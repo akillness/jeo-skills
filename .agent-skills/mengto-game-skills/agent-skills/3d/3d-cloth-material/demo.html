@@ -1,0 +1,856 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Woven Cloth — 3D Cloth Material</title>
+<meta name="description" content="Three.js · WebGL · GLSL woven cloth: inextensible fold curves, a thread-level weave, sheen, anisotropy and backlit transmission on MeshPhysicalMaterial.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' rx='3' fill='%239d382c'/%3E%3Cpath d='M9 9h14M9 16h14M9 23h14M12 7v18M20 7v18' stroke='%23f2ece2' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="modulepreload" href="https://unpkg.com/three@0.169.0/build/three.module.min.js" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400&amp;display=swap&amp;text=%E9%BA%BB%E7%B5%B9%E6%AF%9B%E5%B8%83%E7%B9%94" rel="stylesheet">
+<style>
+  :root{
+    --ink:#f2ece2;
+    --dim:rgba(242,236,226,.66);
+    --hair:rgba(242,236,226,.16);
+    --accent:#c4483a;
+    --pad:clamp(16px,3.2vw,44px);
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+    --mincho:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-weight:normal}
+  html,body{height:100%;background:#0a0806;color:var(--ink);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;overflow:hidden}
+  canvas#gl{position:fixed;inset:0;width:100%;height:100%;display:block}
+  /* the room falls off to black at the edges, like the workshop does */
+  .veil{position:fixed;inset:0;pointer-events:none;
+    background:radial-gradient(120% 90% at 50% 46%,transparent 52%,rgba(6,4,3,.62) 100%)}
+  .copy{transition:opacity .5s;position:fixed;left:var(--pad);top:var(--pad);max-width:min(330px,calc(100vw - 2*var(--pad)));
+    pointer-events:none;text-shadow:0 1px 18px rgba(8,5,3,.9)}
+  .kicker{font-size:11px;line-height:1.5;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+  h1{font-family:var(--serif);font-size:clamp(38px,5.4vw,72px);line-height:.98;margin:10px 0 12px;letter-spacing:-.01em}
+  h1 i{display:block;margin-top:10px;font-family:var(--mincho);font-style:normal;font-size:.36em;color:var(--dim);letter-spacing:.06em}
+  .lede{font-size:13px;line-height:1.62;color:var(--dim);max-width:38ch}
+  .panel{position:fixed;left:var(--pad);right:var(--pad);bottom:var(--pad);display:flex;flex-wrap:wrap;
+    gap:14px 26px;align-items:flex-end;padding:14px 18px 16px;border:1px solid var(--hair);
+    background:rgba(10,8,6,.66);border-radius:4px}
+  .grp{display:flex;flex-direction:column;gap:8px;min-width:0}
+  .grp>span,.grp>label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+  .seg{display:inline-flex;border:1px solid var(--hair);border-radius:3px;overflow:hidden}
+  .seg label{position:relative;cursor:pointer}
+  .seg input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+  .seg b{display:block;padding:7px 12px;font-size:12px;line-height:1.2;color:var(--dim);border-right:1px solid var(--hair);white-space:nowrap;
+    transition:color .18s,background .18s}
+  .seg label:last-child b{border-right:0}
+  .seg b em{font-family:var(--mincho);font-style:normal;margin-right:.5em;color:var(--ink)}
+  .seg input:checked+b{background:var(--ink);color:#120d09}
+  .seg input:checked+b em{color:#120d09}
+  .seg input:focus-visible+b{outline:2px solid var(--accent);outline-offset:-2px}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:112px;height:22px;background:transparent;cursor:pointer}
+  input[type=range]::-webkit-slider-runnable-track{height:1px;background:var(--hair)}
+  input[type=range]::-moz-range-track{height:1px;background:var(--hair)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;margin-top:-6px;border-radius:50%;background:var(--ink);border:0}
+  input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--ink);border:0}
+  input[type=range]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  button.macro{font:inherit;font-size:12px;color:var(--ink);background:transparent;border:1px solid var(--hair);border-radius:3px;
+    padding:7px 14px;cursor:pointer;transition:background .18s,color .18s}
+  button.macro[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+  button.macro:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  body.macro .copy{opacity:0}
+  .stat{position:fixed;right:var(--pad);top:var(--pad);font-size:11px;letter-spacing:.06em;color:var(--dim);
+    font-variant-numeric:tabular-nums;text-align:right;pointer-events:none;text-shadow:0 1px 12px rgba(8,5,3,.9)}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  #boot{position:fixed;inset:0;display:grid;place-items:center;background:#0a0806;font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--dim);transition:opacity .5s;z-index:5}
+  #boot.gone{opacity:0;pointer-events:none}
+  @media (max-width:720px){
+    .lede{display:none}
+    .stat{display:none}
+    .panel{gap:10px 16px;padding:10px 12px 12px}
+    input[type=range]{width:88px}
+    .seg b{padding:6px 9px;font-size:12px}
+  }
+</style>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.169.0/build/three.module.min.js"}}</script>
+</head>
+<body>
+<canvas id="gl" aria-label="A hanging length of woven cloth in a dark room, lit warm from the front and through a paper window from behind"></canvas>
+<div class="veil"></div>
+<div class="copy">
+  <div class="kicker">Three.js · WebGL · GLSL — MeshPhysicalMaterial + onBeforeCompile</div>
+  <h1>Woven Cloth<i>布織</i></h1>
+  <p class="lede">Folds are integrated from a tangent angle, so the weave is never stretched. A thread-level normal map, sheen and backlit transmission do the rest. Strip any one and it turns back into a plastic sheet.</p>
+</div>
+<div class="stat" id="stat" aria-hidden="true"></div>
+
+<form class="panel" onsubmit="return false" aria-label="Cloth controls">
+  <div class="grp" role="radiogroup" aria-label="Fabric">
+    <span>Fabric</span>
+    <div class="seg">
+      <label><input type="radio" name="fab" value="linen" checked><b><em>麻</em>Linen</b></label>
+      <label><input type="radio" name="fab" value="silk"><b><em>絹</em>Silk</b></label>
+      <label><input type="radio" name="fab" value="wool"><b><em>毛</em>Wool</b></label>
+    </div>
+  </div>
+  <div class="grp"><label for="wind">Wind</label><input id="wind" type="range" min="0" max="1" step="0.01" value="0.45"></div>
+  <div class="grp"><label for="full">Fullness</label><input id="full" type="range" min="0.25" max="1.25" step="0.01" value="1"></div>
+  <div class="grp"><label for="back">Window light</label><input id="back" type="range" min="0" max="1" step="0.01" value="0.75"></div>
+  <div class="grp" role="radiogroup" aria-label="Strip a layer">
+    <span>Strip a layer</span>
+    <div class="seg">
+      <label><input type="radio" name="lay" value="full" checked><b>All</b></label>
+      <label><input type="radio" name="lay" value="weave"><b>No weave</b></label>
+      <label><input type="radio" name="lay" value="sheen"><b>No sheen</b></label>
+      <label><input type="radio" name="lay" value="flat"><b>Flat sheet</b></label>
+    </div>
+  </div>
+  <div class="grp"><span>View</span><button type="button" class="macro" id="macro" aria-pressed="false">Macro close-up</button></div>
+</form>
+<div class="sr" id="live" aria-live="polite"></div>
+<div id="boot">Weaving</div>
+
+<script type="module">
+import * as THREE from 'three';
+
+/* ============================================================ *
+ *  Renderer — the workshop's setup: PCFSoft sun shadows, sRGB out, a
+ *  dark warm room. The workshop tone-maps by hand in a final pass; this
+ *  demo has no post chain, so it uses three's ACES instead.
+ * ============================================================ */
+const canvas = document.getElementById('gl');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, powerPreference:'high-performance'});
+THREE.ColorManagement.enabled = true;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.setClearColor(0x0a0806, 1);
+const MAXANISO = Math.min(16, renderer.capabilities.getMaxAnisotropy());
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0a0806);
+const camera = new THREE.PerspectiveCamera(34, 1, 0.03, 60);
+
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ------------------------------------------------------------ */
+const smooth = (a, b, x) => { const u = Math.min(1, Math.max(0, (x - a)/(b - a))); return u*u*(3 - 2*u); };
+const mulberry = s => () => { s = (s + 0x6D2B79F5)|0; let t = Math.imul(s ^ s>>>15, 1|s);
+  t = t + Math.imul(t ^ t>>>7, 61|t) ^ t; return ((t ^ t>>>14)>>>0)/4294967296; };
+
+/* ============================================================ *
+ *  Fabrics. Everything that changes between linen, silk and wool is
+ *  in this table: yarn pitch, weave, dye, sheen, transmission, and the
+ *  fold curve the cloth is hung in.
+ *  pitch  metres per thread      lam   fold wavelength (m)
+ *  amax   peak fold angle (rad)  wp    how uneven the pleat spacing is
+ *  hem    turned-under radius rc (m), 0 = raw cut edge with fray F
+ * ============================================================ */
+const FAB = {
+  linen:{ weave:'plain', NT:32, pitch:0.0016, twist:0.10, slub:0.55, S:2.6, ns:1.15,
+    dye0:0x9c8f78, dye1:0x8c7f68, shot:0.0, dvar:0.55, wearK:0.55, wearCol:0xcbbfa6,
+    rough:0.90, sheen:0.55, sheenR:0.55, sheenC:0xcfc2a8, aniso:0.0,
+    trans:0.60, crease:0.9, lam:0.34, amax:0.98, wp:1.0, rc:0.0022, hemH:0.0, F:0.030,
+    stW:0.0011, stP:0.0085, stCol:0x8a7552, seam:1, wind:1.0, mass:1.0 },
+  silk:{ weave:'satin', NT:40, pitch:0.0007, twist:0.0, slub:0.06, S:1.5, ns:0.6,
+    dye0:0x5f0f1c, dye1:0xb87a2c, shot:1.0, dvar:0.25, wearK:0.0, wearCol:0xd8b4a0,
+    rough:0.36, sheen:0.5, sheenR:0.28, sheenC:0xffb59a, aniso:0.85,
+    trans:1.05, crease:0.18, lam:0.40, amax:1.02, wp:0.8, rc:0.0011, hemH:0.035, F:0.0,
+    stW:0.0004, stP:0.0026, stCol:0x7f1a1f, seam:0, wind:1.9, mass:0.45 },
+  wool:{ weave:'twill', NT:24, pitch:0.0026, twist:0.14, slub:0.7, S:2.9, ns:1.45,
+    dye0:0x2e4068, dye1:0x394b76, shot:0.0, dvar:0.45, wearK:0.5, wearCol:0x7d8bab,
+    rough:0.96, sheen:1.0, sheenR:0.82, sheenC:0x7f93c2, aniso:0.0,
+    trans:0.06, crease:1.0, lam:0.32, amax:0.86, wp:0.9, rc:0.0046, hemH:0.05, F:0.0,
+    stW:0.0016, stP:0.011, stCol:0x8b7d5c, seam:1, wind:0.55, mass:1.6 }
+};
+const col = h => new THREE.Color(h);
+
+/* ============================================================ *
+ *  The weave — baked once per fabric into a tiling normal map and an
+ *  info map (r height, g thread tone, b weft-on-top). Each thread has
+ *  its own width, tone and a slub; warp and weft alternate over/under
+ *  by the weave's own interlacement, so a twill runs diagonally and a
+ *  satin floats. Ported from the workshop's canvas, generalised.
+ * ============================================================ */
+const NW = 512;
+function bakeWeave(f, seed){
+  const r = mulberry(seed), NT = f.NT, px = NW/NT;
+  const over = (A, B) => {           /* is the warp over the weft here? */
+    A = (A + NT)%NT; B = (B + NT)%NT;
+    if (f.weave === 'plain') return ((A + B) & 1) === 0 ? 1 : 0;
+    if (f.weave === 'twill') return ((A + B)%3) < 2 ? 1 : 0;
+    return ((2*A + B)%5) === 0 ? 0 : 1;      /* 5-harness satin, warp-faced */
+  };
+  const th = [];
+  for (let i = 0; i < 2*NT; i++) th.push({w:0.80 + 0.17*r(), t:r(), s:r(), a:r()*0.34*f.slub});
+  const slub = (T, u) => { const d = (u - T.s + 1.5)%1 - 0.5; return 1 + T.a*Math.exp(-d*d/0.0081); };
+  const H = new Float32Array(NW*NW), N8 = new Uint8Array(NW*NW*4), I8 = new Uint8Array(NW*NW*4);
+  const sm = (a, b, x) => { const u = Math.min(1, Math.max(0, (x - a)/(b - a))); return u*u*(3 - 2*u); };
+  for (let y = 0; y < NW; y++) for (let x = 0; x < NW; x++){
+    const a = (x + 0.5)/px, b = (y + 0.5)/px, A = Math.floor(a), B = Math.floor(b);
+    const fa = a - A - 0.5, fb = b - B - 0.5, TA = th[A], TB = th[NT + B];
+    const ca = fa/(0.5*Math.min(0.98, TA.w*slub(TA, b/NT))), cb = fb/(0.5*Math.min(0.98, TB.w*slub(TB, a/NT)));
+    const o0 = over(A, B);
+    /* warp runs down b: rises over a crossing, dips under, blended across the cell border */
+    const ow = o0 + (over(A, fb < 0 ? B - 1 : B + 1) - o0)*0.5*sm(0.05, 0.5, Math.abs(fb));
+    const wf = 1 - o0, of = wf + ((1 - over(fa < 0 ? A - 1 : A + 1, B)) - wf)*0.5*sm(0.05, 0.5, Math.abs(fa));
+    let hw = Math.sqrt(Math.max(0, 1 - ca*ca))*(0.30 + 0.70*ow);
+    let hf = Math.sqrt(Math.max(0, 1 - cb*cb))*(0.30 + 0.70*of);
+    if (f.twist){                       /* spun yarn: a slow diagonal twist along each thread */
+      hw += f.twist*0.22*Math.sin(6.2832*(b*5 + fa*1.3))*Math.sqrt(Math.max(0, 1 - ca*ca));
+      hf += f.twist*0.22*Math.sin(6.2832*(a*5 + fb*1.3))*Math.sqrt(Math.max(0, 1 - cb*cb));
+    }
+    const i = y*NW + x, top = hw >= hf;
+    H[i] = Math.max(hw, hf);
+    I8[i*4] = Math.round(Math.min(1, H[i])*255); I8[i*4 + 1] = Math.round((top ? TA.t : TB.t)*255);
+    I8[i*4 + 2] = top ? 0 : 255; I8[i*4 + 3] = 255;
+  }
+  for (let y = 0; y < NW; y++) for (let x = 0; x < NW; x++){
+    const i = y*NW + x;
+    const gx = (H[y*NW + (x + 1)%NW] - H[y*NW + (x + NW - 1)%NW])*0.5*f.S;
+    const gy = (H[((y + 1)%NW)*NW + x] - H[((y + NW - 1)%NW)*NW + x])*0.5*f.S;
+    const l = Math.hypot(gx, gy, 1);
+    N8[i*4] = Math.round((-gx/l*0.5 + 0.5)*255); N8[i*4 + 1] = Math.round((-gy/l*0.5 + 0.5)*255);
+    N8[i*4 + 2] = Math.round((1/l*0.5 + 0.5)*255); N8[i*4 + 3] = 255;
+  }
+  const tex = d => { const t = new THREE.DataTexture(d, NW, NW, THREE.RGBAFormat);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping; t.generateMipmaps = true;
+    t.minFilter = THREE.LinearMipmapLinearFilter; t.magFilter = THREE.LinearFilter;
+    t.anisotropy = MAXANISO; const rep = 1/(NT*f.pitch); t.repeat.set(rep, rep); t.needsUpdate = true; return t; };
+  return {normal:tex(N8), info:tex(I8)};
+}
+
+/* ============================================================ *
+ *  The cloth material: MeshPhysicalMaterial (sheen, anisotropy) with a
+ *  small onBeforeCompile for what the standard model lacks — two-tone
+ *  warp/weft dye, per-thread tone, wear on thread tops, drawn stitches
+ *  and a seam, wrinkle bump, raw-edge fray, fold AO and light that
+ *  passes through the gaps between threads.
+ * ============================================================ */
+const NOISE = /* glsl */`
+  float h21(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7)))*43758.5453123); }
+  float gn(vec2 x){
+    vec2 p = floor(x), w = fract(x), u = w*w*w*(w*(w*6.0 - 15.0) + 10.0);
+    return mix(mix(h21(p), h21(p + vec2(1,0)), u.x), mix(h21(p + vec2(0,1)), h21(p + vec2(1,1)), u.x), u.y);
+  }
+  float fbm(vec2 p){ float s = 0.0, a = 0.5; for (int i = 0; i < 4; i++){ s += a*gn(p); p = p*2.03 + 7.1; a *= 0.5; } return s/0.9375; }`;
+const STITCH = /* glsl */`
+  uniform float uSP, uStW, uHemY, uSideIn, uSeam, uW;
+  float stLine(float d, float a, inout float th, inout float gr){
+    float ph = fract(a/uSP), x = ph/0.74, w2 = uStW*uStW;
+    float arch = x < 1.0 ? 1.0 - (2.0*x - 1.0)*(2.0*x - 1.0) : 0.0;
+    th = max(th, sqrt(max(0.0, 1.0 - d*d/w2)*arch));
+    gr = max(gr, exp(-d*d/(7.7*w2)));
+    return cos(6.2832*a/uSP)*exp(-d*d/(19.0*w2));
+  }
+  /* x: thread coverage, y: height (m) for the normal, z: needle groove */
+  vec3 stitchAt(vec2 c){
+    float th = 0.0, gr = 0.0, pk = 0.0, reach = uStW*9.0, rd = 0.0;
+    if (uHemY > 0.0 && abs(c.y - uHemY) < reach) pk += stLine(abs(c.y - uHemY), c.x, th, gr);
+    if (abs(c.x - uSideIn) < reach) pk += stLine(abs(c.x - uSideIn), c.y, th, gr);
+    if (abs(c.x - (uW - uSideIn)) < reach) pk += stLine(abs(c.x - (uW - uSideIn)), c.y, th, gr);
+    if (uSeam > 0.5){
+      float dx = c.x - 0.5*uW;
+      if (abs(dx) < 0.03){
+        if (abs(abs(dx) - 0.007) < reach) pk += stLine(abs(abs(dx) - 0.007), c.y, th, gr);
+        /* the felled seam stands a little proud and puckers between stitches */
+        rd = exp(-dx*dx/9.0e-5)*(0.55 + 0.45*cos(6.2832*c.y/(uSP*4.0)));
+      }
+    }
+    float k = uStW/0.00125;
+    return vec3(th, (th*0.0011 - gr*0.0006 + pk*0.0002)*k + rd*0.00075, gr);
+  }`;
+
+function makeMaterial(){
+  const m = new THREE.MeshPhysicalMaterial({color:0xffffff, roughness:0.9, sheen:1, sheenRoughness:0.5,
+    sheenColor:new THREE.Color(0x555555), normalScale:new THREE.Vector2(1, 1), side:THREE.DoubleSide,
+    anisotropy:0.0});
+  const U = m.userData.u = {
+    uWeave:{value:null}, uDye0:{value:new THREE.Color()}, uDye1:{value:new THREE.Color()}, uWearCol:{value:new THREE.Color()},
+    uStitchCol:{value:new THREE.Color()}, uShot:{value:0}, uVar:{value:0.5}, uWearK:{value:0.5}, uCrease:{value:1},
+    uTrans:{value:0.5}, uPitch:{value:0.0016}, uFray:{value:0}, uH:{value:2}, uW:{value:2},
+    uSP:{value:0.0085}, uStW:{value:0.0011}, uHemY:{value:-1}, uSideIn:{value:0.022}, uSeam:{value:1},
+    uWeaveOn:{value:1}, uBackDir:{value:new THREE.Vector3(0.55, 0.3, -0.78).normalize()},
+    uBackCol:{value:new THREE.Color(1, 0.72, 0.4)}, uBack:{value:0.75}
+  };
+  m.onBeforeCompile = sh => {
+    Object.assign(sh.uniforms, U);
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\nattribute float aWear;\nattribute float aAO;\nattribute float aKind;\nvarying float vWear;\nvarying float vAO;\nvarying float vKind;\nvarying vec2 vCl;')
+      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvWear = aWear; vAO = aAO; vKind = aKind; vCl = uv;');
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', `#include <common>
+        uniform sampler2D uWeave;
+        uniform vec3 uDye0, uDye1, uWearCol, uStitchCol, uBackCol, uBackDir;
+        uniform float uShot, uVar, uWearK, uCrease, uTrans, uPitch, uFray, uH, uWeaveOn, uBack;
+        varying float vWear; varying float vAO; varying float vKind; varying vec2 vCl;
+        ${NOISE}${STITCH}`)
+      .replace('#include <color_fragment>', `
+        #include <color_fragment>
+        vec4 wv = mix(vec4(0.55, 0.5, 0.0, 1.0), texture2D(uWeave, vNormalMapUv), uWeaveOn);
+        if (uFray > 0.0 && vCl.y > uH && vKind < 0.5){
+          /* a cut edge: the weft is drawn out, the warp threads hang, each a different length */
+          float colIdx = floor(vCl.x/uPitch), wpos = fract(vCl.x/uPitch);
+          if (vCl.y - uH > uFray*(0.3 + 0.7*h21(vec2(colIdx, 3.7))) || abs(wpos - 0.5) > 0.36) discard;
+        }
+        vec3 st = vKind < 0.5 ? stitchAt(vCl) : vec3(0.0);
+        float blot = fbm(vCl*vec2(2.3, 1.9) + 1.7);
+        float strk = gn(vec2(vCl.x/uPitch*0.5, vCl.y*1.4));
+        vec3 dye = mix(uDye0, uDye1, wv.b*uShot);
+        dye *= 1.0 + uVar*((blot - 0.5)*0.62 + (strk - 0.5)*0.22);
+        float tone = mix(0.86, 1.14, wv.g);
+        float cav = mix(0.5, 1.0, smoothstep(0.05, 0.85, wv.r));
+        /* dye lets go first on the tops of the threads, on hems and on fold crests */
+        float wear = clamp(vWear*(0.25 + wv.r) + (fbm(vCl*5.0 + 3.1) - 0.5)*0.3, 0.0, 1.0)*uWearK;
+        dye = mix(dye, uWearCol, wear*wv.r);
+        float thread = smoothstep(0.04, 0.30, st.x);
+        vec3 cloth = dye*tone*mix(1.0, cav, uWeaveOn)*(1.0 - 0.32*st.z);
+        diffuseColor.rgb *= mix(cloth, uStitchCol*(0.55 + 0.45*st.x), thread);
+      `)
+      .replace('#include <roughnessmap_fragment>', `
+        #include <roughnessmap_fragment>
+        roughnessFactor = clamp(roughnessFactor*mix(1.04, 0.90, wv.r)*(1.0 - 0.10*thread), 0.05, 1.0);
+      `)
+      .replace('#include <normal_fragment_maps>', `
+        #include <normal_fragment_maps>
+        if (vKind < 0.5){
+          if (uHemY > 0.0 || uSeam > 0.5 || uSideIn > 0.0){
+            float e = uStW*0.18;
+            vec2 g = vec2(stitchAt(vCl + vec2(e, 0.0)).y - st.y, stitchAt(vCl + vec2(0.0, e)).y - st.y)/e;
+            g *= 1.0 - smoothstep(uStW, uStW*3.2, length(fwidth(vCl)));
+            normal = normalize(normal - g.x*tbn[0] - g.y*tbn[1]);
+          }
+          /* wrinkle bump: creases run along the yarn, not isotropically */
+          float hC = fbm(vec2(vCl.x*7.0, vCl.y*2.6) + 11.0)*0.8 + gn(vec2(vCl.x*17.0, vCl.y*4.5))*0.2;
+          vec2 dh = vec2(dFdx(hC), dFdy(hC))*uCrease*0.016;
+          vec3 sx = normalize(dFdx(-vViewPosition)), sy = normalize(dFdy(-vViewPosition));
+          vec3 r1 = cross(sy, normal), r2 = cross(normal, sx);
+          float fd = dot(sx, r1)*faceDirection;
+          vec3 vg = sign(fd)*(dh.x*r1 + dh.y*r2);
+          normal = normalize(abs(fd)*normal - vg);
+        }
+      `)
+      .replace('#include <aomap_fragment>', `
+        #include <aomap_fragment>
+        reflectedLight.indirectDiffuse *= vAO;
+        reflectedLight.indirectSpecular *= mix(1.0, vAO, 0.85);
+      `)
+      .replace('#include <emissivemap_fragment>', `
+        #include <emissivemap_fragment>
+        {
+          /* light through the cloth: a fold turned away from the window glows, the gaps
+             between threads pass more than the thread cores, dye warms it */
+          vec3 Lb = normalize((viewMatrix*vec4(uBackDir, 0.0)).xyz);
+          float tr = max(0.0, -dot(normal, Lb));
+          float gap = mix(1.0, 0.42, smoothstep(0.25, 0.9, wv.r)*uWeaveOn);
+          float thin = 0.72 + 0.56*fbm(vCl*vec2(3.1, 2.4) + 5.0);
+          vec3 tc = dye*vec3(1.7, 1.2, 0.85);
+          totalEmissiveRadiance += uTrans*uBack*uBackCol*tc*pow(tr, 1.15)*gap*thin*(1.0 - 0.6*st.x*thread);
+        }
+      `);
+  };
+  m.customProgramCacheKey = () => 'cloth-v1';
+  return m;
+}
+const clothMat = makeMaterial();
+const U = clothMat.userData.u;
+
+/* ============================================================ *
+ *  The cloth geometry.
+ *  Each row is a curve whose TANGENT ANGLE is α(s) = a·(sinθ + 0.28 sin(2θ+0.8)).
+ *  Integrating cosα, sinα gives x, z — the arc length is s by
+ *  construction, so uv = (s, v) in metres never stretches on a fold
+ *  and the weave keeps its pitch on every slope. Hems turn under on a
+ *  half circle (thickness), the bottom hem returns up the back.
+ * ============================================================ */
+const W = 2.0, H = 1.95, NU = 160, NV = 120, M = 6;
+const ROD_Y = 1.16, ROD_R = 0.028, TOP_Y = ROD_Y - 0.052;
+const N_TAB = 9, TAB_W = 0.10;
+
+const cloth = new THREE.Mesh(new THREE.BufferGeometry(), clothMat);
+cloth.castShadow = true; cloth.receiveShadow = true; cloth.frustumCulled = false;
+scene.add(cloth);
+const tabs = new THREE.Mesh(new THREE.BufferGeometry(), clothMat);
+tabs.castShadow = true; tabs.receiveShadow = true; tabs.frustumCulled = false;
+scene.add(tabs);
+const fringe = new THREE.LineSegments(new THREE.BufferGeometry(),
+  new THREE.LineBasicMaterial({vertexColors:true, transparent:true, opacity:0.9}));
+fringe.frustumCulled = false; scene.add(fringe);
+
+const CL = { strips:[], nv:0, pos:null, nrm:null, ao:null, cfg:null, dv:0, Hb:H, zf:null, ready:false };
+const cur = {};           /* tweened numbers the fold curve and material read */
+let curFab = 'linen';
+
+function configureCloth(f){
+  const hem = f.rc > 0 && f.hemH > 0, F = f.F, Hb = H + F, dv = Hb/NV;
+  const RR = hem ? Math.max(2, Math.round(f.hemH/dv)) : 0;
+  const S = [];
+  let n = 0;
+  const add = (kind, n1, n2) => { const s = {kind, n1, n2, base:n}; n += n1*n2; S.push(s); return s; };
+  add('plain', NV + 1, NU + 1);
+  add('left', NV + 1, M + 1); add('right', NV + 1, M + 1);
+  if (hem){ add('bottom', NU + 1, M + 1); add('ret', NU + 1, RR + 1); }
+  CL.strips = S; CL.nv = n; CL.cfg = {hem, F, Hb, dv, RR};
+  CL.pos = new Float32Array(n*3); CL.nrm = new Float32Array(n*3);
+  CL.zf = new Float32Array((NU + 1)*(NV + 1));
+  const uv = new Float32Array(n*2), wear = new Float32Array(n), ao = new Float32Array(n), kind = new Float32Array(n);
+  CL.ao = ao;
+  const ds = W/NU;
+  const rc = f.rc;
+  for (const s of S){
+    for (let k = 0; k < s.n1; k++) for (let m = 0; m < s.n2; m++){
+      const i = s.base + k*s.n2 + m; let u, v, w = 0;
+      if (s.kind === 'plain'){ u = m*ds; v = k*dv; }
+      else if (s.kind === 'left'){ u = -rc*(m/M*0.94*Math.PI); v = k*dv; w = 0.4; }
+      else if (s.kind === 'right'){ u = W + rc*(m/M*0.94*Math.PI); v = k*dv; w = 0.4; }
+      else if (s.kind === 'bottom'){ u = k*ds; v = Hb + rc*(m/M*0.94*Math.PI); w = 0.45; }
+      else { u = k*ds; v = Hb + rc*Math.PI + m*dv; w = 0.35; }
+      uv[i*2] = u; uv[i*2 + 1] = v;
+      /* hems and the cut-off margins are worn first */
+      wear[i] = w + 0.35*smooth(0.05, 0, u) + 0.35*smooth(W - 0.05, W, u) + (hem ? 0.4*smooth(Hb - 0.07, Hb, v) : 0);
+      kind[i] = 0;
+      ao[i] = 1;
+    }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(CL.pos, 3).setUsage(THREE.DynamicDrawUsage));
+  g.setAttribute('normal', new THREE.BufferAttribute(CL.nrm, 3).setUsage(THREE.DynamicDrawUsage));
+  g.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  g.setAttribute('aWear', new THREE.BufferAttribute(wear, 1));
+  g.setAttribute('aAO', new THREE.BufferAttribute(ao, 1).setUsage(THREE.DynamicDrawUsage));
+  g.setAttribute('aKind', new THREE.BufferAttribute(kind, 1));
+  const old = cloth.geometry; cloth.geometry = g; old.dispose();
+  CL.geo = g; CL.idxBuilt = false;
+  CL.wearAttr = g.getAttribute('aWear');
+  /* fringe strands along the raw bottom edge */
+  buildFringe(f);
+}
+
+function buildIndex(){
+  /* pick each strip's winding from its own normals, once, after the first update */
+  const idx = [], P = CL.pos, N = CL.nrm;
+  for (const s of CL.strips){
+    const a0 = s.base, b0 = s.base + 1, c0 = s.base + s.n2;
+    const ax = P[b0*3] - P[a0*3], ay = P[b0*3+1] - P[a0*3+1], az = P[b0*3+2] - P[a0*3+2];
+    const bx = P[c0*3] - P[a0*3], by = P[c0*3+1] - P[a0*3+1], bz = P[c0*3+2] - P[a0*3+2];
+    const cx = ay*bz - az*by, cy = az*bx - ax*bz, cz = ax*by - ay*bx;
+    const flip = (cx*N[a0*3] + cy*N[a0*3+1] + cz*N[a0*3+2]) < 0;
+    for (let k = 0; k < s.n1 - 1; k++) for (let m = 0; m < s.n2 - 1; m++){
+      const a = s.base + k*s.n2 + m, b = a + 1, c = a + s.n2, d = c + 1;
+      if (flip) idx.push(a, c, b, b, c, d); else idx.push(a, b, c, b, d, c);
+    }
+  }
+  CL.geo.setIndex(idx);
+  CL.idxBuilt = true;
+}
+
+const gust = t => 0.55 + 0.45*Math.sin(t*0.37 + 0.9*Math.sin(t*0.11)) ;
+
+const xs = new Float32Array(NU + 1), zs = new Float32Array(NU + 1), al = new Float32Array(NU + 1);
+function updateCloth(t, wind, full){
+  const c = cur, k = 2*Math.PI/c.lam, ds = W/NU, dv = CL.cfg.dv, Hb = CL.cfg.Hb;
+  const g = gust(t), pos = CL.pos, nrm = CL.nrm, nu1 = NU + 1, zf = CL.zf;
+  const ww = wind*c.wind;
+  for (let j = 0; j <= NV; j++){
+    const v = j*dv, vn = Math.min(1, v/H);
+    const av = c.amax*full*(0.55 + 0.45*smooth(0, 0.3, vn));
+    for (let i = 0; i <= NU; i++){
+      const s = i*ds;
+      const th = k*s + c.wp*Math.sin(0.43*k*s + 1.7 + 0.8*vn) + 0.6*Math.sin(0.19*k*s + 4.0*vn) + 1.4*vn
+        + ww*0.42*vn*Math.sin(1.1*t - 1.4*s + 2*vn);
+      /* pleat depth wanders across the width; a second, shorter train rides on top */
+      const env = 0.70 + 0.42*Math.sin(0.37*k*s + 2.1 + 1.7*vn);
+      let a = av*env*(Math.sin(th) + 0.16*Math.sin(2*th + 0.8)) + 0.26*av*Math.sin(2.7*th + 3.0*vn + 0.6) + 0.12*av*Math.sin(5.4*th + 9.0*vn + 1.3);
+      al[i] = a > 1.45 ? 1.45 : (a < -1.45 ? -1.45 : a);
+    }
+    let x = 0, z = 0, zm = 0; xs[0] = 0; zs[0] = 0;
+    for (let i = 0; i < NU; i++){
+      const am = 0.5*(al[i] + al[i + 1]);
+      x += ds*Math.cos(am); z += ds*Math.sin(am); xs[i + 1] = x; zs[i + 1] = z; zm += z;
+    }
+    zm /= NU; const x0 = 0.5*x;
+    const vv = vn*vn, v3 = vn*vn*vn;
+    const swing = ww*0.05*Math.sin(0.55*t + 0.4)*Math.pow(vn, 1.5)*(0.5 + g);
+    for (let i = 0; i <= NU; i++){
+      const s = i*ds, f = zs[i] - zm;
+      const bulge = ww*(0.045 + 0.10*g)*Math.sin(Math.PI*s/W)*Math.pow(vn, 1.4);
+      const rip = ww*0.012*Math.sin(6.5*s - 2.4*t + 2.1*vn)*vv;
+      const o = (j*nu1 + i)*3;
+      pos[o] = xs[i] - x0;
+      pos[o + 1] = TOP_Y - v + 0.42*f*v3;
+      pos[o + 2] = f + bulge + rip + swing;
+      zf[j*nu1 + i] = f;
+    }
+  }
+  /* normals: dP/dj × dP/di */
+  for (let j = 0; j <= NV; j++){
+    const j0 = Math.max(0, j - 1), j1 = Math.min(NV, j + 1);
+    for (let i = 0; i <= NU; i++){
+      const i0 = Math.max(0, i - 1), i1 = Math.min(NU, i + 1);
+      const a = (j*nu1 + i0)*3, b = (j*nu1 + i1)*3, c = (j0*nu1 + i)*3, d = (j1*nu1 + i)*3;
+      const ux = pos[b] - pos[a], uy = pos[b+1] - pos[a+1], uz = pos[b+2] - pos[a+2];
+      const vx = pos[d] - pos[c], vy = pos[d+1] - pos[c+1], vz = pos[d+2] - pos[c+2];
+      let nx = vy*uz - vz*uy, ny = vz*ux - vx*uz, nz = vx*uy - vy*ux;
+      const l = Math.hypot(nx, ny, nz) || 1; const o = (j*nu1 + i)*3;
+      nrm[o] = nx/l; nrm[o+1] = ny/l; nrm[o+2] = nz/l;
+      /* fold AO: valleys (behind the mean) hold darkness, crests stay open; hem gathers a little */
+      CL.ao[j*nu1 + i] = 0.62 + 0.38*smooth(-0.075, 0.035, zf[j*nu1 + i])*(1 - 0.15*Math.min(1, vn_(j)));
+    }
+  }
+  /* turned-under edges and the hem's return strip */
+  const f = FAB[curFab], rc = f.rc;
+  const S = CL.strips;
+  const edge = (s, k, m, pi, oi, ni) => {         /* pi: edge vertex, oi: inward neighbour */
+    const phi = m/M*0.94*Math.PI, sn = Math.sin(phi), cs = Math.cos(phi);
+    let ox = pos[pi*3] - pos[oi*3], oy = pos[pi*3+1] - pos[oi*3+1], oz = pos[pi*3+2] - pos[oi*3+2];
+    const ol = Math.hypot(ox, oy, oz) || 1; ox /= ol; oy /= ol; oz /= ol;
+    const nx = nrm[ni*3], ny = nrm[ni*3+1], nz = nrm[ni*3+2];
+    const i = (s.base + k*s.n2 + m)*3, r = rc*sn, dn = rc*(1 - cs);
+    pos[i] = pos[pi*3] + ox*r - nx*dn; pos[i+1] = pos[pi*3+1] + oy*r - ny*dn; pos[i+2] = pos[pi*3+2] + oz*r - nz*dn;
+    nrm[i] = nx*cs + ox*sn; nrm[i+1] = ny*cs + oy*sn; nrm[i+2] = nz*cs + oz*sn;
+  };
+  for (const s of S){
+    if (s.kind === 'left') for (let k = 0; k <= NV; k++) for (let m = 0; m <= M; m++) edge(s, k, m, k*nu1, k*nu1 + 1, k*nu1);
+    else if (s.kind === 'right') for (let k = 0; k <= NV; k++) for (let m = 0; m <= M; m++) edge(s, k, m, k*nu1 + NU, k*nu1 + NU - 1, k*nu1 + NU);
+    else if (s.kind === 'bottom') for (let k = 0; k <= NU; k++) for (let m = 0; m <= M; m++) edge(s, k, m, NV*nu1 + k, (NV - 1)*nu1 + k, NV*nu1 + k);
+    else if (s.kind === 'ret') for (let k = 0; k <= NU; k++) for (let m = 0; m <= CL.cfg.RR; m++){
+      const src = (NV - m)*nu1 + k, i = (s.base + k*s.n2 + m)*3, off = 2*rc + 0.0002;
+      pos[i] = pos[src*3] - nrm[src*3]*off; pos[i+1] = pos[src*3+1] - nrm[src*3+1]*off; pos[i+2] = pos[src*3+2] - nrm[src*3+2]*off;
+      nrm[i] = -nrm[src*3]; nrm[i+1] = -nrm[src*3+1]; nrm[i+2] = -nrm[src*3+2];
+    }
+  }
+  /* ao for the strips: copy from their edge row */
+  for (const s of S){
+    if (s.kind === 'plain') continue;
+    for (let kk = 0; kk < s.n1; kk++) for (let m = 0; m < s.n2; m++){
+      let src;
+      if (s.kind === 'left') src = kk*nu1; else if (s.kind === 'right') src = kk*nu1 + NU;
+      else src = NV*nu1 + kk;
+      CL.ao[s.base + kk*s.n2 + m] = s.kind === 'ret' ? 0.55*CL.ao[src] : CL.ao[src];
+    }
+  }
+  CL.geo.attributes.position.needsUpdate = true; CL.geo.attributes.normal.needsUpdate = true;
+  CL.geo.attributes.aAO.needsUpdate = true;
+  if (!CL.idxBuilt) buildIndex();
+}
+const vn_ = j => Math.min(1, j*CL.cfg.dv/H);
+
+/* ---- fabric tabs over the rod: the top of the cloth is sewn to loops ---- */
+const TAB_ACROSS = 6, TAB_ALONG = 16;
+{
+  const n = N_TAB*TAB_ACROSS*(TAB_ALONG + 1);
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(n*3), 3).setUsage(THREE.DynamicDrawUsage));
+  g.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(n*3), 3).setUsage(THREE.DynamicDrawUsage));
+  const uv = new Float32Array(n*2), wear = new Float32Array(n).fill(0.25), ao = new Float32Array(n).fill(0.9), kind = new Float32Array(n).fill(1);
+  let q = 0;
+  for (let t = 0; t < N_TAB; t++) for (let a = 0; a < TAB_ACROSS; a++) for (let l = 0; l <= TAB_ALONG; l++){
+    uv[q*2] = 0.3 + t*0.7 + a*TAB_W/(TAB_ACROSS - 1); uv[q*2 + 1] = 0.02 + l*0.0135; q++;
+  }
+  g.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  g.setAttribute('aWear', new THREE.BufferAttribute(wear, 1)); g.setAttribute('aAO', new THREE.BufferAttribute(ao, 1));
+  g.setAttribute('aKind', new THREE.BufferAttribute(kind, 1));
+  const idx = [];
+  for (let t = 0; t < N_TAB; t++){
+    const b = t*TAB_ACROSS*(TAB_ALONG + 1);
+    for (let a = 0; a < TAB_ACROSS - 1; a++) for (let l = 0; l < TAB_ALONG; l++){
+      const p = b + a*(TAB_ALONG + 1) + l, q2 = p + 1, r = p + TAB_ALONG + 1, s2 = r + 1;
+      idx.push(p, q2, r, q2, s2, r);
+    }
+  }
+  g.setIndex(idx); tabs.geometry = g;
+}
+function updateTabs(){
+  const pos = CL.pos, tp = tabs.geometry.attributes.position.array, nu1 = NU + 1, R = ROD_R + 0.005;
+  let q = 0;
+  for (let t = 0; t < N_TAB; t++){
+    const ic = Math.round(((t + 0.5)/N_TAB)*NU);
+    for (let a = 0; a < TAB_ACROSS; a++){
+      const i = Math.min(NU, Math.max(0, ic + Math.round((a - (TAB_ACROSS - 1)/2)*TAB_W/(TAB_ACROSS - 1)/(W/NU))));
+      const px = pos[i*3], py = pos[i*3+1], pz = pos[i*3+2];
+      for (let l = 0; l <= TAB_ALONG; l++){
+        const tau = l/TAB_ALONG, beta = -0.30*Math.PI + tau*1.32*Math.PI;
+        const cx = px, cy = ROD_Y + R*Math.sin(beta), cz = R*Math.cos(beta);
+        const w = smooth(0, 0.34, tau);
+        tp[q*3] = px + (cx - px)*w; tp[q*3 + 1] = py + (cy - py)*w; tp[q*3 + 2] = pz + (cz - pz)*w; q++;
+      }
+    }
+  }
+  tabs.geometry.attributes.position.needsUpdate = true;
+  tabs.geometry.computeVertexNormals();
+  /* tabs face outward from the rod; flip normals if the winding pointed in */
+  const n = tabs.geometry.attributes.normal.array, mid = ((TAB_ALONG/2)|0), i0 = mid*3;
+  if (n[i0 + 1] < 0){ for (let k = 0; k < n.length; k++) n[k] = -n[k]; }
+  tabs.geometry.attributes.normal.needsUpdate = true;
+}
+
+/* ---- loose warp ends along a raw edge (linen only) ---- */
+const FR = { n:520, seeds:null, col:null };
+function buildFringe(f){
+  const on = f.F > 0;
+  fringe.visible = on;
+  if (!on) return;
+  const r = mulberry(4471), n = FR.n, segs = 3;
+  FR.seeds = new Float32Array(n*4);
+  for (let i = 0; i < n; i++){ FR.seeds[i*4] = (i + r()*0.8)/n; FR.seeds[i*4 + 1] = 0.014 + 0.028*r();
+    FR.seeds[i*4 + 2] = (r() - 0.5); FR.seeds[i*4 + 3] = r()*6.28; }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(n*segs*2*3), 3).setUsage(THREE.DynamicDrawUsage));
+  const c = new Float32Array(n*segs*2*3), base = new THREE.Color(f.dye0).multiplyScalar(0.7);
+  for (let i = 0; i < n; i++) for (let s = 0; s < segs; s++) for (let e = 0; e < 2; e++){
+    const k = (i*segs + s)*2 + e, fade = 1 - 0.55*((s + e)/segs), tint = 0.75 + 0.5*((i*7919)%13)/13;
+    c[k*3] = base.r*fade*tint; c[k*3+1] = base.g*fade*tint; c[k*3+2] = base.b*fade*tint;
+  }
+  g.setAttribute('color', new THREE.BufferAttribute(c, 3));
+  const old = fringe.geometry; fringe.geometry = g; old.dispose();
+}
+function updateFringe(t, wind){
+  if (!fringe.visible) return;
+  const pos = CL.pos, nrm = CL.nrm, nu1 = NU + 1, a = fringe.geometry.attributes.position.array, segs = 3;
+  const Hb = CL.cfg.Hb;
+  for (let i = 0; i < FR.n; i++){
+    const sd = FR.seeds, u = sd[i*4]*NU, i0 = Math.min(NU - 1, Math.floor(u)), fr = u - i0;
+    const A = ((NV)*nu1 + i0)*3, B = A + 3, Cc = ((NV - 2)*nu1 + i0)*3;
+    let px = pos[A] + (pos[B] - pos[A])*fr, py = pos[A+1] + (pos[B+1] - pos[A+1])*fr, pz = pos[A+2] + (pos[B+2] - pos[A+2])*fr;
+    let dx = pos[A] - pos[Cc], dy = pos[A+1] - pos[Cc+1], dz = pos[A+2] - pos[Cc+2];
+    const dl = Math.hypot(dx, dy, dz) || 1; dx /= dl; dy /= dl; dz /= dl;
+    const L = sd[i*4 + 1]/segs, ph = sd[i*4 + 3], ws = wind*0.006*Math.sin(t*2.0 + ph);
+    for (let s = 0; s < segs; s++){
+      const o = (i*segs + s)*6;
+      a[o] = px; a[o+1] = py; a[o+2] = pz;
+      const kx = sd[i*4 + 2]*0.012*(s + 1)/segs;
+      dx += kx*0.5 + ws; dz += ws*0.7 + 0.03; dy -= 0.05;
+      const l2 = Math.hypot(dx, dy, dz) || 1; dx /= l2; dy /= l2; dz /= l2;
+      px += dx*L; py += dy*L; pz += dz*L;
+      a[o+3] = px; a[o+4] = py; a[o+5] = pz;
+    }
+  }
+  fringe.geometry.attributes.position.needsUpdate = true;
+}
+
+/* ============================================================ *
+ *  The room: rod, wall, floor, paper window, lights, small studio env
+ * ============================================================ */
+function noiseCanvas(sz, base, amp, freq, seed){
+  const c = document.createElement('canvas'); c.width = c.height = sz; const g = c.getContext('2d');
+  const img = g.createImageData(sz, sz), r = mulberry(seed), G = 128, gr = new Float32Array(G*G);
+  for (let i = 0; i < gr.length; i++) gr[i] = r();
+  /* period P = the octave's frequency, so the tile wraps without a seam */
+  const sample = (x, y, P) => { const X = Math.floor(x), Y = Math.floor(y), fx = x - X, fy = y - Y;
+    const u = fx*fx*(3 - 2*fx), v = fy*fy*(3 - 2*fy), X1 = (X + 1)%P, Y1 = (Y + 1)%P, X0 = X%P, Y0 = Y%P,
+      a = gr[Y0*G + X0], b = gr[Y0*G + X1], c2 = gr[Y1*G + X0], d = gr[Y1*G + X1];
+    return (a + (b - a)*u) + ((c2 + (d - c2)*u) - (a + (b - a)*u))*v; };
+  for (let y = 0; y < sz; y++) for (let x = 0; x < sz; x++){
+    let n = 0, a = 0.5, fq = freq; for (let o = 0; o < 4; o++){ n += a*sample(x/sz*fq, y/sz*fq, fq); a *= 0.5; fq *= 2; }
+    const v = Math.max(0, Math.min(255, base + (n - 0.47)*amp)), i = (y*sz + x)*4;
+    img.data[i] = v*1.0; img.data[i+1] = v*0.92; img.data[i+2] = v*0.80; img.data[i+3] = 255;
+  }
+  g.putImageData(img, 0, 0); return c;
+}
+const plaster = new THREE.CanvasTexture(noiseCanvas(512, 120, 70, 3, 91));
+plaster.colorSpace = THREE.SRGBColorSpace; plaster.wrapS = plaster.wrapT = THREE.RepeatWrapping; plaster.repeat.set(3, 2); plaster.anisotropy = 4;
+const wall = new THREE.Mesh(new THREE.PlaneGeometry(10, 6),
+  new THREE.MeshStandardMaterial({map:plaster, roughness:0.92, color:0xffffff}));
+wall.position.set(0, 0.6, -0.78); wall.receiveShadow = true; scene.add(wall);
+const floorTex = new THREE.CanvasTexture(noiseCanvas(512, 30, 55, 2, 17));
+floorTex.colorSpace = THREE.SRGBColorSpace; floorTex.wrapS = floorTex.wrapT = THREE.RepeatWrapping; floorTex.repeat.set(4, 2);
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(10, 6), new THREE.MeshStandardMaterial({map:floorTex, roughness:0.86, color:0xffffff}));
+floor.rotation.x = -Math.PI/2; floor.position.set(0, -1.12, 2.2); floor.receiveShadow = true; scene.add(floor);
+
+const woodTex = new THREE.CanvasTexture(noiseCanvas(256, 60, 90, 2, 5));
+woodTex.colorSpace = THREE.SRGBColorSpace; woodTex.wrapS = woodTex.wrapT = THREE.RepeatWrapping; woodTex.repeat.set(6, 1);
+const rodMat = new THREE.MeshStandardMaterial({map:woodTex, color:0xb59274, roughness:0.55});
+const rod = new THREE.Mesh(new THREE.CylinderGeometry(ROD_R, ROD_R, 2.55, 32), rodMat);
+rod.rotation.z = Math.PI/2; rod.position.set(0, ROD_Y, 0); rod.castShadow = rod.receiveShadow = true; scene.add(rod);
+for (const sx of [-1, 1]){
+  const fin = new THREE.Mesh(new THREE.SphereGeometry(0.048, 24, 16), rodMat);
+  fin.scale.set(0.8, 1, 1); fin.position.set(sx*1.3, ROD_Y, 0); fin.castShadow = true; scene.add(fin);
+  const br = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.78, 16), rodMat);
+  br.rotation.x = Math.PI/2; br.position.set(sx*1.21, ROD_Y, -0.39); br.castShadow = true; scene.add(br);
+  const pl = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.02, 24), rodMat);
+  pl.rotation.x = Math.PI/2; pl.position.set(sx*1.21, ROD_Y, -0.77); scene.add(pl);
+}
+
+/* the paper window: warm glow, kumiko bars, the source of the backlight */
+const winGroup = new THREE.Group(); winGroup.position.set(2.05, 0.05, -0.765); scene.add(winGroup);
+const paperCv = noiseCanvas(256, 235, 40, 6, 33);
+const paperTex = new THREE.CanvasTexture(paperCv); paperTex.colorSpace = THREE.SRGBColorSpace;
+const winMat = new THREE.MeshBasicMaterial({map:paperTex, color:0xffb670});
+const win = new THREE.Mesh(new THREE.PlaneGeometry(0.95, 1.75), winMat); winGroup.add(win);
+const barMat = new THREE.MeshStandardMaterial({color:0x140d08, roughness:0.7});
+for (let i = 0; i <= 3; i++){ const b = new THREE.Mesh(new THREE.BoxGeometry(0.018, 1.78, 0.03), barMat); b.position.set(-0.475 + i*0.3167, 0, 0.012); winGroup.add(b); }
+for (let i = 0; i <= 5; i++){ const b = new THREE.Mesh(new THREE.BoxGeometry(0.98, 0.018, 0.03), barMat); b.position.set(0, -0.875 + i*0.35, 0.012); winGroup.add(b); }
+for (const sx of [-1, 1]){ const b = new THREE.Mesh(new THREE.BoxGeometry(0.05, 1.84, 0.045), barMat); b.position.set(sx*0.5, 0, 0.02); winGroup.add(b); }
+
+/* lights: warm key with shadows, cool low fill, the window as a warm back light */
+/* a spot, not a sun: the pool of light falls off into a dark room, like the workshop */
+const key = new THREE.SpotLight(0xffd0a0, 3.0, 0, 0.44, 0.9, 0);
+key.position.set(-3.4, 2.5, 3.8); key.target.position.set(0.1, 0.05, 0);
+key.castShadow = true; key.shadow.mapSize.set(2048, 2048);
+key.shadow.camera.near = 3; key.shadow.camera.far = 11;
+key.shadow.bias = -0.0004; key.shadow.normalBias = 0.012; key.shadow.radius = 3;
+scene.add(key, key.target);
+const fill = new THREE.DirectionalLight(0x8fa4cc, 1.0); fill.position.set(3.2, 0.4, 3.4); scene.add(fill);
+const back = new THREE.DirectionalLight(0xffb070, 1.2); back.position.copy(U.uBackDir.value).multiplyScalar(5); scene.add(back);
+
+{ /* a small studio for reflections: warm softbox left, dim cool right, dark room */
+  const env = new THREE.Scene();
+  const room = new THREE.Mesh(new THREE.BoxGeometry(14, 10, 14), new THREE.MeshBasicMaterial({color:0x0c0907, side:THREE.BackSide})); env.add(room);
+  const card = (w, h, p, c) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({color:new THREE.Color(c[0], c[1], c[2]), side:THREE.DoubleSide}));
+    m.position.set(...p); m.lookAt(0, 0, 0); env.add(m); };
+  card(4, 5, [-5, 2, 4], [1.5, 1.1, 0.7]); card(2, 4, [5, 1, 3], [0.26, 0.33, 0.45]);
+  card(6, 2, [0, 5.5, 0], [0.4, 0.36, 0.3]); card(6, 6, [0, -4, 0], [0.1, 0.07, 0.04]);
+  const pm = new THREE.PMREMGenerator(renderer);
+  scene.environment = pm.fromScene(env, 0.03, 0.1, 40).texture; pm.dispose();
+  scene.environmentIntensity = 0.42;
+  scene.add(new THREE.HemisphereLight(0x9aa6c0, 0x3a2a1c, 0.3));
+}
+
+/* ============================================================ *
+ *  State, controls, camera
+ * ============================================================ */
+const state = { fab:'linen', wind:0.45, full:1, back:0.75, layer:'full', macro:false };
+const WEAVES = {};
+const live = document.getElementById('live');
+const say = s => { live.textContent = s; };
+const tmpC = new THREE.Color();
+
+function applyFabricTarget(name){
+  const f = FAB[name]; curFab = name;
+  if (!WEAVES[name]) WEAVES[name] = bakeWeave(f, {linen:1201, silk:2202, wool:3303}[name]);
+  const w = WEAVES[name];
+  clothMat.normalMap = w.normal; U.uWeave.value = w.info; U.uPitch.value = f.pitch;
+  U.uStW.value = f.stW; U.uSP.value = f.stP; U.uSeam.value = f.seam;
+  U.uStitchCol.value.set(f.stCol); U.uFray.value = f.F; U.uH.value = H;
+  U.uHemY.value = f.rc > 0 && f.hemH > 0 ? H - 0.03 : -1;
+  clothMat.anisotropy = Math.max(0.0001, f.aniso);
+  configureCloth(f);
+}
+const tween = { lam:0, amax:0, wp:0, wind:0, rough:0, sheen:0, sheenR:0, ns:0, trans:0, crease:0, dvar:0, wearK:0, shot:0 };
+function snapCur(f){ for (const k in tween) cur[k] = f[k]; cur.dye0 = col(f.dye0); cur.dye1 = col(f.dye1); cur.wearCol = col(f.wearCol); cur.sheenC = col(f.sheenC); }
+function stepCur(f, dt){
+  const a = 1 - Math.exp(-dt*5);
+  for (const k in tween) cur[k] += (f[k] - cur[k])*a;
+  cur.dye0.lerp(tmpC.set(f.dye0), a); cur.dye1.lerp(tmpC.set(f.dye1), a);
+  cur.wearCol.lerp(tmpC.set(f.wearCol), a); cur.sheenC.lerp(tmpC.set(f.sheenC), a);
+}
+function pushMaterial(){
+  const L = state.layer;
+  clothMat.roughness = cur.rough;
+  clothMat.sheen = L === 'sheen' || L === 'flat' ? 0.0001 : cur.sheen;   /* never 0: crossing zero recompiles the program */
+  clothMat.sheenRoughness = cur.sheenR;
+  clothMat.sheenColor.copy(cur.sheenC).multiplyScalar(0.62);
+  const ns = L === 'weave' || L === 'flat' ? 0 : cur.ns;
+  clothMat.normalScale.set(ns, ns);
+  U.uWeaveOn.value = L === 'weave' || L === 'flat' ? 0 : 1;
+  U.uDye0.value.copy(cur.dye0); U.uDye1.value.copy(cur.dye1); U.uWearCol.value.copy(cur.wearCol);
+  U.uShot.value = cur.shot; U.uVar.value = cur.dvar; U.uWearK.value = L === 'flat' ? 0 : cur.wearK;
+  U.uCrease.value = L === 'flat' ? 0 : cur.crease; U.uTrans.value = cur.trans;
+  U.uBack.value = state.back;
+  back.intensity = 0.2 + 1.6*state.back; winMat.color.setRGB(1, 0.74, 0.46).multiplyScalar(0.12 + 0.62*state.back);
+}
+
+const $ = id => document.getElementById(id);
+document.querySelectorAll('input[name=fab]').forEach(el => el.addEventListener('change', () => {
+  state.fab = el.value; applyFabricTarget(el.value); dirty = true; say('Fabric: ' + el.value);
+  if (RM) { snapCur(FAB[el.value]); }
+}));
+document.querySelectorAll('input[name=lay]').forEach(el => el.addEventListener('change', () => { state.layer = el.value; dirty = true;
+  say({full:'All layers on', weave:'Weave removed', sheen:'Sheen removed', flat:'Flat sheet: weave, sheen and wrinkles removed'}[el.value]); }));
+$('wind').addEventListener('input', e => { state.wind = +e.target.value; dirty = true; });
+$('full').addEventListener('input', e => { state.full = +e.target.value; dirty = true; });
+$('back').addEventListener('input', e => { state.back = +e.target.value; dirty = true; });
+$('macro').addEventListener('click', e => { state.macro = !state.macro; e.currentTarget.setAttribute('aria-pressed', state.macro); document.body.classList.toggle('macro', state.macro);
+  dirty = true; say(state.macro ? 'Macro close-up' : 'Wide view'); if (RM) macroK = state.macro ? 1 : 0; });
+
+let dirty = true, macroK = 0, aspect = 1, dpr = Math.min(devicePixelRatio || 1, 2);
+function resize(){
+  const w = Math.max(1, innerWidth || document.documentElement.clientWidth || 1200), h = Math.max(1, innerHeight || document.documentElement.clientHeight || 800);
+  aspect = w/h;
+  renderer.setPixelRatio(dpr); renderer.setSize(w, h, false);
+  camera.aspect = aspect; camera.updateProjectionMatrix(); dirty = true;
+}
+new ResizeObserver(resize).observe(document.documentElement); addEventListener('resize', resize);
+
+const macroPos = new THREE.Vector3(), rake = new THREE.Vector3(0.20, 0.10, 0), camW = new THREE.Vector3(), camL = new THREE.Vector3(), tgt = new THREE.Vector3(), mp = new THREE.Vector3(), mn = new THREE.Vector3();
+function placeCamera(t){
+  const half = Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
+  const dist = Math.max(5.0, 1.22/(half*aspect));
+  const portrait = aspect < 0.9;
+  const sway = RM ? 0 : Math.sin(t*0.12)*0.07;
+  camW.set(Math.sin(sway + 0.05)*dist, 0.02 + (portrait ? -0.05 : 0.0), Math.cos(sway + 0.05)*dist);
+  camL.set(0, -0.02 + (portrait ? 0.16 : 0), 0);
+  /* macro: hover 0.34 m off a fold crest, raked so the sheen runs across the threads */
+  const i = Math.round(NU*0.58), j = Math.round(NV*0.5), o = (j*(NU + 1) + i)*3;
+  mp.set(CL.pos[o], CL.pos[o + 1], CL.pos[o + 2]); mn.set(CL.nrm[o], CL.nrm[o + 1], CL.nrm[o + 2]);
+  const k = macroK*macroK*(3 - 2*macroK);
+  macroPos.copy(mp).addScaledVector(mn, 0.36).add(rake);
+  camera.position.lerpVectors(camW, macroPos, k);
+  tgt.lerpVectors(camL, mp, k);
+  camera.lookAt(tgt);
+}
+
+/* ============================================================ */
+const statEl = $('stat');
+let tSim = RM ? 7.3 : 0, last = 0, clothMs = 0, frames = 0, acc = 0, fpsAvg = 60, running = true;
+function frame(now){
+  if (!running) return;
+  requestAnimationFrame(frame);
+  if (RM && !dirty && macroK === (state.macro ? 1 : 0)) return;
+  let dt = Math.min(0.034, (now - last)/1000 || 0.016); last = now;
+  if (!RM) tSim += dt;
+  step(dt, now);
+}
+function step(dt, now){
+  const f = FAB[state.fab];
+  if (RM) snapCur(f); else stepCur(f, dt);
+  if (!RM) macroK += ((state.macro ? 1 : 0) - macroK)*(1 - Math.exp(-dt*2.6));
+  else macroK = state.macro ? 1 : 0;
+  const c0 = performance.now();
+  const wnd = state.layer === 'flat' ? 0 : state.wind, fl = state.layer === 'flat' ? 0.25 : state.full;
+  updateCloth(tSim, wnd, fl); updateTabs(); updateFringe(tSim, wnd);
+  clothMs += (performance.now() - c0 - clothMs)*0.05;
+  pushMaterial(); placeCamera(tSim);
+  renderer.render(scene, camera); dirty = false;
+  /* resolution governor: sustained slow frames give back device pixels, never below 1 */
+  if (!RM){ acc += dt; frames++;
+    if (frames === 60){ const ms = acc/frames*1000; fpsAvg = 1000/ms; acc = 0; frames = 0;
+      if (ms > 26 && dpr > 1){ dpr = Math.max(1, dpr - 0.25); resize(); }
+      statEl.textContent = `${fpsAvg.toFixed(0)} fps · cloth ${clothMs.toFixed(1)} ms · ${CL.nv.toLocaleString()} verts · ${dpr.toFixed(2)}x`; } }
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) running = false; else { running = true; last = performance.now(); requestAnimationFrame(frame); }
+});
+
+/* boot: bake the weaves off the first frame, then show */
+resize();
+snapCur(FAB.linen);
+for (const n of ['silk', 'wool']) WEAVES[n] = bakeWeave(FAB[n], {silk:2202, wool:3303}[n]);
+applyFabricTarget('linen');
+step(0.016, performance.now());
+step(0.016, performance.now());
+$('boot').classList.add('gone');
+requestAnimationFrame(t => { last = t; requestAnimationFrame(frame); });
+
+/* a small inspection API for the harness */
+window.__cloth = {
+  ready:true,
+  set(o){ if (o.fab){ const el = document.querySelector(`input[name=fab][value=${o.fab}]`); el.checked = true; el.dispatchEvent(new Event('change')); }
+    if (o.layer){ const el = document.querySelector(`input[name=lay][value=${o.layer}]`); el.checked = true; el.dispatchEvent(new Event('change')); }
+    if ('wind' in o){ $('wind').value = o.wind; $('wind').dispatchEvent(new Event('input')); }
+    if ('full' in o){ $('full').value = o.full; $('full').dispatchEvent(new Event('input')); }
+    if ('back' in o){ $('back').value = o.back; $('back').dispatchEvent(new Event('input')); }
+    if ('macro' in o && o.macro !== state.macro) $('macro').click();
+    if ('t' in o) tSim = o.t; },
+  advance(sec, n = 1){ for (let i = 0; i < n; i++){ tSim += sec; step(sec, performance.now()); } const gl = renderer.getContext(); const p = new Uint8Array(4); gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, p); },
+  stats(){ return {clothMs, verts:CL.nv, dpr, calls:renderer.info.render.calls, tris:renderer.info.render.triangles}; },
+  freeze(){ running = false; }, unfreeze(){ running = true; requestAnimationFrame(frame); }
+};
+</script>
+</body>
+</html>

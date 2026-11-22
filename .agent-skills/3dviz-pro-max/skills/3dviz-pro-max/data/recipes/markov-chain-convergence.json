@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "id": "recipe.markov-chain-convergence",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Markov chain distribution and convergence"
+  },
+  "aliases": {
+    "en": [
+      "Markov chain",
+      "stationary distribution",
+      "state graph"
+    ]
+  },
+  "direction_ids": [
+    "probability-statistics"
+  ],
+  "summary": "Separate a single random walker from the distribution over states, and compare convergence or oscillation under a declared transition matrix and initial distribution.",
+  "objective": "Build a small Markov chain in space where I can step the distribution vector and compare it with a sampled walker.",
+  "tags": [
+    "markov chain",
+    "stationary distribution",
+    "state graph"
+  ],
+  "subject_terms": [
+    "Markov chain",
+    "transition matrix",
+    "stationary distribution",
+    "limiting distribution",
+    "irreducible",
+    "aperiodic",
+    "state graph",
+    "random walk"
+  ],
+  "intent_signals": [
+    "Show how a Markov chain settles into a stationary distribution.",
+    "Compare one random walker with the distribution over all states."
+  ],
+  "example_prompts": [
+    "Build a Markov chain state graph with a distribution bar per state and a stepping control.",
+    "Show the two-state swap chain alternating from a nonuniform start and staying fixed from its uniform stationary distribution."
+  ],
+  "negative_signals": [
+    "Not a hidden Markov model, inference or learning recipe.",
+    "Not a claim that every chain converges: periodic and reducible chains must be shown as exceptions."
+  ],
+  "not_for": [
+    "Not a hidden Markov model, inference or learning recipe.",
+    "Not a claim that every chain converges: periodic and reducible chains must be shown as exceptions."
+  ],
+  "entities": [
+    {
+      "name": "State nodes",
+      "guidance": "Place states as distinct 3D nodes with room above each for a probability bar, since the distribution is the real subject."
+    },
+    {
+      "name": "Transition arcs",
+      "guidance": "Draw directed arcs with visible probability labels; arcs with probability zero should be absent rather than drawn faintly."
+    },
+    {
+      "name": "Walker and distribution",
+      "guidance": "Show one sampled walker and the numerically propagated distribution side by side, with the propagation tolerance stated, so a sample path is distinct from a distribution."
+    }
+  ],
+  "state_contract": {
+    "model": "A finite state set with a row-stochastic transition matrix of finite nonnegative entries whose rows sum to one, a row-vector distribution updated as p_next = p P in floating point with a stated tolerance, a seeded walker sampled from the current row, and a stationary vector solved from the balance equations. An all-zero row is rejected rather than renormalised, and periodicity is reported from the chain structure independently of what the current run displays.",
+    "authority": "The transition matrix is authoritative. The distribution uses deterministic floating-point propagation with the stated tolerance, while the walker is a sample; the two are never blended into one display.",
+    "actions": [
+      "Step the distribution one transition.",
+      "Step or run the sampled walker.",
+      "Edit a transition probability and renormalise the row.",
+      "Reset the distribution to a chosen initial state."
+    ]
+  },
+  "invariants": [
+    "Every row stays finite, nonnegative and sums to one after any edit; an all-zero row is refused rather than renormalised, and negative or non-finite entries are rejected before any propagation.",
+    "The distribution vector always sums to one; drift indicates numerical error and must be reported.",
+    "Report periodicity from the chain structure independently of observed convergence. For the two-state swap matrix [[0,1],[1,0]], a nonuniform starting distribution alternates and the uniform distribution stays fixed. Do not generalise oscillation to every nonstationary start of every periodic chain; some such starts can reach or converge to a stationary distribution."
+  ],
+  "motion_guidance": [
+    "Animate probability mass flowing along arcs proportional to its contribution, so a step is legible as redistribution.",
+    "Do not fade the walker between nodes as if it were partially in two states; the jump is discrete."
+  ],
+  "known_limits": [
+    "Finite discrete-time chains only; continuous-time and infinite state spaces are out of scope.",
+    "Propagation is deterministic floating-point matrix arithmetic with a stated tolerance rather than exact rational arithmetic, so reaching a fixed vector on screen is a numerical observation, not a proof about the chain.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe.",
+    "A periodic irreducible finite chain still has a unique stationary distribution; what it lacks is the start-independent limiting behaviour quoted in the aperiodic theorem."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-stationary-distribution",
+      "statement": "A stationary distribution satisfies pi equals pi times the transition matrix, and a limiting distribution is the limit of the n-step state probabilities independent of the starting state.",
+      "scope": "Discrete-time finite chains as cited.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-probabilitycourse-markov",
+          "locator": "11.2.6, stationary and limiting distribution definitions"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-unique-limit",
+      "statement": "For a finite irreducible aperiodic chain the equations pi equals pi P together with the normalisation have a unique solution, and that solution is the limiting distribution.",
+      "scope": "Conditions matter: reducible or periodic chains fall outside this statement.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-probabilitycourse-markov",
+          "locator": "11.2.6, uniqueness theorem for irreducible aperiodic chains"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "State nodes",
+      "structure": "Solid node bodies with a flat top platform for the probability bar and a base ring for the sampled visit count.",
+      "material": "Neutral node material with one accent reserved for the walker, so a node never looks selected merely because it is probable.",
+      "articulation": "Nodes are static; only bars and the walker move."
+    },
+    {
+      "family": "Transition arcs",
+      "structure": "Curved tubes with arrowheads offset from the node surface and a label plate at the arc midpoint.",
+      "material": "Arc thickness encodes probability with a legend, and the label carries the exact value so thickness is never the only cue.",
+      "articulation": "Arc geometry rebuilds when probabilities change."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Deterministic matrix propagation in floating point with a stated tolerance, plus sampled jumps for the walker; no continuous dynamics.",
+    "state": [
+      "distribution vector",
+      "walker state",
+      "step index"
+    ],
+    "checks": [
+      "The distribution sums to one at every step within tolerance.",
+      "For the two-state swap matrix, verify alternation from a declared nonuniform start and a fixed distribution from the uniform start, while reporting period 2 in both cases."
+    ]
+  },
+  "related_ids": [
+    "recipe.binomial-trial-lattice",
+    "recipe.finite-state-machine",
+    "knowledge.graph-in-space"
+  ]
+}

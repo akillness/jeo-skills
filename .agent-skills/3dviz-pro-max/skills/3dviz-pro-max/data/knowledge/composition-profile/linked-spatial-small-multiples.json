@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.linked-spatial-small-multiples",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "composition-profile",
+  "title": {
+    "en": "Linked spatial small multiples"
+  },
+  "aliases": {
+    "en": [
+      "matched 3D panels",
+      "synchronized scientific viewports",
+      "same-scale spatial comparison"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields",
+    "earth-environment",
+    "molecules-materials"
+  ],
+  "summary": "Arrange repeated 3D views under an explicit comparison contract: shared identity, projection, scale, legend and interaction where those conditions carry the claim.",
+  "objective": "A viewer can attribute differences to the chosen variable rather than mismatched camera, viewport, normalization, clipping or selection state.",
+  "applies_when": [
+    "Several states, datasets, parameter values or models must be compared simultaneously.",
+    "The comparison depends on spatial size, direction, shape or field magnitude."
+  ],
+  "subject_terms": [
+    "spatial small multiples",
+    "matched viewports",
+    "linked 3D comparison",
+    "equal scale panels",
+    "shared legend"
+  ],
+  "tags": [
+    "composition-profile",
+    "small-multiples",
+    "comparison",
+    "multiview"
+  ],
+  "intent_signals": [
+    "compare several 3D states at equal scale",
+    "linked viewports shared camera scientific comparison",
+    "small multiples with synchronized selection"
+  ],
+  "example_prompts": [
+    "Compare four deformation states with matched orthographic scale, axes and legend.",
+    "Show three climate fields in linked panels and disclose any independently normalized range."
+  ],
+  "negative_signals": [
+    "Calling panels comparable while silently fitting each camera independently.",
+    "Sharing a color palette while using different unmarked domains."
+  ],
+  "not_for": [
+    "A before/after toggle where simultaneous panels add no value.",
+    "A focus/context inset where the views intentionally have different roles and scales."
+  ],
+  "content": {
+    "principles": [
+      "Write the comparison contract first: changed variable, fixed conditions and any deliberately independent normalization. Equal apparent size is required only when the claim depends on size.",
+      "Link stable entity IDs, selection and probes across panels; decide separately whether camera orientation, zoom, time and clipping are synchronized.",
+      "A shared legend is valid only for a shared value mapping. If domains differ, show the mappings beside each panel rather than hiding normalization."
+    ],
+    "implementation": [
+      "In Blender, author one reference frame, units, camera candidates and state collections; do not bake panel placement into world coordinates.",
+      "In Three.js WebGL, assign logical-pixel viewport/scissor rectangles and enable scissor testing so each camera stays inside its panel. Use one orthographic frustum/zoom or equivalent world-units-per-pixel rule when equal apparent scale is part of the claim; update all projections on resize.",
+      "Render shared axes/scale cues and a panel title outside ambiguous 3D depth. Route selection by viewport, then broadcast the stable ID and probe coordinate to linked panels."
+    ],
+    "observable_checks": [
+      "A reference segment occupies the same declared screen length across equal-scale panels after resize; a deliberately independent scale is labeled in that panel.",
+      "Click the same feature in each panel: linked identity and probe coordinate agree, while the changed variable alone produces the reported difference.",
+      "Clear each panel independently and inspect its borders: no draw, pick or label leaks into a neighboring scissor region."
+    ]
+  },
+  "related_ids": [
+    "knowledge.comparison-stage",
+    "knowledge.signed-field-section",
+    "knowledge.uncertainty-interval-encoding",
+    "knowledge.linked-plot-spatial-selection"
+  ],
+  "creative_affordances": [
+    "Use grids, strips, paired lenses or a movable comparison tray according to panel count and task.",
+    "Synchronize only the dimensions that aid the comparison; independent orbit may remain available behind a relink action."
+  ],
+  "known_limits": [
+    "WebGLRenderer viewport/scissor mechanics do not establish comparison validity or support in other renderer backends.",
+    "Orthographic distance-invariant image size does not itself guarantee equal scale when frusta, zoom or viewport sizes differ.",
+    "No multi-viewport render, pick, resize or quantitative comparison was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.experience-webgl-multiview-regions",
+      "statement": "Three.js WebGLRenderer setViewport defines a render viewport in logical pixels, setScissor defines a region, and enabled scissor testing limits affected pixels to that region.",
+      "scope": "WebGL mechanism only; panel layout, clearing, picking and synchronization are application responsibilities.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-webglrenderer",
+          "locator": "setViewport; setScissor; setScissorTest; setSize"
+        }
+      ]
+    },
+    {
+      "id": "claim.experience-orthographic-distance-invariance",
+      "statement": "Three.js OrthographicCamera documents that an object’s rendered size stays constant regardless of camera distance, with scale controlled by frustum planes and zoom and projection updates required after changes.",
+      "scope": "Projection property only; matched panel scale still requires matching frustum/zoom and viewport conventions.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-three-orthographic-camera",
+          "locator": "Class description; frustum planes; zoom; updateProjectionMatrix"
+        }
+      ]
+    }
+  ]
+}

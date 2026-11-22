@@ -1,0 +1,11 @@
+model,rank,identity,type,cu,jobs
+Video model B,1,Artist 01,Human,12600,60
+Video model B,2,Artist 02,Human,6300,30
+Image model A,1,Artist 01,Human,7500,250
+Image model A,2,Automation,API identity,3600,120
+Image model A,3,Artist 02,Human,1500,50
+3D model C,1,Artist 01,Human,3600,12
+3D model C,2,Artist 02,Human,3600,12
+Audio model D,1,Automation,API identity,900,30
+Audio model D,2,Artist 01,Human,600,20
+Audio model D,3,Artist 02,Human,300,10

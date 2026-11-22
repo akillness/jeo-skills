@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "id": "recipe.job-shop-schedule-playback",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Job shop schedule and solver boundary"
+  },
+  "aliases": {
+    "en": [
+      "job shop scheduling",
+      "makespan",
+      "solver playback"
+    ]
+  },
+  "direction_ids": [
+    "operations-logistics"
+  ],
+  "summary": "Play back a schedule that a solver produced, and keep the boundary between solving and animating visible.",
+  "objective": "Build a job shop floor where a computed schedule is played back on machines, with the makespan and the solver responsibility clearly stated.",
+  "tags": [
+    "scheduling",
+    "operations",
+    "solver"
+  ],
+  "subject_terms": [
+    "job shop",
+    "makespan",
+    "machine",
+    "task",
+    "precedence",
+    "no overlap",
+    "schedule",
+    "solver"
+  ],
+  "intent_signals": [
+    "Play back a machine schedule on a factory floor.",
+    "Show why a schedule cannot start a task before its predecessor finishes."
+  ],
+  "example_prompts": [
+    "Build a job shop schedule playback with machines, tasks and a makespan readout.",
+    "Show a schedule violating a precedence constraint being rejected."
+  ],
+  "negative_signals": [
+    "Not a solver implementation: unless a real solver runs, the schedule must be declared as supplied data.",
+    "Not a factory throughput or capacity study for any real plant."
+  ],
+  "not_for": [
+    "Not a solver implementation: unless a real solver runs, the schedule must be declared as supplied data.",
+    "Not a factory throughput or capacity study for any real plant."
+  ],
+  "entities": [
+    {
+      "name": "Machines and tasks",
+      "guidance": "Model each machine as a station with a queue position and each task as an object carrying its job, duration and machine."
+    },
+    {
+      "name": "Schedule timeline",
+      "guidance": "Show the schedule as a timeline in the scene with one lane per machine, so overlaps would be visible."
+    },
+    {
+      "name": "Constraint report",
+      "guidance": "Validate the supplied schedule against precedence and no-overlap constraints and report violations by task."
+    }
+  ],
+  "state_contract": {
+    "model": "Jobs as ordered task sequences with nonnegative durations and machine assignments, and a supplied schedule of start times using half-open intervals so a task may start exactly when another ends. A validity check reports precedence and machine-overlap violations. A schedule that passes plays back in normal mode; a schedule that fails is either rejected or opened in a labelled diagnostic mode that shows the conflicting blocks as they were supplied. The makespan is the latest completion time. An empty schedule is a declared no-op.",
+    "authority": "The supplied schedule and the constraint checks are authoritative; the animation replays start times and may never move a task to make the picture look better.",
+    "actions": [
+      "Play, pause and scrub the schedule.",
+      "Select a task and inspect its job, machine and constraints.",
+      "Load an invalid schedule and read the violation report.",
+      "Reset playback to time zero."
+    ]
+  },
+  "invariants": [
+    "In normal playback, which requires a schedule declared valid, no machine lane shows two tasks at once. In diagnostic mode overlaps are displayed exactly as supplied and clearly labelled as violations; the scene never silently reschedules or serialises them.",
+    "In normal playback a task never starts before its predecessor completes, with intervals half-open so that starting exactly at a predecessor completion is allowed rather than flagged.",
+    "The reported makespan equals the latest task completion time in the played schedule."
+  ],
+  "motion_guidance": [
+    "Advance playback on a stated time scale with the simulated clock visible, so animation speed is never confused with duration.",
+    "Scrub backwards by restoring state from the schedule rather than by reversing an animation."
+  ],
+  "known_limits": [
+    "Optimality is a property of the solver run, not of the playback; a played schedule is only optimal if the solver proved it.",
+    "Setup times, breakdowns, transport and operator availability are not modelled.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-job-shop-definition",
+      "statement": "In the job shop problem multiple jobs are processed on several machines, each job is a sequence of tasks that must be performed in order, no task may start before its predecessor completes, a machine can work on only one task at a time, a started task runs to completion, and the objective is to minimise the schedule length known as the makespan.",
+      "scope": "Problem definition and objective as documented. It constrains what a valid schedule is; it is not a claim that an arbitrary loaded schedule satisfies those constraints, which is why the scene validates input before normal playback.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-ortools-job-shop",
+          "locator": "The Job Shop Problem, problem statement and objective"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Machines and tasks",
+      "structure": "Machine stations with an in-feed, a work area and an out-feed, and task carriers with printed job and duration labels.",
+      "material": "Neutral machine bodies with per-job carrier colours plus printed identifiers, so jobs remain distinguishable when colours repeat.",
+      "articulation": "Carriers move between stations at scheduled times. That travel is a display transition only: transport time is not part of the modelled schedule, and a carrier never occupies a machine outside its scheduled window."
+    },
+    {
+      "family": "Schedule timeline",
+      "structure": "A physical timeline rail with a lane per machine and blocks sized by duration.",
+      "material": "Opaque lane plates with gridlines at time units so durations can be read directly.",
+      "articulation": "A time cursor sweeps the rail in step with the floor animation."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Time-indexed playback of a supplied schedule; no transport dynamics or contact.",
+    "state": [
+      "playback time",
+      "task states",
+      "machine occupancy"
+    ],
+    "checks": [
+      "No machine has overlapping tasks at any playback time for a schedule declared valid; diagnostic mode is excluded from this check by construction.",
+      "Scrubbing to a time reproduces the same machine occupancy every time."
+    ]
+  },
+  "related_ids": [
+    "recipe.loading-dock-resource-board",
+    "recipe.parcel-sorter-events",
+    "knowledge.state-playback"
+  ]
+}

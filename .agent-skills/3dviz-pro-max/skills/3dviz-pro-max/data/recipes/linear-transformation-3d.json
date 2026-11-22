@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "id": "recipe.linear-transformation-3d",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Linear transformation in three dimensions"
+  },
+  "aliases": {
+    "en": [
+      "3d matrix transformation",
+      "basis vectors under a matrix",
+      "linear map R3"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra"
+  ],
+  "summary": "Connect a real 3 by 3 matrix to transformed basis arrows, vectors, and a reference shape using one shared mapping.",
+  "objective": "Explain y = A x by showing how matrix columns determine the images of the standard basis and therefore every input vector.",
+  "tags": [
+    "matrix",
+    "basis",
+    "vectors",
+    "linear-map"
+  ],
+  "example_prompts": [
+    "Show how a 3 by 3 shear matrix moves the basis and a wireframe cube.",
+    "Let me edit a matrix and compare an input vector with its transformed image."
+  ],
+  "claims": [
+    {
+      "id": "claim.linear-basis-columns",
+      "statement": "For a linear map written in standard coordinates with column vectors, A e_j is column j of A.",
+      "scope": "Real 3 by 3 matrices; the input and output standard bases are fixed.",
+      "source_refs": [
+        {
+          "source_id": "source.mit-matrices-transformations",
+          "locator": "32.5, paragraph beginning A matrix represents"
+        }
+      ]
+    },
+    {
+      "id": "claim.linear-combination",
+      "statement": "The image of x is the combination of the images of the basis vectors with coefficients x_j.",
+      "scope": "A linear map R3 to R3, hence y = A x; no translation term.",
+      "source_refs": [
+        {
+          "source_id": "source.mit-matrices-transformations",
+          "locator": "32.5, paragraph beginning Remember that any other vector"
+        }
+      ]
+    }
+  ],
+  "entities": [
+    {
+      "name": "Standard basis",
+      "guidance": "Keep reference e1, e2, e3 faintly visible; label each transformed arrow A e1, A e2, A e3."
+    },
+    {
+      "name": "Input vector and image",
+      "guidance": "Show x and A x with distinct line treatments and numeric coordinates."
+    },
+    {
+      "name": "Reference shape",
+      "guidance": "Use a wireframe cube or sparse lattice; map each vertex from its original coordinates."
+    }
+  ],
+  "state_contract": {
+    "model": "Finite real matrix A and vector x in a fixed, right-handed coordinate frame; column-vector convention.",
+    "authority": "One matrix value drives basis endpoints, geometry, vector output, and numeric labels. Keep original geometry immutable.",
+    "actions": [
+      "Edit a matrix entry; reject non-finite values.",
+      "Select an authored example such as identity, shear, or axis collapse.",
+      "Reset A to identity and restore the input vector."
+    ],
+    "example": {
+      "matrix_rows": [
+        [
+          1,
+          1,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "input_vector": [
+        1,
+        2,
+        3
+      ],
+      "expected_output": [
+        3,
+        2,
+        3
+      ]
+    }
+  },
+  "invariants": [
+    "For each j, displayed A e_j matches column j of the matrix.",
+    "Every displayed transformed vertex comes from A times its original position, never cumulative frame-to-frame multiplication.",
+    "The origin stays fixed. Keep the displayed coordinate frame and units consistent.",
+    "Treat a singular matrix as a valid dimensional collapse; do not require an inverse to render it."
+  ],
+  "motion_guidance": [
+    "If interpolating, explicitly use A(t) = (1-t)I + tA and derive every displayed value from A(t). Label t as transition progress, not physical time.",
+    "Intermediate matrices can be singular even for invertible endpoints; do not describe this blend as a rigid rotation.",
+    "Allow static before/after inspection and pause or scrub; keep the reference frame stationary."
+  ],
+  "creative_affordances": [
+    "Choose translucent planes, luminous arrows, physical-looking rods, or a monochrome technical drawing while retaining coordinate and label meaning."
+  ],
+  "known_limits": [
+    "This recipe describes an active linear map in fixed coordinates, not a passive change-of-basis lesson.",
+    "No determinant-volume, eigenvector, or SVD claims are included.",
+    "Numerical example was authored and checked arithmetically; no scene runtime or visual cross-check has run."
+  ]
+}

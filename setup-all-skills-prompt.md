@@ -3671,6 +3671,66 @@ Preview `jeo-skill install last30days --global --dry-run`, then install the sele
 ### Motionmaxxing motion graphics operator (on demand)
 
 Preview `jeo-skill install motionmaxxing --global --dry-run`, then install the selected guide with `jeo-skill install motionmaxxing --global --yes`. Installing `motionmaxxing` copies operator guidance, measured craft laws, frame-by-frame curve references, and automated verification scripts (`look.py`, `lint.mjs`) for `Tejashmakwana/motionmaxxing` (Apache-2.0). It directs and builds professional, brand-specific motion graphics films (launch videos, product promos, feature reveals, brand stings) using a seek-safe GSAP runtime without generic AI motion slop.
+
+### Unity Skills operator (on demand)
+
+Preview `jeo-skill install unity-skills --global --dry-run`, then install the selected guide with `jeo-skill install unity-skills --global --yes`. Installing `unity-skills` provides operator guidance and workflow automation for official Unity Technologies skills, enabling agents to handle Unity project creation, builds, package management, URP rendering, and editor scripting.
+
+### Blender Skills operator (on demand)
+
+Preview `jeo-skill install blender-skills --global --dry-run`, then install the selected guide with `jeo-skill install blender-skills --global --yes`. Installing `blender-skills` provides 28 professional Blender workflows covering 3D modeling, UV unwrapping, retopology, character rigging, texture baking, and export pipelines via natural language.
+
+### Scenario Skills operator (on demand)
+
+Preview `jeo-skill install scenario-skills --global --dry-run`, then install the selected guide with `jeo-skill install scenario-skills --global --yes`. Installing `scenario-skills` connects Scenario AI asset generation for game textures, skyboxes, audio, and 3D assets with DCC pipelines for Blender, Maya, ZBrush, Unreal, and Unity.
+
+### Three.js Game Skills operator (on demand)
+
+Preview `jeo-skill install threejs-game-skills --global --dry-run`, then install the selected guide with `jeo-skill install threejs-game-skills --global --yes`. Installing `threejs-game-skills` provides an autonomous Three.js game director that coordinates gameplay systems, AAA graphics shaders, UI design, spatial audio, and automated verification.
+
+### MengTo Game Skills operator (on demand)
+
+Preview `jeo-skill install mengto-game-skills --global --dry-run`, then install the selected guide with `jeo-skill install mengto-game-skills --global --yes`. Installing `mengto-game-skills` provides curated game development workflows for combat animation, monster/enemy AI systems, procedural level design, and playtesting from DesignCode.
+
+### Video to Game operator (on demand)
+
+Preview `jeo-skill install video-to-game --global --dry-run`, then install the selected guide with `jeo-skill install video-to-game --global --yes`. Installing `video-to-game` enables frame-by-frame gameplay video analysis, asset synthesis, and automated playable browser game generation via fal API.
+
+### 3D Viz Pro Max operator (on demand)
+
+Preview `jeo-skill install 3dviz-pro-max --global --dry-run`, then install the selected guide with `jeo-skill install 3dviz-pro-max --global --yes`. Installing `3dviz-pro-max` turns single-line architectural or creative concepts into interactive, walkable WebGL 3D scenes.
+
+### Three.js Ability Casting operator (on demand)
+
+Preview `jeo-skill install threejs-ability-casting --global --dry-run`, then install the selected guide with `jeo-skill install threejs-ability-casting --global --yes`. Installing `threejs-ability-casting` provides a League of Legends style linear skillshot ability casting VFX sandbox implemented with pure GLSL shaders in Three.js without external textures.
+
+### Isometric Voxel Builder operator (on demand)
+
+Preview `jeo-skill install isometric-voxel-builder --global --dry-run`, then install the selected guide with `jeo-skill install isometric-voxel-builder --global --yes`. Installing `isometric-voxel-builder` provides a 14x14 grid isometric voxel island town builder with block stacking, custom shaders, and lightweight browser runtime for game prototyping.
+
+### Game Perf operator (on demand)
+
+Preview `jeo-skill install game-perf --global --dry-run`, then install the selected guide with `jeo-skill install game-perf --global --yes`. Installing `game-perf` provides automated game performance optimization that analyzes and repairs 10 frame drop patterns across Three.js, PixiJS, Phaser, and React games.
+
+### Sprite Gen operator (on demand)
+
+Preview `jeo-skill install sprite-gen --global --dry-run`, then install the selected guide with `jeo-skill install sprite-gen --global --yes`. Installing `sprite-gen` generates 2D game character sprites, pose variations, transparent animation atlases, and motion loop videos from a single reference image.
+
+### Mono Pix operator (on demand)
+
+Preview `jeo-skill install mono-pix --global --dry-run`, then install the selected guide with `jeo-skill install mono-pix --global --yes`. Installing `mono-pix` snaps blurry AI-generated pseudo-pixel-art into true discrete pixel grids with palette quantization and transparent sprite sheet export.
+
+### Motion2Mixamo operator (on demand)
+
+Preview `jeo-skill install motion2mixamo --global --dry-run`, then install the selected guide with `jeo-skill install motion2mixamo --global --yes`. Installing `motion2mixamo` extracts and retargets human body motion from single video or photo sources to Adobe Mixamo character rigs with GLB export.
+
+### UniMate operator (on demand)
+
+Preview `jeo-skill install unimate --global --dry-run`, then install the selected guide with `jeo-skill install unimate --global --yes`. Installing `unimate` provides unified text-to-motion generation supporting arbitrary skeletal topologies (humanoids, quadrupeds, birds, dragons) with custom GLB/FBX support.
+
+### 3D Vibe Coding operator (on demand)
+
+Preview `jeo-skill install 3d-vibe-coding --global --dry-run`, then install the selected guide with `jeo-skill install 3d-vibe-coding --global --yes`. Installing `3d-vibe-coding` provides a comprehensive 386-page 3D Vibe Coding handbook and demo toolset covering image-to-3D, retopology, decimation, rigging, and troubleshooting indexes.
 ### Agent Substrate operator (on demand)
 
 Preview `jeo-skill install agent-substrate --global --dry-run`, then install the selected guide with `jeo-skill install agent-substrate --global --yes`. Installing `agent-substrate` copies operator guidance, CRD schema references, and demo descriptions only, not the Agent Substrate control plane, Go toolchain, `kind` clusters, or GKE infrastructure. Review the skill's operations and architecture references before separately authorizing cluster creation (`hack/create-kind-cluster.sh`), control plane deployment (`go run ./cmd/ate-setup deploy`), demo runs, or any `kubectl-ate` commands that modify cluster state.

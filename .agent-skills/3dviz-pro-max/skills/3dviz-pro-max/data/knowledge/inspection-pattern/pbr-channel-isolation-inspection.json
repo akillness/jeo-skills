@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.pbr-channel-isolation-inspection",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "inspection-pattern",
+  "title": {
+    "en": "PBR channel isolation inspection"
+  },
+  "aliases": {
+    "en": [
+      "ORM channel diagnostic",
+      "base color roughness metallic isolation",
+      "material texture role audit"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "Inspect raw texture roles, packed channels, color-space meaning and full material response separately under a controlled lighting and display setup.",
+  "objective": "A material mismatch identifies the texture role, channel, UV set, factor, transfer function and runtime binding responsible instead of being hidden by a beauty render.",
+  "applies_when": [
+    "A metallic-roughness material looks too glossy, flat, dark, tinted or incorrectly occluded after export."
+  ],
+  "tags": [
+    "inspection-pattern",
+    "pbr",
+    "material",
+    "orm",
+    "channel-isolation"
+  ],
+  "subject_terms": [
+    "base color texture",
+    "metallic roughness texture",
+    "occlusion red channel",
+    "normal map",
+    "emissive texture",
+    "linear transfer",
+    "sRGB decode",
+    "material factor"
+  ],
+  "intent_signals": [
+    "roughness and metalness channels swapped",
+    "base color looks too dark after export",
+    "inspect ORM packing",
+    "normal map changes when color management changes"
+  ],
+  "example_prompts": [
+    "Add a diagnostic mode that shows each glTF material role and packed ORM channel.",
+    "Trace a glossy runtime material back to its roughness texture, factor and UV set."
+  ],
+  "negative_signals": [
+    "beauty render proves channel correctness",
+    "display every data map as sRGB color",
+    "AO should darken direct lights"
+  ],
+  "not_for": [
+    "Declaring two renderers pixel-identical.",
+    "Choosing an artistic material without a parity question."
+  ],
+  "content": {
+    "principles": [
+      "Separate raw-data inspection from shaded-response inspection. A grayscale channel view confirms stored values and binding; a neutral PBR fixture confirms how factors, lights and view direction use them.",
+      "Inspect one material and one role at a time while keeping geometry, UV selection, environment, direct lights, exposure, tone mapping and output transform recorded.",
+      "Treat base color and emissive RGB as encoded color inputs, and metallic, roughness, occlusion and normal data as non-color roles under the glTF contract.",
+      "A packed texture file is not one semantic image: report the channel assigned to each role and ignore unused channels only when the target material contract does."
+    ],
+    "implementation": [
+      "Inventory the source material, exported glTF material and loaded runtime material by stable node/material IDs. Record texture URI or embedded image identity, role, channel, coordinate set, transform, sampler, scalar factor and color-space annotation.",
+      "Provide disposable raw views for base-color RGB/alpha, metallic blue, roughness green, occlusion red, normal RGB and emissive RGB. Label whether values are shown encoded or decoded; do not run data maps through a color interpretation silently.",
+      "Provide a separate neutral shaded fixture with fixed camera, diffuse/specular light directions, environment, exposure and display transform. Toggle one role or factor at a time through cloned diagnostics while production material remains unchanged.",
+      "Check ORM channel packing against the material bindings, then inspect normal orientation and occlusion behavior separately. Use the linked handoff records for Blender node-to-glTF translation and tangent basis.",
+      "Reset restores original materials and shared textures, removes clones and returns lighting, exposure and tone mapping to the captured baseline."
+    ],
+    "observable_checks": [
+      "Use a synthetic texture with distinct red, green and blue ramps; raw views and bindings identify occlusion, roughness and metalness without relying on the final shaded appearance.",
+      "Toggle base color, roughness, metallic, normal, occlusion and emissive roles one at a time under a fixed fixture; only the declared material response changes.",
+      "Switch a color input between correct and deliberately wrong transfer annotation while leaving data maps unchanged; the report names the role and annotation rather than calling the whole material dark.",
+      "Exit inspection and compare material IDs, texture references, factors, environment, exposure and display transform with the captured baseline."
+    ]
+  },
+  "related_ids": [
+    "knowledge.blender-three-metalrough-orm-translation",
+    "knowledge.blender-three-linear-color-handoff",
+    "knowledge.blender-three-tangent-normal-handoff",
+    "knowledge.material-response-check"
+  ],
+  "creative_affordances": [
+    "Use a channel grid, wipe comparison or selected-pixel readout according to the failure.",
+    "Pair raw maps with a neutral sphere or the actual object, clearly labeling which view answers which question."
+  ],
+  "known_limits": [
+    "A channel inspection does not prove artistic match or identical pixels across Blender and Three.js.",
+    "Extensions and custom shaders may add roles beyond core metallic-roughness and require their own declared diagnostics.",
+    "Authored source-checked diagnostic guidance; no material export, upload or render was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.delivery-gltf-pbr-channel-roles",
+      "statement": "Core glTF metallic-roughness materials encode base-color texture RGB with the sRGB transfer function, pack roughness in the green and metalness in the blue channel of a linear metallicRoughnessTexture, use the red channel of an occlusion texture for indirect-light occlusion, and define tangent-space normal textures with linear RGB component mapping.",
+      "scope": "Core glTF 2.0 texture roles; material factors, UV binding, renderer lighting and extensions must also be inspected.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Materials > Metallic-Roughness Material; Additional Textures: normal, occlusion, emissive"
+        }
+      ]
+    }
+  ]
+}

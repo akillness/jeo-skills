@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-default-tolerance-rule",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "validation-profile",
+  "title": {
+    "en": "Default numeric tolerance rule for checks"
+  },
+  "aliases": {
+    "en": [
+      "default tolerance",
+      "tolerance rule",
+      "rtol atol default"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry",
+    "rigid-mechanics",
+    "waves-optics-fields",
+    "physiology-biomechanics",
+    "soft-fluid-thermal",
+    "environments-dioramas"
+  ],
+  "summary": "Give every numeric check a default tolerance and regime so a comparison can fail on its own instead of asking the author to invent one.",
+  "objective": "Apply a stated default tolerance to any numeric check that does not declare its own, and record the tolerance and regime beside the result.",
+  "tags": [
+    "validation-profile",
+    "tolerance",
+    "numeric",
+    "check"
+  ],
+  "subject_terms": [
+    "relative tolerance",
+    "absolute tolerance",
+    "rtol",
+    "atol",
+    "scene scale",
+    "angular tolerance",
+    "sampling period",
+    "pixel threshold",
+    "double precision"
+  ],
+  "intent_signals": [
+    "Choose a tolerance for a numeric check.",
+    "Decide how close is close enough when comparing a computed value with an expected one."
+  ],
+  "example_prompts": [
+    "Give the default tolerance for comparing a computed position with its analytic value.",
+    "State a pass criterion for a check that only says the values should agree."
+  ],
+  "content": {
+    "principles": [
+      "A check without a number is not a check: a comparison that delegates its tolerance to the reader can never report a failure by itself.",
+      "Separate the three failure sources a tolerance has to absorb: floating-point roundoff, the discretisation or model regime, and genuine modelling error. Only the first two justify a loose bound.",
+      "Scale absolute tolerances to the quantity being compared. Positions scale with the scene, angles do not, and counts, indices and permutations are exact and must not be given a tolerance at all.",
+      "A tolerance is meaningless without its regime. Small-angle, fixed-step, linearised and far-field approximations all move the residual by orders of magnitude, so the regime travels with the number."
+    ],
+    "implementation": [
+      "Use these defaults when a record does not state its own: relative tolerance rtol = 1e-6; absolute position tolerance atol_position = 1e-9 x scene_scale_m; angular tolerance 1e-6 rad; integer or discrete state compared exactly; a sampled period accepted to within one sample; and a visual comparison given an explicit pixel or percent threshold rather than an opinion.",
+      "Declare scene_scale_m once per scene as the largest modelled dimension in metres, and derive atol_position from it, so a millimetre model and a kilometre terrain do not share one absolute bound.",
+      "Combine the two forms as |computed - expected| <= atol + rtol x |expected| rather than choosing one, so the check survives an expected value near zero.",
+      "Override the defaults deliberately, in the record that needs it, with the reason attached: a first-order integrator, a truncated series or a coarse mesh needs a bound derived from its step or order, not a looser round number.",
+      "Report the tolerance actually used and the regime it assumes next to every numeric result, including passes; a pass with an undisclosed tolerance carries no information."
+    ],
+    "observable_checks": [
+      "Every numeric check in the record names either these defaults or its own tolerance, and no check text asks the reader to supply one.",
+      "Deliberately perturbing the compared quantity by slightly more than the stated tolerance makes the check fail, and by slightly less makes it pass.",
+      "Exact quantities (piece permutations, site counts, discrete branch labels, integer state) are compared with equality and report no tolerance."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Authored engineering defaults, not measurements and not a claim about any implementation. rtol = 1e-6 sits far above double-precision roundoff for well-conditioned arithmetic while staying tight enough that a real modelling error shows; atol_position is expressed as a fraction of scene scale so it transfers between a millimetre model and a kilometre terrain; sampled quantities cannot be resolved better than the sampling interval, so one sample is the floor; visual comparisons get a stated threshold because an unstated one cannot fail. These values assume double precision and a declared regime, and any record with a coarser integrator, a truncated series or a stated approximation should override them with a bound derived from its own step or order.",
+    "values": {
+      "rtol": 1e-06,
+      "atol_position": "1e-9 x scene_scale_m",
+      "angle_rad": 1e-06,
+      "integer_state": "exact",
+      "sampled_period": "+/-1 sample",
+      "visual": "state a pixel or percent threshold explicitly",
+      "regime_note": "double precision; declare the regime (e.g. small-angle) when the model is approximate"
+    }
+  },
+  "known_limits": [
+    "These are default starting bounds for authored checks, not a numerical-accuracy guarantee and not a substitute for an error analysis of a particular scheme.",
+    "A record whose model is approximate, whose integrator is low order or whose inputs are ill-conditioned will need a looser and separately justified bound; applying the defaults there produces false failures.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "State tolerances in whatever units and presentation the scene already uses, as long as the number and its regime are both visible."
+  ],
+  "related_ids": [
+    "knowledge.reasoning-boundary-conditions-are-the-model",
+    "knowledge.validation-scene-scale-depth-budget",
+    "knowledge.validation-radius-power-law-scaling",
+    "knowledge.validation-constraint-ratio-kinematics",
+    "knowledge.validation-implicit-surface-residual",
+    "knowledge.validation-refraction-branch-handling"
+  ],
+  "claims": []
+}

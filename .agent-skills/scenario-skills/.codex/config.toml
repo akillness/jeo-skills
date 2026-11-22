@@ -1,0 +1,15 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+# Shared repository defaults. Codex loads this file only for trusted projects.
+# AGENTS.md holds the shared conventions; CLAUDE.md is a symlink to it.
+# Model selection and machine-specific settings remain in user configuration.
+# Project values override user config; use CLI -c overrides for session changes.
+# No project_doc_max_bytes: untrusted projects ignore this file, so pnpm style
+# keeps AGENTS.md under the default 32 KiB instead.
+
+web_search = "live"
+approval_policy = "on-request"
+approvals_reviewer = "auto_review"
+sandbox_mode = "workspace-write"
+
+[sandbox_workspace_write]
+network_access = true

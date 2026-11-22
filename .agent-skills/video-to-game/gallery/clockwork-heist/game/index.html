@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clockwork Heist</title>
+<link rel="icon" href="assets/tex/logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@500;700&display=swap" rel="stylesheet">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<style>
+  :root { --gold: #e9c27a; --ink: #140d07; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #0d0905; color: #f3e6cc; font-family: Inter, system-ui, sans-serif; }
+  canvas#gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  .layer { position: fixed; inset: 0; pointer-events: none; }
+  #loading { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 18px; background: radial-gradient(ellipse at center, #2a1c0e 0%, #0d0905 70%); transition: opacity .8s; z-index: 30; }
+  #loading .bar { width: min(340px, 60vw); height: 3px; background: rgba(233,194,122,.18); border-radius: 2px; overflow: hidden; }
+  #loading .bar i { display: block; height: 100%; width: 0; background: var(--gold); box-shadow: 0 0 12px var(--gold); transition: width .2s; }
+  #loading .gear { width: 46px; height: 46px; border: 3px dashed var(--gold); border-radius: 50%; animation: spin 3s linear infinite; opacity: .8; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  #title { display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 4vh 0 5vh; transition: opacity .6s; z-index: 20; }
+  #title img { width: min(720px, 70vw); filter: drop-shadow(0 8px 30px rgba(0,0,0,.6)); }
+  #title .hint { font: 600 13px Inter, sans-serif; letter-spacing: .32em; color: rgba(243,230,204,.85); text-shadow: 0 2px 8px #000; text-align: center; }
+  #title .hint.sub { margin-top: 10px; font-size: 10px; letter-spacing: .22em; color: rgba(243,230,204,.6); }
+  #slots { display: flex; gap: 22px; }
+  .slot { width: 128px; padding: 12px 8px 10px; border-radius: 10px; background: rgba(15,10,5,.55); border: 1px solid rgba(233,194,122,.22); text-align: center; backdrop-filter: blur(3px); transition: transform .25s, border-color .25s, background .25s; }
+  .slot .hood { width: 30px; height: 34px; margin: 0 auto 8px; clip-path: polygon(50% 0, 100% 100%, 0 100%); opacity: .45; transition: opacity .25s; }
+  .slot b { display: block; font: 700 12px Inter, sans-serif; letter-spacing: .18em; }
+  .slot span { display: block; margin-top: 4px; font: 500 10px Inter, sans-serif; letter-spacing: .12em; color: rgba(243,230,204,.6); }
+  .slot.on { transform: translateY(-6px); border-color: var(--c); background: rgba(30,18,8,.75); }
+  .slot.on .hood { opacity: 1; filter: drop-shadow(0 0 8px var(--c)); }
+
+  #hud { z-index: 10; opacity: 0; transition: opacity .5s; }
+  #hud .pips { position: absolute; left: 18px; top: 16px; display: flex; gap: 10px; }
+  #hud .pip { display: flex; align-items: center; gap: 7px; padding: 5px 10px 5px 7px; border-radius: 20px; background: rgba(12,8,4,.5); font: 700 12px Inter, sans-serif; letter-spacing: .06em; }
+  #hud .pip i { width: 12px; height: 14px; clip-path: polygon(50% 0, 100% 100%, 0 100%); background: var(--c); }
+  #hud .pip em { font-style: normal; color: rgba(243,230,204,.55); font-weight: 500; font-size: 10px; }
+  #hud .pip.held { box-shadow: 0 0 0 1px var(--c); }
+  #hud .clock { position: absolute; right: 20px; top: 14px; font: 600 22px Cinzel, serif; letter-spacing: .08em; color: var(--gold); text-shadow: 0 2px 10px #000; }
+  #hud .clock.late { color: #ff7a5a; animation: pulse 1s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .55; } }
+
+  #tags { z-index: 9; }
+  .tag { position: absolute; transform: translate(-50%, -100%); font: 800 13px Inter, sans-serif; letter-spacing: .12em; color: var(--c); text-shadow: 0 1px 3px #000, 0 0 8px rgba(0,0,0,.8); white-space: nowrap; opacity: 0; transition: opacity .25s; }
+  .tag::after { content: ''; display: block; width: 0; height: 0; margin: 2px auto 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid var(--c); }
+  .tag.lever { font-size: 11px; padding: 3px 7px; border-radius: 10px; background: rgba(12,8,4,.65); border: 1px solid var(--c); color: #f3e6cc; }
+  .tag.lever::after { display: none; }
+  #banner { display: flex; align-items: center; justify-content: flex-start; padding-top: 9vh; flex-direction: column; z-index: 15; opacity: 0; transition: opacity .7s; text-align: center; background: linear-gradient(180deg, rgba(10,6,2,.72) 0%, rgba(10,6,2,.45) 32%, rgba(10,6,2,0) 55%); }
+  #banner h1 { margin: 0; font: 800 clamp(34px, 6vw, 72px) Cinzel, serif; letter-spacing: .08em; color: var(--gold); text-shadow: 0 4px 30px rgba(0,0,0,.8), 0 0 40px rgba(233,194,122,.35); }
+  #banner p { margin: 14px 0 0; font: 600 13px Inter, sans-serif; letter-spacing: .3em; color: rgba(243,230,204,.85); text-shadow: 0 2px 8px #000; }
+  #banner .stats { display: flex; gap: 18px; justify-content: center; margin-top: 26px; }
+  #banner .stat { min-width: 88px; padding: 10px 12px; border-radius: 10px; background: rgba(12,8,4,.55); border-top: 3px solid var(--c); font: 700 20px Inter, sans-serif; }
+  #banner .stat small { display: block; font: 500 10px Inter, sans-serif; letter-spacing: .14em; color: rgba(243,230,204,.6); margin-top: 3px; }
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div id="hud" class="layer"><div class="pips"></div><div class="clock">11:50</div></div>
+<div id="tags" class="layer"></div>
+<div id="title" class="layer">
+  <img id="logo" alt="Clockwork Heist">
+  <div>
+    <div id="slots"></div>
+    <div class="hint" style="margin-top:22px">PRESS JUMP TO JOIN &nbsp;·&nbsp; ENTER TO START</div>
+    <div class="hint sub">LEFT / RIGHT MOVE &nbsp;·&nbsp; UP JUMP &nbsp;·&nbsp; HOLD DOWN ON A LEVER &nbsp;·&nbsp; FOUR LEVERS OPEN THE VAULT</div>
+  </div>
+</div>
+<div id="banner" class="layer"><h1></h1><p></p><div class="stats"></div></div>
+<div id="loading" class="layer"><div class="gear"></div><div class="bar"><i></i></div></div>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-evaluation-order-independence",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Order independence, cycle rejection and input typing"
+  },
+  "aliases": {
+    "en": [
+      "combinational order check",
+      "feedback rejection check"
+    ]
+  },
+  "direction_ids": [
+    "logic-circuits"
+  ],
+  "summary": "Confirm that node values do not depend on evaluation order and that cycles and malformed inputs are rejected at construction.",
+  "objective": "Two valid topological orders give identical node values, and cycles or malformed inputs produce a rejection rather than a value.",
+  "applies_when": [
+    "A circuit is evaluated with a zero-delay combinational model.",
+    "A viewer can connect outputs back to inputs.",
+    "Ports, sockets or operator names come from editable data."
+  ],
+  "check_method": "state",
+  "tags": [
+    "domain-validation",
+    "combinational",
+    "acyclicity",
+    "typing"
+  ],
+  "subject_terms": [
+    "topological order",
+    "feedback loop",
+    "zero-delay evaluation",
+    "port",
+    "operator",
+    "Boolean value"
+  ],
+  "intent_signals": [
+    "the output flickers depending on evaluation order",
+    "what happens if I wire the output back"
+  ],
+  "example_prompts": [
+    "Check that this gate scene rejects feedback connections."
+  ],
+  "negative_signals": [
+    "sequential circuit design",
+    "analog electronics"
+  ],
+  "content": {
+    "principles": [
+      "A combinational block is a function of its current inputs, so a result that depends on the order nodes were evaluated in is not combinational.",
+      "Cycle rejection is the declared input boundary of a zero-delay evaluator, not a theorem that cycles are unsolvable: a loop can have no consistent assignment, exactly one, or several, and a node whose value is itself combined with a constant false has the unique solution false. The evaluator rejects cycles because it cannot decide among those cases, and it says so.",
+      "Type checking is part of the contract: unknown operators, missing drivers and non-Boolean values are rejected rather than coerced."
+    ],
+    "implementation": [
+      "Build a fixture with independent parallel branches so that at least two distinct topological orders exist, then evaluate the same input vector in two of them and compare all node values; on a graph whose order is unique, record the check as inapplicable rather than as passed.",
+      "Attempt to construct a feedback connection and record the result; the expected outcome is a rejection naming the cycle, stated as an unsupported input rather than as a claim that no assignment exists.",
+      "Feed malformed inputs deliberately: an unknown operator name, a missing driver on an input port and a value that is neither true nor false.",
+      "Confirm in both directions that every socket drawn in the scene resolves to a declared port on the evaluated graph."
+    ],
+    "observable_checks": [
+      "On a fixture admitting two distinct topological orders, both produce identical values at every node; a difference names the node whose value depends on order, and a graph with only one order reports the check as inapplicable.",
+      "A feedback connection is rejected with the cycle identified and no output value is produced, and the message describes an unsupported input rather than an unsolvable one.",
+      "Malformed inputs are rejected with a message, and no drawn socket lacks a declared port."
+    ]
+  },
+  "known_limits": [
+    "The cited source presents the functional and timing specification of a combinational device; rejecting cycles is stated here as an implementation requirement of a zero-delay evaluator rather than as a quotation from that source.",
+    "Authored verification guidance; no circuit was evaluated or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.logic-gates",
+    "recipe.full-adder",
+    "recipe.finite-state-machine"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-combinational-specification",
+      "statement": "A combinational device is specified by a functional specification such as a truth table or Boolean equations together with a timing specification, and its outputs depend only on its current inputs.",
+      "scope": "The combinational abstraction as presented in the cited section; that page does not state an explicit acyclicity rule.",
+      "source_refs": [
+        {
+          "source_id": "source.mit-combinational",
+          "locator": "4.1, combinational device functional and timing specification"
+        }
+      ]
+    }
+  ]
+}

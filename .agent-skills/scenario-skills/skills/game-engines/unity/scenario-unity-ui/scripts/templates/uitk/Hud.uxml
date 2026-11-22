@@ -1,0 +1,41 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:agent="AgentUI" editor-extension-mode="False">
+    <!-- scenario-unity-ui HUD (Unity Expert Skills v0.1, 2026-09-24). Written as text, no UI Builder.
+         Bindings: property = the TARGET property of the element, data-source-path = the member of
+         the data source (HudModel). The data source itself is set once on the root from C#
+         (HudView.Bind), children inherit it. picking-mode="Ignore" on display-only elements. -->
+    <Style src="Hud.uss" />
+    <ui:VisualElement name="hud-root" class="hud" picking-mode="Ignore">
+        <ui:VisualElement name="health" class="hud-block hud-health" picking-mode="Ignore">
+            <ui:Label name="health-caption" class="hud-caption" text="HEALTH" picking-mode="Ignore" />
+            <agent:HudBar name="health-bar" value="1">
+                <Bindings>
+                    <ui:DataBinding property="value" data-source-path="Health01" binding-mode="ToTarget" />
+                </Bindings>
+            </agent:HudBar>
+            <ui:Label name="health-text" class="hud-value" text="100 / 100" picking-mode="Ignore">
+                <Bindings>
+                    <ui:DataBinding property="text" data-source-path="HealthText" binding-mode="ToTarget" />
+                </Bindings>
+            </ui:Label>
+        </ui:VisualElement>
+        <ui:VisualElement name="minimap" class="hud-block hud-minimap" picking-mode="Ignore">
+            <ui:VisualElement name="minimap-view" class="hud-minimap__view" picking-mode="Ignore" />
+            <ui:Label name="minimap-north" class="hud-minimap__north" text="N" picking-mode="Ignore" />
+        </ui:VisualElement>
+        <ui:VisualElement name="ammo" class="hud-block hud-ammo" picking-mode="Ignore">
+            <ui:VisualElement class="hud-ammo__row" picking-mode="Ignore">
+                <ui:Label name="ammo-text" class="hud-ammo__count" text="30" picking-mode="Ignore">
+                    <Bindings>
+                        <ui:DataBinding property="text" data-source-path="AmmoText" binding-mode="ToTarget" />
+                    </Bindings>
+                </ui:Label>
+                <ui:Label name="reserve-text" class="hud-ammo__reserve" text="/ 90" picking-mode="Ignore">
+                    <Bindings>
+                        <ui:DataBinding property="text" data-source-path="ReserveText" binding-mode="ToTarget" />
+                    </Bindings>
+                </ui:Label>
+            </ui:VisualElement>
+            <ui:Label name="ammo-caption" class="hud-caption" text="AMMO" picking-mode="Ignore" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "id": "recipe.construction-sequence-playback",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Construction task dependency and building playback"
+  },
+  "aliases": {
+    "en": [
+      "4D construction schedule",
+      "task-to-building-element playback",
+      "construction sequence model"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "operations-logistics"
+  ],
+  "summary": "Link supplied construction tasks, times and finish-start dependencies to stable building-element identities, then scrub the resulting planned sequence without inventing progress or optimization.",
+  "objective": "Inspect which task produces each slab, column or wall and see whether a supplied schedule respects its dependency graph at every playback time.",
+  "tags": [
+    "construction scheduling",
+    "4D BIM",
+    "task dependency",
+    "state playback"
+  ],
+  "subject_terms": [
+    "IfcTask",
+    "IfcTaskTime",
+    "IfcRelSequence",
+    "IfcRelAssignsToProduct",
+    "finish-start dependency",
+    "building element schedule"
+  ],
+  "intent_signals": [
+    "Play a construction schedule directly on a building model.",
+    "Select a wall and show its producing task, planned start, finish and predecessors.",
+    "Reject a construction sequence whose successor starts before a required predecessor finishes."
+  ],
+  "example_prompts": [
+    "Build a small slab-column-wall construction playback with a dependency graph and linked 3D elements.",
+    "Let me scrub planned time and inspect finish-start violations without rescheduling the tasks."
+  ],
+  "negative_signals": [
+    "Not machine-capacity job-shop scheduling, build-system topological sorting or circuit critical-path timing.",
+    "Not automatic schedule optimization, progress capture or construction safety analysis."
+  ],
+  "not_for": [
+    "Claiming actual site progress from planned dates alone.",
+    "Deriving productivity, crew conflicts, temporary works or structural safety without additional models."
+  ],
+  "entities": [
+    {
+      "name": "Stable building products",
+      "guidance": "Use a small inspectable structural shell with stable element IDs for slab, columns and walls. Keep product geometry separate from task state so one task may reference several elements and one element cannot silently change identity across time."
+    },
+    {
+      "name": "Task graph and schedule bars",
+      "guidance": "Show tasks as labeled half-open bars [start,finish) and finish-start predecessor arrows with optional nonnegative lag. Link every task to its assigned result element set and surface cycles, missing times or dangling element IDs before playback."
+    },
+    {
+      "name": "Planned-state playback",
+      "guidance": "At time t classify a task as not started for t<start, active for start<=t<finish, and complete for t>=finish. Use those discrete planned states to style assigned elements; do not reveal a fractional physical build from elapsed-time ratio unless an explicit progress model exists."
+    }
+  ],
+  "state_contract": {
+    "model": "Load a finite task set with unique IDs, finite start and finish times satisfying start<finish, zero or more stable result-element IDs, and finish-start dependency edges (u,v,lag) with lag>=0. Validate every reference, require an acyclic dependency graph, and require start_v>=finish_u+lag for normal playback. Use half-open task intervals [start,finish). At shared time t, task state is not-started if t<start, active if start<=t<finish, and complete if t>=finish; each assigned element derives its planned display state from its task. If multiple tasks assign the same result element, reject the input unless an explicit staged transformation contract defines how their states compose. Invalid schedules may open only in a labeled diagnostic view that preserves supplied times and highlights violations.",
+    "authority": "Supplied task identities, task times, dependency edges and task-to-product assignments own the planned state. The scene never shifts dates, infers percent complete or changes dependency order to improve appearance.",
+    "actions": [
+      "Play, pause or scrub the shared planned-time cursor and restore state directly from task intervals.",
+      "Select a building element to highlight its producing task, schedule bar and predecessor chain.",
+      "Select a dependency edge to inspect predecessor finish, lag, successor start and slack to that constraint.",
+      "Load a cyclic, dangling or time-violating fixture in diagnostic mode and read the exact errors.",
+      "Reset the fixture, filters, selection and playback time."
+    ]
+  },
+  "invariants": [
+    "Normal playback is available only for an acyclic graph whose finish-start constraints satisfy start_v>=finish_u+lag; diagnostic mode never presents an invalid schedule as buildable.",
+    "For any fixed t, task and element planned states are deterministic and independent of scrub direction or animation frame rate.",
+    "Every visible scheduled element has a stable source element ID and exactly one producing-task state under this recipe's simple assignment policy.",
+    "An active task marks its assigned element as planned-active without claiming linear percent complete, installed volume, structural capacity or actual field progress."
+  ],
+  "motion_guidance": [
+    "Move one schedule cursor and recompute all states from t; do not reverse construction animations to implement backward scrubbing.",
+    "Use wireframe or ghosted geometry for not-started elements, an outlined complete geometry plus task badge for active elements, and normal solid geometry for complete elements.",
+    "Camera tours may pause on task transitions, but their duration is presentation timing and never modifies planned dates."
+  ],
+  "creative_affordances": [
+    "A dollhouse cutaway, tabletop site model or exploded floor stack can expose task assignments while keeping one stable building coordinate frame.",
+    "Dependency edges may rise into a compact 3D schedule gantry above the site, provided a planar timeline remains available for unambiguous time comparison."
+  ],
+  "known_limits": [
+    "The bounded model supports finish-start dependencies with nonnegative lag only. Other IFC sequence types, calendars, milestones and recurring tasks require explicit extensions rather than conversion to finish-start.",
+    "No resource limits, crews, equipment, cost, productivity, weather, temporary works, structural analysis or actual-progress measurements are modeled.",
+    "The recipe accepts supplied task/product mappings and times; it does not parse arbitrary IFC files or prove schedule optimality. No scene runtime or rendered observation has been executed."
+  ],
+  "claims": [
+    {
+      "id": "claim.mixed-sol-ifc-construction-linkage",
+      "statement": "The official IFC construction-scheduling example links building products to tasks, attaches start and finish information through IfcTaskTime, nests task hierarchies and sequences slab and wall tasks; IfcRelSequence identifies predecessor and successor processes and can carry lag and one of several sequence types including FINISH_START.",
+      "scope": "IFC 4.3.2.0 construction-scheduling semantics and its informative slab-and-wall example; this recipe deliberately implements only a checked subset with finish-start edges and nonnegative time lag.",
+      "source_refs": [
+        {
+          "source_id": "source.mixed-sol-ifc-construction-example",
+          "locator": "Example overview; Task products and task assignment graph discussion; IFC-SPF IfcTaskTime, IfcRelAssignsToProduct and FINISH_START IfcRelSequence rows"
+        },
+        {
+          "source_id": "source.mixed-sol-ifc-rel-sequence",
+          "locator": "Semantic definition and attributes RelatingProcess, RelatedProcess, TimeLag and SequenceType"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Construction product shell",
+      "structure": "Use structurally legible slab plates, column members and wall panels with stable product-ID plaques at selection time. Keep permanent products separate from decorative cranes, workers or temporary props.",
+      "material": "Ghosted future products use dashed edges, active products use an outline and task badge, and completed planned products use opaque neutral materials. State remains readable without hue alone.",
+      "articulation": "Products switch planned display state at task boundaries. Fractional growth, pouring and lifting remain absent unless a separate production or installation model supplies them."
+    },
+    {
+      "family": "Schedule linkage instrument",
+      "structure": "A planar Gantt rail with half-open bars sits beside the model; selectable dependency cables and product-assignment leaders connect by stable IDs without crossing through labels where avoidable.",
+      "material": "Task-family patterns, constraint-error hatching and a single time-cursor accent distinguish identity, invalidity and current time.",
+      "articulation": "The cursor translates continuously for navigation, while task states change exactly at stored start and finish times."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Deterministic playback of supplied planned task intervals and task-to-building-element assignments; no construction physics or resource simulation.",
+    "state": [
+      "planned time t",
+      "task interval state",
+      "dependency validation",
+      "stable product assignment"
+    ],
+    "driving": [
+      "Task interval evaluation owns element visibility and styling.",
+      "The time cursor owns playback position but does not edit schedule data."
+    ],
+    "checks": [
+      "Validate acyclicity, references and every finish-start inequality before normal playback.",
+      "Scrub repeatedly to exact boundary times and verify half-open state classification.",
+      "Trace every rendered scheduled product back to one stable assignment and task."
+    ]
+  },
+  "related_ids": [
+    "recipe.job-shop-schedule-playback",
+    "recipe.build-dependency-order"
+  ]
+}

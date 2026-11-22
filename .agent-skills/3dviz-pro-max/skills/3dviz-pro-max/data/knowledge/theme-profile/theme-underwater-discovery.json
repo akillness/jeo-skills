@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.theme-underwater-discovery",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "theme-profile",
+  "title": {
+    "en": "Underwater discovery fiction"
+  },
+  "aliases": {
+    "en": [
+      "underwater world",
+      "submerged ruins",
+      "deep sea exploration scene"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "Stage a fictional submerged setting around near silhouettes, mid-distance discoveries and a readable exploration destination.",
+  "objective": "The focal discovery remains visible and reachable; apparent buoyancy, pressure or current behavior is not mistaken for a calculated result.",
+  "tags": [
+    "theme-profile",
+    "fictional-setting",
+    "underwater-discovery"
+  ],
+  "subject_terms": [
+    "underwater world",
+    "submerged ruins",
+    "deep sea exploration scene"
+  ],
+  "intent_signals": [
+    "Set the scene in a underwater discovery fiction",
+    "Use underwater world as the narrative setting"
+  ],
+  "example_prompts": [
+    "Create an underwater discovery scene with a clear route to a fictional submerged observatory."
+  ],
+  "content": {
+    "principles": [
+      "Stage a fictional submerged setting around near silhouettes, mid-distance discoveries and a readable exploration destination.",
+      "Theme supplies setting and motifs; choose geometry style, rendering approach and factual model independently."
+    ],
+    "implementation": [
+      "Use contrasting coral-like, rock-like and architectural forms with open navigation gaps; choose a hero creature or ruin instead of filling every region.",
+      "Try a cool ambient palette with localized warm accents and depth-dependent grouping; keep important objects distinguishable through any haze effect.",
+      "Move the camera deliberately between landmarks; creature paths and drifting particles are authored atmosphere unless a flow model is supplied."
+    ],
+    "observable_checks": [
+      "The focal discovery remains visible and reachable; apparent buoyancy, pressure or current behavior is not mistaken for a calculated result.",
+      "Inspect one focal object close up and the complete route or spatial relationship from an overview."
+    ]
+  },
+  "known_limits": [
+    "Authored fictional setting guidance; no rendered artifact or runtime improvement has been observed for this record.",
+    "This proposal does not establish historical, cultural, scientific or engineering facts."
+  ],
+  "creative_affordances": [
+    "Combine with stylized, low-poly or cinematic treatment; real marine identities and environmental claims need separate sources.",
+    "Replace motifs or combine settings to suit the user brief; maintain a readable organizing idea rather than treating these suggestions as a fixed asset list."
+  ],
+  "related_ids": [
+    "knowledge.framed-shelter",
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

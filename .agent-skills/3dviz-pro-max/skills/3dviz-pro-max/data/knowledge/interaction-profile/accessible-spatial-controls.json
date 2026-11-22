@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.accessible-spatial-controls",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "interaction-profile",
+  "title": {
+    "en": "Alternative controls for spatial actions"
+  },
+  "aliases": {
+    "en": [
+      "keyboard controls",
+      "reduced motion"
+    ]
+  },
+  "direction_ids": [
+    "spatial-puzzles",
+    "twisty-puzzles",
+    "abstract-systems-data"
+  ],
+  "summary": "Keep essential spatial actions available without requiring a precise drag or continuous motion.",
+  "objective": "Keep essential spatial actions available without requiring a precise drag or continuous motion.",
+  "subject_terms": [
+    "keyboard controls",
+    "reduced motion",
+    "spatial accessibility"
+  ],
+  "tags": [
+    "interaction-profile",
+    "accessible-spatial-controls"
+  ],
+  "intent_signals": [
+    "spatial accessibility"
+  ],
+  "example_prompts": [
+    "Use alternative controls for spatial actions for the scene, preserving its model and user controls."
+  ],
+  "content": {
+    "principles": [
+      "Choose alternative controls for the actual task rather than adding decorative keyboard shortcuts.",
+      "Explain state changes through more than one visual cue when color or motion alone is ambiguous."
+    ],
+    "implementation": [
+      "Pair important gestures with labeled buttons or keyboard actions and a visible focus state.",
+      "Use discrete step, pause or immediate transition alternatives when continuous motion is unsuitable.",
+      "Place readable state feedback near controls and keep overlays from hiding essential geometry."
+    ],
+    "observable_checks": [
+      "The key task can be completed through the alternative control path.",
+      "Focus and selection remain intelligible after a scene or mode change."
+    ]
+  },
+  "related_ids": [
+    "recipe.direct-turn-cube"
+  ],
+  "creative_affordances": [
+    "Adapt the layout, visual treatment and timing to the task; these are reusable design proposals, not mandatory templates."
+  ],
+  "known_limits": [
+    "Authored interaction/presentation guidance; no new scientific claim, accessibility certification or runtime verification is asserted."
+  ],
+  "claims": []
+}

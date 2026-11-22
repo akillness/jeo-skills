@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-dissection-layer-order",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Peel layers in their real depth order"
+  },
+  "aliases": {
+    "en": [
+      "layer peel",
+      "dissection order",
+      "superficial to deep"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures",
+    "earth-environment"
+  ],
+  "summary": "A reveal sequence asserts depth, so order the layers by their real arrangement and let the viewer stop at any one.",
+  "objective": "Make a layered reveal teach the correct spatial ordering rather than an arbitrary one.",
+  "applies_when": [
+    "A model is revealed by removing or fading successive layers.",
+    "Skin, fascia, muscle, ligament and bone, or comparable stratified structures, appear together.",
+    "The viewer can step through depths in either direction."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "layers",
+    "depth order",
+    "dissection",
+    "peel",
+    "stratification",
+    "epidermis"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "anatomy",
+    "presentation"
+  ],
+  "intent_signals": [
+    "peel the layers back",
+    "show the muscles under the skin",
+    "layered anatomy view"
+  ],
+  "example_prompts": [
+    "Peel the knee from skin down to bone one layer at a time.",
+    "Show the skin layers in order and let me stop at the dermis."
+  ],
+  "negative_signals": [
+    "Exploded views that separate parts along assembly directions rather than by depth.",
+    "Non-stratified subjects where a peel implies an ordering that does not exist."
+  ],
+  "not_for": [
+    "Exploded views that separate parts along assembly directions rather than by depth.",
+    "Non-stratified subjects where a peel implies an ordering that does not exist."
+  ],
+  "content": {
+    "principles": [
+      "A peel sequence is a claim about what lies beneath what. Ordering layers for visual convenience teaches a false anatomy as confidently as a wrong label.",
+      "Real stratification is nested and named, and the naming matters. The skin has two main layers, the epidermis over the dermis, with the hypodermis as a closely associated layer beneath that is not strictly part of the skin. Within the epidermis the strata run from basale at the base through spinosum and granulosum to corneum at the surface, with the stratum lucidum present in thick skin between the corneum and the granulosum.",
+      "Depth is local. A layer present in one region may be absent in another, so a single global peel order can be wrong for part of the model.",
+      "The viewer should be able to stop, reverse and inspect at any depth, because the intermediate states are the content."
+    ],
+    "implementation": [
+      "Assign each structure a depth index from a source rather than from modelling convenience, and drive the reveal from that index.",
+      "Support partial reveal in a region so a layer can be opened over the area of interest while remaining intact elsewhere.",
+      "Name the currently exposed layer on screen, so the state of the peel is legible rather than inferred from appearance.",
+      "Make the reveal reversible and idempotent: stepping back one layer restores exactly the previous state.",
+      "Record regional exceptions, such as layers present only in some areas, instead of applying one order everywhere."
+    ],
+    "observable_checks": [
+      "Step down and back up through the entire stack and confirm the states match in both directions.",
+      "Compare the exposed order against the sourced order at two different regions of the model.",
+      "Check that a layer removed in one region does not silently disappear elsewhere unless that is intended.",
+      "Confirm the on-screen layer name always matches what is actually visible."
+    ]
+  },
+  "related_ids": [
+    "recipe.knee-layer-peel",
+    "knowledge.assembly-layer-reveal",
+    "recipe.divergent-ridge-crust-age"
+  ],
+  "creative_affordances": [
+    "The reveal can be animated, faded, cut or hinged open; only the ordering is constrained.",
+    "A stylised or diagrammatic layer stack is a good teaching device when its abstraction is stated."
+  ],
+  "known_limits": [
+    "Authored sequencing guidance citing one stratification example; other regions need their own sources.",
+    "It does not verify the geometry or thickness of any modelled layer."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-integument-layer-order",
+      "statement": "The skin consists of two main layers, the epidermis and the dermis, with the hypodermis as a closely associated deeper layer that is not strictly part of the skin, and the epidermal strata run from deep to superficial as stratum basale, stratum spinosum, stratum granulosum and stratum corneum, with a fifth layer, the stratum lucidum, present in thick skin between the stratum corneum and the stratum granulosum.",
+      "scope": "Human integumentary layer ordering and naming. It does not give thicknesses, regional variation beyond thick and thin skin, or the arrangement of deeper structures.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-openstax-skin-layers",
+          "locator": "5.1, two main layers and the associated hypodermis; epidermal strata from deep to superficial; stratum lucidum in thick skin"
+        }
+      ]
+    }
+  ]
+}

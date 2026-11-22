@@ -1,0 +1,46 @@
+<!doctype html>
+<!-- Emberfall - an explorable fantasy village. #world, #error, #views and #control keep their ids:
+     the capture script and the viewer contract read them. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Emberfall - a village at dusk</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <div class="viewport" aria-busy="true">
+        <canvas id="world" aria-label="A fantasy village on a terraced hillside at dusk"></canvas>
+        <p id="error" role="alert" hidden></p>
+      </div>
+      <aside class="panel">
+        <header>
+          <p class="eyebrow">Fantasy village &middot; twenty minutes before sunset</p>
+          <h1>Emberfall</h1>
+          <p class="lede">Eight buildings on a terraced hillside, each shaped by the work done
+            inside it. Drag to look around; click a roof to find out what it is for.</p>
+        </header>
+
+        <h2>Views</h2>
+        <nav id="views" aria-label="Camera views"></nav>
+
+        <h2>Buildings</h2>
+        <div id="picks" class="picks" aria-label="Select a building"></div>
+
+        <section class="readout" aria-live="polite">
+          <h3 id="sel-title">Emberfall</h3>
+          <p id="sel-program" class="program">Nothing selected. Click a building, or choose one from the list.</p>
+          <dl id="sel-facts"></dl>
+        </section>
+
+        <p class="controls">
+          <button id="control" type="button" aria-pressed="false">Pause motion</button>
+          <button id="reset" type="button">Reset view</button>
+        </p>
+        <p class="note">Invented place. Nothing here is a historical or structural claim.</p>
+      </aside>
+    </main>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

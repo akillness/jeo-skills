@@ -1,0 +1,2 @@
+# 7.10 added subprocess coverage for scripts launched by the test suites.
+coverage>=7.17.3

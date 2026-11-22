@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-traversable-support-clearance",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Traversable support and clearance probe set"
+  },
+  "aliases": {
+    "en": [
+      "support surface probe",
+      "walkable clearance check"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas"
+  ],
+  "summary": "Verify that a walkable environment blocks, supports and steps where its authored limits say it should.",
+  "objective": "Every authored support surface, slope limit and blocked boundary produces the intended verdict for a declared probe set.",
+  "applies_when": [
+    "A controlled character capsule walks over authored terrain, floors or building geometry.",
+    "Slope, step height or a water boundary decides where the viewer may go.",
+    "A bridge, terrace or overhang puts more than one support surface above the same ground coordinate."
+  ],
+  "check_method": "geometry",
+  "tags": [
+    "domain-validation",
+    "traversal",
+    "collider",
+    "clearance"
+  ],
+  "subject_terms": [
+    "support surface",
+    "capsule collider",
+    "slope limit",
+    "step height",
+    "ground query",
+    "skin offset"
+  ],
+  "intent_signals": [
+    "check that the player cannot walk up the cliff",
+    "verify the bridge is walkable above the water"
+  ],
+  "example_prompts": [
+    "Check the walkable limits of this island before adding more props."
+  ],
+  "negative_signals": [
+    "tuning jump feel",
+    "authoring a navigation mesh for crowd agents"
+  ],
+  "content": {
+    "principles": [
+      "Traversability is a property of the collision representation, not of the visible mesh: check the capsule radius, foot offset and support query against the collider you actually registered.",
+      "Slope admissibility is an angle test on the support normal, so a near-horizontal normal (a wall), a normal exactly at the authored limit and a normal just inside it are three regimes that each need a stated decision.",
+      "Support surfaces stack, so the query resolves the intended support inside a declared search interval around the foot rather than taking the first surface a long ray meets: without that interval a bridge deck resolves to the seabed beneath it, and a probe started too high resolves to a shelf or ceiling above it."
+    ],
+    "implementation": [
+      "Fix the probe set before moving anything: flat ground, the steepest intended ramp, one step or terrace edge, one cliff face, one water boundary and one point directly on a bridge deck. Record each probe as a world coordinate with its expected verdict.",
+      "Declare the support search interval as a snap-up and snap-down distance around the intended foot height, collect every candidate hit inside it, and filter candidates by acceptable normal and by whether the resulting capsule pose stays clear of other colliders before selecting one.",
+      "For each probe record the chosen surface ID, its height relative to the foot, the contact normal, the slope angle in degrees and the remaining clearance, together with the candidates that were rejected and why.",
+      "Repeat every probe with the actor arriving from four headings; a step or slope decision that depends on approach direction is either declared intentional or fixed.",
+      "Write the authored limits beside the results in the same units: capsule radius and height, maximum step height, maximum slope angle and the skin or contact offset. A clearance number is unreadable without them."
+    ],
+    "observable_checks": [
+      "Probes on the bridge deck return the deck surface ID rather than the seabed, and a probe under a low overhang returns the floor rather than the overhang underside; either wrong ID is the failure signal even when the rendered actor looks correct.",
+      "The steepest walkable probe reports a slope at or below the authored limit and the cliff probe reports above it; a probe within numerical noise of the limit is reported as boundary-ambiguous instead of silently accepted.",
+      "No accepted standing pose leaves the capsule intersecting a wall, building or cliff collider by more than the declared skin offset."
+    ]
+  },
+  "known_limits": [
+    "A geometric clearance procedure for an authored controlled actor; not a physics-engine certification, a navigation proof or evidence that the whole scene is traversable.",
+    "Authored verification guidance; no scene was run or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.terrain-island",
+    "recipe.fantasy-village-diorama",
+    "recipe.garden-creature-patrol"
+  ],
+  "claims": []
+}

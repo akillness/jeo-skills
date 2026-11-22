@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "id": "recipe.protein-secondary-structure",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Protein secondary structure ribbon"
+  },
+  "aliases": {
+    "en": [
+      "protein ribbon",
+      "alpha helix and beta sheet",
+      "cartoon representation"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Build a cartoon protein view whose helices and strands come from annotated structure rather than from decorative shapes.",
+  "objective": "Show a protein chain as a ribbon where helices, strands and coil are separate labelled spans traced along the same backbone.",
+  "tags": [
+    "protein",
+    "secondary structure",
+    "ribbon"
+  ],
+  "subject_terms": [
+    "alpha helix",
+    "beta strand",
+    "beta sheet",
+    "backbone",
+    "cartoon representation",
+    "tertiary structure",
+    "quaternary structure",
+    "hydrogen bond"
+  ],
+  "intent_signals": [
+    "Show a protein as a ribbon with helices and sheets I can select.",
+    "Explain how a cartoon protein diagram maps to the actual chain."
+  ],
+  "example_prompts": [
+    "Build a protein ribbon view with spring-shaped helices, flat arrows for strands and a residue-range readout.",
+    "Let me select a secondary structure element and see its residue span."
+  ],
+  "negative_signals": [
+    "Not a folding, docking or energy simulation.",
+    "Not a substitute for a structure viewer: no experimental coordinates are supplied by this recipe."
+  ],
+  "not_for": [
+    "Not a folding, docking or energy simulation.",
+    "Not a substitute for a structure viewer: no experimental coordinates are supplied by this recipe."
+  ],
+  "entities": [
+    {
+      "name": "Backbone path",
+      "guidance": "Build one continuous backbone curve through the chain and derive every ribbon element from spans of that curve, so cartoon shapes cannot drift away from the chain."
+    },
+    {
+      "name": "Secondary structure spans",
+      "guidance": "Represent helices as spring-shaped ribbons and strands as flat arrows with a direction, each carrying its residue range as data."
+    },
+    {
+      "name": "Chain and assembly labels",
+      "guidance": "Give each chain its own identity so a multi-chain assembly can be separated without renaming its elements."
+    }
+  ],
+  "state_contract": {
+    "model": "Residue sequence with per-residue secondary structure assignment loaded from a supplied structure file; ribbon geometry is generated from those spans. The recipe supplies no coordinates and computes no assignment itself.",
+    "authority": "The supplied annotation is authoritative. If the file has no assignment, the scene must say so rather than inventing helices; generated geometry is always derived from the current annotation.",
+    "actions": [
+      "Select a helix, strand or coil span and read its residue range.",
+      "Isolate one chain and restore the assembly.",
+      "Switch between cartoon and backbone trace without losing selection.",
+      "Reset the view to the whole assembly."
+    ]
+  },
+  "invariants": [
+    "Every ribbon element maps to a contiguous residue range, and ranges never overlap.",
+    "Strand arrows keep their direction from N to C terminus under any camera orientation.",
+    "Selection identity survives representation changes: switching to a backbone trace keeps the same element selected."
+  ],
+  "motion_guidance": [
+    "Animate transitions between representations as morphs along the shared backbone, not as cross fades between unrelated meshes.",
+    "Do not animate the chain as if it were folding; this recipe has no dynamics."
+  ],
+  "known_limits": [
+    "Requires a user-supplied structure with a secondary structure annotation; nothing is bundled here.",
+    "Cartoon geometry is a convention, not the physical shape of the molecule.",
+    "Beta sheets can be antiparallel, parallel or mixed; the cited page illustrates one antiparallel sheet, so this recipe does not claim a prevalence and reads strand direction from the supplied annotation.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-secondary-structure-elements",
+      "statement": "Alpha helices form spring-shaped structures in which each amino acid hydrogen bonds with an amino acid further down the chain, and beta strands are extended regions that hydrogen bond with neighbouring strands to form a beta sheet; in the sheet illustrated on the cited page the four strands run in opposite directions.",
+      "scope": "Definitions of the two common secondary structure elements, with the opposite-strand direction restricted to the illustrated sheet. Sheets can also be parallel or mixed, which this source does not cover, and cartoon geometry remains a drawing convention.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-pdb101-protein-structure",
+          "locator": "Protein Hierarchical Structure, secondary structure section and Figure 2 caption"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-cartoon-convention",
+      "statement": "Simplified schematic representations highlight major secondary structures using a spring-shaped structure for alpha helices and a flat arrow for beta strands.",
+      "scope": "Representation convention only; colours and thickness remain authoring choices.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-pdb101-protein-structure",
+          "locator": "Protein Hierarchical Structure, schematic representation description"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Backbone path",
+      "structure": "A smooth interpolating curve through backbone control points with enough segments that helix turns stay round at close inspection.",
+      "material": "Neutral matte base so the accent palette can be reserved for selected elements; avoid strong specular highlights that read as wetness.",
+      "articulation": "None. The curve is rebuilt only when the structure or annotation changes."
+    },
+    {
+      "family": "Secondary structure spans",
+      "structure": "Extruded ribbon profiles: a rounded coil, a helical spring and a flat arrow with a widened head at the C-terminal end of each strand.",
+      "material": "Three material families that differ in value and profile shape, so element type is legible without relying on colour vision.",
+      "articulation": "Selection raises an element slightly and brightens it; the underlying spans do not move."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Static structural presentation; no molecular mechanics, solvent or bond breaking.",
+    "checks": [
+      "Residue ranges reported by the UI match the ranges used to build geometry.",
+      "Isolating and restoring a chain leaves element identity unchanged."
+    ]
+  },
+  "related_ids": [
+    "recipe.molecular-shape-comparison",
+    "knowledge.object-isolation",
+    "knowledge.style-scientific-encoding"
+  ]
+}

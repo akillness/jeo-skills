@@ -1,0 +1,82 @@
+# godot-ci.yml (scenario-godot-pipeline-automation 0.1): written by gd_pipeline.write_workflow. Thin wrapper:
+# the work happens in tools/ci/godot_ci.sh, which runs the same way on a laptop.
+name: godot-ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: godot-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GODOT_VERSION: "__GODOT_VERSION__"
+  PROJECT_DIR: "__PROJECT_DIR__"
+  PRESETS: "__PRESETS__"
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          lfs: true
+
+      - name: Cache Godot and export templates
+        id: godot-cache
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/godot
+            ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.stable
+          key: godot-${{ env.GODOT_VERSION }}-linux
+
+      - name: Download Godot ${{ env.GODOT_VERSION }}
+        if: steps.godot-cache.outputs.cache-hit != 'true'
+        run: |
+          base="https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable"
+          mkdir -p ~/godot ~/godot_dl ~/.local/share/godot/export_templates
+          cd ~/godot_dl
+          curl -fsSLO "$base/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          curl -fsSLO "$base/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          curl -fsSLO "$base/SHA512-SUMS.txt"
+          # exact names: a loose "linux.x86_64.zip" pattern also matches the mono build's line
+          grep -E " Godot_v${GODOT_VERSION}-stable_(linux\.x86_64\.zip|export_templates\.tpz)$" SHA512-SUMS.txt > want.sha512
+          test "$(wc -l < want.sha512)" -eq 2
+          sha512sum -c want.sha512
+          unzip -q "Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" ~/godot/godot
+          unzip -q "Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          mv templates ~/.local/share/godot/export_templates/"${GODOT_VERSION}.stable"
+
+      - name: Cache imported assets
+        uses: actions/cache@v6
+        with:
+          path: ${{ env.PROJECT_DIR }}/.godot/imported
+          key: imported-${{ env.GODOT_VERSION }}-${{ hashFiles('**/*.import') }}
+          restore-keys: imported-${{ env.GODOT_VERSION }}-
+
+      - name: Import, test, export
+        run: GODOT="$HOME/godot/godot" OUT_DIR=build bash tools/ci/godot_ci.sh
+
+      - name: Upload builds
+        if: success()
+        uses: actions/upload-artifact@v7
+        with:
+          name: builds-${{ github.sha }}
+          path: build/*.tar.gz
+          retention-days: 14
+
+      - name: Upload logs and test reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: logs-${{ github.sha }}
+          path: |
+            build/logs
+            build/reports
+          if-no-files-found: ignore

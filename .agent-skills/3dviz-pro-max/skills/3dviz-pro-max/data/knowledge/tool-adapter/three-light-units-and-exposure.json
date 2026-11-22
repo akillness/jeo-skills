@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.three-light-units-and-exposure",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Three.js light intensity units, fog density and tone-mapping exposure"
+  },
+  "aliases": {
+    "en": [
+      "three light units",
+      "light intensity units",
+      "candela and lux in three.js",
+      "tone mapping exposure control",
+      "fog density units"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors",
+    "products-assemblies"
+  ],
+  "summary": "Read three.js light intensities, decay, fog density and tone-mapping exposure as one coupled system, and state the exposure any authored intensity was tuned against.",
+  "objective": "Every authored light intensity in a scene is accompanied by the tone-mapping mode and exposure it was tuned for, and changing the exposure alone changes the whole image rather than one light.",
+  "tags": [
+    "tool-adapter",
+    "three",
+    "lighting",
+    "units",
+    "exposure",
+    "tone-mapping",
+    "fog"
+  ],
+  "subject_terms": [
+    "light intensity",
+    "candela",
+    "lumen",
+    "decay",
+    "inverse square falloff",
+    "tone mapping",
+    "exposure",
+    "fog density",
+    "exponential squared fog",
+    "directional light target"
+  ],
+  "intent_signals": [
+    "what intensity should this light be",
+    "my lights are blown out",
+    "the scene is too dark after adding tone mapping",
+    "how dense should the fog be",
+    "why did the point light disappear at distance"
+  ],
+  "example_prompts": [
+    "Explain what a light intensity number means in this renderer before I tune it.",
+    "Set a fog density that reads as atmosphere without hiding the subject.",
+    "Give the exposure these light values were tuned for so another scene can reuse them."
+  ],
+  "negative_signals": [
+    "photometric measurement of a real luminaire",
+    "renderer-independent physical light transport proof"
+  ],
+  "not_for": [
+    "Certifying the photometric output of a real lamp or luminaire.",
+    "Claiming physical light transport accuracy from a renderer's parameter names alone."
+  ],
+  "content": {
+    "principles": [
+      "An intensity number is meaningless without the exposure it was viewed through. Publish the tone-mapping mode and exposure next to any intensity, or the number cannot be reused.",
+      "Different light types in this renderer carry different documented meanings: a point light's intensity is documented in candela and its falloff is governed by decay, while a directional light is an infinite-distance idealisation whose intensity the page states only as strength with a default of 1.",
+      "Decay is a physical-plausibility switch, not a taste control. With the documented default of 2 a practical light loses most of its effect within a couple of metres, so spacing and count carry a room, not one large number.",
+      "Fog density in a stylised scene is an art-direction value orders of magnitude above the documented default; treat it as authored atmosphere and say so, rather than implying a measured extinction coefficient.",
+      "Exposure is a global decision. Fixing one blown highlight by lowering exposure re-grades every light in the scene, so tune the ratios between lights first and the exposure last."
+    ],
+    "implementation": [
+      "Pair `renderer.toneMapping` and `renderer.toneMappingExposure` as a single declared decision at scene setup, and record both alongside the light values; exposure is the one global control that re-grades every light at once, so authored intensities are only portable when it travels with them.",
+      "Author intensities in the unit-bearing model: Directional and Hemisphere values behave as broad scene-scale illumination, Point and Spot values are documented in candela, and their `power` in lumens is the same quantity expressed differently, so set one of the two and let the other follow.",
+      "Keep `decay` at the documented default of 2 for practicals and reach the wanted spread with more, weaker lights at stated spacing rather than by flattening the falloff.",
+      "For a stylised look, set `FogExp2` density between about 0.01 and 0.08 and match the fog colour to the sky horizon band; the documented default of 0.00025 is a near-clear atmosphere and will not read as mood at diorama scale.",
+      "When reusing another record's numbers, first match its tone-mapping mode and exposure, then scale every light by one factor rather than editing lights individually.",
+      "Re-check every property name, unit and default against the installed release before shipping; documentation pages are unversioned and the light unit model changed across releases."
+    ],
+    "observable_checks": [
+      "The scene records a tone-mapping mode and an exposure value, and every lighting record it borrows numbers from names the same pair.",
+      "Setting exposure to 1.0 and back reproduces the same image, confirming exposure is applied once globally and not baked into individual intensities.",
+      "Halving a point light's distance from a surface raises that surface's illumination by roughly four times while decay is 2; a much flatter response means decay was changed.",
+      "Turning fog off and on changes only depth separation, not the exposure of the foreground subject."
+    ]
+  },
+  "creative_affordances": [
+    "Exposure, fog density and light ratios are legitimate style levers; pushing them is fine as long as the record states the values it was tuned at.",
+    "Non-physical colour temperatures and intensities are allowed for expressive work; the requirement is that the unit convention is declared, not that it is realistic."
+  ],
+  "known_limits": [
+    "Documentation pages are unversioned; the observed wording reflects the access date only, and light unit semantics have changed between releases of this library.",
+    "The fog source states an exponential-squared falloff and the density default in words; it prints no shading formula, so no formula is asserted here.",
+    "The directional-light page states an intensity default of 1 without naming a photometric unit; the lux-scaled reading used in authored defaults is a convention of this dataset, not a quotation.",
+    "Authored reusable guidance; no renderer run or measurement was performed for this record, and the numeric ranges are tuned starting points for ACESFilmic or AgX tone mapping at exposure 0.8-1.3."
+  ],
+  "related_ids": [
+    "knowledge.three-pbr-adapter",
+    "knowledge.shared-display-color-management",
+    "knowledge.shared-stylized-outdoor-daylight",
+    "knowledge.shared-pbr-studio-environment",
+    "knowledge.emissive-practical-light-balance"
+  ],
+  "claims": [
+    {
+      "id": "claim.three-directional-light-model-and-intensity",
+      "statement": "One widely used renderer documents its directional light as behaving as though it is infinitely far away with all produced rays parallel, computes its direction as pointing from the light's position to a separate target position whose position can only be changed once the target is added to the scene, and describes its intensity as the light's strength/intensity with a default of 1 without naming a photometric unit on that page.",
+      "scope": "Documented directional-light model and intensity default of one library as of the access date. It does not establish a photometric unit for that intensity, nor a solar-position model.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-directional-light",
+          "locator": "class description (infinitely far away, rays all parallel); direction from position to target; target must be added to the scene; intensity: The light's strength/intensity. Default is 1."
+        }
+      ]
+    },
+    {
+      "id": "claim.three-point-light-candela-decay-power",
+      "statement": "The same renderer documents its point light as emitted from a single point in all directions, its intensity as the light's strength/intensity measured in candela (cd) with a default of 1, its power as the luminous power of the light measured in lumens (lm) where changing power also changes intensity, and its decay as the amount the light dims along the distance of the light with a default of 2 that should not be changed in the context of physically-correct rendering.",
+      "scope": "Documented point-light parameters and units of one library as of the access date. It describes an idealised omnidirectional emitter, not a measured luminaire.",
+      "source_refs": [
+        {
+          "source_id": "source.lighting-three-point-light",
+          "locator": "class description (emitted from a single point in all directions); intensity: measured in candela (cd), Default is 1; power: luminous power measured in lumens (lm); decay: Default is 2"
+        }
+      ]
+    },
+    {
+      "id": "claim.three-fog-exp2-density-default",
+      "statement": "The same renderer documents FogExp2 as defining an exponential squared fog that gives a clear view near the camera and a faster than exponentially densening fog farther from the camera, with a density property that defines how fast the fog will grow dense and a default of 0.00025; the page states this falloff qualitatively and prints no shading formula.",
+      "scope": "Documented exponential-squared fog description and density default of one library as of the access date. No mathematical expression for the fog factor is quoted, because the page does not print one.",
+      "source_refs": [
+        {
+          "source_id": "source.lighting-three-fog-exp2",
+          "locator": "class description (exponential squared fog, clear view near the camera, faster than exponentially densening farther from the camera); density: Defines how fast the fog will grow dense. Default is 0.00025."
+        }
+      ]
+    }
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "These ranges are a tuned starting point for stylised interactive scenes, not a measurement. ACESFilmic and AgX both roll off highlights, so an exposure between 0.8 and 1.3 keeps a bright sun or emissive practical inside the shoulder while leaving shadow detail readable; below 0.8 mid-tones go muddy and above 1.3 the shoulder stops protecting the highlights. The directional and hemisphere ranges assume that lux-scaled reading of directional intensity, which is this dataset's convention rather than a quotation from the documentation, while the point-light candela range and decay of 2 follow the documented unit and default. Fog density is set two orders of magnitude above the documented default because the documented default reads as near-clear air at diorama distances.",
+    "values": {
+      "tone_mapping_exposure_range": [
+        0.8,
+        1.3
+      ],
+      "tone_mapping_modes": [
+        "ACESFilmic",
+        "AgX"
+      ],
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "directional_key_intensity_range": [
+        2.0,
+        4.5
+      ],
+      "hemisphere_fill_intensity_range": [
+        0.2,
+        1.2
+      ],
+      "point_practical_intensity_cd_range": [
+        20,
+        120
+      ],
+      "spot_key_intensity_cd_range": [
+        40,
+        400
+      ],
+      "decay": 2,
+      "environment_intensity_range": [
+        0.1,
+        0.6
+      ],
+      "fog_exp2_density_stylised_range": [
+        0.01,
+        0.08
+      ],
+      "fog_exp2_density_documented_default": 0.00025,
+      "key_to_fill_ratio_range": [
+        "2:1",
+        "10:1"
+      ],
+      "never": [
+        "an intensity number published without its tone-mapping mode and exposure",
+        "decay changed away from 2 to make a practical reach further",
+        "exposure used to fix a single blown light instead of the light ratio"
+      ]
+    }
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "id": "recipe.cubic-unit-cell-accounting",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Cubic unit-cell atom accounting"
+  },
+  "aliases": {
+    "en": [
+      "BCC FCC lattice",
+      "crystal unit cell fractions"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Expose shared atom fractions across repeated cubic cells.",
+  "objective": "Compare BCC and FCC unit cells and highlight the fractions of atoms belonging to the central cell.",
+  "tags": [
+    "unit cell",
+    "BCC",
+    "FCC"
+  ],
+  "subject_terms": [
+    "unit cell",
+    "BCC",
+    "FCC",
+    "lattice point",
+    "corner fraction",
+    "crystal"
+  ],
+  "intent_signals": [
+    "count atoms in a unit cell",
+    "expand a crystal lattice"
+  ],
+  "example_prompts": [
+    "Compare BCC and FCC unit cells and highlight the fractions of atoms belonging to the central cell.",
+    "Expand neighboring cells so I can see why a corner contributes one eighth."
+  ],
+  "entities": [
+    {
+      "name": "Cell frame",
+      "guidance": "Use a cubic wireframe with fractional-coordinate site markers and a highlighted central cell."
+    },
+    {
+      "name": "Atoms",
+      "guidance": "Create corner sites plus center or face sites from a unique lattice-position map."
+    },
+    {
+      "name": "Accounting overlay",
+      "guidance": "Attach 1/8 corner and 1/2 face labels and a running sum."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Cell frame",
+      "structure": "Use a cubic wireframe with fractional-coordinate site markers and a highlighted central cell.",
+      "material": "Thin neutral frame and muted neighbor frames."
+    },
+    {
+      "family": "Atoms",
+      "structure": "Create corner sites plus center or face sites from a unique lattice-position map.",
+      "material": "Opaque central-cell portions and translucent external portions; colors are explanatory."
+    },
+    {
+      "family": "Accounting overlay",
+      "structure": "Attach 1/8 corner and 1/2 face labels and a running sum.",
+      "material": "Flat text with leader lines that avoid atom occlusion."
+    }
+  ],
+  "state_contract": {
+    "model": "Selected BCC/FCC site set, integer neighbor-cell extent and central-cell inclusion fractions; duplicate boundary sites merged by lattice coordinates.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Switch BCC/FCC.",
+      "Expand neighbors.",
+      "Select site contribution and hide exterior portions."
+    ]
+  },
+  "invariants": [
+    "BCC conventional cell accounts for two atoms; FCC accounts for four.",
+    "Neighbor expansion does not double-create a shared boundary site.",
+    "Clipping portions changes display, not lattice occupancy."
+  ],
+  "motion_guidance": [
+    "Animate neighbor reveal by cell layers rather than moving lattice sites out of position.",
+    "Choose a non-overlapping display radius or state the specific contact-radius construction."
+  ],
+  "known_limits": [
+    "Ideal cubic lattice illustration; no defects, thermal motion, density or material strength inferred.",
+    "Color and sphere radius are not measured atomic properties.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [
+    {
+      "id": "claim.cubic-unit-cell-accounting",
+      "statement": "A conventional BCC unit cell contains two atoms; FCC contains four after accounting for shared corner and face contributions.",
+      "scope": "Ideal monatomic conventional cubic cells; corner sites contribute one eighth and face sites one half.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-cubic-lattices",
+          "locator": "Figures 10.50–10.52 and accompanying BCC/FCC atom accounting"
+        }
+      ]
+    },
+    {
+      "id": "claim.cubic-unit-cell-site-fractions",
+      "statement": "An atom at a corner of a cubic unit cell is shared by eight cells and contributes one-eighth of an atom to each, an atom centred on a face is shared by two cells and contributes one-half, and an atom at the body centre belongs entirely to its own cell; a BCC unit cell therefore contains two atoms (8 x 1/8 from the corners plus one from the centre) and an FCC unit cell four atoms (8 x 1/8 from the corners plus 6 x 1/2 from the faces). An atom in a BCC structure has a coordination number of eight, and in an FCC structure each atom touches 12 near neighbours.",
+      "scope": "Per-site occupancy fractions, conventional-cell atom counts and coordination numbers for the ideal cubic lattices; no lattice constants, densities or material properties.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-cubic-lattices",
+          "locator": "10.6 Lattice Structures in Crystalline Solids: \"Since an atom at a corner of a simple cubic unit cell is contained by a total of eight unit cells, only one-eighth of that atom is within a specific unit cell\"; \"A BCC unit cell contains two atoms: one-eighth of an atom at each of the eight corners (8x1/8=1 atom from the corners) plus one atom from the center\"; \"A FCC unit cell contains four atoms: one-eighth of an atom at each of the eight corners (8x1/8=1 atom from the corners) and one-half of an atom on each of the six faces (6x1/2=3 atoms from the faces)\"; \"an atom in a BCC structure has a coordination number of eight\"; \"each atom touches 12 near neighbors, and therefore has a coordination number of 12\""
+        }
+      ]
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Lattice accounting without dynamics.",
+    "state": [
+      "lattice type",
+      "neighbor extent",
+      "selected site"
+    ],
+    "colliders": [
+      "None; spheres represent lattice sites."
+    ],
+    "driving": [
+      "Visibility and clipping."
+    ],
+    "contact": [
+      "No interatomic contact solver."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Sum central-cell fractions; ensure unique shared sites across expansion."
+    ]
+  },
+  "defaults": {
+    "provenance": "source-backed",
+    "tunable": true,
+    "claim_ids": [
+      "claim.cubic-unit-cell-accounting",
+      "claim.cubic-unit-cell-site-fractions"
+    ],
+    "rationale": "Occupancy fractions, the two-atom BCC and four-atom FCC totals and the coordination numbers restate the cited section (claim.cubic-unit-cell-accounting, claim.cubic-unit-cell-site-fractions). The 2x2x2 block figures in the worked example are arithmetic on those sourced fractions rather than separate facts, and they are the numbers the recipe's deduplication check compares against. The lattice constant and sphere radius carry no default: the section is about accounting, not about a specific material, and the recipe already warns that display radius is not a measured atomic property. Tunable only in the display sense - neighbour extent and sphere size are free, the fractions and totals are not.",
+    "values": {
+      "parameters": {
+        "bcc_atoms_per_conventional_cell": {
+          "value": 2,
+          "unit": "atoms",
+          "note": "sourced"
+        },
+        "fcc_atoms_per_conventional_cell": {
+          "value": 4,
+          "unit": "atoms",
+          "note": "sourced"
+        },
+        "corner_site_fraction": {
+          "value": 0.125,
+          "unit": "fraction of an atom",
+          "note": "sourced one-eighth, shared by 8 cells"
+        },
+        "face_site_fraction": {
+          "value": 0.5,
+          "unit": "fraction of an atom",
+          "note": "sourced one-half, shared by 2 cells"
+        },
+        "body_centre_site_fraction": {
+          "value": 1.0,
+          "unit": "fraction of an atom",
+          "note": "sourced: the centre atom belongs wholly to its cell"
+        },
+        "bcc_coordination_number": {
+          "value": 8,
+          "unit": "neighbours",
+          "note": "sourced"
+        },
+        "fcc_coordination_number": {
+          "value": 12,
+          "unit": "neighbours",
+          "note": "sourced"
+        },
+        "neighbour_cell_extent": {
+          "value": 2,
+          "unit": "cells per axis",
+          "note": "authored display choice: the 2x2x2 block used by the worked example"
+        },
+        "lattice_constant": {
+          "value": "no default; source gives none",
+          "unit": "m",
+          "note": "the section teaches accounting, not a specific material; supply a lattice constant only with its own source"
+        },
+        "display_sphere_radius": {
+          "value": "no default; source gives none",
+          "unit": "m",
+          "note": "display radius is not a measured atomic property, so the recipe refuses to fix one"
+        }
+      },
+      "equations": [
+        "atoms per conventional cell = 8 * corner_fraction + 6 * face_fraction + 1 * body_fraction, with the fractions of the lattice in question",
+        "distinct sites in an n x n x n block: corners (n+1)^3; body centres n^3; face centres 3 * n^2 * (n+1)",
+        "atoms in an n x n x n block = n^3 * atoms per conventional cell"
+      ],
+      "worked_example": {
+        "inputs": "A 2x2x2 block of conventional cells, first BCC then FCC, with duplicate boundary sites merged by lattice coordinates",
+        "expected": "BCC: 35 distinct sites and 16 atoms. FCC: 63 distinct sites and 32 atoms. The site count is always larger than the atom count because shared boundary sites are single objects, and merging must never change the atom total",
+        "derivation": "BCC sites: corners (2+1)^3 = 27, body centres 2^3 = 8, total 27 + 8 = 35 distinct sites. BCC atoms: 2 atoms per cell x 8 cells = 16. FCC sites: 27 corners plus face centres 3 x 2^2 x (2+1) = 36, total 63. FCC atoms: 4 x 8 = 32. Cross-check on the central cell alone with the sourced fractions: BCC 8 x 1/8 + 1 = 2 and FCC 8 x 1/8 + 6 x 1/2 = 1 + 3 = 4, which are the section's own totals. A build that reports 64 BCC sites (8 cells x 8 corners) has failed to merge shared corners; a build that reports 32 BCC atoms has double-counted them."
+      },
+      "tolerance": {
+        "counts": "exact integers; site and atom counts are combinatorial, so any deviation is a deduplication bug rather than a tolerance",
+        "fractional_sum": "rtol 1e-12 when summing the central-cell fractions to 2.0 or 4.0"
+      }
+    }
+  }
+}

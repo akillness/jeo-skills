@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-stability-and-item-identity",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Preserve item identity to show stability"
+  },
+  "aliases": {
+    "en": [
+      "stable sort",
+      "equal keys",
+      "identity through animation"
+    ]
+  },
+  "direction_ids": [
+    "algorithms-data-structures",
+    "abstract-systems-data"
+  ],
+  "summary": "Give sorted items distinguishable secondary attributes and animate identity, so equal-key ordering is observable.",
+  "objective": "Make a sorting visualisation able to demonstrate stability rather than only order.",
+  "applies_when": [
+    "A sorting algorithm is animated over items with possible equal keys.",
+    "Items carry more than one attribute, such as value and arrival order.",
+    "The scene claims a sort is stable or compares algorithms."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "stable sort",
+    "equal keys",
+    "identity",
+    "mergesort",
+    "secondary attribute",
+    "comparison"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "algorithms",
+    "sorting"
+  ],
+  "intent_signals": [
+    "is this sort stable",
+    "sort by two keys",
+    "why did equal items swap"
+  ],
+  "example_prompts": [
+    "Show a stable sort and make the stability visible.",
+    "Compare a stable and an unstable sort on the same data."
+  ],
+  "negative_signals": [
+    "Sorting of distinct keys, where stability is unobservable.",
+    "Scenes that only display a final sorted result."
+  ],
+  "not_for": [
+    "Sorting of distinct keys, where stability is unobservable.",
+    "Scenes that only display a final sorted result."
+  ],
+  "content": {
+    "principles": [
+      "A sorting method is stable when it preserves the relative order of items with equal keys; insertion sort and mergesort are stable while selection sort, shellsort, quicksort and heapsort are not.",
+      "Stability is invisible unless equal-key items are distinguishable. Bars of equal height carry no evidence, so the data must include a secondary attribute that the viewer can see.",
+      "Item identity must survive the animation. If elements are redrawn from array positions each frame, the visualisation cannot show which item moved where, and the stability claim becomes unverifiable.",
+      "Stability is what makes multi-key sorting by successive passes work, which is the practical reason it matters and a good subject for the scene."
+    ],
+    "implementation": [
+      "Give each item a stable identity and a visible secondary attribute, such as original index, colour or label.",
+      "Bind visual elements to item identities rather than to array slots, and animate movement of the same element.",
+      "Include deliberate ties in the default data set, since stability is only observable on ties.",
+      "Offer a comparison with an unstable method on the same data so the difference is concrete.",
+      "Demonstrate the practical consequence in the correct order: to order by a primary key with a secondary tie-break, sort by the secondary key first and then stably by the primary key. Stability preserves the previous order only within ties of the key being sorted, so reversing the passes teaches the wrong priority."
+    ],
+    "observable_checks": [
+      "Sort data containing ties and confirm the tied items keep their original relative order under the stable method.",
+      "Run the unstable comparison on the same data and confirm the tied order changes at least sometimes.",
+      "Track one item through the animation and confirm it is the same visual element throughout.",
+      "Perform the two-pass sort in the order secondary then primary and compare the result against a direct comparison on the pair in that priority; a mismatch means either the passes were ordered wrongly or the second pass is not stable."
+    ]
+  },
+  "related_ids": [
+    "recipe.stable-merge-sort-trace"
+  ],
+  "creative_affordances": [
+    "Items can be any distinguishable objects, from cards to characters to physical tokens; only identity and a visible tie-breaking attribute are required.",
+    "A playful data set with meaningful secondary attributes often teaches stability better than abstract bars."
+  ],
+  "known_limits": [
+    "Authored guidance citing the definition of stability and which classical methods are stable; specific library implementations may differ.",
+    "No runtime sorting visualisation has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-stable-sort-definition",
+      "statement": "A sorting method is stable if it preserves the relative order of records with equal keys; insertion sort and mergesort are stable, while selection sort, shellsort, quicksort and heapsort are not.",
+      "scope": "Classical sorting methods as described in an algorithms text; a specific library implementation may add stability or lose it.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-algs4-sorting-applications",
+          "locator": "Stability: definition and the list of stable and unstable methods"
+        }
+      ]
+    }
+  ]
+}

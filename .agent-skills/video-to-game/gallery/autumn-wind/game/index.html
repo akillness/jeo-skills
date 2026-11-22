@@ -1,0 +1,1691 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Autumn Wind</title>
+<link rel="icon" type="image/png" href="assets/ui/leaf.png">
+<style>
+  :root { --cream:#fff6e4; --ink:#3b2a1f; }
+  html, body { margin:0; height:100%; overflow:hidden; background:#e7d8b6; }
+  body { font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif; color:var(--cream);
+         user-select:none; -webkit-user-select:none; touch-action:none; -webkit-tap-highlight-color:transparent; }
+  canvas { display:block; width:100vw; height:100vh; }
+  .hide { opacity:0 !important; pointer-events:none !important; }
+  #loading { position:fixed; inset:0; display:flex; flex-direction:column; gap:14px; align-items:center; justify-content:center;
+             background:#e9dcbf; transition:opacity 1.4s ease; z-index:30; color:#8a5a33; letter-spacing:.35em; font-size:12px; text-transform:uppercase; }
+  #loading .bar { width:min(300px,60vw); height:2px; background:rgba(110,70,40,.18); }
+  #loading .fill { height:100%; width:0; background:#c65a22; transition:width .25s; }
+  #title { position:fixed; inset:0; display:flex; flex-direction:column; align-items:center; padding-top:7vh; transition:opacity 1.2s ease; z-index:10; pointer-events:none; }
+  #title img { width:min(720px,78vw); filter:drop-shadow(0 6px 22px rgba(90,45,10,.28)); }
+  .hint { margin-top:1.2vh; font-size:clamp(13px,1.45vw,17px); letter-spacing:.06em; text-align:center; color:#fff8ea;
+          text-shadow:0 1px 10px rgba(80,38,8,.65), 0 0 2px rgba(80,38,8,.4); line-height:1.7; }
+  .hint b { font-weight:normal; color:#ffe2a8; }
+  .press { margin-top:2.2vh; font-size:clamp(12px,1.15vw,14px); letter-spacing:.42em; text-transform:uppercase; color:#fff3dc;
+           text-shadow:0 1px 3px rgba(80,38,8,.9), 0 0 14px rgba(80,38,8,.7); animation:pulse 2.6s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity:.3 } 50% { opacity:1 } }
+  #hud { position:fixed; inset:0; pointer-events:none; transition:opacity .9s ease; z-index:5; }
+  #leafbox { position:absolute; left:24px; top:18px; display:flex; align-items:center; gap:10px; font-size:28px;
+             text-shadow:0 1px 10px rgba(80,38,8,.65); transition:transform .15s; }
+  #leafbox img { width:36px; height:36px; object-fit:contain; filter:drop-shadow(0 2px 5px rgba(70,30,8,.4)); }
+  #leafbox.bump { transform:scale(1.12); }
+  #leafbox.low span { color:#ffd0b0; }
+  #leafbox.need span { animation:need 0.9s ease-in-out infinite; }
+  @keyframes need { 0%,100% { color:#fff6e4 } 50% { color:#ffb48a } }
+  #treebox { position:absolute; right:20px; top:14px; display:flex; gap:2px; }
+  #treebox img { width:26px; height:34px; object-fit:contain; opacity:.55; filter:grayscale(.5) brightness(1.2) drop-shadow(0 1px 3px rgba(60,30,10,.45)) drop-shadow(0 0 5px rgba(255,236,200,.35)); transition:all .7s ease; }
+  #treebox img.on { opacity:1; filter:drop-shadow(0 0 7px rgba(255,205,110,.95)); transform:translateY(-2px) scale(1.12); }
+  #treebox img.miss { opacity:.18; }
+  #progress { position:absolute; left:50%; bottom:16px; transform:translateX(-50%); width:min(440px,52vw); height:2px; background:rgba(255,248,232,.28); border-radius:2px; }
+  #progfill { height:100%; width:0; background:rgba(255,238,205,.9); border-radius:2px; }
+  #progdot { position:absolute; top:-3px; width:8px; height:8px; border-radius:50%; background:#e2582a; box-shadow:0 0 8px rgba(255,140,60,.9); transform:translateX(-4px); left:0; }
+  #end { position:fixed; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; transition:opacity 1.6s ease; z-index:10; pointer-events:none;
+         text-shadow:0 2px 16px rgba(80,38,8,.7); background:radial-gradient(ellipse 46% 34% at 50% 50%, rgba(70,32,10,.38), rgba(70,32,10,0)); }
+  #end .big { font-size:clamp(46px,7vw,86px); letter-spacing:.05em; }
+  #end .sub { font-size:clamp(13px,1.5vw,18px); letter-spacing:.18em; margin-top:.4em; text-transform:lowercase; }
+  #end .trees { display:flex; gap:4px; margin-top:1.4em; }
+  #end .trees img { width:30px; height:40px; object-fit:contain; }
+  #end .trees img.off { opacity:.25; filter:grayscale(.6); }
+  #sound { position:fixed; right:16px; bottom:10px; font-size:11px; letter-spacing:.25em; text-transform:uppercase; opacity:.55; z-index:6;
+           text-shadow:0 1px 6px rgba(80,38,8,.7); pointer-events:none; }
+  #err { position:fixed; left:10px; bottom:10px; color:#600; font:12px monospace; z-index:50; white-space:pre; }
+  @media (max-width: 640px) {
+    #treebox { right:10px; top:14px; gap:0; }
+    #treebox img { width:17px; height:24px; }
+    #leafbox { left:14px; top:12px; font-size:22px; }
+    #leafbox img { width:28px; height:28px; }
+    #end .trees img { width:20px; height:28px; }
+  }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="loading"><div>autumn wind</div><div class="bar"><div class="fill" id="loadfill"></div></div></div>
+<div id="title" class="hide">
+  <img id="titleimg" src="assets/title.webp" alt="Autumn Wind">
+  <div class="hint" id="hint">Hold <b>Space</b> / <b>click</b> to leap, keep holding to glide on your leaves · <b>&darr;</b> to dive<br>
+    gather the drifting leaves, wake the sleeping trees, carry autumn to the great tree</div>
+  <div class="press" id="press">press space</div>
+</div>
+<div id="hud" class="hide">
+  <div id="leafbox"><img id="leaficon" src="assets/ui/leaf.png" alt=""><span id="leafcount">0</span></div>
+  <div id="treebox"></div>
+  <div id="progress"><div id="progfill"></div><div id="progdot"></div></div>
+</div>
+<div id="end" class="hide">
+  <div class="big"><span id="endtrees">0</span> / 12</div>
+  <div class="sub">sleeping trees awakened · <span id="endleaves">0</span> leaves given to the great tree</div>
+  <div class="trees" id="endtreerow"></div>
+  <div class="press" id="again" style="margin-top:3vh">space to fly again</div>
+</div>
+<div id="sound">m · sound</div>
+<div id="err"></div>
+<script>
+  // touch screens: same controls, worded for fingers
+  if (matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window) {
+    document.getElementById('hint').innerHTML = 'Touch to leap, keep holding to glide on your leaves · touch the lower-left corner to dive<br>gather the drifting leaves, wake the sleeping trees, carry autumn to the great tree';
+    document.getElementById('press').textContent = 'touch to begin';
+    document.getElementById('again').textContent = 'touch to fly again';
+    document.getElementById('sound').style.display = 'none';
+  }
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+/* =====================================================================================
+   AUTUMN WIND — a child in a cloak of leaves surfs the wind over golden hills.
+   Every image, model and sound in /assets was generated with fal (see README.md).
+   ===================================================================================== */
+
+const Q = new URLSearchParams(location.search);
+const DBG = { zoom: parseFloat(Q.get('zoom') || '1'), ts: parseFloat(Q.get('ts') || '1'), auto: Q.has('auto'), x: parseFloat(Q.get('x') || 'NaN'), state: Q.get('state'), nopost: Q.has('nopost'), leaves: parseInt(Q.get('leaves') || '0'), t: parseFloat(Q.get('t') || 'NaN') };
+window.addEventListener('error', (e) => { document.getElementById('err').textContent += (e.message || e) + '\n'; });
+
+const CFG = {
+  END: 3150,            // x where the final plateau (great tree) begins
+  G: 30,                // gravity
+  JUMP: 12.5,
+  MIN_SPEED: 9, MAX_SPEED: 44, WIND_ACC: 4.2,
+  GLIDE_G: 0.24, GLIDE_TERM: -3.0, GLIDE_COST: 1.7,  // leaves per second while gliding
+  DIVE_G: 2.4,
+  TREE_COST: 12, N_TREES: 12,
+  CHILD_SCALE: 1.75,
+  MAX_LEAVES: 199,
+};
+
+// ---------------------------------------------------------------- utils
+const TAU = Math.PI * 2;
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const smooth = (t) => t * t * (3 - 2 * t);
+const damp = (a, b, l, dt) => lerp(a, b, 1 - Math.exp(-l * dt));
+function mulberry(seed) { let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const R0 = mulberry(1977);
+const rnd = (a = 0, b = 1) => a + (b - a) * R0();
+const V3 = (x = 0, y = 0, z = 0) => new THREE.Vector3(x, y, z);
+
+// ---------------------------------------------------------------- renderer / scene
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+renderer.setSize(innerWidth, innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.NoToneMapping;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const HAZE = new THREE.Color('#ecdcbb'), DUSK_HAZE = new THREE.Color('#f2c3a2');
+scene.background = new THREE.Color('#e9dcc0');
+scene.fog = new THREE.Fog(HAZE.clone(), 34, 560);
+const camera = new THREE.PerspectiveCamera(36, innerWidth / innerHeight, 0.5, 3000);
+scene.add(camera);
+
+const sun = new THREE.DirectionalLight(new THREE.Color('#fff1d6'), 2.3);
+sun.position.set(-0.5, 1.0, 0.9);
+scene.add(sun);
+scene.add(new THREE.AmbientLight(new THREE.Color('#ffe6c4'), 1.25));
+
+// ---------------------------------------------------------------- loading
+const manager = new THREE.LoadingManager();
+const texLoader = new THREE.TextureLoader(manager);
+const gltfLoader = new GLTFLoader(manager);
+let toLoad = 0, loaded = 0;
+const bump = () => { loaded++; document.getElementById('loadfill').style.width = (100 * loaded / Math.max(1, toLoad)) + '%'; };
+function loadTex(url, { srgb = true, wrap = null, mirror = false, wrapX = false, mips = true } = {}) {
+  toLoad++;
+  return new Promise((res) => texLoader.load(url, (t) => {
+    if (srgb) t.colorSpace = THREE.SRGBColorSpace;
+    if (wrap) t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    if (mirror) t.wrapS = THREE.MirroredRepeatWrapping;
+    if (wrapX) t.wrapS = THREE.RepeatWrapping;
+    t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    if (!mips) { t.generateMipmaps = false; t.minFilter = THREE.LinearFilter; }
+    bump(); res(t);
+  }, undefined, () => { console.warn('missing texture', url); bump(); res(null); }));
+}
+function loadGLB(url) { toLoad++; return new Promise((res) => gltfLoader.load(url, (g) => { bump(); res(g); }, undefined, (e) => { console.warn('missing glb', url); bump(); res(null); })); }
+function loadBin(url) { return fetch(url).then(r => r.ok ? r.arrayBuffer() : null).catch(() => null); }   // audio streams in the background
+
+const ASSET = {
+  sky: ['assets/sky.jpg', { mirror: true }], far: ['assets/far_hills.webp', { mirror: true }],
+  grass: ['assets/tex_grass.jpg', { wrap: true }], earth: ['assets/tex_earth.jpg', { wrap: true }],
+  leaves: ['assets/leaves_atlas.webp', {}], paper: ['assets/paper.jpg', { wrap: true }],
+  tree1: ['assets/sprites/tree_1.webp', {}], tree2: ['assets/sprites/tree_2.webp', {}], tree3: ['assets/sprites/tree_3.webp', {}],
+  bushGold: ['assets/sprites/bush_gold.webp', {}], bushAmber: ['assets/sprites/bush_amber.webp', {}], bushOrange: ['assets/sprites/bush_orange.webp', {}],
+  grassA: ['assets/sprites/grass_a.webp', {}], grassB: ['assets/sprites/grass_b.webp', {}],
+  bare: ['assets/sprites/tree_bare.webp', {}], bloom: ['assets/sprites/tree_bloom.webp', {}],
+  greatBare: ['assets/sprites/great_bare.webp', {}], greatBloom: ['assets/sprites/great_bloom.webp', {}],
+  canopyBand: ['assets/sprites/canopy_band.webp', {}], canopyEnd: ['assets/sprites/canopy_end.webp', {}],
+  ceiling: ['assets/sprites/canopy_ceiling.webp', { wrapX: true }], ceilingEnd: ['assets/sprites/canopy_ceiling_end.webp', {}],
+  fgStrip: ['assets/sprites/fg_strip.webp', { wrapX: true }],
+  stroke1: ['assets/fx/stroke_1.png', {}], stroke2: ['assets/fx/stroke_2.png', {}], stroke3: ['assets/fx/stroke_3.png', {}],
+  glow: ['assets/fx/glow.png', {}], sparkle: ['assets/fx/sparkle.png', {}], swirl: ['assets/fx/swirl.png', {}], scarf: ['assets/scarf.webp', {}],
+};
+const SOUNDS = { music: 'assets/audio/music.mp3', wind: 'assets/audio/wind.mp3', chime: 'assets/audio/chime.mp3', bloom: 'assets/audio/bloom.mp3',
+  jump: 'assets/audio/jump.mp3', land: 'assets/audio/land.mp3', stumble: 'assets/audio/stumble.mp3', gust: 'assets/audio/gust.mp3', finale: 'assets/audio/finale.mp3' };
+
+const T = {}; const GLB = {}; const SND = {};
+async function loadAll() {
+  const jobs = [];
+  for (const [k, [u, o]] of Object.entries(ASSET)) jobs.push(loadTex(u, o).then(t => T[k] = t));
+  jobs.push(loadGLB('assets/child.glb').then(g => GLB.child = g));
+  jobs.push(loadGLB('assets/rock_a.glb').then(g => GLB.rockA = g));
+  for (const [k, u] of Object.entries(SOUNDS)) SND[k] = loadBin(u);          // not awaited: the game starts before the music arrives
+  await Promise.all(jobs);
+}
+
+// ---------------------------------------------------------------- course: hills
+class Ridge {
+  constructor(pts) { this.p = pts; this.n = pts.length; this.i = 0; }
+  seg(x) {
+    const p = this.p; let i = this.i;
+    if (x <= p[0].x) return 0;
+    if (x >= p[this.n - 1].x) return this.n - 2;
+    while (i > 0 && x < p[i].x) i--;
+    while (i < this.n - 2 && x >= p[i + 1].x) i++;
+    this.i = i; return i;
+  }
+  h(x) { const i = this.seg(x), a = this.p[i], b = this.p[i + 1]; const t = clamp((x - a.x) / (b.x - a.x), 0, 1); return a.y + (b.y - a.y) * (1 - Math.cos(Math.PI * t)) * 0.5; }
+  d1(x) { const i = this.seg(x), a = this.p[i], b = this.p[i + 1]; const w = b.x - a.x; const t = clamp((x - a.x) / w, 0, 1); return (b.y - a.y) * 0.5 * Math.PI * Math.sin(Math.PI * t) / w; }
+  d2(x) { const i = this.seg(x), a = this.p[i], b = this.p[i + 1]; const w = b.x - a.x; const t = clamp((x - a.x) / w, 0, 1); return (b.y - a.y) * 0.5 * Math.PI * Math.PI * Math.cos(Math.PI * t) / (w * w); }
+}
+function buildCourse() {
+  const R = mulberry(4242);
+  const pts = [{ x: -520, y: -4 }, { x: -260, y: 2 }, { x: -70, y: 7 }, { x: 0, y: 7.2 }];
+  let x = 0, up = false;
+  const crests = [];
+  while (x < CFG.END) {
+    const p = x / CFG.END; const act = p < 0.34 ? 0 : p < 0.68 ? 1 : 2;
+    const w = (25 + R() * 19) * (1 + 0.14 * act) * (x < 60 ? 1.25 : 1);
+    x += w;
+    const base = 4.5 * Math.sin(x * 0.0041 + 0.4) + 2.4 * Math.sin(x * 0.0113 + 1.9);
+    const amp = (4.0 + R() * 4.2) * (1 + 0.3 * act);
+    const y = up ? base + amp : base - amp * (0.6 + R() * 0.35);
+    pts.push({ x, y }); if (up) crests.push(x);
+    up = !up;
+  }
+  if (up) { x += 34; pts.push({ x, y: pts[pts.length - 1].y + 10 }); up = false; }   // end on a crest
+  const valleyY = pts[pts.length - 1].y - 9; x += 38; pts.push({ x, y: valleyY });
+  const plateauY = valleyY + 15; x += 70; pts.push({ x, y: plateauY });
+  const greatX = x + 70;
+  pts.push({ x: x + 210, y: plateauY + 0.6 }); pts.push({ x: x + 420, y: plateauY - 10 }); pts.push({ x: x + 900, y: plateauY - 16 });
+  return { ridge: new Ridge(pts), crests, greatX, plateauStart: x, pts };
+}
+const COURSE = buildCourse();
+const ground = COURSE.ridge;
+const smoothG = (() => { const x0 = -1200, x1 = COURSE.greatX + 1600, st = 4, n = Math.ceil((x1 - x0) / st), raw = new Float32Array(n + 1), out = new Float32Array(n + 1);
+  for (let i = 0; i <= n; i++) raw[i] = ground.h(x0 + i * st);
+  const K = 18; for (let i = 0; i <= n; i++) { let s = 0, c = 0; for (let k = -K; k <= K; k++) { const j = i + k; if (j >= 0 && j <= n) { s += raw[j]; c++; } } out[i] = s / c; }
+  return (x) => { const f = clamp((x - x0) / st, 0, n - 1); const i = Math.floor(f); return lerp(out[i], out[i + 1], f - i); }; })();
+const midA = new Ridge(sinePts(-900, COURSE.greatX + 1400, 12, (x) => smoothG(x) - 6.0 + 4.0 * Math.sin(x * 0.0183 + 1.1) + 2.4 * Math.sin(x * 0.0419 + 0.3) + 1.5 * Math.sin(x * 0.0071)));
+const midB = new Ridge(sinePts(-1100, COURSE.greatX + 1800, 20, (x) => smoothG(x) * 0.6 - 7 + 6.0 * Math.sin(x * 0.0087 + 2.0) + 3.5 * Math.sin(x * 0.0231 + 0.7)));
+function sinePts(x0, x1, step, f) { const p = []; for (let x = x0; x <= x1; x += step) p.push({ x, y: f(x) }); return p; }
+
+// ---------------------------------------------------------------- materials
+const commonUniforms = { uTime: { value: 0 } };
+function groundMaterial({ gold, goldHi, brown, deep, band = 3.5, top = true, fogScale = 1, rim = 0.55, grassMix = 0.55, earthMix = 0.7 }) {
+  const u = THREE.UniformsUtils.merge([THREE.UniformsLib.fog]);
+  Object.assign(u, {
+    tGrass: { value: T.grass }, tEarth: { value: T.earth }, uTime: commonUniforms.uTime,
+    cGold: { value: new THREE.Color(gold) }, cGoldHi: { value: new THREE.Color(goldHi) }, cBrown: { value: new THREE.Color(brown) }, cDeep: { value: new THREE.Color(deep) },
+    uBand: { value: band }, uRim: { value: rim }, uDebug: { value: Q.has('dbg') ? 1 : 0 }, uGrassMix: { value: grassMix }, uEarthMix: { value: earthMix },
+  });
+  return new THREE.ShaderMaterial({
+    uniforms: u, fog: true,
+    vertexShader: /* glsl */`
+      attribute float aSurf; attribute float aKind;
+      varying vec3 vW; varying float vSurf; varying float vKind;
+      #include <fog_pars_vertex>
+      void main() {
+        vec4 w = modelMatrix * vec4(position, 1.0);
+        vW = w.xyz; vSurf = aSurf; vKind = aKind;
+        vec4 mvPosition = viewMatrix * w;
+        gl_Position = projectionMatrix * mvPosition;
+        #include <fog_vertex>
+      }`,
+    fragmentShader: /* glsl */`
+      uniform sampler2D tGrass; uniform sampler2D tEarth; uniform float uTime;
+      uniform vec3 cGold; uniform vec3 cGoldHi; uniform vec3 cBrown; uniform vec3 cDeep;
+      uniform float uBand; uniform float uRim; uniform float uGrassMix; uniform float uEarthMix; uniform float uDebug;
+      varying vec3 vW; varying float vSurf; varying float vKind;
+      #include <fog_pars_fragment>
+      void main() {
+        float d = vSurf - vW.y;
+        vec3 gTop = texture2D(tGrass, vec2(vW.x * 0.035, vW.z * 0.07)).rgb;
+        vec3 gFront = texture2D(tGrass, vec2(vW.x * 0.028 - vW.y * 0.008, vW.y * 0.05)).rgb;
+        vec3 e = texture2D(tEarth, vec2(vW.x * 0.018, vW.y * 0.03)).rgb;
+        float n = texture2D(tEarth, vec2(vW.x * 0.0061, vW.y * 0.006 + 0.31)).r;
+        float n2 = texture2D(tGrass, vec2(vW.x * 0.011 + vW.y * 0.004, vW.y * 0.017)).g;
+        float jag = (n - 0.08) * 4.0 + (n2 - 0.4) * 1.2 + sin(vW.x * 0.21 + vW.y * 0.3) * 0.2;
+        float band = smoothstep(uBand * 0.35, uBand * 1.0, d + jag);
+        vec3 goldC = mix(cGold, gFront, uGrassMix);
+        vec3 earthC = mix(cBrown, e, uEarthMix);
+        vec3 front = mix(goldC, earthC, band);
+        front = mix(front, cDeep, smoothstep(uBand * 1.6, uBand * 5.5, d + jag * 0.5));
+        float sheen = 0.5 + 0.5 * sin(vW.x * 0.11 - uTime * 1.7 + vW.z * 0.2);
+        vec3 top = mix(cGold, gTop, uGrassMix) * (0.94 + 0.12 * sheen);
+        vec3 col = vKind < 0.5 ? top : front;
+        col = mix(col, cGoldHi, (1.0 - smoothstep(0.0, 0.9, d)) * step(0.5, vKind) * uRim);
+        gl_FragColor = vec4(col, 1.0);
+        #include <fog_fragment>
+        if (uDebug > 0.5) gl_FragColor = vec4(vKind, fract(d / 5.0), step(0.5, fract(vW.z / 4.0)), 1.0);
+      }`,
+  });
+}
+
+// ridge geometry: top strip + rounded lip + front face (with per-vertex surface height)
+function ridgeGeometry(ridge, x0, x1, step, { zBack = -10, zFront = 3, depth = 80, top = true } = {}) {
+  const cols = Math.ceil((x1 - x0) / step) + 1;
+  const prof = top
+    ? [[zBack, 0, 0], [zFront - 0.6, 0, 0], [zFront - 0.05, -0.3, 1], [zFront + 0.25, -1.1, 1], [zFront + 0.35, -depth, 1]]
+    : [[zFront, 0.0, 1], [zFront, -depth, 1]];
+  const P = prof.length;
+  const pos = new Float32Array(cols * P * 3), surf = new Float32Array(cols * P), kind = new Float32Array(cols * P);
+  for (let c = 0; c < cols; c++) {
+    const x = x0 + c * step, h = ridge.h(x);
+    for (let k = 0; k < P; k++) {
+      const i = c * P + k; pos[i * 3] = x; pos[i * 3 + 1] = h + prof[k][1]; pos[i * 3 + 2] = prof[k][0];
+      surf[i] = h; kind[i] = prof[k][2];
+    }
+  }
+  const idx = [];
+  for (let c = 0; c < cols - 1; c++) for (let k = 0; k < P - 1; k++) {
+    const a = c * P + k, b = (c + 1) * P + k, a2 = a + 1, b2 = b + 1;
+    idx.push(a, a2, b, b, a2, b2);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  g.setAttribute('aSurf', new THREE.BufferAttribute(surf, 1));
+  g.setAttribute('aKind', new THREE.BufferAttribute(kind, 1));
+  g.setIndex(idx); g.computeBoundingSphere();
+  return g;
+}
+
+// plain sprite plane with bottom-centre pivot
+const spriteMats = new Map();
+function spriteMat(tex, { fog = true, opacity = 1, color = 0xffffff, unique = false, depthWrite = false, alphaTest = 0.0 } = {}) {
+  const key = tex.uuid + fog + opacity + color + depthWrite + alphaTest;
+  if (!unique && spriteMats.has(key)) return spriteMats.get(key);
+  const m = new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite, fog, opacity, color, alphaTest });
+  if (!unique) spriteMats.set(key, m);
+  return m;
+}
+const unitPlane = new THREE.PlaneGeometry(1, 1).translate(0, 0.5, 0);
+function sprite(tex, x, y, z, height, opts = {}) {
+  if (!tex) return null;
+  const aspect = tex.image.width / tex.image.height;
+  const m = new THREE.Mesh(unitPlane, opts.material || spriteMat(tex, opts));
+  m.scale.set(height * aspect * (opts.flip ? -1 : 1), height, 1);
+  m.position.set(x, y, z);
+  if (opts.order !== undefined) m.renderOrder = opts.order;
+  scene.add(m); return m;
+}
+
+// ---------------------------------------------------------------- instanced leaves (atlas 4x4)
+function leafMaterial() {
+  const u = THREE.UniformsUtils.merge([THREE.UniformsLib.fog]);
+  u.map = { value: T.leaves }; u.uGrid = { value: new THREE.Vector2(4, 4) };
+  return new THREE.ShaderMaterial({
+    uniforms: u, fog: true, side: THREE.DoubleSide,
+    vertexShader: /* glsl */`
+      attribute vec3 iPos; attribute vec3 iRot; attribute vec4 iData;
+      uniform vec2 uGrid;
+      varying vec2 vUv; varying float vAlpha; varying float vShade;
+      #include <fog_pars_vertex>
+      mat3 rotXYZ(vec3 r) {
+        float cx = cos(r.x), sx = sin(r.x), cy = cos(r.y), sy = sin(r.y), cz = cos(r.z), sz = sin(r.z);
+        mat3 X = mat3(1.0,0.0,0.0, 0.0,cx,sx, 0.0,-sx,cx);
+        mat3 Y = mat3(cy,0.0,-sy, 0.0,1.0,0.0, sy,0.0,cy);
+        mat3 Z = mat3(cz,sz,0.0, -sz,cz,0.0, 0.0,0.0,1.0);
+        return Z * Y * X;
+      }
+      void main() {
+        mat3 R = rotXYZ(iRot);
+        vec3 p = iPos + R * (position * iData.x);
+        vec3 n = R * vec3(0.0, 0.0, 1.0);
+        vShade = (0.6 + 0.4 * abs(n.z)) * iData.w;
+        float t = iData.y; float cx = mod(t, uGrid.x); float cy = floor(t / uGrid.x + 0.001);
+        vUv = vec2((uv.x + cx) / uGrid.x, (uv.y + (uGrid.y - 1.0 - cy)) / uGrid.y);
+        vAlpha = iData.z;
+        vec4 mvPosition = viewMatrix * vec4(p, 1.0);
+        gl_Position = projectionMatrix * mvPosition;
+        #include <fog_vertex>
+      }`,
+    fragmentShader: /* glsl */`
+      uniform sampler2D map; varying vec2 vUv; varying float vAlpha; varying float vShade;
+      #include <fog_pars_fragment>
+      float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+      void main() {
+        vec4 c = texture2D(map, vUv);
+        if (c.a < 0.5) discard;
+        if (vAlpha < 0.999 && hash(gl_FragCoord.xy) > vAlpha) discard;
+        gl_FragColor = vec4(c.rgb * vShade, 1.0);
+        #include <fog_fragment>
+      }`,
+  });
+}
+class LeafBatch {
+  constructor(n, mat) {
+    this.n = n;
+    const base = new THREE.PlaneGeometry(1, 1);
+    const g = new THREE.InstancedBufferGeometry();
+    g.index = base.index; g.setAttribute('position', base.attributes.position); g.setAttribute('uv', base.attributes.uv);
+    this.pos = new Float32Array(n * 3); this.rot = new Float32Array(n * 3); this.data = new Float32Array(n * 4);
+    this.aPos = new THREE.InstancedBufferAttribute(this.pos, 3).setUsage(THREE.DynamicDrawUsage);
+    this.aRot = new THREE.InstancedBufferAttribute(this.rot, 3).setUsage(THREE.DynamicDrawUsage);
+    this.aData = new THREE.InstancedBufferAttribute(this.data, 4).setUsage(THREE.DynamicDrawUsage);
+    g.setAttribute('iPos', this.aPos); g.setAttribute('iRot', this.aRot); g.setAttribute('iData', this.aData);
+    g.instanceCount = n;
+    this.mesh = new THREE.Mesh(g, mat); this.mesh.frustumCulled = false;
+    scene.add(this.mesh);
+  }
+  set(i, p, r, scale, tile, alpha = 1, bright = 1) {
+    const j = i * 3, k = i * 4;
+    this.pos[j] = p.x; this.pos[j + 1] = p.y; this.pos[j + 2] = p.z;
+    this.rot[j] = r.x; this.rot[j + 1] = r.y; this.rot[j + 2] = r.z;
+    this.data[k] = scale; this.data[k + 1] = tile; this.data[k + 2] = alpha; this.data[k + 3] = bright;
+  }
+  hide(i) { this.data[i * 4] = 0; }
+  flush() { this.aPos.needsUpdate = this.aRot.needsUpdate = this.aData.needsUpdate = true; }
+}
+
+// generic additive / alpha sprite batch for strokes & glows (camera-facing in XY plane)
+function fxMaterial(tex, additive = true) {
+  const u = THREE.UniformsUtils.merge([THREE.UniformsLib.fog]); u.map = { value: tex };
+  return new THREE.ShaderMaterial({
+    uniforms: u, fog: false, transparent: true, depthWrite: false,
+    blending: additive ? THREE.AdditiveBlending : THREE.NormalBlending,
+    vertexShader: /* glsl */`
+      attribute vec3 iPos; attribute vec4 iData; attribute vec3 iCol;
+      varying vec2 vUv; varying float vA; varying vec3 vC;
+      void main() {
+        float c = cos(iData.z), s = sin(iData.z);
+        vec2 q = vec2(position.x * iData.x, position.y * iData.y);
+        q = vec2(c * q.x - s * q.y, s * q.x + c * q.y);
+        vUv = uv; vA = iData.w; vC = iCol;
+        gl_Position = projectionMatrix * viewMatrix * vec4(iPos + vec3(q, 0.0), 1.0);
+      }`,
+    fragmentShader: /* glsl */`
+      uniform sampler2D map; varying vec2 vUv; varying float vA; varying vec3 vC;
+      void main() { vec4 t = texture2D(map, vUv); gl_FragColor = vec4(t.rgb * vC, t.a * vA); if (gl_FragColor.a < 0.003) discard; }`,
+  });
+}
+class FxBatch {
+  constructor(n, tex, additive = true) {
+    this.n = n; const base = new THREE.PlaneGeometry(1, 1);
+    const g = new THREE.InstancedBufferGeometry(); g.index = base.index; g.setAttribute('position', base.attributes.position); g.setAttribute('uv', base.attributes.uv);
+    this.pos = new Float32Array(n * 3); this.data = new Float32Array(n * 4); this.col = new Float32Array(n * 3).fill(1);
+    this.aPos = new THREE.InstancedBufferAttribute(this.pos, 3).setUsage(THREE.DynamicDrawUsage);
+    this.aData = new THREE.InstancedBufferAttribute(this.data, 4).setUsage(THREE.DynamicDrawUsage);
+    this.aCol = new THREE.InstancedBufferAttribute(this.col, 3).setUsage(THREE.DynamicDrawUsage);
+    g.setAttribute('iPos', this.aPos); g.setAttribute('iData', this.aData); g.setAttribute('iCol', this.aCol); g.instanceCount = n;
+    this.mesh = new THREE.Mesh(g, fxMaterial(tex, additive)); this.mesh.frustumCulled = false; this.mesh.renderOrder = 20; scene.add(this.mesh);
+  }
+  set(i, x, y, z, w, h, rot, a, r = 1, g = 1, b = 1) {
+    const j = i * 3, k = i * 4; this.pos[j] = x; this.pos[j + 1] = y; this.pos[j + 2] = z;
+    this.data[k] = w; this.data[k + 1] = h; this.data[k + 2] = rot; this.data[k + 3] = a;
+    this.col[j] = r; this.col[j + 1] = g; this.col[j + 2] = b;
+  }
+  hide(i) { this.data[i * 4 + 3] = 0; this.data[i * 4] = 0; }
+  flush() { this.aPos.needsUpdate = this.aData.needsUpdate = this.aCol.needsUpdate = true; }
+}
+
+// ---------------------------------------------------------------- game state
+const S = {
+  state: 'loading', time: 0, playTime: 0,
+  leaves: 0, trees: 0, delivered: 0,
+  input: { hold: false, dive: false, pressedAt: -1, justPressed: false },
+  shake: 0, flash: 0, slowmo: 1, combo: 0, comboT: 0,
+  progress: 0, ended: false, endT: 0,
+};
+
+// ================================================================ WORLD BUILD
+let world = null;
+function buildWorld() {
+  world = {};
+  // --- screen layers (sky + far hills) attached to the camera
+  const skyMat = new THREE.MeshBasicMaterial({ map: T.sky, fog: false, depthWrite: false });
+  const sky = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), skyMat); sky.renderOrder = -100; sky.frustumCulled = false;
+  camera.add(sky); world.sky = sky;
+  if (T.far) {
+    const farMat = new THREE.MeshBasicMaterial({ map: T.far, fog: false, transparent: true, depthWrite: false, color: new THREE.Color('#fbf3e3') });
+    const far = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), farMat); far.renderOrder = -90; far.frustumCulled = false;
+    camera.add(far); world.far = far;
+  }
+  layoutScreenLayers();
+
+  // --- ridges
+  const X0 = -600, X1 = COURSE.greatX + 700;
+  const gMat = groundMaterial({ gold: '#e9b545', goldHi: '#fde7a0', brown: '#6c3f1e', deep: '#2c1c11', band: 2.8, rim: 0.65 });
+  const gGeo = ridgeGeometry(ground, X0, X1, 0.5, { zBack: -14, zFront: 3, depth: 90, top: true });
+  world.ground = new THREE.Mesh(gGeo, gMat); scene.add(world.ground);
+
+  const aMat = groundMaterial({ gold: '#e8b850', goldHi: '#f8e0a0', brown: '#c98c45', deep: '#a8743c', band: 9, rim: 0.35, grassMix: 0.45, earthMix: 0.35 });
+  world.midA = new THREE.Mesh(ridgeGeometry(midA, -800, X1 + 400, 1.5, { zFront: -55, depth: 120, top: false }), aMat); scene.add(world.midA);
+  const bMat = groundMaterial({ gold: '#e6c27a', goldHi: '#f2dfae', brown: '#d2ab70', deep: '#c49c66', band: 14, rim: 0.2, grassMix: 0.3, earthMix: 0.25 });
+  world.midB = new THREE.Mesh(ridgeGeometry(midB, -1000, X1 + 800, 3, { zFront: -150, depth: 160, top: false }), bMat); scene.add(world.midB);
+
+  // --- decorative sprites
+  const trees = [T.tree1, T.tree2, T.tree3].filter(Boolean);
+  const bushes = [T.bushGold, T.bushAmber, T.bushOrange].filter(Boolean);
+  // far ridge B: big tree masses
+  for (let x = -800; x < X1 + 600; x += rnd(45, 110)) {
+    const t = trees[Math.floor(rnd(0, trees.length))]; const z = -152 + rnd(-6, 4);
+    sprite(t, x, midB.h(x) - 1.5, z, rnd(16, 30), { flip: rnd() < 0.5 });
+  }
+  // mid ridge A: tree clusters + bushes
+  for (let x = -700; x < X1 + 300; x += rnd(22, 70)) {
+    const t = trees[Math.floor(rnd(0, trees.length))]; const z = -57 + rnd(-5, 3);
+    sprite(t, x, midA.h(x) - 1.0, z, rnd(9, 17), { flip: rnd() < 0.5 });
+    if (rnd() < 0.5) { const b = bushes[Math.floor(rnd(0, bushes.length))]; sprite(b, x + rnd(6, 16), midA.h(x + 10) - 0.6, z + 3, rnd(2.5, 4.5)); }
+  }
+  // behind the track: bushes, birch clusters, tufts
+  for (let x = -300; x < X1; x += rnd(9, 26)) {
+    const r = rnd();
+    if (r < 0.16 && trees.length) sprite(T.tree2 || trees[0], x, ground.h(x) - 0.6, rnd(-13, -9), rnd(8, 12), { flip: rnd() < 0.5 });
+    else if (r < 0.62 && bushes.length) sprite(bushes[Math.floor(rnd(0, bushes.length))], x, ground.h(x) - 0.4, rnd(-9, -4), rnd(1.8, 3.6), { flip: rnd() < 0.5 });
+    else if (T.grassA) sprite(rnd() < 0.5 ? T.grassA : T.grassB, x, ground.h(x) - 0.15, rnd(-5, -1.5), rnd(1.2, 2.2));
+  }
+  // in front of the track: some bushes / tufts on the lip (layering like the video)
+  for (let x = -200; x < X1; x += rnd(14, 40)) {
+    const r = rnd();
+    if (r < 0.45 && T.grassA) sprite(rnd() < 0.5 ? T.grassA : T.grassB, x, ground.h(x) - 0.5, rnd(3.6, 5.5), rnd(1.0, 1.9));
+    else if (r < 0.7 && bushes.length) sprite(bushes[Math.floor(rnd(0, bushes.length))], x, ground.h(x) - 1.6, rnd(5, 7), rnd(1.6, 2.6));
+  }
+  // giant golden tree masses rising behind the near hills (the cumulus-sized trees of the video)
+  for (let x = -40; x < X1; x += rnd(120, 230)) {
+    const z = rnd(-72, -60), base = midA.h(x) - 1.6;
+    sprite(T.tree1 || trees[0], x, base, z, rnd(23, 31), { flip: rnd() < 0.5 });
+    sprite(T.tree3 || trees[0], x + rnd(11, 19), midA.h(x + 15) - 1.4, z + 1.5, rnd(16, 23), { flip: rnd() < 0.5 });
+    if (rnd() < 0.6) sprite(T.tree1 || trees[0], x - rnd(10, 16), midA.h(x - 13) - 1.4, z + 1, rnd(14, 19), { flip: rnd() < 0.5 });
+  }
+
+  // --- rocks (3D, collidable) on the gameplay ridge
+  world.rocks = [];
+  const rockSrc = [GLB.rockA].filter(Boolean);
+  const R = mulberry(99);
+  for (let i = 0; i < COURSE.crests.length; i++) {
+    const cx = COURSE.crests[i];
+    if (cx < 160 || cx > COURSE.plateauStart - 40) continue;
+    const p = cx / CFG.END; if (R() > 0.32 + 0.35 * p) continue;
+    const x = cx - lerp(6, 16, R());                     // on the upslope just before a crest
+    const size = lerp(1.5, 2.4, R());
+    world.rocks.push(makeRock(rockSrc, x, size, 0.4, true));
+  }
+  // decorative rocks behind / in front
+  for (let x = -100; x < X1; x += rnd(60, 160)) world.rocks.push(makeRock(rockSrc, x, rnd(2.5, 5), rnd(-12, -6), false));
+
+  // --- sleeping trees to awaken
+  world.trees = [];
+  const span = (COURSE.plateauStart - 220) / CFG.N_TREES;
+  for (let i = 0; i < CFG.N_TREES; i++) {
+    const target = 210 + i * span;
+    let best = COURSE.crests[0];
+    for (const c of COURSE.crests) if (Math.abs(c - target) < Math.abs(best - target)) best = c;
+    const x = best + 4;
+    const y = ground.h(x) - 0.5, z = -6.5, hgt = 10.5;
+    const g = new THREE.Group(); g.position.set(x, y, z); scene.add(g);
+    const bare = makeTreePlane(T.bare, hgt); const bloom = makeTreePlane(T.bloom, hgt);
+    bloom.material.opacity = 0; g.add(bare); g.add(bloom);
+    world.trees.push({ i, x, y, z, g, bare, bloom, state: 0, t: 0 });
+  }
+  // --- the great tree
+  {
+    const x = COURSE.greatX, y = ground.h(x) - 1.5, z = -14, hgt = 46;
+    const g = new THREE.Group(); g.position.set(x, y, z); scene.add(g);
+    const bare = makeTreePlane(T.greatBare || T.bare, hgt); const bloom = makeTreePlane(T.greatBloom || T.bloom, hgt);
+    bloom.material.opacity = 0; g.add(bare); g.add(bloom);
+    world.great = { x, y, z, g, bare, bloom, t: 0 };
+  }
+
+  // --- leaves
+  const lm = leafMaterial();
+  world.swarmBatch = new LeafBatch(440, lm);
+  world.fxBatch = new LeafBatch(520, lm);
+  world.ambBatch = new LeafBatch(300, lm);
+  world.pickBatch = new LeafBatch(700, lm);
+  world.carpetBatch = new LeafBatch(1300, lm);
+  world.glow = T.glow ? new FxBatch(700, T.glow, true) : null;
+  world.sparkB = T.sparkle ? new FxBatch(80, T.sparkle, true) : null;
+  world.swirlB = T.swirl ? new FxBatch(24, T.swirl, true) : null;
+  const strokes = [T.stroke1, T.stroke2, T.stroke3].filter(Boolean);
+  world.strokeBatches = strokes.map(t => new FxBatch(40, t, true));
+
+  buildPickupsAndGusts();
+  buildPlayer();
+  world.swarm = new Swarm(world.swarmBatch);
+  world.fx = new FxLeaves(world.fxBatch);
+  world.amb = new Ambient(world.ambBatch);
+  world.wind = new WindStrokes(world.strokeBatches);
+  world.carpet = new Carpet(world.carpetBatch);
+  buildFraming();
+}
+
+function makeTreePlane(tex, hgt) {
+  const aspect = tex ? tex.image.width / tex.image.height : 0.75;
+  const m = new THREE.Mesh(unitPlane, new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, fog: true }));
+  m.scale.set(hgt * aspect, hgt, 1); m.renderOrder = 2; return m;
+}
+
+function makeRock(src, x, size, z, solid) {
+  if (!src.length) return { x, w: 0, top: -1e9, solid: false };
+  const g = src[Math.floor(rnd(0, src.length))].scene.clone(true);
+  const box = new THREE.Box3().setFromObject(g); const s = box.getSize(V3());
+  const k = size / Math.max(s.x, s.y, s.z);
+  g.scale.set(k * rnd(0.95, 1.5), k * rnd(0.62, 1.0), k * rnd(0.85, 1.2)); g.rotation.y = rnd(0, TAU);
+  const box2 = new THREE.Box3().setFromObject(g); const c = box2.getCenter(V3());
+  const y = ground.h(x);
+  g.position.set(x - c.x, y - box2.min.y - size * 0.18, z - c.z);
+  g.traverse((o) => { if (o.isMesh) { o.material = new THREE.MeshLambertMaterial({ map: o.material.map, color: new THREE.Color(solid ? '#e6e0cc' : '#efe6cf'), emissive: new THREE.Color('#3a3328'), emissiveIntensity: 0.6 }); } });
+  scene.add(g);
+  const b = new THREE.Box3().setFromObject(g);
+  return { x, w: (b.max.x - b.min.x) * 0.42, top: b.max.y - 0.25, solid, g, hit: false };
+}
+
+// ---------------------------------------------------------------- pickups & gusts
+function buildPickupsAndGusts() {
+  world.picks = []; world.gusts = [];
+  const R = mulberry(7);
+  const crests = COURSE.crests.filter(c => c > 40 && c < COURSE.plateauStart - 30);
+  for (let ci = 0; ci < crests.length; ci++) {
+    const cx = crests[ci];
+    const p = cx / CFG.END;
+    const kind = R();
+    if (kind < 0.62) {
+      // an arc that follows a typical leap from the crest
+      const speed = lerp(17, 25, R()) * (1 + 0.15 * p), vy0 = CFG.JUMP * lerp(0.75, 1.05, R());
+      let x = cx - 1, y = ground.h(cx) + 1.0, vx = speed, vy = vy0;
+      const n = 8 + Math.floor(R() * 6);
+      for (let k = 0; k < n * 3; k++) {
+        const dt = 0.035; x += vx * dt; vy -= CFG.G * 0.55 * dt; y += vy * dt;
+        if (k % 3 === 0) { if (y < ground.h(x) + 0.9) break; addPick(x, y, 0); }
+      }
+    } else if (kind < 0.8) {
+      // a low ribbon along the ground on the downslope
+      const n = 6 + Math.floor(R() * 5);
+      for (let k = 0; k < n; k++) { const x = cx + 4 + k * 2.2; addPick(x, ground.h(x) + 0.9 + Math.sin(k * 0.7) * 0.25, 0); }
+    } else {
+      // a high floating spiral over the next valley (glide to reach it)
+      const nx = cx + 26 + R() * 12; const top = ground.h(cx) + 7 + R() * 5;
+      for (let k = 0; k < 10; k++) { const a = k * 0.62; addPick(nx + k * 1.6, top + Math.sin(a) * 1.6, Math.cos(a) * 1.2); }
+    }
+    // gusts: a swirl of wind on some valleys
+    if (R() < 0.2 + 0.12 * p && ci > 1) {
+      const vx = (cx + (crests[ci + 1] || cx + 60)) * 0.5;
+      world.gusts.push({ x: vx, y: ground.h(vx) + 4.2, r: 3.6, used: false, t: R() * 10 });
+    }
+  }
+  // a few lone leaves drifting everywhere
+  for (let x = 30; x < COURSE.plateauStart; x += 14 + R() * 26) addPick(x, ground.h(x) + 1.6 + R() * 5, 0);
+  function addPick(x, y, z) { world.picks.push({ x, y, z, taken: false, ph: R() * TAU, tile: Math.floor(R() * 16), t: 0 }); }
+}
+
+// ---------------------------------------------------------------- trail of the child (for the swarm)
+class Trail {
+  constructor(n = 360, step = 1 / 60) { this.n = n; this.step = step; this.x = new Float32Array(n); this.y = new Float32Array(n); this.z = new Float32Array(n); this.head = 0; this.acc = 0; this.filled = 0; }
+  reset(p) { for (let i = 0; i < this.n; i++) { this.x[i] = p.x; this.y[i] = p.y; this.z[i] = p.z; } this.filled = this.n; }
+  push(p, dt) {
+    this.acc += dt;
+    while (this.acc >= this.step) { this.acc -= this.step; this.head = (this.head + 1) % this.n; this.x[this.head] = p.x; this.y[this.head] = p.y; this.z[this.head] = p.z; }
+  }
+  at(delay, out) {
+    const k = clamp(delay / this.step, 0, this.n - 2); const i0 = Math.floor(k), f = k - i0;
+    const a = (this.head - i0 + this.n) % this.n, b = (a - 1 + this.n) % this.n;
+    out.set(lerp(this.x[a], this.x[b], f), lerp(this.y[a], this.y[b], f), lerp(this.z[a], this.z[b], f));
+    return out;
+  }
+}
+
+// ---------------------------------------------------------------- swarm of leaves following the child
+class Swarm {
+  constructor(batch) { this.b = batch; this.items = []; this.tmp = V3(); this.cp = V3(); this.cr = V3(); }
+  get count() { return this.items.length; }
+  add(from, vel) {
+    if (this.items.length >= this.b.n / 2) return;
+    this.items.push({
+      p: from.clone(), v: vel ? vel.clone() : V3(rnd(-2, 2), rnd(0, 3), rnd(-1, 1)),
+      delay: Math.pow(rnd(), 1.35) * 0.64 + 0.04, rad: rnd(0.4, 1.5), ph: rnd(0, TAU), om: rnd(1.2, 3.4) * (rnd() < 0.5 ? -1 : 1),
+      zo: rnd(-1.3, 1.3), yo: rnd(-0.4, 0.5), r: V3(rnd(0, TAU), rnd(0, TAU), rnd(0, TAU)), rv: V3(rnd(-7, 7), rnd(-5, 5), rnd(-6, 6)),
+      tile: Math.floor(rnd(0, 16)), s: rnd(0.36, 0.62), age: 0,
+    });
+  }
+  // remove the leaves at the tail of the swarm and return them (positions/velocities) for effects
+  take(n) {
+    const out = [];
+    this.items.sort((a, b) => a.delay - b.delay);
+    for (let k = 0; k < n && this.items.length; k++) out.push(this.items.pop());
+    return out;
+  }
+  update(dt, t, trail, player) {
+    const gl = player.glide, tmp = this.tmp;
+    for (let i = 0; i < this.items.length; i++) {
+      const L = this.items[i]; L.age += dt;
+      const d = L.delay * (gl ? 0.35 : 1);
+      trail.at(d, tmp);
+      const ang = L.ph + t * L.om * (gl ? 1.8 : 1);
+      const r = L.rad * (0.6 + 1.6 * d) * (gl ? 0.8 : 1);
+      let tx, ty;
+      if (gl) {
+        // gliding: the leaves gather into a flat whirling cushion just under her feet (she surfs on them)
+        tx = tmp.x + Math.cos(ang) * r * 1.0 - 0.35;
+        ty = tmp.y + 0.5 + Math.sin(ang) * r * 0.32 - 0.25 * Math.abs(Math.cos(ang));
+      } else {
+        // running: the older part of the trail is lifted by the wind, so the swarm streams behind and above her
+        tx = tmp.x + Math.cos(ang) * r * 0.55;
+        ty = tmp.y + 1.0 + L.yo + d * 1.7 + Math.sin(ang) * r * 0.75;
+      }
+      let tz = tmp.z + L.zo * (0.6 + d * 0.5) + Math.cos(ang * 0.7) * r * 0.5;
+      // damped spring towards the trail point; the damping is relative to the child's own velocity, so a fast
+      // run does not leave the swarm lagging metres behind: the stream starts at her and trails back, as in the video
+      const k = gl ? 34 : 18, c = 2 * Math.sqrt(k) * 0.72;
+      L.v.x += ((tx - L.p.x) * k - (L.v.x - player.vx) * c) * dt;
+      L.v.y += ((ty - L.p.y) * k - (L.v.y - player.vy * 0.6) * c) * dt;
+      L.v.z += ((tz - L.p.z) * k - L.v.z * c) * dt;
+      L.p.addScaledVector(L.v, dt);
+      const spin = 1 + player.speed * 0.04;
+      L.r.x += L.rv.x * dt * spin; L.r.y += L.rv.y * dt * spin; L.r.z += L.rv.z * dt;
+      const grow = Math.min(1, L.age * 5);
+      this.b.set(2 * i, L.p, L.r, L.s * grow, L.tile, 1, 1.02);
+      // each leaf carries a smaller companion fluttering around it: the swarm reads as dense as in the video
+      const a2 = L.ph * 1.7 + t * L.om * 1.35 + Math.PI, rr = 0.35 + 0.25 * Math.sin(L.ph * 3.1);
+      this.cp.set(L.p.x + Math.cos(a2) * rr * 1.3, L.p.y + Math.sin(a2) * rr, L.p.z + Math.sin(a2 * 0.7) * 0.5);
+      this.cr.set(L.r.x + 1.7, L.r.y - 0.9, L.r.z + 2.1);
+      this.b.set(2 * i + 1, this.cp, this.cr, L.s * 0.78 * grow, (L.tile + 7) % 16, 1, 0.97);
+    }
+    for (let i = 2 * this.items.length; i < this.b.n; i++) this.b.hide(i);
+    this.b.flush();
+  }
+}
+
+// ---------------------------------------------------------------- free leaves (bursts, drift, homing)
+class FxLeaves {
+  constructor(batch) { this.b = batch; this.items = []; }
+  spawn(p, v, o = {}) {
+    if (this.items.length >= this.b.n) this.items.shift();
+    this.items.push({ p: p.clone(), v: v.clone(), r: V3(rnd(0, TAU), rnd(0, TAU), rnd(0, TAU)), rv: V3(rnd(-8, 8), rnd(-6, 6), rnd(-8, 8)),
+      tile: o.tile ?? Math.floor(rnd(0, 16)), s: o.s ?? rnd(0.35, 0.6), life: o.life ?? rnd(1.6, 3.2), max: 0, grav: o.grav ?? 2.2, drag: o.drag ?? 1.2,
+      home: o.home || null, homeK: o.homeK ?? 0, onArrive: o.onArrive || null, bright: o.bright ?? 1 });
+    this.items[this.items.length - 1].max = this.items[this.items.length - 1].life;
+  }
+  burst(p, n, speed = 8, o = {}) { for (let i = 0; i < n; i++) { const a = rnd(0, TAU), e = rnd(-0.6, 1.2); this.spawn(p, V3(Math.cos(a) * speed * rnd(0.3, 1), Math.sin(e) * speed * rnd(0.4, 1.2) + 2, Math.sin(a) * speed * 0.6), o); } }
+  update(dt, wind) {
+    for (let i = this.items.length - 1; i >= 0; i--) {
+      const L = this.items[i]; L.life -= dt;
+      if (L.home) {
+        const to = L.home.clone().sub(L.p); const dist = to.length();
+        L.homeK = Math.min(1, L.homeK + dt * 0.9);
+        L.v.lerp(to.multiplyScalar(Math.min(6, 2.5 + 8 / Math.max(dist, 0.5))), L.homeK * 0.12);
+        if (dist < 0.8) { L.life = 0; if (L.onArrive) L.onArrive(L); }
+      } else {
+        L.v.x += (wind - L.v.x) * L.drag * dt * 0.6; L.v.y += (-L.grav - L.v.y * 0.6) * dt; L.v.z *= 1 - dt * 0.5;
+        L.v.y += Math.sin(S.time * 3 + L.r.x) * 1.5 * dt;
+      }
+      L.p.addScaledVector(L.v, dt);
+      L.r.x += L.rv.x * dt; L.r.y += L.rv.y * dt; L.r.z += L.rv.z * dt;
+      if (L.life <= 0) { this.items.splice(i, 1); continue; }
+    }
+    for (let i = 0; i < this.b.n; i++) {
+      const L = this.items[i];
+      if (!L) { this.b.hide(i); continue; }
+      this.b.set(i, L.p, L.r, L.s, L.tile, clamp(L.life / Math.min(0.8, L.max), 0, 1), L.bright);
+    }
+    this.b.flush();
+  }
+}
+
+// ---------------------------------------------------------------- ambient wind-blown leaves
+class Ambient {
+  constructor(b) { this.b = b; this.items = []; for (let i = 0; i < b.n; i++) this.items.push(this.make(true)); }
+  make(any, cx = 0, cy = 0) {
+    return { p: V3(cx + rnd(-70, 70), cy + rnd(-28, 30), rnd(-40, 16)), v: rnd(5, 13), ph: rnd(0, TAU), f: rnd(0.6, 1.8), r: V3(rnd(0, TAU), rnd(0, TAU), rnd(0, TAU)),
+      rv: V3(rnd(-5, 5), rnd(-4, 4), rnd(-5, 5)), tile: Math.floor(rnd(0, 16)), s: rnd(0.3, 0.58) };
+  }
+  update(dt, cam, gust) {
+    const cx = cam.x, cy = cam.y;
+    for (let i = 0; i < this.items.length; i++) {
+      const L = this.items[i];
+      L.p.x += (L.v * (1 + gust)) * dt;
+      L.p.y += (Math.sin(S.time * L.f + L.ph) * 1.1 - 0.5) * dt;
+      L.r.x += L.rv.x * dt * (1 + gust); L.r.y += L.rv.y * dt; L.r.z += L.rv.z * dt;
+      if (L.p.x > cx + 75) { L.p.x -= 150; L.p.y = cy + rnd(-28, 30); }
+      if (L.p.x < cx - 75) { L.p.x += 150; L.p.y = cy + rnd(-28, 30); }
+      if (L.p.y < cy - 32) L.p.y += 62; if (L.p.y > cy + 34) L.p.y -= 62;
+      this.b.set(i, L.p, L.r, L.s, L.tile, 1, 0.97);
+    }
+    this.b.flush();
+  }
+}
+
+// ---------------------------------------------------------------- carpet of fallen leaves on the golden hills
+// (the video's hilltops are strewn with orange leaves, drifting into the hollows; the child kicks them up)
+class Carpet {
+  constructor(b) { this.b = b; this.items = []; this.tmp = V3(); this.pt = V3(); for (let i = 0; i < b.n; i++) { const L = {}; this.place(L, rnd(-70, 110)); this.items.push(L); } }
+  reset(camX) { for (const L of this.items) this.place(L, camX + rnd(-70, 125)); }
+  place(L, x) {
+    for (let k = 0; k < 6; k++) {                          // more leaves gather in the hollows
+      const hollow = clamp((smoothG(x) - ground.h(x)) / 5 + 0.3, 0.12, 1);
+      if (rnd() < hollow) break; x += rnd(-7, 7);
+    }
+    const tilt = rnd(0.5, 1.15);
+    L.x = x; L.z = 2.15 - Math.pow(rnd(), 0.75) * 12.5;    // denser towards the front lip, where the child runs
+    L.s = rnd(0.22, 0.4); L.tile = Math.floor(rnd(0, 16)); L.sh = rnd(0.78, 1.0);
+    L.r = V3(-Math.PI / 2 + tilt * (rnd() < 0.5 ? 1 : -1), rnd(0, TAU), rnd(-0.25, 0.25));
+    L.y = ground.h(x) + 0.5 * L.s * Math.sin(tilt) * 0.85 + 0.02;
+    return L;
+  }
+  update(dt, camX) {
+    const kick = S.state === 'play' && P.grounded && P.speed > 7;
+    for (let i = 0; i < this.items.length; i++) {
+      const L = this.items[i];
+      if (L.x < camX - 75) this.place(L, camX + rnd(95, 125));
+      else if (L.x > camX + 135) this.place(L, camX - rnd(60, 70));
+      if (kick && Math.abs(L.x - P.x) < 0.75 && L.z > -1.6) {    // kicked up by the running child
+        this.tmp.set(L.x, L.y + 0.1, L.z);
+        world.fx.spawn(this.tmp, V3(rnd(-2, 3) + P.speed * 0.12, rnd(2.5, 6.5), rnd(-1.5, 1.5)), { tile: L.tile, s: L.s, life: rnd(0.9, 1.8), grav: 3.2 });
+        this.place(L, camX + rnd(95, 125));
+      }
+      this.b.set(i, this.pt.set(L.x, L.y, L.z), L.r, L.s, L.tile, 1, L.sh);
+    }
+    this.b.flush();
+  }
+}
+
+// ---------------------------------------------------------------- brush-stroke wind streaks
+class WindStrokes {
+  constructor(batches) { this.bs = batches; this.items = []; }
+  spawn(x, y, z, len, life, a = 0.5, vx = 24) { if (!this.bs.length) return; this.items.push({ x, y, z, len, life, max: life, a, vx, b: Math.floor(rnd(0, this.bs.length)), rot: rnd(-0.12, 0.12) }); if (this.items.length > 36 * this.bs.length) this.items.shift(); }
+  update(dt) {
+    const counts = this.bs.map(() => 0);
+    for (let i = this.items.length - 1; i >= 0; i--) { const s = this.items[i]; s.life -= dt; s.x += s.vx * dt; if (s.life <= 0) this.items.splice(i, 1); }
+    for (const s of this.items) {
+      const B = this.bs[s.b]; const k = counts[s.b]++; if (k >= B.n) continue;
+      const u = 1 - s.life / s.max; const a = Math.sin(Math.PI * u) * s.a;
+      B.set(k, s.x, s.y, s.z, s.len, s.len * 0.085, s.rot, a, 1, 0.95, 0.86);
+    }
+    this.bs.forEach((B, j) => { for (let k = counts[j]; k < B.n; k++) B.hide(k); B.flush(); });
+  }
+}
+
+// ================================================================ PLAYER
+let P = null;
+function buildPlayer() {
+  P = { x: 0, y: ground.h(0), vx: 0, vy: 0, speed: 0, grounded: true, glide: false, dive: false, coyote: 0, airT: 0, stumble: 0, inv: 0,
+        face: V3(), trail: new Trail(), anim: 'idle', model: null, mixer: null, actions: {}, pitch: 0, roll: 0, lastLand: 0 };
+  const root = new THREE.Group(); scene.add(root); P.root = root;
+  if (GLB.child) {
+    const m = GLB.child.scene; m.scale.setScalar(CFG.CHILD_SCALE);
+    const ramp = new THREE.DataTexture(new Uint8Array([120, 120, 120, 255, 200, 200, 200, 255, 255, 255, 255, 255]), 3, 1);
+    ramp.minFilter = ramp.magFilter = THREE.NearestFilter; ramp.needsUpdate = true;
+    m.traverse((o) => {
+      if (o.isMesh || o.isSkinnedMesh) {
+        o.material = new THREE.MeshToonMaterial({ map: o.material.map, gradientMap: ramp, color: new THREE.Color('#ffffff') });
+        o.frustumCulled = false;
+      }
+      if (o.isBone && o.name === 'neck') P.neck = o;
+      if (o.isBone && o.name === 'Hips') P.hips = o;
+    });
+    const pivot = new THREE.Group(); pivot.add(m); root.add(pivot); P.pivot = pivot; P.model = m;
+    m.rotation.y = Math.PI / 2 - 0.32;
+    P.mixer = new THREE.AnimationMixer(m);
+    for (const clip of GLB.child.animations) {
+      // keep the animation in place: freeze Hips x/z translation (keep the vertical bob)
+      const c = clip.clone();
+      for (const tr of c.tracks) {
+        if (tr.name === 'Hips.position') {
+          const v = tr.values; const x0 = v[0], z0 = v[2];
+          for (let i = 0; i < v.length; i += 3) { v[i] = x0; v[i + 2] = z0; if (/leap|fall|jump|slide/.test(c.name)) v[i + 1] = lerp(v[i + 1], v[1], 0.6); }
+        }
+      }
+      const a = P.mixer.clipAction(c); a.enabled = true; a.setEffectiveWeight(0); a.play();
+      P.actions[c.name] = a;
+    }
+    setAnim('idle', 0);
+  }
+  // scarf ribbon
+  P.scarf = new Scarf(T.scarf);
+}
+
+function setAnim(name, fade = 0.25, time = null, timeScale = 1) {
+  if (!P.mixer || !P.actions[name]) return;
+  const a = P.actions[name];
+  if (P.anim === name) { if (time !== null) a.time = time; a.timeScale = timeScale; return; }
+  const prev = P.actions[P.anim];
+  a.reset(); a.enabled = true; a.setEffectiveTimeScale(timeScale); a.setEffectiveWeight(1); if (time !== null) a.time = time;
+  a.play();
+  if (prev && fade > 0) prev.crossFadeTo(a, fade, false); else if (prev) prev.setEffectiveWeight(0);
+  P.anim = name;
+}
+
+class Scarf {
+  constructor(tex) {
+    this.n = 16; this.len = 2.15; this.seg = this.len / (this.n - 1);   // a broad cape-like flap, as in the video
+    this.p = []; for (let i = 0; i < this.n; i++) this.p.push(V3(-i * this.seg, 1.4, -0.12));
+    const pos = new Float32Array(this.n * 2 * 3), uv = new Float32Array(this.n * 2 * 2), idx = [];
+    for (let i = 0; i < this.n; i++) { const u = i / (this.n - 1); uv[i * 4] = u; uv[i * 4 + 1] = 0; uv[i * 4 + 2] = u; uv[i * 4 + 3] = 1; }
+    for (let i = 0; i < this.n - 1; i++) { const a = i * 2; idx.push(a, a + 1, a + 2, a + 2, a + 1, a + 3); }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3).setUsage(THREE.DynamicDrawUsage)); g.setAttribute('uv', new THREE.BufferAttribute(uv, 2)); g.setIndex(idx);
+    const mat = tex ? new THREE.MeshBasicMaterial({ map: tex, side: THREE.DoubleSide, transparent: true, alphaTest: 0.35, depthWrite: true, fog: true })
+                    : new THREE.MeshBasicMaterial({ color: '#d9532a', side: THREE.DoubleSide, fog: true });
+    this.mesh = new THREE.Mesh(g, mat); this.mesh.frustumCulled = false; scene.add(this.mesh);
+    this.dir = V3(); this.wind = V3(); this.d = []; for (let i = 0; i < this.n; i++) this.d.push(V3(-1, 0, 0));
+  }
+  reset(anchor) { for (let i = 0; i < this.n; i++) this.p[i].set(anchor.x - i * this.seg, anchor.y - i * 0.02, anchor.z); }
+  update(dt, anchor, vel, t) {
+    const n = this.n;
+    // relative wind: the scarf streams away from the motion, lifted a little by the autumn wind
+    this.wind.set(-(vel.x + 7), -vel.y * 0.55 + 1.2, 0).normalize();
+    this.p[0].copy(anchor);
+    for (let i = 1; i < n; i++) {
+      const prev = this.p[i - 1], cur = this.p[i];
+      this.dir.subVectors(cur, prev); this.dir.z = 0;
+      if (this.dir.lengthSq() < 1e-8) this.dir.copy(this.wind);
+      this.dir.normalize().lerp(this.wind, clamp(dt * (3 + i * 0.35), 0, 1)).normalize();
+      cur.copy(prev).addScaledVector(this.dir, this.seg); cur.z = anchor.z;
+      this.d[i].copy(this.dir);
+    }
+    this.d[0].copy(this.d[1]);
+    const pos = this.mesh.geometry.attributes.position.array;
+    const amp = 0.08 + clamp(Math.abs(vel.x) / 70, 0, 0.11);
+    for (let i = 0; i < n; i++) {
+      const u = i / (n - 1), dir = this.d[i];
+      const px = -dir.y, py = dir.x;                                   // perpendicular in the picture plane
+      const wave = Math.sin(t * 10 - i * 0.7) * amp * Math.pow(u, 0.8) + Math.sin(t * 19 - i * 1.4) * 0.035 * u;
+      const cx = this.p[i].x + px * wave, cy = this.p[i].y + py * wave;
+      const w = (0.29 - 0.17 * u) * (0.78 + 0.22 * Math.abs(Math.cos(t * 6.5 - i * 0.45)));
+      pos[i * 6] = cx + px * w; pos[i * 6 + 1] = cy + py * w; pos[i * 6 + 2] = this.p[i].z;
+      pos[i * 6 + 3] = cx - px * w; pos[i * 6 + 4] = cy - py * w; pos[i * 6 + 5] = this.p[i].z;
+    }
+    this.mesh.geometry.attributes.position.needsUpdate = true;
+  }
+}
+
+function resetRun() {
+  const x0 = isFinite(DBG.x) ? DBG.x : 0;
+  Object.assign(P, { x: x0, y: ground.h(x0), vx: 0, vy: 0, speed: 0, grounded: true, glide: false, dive: false, coyote: 0, airT: 0, stumble: 0, inv: 0, pitch: 0, roll: 0 });
+  S.leaves = 0; S.trees = 0; S.delivered = 0; S.playTime = 0; S.ended = false; S.endT = 0; S.combo = 0;
+  for (const p of world.picks) p.taken = false;
+  for (const g of world.gusts) g.used = false;
+  for (const r of world.rocks) r.hit = false;
+  for (const t of world.trees) { t.state = t.x < x0 ? -2 : 0; t.t = 0; t.burst = false; t.bloom.material.opacity = 0; t.bare.material.opacity = 1; t.g.scale.setScalar(1); }
+  world.great.burst = false; world.great.acc = 0;
+  world.great.t = 0; world.great.bloom.material.opacity = 0; world.great.bare.material.opacity = 1;
+  world.swarm.items.length = 0; world.fx.items.length = 0;
+  P.trail.reset(V3(P.x, P.y, 0));
+  const startLeaves = DBG.leaves || 10;
+  for (let i = 0; i < startLeaves; i++) { world.swarm.add(V3(P.x - rnd(0, 2), P.y + rnd(0.5, 2), rnd(-1, 1))); }
+  S.leaves = world.swarm.count;
+  buildTreeHud(); world.trees.forEach(t => { if (t.state === -2) markTreeHud(t.i, false); });
+  P.scarf.reset(V3(P.x, P.y + 1.5, 0));
+  setAnim('idle', 0);
+  CAM.lookX = P.x + 2.5; CAM.lookY = P.y + 1.5; CAM.dist = 22;
+  if (world.carpet) world.carpet.reset(P.x);
+}
+
+// ---------------------------------------------------------------- physics step
+function stepPlayer(dt) {
+  const G = CFG.G; const inp = S.input;
+  P.inv = Math.max(0, P.inv - dt); P.stumble = Math.max(0, P.stumble - dt);
+  const playing = S.state === 'play';
+  const wantGlide = playing && inp.hold && !P.grounded && P.airT > 0.12;
+  const wantDive = playing && inp.dive;
+  P.dive = wantDive;
+  // jump on press (with coyote time and a short input buffer)
+  if (inp.justPressed) inp.buffer = 0.16; else inp.buffer = Math.max(0, (inp.buffer || 0) - dt);
+  if (playing && inp.buffer > 0 && (P.grounded || P.coyote > 0) && P.stumble <= 0) {
+    inp.buffer = 0;
+    const sl = ground.d1(P.x); const nlen = Math.hypot(sl, 1);
+    let vx = P.grounded ? P.speed / nlen : P.vx, vy = P.grounded ? P.speed * sl / nlen : P.vy;
+    vy = Math.max(vy, 0) + CFG.JUMP; vx += 1.5;
+    P.vx = vx; P.vy = vy; P.grounded = false; P.coyote = 0; P.airT = 0;
+    sfx('jump', 0.32, rnd(0.92, 1.08));
+    world.fx.burst(V3(P.x, P.y + 0.2, 0.3), 5, 4, { s: 0.3, life: 1.2 });
+  }
+  inp.justPressed = false;
+
+  if (P.grounded) {
+    const sl = ground.d1(P.x), cth = 1 / Math.hypot(1, sl), sth = sl * cth;
+    let acc = -G * sth * (sl < 0 ? (P.dive ? 1.75 : 1) : 0.78) + CFG.WIND_ACC - 0.0045 * P.speed * P.speed;
+    if (P.dive && sl > 0) acc -= 2;                   // pressing on an upslope costs speed (Tiny-Wings logic)
+    if (!playing) acc = 0;
+    P.speed = clamp(P.speed + acc * dt, playing ? CFG.MIN_SPEED : 0, CFG.MAX_SPEED);
+    if (P.stumble > 0) P.speed = Math.min(P.speed, 9);
+    const dx = P.speed * cth * dt;
+    const nx = P.x + dx;
+    // launch test: does the ground fall away faster than gravity can hold us?
+    const k2 = ground.d2(nx), s1 = ground.d1(nx);
+    const kappa = -k2 / Math.pow(1 + s1 * s1, 1.5);
+    const gEff = G * (P.dive ? CFG.DIVE_G : 1);
+    if (playing && kappa > 0 && P.speed * P.speed * kappa > gEff * cth * 1.02 && P.speed > 14) {
+      const c2 = 1 / Math.hypot(1, s1);
+      P.vx = P.speed * c2; P.vy = P.speed * s1 * c2; P.grounded = false; P.airT = 0; P.coyote = 0.12;
+    } else {
+      P.x = nx; P.y = ground.h(P.x);
+      P.vx = P.speed * cth; P.vy = P.speed * sth;
+    }
+    P.coyote = P.grounded ? 0.12 : P.coyote;
+  } else {
+    P.airT += dt; P.coyote = Math.max(0, P.coyote - dt);
+    let g = G;
+    P.glide = false;
+    if (wantGlide) {
+      if (S.leaves > 0) { g = G * CFG.GLIDE_G; P.glide = true; drainGlide(dt); }
+      else g = G * 0.62;
+    }
+    if (P.dive) g = G * CFG.DIVE_G;
+    P.vy -= g * dt;
+    if (P.glide) { P.vy = Math.max(P.vy, CFG.GLIDE_TERM); P.vx += (Math.max(P.vx, 16) - P.vx) * dt * 0.6; }
+    P.vx += (12 - P.vx) * 0.03 * dt;                  // the wind keeps pushing
+    P.vx = clamp(P.vx, 7, CFG.MAX_SPEED);
+    P.x += P.vx * dt; P.y += P.vy * dt;
+    const h = ground.h(P.x);
+    if (P.y <= h) land(h);
+  }
+  P.speed = P.grounded ? P.speed : Math.hypot(P.vx, P.vy);
+  // rocks
+  if (playing && P.inv <= 0) for (const r of world.rocks) {
+    if (!r.solid || r.hit) continue;
+    if (Math.abs(P.x - r.x) < r.w && P.y < r.top) { hitRock(r); break; }
+  }
+}
+
+function land(h) {
+  const sl = ground.d1(P.x); const n = Math.hypot(1, sl);
+  const tx = 1 / n, ty = sl / n;
+  const vT = P.vx * tx + P.vy * ty; const vlen = Math.hypot(P.vx, P.vy) || 1;
+  const align = vT / vlen;
+  P.y = h; P.grounded = true; P.glide = false;
+  let s = Math.max(vT, CFG.MIN_SPEED);
+  const t = S.time;
+  if (P.airT > 0.35) {
+    if (align > 0.95 && sl < 0) {                      // smooth landing on a downslope: reward
+      s = Math.min(CFG.MAX_SPEED, s * 1.12 + 2);
+      world.fx.burst(V3(P.x, h + 0.3, 0.2), 10, 6, { s: 0.32, life: 1.4 });
+      sfx('land', 0.9, 1.15); sfx('chime', 0.18, 1.5); sparkle(V3(P.x, h + 0.8, 0.3));
+      S.flash = Math.max(S.flash, 0.05);
+    } else if (align < 0.75) {                         // hard landing against a slope
+      s *= 0.74; S.shake = Math.max(S.shake, 0.3);
+      world.fx.burst(V3(P.x, h + 0.2, 0.2), 8, 5, { s: 0.3, life: 1.1, grav: 4 });
+      sfx('land', 1.0, 0.8);
+    } else sfx('land', 0.8, 1);
+  }
+  P.speed = s; P.airT = 0; P.lastLand = t;
+}
+
+function hitRock(r) {
+  r.hit = true; P.inv = 1.2; P.stumble = 0.7; S.shake = 0.7; S.slowmo = 0.45;
+  const lose = Math.min(world.swarm.count, Math.max(3, Math.ceil(world.swarm.count * 0.28)));
+  const taken = world.swarm.take(lose); S.leaves = world.swarm.count;
+  for (const L of taken) world.fx.spawn(L.p, V3(rnd(-4, 7), rnd(3, 10), rnd(-4, 4)), { tile: L.tile, s: L.s, life: rnd(1.8, 3), grav: 3 });
+  if (P.grounded) { P.speed *= 0.4; P.vx = P.speed; P.vy = 7; P.grounded = false; P.airT = 0; } else { P.vx *= 0.5; P.vy = Math.max(P.vy, 5); }
+  sfx('stumble', 0.7, 1);
+  pulseLeafHud(true);
+}
+
+let glideAcc = 0;
+function drainGlide(dt) {
+  glideAcc += CFG.GLIDE_COST * dt;
+  while (glideAcc >= 1 && world.swarm.count > 0) {
+    glideAcc -= 1;
+    const [L] = world.swarm.take(1);
+    if (L) world.fx.spawn(L.p, V3(rnd(-6, -2), rnd(-1, 2), rnd(-1.5, 1.5)), { tile: L.tile, s: L.s, life: rnd(1.4, 2.4), grav: 1.5 });
+    S.leaves = world.swarm.count; pulseLeafHud(false);
+  }
+}
+
+// ---------------------------------------------------------------- game interactions
+function updatePickups(dt) {
+  const b = world.pickBatch, gb = world.glow; let gi = 0;
+  const px = P.x, py = P.y + 0.9;
+  const camX = camera.position.x;
+  let i = 0;
+  const tmpR = V3();
+  for (const p of world.picks) {
+    if (p.taken || Math.abs(p.x - camX) > 85) continue;
+    if (i >= b.n) break;
+    p.t += dt;
+    const bob = Math.sin(S.time * 2.2 + p.ph) * 0.25;
+    const pos = V3(p.x, p.y + bob, p.z);
+    if (S.state === 'play' && Math.abs(px - p.x) < 1.5 && Math.abs(py - pos.y) < 1.6) {
+      p.taken = true; collectLeaf(pos, p.tile); continue;
+    }
+    tmpR.set(Math.sin(S.time * 1.3 + p.ph) * 0.8, S.time * 1.7 + p.ph, Math.sin(S.time * 0.9 + p.ph) * 0.5);
+    b.set(i, pos, tmpR, 0.72, p.tile, 1, 1.18);
+    if (gb && gi < gb.n) { gb.set(gi, p.x, pos.y, p.z - 0.05, 1.05, 1.05, 0, 0.1 + 0.04 * Math.sin(S.time * 3 + p.ph), 1.0, 0.66, 0.3); gi++; }
+    i++;
+  }
+  for (; i < b.n; i++) b.hide(i);
+  b.flush();
+  if (gb) { world.glowUsed = gi; }
+}
+
+function collectLeaf(pos, tile) {
+  for (let k = 0; k < 2; k++) if (world.swarm.count < CFG.MAX_LEAVES) world.swarm.add(pos, V3(rnd(-3, 3), rnd(1, 4), rnd(-1, 1)));
+  S.leaves = world.swarm.count;
+  S.combo = S.comboT > 0 ? S.combo + 1 : 0; S.comboT = 1.2;
+  sfx('chime', 0.32, Math.pow(2, Math.min(S.combo, 12) / 12) * rnd(0.98, 1.02));
+  pulseLeafHud(false);
+  if (world.glow) sparkle(pos);
+}
+const sparks = [];
+function sparkle(pos) { sparks.push({ x: pos.x, y: pos.y, z: pos.z + 0.1, t: 0 }); if (sparks.length > 40) sparks.shift(); }
+
+function updateGusts(dt) {
+  let si = 0; const SB = world.swirlB;
+  for (const g of world.gusts) {
+    g.t += dt;
+    if (Math.abs(g.x - camera.position.x) > 80) continue;
+    if (SB && si < SB.n - 1) {
+      const a = g.used ? Math.max(0, 0.5 - (g.t - g.usedT) * 0.8) : 0.42 + 0.08 * Math.sin(g.t * 3);
+      const sz = g.r * 2.3 * (g.used ? 1 + (g.t - g.usedT) * 1.5 : 1 + 0.04 * Math.sin(g.t * 2.3));
+      SB.set(si++, g.x, g.y, 0.4, sz, sz, -g.t * 2.4, a, 1, 0.95, 0.85);
+      SB.set(si++, g.x, g.y, 0.3, sz * 0.62, sz * 0.62, -g.t * 3.6 + 1.3, a * 0.8, 1, 0.9, 0.75);
+    }
+    // ambient look: stroke swirls around the gust centre
+    if (Math.random() < dt * 6) {
+      const a = rnd(0, TAU); world.wind.spawn(g.x + Math.cos(a) * g.r - 2, g.y + Math.sin(a) * g.r * 0.6, 0.5, rnd(2.5, 4.5), rnd(0.5, 0.9), 0.55, 14);
+    }
+    if (!g.used && S.state === 'play' && Math.hypot(P.x - g.x, (P.y + 0.8) - g.y) < g.r) {
+      g.used = true; g.usedT = g.t;
+      P.grounded = false; P.airT = 0.2; P.vx = Math.min(CFG.MAX_SPEED, Math.max(P.vx, P.speed) + 9); P.vy = Math.max(P.vy, 15);
+      for (let k = 0; k < 10; k++) collectLeafSilent(V3(g.x + rnd(-2, 2), g.y + rnd(-2, 2), rnd(-1, 1)));
+      for (let k = 0; k < 14; k++) world.wind.spawn(P.x + rnd(-6, 2), P.y + rnd(-1, 4), rnd(-1, 2), rnd(4, 7), rnd(0.4, 0.8), 0.8, 30);
+      world.fx.burst(V3(g.x, g.y, 0), 18, 10, { s: 0.35, life: 1.6 });
+      sfx('gust', 0.6, 1); S.shake = Math.max(S.shake, 0.25); S.flash = 0.06;
+    }
+  }
+  if (SB) { for (let i = si; i < SB.n; i++) SB.hide(i); SB.flush(); }
+}
+function collectLeafSilent(pos) { if (world.swarm.count < CFG.MAX_LEAVES) world.swarm.add(pos); S.leaves = world.swarm.count; pulseLeafHud(false); }
+
+function updateTrees(dt) {
+  for (const t of world.trees) {
+    if (t.state === 0 && S.state === 'play' && P.x > t.x - 7) {
+      if (world.swarm.count >= CFG.TREE_COST) {
+        t.state = 1; t.t = 0; S.trees++;
+        const gift = world.swarm.take(CFG.TREE_COST); S.leaves = world.swarm.count;
+        const canopy = V3(t.x, t.y + 7.2, t.z + 0.5);
+        gift.forEach((L, k) => world.fx.spawn(L.p, V3(rnd(-2, 4), rnd(4, 9), rnd(-2, 2)), { tile: L.tile, s: L.s, life: 4, home: canopy.clone().add(V3(rnd(-2.5, 2.5), rnd(-1.5, 1.5), 0)), homeK: 0, grav: 0 }));
+        setTimeout(() => { sfx('bloom', 0.55, rnd(0.97, 1.03)); }, 350);
+        markTreeHud(t.i, true);
+      } else if (P.x > t.x + 2) { t.state = -1; markTreeHud(t.i, false); }
+    }
+    if (t.state === 1) {
+      t.t += dt;
+      const u = clamp((t.t - 0.55) / 1.1, 0, 1);
+      t.bloom.material.opacity = smooth(u); t.bare.material.opacity = 1 - smooth(u) * 0.95;
+      const pop = u > 0 && u < 1 ? 1 + Math.sin(u * Math.PI) * 0.08 : 1;
+      t.g.scale.setScalar(pop);
+      if (t.t > 0.6 && !t.burst) { t.burst = true; world.fx.burst(V3(t.x, t.y + 7, t.z + 1), 40, 9, { s: 0.42, life: 2.6, grav: 1.6, bright: 1.1 }); S.flash = 0.08; }
+    }
+    if (t.state === 0 && t.burst) t.burst = false;
+  }
+}
+
+// ---------------------------------------------------------------- the ending
+function updateEnding(dt) {
+  const gT = world.great;
+  if (S.state === 'play' && P.x > gT.x - 34) {
+    S.state = 'ending'; S.endT = 0; S.input.hold = false;
+    sfx('finale', 0.8, 1); fadeMusic(0.35, 3);
+  }
+  if (S.state !== 'ending' && S.state !== 'end') return;
+  S.endT += dt;
+  // the child slows and stops in front of the great tree
+  const stopX = gT.x - 10;
+  if (P.grounded) {
+    P.speed = Math.max(Math.min(P.speed, 2 + Math.max(0, stopX - P.x) * 1.2), 0);   // stepPlayer integrates the position
+    if (P.x >= stopX) P.speed = 0;
+  }
+  // release the swarm, a few leaves at a time, spiralling into the crown
+  if (S.endT > 1.4 && world.swarm.count > 0) {
+    gT.acc = (gT.acc || 0) + dt * Math.max(14, world.swarm.count * 0.9);
+    while (gT.acc >= 1 && world.swarm.count > 0) {
+      gT.acc -= 1;
+      const [L] = world.swarm.take(1); S.leaves = world.swarm.count; S.delivered++;
+      const crown = V3(gT.x + rnd(-11, 11), gT.y + 30 + rnd(-6, 8), gT.z + 1);
+      world.fx.spawn(L.p, V3(rnd(-3, 3), rnd(8, 14), rnd(-2, 2)), { tile: L.tile, s: L.s, life: 6, home: crown, grav: 0, bright: 1.1 });
+    }
+  }
+  const total = Math.max(1, S.delivered + S.trees * 9);
+  const want = clamp(total / 130, 0.3, 1);
+  if (S.endT > 2.2) { gT.t = Math.min(want, gT.t + dt * 0.18); gT.bloom.material.opacity = smooth(gT.t); gT.bare.material.opacity = 1 - smooth(gT.t) * 0.9; }
+  if (S.endT > 3 && !gT.burst) { gT.burst = true; world.fx.burst(V3(gT.x, gT.y + 28, gT.z + 2), 120, 16, { s: 0.5, life: 4, grav: 1.4, bright: 1.15 }); S.flash = 0.25; }
+  if (S.endT > 7.5 && S.state === 'ending') showEnd();
+}
+
+// ================================================================ CAMERA
+const CAM = { x: 0, y: 8, dist: 34, yaw: 0, lookX: 0, lookY: 0, shakeT: 0 };
+function updateCamera(dt) {
+  const air = Math.max(0, P.y - ground.h(P.x));
+  let lead = clamp(P.vx * 0.3, 0, 8), dist = clamp(22 + P.speed * 0.12 + air * 0.55, 22, 38);
+  let ty = P.y + 1.5 - Math.min(air, 18) * 0.4;
+  if (S.state === 'title') { lead = 2.5; dist = 19 + Math.sin(S.time * 0.15) * 1.5; ty = P.y + 2.6; }
+  if (S.state === 'ending' || S.state === 'end') { const u = smooth(clamp(S.endT / 6, 0, 1)); lead = lerp(lead, (world.great.x - P.x) * 0.55, u); dist = lerp(dist, 70, u); ty = lerp(ty, P.y + 16, u); }
+  CAM.lookX = damp(CAM.lookX, P.x + lead, 3.2, dt);
+  CAM.lookY = damp(CAM.lookY, ty, P.grounded ? 3.0 : 2.0, dt);
+  const portrait = camera.aspect < 1.3 ? Math.sqrt(1.3 / camera.aspect) : 1;   // see further ahead on narrow screens
+  CAM.dist = damp(CAM.dist, dist * DBG.zoom * portrait, 1.4, dt);
+  CAM.yaw = 0.11 * Math.sin(S.time * 0.071) + 0.05 * Math.sin(S.time * 0.031 + 1.0);
+  const pitch = 0.012 + 0.012 * Math.sin(S.time * 0.05);
+  camera.position.set(CAM.lookX + Math.sin(CAM.yaw) * CAM.dist - 1.2, CAM.lookY + Math.sin(pitch) * CAM.dist, Math.cos(CAM.yaw) * CAM.dist);
+  camera.lookAt(CAM.lookX, CAM.lookY + 1.6, 0);
+  camera.rotateZ(0.012 * Math.sin(S.time * 0.11));
+  if (S.shake > 0) { S.shake = Math.max(0, S.shake - dt * 1.8); const s = S.shake * S.shake * 0.6; camera.position.x += rnd(-s, s); camera.position.y += rnd(-s, s); }
+  // screen layers
+  if (world.sky) {
+    world.sky.material.map.offset.x = CAM.lookX * 0.00009 + CAM.yaw * 0.06;
+    world.sky.material.map.offset.y = clamp(0.05 - (CAM.lookY - 6) * 0.0012, 0, 0.1);
+  }
+  if (world.far) {
+    world.far.material.map.offset.x = CAM.lookX * 0.00042 + CAM.yaw * 0.12;
+    const camY = camera.position.y, refTop = smoothG(CAM.lookX) + 5.5;
+    world.far.position.y = (refTop - camY) / 650 * 1400 - world.farHalfH * 0.92;
+  }
+  // near-camera framing: dark canopy hanging from the top, dark silhouettes along the bottom (as in the video)
+  camera.updateMatrixWorld();
+  if (world.canopy) world.canopy.update(dt);
+  if (world.fgStrip) world.fgStrip.update(dt);
+  updateHole(dt);
+}
+
+// ================================================================ FRAMING LAYERS
+// Both layers live at a fixed distance in front of the camera (they keep their size on screen whatever the zoom),
+// stay fixed in world x (true parallax, they slide faster than the hills) and are pinned to the frame edges in y.
+const FRAME = { Dc: 15, Df: 11 };
+const _ray = new THREE.Vector3();
+function viewHeightAt(d) { return 2 * d * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)); }
+// on narrow (portrait) screens the framing layers shrink so they keep framing instead of filling the view
+function frameScale() { return clamp(camera.aspect / 1.4, 0.55, 1); }
+// where the ray through NDC (nx, ny) meets the plane z = camera.z - d
+function frameAt(d, nx, ny, out) {
+  _ray.set(nx, ny, 0.5).unproject(camera).sub(camera.position);
+  const t = -d / _ray.z; return out.set(camera.position.x + _ray.x * t, camera.position.y + _ray.y * t, camera.position.z - d);
+}
+// where the line camera -> world point p crosses the plane z = camera.z - d
+function throughAt(d, p, out) { const t = d / Math.max(0.01, camera.position.z - p.z); return out.copy(camera.position).lerp(p, t); }
+// low-res copy of a texture's alpha, sampled on the CPU to know when the child is hidden behind a layer
+function alphaMap(tex, w = 256) {
+  const img = tex.image, h = Math.max(1, Math.round(w * img.height / img.width));
+  const c = document.createElement('canvas'); c.width = w; c.height = h;
+  const g = c.getContext('2d', { willReadFrequently: true }); g.drawImage(img, 0, 0, w, h);
+  const d = g.getImageData(0, 0, w, h).data, a = new Uint8Array(w * h);
+  for (let i = 0; i < w * h; i++) a[i] = d[i * 4 + 3];
+  // per column: highest (top) and lowest (bottom) opaque texel, as v (0 = image bottom, 1 = top)
+  const top = new Float32Array(w), bot = new Float32Array(w);
+  for (let x = 0; x < w; x++) {
+    let t = -1, b = -1;
+    for (let y = 0; y < h; y++) if (a[y * w + x] > 110) { if (t < 0) t = y; b = y; }
+    top[x] = t < 0 ? 0 : 1 - t / h; bot[x] = b < 0 ? 1 : 1 - (b + 1) / h;
+  }
+  const col = (u) => Math.min(w - 1, Math.max(0, Math.floor(u * w)));
+  return { w, h, top, bot,
+    at(u, v) { if (!(u >= 0 && u <= 1 && v >= 0 && v <= 1)) return 0; return a[Math.min(h - 1, Math.floor((1 - v) * h)) * w + col(u)] / 255; },
+    // highest top / lowest bottom over the columns u0..u1 (u wraps for tiled textures)
+    maxTop(u0, u1) { let m = 0; for (let u = u0; u <= u1; u += 1 / w) m = Math.max(m, top[col(u - Math.floor(u))]); return m; },
+    minBot(u0, u1) { let m = 1; for (let u = u0; u <= u1; u += 1 / w) m = Math.min(m, bot[col(u - Math.floor(u))]); return m; } };
+}
+
+// soft see-through window around the child, carved in the framing layers only while she is behind them
+const HOLE = { uHole: { value: new THREE.Vector3(-1e4, -1e4, 80) }, uHoleAmt: { value: 0 }, cover: 0 };
+function holeMaterial(mat) {
+  mat.onBeforeCompile = (sh) => {
+    sh.uniforms.uHole = HOLE.uHole; sh.uniforms.uHoleAmt = HOLE.uHoleAmt;
+    sh.fragmentShader = 'uniform vec3 uHole; uniform float uHoleAmt;\n' + sh.fragmentShader.replace('#include <map_fragment>', `#include <map_fragment>
+      { float hd = length((gl_FragCoord.xy - uHole.xy) / uHole.z); diffuseColor.a *= 1.0 - uHoleAmt * 0.92 * (1.0 - smoothstep(0.42, 1.0, hd)); }`);
+  };
+  mat.customProgramCacheKey = () => 'framing-hole';
+  return mat;
+}
+const _bs = new THREE.Vector2();
+function updateHole(dt) {
+  const v = V3(P.x, P.y + 0.85, 0).project(camera); renderer.getDrawingBufferSize(_bs);
+  HOLE.uHole.value.set((v.x * 0.5 + 0.5) * _bs.x, (v.y * 0.5 + 0.5) * _bs.y, _bs.y * 0.13);
+  HOLE.uHoleAmt.value = damp(HOLE.uHoleAmt.value, HOLE.cover > 0.3 && S.state === 'play' ? 1 : 0, 7, dt);
+  HOLE.cover = 0;
+}
+
+class Canopy {
+  constructor() { this.eps = []; this.amaps = new Map(); this.tmp = V3(); this.tmp2 = V3(); this.pt = V3(); }
+  amap(tex) { if (!this.amaps.has(tex)) this.amaps.set(tex, alphaMap(tex)); return this.amaps.get(tex); }
+  // quad with its pivot at the image's top-left corner; it reaches 30% above the image (the clamped, dark top row
+  // is repeated there) so the cut top border never shows even when camera yaw / roll tilt the frame edge.
+  // reps > 1 tiles the texture horizontally (wrapS = repeat).
+  geo(u0, u1) {
+    const g = new THREE.PlaneGeometry(1, 1.3).translate(0.5, -0.35, 0), uv = g.attributes.uv;
+    for (let i = 0; i < uv.count; i++) uv.setXY(i, u0 + uv.getX(i) * (u1 - u0), uv.getY(i) * 1.3);
+    return g;
+  }
+  // a piece of canopy showing the texture columns u0..u1 (u1 - u0 > 1 tiles a wrapS = repeat texture)
+  seg(tex, k, flip, u0 = 0, u1 = 1, order = 40) {
+    const m = new THREE.Mesh(this.geo(u0, u1), holeMaterial(new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, fog: false, side: THREE.DoubleSide })));
+    m.frustumCulled = false; m.renderOrder = order; m.visible = false; scene.add(m);
+    const tw = tex.image.width * k;
+    return { m, amap: this.amap(tex), flip, u0, reps: u1 - u0, tw, w: tw * (u1 - u0), h: tex.image.height * k, dx: 0 };
+  }
+  // the grand arch of the opening shot: mirrored end | arched band | end (the end pieces' trunks reach below the frame)
+  addArch(x0, band, end, opts = {}) {
+    const k = viewHeightAt(FRAME.Dc) * 1.08 / end.image.height;
+    const L = this.seg(end, k, true), B = this.seg(band, k, !!opts.flip, 0, 1, 41), Rr = this.seg(end, k, false);
+    const ov = B.w * 0.075; B.dx = L.w - ov; Rr.dx = B.dx + B.w - ov;
+    return this.push(x0, [L, B, Rr], opts);
+  }
+  // a level ceiling of foliage for the run: rounded end | tiled ceiling | rounded end
+  addCeiling(x0, ceil, end, reps, opts = {}) {
+    const k = viewHeightAt(FRAME.Dc) * (opts.scale || 0.62) / ceil.image.height;
+    // the tiled ceiling is cut on columns where its foliage is shallow enough to be fully covered by the
+    // rounded end pieces (which overlap it), so no straight cut edge of the strip can ever show
+    const ac = this.amap(ceil), ae = this.amap(end);
+    const endDepth = (1 - ae.minBot(0, 0.09)) * end.image.height;                 // px below the top, near the end's cut border
+    const ok = (u) => (1 - ac.minBot(u - 0.012, u + 0.012)) * ceil.image.height < endDepth * 0.92;
+    let u0 = opts.u0 || 0; for (let i = 0; i < 400 && !ok(u0); i++) u0 += 0.0025;
+    let u1 = u0 + reps; for (let i = 0; i < 400 && !ok(u1); i++) u1 += 0.0025;
+    const L = this.seg(end, k, true, 0, 1, 41), C = this.seg(ceil, k, false, u0, u1, 40), Rr = this.seg(end, k, false, 0, 1, 41);
+    const ov = L.w * 0.07; C.dx = L.w - ov * 1.4; Rr.dx = C.dx + C.w - ov * 1.4;
+    return this.push(x0, [L, C, Rr], { ...opts, ceiling: true });
+  }
+  push(x0, segs, opts) { const ep = { x0, segs, w: segs[2].dx + segs[2].w, lift: opts.lift || 0, dyn: 0, ceiling: !!opts.ceiling, only: opts.only || null }; this.eps.push(ep); return ep; }
+  update(dt) {
+    const top = frameAt(FRAME.Dc, 0, 1, this.tmp), z = top.z;
+    const halfW = viewHeightAt(FRAME.Dc) * camera.aspect * 0.5 + 2;
+    const hit = throughAt(FRAME.Dc, this.pt.set(P.x, P.y + 0.9, 0), this.tmp2);
+    const head = throughAt(FRAME.Dc, this.pt.set(P.x, P.y + 2.1, 0), V3());
+    const live = S.state !== 'ending' && S.state !== 'end';
+    const f = frameScale(), portrait = camera.aspect < 1;
+    for (const ep of this.eps) {
+      const ok = !ep.only || (ep.only === 'portrait') === portrait;
+      const on = live && ok && ep.x0 < top.x + halfW + 1 && ep.x0 + ep.w * f > top.x - halfW - 1;
+      if (on && ep.ceiling) {
+        // a ceiling of leaves rises (gently) rather than hide the child: lowest foliage over her head + margin
+        let need = 0;
+        for (const s of ep.segs) {
+          const left = ep.x0 + s.dx * f, y = top.y + 0.35 + ep.lift * f, tw = s.tw * f, h = s.h * f;
+          const u0 = (head.x - 0.7 - left) / tw, u1 = (head.x + 0.7 - left) / tw;
+          if (u1 < 0 || u0 > s.reps) continue;
+          const a = Math.max(0, u0), b = Math.min(s.reps, u1);
+          const vb = s.flip ? s.amap.minBot(1 - (b - Math.floor(b) || 1), 1 - (a - Math.floor(a))) : s.amap.minBot(s.u0 + a, s.u0 + b);
+          need = Math.max(need, head.y + 0.5 - (y - h + vb * h));
+        }
+        ep.dyn = damp(ep.dyn, clamp(need, 0, 2.6), need > ep.dyn ? 5 : 1.5, dt);
+      }
+      let cover = 0;
+      for (const s of ep.segs) {
+        s.m.visible = on; if (!on) continue;
+        const left = ep.x0 + s.dx * f, y = top.y + 0.35 + (ep.lift + ep.dyn) * f, w = s.w * f, h = s.h * f, tw = s.tw * f;
+        s.m.position.set(s.flip ? left + w : left, y, z); s.m.scale.set(s.flip ? -w : w, h, 1);
+        let u = (hit.x - left) / tw; if (u < 0 || u > s.reps) continue;
+        u += s.u0; u -= Math.floor(u); if (s.flip) u = 1 - u;
+        cover = Math.max(cover, s.amap.at(u, (hit.y - (y - h)) / h));
+      }
+      if (on) HOLE.cover = Math.max(HOLE.cover, cover);
+    }
+  }
+}
+
+class FgStrip {
+  constructor(tex) {
+    this.tex = tex; this.amap = alphaMap(tex, 1024);
+    this.h0 = viewHeightAt(FRAME.Df) * 0.42; this.texAspect = tex.image.width / tex.image.height;
+    this.mat = holeMaterial(new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, fog: false }));
+    // the quad spans one strip height below the image too: v < 0 repeats the solid dark bottom row (clamped),
+    // so the band can sink without ever showing its bottom edge
+    this.mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 2), this.mat);
+    tex.repeat.y = 2; tex.offset.y = -1;
+    this.mesh.frustumCulled = false; this.mesh.renderOrder = 45; scene.add(this.mesh);
+    this.sink = 0.16; this.tmp = V3(); this.tmp2 = V3();
+  }
+  update(dt) {
+    this.h = this.h0 * frameScale(); this.tileW = this.h * this.texAspect;
+    const bot = frameAt(FRAME.Df, 0, -1, this.tmp);
+    const w = viewHeightAt(FRAME.Df) * camera.aspect * 1.5;
+    // the band breathes slowly (more or less of it shows), and sinks away for the finale
+    let want = 0.13 + 0.15 * (0.5 + 0.5 * Math.sin(bot.x * 0.0105 + 0.6)) + 0.05 * Math.sin(bot.x * 0.031);
+    // never cover the child: the band ducks under her feet when she runs low in the frame
+    const feet = throughAt(FRAME.Df, this.tmp2.set(P.x, P.y - 0.1, 0), V3());
+    const uc = feet.x / this.tileW, du = 1.1 / this.tileW;
+    const need = (bot.y + this.amap.maxTop(uc - du, uc + du) * this.h - (feet.y - 0.12)) / this.h;
+    const ducking = S.state === 'play' || S.state === 'title';
+    if (ducking) want = Math.max(want, Math.min(0.92, need));
+    if (S.state === 'ending' || S.state === 'end') want = 0.62;
+    this.sink = damp(this.sink, want, want > this.sink ? 4 : 1.2, dt);
+    const yb = bot.y - this.h * this.sink;
+    this.mesh.position.set(bot.x, yb, bot.z); this.mesh.scale.set(w, this.h, 1);   // quad spans yb-h .. yb+h, image bottom row at yb
+    const off = (bot.x - w / 2) / this.tileW;
+    this.tex.repeat.x = w / this.tileW; this.tex.offset.x = off - Math.floor(off);
+    const hit = throughAt(FRAME.Df, V3(P.x, P.y + 0.6, 0), this.tmp2);
+    const u = hit.x / this.tileW, cover = this.amap.at(u - Math.floor(u), (hit.y - yb) / this.h);
+    HOLE.cover = Math.max(HOLE.cover, cover);
+  }
+}
+function buildFraming() {
+  const C = world.canopy = new Canopy();
+  if (T.canopyBand && T.canopyEnd) C.addArch(-53, T.canopyBand, T.canopyEnd, { lift: 0.4, only: 'landscape' });   // the opening shot, like the video
+  if (T.ceiling && T.ceilingEnd) C.addCeiling(-16, T.ceiling, T.ceilingEnd, 2, { lift: 0, scale: 0.5, only: 'portrait' });
+  if (T.ceiling && T.ceilingEnd) {
+    const R = mulberry(31);
+    for (let x = 150; x < COURSE.plateauStart - 220; x += lerp(110, 260, R())) {
+      const ep = C.addCeiling(x, T.ceiling, T.ceilingEnd, 1 + Math.floor(R() * 3), { lift: lerp(0, 0.6, R()), scale: lerp(0.4, 0.5, R()) });
+      x += ep.w;
+    }
+  }
+  if (T.fgStrip) world.fgStrip = new FgStrip(T.fgStrip);
+}
+
+function layoutScreenLayers() {
+  const d = 1500, h = 2 * d * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 1.16, w = h * camera.aspect * 1.06;
+  world.sky.position.set(0, 0, -d); world.sky.scale.set(w, h, 1);
+  const img = T.sky.image; const imgAspect = img.width / img.height;
+  T.sky.repeat.set((w / h) / imgAspect, 0.9);
+  if (world.far) {
+    const df = 1400, hf = 2 * df * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)), wf = hf * camera.aspect * 1.2;
+    const fi = T.far.image; const fAspect = fi.width / fi.height; const rep = 0.42;
+    T.far.repeat.set(rep, 1);
+    const ph = wf / (fAspect * rep);
+    world.far.scale.set(wf, ph, 1);
+    world.farHalfH = ph * 0.5; world.farBaseY = 0;
+    world.far.position.set(0, 0, -df);
+  }
+}
+
+// ================================================================ POST
+let composer = null, gradePass = null, bloomPass = null;
+function buildPost() {
+  const size = renderer.getDrawingBufferSize(new THREE.Vector2());
+  const rt = new THREE.WebGLRenderTarget(size.x, size.y, { type: THREE.HalfFloatType, samples: 4 });
+  composer = new EffectComposer(renderer, rt);
+  composer.addPass(new RenderPass(scene, camera));
+  bloomPass = new UnrealBloomPass(new THREE.Vector2(size.x / 2, size.y / 2), 0.22, 0.55, 0.92);
+  composer.addPass(bloomPass);
+  gradePass = new ShaderPass({
+    uniforms: { tDiffuse: { value: null }, tPaper: { value: T.paper }, uP: { value: 0 }, uTime: { value: 0 }, uRes: { value: new THREE.Vector2(size.x, size.y) }, uFlash: { value: 0 }, uVig: { value: 1 }, uHasPaper: { value: T.paper ? 1 : 0 } },
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: /* glsl */`
+      uniform sampler2D tDiffuse; uniform sampler2D tPaper; uniform float uP; uniform float uTime; uniform vec2 uRes; uniform float uFlash; uniform float uVig; uniform float uHasPaper;
+      varying vec2 vUv;
+      void main() {
+        vec4 c = texture2D(tDiffuse, vUv);
+        vec3 tA = vec3(1.0, 0.99, 0.965), tB = vec3(1.05, 0.975, 0.875);
+        float noon = smoothstep(0.0, 0.5, uP);
+        c.rgb *= mix(tA, tB, noon);
+        float dusk = smoothstep(0.6, 1.0, uP);
+        float lum = dot(c.rgb, vec3(0.299, 0.587, 0.114));
+        vec3 hi = vec3(1.12, 0.86, 0.66), lo = vec3(0.86, 0.72, 0.92);
+        vec3 split = mix(lo, hi, smoothstep(0.05, 0.75, lum));
+        c.rgb = mix(c.rgb, c.rgb * split, dusk * 0.85);
+        c.rgb += vec3(0.20, 0.07, 0.03) * dusk * smoothstep(0.35, 1.0, vUv.y) * 0.55;
+        if (uHasPaper > 0.5) { vec3 paper = texture2D(tPaper, vUv * uRes / 1100.0).rgb; c.rgb *= mix(vec3(1.0), paper * 1.06, 0.2); }
+        float d = distance(vUv, vec2(0.5, 0.48));
+        c.rgb *= mix(1.0, 0.74, smoothstep(0.38, 0.98, d) * uVig);
+        c.rgb += uFlash * vec3(1.0, 0.86, 0.62);
+        gl_FragColor = c;
+      }`,
+  });
+  composer.addPass(gradePass);
+  composer.addPass(new OutputPass());
+}
+
+// ================================================================ AUDIO
+let AC = null, master = null, musicGain = null, windGain = null, windFilter = null, muted = false;
+const BUF = {};
+async function initAudio() {
+  if (AC) { if (AC.state === 'suspended') AC.resume(); return; }
+  try {
+    AC = new (window.AudioContext || window.webkitAudioContext)();
+    master = AC.createGain(); master.gain.value = 0.9; master.connect(AC.destination);
+    musicGain = AC.createGain(); musicGain.gain.value = 0; musicGain.connect(master);
+    windFilter = AC.createBiquadFilter(); windFilter.type = 'lowpass'; windFilter.frequency.value = 900; windGain = AC.createGain(); windGain.gain.value = 0.0; windFilter.connect(windGain); windGain.connect(master);
+    for (const [k, pr] of Object.entries(SND)) {
+      Promise.resolve(pr).then(async (b) => {
+        if (!b) return;
+        try { BUF[k] = await AC.decodeAudioData(b.slice(0)); } catch (e) { console.warn('audio decode', k); return; }
+        if (k === 'music') { const s = AC.createBufferSource(); s.buffer = BUF.music; s.loop = true; s.loopEnd = Math.min(BUF.music.duration, 146.5); s.connect(musicGain); s.start(); musicGain.gain.setValueAtTime(0, AC.currentTime); musicGain.gain.linearRampToValueAtTime(S.state === 'ending' || S.state === 'end' ? 0.35 : 0.55, AC.currentTime + 4); }
+        if (k === 'wind') { const s = AC.createBufferSource(); s.buffer = BUF.wind; s.loop = true; s.connect(windFilter); s.start(); }
+      });
+    }
+  } catch (e) { console.warn('audio init failed', e); }
+}
+function sfx(name, vol = 0.5, rate = 1) {
+  if (!AC || !BUF[name] || muted) return;
+  const s = AC.createBufferSource(); s.buffer = BUF[name]; s.playbackRate.value = rate;
+  const g = AC.createGain(); g.gain.value = vol; s.connect(g); g.connect(master); s.start();
+}
+function fadeMusic(v, secs) { if (!musicGain) return; musicGain.gain.cancelScheduledValues(AC.currentTime); musicGain.gain.setValueAtTime(musicGain.gain.value, AC.currentTime); musicGain.gain.linearRampToValueAtTime(v, AC.currentTime + secs); }
+function updateAudio() {
+  if (!AC || !windGain) return;
+  const sp = clamp(P.speed / CFG.MAX_SPEED, 0, 1);
+  windGain.gain.setTargetAtTime(muted ? 0 : (S.state === 'title' ? 0.18 : 0.16 + sp * 0.42 + (P.glide ? 0.12 : 0)), AC.currentTime, 0.2);
+  windFilter.frequency.setTargetAtTime(500 + sp * 2400 + (P.glide ? 600 : 0), AC.currentTime, 0.25);
+}
+
+// ================================================================ HUD / UI
+const $ = (id) => document.getElementById(id);
+function buildTreeHud() {
+  const box = $('treebox'); box.innerHTML = '';
+  for (let i = 0; i < CFG.N_TREES; i++) { const im = document.createElement('img'); im.src = 'assets/ui/tree_bare.png'; im.dataset.i = i; box.appendChild(im); }
+}
+function markTreeHud(i, on) {
+  const im = $('treebox').children[i]; if (!im) return;
+  if (on) { im.src = 'assets/ui/tree_bloom.png'; im.classList.add('on'); } else im.classList.add('miss');
+}
+let hudLeaves = -1;
+function pulseLeafHud(bad) { const b = $('leafbox'); b.classList.add('bump'); setTimeout(() => b.classList.remove('bump'), 120); if (bad) { b.classList.add('low'); setTimeout(() => b.classList.remove('low'), 600); } }
+function updateHud() {
+  if (S.leaves !== hudLeaves) { hudLeaves = S.leaves; $('leafcount').textContent = S.leaves; }
+  const next = world.trees.find(t => t.state === 0 && t.x > P.x - 7);
+  $('leafbox').classList.toggle('need', !!next && next.x - P.x < 80 && S.leaves < CFG.TREE_COST);
+  const p = clamp(P.x / COURSE.greatX, 0, 1);
+  $('progfill').style.width = (p * 100) + '%'; $('progdot').style.left = (p * 100) + '%';
+}
+function showTitle() {
+  S.state = 'title'; $('title').classList.remove('hide'); $('hud').classList.add('hide'); $('end').classList.add('hide');
+}
+function startRun() {
+  initAudio();
+  resetRun();
+  S.state = 'play';
+  $('title').classList.add('hide'); $('end').classList.add('hide'); $('hud').classList.remove('hide');
+  P.speed = 9; setAnim('running', 0.3);
+  if (musicGain) fadeMusic(0.55, 2);
+}
+function showEnd() {
+  S.state = 'end';
+  $('endtrees').textContent = S.trees; $('endleaves').textContent = S.delivered;
+  const row = $('endtreerow'); row.innerHTML = '';
+  for (const t of world.trees) { const im = document.createElement('img'); im.src = t.state === 1 ? 'assets/ui/tree_bloom.png' : 'assets/ui/tree_bare.png'; if (t.state !== 1) im.className = 'off'; row.appendChild(im); }
+  $('end').classList.remove('hide'); $('hud').classList.add('hide');
+  S.endShownAt = S.time;
+}
+
+// ---------------------------------------------------------------- input
+function press() {
+  if (S.state === 'title') { startRun(); return; }
+  if (S.state === 'end') { if (S.time - (S.endShownAt || 0) > 1.2) startRun(); return; }
+  if (!S.input.hold) S.input.justPressed = true;
+  S.input.hold = true;
+}
+function release() { S.input.hold = false; }
+addEventListener('keydown', (e) => {
+  if (e.repeat) { if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') e.preventDefault(); return; }
+  if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW' || e.code === 'Enter') { e.preventDefault(); press(); }
+  if (e.code === 'ArrowDown' || e.code === 'KeyS' || e.code === 'ShiftLeft') { e.preventDefault(); S.input.dive = true; }
+  if (e.code === 'KeyM') { muted = !muted; if (master) master.gain.value = muted ? 0 : 0.9; $('sound').textContent = muted ? 'm · muted' : 'm · sound'; }
+});
+addEventListener('keyup', (e) => {
+  if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW' || e.code === 'Enter') release();
+  if (e.code === 'ArrowDown' || e.code === 'KeyS' || e.code === 'ShiftLeft') S.input.dive = false;
+});
+renderer.domElement.addEventListener('pointerdown', (e) => { if (e.pointerType === 'touch' && e.clientY > innerHeight * 0.6 && e.clientX < innerWidth * 0.35) { S.input.dive = true; return; } press(); });
+addEventListener('pointerup', () => { release(); S.input.dive = false; });
+addEventListener('blur', () => { release(); S.input.dive = false; });
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+  if (composer) { const s = renderer.getDrawingBufferSize(new THREE.Vector2()); composer.setSize(innerWidth, innerHeight); gradePass.uniforms.uRes.value.set(s.x, s.y); }
+  if (world) layoutScreenLayers();
+});
+
+// ================================================================ CHARACTER POSE
+function updateCharacter(dt) {
+  if (!P.model) return;
+  let anim = 'idle', ts = 1, pitch = 0;
+  const sl = ground.d1(P.x);
+  if (S.state === 'title') anim = 'idle';
+  else if ((S.state === 'ending' || S.state === 'end') && P.grounded && P.speed < 1.5) anim = S.endT > 2 ? 'cheer' : 'idle';
+  else if (P.stumble > 0.15) { anim = 'fall2'; ts = 1.6; }
+  else if (P.grounded) {
+    if (P.speed < 2) anim = 'idle';
+    else if (P.speed < 15) { anim = 'running'; ts = clamp(P.speed / 11, 0.7, 1.5); }
+    else { anim = 'sprint'; ts = clamp(P.speed / 20, 0.9, 1.7); }
+    pitch = -Math.atan(sl) * 0.75;
+  } else {
+    if (P.glide) { anim = 'fall1'; ts = 1.2; pitch = 0.62 + clamp(P.vy * 0.02, -0.2, 0.2); }
+    else if (P.dive) { anim = 'fall2'; ts = 1.4; pitch = -0.4; }
+    else { anim = 'jump'; ts = 0; pitch = -Math.atan2(P.vy, P.vx) * 0.35; }
+  }
+  if (anim === 'jump') setAnim('jump', 0.12, 1.05, 0); else setAnim(anim, anim === 'fall1' ? 0.22 : 0.18, null, ts);
+  if (P.actions[anim]) P.actions[anim].timeScale = ts;
+  P.pitch = damp(P.pitch, pitch, 8, dt);
+  const air = !P.grounded;
+  P.root.position.set(P.x, P.y, 0);
+  P.pivot.rotation.z = P.pitch;
+  P.pivot.position.y = air && P.glide ? 0.9 : 0;
+  P.mixer.update(dt);
+}
+
+// ================================================================ MAIN LOOP
+let last = performance.now() / 1000, acc = 0;
+const QUAL = { acc: 0, n: 0, level: 0 };
+const FIXED = 1 / 120;
+function frame() {
+  requestAnimationFrame(frame);
+  const now = performance.now() / 1000; let dt = Math.min(0.05, now - last) * DBG.ts; last = now;
+  if (S.state === 'loading' || !world) return;
+  S.slowmo = damp(S.slowmo, 1, 2.5, dt);
+  const gdt = dt * S.slowmo;
+  S.time += gdt; commonUniforms.uTime.value = S.time;
+  if (S.comboT > 0) S.comboT -= gdt;
+  if (S.state === 'play') S.playTime += gdt;
+  // auto-pilot for headless testing (?auto)
+  if (DBG.auto && S.state === 'play') autoPilot();
+  if (DBG.auto && S.state !== 'end' && (S.logT = (S.logT || 0) + gdt) > 5) { S.logT = 0; console.log('auto', JSON.stringify({ t: S.playTime.toFixed(0), x: P.x.toFixed(0), y: P.y.toFixed(1), v: P.speed.toFixed(1), leaves: S.leaves, trees: S.trees, st: S.state, del: S.delivered })); }
+  acc += gdt;
+  while (acc >= FIXED) { stepPlayer(FIXED); acc -= FIXED; }
+  P.trail.push(V3(P.x, P.y, 0), gdt);
+  updateTrees(gdt); updateGusts(gdt); updatePickups(gdt); updateEnding(gdt);
+  updateCharacter(gdt);
+  updateCamera(dt);
+  // scarf: anchored at the neck bone
+  const anchor = V3(P.x, P.y + 1.3, -0.1);
+  if (P.neck) { P.neck.getWorldPosition(anchor); anchor.z = -0.16; anchor.x -= 0.08; }
+  P.scarf.update(gdt, anchor, V3(P.vx, P.vy, 0), S.time);
+  world.swarm.update(gdt, S.time, P.trail, P);
+  world.fx.update(gdt, 7 + P.speed * 0.3);
+  world.amb.update(gdt, camera.position, P.glide ? 0.6 : 0.15 + P.speed / 80);
+  world.carpet.update(gdt, camera.position.x);
+  // wind streaks around the child when fast
+  if (S.state === 'play' && P.speed > 16 && Math.random() < gdt * (P.speed * 0.08)) world.wind.spawn(P.x + rnd(-14, 18), P.y + rnd(-1, 6), rnd(-4, -1), rnd(5, 9), rnd(0.5, 0.9), 0.1 + P.speed * 0.004, 20 + P.speed * 0.6);
+  if (Math.random() < gdt * 0.8) world.wind.spawn(camera.position.x + rnd(-40, 40), CAM.lookY + rnd(5, 16), rnd(-40, -14), rnd(5, 9), rnd(1, 1.8), 0.1, 14);
+  world.wind.update(gdt);
+  updateSparks(gdt);
+  updateAudio();
+  if (S.state === 'play' || S.state === 'ending') updateHud();
+  S.progress = clamp(P.x / COURSE.greatX, 0, 1);
+  const dusk = smooth(clamp((S.progress - 0.55) / 0.45, 0, 1));
+  scene.fog.color.copy(HAZE).lerp(DUSK_HAZE, dusk * 0.6);
+  world.sky.material.color.setRGB(1, 0.985 - 0.13 * dusk, 0.935 - 0.28 * dusk);   // warmer, creamier sky like the video
+  if (world.far) world.far.material.color.setRGB(0.97, 0.93 - 0.08 * dusk, 0.86 - 0.17 * dusk);
+  S.flash = Math.max(0, S.flash - dt * 0.6);
+  QUAL.acc += dt; QUAL.n++;
+  if (QUAL.acc > 2.5) {
+    const avg = QUAL.acc / QUAL.n; QUAL.acc = 0; QUAL.n = 0;
+    if (avg > 0.024 && QUAL.level < 2) {
+      QUAL.level++;
+      if (QUAL.level === 1 && bloomPass) bloomPass.enabled = false;
+      if (QUAL.level === 2) { renderer.setPixelRatio(1); if (composer) composer.setPixelRatio(1); }
+      console.log('quality ->', QUAL.level, (1 / avg).toFixed(0) + ' fps');
+    }
+  }
+  if (composer) {
+    gradePass.uniforms.uP.value = S.progress; gradePass.uniforms.uTime.value = S.time; gradePass.uniforms.uFlash.value = S.flash;
+    composer.render(dt);
+  } else renderer.render(scene, camera);
+}
+function updateSparks(dt) {
+  if (!world.glow) return;
+  const gb = world.glow; let gi = world.glowUsed || 0; const sb = world.sparkB; let si = 0;
+  for (let i = sparks.length - 1; i >= 0; i--) {
+    const s = sparks[i]; s.t += dt; if (s.t > 0.6) { sparks.splice(i, 1); continue; }
+    const u = s.t / 0.6;
+    if (gi < gb.n) gb.set(gi++, s.x, s.y, s.z, 0.8 + u * 2.2, 0.8 + u * 2.2, 0, (1 - u) * 0.3, 1, 0.78, 0.45);
+    if (sb && si < sb.n) sb.set(si++, s.x, s.y, s.z + 0.05, 1.0 + u * 0.8, 1.0 + u * 0.8, u * 1.5, (1 - u) * 0.55, 1, 0.9, 0.68);
+  }
+  for (let i = gi; i < gb.n; i++) gb.hide(i);
+  gb.flush();
+  if (sb) { for (let i = si; i < sb.n; i++) sb.hide(i); sb.flush(); }
+}
+
+// simple bot used only with ?auto for automated screenshots
+function autoPilot() {
+  const sl = ground.d1(P.x);
+  const nextCrest = COURSE.crests.find(c => c > P.x + 1) || P.x + 40;
+  const air = P.y - ground.h(P.x);
+  if (P.grounded) {
+    S.input.dive = sl < -0.08;
+    S.input.hold = false;
+    if (sl > 0.1 && nextCrest - P.x < 4 + P.speed * 0.12) { S.input.justPressed = true; S.input.hold = true; }
+    const r = world.rocks.find(r => r.solid && !r.hit && r.x > P.x && r.x - P.x < 3 + P.speed * 0.12);
+    if (r) { S.input.justPressed = true; S.input.hold = true; }
+  } else {
+    S.input.dive = P.vy < 0 && air < 3 && ground.d1(P.x + 4) < -0.15;
+    S.input.hold = P.vy < -1 && air > 3 && S.leaves > 9 && !S.input.dive;
+  }
+}
+
+// ================================================================ BOOT
+(async function boot() {
+  await loadAll();
+  buildWorld();
+  buildTreeHud();
+  if (!DBG.nopost) { try { buildPost(); } catch (e) { console.warn('post disabled', e); composer = null; } }
+  resetRun();
+  $('loading').classList.add('hide');
+  if (DBG.state === 'play' || DBG.auto) { startRun(); } else showTitle();
+  frame();
+  window.__game = { S, P, world, CFG, COURSE, HOLE, CAM, camera };
+  console.log('ready', { crests: COURSE.crests.length, greatX: COURSE.greatX.toFixed(0), picks: world.picks.length, gusts: world.gusts.length, rocks: world.rocks.filter(r => r.solid).length });
+})();
+</script>
+<script src="../brand/gamepad.js"></script>
+</body>
+</html>

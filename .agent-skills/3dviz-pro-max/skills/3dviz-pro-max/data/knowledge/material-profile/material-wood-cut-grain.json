@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.material-wood-cut-grain",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Timber grain across long faces and cut ends"
+  },
+  "aliases": {
+    "en": [
+      "wood end grain",
+      "timber cut-face orientation"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "architecture-interiors",
+    "environments-dioramas"
+  ],
+  "summary": "Keep grain tied to the timber member and distinguish a crosscut end from a longitudinal face.",
+  "objective": "Make exposed timber ends and side faces read as parts cut from the same piece.",
+  "tags": [
+    "material-profile",
+    "wood",
+    "end grain",
+    "long grain"
+  ],
+  "subject_terms": [
+    "wood",
+    "end grain",
+    "long grain",
+    "timber",
+    "radial cut",
+    "tangential cut",
+    "UV orientation"
+  ],
+  "intent_signals": [
+    "Make exposed timber ends and side faces read as parts cut from the same piece."
+  ],
+  "example_prompts": [
+    "Build a timber footbridge whose cut post ends and long rails have coherent grain, without specifying a wood species."
+  ],
+  "content": {
+    "principles": [
+      "Treat a solid member as one oriented piece: face patterns should agree with its assigned fiber axis and cuts. Veneers, laminates and painted wood can have different authored layer boundaries.",
+      "Separate cut anatomy from finish. A varnish or paint treatment does not choose the grain direction, strength or contact friction."
+    ],
+    "implementation": [
+      "Assign a local grain axis before unwrapping; use distinct crosscut and longitudinal coordinates at exposed ends instead of projecting the same stripe image onto every face. For a named species, research the particular visible pattern.",
+      "Give rails, tenons and cut ends actual thickness. Use geometry for silhouette-changing splits or chipped corners, and small-scale shading detail for unresolved fibers; keep the grain scale consistent between adjacent members.",
+      "Compare a sanded face and an intentionally rough end under one broad light at both hero and overview distances. Vary finish independently of grain color; avoid making every grain line a deep groove."
+    ],
+    "observable_checks": [
+      "Orbit an exposed beam corner: end pattern changes with the cut while lengthwise grain follows the member rather than world axes.",
+      "Resize one member: check that texture scale does not silently turn fine grain into wide stripes or align unrelated cuts identically.",
+      "Disable normal detail and inspect the silhouette; a modeled split stays open, while a surface mark need not."
+    ]
+  },
+  "known_limits": [
+    "This is not species identification, moisture response, anisotropic strength or a friction model.",
+    "Authored modeling and inspection guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Painted, flat-shaded or exaggerated grain can retain the cut distinction without photorealistic texture.",
+    "A fictional laminated beam may intentionally expose alternating directions if the layer construction is clear."
+  ],
+  "related_ids": [
+    "knowledge.dielectric-surface",
+    "knowledge.framed-shelter"
+  ],
+  "claims": [
+    {
+      "id": "claim.material-depth-wood-cut-grain",
+      "statement": "The Wood Handbook distinguishes transverse cross sections from radial and tangential longitudinal sections; cutting a board across the grain exposes a transverse section.",
+      "scope": "Wood anatomical section orientation only; no prescribed grain graphic or material property.",
+      "source_refs": [
+        {
+          "source_id": "source.material-depth-wood-sections",
+          "locator": "Printed page 3-4 (PDF page index 3), Planes of Section, paragraphs 1-4"
+        }
+      ]
+    }
+  ]
+}

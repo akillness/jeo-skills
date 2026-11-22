@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.camera-authored-viewpoints-and-reset",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "presentation-profile",
+  "title": {
+    "en": "Named viewpoints, a rest pose and one honest reset"
+  },
+  "aliases": {
+    "en": [
+      "camera presets",
+      "reset view",
+      "establishing shot",
+      "named views",
+      "camera viewpoints"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "architecture-interiors",
+    "environments-dioramas"
+  ],
+  "summary": "Author four named views - overview, hero, close-up, mid-motion - park the scene on a three-quarter rest pose rather than a dead-centre eye-level one, and make reset return the camera without touching scene state.",
+  "objective": "Every scene opens on a frame that already explains it, each named view is reachable in one action, and reset restores the camera alone: no simulation, selection or parameter changes travel with it.",
+  "tags": [
+    "presentation-profile",
+    "camera",
+    "viewpoints",
+    "camera-presets",
+    "reset-view",
+    "establishing-shot",
+    "field-of-view"
+  ],
+  "subject_terms": [
+    "named views",
+    "camera presets",
+    "reset view",
+    "establishing shot",
+    "rest pose",
+    "three-quarter view",
+    "field of view",
+    "overview framing",
+    "close-up view",
+    "mid-motion view",
+    "home camera"
+  ],
+  "intent_signals": [
+    "add camera presets",
+    "give me a reset view button",
+    "what should the opening shot be",
+    "the default camera is boring",
+    "let the user jump to a close-up",
+    "reset the camera to the start"
+  ],
+  "example_prompts": [
+    "Author overview, hero and close-up views for a product page.",
+    "Pick an opening frame for an interior that shows scale.",
+    "Add a reset that returns the camera without restarting the animation."
+  ],
+  "negative_signals": [
+    "automatic camera path or turntable with no named stops",
+    "photographic lens specification for a real camera body"
+  ],
+  "not_for": [
+    "Scenes with a single fixed camera and no user navigation.",
+    "Matching a real lens and sensor, which needs a stated sensor size rather than an authored field of view."
+  ],
+  "content": {
+    "principles": [
+      "A rest pose is an argument. A three-quarter view from slightly above shows two faces and the top of a form, while dead-centre eye-level flattens it into a silhouette and hides construction.",
+      "Named views are a table of contents for the scene: overview for extent, hero for identity, close-up for construction, mid-motion for behaviour.",
+      "Field of view sets the honesty of the read: a narrow angle keeps a product's proportions truthful, a wider one lets an interior feel enterable without the walls bending.",
+      "Reset is a camera operation only. Resetting simulation, selection or parameters alongside it destroys work the viewer did on purpose.",
+      "Views should be authored against the actual model bounds, not typed as absolute coordinates that break the moment the model is rescaled."
+    ],
+    "implementation": [
+      "Author each view as a camera position and a look-at point, and keep the overview first so it doubles as the home pose.",
+      "Place the rest pose at roughly 35 deg azimuth off the front and 20 deg above the horizon, framing the subject to about 80 percent of the shorter viewport axis.",
+      "Use 35-50 deg vertical field of view for product and object subjects and 55-75 deg for interiors and walkable environments; state which was chosen and why.",
+      "Derive positions from the bounding sphere of the subject so the same view table survives a rescale.",
+      "Implement reset as a jump or a tween to the home view that cancels any in-flight tween or follow, and leaves every non-camera state untouched.",
+      "Aim the mid-motion view at the moving part, so the viewer sees behaviour rather than a wide shot of a small movement."
+    ],
+    "observable_checks": [
+      "The opening frame shows at least two faces of the subject and its top or bottom relationship to the ground.",
+      "Each named view fits its subject inside the frame at both a wide and a tall viewport aspect.",
+      "Reset restores the opening frame exactly and does not alter playback position, selection or any parameter value.",
+      "Switching views never leaves the camera inside geometry or behind a wall.",
+      "The stated field of view matches the one the renderer uses; there is no second value set elsewhere."
+    ]
+  },
+  "creative_affordances": [
+    "The number and naming of views is free: a scene may deserve two views or seven, and a story-led scene may name them by moment rather than by distance.",
+    "The rest pose can be off-centre, low or high when the subject's shape argues for it; the requirement is that it explains the form, not that it follows the default angle."
+  ],
+  "known_limits": [
+    "Authored framing guidance; no perceptual study or rendered comparison supports the specific angles and field-of-view bands.",
+    "The bands assume a vertical field of view on a perspective camera; orthographic and cropped-sensor setups need their own derivation."
+  ],
+  "related_ids": [
+    "knowledge.camera-orbit-follow-rig",
+    "knowledge.hero-and-context",
+    "knowledge.deterministic-review-capture-package",
+    "knowledge.snap-preview-and-commit"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "A three-quarter rest pose at 35 deg azimuth and 20 deg elevation shows two faces plus the top, which is what makes construction readable in a still opening frame. The field-of-view bands separate the two common briefs: product work stays near 40 deg so proportions read truthfully, interiors go wider so the space feels enterable. All values are authored starting points to be refitted to the real model bounds.",
+    "values": {
+      "feeling": [
+        "composed",
+        "deliberate",
+        "legible"
+      ],
+      "rest_pose": {
+        "azimuth_deg": 35,
+        "elevation_deg": 20,
+        "framing": "subject fills ~80% of the shorter viewport axis",
+        "avoid": "dead-centre eye-level front view"
+      },
+      "views": {
+        "overview": "whole subject plus its ground context; doubles as home",
+        "hero": "three-quarter at hero distance, the identity frame",
+        "close_up": "one construction detail, aimed at that detail",
+        "mid_motion": "framed on the moving part at the middle of its travel"
+      },
+      "fov_deg": {
+        "product": [
+          35,
+          50
+        ],
+        "interior": [
+          55,
+          75
+        ],
+        "default": 40
+      },
+      "reset": {
+        "restores": [
+          "camera position",
+          "camera aim"
+        ],
+        "leaves_alone": [
+          "simulation time",
+          "selection",
+          "parameter values",
+          "visibility toggles"
+        ]
+      },
+      "framing_source": "bounding sphere of the subject, recomputed on load",
+      "never": [
+        "resetting simulation state with the camera",
+        "a view authored in absolute coordinates that breaks on rescale",
+        "two different field-of-view values in one scene"
+      ]
+    }
+  }
+}

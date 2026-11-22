@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-voxel",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Voxel cell composition"
+  },
+  "aliases": {
+    "en": [
+      "voxel art",
+      "block world",
+      "grid-built 3D",
+      "minecraft-like",
+      "cube world"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "spatial-puzzles"
+  ],
+  "summary": "Choose a visible cell rhythm and use clustered blocks to express larger silhouettes rather than scattering isolated cubes.",
+  "objective": "The grid remains coherent at joins and selected blocks can be distinguished; detail does not collapse into flicker at the intended view.",
+  "tags": [
+    "style-profile",
+    "geometry-aesthetic",
+    "voxel"
+  ],
+  "subject_terms": [
+    "voxel art",
+    "block world",
+    "grid-built 3D",
+    "geometry aesthetic"
+  ],
+  "intent_signals": [
+    "Build a voxel composition",
+    "Arrange grid-aligned blocks into readable forms"
+  ],
+  "example_prompts": [
+    "Create a voxel forest island using broad tree clusters and a readable stepped path."
+  ],
+  "content": {
+    "principles": [
+      "Choose a visible cell rhythm and use clustered blocks to express larger silhouettes rather than scattering isolated cubes."
+    ],
+    "implementation": [
+      "Set a consistent cell scale for the main subject; use larger clusters for masses and purposeful stepped edges for detail.",
+      "Group cell colors by surface role and use light that separates steps without turning every cube into a competing highlight.",
+      "Frame the cell structure from an oblique view; snap edits to the authored grid while keeping camera motion independently smooth if desired.",
+      "Fix one cell size for the scene (0.25 m hero, 1.0 m terrain) and snap every edit to it; a 32x32x32 hero grid keeps steps legible from 12 m without flicker.",
+      "Light with a single hard DirectionalLight and a 2048 shadow map at bias -0.0001 and normalBias 0.02, so cube faces settle on exactly three values (top 1.0, sun side 0.75, away 0.45)."
+    ],
+    "observable_checks": [
+      "The grid remains coherent at joins and selected blocks can be distinguished; detail does not collapse into flicker at the intended view."
+    ]
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for Neutral tone mapping at renderer.toneMappingExposure 1.0; re-tune intensities and fog density under a different tone mapping or exposure - a filmic curve blends the three cube-face values into a gradient.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with retro-low-resolution rendering or minimalist color; a voxel appearance is not automatically volumetric measured data."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Voxel scenes describe form with axis-aligned faces, so anything that softens a face boundary is removed: fog is off, depth of field is off, shadows are hard, shading is flat and tone mapping is Neutral at 1.0 so the three face values stay separated. The narrow 30 degree FOV at a 30 degree down-pitch keeps the cell grid from perspective-skewing into flicker at distance, and one material per palette colour makes InstancedMesh batching the natural implementation.",
+    "values": {
+      "feeling": [
+        "blocky",
+        "orderly",
+        "bright"
+      ],
+      "palette": [
+        {
+          "hex": "#1d2b3a",
+          "role": "shadow-side face"
+        },
+        {
+          "hex": "#3f7d4f",
+          "role": "mid grass face"
+        },
+        {
+          "hex": "#8fbf5a",
+          "role": "lit grass top face"
+        },
+        {
+          "hex": "#c98b4a",
+          "role": "earth and wood accent"
+        },
+        {
+          "hex": "#e8e2d0",
+          "role": "light stone"
+        }
+      ],
+      "value_structure": "35/45/20 dark/mid/light; each cube face is exactly one of three values",
+      "saturation_rule": "terrain 45-65% saturation; a single accent block colour may reach 80%",
+      "sky": {
+        "model": "solid",
+        "zenith": "#7fb3e0",
+        "horizon": "#7fb3e0"
+      },
+      "fog": {
+        "type": "none",
+        "color": "#7fb3e0",
+        "density": 0
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#fff6e0",
+          "intensity": 3.2,
+          "elevation_deg": 50,
+          "azimuth_deg": 315,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#9cc6ea",
+          "ground": "#4a5240",
+          "intensity": 0.8
+        },
+        "rim": {
+          "type": "none"
+        },
+        "ratio": "key:fill ~ 4:1, single hard source, no soft wrap and no second shadow-casting light"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "Neutral",
+        "exposure": 1.0
+      },
+      "camera": {
+        "fov_deg": 30,
+        "height_m": 6.0,
+        "pitch_deg": -30,
+        "orbit": {
+          "minPolar_deg": 30,
+          "maxPolar_deg": 75,
+          "minDist_m": 8,
+          "maxDist_m": 60
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.8,
+          1.0
+        ],
+        "metalness": [
+          0.0,
+          0.0
+        ],
+        "notes": "flatShading true, nearest-neighbour filtering on any texture, no bevels; one material per palette colour driving one InstancedMesh"
+      },
+      "motion": {
+        "sway_period_s": [
+          2.0,
+          2.0
+        ],
+        "ease": "stepped at 8 fps for foliage and water; camera stays on ones",
+        "hold_ms": 125
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.3,
+          "strength": 0.08,
+          "radius": 0.25
+        },
+        "vignette": 0.1,
+        "grain": 0.0,
+        "dof": "off"
+      },
+      "signature_technique": "one cell size, flat shading and a single hard 50 degree key, so every cube face lands on one of three unmixed values",
+      "never": [
+        "fog blur or depth of field",
+        "bevelled or smoothed cube edges",
+        "soft area shadows",
+        "off-grid geometry",
+        "untinted white ambient light"
+      ]
+    }
+  }
+}

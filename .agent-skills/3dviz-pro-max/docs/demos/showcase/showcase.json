@@ -1,0 +1,311 @@
+{
+  "schema_version": 1,
+  "about": "Twenty runtime captures, driven by scripts/showcase.py. Three built sources: the early-slice village (one authored look), the blueprint proof harness (its own neutral studio, one record at a time) and the breadth bench (three catalog looks applied per view). look_applied says whether a catalog look was applied to that frame; a shot never claims a tier a record calls missing or not-proved.",
+  "defaults": {
+    "width": 1920,
+    "height": 1080,
+    "format": "jpeg",
+    "max_bytes": 1048576,
+    "settle_ms": 1400,
+    "timeout_s": 60
+  },
+  "shots": [
+    {
+      "id": "village-dusk-golden-hour",
+      "source": "village",
+      "view": "overview",
+      "look": "knowledge.style-lantern-festival-riverside",
+      "mood": "knowledge.lighting-mood-dusk-golden-hour",
+      "look_applied": true,
+      "tiers": {
+        "hero": "T3",
+        "mid": "T2",
+        "background": "T1"
+      },
+      "caption": "The whole island from the app's home camera: inn, round tower, long hall, bridge and pond under the scene's dusk look, with the rock skirt and conifers as instanced background.",
+      "tiers_note": "tiers are the ladder the scene ships; the village LOD picks a level per landmark from camera distance each frame, so this is not a per-frame reading of what was drawn",
+      "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched",
+      "query": "plate=1"
+    },
+    {
+      "id": "village-night-lantern-river",
+      "source": "village",
+      "view": "overview",
+      "look": "knowledge.style-lantern-festival-riverside",
+      "mood": "knowledge.lighting-mood-night-lantern",
+      "look_applied": true,
+      "tiers": {
+        "hero": "T3",
+        "mid": "T2",
+        "background": "T1"
+      },
+      "caption": "Latent Village at night: lantern practicals are the only key light, blue darkness between the pools.",
+      "tiers_note": "tiers are the ladder the scene ships; the village LOD picks a level per landmark from camera distance each frame, so this is not a per-frame reading of what was drawn",
+      "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched",
+      "query": "plate=1&look=night-lantern"
+    },
+    {
+      "id": "village-tilt-shift-diorama",
+      "source": "village",
+      "view": "overview",
+      "look": "knowledge.style-tilt-shift-diorama",
+      "mood": "knowledge.lighting-mood-dusk-golden-hour",
+      "look_applied": true,
+      "tiers": {
+        "hero": "T3",
+        "mid": "T2",
+        "background": "T1"
+      },
+      "caption": "The same island as a tabletop model: 22 degree lens, depth-of-field band across the inn and tower.",
+      "tiers_note": "tiers are the ladder the scene ships; the village LOD picks a level per landmark from camera distance each frame, so this is not a per-frame reading of what was drawn",
+      "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched",
+      "query": "plate=1&look=tilt-shift"
+    },
+    {
+      "id": "village-overcast-morning",
+      "source": "village",
+      "view": "bridge",
+      "look": "knowledge.style-lantern-festival-riverside",
+      "mood": "knowledge.lighting-mood-overcast-soft",
+      "look_applied": true,
+      "tiers": {
+        "hero": "T3",
+        "mid": "T2",
+        "background": "T1"
+      },
+      "caption": "The bridge under overcast light: no cast shadow, desaturated, objects grounded by the T2 bake alone.",
+      "tiers_note": "tiers are the ladder the scene ships; the village LOD picks a level per landmark from camera distance each frame, so this is not a per-frame reading of what was drawn",
+      "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched",
+      "query": "plate=1&look=overcast"
+    },
+    {
+      "id": "watermill-wheel-turning",
+      "source": "village",
+      "view": "mill",
+      "motion_ms": 1200,
+      "look": "knowledge.style-lantern-festival-riverside",
+      "mood": "knowledge.lighting-mood-dusk-golden-hour",
+      "look_applied": true,
+      "tiers": {
+        "hero": "T3"
+      },
+      "caption": "The watermill at the mill view, captured 1200 ms after the camera settled so the wheel is mid-turn; T3 is the top of this landmark's ladder and the distance the LOD serves it from.",
+      "tiers_note": "tiers are the ladder the scene ships; the village LOD picks a level per landmark from camera distance each frame, so this is not a per-frame reading of what was drawn",
+      "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched",
+      "query": "plate=1"
+    },
+    {
+      "id": "stone-bridge-over-water",
+      "source": "village",
+      "view": "bridge",
+      "look": "knowledge.style-lantern-festival-riverside",
+      "mood": "knowledge.lighting-mood-dusk-golden-hour",
+      "look_applied": true,
+      "tiers": {
+        "mid": "T2"
+      },
+      "caption": "The stone bridge and its approaches over the stream, with the persistent water surface running beneath.",
+      "tiers_note": "tiers are the ladder the scene ships; the village LOD picks a level per landmark from camera distance each frame, so this is not a per-frame reading of what was drawn",
+      "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched",
+      "query": "plate=1"
+    },
+    {
+      "id": "village-layout-overview",
+      "source": "village",
+      "view": "layout",
+      "look": "knowledge.style-lantern-festival-riverside",
+      "mood": "knowledge.lighting-mood-dusk-golden-hour",
+      "look_applied": true,
+      "tiers": {
+        "hero": "T3",
+        "mid": "T2",
+        "background": "T1"
+      },
+      "caption": "Near top-down: the plot layout, lanes and yard reservations that the landmarks were placed against.",
+      "tiers_note": "tiers are the ladder the scene ships; the village LOD picks a level per landmark from camera distance each frame, so this is not a per-frame reading of what was drawn",
+      "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched",
+      "query": "plate=1"
+    },
+    {
+      "id": "village-lantern-riverside-pond",
+      "source": "village",
+      "view": "pond",
+      "look": "knowledge.style-lantern-festival-riverside",
+      "mood": "knowledge.lighting-mood-dusk-golden-hour",
+      "look_applied": true,
+      "tiers": {
+        "mid": "T2",
+        "background": "T1"
+      },
+      "caption": "The pond and the lantern post at the bridge head, the look's warm horizon band reading across the water.",
+      "tiers_note": "tiers are the ladder the scene ships; the village LOD picks a level per landmark from camera distance each frame, so this is not a per-frame reading of what was drawn",
+      "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched",
+      "query": "plate=1"
+    },
+    {
+      "id": "village-inn-doorway",
+      "source": "village",
+      "view": "door",
+      "look": "knowledge.style-lantern-festival-riverside",
+      "mood": "knowledge.lighting-mood-dusk-golden-hour",
+      "look_applied": true,
+      "tiers": {
+        "mid": "T2"
+      },
+      "caption": "The inn doorway close enough to judge frame timbers and window recesses: the anti-slop close-up test on a T2 surface.",
+      "tiers_note": "tiers are the ladder the scene ships; the village LOD picks a level per landmark from camera distance each frame, so this is not a per-frame reading of what was drawn",
+      "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched",
+      "query": "plate=1"
+    },
+    {
+      "id": "stone-guildhall-closeup",
+      "source": "harness:knowledge.blueprint-stone-guildhall@T2",
+      "view": "close",
+      "look": "none — blueprint proof harness",
+      "look_applied": false,
+      "harness_look": "neutral grey ground, one warm sun plus hemisphere fill, ACESFilmic at exposure 1.0, no post",
+      "tiers": {
+        "hero": "T2"
+      },
+      "caption": "The stone guildhall's baked glTF asset at T1, in the same proof harness its evidence captures came from."
+    },
+    {
+      "id": "timber-cottage-t3-closeup",
+      "source": "harness:knowledge.blueprint-timber-cottage@T3",
+      "view": "close",
+      "look": "none — blueprint proof harness",
+      "look_applied": false,
+      "harness_look": "neutral grey ground, one warm sun plus hemisphere fill, ACESFilmic at exposure 1.0, no post",
+      "tiers": {
+        "hero": "T3"
+      },
+      "caption": "The timber cottage at T3 — the Blender-baked hero the record marks proved — framed close enough to read sill drips and peg heads."
+    },
+    {
+      "id": "long-hall-porch-chimneys",
+      "source": "harness:knowledge.blueprint-long-hall@T2",
+      "view": "close",
+      "look": "none — blueprint proof harness",
+      "look_applied": false,
+      "harness_look": "neutral grey ground, one warm sun plus hemisphere fill, ACESFilmic at exposure 1.0, no post",
+      "tiers": {
+        "mid": "T2"
+      },
+      "caption": "The long hall at T2 with its porch and chimney run: procedural geometry plus the record's T2 surface settings."
+    },
+    {
+      "id": "round-tower-elevation",
+      "source": "harness:knowledge.blueprint-round-tower@T2",
+      "view": "mid",
+      "look": "none — blueprint proof harness",
+      "look_applied": false,
+      "harness_look": "neutral grey ground, one warm sun plus hemisphere fill, ACESFilmic at exposure 1.0, no post",
+      "tiers": {
+        "mid": "T2"
+      },
+      "caption": "The round tower at T2: stair band, string courses and roof cone, one record alone in the harness."
+    },
+    {
+      "id": "market-stall-canopy",
+      "source": "harness:knowledge.blueprint-market-stall@T2",
+      "view": "mid",
+      "look": "none — blueprint proof harness",
+      "look_applied": false,
+      "harness_look": "neutral grey ground, one warm sun plus hemisphere fill, ACESFilmic at exposure 1.0, no post",
+      "tiers": {
+        "mid": "T2"
+      },
+      "composition_note": "single kit: the proof harness builds exactly one record, so the barrel, crate and signboard this shot was planned with are not in frame.",
+      "caption": "The market stall at T2, canopy and sacks — one kit alone, because the proof harness composes one record at a time."
+    },
+    {
+      "id": "iron-lantern-gltf-detail",
+      "source": "harness:knowledge.blueprint-iron-lantern@T2",
+      "view": "close",
+      "look": "none — blueprint proof harness",
+      "look_applied": false,
+      "harness_look": "neutral grey ground, one warm sun plus hemisphere fill, ACESFilmic at exposure 1.0, no post",
+      "tiers": {
+        "prop": "T2"
+      },
+      "composition_note": "single kit: planned as a lantern-post pairing; the harness builds one record, so the post is not in frame.",
+      "caption": "The iron lantern's glTF asset at T1, at the harness detail distance — the closest framing any shot here uses."
+    },
+    {
+      "id": "tree-round-canopy",
+      "source": "harness:knowledge.blueprint-tree-round@T2",
+      "view": "mid",
+      "look": "none — blueprint proof harness",
+      "look_applied": false,
+      "harness_look": "neutral grey ground, one warm sun plus hemisphere fill, ACESFilmic at exposure 1.0, no post",
+      "tiers": {
+        "background": "T2"
+      },
+      "composition_note": "single kit: planned as a cluster with the conifer, rocks and reeds; the harness builds one record.",
+      "caption": "The round tree at T2: trunk taper, branch stubs and the canopy shells the village plants in numbers."
+    },
+    {
+      "id": "well-stone-collar",
+      "source": "harness:knowledge.blueprint-well@T2",
+      "view": "close",
+      "look": "none — blueprint proof harness",
+      "look_applied": false,
+      "harness_look": "neutral grey ground, one warm sun plus hemisphere fill, ACESFilmic at exposure 1.0, no post",
+      "tiers": {
+        "prop": "T2"
+      },
+      "composition_note": "single kit: planned as a yard with the cart and fence run; the harness builds one record.",
+      "caption": "The well at T2, close enough to read the collar stones and the roof frame over the shaft."
+    },
+    {
+      "id": "quadruped-walker-stance",
+      "source": "harness:knowledge.blueprint-quadruped-walker@T2",
+      "view": "mid",
+      "look": "none — blueprint proof harness",
+      "look_applied": false,
+      "harness_look": "neutral grey ground, one warm sun plus hemisphere fill, ACESFilmic at exposure 1.0, no post",
+      "tiers": {
+        "hero": "T2"
+      },
+      "motion_note": "still: the harness page freezes animate(dt) while capturing, so this is a standing pose, not a stride.",
+      "caption": "The quadruped walker at T2 — its record marks T2 not-proved, so this shot does not claim it."
+    },
+    {
+      "id": "biped-walker-stance",
+      "source": "harness:knowledge.blueprint-biped-walker@T2",
+      "view": "mid",
+      "look": "none — blueprint proof harness",
+      "look_applied": false,
+      "harness_look": "neutral grey ground, one warm sun plus hemisphere fill, ACESFilmic at exposure 1.0, no post",
+      "tiers": {
+        "hero": "T2"
+      },
+      "motion_note": "still: the harness page freezes animate(dt) while capturing, so this is a standing pose, not a stride.",
+      "caption": "The biped walker at T2: proportion, joint placement and the surfaced limbs, held in its rest pose."
+    },
+    {
+      "id": "bloch-ball-linear-algebra",
+      "source": "breadth",
+      "view": "bloch",
+      "recipe": "recipe.single-qubit-bloch-ball",
+      "look": "knowledge.style-technical-illustration",
+      "look_applied": true,
+      "caption": "A pure single-qubit state on the Bloch ball at theta 55 deg, phi 35 deg — unlit flat fills on a white page, two saturated hues, one callout.",
+      "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched",
+      "query": "plate=1"
+    },
+    {
+      "id": "coupled-gears-studio",
+      "source": "breadth",
+      "view": "gears",
+      "motion_ms": 800,
+      "recipe": "recipe.coupled-gears",
+      "look": "knowledge.style-stylized-realism",
+      "mood": "knowledge.lighting-mood-dark-studio-product",
+      "look_applied": true,
+      "caption": "A 24/16-tooth spur pair, module 10 mm, ratio 3:2 held by the update, under the three-panel dark studio set; captured 800 ms into the view so the train is mid-rotation.",
+      "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched",
+      "query": "plate=1"
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "id": "recipe.vector-field-integration",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Streamlines, trajectories and integrator error"
+  },
+  "aliases": {
+    "en": [
+      "field line integration",
+      "streamline",
+      "numerical trajectory"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields"
+  ],
+  "summary": "Separate the field itself from the numerical path traced through it, and keep the step size visible as a modelling choice.",
+  "objective": "Build a vector field where I can drop a seed point, integrate its path with a chosen step size and compare the result against a refined reference.",
+  "tags": [
+    "vector field",
+    "integration",
+    "step size"
+  ],
+  "subject_terms": [
+    "vector field",
+    "streamline",
+    "integral curve",
+    "seed point",
+    "step size",
+    "Euler method",
+    "numerical error",
+    "flow"
+  ],
+  "intent_signals": [
+    "Trace a particle path through a vector field and show how accurate it is.",
+    "Show how step size changes an integrated field line."
+  ],
+  "example_prompts": [
+    "Build a 3D vector field with seed points, an integrated path and a step-size control.",
+    "Compare a coarse and a refined integration of the same field line."
+  ],
+  "negative_signals": [
+    "Not a fluid solver: the field is prescribed, not computed from any physical equation.",
+    "Not a particle system with mass, drag or collisions."
+  ],
+  "not_for": [
+    "Not a fluid solver: the field is prescribed, not computed from any physical equation.",
+    "Not a particle system with mass, drag or collisions."
+  ],
+  "entities": [
+    {
+      "name": "Field sampling",
+      "guidance": "Sample the field on a sparse lattice with arrows whose display scale is stated, since arrow length is a chosen gain and not a physical magnitude."
+    },
+    {
+      "name": "Integrated path",
+      "guidance": "Draw the path as a polyline of actual integration steps with visible step markers, so the discretisation is inspectable rather than hidden by smoothing."
+    },
+    {
+      "name": "Reference comparison",
+      "guidance": "Integrate the same seed with a much smaller step or a higher-order method and draw the divergence between the two paths."
+    }
+  ],
+  "state_contract": {
+    "model": "A prescribed analytic field, a seed position, a step size h, an integration method and a step count N with the horizon fixed as T = N h, so halving h doubles N and comparisons are made at matched times. The drawn path is the sequence of computed states; the reference path is a separately computed refinement, which is a numerical reference rather than truth.",
+    "authority": "The integrator output is authoritative for the path. Smoothing is display only and must never be used to hide step-to-step differences.",
+    "actions": [
+      "Place or drag a seed point.",
+      "Change the step size and step count.",
+      "Switch integration method and compare against the reference.",
+      "Reset seeds, step size and camera."
+    ]
+  },
+  "invariants": [
+    "For a smooth field already in the convergence regime, halving h while doubling N to hold T fixed reduces the error at matched times roughly in proportion to h for a first-order method. This is a conditional expectation, not a configuration test: a constant field is integrated exactly by Euler at every h, and pre-asymptotic or rounding-dominated regimes break the trend without any defect.",
+    "The path never leaves the domain where the field is defined without the scene reporting it.",
+    "At a point where the field vanishes the path stops advancing rather than drifting."
+  ],
+  "motion_guidance": [
+    "Advance the integration in visible steps and allow stepping backwards through stored states rather than re-integrating with sign flipped.",
+    "Keep arrow scale fixed while the step size changes, so only the path changes."
+  ],
+  "known_limits": [
+    "Illustrative error comparison only; no error bound, order verification or tolerance certification is claimed.",
+    "Streamlines of a time-dependent field are not particle trajectories, and this recipe uses a steady field to avoid that confusion.",
+    "Error behaviour is only expected in the asymptotic regime for a smooth field; step-size trends are illustrative and do not verify the order of a method.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-euler-step",
+      "statement": "Euler stepping approximates a scalar initial-value problem with x_n = x_(n-1) + h and y_n = y_(n-1) + h f(x_(n-1), y_(n-1)), evaluating the slope at the previous computed point.",
+      "scope": "Explicit Euler recurrence for a scalar initial-value problem as cited, applied componentwise to the prescribed 3D field. The claim does not guarantee monotonic error reduction under refinement; convergence-regime comparisons and reference accuracy are separately declared modelling conditions.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-euler-method",
+          "locator": "4.2, Euler Method recurrence for x_n and y_n"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-direction-field",
+      "statement": "A direction field represents solutions of a first-order differential equation graphically, and a solution curve is the graph of the solution to an initial-value problem.",
+      "scope": "Definition used here to distinguish the drawn field from the drawn path.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-euler-method",
+          "locator": "4.2, direction fields and solution curves"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Field sampling",
+      "structure": "Cone-headed arrows of constant screen-relative width on a lattice whose spacing is a stated parameter.",
+      "material": "Neutral desaturated arrows so integrated paths keep the accent palette; magnitude is encoded by length and by a legend, not by hue alone.",
+      "articulation": "None. Arrows are rebuilt only when the field or lattice changes."
+    },
+    {
+      "family": "Integrated path",
+      "structure": "Tube along the polyline with spheres at each computed state, so the step count is countable at close range.",
+      "material": "One accent for the working path and a second, lower-value accent for the reference path.",
+      "articulation": "The path grows by appending states; scrubbing moves an index rather than re-integrating."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Numerical integration of a prescribed field with an explicit step size; no masses, forces or contact.",
+    "state": [
+      "seed position",
+      "step size",
+      "step index",
+      "stored state list"
+    ],
+    "driving": [
+      "Field evaluation at the current state supplies the increment."
+    ],
+    "timestep": "Fixed step size chosen by the user; rendering interpolates only between stored states.",
+    "checks": [
+      "Compare errors only at matched times with T fixed and a sufficiently accurate reference. Interpret first-order refinement trends only in the declared convergence regime before reference or rounding error dominates; lack of pairwise improvement alone is not failure. Report the constant-field case as exact in ideal arithmetic, subject to floating-point tolerance.",
+      "Reset clears stored states so no stale path remains."
+    ]
+  },
+  "related_ids": [
+    "recipe.divergence-flux-box",
+    "recipe.directional-derivative-surface",
+    "knowledge.parameter-experiment"
+  ]
+}

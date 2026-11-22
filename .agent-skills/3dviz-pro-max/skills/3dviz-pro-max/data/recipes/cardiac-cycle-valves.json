@@ -1,0 +1,317 @@
+{
+  "schema_version": 1,
+  "id": "recipe.cardiac-cycle-valves",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Cardiac cycle phases and valve states"
+  },
+  "aliases": {
+    "en": [
+      "cardiac cycle",
+      "heart valves",
+      "systole and diastole"
+    ]
+  },
+  "direction_ids": [
+    "physiology-biomechanics"
+  ],
+  "summary": "Drive valve states from an explicit phase model so opening and closing follow declared pressure comparisons rather than animation timing.",
+  "objective": "Build a cardiac cycle explorer where stepping through phases opens and closes the atrioventricular and semilunar valves for stated reasons.",
+  "tags": [
+    "cardiac cycle",
+    "valves",
+    "phases"
+  ],
+  "subject_terms": [
+    "systole",
+    "diastole",
+    "atrioventricular valve",
+    "semilunar valve",
+    "ventricular filling",
+    "ventricular ejection",
+    "isovolumetric",
+    "cardiac phase"
+  ],
+  "intent_signals": [
+    "Show what opens and closes each heart valve during a beat.",
+    "Step through the cardiac cycle instead of watching a loop."
+  ],
+  "example_prompts": [
+    "Build a cardiac cycle explorer with phase stepping and valve states I can inspect.",
+    "Show systole and diastole with the reason each valve opens or closes."
+  ],
+  "negative_signals": [
+    "Not an electrophysiology, pressure-volume or haemodynamic solver.",
+    "Not an ECG interpretation aid and not usable for any clinical judgement."
+  ],
+  "not_for": [
+    "Not an electrophysiology, pressure-volume or haemodynamic solver.",
+    "Not an ECG interpretation aid and not usable for any clinical judgement."
+  ],
+  "entities": [
+    {
+      "name": "Chamber shells",
+      "guidance": "Reuse a sectioned four-chamber shell whose cavities are separate volumes, so a phase can change cavity volume without merging chambers."
+    },
+    {
+      "name": "Valve leaflets",
+      "guidance": "Model each valve as discrete leaflets with a hinge ring and a closed-state seal, so an open and a closed valve differ in geometry rather than in opacity."
+    },
+    {
+      "name": "Phase panel",
+      "guidance": "Show the current phase name, the qualitative pressure comparison driving it, and the resulting state of each of the four valves as text as well as geometry."
+    }
+  ],
+  "state_contract": {
+    "model": "Ordered phase list; each phase declares a qualitative pressure comparison between chamber, atrium and outflow vessel and the resulting open or closed state of each valve. The five phases and their valve states are enumerated in defaults.values.state_table, which is the state of record for the phase model. Volumes are authored per phase, not integrated.",
+    "authority": "The phase index is authoritative. Leaflet pose, chamber volume and arrows are derived from the phase record; scrubbing backwards must restore the earlier valve states exactly.",
+    "actions": [
+      "Step to the next or previous phase.",
+      "Hold a phase and inspect the stated pressure comparison.",
+      "Toggle flow arrows and the section plane.",
+      "Reset to the start of ventricular filling."
+    ]
+  },
+  "invariants": [
+    "Each valve has exactly one declared state within a phase; the pressure comparison recorded for the next phase decides whether that state changes, so a valve may legitimately remain open, or remain closed, across adjacent compatible phases.",
+    "Anatomical left and right stay labelled independently of screen position.",
+    "Transvalvular flow arrows only appear where the phase record has an open valve.",
+    "Isovolumic phases are represented with all four valves closed; a phase record that leaves every valve closed is a valid state, not a missing entry."
+  ],
+  "motion_guidance": [
+    "Interpolate leaflet pose between phase states for legibility, but let the discrete phase remain the state of record.",
+    "Do not free-run the cycle as evidence of timing; if a play control exists, its rate is a display choice."
+  ],
+  "known_limits": [
+    "Qualitative phase ordering with typical resting volumes and phase durations from the cited section; no pressures in mmHg are asserted and the pressure column of the phase table stays a trend, not a value.",
+    "The cited section states no heart rate and no total cycle time; the 0.8 s cycle and 75 bpm in the defaults are arithmetic on the three sourced phase durations, not sourced figures.",
+    "Chamber and valve geometry remain authored approximations that need expert review before teaching use.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-systole-diastole",
+      "statement": "Systole is the period of contraction during which the heart pumps blood into circulation, and diastole is the period of relaxation during which the chambers fill.",
+      "scope": "Definitions of the two named periods; no timing values are claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-cardiac-cycle",
+          "locator": "19.3, definitions of systole and diastole"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-valve-states",
+      "statement": "Rising ventricular pressure closes the tricuspid and mitral valves, ventricular ejection pushes the pulmonary and aortic semilunar valves open, and those semilunar valves close when ventricular pressure falls below the pressure in the pulmonary trunk and aorta.",
+      "scope": "Qualitative pressure-driven ordering of valve states within one cycle.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-cardiac-cycle",
+          "locator": "19.3, atrioventricular and semilunar valve behaviour"
+        }
+      ]
+    },
+    {
+      "id": "claim.cardiac-cycle-phase-order",
+      "statement": "The cardiac cycle begins with contraction of the atria and ends with ventricular relaxation; atrial systole is followed by an isovolumic contraction phase that opens into ventricular ejection, then by an isovolumic ventricular relaxation phase that opens into ventricular filling, and atrial contraction supplies the last 20 to 30 percent of ventricular filling.",
+      "scope": "Named phase order of one cycle and the share of filling attributed to atrial contraction; no pressures in mmHg are claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-ap-cardiac-cycle",
+          "locator": "19.3, Phases of the Cardiac Cycle / Atrial Systole and Diastole / Ventricular Systole / Ventricular Diastole: \"The period of time that begins with contraction of the atria and ends with ventricular relaxation is known as the cardiac cycle\"; \"this initial phase of ventricular systole is known as isovolumic contraction\"; \"the early phase of ventricular diastole is called the isovolumic ventricular relaxation phase\"; \"Atrial contraction, also referred to as the 'atrial kick,' contributes the remaining 20-30 percent of filling\""
+        }
+      ]
+    },
+    {
+      "id": "claim.cardiac-cycle-volumes",
+      "statement": "At the end of ventricular filling a resting ventricle holds an end diastolic volume of approximately 130 mL, ventricular ejection leaves an end systolic volume of 50 to 60 mL, and the stroke volume ejected is 70 to 80 mL.",
+      "scope": "Typical resting left-ventricular volumes quoted by the cited teaching section; not a measured patient range and not a diagnostic reference interval.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-ap-cardiac-cycle",
+          "locator": "19.3, Ventricular Systole: end diastolic volume \"approximately 130 mL\", \"50-60 mL of blood remaining\" as end systolic volume, stroke volume \"70-80 mL\""
+        }
+      ]
+    },
+    {
+      "id": "claim.cardiac-cycle-phase-durations",
+      "statement": "In the cited teaching section atrial systole lasts approximately 100 ms, ventricular systole lasts a total of 270 ms and ventricular diastole lasts approximately 430 ms; the section states no heart rate and no total cycle time.",
+      "scope": "Phase durations as printed in the section. The 800 ms sum, the 0.8 s cycle time and the 75 bpm rate are arithmetic on these three numbers, not statements of the source.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-ap-cardiac-cycle",
+          "locator": "19.3, phase durations: \"Atrial systole lasts approximately 100 ms\"; ventricular systole \"lasting a total of 270 ms\"; ventricular diastole \"lasts approximately 430 ms\""
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Chamber shells",
+      "structure": "Sectioned cavities with wall thickness that differs between atria and ventricles; keep the cut capped so the interior reads as a solid organ.",
+      "material": "Restrained tissue palette in which cavity, wall and cut cap differ by roughness and value; colour marks chambers, not oxygen content.",
+      "articulation": "Volume change per phase is an authored blend between stored shapes, not a deformation solver."
+    },
+    {
+      "family": "Valve leaflets",
+      "structure": "Thin leaflets with a visible free edge and a hinge ring; closed state must show contacting edges rather than interpenetrating sheets.",
+      "material": "Slightly translucent, low-roughness leaflet material distinct from the chamber wall so open and closed states are readable in section.",
+      "articulation": "Leaflets rotate about their hinge ring between the two states declared by the phase record."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Phase-indexed presentation of authored geometry; no pressure solver, no fluid and no contact.",
+    "state": [
+      "phase index",
+      "valve states",
+      "section plane"
+    ],
+    "checks": [
+      "Stepping forward then backward restores the previous valve states.",
+      "Every transvalvular flow arrow shown corresponds to an open valve in the current phase record."
+    ]
+  },
+  "related_ids": [
+    "recipe.heart-cutaway",
+    "knowledge.state-playback",
+    "knowledge.signed-field-section"
+  ],
+  "defaults": {
+    "provenance": "source-backed",
+    "tunable": true,
+    "claim_ids": [
+      "claim.rd-valve-states",
+      "claim.cardiac-cycle-phase-order",
+      "claim.cardiac-cycle-volumes",
+      "claim.cardiac-cycle-phase-durations"
+    ],
+    "rationale": "Phase order, valve states, resting volumes and phase durations restate the cited section (claim.cardiac-cycle-phase-order, -volumes, -phase-durations, claim.rd-valve-states). Two derived entries are marked as such in their notes: the cycle time is the sum of the three sourced durations (100 + 270 + 430 ms = 800 ms) and the heart rate is 60 / 0.8 s = 75 bpm; the section states neither, so they are arithmetic on sourced numbers rather than sourced figures. The pressure and volume columns of the state table stay trends because the section gives no per-phase mmHg values. Tunable for animation pacing only: changing the cycle time must rescale the three phase durations together or the table stops matching its source.",
+    "values": {
+      "parameters": {
+        "end_diastolic_volume": {
+          "value": 130,
+          "unit": "mL",
+          "note": "\"approximately 130 mL\"; sourced"
+        },
+        "end_systolic_volume": {
+          "value": 55,
+          "unit": "mL",
+          "range": [
+            50,
+            60
+          ],
+          "note": "section gives the range 50-60 mL; 55 mL is its midpoint, used as the single default"
+        },
+        "stroke_volume": {
+          "value": 75,
+          "unit": "mL",
+          "range": [
+            70,
+            80
+          ],
+          "note": "sourced as 70-80 mL and equal to EDV - ESV at the midpoint"
+        },
+        "atrial_systole_duration": {
+          "value": 100,
+          "unit": "ms",
+          "note": "sourced, \"approximately\""
+        },
+        "ventricular_systole_duration": {
+          "value": 270,
+          "unit": "ms",
+          "note": "sourced total"
+        },
+        "ventricular_diastole_duration": {
+          "value": 430,
+          "unit": "ms",
+          "note": "sourced, \"approximately\""
+        },
+        "atrial_kick_fraction_of_filling": {
+          "value": 0.25,
+          "unit": "fraction",
+          "range": [
+            0.2,
+            0.3
+          ],
+          "note": "sourced as 20-30 percent; midpoint used"
+        },
+        "cycle_time": {
+          "value": 0.8,
+          "unit": "s",
+          "note": "derived: 100 + 270 + 430 ms; the section states no cycle time"
+        },
+        "heart_rate": {
+          "value": 75,
+          "unit": "bpm",
+          "note": "derived: 60 / 0.8 s; the section states no heart rate"
+        },
+        "chamber_pressures_mmhg": {
+          "value": "no default; source gives none",
+          "unit": "mmHg",
+          "note": "the section describes pressure comparisons qualitatively; the state table therefore carries trends, not values"
+        }
+      },
+      "equations": [
+        "SV = EDV - ESV",
+        "EF = SV / EDV",
+        "cycle_time = atrial_systole + ventricular_systole + ventricular_diastole (derived)",
+        "heart_rate = 60 s / cycle_time (derived)"
+      ],
+      "state_table": [
+        {
+          "phase": "atrial systole",
+          "duration_ms": 100,
+          "av_valves": "open",
+          "semilunar_valves": "closed",
+          "ventricular_pressure_trend": "low, rising slightly as the atrial kick tops the ventricle up",
+          "ventricular_volume_trend": "rising to EDV (130 mL)"
+        },
+        {
+          "phase": "isovolumic ventricular contraction",
+          "duration_ms": "part of the 270 ms ventricular systole; the section gives no split",
+          "av_valves": "closed",
+          "semilunar_valves": "closed",
+          "ventricular_pressure_trend": "rising steeply",
+          "ventricular_volume_trend": "constant at EDV"
+        },
+        {
+          "phase": "ventricular ejection",
+          "duration_ms": "remainder of the 270 ms ventricular systole",
+          "av_valves": "closed",
+          "semilunar_valves": "open",
+          "ventricular_pressure_trend": "peak, then falling toward the end of ejection",
+          "ventricular_volume_trend": "falling from EDV to ESV (130 to 55 mL)"
+        },
+        {
+          "phase": "isovolumic ventricular relaxation",
+          "duration_ms": "part of the 430 ms ventricular diastole; the section gives no split",
+          "av_valves": "closed",
+          "semilunar_valves": "closed",
+          "ventricular_pressure_trend": "falling steeply",
+          "ventricular_volume_trend": "constant at ESV"
+        },
+        {
+          "phase": "ventricular filling",
+          "duration_ms": "remainder of the 430 ms ventricular diastole",
+          "av_valves": "open",
+          "semilunar_valves": "closed",
+          "ventricular_pressure_trend": "low",
+          "ventricular_volume_trend": "rising; passive filling supplies 70-80 percent, the next atrial systole the rest"
+        }
+      ],
+      "worked_example": {
+        "inputs": "EDV 130 mL and ESV 55 mL (midpoint of the sourced 50-60 mL band)",
+        "expected": "SV = 75 mL and EF = 58 percent; across the whole sourced ESV band, SV 70-80 mL and EF 54-62 percent",
+        "derivation": "SV = EDV - ESV = 130 - 55 = 75 mL, which lands inside the section's own 70-80 mL stroke volume. EF = SV / EDV = 75 / 130 = 0.577 = 57.7 percent. Band endpoints: ESV 50 mL gives SV 80 mL and EF 80/130 = 61.5 percent; ESV 60 mL gives SV 70 mL and EF 70/130 = 53.8 percent."
+      },
+      "tolerance": {
+        "volumes_ml": "+/- 1 mL when comparing a computed SV with the table",
+        "durations_ms": "+/- 5 ms; the source hedges two of the three durations with \"approximately\"",
+        "phase_index": "exact integer; scrubbing back must restore the identical valve states"
+      }
+    }
+  }
+}

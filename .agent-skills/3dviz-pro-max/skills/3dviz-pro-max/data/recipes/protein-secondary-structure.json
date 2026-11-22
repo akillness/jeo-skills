@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "id": "recipe.protein-secondary-structure",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Protein secondary structure ribbon"
+  },
+  "aliases": {
+    "en": [
+      "protein ribbon",
+      "alpha helix and beta sheet",
+      "cartoon representation"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Build a cartoon protein view whose helices and strands come from annotated structure rather than from decorative shapes.",
+  "objective": "Show a protein chain as a ribbon where helices, strands and coil are separate labelled spans traced along the same backbone.",
+  "tags": [
+    "protein",
+    "secondary structure",
+    "ribbon"
+  ],
+  "subject_terms": [
+    "alpha helix",
+    "beta strand",
+    "beta sheet",
+    "backbone",
+    "cartoon representation",
+    "tertiary structure",
+    "quaternary structure",
+    "hydrogen bond"
+  ],
+  "intent_signals": [
+    "Show a protein as a ribbon with helices and sheets I can select.",
+    "Explain how a cartoon protein diagram maps to the actual chain."
+  ],
+  "example_prompts": [
+    "Build a protein ribbon view with spring-shaped helices, flat arrows for strands and a residue-range readout.",
+    "Let me select a secondary structure element and see its residue span."
+  ],
+  "negative_signals": [
+    "Not a folding, docking or energy simulation.",
+    "Not a substitute for a structure viewer: no experimental coordinates are supplied by this recipe."
+  ],
+  "not_for": [
+    "Not a folding, docking or energy simulation.",
+    "Not a substitute for a structure viewer: no experimental coordinates are supplied by this recipe."
+  ],
+  "entities": [
+    {
+      "name": "Backbone path",
+      "guidance": "Build one continuous backbone curve through the chain and derive every ribbon element from spans of that curve, so cartoon shapes cannot drift away from the chain."
+    },
+    {
+      "name": "Secondary structure spans",
+      "guidance": "Represent helices as spring-shaped ribbons and strands as flat arrows with a direction, each carrying its residue range as data."
+    },
+    {
+      "name": "Chain and assembly labels",
+      "guidance": "Give each chain its own identity so a multi-chain assembly can be separated without renaming its elements."
+    }
+  ],
+  "state_contract": {
+    "model": "Residue sequence with per-residue secondary structure assignment loaded from a supplied structure file; ribbon geometry is generated from those spans. The recipe supplies no coordinates and computes no assignment itself.",
+    "authority": "The supplied annotation is authoritative. If the file has no assignment, the scene must say so rather than inventing helices; generated geometry is always derived from the current annotation.",
+    "actions": [
+      "Select a helix, strand or coil span and read its residue range.",
+      "Isolate one chain and restore the assembly.",
+      "Switch between cartoon and backbone trace without losing selection.",
+      "Reset the view to the whole assembly."
+    ]
+  },
+  "invariants": [
+    "Every ribbon element maps to a contiguous residue range, and ranges never overlap.",
+    "Strand arrows keep their direction from N to C terminus under any camera orientation.",
+    "Selection identity survives representation changes: switching to a backbone trace keeps the same element selected."
+  ],
+  "motion_guidance": [
+    "Animate transitions between representations as morphs along the shared backbone, not as cross fades between unrelated meshes.",
+    "Do not animate the chain as if it were folding; this recipe has no dynamics."
+  ],
+  "known_limits": [
+    "Requires a user-supplied structure with a secondary structure annotation; nothing is bundled here, and the defaults contain no coordinates because the recipe supplies none.",
+    "Cartoon geometry is a convention, not the physical shape of the molecule: the ribbon widths and radii in the defaults are authored display proportions, and the cited page gives no residues per turn, helix pitch or hydrogen-bond spacing to source them from.",
+    "Beta sheets can be antiparallel, parallel or mixed; the cited page illustrates one antiparallel sheet, so this recipe does not claim a prevalence and reads strand direction from the supplied annotation.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-secondary-structure-elements",
+      "statement": "Alpha helices form spring-shaped structures in which each amino acid hydrogen bonds with an amino acid further down the chain, and beta strands are extended regions that hydrogen bond with neighbouring strands to form a beta sheet; in the sheet illustrated on the cited page the four strands run in opposite directions.",
+      "scope": "Definitions of the two common secondary structure elements, with the opposite-strand direction restricted to the illustrated sheet. Sheets can also be parallel or mixed, which this source does not cover, and cartoon geometry remains a drawing convention.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-pdb101-protein-structure",
+          "locator": "Protein Hierarchical Structure, secondary structure section and Figure 2 caption"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-cartoon-convention",
+      "statement": "Simplified schematic representations highlight major secondary structures using a spring-shaped structure for alpha helices and a flat arrow for beta strands.",
+      "scope": "Representation convention only; colours and thickness remain authoring choices.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-pdb101-protein-structure",
+          "locator": "Protein Hierarchical Structure, schematic representation description"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Backbone path",
+      "structure": "A smooth interpolating curve through backbone control points with enough segments that helix turns stay round at close inspection.",
+      "material": "Neutral matte base so the accent palette can be reserved for selected elements; avoid strong specular highlights that read as wetness.",
+      "articulation": "None. The curve is rebuilt only when the structure or annotation changes."
+    },
+    {
+      "family": "Secondary structure spans",
+      "structure": "Extruded ribbon profiles: a rounded coil, a helical spring and a flat arrow with a widened head at the C-terminal end of each strand.",
+      "material": "Three material families that differ in value and profile shape, so element type is legible without relying on colour vision.",
+      "articulation": "Selection raises an element slightly and brightens it; the underlying spans do not move."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Static structural presentation; no molecular mechanics, solvent or bond breaking.",
+    "checks": [
+      "Residue ranges reported by the UI match the ranges used to build geometry.",
+      "Isolating and restoring a chain leaves element identity unchanged."
+    ]
+  },
+  "related_ids": [
+    "recipe.molecular-shape-comparison",
+    "knowledge.object-isolation",
+    "knowledge.style-scientific-encoding"
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Illustrative cartoon proportions: the cited page describes the spring-shaped helix and flat-arrow strand convention (claim.rd-cartoon-convention, claim.rd-secondary-structure-elements) but prints no residues per turn, no pitch and no hydrogen-bond spacing, so every number below is an authored display proportion and none is a structural measurement. They are expressed as ratios to a single ribbon width so a scene can scale the whole cartoon with one number and keep arrowheads reading as arrowheads. The residue-range arithmetic in the worked example is the part that must be exact, because it is what connects the drawn geometry back to the supplied annotation - that is bookkeeping, not styling. Tunable: all display ratios are free; the inclusive-range convention is not, because changing it silently shifts every element by one residue.",
+    "values": {
+      "parameters": {
+        "ribbon_width": {
+          "value": 1.0,
+          "unit": "display unit",
+          "note": "authored base unit; every other proportion is a multiple of it"
+        },
+        "helix_ribbon_width_ratio": {
+          "value": 1.0,
+          "unit": "x ribbon_width",
+          "note": "authored"
+        },
+        "strand_body_width_ratio": {
+          "value": 0.9,
+          "unit": "x ribbon_width",
+          "note": "authored"
+        },
+        "strand_arrowhead_width_ratio": {
+          "value": 1.8,
+          "unit": "x ribbon_width",
+          "note": "authored: twice the strand body so direction reads at a glance"
+        },
+        "strand_arrowhead_length_residues": {
+          "value": 2,
+          "unit": "residues",
+          "note": "authored: the arrowhead consumes the last two residues of the span and must not extend past its end"
+        },
+        "coil_tube_radius_ratio": {
+          "value": 0.15,
+          "unit": "x ribbon_width",
+          "note": "authored"
+        },
+        "residue_range_convention": {
+          "value": "inclusive on both ends",
+          "unit": "convention",
+          "note": "length = end - start + 1; not tunable"
+        },
+        "helix_residues_per_turn": {
+          "value": "no default; source gives none",
+          "unit": "residues",
+          "note": "the cited page gives no residues per turn; take it from the supplied structure if a scene needs it"
+        },
+        "helix_pitch": {
+          "value": "no default; source gives none",
+          "unit": "angstrom"
+        },
+        "backbone_coordinates": {
+          "value": "no default; the recipe supplies none",
+          "unit": "angstrom",
+          "note": "coordinates and the secondary-structure annotation both come from the user-supplied structure file"
+        }
+      },
+      "equations": [
+        "element length in residues = end - start + 1 (inclusive convention)",
+        "two ranges overlap iff start_b <= end_a and start_a <= end_b",
+        "covered residues = sum of element lengths, which must equal the count of distinct residues in the union"
+      ],
+      "worked_example": {
+        "inputs": "An annotation with a helix over residues 42-53 and a strand over residues 56-61 in the same chain",
+        "expected": "Two ribbon elements of length 12 and 6 residues, 18 residues covered in total, zero overlap, and a gap of 2 residues (54 and 55) rendered as coil; the strand arrowhead occupies residues 60-61 and points from 56 toward 61, and that direction is unchanged by any camera orbit",
+        "derivation": "Lengths: 53 - 42 + 1 = 12 and 61 - 56 + 1 = 6, so 18 residues are covered. Overlap test: 56 <= 53 is false, so the ranges do not overlap, which is the recipe's invariant. Gap: 56 - 53 - 1 = 2 residues of coil. Arrowhead: the last 2 residues of the strand span are 60 and 61, so an arrowhead drawn over 61-62 would extend one residue past the annotation and is a defect. Off-by-one check: a half-open reading of the same annotation would give lengths 11 and 5 and would place the arrowhead one residue early, which is why the inclusive convention is fixed rather than tunable."
+      },
+      "tolerance": {
+        "residue_indices": "exact integers; a one-residue disagreement between the reported range and the geometry is a defect, not a tolerance",
+        "geometry": "display proportions are free within a factor of about two before an arrowhead stops reading as an arrowhead",
+        "selection_identity": "an element must keep the same identifier through a representation change, compared exactly rather than by proximity"
+      }
+    }
+  }
+}

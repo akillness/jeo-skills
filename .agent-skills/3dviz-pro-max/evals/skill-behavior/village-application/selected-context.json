@@ -1,0 +1,1734 @@
+{
+  "catalog_hash": "025c2ba5154fea9b1268242b42a4c4242a1fb9a777dfc593511627608c9c93c3",
+  "bundle_hash": "ff1f49b8f05eeac588323a547fa8931a90dbffa4ccb33f62a1124f6a3b32ab86",
+  "selected_ids": [
+    "recipe.fantasy-village-diorama",
+    "recipe.terrain-island",
+    "recipe.winged-flight-cycle",
+    "recipe.garden-creature-patrol",
+    "knowledge.framed-shelter",
+    "knowledge.style-stylized-realism",
+    "knowledge.theme-fantasy-woodland",
+    "knowledge.gravity-contact",
+    "knowledge.three-rigid-body-adapter",
+    "knowledge.reasoning-terrain-height-authority",
+    "knowledge.reasoning-settlement-function-variation",
+    "knowledge.reasoning-gait-contact-consistency",
+    "knowledge.reasoning-creature-body-plan-coherence",
+    "knowledge.validation-traversable-support-clearance",
+    "knowledge.controlled-experiment",
+    "knowledge.dielectric-surface",
+    "knowledge.conductor-surface",
+    "knowledge.transmissive-medium",
+    "knowledge.shared-pbr-studio-environment"
+  ],
+  "records": [
+    {
+      "schema_version": 1,
+      "id": "recipe.fantasy-village-diorama",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "creative",
+      "title": {
+        "en": "Fantasy village diorama"
+      },
+      "aliases": {
+        "en": [
+          "storybook village",
+          "miniature fantasy settlement"
+        ]
+      },
+      "direction_ids": [
+        "environments-dioramas"
+      ],
+      "summary": "Compose a small invented settlement around a memorable landmark, readable paths, and contrasting building silhouettes.",
+      "objective": "Create an explorable miniature world with a coherent visual story and room for unexpected architecture.",
+      "tags": [
+        "worldbuilding",
+        "diorama",
+        "village"
+      ],
+      "example_prompts": [
+        "Build a hillside village whose lanterns collect falling stars.",
+        "Make a rainy miniature settlement growing around an enormous teapot."
+      ],
+      "entities": [
+        {
+          "name": "Landmark",
+          "guidance": "Choose one strong silhouette and give it breathing room."
+        },
+        {
+          "name": "Homes and gathering spaces",
+          "guidance": "Vary roof profiles and clustering; connect entrances to visible paths."
+        },
+        {
+          "name": "Terrain and vegetation",
+          "guidance": "Use terraces, roots, or islands to organize depth and sightlines."
+        }
+      ],
+      "creative_affordances": [
+        "Start with a story constraint: what do the inhabitants value, collect, or fear? Let it shape the landmark and daily-life details.",
+        "Explore asymmetry, improbable materials, exaggerated scale, and palettes beyond conventional medieval fantasy.",
+        "Use a limited family of shapes for cohesion; reserve a contrasting shape for the landmark.",
+        "Choose orbit inspection, a few authored viewpoints, or a static composition according to the requested artifact."
+      ],
+      "motion_guidance": [
+        "Optional lantern sway, drifting leaves, or chimney wisps can suggest life without forcing a population simulation.",
+        "Provide a still or reduced-motion presentation; keep decorative motion separate from camera input."
+      ],
+      "known_limits": [
+        "Entirely invented setting; no claim of historical, structural, or ecological accuracy.",
+        "Spatial readability and style guidance are editorial suggestions, not universal aesthetic rules.",
+        "No bundled models, textures, or observed render evaluation."
+      ],
+      "_path": "data/recipes/environments-dioramas.json"
+    },
+    {
+      "schema_version": 1,
+      "id": "recipe.terrain-island",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "creative",
+      "title": {
+        "en": "Terrain island with grounded exploration"
+      },
+      "aliases": {
+        "en": [
+          "terrain island"
+        ]
+      },
+      "direction_ids": [
+        "environments-dioramas"
+      ],
+      "summary": "Compose a traversable island around a ridge, sheltered inlet and readable path.",
+      "objective": "Build an island I can explore, with terrain-aware walkers and a clear route from jetty to lookout.",
+      "tags": [
+        "terrain",
+        "island"
+      ],
+      "example_prompts": [
+        "Build an island I can explore, with terrain-aware walkers and a clear route from jetty to lookout."
+      ],
+      "entities": [
+        {
+          "name": "Terrain",
+          "guidance": "Author silhouette before detail: ridge, saddle, shore shelf and cliff faces. Use rough rock, softer soil and low-gloss water as distinct material families; avoid uniform noise."
+        },
+        {
+          "name": "Jetty and lookout",
+          "guidance": "Model posts into the support surface, deck thickness, rail joints and visible steps; inspect at walking distance."
+        },
+        {
+          "name": "Walker",
+          "guidance": "Give feet, hips and a head a readable hierarchy; derive stride from traveled distance, plant feet against the support surface."
+        }
+      ],
+      "state_contract": {
+        "model": "Authored height field and static obstacles; controlled capsule actor with position, velocity and bounded steering acceleration in illustrative metres.",
+        "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+        "actions": [
+          "Select route waypoint; reject unreachable targets.",
+          "Pause or reset actor position and velocity.",
+          "Toggle terrain and obstacle collider overlay."
+        ]
+      },
+      "invariants": [
+        "Collider includes body clearance; buildings and cliff walls block movement.",
+        "Sample support height and normal; enforce authored slope and step limits and block water unless swimming is implemented.",
+        "Bridge deck is a distinct support surface above water; do not sample seabed through it."
+      ],
+      "motion_guidance": [
+        "Use fixed simulation steps, sweep capsule across movement and slide/stop at contact; interpolate rendering.",
+        "Constrain feet to terrain, limit heading change, and keep acceleration bounded in free motion; gravity only in unsupported states."
+      ],
+      "known_limits": [
+        "Invented terrain, not a geologic or erosion model.",
+        "Navigation and contact implementation remain required; a waypoint curve alone does not establish clearance.",
+        "Authored guidance; no scene runtime or visual verification has run for this recipe."
+      ],
+      "object_craft": [
+        {
+          "family": "Terrain",
+          "structure": "Author silhouette before detail: ridge, saddle, shore shelf and cliff faces. Use rough rock, softer soil and low-gloss water as distinct material families; avoid uniform noise.",
+          "material": "Rough cliff rock, softer matte soil, directional timber grain and a low-gloss water family; use contact darkening sparingly at supports.",
+          "articulation": "Parent feet to legs and legs to pelvis; heading follows resolved velocity, foot placement follows the selected support surface."
+        },
+        {
+          "family": "Jetty and lookout",
+          "structure": "Model posts into the support surface, deck thickness, rail joints and visible steps; inspect at walking distance.",
+          "material": "Rough cliff rock, softer matte soil, directional timber grain and a low-gloss water family; use contact darkening sparingly at supports.",
+          "articulation": "Parent feet to legs and legs to pelvis; heading follows resolved velocity, foot placement follows the selected support surface."
+        },
+        {
+          "family": "Walker",
+          "structure": "Give feet, hips and a head a readable hierarchy; derive stride from traveled distance, plant feet against the support surface.",
+          "material": "Rough cliff rock, softer matte soil, directional timber grain and a low-gloss water family; use contact darkening sparingly at supports.",
+          "articulation": "Parent feet to legs and legs to pelvis; heading follows resolved velocity, foot placement follows the selected support surface."
+        }
+      ],
+      "physical_contract": {
+        "model": "controlled-locomotion",
+        "scope": "Terrain-aware authored walking; no hydrodynamics.",
+        "state": [
+          "position",
+          "velocity",
+          "heading",
+          "support surface ID"
+        ],
+        "colliders": [
+          "Capsule actor encompassing body; support contact handles feet.",
+          "Transformed static wall/roof bounds; terrain and bridge supports."
+        ],
+        "driving": [
+          "Bound free-motion acceleration and turn rate; brake or replan at blocked route."
+        ],
+        "contact": [
+          "Sweep movement, remove inward velocity, slide or stop.",
+          "Terrain normal, slope and step limits decide support; water is blocked."
+        ],
+        "timestep": "Fixed simulation step with accumulated remainder; interpolate render transforms.",
+        "checks": [
+          "Complete a route without penetration at declared tolerance.",
+          "Stop at shoreline and cliff; traverse bridge on its deck.",
+          "Pause and reset clear stale velocity."
+        ]
+      },
+      "_path": "data/recipes/environments-dioramas.json"
+    },
+    {
+      "schema_version": 1,
+      "id": "recipe.winged-flight-cycle",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "creative",
+      "title": {
+        "en": "Winged creature flight cycle and banking turns"
+      },
+      "aliases": {
+        "en": [
+          "flight cycle",
+          "wing flap",
+          "banking turn"
+        ]
+      },
+      "direction_ids": [
+        "characters-motion-art"
+      ],
+      "summary": "Build a flier whose wing cycle, banking and heading come from one motion state instead of three unrelated animations.",
+      "objective": "Create a flying creature that flaps, glides and banks into turns, with the wing cycle driven by its actual motion.",
+      "tags": [
+        "creature",
+        "flight",
+        "animation"
+      ],
+      "subject_terms": [
+        "flight cycle",
+        "wing beat",
+        "banking",
+        "glide",
+        "downstroke",
+        "upstroke",
+        "heading",
+        "turn radius"
+      ],
+      "intent_signals": [
+        "Make a flying creature that turns believably.",
+        "Build a wing flap cycle that responds to speed rather than looping at a fixed rate."
+      ],
+      "example_prompts": [
+        "Create a flying creature with flap, glide and banking turns driven by its motion state.",
+        "Build a bird-like flier that circles a landmark and lands on it."
+      ],
+      "negative_signals": [
+        "Not an aerodynamic flight model: no lift, drag or stall is computed.",
+        "Not a species-accurate ornithological reconstruction."
+      ],
+      "not_for": [
+        "Not an aerodynamic flight model: no lift, drag or stall is computed.",
+        "Not a species-accurate ornithological reconstruction."
+      ],
+      "entities": [
+        {
+          "name": "Wing structure",
+          "guidance": "Build the wing as a jointed arm with membrane or feather layers driven by joint angles, so folding and extension are structural rather than a scale change."
+        },
+        {
+          "name": "Body and tail",
+          "guidance": "Give the body a spine chain and a steering tail, so banking involves the whole creature rather than only the wings."
+        },
+        {
+          "name": "Flight state",
+          "guidance": "Hold speed, heading, bank angle and flap phase as one state, since every visible motion should be derived from it."
+        }
+      ],
+      "state_contract": {
+        "model": "Flight state with position, speed, heading, bank angle and flap phase; the wing cycle rate is derived from speed and climb demand, and bank angle is derived from turn rate. Landing is a state transition with a stated approach.",
+        "authority": "The flight state is authoritative. Wing pose, tail deflection and body roll are all derived from it, so an animation that plays while the state is idle is a defect.",
+        "actions": [
+          "Steer the creature along a path or toward a target.",
+          "Switch between flapping and gliding.",
+          "Command a landing on a marked perch.",
+          "Reset position, speed and pose."
+        ]
+      },
+      "invariants": [
+        "Under the coordinated-flight rule this scene chooses, bank angle follows the commanded turn rate with a declared lag, so roll-in and roll-out legitimately show bank while the heading is still changing. Glide, landing approach and idle are separate states with their own pose rules.",
+        "In flapping flight the cycle rate follows speed and climb demand; in glide and idle the flap phase is held at a declared pose rather than continuing to advance.",
+        "Landing uses a foot-to-support alignment rule: the feet are placed on the perch surface and the flight state ends only then, since capsule contact alone does not establish that the feet are on the perch."
+      ],
+      "motion_guidance": [
+        "Use anticipation before the first downstroke and follow-through in the wing tips, and offset the tail so it does not move in lockstep with the wings.",
+        "Blend between flapping and gliding through pose targets rather than cross-fading two clips."
+      ],
+      "known_limits": [
+        "Authored motion: nothing here predicts real flight performance or energy cost.",
+        "Wing membranes are driven by joints; no cloth or feather simulation is implied.",
+        "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+      ],
+      "object_craft": [
+        {
+          "family": "Wing structure",
+          "structure": "Shoulder, elbow and wrist joints with primaries or membrane panels attached along the forearm and hand, and visible attachment at the body.",
+          "material": "Layered surfaces with slight translucency at membrane edges; feather or membrane detail should read as geometry at silhouette scale.",
+          "articulation": "Wing pose is driven by the flap phase and by the fold parameter used for gliding and perching."
+        },
+        {
+          "family": "Body and tail",
+          "structure": "Spine chain with a heavier chest mass and a tail that can fan and twist.",
+          "material": "Matte body with a distinct surface treatment on the underside so bank angle is legible against the sky.",
+          "articulation": "Roll is applied to the spine root; the tail lags the body by a short offset."
+        }
+      ],
+      "physical_contract": {
+        "model": "controlled-locomotion",
+        "scope": "Authored flight steering with bounded acceleration and turn rate; no aerodynamics or collision response beyond landing contact.",
+        "state": [
+          "position",
+          "speed",
+          "heading",
+          "bank angle",
+          "flap phase"
+        ],
+        "colliders": [
+          "Body capsule for perch contact and obstacle blocking."
+        ],
+        "driving": [
+          "Bounded acceleration, climb rate and turn rate; flap rate derived from speed and climb demand."
+        ],
+        "contact": [
+          "Perch landing places feet on the support surface and stops motion."
+        ],
+        "timestep": "Fixed step with interpolated rendering.",
+        "checks": [
+          "For the authored coordinated-flight state, bank follows the declared turn signal with the stated response lag; evaluate roll-in, roll-out, glide, landing and idle under their own state rules.",
+          "Feet contact the perch on landing without interpenetration."
+        ]
+      },
+      "creative_affordances": [
+        "The creature can be avian, chiropteran or invented, as long as the wing arm remains structurally readable.",
+        "Flight personality is a design lever: heavy slow beats or quick nervous flicks both work with the same state model."
+      ],
+      "related_ids": [
+        "recipe.garden-creature-patrol",
+        "knowledge.articulated-limb",
+        "knowledge.articulation-from-motion"
+      ],
+      "_path": "data/recipes/opus5-recipe-depth-characters-motion-art-depth.json"
+    },
+    {
+      "schema_version": 1,
+      "id": "recipe.garden-creature-patrol",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "creative",
+      "title": {
+        "en": "Garden creature route and gait"
+      },
+      "aliases": {
+        "en": [
+          "stylized creature locomotion",
+          "patrol animal"
+        ]
+      },
+      "direction_ids": [
+        "characters-motion-art"
+      ],
+      "summary": "Make a small fictional quadruped travel a route with readable foot placement and stopping.",
+      "objective": "Make a mushroom-backed creature patrol between garden stones, pause and turn toward a visitor.",
+      "tags": [
+        "quadruped",
+        "patrol route",
+        "foot plant"
+      ],
+      "subject_terms": [
+        "quadruped",
+        "patrol route",
+        "foot plant",
+        "gait phase",
+        "creature"
+      ],
+      "intent_signals": [
+        "make a creature walk",
+        "stop without sliding"
+      ],
+      "example_prompts": [
+        "Make a mushroom-backed creature patrol between garden stones, pause and turn toward a visitor.",
+        "Show its support points and compare slow and brisk walks."
+      ],
+      "entities": [
+        {
+          "name": "Creature",
+          "guidance": "Use trunk, four two-segment legs, broad feet and a separate expressive head; attach mushrooms to the back."
+        },
+        {
+          "name": "Route and stones",
+          "guidance": "Define traversable ground, turn zones and enlarged rock exclusion envelopes."
+        }
+      ],
+      "object_craft": [
+        {
+          "family": "Creature",
+          "structure": "Use trunk, four two-segment legs, broad feet and a separate expressive head; attach mushrooms to the back.",
+          "material": "Soft matte hide and speckled caps.",
+          "articulation": "Leg pivots belong to the body hierarchy; support targets remain in world space during stance."
+        },
+        {
+          "family": "Route and stones",
+          "structure": "Define traversable ground, turn zones and enlarged rock exclusion envelopes.",
+          "material": "Earth ground and dull stone; highlight path only on request."
+        }
+      ],
+      "state_contract": {
+        "model": "Authored route controller with arc length, heading, speed, bounded acceleration, gait phase and per-foot stance flags.",
+        "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+        "actions": [
+          "Choose next waypoint.",
+          "Pause and resume patrol.",
+          "Toggle foot targets and reset route."
+        ]
+      },
+      "invariants": [
+        "Root position comes from route state rather than a second animation track.",
+        "Stance feet remain fixed relative to ground until lift-off.",
+        "Pause freezes both travel and gait."
+      ],
+      "motion_guidance": [
+        "Derive gait progression from distance traveled; fade stride length toward zero during stopping.",
+        "Bound turn rate and use a wider waypoint arc instead of snapping the torso."
+      ],
+      "known_limits": [
+        "Fictional gait, not a biological claim or dynamically balanced animal.",
+        "No arbitrary terrain climbing; stop before an untraversable segment.",
+        "Authored recipe only; runtime and rendered geometry checks have not run."
+      ],
+      "claims": [],
+      "creative_affordances": [
+        "Mushroom shapes and slow head curiosity distinguish the creature without obscuring its legs."
+      ],
+      "physical_contract": {
+        "model": "controlled-locomotion",
+        "scope": "Scripted ground travel with exclusion envelopes.",
+        "state": [
+          "position",
+          "heading",
+          "speed",
+          "gait phase",
+          "foot targets"
+        ],
+        "colliders": [
+          "Body capsule envelope and static stone envelopes."
+        ],
+        "driving": [
+          "Waypoint steering with explicit speed, acceleration and turn limits."
+        ],
+        "contact": [
+          "Ground height anchors feet; halt or replan if envelope path is blocked."
+        ],
+        "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+        "checks": [
+          "Stop feet without sliding; block a waypoint behind a stone."
+        ]
+      },
+      "_path": "data/recipes/characters-motion-art.json"
+    },
+    {
+      "schema_version": 1,
+      "id": "knowledge.framed-shelter",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "creative",
+      "knowledge_kind": "object-archetype",
+      "title": {
+        "en": "Framed shelter with readable assembly"
+      },
+      "aliases": {
+        "en": [
+          "framed shelter"
+        ]
+      },
+      "direction_ids": [
+        "environments-dioramas"
+      ],
+      "summary": "Construct a shelter from foundation, posts, beams, roof and infill so support and enclosure can be inspected.",
+      "objective": "From an isolated oblique view, trace roof-to-frame-to-ground connections without unexplained floating members.",
+      "tags": [
+        "object-archetype",
+        "framed",
+        "shelter"
+      ],
+      "example_prompts": [
+        "Construct a shelter from foundation, posts, beams, roof and infill so support and enclosure can be inspected."
+      ],
+      "content": {
+        "principles": [
+          "Authored visual archetype: identify what supports, what encloses and what opens before choosing decorative motifs.",
+          "Repeat a bay dimension to give doors, posts and roof edges a shared scale; vary the silhouette without losing the assembly."
+        ],
+        "implementation": [
+          "Create named foundation, frame, roof and infill groups. Place post feet at the foundation and give roof members visible bearing locations.",
+          "Give doors thickness, jambs and a hinge-side pivot. Reserve clearance through the opening before adding trim.",
+          "Represent joints with a few purposeful seams or brackets; use a removable wall or roof for inspection."
+        ],
+        "observable_checks": [
+          "From an isolated oblique view, trace roof-to-frame-to-ground connections without unexplained floating members.",
+          "Open the door through its declared range; it clears jambs and can be closed to its saved rest pose.",
+          "Removing infill reveals the same frame, not a second disconnected interior model."
+        ]
+      },
+      "known_limits": [
+        "A coherent visual assembly does not certify loads, joinery, weather resistance or construction safety.",
+        "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+      ],
+      "creative_affordances": [
+        "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+      ],
+      "related_ids": [
+        "recipe.fantasy-village-diorama",
+        "recipe.historical-diorama"
+      ],
+      "claims": [],
+      "_path": "data/knowledge/object-archetypes.json"
+    },
+    {
+      "schema_version": 1,
+      "id": "knowledge.style-stylized-realism",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "creative",
+      "knowledge_kind": "style-profile",
+      "title": {
+        "en": "Stylized realism balance"
+      },
+      "aliases": {
+        "en": [
+          "semi realistic 3D",
+          "stylized realistic scene",
+          "selective realism"
+        ]
+      },
+      "direction_ids": [
+        "characters-motion-art",
+        "environments-dioramas"
+      ],
+      "summary": "Keep construction and recognizable material relationships while deliberately exaggerating selected shapes or color relationships.",
+      "objective": "The intended exaggeration is identifiable, while feet, hinges and supported parts retain coherent connections.",
+      "tags": [
+        "style-profile",
+        "art-direction",
+        "stylized-realism"
+      ],
+      "subject_terms": [
+        "semi realistic 3D",
+        "stylized realistic scene",
+        "selective realism",
+        "art direction"
+      ],
+      "intent_signals": [
+        "Balance realism with stylized emphasis",
+        "Retain construction cues while exaggerating selected forms"
+      ],
+      "example_prompts": [
+        "Create a stylized-realistic village with expressive roofs but clearly supported buildings."
+      ],
+      "content": {
+        "principles": [
+          "Keep construction and recognizable material relationships while deliberately exaggerating selected shapes or color relationships.",
+          "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+        ],
+        "implementation": [
+          "Retain functional joints and major proportions as anchors; exaggerate one expressive silhouette feature at a time.",
+          "Use grounded surface separation with a selectively heightened palette and controlled focal light.",
+          "Choose a cinematic or exploratory camera that still supports object inspection; let expressive secondary motion coexist with clear model boundaries."
+        ],
+        "observable_checks": [
+          "The intended exaggeration is identifiable, while feet, hinges and supported parts retain coherent connections.",
+          "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+        ]
+      },
+      "known_limits": [
+        "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+        "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+      ],
+      "creative_affordances": [
+        "Combine with painterly atmosphere or hand-painted accents; explicitly factual dimensions remain unaltered unless the view declares a visual exaggeration.",
+        "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+      ],
+      "related_ids": [
+        "knowledge.object-isolation"
+      ],
+      "claims": [],
+      "_path": "data/knowledge/style-profiles.json"
+    },
+    {
+      "schema_version": 1,
+      "id": "knowledge.theme-fantasy-woodland",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "creative",
+      "knowledge_kind": "theme-profile",
+      "title": {
+        "en": "Fantasy woodland community"
+      },
+      "aliases": {
+        "en": [
+          "fantasy woodland",
+          "enchanted forest village",
+          "storybook grove"
+        ]
+      },
+      "direction_ids": [
+        "environments-dioramas",
+        "characters-motion-art"
+      ],
+      "summary": "Make a fictional community legible through shared paths, sheltered gathering spaces and a recurring woodland motif.",
+      "objective": "Paths visibly reach the important buildings and magical accents do not conceal entrances or characters.",
+      "tags": [
+        "theme-profile",
+        "fictional-setting",
+        "fantasy-woodland"
+      ],
+      "subject_terms": [
+        "fantasy woodland",
+        "enchanted forest village",
+        "storybook grove"
+      ],
+      "intent_signals": [
+        "Set the scene in a fantasy woodland community",
+        "Use fantasy woodland as the narrative setting"
+      ],
+      "example_prompts": [
+        "Create an enchanted woodland settlement whose residents visibly travel between distinct workplaces."
+      ],
+      "content": {
+        "principles": [
+          "Make a fictional community legible through shared paths, sheltered gathering spaces and a recurring woodland motif.",
+          "Theme supplies setting and motifs; choose geometry style, rendering approach and factual model independently."
+        ],
+        "implementation": [
+          "Shape houses around invented root or mushroom forms, but give entrances, bridges and supports readable connections.",
+          "Use a deliberate mix of timber-like, leaf-like and luminous accents with a warm focal light; keep the forest background grouped.",
+          "Offer an inviting path-level view and an overview; give residents distinct routes and rest points rather than universal bobbing."
+        ],
+        "observable_checks": [
+          "Paths visibly reach the important buildings and magical accents do not conceal entrances or characters.",
+          "Inspect one focal object close up and the complete route or spatial relationship from an overview."
+        ]
+      },
+      "known_limits": [
+        "Authored fictional setting guidance; no rendered artifact or runtime improvement has been observed for this record.",
+        "This proposal does not establish historical, cultural, scientific or engineering facts."
+      ],
+      "creative_affordances": [
+        "Combine with clay, painterly or stylized realism; the setting is invented and any real ecological claim needs separate grounding.",
+        "Replace motifs or combine settings to suit the user brief; maintain a readable organizing idea rather than treating these suggestions as a fixed asset list."
+      ],
+      "related_ids": [
+        "knowledge.framed-shelter",
+        "knowledge.object-isolation"
+      ],
+      "claims": [],
+      "_path": "data/knowledge/theme-profiles.json"
+    },
+    {
+      "schema_version": 1,
+      "id": "knowledge.gravity-contact",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "mixed",
+      "knowledge_kind": "physical-behavior",
+      "title": {
+        "en": "Gravity and contact as an observable action"
+      },
+      "aliases": {
+        "en": [
+          "gravity contact"
+        ]
+      },
+      "direction_ids": [
+        "rigid-mechanics",
+        "environments-dioramas"
+      ],
+      "summary": "Release a body onto a support with visible initial state, contact behavior and a reproducible reset.",
+      "objective": "Release from two declared heights and record distinct first-contact times; neither object visibly passes through the support.",
+      "tags": [
+        "physical-behavior",
+        "gravity",
+        "contact"
+      ],
+      "example_prompts": [
+        "Release a body onto a support with visible initial state, contact behavior and a reproducible reset."
+      ],
+      "content": {
+        "principles": [
+          "Choose analytic first-contact termination or solver-driven contact before animating. State authority must belong to that model.",
+          "A downward loop is insufficient evidence: expose an action whose outcome depends on the selected initial conditions."
+        ],
+        "implementation": [
+          "Declare distance and time units, gravity, body shape, floor shape and initial clearance. Render the contact geometry as an optional overlay.",
+          "For solver contact, give the falling item a dynamic body and a non-sensor collider; assign the support a collision shape.",
+          "Use a fixed simulation step with bounded catch-up and document pause behavior. Reset pose, velocities, clock and accumulated steps."
+        ],
+        "observable_checks": [
+          "Release from two declared heights and record distinct first-contact times; neither object visibly passes through the support.",
+          "Pause freezes model time; reset then release reproduces the initial configuration within a declared tolerance."
+        ]
+      },
+      "known_limits": [
+        "Contact tolerances, bounce and friction require explicit configuration; this record supplies no universal coefficients.",
+        "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+      ],
+      "creative_affordances": [
+        "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+      ],
+      "related_ids": [
+        "recipe.projectile-trajectory",
+        "recipe.fantasy-village-diorama",
+        "knowledge.three-rigid-body-adapter"
+      ],
+      "claims": [
+        {
+          "id": "claim.knowledge-gravity-contact",
+          "statement": "Dynamic Rapier bodies respond to forces and contacts; a body without a collider has no shape for contact response.",
+          "scope": "Rapier dynamics boundary; analytic stop-on-contact is a separate authored option.",
+          "source_refs": [
+            {
+              "source_id": "source.rapier-rigid-bodies",
+              "locator": "Rigid-body type; opening collider explanation"
+            }
+          ]
+        }
+      ],
+      "_path": "data/knowledge/physical-behaviors.json"
+    },
+    {
+      "schema_version": 1,
+      "id": "knowledge.three-rigid-body-adapter",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "mixed",
+      "knowledge_kind": "tool-adapter",
+      "title": {
+        "en": "Three.js and Rapier rigid-body adapter"
+      },
+      "aliases": {
+        "en": [
+          "three rigid body adapter"
+        ]
+      },
+      "direction_ids": [
+        "rigid-mechanics",
+        "environments-dioramas"
+      ],
+      "summary": "Connect rendered assemblies to independent rigid bodies and colliders with one authoritative simulation state.",
+      "objective": "Toggle collider visualization: rendered surfaces and collision boundaries agree at the contact region.",
+      "tags": [
+        "tool-adapter",
+        "three",
+        "rigid",
+        "body",
+        "adapter"
+      ],
+      "example_prompts": [
+        "Connect rendered assemblies to independent rigid bodies and colliders with one authoritative simulation state."
+      ],
+      "content": {
+        "principles": [
+          "Three.js draws the view; the physics world owns dynamic poses. Give each body an explicit corresponding presentation root.",
+          "Use a solver only when the interaction requires it; an analytic trajectory can remain a smaller, clearly scoped model."
+        ],
+        "implementation": [
+          "Choose consistent distance units and axes, record the installed Three.js/Rapier versions and await engine initialization before starting controls.",
+          "Create bodies and colliders separately. Configure density or mass, friction and restitution deliberately; optical materials do not supply these values.",
+          "Step the physics world at a declared fixed interval, then copy body position and quaternion into unscaled view roots. Interpolate only the rendered pose.",
+          "Use forces or impulses for dynamic actions. For prescribed motion use the appropriate kinematic target API; clear the accumulator on reset."
+        ],
+        "observable_checks": [
+          "Toggle collider visualization: rendered surfaces and collision boundaries agree at the contact region.",
+          "Apply one impulse, pause and reset; the view follows body state and never fights a second animation writer."
+        ]
+      },
+      "known_limits": [
+        "Kinematic targets are not obstacle avoidance. Verify engine-specific collision filters, sensor flags and initialization in the installed version.",
+        "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+      ],
+      "creative_affordances": [
+        "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+      ],
+      "related_ids": [
+        "recipe.projectile-trajectory",
+        "recipe.fantasy-village-diorama",
+        "knowledge.gravity-contact"
+      ],
+      "claims": [
+        {
+          "id": "claim.knowledge-three-rigid-body-adapter",
+          "statement": "Rapier colliders define mass properties and friction/restitution parameters for contact.",
+          "scope": "Physics configuration, separate from rendering materials.",
+          "source_refs": [
+            {
+              "source_id": "source.rapier-colliders",
+              "locator": "Mass properties; Friction; Restitution"
+            }
+          ]
+        }
+      ],
+      "_path": "data/knowledge/tool-adapters.json"
+    },
+    {
+      "schema_version": 1,
+      "id": "knowledge.reasoning-terrain-height-authority",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "creative",
+      "knowledge_kind": "reasoning-rule",
+      "title": {
+        "en": "One elevation function owns ground contact"
+      },
+      "aliases": {
+        "en": [
+          "terrain height authority",
+          "single height field",
+          "grounding placement"
+        ]
+      },
+      "direction_ids": [
+        "environments-dioramas",
+        "earth-environment"
+      ],
+      "summary": "Sample the same elevation function that renders the ground when placing buildings, roads, water and walkable paths.",
+      "objective": "Decide which representation owns terrain elevation so that placement, traversal and the rendered surface cannot disagree.",
+      "applies_when": [
+        "A scene has non-flat terrain and objects that must rest on it.",
+        "Buildings, props or vegetation are scattered procedurally or from a layout table.",
+        "A camera or character walks, drives or hovers over the ground.",
+        "Water level, roads or foundations are placed relative to the landscape."
+      ],
+      "constraint_level": "correctness",
+      "subject_terms": [
+        "terrain",
+        "height field",
+        "ground contact",
+        "scatter placement",
+        "displacement",
+        "walkable surface"
+      ],
+      "tags": [
+        "reasoning-rule",
+        "correctness",
+        "terrain",
+        "placement"
+      ],
+      "intent_signals": [
+        "objects float above or sink into terrain",
+        "place buildings on a hillside",
+        "walk over uneven ground"
+      ],
+      "example_prompts": [
+        "Scatter houses and trees over the hills so nothing floats or sinks.",
+        "Let me walk over the island terrain instead of sliding across a flat plane."
+      ],
+      "negative_signals": [
+        "Deliberately floating architecture, dream logic or a stylised world where contact with the ground is not intended.",
+        "Flat-stage scenes where every object shares one ground plane."
+      ],
+      "not_for": [
+        "Deliberately floating architecture, dream logic or a stylised world where contact with the ground is not intended.",
+        "Flat-stage scenes where every object shares one ground plane."
+      ],
+      "content": {
+        "principles": [
+          "Terrain elevation is application state, not a look. If mesh displacement, the placement routine and the walking controller each compute height in their own way, the three drift apart and the mismatch appears as floating or buried objects.",
+          "A height source can be a noise or spline function, a sampled height array, or a collider raycast. What matters is that one of them is authoritative and the others are derived from it. Where the ground is not a single-valued surface, because of bridges, overhangs, caves or stacked storeys, the authority becomes a surface-identity query rather than one elevation per horizontal position, and consumers must say which surface they mean.",
+          "Placement needs more than a height value: slope and normal decide whether a foundation should be cut, terraced or rejected."
+        ],
+        "implementation": [
+          "Choose the authority first: an analytic height function for procedural worlds, a height array for imported or edited terrain, a collider raycast when the ground includes overhangs or separate props.",
+          "If the renderer displaces vertices in a shader, that displacement is not automatically available to placement or gameplay code on the CPU. Bridge it deliberately: evaluate the same function on the CPU, sample the same source data, or perform an explicit GPU readback or compute query, and say which of these the scene relies on.",
+          "Return position, surface normal and slope from one query, then let each consumer decide: cut a flat pad, add a plinth or stilts, terrace the slope, or exclude the site.",
+          "Store the sampled elevation with the placement so a later terrain edit can report which instances became stale instead of silently detaching."
+        ],
+        "observable_checks": [
+          "Move the camera to a grazing angle at the base of scattered objects on a slope; gaps and sunken corners are visible there and invisible from above.",
+          "Change one terrain parameter, such as amplitude or seed, and confirm placed objects either follow the new surface or are reported as stale.",
+          "Walk or drive across a steep region and a valley floor; a controller reading a different height source snaps, hovers or falls through.",
+          "Check a water plane against shoreline geometry: a constant water height crossing an inconsistent ground surface shows flooded interiors."
+        ]
+      },
+      "related_ids": [
+        "recipe.terrain-island",
+        "recipe.fantasy-village-diorama",
+        "knowledge.terrain-landmark-rhythm"
+      ],
+      "creative_affordances": [
+        "Terraces, retaining walls, stilts and carved pads are all legitimate answers to a steep site; the rule constrains consistency, not architectural language.",
+        "Deliberate exceptions such as a floating shrine stay expressive as long as they are authored exceptions rather than sampling bugs."
+      ],
+      "known_limits": [
+        "Authored construction guidance; no runtime scene has been rendered or measured for this record.",
+        "Says nothing about terrain generation quality, erosion realism or level-of-detail strategy."
+      ],
+      "claims": [],
+      "_path": "data/knowledge/opus5-reasoning-depth-reasoning-environments-dioramas.json"
+    },
+    {
+      "schema_version": 1,
+      "id": "knowledge.reasoning-settlement-function-variation",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "creative",
+      "knowledge_kind": "reasoning-rule",
+      "title": {
+        "en": "Vary buildings by what happens inside them"
+      },
+      "aliases": {
+        "en": [
+          "functional variation",
+          "building program",
+          "village differentiation"
+        ]
+      },
+      "direction_ids": [
+        "environments-dioramas",
+        "architecture-interiors"
+      ],
+      "summary": "Differentiate structures by their program, materials and site rather than by random size and rotation jitter.",
+      "objective": "Turn a repeated-house village into a settlement whose silhouette carries information about work, wealth and terrain.",
+      "applies_when": [
+        "A scene contains several buildings, tents, workshops or stalls of the same family.",
+        "A village, market, camp or town block looks repetitive or uniformly random.",
+        "The brief asks for a place with a story, an economy or a history."
+      ],
+      "constraint_level": "advisory",
+      "subject_terms": [
+        "village",
+        "settlement",
+        "building program",
+        "silhouette",
+        "variation",
+        "vernacular"
+      ],
+      "tags": [
+        "reasoning-rule",
+        "advisory",
+        "environment",
+        "object-craft"
+      ],
+      "intent_signals": [
+        "the houses all look the same",
+        "make the village feel lived in",
+        "add a smithy and a mill"
+      ],
+      "example_prompts": [
+        "Give the village a mill, a smithy and a granary that read differently from a distance.",
+        "Make the harbour buildings look like they belong to the harbour."
+      ],
+      "negative_signals": [
+        "Deliberately uniform architecture such as barracks, container yards or planned identical housing, where sameness is the subject.",
+        "Background scenery too far away to resolve any of these features."
+      ],
+      "not_for": [
+        "Deliberately uniform architecture such as barracks, container yards or planned identical housing, where sameness is the subject.",
+        "Background scenery too far away to resolve any of these features."
+      ],
+      "content": {
+        "principles": [
+          "Random jitter of one prototype produces variety without meaning: the eye reads noise, not a settlement. Function produces silhouettes that differ in ways a viewer can name.",
+          "Programs impose consequences on shape once you have chosen how the world works. If your mill is water driven it needs a wheel and access to the water; a smithy that burns fuel needs a flue and a working yard; a store built to keep grain dry needs whatever your setting uses for that, whether a raised floor, a sealed jar or a cold cellar. These are motifs that follow from a chosen process, not universal requirements of every mill or granary.",
+          "Site and material continue the story: the same program in stone, timber or mud brick differs in wall thickness, opening size and roof pitch, and slope forces terraces, stilts or split levels."
+        ],
+        "implementation": [
+          "List three to six programs for the settlement and give each one distinguishing feature that survives at the intended viewing distance: roof shape, chimney, opening pattern, attached yard or projecting structure.",
+          "Derive secondary detail from the program rather than adding it uniformly: fuel and tools at the smithy, sacks and a hoist at the granary, drying racks at the fishery.",
+          "Let the site sort the buildings: workshops near power or water, storage near the route out, dwellings filling the space between, and orient ridge lines to the slope or prevailing wind you have chosen.",
+          "Keep a shared vocabulary of joinery, roof material and colour so the differences read as one culture rather than as a sample sheet."
+        ],
+        "observable_checks": [
+          "Render a distant silhouette pass: if three named buildings cannot be identified from the outline alone, the variation is decorative.",
+          "Ask what each building consumes and produces; a building with no answer is filler and can be merged or removed.",
+          "Look for the tell of jitter: identical footprints at different angles, or scaled copies whose door heights no longer match the ground.",
+          "Check that special structures sit where their function needs them, not where they happened to be scattered."
+        ]
+      },
+      "related_ids": [
+        "recipe.fantasy-village-diorama",
+        "knowledge.framed-shelter",
+        "knowledge.terrain-landmark-rhythm"
+      ],
+      "creative_affordances": [
+        "Invented economies and fictional crafts work as well as historical ones; the rule asks for consequences, not authenticity.",
+        "Stylised exaggeration of a functional feature, such as an oversized wheel or chimney, is a legitimate way to make the program readable."
+      ],
+      "known_limits": [
+        "Authored creative guidance; it makes no claim about the actual construction practice of any real place or period.",
+        "Historical or heritage subjects need separate evidence work before a reconstruction is presented as such."
+      ],
+      "claims": [],
+      "_path": "data/knowledge/opus5-reasoning-depth-reasoning-environments-dioramas.json"
+    },
+    {
+      "schema_version": 1,
+      "id": "knowledge.reasoning-gait-contact-consistency",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "creative",
+      "knowledge_kind": "reasoning-rule",
+      "title": {
+        "en": "Tie stride length to travelled distance"
+      },
+      "aliases": {
+        "en": [
+          "foot skate",
+          "root motion",
+          "gait consistency"
+        ]
+      },
+      "direction_ids": [
+        "characters-motion-art"
+      ],
+      "summary": "Derive body speed from foot contact, or drive feet from body speed, but never let the two be authored independently.",
+      "objective": "Make locomotion read as contact with the ground rather than as a sliding pose cycle.",
+      "applies_when": [
+        "A character or creature walks, runs, crawls or climbs across a surface.",
+        "A looping locomotion clip is played while a controller moves the root.",
+        "Movement speed is variable, or the ground is uneven."
+      ],
+      "constraint_level": "advisory",
+      "subject_terms": [
+        "gait",
+        "walk cycle",
+        "foot plant",
+        "root motion",
+        "locomotion",
+        "stride"
+      ],
+      "tags": [
+        "reasoning-rule",
+        "advisory",
+        "animation",
+        "locomotion"
+      ],
+      "intent_signals": [
+        "the feet slide",
+        "the walk looks like it is on ice",
+        "make the creature patrol the garden"
+      ],
+      "example_prompts": [
+        "Fix the sliding feet on the walking creature.",
+        "Let the creature slow down near the pond without the walk breaking."
+      ],
+      "negative_signals": [
+        "Floating, hovering or swimming actors with no ground contact.",
+        "Deliberately weightless or dreamlike motion where sliding is the intent."
+      ],
+      "not_for": [
+        "Floating, hovering or swimming actors with no ground contact.",
+        "Deliberately weightless or dreamlike motion where sliding is the intent."
+      ],
+      "content": {
+        "principles": [
+          "During a plant, the contact point should not move relative to the ground. Body displacement over one cycle therefore equals the stride the animation actually produces; if the controller speed and the clip disagree, the difference shows up as sliding.",
+          "There are two consistent architectures: motion extracted from the animation drives the body, or the body speed scales the playback rate of the cycle. Mixing them arbitrarily is what produces skate.",
+          "Uneven ground adds a second requirement: the planted foot must follow the surface height, otherwise the character floats on slopes and sinks on rises even when the horizontal speed is right.",
+          "Turning is part of the same budget. A body that rotates faster than the feet can step reads as a pivoting statue."
+        ],
+        "implementation": [
+          "Pick the authority: extract root displacement from the clip for authored gaits, or measure the cycle stride once and scale playback by the current speed for procedural control.",
+          "Blend between separate cycles at their natural speeds rather than stretching one clip across an implausible range.",
+          "Add a per-foot adjustment against the ground query for slopes and steps, and keep it small so it corrects rather than replaces the animation.",
+          "Constrain turn rate and add lean or a step-turn transition so heading changes cost time.",
+          "Give creatures rests, glances and speed changes rather than a constant loop; irregularity should come from the state machine, not from noise on the transform."
+        ],
+        "observable_checks": [
+          "Watch a single foot from a low camera through one full cycle: a planted foot that drifts backwards or forwards is skating.",
+          "Halve and double the movement speed and watch whether the cycle rate follows.",
+          "Walk across a slope and a step; the planted foot should stay in contact instead of hovering or penetrating.",
+          "Stop the actor abruptly: the pose should settle into a stance rather than freezing mid-stride."
+        ]
+      },
+      "related_ids": [
+        "recipe.garden-creature-patrol",
+        "knowledge.authored-locomotion",
+        "knowledge.articulation-from-motion"
+      ],
+      "creative_affordances": [
+        "Stylised gaits, exaggerated hops and impossible creatures remain fully available; the constraint is between contact and displacement, not a realism requirement.",
+        "Deliberate skating, such as a skid into a turn, is expressive when it is authored rather than accidental."
+      ],
+      "known_limits": [
+        "Authored motion guidance; no clip, controller or rendered gait has been measured for this record.",
+        "Clip playback alone does not provide obstacle avoidance, support or contact response; those need a separate model."
+      ],
+      "claims": [],
+      "_path": "data/knowledge/opus5-reasoning-depth-reasoning-characters-motion-art.json"
+    },
+    {
+      "schema_version": 1,
+      "id": "knowledge.reasoning-creature-body-plan-coherence",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "creative",
+      "knowledge_kind": "reasoning-rule",
+      "title": {
+        "en": "Give an invented creature a consistent body plan"
+      },
+      "aliases": {
+        "en": [
+          "body plan",
+          "creature design coherence",
+          "limb symmetry"
+        ]
+      },
+      "direction_ids": [
+        "characters-motion-art",
+        "environments-dioramas"
+      ],
+      "summary": "Fix limb count, joint axes, mass distribution and sensory orientation once, then let style exaggerate them.",
+      "objective": "Make an invented creature read as a single organism whose movement follows from its construction.",
+      "applies_when": [
+        "A non-existing creature, mascot or fictional animal is being designed.",
+        "A creature already moves but reads as an assembly of parts.",
+        "Several creatures must belong to the same fictional world."
+      ],
+      "constraint_level": "advisory",
+      "subject_terms": [
+        "creature design",
+        "body plan",
+        "joint axis",
+        "silhouette",
+        "balance",
+        "mascot"
+      ],
+      "tags": [
+        "reasoning-rule",
+        "advisory",
+        "creature",
+        "object-craft"
+      ],
+      "intent_signals": [
+        "invent a creature for the garden",
+        "the creature looks like random parts",
+        "design a mascot"
+      ],
+      "example_prompts": [
+        "Design a six-legged garden creature that moves like it is built that way.",
+        "Make the flying creature look capable of carrying its own weight."
+      ],
+      "negative_signals": [
+        "Deliberately incoherent or surreal designs where impossible anatomy is the point.",
+        "Real animals, where anatomy is a factual matter requiring sources."
+      ],
+      "not_for": [
+        "Deliberately incoherent or surreal designs where impossible anatomy is the point.",
+        "Real animals, where anatomy is a factual matter requiring sources."
+      ],
+      "content": {
+        "principles": [
+          "Coherence, not realism, is what makes an invented creature convincing: repeated limb structure, a consistent joint direction and a plausible relationship between mass and support.",
+          "Joints are the strongest signal. A limb whose segments bend in alternating directions reads as a leg; a limb whose joints bend arbitrarily reads as a tentacle or as an error.",
+          "Support must match mass. A heavy body on thin distal limbs needs a visible reason such as a broad foot, a counterbalancing tail or a suspended posture.",
+          "Sensors and mouth parts set the front of the creature and therefore its turning behaviour and resting orientation."
+        ],
+        "implementation": [
+          "Decide the plan explicitly: number of limbs, segments per limb, joint axes and their directions, symmetry, tail or counterweight, and where the sensory end is.",
+          "Repeat the same joint logic across limb pairs, then vary length and thickness by role, such as digging forelimbs and springing hind limbs.",
+          "For a grounded creature, declare the support model and place the centre of mass over the support polygon in the rest pose and in the quasi-static poses it will hold. Flying, swimming, climbing and transient dynamic poses are outside that test and need their own justification, such as lift, adhesion or momentum.",
+          "Add style at the surface, in scale relationships and in silhouette, after the plan is fixed, so exaggeration does not invalidate the mechanics.",
+          "Where several creatures share a world, reuse the plan with variations so they read as related species."
+        ],
+        "observable_checks": [
+          "For the poses the creature actually holds on the ground, project the centre of mass and check it lies within the declared support polygon. A failure says the pose is not statically balanced under that model, which may be intended for a lunge or a fall; it does not by itself establish that the design is unbuildable, and it does not apply to flight or other unsupported poses.",
+          "Compare limb pairs: joints that bend in inconsistent directions between left and right are almost always mistakes.",
+          "Show only the silhouette and ask which end is the front; ambiguity here usually means the sensory end is undefined.",
+          "Play the intended motion at half speed and look for limbs whose range exceeds what their joints allow."
+        ]
+      },
+      "related_ids": [
+        "recipe.garden-creature-patrol",
+        "knowledge.articulated-limb",
+        "knowledge.theme-fantasy-woodland"
+      ],
+      "creative_affordances": [
+        "Asymmetry, extra limbs, impossible proportions and non-biological materials are all legitimate once the plan is deliberate.",
+        "A creature may violate its own plan for a story reason, such as an injury or a prosthesis, when that is visible in the design."
+      ],
+      "known_limits": [
+        "Authored creative guidance for invented creatures; it asserts no biological or biomechanical fact.",
+        "Real-animal anatomy, gait energetics and load capacity require sourced research rather than this rule."
+      ],
+      "claims": [],
+      "_path": "data/knowledge/opus5-reasoning-depth-reasoning-characters-motion-art.json"
+    },
+    {
+      "schema_version": 1,
+      "id": "knowledge.validation-traversable-support-clearance",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "creative",
+      "knowledge_kind": "domain-validation",
+      "title": {
+        "en": "Traversable support and clearance probe set"
+      },
+      "aliases": {
+        "en": [
+          "support surface probe",
+          "walkable clearance check"
+        ]
+      },
+      "direction_ids": [
+        "environments-dioramas"
+      ],
+      "summary": "Verify that a walkable environment blocks, supports and steps where its authored limits say it should.",
+      "objective": "Every authored support surface, slope limit and blocked boundary produces the intended verdict for a declared probe set.",
+      "applies_when": [
+        "A controlled character capsule walks over authored terrain, floors or building geometry.",
+        "Slope, step height or a water boundary decides where the viewer may go.",
+        "A bridge, terrace or overhang puts more than one support surface above the same ground coordinate."
+      ],
+      "check_method": "geometry",
+      "tags": [
+        "domain-validation",
+        "traversal",
+        "collider",
+        "clearance"
+      ],
+      "subject_terms": [
+        "support surface",
+        "capsule collider",
+        "slope limit",
+        "step height",
+        "ground query",
+        "skin offset"
+      ],
+      "intent_signals": [
+        "check that the player cannot walk up the cliff",
+        "verify the bridge is walkable above the water"
+      ],
+      "example_prompts": [
+        "Check the walkable limits of this island before adding more props."
+      ],
+      "negative_signals": [
+        "tuning jump feel",
+        "authoring a navigation mesh for crowd agents"
+      ],
+      "content": {
+        "principles": [
+          "Traversability is a property of the collision representation, not of the visible mesh: check the capsule radius, foot offset and support query against the collider you actually registered.",
+          "Slope admissibility is an angle test on the support normal, so a near-horizontal normal (a wall), a normal exactly at the authored limit and a normal just inside it are three regimes that each need a stated decision.",
+          "Support surfaces stack, so the query resolves the intended support inside a declared search interval around the foot rather than taking the first surface a long ray meets: without that interval a bridge deck resolves to the seabed beneath it, and a probe started too high resolves to a shelf or ceiling above it."
+        ],
+        "implementation": [
+          "Fix the probe set before moving anything: flat ground, the steepest intended ramp, one step or terrace edge, one cliff face, one water boundary and one point directly on a bridge deck. Record each probe as a world coordinate with its expected verdict.",
+          "Declare the support search interval as a snap-up and snap-down distance around the intended foot height, collect every candidate hit inside it, and filter candidates by acceptable normal and by whether the resulting capsule pose stays clear of other colliders before selecting one.",
+          "For each probe record the chosen surface ID, its height relative to the foot, the contact normal, the slope angle in degrees and the remaining clearance, together with the candidates that were rejected and why.",
+          "Repeat every probe with the actor arriving from four headings; a step or slope decision that depends on approach direction is either declared intentional or fixed.",
+          "Write the authored limits beside the results in the same units: capsule radius and height, maximum step height, maximum slope angle and the skin or contact offset. A clearance number is unreadable without them."
+        ],
+        "observable_checks": [
+          "Probes on the bridge deck return the deck surface ID rather than the seabed, and a probe under a low overhang returns the floor rather than the overhang underside; either wrong ID is the failure signal even when the rendered actor looks correct.",
+          "The steepest walkable probe reports a slope at or below the authored limit and the cliff probe reports above it; a probe within numerical noise of the limit is reported as boundary-ambiguous instead of silently accepted.",
+          "No accepted standing pose leaves the capsule intersecting a wall, building or cliff collider by more than the declared skin offset."
+        ]
+      },
+      "known_limits": [
+        "A geometric clearance procedure for an authored controlled actor; not a physics-engine certification, a navigation proof or evidence that the whole scene is traversable.",
+        "Authored verification guidance; no scene was run or rendered for this record."
+      ],
+      "creative_affordances": [
+        "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+      ],
+      "related_ids": [
+        "recipe.terrain-island",
+        "recipe.fantasy-village-diorama",
+        "recipe.garden-creature-patrol"
+      ],
+      "claims": [],
+      "_path": "data/knowledge/opus5-validation-depth-validation-environments-dioramas.json"
+    },
+    {
+      "schema_version": 1,
+      "id": "knowledge.controlled-experiment",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "creative",
+      "knowledge_kind": "inspection-pattern",
+      "title": {
+        "en": "Controlled before-and-after experiment"
+      },
+      "aliases": {
+        "en": [
+          "controlled experiment"
+        ]
+      },
+      "direction_ids": [
+        "rigid-mechanics",
+        "environments-dioramas",
+        "solid-geometry"
+      ],
+      "summary": "Make one change produce a visible, attributable response while preserving the baseline.",
+      "objective": "Repeat the baseline before and after the altered case; unexplained differences are investigated instead of attributed to the selected input.",
+      "tags": [
+        "inspection-pattern",
+        "controlled",
+        "experiment"
+      ],
+      "example_prompts": [
+        "Make one change produce a visible, attributable response while preserving the baseline."
+      ],
+      "content": {
+        "principles": [
+          "Write the question first: which input changes, which outcome should respond and which conditions stay fixed?",
+          "A side-by-side pair can compare states; a replay can compare time evolution. Neither needs decorative motion."
+        ],
+        "implementation": [
+          "Capture baseline input, camera, lighting, model time and seed if randomness exists. Expose one independent control for the selected question.",
+          "For a drop test vary release height; for material inspection vary finish under fixed lights; for gear motion vary the radius ratio while paused.",
+          "Show the changed input beside an observable result and retain a reset action that restores the entire baseline."
+        ],
+        "observable_checks": [
+          "Repeat the baseline before and after the altered case; unexplained differences are investigated instead of attributed to the selected input.",
+          "The result can be observed at the intended camera distance without reading debug logs."
+        ]
+      },
+      "known_limits": [
+        "This is an authored inspection method, not a controlled scientific study or a numerical accuracy guarantee.",
+        "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+      ],
+      "creative_affordances": [
+        "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+      ],
+      "related_ids": [
+        "recipe.projectile-trajectory",
+        "recipe.coupled-gears",
+        "knowledge.material-response-check"
+      ],
+      "claims": [],
+      "_path": "data/knowledge/inspection-patterns.json"
+    },
+    {
+      "schema_version": 1,
+      "id": "knowledge.dielectric-surface",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "mixed",
+      "knowledge_kind": "material-profile",
+      "title": {
+        "en": "Dielectric surface: wood, stone and painted parts"
+      },
+      "aliases": {
+        "en": [
+          "dielectric surface"
+        ]
+      },
+      "direction_ids": [
+        "environments-dioramas",
+        "rigid-mechanics"
+      ],
+      "summary": "Author nonmetal surfaces through finish, grain direction and controlled highlight comparisons.",
+      "objective": "Orbit the camera: the object remains readable and its finish differs visibly from the adjacent metal part.",
+      "tags": [
+        "material-profile",
+        "dielectric",
+        "surface"
+      ],
+      "example_prompts": [
+        "Author nonmetal surfaces through finish, grain direction and controlled highlight comparisons."
+      ],
+      "content": {
+        "principles": [
+          "Choose a surface story: cut timber, worn stone or painted shell. Do not use random noise as a substitute for fabrication direction.",
+          "Mechanical friction and optical roughness are separate scene decisions."
+        ],
+        "implementation": [
+          "For a nonmetal baseline use metalness 0; compare roughness candidates on the same object under a fixed light rig.",
+          "Align authored wood grain with the member length and keep mortar scale consistent across adjacent walls.",
+          "Reserve geometric relief for silhouette-changing chips; normal maps alter lighting rather than mesh shape."
+        ],
+        "observable_checks": [
+          "Orbit the camera: the object remains readable and its finish differs visibly from the adjacent metal part.",
+          "Inspect a silhouette close-up; detail claimed as geometry actually appears at the edge."
+        ]
+      },
+      "known_limits": [
+        "PBR settings do not identify species, strength, friction or measured surface properties.",
+        "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+      ],
+      "creative_affordances": [
+        "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+      ],
+      "related_ids": [
+        "recipe.fantasy-village-diorama",
+        "recipe.terrain-island",
+        "knowledge.three-pbr-adapter"
+      ],
+      "claims": [
+        {
+          "id": "claim.knowledge-dielectric-surface",
+          "statement": "MeshStandardMaterial uses metalness 0 for nonmetals; normal maps change shading without changing geometry.",
+          "scope": "Renderer parameter semantics only.",
+          "source_refs": [
+            {
+              "source_id": "source.three-standard-material",
+              "locator": "metalness; normalMap"
+            }
+          ]
+        }
+      ],
+      "_path": "data/knowledge/material-profiles.json"
+    },
+    {
+      "schema_version": 1,
+      "id": "knowledge.conductor-surface",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "mixed",
+      "knowledge_kind": "material-profile",
+      "title": {
+        "en": "Conductor surface with intentional finish"
+      },
+      "aliases": {
+        "en": [
+          "conductor surface"
+        ]
+      },
+      "direction_ids": [
+        "rigid-mechanics",
+        "environments-dioramas"
+      ],
+      "summary": "Make metal parts readable using finish zones and a reflected environment instead of a flat gray color.",
+      "objective": "Rotate the object under the fixed rig: reflections reveal the hub and rim rather than flattening them into one gray disc.",
+      "tags": [
+        "material-profile",
+        "conductor",
+        "surface"
+      ],
+      "example_prompts": [
+        "Make metal parts readable using finish zones and a reflected environment instead of a flat gray color."
+      ],
+      "content": {
+        "principles": [
+          "Separate bare metal, paint and corrosion patches according to the intended construction.",
+          "A polished hub and rough rim can express handling and machining; these are art choices until measured."
+        ],
+        "implementation": [
+          "Start bare metal regions at metalness 1 and place broad bright and dark reflection features around the object.",
+          "Hold geometry and exposure constant while selecting finish. Avoid adding emission to compensate for an unreadable reflection.",
+          "Keep wear at plausible contact or handled edges and inspect its scale at the intended camera distance."
+        ],
+        "observable_checks": [
+          "Rotate the object under the fixed rig: reflections reveal the hub and rim rather than flattening them into one gray disc.",
+          "Painted and bare regions remain distinguishable without depending solely on hue."
+        ]
+      },
+      "known_limits": [
+        "This is appearance guidance, not electrical conductivity or a measured alloy model.",
+        "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+      ],
+      "creative_affordances": [
+        "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+      ],
+      "related_ids": [
+        "recipe.coupled-gears",
+        "recipe.fantasy-village-diorama",
+        "knowledge.material-response-check"
+      ],
+      "claims": [
+        {
+          "id": "claim.knowledge-conductor-surface",
+          "statement": "MeshStandardMaterial uses metalness 1 for metallic surfaces and recommends an environment map.",
+          "scope": "Metallic-roughness rendering workflow.",
+          "source_refs": [
+            {
+              "source_id": "source.three-standard-material",
+              "locator": "metalness; envMap"
+            }
+          ]
+        }
+      ],
+      "_path": "data/knowledge/material-profiles.json"
+    },
+    {
+      "schema_version": 1,
+      "id": "knowledge.transmissive-medium",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "mixed",
+      "knowledge_kind": "material-profile",
+      "title": {
+        "en": "Transmissive pane or vessel"
+      },
+      "aliases": {
+        "en": [
+          "transmissive medium"
+        ]
+      },
+      "direction_ids": [
+        "environments-dioramas",
+        "solid-geometry"
+      ],
+      "summary": "Model transparent parts with inspectable boundaries and optical thickness assumptions.",
+      "objective": "The intended pane or vessel boundary remains visible and the reference behind it is recognizable through the chosen finish.",
+      "tags": [
+        "material-profile",
+        "transmissive",
+        "medium"
+      ],
+      "example_prompts": [
+        "Model transparent parts with inspectable boundaries and optical thickness assumptions."
+      ],
+      "content": {
+        "principles": [
+          "State whether the object is a thin pane or a closed volume before selecting optical settings.",
+          "Keep handles, rims and support frames visible so the transparent object still reads as constructed."
+        ],
+        "implementation": [
+          "Use MeshPhysicalMaterial transmission with opacity 1; choose thickness intentionally, with 0 representing a thin wall.",
+          "Record mesh scale alongside thickness and attenuation settings; thickness uses mesh coordinates while attenuation distance uses world units.",
+          "Place a contrasting reference behind the pane and compare front, oblique and edge views before adding tint."
+        ],
+        "observable_checks": [
+          "The intended pane or vessel boundary remains visible and the reference behind it is recognizable through the chosen finish.",
+          "A thickness change produces an inspectable optical difference in the test setup or is reported as inconclusive."
+        ]
+      },
+      "known_limits": [
+        "No measured glass spectrum, caustic accuracy or arbitrary nested-volume correctness is asserted.",
+        "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+      ],
+      "creative_affordances": [
+        "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+      ],
+      "related_ids": [
+        "recipe.fantasy-village-diorama",
+        "recipe.solid-of-revolution",
+        "knowledge.three-pbr-adapter"
+      ],
+      "claims": [
+        {
+          "id": "claim.knowledge-transmissive-medium",
+          "statement": "Transmission uses opacity 1; zero thickness denotes thin walls. Thickness is in mesh space; attenuation distance is in world units.",
+          "scope": "Documented MeshPhysicalMaterial parameters, not an optical validation.",
+          "source_refs": [
+            {
+              "source_id": "source.three-physical-material",
+              "locator": "transmission; thickness; attenuationDistance"
+            }
+          ]
+        }
+      ],
+      "_path": "data/knowledge/material-profiles.json"
+    },
+    {
+      "schema_version": 1,
+      "id": "knowledge.shared-pbr-studio-environment",
+      "revision": 1,
+      "status": "active",
+      "record_kind": "mixed",
+      "knowledge_kind": "lighting-profile",
+      "title": {
+        "en": "Environment-led studio lighting for physically based materials"
+      },
+      "aliases": {
+        "en": [
+          "PBR studio environment",
+          "image-based studio light",
+          "environment as key light"
+        ]
+      },
+      "direction_ids": [
+        "products-assemblies",
+        "molecules-materials",
+        "environments-dioramas"
+      ],
+      "summary": "Let a controlled environment carry most of the illumination, and add discrete lights only for the shaping the environment cannot supply.",
+      "objective": "Metal and dielectric parts separate by their reflections rather than by their base colour, and the environment can be rotated without changing which parts read as metal.",
+      "tags": [
+        "lighting-profile",
+        "pbr",
+        "environment",
+        "studio",
+        "image-based-lighting"
+      ],
+      "subject_terms": [
+        "environment lighting",
+        "image-based lighting",
+        "metallic roughness",
+        "reflection",
+        "key light",
+        "fill light",
+        "rim light",
+        "environment rotation",
+        "studio setup"
+      ],
+      "intent_signals": [
+        "metal looks like grey plastic",
+        "product shot lighting",
+        "reflections look flat",
+        "how do I light a PBR model",
+        "the object has no highlight"
+      ],
+      "example_prompts": [
+        "Light a product so its metal and painted parts are clearly different.",
+        "Set up a neutral studio for comparing two material finishes.",
+        "Rotate the environment to find a reading angle for a curved surface."
+      ],
+      "negative_signals": [
+        "quantitative colour encoding must not be shaded",
+        "flat diagram with no lighting"
+      ],
+      "not_for": [
+        "Views where colour carries data and any shading would corrupt the reading.",
+        "Outdoor scenes whose whole point is a directional sun and sky."
+      ],
+      "content": {
+        "principles": [
+          "In a metallic-roughness workflow the environment is the main light source for reflective materials. A metal with nothing around it to reflect has almost nothing to show, which is why isolated metal renders as dull grey.",
+          "The environment is a light, not a backdrop. Deciding what the object reflects is a lighting decision even when the environment is never visible behind the object.",
+          "Discrete lights should have a stated job: a highlight the environment cannot place, a separation rim, or a shadow that grounds the object. A light without a job usually flattens the result.",
+          "Roughness is what turns a light into a shape. A narrow highlight reads as polish, a broad one reads as satin, and reading the difference requires an environment with real variation rather than a uniform grey dome.",
+          "The same environment applied to every object in a comparison is what makes the comparison fair. Changing the environment between variants changes the conclusion."
+        ],
+        "implementation": [
+          "Choose the environment first and state what it represents: a soft box array, an interior, an open sky. Give it real large-scale variation, since a perfectly uniform environment removes the reflections that read as material.",
+          "Apply the environment at the scene level so all physically based materials receive it consistently, and be aware that a material carrying its own explicit environment map will not be overridden by the scene-level setting.",
+          "Control environment brightness through its own intensity, and control the visible backdrop separately, so the lighting can be adjusted without changing what the viewer sees behind the object.",
+          "Rotate the environment to place its bright regions where the object needs a highlight; this is usually a faster and more reversible control than moving several discrete lights.",
+          "Add at most a small number of named discrete lights, each with a written purpose, and check whether removing each one changes anything the record cares about.",
+          "Give the object light from below by a named mechanism rather than by assuming a floor will bounce it: an environment contribution, a baked or global-illumination solution, or an explicit weak fill light. A direct-light rasteriser produces no bounce from an ordinary visible floor, and a floating object with nothing from below reads as a cut-out.",
+          "Keep the environment fixed while material variants are being judged, and change one thing at a time."
+        ],
+        "observable_checks": [
+          "Turning the object shows a moving highlight whose width matches the roughness the record assigns to each part.",
+          "A metal part and a painted part at the same base colour are still distinguishable, and remain distinguishable when the environment is rotated.",
+          "Removing each named discrete light produces a visible loss the record can name; a light whose removal changes nothing is not doing the job it claims.",
+          "Every object in a comparison is under the same environment, with the same intensity and rotation.",
+          "Raising environment intensity brightens the reflections and the diffuse response together, and does not silently change the visible backdrop unless that was intended."
+        ]
+      },
+      "creative_affordances": [
+        "The environment can be invented, stylised or coloured for narrative purposes; it does not have to be a photographic studio.",
+        "Strong single-source lighting, deep shadow and high-contrast staging remain available choices when the record states the intent."
+      ],
+      "known_limits": [
+        "Using a physically based material model and an environment does not make a render photometrically accurate; brightness units, exposure and display transform all remain open decisions.",
+        "The scene-level environment behaviour cited here is documented for one renderer and does not describe how other engines resolve material-level and scene-level environments.",
+        "Authored reusable guidance; no runtime artifact or rendered result has been observed for this record."
+      ],
+      "related_ids": [
+        "recipe.portable-speaker-exploded",
+        "recipe.modular-camera-rig",
+        "knowledge.conductor-surface",
+        "knowledge.dielectric-surface",
+        "knowledge.shared-display-color-management",
+        "knowledge.shared-light-comparison-rig"
+      ],
+      "claims": [
+        {
+          "id": "claim.shared-scene-environment-scope",
+          "statement": "In one widely used renderer a scene-level environment map is applied to all physical materials in the scene but does not overwrite an environment map already assigned on a material, environment intensity and rotation affect only that environment, and background blurriness and background intensity affect only the visible background rather than the lighting.",
+          "scope": "Documented scene properties of one library as of the access date. They describe where environment lighting is resolved and what the background controls do not affect; they make no photometric claim.",
+          "source_refs": [
+            {
+              "source_id": "source.shared-depth-three-scene",
+              "locator": "environment; environmentIntensity; environmentRotation; backgroundBlurriness; backgroundIntensity"
+            }
+          ]
+        },
+        {
+          "id": "claim.shared-metallic-basecolor-meaning",
+          "statement": "In the glTF 2.0 metallic-roughness model the base colour is interpreted differently by metalness: for a metal it is the measured reflectance at normal incidence, while for a non-metal it is the reflected diffuse colour and a fixed linear value of four percent is used for normal-incidence reflectance, which cannot be specified separately.",
+          "scope": "Normative material-model text of the glTF 2.0 specification, read from the Khronos specification source. It defines how one parameter set is interpreted; it does not assert that any authored value matches a measured material.",
+          "source_refs": [
+            {
+              "source_id": "source.shared-depth-gltf-spec",
+              "locator": "Materials > Metallic-Roughness Material"
+            }
+          ]
+        }
+      ],
+      "_path": "data/knowledge/opus5-shared-depth-lighting-profiles.json"
+    }
+  ],
+  "sources": [
+    {
+      "id": "source.rapier-colliders",
+      "url": "https://rapier.rs/docs/user_guides/javascript/colliders/",
+      "title": "Rapier JavaScript: Colliders",
+      "accessed_at": "2026-09-07",
+      "locator": "Mass properties; Friction; Restitution",
+      "scope": "Collision shape and mechanical contact parameters.",
+      "version": "Unversioned official web documentation read 2026-09-07; verify against installed package before implementation.",
+      "redistribution": "Link and independently authored guidance only; source text, images and code are not bundled. No redistribution permission asserted."
+    },
+    {
+      "id": "source.rapier-rigid-bodies",
+      "url": "https://rapier.rs/docs/user_guides/javascript/rigid_bodies/",
+      "title": "Rapier JavaScript: Rigid-bodies",
+      "accessed_at": "2026-09-07",
+      "locator": "Rigid-body type; Position; Gravity",
+      "scope": "Body state authority, kinematic limits and gravity.",
+      "version": "Unversioned official web documentation read 2026-09-07; verify against installed package before implementation.",
+      "redistribution": "Link and independently authored guidance only; source text, images and code are not bundled. No redistribution permission asserted."
+    },
+    {
+      "id": "source.shared-depth-gltf-spec",
+      "url": "https://raw.githubusercontent.com/KhronosGroup/glTF/main/specification/2.0/Specification.adoc",
+      "title": "Khronos glTF 2.0 Specification (AsciiDoc source)",
+      "accessed_at": "2026-09-07",
+      "locator": "Coordinate System and Units; Geometry > Meshes; Geometry > Skins > Skinned Mesh Attributes; Materials > Metallic-Roughness Material; Materials > Double Sided; Materials > Point and Line Materials; Animations",
+      "scope": "Normative asset semantics for axes, units, mesh primitives, linear blend skinning and the metallic-roughness material model, together with the runtime interpretation the specification does prescribe for them, such as back-face culling and reversed back-face normals for double-sided materials. It does not guarantee image quality or physical accuracy, and it defines no application behavior beyond those requirements.",
+      "version": "main-branch AsciiDoc source of the glTF 2.0 Specification, retrieved 2026-09-07. The registry HTML mirror at registry.khronos.org returned HTTP 403 to this session's fetch tool, so the Khronos-published source file was read instead.",
+      "redistribution": "Specification text is published by Khronos under CC-BY 4.0; only independently written summaries are stored here, no specification text is bundled."
+    },
+    {
+      "id": "source.shared-depth-three-scene",
+      "url": "https://threejs.org/docs/pages/Scene.html",
+      "title": "Three.js documentation: Scene",
+      "accessed_at": "2026-09-07",
+      "locator": "environment; background; backgroundBlurriness; backgroundIntensity; environmentIntensity; environmentRotation",
+      "scope": "Documented scene-level environment and background properties and their stated limits. Not a photometric calibration.",
+      "version": "Unversioned official web documentation read 2026-09-07; verify against the installed package version before implementation.",
+      "redistribution": "Linked, not copied. Summaries are independently written."
+    },
+    {
+      "id": "source.three-physical-material",
+      "url": "https://threejs.org/docs/pages/MeshPhysicalMaterial.html",
+      "title": "Three.js MeshPhysicalMaterial",
+      "accessed_at": "2026-09-07",
+      "locator": "transmission, thickness, attenuationDistance, ior",
+      "scope": "Approximate optical shading and documented parameter spaces.",
+      "version": "Unversioned official web documentation read 2026-09-07; verify against installed package before implementation.",
+      "redistribution": "Link and independently authored guidance only; source text, images and code are not bundled. No redistribution permission asserted."
+    },
+    {
+      "id": "source.three-standard-material",
+      "url": "https://threejs.org/docs/pages/MeshStandardMaterial.html",
+      "title": "Three.js MeshStandardMaterial",
+      "accessed_at": "2026-09-07",
+      "locator": "metalness, roughness, normalMap, map",
+      "scope": "Rendering controls only; no mechanical properties.",
+      "version": "Unversioned official web documentation read 2026-09-07; verify against installed package before implementation.",
+      "redistribution": "Link and independently authored guidance only; source text, images and code are not bundled. No redistribution permission asserted."
+    }
+  ],
+  "notice": "These are authored records and source metadata, not new source reads or runtime verification. Apply only the guidance relevant to the task."
+}

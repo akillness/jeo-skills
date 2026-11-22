@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "id": "recipe.brachial-plexus-routing",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Brachial plexus nerve routing"
+  },
+  "aliases": {
+    "en": [
+      "brachial plexus",
+      "arm nerve routing",
+      "nerve plexus map"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures"
+  ],
+  "summary": "Follow named nerve branches from the typical C5 to T1 roots through trunks, divisions and cords into the arm as an explicit route graph rather than a decorative bundle.",
+  "objective": "Build a brachial plexus route explorer where selecting the radial, median, ulnar, axillary or musculocutaneous nerve highlights the cord and root segments that contribute to it.",
+  "tags": [
+    "nerve",
+    "plexus",
+    "routing"
+  ],
+  "subject_terms": [
+    "brachial plexus",
+    "spinal nerve",
+    "nerve root",
+    "radial nerve",
+    "median nerve",
+    "ulnar nerve",
+    "axillary nerve",
+    "peripheral nervous system"
+  ],
+  "intent_signals": [
+    "Show how spinal nerve roots reorganise into the nerves of the arm.",
+    "Make a 3D nerve routing map I can select branch by branch."
+  ],
+  "example_prompts": [
+    "Build a brachial plexus route explorer where selecting a named arm nerve highlights its contributing spinal segments.",
+    "Trace the radial, median and ulnar nerves from the neck into the arm with labels I can toggle."
+  ],
+  "negative_signals": [
+    "Not a dissection-accurate atlas, surgical planning aid or nerve-conduction simulation.",
+    "Do not use for diagnosis, injury localisation or patient communication."
+  ],
+  "not_for": [
+    "Not a dissection-accurate atlas, surgical planning aid or nerve-conduction simulation.",
+    "Do not use for diagnosis, injury localisation or patient communication."
+  ],
+  "entities": [
+    {
+      "name": "Root and cord segments",
+      "guidance": "Model the five graph levels explicitly: ventral rami (roots), trunks, anterior and posterior divisions, cords and terminal branches. Each segment is a swept tube with a stable ID, so a route is a chain of identified segments rather than one merged mesh."
+    },
+    {
+      "name": "Named branches",
+      "guidance": "Give every terminal branch its own label anchor and endpoint marker at its target region. Axillary and radial both leave the posterior cord as sibling branches; never draw one as a branch of the other."
+    },
+    {
+      "name": "Skeletal context",
+      "guidance": "Add a low-contrast clavicle, scapula and humerus block only as spatial reference; keep it visually subordinate and clearly marked as schematic."
+    }
+  ],
+  "state_contract": {
+    "model": "Route graph with five declared levels (ventral ramus, trunk, division, cord, terminal branch) and contribution edges between consecutive levels, plus selection state and label visibility. The typical C5 to T1 arrangement is the default; C4 or T2 contributions exist only as an optional variant layer that is off by default and labelled as a variant. No conduction or timing model. Edges carry sourced root-contribution labels: connectivity through a mixed cord alone does not mean every root in that cord supplies every terminal branch. Selective highlighting follows those labels, not unrestricted graph reachability. The cited reference gives musculocutaneous C5-C7, median C6-T1, ulnar C8-T1, axillary C5-C6 and radial C5-T1; these are the selected reference arrangement, not a universal variant-free map.",
+    "authority": "The source-backed route graph and root-contribution labels own anatomical membership; only tube placement is schematic. Geometry and highlights derive from that data, and camera orbit never changes membership.",
+    "actions": [
+      "Select a named branch and highlight its contributing root segments.",
+      "Select a root segment and highlight every branch it feeds.",
+      "Toggle skeletal context and label density.",
+      "Reset selection and camera to the reference anterior view.",
+      "Toggle the C4 and T2 variant contributions, which are labelled as variants whenever shown."
+    ]
+  },
+  "invariants": [
+    "A branch keeps the same contributing root set under every camera or highlight state, and that set is computed by walking the graph rather than stored twice.",
+    "Left and right plexuses stay distinguishable and are never mirrored into each other by a display transform.",
+    "A highlighted route is a connected chain of segments; no highlight may skip an intermediate segment.",
+    "Axillary and radial are sibling terminal branches of the posterior cord; a route that reaches the axillary nerve through the radial nerve is a defect, not a drawing choice.",
+    "Turning the variant layer on adds C4 or T2 contributions and marks them as variants; turning it off restores the typical C5 to T1 graph exactly."
+  ],
+  "motion_guidance": [
+    "Animate highlight travel along the route as a display effect only; travel speed carries no physiological meaning.",
+    "Keep the underlying tubes static. A pulsing nerve implies activity that this model does not compute."
+  ],
+  "known_limits": [
+    "Schematic routing only; segment lengths, calibres and branch points are authored, not measured.",
+    "Individual anatomical variation is common; only the sourced C4 and T2 contributions are represented, as a labelled variant layer.",
+    "Sources disagree: the OpenStax teaching page gives a C4 to T1 root range and describes the axillary nerve as branching from the radial nerve, while the peer-reviewed anatomy reference used here gives a typical C5 to T1 range with axillary and radial as separate posterior-cord terminal branches. This recipe follows the latter and keeps C4 and T2 as a labelled variant.",
+    "Spatial tube paths and dimensions are schematic. Every anatomical connection and highlighted root-to-terminal contribution must follow the selected reference; unsourced membership is omitted or marked unknown, never invented. Optional C4/T2 variants are shown only to the extent their actual contribution routing is sourced.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-brachial-plexus-roots",
+      "statement": "The brachial plexus is typically formed by the anterior primary rami of C5 through T1, with C5 and C6 forming the superior trunk, C7 continuing as the middle trunk and C8 and T1 forming the inferior trunk; contributions from C4 and T2 are described as a common variant rather than part of the typical arrangement.",
+      "scope": "Typical adult topology at root and trunk level, with C4 and T2 explicitly separated as variants; not dissection coordinates and not a clinical localisation aid.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-ncbi-brachial-plexus",
+          "locator": "Structure and Function: roots, trunks, cords and terminal branches; Physiologic Variants"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-brachial-named-branches",
+      "statement": "The axillary and radial nerves are the two terminal branches of the posterior cord, the musculocutaneous nerve is formed completely by the lateral cord, the ulnar nerve completely by the medial cord, and the median nerve from both medial and lateral contributions.",
+      "scope": "Terminal-branch membership by cord in the typical arrangement; no fascicular detail, variation frequency or surgical course is claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-ncbi-brachial-plexus",
+          "locator": "Structure and Function: roots, trunks, cords and terminal branches"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-brachial-plexus-purpose",
+      "statement": "Spinal nerves reorganise through four plexuses, of which the brachial plexus gives rise to the nerves of the arms.",
+      "scope": "Teaching-level statement of what the plexus is for. The same teaching page states a C4 to T1 root range and describes the axillary nerve as branching from the radial nerve; this recipe does not use either statement and records the disagreement in its limits.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-spinal-nerves",
+          "locator": "13.4, Spinal Nerves, four plexuses and brachial plexus role"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-brachial-division-contributions",
+      "statement": "Each trunk separates into anterior and posterior divisions. All three posterior divisions form the posterior cord; anterior divisions of superior and middle trunks form the lateral cord, while the anterior division of the inferior trunk continues as the medial cord. The reference lists root contributions as musculocutaneous C5-C7, median C6-T1, ulnar C8-T1, axillary C5-C6 and radial C5-T1.",
+      "scope": "Selected teaching-reference arrangement for contribution-labelled routing; cord connectivity alone does not imply all cord roots enter every branch. Variant-specific routing requires its own source evidence. Spatial coordinates are schematic.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-ncbi-brachial-plexus",
+          "locator": "Structure and Function, division-to-cord formation; Nerves, five terminal branches and their spinal levels"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Root and cord segments",
+      "structure": "Swept tubes with slight taper and a visible junction bead where segments merge, so branch points read as structure rather than as texture.",
+      "material": "Matte, low-specular tissue surface with subtle longitudinal striation; keep hue reserved for selection state so unselected anatomy stays neutral.",
+      "articulation": "None. Segments are rigid display geometry; only highlight and opacity change."
+    },
+    {
+      "family": "Named branches",
+      "structure": "Thinner tubes than their parent cord, ending in an explicit target marker rather than fading out.",
+      "material": "Same tissue family as the cords with a brighter selection emissive ramp; label plates are opaque so text survives against any background.",
+      "articulation": "None. Labels billboard toward the camera but their anchor points stay fixed to the geometry."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Selection, highlight and label presentation of static routing geometry; no forces, no tissue mechanics.",
+    "checks": [
+      "Selecting each named branch highlights the same root set every time.",
+      "Reset restores full opacity and the reference view."
+    ]
+  },
+  "related_ids": [
+    "knowledge.object-isolation",
+    "knowledge.inspectable-selection",
+    "recipe.skeletal-hierarchy"
+  ]
+}

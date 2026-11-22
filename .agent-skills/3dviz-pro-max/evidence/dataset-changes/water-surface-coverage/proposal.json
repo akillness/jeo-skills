@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "promotion_status": "promoted",
+  "change_id": "water-surface-coverage",
+  "feedback_ref": "evidence/feedback/water-surface-coverage.json",
+  "reason": "Promoted all three prepared revision-2 records with content-addressed revision-1 snapshots and new proposal/curation events. Historical event logs are unchanged; Git history is not required.",
+  "canonicalization": "UTF-8 JSON; sorted keys; compact separators; ensure_ascii=false",
+  "runtime_status": "not-run",
+  "records": [
+    {
+      "record_id": "knowledge.reasoning-terrain-height-authority",
+      "before_revision": 1,
+      "proposed_revision": 2,
+      "before_hash": "b402cb3b726f80403f57f7dbb75fce97dd81d4ac8ea5e4421e5eed6773841b0f",
+      "proposed_hash": "1effccd9bd2526e906595ef4daf69e55501f44e284c1436b887e8c24dd3e9921",
+      "before_ref": {
+        "collection": "knowledge",
+        "record_id": "knowledge.reasoning-terrain-height-authority",
+        "revision": 1,
+        "provenance_ref": "snapshot:sha256:b402cb3b726f80403f57f7dbb75fce97dd81d4ac8ea5e4421e5eed6773841b0f:evidence/dataset-changes/water-surface-coverage/snapshots/knowledge/knowledge.reasoning-terrain-height-authority/1/b402cb3b726f80403f57f7dbb75fce97dd81d4ac8ea5e4421e5eed6773841b0f.json"
+      }
+    },
+    {
+      "record_id": "knowledge.material-response-check",
+      "before_revision": 1,
+      "proposed_revision": 2,
+      "before_hash": "dcd68c05344d453a86be3c4e0fcb9780a1e010ca64d81c72e98f21370257c837",
+      "proposed_hash": "25e6f282f75f6c7842d71b9c828457aae078e223fda8bbda6c5f6fd81f5d1c2a",
+      "before_ref": {
+        "collection": "knowledge",
+        "record_id": "knowledge.material-response-check",
+        "revision": 1,
+        "provenance_ref": "snapshot:sha256:dcd68c05344d453a86be3c4e0fcb9780a1e010ca64d81c72e98f21370257c837:evidence/dataset-changes/water-surface-coverage/snapshots/knowledge/knowledge.material-response-check/1/dcd68c05344d453a86be3c4e0fcb9780a1e010ca64d81c72e98f21370257c837.json"
+      }
+    },
+    {
+      "record_id": "recipe.terrain-island",
+      "before_revision": 1,
+      "proposed_revision": 2,
+      "before_hash": "ff1f9dc00dda7d11dcc209068d745d4ce5137811bc9401c840aa06c693f48e13",
+      "proposed_hash": "3499b646a2e6b300a3cb5cac3a997d41f45e4cc631205c041bd586523ffe3ffa",
+      "before_ref": {
+        "collection": "recipes",
+        "record_id": "recipe.terrain-island",
+        "revision": 1,
+        "provenance_ref": "snapshot:sha256:ff1f9dc00dda7d11dcc209068d745d4ce5137811bc9401c840aa06c693f48e13:evidence/dataset-changes/water-surface-coverage/snapshots/recipes/recipe.terrain-island/1/ff1f9dc00dda7d11dcc209068d745d4ce5137811bc9401c840aa06c693f48e13.json"
+      }
+    }
+  ],
+  "reference_updates": [
+    "skills/3dviz-pro-max/references/object-reasoning.md",
+    "skills/3dviz-pro-max/references/physical-interaction.md"
+  ],
+  "limits": [
+    "Authored creative guidance; source claims unchanged and no new source record.",
+    "Runtime status remains not-run for this reusable guidance promotion.",
+    "Historical event logs are preserved byte-for-byte; snapshots identify content, not trusted authorship.",
+    "Parent artifact screenshot review is separate from this guidance change."
+  ],
+  "promoted_at": "2026-09-07T12:06:34Z"
+}

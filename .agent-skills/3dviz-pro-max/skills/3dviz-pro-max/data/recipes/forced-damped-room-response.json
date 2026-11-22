@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "id": "recipe.forced-damped-room-response",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Forced damped rectangular-room modal response"
+  },
+  "aliases": {
+    "en": [
+      "driven room-mode response",
+      "damped acoustic mode inspector"
+    ]
+  },
+  "direction_ids": [
+    "waves-optics-fields",
+    "architecture-interiors"
+  ],
+  "summary": "Drive a finite set of analytic rectangular-room modes with declared modal mass, damping and coupling rather than inferring loss from wall appearance.",
+  "objective": "Build a bounded room-response instrument where a sinusoidal source excites selected modes and energy input, damping loss and integration residual remain inspectable.",
+  "tags": [
+    "room acoustics",
+    "forced oscillator",
+    "modal damping"
+  ],
+  "subject_terms": [
+    "modal coordinate",
+    "forcing frequency",
+    "damping ratio",
+    "modal mass",
+    "source coupling",
+    "resonance",
+    "energy balance"
+  ],
+  "intent_signals": [
+    "forced room resonance with damping",
+    "inspect modal forcing and decay"
+  ],
+  "example_prompts": [
+    "Drive one rectangular-room mode through resonance, then stop the force and inspect its damped decay."
+  ],
+  "negative_signals": [
+    "Not RT60 prediction, absorption fitting, ray tracing, calibrated SPL or a furnished-room measurement."
+  ],
+  "not_for": [
+    "No wall-material-to-damping inference, broadband auralization, nonlinear acoustics or certification."
+  ],
+  "entities": [
+    {
+      "name": "Room and modal field",
+      "guidance": "Reuse the exact rigid rectangular eigenfunction as a spatial display basis; each selected mode has its own numeric coordinate q, velocity and parameters."
+    },
+    {
+      "name": "Source and residual panel",
+      "guidance": "Show source position/coupling, drive phase, energy input, damping power and per-step equation residual."
+    }
+  ],
+  "state_contract": {
+    "model": "For each selected rigid-room mode j, declare positive modal mass Mj, a non-all-zero mode triplet, natural frequency fj from the rectangular-room formula, angular frequency wj=2*pi*fj, damping ratio zeta_j>=0, force amplitude Fj and spatial source coupling Phi_j(xs). Integrate Mj*qdd_j+2*zeta_j*wj*Mj*qd_j+Mj*wj^2*q_j=Fj*Phi_j(xs)*sin(Omega*t) over fixed dt with a declared method and finite step cap. Field display is sum_j q_j*Phi_j(x). The oscillator-coordinate bookkeeping energy (not calibrated acoustic energy) is Ej=.5*Mj*qd_j^2+.5*Mj*wj^2*q_j^2; its continuous balance is dEj/dt=force_j*qd_j-2*zeta_j*wj*Mj*qd_j^2. Damping is authored numeric input, not derived from wall materials.",
+    "authority": "Three.js owns modal state, fixed-step integration, force phase, energy/residual history and reset. Blender owns a dimensioned room shell, source/probe anchors and field glyph geometry.",
+    "actions": [
+      "Select a finite mode set and positive room dimensions.",
+      "Sweep forcing frequency or disable forcing to observe free decay.",
+      "Change authored damping or source position and invalidate prior traces.",
+      "Step or restore an exact checkpoint."
+    ]
+  },
+  "invariants": [
+    "Every active mode uses the current room dimensions, a non-all-zero nonnegative integer triplet, w=2*pi*f and declared finite modal parameters; the zero-frequency all-zero mode is rejected.",
+    "At a nodal source position the corresponding coupling is zero within tolerance.",
+    "With forcing off and nonnegative damping, accepted-step oscillator-coordinate energy cannot grow beyond the declared numerical residual tolerance; it is not calibrated acoustic energy.",
+    "Changing display gain leaves q, qdot, energy and residual unchanged."
+  ],
+  "motion_guidance": [
+    "Play, pause and step advance the declared model clock only; reset restores parameters, state, solver budget, selections, errors and presentation transforms.",
+    "Use static before/after states and numeric tables for reduced motion; animation interpolates committed state and never supplies physical evidence."
+  ],
+  "creative_affordances": [
+    "Blender may shape distinctive apparatus, cutaways and materials; Three.js binds named parts to authoritative state and keeps units and error states readable.",
+    "Camera, color, trails and deformation gain are presentation controls and cannot change the numerical model."
+  ],
+  "known_limits": [
+    "Finite modal truncation with independent linear oscillator coordinates only; q and its bookkeeping energy have declared analog units and are not calibrated acoustic pressure or energy. No damping identification, diffuse-field assumption, wall impedance or perceptual loudness.",
+    "Authored, source-reviewed guidance only; no Blender export, numerical simulation, contact solve, browser or renderer was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.physics-forced-oscillator-equation",
+      "statement": "A viscously damped mass-spring oscillator driven by F0 sin(omega t) satisfies m*xddot+b*xdot+k*x=F0*sin(omega*t).",
+      "scope": "Linear one-degree-of-freedom forced oscillator; this recipe applies the form independently to declared modal coordinates.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-openstax-forced-oscillations",
+          "locator": "Section 15.6, equation 15.27 and surrounding forced damped oscillator discussion"
+        }
+      ]
+    },
+    {
+      "id": "claim.physics-room-modal-basis",
+      "statement": "Rigid rectangular-room pressure modes have cosine-product spatial shapes and natural frequencies determined by sound speed, dimensions and nonnegative integer mode indices.",
+      "scope": "Homogeneous lossless rectangular cavity basis only; damping and forcing are separate authored inputs.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-mathworks-room-modes",
+          "locator": "Helmholtz rigid-boundary model, frequency formula and pressure eigenfunction"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Modal room instrument",
+      "structure": "Dimension six boundary planes, source/probe anchors and sparse signed field samples; keep charts outside the acoustic domain.",
+      "material": "Use sign plus glyph shape, and label damping numerically rather than encoding it as wall roughness."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Finite independently damped and forced rectangular-room modal coordinates.",
+    "timestep": "Fixed declared dt and integrator; reject overflow/non-finite state and expose step residual.",
+    "state": [
+      "room dimensions and selected modes",
+      "modal mass, damping, q and qdot",
+      "source position, drive amplitude/frequency/phase"
+    ],
+    "colliders": [
+      "none"
+    ],
+    "driving": [
+      "sinusoidal generalized modal force"
+    ],
+    "contact": [
+      "none"
+    ],
+    "checks": [
+      "nodal coupling check",
+      "unforced energy non-growth within authored integrator tolerance",
+      "equation residual and reset equality"
+    ]
+  },
+  "related_ids": [
+    "recipe.rectangular-room-normal-modes",
+    "knowledge.reasoning-boundary-conditions-are-the-model"
+  ]
+}

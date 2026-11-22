@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-stylized-outdoor-daylight",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Stylised outdoor daylight with one committed sun"
+  },
+  "aliases": {
+    "en": [
+      "outdoor daylight rig",
+      "sun and sky lighting",
+      "consistent shadow direction"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors",
+    "earth-environment"
+  ],
+  "summary": "Commit to a single sun direction and a sky fill, and keep every shadow, highlight and painted-in cue consistent with it.",
+  "objective": "All cast shadows in the scene run parallel and agree with the stated sun direction, and shaded sides agree with the shadows.",
+  "tags": [
+    "lighting-profile",
+    "outdoor",
+    "daylight",
+    "sun",
+    "sky-fill",
+    "shadow-direction"
+  ],
+  "subject_terms": [
+    "directional light",
+    "sun direction",
+    "sky fill",
+    "bounce light",
+    "shadow direction",
+    "time of day",
+    "warm and cool contrast",
+    "silhouette separation"
+  ],
+  "intent_signals": [
+    "shadows point in different directions",
+    "the scene looks flat outdoors",
+    "make it feel like late afternoon",
+    "light a village exterior",
+    "the buildings do not separate from the ground"
+  ],
+  "example_prompts": [
+    "Light an outdoor village so the roofs and streets read clearly.",
+    "Set a late-afternoon mood without losing readability in the shade.",
+    "Make a terrain island read as a place rather than a texture."
+  ],
+  "negative_signals": [
+    "indoor product studio",
+    "quantitative solar position required"
+  ],
+  "not_for": [
+    "Interior studio setups whose light comes from controlled fixtures.",
+    "Scenes that must state a real solar position for a given date and latitude, which needs a sourced solar model."
+  ],
+  "content": {
+    "principles": [
+      "Outdoor light reads as outdoor light mainly through consistency. One committed direction, applied everywhere, does more than any number of extra lights.",
+      "A directional light is an idealisation of a very distant source, so its rays are parallel and the shadow direction it produces on one flat receiver is constant. Shadows on a sloped, curved or stepped receiver take different screen paths from the same light, and a perspective camera can make even genuinely parallel ground shadows appear to converge, so consistency is checked in world space or on a common flat receiver rather than by eye on the screen.",
+      "Sky fill is a separate decision from the sun. The sun sets the direction and the shadow shape, while the sky decides how much can still be read inside the shadow, and a scene with no fill loses everything on the shaded side.",
+      "Bounce from the ground is what keeps undersides from going black. Its colour is a strong stylistic lever, since a warm ground and a cool sky produce the temperature separation most outdoor looks depend on.",
+      "The sun angle is a composition tool. A low angle produces long shadows that describe terrain and separate buildings, while a high angle flattens the scene and hides its relief.",
+      "Stylising the light is legitimate; contradicting it is not. Painted-in shading, baked gradients and stylised rim light must agree with the same declared direction."
+    ],
+    "implementation": [
+      "Declare the sun direction once as a named scene value, and drive both the directional light and any authored shading cues from that single value.",
+      "Remember that a directional light's direction comes from the relation between its position and its target, so moving only one of them changes the direction; keep the pair together and make sure the target participates in the scene hierarchy.",
+      "Add a sky-derived ambient or hemispheric fill whose colour differs from the sun, and set its level by checking readability in the deepest shadow rather than by a fixed ratio.",
+      "Introduce light from below by a named mechanism: an environment contribution, a baked or global-illumination solution, or an explicit weak fill light coloured from the ground material. A direct-light rasteriser does not generate bounce from a visible floor on its own.",
+      "Choose the sun elevation from what the scene must show: low for relief and separation, higher for legibility of layouts and plans.",
+      "Verify that objects added later inherit the same sun value rather than carrying their own light, which is the usual source of inconsistent shadows.",
+      "If the scene claims a time of day, keep it as an artistic label unless a sourced solar model is present; a mood name is not a solar position."
+    ],
+    "observable_checks": [
+      "On a common flat receiver, cast shadows across the scene run parallel and point away from the declared sun direction; on other receivers the caster-to-receiver direction is compared against the declared direction in world space instead.",
+      "The lit side of every object is the side facing the declared direction, including objects added after the lighting was set.",
+      "Detail remains readable in the deepest shadow, or the record states that the loss of detail there is intentional.",
+      "Undersides and eaves are not pure black, which confirms the ground bounce is present.",
+      "Changing the single declared sun value moves every shadow in the scene together, with no object keeping its old shading."
+    ]
+  },
+  "creative_affordances": [
+    "Non-natural sky colours, exaggerated shadow length and invented multiple-moon lighting are all available; the requirement is internal consistency, not realism.",
+    "Time-of-day mood can be pushed strongly, including colours no real sun produces, as long as the record labels the choice as expressive."
+  ],
+  "known_limits": [
+    "This profile does not compute solar position, day length or seasonal variation; a scene that asserts those needs a sourced astronomical model.",
+    "A parallel-ray light is an idealisation and does not reproduce the small angular size of the real sun or its penumbra behaviour.",
+    "Authored reusable guidance; no runtime artifact or rendered result has been observed for this record."
+  ],
+  "related_ids": [
+    "recipe.fantasy-village-diorama",
+    "recipe.terrain-island",
+    "recipe.earth-tilt-seasons",
+    "knowledge.terrain-landmark-rhythm",
+    "knowledge.shared-shadow-volume-fit",
+    "knowledge.theme-fantasy-woodland"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-directional-light-parallel",
+      "statement": "One widely used renderer documents a directional light as behaving as though it were infinitely far away so that all the rays it produces are parallel, with its direction computed as pointing from the light's position to a separate target object, and it notes that the target must be part of the scene for its position to be changed.",
+      "scope": "Documented light model of one library as of the access date. It supports the requirement that a single declared direction governs all shadows; it is an idealisation and not a solar model.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-directional-light",
+          "locator": "class description; direction from position to target; target"
+        }
+      ]
+    }
+  ]
+}

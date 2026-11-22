@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-crate",
+  "record_revision": 2,
+  "asset": "templates/kits/props/crate.js",
+  "asset_sha256": "c998372c351a3e05adf04ca38255e021120984009a93a4a52be663c6311590d7",
+  "params": {
+    "size": 0.62,
+    "planks": 4,
+    "seed": 1,
+    "braced": true
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-crate",
+    "module": "../props/crate.js",
+    "params": {
+      "size": 0.62,
+      "planks": 4,
+      "seed": 1,
+      "braced": true
+    },
+    "triangles": 2156,
+    "bounds_m": {
+      "min": [
+        -0.33442449755966663,
+        -2.384185793236071e-09,
+        -0.3422000110149384
+      ],
+      "max": [
+        0.33442449755966663,
+        0.6809999996647239,
+        0.34220001101493835
+      ],
+      "size": [
+        0.6688489951193333,
+        0.6810000020489098,
+        0.6844000220298767
+      ]
+    },
+    "fit_distance_m": 1.717,
+    "view_distances_m": {
+      "far": 4.1209,
+      "mid": 2.0605,
+      "close": 1.3393,
+      "detail": 0.7408
+    },
+    "sockets": [
+      "lid",
+      "base",
+      "label"
+    ],
+    "detail_socket": "lid",
+    "animated": false,
+    "colliders": [
+      "crate"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "281ecf4ef8cc33ef74890d6760e09e55afe3c5e9c902214c945d688c4f491dc6",
+    "mid.png": "d6715afd3901a7dcc8d36076a71b434bb6e000f65aea2222f898ea0aaaf952ee",
+    "close.png": "511f2585e678caec32312d84bcc676e6fcfc4002a051995e3f666370c3cdab34",
+    "detail.png": "a1aef39623f7625369706c702d184881fb18b58f3996e44d727ab60ef91d79ed"
+  },
+  "motion": null,
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:49:43+00:00",
+  "finished": "2026-09-08T13:49:46+00:00"
+}

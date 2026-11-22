@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.state-playback",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "motion-profile",
+  "title": {
+    "en": "State-derived playback with pause and reset"
+  },
+  "aliases": {
+    "en": [
+      "state playback",
+      "pause reset"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles",
+    "logic-circuits",
+    "algorithms-data-structures"
+  ],
+  "summary": "Display a sequence without letting animation create a second conflicting source of state.",
+  "objective": "Display a sequence without letting animation create a second conflicting source of state.",
+  "subject_terms": [
+    "state playback",
+    "pause reset",
+    "discrete animation queue"
+  ],
+  "tags": [
+    "motion-profile",
+    "state-playback"
+  ],
+  "intent_signals": [
+    "discrete animation queue"
+  ],
+  "example_prompts": [
+    "Use state-derived playback with pause and reset for the scene, preserving its model and user controls."
+  ],
+  "content": {
+    "principles": [
+      "Choose whether state commits before, during or after a transition and keep that policy consistent.",
+      "Distinguish a recorded sequence from a solver that can accept arbitrary new states."
+    ],
+    "implementation": [
+      "Keep committed model state, pending actions and presentation progress separate.",
+      "Define cancellation, queueing and undo behavior while a transition is active.",
+      "Reset clears pending work and presentation progress before restoring the initial model."
+    ],
+    "observable_checks": [
+      "Pause preserves both transition progress and committed state.",
+      "Reset during a transition prevents delayed callbacks from applying old actions."
+    ]
+  },
+  "related_ids": [
+    "recipe.twisty-cube-3x3-face-turns"
+  ],
+  "creative_affordances": [
+    "Adapt the layout, visual treatment and timing to the task; these are reusable design proposals, not mandatory templates."
+  ],
+  "known_limits": [
+    "Authored interaction/presentation guidance; no new scientific claim, accessibility certification or runtime verification is asserted."
+  ],
+  "claims": []
+}

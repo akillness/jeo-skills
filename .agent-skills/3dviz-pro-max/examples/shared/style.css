@@ -1,0 +1,42 @@
+:root{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f2eee5;background:#0c151a;--accent:#78b9b2;color-scheme:dark;font-synthesis:none}*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden}button,input,select,summary{font:inherit}button,summary{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.shell{height:100dvh;position:relative;background:radial-gradient(ellipse at 55% 65%,#263b43,#0c151a 72%)}#viewport,#world{position:absolute;inset:0;width:100%;height:100%}#viewport{overflow:hidden}#world{display:block;touch-action:none}.heading{position:absolute;z-index:2;left:clamp(18px,3vw,44px);top:clamp(18px,3vw,38px);width:min(410px,calc(100vw - 36px));pointer-events:none;text-shadow:0 2px 18px #081216}.eyebrow{margin:0;color:var(--accent);font-size:9px;font-weight:700;letter-spacing:.2em}h1{font:400 clamp(30px,4.2vw,58px)/1.02 Georgia,serif;letter-spacing:-.035em;margin:10px 0}#description{max-width:340px;margin:0;color:#b6c5c5;font-size:11px;line-height:1.65}.toolbar{position:absolute;z-index:3;right:18px;top:18px;display:flex;gap:5px;padding:5px;border:1px solid #ffffff18;border-radius:9px;background:#102027b8;backdrop-filter:blur(12px)}button{border:1px solid #ffffff18;border-radius:6px;background:#21343b;color:#ecede6;padding:8px 11px;font-size:10px}button:hover{border-color:var(--accent)}#readouts{position:absolute;z-index:2;left:18px;bottom:22px;display:flex;gap:8px;max-width:calc(100vw - 390px);overflow:auto}#readouts div{min-width:105px;padding:9px 11px;border:1px solid #ffffff12;border-radius:7px;background:#102027bd;backdrop-filter:blur(10px)}#readouts span{display:block;color:#8fa5a7;font-size:7px;letter-spacing:.12em;text-transform:uppercase}#readouts strong{display:block;margin-top:4px;font:400 15px Georgia,serif;white-space:nowrap}.panel{position:absolute;z-index:4;right:18px;bottom:18px;width:min(330px,calc(100vw - 36px));max-height:min(54dvh,460px);overflow:auto;border:1px solid #ffffff18;border-radius:10px;background:#102027e8;box-shadow:0 18px 55px #0007;backdrop-filter:blur(16px)}.panel>summary{list-style:none;padding:12px 15px;color:#c6d1ce;font-size:10px;letter-spacing:.12em}.panel>summary::-webkit-details-marker{display:none}.panel>summary::after{content:'＋';float:right;color:var(--accent)}.panel[open]>summary::after{content:'−'}.panel-content{padding:0 15px 14px;border-top:1px solid #ffffff10}.control-row,#subject-controls>label{display:block;padding:12px 0;border-bottom:1px solid #ffffff0d}.control-row label,#subject-controls>label{font-size:10px;color:#c2cdcc}.control-row label>span{display:inline-block;max-width:82%}.control-row output,#subject-controls output{float:right;color:var(--accent)}input[type=range],select{display:block;width:100%;margin-top:9px;accent-color:var(--accent)}select{padding:8px;background:#1b3037;border:1px solid #ffffff1c;border-radius:5px;color:inherit}.action{width:100%;text-align:left}.panel-actions{display:flex;gap:6px;margin:12px 0}.panel-actions button{flex:1}.lighting-isolation{display:flex;gap:5px;flex-wrap:wrap;margin:10px 0}#subject-controls .fine,#subject-controls a{color:#a7bbb9;font-size:10px;line-height:1.6}#subject-controls a,#sources a{display:block;color:var(--accent);margin:7px 0}.about{border-top:1px solid #ffffff14;margin-top:10px;padding-top:8px}.about summary{font-size:10px;color:#c5d0ce}.about p{color:#aab9b9;font-size:9px;line-height:1.6}#loading,#error{position:absolute;z-index:8;inset:0;display:grid;place-items:center;background:#0c151ade;font-size:11px;letter-spacing:.12em}#loading[hidden],#error[hidden]{display:none}#error{inset:auto 20%;top:45%;padding:18px;background:#442425;color:#ffd1c8;border-radius:8px;letter-spacing:0}.hint{position:absolute;z-index:2;left:20px;bottom:4px;color:#7f9597;font-size:7px;letter-spacing:.14em}
+@media(max-width:720px){.heading{top:16px}.heading h1{font-size:34px;max-width:260px}.heading #description{max-width:245px;font-size:10px}.toolbar{top:auto;right:auto;left:12px;bottom:90px}.toolbar button{padding:7px 8px}.panel{left:12px;right:12px;bottom:12px;width:auto;max-height:48dvh}#readouts{left:12px;right:12px;bottom:58px;max-width:none}.panel[open]~#readouts{display:none}.hint{display:none}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* The artwork owns the frame; long explanations remain in the notes tray. */
+.heading{width:min(310px,calc(100vw - 36px))}.heading h1{font-size:clamp(25px,3vw,40px)}.heading #description{display:none}.toolbar button,button{font-size:12px}.panel>summary{font-size:12px}.control-row label,#subject-controls>label,.about summary{font-size:12px}.about p,#subject-controls .fine{font-size:11px}.toolbar button{min-height:34px}
+@media(max-width:720px){.heading h1{font-size:28px}.toolbar button{font-size:11px;min-height:34px}.panel>summary{min-height:40px}}
+
+.panel>summary{position:sticky;top:0;z-index:1;background:#102027;border-radius:10px 10px 0 0}
+
+/* Chrome-free capture plate (?plate=1): the canvas keeps the whole frame. Chrome is hidden, never
+   removed, so a capture can still click #pause; #loading and #error stay visible so a failed
+   scene is still visible in a capture. */
+html[data-plate="1"] .heading,html[data-plate="1"] .toolbar,html[data-plate="1"] .panel,html[data-plate="1"] #readouts,html[data-plate="1"] .hint{display:none}
+
+/* Loading copy is a single line: grid + letter-spacing was wrapping each glyph onto the next
+   line inside a short iframe (the landing-page modal on a phone). Opaque fill so the title
+   behind it cannot show through. */
+#loading{display:flex;align-items:center;justify-content:center;padding:16px;background:#0c151a;letter-spacing:.04em;white-space:nowrap;text-align:center}#loading[hidden]{display:none}
+
+/* Hosted in the landing modal (`?embed=1`): the dialog already shows the title, so the in-frame
+   heading and hint would only cover the model. Toolbar, readouts and notes stay; on a phone the
+   readout chips go too, since there the modal has no room beside the toolbar. */
+html[data-embed="1"] .heading,html[data-embed="1"] .hint{display:none}
+@media(max-width:720px){
+ html[data-embed="1"] .toolbar{top:12px;right:12px;left:auto;bottom:auto}
+ html[data-embed="1"] #readouts{display:none}
+}
+
+/* Full-page phone: keep a small title, park the view buttons above the notes bar and the readout
+   chips above the buttons, so no chrome sits on the model. Short viewports (landscape, leftover
+   letterbox) hide the title and readouts entirely so the canvas stays readable. */
+@media(max-width:720px){
+ .heading{top:12px;left:12px;width:min(210px,calc(100vw - 24px))}
+ .heading h1{font-size:22px;max-width:none;margin:4px 0 0;line-height:1.15}
+ .toolbar{left:12px;right:12px;bottom:56px;justify-content:flex-end}
+ #readouts{bottom:110px}
+}
+@media(max-height:520px){
+ .heading,#readouts,.hint{display:none}
+ .toolbar{top:8px;right:8px;left:auto;bottom:auto}
+}

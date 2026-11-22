@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="3Dviz Pro Max">
+  <!-- The header's logo mark (site-nav.tsx) on the site's cream tile, so the green outline keeps
+       its contrast on a dark browser tab. Geometry is the nav's, scaled to 0.78 around the centre
+       and stroked heavier to survive 16 px; the raster sizes are rendered from this file by
+       site/scripts/social-assets.py. -->
+  <rect width="48" height="48" rx="12" fill="#fffaf2"/>
+  <g transform="translate(24 24) scale(0.78) translate(-24 -24)">
+    <g fill="none" stroke="#0b7553" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M24 5 41 14.5v19L24 43 7 33.5v-19Z"/>
+      <path d="M7 14.5 24 24l17-9.5M24 24v19"/>
+    </g>
+    <circle cx="24" cy="24" r="4.1" fill="#c7ef7a" stroke="#0b7553" stroke-width="2.1"/>
+  </g>
+</svg>

@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.molecular-topology-trajectory-identity-bridge",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Molecular trajectory import with topology-owned atom identity"
+  },
+  "aliases": {
+    "en": [
+      "molecular trajectory import",
+      "atom topology order"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Bind trajectory coordinates to a fixed topology order and retain per-frame metadata before building molecular render meshes.",
+  "objective": "Load a molecular trajectory and keep atom identity, selection and supplied connectivity stable through frame changes and render filtering.",
+  "tags": [
+    "tool-adapter",
+    "molecular-topology-trajectory-identity-bridge"
+  ],
+  "subject_terms": [
+    "molecular trajectory import",
+    "atom topology order",
+    "MDAnalysis Universe",
+    "trajectory frame metadata"
+  ],
+  "intent_signals": [
+    "Load a molecular trajectory and keep atom identity, selection and supplied connectivity stable through frame changes and render filtering."
+  ],
+  "example_prompts": [
+    "Load a molecular trajectory and keep atom identity, selection and supplied connectivity stable through frame changes and render filtering."
+  ],
+  "applies_when": [
+    "Bind trajectory coordinates to a fixed topology order and retain per-frame metadata before building molecular render meshes."
+  ],
+  "content": {
+    "principles": [
+      "The imported topology and its explicit coordinate-order mapping own atom identity. Mesh order, element color and distance-based guesses cannot substitute for that mapping.",
+      "Reading a trajectory is playback of supplied coordinates. It neither runs molecular dynamics nor proves that a bonded or interacting structure is scientifically correct."
+    ],
+    "implementation": [
+      "Bind topology and trajectory revisions through a manifest with atom count, ordered atom keys and reader version. Validate a known mapping when available; matching counts alone do not prove coordinate order. Refuse an unidentified reorder rather than matching atoms by nearest positions.",
+      "Keep source atom indices separate from any filtered GPU buffer. Derive selection, bonds and residue metadata through a stable mapping; record whether attributes were read, guessed or absent. Configure guessing deliberately rather than accepting guessed masses/types as supplied facts.",
+      "A frame reader owns source frame index, available physical time, unit conversion and cell metadata. If time is absent use an explicitly labeled assumed interval or frame index; never infer physical time from playback FPS.",
+      "Copy a frame into immutable application state when retaining it across subsequent reads. A new topology or changed atom count starts a new mapping epoch; invalidate old selections and measurements before replacing meshes."
+    ],
+    "observable_checks": [
+      "Use two topologies with the same atom count but a deliberately permuted identity mapping; reject the incompatible binding unless the permutation is supplied and applied consistently.",
+      "Select source atom 7, filter render atoms and seek backward then forward: atom 7 retains its identity and supplied bond endpoints.",
+      "Import a frame without time or bonds: report those fields absent/assumed according to policy, and never draw newly guessed bonds as source-provided connectivity."
+    ]
+  },
+  "known_limits": [
+    "Fixed-topology trajectory scope only. Reactive trajectories, variable particle count and bond-changing chemistry require a different identity/event model.",
+    "Authored source-reviewed guidance only; no import adapter, runtime artifact or scientific pipeline was implemented or executed."
+  ],
+  "creative_affordances": [
+    "Use a compact source-versus-display inspector to expose the specific transformation; layout and emphasis are authored choices, not validated usability findings."
+  ],
+  "related_ids": [
+    "knowledge.validation-bond-provenance-not-distance",
+    "knowledge.linked-plot-spatial-selection"
+  ],
+  "claims": [
+    {
+      "id": "claim.mdanalysis-trajectory-coordinate-order",
+      "statement": "MDAnalysis Universe requires trajectory coordinates to follow topology atom order; it also exposes optional topology guessing and current-step unit-cell dimensions.",
+      "scope": "MDAnalysis 2.10.0 documented import contract; no claim of automatic identity verification.",
+      "source_refs": [
+        {
+          "source_id": "source.mdanalysis-topology-trajectory-universe",
+          "locator": "Universe class description; coordinates parameter; to_guess and force_guess; dimensions"
+        }
+      ]
+    }
+  ]
+}

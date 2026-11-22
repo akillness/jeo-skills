@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "artifact_id": "emberfall-village",
+  "objective": "Explore an invented hillside village and leave knowing that its buildings look different because the work inside them is different.",
+  "selected_records": [
+    "recipe.fantasy-village-diorama",
+    "knowledge.theme-fantasy-woodland",
+    "knowledge.reasoning-settlement-function-variation",
+    "knowledge.style-ghibli-painterly-pastoral",
+    "knowledge.lighting-mood-dusk-golden-hour",
+    "knowledge.inspectable-selection"
+  ],
+  "custom_choices": [
+    "Story constraint chosen before geometry: the villagers collect emberlight, which produced the landmark (a burning hollow stump), the moth loft, the glimmer mill and the lantern motif.",
+    "Terrain is a terraced heightfield: a smoothstep quantiser turns a smooth landform into flat treads with short risers near the village, and relaxes to organic hills beyond 38 m.",
+    "Buildings are bedded 62% up their footprint's height range so the uphill wall cuts into the terrace and a stone plinth fills the downhill gap.",
+    "Fog density and hemisphere fill were re-derived for a 62 m scene; the lighting record's values were tuned for a 20 m subject.",
+    "Camera focus on selection approaches from outside the village so framing never lands inside a neighbour's roof."
+  ],
+  "runtime": {
+    "engine": "three@0.180.0",
+    "build": "vite@7.1.5",
+    "post": "postprocessing@6.39.4",
+    "pixel_ratio_cap": 2,
+    "remote_runtime_assets": false,
+    "physics": "none",
+    "render_scheduling": "Demand-driven RAF, max 60 fps, hidden-tab suspension, camera/input invalidation; 2048px shadow map fitted to a 42 m extent."
+  },
+  "scenes": [
+    {
+      "id": "emberfall",
+      "motion": "decorative ambient over discrete state (residents walk a distance along an owned route; the mesh displays it)",
+      "entities": [
+        "The Ember Beacon: 7 m hollow stump, burning crown, keeper's stair (hero)",
+        "Seven program-specific buildings: hall, water mill, smithy, granary, moth loft, two cottages",
+        "Scale cues: 2.0 m doors, 1.1 m fence posts, 1.5 m fox-folk, 0.45 m benches",
+        "Four lanes as terrain-hugging ribbons with stone treads on every riser",
+        "Instanced scatter: 96 trees (3 baked value bands, per-instance hue/scale/rotation jitter), 54 rocks, 120 shrubs, 150 shoreline reeds",
+        "Moving life: 3 residents on distinct routes, 9 orbiting moths, 5 smoke puffs"
+      ],
+      "actions": [
+        "orbit",
+        "zoom",
+        "reset view",
+        "select a building by clicking it or by its list button",
+        "pause and resume ambient motion",
+        "jump to five authored views"
+      ],
+      "boundaries": [
+        "Entirely invented: no historical, structural, ecological or engineering claim.",
+        "Dimensions are authored for internal consistency, not measured from anything.",
+        "No solver: nothing collides, floats or grinds; the mill wheel does not turn."
+      ],
+      "physical_contract": {
+        "model": "none",
+        "scope": "Positions in metres; residents advance along a polyline at a stated speed and are projected onto the terrain height.",
+        "time": "Variable delta capped at 50 ms; authored periods only.",
+        "limits": [
+          "No collision, no contact resolution, no support checks beyond sampling terrain height.",
+          "Residents can pass through each other and through props off the lane."
+        ]
+      }
+    }
+  ],
+  "claims_to_visuals": [
+    {
+      "claim": "No factual claim is made by this artifact.",
+      "source": "n/a - invented setting, stated on screen and in design-system.md",
+      "visual": "The panel note: 'Invented place. Nothing here is a historical or structural claim.'",
+      "verified_by": "captures/overview.png"
+    },
+    {
+      "claim": "Design claim only: each building's silhouette carries information about its program.",
+      "source": "knowledge.reasoning-settlement-function-variation (authored creative guidance)",
+      "visual": "Wheel at the waterline, flue twice the roof height, floor on staddle stones with a hoist beam, louvred four-sided tower, one long low ridge.",
+      "verified_by": "captures/millpond.png, captures/terraces.png, captures/overview.png"
+    }
+  ],
+  "selection_scope": "The records guided mood, palette, lighting numbers, the value-grouping discipline, the settlement's functional variation and the selection interaction. Terrain, building geometry, creature rigs and the panel layout are original to this artifact."
+}

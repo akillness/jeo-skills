@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-boundary-conditions-are-the-model",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Boundary conditions are part of the physics"
+  },
+  "aliases": {
+    "en": [
+      "Dirichlet or Neumann",
+      "held or insulated",
+      "domain edges"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal",
+    "calculus-fields"
+  ],
+  "summary": "Choose and display the boundary condition, because the same equation gives different answers at different edges.",
+  "objective": "Make a field simulation state what happens at its edges rather than leaving it implicit.",
+  "applies_when": [
+    "A source-free heat conduction field is simulated on a bounded domain, or another field equation is used and its own boundary conditions and conserved quantities have been stated.",
+    "The scene shows a rod, plate, container or region with edges.",
+    "Steady state or long-time behaviour is discussed."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "boundary condition",
+    "Dirichlet",
+    "Neumann",
+    "insulated",
+    "fixed temperature",
+    "steady state"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "fields",
+    "modelling"
+  ],
+  "intent_signals": [
+    "heat flows along the rod",
+    "what happens at the ends",
+    "why does it settle to zero"
+  ],
+  "example_prompts": [
+    "Simulate heat along a rod with the ends held at fixed temperature.",
+    "Let me switch the ends between held and insulated."
+  ],
+  "negative_signals": [
+    "Unbounded analytic solutions where no domain edge exists.",
+    "Purely decorative field animations that make no physical claim."
+  ],
+  "not_for": [
+    "Unbounded analytic solutions where no domain edge exists.",
+    "Purely decorative field animations that make no physical claim."
+  ],
+  "content": {
+    "principles": [
+      "The equation alone does not determine the solution. Holding the ends at a fixed temperature and insulating them are different physical situations with different long-time behaviour, even with identical initial conditions.",
+      "In the heat equation, fixed-value ends correspond to contact with a reservoir at that temperature, while an insulated end is expressed by a zero gradient there, meaning no heat flows across the boundary.",
+      "Higher modes decay fastest, so after a while the solution resembles its slowest surviving component; which component that is depends on the boundary condition.",
+      "Because the boundary is where the physics enters, it deserves visible treatment in the scene rather than being an unlabelled edge of a mesh."
+    ],
+    "implementation": [
+      "Choose the boundary condition explicitly and show it in the scene, for example as a clamp, a reservoir or an insulating jacket.",
+      "Implement the condition consistently with the stencil and the time level you are updating. Assigning fixed boundary values after an interior update is a valid implementation when the interior update did not depend on stale boundary values; what matters is that the discrete boundary condition holds for the state you then display.",
+      "Let the viewer switch conditions and observe the different long-time behaviour, which is the clearest demonstration of why they matter.",
+      "State the initial condition alongside the boundary condition, since the transient depends on both.",
+      "Label the quantity and units on the display, and report the steady state the current conditions imply."
+    ],
+    "observable_checks": [
+      "Run to long times with fixed ends and confirm the interior approaches the steady solution those ends imply: a uniform value only when both ends are held at the same value, and a linear profile between them when they differ.",
+      "Run with insulated ends and no internal sources or sinks, and confirm the appropriately weighted total thermal energy stays constant within tolerance rather than decaying.",
+      "Switch conditions mid-run and confirm the subsequent behaviour changes accordingly.",
+      "Check the discrete boundary residual at an insulated end: the one-sided difference should be zero to within the tolerance you declared for the scheme, since a finite-difference implementation will not produce an exact analytic zero."
+    ]
+  },
+  "related_ids": [
+    "recipe.heat-rod-decay",
+    "recipe.hydrostatic-depth-pressure"
+  ],
+  "creative_affordances": [
+    "Physical staging of the boundary, such as visible ice baths or insulation, makes the model legible and is a free design choice.",
+    "Comparative side-by-side runs with different conditions are often the strongest presentation."
+  ],
+  "known_limits": [
+    "Authored modelling guidance citing one-dimensional heat-equation boundary conditions; other equations have their own boundary types.",
+    "No simulation has been run and no numerical accuracy is asserted."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-heat-equation-boundaries",
+      "statement": "For the one-dimensional heat equation, ends held at a fixed temperature represent contact with a reservoir at that temperature, insulated ends are expressed by a zero spatial derivative at the boundary meaning no heat flows there, and in the series solution the higher modes decay fastest so the long-time behaviour is dominated by the slowest surviving term.",
+      "scope": "One-dimensional linear heat conduction with constant coefficients; other equations and geometries require their own treatment.",
+      "source_refs": [
+        {
+          "source_id": "source.lebl-heat-equation",
+          "locator": "4.6, heat equation, fixed and insulated boundary conditions, decay of higher modes"
+        }
+      ]
+    }
+  ]
+}

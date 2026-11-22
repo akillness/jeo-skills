@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.stable-merge-sort-trace",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Stable mergesort with persistent item identity"
+  },
+  "aliases": {
+    "en": [
+      "merge sort visualization",
+      "stable mergesort",
+      "divide and conquer sorting"
+    ]
+  },
+  "direction_ids": [
+    "algorithms-data-structures"
+  ],
+  "summary": "Track duplicate-valued items through recursive splitting and stable merging.",
+  "objective": "Build a mergesort trace with labeled bars, duplicate keys and a visible auxiliary array so I can verify stable ordering.",
+  "tags": [
+    "mergesort",
+    "stable sorting",
+    "merge operation"
+  ],
+  "subject_terms": [
+    "mergesort",
+    "stable sorting",
+    "merge operation",
+    "auxiliary array",
+    "duplicate keys",
+    "recursion tree"
+  ],
+  "intent_signals": [
+    "Build a mergesort trace with labeled bars, duplicate keys and a visible auxiliary array so I can verify stable ordering.",
+    "Track duplicate-valued items through recursive splitting and stable merging."
+  ],
+  "example_prompts": [
+    "Build a mergesort trace with labeled bars, duplicate keys and a visible auxiliary array so I can verify stable ordering.",
+    "Create an explorable 3D explanation of merge sort visualization with merge workspace."
+  ],
+  "negative_signals": [
+    "This is a specific stable mergesort implementation, not a claim that every merge variant is stable."
+  ],
+  "not_for": [
+    "This is a specific stable mergesort implementation, not a claim that every merge variant is stable."
+  ],
+  "entities": [
+    {
+      "name": "Identity bars",
+      "guidance": "Use equal-width bars with height encoding nonnegative key values and a separate original-index label; support zero values without hiding their label."
+    },
+    {
+      "name": "Split tree",
+      "guidance": "Show recursive index ranges above the main array with a clear base case for ranges of size zero or one."
+    },
+    {
+      "name": "Merge workspace",
+      "guidance": "Render left/right read pointers and output write pointer over an auxiliary row; keep copied tokens visually distinct from unique logical records."
+    }
+  ],
+  "state_contract": {
+    "model": "Finite array of (finite nonnegative numeric key,originalIndex) records, including duplicates. Sort by key only; top-down mergesort merges sorted halves, choosing the left item first on equal keys.",
+    "authority": "Array records, merge pointers and emitted write events own order; bar positions interpolate between committed index mappings without mutating keys.",
+    "actions": [
+      "Load a short input with repeated keys.",
+      "Step one comparison or write.",
+      "Pause and inspect a merge range.",
+      "Reset input and trace, or replay from the beginning."
+    ]
+  },
+  "invariants": [
+    "The final array is nondecreasing by key and preserves the input multiset.",
+    "Equal keys retain original relative order.",
+    "Each completed merge range is sorted; temporary buffer copies do not count as extra logical items."
+  ],
+  "motion_guidance": [
+    "Commit array writes at event boundaries rather than using proximity of moving bars as the sorting rule.",
+    "Allow speed changes to affect playback duration without changing comparison order."
+  ],
+  "known_limits": [
+    "This is a specific stable mergesort implementation, not a claim that every merge variant is stable.",
+    "The view is for representative short arrays; animation duration is not a benchmark of algorithm speed.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.stable-merge-sort-trace",
+      "statement": "Top-down mergesort recursively sorts two halves and combines them with a merge operation.",
+      "scope": "Stable tie handling is an explicit application choice for this recipe.",
+      "source_refs": [
+        {
+          "source_id": "source.princeton-mergesort",
+          "locator": "Abstract in-place merge; Top-down mergesort"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Identity bars",
+      "structure": "Use equal-width bars with height encoding nonnegative key values and a separate original-index label; support zero values without hiding their label.",
+      "material": "Matte bars with immutable index labels and a muted auxiliary tray; identical key heights remain distinguishable by identity markers."
+    }
+  ]
+}

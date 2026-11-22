@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.articulated-limb",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "object-archetype",
+  "title": {
+    "en": "Articulated creature or limb hierarchy"
+  },
+  "aliases": {
+    "en": [
+      "articulated limb"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "anatomy-structures"
+  ],
+  "summary": "Build limbs from connected segments and explicit joint pivots so motion reveals construction.",
+  "objective": "Rotate the proximal joint: all downstream parts follow while its parent remains fixed.",
+  "tags": [
+    "object-archetype",
+    "articulated",
+    "limb"
+  ],
+  "example_prompts": [
+    "Build limbs from connected segments and explicit joint pivots so motion reveals construction."
+  ],
+  "content": {
+    "principles": [
+      "Keep segment length, joint location and skin silhouette as separate authoring decisions.",
+      "Use a rest pose with named proximal and distal parts; cosmetic deformation must not silently change the declared joint mechanism."
+    ],
+    "implementation": [
+      "Place pivot nodes at intended joints, then offset segment meshes beneath them. Add the next pivot at the segment endpoint.",
+      "Expose one joint control at a time with authored travel bounds. Keep left/right naming explicit rather than relying on negative scale.",
+      "For a soft creature, choose a skinned mesh or overlapping stylized pieces and inspect the joint gap in bent poses."
+    ],
+    "observable_checks": [
+      "Rotate the proximal joint: all downstream parts follow while its parent remains fixed.",
+      "At both travel limits, segments remain attached and the visible joint does not open an unintended hole."
+    ]
+  },
+  "known_limits": [
+    "This hierarchy is not verified anatomical geometry, a joint biomechanics model or a muscle-force simulation.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+  ],
+  "related_ids": [
+    "recipe.fantasy-village-diorama",
+    "recipe.skeletal-hierarchy",
+    "recipe.knee-layer-peel"
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-articulated-limb",
+      "statement": "Scene graph children inherit the movement of their parent assembly.",
+      "scope": "Transform organization; the suggested limb segmentation is authored.",
+      "source_refs": [
+        {
+          "source_id": "source.three-scenegraph",
+          "locator": "Car frame and human hierarchy examples"
+        }
+      ]
+    }
+  ]
+}

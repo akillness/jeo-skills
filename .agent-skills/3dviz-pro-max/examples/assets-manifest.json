@@ -1,0 +1,546 @@
+{
+ "note": "Every file the anatomy studies fetch from ASSET_BASE. Regenerate with examples/scripts/fetch-assets.sh --manifest after changing the assets.",
+ "base": "https://assets.3dviz.dev/",
+ "files": [
+  {
+   "key": "anatomy/FMA13322.stl",
+   "bytes": 255684,
+   "sha256": "f340050375ea4397a85082fb7bd68ea553d52f4718656599804ecf8f4c7768be"
+  },
+  {
+   "key": "anatomy/FMA13323.stl",
+   "bytes": 257084,
+   "sha256": "ec68d362926061c62c2b7493fb6554941d78250f27ecdf744375659050bdc7ee"
+  },
+  {
+   "key": "anatomy/FMA13377.stl",
+   "bytes": 9560384,
+   "sha256": "4349d30019c36fc1823c1473b9c5ea5e06275f1d1f50b62ded4c2989ad6233a9"
+  },
+  {
+   "key": "anatomy/FMA13378.stl",
+   "bytes": 9443184,
+   "sha256": "ae21dee8f0c8be12b817a8c6eb06c4ebd009e297e584844a71d4751d60452437"
+  },
+  {
+   "key": "anatomy/FMA13395.stl",
+   "bytes": 5662884,
+   "sha256": "c0a3afd469db1fec9527bb81ec1f0956876d3d64d3acbf3a083619d4e7ce297b"
+  },
+  {
+   "key": "anatomy/FMA13396.stl",
+   "bytes": 6090884,
+   "sha256": "104b7749a10794987535c539d6c412b9b9afb3fd1819bdf5911ab1852f07a425"
+  },
+  {
+   "key": "anatomy/FMA13408.stl",
+   "bytes": 2565784,
+   "sha256": "f8b2c4b28041f155450654f43e00eed074191d580839c709e40ccfb0d1b56cbf"
+  },
+  {
+   "key": "anatomy/FMA13409.stl",
+   "bytes": 2514584,
+   "sha256": "bc0cc11c249b42be52864ed2b862a755d58cf044847034e803b05821ddbc7d24"
+  },
+  {
+   "key": "anatomy/FMA23130.stl",
+   "bytes": 813484,
+   "sha256": "6e26ad2b9794b136000abe2cc0b54cade989b943214e2149732cc2db2e337dce"
+  },
+  {
+   "key": "anatomy/FMA23131.stl",
+   "bytes": 824684,
+   "sha256": "a0650a72c481093ee8c3b1fe7cf8ad97b2d63875685e1acf608dec7a5e031748"
+  },
+  {
+   "key": "anatomy/FMA23464.stl",
+   "bytes": 140284,
+   "sha256": "23eed49ade9f558406782b47decee325d12ee9e1d5ef661a051a0516a142dfa3"
+  },
+  {
+   "key": "anatomy/FMA23465.stl",
+   "bytes": 135784,
+   "sha256": "1a09c41034b916d138696db3266bf66f159f3770f9446f45a9a198db4486ae07"
+  },
+  {
+   "key": "anatomy/FMA23467.stl",
+   "bytes": 179684,
+   "sha256": "c6074d69a2ccbcef6db2fb8bf758b44a5f6438b035da3399d6efb41b9d759a03"
+  },
+  {
+   "key": "anatomy/FMA23468.stl",
+   "bytes": 176984,
+   "sha256": "1284c72ce602b533b97cfb24fa73a72342cc049ebf6a6f8e709b686cdb828ed6"
+  },
+  {
+   "key": "anatomy/FMA24474.stl",
+   "bytes": 649584,
+   "sha256": "a47d03f9a1064bab3db90876e05729924e8c4667c78c1e6373fb42d191cd5563"
+  },
+  {
+   "key": "anatomy/FMA24477.stl",
+   "bytes": 342584,
+   "sha256": "93c9c1b04dff757fc170e7e6bdd682f94816579c18c2fe0aa2170371c24635c2"
+  },
+  {
+   "key": "anatomy/FMA24480.stl",
+   "bytes": 231184,
+   "sha256": "972e74cb7f9d774c8dbf477542414acba7d02358fb090726a1ec2ffa57a44357"
+  },
+  {
+   "key": "anatomy/FMA24486.stl",
+   "bytes": 66784,
+   "sha256": "bf7bcd3d2b546a06e5d5be1cec4540a2a228c28501d50397b2f72e5a4e543aab"
+  },
+  {
+   "key": "anatomy/FMA34680.stl",
+   "bytes": 1454184,
+   "sha256": "89f2568231a3f44d4de8119e8d3a5de8303ce18b607338be448e4de9169fcb9e"
+  },
+  {
+   "key": "anatomy/FMA34681.stl",
+   "bytes": 1424384,
+   "sha256": "74a6b52b59635579a69047bd98c544a6f4427f270ecc5abe78b70109304342d4"
+  },
+  {
+   "key": "anatomy/FMA34682.stl",
+   "bytes": 1484184,
+   "sha256": "1d261c2d378ca98a352dca1511bb1c2aa005a0a4309b9f9998d23d8397d80d0b"
+  },
+  {
+   "key": "anatomy/FMA34683.stl",
+   "bytes": 1453884,
+   "sha256": "82c39b100f36dd92ea51bf00cd233486d5b2e1c7dfdd265a85b8185faa0e07ae"
+  },
+  {
+   "key": "anatomy/FMA34684.stl",
+   "bytes": 2200584,
+   "sha256": "685c2c3b8e24b7a31e2274749b5306d96880420feb035ea4ecce5fb2d0993ac0"
+  },
+  {
+   "key": "anatomy/FMA34685.stl",
+   "bytes": 2231484,
+   "sha256": "d87ce42e4e42b8332e1677d35d59201fbc825de745ca77f9740741ef8bd42b3a"
+  },
+  {
+   "key": "anatomy/FMA34690.stl",
+   "bytes": 466584,
+   "sha256": "1725833b2da2e72bd64322c256e81910eae9fb9490ee721fd82910ae2eaed921"
+  },
+  {
+   "key": "anatomy/FMA34691.stl",
+   "bytes": 460684,
+   "sha256": "29d0cc082b0ee0b753eafa1f259fd0e3da8de4a3a480a863abef76664a432f6a"
+  },
+  {
+   "key": "anatomy/FMA37668.stl",
+   "bytes": 1749484,
+   "sha256": "2eb8019befa2c5f67e138757b0b4b52bef9bedba735e6bde1596becca8388b19"
+  },
+  {
+   "key": "anatomy/FMA37669.stl",
+   "bytes": 1734384,
+   "sha256": "ebada57b7f34fac71abc0a17c5c91c531778997b7a698be66e9c5879c241b143"
+  },
+  {
+   "key": "anatomy/FMA37684.stl",
+   "bytes": 1392084,
+   "sha256": "254c2b9528925155b360d919be825040fd6fb46f9fcf006a9969f25d738a50b0"
+  },
+  {
+   "key": "anatomy/FMA37685.stl",
+   "bytes": 1435484,
+   "sha256": "dcffdccfcbde15923e92aca1a56a006f911921f8fe4d66b7dd57408fdb792406"
+  },
+  {
+   "key": "anatomy/FMA37686.stl",
+   "bytes": 1613384,
+   "sha256": "1ceb9b9892b4cfe905d108cd096a24c9ea0c20bbe182364d748852e1eaeab344"
+  },
+  {
+   "key": "anatomy/FMA37687.stl",
+   "bytes": 1645384,
+   "sha256": "8a0d8998ec26224e8f3ef63c36190bcf6b187007bd2d4b62c60c898f0ba12c2c"
+  },
+  {
+   "key": "anatomy/FMA37695.stl",
+   "bytes": 1344084,
+   "sha256": "1a92c34f2891072488e55f65b9bed1560b473f36b6a4b996a2ccab6681b4c3ea"
+  },
+  {
+   "key": "anatomy/FMA37696.stl",
+   "bytes": 1311384,
+   "sha256": "fc0ec8d87af90596edec36ddc35ddccb06787c9db53c439e10c6bd7811a7c4e2"
+  },
+  {
+   "key": "anatomy/FMA37697.stl",
+   "bytes": 1815684,
+   "sha256": "c875ced0ecedde0637edf88b27e9a2086fd80088d9f89252664f49e981a8f855"
+  },
+  {
+   "key": "anatomy/FMA37698.stl",
+   "bytes": 1798784,
+   "sha256": "8bda791fe4d142e9a9a0060027328bd88734e95d6be4651fe82b111446e6b43a"
+  },
+  {
+   "key": "anatomy/FMA37699.stl",
+   "bytes": 1975784,
+   "sha256": "1ed7dd3d76fe3b6c89a6998e4cbd908ae22a545c4779a54e4cb720dc0e571a9f"
+  },
+  {
+   "key": "anatomy/FMA37700.stl",
+   "bytes": 1906484,
+   "sha256": "8f289dc2825e02602c3b7e42b2831c582e6958b74788c28acaa7c765c8c4acd9"
+  },
+  {
+   "key": "anatomy/FMA45874.stl",
+   "bytes": 377384,
+   "sha256": "130109f109bac097eb5c710b7e34cb9e7ffa1ac0f88a76182fe8795ba19b2056"
+  },
+  {
+   "key": "anatomy/FMA45875.stl",
+   "bytes": 373484,
+   "sha256": "57ff119e61e7af839088d9d6581c2898384ad66a00c0c457361d316f8ff90099"
+  },
+  {
+   "key": "anatomy/FMA61822.stl",
+   "bytes": 8828284,
+   "sha256": "709107c09a8df8f820e332462490ee209bcdfd4921236ff69f6fa01c989f98d3"
+  },
+  {
+   "key": "anatomy/FMA61993nsn.stl",
+   "bytes": 2815784,
+   "sha256": "bc4a8dada1834e72bfda67b43d427325e289791fd3e52eb9572d829702e2f335"
+  },
+  {
+   "key": "anatomy/FMA62004.stl",
+   "bytes": 2638084,
+   "sha256": "9c3b3ed2c81667526e14ba3cd5f427c4611f596eb38df6939d2154324dd6bb07"
+  },
+  {
+   "key": "anatomy/FMA67943.stl",
+   "bytes": 4503684,
+   "sha256": "464721a0893b05d7e830b327725cbd71c92d5fba6016c218bdbc4057f519e867"
+  },
+  {
+   "key": "anatomy/FMA67944.stl",
+   "bytes": 11925384,
+   "sha256": "a023ac8cad7440cbb16814782f0d78643c9e81cdf04272971afa11a0100bd6fe"
+  },
+  {
+   "key": "anatomy/FMA72653.stl",
+   "bytes": 1522484,
+   "sha256": "bfdfb291520f28f3243e5b6969449e9d0ce70fcbe7f2e1862629cea21110eb94"
+  },
+  {
+   "key": "anatomy/FMA72654.stl",
+   "bytes": 1522584,
+   "sha256": "54aa6966cf6dee412cd16f2fc9ba4222a47910c59cc7a147dbac87d62689a13d"
+  },
+  {
+   "key": "anatomy/FMA72655.stl",
+   "bytes": 777984,
+   "sha256": "3996b19ea6ddce123eb1c41798cfff26f8af125fa63492a98454c6ea994bf26e"
+  },
+  {
+   "key": "anatomy/FMA72656.stl",
+   "bytes": 777284,
+   "sha256": "e97ef0b0a99f9d5b76d96363555cc27dca101c0f39ec340f38517e106a68d05b"
+  },
+  {
+   "key": "anatomy/FMA72661.stl",
+   "bytes": 941984,
+   "sha256": "136dc5cab4297753d7d26af60990c9e94b78997d6bf6a61d2beea08c726fd497"
+  },
+  {
+   "key": "anatomy/FMA72662.stl",
+   "bytes": 941884,
+   "sha256": "533692c92294c4f5ad4158a51ab681cfefb4bd0f729a70df2e983693a1b51b2b"
+  },
+  {
+   "key": "anatomy/FMA72665.stl",
+   "bytes": 843184,
+   "sha256": "26aa859a22bed7bb4165f41b456f532ace9de8e7583754f894ec239615558829"
+  },
+  {
+   "key": "anatomy/FMA72666.stl",
+   "bytes": 842984,
+   "sha256": "30fd9c050762f100770d42a71c64976cce10c49440f03e991702fe8514ebceb3"
+  },
+  {
+   "key": "anatomy/FMA72667.stl",
+   "bytes": 489184,
+   "sha256": "babd989df0c238866ab1ae6c9e94d1fb3ec5b7d457ee25576a31a120831e9f97"
+  },
+  {
+   "key": "anatomy/FMA72668.stl",
+   "bytes": 488984,
+   "sha256": "ac0d7b383407477f53f13304de628ec848e8273f41b9ca5895a34697834e6f1b"
+  },
+  {
+   "key": "anatomy/FMA72669.stl",
+   "bytes": 658684,
+   "sha256": "8d269ad9da1d34453e23ac41ce4cf1e94734f48023373b7f2502beaed17cfeb1"
+  },
+  {
+   "key": "anatomy/FMA72670.stl",
+   "bytes": 658284,
+   "sha256": "206507829901707be007389c3ebdbae07ebb942ec983d4582c3c2b76fef6ae34"
+  },
+  {
+   "key": "anatomy/FMA72685.stl",
+   "bytes": 646384,
+   "sha256": "a39ee61dc99086d7d1be44c42157de54e04f9defa85074c63dc43b0bd1ef028f"
+  },
+  {
+   "key": "anatomy/FMA72686.stl",
+   "bytes": 645984,
+   "sha256": "b7e58d0f86e4dd335eabf01b5459526f6a7fe66821b03ccb43d879ba70d56332"
+  },
+  {
+   "key": "anatomy/FMA72687.stl",
+   "bytes": 652884,
+   "sha256": "ec04eabe123163d811f4eb4cbca8baf6cfc018ee5994bfe48b04a6b1991ad479"
+  },
+  {
+   "key": "anatomy/FMA72688.stl",
+   "bytes": 652084,
+   "sha256": "fe75592f16a8c604c07f17e788e22f34801467f14f4a1e9d1066da3759a7616f"
+  },
+  {
+   "key": "anatomy/FMA72689.stl",
+   "bytes": 307584,
+   "sha256": "5f7263b7768b54a4ef8b8e31a1d0ef7a7d8f72ccce5011fcbfce66b36a27ad58"
+  },
+  {
+   "key": "anatomy/FMA72690.stl",
+   "bytes": 307484,
+   "sha256": "f7573954276f752193fe5b80b2ebab8e717d0e6c2b11f8ccea12c632c8abea3a"
+  },
+  {
+   "key": "anatomy/FMA72705.stl",
+   "bytes": 172784,
+   "sha256": "fd317edc429ea14f0cc4398198bfb5a6f3a06d1ab9b2b24e5d41a63756899e0a"
+  },
+  {
+   "key": "anatomy/FMA72706.stl",
+   "bytes": 172684,
+   "sha256": "fa2679accd8a5134422e3d06012d30ac7db37cac3dcccba5526b9c9c3c55438b"
+  },
+  {
+   "key": "anatomy/FMA72717.stl",
+   "bytes": 585884,
+   "sha256": "052c22b760864144c50cc50077a3bdb111d7ed57e5f025ed9c061829b353b5dc"
+  },
+  {
+   "key": "anatomy/FMA72718.stl",
+   "bytes": 586284,
+   "sha256": "e83fc7ef26bafad285d81a236a5651132bd7eb1232f488ebb01f14202bffd927"
+  },
+  {
+   "key": "anatomy/FMA72800.stl",
+   "bytes": 417484,
+   "sha256": "19cde3a87977e5e3ba6c4a7f5570686108354193ce1e57c4b2607461ef6444cf"
+  },
+  {
+   "key": "anatomy/FMA72801.stl",
+   "bytes": 416984,
+   "sha256": "72022c802774b46f1ed6b3ae4afc705649d0a0a55a4eb50eef01ba40cb1278cb"
+  },
+  {
+   "key": "anatomy/FMA72804.stl",
+   "bytes": 523684,
+   "sha256": "812a311901ebf3947d8bf37341b91e9ce25560c14cb65834ea4a1e707310af51"
+  },
+  {
+   "key": "anatomy/FMA72805.stl",
+   "bytes": 523684,
+   "sha256": "8ee112c9d3387d6dcceacca5c13b27792466a55ecad95766c0cdee541a7e8210"
+  },
+  {
+   "key": "anatomy/FMA72975.stl",
+   "bytes": 938184,
+   "sha256": "1ce0984b5f92adef2278d7adb2d6eada578f20da6d00ce642eb085af60711138"
+  },
+  {
+   "key": "anatomy/FMA72976.stl",
+   "bytes": 937384,
+   "sha256": "8f718a0c60a316c7e6b60fa440909865927de819d2229c2c513f9dee97644a0a"
+  },
+  {
+   "key": "anatomy/FMA7333.stl",
+   "bytes": 1519984,
+   "sha256": "cd168d6c22d10dcb5e8be3ec88e9a97b33a261fc3e8195001daaac32d964a177"
+  },
+  {
+   "key": "anatomy/FMA7337.stl",
+   "bytes": 3279684,
+   "sha256": "cfb1641ad8443abd6da3919d3f7565f7d119dc740b7cf91d51d17ae9f2f67eda"
+  },
+  {
+   "key": "anatomy/FMA7370.stl",
+   "bytes": 2032684,
+   "sha256": "d5e0401182d8af9e9b05f4cac7eb4f728598650645370a15eec83ea1598b7e24"
+  },
+  {
+   "key": "anatomy/FMA7371.stl",
+   "bytes": 2214484,
+   "sha256": "17419dd2f9d837e162286b8545308893a9377e1f410c6e3c6385b45f1a6e90a3"
+  },
+  {
+   "key": "anatomy/FMA7383.stl",
+   "bytes": 1173984,
+   "sha256": "a12839911dd06f97d21f716d717a207ad0237dc602ce2ad2ad53fbcd402d4673"
+  },
+  {
+   "key": "anatomy/FMA7394.stl",
+   "bytes": 693584,
+   "sha256": "6cc38ce5ad2602ba214ef47e9bc94f7f44ef650772258caeee7060e20f6deda0"
+  },
+  {
+   "key": "anatomy/FMA7486.stl",
+   "bytes": 594184,
+   "sha256": "1d503e4a4b7b7090bb43ced9870d8bf8c618c4cc6c88f9570a6a3c0962b6597b"
+  },
+  {
+   "key": "anatomy/FMA7487.stl",
+   "bytes": 995884,
+   "sha256": "33488974f006fbf6404b7c3b095fac3502cd4c2abc787293eaf21e4c84193a90"
+  },
+  {
+   "key": "anatomy/FMA7857.stl",
+   "bytes": 709784,
+   "sha256": "60aaf884bbba890b825cc96036ab3af04ab8ba9a8d283752ba5c86105927b265"
+  },
+  {
+   "key": "anatomy/FMA7882.stl",
+   "bytes": 1184784,
+   "sha256": "be841be06ebe7f2554655e222a5c5237a40103335816eb6c2d51dae28bb9a7b0"
+  },
+  {
+   "key": "anatomy/FMA7909.stl",
+   "bytes": 1543084,
+   "sha256": "942b53665d37f1541b49772e092d557ffee0407fa917205eb204c612c707710a"
+  },
+  {
+   "key": "anatomy/FMA7957.stl",
+   "bytes": 1924484,
+   "sha256": "f09aed293efeaca491348e4b0d68aba243ad69b12da16c99ca0af8dfdbbe1537"
+  },
+  {
+   "key": "anatomy/FMA7987.stl",
+   "bytes": 773284,
+   "sha256": "47054d1d5654d7612a853d28529784a04719235c7162c20f3c11b14778735526"
+  },
+  {
+   "key": "anatomy/FMA79979.stl",
+   "bytes": 1800784,
+   "sha256": "50cec276c3919d5c8857e789852a0e7cfe2c3d789bfd52334e4dc37849079915"
+  },
+  {
+   "key": "anatomy/FMA79980.stl",
+   "bytes": 1789984,
+   "sha256": "6a7dcc338b91d2f7201a3c19c120d0c9067874f470f3c626f2a965e11893940f"
+  },
+  {
+   "key": "anatomy/FMA8012.stl",
+   "bytes": 1265284,
+   "sha256": "f6aadf30d7b507bd545fdcbb4f43630fc331c652fe1c4024d75380c1dfae45e6"
+  },
+  {
+   "key": "anatomy/FMA8039.stl",
+   "bytes": 1560684,
+   "sha256": "344b8098d9d10c0fb24bc11cd5f1cf41aba35070c4344d84b9a9b9b01026d394"
+  },
+  {
+   "key": "anatomy/FMA8148.stl",
+   "bytes": 1896184,
+   "sha256": "477e7de3c896937eb7df14760a63c0003cdeb6de9ae156d02a46da960081456f"
+  },
+  {
+   "key": "anatomy/attribution.json",
+   "bytes": 24174,
+   "sha256": "3b620f2481ce9c401abcf62039832a17c4598e7437e87b6bef0bde179028600c"
+  },
+  {
+   "key": "heart/FMA10951.stl",
+   "bytes": 384384,
+   "sha256": "627622da12b0716e3b564c2f4812c6a5b0fbec0d49e0cbdc018c70247b66b609"
+  },
+  {
+   "key": "heart/FMA3736.stl",
+   "bytes": 107884,
+   "sha256": "c99fcd415e7d7df717446f32601324b53656a96c41ff9190c766e39381e108e3"
+  },
+  {
+   "key": "heart/FMA3768.stl",
+   "bytes": 164184,
+   "sha256": "d45fa63a0dda6f6cea8e5db8bdd3fba851fe8e4dd5c679afe68ae47eb6ad56eb"
+  },
+  {
+   "key": "heart/FMA3802.stl",
+   "bytes": 257784,
+   "sha256": "a0327d37afecd97067bd8b95396622175e028a863debd418c6ab47e42dd89d03"
+  },
+  {
+   "key": "heart/FMA3818.stl",
+   "bytes": 245484,
+   "sha256": "8051eabb657122c11672c033e97e27a42c9e05213654dcdba5fada5c36fe9591"
+  },
+  {
+   "key": "heart/FMA3862nsn.stl",
+   "bytes": 461084,
+   "sha256": "831c5417e07392b91a6eba2f9584ae96912cfb21b75db192dd543500a8cfbc6a"
+  },
+  {
+   "key": "heart/FMA3895.stl",
+   "bytes": 177184,
+   "sha256": "bdccf8e75e76ef53555f2a667e135b7670f9f97d87dd10972b651b793a536763"
+  },
+  {
+   "key": "heart/FMA4685.stl",
+   "bytes": 12684,
+   "sha256": "1f255ab043b03785f60b080af66ec385c660797ff8796491880d4eed4ca54aad"
+  },
+  {
+   "key": "heart/FMA4706.stl",
+   "bytes": 96184,
+   "sha256": "03542a2590c4fa570efccc5e81c9b7936b0968cbad5b4c6d435e1e788481acf3"
+  },
+  {
+   "key": "heart/FMA4720.stl",
+   "bytes": 76684,
+   "sha256": "5be118bf9a3112718d16876762df66eb6d8998e433dd417f3ff0042057a08e10"
+  },
+  {
+   "key": "heart/FMA66326.stl",
+   "bytes": 5847484,
+   "sha256": "3067ec3d6f6c9a98ac2797d6de36f3eb39c7e2569edc6da7f44b6e545dde8af3"
+  },
+  {
+   "key": "heart/FMA7234.stl",
+   "bytes": 2363484,
+   "sha256": "96e2470c9ddd5fa0970014235abe2686d4c6084b1ed514edfec37677a7ae377e"
+  },
+  {
+   "key": "heart/FMA7235.stl",
+   "bytes": 955184,
+   "sha256": "e434d63f98d789acff6943ae244713d524d2abf6aa6020445a46bd24bc03d70c"
+  },
+  {
+   "key": "heart/FMA7246.stl",
+   "bytes": 910184,
+   "sha256": "b1436a72cf5727be01c02fe08bda7eaefd667af6cfbbcd6261f915a61e7f48dc"
+  },
+  {
+   "key": "heart/FMA7274.stl",
+   "bytes": 16579684,
+   "sha256": "ed570773264c7abf73db5f5da20e5e4f69943315e8c5995da850a2821988b0a2"
+  },
+  {
+   "key": "heart/attribution.json",
+   "bytes": 2335,
+   "sha256": "4e247aefa236d25a6e0400fd1e361827c6bcc37128d8b85ef5413acfa37361da"
+  }
+ ]
+}

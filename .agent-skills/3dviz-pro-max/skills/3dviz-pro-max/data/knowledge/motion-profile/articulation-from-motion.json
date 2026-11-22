@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.articulation-from-motion",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "motion-profile",
+  "title": {
+    "en": "Articulation from controlled movement"
+  },
+  "aliases": {
+    "en": [
+      "gait synchronization",
+      "creature articulation"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "robotics-control",
+    "environments-dioramas"
+  ],
+  "summary": "Connect limb and body motion to actual movement or commanded pose rather than an unrelated clock.",
+  "objective": "Connect limb and body motion to actual movement or commanded pose rather than an unrelated clock.",
+  "subject_terms": [
+    "gait synchronization",
+    "creature articulation",
+    "foot sliding"
+  ],
+  "tags": [
+    "motion-profile",
+    "articulation-from-motion"
+  ],
+  "intent_signals": [
+    "foot sliding"
+  ],
+  "example_prompts": [
+    "Use articulation from controlled movement for the scene, preserving its model and user controls."
+  ],
+  "content": {
+    "principles": [
+      "The root controller, joint pose and secondary decoration need distinct responsibilities.",
+      "A stylized gait can exaggerate timing while preserving the intended contact and clearance story."
+    ],
+    "implementation": [
+      "Choose a body plan, joint pivots and motion range before animating the whole creature.",
+      "Drive gait phase from actual progress where appropriate; handle blocked motion, stopping and turning explicitly.",
+      "Use a pose or animation tool for articulation and a controller or solver for world constraints as needed."
+    ],
+    "observable_checks": [
+      "A blocked root does not continue an unqualified walking cycle indefinitely.",
+      "Turning and full limb extension remain within the chosen clearance envelope."
+    ]
+  },
+  "related_ids": [
+    "knowledge.authored-locomotion"
+  ],
+  "creative_affordances": [
+    "Adapt the layout, visual treatment and timing to the task; these are reusable design proposals, not mandatory templates."
+  ],
+  "known_limits": [
+    "Authored interaction/presentation guidance; no new scientific claim, accessibility certification or runtime verification is asserted."
+  ],
+  "claims": []
+}

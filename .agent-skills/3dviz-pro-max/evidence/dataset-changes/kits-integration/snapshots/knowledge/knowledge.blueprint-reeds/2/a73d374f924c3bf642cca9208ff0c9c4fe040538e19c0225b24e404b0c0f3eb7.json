@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-reeds",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: instanced water reeds"
+  },
+  "aliases": {
+    "en": [
+      "reeds kit",
+      "reed clump blueprint",
+      "riverbank grass module"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "earth-environment"
+  ],
+  "summary": "A clump of instanced reed blades on a faceted tussock, with seed heads carried on the blade tips and an animate(dt) that bends every blade about its own base.",
+  "objective": "At one metre the clump reads as a fan of blades of different heights over a tussock, then each blade curving its own way with seed heads, then tapered tips and hue jitter.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "nature",
+    "reeds",
+    "grass",
+    "instanced",
+    "animated",
+    "wind"
+  ],
+  "subject_terms": [
+    "blade taper",
+    "seed head",
+    "tussock",
+    "wind phase",
+    "blade curve"
+  ],
+  "intent_signals": [
+    "line the stream with reeds",
+    "wind-animated grass clump",
+    "instanced vegetation kit"
+  ],
+  "example_prompts": [
+    "Line the pond edge with reeds that move in the wind.",
+    "I need grass I can instance across a bank without forty draw calls."
+  ],
+  "not_for": [
+    "Any claim about a plant species, its habitat or its growth.",
+    "A wind field: the sway is a per-blade phase, not a simulated force."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/nature/reeds.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "count",
+      "type": "integer",
+      "range": [
+        6,
+        120
+      ],
+      "default": 40
+    },
+    {
+      "name": "seed",
+      "type": "integer",
+      "range": [
+        0,
+        65535
+      ],
+      "default": 1
+    },
+    {
+      "name": "spread",
+      "type": "number",
+      "range": [
+        0.2,
+        2.0
+      ],
+      "default": 0.62,
+      "unit": "m"
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "range": [
+        0.5,
+        2.5
+      ],
+      "default": 1.25,
+      "unit": "m"
+    },
+    {
+      "name": "blade",
+      "type": "color",
+      "default": "#7c9455"
+    }
+  ],
+  "sockets": [
+    {
+      "name": "base",
+      "position_m": [
+        0,
+        0,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "tip",
+      "position_m": [
+        0.214,
+        1.376,
+        -0.071
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "edge",
+      "position_m": [
+        0.62,
+        0.04,
+        0
+      ],
+      "normal": [
+        1,
+        0,
+        0
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "forty blades whose heights vary from half to 1.1 times the height parameter",
+      "a low faceted tussock the blades grow out of",
+      "the clump fanning out rather than standing as a bundle"
+    ],
+    "medium": [
+      "every blade swept along its own azimuth, so no two curve the same way",
+      "two blade curvatures in the clump, one gentle and one strongly hooked",
+      "about a third of the blades carrying an elongated seed head at the tip"
+    ],
+    "fine": [
+      "blades tapering from 14 mm at the sheath to 3 mm at the tip",
+      "the seed head carried in the same geometry space as the blade, so it can never drift off its stem",
+      "per-blade hue jitter of 8 percent across the whole clump"
+    ]
+  },
+  "footprint_m": [
+    1.6,
+    1.32
+  ],
+  "poly_budget": 2030,
+  "fits_looks": [
+    "knowledge.style-stylized",
+    "knowledge.style-hand-painted",
+    "knowledge.theme-botanical-sanctuary",
+    "knowledge.lighting-mood-dawn-cool",
+    "knowledge.lighting-mood-fog-shafts"
+  ],
+  "content": {
+    "principles": [
+      "A blade that grows straight up reads as a spike. The quadratic sweep is what makes a clump read as a plant.",
+      "The seed head is placed in the blade geometry, not in a second placement list, so one instance transform carries both and they can never separate.",
+      "Wind is per-blade phase and per-blade gust strength: a clump that bends as one object reads as a rubber prop."
+    ],
+    "implementation": [
+      "Call create({ count, seed, spread, height, blade }); the clump is centred on the origin with the ground plane at y = 0.",
+      "animate(dt, strength) - also exported as sway(dt) - recomposes every instance matrix and returns true when it moved; it returns false for dt <= 0.",
+      "instancing gives { geometry, material, hueJitter } for a unit blade standing on y = 0 with its tip at y = 1, so an instance scale is the blade height in metres."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible.",
+      "count 90 produces more than three times the triangles of count 12 at the same seed.",
+      "animate(0) returns false, animate(0.4) returns true and changes the instance matrices."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here measures a real reed, sedge or grass.",
+    "The poly budget is the triangle count observed at the default count of forty; a count of ninety costs about 4300 triangles and breaks the 2500 ceiling. The budget is per default count.",
+    "Blades are three-sided tapered prisms, not cards: they read from every angle but they cannot show a flat leaf face.",
+    "animate() rewrites every instance matrix on the CPU each call, so a bank of many clumps should share one clump and animate it once rather than call each.",
+    "Palette values are the colours that render: kit-core scatterInstances runs its InstancedMesh on a white-based clone of the material and writes the absolute jittered colour per instance, so an unjittered instance lands on exactly the hex the parameter names."
+  ],
+  "creative_affordances": [
+    "Any parameter may be pushed outside its stated range; the range is the band that was proved, not a limit.",
+    "Raise the height and drop the count for bulrushes, or shrink both and re-colour for a tussock of meadow grass."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "count": 40,
+      "seed": 1,
+      "spread": 0.62,
+      "height": 1.25,
+      "blade": "#7c9455",
+      "curves": [
+        0.17,
+        0.34
+      ],
+      "wind_hz": 0.27,
+      "feeling": "still pond edge at dawn"
+    },
+    "rationale": "1.25 m puts the tallest blades at waist height on a 1.7 m figure, the height at which reeds read as water margin rather than as lawn."
+  },
+  "related_ids": [
+    "knowledge.three-instanced-scenery-adapter",
+    "knowledge.geometry-nodes-instance-handoff",
+    "knowledge.tree-crown-root-architecture",
+    "recipe.fantasy-village-diorama"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "detail_socket": "base",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-reeds/far.png",
+      "evidence/kits/knowledge.blueprint-reeds/mid.png",
+      "evidence/kits/knowledge.blueprint-reeds/close.png",
+      "evidence/kits/knowledge.blueprint-reeds/detail.png",
+      "evidence/kits/knowledge.blueprint-reeds/close-motion.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-reeds/proof-log.json"
+  }
+}

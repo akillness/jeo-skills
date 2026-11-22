@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "id": "recipe.root-zone-irrigation-budget",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Root-zone irrigation water budget"
+  },
+  "aliases": {
+    "en": [
+      "daily soil water balance",
+      "irrigation depletion ledger",
+      "root-zone water budget"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment",
+    "environments-dioramas"
+  ],
+  "summary": "Balance daily root-zone depletion from rain, runoff, irrigation, capillary rise, evapotranspiration and deep percolation while keeping every flux and modeling assumption visible.",
+  "objective": "Edit a short weather-and-irrigation schedule and inspect how each daily flux changes root-zone depletion, threshold crossings and conservation residual.",
+  "tags": [
+    "irrigation",
+    "soil water",
+    "root zone",
+    "water budget"
+  ],
+  "subject_terms": [
+    "root-zone depletion",
+    "total available water",
+    "readily available water",
+    "crop evapotranspiration",
+    "deep percolation",
+    "daily irrigation schedule"
+  ],
+  "intent_signals": [
+    "Show where irrigation water goes in a daily root-zone budget.",
+    "Compare a small irrigation with an over-irrigation event and reveal deep percolation.",
+    "Scrub a field water ledger and see when depletion reaches the selected management threshold."
+  ],
+  "example_prompts": [
+    "Build a 14-day root-zone water budget with editable rain and irrigation and a linked soil-profile scene.",
+    "Show how net irrigation lowers depletion and how excess wetting becomes deep percolation in the simple FAO balance."
+  ],
+  "negative_signals": [
+    "Not groundwater flow, Richards-equation infiltration, flood routing or a watershed delineation.",
+    "Not a crop-yield forecast or universal irrigation prescription."
+  ],
+  "not_for": [
+    "Sizing a real irrigation system without local soil, crop, efficiency and weather data.",
+    "Inferring a literal water-table surface from a single root-zone depletion value."
+  ],
+  "entities": [
+    {
+      "name": "Field and root-zone prism",
+      "guidance": "Build a shallow field plot with crop rows above a cutaway root-zone prism. Encode normalized remaining available water as a labeled fill or pore tint; keep it distinct from a literal saturated water surface."
+    },
+    {
+      "name": "Daily flux arrows",
+      "guidance": "Place precipitation, runoff, net infiltrated irrigation, capillary rise, crop evapotranspiration and deep-percolation arrows on the correct boundary of the prism. Arrow cross-section or pulse count scales to millimetres for the selected day and remains legible at zero."
+    },
+    {
+      "name": "Depletion ledger and thresholds",
+      "guidance": "Show D_r at the start and end of each day, TAW, optional RAW=p*TAW, every signed term and the balance residual. Link a selected ledger row to the soil prism and flux arrows."
+    }
+  ],
+  "state_contract": {
+    "model": "Use a finite daily sequence and one root-zone control volume. For day i, D_i=D_(i-1)-(P_i-RO_i)-I_i-CR_i+ETc_i+DP_i in millimetres, with 0<=D_i<=TAW. Require every input finite, positive TAW, 0<=D_0<=TAW, 0<=RO_i<=P_i, I_i>=0, CR_i>=0 and ETc_i>=0. For CR_i=0, follow the source's equation (88) same-day drainage case: evaluate C=D_(i-1)-(P_i-RO_i)-I_i+ETc_i; if C<0 set DP_i=-C and D_i=0, otherwise set DP_i=0 and D_i=C. When optional CR_i>0 is enabled, use the explicitly authored conservation-preserving extension of equation (85), C=D_(i-1)-(P_i-RO_i)-I_i-CR_i+ETc_i, with the same DP_i=max(0,-C) rule; do not attribute that CR term to equation (88). If C>TAW, reject the day as inconsistent with the supplied actual ETc and this bounded one-layer model; do not silently clamp away an unmodeled water deficit. Optional RAW=p*TAW uses a declared finite 0<p<=1 and is a visible management threshold, not an automatic local recommendation.",
+    "authority": "The ordered daily ledger owns D_i, DP_i and threshold state. Soil tint, crop animation and arrow travel are projections of those values and never feed water back into the calculation.",
+    "actions": [
+      "Select a day and inspect each signed balance term and residual.",
+      "Edit precipitation, runoff or net infiltrated irrigation and recompute that day and every later day.",
+      "Toggle optional capillary rise and RAW threshold with their assumptions visible.",
+      "Compare two irrigation schedules using identical weather and initial depletion.",
+      "Reset the schedule, TAW, p, initial depletion and selected day."
+    ]
+  },
+  "invariants": [
+    "For every accepted day, D_i-D_(i-1)+(P_i-RO_i)+I_i+CR_i-ETc_i-DP_i equals zero within a declared arithmetic tolerance.",
+    "Accepted depletion remains in [0,TAW]. A negative pre-drainage candidate is converted to nonnegative DP and D_i=0; a candidate above TAW is reported as unsupported demand rather than hidden by clamping.",
+    "Changing day i recomputes all later depletion states because D_i is the next day's initial condition; prior days remain unchanged.",
+    "The normalized fill is 1-D_i/TAW and is labeled available-water fraction, not volumetric water content or groundwater elevation."
+  ],
+  "motion_guidance": [
+    "Advance in discrete daily steps. Within-day arrow pulses may stage inputs then outputs for explanation, but the final state must equal the single declared daily balance.",
+    "Scrubbing restores the stored ledger row directly; reverse arrow motion is a navigation cue and not reversed evapotranspiration or drainage.",
+    "When schedule edits cascade forward, mark recalculated rows before moving the time cursor."
+  ],
+  "creative_affordances": [
+    "Use a compact farm plot, terrace or greenhouse bed while preserving one clearly bounded root-zone control volume.",
+    "A translucent soil cutaway, stacked water-depth tiles or a vertical millimetre ruler can communicate storage without imitating unsimulated pore-scale flow."
+  ],
+  "known_limits": [
+    "This is a one-layer daily bookkeeping model. It does not resolve infiltration rate, preferential flow, layered soil, salinity, water-table dynamics, irrigation uniformity or sub-daily storms.",
+    "ETc, TAW, p, runoff and capillary rise must come from suitable local evidence or explicit authored inputs; this recipe supplies no crop coefficients or field calibration.",
+    "The simple drainage rule assumes excess above field capacity leaves within the day. Including optional capillary rise in that drainage calculation is an authored conservation extension of equation (85), not wording from equation (88). The recipe has no executed calculation artifact, scene runtime or rendered observation."
+  ],
+  "claims": [
+    {
+      "id": "claim.mixed-sol-fao-root-zone-balance",
+      "statement": "FAO Paper 56 equation (85) expresses end-of-day root-zone depletion as previous depletion minus effective precipitation, net irrigation and capillary rise plus crop evapotranspiration and deep percolation; equation (86) bounds depletion between zero and total available water, while the simple heavy-rain-or-irrigation case in equation (88) sets same-day deep percolation without a capillary-rise term.",
+      "scope": "The daily single-root-zone procedure in FAO Paper 56 equations (85)-(88); not a Richards-equation soil-flow model or a site-specific irrigation recommendation.",
+      "source_refs": [
+        {
+          "source_id": "source.mixed-sol-fao-56-root-zone-balance",
+          "locator": "Soil water balance, equations (85)-(88), plus Forecasting or allocating irrigations"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Root-zone cutaway",
+      "structure": "A watertight rectangular teaching prism has topsoil, labeled effective-root-depth bracket and a separate lower drainage boundary; crop roots remain contained within the declared control volume.",
+      "material": "Layered matte soil with a cool available-water tint and hatched excluded subsoil. Tint opacity uses a legend and never resembles a measured phreatic surface.",
+      "articulation": "Only the normalized storage tint and daily arrows change; soil geometry stays fixed unless root depth is explicitly added as a new model input."
+    },
+    {
+      "family": "Flux manifold",
+      "structure": "Six labeled inlet or outlet channels terminate at the correct prism boundary, with a millimetre ruler and a zero-flux parked state.",
+      "material": "Rain and irrigation share a water hue but differ by icon and label; ET uses vapor marks, runoff a surface channel, capillary rise an upward arrow, and percolation a lower drain.",
+      "articulation": "Pulse length follows the selected day's magnitude on one shared scale; animation timing carries no hydraulic meaning."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Discrete daily scalar conservation ledger for one root-zone control volume; no fluid solver or rigid-body interaction.",
+    "timestep": "One day per update in the stated same-day-drainage convention; the optional CR-aware branch is labeled as an authored equation (85) extension.",
+    "state": [
+      "root-zone depletion D in millimetres",
+      "daily flux ledger",
+      "TAW and optional RAW threshold",
+      "selected day"
+    ],
+    "checks": [
+      "Compute the signed conservation residual for every accepted day.",
+      "Verify forward recomputation after editing a historical day.",
+      "Distinguish zero depletion from a literal saturated water table and report C>TAW as unsupported input."
+    ]
+  },
+  "related_ids": [
+    "recipe.watershed-flow-accumulation",
+    "recipe.streamflow-forecast-playback"
+  ]
+}

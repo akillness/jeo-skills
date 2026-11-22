@@ -1,0 +1,20 @@
+{
+  "name": "3dviz-pro-max-examples",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 4180",
+    "fetch-assets": "bash scripts/fetch-assets.sh",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4180",
+    "test": "node --test --test-concurrency=1 shared/*.test.js shared/art-science/scenes/*.test.js shared/breadth/src/*.test.js"
+  },
+  "dependencies": {
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "vite": "7.1.5"
+  },
+  "packageManager": "pnpm@10.30.1"
+}

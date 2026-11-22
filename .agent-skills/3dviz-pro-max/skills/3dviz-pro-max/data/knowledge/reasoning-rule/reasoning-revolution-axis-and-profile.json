@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-revolution-axis-and-profile",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Check the axis relationship before revolving a profile"
+  },
+  "aliases": {
+    "en": [
+      "solid of revolution",
+      "disk or washer",
+      "profile crossing"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry",
+    "calculus-fields"
+  ],
+  "summary": "Define the generating region relative to the rotation axis, then derive its inner and outer radii to choose the method and volume formula.",
+  "objective": "Keep a solid of revolution and its computed volume consistent with the profile that generates them.",
+  "applies_when": [
+    "A curve or profile is revolved about an axis to produce a solid.",
+    "A volume is computed and displayed alongside the solid.",
+    "The user can edit the profile or move the axis."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "solid of revolution",
+    "disk method",
+    "washer method",
+    "axis",
+    "volume",
+    "profile"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "geometry",
+    "integration"
+  ],
+  "intent_signals": [
+    "revolve this curve",
+    "compute the volume of the solid",
+    "why is there a hole"
+  ],
+  "example_prompts": [
+    "Revolve my profile and show the volume as it changes.",
+    "Show the difference between a solid and a hollow solid of revolution."
+  ],
+  "negative_signals": [
+    "Lathe-style modelling where no volume claim is made.",
+    "Non-axisymmetric sweeps, which need a different construction."
+  ],
+  "not_for": [
+    "Lathe-style modelling where no volume claim is made.",
+    "Non-axisymmetric sweeps, which need a different construction."
+  ],
+  "content": {
+    "principles": [
+      "Define the generating region, the axis and the direction of the cross sections first, then read the method from the region rather than from the profile alone. When the region reaches the axis the cross sections are disks and the volume is the integral of pi times the radius squared; when the region is bounded away from the axis they are washers and the inner radius squared is subtracted.",
+      "Crossing the axis is not by itself a defect. Revolving the graph of y equal to x about the horizontal axis gives radius equal to the absolute value of x, which is single-valued everywhere including at zero. What a crossing does require is a decision about the generating region: which side of the axis, whether the swept solid is a union of intervals, and whether the surface or the solid is being reported.",
+      "The rendered lathe surface and the computed volume are two consumers of the same profile; if they use different sampling or different bounds they will disagree.",
+      "The interval of revolution is part of the definition, and a scene that reports a volume must show which interval it integrated."
+    ],
+    "implementation": [
+      "State the generating region explicitly and derive the inner and outer radius functions from it, rather than inferring the method from a gap in the profile; a positive profile separated from the axis still generates disks when the region includes the strip beneath it down to the axis.",
+      "Compute the volume by integrating the same radius function that generates the mesh, and show the integration interval and the sample count.",
+      "Show the inner and outer radius explicitly in the washer case so the hole is understood as a subtraction rather than an artefact.",
+      "For a profile that crosses the axis, state the policy in terms of the region: take the absolute value as the radius, split the interval, or treat the two sides as separate regions and report their union. Only a genuinely multivalued radius over the same interval needs to be rejected.",
+      "Display the units and note when the volume is approximate because it is computed from samples."
+    ],
+    "observable_checks": [
+      "Compare the computed volume for a shape with a known closed form, such as a cylinder or sphere, and check the error against the sample count.",
+      "Change the generating region so its perpendicular cross sections acquire a positive inner radius and confirm the geometry and method switch to washers. Moving only a positive profile while its region still extends down to the axis leaves disks; a graph-to-axis gap alone must not trigger the switch.",
+      "Drag the profile across the axis and confirm the stated region policy is applied and the reported volume matches an independent computation for the resulting region, rather than assuming the crossing itself is an error.",
+      "Change the interval and confirm the reported volume and the drawn solid change together."
+    ]
+  },
+  "related_ids": [
+    "recipe.solid-of-revolution",
+    "recipe.double-integral-columns"
+  ],
+  "creative_affordances": [
+    "Presentation of the sweep, including partial revolution and cutaway, is free; the constraint concerns the method and the reported number.",
+    "A decorative lathe object needs none of this apparatus when it reports no volume."
+  ],
+  "known_limits": [
+    "Authored construction guidance citing the disk and washer rules; it does not cover shell integration or revolution about arbitrary skew axes.",
+    "Numerical accuracy depends on the sampling used, which this rule does not specify."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-disk-washer-methods",
+      "statement": "For a continuous nonnegative function revolved about an axis with the region touching the axis, the volume is the integral of pi times the square of the function; when the region is bounded by two nonnegative functions with the larger above the smaller, the washer method gives the integral of pi times the difference of their squares.",
+      "scope": "Volumes of solids of revolution for regions defined by continuous nonnegative functions over an interval; it does not cover shell integration or crossing profiles.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-disk-method",
+          "locator": "2.2, Rule: The Disk Method and the washer method"
+        }
+      ]
+    }
+  ]
+}

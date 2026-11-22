@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-texture-screen-footprint",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "constraint_level": "advisory",
+  "title": {
+    "en": "Choose texture sampling from screen footprint"
+  },
+  "aliases": {
+    "en": [
+      "texture resolution by projected size",
+      "screen-space texel budget",
+      "mip anisotropy camera reasoning"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "Choose source resolution, UV allocation, mip filtering and bounded anisotropy from the texture's projected use across target cameras and drawing-buffer pixels rather than a universal texture-size rule.",
+  "objective": "Important surfaces receive enough sampled detail for their largest and most oblique intended views while minified views remain stable, without allocating identical resolution to every asset.",
+  "applies_when": [
+    "A UV-mapped texture appears blurry, pixelated, shimmering or wastefully large across known target cameras, display sizes or oblique surface angles."
+  ],
+  "tags": [
+    "reasoning-rule",
+    "texture",
+    "screen-footprint",
+    "mipmaps",
+    "anisotropy",
+    "uv-density"
+  ],
+  "subject_terms": [
+    "projected pixels",
+    "texel footprint",
+    "texture minification",
+    "magnification filter",
+    "mipmap",
+    "anisotropic filtering",
+    "drawing buffer"
+  ],
+  "intent_signals": [
+    "what texture resolution does this camera need",
+    "reduce distant texture shimmer without one huge map",
+    "choose anisotropy for an oblique floor texture"
+  ],
+  "example_prompts": [
+    "Size a hero prop atlas for one close camera and several distant views without forcing 4K on every prop.",
+    "Choose mip and anisotropy settings for a tiled floor seen at a grazing angle."
+  ],
+  "negative_signals": [
+    "all assets need 4K textures",
+    "anisotropy creates missing source detail",
+    "one pixels-per-metre target fits every shot"
+  ],
+  "not_for": [
+    "Choosing color-space annotations or PBR channel meaning.",
+    "A measured memory or frame-time budget without authorized runtime profiling."
+  ],
+  "content": {
+    "principles": [
+      "Texture need is view dependent. Use the largest projected footprint of the important textured region across target cameras and actual drawing-buffer pixels, then account for UV coverage and intentional reuse; object dimensions alone do not determine resolution.",
+      "Magnification filtering cannot reconstruct authored detail absent from the source. Minification needs a declared filter/mipmap policy to reduce aliasing; oblique footprints may benefit from bounded anisotropy when the selected backend and device support it.",
+      "Spend resolution by consequence: labels, hero details and close inspection may need more UV area, while distant or noisy surfaces can tolerate less. This is an artistic and product decision constrained by observable views, not a universal aesthetic budget.",
+      "Asset sampling and runtime capability share ownership. Blender owns source image choice, UV allocation and padding; glTF carries supported sampler state; Three.js owns loaded filtering, mip availability, anisotropy cap and drawing-buffer/camera regime."
+    ],
+    "implementation": [
+      "List target cameras, viewport and pixel-ratio regimes, closest expected distance, oblique angles and which surface details must remain readable. Capture each important UV island's fraction of source-image texels and its projected screen bounds in those views.",
+      "Compare available texels along the island's important axes with projected drawing-buffer pixels. Increase source resolution or UV allocation only where magnification exposes missing information; reduce waste where large allocations never approach the screen footprint.",
+      "Choose and record glTF/Three.js magnification and minification filters plus mip availability. Test minified motion and distance changes for shimmer or moiré separately from close-view blur; preserve mip-safe island padding in atlases.",
+      "For grazing views, raise texture anisotropy only up to the renderer/device-reported support and only when the view benefits. Treat extra samples as a runtime tradeoff to measure later, not a free quality switch or a guarantee of recovered detail.",
+      "Retest after camera FOV, viewport pixel ratio, UV transform, atlas packing or texture compression changes, since each can change the effective screen-to-texel footprint."
+    ],
+    "observable_checks": [
+      "At the closest required view, declared labels and hero features remain legible without relying on magnification to invent absent source information; nonessential distant detail may remain simplified.",
+      "Across the intended distance sweep, mip transitions do not introduce unacceptable shimmer, moiré or seam bleed under the recorded sampler and atlas padding policy.",
+      "At the most oblique required view, a bounded anisotropy comparison is reported against the device cap; improvement or no benefit is recorded without turning the setting into a universal mandate.",
+      "A camera, pixel-ratio or UV-layout change triggers a footprint reassessment instead of preserving a stale texture-size choice by habit."
+    ]
+  },
+  "related_ids": [
+    "knowledge.uv-atlas-bake-correspondence",
+    "knowledge.gltf-texture-transform-atlas-handoff",
+    "knowledge.lod-screen-error-continuity",
+    "knowledge.pbr-channel-isolation-inspection"
+  ],
+  "creative_affordances": [
+    "Deliberate pixel art, painterly blur, nearest filtering or coarse distant textures are valid when they serve the intended image and stay stable in motion.",
+    "Concentrate atlas area on narrative details and use repetition or procedural variation elsewhere."
+  ],
+  "known_limits": [
+    "No universal texture dimension, texels-per-metre, anisotropy value or acceptable blur threshold is asserted.",
+    "Compression quality, shader derivatives, backend sampling and display characteristics can create additional limits beyond this rule.",
+    "Runtime cost and memory effects require measured artifact evidence; none is claimed here.",
+    "Authored source-checked reasoning; no texture, camera, renderer or device comparison was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-gltf-sampler-minification",
+      "statement": "glTF 2.0 sampler state distinguishes magnification and minification filters, includes mipmap minification modes, and recommends runtime mip generation or defined non-mipmap fallback when mip generation is unavailable.",
+      "scope": "Core glTF 2.0.1 sampler semantics; it does not choose source resolution, atlas padding or a quality threshold.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Texture Data > Samplers > Filtering; sampler.magFilter and sampler.minFilter"
+        }
+      ]
+    },
+    {
+      "id": "claim.reasoning-three-texture-anisotropy",
+      "statement": "Three.js Texture documents separate magFilter and minFilter controls, optional mipmap generation, and anisotropy where higher values can reduce oblique-axis blur at the cost of more texture samples; WebGLRenderer exposes the drawing-buffer size in physical pixels and a maximum available anisotropy query.",
+      "scope": "Live Three.js Texture and WebGLRenderer documentation read 2026-09-08; actual benefit and cost are backend-, device-, texture- and view-dependent.",
+      "source_refs": [
+        {
+          "source_id": "source.knowledge-depth-three-texture",
+          "locator": "Constructor; anisotropy; generateMipmaps; magFilter; minFilter"
+        },
+        {
+          "source_id": "source.shared-depth-three-webglrenderer",
+          "locator": "getDrawingBufferSize; Capabilities.getMaxAnisotropy"
+        }
+      ]
+    }
+  ]
+}

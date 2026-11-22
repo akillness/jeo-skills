@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blender-deformation-animation-handoff",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "motion-profile",
+  "title": {
+    "en": "Skinned and morph animation handoff ownership"
+  },
+  "aliases": {
+    "en": [
+      "Blender armature shape key glTF",
+      "skin plus morph export",
+      "AnimationMixer ownership"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "anatomy-structures",
+    "products-assemblies"
+  ],
+  "summary": "Freeze bind pose, joint influence and morph topology contracts, bake Blender-only animation logic into transportable channels, then assign one Three.js playback owner per property.",
+  "objective": "Imported clips deform the expected mesh through joints and morph weights without bind-pose offsets, missing targets, clip contamination or competing runtime writers.",
+  "applies_when": [
+    "A Blender asset uses an armature, shape keys, or both and must play exported clips in Three.js."
+  ],
+  "tags": [
+    "motion-profile",
+    "skinning",
+    "morph-targets",
+    "shape-keys",
+    "animation-mixer",
+    "gltf"
+  ],
+  "subject_terms": [
+    "bind pose",
+    "inverse bind matrix",
+    "JOINTS_0 WEIGHTS_0",
+    "shape key morph target",
+    "morph weights",
+    "animation bake",
+    "reset shape keys between actions",
+    "AnimationMixer"
+  ],
+  "intent_signals": [
+    "shape keys missing from GLB",
+    "character jumps from bind pose",
+    "two clips contaminate each other",
+    "skin and morph animation in Three.js"
+  ],
+  "example_prompts": [
+    "Export a facially morphing skinned creature from Blender and play named clips with one Three.js mixer.",
+    "Diagnose why a mechanical arm's baked action and corrective shape key fight at runtime."
+  ],
+  "negative_signals": [
+    "Change topology after approving morph targets",
+    "Let an AnimationMixer and custom code write the same bone or morph weight",
+    "Treat constraints and drivers as portable runtime logic"
+  ],
+  "not_for": [
+    "Runtime inverse kinematics or ragdoll solving.",
+    "A tutorial on weight painting or facial sculpting aesthetics."
+  ],
+  "content": {
+    "principles": [
+      "Skinning and morphing are transported deformation representations. Blender constraints, drivers, procedural modifiers and NLA organization are authoring mechanisms unless baked into glTF-addressable node TRS or morph-weight channels.",
+      "Skinning requires a stable joint hierarchy, bind relationship and normalized influence data. Morph targets require the same primitive topology and target order as the base mesh.",
+      "Playback has one owner per property. An AnimationMixer, manual control or physics system may write a joint or morph weight, but simultaneous undocumented writers create order-dependent results."
+    ],
+    "implementation": [
+      "Freeze the export mesh topology, armature rest pose and scale. Remove accidental non-deforming bones from the export set, normalize weights, and inspect maximum influences against the chosen viewer budget.",
+      "Keep shape keys on the exact export mesh and name them semantically. Exercise every target at 0, 1 and intended combinations; reject changed vertex counts or target-order drift.",
+      "Bake constraint-, driver- or procedural action results to sampled joint TRS and morph weights. Enable the exporter data options for shape keys and skinning, reset armature and shape keys between exported actions when needed, and sample animations when unsampled export is incorrect.",
+      "Inspect the GLB for skins, joints, inverse bind matrices, morph targets, target names when present, and animation channels. Load with GLTFLoader and select clips from its animations array.",
+      "Create one AnimationMixer for the intended root. Declare clip loop/stop behavior and ownership of every manually controlled bone or morph influence; disable or blend the competing action explicitly before direct writes.",
+      "Exercise a fixture with one translated root, one bending joint, one asymmetric morph and a combined clip. Recompute or conservatively define animated bounds where culling requires it."
+    ],
+    "observable_checks": [
+      "At rest, the mesh aligns with the skeleton; bending the test joint deforms the weighted region without a root or bind offset.",
+      "Each morph reaches the approved shape at weight 1 and returns exactly at 0; clip transitions do not retain weights from an unrelated action.",
+      "Pausing the AnimationMixer freezes its channels, manual writes affect only declared properties, and animated geometry remains inside valid runtime bounds."
+    ]
+  },
+  "related_ids": [
+    "knowledge.shared-skinned-articulated-rig",
+    "knowledge.gltf-articulated-asset-adapter",
+    "knowledge.shared-gltf-asset-bridge"
+  ],
+  "creative_affordances": [
+    "Combine a skeletal body pose with authored facial or corrective morphs when ownership and target combinations are explicit.",
+    "Keep high-frequency secondary motion in runtime code while the primary performance remains an exported clip."
+  ],
+  "known_limits": [
+    "This record does not prescribe IK, ragdoll, cloth or retargeting implementations.",
+    "Viewer influence limits and exporter behavior must be tested against installed versions.",
+    "Authored reusable guidance; no export, import or runtime artifact was executed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.modeling-blender-animation-export",
+      "statement": "Blender's glTF exporter can export shape keys as morph targets, armature rest position as joint rest pose, skinning influence data, and sampled animation; it provides reset-between-actions controls and warns that not sampling can lead to incorrect animation export.",
+      "scope": "Documented Blender 4.5 exporter options and warnings; the source does not guarantee a particular asset or viewer result.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "Data > Shape Keys; Data > Armature; Data > Skinning; Animation > Bake; Shape Keys Animations; Reset between actions"
+        }
+      ]
+    },
+    {
+      "id": "claim.modeling-gltf-deformation-playback",
+      "statement": "glTF 2.0 represents skin deformation with joints and inverse bind matrices, represents morph targets as ordered attribute deltas weighted against a base primitive, and animates node TRS or morph weights while leaving playback behavior undefined; Three.js GLTFLoader returns scene and animation clips, AnimationMixer plays animations on an object, and SkinnedMesh owns a Skeleton plus skin indices and weights.",
+      "scope": "glTF 2.0 deformation and animation semantics plus current Three.js loader, mixer and SkinnedMesh APIs; it does not specify authoring quality or physics behavior.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Morph Targets; Skins; Animations"
+        },
+        {
+          "source_id": "source.modeling-three-gltf-loader",
+          "locator": "load result scene and animations"
+        },
+        {
+          "source_id": "source.reasoning-depth-three-animation-mixer",
+          "locator": "Class description; update(deltaTime)"
+        },
+        {
+          "source_id": "source.modeling-three-skinned-mesh",
+          "locator": "Description; skeleton; bind"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-contact-root-selection",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "First-contact root selection and its boundary configurations"
+  },
+  "aliases": {
+    "en": [
+      "impact time root check",
+      "grazing contact branch"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics"
+  ],
+  "summary": "Select first contact as the earliest admissible root of the gap equation and enumerate the degenerate starting configurations explicitly.",
+  "objective": "The selected contact time is the earliest admissible root in every configuration, and no sample passes through the contact surface.",
+  "applies_when": [
+    "An analytic trajectory terminates at contact with a surface.",
+    "The object may start already touching, or never reach the surface.",
+    "The contact equation is solved in floating point."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "contact",
+    "root-finding",
+    "numerical-stability"
+  ],
+  "subject_terms": [
+    "gap function",
+    "discriminant",
+    "smallest positive root",
+    "grazing",
+    "apex",
+    "catastrophic cancellation"
+  ],
+  "intent_signals": [
+    "the ball sinks through the floor",
+    "which root is the impact time"
+  ],
+  "example_prompts": [
+    "Check the contact time selection in this projectile scene."
+  ],
+  "negative_signals": [
+    "bounce and restitution modelling",
+    "multi-body collision response"
+  ],
+  "content": {
+    "principles": [
+      "Contact time is the earliest admissible root of the gap equation: a root where the gap is increasing is a departure and is skipped, a root reached with the gap decreasing is an impact, and a root reached with zero rate is a grazing case whose treatment is declared in advance.",
+      "The textbook quadratic form loses accuracy when its terms nearly cancel, so use a numerically stable evaluation. A nonnegative discriminant does not establish future contact, because both roots can lie in the past; existence of contact is decided by whether an admissible root at or after the current time exists.",
+      "Boundary configurations are distinct cases: starting exactly in contact while moving upward departs and lands at the later root, starting in contact at rest or moving downward contacts immediately under the declared acceleration, and starting below the surface is initial penetration, which is rejected rather than solved."
+    ],
+    "implementation": [
+      "Define the signed surface-to-plane gap and reject a negative initial gap as penetration. With zero acceleration, solve the linear gap. If velocity is also zero, a positive constant gap means no contact; an identically zero gap means already in contact at t=0 under the resting-contact policy, not never-contact.",
+      "Solve the quadratic branch with a numerically stable evaluation, and treat a small negative discriminant as zero only inside a bound scaled to the coefficients, never as a way to manufacture a root for a genuinely non-contacting trajectory.",
+      "Enumerate the branches explicitly: positive clearance moving down, positive clearance moving up, zero clearance moving up, zero clearance at rest or moving down, and a trajectory that never reaches the plane.",
+      "For each branch record the discriminant, every root with its time sign, the gap rate at each root, which roots were skipped as departures or as past, the selected root and the final position, then verify the selected position lies on the surface within tolerance.",
+      "Cross-check free flight independently at several times before contact by comparing closed-form position and velocity with the displayed values."
+    ],
+    "observable_checks": [
+      "The selected root is the earliest admissible root at or after the current time: departures and past roots are skipped, and when the object starts in contact moving upward the root at time zero is a departure while the later descending root is selected.",
+      "At the selected time the gap is zero within a tolerance derived from the scene scale, no sample after that time lies below the surface, and a trajectory with no admissible root is reported as never contacting rather than given a clamped time.",
+      "At the apex the vertical velocity is zero while the acceleration stays downward and unchanged; zeroing acceleration at the apex would be a different model than the scene claims."
+    ]
+  },
+  "known_limits": [
+    "Covers flight and first contact only; no bounce, restitution, spin or drag behaviour is implied by passing this check.",
+    "Authored verification guidance; no trajectory was computed or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.projectile-trajectory",
+    "recipe.simple-pendulum",
+    "recipe.terrain-island"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-projectile-kinematics",
+      "statement": "Without air resistance the horizontal velocity stays constant and the vertical position is the initial height plus initial vertical velocity times time minus half of gravity times time squared, with the apex where vertical velocity is zero.",
+      "scope": "Constant-acceleration flight before contact with an upward-positive vertical axis.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-projectile",
+          "locator": "4.3, equations 4.19, 4.21 and 4.22, and the apex statement"
+        }
+      ]
+    },
+    {
+      "id": "claim.validation-quadratic-cancellation",
+      "statement": "Computing roots with the textbook quadratic formula can suffer catastrophic cancellation, so a rearranged form that avoids subtracting nearly equal quantities should be used for the affected root.",
+      "scope": "Binary floating-point evaluation as described in the cited section.",
+      "source_refs": [
+        {
+          "source_id": "source.validation-depth-goldberg-floating-point",
+          "locator": "Cancellation section, quadratic formula discussion"
+        }
+      ]
+    }
+  ]
+}

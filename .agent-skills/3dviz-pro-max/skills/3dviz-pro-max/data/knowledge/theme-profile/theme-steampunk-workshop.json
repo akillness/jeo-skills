@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.theme-steampunk-workshop",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "theme-profile",
+  "title": {
+    "en": "Steampunk kinetic workshop fiction"
+  },
+  "aliases": {
+    "en": [
+      "steampunk workshop",
+      "brass machine room",
+      "fantastical pressure-age workshop"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies",
+    "rigid-mechanics"
+  ],
+  "summary": "Create an invented workshop around readable power transmission, crafted pressure vessels and layered repair while keeping historical and engineering claims out of decorative machinery.",
+  "objective": "A viewer can identify the driver, follow one motion chain to a useful output, inspect how a vessel or machine is assembled, and distinguish hot, moving and safe interaction zones.",
+  "claims": [],
+  "tags": [
+    "theme-profile",
+    "fictional-setting",
+    "steampunk-workshop"
+  ],
+  "subject_terms": [
+    "steampunk workshop",
+    "brass machine room",
+    "fantastical steam machinery",
+    "kinetic workshop"
+  ],
+  "intent_signals": [
+    "set the scene in a steampunk workshop",
+    "build a brass machine room with linked motion",
+    "create an inspectable fantastical steam engine"
+  ],
+  "example_prompts": [
+    "Design a fictional steampunk repair workshop where one handwheel drives a readable shaft-and-linkage chain, with an inspectable vessel and clearly separate decorative steam."
+  ],
+  "negative_signals": [
+    "random gears rotating independently",
+    "brass material applied to every object",
+    "historical reconstruction claim",
+    "decorative steam presented as computed pressure flow"
+  ],
+  "not_for": [
+    "Historical claims about actual steam technology, labor, dress or architecture without separate primary research.",
+    "Engineering or safety analysis of pressure vessels, gearing, boilers or rotating equipment.",
+    "A thermodynamic or fluid simulation unless its variables, equations, units and validation are separately declared."
+  ],
+  "content": {
+    "principles": [
+      "Give the workshop a legible job and one dominant power chain: input, transmission, supported shafts or linkages, and an output that visibly changes state.",
+      "Craft machines as assemblies with shells, seams, fasteners, bearings, pipe supports, access clearances and repair evidence. Ornament should follow structure rather than replace it.",
+      "Use brass, copper, iron, timber, leather, glass and textile as distinct authored surface roles; variation in roughness, oxidation, soot and polished touch zones should explain use.",
+      "Separate warm practical light around occupied work from cooler window or skylight fill, preserving silhouettes around spokes, rods and pipes and readable contrast at controls.",
+      "Prefer constrained or authored kinematics for a deterministic fictional machine. Add rigid-body contact, pressure or thermal physics only when the task asks a question that those models answer."
+    ],
+    "implementation": [
+      "Arrange a driver station, transmission bay, workbench and output machine around clear walking and maintenance space. Route pipes and shafts through brackets, glands and bearings instead of through unrelated solids.",
+      "Build a hero vessel from body courses, end caps, necks, flanges, valves, gauge mount and feet or saddles. Make inspection seams and service access readable; do not imply code compliance.",
+      "Assign dark iron to frames and high-load visual masses, copper or brass to selected fittings and warm highlights, timber or leather to hand-contact areas, and glass to protected gauges or sight features.",
+      "Derive linked angular motion from one driver parameter and declared tooth counts or linkage phase where ratios matter. A stopped driver stops downstream parts unless a clutch, flywheel or stored-state behavior is explicitly authored.",
+      "Treat steam puffs, gauge tremor and lamp flutter as labeled decorative or state-driven effects. If a gauge indicates a variable, the pointer and machine state share one authority rather than playing unrelated loops.",
+      "Use an overview to reveal the whole motion chain and an inspection view for the vessel, bearing or valve; provide pause, single-step where useful and reset."
+    ],
+    "observable_checks": [
+      "From the overview, identify the input, follow every transmission connection and state what output the machine drives; unsupported or decorative gears are visually distinct.",
+      "Rotate or step the driver through a cycle: connected shafts, meshing gears and linkages preserve their declared ratios and phase without tooth sliding or sudden reversal.",
+      "Inspect the hero vessel or machine: supports, seams, access points, valve/gauge mounts and pipe attachments remain legible under close light.",
+      "Compare powered, stopped and reset states: the gauge, output, lamps and state-driven vapor agree with the same fictional state and return exactly.",
+      "Turn decorative vapor off: the mechanism and its motion chain remain understandable, showing that particles are atmosphere rather than the simulation authority.",
+      "Read controls against both warm and cool backgrounds; focus, selection and hazard cues retain shape or label distinctions in addition to color."
+    ]
+  },
+  "known_limits": [
+    "Authored fictional theme guidance; no rendered artifact, historical-authenticity review, mechanism test or runtime improvement has been observed for this record.",
+    "Visible gears, gauges, pipes and vapor do not establish feasible power, pressure, temperature, efficiency or safe operation.",
+    "Surface terms describe visual material roles; they do not supply measured metal, wood, leather, glass or textile properties."
+  ],
+  "creative_affordances": [
+    "Scale the workshop from a watchmaker's bench to an airship hangar while preserving one traceable job and power chain.",
+    "Combine with whimsical, ornate, soot-heavy, polished salon or improvised repair directions; keep material roles and control contrast deliberate.",
+    "Use a non-steam fictional driver such as a hand crank, spring store or fantastical source when the story benefits, and label its behavior as invented."
+  ],
+  "related_ids": [
+    "knowledge.theme-industrial-workshop",
+    "knowledge.constrained-gear-motion",
+    "knowledge.material-oxidized-metal-layers",
+    "knowledge.articulation-from-motion",
+    "knowledge.physical-action-reset"
+  ]
+}

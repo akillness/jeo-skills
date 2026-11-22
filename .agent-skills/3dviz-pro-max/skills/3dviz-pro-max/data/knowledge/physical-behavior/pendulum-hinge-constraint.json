@@ -1,0 +1,115 @@
+{
+  "id": "knowledge.pendulum-hinge-constraint",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Pendulum and hinge as a reduced-DOF constraint"
+  },
+  "aliases": {
+    "en": [
+      "simple pendulum",
+      "revolute joint",
+      "spherical pendulum support"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "products-assemblies"
+  ],
+  "summary": "Reduce a hanging or hinged body to the degrees of freedom the joint actually leaves, and keep an ideal pendulum ODE distinct from an engine constraint.",
+  "objective": "A bob or door swings about a declared axis or pivot; lengthening a simple pendulum increases its small-angle period as the square root of length.",
+  "applies_when": [
+    "A body hangs or rotates about a support and should not fly off as a free rigid body.",
+    "The viewer is asked to compare period with length or to inspect a hinge axis."
+  ],
+  "subject_terms": [
+    "simple pendulum",
+    "small-angle approximation",
+    "revolute joint",
+    "spherical joint",
+    "degrees of freedom",
+    "pivot"
+  ],
+  "tags": [
+    "physical-behavior",
+    "pendulum",
+    "hinge",
+    "constraint"
+  ],
+  "intent_signals": [
+    "hang a lamp from a chain",
+    "door that only rotates on its hinge",
+    "measure pendulum period versus length"
+  ],
+  "example_prompts": [
+    "Build a simple pendulum whose period I can compare with 2 pi sqrt(L/g) at small amplitude.",
+    "Hinge a shutter so it rotates about one axis and cannot translate off the frame."
+  ],
+  "negative_signals": [
+    "A dangling mesh parented to a point with no length constraint.",
+    "A pre-recorded swing clip presented as a measured period."
+  ],
+  "not_for": [
+    "Spherical pendulums, 3D conical motion or chaotic double pendulums unless those DOF are declared.",
+    "Claims that an engine joint automatically matches the small-angle formula."
+  ],
+  "content": {
+    "principles": [
+      "A pendulum or hinge is a restriction of relative motion, not a texture of a pin. If the bob can translate freely, there is no pendulum.",
+      "The ideal simple-pendulum equation theta'' = -(g/L) sin(theta) is an analytic model. A physics-engine revolute or spherical joint is a numerical constraint. They agree only under stated idealisations.",
+      "Small-angle period T = 2 pi sqrt(L/g) is independent of mass and, to that approximation, of amplitude. Large amplitudes need the sin(theta) equation or a measured period, not the small-angle badge."
+    ],
+    "implementation": [
+      "Analytic planar branch: own fixed pivot, finite L>0,g>0, angle in radians and angular velocity; integrate theta''=-(g/L) sin(theta). Use a declared small-angle threshold for the approximate period readout.",
+      "Engine branch: configure coincident world anchors, with the bob center a nonzero distance L from its local anchor. A revolute joint restricts rotation to the selected axis; a spherical joint allows multiple angular directions and is a separate branch.",
+      "Apply point-bob period checks only to the ideal analytic branch. An extended rigid body has rotational inertia about its pivot; a generic engine hinge does not certify the simple-pendulum period.",
+      "Pause preserves state. Reset restores pivot, length, axis, angle, angular velocity, clock and engine body/joint configuration where used."
+    ],
+    "observable_checks": [
+      "The analytic bob stays distance L from the pivot. Engine world anchors remain coincident within solver tolerance and motion respects the chosen joint degrees of freedom.",
+      "For the small-angle analytic point-bob branch, doubling L multiplies the period by sqrt(2); changing mass alone has no effect.",
+      "Beyond the chosen small-angle regime, label the approximate readout and do not force the nonlinear trajectory to match it. Pause and reset preserve their declared state contracts."
+    ]
+  },
+  "related_ids": [
+    "recipe.simple-pendulum",
+    "knowledge.three-rigid-body-adapter",
+    "knowledge.constrained-gear-motion"
+  ],
+  "creative_affordances": [
+    "Chains, gimbals or oversized hinge pins can make the allowed DOF obvious.",
+    "A ghost of the small-angle sinusoid beside the true sin(theta) path is a free teaching overlay."
+  ],
+  "known_limits": [
+    "OpenStax simple-pendulum period assumes a point bob, massless inextensible string and the small-angle replacement of sin(theta) by theta.",
+    "Rapier joints restrict relative DOF; they do not implement the pendulum closed form or guarantee energy conservation.",
+    "Authored reusable guidance; no runtime artifact has been observed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-pendulum-small-angle",
+      "statement": "A simple pendulum of length L has angular acceleration -(g/L) sin(theta); for small angles the motion is simple harmonic with period 2 pi sqrt(L/g), independent of mass and, in that approximation, of amplitude.",
+      "scope": "Ideal planar point bob, fixed pivot, finite positive L and g and a massless inextensible taut support; approximate period is for small angles, not extended rigid bodies or spherical trajectories.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-pendulum",
+          "locator": "15.4, The Simple Pendulum, theta''=-(g/L)sin(theta) and T=2 pi sqrt(L/g)"
+        }
+      ]
+    },
+    {
+      "id": "claim.knowledge-pendulum-hinge-joint",
+      "statement": "A Rapier revolute joint prevents any relative movement between two rigid bodies except relative rotation along one axis; a spherical joint keeps two local anchors coincident and is documented as typical for pendulums and ragdoll arms.",
+      "scope": "Rapier JavaScript joint types; not an analytic period formula.",
+      "source_refs": [
+        {
+          "source_id": "source.knowledge-depth-rapier-joints",
+          "locator": "Spherical joint; Revolute joint"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed"
+}

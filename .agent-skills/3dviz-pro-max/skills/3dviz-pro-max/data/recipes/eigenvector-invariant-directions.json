@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "id": "recipe.eigenvector-invariant-directions",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Eigenvectors as invariant directions"
+  },
+  "aliases": {
+    "en": [
+      "eigenvectors",
+      "invariant directions",
+      "eigenvalue scaling"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra"
+  ],
+  "summary": "Sweep a direction through space and stop where the mapped vector stays on its own line, with the scale factor read from the same event.",
+  "objective": "Let me rotate a probe direction and see where A x stays parallel to x, reading the eigenvalue as the signed scale factor.",
+  "tags": [
+    "eigenvector",
+    "eigenvalue",
+    "linear map"
+  ],
+  "subject_terms": [
+    "eigenvector",
+    "eigenvalue",
+    "invariant direction",
+    "symmetric matrix",
+    "diagonalisation",
+    "characteristic direction",
+    "scale factor"
+  ],
+  "intent_signals": [
+    "Show what makes a direction special for a matrix.",
+    "Let me search for eigenvectors by sweeping a direction in 3D."
+  ],
+  "example_prompts": [
+    "Build an eigenvector explorer with a sweepable probe direction and a parallelism readout.",
+    "Show the invariant directions of a symmetric matrix and the sign of each eigenvalue."
+  ],
+  "negative_signals": [
+    "Not a numerical eigensolver tutorial; the search is a visual aid, not the computation of record.",
+    "Not a claim about complex eigenvalues: rotations without real invariant directions must be reported, not hidden."
+  ],
+  "not_for": [
+    "Not a numerical eigensolver tutorial; the search is a visual aid, not the computation of record.",
+    "Not a claim about complex eigenvalues: rotations without real invariant directions must be reported, not hidden."
+  ],
+  "entities": [
+    {
+      "name": "Probe direction",
+      "guidance": "A unit vector on a sphere with a visible great-circle sweep path, so the search space is legible rather than arbitrary."
+    },
+    {
+      "name": "Image vector",
+      "guidance": "Draw A x from the same origin with an explicit angle arc to x, so parallelism is a measured angle and not an impression."
+    },
+    {
+      "name": "Invariant lines",
+      "guidance": "When an eigenvector is found, draw the whole line through the origin and label the signed scale factor, since the eigenvector is a direction, not a single arrow."
+    }
+  ],
+  "state_contract": {
+    "model": "A real 3 by 3 matrix, a unit probe direction x, the image A x, and a candidate test on the scaled residual norm(A x - lambda x) / max(1, norm(A x)) with the signed Rayleigh candidate lambda = x^T A x. Authoritative eigenpairs come from a documented eigensolver, and each reported eigenvalue also reports the dimension of ker(A - lambda I) computed with a stated rank tolerance.",
+    "authority": "The matrix and the probe direction are authoritative for the residual readout; the eigensolver is authoritative for the reported eigenpairs. The visual search never overrides the solver, and a candidate is only labelled an eigenvector when the scaled residual is within the stated tolerance.",
+    "actions": [
+      "Sweep the probe direction over the sphere.",
+      "Snap to a reported eigenvector and inspect the scale factor.",
+      "Switch between a symmetric and a non-symmetric matrix.",
+      "Reset the matrix and the probe."
+    ]
+  },
+  "invariants": [
+    "A found direction and its negation describe the same eigenvector line and must not be reported as two different results.",
+    "The verdict states the scaled residual and its tolerance rather than an angle alone: a negative eigenvalue gives an angle of pi and A x = 0 gives no angle at all, so an angle test cannot cover the declared regime.",
+    "A negative eigenvalue is shown as a reversal along the same line, not as a rotation to a new direction.",
+    "Eigenspace dimension is reported as dim ker(A - lambda I), not as algebraic multiplicity: for [[1,1,0],[0,1,0],[0,0,2]] the repeated eigenvalue 1 has a one-dimensional eigenspace, while the identity has a three-dimensional one.",
+    "Zero is an allowed eigenvalue: a nonzero x with A x = 0 is reported as an eigenvector with eigenvalue zero rather than rejected for having no direction."
+  ],
+  "motion_guidance": [
+    "Sweep slowly near candidate directions, since the interesting behaviour is the angle collapsing to zero.",
+    "Animate the map as a continuous blend from x to A x only if the intermediate frames are labelled as interpolation, not as the transformation."
+  ],
+  "known_limits": [
+    "Every real 3 by 3 matrix has at least one real eigenvalue, so a 3D rotation always shows its rotation axis; matrices with no real eigenvector exist only in even dimensions, which is why the no-real-eigenvector demonstration is offered as an explicitly separate 2D case.",
+    "A repeated eigenvalue may or may not give a higher-dimensional eigenspace, and a single probe sweep under-reports whichever it is; the reported kernel dimension, not the sweep, is the answer.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-eigenvector-direction",
+      "statement": "If the product A x points in the same direction as the vector x, then x is an eigenvector of A.",
+      "scope": "Positive-eigenvalue illustration only: this \"same direction\" phrasing is a sufficient example, not the general definition, since negative eigenvalues reverse the direction and zero eigenvalues are allowed. The general definition is carried by the separate eigenpair claim.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-mit-eigenvectors",
+          "locator": "Eigenvalues and Eigenvectors session overview"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-symmetric-eigen-basis",
+      "statement": "A documented symmetric eigenvalue routine returns real eigenvalues in ascending order with normalised eigenvector columns, and its notes state that the eigenvalues of real symmetric or complex Hermitian matrices are always real and that the array of column eigenvectors is unitary.",
+      "scope": "Computational contract of one library version for symmetric or Hermitian input, re-read in this session; the documentation sentence about the eigenvector array carries a naming typo, and the routine does not check that the supplied matrix is symmetric.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-numpy-eigh",
+          "locator": "numpy.linalg.eigh, Returns section"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-eigenpair-definition",
+      "statement": "An eigenvector of a matrix A is a nonzero vector v with A v = lambda v, an eigenvalue is a scalar for which that equation has a nontrivial solution, eigenvalues may equal zero, and the lambda-eigenspace is the null space of A - lambda I.",
+      "scope": "Finite-dimensional real definition covering zero eigenvalues and eigenspaces; the scene computes kernel dimension numerically with a stated rank tolerance rather than exactly.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-ila-eigenvectors",
+          "locator": "Section 5.1, eigenvector and eigenvalue definitions, note on zero eigenvalues, eigenspace as null space"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Probe direction",
+      "structure": "A unit arrow with a shaft that stays a constant screen thickness and a sphere gizmo showing the sweep path.",
+      "material": "Neutral material for the probe so the accent palette is reserved for found invariant lines.",
+      "articulation": "The probe is constrained to unit length; dragging changes direction only."
+    },
+    {
+      "family": "Image vector",
+      "structure": "A second arrow with a distinct head shape and an arc connecting it to the probe, annotated with the current angle.",
+      "material": "A contrasting accent whose value differs from the probe, so the pair is readable without colour perception.",
+      "articulation": "Rebuilt from the matrix and the probe on every change."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Mathematical mapping and presentation; no physical interpretation of the arrows.",
+    "checks": [
+      "Sweeping to the negative of a reported eigenvector yields the same eigenvalue.",
+      "A 3D rotation reports its rotation axis as a real eigenvector with eigenvalue 1 alongside the complex pair acting in the perpendicular plane.",
+      "The optional 2D case reports that a planar rotation by an angle other than 0 or pi has no real eigenvector."
+    ]
+  },
+  "related_ids": [
+    "recipe.linear-transformation-3d",
+    "recipe.determinant-volume",
+    "knowledge.parameter-experiment"
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-reeds",
+  "record_revision": 3,
+  "asset": "templates/kits/nature/reeds.js",
+  "asset_sha256": "d3196cc7d50c78bd032e7d71104d97557d3cb7418568ce70563e2cc1833cc364",
+  "params": {
+    "count": 40,
+    "seed": 1,
+    "spread": 0.62,
+    "height": 1.25,
+    "blade": "#7c9455"
+  },
+  "tier": "T2",
+  "kit": {
+    "blueprint": "knowledge.blueprint-reeds",
+    "module": "../nature/reeds.js",
+    "params": {
+      "count": 40,
+      "seed": 1,
+      "spread": 0.62,
+      "height": 1.25,
+      "blade": "#7c9455"
+    },
+    "tier": "T2",
+    "surface": {
+      "seed": 1,
+      "size": 1024,
+      "materials": 1,
+      "unmapped": [
+        "#ffffff"
+      ],
+      "uv": [
+        "normalised"
+      ],
+      "ms": 74.8,
+      "ao": {
+        "vertices": 376,
+        "casts": 1508,
+        "ms": 17.1,
+        "skipped": null
+      }
+    },
+    "triangles": 2030,
+    "bounds_m": {
+      "min": [
+        -0.8444531375981503,
+        -0.019999999552965164,
+        -0.6170960494847639
+      ],
+      "max": [
+        0.7506158438967141,
+        1.3561092428863049,
+        0.7075728089314799
+      ],
+      "size": [
+        1.5950689814948644,
+        1.37610924243927,
+        1.3246688584162438
+      ]
+    },
+    "fit_distance_m": 3.638,
+    "view_distances_m": {
+      "far": 8.7311,
+      "mid": 4.3655,
+      "close": 2.8376,
+      "detail": 0.9088
+    },
+    "sockets": [
+      "base",
+      "tip",
+      "edge"
+    ],
+    "detail_socket": "base",
+    "animated": true,
+    "colliders": [
+      "clump"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "25a4da425ba7bd109a53e57ec031ed8bb998553a801ef1af1b6730c07985a2c1",
+    "mid.png": "d7acc6ca5d15217eeb27fcd9d4b425fce3aa85765b7d0286f8f5e526ea8fb076",
+    "close.png": "46ce138b7a60498e31e18d598b3e3825027a1dd4d50ab03c1bcddebb959262b0",
+    "detail.png": "97847488bb9c0ab2a3a5686ff8ee8e6cb63cf7b5c7b4a59981881f5e1b678476",
+    "close-motion.png": "945da384945bbcc012bb54153dc58896a5863aed85ccf4f38b656a4bed5ecca1"
+  },
+  "motion": {
+    "interval_ms": 700,
+    "simulated": true,
+    "animate_returned": true,
+    "differs": true,
+    "sha_before": "46ce138b7a60498e31e18d598b3e3825027a1dd4d50ab03c1bcddebb959262b0",
+    "sha_after": "945da384945bbcc012bb54153dc58896a5863aed85ccf4f38b656a4bed5ecca1"
+  },
+  "gpu_requested": false,
+  "capture_mode": "swiftshader",
+  "webgl_renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T17:15:11+00:00",
+  "finished": "2026-09-08T17:15:17+00:00",
+  "surface": {
+    "families": {
+      "#a48a56": "wood"
+    },
+    "seed": 1,
+    "size": 1024,
+    "ao": {
+      "samples": 13,
+      "radius_m": 0.41,
+      "ground_dirt_m": 0.6
+    }
+  }
+}

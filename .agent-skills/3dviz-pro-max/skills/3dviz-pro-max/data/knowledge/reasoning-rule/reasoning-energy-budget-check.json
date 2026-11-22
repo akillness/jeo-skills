@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-energy-budget-check",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Use conserved quantities as the simulation check"
+  },
+  "aliases": {
+    "en": [
+      "energy conservation",
+      "restitution",
+      "simulation sanity check"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "soft-fluid-thermal"
+  ],
+  "summary": "Track energy or momentum through a run and compare the trend with what the modelled dissipation allows.",
+  "objective": "Give a physical simulation an observable check that exposes solver and parameter errors.",
+  "applies_when": [
+    "A dynamic simulation runs long enough to accumulate error.",
+    "Restitution, friction or damping parameters are exposed.",
+    "The scene claims a physical behaviour such as bouncing or settling."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "energy",
+    "restitution",
+    "friction",
+    "dissipation",
+    "conservation",
+    "validation"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "mechanics",
+    "validation"
+  ],
+  "intent_signals": [
+    "the ball bounces higher each time",
+    "objects jitter forever",
+    "tune the bounciness"
+  ],
+  "example_prompts": [
+    "Add a bounce control and check that energy behaves sensibly.",
+    "Show whether the simulation is gaining energy."
+  ],
+  "negative_signals": [
+    "Kinematic animation, where no energy is being integrated.",
+    "Systems with deliberate energy input, such as a driven oscillator, where the budget must include the drive."
+  ],
+  "not_for": [
+    "Kinematic animation, where no energy is being integrated.",
+    "Systems with deliberate energy input, such as a driven oscillator, where the budget must include the drive."
+  ],
+  "content": {
+    "principles": [
+      "A conserved or monotone quantity is the cheapest simulation check available. Without dissipation, mechanical energy should stay within a tolerance; with dissipation, it should decrease.",
+      "Restitution is defined on the relative normal velocity at the contact, not on one body's world velocity: a coefficient of one means the exit speed along the contact normal matches the entry speed, and zero means the relative exit speed along that normal is zero, which allows both bodies to move on together. It is also a pair property: the engine combines the two colliders' coefficients with a rule, averaging them by default, so setting one collider does not set the contact.",
+      "Friction is also a pair parameter rather than an appearance: a coefficient of zero implies completely sliding contact and a value at or above one implies very strong friction, combined across the two colliders by the same kind of rule. Zero friction permits sliding; it does not make a resting body start to slide.",
+      "Because material appearance is unrelated to these coefficients, a shiny surface says nothing about its bounciness and must not be used to imply it."
+    ],
+    "implementation": [
+      "Compute the total mechanical energy of the tracked bodies each step, including translational and rotational kinetic energy and potential energy, and expose it as an optional readout or plot.",
+      "State the expected trend for the current parameters, then compare, rather than assuming the solver is right.",
+      "Distinguish contact parameters from render materials in both the code and the interface, and label controls with the physical parameter they change.",
+      "Investigate persistent jitter or slow drift as evidence about step size, contact settings or constraint handling.",
+      "For driven systems, include the work done by the drive in the budget so the comparison remains meaningful."
+    ],
+    "observable_checks": [
+      "Drop an object onto a stationary support with no other energy input, with the effective pair restitution set to one, and confirm the bounce height is stable rather than growing. A moving or vibrating support can legitimately add energy and raise the bounce, so hold the support still for this test.",
+      "Set the effective pair restitution to zero and confirm the relative normal speed after impact is zero, which means the bodies separate no faster than they meet along the normal; both may still be moving together in the world frame.",
+      "Run a closed system with no dissipation and confirm total energy stays within the stated tolerance over a long run.",
+      "Change a render material and confirm no mechanical behaviour changes."
+    ]
+  },
+  "related_ids": [
+    "recipe.projectile-trajectory",
+    "recipe.simple-pendulum",
+    "knowledge.physical-action-reset",
+    "knowledge.gravity-contact"
+  ],
+  "creative_affordances": [
+    "Exaggerated bounciness or unrealistic gravity are legitimate design choices when stated as such.",
+    "Showing the energy plot alongside the scene turns a check into a teaching device."
+  ],
+  "known_limits": [
+    "Authored validation guidance citing documented contact-parameter meanings; it asserts no accuracy for any solver and no simulation was run.",
+    "Numerical tolerances depend on the scene scale and step size and are not specified here."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-restitution-and-friction-meaning",
+      "statement": "A restitution coefficient of one means the exit velocity at a contact has the same magnitude as the entry velocity along the contact normal, a coefficient of zero means the exit velocity along that normal is zero, a friction coefficient of zero implies completely sliding contact while a value at or above one implies very strong friction, and the coefficients of two colliders are combined for the contact by a coefficient combine rule that averages them by default.",
+      "scope": "Documented contact-parameter semantics of one rigid-body engine, including the pair-combination rule. It gives no material property values for real substances and no solver accuracy guarantee.",
+      "source_refs": [
+        {
+          "source_id": "source.rapier-colliders",
+          "locator": "Friction and restitution coefficient descriptions and the CoefficientCombineRule default of averaging"
+        }
+      ]
+    }
+  ]
+}

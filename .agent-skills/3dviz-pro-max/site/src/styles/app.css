@@ -1,0 +1,85 @@
+@import 'tailwindcss';
+/* Design tokens + the record palette as --color-look-*; must come after tailwindcss so @theme applies. */
+@import '../generated/theme.css';
+
+/* Both faces are the latin subsets of the variable originals (see public/fonts/OFL.txt).
+   Outfit is the Daylight display face and also the body face: the H1 asks for 800, section titles
+   for 700, buttons and card titles for 600. */
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/outfit-latin-variable.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/jetbrains-mono-latin-variable.woff2') format('woff2');
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    -webkit-font-smoothing: antialiased;
+    /* The design's own guard: the hero picture and the soft glows run wider than the viewport. */
+    overflow-x: hidden;
+  }
+
+  a {
+    color: var(--color-green);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--color-green-dark);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-green);
+    outline-offset: 3px;
+  }
+}
+
+/* The design's one ambient motion: a chip or badge that breathes rather than sits. */
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+/* One global escape hatch: readers who ask for less motion get none of it. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

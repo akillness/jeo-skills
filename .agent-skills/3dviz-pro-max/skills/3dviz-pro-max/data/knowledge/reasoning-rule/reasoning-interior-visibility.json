@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-interior-visibility",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Make the buried part of a spatial puzzle visible"
+  },
+  "aliases": {
+    "en": [
+      "occlusion",
+      "ghosting",
+      "layer view"
+    ]
+  },
+  "direction_ids": [
+    "spatial-puzzles",
+    "architecture-interiors"
+  ],
+  "summary": "Give the player a way to see interior and hidden cells, because a three-dimensional puzzle hides most of its own state.",
+  "objective": "Ensure the player can perceive the puzzle state they are asked to reason about.",
+  "applies_when": [
+    "A puzzle has interior cells, stacked layers or occluded regions.",
+    "Pieces can be placed where they are not visible from outside.",
+    "The player must plan a route or a packing through a volume."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "occlusion",
+    "interior",
+    "ghosting",
+    "layer slice",
+    "visibility",
+    "spatial reasoning"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "puzzle",
+    "presentation"
+  ],
+  "intent_signals": [
+    "I cannot see the middle",
+    "show the layers",
+    "where is the gap"
+  ],
+  "example_prompts": [
+    "Let me see inside the packed tray to find the empty cells.",
+    "Show the maze one layer at a time."
+  ],
+  "negative_signals": [
+    "Puzzles whose difficulty deliberately depends on hidden information.",
+    "Flat or single-layer boards where nothing is occluded."
+  ],
+  "not_for": [
+    "Puzzles whose difficulty deliberately depends on hidden information.",
+    "Flat or single-layer boards where nothing is occluded."
+  ],
+  "content": {
+    "principles": [
+      "In a solid volume most cells are invisible, so a player asked to reason about the whole volume is being asked to plan with missing information.",
+      "Hiding by occlusion is not a difficulty design; it is an interface failure unless the hidden information is deliberately part of the puzzle.",
+      "Different questions need different reveals: finding a gap suits a slice or an empty-cell highlight, planning a route suits a layer view, and understanding a packing suits an exploded or ghosted view.",
+      "The reveal must not become a second state. Whatever is shown or hidden is a view, so the puzzle state and the legality of moves are unaffected."
+    ],
+    "implementation": [
+      "Offer at least one reveal that matches the puzzle question: a movable slice, a layer selector, ghosting of outer pieces, or highlighting of empty cells.",
+      "Keep the reveal a pure view operation with no effect on placement, legality or completion.",
+      "Preserve orientation cues during the reveal so the player does not lose the mapping between the view and the volume.",
+      "Allow interaction in the revealed view where it is safe, and be explicit when placement is disabled in a particular mode.",
+      "Provide a way to see the whole volume again in one action."
+    ],
+    "observable_checks": [
+      "Ask the player to find a single empty interior cell using the navigation the design intends. Judge the result against that workflow: an orbit-based inspection design passes if a short, purposeful rotation answers the question, while a design that offers a slice or a gap highlight should answer it without repeated searching.",
+      "Toggle every reveal mode and confirm the puzzle state and legality are unchanged.",
+      "Confirm orientation remains understandable when switching between full and sliced views.",
+      "Check that pieces placed in a revealed view are placed where the preview indicated."
+    ]
+  },
+  "related_ids": [
+    "recipe.voxel-packing-tray",
+    "recipe.layered-maze-navigation",
+    "knowledge.cutaway-explode"
+  ],
+  "creative_affordances": [
+    "Reveal styles are open: transparency, wireframe, exploded layers or an x-ray band all work.",
+    "Deliberately hidden information is a valid design when the player knows it is hidden."
+  ],
+  "known_limits": [
+    "Authored presentation guidance; no runtime puzzle has been play-tested for this record.",
+    "It offers no measure of puzzle difficulty or player performance."
+  ],
+  "claims": []
+}

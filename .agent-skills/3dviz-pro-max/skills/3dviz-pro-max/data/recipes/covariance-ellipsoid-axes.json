@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "id": "recipe.covariance-ellipsoid-axes",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Covariance ellipsoid and principal axes"
+  },
+  "aliases": {
+    "en": [
+      "covariance ellipsoid",
+      "principal axes",
+      "spread of a point cloud"
+    ]
+  },
+  "direction_ids": [
+    "probability-statistics"
+  ],
+  "summary": "Show a point cloud together with the ellipsoid built from its covariance, keeping sample estimate and population parameter distinct.",
+  "objective": "Build a 3D sample cloud whose covariance ellipsoid and principal axes update as I change the sample size or the underlying spread.",
+  "tags": [
+    "covariance",
+    "ellipsoid",
+    "sample"
+  ],
+  "subject_terms": [
+    "covariance matrix",
+    "principal axis",
+    "eigenvalue",
+    "eigenvector",
+    "sample estimate",
+    "correlation",
+    "ellipsoid",
+    "standard deviation"
+  ],
+  "intent_signals": [
+    "Show the shape of a correlated point cloud in three dimensions.",
+    "Explain what the principal axes of a covariance matrix look like."
+  ],
+  "example_prompts": [
+    "Build a correlated 3D sample cloud with its covariance ellipsoid and labelled principal axes.",
+    "Show how the ellipsoid changes when I increase the sample size."
+  ],
+  "negative_signals": [
+    "Not principal component analysis of real data: no scaling policy, loadings or variance-explained interpretation is provided.",
+    "Not an outlier detection or classification tool."
+  ],
+  "not_for": [
+    "Not principal component analysis of real data: no scaling policy, loadings or variance-explained interpretation is provided.",
+    "Not an outlier detection or classification tool."
+  ],
+  "entities": [
+    {
+      "name": "Sample cloud",
+      "guidance": "Draw individual points from a seeded generator so the cloud is reproducible, and keep the sample size visible."
+    },
+    {
+      "name": "Ellipsoid shell",
+      "guidance": "Build the ellipsoid from the eigen decomposition of the sample covariance at a stated scale factor, and label that factor."
+    },
+    {
+      "name": "Axis rods",
+      "guidance": "Draw the three principal axes scaled by the square roots of the eigenvalues, ordered consistently and labelled with their values."
+    }
+  ],
+  "state_contract": {
+    "model": "A seeded independent sample of size n at least 2 from a declared distribution with finite second moments, the sample mean, the sample covariance as the centred outer-product sum divided by n - 1, its symmetric eigendecomposition, and an ellipsoid drawn at a stated multiple of the square roots of the eigenvalues. An edited population covariance must be symmetric positive semidefinite and is rejected otherwise; population parameters are displayed separately from sample estimates.",
+    "authority": "The sample is authoritative for everything drawn as an estimate; the population ellipsoid, when shown, is drawn from declared parameters and never from the sample.",
+    "actions": [
+      "Resample with a new seed.",
+      "Change the sample size.",
+      "Edit the population covariance and compare the two ellipsoids.",
+      "Reset the seed, size and parameters."
+    ]
+  },
+  "invariants": [
+    "Principal axes stay mutually perpendicular for any sample covariance matrix.",
+    "The ellipsoid is centred on the sample mean, not on the origin.",
+    "The sample size is reported next to every estimate. Small samples often give visibly unstable axes, though a degenerate or tightly constrained population can keep them nearly fixed, so instability is a possible observation rather than a guaranteed one.",
+    "Sample covariance rank is at most the smaller of 3 and n - 1, so small samples are drawn honestly as a rank-2 disc, a rank-1 segment or a rank-0 point instead of a volumetric shell.",
+    "Materially negative eigenvalues are rejected as invalid input, while eigenvalues within the stated rounding tolerance of zero are clamped and reported; equal eigenvalues leave the axis directions non-unique even though an orthonormal basis is returned."
+  ],
+  "motion_guidance": [
+    "Animate resampling as a discrete replacement, not as points sliding, since successive samples are independent.",
+    "When the sample size grows, hold the population ellipsoid fixed so convergence is visible as a comparison."
+  ],
+  "known_limits": [
+    "Sample covariance is an estimate: axis directions can swap under resampling when eigenvalues are close.",
+    "No confidence region for the ellipsoid itself is computed, so apparent agreement is not a significance statement.",
+    "A change of seed gives a reproducible pseudorandom resample; it is not by itself evidence of independence or of any distributional assumption.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-symmetric-eigendecomposition-contract",
+      "statement": "A documented symmetric eigenvalue routine returns real eigenvalues in ascending order with normalised eigenvector columns, and documents the array of column eigenvectors as unitary for real symmetric or complex Hermitian input.",
+      "scope": "Library contract for symmetric input, which is what makes principal-axis extraction well defined in code. Interpreting those eigenvectors as principal axes of a covariance matrix is this recipe's modelling choice, and the routine does not verify that a matrix is a valid covariance matrix.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-numpy-eigh",
+          "locator": "numpy.linalg.eigh, Returns section and UPLO note"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-sample-mean-spread",
+      "statement": "As the number of averaged values increases, the distribution of sample means concentrates, with the standard deviation of the sampling distribution equal to the population standard deviation divided by the square root of the sample size.",
+      "scope": "Cited only to justify why a larger sample gives a more stable centre, for an independent sample from a population with finite variance; no convergence rate is asserted for the covariance estimate or for the axis directions.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-sample-means",
+          "locator": "7.1, central limit theorem for sample means"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-sample-covariance-normalisation",
+      "statement": "A documented covariance routine defines the matrix element C_ij as the covariance of variables i and j with C_ii the variance, and normalises by N - 1 by default, describing that as the unbiased estimate.",
+      "scope": "Estimator convention of one library version, adopted here so that the drawn ellipsoid has a stated definition; it does not establish that a given sample satisfies the assumptions behind the estimate.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-numpy-cov",
+          "locator": "numpy.cov, Notes and the bias/ddof parameters"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Sample cloud",
+      "structure": "Uniform small spheres with depth cueing so density reads correctly; avoid billboards that hide the third dimension.",
+      "material": "Neutral point material so the ellipsoid and axes carry the accents; density is conveyed by count, not by glow.",
+      "articulation": "Points are replaced on resample and never interpolated between samples."
+    },
+    {
+      "family": "Ellipsoid shell",
+      "structure": "Thin translucent shell with a visible silhouette and an equator band, so orientation is readable.",
+      "material": "Low-opacity fill over opaque axis rods; the shell must not wash out the points inside it.",
+      "articulation": "Rebuilt from the current decomposition; scale factor changes rescale rather than re-author it."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Statistical estimation and presentation; no motion model.",
+    "checks": [
+      "Axis rods stay mutually perpendicular after every resample.",
+      "The ellipsoid centre equals the reported sample mean."
+    ]
+  },
+  "related_ids": [
+    "recipe.sampling-mean-distribution",
+    "recipe.eigenvector-invariant-directions",
+    "knowledge.comparison-stage"
+  ]
+}

@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.lighting-mood-fog-shafts",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Fog with visible light shafts through openings"
+  },
+  "aliases": {
+    "en": [
+      "volumetric fog shafts",
+      "god rays lighting",
+      "light shafts through windows",
+      "misty beam rig"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "environments-dioramas",
+    "waves-optics-fields"
+  ],
+  "summary": "Put a low key behind an occluder and raise the fog until the beams between the openings become the subject.",
+  "objective": "Visible shafts follow the declared key direction, and the surfaces they land on are brighter than the surfaces they pass over.",
+  "tags": [
+    "lighting-profile",
+    "fog",
+    "volumetric",
+    "shafts",
+    "god-rays",
+    "atmosphere"
+  ],
+  "subject_terms": [
+    "volumetric light",
+    "light shaft",
+    "occluder",
+    "spot light cone",
+    "fog density",
+    "penumbra",
+    "atmospheric scattering",
+    "dust motes",
+    "raking light"
+  ],
+  "intent_signals": [
+    "add light shafts",
+    "make the fog visible",
+    "god rays through the windows",
+    "a misty forest morning",
+    "beams of light in a cathedral"
+  ],
+  "example_prompts": [
+    "Light a forest clearing so the mist between the trunks carries beams.",
+    "Show a hall where the windows throw visible shafts across the floor.",
+    "Make an early morning scene where the air itself is the subject."
+  ],
+  "negative_signals": [
+    "clear-air product shot",
+    "measured atmospheric scattering"
+  ],
+  "not_for": [
+    "Scenes that must stay clear-air, where visible beams read as a fault.",
+    "Any claim about real atmospheric scattering coefficients, which needs a sourced optical model."
+  ],
+  "content": {
+    "principles": [
+      "A shaft is only visible where something occludes the light. The occluder pattern is therefore part of the lighting design, not scenery placed afterwards.",
+      "Fog density and beam contrast trade against each other. Past roughly 0.08 the far field disappears before the beams become any more legible.",
+      "The beams must land somewhere. A shaft that crosses the frame without producing a bright patch on a floor or a wall reads as a graphic overlay.",
+      "A low key produces long shafts that travel across the frame; a high key produces short vertical ones. The azimuth choice is a composition decision made before any density is tuned.",
+      "Dust motes drifting inside the beam are what separate a volumetric effect from a painted gradient."
+    ],
+    "implementation": [
+      "Declare the key direction once at 12 deg elevation and 110 deg azimuth, and place the openings in the occluder so the shafts cross the composition rather than run parallel to the camera.",
+      "Drive the visible cone with a SpotLight aligned to the same direction; in a candela model with decay 2 a shaft source at 8-12 m needs several hundred cd, which is why its value is far above the directional key's.",
+      "Build the visible volume either as a screen-space radial blur seeded at the light position or as a cone mesh with an additive, depth-soft material; keep the choice explicit because the two behave differently at grazing camera angles.",
+      "Set FogExp2 to 0.06 in a slightly warm grey so the shaft colour and the ambient haze belong to the same source.",
+      "Add 200-400 slow drifting motes confined to the shaft volume at 0.02-0.06 m/s so the beams have interior motion.",
+      "Keep exposure at 0.95; the shafts are the brightest element and a higher exposure blooms them into a single white mass."
+    ],
+    "observable_checks": [
+      "Turning the fog off leaves a normally lit scene, confirming the shafts come from the volume and not from an emissive mesh.",
+      "Each visible shaft terminates in a brighter patch on a receiving surface, and that patch moves when the key azimuth is changed.",
+      "A grayscale screenshot shows the shafts as the highest-value elements, with the diffuse scene at least one stop lower.",
+      "Removing the occluder removes the shafts entirely."
+    ]
+  },
+  "creative_affordances": [
+    "Shaft colour, count and the occluder pattern are free; invented window shapes and non-physical beam colours are legitimate.",
+    "The volume can be pushed to near-solid for a stylised look as long as the receiving patches remain visible."
+  ],
+  "known_limits": [
+    "Every number in this profile was tuned for ACESFilmic tone mapping at exposure 0.95; under a different tone-mapping curve or exposure the intensities and fog density must be re-derived, not copied.",
+    "Volumetric appearance here is an authored screen-space or mesh approximation, not a scattering simulation; a physically based volumetric integrator will not match these numbers.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "related_ids": [
+    "knowledge.three-light-units-and-exposure",
+    "knowledge.shared-stylized-outdoor-daylight",
+    "knowledge.shared-surface-feature-inspection-light"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "The look lives in the ratio between the fog density and the beam brightness, so fog sits at 0.06 and the shaft source is given several hundred candela while the directional key stays at 4.5 in the lux-scaled convention; keeping them as two lights lets the shadows stay physically sane while the cone stays bright enough to be seen. Exposure at 0.95 stops the shafts from merging into one white mass, and the low 12 deg azimuth is chosen so beams cross the frame rather than pointing at the camera. Kelvin-to-hex conversions here are authored approximations, not colorimetric transforms (2700K~#ffb46b, 3200K~#ffc58f, 4500K~#ffe4c4, 5600K~#fff4e5, 6500K~#ffffff, open shade 8000K~#cfe0ff).",
+    "values": {
+      "feeling": [
+        "mysterious",
+        "still",
+        "cathedral-like"
+      ],
+      "time_of_day": "early morning, sun 12 deg above the horizon behind an occluder",
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#ffe4c4",
+          "intensity": 4.5,
+          "elevation_deg": 12,
+          "azimuth_deg": 110,
+          "castShadow": true,
+          "note": "carries the surface lighting and the shadow pattern that defines where shafts can exist"
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#7d8ea6",
+          "ground": "#3a3630",
+          "intensity": 0.3
+        },
+        "rim": {
+          "type": "SpotLight",
+          "color": "#fff0d6",
+          "intensity": 600,
+          "decay": 2,
+          "elevation_deg": 14,
+          "azimuth_deg": 108,
+          "angle_deg": 22,
+          "penumbra": 0.5,
+          "castShadow": true,
+          "note": "shaft source aligned to the key; several hundred candela because decay 2 at 8-12 m consumes most of it"
+        },
+        "ratio": "beam:diffuse ~ 4:1 in the shaft, key:fill ~ 15:1 on surfaces"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#55627a",
+        "horizon": "#b9b3a4"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#c8ccc4",
+        "density": 0.06
+      },
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 0.95
+      },
+      "shadow": {
+        "mapSize": 2048,
+        "bias": -0.0002,
+        "normalBias": 0.03,
+        "camera_extent_m": 20
+      },
+      "environment": {
+        "type": "RoomEnvironment",
+        "intensity": 0.1
+      },
+      "post": {
+        "bloom": {
+          "threshold": 0.95,
+          "strength": 0.45,
+          "radius": 0.9
+        },
+        "vignette": 0.35,
+        "grain": 0.03,
+        "dof": "off",
+        "volumetric": "screen-space radial blur seeded at the spot position, weight 0.3; or an additive depth-soft cone mesh",
+        "motes": "200-400 particles confined to the shaft volume, 0.02-0.06 m/s"
+      },
+      "never": [
+        "shafts that land nowhere",
+        "fog density above 0.08 with beams still expected to read",
+        "a beam pointing straight at the camera as the only shaft",
+        "white ambient filling the shadow between shafts"
+      ],
+      "snippet": "const key=new THREE.DirectionalLight(0xffe4c4,4.5);\nkey.position.setFromSphericalCoords(35,THREE.MathUtils.degToRad(90-12),THREE.MathUtils.degToRad(110));\nkey.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.normalBias=0.03;scene.add(key);\nconst shaft=new THREE.SpotLight(0xfff0d6,600,0,THREE.MathUtils.degToRad(22),0.5,2);\nshaft.position.setFromSphericalCoords(12,THREE.MathUtils.degToRad(90-14),THREE.MathUtils.degToRad(108));\nshaft.castShadow=true;shaft.shadow.mapSize.set(2048,2048);scene.add(shaft);scene.add(shaft.target);\nscene.add(new THREE.HemisphereLight(0x7d8ea6,0x3a3630,0.3));\nscene.fog=new THREE.FogExp2(0xc8ccc4,0.06);\nrenderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=0.95;"
+    }
+  }
+}

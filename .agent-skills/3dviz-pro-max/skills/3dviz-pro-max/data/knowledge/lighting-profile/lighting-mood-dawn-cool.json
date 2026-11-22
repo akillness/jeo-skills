@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.lighting-mood-dawn-cool",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Cool dawn with a pale low key and standing mist"
+  },
+  "aliases": {
+    "en": [
+      "dawn cool light",
+      "blue hour dawn",
+      "early morning mist rig",
+      "cool sunrise lighting"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "earth-environment",
+    "architecture-interiors"
+  ],
+  "summary": "Keep the ambient cool and blue while a pale low key just begins to warm the surfaces it touches.",
+  "objective": "Only the surfaces facing the key are warm; everything else stays blue, and the mist thickens toward the ground.",
+  "tags": [
+    "lighting-profile",
+    "dawn",
+    "sunrise",
+    "cool",
+    "mist",
+    "blue-hour"
+  ],
+  "subject_terms": [
+    "dawn light",
+    "blue hour",
+    "mist",
+    "cool ambient",
+    "pale key",
+    "low sun elevation",
+    "temperature separation",
+    "ground fog",
+    "quiet palette"
+  ],
+  "intent_signals": [
+    "make it early morning",
+    "a cold sunrise mood",
+    "mist over the fields at dawn",
+    "the scene feels like afternoon not morning",
+    "cool blue morning light"
+  ],
+  "example_prompts": [
+    "Light a valley at first light with mist still in the hollows.",
+    "Set a cold morning street before the sun has any strength.",
+    "Show a scene at dawn without it reading as a warm sunset."
+  ],
+  "negative_signals": [
+    "golden hour warmth",
+    "quantitative solar position for a date and latitude"
+  ],
+  "not_for": [
+    "Warm sunset moods, which need the opposite temperature balance.",
+    "Scenes that must state a real solar elevation, which needs a sourced solar model."
+  ],
+  "content": {
+    "principles": [
+      "Dawn and dusk differ by which temperature dominates. At dawn the ambient stays cool and the key is pale; reverse that and the audience reads sunset instead.",
+      "The key at first light has little power. It should touch only the surfaces facing it and leave everything else to the blue ambient, which is why its intensity sits below the golden-hour value.",
+      "Mist collects low. A uniform fog reads as haze; density that thickens toward the ground reads as morning.",
+      "The palette is narrow on purpose. Dawn works with a small range of cool hues plus one pale warm accent, and adding a third hue family flattens it.",
+      "A low key from close to the horizon gives long shadows without the saturation of a sunset, which is what makes the scene feel cold rather than nostalgic."
+    ],
+    "implementation": [
+      "Set the key as a DirectionalLight at #ffd6b8 and 2.4, elevation 8 deg, with shadows on and a 24 m shadow camera extent for a valley-scale scene.",
+      "Give the fill a strong cool bias (sky #6d84b8, ground #4a4640, intensity 0.7) so the unlit majority of the frame stays blue.",
+      "Add the rim as a cool pale DirectionalLight at 0.5 with castShadow false, roughly opposite the key, so silhouettes separate from the mist.",
+      "Keep fog at 0.03 in a desaturated mauve-grey, and if a ground-hugging layer is needed, add a shallow mist plane instead of raising the global density.",
+      "Hold exposure at 1.05: slightly above neutral because the whole scene is dim, but not far enough to warm the shadows into daylight.",
+      "Keep saturation low across the palette; a saturated orange anywhere in frame will pull the read toward sunset."
+    ],
+    "observable_checks": [
+      "Only surfaces facing the declared key are warm; a sampled shadow-side patch reads cool and non-zero.",
+      "A grayscale screenshot shows a narrow value range with the key-lit planes as the only bright elements.",
+      "Turning fog off removes the mist depth cue without changing the temperature split, confirming the two are independent.",
+      "Shadows are long and parallel and agree with the 8 deg elevation."
+    ]
+  },
+  "creative_affordances": [
+    "The zenith and horizon colours can be pushed to invented dawn palettes, including green or violet skies, while the cool-ambient / pale-key relationship is kept.",
+    "The mist layer can be thickened into a full cloud inversion for a dramatic version without changing the light ratios."
+  ],
+  "known_limits": [
+    "Every number in this profile was tuned for ACESFilmic tone mapping at exposure 1.05; under a different tone-mapping curve or exposure the intensities and fog density must be re-derived, not copied.",
+    "The cool/warm split was tuned for a scene with a visible sky; an enclosed interior needs the fill re-balanced or the whole frame goes blue.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "related_ids": [
+    "knowledge.three-light-units-and-exposure",
+    "knowledge.shared-stylized-outdoor-daylight",
+    "knowledge.shared-shadow-volume-fit"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Dawn is separated from dusk by which temperature owns the ambient, so the fill is strongly cool at #6d84b8 and the key is a pale 2.4 rather than a saturated one, touching only the planes that face it. Exposure at 1.05 lifts a genuinely dim scene without warming the shadows into daylight, and fog at 0.03 in a desaturated mauve-grey gives standing mist while a separate shallow plane, not a higher global density, carries any ground-hugging layer. Kelvin-to-hex conversions here are authored approximations, not colorimetric transforms (2700K~#ffb46b, 3200K~#ffc58f, 4500K~#ffe4c4, 5600K~#fff4e5, 6500K~#ffffff, open shade 8000K~#cfe0ff).",
+    "values": {
+      "feeling": [
+        "cold",
+        "quiet",
+        "expectant"
+      ],
+      "time_of_day": "15 min after sunrise, sun elevation 8 deg, mist still standing",
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#ffd6b8",
+          "intensity": 2.4,
+          "elevation_deg": 8,
+          "azimuth_deg": 95,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#6d84b8",
+          "ground": "#4a4640",
+          "intensity": 0.7
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#cfe0ff",
+          "intensity": 0.5,
+          "elevation_deg": 20,
+          "azimuth_deg": 275,
+          "castShadow": false
+        },
+        "ratio": "key:fill ~ 3.5:1; deliberately flatter than dusk so the cool ambient stays dominant"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#2b3a67",
+        "horizon": "#d9c1c8"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#c9c2cf",
+        "density": 0.03
+      },
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.05
+      },
+      "shadow": {
+        "mapSize": 2048,
+        "bias": -0.0002,
+        "normalBias": 0.03,
+        "camera_extent_m": 24
+      },
+      "environment": {
+        "type": "RoomEnvironment",
+        "intensity": 0.2
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.0,
+          "strength": 0.25,
+          "radius": 0.7
+        },
+        "vignette": 0.2,
+        "grain": 0.03,
+        "dof": "off"
+      },
+      "never": [
+        "a saturated orange sky",
+        "the sun above 15 deg elevation",
+        "black shadow cores",
+        "fog warmer than the key colour"
+      ],
+      "snippet": "const key=new THREE.DirectionalLight(0xffd6b8,2.4);\nkey.position.setFromSphericalCoords(35,THREE.MathUtils.degToRad(90-8),THREE.MathUtils.degToRad(95));\nkey.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.normalBias=0.03;key.shadow.bias=-0.0002;\nconst c=key.shadow.camera;c.left=c.bottom=-24;c.right=c.top=24;c.updateProjectionMatrix();scene.add(key);\nscene.add(new THREE.HemisphereLight(0x6d84b8,0x4a4640,0.7));\nconst rim=new THREE.DirectionalLight(0xcfe0ff,0.5);\nrim.position.setFromSphericalCoords(35,THREE.MathUtils.degToRad(90-20),THREE.MathUtils.degToRad(275));scene.add(rim);\nscene.fog=new THREE.FogExp2(0xc9c2cf,0.03);\nrenderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;"
+    }
+  }
+}

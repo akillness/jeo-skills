@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.material-ice-snow-structure",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Solid ice and granular snow appearance"
+  },
+  "aliases": {
+    "en": [
+      "ice versus snow material",
+      "snow grain and ice volume"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "earth-environment",
+    "products-assemblies"
+  ],
+  "summary": "Distinguish a continuous ice body from a snow covering through structure, boundaries and light response rather than one shared blue-white shader.",
+  "objective": "Make an icy object and its snow covering remain distinguishable in the same lighting.",
+  "tags": [
+    "material-profile",
+    "ice",
+    "snow",
+    "snow grains"
+  ],
+  "subject_terms": [
+    "ice",
+    "snow",
+    "snow grains",
+    "scattering",
+    "frost",
+    "clear ice",
+    "snow covering"
+  ],
+  "intent_signals": [
+    "Make an icy object and its snow covering remain distinguishable in the same lighting."
+  ],
+  "example_prompts": [
+    "Build an ice arch with a granular snow cap and a readable underside, avoiding a blanket blue glow."
+  ],
+  "content": {
+    "principles": [
+      "Choose whether the subject is clear ice, cloudy ice, crust or loose snow; color alone cannot encode these distinctions reliably. Use sourced optics narrowly and author the scale/style explicitly.",
+      "A snow cover has a footprint and thickness separate from the underlying ice or terrain. Its optical treatment does not establish support strength, slipperiness or melting behavior."
+    ],
+    "implementation": [
+      "Model the ice body with enough thickness and edge shape to make transmission or an opaque approximation intelligible. Give snow an explicit accumulation contour instead of recoloring the ice mesh everywhere.",
+      "Separate large snow forms, resolved clumps and unresolved grain. Reserve individual geometry for close grains or silhouette detail; inspect fine sparkle/noise under a moving light rather than assuming more contrast means more snow.",
+      "Compare the two regions with one broad light and a darker background reference. Choose roughness and internal-scattering cues independently; avoid requiring all ice to be blue or all snow to be perfectly white."
+    ],
+    "observable_checks": [
+      "At the chosen camera distance, snow cover boundaries and ice thickness remain legible when colors are temporarily similar.",
+      "An underside inspection does not reveal the snow cap painted through the whole ice volume unless that is intentional.",
+      "Changing the light does not turn every patch into identical emissive white; colored lighting and authored tint remain distinguishable from the material model."
+    ]
+  },
+  "known_limits": [
+    "No melt solver, thermal insulation value, snow density, avalanche stability or safe walking criterion is supplied.",
+    "Authored modeling and inspection guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Opaque faceted ice, sparkling graphic snow or unusual fantasy colors are valid when the two structures and intended boundaries remain clear."
+  ],
+  "related_ids": [
+    "knowledge.transmissive-medium",
+    "knowledge.material-response-check"
+  ],
+  "claims": [
+    {
+      "id": "claim.material-depth-ice-snow-structure",
+      "statement": "NSIDC describes snow as packed ice crystals; scattering near the surface and preferential absorption over longer paths through snow or ice contribute to white and blue appearances.",
+      "scope": "Qualitative snow/ice optics; no fixed hue, thickness threshold or optical coefficients.",
+      "source_refs": [
+        {
+          "source_id": "source.material-depth-snow-optics",
+          "locator": "How snow forms, opening paragraph; The colors of snow, paragraphs 1-4"
+        }
+      ]
+    }
+  ]
+}

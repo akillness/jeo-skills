@@ -1,0 +1,42 @@
+# Editor defaults that match the files as they are. prettier reads this file
+# too, and .prettierrc.json overrides it.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# prettier's defaults, for editors that do not run it
+[*.{md,json,yml,yaml,js,mjs,ts,sh}]
+indent_style = space
+indent_size = 2
+
+[*.{py,cs,shader,hlsl,asmdef}]
+indent_style = space
+indent_size = 4
+
+# GDScript and Godot shaders as the Godot editor writes them; Luau as StyLua
+# formats it (the Roblox tooling template sets tabs)
+[*.{gd,gdshader,gdshaderinc,luau}]
+indent_style = tab
+
+# A trailing double space is a Markdown line break.
+[*.md]
+trim_trailing_whitespace = false
+
+# Vendored dev skills, kept byte-identical to their published source
+[.agents/skills/{skill-creator,skill-development,pr-summary,pr-squash-message,pr-handle-comments}/**]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+indent_style = unset
+indent_size = unset
+
+# Test evidence, kept as the skill's script wrote it (CRLF CSV included)
+[tests/*/evidence/**]
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset

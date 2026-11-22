@@ -1,0 +1,1432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fog Shepherd</title>
+<link rel="icon" href="data:,">
+<style>
+:root { --ink:#eef3f3; --teal:#86e6f4; }
+html, body { margin:0; height:100%; background:#0d1112; overflow:hidden; color:var(--ink);
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif; }
+#c { position:fixed; inset:0; width:100%; height:100%; display:block; }
+.ov { position:fixed; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  pointer-events:none; transition:opacity 1.8s ease; text-align:center; }
+#load { background:#0d1112; z-index:5; transition:opacity 1.2s ease; }
+#load .bar { width:160px; height:1px; background:rgba(255,255,255,.12); margin-top:18px; position:relative; overflow:hidden; }
+#load .bar b { position:absolute; left:0; top:0; bottom:0; width:0; background:var(--teal); box-shadow:0 0 10px var(--teal); transition:width .3s; }
+#load p { margin:0; font-size:12px; letter-spacing:.5em; text-transform:uppercase; opacity:.55; }
+#title { opacity:0; justify-content:flex-start; padding-top:13vh; }
+#title img { width:min(60vw, 760px); max-height:34vh; object-fit:contain; filter:drop-shadow(0 0 30px rgba(10,14,15,.35)); }
+#title .press { margin-top:2.4vh; font-size:13px; letter-spacing:.55em; text-transform:uppercase; animation:pulse 3.2s ease-in-out infinite; text-shadow:0 0 18px rgba(20,26,28,.85), 0 0 4px rgba(20,26,28,.6); }
+#title .keys { margin-top:1.4vh; font-size:12px; letter-spacing:.22em; opacity:.75; text-shadow:0 0 14px rgba(20,26,28,.9), 0 0 3px rgba(20,26,28,.7); }
+@keyframes pulse { 0%,100% { opacity:.85 } 50% { opacity:.3 } }
+#hud { position:fixed; left:30px; right:30px; top:26px; display:flex; justify-content:space-between; align-items:center;
+  pointer-events:none; opacity:0; transition:opacity 1.4s ease; }
+#herd { display:flex; gap:8px; align-items:center; }
+#herd i { width:7px; height:7px; border-radius:50%; border:1px solid rgba(240,247,248,.45); box-sizing:border-box;
+  transition:background .6s, box-shadow .6s, border-color .6s, opacity .6s; }
+#herd i.on { background:#f6fcfd; border-color:#f6fcfd; box-shadow:0 0 9px rgba(200,246,255,.95); }
+#herd i.gone { opacity:.18; }
+#oilw { display:flex; align-items:center; gap:10px; }
+#oil { width:110px; height:2px; background:rgba(255,255,255,.14); position:relative; }
+#oil b { position:absolute; left:0; top:0; bottom:0; width:100%; background:var(--teal); box-shadow:0 0 9px var(--teal); }
+#oilw span { width:6px; height:6px; border-radius:50%; background:var(--teal); box-shadow:0 0 10px var(--teal); }
+#oilw.low span, #oilw.low #oil b { animation:pulse .7s ease-in-out infinite; }
+#hint { position:fixed; left:0; right:0; bottom:6vh; font-size:12px; letter-spacing:.32em; text-transform:uppercase;
+  opacity:0; transition:opacity 1.4s ease; pointer-events:none; text-align:center; text-shadow:0 0 14px rgba(0,0,0,.6); }
+#end { opacity:0; background:radial-gradient(ellipse 46% 38% at 50% 50%, rgba(12,16,17,.55), rgba(12,16,17,0)); }
+#end h2, #end p { text-shadow:0 0 22px rgba(10,14,15,.9), 0 0 4px rgba(10,14,15,.6); }
+#end h2 { font-weight:normal; font-size:clamp(24px, 3.2vw, 44px); letter-spacing:.14em; margin:0 0 2vh; text-shadow:0 0 26px rgba(10,14,15,.9), 0 0 5px rgba(10,14,15,.6); }
+#end p { margin:.6vh 0; letter-spacing:.38em; font-size:12px; text-transform:uppercase; opacity:.8; }
+#end .n { font-size:clamp(18px, 2vw, 26px); letter-spacing:.2em; text-transform:none; opacity:1; margin-bottom:2.4vh; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud"><div id="herd"></div><div id="oilw"><span></span><div id="oil"><b></b></div></div></div>
+<div id="hint">← → walk &nbsp;·&nbsp; ↑ ↓ wander &nbsp;·&nbsp; space raise the lantern</div>
+<div id="title" class="ov"><img id="logo" alt="Fog Shepherd"><div class="press">press enter</div>
+  <div class="keys">← → walk &nbsp;·&nbsp; ↑ ↓ wander &nbsp;·&nbsp; space raise the lantern &nbsp;·&nbsp; m sound</div></div>
+<div id="end" class="ov"><h2>The herd is home</h2><p class="n" id="endn"></p><p>press enter to walk again</p></div>
+<div id="load" class="ov"><p>gathering the fog</p><div class="bar"><b id="lb"></b></div></div>
+
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+// ------------------------------------------------------------------ utils
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const smooth = (e0, e1, x) => { const t = clamp((x - e0) / (e1 - e0), 0, 1); return t * t * (3 - 2 * t); };
+const damp = (a, b, k, dt) => lerp(a, b, 1 - Math.exp(-k * dt));
+function mulberry(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+  t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const R0 = mulberry(1907);
+const rr = (a, b, r = R0) => a + (b - a) * r();
+const angDiff = (a, b) => { let d = (b - a) % (Math.PI * 2); if (d > Math.PI) d -= Math.PI * 2; if (d < -Math.PI) d += Math.PI * 2; return d; };
+
+// ------------------------------------------------------------------ world constants
+const LEVEL_END = 372;          // the glade
+const START_X = 0;
+const DEER_H = 2.1;             // stag height incl. antlers (world units)
+const SHEP_H = 1.62;
+const CAM_FOV = 30;
+const CAM_Z = 13.3;
+
+function pathY(x) { return 0.55 * Math.sin(x * 0.05 + 0.3) + 0.32 * Math.sin(x * 0.13 + 1.1) + 0.12 * Math.sin(x * 0.31 + 2.0); }
+function groundY(x, z) {
+  const back = smooth(2.5, 26, -z);
+  const hills = 1.4 * Math.sin(x * 0.031 + z * 0.045) + 0.8 * Math.sin(x * 0.071 + 1.3 + z * 0.02) + 0.45 * Math.sin(x * 0.15 - z * 0.08);
+  const front = smooth(2.2, 7.5, z) * (0.36 + 0.15 * Math.sin(x * 0.45 + 0.7) + 0.1 * Math.sin(x * 1.13 + z * 0.4) + 0.06 * Math.sin(x * 2.7 + z));
+  return pathY(x) * (1 - back * 0.5) + hills * back + front - back * 1.2;
+}
+function fogDensityAt(x) {
+  const deep = smooth(185, 205, x) * (1 - smooth(272, 292, x));
+  const glade = smooth(338, 368, x);
+  return lerp(lerp(0.021, 0.042, deep), 0.015, glade);
+}
+
+// ------------------------------------------------------------------ renderer
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+renderer.setSize(innerWidth, innerHeight, false);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.NoToneMapping;
+renderer.info.autoReset = false;
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('#d3d7d6');
+const camera = new THREE.PerspectiveCamera(CAM_FOV, innerWidth / innerHeight, 0.1, 600);
+camera.position.set(-6, 2.6, CAM_Z);
+
+const rt = new THREE.WebGLRenderTarget(innerWidth, innerHeight, { type: THREE.HalfFloatType, samples: 4 });
+const composer = new EffectComposer(renderer, rt);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth / 2, innerHeight / 2), 0.55, 0.5, 0.88);
+composer.addPass(bloom);
+const GradeShader = {
+  uniforms: { tDiffuse: { value: null }, uPaper: { value: null }, uTime: { value: 0 }, uFade: { value: 1 },
+    uFlash: { value: 0 }, uAspect: { value: 1 }, uVig: { value: 0.32 } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`,
+  fragmentShader: `
+    uniform sampler2D tDiffuse; uniform sampler2D uPaper; uniform float uTime; uniform float uFade; uniform float uFlash;
+    uniform float uAspect; uniform float uVig; varying vec2 vUv;
+    float h(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+    void main(){
+      vec3 c = texture2D(tDiffuse, vUv).rgb;
+      vec2 q = vUv - 0.5; q.x *= uAspect;
+      float v = smoothstep(0.95, 0.25, length(q));
+      c *= mix(1.0 - uVig, 1.0, v);
+      vec3 p = texture2D(uPaper, vUv * vec2(uAspect, 1.0) * 1.15).rgb;
+      float pl = dot(p, vec3(0.333)) - 0.5;
+      c *= 1.0 + pl * 0.16;
+      c += pl * 0.012;
+      c += (h(vUv * 911.0 + fract(uTime) * 37.0) - 0.5) * 0.012;
+      c = mix(c, vec3(1.0), uFlash);
+      c *= uFade;
+      gl_FragColor = vec4(max(c, 0.0), 1.0);
+    }`
+};
+const grade = new ShaderPass(GradeShader);
+composer.addPass(grade);
+composer.addPass(new OutputPass());
+
+// ------------------------------------------------------------------ shared uniforms + glsl
+const NRP = 10;
+const RP = []; for (let i = 0; i < NRP; i++) RP.push(new THREE.Vector4(0, 0, 0, 0));
+function addReveal(x, y, z, r) { RP[G.revealPts % NRP].set(x, y, z, r); G.revealPts++; }
+const U = {
+  uTime: { value: 0 }, uCam: { value: new THREE.Vector3() },
+  uFogA: { value: new THREE.Color('#b3b8b7') }, uFogB: { value: new THREE.Color('#e0e3e2') }, uFogDen: { value: 0.021 },
+  uLamp: { value: new THREE.Vector4(0, 1, 0, 4) }, uLampI: { value: 1 }, uLampC: { value: new THREE.Color('#50c6f0') },
+  uReveal: { value: 0 }, uRevealPts: { value: RP }, uWarm: { value: 0 },
+};
+const COMMON = /* glsl */`
+uniform float uTime; uniform vec3 uCam; uniform vec3 uFogA; uniform vec3 uFogB; uniform float uFogDen;
+uniform vec4 uLamp; uniform float uLampI; uniform vec3 uLampC; uniform float uReveal; uniform vec4 uRevealPts[10]; uniform float uWarm;
+float lampFall(vec3 wp){ float d = distance(wp, uLamp.xyz); float f = clamp(1.0 - d / uLamp.w, 0.0, 1.0); return f * f * (3.0 - 2.0 * f); }
+float revealAt(vec3 wp){
+  float r = uReveal;
+  float d = distance(wp, uLamp.xyz);
+  r = max(r, smoothstep(uLamp.w * 1.02, uLamp.w * 0.42, d) * clamp(uLampI, 0.0, 1.0));
+  for (int i = 0; i < 10; i++) { vec4 q = uRevealPts[i]; if (q.w > 0.0) r = max(r, smoothstep(q.w, q.w * 0.35, distance(wp, q.xyz))); }
+  return r;
+}
+vec3 mono(vec3 c){ float l = dot(c, vec3(0.2126, 0.7152, 0.0722)); return vec3(l) * vec3(0.965, 1.0, 1.025); }
+vec3 world(vec3 albedo, vec3 wp, float mulG, float addG){
+  float rv = revealAt(wp);
+  vec3 col = albedo * mix(vec3(1.0), vec3(1.08, 1.05, 0.93), uWarm) * (1.0 + 0.12 * uReveal);
+  vec3 c = mix(mono(albedo), col, rv);
+  float L = lampFall(wp) * uLampI;
+  c = c * (1.0 + L * mulG * uLampC) + uLampC * L * addG;
+  return c;
+}
+vec3 fogColor(float y){ return mix(uFogA, uFogB, clamp((y + 1.5) / 17.0, 0.0, 1.0)); }
+float fogAmt(vec3 wp){ float d = distance(wp, uCam); return clamp(1.0 - exp(-uFogDen * max(d - 9.5, 0.0)), 0.0, 1.0); }
+vec3 fogIt(vec3 c, vec3 wp){ return mix(c, fogColor(wp.y), fogAmt(wp)); }
+`;
+
+// ------------------------------------------------------------------ loading
+const lb = document.getElementById('lb');
+let toLoad = 0, loaded = 0;
+const bump = () => { loaded++; lb.style.width = (100 * loaded / Math.max(1, toLoad)) + '%'; };
+const texLoader = new THREE.TextureLoader();
+const gltfLoader = new GLTFLoader();
+function loadTex(url, { srgb = true, repeat = false, mirror = false } = {}) {
+  toLoad++;
+  return new Promise((res) => {
+    texLoader.load(url, (t) => {
+      if (srgb) t.colorSpace = THREE.SRGBColorSpace;
+      t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+      if (repeat) { t.wrapS = t.wrapT = THREE.RepeatWrapping; }
+      if (mirror) { t.wrapS = t.wrapT = THREE.MirroredRepeatWrapping; }
+      bump(); res(t);
+    }, undefined, () => { console.warn('missing texture', url); bump(); res(null); });
+  });
+}
+function loadGLB(url) {
+  toLoad++;
+  return new Promise((res) => gltfLoader.load(url, (g) => { bump(); res(g); }, undefined, (e) => { console.warn('missing glb', url, e); bump(); res(null); }));
+}
+async function loadJSON(url) { try { const r = await fetch(url); return await r.json(); } catch (e) { return null; } }
+
+// ------------------------------------------------------------------ materials
+const spriteVS = /* glsl */`
+uniform float uTime; uniform float uSway;
+varying vec2 vUv; varying vec3 vWp;
+void main(){
+  vUv = uv;
+  vec3 p = position;
+  vec4 o = modelMatrix * vec4(0.0, 0.0, 0.0, 1.0);
+  float seed = o.x * 0.731 + o.z * 1.37;
+  float sx = max(abs(modelMatrix[0][0]), 0.001);
+  p.x += sin(uTime * 0.65 + seed) * uSway * uv.y * uv.y / sx;
+  vec4 wp = modelMatrix * vec4(p, 1.0);
+  vWp = wp.xyz;
+  gl_Position = projectionMatrix * viewMatrix * wp;
+}`;
+const spriteFS = COMMON + /* glsl */`
+uniform sampler2D map; uniform float uTopFade; uniform float uMul; uniform float uAdd; uniform float uDark; uniform float uFgK;
+varying vec2 vUv; varying vec3 vWp;
+void main(){
+  vec4 t = texture2D(map, vUv);
+  float a = t.a * (1.0 - smoothstep(1.0 - uTopFade, 1.0, vUv.y));
+  if (a < 0.012) discard;
+  vec3 c = t.rgb * uDark;
+  float fg = smoothstep(2.3, 7.0, vWp.z) * uFgK;
+  c *= mix(1.0, 0.13, fg);
+  c = world(c, vWp, uMul * (1.0 - fg * 0.5), uAdd * (1.0 - fg * 0.7));
+  c = fogIt(c, vWp);
+  gl_FragColor = vec4(c, a);
+}`;
+const spriteMats = new Map();
+function spriteMat(tex, { sway = 0, topFade = 0.0, mul = 1.2, add = 0.05, dark = 1.0, fgK = 1.0 } = {}) {
+  const key = tex.uuid + sway + topFade + mul + add + dark + fgK;
+  if (spriteMats.has(key)) return spriteMats.get(key);
+  const m = new THREE.ShaderMaterial({
+    uniforms: { ...U, map: { value: tex }, uSway: { value: sway }, uTopFade: { value: topFade }, uMul: { value: mul },
+      uAdd: { value: add }, uDark: { value: dark }, uFgK: { value: fgK } },
+    vertexShader: spriteVS, fragmentShader: spriteFS, transparent: true, depthWrite: false,
+  });
+  spriteMats.set(key, m);
+  return m;
+}
+const planeGeo = new THREE.PlaneGeometry(1, 1).translate(0, 0.5, 0);
+function addSprite(tex, x, y, z, h, opts = {}) {
+  const aspect = tex.image.width / tex.image.height;
+  const m = new THREE.Mesh(planeGeo, spriteMat(tex, opts));
+  const flip = opts.flip ? -1 : 1;
+  m.scale.set((opts.w || h * aspect) * flip, h, 1);
+  m.position.set(x, y, z);
+  m.renderOrder = Math.round(z * 10) + 1000;
+  m.frustumCulled = true;
+  scene.add(m);
+  return m;
+}
+
+// ------------------------------------------------------------------ globals filled at load
+const A = {};       // assets
+const G = {         // game state
+  state: 'loading', t: 0, oil: 100, flare: 0, flareCd: 0, herdTotal: 0, found: 0, home: 0,
+  lightR: 4, deer: [], shades: [], motes: [], wayposts: [], parts: null, shadeTimer: 9,
+  finaleT: 0, startT: 0, hintT: 0, revealPts: 0, muted: false, gameTime: 0,
+};
+const keys = {};
+
+// ------------------------------------------------------------------ build world
+function buildGround() {
+  const W = LEVEL_END + 220, X0 = -110;
+  const nx = 900, zs = [];
+  for (let i = 0; i <= 64; i++) { const t = i / 64; zs.push(lerp(-95, 10, Math.pow(t, 0.62))); }
+  const pos = [], uvs = [], idx = [];
+  for (let j = 0; j < zs.length; j++) for (let i = 0; i <= nx; i++) {
+    const x = X0 + W * i / nx, z = zs[j];
+    pos.push(x, groundY(x, z), z); uvs.push(i / nx, j / (zs.length - 1));
+  }
+  const row = nx + 1;
+  for (let j = 0; j < zs.length - 1; j++) for (let i = 0; i < nx; i++) {
+    const a = j * row + i, b = a + 1, c = a + row, d = c + 1;
+    idx.push(a, c, b, b, c, d);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+  g.setIndex(idx); g.computeVertexNormals();
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { ...U, map: { value: A.ground } },
+    vertexShader: `varying vec3 vWp; varying vec3 vN; void main(){ vec4 wp = modelMatrix * vec4(position, 1.0); vWp = wp.xyz; vN = normal; gl_Position = projectionMatrix * viewMatrix * wp; }`,
+    fragmentShader: COMMON + `
+      uniform sampler2D map; varying vec3 vWp; varying vec3 vN;
+      void main(){
+        vec3 t1 = texture2D(map, vWp.xz * 0.11).rgb;
+        vec3 t2 = texture2D(map, vWp.xz * vec2(0.031, 0.037) + 0.37).rgb;
+        vec3 c = mix(t1, t2, 0.4) * 0.52;
+        float fg = smoothstep(1.2, 5.5, vWp.z);
+        c *= mix(1.0, 0.1, fg);
+        float path = 1.0 - smoothstep(0.8, 2.9, abs(vWp.z + 0.6));
+        c *= 1.0 + 0.2 * path;
+        c *= 0.7 + 0.3 * clamp(vN.y, 0.0, 1.0);
+        c = world(c, vWp, 2.8 * (1.0 - fg * 0.85), 0.36 * (1.0 - fg * 0.85));   // the silhouette band stays dark, even in a flare
+        c = fogIt(c, vWp);
+        gl_FragColor = vec4(c, 1.0);
+      }`,
+  });
+  const m = new THREE.Mesh(g, mat);
+  m.renderOrder = -10;
+  scene.add(m);
+}
+
+function buildBackdrop() {
+  // far painted plate, world-fixed, mirrored repeat
+  const tex = A.bgFar; tex.wrapS = THREE.MirroredRepeatWrapping; tex.needsUpdate = true;
+  const W = 1200, H = 150, z = -170;
+  const aspect = tex.image.width / tex.image.height;
+  const tileW = H * aspect * 0.86;
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { ...U, map: { value: tex }, uRep: { value: W / tileW } },
+    vertexShader: `varying vec2 vUv; varying vec3 vWp; void main(){ vUv = uv; vec4 wp = modelMatrix * vec4(position,1.0); vWp = wp.xyz; gl_Position = projectionMatrix * viewMatrix * wp; }`,
+    fragmentShader: COMMON + `
+      uniform sampler2D map; uniform float uRep; varying vec2 vUv; varying vec3 vWp;
+      void main(){
+        vec2 uv = vec2(vUv.x * uRep, clamp(vUv.y * 1.16 - 0.08, 0.002, 0.998));
+        vec3 t = texture2D(map, uv).rgb;
+        vec3 c = mix(mono(t), t * mix(vec3(1.0), vec3(1.08, 1.05, 0.9), uWarm), uReveal);
+        c = mix(c, fogColor(vWp.y * 0.2 + 4.0), 0.18 + 0.1 * (1.0 - uReveal));
+        gl_FragColor = vec4(c, 1.0);
+      }`,
+    depthWrite: false,
+  });
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(W, H), mat);
+  m.position.set(LEVEL_END * 0.5, 22, z);
+  m.renderOrder = -20;
+  scene.add(m);
+
+  if (A.glade) {
+    const ga = A.glade.image.width / A.glade.image.height;
+    const gh = 46;
+    const gm = new THREE.ShaderMaterial({
+      uniforms: { ...U, map: { value: A.glade } },
+      vertexShader: `varying vec2 vUv; varying vec3 vWp; void main(){ vUv = uv; vec4 wp = modelMatrix * vec4(position,1.0); vWp = wp.xyz; gl_Position = projectionMatrix * viewMatrix * wp; }`,
+      fragmentShader: COMMON + `
+        uniform sampler2D map; varying vec2 vUv; varying vec3 vWp;
+        void main(){
+          vec3 t = texture2D(map, vUv).rgb;
+          float e = smoothstep(0.0, 0.22, vUv.x) * smoothstep(1.0, 0.78, vUv.x) * smoothstep(0.0, 0.12, vUv.y) * smoothstep(1.0, 0.8, vUv.y);
+          vec3 c = mix(mono(t), t * (1.0 + 0.15 * uWarm), max(uReveal, 0.0));
+          c = mix(c, fogColor(vWp.y), 0.42 * (1.0 - uReveal));
+          gl_FragColor = vec4(c, e);
+        }`,
+      transparent: true, depthWrite: false,
+    });
+    const g = new THREE.Mesh(new THREE.PlaneGeometry(gh * ga, gh), gm);
+    g.position.set(LEVEL_END + 22, 13, -78);
+    g.renderOrder = Math.round(-78 * 10) + 1000;
+    scene.add(g);
+    A.gladeMesh = g;
+  }
+}
+
+function buildFogAndRays() {
+  if (A.fog) {
+    A.fog.wrapS = THREE.RepeatWrapping; A.fog.needsUpdate = true;
+    const layers = [
+      { z: -46, y: 3.0, h: 26, a: 0.55, s: 0.006, sc: 0.012 },
+      { z: -22, y: 1.0, h: 15, a: 0.45, s: 0.010, sc: 0.020 },
+      { z: -9, y: -0.6, h: 8.5, a: 0.40, s: 0.016, sc: 0.034 },
+      { z: -2.6, y: -0.9, h: 4.2, a: 0.22, s: 0.022, sc: 0.05 },
+      { z: 3.4, y: -0.2, h: 2.2, a: 0.16, s: 0.03, sc: 0.07 },
+    ];
+    for (const L of layers) {
+      const mat = new THREE.ShaderMaterial({
+        uniforms: { ...U, map: { value: A.fog }, uSpeed: { value: L.s }, uAlpha: { value: L.a }, uScale: { value: L.sc } },
+        vertexShader: `varying vec2 vUv; varying vec3 vWp; void main(){ vUv = uv; vec4 wp = modelMatrix * vec4(position,1.0); vWp = wp.xyz; gl_Position = projectionMatrix * viewMatrix * wp; }`,
+        fragmentShader: COMMON + `
+          uniform sampler2D map; uniform float uSpeed; uniform float uAlpha; uniform float uScale; varying vec2 vUv; varying vec3 vWp;
+          void main(){
+            float n1 = dot(texture2D(map, vec2(vWp.x * uScale + uTime * uSpeed, vUv.y * 0.9 + 0.05)).rgb, vec3(0.333));
+            float n2 = dot(texture2D(map, vec2(vWp.x * uScale * 0.57 - uTime * uSpeed * 0.6 + 0.37, vUv.y * 0.8 + 0.1)).rgb, vec3(0.333));
+            float m = clamp(n1 * 0.75 + n2 * 0.55 - 0.08, 0.0, 1.0);
+            float edge = smoothstep(0.0, 0.3, vUv.y) * (1.0 - smoothstep(0.55, 1.0, vUv.y));
+            float a = m * uAlpha * edge * (1.0 - 0.6 * uReveal);
+            vec3 c = fogColor(vWp.y + 2.0);
+            float L = lampFall(vWp) * uLampI;
+            c = mix(c, c * 0.6 + uLampC * 0.9, L * 0.65);
+            gl_FragColor = vec4(c, a);
+          }`,
+        transparent: true, depthWrite: false,
+      });
+      const m = new THREE.Mesh(new THREE.PlaneGeometry(LEVEL_END + 260, L.h), mat);
+      m.position.set(LEVEL_END * 0.5, groundY(LEVEL_END * 0.5, L.z) * 0 + L.y + L.h * 0.5, L.z);
+      m.renderOrder = Math.round(L.z * 10) + 1000 + 5;
+      scene.add(m);
+    }
+  }
+  if (A.rays) {
+    A.rayMats = [];
+    const rr2 = mulberry(77);
+    for (let x = -20; x < LEVEL_END + 60; x += rr(26, 44, rr2)) {
+      const z = rr(-34, -12, rr2);
+      const mat = new THREE.ShaderMaterial({
+        uniforms: { ...U, map: { value: A.rays }, uA: { value: rr(0.25, 0.5, rr2) }, uPh: { value: rr(0, 6.28, rr2) } },
+        vertexShader: `varying vec2 vUv; varying vec3 vWp; void main(){ vUv = uv; vec4 wp = modelMatrix * vec4(position,1.0); vWp = wp.xyz; gl_Position = projectionMatrix * viewMatrix * wp; }`,
+        fragmentShader: COMMON + `
+          uniform sampler2D map; uniform float uA; uniform float uPh; varying vec2 vUv; varying vec3 vWp;
+          void main(){
+            float r = dot(texture2D(map, vUv).rgb, vec3(0.333));
+            float pulse = 0.75 + 0.25 * sin(uTime * 0.23 + uPh);
+            float e = smoothstep(0.0, 0.15, vUv.x) * smoothstep(1.0, 0.8, vUv.x) * smoothstep(0.0, 0.25, vUv.y) * smoothstep(1.0, 0.7, vUv.y);
+            vec3 col = mix(vec3(0.95, 0.97, 0.98), vec3(1.0, 0.93, 0.72), uWarm);
+            gl_FragColor = vec4(col * r * uA * pulse * e * (1.0 + 0.2 * uWarm), 1.0);
+          }`,
+        transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+      });
+      const h = 30, w = h * (A.rays.image.width / A.rays.image.height);
+      const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat);
+      m.position.set(x, 12.5, z);
+      m.renderOrder = Math.round(z * 10) + 1000 + 3;
+      scene.add(m);
+    }
+  }
+}
+
+function buildForest() {
+  const S = A.sprites;
+  const R = mulberry(4242);
+  const pick = (arr) => arr[Math.floor(R() * arr.length)];
+  const X0 = -70, X1 = LEVEL_END + 110;
+  const nearStray = (x, z) => LEVEL.strays.some(s => Math.abs(s.x - x) < 2.8 && z > s.z - 0.6 && z < s.z + 5.0);
+  const TANH = Math.tan(THREE.MathUtils.degToRad(CAM_FOV / 2));
+  const viewH = (z) => 2 * (CAM_Z - z) * TANH;
+  const px = (p, z) => p / 720 * viewH(z);                       // screen pixels (720p) -> world units at depth z
+  const camTopY = (x, z) => pathY(x) + 2.6 + (CAM_Z - z) * TANH + 1.5;
+  // tree bands: [zMin, zMax, spacing(px), widthPx min/max, dark]
+  const bands = [
+    [-88, -58, 46, 48, 78, 0.95],
+    [-58, -34, 64, 46, 72, 0.95],
+    [-34, -18, 92, 52, 84, 0.93],
+    [-18, -9.5, 130, 62, 96, 0.8],
+    [-9.5, -3.6, 210, 78, 112, 0.68],
+  ];
+  if (S.trees && S.trees.length) {
+    for (const [z0, z1, spPx, w0, w1, dk] of bands) {
+      const zm = (z0 + z1) / 2;
+      for (let x = X0; x < X1; x += px(spPx, zm) * rr(0.45, 1.55, R)) {
+        const z = rr(z0, z1, R);
+        if (x > LEVEL_END - 8 && x < LEVEL_END + 46 && z > -82 && R() < 0.9) continue;   // the glade opens up
+        if (z > -10 && nearStray(x, z)) continue;
+        const tex = pick(S.trees);
+        const w = px(rr(w0, w1, R), z);
+        const y = groundY(x, z) - 0.5;
+        const h = camTopY(x, z) - y;
+        addSprite(tex, x, y, z, h, { w, topFade: 0.0, mul: 0.9, add: 0.03, dark: dk, flip: R() < 0.5 });
+      }
+    }
+    // foreground trunks sliding past between the camera and the path
+    for (let x = X0 + 14; x < X1; x += rr(22, 40, R)) {
+      const z = rr(5.0, 7.4, R);
+      if (Math.abs(x - START_X) < 8) continue;
+      const tex = pick(S.trees);
+      const w = px(rr(170, 260, R), z);
+      const y = groundY(x, z) - 1.2;
+      addSprite(tex, x, y, z, camTopY(x, z) - y + 1, { w, topFade: 0.0, mul: 0.35, add: 0.0, dark: 0.75, flip: R() < 0.5 });
+    }
+  }
+  if (S.canopy && S.canopy.length) {
+    for (const [z0, z1, spPx, frac] of [[-86, -56, 300, 0.2], [-56, -30, 340, 0.22], [-30, -12, 420, 0.25], [-12, -4, 520, 0.27]]) {
+      const zm = (z0 + z1) / 2;
+      for (let x = X0; x < X1; x += px(spPx, zm) * rr(0.5, 1.4, R)) {
+        const z = rr(z0, z1, R);
+        if (x > LEVEL_END - 2 && x < LEVEL_END + 44 && z > -82) continue;
+        const tex = pick(S.canopy);
+        const h = viewH(z) * frac * rr(0.8, 1.25, R);
+        const w = h * tex.image.width / tex.image.height;
+        addSprite(tex, x, camTopY(x, z) - 1.5 - h * rr(0.62, 0.88, R), z, h, { w, sway: 0.12, mul: 0.6, add: 0.02, dark: 0.5, flip: R() < 0.5 });
+      }
+    }
+  }
+  const under = [...(S.bushes || []), ...(S.crowns || [])];
+  if (under.length) {
+    // distant rolling masses
+    for (const [z0, z1, spPx, hPx0, hPx1] of [[-60, -34, 150, 40, 80], [-34, -16, 140, 44, 86], [-16, -6.5, 150, 46, 92], [-6.5, -2.4, 210, 50, 110]]) {
+      const zm = (z0 + z1) / 2;
+      for (let x = X0; x < X1; x += px(spPx, zm) * rr(0.4, 1.4, R)) {
+        const z = rr(z0, z1, R);
+        if (z > -12 && nearStray(x, z)) continue;
+        const tex = z < -16 && S.crowns && S.crowns.length && R() < 0.45 ? pick(S.crowns) : pick(S.bushes);
+        const h = px(rr(hPx0, hPx1, R), z);
+        addSprite(tex, x, groundY(x, z) - h * 0.08, z, h, { sway: 0.04, mul: 1.4, add: 0.07, dark: 0.92, flip: R() < 0.5 });
+      }
+    }
+    // dark foreground mounds in front of the path
+    for (let x = X0; x < X1; x += rr(1.6, 3.6, R)) {
+      const z = rr(2.5, 4.6, R);
+      if (LEVEL.wayposts.some(w => Math.abs(w - x) < 2.5)) continue;
+      const tex = pick(S.bushes);
+      const h = px(rr(36, 78, R), z);
+      addSprite(tex, x, groundY(x, z) - h * 0.14, z, h, { sway: 0.05, mul: 1.0, add: 0.05, dark: 0.85, flip: R() < 0.5 });
+    }
+  }
+  if (S.plants && S.plants.length) {
+    const fgPlants = S.plants.filter((t, i) => i !== 4);
+    for (let x = X0; x < X1; x += rr(2.2, 5.5, R)) {
+      const z = rr(3.2, 7.0, R);
+      const tex = pick(fgPlants.length ? fgPlants : S.plants);
+      addSprite(tex, x, groundY(x, z) - 0.12, z, px(rr(80, 150, R), z), { sway: 0.1, mul: 0.8, add: 0.04, dark: 0.85, flip: R() < 0.5 });
+    }
+    for (let x = X0; x < X1; x += rr(2.5, 6, R)) {
+      const z = rr(-8, -2.2, R);
+      if (nearStray(x, z)) continue;
+      const tex = pick(S.plants);
+      addSprite(tex, x, groundY(x, z) - 0.08, z, px(rr(50, 95, R), z), { sway: 0.08, mul: 1.5, add: 0.07, dark: 0.95, flip: R() < 0.5 });
+    }
+  }
+  // the video's framing: a rolling band of near-black leafy mounds and seedling silhouettes along the bottom edge
+  // (own seed so the rest of the forest layout stays unchanged)
+  const RF = mulberry(5150);
+  const mounds = [...(S.crowns || []), ...(S.bushes || []).slice(0, 1)];
+  const sprouts = (S.plants || []).filter((t, i) => i === 0 || i === 1 || i === 3);
+  if (mounds.length) for (let x = X0; x < X1; x += rr(1.0, 2.6, RF)) {
+    const z = rr(4.6, 6.6, RF);
+    if (LEVEL.wayposts.some(w => Math.abs(w - x) < 3.2)) continue;
+    const tex = mounds[Math.floor(RF() * mounds.length)];
+    const h = px(rr(90, 150, RF) + (z - 4.6) * 40, z);       // nearer mounds sit lower on screen, so they may be taller; tops stay around the path line
+    addSprite(tex, x, groundY(x, z) - h * 0.4, z, h, { sway: 0.02, mul: 0.6, add: 0.03, dark: 0.3, flip: RF() < 0.5 });
+  }
+  if (sprouts.length) for (let x = X0 + 3; x < X1; x += rr(3.2, 7.5, RF)) {
+    const z = rr(3.8, 6.0, RF);
+    const tex = sprouts[Math.floor(RF() * sprouts.length)];
+    addSprite(tex, x, groundY(x, z) - 0.15, z, px(rr(95, 175, RF), z), { sway: 0.07, mul: 0.6, add: 0.03, dark: 0.32, flip: RF() < 0.5 });
+  }
+}
+
+// ------------------------------------------------------------------ level data
+const LEVEL = {
+  strays: [
+    { x: 22, z: -3.4 }, { x: 41, z: -1.2 }, { x: 60, z: -7.4 }, { x: 84, z: -2.6 }, { x: 108, z: -8.0 },
+    { x: 129, z: -1.6 }, { x: 152, z: -7.6 }, { x: 177, z: -3.0 }, { x: 204, z: -8.2 }, { x: 228, z: -1.8 },
+    { x: 253, z: -7.8 }, { x: 281, z: -3.2 }, { x: 312, z: -8.0 }, { x: 338, z: -4.4 },
+  ],
+  wayposts: [96, 192, 300],
+};
+
+// ------------------------------------------------------------------ deer
+const DEER_VS = /* glsl */`
+uniform float uGait; uniform float uStride; uniform float uGraze; uniform float uLook; uniform float uTime; uniform float uBob;
+varying vec2 vUv; varying vec3 vN; varying vec3 vWp; varying float vY;
+const float V0 = -0.489; const float HH = 0.981; const float TAU = 6.2831853;
+vec3 rotX(vec3 p, vec3 piv, float a){ vec3 d = p - piv; float c = cos(a), s = sin(a); return piv + vec3(d.x, d.y * c - d.z * s, d.y * s + d.z * c); }
+vec3 rotXv(vec3 n, float a){ float c = cos(a), s = sin(a); return vec3(n.x, n.y * c - n.z * s, n.y * s + n.z * c); }
+void main(){
+  vUv = uv;
+  vec3 p0 = position; vec3 p = p0; vec3 n = normal;
+  float u = -p0.z;
+  float front = smoothstep(-0.07, 0.0, u);
+  float hind = 1.0 - smoothstep(-0.17, -0.11, u);
+  float left = 1.0 - smoothstep(-0.025, 0.025, p0.x);
+  float pF = TAU * (uGait + mix(0.60, 0.10, left));
+  float pH = TAU * (uGait + mix(0.0, 0.50, left));
+  // knees (rest pose)
+  float kneeF = V0 + 0.17 * HH, kneeH = V0 + 0.22 * HH;
+  float wkF = (1.0 - smoothstep(kneeF - 0.02, kneeF + 0.03, p0.y)) * front;
+  float wkH = (1.0 - smoothstep(kneeH - 0.02, kneeH + 0.03, p0.y)) * hind;
+  float liftF = max(0.0, cos(pF)) * uStride * 1.6;
+  float liftH = max(0.0, cos(pH)) * uStride * 1.2;
+  float zH = mix(0.30, 0.235, left);
+  p = rotX(p, vec3(0.0, kneeF, -0.085), -liftF * wkF); n = rotXv(n, -liftF * wkF);
+  p = rotX(p, vec3(0.0, kneeH, zH), liftH * wkH * 0.7); n = rotXv(n, liftH * wkH * 0.7);
+  // upper legs
+  float shY = V0 + 0.43 * HH, hipY = V0 + 0.48 * HH, belly = V0 + 0.30 * HH;
+  float wF = (1.0 - smoothstep(belly - 0.05, shY, p0.y)) * front;
+  float wH = (1.0 - smoothstep(belly - 0.05, hipY, p0.y)) * hind;
+  float aF = uStride * sin(pF), aH = uStride * sin(pH) * 0.9;
+  p = rotX(p, vec3(0.0, shY, -0.07), aF * wF); n = rotXv(n, aF * wF);
+  p = rotX(p, vec3(0.0, hipY, 0.25), aH * wH); n = rotXv(n, aH * wH);
+  // neck / head / antlers
+  float neck = smoothstep(V0 + 0.47 * HH, V0 + 0.60 * HH, p0.y) * smoothstep(0.0, 0.11, u);
+  float ant = smoothstep(V0 + 0.62 * HH, V0 + 0.70 * HH, p0.y);
+  float wHead = max(neck, ant);
+  float ah = -uGraze * 1.25 + uLook + 0.05 * sin(TAU * uGait * 2.0) * uStride * 2.0;
+  p = rotX(p, vec3(0.0, V0 + 0.50 * HH, -0.10), ah * wHead); n = rotXv(n, ah * wHead);
+  // body bob
+  p.y += uBob * (0.5 + 0.5 * sin(TAU * uGait * 2.0)) * uStride;
+  vY = (p0.y - V0) / HH;
+  vec4 wp = modelMatrix * vec4(p, 1.0);
+  vWp = wp.xyz;
+  vN = normalize(mat3(modelMatrix) * n);
+  gl_Position = projectionMatrix * viewMatrix * wp;
+}`;
+const DEER_FS = COMMON + /* glsl */`
+uniform sampler2D map; uniform float uGlow; uniform float uFade; uniform float uFlash;
+varying vec2 vUv; varying vec3 vN; varying vec3 vWp; varying float vY;
+float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float noise(vec2 p){ vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(hash(i), hash(i + vec2(1, 0)), f.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), f.x), f.y); }
+void main(){
+  if (uFade > 0.001) { float nn = noise(vUv * 38.0) * 0.7 + noise(vUv * 120.0) * 0.3; if (nn < uFade) discard; }
+  vec3 tex = texture2D(map, vUv).rgb;
+  vec3 V = normalize(uCam - vWp); vec3 N = normalize(vN);
+  float fres = pow(1.0 - abs(dot(N, V)), 2.2);
+  float up = clamp(N.y * 0.5 + 0.5, 0.0, 1.0);
+  vec3 base = mix(vec3(0.82, 0.88, 0.95), tex, 0.55);
+  vec3 glowC = base * (0.92 + 0.12 * up) * (1.0 - 0.3 * fres) + vec3(0.5, 0.72, 0.95) * fres * 0.32;
+  glowC *= 1.1 + 0.05 * sin(uTime * 1.7 + vWp.x);
+  vec3 dimC = mono(base) * (0.42 + 0.18 * up) + vec3(0.55, 0.62, 0.66) * fres * 0.55;
+  vec3 c = mix(dimC, glowC, uGlow);
+  float L = lampFall(vWp) * uLampI;
+  c += uLampC * L * 0.35 * (1.0 - uGlow * 0.5);
+  c += vec3(0.5, 0.8, 0.95) * uFlash * 0.55;
+  float f = fogAmt(vWp) * (1.0 - 0.75 * uGlow);
+  c = mix(c, fogColor(vWp.y), f);
+  gl_FragColor = vec4(c, 1.0);
+}`;
+let deerGeo = null, deerMap = null;
+const TMP = new THREE.Vector3();
+
+class Deer {
+  constructor(x, z, stray) {
+    this.mat = new THREE.ShaderMaterial({
+      uniforms: { ...U, map: { value: deerMap }, uGait: { value: 0 }, uStride: { value: 0 }, uGraze: { value: 0 }, uLook: { value: 0 },
+        uGlow: { value: stray ? 0 : 1 }, uFade: { value: 0 }, uFlash: { value: 0 }, uBob: { value: 0.012 } },
+      vertexShader: DEER_VS, fragmentShader: DEER_FS,
+    });
+    this.mesh = new THREE.Mesh(deerGeo, this.mat);
+    const s = DEER_H / 0.981 * rr(0.9, 1.06);
+    this.mesh.scale.setScalar(s);
+    this.mesh.position.y = 0.489 * s;
+    this.mesh.rotation.y = -Math.PI / 2;
+    this.root = new THREE.Group();
+    this.root.add(this.mesh);
+    scene.add(this.root);
+    this.x = x; this.z = z; this.vx = 0; this.vz = 0; this.yaw = stray ? (R0() < 0.5 ? 0 : Math.PI) : 0;
+    this.gait = R0(); this.stride = 0; this.graze = stray ? 1 : 0; this.grazeT = rr(2, 6); this.look = 0; this.lookT = rr(1, 4);
+    this.state = stray ? 'stray' : 'herd';
+    this.bond = stray ? 0 : 1; this.awake = 0; this.glow = stray ? 0 : 1; this.fade = 0; this.spook = 0; this.flash = 0;
+    this.seed = R0() * 100; this.slotJx = rr(-0.35, 0.35); this.slotJz = rr(-0.3, 0.3);
+    this.everHerd = !stray; this.lostAt = 0; this.homeX = 0;
+    this.update(0);
+  }
+  get inHerd() { return this.state === 'herd'; }
+  update(dt) {
+    const sp = Math.hypot(this.vx, this.vz);
+    this.stride = damp(this.stride, clamp(sp / 3.2, 0, 1) * 0.5, 6, dt);
+    this.gait += dt * (0.25 + sp / 1.55) * (sp > 0.05 ? 1 : 0.0);
+    if (sp > 0.25) {
+      const target = Math.atan2(-this.vz, this.vx);
+      this.yaw += angDiff(this.yaw, target) * (1 - Math.exp(-6 * dt));
+    }
+    // idle behaviours
+    if (sp < 0.3) {
+      this.grazeT -= dt;
+      if (this.grazeT < 0) { this.grazeTarget = this.grazeTarget ? 0 : 1; this.grazeT = this.grazeTarget ? rr(3, 7) : rr(2, 5); }
+    } else this.grazeTarget = 0;
+    if (this.state === 'stray') this.grazeTarget = this.alerted ? 0 : (this.grazeT > 2.2 ? 1 : 0);
+    this.graze = damp(this.graze, this.grazeTarget || 0, 2.5, dt);
+    this.lookT -= dt; if (this.lookT < 0) { this.lookT = rr(1.5, 4.5); this.lookTarget = rr(-0.12, 0.25); }
+    this.look = damp(this.look, this.lookTarget || 0, 3, dt);
+    const y = groundY(this.x, this.z);
+    this.root.position.set(this.x, y, this.z);
+    this.root.rotation.y = this.yaw;
+    const u = this.mat.uniforms;
+    u.uGait.value = this.gait; u.uStride.value = this.stride; u.uGraze.value = this.graze; u.uLook.value = this.look;
+    u.uGlow.value = this.glow; u.uFade.value = this.fade; u.uFlash.value = this.flash;
+    this.flash = Math.max(0, this.flash - dt * 1.6);
+  }
+  dispose() { scene.remove(this.root); this.mat.dispose(); }
+}
+
+// ------------------------------------------------------------------ shepherd + lantern
+const SHEP_VS = /* glsl */`
+uniform float uWalk; uniform float uSpeed; uniform float uTime; uniform float uTurn;
+varying vec2 vUv; varying vec3 vN; varying vec3 vWp; varying float vY;
+const float TAU = 6.2831853;
+void main(){
+  vUv = uv;
+  vec3 p = position; float u = -p.z; float y = p.y;
+  float low = smoothstep(-0.05, -0.49, y);
+  float low2 = low * low;
+  // trailing train + flutter
+  p.z += low2 * (0.05 + 0.13 * uSpeed) * (0.75 + 0.25 * sin(uTime * 2.6 + p.x * 9.0 + y * 6.0)) * smoothstep(0.25, -0.2, u);
+  p.x += low * 0.016 * sin(uTime * 3.7 + y * 13.0 + p.z * 8.0) * (0.35 + uSpeed);
+  p.y += low * 0.008 * sin(uTime * 3.1 + p.z * 11.0 + p.x * 5.0) * (0.3 + uSpeed);
+  // stepping bulge at the front hem
+  float frontLow = smoothstep(0.02, 0.17, u) * smoothstep(-0.12, -0.46, y);
+  p.z -= frontLow * 0.045 * uSpeed * sin(TAU * uWalk);
+  p.x += frontLow * 0.02 * uSpeed * cos(TAU * uWalk);
+  // forward lean + bob
+  float lean = 0.07 * uSpeed;
+  p.z -= (y + 0.49) * lean;
+  p.y += 0.014 * uSpeed * abs(sin(TAU * uWalk));
+  vY = y;
+  vec4 wp = modelMatrix * vec4(p, 1.0);
+  vWp = wp.xyz;
+  vN = normalize(mat3(modelMatrix) * normal);
+  gl_Position = projectionMatrix * viewMatrix * wp;
+}`;
+const SHEP_FS = COMMON + /* glsl */`
+uniform sampler2D map; varying vec2 vUv; varying vec3 vN; varying vec3 vWp; varying float vY;
+void main(){
+  vec3 tex = texture2D(map, vUv).rgb;
+  vec3 N = normalize(vN);
+  vec3 Ld = normalize(uLamp.xyz - vWp);
+  float lam = clamp(dot(N, Ld) * 0.6 + 0.4, 0.0, 1.0);
+  float sky = 0.55 + 0.45 * clamp(N.y, 0.0, 1.0);
+  vec3 V = normalize(uCam - vWp);
+  float rim = pow(1.0 - abs(dot(N, V)), 3.0);
+  vec3 c = tex * (0.55 * sky);
+  c = world(c, vWp, 0.0, 0.0);
+  float L = lampFall(vWp) * uLampI;
+  c += uLampC * L * lam * 0.55 * (0.4 + tex);
+  c += fogColor(vWp.y) * rim * 0.12;
+  c = fogIt(c, vWp);
+  gl_FragColor = vec4(c, 1.0);
+}`;
+const LANT_FS = COMMON + /* glsl */`
+uniform sampler2D map; uniform float uBright; varying vec2 vUv; varying vec3 vN; varying vec3 vWp;
+void main(){
+  vec3 tex = texture2D(map, vUv).rgb;
+  float lum = dot(tex, vec3(0.2126, 0.7152, 0.0722));
+  float glass = smoothstep(0.18, 0.45, tex.g - tex.r * 0.6);
+  vec3 N = normalize(vN);
+  vec3 c = tex * (0.5 + 0.3 * clamp(N.y, 0.0, 1.0));
+  c = world(c, vWp, 0.0, 0.0);
+  c += uLampC * glass * (1.6 + 2.6 * uBright) + vec3(0.8, 1.0, 1.0) * smoothstep(0.65, 0.95, lum) * 2.5 * uBright;
+  gl_FragColor = vec4(c, 1.0);
+}`;
+const HALO_FS = /* glsl */`
+uniform vec3 uColor; uniform float uI; varying vec2 vUv;
+void main(){ vec2 d = vUv - 0.5; float r = length(d) * 2.0; float g = exp(-r * r * 5.0) * 0.55 + exp(-r * 14.0) * 0.9; gl_FragColor = vec4(uColor * g * uI, 1.0); }`;
+const SIMPLE_VS = `varying vec2 vUv; varying vec3 vWp; varying vec3 vN; void main(){ vUv = uv; vN = normalize(mat3(modelMatrix) * normal); vec4 wp = modelMatrix * vec4(position,1.0); vWp = wp.xyz; gl_Position = projectionMatrix * viewMatrix * wp; }`;
+
+const shep = { x: START_X, z: 0, vx: 0, vz: 0, face: 1, yaw: 0, walk: 0, speed: 0, root: null, mat: null, hand: null,
+  lantern: null, lanternMat: null, swing: 0, swingV: 0, swingZ: 0, swingZV: 0, lift: 0, halo: null, haloMat: null };
+
+function buildShepherd() {
+  const sm = A.shepGLB.scene.getObjectByProperty('isMesh', true);
+  const map = sm.material.map;
+  shep.mat = new THREE.ShaderMaterial({ uniforms: { ...U, map: { value: map }, uWalk: { value: 0 }, uSpeed: { value: 0 }, uTurn: { value: 0 } },
+    vertexShader: SHEP_VS, fragmentShader: SHEP_FS });
+  const mesh = new THREE.Mesh(sm.geometry, shep.mat);
+  const s = SHEP_H / 0.979;
+  mesh.scale.setScalar(s);
+  mesh.position.y = 0.489 * s;
+  shep.body = new THREE.Group();
+  shep.body.rotation.y = -Math.PI / 2;
+  shep.body.add(mesh);
+  shep.root = new THREE.Group();
+  shep.root.add(shep.body);
+  scene.add(shep.root);
+  // hand anchor (fist in glTF space: x -0.094, y 0.087, z -0.352)
+  shep.hand = new THREE.Object3D();
+  shep.hand.position.set(-0.094 * s, (0.087 + 0.489) * s, -0.352 * s);
+  shep.body.add(shep.hand);
+  shep.pend = new THREE.Group();
+  shep.hand.add(shep.pend);
+  if (A.lanternGLB) {
+    const lm = A.lanternGLB.scene.getObjectByProperty('isMesh', true);
+    shep.lanternMat = new THREE.ShaderMaterial({ uniforms: { ...U, map: { value: lm.material.map }, uBright: { value: 1 } },
+      vertexShader: SIMPLE_VS, fragmentShader: LANT_FS });
+    const l = new THREE.Mesh(lm.geometry, shep.lanternMat);
+    lm.geometry.computeBoundingBox();
+    const bb = lm.geometry.boundingBox; const lh = bb.max.y - bb.min.y;
+    const ls = 0.36 / lh;
+    l.scale.setScalar(ls);
+    l.position.y = -bb.max.y * ls;      // ring at the pivot
+    shep.pend.add(l);
+    shep.lantern = l; shep.lanternH = 0.36;
+  }
+  shep.glass = new THREE.Object3D(); shep.glass.position.y = -0.2; shep.pend.add(shep.glass);
+  shep.haloMat = new THREE.ShaderMaterial({ uniforms: { uColor: { value: new THREE.Color('#86dcff') }, uI: { value: 1 } },
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
+    fragmentShader: HALO_FS, transparent: true, depthWrite: false, depthTest: true, blending: THREE.AdditiveBlending });
+  shep.halo = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), shep.haloMat);
+  shep.halo.renderOrder = 5000;
+  scene.add(shep.halo);
+}
+
+// ------------------------------------------------------------------ wayposts
+const WAY_FS = COMMON + /* glsl */`
+uniform sampler2D map; uniform float uLit; varying vec2 vUv; varying vec3 vN; varying vec3 vWp;
+void main(){
+  vec3 tex = texture2D(map, vUv).rgb;
+  vec3 N = normalize(vN);
+  vec3 c = tex * (0.5 + 0.35 * clamp(N.y, 0.0, 1.0));
+  c = world(c, vWp, 1.6, 0.05);
+  c = fogIt(c, vWp);
+  gl_FragColor = vec4(c, 1.0);
+}`;
+function buildWayposts() {
+  for (const x of LEVEL.wayposts) {
+    const z = -2.4;
+    const g = new THREE.Group();
+    let topY = 1.6;
+    if (A.wayGLB) {
+      const wm = A.wayGLB.scene.getObjectByProperty('isMesh', true);
+      const mat = new THREE.ShaderMaterial({ uniforms: { ...U, map: { value: wm.material.map }, uLit: { value: 0 } }, vertexShader: SIMPLE_VS, fragmentShader: WAY_FS });
+      const m = new THREE.Mesh(wm.geometry, mat);
+      wm.geometry.computeBoundingBox();
+      const bb = wm.geometry.boundingBox; const h = bb.max.y - bb.min.y;
+      const s = 2.3 / h;
+      m.scale.setScalar(s); m.position.y = -bb.min.y * s - 0.05;
+      m.rotation.y = -Math.PI / 2 + 0.5;
+      g.add(m); topY = A.wayFlameY != null ? A.wayFlameY * 2.3 : 1.75;
+    }
+    const halo = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.ShaderMaterial({
+      uniforms: { uColor: { value: new THREE.Color('#86dcff') }, uI: { value: 0 } },
+      vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
+      fragmentShader: HALO_FS, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
+    halo.position.set(0, topY, 0.32); halo.scale.setScalar(3.0); halo.renderOrder = Math.round((-2.4 + 0.32) * 10) + 1000 + 4;
+    g.add(halo);
+    g.position.set(x, groundY(x, z), z);
+    scene.add(g);
+    G.wayposts.push({ x, z, lit: false, halo, g, flameY: topY, t: 0 });
+  }
+}
+
+// ------------------------------------------------------------------ particles (motes + bursts + dust)
+const PTS_VS = /* glsl */`
+attribute float aSize; attribute vec3 aColor; attribute float aAlpha; uniform float uPx;
+varying vec3 vC; varying float vA;
+void main(){ vC = aColor; vA = aAlpha; vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_PointSize = aSize * uPx / max(-mv.z, 0.1); gl_Position = projectionMatrix * mv; }`;
+const PTS_FS = /* glsl */`
+varying vec3 vC; varying float vA;
+void main(){ vec2 d = gl_PointCoord - 0.5; float r = length(d) * 2.0; float g = exp(-r * r * 4.5) * 0.8 + exp(-r * 12.0) * 0.6; if (g * vA < 0.003) discard; gl_FragColor = vec4(vC * g * vA, 1.0); }`;
+const PTS_FS_SMOKE = /* glsl */`
+varying vec3 vC; varying float vA;
+void main(){ vec2 d = gl_PointCoord - 0.5; float r = length(d) * 2.0; float g = smoothstep(1.0, 0.0, r); g *= g; if (g * vA < 0.003) discard; gl_FragColor = vec4(vC, g * vA * 0.8); }`;
+class Points {
+  constructor(n, smoke = false) {
+    this.n = n; this.pos = new Float32Array(n * 3); this.col = new Float32Array(n * 3); this.size = new Float32Array(n); this.alpha = new Float32Array(n);
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(this.pos, 3).setUsage(THREE.DynamicDrawUsage));
+    g.setAttribute('aColor', new THREE.BufferAttribute(this.col, 3).setUsage(THREE.DynamicDrawUsage));
+    g.setAttribute('aSize', new THREE.BufferAttribute(this.size, 1).setUsage(THREE.DynamicDrawUsage));
+    g.setAttribute('aAlpha', new THREE.BufferAttribute(this.alpha, 1).setUsage(THREE.DynamicDrawUsage));
+    this.geo = g;
+    this.mat = new THREE.ShaderMaterial({ uniforms: { uPx: { value: innerHeight * 0.5 } }, vertexShader: PTS_VS, fragmentShader: smoke ? PTS_FS_SMOKE : PTS_FS,
+      transparent: true, depthWrite: false, blending: smoke ? THREE.NormalBlending : THREE.AdditiveBlending });
+    this.obj = new THREE.Points(g, this.mat); this.obj.frustumCulled = false; this.obj.renderOrder = 1000 + 24;
+    scene.add(this.obj);
+  }
+  flush(count) { this.geo.setDrawRange(0, count); for (const k of ['position', 'aColor', 'aSize', 'aAlpha']) this.geo.attributes[k].needsUpdate = true; }
+}
+const burst = { list: [] };
+function emit(x, y, z, n, { speed = 2, up = 1, life = 1.4, size = 0.12, color = [0.8, 1.6, 1.9], spread = 1, grav = -0.4, drag = 1.5 } = {}) {
+  for (let i = 0; i < n; i++) {
+    const a = Math.random() * Math.PI * 2, b = Math.random() * 2 - 1, s = speed * (0.3 + Math.random() * 0.7);
+    burst.list.push({ x: x + (Math.random() - 0.5) * 0.3 * spread, y: y + (Math.random() - 0.5) * 0.3 * spread, z: z + (Math.random() - 0.5) * 0.3 * spread,
+      vx: Math.cos(a) * Math.sqrt(1 - b * b) * s, vy: b * s * 0.6 + up, vz: Math.sin(a) * Math.sqrt(1 - b * b) * s,
+      life, max: life, size: size * (0.6 + Math.random() * 0.8), c: color, grav, drag });
+  }
+  if (burst.list.length > 900) burst.list.splice(0, burst.list.length - 900);
+}
+
+function buildMotes() {
+  const R = mulberry(99);
+  for (let x = 8; x < LEVEL_END - 10; x += rr(9, 17, R)) {
+    const deep = x > 190 && x < 290;
+    const cz = rr(-5.0, 1.4, R), n = Math.floor(rr(3, deep ? 7 : 6, R));
+    for (let i = 0; i < n; i++) {
+      const mx = x + rr(-1.6, 1.6, R), mz = clamp(cz + rr(-0.9, 0.9, R), -5.8, 1.8);
+      G.motes.push({ hx: mx, hy: groundY(mx, mz) + rr(0.8, 2.2, R), hz: mz, x: mx, y: 0, z: mz, ph: rr(0, 6.28, R), st: 0, t: 0 });
+    }
+  }
+}
+
+// ------------------------------------------------------------------ shades
+const SHADE_FS = COMMON + /* glsl */`
+uniform sampler2D map; uniform float uA; uniform float uSeed; varying vec2 vUv; varying vec3 vWp;
+void main(){
+  vec2 uv = vUv;
+  uv.x += sin(uv.y * 9.0 + uTime * 3.0 + uSeed) * 0.012 + sin(uv.y * 23.0 - uTime * 5.0) * 0.006;
+  uv.y += sin(uv.x * 7.0 + uTime * 2.2 + uSeed) * 0.01;
+  vec4 t = texture2D(map, uv);
+  float a = t.a * uA * (0.85 + 0.15 * sin(uTime * 7.0 + uSeed * 3.0));
+  if (a < 0.01) discard;
+  float lum = dot(t.rgb, vec3(0.2126, 0.7152, 0.0722));
+  vec3 c = mix(vec3(0.018, 0.024, 0.03), t.rgb * 0.5, 0.35);
+  c += vec3(0.75, 0.95, 1.0) * smoothstep(0.55, 0.85, lum) * 2.2;
+  c = mix(c, fogColor(vWp.y), fogAmt(vWp) * 0.6);
+  gl_FragColor = vec4(c, a);
+}`;
+function spawnShade() {
+  if (!A.shade) return;
+  const side = R0() < 0.5 ? -1 : 1;
+  const halfW = (CAM_Z + 6) * Math.tan(THREE.MathUtils.degToRad(CAM_FOV / 2)) * camera.aspect;
+  let x = shep.x + side * (halfW + 3), z = rr(-6, 1.5);
+  if (R0() < 0.7) {                        // creep out of the deep fog behind the herd's tail
+    let tail = shep.x; for (const d of G.deer) if (d.inHerd) tail = shep.face > 0 ? Math.min(tail, d.x) : Math.max(tail, d.x);
+    x = tail - shep.face * rr(2.5, 6); z = rr(-9, -6.5);
+  }
+  sfx('shade', 0.28, 0.72);
+  const mat = new THREE.ShaderMaterial({ uniforms: { ...U, map: { value: A.shade }, uA: { value: 0 }, uSeed: { value: R0() * 10 } },
+    vertexShader: SIMPLE_VS, fragmentShader: SHADE_FS, transparent: true, depthWrite: false });
+  const m = new THREE.Mesh(planeGeo, mat);
+  const h = 1.95, w = h * A.shade.image.width / A.shade.image.height;
+  m.scale.set(w, h, 1);
+  scene.add(m);
+  G.shades.push({ x, z, vx: 0, vz: 0, m, mat, w, h, a: 0, life: 0, dying: false, dir: x < shep.x ? 1 : -1, target: null, seed: R0() * 10 });
+}
+
+// ------------------------------------------------------------------ audio
+const AU = { ctx: null, buf: {}, master: null, music: null, amb: null, ready: false };
+const AUDIO_FILES = { music: 'assets/audio/music.mp3', amb: 'assets/audio/ambience.mp3', chime: 'assets/audio/chime.mp3',
+  flare: 'assets/audio/flare.mp3', shade: 'assets/audio/shade.mp3', way: 'assets/audio/waypost.mp3', mote: 'assets/audio/mote.mp3',
+  finale: 'assets/audio/finale.mp3', lost: 'assets/audio/lost.mp3' };
+async function initAudio() {
+  if (AU.ctx) return;
+  try {
+    AU.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    AU.master = AU.ctx.createGain(); AU.master.gain.value = G.muted ? 0 : 1; AU.master.connect(AU.ctx.destination);
+    await Promise.all(Object.entries(AUDIO_FILES).map(async ([k, url]) => {
+      try { const r = await fetch(url); if (!r.ok) return; const ab = await r.arrayBuffer(); AU.buf[k] = await AU.ctx.decodeAudioData(ab); } catch (e) {}
+    }));
+    AU.ready = true;
+    AU.music = loopSound('music', 0.0); AU.amb = loopSound('amb', 0.0);
+    fadeGain(AU.music, 0.5, 5); fadeGain(AU.amb, 0.9, 3);
+  } catch (e) { console.warn('audio unavailable', e); }
+}
+function loopSound(k, vol) {
+  if (!AU.buf[k]) return null;
+  const s = AU.ctx.createBufferSource(); s.buffer = AU.buf[k]; s.loop = true;
+  const g = AU.ctx.createGain(); g.gain.value = vol; s.connect(g); g.connect(AU.master); s.start();
+  return g;
+}
+function fadeGain(g, v, sec) { if (!g) return; const t = AU.ctx.currentTime; g.gain.cancelScheduledValues(t); g.gain.setValueAtTime(g.gain.value, t); g.gain.linearRampToValueAtTime(v, t + sec); }
+function sfx(k, vol = 1, rate = 1, x = null) {
+  if (!AU.ready || !AU.buf[k]) return;
+  const s = AU.ctx.createBufferSource(); s.buffer = AU.buf[k]; s.playbackRate.value = rate;
+  const g = AU.ctx.createGain(); g.gain.value = vol; s.connect(g);
+  if (x !== null && AU.ctx.createStereoPanner) {
+    const p = AU.ctx.createStereoPanner(); p.pan.value = clamp((x - camera.position.x) / 9, -0.85, 0.85);
+    g.connect(p); p.connect(AU.master);
+  } else g.connect(AU.master);
+  s.start();
+}
+
+// ------------------------------------------------------------------ HUD
+const elHerd = document.getElementById('herd'), elOil = document.querySelector('#oil b'), elOilW = document.getElementById('oilw'), elHud = document.getElementById('hud'),
+  elHint = document.getElementById('hint'), elTitle = document.getElementById('title'), elEnd = document.getElementById('end'),
+  elEndN = document.getElementById('endn');
+let dots = [];
+function buildHUD() {
+  elHerd.innerHTML = '';
+  dots = [];
+  for (let i = 0; i < G.herdTotal; i++) { const d = document.createElement('i'); elHerd.appendChild(d); dots.push(d); }
+}
+function updateHUD() {
+  const herd = G.deer.filter(d => d.inHerd).length;
+  const gone = G.deer.filter(d => d.state === 'gone').length;
+  dots.forEach((d, i) => { d.className = i < herd ? 'on' : (i >= G.herdTotal - gone ? 'gone' : ''); });
+  elOil.style.width = clamp(G.oil, 0, 100) + '%';
+  elOilW.classList.toggle('low', G.oil < 20);
+}
+
+// ------------------------------------------------------------------ game setup / reset
+function resetGame() {
+  for (const d of G.deer) d.dispose();
+  G.deer = [];
+  for (const s of G.shades) scene.remove(s.m);
+  G.shades = [];
+  burst.list = [];
+  shep.x = START_X; shep.z = 0; shep.vx = 0; shep.vz = 0; shep.face = 1; shep.yaw = 0; shep.swing = 0; shep.swingV = 0;
+  G.oil = 100; G.flare = 0; G.flareCd = 0; G.shadeTimer = 10; G.finaleT = 0; G.home = 0; G.gameTime = 0;
+  for (let i = 0; i < 3; i++) G.deer.push(new Deer(-2.2 - i * 1.4, -0.6 + (i % 2) * 1.0, false));
+  for (const s of LEVEL.strays) G.deer.push(new Deer(s.x, s.z, true));
+  G.herdTotal = G.deer.length;
+  for (const m of G.motes) { m.st = 0; m.t = 0; }
+  for (const w of G.wayposts) { w.lit = false; w.t = 0; }
+  G.revealPts = 0; for (const v of RP) v.set(0, 0, 0, 0);
+  U.uReveal.value = 0; U.uWarm.value = 0;
+  U.uFogA.value.copy(FOG_A0); U.uFogB.value.copy(FOG_B0); grade.uniforms.uFlash.value = 0;
+  cam.x = shep.x + 1.4; cam.lx = cam.x; cam.y = groundY(0, 0) + 2.05; cam.z = CAM_Z;
+  buildHUD();
+}
+
+// ------------------------------------------------------------------ input
+addEventListener('keydown', (e) => {
+  keys[e.code] = true;
+  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) e.preventDefault();
+  if (e.code === 'KeyM') { G.muted = !G.muted; if (AU.master) AU.master.gain.value = G.muted ? 0 : 1; }
+  if ((e.code === 'Enter' || e.code === 'Space' || e.code === 'NumpadEnter') && (G.state === 'title' || G.state === 'end')) startGame();
+});
+addEventListener('keyup', (e) => { keys[e.code] = false; if (e.code === 'Space' || e.code === 'KeyE') G.flareLock = false; });
+addEventListener('pointerdown', () => { if (G.state === 'title' || G.state === 'end') startGame(); });
+addEventListener('blur', () => { for (const k in keys) keys[k] = false; if (window.__fogDebugBlur) console.log('blur'); });
+function readInput() {
+  let ix = 0, iz = 0, fl = false;
+  if (keys.ArrowLeft || keys.KeyA) ix -= 1;
+  if (keys.ArrowRight || keys.KeyD) ix += 1;
+  if (keys.ArrowUp || keys.KeyW) iz -= 1;
+  if (keys.ArrowDown || keys.KeyS) iz += 1;
+  if ((keys.Space || keys.KeyE) && !G.flareLock) fl = true;
+  const pads = navigator.getGamepads ? navigator.getGamepads() : [];
+  for (const p of pads) {
+    if (!p) continue;
+    if (Math.abs(p.axes[0]) > 0.2) ix += p.axes[0];
+    if (Math.abs(p.axes[1]) > 0.2) iz += p.axes[1];
+    if (p.buttons[0] && p.buttons[0].pressed) fl = true;
+    if (p.buttons[14] && p.buttons[14].pressed) ix -= 1;
+    if (p.buttons[15] && p.buttons[15].pressed) ix += 1;
+    if (p.buttons[9] && p.buttons[9].pressed && (G.state === 'title' || G.state === 'end')) startGame();
+  }
+  return { ix: clamp(ix, -1, 1), iz: clamp(iz, -1, 1), fl };
+}
+
+function startGame() {
+  if (G.state === 'end') resetGame();
+  initAudio();
+  G.state = 'play'; G.startT = G.t; G.hintT = 9; G.flareLock = !!(keys.Space || keys.KeyE);
+  elTitle.style.opacity = 0; elEnd.style.opacity = 0; elHud.style.opacity = 1;
+  elHint.style.opacity = 1;
+}
+
+// ------------------------------------------------------------------ simulation
+const cam = { x: -6, y: 2.6, z: CAM_Z, lx: 0, ly: 1.4, lz: 0, shake: 0 };
+
+function lanternWorld() { shep.glass.getWorldPosition(TMP); return TMP; }
+
+function step(dt) {
+  G.t += dt; U.uTime.value = G.t;
+  const playing = G.state === 'play';
+  if (playing) G.gameTime += dt;
+  const inp = playing ? readInput() : { ix: 0, iz: 0, fl: false };
+  if (G.state === 'title') { inp.ix = 0; }
+
+  // ---- shepherd
+  const maxV = 2.35;
+  let tvx = inp.ix * maxV, tvz = inp.iz * 1.7;
+  const ending = G.state === 'finale' || G.state === 'end';
+  if (ending) { const goal = LEVEL_END + 3; tvx = shep.x < goal ? 1.15 * smooth(0, 1.5, goal - shep.x) : 0; tvz = -shep.z * 0.6; }
+  shep.vx = damp(shep.vx, tvx, ending ? 2.5 : (inp.ix ? 5 : 7), dt);
+  shep.vz = damp(shep.vz, tvz, 6, dt);
+  shep.x = clamp(shep.x + shep.vx * dt, -12, LEVEL_END + 2);
+  shep.z = clamp(shep.z + shep.vz * dt, -6.2, 2.0);
+  if (Math.abs(shep.vx) > 0.15) shep.face = Math.sign(shep.vx);
+  const spd = Math.hypot(shep.vx, shep.vz);
+  shep.speed = damp(shep.speed, clamp(spd / maxV, 0, 1), 6, dt);
+  shep.walk += dt * spd / 1.25;
+  const targetYaw = shep.face > 0 ? 0 : Math.PI;
+  shep.yaw += angDiff(shep.yaw, targetYaw + (shep.vz * -0.18) * shep.face) * (1 - Math.exp(-7 * dt));
+  shep.root.position.set(shep.x, groundY(shep.x, shep.z), shep.z);
+  shep.root.rotation.y = shep.yaw;
+  shep.mat.uniforms.uWalk.value = shep.walk; shep.mat.uniforms.uSpeed.value = shep.speed;
+  // lantern pendulum (local, swing about hand)
+  const ax = (tvx - shep.vx) * 0.9;
+  shep.swingV += (-9.0 * Math.sin(shep.swing) - 2.2 * shep.swingV - ax * shep.face * 1.2 + Math.sin(shep.walk * Math.PI * 2) * 1.4 * shep.speed) * dt;
+  shep.swing += shep.swingV * dt;
+  shep.swingZV += (-9.0 * Math.sin(shep.swingZ) - 2.5 * shep.swingZV - (tvz - shep.vz) * 0.9) * dt;
+  shep.swingZ += shep.swingZV * dt;
+  G.flare = Math.max(0, G.flare - dt); G.flareCd = Math.max(0, G.flareCd - dt);
+  const fEnv = G.flare > 0 ? Math.sin(Math.PI * clamp(1 - G.flare / 1.7, 0, 1)) : 0;
+  shep.lift = damp(shep.lift, fEnv > 0 ? 1 : 0, 8, dt);
+  shep.pend.position.y = shep.lift * 0.22;
+  shep.pend.rotation.set(shep.swingZ * 0.6, 0, shep.swing);   // body space: z axis swings forward/back
+
+  // ---- oil + light radius
+  const herd = G.deer.filter(d => d.inHerd);
+  if (playing) G.oil = Math.max(0, G.oil - dt * 0.42);
+  const baseR = lerp(1.8, 4.1, clamp(G.oil / 100, 0, 1)) + Math.min(herd.length, 14) * 0.16;
+  G.lightR = damp(G.lightR, baseR * (1 + 1.35 * fEnv) * (G.state === 'finale' ? 1.6 : 1), 4, dt);
+  const low = 1 - smooth(8, 22, G.oil);
+  const flick = 1 + (0.035 + 0.12 * low) * Math.sin(G.t * (13.1 + 9 * low)) + (0.025 + 0.08 * low) * Math.sin(G.t * 7.3 + 1.2);
+  const lp = lanternWorld();
+  U.uLamp.value.set(lp.x, lp.y, lp.z, G.lightR * flick);
+  U.uLampI.value = lerp(0.55, 1.0, clamp(G.oil / 40, 0, 1)) + fEnv * 0.5;
+  if (shep.lanternMat) shep.lanternMat.uniforms.uBright.value = 0.5 + 0.5 * clamp(G.oil / 50, 0, 1) + fEnv;
+  shep.halo.position.copy(lp); shep.halo.position.z += 0.05;
+  shep.halo.renderOrder = Math.round(lp.z * 10) + 1000 + 4;
+  shep.halo.scale.setScalar((1.1 + baseR * 0.32 + fEnv * 1.1) * flick);
+  shep.haloMat.uniforms.uI.value = (0.5 + 0.4 * clamp(G.oil / 40, 0, 1)) * (1 + fEnv * 0.45);
+  U.uFogDen.value = damp(U.uFogDen.value, fogDensityAt(shep.x) * (G.state === 'finale' ? 0.6 : 1), 1.0, dt);
+
+  // ---- flare
+  if (playing && inp.fl && G.flareCd <= 0 && G.oil >= 6) {
+    G.flare = 1.7; G.flareCd = 2.6; G.oil = Math.max(0, G.oil - 11);
+    sfx('flare', 0.8);
+    emit(lp.x, lp.y, lp.z, 46, { speed: 2.6, up: 1.2, life: 1.6, size: 0.14, color: [0.6, 1.5, 1.8] });
+    for (const s of G.shades) if (Math.hypot(s.x - shep.x, s.z - shep.z) < G.lightR * 2.6) s.dying = true;
+    for (const d of G.deer) {
+      const dd = Math.hypot(d.x - lp.x, d.z - lp.z);
+      if (d.inHerd && dd < baseR * 3.2) { d.bond = 1; d.spook = 0; d.flash = 0.6; }
+      if (d.state === 'stray' && dd < baseR * 2.3) d.awake = Math.max(d.awake, 0.95);
+    }
+  }
+
+  // ---- deer
+  const R = G.lightR;
+  const back = -shep.face;
+  let rank = 0;
+  // the glowing herd lights itself: a deer stays warm if it is in the lantern light
+  // or close to another deer that is (a chain of light through the herd)
+  const deepFog = fogDensityAt(shep.x) > 0.03;
+  const chain = deepFog ? 2.1 : 2.7;
+  for (const d of G.deer) d.lit = d.inHerd && d.spook <= 0 && Math.hypot(d.x - lp.x, d.z - lp.z) < R * 1.02;
+  for (let pass = 0; pass < 3; pass++) for (const d of G.deer) {
+    if (!d.inHerd || d.lit || d.spook > 0) continue;
+    for (const o of G.deer) if (o.lit && Math.hypot(d.x - o.x, (d.z - o.z) * 1.3) < chain) { d.lit = true; break; }
+  }
+  for (const d of G.deer) {
+    const dl = Math.hypot(d.x - lp.x, d.z - lp.z);
+    if (d.state === 'herd') {
+      const inLight = d.lit;
+      const deepK = fogDensityAt(d.x) > 0.03 ? 1.5 : 1;
+      if (inLight) d.bond = Math.min(1, d.bond + dt * 0.55);
+      else if (playing) d.bond -= dt * 0.085 * deepK;
+      // slot
+      const col = Math.floor(rank / 3), row = rank % 3;
+      rank++;
+      const sx = shep.x + back * (1.7 + col * 1.75 + [0, 0.8, 0.45][row] + d.slotJx + 0.25 * Math.sin(G.t * 0.3 + d.seed));
+      const sz = clamp(shep.z + [-0.2, 0.9, -1.3][row] + d.slotJz, -6.4, 2.2);
+      let dvx = (sx - d.x) * 1.5, dvz = (sz - d.z) * 1.5;
+      if (!inLight && dl > R * 2.8) { dvx *= 0.25; dvz *= 0.25; }   // lost sight: wander slowly
+      if (d.spook > 0) {
+        d.spook -= dt;
+        dvx = d.fleeX * 3.6; dvz = d.fleeZ * 3.6;
+      }
+      // separation
+      for (const o of G.deer) {
+        if (o === d || o.state === 'gone') continue;
+        const ex = d.x - o.x, ez = d.z - o.z, e2 = ex * ex + ez * ez;
+        const ex2 = ex * 0.75, sep = ex2 * ex2 + ez * ez * 1.6;
+        if (sep < 1.2 && e2 > 1e-4) { const k = (1.2 - sep) * 2.4; dvx += ex * k; dvz += ez * k * 1.2; }
+      }
+      const ex = d.x - shep.x, ez = d.z - shep.z, e2 = ex * ex + ez * ez;
+      if (e2 < 1.1) { const k = (1.1 - e2) * 3; dvx += ex * k; dvz += ez * k; }
+      const m = Math.hypot(dvx, dvz), vmax = d.spook > 0 ? 4.2 : 3.1;
+      if (m > vmax) { dvx *= vmax / m; dvz *= vmax / m; }
+      if (m < 0.18) { dvx = 0; dvz = 0; }
+      d.vx = damp(d.vx, dvx, 3.2, dt); d.vz = damp(d.vz, dvz, 3.2, dt);
+      d.glow = damp(d.glow, 0.25 + 0.75 * clamp(d.bond * 1.6, 0, 1), 4, dt);
+      if (d.bond <= 0) {
+        d.state = 'stray'; d.awake = 0; d.alerted = false; d.lostAt = shep.x; d.vx *= 0.3; d.vz *= 0.3;
+        sfx('lost', 0.5, 1, d.x);
+        emit(d.x, groundY(d.x, d.z) + 1.0, d.z, 18, { speed: 0.8, up: 0.5, life: 1.8, color: [0.7, 0.8, 0.85], size: 0.1 });
+      }
+    } else if (d.state === 'stray') {
+      d.vx = damp(d.vx, 0, 2, dt); d.vz = damp(d.vz, 0, 2, dt);
+      const near = dl < R * 1.0;
+      d.alerted = dl < R * 2.0;
+      if (near && playing) d.awake += dt * 1.25; else d.awake = Math.max(0, d.awake - dt * 0.3);
+      d.glow = damp(d.glow, clamp(d.awake, 0, 1) * 0.7 + 0.04 + (d.alerted ? 0.06 : 0) + 0.03 * Math.sin(G.t * 2 + d.seed), 3, dt);
+      d.sparkT = (d.sparkT || rr(0, 2)) - dt;
+      if (d.sparkT <= 0) { d.sparkT = rr(1.6, 3.2); if (Math.abs(d.x - shep.x) < 16) emit(d.x + rr(-0.5, 0.5), groundY(d.x, d.z) + rr(1.2, 1.9), d.z, 2, { speed: 0.15, up: 0.35, life: 2.4, size: 0.1, color: [0.9, 1.1, 1.2], grav: 0.05, drag: 0.6 }); }
+      if (d.alerted && Math.abs(shep.x - d.x) > 0.5) {
+        const tgt = Math.atan2(-(shep.z - d.z), shep.x - d.x);
+        d.yaw += angDiff(d.yaw, tgt) * (1 - Math.exp(-1.5 * dt));
+      }
+      if (d.awake >= 1) {
+        d.state = 'herd'; d.bond = 1; d.flash = 1; d.everHerd = true;
+        sfx('chime', 0.75, 0.94 + R0() * 0.12, d.x);
+        const y = groundY(d.x, d.z) + 1.1;
+        emit(d.x, y, d.z, 60, { speed: 2.2, up: 0.8, life: 1.8, size: 0.13, color: [1.2, 1.5, 1.7] });
+        addReveal(d.x, groundY(d.x, d.z) + 0.5, d.z, 4.2);   // a little permanent bloom of colour where each deer awoke
+      }
+      if (d.everHerd && playing && Math.abs(shep.x - d.x) > 34) {
+        d.state = 'gone'; d.fade = 0.001;
+      }
+    } else if (d.state === 'gone') {
+      d.fade = Math.min(1.01, d.fade + dt * 0.5);
+      d.vx = damp(d.vx, 0, 2, dt);
+      if (d.fade >= 1 && d.root.visible) { d.root.visible = false; }
+    } else if (d.state === 'home') {
+      d.vx = damp(d.vx, 3.0, 1.5, dt); d.vz = damp(d.vz, (d.homeZ - d.z) * 0.8, 2, dt);
+      d.glow = damp(d.glow, 1.2, 1, dt);
+      if (d.x > LEVEL_END + 16) d.fade = Math.min(1.01, d.fade + dt * 0.35);
+      if (d.fade >= 1) d.root.visible = false;
+    }
+    if (d.state !== 'gone' || d.fade < 1) {
+      d.x += d.vx * dt; d.z = clamp(d.z + d.vz * dt, -9, 2.4);
+      d.update(dt);
+    }
+  }
+
+  // ---- motes
+  for (const m of G.motes) {
+    if (m.st === 2) continue;
+    if (m.st === 0) {
+      m.x = m.hx + Math.sin(G.t * 0.7 + m.ph) * 0.35; m.y = m.hy + Math.sin(G.t * 1.1 + m.ph * 2) * 0.25; m.z = m.hz + Math.cos(G.t * 0.6 + m.ph) * 0.25;
+      if (playing && Math.hypot(m.x - lp.x, m.z - lp.z) < 1.35 + G.lightR * 0.12 && Math.abs(m.y - lp.y) < 2.2) { m.st = 1; m.t = 0; }
+    } else if (m.st === 1) {
+      m.t += dt;
+      const k = 1 - Math.exp(-dt * (4 + m.t * 10));
+      m.x = lerp(m.x, lp.x, k); m.y = lerp(m.y, lp.y, k); m.z = lerp(m.z, lp.z, k);
+      if (Math.hypot(m.x - lp.x, m.y - lp.y, m.z - lp.z) < 0.12) {
+        m.st = 2; G.oil = Math.min(100, G.oil + 7.5); sfx('mote', 0.9, 0.9 + R0() * 0.3);
+        emit(lp.x, lp.y, lp.z, 10, { speed: 1.1, up: 0.6, life: 0.8, size: 0.08, color: [1.6, 1.5, 0.9] });
+      }
+    }
+  }
+
+  // ---- wayposts
+  for (const w of G.wayposts) {
+    if (!w.lit && playing && Math.hypot(w.x - lp.x, w.z - lp.z) < 2.8) {
+      w.lit = true; G.oil = 100; sfx('way', 0.8, 1, w.x);
+      emit(w.x, groundY(w.x, w.z) + w.flameY, w.z, 70, { speed: 2.4, up: 1.4, life: 2.0, size: 0.14, color: [0.6, 1.5, 1.8] });
+      addReveal(w.x, groundY(w.x, w.z) + 1, w.z, 8.5);
+    }
+    w.t += dt;
+    w.halo.material.uniforms.uI.value = damp(w.halo.material.uniforms.uI.value, w.lit ? 1.0 + 0.08 * Math.sin(G.t * 9 + w.x) : 0.0, 3, dt);
+    w.halo.lookAt(camera.position);
+  }
+
+  // ---- shades
+  if (playing && shep.x > 70 && herd.length > 0) {
+    G.shadeTimer -= dt;
+    const deep = fogDensityAt(shep.x) > 0.03;
+    if (G.shadeTimer <= 0 && G.shades.length < (deep ? 3 : 2)) { spawnShade(); G.shadeTimer = deep ? rr(4.5, 7.5) : rr(7, 12); }
+  }
+  for (let i = G.shades.length - 1; i >= 0; i--) {
+    const s = G.shades[i];
+    s.life += dt;
+    // target: herd deer furthest from the light
+    let best = null, bd = -1;
+    for (const d of G.deer) if (d.inHerd) { const q = Math.hypot(d.x - lp.x, d.z - lp.z); if (q > bd) { bd = q; best = d; } }
+    const dl = Math.hypot(s.x - lp.x, s.z - lp.z);
+    if (dl < R * 0.92 || G.state !== 'play') s.dying = true;
+    if (s.dying) {
+      s.a -= dt * 1.6;
+      s.vx = damp(s.vx, Math.sign(s.x - lp.x || 1) * 3.0, 3, dt);
+      if (!s.hissed) { s.hissed = true; sfx('shade', 0.5, 0.9 + R0() * 0.2, s.x); emit(s.x, groundY(s.x, s.z) + 0.8, s.z, 26, { speed: 1.2, up: 0.6, life: 1.4, size: 0.16, color: [0.04, 0.05, 0.06], grav: 0.2 }); }
+    } else {
+      s.a = Math.min(1, s.a + dt * 0.8);
+      if (best) {
+        const ex = best.x - s.x, ez = best.z - s.z, e = Math.hypot(ex, ez) || 1;
+        const v = 1.55 + 0.35 * Math.sin(s.life * 2.0 + s.seed);
+        s.vx = damp(s.vx, ex / e * v, 2, dt); s.vz = damp(s.vz, ez / e * v * 0.8, 2, dt);
+        if (e < 0.95) {
+          best.spook = 1.8; best.bond = Math.max(0.02, best.bond - 0.55);
+          const fx = best.x - s.x, fz = best.z - s.z, f = Math.hypot(fx, fz) || 1;
+          best.fleeX = fx / f; best.fleeZ = fz / f * 0.6;
+          sfx('shade', 0.7, 0.8); sfx('lost', 0.35, 1.2);
+          emit(best.x, groundY(best.x, best.z) + 1.1, best.z, 34, { speed: 1.6, up: 0.4, life: 1.6, size: 0.2, color: [0.03, 0.04, 0.05], grav: 0.3 });
+          s.dying = true; s.hissed = true;
+        }
+      } else s.dying = true;
+    }
+    s.x += s.vx * dt; s.z = clamp(s.z + s.vz * dt, -9.5, 2.4);
+    if (Math.abs(s.vx) > 0.2) s.dir = Math.sign(s.vx);
+    const y = groundY(s.x, s.z) - 0.1 + 0.08 * Math.sin(s.life * 3 + s.seed);
+    s.m.position.set(s.x, y, s.z);
+    s.m.scale.set(s.w * s.dir, s.h, 1);
+    s.m.renderOrder = Math.round(s.z * 10) + 1000 + 2;
+    s.mat.uniforms.uA.value = clamp(s.a, 0, 1);
+    if (s.dying && s.a <= 0) { scene.remove(s.m); s.mat.dispose(); G.shades.splice(i, 1); }
+  }
+
+  // ---- finale trigger
+  if (playing && shep.x >= LEVEL_END - 8) {
+    G.state = 'finale'; G.finaleT = 0;
+    elHint.style.opacity = 0;
+    G.home = G.deer.filter(d => d.inHerd).length;
+    let k = 0;
+    for (const d of G.deer) if (d.inHerd) { d.state = 'home'; d.homeZ = rr(-12, -3); d.flash = 1; k++; }
+    sfx('finale', 0.9);
+    if (AU.music) fadeGain(AU.music, 0.8, 3);
+    for (const s of G.shades) s.dying = true;
+  }
+  if (G.state === 'finale') {
+    G.finaleT += dt;
+    U.uReveal.value = smooth(1.5, 7.5, G.finaleT);
+    U.uWarm.value = smooth(2, 9, G.finaleT);
+    U.uFogA.value.lerpColors(FOG_A0, FOG_A1, U.uWarm.value);
+    U.uFogB.value.lerpColors(FOG_B0, FOG_B1, U.uWarm.value);
+    grade.uniforms.uFlash.value = 0.22 * Math.exp(-Math.pow((G.finaleT - 2.2) / 0.9, 2));
+    if (G.finaleT > 9.5 && G.state !== 'end') {
+      G.state = 'end';
+      elEndN.textContent = `${G.home} of ${G.herdTotal} deer guided home`;
+      elEnd.style.opacity = 1; elHud.style.opacity = 0;
+    }
+  }
+
+  // ---- bursts
+  for (let i = burst.list.length - 1; i >= 0; i--) {
+    const p = burst.list[i];
+    p.life -= dt;
+    if (p.life <= 0) { burst.list.splice(i, 1); continue; }
+    p.vx *= Math.exp(-p.drag * dt); p.vy = p.vy * Math.exp(-p.drag * dt) + p.grav * dt; p.vz *= Math.exp(-p.drag * dt);
+    p.x += p.vx * dt; p.y += p.vy * dt; p.z += p.vz * dt;
+  }
+
+  // ---- hint
+  if (G.hintT > 0) { G.hintT -= dt; if (G.hintT <= 0) elHint.style.opacity = 0; }
+
+  // ---- camera
+  let hx = 0, hc = 0;
+  for (const d of G.deer) if (d.inHerd || d.state === 'home') { hx += d.x; hc++; }
+  const herdX = hc ? hx / hc : shep.x;
+  let tx = lerp(shep.x, herdX, 0.18) + shep.face * 1.4;
+  let ty = groundY(shep.x, shep.z) + 2.05, tz = CAM_Z + shep.z * 0.55;
+  if (G.state === 'title') { tx = -1.2 + Math.sin(G.t * 0.08) * 1.2; ty = groundY(0, 0) + 1.75; }
+  if (G.state === 'finale' || G.state === 'end') { const f = smooth(0, 7, G.finaleT); tx = lerp(tx, shep.x + 5.5, f); ty += f * 1.6; tz += f * 4.5; }
+  cam.x = damp(cam.x, tx, 1.6, dt); cam.y = damp(cam.y, ty, 1.4, dt); cam.z = damp(cam.z, tz, 1.4, dt);
+  const breathe = Math.sin(G.t * 0.21) * 0.12;
+  camera.position.set(cam.x, cam.y + breathe, cam.z);
+  cam.lx = damp(cam.lx, cam.x + shep.vx * 0.25, 2, dt);
+  camera.lookAt(cam.lx, cam.y - 0.32 + breathe * 0.5, shep.z * 0.5 - 2);
+  U.uCam.value.copy(camera.position);
+}
+const FOG_A0 = new THREE.Color('#b3b8b7'), FOG_B0 = new THREE.Color('#e0e3e2');
+const FOG_A1 = new THREE.Color('#aeb59a'), FOG_B1 = new THREE.Color('#dedccb');
+
+// ------------------------------------------------------------------ render particles
+let motePts, burstPts, smokePts;
+function drawParticles() {
+  let n = 0;
+  const P = motePts;
+  for (const m of G.motes) {
+    if (m.st === 2) continue;
+    if (Math.abs(m.x - camera.position.x) > 30) continue;
+    P.pos[n * 3] = m.x; P.pos[n * 3 + 1] = m.y; P.pos[n * 3 + 2] = m.z;
+    const tw = 0.65 + 0.35 * Math.sin(G.t * 5 + m.ph * 3);
+    P.col[n * 3] = 1.5; P.col[n * 3 + 1] = 1.45; P.col[n * 3 + 2] = 0.8;
+    P.size[n] = 0.42 * tw; P.alpha[n] = 0.9 * tw;
+    n++;
+  }
+  P.flush(n);
+  let k = 0, q = 0;
+  const B = burstPts, S = smokePts;
+  for (const p of burst.list) {
+    const f = p.life / p.max;
+    const dark = p.c[0] + p.c[1] + p.c[2] < 0.5;
+    const T = dark ? S : B; const i = dark ? q : k;
+    if (i >= T.n) continue;
+    T.pos[i * 3] = p.x; T.pos[i * 3 + 1] = p.y; T.pos[i * 3 + 2] = p.z;
+    T.col[i * 3] = p.c[0]; T.col[i * 3 + 1] = p.c[1]; T.col[i * 3 + 2] = p.c[2];
+    T.size[i] = p.size * (dark ? (2.4 - f) : (0.5 + f)); T.alpha[i] = Math.min(1, f * 1.6);
+    if (dark) q++; else k++;
+  }
+  B.flush(k); S.flush(q);
+}
+
+// ------------------------------------------------------------------ resize
+function resize() {
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h, false);
+  composer.setSize(w, h);
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+  grade.uniforms.uAspect.value = w / h;
+  if (motePts) motePts.mat.uniforms.uPx.value = h * renderer.getPixelRatio() * 0.5 / Math.tan(THREE.MathUtils.degToRad(CAM_FOV / 2));
+  if (burstPts) burstPts.mat.uniforms.uPx.value = h * renderer.getPixelRatio() * 0.5 / Math.tan(THREE.MathUtils.degToRad(CAM_FOV / 2));
+  if (smokePts) smokePts.mat.uniforms.uPx.value = h * renderer.getPixelRatio() * 0.5 / Math.tan(THREE.MathUtils.degToRad(CAM_FOV / 2));
+}
+addEventListener('resize', resize);
+
+// ------------------------------------------------------------------ main
+let last = performance.now();
+const FPS = { n: 0, t0: performance.now(), fps: 0 };
+function frame(now) {
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  FPS.n++; if (now - FPS.t0 > 1000) { FPS.fps = FPS.n * 1000 / (now - FPS.t0); FPS.n = 0; FPS.t0 = now; }
+  if (G.state !== 'loading') {
+    renderer.info.reset();
+    try { step(dt); } catch (e) { if (!window.__stepErr) { window.__stepErr = String(e && e.stack || e); console.error('step error', window.__stepErr); } }
+    try {
+      drawParticles();
+      grade.uniforms.uTime.value = G.t;
+      grade.uniforms.uFade.value = damp(grade.uniforms.uFade.value, G.state === 'end' ? 0.62 : 1, 1.2, dt);
+      updateHUD();
+      composer.render(dt);
+    } catch (e) { if (!window.__drawErr) { window.__drawErr = String(e && e.stack || e); console.error('draw error', window.__drawErr); } }
+  }
+  requestAnimationFrame(frame);
+}
+
+async function boot() {
+  const manifest = await loadJSON('assets/manifest.json') || {};
+  const sp = manifest.sprites || {};
+  const P = [];
+  const texList = (arr) => Promise.all((arr || []).map(f => loadTex('assets/' + f)));
+  P.push(texList(sp.trees).then(t => A.trees = t.filter(Boolean)));
+  P.push(texList(sp.canopy).then(t => A.canopy = t.filter(Boolean)));
+  P.push(texList(sp.bushes).then(t => A.bushes = t.filter(Boolean)));
+  P.push(texList(sp.plants).then(t => A.plants = t.filter(Boolean)));
+  P.push(texList(sp.crowns).then(t => A.crowns = t.filter(Boolean)));
+  P.push(loadTex('assets/bg_far.jpg', { mirror: true }).then(t => A.bgFar = t));
+  P.push(loadTex('assets/glade.jpg').then(t => A.glade = t));
+  P.push(loadTex('assets/ground.jpg', { repeat: true }).then(t => A.ground = t));
+  P.push(loadTex('assets/fog.jpg', { srgb: false, repeat: true }).then(t => A.fog = t));
+  P.push(loadTex('assets/rays.jpg', { srgb: false }).then(t => A.rays = t));
+  P.push(loadTex('assets/paper.jpg', { srgb: false, repeat: true }).then(t => A.paper = t));
+  P.push(loadTex('assets/shade.png').then(t => A.shade = t));
+  P.push(loadGLB('assets/deer.glb').then(g => A.deerGLB = g));
+  P.push(loadGLB('assets/shepherd.glb').then(g => A.shepGLB = g));
+  P.push(loadGLB('assets/lantern.glb').then(g => A.lanternGLB = g));
+  P.push(loadGLB('assets/waystone.glb').then(g => A.wayGLB = g));
+  document.getElementById('logo').src = 'assets/title.png';
+  await Promise.all(P);
+  A.wayFlameY = manifest.wayFlameY;
+  A.sprites = { trees: A.trees, canopy: A.canopy, bushes: A.bushes, plants: A.plants, crowns: A.crowns };
+  grade.uniforms.uPaper.value = A.paper || new THREE.DataTexture(new Uint8Array([200, 200, 200, 255]), 1, 1);
+  if (A.paper) grade.uniforms.uPaper.value.needsUpdate = true;
+  const dm = A.deerGLB.scene.getObjectByProperty('isMesh', true);
+  deerGeo = dm.geometry; deerMap = dm.material.map;
+  if (A.bgFar) buildBackdrop();
+  if (A.ground) buildGround();
+  buildFogAndRays();
+  buildForest();
+  buildShepherd();
+  buildWayposts();
+  buildMotes();
+  motePts = new Points(600); burstPts = new Points(900); smokePts = new Points(300, true);
+  resetGame();
+  resize();
+  G.state = 'title';
+  grade.uniforms.uFade.value = 0;
+  document.getElementById('load').style.opacity = 0;
+  setTimeout(() => { elTitle.style.opacity = 1; }, 600);
+  if (new URLSearchParams(location.search).has('autostart')) startGame();
+}
+
+// debug hooks for automated checks
+window.__fog = {
+  get state() { return { t: +G.t.toFixed(2), err: window.__stepErr || window.__drawErr || null, raf: FPS.n, state: G.state, x: +shep.x.toFixed(2), z: +shep.z.toFixed(2), oil: +G.oil.toFixed(1), R: +G.lightR.toFixed(2),
+    herd: G.deer.filter(d => d.inHerd).length, strays: G.deer.filter(d => d.state === 'stray').length, gone: G.deer.filter(d => d.state === 'gone').length,
+    shades: G.shades.length, home: G.home, fps: +FPS.fps.toFixed(1), calls: renderer.info.render.calls, tris: renderer.info.render.triangles }; },
+  keys() { return JSON.stringify(keys); },
+  shades() { return JSON.stringify(G.shades.map(s => ({ x: +s.x.toFixed(1), z: +s.z.toFixed(1), a: +s.a.toFixed(2), dying: s.dying, life: +s.life.toFixed(1) }))); },
+  spawnShade() { spawnShade(); },
+  setOil(v) { G.oil = v; },
+  count() { let sprites = 0, meshes = 0; scene.traverse(o => { if (o.isMesh) { meshes++; if (o.geometry === planeGeo) sprites++; } }); return JSON.stringify({ sprites, meshes }); },
+  wakeAll() { for (const d of G.deer) if (d.state === 'stray') { d.state = 'herd'; d.bond = 1; d.glow = 1; d.everHerd = true; d.x = shep.x - 3 - R0() * 8; d.z = rr(-1.5, 1); } },
+  audio() { return JSON.stringify({ ready: AU.ready, state: AU.ctx && AU.ctx.state, buffers: Object.fromEntries(Object.entries(AU.buf).map(([k, b]) => [k, +b.duration.toFixed(1)])) }); },
+  gl() { const gl = renderer.getContext(); const e = gl.getExtension('WEBGL_debug_renderer_info'); return e ? gl.getParameter(e.UNMASKED_RENDERER_WEBGL) : 'n/a'; },
+  warp(x) { shep.x = x; cam.x = x; for (const d of G.deer) if (d.inHerd) { d.x = x - 2 - R0() * 3; } },
+  start() { startGame(); },
+};
+boot();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

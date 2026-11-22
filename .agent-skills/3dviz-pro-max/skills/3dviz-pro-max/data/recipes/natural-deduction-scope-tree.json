@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "id": "recipe.natural-deduction-scope-tree",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Natural deduction: proof trees and assumption scope"
+  },
+  "aliases": {
+    "en": [
+      "propositional proof tree",
+      "implication discharge"
+    ]
+  },
+  "direction_ids": [
+    "logic-circuits"
+  ],
+  "summary": "Inspect why each inference is licensed and which assumptions remain open.",
+  "objective": "Build a proof-tree workbench for conjunction and implication where I can construct (A ∧ B) → (B ∧ A) and inspect assumption discharge.",
+  "tags": [
+    "natural deduction",
+    "proof tree",
+    "assumption scope"
+  ],
+  "subject_terms": [
+    "natural deduction",
+    "proof tree",
+    "assumption scope",
+    "discharge",
+    "conjunction introduction",
+    "implication elimination",
+    "open hypotheses"
+  ],
+  "intent_signals": [
+    "Build a proof-tree workbench for conjunction and implication where I can construct (A ∧ B) → (B ∧ A) and inspect assumption discharge."
+  ],
+  "example_prompts": [
+    "Build a proof-tree workbench for conjunction and implication where I can construct (A ∧ B) → (B ∧ A) and inspect assumption discharge."
+  ],
+  "negative_signals": [
+    "No quantifiers, disjunction, negation, classical contradiction rule or general theorem search."
+  ],
+  "not_for": [
+    "No quantifiers, disjunction, negation, classical contradiction rule or general theorem search."
+  ],
+  "entities": [
+    {
+      "name": "Proof nodes",
+      "guidance": "Place premises above their conclusion with explicit rule bars. Offer nested scope frames as separable inspection layers; Z means scope-layout separation only, never strength or truth."
+    },
+    {
+      "name": "Dependency inspector",
+      "guidance": "Click a discharged occurrence to reveal its owning introduction rule; pin all remaining assumptions beside the selected conclusion."
+    }
+  ],
+  "state_contract": {
+    "model": "Finite formula AST: atoms, conjunction and implication only. Nodes record rule, premise IDs, conclusion and open labeled assumption occurrences. Assumption introduces one occurrence; conjunction introduction unions dependencies, conjunction elimination preserves them, implication elimination unions them, and implication introduction removes only designated occurrences of its antecedent within its premise subtree.",
+    "authority": "The typed domain model owns each committed state and result. Geometry, labels and selection derive from that model; animation cannot certify a claim.",
+    "actions": [
+      "Add an assumption, apply a supported introduction/elimination rule, or select occurrence IDs to discharge.",
+      "Inspect open assumptions at any node; delete a premise and invalidate dependent nodes.",
+      "Load the conjunction-swap exercise; undo and reset."
+    ]
+  },
+  "invariants": [
+    "Accept a node only after checking rule arity, formula equality and referenced premise scope.",
+    "Two occurrences with equal formula text can have different discharge identity.",
+    "Expected exercise: closed conjunction-swap proof succeeds; A→B and B must not license A. A bound on search or an incomplete tree is not a disproof."
+  ],
+  "motion_guidance": [
+    "Step commits one semantic action; pause freezes presentation and leaves the committed state inspectable. Reset cancels pending playback and restores the complete starting state.",
+    "Offer a static transition highlight and an equivalent readable table for reduced motion. Camera travel is presentation, not an inference or domain operation."
+  ],
+  "creative_affordances": [
+    "Use shallow sculptural cards, restrained materials and selective focus to expose relationships. Prefer a flat readable layout whenever depth has no declared role."
+  ],
+  "known_limits": [
+    "No quantifiers, disjunction, negation, classical contradiction rule or general theorem search.",
+    "Authored, source-reviewed guidance only; no generated artifact, solver integration, runtime behavior or visual check has run."
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Abstract symbols and logical state; mesh contact, light and motion have no causal role in the model."
+  },
+  "related_ids": [
+    "recipe.logic-gates"
+  ],
+  "object_craft": [
+    {
+      "family": "Proof nodes",
+      "structure": "Place premises above their conclusion with explicit rule bars. Offer nested scope frames as separable inspection layers; Z means scope-layout separation only, never strength or truth.",
+      "material": "Matte surfaces and high-contrast labels; distinguish status with text and border style as well as color."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim.natural-deduction-scope-tree",
+      "statement": "Natural-deduction proofs are assembled from local inference rules; conjunction introduction combines premise hypotheses, and implication introduction discharges selected antecedent assumptions. The resulting conclusion remains dependent on hypotheses not discharged.",
+      "scope": "Conjunction/implication fragment with explicit labeled assumption occurrences; no claim of a complete prover.",
+      "source_refs": [
+        {
+          "source_id": "source.lean-natural-deduction",
+          "locator": "3.1 Derivations; 3.3 Forward and Backward Reasoning, hypothesis scope"
+        }
+      ]
+    }
+  ]
+}

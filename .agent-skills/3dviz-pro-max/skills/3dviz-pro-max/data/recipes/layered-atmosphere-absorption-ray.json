@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "id": "recipe.layered-atmosphere-absorption-ray",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Layered atmosphere absorption-only chord"
+  },
+  "aliases": {
+    "en": [
+      "atmospheric optical depth",
+      "Beer Lambert"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment",
+    "waves-optics-fields"
+  ],
+  "summary": "Integrate a fixed straight chord through concentric piecewise-homogeneous absorbing shells and accumulate optical depth with Beer–Lambert attenuation, excluding refraction, scattering and weather.",
+  "objective": "Integrate a fixed straight chord through concentric piecewise-homogeneous absorbing shells and accumulate optical depth with Beer–Lambert attenuation, excluding refraction, scattering and weather.",
+  "tags": [
+    "atmospheric optical depth",
+    "Beer Lambert",
+    "layer path length",
+    "straight ray"
+  ],
+  "subject_terms": [
+    "atmospheric optical depth",
+    "Beer Lambert",
+    "layer path length",
+    "straight ray"
+  ],
+  "intent_signals": [
+    "Layered atmosphere absorption-only chord"
+  ],
+  "example_prompts": [
+    "Build an absorption-only straight chord through finite homogeneous atmospheric shells with explicit inverse-metre coefficients and optical-depth checks."
+  ],
+  "negative_signals": [
+    "particle appearance proves physics",
+    "playback is a forecast"
+  ],
+  "not_for": [
+    "Operational forecasting or safety decisions."
+  ],
+  "entities": [
+    {
+      "name": "Concentric layers",
+      "guidance": "Define finite increasing radii, layer absorption coefficient beta>=0 in inverse metres and no gaps/overlap."
+    },
+    {
+      "name": "Ray chord",
+      "guidance": "Intersect a normalized ray with shell boundaries and sort nonnegative entry/exit distances."
+    },
+    {
+      "name": "Optical-depth ledger",
+      "guidance": "For each traversed segment show ds, beta*ds, cumulative tau and I/I0=exp(-tau)."
+    }
+  ],
+  "state_contract": {
+    "model": "Planet radius R>0 and 1..32 outer shell radii are finite strictly increasing metres; each shell is a piecewise-homogeneous isotropic absorbing slab along a ray x(t)=o+t*d with finite origin satisfying ||o||>=R (reject inside-solid origins), normalized direction ||d||=1 and forward parameter t>=0. Require monochromatic beta>=0 in inverse metres. Sort forward sphere intersections, clip traversal at the first solid-planet boundary R (an origin on R directed inward stops immediately), never continue through ground, and compute ds>=0, tau=sum(beta*ds), mathematical T=exp(-tau)>0. A floating-point result T=0 is allowed only with an explicit underflow marker and log-transmittance -tau retained; terminate on nonfinite arithmetic or no atmospheric segment.",
+    "authority": "Finite metre radii, inverse-metre beta values and the normalized forward ray own intersections, segment lengths and optical depth. Blender shell thickness/opacity is context only; Three.js computes clipped forward segments, retains -tau through transmittance underflow and resets the exact ray/layer ledger.",
+    "actions": [
+      "Adjust ray origin/direction.",
+      "Change one beta/layer boundary.",
+      "Step layer contributions.",
+      "Reset geometry and coefficients."
+    ]
+  },
+  "invariants": [
+    "Layer radii strictly increase.",
+    "Segment lengths are never inferred from visual thickness/exaggeration.",
+    "tau is nondecreasing for beta>=0; mathematical transmittance lies in (0,1], while a floating-point zero must be labeled underflow and retain finite log-transmittance -tau.",
+    "Display gain never alters tau or I/I0."
+  ],
+  "motion_guidance": [
+    "Playback follows stored model/data time; reverse scrub is history and display interpolation never changes the numeric model."
+  ],
+  "creative_affordances": [
+    "Use scale-separated context, glyphs and trails while disclosing exaggeration and keeping uncertainty visible."
+  ],
+  "known_limits": [
+    "No forecast, dataset execution, numerical solve, render or runtime validation was performed."
+  ],
+  "claims": [
+    {
+      "id": "claim.env-iupac-beer-lambert",
+      "statement": "IUPAC defines Beer–Lambert absorbance for collimated monochromatic radiation in a homogeneous isotropic medium as proportional to absorption path length and concentration, with transmitted radiant power exponentially reduced in its decadic form.",
+      "scope": "Absorption-only homogeneous-layer application; atmospheric scattering, refraction, emission and broadband effects are excluded.",
+      "source_refs": [
+        {
+          "source_id": "source.env-iupac-beer-lambert",
+          "locator": "Beer–Lambert law definition B00626"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Atmospheric shell section",
+      "structure": "Blender authors a planet solid, named shell boundaries and section frame with clearly labeled altitude exaggeration; glTF exports static context only and never supplies numeric chord length.",
+      "material": "Transparent shells use distinct hatch/order cues; visual opacity is not numeric transmittance.",
+      "articulation": "Three.js normalizes d, solves forward sphere intersections, clips at solid ground, builds segment tubes from numeric endpoints, accumulates tau/log-transmittance, labels underflow and resets."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Static straight-chord integration through absorption-only slabs; no refraction, scattering, emission, broadband transfer or time dynamics.",
+    "timestep": "One layer segment per explanatory step.",
+    "state": [
+      "shell radii and beta",
+      "ray origin/direction",
+      "segments and optical depth"
+    ],
+    "checks": [
+      "Reject ||o||<R; an origin on R directed inward has zero atmospheric traversal.",
+      "beta=0 gives unit transmittance.",
+      "A downward ray stops at the first solid-planet boundary and never accumulates a far-side atmosphere segment.",
+      "Large finite tau retains -tau when exp(-tau) underflows to zero."
+    ]
+  },
+  "related_ids": [
+    "recipe.planar-refraction-ray"
+  ]
+}

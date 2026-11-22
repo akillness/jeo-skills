@@ -1,0 +1,700 @@
+{
+  "version": 2,
+  "account": "illustrative-demo",
+  "query": {
+    "team_id": "team_demo",
+    "project_id": "project_demo",
+    "scope": "team",
+    "start_date": "2026-06-01T00:00:00Z",
+    "end_date": "2026-08-31T23:59:59.999Z",
+    "include": ["entities", "modelUsages.daily"],
+    "response_format": "json"
+  },
+  "fetched_at": "2026-09-01T09:00:00Z",
+  "response": {
+    "scope": {
+      "mode": "team",
+      "teamId": "team_demo",
+      "contextProjectId": "project_demo",
+      "projectIds": null,
+      "userIds": null
+    },
+    "totals": {
+      "totalCU": 39000,
+      "totalDiscountCU": 0,
+      "totalBeforeDiscountCU": 39000,
+      "startDate": "2026-06-01T00:00:00Z",
+      "endDate": "2026-08-31T23:59:59.999Z"
+    },
+    "modelUsages": [
+      {
+        "modelId": "model_example_0",
+        "modelName": "Image model A",
+        "totalCU": 12600,
+        "totalJobs": 420,
+        "totalApiKeyCU": 3600
+      },
+      {
+        "modelId": "model_example_1",
+        "modelName": "Video model B",
+        "totalCU": 18900,
+        "totalJobs": 90,
+        "totalApiKeyCU": 0
+      },
+      {
+        "modelId": "model_example_2",
+        "modelName": "3D model C",
+        "totalCU": 7200,
+        "totalJobs": 24,
+        "totalApiKeyCU": 0
+      },
+      {
+        "modelId": "model_example_3",
+        "modelName": "Audio model D",
+        "totalCU": 1800,
+        "totalJobs": 60,
+        "totalApiKeyCU": 900
+      }
+    ],
+    "consumption": [
+      { "userId": "person_01", "value": 23500, "discount": 0, "total": 23500 },
+      { "userId": "person_02", "value": 11000, "discount": 0, "total": 11000 },
+      { "userId": "automation", "value": 4500, "discount": 0, "total": 4500 }
+    ],
+    "assetUsages": [],
+    "modelUsages.daily": [
+      {
+        "modelId": "model_example_0",
+        "points": [
+          {
+            "time": "2026-06-15T00:00:00Z",
+            "cost": 3150.0,
+            "jobs": 104,
+            "discount": 0,
+            "apiKeyCost": 900.0,
+            "apiKeyDiscount": 0
+          },
+          {
+            "time": "2026-07-15T00:00:00Z",
+            "cost": 4410.0,
+            "jobs": 146,
+            "discount": 0,
+            "apiKeyCost": 1260.0,
+            "apiKeyDiscount": 0
+          },
+          {
+            "time": "2026-08-15T00:00:00Z",
+            "cost": 5040.0,
+            "jobs": 170,
+            "discount": 0,
+            "apiKeyCost": 1440.0,
+            "apiKeyDiscount": 0
+          }
+        ]
+      },
+      {
+        "modelId": "model_example_1",
+        "points": [
+          {
+            "time": "2026-06-15T00:00:00Z",
+            "cost": 4725.0,
+            "jobs": 22,
+            "discount": 0,
+            "apiKeyCost": 0.0,
+            "apiKeyDiscount": 0
+          },
+          {
+            "time": "2026-07-15T00:00:00Z",
+            "cost": 6615.0,
+            "jobs": 31,
+            "discount": 0,
+            "apiKeyCost": 0.0,
+            "apiKeyDiscount": 0
+          },
+          {
+            "time": "2026-08-15T00:00:00Z",
+            "cost": 7560.0,
+            "jobs": 37,
+            "discount": 0,
+            "apiKeyCost": 0.0,
+            "apiKeyDiscount": 0
+          }
+        ]
+      },
+      {
+        "modelId": "model_example_2",
+        "points": [
+          {
+            "time": "2026-06-15T00:00:00Z",
+            "cost": 1800.0,
+            "jobs": 6,
+            "discount": 0,
+            "apiKeyCost": 0.0,
+            "apiKeyDiscount": 0
+          },
+          {
+            "time": "2026-07-15T00:00:00Z",
+            "cost": 2520.0,
+            "jobs": 8,
+            "discount": 0,
+            "apiKeyCost": 0.0,
+            "apiKeyDiscount": 0
+          },
+          {
+            "time": "2026-08-15T00:00:00Z",
+            "cost": 2880.0,
+            "jobs": 10,
+            "discount": 0,
+            "apiKeyCost": 0.0,
+            "apiKeyDiscount": 0
+          }
+        ]
+      },
+      {
+        "modelId": "model_example_3",
+        "points": [
+          {
+            "time": "2026-06-15T00:00:00Z",
+            "cost": 450.0,
+            "jobs": 14,
+            "discount": 0,
+            "apiKeyCost": 225.0,
+            "apiKeyDiscount": 0
+          },
+          {
+            "time": "2026-07-15T00:00:00Z",
+            "cost": 630.0,
+            "jobs": 20,
+            "discount": 0,
+            "apiKeyCost": 315.0,
+            "apiKeyDiscount": 0
+          },
+          {
+            "time": "2026-08-15T00:00:00Z",
+            "cost": 720.0,
+            "jobs": 26,
+            "discount": 0,
+            "apiKeyCost": 360.0,
+            "apiKeyDiscount": 0
+          }
+        ]
+      }
+    ],
+    "entities": {
+      "users": [
+        { "id": "person_01", "fullName": "Artist 01", "isApiKey": false },
+        { "id": "person_02", "fullName": "Artist 02", "isApiKey": false },
+        { "id": "automation", "fullName": "Automation", "isApiKey": true }
+      ]
+    }
+  },
+  "user_snapshots": [
+    {
+      "version": 2,
+      "account": "illustrative-demo",
+      "query": {
+        "team_id": "team_demo",
+        "project_id": "project_demo",
+        "scope": "team",
+        "start_date": "2026-06-01T00:00:00Z",
+        "end_date": "2026-08-31T23:59:59.999Z",
+        "include": ["entities", "modelUsages.daily"],
+        "response_format": "json",
+        "user_ids": ["person_01"]
+      },
+      "fetched_at": "2026-09-01T09:00:00Z",
+      "response": {
+        "scope": {
+          "mode": "team",
+          "teamId": "team_demo",
+          "contextProjectId": "project_demo",
+          "projectIds": null,
+          "userIds": ["person_01"]
+        },
+        "totals": {
+          "totalCU": 23500,
+          "totalDiscountCU": 0,
+          "totalBeforeDiscountCU": 23500,
+          "startDate": "2026-06-01T00:00:00Z",
+          "endDate": "2026-08-31T23:59:59.999Z"
+        },
+        "modelUsages": [
+          {
+            "modelId": "model_example_0",
+            "modelName": "Image model A",
+            "totalCU": 7500,
+            "totalJobs": 250,
+            "totalApiKeyCU": 0
+          },
+          {
+            "modelId": "model_example_1",
+            "modelName": "Video model B",
+            "totalCU": 12600,
+            "totalJobs": 60,
+            "totalApiKeyCU": 0
+          },
+          {
+            "modelId": "model_example_2",
+            "modelName": "3D model C",
+            "totalCU": 3600,
+            "totalJobs": 12,
+            "totalApiKeyCU": 0
+          },
+          {
+            "modelId": "model_example_3",
+            "modelName": "Audio model D",
+            "totalCU": 600,
+            "totalJobs": 20,
+            "totalApiKeyCU": 0
+          }
+        ],
+        "consumption": [
+          {
+            "userId": "person_01",
+            "value": 23500,
+            "discount": 0,
+            "total": 23500
+          }
+        ],
+        "assetUsages": [],
+        "modelUsages.daily": [
+          {
+            "modelId": "model_example_0",
+            "points": [
+              {
+                "time": "2026-06-15T00:00:00Z",
+                "cost": 1875.0,
+                "jobs": 62,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-07-15T00:00:00Z",
+                "cost": 2625.0,
+                "jobs": 87,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-08-15T00:00:00Z",
+                "cost": 3000.0,
+                "jobs": 101,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              }
+            ]
+          },
+          {
+            "modelId": "model_example_1",
+            "points": [
+              {
+                "time": "2026-06-15T00:00:00Z",
+                "cost": 3150.0,
+                "jobs": 15,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-07-15T00:00:00Z",
+                "cost": 4410.0,
+                "jobs": 21,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-08-15T00:00:00Z",
+                "cost": 5040.0,
+                "jobs": 24,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              }
+            ]
+          },
+          {
+            "modelId": "model_example_2",
+            "points": [
+              {
+                "time": "2026-06-15T00:00:00Z",
+                "cost": 900.0,
+                "jobs": 3,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-07-15T00:00:00Z",
+                "cost": 1260.0,
+                "jobs": 4,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-08-15T00:00:00Z",
+                "cost": 1440.0,
+                "jobs": 5,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              }
+            ]
+          },
+          {
+            "modelId": "model_example_3",
+            "points": [
+              {
+                "time": "2026-06-15T00:00:00Z",
+                "cost": 150.0,
+                "jobs": 5,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-07-15T00:00:00Z",
+                "cost": 210.0,
+                "jobs": 7,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-08-15T00:00:00Z",
+                "cost": 240.0,
+                "jobs": 8,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              }
+            ]
+          }
+        ],
+        "entities": {
+          "users": [
+            { "id": "person_01", "fullName": "Artist 01", "isApiKey": false }
+          ]
+        }
+      }
+    },
+    {
+      "version": 2,
+      "account": "illustrative-demo",
+      "query": {
+        "team_id": "team_demo",
+        "project_id": "project_demo",
+        "scope": "team",
+        "start_date": "2026-06-01T00:00:00Z",
+        "end_date": "2026-08-31T23:59:59.999Z",
+        "include": ["entities", "modelUsages.daily"],
+        "response_format": "json",
+        "user_ids": ["person_02"]
+      },
+      "fetched_at": "2026-09-01T09:00:00Z",
+      "response": {
+        "scope": {
+          "mode": "team",
+          "teamId": "team_demo",
+          "contextProjectId": "project_demo",
+          "projectIds": null,
+          "userIds": ["person_02"]
+        },
+        "totals": {
+          "totalCU": 11000,
+          "totalDiscountCU": 0,
+          "totalBeforeDiscountCU": 11000,
+          "startDate": "2026-06-01T00:00:00Z",
+          "endDate": "2026-08-31T23:59:59.999Z"
+        },
+        "modelUsages": [
+          {
+            "modelId": "model_example_0",
+            "modelName": "Image model A",
+            "totalCU": 1500,
+            "totalJobs": 50,
+            "totalApiKeyCU": 0
+          },
+          {
+            "modelId": "model_example_1",
+            "modelName": "Video model B",
+            "totalCU": 6300,
+            "totalJobs": 30,
+            "totalApiKeyCU": 0
+          },
+          {
+            "modelId": "model_example_2",
+            "modelName": "3D model C",
+            "totalCU": 3600,
+            "totalJobs": 12,
+            "totalApiKeyCU": 0
+          },
+          {
+            "modelId": "model_example_3",
+            "modelName": "Audio model D",
+            "totalCU": 300,
+            "totalJobs": 10,
+            "totalApiKeyCU": 0
+          }
+        ],
+        "consumption": [
+          {
+            "userId": "person_02",
+            "value": 11000,
+            "discount": 0,
+            "total": 11000
+          }
+        ],
+        "assetUsages": [],
+        "modelUsages.daily": [
+          {
+            "modelId": "model_example_0",
+            "points": [
+              {
+                "time": "2026-06-15T00:00:00Z",
+                "cost": 375.0,
+                "jobs": 12,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-07-15T00:00:00Z",
+                "cost": 525.0,
+                "jobs": 17,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-08-15T00:00:00Z",
+                "cost": 600.0,
+                "jobs": 21,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              }
+            ]
+          },
+          {
+            "modelId": "model_example_1",
+            "points": [
+              {
+                "time": "2026-06-15T00:00:00Z",
+                "cost": 1575.0,
+                "jobs": 7,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-07-15T00:00:00Z",
+                "cost": 2205.0,
+                "jobs": 10,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-08-15T00:00:00Z",
+                "cost": 2520.0,
+                "jobs": 13,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              }
+            ]
+          },
+          {
+            "modelId": "model_example_2",
+            "points": [
+              {
+                "time": "2026-06-15T00:00:00Z",
+                "cost": 900.0,
+                "jobs": 3,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-07-15T00:00:00Z",
+                "cost": 1260.0,
+                "jobs": 4,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-08-15T00:00:00Z",
+                "cost": 1440.0,
+                "jobs": 5,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              }
+            ]
+          },
+          {
+            "modelId": "model_example_3",
+            "points": [
+              {
+                "time": "2026-06-15T00:00:00Z",
+                "cost": 75.0,
+                "jobs": 2,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-07-15T00:00:00Z",
+                "cost": 105.0,
+                "jobs": 3,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-08-15T00:00:00Z",
+                "cost": 120.0,
+                "jobs": 5,
+                "discount": 0,
+                "apiKeyCost": 0.0,
+                "apiKeyDiscount": 0
+              }
+            ]
+          }
+        ],
+        "entities": {
+          "users": [
+            { "id": "person_02", "fullName": "Artist 02", "isApiKey": false }
+          ]
+        }
+      }
+    },
+    {
+      "version": 2,
+      "account": "illustrative-demo",
+      "query": {
+        "team_id": "team_demo",
+        "project_id": "project_demo",
+        "scope": "team",
+        "start_date": "2026-06-01T00:00:00Z",
+        "end_date": "2026-08-31T23:59:59.999Z",
+        "include": ["entities", "modelUsages.daily"],
+        "response_format": "json",
+        "user_ids": ["automation"]
+      },
+      "fetched_at": "2026-09-01T09:00:00Z",
+      "response": {
+        "scope": {
+          "mode": "team",
+          "teamId": "team_demo",
+          "contextProjectId": "project_demo",
+          "projectIds": null,
+          "userIds": ["automation"]
+        },
+        "totals": {
+          "totalCU": 4500,
+          "totalDiscountCU": 0,
+          "totalBeforeDiscountCU": 4500,
+          "startDate": "2026-06-01T00:00:00Z",
+          "endDate": "2026-08-31T23:59:59.999Z"
+        },
+        "modelUsages": [
+          {
+            "modelId": "model_example_0",
+            "modelName": "Image model A",
+            "totalCU": 3600,
+            "totalJobs": 120,
+            "totalApiKeyCU": 3600
+          },
+          {
+            "modelId": "model_example_3",
+            "modelName": "Audio model D",
+            "totalCU": 900,
+            "totalJobs": 30,
+            "totalApiKeyCU": 900
+          }
+        ],
+        "consumption": [
+          {
+            "userId": "automation",
+            "value": 4500,
+            "discount": 0,
+            "total": 4500
+          }
+        ],
+        "assetUsages": [],
+        "modelUsages.daily": [
+          {
+            "modelId": "model_example_0",
+            "points": [
+              {
+                "time": "2026-06-15T00:00:00Z",
+                "cost": 900.0,
+                "jobs": 30,
+                "discount": 0,
+                "apiKeyCost": 900.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-07-15T00:00:00Z",
+                "cost": 1260.0,
+                "jobs": 42,
+                "discount": 0,
+                "apiKeyCost": 1260.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-08-15T00:00:00Z",
+                "cost": 1440.0,
+                "jobs": 48,
+                "discount": 0,
+                "apiKeyCost": 1440.0,
+                "apiKeyDiscount": 0
+              }
+            ]
+          },
+          {
+            "modelId": "model_example_3",
+            "points": [
+              {
+                "time": "2026-06-15T00:00:00Z",
+                "cost": 225.0,
+                "jobs": 7,
+                "discount": 0,
+                "apiKeyCost": 225.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-07-15T00:00:00Z",
+                "cost": 315.0,
+                "jobs": 10,
+                "discount": 0,
+                "apiKeyCost": 315.0,
+                "apiKeyDiscount": 0
+              },
+              {
+                "time": "2026-08-15T00:00:00Z",
+                "cost": 360.0,
+                "jobs": 13,
+                "discount": 0,
+                "apiKeyCost": 360.0,
+                "apiKeyDiscount": 0
+              }
+            ]
+          }
+        ],
+        "entities": {
+          "users": [
+            { "id": "automation", "fullName": "Automation", "isApiKey": true }
+          ]
+        }
+      }
+    }
+  ]
+}

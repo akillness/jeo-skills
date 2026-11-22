@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.lighting-mood-dark-studio-product",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Dark studio product light from three soft boxes"
+  },
+  "aliases": {
+    "en": [
+      "dark studio product lighting",
+      "softbox product rig",
+      "rect area light studio",
+      "low key product shot"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "molecules-materials",
+    "solid-geometry"
+  ],
+  "summary": "Shape a product against a dark ground with three rectangular soft boxes whose reflections describe the form.",
+  "objective": "Each soft box is identifiable as a distinct reflection on a glossy sample, and the product edge separates from the background everywhere.",
+  "tags": [
+    "lighting-profile",
+    "studio",
+    "product",
+    "softbox",
+    "low-key",
+    "rect-area-light"
+  ],
+  "subject_terms": [
+    "rect area light",
+    "soft box",
+    "specular reflection",
+    "edge separation",
+    "gradient background",
+    "environment map",
+    "shadow catcher",
+    "key to fill ratio",
+    "product turntable"
+  ],
+  "intent_signals": [
+    "light a product shot",
+    "studio lighting on a dark background",
+    "make the metal look good",
+    "the product edges disappear into the background",
+    "hero shot of this object"
+  ],
+  "example_prompts": [
+    "Light a device on a dark set so its silhouette stays crisp.",
+    "Show a metal part where the highlights describe its curvature.",
+    "Set a hero turntable for a small object without a white background."
+  ],
+  "negative_signals": [
+    "outdoor daylight scene",
+    "measured photometric studio report"
+  ],
+  "not_for": [
+    "Outdoor or environmental scenes that need a sky and a sun.",
+    "Any claim about the real output of studio fixtures, which needs measured photometric data."
+  ],
+  "content": {
+    "principles": [
+      "On a glossy product the lights are not seen directly, only their reflections. Sizing and placing those reflections is the whole job, and the source shape matters more than its intensity.",
+      "Edge separation comes before beauty. Every silhouette edge needs either a rim reflection or a background value different from the product at that point.",
+      "A dark set is not a black set. A vertical gradient behind the product gives the edge something to change against as it travels around the form.",
+      "Three sources is the working minimum for a hard-surface product: a large key to describe the main form, a broad low fill to open the shadow side, and a narrow strip behind for the edge.",
+      "The environment map is part of the lighting. At low intensity it fills the micro-reflections that discrete area lights leave empty."
+    ],
+    "implementation": [
+      "Use RectAreaLights sized in metres: key 1.2 x 1.8 m, fill 2.0 x 1.2 m, rim strip 0.4 x 1.6 m, each aimed at the product with lookAt.",
+      "Initialise RectAreaLightUniformsLib before creating any RectAreaLight, or the lights contribute nothing.",
+      "Note that RectAreaLight casts no shadow in this renderer: get the contact shadow from a low-intensity DirectionalLight aimed down, or from a baked shadow-catcher plane under the product.",
+      "Add RoomEnvironment at 0.15 so smooth surfaces pick up broad reflections between the three panels; without it, metals go patchy.",
+      "Keep the background a vertical gradient from #0d0f12 to #1c2026 and check every silhouette edge against it as the product turns.",
+      "Keep bloom threshold high at 1.3: the soft box reflections are meant to stay legible as shapes, not to smear into glow."
+    ],
+    "observable_checks": [
+      "A glossy test sphere shows three distinct rectangular reflections whose proportions match the stated panel sizes.",
+      "Rotating the product 360 degrees never leaves a silhouette edge merging into the background value.",
+      "Disabling the environment contribution visibly empties the micro-reflections, confirming it is contributing.",
+      "The background is a gradient, not a flat value, when sampled top to bottom."
+    ]
+  },
+  "creative_affordances": [
+    "Panel colours can be tinted apart for a cool/warm split, and the rim can take a saturated accent colour.",
+    "The set can move from near-black to mid-grey; the fixed points are the three-panel structure and the edge separation rule."
+  ],
+  "known_limits": [
+    "Every number in this profile was tuned for ACESFilmic tone mapping at exposure 1.0; under a different tone-mapping curve or exposure the intensities and fog density must be re-derived, not copied.",
+    "RectAreaLight in this renderer supports neither shadows nor a physical-light distance falloff, so the contact shadow must come from another light or a baked plane; these panel intensities are authored, not photometric.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "related_ids": [
+    "knowledge.three-light-units-and-exposure",
+    "knowledge.shared-pbr-studio-environment",
+    "knowledge.shared-surface-feature-inspection-light"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Product form is read from the shape of the reflections, so the three panels are specified by size in metres before intensity, and the key/fill/rim intensities of 12/4/8 give a 3:1 shaping ratio with an edge strip that reads about a stop over the key on the silhouette only. The environment stays low at 0.15 so it fills micro-reflections without washing out the panel shapes, and the background is a gradient rather than black so edges always have something to separate against at exposure 1.0. Kelvin-to-hex conversions here are authored approximations, not colorimetric transforms (2700K~#ffb46b, 3200K~#ffc58f, 4500K~#ffe4c4, 5600K~#fff4e5, 6500K~#ffffff, open shade 8000K~#cfe0ff).",
+    "values": {
+      "feeling": [
+        "precise",
+        "premium",
+        "controlled"
+      ],
+      "time_of_day": "not applicable; enclosed studio set",
+      "lights": {
+        "key": {
+          "type": "RectAreaLight",
+          "color": "#ffffff",
+          "intensity": 12,
+          "width_m": 1.2,
+          "height_m": 1.8,
+          "elevation_deg": 35,
+          "azimuth_deg": 315,
+          "castShadow": false,
+          "note": "main soft box; its reflection should cross the product's primary form"
+        },
+        "fill": {
+          "type": "RectAreaLight",
+          "color": "#eaf0ff",
+          "intensity": 4,
+          "width_m": 2.0,
+          "height_m": 1.2,
+          "elevation_deg": 15,
+          "azimuth_deg": 60,
+          "castShadow": false
+        },
+        "rim": {
+          "type": "RectAreaLight",
+          "color": "#ffffff",
+          "intensity": 8,
+          "width_m": 0.4,
+          "height_m": 1.6,
+          "elevation_deg": 25,
+          "azimuth_deg": 170,
+          "castShadow": false,
+          "note": "narrow strip behind the product; supplies the separation edge"
+        },
+        "ratio": "key:fill ~ 3:1; rim reads about one stop above the key on the silhouette edge only"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#0d0f12",
+        "horizon": "#1c2026"
+      },
+      "fog": {
+        "type": "none",
+        "color": "#1c2026",
+        "density": 0.0
+      },
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.0
+      },
+      "shadow": {
+        "mapSize": 2048,
+        "bias": -0.0001,
+        "normalBias": 0.02,
+        "camera_extent_m": 6,
+        "note": "RectAreaLight casts no shadow here; these settings belong to the low DirectionalLight or shadow-catcher used for contact"
+      },
+      "environment": {
+        "type": "RoomEnvironment",
+        "intensity": 0.15
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.3,
+          "strength": 0.15,
+          "radius": 0.4
+        },
+        "vignette": 0.3,
+        "grain": 0.02,
+        "dof": "focus on the front face, roughly f/4 equivalent"
+      },
+      "never": [
+        "a flat black background",
+        "untinted white ambient light",
+        "a silhouette edge that merges into the background at any rotation",
+        "two competing contact shadows"
+      ],
+      "snippet": "RectAreaLightUniformsLib.init();\nconst key=new THREE.RectAreaLight(0xffffff,12,1.2,1.8);key.position.set(-1.8,1.4,1.8);key.lookAt(0,0.4,0);scene.add(key);\nconst fill=new THREE.RectAreaLight(0xeaf0ff,4,2.0,1.2);fill.position.set(2.2,0.7,1.2);fill.lookAt(0,0.4,0);scene.add(fill);\nconst rim=new THREE.RectAreaLight(0xffffff,8,0.4,1.6);rim.position.set(0.3,1.0,-2.0);rim.lookAt(0,0.4,0);scene.add(rim);\nconst contact=new THREE.DirectionalLight(0xffffff,0.3);contact.position.set(0,4,0.5);\ncontact.castShadow=true;contact.shadow.mapSize.set(2048,2048);contact.shadow.normalBias=0.02;scene.add(contact);\nconst pmrem=new THREE.PMREMGenerator(renderer);\nscene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture;scene.environmentIntensity=0.15;\nrenderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;"
+    }
+  }
+}

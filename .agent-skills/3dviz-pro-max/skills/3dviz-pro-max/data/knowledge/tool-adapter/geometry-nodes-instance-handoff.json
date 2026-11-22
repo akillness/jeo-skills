@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.geometry-nodes-instance-handoff",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Geometry Nodes realization versus runtime instancing"
+  },
+  "aliases": {
+    "en": [
+      "Realize Instances before glTF",
+      "EXT_mesh_gpu_instancing handoff",
+      "Geometry Nodes instance export"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies",
+    "operations-logistics"
+  ],
+  "summary": "Classify procedural copies by prototype, transform, material and hierarchy so they either remain a supported glTF instance batch or are deliberately realized into ordinary geometry.",
+  "objective": "Repeated geometry arrives with the intended count, transforms and material grouping, while uniqueness-dependent edits are realized and draw-call expectations are measured in Three.js.",
+  "applies_when": [
+    "Geometry Nodes or shared Blender mesh data creates repeated props intended for a Three.js scene."
+  ],
+  "tags": [
+    "tool-adapter",
+    "geometry-nodes",
+    "instances",
+    "EXT-mesh-gpu-instancing",
+    "three"
+  ],
+  "subject_terms": [
+    "Geometry Nodes instances",
+    "Realize Instances",
+    "nested instances",
+    "EXT_mesh_gpu_instancing",
+    "shared mesh datablock",
+    "InstancedMesh",
+    "instanceMatrix",
+    "prototype transform table"
+  ],
+  "intent_signals": [
+    "Geometry Nodes copies became one huge mesh",
+    "why are instances missing from GLB",
+    "keep Blender scatter instanced in Three.js",
+    "realize or instance before export"
+  ],
+  "example_prompts": [
+    "Export a Geometry Nodes forest as reusable tree prototypes and transforms for Three.js.",
+    "Decide which repeated bolts must be realized because each receives unique geometry edits."
+  ],
+  "negative_signals": [
+    "Assume every Geometry Nodes graph maps to EXT_mesh_gpu_instancing",
+    "Realize a large nested scatter without measuring expansion"
+  ],
+  "not_for": [
+    "Independent rigid-body simulation for every copy.",
+    "Copies requiring distinct shader feature sets within one runtime InstancedMesh batch."
+  ],
+  "content": {
+    "principles": [
+      "An instance is a prototype reference plus a transform, not duplicated vertex data. Realization changes that representation into editable geometry and can greatly increase processing and delivery cost.",
+      "Blender's Geometry Nodes instance export is experimental, while its GPU-instance path has explicit structural limits. Treat extension output as an inspected artifact rather than an assumption.",
+      "Runtime batching depends on shared geometry and material. Preserve semantic identity in a side table because one InstancedMesh does not create one scene node or physics body per copy."
+    ],
+    "implementation": [
+      "Inventory prototype key, transform, material assignment, parent and required per-copy attributes. Partition copies into homogeneous batches; promote exceptional copies to separate objects.",
+      "Keep instances through export only when the actual exporter path preserves the required structure. For Blender GPU Instances, test mesh-only copies sharing mesh data, parent and material constraints; inspect whether EXT_mesh_gpu_instancing is present.",
+      "Insert Realize Instances only where downstream operations require unique vertices, faces or attributes. Choose nested realization depth deliberately and compare realized vertex count with prototype vertices times copy count.",
+      "Load with GLTFLoader and inspect the resulting scene. If using an application-owned InstancedMesh, transfer prototype geometry/material and matrices, call setMatrixAt, mark instanceMatrix.needsUpdate after edits, and maintain stable semantic IDs outside the matrix buffer.",
+      "Compare draw calls, instance count, bounds and picking IDs for one small fixture containing nested copies, one material exception and one unique edit."
+    ],
+    "observable_checks": [
+      "The imported copy count and transforms equal the authored transform table, including a rotated non-uniform fixture.",
+      "Extension inspection confirms EXT_mesh_gpu_instancing only for batches intended to use it; unsupported exceptions remain visible separate objects or approved realized geometry.",
+      "Moving one runtime matrix changes only that instance after needsUpdate, and picking maps its instanceId back to the intended semantic object."
+    ]
+  },
+  "related_ids": [
+    "knowledge.three-instanced-scenery-adapter",
+    "knowledge.blender-evaluated-mesh-handoff",
+    "knowledge.shared-gltf-asset-bridge"
+  ],
+  "creative_affordances": [
+    "Mix a large instanced background with a few unique hero copies.",
+    "Instance transforms may carry controlled scale and rotation variation while the prototype remains shared."
+  ],
+  "known_limits": [
+    "Geometry Nodes instance export is documented as experimental in Blender 4.5.",
+    "Instancing does not provide per-copy physics or arbitrary per-copy materials.",
+    "Authored reusable guidance; no export, import or runtime artifact was executed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.modeling-blender-instance-realization",
+      "statement": "Blender Geometry Nodes instances reference geometry and store per-instance transforms without duplicating the underlying data; Realize Instances converts them to real geometry, can worsen performance for many complex instances, supports nested realization depth, and propagates instance-domain attributes under documented precedence rules.",
+      "scope": "Blender 4.5 Geometry Nodes representation and Realize Instances behavior.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-blender-geometry-instances",
+          "locator": "Instances; Nested Instancing"
+        },
+        {
+          "source_id": "source.modeling-blender-realize-instances",
+          "locator": "Realize Instances Node; Attributes; Realize All; Depth"
+        }
+      ]
+    },
+    {
+      "id": "claim.modeling-instance-export-runtime",
+      "statement": "Blender's glTF exporter labels Geometry Nodes instance export experimental and can emit EXT_mesh_gpu_instancing for mesh instances under documented parent, child and material constraints; Three.js GLTFLoader lists that extension as supported, and InstancedMesh represents copies sharing geometry and materials with per-instance transforms.",
+      "scope": "Documented Blender 4.5 exporter and current Three.js APIs; installed versions and generated assets still require inspection.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "GPU Instances; Include > Data > Scene Graph"
+        },
+        {
+          "source_id": "source.modeling-three-gltf-loader",
+          "locator": "Extensions"
+        },
+        {
+          "source_id": "source.knowledge-depth-three-instanced-mesh",
+          "locator": "Opening description; setMatrixAt and instanceMatrix.needsUpdate"
+        }
+      ]
+    }
+  ]
+}

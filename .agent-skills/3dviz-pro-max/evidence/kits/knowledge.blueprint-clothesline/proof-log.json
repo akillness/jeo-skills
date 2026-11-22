@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-clothesline",
+  "record_revision": 2,
+  "asset": "templates/kits/props/clothesline.js",
+  "asset_sha256": "036597e3c25a09153bf1e8a48680c36533a917f0a97cb808926c4575fba6b1f9",
+  "params": {
+    "span": 4.2,
+    "height": 1.98,
+    "sheets": 5,
+    "seed": 1,
+    "sag": 0.22
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-clothesline",
+    "module": "../props/clothesline.js",
+    "params": {
+      "span": 4.2,
+      "height": 1.98,
+      "sheets": 5,
+      "seed": 1,
+      "sag": 0.22
+    },
+    "triangles": 1232,
+    "bounds_m": {
+      "min": [
+        -2.309999993443489,
+        -0.0006494702976045374,
+        -0.3499999940395355
+      ],
+      "max": [
+        2.309999993443489,
+        1.9806494702976045,
+        0.3500000238418579
+      ],
+      "size": [
+        4.619999986886978,
+        1.981298940595209,
+        0.7000000178813934
+      ]
+    },
+    "fit_distance_m": 7.4198,
+    "view_distances_m": {
+      "far": 17.8075,
+      "mid": 8.9037,
+      "close": 5.7874,
+      "detail": 1.297
+    },
+    "sockets": [
+      "left",
+      "right",
+      "line"
+    ],
+    "detail_socket": "left",
+    "animated": false,
+    "colliders": [
+      "run"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "6b86635ed9f1130f660eb7287dbba9c058b1bfd7ee0cbf069637a290d6c14531",
+    "mid.png": "f578fc30c9226179f73f4b651bc1e1e12d9478d92a6276fd50dc379529f3414d",
+    "close.png": "3fe963c301fd6abefc4910326968533aad006fdbbb28e794910c1f941012ecfd",
+    "detail.png": "117ae8331bf21b18fe05e053baa07e4360e289325594910121530922aef1242d"
+  },
+  "motion": null,
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:51:22+00:00",
+  "finished": "2026-09-08T13:51:25+00:00"
+}

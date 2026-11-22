@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-gesture-move-arbitration",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Gesture arbitration between camera orbit and a committed move"
+  },
+  "aliases": {
+    "en": [
+      "drag to turn arbitration",
+      "gesture cancellation check"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles"
+  ],
+  "summary": "Check that one gesture yields at most one legal move and that cancellation leaves state and history untouched.",
+  "objective": "Committed gestures add at most one move under the declared history policy, cancelled gestures change nothing, and arbitration holds for the whole drag.",
+  "applies_when": [
+    "A viewer turns a puzzle by dragging directly on its surface.",
+    "The same input device also orbits the camera.",
+    "Drags can start on edges, leave the object or lose pointer capture."
+  ],
+  "check_method": "interaction",
+  "tags": [
+    "domain-validation",
+    "gesture",
+    "arbitration",
+    "cancellation"
+  ],
+  "subject_terms": [
+    "drag threshold",
+    "pointer capture",
+    "axis inference",
+    "commit",
+    "cancel",
+    "temporary angle"
+  ],
+  "intent_signals": [
+    "dragging near an edge turns the wrong layer",
+    "the layer stayed half turned after I let go"
+  ],
+  "example_prompts": [
+    "Check the drag-to-turn arbitration of this puzzle scene."
+  ],
+  "negative_signals": [
+    "modelling physical corner cutting",
+    "evaluating solving speed"
+  ],
+  "content": {
+    "principles": [
+      "A gesture proposes and the move engine decides: the interaction layer owns a temporary angle, and only a committed legal move changes state.",
+      "One gesture produces at most one move, so arbitration between orbiting the camera and turning a layer is resolved once and then held for the duration of the drag.",
+      "Cancellation is a first-class outcome, and which events cause it is an authored policy: releasing below the commit threshold usually cancels, while a release outside the object under valid pointer capture may legitimately commit. Declare the policy for off-surface release and for capture loss, then check that policy."
+    ],
+    "implementation": [
+      "Record for every gesture the initial contact point and surface, the inferred axis and layer, the accumulated angle and the final decision.",
+      "Script the ambiguous cases against the declared policy: a drag starting on an edge between two faces, a drag that reverses direction, a drag released off the object while capture is held, a capture loss mid-drag, and a modifier-driven camera orbit starting on a face.",
+      "For each case record state and history length before and after, and whether the temporary angle returned to zero.",
+      "Test the commit threshold from both sides with the same starting contact, just below and just above."
+    ],
+    "observable_checks": [
+      "Every gesture yields at most one committed move, and history grows according to the declared transaction policy: by exactly one per commit when moves are not coalesced, and by the declared coalesced amount otherwise, while cancelled gestures add nothing.",
+      "A cancelled gesture leaves the exact state unchanged and returns the temporary presentation angle to zero, with no partially rotated layer left behind.",
+      "Once arbitration selects camera orbit or layer turn, that choice holds for the whole drag; a mid-drag switch is reported as an arbitration defect."
+    ]
+  },
+  "known_limits": [
+    "Covers input arbitration and commitment; it does not evaluate how the gesture feels or whether the threshold suits a particular audience.",
+    "Authored verification guidance; no interface was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.direct-turn-cube",
+    "recipe.twisty-cube-3x3-face-turns",
+    "recipe.sliding-block-escape"
+  ],
+  "claims": []
+}

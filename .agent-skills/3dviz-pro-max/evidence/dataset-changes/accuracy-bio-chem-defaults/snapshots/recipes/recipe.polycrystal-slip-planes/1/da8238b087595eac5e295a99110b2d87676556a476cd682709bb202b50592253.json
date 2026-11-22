@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "id": "recipe.polycrystal-slip-planes",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Polycrystalline grains and slip planes"
+  },
+  "aliases": {
+    "en": [
+      "grain boundaries",
+      "dislocation slip",
+      "microstructure"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Show a polycrystal as differently oriented lattice domains and make slip planes a property of orientation rather than a texture.",
+  "objective": "Build a polycrystalline block where each grain has its own lattice orientation and I can reveal the slip planes that follow it.",
+  "tags": [
+    "microstructure",
+    "grains",
+    "slip"
+  ],
+  "subject_terms": [
+    "grain boundary",
+    "polycrystal",
+    "lattice orientation",
+    "slip plane",
+    "dislocation",
+    "plastic deformation",
+    "work hardening"
+  ],
+  "intent_signals": [
+    "Show why a metal has grains with different orientations.",
+    "Explain slip planes and grain boundaries in a 3D block."
+  ],
+  "example_prompts": [
+    "Build a polycrystalline block with per-grain lattice orientation and toggleable slip planes.",
+    "Show a dislocation stepping through a lattice plane and where a grain boundary interrupts it."
+  ],
+  "negative_signals": [
+    "Not a crystal plasticity or finite-element solver: no stress, strain or yield strength is computed.",
+    "Not a materials-selection or failure-analysis tool."
+  ],
+  "not_for": [
+    "Not a crystal plasticity or finite-element solver: no stress, strain or yield strength is computed.",
+    "Not a materials-selection or failure-analysis tool."
+  ],
+  "entities": [
+    {
+      "name": "Grain domains",
+      "guidance": "Partition the block into grains as closed cells with shared boundary faces, each storing its own lattice orientation."
+    },
+    {
+      "name": "Lattice and slip planes",
+      "guidance": "Draw a sparse lattice inside a selected grain and derive the highlighted plane from that grain orientation, so the plane rotates with the grain."
+    },
+    {
+      "name": "Dislocation marker",
+      "guidance": "Show one dislocation line and its step-by-step advance along a plane, stopping visibly at the grain boundary."
+    }
+  ],
+  "state_contract": {
+    "model": "Grain list with orientations, a boundary set shared between neighbouring grains, and a dislocation position expressed as a step index on a chosen plane. Deformation shown is an authored illustration, not a computed response to load.",
+    "authority": "Grain orientation is authoritative: lattice, slip plane and dislocation direction are all derived from it, so changing an orientation must update all three together.",
+    "actions": [
+      "Select a grain and show its lattice and available slip planes.",
+      "Step a dislocation along the selected plane.",
+      "Toggle the grain boundary surfaces and the outer block faces.",
+      "Reset orientations and the dislocation to the authored start."
+    ]
+  },
+  "invariants": [
+    "A slip plane never crosses a grain boundary unchanged; at the boundary the plane orientation changes or the marker stops.",
+    "Neighbouring grains share one boundary surface rather than each owning a private copy.",
+    "Stepping the dislocation backwards restores the previous lattice state exactly."
+  ],
+  "motion_guidance": [
+    "Advance the dislocation in discrete lattice steps so the motion reads as bond-by-bond, not as a sliding decal.",
+    "Do not deform the whole block continuously as if a load were applied; any shape change is an authored illustration."
+  ],
+  "known_limits": [
+    "Illustrative microstructure: grain sizes, shapes and orientation distribution are authored, not from a measured sample.",
+    "The recipe shows one dislocation on one plane; multiplication, tangles and cross-slip are out of scope.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-grain-boundaries",
+      "statement": "Grain boundaries are internal interfaces between zones of a crystalline material that have different lattice alignments.",
+      "scope": "Definition of the interface as stated in the cited session material; grain size effects are not claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-mit-crystal-defects",
+          "locator": "Session 20 summary, two-dimensional defects and grain boundaries"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-dislocation-slip",
+      "statement": "Movement of dislocations through the lattice contributes to plastic deformation and work hardening.",
+      "scope": "Qualitative mechanism quoted from the cited session objectives. The same page summarises the yield-stress argument in an elliptical sentence, so no quantitative strength or yield claim is drawn from this source.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-mit-crystal-defects",
+          "locator": "Session 20 learning objectives and summary, dislocation motion and yield stress"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Grain domains",
+      "structure": "Convex-ish cells with flat shared faces and slightly bevelled edges so boundaries read as surfaces rather than as wireframes.",
+      "material": "One metal family with per-grain variation in orientation-driven shading rather than arbitrary colour, so the block still looks like a single material.",
+      "articulation": "None. Grains are static; only visibility and selection change."
+    },
+    {
+      "family": "Lattice and slip planes",
+      "structure": "Sparse atom markers on the lattice with a translucent plane patch bounded by the grain, not extending past it.",
+      "material": "Thin translucent plane with a visible border so it can be seen edge-on; lattice markers stay small enough to avoid hiding the plane.",
+      "articulation": "Plane orientation is recomputed whenever the grain orientation changes."
+    },
+    {
+      "family": "Dislocation marker",
+      "structure": "A line defect with a visible step in the surrounding lattice rows, so the marker has structural evidence around it.",
+      "material": "A single high-contrast accent reserved for the defect; nothing else in the scene may use it.",
+      "articulation": "Advances in discrete steps along the plane and halts at the boundary."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Discrete illustrative stepping of an authored defect; no stress, strain or contact is simulated.",
+    "state": [
+      "selected grain",
+      "dislocation step index"
+    ],
+    "checks": [
+      "The dislocation marker stops at the boundary of its grain.",
+      "Changing a grain orientation rotates lattice, plane and marker together."
+    ]
+  },
+  "related_ids": [
+    "recipe.cubic-unit-cell-accounting",
+    "knowledge.structural-coherence",
+    "knowledge.object-isolation"
+  ]
+}

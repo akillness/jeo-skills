@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-prescribed-rate-age-distance",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Prescribed rate kinematics, units and half versus full rate"
+  },
+  "aliases": {
+    "en": [
+      "spreading rate units check",
+      "age distance consistency"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment"
+  ],
+  "summary": "Check that distance equals rate times age by construction, that units convert once, and that half and full rates are labelled.",
+  "objective": "Age and distance stay consistent for every parcel, paired parcels match, and the displayed rate convention is explicit.",
+  "applies_when": [
+    "A scene advects features at a prescribed rate rather than solving a physical model.",
+    "Published rates in one unit system are displayed in another.",
+    "Symmetric behaviour about an axis is asserted."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "kinematics",
+    "units",
+    "labelling"
+  ],
+  "subject_terms": [
+    "spreading rate",
+    "half rate",
+    "parcel age",
+    "advection",
+    "centimetres per year",
+    "playback speed"
+  ],
+  "intent_signals": [
+    "is that the half rate or the full rate",
+    "check the age labels against the distances"
+  ],
+  "example_prompts": [
+    "Check the rate and age bookkeeping in this seafloor spreading scene."
+  ],
+  "negative_signals": [
+    "mantle convection modelling",
+    "earthquake hazard analysis"
+  ],
+  "content": {
+    "principles": [
+      "A prescribed-rate model is kinematics rather than geodynamics: distance equals rate times age by construction, so the check is that the display cannot contradict its own construction.",
+      "Rate units must be stated and converted once, because published spreading rates are quoted in centimetres per year while a scene may run in other units.",
+      "Half rate and full rate differ by a factor of two under the symmetric constant-rate assumption used here, so a scene must say which it displays; that factor is a property of this fixture rather than a general relation for asymmetric spreading."
+    ],
+    "implementation": [
+      "Record each parcel birth time, side and signed axis-relative position, require a strictly positive half rate, and compare the magnitude of that position with half rate times age at several model times, keeping signed position and nonnegative distance distinct in the report.",
+      "Compare paired parcels born together on either side and record their ages and distances from the axis.",
+      "State the rate with units in the interface and verify the conversion by computing the distance travelled over one model year in scene units, reporting the converted value with the tolerance of the conversion.",
+      "Change playback speed and re-read the age-distance relation to confirm it is unchanged."
+    ],
+    "observable_checks": [
+      "Distance from the axis equals half rate times age for every parcel within the reported tolerance, signed positions are opposite for paired parcels, and paired parcels have equal age and equal distance in this symmetric model.",
+      "Under the declared symmetric assumption the displayed full separation rate is exactly twice the half rate, whichever is shown is labelled, and the artifact does not extend that factor to asymmetric spreading.",
+      "Playback speed changes only wall-clock duration, leaving the age-distance relation and the labels unchanged."
+    ]
+  },
+  "known_limits": [
+    "A synthetic constant-rate illustration; symmetric constant spreading is an assumption rather than a property of real ridges, and no ages here are measured.",
+    "Authored verification guidance; nothing was computed or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.divergent-ridge-crust-age",
+    "recipe.terrain-contour-slices",
+    "recipe.earth-tilt-seasons"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-seafloor-spreading-rates",
+      "statement": "Mid-ocean ridges occur along divergent plate boundaries where new ocean floor is created as tectonic plates spread apart, with published spreading rates of a few centimetres per year for the Mid-Atlantic Ridge and higher rates for the East Pacific Rise.",
+      "scope": "General process description and example rates from the cited public page; the parcels, ages and constant rate in a scene remain synthetic.",
+      "source_refs": [
+        {
+          "source_id": "source.validation-depth-noaa-mid-ocean-ridge",
+          "locator": "Mid-ocean ridge description and quoted spreading rates"
+        }
+      ]
+    }
+  ]
+}

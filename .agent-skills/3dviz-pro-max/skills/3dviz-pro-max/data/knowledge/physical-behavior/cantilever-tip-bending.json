@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.cantilever-tip-bending",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Cantilever tip load and spatial bending"
+  },
+  "aliases": {
+    "en": [
+      "Euler Bernoulli cantilever",
+      "tip load"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal",
+    "products-assemblies"
+  ],
+  "summary": "Change a tip load and inspect the continuous beam bend while its clamped root stays fixed.",
+  "objective": "Expose the authoritative model and its visible response: cantilever tip load and spatial bending.",
+  "applies_when": [
+    "Prismatic slender Euler-Bernoulli beam with constant E,I, fixed root, transverse tip force and small deflection; static linear elastic response without self-weight."
+  ],
+  "subject_terms": [
+    "Euler Bernoulli cantilever",
+    "tip load",
+    "flexural rigidity",
+    "beam deflection"
+  ],
+  "tags": [
+    "physical-behavior",
+    "cantilever-tip-bending"
+  ],
+  "intent_signals": [
+    "Change a tip load and inspect the continuous beam bend while its clamped root stays fixed."
+  ],
+  "example_prompts": [
+    "Build an inspectable demonstration of cantilever tip load and spatial bending with parameter controls and a reset."
+  ],
+  "negative_signals": [
+    "Not large rotations, shear-flexible short beams, buckling, plasticity, dynamic response or certified structural design."
+  ],
+  "not_for": [
+    "Not large rotations, shear-flexible short beams, buckling, plasticity, dynamic response or certified structural design."
+  ],
+  "content": {
+    "principles": [
+      "A load slider recalculates static equilibrium; tweening between equilibria is not vibration.",
+      "The centerline bend and section orientation must come from the same displacement field."
+    ],
+    "implementation": [
+      "Own length L in m, E in Pa, second area moment I in m^4 and signed transverse tip force P in N. Fix +x from the clamp toward the tip and one transverse +y axis. P is signed along +y, and w is displacement along that same fixed +y axis for either load sign. Use w(x)=P*x*x*(3*L-x)/(6*E*I), slope=P*x*(2*L-x)/(2*E*I), and M(x)=E*I*w''(x)=P*(L-x) in this section-moment convention. Require finite L,E,I>0 and finite P.",
+      "Sample physical centerline positions and orient cross sections normal to its tangent; retain section dimensions. Show a fixed clamp, tip force and optional undeformed ghost. A displayed displacement magnifier must not modify computed strain or physical readouts.",
+      "Allow load reversal and E or I edits; recompute mesh, slope and tip displacement together. Declare a small-slope/deflection applicability criterion for the chosen example and label out-of-regime inputs. Reset restores load and display magnification."
+    ],
+    "observable_checks": [
+      "Verify w(0)=0, slope(0)=0, M(L)=0 and w(L)=P*L^3/(3*E*I).",
+      "With L=1 m,E=200 GPa,I=1e-8 m^4,P=10 N, tip displacement is 1/600 m; doubling P doubles it, and P=0 restores the undeformed centerline.",
+      "Reverse P in the same fixed coordinates: w(x;-P)=-w(x;P), including the tip. The transverse axis and undeformed reference do not flip with the load."
+    ]
+  },
+  "known_limits": [
+    "Not large rotations, shear-flexible short beams, buckling, plasticity, dynamic response or certified structural design.",
+    "Authored reusable guidance; no solver or rendered artifact has been tested for this record."
+  ],
+  "creative_affordances": [
+    "Use a cutaway, restrained ghost reference or annotated section only when it clarifies the modeled relation; a planar diagram remains valid when depth adds no information."
+  ],
+  "related_ids": [
+    "knowledge.compliant-spring-motion"
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-cantilever-tip-bending",
+      "statement": "For a clamped prismatic beam under a transverse tip force P, the linear beam solution is w(x)=P*x^2*(3L-x)/(6EI), slope=P*x*(2L-x)/(2EI) and bending moment P*(L-x); the tip displacement follows as P*L^3/(3EI).",
+      "scope": "Prismatic slender Euler-Bernoulli beam with constant E,I, fixed root, transverse tip force and small deflection; static linear elastic response without self-weight.",
+      "source_refs": [
+        {
+          "source_id": "source.object-physics-cantilever-tip-bending",
+          "locator": "PDF page 14, solution 4; page 16, table solution 4"
+        }
+      ]
+    }
+  ]
+}

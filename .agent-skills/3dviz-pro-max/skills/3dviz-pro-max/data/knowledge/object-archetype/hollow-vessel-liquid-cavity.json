@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.hollow-vessel-liquid-cavity",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "object-archetype",
+  "title": {
+    "en": "Hollow vessel, rim and retained liquid volume"
+  },
+  "aliases": {
+    "en": [
+      "cup interior and liquid surface",
+      "container cavity and fill level"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "soft-fluid-thermal",
+    "environments-dioramas"
+  ],
+  "summary": "Separate vessel wall, interior cavity, opening and liquid domain so fill and tilt interactions reveal a usable container rather than a capped solid.",
+  "objective": "Keep liquid inside the declared cavity, distinguish static equilibrium from pouring dynamics and preserve a coherent wall/rim cross-section.",
+  "tags": [
+    "object-archetype",
+    "hollow-vessel-liquid-cavity"
+  ],
+  "subject_terms": [
+    "hollow vessel",
+    "rim thickness",
+    "interior cavity",
+    "free surface",
+    "fill volume",
+    "hydrostatic pressure",
+    "spill threshold"
+  ],
+  "intent_signals": [
+    "cup is solid inside",
+    "liquid surface rotates with container",
+    "show vessel wall thickness and fill"
+  ],
+  "example_prompts": [
+    "Build an inspectable glass or ceramic vessel with a real cavity and a volume-based fill control.",
+    "Show quasi-static liquid tilt and the onset of spill without claiming a full fluid simulation."
+  ],
+  "content": {
+    "principles": [
+      "For a connected static liquid of constant density in uniform gravity with a uniform surface pressure, the cited hydrostatic relation makes pressure depend on depth rather than container shape. Ignore capillary curvature only when that approximation is declared.",
+      "The outer silhouette does not define liquid capacity. Wall thickness, bottom thickness, cavity and opening must be distinct enough to inspect.",
+      "A fill fraction is a volume parameter, not generally a linear height parameter. Only a constant-area upright cavity makes height proportional to volume.",
+      "A quasi-static tilted vessel can use a gravity-aligned clipped liquid volume; fast sloshing, jets and splashes require another model or an explicitly decorative effect."
+    ],
+    "implementation": [
+      "Define a closed interior cavity below an open rim, with outward-facing exterior and inward-facing cavity surfaces connected across the rim. Preserve positive wall/bottom thickness when editing dimensions.",
+      "For a simple upright cylindrical cavity, use V=pi*r*r*h with positive radius and bounded height. For a general cavity, solve the volume below a plane by analytic integration or a converged geometric method and state its tolerance.",
+      "In the quasi-static model, orient the free-surface plane perpendicular to gravity in world coordinates and solve its offset for retained volume. Transform the vessel cavity, not gravity, when tilting the vessel.",
+      "Compute the capacity below the lowest world-space rim point. If requested liquid volume exceeds it, either clamp retained volume and report removed volume as instantaneous quasi-static spill or stop the control at that limit; do not silently keep a floating cap outside the opening.",
+      "Render liquid surface and boundary separately from vessel optics. Refraction/transparency, ceramic glaze or a deliberately opaque illustrative liquid are presentation choices and must not change collision/cavity geometry.",
+      "Keep dimensions, vessel pose, retained volume and any spilled-volume counter authoritative. If dynamic pouring is enabled, give that solver state ownership and stop the quasi-static plane controller from overwriting it."
+    ],
+    "observable_checks": [
+      "A cross-section shows bottom and wall thickness with the liquid entirely in the cavity; the empty setting leaves an opening rather than a hidden lid.",
+      "For an upright cylinder, doubling retained volume doubles height only while below capacity; a tapered test cavity uses its own volume-height mapping.",
+      "Slowly tilt the vessel: the static free surface remains gravity-aligned, and the chosen spill rule activates at the lowest rim without unexplained volume creation.",
+      "Pause and reset preserve or restore pose, retained/spilled volume and geometry parameters together."
+    ]
+  },
+  "known_limits": [
+    "Static constant-density approximation excludes capillary menisci, rotating/accelerating frames, compressibility and dynamic slosh unless separately modeled.",
+    "A schematic spill counter is not a trajectory, discharge-rate or wetting simulation; numerical cavity clipping needs its own tolerance checks.",
+    "Authored modeling guidance and prospective checks; no runtime artifact has been executed for this record."
+  ],
+  "creative_affordances": [
+    "Choose cups, bowls, bottles with an appropriate opening model, cooking vessels or fantastical containers; stylize materials and cross-section presentation independently of the declared liquid regime."
+  ],
+  "claims": [
+    {
+      "id": "claim.object-depth-hollow-vessel-liquid-cavity",
+      "statement": "For a static constant-density liquid in uniform gravity, OpenStax gives p=p0+rho*g*h and explains that connected freely communicating parts reach the same liquid level regardless of container shape.",
+      "scope": "Hydrostatic equilibrium with uniform surface pressure; gravity-aligned free-surface approximation excludes capillary effects, acceleration and sloshing.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-hydrostatics",
+          "locator": "Section 14.1, Pressure at a Depth for a Fluid of Constant Density, Eq. 14.4; Pressure in a fluid with a constant density, Eq. 14.9 and Figure 14.9."
+        }
+      ]
+    }
+  ],
+  "related_ids": []
+}

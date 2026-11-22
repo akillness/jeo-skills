@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "id": "recipe.single-attention-head-aggregation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Single attention-head value aggregation"
+  },
+  "aliases": {
+    "en": [
+      "scaled dot-product attention inspector",
+      "attention weight and value mix",
+      "one-head attention"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "linear-algebra"
+  ],
+  "summary": "Connect one query row's scaled query-key scores and softmax weights to the weighted sum of value vectors produced by one attention head.",
+  "objective": "Select one query token, inspect every scaled score and softmax weight, and verify how those weights aggregate value vectors into the head output.",
+  "tags": [
+    "attention",
+    "softmax",
+    "weighted sum",
+    "tensor shapes"
+  ],
+  "subject_terms": [
+    "scaled dot-product attention",
+    "query key value",
+    "attention matrix",
+    "row-wise softmax",
+    "value aggregation",
+    "causal mask",
+    "single attention head",
+    "convex combination"
+  ],
+  "intent_signals": [
+    "Explain how one attention head computes weights and mixes value vectors.",
+    "Show tensor shapes for Q, K, V, attention weights, and one output row."
+  ],
+  "example_prompts": [
+    "Visualize one scaled dot-product attention head for a short token sequence and let me verify the value-vector weighted sum."
+  ],
+  "negative_signals": [
+    "all-head overview",
+    "causal attribution",
+    "feature-importance proof",
+    "generic network graph"
+  ],
+  "not_for": [
+    "Claiming that attention weights explain the final model prediction.",
+    "Combining several heads without their projections and output matrix.",
+    "Treating a causal mask as a learned low weight."
+  ],
+  "entities": [
+    {
+      "name": "Query-key score row",
+      "guidance": "For selected query i, expose each dot product q_i dot k_j, the division by sqrt(d_k), any explicit mask, and the resulting softmax input. Keep tensor shapes visible."
+    },
+    {
+      "name": "Attention weights",
+      "guidance": "Use a table, ribbons, or bars whose linear scale represents alpha_ij. Show the row sum and distinguish masked zeros from small learned weights."
+    },
+    {
+      "name": "Value-vector mixture",
+      "guidance": "Show o_i=sum_j alpha_ij v_j in the actual d_v-dimensional state. A 3D point cloud or convex hull is a declared projection of value space, and the projected output must be obtained by applying the same linear display projection to o_i."
+    }
+  ],
+  "state_contract": {
+    "model": "One head with Q in R^(n_q x d_k), K in R^(n_k x d_k), V in R^(n_k x d_v). Compute logits=QK^T/sqrt(d_k), apply the declared mask before a row-wise softmax alpha, then O=alpha V in R^(n_q x d_v). Use n_q=n_k only for self-attention; cross-attention may differ.",
+    "authority": "Q, K, V, d_k, mask, and the selected query row own all scores, weights, and outputs. Any 3D projection is a display map from d_k or d_v dimensions and never changes the tensor calculation.",
+    "actions": [
+      "Select a query row and inspect its per-key products, scaled logits, mask, weights, and output.",
+      "Toggle a valid causal mask and recompute softmax after setting forbidden logits to negative infinity.",
+      "Edit one supplied vector component or load another fixture and recompute all dependent rows.",
+      "Switch between actual-coordinate tables and labeled 3D projections.",
+      "Reset tensors, mask, query selection, and camera."
+    ]
+  },
+  "invariants": [
+    "For each nonempty permitted key set, attention weights are nonnegative and sum to 1 within tolerance.",
+    "O has shape n_q by d_v and each row equals the independently recomputed alpha row times V.",
+    "A causal mask yields exactly zero displayed probability for forbidden future keys after softmax.",
+    "If the 3D value view uses a linear projection P, the displayed output is P(o_i)=sum_j alpha_ij P(v_j); no nonlinear embedding may be presented as preserving this barycentric identity."
+  ],
+  "motion_guidance": [
+    "Reveal score, scale, mask, softmax, and value sum as ordered explanatory stages driven by one frozen tensor state.",
+    "A moving ribbon or particle shows aggregation order only; matrix multiplication has no implied physical transit time."
+  ],
+  "creative_affordances": [
+    "Use ribbons, matrix tiles, vector balances, or a compact tensor laboratory while keeping exact values accessible.",
+    "A projected convex-hull view may complement the table when its axes and linear projection are declared."
+  ],
+  "known_limits": [
+    "One attention head does not include multi-head concatenation, the output projection, residual connections, normalization, or downstream layers.",
+    "Attention weights describe this head's value mixture; they are not by themselves a faithful causal explanation of a model prediction.",
+    "A 3D projection shows at most three display coordinates of d_k- or d_v-dimensional vectors.",
+    "Authored recipe and prospective checks only; no model forward pass, scene, or rendered result was run or observed."
+  ],
+  "claims": [
+    {
+      "id": "claim.mixed-grok-scaled-dot-product-attention",
+      "statement": "Scaled dot-product attention computes softmax(QK^T/sqrt(d_k))V, so each query row's softmax weights form the coefficients of a weighted sum of value vectors.",
+      "scope": "One scaled dot-product attention operation with its declared mask and row-wise softmax.",
+      "source_refs": [
+        {
+          "source_id": "source.mixed-grok-transformer-attention",
+          "locator": "Section 3.2, equation 1, and Section 3.2.3 masking description"
+        }
+      ]
+    },
+    {
+      "id": "claim.mixed-grok-attention-explanation-limit",
+      "statement": "In the NLP models studied by Jain and Wallace, learned attention weights were often uncorrelated with gradient-based feature-importance measures, and substantially different attention distributions could yield equivalent predictions.",
+      "scope": "The models and tasks tested in the NAACL 2019 study; this supports a caution, not a theorem about every attention mechanism.",
+      "source_refs": [
+        {
+          "source_id": "source.mixed-grok-attention-explanation-limit",
+          "locator": "Abstract"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Attention aggregation instrument",
+      "structure": "Keep query, key, score, mask, probability, value, and output objects separately selectable. Align rows and token identities across matrix, ribbon, and projected-vector views.",
+      "material": "Use signed styling for logits, bounded styling for probabilities, and distinct outlines for masked entries. Text and shape preserve meaning without color."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Tensor-derived geometry and staged explanation; no physical flow or causal-attribution model.",
+    "checks": [
+      "Recompute row softmax and O=alpha V from displayed tensors.",
+      "Verify the declared display projection does not alter the underlying tensor state."
+    ]
+  }
+}

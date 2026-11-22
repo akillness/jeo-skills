@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "id": "recipe.citygml-stable-id-scenario-diff",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "CityGML stable-ID scenario differencer"
+  },
+  "aliases": {
+    "en": [
+      "urban alternative comparison",
+      "city object change set"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "operations-logistics"
+  ],
+  "summary": "Compare a finite set of supplied CityGML-derived urban alternatives by stable feature identity, CRS, epoch and declared attribute/geometry changes, without inferring semantics from meshes or running an urban simulation.",
+  "objective": "Compare a finite set of supplied CityGML-derived urban alternatives by stable feature identity, CRS, epoch and declared attribute/geometry changes, without inferring semantics from meshes or running an urban simulation.",
+  "tags": [
+    "CityGML 3.0",
+    "urban scenario",
+    "featureID",
+    "CRS epoch",
+    "change set"
+  ],
+  "subject_terms": [
+    "CityGML 3.0",
+    "urban scenario",
+    "featureID",
+    "CRS epoch",
+    "change set"
+  ],
+  "intent_signals": [
+    "CityGML stable-ID scenario differencer"
+  ],
+  "example_prompts": [
+    "Build citygml stable-id scenario differencer with explicit stable IDs, units, time, boundary inputs and stale/unavailable states."
+  ],
+  "negative_signals": [
+    "rendered motion proves operational correctness",
+    "planned state equals observed state"
+  ],
+  "not_for": [
+    "Safety certification, regulatory compliance, or operational control without qualified local review."
+  ],
+  "entities": [
+    {
+      "name": "Base registry",
+      "guidance": "Retain dataset/version hash, CRS with axis order/units, epoch and stable featureID/identifier separately from glTF node names."
+    },
+    {
+      "name": "Scenario patches",
+      "guidance": "Each finite alternative lists add/remove/replace operations against base IDs with provenance and expected prior hash."
+    },
+    {
+      "name": "Difference view",
+      "guidance": "Report semantic attribute changes and geometry-hash changes independently; missing mapping stays unavailable."
+    }
+  ],
+  "state_contract": {
+    "model": "Accept one base registry and 2..16 finite supplied scenario patch sets. Require unique featureID, declared CRS/axis order/linear units and common epoch or an explicit prevalidated transform. Apply transactionally: add requires an absent target ID and null predecessor hash; update/remove requires an existing target and exact expected prior hash. Reject duplicate operations on one ID unless a declared sequential patch order and intermediate hashes are present. Compare every scenario with the same immutable base hash; report added, removed, semantic-changed, geometry-changed and mapping-unavailable IDs. Never recover CityGML class, topology or identifier from visual mesh similarity.",
+    "authority": "The CityGML-derived registry, CRS/epoch, base hash and scenario patches own identity/change state. Blender may author context geometry but must preserve an external ID map; glTF transports render meshes/nodes; Three.js applies patches to cloned registries and drives selection/difference overlays.",
+    "actions": [
+      "Choose base and alternative.",
+      "Filter change category.",
+      "Inspect one feature provenance/hash.",
+      "Reset to immutable base."
+    ]
+  },
+  "invariants": [
+    "Every add targets an absent ID with null predecessor; every update/remove matches an existing ID and exact prior hash.",
+    "Alternatives share the same base registry hash.",
+    "Semantic and geometry changes remain separate.",
+    "Unmapped meshes never acquire inferred CityGML semantics."
+  ],
+  "motion_guidance": [
+    "Playback restores stored model/event steps; animation between steps is explanatory and never changes authoritative counts, timestamps or completion state."
+  ],
+  "creative_affordances": [
+    "Use cutaways, small multiples, queues and non-color status glyphs while keeping assumptions and unavailable states visible."
+  ],
+  "known_limits": [
+    "No planning merit, environmental effect, BIM correctness, topology recovery or regulatory conclusion is computed."
+  ],
+  "claims": [
+    {
+      "id": "claim.city-ogc-citygml-identity",
+      "statement": "OGC CityGML 3.0 defines a semantic information model alongside geometry and relationships; geographic features have mandatory featureID for versions and an optional identifier that can reference the same real-world object across versions.",
+      "scope": "CityGML 3.0 Conceptual Model and Users Guide; this recipe’s patch hashes and comparison categories are authored workflow rules.",
+      "source_refs": [
+        {
+          "source_id": "source.city-ogc-citygml30-guide",
+          "locator": "Sections 7 and 7.2.1, semantic modeling and feature identity"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Urban alternative small multiples",
+      "structure": "Blender exports named context/building/road meshes and an external featureID-to-node manifest in the declared display frame; glTF mesh structure is not treated as semantic source.",
+      "material": "Added/removed/attribute/geometry changes use distinct hatch/glyph channels.",
+      "articulation": "Three.js validates the ID manifest, clones the base, applies one patch transaction and synchronizes camera/selection across alternatives."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Transactional comparison of supplied semantic/geometry records; no urban physics.",
+    "state": [
+      "base registry/hash",
+      "CRS/epoch",
+      "scenario patch sets",
+      "difference categories"
+    ],
+    "checks": [
+      "Reject wrong prior hash.",
+      "Reset reproduces base hash.",
+      "Flag every unmapped feature/node."
+    ]
+  },
+  "related_ids": [
+    "recipe.historical-diorama",
+    "knowledge.inspectable-selection"
+  ]
+}

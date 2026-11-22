@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "id": "recipe.exact-cover-packing",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Exact cover packing with a real search"
+  },
+  "aliases": {
+    "en": [
+      "exact cover",
+      "polycube packing",
+      "backtracking search"
+    ]
+  },
+  "direction_ids": [
+    "spatial-puzzles"
+  ],
+  "summary": "Keep the search honest: a packing scene either runs a real backtracking search or replays a recorded one, and says which.",
+  "objective": "Build a polycube packing puzzle whose solver explores placements as an exact cover search I can step, pause and inspect.",
+  "tags": [
+    "exact cover",
+    "packing",
+    "search"
+  ],
+  "subject_terms": [
+    "exact cover",
+    "polycube",
+    "backtracking",
+    "search tree",
+    "placement candidate",
+    "constraint",
+    "dancing links",
+    "solution count"
+  ],
+  "intent_signals": [
+    "Show a packing puzzle being solved by an actual search.",
+    "Explain exact cover with cells that must be covered exactly once."
+  ],
+  "example_prompts": [
+    "Build a polycube packing puzzle with a steppable exact cover search and a placement candidate list.",
+    "Show the search backtracking when a region becomes impossible to fill."
+  ],
+  "negative_signals": [
+    "Not a claim of optimal or fastest solving; no benchmark is asserted.",
+    "Not a physics assembly: pieces do not slide, collide or fall."
+  ],
+  "not_for": [
+    "Not a claim of optimal or fastest solving; no benchmark is asserted.",
+    "Not a physics assembly: pieces do not slide, collide or fall."
+  ],
+  "entities": [
+    {
+      "name": "Tray and cells",
+      "guidance": "Model the target volume as an explicit set of cells with coordinates, since exact cover is a statement about cells being covered once."
+    },
+    {
+      "name": "Piece placements",
+      "guidance": "Enumerate placements as piece plus rotation plus offset and treat each as a candidate object, not as a transform applied to a mesh."
+    },
+    {
+      "name": "Search view",
+      "guidance": "Show the current partial cover, the chosen branch and the depth, so backtracking is visible as retreat rather than as a jump."
+    }
+  ],
+  "state_contract": {
+    "model": "A cell set, a finite enumerated placement list (each piece under its allowed rotations at every in-bounds offset, with duplicate placements removed), a partial cover with a count per cell, and one piece-use element per supplied piece so that each piece is required exactly once alongside each cell being covered exactly once. Depth-first search with a declared branching rule ends in one of three outcomes: solution found, search exhausted with no solution, or paused at a declared step budget. Whether the run is live or a recorded replay is stated in the scene.",
+    "authority": "The cover counts are authoritative: a cell covered twice is a failure state, and no piece may be shown placed unless its cells are marked in the cover.",
+    "actions": [
+      "Step the search forward one placement.",
+      "Backtrack one level.",
+      "Run until the next complete solution.",
+      "Reset the tray, placements and search.",
+      "Run to exhaustion or to the declared step budget, and read which of the three outcomes ended the run."
+    ]
+  },
+  "invariants": [
+    "A completed solution covers every cell exactly once and uses every supplied piece exactly once; a tiling that reuses one piece and omits another is rejected by the piece-use elements, not accepted as a cover.",
+    "Backtracking removes exactly the cells added by the placement being undone and restores that piece to the available set, so cover counts and piece availability always move together.",
+    "A solution count is a count of what this search found; it is a total only when the search reported exhaustion over the complete declared placement list, and never when it stopped at the step budget."
+  ],
+  "motion_guidance": [
+    "Animate placement and removal so a backtrack is visible as the piece leaving, not as the scene resetting.",
+    "Keep step, pause and inspect available; a search that can only run to completion cannot be understood."
+  ],
+  "known_limits": [
+    "Search cost grows sharply with tray size and piece symmetry; no interactive performance is promised.",
+    "Symmetric solutions may be counted more than once unless a symmetry-breaking rule is declared.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-exact-cover-search",
+      "statement": "Depth-first search for tiling-style problems can be implemented with reversible local operations on doubly linked lists so that every step affects the data incrementally, and adding a ghost element for each piece places the rule that each piece is used once on the same footing as the rule that each cell is covered once.",
+      "scope": "Technique described in the cited abstract, which was read in full while the paper body was not. The ghost element is exactly what makes each piece used once a covering rule alongside each cell covered once, which is why this recipe carries piece-use elements in its state.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-knuth-dancing-links",
+          "locator": "arXiv cs/0011047 abstract"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Tray and cells",
+      "structure": "A tray with visible cell divisions and open faces so partial fills are inspectable from outside.",
+      "material": "Neutral tray with a distinct treatment for uncovered cells, so remaining space is legible at a glance.",
+      "articulation": "The tray is static; only the cover state changes."
+    },
+    {
+      "family": "Piece placements",
+      "structure": "Polycubes built from unit cubes with slight bevels so seams are visible and piece shape is readable.",
+      "material": "Per-piece identity material kept constant across rotations, so a piece stays recognisable when reoriented.",
+      "articulation": "Placements snap to cell coordinates and are removed cleanly on backtrack."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Discrete search with snapped placements; no contact, gravity or friction.",
+    "state": [
+      "cover counts",
+      "placement stack",
+      "search depth"
+    ],
+    "checks": [
+      "No cell is covered more than once at any search step.",
+      "Backtracking restores the exact previous cover state."
+    ]
+  },
+  "related_ids": [
+    "recipe.voxel-packing-tray",
+    "recipe.recursion-call-stack",
+    "knowledge.controlled-experiment"
+  ]
+}

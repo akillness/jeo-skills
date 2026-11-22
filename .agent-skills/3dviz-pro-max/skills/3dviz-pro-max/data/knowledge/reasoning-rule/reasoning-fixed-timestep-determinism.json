@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-fixed-timestep-determinism",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Advance the solver on a fixed step"
+  },
+  "aliases": {
+    "en": [
+      "timestep",
+      "accumulator",
+      "frame rate independence"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "soft-fluid-thermal",
+    "robotics-control"
+  ],
+  "summary": "Integrate physics on a fixed timestep decoupled from rendering, and interpolate for display.",
+  "objective": "Make simulated behaviour reproducible and stable regardless of frame rate.",
+  "applies_when": [
+    "A solver advances state over time in an interactive scene.",
+    "The scene can be paused, slowed, or run on machines of different speed.",
+    "A demonstration must repeat identically for comparison."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "timestep",
+    "integration",
+    "determinism",
+    "accumulator",
+    "frame rate",
+    "stability"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "mechanics",
+    "simulation"
+  ],
+  "intent_signals": [
+    "the simulation behaves differently each run",
+    "slow motion",
+    "it explodes on a slow machine"
+  ],
+  "example_prompts": [
+    "Make the physics demonstration repeat identically each time.",
+    "Add slow motion without changing the reported physics."
+  ],
+  "negative_signals": [
+    "Purely kinematic animation driven by elapsed time with no solver.",
+    "Analytic solutions evaluated directly at a time value."
+  ],
+  "not_for": [
+    "Purely kinematic animation driven by elapsed time with no solver.",
+    "Analytic solutions evaluated directly at a time value."
+  ],
+  "content": {
+    "principles": [
+      "Driving a solver with the frame interval makes the result depend on the machine, the window and the moment, so the same demonstration produces different outcomes and cannot be discussed.",
+      "The step size is a numerical parameter: a typical engine default is one sixtieth of a second, smaller steps give better accuracy, and large steps worsen the approximations in the equations of motion and can miss collisions entirely.",
+      "Fixed-step integration with an accumulator separates simulation time from display time, which is what makes pause, slow motion and replay meaningful.",
+      "Slow motion must scale simulation time, not the reported physical quantities; velocities and forces stay in model units regardless of playback rate."
+    ],
+    "implementation": [
+      "Accumulate elapsed real time and run whole fixed steps, carrying the remainder, then interpolate rendering between the last two states.",
+      "Cap the number of steps per frame and state the policy when the cap is hit: carry the remainder, drop simulation time, or pause. Schedule inputs on the simulation clock rather than on frame arrival, or throttling will change the run even with fixed steps.",
+      "Expose the step size and note it with the artifact, since it is part of the model rather than a rendering detail.",
+      "Seed any randomness explicitly and keep the input sequence recorded when reproducibility is claimed.",
+      "Report physical quantities in model units and show the playback rate separately."
+    ],
+    "observable_checks": [
+      "Run the same complete configuration twice, comparing states at equal simulation times with a stated numerical criterion. Divergence shows non-reproducibility, not its cause: unrecorded input timing, unseeded randomness, uninitialised state, solver ordering or platform arithmetic all produce it, and fixed stepping alone does not exclude them.",
+      "Throttle the frame rate deliberately and confirm the outcome is unchanged.",
+      "Switch to slow motion and confirm reported velocities and forces are unchanged while the motion appears slower.",
+      "Reduce the step size and compare: a converging result supports the current choice, while a qualitative change is evidence to investigate, often a missed impact now resolved or genuinely sensitive dynamics, rather than proof that refinement is wrong."
+    ]
+  },
+  "related_ids": [
+    "recipe.projectile-trajectory",
+    "recipe.simple-pendulum",
+    "knowledge.three-rigid-body-adapter"
+  ],
+  "creative_affordances": [
+    "Dramatic time effects such as slow motion, freeze and rewind are entirely compatible with a fixed step.",
+    "A deliberately coarse step can be shown as a teaching device about numerical error.",
+    "Adaptive integration is legitimate when it is deterministic and reproducible; the requirement is a defined relationship between simulation time and display time, not one fixed number."
+  ],
+  "known_limits": [
+    "Authored simulation guidance citing documented timestep behaviour of one engine; no simulation has been run or benchmarked for this record.",
+    "Full determinism across platforms also depends on floating-point behaviour, which this rule does not guarantee."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-timestep-accuracy-tradeoff",
+      "statement": "The simulation timestep of a rigid-body engine controls how far the physics state is integrated each step, with a typical default of one sixtieth of a second; smaller timesteps yield better accuracy, while large timesteps increase the effect of the linearisation approximations in the equations of motion and may result in missed collisions.",
+      "scope": "Documented behaviour of one rigid-body engine; the numerical accuracy of a specific simulation is not claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-rapier-integration-parameters",
+          "locator": "dt default, accuracy with smaller timesteps and consequences of large timesteps"
+        }
+      ]
+    }
+  ]
+}

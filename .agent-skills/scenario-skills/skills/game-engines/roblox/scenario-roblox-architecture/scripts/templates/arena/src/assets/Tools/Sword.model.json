@@ -1,0 +1,11 @@
+{
+  "className": "Tool",
+  "properties": { "CanBeDropped": false, "RequiresHandle": true, "Tags": ["Sword"] },
+  "children": [
+    {
+      "name": "Handle",
+      "className": "Part",
+      "properties": { "Size": [0.6, 4, 0.6], "CanTouch": false, "Massless": true, "Color": [0.75, 0.75, 0.8], "Material": "Metal" }
+    }
+  ]
+}

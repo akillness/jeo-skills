@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-interactive-web-scene",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "output-profile",
+  "title": {
+    "en": "Interactive browser scene as a delivered artifact"
+  },
+  "aliases": {
+    "en": [
+      "interactive web scene output",
+      "browser 3D delivery",
+      "canvas lifecycle ownership"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "abstract-systems-data",
+    "twisty-puzzles",
+    "algorithms-data-structures"
+  ],
+  "summary": "Treat an interactive browser scene as an artifact with an owned lifecycle: one loop, one canvas, explicit resizing, explicit teardown and a plan for losing the rendering context.",
+  "objective": "The scene survives a resize, a tab switch and a simulated context loss, and leaves nothing running after it is torn down.",
+  "tags": [
+    "output-profile",
+    "interactive",
+    "browser",
+    "lifecycle",
+    "context-loss"
+  ],
+  "subject_terms": [
+    "render loop",
+    "canvas",
+    "device pixel ratio",
+    "resize handling",
+    "resource disposal",
+    "context loss",
+    "context restore",
+    "animation loop",
+    "teardown"
+  ],
+  "intent_signals": [
+    "the scene is blurry on a high-resolution display",
+    "the canvas does not resize",
+    "memory grows every time I reload the scene",
+    "the render stops after switching tabs",
+    "webgl context lost"
+  ],
+  "example_prompts": [
+    "Deliver an explorable scene that behaves when the window changes size.",
+    "Make an embedded viewer that cleans up when the page navigates away.",
+    "Recover the scene after the browser drops the graphics context."
+  ],
+  "negative_signals": [
+    "offline frame sequence",
+    "static illustration"
+  ],
+  "not_for": [
+    "Offline renders, where no interaction loop or context exists.",
+    "Static images and documents, which have no lifecycle to manage."
+  ],
+  "content": {
+    "principles": [
+      "The artifact is not the scene graph; it is the running page. Ownership of the loop, the canvas, the input handlers and the graphics resources has to be assigned to something that can also give them back.",
+      "One loop drives the frame. Multiple independent loops produce state that advances at different rates and makes any timing-dependent behaviour irreproducible.",
+      "Display resolution and layout size are different quantities. Treating them as one produces either a blurry image on a dense display or a needlessly expensive one on a large screen.",
+      "The graphics context can be taken away at any time by the browser or the operating system. An artifact that does not plan for this simply stops working, and the failure looks like a crash to the user.",
+      "Simulation or playback time should not be the same as wall-clock frame time. A scene whose state advances by the elapsed frame interval behaves differently on different machines and after a pause.",
+      "Teardown is part of the deliverable. A viewer that keeps a loop and its buffers alive after being removed is a defect even when it looks correct while visible."
+    ],
+    "implementation": [
+      "Use the renderer's own animation loop entry point rather than scheduling frames independently, and keep exactly one loop for the whole scene.",
+      "On resize, set the pixel ratio first and then pass the layout width and height to the renderer, which applies the ratio itself; multiplying the layout size by the ratio before passing it applies the scaling twice. Update the camera projection in the same step, and clamp the pixel ratio to a stated maximum so a very dense display does not multiply the cost without limit.",
+      "Advance authoritative state on a fixed step derived from the scene's own clock, and use the frame only to sample that state for display; pause the clock rather than the loop when the scene is hidden.",
+      "Handle context loss explicitly. Keep the scene description and application state on the CPU so it survives the loss, and stop drawing and cancel the loop when the loss is signalled. In an application-owned raw handler, cancel the default action of the loss event, because restoration only proceeds if that default is cancelled; where the renderer already owns that handling, do not duplicate it.",
+      "On restoration, rebuild or re-upload the graphics resources the application owns, re-enable any extensions it had enabled, and restart the loop exactly once. Resources created before the loss are no longer valid and previously enabled extensions are not restored, but resources the renderer manages should be left to it rather than recreated twice.",
+      "Provide a single teardown entry point that stops the loop, removes input handlers, releases owned geometry, materials and textures, and disposes the renderer.",
+      "Report a clear message when a context cannot be created at all, and offer the fallback view rather than leaving an empty canvas.",
+      "Keep any randomness behind a named seed so the same artifact can be reloaded into the same starting state."
+    ],
+    "observable_checks": [
+      "Resizing the window keeps the scene correctly framed and undistorted, with no drift in the aspect ratio after repeated resizes.",
+      "The scene is sharp on a high-density display and does not exceed the stated pixel-ratio clamp.",
+      "After a simulated context loss and restoration, the scene returns to a drawable state with its objects visible, and exactly one animation loop is running afterwards.",
+      "Calling teardown stops the loop, and reloading the viewer repeatedly does not leave the previous instances running.",
+      "Reloading with the same seed reproduces the same initial arrangement.",
+      "Hiding and re-showing the scene resumes it without a jump proportional to the hidden duration."
+    ]
+  },
+  "creative_affordances": [
+    "Interaction design, camera behaviour and transitions remain entirely open; this profile constrains the lifecycle, not the experience.",
+    "Progressive enhancement is welcome: a richer scene where the device allows it and a simpler one elsewhere, as long as both are declared."
+  ],
+  "known_limits": [
+    "Meeting this profile does not establish that the scene runs acceptably on any particular device; no performance measurement is part of it.",
+    "The context-loss contract cited here is the browser specification's; a given browser's recovery behaviour and the availability of a loss-simulation extension still need to be checked on the target.",
+    "Authored reusable guidance; no runtime artifact has been executed or observed for this record."
+  ],
+  "related_ids": [
+    "recipe.agent-harness",
+    "recipe.direct-turn-cube",
+    "recipe.breadth-first-frontier",
+    "knowledge.three-scene-adapter",
+    "knowledge.shared-static-accessible-fallback",
+    "knowledge.shared-reproducible-animation-export"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-webgl-context-loss-contract",
+      "statement": "The WebGL specification requires that when the drawing buffer is lost the user agent sets a context-lost flag, invalidates every object created by that context, disables all extensions except the loss-simulation extension and fires a context-lost event at the canvas; restoration only proceeds if that event's default action is cancelled, and after restoration resources created before the loss are no longer valid and previously enabled extensions are not restored.",
+      "scope": "Normative context-loss and restoration steps from the Khronos WebGL specification source, read as an editor's draft on the access date. It defines the browser contract; it does not describe when any particular browser triggers a loss.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-webgl-spec",
+          "locator": "The Context Lost Event; The Context Restored Event"
+        }
+      ]
+    },
+    {
+      "id": "claim.shared-renderer-loop-and-teardown",
+      "statement": "One widely used renderer advises applications to define the animation loop through its own loop method rather than scheduling frames manually for best compatibility, documents that resizing the output canvas takes the device pixel ratio into account and sets the viewport to match, provides a dispose method to free the GPU resources it allocated, and provides a context-loss simulation that requires the corresponding WebGL extension.",
+      "scope": "Documented lifecycle guidance and methods of one library as of the access date. It supports assigning loop and resource ownership; it makes no claim about runtime performance.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-webglrenderer",
+          "locator": "setAnimationLoop; setSize; setPixelRatio; dispose; forceContextLoss"
+        }
+      ]
+    }
+  ]
+}

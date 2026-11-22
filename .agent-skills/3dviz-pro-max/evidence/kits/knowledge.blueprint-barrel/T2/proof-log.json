@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-barrel",
+  "record_revision": 3,
+  "asset": "templates/kits/props/barrel.js",
+  "asset_sha256": "e82c88bb55431931a15431672815daf4f2e97dbaa13436c898832ede36f820d0",
+  "params": {
+    "height": 0.94,
+    "radius": 0.34,
+    "staves": 16,
+    "seed": 1,
+    "bulge": 0.2,
+    "gap": 0.06
+  },
+  "tier": "T2",
+  "kit": {
+    "blueprint": "knowledge.blueprint-barrel",
+    "module": "../props/barrel.js",
+    "params": {
+      "height": 0.94,
+      "radius": 0.34,
+      "staves": 16,
+      "seed": 1,
+      "bulge": 0.2,
+      "gap": 0.06
+    },
+    "tier": "T2",
+    "surface": {
+      "seed": 1,
+      "size": 1024,
+      "materials": 6,
+      "unmapped": [],
+      "uv": [
+        "world",
+        "normalised"
+      ],
+      "ms": 118.6,
+      "ao": {
+        "vertices": 1271,
+        "casts": 7228,
+        "ms": 53.3,
+        "skipped": null
+      }
+    },
+    "triangles": 3448,
+    "bounds_m": {
+      "min": [
+        -0.3637999892234802,
+        -0.00405915779992938,
+        -0.3631440983768166
+      ],
+      "max": [
+        0.3637999892234802,
+        0.9440591335296631,
+        0.36299189576118657
+      ],
+      "size": [
+        0.7275999784469604,
+        0.9481182913295925,
+        0.7261359941380032
+      ]
+    },
+    "fit_distance_m": 2.0444,
+    "view_distances_m": {
+      "far": 4.9065,
+      "mid": 2.4532,
+      "close": 1.5946,
+      "detail": 0.7671
+    },
+    "sockets": [
+      "lid",
+      "base",
+      "tap"
+    ],
+    "detail_socket": "lid",
+    "animated": false,
+    "colliders": [
+      "barrel"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "9d9c11966940a3dab45e8cce59affc428e0d88aa66217731f9ccd965026f7bf4",
+    "mid.png": "d2c33dc6a85888761199e2a024ae51f609e424874334c90c6b7688a4811180be",
+    "close.png": "d4a7a428776875b8a61f710aee1c9b97a561378dec0b3b899f0c213c8ac7c444",
+    "detail.png": "a152382838b58359ba2231324e78ae341461ec94c590ce987990313ce50487b2"
+  },
+  "motion": null,
+  "gpu_requested": false,
+  "capture_mode": "swiftshader",
+  "webgl_renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T17:13:58+00:00",
+  "finished": "2026-09-08T17:14:03+00:00",
+  "surface": {
+    "families": {
+      "#a8794a": "wood",
+      "#b78e5e": "wood",
+      "#8d6a44": "wood",
+      "#3a3a40": "metal",
+      "#cfc9bd": "metal"
+    },
+    "seed": 1,
+    "size": 1024,
+    "ao": {
+      "samples": 13,
+      "radius_m": 0.45,
+      "ground_dirt_m": 0.6
+    }
+  }
+}

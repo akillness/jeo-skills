@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-cinematic",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Cinematic staging"
+  },
+  "aliases": {
+    "en": [
+      "cinematic lighting",
+      "dramatic scene composition",
+      "film-like framing",
+      "film look",
+      "anamorphic framing"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies"
+  ],
+  "summary": "Design attention through foreground, focal action and background separation instead of relying solely on glow or dark exposure.",
+  "objective": "The focal action stays visible throughout the move, text remains readable and dramatic darkness does not hide the mechanism being explained.",
+  "tags": [
+    "style-profile",
+    "presentation-aesthetic",
+    "cinematic"
+  ],
+  "subject_terms": [
+    "cinematic lighting",
+    "dramatic scene composition",
+    "film-like framing",
+    "presentation aesthetic",
+    "film look",
+    "anamorphic framing"
+  ],
+  "intent_signals": [
+    "Use cinematic staging",
+    "Direct attention with framing light and a purposeful reveal"
+  ],
+  "example_prompts": [
+    "Stage a cinematic reveal of a mechanical watch, then let me inspect its moving parts."
+  ],
+  "content": {
+    "principles": [
+      "Design attention through foreground, focal action and background separation instead of relying solely on glow or dark exposure."
+    ],
+    "implementation": [
+      "Arrange depth layers and purposeful negative space around the hero silhouette; keep foreground shapes from blocking required actions.",
+      "Use motivated-looking key and accent lights with a chosen contrast range; retain detail needed to understand the scene.",
+      "Plan a revealing camera move or hold, with a stable inspection view available for interactive tasks; time visual emphasis around a meaningful action.",
+      "Frame 2.39:1 with hard mattes at fov 28-35 degrees and keep every control, label and required action inside the centre 80%, so a 16:9 fallback crop remains usable.",
+      "Run key:fill at 8:1 (SpotLight 40 candela against a 0.25 HemisphereLight), vignette 0.35 and grain 0.06 under ACESFilmic at exposure 0.85; confirm in a grayscale screenshot that the mechanism under explanation still reads at that contrast."
+    ],
+    "observable_checks": [
+      "The focal action stays visible throughout the move, text remains readable and dramatic darkness does not hide the mechanism being explained."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Cinematic staging is a contrast budget, so the numbers spend it in one place: a 60/30/10 value split, an 8:1 key-to-fill ratio and a single region above 0.8 luminance on the hero, with a cool rim from the opposite quadrant doing the separation that a fill light would otherwise flatten. The 2.39:1 frame at 28-35 degrees and exposure 0.85 buy negative space and shadow depth, while vignette 0.35 and grain 0.06 keep the darkness textured rather than crushed.",
+    "values": {
+      "feeling": [
+        "tense",
+        "composed",
+        "widescreen"
+      ],
+      "palette": [
+        {
+          "hex": "#0d1117",
+          "role": "matte black / deepest frame value"
+        },
+        {
+          "hex": "#1e2c3a",
+          "role": "shadow field, cool background"
+        },
+        {
+          "hex": "#6b7a86",
+          "role": "mid neutral, background separation"
+        },
+        {
+          "hex": "#e6c07a",
+          "role": "key light and practicals, warm"
+        },
+        {
+          "hex": "#c2452f",
+          "role": "single dramatic accent"
+        }
+      ],
+      "value_structure": "60/30/10 dark/mid/light; the hero face or focal mechanism owns the only region above 0.8 luminance",
+      "saturation_rule": "background <= 30% HSL, hero <= 65%; at most two hue families (warm key, cool rim) plus the single accent",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#0d1117",
+        "horizon": "#35424f"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#35424f",
+        "density": 0.025
+      },
+      "lights": {
+        "key": {
+          "type": "SpotLight",
+          "color": "#ffd9a0",
+          "intensity": 40,
+          "elevation_deg": 38,
+          "azimuth_deg": 215,
+          "castShadow": true,
+          "angle_deg": 28,
+          "penumbra": 0.5,
+          "decay": 2
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#3a4f66",
+          "ground": "#1a1a1c",
+          "intensity": 0.25
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#b9d4ff",
+          "intensity": 1.6,
+          "elevation_deg": 12,
+          "azimuth_deg": 30,
+          "castShadow": false
+        },
+        "ratio": "key:fill ~ 8:1 measured on a neutral card at the hero; the rim sits between them so the contour never merges with the background"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 0.85
+      },
+      "camera": {
+        "fov_deg": 30,
+        "height_m": 1.45,
+        "pitch_deg": -2,
+        "aspect_ratio": "2.39:1 with hard mattes; compose the action inside the centre 80% for a 16:9 fallback",
+        "orbit": {
+          "minPolar_deg": 60,
+          "maxPolar_deg": 92,
+          "minDist_m": 3,
+          "maxDist_m": 40
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.2,
+          0.9
+        ],
+        "metalness": [
+          0,
+          1
+        ],
+        "notes": "exactly one wet or polished surface in frame to carry the key as a specular streak; every other surface stays at or above 0.55 roughness so that highlight remains unique"
+      },
+      "motion": {
+        "sway_period_s": [
+          4.5,
+          7.0
+        ],
+        "ease": "cubic in-out",
+        "hold_ms": 700
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.0,
+          "strength": 0.35,
+          "radius": 0.7
+        },
+        "vignette": 0.35,
+        "grain": 0.06,
+        "dof": "hero in focus at f/2.0; disable while the user is orbiting"
+      },
+      "signature_technique": "a motivated single key at 8:1 with a cool rim from the opposite quadrant, framed 2.39:1 so the negative space above the hero carries the tension",
+      "never": [
+        "a flat frontal key mounted at the camera",
+        "untinted white ambient fill",
+        "letterboxing with no depth layers behind the hero",
+        "dramatic darkness that hides the mechanism being explained"
+      ]
+    }
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at exposure 0.85; re-tune every intensity, fog density and bloom threshold if you change the tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with photorealistic, stylized or miniature subjects; cinematic is staging rather than a promise of a specific rendering technology."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

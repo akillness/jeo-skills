@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-gradient-finite-difference",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Analytic derivative against a finite difference with step study"
+  },
+  "aliases": {
+    "en": [
+      "derivative cross-check",
+      "step size error curve"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields"
+  ],
+  "summary": "Cross-check an analytic directional derivative with a central difference and expose the step size where cancellation takes over.",
+  "objective": "Analytic and numerical values agree within declared absolute and relative bounds for the declared fixture, and the zero-gradient point draws no steepest direction.",
+  "applies_when": [
+    "A scene displays a derivative, slope or gradient computed analytically.",
+    "A viewer can choose a direction or a probe point continuously.",
+    "The domain contains a critical point where the gradient vanishes."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "derivative",
+    "finite-difference",
+    "numerical-error"
+  ],
+  "subject_terms": [
+    "directional derivative",
+    "gradient",
+    "central difference",
+    "truncation error",
+    "cancellation",
+    "critical point"
+  ],
+  "intent_signals": [
+    "is this slope readout correct",
+    "what happens at the flat point of the surface"
+  ],
+  "example_prompts": [
+    "Cross-check the directional derivative readout on this surface."
+  ],
+  "negative_signals": [
+    "training an optimizer",
+    "symbolic differentiation tooling"
+  ],
+  "content": {
+    "principles": [
+      "An analytic derivative and a finite difference are two independent computations; agreement to a stated order is evidence, and the pattern of disagreement identifies which one is wrong.",
+      "A step-size optimum exists only when truncation error is present: the central difference is exact for a quadratic in exact arithmetic, so on the common quadratic fixture only cancellation grows as the step shrinks. Demonstrating the order needs a fixture with a nonzero third derivative, and the fixture is declared with the expectation.",
+      "The zero-gradient point is its own regime: no direction is steepest there and the directional derivative is zero in every direction, so probe directions there are arbitrary declared unit vectors rather than a gradient direction that does not exist."
+    ],
+    "implementation": [
+      "State the function, its smoothness and the coordinate scale, then at each probe evaluate the analytic directional derivative as the gradient dotted with a unit direction and, independently, a central difference along the same direction with both offset points inside the domain.",
+      "Repeat over step sizes spanning several orders of magnitude on both fixtures, the quadratic and one with a nonzero third derivative, and record the error at each so the actual curve shape is observed rather than assumed.",
+      "At probes with a nonzero gradient include three characteristic directions: along the gradient, opposite to it and perpendicular to it. At a zero-gradient probe use two arbitrary declared unit directions instead.",
+      "Probe the zero-gradient point explicitly and record what the interface displays for a steepest direction there."
+    ],
+    "observable_checks": [
+      "Central-difference and analytic values agree within a combined absolute and relative bound stated from the function and coordinate scales, since relative error is undefined where the derivative is zero. On the nonzero-third-derivative fixture the error falls roughly with the square of the step until cancellation dominates and that turning point is reported; on the quadratic fixture no truncation branch appears, which is the expected result rather than a failure.",
+      "Opposite directions give equal magnitudes with opposite signs, and a direction perpendicular to a nonzero gradient gives zero within the declared absolute bound rather than a relative one.",
+      "At the zero-gradient point both declared probe directions return zero within the absolute bound and no steepest-direction arrow is drawn; drawing an arbitrary arrow there is the failure signal."
+    ]
+  },
+  "known_limits": [
+    "Cross-checks the derivative of a declared analytic function; it does not validate a triangulated surface as a model of that function.",
+    "Authored verification guidance; no computation or render was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.directional-derivative-surface",
+    "recipe.divergence-flux-box",
+    "recipe.double-integral-columns"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-directional-derivative-dot",
+      "statement": "The directional derivative of a differentiable function along a unit vector equals the gradient dotted with that vector, and when the gradient is zero the directional derivative is zero for every unit vector.",
+      "scope": "Differentiable scalar functions with a unit domain direction, as stated in the cited theorem and gradient properties.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-gradient",
+          "locator": "4.6, Theorem 4.12 and the gradient properties that follow"
+        }
+      ]
+    },
+    {
+      "id": "claim.validation-floating-point-cancellation",
+      "statement": "Catastrophic cancellation occurs when nearby quantities carrying rounding error are subtracted, so accurate digits of the difference disappear.",
+      "scope": "Binary floating-point arithmetic as described in the cited section; the size of the effect depends on the expression and the precision used.",
+      "source_refs": [
+        {
+          "source_id": "source.validation-depth-goldberg-floating-point",
+          "locator": "Cancellation section"
+        }
+      ]
+    }
+  ]
+}

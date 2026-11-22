@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.hard-surface-functional-assembly",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "object-archetype",
+  "title": {
+    "en": "Hard-surface functional assembly"
+  },
+  "aliases": {
+    "en": [
+      "serviceable hard-surface housing",
+      "replaceable panel assembly",
+      "fastened product enclosure"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "operations-logistics",
+    "environments-dioramas"
+  ],
+  "summary": "Construct a hard-surface object as named shells, inserts, fasteners and mating interfaces whose visible boundaries explain assembly and service access.",
+  "objective": "A viewer can isolate each serviceable part, trace what locates and retains it, and move an articulated part without exposing impossible gaps or fused neighbours.",
+  "applies_when": [
+    "A manufactured prop, enclosure, machine or architectural fixture must read as an assembly rather than one decorated solid."
+  ],
+  "tags": [
+    "object-archetype",
+    "hard-surface",
+    "assembly",
+    "fasteners",
+    "service-panel"
+  ],
+  "subject_terms": [
+    "part boundary",
+    "mating lip",
+    "fastener boss",
+    "service panel",
+    "datum face",
+    "clearance gap",
+    "retaining feature",
+    "assembly hierarchy"
+  ],
+  "intent_signals": [
+    "beveled housing with replaceable panels",
+    "make the machine look assembled",
+    "show how a cover is retained",
+    "select product parts after glTF export"
+  ],
+  "example_prompts": [
+    "Build a rugged instrument enclosure with a removable battery door, locating lip and visible fasteners.",
+    "Create an inspectable pump housing whose cover, gasket seat, shaft and bearing cap remain separate runtime parts."
+  ],
+  "negative_signals": [
+    "Add random panel lines to a solid block",
+    "Infer joints from nearby meshes",
+    "Model hidden fasteners with no inspection or silhouette value"
+  ],
+  "not_for": [
+    "Manufacturing tolerances, structural loads or certified service procedures.",
+    "Bevel width and custom-normal setup, which belong to the linked geometry contract."
+  ],
+  "content": {
+    "principles": [
+      "Begin with a part-and-interface diagram: which part carries load visually, which closes an opening, which locates another part, and which feature retains it. A seam earns geometry when it marks one of those relationships.",
+      "Keep a functional part separate when selection, removal, articulation, material assignment or replacement needs independent identity. Merge purely decorative marks when separation adds no runtime or construction meaning.",
+      "A fastening story needs both sides. A visible screw head without a boss, flange or receiving region reads as decoration; a removable cover with no clearance path or retainer reads as fused geometry."
+    ],
+    "implementation": [
+      "Block primary shell, frame, removable covers, inserts and moving parts as named Blender objects. Establish mating planes and opening envelopes before adding seams, ribs, vents or fastener heads.",
+      "Give a removable panel an edge condition: overlap lip, rebate, flange or deliberate butt seam. Add only the retention cues visible at the intended camera, and include a plausible removal direction and hand/tool clearance when serviceability is part of the story.",
+      "Use separate cutter and detail collections in the editable `.blend`; keep modifier order and source construction editable. Export the approved evaluated meshes through `knowledge.blender-evaluated-mesh-handoff` and use the linked bevel/normal contract for edge treatment.",
+      "Assign a stable application key as a Blender custom property for every interactive part and export Custom Properties to glTF extras. Treat display names as labels; Three.js lookup, selection, variants and motion use the explicit key and declared parent hierarchy.",
+      "Create selection proxies or simple bounds for thin fasteners and recessed parts when precise ray hits would be unreliable. Keep proxies application-side or visibly excluded from production rendering.",
+      "Inspect assembled, isolated and one-step-disassembled states. Reset restores the same hierarchy, local transforms and visible mating relationships."
+    ],
+    "observable_checks": [
+      "In a three-quarter view, every major seam terminates at a meaningful boundary and does not drift across a supposedly single part.",
+      "Isolating a cover reveals a matching opening, seat or flange on the body; hiding a fastener does not remove unrelated shell geometry.",
+      "Moving the declared removable or hinged part through its path clears neighbours and retains its pivot or removal axis.",
+      "After glTF load, every interactive application key resolves exactly once and selects the intended mesh or group; proximity alone creates no joint."
+    ]
+  },
+  "related_ids": [
+    "knowledge.reasoning-mating-feature-detail",
+    "knowledge.blender-evaluated-mesh-handoff",
+    "knowledge.hard-surface-bevel-normal-contract",
+    "knowledge.gltf-transform-pivot-handoff",
+    "knowledge.shared-gltf-asset-bridge"
+  ],
+  "creative_affordances": [
+    "Retainers may be screws, latches, clips, pins or concealed attachment; choose one that matches the object's visual language.",
+    "Let wear, paint breaks or material contrast emphasize handled service boundaries without inventing extra seams."
+  ],
+  "known_limits": [
+    "Readable construction does not certify manufacturability, ingress protection, fastening strength or repair safety.",
+    "glTF extras are application metadata with no universal behavior; the runtime must define its keys.",
+    "Authored reusable guidance; no Blender export, Three.js runtime or assembly artifact was executed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.craft-functional-assembly-extras",
+      "statement": "Blender 4.5's glTF exporter can export custom properties from most objects when Include > Custom Properties is selected, storing them in the corresponding glTF extras field; extras have no defined namespace and require application-specific meaning.",
+      "scope": "Blender 4.5 exporter metadata transport only; it does not guarantee unique identifiers or runtime selection behavior.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "Custom Properties"
+        }
+      ]
+    }
+  ]
+}

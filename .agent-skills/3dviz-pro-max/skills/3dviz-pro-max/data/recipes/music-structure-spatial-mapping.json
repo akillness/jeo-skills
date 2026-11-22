@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "id": "recipe.music-structure-spatial-mapping",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Music structure mapped into a spatial scene"
+  },
+  "aliases": {
+    "en": [
+      "music-driven spatial composition",
+      "phrase and beat scene mapping"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "Map supplied musical events and sections to authored spatial parameters while keeping timing data, audio playback and visual interpretation separate.",
+  "objective": "Build a seekable scene where measures, phrases and accents drive object arrangement, light or motion through explicit mappings and non-audio alternatives.",
+  "tags": [
+    "music visualization",
+    "spatial mapping",
+    "audio timeline"
+  ],
+  "subject_terms": [
+    "tempo map",
+    "beat",
+    "measure",
+    "phrase",
+    "cue mapping",
+    "AudioContext currentTime",
+    "licensed audio"
+  ],
+  "intent_signals": [
+    "music structure spatial mapping",
+    "music-driven motion not acoustic simulation"
+  ],
+  "example_prompts": [
+    "Map a supplied verse/chorus/beat JSON timeline onto a sculptural scene with a readable static score view."
+  ],
+  "negative_signals": [
+    "Not acoustic simulation, automatic music understanding, emotion inference or proof of synchronization quality."
+  ],
+  "not_for": [
+    "No unlabeled waveform-derived semantics, unlicensed media, loudness calibration or mandatory visual style."
+  ],
+  "entities": [
+    {
+      "name": "Musical event track",
+      "guidance": "Store supplied tempo changes, section/beat IDs and event times as versioned data with provenance; audio is optional and separately licensed."
+    },
+    {
+      "name": "Mapping graph",
+      "guidance": "Each visual parameter names its source event, transform/range, easing and fallback; multiple events may layer only through declared precedence."
+    }
+  ],
+  "state_contract": {
+    "model": "Model time is seconds from an immutable composition revision. A supplied finite tempo/section/event track maps event IDs to visual targets through explicit functions. Audio playback, when present, uses one audio clock as synchronization authority; visual frames sample that clock and never feed animation drift back into event time. Seek reconstructs active intervals and latched events from data. Missing audio retains captions, section labels and a static event list; changing a mapping creates a new revision and invalidates old checkpoints.",
+    "authority": "Three.js owns the versioned semantic state, model time, history and reset; Blender/glTF assets are named presentation resources only.",
+    "actions": [
+      "Play/pause/seek the shared model time.",
+      "Inspect or disable one event-to-visual mapping.",
+      "Switch to static score/section view.",
+      "Reset mapping, time and selection."
+    ]
+  },
+  "invariants": [
+    "Every visual change identifies a source event or authored continuous mapping.",
+    "Seeking to the same time and revision restores the same semantic visual parameters.",
+    "Audio absence cannot remove section/event information needed for the experience.",
+    "Presentation gain cannot alter tempo/event timestamps."
+  ],
+  "motion_guidance": [
+    "Drive presentation from a seekable model time and derive every visible transform from current state; pause and scrub never advance hidden semantic state.",
+    "Provide a static sequence/list and reduced-motion mode that preserves text, order, choices and status."
+  ],
+  "creative_affordances": [
+    "Choose typography, assets, palette, staging and metaphor per the supplied brief and licensed material; no house style is mandatory.",
+    "Blender owns expressive geometry, rigs, sets and cue anchors; Three.js owns time, branch/state, captions, interruption and checkpoints."
+  ],
+  "known_limits": [
+    "The scene interprets supplied annotations; it does not discover musical form, measure acoustic response or infer audience emotion.",
+    "Authored, source-reviewed guidance only; no Blender export, audio playback, visitor study, show-control link, browser or renderer was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.art-webaudio-clock-scheduling",
+      "statement": "The Web Audio API exposes AudioContext currentTime as its time coordinate and schedules source starts and AudioParam changes against that audio timeline.",
+      "scope": "Web Audio 1.1 browser audio scheduling; availability and output latency remain implementation/runtime concerns.",
+      "source_refs": [
+        {
+          "source_id": "source.art-w3c-webaudio",
+          "locator": "BaseAudioContext currentTime; AudioScheduledSourceNode start; AudioParam automation methods"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Spatial score instrument",
+      "structure": "Build stable section islands, beat markers and reusable performer/prop forms keyed by IDs; preserve a legible timeline outside the scene.",
+      "material": "Use shape and labels with color; reactive brightness is a mapped value, not measured sound pressure."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Spatial layout and motion communicate authored media/state; geometry and collisions have no physical authority.",
+    "timestep": "Evaluate from seekable authored time or discrete event state; no physics integration.",
+    "state": [
+      "versioned authored content",
+      "model time or event cursor",
+      "selection, accessibility and error state"
+    ],
+    "colliders": [
+      "optional interaction hit regions only"
+    ],
+    "driving": [
+      "authored cues and user actions"
+    ],
+    "contact": [
+      "none"
+    ],
+    "checks": [
+      "seek/reset state equality",
+      "missing asset/data fallback",
+      "presentation controls leave semantic data unchanged"
+    ]
+  },
+  "related_ids": [
+    "recipe.fourier-harmonic-synthesis",
+    "knowledge.reasoning-discrete-event-timeline",
+    "knowledge.environmental-story-clue-layers"
+  ]
+}

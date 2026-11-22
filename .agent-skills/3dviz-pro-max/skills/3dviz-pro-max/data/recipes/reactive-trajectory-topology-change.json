@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "id": "recipe.reactive-trajectory-topology-change",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Reactive trajectory: explicit topology changes"
+  },
+  "aliases": {
+    "en": [
+      "reactive trajectory",
+      "variable topology"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Preserve atom identity and sourced bond events across frames without guessing reaction chemistry from distance.",
+  "objective": "Build a reactive-trajectory inspector where explicit atom mapping and per-frame bond events show which bonds form or break, with provenance visible at every frame.",
+  "tags": [
+    "reactive trajectory",
+    "variable topology",
+    "bond event provenance"
+  ],
+  "subject_terms": [
+    "reactive trajectory",
+    "atom mapping",
+    "stable atom ID",
+    "variable topology",
+    "bond formation",
+    "bond breaking",
+    "bond order",
+    "frame provenance",
+    "XYZ coordinates"
+  ],
+  "intent_signals": [
+    "reaction breaks and forms bonds across trajectory frames",
+    "inspect explicit bond events without distance inference"
+  ],
+  "example_prompts": [
+    "Show a short supplied reaction trajectory with stable atom IDs and explicit bond add/remove events, then reject an unmapped frame."
+  ],
+  "negative_signals": [
+    "Not a bond-perception heuristic, reaction-path calculation, force field, mechanism proof or rate prediction."
+  ],
+  "not_for": [
+    "No bond inference from distance, changing atom identity, missing event provenance, molecular dynamics integration, electronic structure or causal mechanism claim."
+  ],
+  "entities": [
+    {
+      "name": "Mapped atoms and bonds",
+      "guidance": "Blender supplies atom sockets and bond-segment families. Three.js retains atom ID across frames, reuses objects by ID and changes bond objects only from validated topology events."
+    },
+    {
+      "name": "Frame provenance ledger",
+      "guidance": "Pin source frame, time/unit if supplied, atom-map status and ordered add/remove/change events beside before/after topology. XYZ is admitted only as coordinates plus an explicit sidecar contract."
+    }
+  ],
+  "state_contract": {
+    "model": "Finite ordered frames. Each frame has unique stable atom IDs, element labels and finite Cartesian coordinates with declared length unit; atom-set changes are out of scope. Initial topology is an explicit set of unordered atom-ID pairs with declared bond label/order provenance. Each later frame carries an ordered atomic event batch add/remove/change(old,new); validate referenced IDs, prior existence/absence and duplicate conflicts before committing the complete batch. Coordinates may come from XYZ, but ID mapping and topology must come from a separate provenance-bound manifest; line order alone is never silently treated as identity after mismatch.",
+    "authority": "Three.js owns IDs, frame index, topology events, validation and snapshots. Blender owns reusable atom/bond presentation meshes and never guesses connectivity.",
+    "actions": [
+      "Load an initial mapped frame and explicit topology, then validate all frames before playback.",
+      "Step one frame and inspect the atomic before/event/after topology diff.",
+      "Select a bond to see the exact source event that created, removed or changed it.",
+      "Reject missing/duplicate IDs, contradictory events, unknown endpoints or coordinate-only topology requests; reset returns frame zero."
+    ]
+  },
+  "invariants": [
+    "Every frame contains each declared atom ID exactly once with unchanged element label; a mismatch stops playback before mutation.",
+    "Topology changes only through the current frame’s validated event batch; geometric distance may be displayed but never creates a bond.",
+    "Applying a valid batch then its exact inverse restores the preceding topology; rejected batches preserve prior state.",
+    "A bond event is an annotation from the supplied source/model, not evidence that the visualization discovered a mechanism."
+  ],
+  "motion_guidance": [
+    "Step commits one source frame or declared transformation; pause preserves committed state and reset restores data, view, selections and errors.",
+    "Offer a static frame/table alternative. Tweened atom, curve or surface motion explains correspondence only and never creates scientific samples."
+  ],
+  "creative_affordances": [
+    "Blender may establish a distinctive molecular stage, lattice frame and stable atom/orbital glyph families; Three.js binds them to scientific IDs and data.",
+    "Materials, camera and composition remain flexible when units, provenance, sign, identity and uncertainty stay legible without color alone."
+  ],
+  "known_limits": [
+    "Fixed atom set and supplied event provenance only; no claim that topology labels are experimentally correct or that sampled frames resolve an elementary mechanism.",
+    "Authored, source-reviewed guidance only; no chemistry calculation, trajectory conversion, Blender export, browser, renderer or interactive artifact was run."
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Scientific coordinates and annotations drive display; mesh contact and animation do not compute chemistry."
+  },
+  "related_ids": [
+    "recipe.molecular-shape-comparison",
+    "recipe.deposited-protein-binding-site-inspection"
+  ],
+  "object_craft": [
+    {
+      "family": "Reactive frame stage",
+      "structure": "Use stable keyed atom cores, replaceable bond sleeves and a fixed before/after event rail; topology changes should remain visible when animation is paused.",
+      "material": "Encode element and bond-event status with label, pattern and outline as well as color; distinguish sourced bonds from optional distance guides."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim.reactive-trajectory-xyz-boundary",
+      "statement": "The generic XYZ format described by Open Babel consists of atom count, a comment line and element symbols with Cartesian coordinates; multiple frames can occur, but the page describes no stable atom identifier or explicit bond list in those core lines.",
+      "scope": "Open Babel XYZ coordinate representation only; this recipe therefore requires a separate explicit ID/topology manifest rather than treating XYZ as reactive connectivity.",
+      "source_refs": [
+        {
+          "source_id": "source.openbabel-xyz-format",
+          "locator": "Format description and lines 1–11: atom count, comment, element and Cartesian-coordinate fields, multiple frames"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.lighting-mood-underwater",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Underwater light from the surface with dense blue extinction"
+  },
+  "aliases": {
+    "en": [
+      "underwater lighting",
+      "submerged light rig",
+      "subsurface blue fog",
+      "caustic light rig"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment",
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "Drop the key almost overhead, tint everything toward blue-green and let dense fog remove anything past a short distance.",
+  "objective": "Objects lose contrast and shift toward the fog colour with distance, and the light direction stays consistently from above.",
+  "tags": [
+    "lighting-profile",
+    "underwater",
+    "submerged",
+    "caustics",
+    "god-rays",
+    "blue-green"
+  ],
+  "subject_terms": [
+    "light extinction",
+    "caustics",
+    "god rays",
+    "surface light",
+    "backscatter",
+    "exponential fog",
+    "depth attenuation",
+    "blue-green shift",
+    "particulate"
+  ],
+  "intent_signals": [
+    "make this look underwater",
+    "light an ocean floor scene",
+    "add caustics to the seabed",
+    "the underwater scene looks like a blue filter",
+    "sunken ship lighting"
+  ],
+  "example_prompts": [
+    "Light a reef diorama so the far side of it fades convincingly.",
+    "Set a submerged wreck scene with light shafts from the surface.",
+    "Show a deep-sea vehicle lit only by the water above it."
+  ],
+  "negative_signals": [
+    "dry exterior daylight",
+    "measured optical extinction of real seawater"
+  ],
+  "not_for": [
+    "Scenes above water, where fog this dense reads as a fault.",
+    "Any claim about the real attenuation of water at a stated depth, which needs a sourced optical model."
+  ],
+  "content": {
+    "principles": [
+      "Underwater is defined by what is missing. Extinction removes contrast and colour with distance faster than anything else in the rig, so fog density, not the lights, sets the mood.",
+      "Light comes from one place: above. A source from the side or below breaks the read immediately, whatever colour it is.",
+      "Colour shifts toward blue-green with distance rather than toward grey, because the water absorbs the long wavelengths first; matching fog colour to the deep tone is what sells this.",
+      "Caustics are the signature. Moving bright ripple patterns on horizontal surfaces do more for the illusion than any amount of blue tinting, because they say the surface above is in motion.",
+      "Suspended particulate is the second signature: a few slow-drifting motes near the camera give a sense of a medium rather than empty space."
+    ],
+    "implementation": [
+      "Set the key as a DirectionalLight at 78 deg elevation in a cool cyan, with shadows on, so the seabed shows the same direction the shafts imply.",
+      "Project an animated caustic texture onto horizontal surfaces from the key's direction, cycling two scrolling copies at different rates so the pattern never visibly repeats.",
+      "Set FogExp2 to 0.08 in the deep tone; at that density the useful visible range is roughly 10-15 m, which is what forces near-field composition.",
+      "Add god rays as a screen-space radial blur seeded at the projected key position, kept under about 0.25 weight so they stay atmospheric rather than graphic.",
+      "Slow every motion: drifting particulate at 0.05-0.15 m/s and any sway period above 4 s, so the medium feels dense.",
+      "Keep the environment contribution off and let the hemisphere fill supply the ambient, so materials do not pick up a dry indoor reflection."
+    ],
+    "observable_checks": [
+      "Turning fog off restores a normal scene, confirming the underwater read is carried by extinction rather than by material tinting.",
+      "An object moved from 3 m to 12 m from the camera loses most of its contrast and shifts toward the fog colour.",
+      "Every cast shadow points away from the overhead key; nothing is lit from below.",
+      "With caustics disabled, the seabed reads as inert, confirming the caustic pass is doing the work attributed to it."
+    ]
+  },
+  "creative_affordances": [
+    "Bioluminescent sources, invented deep-sea colours and non-physical shaft geometry are all available; the fixed points are the overhead direction and the distance extinction.",
+    "The water tone can move from tropical cyan to near-black abyssal blue by changing the fog colour and the key intensity together."
+  ],
+  "known_limits": [
+    "Every number in this profile was tuned for ACESFilmic tone mapping at exposure 1.1; under a different tone-mapping curve or exposure the intensities and fog density must be re-derived, not copied.",
+    "Fog density 0.08 was tuned for a scene of roughly 15 m depth of field; a larger set will need it lowered or the far half will be invisible.",
+    "Caustics and god rays here are authored screen-space effects, not a simulation of refraction through a real surface.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "related_ids": [
+    "knowledge.three-light-units-and-exposure",
+    "knowledge.theme-underwater-discovery",
+    "knowledge.shared-transmissive-enclosure-light",
+    "knowledge.shared-shadow-volume-fit"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "The mood is set by extinction rather than by intensity, so fog density is high at 0.08 in the deep tone and the key stays modest at 2.2; exposure slightly above 1 compensates for the overall loss without lifting the far field back into view. The near-overhead key at 78 deg keeps every shadow and shaft agreeing with a surface above, and the caustic projection plus a small god-ray weight supply the movement that a static blue tint cannot. Kelvin-to-hex conversions here are authored approximations, not colorimetric transforms (2700K~#ffb46b, 3200K~#ffc58f, 4500K~#ffe4c4, 5600K~#fff4e5, 6500K~#ffffff, open shade 8000K~#cfe0ff).",
+    "values": {
+      "feeling": [
+        "submerged",
+        "weightless",
+        "dim"
+      ],
+      "time_of_day": "mid-morning at roughly 12 m depth; surface light only",
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#4fa3c9",
+          "intensity": 2.2,
+          "elevation_deg": 78,
+          "azimuth_deg": 200,
+          "castShadow": true,
+          "note": "stands in for the surface; keep it near vertical so shafts, shadows and caustics agree"
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#2b7fa6",
+          "ground": "#06202f",
+          "intensity": 0.6
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#8fd8e8",
+          "intensity": 0.4,
+          "elevation_deg": 55,
+          "azimuth_deg": 20,
+          "castShadow": false,
+          "note": "weak backscatter edge so silhouettes survive the fog"
+        },
+        "ratio": "key:fill ~ 3.5:1 at 2 m; effectively 1:1 beyond 10 m once extinction dominates"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#2b7fa6",
+        "horizon": "#06202f"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#0a3d5c",
+        "density": 0.08
+      },
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.1
+      },
+      "shadow": {
+        "mapSize": 2048,
+        "bias": -0.0002,
+        "normalBias": 0.03,
+        "camera_extent_m": 18
+      },
+      "environment": {
+        "type": "none",
+        "intensity": 0.0
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.0,
+          "strength": 0.35,
+          "radius": 0.9
+        },
+        "vignette": 0.4,
+        "grain": 0.04,
+        "dof": "focus 4 m, far falloff from 14 m",
+        "god_rays": "screen-space radial blur seeded at the projected key position, weight 0.2-0.25",
+        "caustics": "two scrolling caustic textures projected along the key direction at 0.11 and 0.17 uv/s"
+      },
+      "never": [
+        "untinted white light",
+        "clear-air fog density",
+        "any light source from below",
+        "hard black shadow cores"
+      ],
+      "snippet": "const sun=new THREE.DirectionalLight(0x4fa3c9,2.2);\nsun.position.setFromSphericalCoords(40,THREE.MathUtils.degToRad(90-78),THREE.MathUtils.degToRad(200));\nsun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.normalBias=0.03;\nconst c=sun.shadow.camera;c.left=c.bottom=-18;c.right=c.top=18;c.updateProjectionMatrix();scene.add(sun);\nscene.add(new THREE.HemisphereLight(0x2b7fa6,0x06202f,0.6));\nconst back=new THREE.DirectionalLight(0x8fd8e8,0.4);\nback.position.setFromSphericalCoords(40,THREE.MathUtils.degToRad(90-55),THREE.MathUtils.degToRad(20));scene.add(back);\nseabed.material.map=causticMap;// scroll causticMap.offset each frame at 0.11 and 0.17 uv/s\nscene.fog=new THREE.FogExp2(0x0a3d5c,0.08);\nrenderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;"
+    }
+  }
+}

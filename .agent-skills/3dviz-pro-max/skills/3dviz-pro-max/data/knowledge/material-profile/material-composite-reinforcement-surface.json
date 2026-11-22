@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.material-composite-reinforcement-surface",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Composite reinforcement direction and laminate edge"
+  },
+  "aliases": {
+    "en": [
+      "carbon composite surface",
+      "unidirectional reinforcement",
+      "woven carbon fabric"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies"
+  ],
+  "summary": "Keep a composite surface pattern consistent with its declared reinforcement and show a separate authored laminate edge where layers are exposed.",
+  "objective": "Keep a composite surface pattern consistent with its declared reinforcement and show a separate authored laminate edge where layers are exposed.",
+  "tags": [
+    "material-profile",
+    "carbon composite surface",
+    "unidirectional reinforcement",
+    "woven carbon fabric"
+  ],
+  "subject_terms": [
+    "carbon composite surface",
+    "unidirectional reinforcement",
+    "woven carbon fabric",
+    "laminate edge",
+    "fiber direction",
+    "resin coated weave"
+  ],
+  "intent_signals": [
+    "Keep a composite surface pattern consistent with its declared reinforcement and show a separate authored laminate edge where layers are exposed."
+  ],
+  "example_prompts": [
+    "Build an explorable composite reinforcement direction and laminate edge and expose its construction at close range."
+  ],
+  "content": {
+    "principles": [
+      "A checkerboard weave is not a universal carbon-fiber appearance. The cited manufacturer supplies both woven and unidirectional reinforcement forms.",
+      "Choose a display specimen with a declared reinforcement type and an authored resin-rich outer finish. Surface appearance does not reveal the entire internal layup or establish mechanical strength."
+    ],
+    "implementation": [
+      "Create a thin panel or curved shell with finite thickness, a trim edge and any actual mounting holes. For an explanatory edge inset store a list of plies with orientation and thickness; derive the stack height from their sum. This list is an authored teaching layup, not a certified design.",
+      "For a woven outer ply give the two interlaced bundle directions a coherent local pattern; for a unidirectional outer ply emphasize one direction rather than reusing a checker texture. Keep texture coordinates attached to each panel and disclose deliberate cosmetic discontinuities at joins.",
+      "Separate outer resin/clear-finish response from reinforcement contrast. A glossy clear coat may produce a broad continuous highlight above a subtler pattern; exposed teaching fibers may use a different surface. Do not assign raw conductor metalness merely because a carbon panel is dark and shiny.",
+      "Use geometry for trim thickness, ply-step cutaways and silhouette-changing chips. Keep microscopic filaments in shading detail or omit them at normal viewing distances. Do not extend an outer-ply weave unchanged around a cut edge as if every ply shared that orientation.",
+      "Let the viewer toggle woven/unidirectional specimens, expose a labeled ply inset and rotate the finish lighting. If rotating ply orientation changes a displayed pattern, retain the same specimen dimensions and avoid reporting stiffness without a separate calculation."
+    ],
+    "observable_checks": [
+      "Inspect a hole and outer edge: both expose the finite shell thickness; the cosmetic face pattern does not wrap across the void.",
+      "Compare woven and unidirectional examples with finish held fixed: their declared reinforcement directions differ, while no fabricated strength readout appears.",
+      "In the teaching cutaway the number and thickness sum of displayed plies match the authored stack; hide the inset and retain the original outer surface."
+    ]
+  },
+  "known_limits": [
+    "No laminate stiffness, failure, impact damage, cure process or structural suitability calculation. A visible weave cannot identify hidden plies; a cosmetic finish may obscure reinforcement.",
+    "Authored construction and prospective checks; no runtime artifact, render or material test has been executed for this record."
+  ],
+  "creative_affordances": [
+    "A painted composite panel, matte technical specimen or glossy patterned shell can be valid choices. Keep a labeled construction inset when the chosen finish hides the underlying reinforcement."
+  ],
+  "claims": [
+    {
+      "id": "claim.craft-depth-material-composite-reinforcement-surface",
+      "statement": "Hexcel offers woven reinforcement fabrics and also describes nonwoven unidirectional carbon reinforcements; its product range therefore does not support treating all carbon reinforcement as a woven checker pattern.",
+      "scope": "Manufacturer reinforcement-form distinction only; laminate layup, resin finish and depiction choices are authored.",
+      "source_refs": [
+        {
+          "source_id": "source.craft-depth-material-composite-reinforcement-surface",
+          "locator": "HexForce Woven Reinforcements and Unidirectional Fabrics subsections"
+        }
+      ]
+    }
+  ]
+}

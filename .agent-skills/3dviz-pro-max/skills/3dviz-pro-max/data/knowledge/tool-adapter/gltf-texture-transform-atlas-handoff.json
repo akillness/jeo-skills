@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.gltf-texture-transform-atlas-handoff",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "glTF texture-transform and atlas handoff"
+  },
+  "aliases": {
+    "en": [
+      "KHR texture transform UV set",
+      "atlas offset rotation scale"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "Carry per-texture UV selection and KHR_texture_transform into Three.js without confusing transform order, sampler wrap or mip padding.",
+  "objective": "Each texture samples the intended atlas cell and UV attribute across close and distant views, with fallback and runtime overrides owned explicitly.",
+  "applies_when": [
+    "A glTF uses multiple UV sets, atlas regions or KHR_texture_transform."
+  ],
+  "tags": [
+    "tool-adapter",
+    "gltf",
+    "texture-transform",
+    "uv-set",
+    "atlas",
+    "mipmap"
+  ],
+  "subject_terms": [
+    "KHR_texture_transform",
+    "textureInfo texCoord",
+    "texCoord override",
+    "offset rotation scale",
+    "Texture channel",
+    "wrapS wrapT"
+  ],
+  "intent_signals": [
+    "texture transform ignored after export",
+    "wrong UV set in Three.js",
+    "atlas tile bleeds at mip"
+  ],
+  "example_prompts": [
+    "Export a trim-sheet atlas with the intended UV set.",
+    "Debug a rotated atlas cell bleeding at distant mips."
+  ],
+  "negative_signals": [
+    "always force AO to uv2",
+    "one padding value for every mip"
+  ],
+  "not_for": [
+    "Creating the unique unwrap.",
+    "Virtual texturing outside glTF textureInfo."
+  ],
+  "content": {
+    "principles": [
+      "Resolve base texCoord plus extension override separately from UV transformation.",
+      "Preserve transform order and origin instead of visually retuning imported values.",
+      "Atlas transforms do not create gutters; filtering, mips, compression and wrap can sample neighbours.",
+      "Texture channel naming is revision-specific; do not impose a universal legacy uv2 rule."
+    ],
+    "implementation": [
+      "Author named UV roles and documented gutters; inspect exported JSON.",
+      "Record texture index, base/override texCoord, offset, rotation, scale and sampler; confirm TEXCOORD_n exists.",
+      "Inspect loaded Texture.channel, matrix properties, wrap and filters before overriding.",
+      "Package post-transform fallback UVs, require the extension, or deliberately share texCoord as the specification permits.",
+      "Test numbered asymmetric cells and contrasting gutters through intended mips."
+    ],
+    "observable_checks": [
+      "GLB and loaded texture agree on UV attribute, transform and sampler.",
+      "A rotated override fixture retains orientation and bounds.",
+      "No neighbouring cell bleeds across declared mip/filter/compression conditions.",
+      "Reset restores imported channel and transform without accumulation."
+    ]
+  },
+  "creative_affordances": [
+    "Reuse a trim sheet across many props.",
+    "Bake transforms into fallback UVs for a critical asset."
+  ],
+  "known_limits": [
+    "No fixed universal gutter.",
+    "Texture.channel behavior is revision-specific.",
+    "No export, import or mip inspection ran."
+  ],
+  "related_ids": [
+    "knowledge.uv-atlas-bake-correspondence",
+    "knowledge.blender-three-metalrough-orm-translation",
+    "knowledge.gltf-compression-decoder-lifecycle"
+  ],
+  "claims": [
+    {
+      "id": "claim.craft-khr-texture-transform",
+      "statement": "KHR_texture_transform adds offset, rotation and scale, applies translation times rotation times scale, and lets extension texCoord override base textureInfo texCoord; it states wrap/range conditions and a fallback UV strategy.",
+      "scope": "Ratified glTF extension; padding remains authored.",
+      "source_refs": [
+        {
+          "source_id": "source.craft-khr-texture-transform",
+          "locator": "Status; Overview; affine transform example; glTF Schema Updates; compatibility implementation note"
+        }
+      ]
+    },
+    {
+      "id": "claim.craft-three-texture-transform-runtime",
+      "statement": "Current GLTFLoader lists KHR_texture_transform support, while Texture documents channel-based UV selection, UV transform properties, filters, mipmaps and wrap controls.",
+      "scope": "Live docs accessed 2026-09-08; imported values require installed-revision inspection.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-three-gltf-loader",
+          "locator": "Extension support list: KHR_texture_transform"
+        },
+        {
+          "source_id": "source.knowledge-depth-three-texture",
+          "locator": "channel; matrix; matrixAutoUpdate; offset; repeat; rotation; minFilter; magFilter; mipmaps; wrapS; wrapT"
+        }
+      ]
+    }
+  ]
+}

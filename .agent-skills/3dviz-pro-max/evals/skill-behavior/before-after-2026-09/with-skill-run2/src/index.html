@@ -1,0 +1,48 @@
+<!doctype html>
+<!-- Keep #world, #error, #views, #control and #reset: the capture script and the viewer
+     contract read them. #picks is the keyboard-equivalent of clicking a building in the canvas. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lanternfall — a river village after dark</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <div class="viewport" aria-busy="true">
+        <canvas id="world" aria-label="A lantern-lit river village you can orbit and click"></canvas>
+        <p id="error" role="alert" hidden></p>
+      </div>
+      <aside class="panel">
+        <header>
+          <p class="eyebrow">Invented settlement &middot; lantern night</p>
+          <h1>Lanternfall</h1>
+          <p class="lede">Two hours after sunset on the Slowwater. Every light in this village is
+            carried, hung or tended by somebody. Click a roof to hear who.</p>
+        </header>
+
+        <h2>Views</h2>
+        <nav id="views" aria-label="Camera views"></nav>
+
+        <h2>Buildings</h2>
+        <nav id="picks" aria-label="Buildings"></nav>
+
+        <section id="readout" class="readout" aria-live="polite">
+          <h3 id="readout-name">Nothing selected</h3>
+          <p id="readout-note">Click a building in the scene, or pick one from the list.</p>
+          <p id="readout-dims" class="dims"></p>
+        </section>
+
+        <p class="controls">
+          <button id="control" type="button" aria-pressed="false">Pause motion</button>
+          <button id="reset" type="button">Reset view</button>
+        </p>
+        <p class="fineprint">Fiction, not a record: Lanternfall, the Slowwater and its creatures are
+          invented. Dimensions in the readout are authored to keep human scale honest (doors 2.0&nbsp;m,
+          quay wall 1.25&nbsp;m, ferry 4.5&nbsp;m, lantern 0.35&nbsp;m) — they measure nothing real.</p>
+      </aside>
+    </main>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

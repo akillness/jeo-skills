@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-minimalist",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Minimalist visual hierarchy"
+  },
+  "aliases": {
+    "en": [
+      "minimal 3D",
+      "minimalist scene",
+      "reduced visual clutter",
+      "negative space composition",
+      "quiet 3D"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "products-assemblies"
+  ],
+  "summary": "Keep only forms that communicate identity, relation or interaction; use spacing and proportion as the primary expressive tools.",
+  "objective": "Removing decoration has not removed the cues needed to identify parts, interpret a value or discover an action.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "minimalist"
+  ],
+  "subject_terms": [
+    "minimal 3D",
+    "minimalist scene",
+    "reduced visual clutter",
+    "art direction",
+    "negative space composition",
+    "quiet 3D"
+  ],
+  "intent_signals": [
+    "Create a minimalist scene",
+    "Reduce visual clutter while retaining meaning"
+  ],
+  "example_prompts": [
+    "Explain a service graph with minimalist forms and clearly labeled connection states."
+  ],
+  "content": {
+    "principles": [
+      "Keep only forms that communicate identity, relation or interaction; use spacing and proportion as the primary expressive tools."
+    ],
+    "implementation": [
+      "Reduce components to meaningful masses while preserving essential connections and selectable boundaries.",
+      "Choose a restrained palette and one clear lighting relationship; add contrast intentionally for focus and state.",
+      "Use a calm framing with room around the subject; animate only meaningful transitions or one deliberate ambient gesture.",
+      "Hold the working palette at three colours (#f4f2ee ground, #2b2b2b form, #d94f2b accent) and keep at least 55% of the frame as empty ground; the two reserve swatches stay unused unless a disabled or secondary state genuinely needs them.",
+      "Space objects at 1.5x their own width or more and chamfer every edge 2 mm; with key:fill at 1.8:1 and a single 12%-opacity contact ellipse, that chamfer highlight is the only separation cue the style allows."
+    ],
+    "observable_checks": [
+      "Removing decoration has not removed the cues needed to identify parts, interpret a value or discover an action."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "A minimalist scene has no texture, no fog and no second light to hide behind, so the numbers protect the two things that remain: emptiness and edge quality. The palette is deliberately three colours padded to five reserve slots, more than half the frame stays empty ground with no horizon seam, and a soft 1.8:1 key with Neutral tone mapping at 1.05 keeps the field even so the single accent and the 2 mm chamfer line carry the whole composition.",
+    "values": {
+      "feeling": [
+        "calm",
+        "spacious",
+        "exact"
+      ],
+      "palette": [
+        {
+          "hex": "#f4f2ee",
+          "role": "ground and background, one continuous field"
+        },
+        {
+          "hex": "#2b2b2b",
+          "role": "form and type, the only dark value"
+        },
+        {
+          "hex": "#d94f2b",
+          "role": "single accent, reserved for the active or selected element"
+        },
+        {
+          "hex": "#e3e0da",
+          "role": "unused / reserve - a second surface plane only if the three-colour set fails"
+        },
+        {
+          "hex": "#8a8a8a",
+          "role": "unused / reserve - disabled state only, never part of the composition"
+        }
+      ],
+      "value_structure": "70/22/8 light/mid/dark; at least 55% of the frame is empty ground containing no object, edge or shadow",
+      "saturation_rule": "two achromatic values plus one accent at <= 70% HSL; the accent appears once per view and only on the interactive or currently selected element",
+      "sky": {
+        "model": "solid",
+        "zenith": "#f4f2ee",
+        "horizon": "#f4f2ee"
+      },
+      "fog": {
+        "type": "none",
+        "color": "#f4f2ee",
+        "density": 0
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#fff8ef",
+          "intensity": 2.2,
+          "elevation_deg": 55,
+          "azimuth_deg": 200,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#eef1f5",
+          "ground": "#d8d4cc",
+          "intensity": 1.2
+        },
+        "rim": {
+          "type": "none"
+        },
+        "ratio": "key:fill ~ 1.8:1, near shadowless; the cast shadow is one soft ellipse at 12% opacity and nothing else"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "Neutral",
+        "exposure": 1.05
+      },
+      "camera": {
+        "fov_deg": 35,
+        "height_m": 1.5,
+        "pitch_deg": -8,
+        "orbit": {
+          "minPolar_deg": 60,
+          "maxPolar_deg": 85,
+          "minDist_m": 2,
+          "maxDist_m": 12
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.6,
+          0.8
+        ],
+        "metalness": [
+          0,
+          0
+        ],
+        "notes": "one material for every surface; separation comes from spacing of 1.5x object width and from a 2 mm chamfer catching a single highlight line"
+      },
+      "motion": {
+        "sway_period_s": [
+          0,
+          0
+        ],
+        "ease": "cubic out",
+        "hold_ms": 600
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.2,
+          "strength": 0.0,
+          "radius": 0.0
+        },
+        "vignette": 0.0,
+        "grain": 0.0,
+        "dof": "off"
+      },
+      "signature_technique": "one continuous ground-and-background field with no horizon seam, so the subject floats in value and every edge in frame belongs to the subject",
+      "never": [
+        "a visible horizon line or backdrop seam",
+        "more than one accent element per view",
+        "decorative shadow patterns",
+        "removing units, legends or the cue that makes an action discoverable"
+      ]
+    }
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for Neutral tone mapping at exposure 1.05; re-tune every intensity, fog density and bloom threshold if you change the tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with geometric-abstract, monochrome or scientific encoding; minimalism must not delete units, uncertainty or required controls."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

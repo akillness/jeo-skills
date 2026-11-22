@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-determinant-sign-and-collapse",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Read the determinant as signed volume and collapse"
+  },
+  "aliases": {
+    "en": [
+      "determinant meaning",
+      "orientation reversal",
+      "singular matrix"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra",
+    "solid-geometry"
+  ],
+  "summary": "Show the determinant as the signed volume scaling, including the orientation flip at negative values and the collapse at zero.",
+  "objective": "Make the determinant visible as a geometric consequence rather than as a computed number beside a shape.",
+  "applies_when": [
+    "A transformation is applied to a volume, a parallelepiped or a set of three vectors.",
+    "The determinant, invertibility or orientation is displayed or discussed.",
+    "The user can drive the matrix towards a singular configuration."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "determinant",
+    "signed volume",
+    "orientation",
+    "singular",
+    "parallelepiped",
+    "coplanar"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "linear-algebra",
+    "geometry"
+  ],
+  "intent_signals": [
+    "what does the determinant mean",
+    "make the matrix singular",
+    "why is the volume zero"
+  ],
+  "example_prompts": [
+    "Show the determinant as the volume of the transformed cube, including the flip.",
+    "Let me drive the matrix to singular and see what happens."
+  ],
+  "negative_signals": [
+    "Scenes that only need a scalar readout with no geometric claim.",
+    "Numerical linear algebra topics such as conditioning, which need a different treatment."
+  ],
+  "not_for": [
+    "Scenes that only need a scalar readout with no geometric claim.",
+    "Numerical linear algebra topics such as conditioning, which need a different treatment."
+  ],
+  "content": {
+    "principles": [
+      "The volume of a parallelepiped spanned by three vectors is the absolute value of their triple scalar product, so the determinant of the matrix of those vectors is a signed volume rather than an arbitrary number.",
+      "A zero triple product means the three vectors lie in a common plane, so the volume is zero and the transformation has collapsed a dimension; that is the geometric meaning of singularity.",
+      "The sign carries orientation. Because the cross product is anticommutative, swapping two vectors negates the determinant, and a negative determinant means the transformation reverses handedness.",
+      "The singular case is a legitimate linear map and should be reachable and inspectable, even though the inverse does not exist."
+    ],
+    "implementation": [
+      "Draw the transformed unit volume and report the determinant beside it, computed from the same matrix.",
+      "Encode the sign visually, for example by a handedness indicator or a colour change at the flip, rather than only by a minus sign in the readout.",
+      "Let the parameters reach the singular configuration exactly and show the flattened image with an explicit label instead of a near-zero jitter.",
+      "Where an inverse is offered, disable it in the singular case with an explanation rather than producing large or arbitrary numbers.",
+      "Show the plane or line that the collapsed image occupies, since that is the informative part of a singular map."
+    ],
+    "observable_checks": [
+      "Compare the reported determinant against the volume drawn for several matrices, including a negative one.",
+      "Swap two columns and confirm the sign changes and the handedness indicator flips.",
+      "Drive the matrix to singular and confirm the image is genuinely flat and labelled, and that any inverse control is disabled.",
+      "Scale one column by a factor and confirm the determinant scales by the same factor."
+    ]
+  },
+  "related_ids": [
+    "recipe.determinant-volume",
+    "recipe.cross-product",
+    "recipe.linear-transformation-3d"
+  ],
+  "creative_affordances": [
+    "The visual language for orientation reversal is open: mirrored labels, a handed glyph or a colour convention all work.",
+    "A staged animation that pauses at the collapse is often the clearest presentation."
+  ],
+  "known_limits": [
+    "Authored interpretation guidance citing the triple product and coplanarity statements; it does not treat determinants in dimensions other than three geometrically.",
+    "Numerical detection of singularity depends on a tolerance that this rule does not fix."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-triple-product-volume",
+      "statement": "The volume of a parallelepiped with adjacent edges given by three vectors is the absolute value of their triple scalar product, a zero triple scalar product means the three vectors lie in the same plane, and the cross product is anticommutative so that exchanging two vectors reverses the sign.",
+      "scope": "Three-dimensional vector geometry; it does not treat determinants of larger matrices or numerical conditioning.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-cross-product",
+          "locator": "2.4, volume of a parallelepiped, coplanar case and anticommutativity"
+        }
+      ]
+    }
+  ]
+}

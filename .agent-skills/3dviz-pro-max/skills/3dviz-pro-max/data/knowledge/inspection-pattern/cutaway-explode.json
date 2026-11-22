@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.cutaway-explode",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "inspection-pattern",
+  "title": {
+    "en": "Cutaway and exploded assembly inspection"
+  },
+  "aliases": {
+    "en": [
+      "cutaway explode"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures",
+    "environments-dioramas",
+    "solid-geometry"
+  ],
+  "summary": "Reveal internal construction while distinguishing an explanatory display transform from the real assembly.",
+  "objective": "At zero explosion every part returns to its exact assembly transform; at full separation attachment relationships remain understandable.",
+  "tags": [
+    "inspection-pattern",
+    "cutaway",
+    "explode"
+  ],
+  "example_prompts": [
+    "Reveal internal construction while distinguishing an explanatory display transform from the real assembly."
+  ],
+  "content": {
+    "principles": [
+      "Choose cutaway for spatial continuity and explode for attachment order. State when displacement is purely explanatory.",
+      "Preserve a rest assembly and label removed or shifted parts; a floating part should have an obvious inspection reason."
+    ],
+    "implementation": [
+      "For WebGL material clipping, enable localClippingEnabled and use world-space planes. Inspect shadow clipping separately.",
+      "For explosion, derive display offsets from saved rest poses and a single progress value; do not mutate semantic coordinates cumulatively.",
+      "If the cut should show a solid cross-section, author a suitable cap or section mesh; hiding fragments alone is not an interior model."
+    ],
+    "observable_checks": [
+      "At zero explosion every part returns to its exact assembly transform; at full separation attachment relationships remain understandable.",
+      "Move a cut plane: interior labels and boundaries agree with the revealed geometry rather than suggesting a hollow object accidentally."
+    ]
+  },
+  "known_limits": [
+    "Rendering clips do not certify watertight geometry or factual interior anatomy; exploded poses are not physically attainable by default.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+  ],
+  "related_ids": [
+    "recipe.fantasy-village-diorama",
+    "recipe.heart-cutaway",
+    "recipe.polyhedron-net"
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-cutaway-explode",
+      "statement": "Material clipping planes are world-space planes and require WebGLRenderer local clipping to be enabled; shadow clipping is separately configurable.",
+      "scope": "WebGL rendering configuration only.",
+      "source_refs": [
+        {
+          "source_id": "source.three-material-clipping",
+          "locator": "clippingPlanes; clipShadows"
+        }
+      ]
+    }
+  ]
+}

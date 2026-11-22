@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-illuminated-fraction-phase",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Illuminated fraction, phase naming and light-driven shading"
+  },
+  "aliases": {
+    "en": [
+      "moon phase fraction check",
+      "quarter phase half disk"
+    ]
+  },
+  "direction_ids": [
+    "astronomy-space"
+  ],
+  "summary": "Derive the illuminated fraction from observer geometry and confirm shading follows the light rather than the camera.",
+  "objective": "Under the declared sphere, parallel-light and distant-observer idealization a quarter phase shows a half-lit disk, the fraction varies monotonically under a prescribed phase sweep, and camera orbit changes neither the lit hemisphere nor the disk.",
+  "applies_when": [
+    "A scene links an external orbital diagram to an observer view of a lit body.",
+    "Phase names are displayed alongside the geometry.",
+    "The external camera can be orbited freely."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "phase",
+    "illumination",
+    "observer-view"
+  ],
+  "subject_terms": [
+    "phase angle",
+    "illuminated fraction",
+    "terminator",
+    "first quarter",
+    "observer disk",
+    "projection assumption"
+  ],
+  "intent_signals": [
+    "the first quarter looks a quarter lit",
+    "the shading rotates when I orbit the camera"
+  ],
+  "example_prompts": [
+    "Check the illuminated fraction and phase names in this Moon phases scene."
+  ],
+  "negative_signals": [
+    "eclipse prediction",
+    "libration or topographic shadowing"
+  ],
+  "content": {
+    "principles": [
+      "The exact half-lit hemisphere and half-lit quarter-phase disk are properties of a declared idealization: a spherical body, parallel incident light and an orthographic or distant observer. Under a nearby perspective observer neither identity is exact, so the idealization is required rather than merely recorded.",
+      "A quarter phase shows half of the visible disk illuminated, which is the naming trap this check exists to catch.",
+      "Shading follows the light direction rather than the camera, so orbiting the external view must not change which hemisphere is lit."
+    ],
+    "implementation": [
+      "Compute the phase angle at the body, between the direction to the light source and the direction to the observer, derive the illuminated fraction from it, and record both at each step together with the declared sphere, parallel-light and distant-observer assumptions.",
+      "Use the conventional phase angle between the two declared directions, in [0, pi]. Sweep it from 0 to pi and back to represent a full illumination cycle, or derive it from a separately named oriented cycle parameter. Compare the named full, quarter and new phases under the declared parallel-light and distant-observer model.",
+      "Orbit the external camera at a fixed model time and confirm that the world-space lit hemisphere and the separate observer disk are unchanged, while accepting that external-view pixels and any view-dependent material response legitimately differ.",
+      "Record the projection assumption used for the observer disk and check the extreme phases where that assumption matters most."
+    ],
+    "observable_checks": [
+      "At a quarter phase the observer disk is half illuminated; a quarter-lit disk identifies the fraction being taken from the phase name rather than from the geometry.",
+      "The illuminated fraction changes monotonically on each monotone half-cycle of conventional phase angle, with the direction reversed on the return sweep; it returns to the initial fraction after the complete prescribed cycle. Keep the two quarter-phase positions distinct in the oriented cycle.",
+      "Camera orbit changes neither the world-space lit hemisphere nor the observer disk, and the sphere, parallel-light and distant-observer assumptions are stated in the artifact as conditions of the half-disk identity."
+    ]
+  },
+  "known_limits": [
+    "Reflected-light geometry only; eclipses, libration, terrain shadowing and any real lunar ephemeris are outside this check.",
+    "Authored verification guidance; nothing was computed or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.moon-phase-observer",
+    "recipe.earth-tilt-seasons",
+    "recipe.kepler-equal-area-orbit"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-lunar-phase-geometry",
+      "statement": "The Sun always illuminates half of the Moon while the other half remains dark, and how much of that illuminated half is visible changes as the Moon travels through its orbit, with first quarter showing half of the illuminated side.",
+      "scope": "Reflected-sunlight geometry as described in the cited public page, distinct from eclipse geometry and without ephemeris data.",
+      "source_refs": [
+        {
+          "source_id": "source.nasa-moon-phases",
+          "locator": "Why the Moon has phases and the first quarter description"
+        }
+      ]
+    }
+  ]
+}

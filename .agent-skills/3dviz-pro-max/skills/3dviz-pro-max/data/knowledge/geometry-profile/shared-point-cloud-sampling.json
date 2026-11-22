@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-point-cloud-sampling",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "geometry-profile",
+  "title": {
+    "en": "Point cloud with declared sampling and point size"
+  },
+  "aliases": {
+    "en": [
+      "point cloud density",
+      "splat size and world size",
+      "sampled point set"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment",
+    "abstract-systems-data",
+    "probability-statistics"
+  ],
+  "summary": "Say where the points came from and whether their drawn size means anything, so density is not mistaken for magnitude.",
+  "objective": "Zooming the camera changes apparent point size only in the way the record declares, and the legend states what one point represents.",
+  "tags": [
+    "geometry-profile",
+    "point-cloud",
+    "sampling",
+    "density",
+    "point-size"
+  ],
+  "subject_terms": [
+    "point cloud",
+    "sample density",
+    "point size",
+    "size attenuation",
+    "screen-space size",
+    "world-space size",
+    "overplotting",
+    "depth ordering",
+    "sampled surface"
+  ],
+  "intent_signals": [
+    "show a scatter of samples in space",
+    "the points get huge when I zoom in",
+    "cloud looks denser near the camera",
+    "render lidar-like points",
+    "does one dot mean one measurement"
+  ],
+  "example_prompts": [
+    "Show a cloud of sampled measurements and let me probe one point.",
+    "Render a projected embedding as points I can select.",
+    "Display terrain samples before they are turned into a surface."
+  ],
+  "negative_signals": [
+    "continuous surface required",
+    "solid object with a definite boundary"
+  ],
+  "not_for": [
+    "Objects whose boundary matters, where a surface should be reconstructed instead.",
+    "Particle effects driven by a simulation, whose motion and lifetime are the point rather than the sampling."
+  ],
+  "content": {
+    "principles": [
+      "State what one point is: a measurement, a sample of a surface, a record in a dataset or a decorative particle. The rest of the presentation depends on that answer.",
+      "Point size is a rendering choice that can also carry data, and the two readings must not be confused. A screen-pixel size is independent of distance and can legitimately encode a declared symbolic quantity; a distance-attenuated size behaves like an object of some extent but is still not a measured radius unless the record says how it was derived. State which mode is in use and whether the size means anything.",
+      "Density can be read as magnitude by a viewer whether or not it was meant that way. Uneven sampling therefore needs to be disclosed, especially where the sampling process itself was uneven.",
+      "Overplotting hides structure. When many points fall on the same screen area, the visible result saturates and further points add nothing, so the presentation needs a stated mitigation such as subsampling, opacity or aggregation.",
+      "A point set has no surface. Individual sprites do depth-test and occlude one another, so the nearest layer of a dense cloud can look like a solid shell; that appearance is a rasterisation effect, not an inferred boundary, and the presentation should actively counter the reading."
+    ],
+    "implementation": [
+      "Keep the source identity with each point so selection can report a real record rather than an index into a buffer.",
+      "Choose and declare the size mode: fixed screen size for readability at all zooms, or distance-attenuated size when the near-far relationship matters. Do not switch modes between views that are meant to be compared.",
+      "When size or colour encodes a value, keep the mapping and its range in a legend and hold it fixed while the camera moves.",
+      "Where the cloud is dense, reduce opacity or draw a stated random subsample, and show the subsample fraction so the viewer knows the display is not complete.",
+      "Add at least one spatial reference such as a ground grid, bounding box or axis triad, because a cloud alone gives the eye no scale or orientation.",
+      "For sampled surfaces, offer a hover or probe readout with the point's own coordinates and values instead of relying on the viewer to judge position by eye.",
+      "If the points are later meshed, keep the point set available as a separate view so the reconstruction can be compared with its input."
+    ],
+    "observable_checks": [
+      "Zooming in changes apparent point size only in the declared way, and the legend statement matches the observed behaviour.",
+      "Selecting a point reports the identity and values of a real record from the source data.",
+      "For a test cloud with known interior samples, use camera rotation and the declared occlusion controls to inspect those samples. For surface-only or planar data, verify faithful visibility of the sampled structure without inventing an interior.",
+      "The stated subsample fraction matches the number of points actually drawn.",
+      "Two views that are meant to be compared use the same size mode, the same subsample fraction and the same colour range."
+    ]
+  },
+  "creative_affordances": [
+    "Point clouds support strong atmospheric looks such as glowing motes or fading depth, provided the record separates the decorative treatment from the encoded values.",
+    "Non-circular sprites, per-point rotation and layered colour ramps are legitimate stylistic tools."
+  ],
+  "known_limits": [
+    "This profile does not reconstruct a surface, estimate normals or fill gaps in the sampling.",
+    "Point rendering behaviour differs between engines and asset formats; sizes and styles that look right in one runtime may not transfer.",
+    "Authored reusable guidance; no runtime artifact or rendered result has been observed for this record."
+  ],
+  "related_ids": [
+    "recipe.embedding-projection",
+    "recipe.sampling-mean-distribution",
+    "recipe.terrain-contour-slices",
+    "knowledge.graph-in-space",
+    "knowledge.shared-unlit-quantitative-encoding"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-point-size-attenuation",
+      "statement": "In one widely used renderer, point size is specified in pixels with a default of one, and an attenuation flag that is enabled by default makes individual point size depend on camera depth for a perspective camera only.",
+      "scope": "Documented point-sprite behavior of one library as of the access date. It shows that the same numeric size means different things under different camera and attenuation settings; it says nothing about sampling adequacy.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-points-material",
+          "locator": "size; sizeAttenuation"
+        }
+      ]
+    },
+    {
+      "id": "claim.shared-gltf-point-rendering-undefined",
+      "statement": "The glTF 2.0 specification does not define the size or style of non-triangular primitives such as points and lines, recommends a width of one pixel in viewport space as a consistency convention, and recommends that points without a normal attribute be rendered without lighting using the base colour and emissive value.",
+      "scope": "Normative and recommended text of the glTF 2.0 specification for point and line primitives, read from the Khronos specification source. It establishes that point appearance is not portable through the format; it does not describe any particular viewer's behavior.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Materials > Point and Line Materials"
+        }
+      ]
+    }
+  ]
+}

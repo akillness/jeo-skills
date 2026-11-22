@@ -1,0 +1,17 @@
+# Direct Python dependencies of the kinetic music-video tools. The per-platform locks next to this
+# file pin every package, transitives included, with hashes. Regenerate them all after any change.
+# beat-this 1.1.0 is CPJKU/beat_this commit ad7974846029835307ba19a3d5cefbf40b243041 (tag v1.1.0):
+# its PyPI provenance attestation names that commit, and the wheel's package files match it.
+beat-this==1.1.0
+demucs
+faster-whisper
+librosa
+matplotlib
+mediapipe==0.10.14
+numpy
+opencv-python
+pillow
+scipy
+soundfile
+torch==2.11.0
+torchaudio==2.11.0

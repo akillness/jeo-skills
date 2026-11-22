@@ -1,0 +1,1214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fire-Paper Loader — Worker WebGL</title>
+<meta name="description" content="A burning-paper ring loader started from the head: a GLSL flame drawn by a Worker on an OffscreenCanvas, so a blocked main thread cannot stall the fire.">
+<meta name="color-scheme" content="dark">
+<style>html{background:#000}</style>
+<script>
+/* The loader (#kindle) draws its fire in a worker. A worker can start, and
+   make its WebGL context, only while this thread is free: it is now, while
+   the stylesheets below come in, and not again until the whole page is
+   parsed. So it is started here, on a canvas #kindle takes over. */
+window.__kbBoot = 'self.window = self; self.onmessage = e => { const d = e.data || {};'
+  + ' if (d.kbPre){ self.__kbCanvas = d.canvas; try { d.canvas.getContext("webgl", {antialias:false, alpha:false, depth:false, stencil:false}); } catch (x) {} return; }'
+  + ' if (!d.kbInit) return; self.onmessage = null; d.canvas = d.canvas || self.__kbCanvas; self.__kbInit = d; (0, eval)(d.src); };';
+(() => {
+  try {
+    if (window.__kbNoWorker || typeof Worker !== 'function' || typeof OffscreenCanvas !== 'function') return;
+    const canvas = document.createElement('canvas');
+    if (!canvas.transferControlToOffscreen) return;
+    const url = URL.createObjectURL(new Blob([window.__kbBoot], {type:'text/javascript'}));
+    const worker = new Worker(url), pre = window.__kbPre = {worker, canvas, url, failed:false};
+    worker.onerror = e => { e.preventDefault(); pre.failed = true; };
+    const off = canvas.transferControlToOffscreen();
+    worker.postMessage({kbPre:1, canvas:off}, [off]);
+  } catch (e) { window.__kbPre = null; }
+})();
+/* demo only: ?worker=0 draws the fire on the main thread, to compare */
+if (/[?&]worker=0/.test(location.search)) window.__kbNoWorker = true;
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400&amp;display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#f2ece2;
+    --dim:rgba(242,236,226,.62);
+    --hair:rgba(242,236,226,.16);
+    --ember:#e8a23a;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+    --pad:clamp(20px,5vw,72px);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-weight:normal}
+  html,body{min-height:100%}
+  body{background:#000;color:var(--ink);font-family:var(--sans);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+  /* ---- the loader, as the source has it ---- */
+
+  /* the loader is black like the intro's first frame, not the warm page black,
+     so the two can hand over without a shift in the dark */
+  #kindle{position:fixed;inset:0;z-index:8;background:#000;pointer-events:none;
+    transition:opacity .16s linear}
+  /* the count lands on 100, holds a beat, and goes before the ring can
+     reach it; on the compositor, so a busy first frame cannot cut it short */
+  #kindle .kindle-label{transition:opacity .40s linear .12s}
+  #kindle.lit .kindle-label{opacity:0}
+  #kindle.out{opacity:0}
+  #kindle canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .kindle-label{position:absolute;left:50%;top:calc(50% + 24vh);transform:translateX(-50%);
+    display:flex;align-items:baseline;gap:14px;white-space:nowrap;
+    font:normal 11px/1 var(--sans);letter-spacing:.26em;text-transform:uppercase;
+    color:rgba(242,236,226,.52)}
+  .kindle-label b{font-weight:normal;min-width:3ch;letter-spacing:.06em;
+    font-variant-numeric:tabular-nums;color:rgba(242,236,226,.78)}
+  @media (prefers-reduced-motion:reduce){ #kindle{transition-duration:.25s} }
+
+  /* ---- the page it hands off to (staging) ---- */
+  main{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:var(--pad);max-width:1120px;margin:0 auto;
+    opacity:0;transition:opacity .9s ease .1s}
+  body.open main{opacity:1}
+  .stack{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim)}
+  h1{font-family:var(--serif);font-size:clamp(46px,8.4vw,120px);line-height:.98;letter-spacing:-.01em;margin:18px 0 26px}
+  h1 em{font-style:italic;color:var(--ember)}
+  .lede{font-size:clamp(15px,1.5vw,18px);line-height:1.65;color:var(--dim);max-width:60ch}
+  .lede b{color:var(--ink)}
+  .bar{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;margin-top:34px;padding-top:22px;border-top:1px solid var(--hair);font-size:12px;letter-spacing:.06em;color:var(--dim)}
+  .bar label{display:inline-flex;gap:8px;align-items:center;cursor:pointer}
+  .bar input{accent-color:var(--ember);width:15px;height:15px}
+  .bar input:focus-visible,.bar button:focus-visible{outline:2px solid var(--ember);outline-offset:3px}
+  .bar button{font:inherit;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);background:none;border:1px solid var(--hair);padding:10px 18px;border-radius:2px;cursor:pointer}
+  .bar button:hover{border-color:var(--ember)}
+  .read{font-variant-numeric:tabular-nums;margin-left:auto}
+  .read b{color:var(--ink)}
+  @media (max-width:640px){ .read{margin-left:0;width:100%} }
+</style>
+</head>
+<body>
+<!-- Kindling: the loader is the first stretch of an intro burn: a ragged rim opens on black while the page loads. -->
+<div id="kindle">
+  <canvas id="kindle-gl" aria-hidden="true"></canvas>
+  <div class="kindle-label" role="progressbar" aria-label="Loading the workshop"
+       aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span>Kindling</span><b>0</b></div>
+</div>
+<script>
+(() => {
+  /* This same script also runs in a worker (see the end), which is handed
+     the canvas and draws the fire there, on frames of its own. */
+  const IN_W = typeof document === 'undefined', WI = IN_W ? self.__kbInit : null;
+  const SRC = IN_W ? '' : ((document.currentScript || {}).textContent || '');
+  const root = IN_W ? null : document.getElementById('kindle');
+  let cv = IN_W ? WI.canvas : document.getElementById('kindle-gl');
+  const label = IN_W ? null : root.querySelector('.kindle-label'), num = IN_W ? null : label.querySelector('b');
+  const reduced = IN_W ? WI.reduced : matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* the intro burn's own progress at the hand-off — the module resumes the
+     intro from exactly here (INTRO.hand), so the two rims coincide */
+  const HAND = 0.36;
+  /* while it waits the rim holds a little short of the hand-off, then runs
+     into it at the speed the intro starts with — a ring that stalls and is
+     then overtaken by a faster one reads as two fires. That speed is kept
+     low (uProg/s): leaving at easeBurn's full pace, the ring grew 180 px a
+     frame from a standstill */
+  const WAIT = 0.290, V_HAND = 0.24;
+  /* and never still: it creeps on at VMIN (about 5 px a frame at 8 fps),
+     held to a limit a little ahead of the real progress that itself rises
+     at 0.012/s, up to CEIL, which leaves room for a smooth run in (a fixed
+     ceiling it reached early stood it still for a second) */
+  const VMIN = 0.016, CEIL = 0.335;
+  /* nor faster than VMAX: after a stall the progress arrived in one lump,
+     and the coal leapt a size in a frame */
+  const VMAX = 0.05;
+  /* the radius that is seen, in screen heights: the coal's, then the ring's */
+  const ss = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a)/(b - a))); return t*t*(3 - 2*t); };
+  /* What is seen, for the clock: the rim's radius in CSS px as the loader FS
+     draws it (its Tv: a 4 px fleck at uProg 0, 5.8 px by 0.15, then the burn's
+     own T at kbScale — keep in step with the FS), and how bright it is (its
+     gain, 0 at uProg 0). The pace is planned in S = gain + ln(radius/first
+     radius), so the same speed in S looks like the same growth whatever the
+     size: planned in u the fleck held one size for the first 0.15 of it and
+     then leapt 2.5x. */
+  const seenPx = (u, h, a) => {
+    const sc = 0.67 + 0.33*ss(0.335, 0.55, u), maxR = Math.hypot(a, 1)*0.5, T = u*1.62 - 0.30, px2T = 1/(maxR*h*sc);
+    const eps = (4.0 + 1.8*ss(0.0, 0.15, u) + 4.5*ss(0.15, 0.22, u))*px2T, x = (T - eps)/0.006;
+    return (eps + 0.006*(x > 30 ? x : Math.log1p(Math.exp(x))))/px2T;
+  };
+  const seenGain = u => ss(0.0, 0.03, u)*(0.45 + 0.55*ss(0.03, 0.15, u));
+  let sTab = null, sKey = '';
+  const sTable = (h, a) => {
+    const key = h + 'x' + a;
+    if (key !== sKey){
+      sKey = key; sTab = new Float64Array(1024);
+      const r0 = seenPx(0, h, a);
+      for (let i = 0; i < 1024; i++){ const u = 0.4*i/1023; sTab[i] = 0.3*seenGain(u) + Math.log(seenPx(u, h, a)/r0); }   /* the fade-in weighs 0.3: at 1 it held the size back for the first 0.9 s */
+    }
+    return sTab;
+  };
+  const sOf = (u, t) => { const f = Math.min(1, Math.max(0, u/0.4))*1023, i = Math.min(1022, Math.floor(f)); return t[i] + (t[i + 1] - t[i])*(f - i); };
+  const uOf = (v, t) => {
+    if (v <= t[0]) return 0;
+    if (v >= t[1023]) return 0.4;
+    let lo = 0, hi = 1023;
+    while (hi - lo > 1){ const m = (lo + hi) >> 1; if (t[m] < v) lo = m; else hi = m; }
+    return 0.4*(lo + (v - t[lo])/Math.max(1e-9, t[hi] - t[lo]))/1023;
+  };
+  const vwh = () => IN_W ? [view.w, view.h] : [Math.max(1, innerWidth || screen.width), Math.max(1, innerHeight || screen.height)];
+  const tabNow = () => { const [w, h] = vwh(); return sTable(h, w/h); };
+  /* the radius that is seen, in screen heights (the compositor scale's pace) */
+  const visR = u => { const [w, h] = vwh(); return seenPx(u, h, w/h)/h; };
+  let lim = 0;
+  const t0 = IN_W ? WI.t0 : performance.now();
+  /* the worker's clock, moved onto the page's: every time below is the page's */
+  const OFF = IN_W ? performance.timeOrigin - WI.origin : 0, pnow = () => performance.now() + OFF;
+  let target = 0, shown = 0, alive = true, lastYield = t0, lastPct = -1;
+  let doneAt = 0, doneFrom = 0, doneDur = 0, doneM0 = 0, doneM1 = 0, uNow = 0.10, finish = null, handAt = 0;
+  /* after the hand-off this rim keeps growing on the intro's own curve
+     (easeBurn over 2.3 s, resumed at HAND), so while it fades out it sits
+     exactly on the page's rim instead of being overtaken by it */
+  const DUR = 2.30, RH = 1 - Math.pow(1 - HAND, 1/1.70);
+  /* the intro burn's progress for its clock x (0-1), which the page uses too
+     (window.__kbIntroBurn): easeBurn up to the hand-off, then a curve that
+     leaves at the loader's speed, gathers pace, and slows onto the open
+     frame when easeBurn would have */
+  const introBurn = window.__kbIntroBurn = x => {
+    if (x <= RH) return 1 - Math.pow(1 - x, 1.70);
+    const u = Math.min(1, (x - RH)/(1 - RH)), s0 = V_HAND*DUR*(1 - RH)/(1 - HAND);
+    return HAND + (1 - HAND)*(s0*u*(1 - u)*(1 - u) + u*u*(3 - 2*u));
+  };
+  let uPrev = 0.10, lastNow = t0, velS = 0;
+  let sparkProg = null, sparkSets = [], sU = {};
+
+  let gl = null, prog = null, buf = null, uRes, uProg, uAspect, uTime, uPxS;
+  let grow = null, vGrow = 0, view = IN_W ? WI.view : null, worker = null, followU = null, gW = 0.150, vW = 0;
+  let sV = 0, vS = 0, doneS1 = 0, warming = false, fresh = true, lastFollow = null;
+  const VS = 'attribute vec2 a;void main(){gl_Position=vec4(a,0.0,1.0);}';
+  /* A copy of the page's noise and of the radial branch of its burn: the rim
+     is the same shape at the same progress, and it opens onto black because
+     there is nothing to reveal yet. */
+  /* the burning edge is shared with the page's burn pass (compMat reads
+     window.__kbEdge), so the ring the loader hands over is the one the
+     intro and every burn go on drawing */
+  const EDGE = window.__kbEdge = `
+    /* ---- The burning edge: one look for the loader's ring, the intro and
+       every burn (the page's burn pass reads this same text). It is drawn in
+       CSS pixels: xc is the distance to the front (+ ahead of it, - burnt), g
+       the paper's own coordinates, so the grain, the embers and the splits
+       stay put on the paper while the front passes over them, and aa is a
+       device pixel in CSS px, so every hard edge is crisp to the pixel.
+       wht: how wide it burns here (0.3-2.6, it swells and pinches), how hot
+       (0-1, high only in a few stretches), a scale on the whole band (1;
+       less on a ring still small, which must stay a rim with black inside
+       it, never a glowing disc), and how alive (0.15-1: some stretches all
+       but out), each wandering along the edge and over time. ---- */
+    /* the loader's ring is drawn at about two-thirds size while the page
+       loads, and opens out to full size over the intro's first stretch;
+       the loader and the intro both draw it through this, so the hand-off
+       is the same ring at the same size */
+    float kbScale(float u){ return mix(0.67, 1.0, smoothstep(0.335, 0.55, u)); }
+    float kbGrad(float f, float pxH, float nominal){
+    #ifdef KB_NO_DERIV
+      return nominal;
+    #else
+      return clamp(length(vec2(dFdx(f), dFdy(f)))*pxH, 0.35*nominal, 3.0*nominal);
+    #endif
+    }
+    /* distance in pixels to where v crosses zero: a line drawn this way is
+       a pixel wide wherever it runs, never a soft blotch */
+    float kbLinePx(float v, float nominalPerPx){
+    #ifdef KB_NO_DERIV
+      return abs(v)/nominalPerPx;
+    #else
+      return abs(v)/max(length(vec2(dFdx(v), dFdy(v))), 0.25*nominalPerPx);
+    #endif
+    }
+    vec4 kbEdgeWHT(vec2 e, float t){
+      /* one slow field decides what each stretch is doing, so the edge never
+         reads as a stroke: some arcs burn wide and hot, others narrow and
+         dull, and some are all but out; it drifts slowly as it burns */
+      float b = fbm(e*2.6 + vec2(t*0.24, -t*0.17) + 13.0, 3);
+      float life = 0.03 + 0.97*smoothstep(0.42, 0.60, b);
+      float w = (0.20 + 2.60*smoothstep(0.40, 0.66, b + 0.14*(gnoise(e*6.0 + vec2(t*0.70, 1.0)) - 0.5)))
+              * (0.80 + 0.40*gnoise(e*1.6 + vec2(t*0.95, 3.0)));
+      float hn = gnoise(e*4.1 + 31.0 + vec2(0.0, -t*0.08));
+      float h = smoothstep(0.55, 0.80, b + 0.35*(hn - 0.5))*(0.75 + 0.25*sin(t*2.1 + hn*9.0));
+      return vec4(w, h, 1.0, life);
+    }
+    /* hashes and a value noise with no sin in them, for the pixel-sized
+       grain (fixed on the paper, so it never swims) */
+    float kbHash(vec2 p){ vec3 q = fract(p.xyx*0.1031); q += dot(q, q.yzx + 33.33); return fract((q.x + q.y)*q.z); }
+    vec2 kbHash2(vec2 p){ vec3 q = fract(p.xyx*vec3(0.1031, 0.1030, 0.0973)); q += dot(q, q.yzx + 33.33); return fract((q.xx + q.yz)*q.zy); }
+    float kbVN(vec2 x){ vec2 i = floor(x), f = fract(x); f = f*f*(3.0 - 2.0*f);
+      return mix(mix(kbHash(i), kbHash(i + vec2(1.0, 0.0)), f.x), mix(kbHash(i + vec2(0.0, 1.0)), kbHash(i + vec2(1.0, 1.0)), f.x), f.y); }
+    /* The page's burn pass has its noise baked (KB_BAKED), made once at
+       load: a tileable texture of fbm and ridged of three octaves, one
+       gradient octave and ridged of two on a 16-cell period, so an octave stack costs a
+       texture tap (the lines take it; the ring keeps its own noise, so it
+       stays the loader's ring); and kbHash's own values for 2048 x 2048
+       cells round the origin, which give kbVN exactly — the same grain as
+       the loader's, in one tap: filtered between cell centres, at the
+       smoothstep of the fraction */
+    #ifdef KB_BAKED
+    uniform sampler2D uKbN, uKbH;
+    float kbFbmT(vec2 x){ return texture2D(uKbN, x*0.0625).r; }
+    float kbRidT(vec2 x){ return texture2D(uKbN, x*0.0625).g; }
+    float kbGnT(vec2 x){ return texture2D(uKbN, x*0.0625).b; }
+    float kbRid2T(vec2 x){ return texture2D(uKbN, x*0.0625).a; }   /* ridged, two octaves */
+    float kbV(vec2 x){ vec2 i = floor(x), f = fract(x); f = f*f*(3.0 - 2.0*f);
+      return texture2D(uKbH, (i + 1024.5 + f)*0.00048828125).r; }
+    #define KBGN(x) kbGnT(x)
+    #define KBFBM(x) kbFbmT(x)
+    #define KBRID(x) kbRidT(x)
+    /* a line's width, heat and life, as kbEdgeWHT but off the baked noise */
+    vec4 kbEdgeWHTb(vec2 e, float t){
+      float b = kbFbmT(e*2.6 + vec2(t*0.24, -t*0.17) + 13.0);
+      float life = 0.03 + 0.97*smoothstep(0.42, 0.60, b);
+      float w = (0.20 + 2.60*smoothstep(0.40, 0.66, b + 0.14*(kbGnT(e*6.0 + vec2(t*0.70, 1.0)) - 0.5)))
+              * (0.80 + 0.40*kbGnT(e*1.6 + vec2(t*0.95, 3.0)));
+      float hn = kbGnT(e*4.1 + 31.0 + vec2(0.0, -t*0.08));
+      float h = smoothstep(0.55, 0.80, b + 0.35*(hn - 0.5))*(0.75 + 0.25*sin(t*2.1 + hn*9.0));
+      return vec4(w, h, 1.0, life);
+    }
+    #else
+    float kbV(vec2 x){ return kbVN(x); }
+    #define KBGN(x) gnoise(x)
+    #define KBFBM(x) fbm(x, 2)
+    #define KBRID(x) ridged(x, 3)
+    #endif
+    /* coverage of v > 0 over w, the change in v across a device pixel,
+       worked out from v's own scale rather than taken with derivatives:
+       the page skips whole regions before these run, and a derivative
+       taken past such a branch came back as 2x2 blocks — stair-steps and
+       loose flecks along the skipped region's edge */
+    float kbAA(float v, float w){ return clamp(0.5 + v/max(w, 1e-5), 0.0, 1.0); }
+    /* the ember zone's width, px: 12-66 on a line, wide where it burns hot,
+       narrow where it is dying, and on a small ring never under 3.5-7 px
+       (as wide as it burns there): thinner, the rim read as a drawn outline,
+       and even, as a drawn 'o' */
+    float kbZoneW(vec4 wht){ return max((18.0 + 20.0*min(wht.x, 2.6))*wht.z*(0.55 + 0.45*wht.w), 3.5 + 3.5*smoothstep(0.3, 2.0, wht.x)); }
+    /* The ember ramp every colour of the fire keeps to, before the tone
+       curve: deep red, red-orange, orange, warm yellow-orange; nothing on it
+       is pale or grey (the old yellow went cream at full heat and khaki when
+       dimmed), and nothing is bright enough to bloom, so the flame keeps a
+       hard edge on the frame ahead of it. A dim stretch goes down the ramp,
+       never just darker. */
+    vec3 kbRamp(float h){
+      vec3 c = mix(vec3(0.11, 0.006, 0.0007), vec3(0.34, 0.032, 0.0025), smoothstep(0.00, 0.33, h));
+      c = mix(c, vec3(0.90, 0.13, 0.012), smoothstep(0.33, 0.66, h));
+      return mix(c, vec3(1.13, 0.30, 0.036), smoothstep(0.66, 1.00, h));
+    }
+    /* where the ember zone ends: its lip, W px back, torn */
+    float kbLipD(float W, vec2 g){
+      vec2 gr = mat2(0.80, -0.60, 0.60, 0.80)*g;
+      return W*(0.78 + 0.30*kbV(gr*0.035 + 6.0)) + 1.5*(kbV(gr*0.22 + 1.0) - 0.5);
+    }
+    /* The front, as the footer's paper burns: a bright thread of ember that
+       beads and pinches along its length (an even stroke read as neon), gold
+       where it runs hot and dull red where it is nearly out, with a tight
+       glow a few px round it; behind it the ember zone, packed solid and
+       graded smoothly by its heat — yellow at the front, orange, deep red
+       at a crisp torn lip, the hot stretches carrying the yellow further
+       back (hard steps read as a poster). All of it alive: heat pulses run
+       along it both ways and roll back through the zone, patches flicker,
+       the beads drift. sA runs along the edge, px. */
+    vec3 kbFlame(float xc, float xb, float sA, vec4 wht, vec2 g, float t, float aa){
+      float hot = wht.y, life = wht.w, dist = max(-xc, 0.0);
+      float W = kbZoneW(wht);
+      float behind = clamp(0.5 - xc/aa, 0.0, 1.0);          /* burnt, to the pixel */
+      float run = 0.5*kbV(vec2(sA*0.018 - t*1.30, 2.0)) + 0.5*kbV(vec2(sA*0.027 + t*1.70, 5.0));
+      float flk = kbV(vec2(sA*0.110, t*7.0) + 3.0);
+      float roll = kbV(vec2(sA*0.060, dist*0.090 - t*2.6) + 11.0);
+      float heat = clamp(0.30 + 0.55*hot + 0.50*(run - 0.5) + 0.22*(flk - 0.5), 0.0, 1.0)*(0.30 + 0.70*life);
+      float bead = 0.50 + 1.00*kbV(vec2(sA*0.085 - t*0.8, 7.0));
+      float wc = max(0.7, (0.9 + 2.6*heat)*bead*min(1.0, wht.z*2.5));   /* the thread, ~1-5 px */
+      float core = behind*exp(-dist/wc) + (1.0 - behind)*exp(-max(xc, 0.0)/0.35)*0.35;
+      float glow = exp(-abs(xc + 0.5*wc)/(2.0 + 2.8*heat))*heat*min(1.0, wht.z*2.0);
+      float k = dist/W;
+      vec2 gr = mat2(0.80, -0.60, 0.60, 0.80)*g, ga = mat2(0.94, 0.34, -0.34, 0.94)*g;
+      float gT = kbV(g*0.045 + vec2(t*0.90, -t*0.50));
+      /* a few holes drawn out along the grain, drifting */
+      float cl = kbV(ga*vec2(0.12, 0.42) + vec2(t*0.5, -t*0.8) + 4.0)*0.6 + kbV(gr*0.50 + 9.0)*0.4;
+      float lit = kbAA(cl - (0.10 + 0.40*k*k + 0.12*(0.5 - life)), 0.45*aa)*behind;
+      lit *= kbAA(kbLipD(W, g) - dist, aa);
+      float tau = clamp(1.0 - k*(1.05 - 0.40*hot) + 0.22*(gT - 0.5) + 0.34*(run - 0.5) + 0.24*(roll - 0.5) + 0.12*(flk - 0.5) - 0.30*(1.0 - life), 0.0, 1.0);
+      vec3 ember = mix(vec3(0.34, 0.022, 0.003), vec3(0.86, 0.20, 0.024), smoothstep(0.05, 0.42, tau));
+      ember = mix(ember, vec3(1.02, 0.38, 0.055), smoothstep(0.42, 0.76, tau));
+      ember = mix(ember, vec3(1.10, 0.64, 0.17), smoothstep(0.86, 1.0, tau)*(0.30 + 0.70*hot));
+      float band = lit*(0.20 + 0.82*tau*tau)*(1.0 + mix(0.16, 0.50, k)*(kbV(gr*0.60) - 0.5))*(0.35 + 0.65*life);
+      vec3 coreC = mix(vec3(1.40, 0.56, 0.09), vec3(1.85, 1.02, 0.30), heat);
+      coreC = mix(vec3(0.38, 0.05, 0.008), coreC, smoothstep(0.06, 0.55, life));
+      return coreC*core + ember*band + vec3(0.95, 0.20, 0.022)*glow*0.60;
+    }
+    /* the char's crust behind the lip: 3-6 px of it, hard and flaky, before
+       the black: rgb its colour, a its cover */
+    vec4 kbCrust(float xc, float sA, vec4 wht, vec2 g, float aa){
+      float dist = max(-xc, 0.0), W = kbZoneW(wht), lipD = kbLipD(W, g);
+      float cw = 3.0 + 3.0*kbV(vec2(sA*0.12, 1.7));
+      float cov = kbAA(dist - lipD, aa)*kbAA(lipD + cw - dist, aa);
+      float flake = kbAA(kbV(g*0.55 + 2.0) - 0.52, 0.30*aa);
+      return vec4(mix(vec3(0.0030, 0.0022, 0.0016), vec3(0.022, 0.016, 0.011), flake), cov);
+    }
+    /* the char: near black with a fibrous grain, and, where it lies behind a
+       burning line, a dim ash-grey mottling and flecks drawn out along the
+       grain (ash 1); the loader's hole is quiet char with neither (ash 0) */
+    vec3 kbCharCol(vec2 g, float ash){
+      vec2 gr = mat2(0.80, -0.60, 0.60, 0.80)*g;
+      float f = 0.55*kbV(gr*0.85 + 3.1) + 0.45*kbV(vec2(g.x*0.22 + g.y*0.10, g.y*0.95 - g.x*0.35) + 7.7);
+      vec3 c = vec3(0.0085, 0.0062, 0.0048)*(0.60 + 0.80*f);   /* sumi charcoal, as the footer's */
+      if (ash <= 0.0) return c;
+      vec2 ga = mat2(0.94, 0.34, -0.34, 0.94)*g;
+      float mott = kbV(g*0.09 + 6.0)*0.6 + kbV(gr*0.33 + 2.0)*0.4;
+      float fl = kbAA(kbV(ga*vec2(0.17, 0.60) + 11.0) - 0.80, 0.30)*smoothstep(0.45, 0.70, kbV(g*0.045 + 2.0));
+      return c + (vec3(0.010, 0.0085, 0.0068)*smoothstep(0.50, 0.90, mott) + vec3(0.010, 0.0085, 0.007)*fl*(0.35 + 0.85*kbV(g*0.21 + 5.0)))*ash;
+    }
+    /* the char burning through, never a flat slab: pores open in it as it
+       ages (a: 0 at the ember zone's lip, 1 at its far edge), ragged, down
+       to whatever lies beneath (no glowing rims: round the pores they
+       joined into one drawn line along the edge); they open while you
+       watch, as the fire moves on and in their own slow breathing. Its cover */
+    float kbPores(vec2 g, float a, float t, float aa){
+      vec2 gr = mat2(0.80, -0.60, 0.60, 0.80)*g;
+      float n = 0.50*kbV(gr*0.060 + 21.0) + 0.32*kbV(g*0.17 + 4.0) + 0.18*kbV(gr*0.46 + 8.0);
+      float thr = -0.12 + 0.95*a + 0.16*(kbV(g*0.022 + vec2(t*0.45, -t*0.30) + 2.0) - 0.5);
+      float v = n - thr, w = 0.08*aa;
+      return kbAA(v, w);
+    }
+    /* the char's far edge, a noise along the edge only (a 2-D noise cut
+       loose islands of char that floated on the new frame): a line's, by
+       its height, px */
+    float kbEdgeNLine(float s){
+      return 0.60*kbV(vec2(s*0.026, 3.1)) + 0.40*(1.0 - abs(2.0*kbV(vec2(s*0.072, 7.3)) - 1.0));
+    }
+    /* a ring's, round it: noise on a circle, so it closes on itself */
+    float kbEdgeNRing(vec2 dir){
+      return 0.60*kbV(dir*6.0 + 3.1) + 0.40*(1.0 - abs(2.0*kbV(dir*17.0 + 7.3) - 1.0));
+    }
+    /* how charred: from the front, through the ember zone, then a band of
+       char bedW px more (as its edge noise n says), to the char's own torn
+       edge, a pixel wide. xb is the distance to the broad front at its
+       nominal slope, smooth and never blowing up where the field runs flat
+       (the true slope, constant over each 2x2 block, stair-stepped the edge
+       and opened holes in the char there), and the fine terms move the
+       front off it by at most fs px: the far edge is taken from it, so no
+       island of char is ever cut loose; and it always covers the embers */
+    float kbBed(float xc, float xb, float fs, float n, float zoneW, float bedW, float aa, vec2 g){
+      /* and a tear of a few px on it, at two scales, together gentler than
+         the front's own slope, so it frays without cutting a piece loose */
+      vec2 gt = mat2(0.80, -0.60, 0.60, 0.80)*g;
+      float edge = zoneW + fs + bedW*(0.35 + 1.10*n) + 8.0*(kbV(gt*0.08 + 4.0) - 0.5) + 3.0*(kbV(gt*0.25 + 9.0) - 0.5);
+      return clamp(0.5 - xc/aa, 0.0, 1.0)*max(kbAA(edge + min(xb, 0.0), aa), kbAA(zoneW*1.12 + 3.0 + xc, aa));
+    }
+    /* what still glows in the char just behind the ember zone: thin grain
+       drawn out along its fibres, each thread at its own brightness,
+       cooling and thinning within 20-40 px (patches read as leopard spots) */
+    vec3 kbCharGlow(float xc, vec2 g, vec4 wht, float aa, float t, float specks){
+      float dist = -xc, W = kbZoneW(wht);
+      if (dist < 0.85*W || dist > W + 40.0) return vec3(0.0);
+      vec2 ga = mat2(0.94, 0.34, -0.34, 0.94)*g;
+      float fade = exp(-max(dist - 0.92*W, 0.0)/11.0)*smoothstep(0.85*W, 0.98*W, dist);
+      float thread = kbV(ga*vec2(0.075, 0.75) + 17.0);
+      float st = kbAA(thread - 0.78 + 0.08*fade, 0.10*aa)*smoothstep(0.45, 0.65, kbV(ga*vec2(0.03, 0.10) + 3.0));
+      float br = (0.30 + 0.70*kbV(ga*vec2(0.025, 0.22) + vec2(t*0.8, -t*0.5) + 9.0))*(0.60 + 0.40*kbV(ga*vec2(0.05, 0.3) + vec2(0.0, t*4.0) + 23.0));
+      return kbRamp(0.12 + 0.45*fade)*st*fade*br*(0.35 + 0.65*wht.w);
+    }
+    /* Smoke: a few wisps, never a haze and never a strand. Each follows a
+       level line of a field that runs up the frame, bent by noise and curled
+       by a flow that rises slower than it does, and pushed aside more the
+       higher it gets by a drift that differs from one wisp to the next, so
+       they part and lean rather than run parallel; each is a volume 10-40
+       px wide with its own curling structure inside, that widens and thins,
+       tears into pieces and fades as it rises (age: 0 at the fire, 1 gone).
+       q CSS px, y up; returns its cover, 0-1. */
+    float kbSmoke(vec2 q, float t, float age){
+      vec2 c = vec2(q.x/48.0, q.y/80.0 - t*0.20) + 3.1;
+      float n0 = KBGN(c);
+      vec2 cu = (vec2(KBGN(c + vec2(0.0, 0.3)) - n0, n0 - KBGN(c + vec2(0.3, 0.0)))/0.3)*vec2(0.45, 0.18)*(0.35 + 1.6*age);
+      vec2 s = vec2(q.x/70.0, q.y/140.0 - t*0.28) + cu;
+      s.x += (KBGN(vec2(q.x/130.0 + 5.1, q.y/170.0 - t*0.12)) - 0.5)*2.2*age;
+      float f = s.x + (KBFBM(s + 7.7) - 0.5)*1.3;
+      /* its slope per px, over 6 px: over one, the baked noise's filtering
+         steps striped it */
+      float fx = (6.0/70.0 + (KBFBM(s + vec2(6.0/70.0, 0.0) + 7.7) - 0.5)*1.3 - (f - s.x))/6.0;
+      float fy = ((KBFBM(s + vec2(0.0, 6.0/140.0) + 7.7) - 0.5)*1.3 - (f - s.x))/6.0;
+      float gl = max(1.25*length(vec2(fx, fy)), 2e-4);
+      float k = f*1.25, cov = 0.0;
+      /* the two lines either side, so a wide wisp is never cut off where
+         the next line takes over */
+      for (int j = 0; j < 2; j++){
+        float id = floor(k) + float(j);
+        vec2 h = kbHash2(vec2(id, 7.1));
+        if (h.x < 0.45) continue;                                   /* about half the lines hold one */
+        float e = abs(k - id)/gl;                                   /* px to the wisp's middle */
+        float along = KBGN(vec2(id*3.7, q.y/46.0 - t*0.45));
+        float wd = min(22.0, (6.0 + 7.0*h.y)*(0.80 + 1.30*age)*(0.60 + 0.80*along));   /* widening as it rises */
+        float body = exp(-e*e/(wd*wd));
+        if (body < 0.01) continue;
+        /* its inside: curling filaments drawn out along it */
+        vec2 st = vec2((k - id)*16.0, s.y*5.0 + id*1.7);
+        float tex = KBRID(st + vec2((KBFBM(st*0.6 + vec2(0.0, -t*0.25)) - 0.5)*2.4, 0.0));
+        float dens = body*(0.30 + 0.70*smoothstep(0.45, 0.95, tex));
+        float tear = smoothstep(0.30 + 0.34*age, 0.50 + 0.30*age, along);
+        cov = max(cov, dens*tear*(0.35 + 0.65*h.y));
+      }
+      return cov*(1.0 - age)*(1.0 - 0.55*age);
+    }
+    /* warm grey, lit orange from below near the fire; h px above it */
+    vec3 kbSmokeCol(float h){ return mix(vec3(0.80, 0.36, 0.090), vec3(0.34, 0.31, 0.28), smoothstep(0.0, 16.0, h)); }
+    /* the ring's smoke, off its upper arc: g CSS px from the centre, y up,
+       R its radius in CSS px, top the frame's top edge (CSS px up from the
+       centre); amt how far it has come (0-1): it rises from the rim as it
+       comes, never all at once, and is gone before the top of the frame.
+       rgb its colour, a its cover */
+    vec4 kbRingSmoke(vec2 g, float R, float t, float top, float amt){
+      float x = abs(g.x), spread = R*0.80 + max(g.y, 0.0)*0.22;
+      if (amt <= 0.0 || R < 10.0 || g.y < 0.0 || x > spread) return vec4(0.0);
+      float h = g.y - sqrt(max(R*R - x*x, 0.0)), H = 40.0 + 0.40*min(R, 220.0), hm = 3.2*H*amt;
+      if (h > hm || h < -10.0 || g.y > top) return vec4(0.0);
+      float src = smoothstep(-10.0, 4.0, h)*exp(-max(h, 0.0)/(1.3*H))*smoothstep(spread, 0.40*spread, x)*smoothstep(10.0, 50.0, R)
+                * smoothstep(hm, hm*0.55, h)*smoothstep(top - 20.0, top - 170.0, g.y);
+      return vec4(kbSmokeCol(max(h, 0.0)), kbSmoke(g, t, clamp(h/(3.2*H), 0.0, 1.0))*src*0.62);
+    }
+    /* a line's smoke: a few patches of it rising along the line and drifting
+       with it, over the burnt side past its char, never a column: q.x px to
+       where the line stands on average (so the wisps rise straight and move
+       with it), q.y up the frame; xs px to its broad front (+ ahead), which
+       the smoke stays behind; top the frame's top edge */
+    vec4 kbLineSmoke(vec2 q, float xs, float t, float top){
+      float b = -xs;
+      if (b < 60.0 || b > 200.0) return vec4(0.0);
+      float src = smoothstep(60.0, 100.0, b)*exp(-(b - 60.0)/70.0)*smoothstep(top - 20.0, top - 170.0, q.y)
+                * smoothstep(0.52, 0.68, KBGN(vec2(q.y/210.0 - t*0.20, 4.3)));
+      if (src <= 0.0) return vec4(0.0);
+      return vec4(kbSmokeCol(50.0), kbSmoke(q, t, clamp((b - 60.0)/140.0, 0.0, 1.0))*src*0.40);
+    }
+    /* the ring's front: broad uneven lobes, ragged bays at every size, a
+       broad swell, fine serration and a flicker. Split in two, its broad
+       shape alone, whose slope sets the flame's width in pixels (kbRing's
+       y), and the fine terms on top of it, at most 0.07 either way, so the
+       page can find the band from the broad shape and skip the rest away
+       from it; pw and grow are handed from one to the other */
+    float kbRingBroad(vec2 p, float maxR, out vec2 pw, out float grow){
+      float r = length(p)/maxR;
+      /* every octave off its lattice at the centre — on a lattice corner the
+         four cells' gradients met there and the first ember was a square —
+         and the fine terms coming in as it grows, so it starts round */
+      grow = smoothstep(0.015, 0.16, r);
+      /* warped, so no run of the edge stays straight: unwarped it read as a
+         many-sided polygon at the hand-off size */
+      pw = p + (vec2(gnoise(p*3.1 + 1.7), gnoise(p*3.1 + 8.3)) - 0.5)*0.07*grow;
+      float lobes = fbm(pw*2.20 + vec2(0.37, 0.61), 3);
+      return r + (lobes - 0.50)*0.300*mix(0.35, 1.0, grow)
+               + (gnoise(p/max(length(p), 1e-4)*0.95 + vec2(2.7, 0.4)) - 0.5)*0.05*smoothstep(0.02, 0.14, r);
+    }
+    float kbRingFine(vec2 p, vec2 pw, float grow, float t){
+      float bays = fbm(pw*10.50 + vec2(21.43, 20.71), 3);
+      float crys = ridged(p*20.0 + vec2(5.29, 4.63), 3), lace = ridged(p*52.0 + vec2(13.71, 12.37), 2);
+      return ((bays - 0.50)*0.115 + (crys - 0.62)*0.022 + (lace - 0.62)*0.006)*grow
+           + (gnoise(p*9.0 + vec2(0.0, -t*2.4)) - 0.5)*0.016 + (gnoise(p*24.0 + vec2(0.0, -t*4.5)) - 0.5)*0.007;
+    }
+    vec2 kbRing(vec2 p, float maxR, float t){
+      vec2 pw; float grow;
+      float fl = kbRingBroad(p, maxR, pw, grow);
+      return vec2(fl + kbRingFine(p, pw, grow, t), fl);
+    }
+    /* the char of the hole, the loader's and the intro's middle: quiet, near
+       black, with the char's own grain and nothing glowing in it, no flecks */
+    vec3 kbHole(vec2 p, float t, float pxH, float pxs){
+      vec2 g = p*pxH/pxs;
+      /* all but black, with a crisp flaky texture: no flat brown */
+      float fl = kbAA(kbV(g*0.30 + 13.0) - 0.62, 0.20) + 0.6*kbAA(kbV(g*0.9 + 5.0) - 0.70, 0.40);
+      return vec3(0.0014, 0.0010, 0.0008) + vec3(0.0035, 0.0026, 0.0020)*fl;
+    }
+    /* all the ring itself draws, the same in the loader and the intro: the
+       flame, its ember zone and what glows in its char. d the distance to
+       its front in units of p, pxH device px per unit, pxs device px per CSS
+       px; pe where this is on the ring's own pattern of swells and hot and
+       dying stretches (p, or, while the ring is still a miniature of itself,
+       p scaled up to the size it grows into, so the same stretches grow with
+       it); lit how much of the room is uncovered here, 0 in the loader —
+       nothing glows over the room. charK: how charred the ground is here;
+       wht its width, heat, scale and life */
+    vec3 kbRingLight(vec2 p, float d, float dB, vec2 pe, float t, float pxH, float pxs, float lit, out float charK, out vec4 wht){
+      /* nothing of it reaches past 12 px ahead of its front or 140 px
+         behind its broad front (the char's edge is taken from that): there,
+         skip it all */
+      if (d*pxH/pxs > 12.0 || (dB*pxH/pxs < -140.0 && d*pxH/pxs < -80.0)){ charK = 0.0; wht = vec4(1.0, 0.0, 1.0, 1.0); return vec3(0.0); }
+      wht = kbEdgeWHT(pe, t);
+      wht.x *= 1.15; wht.y = min(1.0, wht.y*1.25 + 0.06);   /* a little broader and hotter than a line */
+      float cpx = pxH/pxs, aa = 1.0/pxs, xc = d*cpx, xb = dB*cpx;
+      vec2 g = p*cpx;
+      /* the ring's radius here: while it is small its band narrows with it,
+         to about half the radius, so there is black inside the rim, but
+         never under 3.5 px (kbZoneW) */
+      float R = length(g) + xc;
+      wht.z = clamp(R/80.0, 0.0, 1.0);
+      vec2 pd = pe/max(length(pe), 1e-5);
+      /* the char band just inside it: as wide as the loader's while its
+         hole is char too, and thinning as the room comes up in the hole, so
+         it never frames the room like a porthole */
+      charK = kbBed(xc, xb, 24.0*wht.z*mix(1.0, 0.55, lit), kbEdgeNRing(pd), kbZoneW(wht), 32.0*wht.z*mix(1.0, 0.25, lit), aa, g);
+      /* (no specks round a ring: they sat in its hole as dots, one in the
+         middle of a small one like a pupil); its fibres run round it on a
+         fixed circle */
+      return kbFlame(xc, xb, atan(pd.y, pd.x)*150.0, wht, g, t, aa) + kbCharGlow(xc, g, wht, aa, t, 0.0)*mix(1.0, charK, lit)*smoothstep(60.0, 110.0, R);
+    }
+`;
+  const FS = `precision highp float;
+    uniform vec2 uRes; uniform float uProg, uAspect, uTime, uPxS;
+    vec2 hash2(vec2 p){ p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));
+      return fract(sin(p)*43758.5453123)*2.0-1.0; }
+    float gnoise(vec2 x){ vec2 p=floor(x), w=fract(x); vec2 u=w*w*w*(w*(w*6.0-15.0)+10.0);
+      float a=dot(hash2(p),w), b=dot(hash2(p+vec2(1,0)),w-vec2(1,0));
+      float c=dot(hash2(p+vec2(0,1)),w-vec2(0,1)), d=dot(hash2(p+vec2(1,1)),w-vec2(1,1));
+      return mix(mix(a,b,u.x),mix(c,d,u.x),u.y)*0.7+0.5; }
+    float fbm(vec2 p,int oct){ float s=0.0,a=0.5,n=0.0;
+      for(int i=0;i<8;i++){ if(i>=oct) break; s+=a*gnoise(p); n+=a; p=p*2.03+11.7; a*=0.5; }
+      return s/max(n,1e-4); }
+    float ridged(vec2 p,int oct){ float s=0.0,a=0.5,n=0.0;
+      for(int i=0;i<8;i++){ if(i>=oct) break; s+=a*(1.0-abs(gnoise(p)*2.0-1.0)); n+=a; p=p*2.11+5.3; a*=0.5; }
+      return s/max(n,1e-4); }
+    vec3 aces(vec3 x){ return clamp((x*(2.51*x+0.03))/(x*(2.43*x+0.59)+0.14),0.0,1.0); }
+    vec3 srgb(vec3 c){ return mix(c*12.92,1.055*pow(max(c,vec3(1e-5)),vec3(1.0/2.4))-0.055,step(0.0031308,c)); }
+    float crackle(vec2 x){ vec2 n=floor(x), f=fract(x); float d1=8.0, d2=8.0;
+      for(int j=-1;j<=1;j++) for(int i=-1;i<=1;i++){ vec2 g=vec2(float(i),float(j));
+        vec2 r=g+(hash2(n+g)*0.5+0.5)*0.86+0.07-f; float d=dot(r,r);
+        if(d<d1){ d2=d1; d1=d; } else if(d<d2) d2=d; }
+      return sqrt(d2)-sqrt(d1); }
+${EDGE}
+    void main(){
+      vec2 uv=gl_FragCoord.xy/uRes;
+      float sc=kbScale(uProg), pxH=uRes.y*sc;   /* drawn at its loading size: all of it, char and smoke too */
+      vec2 p=(uv-0.5)*vec2(uAspect,1.0)/sc;
+      float maxR=length(vec2(uAspect,1.0)*0.5);
+      float T=uProg*1.62-0.30;
+      float cpx=pxH/uPxS, aa=1.0/uPxS;          /* CSS px per unit of p, and per device pixel */
+      float gain=smoothstep(0.0,0.03,uProg)*(0.45+0.55*smoothstep(0.03,0.15,uProg));
+      vec2 gc=p*cpx;
+      /* It starts as a tear: a short jagged ember crack, open at one end,
+         never a filled fleck, a disc, a ball or a drawn 'o'; it splits and
+         opens into a small ragged hole, a grainy rim round dark char, the
+         ring itself in miniature, its bays and hot and dying stretches, dim
+         and dark red at first and heating up as it grows into itself, so it
+         never passes through a dot, a disc or a round hoop, and nothing
+         changes shape when it reaches its own size (T1, uProg 0.345, the
+         size it hands over at). Tv is how big it is: 4 px at the first
+         frame, 5-6 by uProg 0.15, then the burn's own T, eased in. (The
+         loader's pace, seenPx in the script, mirrors this and the gain
+         below, so the growth it plans is the growth seen) */
+      const float T1=0.2589;
+      float px2T=1.0/(maxR*cpx);
+      float eps=(4.0+1.8*smoothstep(0.0,0.15,uProg)+4.5*smoothstep(0.15,0.22,uProg))*px2T;
+      float Tv=eps+0.006*log(1.0+exp((T-eps)/0.006));
+      float k=max(1.0,T1/Tv);                   /* how much smaller than itself it still is */
+      float Rpx=Tv/px2T;
+      /* away from the fire, black (its smoke starts with the intro) */
+      if(length(p)/maxR-Tv>0.25){ gl_FragColor=vec4(0.0,0.0,0.0,1.0); return; }
+      /* at first a tear, drawn out a little and turned, 3.5-7 px thick (the
+         rim is never thinner, nor even: kbZoneW) */
+      float ay=mix(0.70,1.0,smoothstep(0.06,0.19,uProg));
+      vec2 ps=mat2(0.94,0.34,-0.34,0.94)*p; ps.y/=ay;
+      vec2 rf=kbRing(ps*k,maxR,uTime);
+      /* and while it is small, lopsided more than the ring is: a few broad
+         bays that one side eats ahead of the other, easing into the ring's
+         own shape by the time it is that size */
+      vec2 dir=ps/max(length(ps),1e-5);
+      rf+=T1*0.46*(0.62*gnoise(dir*1.3+vec2(5.1,2.3))+0.38*gnoise(dir*3.1+vec2(9.7,1.1))-0.5)*smoothstep(1.0,3.0,k);
+      /* (the fine terms move it only a little either way, as the page's do) */
+      float fn=rf.x-rf.y; rf.x=rf.y+fn/(1.0+abs(fn)/0.03);
+      float g=kbGrad(rf.y,pxH,k/(maxR*ay));
+      float d=(rf.x-Tv*k)/g;
+      float charK; vec4 wh;
+      /* its stretches taken round it (see the page's burn pass) */
+      vec3 ring=kbRingLight(p,d,(rf.y-Tv*k)*maxR*ay/k,dir*max(Tv,T1)*maxR,uTime,pxH,uPxS,0.0,charK,wh);
+      /* while it is a tear it is an arc, a little over half round, its two
+         ends torn, which crawl round and meet as it grows from 6.5 to 12 px
+         (about 0.4 s): never a closed, even 'o' */
+      float arc=dir.x+(gnoise(dir*2.0+4.0)-0.5)*0.55+(gnoise(dir*7.0+1.3)-0.5)*0.20+0.15+1.9*smoothstep(6.5,12.0,Tv/px2T);
+      float arcK=clamp(0.5+arc*Tv/px2T/aa*0.8,0.0,1.0);
+      ring*=arcK;
+      /* it starts dim, a dark-red rim barely lit, and heats up to its full
+         yellow as it grows */
+      float heat=smoothstep(0.0,0.20,uProg);
+      ring=mix(vec3(min(dot(ring,vec3(0.55,0.35,0.10)),1.15))*vec3(0.95,0.09,0.006),ring,heat)*mix(0.85,1.0,heat);   /* deep red-orange, never grey */
+      float xc=d*cpx;
+      /* inside, the char of the hole, as the intro draws it */
+      float po=kbPores(gc,clamp((-xc-1.05*kbZoneW(wh))/(12.0+30.0*wh.z),0.0,1.0),uTime,aa);
+      vec3 hole=mix(kbHole(p,uTime,pxH,uPxS),kbCharCol(gc,0.35),charK*0.94*po);
+      /* a hard, flaky crust of char just inside the embers */
+      vec4 crust=kbCrust(xc,atan(dir.y,dir.x)*150.0,wh,gc,aa);
+      hole=mix(hole,crust.rgb,crust.a)*clamp(0.5-xc/aa,0.0,1.0)*arcK;
+      /* seen from its first frame, with the count: the first tear comes in
+         bright within a frame or two, not on the fade-in */
+      vec3 col=(hole+ring)*max(gain,0.80*smoothstep(0.0,0.006,uProg));
+      gl_FragColor=vec4(srgb(aces(col)),1.0);
+    }
+`;
+  function initGL(){
+  try {
+    gl = cv.getContext('webgl', {antialias:false, alpha:false, depth:false, stencil:false});
+    /* with KHR_parallel_shader_compile the driver compiles on its own threads:
+       nothing is asked of a shader until both programs are linking */
+    const par = gl.getExtension('KHR_parallel_shader_compile');
+    const sh = (type, src) => { const o = gl.createShader(type); gl.shaderSource(o, src); gl.compileShader(o);
+      if (!par && !gl.getShaderParameter(o, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(o)); return o; };
+    prog = gl.createProgram();
+    gl.attachShader(prog, sh(gl.VERTEX_SHADER, VS));
+    /* the edge's width is measured in pixels from the field's slope */
+    gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, (gl.getExtension('OES_standard_derivatives')
+      ? '#extension GL_OES_standard_derivatives : enable\n' : '#define KB_NO_DERIV\n') + FS));
+    gl.bindAttribLocation(prog, 0, 'a');
+    gl.linkProgram(prog);
+    /* checked and set up once the cinders' program is linking too */
+    const progReady = () => {
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+    gl.useProgram(prog);
+    buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);
+    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+    uRes = gl.getUniformLocation(prog, 'uRes'); uProg = gl.getUniformLocation(prog, 'uProg'); uPxS = gl.getUniformLocation(prog, 'uPxS');
+    uAspect = gl.getUniformLocation(prog, 'uAspect'); uTime = gl.getUniformLocation(prog, 'uTime');
+    };
+
+    /* The page's intro sparks, ported: the same three sets, the same seeds
+       from the same stream, the same trajectories. The page's own system
+       takes over on the same clock, so no spark is lost or born twice. */
+    const SVS = `attribute vec2 aCorner; attribute vec4 aSeed;
+      varying vec2 vUv; varying float vFade, vHeat;
+      uniform float uProg,uAspect,uTime,uPx,uLife,uRise,uThrow,uSize,uStreak,uAsh,uVelocity,uDensity,uGain;
+      uniform vec2 uResolution;
+      /* the rim's heat where a cinder is thrown: kbEdgeWHT's heat term on
+         the ring's own pattern (the loader's p, turned, grown into its own
+         size while small), from the same noise, so they come off its hot
+         stretches rather than an even column */
+      vec2 skHash(vec2 p){ p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))); return fract(sin(p)*43758.5453123)*2.0-1.0; }
+      float skNoise(vec2 x){ vec2 p=floor(x), w=fract(x); vec2 u=w*w*w*(w*(w*6.0-15.0)+10.0);
+        float a=dot(skHash(p),w), b=dot(skHash(p+vec2(1,0)),w-vec2(1,0));
+        float c=dot(skHash(p+vec2(0,1)),w-vec2(0,1)), d=dot(skHash(p+vec2(1,1)),w-vec2(1,1));
+        return mix(mix(a,b,u.x),mix(c,d,u.x),u.y)*0.7+0.5; }
+      float skRimHeat(float ang, float T, float t){
+        vec2 q = (mat2(0.94,0.34,-0.34,0.94)*vec2(cos(ang), sin(ang)))*max(T, 0.2589)*length(vec2(uAspect,1.0)*0.5)*4.1 + 31.0 + vec2(0.0, -t*0.08);
+        float s = 0.0, a = 0.5, n = 0.0;
+        for(int i=0;i<3;i++){ s += a*skNoise(q); n += a; q = q*2.03 + 11.7; a *= 0.5; }
+        return smoothstep(0.50, 0.80, s/n);
+      }
+      /* Cinders, as the burn lines throw them (makeSparks, burn mode): small
+         points with a short tail, lifted by the heat off the burning edge,
+         straight up with a lazy sway, only as far as the fire is big, and as
+         many as there is rim alight. Only off the upper arc of the ring; none
+         ever moves down or sprays sideways. */
+      vec2 trajectory(float age, float ang, float speed, vec2 origin){
+        float thrown = (1.0 - exp(-age*2.6))/2.6*2.2;
+        vec2 velocity = vec2(cos(ang)*0.07*uThrow*0.60, 0.03+(0.60+0.40*abs(sin(ang*1.37+0.4)))*uThrow*0.95);
+        float curl = (sin(ang*3.7+age*3.2)*0.085 + sin(ang*1.3+age*7.0)*0.020)*age*(0.6 + 0.8*fract(ang*5.31));
+        curl *= 0.35;
+        /* they rise about as far as the fire is big: off a small ring only a
+           little way, never a fountain over it */
+        float reach = mix(0.50, 0.75, smoothstep(0.02, 0.18, length((origin - 0.5)*vec2(uAspect, 1.0))));
+        velocity *= reach; curl *= reach;
+        origin.y += (reach - 1.0)*(age*age*uRise*speed*1.10 + age*0.030*speed);
+        return origin + velocity*thrown*speed + vec2(curl, age*age*uRise*speed*1.10 + age*0.030*speed);
+      }
+      void main(){
+        vUv = aCorner + 0.5;
+        /* only off the top of the ring, 20-160 degrees, spread evenly both
+           sides: off its flanks the rim's own growth carried them sideways */
+        float ang = 0.35 + fract(aSeed.x*0.15915494)*2.44, speed = aSeed.z;
+        float life = uLife*2.0*(0.55+aSeed.w*0.9);
+        life *= 0.70;   /* short lives: they go out a little way above the rim */
+        float period = 2.5+aSeed.z*2.0;
+        float age = mod(uTime+aSeed.y*period,period);
+        /* where the rim was when it was thrown, dated by a quarter of the
+           ring's smoothed speed: that speed lags the ring as it gathers into
+           the hand-off, and dating by all of it slid the older cinders'
+           starting points back down the rim, so they sank */
+        float birthProgress = uProg-age*uVelocity*0.25;
+        vFade = 0.0; vHeat = 0.0;
+        /* none before the coal itself shows */
+        if(age>life || birthProgress<0.19){ gl_Position=vec4(3.0,3.0,0.0,1.0); return; }
+        /* as many as there is rim alight when it is thrown: none from the
+           coal, ramping up with the ring's length until it is well open; one
+           just let in fades up rather than popping in mid-air (the page's
+           ring mode keeps the same) */
+        float rimB = max(0.0, birthProgress*1.62 - 0.325)*mix(0.67,1.0,smoothstep(0.335,0.55,birthProgress))/0.09;
+        float adm = min(1.0, rimB)*mix(0.2, 1.0, skRimHeat(ang, birthProgress*1.62 - 0.30, uTime - age)) - fract(aSeed.y*57.3)/(uStreak > 1.5 ? 0.08 : 0.62);
+        if(adm <= 0.0){ gl_Position=vec4(3.0,3.0,0.0,1.0); return; }
+        float phase = age/life;
+        float radius = max(0.022,birthProgress*1.62-0.30)*length(vec2(uAspect,1.0)*0.5)*mix(0.67,1.0,smoothstep(0.335,0.55,birthProgress));   /* kbScale */
+        vec2 origin = vec2(cos(ang)/uAspect,sin(ang))*radius+0.5;
+        vec2 center = trajectory(phase,ang,speed,origin);
+        center.x += sin(uTime*0.45+ang*7.0)*0.003*phase;
+        vec2 prev = trajectory(max(0.0,phase-0.025),ang,speed,origin);
+        prev.x += sin(uTime*0.45+ang*7.0)*0.003*max(0.0,phase-0.025);
+        vec2 velocity = (center-prev)*uResolution;
+        vec2 tangent = normalize(velocity+vec2(0.001));
+        if(uAsh>0.5) tangent = vec2(cos(ang+phase*6.0),sin(ang+phase*6.0));
+        vec2 normal = vec2(-tangent.y,tangent.x);
+        /* a little fuller than the page draws them: there the bloom spreads them */
+        /* none wider than 2.0 px round the ring: at the 720 and 160 sets'
+           full size they read as soft blobs by the rim (as the page's) */
+        float width = min(uSize*uPx*aSeed.w*mix(1.0,0.55,phase), 1.7*uPx)*1.35;
+        /* a short streak along its motion, 2.5-4.5 times as long as it is
+           wide, as the burn cinders are but shorter: at their slow rise the
+           tail was nil and they read as round dots */
+        float lengthPx = width + clamp(length(velocity)*uStreak*0.40, 1.5*width, 3.5*width);
+        vec2 offset = (tangent*aCorner.x*lengthPx+normal*aCorner.y*width)/uResolution;
+        vFade = smoothstep(0.0,0.055,phase)*pow(1.0-phase,1.5)*(0.55+0.9*fract(aSeed.y*31.7));
+        /* fading up as it is let in, and none brighter than a cinder of the
+           720 set: the fast set at full gain tone-mapped to white glints */
+        vFade *= smoothstep(0.0, 0.12, adm)*min(1.0, 3.1/uGain);
+        /* none over the hole the ring has burnt clear: gone within the rim's
+           ember zone, and never inside a small ring */
+        float ringR = (uProg*1.62 - 0.30)*mix(0.67,1.0,smoothstep(0.335,0.55,uProg));
+        vFade *= smoothstep(max(ringR - 0.04, 0.6*ringR), max(ringR - 0.01, 0.9*ringR), length((center - 0.5)*vec2(uAspect, 1.0))/length(vec2(uAspect, 1.0)*0.5));
+        vHeat = (1.0-phase)*0.68;   /* orange as they leave, deep red as they rise; never white */
+        gl_Position = vec4((center+offset)*2.0-1.0,0.0,1.0);
+      }`;
+    const SFS = `precision highp float;
+      varying vec2 vUv; varying float vFade, vHeat; uniform float uGain, uAsh;
+      vec3 aces(vec3 x){ return clamp((x*(2.51*x+0.03))/(x*(2.43*x+0.59)+0.14),0.0,1.0); }
+      void main(){
+        vec2 p=vUv*2.0-1.0;
+        float edge=1.0-smoothstep(0.16,1.0,abs(p.y));
+        float tip=1.0-smoothstep(0.25,1.0,abs(p.x));
+        float coverage=edge*edge*tip;
+        vec3 color=mix(vec3(0.42,0.036,0.003),vec3(1.0,0.27,0.025),smoothstep(0.0,0.75,vHeat));
+        color=mix(color,vec3(1.0,0.84,0.51),pow(vHeat,5.0));
+        color=mix(color,vec3(0.40,0.34,0.27),uAsh);
+        vec3 c=aces(color*coverage*vFade*uGain*0.85);
+        gl_FragColor=vec4(pow(c,vec3(1.0/2.2)),1.0);
+      }`;
+    sparkProg = gl.createProgram();
+    gl.attachShader(sparkProg, sh(gl.VERTEX_SHADER, SVS)); gl.attachShader(sparkProg, sh(gl.FRAGMENT_SHADER, SFS));
+    gl.bindAttribLocation(sparkProg, 0, 'aCorner'); gl.bindAttribLocation(sparkProg, 1, 'aSeed');
+    gl.linkProgram(sparkProg);
+    progReady();
+    if (!gl.getProgramParameter(sparkProg, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(sparkProg));
+    for (const n of ['uProg','uAspect','uTime','uPx','uLife','uRise','uThrow','uSize','uStreak','uAsh','uVelocity','uResolution','uGain','uDensity'])
+      sU[n] = gl.getUniformLocation(sparkProg, n);
+    sU.aCorner = gl.getAttribLocation(sparkProg, 'aCorner'); sU.aSeed = gl.getAttribLocation(sparkProg, 'aSeed');
+    const sparkRand = (seed => () => { seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0)/4294967296; })(0x2f6b9d1);
+    const SEG = 1, NV = (SEG + 1)*2;   /* a quad per cinder */
+    for (const o of [{n:1800,life:0.23,rise:0.20,thr:0.10, size:2.6,streak:2.1, gain:8.0,ash:0},
+                     {n:720, life:0.58,rise:0.42,thr:0.055,size:4.2,streak:0.65,gain:3.1,ash:0},
+                     {n:360, life:0.90,rise:0.30,thr:0.08, size:2.0,streak:0.0, gain:0.9,ash:1},
+                     {n:160, life:1.40,rise:0.40,thr:0.03, size:5.5,streak:0.15,gain:1.4,ash:0}]){
+      const corner = new Float32Array(o.n*NV*2), seed = new Float32Array(o.n*NV*4), idx = new Uint16Array(o.n*SEG*6);
+      for (let i = 0; i < o.n; i++){
+        const sd = [sparkRand()*Math.PI*2, sparkRand(), 0.4+sparkRand()*1.5, 0.3+sparkRand()*0.7];
+        for (let v = 0; v < NV; v++){ corner.set([(v % (SEG + 1))/SEG - 0.5, v > SEG ? -0.5 : 0.5], (i*NV + v)*2); seed.set(sd, (i*NV + v)*4); }
+        for (let k = 0; k < SEG; k++){ const a = i*NV + k, b = a + SEG + 1; idx.set([a, b, a + 1, b, b + 1, a + 1], (i*SEG + k)*6); }
+      }
+      const bc = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, bc); gl.bufferData(gl.ARRAY_BUFFER, corner, gl.STATIC_DRAW);
+      const bs = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, bs); gl.bufferData(gl.ARRAY_BUFFER, seed, gl.STATIC_DRAW);
+      const bi = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, bi); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, idx, gl.STATIC_DRAW);
+      sparkSets.push({...o, bc, bs, bi, count: o.n*SEG*6});
+    }
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  } catch (e) { gl = null; if (!IN_W) cv.style.display = 'none'; }
+  /* The page's build blocks this thread for up to half a second at a time,
+     and a ring that stops dead reads as a hang. So the canvas also carries a
+     slow scale on the compositor, which runs through a block: each frame it
+     is reset to 1 and set to the rate the ring is growing at, so while this
+     thread is running it adds nothing, and while it is blocked the ring goes
+     on widening at the same pace. Only drawn on this thread: from a worker
+     the ring goes on burning through a block, and there is no OffscreenCanvas.animate. */
+  if (gl && !reduced && cv.animate){
+    try { grow = cv.animate([{transform:'scale(1)'}, {transform:'scale(2)'}], {duration:10000, fill:'forwards'}); } catch (e) { grow = null; }
+  }
+  }
+
+  function paint(now){
+    /* Before the page script has said anything — three.js is still coming
+       down the wire — the ember creeps toward ignition on its own clock and
+       never gets there; real progress from the build takes it the rest. */
+    const creep = 0.38*(1 - Math.exp(-(now - t0)/800));
+    const goal = Math.max(target, creep);
+    shown += (goal - shown)*(target >= 1 ? 0.30 : 0.09);
+    /* once it is done the count lands on 100 and is seen there */
+    const pct = target >= 1 ? 100 : Math.min(100, Math.round(shown*100));
+    if (pct !== lastPct){ lastPct = pct; showPct(pct); }
+    /* from a faint glow below ignition, up to the waiting rim; after done(),
+       an ease-in into the hand-off that leaves at the intro's own speed */
+    if (handAt){
+      /* once the page draws the intro, its rim (see follow) */
+      uNow = followU !== null ? followU : introBurn(Math.min(1, RH + (now - handAt)/1000/DUR));
+    } else if (doneAt){
+      /* still creeping while the count shows 100, then gathering into the
+         hand-off at the intro's own speed: a Hermite from the creep's speed
+         to V_HAND (k^n stood still for its first half) */
+      const k = Math.min(1, Math.max(0, (now - doneAt)/doneDur));   /* a rAF stamp can predate done() */
+      const k2 = k*k, k3 = k2*k;
+      /* in what is seen (S), so the ring grows at an even pace however small it still is */
+      sV = doneFrom*(2*k3 - 3*k2 + 1) + doneM0*(k3 - 2*k2 + k) + doneS1*(3*k2 - 2*k3) + doneM1*(k3 - k2);
+      uNow = k >= 1 ? HAND : Math.min(HAND, uOf(sV, tabNow()));
+      if (k >= 1 && finish){ handAt = now; const f = finish; finish = null; f(); }
+    } else {
+      /* linear in progress: a glow that grows, a ring that forms at about a
+         third, then widens — every percent shows. And always on the move,
+         never lurching: the goal is the real progress, never less, easing
+         on toward the waiting cap on its own clock whatever the build does —
+         asymptotically, so it never gets there (the run into the hand-off
+         has that stretch) — and the ring follows the goal on a critically
+         damped spring, so its speed is continuous. A hard hold at a creeping
+         limit, and progress landing in lumps, read as a ring parked, then
+         shoved. After a stall it picks up where the compositor had carried it */
+      /* The ring follows in what is seen (S): from nothing on the first
+         frame, at most 1.6/s (2.7 % of its radius a 60 Hz frame), so it
+         fades in, then grows at an even pace, then eases into the wait */
+      const dtp = Math.min(1.5, Math.max(0, (now - lastNow)/1000)), tab = tabNow();
+      gW = Math.max(gW, 0.150 + (WAIT - 0.150)*shown);
+      gW += (CEIL - gW)*(1 - Math.exp(-dtp/2.5));
+      const sG = sOf(gW, tab);
+      for (let h = dtp; h > 1e-6; h -= 1/120){
+        const s = Math.min(h, 1/120);
+        vS = Math.min(1.6, vS + (25.0*(sG - sV) - 10.0*vS)*s); sV += vS*s;   /* ω 5/s */
+      }
+      sV = Math.min(sV, sOf(CEIL, tab));
+      uNow = uOf(sV, tab);
+      vW = vS/Math.max(1e-3, (sOf(Math.min(0.4, uNow + 0.002), tab) - sOf(Math.max(0, uNow - 0.002), tab))/0.004);   /* du/dt */
+    }
+    if (!gl) return;
+    const w = IN_W ? view.w : Math.max(1, innerWidth || screen.width), h = IN_W ? view.h : Math.max(1, innerHeight || screen.height);
+    const d = IN_W ? view.d : Math.min(1.5, devicePixelRatio || 1);
+    const pw = Math.round(w*d), ph = Math.round(h*d);
+    if (cv.width !== pw || cv.height !== ph){ cv.width = pw; cv.height = ph; gl.viewport(0, 0, pw, ph); }
+    const tSec = reduced ? 0 : (now - t0)/1000;
+    /* the burn's speed, smoothed the way the page smooths it for its sparks */
+    const dt = Math.max(0.001, (now - lastNow)/1000);
+    const v = Math.max(-1, Math.min(1, (uNow - uPrev)/dt));
+    velS += (v - velS)*Math.min(1, dt*8); uPrev = uNow; lastNow = now;
+    if (grow){
+      /* the ring's own relative rate of growth (its radius is T = 1.62u - 0.30) */
+      vGrow = handAt || (!doneAt && uNow >= CEIL - 1e-4) ? 0 : Math.max(VMIN, Math.min(doneAt ? 0.3 : VMAX, velS));
+      /* the relative pace of what is seen: the coal's radius early on, the
+         ring's once it opens (the ring's alone let the coal leap a size
+         after every stall) */
+      const r = Math.min(2.0, (visR(uNow + vGrow*0.05) - visR(uNow))/0.05/visR(uNow));
+      grow.playbackRate = Math.max(1e-3, r/0.1); grow.currentTime = 0;
+    }
+
+    if (warming) gl.viewport(0, 0, 1, 1);   /* the warm-up (see warmUp): a real frame's draws, into one pixel */
+    gl.useProgram(prog);
+    gl.disable(gl.BLEND);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+    gl.uniform2f(uRes, pw, ph); gl.uniform1f(uAspect, w/h); gl.uniform1f(uPxS, d);
+    gl.uniform1f(uProg, uNow);
+    gl.uniform1f(uTime, tSec);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+    if (sparkProg && !reduced){
+      gl.useProgram(sparkProg);
+      gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE);
+      gl.uniform1f(sU.uProg, uNow); gl.uniform1f(sU.uAspect, w/h); gl.uniform1f(sU.uTime, tSec);
+      gl.uniform1f(sU.uPx, d); gl.uniform1f(sU.uVelocity, velS); gl.uniform2f(sU.uResolution, pw, ph);
+      gl.uniform1f(sU.uDensity, Math.min(1, 0.25 + 0.75*shown));
+      for (const o of sparkSets){
+        gl.uniform1f(sU.uLife, o.life); gl.uniform1f(sU.uRise, o.rise); gl.uniform1f(sU.uThrow, o.thr);
+        gl.uniform1f(sU.uSize, o.size); gl.uniform1f(sU.uStreak, o.streak); gl.uniform1f(sU.uAsh, o.ash);
+        gl.uniform1f(sU.uGain, o.gain);
+        gl.bindBuffer(gl.ARRAY_BUFFER, o.bc); gl.enableVertexAttribArray(sU.aCorner);
+        gl.vertexAttribPointer(sU.aCorner, 2, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, o.bs); gl.enableVertexAttribArray(sU.aSeed);
+        gl.vertexAttribPointer(sU.aSeed, 4, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, o.bi);
+        gl.drawElements(gl.TRIANGLES, o.count, gl.UNSIGNED_SHORT, 0);
+      }
+      gl.disableVertexAttribArray(sU.aSeed);
+    }
+  }
+  /* One engine, drawn by this thread or by the worker. Every time it is
+     given is on this page's clock (the worker converts its own). */
+  const FT = [];   /* when each frame was drawn: window.__kbLoaderFrames, for timing harnesses */
+  let here = !IN_W, afterPaint = null;
+  function loop(now){
+    if (!alive || !here) return;
+    requestAnimationFrame(loop);
+    /* the first frame that is seen starts from nothing — no ember yet — and
+       it grows from there, however far the build has got (it eases in) */
+    if (fresh){ fresh = false; sV = vS = vW = 0; uNow = uPrev = 0; velS = 0; lastNow = now + OFF; }
+    if (FT.length < 6000) FT.push(now + OFF);
+    paint(now + OFF);
+    if (afterPaint) afterPaint();
+  }
+  /* Every pipeline the fire draws with is built before anything is seen: a
+     real frame's draws of both programs, into one pixel, waited on. A first
+     draw builds its Metal pipeline (30-130 ms), which made the first visible
+     frames the slowest of the load */
+  function warmUp(){
+    if (!gl) return;
+    warming = true;
+    try { paint(pnow()); } finally { warming = false; }
+    gl.viewport(0, 0, cv.width, cv.height);
+    gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(4));
+  }
+  const showPct = IN_W ? v => postMessage({kb:'pct', v}) : v => { num.textContent = v; label.setAttribute('aria-valuenow', v); };
+  const ctl = {
+    set(p){ target = Math.max(target, p); },
+    /* into the hand-off, from the moment done() was called */
+    done(at, onHand){
+      lastPct = 100;
+      const tab = tabNow(), vH = V_HAND*(sOf(HAND + 0.002, tab) - sOf(HAND - 0.002, tab))/0.004;   /* the intro's speed, in S */
+      doneS1 = sOf(HAND, tab); doneFrom = Math.min(sOf(uNow, tab), doneS1); doneAt = at;
+      /* long enough for the label to be nearly gone at the hand-off: the
+         ring reaches it a fifth of a second later */
+      /* leaving at the creep's speed and arriving at the intro's, as long
+         as that allows without overshooting (Hermite end slopes under 3x
+         the chord) */
+      const du = Math.max(0.005, doneS1 - doneFrom), ds = Math.min(1.2, Math.max(0.30, 2.8*du/vH));
+      doneDur = ds*1000;
+      /* leaving at exactly the speed it had (the spring's), so it never lurches into the run */
+      doneM0 = Math.min(Math.max(vS, 0), 1.5*du/ds)*ds; doneM1 = Math.min(vH*ds, 2.9*du);
+      finish = onHand;
+      setTimeout(() => { if (finish){ handAt = pnow(); const f = finish; finish = null; f(); } }, doneDur + 400);   /* rAF stalled */
+    }
+  };
+
+  /* In the worker: draw on the canvas the page handed over, on this
+     thread's own frames, and take the page's word for the progress. */
+  if (IN_W){
+    initGL();
+    if (!gl){ postMessage({kb:'fail'}); return; }
+    warmUp();
+    target = WI.target || 0;
+    let mirror = false, synced = true;   /* it draws alone from its first frame */
+    self.onmessage = e => {
+      const m = e.data || {};
+      if (m.kb === 'sync'){ if (mirror){ [target, shown, lim, uNow, uPrev, lastNow, velS, gW, vW] = m.st; synced = true; } }
+      else if (m.kb === 'take'){ mirror = false; lastPct = -1; }
+      else if (m.kb === 'set') ctl.set(m.p);
+      else if (m.kb === 'view') view = m.view;
+      else if (m.kb === 'follow') followU = m.u;
+      else if (m.kb === 'done') ctl.done(m.at, () => postMessage({kb:'hand', at:handAt, vel:velS}));
+      else if (m.kb === 'stop'){
+        /* no more draws; its last frame stays up while the page fades it */
+        alive = false;
+        postMessage({kb:'stopped', ft:FT});
+      }
+      else if (m.kb === 'free'){ const x = gl.getExtension('WEBGL_lose_context'); if (x) x.loseContext(); }
+    };
+    /* ready to take over once a frame drawn from the page's own state is up */
+    afterPaint = () => { if (synced){ afterPaint = null; postMessage({kb:'up'}); } };
+    here = true;
+    requestAnimationFrame(loop);
+    return;
+  }
+
+  /* On the page: the build blocks this thread for up to a second at a time,
+     and no frame can be drawn here then (the compositor scale above only
+     stretched the last one). So a worker is started on a second canvas
+     under this one, drawing the same fire in step with it, and the moment
+     it has a frame up this canvas is taken away and the worker carries on
+     alone. Its WebGL context can only be made when this thread is free, so
+     until then — and wherever there is no such worker — the fire is drawn
+     here, as before. */
+  const viewNow = () => ({w: Math.max(1, innerWidth || screen.width), h: Math.max(1, innerHeight || screen.height), d: Math.min(1.5, devicePixelRatio || 1)});
+  const onResize = () => { if (worker) worker.postMessage({kb:'view', view:viewNow()}); };
+  let wDone = null, velW = V_HAND, doneCalled = false, cvW = null, tSwap = 0, wReady = null;
+  const readyNow = () => { if (wReady){ const r = wReady; wReady = null; r(); } };
+  const dropWorker = () => {
+    if (!worker) return;
+    worker.terminate(); worker = null;
+    removeEventListener('resize', onResize);
+    if (cvW) cvW.remove();
+    readyNow();
+    if (!here){   /* draw here instead: on a new canvas if the worker's had been shown */
+      if (tSwap){ const c = document.createElement('canvas'); c.id = 'kindle-gl'; c.setAttribute('aria-hidden', 'true');
+        root.insertBefore(c, root.firstChild); cv = c; }
+      gl = null; here = true; sparkSets = []; sU = {};
+      initGL(); warmUp(); requestAnimationFrame(loop);
+      if (wDone){ const r = wDone; wDone = null; if (gl) ctl.done(performance.now(), () => { window.__kbLoad.handAt = handAt; r(); }); else r(); }
+    }
+  };
+  /* in a frame of this thread, so the canvas goes in the same commit */
+  function takeOver(){
+    here = false; tSwap = window.__kbLoaderSwap = performance.now();
+    if (grow){ grow.cancel(); grow = null; }
+    /* its context goes now, while a wait on the GPU only holds up the build */
+    const x = gl && gl.getExtension('WEBGL_lose_context'); if (x) x.loseContext();
+    cv.remove(); cvW.id = 'kindle-gl'; gl = null;
+    worker.postMessage({kb:'take'});
+    if (lastPct >= 0) showPct(lastPct);
+    readyNow();
+  }
+  /* started in the <head>, where this thread is still free for it (see there) */
+  const PRE = window.__kbPre; window.__kbPre = null;
+  if (SRC && !window.__kbNoWorker && typeof Worker === 'function' && typeof OffscreenCanvas === 'function' && !(PRE && PRE.failed)){
+    let off = null, url = '';
+    try {
+      if (PRE){ worker = PRE.worker; cvW = PRE.canvas; url = PRE.url; }
+      else {
+        cvW = document.createElement('canvas');
+        if (!cvW.transferControlToOffscreen || !window.__kbBoot) throw 0;
+        url = URL.createObjectURL(new Blob([window.__kbBoot], {type:'text/javascript'}));
+        worker = new Worker(url);
+        off = cvW.transferControlToOffscreen();
+      }
+      cvW.setAttribute('aria-hidden', 'true');
+      root.insertBefore(cvW, cv);
+      worker.onmessage = e => {
+        const m = e.data || {};
+        if (m.kb === 'pct'){ if (!here && !doneCalled) showPct(m.v); }
+        else if (m.kb === 'hand'){ velW = m.vel; window.__kbLoad.handAt = m.at; if (wDone){ const r = wDone; wDone = null; r(); } }
+        else if (m.kb === 'up'){ URL.revokeObjectURL(url); if (!tSwap) takeOver(); }
+        else if (m.kb === 'stopped'){
+          window.__kbLoaderFrames = FT.filter(t => !tSwap || t < tSwap).concat(m.ft.filter(t => tSwap && t >= tSwap));
+        }
+        else if (m.kb === 'fail') dropWorker();
+      };
+      worker.onerror = e => { e.preventDefault(); dropWorker(); };
+      /* the worker alone draws the fire: nothing is drawn here (a second
+         fire drawn here first cost its compile and pipelines in the first
+         visible frames, and the worker's own landed on them too) */
+      here = false;
+      worker.postMessage({kbInit:1, src:SRC, canvas:off, t0, origin:performance.timeOrigin, reduced, view:viewNow(), target}, off ? [off] : []);
+      addEventListener('resize', onResize);
+    } catch (e) {
+      if (worker) worker.terminate();
+      worker = null;
+      if (cvW) cvW.remove();
+    }
+  }
+  /* no worker: drawn here, after the same warm-up */
+  if (here){ initGL(); warmUp(); requestAnimationFrame(loop); }
+
+  /* Slow connections: say so rather than burning quietly forever. */
+  const slow = setTimeout(() => { if (alive && target < 0.4) label.querySelector('span').textContent = 'Still kindling'; }, 12000);
+
+  window.__kbLoad = {
+    t0,
+    /* when the rim reached the hand-off, on this thread's clock: the intro
+       resumes from exactly then, however late the word got here */
+    handAt: 0,
+    velocity(){ const v = here ? velS : velW; return Number.isFinite(v) ? v : V_HAND; },
+    /* resolves once the worker draws the fire, typically 0.15-0.3 s (at
+       most 1.2): it can start, and make its WebGL context, only while this
+       thread is free, so the build waits for it rather than holding it off
+       for a second or more while the fire stands still */
+    ready(){ return new Promise(r => { if (!worker || tSwap || document.hidden) return r(); wReady = r; setTimeout(readyNow, 1200); }); },
+    set(p){ target = Math.max(target, p); if (!alive) return; if (worker) worker.postMessage({kb:'set', p:target}); },
+    /* after the hand-off the page reports its intro's progress each frame
+       until this has faded, and the rim is drawn there */
+    follow(u){ if (!alive) return; lastFollow = u; if (here) followU = u; else if (worker) worker.postMessage({kb:'follow', u}); },
+    /* a yield the build awaits between stations, so the ember keeps moving;
+       only when a frame is due, and never in a hidden tab, where rAF waits.
+       Once the worker draws it, only the count needs one, and less often */
+    step(p){
+      this.set(p);
+      const now = performance.now();
+      if (document.hidden || now - lastYield < (here ? 45 : 90)) return Promise.resolve();
+      return new Promise(r => requestAnimationFrame(() => setTimeout(() => { lastYield = performance.now(); r(); }, 0)));
+    },
+    /* resolves the moment the rim reaches the hand-off size */
+    done(){
+      this.set(1);
+      doneCalled = true;
+      /* the count lands on 100 now; the label holds it a beat and fades (CSS) */
+      num.textContent = lastPct = 100; label.setAttribute('aria-valuenow', 100);
+      root.classList.add('lit');
+      return new Promise(res => {
+        if (document.hidden || (here ? !gl : !worker)){ return res(); }
+        if (!here){
+          wDone = res;
+          worker.postMessage({kb:'done', at:performance.now()});
+          /* it hands over within 1.6 s; should it have gone quiet, so do we */
+          setTimeout(() => { if (wDone === res){ wDone = null; res(); } }, 2400);
+          return;
+        }
+        ctl.done(performance.now(), () => { this.handAt = handAt; res(); });
+      });
+    },
+    close(){
+      clearTimeout(slow);
+      /* the intro's rim is now drawn exactly where this one is, so a short
+         fade only has to hand over the dark inside to the workshop — kept
+         short, as through a slow one the lit paper showed before the room */
+      /* One WebGL context draws the hand-off. The page has drawn the intro
+         under this, so the fire stops drawing now — drawn on through the
+         fade, the two contexts shared the GPU and the fade's frames ran to
+         35-67 ms — and its last frame fades out on the compositor, scaled
+         as the intro's ring grows (the intro's own curve, on the clock it
+         runs on) so it stays on the page's rim while it goes */
+      alive = false;
+      removeEventListener('resize', onResize);
+      if (worker) worker.postMessage({kb:'stop'});
+      else window.__kbLoaderFrames = FT;
+      const FADE = reduced ? 250 : 120, t1 = performance.now();
+      if (!reduced){
+        const [w, h] = vwh(), a = w/h, hA = window.__kbLoad.handAt || t1;
+        const uAt = t => introBurn(Math.min(1, RH + (t - hA)/1000/DUR));
+        const u0 = lastFollow !== null ? lastFollow : uAt(t1), r0 = seenPx(u0, h, a), keys = [];
+        for (let k = 0; k <= 8; k++) keys.push({transform: `scale(${(seenPx(uAt(t1 + FADE*k/8), h, a)/r0).toFixed(4)})`, offset: k/8});
+        for (const c of root.querySelectorAll('canvas')){ try { c.animate(keys, {duration: FADE, fill: 'forwards'}); } catch (e) {} }
+      }
+      root.style.transition = `opacity ${FADE/1000}s linear`;
+      root.classList.add('out');
+      setTimeout(() => {
+        /* no loseContext on this thread: it waits for all the GPU work
+           queued — the intro's first frames with it — and held it 100 ms */
+        gl = null;
+        root.remove();
+        const w = worker;
+        if (w){
+          /* its context goes now; the worker itself when the page is hidden
+             or left: terminating it held this thread 55-240 ms at any time
+             while the page is on screen (after the intro too), and an idle
+             worker with no context costs next to nothing */
+          w.postMessage({kb:'free'});
+          const end = () => { if (document.hidden){ w.terminate(); removeEventListener('visibilitychange', end); removeEventListener('pagehide', end); } };
+          addEventListener('visibilitychange', end); addEventListener('pagehide', end);
+        }
+      }, FADE + 180);
+    }
+  };
+})();
+</script>
+
+<main id="main">
+  <p class="stack">Vanilla JavaScript · WebGL (GLSL) in a Worker on an OffscreenCanvas · CSS label · no Three.js</p>
+  <h1>Fire-Paper <em>Loader</em></h1>
+  <p class="lede">The ring you just watched was drawn by a <b>Worker</b>, started from the &lt;head&gt; before the page below was built. While the page then blocked its own thread for up to 450&nbsp;ms at a time, the flame kept burning. Draw the same GLSL on the main thread and it freezes at every block. The count lands on 100, the rim runs into the hand-off at an even pace, and only then does the page appear.</p>
+  <div class="bar">
+    <label><input type="checkbox" id="w" checked> Draw in a worker</label>
+    <label><input type="checkbox" id="b" checked> Block the main thread while building</label>
+    <button id="r" type="button">Replay</button>
+    <span class="read" id="read" role="status" aria-live="polite">Longest gap between fire frames while loading: <b>…</b></span>
+  </div>
+</main>
+
+<script>
+/* ---- demo staging: a stand-in for the page's build. Each station holds the
+   thread for a while (as the real page's shader and geometry build did), then
+   reports progress to the loader, exactly as the page does with LOAD.step(). */
+(async () => {
+  const q = new URLSearchParams(location.search);
+  const block = q.get('block') !== '0';
+  const $ = id => document.getElementById(id);
+  $('w').checked = q.get('worker') !== '0'; $('b').checked = block;
+  const go = () => { const p = new URLSearchParams(); if (!$('w').checked) p.set('worker', '0'); if (!$('b').checked) p.set('block', '0'); location.search = p.toString(); };
+  $('w').onchange = go; $('b').onchange = go; $('r').onclick = () => location.reload();
+  const spin = ms => { const e = performance.now() + ms; while (performance.now() < e) { Math.sqrt(Math.random()); } };
+  const LOAD = window.__kbLoad;
+  LOAD.set(0.40);
+  await LOAD.ready();
+  const stations = [[0.44,300],[0.54,450],[0.59,250],[0.63,350],[0.66,400],[0.69,250],[0.72,450],[0.75,300],[0.78,400],[0.80,250],[0.84,450],[0.86,300],[0.90,400],[0.95,300]];
+  for (const [p, ms] of stations){ if (block) spin(ms); await LOAD.step(p); if (!block) await new Promise(r => setTimeout(r, ms*0.6)); }
+  await LOAD.done();
+  /* the real page draws its own intro rim from here; the demo lets the loader's
+     ring go on along the same intro curve until it leaves the frame (1.8 s) */
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  await new Promise(r => setTimeout(r, reduced ? 200 : 1800));
+  LOAD.close();
+  document.body.classList.add('open');
+  setTimeout(() => {
+    const f = (window.__kbLoaderFrames || []).filter(t => t < LOAD.t0 + 1e9), g = [];
+    for (let i = 1; i < f.length; i++) g.push(f[i] - f[i-1]);
+    const top = g.length ? Math.max(...g) : 0;
+    $('read').innerHTML = 'Longest gap between fire frames while loading: <b>' + top.toFixed(0) + ' ms</b>' + (window.__kbNoWorker ? ' (main thread)' : ' (worker)');
+  }, 600);
+})();
+</script>
+</body>
+</html>

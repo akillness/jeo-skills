@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-undo-is-the-inverse-move",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Undo by applying the inverse, not by restoring a picture"
+  },
+  "aliases": {
+    "en": [
+      "undo semantics",
+      "inverse sequence",
+      "move history"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles",
+    "spatial-puzzles"
+  ],
+  "summary": "Implement undo as the inverse operation on the model, and reverse the order when undoing a sequence.",
+  "objective": "Make history operations exact so that undo, redo and replay agree with the model.",
+  "applies_when": [
+    "A puzzle or interactive model whose operations have defined inverses offers undo or step-back.",
+    "Sequences of moves are recorded, replayed or reversed.",
+    "A solution is played backwards from a solved state.",
+    "An editor supports operations that are not invertible from the current state alone, such as deletion or a destructive edit, and undo must restore prior model state instead."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "undo",
+    "inverse",
+    "move sequence",
+    "history",
+    "replay",
+    "reverse order"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "puzzle",
+    "interaction"
+  ],
+  "intent_signals": [
+    "undo my last move",
+    "replay the solution backwards",
+    "step back through the scramble"
+  ],
+  "example_prompts": [
+    "Let me undo moves one at a time and get back to the scramble.",
+    "Play the recorded solution in reverse."
+  ],
+  "negative_signals": [
+    "Irreversible operations that are deliberately destructive.",
+    "Continuous parameters where a snapshot restore is the appropriate mechanism."
+  ],
+  "not_for": [
+    "Irreversible operations that are deliberately destructive.",
+    "Continuous parameters where a snapshot restore is the appropriate mechanism."
+  ],
+  "content": {
+    "principles": [
+      "Undo is an operation on the model, not on the display. Restoring colours, textures or a cached pose leaves the underlying state wherever the last move left it. Where an operation is invertible, applying the inverse is the cleanest implementation; where it is not, undo restores prior model state from a snapshot or from an inverse command that carries the data it removed. Both restore the model; neither is inherently less correct.",
+      "Sequences invert in reverse order: to undo a sequence of moves each move must be inverted and the inversions applied starting from the last, so the inverse of doing three moves is undoing the third, then the second, then the first.",
+      "Because moves compose, undo can be expressed in the same vocabulary as play, which keeps a single code path and makes replay and reverse-replay symmetrical.",
+      "History must record model moves rather than input events, so that a move triggered by a drag and the same move triggered by a key undo identically."
+    ],
+    "implementation": [
+      "Record each committed operation at model level together with what undo needs: a defined inverse for invertible moves, or the prior state or removed data for destructive edits.",
+      "Implement undo as applying that inverse through the same commit path as a normal move, including the animation.",
+      "For sequences of invertible moves, apply the inverses in reverse order and verify the resulting state equals the state before the sequence; for mixed histories, verify the same equality however each step is restored.",
+      "Distinguish undo from reset: reset returns to a stored initial state, while undo walks the history.",
+      "Keep redo consistent by re-applying the original moves in order rather than inverting the inverses."
+    ],
+    "observable_checks": [
+      "Apply a random sequence, undo it entirely and confirm the state equals the pre-sequence state exactly, not merely visually.",
+      "Undo and redo repeatedly and confirm the state and move count stay consistent.",
+      "Undo a move triggered by direct manipulation and confirm it behaves like an undone keyboard move.",
+      "Undo across a scramble boundary and confirm the scene distinguishes undo from reset."
+    ]
+  },
+  "related_ids": [
+    "recipe.direct-turn-cube",
+    "recipe.twisty-cube-3x3-face-turns",
+    "recipe.sliding-block-escape"
+  ],
+  "creative_affordances": [
+    "Undo can be presented playfully, as rewinding time or reversing a mechanism, once the model operation is correct.",
+    "A visible history strip is optional; the contract concerns the operation, not the interface."
+  ],
+  "known_limits": [
+    "Authored interaction guidance citing the inverse-of-a-sequence rule; it does not prescribe a history data structure.",
+    "No runtime implementation has been exercised for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-inverse-of-a-sequence",
+      "statement": "To undo a sequence of moves the moves must be undone starting with the last, so that the inverse of a composed sequence is the composition of the individual inverses in reverse order.",
+      "scope": "Composition of invertible discrete operations, as used for puzzle moves; it does not apply to irreversible operations.",
+      "source_refs": [
+        {
+          "source_id": "source.jaap-permutations",
+          "locator": "Inverse of a move sequence"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "id": "knowledge.granular-aggregate-approximation",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Granular aggregate versus a rigid heap"
+  },
+  "aliases": {
+    "en": [
+      "distinct element pile",
+      "particle-by-particle contact",
+      "sand heap approximation"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal",
+    "environments-dioramas",
+    "rigid-mechanics"
+  ],
+  "summary": "Compare a rigid authored heap with a contact-by-contact particle example while allowing declared continuum, heightfield or hybrid alternatives; a sculpted mound alone does not establish granular flow.",
+  "objective": "Compare a declared rigid display heap with a discrete grain example whose deliberately unsupported grains can respond to gravity and contacts.",
+  "applies_when": [
+    "Sand, gravel, grain, rubble or pellets occupy a mound, hopper or hourglass.",
+    "The viewer might read a static mesh as flowing aggregate."
+  ],
+  "subject_terms": [
+    "distinct element method",
+    "granular assembly",
+    "contact by contact",
+    "particle by particle",
+    "heap",
+    "angle of repose"
+  ],
+  "tags": [
+    "physical-behavior",
+    "granular",
+    "aggregate",
+    "DEM"
+  ],
+  "intent_signals": [
+    "pile of gravel that I can dig",
+    "sand that should flow through a hopper",
+    "is this mound just a mesh"
+  ],
+  "example_prompts": [
+    "Build a hopper of spheres that jam and unjam as contacts form, labelled as a distinct-element sketch.",
+    "Sculpt a dune as a rigid mesh and state that it will not avalanche."
+  ],
+  "negative_signals": [
+    "A noisy displacement map on a dune claiming to be granular flow.",
+    "A single rigid body with a sand material."
+  ],
+  "not_for": [
+    "Continuum soil plasticity, fluidised beds or measured angle-of-repose certification from a mesh.",
+    "Claims beyond the DEM abstract: force-law details were not read from the full paper."
+  ],
+  "content": {
+    "principles": [
+      "This comparison selects rigid display and discrete grains; continuum, evolving heightfield and hybrid models remain valid alternatives when labeled.",
+      "The distinct-element idea owns particle motion and contacts individually. The abstract supports this concept, not a particular force law or calibrated heap slope.",
+      "Removing one buried grain need not rearrange its neighbors: redundant support or an arch may remain. Use a known unsupported configuration to inspect response."
+    ],
+    "implementation": [
+      "Rigid display: own a mesh or heightfield and declare whether edits rebuild its geometry. Decorative instances alone do not provide interactive granular mechanics.",
+      "Discrete example: own grain shape/mass, position/orientation, linear/angular velocity, gravity and contact state. Select and label the solver's contact, friction and restitution policy; these authored settings are not supplied by the Cundall abstract.",
+      "A fixed bulk collider plus interactive surface grains is an allowed labeled hybrid. Keep decorative and participating grains distinguishable and avoid duplicate bulk/grain collision occupancy.",
+      "For a response check, remove the sole support of an isolated test grain in gravity, wake that grain and advance contacts. Do not demand that every removal collapse an arbitrary packing.",
+      "Pause preserves positions, orientations and velocities without advancing time. Reset restores the initial packed state, parameters and sleep flags; contacts are rebuilt consistently by the chosen solver."
+    ],
+    "observable_checks": [
+      "A decorative instance removed from a rigid heap does not claim a physically derived avalanche.",
+      "The isolated grain with its sole support removed and no remaining contact accelerates under the declared gravity after waking; an unrelated stable arch may remain stationary.",
+      "Color/roughness changes leave contact parameters unchanged. Resume preserves pre-pause momentum; reset restores initial grain poses and velocities."
+    ]
+  },
+  "related_ids": [
+    "knowledge.three-scene-adapter",
+    "recipe.fantasy-village-diorama"
+  ],
+  "creative_affordances": [
+    "Stylised pellets, crystals or coins can stand in for grains if contact ownership is unchanged.",
+    "A cutaway of a few force-carrying contacts is a free overlay, not a photoelastic validation."
+  ],
+  "known_limits": [
+    "The Cundall and Strack claim is taken from the published abstract only; the full Géotechnique paper was not obtained, so contact-force laws and the BALL validation plots are not used here.",
+    "A few dozen spheres are an illustration of the modelling idea, not a calibrated granular material.",
+    "Authored reusable guidance; no runtime artifact has been observed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-granular-aggregate-approximation",
+      "statement": "The distinct element method is a numerical model for assemblies of discs and spheres that uses an explicit scheme in which particle interactions are monitored contact by contact and particle motion is modelled particle by particle.",
+      "scope": "Abstract of Cundall and Strack, Géotechnique 29(1) 1979; full-paper force laws and photoelastic figures were not read.",
+      "source_refs": [
+        {
+          "source_id": "source.knowledge-depth-cundall-strack-granular",
+          "locator": "Abstract: contact-by-contact interaction and particle-by-particle motion for discs and spheres"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed"
+}

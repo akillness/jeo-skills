@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-field-line-conventions",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Follow the field-line drawing conventions"
+  },
+  "aliases": {
+    "en": [
+      "field lines",
+      "line density",
+      "lines never cross"
+    ]
+  },
+  "direction_ids": [
+    "waves-optics-fields",
+    "calculus-fields"
+  ],
+  "summary": "Draw field lines with density proportional to magnitude, beginning and ending correctly, and never crossing.",
+  "objective": "Make a field-line diagram carry the quantitative information the convention promises.",
+  "applies_when": [
+    "An electrostatic field is drawn as continuous field lines rather than sampled arrows.",
+    "Charges, poles or sources of different strength appear together.",
+    "The viewer is expected to read relative field strength from the picture.",
+    "Another vector field, such as a magnetic or flow field, is drawn as lines and needs its own source rules, since it has no charge-like sources to begin and end on."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "field lines",
+    "line density",
+    "flux",
+    "sources and sinks",
+    "convention",
+    "vector field"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "fields",
+    "presentation"
+  ],
+  "intent_signals": [
+    "draw the field lines",
+    "which region has a stronger field",
+    "why do the lines not cross"
+  ],
+  "example_prompts": [
+    "Draw field lines for two unequal charges with correct line counts.",
+    "Show where the field is strongest from the line spacing."
+  ],
+  "negative_signals": [
+    "Sampled arrow grids, which follow different reading rules.",
+    "Decorative flow lines with no quantitative claim."
+  ],
+  "not_for": [
+    "Sampled arrow grids, which follow different reading rules.",
+    "Decorative flow lines with no quantitative claim."
+  ],
+  "content": {
+    "principles": [
+      "Field-line density is the encoding: the line density at a point is proportional to the field magnitude there. That reading is quantitative only with a stated seeding and flux interpretation in a plane where it holds; apparent spacing in a projected three-dimensional view is not a magnitude measurement.",
+      "Field lines cannot cross in the field domain, because a crossing would give two directions at one point. That argument needs a non-zero, well-defined direction, so null points and singularities are genuine exceptions where lines may meet or terminate and need a stated policy. A crossing on screen is not evidence of a fault either: in a projected three-dimensional view, lines at different depths routinely appear to cross.",
+      "Lines begin on positive charges or come in from infinity and end on negative charges or continue to infinity, and the number attached to a charge is proportional to its magnitude, so unequal charges must not receive equal line counts.",
+      "Because the convention is quantitative, a hand-drawn or evenly spaced set of lines misinforms even when it looks tidy."
+    ],
+    "implementation": [
+      "Seed lines in proportion to source magnitude rather than at a fixed count per source.",
+      "Integrate each line along the computed field with a step small enough to resolve strong gradients, and give termination an explicit policy: on a sink, at the domain boundary, at a null point, or on reaching a step limit, reporting which occurred.",
+      "Handle the neighbourhood of a singularity with a stated cutoff radius so integration does not produce spurious behaviour.",
+      "State the convention and the seeding rule in a legend, including whether the drawing is a section of a three-dimensional field.",
+      "In three dimensions, note that perceived spacing depends on projection, and consider a section or a magnitude encoding as a companion."
+    ],
+    "observable_checks": [
+      "Test for intersections between line paths in the field domain rather than on screen, and expect apparent crossings in any projected view. Only require visually non-crossing lines in a true planar section of a field that lies in that plane.",
+      "Compare the number of lines on a source of double strength and confirm it is proportionally larger.",
+      "Compare line spacing between a strong and a weak region against the computed magnitudes.",
+      "Confirm every line ends according to the declared policy, and that lines approaching a null point are handled deliberately rather than wandering or stopping silently in empty space."
+    ]
+  },
+  "related_ids": [
+    "recipe.point-charge-field-superposition",
+    "recipe.divergence-flux-box",
+    "knowledge.signed-field-section"
+  ],
+  "creative_affordances": [
+    "Animated flow along the lines, colour by magnitude and stylised line rendering are all free choices.",
+    "A deliberately schematic diagram is fine when it is labelled as schematic rather than quantitative."
+  ],
+  "known_limits": [
+    "Authored presentation guidance citing electrostatic field-line conventions; it does not extend to magnetic field lines or to fields with sources outside the domain.",
+    "Density reading in a three-dimensional projection is approximate and is not resolved by this rule."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-field-line-rules",
+      "statement": "In an electric field-line diagram the line density at a point is proportional to the magnitude of the field there, field lines can never cross because a line represents the field direction at a point, lines originate on positive charges or come in from infinity and terminate on negative charges or extend to infinity, and the number of lines at a charge is proportional to the magnitude of that charge.",
+      "scope": "Electrostatic field-line diagram conventions; magnetic field lines and other vector fields follow related but distinct conventions.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-openstax-field-lines",
+          "locator": "5.6, field line density, non-crossing rule and line origination"
+        }
+      ]
+    }
+  ]
+}

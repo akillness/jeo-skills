@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-graph-evidence-coverage",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Observed edges, inferred edges and disclosed coverage"
+  },
+  "aliases": {
+    "en": [
+      "trace coverage disclosure",
+      "observed versus inferred edges"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data"
+  ],
+  "summary": "Require supporting records for asserted observed edges and disclose sampling and instrumentation coverage with the graph.",
+  "objective": "Every observed edge resolves to supporting records, inferred edges are labelled, and coverage and window are stated.",
+  "applies_when": [
+    "A graph is derived from observations rather than authored by hand.",
+    "The observation pipeline samples or misses some events.",
+    "A reader might treat the graph as a complete map."
+  ],
+  "check_method": "source",
+  "tags": [
+    "domain-validation",
+    "coverage",
+    "evidence",
+    "graph"
+  ],
+  "subject_terms": [
+    "observed edge",
+    "inferred edge",
+    "sampling",
+    "observation window",
+    "instrumentation gap",
+    "coverage disclosure"
+  ],
+  "intent_signals": [
+    "is this dependency actually observed",
+    "how much of the system is instrumented here"
+  ],
+  "example_prompts": [
+    "Audit the evidence behind the edges in this service graph."
+  ],
+  "negative_signals": [
+    "capacity planning",
+    "incident root cause attribution"
+  ],
+  "content": {
+    "principles": [
+      "An asserted observed edge needs supporting records; an edge drawn because it seems likely is a hypothesis and must be labelled as one.",
+      "Absence of evidence is not evidence of absence, because sampling and instrumentation gaps mean a missing connection may exist and simply not be recorded. The converse also holds: an edge seen in only one window is still observed evidence, and what is unestablished is its persistence, not the observation.",
+      "Coverage is part of the result, so the artifact should state what is instrumented and what sampling was in effect."
+    ],
+    "implementation": [
+      "For every displayed edge record the supporting input records or the fact that it is inferred, keeping the two categories distinct in the data and in the display.",
+      "Record the sampling configuration and the observation window with the dataset and show them with the graph.",
+      "List components known to exist but absent from the data, so absence is explicit rather than implied by a blank area.",
+      "Re-run the extraction over a second window and report per-window presence and observation counts for every edge, so an edge seen in one window keeps its evidence while its persistence stays unestablished."
+    ],
+    "observable_checks": [
+      "Every asserted observed edge resolves to supporting records, and inferred edges stay labelled everywhere they appear, including in exports.",
+      "The artifact states the sampling configuration and observation window, so a reader cannot mistake a sampled view for a complete map.",
+      "Edges present in only one window are reported with their window and count and their persistence marked unestablished, rather than being downgraded as unreliable; a union across windows is legitimate when it is labelled as a union with its combined window."
+    ]
+  },
+  "known_limits": [
+    "An evidence and disclosure procedure; it does not improve instrumentation coverage or validate the correctness of the underlying telemetry.",
+    "Authored verification guidance; no dataset was extracted for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.service-graph",
+    "recipe.agent-harness",
+    "recipe.embedding-projection"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-sampling-limits-coverage",
+      "statement": "Sampling reduces the traces that are collected and exported: head sampling decides as early as possible without seeing the whole trace, tail sampling decides after considering most spans of a trace, and traces that are not sampled are not processed or exported.",
+      "scope": "The sampling behaviour described in the cited documentation; the consequences for a specific dataset depend on its own configuration.",
+      "source_refs": [
+        {
+          "source_id": "source.validation-depth-otel-sampling",
+          "locator": "Sampling: head sampling, tail sampling and unsampled data"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Seamless loop</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #0b0b0b;
+      }
+      body {
+        display: grid;
+        place-items: center;
+      }
+      canvas {
+        display: block;
+        max-width: 100vw;
+        max-height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="out"></canvas>
+    <script>
+      // One seamless motion loop in one HTML file.
+      // Open it in a browser to preview. Render it with:
+      //   node scripts/render-loop.mjs loop.html --out loop.mp4
+      // URL options: ?w=1920&h=1080 (size), ?tone=dark|accent|light, ?t=3 (freeze the preview),
+      // ?overlay=subject.png (a cut-out PNG with alpha in this folder), ?ss=2 (supersampling).
+
+      // 1. Settings: loop length, brand colors. Tiles only ever use the palette P built from these.
+      const LOOP = 12; // seconds; every period in a tile must divide it: 1, 1.5, 2, 3, 4, 6 or 12
+      const BRAND = {
+        accent: "#5CC8FF", // the brand color
+        ink: "#0F0F0F", // darkest
+        paper: "#F2EFE9", // lightest
+        card: "#161616", // background of the dark tone
+      };
+
+      // 2. Helpers. Pure and deterministic: the same t always gives the same frame.
+      (function () {
+        const TAU = Math.PI * 2;
+        const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+        const lerp = (a, b, k) => a + (b - a) * k;
+        const fract = (x) => x - Math.floor(x);
+        const mod = (x, m) => ((x % m) + m) % m;
+        const smoothstep = (a, b, x) => {
+          const k = clamp((x - a) / (b - a));
+          return k * k * (3 - 2 * k);
+        };
+        // Phase 0..1 of a cycle of `period` seconds. The period must divide LOOP.
+        const phase = (t, period = LOOP, offset = 0) =>
+          fract((t + offset) / period);
+        // Progress 0..1 of a window [a, b] inside a 0..1 phase: holds before and after.
+        const win = (p, a, b) => clamp((p - a) / (b - a));
+        const ease = {
+          linear: (k) => k,
+          inSine: (k) => 1 - Math.cos((k * Math.PI) / 2),
+          outSine: (k) => Math.sin((k * Math.PI) / 2),
+          inOutSine: (k) => -(Math.cos(Math.PI * k) - 1) / 2,
+          inQuad: (k) => k * k,
+          outQuad: (k) => 1 - (1 - k) * (1 - k),
+          inOutQuad: (k) =>
+            k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2,
+          inCubic: (k) => k * k * k,
+          outCubic: (k) => 1 - Math.pow(1 - k, 3),
+          inOutCubic: (k) =>
+            k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2,
+          inQuart: (k) => k * k * k * k,
+          outQuart: (k) => 1 - Math.pow(1 - k, 4),
+          inOutQuart: (k) =>
+            k < 0.5 ? 8 * k * k * k * k : 1 - Math.pow(-2 * k + 2, 4) / 2,
+          outQuint: (k) => 1 - Math.pow(1 - k, 5),
+          inOutQuint: (k) =>
+            k < 0.5 ? 16 * k * k * k * k * k : 1 - Math.pow(-2 * k + 2, 5) / 2,
+          inExpo: (k) => (k === 0 ? 0 : Math.pow(2, 10 * k - 10)),
+          outExpo: (k) => (k === 1 ? 1 : 1 - Math.pow(2, -10 * k)),
+          inOutExpo: (k) =>
+            k === 0
+              ? 0
+              : k === 1
+                ? 1
+                : k < 0.5
+                  ? Math.pow(2, 20 * k - 10) / 2
+                  : (2 - Math.pow(2, -20 * k + 10)) / 2,
+          inCirc: (k) => 1 - Math.sqrt(1 - k * k),
+          outCirc: (k) => Math.sqrt(1 - Math.pow(k - 1, 2)),
+          inOutCirc: (k) =>
+            k < 0.5
+              ? (1 - Math.sqrt(1 - Math.pow(2 * k, 2))) / 2
+              : (Math.sqrt(1 - Math.pow(-2 * k + 2, 2)) + 1) / 2,
+          outBack: (k, s = 1.70158) =>
+            1 + (s + 1) * Math.pow(k - 1, 3) + s * Math.pow(k - 1, 2),
+          inBack: (k, s = 1.70158) => (s + 1) * k * k * k - s * k * k,
+          inOutBack: (k, s = 1.70158 * 1.525) =>
+            k < 0.5
+              ? (Math.pow(2 * k, 2) * ((s + 1) * 2 * k - s)) / 2
+              : (Math.pow(2 * k - 2, 2) * ((s + 1) * (k * 2 - 2) + s) + 2) / 2,
+          // Damped spring from 0 to 1 (zeta 0.2 bouncy to 1 critical), pinned to exactly 1 at k = 1
+          // so a cycle closes cleanly.
+          spring: (k, zeta = 0.35, freq = 3.2) => {
+            if (k <= 0) return 0;
+            if (k >= 1) return 1;
+            const w = TAU * freq;
+            const wd = w * Math.sqrt(Math.max(1e-6, 1 - zeta * zeta));
+            const v =
+              1 -
+              Math.exp(-zeta * w * k) *
+                (Math.cos(wd * k) + ((zeta * w) / wd) * Math.sin(wd * k));
+            return lerp(v, 1, smoothstep(0.85, 1, k));
+          },
+          outElastic: (k) =>
+            k === 0
+              ? 0
+              : k === 1
+                ? 1
+                : Math.pow(2, -10 * k) * Math.sin((k * 10 - 0.75) * (TAU / 3)) +
+                  1,
+          outBounce: (k) => {
+            const n1 = 7.5625,
+              d1 = 2.75;
+            if (k < 1 / d1) return n1 * k * k;
+            if (k < 2 / d1) return n1 * (k -= 1.5 / d1) * k + 0.75;
+            if (k < 2.5 / d1) return n1 * (k -= 2.25 / d1) * k + 0.9375;
+            return n1 * (k -= 2.625 / d1) * k + 0.984375;
+          },
+        };
+        // Deterministic randoms. Never use Math.random, Date or state carried between frames.
+        const hash = (n) => {
+          const s = Math.sin(n * 127.1 + 311.7) * 43758.5453123;
+          return s - Math.floor(s);
+        };
+        const rand = (i, salt = 0) => hash(i * 12.9898 + salt * 78.233 + 0.5);
+        const rrange = (i, a, b, salt = 0) => lerp(a, b, rand(i, salt));
+        // Smooth noise that repeats every `period` seconds (sines on a circle).
+        const loopNoise = (t, seed = 0, period = LOOP, octaves = 2) => {
+          let v = 0,
+            amp = 1,
+            norm = 0;
+          for (let o = 0; o < octaves; o++) {
+            v +=
+              amp *
+              Math.sin(TAU * (o + 1) * (t / period) + rand(seed + o, 1) * TAU);
+            norm += amp;
+            amp *= 0.5;
+          }
+          return v / norm;
+        };
+        // Colors: accepts '#rgb', '#rrggbb', 'rgb()' and 'rgba()' (mixColor returns rgb()).
+        const hexToRgb = (c) => {
+          if (c.startsWith("rgb"))
+            return c
+              .slice(c.indexOf("(") + 1, c.indexOf(")"))
+              .split(",")
+              .slice(0, 3)
+              .map((v) => Math.round(parseFloat(v)));
+          let h = c.replace("#", "");
+          if (h.length === 3)
+            h = h
+              .split("")
+              .map((x) => x + x)
+              .join("");
+          const n = parseInt(h, 16);
+          return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+        };
+        const rgba = (c, a = 1) => {
+          const [r, g, b] = hexToRgb(c);
+          return `rgba(${r},${g},${b},${a})`;
+        };
+        const mixColor = (c1, c2, k) => {
+          const a = hexToRgb(c1),
+            b = hexToRgb(c2);
+          const m = a.map((v, i) => Math.round(lerp(v, b[i], k)));
+          return `rgb(${m[0]},${m[1]},${m[2]})`;
+        };
+        // Shapes.
+        const circle = (ctx, x, y, r) => {
+          ctx.beginPath();
+          ctx.arc(x, y, Math.max(0, r), 0, TAU);
+        };
+        const roundRect = (ctx, x, y, w, h, r) => {
+          ctx.beginPath();
+          ctx.roundRect(x, y, w, h, Math.max(0, Math.min(r, w / 2, h / 2)));
+        };
+        const poly = (ctx, x, y, r, n, rot = 0) => {
+          ctx.beginPath();
+          for (let i = 0; i < n; i++) {
+            const a = rot + (i / n) * TAU - Math.PI / 2;
+            const px = x + r * Math.cos(a),
+              py = y + r * Math.sin(a);
+            i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+          }
+          ctx.closePath();
+        };
+        const star = (ctx, x, y, r1, r2, n, rot = 0) => {
+          ctx.beginPath();
+          for (let i = 0; i < n * 2; i++) {
+            const r = i % 2 ? r2 : r1;
+            const a = rot + (i / (n * 2)) * TAU - Math.PI / 2;
+            const px = x + r * Math.cos(a),
+              py = y + r * Math.sin(a);
+            i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+          }
+          ctx.closePath();
+        };
+        // A polyline from [x, y] points, optionally only its first `upto` fraction (line draws).
+        const polyline = (ctx, pts, upto = 1) => {
+          if (pts.length < 2) return;
+          let total = 0;
+          const seg = [];
+          for (let i = 1; i < pts.length; i++) {
+            const d = Math.hypot(
+              pts[i][0] - pts[i - 1][0],
+              pts[i][1] - pts[i - 1][1],
+            );
+            seg.push(d);
+            total += d;
+          }
+          let left = total * clamp(upto);
+          ctx.beginPath();
+          ctx.moveTo(pts[0][0], pts[0][1]);
+          for (let i = 1; i < pts.length && left > 0; i++) {
+            const d = seg[i - 1];
+            if (d <= left) {
+              ctx.lineTo(pts[i][0], pts[i][1]);
+              left -= d;
+            } else {
+              const k = left / d;
+              ctx.lineTo(
+                lerp(pts[i - 1][0], pts[i][0], k),
+                lerp(pts[i - 1][1], pts[i][1], k),
+              );
+              left = 0;
+            }
+          }
+        };
+        // 3D: camera at the origin looking down +z, y up. Returns [screenX, screenY, scale].
+        // Divide by z once, here; never scale f by depth again.
+        const proj = (x, y, z, f, cx, cy) => [
+          cx + (f * x) / z,
+          cy - (f * y) / z,
+          f / z,
+        ];
+        const rotX = ([x, y, z], a) => [
+          x,
+          y * Math.cos(a) - z * Math.sin(a),
+          y * Math.sin(a) + z * Math.cos(a),
+        ];
+        const rotY = ([x, y, z], a) => [
+          x * Math.cos(a) + z * Math.sin(a),
+          y,
+          -x * Math.sin(a) + z * Math.cos(a),
+        ];
+        const rotZ = ([x, y, z], a) => [
+          x * Math.cos(a) - y * Math.sin(a),
+          x * Math.sin(a) + y * Math.cos(a),
+          z,
+        ];
+        window.M = {
+          LOOP,
+          TAU,
+          clamp,
+          lerp,
+          fract,
+          mod,
+          smoothstep,
+          phase,
+          win,
+          ease,
+          hash,
+          rand,
+          rrange,
+          loopNoise,
+          hexToRgb,
+          rgba,
+          mixColor,
+          circle,
+          roundRect,
+          poly,
+          star,
+          polyline,
+          proj,
+          rotX,
+          rotY,
+          rotZ,
+        };
+        window.TILES = {};
+        // Register a loop. The first one registered renders unless ?tile=<id> picks another.
+        window.tile = (id, def) => {
+          window.TILES[id] = Object.assign({ id }, def);
+        };
+      })();
+
+      // Tones: dark (card background, accent motif), accent (accent background, ink motif),
+      // light (paper background, ink motif, accent as the second color).
+      function palette(tone) {
+        const { accent: A, ink, paper, card } = BRAND;
+        const P = { accent: A, paper, ink };
+        if (tone === "accent")
+          return Object.assign(P, {
+            bg: A,
+            fg: ink,
+            fg2: paper,
+            mid: M.mixColor(A, ink, 0.35),
+          });
+        if (tone === "light")
+          return Object.assign(P, {
+            bg: paper,
+            fg: ink,
+            fg2: A,
+            mid: M.mixColor(paper, ink, 0.25),
+          });
+        return Object.assign(P, {
+          bg: card,
+          fg: A,
+          fg2: paper,
+          mid: M.mixColor(card, A, 0.35),
+        });
+      }
+
+      // 3. The loop: draw(ctx, w, h, t, P) paints one frame. t is in [0, LOOP).
+      // Sizes come from u = h / 100 and counts from w, so it holds at any aspect.
+      // Replace this example with your own, or paste a tile(...) block copied from elsewhere.
+      tile("example.perspective-floor", {
+        name: "Perspective Floor",
+        draw(ctx, w, h, t, P) {
+          const { clamp, phase, rgba, smoothstep, proj } = M;
+          const u = h / 100,
+            cx = w / 2,
+            cy = h * 0.5,
+            f = h * 0.55;
+          const p = phase(t, 1.5); // one grid row per 1.5 s: 8 rows per loop, a whole number
+          const zNear = 0.35,
+            zFar = 26;
+          for (const side of [1, -1]) {
+            // floor below the horizon, ceiling above
+            for (let k = 0; k < 60; k++) {
+              const z = k + 1 - p;
+              if (z < zNear || z > zFar) continue;
+              const y = cy + (f * side) / z;
+              const a = (1 - smoothstep(2.5, 9, z)) * clamp((z - zNear) * 3);
+              ctx.strokeStyle = rgba(P.fg, a);
+              ctx.lineWidth = Math.max(0.06 * u, (0.55 * u) / Math.sqrt(z));
+              ctx.beginPath();
+              ctx.moveTo(0, y);
+              ctx.lineTo(w, y);
+              ctx.stroke();
+            }
+            // Columns converging on the vanishing point, in depth segments so they fade out.
+            const span = Math.ceil(w / 2 / (f / zNear)) + 18;
+            for (let i = -span; i <= span; i++) {
+              let zPrev = zNear;
+              for (let s = 1; s <= 24; s++) {
+                const z = zNear * Math.pow(zFar / zNear, s / 24);
+                const [x0, y0] = proj(i, -side, zPrev, f, cx, cy);
+                const [x1, y1] = proj(i, -side, z, f, cx, cy);
+                ctx.strokeStyle = rgba(
+                  P.fg,
+                  1 - smoothstep(2.5, 11, (zPrev + z) / 2),
+                );
+                ctx.lineWidth = Math.max(
+                  0.06 * u,
+                  (0.55 * u) / Math.sqrt(zPrev),
+                );
+                ctx.beginPath();
+                ctx.moveTo(x0, y0);
+                ctx.lineTo(x1, y1);
+                ctx.stroke();
+                zPrev = z;
+              }
+            }
+          }
+          // Horizon: a soft band of the background, then one fine line in the second color.
+          const g = ctx.createLinearGradient(0, cy - 14 * u, 0, cy + 14 * u);
+          g.addColorStop(0, rgba(P.bg, 0));
+          g.addColorStop(0.5, rgba(P.bg, 1));
+          g.addColorStop(1, rgba(P.bg, 0));
+          ctx.fillStyle = g;
+          ctx.fillRect(0, cy - 14 * u, w, 28 * u);
+          ctx.fillStyle = rgba(P.fg2, 0.9);
+          ctx.fillRect(0, cy - 0.12 * u, w, 0.24 * u);
+        },
+      });
+
+      // 4. Optional subject over the loop (?overlay=subject.png): a cut-out drawn on the loop's
+      // clock, so it shares the motion blur and the composite still loops. Every period divides LOOP.
+      function drawOverlay(ctx, w, h, t, P, img) {
+        const { TAU, phase, rgba } = M;
+        const u = h / 100;
+        const scale = Math.min((56 * u) / img.height, (w * 0.5) / img.width);
+        const iw = img.width * scale,
+          ih = img.height * scale;
+        const bob = Math.sin(TAU * phase(t, 3)); // up and down every 3 s
+        const tilt = 0.02 * Math.sin(TAU * phase(t, 6, 0.75)); // a slow sway every 6 s
+        const cx = w / 2,
+          cy = h * 0.47 - 2.2 * u * bob;
+        // Contact shadow on the floor: smaller and fainter as the subject rises.
+        const lift = 0.5 + 0.5 * bob;
+        const lit = P.bg === P.paper || P.bg === P.accent;
+        ctx.fillStyle = lit
+          ? rgba(P.ink, 0.22 - 0.08 * lift)
+          : rgba(P.paper, 0.12 - 0.05 * lift);
+        ctx.beginPath();
+        ctx.ellipse(
+          cx,
+          h * 0.47 + ih / 2 + 6 * u,
+          iw * (0.32 - 0.05 * lift),
+          1.6 * u,
+          0,
+          0,
+          TAU,
+        );
+        ctx.fill();
+        ctx.translate(cx, cy);
+        ctx.rotate(tilt);
+        ctx.drawImage(img, -iw / 2, -ih / 2, iw, ih);
+      }
+
+      // 5. Engine: preview, supersampling, motion blur and the hooks render-loop.mjs uses.
+      (function () {
+        const Q = new URLSearchParams(location.search);
+        const RENDER = Q.has("render");
+        const W = parseInt(Q.get("w") || "1920", 10);
+        const H = parseInt(Q.get("h") || "1080", 10);
+        const SS = Math.max(
+          1,
+          Math.round(parseFloat(Q.get("ss") || (RENDER ? "2" : "1"))),
+        );
+        const P = palette(Q.get("tone") || "dark");
+        const id = Q.get("tile") || Object.keys(TILES)[0];
+        const def = TILES[id];
+        const fail = (msg) => {
+          window.__error = msg;
+          throw new Error(msg);
+        };
+        if (!def) fail(`no tile registered with id ${id}`);
+
+        const out = document.getElementById("out");
+        out.width = W;
+        out.height = H;
+        const work = document.createElement("canvas");
+        work.width = W * SS;
+        work.height = H * SS;
+        const wctx = work.getContext("2d", { willReadFrequently: true });
+        const octx = out.getContext("2d", { willReadFrequently: true });
+        let overlay = null;
+
+        // One sharp frame at time t into the work canvas. Time wraps, so a shutter that
+        // straddles 0 samples the end of the loop: the blur is continuous across the seam.
+        // wrap = false passes t through unchanged (render-loop.mjs uses it to test periodicity).
+        function renderAt(t, wrap = true) {
+          const tt = wrap ? M.mod(t, LOOP) : t;
+          wctx.setTransform(SS, 0, 0, SS, 0, 0);
+          wctx.fillStyle = P.bg;
+          wctx.fillRect(0, 0, W, H);
+          wctx.save();
+          def.draw(wctx, W, H, tt, P);
+          wctx.restore();
+          if (overlay) {
+            wctx.save();
+            drawOverlay(wctx, W, H, tt, P, overlay);
+            wctx.restore();
+          }
+        }
+
+        // Output frame: `samples` sub-frames over a shutter of `shutter` x one frame, centered
+        // on t, averaged in float and box-downsampled by SS.
+        let acc = null;
+        function frame(t, fps = 24, samples = 8, shutter = 0.5, wrap = true) {
+          const sw = work.width,
+            f = SS;
+          if (samples <= 1 && f === 1) {
+            renderAt(t, wrap);
+            octx.drawImage(work, 0, 0);
+            return;
+          }
+          if (!acc || acc.length !== W * H * 4)
+            acc = new Float32Array(W * H * 4);
+          acc.fill(0);
+          for (let s = 0; s < samples; s++) {
+            const off = samples === 1 ? 0 : (s + 0.5) / samples - 0.5;
+            renderAt(t + (off * shutter) / fps, wrap);
+            const d = wctx.getImageData(0, 0, sw, work.height).data;
+            for (let y = 0; y < H; y++) {
+              for (let yy = 0; yy < f; yy++) {
+                let si = (y * f + yy) * sw * 4,
+                  di = y * W * 4;
+                for (let x = 0; x < W; x++) {
+                  for (let xx = 0; xx < f; xx++) {
+                    acc[di] += d[si];
+                    acc[di + 1] += d[si + 1];
+                    acc[di + 2] += d[si + 2];
+                    acc[di + 3] += d[si + 3];
+                    si += 4;
+                  }
+                  di += 4;
+                }
+              }
+            }
+          }
+          const img = octx.createImageData(W, H);
+          const o = img.data,
+            n = samples * f * f;
+          for (let i = 0; i < o.length; i++) o[i] = acc[i] / n + 0.5;
+          octx.putImageData(img, 0, 0);
+        }
+
+        function preview() {
+          const fixed = Q.has("t") ? parseFloat(Q.get("t")) : null;
+          const start = performance.now(); // the preview clock only; tiles never read it
+          const tick = (now) => {
+            renderAt(fixed ?? (now - start) / 1000);
+            octx.drawImage(work, 0, 0, W, H);
+            if (fixed === null) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
+
+        const loadOverlay = () =>
+          new Promise((resolve) => {
+            const src = Q.get("overlay");
+            if (!src) return resolve();
+            const img = new Image();
+            img.onload = () => {
+              overlay = img;
+              resolve();
+            };
+            img.onerror = () => {
+              window.__error = `could not load overlay ${src}`;
+              resolve();
+            };
+            img.src = src;
+          });
+
+        Promise.all([document.fonts.ready, loadOverlay()]).then(() => {
+          window.__info = {
+            loop: LOOP,
+            width: W,
+            height: H,
+            tile: id,
+            name: def.name || id,
+            overlay: !!overlay,
+          };
+          window.__frame = frame;
+          if (RENDER) frame(parseFloat(Q.get("t") || "0"), 24, 1);
+          else preview();
+          window.__ready = true;
+        });
+      })();
+    </script>
+  </body>
+</html>

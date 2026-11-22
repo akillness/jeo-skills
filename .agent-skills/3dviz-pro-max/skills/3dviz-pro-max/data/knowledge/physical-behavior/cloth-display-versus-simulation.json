@@ -1,0 +1,103 @@
+{
+  "id": "knowledge.cloth-display-versus-simulation",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Cloth display motion versus mass-spring simulation"
+  },
+  "aliases": {
+    "en": [
+      "waving flag display",
+      "structural shear flexion springs",
+      "super-elastic stretch"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal",
+    "characters-motion-art"
+  ],
+  "summary": "Compare an authored textile display with a selected particle-spring example; other declared cloth formulations remain valid, and neither example establishes tested fabric properties.",
+  "objective": "Choose an authored textile display or the selected mass-spring sheet example; inspect pinned particles and report stretch against a declared tolerance without treating spring families as a hard bound.",
+  "applies_when": [
+    "A flag, curtain, garment or banner is asked to move, hang or collide.",
+    "The user might read the motion as physical drape rather than decoration."
+  ],
+  "subject_terms": [
+    "mass-spring cloth",
+    "structural spring",
+    "shear spring",
+    "flexion spring",
+    "super-elastic effect",
+    "pinned particle"
+  ],
+  "tags": [
+    "physical-behavior",
+    "cloth",
+    "display",
+    "mass-spring"
+  ],
+  "intent_signals": [
+    "hanging tablecloth",
+    "flag that is just animated",
+    "cloth that stretches like rubber"
+  ],
+  "example_prompts": [
+    "Hang a sheet from two corners with visible structural, shear and bend springs.",
+    "Wave a banner with an authored clip and label it as display, not a cloth solver."
+  ],
+  "negative_signals": [
+    "Vertex shader ripples claimed as drape prediction.",
+    "A skinned cloak clip presented as collision response."
+  ],
+  "not_for": [
+    "Laboratory fabric identification, measured drape coefficients or cutting-pattern CAD.",
+    "Continuum shell finite elements, which this record does not specify."
+  ],
+  "content": {
+    "principles": [
+      "This record compares authored display with one discrete mass-spring formulation. Other cloth solvers and explicitly coordinated hybrids remain valid choices.",
+      "The selected sheet owns particles and structural, shear and flexion springs. These are modeling elements, not measured textile properties or a universal requirement for cloth.",
+      "Large local extensions can be an artifact of this elastic formulation. Selecting spring families does not by itself enforce maximum stretch."
+    ],
+    "implementation": [
+      "Display branch: own clip, morph or shader state. Describe pins or gravity only as authored appearance unless they actually enter a solver.",
+      "Simulation branch: own particle positions/velocities, positive masses, rest lengths, stiffnesses, damping, pin set, forces and timestep. Generate rendered vertices from that state; collisions require a separately declared implementation.",
+      "For this basic spring example, measure max(L/L0-1) over springs with positive L0 each step and report excursions beyond a declared threshold. Do not claim a hard bound or silently clamp. A separately implemented deformation-projection method must specify its pin handling, iteration policy and residual before claiming constraint enforcement.",
+      "Pause preserves particle velocities or clip state. Reset restores initial positions, velocities, rest lengths, pins, parameters and time. Hybrids need explicit ownership/blending instead of two competing writers on the same degree of freedom."
+    ],
+    "observable_checks": [
+      "Display-only controls do not imply simulated gravity, stiffness or collision response.",
+      "Pinned simulation particles remain at their declared positions, while measured extension is reported independently for the spring families.",
+      "Extension above the declared threshold is an observed model discrepancy, not realistic fabric certification. Reset reproduces the initial particle state."
+    ]
+  },
+  "related_ids": [
+    "recipe.mass-spring-cloth-contract",
+    "knowledge.authored-locomotion"
+  ],
+  "creative_affordances": [
+    "Stylised garments may stay on bones or use a declared solver; make the chosen model and its actual state inspectable.",
+    "Drawing the three spring families in different colours is a free teaching overlay."
+  ],
+  "known_limits": [
+    "The selected mass-spring guidance is not a measured textile model; other physical formulations are outside this example.",
+    "Provot describes heuristic deformation correction, but this basic implementation only measures stretch. His compared examples omit self-collision; no collision or self-collision implementation is supplied here.",
+    "Authored reusable guidance; no runtime artifact has been observed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-cloth-display-versus-simulation",
+      "statement": "Provot models cloth as a discrete mass mesh with structural, shear and flexion springs and numerically integrates its dynamics. Concentrated loads can cause unrealistic local extension; increasing stiffness in the discussed explicit integration approach raises computational cost.",
+      "scope": "Provot1995 discrete graphics model and its discussed integration regime; not a universal cloth formulation or laboratory fabric test.",
+      "source_refs": [
+        {
+          "source_id": "source.knowledge-depth-provot-cloth-mass-spring",
+          "locator": "Abstract; sections2.1-2.3 mesh, forces and integration; sections3-4 super-elastic extension and stiffness cost"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed"
+}

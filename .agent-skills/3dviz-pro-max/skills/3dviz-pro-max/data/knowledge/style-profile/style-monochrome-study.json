@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-monochrome-study",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Monochrome form study"
+  },
+  "aliases": {
+    "en": [
+      "monochrome 3D",
+      "single hue sculpture",
+      "grayscale form study",
+      "value study",
+      "tonal study"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry",
+    "products-assemblies"
+  ],
+  "summary": "Use value, surface response and silhouette to study form with a deliberately restricted hue range.",
+  "objective": "Neighboring parts remain distinct without hue changes, and shadows do not erase the contour under inspection.",
+  "tags": [
+    "style-profile",
+    "palette-aesthetic",
+    "monochrome-study"
+  ],
+  "subject_terms": [
+    "monochrome 3D",
+    "single hue sculpture",
+    "grayscale form study",
+    "palette aesthetic",
+    "value study",
+    "tonal study"
+  ],
+  "intent_signals": [
+    "Make a monochrome form study",
+    "Use value and light to distinguish shape"
+  ],
+  "example_prompts": [
+    "Make a monochrome gear study where teeth, hubs and shafts remain easy to distinguish."
+  ],
+  "content": {
+    "principles": [
+      "Use value, surface response and silhouette to study form with a deliberately restricted hue range."
+    ],
+    "implementation": [
+      "Prioritize curvature, edge treatment and spacing because color categories will not separate adjacent parts.",
+      "Choose a value range and broad light-dark relationships; use small finish differences only when they help read the shape.",
+      "Set a stable study view and a slow orbit; hold motion when comparing geometry variants under the same light.",
+      "Build the ramp explicitly from five values (#14100d, #2f261f, #5c4d40, #96826f, #ded2c0) about 0.18 luminance apart, then posterise a screenshot to five bands and move the key at 45 degrees elevation / 300 degrees azimuth until every major plane lands on a different band.",
+      "Run key:fill at 6:1 and chamfer every part 1-3 mm; without hue separation that chamfer rim is the only cue that two same-value parts are distinct objects."
+    ],
+    "observable_checks": [
+      "Neighboring parts remain distinct without hue changes, and shadows do not erase the contour under inspection."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "With hue removed from the toolkit, everything depends on the value ramp being explicit and evenly spaced, so the palette is one warm hue family from 28 to 36 degrees at five steps roughly 0.18 luminance apart. A 6:1 key at 45 degrees puts the form turn in the middle of that ramp and a rim exactly one step brighter than the plane behind it does the separation that a second colour would normally do; ACESFilmic at 1.0 keeps the top step from clipping into a flat white.",
+    "values": {
+      "feeling": [
+        "studious",
+        "sculptural",
+        "calm"
+      ],
+      "palette": [
+        {
+          "hex": "#14100d",
+          "role": "value 1 - deepest shadow and background base"
+        },
+        {
+          "hex": "#2f261f",
+          "role": "value 2 - core shadow"
+        },
+        {
+          "hex": "#5c4d40",
+          "role": "value 3 - mid, the form turn"
+        },
+        {
+          "hex": "#96826f",
+          "role": "value 4 - light plane"
+        },
+        {
+          "hex": "#ded2c0",
+          "role": "value 5 - highlight and rim"
+        }
+      ],
+      "value_structure": "five discrete values about 0.18 luminance apart, distributed 40/35/25 dark/mid/light, with no more than two adjacent values touching along any silhouette",
+      "saturation_rule": "one hue family (hue 28-36 degrees) at 10-35% HSL; hue never carries information, so a value step must do every job colour would do",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#14100d",
+        "horizon": "#3a3028"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#3a3028",
+        "density": 0.01
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#f3e6d2",
+          "intensity": 2.8,
+          "elevation_deg": 45,
+          "azimuth_deg": 300,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#6b5a4a",
+          "ground": "#14100d",
+          "intensity": 0.45
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#ded2c0",
+          "intensity": 1.1,
+          "elevation_deg": 15,
+          "azimuth_deg": 120,
+          "castShadow": false
+        },
+        "ratio": "key:fill ~ 6:1 so the form turn lands mid-ramp; the rim reads exactly one value step brighter than the plane behind it"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.0
+      },
+      "camera": {
+        "fov_deg": 40,
+        "height_m": 1.3,
+        "pitch_deg": -6,
+        "orbit": {
+          "minPolar_deg": 55,
+          "maxPolar_deg": 88,
+          "minDist_m": 0.8,
+          "maxDist_m": 8
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.45,
+          0.7
+        ],
+        "metalness": [
+          0,
+          0
+        ],
+        "notes": "one albedo across every surface; separation comes from orientation and from a 1-3 mm chamfer catching the rim, and a second finish is allowed only where two parts share a plane"
+      },
+      "motion": {
+        "sway_period_s": [
+          8.0,
+          12.0
+        ],
+        "ease": "sine in-out",
+        "hold_ms": 800
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.15,
+          "strength": 0.1,
+          "radius": 0.4
+        },
+        "vignette": 0.25,
+        "grain": 0.03,
+        "dof": "off"
+      },
+      "signature_technique": "posterise a test render to five bands and adjust the key elevation until every major plane occupies a different band",
+      "never": [
+        "a second hue smuggled in as a neutral background",
+        "hue used to distinguish parts",
+        "a shadow that merges two separate parts into one mass",
+        "flat frontal light that collapses the value ramp"
+      ]
+    }
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at exposure 1.0; re-tune every intensity, fog density and bloom threshold if you change the tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with faceted, clay or minimalist forms; retain a separate readable legend when the underlying data needs categorical distinction."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

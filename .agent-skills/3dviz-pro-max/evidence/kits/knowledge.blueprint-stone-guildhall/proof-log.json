@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-stone-guildhall",
+  "record_revision": 2,
+  "asset": "templates/kits/gltf/stone-guildhall.glb",
+  "asset_sha256": "a09b2c7dd5479b5ae75c0fc2fdc529afbb9fd5f6dcbe80907e143dc9cfd7b6cf",
+  "params": {
+    "scale": 1
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-stone-guildhall",
+    "module": "../gltf/stone-guildhall.glb",
+    "params": {
+      "scale": 1
+    },
+    "triangles": 8908,
+    "bounds_m": {
+      "min": [
+        -4,
+        0,
+        -3.177022933959961
+      ],
+      "max": [
+        4,
+        8.170000076293945,
+        3.3899998664855957
+      ],
+      "size": [
+        8,
+        8.170000076293945,
+        6.567022800445557
+      ]
+    },
+    "fit_distance_m": 19.2769,
+    "view_distances_m": {
+      "far": 46.2645,
+      "mid": 23.1322,
+      "close": 15.036,
+      "detail": 2.4909
+    },
+    "sockets": [
+      "banner",
+      "chimney",
+      "door",
+      "lantern"
+    ],
+    "detail_socket": "door",
+    "animated": false,
+    "colliders": [],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "881e073a82dbd81ad255d86783c5ee3446dd0926e15eb877d689d67fc496edff",
+    "mid.png": "5ed0658d6b5ab14fb554b6fdd35b88857b9f5bf8fdd79400611cd646459f5527",
+    "close.png": "a508b861d981f331737823d3b2aac71a664407200d3610a5591f7646dd7a7338",
+    "detail.png": "065c052bbec45c9f7aa8bde2dcd0297dac95c401736651263f152f83e7547aae"
+  },
+  "motion": null,
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:50:46+00:00",
+  "finished": "2026-09-08T13:50:50+00:00"
+}

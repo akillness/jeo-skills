@@ -1,0 +1,21 @@
+{
+  "name": "3dviz-pro-max",
+  "version": "0.1.0",
+  "description": "Creative 3D scenes and grounded interactive explanations for Codex.",
+  "license": "MIT",
+  "homepage": "https://github.com/viettranx/3dviz-pro-max",
+  "repository": "https://github.com/viettranx/3dviz-pro-max",
+  "skills": "./skills/",
+  "author": {
+    "name": "Viettranx"
+  },
+  "interface": {
+    "displayName": "3Dviz Pro Max",
+    "shortDescription": "Creative 3D scenes grounded in real knowledge.",
+    "longDescription": "A standalone skill for expressive 3D scenes, mathematical explainers and interactive spatial models. Includes a small sourced pilot catalog and optional local search helpers.",
+    "developerName": "Viettranx",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": "Use $3dviz-pro-max to build an interactive 3D explanation of my idea."
+  }
+}

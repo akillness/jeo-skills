@@ -1,0 +1,509 @@
+{
+  "url": "http://localhost:8099/skills/3d-wood-lighting-scorecard/demo.html",
+  "size": [
+    1440,
+    900
+  ],
+  "dpr": 1,
+  "target": 8,
+  "date": "2026-09-30",
+  "three_revision": "169",
+  "all_on": {
+    "total": 8.81,
+    "min": 6.52,
+    "items": [
+      {
+        "id": "grain",
+        "name": "Materials & grain",
+        "score": 8.13,
+        "parts": [
+          {
+            "k": "grainContrast",
+            "v": 0.0357,
+            "anchors": [
+              0.006,
+              0.022,
+              0.05
+            ],
+            "score": 7.46,
+            "note": "band-pass 1-8 px std / mean"
+          },
+          {
+            "k": "grainAniso",
+            "v": 106.4829,
+            "anchors": [
+              1.1,
+              1.9,
+              3.2
+            ],
+            "score": 10,
+            "note": "gradient energy across/along the grain axis"
+          },
+          {
+            "k": "toneVar",
+            "v": 0.0491,
+            "anchors": [
+              0.008,
+              0.035,
+              0.08
+            ],
+            "score": 6.94,
+            "note": "broad tonal drift (cathedral arcs, ring bands)"
+          }
+        ]
+      },
+      {
+        "id": "keyfill",
+        "name": "Key / fill contrast",
+        "score": 10,
+        "parts": [
+          {
+            "k": "keyFillStops",
+            "v": 3.29,
+            "anchors": [
+              0.7,
+              1.7,
+              2.8
+            ],
+            "score": 10,
+            "note": "lit face vs shaded face, linear stops"
+          },
+          {
+            "k": "rangeStops",
+            "v": 10.3197,
+            "anchors": [
+              3,
+              5,
+              7
+            ],
+            "score": 10,
+            "note": "p99 / p1 whole frame, stops"
+          },
+          {
+            "k": "shadeAlive",
+            "v": 44.061,
+            "anchors": [
+              1.5,
+              4,
+              10
+            ],
+            "score": 10,
+            "note": "shaded face linear x1000 (fill must not crush to 0)"
+          }
+        ]
+      },
+      {
+        "id": "shadow",
+        "name": "Shadows & contact",
+        "score": 9.57,
+        "parts": [
+          {
+            "k": "shadowRatio",
+            "v": 6.7543,
+            "anchors": [
+              1.6,
+              3.5,
+              7
+            ],
+            "score": 8.79,
+            "note": "lit / shadowed bench, linear"
+          },
+          {
+            "k": "contactDark",
+            "v": 0.1202,
+            "anchors": [
+              0.75,
+              0.42,
+              0.18
+            ],
+            "score": 9.75,
+            "note": "contact strip / open bench (lower is better)"
+          },
+          {
+            "k": "penumbraMono",
+            "v": 1,
+            "anchors": [
+              0.6,
+              0.8,
+              0.95
+            ],
+            "score": 10,
+            "note": "penumbra rises monotonically from contact"
+          },
+          {
+            "k": "contactGap",
+            "v": 0,
+            "anchors": [
+              0.3,
+              0.1,
+              0.02
+            ],
+            "score": 9.75,
+            "note": "bright sliver at the base = peter-panning (lower is better)"
+          }
+        ]
+      },
+      {
+        "id": "shafts",
+        "name": "Volumetric shafts & dust",
+        "score": 8.02,
+        "parts": [
+          {
+            "k": "shaftDelta",
+            "v": 41.1398,
+            "anchors": [
+              1.2,
+              4,
+              9
+            ],
+            "cap": [
+              35,
+              70
+            ],
+            "score": 7.95,
+            "note": "levels above the parallel off-axis strips; above 35 the beam is washing the blacks"
+          },
+          {
+            "k": "shaftRough",
+            "v": 0.0008,
+            "anchors": [
+              0.5,
+              0.22,
+              0.08
+            ],
+            "score": 10,
+            "note": "jaggedness of the falloff (lower is better)"
+          },
+          {
+            "k": "dustFrac",
+            "v": 0.0011,
+            "anchors": [
+              0.0002,
+              0.001,
+              0.003
+            ],
+            "score": 6.11,
+            "note": "soft specks 6+ levels above their 7 px neighbourhood, inside the beam minus a dark-wall patch"
+          }
+        ]
+      },
+      {
+        "id": "rays",
+        "name": "Background rays",
+        "score": 8.75,
+        "parts": [
+          {
+            "k": "rayContrast",
+            "v": 36.1453,
+            "anchors": [
+              1,
+              3,
+              6.5
+            ],
+            "cap": [
+              45,
+              90
+            ],
+            "score": 10,
+            "note": "p92-p8 across the wall band, levels; above 45 the rays are a wall of glare"
+          },
+          {
+            "k": "rayPeaks",
+            "v": 3,
+            "anchors": [
+              1,
+              2,
+              4
+            ],
+            "score": 7.5,
+            "note": "distinct bands across the wall"
+          }
+        ]
+      },
+      {
+        "id": "tone",
+        "name": "Colour & tone mapping",
+        "score": 9.84,
+        "parts": [
+          {
+            "k": "clipPct",
+            "v": 0,
+            "anchors": [
+              4,
+              1.2,
+              0.25
+            ],
+            "score": 9.79,
+            "note": "% of pixels with any channel >= 254 (lower is better)"
+          },
+          {
+            "k": "p1",
+            "v": 2,
+            "anchors": [
+              34,
+              18,
+              7
+            ],
+            "score": 10,
+            "note": "black point: p1 luma. High = volumetrics/ambient washed the blacks (lower is better)"
+          },
+          {
+            "k": "crushPct",
+            "v": 1.5721,
+            "anchors": [
+              45,
+              22,
+              8
+            ],
+            "score": 10,
+            "note": "% pixels < 2 (lower is better; a dark room still needs shadow detail)"
+          },
+          {
+            "k": "warmCool",
+            "v": 45.7989,
+            "anchors": [
+              1,
+              8,
+              18
+            ],
+            "score": 10,
+            "note": "R-B of the same bench in light minus in shadow: warm key over a cool fill"
+          },
+          {
+            "k": "flatRun",
+            "v": 0.0192,
+            "anchors": [
+              0.5,
+              0.2,
+              0.04
+            ],
+            "score": 9.39,
+            "note": "share of wall pixels in runs of 6+ identical values = 8-bit banding (lower is better)"
+          }
+        ]
+      },
+      {
+        "id": "texture",
+        "name": "Texture resolution & texel density",
+        "score": 9.69,
+        "parts": [
+          {
+            "k": "fineStd",
+            "v": 5.3559,
+            "anchors": [
+              0.5,
+              1.4,
+              3.2
+            ],
+            "score": 10,
+            "note": "1-px Laplacian std in levels (sharp, not blurry)"
+          },
+          {
+            "k": "texelPerPx",
+            "v": 7.48,
+            "anchors": [
+              0.45,
+              0.9,
+              1.6
+            ],
+            "score": 10,
+            "note": "source texels per device pixel at the finest grain band; <1 = magnified (soft)"
+          },
+          {
+            "k": "shimmer",
+            "v": 1.1328,
+            "anchors": [
+              3.2,
+              1.9,
+              1.15
+            ],
+            "score": 9.07,
+            "note": "half-pixel shift diff / expected from gradient; >2 = minification shimmer (lower is better)"
+          }
+        ]
+      },
+      {
+        "id": "spec",
+        "name": "Specular & roughness realism",
+        "score": 6.52,
+        "parts": [
+          {
+            "k": "sheenSpread",
+            "v": 1.3228,
+            "anchors": [
+              1.06,
+              1.3,
+              1.9
+            ],
+            "score": 6.11,
+            "note": "p95 / p25 of the blurred wood in linear light: a sheen that travels across the board"
+          },
+          {
+            "k": "paintClip",
+            "v": 0,
+            "anchors": [
+              0.05,
+              0.01,
+              0.0005
+            ],
+            "score": 9.16,
+            "note": "share of near-white pixels in the wood = plastic paint, not oil (lower is better)"
+          },
+          {
+            "k": "hlBreakup",
+            "v": 0.01,
+            "anchors": [
+              0.004,
+              0.018,
+              0.045
+            ],
+            "score": 4.29,
+            "note": "grain texture surviving inside the sheen: roughness map breaking it up"
+          }
+        ]
+      }
+    ],
+    "metrics": {
+      "clipPct": 0,
+      "crushPct": 1.5721,
+      "p1": 2,
+      "p50": 29,
+      "p99": 228.25,
+      "rangeStops": 10.3197,
+      "grainContrast": 0.0357,
+      "grainAniso": 106.4829,
+      "toneVar": 0.0491,
+      "keyFillStops": 3.29,
+      "shadeLin": 0.0441,
+      "shadowRatio": 6.7543,
+      "contactDark": 0.1202,
+      "penumbraMono": 1,
+      "contactGap": 0,
+      "shaftDelta": 41.1398,
+      "shaftPeak": 56.6951,
+      "shaftRough": 0.0008,
+      "dustFrac": 0.0011,
+      "rayContrast": 36.1453,
+      "rayPeaks": 3,
+      "warmCool": 45.7989,
+      "flatRun": 0.0192,
+      "fineStd": 5.3559,
+      "texelPerPx": 7.48,
+      "shimmer": 1.1328,
+      "sheenSpread": 1.3228,
+      "paintClip": 0,
+      "hlBreakup": 0.01
+    }
+  },
+  "baseline": {
+    "total": 3.73,
+    "min": 0.75,
+    "scores": {
+      "grain": 1.67,
+      "keyfill": 4.13,
+      "shadow": 5.63,
+      "shafts": 4.65,
+      "rays": 0.75,
+      "tone": 4.46,
+      "texture": 4.04,
+      "spec": 4.52
+    }
+  },
+  "ablation": {
+    "grain": {
+      "total": 7.87,
+      "drop": 0.94,
+      "items_hurt": [
+        "grain 8.13 -> 3.26",
+        "texture 9.69 -> 7.82",
+        "spec 6.52 -> 5.95"
+      ]
+    },
+    "field": {
+      "total": 8.61,
+      "drop": 0.2,
+      "items_hurt": [
+        "texture 9.69 -> 6.87"
+      ]
+    },
+    "env": {
+      "total": 8.95,
+      "drop": -0.14,
+      "items_hurt": []
+    },
+    "key": {
+      "total": 8.11,
+      "drop": 0.7,
+      "items_hurt": [
+        "keyfill 10 -> 8.19",
+        "shadow 9.57 -> 5.36",
+        "tone 9.84 -> 8.33",
+        "texture 9.69 -> 9.06"
+      ]
+    },
+    "fill": {
+      "total": 8.79,
+      "drop": 0.02,
+      "items_hurt": [
+        "tone 9.84 -> 9.17"
+      ]
+    },
+    "shadow": {
+      "total": 8.14,
+      "drop": 0.67,
+      "items_hurt": [
+        "shadow 9.57 -> 5.59",
+        "tone 9.84 -> 8.38"
+      ]
+    },
+    "shafts": {
+      "total": 8.5,
+      "drop": 0.31,
+      "items_hurt": [
+        "shafts 8.02 -> 5.75",
+        "rays 8.75 -> 8"
+      ]
+    },
+    "back": {
+      "total": 8.54,
+      "drop": 0.27,
+      "items_hurt": [
+        "rays 8.75 -> 6.5"
+      ]
+    },
+    "dust": {
+      "total": 8.65,
+      "drop": 0.16,
+      "items_hurt": [
+        "shafts 8.02 -> 6.73"
+      ]
+    },
+    "grade": {
+      "total": 8.23,
+      "drop": 0.58,
+      "items_hurt": [
+        "shadow 9.57 -> 8.41",
+        "shafts 8.02 -> 7.42",
+        "tone 9.84 -> 6.48"
+      ]
+    }
+  },
+  "cost": {
+    "frames": 60,
+    "median_ms": 10,
+    "p90_ms": 15.9,
+    "note": "headless, one frame at a time, incl. 4096 shadow map re-render off (static) and 1 px readback"
+  },
+  "short": [
+    {
+      "id": "spec",
+      "score": 6.52,
+      "worst": [
+        "hlBreakup=0.01 -> 4.29",
+        "sheenSpread=1.3228 -> 6.11"
+      ]
+    }
+  ],
+  "pass": false,
+  "console": []
+}

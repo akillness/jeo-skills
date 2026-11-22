@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-assembly-precedence-order",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Derive assembly steps from a precedence graph"
+  },
+  "aliases": {
+    "en": [
+      "assembly order",
+      "precedence graph",
+      "topological order"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "operations-logistics"
+  ],
+  "summary": "Model which parts must precede which, then present any step sequence as a topological order of that graph.",
+  "objective": "Ensure a demonstrated assembly or disassembly sequence is actually performable and that impossible orders are detected.",
+  "applies_when": [
+    "A scene teaches how something is built, installed, serviced or taken apart.",
+    "Steps are numbered, or a next and previous control walks through an assembly.",
+    "Several subassemblies could be built in different orders."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "assembly sequence",
+    "precedence",
+    "topological order",
+    "directed acyclic graph",
+    "service procedure"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "assembly",
+    "sequencing"
+  ],
+  "intent_signals": [
+    "show the assembly steps",
+    "in what order does it go together",
+    "service procedure animation"
+  ],
+  "example_prompts": [
+    "Walk through building the camera rig step by step.",
+    "Show which parts have to come off before the battery can be replaced."
+  ],
+  "negative_signals": [
+    "Free exploration of a finished object where no order is implied.",
+    "Purely decorative build-up animations that make no procedural claim."
+  ],
+  "not_for": [
+    "Free exploration of a finished object where no order is implied.",
+    "Purely decorative build-up animations that make no procedural claim."
+  ],
+  "content": {
+    "principles": [
+      "An ordering claim is a graph claim. Constraints such as the fastener needing its bracket, or the cover needing everything beneath it, are directed edges between parts.",
+      "A directed graph has a topological order exactly when it contains no directed cycle, so a set of precedence constraints with a cycle describes an assembly that cannot be built in that decomposition, which is information worth surfacing rather than hiding.",
+      "The presented sequence is one valid order. How many others exist depends on the constraints: a chain of dependencies admits exactly one topological order, while independent branches leave genuinely unordered steps. Presenting a sequence as the order hides that freedom where it exists and makes the model brittle when a part is added.",
+      "Disassembly is not automatically the reverse: fasteners, adhesives and captive parts break the symmetry, so the reverse order needs its own check."
+    ],
+    "implementation": [
+      "Record precedence as explicit pairs on the part data, with a short reason such as blocked path, fastened by, or supports.",
+      "Generate the presented sequence from the graph rather than hand-numbering steps, so adding a part updates the walkthrough.",
+      "Detect a cycle and report it as an unbuildable constraint set, naming the parts in the cycle instead of silently choosing an order.",
+      "Where several orders are valid, either group independent steps as parallel or state that the order shown is one of several.",
+      "Derive the explode offsets and the step camera framing from the same graph so the visual separation matches the stated order."
+    ],
+    "observable_checks": [
+      "Step through the sequence and confirm each part has a clear path into place with the parts already installed; a part that must pass through solid geometry indicates a missing constraint.",
+      "Introduce a deliberate cycle in the test data and confirm the tool reports it rather than producing an arbitrary sequence.",
+      "Reverse the sequence and check the removal story separately, especially around fasteners and captive parts.",
+      "Add a new part with one constraint and confirm the numbering updates without manual renumbering; where the constraints are a chain, confirm the tool reports a single valid order rather than offering alternatives that do not exist."
+    ]
+  },
+  "related_ids": [
+    "recipe.modular-camera-rig",
+    "recipe.portable-speaker-exploded",
+    "knowledge.assembly-layer-reveal"
+  ],
+  "creative_affordances": [
+    "Presentation is free: exploded stills, animated inserts, ghosted future parts or a hand-drawn manual style all satisfy the same graph.",
+    "A story-driven build sequence may reorder independent steps for pacing, since independent steps are genuinely unordered."
+  ],
+  "known_limits": [
+    "Authored procedural guidance with a cited graph-theoretic fact; no real product assembly has been validated here.",
+    "Physical feasibility also depends on tool access, clearance and handling, which this rule does not model."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-topological-order-dag",
+      "statement": "A topological order arranges the vertices of a digraph so that every directed edge points from an earlier vertex to a later one, and a digraph has a topological order if and only if it is a directed acyclic graph.",
+      "scope": "Property of finite directed graphs; it constrains orderings of a precedence model, not the physical feasibility of any assembly step.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-algs4-digraph",
+          "locator": "Topological sort; proposition relating topological order and directed acyclic graphs"
+        }
+      ]
+    }
+  ]
+}

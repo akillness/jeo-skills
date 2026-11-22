@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-integrator-energy-drift",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Energy drift, step size and the small-angle approximation"
+  },
+  "aliases": {
+    "en": [
+      "integrator drift check",
+      "pendulum energy conservation"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics"
+  ],
+  "summary": "Measure a conserved quantity over long model time at several step sizes and separate integrator drift from approximation error.",
+  "objective": "Energy deviation is reported with integrator and step size, and measured period behaviour matches the stated validity of the small-angle formula.",
+  "applies_when": [
+    "A scene integrates an ideal conservative system over time.",
+    "Step size, integrator or amplitude can be changed.",
+    "A period or frequency readout is compared with an approximate formula."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "integrator",
+    "energy",
+    "approximation"
+  ],
+  "subject_terms": [
+    "total mechanical energy",
+    "step size",
+    "symplectic method",
+    "small-angle approximation",
+    "period",
+    "drift"
+  ],
+  "intent_signals": [
+    "the pendulum gains amplitude over time",
+    "check the period against the formula"
+  ],
+  "example_prompts": [
+    "Check the energy behaviour of this pendulum at different step sizes."
+  ],
+  "negative_signals": [
+    "damped or driven oscillator fitting",
+    "benchmarking solver speed"
+  ],
+  "content": {
+    "principles": [
+      "A conserved quantity of the continuous model is the sharpest test of an integrator: for an ideal pendulum the total mechanical energy should show no trend over time. Compare it against a declared absolute energy scale, because a state at rest at the stable equilibrium has zero energy above that equilibrium and no relative deviation can be formed.",
+      "Drift belongs to the integrator and the step size together, so report both and compare energy at equal model times rather than at equal frame counts.",
+      "The small-angle period is an approximation with a stated validity range, so comparing a measured period with it outside that range measures the approximation rather than the code. A period only exists for an oscillating initial condition; the rest state at equilibrium has none and is reported as such."
+    ],
+    "implementation": [
+      "Declare the fixture first: length and gravity strictly positive, an oscillating initial condition, and an amplitude range in which the modelled constraint holds. A taut string carries no push, so a bob released beyond horizontal leaves the circular arc unless tension is checked; use a rigid rod model or keep the amplitude inside the taut range.",
+      "Compute total energy from model state at fixed model-time intervals over at least fifty oscillations and record maximum and mean deviation from the initial value, expressed against a declared absolute energy scale such as the initial energy above equilibrium plus a floor, so the rest case does not divide by zero.",
+      "Repeat at three step sizes differing by factors of four, and for each integrator the scene offers, reporting every result with its method and step.",
+      "Measure the period between successive zero crossings taken in the same direction, since consecutive crossings of either sign span half a period, and compare it with the small-angle formula at a small amplitude and at a larger one inside the declared range, reporting both amplitudes.",
+      "Verify that pausing stops model time by comparing energy and phase before and after a long pause and confirming the state resumes without a time jump."
+    ],
+    "observable_checks": [
+      "Energy deviation is reported against the declared absolute scale together with the integrator name and step size, and a deviation that grows steadily with time is distinguished in the report from a bounded oscillation rather than merged into one number.",
+      "The measured period approaches the small-angle formula as amplitude decreases and departs from it at larger amplitude inside the declared range, which is the approximation behaving as stated rather than an error; a non-oscillating initial condition reports no period instead of a number.",
+      "The bob distance from the pivot equals the declared length at every sample within the stated tolerance, and pausing changes neither model time nor state."
+    ]
+  },
+  "known_limits": [
+    "Applies to the ideal undamped model in the declared amplitude range; drag, pivot friction, string slackness and elasticity are outside it, and this record reports no measured drift of its own.",
+    "Favourable long-time energy behaviour of a symplectic method holds for sufficiently small stable steps under the assumptions of the cited analysis; being symplectic does not by itself make an arbitrary step size well behaved.",
+    "Authored verification guidance; no integration was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.simple-pendulum",
+    "recipe.projectile-trajectory",
+    "recipe.coupled-gears"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-pendulum-small-angle",
+      "statement": "The ideal simple pendulum obeys an angular acceleration equal to minus gravity over length times the sine of the angle, and for small angles its period is approximately two pi times the square root of length over gravity.",
+      "scope": "Point bob on a massless taut string with a fixed pivot; the cited section notes that below about fifteen degrees the sine and the angle in radians differ by less than one percent.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-pendulum",
+          "locator": "15.4 The Simple Pendulum, angular equation and equations 15.17 to 15.19"
+        }
+      ]
+    },
+    {
+      "id": "claim.validation-symplectic-energy-behaviour",
+      "statement": "Subject to the very generous conditions stated by the cited review, solving a Hamiltonian problem with a symplectic method at constant step size stays exponentially close to the exact solution of a nearby Hamiltonian problem for an exponentially long time, which yields conservation of the Hamiltonian energy on average.",
+      "scope": "The backward-error-analysis statement in the cited review, which qualifies it by those conditions; it concerns symplectic constant-step methods with a sufficiently small stable step and makes no claim about any particular non-symplectic scheme or about arbitrary step sizes.",
+      "source_refs": [
+        {
+          "source_id": "source.validation-depth-geometric-integration",
+          "locator": "Section 2.1 Symplectic integration, backward error analysis paragraph"
+        }
+      ]
+    }
+  ]
+}

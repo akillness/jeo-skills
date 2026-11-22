@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "id": "recipe.modular-camera-rig",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Modular camera rig compatibility"
+  },
+  "aliases": {
+    "en": [
+      "camera accessory assembly",
+      "product configuration slots"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies"
+  ],
+  "summary": "Create an invented accessory rig with explicit slot rules and reversible changes.",
+  "objective": "Build a fictional modular camera rig where a handle, monitor and battery attach to named slots.",
+  "tags": [
+    "camera rig",
+    "mount slot",
+    "accessory"
+  ],
+  "subject_terms": [
+    "camera rig",
+    "mount slot",
+    "accessory",
+    "tripod plate",
+    "compatibility"
+  ],
+  "intent_signals": [
+    "attach compatible modules",
+    "configure a product assembly"
+  ],
+  "example_prompts": [
+    "Build a fictional modular camera rig where a handle, monitor and battery attach to named slots.",
+    "Show why an accessory cannot fit an occupied mounting point."
+  ],
+  "entities": [
+    {
+      "name": "Camera cage",
+      "guidance": "Create frame rails, corner joins and named mount sockets around a camera-shaped body."
+    },
+    {
+      "name": "Accessories",
+      "guidance": "Distinct monitor frame, battery block and top handle, each with a visible mounting foot."
+    },
+    {
+      "name": "Mount guides",
+      "guidance": "Show socket axis and occupancy only during attachment."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Camera cage",
+      "structure": "Create frame rails, corner joins and named mount sockets around a camera-shaped body.",
+      "material": "Anodized-looking aluminum and textured grip inserts."
+    },
+    {
+      "family": "Accessories",
+      "structure": "Distinct monitor frame, battery block and top handle, each with a visible mounting foot.",
+      "material": "Glass-like screen, polymer battery and rubber-looking handle."
+    },
+    {
+      "family": "Mount guides",
+      "structure": "Show socket axis and occupancy only during attachment.",
+      "material": "Muted neutral guides with text status."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored compatibility table keyed by slot type; mounted accessory IDs, rigid local transforms and selected candidate.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Preview an accessory at a socket.",
+      "Attach if compatible and free.",
+      "Detach and undo the last change."
+    ]
+  },
+  "invariants": [
+    "Each slot has at most one attachment and each accessory one parent.",
+    "Invalid preview does not mutate committed assembly.",
+    "Undo restores occupancy and transforms together."
+  ],
+  "motion_guidance": [
+    "Snap only after confirmation of a valid candidate; rejected parts return to their tray.",
+    "Keep preview ghost separate from committed meshes and accessible selection labels."
+  ],
+  "known_limits": [
+    "Fictional interface dimensions; no claim of compatibility with commercial camera hardware.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [],
+  "creative_affordances": [
+    "Clearly different silhouettes make configuration changes visible without requiring brand assets."
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Slot-based assembly editor.",
+    "state": [
+      "slot occupancy",
+      "accessory IDs",
+      "mount transforms"
+    ],
+    "colliders": [
+      "Attachment envelopes for authored clearance checks."
+    ],
+    "driving": [
+      "Discrete attach/detach operations."
+    ],
+    "contact": [
+      "No load or fastening simulation."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Occupied slot rejects attach without duplicating the accessory."
+    ]
+  }
+}

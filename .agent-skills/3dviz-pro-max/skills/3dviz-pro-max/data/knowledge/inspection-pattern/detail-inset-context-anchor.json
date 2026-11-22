@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.detail-inset-context-anchor",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "inspection-pattern",
+  "title": {
+    "en": "Detail inset with a persistent context anchor"
+  },
+  "aliases": {
+    "en": [
+      "magnified detail inset",
+      "3D overview and closeup"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "anatomy-structures",
+    "environments-dioramas"
+  ],
+  "summary": "Enlarge a feature in a secondary view while retaining its identity, position and orientation in the overview.",
+  "objective": "Open a close-up inset for a small feature and keep an overview anchor that follows the same feature during camera and state changes.",
+  "subject_terms": [
+    "detail inset",
+    "context anchor",
+    "overview detail",
+    "secondary camera"
+  ],
+  "tags": [
+    "inspection-pattern",
+    "detail-inset-context-anchor"
+  ],
+  "intent_signals": [
+    "Open a close-up inset for a small feature and keep an overview anchor that follows the same feature during camera and state changes."
+  ],
+  "example_prompts": [
+    "Open a close-up inset for a small feature and keep an overview anchor that follows the same feature during camera and state changes."
+  ],
+  "content": {
+    "principles": [
+      "Use an inset when a small feature needs magnification while the whole remains relevant; the design rationale is reduced back-and-forth camera travel, not a measured usability claim.",
+      "Keep an explicit relationship between the inset subject and overview anchor. Enlargement and changed lighting are presentation choices and must not imply a different physical scale or material."
+    ],
+    "implementation": [
+      "Track a stable feature ID plus its model-space anchor and bounds. Derive the overview marker from the main camera and fit a separate detail camera to the same feature; do not clone independent mutable model state.",
+      "Label orientation and relative scale where they matter. If a diagrammatic inset rotates, clips or explodes the feature, disclose that transform and retain a return-to-assembled control.",
+      "Clip the connector to its viewport, and distinguish an off-screen anchor from a visible one. Avoid drawing a connector through an unrelated object as if it were an attachment. Reposition the panel when it obscures the inspection target.",
+      "Provide close, refocus and keyboard/list alternatives. Closing the inset restores any temporarily hidden content and leaves main camera and simulation state unchanged unless a documented focus action changed them."
+    ],
+    "observable_checks": [
+      "Open an inset, rotate the overview and advance one explicit state step: both views identify the same feature and time sample.",
+      "Move the anchor off screen or occlude it: the marker reports that condition rather than jumping to a different visible object.",
+      "Resize the viewport, switch selected features and close the inset; no stale connector, duplicated state or hidden main-view geometry remains."
+    ]
+  },
+  "known_limits": [
+    "An inset can expose detail only present in the source geometry or data. It does not add verified internal structure or increase source resolution.",
+    "Draft authored guidance; no renderer, interaction artifact or scientific result was executed for this record."
+  ],
+  "creative_affordances": [
+    "Choose layout and visual emphasis to support the stated inspection task; these are design proposals rather than proven usability improvements."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation",
+    "knowledge.assembly-layer-reveal"
+  ],
+  "claims": []
+}

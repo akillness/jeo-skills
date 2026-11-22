@@ -1,0 +1,102 @@
+{
+  "id": "knowledge.rolling-versus-sliding",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Rolling without slip versus sliding friction"
+  },
+  "aliases": {
+    "en": [
+      "rolling without slipping",
+      "kinetic slip",
+      "contact point at rest"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics"
+  ],
+  "summary": "Treat no-slip rolling as a kinematic constraint with static friction, and sliding as a separate kinetic-friction regime; do not infer either from a shiny material.",
+  "objective": "On a stationary support, show zero instantaneous contact velocity for signed no-slip rolling and nonzero tangential contact velocity for sliding.",
+  "applies_when": [
+    "A wheel, cylinder, ball or similar rigid body moves on a support and the viewer is asked to distinguish roll from slide.",
+    "An incline race or vehicle tyre is used to talk about friction and rotation together."
+  ],
+  "subject_terms": [
+    "rolling without slipping",
+    "static friction",
+    "kinetic friction",
+    "slip ratio",
+    "centre-of-mass speed",
+    "angular velocity"
+  ],
+  "tags": [
+    "physical-behavior",
+    "rolling",
+    "sliding",
+    "friction"
+  ],
+  "intent_signals": [
+    "roll a barrel down a ramp without sliding",
+    "show the tyre patch at rest",
+    "why does the hollow cylinder slip"
+  ],
+  "example_prompts": [
+    "Race a sliding block against a rolling cylinder on the same incline and label which uses static friction.",
+    "Mark the contact point on a wheel and show when it is instantaneously at rest."
+  ],
+  "negative_signals": [
+    "Decorative spinning wheels whose rotation is unrelated to travel.",
+    "Material roughness maps used as a friction coefficient."
+  ],
+  "not_for": [
+    "Authored locomotion that only locks a foot visually.",
+    "Claims that optical roughness establishes traction."
+  ],
+  "content": {
+    "principles": [
+      "Rolling without slip constrains the instantaneous contact velocity relative to the support. A painted rim marker is momentarily stationary at contact, not fixed there throughout rotation.",
+      "Use signed rolling velocity and spin about a declared axis on a stationary plane; matching unsigned speed magnitudes alone does not establish no slip.",
+      "Static friction can sustain the constraint only within its available bound. Imposed rolling animation is a kinematic model, separate from a friction solver."
+    ],
+    "implementation": [
+      "Own center position, signed tangential velocity, angular position/velocity, finite m,R,I>0, support frame and friction parameters. The general contact residual is v_CM + omega cross r_contact - v_surface.",
+      "For an undriven body already rolling or released from rest down a stationary incline under gravity, use a=g sin(theta)/(1+I/(m R²)), f_required=I a/R² and N=m g cos(theta). Require 0<=theta<pi/2 and f_required<=mu_s N before enforcing the signed v=R omega constraint.",
+      "If the static bound fails, evolve translation and spin separately with a declared kinetic-friction law opposing tangential slip; detect zero slip and recheck static feasibility. Do not carry the no-slip acceleration into this branch or into motor-driven motion.",
+      "Render the contact marker and signed residual from the same state. Pause preserves state; reset restores center pose, spin, linear/angular velocity and friction settings."
+    ],
+    "observable_checks": [
+      "In the stationary-plane no-slip branch, the signed residual is zero within tolerance; reversing spin alone makes it nonzero.",
+      "The material point at contact is instantaneously at rest, then moves away as the body rotates.",
+      "When the static inequality fails, the model reports slipping rather than continuing to impose v=R omega. Visual roughness alone changes no friction state."
+    ]
+  },
+  "related_ids": [
+    "recipe.rolling-inertia-race",
+    "knowledge.three-rigid-body-adapter"
+  ],
+  "creative_affordances": [
+    "Tyre squash, dust or skid marks can communicate slip without becoming the friction law.",
+    "Cutaway spokes or a ground grid make the contact-point rest condition readable."
+  ],
+  "known_limits": [
+    "OpenStax rolling without slipping assumes a rigid symmetric body on a rigid surface; rolling resistance and deformation are out of scope.",
+    "Engine friction combine rules are implementation-defined and were not verified here.",
+    "Authored reusable guidance; no runtime artifact has been observed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-rolling-versus-sliding",
+      "statement": "For planar rolling on a stationary surface with the consistent signed roll convention, no slip means zero instantaneous contact velocity and v_CM=R omega. Static friction may act within its bound; sliding requires a separate tangential slip/friction model.",
+      "scope": "Rigid symmetric body on a stationary rigid plane, with declared spin sign; the gravity-only incline example excludes external driving torques, rolling resistance and tire deformation.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-rolling",
+          "locator": "11.1, Rolling without Slipping; Figure11.5, static-friction inequality and Eq11.4"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed"
+}

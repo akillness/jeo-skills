@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-euler-characteristic-count",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Canonical cell counts separated from render duplication"
+  },
+  "aliases": {
+    "en": [
+      "euler characteristic check",
+      "seam vertex duplication"
+    ]
+  },
+  "direction_ids": [
+    "topology-symmetry"
+  ],
+  "summary": "Count cells from canonical wrapped identities, verify each edge has two faces, and keep render duplicates out of the result.",
+  "objective": "The alternating cell count is stable across subdivisions and triangulation, and render-buffer duplication never enters it.",
+  "applies_when": [
+    "A closed surface is built from a periodic grid or an identified polygon.",
+    "Rendering duplicates vertices at seams or for per-face attributes.",
+    "Subdivision or triangulation can be changed by the viewer."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "topology",
+    "counting",
+    "identification"
+  ],
+  "subject_terms": [
+    "Euler characteristic",
+    "cell complex",
+    "periodic grid",
+    "seam vertex",
+    "incident faces",
+    "triangulation"
+  ],
+  "intent_signals": [
+    "my torus counts too many vertices",
+    "check the Euler characteristic of this mesh"
+  ],
+  "example_prompts": [
+    "Check the cell counts of this periodic torus mesh."
+  ],
+  "negative_signals": [
+    "classifying arbitrary spaces",
+    "mesh repair tooling"
+  ],
+  "content": {
+    "principles": [
+      "Topological counts belong to the identified cell structure rather than to the rendering; seam-duplicated vertices exist for the graphics pipeline and must never enter the count.",
+      "On a closed surface every edge carries exactly two face incidences, counted as incidences rather than as distinct neighbouring faces, because a coarse identified grid can let one face meet the same edge twice.",
+      "Refining a decomposition changes the individual counts but not the alternating sum, which is the property being demonstrated."
+    ],
+    "implementation": [
+      "Require a grid fine enough to keep the identification nondegenerate, at least three divisions in each periodic direction, or key edges by oriented cell incidence rather than by endpoint pair, since a coarser grid produces distinct edges sharing the same endpoints.",
+      "Assign canonical integer identities by wrapping index arithmetic modulo the grid counts, and build the vertex, edge and face sets from those identities.",
+      "Count face incidences per edge and report any edge whose count is not two, naming the edge by its identity rather than only by its endpoints.",
+      "Compute the alternating count of cells by dimension for at least three subdivisions and again after triangulating each quad.",
+      "Report the render-buffer vertex count separately, so the duplication factor sits visibly beside the canonical count."
+    ],
+    "observable_checks": [
+      "Every edge has exactly two face incidences under the declared closed periodic gluing. In the minimum-grid construction, a repeated incidence from one face violates that branch. In the explicit cell-incidence construction, repeated incidences from one face may be valid, including the one-face torus; check the declared gluing rather than requiring distinct face IDs.",
+      "The alternating count is unchanged across subdivisions and after triangulation, because splitting a quad adds one edge and one face.",
+      "The render-buffer vertex count is greater than or equal to the canonical count and never substitutes for it in the reported result."
+    ]
+  },
+  "known_limits": [
+    "Covers the declared cell structure; the Euler characteristic alone does not classify arbitrary spaces.",
+    "Authored verification guidance; no computation or render was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.torus-euler-cells",
+    "recipe.mobius-orientation-trace",
+    "recipe.polyhedron-net"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-euler-cell-count",
+      "statement": "A torus is constructed by identifying opposite sides of a square, and the Euler characteristic of a cell complex with finitely many cells is the number of even-dimensional cells minus the number of odd-dimensional cells.",
+      "scope": "Finite cell decompositions as described in the cited chapter; the displayed subdivision is an authored choice.",
+      "source_refs": [
+        {
+          "source_id": "source.hatcher-cell-complexes",
+          "locator": "Chapter 0, Cell Complexes: torus from a square, and the Euler characteristic definition in Example 0.2"
+        }
+      ]
+    }
+  ]
+}

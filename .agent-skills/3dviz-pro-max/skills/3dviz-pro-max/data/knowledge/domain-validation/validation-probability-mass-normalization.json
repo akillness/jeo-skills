@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-probability-mass-normalization",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Mass normalization, boundary parameters and count overflow"
+  },
+  "aliases": {
+    "en": [
+      "pmf sum check",
+      "degenerate probability parameters"
+    ]
+  },
+  "direction_ids": [
+    "probability-statistics"
+  ],
+  "summary": "Verify that a discrete mass function sums to one, handles boundary probabilities exactly and computes coefficients without overflow.",
+  "objective": "Masses are nonnegative and sum to one within a stated tolerance, and boundary parameters produce a clean point mass.",
+  "applies_when": [
+    "A scene shows exact probabilities for a discrete distribution.",
+    "Parameters can reach their boundary values.",
+    "Sampled outcomes are shown next to the exact distribution."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "distribution",
+    "normalization",
+    "boundary-cases"
+  ],
+  "subject_terms": [
+    "probability mass function",
+    "binomial coefficient",
+    "success probability",
+    "point mass",
+    "empirical frequency"
+  ],
+  "intent_signals": [
+    "the bars do not add to one",
+    "what happens when p is zero"
+  ],
+  "example_prompts": [
+    "Check the exact binomial masses in this trial lattice scene."
+  ],
+  "negative_signals": [
+    "statistical inference or hypothesis testing",
+    "random number generator quality testing"
+  ],
+  "content": {
+    "principles": [
+      "A probability mass function is a distribution before it is a chart: masses are nonnegative and sum to one over the support, and that identity is checked numerically rather than assumed.",
+      "Boundary parameter values are exact special cases where the distribution collapses to a single point, so expressions involving zero raised to the power zero need explicit handling, and the supported ranges of trial count and probability are declared rather than left open.",
+      "Observed frequencies and exact probabilities are different quantities and must never be drawn so that the sample appears to define the model."
+    ],
+    "implementation": [
+      "Declare the supported trial-count and probability ranges, then compute the mass vector over the full support for those parameters, sum it, and record the deviation from one.",
+      "Evaluate both boundary probabilities and confirm that all mass sits at the corresponding outcome with no not-a-number entries.",
+      "Compute the masses with a method that stays in range across the declared support, such as a recurrence on the probabilities themselves or an evaluation in logarithms; a multiplicative binomial-coefficient recurrence still overflows for large counts, so name the regime the chosen method supports and cross-check a few entries against a direct computation at small counts.",
+      "Keep the empirical side separate: fix the seed, record the completed sample count, and compare frequencies with the exact masses without overwriting either."
+    ],
+    "observable_checks": [
+      "The mass vector sums over the full support to one within a tolerance that scales with the number of terms; for a few dozen terms in double precision a deviation above about 1e-12 indicates a formula error rather than accumulation, and the tolerance is restated for larger supports.",
+      "Every mass is nonnegative and finite, each boundary parameter produces a single point mass with no not-a-number entries, and parameters outside the declared range are reported as unsupported rather than evaluated.",
+      "Empirical counts sum to the number of completed samples and stay distinguishable from the exact masses in both the display and the data."
+    ]
+  },
+  "known_limits": [
+    "Checks the distribution arithmetic and its boundary cases; it does not establish that the modelled experiment satisfies the distribution assumptions.",
+    "Authored verification guidance; no computation or render was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.binomial-trial-lattice",
+    "recipe.sampling-mean-distribution",
+    "recipe.normal-density-window"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-binomial-experiment-definition",
+      "statement": "A binomial variable counts successes in a fixed number of independent trials with two outcomes and a constant success probability, and its probability uses the binomial coefficient times the success probability raised to the number of successes times the failure probability raised to the remaining trials.",
+      "scope": "Experiments satisfying the stated binomial conditions; trial count and probability are declared inputs.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-binomial",
+          "locator": "4.3, characteristics of a binomial experiment and the probability formula"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "id": "recipe.mesh-orientability-check",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Manifoldness, orientation and mesh validity"
+  },
+  "aliases": {
+    "en": [
+      "manifold mesh",
+      "consistent orientation",
+      "self-intersection"
+    ]
+  },
+  "direction_ids": [
+    "topology-symmetry"
+  ],
+  "summary": "Make mesh validity inspectable: combinatorial manifoldness, consistent orientation and geometric self-intersection are three different questions.",
+  "objective": "Build a mesh inspector that highlights non-manifold edges, inconsistently oriented faces and self-intersections as separate findings.",
+  "tags": [
+    "mesh validity",
+    "orientation",
+    "manifold"
+  ],
+  "subject_terms": [
+    "manifold",
+    "non-manifold edge",
+    "boundary edge",
+    "face orientation",
+    "self-intersection",
+    "watertight",
+    "polygon soup",
+    "closed surface"
+  ],
+  "intent_signals": [
+    "Check whether a mesh is closed, manifold and consistently oriented.",
+    "Show why a mesh can look fine and still be invalid for boolean operations."
+  ],
+  "example_prompts": [
+    "Build a mesh validity inspector that separates non-manifold edges from self-intersections.",
+    "Show a mesh with flipped faces and let me repair the orientation."
+  ],
+  "negative_signals": [
+    "Not a repair pipeline: this recipe reports findings and may reorient faces, but it does not claim to fix arbitrary meshes.",
+    "Not a rendering quality check; shading artefacts are a symptom, not the subject."
+  ],
+  "not_for": [
+    "Not a repair pipeline: this recipe reports findings and may reorient faces, but it does not claim to fix arbitrary meshes.",
+    "Not a rendering quality check; shading artefacts are a symptom, not the subject."
+  ],
+  "entities": [
+    {
+      "name": "Inspected mesh",
+      "guidance": "Load or build a mesh with deliberate defects and keep face and edge indices addressable, since findings are reported per element."
+    },
+    {
+      "name": "Finding overlays",
+      "guidance": "Give each finding class its own overlay: boundary edges, non-manifold edges, inconsistently oriented faces and self-intersecting triangles."
+    },
+    {
+      "name": "Normal display",
+      "guidance": "Draw face normals as short spikes so a flipped face is visible as geometry rather than only as shading."
+    }
+  ],
+  "state_contract": {
+    "model": "An indexed mesh with per-edge incidence counts, per-face winding relative to neighbours, a vertex-link connectivity test that detects non-manifold vertices, and a self-intersection test. Findings are lists of element indices per class: boundary edge, non-manifold edge, non-manifold vertex, inconsistent winding, non-orientable component and self-intersecting face.",
+    "authority": "The element lists are authoritative. A repair action must rebuild them, and a stale overlay after an edit is a defect.",
+    "actions": [
+      "Run the validity check and step through findings.",
+      "Reorient faces consistently and rerun.",
+      "Toggle each finding overlay and the normal spikes.",
+      "Reset to the original mesh."
+    ]
+  },
+  "invariants": [
+    "An edge shared by more than two faces is reported as non-manifold even when the mesh looks closed.",
+    "Consistent orientation is a combinatorial property and does not by itself imply the absence of self-intersections.",
+    "Reorientation changes face winding only: vertex positions and mesh topology are identical before and after, and a component that cannot be consistently oriented keeps its original winding.",
+    "Edge counts alone do not certify a 2-manifold: two tetrahedral surfaces joined at a single shared vertex have two faces per edge and consistent winding, and are reported through the vertex-link test instead.",
+    "Reorientation can fail: a component that is non-orientable, such as a Moebius strip, is reported as a conflict rather than repaired by flipping windings."
+  ],
+  "motion_guidance": [
+    "Animate a camera move to each finding rather than teleporting, so the viewer keeps spatial context.",
+    "Flash a repaired face once and then leave it in its final state; a persistent animation hides whether the finding is resolved."
+  ],
+  "known_limits": [
+    "Self-intersection tests are geometric and tolerance-sensitive near coincident faces.",
+    "This recipe describes checks; performance on large meshes depends entirely on the implementation chosen.",
+    "The declared defect classes are edge manifoldness, vertex-link manifoldness, winding consistency, orientability and self-intersection; anything outside that list is not evaluated.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-mesh-manifold-definition",
+      "statement": "A polygon mesh treated as a surface is required to be a consistent and orientable surface mesh with the topology of a two-manifold.",
+      "scope": "Combinatorial definition used by the cited library documentation.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-cgal-mesh-processing",
+          "locator": "Polygon Mesh Processing, polygon mesh definition"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-mesh-combinatorial-limits",
+      "statement": "These requirements are mostly combinatorial and do not prevent defects such as self-intersections or degenerate faces and edges.",
+      "scope": "Explicit separation of combinatorial validity from geometric validity, as documented.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-cgal-mesh-processing",
+          "locator": "Polygon Mesh Processing, note on combinatorial requirements"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Inspected mesh",
+      "structure": "Flat-shaded faces with visible edges so topology is readable; avoid smoothing that hides seams and duplicate vertices.",
+      "material": "Neutral grey mesh so every finding overlay stands out; reserve saturated colour entirely for findings.",
+      "articulation": "None. Only overlays and, on repair, face winding change."
+    },
+    {
+      "family": "Finding overlays",
+      "structure": "Edge tubes and face patches slightly offset from the surface so they do not z-fight with the mesh.",
+      "material": "One accent per finding class with distinct dash or hatch patterns so classes are distinguishable in monochrome.",
+      "articulation": "Overlays rebuild after every check or repair."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Static geometric and combinatorial analysis; no simulation.",
+    "checks": [
+      "Vertex positions are unchanged after a reorientation repair.",
+      "A mesh with a triple edge is reported as non-manifold even when it is watertight by appearance."
+    ]
+  },
+  "related_ids": [
+    "recipe.polyhedron-net",
+    "recipe.minkowski-clearance",
+    "knowledge.structural-coherence"
+  ]
+}

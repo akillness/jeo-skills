@@ -1,0 +1,4 @@
+identity,type,cu,start_inclusive,end_inclusive
+Artist 01,Human,23500,2026-06-01T00:00:00Z,2026-08-31T23:59:59.999Z
+Artist 02,Human,11000,2026-06-01T00:00:00Z,2026-08-31T23:59:59.999Z
+Automation,API identity,4500,2026-06-01T00:00:00Z,2026-08-31T23:59:59.999Z

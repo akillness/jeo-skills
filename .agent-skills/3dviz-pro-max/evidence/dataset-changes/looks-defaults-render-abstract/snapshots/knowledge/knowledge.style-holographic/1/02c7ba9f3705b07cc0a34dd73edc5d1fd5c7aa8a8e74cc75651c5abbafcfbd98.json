@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-holographic",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Holographic display metaphor"
+  },
+  "aliases": {
+    "en": [
+      "hologram look",
+      "projected interface aesthetic",
+      "luminous wire display"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "products-assemblies"
+  ],
+  "summary": "Use a visibly authored projected-display metaphor to reveal layers or selection, without claiming a real optical hologram.",
+  "objective": "Layer depth and active selection remain legible without relying on bloom, and the view identifies any metaphorical projection effect.",
+  "tags": [
+    "style-profile",
+    "surface-aesthetic",
+    "holographic"
+  ],
+  "subject_terms": [
+    "hologram look",
+    "projected interface aesthetic",
+    "luminous wire display",
+    "surface aesthetic"
+  ],
+  "intent_signals": [
+    "Use a holographic display metaphor",
+    "Present a luminous layered diagram without claiming real holography"
+  ],
+  "example_prompts": [
+    "Show a holographic-style service map with stable node identities and independently pausable scan decoration."
+  ],
+  "content": {
+    "principles": [
+      "Use a visibly authored projected-display metaphor to reveal layers or selection, without claiming a real optical hologram.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Simplify internal layers and add a clear boundary or display base where useful; choose which edges carry the main shape.",
+      "Use restrained luminous accents, transparent-looking fills and a darker neutral reference; preserve contrast for labels and selected objects.",
+      "Favor a slow orbit or deliberate layer reveal; decorative scan motion should be independently pausable and should not generate model state."
+    ],
+    "observable_checks": [
+      "Layer depth and active selection remain legible without relying on bloom, and the view identifies any metaphorical projection effect.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with wireframe or scientific encoding while keeping data colors distinct from decorative scan colors.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

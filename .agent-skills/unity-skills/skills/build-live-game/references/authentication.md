@@ -1,0 +1,473 @@
+# Authentication Reference
+
+## Table of Contents
+
+- [Anti-Hallucination Reference](#anti-hallucination-reference)
+- [Sign-In Methods](#sign-in-methods)
+- [Key Properties](#key-properties)
+- [Inspect State from the CLI](#inspect-state-from-the-cli)
+- [Events](#events)
+- [Player Info / Name](#player-info--name)
+- [Link / Unlink Methods](#link--unlink-methods)
+- [Profile Switching](#profile-switching)
+- [Username/Password Constraints](#usernamepassword-constraints)
+- [Options / Types](#options--types)
+- [Identity Providers Quick Reference](#identity-providers-quick-reference)
+- [Code Templates](#code-templates)
+- [Error Handling](#error-handling)
+- [Session Warnings](#session-warnings)
+
+Accessed via `AuthenticationService.Instance` (`IAuthenticationService`, namespace `Unity.Services.Authentication`). Assembly: `Unity.Services.Authentication`.
+
+Call `UnityServices.InitializeAsync()` from `com.unity.services.core` before using this service.
+
+---
+
+## Anti-Hallucination Reference
+
+| Correct | Incorrect (do NOT use) |
+|---|---|
+| `SignOut(bool clearCredentials = false)` -- synchronous void | `SignOutAsync`, `SignOut()` returning Task |
+| `SignInWithSteamAsync(sessionTicket, identity)` -- identity param is required | `SignInWithSteamAsync(sessionTicket)` -- deprecated |
+| `SignInWithOculusAsync(nonce, userId)` -- both params required | `SignInWithOculusAsync(nonce)` -- missing userId |
+| `LinkWithSteamAsync(sessionTicket, identity)` | `LinkWithSteamAsync(sessionTicket)` -- deprecated |
+| `LinkWithOculusAsync(nonce, userId)` | `LinkWithOculusAsync(nonce)` -- missing userId |
+| `SwitchProfile(string)` -- synchronous void | `SwitchProfileAsync` |
+| `ClearSessionToken()` -- synchronous void | `ClearSessionTokenAsync` |
+| No `UnlinkUsernamePasswordAsync` | Username/password cannot be unlinked once linked |
+| No `IsAnonymous` property | Use `PlayerInfo.Identities` to check linked providers |
+
+---
+
+## Sign-In Methods
+
+```csharp
+// Anonymous sign-in. Creates a new player if no cached credentials exist.
+Task SignInAnonymouslyAsync(SignInOptions options = default)
+
+// Google ID token sign-in.
+Task SignInWithGoogleAsync(string idToken, SignInOptions options = default)
+
+// Google Play Games auth code sign-in.
+Task SignInWithGooglePlayGamesAsync(string authCode, SignInOptions options = default)
+
+// Apple ID token sign-in.
+Task SignInWithAppleAsync(string idToken, SignInOptions options = default)
+
+// Apple Game Center signature sign-in.
+Task SignInWithAppleGameCenterAsync(string signature, string teamPlayerId, string publicKeyURL, string salt, ulong timestamp, SignInOptions options = default)
+
+// Facebook access token sign-in.
+Task SignInWithFacebookAsync(string accessToken, SignInOptions options = default)
+
+// Steam session ticket sign-in. The identity param is REQUIRED (deprecated overload without it).
+[Obsolete] Task SignInWithSteamAsync(string sessionTicket, SignInOptions options = default)
+Task SignInWithSteamAsync(string sessionTicket, string identity, SignInOptions options = default)
+// For sub-apps (PlayTest, Demo) -- include appId:
+Task SignInWithSteamAsync(string sessionTicket, string identity, string appId, SignInOptions options = default)
+
+// Oculus sign-in. Both nonce AND userId are required.
+Task SignInWithOculusAsync(string nonce, string userId, SignInOptions options = default)
+
+// OpenID Connect sign-in with a custom provider ID.
+Task SignInWithOpenIdConnectAsync(string idProviderName, string idToken, SignInOptions options = default)
+
+// Unity token sign-in.
+Task SignInWithUnityAsync(string token, SignInOptions options = default)
+
+// Username/password sign-up (first-time registration).
+Task SignUpWithUsernamePasswordAsync(string username, string password)
+
+// Username/password sign-in (no SignInOptions).
+Task SignInWithUsernamePasswordAsync(string username, string password)
+
+// Device code flow -- generate code, then poll for sign-in.
+Task<SignInCodeInfo> GenerateSignInCodeAsync(string identifier = default)
+Task SignInWithCodeAsync(bool usePolling = false, CancellationToken cancellationToken = default)
+Task<SignInCodeInfo> GetSignInCodeInfoAsync(string code)
+Task ConfirmCodeAsync(string code, string idProvider = default, string externalToken = default)
+
+// Sign out. Synchronous (void), NOT async.
+void SignOut(bool clearCredentials = false)
+
+// Permanently delete the current player's account.
+Task DeleteAccountAsync()
+```
+
+---
+
+## Key Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `IsSignedIn` | `bool` | Token exists in memory (player has signed in during this session) |
+| `IsAuthorized` | `bool` | Access token is present AND not expired (player can make API calls) |
+| `IsExpired` | `bool` | Access token has expired but still exists (SDK will try auto-refresh) |
+| `PlayerId` | `string` | Unique player identifier |
+| `PlayerName` | `string` | Player display name |
+| `AccessToken` | `string` | JWT access token for service calls |
+| `Profile` | `string` | Current profile name |
+| `SessionTokenExists` | `bool` | True if a session token is cached |
+
+**Key distinction:** `IsSignedIn` means a token exists (even if expired). `IsAuthorized` means the token is currently valid. `IsExpired` means the token expired but still exists -- the SDK will attempt automatic refresh. If refresh fails, `SignInFailed` fires.
+
+---
+
+## Inspect State from the CLI
+
+Game code reads authentication state in C#. To check that state yourself while the game runs, use the `services.authentication` CLI commands. Never read `AuthenticationService.Instance` by evaluating C# with `script eval`. The commands return the same state without running code in the user's Editor.
+
+The following table lists each command and the property it returns.
+
+| Command | Returns |
+|---|---|
+| `get_state` | `SignedOut`, `SigningIn`, `Authorized`, `Refreshing`, or `Expired` |
+| `get_signed_in` | `IsSignedIn` |
+| `get_authorized` | `IsAuthorized` |
+| `get_player_id` | `PlayerId` |
+| `get_profile` | `Profile` |
+| `get_access_token` | `AccessToken` (the raw JWT) |
+| `get_player_name` | `PlayerName`. The game must call `GetPlayerNameAsync` first, otherwise it returns a cached name or nothing |
+| `get_player_info` | `PlayerInfo`. The game must call `GetPlayerInfoAsync` first, otherwise it can lack the creation time, linked identities, and username |
+
+These are runtime commands, so they fail outside Play mode and before the services initialize. To run one:
+
+1. Read each command's arguments from `unity command --query services.authentication --format json`, because the arguments can differ between package versions.
+2. Read the play state with `unity command editor status`. If its `playMode` reads `stopped`, enter Play mode with `unity command editor.playmode start`. Otherwise the session is the user's: inspect it and change nothing.
+3. Wait until `unity command services.core get_initialization_state` returns `Initialized`. If it returns `Failed` or stays `Uninitialized`, stop and read the Console, because the game never initialized the services.
+4. Run the command you need, for example `unity command services.authentication get_state`:
+   - `get_state`, `get_signed_in`, `get_authorized`, and `get_profile` work as soon as the services initialize. Report `SignedOut` or `SigningIn` as the player's state, not as an error.
+   - `get_player_id`, `get_access_token`, `get_player_name`, and `get_player_info` need a signed-in player. Run them only when `get_signed_in` returns `true`, otherwise they return an empty value.
+5. If you entered Play mode in step 2, exit it with `unity command editor.playmode stop`. Never stop the user's session, because stopping it discards its runtime state.
+
+The Editor command `services.authentication add_player_authentication_component` adds a scene component that signs the player in without game code. Never add it when the game's own code already signs in, because the player would sign in twice.
+
+---
+
+## Events
+
+| Event | Signature | When fired |
+|---|---|---|
+| `SignedIn` | `Action` | Sign-in succeeds |
+| `SignedOut` | `Action` | Player signs out |
+| `Expired` | `Action` | Access token expires; SDK auto-attempts refresh. Re-auth only needed if refresh fails (`SignInFailed` fires) |
+| `SignInFailed` | `Action<RequestFailedException>` | Sign-in or token refresh fails |
+| `SignInCodeReceived` | `Action<SignInCodeInfo>` | Device code flow: sign-in code generated |
+| `SignInCodeExpired` | `Action` | Device code flow: sign-in code expired |
+| `PlayerNameChanged` | `Action<string>` | Player name updated (provides new name) |
+| `PlayerIdChanged` | `Action<string>` | Player ID changed (provides new ID) |
+| `PlayerInfoChanged` | `Action<PlayerInfo>` | Player info updated |
+
+---
+
+## Player Info / Name
+
+```csharp
+Task<PlayerInfo> GetPlayerInfoAsync()
+Task<string> GetPlayerNameAsync(bool autoGenerate = true)
+Task<string> UpdatePlayerNameAsync(string name)
+```
+
+### `PlayerInfo` Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `Id` | `string` | UGS player ID |
+| `Username` | `string?` | Username (if set) |
+| `Identities` | `List<Identity>` | Linked external providers |
+| `CreatedAt` | `DateTime?` | Account creation time |
+| `LastPasswordUpdate` | `DateTime?` | Last password change |
+
+Helper methods: `GetGoogleId()`, `GetAppleId()`, `GetFacebookId()`, `GetSteamId()`, `GetOculusId()`, `GetGooglePlayGamesId()`, `GetAppleGameCenterId()`, `GetUnityId()`, `GetOpenIdConnectId(providerName)`, `GetCustomId()`, `GetOpenIdConnectIdProviders()`.
+
+---
+
+## Link / Unlink Methods
+
+All Link methods accept an optional `LinkOptions` parameter (for `ForceLink`).
+
+```csharp
+Task LinkWithGoogleAsync(string idToken, LinkOptions options = default)
+Task LinkWithGooglePlayGamesAsync(string authCode, LinkOptions options = default)
+Task LinkWithAppleAsync(string idToken, LinkOptions options = default)
+Task LinkWithAppleGameCenterAsync(string signature, string teamPlayerId, string publicKeyURL, string salt, ulong timestamp, LinkOptions options = default)
+Task LinkWithFacebookAsync(string accessToken, LinkOptions options = default)
+[Obsolete] Task LinkWithSteamAsync(string sessionTicket, LinkOptions options = default)
+Task LinkWithSteamAsync(string sessionTicket, string identity, LinkOptions options = default)
+Task LinkWithSteamAsync(string sessionTicket, string identity, string appId, LinkOptions options = default)
+Task LinkWithOculusAsync(string nonce, string userId, LinkOptions options = default)
+Task LinkWithOpenIdConnectAsync(string idProviderName, string idToken, LinkOptions options = default)
+Task LinkWithUnityAsync(string token, LinkOptions options = default)
+
+Task UnlinkGoogleAsync()
+Task UnlinkGooglePlayGamesAsync()
+Task UnlinkAppleAsync()
+Task UnlinkAppleGameCenterAsync()
+Task UnlinkFacebookAsync()
+Task UnlinkSteamAsync()
+Task UnlinkOculusAsync()
+Task UnlinkOpenIdConnectAsync(string idProviderName)
+Task UnlinkUnityAsync()
+```
+
+**Note:** There is no `UnlinkUsernamePasswordAsync`. Username/password credentials cannot be unlinked once linked.
+
+---
+
+## Profile Switching
+
+```csharp
+// Switch active profile. Must be called BEFORE sign-in. Synchronous.
+void SwitchProfile(string profile)
+
+// Clear cached session token for the active profile.
+void ClearSessionToken()
+
+// Process externally-obtained tokens.
+void ProcessAuthenticationTokens(string accessToken, string sessionToken = default)
+```
+
+Use `SwitchProfile(string profile)` before sign-in to store separate cached credentials per-profile (useful for multiple accounts on one device). Must be called BEFORE signing in -- call `SignOut()` first if already signed in. It is not a second player for testing a multiplayer feature: one game instance holds one signed-in player at a time, so test shared play with one Multiplayer Play Mode instance per player.
+
+---
+
+## Username/Password Constraints
+
+| Field | Constraint |
+|---|---|
+| Username length | 3-20 characters |
+| Username characters | `A-Z`, `a-z`, `0-9`, `.`, `-`, `@`, `_` |
+| Username case | Case insensitive (stored lowercase) |
+| Password length | 8-30 characters |
+| Password requirements | At least 1 lowercase + 1 uppercase + 1 number + 1 symbol |
+
+Username/password credentials **cannot be unlinked** once linked. `UpdatePasswordAsync()` signs out all other devices for this player.
+
+Additional username/password management methods:
+
+```csharp
+// Add username/password to an existing signed-in account.
+Task AddUsernamePasswordAsync(string username, string password)
+
+// Update the password for the currently signed-in account.
+// WARNING: Signs out ALL other devices for this player.
+Task UpdatePasswordAsync(string currentPassword, string newPassword)
+```
+
+---
+
+## Options / Types
+
+### `SignInOptions`
+
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `CreateAccount` | `bool` | `true` | If false, only sign in if an existing player maps to the credentials |
+
+### `LinkOptions`
+
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `ForceLink` | `bool` | `false` | If true, removes existing link on another player and reassigns to current |
+
+### `SignInCodeInfo`
+
+| Property | Type | Description |
+|---|---|---|
+| `SignInCode` | `string` | The code to display to the user |
+| `Identifier` | `string` | Identifier for the code |
+| `Expiration` | `string` | When the code expires |
+
+---
+
+## Identity Providers Quick Reference
+
+| Provider | Dashboard credentials | SDK input | SDK method |
+|---|---|---|---|
+| Anonymous | None | None | `SignInAnonymouslyAsync()` |
+| Google | Client ID, Client Secret | ID token | `SignInWithGoogleAsync(idToken)` |
+| Google Play Games | Client ID, Client Secret | Auth code | `SignInWithGooglePlayGamesAsync(authCode)` |
+| Apple | Client ID, Client Secret | ID token | `SignInWithAppleAsync(idToken)` |
+| Apple Game Center | Client ID, Client Secret | Signature bundle | `SignInWithAppleGameCenterAsync(...)` |
+| Facebook | Client ID, Client Secret | Access token | `SignInWithFacebookAsync(accessToken)` |
+| Steam | Publisher Web API Key | Session ticket + identity | `SignInWithSteamAsync(sessionTicket, identity)` |
+| Oculus | App ID, App Secret | Nonce + user ID | `SignInWithOculusAsync(nonce, userId)` |
+| OpenID Connect | Client ID, Client Secret, Issuer URL | ID token | `SignInWithOpenIdConnectAsync(providerName, idToken)` |
+| Unity Player Accounts | Turn on Player Accounts (`references/player-account.md`) | Access token | `SignInWithUnityAsync(token)` |
+| Username / Password | Enable in dashboard | Username + password | `SignInWithUsernamePasswordAsync(u, p)` |
+
+Identity providers are configured per project, outside the game code, and a sign-in method fails with `InvalidProvider` until its provider is configured.
+
+### Configure a Provider
+
+1. Check that the UGS CLI plugin runs: `unity ugs --version`. If it fails, install it with `unity plugin install ugs`. Do this first, because without the plugin the next check fails too, which would wrongly read as the commands being unavailable.
+   The `id-provider` commands need UGS CLI 2.1.0 or later. If the version is older, run `unity plugin upgrade ugs`. If it still reports an older version, the plugin registry does not offer 2.1.0 yet. Tell the user, and either use the Dashboard (step 5) or, if they agree, download the 2.1.0 build for their platform from the UGS CLI GitHub releases and put it on PATH as `ugs`: `unity ugs` runs a `ugs` on PATH ahead of the plugin's copy.
+2. Whether or not you installed it, make sure the CLI is signed in and targets the user's project, as in Auth and Project Setup in `references/ugs-cli.md`. Compare `unity ugs config get project-id` with the project ID in **Edit > Project Settings > Services**, and set it with `unity ugs config set project-id` if they differ. The CLI keeps its own sign-in and project, separate from the Editor's link, so a stale one creates the provider in another project without an error.
+3. Run `UGS_CLI_PREVIEW=player-id-providers unity ugs player id-provider --help`. The `id-provider` commands are a preview: the CLI hides them unless `UGS_CLI_PREVIEW` names `player-id-providers`, so prefix every `id-provider` command with it. In PowerShell, set `$env:UGS_CLI_PREVIEW = 'player-id-providers'` for the session instead. A preview can change between releases, so check `--help` before relying on the commands.
+4. If it lists the commands, run `UGS_CLI_PREVIEW=player-id-providers unity ugs player id-provider list-types` to see the fields each provider type needs, then `UGS_CLI_PREVIEW=player-id-providers unity ugs player id-provider create <type> --client-id <id>`. Pipe a client secret in with `--client-secret-stdin`, never as an argument, because arguments are kept in shell history and process lists. Confirm the result with `UGS_CLI_PREVIEW=player-id-providers unity ugs player id-provider list`.
+5. If it reports an unknown command, don't guess other command names. Ask the user to add the provider in the **Unity Dashboard**: Your project > Products > Authentication > Identity Providers > Add provider.
+6. Don't create the Unity Player Accounts provider (`unity`) directly: turning on Unity Player Accounts creates it and points it at the project's Player Accounts client. Follow Turn On Unity Player Accounts in `references/player-account.md`.
+
+---
+
+## Code Templates
+
+### Initialize and Sign In Anonymously
+
+```csharp
+using Unity.Services.Core;
+using Unity.Services.Authentication;
+
+async Task InitAndSignIn()
+{
+    await UnityServices.InitializeAsync();
+
+    // SignInAnonymouslyAsync auto-detects returning vs new players:
+    // - If a session token exists, it signs in silently with the cached token
+    // - If no token exists, it creates a new anonymous account
+    if (!AuthenticationService.Instance.IsSignedIn)
+    {
+        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+    }
+
+    Debug.Log($"Signed in as {AuthenticationService.Instance.PlayerId}");
+}
+```
+
+### Sign In with Steam (with Identity Param)
+
+```csharp
+// sessionTicket from SteamUser.GetAuthSessionTicket
+// identity string for security (required -- old overload without it is deprecated)
+await AuthenticationService.Instance.SignInWithSteamAsync(sessionTicket, identity);
+
+// For sub-apps (PlayTest, Demo) -- include appId:
+await AuthenticationService.Instance.SignInWithSteamAsync(sessionTicket, identity, appId);
+```
+
+### Username/Password Sign Up then Sign In
+
+```csharp
+// First-time registration
+await AuthenticationService.Instance.SignUpWithUsernamePasswordAsync("myUsername", "MyPassword123!");
+
+// Subsequent sign-ins
+await AuthenticationService.Instance.SignInWithUsernamePasswordAsync("myUsername", "MyPassword123!");
+```
+
+### Link a Provider
+
+```csharp
+// Player is already signed in anonymously; link their Google account
+try
+{
+    await AuthenticationService.Instance.LinkWithGoogleAsync(googleIdToken);
+    Debug.Log("Google account linked successfully.");
+}
+catch (AuthenticationException ex) when (ex.ErrorCode == AuthenticationErrorCodes.AccountAlreadyLinked)
+{
+    Debug.LogWarning("This Google account is already linked to another player.");
+}
+
+// Force-link: removes existing link on another player and reassigns to current
+await AuthenticationService.Instance.LinkWithGoogleAsync(
+    idToken,
+    new LinkOptions { ForceLink = true });
+```
+
+### Switch Profile
+
+```csharp
+// Must sign out first, then switch, then sign in
+AuthenticationService.Instance.SignOut();
+AuthenticationService.Instance.SwitchProfile("ProfileB");
+await AuthenticationService.Instance.SignInAnonymouslyAsync();
+```
+
+### Token Expiry Handling
+
+```csharp
+AuthenticationService.Instance.Expired += () =>
+{
+    // Token expired - the SDK will attempt to refresh automatically.
+    // If refresh fails, you'll get SignInFailed and need to re-authenticate.
+    Debug.Log("Token expired, SDK is attempting refresh...");
+};
+
+AuthenticationService.Instance.SignInFailed += (ex) =>
+{
+    // Refresh failed, prompt user to sign in again
+    Debug.LogError($"Sign-in failed: {ex.Message}");
+};
+```
+
+### Error Handling
+
+```csharp
+try
+{
+    await AuthenticationService.Instance.SignInAnonymouslyAsync();
+}
+catch (AuthenticationException ex)
+{
+    // ex.ErrorCode contains the specific error code
+    Debug.LogError($"Auth failed: {ex.Message} (code: {ex.ErrorCode})");
+}
+catch (RequestFailedException ex)
+{
+    // Network or other service errors
+    Debug.LogError($"Request failed: {ex.Message}");
+}
+```
+
+### Account Management (GetPlayerInfo, UpdatePlayerName, DeleteAccount)
+
+```csharp
+// Get full player info
+var info = await AuthenticationService.Instance.GetPlayerInfoAsync();
+
+// Get or update player name
+var name = await AuthenticationService.Instance.GetPlayerNameAsync();
+var updated = await AuthenticationService.Instance.UpdatePlayerNameAsync("NewName");
+
+// Add username/password to existing account
+await AuthenticationService.Instance.AddUsernamePasswordAsync(username, password);
+
+// Update password (signs out ALL other devices for this player)
+await AuthenticationService.Instance.UpdatePasswordAsync(currentPassword, newPassword);
+
+// Delete account permanently
+await AuthenticationService.Instance.DeleteAccountAsync();
+```
+
+---
+
+## Error Handling
+
+Throws `AuthenticationException` (extends `RequestFailedException`) on failure. Use `ex.ErrorCode` and compare against `AuthenticationErrorCodes`:
+
+| Constant | Value | Meaning | Fix |
+|---|---|---| :-- |
+| `ClientInvalidUserState` | 10000 | Operation not valid in current state | Check the player's sign-in state before the call; call `SignOut()` first when switching profile |
+| `ClientNoActiveSession` | 10001 | No active session | Sign in before calling the operation |
+| `InvalidParameters` | 10002 | Bad input parameters | Validate the input against the provider or username rules before the call |
+| `AccountAlreadyLinked` | 10003 | External ID already linked to another player | Sign in with that identity, or link with `ForceLink` only after the player confirms |
+| `AccountLinkLimitExceeded` | 10004 | Max linked accounts for this provider type | Unlink an existing identity of that provider type first |
+| `ClientUnlinkExternalIdNotFound` | 10005 | External ID not linked | Check `PlayerInfo.Identities` before unlinking |
+| `ClientInvalidProfile` | 10006 | Invalid profile name | Use a valid profile name |
+| `InvalidSessionToken` | 10007 | Session token invalid or expired | Clear the token with `ClearSessionToken()` and sign in again only if the player has a linked identity; for an anonymous-only player keep the token, because clearing it permanently loses the account |
+| `InvalidProvider` | 10008 | Unknown identity provider | Check the provider name matches the one configured in the Dashboard |
+| `BannedUser` | 10009 | Player has been banned | Not retryable; the player cannot sign in |
+| `EnvironmentMismatch` | 10010 | Session token from a different environment | Keep the token for its original environment and sign in to the other environment under a separate profile with `SwitchProfile`; clear the token only if the player has a linked identity |
+
+**Error response format:** Authentication errors follow RFC 7807 (Problem Details). Branch your error handling on `status` and `title` fields, never on `detail` -- the detail message may change without notice.
+
+---
+
+## Session Warnings
+
+**Console platforms (Xbox, PlayStation, Switch):** Token refresh is NOT automatic. You must manually re-sign in when the token expires.
+
+**Anonymous-only accounts:** Calling `ClearSessionToken()` or `SignOut(clearCredentials: true)` on an account that ONLY has anonymous sign-in will **permanently lose** that account. Always link at least one external provider before clearing credentials.
+
+**DeleteAccountAsync compliance:** iOS App Store (Guideline 5.1.1) requires apps that support account creation to offer account deletion. `DeleteAccountAsync()` only deletes **Authentication data**. It does NOT automatically clean up data in other UGS services (Cloud Save, Leaderboards, etc.). You must manually delete data from each service before calling `DeleteAccountAsync()`.

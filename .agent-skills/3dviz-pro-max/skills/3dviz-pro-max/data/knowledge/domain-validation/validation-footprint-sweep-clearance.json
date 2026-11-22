@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-footprint-sweep-clearance",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Furniture footprint and door sweep area tests"
+  },
+  "aliases": {
+    "en": [
+      "door sweep clearance check",
+      "layout overlap test"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors"
+  ],
+  "summary": "Test layout acceptance with polygon area overlaps, including the swept door sector and edge-touching cases.",
+  "objective": "Accepted layouts have no overlap area above the declared tolerance with walls, other furniture or door sweeps.",
+  "applies_when": [
+    "Furniture or equipment is placed inside a measured plan.",
+    "Doors, drawers or panels sweep through the same floor area.",
+    "Clearance margins are part of the design intent."
+  ],
+  "check_method": "geometry",
+  "tags": [
+    "domain-validation",
+    "layout",
+    "clearance",
+    "polygon"
+  ],
+  "subject_terms": [
+    "footprint polygon",
+    "door sweep sector",
+    "intersection area",
+    "clearance margin",
+    "plan"
+  ],
+  "intent_signals": [
+    "the door hits the cabinet",
+    "check the walking clearance in this layout"
+  ],
+  "example_prompts": [
+    "Check this studio layout for door sweep and clearance conflicts."
+  ],
+  "negative_signals": [
+    "accessibility code certification",
+    "furniture manufacturing tolerances"
+  ],
+  "content": {
+    "principles": [
+      "A door is a swept region rather than a leaf: the space it needs is the sector traced between its closed and open angles, plus the leaf thickness.",
+      "Placement conflicts are area tests between polygons; a centre-point test accepts a chair whose seat crosses a wall as long as its centre is free.",
+      "Touching is not overlapping, so the comparison needs a declared area tolerance instead of a strict inequality on a floating-point number."
+    ],
+    "implementation": [
+      "Represent each item by its plan footprint polygon rather than its bounding box, the room by its wall polygon with openings, and each door by the sector swept from closed to fully open.",
+      "Compute pairwise intersection areas for furniture against furniture, walls and door sweeps, and report every nonzero area with both IDs and the value in square scene units.",
+      "Test the cases that actually fail: an item flush against a wall, an item inside the sweep but clear of the closed leaf, an item under a wall opening, and two items sharing an edge.",
+      "State clearance margins as explicit inputs, such as circulation width or pull-out depth, and evaluate them as offset polygons rather than as a remembered rule."
+    ],
+    "observable_checks": [
+      "Accepted layouts show zero furniture-wall and furniture-sweep intersection area above the declared tolerance, which is chosen from the plan coordinate precision and reported with the result.",
+      "The item placed inside the door sweep is rejected although it never touches the closed leaf; that case is the signal that the sweep rather than the leaf is being tested.",
+      "Two items sharing an edge are accepted, demonstrating that the test uses area rather than a strict non-touching rule."
+    ]
+  },
+  "known_limits": [
+    "A geometric design aid; it is not an accessibility, egress or building-code evaluation.",
+    "Authored verification guidance; no layout was run or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.studio-furniture-layout",
+    "recipe.courtyard-house-cutaway",
+    "recipe.warehouse-pick-tour"
+  ],
+  "claims": []
+}

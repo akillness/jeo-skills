@@ -1,0 +1,4 @@
+interface:
+  display_name: "3Dviz Pro Max"
+  short_description: "Creative 3D scenes grounded in real knowledge"
+  default_prompt: "Use $3dviz-pro-max to build an expressive interactive 3D explanation of my idea."

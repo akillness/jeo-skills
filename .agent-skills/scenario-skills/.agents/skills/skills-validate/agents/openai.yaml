@@ -1,0 +1,6 @@
+interface:
+  short_description: "Validate <skill-name> [--pr <number>] [--plan-only]"
+  default_prompt: "$skills-validate <skill-name>"
+
+policy:
+  allow_implicit_invocation: false

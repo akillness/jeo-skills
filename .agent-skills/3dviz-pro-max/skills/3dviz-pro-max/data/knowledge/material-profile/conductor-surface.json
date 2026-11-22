@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.conductor-surface",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Conductor surface with intentional finish"
+  },
+  "aliases": {
+    "en": [
+      "conductor surface"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "environments-dioramas"
+  ],
+  "summary": "Make metal parts readable using finish zones and a reflected environment instead of a flat gray color.",
+  "objective": "Rotate the object under the fixed rig: reflections reveal the hub and rim rather than flattening them into one gray disc.",
+  "tags": [
+    "material-profile",
+    "conductor",
+    "surface"
+  ],
+  "example_prompts": [
+    "Make metal parts readable using finish zones and a reflected environment instead of a flat gray color."
+  ],
+  "content": {
+    "principles": [
+      "Separate bare metal, paint and corrosion patches according to the intended construction.",
+      "A polished hub and rough rim can express handling and machining; these are art choices until measured."
+    ],
+    "implementation": [
+      "Start bare metal regions at metalness 1 and place broad bright and dark reflection features around the object.",
+      "Hold geometry and exposure constant while selecting finish. Avoid adding emission to compensate for an unreadable reflection.",
+      "Keep wear at plausible contact or handled edges and inspect its scale at the intended camera distance."
+    ],
+    "observable_checks": [
+      "Rotate the object under the fixed rig: reflections reveal the hub and rim rather than flattening them into one gray disc.",
+      "Painted and bare regions remain distinguishable without depending solely on hue."
+    ]
+  },
+  "known_limits": [
+    "This is appearance guidance, not electrical conductivity or a measured alloy model.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+  ],
+  "related_ids": [
+    "recipe.coupled-gears",
+    "recipe.fantasy-village-diorama",
+    "knowledge.material-response-check"
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-conductor-surface",
+      "statement": "MeshStandardMaterial uses metalness 1 for metallic surfaces and recommends an environment map.",
+      "scope": "Metallic-roughness rendering workflow.",
+      "source_refs": [
+        {
+          "source_id": "source.three-standard-material",
+          "locator": "metalness; envMap"
+        }
+      ]
+    }
+  ]
+}

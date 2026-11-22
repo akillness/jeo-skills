@@ -1,0 +1,184 @@
+// SPDX-License-Identifier: Apache-2.0
+// curator/persistence.js — curation.json 저장 (디바운스 autosave + 유실 배너) / 산출물 다운로드
+// 로드 순서 SSoT = index.html (classic script 전역 어휘 공유; 빌드 스텝 없음)
+
+let saveTimer = null;
+
+function buildPayload() {
+  const states = {};
+  for (const [name, entry] of Object.entries(entries)) {
+    if (name === BASE_STATE) continue; // 가상 상태 — 큐레이션 사이드카에 절대 저장 금지
+    const transforms = {};
+    for (const [idx, t] of Object.entries(entry.transforms)) {
+      if (t.rotate || t.scale !== 1 || t.dx || t.dy || t.shx || t.shy || t.flipX) transforms[idx] = t;
+    }
+    // `selected` is the play order (what compose bakes). `order` is the full
+    // display order (sequence then pool) so the webview can restore the exact
+    // row arrangement on reload — compose/curation.py ignore it.
+    states[name] = {
+      selected: entry.order.filter((idx) => entry.sel.has(idx)),
+      order: entry.order.slice(),
+      transforms,
+    };
+    // 보관함 = 스키마의 deleted (UI 행/굽기 기본값에서 제외 — state_plan SSoT)
+    if (entry.archived && entry.archived.length) states[name].deleted = entry.archived.slice();
+    // 복제 인스턴스 맵 — order 에 남아 있는 복제만 저장 (제거된 복제는 흔적 없이 정리)
+    const liveClones = {};
+    for (const [ci, src] of Object.entries(entry.clones || {})) {
+      if (entry.order.includes(Number(ci))) liveClones[ci] = src;
+    }
+    if (Object.keys(liveClones).length) states[name].clones = liveClones;
+    // 링크 끊은 복제 (독립 편집 소유) — 살아있는 복제만
+    const liveUnlinked = [...(entry.unlinked || [])].filter((ci) => liveClones[ci] !== undefined);
+    if (liveUnlinked.length) states[name].unlinked = liveUnlinked;
+    // 인스턴스 이름 (표시용 별명 — 예: "깜빡임") — 살아있는 인스턴스만
+    const liveNames = {};
+    for (const [i, nm] of Object.entries(entry.names || {})) {
+      if (entry.order.includes(Number(i)) && nm) liveNames[i] = nm;
+    }
+    if (Object.keys(liveNames).length) states[name].names = liveNames;
+    // 픽셀 편집 사이드카 (빈 프레임 엔트리는 정리)
+    const px = {};
+    for (const [i, ops] of Object.entries(entry.pixels || {})) {
+      if (ops && Object.keys(ops).length) px[i] = ops;
+    }
+    if (Object.keys(px).length) states[name].pixels = px;
+    // per-state pixel-unfake — **트윈 줄만 저장** (계약): 트윈 없는 줄의 퍼펙은
+    // 표시 렌즈(측정 k 양자화)라 사이드카에 적으면 굽기 리졸버가 존재하지 않는
+    // .plain 변형을 요구하게 된다. 격자 토글과 같은 표시-전용 상태다.
+    // authoring 규칙의 SSoT 는 `authoredUnfake` 다. **해소 규칙과는 다른 함수**다 —
+    // 뷰가 안 적는 값도 사이드카엔 남아 있을 수 있고(서버 이월), 굽기는 그걸 읽는다.
+    const ownPp = authoredUnfake(name);
+    if (ownPp !== undefined) states[name].pixel_unfake = ownPp;
+    // 호흡 후처리 레이어 (maintainer 2026-07-18) — 켠 상태만 기록 (없음 = off)
+    if (entry.breathe) states[name].breathe = entry.breathe;
+    // 폐기 스키마는 **원본 그대로 되쓴다.** 정규화도 삭제도 하지 않는다 — 웹뷰가 못 읽는
+    // 사이드카를 웹뷰가 파괴하면 굽기의 loud reject 와 migrate-breathe 가 근거를 잃는다.
+    else if (entry.breatheRetired) states[name].breathe = entry.breatheRetired.raw;
+  }
+  const payload = { version: run.schemaVersion || 1, kind: "sprite-gen-curation", states };
+  // 방향 앵커 프레임 지정 — **항상 실어 보낸다** (해제도 의도다). 키가 없으면 서버가
+  // 이전 지정을 이월하므로(엔진 CLI 로 심은 지정 보호), 빈 객체가 "지정 없음" 의 표현이다.
+  payload.anchors = { ...anchorPicks };
+  // 채택 컬러웨이 — **variant 섹션이 있는 런에서만** authoring 한다. 이 런에 베이크
+  // 산출물이 없으면 뷰는 이 필드를 모르는 것이고, 안 싣는 것이 곧 "건드리지 않음" 이다
+  // (서버가 기존 값을 이월한다). 섹션이 있으면 해제도 의도라 빈 객체를 싣는다.
+  if (run.recolor) payload.recolor = recolorPicked ? { picked: recolorPicked } : {};
+  // echo the run generation this view was loaded with; the server rejects the autosave
+  // (409) if the run was re-imported/re-extracted under this session so stale selections
+  // never land on new frames.
+  if (run.runRevision) payload.runRevision = run.runRevision;
+  // run-wide default field: written only when every twin row agrees (uniform),
+  // so a consumer without per-state awareness still bakes the right variant.
+  // Mixed rows -> omitted; the per-state values above are the truth.
+  // `savedRunUnfake` 가 이 필드의 authoring 규칙을 소유한다 (트윈 줄이 전부 같을
+  // 때만 authoring; 아니면 로드된 값을 그대로 둔다 — 서버가 이월한다).
+  const widePp = savedRunUnfake();
+  if (widePp !== undefined) payload.pixel_unfake = widePp;
+  return payload;
+}
+
+let lastEditAt = 0;
+
+function scheduleSave() {
+  if (zoomView && zoomView.stateName === BASE_STATE) {
+    // 베이스 편집은 파일 굽기 대상 — "저장됨" 오해 방지, 명시 버튼으로만 반영
+    setStatus(t("baseUnsaved"));
+    return;
+  }
+  lastEditAt = Date.now();
+  setStatus(t("editing"));
+  if (typeof markAtlasStale === "function") markAtlasStale(); // 아틀라스 스테일 배지
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(save, 250);
+}
+
+// 대기 중인 디바운스 저장을 즉시 밀어낸다 — 서버가 디스크의 curation.json 을 읽는
+// 작업(아틀라스 굽기, GIF, export) 직전에 호출해 "마지막 250ms 편집 누락" 레이스 제거.
+async function flushSave() {
+  clearTimeout(saveTimer);
+  await save();
+}
+
+async function save() {
+  try {
+    const res = await fetch("/api/curation", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(buildPayload()),
+    });
+    if (!res.ok) throw new Error((await res.json()).error || res.statusText);
+    setStatus(t("saved"), "ok");
+    hideSaveLostBanner();
+    // 디스크 truth 가 바뀌었다 = 앵커 라이브 베이크도 달라졌을 수 있다 (앵커 프레임의
+    // 픽셀 편집·변형·시퀀스 변경). 칩은 서버에서 다시 받아야 최신이다 — 카운터의
+    // 단일 writer 는 여기다.
+    anchorCacheBust += 1;
+    if (typeof refreshAnchorChips === "function") refreshAnchorChips();
+    // 디스크 truth 갱신 후 — 레이지 아틀라스 자동 굽기 (보일 때만 실제 굽기)
+    if (typeof noteAtlasEdit === "function") noteAtlasEdit();
+  } catch (e) {
+    setStatus(t("saveFail") + e.message, "err");
+    // 작은 상태줄만으론 그림 그리는 중에 못 본다 (회귀 2026-07-17: 서버 재기동으로
+    // 죽은 탭에서 픽셀 편집이 조용히 유실, maintainer 발견). 저장이 실패하면 무시할 수
+    // 없는 배너로 알린다 — 편집은 계속 가능하되 "지금 저장 안 되고 있음" 이 보인다.
+    showSaveLostBanner(e.message);
+  }
+}
+
+let saveLostBanner = null;
+
+function showSaveLostBanner(detail) {
+  if (!saveLostBanner) {
+    saveLostBanner = document.createElement("div");
+    saveLostBanner.className = "save-lost-banner";
+    document.body.appendChild(saveLostBanner);
+  }
+  saveLostBanner.textContent = `${t("saveLostBanner")} (${detail})`;
+  saveLostBanner.hidden = false;
+}
+
+function hideSaveLostBanner() {
+  if (saveLostBanner) saveLostBanner.hidden = true;
+}
+
+async function downloadArtifact(kind, doneMsg) {
+  clearTimeout(saveTimer);
+  await save();
+  setStatus(t("baking"));
+  const res = await fetch(`/download/${kind}`);
+  if (!res.ok) {
+    let msg = "download failed";
+    try {
+      const data = await res.json();
+      msg = (data.stderr || data.error || msg).trim();
+    } catch { /* 비 JSON 에러 응답 — 기본 메시지 유지 */ }
+    throw new Error(msg);
+  }
+  const blob = await res.blob();
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = res.headers.get("X-Filename") || `${kind}.zip`;
+  link.click();
+  URL.revokeObjectURL(link.href);
+  if (kind === "atlas") await refreshFinalAtlas();  // 방금 재계산된 시트/문서 반영
+  setStatus(doneMsg, "ok");
+}
+
+for (const [id, kind, done] of [
+  ["compose", "atlas", () => t("composeDone")],
+  ["export", "pngs", () => STR[lang].exportDone()],
+  ["export-gif", "gifs", () => STR[lang].exportGifDone()],
+]) {
+  document.getElementById(id).addEventListener("click", async (ev) => {
+    const btn = ev.currentTarget;
+    btn.disabled = true;
+    try {
+      await downloadArtifact(kind, done());
+    } catch (e) {
+      setStatus(t(id === "compose" ? "composeFail" : "exportFail") + e.message, "err");
+    } finally {
+      btn.disabled = false;
+    }
+  });
+}

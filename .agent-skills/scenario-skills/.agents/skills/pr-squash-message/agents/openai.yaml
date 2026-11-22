@@ -1,0 +1,4 @@
+interface:
+  display_name: 'PR Squash Message'
+  short_description: 'Build one Conventional Commits squash message for the PR'
+  default_prompt: 'Use $pr-squash-message to write the squash commit message for the current pull request.'

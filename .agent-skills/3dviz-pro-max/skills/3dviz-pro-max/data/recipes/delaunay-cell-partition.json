@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "id": "recipe.delaunay-cell-partition",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Delaunay tetrahedra and the empty sphere property"
+  },
+  "aliases": {
+    "en": [
+      "Delaunay triangulation",
+      "empty sphere",
+      "tetrahedral partition"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry"
+  ],
+  "summary": "Partition space around a point set and let the defining empty-sphere condition be tested rather than assumed.",
+  "objective": "Build a Delaunay tetrahedralisation where selecting a cell shows its circumscribing sphere and confirms that no other vertex lies inside it.",
+  "tags": [
+    "delaunay",
+    "tetrahedra",
+    "partition"
+  ],
+  "subject_terms": [
+    "Delaunay triangulation",
+    "empty sphere property",
+    "circumscribing sphere",
+    "tetrahedron",
+    "cospherical",
+    "convex hull",
+    "infinite cell"
+  ],
+  "intent_signals": [
+    "Show how a set of points partitions space into tetrahedra.",
+    "Test the empty sphere property on a cell I select."
+  ],
+  "example_prompts": [
+    "Build a 3D Delaunay triangulation with selectable cells and their circumscribing spheres.",
+    "Show what happens to the triangulation when five points become cospherical."
+  ],
+  "negative_signals": [
+    "Not a meshing pipeline for simulation: element quality, refinement and boundary conformity are out of scope.",
+    "Not a Voronoi diagram recipe; the dual is only referenced, not asserted here."
+  ],
+  "not_for": [
+    "Not a meshing pipeline for simulation: element quality, refinement and boundary conformity are out of scope.",
+    "Not a Voronoi diagram recipe; the dual is only referenced, not asserted here."
+  ],
+  "entities": [
+    {
+      "name": "Vertex set",
+      "guidance": "Give editable points stable IDs. In the full-dimensional case the boundary of the finite-cell union is the convex-hull surface, whose facets deserve their own highlight; it is not the boundary of the finite point set itself."
+    },
+    {
+      "name": "Tetrahedral cells",
+      "guidance": "Show cells as separable tetrahedra with shared faces, able to be exploded outward without losing adjacency information."
+    },
+    {
+      "name": "Circumsphere probe",
+      "guidance": "Offer the circumscribing sphere only for finite, full-dimensional tetrahedra. Infinite cells have no meaningful circumsphere, and when the point set drops below three dimensions the probe is disabled and the rank drop is reported instead."
+    }
+  ],
+  "state_contract": {
+    "model": "Point list, a triangulation recomputed after edits, per-cell adjacency including the infinite cells used as boundary scaffolding, the current triangulation dimension, and an empty-sphere test with a stated tolerance evaluated only on finite full-dimensional cells from canonical un-exploded coordinates. Ties in near-cospherical configurations are resolved by the implementation.",
+    "authority": "The triangulation structure is authoritative; exploded cell positions are display transforms that never alter adjacency.",
+    "actions": [
+      "Select a cell and run its empty-sphere test.",
+      "Explode and reassemble the cells.",
+      "Drag a vertex and watch cells flip.",
+      "Reset the point set and the explode amount."
+    ]
+  },
+  "invariants": [
+    "Each face is incident to exactly two cells once infinite cells are counted; a convex hull facet is incident to one finite cell and one infinite cell, which is scaffolding rather than a drawable tetrahedron.",
+    "A reported empty-sphere test names its tolerance instead of implying exactness.",
+    "Exploding cells changes only their transforms, so collapsing the explode returns the exact original partition.",
+    "The union of the finite cells covers the convex hull of the point set, which is not the same thing as the point set itself.",
+    "A selected cell is invalidated when the triangulation is recomputed, and sphere geometry is always computed from canonical coordinates rather than from exploded display positions."
+  ],
+  "motion_guidance": [
+    "Animate a cell flip when a vertex crosses a degenerate configuration; a silent retriangulation hides the most interesting event.",
+    "Keep explode motion radial from the centroid so adjacency stays visually traceable."
+  ],
+  "known_limits": [
+    "Degenerate cospherical configurations have more than one valid triangulation; the one shown is whatever the implementation chooses.",
+    "No element quality metric is computed, so cells may be arbitrarily thin.",
+    "When the point set is coplanar or lower dimensional the triangulation dimension drops below three; the scene reports that state and disables the sphere probe rather than drawing degenerate cells.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-delaunay-empty-sphere",
+      "statement": "Delaunay triangulations have the empty sphere property: the circumscribing sphere of each cell contains no other vertex of the triangulation in its interior.",
+      "scope": "Defining property of finite full-dimensional cells; floating-point tests are approximate and need a stated tolerance, and the property is not evaluated on infinite cells or on degenerate lower-dimensional configurations.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-cgal-triangulation-3",
+          "locator": "3D Triangulations, Definition and Representation; Delaunay empty sphere property"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-delaunay-cospherical",
+      "statement": "The triangulation is uniquely defined except in degenerate cases such as five cospherical points, where an implementation may still return one particular triangulation.",
+      "scope": "Uniqueness caveat as documented for one library version.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-cgal-triangulation-3",
+          "locator": "3D Triangulations, uniqueness and degenerate cases"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-delaunay-infinite-cell",
+      "statement": "Convex hull facets can be handled uniformly by attaching each to an infinite cell with an auxiliary infinite vertex, so every facet is incident to exactly two cells.",
+      "scope": "Documented representation choice for boundary handling, not a geometric property of the point set; the infinite vertex has no meaningful coordinates for geometric predicates.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-cgal-triangulation-3",
+          "locator": "3D Triangulations, Representation and Degenerate Dimensions; infinite vertex and infinite cells"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Tetrahedral cells",
+      "structure": "Solid tetrahedra with slightly inset faces so neighbouring cells remain visually separable when assembled.",
+      "material": "A single neutral material with per-cell value variation; reserve saturated colour for the selected cell and its circumsphere.",
+      "articulation": "Cells translate along the centroid direction under an explode parameter and return exactly on reset."
+    },
+    {
+      "family": "Circumsphere probe",
+      "structure": "A thin wireframe sphere plus an opaque centre marker, sized from the selected cell only.",
+      "material": "Wire-only sphere so interior vertices stay visible; any vertex found inside is marked with a distinct failure badge.",
+      "articulation": "Rebuilt whenever the selection or the point set changes."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Static geometric partition with display-only explode; no physics.",
+    "checks": [
+      "Every interior face reports exactly two incident cells.",
+      "Explode set to zero reproduces the original vertex positions."
+    ]
+  },
+  "related_ids": [
+    "recipe.convex-hull-construction",
+    "knowledge.cutaway-explode",
+    "knowledge.structural-coherence"
+  ]
+}

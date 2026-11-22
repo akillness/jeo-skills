@@ -1,0 +1,62 @@
+{
+  "byte_cap": 256000,
+  "capture_mode": "baked-frame",
+  "frame": {
+    "height": 1080,
+    "width": 1920
+  },
+  "generated_at": "2026-09-10T00:09:22+00:00",
+  "items": [
+    {
+      "bytes": 74416,
+      "encoder": "pillow-jpeg",
+      "height": 540,
+      "look": "overcast-morning",
+      "path": "site/public/media/hero/overcast-morning-960.jpg",
+      "quality": 66,
+      "sha256": "10d2364c3a203cdfcd3d67af9a204dd1ced27e2069ca69131d70e804a91aa7fe",
+      "source": "docs/demos/showcase/village-overcast-morning.jpg",
+      "source_sha256": "038d491279d98e79a30c64df9600cbd1fe4cb7e59d3f71171dcabf09c8b12747",
+      "width": 960
+    },
+    {
+      "bytes": 60736,
+      "encoder": "pillow-webp",
+      "height": 540,
+      "look": "overcast-morning",
+      "path": "site/public/media/hero/overcast-morning-960.webp",
+      "quality": 78,
+      "sha256": "ebb0e08b6c27369bb8a3e30eaaf056c2e7373275c8fc7177778504c6813ae9d4",
+      "source": "docs/demos/showcase/village-overcast-morning.jpg",
+      "source_sha256": "038d491279d98e79a30c64df9600cbd1fe4cb7e59d3f71171dcabf09c8b12747",
+      "width": 960
+    },
+    {
+      "bytes": 251728,
+      "encoder": "pillow-jpeg",
+      "height": 1080,
+      "look": "overcast-morning",
+      "path": "site/public/media/hero/overcast-morning.jpg",
+      "quality": 72,
+      "sha256": "45e801fe523f18bf88abdb8b4d4b1670c55a833a3f2bff526904f603dc03db22",
+      "source": "docs/demos/showcase/village-overcast-morning.jpg",
+      "source_sha256": "038d491279d98e79a30c64df9600cbd1fe4cb7e59d3f71171dcabf09c8b12747",
+      "width": 1920
+    },
+    {
+      "bytes": 211834,
+      "encoder": "pillow-webp",
+      "height": 1080,
+      "look": "overcast-morning",
+      "path": "site/public/media/hero/overcast-morning.webp",
+      "quality": 80,
+      "sha256": "9072e171ad7f805072c931e85096265478bc0bebae6d0185000f328914c5163d",
+      "source": "docs/demos/showcase/village-overcast-morning.jpg",
+      "source_sha256": "038d491279d98e79a30c64df9600cbd1fe4cb7e59d3f71171dcabf09c8b12747",
+      "width": 1920
+    }
+  ],
+  "playwright_version": null,
+  "renderer": null,
+  "source_url": null
+}

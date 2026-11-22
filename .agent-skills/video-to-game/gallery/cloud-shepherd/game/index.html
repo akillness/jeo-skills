@@ -1,0 +1,1457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Cloud Shepherd</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#2b4a6f; --sky:#bfe0f5; }
+  html, body { margin:0; height:100%; overflow:hidden; background:var(--sky); font-family:'Fredoka', ui-rounded, 'SF Pro Rounded', system-ui, sans-serif; color:var(--ink); user-select:none; -webkit-user-select:none; touch-action:none; }
+  canvas#c { position:fixed; inset:0; width:100%; height:100%; display:block; outline:none; }
+  .overlay { position:fixed; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; transition:opacity .9s ease; pointer-events:none; }
+  .hidden { opacity:0 !important; pointer-events:none !important; }
+  #loading { background:radial-gradient(ellipse at 50% 40%, #e9f6ff 0%, #bfe0f5 60%, #9ccbec 100%); z-index:30; }
+  #loading .puff { width:120px; height:120px; background:url(assets/ui/icons.png) 0 0/200% 200% no-repeat; animation:bob 2.2s ease-in-out infinite; }
+  #bar { margin-top:22px; width:min(300px,60vw); height:10px; border-radius:6px; background:rgba(255,255,255,.55); overflow:hidden; box-shadow:inset 0 1px 3px rgba(40,90,140,.25); }
+  #bar > i { display:block; height:100%; width:0%; background:linear-gradient(90deg,#ffffff,#e6f3ff); border-radius:6px; transition:width .25s ease; }
+  #title { z-index:20; background:linear-gradient(180deg, rgba(190,225,248,.0) 0%, rgba(190,225,248,.0) 55%, rgba(120,175,220,.28) 100%); }
+  #title .logo, #win .logo { width:min(660px, 84vw); max-height:46vh; object-fit:contain; filter:drop-shadow(0 8px 22px rgba(30,70,120,.28)); animation:bob 4.5s ease-in-out infinite; }
+  .start { margin-top:2.4vh; font-size:clamp(17px,2.2vw,22px); font-weight:600; color:#fff; text-shadow:0 2px 8px rgba(20,60,110,.5); animation:pulse 1.8s ease-in-out infinite; }
+  .keys { margin-top:2.2vh; display:flex; gap:10px 22px; flex-wrap:wrap; justify-content:center; max-width:92vw; font-size:15px; font-weight:500; color:#fff; text-shadow:0 1px 4px rgba(20,60,110,.55); }
+  kbd { display:inline-block; min-width:16px; padding:2px 7px; margin:0 1px; border-radius:7px; background:rgba(255,255,255,.92); color:var(--ink); font:600 13px 'Fredoka',sans-serif; box-shadow:0 2px 0 rgba(40,80,130,.35); text-shadow:none; text-align:center; }
+  #hud { position:fixed; top:14px; left:16px; display:flex; gap:8px; z-index:10; transition:opacity .6s; pointer-events:none; }
+  #hud .f { width:54px; height:54px; background:url(assets/ui/icons.png) 100% 0/200% 200% no-repeat; filter:drop-shadow(0 3px 5px rgba(30,70,120,.3)) saturate(.85); opacity:.92; transition:transform .5s cubic-bezier(.3,1.8,.5,1); }
+  #hud .f.done { background-position:0 100%; transform:scale(1.12); opacity:1; }
+  #hint { position:fixed; bottom:16px; left:50%; transform:translateX(-50%); z-index:10; width:max-content; max-width:calc(100vw - 32px); text-align:center; font-size:14px; font-weight:500; color:#fff; text-shadow:0 1px 4px rgba(20,60,110,.6); transition:opacity 1.2s; pointer-events:none; }
+  #arrow { position:fixed; width:46px; height:46px; margin:-23px 0 0 -23px; z-index:9; background:url(assets/ui/icons.png) 100% 100%/200% 200% no-repeat; filter:drop-shadow(0 2px 4px rgba(30,70,120,.35)); transition:opacity .4s; pointer-events:none; }
+  #win { z-index:20; background:radial-gradient(ellipse at 50% 45%, rgba(255,255,255,.18), rgba(140,190,235,.25)); }
+  #win .time { margin-top:1.2vh; font-size:26px; font-weight:700; color:#fff; text-shadow:0 2px 8px rgba(20,60,110,.5); }
+  #touch { position:fixed; inset:0; z-index:8; display:none; }
+  #stick { position:fixed; width:110px; height:110px; border-radius:50%; background:rgba(255,255,255,.22); border:2px solid rgba(255,255,255,.55); display:none; pointer-events:none; }
+  #stick i { position:absolute; left:50%; top:50%; width:46px; height:46px; margin:-23px; border-radius:50%; background:rgba(255,255,255,.85); }
+  .tbtn { position:fixed; width:74px; height:74px; border-radius:50%; background:rgba(255,255,255,.35); border:2px solid rgba(255,255,255,.7); color:#fff; font:700 15px 'Fredoka',sans-serif; display:flex; align-items:center; justify-content:center; text-shadow:0 1px 3px rgba(20,60,110,.6); }
+  @keyframes bob { 0%,100% { transform:translateY(0) } 50% { transform:translateY(-10px) } }
+  @keyframes pulse { 0%,100% { opacity:1 } 50% { opacity:.55 } }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<canvas id="c" tabindex="0"></canvas>
+
+<div id="loading" class="overlay"><div class="puff"></div><div id="bar"><i></i></div></div>
+
+<div id="title" class="overlay hidden">
+  <img class="logo" src="assets/ui/logo.png" alt="Cloud Shepherd">
+  <div class="start">Click or press Enter</div>
+  <div class="keys">
+    <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> / <kbd>&uarr;</kbd><kbd>&larr;</kbd><kbd>&darr;</kbd><kbd>&rarr;</kbd> marcher</span>
+    <span><kbd>Maj</kbd> courir</span>
+    <span><kbd>Espace</kbd> houlette</span>
+    <span><kbd>E</kbd> siffler</span>
+  </div>
+</div>
+
+<div id="hud" class="hidden"></div>
+<div id="hint" class="hidden">Gather the cloud-sheep, push them together, and lead the big cloud over a dry field</div>
+<div id="arrow" class="hidden"></div>
+
+<div id="win" class="overlay hidden">
+  <img class="logo" src="assets/ui/logo.png" alt="Cloud Shepherd">
+  <div class="time" id="wintime"></div>
+  <div class="start">Enter to play again</div>
+</div>
+
+<div id="touch"><div id="stick"><i></i></div>
+  <div class="tbtn" id="tSwing" style="right:26px;bottom:34px">Houlette</div>
+  <div class="tbtn" id="tWhistle" style="right:112px;bottom:22px;width:60px;height:60px;font-size:13px">Siffler</div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { HorizontalTiltShiftShader } from 'three/addons/shaders/HorizontalTiltShiftShader.js';
+import { VerticalTiltShiftShader } from 'three/addons/shaders/VerticalTiltShiftShader.js';
+
+// =====================================================================
+//  Utilities
+// =====================================================================
+const V2 = THREE.Vector2, V3 = THREE.Vector3;
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const lerp = (a, b, t) => a + (b - a) * t;
+const sstep = (e0, e1, x) => { const t = clamp((x - e0) / (e1 - e0), 0, 1); return t * t * (3 - 2 * t); };
+const damp = (a, b, k, dt) => lerp(a, b, 1 - Math.exp(-k * dt));
+const wrapPi = (a) => { a = (a + Math.PI) % (Math.PI * 2); if (a < 0) a += Math.PI * 2; return a - Math.PI; };
+const dampAngle = (a, b, k, dt) => a + wrapPi(b - a) * (1 - Math.exp(-k * dt));
+function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const rng = mulberry32(17);
+const R = (a = 0, b = 1) => a + rng() * (b - a);
+const rand = (a = 0, b = 1) => a + Math.random() * (b - a);
+const elastic = (t) => t <= 0 ? 0 : t >= 1 ? 1 : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * (2 * Math.PI / 3)) + 1;
+
+// =====================================================================
+//  Renderer / scene / post
+// =====================================================================
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+const DPR = Math.min(window.devicePixelRatio || 1, 1.75);
+renderer.setPixelRatio(DPR);
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.95;
+
+const scene = new THREE.Scene();
+const FOG = new THREE.Color(0xc6e4f7);
+scene.background = FOG.clone();
+scene.fog = new THREE.Fog(FOG, 62, 175);
+
+const camera = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 0.3, 420);
+camera.position.set(0, 16, 28);
+
+const hemi = new THREE.HemisphereLight(0xe8f5ff, 0x9cc4e4, 0.78);
+scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xfff0dc, 2.4);
+const SUN_DIR = new V3(0.42, 1.0, -0.30).normalize();
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -36, right: 36, top: 36, bottom: -36, near: 1, far: 150 });
+sun.shadow.bias = -0.00035;
+sun.shadow.normalBias = 0.035;
+scene.add(sun, sun.target);
+
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+// soft ambient occlusion: the clay-toy contact shading of the source video
+const gtao = new GTAOPass(scene, camera, Math.round(innerWidth * DPR / 2), Math.round(innerHeight * DPR / 2));
+gtao.updateGtaoMaterial({ radius: 0.9, distanceExponent: 1.4, thickness: 1.5, scale: 1.0, samples: 12, distanceFallOff: 1.0 });
+gtao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, rings: 2, samples: 12 });
+gtao.blendIntensity = 0.7;
+composer.addPass(gtao);
+const bloom = new UnrealBloomPass(new V2(innerWidth, innerHeight), 0.18, 0.55, 0.92);
+composer.addPass(bloom);
+const tiltH = new ShaderPass(HorizontalTiltShiftShader);
+const tiltV = new ShaderPass(VerticalTiltShiftShader);
+composer.addPass(tiltH); composer.addPass(tiltV);
+const GradeShader = {
+  uniforms: { tDiffuse: { value: null }, uVig: { value: 0.55 }, uSat: { value: 1.14 }, uLift: { value: new THREE.Color(0.006, 0.01, 0.02) } },
+  vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+  fragmentShader: `uniform sampler2D tDiffuse; uniform float uVig; uniform float uSat; uniform vec3 uLift; varying vec2 vUv;
+    void main(){ vec4 c = texture2D(tDiffuse, vUv); float l = dot(c.rgb, vec3(0.2126,0.7152,0.0722));
+      c.rgb = mix(vec3(l), c.rgb, uSat) + uLift; vec2 d = vUv - 0.5; d.x *= 1.25; c.rgb *= 1.0 - dot(d,d) * uVig; gl_FragColor = c; }`
+};
+const grade = new ShaderPass(GradeShader);
+composer.addPass(grade);
+composer.addPass(new OutputPass());
+function setTilt() {
+  tiltH.uniforms.h.value = 2.6 / innerWidth; tiltV.uniforms.v.value = 2.6 / innerHeight;
+  tiltH.uniforms.r.value = 0.5; tiltV.uniforms.r.value = 0.5;
+}
+setTilt();
+
+function onResize() {
+  camera.fov = innerWidth < innerHeight ? 54 : 40; // portrait screens get a wider view
+  renderer.setSize(innerWidth, innerHeight);
+  composer.setSize(innerWidth, innerHeight);
+  gtao.setSize(Math.round(innerWidth * DPR / 2), Math.round(innerHeight * DPR / 2));
+  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  setTilt();
+  if (fx) fx.mat.uniforms.uScale.value = innerHeight * DPR / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
+}
+addEventListener('resize', onResize);
+
+// =====================================================================
+//  Asset loading (every visual asset below was generated with fal)
+// =====================================================================
+const MODEL_FILES = {
+  shepherd: 'shepherd', crook: 'crook', sheep: 'sheep', cloud: 'cloud', pine: 'pine', treeY: 'tree_yellow',
+  bush: 'bush', rock: 'rock', fence: 'fence', house: 'house', stump: 'stump', wheat: 'wheat', sprout: 'sprout',
+  flowerY: 'flower_yellow', flowerW: 'flower_white', tuft: 'grass_tuft'
+};
+const TEX_FILES = {
+  sky: ['tex/sky.jpg', true], streaks: ['tex/streaks.jpg', false], grass: ['tex/grass.jpg', true], soil: ['tex/soil.jpg', true],
+  soilWet: ['tex/soil_wet.jpg', true], fx: ['fx/fx_atlas.jpg', true], rainbow: ['fx/rainbow.jpg', true], pano: ['tex/sky_pano.jpg', true]
+};
+const SOUND_FILES = {
+  music: 'music.mp3', wind: 'wind.mp3', rain: 'rain.mp3', baa: 'baa.mp3', poof: 'poof.mp3', swish: 'swish.mp3',
+  chime: 'chime.mp3', thunder: 'thunder.mp3', pop: 'pop.mp3', whistle: 'whistle.mp3', step: 'step.mp3'
+};
+const M = {}, T = {}, S = {};
+const gltfLoader = new GLTFLoader();
+const texLoader = new THREE.TextureLoader();
+let AC = null, master = null, musicGain = null, sfxGain = null;
+try { AC = new (window.AudioContext || window.webkitAudioContext)(); master = AC.createGain(); master.connect(AC.destination); musicGain = AC.createGain(); musicGain.gain.value = 0.42; musicGain.connect(master); sfxGain = AC.createGain(); sfxGain.gain.value = 0.9; sfxGain.connect(master); } catch (e) { AC = null; }
+
+async function loadAll() {
+  const jobs = [];
+  for (const [k, f] of Object.entries(MODEL_FILES)) jobs.push(gltfLoader.loadAsync(`assets/models/${f}.glb`).then(g => { M[k] = g; }).catch(e => console.warn('model missing', f)));
+  for (const [k, [f, srgb]] of Object.entries(TEX_FILES)) jobs.push(texLoader.loadAsync(`assets/${f}`).then(t => {
+    t.colorSpace = srgb ? THREE.SRGBColorSpace : THREE.NoColorSpace;
+    // ground textures tile with mirroring so their edges always match
+    t.wrapS = t.wrapT = ['sky', 'streaks', 'grass', 'soil', 'soilWet'].includes(k) ? THREE.MirroredRepeatWrapping : THREE.ClampToEdgeWrapping;
+    t.anisotropy = renderer.capabilities.getMaxAnisotropy(); T[k] = t;
+  }).catch(e => console.warn('texture missing', f)));
+  if (AC) for (const [k, f] of Object.entries(SOUND_FILES)) jobs.push(fetch(`assets/audio/${f}`).then(r => { if (!r.ok) throw 0; return r.arrayBuffer(); }).then(b => AC.decodeAudioData(b)).then(buf => { S[k] = buf; }).catch(e => console.warn('sound missing', f)));
+  let done = 0; const bar = document.querySelector('#bar > i');
+  jobs.forEach(p => p.finally(() => { done++; bar.style.width = (100 * done / jobs.length).toFixed(0) + '%'; }));
+  await Promise.all(jobs);
+}
+
+// ----- model preparation: bake transforms, normalize, fix materials -----
+function prepModel(gltf, { height, width, length, rotY = 0, rough = 0.82, color = null, emissive = null, emissiveIntensity = 0 } = {}) {
+  if (!gltf) return null;
+  const root = gltf.scene; root.updateMatrixWorld(true);
+  const parts = [];
+  root.traverse(o => { if (o.isMesh) { const g = o.geometry.clone(); g.applyMatrix4(o.matrixWorld); parts.push({ geometry: g, material: o.material }); } });
+  const rot = new THREE.Matrix4().makeRotationY(rotY);
+  const box = new THREE.Box3();
+  parts.forEach(p => { p.geometry.applyMatrix4(rot); p.geometry.computeBoundingBox(); box.union(p.geometry.boundingBox); });
+  const size = box.getSize(new V3());
+  const s = height ? height / size.y : width ? width / Math.max(size.x, size.z) : length ? length / size.z : 1;
+  const m = new THREE.Matrix4().makeScale(s, s, s).multiply(new THREE.Matrix4().makeTranslation(-(box.min.x + box.max.x) / 2, -box.min.y, -(box.min.z + box.max.z) / 2));
+  parts.forEach(p => {
+    p.geometry.applyMatrix4(m); p.geometry.computeBoundingBox(); p.geometry.computeBoundingSphere();
+    const mat = p.material = p.material.clone();
+    mat.metalness = 0; mat.roughness = rough; mat.envMapIntensity = 0.55;
+    if (color) mat.color.copy(color);
+    if (emissive) { mat.emissive = new THREE.Color(emissive); mat.emissiveIntensity = emissiveIntensity; }
+    if (mat.map) mat.map.anisotropy = 8;
+  });
+  return { parts, size: size.multiplyScalar(s) };
+}
+function instantiate(model, { cast = true, receive = true } = {}) {
+  const g = new THREE.Group();
+  if (!model) return g;
+  model.parts.forEach(p => { const mesh = new THREE.Mesh(p.geometry, p.material); mesh.castShadow = cast; mesh.receiveShadow = receive; g.add(mesh); });
+  return g;
+}
+function makeInstanced(model, mats, { cast = true, receive = true, material = null, colors = false } = {}) {
+  const g = new THREE.Group(); g.userData.meshes = [];
+  if (!model || !mats.length) return g;
+  model.parts.forEach(p => {
+    const im = new THREE.InstancedMesh(p.geometry, material || p.material, mats.length);
+    mats.forEach((m, i) => im.setMatrixAt(i, m));
+    if (colors) { const c = new THREE.Color(1, 1, 1); for (let i = 0; i < mats.length; i++) im.setColorAt(i, c); }
+    im.castShadow = cast; im.receiveShadow = receive; im.frustumCulled = true; im.computeBoundingSphere(); im.boundingSphere.radius += 1.5;
+    g.add(im); g.userData.meshes.push(im);
+  });
+  return g;
+}
+
+// wind sway for flora (instanced or not)
+const U = { time: { value: 0 }, player: { value: new THREE.Vector3(0, -100, 0) } };
+function addSway(mat, amount, stiffY = 1) {
+  const m = mat.clone();
+  m.onBeforeCompile = (sh) => {
+    sh.uniforms.uTime = U.time; sh.uniforms.uSway = { value: amount }; sh.uniforms.uPlayer = U.player;
+    sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nuniform float uTime; uniform float uSway; uniform vec3 uPlayer;')
+      .replace('#include <begin_vertex>', `#include <begin_vertex>
+        vec4 swOrigin = vec4(0.0, 0.0, 0.0, 1.0);
+        #ifdef USE_INSTANCING
+          swOrigin = instanceMatrix * swOrigin;
+        #endif
+        swOrigin = modelMatrix * swOrigin;
+        float swH = max(transformed.y, 0.0) * ${stiffY.toFixed(3)};
+        float swP = uTime * 1.6 + swOrigin.x * 0.31 + swOrigin.z * 0.23;
+        transformed.x += (sin(swP) + 0.35 * sin(swP * 2.3 + 1.7)) * swH * swH * uSway;
+        transformed.z += cos(swP * 0.83) * swH * swH * uSway * 0.6;
+        // bend away from the shepherd when he walks through
+        vec2 swD = swOrigin.xz - uPlayer.xz; float swL = length(swD);
+        float swPush = smoothstep(1.25, 0.15, swL) * swH;
+        if (swPush > 0.0) {
+          mat3 swM = mat3(modelMatrix);
+          #ifdef USE_INSTANCING
+            swM = swM * mat3(instanceMatrix);
+          #endif
+          vec3 swW = vec3(swD.x, 0.0, swD.y) / max(swL, 0.001) * swPush * 0.55;
+          transformed += transpose(swM) * swW / max(dot(swM[0], swM[0]), 1e-4);
+          transformed.y -= swPush * 0.18 * swH;
+        }`);
+  };
+  return m;
+}
+
+// =====================================================================
+//  Procedural skinning (the GLBs are static meshes: we rig them in code)
+// =====================================================================
+function buildRig(model, boneDefs, weightFn) {
+  const p = model.parts[0];
+  const geo = p.geometry.clone();
+  const pos = geo.attributes.position, n = pos.count;
+  const si = new Uint16Array(n * 4), sw = new Float32Array(n * 4);
+  for (let i = 0; i < n; i++) {
+    const ws = weightFn(pos.getX(i), pos.getY(i), pos.getZ(i)).filter(w => w[1] > 1e-4).sort((a, b) => b[1] - a[1]).slice(0, 4);
+    let tot = 0; ws.forEach(w => tot += w[1]);
+    ws.forEach((w, k) => { si[i * 4 + k] = w[0]; sw[i * 4 + k] = w[1] / tot; });
+  }
+  geo.setAttribute('skinIndex', new THREE.Uint16BufferAttribute(si, 4));
+  geo.setAttribute('skinWeight', new THREE.Float32BufferAttribute(sw, 4));
+  return { geometry: geo, material: p.material, boneDefs };
+}
+function instantiateRig(rig) {
+  const bones = rig.boneDefs.map(d => { const b = new THREE.Bone(); b.name = d.name; return b; });
+  rig.boneDefs.forEach((d, i) => {
+    if (d.parent >= 0) { const pp = rig.boneDefs[d.parent].pos; bones[d.parent].add(bones[i]); bones[i].position.set(d.pos[0] - pp[0], d.pos[1] - pp[1], d.pos[2] - pp[2]); }
+    else bones[i].position.set(...d.pos);
+  });
+  const mesh = new THREE.SkinnedMesh(rig.geometry, rig.material);
+  mesh.add(bones[0]); mesh.updateMatrixWorld(true);
+  mesh.bind(new THREE.Skeleton(bones));
+  mesh.castShadow = true; mesh.receiveShadow = true; mesh.frustumCulled = false;
+  const b = {}; bones.forEach(x => b[x.name] = x);
+  rig.boneDefs.forEach((d, i) => { bones[i].userData.rest = bones[i].position.clone(); });
+  return { mesh, b };
+}
+
+// =====================================================================
+//  World definition
+// =====================================================================
+const WORLD = { minX: -48, maxX: 48, minZ: -94, maxZ: 22 };
+const ISLAND_H = 0.34, BEVEL = 0.24;
+const FIELD_DEFS = [
+  { x: 15, z: -17, w: 11, d: 10, need: 2 },
+  { x: -16, z: -36, w: 12, d: 11, need: 3 },
+  { x: 22, z: -48, w: 13, d: 12, need: 5 },
+  { x: 0, z: -70, w: 17, d: 15, need: 8 },
+];
+const GRASS_ISLANDS = [
+  { x: 0, z: 2, r: 12.5, home: true },
+  { x: -20, z: -10, r: 7.2, house: true },
+  { x: 25, z: -4, r: 5.2 }, { x: -29, z: -27, r: 4.6 }, { x: 35, z: -29, r: 5.0 },
+  { x: 9, z: -36, r: 3.6 }, { x: -31, z: -57, r: 5.6 }, { x: 39, z: -61, r: 4.2 },
+  { x: -15, z: -85, r: 5.0 }, { x: 19, z: -84, r: 4.6 }, { x: -6, z: -51, r: 3.0 }, { x: 33, z: 9, r: 3.6 }, { x: -33, z: 4, r: 4.2 }
+];
+const ROCKS = [[6.5, -13.5, 1.0], [-5, -22, 1.3], [29, -19, 0.9], [-26, -45, 1.2], [11, -58, 1.0], [31, -73, 1.3], [-22, -70, 0.9], [-38, -15, 1.1], [42, -42, 0.9], [2, -45, 0.8], [-12, 14, 1.0], [16, 13, 0.9]];
+
+class Island {
+  constructor(o) {
+    Object.assign(this, { h: ISLAND_H, bevel: BEVEL, kind: 'round' }, o);
+    if (this.kind === 'round') this.waves = [[3, R(0.03, 0.06), R(0, 6.28)], [5, R(0.015, 0.035), R(0, 6.28)], [2, R(0.02, 0.05), R(0, 6.28)]];
+    this.outline = this.makeOutline();
+  }
+  radiusAt(t) { let r = this.r; for (const [k, a, p] of this.waves) r *= 1 + a * Math.sin(k * t + p); return r; }
+  sdf(x, z) {
+    const dx = x - this.x, dz = z - this.z;
+    if (this.kind === 'round') return Math.hypot(dx, dz) - this.radiusAt(Math.atan2(dz, dx));
+    const c = this.corner, qx = Math.abs(dx) - (this.w / 2 - c), qz = Math.abs(dz) - (this.d / 2 - c);
+    return Math.hypot(Math.max(qx, 0), Math.max(qz, 0)) + Math.min(Math.max(qx, qz), 0) - c;
+  }
+  heightAt(x, z) {
+    const d = this.sdf(x, z);
+    if (d >= 0) return 0;
+    const b = this.bevel; if (d <= -b) return this.h;
+    const s = d + b; return (this.h - b) + Math.sqrt(Math.max(0, b * b - s * s));
+  }
+  makeOutline() {
+    const pts = [];
+    if (this.kind === 'round') { const N = Math.max(48, Math.round(this.r * 9)); for (let i = 0; i < N; i++) { const t = i / N * Math.PI * 2, r = this.radiusAt(t); pts.push(new V2(this.x + Math.cos(t) * r, this.z + Math.sin(t) * r)); } }
+    else {
+      const c = this.corner, hw = this.w / 2 - c, hd = this.d / 2 - c, seg = 10;
+      for (const [cx, cz, a0] of [[hw, hd, 0], [-hw, hd, Math.PI / 2], [-hw, -hd, Math.PI], [hw, -hd, Math.PI * 1.5]])
+        for (let i = 0; i <= seg; i++) { const a = a0 + i / seg * Math.PI / 2; pts.push(new V2(this.x + cx + Math.cos(a) * c, this.z + cz + Math.sin(a) * c)); }
+    }
+    return pts;
+  }
+  normals() {
+    const P = this.outline, N = P.length;
+    return P.map((p, i) => { const a = P[(i - 1 + N) % N], c = P[(i + 1) % N]; const tx = c.x - a.x, tz = c.y - a.y, l = Math.hypot(tx, tz) || 1; return new V2(tz / l, -tx / l); });
+  }
+}
+
+function buildSlab(isl, tile, sideShade) {
+  const P = isl.outline, N = P.length, nrm = isl.normals(), h = isl.h, b = isl.bevel, K = 7;
+  const pos = [], uv = [], col = [], idx = [];
+  let cx = 0, cz = 0; P.forEach(p => { cx += p.x; cz += p.y; }); cx /= N; cz /= N;
+  pos.push(cx, h, cz); uv.push(cx / tile, cz / tile); col.push(1, 1, 1);
+  for (let k = 0; k <= K; k++) {
+    const a = k / K * Math.PI / 2, off = Math.sin(a) * b - b, y = (h - b) + Math.cos(a) * b, sh = lerp(1, sideShade, sstep(0.2, 1, k / K));
+    for (let i = 0; i < N; i++) { const x = P[i].x + nrm[i].x * off, z = P[i].y + nrm[i].y * off; pos.push(x, y, z); uv.push(x / tile, z / tile); col.push(sh, sh, sh); }
+  }
+  for (let i = 0; i < N; i++) { const x = P[i].x + nrm[i].x * 0.06, z = P[i].y + nrm[i].y * 0.06; pos.push(x, -0.25, z); uv.push(x / tile, z / tile); col.push(sideShade * 0.9, sideShade * 0.9, sideShade * 0.9); }
+  for (let i = 0; i < N; i++) idx.push(0, 1 + (i + 1) % N, 1 + i);
+  const rings = K + 2;
+  for (let r = 0; r < rings - 1; r++) for (let i = 0; i < N; i++) {
+    const i2 = (i + 1) % N, a = 1 + r * N + i, bb = 1 + r * N + i2, c = 1 + (r + 1) * N + i, d = 1 + (r + 1) * N + i2;
+    idx.push(a, bb, c, bb, d, c);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+  g.setIndex(idx); g.computeVertexNormals();
+  return g;
+}
+// white foam rim around islands (as in the source video)
+function buildRim(outline, nrm, rows) {
+  const N = outline.length, pos = [], col = [], idx = [];
+  rows.forEach(([off, a]) => { for (let i = 0; i < N; i++) { pos.push(outline[i].x + nrm[i].x * off, 0.02, outline[i].y + nrm[i].y * off); col.push(1, 1, 1, a); } });
+  for (let r = 0; r < rows.length - 1; r++) for (let i = 0; i < N; i++) { const i2 = (i + 1) % N, a = r * N + i, b = r * N + i2, c = (r + 1) * N + i, d = (r + 1) * N + i2; idx.push(a, b, c, b, d, c); }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('color', new THREE.Float32BufferAttribute(col, 4));
+  g.setIndex(idx); g.computeVertexNormals();
+  return g;
+}
+const rimMat = new THREE.MeshBasicMaterial({ color: 0xf7fcff, vertexColors: true, transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 });
+
+// =====================================================================
+//  Particles (fal-generated sprite atlas, premultiplied on black)
+// =====================================================================
+class FX {
+  constructor(tex, max = 5000) {
+    this.max = max; this.list = [];
+    this.pos = new Float32Array(max * 3); this.size = new Float32Array(max); this.alpha = new Float32Array(max); this.cell = new Float32Array(max); this.rot = new Float32Array(max); this.tint = new Float32Array(max * 3);
+    const g = new THREE.BufferGeometry();
+    const attr = (name, arr, n) => g.setAttribute(name, new THREE.BufferAttribute(arr, n).setUsage(THREE.DynamicDrawUsage));
+    attr('position', this.pos, 3); attr('aSize', this.size, 1); attr('aAlpha', this.alpha, 1); attr('aCell', this.cell, 1); attr('aRot', this.rot, 1); attr('aTint', this.tint, 3);
+    this.geo = g;
+    this.mat = new THREE.ShaderMaterial({
+      uniforms: { uTex: { value: tex }, uScale: { value: innerHeight * DPR / (2 * Math.tan(THREE.MathUtils.degToRad(20))) } },
+      vertexShader: `attribute float aSize; attribute float aAlpha; attribute float aCell; attribute float aRot; attribute vec3 aTint;
+        uniform float uScale; varying float vA; varying float vC; varying float vR; varying vec3 vT;
+        void main(){ vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_Position = projectionMatrix * mv;
+          gl_PointSize = aSize * uScale / max(0.1, -mv.z); vA = aAlpha; vC = aCell; vR = aRot; vT = aTint; }`,
+      fragmentShader: `uniform sampler2D uTex; varying float vA; varying float vC; varying float vR; varying vec3 vT;
+        void main(){ vec2 p = gl_PointCoord - 0.5; float c = cos(vR), s = sin(vR); p = vec2(c*p.x - s*p.y, s*p.x + c*p.y) + 0.5;
+          if (p.x < 0.0 || p.x > 1.0 || p.y < 0.0 || p.y > 1.0) discard;
+          p = clamp(p, 0.015, 0.985);
+          vec2 off = vec2(mod(vC, 2.0), 1.0 - floor(vC / 2.0)) * 0.5;
+          vec4 t = texture2D(uTex, off + vec2(p.x, 1.0 - p.y) * 0.5);
+          float a = max(t.r, max(t.g, t.b));
+          gl_FragColor = vec4(t.rgb * vT * vA, a * vA); }`,
+      transparent: true, depthWrite: false, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor
+    });
+    this.points = new THREE.Points(g, this.mat); this.points.frustumCulled = false; this.points.renderOrder = 5;
+    scene.add(this.points);
+  }
+  // cell: 0 raindrop, 1 puff, 2 sparkle, 3 petal
+  spawn(o) {
+    if (this.list.length >= this.max) return null;
+    const p = Object.assign({ x: 0, y: 0, z: 0, vx: 0, vy: 0, vz: 0, life: 1, s0: 0.5, s1: 0.5, a0: 1, a1: 0, cell: 1, rot: 0, vr: 0, drag: 0, g: 0, floor: -99, tint: [1, 1, 1], onHit: null }, o);
+    p.t = 0; this.list.push(p); return p;
+  }
+  update(dt) {
+    const L = this.list; let w = 0;
+    for (let i = 0; i < L.length; i++) {
+      const p = L[i]; p.t += dt;
+      if (p.t >= p.life) continue;
+      if (p.fn) p.fn(p, dt);
+      p.vy -= p.g * dt; const dr = Math.exp(-p.drag * dt); p.vx *= dr; p.vy *= dr; p.vz *= dr;
+      p.x += p.vx * dt; p.y += p.vy * dt; p.z += p.vz * dt; p.rot += p.vr * dt;
+      if (p.y < p.floor) { if (p.onHit) p.onHit(p); continue; }
+      L[w++] = p;
+    }
+    L.length = w;
+    for (let i = 0; i < w; i++) {
+      const p = L[i], k = p.t / p.life;
+      this.pos[i * 3] = p.x; this.pos[i * 3 + 1] = p.y; this.pos[i * 3 + 2] = p.z;
+      this.size[i] = lerp(p.s0, p.s1, k); this.alpha[i] = lerp(p.a0, p.a1, k) * Math.min(1, p.t * 12);
+      this.cell[i] = p.cell; this.rot[i] = p.rot;
+      this.tint[i * 3] = p.tint[0]; this.tint[i * 3 + 1] = p.tint[1]; this.tint[i * 3 + 2] = p.tint[2];
+    }
+    this.geo.setDrawRange(0, w);
+    for (const k of ['position', 'aSize', 'aAlpha', 'aCell', 'aRot', 'aTint']) this.geo.attributes[k].needsUpdate = true;
+  }
+  burst(x, y, z, n, o = {}) {
+    for (let i = 0; i < n; i++) {
+      const a = Math.random() * Math.PI * 2, sp = rand(o.sp0 ?? 1.5, o.sp1 ?? 4), up = rand(o.up0 ?? 0.5, o.up1 ?? 2.5);
+      this.spawn({ x: x + Math.cos(a) * (o.r ?? 0.3), y, z: z + Math.sin(a) * (o.r ?? 0.3), vx: Math.cos(a) * sp, vy: up, vz: Math.sin(a) * sp, life: rand(o.l0 ?? 0.6, o.l1 ?? 1.2), s0: o.s0 ?? 0.6, s1: o.s1 ?? 1.4, a0: o.a0 ?? 0.95, a1: 0, cell: o.cell ?? 1, rot: rand(0, 6.28), vr: rand(-2, 2), drag: o.drag ?? 2.5, g: o.g ?? 0, tint: o.tint ?? [1, 1, 1] });
+    }
+  }
+}
+let fx = null;
+
+// =====================================================================
+//  Audio
+// =====================================================================
+function sfx(name, { vol = 1, rate = 1, pan = 0 } = {}) {
+  if (!AC || !S[name] || AC.state !== 'running') return null;
+  const s = AC.createBufferSource(); s.buffer = S[name]; s.playbackRate.value = rate;
+  const g = AC.createGain(); g.gain.value = vol;
+  let node = s.connect(g);
+  if (AC.createStereoPanner) { const p = AC.createStereoPanner(); p.pan.value = clamp(pan, -1, 1); node = node.connect(p); }
+  node.connect(sfxGain); s.start(); return { s, g };
+}
+function loopSound(name, vol, out) {
+  if (!AC || !S[name]) return null;
+  const s = AC.createBufferSource(); s.buffer = S[name]; s.loop = true;
+  const g = AC.createGain(); g.gain.value = vol; s.connect(g).connect(out || sfxGain); s.start(); return { s, g };
+}
+let music = null, windLoop = null, rainLoop = null;
+function startAudio() {
+  if (!AC) return;
+  AC.resume().then(() => {
+    if (!music) music = loopSound('music', 1.0, musicGain);
+    if (!windLoop) windLoop = loopSound('wind', 0.16);
+    if (!rainLoop) rainLoop = loopSound('rain', 0.0);
+  });
+}
+function panOf(x) { const v = new V3(x, 0, 0); return clamp((x - camera.position.x) / 14, -0.8, 0.8); }
+
+// =====================================================================
+//  Game globals
+// =====================================================================
+const keys = new Set();
+let state = 'loading';
+const islands = [], fields = [], obstacles = [], herd = [], decoClouds = [], popups = [];
+let player = null, sheepRig = null, cloudModel = null, sheepModel = null;
+let gameTime = 0, startT = 0, endT = 0, flowerModels = [];
+const ui = { hud: document.getElementById('hud'), hint: document.getElementById('hint'), arrow: document.getElementById('arrow'), title: document.getElementById('title'), win: document.getElementById('win'), loading: document.getElementById('loading') };
+
+function groundAt(x, z) { let h = 0; for (const isl of islands) { const v = isl.heightAt(x, z); if (v > h) h = v; } return h; }
+
+// =====================================================================
+//  Build the world
+// =====================================================================
+function buildWorld() {
+  // ---- image-based ambient from a fal-generated sky panorama
+  if (T.pano) {
+    T.pano.mapping = THREE.EquirectangularReflectionMapping;
+    const pm = new THREE.PMREMGenerator(renderer);
+    scene.environment = pm.fromEquirectangular(T.pano).texture;
+    pm.dispose();
+  }
+  // ---- sky meadow floor
+  // texture tints below were matched to colours sampled on the video frames (_ref/full_t*.jpg)
+  const floorMat = new THREE.MeshStandardMaterial({ map: T.sky || null, color: T.sky ? new THREE.Color(0.62, 0.8, 0.92) : 0x79b4e2, roughness: 0.78, metalness: 0, envMapIntensity: 0.35 });
+  floorMat.onBeforeCompile = (sh) => {
+    sh.uniforms.uTime = U.time; sh.uniforms.uStreak = { value: T.streaks || null };
+    sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vWPos;')
+      .replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\n vWPos = (modelMatrix * vec4(transformed, 1.0)).xyz;');
+    sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vWPos; uniform float uTime; uniform sampler2D uStreak;')
+      .replace('#include <map_fragment>', `
+        #ifdef USE_MAP
+          vec3 skA = texture2D(map, vWPos.xz * 0.04).rgb;
+          vec3 skB = texture2D(map, vWPos.xz * 0.0093 + vec2(0.37, 0.71)).rgb;
+          vec3 base = mix(skA, skB, 0.45);
+          float st = texture2D(uStreak, vWPos.xz * 0.014 + vec2(uTime * 0.0045, uTime * 0.0018)).r;
+          float st2 = texture2D(uStreak, vWPos.xz * vec2(0.0085, -0.0095) + vec2(-uTime * 0.0026, uTime * 0.0034) + 0.5).r;
+          float lines = smoothstep(0.45, 0.8, st) * 0.5 * (0.55 + 0.45 * sin(uTime * 0.35 + vWPos.x * 0.05)) + smoothstep(0.55, 0.88, st2) * 0.22;
+          base = mix(base, vec3(0.93, 0.975, 1.0), clamp(lines, 0.0, 0.85));
+          diffuseColor.rgb *= base;
+        #endif`);
+  };
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(900, 900), floorMat);
+  floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+
+  // ---- grass islands
+  const grassMat = new THREE.MeshStandardMaterial({ map: T.grass || null, color: T.grass ? new THREE.Color(0.64, 0.6, 0.5) : 0x8fc464, vertexColors: true, roughness: 0.95, envMapIntensity: 0.4 });
+  for (const d of GRASS_ISLANDS) {
+    const isl = new Island({ ...d, kind: 'round' }); islands.push(isl);
+    const m = new THREE.Mesh(buildSlab(isl, 7, 0.78), grassMat); m.receiveShadow = true; m.castShadow = false; scene.add(m);
+    const nrm = isl.normals();
+    scene.add(new THREE.Mesh(buildRim(isl.outline, nrm, [[-0.05, 1], [0.24, 0.95], [0.36, 0]]), rimMat));
+    scene.add(new THREE.Mesh(buildRim(isl.outline, nrm, [[1.05, 0], [1.12, 0.45], [1.2, 0]]), rimMat));
+  }
+  // ---- rocks in the sky-water, with foam rims
+  if (M.rock) {
+    const rock = prepModel(M.rock, { width: 1, rough: 0.7 });
+    for (const [x, z, s] of ROCKS) {
+      const g = instantiate(rock); g.scale.setScalar(s * R(1.1, 1.6)); g.position.set(x, -0.08, z); g.rotation.y = R(0, 6.28); scene.add(g);
+      const isl = new Island({ x, z, r: s * 0.78, kind: 'round', h: 0 });
+      scene.add(new THREE.Mesh(buildRim(isl.outline, isl.normals(), [[-0.02, 0.9], [0.22, 0.85], [0.32, 0]]), rimMat));
+      obstacles.push({ x, z, r: s * 0.6, rock: true });
+    }
+  }
+  // ---- fields
+  FIELD_DEFS.forEach((d, i) => fields.push(new Field(d, i)));
+  // ---- props on islands
+  placeProps();
+  // ---- big decorative clouds that cast blue shadows on the meadow
+  if (cloudModel) {
+    for (let i = 0; i < 9; i++) {
+      const g = instantiate(cloudModel, { receive: false });
+      const mat = cloudModel.parts[0].material.clone(); mat.transparent = true;
+      g.traverse(o => { if (o.isMesh) o.material = mat; });
+      const s = R(2.1, 3.3); g.scale.set(s, s * R(0.85, 1.05), s);
+      g.position.set(R(WORLD.minX - 10, WORLD.maxX + 10), R(5.8, 8.2), R(WORLD.minZ, WORLD.maxZ));
+      g.rotation.y = R(0, 6.28);
+      g.userData = { mat, speed: R(0.35, 0.7), fade: 1 };
+      scene.add(g); decoClouds.push(g);
+    }
+  }
+}
+
+function addObstacle(x, z, r) { obstacles.push({ x, z, r }); }
+function onAnyIsland(x, z, margin) { for (const isl of islands) if (isl.sdf(x, z) < -margin) return isl; return null; }
+function freeSpot(x, z, r) { for (const o of obstacles) if (Math.hypot(o.x - x, o.z - z) < o.r + r) return false; return true; }
+
+function placeProps() {
+  const pine = prepModel(M.pine, { height: 1, rough: 0.85, color: new THREE.Color(1.12, 1.16, 1.12) });
+  const treeY = prepModel(M.treeY, { height: 1, rough: 0.85, color: new THREE.Color(1.15, 1.12, 1.05) });
+  const bush = prepModel(M.bush, { height: 1, rough: 0.9 });
+  const stump = prepModel(M.stump, { height: 1, rough: 0.9 });
+  const fence = prepModel(M.fence, { length: 1, rough: 0.85 });
+  const house = prepModel(M.house, { height: 1, rough: 0.85 });
+  const tuft = prepModel(M.tuft, { height: 1, rough: 0.95, color: new THREE.Color(0.5, 0.95, 0.42) }); // sage GLB texture -> fresh green of the video
+  const [flY, flW] = flowerModels;
+  const put = (model, x, z, h, rot = R(0, 6.28), obstR = 0) => {
+    if (!model) return null;
+    const g = instantiate(model); g.scale.setScalar(h); g.position.set(x, groundAt(x, z) - 0.03, z); g.rotation.y = rot; scene.add(g);
+    if (obstR) addObstacle(x, z, obstR);
+    return g;
+  };
+  // home meadow (mirrors the opening shot of the video)
+  put(pine, -6.5, -6.5, 4.6, R(0, 6), 0.75); put(pine, 5.8, -7.8, 4.2, R(0, 6), 0.7);
+  put(pine, 9.6, 3.2, 3.9, R(0, 6), 0.7); put(pine, -9.6, 4.0, 4.4, R(0, 6), 0.75);
+  put(treeY, 8.2, 8.0, 3.4, R(0, 6), 0.75); put(pine, 3.5, 10.4, 3.6, R(0, 6), 0.65);
+  put(bush, 4.2, -6.4, 1.15, R(0, 6), 0.6); put(bush, -8.2, -2.0, 1.0, R(0, 6), 0.55); put(bush, -3.6, 9.6, 1.1, R(0, 6), 0.55);
+  // fence along the west edge of the home meadow
+  if (fence) {
+    const pts = [[-11.2, -3.5], [-11.7, 0.2], [-11.5, 3.9], [-10.4, 7.4]];
+    for (let i = 0; i < pts.length - 1; i++) {
+      const [x0, z0] = pts[i], [x1, z1] = pts[i + 1], len = Math.hypot(x1 - x0, z1 - z0);
+      const g = instantiate(fence); g.scale.setScalar(len); g.position.set((x0 + x1) / 2, ISLAND_H - 0.03, (z0 + z1) / 2);
+      g.rotation.y = Math.atan2(x1 - x0, z1 - z0); scene.add(g);
+      for (let k = 0; k <= 4; k++) addObstacle(lerp(x0, x1, k / 4), lerp(z0, z1, k / 4), 0.4);
+    }
+  }
+  // house island
+  put(house, -21.0, -11.6, 3.7, -1.04, 2.5); // door (+X face of the GLB) turned toward the camera
+  put(stump, -16.4, -8.2, 0.55, R(0, 6), 0.4); put(stump, -17.6, -14.6, 0.48, R(0, 6), 0.35);
+  put(pine, -24.6, -6.6, 4.0, R(0, 6), 0.7); put(bush, -15.6, -12.0, 0.95, R(0, 6), 0.5);
+  // small islets
+  put(pine, 25.8, -5.2, 4.0, R(0, 6), 0.7); put(treeY, 23.2, -2.4, 3.0, R(0, 6), 0.65);
+  put(pine, -29.4, -27.6, 3.7, R(0, 6), 0.7); put(bush, -27.6, -25.6, 1.0, R(0, 6), 0.5);
+  put(treeY, 35.2, -29.6, 3.3, R(0, 6), 0.7); put(pine, 37.2, -27.4, 3.4, R(0, 6), 0.65); put(stump, 33.6, -31.4, 0.5, R(0, 6), 0.35);
+  put(bush, 9.4, -36.2, 1.1, R(0, 6), 0.55);
+  put(pine, -31.6, -58.4, 4.4, R(0, 6), 0.75); put(pine, -29.2, -55.2, 3.6, R(0, 6), 0.65); put(treeY, -33.4, -55.4, 3.0, R(0, 6), 0.6);
+  put(treeY, 39.4, -61.2, 3.4, R(0, 6), 0.7);
+  put(pine, -15.4, -85.6, 4.6, R(0, 6), 0.75); put(bush, -13.2, -83.4, 1.0, R(0, 6), 0.5);
+  put(pine, 19.6, -84.8, 3.8, R(0, 6), 0.7); put(treeY, 17.4, -82.2, 3.0, R(0, 6), 0.6);
+  put(stump, -6.2, -51.4, 0.5, R(0, 6), 0.35); put(bush, 33.4, 9.2, 1.0, R(0, 6), 0.5); put(pine, -33.4, 4.4, 4.0, R(0, 6), 0.7);
+  // grass tufts + flowers scattered over all grass islands (instanced per island so off-screen islands are culled, swaying)
+  const tmp = new THREE.Object3D();
+  const tuftMat = tuft ? addSway(tuft.parts[0].material, 0.11, 1.0) : null;
+  const flYMat = flY ? addSway(flY.parts[0].material, 0.13, 1.0) : null;
+  const flWMat = flW ? addSway(flW.parts[0].material, 0.13, 1.0) : null;
+  for (const isl of islands) {
+    if (isl.kind !== 'round' || isl.h === 0) continue;
+    const tuftM = [], flYM = [], flWM = [];
+    const area = Math.PI * isl.r * isl.r, nT = Math.round(area * 0.17), nF = Math.round(area * 0.12);
+    const scatter = (count, arr, h0, h1, facing) => {
+      for (let i = 0; i < count; i++) {
+        const a = R(0, 6.28), rr = Math.sqrt(R(0, 1)) * (isl.r - 0.9), x = isl.x + Math.cos(a) * rr, z = isl.z + Math.sin(a) * rr;
+        if (isl.sdf(x, z) > -0.5 || !freeSpot(x, z, 0.15)) continue;
+        tmp.position.set(x, isl.h - 0.02, z);
+        // flowers face the camera and lean back a little so their corollas read from above
+        if (facing) tmp.rotation.set(-0.6, R(-0.45, 0.45), 0, 'YXZ'); else tmp.rotation.set(0, R(0, 6.28), 0, 'XYZ');
+        tmp.scale.setScalar(R(h0, h1)); tmp.updateMatrix(); arr.push(tmp.matrix.clone());
+      }
+    };
+    scatter(nT, tuftM, 0.36, 0.56, false); scatter(nF / 2, flYM, 0.38, 0.5, true); scatter(nF / 2, flWM, 0.32, 0.42, true);
+    // models are normalised to a local height of 1, the instance matrix scales them: sway amounts are in local units
+    if (tuft) scene.add(makeInstanced(tuft, tuftM, { cast: false, material: tuftMat }));
+    if (flY) scene.add(makeInstanced(flY, flYM, { cast: false, material: flYMat }));
+    if (flW) scene.add(makeInstanced(flW, flWM, { cast: false, material: flWMat }));
+  }
+}
+
+// =====================================================================
+//  Fields (dry -> watered)
+// =====================================================================
+let soilShaderTemplate = null;
+class Field {
+  constructor(d, idx) {
+    Object.assign(this, d); this.idx = idx; this.done = false; this.raining = false; this.wetR = 0; this.lit = 0; this.litShown = 0; this.pulse = 0;
+    this.isl = new Island({ kind: 'rect', x: d.x, z: d.z, w: d.w, d: d.d, corner: 1.4, h: 0.42, bevel: 0.3 });
+    islands.push(this.isl);
+    this.maxR = Math.hypot(d.w, d.d) / 2 + 1.5;
+    // soil with wetness shader (dry texture -> wet texture spreading from the centre)
+    const mat = this.mat = new THREE.MeshStandardMaterial({ map: T.soil || null, color: T.soil ? 0xffffff : 0x7a4a33, vertexColors: true, roughness: 0.96, envMapIntensity: 0.6 });
+    const uC = { value: new V2(d.x, d.z) }, uR = this.uR = { value: 0 }, uHalf = { value: new V2(d.w / 2, d.d / 2) };
+    mat.onBeforeCompile = (sh) => {
+      sh.uniforms.uWetTex = { value: T.soilWet || T.soil || null }; sh.uniforms.uC = uC; sh.uniforms.uR = uR; sh.uniforms.uHalf = uHalf; sh.uniforms.uNoise = { value: T.streaks || null };
+      sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vWPos;')
+        .replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\n vWPos = (modelMatrix * vec4(transformed, 1.0)).xyz;');
+      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vWPos; uniform sampler2D uWetTex; uniform sampler2D uNoise; uniform vec2 uC; uniform vec2 uHalf; uniform float uR; float gWet;')
+        .replace('#include <map_fragment>', `
+          #ifdef USE_MAP
+            vec2 wuv = vWPos.xz * 0.14;
+            vec4 dryC = texture2D(map, wuv) * vec4(0.62, 0.6, 0.68, 1.0); // muted red-brown soil of the video
+            vec4 wetC = texture2D(uWetTex, wuv) * vec4(0.85, 0.85, 0.9, 1.0);
+            float nz = texture2D(uNoise, vWPos.xz * 0.06).r;
+            float dd = distance(vWPos.xz, uC) + (nz - 0.5) * 3.0;
+            gWet = 1.0 - smoothstep(uR - 1.6, uR, dd);
+            // puddles only on the flat top (vertex colour is 1 on top, darker on the bevel and sides)
+            vec2 edgeD = uHalf - abs(vWPos.xz - uC);
+            float topMask = smoothstep(0.93, 0.99, vColor.r) * smoothstep(0.5, 1.4, min(edgeD.x, edgeD.y));
+            vec4 wetSide = dryC * vec4(0.72, 0.68, 0.66, 1.0);
+            diffuseColor *= mix(dryC, mix(wetSide, wetC, topMask), gWet);
+            gWet *= topMask;
+          #else
+            gWet = 0.0;
+          #endif`)
+        .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\n roughnessFactor = mix(roughnessFactor, 0.42, gWet);');
+    };
+    const mesh = new THREE.Mesh(buildSlab(this.isl, 1, 0.62), mat); mesh.receiveShadow = true; scene.add(mesh);
+    const nrm = this.isl.normals();
+    scene.add(new THREE.Mesh(buildRim(this.isl.outline, nrm, [[-0.05, 1], [0.26, 0.95], [0.38, 0]]), rimMat));
+    scene.add(new THREE.Mesh(buildRim(this.isl.outline, nrm, [[1.1, 0], [1.18, 0.45], [1.26, 0]]), rimMat));
+    // wheat clumps in two blocks with a path between (like the video)
+    this.wheat = [];
+    const sp = 0.78, top = this.isl.h - 0.04;
+    for (let x = -d.w / 2 + 0.95; x <= d.w / 2 - 0.95; x += sp) for (let z = -d.d / 2 + 0.95; z <= d.d / 2 - 0.95; z += sp) {
+      if (Math.abs(x) < 1.05) continue;
+      const px = d.x + x + R(-0.22, 0.22), pz = d.z + z + R(-0.22, 0.22);
+      if (this.isl.sdf(px, pz) > -0.75) continue;
+      this.wheat.push({ x: px, z: pz, y: top, yaw: R(0, 6.28), s: R(0.82, 1.12), tiltA: R(0, 6.28), tilt: R(0.1, 0.24), dist: Math.hypot(px - d.x, pz - d.z), p: 0, shown: -1 });
+    }
+    this.wheatGroup = null;
+    if (wheatModel) {
+      const mats = this.wheat.map(w => this.wheatMatrix(w, 0));
+      this.wheatGroup = makeInstanced(wheatModel, mats, { cast: false, material: wheatMat, colors: true });
+      scene.add(this.wheatGroup);
+    }
+    // sprouts + flowers that pop on the path when watered
+    this.pops = [];
+    const nPop = Math.round(d.w * d.d / 9);
+    for (let i = 0; i < nPop; i++) {
+      const onPath = i % 3 !== 0;
+      const x = d.x + (onPath ? R(-0.75, 0.75) : R(-d.w / 2 + 0.9, d.w / 2 - 0.9)), z = d.z + R(-d.d / 2 + 0.9, d.d / 2 - 0.9);
+      const model = (i % 4 === 0 && sproutModel) ? sproutModel : (flowerModels[i % 2] || sproutModel);
+      if (!model) continue;
+      const g = instantiate(model, { cast: false }); const h = model === sproutModel ? R(0.32, 0.46) : R(0.28, 0.38);
+      g.position.set(x, this.isl.h - 0.03, z); if (model === sproutModel) g.rotation.y = R(0, 6.28); else g.rotation.set(-0.55, R(-0.45, 0.45), 0, 'YXZ');
+      g.scale.setScalar(0.0001); g.visible = false; scene.add(g);
+      this.pops.push({ g, h, dist: Math.hypot(x - d.x, z - d.z), t: -1 });
+    }
+    // floating need-indicator (one puff per sheep needed)
+    this.indic = [];
+    for (let i = 0; i < this.need; i++) this.indic.push({ lit: 0 });
+    this.rainbow = null;
+  }
+  wheatMatrix(w, p) {
+    const m = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler();
+    const tilt = lerp(w.tilt, 0.04, p);
+    const axis = new V3(Math.cos(w.tiltA), 0, Math.sin(w.tiltA));
+    q.setFromAxisAngle(axis, tilt).multiply(new THREE.Quaternion().setFromAxisAngle(new V3(0, 1, 0), w.yaw));
+    const grow = w.s * lerp(0.86, 1.22, p);
+    m.compose(new V3(w.x, w.y, w.z), q, new V3(w.s * lerp(0.95, 1.06, p), grow, w.s * lerp(0.95, 1.06, p)));
+    return m;
+  }
+  inside(x, z, inset = 0.8) { return Math.abs(x - this.x) < this.w / 2 - inset && Math.abs(z - this.z) < this.d / 2 - inset; }
+  update(dt) {
+    // wetness front
+    this.uR.value = this.wetR;
+    if (this.wheatGroup && (this.raining || (this.done && !this.settled))) {
+      const DRY = new THREE.Color(1, 1, 1), WET = new THREE.Color(0.5, 1.05, 0.46), c = new THREE.Color();
+      let allDone = true;
+      this.wheat.forEach((w, i) => {
+        const target = w.dist < this.wetR - 0.6 ? 1 : 0;
+        if (target > w.p) w.p = Math.min(1, w.p + dt * 0.9);
+        if (w.p < 1) allDone = false;
+        if (Math.abs(w.p - w.shown) > 0.004) {
+          w.shown = w.p; const e = elastic(w.p);
+          const m = this.wheatMatrix(w, clamp(e, 0, 1.15));
+          c.copy(DRY).lerp(WET, sstep(0, 1, w.p));
+          for (const im of this.wheatGroup.userData.meshes) { im.setMatrixAt(i, m); im.setColorAt(i, c); im.instanceMatrix.needsUpdate = true; im.instanceColor.needsUpdate = true; }
+        }
+      });
+      if (this.done && allDone) this.settled = true;
+    }
+    for (const p of this.pops) {
+      if (p.t < 0 && p.dist < this.wetR - 0.8) { p.t = 0; p.g.visible = true; if (Math.random() < 0.35) fx.burst(p.g.position.x, p.g.position.y + 0.2, p.g.position.z, 3, { cell: 2, s0: 0.35, s1: 0.1, sp0: 0.3, sp1: 1, up0: 1, up1: 2, l0: 0.5, l1: 0.9, tint: [1, 1, 0.8] }); }
+      if (p.t >= 0 && p.t < 1.2) { p.t += dt; p.g.scale.setScalar(Math.max(0.0001, p.h * elastic(p.t / 0.9))); }
+    }
+  }
+}
+let wheatModel = null, wheatMat = null, sproutModel = null;
+
+// indicator puffs (sprite points sharing the fx atlas)
+class Indicators {
+  constructor(tex) {
+    const max = 64; this.max = max;
+    this.pos = new Float32Array(max * 3); this.size = new Float32Array(max); this.alpha = new Float32Array(max); this.cell = new Float32Array(max); this.rot = new Float32Array(max); this.tint = new Float32Array(max * 3);
+    const g = new THREE.BufferGeometry();
+    const attr = (n, a, k) => g.setAttribute(n, new THREE.BufferAttribute(a, k).setUsage(THREE.DynamicDrawUsage));
+    attr('position', this.pos, 3); attr('aSize', this.size, 1); attr('aAlpha', this.alpha, 1); attr('aCell', this.cell, 1); attr('aRot', this.rot, 1); attr('aTint', this.tint, 3);
+    this.geo = g; this.points = new THREE.Points(g, fx.mat); this.points.frustumCulled = false; this.points.renderOrder = 6; scene.add(this.points);
+  }
+  update(t, dt) {
+    let k = 0; this.dt = dt;
+    for (const f of fields) {
+      if (f.done && f.indicFade <= 0) continue;
+      const fade = f.done ? (f.indicFade = Math.max(0, (f.indicFade ?? 1) - this.dt * 0.8)) : 1;
+      const n = f.need, rad = 0.62 + n * 0.14;
+      for (let i = 0; i < n && k < this.max; i++, k++) {
+        const a = t * 0.5 + i / n * Math.PI * 2, lit = i < f.litShown;
+        const bob = Math.sin(t * 2 + i) * 0.12 + (lit ? f.pulse * 0.4 : 0);
+        this.pos[k * 3] = f.x + Math.cos(a) * rad; this.pos[k * 3 + 1] = 4.4 + bob; this.pos[k * 3 + 2] = f.z + Math.sin(a) * rad * 0.8;
+        this.size[k] = lit ? 1.15 + f.pulse * 0.5 : 0.8; this.alpha[k] = (lit ? 1 : 0.42) * fade; this.cell[k] = 1; this.rot[k] = a;
+        const tn = lit ? [1, 1, 1] : [0.62, 0.74, 0.92]; this.tint.set(tn, k * 3);
+      }
+    }
+    this.geo.setDrawRange(0, k);
+    for (const n of ['position', 'aSize', 'aAlpha', 'aCell', 'aRot', 'aTint']) this.geo.attributes[n].needsUpdate = true;
+  }
+}
+let indicators = null;
+
+// =====================================================================
+//  Shepherd (player)
+// =====================================================================
+const SHEP_H = 1.5;
+let shepRig = null, crookModel = null, handR = new V3(), handL = new V3();
+function rigShepherd(model) {
+  const H = SHEP_H;
+  const pos = model.parts[0].geometry.attributes.position;
+  // measure hands (extreme x) and leg columns from the actual mesh
+  let maxX = -1e9, minX = 1e9; for (let i = 0; i < pos.count; i++) { const x = pos.getX(i); if (x > maxX) maxX = x; if (x < minX) minX = x; }
+  const hl = new V3(), hr = new V3(); let nl = 0, nr = 0, legX = 0, nLeg = 0;
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
+    if (x > maxX - 0.08) { hl.add(new V3(x, y, z)); nl++; }
+    if (x < minX + 0.08) { hr.add(new V3(x, y, z)); nr++; }
+    if (y < 0.12 * H) { legX += Math.abs(x); nLeg++; }
+  }
+  hl.divideScalar(Math.max(1, nl)); hr.divideScalar(Math.max(1, nr)); legX = nLeg ? legX / nLeg : 0.1;
+  handL.copy(hl); handR.copy(hr);
+  const armX = Math.max(0.15, Math.min(maxX, -minX) * 0.42);
+  const hipY = 0.40 * H, shY = 0.585 * H, neckY = 0.60 * H;
+  const bones = [
+    { name: 'root', parent: -1, pos: [0, 0, 0] },
+    { name: 'hips', parent: 0, pos: [0, hipY, 0] },
+    { name: 'spine', parent: 1, pos: [0, hipY + 0.04, 0] },
+    { name: 'head', parent: 2, pos: [0, neckY, 0] },
+    { name: 'legL', parent: 1, pos: [legX, hipY, 0] },
+    { name: 'legR', parent: 1, pos: [-legX, hipY, 0] },
+    { name: 'armL', parent: 2, pos: [armX, shY, 0] },
+    { name: 'armR', parent: 2, pos: [-armX, shY, 0] },
+  ];
+  const bodyHalf = armX * 1.02;
+  return buildRig(model, bones, (x, y, z) => {
+    const ax = Math.abs(x);
+    const wHead = sstep(neckY - 0.03, neckY + 0.05, y);
+    const wArm = sstep(bodyHalf - 0.02, bodyHalf + 0.05, ax) * sstep(0.30 * H, 0.36 * H, y) * (1 - wHead);
+    const wLeg = sstep(hipY + 0.02, hipY - 0.12, y) * (1 - sstep(bodyHalf - 0.04, bodyHalf + 0.02, ax));
+    const out = [];
+    if (wLeg > 0) { out.push([x > 0 ? 4 : 5, wLeg]); out.push([1, 1 - wLeg]); return out; }
+    if (wArm > 0) out.push([x > 0 ? 6 : 7, wArm]);
+    if (wHead > 0) out.push([3, wHead]);
+    out.push([2, Math.max(0, 1 - wArm - wHead)]);
+    return out;
+  });
+}
+
+class Player {
+  constructor() {
+    this.obj = new THREE.Group(); scene.add(this.obj);
+    const r = instantiateRig(shepRig); this.mesh = r.mesh; this.b = r.b; this.obj.add(this.mesh);
+    this.pos = new V3(0, 0, 2.5); this.vel = new V3(); this.yaw = Math.PI * 0.8; this.phase = 0; this.y = 0; // starts in 3/4 view so the crook's hook reads
+    this.swingT = -1; this.swingCD = 0; this.whistleCD = 0; this.whistleT = -1; this.stepAcc = 0; this.pushed = new Set();
+    // crook held in the right hand
+    this.crookPivot = new THREE.Group();
+    const handLocal = handR.clone().sub(new V3(...shepRig.boneDefs[7].pos));
+    this.crookPivot.position.copy(handLocal); this.crookPivot.rotation.y = -0.32; // staff angled forward-right, like in the video
+    this.b.armR.add(this.crookPivot);
+    if (crookModel) {
+      const c = instantiate(crookModel); this.crookInner = c;
+      c.position.y = -crookModel.size.y * 0.36; // grip point ~ one third up the staff
+      this.crookHold = new THREE.Group(); this.crookHold.add(c); this.crookPivot.add(this.crookHold);
+      this.crookHold.rotation.set(1.22, 0, 0.0); // staff pointing forward and up
+      this.tip = new THREE.Object3D(); this.tip.position.set(0, crookModel.size.y * 0.62, 0); c.add(this.tip);
+    }
+  }
+  forward() { return new V3(Math.sin(this.yaw), 0, Math.cos(this.yaw)); }
+  update(dt, input) {
+    const run = input.run;
+    const target = new V3(input.x, 0, input.z).multiplyScalar(run ? 8.2 : 5.4);
+    const k = target.lengthSq() > 0.01 ? 9 : 12;
+    this.vel.x = damp(this.vel.x, target.x, k, dt); this.vel.z = damp(this.vel.z, target.z, k, dt);
+    this.pos.addScaledVector(this.vel, dt);
+    // collisions
+    for (const o of obstacles) { const dx = this.pos.x - o.x, dz = this.pos.z - o.z, d = Math.hypot(dx, dz), m = o.r + 0.32; if (d < m && d > 1e-4) { this.pos.x = o.x + dx / d * m; this.pos.z = o.z + dz / d * m; } }
+    this.pos.x = clamp(this.pos.x, WORLD.minX, WORLD.maxX); this.pos.z = clamp(this.pos.z, WORLD.minZ, WORLD.maxZ);
+    const sp = Math.hypot(this.vel.x, this.vel.z);
+    if (sp > 0.25) this.yaw = dampAngle(this.yaw, Math.atan2(this.vel.x, this.vel.z), 11, dt);
+    this.y = damp(this.y, groundAt(this.pos.x, this.pos.z), 14, dt);
+    // timers
+    this.swingCD -= dt; this.whistleCD -= dt;
+    if (input.swing && this.swingCD <= 0) { this.swingT = 0; this.swingCD = 0.55; this.pushed.clear(); sfx('swish', { vol: 0.7, rate: rand(0.92, 1.1) }); }
+    if (input.whistle && this.whistleCD <= 0) this.whistle();
+    // animation
+    const m = clamp(sp / 5.4, 0, 1.45);
+    this.phase += dt * (2.2 + sp * 1.55);
+    const s = Math.sin(this.phase), b = this.b;
+    b.legL.rotation.x = -s * 0.62 * m; b.legR.rotation.x = s * 0.62 * m;
+    b.armL.rotation.x = s * 0.5 * m; b.armL.rotation.z = -0.08;
+    b.hips.position.y = b.hips.userData.rest.y + Math.abs(Math.cos(this.phase)) * 0.07 * m + Math.sin(gameTime * 2.2) * 0.008 * (1 - m);
+    b.spine.rotation.x = 0.1 * m; b.spine.rotation.z = Math.sin(this.phase) * 0.05 * m;
+    b.head.rotation.x = -0.06 * m + Math.sin(gameTime * 1.3) * 0.03; b.head.rotation.y = Math.sin(gameTime * 0.7) * 0.08 * (1 - m);
+    // right arm: hold the crook, swing it when asked
+    // 'total' = staff pitch from vertical (arm pitch + grip pitch); ~1.1 rad keeps the hook forward and up like in the video
+    let armY = 0, armX = -0.5 + s * 0.12 * m, armZ = 0.05, total = 1.1, twist = 0;
+    if (this.swingT >= 0) {
+      const t = this.swingT; this.swingT += dt;
+      const wind = sstep(0, 0.1, t) * (1 - sstep(0.1, 0.24, t)), sweep = sstep(0.1, 0.26, t) * (1 - sstep(0.32, 0.55, t));
+      armY = -1.0 * wind + 1.45 * sweep; armX = lerp(armX, -1.0, Math.max(wind, sweep)); total = lerp(1.1, 1.5, sweep); twist = -0.35 * wind + 0.45 * sweep;
+      if (t > 0.1 && t < 0.3) this.applySweep();
+      if (this.tip && t > 0.08 && t < 0.32) { const w = this.tip.getWorldPosition(new V3()); fx.spawn({ x: w.x, y: w.y, z: w.z, life: 0.45, s0: 0.55, s1: 0.15, a0: 0.75, cell: 1, vy: 0.4, tint: [1, 1, 1] }); if (Math.random() < 0.5) fx.spawn({ x: w.x, y: w.y, z: w.z, life: 0.5, s0: 0.4, s1: 0.1, a0: 1, cell: 2, vy: 0.6, tint: [1, 0.95, 0.75] }); }
+      if (this.swingT > 0.6) this.swingT = -1;
+    }
+    b.armR.rotation.set(armX, armY, armZ);
+    b.spine.rotation.y = twist;
+    if (this.crookHold) this.crookHold.rotation.x = total - armX;
+    if (this.whistleT >= 0) { this.whistleT += dt; b.head.rotation.x -= 0.25 * Math.sin(Math.min(1, this.whistleT / 0.8) * Math.PI); b.armL.rotation.x = -1.6 * Math.sin(Math.min(1, this.whistleT / 0.8) * Math.PI); if (this.whistleT > 0.8) this.whistleT = -1; }
+    this.obj.position.set(this.pos.x, this.y, this.pos.z);
+    this.obj.rotation.y = this.yaw;
+    // footsteps dust
+    if (sp > 2.5) { this.stepAcc += dt * sp; if (this.stepAcc > (run ? 1.6 : 2.2)) { this.stepAcc = 0; fx.spawn({ x: this.pos.x + rand(-0.15, 0.15), y: this.y + 0.08, z: this.pos.z + rand(-0.15, 0.15), vy: 0.35, vx: -this.vel.x * 0.05, vz: -this.vel.z * 0.05, life: 0.7, s0: 0.25, s1: 0.75, a0: 0.4, cell: 1, tint: [0.95, 0.97, 1] }); sfx('step', { vol: 0.16, rate: rand(0.85, 1.2) }); } }
+  }
+  applySweep() {
+    const f = this.forward();
+    for (const h of herd) {
+      if (h.state !== 'free' || this.pushed.has(h)) continue;
+      const dx = h.pos.x - this.pos.x, dz = h.pos.z - this.pos.z, d = Math.hypot(dx, dz);
+      if (d > 3.7 + h.r * 0.6) continue;
+      const dot = (dx * f.x + dz * f.z) / (d || 1);
+      if (dot < -0.15) continue;
+      this.pushed.add(h);
+      const away = new V3(dx / (d || 1), 0, dz / (d || 1));
+      const kick = (6.5 / Math.sqrt(h.n)) * (1.15 - d / 5);
+      h.impulse.x += (away.x * 0.65 + f.x * 0.55) * kick; h.impulse.z += (away.z * 0.65 + f.z * 0.55) * kick;
+      h.agit = Math.max(h.agit, 1.6);
+      if (h.n === 1) { h.baa(1.15); } else sfx('poof', { vol: 0.8, rate: 1.4 - h.n * 0.05 });
+      fx.burst(h.pos.x, h.y + 0.6, h.pos.z, 4, { cell: 1, s0: 0.4, s1: 0.9, sp0: 0.6, sp1: 1.8, up0: 0.2, up1: 0.8, l0: 0.4, l1: 0.7, a0: 0.7 });
+    }
+  }
+  whistle() {
+    this.whistleCD = 3.5; this.whistleT = 0; sfx('whistle', { vol: 0.38 });
+    for (let i = 0; i < 26; i++) { const a = i / 26 * Math.PI * 2; fx.spawn({ x: this.pos.x + Math.cos(a) * 0.6, y: this.y + 1.3, z: this.pos.z + Math.sin(a) * 0.6, vx: Math.cos(a) * 9, vz: Math.sin(a) * 9, drag: 2.2, life: 0.9, s0: 0.45, s1: 0.9, a0: 0.55, cell: 1, tint: [0.95, 0.98, 1] }); }
+    for (const h of herd) if (h.n === 1 && h.state === 'free' && h.pos.distanceTo(this.pos) < 26) { h.called = 3.2; h.baaLater = rand(0.1, 0.9); }
+  }
+}
+
+// =====================================================================
+//  Sheep & cloud herd
+// =====================================================================
+const SHEEP_LEN = 1.72;
+function rigSheep(model) {
+  const g = model.parts[0].geometry, pos = g.attributes.position; g.computeBoundingBox();
+  const bb = g.boundingBox, H = bb.max.y, L = bb.max.z - bb.min.z, zc = (bb.max.z + bb.min.z) / 2;
+  const q = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]; // FL FR BL BR : sumx sumz n
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
+    if (y > 0.16 * H) continue;
+    const k = (z > zc ? 0 : 2) + (x > 0 ? 0 : 1); q[k][0] += x; q[k][1] += z; q[k][2]++;
+  }
+  const legPos = q.map(a => a[2] ? [a[0] / a[2], 0.3 * H, a[1] / a[2]] : [0, 0.3 * H, 0]);
+  const bones = [
+    { name: 'root', parent: -1, pos: [0, 0, 0] },
+    { name: 'body', parent: 0, pos: [0, 0.45 * H, 0] },
+    { name: 'head', parent: 1, pos: [0, 0.55 * H, bb.max.z - 0.36 * L] },
+    { name: 'FL', parent: 1, pos: legPos[0] }, { name: 'FR', parent: 1, pos: legPos[1] },
+    { name: 'BL', parent: 1, pos: legPos[2] }, { name: 'BR', parent: 1, pos: legPos[3] },
+  ];
+  const zHead = bb.max.z - 0.3 * L;
+  return buildRig(model, bones, (x, y, z) => {
+    const wLeg = sstep(0.31 * H, 0.22 * H, y);
+    if (wLeg > 0) { const k = (z > zc ? 0 : 2) + (x > 0 ? 0 : 1); return [[3 + k, wLeg], [1, 1 - wLeg]]; }
+    const wHead = sstep(zHead - 0.04 * L, zHead + 0.06 * L, z) * sstep(0.3 * H, 0.42 * H, y);
+    return [[2, wHead], [1, 1 - wHead]];
+  });
+}
+const cloudR = (n) => n === 1 ? 0.86 : 1.08 * Math.pow(n, 0.43);
+const hoverH = (n) => n === 1 ? 0 : 1.2 + n * 0.34;
+
+class Herdling {
+  constructor(n, x, z, opts = {}) {
+    this.n = n; this.pos = new V3(x, 0, z); this.vel = new V3(); this.impulse = new V3(); this.yaw = rand(0, 6.28);
+    this.r = cloudR(n) * (opts.scale || 1); this.scale = opts.scale || 1; this.agit = 0; this.called = 0; this.state = 'free';
+    this.wanderT = rand(0, 3); this.target = null; this.graze = 0; this.grazeT = rand(3, 9); this.phase = rand(0, 10); this.baaCD = rand(3, 12);
+    this.popT = opts.pop ? 0 : 1; this.y = groundAt(x, z) + hoverH(n); this.spawnLock = opts.lock || 0;
+    this.obj = new THREE.Group(); scene.add(this.obj);
+    if (n === 1) {
+      const r = instantiateRig(sheepRig); this.mesh = r.mesh; this.b = r.b; this.obj.add(this.mesh); this.obj.scale.setScalar(this.scale);
+    } else {
+      this.body = instantiate(cloudModel, { receive: true });
+      this.cmat = cloudModel.parts[0].material.clone(); this.body.traverse(o => { if (o.isMesh) o.material = this.cmat; });
+      this.obj.add(this.body);
+      this.riders = [];
+      const rr = this.r - 0.38;
+      for (let i = 0; i < n; i++) {
+        const s = new THREE.Mesh(sheepModel.parts[0].geometry, sheepModel.parts[0].material); s.castShadow = true;
+        const a = i / n * Math.PI * 2 + 0.6; s.position.set(Math.sin(a) * rr, -this.r * 0.32 + (i % 2) * 0.12, Math.cos(a) * rr);
+        s.rotation.y = a; s.scale.setScalar(0.6); this.obj.add(s); this.riders.push({ s, a, base: s.position.clone() });
+      }
+    }
+    this.obj.position.set(x, this.y, z);
+  }
+  dispose() { scene.remove(this.obj); }
+  baa(rate = 1) { if (this.n !== 1) return; sfx('baa', { vol: 0.42, rate: rate * rand(0.9, 1.18) / Math.sqrt(this.scale), pan: panOf(this.pos.x) }); this.baaAnim = 0.5; }
+  update(dt) {
+    if (this.state === 'hop') return this.updateHop(dt);
+    if (this.state === 'rain') return; // driven by field rain logic
+    this.agit -= dt; this.called -= dt; this.baaCD -= dt; this.spawnLock -= dt; this.press = Math.max(0, (this.press || 0) - dt);
+    if (this.baaLater !== undefined) { this.baaLater -= dt; if (this.baaLater <= 0) { this.baa(1); this.baaLater = undefined; } }
+    const des = new V3();
+    const big = this.n > 1;
+    // flee the shepherd
+    const dx = this.pos.x - player.pos.x, dz = this.pos.z - player.pos.z, d = Math.hypot(dx, dz) || 1e-3;
+    const FR = 5.4 + this.r * 0.7;
+    if (d < FR && state === 'play') {
+      const sp = (big ? 4.9 / (1 + 0.13 * (this.n - 1)) : 5.1) * sstep(FR, FR * 0.3, d);
+      des.x += dx / d * sp; des.z += dz / d * sp;
+      this.agit = Math.max(this.agit, 0.45);
+      if (!big && this.baaCD < 0 && d < 3.2) { this.baa(1.1); this.baaCD = rand(2.5, 6); }
+    }
+    if (!big) {
+      // flocking: cohesion (stronger when agitated)
+      let cx = 0, cz = 0, cn = 0;
+      for (const o of herd) { if (o === this || o.state !== 'free') continue; const ox = o.pos.x - this.pos.x, oz = o.pos.z - this.pos.z, od = Math.hypot(ox, oz); if (od < 7.5) { cx += o.pos.x; cz += o.pos.z; cn++; } }
+      if (cn) { cx /= cn; cz /= cn; const tx = cx - this.pos.x, tz = cz - this.pos.z, tl = Math.hypot(tx, tz); if (tl > 0.4) { const w = (this.agit > 0 ? 2.1 : 0.35) * Math.min(1, tl / 3); des.x += tx / tl * w; des.z += tz / tl * w; } }
+      if (this.called > 0) {
+        const px = player.pos.x - this.pos.x, pz = player.pos.z - this.pos.z, pd = Math.hypot(px, pz);
+        if (pd > 2.6) { const v = Math.min(4.6, 1.5 + pd * 0.25); des.x += px / pd * v; des.z += pz / pd * v; }
+      } else if (this.agit <= 0) {
+        // wander / graze
+        this.wanderT -= dt; this.grazeT -= dt;
+        if (this.grazeT < 0) { this.graze = this.graze > 0 ? 0 : rand(2, 4.5); this.grazeT = this.graze > 0 ? this.graze : rand(4, 9); }
+        if (this.wanderT < 0 || !this.target) { const a = rand(0, 6.28), rr = rand(1.5, 5); this.target = new V3(this.pos.x + Math.cos(a) * rr, 0, this.pos.z + Math.sin(a) * rr); this.wanderT = rand(3, 7); }
+        if (this.graze <= 0 && this.target) { const tx = this.target.x - this.pos.x, tz = this.target.z - this.pos.z, tl = Math.hypot(tx, tz); if (tl > 0.4) { des.x += tx / tl * 0.85; des.z += tz / tl * 0.85; } }
+      }
+    } else {
+      // clouds drift gently with the breeze when nobody pushes them
+      des.x += 0.18; des.z += Math.sin(gameTime * 0.2 + this.n) * 0.08;
+    }
+    // world bounds
+    if (this.pos.x < WORLD.minX + 3) des.x += 2.5; if (this.pos.x > WORLD.maxX - 3) des.x -= 2.5;
+    if (this.pos.z < WORLD.minZ + 3) des.z += 2.5; if (this.pos.z > WORLD.maxZ - 3) des.z -= 2.5;
+    const acc = big ? 2.4 : 4.5;
+    this.vel.x = damp(this.vel.x, des.x, acc, dt); this.vel.z = damp(this.vel.z, des.z, acc, dt);
+    this.pos.x += (this.vel.x + this.impulse.x) * dt; this.pos.z += (this.vel.z + this.impulse.z) * dt;
+    const id = Math.exp(-3.2 * dt); this.impulse.multiplyScalar(id);
+    if (!big) for (const o of obstacles) { const ox = this.pos.x - o.x, oz = this.pos.z - o.z, od = Math.hypot(ox, oz), m = o.r + this.r * 0.75; if (od < m && od > 1e-4) { this.pos.x = o.x + ox / od * m; this.pos.z = o.z + oz / od * m; } }
+    this.pos.x = clamp(this.pos.x, WORLD.minX, WORLD.maxX); this.pos.z = clamp(this.pos.z, WORLD.minZ, WORLD.maxZ);
+    const sp = Math.hypot(this.vel.x + this.impulse.x, this.vel.z + this.impulse.z);
+    if (sp > 0.2) this.yaw = dampAngle(this.yaw, Math.atan2(this.vel.x + this.impulse.x, this.vel.z + this.impulse.z), big ? 2 : 7, dt);
+    this.animate(dt, sp);
+  }
+  animate(dt, sp) {
+    const big = this.n > 1;
+    if (this.popT < 1) this.popT = Math.min(1, this.popT + dt * 1.4);
+    const pop = elastic(this.popT);
+    if (!big) {
+      const g = groundAt(this.pos.x, this.pos.z), m = clamp(sp / 4, 0, 1.3);
+      this.phase += dt * (3 + sp * 3.2);
+      const s = Math.sin(this.phase), b = this.b;
+      const hop = this.agit > 0 ? Math.abs(Math.sin(this.phase)) * 0.16 * m : Math.abs(Math.sin(this.phase)) * 0.05 * m;
+      this.y = damp(this.y, g, 12, dt);
+      b.FL.rotation.x = s * 0.55 * m; b.BR.rotation.x = s * 0.55 * m; b.FR.rotation.x = -s * 0.55 * m; b.BL.rotation.x = -s * 0.55 * m;
+      b.body.position.y = b.body.userData.rest.y + hop + Math.sin(gameTime * 2 + this.phase) * 0.01;
+      b.body.rotation.z = Math.sin(this.phase) * 0.06 * m; b.body.rotation.x = -0.05 * m;
+      let headX = 0;
+      if (this.graze > 0 && sp < 0.3) headX = 0.55 + Math.sin(gameTime * 9 + this.phase) * 0.06;
+      if (this.baaAnim > 0) { this.baaAnim -= dt; headX = -0.35 * Math.sin(this.baaAnim / 0.5 * Math.PI); }
+      b.head.rotation.x = damp(b.head.rotation.x, headX, 8, dt);
+      b.head.rotation.y = Math.sin(gameTime * 0.9 + this.phase) * 0.15;
+      const sq = 1 + Math.sin(this.phase * 2) * 0.03 * m;
+      this.obj.scale.set(this.scale / Math.sqrt(sq), this.scale * sq * (0.6 + 0.4 * pop), this.scale / Math.sqrt(sq));
+    } else {
+      this.y = damp(this.y, hoverH(this.n) + Math.sin(gameTime * 1.3 + this.n) * 0.12, 3, dt);
+      const s = this.r * pop; const breath = 1 + Math.sin(gameTime * 1.7 + this.n) * 0.025;
+      this.body.scale.set(s * breath, s / breath * 0.95, s * breath);
+      for (const r of this.riders) { r.s.position.y = r.base.y * pop + Math.sin(gameTime * 2.4 + r.a * 3) * 0.05; r.s.rotation.z = Math.sin(gameTime * 1.8 + r.a) * 0.08; r.s.scale.setScalar(0.6 * Math.min(1, pop)); }
+    }
+    this.obj.position.set(this.pos.x, this.y, this.pos.z);
+    this.obj.rotation.y = this.yaw;
+  }
+  updateHop(dt) {
+    this.hopT += dt / this.hopDur;
+    const t = Math.min(1, this.hopT);
+    this.pos.x = lerp(this.hopFrom.x, this.hopTo.x, t); this.pos.z = lerp(this.hopFrom.z, this.hopTo.z, t);
+    const g = groundAt(this.pos.x, this.pos.z);
+    this.y = lerp(this.hopFrom.y, g, t) + Math.sin(t * Math.PI) * 2.2;
+    this.yaw = Math.atan2(this.hopTo.x - this.hopFrom.x, this.hopTo.z - this.hopFrom.z);
+    if (this.b) { this.b.FL.rotation.x = this.b.FR.rotation.x = -0.5 * Math.sin(t * Math.PI); this.b.BL.rotation.x = this.b.BR.rotation.x = 0.5 * Math.sin(t * Math.PI); }
+    this.obj.position.set(this.pos.x, this.y, this.pos.z); this.obj.rotation.y = this.yaw;
+    const sc = this.scale * (0.4 + 0.6 * Math.min(1, t * 2.5));
+    this.obj.scale.setScalar(sc);
+    if (t >= 1) { this.state = 'free'; this.y = g; fx.burst(this.pos.x, g + 0.1, this.pos.z, 5, { cell: 1, s0: 0.3, s1: 0.8, sp0: 0.5, sp1: 1.5, up0: 0.2, up1: 0.6, l0: 0.4, l1: 0.8, a0: 0.6 }); this.baa(1.05); }
+  }
+}
+
+function mergeHerdlings(a, b) {
+  const n = a.n + b.n, wa = a.n / n;
+  const x = a.pos.x * wa + b.pos.x * (1 - wa), z = a.pos.z * wa + b.pos.z * (1 - wa);
+  const c = new Herdling(n, x, z, { pop: true });
+  c.y = Math.max(a.y, b.y) + 0.3; c.vel.set(a.vel.x * wa + b.vel.x * (1 - wa), 0, a.vel.z * wa + b.vel.z * (1 - wa));
+  c.impulse.set((a.impulse.x + b.impulse.x) * 0.4, 0, (a.impulse.z + b.impulse.z) * 0.4); c.agit = 0.6; c.yaw = Math.atan2(c.vel.x, c.vel.z) || a.yaw; c.spawnLock = 0.35;
+  herd.splice(herd.indexOf(a), 1); herd.splice(herd.indexOf(b), 1); a.dispose(); b.dispose(); herd.push(c);
+  fx.burst(x, c.y + 0.4, z, 16 + n * 2, { cell: 1, s0: 0.7, s1: 1.8, sp0: 2, sp1: 5, up0: 0.5, up1: 2.5, l0: 0.6, l1: 1.1, r: c.r * 0.6, a0: 0.9 });
+  fx.burst(x, c.y + 0.8, z, 8, { cell: 2, s0: 0.5, s1: 0.1, sp0: 1, sp1: 3, up0: 1, up1: 3, l0: 0.5, l1: 0.9, tint: [1, 1, 0.85] });
+  sfx('poof', { vol: 1.4, rate: clamp(1.25 - n * 0.06, 0.7, 1.3), pan: panOf(x) });
+  if (a.n === 1 || b.n === 1) setTimeout(() => sfx('baa', { vol: 0.3, rate: 1.35 }), 120);
+  camShake = Math.min(0.35, 0.12 + n * 0.02);
+}
+
+function herdPairs(dt) {
+  const merging = state === 'play';
+  for (let i = 0; i < herd.length; i++) for (let j = i + 1; j < herd.length; j++) {
+    const a = herd[i], b = herd[j];
+    if (a.state !== 'free' || b.state !== 'free') continue;
+    const dx = b.pos.x - a.pos.x, dz = b.pos.z - a.pos.z, d = Math.hypot(dx, dz) || 1e-3, minD = a.r + b.r;
+    const calm = a.agit <= 0 && b.agit <= 0;
+    const wa = b.n / (a.n + b.n), wb = 1 - wa;
+    const clouds = a.n > 1 && b.n > 1;
+    // frightened sheep coalesce with a gentle pull when nearly touching; two clouds always drift together
+    if ((!calm || clouds) && d < minD * (clouds ? 1.45 : 1.25) && d > minD * 0.5) {
+      const pull = (clouds ? 1.4 : 1.0) * dt; a.pos.x += dx / d * pull * wa; a.pos.z += dz / d * pull * wa; b.pos.x -= dx / d * pull * wb; b.pos.z -= dz / d * pull * wb;
+    }
+    if (merging && clouds && d < minD * 1.06) { a.touch = (a.touch || 0) + dt; if (a.touch > 0.9 && a.spawnLock <= 0 && b.spawnLock <= 0) { mergeHerdlings(a, b); return; } }
+    if (d >= minD) continue;
+    const overlap = minD - d, k = calm && !clouds ? 0.5 : 0.04;
+    a.pos.x -= dx / d * overlap * k * wa * 2; a.pos.z -= dz / d * overlap * k * wa * 2;
+    b.pos.x += dx / d * overlap * k * wb * 2; b.pos.z += dz / d * overlap * k * wb * 2;
+    // sheep have to be squeezed together for a moment before they fuse
+    if (merging && (!calm || clouds) && d < minD * 0.72 && a.spawnLock <= 0 && b.spawnLock <= 0) {
+      a.press = (a.press || 0) + dt * 2; b.press = (b.press || 0) + dt * 2;
+      if (a.press > 0.3 && b.press > 0.3) { mergeHerdlings(a, b); return; }
+    }
+  }
+}
+
+// =====================================================================
+//  Rain sequence
+// =====================================================================
+const rains = [];
+function startRain(field, h) {
+  h.state = 'rain'; field.raining = true;
+  rains.push({ field, h, t: 0, dur: 7.2, startPos: h.pos.clone(), startY: h.y, nextThunder: 0.4 });
+  sfx('thunder', { vol: 1.6, rate: 1.0 });
+  sfx('chime', { vol: 0.25, rate: 0.75 });
+}
+function updateRains(dt) {
+  for (let i = rains.length - 1; i >= 0; i--) {
+    const r = rains[i], f = r.field, h = r.h; r.t += dt;
+    const t = r.t, k = sstep(0, 1.4, t);
+    // the cloud glides over the field centre, swells and darkens
+    h.pos.x = lerp(r.startPos.x, f.x, k); h.pos.z = lerp(r.startPos.z, f.z, k);
+    const coverR = Math.max(h.r, Math.min(f.w, f.d) * 0.3); // ~60% of the field width, as in the video
+    const swell = lerp(h.r, coverR, sstep(0.3, 2.0, t)) * (1 - 0.6 * sstep(r.dur - 0.2, r.dur + 0.6, t));
+    h.y = lerp(r.startY, 4.6 + coverR * 0.15, k) + Math.sin(gameTime * 2) * 0.1;
+    if (h.body) {
+      h.body.scale.set(swell * 1.05, swell * 0.85, swell * 1.05);
+      const dark = sstep(0.4, 1.6, t) * (1 - sstep(r.dur - 0.6, r.dur, t));
+      h.cmat.color.setRGB(lerp(1.28, 1.0, dark), lerp(1.28, 1.06, dark), lerp(1.3, 1.2, dark)); // stays a white cumulus with a cool underside
+      h.riders.forEach(rd => { const rr = swell - 0.35; rd.s.position.set(Math.sin(rd.a) * rr, -swell * 0.3, Math.cos(rd.a) * rr); });
+    }
+    h.yaw += dt * 0.15; h.obj.position.set(h.pos.x, h.y, h.pos.z); h.obj.rotation.y = h.yaw;
+    // rain
+    const raining = t > 1.2 && t < r.dur;
+    if (raining) {
+      f.wetR = Math.max(f.wetR, f.maxR * sstep(1.4, r.dur - 0.6, t));
+      const rate = 140 * dt * Math.min(1, (t - 1.2) * 2);
+      for (let k2 = 0; k2 < rate; k2++) {
+        const a = Math.random() * 6.28, rr = Math.sqrt(Math.random()) * swell * 0.95;
+        const x = h.pos.x + Math.cos(a) * rr, z = h.pos.z + Math.sin(a) * rr, gy = groundAt(x, z);
+        fx.spawn({ x, y: h.y - swell * 0.25, z, vy: -rand(11, 14), life: 2, s0: 0.62, s1: 0.62, a0: 0.92, a1: 0.92, cell: 0, floor: gy, tint: [0.85, 0.92, 1],
+          onHit: (p) => { if (Math.random() < 0.35) fx.spawn({ x: p.x, y: gy + 0.05, z: p.z, vy: 1.2, vx: rand(-0.6, 0.6), vz: rand(-0.6, 0.6), g: 6, life: 0.35, s0: 0.22, s1: 0.4, a0: 0.75, cell: 1, tint: [0.85, 0.93, 1] }); } });
+      }
+      if (t > r.nextThunder) { r.nextThunder = t + rand(2.2, 3.5); sfx('thunder', { vol: 1.1, rate: rand(0.9, 1.1) }); camShake = 0.12; }
+    }
+    if (rainLoop) rainLoop.g.gain.value = damp(rainLoop.g.gain.value, raining ? 2.8 : 0, 3, dt);
+    if (t >= r.dur + 0.6 && !r.ended) {
+      r.ended = true; f.raining = false; f.done = true; f.wetR = f.maxR + 2;
+      finishField(f, h);
+      rains.splice(i, 1);
+    }
+  }
+}
+function finishField(f, h) {
+  game.done++; camFocus = { x: f.x, z: f.z, t: 4.5 };
+  sfx('chime', { vol: 0.8 }); sfx('pop', { vol: 0.5, rate: 0.9 });
+  fx.burst(f.x, 1.2, f.z, 46, { cell: 2, s0: 0.75, s1: 0.1, sp0: 2, sp1: 7, up0: 3, up1: 8, l0: 0.9, l1: 1.7, g: 5, tint: [1, 0.97, 0.75], r: 2.5 });
+  fx.burst(f.x, 0.8, f.z, 30, { cell: 3, s0: 0.45, s1: 0.3, sp0: 2, sp1: 6, up0: 3, up1: 7, l0: 1.2, l1: 2.0, g: 6, drag: 1, r: 3 });
+  // rainbow
+  if (T.rainbow) {
+    // the rainbow image is on black: its brightness is used as coverage (premultiplied alpha)
+    const mat = new THREE.ShaderMaterial({
+      uniforms: { map: { value: T.rainbow }, opacity: { value: 0 } },
+      vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+      fragmentShader: 'uniform sampler2D map; uniform float opacity; varying vec2 vUv; void main(){ vec3 c = texture2D(map, vUv).rgb; float a = clamp(max(c.r, max(c.g, c.b)) * 1.25, 0.0, 1.0); gl_FragColor = vec4(c * 1.15 * opacity, a * opacity); }',
+      transparent: true, depthWrite: false, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor, side: THREE.DoubleSide
+    });
+    mat.opacity = 0;
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(1, 0.5625), mat); const w = Math.max(f.w, f.d) * 1.25;
+    m.scale.set(w, w, 1); m.position.set(f.x, w * 0.5625 * 0.5 - 0.6, f.z - f.d * 0.15); m.renderOrder = 4; scene.add(m);
+    f.rainbow = { m, t: 0 };
+  }
+  // the rain cloud bursts back into its sheep (+ one new lamb, a gift of the watered field)
+  const n = h.n + (game.done < fields.length ? 1 : 0);
+  herd.splice(herd.indexOf(h), 1); h.dispose();
+  fx.burst(h.pos.x, h.y, h.pos.z, 30, { cell: 1, s0: 1.0, s1: 2.4, sp0: 2, sp1: 6, up0: -1, up1: 2, l0: 0.8, l1: 1.4, r: 2, a0: 0.9 });
+  sfx('poof', { vol: 1.5, rate: 0.8 });
+  for (let i = 0; i < n; i++) {
+    const lamb = i >= h.n;
+    const a = i / n * Math.PI * 2 + rand(-0.2, 0.2);
+    const tx = f.x + Math.cos(a) * (f.w / 2 + 1.6), tz = f.z + Math.sin(a) * (f.d / 2 + 1.6);
+    const s = new Herdling(1, h.pos.x, h.pos.z, { scale: lamb ? 0.68 : 1, lock: 1.5 });
+    s.state = 'hop'; s.hopT = -i * 0.08; s.hopDur = 1.0 + rand(0, 0.25); s.hopFrom = new V3(h.pos.x + rand(-1, 1), h.y, h.pos.z + rand(-1, 1)); s.hopTo = new V3(tx, 0, tz);
+    s.agit = 0; herd.push(s);
+  }
+  updateHud();
+  if (game.done >= fields.length) setTimeout(win, 2600);
+}
+
+// =====================================================================
+//  HUD, input, camera
+// =====================================================================
+const game = { done: 0 };
+function buildHud() { ui.hud.innerHTML = fields.map((f, i) => `<div class="f" id="hf${i}"></div>`).join(''); }
+function updateHud() { fields.forEach((f, i) => { const el = document.getElementById('hf' + i); if (el) el.classList.toggle('done', f.done); }); }
+
+addEventListener('keydown', (e) => {
+  if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) e.preventDefault();
+  keys.add(e.code);
+  if (state === 'title' && (e.code === 'Enter' || e.code === 'Space' || e.code === 'NumpadEnter')) startGame();
+  else if (state === 'win' && e.code === 'Enter') location.reload();
+  if (e.code === 'KeyM' && master) master.gain.value = master.gain.value > 0 ? 0 : 1;
+});
+addEventListener('keyup', (e) => keys.delete(e.code));
+addEventListener('blur', () => keys.clear());
+canvas.addEventListener('pointerdown', () => { if (state === 'title') startGame(); else if (state === 'win') location.reload(); });
+ui.title.addEventListener('pointerdown', () => { if (state === 'title') startGame(); });
+
+// touch: virtual stick (left half) + buttons
+const touch = { x: 0, z: 0, id: null, ox: 0, oy: 0, swing: false, whistle: false };
+const isTouch = matchMedia('(pointer: coarse)').matches;
+if (isTouch) {
+  const tl = document.getElementById('touch'), stick = document.getElementById('stick');
+  tl.style.display = 'block';
+  document.querySelector('#title .start').textContent = "Tap the screen to play"; document.querySelector('#title .keys').style.display = 'none';
+  document.querySelector('#win .start').textContent = "Tap the screen to play again";
+  tl.addEventListener('pointerdown', () => { if (state === 'win') location.reload(); });
+  tl.addEventListener('pointerdown', (e) => {
+    if (state === 'title') { startGame(); return; }
+    if (e.target.id === 'tSwing') { touch.swing = true; return; }
+    if (e.target.id === 'tWhistle') { touch.whistle = true; return; }
+    if (e.clientX < innerWidth * 0.6 && touch.id === null) { touch.id = e.pointerId; touch.ox = e.clientX; touch.oy = e.clientY; stick.style.display = 'block'; stick.style.left = (e.clientX - 55) + 'px'; stick.style.top = (e.clientY - 55) + 'px'; }
+  });
+  tl.addEventListener('pointermove', (e) => { if (e.pointerId !== touch.id) return; let dx = e.clientX - touch.ox, dy = e.clientY - touch.oy; const l = Math.hypot(dx, dy), mx = 50; if (l > mx) { dx *= mx / l; dy *= mx / l; } touch.x = dx / mx; touch.z = dy / mx; stick.firstChild.style.transform = `translate(${dx}px,${dy}px)`; });
+  const end = (e) => { if (e.pointerId !== touch.id) return; touch.id = null; touch.x = touch.z = 0; stick.style.display = 'none'; };
+  tl.addEventListener('pointerup', end); tl.addEventListener('pointercancel', end);
+}
+function readInput() {
+  let x = 0, z = 0;
+  if (keys.has('KeyW') || keys.has('ArrowUp')) z -= 1;
+  if (keys.has('KeyS') || keys.has('ArrowDown')) z += 1;
+  if (keys.has('KeyA') || keys.has('ArrowLeft')) x -= 1;
+  if (keys.has('KeyD') || keys.has('ArrowRight')) x += 1;
+  x += touch.x; z += touch.z;
+  // gamepad
+  const gp = navigator.getGamepads ? [...navigator.getGamepads()].find(g => g) : null;
+  let gSwing = false, gWhistle = false, gRun = false;
+  if (gp) { const ax = gp.axes[0] || 0, az = gp.axes[1] || 0; if (Math.hypot(ax, az) > 0.18) { x += ax; z += az; } gSwing = gp.buttons[0]?.pressed; gWhistle = gp.buttons[2]?.pressed || gp.buttons[3]?.pressed; gRun = gp.buttons[7]?.pressed || gp.buttons[5]?.pressed; }
+  const l = Math.hypot(x, z); if (l > 1) { x /= l; z /= l; }
+  const swing = keys.has('Space') || touch.swing || gSwing, whistle = keys.has('KeyE') || touch.whistle || gWhistle;
+  touch.swing = touch.whistle = false;
+  return { x, z, run: keys.has('ShiftLeft') || keys.has('ShiftRight') || gRun, swing, whistle };
+}
+
+let camShake = 0, camFocus = null;
+const cam = { target: new V3(0, 0, 0), pos: new V3(0, 14, 24), zoom: 1 };
+function updateCamera(dt) {
+  if (state === 'title' || state === 'loading') {
+    const a = gameTime * 0.06;
+    const tgt = new V3(Math.sin(a * 0.7) * 3, 0.5, -10 + Math.sin(a) * 6);
+    cam.target.lerp(tgt, 1 - Math.exp(-2 * dt));
+    const p = new V3(tgt.x + Math.sin(a) * 30, 15 + Math.sin(a * 1.3) * 2, tgt.z + Math.cos(a) * 30);
+    cam.pos.lerp(p, 1 - Math.exp(-1.5 * dt));
+  } else if (state === 'win') {
+    const a = (gameTime - endT) * 0.08;
+    const tgt = new V3(5, 0, -40);
+    cam.target.lerp(tgt, 1 - Math.exp(-0.8 * dt));
+    cam.pos.lerp(new V3(tgt.x + Math.sin(a) * 52, 44, tgt.z + Math.cos(a) * 52), 1 - Math.exp(-0.6 * dt));
+  } else {
+    const spd = Math.hypot(player.vel.x, player.vel.z);
+    let zoom = 0.8 + 0.14 * sstep(4, 8, spd), tgt = new V3(player.pos.x + player.vel.x * 0.32, player.y + 0.5, player.pos.z + player.vel.z * 0.32 - 1.0);
+    for (const h of herd) if (h.n >= 3 && h.state === 'free' && h.pos.distanceTo(player.pos) < 12) zoom = Math.max(zoom, 0.98 + h.n * 0.02);
+    if (rains.length) { const f = rains[0].field; if (Math.hypot(f.x - player.pos.x, f.z - player.pos.z) < 26) { tgt.lerp(new V3(f.x, 1.6, f.z + 0.6), 0.75); zoom = 1.0 + Math.max(f.w, f.d) * 0.022; } } // frame the whole field with the cloud above it
+    else if (camFocus && camFocus.t > 0) { camFocus.t -= dt; if (Math.hypot(camFocus.x - player.pos.x, camFocus.z - player.pos.z) < 26) { tgt.lerp(new V3(camFocus.x, 1.5, camFocus.z - 2), 0.45 * Math.min(1, camFocus.t)); zoom = Math.max(zoom, 1 + 0.3 * Math.min(1, camFocus.t)); } }
+    cam.zoom = damp(cam.zoom, zoom, 1.5, dt);
+    cam.target.lerp(tgt, 1 - Math.exp(-4.5 * dt));
+    const off = new V3(0, 9.8, 11.6).multiplyScalar(cam.zoom); // ~40 deg high third-person view, as in the video
+    cam.pos.lerp(cam.target.clone().add(off), 1 - Math.exp(-5 * dt));
+  }
+  camera.position.copy(cam.pos);
+  if (camShake > 0) { camShake = Math.max(0, camShake - dt * 0.8); camera.position.x += (Math.random() - 0.5) * camShake; camera.position.y += (Math.random() - 0.5) * camShake; }
+  camera.lookAt(cam.target);
+  // sun + shadow camera follow the view
+  const focus = state === 'win' ? new V3(5, 0, -40) : cam.target;
+  sun.target.position.copy(focus); sun.position.copy(focus).addScaledVector(SUN_DIR, 70);
+  const sc = sun.shadow.camera, ext = state === 'win' ? 72 : state === 'title' ? 44 : 36;
+  if (sc.right !== ext) { sc.left = -ext; sc.right = ext; sc.top = ext; sc.bottom = -ext; sc.updateProjectionMatrix(); }
+}
+
+function updateDecoClouds(dt) {
+  const pScreen = player ? player.obj.position.clone().setY(player.y + 0.8).project(camera) : new V3(0, 0, 0);
+  for (const c of decoClouds) {
+    c.position.x += c.userData.speed * dt;
+    if (c.position.x > WORLD.maxX + 25) c.position.x = WORLD.minX - 25;
+    c.position.y += Math.sin(gameTime * 0.4 + c.userData.speed * 10) * 0.002;
+    // fade a cloud when it hides the shepherd or the action
+    let want = 1;
+    if (state === 'play') {
+      const sp = c.position.clone().project(camera), dist = c.position.distanceTo(camera.position);
+      const pd = player.obj.position.distanceTo(camera.position);
+      const ds = Math.hypot((sp.x - pScreen.x) * camera.aspect, sp.y - pScreen.y);
+      if (dist < pd && ds < 0.55 + c.scale.x * 0.05) want = 0.12;
+      if (dist < 17) want = Math.min(want, 0.15 + 0.85 * sstep(9, 17, dist));
+    }
+    c.userData.fade = damp(c.userData.fade, want, 4, dt);
+    c.userData.mat.opacity = c.userData.fade; c.userData.mat.depthWrite = c.userData.fade > 0.95;
+    c.visible = c.userData.fade > 0.02;
+  }
+}
+
+function updateArrow() {
+  if (state !== 'play') { ui.arrow.classList.add('hidden'); return; }
+  // point to the nearest dry field when it is off-screen
+  let best = null, bd = 1e9;
+  for (const f of fields) if (!f.done) { const d = Math.hypot(f.x - player.pos.x, f.z - player.pos.z); if (d < bd) { bd = d; best = f; } }
+  if (!best) { ui.arrow.classList.add('hidden'); return; }
+  const p = new V3(best.x, 0.5, best.z).project(camera);
+  const on = Math.abs(p.x) < 0.92 && Math.abs(p.y) < 0.9 && p.z < 1;
+  if (on) { ui.arrow.classList.add('hidden'); return; }
+  let x = p.x, y = p.y; if (p.z > 1) { x = -x; y = -y; }
+  const l = Math.max(Math.abs(x) / 0.88, Math.abs(y) / 0.84); x /= l; y /= l;
+  ui.arrow.style.left = ((x + 1) / 2 * innerWidth) + 'px'; ui.arrow.style.top = ((1 - y) / 2 * innerHeight) + 'px';
+  ui.arrow.style.transform = `rotate(${Math.atan2(-y, x) * 180 / Math.PI - 90}deg)`;
+  ui.arrow.classList.remove('hidden');
+}
+
+// =====================================================================
+//  Game flow
+// =====================================================================
+function spawnFlock() {
+  // the flock starts spread over the home meadow: it has to be gathered first
+  const start = [[-6.0, -0.5], [6.4, -2.6], [-2.8, 7.6], [5.2, 6.4], [0.6, -4.6]];
+  for (const [x, z] of start) herd.push(new Herdling(1, x, z));
+}
+function startGame() {
+  if (state !== 'title') return;
+  state = 'play'; startT = gameTime; keys.clear();
+  ui.title.classList.add('hidden'); ui.hud.classList.remove('hidden'); ui.hint.classList.remove('hidden');
+  setTimeout(() => ui.hint.classList.add('hidden'), 11000);
+  startAudio(); canvas.focus();
+  sfx('pop', { vol: 0.5 });
+}
+function win() {
+  state = 'win'; endT = gameTime;
+  const s = Math.round(gameTime - startT); document.getElementById('wintime').textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+  ui.hud.classList.add('hidden'); ui.win.classList.remove('hidden'); ui.arrow.classList.add('hidden');
+  sfx('chime', { vol: 0.9, rate: 1.12 });
+  for (const f of fields) if (f.rainbow) { f.rainbow.t = 0; f.rainbow.hold = true; }
+}
+
+// =====================================================================
+//  Main loop
+// =====================================================================
+const clock = new THREE.Clock();
+function frame() {
+  requestAnimationFrame(frame);
+  try { step(); } catch (e) { if (!window.__err) { window.__err = String(e && e.stack || e); console.error(e); } }
+}
+function step() {
+  const dt = Math.min(clock.getDelta(), 1 / 25);
+  gameTime += dt; U.time.value = gameTime;
+  if (player) U.player.value.set(player.pos.x, player.y, player.pos.z);
+  if (state === 'play' || state === 'win' || state === 'title') {
+    const input = state === 'play' ? readInput() : { x: 0, z: 0, run: false, swing: false, whistle: false };
+    if (player) player.update(dt, input);
+    for (const h of [...herd]) if (herd.includes(h)) h.update(dt);
+    herdPairs(dt);
+    // fields: who hovers over them, rain triggers
+    for (const f of fields) {
+      let best = 0, bestH = null;
+      if (!f.done && !f.raining) {
+        for (const h of herd) if (h.state === 'free' && f.inside(h.pos.x, h.pos.z, 0.6)) { if (h.n > best) { best = h.n; bestH = h; } }
+        if (bestH && best >= f.need && bestH.n > 1) startRain(f, bestH);
+        else if (bestH && best >= f.need && f.need === 1) startRain(f, bestH);
+      }
+      // a cloud that is too small only drizzles: the puffs above the field show how many sheep are missing
+      if (!f.done && !f.raining && bestH && bestH.n >= 2 && best < f.need && Math.random() < dt * 22) {
+        const a = Math.random() * 6.28, rr = Math.sqrt(Math.random()) * bestH.r * 0.8, x = bestH.pos.x + Math.cos(a) * rr, z = bestH.pos.z + Math.sin(a) * rr;
+        fx.spawn({ x, y: bestH.y - bestH.r * 0.3, z, vy: -9, life: 1.5, s0: 0.3, s1: 0.3, a0: 0.7, a1: 0.7, cell: 0, floor: groundAt(x, z), tint: [0.85, 0.92, 1] });
+      }
+      if (f.done && Math.random() < dt * 0.9) {
+        const seed = Math.random() * 10, tint = [[1, 0.78, 0.86], [1, 0.95, 0.6], [1, 1, 1], [0.8, 0.9, 1]][Math.floor(Math.random() * 4)];
+        fx.spawn({ x: f.x + rand(-f.w / 2, f.w / 2), y: f.isl.h + 0.6, z: f.z + rand(-f.d / 2, f.d / 2), life: 7, s0: 0.38, s1: 0.38, a0: 1, a1: 0, cell: 3, tint,
+          fn: (p) => { p.vx = Math.cos(p.t * 1.3 + seed) * 1.1; p.vz = Math.sin(p.t * 1.1 + seed * 2) * 1.1; p.vy = Math.sin(p.t * 3 + seed) * 0.5 + (p.y < 0.9 ? 0.6 : 0); const fl = 0.55 + 0.45 * Math.abs(Math.sin(p.t * 19 + seed)); p.s0 = p.s1 = 0.38 * fl; p.rot = Math.sin(p.t * 2 + seed) * 0.5; } });
+      }
+      const lit = f.raining ? f.need : f.done ? f.need : Math.min(f.need, best);
+      if (lit > f.litShown) { f.pulse = 1; sfx('pop', { vol: 0.25, rate: 1.2 + lit * 0.08 }); }
+      f.litShown = lit; f.pulse = Math.max(0, f.pulse - dt * 2.5);
+      f.update(dt);
+      if (f.rainbow) {
+        const rb = f.rainbow; rb.t += dt;
+        const a = rb.hold ? sstep(0, 2, rb.t) * 0.9 : sstep(0, 1.5, rb.t) * (1 - sstep(5, 8, rb.t)) * 0.9;
+        rb.m.material.uniforms.opacity.value = a; rb.m.quaternion.copy(camera.quaternion);
+        if (!rb.hold && rb.t > 8) { scene.remove(rb.m); f.rainbow = null; }
+      }
+    }
+    updateRains(dt);
+    // idle bleats
+    if (state === 'play' && Math.random() < dt * 0.25) { const s = herd.filter(h => h.n === 1 && h.state === 'free'); if (s.length) { const h = s[Math.floor(Math.random() * s.length)]; if (h.pos.distanceTo(player.pos) < 16) h.baa(1); } }
+  }
+  if (indicators) indicators.update(gameTime, dt);
+  fx && fx.update(dt);
+  updateDecoClouds(dt);
+  updateCamera(dt);
+  updateArrow();
+  composer.render();
+}
+
+// =====================================================================
+//  Boot
+// =====================================================================
+async function boot() {
+  await loadAll();
+  // shared models
+  sheepModel = prepModel(M.sheep, { length: SHEEP_LEN, rough: 0.95, color: new THREE.Color(1.22, 1.2, 1.2), emissive: 0xe6eef8, emissiveIntensity: 0.16 });
+  cloudModel = prepModel(M.cloud, { width: 2, rough: 1.0, color: new THREE.Color(1.28, 1.28, 1.3), emissive: 0xdce9f6, emissiveIntensity: 0.3 });
+  if (cloudModel) cloudModel.parts.forEach(p => { p.geometry.translate(0, -cloudModel.size.y / 2, 0); });
+  const shep = prepModel(M.shepherd, { height: SHEP_H, rotY: -Math.PI / 2, rough: 0.8, color: new THREE.Color(0.8, 0.74, 0.72) }); // chestnut hair like the video
+  crookModel = prepModel(M.crook, { height: 2.05, rough: 0.7, color: new THREE.Color(0.45, 0.42, 0.36) }); // darker walnut brown, as in the video
+  wheatModel = prepModel(M.wheat, { height: 0.95, rough: 0.88, color: new THREE.Color(1.42, 1.26, 0.98) });
+  if (wheatModel) wheatMat = addSway(wheatModel.parts[0].material, 0.075, 1.0);
+  sproutModel = prepModel(M.sprout, { height: 1, rough: 0.8 });
+  // the flower GLBs face +X: turn them so their corolla faces +Z (toward the camera before instance tilt)
+  flowerModels = [prepModel(M.flowerY, { height: 1, rough: 0.8, rotY: -Math.PI / 2, color: new THREE.Color(1.15, 1.12, 1.05) }), prepModel(M.flowerW, { height: 1, rough: 0.8, rotY: -Math.PI / 2, color: new THREE.Color(1.15, 1.15, 1.15) })];
+  fx = new FX(T.fx || null);
+  if (sheepModel) sheepRig = rigSheep(sheepModel);
+  if (shep) shepRig = rigShepherd(shep);
+  buildWorld();
+  indicators = new Indicators();
+  buildHud();
+  player = new Player();
+  spawnFlock();
+  onResize();
+  ui.loading.classList.add('hidden');
+  ui.title.classList.remove('hidden');
+  state = 'title';
+  // read-only handle used by the automated play-test harness (_tools/cdp.mjs, _tools/bot.js)
+  window.__cs = { herd, fields, player, rains, keys, get t() { return gameTime; }, get state() { return state; }, startGame, mergeHerdlings, startRain, scene, camera, renderer };
+}
+boot().catch(e => { console.error(e); });
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

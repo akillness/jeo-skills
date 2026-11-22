@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "id": "recipe.cubic-unit-cell-accounting",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Cubic unit-cell atom accounting"
+  },
+  "aliases": {
+    "en": [
+      "BCC FCC lattice",
+      "crystal unit cell fractions"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Expose shared atom fractions across repeated cubic cells.",
+  "objective": "Compare BCC and FCC unit cells and highlight the fractions of atoms belonging to the central cell.",
+  "tags": [
+    "unit cell",
+    "BCC",
+    "FCC"
+  ],
+  "subject_terms": [
+    "unit cell",
+    "BCC",
+    "FCC",
+    "lattice point",
+    "corner fraction",
+    "crystal"
+  ],
+  "intent_signals": [
+    "count atoms in a unit cell",
+    "expand a crystal lattice"
+  ],
+  "example_prompts": [
+    "Compare BCC and FCC unit cells and highlight the fractions of atoms belonging to the central cell.",
+    "Expand neighboring cells so I can see why a corner contributes one eighth."
+  ],
+  "entities": [
+    {
+      "name": "Cell frame",
+      "guidance": "Use a cubic wireframe with fractional-coordinate site markers and a highlighted central cell."
+    },
+    {
+      "name": "Atoms",
+      "guidance": "Create corner sites plus center or face sites from a unique lattice-position map."
+    },
+    {
+      "name": "Accounting overlay",
+      "guidance": "Attach 1/8 corner and 1/2 face labels and a running sum."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Cell frame",
+      "structure": "Use a cubic wireframe with fractional-coordinate site markers and a highlighted central cell.",
+      "material": "Thin neutral frame and muted neighbor frames."
+    },
+    {
+      "family": "Atoms",
+      "structure": "Create corner sites plus center or face sites from a unique lattice-position map.",
+      "material": "Opaque central-cell portions and translucent external portions; colors are explanatory."
+    },
+    {
+      "family": "Accounting overlay",
+      "structure": "Attach 1/8 corner and 1/2 face labels and a running sum.",
+      "material": "Flat text with leader lines that avoid atom occlusion."
+    }
+  ],
+  "state_contract": {
+    "model": "Selected BCC/FCC site set, integer neighbor-cell extent and central-cell inclusion fractions; duplicate boundary sites merged by lattice coordinates.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Switch BCC/FCC.",
+      "Expand neighbors.",
+      "Select site contribution and hide exterior portions."
+    ]
+  },
+  "invariants": [
+    "BCC conventional cell accounts for two atoms; FCC accounts for four.",
+    "Neighbor expansion does not double-create a shared boundary site.",
+    "Clipping portions changes display, not lattice occupancy."
+  ],
+  "motion_guidance": [
+    "Animate neighbor reveal by cell layers rather than moving lattice sites out of position.",
+    "Choose a non-overlapping display radius or state the specific contact-radius construction."
+  ],
+  "known_limits": [
+    "Ideal cubic lattice illustration; no defects, thermal motion, density or material strength inferred.",
+    "Color and sphere radius are not measured atomic properties.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [
+    {
+      "id": "claim.cubic-unit-cell-accounting",
+      "statement": "A conventional BCC unit cell contains two atoms; FCC contains four after accounting for shared corner and face contributions.",
+      "scope": "Ideal monatomic conventional cubic cells; corner sites contribute one eighth and face sites one half.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-cubic-lattices",
+          "locator": "Figures 10.50–10.52 and accompanying BCC/FCC atom accounting"
+        }
+      ]
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Lattice accounting without dynamics.",
+    "state": [
+      "lattice type",
+      "neighbor extent",
+      "selected site"
+    ],
+    "colliders": [
+      "None; spheres represent lattice sites."
+    ],
+    "driving": [
+      "Visibility and clipping."
+    ],
+    "contact": [
+      "No interatomic contact solver."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Sum central-cell fractions; ensure unique shared sites across expansion."
+    ]
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-pressure-flow-sign-consistency",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Flow direction derived from one signed pressure value"
+  },
+  "aliases": {
+    "en": [
+      "ventilation sign check",
+      "zero crossing flow check"
+    ]
+  },
+  "direction_ids": [
+    "physiology-biomechanics"
+  ],
+  "summary": "Check that arrows, phase labels and magnitudes all derive from a single signed pressure difference, including at equalization.",
+  "objective": "Flow indicators follow the stored pressure sign everywhere, and equalization frames show zero flow.",
+  "applies_when": [
+    "A scene shows directional flow driven by a pressure difference.",
+    "The cycle passes through instants where the difference is zero.",
+    "Phase names are authored labels rather than computed physiology."
+  ],
+  "check_method": "state",
+  "tags": [
+    "domain-validation",
+    "ventilation",
+    "sign-consistency",
+    "phases"
+  ],
+  "subject_terms": [
+    "intrapulmonary pressure",
+    "pressure gradient",
+    "flow direction",
+    "phase label",
+    "equalization"
+  ],
+  "intent_signals": [
+    "arrows still move when the pressures are equal",
+    "check the airflow direction against the pressure"
+  ],
+  "example_prompts": [
+    "Check that airflow arrows follow the pressure sign through the whole breathing cycle."
+  ],
+  "negative_signals": [
+    "gas exchange modelling",
+    "respiratory disease simulation"
+  ],
+  "content": {
+    "principles": [
+      "Flow direction is the sign of a pressure difference in this qualitative model, so one stored quantity should drive the arrow direction, the magnitude glyph and the phase label.",
+      "The equalization instant is a real state rather than a transition to skip: at zero difference the indicator must be zero instead of interpolating through a direction.",
+      "Phase names are authored labels over an illustrative sequence, so their timing carries no physiological calibration and must be presented that way."
+    ],
+    "implementation": [
+      "Store the relative pressure of the compartment with respect to the atmosphere as one signed value per step and derive every visual element from it.",
+      "Step through the whole cycle including both zero crossings and record the signed pressure, arrow direction, phase label and whether the conducting path is drawn as connected.",
+      "Flip the stored sign once as a deliberate test and confirm that arrows follow the data rather than a direction hard-coded per phase name.",
+      "Check that the conducting path stays connected as the enclosing envelope moves, since a detached path implies an obstruction that is not part of the model."
+    ],
+    "observable_checks": [
+      "Arrows point inward exactly when the stored relative pressure is negative and outward exactly when it is positive, with no exceptions across the cycle.",
+      "At every zero crossing the flow indicator is zero and the label says so; a moving arrow at zero difference is the failure signal.",
+      "Flipping the stored sign flips every derived arrow and label, demonstrating that presentation reads the model rather than the phase name."
+    ]
+  },
+  "known_limits": [
+    "Qualitative quiet-breathing illustration; no pressure-volume calibration, gas exchange or patient-specific geometry is implied.",
+    "Authored verification guidance; no scene was run or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.ventilation-pressure-phases",
+    "recipe.nozzle-continuity",
+    "recipe.hydrostatic-depth-pressure"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-ventilation-pressure-gradient",
+      "statement": "Air flows into the lungs when atmospheric pressure is greater than intra-alveolar pressure and out when pressure within the lungs becomes greater than atmospheric, and intrapulmonary pressure equalizes with atmospheric pressure during the cycle.",
+      "scope": "Qualitative quiet-breathing mechanism from the cited section; the authored phase timing is not sourced patient data.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-breathing",
+          "locator": "Mechanisms of Breathing: pressure relationships and airflow direction"
+        }
+      ]
+    }
+  ]
+}

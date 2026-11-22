@@ -1,0 +1,4 @@
+Packages/
+DevPackages/
+# vendored from scenario-roblox-expert: refresh by copying, do not edit
+tools/testkit/Spec.luau

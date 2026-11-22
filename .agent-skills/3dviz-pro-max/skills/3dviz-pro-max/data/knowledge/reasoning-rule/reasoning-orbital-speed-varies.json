@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-orbital-speed-varies",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Let the orbit law set the animation speed"
+  },
+  "aliases": {
+    "en": [
+      "Kepler second law",
+      "equal areas",
+      "non-uniform orbital motion"
+    ]
+  },
+  "direction_ids": [
+    "astronomy-space",
+    "rigid-mechanics"
+  ],
+  "summary": "Animate an elliptical orbit with the speed variation the equal-area law requires rather than at constant angular rate.",
+  "objective": "Make an orbit animation express the physical law it is meant to teach.",
+  "applies_when": [
+    "An elliptical orbit is animated.",
+    "The scene mentions perihelion, aphelion, orbital periods or swept areas.",
+    "Several bodies with different orbits are animated together."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "Kepler laws",
+    "equal areas",
+    "ellipse",
+    "perihelion",
+    "aphelion",
+    "orbital speed"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "astronomy",
+    "dynamics"
+  ],
+  "intent_signals": [
+    "animate the orbit",
+    "why does it speed up",
+    "show the swept areas"
+  ],
+  "example_prompts": [
+    "Animate an elliptical orbit with correct speed variation and swept areas.",
+    "Show why the planet moves fastest near the Sun."
+  ],
+  "negative_signals": [
+    "Circular orbit approximations where the variation is negligible and stated as such.",
+    "Decorative orbital motion with no physical claim."
+  ],
+  "not_for": [
+    "Circular orbit approximations where the variation is negligible and stated as such.",
+    "Decorative orbital motion with no physical claim."
+  ],
+  "content": {
+    "principles": [
+      "The orbit is an ellipse with the primary at one focus, and the line joining the body to the primary sweeps equal areas in equal times, which means the body moves fastest at the closest point and slowest at the farthest.",
+      "A constant angular rate contradicts that law visibly: it sweeps larger areas near the far point, which is exactly backwards.",
+      "The equal-area statement is also the natural check, because a scene that draws swept sectors can compare their areas rather than asserting the behaviour.",
+      "Eccentricity controls how visible the effect is, so a demonstration should use an eccentric orbit rather than a nearly circular one."
+    ],
+    "implementation": [
+      "Advance the orbit by solving for position as a function of time under the equal-area relation rather than stepping the angle uniformly.",
+      "Draw swept sectors over equal time intervals so the law is visible as a construction rather than a caption.",
+      "Give eccentricity a control and default to a clearly eccentric value for the demonstration.",
+      "Mark the focus, and be explicit that the primary is at a focus rather than the centre.",
+      "State whether the timing is scaled and by how much, and keep the ratio of speeds physical even when the absolute rate is not."
+    ],
+    "observable_checks": [
+      "Measure the areas of sectors swept in equal times and confirm they match within tolerance.",
+      "Confirm the body is fastest at the closest approach and slowest at the farthest point.",
+      "Increase eccentricity and confirm the speed variation increases.",
+      "Confirm the primary sits at a focus and not at the centre of the ellipse."
+    ]
+  },
+  "related_ids": [
+    "recipe.kepler-equal-area-orbit",
+    "recipe.moon-phase-observer"
+  ],
+  "creative_affordances": [
+    "Trails, sector shading and time-lapse presentation are all free choices above the law.",
+    "Fictional systems can use any orbit shape when they do not claim to demonstrate the law."
+  ],
+  "known_limits": [
+    "Authored guidance citing the first and second orbital laws; it does not model perturbations, multi-body effects or relativistic corrections.",
+    "No orbital integration has been run for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-kepler-equal-areas",
+      "statement": "Each planetary orbit about the Sun is an ellipse with the Sun at one focus, the line joining a planet and the Sun sweeps equal areas during equal time intervals, and consequently a planet moves fastest at perihelion and slowest at aphelion.",
+      "scope": "Two-body Keplerian orbits; perturbations and relativistic corrections are outside this claim.",
+      "source_refs": [
+        {
+          "source_id": "source.nasa-kepler",
+          "locator": "Kepler first and second laws and the resulting speed variation"
+        }
+      ]
+    }
+  ]
+}

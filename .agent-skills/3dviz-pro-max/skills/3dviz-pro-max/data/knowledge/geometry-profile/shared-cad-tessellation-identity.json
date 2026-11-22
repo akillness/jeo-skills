@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-cad-tessellation-identity",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "geometry-profile",
+  "title": {
+    "en": "CAD tessellation with preserved part identity"
+  },
+  "aliases": {
+    "en": [
+      "CAD to triangles",
+      "chord tolerance tessellation",
+      "assembly identity through import"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "operations-logistics",
+    "architecture-interiors"
+  ],
+  "summary": "Convert exact CAD surfaces to triangles under a declared tolerance while keeping part names, assembly structure and units attached to the result.",
+  "objective": "Every displayed part still resolves to its source part name and place in the assembly, and the tessellation tolerance is stated in the same units as the model.",
+  "tags": [
+    "geometry-profile",
+    "cad",
+    "tessellation",
+    "tolerance",
+    "assembly",
+    "identity"
+  ],
+  "subject_terms": [
+    "boundary representation",
+    "tessellation",
+    "linear deflection",
+    "angular deflection",
+    "chord tolerance",
+    "assembly structure",
+    "part identity",
+    "model units",
+    "shape tolerance"
+  ],
+  "intent_signals": [
+    "import a CAD model for the web",
+    "curved faces look faceted",
+    "part names disappeared after import",
+    "the model came in a thousand times too small",
+    "how fine should the triangulation be"
+  ],
+  "example_prompts": [
+    "Bring a mechanical assembly into an interactive scene and keep the part list.",
+    "Show a machined curve smoothly without exploding the triangle count.",
+    "Explain why the imported model needs a unit conversion."
+  ],
+  "negative_signals": [
+    "organic sculpted character",
+    "procedurally generated landscape"
+  ],
+  "not_for": [
+    "Assets that were authored as meshes from the start and have no exact-surface origin.",
+    "Manufacturing or collision decisions based only on an unvalidated display tessellation. Validated mesh workflows remain appropriate when their geometry, tolerances and downstream algorithm satisfy the task requirements."
+  ],
+  "content": {
+    "principles": [
+      "A tessellated CAD part is an approximation with a declared error budget. The tolerance is part of the object's description, and a scene that shows a curved face without stating its tolerance is hiding a modelling decision.",
+      "Two tolerances matter and they behave differently: a distance tolerance controls how far a triangle may sit from the true surface, and an angular tolerance controls how much the surface may turn between neighbouring samples. A cylinder needs the second; a large gentle spline needs the first.",
+      "Tolerance is meaningful only relative to model size and units. The same numeric tolerance is fine detail on a machine part and useless on a building, so a mixed-scale import cannot use a single absolute value.",
+      "Identity is more fragile than geometry. Merging parts into one mesh for rendering speed destroys selection, explode views, part lists and any later link back to the source data.",
+      "The exchange step also carries information that is not geometry: units, product names, colours, layers and structure. Which of these survive depends on the exchange path, and the record should say what was expected to survive and what was actually checked."
+    ],
+    "implementation": [
+      "Fix the working units at import and convert once at a single boundary, rather than scaling individual parts later in the scene.",
+      "Set a distance tolerance from the smallest feature that must remain readable at the closest intended camera distance, and set an angular tolerance from how round small cylinders and fillets must look.",
+      "Expect a very small requested tolerance to be limited by the model's own stored tolerance, so requesting an extreme value can produce no improvement while still costing memory.",
+      "Keep one renderable object per source part, carrying the source name and its path in the assembly tree, and derive the scene hierarchy from that tree instead of flattening it.",
+      "Where performance requires merging, merge only within a part and keep a separate identity map, so selection and explode still address the original parts.",
+      "Record which non-geometric attributes were expected from the exchange and check them explicitly after import rather than assuming they arrived.",
+      "Keep a coarse and a fine tessellation of the same parts when both an overview and a close inspection are needed, and switch between them by distance rather than re-importing."
+    ],
+    "observable_checks": [
+      "A cylindrical or filleted face shows no visible facets at the closest intended camera distance, and visibly coarsens if the angular tolerance is loosened.",
+      "Clicking any visible part reports its source part name and its position in the assembly tree.",
+      "A measured overall dimension in the scene matches the source model dimension after the declared unit conversion.",
+      "The part count in the scene matches the part count expected from the source assembly, with any intentional omissions listed.",
+      "Switching between the coarse and fine tessellation changes only smoothness, not part positions or identities."
+    ]
+  },
+  "creative_affordances": [
+    "A deliberately faceted or exploded technical look is a legitimate presentation of a CAD import as long as the tolerance and the identity mapping are stated.",
+    "Materials and lighting can be re-authored freely for presentation; only the geometric tolerance and the part identity need to be preserved."
+  ],
+  "known_limits": [
+    "The display tessellation authored under this profile is chosen for appearance and is not validated for tolerance analysis, interference checking or manufacturing. Tessellated geometry is transferred to such workflows in practice, but each one needs its own error budget and acceptance tolerance rather than the viewing tolerance used here.",
+    "The tessellation controls and exchange behaviour cited here are documented for one CAD kernel; other kernels and converters expose different parameters and preserve different attributes.",
+    "The ISO text for the underlying exchange standard was not read for this record; the catalogue page returned an access error, so all format statements here come from the kernel documentation instead.",
+    "Authored reusable guidance; no runtime artifact or rendered result has been observed for this record."
+  ],
+  "related_ids": [
+    "recipe.modular-camera-rig",
+    "recipe.portable-speaker-exploded",
+    "recipe.building-service-layers",
+    "knowledge.shared-indexed-manifold-mesh",
+    "knowledge.shared-cad-exchange-boundary",
+    "knowledge.cutaway-explode"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-tessellation-deflection-controls",
+      "statement": "One CAD kernel's default triangulation is governed by a linear deflection that limits the distance between a curve and its tessellation and an angular deflection that limits the angle between successive segments, with separate interior controls for the distance between triangles and the face interior; the documentation notes that a requested linear deflection smaller than the shape tolerance is skipped in favour of the shape tolerance, that linear deflection has an absolute meaning that the application must set for its own model dimensions, and that a relative deflection scaled by model size exists for models whose dimensions vary by orders of magnitude.",
+      "scope": "Documented tessellation controls of the Open CASCADE Technology kernel as of the access date. They describe how one implementation bounds tessellation error; other kernels expose different parameters.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-occt-mesh",
+          "locator": "Meshing algorithm: linear and angular deflection; note on shape tolerance; relative deflection"
+        }
+      ]
+    },
+    {
+      "id": "claim.shared-step-transfer-scope",
+      "statement": "In one CAD kernel's STEP processor the basic translator handles geometrical and topological entities and assembly structures, while names, colours, layers and validation properties require the extended document translator, and length units, plane angle units and the uncertainty value are taken from the shape representation entities in the file.",
+      "scope": "Documented import behavior of the Open CASCADE Technology STEP processor as of the access date. It shows that geometry and descriptive attributes travel by different paths; it is not the text of the ISO exchange standard itself.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-occt-step",
+          "locator": "Introduction; Domain covered > Assemblies; Shape representations"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+<!doctype html>
+<!-- index.html - the blueprint proof harness. `python3 scripts/kit-proof.py` copies this file
+     into a scratch directory and replaces the INJECT line below with an import map plus the
+     four <meta> tags that name the blueprint, its module, its parameters and its footprint.
+     Nothing else in this page is generated; open it by hand with any static server to look at
+     a kit while you build it. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blueprint proof harness</title>
+    <!-- kit-proof:inject -->
+    <style>
+      html, body { margin: 0; height: 100%; background: #6d7075; }
+      #world { display: block; width: 100vw; height: 100vh; }
+      #hud { position: fixed; left: 8px; bottom: 8px; margin: 0; color: #f2f2f0;
+             font: 12px/1.4 ui-monospace, monospace; text-shadow: 0 1px 2px #0008; }
+      #error { position: fixed; inset: 12px auto auto 12px; color: #ffd7d7; font: 14px monospace; }
+    </style>
+  </head>
+  <body>
+    <canvas id="world" aria-label="Blueprint proof view"></canvas>
+    <p id="hud"></p>
+    <p id="error" role="alert" hidden></p>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

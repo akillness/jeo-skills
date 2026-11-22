@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "id": "recipe.hessian-critical-points",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Critical points and the second derivative test"
+  },
+  "aliases": {
+    "en": [
+      "saddle point",
+      "second derivative test",
+      "Hessian discriminant"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields"
+  ],
+  "summary": "Classify stationary points on a surface from the discriminant, and show the inconclusive case as a real outcome.",
+  "objective": "Build a surface where I can find stationary points and see the discriminant classify each as a maximum, minimum, saddle or inconclusive case.",
+  "tags": [
+    "critical point",
+    "saddle",
+    "classification"
+  ],
+  "subject_terms": [
+    "critical point",
+    "saddle point",
+    "local maximum",
+    "local minimum",
+    "discriminant",
+    "Hessian",
+    "second derivative test",
+    "tangent plane"
+  ],
+  "intent_signals": [
+    "Show why a point on a surface is a saddle rather than a maximum.",
+    "Classify the stationary points of a function of two variables."
+  ],
+  "example_prompts": [
+    "Build a surface with marked critical points classified by the second derivative test.",
+    "Show a case where the second derivative test is inconclusive."
+  ],
+  "negative_signals": [
+    "Not an optimiser: this recipe classifies points, it does not search for optima.",
+    "Not a claim about global extrema; only local behaviour is classified."
+  ],
+  "not_for": [
+    "Not an optimiser: this recipe classifies points, it does not search for optima.",
+    "Not a claim about global extrema; only local behaviour is classified."
+  ],
+  "entities": [
+    {
+      "name": "Height surface",
+      "guidance": "Sample the function on a regular indexed mesh with equal horizontal scales and a visible zero plane."
+    },
+    {
+      "name": "Critical point markers",
+      "guidance": "Mark each stationary point with its classification label and the numeric discriminant value, not with colour alone."
+    },
+    {
+      "name": "Local probe",
+      "guidance": "Provide two orthogonal section curves through the selected point so a saddle can be seen falling in one direction and rising in the other."
+    }
+  ],
+  "state_contract": {
+    "model": "An analytic function with analytic first and second partial derivatives, a set of stationary points, the discriminant at each and the resulting classification including an explicit inconclusive case.",
+    "authority": "The analytic derivatives are authoritative; mesh normals and visual curvature are illustrations and never decide a classification.",
+    "actions": [
+      "Select a critical point and read its discriminant and classification.",
+      "Rotate the two section planes through the selected point.",
+      "Switch to a function whose discriminant is zero at a stationary point.",
+      "Reset the function, selection and camera."
+    ]
+  },
+  "invariants": [
+    "A point is only labelled critical when both first partial derivatives vanish, within a stated tolerance.",
+    "A zero discriminant is reported as inconclusive rather than pushed into a nearby class.",
+    "The tangent plane at a critical point is horizontal in every displayed section."
+  ],
+  "motion_guidance": [
+    "Animate the section plane sweeping around the point so the up and down directions of a saddle are found by the viewer, not asserted.",
+    "Avoid animating the surface itself; the function is fixed while classification is inspected."
+  ],
+  "known_limits": [
+    "Only twice-differentiable functions of two variables are covered.",
+    "Mesh resolution can hide narrow features; classification comes from analytic derivatives, not from the mesh.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-critical-point-definition",
+      "statement": "A point is a critical point of a function of two variables when both first partial derivatives vanish there or one of them fails to exist.",
+      "scope": "Definition for functions defined on an open set as cited.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-second-derivative-test",
+          "locator": "4.7, definition of a critical point"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-second-derivative-test",
+      "statement": "With discriminant D equal to f_xx times f_yy minus the square of f_xy, D greater than zero with positive f_xx gives a local minimum, D greater than zero with negative f_xx gives a local maximum, D less than zero gives a saddle point, and D equal to zero is inconclusive.",
+      "scope": "Evaluated at a stationary point of a function whose first and second partial derivatives are continuous on a neighbourhood of that point; D = 0 is genuinely inconclusive, and a floating-point D near zero is reported as numerically inconclusive rather than as exactly zero.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-second-derivative-test",
+          "locator": "4.7, Theorem 4.17 second derivative test"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Height surface",
+      "structure": "Indexed quad mesh with enough resolution near marked points that a saddle does not disappear between samples.",
+      "material": "Matte surface with restrained elevation shading; keep the zero plane visible and translucent.",
+      "articulation": "None. The surface is regenerated only when the function changes."
+    },
+    {
+      "family": "Critical point markers",
+      "structure": "Distinct marker shapes per class plus a leader line to a text plate carrying the discriminant value.",
+      "material": "Opaque label plates so text stays readable over any part of the surface.",
+      "articulation": "Markers rebuild when the function changes and remain anchored to their domain coordinates."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Analytic evaluation and presentation; nothing moves under physical rules.",
+    "checks": [
+      "Every marked point reports vanishing first derivatives within the tolerance.",
+      "A function with a degenerate stationary point reports the inconclusive case."
+    ]
+  },
+  "related_ids": [
+    "recipe.directional-derivative-surface",
+    "recipe.double-integral-columns",
+    "knowledge.comparison-stage"
+  ]
+}

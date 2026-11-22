@@ -1,0 +1,18 @@
+{
+    "name": "AgentKit.Vfx.GraphTools",
+    "rootNamespace": "AgentKit.VfxGraph",
+    "references": [
+        "Unity.VisualEffectGraph.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

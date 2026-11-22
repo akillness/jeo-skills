@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.terrain-contour-slices",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Terrain contours linked to a height field"
+  },
+  "aliases": {
+    "en": [
+      "topographic contour map",
+      "terrain elevation slices",
+      "contour lines 3D"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment"
+  ],
+  "summary": "Connect equal-elevation contour lines with horizontal slices through a labeled synthetic terrain.",
+  "objective": "Make a synthetic terrain with selectable elevation contours, a horizontal slice plane and a linked map view.",
+  "tags": [
+    "topography",
+    "contour lines",
+    "elevation"
+  ],
+  "subject_terms": [
+    "topography",
+    "contour lines",
+    "elevation",
+    "height field",
+    "vertical exaggeration",
+    "terrain section"
+  ],
+  "intent_signals": [
+    "Make a synthetic terrain with selectable elevation contours, a horizontal slice plane and a linked map view.",
+    "Connect equal-elevation contour lines with horizontal slices through a labeled synthetic terrain."
+  ],
+  "example_prompts": [
+    "Make a synthetic terrain with selectable elevation contours, a horizontal slice plane and a linked map view.",
+    "Create an explorable 3D explanation of topographic contour map with map and slice."
+  ],
+  "negative_signals": [
+    "Synthetic terrain is not a DEM, surveyed map or navigation product."
+  ],
+  "not_for": [
+    "Synthetic terrain is not a DEM, surveyed map or navigation product."
+  ],
+  "entities": [
+    {
+      "name": "Terrain block",
+      "guidance": "Build a regular triangulated height mesh with a cut side wall and a visible horizontal scale; avoid implying a geographic location for invented heights."
+    },
+    {
+      "name": "Contour curves",
+      "guidance": "Extract level sets from grid cells with a consistent saddle-cell rule; retain separate connected components and identify the selected elevation."
+    },
+    {
+      "name": "Map and slice",
+      "guidance": "Link a top-down contour map to a horizontal slicing plane and numeric elevation probe; show contour interval and vertical exaggeration factor."
+    }
+  ],
+  "state_contract": {
+    "model": "For x,y in [-500,500] measured in meters, use synthetic height h=120*exp(-((x+150)^2+y^2)/40000)+80*exp(-((x-180)^2+(y-100)^2)/22500) meters. Extract fixed-increment contours from the same sampled height field.",
+    "authority": "The height field, horizontal coordinates and contour levels own geometry and labels; vertical exaggeration is a separate display transform.",
+    "actions": [
+      "Select a contour elevation or move the horizontal slice.",
+      "Adjust the declared contour interval.",
+      "Toggle true-scale and exaggerated-height views.",
+      "Inspect a point and reset view settings."
+    ]
+  },
+  "invariants": [
+    "Every contour point approximates its labeled elevation within the extraction tolerance.",
+    "Changing display exaggeration changes no source elevations or map distances.",
+    "Contour interval uses one elevation unit and stays constant within a layer."
+  ],
+  "motion_guidance": [
+    "Slice-plane motion is an inspection control; hills are not uplifted or eroded by moving it.",
+    "Recompute extracted lines when the source height field changes, not by simply raising old curves."
+  ],
+  "known_limits": [
+    "Synthetic terrain is not a DEM, surveyed map or navigation product.",
+    "Contour extraction resolution limits small features; projection, datum and geographic provenance must be supplied before using real data.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.terrain-contour-slices",
+      "statement": "Topographic contour lines join positions of equal elevation.",
+      "scope": "Basic contour meaning; the recipe terrain and extraction method are independently authored.",
+      "source_refs": [
+        {
+          "source_id": "source.usgs-contour-symbols",
+          "locator": "Opening explanation of contour lines and equal elevation"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Terrain block",
+      "structure": "Build a regular triangulated height mesh with a cut side wall and a visible horizontal scale; avoid implying a geographic location for invented heights.",
+      "material": "Matte terrain with restrained elevation tint and high-contrast thin contour lines; labels and side-wall scale prevent color-only elevation reading."
+    }
+  ]
+}

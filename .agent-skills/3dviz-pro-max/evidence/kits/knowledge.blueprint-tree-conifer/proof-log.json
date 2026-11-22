@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-tree-conifer",
+  "record_revision": 2,
+  "asset": "templates/kits/nature/tree-conifer.js",
+  "asset_sha256": "7754941646552dc5fd922cfea077cd38f87461ae2293c5f23d78e05fc5d1c6a4",
+  "params": {
+    "seed": 1,
+    "age": 1,
+    "lean": 0.06,
+    "height": 4.2,
+    "radius": 0.16,
+    "needle": "#4b7554"
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-tree-conifer",
+    "module": "../nature/tree-conifer.js",
+    "params": {
+      "seed": 1,
+      "age": 1,
+      "lean": 0.06,
+      "height": 4.2,
+      "radius": 0.16,
+      "needle": "#4b7554"
+    },
+    "triangles": 1184,
+    "bounds_m": {
+      "min": [
+        -1.2230756101045677,
+        -0.19060169829799012,
+        -1.2286988178973308
+      ],
+      "max": [
+        1.2875017694084803,
+        4.926765631905819,
+        1.3221124599824674
+      ],
+      "size": [
+        2.510577379513048,
+        5.117367330203809,
+        2.5508112778797982
+      ]
+    },
+    "fit_distance_m": 9.1292,
+    "view_distances_m": {
+      "far": 21.9102,
+      "mid": 10.9551,
+      "close": 7.1208,
+      "detail": 1.4848
+    },
+    "sockets": [
+      "base",
+      "leader",
+      "nest"
+    ],
+    "detail_socket": "base",
+    "animated": true,
+    "colliders": [
+      "bole",
+      "crown"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "f495821e46438ec55306cff21cb47bbab5f15bcdd6f5fbe1dfe5fa8904a3b1be",
+    "mid.png": "5ae5764c4e1ce3ec37b66392765beb5e4559c84a848151c973a20477a282ac65",
+    "close.png": "c8bfde122dab8e8d36760ec6b593e5af2f4e5232a08d02b837716bb8d8f54930",
+    "detail.png": "5b80ba9001a14ded30605291f433feffdb7109bd06d02f93f419b439a1e8d1ae",
+    "close-motion.png": "01b767c73b4610873c6ed04f9802b363ed79b5f13acd59072bc70d6c0640b4c6"
+  },
+  "motion": {
+    "interval_ms": 400,
+    "simulated": true,
+    "animate_returned": true,
+    "differs": true,
+    "sha_before": "c8bfde122dab8e8d36760ec6b593e5af2f4e5232a08d02b837716bb8d8f54930",
+    "sha_after": "01b767c73b4610873c6ed04f9802b363ed79b5f13acd59072bc70d6c0640b4c6"
+  },
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:50:54+00:00",
+  "finished": "2026-09-08T13:50:59+00:00"
+}

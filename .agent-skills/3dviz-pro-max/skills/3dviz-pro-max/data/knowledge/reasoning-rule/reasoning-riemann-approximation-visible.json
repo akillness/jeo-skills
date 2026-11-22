@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-riemann-approximation-visible",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Show the approximation as an approximation"
+  },
+  "aliases": {
+    "en": [
+      "Riemann sum",
+      "signed volume",
+      "convergence display"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields",
+    "probability-statistics"
+  ],
+  "summary": "Display the sum, the refinement and the sign explicitly, so an integral scene shows convergence rather than asserting an answer.",
+  "objective": "Make integral visualisations teach the limit process and the sign convention they depend on.",
+  "applies_when": [
+    "Columns, slabs or slices approximate an area, volume or integral.",
+    "A numeric value for the integral is displayed with the geometry.",
+    "The function takes negative values over part of the region."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "Riemann sum",
+    "integral",
+    "convergence",
+    "signed volume",
+    "refinement",
+    "partition"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "calculus",
+    "integration"
+  ],
+  "intent_signals": [
+    "show the Riemann sum",
+    "why is the integral negative",
+    "refine the partition"
+  ],
+  "example_prompts": [
+    "Show the double integral as columns and let me refine the grid.",
+    "Explain what happens when the function dips below zero."
+  ],
+  "negative_signals": [
+    "Scenes that report an exact analytic integral with no approximation shown.",
+    "Purely decorative slab geometry."
+  ],
+  "not_for": [
+    "Scenes that report an exact analytic integral with no approximation shown.",
+    "Purely decorative slab geometry."
+  ],
+  "content": {
+    "principles": [
+      "A double Riemann sum evaluates the function at a sample point in each subrectangle, multiplies by the subrectangle area and adds, and the double integral is the limit of those sums as the partition is refined. The sum and the limit are different objects and the scene should show both.",
+      "Where the function is negative the integral is a signed volume, so columns below the reference plane must subtract rather than accumulate; drawing them as positive mass is the most common error in these scenes.",
+      "The sample point choice matters: left, right, midpoint or corner sampling produce different sums for the same partition, and the choice should be visible.",
+      "Convergence is the content. A scene that jumps straight to the exact value teaches the answer rather than the method."
+    ],
+    "implementation": [
+      "Compute the displayed value from the drawn columns, so what the viewer sees is exactly what is being summed.",
+      "Encode sign visually, for example by drawing negative columns downward with a distinct treatment, and report the signed total.",
+      "Expose the partition count and the sample-point rule as controls, and show the value changing as they change.",
+      "Show the difference from a reference value where one is available, so the error and its trend are visible.",
+      "State the region of integration explicitly, since a sum over the wrong region converges confidently to the wrong number."
+    ],
+    "observable_checks": [
+      "Refine the partition repeatedly and confirm the sums approach a stable value at the rate the chosen rule predicts. Do not require the error to fall at every step: a coarse partition can be exact by cancellation, so that the next refinement increases the error before the trend resumes. For the midpoint rule applied to x squared minus twenty over thirty-three times x to the fourth power on the unit interval, the single-cell estimate is exactly the integral, seven thirty-thirds, while two cells give a slightly larger value, so the error rises from zero before the trend resumes.",
+      "Choose a function that is negative on part of the region and confirm the total decreases rather than increases.",
+      "Switch the sample-point rule and confirm the sum changes in the expected direction for a monotone function.",
+      "Compare against a known analytic value for a simple case and check the error trend against the order of the chosen rule over several refinements, rather than expecting a monotone decrease between consecutive steps."
+    ]
+  },
+  "related_ids": [
+    "recipe.double-integral-columns",
+    "recipe.normal-density-window"
+  ],
+  "creative_affordances": [
+    "Animation of the refinement, colour coding by sign and a running error plot are all free presentation choices.",
+    "A deliberately coarse partition is often the better teaching image when its coarseness is the point."
+  ],
+  "known_limits": [
+    "Authored guidance citing the double Riemann sum and signed-volume statements; it does not cover improper integrals or non-integrable functions.",
+    "It prescribes no quadrature scheme or error bound."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-double-riemann-sum-signed",
+      "statement": "A double Riemann sum evaluates the function at a chosen point of each subrectangle, multiplies by the subrectangle area and sums the results, the double integral is the limit of these sums as the subdivision is refined, and when the function takes negative values the double integral is a signed volume.",
+      "scope": "Double integrals over rectangular regions for integrable functions. The limit is taken as the partition is refined so that the mesh size tends to zero; improper integrals and convergence rates are not covered, and no monotone error behaviour is claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-double-integrals",
+          "locator": "5.1, double Riemann sums, the limit definition and signed volume"
+        }
+      ]
+    }
+  ]
+}

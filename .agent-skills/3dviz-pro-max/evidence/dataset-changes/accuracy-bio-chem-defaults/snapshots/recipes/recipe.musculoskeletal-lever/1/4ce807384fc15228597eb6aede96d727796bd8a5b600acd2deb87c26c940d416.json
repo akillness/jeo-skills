@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "id": "recipe.musculoskeletal-lever",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Bone, joint and muscle as a lever system"
+  },
+  "aliases": {
+    "en": [
+      "moment arm",
+      "muscle lever",
+      "joint torque geometry"
+    ]
+  },
+  "direction_ids": [
+    "physiology-biomechanics"
+  ],
+  "summary": "Expose effort, fulcrum and load geometry on a limb so a moment arm becomes a measurable distance rather than an illustration.",
+  "objective": "Build a limb lever model where I can move the load and the muscle attachment and read the resulting moment arms.",
+  "tags": [
+    "lever",
+    "moment arm",
+    "biomechanics"
+  ],
+  "subject_terms": [
+    "lever",
+    "fulcrum",
+    "effort",
+    "load",
+    "moment arm",
+    "muscle attachment",
+    "joint torque"
+  ],
+  "intent_signals": [
+    "Show why a muscle attachment position changes the effort needed.",
+    "Explain the lever geometry of an elbow or ankle in 3D."
+  ],
+  "example_prompts": [
+    "Build a limb lever demonstration with a movable load and a visible moment arm for the muscle.",
+    "Let me drag the muscle insertion and see how the lever geometry changes."
+  ],
+  "negative_signals": [
+    "Not a validated musculoskeletal dynamics model: no muscle force, activation or metabolic cost.",
+    "Not a lever-class taxonomy: this recipe does not assign first, second or third class labels."
+  ],
+  "not_for": [
+    "Not a validated musculoskeletal dynamics model: no muscle force, activation or metabolic cost.",
+    "Not a lever-class taxonomy: this recipe does not assign first, second or third class labels."
+  ],
+  "entities": [
+    {
+      "name": "Bone segments",
+      "guidance": "Two rigid segments meeting at one joint centre, each with a marked attachment site and a visible long axis."
+    },
+    {
+      "name": "Muscle line of action",
+      "guidance": "Draw the muscle as a straight line of action between origin and insertion with an explicit perpendicular distance to the joint centre."
+    },
+    {
+      "name": "Load and readout",
+      "guidance": "Attach a movable load marker on the distal segment and display both moment arms as measured distances with units stated as illustrative."
+    }
+  ],
+  "state_contract": {
+    "model": "Two-segment linkage with a joint centre, an origin and insertion point, a load position and a joint angle. Moment arms are computed as perpendicular distances from the joint centre to each line of action. No force magnitudes are computed.",
+    "authority": "Geometry is authoritative: every displayed distance is recomputed from the current points, so dragging any point immediately updates the readout.",
+    "actions": [
+      "Drag the insertion point along the bone.",
+      "Move the load along the distal segment.",
+      "Change the joint angle within the authored range.",
+      "Reset all points and the angle to the reference pose."
+    ]
+  },
+  "invariants": [
+    "The fulcrum stays at the joint centre; dragging an attachment never moves it.",
+    "A moment arm is the perpendicular distance to the line of action, so it changes with joint angle even when attachment points do not move.",
+    "When the line of action passes through the joint centre the moment arm displays as zero rather than as a small residue."
+  ],
+  "motion_guidance": [
+    "Animate the joint angle slowly enough that both moment arms can be read while moving.",
+    "Do not animate the muscle line thickening as if it were contracting force; thickness here is a display choice."
+  ],
+  "known_limits": [
+    "Idealised straight line of action: no muscle wrapping, pennation, tendon compliance or multi-joint muscles.",
+    "Distances are illustrative units; no anthropometric dataset backs the geometry.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-lever-roles",
+      "statement": "In the musculoskeletal system bones act as stiff levers, the articular endings of bones in synovial joints act as fulcrums, contracting skeletal muscle supplies the effort, and the load is the object lifted or the resistance to the movement.",
+      "scope": "Role assignment only. The section read did not enumerate lever classes, so no class label is claimed here.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-lever-system",
+          "locator": "11.1, The Lever System of Muscle and Bone Interactions"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Bone segments",
+      "structure": "Shafts with distinguishable proximal and distal ends and a marked attachment ridge rather than a smooth cylinder.",
+      "material": "Matte bone with a subtly different surface at attachment sites so the insertion reads as a real feature.",
+      "articulation": "Distal segment rotates about the joint centre; attachment markers are parented to their segment and move with it."
+    },
+    {
+      "family": "Muscle line of action",
+      "structure": "A straight tensile element with end caps at origin and insertion plus a dashed perpendicular drop to the joint centre.",
+      "material": "A single saturated accent reserved for the line of action, with the perpendicular drawn in a neutral value so the two are not confused.",
+      "articulation": "The line re-solves from current endpoints each frame; it never stores a stale direction."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Geometric measurement of an authored linkage; no forces, torques in newton metres or dynamics.",
+    "state": [
+      "joint angle",
+      "origin and insertion points",
+      "load position"
+    ],
+    "checks": [
+      "Moment arm reads zero when the line of action passes through the joint centre.",
+      "Reset restores the reference pose and the original readouts."
+    ]
+  },
+  "related_ids": [
+    "recipe.knee-layer-peel",
+    "knowledge.parameter-experiment",
+    "knowledge.comparison-stage"
+  ]
+}

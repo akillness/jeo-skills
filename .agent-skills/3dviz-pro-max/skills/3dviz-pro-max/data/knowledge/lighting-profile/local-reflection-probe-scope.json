@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.local-reflection-probe-scope",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Local reflection and probe spatial scope"
+  },
+  "aliases": {
+    "en": [
+      "local cubemap ownership",
+      "probe influence and parallax",
+      "position-dependent environment approximation"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "products-assemblies",
+    "environments-dioramas"
+  ],
+  "summary": "Choose and label the spatial approximation for local reflections or diffuse irradiance: global environment, positioned cubemap capture, diffuse probe or supported probe grid, without promising automatic GI or portable box projection.",
+  "objective": "Reflective objects change plausibly across declared zones, capture updates are controlled, and unsupported local parallax or diffuse-GI features fail visibly instead of being implied.",
+  "applies_when": [
+    "A global environment looks stuck or spatially wrong inside rooms or vehicles.",
+    "Blender EEVEE probes inspire a Three.js runtime solution."
+  ],
+  "subject_terms": [
+    "reflection probe",
+    "cubemap capture",
+    "influence volume",
+    "parallax correction",
+    "LightProbe",
+    "LightProbeGrid",
+    "CubeCamera"
+  ],
+  "tags": [
+    "lighting-profile",
+    "reflection",
+    "probe",
+    "environment-map"
+  ],
+  "intent_signals": [
+    "local reflections in several rooms",
+    "box projected cubemap support check",
+    "distinguish diffuse probe from reflection capture"
+  ],
+  "example_prompts": [
+    "Give two adjacent rooms distinct reflection captures and show the transition volume.",
+    "Use CubeCamera for a hero object while proving the object is excluded during capture."
+  ],
+  "negative_signals": [
+    "Calling LightProbe a local specular reflection cubemap.",
+    "Assuming Blender probe influence/parallax objects export into a core Three.js scene."
+  ],
+  "not_for": [
+    "Screen-space or ray-traced reflection implementation.",
+    "Global IBL and direct-shadow ownership already covered by the related record."
+  ],
+  "content": {
+    "principles": [
+      "A global environment is a broad directional approximation. Local specular capture requires a declared capture position, influence/blend rule and update policy; a diffuse LightProbe is a different representation.",
+      "Blender EEVEE Sphere probes have local influence and optional parallax volumes, but those authoring constructs are references unless an explicit adapter recreates them at runtime.",
+      "Box projection is capability gated. Do not claim it as an automatic core Three.js feature; record renderer backend, Three.js revision and the exact supported implementation or diagnose absence. No probe automatically supplies complete dynamic GI."
+    ],
+    "implementation": [
+      "In Blender, author probe-reference bounds around coherent spaces and capture neutral/chrome references; record which geometry and emitter state the probe saw.",
+      "In Three.js, choose global envMap, a positioned CubeCamera capture, diffuse LightProbe, or supported LightProbeGrid deliberately. Exclude the receiving hero from its own cubemap capture and update only on declared invalidation.",
+      "Visualize capture points and zone bounds; compare a chrome sphere and diffuse card at center, boundary and outside each zone."
+    ],
+    "observable_checks": [
+      "A translated chrome reference changes consistently between zones rather than reflecting one global position everywhere.",
+      "Diffuse LightProbe changes the diffuse card but is not presented as a specular cubemap; CubeCamera changes reflections at its capture point.",
+      "Unsupported box projection produces an explicit capability result. No capture recursively contains its receiving object, and static update policy shows stale state when deliberately invalidated."
+    ]
+  },
+  "related_ids": [
+    "knowledge.blender-three-ibl-shadow-ownership",
+    "knowledge.shared-pbr-studio-environment",
+    "knowledge.material-response-check"
+  ],
+  "creative_affordances": [
+    "Use rooms, display cases, vehicle cabins or portals with sharply different reflection identities.",
+    "Make probe boundaries inspectable through wire volumes or a movable reference sphere."
+  ],
+  "known_limits": [
+    "Cubemap capture is exact only at its capture position; parallax and occlusion errors remain.",
+    "Current LightProbeGrid documentation is WebGLRenderer-only and describes diffuse irradiance, not specular reflection.",
+    "No probe bake, cube capture, renderer capability or visual comparison was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.lighting-blender-local-probe",
+      "statement": "Blender EEVEE Sphere probes record incoming light at one location, have local sphere/box influence, and can use a separately fitted custom parallax volume.",
+      "scope": "Current Blender EEVEE authoring reference; no interchange claim.",
+      "source_refs": [
+        {
+          "source_id": "source.lighting-blender-probe-sphere",
+          "locator": "Overview; Influence volume; Custom Parallax"
+        }
+      ]
+    },
+    {
+      "id": "claim.lighting-three-cube-capture",
+      "statement": "Three.js CubeCamera captures surroundings from one 3D position into a cube render target usable as an environment map; its example hides the receiving object during update.",
+      "scope": "Current local cubemap mechanism, without volume blending or box projection guarantee.",
+      "source_refs": [
+        {
+          "source_id": "source.lighting-three-cube-camera",
+          "locator": "Class description, code example and update(renderer, scene)"
+        }
+      ]
+    },
+    {
+      "id": "claim.lighting-three-diffuse-probes",
+      "statement": "Three.js LightProbe stores spherical-harmonic irradiance for diffuse approximation and does not emit; the current LightProbeGrid addon provides position-dependent diffuse GI and is documented as WebGLRenderer-only.",
+      "scope": "Current Three.js diffuse probe APIs, distinct from local specular cubemaps.",
+      "source_refs": [
+        {
+          "source_id": "source.lighting-three-light-probe",
+          "locator": "Class description and irradiance property"
+        },
+        {
+          "source_id": "source.lighting-three-light-probe-grid",
+          "locator": "Description, addon import and backend note"
+        }
+      ]
+    }
+  ]
+}

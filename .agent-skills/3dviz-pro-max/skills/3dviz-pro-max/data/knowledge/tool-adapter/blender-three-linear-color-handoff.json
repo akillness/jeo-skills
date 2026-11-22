@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blender-three-linear-color-handoff",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Blender-to-Three linear color handoff"
+  },
+  "aliases": {
+    "en": [
+      "Blender Three color mismatch",
+      "texture color role handoff",
+      "AgX versus Three output"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "characters-motion-art",
+    "molecules-materials"
+  ],
+  "summary": "Carry scene-linear material inputs through glTF, classify every texture as color or data, and compare Blender with Three.js under explicitly named display transforms.",
+  "objective": "A neutral swatch, a saturated color patch and one roughness-driven highlight remain explainably related across Blender and Three.js without decoding a data map or applying an output transform twice.",
+  "tags": [
+    "tool-adapter",
+    "blender",
+    "threejs",
+    "gltf",
+    "color-management",
+    "linear-workflow"
+  ],
+  "subject_terms": [
+    "scene-linear",
+    "Linear-sRGB",
+    "sRGB texture",
+    "Non-Color Data",
+    "AgX",
+    "Khronos PBR Neutral",
+    "tone mapping",
+    "outputColorSpace",
+    "base color texture",
+    "roughness map"
+  ],
+  "intent_signals": [
+    "Blender material is darker in Three.js",
+    "AgX render does not match glTF viewer",
+    "roughness texture looks washed out",
+    "which textures use sRGB",
+    "avoid double gamma on exported model"
+  ],
+  "example_prompts": [
+    "Make this Blender product material read consistently in a Three.js glTF viewer.",
+    "Diagnose why my base color matches but the roughness response changes after export."
+  ],
+  "negative_signals": [
+    "calibrate a physical display",
+    "copy viewport pixels exactly across unrelated tone mappers",
+    "pure geometry with no material comparison"
+  ],
+  "not_for": [
+    "Display calibration or spectral color accuracy.",
+    "Guaranteeing pixel identity between different renderers, samplers, lights or tone mappers."
+  ],
+  "content": {
+    "principles": [
+      "Separate three responsibilities: Blender assigns image roles and authors scene-linear material values, glTF transports defined color encodings and material factors, and Three.js decodes inputs into its working space before one output conversion.",
+      "Base color and emissive images are color; normal, roughness, metalness, occlusion and masks are data. A visually gray image is not automatically color data.",
+      "A Blender view transform such as AgX or Khronos PBR Neutral is a display look, not texture content to bake into base color for a normal glTF material.",
+      "Pixel equality is meaningful only after fixing lights, environment, exposure, tone mapping, output color space, camera and renderer version on both sides. Otherwise compare named appearance relationships and record the differing pipelines."
+    ],
+    "implementation": [
+      "In Blender, mark base-color and emissive images with their actual color encoding and mark normal, roughness, metalness, occlusion and mask inputs as Non-Color. Keep the source texture assignment visible in the material graph.",
+      "Export through the recognized glTF material arrangement instead of baking Blender's display transform into ordinary material textures. Preserve a small neutral/color/roughness swatch asset beside the production asset.",
+      "Load glTF through GLTFLoader so its material texture annotations are interpreted by the loader. For manually loaded PNG or JPEG color maps, assign sRGB; leave non-color maps unannotated as color. Keep renderer output color space and tone mapping explicit in the app configuration.",
+      "Build a comparison matrix with one Blender view and one Three.js output configuration per column. State software versions and renderer backend. Change one axis at a time before adjusting material factors.",
+      "Name the output pair with constants, not adjectives. Blender `Standard` pairs with `NoToneMapping` (the renderer's documented default), `AgX` with `AgXToneMapping`, and `Khronos PBR Neutral` with `NeutralToneMapping`. Blender `Filmic` has no counterpart: the documented `toneMapping` enumeration is `NoToneMapping | LinearToneMapping | ReinhardToneMapping | CineonToneMapping | ACESFilmicToneMapping | CustomToneMapping | AgXToneMapping | NeutralToneMapping` and contains no Filmic constant, while `ACESFilmicToneMapping` is a separately named transform. The full table with its caveats is `knowledge.blender-view-transform-tone-mapping-table`.",
+      "Fix both output settings explicitly at renderer construction: `renderer.outputColorSpace = SRGBColorSpace` (documented default; the only alternative is `LinearSRGBColorSpace`) and `renderer.toneMappingExposure = 1` (documented default), and record both in every comparison column beside `renderer.toneMapping`.",
+      "Annotate manually loaded colour textures with `texture.colorSpace = SRGBColorSpace` and leave normal, roughness, metalness, occlusion and mask maps unannotated. `THREE.ColorManagement.enabled` is documented as enabled by default and converts hexadecimal and CSS colour input into the Linear-sRGB working space; record its value rather than toggling it to chase a match.",
+      "If a custom Three shader participates, confirm it performs the required output color conversion for the chosen renderer path; do not compensate for a missing conversion by retinting source textures."
+    ],
+    "observable_checks": [
+      "A flat normal-map test patch stays neutral and its lighting does not acquire the contrast shift expected from sRGB decoding.",
+      "The roughness ramp changes highlight width monotonically while its underlying data values remain unchanged across the handoff.",
+      "Switching only Blender's view transform changes the displayed Blender image but does not alter exported texture bytes or glTF material factors.",
+      "The comparison report names Blender version/view, Three.js revision/renderer backend, environment, exposure, tone mapping and output color space before calling a mismatch a material defect.",
+      "Every comparison column names one Blender view and one `toneMapping` constant from the mapped pairs plus its `outputColorSpace` and `toneMappingExposure`; a column whose Blender view is `Filmic` is reported as unmapped instead of being compared."
+    ]
+  },
+  "creative_affordances": [
+    "Choose a graded or stylized final look on either side after the transport comparison is stable; keep a neutral diagnostic view available.",
+    "Exact pixel matching may be replaced by an authored perceptual match when the two output transforms intentionally differ."
+  ],
+  "known_limits": [
+    "This extends the existing shared color-management profile with a Blender-glTF-Three handoff; it does not derive color science or certify displays.",
+    "Blender and Three.js defaults change across releases, so every implementation records actual versions and backend.",
+    "Authored reusable guidance; no Blender export, Three.js runtime or rendered comparison was run for this record.",
+    "The view-to-constant pairing is by shared name and documented intent only; no source states that a Blender view and a same-named renderer constant implement the same curve."
+  ],
+  "related_ids": [
+    "knowledge.shared-display-color-management",
+    "knowledge.shared-pbr-studio-environment",
+    "knowledge.three-pbr-adapter",
+    "knowledge.blender-view-transform-tone-mapping-table"
+  ],
+  "claims": [
+    {
+      "id": "claim.blender-three-color-input-roles",
+      "statement": "Blender documents scene-linear rendering, Non-Color handling for data images, and selectable display views, while Three.js documents Linear-sRGB as its working space, sRGB annotation for ordinary color textures, no color-space annotation for normal and roughness data, and an explicit output color-space conversion.",
+      "scope": "Current documented color-management conventions of Blender and Three.js as accessed; they do not imply identical tone mapping or pixel output.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-blender-color-spaces",
+          "locator": "Linear Workflow; Working Space; Images and Video (Non-Color Data)"
+        },
+        {
+          "source_id": "source.shared-depth-blender-displays-views",
+          "locator": "Overview; Views"
+        },
+        {
+          "source_id": "source.shared-depth-three-color-management",
+          "locator": "Roles of color spaces; Input, Working and Output color space"
+        }
+      ]
+    },
+    {
+      "id": "claim.blender-three-color-gltf-encoding",
+      "statement": "glTF 2.0 requires the RGB components of base-color textures to use the sRGB transfer function, while metallic-roughness, normal and occlusion values use linear transfer functions.",
+      "scope": "glTF 2.0 core material texture encodings; extension textures must follow their own specifications.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Materials > Metallic-Roughness Material; Additional Textures"
+        }
+      ]
+    },
+    {
+      "id": "claim.blender-three-color-output-transform-pairs",
+      "statement": "The renderer documents toneMapping as one of NoToneMapping, LinearToneMapping, ReinhardToneMapping, CineonToneMapping, ACESFilmicToneMapping, CustomToneMapping, AgXToneMapping or NeutralToneMapping with a default of NoToneMapping, outputColorSpace as SRGBColorSpace or LinearSRGBColorSpace with a default of SRGBColorSpace, and toneMappingExposure with a default of 1, and that enumeration contains no constant named for Blender's Filmic view; the Blender manual describes Standard as doing no extra conversion besides the conversion for the display, Khronos PBR Neutral and AgX as named tone mapping transforms, and Filmic as deprecated and superseded by AgX.",
+      "scope": "Documented property enumerations, defaults and view descriptions on the accessed pages. Shared or similar names are used here to pair columns in a comparison; neither page states that a Blender view and a same-named renderer constant implement an identical curve.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-webglrenderer",
+          "locator": "toneMapping : NoToneMapping | LinearToneMapping | ReinhardToneMapping | CineonToneMapping | ACESFilmicToneMapping | CustomToneMapping | AgXToneMapping | NeutralToneMapping, \"Default is NoToneMapping\"; toneMappingExposure \"Exposure level of tone mapping. Default is 1\"; outputColorSpace : SRGBColorSpace | LinearSRGBColorSpace, \"Default is SRGBColorSpace\""
+        },
+        {
+          "source_id": "source.shared-depth-blender-displays-views",
+          "locator": "Views: \"Standard: Does no extra conversion besides the conversion for the display\"; \"Khronos PBR Neutral: A tone mapping transform designed specifically for PBR color accuracy\"; \"AgX: A tone mapping transform that improves on Filmic\"; \"Filmic: ... Filmic is deprecated and is superseded by AgX which improves handling of saturated colors\""
+        }
+      ]
+    }
+  ]
+}

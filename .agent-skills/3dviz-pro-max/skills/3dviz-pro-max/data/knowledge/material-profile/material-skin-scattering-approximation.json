@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.material-skin-scattering-approximation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Skin surface and subsurface approximation"
+  },
+  "aliases": {
+    "en": [
+      "skin subsurface appearance",
+      "skin scattering approximation"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "anatomy-structures"
+  ],
+  "summary": "Balance surface detail and an explicitly approximate subsurface response without turning a character into uniform wax.",
+  "objective": "Give a character skin-like light response while preserving facial form and an explicit approximation boundary.",
+  "tags": [
+    "material-profile",
+    "skin",
+    "subsurface scattering",
+    "surface roughness"
+  ],
+  "subject_terms": [
+    "skin",
+    "subsurface scattering",
+    "surface roughness",
+    "thin features",
+    "light transport"
+  ],
+  "intent_signals": [
+    "Give a character skin-like light response while preserving facial form and an explicit approximation boundary."
+  ],
+  "example_prompts": [
+    "Light a stylized character with readable cheek planes and restrained scattering at thin ear edges, without claiming measured human tissue."
+  ],
+  "content": {
+    "principles": [
+      "Keep facial geometry, surface reflection and subsurface response as separate decisions. An extra warm edge tint can be an authored cue but is not automatically a physical scattering model.",
+      "Use measured tissue parameters only when their subject, units and model assumptions are actually available; character palette does not determine biological properties."
+    ],
+    "implementation": [
+      "Establish silhouette and facial planes before microdetail. Scale pores and wrinkle relief to the intended shot; use mesh detail for deep creases that need real occlusion rather than pushing all texture through a strong normal map.",
+      "For a subsurface-capable renderer, choose a documented transport approximation and track its length scale relative to the object. For a simpler style, label a warm-rim or diffuse-wrap treatment as an appearance approximation.",
+      "Compare front, side and back lighting under fixed exposure. Tune surface roughness separately from scattering so a broad highlight does not erase the nose or lips and subsurface softness does not flood every shadow equally."
+    ],
+    "observable_checks": [
+      "Front-lit facial planes remain readable when subsurface response is enabled; the result is not uniformly luminous.",
+      "A thin feature and a thicker cheek respond differently in the chosen setup, or the simplified model's inability to distinguish them is recorded.",
+      "Rescaling the character prompts a check of scattering length and pore scale; parameters are not assumed invariant in every renderer."
+    ]
+  },
+  "known_limits": [
+    "No medical, physiological, demographic or measured tissue claim; optical parameters do not establish softness, elasticity or contact friction.",
+    "Authored modeling and inspection guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Deeply stylized palettes, painted skin and deliberately wax-like characters remain possible when intended; photorealistic skin is not mandatory."
+  ],
+  "related_ids": [
+    "knowledge.material-response-check",
+    "knowledge.transmissive-medium"
+  ],
+  "claims": [
+    {
+      "id": "claim.material-depth-skin-scattering-approximation",
+      "statement": "Jensen and colleagues' 2001 subsurface model combines single scattering with a diffusion approximation for multiple scattering, and includes skin among the materials used in optical-property measurements.",
+      "scope": "Description of the cited model and its reported examples; no universal skin coefficients or calibration for this profile.",
+      "source_refs": [
+        {
+          "source_id": "source.material-depth-skin-transport",
+          "locator": "Abstract paragraphs 1-2"
+        }
+      ]
+    }
+  ]
+}

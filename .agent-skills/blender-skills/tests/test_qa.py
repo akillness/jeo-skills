@@ -1,0 +1,180 @@
+import os
+
+import bmesh
+import bpy
+import fixtures as fx
+from run_all import TMP, requires_gpu, skill_module
+
+
+def _qa():
+    return skill_module("blender-asset-qa", "qa_check")
+
+
+def test_clean_cube_passes():
+    c = fx.cube("SM_Box", location=(0, 0, 1))
+    fx.unwrap(c)
+    c.data.materials.append(bpy.data.materials.new("M_Box"))
+    r = _qa().run(objects=["SM_Box"])
+    assert r["pass"], r
+    assert r["objects"]["SM_Box"]["tris"] == 12 and r["ground_z"] == 0
+
+
+def test_detects_zfighting_between_objects_and_within_mesh():
+    fx.zfight_pair()
+    r = _qa().run(objects=["ZF_A", "ZF_B"], uv=False)
+    assert any("ZF_A<->ZF_B" in z["where"] for z in r["zfighting"]), r["zfighting"]
+    r = _qa().run(objects=["ZF_Self"], uv=False)
+    assert any(z["where"] == "ZF_Self" for z in r["zfighting"]), r
+    assert not r["pass"]
+
+
+def test_slightly_offset_coplanar_is_zfighting_but_far_is_not():
+    fx.plane("P1")
+    fx.plane("P2", location=(0.3, 0, 0.0004))
+    fx.plane("P3", location=(0, 0, 0.05))
+    r = _qa().run(objects=["P1", "P2"], uv=False)
+    assert r["zfighting"], r
+    r = _qa().run(objects=["P1", "P3"], uv=False)
+    assert not r["zfighting"], r
+
+
+def test_detects_floating_parts_and_objects():
+    fx.detached_part()
+    r = _qa().run(objects=["Body", "Floater"], uv=False)
+    objs = sorted(f["object"] for f in r["floating"])
+    assert objs == ["Body", "Floater"], r["floating"]
+
+
+def test_touching_parts_are_not_floating():
+    fx.cube("Base", size=2, location=(0, 0, 1))
+    fx.cube("Top", size=1, location=(0, 0, 2.5))   # rests exactly on Base
+    fx.cube("Pierce", size=0.5, location=(1, 0, 1))  # intersects Base
+    r = _qa().run(objects=["Base", "Top", "Pierce"], uv=False)
+    assert not r["floating"], r["floating"]
+
+
+def test_enclosed_part_is_not_floating():
+    fx.uv_sphere("Head", radius=1, location=(0, 0, 1))
+    fx.uv_sphere("Eye", radius=0.2, location=(0, -0.6, 1.2))
+    r = _qa().run(objects=["Head", "Eye"], uv=False)
+    assert not r["floating"] and r["enclosed"], r
+
+
+def test_detects_inverted_and_inconsistent_normals_and_back_to_back():
+    c = fx.cube("Inv", location=(0, 0, 1))
+    bm = bmesh.new()
+    bm.from_mesh(c.data)
+    bmesh.ops.reverse_faces(bm, faces=bm.faces[:])
+    bm.to_mesh(c.data)
+    bm.free()
+    r = _qa().run(objects=["Inv"], uv=False)
+    assert r["objects"]["Inv"]["inside_out_islands"] == 1
+    d = fx.cube("Inc", location=(4, 0, 1))
+    bm = bmesh.new()
+    bm.from_mesh(d.data)
+    bmesh.ops.reverse_faces(bm, faces=bm.faces[:1])
+    bm.to_mesh(d.data)
+    bm.free()
+    r = _qa().run(objects=["Inc"], uv=False)
+    assert r["objects"]["Inc"]["inconsistent_normals_edges"] == 4
+    fx.cube("BB1", size=1, location=(10, 0, 0.5))
+    fx.cube("BB2", size=1, location=(11, 0, 0.5))
+    r = _qa().run(objects=["BB1", "BB2"], uv=False)
+    assert r["back_to_back"] and not r["zfighting"], r
+
+
+def test_small_part_far_from_origin_is_not_inside_out():
+    # 3 mm joint spheres ~2.4 m out: origin-based float32 volume used to come out negative
+    for k in range(12):
+        fx.uv_sphere(f"Joint{k}", radius=0.003, segs=5, rings=4, location=(2.37 + 0.011 * k, 0.81, 0.97))
+    r = _qa().run(objects=[f"Joint{k}" for k in range(12)], uv=False)
+    assert sum(o["inside_out_islands"] for o in r["objects"].values()) == 0, r["objects"]
+
+
+def test_stacked_uvs_are_overlap_and_stay_cheap():
+    import time
+    ob = fx.plane("Grid")
+    bm = bmesh.new()
+    bm.from_mesh(ob.data)
+    bmesh.ops.subdivide_edges(bm, edges=bm.edges[:], cuts=59, use_grid_fill=True)   # 3600 quads
+    bm.to_mesh(ob.data)
+    bm.free()
+    lay = ob.data.uv_layers.new(name="UVMap")   # per-face "reset" UVs: every quad covers 0-1
+    for p in ob.data.polygons:
+        for i, li in enumerate(p.loop_indices):
+            lay.data[li].uv = ((0, 0), (1, 0), (1, 1), (0, 1))[i]
+    t = time.time()
+    m = _qa().run(objects=["Grid"])["objects"]["Grid"]
+    assert m["uv_overlap_pct"] == 100.0 and m["uv_coverage_pct"] == 100.0, m
+    assert time.time() - t < 60, time.time() - t
+
+
+def test_roblox_profile_flags_open_mesh_and_ngons():
+    p = fx.plane("Flat")
+    r = _qa().run(objects=["Flat"], profile="roblox", uv=False)
+    assert r["objects"]["Flat"]["boundary_edges"] == 4
+    assert any("watertight" in w for w in r["warnings"])
+    assert p
+
+
+def test_review_shots_renders_sheet():
+    requires_gpu()
+    fx.cube("SM_Box", location=(0, 0, 1))
+    r = skill_module("blender-asset-qa", "review_shots").run(out=str(TMP / "qa.png"), res=128, mode="wire")
+    assert os.path.getsize(r["sheet"]) > 1000 and len(r["views"]) == 4
+    assert "QA_Cam" not in bpy.data.objects and len(bpy.data.objects) == 1
+    rs = skill_module("blender-asset-qa", "review_shots")
+    assert rs.run(out=str(TMP / "qa3.png"), res=64, views=["front", "right", "top"])["layout"] == "3x1"
+    r = rs.run(out=str(TMP / "qa5.png"), res=64, views=["front", "right", "back", "left", "top"])
+    assert r["layout"] == "3x2", r
+    im = bpy.data.images.load(r["sheet"])
+    px = im.pixels[:]
+    bpy.data.images.remove(im)
+    corner = px[(64 * 3 - 1) * 4:(64 * 3 - 1) * 4 + 3]  # bottom-right cell is the unused one
+    assert max(corner) < 0.99, corner  # background, not white
+
+
+def test_material_and_texture_delivery_checks():
+    ob = fx.unwrap(fx.cube("Crate"))
+    good, bad = bpy.data.materials.new("M_Good"), bpy.data.materials.new("M_Bad")
+    ob.data.materials.append(good)
+    ob.data.materials.append(bad)
+    ob.data.materials.append(None)  # unused empty slot
+    for p in ob.data.polygons:
+        p.material_index = 0 if p.index < 3 else 1
+    nt = bad.node_tree
+    bsdf = next(n for n in nt.nodes if n.type == "BSDF_PRINCIPLED")
+    rough = nt.nodes.new("ShaderNodeTexImage")
+    rough.image = bpy.data.images.new("T_Crate_R", 8, 8)  # generated image, default sRGB
+    nt.links.new(rough.outputs["Color"], bsdf.inputs["Roughness"])
+    nrm, nmap = nt.nodes.new("ShaderNodeTexImage"), nt.nodes.new("ShaderNodeNormalMap")
+    nrm.image = bpy.data.images.load(__file__)  # any existing file, then point it at a missing one
+    nrm.image.filepath = "//textures/T_Crate_N_missing.png"
+    nrm.image.colorspace_settings.is_data = True
+    nt.links.new(nrm.outputs["Color"], nmap.inputs["Color"])
+    nt.links.new(nmap.outputs["Normal"], bsdf.inputs["Normal"])
+    qa = skill_module("blender-asset-qa", "qa_check")
+    r = qa.run(objects=["Crate"])
+    errs, warns = " | ".join(r["errors"]), " | ".join(r["warnings"])
+    assert "T_Crate_R feeds ['Roughness'] but is sRGB" in errs, errs
+    assert "missing texture file" in errs and "unused material slot" in warns, (errs, warns)
+    rough.image.colorspace_settings.is_data = True
+    nt.nodes.remove(nrm)
+    ob.data.materials.pop(index=2)
+    r = qa.run(objects=["Crate"])
+    assert not any("M_" in e or "slot" in e for e in r["errors"] + r["warnings"]), r
+    ob.data.polygons[0].material_index = 1
+    ob.data.materials[1] = None
+    r = qa.run(objects=["Crate"])
+    assert any("empty/missing material slot" in e for e in r["errors"]), r["errors"]
+
+
+def test_mirrored_object_is_not_inside_out_and_empty_mesh_is_flagged():
+    c = fx.cube("Mirror", location=(0, 0, 1))
+    c.scale = (-1, 1, 1)
+    r = _qa().run(objects=["Mirror"], uv=False)
+    assert r["objects"]["Mirror"]["inside_out_islands"] == 0, r
+    assert any("negative scale" in e for e in r["errors"]), r
+    fx.mesh_object("Hollow", lambda bm: None)
+    r = _qa().run(objects=["Hollow"], uv=False)
+    assert r["errors"] == ["Hollow: mesh has no faces"], r

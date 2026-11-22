@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.terrain-landmark-rhythm",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "composition-profile",
+  "title": {
+    "en": "Terrain and landmark rhythm"
+  },
+  "aliases": {
+    "en": [
+      "organic village layout",
+      "terrain elevation"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors",
+    "earth-environment"
+  ],
+  "summary": "Compose varied elevations and routes around a readable hierarchy of landmarks.",
+  "objective": "Compose varied elevations and routes around a readable hierarchy of landmarks.",
+  "subject_terms": [
+    "organic village layout",
+    "terrain elevation",
+    "landmark hierarchy"
+  ],
+  "tags": [
+    "composition-profile",
+    "terrain-landmark-rhythm"
+  ],
+  "intent_signals": [
+    "landmark hierarchy"
+  ],
+  "example_prompts": [
+    "Use terrain and landmark rhythm for the scene, preserving its model and user controls."
+  ],
+  "content": {
+    "principles": [
+      "Let terrain, routes and building purpose influence placement; a grid remains valid when it suits the setting.",
+      "Height variation should contribute to navigation or emphasis rather than create arbitrary obstacles."
+    ],
+    "implementation": [
+      "Block out major landforms and connected routes before adding small props.",
+      "Give important buildings distinct silhouettes, approaches and support transitions.",
+      "Frame at least one view where route continuity and vertical relationships are visible together."
+    ],
+    "observable_checks": [
+      "An overview communicates how the major places connect.",
+      "A close inspection shows roads and foundations meeting the intended terrain or supports."
+    ]
+  },
+  "related_ids": [
+    "recipe.terrain-island"
+  ],
+  "creative_affordances": [
+    "Adapt the layout, visual treatment and timing to the task; these are reusable design proposals, not mandatory templates."
+  ],
+  "known_limits": [
+    "Authored interaction/presentation guidance; no new scientific claim, accessibility certification or runtime verification is asserted."
+  ],
+  "claims": []
+}

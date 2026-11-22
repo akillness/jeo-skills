@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-painterly",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Painterly scene composition"
+  },
+  "aliases": {
+    "en": [
+      "painterly 3D",
+      "brushlike scene",
+      "painted atmosphere",
+      "gouache",
+      "impasto"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "Treat the complete scene as grouped value and color masses, reserving sharp detail for the focal subject.",
+  "objective": "The focal subject remains apparent when viewed small, and moving views do not expose an unfinished side of the scene.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "painterly"
+  ],
+  "subject_terms": [
+    "painterly 3D",
+    "brushlike scene",
+    "painted atmosphere",
+    "art direction"
+  ],
+  "intent_signals": [
+    "Compose a painterly scene",
+    "Group color and value around a focal subject"
+  ],
+  "example_prompts": [
+    "Make a painterly woodland diorama with a crisp lantern keeper against soft grouped trees."
+  ],
+  "content": {
+    "principles": [
+      "Treat the complete scene as grouped value and color masses, reserving sharp detail for the focal subject."
+    ],
+    "implementation": [
+      "Simplify distant shapes and vary edge sharpness; keep a few crisp silhouettes that anchor the composition.",
+      "Use broad color relationships and selective surface marks rather than uniformly noisy textures; let light support the chosen focal hierarchy.",
+      "Start from a composed view and allow a limited exploratory orbit; use gentle motion in secondary regions to maintain the main visual emphasis.",
+      "Group the frame into three value masses and hold each within a 12% luminance band; reserve the sharpest 10% of edges for the focal subject and soften the rest to 2-4 px at 1080p.",
+      "Jitter foliage and roof hues by +/-5 degrees and value by +/-8% across 200-600 instances so the masses shimmer without reading as noise."
+    ],
+    "observable_checks": [
+      "The focal subject remains apparent when viewed small, and moving views do not expose an unfinished side of the scene."
+    ]
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at renderer.toneMappingExposure 1.0; re-tune intensities and fog density under a different tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with hand-painted detail or surreal scale; if the look is tailored to one view, disclose that limit before offering unrestricted orbit."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Painterly reads through soft value grouping and warm/cool separation rather than detail, so a low-frequency gradient sky and a fog colour equal to the horizon carry the brushwork feel and dissolve distant masses instead of describing them. ACESFilmic at exposure 1.0 keeps the mids soft, and roughness held at 0.7-0.95 with near-zero metalness removes the specular hot spots that would betray a rendered surface.",
+    "values": {
+      "feeling": [
+        "calm",
+        "sunlit",
+        "handmade"
+      ],
+      "palette": [
+        {
+          "hex": "#2d3a5c",
+          "role": "deep shadow / sky zenith"
+        },
+        {
+          "hex": "#7fa6c9",
+          "role": "sky horizon / cool fill"
+        },
+        {
+          "hex": "#e9d8a6",
+          "role": "sunlit ground / warm mid"
+        },
+        {
+          "hex": "#c97b4a",
+          "role": "accent (roofs, cloth)"
+        },
+        {
+          "hex": "#5c7a4a",
+          "role": "foliage mid"
+        }
+      ],
+      "value_structure": "35/45/20 dark/mid/light; one light mass per view",
+      "saturation_rule": "non-focal <= 40% HSL saturation; accent <= 70%",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#2d3a5c",
+        "horizon": "#cfd9e6"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#cfd9e6",
+        "density": 0.03
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#ffe6c2",
+          "intensity": 2.5,
+          "elevation_deg": 38,
+          "azimuth_deg": 300,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#9fc0e8",
+          "ground": "#5c5a48",
+          "intensity": 0.8
+        },
+        "rim": {
+          "type": "none"
+        },
+        "ratio": "key:fill ~ 3:1 on a neutral card"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.0
+      },
+      "camera": {
+        "fov_deg": 40,
+        "height_m": 1.7,
+        "pitch_deg": -6,
+        "orbit": {
+          "minPolar_deg": 55,
+          "maxPolar_deg": 88,
+          "minDist_m": 4,
+          "maxDist_m": 30
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.7,
+          0.95
+        ],
+        "metalness": [
+          0.0,
+          0.05
+        ],
+        "notes": "flat vertex-colour bands with 5% hue jitter per object; no specular hot spots"
+      },
+      "motion": {
+        "sway_period_s": [
+          3.5,
+          5.5
+        ],
+        "ease": "sine in-out",
+        "hold_ms": 400
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.0,
+          "strength": 0.2,
+          "radius": 0.5
+        },
+        "vignette": 0.2,
+        "grain": 0.04,
+        "dof": "off"
+      },
+      "signature_technique": "gradient sky dome with the fog colour set equal to the horizon so far masses dissolve into brushwork",
+      "never": [
+        "untinted white ambient light",
+        "flat black background",
+        "glossy plastic on every surface",
+        "uniform grid layout",
+        "equal edge sharpness across the frame"
+      ]
+    }
+  }
+}

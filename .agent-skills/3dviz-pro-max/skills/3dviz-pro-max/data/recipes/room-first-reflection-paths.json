@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "id": "recipe.room-first-reflection-paths",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Room acoustics through first-reflection image sources"
+  },
+  "aliases": {
+    "en": [
+      "room acoustics",
+      "image source method",
+      "first reflection"
+    ]
+  },
+  "direction_ids": [
+    "waves-optics-fields",
+    "architecture-interiors"
+  ],
+  "summary": "Reveal direct and single-wall specular paths in a rectangular room, with travel delays rather than a claimed wave solution.",
+  "objective": "Move source and receiver in three dimensions and inspect the wall reflection point and excess path length.",
+  "tags": [
+    "room acoustics",
+    "image source method",
+    "first reflection",
+    "specular reflection path"
+  ],
+  "subject_terms": [
+    "room acoustics",
+    "image source method",
+    "first reflection",
+    "specular reflection path",
+    "shoebox room",
+    "early arrival delay",
+    "mirror source",
+    "geometrical acoustics"
+  ],
+  "intent_signals": [
+    "Move source and receiver in three dimensions and inspect the wall reflection point and excess path length.",
+    "Reveal direct and single-wall specular paths in a rectangular room, with travel delays rather than a claimed wave solution."
+  ],
+  "example_prompts": [
+    "Build an explorable room acoustics through first-reflection image sources. Move source and receiver in three dimensions and inspect the wall reflection point and excess path length."
+  ],
+  "entities": [
+    {
+      "name": "Room and handles",
+      "guidance": "Build six rectangular planes at x=0,Lx; y=0,Ly; z=0,Lz, with z-up meters. Use an open inspection shell while keeping all six mathematical reflecting planes active. Separate source and receiver glyphs with distinct shapes."
+    },
+    {
+      "name": "Image-source construction",
+      "guidance": "For selected wall n dot p=d with unit n, show mirror source S′=S-2*(n dot S-d)*n. Draw a dashed construction line from S′ to R, intersect the finite wall at Q, and draw the actual path S-Q-R distinctly."
+    },
+    {
+      "name": "Arrival ruler",
+      "guidance": "List direct length |R-S| and each valid first-reflection length, plus geometric delay length/c0. Use one marker per path; equal arrival times remain ties rather than invented ordering."
+    }
+  ],
+  "state_contract": {
+    "model": "Choose L=(6,4,3)m, finite positive c0=343m/s as an authored uniform-medium value. Keep S,R strictly inside with a declared wall margin and |S-R|>epsilon. For each wall solve Q=S′+u*(R-S′), u=(d-n dot S′)/(n dot(R-S′)); accept u in[0,1] and Q in the finite wall rectangle within a scale-aware tolerance. Count direct plus six possible single-wall paths only.",
+    "authority": "Room dimensions, S,R,c0 and selected wall own path geometry and delay labels. Room hiding/cutaway changes visibility only. No audio, pressure amplitude, material absorption or wave state is inferred from path-line brightness.",
+    "actions": [
+      "Drag source or receiver with numeric meter coordinates and reject boundary/outside placements.",
+      "Select a wall and expose its virtual source and reflection point.",
+      "Compare reflected delay and excess delay relative to direct arrival.",
+      "Animate an illustrative pulse at chosen slowed playback speed along the computed paths, pause, and reset dimensions, points, speed and pulse clock."
+    ]
+  },
+  "invariants": [
+    "For each accepted path, |S-Q|+|Q-R| equals |S′-R| within geometric tolerance and is no shorter than direct length.",
+    "Q lies on its declared wall and within its finite rectangle; incoming and outgoing unit directions have matching tangential components and opposite normal components.",
+    "Swapping source and receiver preserves path lengths in this reciprocal static geometry; coincident arrivals stay tied."
+  ],
+  "motion_guidance": [
+    "Use accumulated traveled length along segments to place pulse glyphs; display any time slowdown factor. A moving dot is a propagation illustration, not sampled sound pressure.",
+    "Parameter edits recompute paths and restart the pulse clock rather than mixing segments from old and new rooms."
+  ],
+  "known_limits": [
+    "First-order geometrical paths only: no diffraction, scattering, occlusion by furniture, modal field, phase interference, pressure level, absorption calibration or reverberation-time prediction.",
+    "A hidden wall remains a reflector in inspection mode. Removing a reflector would be a separate model edit; the six-path count does not generalize to rooms with openings or obstacles.",
+    "Authored recipe and prospective checks only; no runtime artifact or rendered result has been observed."
+  ],
+  "claims": [
+    {
+      "id": "claim.handbook-math-room-first-reflection-paths",
+      "statement": "The TU Eindhoven image-source teaching example constructs first-order reflection paths by mirroring a source across a room boundary and intersecting the line from the image to the receiver with the finite wall; its visualization separates construction lines from reflected paths.",
+      "scope": "Institutional planar mirror-construction example; recipe extends elementary reflection geometry to six axis-aligned planes, without adopting its reverberation exercise.",
+      "source_refs": [
+        {
+          "source_id": "source.handbook-math-image-sources",
+          "locator": "draw_reflection_paths, _draw_first_order and mirrored coordinates; Room description and Image source visualization"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Room acoustics through first-reflection image sources",
+      "structure": "Keep mathematical wall planes independent of visible wall thickness, source furniture and decorative panels. Reflection markers attach to the plane, not the outer face of an arbitrary display shell.",
+      "material": "Use independent line weights, shapes and labels for mathematical roles. Color and surface finish are presentation choices; do not infer material physics from them."
+    }
+  ],
+  "creative_affordances": [
+    "A dollhouse cutaway, transparent room or wireframe studio can expose vertical ceiling/floor paths. Different path colors and arrival labels may aid comparison without encoding unsupported acoustic strength."
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Derived mathematical geometry and authored inspection; no contact dynamics or calibrated physical artifact.",
+    "checks": [
+      "For each accepted path, |S-Q|+|Q-R| equals |S′-R| within geometric tolerance and is no shorter than direct length.",
+      "Q lies on its declared wall and within its finite rectangle; incoming and outgoing unit directions have matching tangential components and opposite normal components."
+    ]
+  }
+}

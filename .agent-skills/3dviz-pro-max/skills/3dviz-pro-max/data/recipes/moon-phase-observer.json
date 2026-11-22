@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.moon-phase-observer",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Moon phases from an observer viewpoint"
+  },
+  "aliases": {
+    "en": [
+      "Moon phases",
+      "lunar phase geometry",
+      "sunlit hemisphere observer"
+    ]
+  },
+  "direction_ids": [
+    "astronomy-space"
+  ],
+  "summary": "Link an external Sun-Earth-Moon diagram with the lunar disk seen by an Earth observer.",
+  "objective": "Show the Moon phase from Earth alongside a 3D orbital view, keeping the sunlit side physically consistent.",
+  "tags": [
+    "lunar phase",
+    "waxing waning",
+    "illumination"
+  ],
+  "subject_terms": [
+    "lunar phase",
+    "waxing waning",
+    "illumination",
+    "observer viewpoint",
+    "Sun Earth Moon",
+    "phase angle"
+  ],
+  "intent_signals": [
+    "Show the Moon phase from Earth alongside a 3D orbital view, keeping the sunlit side physically consistent.",
+    "Link an external Sun-Earth-Moon diagram with the lunar disk seen by an Earth observer."
+  ],
+  "example_prompts": [
+    "Show the Moon phase from Earth alongside a 3D orbital view, keeping the sunlit side physically consistent.",
+    "Create an explorable 3D explanation of Moon phases with observer disk."
+  ],
+  "negative_signals": [
+    "No lunar ephemeris, libration, topographic shadow detail or eclipse prediction; the observer disk uses a distant-observer approximation, not the perspective cap seen from an exaggerated nearby sphere."
+  ],
+  "not_for": [
+    "No lunar ephemeris, libration, topographic shadow detail or eclipse prediction; the observer disk uses a distant-observer approximation, not the perspective cap seen from an exaggerated nearby sphere."
+  ],
+  "entities": [
+    {
+      "name": "Earth and Moon markers",
+      "guidance": "Build separate spheres with exaggerated sizes and an explicit orbit plane; use a fixed observer marker on or near Earth with a declared camera convention."
+    },
+    {
+      "name": "Sunlight geometry",
+      "guidance": "Show parallel incoming-light arrows and a Sun-direction marker outside the model; illuminate the Moon hemisphere facing that direction."
+    },
+    {
+      "name": "Observer disk",
+      "guidance": "Render an orthographic second view of the lunar sphere along the observer-to-Moon-center direction, labeled with phase angle and illuminated fraction. Keep exaggerated overview distances out of this disk projection."
+    }
+  ],
+  "state_contract": {
+    "model": "Schematic Sun direction, Earth observer and Moon center determine the phase angle alpha=Sun-Moon-observer. Use parallel illumination and an orthographic disk viewed along the observer-to-Moon-center direction; its illuminated fraction=(1+cos(alpha))/2. This is the distant-observer projection approximation.",
+    "authority": "The same light direction and observer position determine both the external hemisphere shading and observer-camera disk; phase names are derived from declared orbital direction.",
+    "actions": [
+      "Scrub Moon orbital phase.",
+      "Switch between external and observer view.",
+      "Compare quarter, full and new configurations.",
+      "Reset orbital direction and camera convention."
+    ]
+  },
+  "invariants": [
+    "A quarter phase shows about half the apparent disk illuminated, not a quarter of it.",
+    "Phase shading follows Sun direction rather than the external camera.",
+    "At full phase the observer-facing hemisphere is illuminated; at new phase it is mostly dark in the ideal model."
+  ],
+  "motion_guidance": [
+    "Advance the declared orbit angle smoothly; do not change light direction to paint a desired phase.",
+    "Keep Earth shadows disabled or outside the phase-only model and explain that eclipses are a separate alignment phenomenon."
+  ],
+  "known_limits": [
+    "No lunar ephemeris, libration, topographic shadow detail or eclipse prediction; the observer disk uses a distant-observer approximation, not the perspective cap seen from an exaggerated nearby sphere.",
+    "A coplanar schematic must not imply an eclipse every new and full Moon; phase and eclipse mechanisms are separate.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.moon-phase-observer",
+      "statement": "Lunar phases arise because an Earth observer sees different portions of the Moon sunlit hemisphere as it orbits.",
+      "scope": "Reflected-sunlight geometry, distinct from the Earth shadow during lunar eclipses.",
+      "source_refs": [
+        {
+          "source_id": "source.nasa-moon-phases",
+          "locator": "Why the Moon has phases; phase descriptions"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Earth and Moon markers",
+      "structure": "Build separate spheres with exaggerated sizes and an explicit orbit plane; use a fixed observer marker on or near Earth with a declared camera convention.",
+      "material": "Diffuse lunar sphere and controlled illumination; avoid ambient fill that makes the unlit fraction look self-luminous."
+    }
+  ]
+}

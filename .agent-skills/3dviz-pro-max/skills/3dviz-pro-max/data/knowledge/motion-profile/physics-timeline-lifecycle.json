@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.physics-timeline-lifecycle",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "motion-profile",
+  "title": {
+    "en": "Physics timeline lifecycle and render interpolation"
+  },
+  "aliases": {
+    "en": [
+      "physics pause reset ownership",
+      "solver clock lifecycle",
+      "fixed-step presentation state"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "soft-fluid-thermal",
+    "robotics-control",
+    "environments-dioramas"
+  ],
+  "summary": "Coordinate a fixed-step solver, variable-rate Three.js presentation and authored animation with one model-time lifecycle across run, pause, resume, reset and visibility changes.",
+  "objective": "Display interpolated poses without feeding them into physics; pausing and hidden-tab time add no solver steps, resume causes no catch-up burst, and reset restores the complete initial snapshot and timing state.",
+  "applies_when": [
+    "A fixed-step simulation is rendered at an independent display cadence.",
+    "Pause, reset, visibility changes or authored clip layers can otherwise leave stale accumulator, velocity or transform state."
+  ],
+  "subject_terms": [
+    "model time",
+    "fixed timestep",
+    "render interpolation",
+    "pause resume",
+    "reset snapshot",
+    "visibility change",
+    "transform owner"
+  ],
+  "tags": [
+    "motion-profile",
+    "physics",
+    "timeline",
+    "reset"
+  ],
+  "intent_signals": [
+    "pause physics without a catch-up jump",
+    "reset every solver-owned field",
+    "interpolate rendering between physics steps"
+  ],
+  "example_prompts": [
+    "Run Rapier at fixed dt while Three.js interpolates display poses and pause excludes hidden-tab time.",
+    "Make reset restore bodies, velocities, sleeping flags, accumulator, animation time and ownership mode."
+  ],
+  "negative_signals": [
+    "Advancing physics once per render callback with an arbitrary frame delta.",
+    "Resetting mesh positions while leaving solver velocities, contacts or accumulator intact."
+  ],
+  "not_for": [
+    "A pure glTF clip with no numerical solver.",
+    "Claiming deterministic replay across engines, devices or floating-point builds without evidence."
+  ],
+  "content": {
+    "principles": [
+      "The existing fixed-step adapter owns accumulator and interpolation arithmetic. This motion profile owns lifecycle transitions: one model clock, one solver state, and a presentation pose derived read-only from completed states.",
+      "Pause is a model transition, not a small timestep: stop accumulation and integration, preserve the completed solver state and define whether authored visual layers freeze. Resume resets the wall-clock baseline so paused or hidden duration is excluded.",
+      "Reset is atomic across body poses, velocities, forces/impulses owned by the app, sleep/enabled/type flags, joints or controller state, previous/current presentation snapshots, accumulator, dropped-time counters, mixer time and ownership mode."
+    ],
+    "implementation": [
+      "Use renderer.setAnimationLoop as the display callback. Convert its timestamp to finite nonnegative elapsed time, clamp according to the linked fixed-step policy, and never use display cadence itself as solver dt.",
+      "Before each solver step preserve the last completed state; after stepping capture the new state. Render an interpolation of those snapshots only. Solver-to-mesh synchronization occurs after all steps and before render, and never writes the blended mesh pose back.",
+      "On pause or visibility suspension, mark the clock baseline invalid and perform no integration. On resume initialize the baseline from the first callback. On reset stop conflicting mixers/controllers, restore one immutable initial snapshot, set previous=current, clear the accumulator/counters and render once."
+    ],
+    "observable_checks": [
+      "With identical initial solver configuration and the same step-indexed input sequence, two display cadences produce matching completed-step state at equal model time within declared tolerance, provided neither run clamps or drops model time; wall-clock event ordering is outside this comparison.",
+      "A pause longer than the catch-up budget yields zero resume catch-up steps and no velocity or pose jump. Single-step while paused advances exactly one dt if offered.",
+      "After disturbance, reset immediately restores pose, velocity, body type, sleep policy, controller/mixer time, previous/current snapshots and zero accumulator; a second run repeats the same lifecycle sequence."
+    ]
+  },
+  "related_ids": [
+    "knowledge.fixed-step-interpolation-adapter",
+    "knowledge.state-playback",
+    "knowledge.demand-driven-render-adapter",
+    "knowledge.three-animation-mixer-adapter"
+  ],
+  "creative_affordances": [
+    "Show previous/current ghosts, a model-time dial or dropped-time indicator when useful; these are optional inspection devices.",
+    "Slow motion may alter wall-time consumption while leaving the solver dt fixed and visibly reporting the time scale."
+  ],
+  "known_limits": [
+    "A fixed timestep and careful lifecycle do not prove numerical convergence, deterministic cross-platform replay or collision completeness.",
+    "Browser visibility and XR scheduling need artifact-specific tests; Three.js loop documentation does not define application pause semantics.",
+    "Authored guidance only; no render loop, visibility transition, solver or reset test was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.physics-timeline-rapier-dt",
+      "statement": "Rapier IntegrationParameters.dt is the time advanced by each physics update and defaults to 1/60 second; smaller steps generally improve accuracy, while larger steps amplify approximation error and can miss fast collisions.",
+      "scope": "Rapier JavaScript integration guidance; application accumulator, pause and reset policy is authored here and linked to the existing fixed-step adapter.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-rapier-integration-parameters",
+          "locator": "dt and min_ccd_dt sections"
+        }
+      ]
+    },
+    {
+      "id": "claim.physics-timeline-three-loop",
+      "statement": "Three.js recommends WebGLRenderer.setAnimationLoop for the application render loop, while AnimationMixer.update advances authored animation by a supplied delta time and setTime moves it to an explicit time.",
+      "scope": "Current Three.js renderer and animation APIs; neither API defines a physics pause/reset contract.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-webglrenderer",
+          "locator": "setAnimationLoop(callback)"
+        },
+        {
+          "source_id": "source.reasoning-depth-three-animation-mixer",
+          "locator": "update(deltaTime) and setTime(time)"
+        }
+      ]
+    }
+  ]
+}

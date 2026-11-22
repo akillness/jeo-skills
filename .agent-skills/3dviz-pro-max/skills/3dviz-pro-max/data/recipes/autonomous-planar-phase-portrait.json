@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "id": "recipe.autonomous-planar-phase-portrait",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Autonomous planar phase portrait with time lift"
+  },
+  "aliases": {
+    "en": [
+      "phase portrait",
+      "autonomous ODE",
+      "planar dynamical system"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields",
+    "robotics-control"
+  ],
+  "summary": "Compare phase trajectories, vector directions and a time-lifted solution for a bounded family of planar autonomous systems.",
+  "objective": "Move an initial state and switch between a spiral sink, center and spiral source while preserving the equations and model-time meaning.",
+  "tags": [
+    "phase portrait",
+    "autonomous ODE",
+    "planar dynamical system",
+    "spiral sink"
+  ],
+  "subject_terms": [
+    "phase portrait",
+    "autonomous ODE",
+    "planar dynamical system",
+    "spiral sink",
+    "center equilibrium",
+    "spiral source",
+    "vector field trajectories",
+    "time lifted curve"
+  ],
+  "intent_signals": [
+    "Move an initial state and switch between a spiral sink, center and spiral source while preserving the equations and model-time meaning.",
+    "Compare phase trajectories, vector directions and a time-lifted solution for a bounded family of planar autonomous systems."
+  ],
+  "example_prompts": [
+    "Build an explorable autonomous planar phase portrait with time lift. Move an initial state and switch between a spiral sink, center and spiral source while preserving the equations and model-time meaning."
+  ],
+  "entities": [
+    {
+      "name": "Phase board",
+      "guidance": "Draw a fixed x-y domain with equal mathematical scale, equilibrium at0 and sampled arrows F(x,y). At F=0 draw a zero marker instead of normalizing a zero vector. If arrows are normalized, encode speed separately and label the normalization."
+    },
+    {
+      "name": "Time-lifted trajectories",
+      "guidance": "For each named seed, plot(x(t),y(t),t) over a finite0<=t<=T. A movable time plane intersects all traces at the same t; project those points to the phase board."
+    },
+    {
+      "name": "Linked time series",
+      "guidance": "Use one selection to highlight its x(t),y(t), radius and analytic state. A finite trajectory ends at T or the declared viewport limit; it is not evidence about all future time."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored linear family: x′=-a*x-y, y′=x-a*y, a in[-1,1], dimensionless x,y,t. Exact solution x=e^(-a*t)(x0*cos t-y0*sin t), y=e^(-a*t)(x0*sin t+y0*cos t). Use finite T<=10 and bounded seeds; retain origin as a stationary reference. The vector-field concept generalizes, but this recipe does not claim an arbitrary nonlinear solver.",
+    "authority": "a, named initial states and model time own all curves and phase points. Primary playback evaluates the closed form. Optional numerical comparison has its own solver settings and error readout, never overwrites the reference.",
+    "actions": [
+      "Place or remove a seed and compare trajectories at shared time.",
+      "Choose a>0, a=0 or a<0 and regenerate all trajectories from the unchanged seeds.",
+      "Scrub/play time; pause holds state and reset restores a, seeds and t=0.",
+      "Toggle an optional numerical solution and halve its maximum step to compare with the analytic reference."
+    ]
+  },
+  "invariants": [
+    "Origin remains at0; nonzero trajectories have radius r(t)=r0*exp(-a*t).",
+    "a=0 preserves radius and has period2pi; a>0 shrinks it and a<0 grows it for increasing model time.",
+    "At(1,0), F=(-a,1): trajectory initially points toward positive y. The time-lift height equals t, not speed."
+  ],
+  "motion_guidance": [
+    "Move the synchronized time plane from analytic t; do not advance each seed from a separate animation clock.",
+    "Forward playback should follow vector directions; reverse scrubbing re-evaluates history and is not claimed to model irreversible physical dynamics."
+  ],
+  "known_limits": [
+    "Only this smooth linear autonomous family is supplied; saddle, limit-cycle, chaotic and discontinuous systems need separate equations and checks.",
+    "A sampled phase board is not proof of global nonlinear stability. Display-gain changes must not be reported as changes of model units.",
+    "Authored recipe and prospective checks only; no runtime artifact or rendered result has been observed."
+  ],
+  "claims": [
+    {
+      "id": "claim.handbook-math-autonomous-planar-phase-portrait",
+      "statement": "A planar autonomous phase portrait shows state-space trajectories and equilibria where both derivatives vanish; trajectories are tangent to the time-independent vector field. Time series and phase-space plots display different aspects of the same solution.",
+      "scope": "Autonomous planar state-space interpretation; recipe linear family and exact solution are an authored worked example.",
+      "source_refs": [
+        {
+          "source_id": "source.handbook-math-phase-portrait",
+          "locator": "22.2 equilibrium definition; 22.2.3 state space; 22.2.4 portrait definition; 22.2.5 vector field tangency"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Autonomous planar phase portrait with time lift",
+      "structure": "Treat the phase board, time ruler, clipping time plane and seed handles as distinct controls. Let users return to a planar view when depth occludes nearby trajectories.",
+      "material": "Use independent line weights, shapes and labels for mathematical roles. Color and surface finish are presentation choices; do not infer material physics from them."
+    }
+  ],
+  "creative_affordances": [
+    "Use small multiples, a restrained trajectory sculpture or a technical chart style. The time-lift can be hidden without losing the mathematical state."
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Derived mathematical geometry and authored inspection; no contact dynamics or calibrated physical artifact.",
+    "checks": [
+      "Origin remains at0; nonzero trajectories have radius r(t)=r0*exp(-a*t).",
+      "a=0 preserves radius and has period2pi; a>0 shrinks it and a<0 grows it for increasing model time."
+    ]
+  }
+}

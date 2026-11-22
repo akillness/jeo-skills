@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.progressive-control-disclosure",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "presentation-profile",
+  "title": {
+    "en": "Progressive disclosure for 3D controls"
+  },
+  "aliases": {
+    "en": [
+      "advanced controls disclosure",
+      "guided control layers",
+      "expandable scene settings"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "products-assemblies",
+    "earth-environment"
+  ],
+  "summary": "Expose the smallest complete control set for the current task, group advanced parameters by consequence, and keep hidden state visible through summaries and accessible disclosure controls.",
+  "objective": "A first-time viewer can perform the primary action and recover from it, while an expert can reveal precise controls without losing keyboard order, state meaning or reset behavior.",
+  "applies_when": [
+    "A 3D experience has many parameters, layers or diagnostics.",
+    "Primary actions and advanced tuning should not compete at the same visual level."
+  ],
+  "subject_terms": [
+    "progressive disclosure",
+    "advanced controls",
+    "aria-expanded",
+    "control summary",
+    "onboarding"
+  ],
+  "tags": [
+    "presentation-profile",
+    "controls",
+    "disclosure",
+    "accessibility"
+  ],
+  "intent_signals": [
+    "hide advanced 3D controls without hiding state",
+    "guided first-use controls",
+    "expandable diagnostics panel"
+  ],
+  "example_prompts": [
+    "Present play, pause and reset first, then disclose solver and display parameters with a live summary.",
+    "Make an advanced material-inspection panel keyboard operable and keep modified hidden values visible."
+  ],
+  "negative_signals": [
+    "Collapsing controls while their nondefault effects become invisible.",
+    "Using hover-only help as the only explanation of a parameter."
+  ],
+  "not_for": [
+    "Removing capabilities for novice users.",
+    "A fixed onboarding tour required for every scene."
+  ],
+  "content": {
+    "principles": [
+      "Progressive disclosure changes presentation, not ownership. Collapsed parameters still have explicit values and effects.",
+      "The primary layer includes the action, current state and recovery path needed to complete the main task. Advanced layers group controls by consequence rather than implementation module.",
+      "Disclosure remains optional and reversible. A user who already understands the scene can skip guidance, and a returning user is not forced through animation."
+    ],
+    "implementation": [
+      "In Blender, name controllable objects and author defaults/reference poses; do not encode web control grouping into mesh hierarchy.",
+      "In Three.js/DOM, render semantic buttons and disclosure sections. Reflect open state with aria-expanded, optionally connect the controlled region with aria-controls, and support Enter/Space through native button behavior or the documented pattern.",
+      "Show a compact summary when a group is collapsed, mark nondefault values, and make reset scope explicit: view, display layer or model state."
+    ],
+    "observable_checks": [
+      "Keyboard activation opens and closes each section, focus remains logical, and collapsed content does not leave unreachable focused controls.",
+      "Change an advanced value, collapse the group, and verify its effect and nondefault summary remain apparent; scoped reset restores only the declared state.",
+      "At the smallest supported viewport, the primary action, current state and recovery path remain reachable without the advanced panel covering the scene."
+    ]
+  },
+  "related_ids": [
+    "knowledge.interruptible-focus",
+    "knowledge.shared-light-comparison-rig",
+    "knowledge.object-isolation",
+    "knowledge.accessible-spatial-controls"
+  ],
+  "creative_affordances": [
+    "Use drawers, accordions, command palettes or staged prompts to fit the experience.",
+    "Advanced controls may be always visible in an expert workspace when hierarchy remains clear."
+  ],
+  "known_limits": [
+    "The WAI APG disclosure pattern describes control semantics, not which application controls should be advanced.",
+    "No keyboard, screen-reader, onboarding or persistence test was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.experience-wai-disclosure-control",
+      "statement": "The WAI ARIA Authoring Practices disclosure pattern uses a button controlling hidden/visible content, toggles it with Enter or Space, reflects state with aria-expanded, and may identify the controlled region with aria-controls.",
+      "scope": "Disclosure widget semantics; control grouping and default openness remain authored choices.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-wai-disclosure",
+          "locator": "About This Pattern; Keyboard Interaction; WAI-ARIA Roles, States, and Properties"
+        }
+      ]
+    }
+  ]
+}

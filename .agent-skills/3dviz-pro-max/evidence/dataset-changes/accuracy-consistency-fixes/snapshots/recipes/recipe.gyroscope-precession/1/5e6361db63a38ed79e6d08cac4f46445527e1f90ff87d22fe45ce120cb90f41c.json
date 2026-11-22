@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "id": "recipe.gyroscope-precession",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Gyroscopic precession and angular momentum"
+  },
+  "aliases": {
+    "en": [
+      "precession",
+      "spinning top",
+      "angular momentum direction"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics"
+  ],
+  "summary": "Show a torque changing the direction of angular momentum rather than speeding the spin, and keep the fast-spin assumption visible.",
+  "objective": "Build a supported spinning disc whose precession rate follows from gravity torque and spin angular momentum, with the assumption stated on screen.",
+  "tags": [
+    "gyroscope",
+    "precession",
+    "angular momentum"
+  ],
+  "subject_terms": [
+    "precession",
+    "angular momentum",
+    "torque",
+    "spin rate",
+    "moment of inertia",
+    "gyroscope",
+    "support point",
+    "nutation"
+  ],
+  "intent_signals": [
+    "Show why a spinning top does not simply fall over.",
+    "Explain precession as a torque perpendicular to angular momentum."
+  ],
+  "example_prompts": [
+    "Build a gyroscope with adjustable spin rate and a precession rate derived from the torque.",
+    "Show the angular momentum vector turning while its length stays constant."
+  ],
+  "negative_signals": [
+    "Not a full rigid-body dynamics solver: nutation, bearing friction and support compliance are not modelled here.",
+    "Not a navigation-grade gyroscope model."
+  ],
+  "not_for": [
+    "Not a full rigid-body dynamics solver: nutation, bearing friction and support compliance are not modelled here.",
+    "Not a navigation-grade gyroscope model."
+  ],
+  "entities": [
+    {
+      "name": "Rotor and axle",
+      "guidance": "Model the disc, axle and support point as distinct parts, since the torque arm is the distance from support to centre of mass."
+    },
+    {
+      "name": "Vector overlays",
+      "guidance": "Draw angular momentum, the gravity torque and their cross-product relationship with a declared display scale."
+    },
+    {
+      "name": "Assumption panel",
+      "guidance": "Show the ratio of precession rate to spin rate and flag when the fast-spin assumption is no longer reasonable."
+    }
+  ],
+  "state_contract": {
+    "model": "A symmetric rigid rotor with positive moment of inertia I about its spin axis, positive spin rate omega, mass M and support offset r, mounted with the axle horizontal so that the gravity torque magnitude is r M g and the azimuthal precession rate is torque divided by the horizontal component of angular momentum. In general the torque magnitude is r M g sin(theta) and the azimuth rate is that torque divided by L sin(theta), which reduces to r M g over I omega; the horizontal mounting is declared so both sine factors are one. Nutation is not integrated.",
+    "authority": "The computed precession rate drives the azimuthal motion; the spin animation is presentation of the declared spin rate and must not drift from it.",
+    "actions": [
+      "Change the spin rate and read the precession rate.",
+      "Change the support offset or the disc mass.",
+      "Toggle vector overlays and the assumption panel.",
+      "Reset to the reference configuration."
+    ]
+  },
+  "invariants": [
+    "Within a run at fixed rotor parameters the magnitude of angular momentum stays constant while its direction turns; editing the disc mass or geometry recomputes the inertia and starts a new run rather than silently changing the magnitude mid-run.",
+    "Precession rate varies inversely with spin rate; a slower spin precesses faster.",
+    "When the precession rate approaches the spin rate the scene reports that the assumption has failed instead of continuing silently.",
+    "The assumption check uses the ratio of precession rate to spin magnitude and excludes zero spin; at zero spin the model reports that it does not apply instead of dividing by zero."
+  ],
+  "motion_guidance": [
+    "Animate spin and precession as separate rotations composed in a stated order, so the two rates are independently readable.",
+    "Trace the tip path over time to make the direction change visible without adding a second physical claim."
+  ],
+  "known_limits": [
+    "The relation used assumes a symmetric rotor, a fixed support point and precession much slower than spin.",
+    "Real tops also nutate and lose energy to friction; neither is modelled here.",
+    "The demonstrator is mounted with a horizontal axle. A tilted axle keeps the same azimuth rate expression only because the sine factors cancel; the torque magnitude is not r M g in that case.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-precession-rate",
+      "statement": "For a gyroscope whose spin angular momentum is large compared with its precession, the azimuthal precession rate equals the gravity torque divided by the component of angular momentum in the plane of precession, which reduces to r M g divided by I omega; the torque magnitude itself carries a sin(theta) factor that cancels against the same factor in that component.",
+      "scope": "Symmetric rotor with a fixed support point and precession rate much smaller than the spin rate; the scene mounts the axle horizontally so both sine factors equal one, and omega = 0 is excluded.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-precession",
+          "locator": "11.4, precession angular velocity and its assumption"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-torque-changes-direction",
+      "statement": "The torque produced is perpendicular to the angular momentum vector, so it changes the direction of that vector according to the change in angular momentum equal to torque times time, without changing its magnitude.",
+      "scope": "Vector relationship as cited.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-precession",
+          "locator": "11.4, torque perpendicular to angular momentum"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Rotor and axle",
+      "structure": "A weighted disc with a visible hub, a slender axle and a pivot cradle at the support point.",
+      "material": "Metallic rotor with anisotropic highlights that make the spin visible, against a matte support so the two do not compete.",
+      "articulation": "Spin is a rotation about the axle; precession rotates the whole assembly about the vertical through the support."
+    },
+    {
+      "family": "Vector overlays",
+      "structure": "Three arrows with distinct head shapes plus a scale legend anchored in the scene.",
+      "material": "Reserved accents per vector with clearly different values; the legend states the display gain.",
+      "articulation": "Overlays recompute each frame from the current state."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Analytic precession relation applied to a rigid rotor; no contact, friction or nutation integration.",
+    "state": [
+      "spin rate",
+      "precession angle",
+      "support offset"
+    ],
+    "driving": [
+      "Gravity torque about the support point sets the precession rate."
+    ],
+    "timestep": "Fixed step advancing the precession angle; the spin animation is derived from the same clock.",
+    "checks": [
+      "Angular momentum magnitude stays constant while direction rotates.",
+      "Doubling the spin rate halves the reported precession rate."
+    ]
+  },
+  "related_ids": [
+    "recipe.coupled-gears",
+    "recipe.simple-pendulum",
+    "knowledge.constrained-gear-motion"
+  ]
+}

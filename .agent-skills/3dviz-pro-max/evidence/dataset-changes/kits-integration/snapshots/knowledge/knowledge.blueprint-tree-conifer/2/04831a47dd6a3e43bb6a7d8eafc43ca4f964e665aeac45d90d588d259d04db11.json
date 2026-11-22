@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-tree-conifer",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: conifer with countable boughs"
+  },
+  "aliases": {
+    "en": [
+      "conifer kit",
+      "spruce tree blueprint",
+      "pine tree module"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "earth-environment"
+  ],
+  "summary": "A conifer with a flared root collar, a leaning tapered bole and eight whorls, each a skirt with nine boughs poking past it, with sway(dt) and an instancing handle.",
+  "objective": "At six metres the conifer reads as a narrow leaning cone with a bare bole, then eight separate whorls, then countable boughs, facets and hue jitter.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "nature",
+    "tree",
+    "conifer",
+    "instanced",
+    "animated"
+  ],
+  "subject_terms": [
+    "whorl",
+    "bough",
+    "leader spike",
+    "bole taper",
+    "root flare"
+  ],
+  "intent_signals": [
+    "plant conifers on the ridge",
+    "reusable pine tree",
+    "instanced forest kit"
+  ],
+  "example_prompts": [
+    "Put a line of conifers along the ridge behind the village.",
+    "I need a pine that does not look like a stack of party hats."
+  ],
+  "not_for": [
+    "Any claim about a conifer species, its habit or its timber.",
+    "Needle-level foliage: a bough is a flattened cone, not a needle system."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/nature/tree-conifer.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "seed",
+      "type": "integer",
+      "range": [
+        0,
+        65535
+      ],
+      "default": 1
+    },
+    {
+      "name": "age",
+      "type": "number",
+      "range": [
+        0.3,
+        1.0
+      ],
+      "default": 1
+    },
+    {
+      "name": "lean",
+      "type": "number",
+      "range": [
+        -0.25,
+        0.25
+      ],
+      "default": 0.06,
+      "unit": "rad"
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "range": [
+        2.0,
+        8.0
+      ],
+      "default": 4.2,
+      "unit": "m"
+    },
+    {
+      "name": "radius",
+      "type": "number",
+      "range": [
+        0.07,
+        0.32
+      ],
+      "default": 0.16,
+      "unit": "m"
+    },
+    {
+      "name": "needle",
+      "type": "color",
+      "default": "#4b7554"
+    }
+  ],
+  "sockets": [
+    {
+      "name": "base",
+      "position_m": [
+        0,
+        0,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "leader",
+      "position_m": [
+        0.163,
+        4.78,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "nest",
+      "position_m": [
+        0.794,
+        0.84,
+        0
+      ],
+      "normal": [
+        1,
+        0,
+        0
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "a narrow leaning cone 5.1 m tall over a bare bole for its lowest sixth",
+      "a leader spike standing clear above the top whorl",
+      "five root wedges splaying out of the base"
+    ],
+    "medium": [
+      "eight whorls of decreasing radius, each turned to its own angle",
+      "the bole visible between the upper whorls, tapering from 16 cm to 3 cm",
+      "a skirt of needle mass inside every whorl, with boughs poking past its rim"
+    ],
+    "fine": [
+      "nine countable boughs in every whorl, each at its own reach and droop",
+      "flat-shaded facets on every bough and skirt, so the crown catches light in planes",
+      "per-bough hue jitter of 10 percent across the seventy-two boughs"
+    ]
+  },
+  "footprint_m": [
+    2.51,
+    2.55
+  ],
+  "poly_budget": 1184,
+  "fits_looks": [
+    "knowledge.style-low-poly",
+    "knowledge.style-faceted",
+    "knowledge.theme-fantasy-woodland",
+    "knowledge.lighting-mood-fog-shafts",
+    "knowledge.lighting-mood-dawn-cool"
+  ],
+  "content": {
+    "principles": [
+      "Countable boughs are what separate a spruce from a stack of cones at any distance closer than twenty metres.",
+      "The bare bole under the lowest whorl is the read that says conifer even when the crown is a silhouette against fog.",
+      "One bough geometry, seventy-two instances: the variation lives in the placement, not in seventy-two meshes."
+    ],
+    "implementation": [
+      "Call create({ seed, age, lean, height, radius, needle }); the group is centred on the bole base with y = 0 at the ground.",
+      "animate(dt) - also exported as sway(dt) - rocks the crown and returns true when it moved; it returns false for dt <= 0.",
+      "instancing gives { geometry, material, hueJitter } for the bough, laid along +X with its butt at the origin so a placement is an azimuth and a droop."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible.",
+      "lean 0.3 moves the leader socket more than 30 cm further off axis than lean 0.",
+      "animate(0) returns false and animate(0.4) returns true and moves the crown."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here measures a real conifer or its species habit.",
+    "The poly budget is the triangle count observed at default parameters and stays inside the 2500 triangle ceiling this phase set for nature.",
+    "Boughs are opaque flattened cones with no needle silhouette: at less than a metre the crown reads as folded card.",
+    "sway() rotates the whole crown group, so the boughs move together rather than each bough loading independently.",
+    "Palette values are the colours that render: kit-core scatterInstances runs its InstancedMesh on a white-based clone of the material and writes the absolute jittered colour per instance, so an unjittered instance lands on exactly the hex the parameter names."
+  ],
+  "creative_affordances": [
+    "Any parameter may be pushed outside its stated range; the range is the band that was proved, not a limit.",
+    "Drop age and raise lean for a treeline krummholz, or re-colour the needle to a blue-grey for a spruce stand."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "age": 1,
+      "lean": 0.06,
+      "height": 4.2,
+      "radius": 0.16,
+      "needle": "#4b7554",
+      "whorls": 8,
+      "boughs_per_whorl": 9,
+      "feeling": "cold ridge treeline"
+    },
+    "rationale": "5.1 m keeps a conifer taller than every building in the village kit, which is what makes a ridge line of them read as distance rather than as scale confusion."
+  },
+  "related_ids": [
+    "knowledge.tree-crown-root-architecture",
+    "knowledge.three-instanced-scenery-adapter",
+    "knowledge.geometry-nodes-instance-handoff",
+    "recipe.fantasy-village-diorama"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "detail_socket": "base",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-tree-conifer/far.png",
+      "evidence/kits/knowledge.blueprint-tree-conifer/mid.png",
+      "evidence/kits/knowledge.blueprint-tree-conifer/close.png",
+      "evidence/kits/knowledge.blueprint-tree-conifer/detail.png",
+      "evidence/kits/knowledge.blueprint-tree-conifer/close-motion.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-tree-conifer/proof-log.json"
+  }
+}

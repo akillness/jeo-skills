@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "id": "recipe.cp-tucker-tensor-component-reconstruction",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "CP and Tucker tensor component reconstruction"
+  },
+  "aliases": {
+    "en": [
+      "tensor factorization slice inspector",
+      "CP Tucker reconstruction"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra",
+    "abstract-systems-data"
+  ],
+  "summary": "Reconstruct a small explicit third-order tensor from supplied CP factors or a Tucker core and factors, linking component terms, slices and residual without implying uniqueness.",
+  "objective": "Let users inspect exactly how outer-product CP components or Tucker core interactions contribute to each entry and compare reconstruction error under declared shapes.",
+  "tags": [
+    "tensor decomposition",
+    "CP decomposition",
+    "Tucker decomposition",
+    "rank one component"
+  ],
+  "subject_terms": [
+    "tensor decomposition",
+    "CP decomposition",
+    "Tucker decomposition",
+    "rank one component",
+    "core tensor",
+    "reconstruction residual"
+  ],
+  "intent_signals": [
+    "Visualize CP rank-one tensor components and Tucker core reconstruction entry by entry."
+  ],
+  "example_prompts": [
+    "Visualize CP rank-one tensor components and Tucker core reconstruction entry by entry."
+  ],
+  "negative_signals": [
+    "Not matrix SVD drawn as another ellipsoid.",
+    "Not automatic rank discovery or uniqueness certification."
+  ],
+  "not_for": [
+    "Large-scale fitting, ALS optimization or performance benchmarks.",
+    "Statistical interpretation of latent components without a domain model."
+  ],
+  "entities": [
+    {
+      "name": "Source tensor lattice",
+      "guidance": "Render a bounded I×J×K lattice (each dimension 1..12) with exact entry table and slice selector."
+    },
+    {
+      "name": "Factor and core racks",
+      "guidance": "For CP show weighted factor columns a_r,b_r,c_r; for Tucker show core G and factor matrices A,B,C with declared shapes."
+    },
+    {
+      "name": "Contribution and residual views",
+      "guidance": "Selecting (i,j,k) expands every scalar product term and links source, reconstruction and residual cells."
+    }
+  ],
+  "state_contract": {
+    "model": "Accept finite real X and either CP factors lambda,A,B,C with matching rank R or Tucker G,A,B,C with shapes G=P×Q×R, A=I×P, B=J×Q, C=K×R. CP reconstructs Xhat_ijk=sum_r lambda_r A_ir B_jr C_kr. Tucker reconstructs Xhat_ijk=sum_pqr G_pqr A_ip B_jq C_kr. Require each dimension/rank 1..12 and reject shape/nonfinite errors. Report Frobenius residual norm and relative residual only when ||X||_F>0.",
+    "authority": "Array values, indices, shape convention and summation own all glyphs. Component color/order is display and is not identity across refits unless explicitly matched.",
+    "actions": [
+      "Switch CP/Tucker preset with compatible shapes.",
+      "Select component, core entry, tensor slice or output cell.",
+      "Scale or zero one supplied component and reconstruct atomically.",
+      "Toggle cumulative reconstruction and residual; reset exact arrays and ordering."
+    ]
+  },
+  "invariants": [
+    "Every displayed Xhat entry equals the declared finite sum within tolerance.",
+    "Each nonzero CP component is a rank-one outer product scaled by lambda_r; a zero-weight or zero-factor component has rank zero and therefore rank at most one.",
+    "Tucker terms include core interactions; do not display the core as diagonal unless it actually is.",
+    "Permutation/rescaling of factor presentations may represent the same reconstruction, so component color is not semantic identity.",
+    "Relative residual is unavailable for zero source norm."
+  ],
+  "motion_guidance": [
+    "Step through summands in a fixed declared order; cumulative motion is explanatory, not an optimization algorithm.",
+    "Reverse scrub subtracts stored terms and does not refit factors."
+  ],
+  "creative_affordances": [
+    "Use stacked translucent lattice slices or small cubes; keep signs visible with orientation/pattern as well as color."
+  ],
+  "known_limits": [
+    "The checks target reconstruction from supplied factors; they do not verify how factors were fitted or whether rank is minimal or unique.",
+    "Dense tensors are intentionally small; no computation was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.math-kolda-cp-tucker-reconstruction",
+      "statement": "Kolda and Bader define a three-way CP model as a sum of rank-one outer products and a Tucker model as a core tensor multiplied by factor matrices, with the stated elementwise sums; they note CP is a Tucker special case with a superdiagonal core and equal mode ranks.",
+      "scope": "Finite real third-order tensors and supplied factors; approximation, fitting and uniqueness are not inferred.",
+      "source_refs": [
+        {
+          "source_id": "source.math-kolda-bader-tensors",
+          "locator": "Sections 3, equations (3.1)-(3.3), and 4.1, equations (4.1)-(4.2), PDF pages 8-9 and 19-20"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Tensor reconstruction lattice",
+      "structure": "Put source, cumulative reconstruction and residual lattices on one indexed base with CP factor rods or Tucker core rack beside them.",
+      "material": "Signed entries use height/orientation plus hue; selected summands glow without hiding numeric labels.",
+      "articulation": "A component slider adds one stored summand; slice planes share the same i,j,k selection."
+    },
+    {
+      "family": "Blender-to-Three.js mathematical handoff",
+      "structure": "In Blender, author only static axes, labeled frames, selection glyphs and low-detail instrument housings at declared units; keep numeric curves, rasters, samples and component lattices out of baked mesh state.",
+      "material": "Use simple glTF-safe material slots and optional baked label atlases with explicit UVs. Export named anchors and static teaching geometry; unsupported procedural nodes, text and compositor marks require baked or runtime replacements.",
+      "articulation": "In Three.js, allocate numeric arrays from the validated input contract, generate dynamic lines/points/instances, bind selections by stable index, and rebuild all linked views atomically on parameter revision or reset."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Finite algebraic reconstruction of a supplied real 3-way tensor; no fitting dynamics.",
+    "timestep": "One stored summand per explanatory step.",
+    "state": [
+      "source tensor and factor arrays",
+      "selected model and indices",
+      "reconstruction and residual arrays"
+    ],
+    "checks": [
+      "Validate all shapes before multiplication.",
+      "Spot-check selected entry by explicit scalar sum.",
+      "Verify Frobenius residual and zero-norm guard."
+    ]
+  },
+  "related_ids": [
+    "recipe.svd-sphere-to-ellipsoid"
+  ]
+}

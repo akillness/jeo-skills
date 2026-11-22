@@ -1,0 +1,27 @@
+```pixels
+PALETTE
+. transparent
+k #2e5a26
+d #3e7530
+g #4e9038
+m #5c9e42
+l #7cbc52
+h #a4d670
+FRAME tile
+ggggdggggggmmmmmmmmggggggggggggg
+ggggggggdggggmmmmggggggggghggggg
+ggggggggdggggggggggggggggglghggg
+gggggggggggggggggggggggggglglggg
+ggggmmmmggggggggggdgdgdggggglggg
+hggmmmmmmmggggggggdgdgdggggggggg
+lgmmmmmmmmgggggggggdkdgggggdgggg
+gggmmmmmmgggghgggggggggggggdgggg
+gggggmmmggggglghgggggggggggggggg
+ggggggggggggglglgggggggghggggggg
+gdggggggggggggglgggggggglggggdgd
+gdgggggggggggggggggggggggggggdgd
+dgggggggggdgdgggggggggdgggggggdk
+ggggggggggdgdgggggggggdggggggggg
+gggghggggggdgggggggggggggggggggg
+gdgglghggggggggg官
+```

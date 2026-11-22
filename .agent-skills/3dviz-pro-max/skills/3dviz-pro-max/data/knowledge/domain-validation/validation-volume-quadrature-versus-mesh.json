@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-volume-quadrature-versus-mesh",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Analytic volume, quadrature estimate and mesh volume compared"
+  },
+  "aliases": {
+    "en": [
+      "solid of revolution volume check",
+      "mesh volume comparison"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry"
+  ],
+  "summary": "Report the analytic volume, the quadrature estimate and the tessellated mesh volume as three separate numbers with their error sources.",
+  "objective": "Quadrature error follows the declared refinement trend, mesh volume approaches the analytic value from below where containment was verified, and units are cubed length units.",
+  "applies_when": [
+    "A solid is generated from a profile curve and its volume is displayed.",
+    "The scene uses numerical quadrature, a tessellated mesh, or both.",
+    "The profile can touch or approach the axis of revolution."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "volume",
+    "quadrature",
+    "tessellation"
+  ],
+  "subject_terms": [
+    "disk method",
+    "solid of revolution",
+    "quadrature error",
+    "mesh volume",
+    "radius",
+    "cubic units"
+  ],
+  "intent_signals": [
+    "the displayed volume does not match the integral",
+    "check the mesh resolution against the volume"
+  ],
+  "example_prompts": [
+    "Check the volume reported for this solid of revolution against the integral."
+  ],
+  "negative_signals": [
+    "finite element analysis",
+    "manufacturing tolerance analysis"
+  ],
+  "content": {
+    "principles": [
+      "One solid has three numbers: the analytic volume, the quadrature estimate and the volume of the tessellated mesh. They differ for different reasons and must be reported separately.",
+      "A predictable error sign needs containment, not just inscribed cross-sections: radial polygons inscribed in each ring reduce the area, but the axial interpolant can bulge outside the solid. For a convex profile such as radius equal to the square of the position on the unit interval, joining endpoint rings gives a cone of volume pi over three, above the true pi over five. Check containment of the whole piecewise-linear surface before applying any underestimate gate, and otherwise report signed tessellation error.",
+      "The profile gives the radius, not the diameter; a factor-of-two radius error appears as a factor of four in volume and is easy to mistake for a deliberate scaling choice."
+    ],
+    "implementation": [
+      "Compute the analytic disk-method value for the authored profile where a closed form exists and record it with its units.",
+      "Compute the quadrature estimate at several partition counts, for example eight, thirty-two and one hundred twenty-eight slices, recording the error against the analytic value at each.",
+      "Compute the mesh volume from the rendered triangles with a signed tetrahedron sum over a closed mesh, record the radial and axial segment counts, and record whether the axial interpolant stays inside the solid for this profile.",
+      "Repeat with a profile that reaches zero at an endpoint, where the parameterization degenerates to a single point; whether a surface normal exists there depends on the profile, since a cone apex has none while a spherical pole is smooth, so record which case the fixture is and how per-vertex normals are produced."
+    ],
+    "observable_checks": [
+      "Quadrature error follows the refinement trend expected for the declared rule and profile, reported as a series of errors with their partition counts; smoothness alone does not make the error decrease at every individual count, so the trend rather than a per-step decrease is the observable.",
+      "Where containment was verified, mesh volume stays below the analytic value and approaches it as segment counts rise; where it was not, the signed difference is reported with its sign explained by the profile shape rather than treated as a defect.",
+      "Displayed units are cubed length units consistent with the profile; a radius-versus-diameter mistake shows as a factor of four and is reported as such."
+    ]
+  },
+  "known_limits": [
+    "Applies to the declared region under a nonnegative profile; regions crossing the axis or containing cavities need a different formulation.",
+    "Authored verification guidance; no computation or render was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.solid-of-revolution",
+    "recipe.double-integral-columns",
+    "recipe.conic-slicing"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-disk-method-volume",
+      "statement": "For a continuous nonnegative function on a closed interval, revolving the region bounded by its graph and the axis produces a volume equal to pi times the integral of the square of the function over that interval.",
+      "scope": "The disk method as stated in the cited rule; regions crossing the axis or with cavities require a different rule.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-disk-method",
+          "locator": "2.2, Rule: The Disk Method"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "id": "recipe.heart-cutaway",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Heart chamber cutaway"
+  },
+  "aliases": {
+    "en": [
+      "heart cutaway"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures"
+  ],
+  "summary": "Reveal four chambers without confusing presentation layers with tissue motion.",
+  "objective": "Create a labeled heart cutaway that lets me isolate each chamber while preserving anatomical left and right.",
+  "tags": [
+    "heart",
+    "cutaway"
+  ],
+  "example_prompts": [
+    "Create a labeled heart cutaway that lets me isolate each chamber while preserving anatomical left and right."
+  ],
+  "entities": [
+    {
+      "name": "Chambers",
+      "guidance": "Use distinct atrial and ventricular cavities with section thickness; identify by labels as well as color. Do not use four disconnected spheres."
+    },
+    {
+      "name": "Section shell",
+      "guidance": "Create a stable clipping plane and capped section; subdued tissue roughness separates shell from cavity without inventing diagnostic textures."
+    },
+    {
+      "name": "Orientation frame",
+      "guidance": "Keep anterior/posterior and anatomical left/right labels fixed to the organ, independent of camera."
+    }
+  ],
+  "state_contract": {
+    "model": "Structural model with chamber IDs, clipping plane and visibility; no blood-pressure or contraction solver.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Drag section plane.",
+      "Isolate a chamber and restore neighboring context.",
+      "Reset orientation and visibility."
+    ]
+  },
+  "invariants": [
+    "Each chamber ID remains attached to the same cavity through clipping and isolation.",
+    "Anatomical left is not screen left.",
+    "No clipping cap can imply a real anatomical membrane."
+  ],
+  "motion_guidance": [
+    "Animate the section plane as a display transform; retain an uncut reference silhouette.",
+    "Do not pulse chambers or flow arrows as physiological evidence."
+  ],
+  "known_limits": [
+    "A sourced or expert-reviewed mesh is still required for anatomical proportions and connections.",
+    "Four-chamber sourcing does not validate an entire heart model or any diagnostic use.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.heart-cutaway",
+      "statement": "The human heart has a left and right atrium and a left and right ventricle.",
+      "scope": "Structural chamber identification only.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-heart",
+          "locator": "19.1, Chambers and Circulation through the Heart"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Chambers",
+      "structure": "Use distinct atrial and ventricular cavities with section thickness; identify by labels as well as color. Do not use four disconnected spheres.",
+      "material": "Restrained nonmetallic tissue palette; cavity and capped cut surfaces differ in roughness and value. Colors are structural labels, not oxygen or pathology measurements.",
+      "articulation": "Clipping and isolation are display controls; no contraction or deformation is implied."
+    },
+    {
+      "family": "Section shell",
+      "structure": "Create a stable clipping plane and capped section; subdued tissue roughness separates shell from cavity without inventing diagnostic textures.",
+      "material": "Restrained nonmetallic tissue palette; cavity and capped cut surfaces differ in roughness and value. Colors are structural labels, not oxygen or pathology measurements.",
+      "articulation": "Clipping and isolation are display controls; no contraction or deformation is implied."
+    },
+    {
+      "family": "Orientation frame",
+      "structure": "Keep anterior/posterior and anatomical left/right labels fixed to the organ, independent of camera.",
+      "material": "Restrained nonmetallic tissue palette; cavity and capped cut surfaces differ in roughness and value. Colors are structural labels, not oxygen or pathology measurements.",
+      "articulation": "Clipping and isolation are display controls; no contraction or deformation is implied."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Semantic geometry/state presentation; no gravity, contact force or material simulation.",
+    "checks": [
+      "Each chamber ID remains attached to the same cavity through clipping and isolation.",
+      "Anatomical left is not screen left."
+    ]
+  }
+}

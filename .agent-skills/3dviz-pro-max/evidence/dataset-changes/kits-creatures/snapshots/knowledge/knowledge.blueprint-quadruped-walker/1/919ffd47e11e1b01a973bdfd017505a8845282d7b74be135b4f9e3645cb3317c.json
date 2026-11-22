@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-quadruped-walker",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: quadruped walker"
+  },
+  "aliases": {
+    "en": [
+      "four-legged village animal kit",
+      "walking animal blueprint",
+      "procedural quadruped gait"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "A four-legged village animal - barrel body, arched neck, horned head, three-segment legs and a tail - with a procedural diagonal-pair walk cycle, route following and a clamped turn rate.",
+  "objective": "Seen from about three metres the animal reads as three tiers of detail: body, neck and tail silhouette, then jointed legs, muzzle, ears and horns, then hoof splits, eye highlights and nostrils; in motion the diagonal legs pair up and the planted hoof does not slide.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "creature",
+    "quadruped",
+    "walk-cycle",
+    "village",
+    "animal"
+  ],
+  "subject_terms": [
+    "walk cycle",
+    "diagonal gait",
+    "two-bone leg",
+    "foot plant",
+    "body bob",
+    "horns",
+    "hoof"
+  ],
+  "intent_signals": [
+    "add a walking animal to the village",
+    "reusable quadruped walk cycle",
+    "creature that follows a path"
+  ],
+  "example_prompts": [
+    "Put a goat on the lane and have it walk between the well and the barn.",
+    "I need a four-legged animal whose legs actually plant on the ground."
+  ],
+  "not_for": [
+    "Anatomically accurate animal locomotion or veterinary reference.",
+    "Any claim about the gait of a named species.",
+    "Skinned or blend-shape deformation: this rig is rigid parts on rotating joints."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/creatures/quadruped-walker.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "scale",
+      "type": "number",
+      "default": 1,
+      "range": [
+        0.4,
+        2.5
+      ]
+    },
+    {
+      "name": "strideM",
+      "type": "number",
+      "default": 0.62,
+      "range": [
+        0.35,
+        1.1
+      ],
+      "unit": "m"
+    },
+    {
+      "name": "strideHz",
+      "type": "number",
+      "default": 1.1,
+      "range": [
+        0.4,
+        2.4
+      ],
+      "unit": "Hz"
+    },
+    {
+      "name": "speed",
+      "type": "number",
+      "default": 0,
+      "range": [
+        0,
+        4
+      ],
+      "unit": "m/s"
+    },
+    {
+      "name": "seed",
+      "type": "integer",
+      "default": 1,
+      "range": [
+        0,
+        65535
+      ]
+    },
+    {
+      "name": "coat",
+      "type": "color",
+      "default": "#b39a78"
+    },
+    {
+      "name": "yawRateRad",
+      "type": "number",
+      "default": 1.8,
+      "range": [
+        0.4,
+        6
+      ],
+      "unit": "rad/s"
+    }
+  ],
+  "sockets": [
+    {
+      "name": "harness",
+      "position_m": [
+        0,
+        0.64,
+        0.44
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "head",
+      "position_m": [
+        0,
+        1.175,
+        0.62
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "back",
+      "position_m": [
+        0,
+        0.88,
+        -0.06
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "barrel trunk tapering from a 0.43 m chest to a 0.34 m rump, back line 0.88 m above the ground",
+      "neck leaning forward 24 degrees into a horned head that breaks the back line at 1.18 m",
+      "tail carried up and away from the rump, and four legs whose gaps are readable between them",
+      "in motion: the diagonal pairs split the silhouette, one pair grounded while the other swings"
+    ],
+    "medium": [
+      "three-segment legs - thigh, shin and fetlock - with the foreleg elbow folding back and the hind stifle folding forward",
+      "muzzle, ears with a pale inner surface, and horns swept back off the skull",
+      "hooves that stay flat on the ground through stance and roll over the toe through swing",
+      "body bob of 2.2 cm at twice the stride rate, with the head nodding once per stride"
+    ],
+    "fine": [
+      "each hoof split into two claws about 3.6 cm across, chamfered at 1.2 cm",
+      "eyes 4.8 cm across with a 1.4 cm highlight, and 2.2 cm nostril dots on the muzzle",
+      "three growth rings turned into each horn",
+      "per-seed jitter on ear splay and hoof claw offset, so two animals are not one animal twice"
+    ]
+  },
+  "footprint_m": [
+    0.44,
+    1.32
+  ],
+  "poly_budget": 2472,
+  "fits_looks": [
+    "knowledge.style-stylized",
+    "knowledge.style-hand-painted",
+    "knowledge.style-toy-miniature",
+    "knowledge.style-ghibli-painterly-pastoral",
+    "knowledge.lighting-mood-dusk-golden-hour",
+    "knowledge.lighting-mood-overcast-soft"
+  ],
+  "content": {
+    "principles": [
+      "Fix the body plan first - four legs, one neck, one tail - then let the gait follow from it; a creature that changes limb count between poses stops reading as an organism.",
+      "Drive the feet from the distance travelled, never from wall-clock time: phase advances by travel divided by stride length, so the same walk holds together at any speed.",
+      "The stance foot is the contact with the world. Author its ground span to equal the body travel of that stance and the sliding-puppet look disappears without any IK solver at runtime."
+    ],
+    "implementation": [
+      "Call create({ scale, strideM, strideHz, speed, seed, coat, yawRateRad }); the group is centred on its footprint with y = 0 at the ground plane and the animal facing +Z.",
+      "Call animate(dt) every frame; it returns false for dt <= 0 and true when the pose advanced. animate(dt, speed) overrides the cruise speed for that frame onward.",
+      "speed = 0 means cruise, which is strideM x strideHz x scale; set it explicitly to walk faster or slower than the authored gait.",
+      "setRoute(points, loop) takes [x, z] or [x, y, z] points, drops the walker on the first point and turns it towards each next one at no more than yawRateRad; a non-looping route ends in a halt.",
+      "Read state.position, state.heading, state.phase and state.distance for a follow camera or a footstep sound; do not write them while a route is running.",
+      "Sockets are ordered harness, head, back: the proof harness aims its detail view at sockets[0] and lifts that anchor by 0.35 of the model height, so the chest socket is what frames the head."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible in the frame.",
+      "Step animate(1/60) for four seconds and log the world position of hoof-0: through each stance run its x and z must vary by less than 2 cm (kits-creatures.test.js asserts this).",
+      "hoof-0 and hoof-3 must share a height at every frame, and differ from hoof-1 and hoof-2: that is the diagonal pairing, visible as a trot-like walk.",
+      "The same seed and the same dt sequence must reproduce the same pose exactly."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry and an authored gait. Nothing here is a measurement of any real animal, and no biomechanical claim is made.",
+    "The poly budget is the triangle count observed at default parameters.",
+    "The foot plant is exact only while the walker travels in a straight line; a turn moves the planted foot along the arc, by up to the turn radius times the yaw step.",
+    "Rigid parts on rotating joints, no skinning: joints show as hard creases at close range, which is why the fetlock and shoulder masses are separate spheres.",
+    "The proof harness never calls animate(dt), so every capture shows the phase-zero stance pose and not the walk cycle in motion.",
+    "create() returns the rig posed mid-stride rather than in its rest pose, so a single still reads as walking; the socket positions are still read off the rest pose, so they do not move with phase."
+  ],
+  "creative_affordances": [
+    "Push scale to 0.5 for a dog or to 2.0 for an ox; the gait keeps working because every length in the cycle is derived from strideM.",
+    "Swap coat and re-seed for a herd that reads as one species with different individuals.",
+    "Drop the horns and shorten the neck for a farm dog; the leg chain does not care."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "scale": 1,
+      "strideM": 0.62,
+      "strideHz": 1.1,
+      "seed": 1,
+      "yawRateRad": 1.8,
+      "duty_factor": 0.62,
+      "foot_lift_m": 0.1,
+      "body_bob_m": 0.022,
+      "phase_offsets": [
+        0,
+        0.5,
+        0.5,
+        0
+      ],
+      "feeling": "unhurried village animal"
+    },
+    "rationale": "A 0.62 m stride at 1.1 Hz is 0.68 m/s, a walk a 1.7 m figure keeps up with; the 0.62 duty factor keeps two feet grounded for most of the cycle, which is what separates a walk from a trot at this speed."
+  },
+  "related_ids": [
+    "knowledge.reasoning-gait-contact-consistency",
+    "knowledge.authored-locomotion",
+    "knowledge.reasoning-creature-body-plan-coherence",
+    "knowledge.camera-orbit-follow-rig",
+    "knowledge.hero-prop-detail-hierarchy"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-quadruped-walker/far.png",
+      "evidence/kits/knowledge.blueprint-quadruped-walker/mid.png",
+      "evidence/kits/knowledge.blueprint-quadruped-walker/close.png",
+      "evidence/kits/knowledge.blueprint-quadruped-walker/detail.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-quadruped-walker/proof-log.json"
+  }
+}

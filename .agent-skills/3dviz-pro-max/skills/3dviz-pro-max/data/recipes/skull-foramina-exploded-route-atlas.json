@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "id": "recipe.skull-foramina-exploded-route-atlas",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Dry-skull foramina exploded route atlas"
+  },
+  "aliases": {
+    "en": [
+      "skull foramina",
+      "cranial fossa"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures"
+  ],
+  "summary": "Inspect a licensed supplied adult dry-skull teaching mesh using curated cranial-fossa aperture labels and internal/external route anchors without detecting anatomy from holes.",
+  "objective": "Inspect a licensed supplied adult dry-skull teaching mesh using curated cranial-fossa aperture labels and internal/external route anchors without detecting anatomy from holes.",
+  "tags": [
+    "skull foramina",
+    "cranial fossa",
+    "optic canal",
+    "laterality"
+  ],
+  "subject_terms": [
+    "skull foramina",
+    "cranial fossa",
+    "optic canal",
+    "laterality",
+    "route atlas"
+  ],
+  "intent_signals": [
+    "Dry-skull foramina exploded route atlas"
+  ],
+  "example_prompts": [
+    "Build dry-skull foramina exploded route atlas with explicit provenance, laterality, frame and unavailable-state checks."
+  ],
+  "negative_signals": [
+    "mesh similarity proves anatomical correctness",
+    "infer missing clinical data from geometry"
+  ],
+  "not_for": [
+    "Diagnosis, treatment, procedure guidance or patient-specific inference."
+  ],
+  "entities": [
+    {
+      "name": "Source skull",
+      "guidance": "Preserve an unmodified, licensed mesh collection and record that OpenStax licenses its text/figures, not the chosen mesh."
+    },
+    {
+      "name": "Paired apertures",
+      "guidance": "Curate side, fossa, internal/external anchors and passage label; camera never determines anatomical left/right."
+    },
+    {
+      "name": "Exploded view",
+      "guidance": "Move bone parts by display matrices while route measurements remain in source coordinates."
+    }
+  ],
+  "state_contract": {
+    "model": "Each aperture record stores stable ID, anatomical side, fossa, source anchors, label confidence and provenance; missing anchors remain unavailable.",
+    "authority": "Supplied source records, identifiers, frames and curated labels own state. Blender/glTF geometry is display-only; Three.js owns validated runtime binding and exact reset.",
+    "actions": [
+      "Select aperture and side.",
+      "Explode/reset bones.",
+      "Toggle fossa and route labels."
+    ]
+  },
+  "invariants": [
+    "Laterality survives camera orbit and mirrored layout.",
+    "Foramen lacerum is a dry-skull opening filled by cartilage in life, not a generic through-route.",
+    "Exploded matrices never alter source measurements."
+  ],
+  "motion_guidance": [
+    "Exploded motion applies reversible display matrices to named bone nodes while source-space anchors and laterality stay fixed; Blender authors neutral parts/anchors, glTF transports their stable names, and Three.js owns the display transition and exact reset."
+  ],
+  "creative_affordances": [
+    "Use restrained cutaways, translucent planes and non-color selection cues without implying clinical confidence."
+  ],
+  "known_limits": [
+    "Documentary source review only; no dataset, patient record, simulation, specialist clinical validation or runtime was used."
+  ],
+  "claims": [
+    {
+      "id": "claim.biomed-openstax-skull-openings",
+      "statement": "OpenStax Anatomy and Physiology 2e describes cranial fossae and the locations or passage roles of major openings including optic canal, orbital fissure, foramina rotundum/ovale/spinosum, carotid canal, foramen lacerum, internal acoustic meatus, hypoglossal canal and jugular foramen; it notes foramen lacerum is filled with cartilage in life.",
+      "scope": "Section 7.2 adult dry-skull educational description; not a complete variant or transmitted-structure atlas.",
+      "source_refs": [
+        {
+          "source_id": "source.biomed-openstax-skull",
+          "locator": "Section 7.2, Figures 7.8 and 7.16, Cranial Fossae opening lists"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Cranial-base atlas",
+      "structure": "Blender keeps the licensed source mesh unmodified, separates teaching-display bone parts non-destructively, and authors named aperture/route anchors in the declared source frame; glTF exports static parts, node names and neutral transforms.",
+      "material": "Matte bone, translucent fossa plates and glyph-coded routes; OpenStax content is not a geometry license.",
+      "articulation": "Three.js owns side-safe ID binding, source-to-display matrices, route lines, unavailable states and exact neutral reset; source measurements never read displaced mesh coordinates."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Display of supplied educational or derived biomedical records; no tissue mechanics or diagnostic model.",
+    "state": [
+      "source identity and license",
+      "laterality and coordinate frames",
+      "validated selection/playback state"
+    ],
+    "checks": [
+      "Reject ambiguous side, unit or frame.",
+      "Reset exact source-space transforms.",
+      "Keep unavailable data explicit."
+    ]
+  },
+  "related_ids": [
+    "recipe.brachial-plexus-routing",
+    "recipe.supplied-brain-atlas-region-inspection"
+  ]
+}

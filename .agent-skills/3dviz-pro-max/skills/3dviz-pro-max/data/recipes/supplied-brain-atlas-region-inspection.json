@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "id": "recipe.supplied-brain-atlas-region-inspection",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Supplied brain-atlas region inspection"
+  },
+  "aliases": {
+    "en": [
+      "brain atlas labels",
+      "atlas region viewer",
+      "label-volume inspection"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures"
+  ],
+  "summary": "Inspect regions from a supplied validated atlas label volume and label table without generating or relabelling anatomy.",
+  "objective": "Select a source region ID and inspect its name, voxels, world coordinates, slices and derived surface with provenance always visible.",
+  "tags": [
+    "brain atlas",
+    "label volume",
+    "NIfTI affine",
+    "provenance"
+  ],
+  "subject_terms": [
+    "atlas label volume",
+    "voxel to world affine",
+    "region ontology",
+    "nearest-neighbour labels",
+    "orthogonal slices",
+    "laterality"
+  ],
+  "intent_signals": [
+    "Inspect a supplied brain region atlas.",
+    "Highlight one atlas label in slices and 3D."
+  ],
+  "example_prompts": [
+    "Load my validated brain atlas volume and label table, then build linked slice and 3D inspection without inventing anatomy."
+  ],
+  "negative_signals": [
+    "procedurally generated brain anatomy",
+    "automatic diagnosis",
+    "individual patient segmentation"
+  ],
+  "not_for": [
+    "Creating an atlas, registering a subject, segmenting anatomy or inferring disease.",
+    "Treating atlas labels as individual anatomical truth."
+  ],
+  "entities": [
+    {
+      "name": "Validated atlas package",
+      "guidance": "Require volume, label table, atlas/version identifier, coordinate-space declaration, rights and integrity metadata before rendering."
+    },
+    {
+      "name": "Linked slice probe",
+      "guidance": "Use one voxel identity across three orthogonal slices; report integer index, source-space coordinates with header-declared spatial units, region ID and exact supplied label."
+    },
+    {
+      "name": "Derived region surface",
+      "guidance": "Extract at 0.5 from a binary selected-ID mask; disclose threshold, spacing and any smoothing because the mesh is derived, not source anatomy."
+    }
+  ],
+  "state_contract": {
+    "model": "Load integer labels L[i,j,k], background ID and a supplied table that maps every used ID to a label record; label names need not be unique. Map voxel indices through the selected NIfTI affine in the header-declared spatial unit. A millimetre display is allowed only through a recorded conversion from meter, millimetre or micron units. Use nearest-neighbour only for any declared label-grid resampling.",
+    "authority": "The supplied validated asset owns atlas identity, region IDs/names, voxel values, orientation, affine and units. The viewer may derive selection masks and surfaces but cannot invent missing regions or anatomical names.",
+    "actions": [
+      "Select a region from the supplied table or probe.",
+      "Move the shared crosshair in voxel or world coordinates.",
+      "Toggle slices, selected-region surface and unsmoothed boundary reference.",
+      "Reset selection, crosshair, derivation controls and camera."
+    ]
+  },
+  "invariants": [
+    "Voxel-to-world-to-voxel round trips differ by less than 1e-6 indices for sampled in-bounds points.",
+    "Every non-background ID exists in the supplied label table; nearest-neighbour resampling introduces no new IDs.",
+    "A signed laterality fixture renders a known positive-RAS-x marker on the side labelled R.",
+    "Displayed provenance and affine choice remain visible through clipping, isolation and reset."
+  ],
+  "motion_guidance": [
+    "Crosshair and slices move as inspection state; no tissue motion is implied.",
+    "Animate selection transitions only after the old and new source IDs are separately identified."
+  ],
+  "creative_affordances": [
+    "Use translucent shells, restrained atlas colours or a sectional teaching-table style; include redundant labels so hue is not the sole identifier."
+  ],
+  "known_limits": [
+    "Atlas boundaries reflect the supplied atlas construction and population or specimen scope, not a current viewer's brain.",
+    "Smoothing, thresholding and tessellation alter derived appearance and must retain disclosed settings.",
+    "Authored and source-reviewed draft only; no atlas asset, importer or renderer was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.mixed-biomed-nifti-affine-authority",
+      "statement": "NiBabel maps NIfTI voxel coordinates into RAS+ world coordinates and chooses a valid sform before qform, then a fallback affine when neither coded transform is available.",
+      "scope": "NiBabel's documented NIfTI implementation; fallback details can differ between software and must be recorded.",
+      "source_refs": [
+        {
+          "source_id": "source.mixed-biomed-nibabel-nifti-affines",
+          "locator": "The NIfTI affines; The sform affine; Choosing the image affine"
+        }
+      ]
+    },
+    {
+      "id": "claim.mixed-biomed-atlas-provenance-is-data",
+      "statement": "The Allen adult human brain atlas publication ties its anatomical and transcriptomic atlas data to identified donor specimens and spatial anatomical context, so that atlas's identity and specimen provenance are scientific context rather than interchangeable decoration.",
+      "scope": "The cited Allen Human Brain Atlas publication; the recipe accepts other validated supplied atlases only with their own provenance.",
+      "source_refs": [
+        {
+          "source_id": "source.mixed-biomed-allen-human-brain-atlas",
+          "locator": "Abstract and atlas overview"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Atlas inspection assembly",
+      "structure": "Keep source slices, crosshair, orientation cube, labels and derived surfaces separate with stable region IDs.",
+      "material": "Use unlit or controlled quantitative colours for labels; lighting may shape the derived mesh but cannot recolour IDs ambiguously."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Static source-data inspection; no anatomical motion or tissue simulation.",
+    "checks": [
+      "Affine, label-set and laterality fixtures pass.",
+      "Surface selection resolves to exactly one supplied region ID."
+    ]
+  },
+  "related_ids": [
+    "knowledge.synchronized-orthogonal-slices",
+    "knowledge.shared-voxel-field-grid",
+    "knowledge.validation-anatomical-orientation-frame",
+    "knowledge.validation-structure-naming-attribution"
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.divergent-ridge-crust-age",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Divergent ridge and crust-age bands"
+  },
+  "aliases": {
+    "en": [
+      "seafloor spreading",
+      "divergent plate boundary",
+      "mid ocean ridge crust age"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment"
+  ],
+  "summary": "Expose the distinction between prescribed plate separation, newly formed crust and a computed geodynamic solution.",
+  "objective": "Make a ridge cross-section with two separating plates and age bands that record when crust was created.",
+  "tags": [
+    "plate tectonics",
+    "divergent boundary",
+    "spreading ridge"
+  ],
+  "subject_terms": [
+    "plate tectonics",
+    "divergent boundary",
+    "spreading ridge",
+    "crust age",
+    "half spreading rate",
+    "magnetic stripes"
+  ],
+  "intent_signals": [
+    "Make a ridge cross-section with two separating plates and age bands that record when crust was created.",
+    "Expose the distinction between prescribed plate separation, newly formed crust and a computed geodynamic solution."
+  ],
+  "example_prompts": [
+    "Make a ridge cross-section with two separating plates and age bands that record when crust was created.",
+    "Create an explorable 3D explanation of seafloor spreading with rate and age ruler."
+  ],
+  "negative_signals": [
+    "No mantle rheology, melting, cooling subsidence, bathymetry prediction or earthquake dynamics."
+  ],
+  "not_for": [
+    "No mantle rheology, melting, cooling subsidence, bathymetry prediction or earthquake dynamics."
+  ],
+  "entities": [
+    {
+      "name": "Ridge cutaway",
+      "guidance": "Build two plate slabs with a narrow central creation zone, simplified upper mantle and a cut side face; mark vertical exaggeration and layers as schematic."
+    },
+    {
+      "name": "Crust parcels",
+      "guidance": "Use contiguous age bands born in matched left/right pairs; their colors encode age, not naturally visible rock stripes."
+    },
+    {
+      "name": "Rate and age ruler",
+      "guidance": "Show one-side half-rate u versus full separation rate 2*u, model time and a selected parcel age-distance relation."
+    }
+  ],
+  "state_contract": {
+    "model": "Schematic symmetric spreading with fixed ridge at x=0 and prescribed half-rate u>0 on each side. New parcels are created at the ridge and advect as x=side*u*(t-birthTime); age=t-birthTime.",
+    "authority": "Parcel birth times, side IDs and the prescribed rate own age labels and positions. The model does not solve mantle convection or plate forces.",
+    "actions": [
+      "Advance a bounded geological-time interval.",
+      "Pause and select matching age bands.",
+      "Change rate only by restarting or by recording a rate history.",
+      "Reset parcels, time and rate."
+    ]
+  },
+  "invariants": [
+    "Paired parcels born together have equal age and equal distance from the ridge in the symmetric model.",
+    "Full separation rate is twice the prescribed half-rate.",
+    "Changing playback speed does not change simulated age-distance relations."
+  ],
+  "motion_guidance": [
+    "Create crust at the ridge as plates separate rather than revealing empty voids under an unchanged old surface.",
+    "If magnetic polarity bands are added, use a declared polarity-time input; do not fabricate real reversal dates."
+  ],
+  "known_limits": [
+    "No mantle rheology, melting, cooling subsidence, bathymetry prediction or earthquake dynamics.",
+    "Symmetric constant-rate spreading is an illustrative assumption, not a universal property of real ridges.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.divergent-ridge-crust-age",
+      "statement": "At divergent plate boundaries, plates move apart and new crust forms; seafloor magnetic patterns can record this spreading.",
+      "scope": "General boundary process; displayed ages and constant rates are synthetic.",
+      "source_refs": [
+        {
+          "source_id": "source.usgs-divergent-boundaries",
+          "locator": "Plate boundary explanation and magnetic stripe discussion"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Ridge cutaway",
+      "structure": "Build two plate slabs with a narrow central creation zone, simplified upper mantle and a cut side face; mark vertical exaggeration and layers as schematic.",
+      "material": "Matte rock slabs with a separate age legend; central warm accent identifies the authored creation zone without claiming a computed temperature."
+    }
+  ]
+}

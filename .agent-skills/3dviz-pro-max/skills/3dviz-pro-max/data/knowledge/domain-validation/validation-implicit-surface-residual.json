@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-implicit-surface-residual",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Intersection residual and degenerate section classification"
+  },
+  "aliases": {
+    "en": [
+      "conic residual check",
+      "implicit intersection tolerance"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry"
+  ],
+  "summary": "Measure how well an intersection curve satisfies both defining equations and force degenerate cases to classify themselves.",
+  "objective": "Sampled intersection points meet the declared residual tolerance where the gradient is above its floor, and apex, tangent and ill-conditioned cases are classified rather than passed.",
+  "applies_when": [
+    "A curve or surface is produced by intersecting two implicit or parametric definitions.",
+    "A viewer can move the cutting object continuously, including through tangency.",
+    "The rendered result is a finite tessellation of an extended or unbounded mathematical object."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "implicit-geometry",
+    "residual",
+    "degeneracy"
+  ],
+  "subject_terms": [
+    "conic section",
+    "double cone",
+    "plane equation",
+    "residual",
+    "tangency",
+    "degenerate conic"
+  ],
+  "intent_signals": [
+    "is this really the intersection curve",
+    "the classification flickers near tangency"
+  ],
+  "example_prompts": [
+    "Check the conic slicing curve against both defining equations."
+  ],
+  "negative_signals": [
+    "general quadric classification library",
+    "CAD boolean operations"
+  ],
+  "content": {
+    "principles": [
+      "Intersection points must satisfy both defining equations, so the residual of each equation is the measurable evidence; a plausible-looking curve is not evidence.",
+      "Residual size is not distance: dividing by the gradient magnitude gives a first-order distance estimate, otherwise the tolerance silently depends on how the equation was scaled. That estimate is undefined where the gradient vanishes, which is exactly what happens at the cone apex.",
+      "Tangency and apex are separate regimes: near tangency the intersection is ill-conditioned, so small residuals do not prove the curve is well localized, and a plane through the apex gives a degenerate section that needs its own classification rather than the nearest nondegenerate name."
+    ],
+    "implementation": [
+      "Reject a zero or non-finite plane normal before anything else, then normalize the plane equation to unit normal length and evaluate both defining equations at every sampled curve point, recording the two raw residuals together with the equation scaling used.",
+      "Where the gradient magnitude is above a declared floor, also report the residual divided by it as a first-order distance in scene units; where it is at or below the floor, report the raw residual and mark the distance estimate unavailable rather than dividing.",
+      "Sweep the cutting plane through the four nondegenerate cases and through the apex, recording the classification reported at each step and the parameter where it changes.",
+      "Include configurations within numerical noise of a generator direction and record whether the classification flickers between two names, plus a conditioning measure such as the angle between the two surface gradients along the curve."
+    ],
+    "observable_checks": [
+      "Every sampled point away from the declared gradient floor has a gradient-scaled residual below the default tolerance rule (knowledge.validation-default-tolerance-rule) unless this record states its own, reported with the tolerance actually used; points at or below the floor report a raw residual and an explicit unavailable distance instead of passing silently.",
+      "A plane through the apex is reported as a degenerate section rather than as an ellipse or hyperbola, and near-tangent configurations where the gradients are nearly parallel are reported as ill-conditioned or inconclusive rather than passed on small residuals alone.",
+      "A clipped branch is labelled as clipped: an unbounded parabola or hyperbola displayed inside a box is never described as a closed or bounded curve."
+    ]
+  },
+  "known_limits": [
+    "Checks a specific authored construction against its own equations; it is not a robust classifier for arbitrary quadrics or arbitrary cutting surfaces.",
+    "Authored verification guidance; no computation or render was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.conic-slicing",
+    "recipe.solid-of-revolution",
+    "recipe.divergence-flux-box",
+    "knowledge.validation-default-tolerance-rule"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-conic-plane-sections",
+      "statement": "Nondegenerate plane sections of a right circular double cone are circles, ellipses, parabolas and hyperbolas, depending on how the plane relates to the axis and to the generating line.",
+      "scope": "The cited section describes the nondegenerate cases; degenerate sections through the apex are not covered there and need separate treatment.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-conics",
+          "locator": "1.5, opening discussion of plane sections of a cone"
+        }
+      ]
+    }
+  ]
+}

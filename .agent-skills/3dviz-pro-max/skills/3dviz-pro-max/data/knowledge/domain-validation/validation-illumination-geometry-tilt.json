@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-illumination-geometry-tilt",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Fixed axis direction and hemispheric illumination contrast"
+  },
+  "aliases": {
+    "en": [
+      "axial tilt check",
+      "seasonal illumination geometry"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment"
+  ],
+  "summary": "Confirm the spin axis keeps a fixed inertial direction and that seasonal contrast comes from tilt rather than distance.",
+  "objective": "The axis vector is constant across orbital phases, symmetric latitudes respond oppositely in daily-integrated illumination, and zero tilt removes that seasonal variation.",
+  "applies_when": [
+    "A scene links orbital phase to illumination on a rotating body.",
+    "Obliquity or orbital distance can be changed.",
+    "Latitude bands or day length are displayed."
+  ],
+  "check_method": "geometry",
+  "tags": [
+    "domain-validation",
+    "illumination",
+    "obliquity",
+    "orbit"
+  ],
+  "subject_terms": [
+    "axial tilt",
+    "obliquity",
+    "terminator",
+    "incidence angle",
+    "orbital phase",
+    "hemisphere"
+  ],
+  "intent_signals": [
+    "the axis seems to follow the Sun",
+    "check whether distance is driving the seasons here"
+  ],
+  "example_prompts": [
+    "Check the tilt and illumination geometry in this seasons scene."
+  ],
+  "negative_signals": [
+    "climate or temperature modelling",
+    "ephemeris accuracy"
+  ],
+  "content": {
+    "principles": [
+      "The spin axis keeps a fixed direction in the inertial frame as the body orbits, so an axis that leans toward the light through the year is the classic modelling error this check targets. Fixity is checked on the whole unit vector, because a single dot product with an arbitrary reference stays constant for an axis precessing on a cone around it.",
+      "Local illumination is the dot product of the surface normal with the light direction clamped at zero, and the terminator is where that quantity changes sign.",
+      "Zero obliquity is the control case: with no tilt on a circular orbit a fixed latitude sees no seasonal change in its daily illumination, although illumination still varies through each rotation, so the seasonal metric is a daily-integrated or same-local-time quantity rather than an instantaneous sample."
+    ],
+    "implementation": [
+      "Record the axis unit vector in the inertial frame at several orbital phases and compare each with the initial axis vector componentwise, or equivalently require the dot product with the initial axis to stay at one within tolerance.",
+      "At four orbital phases compute a daily-integrated illumination or day length at a symmetric pair of extratropical latitudes, one in each hemisphere, holding the orbit circular and the light-distance treatment fixed.",
+      "Set obliquity to zero and repeat the four-phase daily-integrated measurement at a fixed non-polar latitude.",
+      "Vary orbital distance while holding obliquity fixed and record what changes, so the scene cannot be read as attributing seasons to distance."
+    ],
+    "observable_checks": [
+      "The axis unit vector equals its initial value at every orbital phase within numerical tolerance; a constant dot product with some other reference is not sufficient, since a precessing axis satisfies it.",
+      "At the symmetric extratropical latitude pair the daily-integrated illumination moves oppositely between hemispheres across the four phases, and at zero obliquity that seasonal variation disappears while ordinary daily variation remains.",
+      "Changing orbital distance alone does not produce the seasonal pattern, and the artifact states that the schematic orbit and body sizes are exaggerated presentation."
+    ]
+  },
+  "known_limits": [
+    "Illumination geometry only; no atmosphere, weather, temperature response or eccentricity effects are computed.",
+    "Authored verification guidance; nothing was computed or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.earth-tilt-seasons",
+    "recipe.moon-phase-observer",
+    "recipe.terrain-contour-slices"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-axial-tilt-seasons",
+      "statement": "Earth's tilted axis causes the seasons, the axis always points in the same direction as Earth orbits, the hemispheres experience opposite seasonal timing, and distance from the Sun is not the cause of the seasons.",
+      "scope": "Illumination geometry as explained in the cited public science page; no climate or temperature response is computed.",
+      "source_refs": [
+        {
+          "source_id": "source.nasa-seasons",
+          "locator": "Tilted axis, fixed axis direction, opposite hemispheres and the distance statement"
+        }
+      ]
+    }
+  ]
+}

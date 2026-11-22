@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.gltf-material-extension-matrix",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "glTF material extension matrix: Principled BSDF to MeshPhysicalMaterial"
+  },
+  "aliases": {
+    "en": [
+      "KHR_materials extension mapping",
+      "Principled BSDF to MeshPhysicalMaterial",
+      "which glTF material extensions survive export",
+      "clearcoat sheen specular anisotropy iridescence handoff"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "molecules-materials",
+    "environments-dioramas"
+  ],
+  "summary": "Map each Principled BSDF surface feature to its KHR_materials_* extension and the three.js MeshPhysicalMaterial property that receives it, and check each row against what the exporter and the loader actually list as supported.",
+  "objective": "Every advanced material feature in a scene names its glTF extension and its receiving renderer property, and any row without an exporter or loader path is declared before authoring rather than discovered after export.",
+  "tags": [
+    "tool-adapter",
+    "gltf",
+    "materials",
+    "blender",
+    "threejs",
+    "extensions"
+  ],
+  "subject_terms": [
+    "KHR_materials_clearcoat",
+    "KHR_materials_sheen",
+    "KHR_materials_specular",
+    "KHR_materials_anisotropy",
+    "KHR_materials_emissive_strength",
+    "KHR_materials_iridescence",
+    "KHR_materials_variants",
+    "MeshPhysicalMaterial",
+    "Principled BSDF",
+    "clearcoatFactor",
+    "sheenColorFactor",
+    "specularFactor",
+    "anisotropyStrength",
+    "emissiveStrength",
+    "iridescenceIor"
+  ],
+  "intent_signals": [
+    "which glTF extension carries clearcoat",
+    "my sheen material lost its look after export",
+    "does three.js support material variants",
+    "map Principled BSDF inputs to glTF",
+    "iridescence does not export from Blender"
+  ],
+  "example_prompts": [
+    "Plan a car-paint material that survives Blender to glTF to three.js with clearcoat intact.",
+    "Tell me which advanced material features I can rely on end to end for this product viewer."
+  ],
+  "negative_signals": [
+    "measured spectral reflectance",
+    "choosing a colour palette",
+    "authoring a custom shader graph"
+  ],
+  "not_for": [
+    "Claiming appearance equivalence between two renderers implementing the same extension.",
+    "Physically measured material parameters.",
+    "Extensions no source in this record documents."
+  ],
+  "content": {
+    "principles": [
+      "A material feature only exists end to end when three separate lists agree: the exporter can write the extension, the extension defines the property, and the loader can read it. A row where any of the three is missing is an authoring decision, not a bug to debug later.",
+      "Extension factors and renderer properties are not always spelled the same. The glTF factor names carry the defaults; the renderer property names carry the runtime API. Write both in the same row so neither is guessed.",
+      "Defaults matter as much as names: several extensions default to the disabled value, so a material that exports without an authored factor produces a file that is valid and visually inert.",
+      "Use MeshPhysicalMaterial for any row in this matrix; the metallic-roughness baseline material has no properties to receive them and fails silently rather than loudly."
+    ],
+    "implementation": [
+      "Clearcoat: Blender's `Clearcoat` and `Clearcoat Roughness` inputs on the Principled BSDF trigger `KHR_materials_clearcoat` (`clearcoatFactor` default `0.0`, `clearcoatRoughnessFactor` default `0.0`, plus `clearcoatNormalTexture`; textures pack clearcoat in `R` and clearcoat roughness in `G`) and arrive as `material.clearcoat`, `material.clearcoatRoughness`, `material.clearcoatNormalMap` and `material.clearcoatNormalScale`.",
+      "Sheen: the Blender sheen inputs export as `KHR_materials_sheen` (`sheenColorFactor` default `[0.0, 0.0, 0.0]` in linear space, `sheenRoughnessFactor` default `0.0`, roughness carried in the texture's alpha channel) and arrive as `material.sheen`, `material.sheenColor`, `material.sheenRoughness`, `material.sheenColorMap` and `material.sheenRoughnessMap`. The loader page's supported-extension list does not name `KHR_materials_sheen`, so verify sheen import against the installed release before designing around it.",
+      "Specular: `Specular IOR Level` or `Specular Tint` triggers `KHR_materials_specular` (`specularFactor` default `1.0` with strength in the texture alpha, `specularColorFactor` default `[1.0, 1.0, 1.0]` as an F0 colour in linear RGB with the texture encoded in sRGB) and arrives as `material.specularIntensity`, `material.specularColor`, `material.specularIntensityMap` and `material.specularColorMap`.",
+      "Anisotropy: the `Anisotropic` and `Anisotropic Rotation` sockets, with the tangent socket linked to a tangent node using the normal map's UVMap, export as `KHR_materials_anisotropy` (`anisotropyStrength` default `0.0` multiplied by the texture's blue channel, `anisotropyRotation` default `0.0` radians counter-clockwise from the tangent, direction in the red and green channels) and arrive as `material.anisotropy` in 0.0-1.0, `material.anisotropyRotation` in radians and `material.anisotropyMap`.",
+      "Emissive strength: Blender writes `KHR_materials_emissive_strength` when any component of `emissiveFactor` exceeds 1.0; the extension's `emissiveStrength` defaults to `1.0` and multiplies the material's emissive value so emission can exceed [0, 1] for HDR rendering. On the renderer side the pair is `material.emissive` and `material.emissiveIntensity` (documented default `1`).",
+      "Iridescence: `KHR_materials_iridescence` defines `iridescenceFactor` default `0.0`, `iridescenceIor` default `1.3`, `iridescenceThicknessMinimum` default `100.0` nm and `iridescenceThicknessMaximum` default `400.0` nm, received as `material.iridescence`, `material.iridescenceIOR` and the two-element `material.iridescenceThicknessRange`. The exporter manual's supported-extension lists name no iridescence extension in either direction, so this row has no documented Blender export path: author it on the renderer side or add it with a post-export tool.",
+      "Transmission, volume and IOR: the `Transmission` input triggers `KHR_materials_transmission` (texture value in the `R` channel, Non-Color), volume requires transmission to be set first and rides `KHR_materials_volume`, and `KHR_materials_ior` carries the Principled IOR - the manual notes the importer sets the Principled BSDF IOR to 1.5 when the extension is absent. These arrive as `material.transmission`, `material.thickness`, `material.attenuationColor`, `material.attenuationDistance` and `material.ior`; see `knowledge.blender-three-thick-volume-handoff` and `knowledge.blender-three-transparency-boundaries` for the thickness and sorting contracts they depend on.",
+      "Variants: `KHR_materials_variants` declares a root-level `variants` array of named objects plus per-primitive `mappings` entries that pair a `material` index with an array of `variants` indices, each variant index used no more than once across the whole mappings array. The exporter manual lists it under both import and export, but the loader page places it under `The following glTF 2.0 extension is supported by an external user plugin` alongside `MSFT_texture_dds`, `KHR_animation_pointer` and `NEEDLE_progressive`, so a viewer must supply a plugin through `loader.register(callback)` rather than expect native switching.",
+      "Before authoring any row, check it against the loader's own native list: `KHR_draco_mesh_compression`, `KHR_lights_punctual`, `KHR_materials_anisotropy`, `KHR_materials_clearcoat`, `KHR_materials_dispersion`, `KHR_materials_emissive_strength`, `KHR_materials_ior`, `KHR_materials_specular`, `KHR_materials_transmission`, `KHR_materials_iridescence`, `KHR_materials_unlit`, `KHR_materials_volume`, `KHR_mesh_quantization`, `KHR_meshopt_compression`, `KHR_texture_basisu`, `KHR_texture_transform`, `EXT_materials_bump`, `EXT_meshopt_compression`, `EXT_mesh_gpu_instancing`, `EXT_texture_avif`, `EXT_texture_webp`.",
+      "Instantiate the receiving material as `new THREE.MeshPhysicalMaterial( { ... } )`. `MeshStandardMaterial` exposes only the metallic-roughness baseline (`map`, `roughness`, `metalness`, `roughnessMap`, `normalMap`, `normalScale`) and has no property to receive any factor in this matrix."
+    ],
+    "observable_checks": [
+      "For every row used, the exported glTF names the extension in `extensionsUsed` and the loaded material reports a non-default value on the paired property; a property still sitting at its documented default means the extension did not survive the handoff.",
+      "A material authored only as `MeshStandardMaterial` shows no clearcoat, sheen or transmission response even when the glTF declares those extensions, which separates a loader problem from a material-class problem.",
+      "Changing `material.iridescenceThicknessRange` away from the extension's [100, 400] nm defaults changes the observed hue shift, confirming the two-element array is being read.",
+      "Without a registered plugin, switching a material variant leaves the primitive on its default `material` index and reports no error; the same asset with a plugin registered through `loader.register(callback)` switches.",
+      "An asset whose only sheen evidence is `sheenColorFactor` at its default `[0, 0, 0]` renders identically with and without the extension, which is the expected result rather than a failure."
+    ]
+  },
+  "known_limits": [
+    "Every list quoted here is a documentation list as accessed: the exporter's supported extensions, the loader's native and plugin lists and the renderer's property set all change between releases and must be re-checked against installed versions.",
+    "The loader page's supported-extension list does not name KHR_materials_sheen and the exporter manual lists no iridescence extension; both are observations about those pages on the access date, not statements about any release's source code.",
+    "Extension conformance does not imply appearance agreement: two renderers implementing the same extension may still differ, and no comparison was rendered for this record.",
+    "The variants extension document says nothing about which engines import variants, so the plugin requirement here is taken from the loader page alone.",
+    "Authored reusable guidance: no export, load or render was performed for this record."
+  ],
+  "creative_affordances": [
+    "Rows may be deliberately dropped for delivery weight; record the drop rather than leaving an inert factor in the file.",
+    "A row with no export path may be re-authored on the renderer side as a declared departure from the source asset."
+  ],
+  "related_ids": [
+    "knowledge.blender-three-thick-volume-handoff",
+    "knowledge.blender-three-transparency-boundaries",
+    "knowledge.three-pbr-adapter",
+    "knowledge.blender-three-linear-color-handoff",
+    "knowledge.blender-headless-gltf-export-script"
+  ],
+  "claims": [
+    {
+      "id": "claim.gltf-material-extension-factor-defaults",
+      "statement": "The ratified Khronos material extensions define their factors and defaults as follows: clearcoatFactor 0.0 and clearcoatRoughnessFactor 0.0 with a clearcoatNormalTexture; sheenColorFactor [0.0, 0.0, 0.0] in linear space and sheenRoughnessFactor 0.0 with roughness carried in a texture alpha channel; specularFactor 1.0 with strength in a texture alpha channel and specularColorFactor [1.0, 1.0, 1.0] as an F0 colour in linear RGB whose texture is encoded in sRGB; anisotropyStrength 0.0 multiplied by a texture blue channel and anisotropyRotation 0.0 radians counter-clockwise from the tangent; emissiveStrength 1.0 multiplying the material's emissive value; and iridescenceFactor 0.0, iridescenceIor 1.3, iridescenceThicknessMinimum 100.0 nanometres and iridescenceThicknessMaximum 400.0 nanometres.",
+      "scope": "Property names, units and defaults declared by the accessed ratified extension documents. They define file-format semantics, not any renderer's shading result.",
+      "source_refs": [
+        {
+          "source_id": "source.khr-materials-clearcoat",
+          "locator": "Properties table: clearcoatFactor \"The clearcoat layer intensity\" No, default: 0.0; clearcoatTexture; clearcoatRoughnessFactor \"The clearcoat layer roughness\" No, default: 0.0; clearcoatRoughnessTexture; clearcoatNormalTexture"
+        },
+        {
+          "source_id": "source.khr-materials-sheen",
+          "locator": "Properties table: sheenColorFactor \"The sheen color in linear space\" No, default: [0.0, 0.0, 0.0]; sheenColorTexture (\"The sheen color is in sRGB transfer function\"); sheenRoughnessFactor \"The sheen roughness\" No, default: 0.0; sheenRoughnessTexture \"The sheen roughness (Alpha) texture\""
+        },
+        {
+          "source_id": "source.khr-materials-specular",
+          "locator": "Properties table: specularFactor \"The strength of the specular reflection\" No, default: 1.0; specularTexture (strength \"stored in the alpha (A) channel\"); specularColorFactor \"The F0 color of the specular reflection (linear RGB)\" No, default: [1.0, 1.0, 1.0]; specularColorTexture (\"stored in the RGB channels and encoded in sRGB\")"
+        },
+        {
+          "source_id": "source.khr-materials-anisotropy",
+          "locator": "Properties table: anisotropyStrength \"The anisotropy strength. When the anisotropy texture is present, this value is multiplied by the texture's blue channel\" No, default: 0.0; anisotropyRotation \"...measured in radians counter-clockwise from the tangent\" No, default: 0.0; anisotropyTexture (\"Red and green channels represent the anisotropy direction\")"
+        },
+        {
+          "source_id": "source.khr-materials-emissive-strength",
+          "locator": "Properties table: emissiveStrength \"The strength adjustment to be multiplied with the material's emissive value\" No, default: 1.0; Physical Units and Implementation Notes sections"
+        },
+        {
+          "source_id": "source.khr-materials-iridescence",
+          "locator": "Properties table: iridescenceFactor \"The iridescence intensity factor\" No, default: 0.0; iridescenceIor \"The index of refraction of the dielectric thin-film layer\" No, default: 1.3; iridescenceThicknessMinimum \"...given in nanometers\" No, default: 100.0; iridescenceThicknessMaximum No, default: 400.0; iridescenceThicknessTexture"
+        }
+      ]
+    },
+    {
+      "id": "claim.three-physical-material-extension-properties",
+      "statement": "The MeshPhysicalMaterial documentation lists the receiving properties clearcoat, clearcoatRoughness, clearcoatNormalMap and clearcoatNormalScale; sheen, sheenColor, sheenRoughness, sheenColorMap and sheenRoughnessMap; specularIntensity, specularColor, specularIntensityMap and specularColorMap; anisotropy from 0.0 to 1.0, anisotropyRotation measured in radians counter-clockwise from the tangent, and anisotropyMap; iridescence, iridescenceIOR and iridescenceThicknessRange as an array of exactly two elements giving minimum and maximum thickness; and transmission, thickness, attenuationColor, attenuationDistance, ior and dispersion.",
+      "scope": "Documented property names and stated ranges of one unversioned library page as accessed. It does not state how those properties are shaded or that they match another renderer.",
+      "source_refs": [
+        {
+          "source_id": "source.three-physical-material",
+          "locator": "Property list: clearcoat, clearcoatRoughness, clearcoatNormalMap, clearcoatNormalScale; sheen, sheenColor, sheenRoughness, sheenColorMap, sheenRoughnessMap; specularIntensity, specularColor, specularIntensityMap, specularColorMap; anisotropy (\"from 0.0 to 1.0\"), anisotropyRotation (\"measured in radians counter-clockwise from the tangent\"), anisotropyMap; iridescence, iridescenceIOR, iridescenceThicknessRange (\"Array of exactly 2 elements, specifying minimum and maximum thickness of the iridescence layer\"); transmission, thickness, attenuationColor, attenuationDistance, ior, dispersion"
+        }
+      ]
+    },
+    {
+      "id": "claim.gltf-loader-native-versus-plugin-extensions",
+      "statement": "The loader page publishes two separate lists: a set of glTF 2.0 extensions the loader supports directly, which includes KHR_materials_anisotropy, KHR_materials_clearcoat, KHR_materials_emissive_strength, KHR_materials_ior, KHR_materials_specular, KHR_materials_transmission, KHR_materials_iridescence and KHR_materials_volume but does not name KHR_materials_sheen, and a set supported by an external user plugin, which contains KHR_materials_variants, MSFT_texture_dds, KHR_animation_pointer and NEEDLE_progressive; plugins are attached through the loader's register(callback) method.",
+      "scope": "The two documented extension lists on the accessed unversioned loader page. The absence of an entry is an observation about the list, not about a release's source code.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-three-gltf-loader",
+          "locator": "\"GLTFLoader supports the following glTF 2.0 extensions:\" list including KHR_lights_punctual, KHR_materials_anisotropy, KHR_materials_clearcoat, KHR_materials_emissive_strength, KHR_materials_ior, KHR_materials_specular, KHR_materials_transmission, KHR_materials_iridescence, KHR_materials_volume, KHR_meshopt_compression, EXT_meshopt_compression"
+        },
+        {
+          "source_id": "source.modeling-three-gltf-loader",
+          "locator": "\"The following glTF 2.0 extension is supported by an external user plugin:\" KHR_materials_variants, MSFT_texture_dds, KHR_animation_pointer, NEEDLE_progressive; .register(callback) \"Registers a plugin callback\"; the supported-extension list above it does not name KHR_materials_sheen"
+        }
+      ]
+    },
+    {
+      "id": "claim.blender-exporter-material-extension-coverage",
+      "statement": "The Blender glTF exporter manual documents which Principled BSDF inputs trigger which extensions - Clearcoat and Clearcoat Roughness for KHR_materials_clearcoat with clearcoat in the red and clearcoat roughness in the green channel, a sheen roughness texture written to the alpha channel for KHR_materials_sheen, Specular IOR Level or Specular Tint for KHR_materials_specular, the Anisotropic and Anisotropic Rotation sockets for KHR_materials_anisotropy, an emissiveFactor component greater than 1.0 for KHR_materials_emissive_strength, the Transmission input for KHR_materials_transmission with volume requiring transmission, and KHR_materials_ior with an implied Principled IOR of 1.5 when the extension is absent - and its list of directly supported extensions names no iridescence extension in either the import or the export direction.",
+      "scope": "Documented exporter behaviour and supported-extension lists on the accessed 4.5 LTS add-on manual page. Support lists change between Blender versions.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "Materials sections: Clearcoat (\"When the Clearcoat input on the Principled BSDF node has a nonzero default value or Image Texture node connected, the KHR_materials_clearcoat glTF extension will be included in the export\", clearcoat in R and Clearcoat Roughness in G); Sheen (\"If a Sheen Roughness Texture is used, glTF requires the values be written to the alpha (A) channel\"); Specular (\"When the Specular IOR Level or Specular Tint input of Principled BSDF node have a non default value ... KHR_materials_specular\"); Anisotropy (Anisotropic and Anisotropic Rotation sockets, tangent socket linked to a tangent node with the normal map's UVMap); Emission (\"If any component of emissiveFactor is > 1.0, KHR_materials_emissive_strength extension will be used\"); Transmission and Volume; IOR (\"if KHR_materials_ior is not set, IOR value of Principled BSDF node is set to 1.5\"); Extensions > Export list: KHR_draco_mesh_compression, KHR_lights_punctual, KHR_materials_clearcoat, KHR_materials_transmission, KHR_materials_unlit, KHR_materials_emissive_strength, KHR_materials_volume, KHR_materials_sheen, KHR_materials_specular, KHR_materials_anisotropy, KHR_materials_ior, KHR_materials_variants, KHR_texture_transform, EXT_mesh_gpu_instancing (no iridescence entry in either the Import or the Export list)"
+        }
+      ]
+    },
+    {
+      "id": "claim.gltf-materials-variants-structure",
+      "statement": "KHR_materials_variants defines two properties, a variants array on the glTF root holding objects each with a name, and mappings on any number of mesh primitives whose entries each specify a material by its index and an array of variant indices, with the constraint that across the entire mappings array each variant index must be used no more than one time.",
+      "scope": "The ratified extension's declared structure and constraint. The document states nothing about which engines or loaders import variants.",
+      "source_refs": [
+        {
+          "source_id": "source.khr-materials-variants",
+          "locator": "Properties > Variants and Mappings: \"defines two properties - variants on the root node and mappings on any number of primitive nodes\"; variants defined at the glTF root as an array of objects each with a name property; each mapping item specifies a material by index and an array of variants indices; \"Across the entire mappings array, each variant index must be used no more than one time\""
+        }
+      ]
+    }
+  ]
+}

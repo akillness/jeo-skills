@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.theme-industrial-workshop",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "theme-profile",
+  "title": {
+    "en": "Industrial workshop narrative"
+  },
+  "aliases": {
+    "en": [
+      "maker workshop",
+      "mechanical workshop",
+      "industrial craft scene"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "operations-logistics"
+  ],
+  "summary": "Show a workspace organized around making or repairing a chosen object so tools and stations have narrative roles.",
+  "objective": "Every prominent tool or station relates to the stated task, and animated parts do not pass through the bench or the operator workspace.",
+  "tags": [
+    "theme-profile",
+    "fictional-setting",
+    "industrial-workshop"
+  ],
+  "subject_terms": [
+    "maker workshop",
+    "mechanical workshop",
+    "industrial craft scene"
+  ],
+  "intent_signals": [
+    "Set the scene in a industrial workshop narrative",
+    "Use maker workshop as the narrative setting"
+  ],
+  "example_prompts": [
+    "Build a repair workshop around an exploded clock assembly with selectable parts and a resettable repair sequence."
+  ],
+  "content": {
+    "principles": [
+      "Show a workspace organized around making or repairing a chosen object so tools and stations have narrative roles.",
+      "Theme supplies setting and motifs; choose geometry style, rendering approach and factual model independently."
+    ],
+    "implementation": [
+      "Give the hero assembly clear parts and place support jigs, storage and work surfaces along a plausible authored workflow.",
+      "Contrast clean working faces with selected handled surfaces; use local task lights and enough fill to expose the construction.",
+      "Begin at the main workbench and let the user isolate an assembly; motion should demonstrate a chosen process step with clear start and reset."
+    ],
+    "observable_checks": [
+      "Every prominent tool or station relates to the stated task, and animated parts do not pass through the bench or the operator workspace.",
+      "Inspect one focal object close up and the complete route or spatial relationship from an overview."
+    ]
+  },
+  "known_limits": [
+    "Authored fictional setting guidance; no rendered artifact or runtime improvement has been observed for this record.",
+    "This proposal does not establish historical, cultural, scientific or engineering facts."
+  ],
+  "creative_affordances": [
+    "Combine with technical illustration or cinematic staging; depicted machinery needs a separate model before claiming operational or safety accuracy.",
+    "Replace motifs or combine settings to suit the user brief; maintain a readable organizing idea rather than treating these suggestions as a fixed asset list."
+  ],
+  "related_ids": [
+    "knowledge.framed-shelter",
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

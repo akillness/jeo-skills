@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "id": "recipe.museum-route-object-inspection",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Accessible museum route and object inspection"
+  },
+  "aliases": {
+    "en": [
+      "museum exhibit navigation",
+      "accessible virtual gallery",
+      "inspectable exhibition route"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "Build a navigable gallery whose route, landmarks and exhibit inspection stay connected, with equivalent controls for essential spatial actions and venue-specific clearance assumptions kept explicit.",
+  "objective": "Let a visitor choose a landmark, travel or jump to it, inspect the same exhibit from an appropriate view, read its interpretation, and return or reset without losing orientation.",
+  "claims": [
+    {
+      "id": "claim.experience-smithsonian-exhibit-route",
+      "statement": "The Smithsonian exhibition guideline calls for an accessible circulation route, gives 915 mm as its minimum one-way clear width and recommends 1525 mm even for one-way routes so a wheelchair user can stop at a case without blocking the route; it also gives an approximately 760 by 1220 mm clear floor space at viewing sides of cases and vitrines.",
+      "scope": "Smithsonian physical exhibition guidance used only as one declared layout preset. It is not a universal rule for virtual navigation, a substitute for local codes or visitor testing, or evidence that a rendered gallery is accessible.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-smithsonian-accessible-exhibitions",
+          "locator": "Smithsonian Guidelines for Accessible Design, III Circulation Route, especially Figures 21-23 and the paragraphs on route width and case viewing floor space"
+        }
+      ]
+    },
+    {
+      "id": "claim.experience-wcag-keyboard-focus",
+      "statement": "For web content, WCAG 2.2 requires functionality to be operable through a keyboard interface except for path-dependent input, requires a visible keyboard-focus indicator, and requires that merely receiving focus not initiate a change of context.",
+      "scope": "Normative web-interface criteria relevant to labeled controls around a 3D view. The recipe does not claim WCAG conformance, and free camera motion may still use pointer gestures when equivalent task outcomes are available through controls.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-wcag22-controls",
+          "locator": "Success Criteria 2.1.1 Keyboard, 2.4.7 Focus Visible, and 3.2.1 On Focus"
+        }
+      ]
+    }
+  ],
+  "entities": [
+    {
+      "name": "Gallery route graph",
+      "guidance": "Use stable landmark nodes and traversable segments in one declared coordinate system; keep stairs, lifts, ramps, shortcuts and blocked segments semantically distinct rather than drawing one decorative floor line."
+    },
+    {
+      "name": "Exhibit station",
+      "guidance": "Bind the display object, case or mount, label, viewing anchor and optional alternate-description content to one stable exhibit ID."
+    },
+    {
+      "name": "Visitor and camera",
+      "guidance": "Keep route position, facing, active landmark, selected exhibit and inspection camera separate so inspection cannot silently teleport the authoritative visitor state."
+    },
+    {
+      "name": "Navigation and interpretation controls",
+      "guidance": "Provide a labeled landmark list and inspection controls with visible focus; selecting a control previews or focuses it, while activation performs navigation or opens the exhibit."
+    }
+  ],
+  "state_contract": {
+    "model": "One reducer owns route position, facing, route plan, selected exhibit ID, navigation mode, inspection mode, camera presentation, content alternative and saved return view. Route travel and named-view jumps are explicit different actions. Entering inspection snapshots the route camera; leaving restores that snapshot without rewinding route state. Reset restores the declared entrance, default route options, no selection and the initial camera.",
+    "authority": "Application state keyed by stable route-node and exhibit IDs is authoritative. Render meshes, focus rings, floor highlights and camera tweens derive from it and never mutate visitor position by themselves.",
+    "actions": [
+      "Choose a landmark from the map or labeled list",
+      "Move along a valid route segment or activate a named-view jump",
+      "Select and activate an exhibit through pointer or keyboard-operable controls",
+      "Enter inspection, choose an authored object view and open the label or alternate description",
+      "Return to the saved route view without changing route progress",
+      "Cancel an in-flight camera transition",
+      "Reset navigation, selection, inspection and presentation state to the declared entrance snapshot"
+    ]
+  },
+  "tags": [
+    "museum",
+    "exhibition",
+    "accessible-navigation",
+    "object-inspection",
+    "spatial-orientation"
+  ],
+  "subject_terms": [
+    "museum circulation route",
+    "exhibit station",
+    "gallery landmark",
+    "accessible spatial controls",
+    "object inspection",
+    "return view"
+  ],
+  "intent_signals": [
+    "build a museum I can navigate without precise dragging",
+    "let visitors inspect artifacts and return to the gallery",
+    "show an accessible exhibition route with keyboard controls",
+    "make a virtual gallery with landmarks and object descriptions"
+  ],
+  "example_prompts": [
+    "Create a small virtual museum with three landmark exhibits, a labeled keyboard route, inspectable objects and a reliable return-to-gallery action.",
+    "Model a gallery layout using a declared Smithsonian clearance preset, then show the route envelope and let me switch to a venue-specific preset."
+  ],
+  "negative_signals": [
+    "generic orbit-only model viewer",
+    "automatic flythrough with no visitor choice",
+    "museum facade without an interior route",
+    "claim of accessibility based only on visual appearance"
+  ],
+  "not_for": [
+    "Certifying a real building, local-code compliance or assistive-technology conformance without project-specific evaluation.",
+    "Large collection-management systems where the task is catalog search rather than spatial navigation and inspection.",
+    "A path-accurate mobility training simulation unless movement, controls and collision behavior are separately validated."
+  ],
+  "invariants": [
+    "Every landmark exposed as reachable has a valid route or an explicit unavailable reason; a decorative line is not route evidence.",
+    "Selected exhibit identity survives overview, travel, inspection, alternate content and return; mesh replacement cannot select a neighbor by array index.",
+    "Keyboard focus is visible and does not itself navigate, open an exhibit or move the camera; activation causes the declared action.",
+    "Pointer and labeled-control paths reach the same essential landmarks and exhibit states, though free-form orbit trajectories need not match.",
+    "Leaving inspection restores the saved route view and preserves route position; reset restores the complete entrance snapshot.",
+    "Any clearance overlay names its source or venue preset, units and scope; changing the preset recomputes the route envelope rather than relabeling unchanged geometry."
+  ],
+  "motion_guidance": [
+    "Use short, interruptible transitions between route and inspection views; a new navigation action cancels the old transition from the currently rendered camera.",
+    "Offer immediate focus and named viewpoints when reduced motion is requested; do not make automatic camera travel necessary to obtain the exhibit content.",
+    "Keep ambient exhibit motion paused or independent during close inspection when it would obscure the object; motion must not carry the only selection or route cue."
+  ],
+  "creative_affordances": [
+    "The gallery may be realistic, miniature, abstract or impossible, provided routes, landmarks and inspection relationships remain readable.",
+    "Use floor texture, lighting rhythm, room silhouette or recurring motifs as redundant landmarks rather than relying on color alone.",
+    "Offer optional curated routes by duration or theme, but preserve free landmark selection and disclose any unreachable station."
+  ],
+  "known_limits": [
+    "The cited Smithsonian dimensions are institution-specific physical exhibition guidance and may be superseded by local requirements or a project accessibility brief.",
+    "WCAG criteria apply to the web interface; this authored recipe has not been tested with a keyboard, screen reader, switch device, magnifier, wheelchair user or other museum visitor.",
+    "A text description, named views and keyboard controls improve available paths but do not establish universal design or conformance.",
+    "No route solver, renderer, museum artifact, usability study or runtime interaction was executed for this draft."
+  ],
+  "object_craft": [
+    {
+      "family": "Display case and mount",
+      "structure": "Separate plinth, support mount, transparent enclosure, frame, opening seam and label rail so the protected object and the case do not merge into one block.",
+      "material": "Use restrained glass transmission and reflections with enough edge/frame contrast to reveal the enclosure; keep the artifact readable through the case.",
+      "articulation": "Inspection may hide or ghost the enclosure as an explicitly labeled presentation mode; it does not imply opening or removing a real conservation case."
+    },
+    {
+      "family": "Orientation landmark",
+      "structure": "Build a recognizable whole-room feature with a silhouette visible at route height and a corresponding icon or name in the landmark list.",
+      "material": "Differentiate it through form, texture and value as well as hue so it remains useful under varied lighting and color perception."
+    }
+  ],
+  "physical_contract": {
+    "model": "controlled-locomotion",
+    "scope": "Optional continuous route travel uses a controlled visitor proxy against authored walkable surfaces and obstacles. Named-view jumps and inspection cameras are presentation actions, not physical locomotion.",
+    "timestep": "Use frame-rate-independent commanded movement or a fixed locomotion step; camera easing may render independently and remains interruptible.",
+    "state": [
+      "Authoritative route node or walkable-surface position, facing, commanded speed and locomotion mode",
+      "Separate camera pose, selected exhibit and inspection/return snapshot"
+    ],
+    "colliders": [
+      "A conservative visitor capsule or declared mobility envelope",
+      "Simplified walls, case footprints and route barriers; tiny decorative meshes do not define navigation"
+    ],
+    "driving": [
+      "Clamp acceleration and speed to authored comfort settings; do not infer real mobility-device performance.",
+      "Project continuous movement onto the valid route surface and stop at invalid or blocked transitions."
+    ],
+    "contact": [
+      "Treat walls and cases as non-penetrable route constraints with a visible stop or reroute response.",
+      "Exhibit activation uses an interaction envelope and stable ID rather than requiring pixel-perfect contact with the display mesh."
+    ],
+    "checks": [
+      "Traverse each declared reachable segment with the chosen proxy and verify that it does not clip cases or cross blocked boundaries.",
+      "Stop at each exhibit and confirm the visitor envelope and declared viewing-space overlay remain distinct from the display case footprint.",
+      "Repeat travel, inspect, return and reset at two render frame rates; authoritative route and selection state must match."
+    ]
+  },
+  "related_ids": [
+    "recipe.historical-diorama",
+    "knowledge.accessible-spatial-controls",
+    "knowledge.inspectable-selection",
+    "knowledge.object-isolation",
+    "knowledge.interruptible-focus",
+    "knowledge.shared-static-accessible-fallback"
+  ]
+}

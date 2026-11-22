@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blender-three-metalrough-orm-translation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Metal-rough material and ORM channel translation"
+  },
+  "aliases": {
+    "en": [
+      "Blender Principled to MeshStandardMaterial",
+      "ORM texture channels",
+      "occlusion roughness metalness packing"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "Translate the portable subset of Blender Principled materials into glTF metallic-roughness and Three.js PBR inputs without swapping packed channels or carrying unsupported shader layers by assumption.",
+  "objective": "A test object preserves the intended metal/dielectric boundary, highlight-width ordering and cavity occlusion after Blender export and Three.js load.",
+  "tags": [
+    "material-profile",
+    "metallic-roughness",
+    "orm",
+    "principled-bsdf",
+    "meshstandardmaterial",
+    "gltf"
+  ],
+  "subject_terms": [
+    "Principled BSDF",
+    "MeshStandardMaterial",
+    "baseColor",
+    "metallicFactor",
+    "roughnessFactor",
+    "metallicRoughnessTexture",
+    "ORM texture",
+    "occlusion R channel",
+    "roughness G channel",
+    "metalness B channel"
+  ],
+  "intent_signals": [
+    "metal looks like plastic after glTF export",
+    "roughness and metalness channels are swapped",
+    "pack AO roughness metalness",
+    "translate Principled BSDF to Three.js",
+    "cavities are too bright after export"
+  ],
+  "example_prompts": [
+    "Export this worn painted-metal prop from Blender with one packed ORM texture.",
+    "Keep brushed metal, painted shell and cavity occlusion readable in Three.js."
+  ],
+  "negative_signals": [
+    "specular-glossiness workflow",
+    "measured spectral conductor fit",
+    "copy every Blender shader node to glTF"
+  ],
+  "not_for": [
+    "Treating arbitrary Blender node graphs as portable glTF materials.",
+    "Photometric validation of measured real-world materials."
+  ],
+  "content": {
+    "principles": [
+      "Translate meanings before values: base color, metalness and roughness form the portable core; Blender-specific layers remain authoring features unless a supported glTF extension or a deliberate bake carries them.",
+      "For the common ORM convention, occlusion occupies red, roughness green and metalness blue. Core glTF formally defines occlusion separately and metallic-roughness as G/B; sharing one image is a packing optimization, not a new combined material property.",
+      "Material factors multiply sampled channels. A factor left at zero can erase a valid map, and a factor left at one does not prove that source and destination BRDFs are identical.",
+      "Judge consequences on geometry: metal/dielectric boundaries change reflected versus diffuse color, roughness changes reflection width, and occlusion darkens indirect-light creases rather than painting every shadow."
+    ],
+    "implementation": [
+      "Author a Blender Principled baseline using Base Color, Metallic and Roughness with image nodes connected in the arrangement recognized by the glTF exporter. Label any extra coat, sheen, anisotropy or transmission feature with its required extension or fallback.",
+      "Pack only linear data into ORM: AO to R, roughness to G and metalness to B. Keep the texture Non-Color in Blender. Connect the metallic-roughness inputs in the exporter-recognized arrangement and connect the same image to occlusion when intended.",
+      "After GLTFLoader creates the Three.js material, inspect the actual material class, maps and scalar factors rather than rebuilding a second material from filenames. Record whether MeshStandardMaterial or MeshPhysicalMaterial is responsible for each extension feature.",
+      "Use a diagnostic sphere or beveled block containing a dielectric patch, bare-metal patch, roughness steps and a recessed groove. Keep environment and exposure fixed through export comparisons.",
+      "If unsupported Blender nodes affect the approved look, choose explicitly among baking their observable contribution, approximating them with supported parameters, or reconstructing a custom runtime shader; retain the source material for later edits."
+    ],
+    "observable_checks": [
+      "The bare-metal patch reflects the environment with base-color tint while the adjacent dielectric retains a diffuse component; neither boundary shifts after export.",
+      "Roughness steps preserve their narrow-to-broad highlight ordering, revealing a G/B channel swap immediately.",
+      "The recessed groove responds to indirect occlusion without the exposed top surface becoming uniformly dirty or dark.",
+      "The exported glTF and loaded Three.js material inventory names every extension or fallback used; no appearance feature depends on an unrecorded Blender-only node."
+    ]
+  },
+  "creative_affordances": [
+    "Stylized binary metal masks, exaggerated roughness zoning and invented wear remain valid when identified as authored appearance.",
+    "Separate images may be kept instead of ORM when editing clarity, compression behavior or platform constraints matter more than packing."
+  ],
+  "known_limits": [
+    "Principled BSDF and Three.js PBR materials are related authoring models, not guaranteed identical implementations.",
+    "Image compression, mip generation and texture precision can alter packed data and require target-device inspection.",
+    "Authored reusable guidance; no material was exported or rendered for this record."
+  ],
+  "related_ids": [
+    "knowledge.conductor-surface",
+    "knowledge.dielectric-surface",
+    "knowledge.three-pbr-adapter",
+    "knowledge.shared-pbr-studio-environment"
+  ],
+  "claims": [
+    {
+      "id": "claim.blender-three-orm-channels",
+      "statement": "glTF 2.0 samples metallic values from blue and roughness from green in a linear metallic-roughness texture, and samples occlusion from red in a linear occlusion texture; Blender's exporter documentation describes the recognized node arrangements and can combine compatible channels during export.",
+      "scope": "glTF 2.0 core channel semantics and current Blender exporter behavior; ORM is shorthand for image reuse across the two specified texture roles.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Materials > Metallic-Roughness Material; Additional Textures"
+        },
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "Exported Materials; Metallic and Roughness; Occlusion"
+        }
+      ]
+    },
+    {
+      "id": "claim.blender-three-principled-standard-semantics",
+      "statement": "Blender Principled documents metallic as a blend between dielectric and metallic base behavior and roughness as microfacet roughness, while Three.js MeshStandardMaterial documents a metallic-roughness workflow whose metalness and roughness maps multiply their scalar properties.",
+      "scope": "High-level parameter semantics in current Blender and Three.js documentation; this does not establish pixel identity between implementations.",
+      "source_refs": [
+        {
+          "source_id": "source.blender-three-principled",
+          "locator": "Inputs: Roughness; Metallic"
+        },
+        {
+          "source_id": "source.three-standard-material",
+          "locator": "Opening description; metalness; metalnessMap; roughness; roughnessMap"
+        }
+      ]
+    }
+  ]
+}

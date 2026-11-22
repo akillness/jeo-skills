@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "id": "recipe.layered-attenuating-seismic-rays",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Flat layered attenuating seismic rays"
+  },
+  "aliases": {
+    "en": [
+      "layered seismic travel-time ray",
+      "Q attenuation path inspector"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment",
+    "waves-optics-fields"
+  ],
+  "summary": "Trace one declared P or S geometric ray through flat constant-velocity layers while keeping travel time, interface refraction and phenomenological Q_x attenuation explicit.",
+  "objective": "Build a bounded ray inspector where I change takeoff angle, layer velocity and Q_x, then see valid segments, travel time and amplitude ledger or a critical-interface rejection.",
+  "tags": [
+    "seismic ray",
+    "layered medium",
+    "attenuation"
+  ],
+  "subject_terms": [
+    "Snell law",
+    "ray parameter",
+    "travel time",
+    "propagating-wave attenuation factor Q_x",
+    "frequency attenuation",
+    "critical angle"
+  ],
+  "intent_signals": [
+    "layered seismic attenuation",
+    "flat-layer travel time and Q"
+  ],
+  "example_prompts": [
+    "Trace a 5 Hz P ray across three flat layers and show each refraction, segment time and Q loss."
+  ],
+  "negative_signals": [
+    "Not a wavefront solver, whole-Earth model, inversion, earthquake forecast or hazard estimate."
+  ],
+  "not_for": [
+    "No reflection amplitude, mode conversion, diffraction, scattering, geometric spreading, anisotropy or spherical Earth."
+  ],
+  "entities": [
+    {
+      "name": "Layer stack",
+      "guidance": "Blender authors flat slabs and named interfaces; a data table owns thickness, chosen P-or-S velocity and propagating-wave Q_x for each layer."
+    },
+    {
+      "name": "Ray ledger",
+      "guidance": "Three.js solves one coplanar path and lists angle from interface normal, segment length/time and Q_x attenuation exponent per segment."
+    }
+  ],
+  "state_contract": {
+    "model": "Use N flat horizontal layers with positive thickness hi, phase velocity vi, propagating-wave attenuation factor Qx_i and one frequency f>0; layers are nondispersive within this authored monochromatic model. Angles are measured from the interface normal. Preserve the ray parameter p=sin(theta_i)/vi across transmitted segments. Reject a requested transmission when |p*vi|>1. When |p*vi|=1 within tolerance, label a grazing segment and terminate because it cannot cross the next positive-thickness horizontal layer; do not invent a converted or reflected branch. For a segment of length ell_i, travel time Ti=ell_i/vi. This teaching model declares amplitude multiplier exp(-pi*f*Ti/Qx_i) per segment, so log amplitude accumulates -pi*f*sum(Ti/Qx_i); this is an explicit constant-Q phenomenological law, excluding spreading and interface coefficients.",
+    "authority": "Three.js owns units, ray solve, validity, travel-time and log-amplitude ledger. Blender owns layer slabs, interface planes and source/receiver markers; mesh scale is not velocity.",
+    "actions": [
+      "Choose P or S and one finite flat layer table.",
+      "Change takeoff angle and recompute every downstream segment atomically.",
+      "Inspect a rejected critical interface without extending the ray.",
+      "Change f or Q_x and update amplitude only, leaving path and travel time invariant."
+    ]
+  },
+  "invariants": [
+    "p is constant on every accepted transmitted segment within tolerance.",
+    "All segment times are positive and total time is their sum.",
+    "Changing f or Q_x cannot change the geometric path in this nondispersive authored model.",
+    "An asin argument above one rejects without a partial downstream path; equality within tolerance produces a labeled grazing termination, not a positive-thickness crossing."
+  ],
+  "motion_guidance": [
+    "Play, pause and step advance the declared model clock only; reset restores parameters, state, solver budget, selections, errors and presentation transforms.",
+    "Use static before/after states and numeric tables for reduced motion; animation interpolates committed state and never supplies physical evidence."
+  ],
+  "creative_affordances": [
+    "Blender may shape distinctive apparatus, cutaways and materials; Three.js binds named parts to authoritative state and keeps units and error states readable.",
+    "Camera, color, trails and deformation gain are presentation controls and cannot change the numerical model."
+  ],
+  "known_limits": [
+    "Flat, piecewise homogeneous, nondispersive scalar ray only; the Q_x amplitude law is a declared lesson model, not a calibrated site prediction.",
+    "Authored, source-reviewed guidance only; no Blender export, numerical simulation, contact solve, browser or renderer was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.physics-layered-ray-refraction",
+      "statement": "For optical refraction, Snell’s law uses angles from the interface normal and n1*sin(theta1)=n2*sin(theta2); because refractive index is inversely related to wave speed, the speed form preserves sin(theta)/v. This recipe explicitly adopts that form as its scalar flat-layer ray law.",
+      "scope": "Source-backed optical refraction relation used as a declared geometric-wave model; no seismic interface amplitude, reflection or P/S mode conversion is claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-refraction",
+          "locator": "Section 1.3, law of refraction and speed-change explanation around equation 1.4"
+        }
+      ]
+    },
+    {
+      "id": "claim.physics-seismic-bodywave-velocities",
+      "statement": "P and S body waves have material-dependent velocities, with P particle motion parallel and S motion transverse in a homogeneous elastic medium.",
+      "scope": "Choice of one P or S velocity per layer; no claim that optical refractive index equals seismic material data.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-epa-seismic-velocities",
+          "locator": "Body-wave overview and P/S velocity relations"
+        }
+      ]
+    },
+    {
+      "id": "claim.physics-propagating-wave-qx-attenuation",
+      "statement": "For a propagating monochromatic wave, the cited paper defines spatial attenuation factor Q_x so amplitude diminishes with distance x as exp(-pi*x/(c*T*Q_x)), distinct from the standing-wave time-decay factor Q_T. With T=1/f and segment travel time x/c, this equals exp(-pi*f*time/Q_x).",
+      "scope": "Piecewise application to this recipe’s nondispersive constant-velocity segments; Q_x values are declared inputs, and no inference, dispersion, interface loss, spreading or calibration is claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-caltech-dispersed-wave-attenuation",
+          "locator": "Abstract: definitions of Q_T and Q_x and exponential amplitude laws for standing and propagating monochromatic waves"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Layered ray cutaway",
+      "structure": "Use dimensioned slabs, interface-normal arrows and one continuous segmented tube; stop the tube visibly at an invalid interface.",
+      "material": "Assign layers readable patterns and label path attenuation numerically; opacity does not stand for Q."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Flat-layer geometric transmission path plus declared constant-Q amplitude bookkeeping.",
+    "timestep": "No integration; recompute path and ledger from immutable inputs.",
+    "state": [
+      "layer thickness, velocity and Q_x",
+      "ray kind, frequency and takeoff angle",
+      "segment path/time/log amplitude"
+    ],
+    "colliders": [
+      "none"
+    ],
+    "driving": [
+      "source ray parameter"
+    ],
+    "contact": [
+      "none"
+    ],
+    "checks": [
+      "constant ray parameter",
+      "asin domain guard",
+      "travel-time sum",
+      "frequency/Q_x changes preserve path"
+    ]
+  },
+  "related_ids": [
+    "recipe.isotropic-seismic-plane-waves",
+    "knowledge.reasoning-boundary-conditions-are-the-model"
+  ]
+}

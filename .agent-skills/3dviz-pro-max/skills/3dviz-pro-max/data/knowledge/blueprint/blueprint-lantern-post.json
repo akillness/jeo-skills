@@ -1,0 +1,287 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-lantern-post",
+  "revision": 3,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: wrought iron lantern post"
+  },
+  "aliases": {
+    "en": [
+      "lantern post kit",
+      "street lamp blueprint",
+      "village lamp module"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "A wrought iron lantern post: stepped base flare, a tapering collared shaft, a scrolled bracket and a glazed head whose panes are emissive geometry with no light object.",
+  "objective": "At two metres the post reads as a shaft carrying a hanging glazed head, then the bracket, collars and glazing bars, then bolt domes and jittered glass.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "prop",
+    "village",
+    "lantern",
+    "lighting",
+    "emissive"
+  ],
+  "subject_terms": [
+    "base flare",
+    "bracket arm",
+    "glazing bar",
+    "emissive glass",
+    "bolt dome",
+    "shaft collar"
+  ],
+  "intent_signals": [
+    "add street lanterns to a village lane",
+    "emissive lamp prop",
+    "night lighting prop kit"
+  ],
+  "example_prompts": [
+    "Line the lane with lantern posts for a night scene.",
+    "I need a lamp post whose glass glows without adding another shadow light."
+  ],
+  "not_for": [
+    "Any claim about historical street lighting hardware or photometry.",
+    "A light source: the module creates no THREE.Light and casts no illumination."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/props/lantern-post.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "height",
+      "type": "number",
+      "range": [
+        2.2,
+        4.0
+      ],
+      "default": 2.82,
+      "unit": "m"
+    },
+    {
+      "name": "headSize",
+      "type": "number",
+      "range": [
+        0.22,
+        0.5
+      ],
+      "default": 0.34,
+      "unit": "m"
+    },
+    {
+      "name": "seed",
+      "type": "integer",
+      "range": [
+        0,
+        65535
+      ],
+      "default": 1
+    },
+    {
+      "name": "iron",
+      "type": "color",
+      "default": "#5f636d"
+    },
+    {
+      "name": "glass",
+      "type": "color",
+      "default": "#ffd9a0"
+    }
+  ],
+  "sockets": [
+    {
+      "name": "base",
+      "position_m": [
+        0,
+        0,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "hook",
+      "position_m": [
+        0.39,
+        2.585,
+        0
+      ],
+      "normal": [
+        0,
+        -1,
+        0
+      ]
+    },
+    {
+      "name": "lamp",
+      "position_m": [
+        0.39,
+        2.328,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "a 2.82 m shaft with a glazed head hanging 39 cm off its axis",
+      "a three-step base flare widening from 17 cm to 38 cm at the ground",
+      "the pyramid cap and ball finial breaking the top of the head"
+    ],
+    "medium": [
+      "a bracket arm with a seven-link scroll curling under it from post to arm",
+      "three collars dividing the shaft into four segments, each 6 cm proud of it",
+      "four glazing bars, one across the middle of each emissive pane"
+    ],
+    "fine": [
+      "eighteen bolt domes, 3.8 cm across: four per collar, four on the base plate, two on the arm",
+      "1.8 cm chamfer on the shaft and 2.4 cm on the base blocks",
+      "per-instance hue jitter of 5 percent on the glass colour, applied through materialFor so the shared material cache is never mutated"
+    ]
+  },
+  "footprint_m": [
+    0.82,
+    0.49
+  ],
+  "poly_budget": 2248,
+  "fits_looks": [
+    "knowledge.style-lantern-festival-riverside",
+    "knowledge.style-ghibli-painterly-pastoral",
+    "knowledge.lighting-mood-night-lantern",
+    "knowledge.lighting-mood-dusk-golden-hour",
+    "knowledge.theme-heritage-fiction"
+  ],
+  "content": {
+    "principles": [
+      "Lights belong to the rig, never inside a kit module: a scene has a shadow-light budget and a prop cannot be allowed to spend it.",
+      "Emissive geometry carries the read on its own under ACESFilmic at exposure 1.0; the light it appears to cast is the rig's job.",
+      "Metalness with no environment map renders black. Village ironwork is authored as a dark dielectric so it keeps its form under two lights and no IBL.",
+      "A post rising straight out of the ground reads as a stick. The base flare is the cheapest feature that makes it read as fixed ironwork."
+    ],
+    "implementation": [
+      "Call create({ height, headSize, seed, iron, glass }); the group is centred on the post axis with y = 0 at the ground.",
+      "Attach a PointLight at the `lamp` socket if the look needs a real pool of light; the module deliberately creates none.",
+      "Hue jitter is applied to the colour handed to materialFor, never to the material it returns, because materialFor caches by colour."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible.",
+      "Traversing the returned group finds zero objects with isLight true.",
+      "Four meshes in the group carry emissiveIntensity above zero, one per glazed face."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here measures a real lamp standard or its output.",
+    "The poly budget is the triangle count observed at default parameters.",
+    "The emissive panes are tuned against ACESFilmic tone mapping at exposure 1.0 with no post-processing; bloom or a different exposure changes how the head reads.",
+    "A post is taller than the proof harness close view can hold: close.png crops the cap and the base plate, and the fine band is read there on the collar bolts instead.",
+    "T2 is the same geometry with runtime procedural surface and vertex occlusion (see knowledge.surface-tier-defaults); it adds no polygons and ships no files, and it reads at stylized-game quality, not photoreal."
+  ],
+  "creative_affordances": [
+    "Any parameter may be pushed outside its stated range; the range is the band that was proved, not a limit.",
+    "Swap the glass colour for a cold blue and the iron for verdigris to move the post from a warm village to a harbour."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "height": 2.82,
+      "headSize": 0.34,
+      "iron": "#5f636d",
+      "glass": "#ffd9a0",
+      "emissiveIntensity": 1.7,
+      "bevel_m": 0.018,
+      "feeling": "warm lit village lane"
+    },
+    "rationale": "2.82 m puts the glazing just above head height for a 1.7 m figure, which is where a lantern has to be for its pool of light to read as a street light rather than a lamp."
+  },
+  "related_ids": [
+    "knowledge.emissive-practical-light-balance",
+    "knowledge.hero-prop-detail-hierarchy",
+    "knowledge.lighting-mood-night-lantern",
+    "recipe.fantasy-village-diorama"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "detail_socket": "base",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-lantern-post/far.png",
+      "evidence/kits/knowledge.blueprint-lantern-post/mid.png",
+      "evidence/kits/knowledge.blueprint-lantern-post/close.png",
+      "evidence/kits/knowledge.blueprint-lantern-post/detail.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-lantern-post/proof-log.json"
+  },
+  "tiers": {
+    "T0": {
+      "mode": "proxy",
+      "size_m": [
+        0.82,
+        2.82,
+        0.49
+      ],
+      "poly_budget": 12,
+      "status": "generated",
+      "note": "Bevelled box from the proof log bounds: the post height and the arm reach."
+    },
+    "T2": {
+      "mode": "runtime",
+      "poly_budget": 2248,
+      "texture_budget": {
+        "maps": 3,
+        "resolution": 1024,
+        "families": 2
+      },
+      "families": {
+        "#5f636d": "metal",
+        "#b6bcc4": "metal",
+        "#8d9099": "metal",
+        "#a49d90": "stone"
+      },
+      "ao": {
+        "samples": 13,
+        "radius_m": 0.45,
+        "ground_dirt_m": 0.6
+      },
+      "status": "proved",
+      "note": "Ironwork, collar and bolt domes take metal; the plinth takes stone. Left flat on purpose: the glazing #ffd9a0 and its lit variant #ffdca0, which are emissive and must not carry a grain.",
+      "proof": {
+        "harness": "templates/kits/_harness/index.html",
+        "captures": [
+          "evidence/kits/knowledge.blueprint-lantern-post/T2/far.png",
+          "evidence/kits/knowledge.blueprint-lantern-post/T2/mid.png",
+          "evidence/kits/knowledge.blueprint-lantern-post/T2/close.png",
+          "evidence/kits/knowledge.blueprint-lantern-post/T2/detail.png"
+        ],
+        "log": "evidence/kits/knowledge.blueprint-lantern-post/T2/proof-log.json",
+        "detail_socket": "base"
+      }
+    },
+    "T3": {
+      "mode": "gltf",
+      "status": "missing",
+      "note": "No baked glTF ships for this blueprint: phase 9C baked only the two heroes (timber-cottage and watermill)."
+    },
+    "T4": {
+      "mode": "external",
+      "status": "missing",
+      "note": "No external asset ships with this skill."
+    }
+  }
+}

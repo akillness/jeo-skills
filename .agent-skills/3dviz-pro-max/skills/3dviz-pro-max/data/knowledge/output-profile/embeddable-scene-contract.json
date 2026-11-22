@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "id": "knowledge.embeddable-scene-contract",
+  "knowledge_kind": "output-profile",
+  "title": {
+    "en": "Embeddable scene host contract"
+  },
+  "aliases": {
+    "en": [
+      "reusable 3D embed API",
+      "iframe scene contract",
+      "responsive scene component"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "architecture-interiors",
+    "abstract-systems-data"
+  ],
+  "summary": "Deliver a scene as a bounded embed with a versioned command/event API, element-size ownership, origin validation, teardown and semantic fallback.",
+  "objective": "The same scene can be mounted twice, resized by its containers, controlled through documented messages and removed without cross-instance state or resource leaks.",
+  "tags": [
+    "output-profile",
+    "embed",
+    "resize-observer",
+    "postmessage",
+    "lifecycle"
+  ],
+  "subject_terms": [
+    "embed protocol",
+    "container resize",
+    "ResizeObserver",
+    "postMessage origin",
+    "instance ID",
+    "mount teardown",
+    "host integration"
+  ],
+  "intent_signals": [
+    "embed this Three.js scene in another site",
+    "two viewers interfere",
+    "iframe messages are unsafe",
+    "viewer ignores container resize"
+  ],
+  "example_prompts": [
+    "Package a product viewer that can be embedded twice on one page.",
+    "Define a safe cross-origin command API for a spatial scene iframe.",
+    "Make a scene component respond to its own container instead of only window resize."
+  ],
+  "negative_signals": [
+    "full application navigation design",
+    "untrusted arbitrary scripting"
+  ],
+  "not_for": [
+    "Designing the host application itself.",
+    "Accepting arbitrary code or unvalidated messages from embedding pages."
+  ],
+  "content": {
+    "principles": [
+      "An embed contract names its surface: mount inputs, commands, events, state snapshot, failure states, fallback and teardown. DOM internals and scene-child indices are private implementation details.",
+      "Layout ownership follows the embedding element. Window size is insufficient when panels, grids or multiple embeds resize independently.",
+      "Cross-origin messaging is an input boundary. Validate origin, source/instance identity, protocol version, message shape and command authorization before mutating scene state."
+    ],
+    "implementation": [
+      "Publish a small versioned protocol: ready/capabilities/state/error events and setView/select/setTime/reset/dispose commands. Include instance ID and request ID so two embeds and asynchronous replies cannot cross.",
+      "Observe the actual host element box, update renderer size and camera projection in one scheduled layout step, and disconnect the observer during teardown. Treat zero-size and hidden states explicitly instead of allocating a zero or stale drawing buffer.",
+      "For iframe transport, send to an exact configured target origin and accept only expected event.origin plus the registered event.source. Validate the structured payload against the protocol before dispatch; never turn message data into executable code.",
+      "Keep Blender asset names as stable semantic IDs only when declared in the export contract. Three.js owns mapping those IDs to scene objects, accessible controls and state events. A non-WebGL fallback exposes the same meaningful state through host-visible markup or another equivalent control surface."
+    ],
+    "observable_checks": [
+      "Two embeds with different instance IDs accept only their own commands, keep independent cameras/selections and emit replies to the correct host.",
+      "Resizing either container without a window resize updates only that canvas and its camera aspect; repeated hide/show does not accumulate observers or loops.",
+      "Messages from a wrong origin, wrong source window, unsupported version, unknown command or invalid payload produce no scene mutation and a bounded diagnostic.",
+      "After dispose, the instance emits no events, runs no loop and retains no host listeners; remount creates exactly one fresh instance."
+    ]
+  },
+  "creative_affordances": [
+    "The host may present the embed as a card, full-bleed panel, comparison cell or narrative step.",
+    "Commands may expose domain-specific views while preserving the same envelope and validation rules."
+  ],
+  "known_limits": [
+    "Same-origin direct component calls may replace postMessage but still need instance and lifecycle boundaries.",
+    "No embed, resize, message, accessibility or disposal behavior was executed."
+  ],
+  "related_ids": [
+    "knowledge.shared-interactive-web-scene",
+    "knowledge.shared-static-accessible-fallback",
+    "knowledge.responsive-spatial-label-hierarchy",
+    "knowledge.source-model-runtime-provenance-panel"
+  ],
+  "claims": [
+    {
+      "id": "claim.output-resize-observer-boxes",
+      "statement": "Resize Observer observes changes to an Element’s size, can observe content-box, border-box or device-pixel-content-box sizes, and provides disconnect to clear observation targets.",
+      "scope": "CSSWG Resize Observer Level 1 Editor’s Draft read 2026-09-08; browser support and box choice remain target-specific.",
+      "source_refs": [
+        {
+          "source_id": "source.output-resize-observer",
+          "locator": "Sections 1 and 2.1–2.3: observed boxes, observe/unobserve/disconnect"
+        }
+      ]
+    },
+    {
+      "id": "claim.output-postmessage-validation",
+      "statement": "The HTML Standard advises postMessage receivers to check event.origin and expected data format, and advises against wildcard targetOrigin for confidential messages.",
+      "scope": "WHATWG HTML living standard Web Messaging security guidance read 2026-09-08; application authentication and authorization remain separate.",
+      "source_refs": [
+        {
+          "source_id": "source.output-html-web-messaging",
+          "locator": "Web messaging 9.3.2 Security and 9.3.3 Posting messages"
+        }
+      ]
+    }
+  ]
+}

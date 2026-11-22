@@ -1,0 +1,115 @@
+{
+  "id": "knowledge.liquid-coverage-versus-flow",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Liquid coverage versus flowing volume"
+  },
+  "aliases": {
+    "en": [
+      "fill fraction",
+      "hydrostatic pond",
+      "continuity flow"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal",
+    "environments-dioramas"
+  ],
+  "summary": "Keep a still fill that takes the container's shape separate from a continuity flow with a volume rate, and never let a scrolling texture stand in for either.",
+  "objective": "Change retained volume and its corresponding level or footprint according to basin geometry without implying a current; conserve section flow rates only in the declared incompressible branch without accumulation or sources between sections.",
+  "applies_when": [
+    "A liquid is used as a covering, flood, tank level or pond rather than as decoration only.",
+    "A channel, hose or nozzle is used to talk about how fast volume moves."
+  ],
+  "subject_terms": [
+    "fill fraction",
+    "free surface",
+    "hydrostatic pressure",
+    "volume flow rate",
+    "equation of continuity",
+    "incompressible"
+  ],
+  "tags": [
+    "physical-behavior",
+    "liquid",
+    "coverage",
+    "flow"
+  ],
+  "intent_signals": [
+    "fill the pond without making a river",
+    "water covering the cobbles",
+    "narrow the pipe and speed up the jet"
+  ],
+  "example_prompts": [
+    "Let me raise a cistern level so more of the courtyard is covered, with no current implied.",
+    "Show a hose and nozzle where the same volume flow gets faster in the narrower section."
+  ],
+  "negative_signals": [
+    "UV-scrolling water that claims to be a current.",
+    "A fill slider that also moves boats as if there were a river."
+  ],
+  "not_for": [
+    "Predicting turbulent mixing, viscous velocity profiles or pressure losses, or compressible gas dynamics; continuity bookkeeping alone does not provide those models.",
+    "Claims that a coverage texture conserves mass."
+  ],
+  "content": {
+    "principles": [
+      "Coverage is retained volume occupying a basin; flow is volume crossing a section per unit time. Neither is inferred from a scrolling texture.",
+      "In the still constant-density branch p=p0+rho g h, with h depth below the horizontal free surface.",
+      "Q=A v uses section-average normal velocity. Equality of station flow rates requires no accumulation or intervening sources; viscosity does not remove mass conservation, though this record predicts no detailed velocity profile."
+    ],
+    "implementation": [
+      "Coverage owns retained volume V in a declared basin, with monotone capacity function V(h) from its interior geometry. Solve h for V, including dry/fully filled endpoints. Clamp retained volume at capacity and report excess as overflow; do not silently discard it.",
+      "For still fluid in uniform gravity use a horizontal free surface clipped to the basin. A deliberately tilted or decorative surface is display-only, excluded from hydrostatic volume and pressure claims.",
+      "Flow owns positive section areas and Q. At fixed sections with no accumulation, branches or sources between them, set section-average normal velocity v=Q/A. This specifies transport, not a viscous profile or pressure-loss prediction.",
+      "Pause freezes model time and tracer advancement while preserving Q and retained volume. Reset restores initial fill, Q, tracer state and time; switching models updates the readout and its stated assumptions."
+    ],
+    "observable_checks": [
+      "Increasing retained volume within capacity increases level according to V(h); horizontal footprint may stay constant in a vertical-sided tank. Overflow is explicitly reported.",
+      "At fixed Q with no accumulation, halving a positive station area doubles the section-average speed.",
+      "Changing normal-map scrolling alone changes neither V nor Q. Pausing retains both values and resumes tracer advancement without resetting its state."
+    ]
+  },
+  "related_ids": [
+    "recipe.hydrostatic-depth-pressure",
+    "recipe.nozzle-continuity",
+    "recipe.fantasy-village-diorama"
+  ],
+  "creative_affordances": [
+    "Stylised ponds, ink fills or molten metal can still use a volume-owned free surface.",
+    "Optional streamlines belong to the flow model and should be hideable in coverage mode."
+  ],
+  "known_limits": [
+    "Equal section volume rates assume constant density and no accumulation between stations; compressible flow requires mass-flux accounting.",
+    "Hydrostatic p = p0 + rho g h is for constant density; it is not a shallow-water wave solver.",
+    "Authored reusable guidance; no runtime artifact has been observed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-liquid-coverage-hydrostatic",
+      "statement": "Liquids have definite volumes but take the shape of their container; in a fluid of constant density the pressure at depth h is p = p0 + rho g h.",
+      "scope": "Still fluid of constant density as in OpenStax 14.1; not flowing or stratified fluid.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-hydrostatics",
+          "locator": "14.1, liquids take container shape; pressure at a depth p=p0+rho g h"
+        }
+      ]
+    },
+    {
+      "id": "claim.knowledge-liquid-coverage-continuity",
+      "statement": "Volume flow rate is Q=A v where v is the section-average normal velocity. For incompressible flow with no sources, sinks or accumulation between sections, conservation gives A1 v1=A2 v2.",
+      "scope": "Constant-density flow through fixed sections; no velocity-profile or viscous pressure-loss prediction, and no compressible-gas approximation.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-continuity",
+          "locator": "14.5, Eq14.13 Q=Av with average speed; conservation of mass and continuity"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed"
+}

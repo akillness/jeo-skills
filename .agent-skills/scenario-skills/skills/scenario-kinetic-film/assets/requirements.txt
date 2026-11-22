@@ -1,0 +1,4 @@
+# Python packages for the film folder's .venv (new_film.sh installs them). Python 3.12 or newer.
+# Pinned to the versions tests/requirements-ci.txt locks, so CI tests what a film folder runs.
+numpy==2.5.4
+opencv-python-headless==5.0.0.93

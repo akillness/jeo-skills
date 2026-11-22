@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-clocked-commit-separation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Compute the next state, then commit it"
+  },
+  "aliases": {
+    "en": [
+      "clocked update",
+      "state register",
+      "next state function"
+    ]
+  },
+  "direction_ids": [
+    "logic-circuits",
+    "algorithms-data-structures"
+  ],
+  "summary": "Evaluate the next state from the current state and inputs, then apply it as one atomic step at the clock edge.",
+  "objective": "Give a sequential scene a clocking discipline whose steps are reproducible and inspectable.",
+  "applies_when": [
+    "A synchronous deterministic state machine, register, counter or circuit uses a single logical clock and computes next state from a snapshot of current state.",
+    "The viewer can inspect the pending next state and step or clock the machine.",
+    "Unmatched inputs have a declared hold or error outcome that completes the transition behavior; asynchronous or nondeterministic machines need a different update contract."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "finite state machine",
+    "clock edge",
+    "next state",
+    "register",
+    "atomic update",
+    "transition"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "logic",
+    "state"
+  ],
+  "intent_signals": [
+    "step the clock",
+    "show the state machine",
+    "why did two things update at once"
+  ],
+  "example_prompts": [
+    "Let me single-step a clocked state machine and see the next state before it commits.",
+    "Show the transition table and the current state together."
+  ],
+  "negative_signals": [
+    "Purely combinational circuits with no memory.",
+    "Continuous dynamical systems, which are integrated rather than clocked."
+  ],
+  "not_for": [
+    "Purely combinational circuits with no memory.",
+    "Continuous dynamical systems, which are integrated rather than clocked."
+  ],
+  "content": {
+    "principles": [
+      "Sequential logic keeps its state in registers that are updated by the clock, and the next state is computed from the current state together with the inputs. Updating elements one at a time inside a step makes later elements see the new values of earlier ones, which is a different machine.",
+      "For the synchronous deterministic machine described by the cited source, a well-formed transition specification has transitions that are mutually exclusive and collectively exhaustive, so exactly one applies. A machine that deliberately leaves inputs unhandled is not malformed if it declares what happens then, such as holding state or entering an error state; asynchronous and nondeterministic automata are different models with their own well-formedness conditions.",
+      "The separation between computing and committing is what makes stepping meaningful: the viewer can inspect the pending next state before it becomes current.",
+      "Recording each committed step makes the run reproducible and allows stepping backwards without recomputing forwards."
+    ],
+    "implementation": [
+      "Compute the next state for every stateful element from a snapshot of the current state, then commit all of them together.",
+      "Validate mutually exclusive and collectively exhaustive transitions for the synchronous deterministic machine, including any declared hold or error fallback; report the offending state and input when the specification is incomplete or ambiguous. Route asynchronous or nondeterministic models to a separate update contract.",
+      "Show the current state, the input and the pending next state as separate readouts so the mechanism is visible.",
+      "Record committed states in a history so stepping backwards restores state rather than replaying.",
+      "Distinguish outputs that depend only on state from outputs that also depend on inputs, and label which convention the machine uses."
+    ],
+    "observable_checks": [
+      "Construct a case where two elements depend on each other and confirm both update from the previous values, not from each other.",
+      "Feed an input without an explicit transition and confirm the declared hold or error outcome occurs. Report an incomplete specification only when no transition and no fallback behavior are defined.",
+      "Step forward and back repeatedly and confirm the state sequence is identical each time.",
+      "Confirm the displayed pending next state becomes the current state exactly on the commit."
+    ]
+  },
+  "related_ids": [
+    "recipe.finite-state-machine",
+    "recipe.full-adder",
+    "knowledge.state-playback"
+  ],
+  "creative_affordances": [
+    "Visual metaphors for the clock, from a pendulum to a lighthouse sweep, are free choices.",
+    "A physically staged machine, such as marbles or gates, can carry the same discipline."
+  ],
+  "known_limits": [
+    "Authored state-discipline guidance citing register update and well-formedness rules; it does not model setup and hold times, metastability or clock domains.",
+    "No runtime circuit has been simulated for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-clocked-state-update",
+      "statement": "In a finite state machine the state registers hold the current state and are updated by the clock, the next state is computed from the current state together with the inputs, and a well-formed transition diagram has transitions leaving each state that are mutually exclusive and collectively exhaustive so exactly one transition applies.",
+      "scope": "Synchronous digital state machines; it does not cover asynchronous logic or physical timing constraints.",
+      "source_refs": [
+        {
+          "source_id": "source.mit-fsm",
+          "locator": "6.1, state registers, next-state computation and well-formed transition diagrams"
+        }
+      ]
+    }
+  ]
+}

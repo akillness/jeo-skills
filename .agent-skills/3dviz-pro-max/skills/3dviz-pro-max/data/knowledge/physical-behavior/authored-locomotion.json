@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.authored-locomotion",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Authored locomotion with visible stance and swing"
+  },
+  "aliases": {
+    "en": [
+      "authored locomotion"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "anatomy-structures"
+  ],
+  "summary": "Coordinate root travel and limb motion so a creature communicates intended contact without pretending to solve biomechanics.",
+  "objective": "Track a stance foot against a ground marker; unintended sliding is visible and can be corrected.",
+  "tags": [
+    "physical-behavior",
+    "authored",
+    "locomotion"
+  ],
+  "example_prompts": [
+    "Coordinate root travel and limb motion so a creature communicates intended contact without pretending to solve biomechanics."
+  ],
+  "content": {
+    "principles": [
+      "Classify prescribed walking as kinematics. A believable gait can be authored without claiming force balance or muscle simulation.",
+      "Choose a contact schedule first: identify stance feet, swing feet and the intended support surface at each part of the cycle."
+    ],
+    "implementation": [
+      "Keep canonical root position and gait phase. Derive limb targets from phase and route distance rather than unrelated sine loops.",
+      "During stance, preserve the selected foot target in world space; during swing, use an authored clearance arc. Handle turns by updating future placements.",
+      "Give route speed zero a clear idle pose; do not keep stepping while the creature is paused."
+    ],
+    "observable_checks": [
+      "Track a stance foot against a ground marker; unintended sliding is visible and can be corrected.",
+      "Slow playback shows a lifted swing foot and continuous attachment at the joints.",
+      "Stop, reverse or reset the route without a one-frame limb jump or accumulated phase drift."
+    ]
+  },
+  "known_limits": [
+    "Foot locking is a presentation constraint; it does not establish traction, stability, collision avoidance or dynamic balance.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+  ],
+  "related_ids": [
+    "recipe.fantasy-village-diorama",
+    "knowledge.articulated-limb"
+  ],
+  "claims": []
+}

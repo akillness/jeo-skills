@@ -1,0 +1,4 @@
+interface:
+  display_name: "3D Metal Material"
+  short_description: "Hyperrealistic PBR metal: F0 conductors, finishes, HDR studio reflections"
+  default_prompt: "Use $3d-metal-material to make the metal in this Three.js scene read as real steel, brass, gold or copper, with a dark HDR studio of bright window cards, roughness-varied finishes and bevels that catch light."

@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.camera-orbit-follow-rig",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "composition-profile",
+  "title": {
+    "en": "Orbit rig that follows a moving subject until the user takes over"
+  },
+  "aliases": {
+    "en": [
+      "third-person camera",
+      "follow cam",
+      "chase camera",
+      "orbit camera",
+      "follow camera",
+      "camera rig"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "environments-dioramas",
+    "robotics-control"
+  ],
+  "summary": "Orbit the camera around a subject with damping and clamped limits, tween focus over 0.9 s, keep following a moving character, and hand control back the moment the user drags.",
+  "objective": "A viewer can watch a moving character from behind without the camera fighting them: the follow stops on the first drag, the framing never falls inside geometry, and one reset returns the home pose.",
+  "tags": [
+    "composition-profile",
+    "camera",
+    "orbit",
+    "follow",
+    "third-person",
+    "camera-rig",
+    "orbitcontrols"
+  ],
+  "subject_terms": [
+    "orbit camera",
+    "follow camera",
+    "third-person camera",
+    "chase camera",
+    "camera rig",
+    "camera behind character",
+    "polar angle clamp",
+    "orbit damping",
+    "focus tween",
+    "reset pose",
+    "home view",
+    "dolly distance"
+  ],
+  "intent_signals": [
+    "follow camera behind character",
+    "make the camera follow the character",
+    "add a third-person camera",
+    "the camera keeps fighting my mouse",
+    "orbit around the model but let me stop it",
+    "chase camera for the moving vehicle"
+  ],
+  "example_prompts": [
+    "Follow a walking character from behind while the user can still orbit.",
+    "Give the drone a chase camera that snaps back to the overview.",
+    "Frame a moving robot arm and stop following as soon as I drag."
+  ],
+  "negative_signals": [
+    "fixed cinematic camera path with no user input",
+    "first-person controller with pointer lock"
+  ],
+  "not_for": [
+    "Cutscene camera animation where the user has no control at all.",
+    "First-person walk-throughs, which need collision and head height rather than an orbit pivot."
+  ],
+  "content": {
+    "principles": [
+      "The camera is a second pair of hands: any tween or follow that keeps moving while the user drags reads as a broken control, so the first user gesture cancels both.",
+      "Clamped polar angles and a distance range are what keep the frame legible; without them a viewer can end up under the ground plane or inside the subject and conclude the scene is broken.",
+      "Damping is a readability choice, not smoothing for its own sake: it separates the subject's motion from the camera's, so the eye keeps tracking the subject.",
+      "A follow is a pivot update, not a path. Move the orbit pivot with the subject and let the offset the user chose ride along; animating a bespoke curve fights every user input.",
+      "One named home pose makes exploration safe, because the viewer knows a single action returns to a frame that reads."
+    ],
+    "implementation": [
+      "Create OrbitControls(camera, canvas) and set enableDamping true and enablePan false so the pivot stays on the subject.",
+      "Clamp with minPolarAngle and maxPolarAngle (25 deg to 85 deg here) and with minDistance / maxDistance (2.5 m to 18 m), converting degrees with THREE.MathUtils.degToRad.",
+      "Tween the camera position and the controls pivot together over 0.9 s with a smoothstep ease so the move starts and ends calmly; see templates/rigs/camera-orbit-follow.js.",
+      "While a follow function is set, add the subject delta to both the camera position and the orbit pivot each frame; the offset the user chose is preserved.",
+      "Subscribe to the OrbitControls 'start' event and clear both the tween and the follow there; that single listener is the whole hand-back rule.",
+      "Return a boolean from update(dt) that is true while the tween or follow is live, so an on-demand render loop keeps drawing only while something moves.",
+      "Keep the first entry of the views map as the home pose and implement reset as setView(home), which also cancels any tween."
+    ],
+    "observable_checks": [
+      "Dragging during a focus tween stops the tween immediately and the camera stays where the drag left it.",
+      "Orbiting to the extremes never places the camera below the ground plane or closer than the minimum distance, at any viewport aspect.",
+      "With the subject moving, the on-screen size and screen position of the subject stay roughly constant until the user drags.",
+      "Reset returns to the same home pose from any position, and the render loop goes idle afterwards.",
+      "Nothing in the scene moves or changes state because of a camera action."
+    ]
+  },
+  "creative_affordances": [
+    "Limits, tween duration and ease are style choices: a snappier 0.4 s or a slower 1.4 s move both work as long as the cancel-on-input rule survives.",
+    "The follow can lead the subject, sit off to one side, or hold a fixed compass bearing instead of the offset the user left."
+  ],
+  "known_limits": [
+    "Authored camera-behaviour guidance; no runtime or perceptual measurement was performed for these numbers.",
+    "No occlusion test is described: the rig can still pass through geometry between the camera and the subject unless the scene adds its own handling."
+  ],
+  "related_ids": [
+    "knowledge.camera-authored-viewpoints-and-reset",
+    "knowledge.interruptible-focus",
+    "knowledge.hero-and-context",
+    "knowledge.accessible-spatial-controls"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Limits and timings tuned against templates/rigs/camera-orbit-follow.js: 25-85 deg polar keeps the camera above the ground and off the pole, 2.5-18 m spans a close inspection and a full establishing frame for a human-scale subject, and the 0.9 s smoothstep focus reads as deliberate without feeling slow. The damping factor and the cancel-on-input rule matter more than any single number.",
+    "values": {
+      "feeling": [
+        "attentive",
+        "unobtrusive",
+        "responsive"
+      ],
+      "controls": {
+        "type": "OrbitControls",
+        "enableDamping": true,
+        "dampingFactor": 0.08,
+        "enablePan": false,
+        "minPolarAngle_deg": 25,
+        "maxPolarAngle_deg": 85,
+        "minDistance": 2.5,
+        "maxDistance": 18
+      },
+      "focus": {
+        "tween_seconds": 0.9,
+        "ease": "smoothstep p*p*(3-2p)",
+        "distance_m": 7,
+        "cancel_on": "OrbitControls 'start' event clears the tween and the follow"
+      },
+      "follow": {
+        "mode": "pivot-delta",
+        "keeps": "the orbit offset the user last chose",
+        "stops_when": "the user drags, or the caller clears the follow function"
+      },
+      "reset": {
+        "pose": "first entry of the views map",
+        "action": "setView(home) after cancelling any tween"
+      },
+      "never": [
+        "a follow that continues while the user is dragging",
+        "an unclamped polar angle that lets the camera go under the floor",
+        "moving the subject to suit the camera"
+      ],
+      "template": "templates/rigs/camera-orbit-follow.js",
+      "snippet": "const controls=new OrbitControls(camera,canvas);\ncontrols.enableDamping=true;controls.dampingFactor=0.08;controls.enablePan=false;\ncontrols.minPolarAngle=THREE.MathUtils.degToRad(25);controls.maxPolarAngle=THREE.MathUtils.degToRad(85);\ncontrols.minDistance=2.5;controls.maxDistance=18;\ncontrols.addEventListener('start',()=>{tween=null;follow=null;});"
+    }
+  }
+}

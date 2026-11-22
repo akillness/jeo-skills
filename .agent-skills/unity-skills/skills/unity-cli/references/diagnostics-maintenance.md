@@ -1,0 +1,725 @@
+# Diagnostics & maintenance — unity-cli command reference
+
+Relative links in this file resolve to the skill directory's `references/` folder.
+
+Part of the **`unity-cli`** skill. See the main skill page for CLI install, global flags,
+environment variables, exit codes, and common workflows. All global flags (`--format json`,
+`--non-interactive`, `--yes`, `--proxy`, …) apply to every command below.
+
+### Contents
+
+- Logs — application logs
+- Logs --console: the running Editor's console
+- Doctor — system diagnostics
+- CI init — scaffold a working CI workflow
+- Doctor --ci — preflight before a long pipeline step
+- Diagnose update — why this install is or is not updating
+- Diagnose proxy — proxy diagnostic report
+- Diagnose accelerator — Unity Accelerator diagnostic report
+- Environment
+- Version — machine-readable version object
+- Cache
+- Cache key — deterministic key for CI cache steps
+- Analytics — usage/telemetry consent
+- Changelog
+- Docs — version-matched Unity documentation
+- Language
+- Completion — shell tab completion
+- Bug — report a bug
+- Self-update — update the CLI itself
+- Self-uninstall — remove the CLI
+
+---
+
+### Logs — application logs
+
+```bash
+# Show last 20 log lines (default)
+unity logs
+
+# Show last 50 lines
+unity logs --tail 50
+
+# Follow in real-time (like tail -f)
+unity logs --follow
+
+# Filter by level
+unity logs --level error
+unity logs --level warn
+
+# Available levels: trace, debug, info, warn, error, fatal
+```
+
+The CLI writes its own `cli-log.json` (separate from the Hub's `info-log.json`) and records its version on every start. `unity logs`, `unity bug`, and `unity doctor` read the CLI's own log.
+
+> **Not the Unity Editor log.** `unity logs` shows the *CLI's* activity, **not** the Editor's
+> `Editor.log`. To read Editor-side output — for example the compile errors that force an Editor into
+> Safe Mode and block the Pipeline connection — read `Editor.log` directly (see
+> [integration-advanced.md → Recovering from Safe Mode](integration-advanced.md#recovering-from-safe-mode-connection-fails-because-of-compile-errors) for its per-platform path and the full recovery loop).
+
+### Logs --console: the running Editor's console
+
+```bash
+# The last 20 console entries of the Editor this folder's project is open in
+unity logs --console
+
+# Errors only, from a named project's Editor
+unity logs --console --level error --project-path /path/to/project
+
+# Stream new console entries as the Editor logs them, one JSON object per line, until Ctrl-C
+unity logs --console --follow --format ndjson
+```
+
+`--console` reads the Editor console through the Pipeline package (`console get`), so the Editor
+must be running with the package loaded. `--project-path <path>` (or `UNITY_PROJECT_PATH`) picks the
+Editor, and typing `--project-path` without `--console` is a usage error. `--level` maps onto the
+console's three levels: `trace`, `debug` and `info` show everything, `warn` shows warnings and
+errors, `error` and `fatal` show errors. `--tail 0` asks for every entry the console buffer holds.
+
+Each entry carries `seq`, `time` (UTC), `level` (`log`, `warn`, `error`), `logType` (Unity's own
+`Log`, `Warning`, `Error`, `Assert` or `Exception`), `message`, `stackTrace`, `seeded` (read from the
+Editor console's store rather than captured live) and `diagnostic`. `diagnostic` is `null` unless the
+message's first line is a compiler diagnostic; then it holds `source` (`burst` for Burst's
+`BCnnnn` errors, `compiler` for the C# compiler), `severity`, `code`, `file`, `line`, `column` and
+`message`. In `tsv` the columns are `seq`, `time`, `level`, `logType`, `message` and the
+`diagnostic.*` fields, after a header row.
+
+`--follow` resumes from the console's cursor, so no entry is written twice. It keeps running through
+a script reload or an Editor restart, and stays on the first Editor it read. It says on stderr, once
+per outage, that it lost the connection or what the Editor answered instead of entries. It also says
+when the Editor restarted, or when entries were evicted from the buffer before it could read them.
+Under `--format json` each of these is one `{"warning": "..."}` line on stderr.
+Only a failed first read fails the command (exit `12` when no Editor is running for the project).
+Ctrl-C ends it with exit `130`. A Pipeline package older than 0.7.0-exp.1 can't be followed (it
+reports no console session), and the command says to update it with `unity pipeline upgrade`.
+
+---
+
+### Doctor — system diagnostics
+
+```bash
+# Full system report
+unity doctor --format json
+
+# Includes: platform info, auth status, installed editors, recent log lines, resolved proxy
+unity doctor --tail 50
+```
+
+`unity doctor` reports real session state (matching `unity auth status`) and surfaces the resolved proxy URL, its source, and auth source. It carries an **Accelerator** section alongside the Proxy one, reporting the resolved endpoint and its source and — when a project is in scope — that project's cache-server mode and pinned endpoint. Three states, mirroring Proxy: a table, a plain `No Unity Accelerator configured.` (the common case, not a fault), or `Accelerator state unknown` when the configuration could not be read. Nothing there is a *check*: whether the endpoint answers is `doctor --ci`'s question, because the default collector is synchronous and cannot make a network call. It also runs environment health checks and reports pass/warn per check (in every output format): whether the `unity` binary's directory is actually on `PATH` (the top post-install pitfall on Windows, where a new terminal is needed), whether multiple `unity` binaries shadow each other on `PATH`, whether Windows long-path support is enabled, and whether a git credential helper is configured (`git-credential-helper`: advisory for the git-token flows in `projects clone`/`create`/`link vcs`; the row is omitted on machines without git).
+
+A **"Third-party components"** section lists every open-source runtime dependency the binary bundles — the .NET runtime plus each direct NuGet package — with its version and SPDX license identifier, and points at `https://spdx.org/licenses/` for the full texts (not embedded, to keep the binary small). It's generated from the CLI's own build configuration, so it can never drift from what actually shipped, and it's informational only — never a pass/fail check.
+
+---
+
+### CI init — scaffold a working CI workflow
+
+`unity ci init` writes a committed CI workflow generated from the project. Use it instead of assembling the steps by hand — it wires up the CLI's own CI features in the right order and encodes the parts that are otherwise learned by trial and error.
+
+```bash
+# GitHub Actions -> .github/workflows/unity.yml (the default provider).
+# With no --project-path, it works on the directory you ran it from.
+unity ci init
+
+# GitLab CI -> .gitlab-ci.yml
+unity ci init --provider gitlab
+
+# Scope the workflow to a build target (validated like `unity build --target`)
+unity ci init --target Android
+
+# Review it before committing to anything
+unity ci init --dry-run
+
+# Another project; replace a workflow that is already there
+unity ci init --project-path ./MyProject --overwrite
+```
+
+Piped or redirected with no `--format`, `--dry-run` prints tsv: a `line` header, then one row per line of the workflow. To save the bare YAML to a file, pass `--format human` (`unity ci init --dry-run --format human > workflow.yml`).
+
+The generated workflow installs the CLI, restores the editor download cache and the project's `Library/` folder, installs the editor version from `ProjectSettings/ProjectVersion.txt`, activates a license, runs `unity doctor --ci` as a preflight, runs the tests with a JUnit report, builds, uploads the report and the build, and returns the license seat in a teardown step that runs even when the job failed or was cancelled.
+
+What it derives from the project: the editor version (rejected unless it parses as a real Unity version, since it is interpolated into an install command on the runner), and the editor module the build target needs where that is unambiguous — `Android`, `iOS`, `tvOS`, `WebGL`, `WindowsStoreApps`, `VisionOS`, `Lumin`. The standalone desktop targets get no module, because each has il2cpp / mono / server variants and picking one from the target alone would be a guess; asking for `StandaloneOSX` or `StandaloneWindows64` warns that the install step needs a `--module` you choose.
+
+Secrets are referenced by name only. The command never reads a credential and the generated file never contains one — it expects `UNITY_SERVICE_ACCOUNT_ID`, `UNITY_SERVICE_ACCOUNT_SECRET`, and `UNITY_LICENSE_SERIAL` to exist as repository secrets, and reports which ones to add after it writes.
+
+Two things about licensing that the workflow states in comments, because they surprise people: service-account auth covers Unity *services*, not the editor licence, and `unity license activate --personal` is rejected outright for a service account. The generated step therefore activates from a serial (a bare `unity license activate` with `UNITY_LICENSE_SERIAL` in the step environment, so the serial never reaches argv), and ships the floating-server and offline-`.ulf` alternatives as commented blocks beside it.
+
+The project rides `--project-path`, like `list`, `status`, `mcp configure`, `pipeline install` and `collaboration` — not a positional operand as on `build` / `test` / `cache key`. It takes a path, not a registry project name, and defaults to the current directory, so the common case is a bare `unity ci init` from the project root.
+
+**Interactive vs scripted.** On a real terminal, anything you didn't pass is asked for: a picker for the provider, one for the build target, and one for how many parallel jobs to split the tests across (all three open on their default, so Enter accepts), plus a confirm before replacing a workflow that already exists. A flag always wins over its prompt, so `--provider gitlab --target Android --shards 4` asks nothing.
+
+Nothing prompts when any one of these holds — `--non-interactive` (or `UNITY_NON_INTERACTIVE`), a machine `--format` (`json`, `ndjson`, `tsv`), `--format github`, or a redirected stdout. In that case the unpassed values take their defaults (`github`, `StandaloneLinux64`, no sharding) and an existing workflow is an exit-2 error naming `--overwrite` rather than a question. That means a CI job or a script gets identical behaviour whether or not it happens to be attached to a terminal.
+
+**Splitting the suite: `--shards <n>`.** Off by default, and offered by the picker on a terminal. Accepts 2 to 64 — `1` is rejected rather than generating a one-leg matrix, so there is no flag spelling for "no sharding"; omit it instead. More shards than tests is safe, because `unity test --shard` reports an empty slice and skips the editor instead of quietly running the whole suite.
+
+```bash
+unity ci init --shards 4
+unity ci init --provider gitlab --shards 8
+```
+
+Two things the generated matrix handles that a hand-written one usually does not. `unity test --shard N/M` splits the suite using an NUnit report from an *earlier* run, because the Editor cannot enumerate tests without running them — so a cold pipeline has nothing to split. Rather than fail, one shard runs the whole suite to write that inventory while the rest stand down: the first run is green and costs exactly one full suite. And a *stale* inventory is the dangerous case, since a test added after it was written would belong to no shard and run nowhere — green, and not running the new test. So the cached inventory is bound to a hash of every `.cs`, `.asmdef`, `.asmref` and `packages-lock.json` in the repository, and any change to them re-seeds the suite in full. (`unity cache key` deliberately ignores script changes, which is right for a `Library/` cache and wrong for this, so the inventory gets its own key.)
+
+The trade: a run that touches C# pays for one full unsharded suite, and a run that does not — assets, scenes, shaders, config, a retry, a scheduled build — is split `n` ways. Never slower than the unsharded workflow, and never under-tested. The build gets its own job, since inside the matrix it would run once per shard and burn `n` licence seats; both providers aggregate the per-shard JUnit reports themselves, so there is no merge step.
+
+`--dry-run` prints the workflow to stdout and nothing else, so it pipes into a file or a diff. `--format json` reports the written paths in `data.paths`, plus the resolved provider, editor version, build target, and module. Exit 2 on an unknown `--provider`, an invalid `--target`, an existing workflow file without `--overwrite`, or a stray positional argument; exit 6 when the directory isn't a Unity project or its editor version can't be read. Templates are embedded in the binary, so this works offline and always matches the CLI it ships with.
+
+---
+
+### Doctor --ci — preflight before a long pipeline step
+
+```bash
+# First step of a CI job: fail in seconds instead of after a long build
+unity doctor --ci
+
+# Per-check results a workflow can branch on
+unity doctor --ci --format json
+
+# Failed checks become inline annotations on the pull request
+unity doctor --ci --format github
+```
+
+`--ci` replaces the diagnostic report with a **preflight**: it verifies the environment can actually finish a build or test run and exits non-zero when it cannot, so a pipeline fails fast rather than tens of minutes into a build. It checks an activatable license, the project's required editor, free disk space, and reachability of the Unity services endpoint, and folds the `PATH` / long-path / git-credential-helper checks in as advisory rows that never fail a job.
+
+Exit codes distinguish the two kinds of bad news, so a workflow can retry only what is worth retrying:
+
+| Exit | Meaning |
+|---|---|
+| `0` | Every blocking check passed. Warnings do not fail the preflight. |
+| `6` | A definitive failure — no license, the required editor is not installed, disk below the floor. Retrying will not help. |
+| `7` | The preflight could not reach a verdict because a required service was unreachable. Worth a retry. |
+
+A `6` outranks a `7` when both occur, so a real blocker is never reported as retryable.
+
+On a machine licensed by a floating license server, the licensing client holds no license until the Editor leases a seat at startup. When no license is held and the configured server answers its `/v1/status` as healthy, the license row passes as `LICENSE_FLOATING` instead of failing as `LICENSE_NONE`. A runner that gets its license some other way can drop the row entirely:
+
+```bash
+unity doctor --ci --skip-license
+```
+
+`--skip-license` reports the license row as `info` (`LICENSE_SKIPPED`) and never starts the licensing client. It only has an effect with `--ci`.
+
+`--ci` also probes the configured Unity Accelerator, so a CI agent learns the cache server is down in seconds instead of discovering it as an unexplained twenty-minute import. **This check never blocks, in any arm** — an Accelerator is an accelerator, so an unreachable one is a `warn` (`ACCELERATOR_UNREACHABLE`, classified retryable) and a machine with none configured is an `info` row (`ACCELERATOR_NOT_CONFIGURED`). A project that does not use an Accelerator can never have its preflight failed by it. The probe targets the endpoint the CLI would hand to the Editor (the resolver's answer), not the project's own pinned endpoint.
+
+Every check carries a machine-readable `code` (`LICENSE_NONE`, `EDITOR_NOT_INSTALLED`, `DISK_SPACE_LOW`, `NETWORK_UNREACHABLE`, …) plus a remediation `hint`. In `--format json` the per-check results stay in `data` even on failure, with one coded entry per failure in `errors`. Output is redacted and carries no tokens and no absolute user paths, so it is safe to paste into a public CI log.
+
+`--ci` is always explicit — it is never inferred from `CI=true`, because a report that silently changed shape and exit code on a runner would be a trap. Note that the CLI already defaults to `--format tsv` whenever stdout is redirected, which in CI it usually is; that output is a `key<TAB>value` header, then one row per `--format json` field under its key path: `verdict`, then `checks.0.id`, `checks.0.status`, `checks.0.code`, `checks.0.message` and so on. A script that read `verdict<TAB>...` or `check.<id>` rows reads those keys now; `--no-header` drops the header row.
+
+---
+
+### Diagnose update — why this install is or is not updating
+
+```bash
+unity diagnose update
+unity diagnose update --json
+```
+
+Reports how this install resolves updates: the channel it tracks, the manifest it reads, the version it found, and whichever condition is holding an update back. Reach for it when `unity self-update` reports nothing to do but a newer version is known to exist, or when an install seems pinned to an old version.
+
+---
+
+### Diagnose proxy — proxy diagnostic report
+
+```bash
+# Print a redacted, paste-safe proxy diagnostic report for support
+unity diagnose proxy
+
+# Machine-readable
+unity diagnose proxy --json
+```
+
+Reports the resolved proxy and where it came from, PAC configuration, CA bundle, and credential-store and Kerberos checks — redacted so it's safe to paste into a support ticket. A copy is also written to the logs directory. For per-request proxy logging over the course of a repro, use the global `--log-proxy` flag (or `UNITY_LOG_PROXY=1`), which writes one redacted entry per outbound request to `proxy-request.json`.
+
+---
+
+### Diagnose accelerator — Unity Accelerator diagnostic report
+
+```bash
+# Resolved endpoint, project cache-server settings, and whether the endpoint answers
+unity diagnose accelerator
+
+# Machine-readable
+unity diagnose accelerator --json
+```
+
+A working Accelerator and a broken one produce identical output apart from wall-clock time. This is the command that tells them apart. It reports four sections:
+
+- **Resolved configuration** — the endpoint and its source (`env` / `settings` / `none`), and whether the Accelerator was disabled. This command does not accept `--accelerator` or `--no-accelerator` (both are scoped to `run` / `test` / `build`), so it reports what the env var and the persisted setting resolve to — the endpoint any command would start from, before a one-shot override.
+- **Environment variables** — `UNITY_ACCELERATOR` by **presence only**, never by value (a host and port is infrastructure detail a support paste should not carry). The character length is included, enough to tell "set" from "set to empty".
+- **Project cache server** — the project's `m_CacheServerMode` (as Unity's own inspector labels it) and `m_CacheServerEndpoint`, and whether they agree with the resolved endpoint. There is no "void case": a project's cache-server mode never makes an injected endpoint moot — command-line flags always win — so the report states a mismatch as a fact without claiming which side the Editor uses.
+- **Reachability** — a raw TCP connect with a 5-second timeout, reporting elapsed time and a familiar error code on failure (`ENOTFOUND`, `ECONNREFUSED`, `ETIMEDOUT`, …). A successful connect proves the port is reachable, **not** that an import will get a cache hit, and the report says so.
+
+**An unreachable endpoint is a reported row, not a command failure** — the command exits `0` having successfully diagnosed a broken endpoint. `--format json` emits the standard envelope; every other format writes the plaintext report raw to stdout so it survives a pipe or a CI log. `--quiet` is honoured.
+
+---
+
+### Environment
+
+```bash
+# Show environment paths
+unity env --format json
+
+# Returns: user data path, editor install path, download cache path, config path, CLI version, resolved proxy
+```
+
+---
+
+### Version — machine-readable version object
+
+```bash
+# Bare version string (backward compatible, unchanged)
+unity --version
+
+# Structured version object
+unity version --format json
+
+# The --version flag also honors an explicit format set before it
+unity --format json --version
+```
+
+`unity version` reports the CLI version, release channel (`stable`, `beta`, …), commit, platform, architecture, and runtime — the same version fact `env` and `doctor` carry, as one parseable object. It honors `--format` (`human`, `json`, `tsv`, `ndjson`); human output is the bare version string, and `tsv` is a `key<TAB>value` table with one row per field.
+
+A bare `unity --version` still prints only the version string, so scripts that parse it are unaffected. The `--version` flag switches to the structured object only when an explicit machine format is given *before* it (`unity --json --version`, `unity --format json --version`, or `UNITY_FORMAT=json unity --version`) — the flag terminates parsing, so a trailing format after `--version` is not seen. For order-independent machine output, prefer the `unity version` subcommand.
+
+---
+
+### Cache
+
+```bash
+# Show cache location and size
+unity cache info --format json
+
+# Clear download cache
+unity cache clean --yes
+```
+
+---
+
+### Cache key — deterministic key for CI cache steps
+
+`unity cache key` prints one hash derived from the inputs that actually invalidate a project's build cache: the editor version, the resolved package set, and (optionally) the build target. Use it as the `key:` of a CI cache step instead of hand-rolling the hashing.
+
+```bash
+# Print the key for the project in the current directory
+unity cache key
+
+# Scope it to a build target — a Library/ folder is platform-specific
+unity cache key --target Android
+
+# Any project path
+unity cache key ./MyProject
+```
+
+Whenever stdout is not an interactive terminal — a pipe, a redirect, or any CI runner — the format defaults to `tsv`, a `key<TAB>value` table of the same members `--json` carries (the `key` row holds the hash). To get the bare key for a shell substitution or a workflow expression, pass `--format human`: it prints the key and nothing else. (On an interactive colour terminal the CLI's usual one-line banner still prints above it, as it does for every command; `--quiet` suppresses that.)
+
+Pass the project path if the workflow's working directory isn't the project:
+
+```yaml
+- id: cachekey
+  run: echo "key=$(unity cache key MyProject --target Android --format human)" >> "$GITHUB_OUTPUT"
+- uses: actions/cache@v4
+  with:
+    path: MyProject/Library
+    key: Library-${{ steps.cachekey.outputs.key }}
+```
+
+What moves the key, and what doesn't:
+
+- **Changes** when the editor version (`ProjectSettings/ProjectVersion.txt`), the package set (`Packages/packages-lock.json`, falling back to `Packages/manifest.json`), or `--target` changes.
+- **Does not change** for unrelated edits — scenes, scripts, assets, or project settings other than the version file.
+- **Is identical across machines and operating systems** for the same inputs. Line endings and a UTF-8 BOM are normalized before hashing, so a Windows checkout with `core.autocrlf` and a Linux one agree. No paths, usernames, or timestamps enter the hash.
+
+`--format json` returns the key plus each component's raw value and hash, so one invocation can build a layered key with fallback levels:
+
+```bash
+unity cache key --target Android --format json
+```
+
+`--component <editor|packages|target>` prints just one component's hash for the fallback levels themselves. Under `--format json` it also sets `data.key` to that component, so `jq -r .data.key` means the same thing either way:
+
+```bash
+# Restore any cache built for this editor, whatever the packages were
+unity cache key --component editor
+```
+
+Runs without an editor and without network access. Exit 2 on an unknown `--target` or `--component` (a silently-accepted typo would produce a key nothing else matches); exit 6 when the directory isn't a Unity project. A project with neither package file still emits a key, with a warning that it doesn't cover the package set.
+
+---
+
+### Analytics — usage/telemetry consent
+
+The CLI never asks. On a new install, a user who never chose is **opted in**, and the first run of a release build prints a one-line notice on stderr saying what is collected, with a link that explains how to turn it off. A choice already made is always kept: `unity analytics opt-out`, an answer to an older CLI's first-run prompt, or the Hub's analytics setting. `DO_NOT_TRACK` (any value but empty, `0` or `false`) also keeps a user who never chose opted out, and so does a machine that already had Hub or CLI data before this default (an existing install).
+
+```bash
+# Show current consent status
+unity analytics status
+unity analytics status --format json
+
+# Opt in to anonymous usage data collection
+unity analytics opt-in
+
+# Opt out
+unity analytics opt-out
+```
+
+Consent is stored in the shared Hub privacy preferences, so opting out in the CLI also opts out in Hub, and vice versa. When opted **in**, the CLI records which commands run (registered command names only — never your arguments, paths, or project names), editor uninstalls, project open/create (editor version and template id only), CLI self-update/uninstall outcomes, `unity shell` and `unity mcp` session usage, and `unity doctor` / `unity bug` results. When opted out, no events are sent.
+
+Separately from analytics, the CLI reports **anonymous crashes and errors** via Sentry to help fix bugs (no IP address or hostname; home-directory paths and token-like values scrubbed before send), aligned with the Unity Hub. Opting in to analytics additionally attaches an anonymized machine id so crash-free-user rates can be computed; opted-out users stay fully anonymous. Set `UNITY_NO_CRASH_REPORT` to disable crash reporting entirely. Turning off "Send crash reports" in the Unity Hub's settings does the same for the CLI; only an explicit off counts, so a machine without the Hub keeps reporting.
+
+Separately again, every run (CI, an agent, a machine `--format` included) sends one anonymous `cli telemetry` usage ping, so total CLI usage can be counted. It is not a measure of who opted in and carries no user, machine, or session identifier (a fresh random id per invocation, never persisted) and no consent state — just which Unity tool sent it, the CLI version, and whether the run looks like CI. Any one of these stops it:
+
+- explicitly turning analytics off (`unity analytics opt-out`, an opt-out answered at an older CLI's prompt, or turning it off in the Hub while signed in to the Hub; a Hub opt-out made while signed out is not visible to the CLI and does not stop it);
+- `DO_NOT_TRACK` set to any value but empty, `0` or `false` ([consoledonottrack.com](https://consoledonottrack.com));
+- `UGS_CLI_TELEMETRY_DISABLED` set to any value but empty, `0` or `false`, the same switch under the UGS CLI's name;
+- `UNITY_NO_CLI_INVOKED_TELEMETRY` set to any value.
+
+`DO_NOT_TRACK` or `UGS_CLI_TELEMETRY_DISABLED` also stops the upload of opt-in usage data, even when you opted in. Usage data never holds a command for long: on a slow or unreachable network the CLI gives up on it after half a second. `unity analytics status` says what is collected, links the privacy policy, and reports whether the ping is on and why it is off. None of these settings stop the licensing records `unity license activate` files.
+
+---
+
+### Changelog
+
+Show the release notes for the installed CLI version, or with `--target`, for another release. `--target latest` shows the newest release on your channel, the one `unity self-update` would install:
+
+```bash
+unity changelog
+unity changelog --target 1.0.0-beta.10
+unity changelog --target latest
+unity changelog --format json
+```
+
+When no notes are published for that version, the command exits 6, and `--format json` reports `CHANGELOG_NOT_FOUND` in `errors[0].code`. A download that fails reports `ERR_NETWORK` (no connection) or `COMMAND_FAILED` (an HTTP error) instead.
+
+---
+
+### Docs — version-matched Unity documentation
+
+Open the docs.unity.com page for a class or topic in the default browser,
+matched to the editor version of the project you are in:
+
+```bash
+unity docs                               # the Engine documentation home
+unity docs GameObject                    # scripting API reference
+unity docs GameObject.activeSelf         # a member page
+unity docs --manual Coroutines           # search the manual
+unity docs --search "physics raycast"    # the documentation search results
+unity docs --package com.unity.2d.sprite # a package manual, at the version your project uses
+unity docs --url Rigidbody.AddForce      # print the URL, do not open it
+unity docs --cli use-unity-cli           # the Unity CLI's own documentation
+unity docs --hub project-create          # the Unity Hub documentation
+unity docs --cloud developer-data/collection-settings   # Unity Cloud
+unity docs --content GameObject          # print the page's Markdown, do not open it
+```
+
+The version is `--editor-version`, then the current project's
+`ProjectSettings/ProjectVersion.txt` (no editor has to be installed), then the
+newest version docs.unity.com hosts. `--editor-version` accepts a full version
+(`6000.0.26f1`) or a version branch (`6000.0`); an unparseable value is a usage
+failure rather than a silent fallback. A version the site doesn't host uses the
+nearest hosted version below it, or the oldest hosted one, with a one-line
+notice on stderr.
+
+A scripting API topic is looked up in the site's page index (the same one
+`docs toc` lists): a qualified name (`UnityEngine.GameObject`) matches exactly,
+a bare class name or `Class.member` matches the page whose path ends with it,
+preferring `UnityEngine`, then `UnityEditor`, then the shortest path. A name two
+pages tie on goes to search rather than a guess. The lookup takes at most 5
+seconds and never fails the command: offline, a qualified name is built
+directly for the version you asked for, and anything else goes to search. A
+trailing `.html`, a `(...)` signature and the old `Class-member` page form are
+all accepted. `--manual` always searches, since the new Manual pages have no
+mapping from the old page names.
+
+When the Editor's Documentation module is installed for the version `docs`
+resolves (that exact Editor first, then the others on its line, newest first),
+opening a scripting API topic in the browser opens the local page instead, a
+`file://` URL with no network. `--online` skips the local copy. A printed
+address (`--url`) is always the docs.unity.com page, so a citation never
+carries a machine-local path. A topic the local copy doesn't have, a tie, or
+no version at all goes online as before, and so does every run under WSL,
+whose Windows browser can't read a Linux path.
+
+**For an agent, `--url` is the useful mode:** it prints the resolved address to
+stdout and opens nothing, so it composes into a citation or a review comment.
+`--format json` carries the same address plus `version` (the docs version in the
+URL, `null` for search or a home page), `requestedVersion` (the one asked for),
+`source` (`online`, or `local` for a page opened from the Documentation module,
+which also carries `path` and `editorVersion`) and `resolvedBy`: `index`,
+`direct`, `search` or `local`.
+
+#### Package manuals: `docs --package`
+
+`unity docs --package <name>` opens a package's manual on docs.unity3d.com,
+where package manuals live, for the package version your project uses. The
+version is the one in the project's `Packages/packages-lock.json`; a package
+built into the Editor (`com.unity.2d.sprite`, `com.unity.2d.tilemap`) uses its
+one manual version; anything else uses the newest release on the Unity
+registry (also for a package the project takes from a Git URL or a local
+folder). A name the registry doesn't list fails with `DOCS_PACKAGE_UNKNOWN`
+instead of opening a missing page, and a registry that
+can't be reached fails with `NETWORK_UNREACHABLE`. `--package` takes no topic and
+can't be combined with another documentation set, `--search` or
+`--editor-version`. `--url` prints the address; `--format json` adds `package`,
+`packageVersion` (the full version, `null` for a built-in package outside a
+project) and `resolvedBy`: `project`, `editor` or `registry`.
+
+When the project has the package's own docs (`Packages/<name>/Documentation~`,
+else the cache entry under `Library/PackageCache` at the locked version, else
+the newest one), `docs --package` opens that local Markdown page instead, offline
+and without asking the registry. `--online` skips it, and `--url` always prints
+the online manual. JSON for a local page says `resolvedBy: local`,
+`source: local` and the file's `path`, with `packageVersion` from the package's
+`package.json`.
+
+#### Documentation sets outside the Engine docs
+
+`--cli`, `--hub` and `--cloud` look the topic up in another documentation set
+on docs.unity.com instead of the Engine documentation. With no topic, each opens
+its set's home page:
+
+|Flag|Documentation|
+|---|---|
+|*(default)*|Engine scripting API reference, version-matched|
+|`--manual`|Engine manual, through search|
+|`--cli`|The Unity CLI|
+|`--hub`|The Unity Hub|
+|`--cloud`|Unity Cloud|
+
+Those pages are not versioned by editor, so they take no version: `--editor-version`
+alongside one of them is a usage failure rather than a value that gets quietly
+dropped. The four selectors are mutually exclusive, and passing two is a usage
+failure too rather than one of them silently winning.
+
+Page names on these sets are lowercase and hyphenated, and may carry more than
+one segment (`developer-data/collection-settings`). Anything else — a phrase, or
+a name in the wrong case — falls back to the platform's search page, the same
+fallback rule the Editor sections use.
+
+#### Reading a page as Markdown: `docs --content`
+
+`unity docs <topic> --content` prints the page's Markdown to stdout instead of
+opening a browser, which an agent reads far better than HTML. With
+`--format json` the Markdown is wrapped with `url`, `markdownUrl`, `version`
+and `source` (`online`, `cache` for a page read from the offline cache, or
+`local` for a package). It cannot be combined with
+`--url`. A topic that only resolves to a search, and `--manual`, have no page
+to print and fail. A package topic (`com.unity.*`) has no Markdown online yet:
+it prints the package's local `Documentation~` Markdown from the project's
+`Packages` or `Library/PackageCache`, or says plainly that none exists.
+
+#### Listing the pages: `docs toc`
+
+`unity docs toc` lists every page of a documentation section on docs.unity.com,
+so an agent can pick a real page instead of guessing its name:
+
+```bash
+unity docs toc --format json                             # scripting API reference
+unity docs toc --manual --format json                    # the manual
+unity docs toc --editor-version 6000.0 --format ndjson   # one page per line
+```
+
+The version is `--editor-version`, then the project's `ProjectVersion.txt`, then
+the newest version docs.unity.com hosts. A version the site doesn't host is
+listed as the nearest hosted version below it, or the oldest hosted one if there
+is none, with a one-line notice on stderr.
+
+Each entry has a `path` under the section (`unityengine/gameobject/activeself`)
+and its absolute `url`. The pages come from the site's sitemaps, which carry no
+titles. The json envelope's `data` is `{version, requestedVersion, section,
+entries}`: `version` is the one listed, `requestedVersion` the one asked for
+(null when none was). TSV and the human table show the path and URL.
+
+The index is downloaded once a day, then read from a local cache. No
+connection is `NETWORK_UNREACHABLE` (exit 7); a server error is
+`DOCS_TOC_FETCH_FAILED`, and an index that can't be read is `DOCS_TOC_INVALID`.
+`--cli`, `--hub` and `--cloud` publish no index, so `toc` doesn't take them.
+
+#### Offline docs: `docs cache`
+
+`unity docs cache add` downloads a version's documentation as Markdown so it can
+be read with no connection. It stores the manual by default; `--api` adds the
+scripting API reference too (about 96,000 pages, so it takes a while). The
+version is `--editor-version`, then the project's, then the newest hosted one,
+as for `docs toc`.
+
+```bash
+unity docs cache add                                     # the manual, this project's version
+unity docs cache add --api --editor-version 6000.0       # the manual and the scripting API
+unity docs cache --format json                      # what is cached
+unity docs cache clear --editor-version 6000.0 --yes     # delete one version
+unity docs cache clear --yes                             # delete every version
+```
+
+Once a version is cached, `docs --content` reads its pages from the cache
+before going online (`source: cache` in json), and `docs toc` and topic
+resolution use its page listing when docs.unity.com can't be reached. Opening a
+page in the browser still needs the network. Every page `docs --content`
+fetches online is cached too.
+
+Each page is a file, `<version>/<section>/<path>.md`, under the `docs` folder of
+the download cache that `unity cache info` reports, so an agent can also read
+the files directly; `add` prints the folder. `unity cache clean` deletes it
+with everything else.
+
+`add` is resumable: a run that loses pages fails with `DOCS_CACHE_INCOMPLETE`,
+and running the same command again downloads only the rest, leaving any
+section that already finished alone. Once every section it covers has
+finished, running it again downloads them afresh. Listed pages with no Markdown are skipped
+and counted as `missing`. With no connection to the index it is
+`NETWORK_UNREACHABLE` (exit 7). `list` reports `version`, `sections`, `pages`,
+`sizeBytes` and `fetchedAt` per version. `clear` asks first; with no terminal
+or under `--non-interactive` it needs `--yes` (`DOCS_CACHE_CLEAR_REQUIRES_YES`,
+exit 2). The lowercase word `cache` is the subcommand, so for the `Cache` class
+write `unity docs Cache` or `unity docs UnityEngine.Cache`.
+
+---
+
+### Language
+
+```bash
+# Show current language and available options
+unity language
+
+# Set language by code
+unity language --set en
+unity language --set ja
+unity language --set zh-hans
+
+# Alias
+unity lang --set ko
+```
+
+On a TTY with no flags, shows an interactive selection prompt. `--set` accepts common spellings of a language code — BCP-47 (`ja-JP`), locale (`ja_JP`), a bare language (`ja`), or a bare region (`jp`) — and resolves them case-insensitively when the match is unambiguous (`zh` still asks you to pick `zh_cn` or `zh_tw`). Display names and ordering come from the shared Hub language catalog. The regional variants Spanish (Latin America), French (Canada), and Portuguese (Portugal) are no longer offered; Spanish, French, and Portuguese (Brazil) remain.
+
+---
+
+### Completion — shell tab completion
+
+Generate and install shell completion scripts:
+
+```bash
+# Supported shells: bash, zsh, fish, powershell
+unity completion bash
+unity completion zsh
+unity completion fish
+unity completion powershell
+```
+
+After `unity command` (and its aliases `cmd` and `request`), Tab offers the connected Editor's commands, then a group's commands, then the chosen command's parameters not yet typed. The shell asks the CLI at Tab time, for the Editor of the project in the working directory or `UNITY_PROJECT_PATH`, and waits at most 1 second. With no Editor, or a slow one, Tab offers nothing there. Nothing is cached. Scripts generated before this need regenerating to get it.
+
+With `--json` or `--format ndjson`, the script comes inside the standard envelope: `data.shell` names the shell and `data.script` holds the script text. Every other format prints the script itself.
+
+---
+
+### Bug — report a bug
+
+Interactive bug reporter that collects system info and recent logs, then submits to Unity:
+
+```bash
+# Interactive — prompts for each field
+unity bug
+
+# Non-interactive — supply the report through flags (works from scripts, CI, piped shells)
+unity bug \
+  --title "Editor crashes on project open" \
+  --description "Opening MyGame hard-crashes the editor." \
+  --steps "Open the CLI" --steps "Run unity open MyGame" --steps "Editor window closes" \
+  --reproducibility always \
+  --area editor \
+  --email you@example.com \
+  --attachments ./crash.log ./notes.txt \
+  --share-project .
+```
+
+Prompts for title, description, email, reproducibility level, and which area the issue is in. As of `0.1.0-beta.8` it collects the same diagnostic system information as the Unity Hub bug reporter (including GPU details).
+
+The report can also be supplied entirely through flags — `--title`, `--description`, `--steps` (repeatable, one line per value), `--reproducibility <first-time|sometimes|always>`, and `--email` (defaults to your Unity account email when signed in; otherwise required). On a terminal, any flags you pass skip their prompts and the remaining fields still ask; a non-interactive run submits without prompting. A non-interactive run with missing or invalid fields fails fast with a usage error (exit 2) listing the exact flags to add.
+
+Use `--area <cli|pipeline-package|editor|licensing|ugs|plastic|ai|transform|assetlibrary|not-sure>` to say which part of Unity the issue is in: the CLI itself, the connection to the Editor or the Pipeline package (`com.unity.pipeline`), the Editor or your project, licensing and signing in, or one of the plugins (`ugs`, `plastic`, `ai`, `transform`, `assetlibrary`). Pass it whenever you know, because a failure that surfaces in CLI output is otherwise easy to misroute as a CLI bug when the Editor or the Pipeline package is at fault. It's optional and never blocks a report: pass `not-sure` when you don't know, or leave it out. On a terminal without `--area`, the reporter asks, with "Not sure" preselected; a non-interactive run without it submits with no area, the same report it sent before the flag existed. An unknown value is a usage error (exit 2). The answer is sent with the report as an `Issue area:` line in the report text, which is what triage sees. On a terminal, a plugin is offered as an area only while it is installed. A plugin area names the plugin and its installed version, and attaches the newest `.log` and `.txt` files from the log directories the plugin registry lists for it, redacted and size-capped like the other logs. Every report also lists the plugins installed on the machine, with their versions, as an `Installed plugins:` line.
+
+Use `--attachments <paths...>` (repeatable) to attach extra files — for example a crash log or a zipped copy of a subset of assets. Each path must be an existing, readable file; a folder is rejected (zip it yourself first), and a missing or unreadable path fails fast with a usage error (exit 2) naming the offending path.
+
+Use `--share-project <path>` (use `.` for the current directory) to attach a copy of the Unity project the bug is about — the same stripped-project packaging the Editor's bug reporter uses. It sends the source folders plus a slimmed `Library`, excluding the regenerable caches and build output (`Library` caches, `Temp`, `Build`, `Logs`, VCS/IDE metadata, `MemoryCaptures`, `CrashReports`), so you don't have to zip the project yourself. A path that isn't a Unity project fails fast with exit 2. The archive is streamed from disk during upload, so there's no size limit — even a multi-gigabyte project copy uploads without being buffered in memory.
+
+Interactively, when you don't pass `--attachments` or `--share-project`, the reporter asks whether to attach files and whether to include a project copy. When the area answer is `editor` or `pipeline-package`, the project-copy question first explains why a copy helps with those issues; it still defaults to no, and nothing is shared unless you answer yes. Everything — attachments and the project copy — is bundled into the same archive as the auto-collected logs.
+
+#### `unity bug mcp`: check for known issues before filing
+
+Before filing a report, add Unity's Issue Tracker MCP server to an AI assistant so it can search for known issues on your behalf:
+
+```bash
+unity bug mcp claude
+unity bug mcp --list
+unity bug mcp cursor --local
+unity bug mcp claude --dry-run
+```
+
+`unity bug mcp [client]` is exactly `unity mcp configure [client] --server issue-tracker`. It delegates to the same `mcp configure` execution with the target server fixed, so it accepts the same `client` argument and the same `--list`, `--local`, `--yes`, and `--dry-run` flags (no `--server` flag here, since the server is already fixed). See the MCP configuration section in `integration-advanced.md` for the full client list, config paths, and what each flag does; `unity bug --help` also points here. This adds no new required prompt to the bug-report wizard, since it's a separate, optional subcommand, and the interactive wizard prints a one-line reminder about it before asking its own questions.
+
+---
+
+### Self-update — update the CLI itself
+
+```bash
+# Check for available updates
+unity self-update --check --format json
+
+# Show changelog for the new version
+unity self-update --changelog
+
+# Update (interactive confirmation)
+unity self-update
+
+# Update without prompts
+unity self-update --yes
+
+# Install a specific version (v0.2.0 works too; latest is the same as no --target)
+unity self-update --target 0.2.0
+
+# Select update channel (stable or beta)
+unity self-update --channel beta
+
+# Dry-run: show what would change
+unity self-update --dry-run
+
+# Roll back to the most recent previous version
+unity self-update --rollback
+
+# Roll back to a specific kept version
+unity self-update --rollback 0.1.0
+```
+
+Each update keeps the binary it replaces, so `--rollback` has something to go back to. The last 3 versions are kept (the oldest is dropped), and `--rollback` with no value restores the most recent one. Pass a version to restore a specific kept one; if it isn't kept, the error lists the versions that are. On macOS and Linux a rollback uses up the backup it restores, so running `--rollback` again goes one version further back; on Windows the swap finishes after the command exits, so every backup stays. Set `UNITY_CLI_ROLLBACK_KEEP` (1 to 10) to keep more or fewer.
+
+`unity self-update` detects how the CLI was installed and updates accordingly (`unity upgrade` is still accepted as an alias):
+
+- **`curl | sh` install** — keeps updating itself in place.
+- **Linux AppImage** — updates in place: downloads the new `.AppImage` artifact, verifies its checksum against the release manifest, and atomically replaces the AppImage you launched (`--rollback` restores the previous one). The embedded zsync update info is preserved, so external updaters (AppImageUpdate, Gear Lever) keep working.
+- **Package-manager install** — points you at the owning manager instead of replacing the binary. The `.deb` and `.rpm` packages are published to Unity's apt and rpm repositories on every beta and GA release (rpm packages are GPG-signed), so a package-managed install stays current through the system package manager: `sudo apt update && sudo apt upgrade unity-cli` on Debian/Ubuntu, `sudo dnf upgrade unity-cli` on Fedora/RHEL.
+
+Downloads go through the CLI’s regular download engine: an interrupted download (a dropped connection, a closed lid, a Ctrl-C) resumes from where it left off on the next `unity self-update`, and a Brotli-compressed artifact is preferred when the release publishes one — verified against its own checksum and again after decompression. A release with no compressed artifact for your platform falls back to the raw download.
+
+`--check`, `--changelog`, and `--dry-run` work everywhere. When no notes are published for the version, `--changelog` exits 6, and `--format json` reports `CHANGELOG_NOT_FOUND` in `errors[0].code`. The background "update available" notice is package-manager-aware: when the release manifest says your install's package manager already carries the new version, the notice suggests that manager's exact upgrade command instead of `unity self-update`; installs whose manager doesn't carry the release yet stay quiet.
+
+The same background check also warns when a self-installed `unity` and a Homebrew-managed one are **both** on `PATH` — a state where `which unity` keeps resolving to the self-installed copy while `brew upgrade` updates the other, so the two silently drift apart. The notice points at `unity self-uninstall -y` to remove the self-installed copy so Homebrew is the only one managing updates going forward.
+
+---
+
+### Self-uninstall — remove the CLI
+
+```bash
+# Uninstall the CLI (interactive confirmation)
+unity self-uninstall
+
+# Uninstall without prompts
+unity self-uninstall --yes
+
+# Also remove config and data files
+unity self-uninstall --purge --yes
+
+# Dry-run: show what would be removed
+unity self-uninstall --dry-run
+```
+
+> **`unity implode` was removed** in `0.1.0-beta.8` (it was previously a deprecated alias). Use `unity self-uninstall`.
+
+---
+

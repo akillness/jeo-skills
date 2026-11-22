@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "id": "recipe.ribbon-motion-sculpture",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Ribbon motion sculpture"
+  },
+  "aliases": {
+    "en": [
+      "kinetic ribbon art",
+      "abstract motion loop"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art"
+  ],
+  "summary": "Compose a layered ribbon installation whose form can be explored without hiding its control curve.",
+  "objective": "Build a suspended ribbon sculpture with three contrasting loops and a timeline I can scrub.",
+  "tags": [
+    "ribbon",
+    "swept surface",
+    "kinetic sculpture"
+  ],
+  "subject_terms": [
+    "ribbon",
+    "swept surface",
+    "kinetic sculpture",
+    "curve frame"
+  ],
+  "intent_signals": [
+    "shape an animated ribbon",
+    "scrub a motion artwork"
+  ],
+  "example_prompts": [
+    "Build a suspended ribbon sculpture with three contrasting loops and a timeline I can scrub.",
+    "Expose the control curves and freeze the sculpture at its widest pose."
+  ],
+  "entities": [
+    {
+      "name": "Ribbons",
+      "guidance": "Sweep a finite-width strip along sampled curves; specify stable local frames and cap treatment."
+    },
+    {
+      "name": "Suspension",
+      "guidance": "Use slender rods terminating outside the ribbon sweep."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Ribbons",
+      "structure": "Sweep a finite-width strip along sampled curves; specify stable local frames and cap treatment.",
+      "material": "Satin outer face and darker underside to expose twist."
+    },
+    {
+      "family": "Suspension",
+      "structure": "Use slender rods terminating outside the ribbon sweep.",
+      "material": "Brushed dark metal with restrained highlights."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored periodic control-point functions, width, twist, phase offsets and scrub time; no elastic solver.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Scrub phase.",
+      "Edit width within a declared range.",
+      "Toggle curve and frame guides."
+    ]
+  },
+  "invariants": [
+    "Curve sampling order and normals remain consistent across loop wrap.",
+    "Width edits do not change the number of semantic ribbons.",
+    "Suspension is outside the swept envelope."
+  ],
+  "motion_guidance": [
+    "Use periodic position and tangent conditions at loop boundaries.",
+    "Inspect twist and front/back shading at high curvature; do not conceal frame flips with bloom."
+  ],
+  "known_limits": [
+    "No prediction of fabric, bending energy or aerodynamic response.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [],
+  "creative_affordances": [
+    "Contrasting underside makes orientation readable; sparse supports preserve the sculpture silhouette."
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Prescribed deforming display surface.",
+    "state": [
+      "phase",
+      "width",
+      "twist"
+    ],
+    "colliders": [
+      "None; authored envelopes prevent support overlap."
+    ],
+    "driving": [
+      "Periodic control curves."
+    ],
+    "contact": [
+      "No contact mechanics."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Inspect seam continuity and surface frame flips."
+    ]
+  }
+}

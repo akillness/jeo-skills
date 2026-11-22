@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-frame-composition-order",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Declare every frame and compose in one order"
+  },
+  "aliases": {
+    "en": [
+      "coordinate frames",
+      "transform order",
+      "forward kinematics"
+    ]
+  },
+  "direction_ids": [
+    "robotics-control",
+    "earth-environment"
+  ],
+  "summary": "Name the frames, fix the convention and compose transforms in the stated order, because a wrong order still looks plausible.",
+  "objective": "Make a multi-frame scene verifiable rather than tuned until it looks right.",
+  "applies_when": [
+    "A robot arm, vehicle, sensor or camera has links and attached frames.",
+    "Positions are converted between world, base, tool and sensor frames.",
+    "A pose looks almost right and is being corrected by trial and error."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "coordinate frame",
+    "transform composition",
+    "forward kinematics",
+    "home configuration",
+    "tool frame",
+    "convention"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "robotics",
+    "frames"
+  ],
+  "intent_signals": [
+    "the arm points the wrong way",
+    "convert to the tool frame",
+    "show forward kinematics"
+  ],
+  "example_prompts": [
+    "Build an arm whose end-effector pose is computed from the joint angles.",
+    "Show the frames at each link and how they compose."
+  ],
+  "negative_signals": [
+    "Single-frame scenes with no attached coordinate systems.",
+    "Purely artistic articulation with no pose computation."
+  ],
+  "not_for": [
+    "Single-frame scenes with no attached coordinate systems.",
+    "Purely artistic articulation with no pose computation."
+  ],
+  "content": {
+    "principles": [
+      "Forward kinematics is the composition of a fixed sequence of transforms with a defined reference: the end-effector configuration is obtained by composing the joint transforms with the home configuration, which is the pose when all joint variables are zero.",
+      "Composition does not commute, so an order swapped in the code produces poses that look plausible in a rest pose and diverge as joints move. Visual plausibility is not evidence here.",
+      "Every frame needs a declared origin, orientation convention and handedness; a scene that names frames but not conventions is not checkable by anyone else.",
+      "Frames are shared with sensors, targets and collision geometry, so the same convention must be used everywhere or the arm and its target will live in different worlds."
+    ],
+    "implementation": [
+      "Enumerate the frames with their parents and conventions in the scene description, including the reference or home configuration.",
+      "Implement composition in one place and derive both the drawn geometry and any reported pose from it.",
+      "Draw frame triads at the joints and the tool during development, and keep the option available for inspection.",
+      "Verify the home configuration first, then each joint in isolation, before testing combined motion.",
+      "Express targets and sensor data in a named frame and convert explicitly rather than assuming a shared frame."
+    ],
+    "observable_checks": [
+      "Set all joint variables to zero and confirm the end-effector matches the declared home configuration within a stated numeric tolerance for position and orientation.",
+      "For the open chain this record describes, move one joint at a time and confirm only the links after it in the chain move, and in the expected direction. Closed loops and parallel mechanisms do not have that property and need their own constraint check.",
+      "Compute a pose by hand for a simple configuration and compare with the reported pose.",
+      "Convert a point to another frame and back and confirm it returns within a tolerance appropriate to the scene scale, rather than expecting exact equality in floating point."
+    ]
+  },
+  "related_ids": [
+    "recipe.robot-arm-forward-frames",
+    "recipe.inverse-kinematics-target",
+    "knowledge.reasoning-basis-versus-coordinates"
+  ],
+  "creative_affordances": [
+    "Frame visualisation style, from triads to labelled ghosts, is a free design choice.",
+    "Fictional or non-standard mechanisms work identically once their frames are declared."
+  ],
+  "known_limits": [
+    "Authored guidance citing one forward-kinematics formulation; other conventions such as Denavit-Hartenberg parameters express the same composition differently.",
+    "No robot model has been simulated or verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-forward-kinematics-composition",
+      "statement": "In the product of exponentials formulation in the space frame, the end-effector configuration for a given vector of joint variables is obtained by composing the joint screw transforms in order with the home configuration, the pose of the end-effector frame when all joint variables are zero.",
+      "scope": "Open-chain forward kinematics in one standard formulation; other parameterisations express the same composition differently.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-forward-kinematics",
+          "locator": "Product of exponentials in the space frame; home configuration and composition order"
+        }
+      ]
+    }
+  ]
+}

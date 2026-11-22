@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.inspectable-selection",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "interaction-profile",
+  "title": {
+    "en": "Inspectable selection and part identity"
+  },
+  "aliases": {
+    "en": [
+      "select part",
+      "inspect object"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures",
+    "products-assemblies",
+    "architecture-interiors"
+  ],
+  "summary": "Let viewers identify and inspect a part without confusing it with a disposable mesh or decoration.",
+  "objective": "Let viewers identify and inspect a part without confusing it with a disposable mesh or decoration.",
+  "subject_terms": [
+    "select part",
+    "inspect object",
+    "persistent identity"
+  ],
+  "tags": [
+    "interaction-profile",
+    "inspectable-selection"
+  ],
+  "intent_signals": [
+    "persistent identity"
+  ],
+  "example_prompts": [
+    "Use inspectable selection and part identity for the scene, preserving its model and user controls."
+  ],
+  "content": {
+    "principles": [
+      "Select the semantic object the user cares about, which may contain many render meshes.",
+      "Selection feedback should remain distinguishable from scientific color encoding or material changes."
+    ],
+    "implementation": [
+      "Map hit-test results to stable part IDs and clear names.",
+      "Offer a visible equivalent control for essential selection tasks when spatial picking is difficult.",
+      "Keep selected metadata synchronized through hide/reveal, camera changes and reset."
+    ],
+    "observable_checks": [
+      "Selecting a child mesh identifies its intended assembly or part.",
+      "An unavailable or hidden part is handled explicitly without retaining misleading stale information."
+    ]
+  },
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "creative_affordances": [
+    "Adapt the layout, visual treatment and timing to the task; these are reusable design proposals, not mandatory templates."
+  ],
+  "known_limits": [
+    "Authored interaction/presentation guidance; no new scientific claim, accessibility certification or runtime verification is asserted."
+  ],
+  "claims": []
+}

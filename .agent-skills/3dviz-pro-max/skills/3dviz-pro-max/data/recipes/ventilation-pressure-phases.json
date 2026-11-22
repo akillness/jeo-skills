@@ -1,0 +1,225 @@
+{
+  "schema_version": 1,
+  "id": "recipe.ventilation-pressure-phases",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Ventilation pressure and motion phases"
+  },
+  "aliases": {
+    "en": [
+      "breathing mechanics",
+      "diaphragm ventilation illustration"
+    ]
+  },
+  "direction_ids": [
+    "physiology-biomechanics"
+  ],
+  "summary": "Connect an illustrative thorax motion to pressure direction and airflow phase labels.",
+  "objective": "Create a breathing illustration with a diaphragm, lungs and airflow arrows tied to clearly labeled phases.",
+  "tags": [
+    "ventilation",
+    "diaphragm",
+    "thorax"
+  ],
+  "subject_terms": [
+    "ventilation",
+    "diaphragm",
+    "thorax",
+    "alveolar pressure",
+    "airflow"
+  ],
+  "intent_signals": [
+    "explain inhalation",
+    "connect pressure to airflow"
+  ],
+  "example_prompts": [
+    "Create a breathing illustration with a diaphragm, lungs and airflow arrows tied to clearly labeled phases.",
+    "Pause inhalation and compare alveolar pressure with atmospheric pressure."
+  ],
+  "entities": [
+    {
+      "name": "Thorax frame",
+      "guidance": "Use a simplified rib envelope with a cutaway side and a diaphragm dome below two lung envelopes."
+    },
+    {
+      "name": "Airway",
+      "guidance": "Keep tracheal tube connected to left and right branches with arrow paths inside the lumen."
+    },
+    {
+      "name": "Pressure comparison",
+      "guidance": "Show atmospheric reference and qualitative alveolar pressure relation beside the scene."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Thorax frame",
+      "structure": "Use a simplified rib envelope with a cutaway side and a diaphragm dome below two lung envelopes.",
+      "material": "Muted bone-like frame and translucent schematic lung surfaces."
+    },
+    {
+      "family": "Airway",
+      "structure": "Keep tracheal tube connected to left and right branches with arrow paths inside the lumen.",
+      "material": "Neutral airway walls and legible arrowheads."
+    },
+    {
+      "family": "Pressure comparison",
+      "structure": "Show atmospheric reference and qualitative alveolar pressure relation beside the scene.",
+      "material": "Flat high-contrast labels; no fabricated monitor trace."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored sequence rest, inspiration, end-inspiration, expiration; relative pressure sign and flow direction are explicit phase values, not computed physiology. The four phases, their pressure signs and their flow directions are enumerated in defaults.values.state_table, and arrow direction is the sign of (intra-alveolar pressure - atmospheric pressure) rather than an animation choice.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Scrub a cycle.",
+      "Pause a phase and inspect arrows.",
+      "Toggle rib envelope."
+    ]
+  },
+  "invariants": [
+    "Airflow arrows point inward only when phase pressure is below atmospheric and outward only when above.",
+    "Zero-flow transition frames show equalized pressure rather than moving arrows.",
+    "Airways remain connected as lung envelopes change."
+  ],
+  "motion_guidance": [
+    "Coordinate diaphragm lowering and thorax expansion during the authored inspiration pose.",
+    "Do not use a free sinusoid for arrows independent of the phase state."
+  ],
+  "known_limits": [
+    "Quiet-breathing explanation with the sourced reference pressures only: atmospheric 760 mm Hg, intrapleural about -4 mm Hg and a 500 mL tidal volume. The cited section gives no per-phase intra-alveolar value, so the phase table carries signs, not millimetres of mercury.",
+    "No gas exchange, compliance, airway resistance or disease model; Boyle's law is used to explain the sign of the pressure change, not to compute a volume history.",
+    "Geometry is schematic and not a patient-specific reconstruction.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [
+    {
+      "id": "claim.ventilation-pressure-phases",
+      "statement": "Ventilation direction depends on the pressure difference between atmosphere and lungs; diaphragm and thoracic muscle movement contributes to the pressure changes.",
+      "scope": "Qualitative ventilation mechanism only; the authored phase timing is not sourced patient data.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-breathing",
+          "locator": "Mechanisms of Breathing; Pressure Relationships; Physical Factors Affecting Ventilation"
+        }
+      ]
+    },
+    {
+      "id": "claim.ventilation-reference-pressures",
+      "statement": "One atmosphere equals 760 mm Hg, the atmospheric pressure at sea level; intrapleural pressure remains approximately -4 mm Hg throughout the breathing cycle; transpulmonary pressure is the difference between the intrapleural and intra-alveolar pressures; tidal volume, the air that normally enters the lungs during quiet breathing, is about 500 millilitres; and by Boyle's law the pressure of a gas is inversely proportional to its volume, so an increase in thoracic volume lowers pressure.",
+      "scope": "Reference pressures and the quiet-breathing tidal volume used to scale the scene and to fix the sign convention. The section states no intra-alveolar pressure value for each phase, only that it changes during the phases of breathing.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-breathing",
+          "locator": "22.3 The Process of Breathing, Mechanisms of Breathing / Pressure Relationships / Respiratory Volumes: \"One atm is equal to 760 mm Hg, which is the atmospheric pressure at sea level\"; \"intrapleural pressure remains approximately -4 mm Hg throughout the breathing cycle\"; transpulmonary pressure defined as \"the difference between the intrapleural and intra-alveolar pressures\"; \"Boyle discovered that the pressure of a gas is inversely proportional to its volume: If volume increases, pressure decreases\"; \"Tidal volume (TV) is the amount of air that normally enters the lungs during quiet breathing, which is about 500 milliliters\""
+        }
+      ]
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Illustrative ventilation phases, no fluid solver.",
+    "state": [
+      "phase",
+      "relative pressure sign",
+      "flow direction"
+    ],
+    "colliders": [
+      "None; airway continuity checked geometrically."
+    ],
+    "driving": [
+      "Shared phase sequence for deformation and arrows."
+    ],
+    "contact": [
+      "No pleural or tissue contact mechanics."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Pressure sign and arrows agree at inspiration, expiration and zero-flow transitions."
+    ]
+  },
+  "defaults": {
+    "provenance": "source-backed",
+    "tunable": true,
+    "claim_ids": [
+      "claim.ventilation-pressure-phases",
+      "claim.ventilation-reference-pressures"
+    ],
+    "rationale": "Atmospheric pressure, intrapleural pressure, the transpulmonary definition, the tidal volume and Boyle's law all restate the cited section (claim.ventilation-reference-pressures), and the direction rule restates claim.ventilation-pressure-phases. They give the scene a real pressure scale and a sign convention instead of an invented one. The per-phase intra-alveolar values stay absent on purpose: the section says intra-alveolar pressure changes during the phases without printing a value, so the state table carries the sign of the difference from atmospheric, which is all the source supports. Tunable for pacing and for the amplitude of the authored thorax motion; the reference pressures themselves are sourced and should not be retuned.",
+    "values": {
+      "parameters": {
+        "atmospheric_pressure": {
+          "value": 760,
+          "unit": "mmHg",
+          "note": "sourced sea-level reference; the zero of the gauge scale used by the phase table"
+        },
+        "intrapleural_pressure_gauge": {
+          "value": -4,
+          "unit": "mmHg",
+          "note": "sourced; approximately constant through the cycle, so it is a constant offset rather than a phase variable"
+        },
+        "tidal_volume": {
+          "value": 500,
+          "unit": "mL",
+          "note": "sourced quiet-breathing volume; sets how far the authored thorax motion should travel"
+        },
+        "intra_alveolar_pressure_by_phase": {
+          "value": "no default; source gives none",
+          "unit": "mmHg",
+          "note": "the section states that intra-alveolar pressure changes with the phases but prints no per-phase value; the table therefore stores the sign of (P_alveolar - P_atmospheric)"
+        },
+        "breathing_rate": {
+          "value": "no default; source gives none",
+          "unit": "breaths/min",
+          "note": "not stated in the cited section; if a play control exists its rate is a display choice"
+        }
+      },
+      "equations": [
+        "flow direction = sign(P_atmospheric - P_alveolar): positive means inward",
+        "transpulmonary pressure = |P_alveolar - P_intrapleural|",
+        "Boyle's law: P1 V1 = P2 V2 at constant temperature, so increasing thoracic volume lowers intra-alveolar pressure"
+      ],
+      "state_table": [
+        {
+          "phase": "rest (end-expiration)",
+          "thoracic_volume_trend": "constant",
+          "alveolar_vs_atmospheric": "equal",
+          "flow": "none - arrows hidden",
+          "note": "the equalised frame; showing moving arrows here is the defect this recipe guards against"
+        },
+        {
+          "phase": "inspiration",
+          "thoracic_volume_trend": "increasing (diaphragm and external intercostals contract)",
+          "alveolar_vs_atmospheric": "below atmospheric",
+          "flow": "inward",
+          "note": "Boyle's law: volume up, pressure down"
+        },
+        {
+          "phase": "end-inspiration",
+          "thoracic_volume_trend": "maximum, momentarily constant",
+          "alveolar_vs_atmospheric": "equal",
+          "flow": "none - arrows hidden",
+          "note": "500 mL of tidal volume has entered"
+        },
+        {
+          "phase": "expiration",
+          "thoracic_volume_trend": "decreasing (elastic recoil in quiet breathing)",
+          "alveolar_vs_atmospheric": "above atmospheric",
+          "flow": "outward",
+          "note": "Boyle's law: volume down, pressure up"
+        }
+      ],
+      "worked_example": {
+        "inputs": "End-expiration with the airway open: intra-alveolar pressure equal to atmospheric at 760 mm Hg, intrapleural pressure -4 mm Hg on the same gauge scale (756 mm Hg absolute)",
+        "expected": "Transpulmonary pressure 4 mm Hg holding the lungs open, and zero airflow with all arrows hidden; one quiet inspiration then moves the sourced 500 mL tidal volume while the intrapleural offset stays at about -4 mm Hg",
+        "derivation": "On the gauge scale that puts atmospheric at 0, intra-alveolar = 0 and intrapleural = -4, so transpulmonary = |0 - (-4)| = 4 mm Hg. In absolute terms 760 - 756 = 4 mm Hg, the same number. Flow direction = sign(P_atmospheric - P_alveolar) = sign(0) = 0, so the rest and end-inspiration rows must render with no arrows. During inspiration the sign becomes positive and during expiration negative, which is the only quantity the arrows may read."
+      },
+      "tolerance": {
+        "pressure_mmHg": "+/- 1 mmHg; the intrapleural figure is hedged approximately in the source",
+        "zero_flow": "exact: at an equalised phase the arrow count must be 0, not a short arrow",
+        "tidal_volume_mL": "+/- 50 mL against the sourced 500 mL"
+      }
+    }
+  }
+}

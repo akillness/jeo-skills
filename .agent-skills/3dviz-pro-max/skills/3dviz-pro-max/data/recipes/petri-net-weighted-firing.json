@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "id": "recipe.petri-net-weighted-firing",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Petri nets: weighted firing and markings"
+  },
+  "aliases": {
+    "en": [
+      "place-transition token game",
+      "P/T net firing"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data"
+  ],
+  "summary": "Make enabling, conflict and marking updates visible without confusing moving beads with tokens in transit.",
+  "objective": "Build a weighted place-transition net where I can edit an initial marking, inspect enabled transitions and fire one transition atomically.",
+  "tags": [
+    "Petri net",
+    "place-transition",
+    "marking"
+  ],
+  "subject_terms": [
+    "Petri net",
+    "place-transition",
+    "marking",
+    "enabled transition",
+    "arc weight",
+    "firing",
+    "conflict"
+  ],
+  "intent_signals": [
+    "Build a weighted place-transition net where I can edit an initial marking, inspect enabled transitions and fire one transition atomically."
+  ],
+  "example_prompts": [
+    "Build a weighted place-transition net where I can edit an initial marking, inspect enabled transitions and fire one transition atomically."
+  ],
+  "negative_signals": [
+    "No timed, stochastic, colored or capacity-constrained net; total token count need not be conserved. Finite exploration is not a liveness or boundedness proof."
+  ],
+  "not_for": [
+    "No timed, stochastic, colored or capacity-constrained net; total token count need not be conserved. Finite exploration is not a liveness or boundedness proof."
+  ],
+  "entities": [
+    {
+      "name": "Places and transitions",
+      "guidance": "Use shallow round token trays and rectangular transition bars with labeled weighted arrows. Token-stack height represents integer count at fixed scale; larger counts collapse to a numeric badge."
+    },
+    {
+      "name": "Marking inspector",
+      "guidance": "Pin the exact before/after vectors beside an enabledness table. Optional history trays occupy explicit discrete-step layers, not physical elapsed time."
+    }
+  ],
+  "state_contract": {
+    "model": "Finite places P and transitions T; Pre and Post are nonnegative integer matrices; M∈N^|P|. Unlimited place capacity, no inhibitor/reset arcs and no timing. Transition t is enabled iff M≥Pre[:,t], componentwise; commit M′=M−Pre[:,t]+Post[:,t]. Store marking snapshots and chosen transition IDs.",
+    "authority": "The typed domain model owns each committed state and result. Geometry, labels and selection derive from that model; animation cannot certify a claim.",
+    "actions": [
+      "Change nonnegative initial token counts or arc weights, then reset history.",
+      "Select a transition to preview required/produced tokens; fire only when enabled.",
+      "Explore two transitions competing for one input token; step back by restoring a snapshot."
+    ]
+  },
+  "invariants": [
+    "Disabled firing is rejected without any count change; re-evaluate enablement after every commit.",
+    "After one competing transition consumes the only token, the other is disabled unless the committed outputs replenish its input.",
+    "For Pre=[2,0], Post=[0,1], M=[2,0], one firing gives [0,1]; M=[1,0] is disabled. A solution of the aggregate marking equation alone is not a reachable firing sequence."
+  ],
+  "motion_guidance": [
+    "Step commits one semantic action; pause freezes presentation and leaves the committed state inspectable. Reset cancels pending playback and restores the complete starting state.",
+    "Offer a static transition highlight and an equivalent readable table for reduced motion. Camera travel is presentation, not an inference or domain operation."
+  ],
+  "creative_affordances": [
+    "Use shallow sculptural cards, restrained materials and selective focus to expose relationships. Prefer a flat readable layout whenever depth has no declared role."
+  ],
+  "known_limits": [
+    "No timed, stochastic, colored or capacity-constrained net; total token count need not be conserved. Finite exploration is not a liveness or boundedness proof.",
+    "Authored, source-reviewed guidance only; no generated artifact, solver integration, runtime behavior or visual check has run."
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Abstract symbols and logical state; mesh contact, light and motion have no causal role in the model."
+  },
+  "related_ids": [
+    "recipe.finite-state-machine"
+  ],
+  "object_craft": [
+    {
+      "family": "Places and transitions",
+      "structure": "Use shallow round token trays and rectangular transition bars with labeled weighted arrows. Token-stack height represents integer count at fixed scale; larger counts collapse to a numeric badge.",
+      "material": "Matte surfaces and high-contrast labels; distinguish status with text and border style as well as color."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim.petri-net-weighted-firing",
+      "statement": "For weighted P/T nets without capacity limits, input token multiplicities determine enabling and firing subtracts input weights and adds output weights. The aggregate marking equation is necessary but not sufficient for reachability.",
+      "scope": "Unlimited-capacity specialization of the tutorial occurrence rule; no inhibitor arcs.",
+      "source_refs": [
+        {
+          "source_id": "source.desel-pt-nets-2000",
+          "locator": "Printed pages 89–90, formal definition and occurrence rule; 97–98, marking equation"
+        }
+      ]
+    }
+  ]
+}

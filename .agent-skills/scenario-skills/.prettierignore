@@ -1,0 +1,36 @@
+# Generated files
+pnpm-lock.yaml
+skills-lock.json
+.claude-plugin/marketplace.json
+.cursor/BUGBOT.md
+.husky/_/
+
+# Rewritten by release-please, which emits `*` bullets prettier would rewrite.
+# .release-please-manifest.json needs no exemption: release-please reuses that
+# file's existing indent and trailing newline, so it stays prettier-clean.
+CHANGELOG.md
+
+# Vendored dev skills, kept byte-identical to their published source
+.claude/skills/
+.agents/skills/skill-creator/
+.agents/skills/skill-development/
+.agents/skills/pr-summary/
+.agents/skills/pr-squash-message/
+.agents/skills/pr-handle-comments/
+
+# Unity project files the Unity expert tools copy into a project (a WebGL
+# template with {{{ }}} tags, a .jslib plugin), kept as Unity reads them
+skills/game-engines/unity/*/scripts/
+
+# Contributor Covenant 2.1, kept byte-identical to its published source
+CODE_OF_CONDUCT.md
+# Godot files the Godot expert tools copy into a project (a GitHub Actions
+# workflow and CI script template), kept as they were run in Godot
+skills/game-engines/godot/*/scripts/
+# Roblox files the Roblox Studio expert tools copy into a project (Rojo model
+# and place JSON, a GitHub Actions template), kept as they were built and run
+skills/game-engines/roblox/*/scripts/
+# The kinetic film shows its own source (the Counters block, {lines}), so a
+# reformat of the engine or an example would change what the film renders
+skills/scenario-kinetic-film/assets/engine/
+skills/scenario-kinetic-film/assets/examples/

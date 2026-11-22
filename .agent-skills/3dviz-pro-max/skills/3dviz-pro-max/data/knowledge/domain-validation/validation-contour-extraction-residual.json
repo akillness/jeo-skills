@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-contour-extraction-residual",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Contour vertex residual, interval constancy and exaggeration isolation"
+  },
+  "aliases": {
+    "en": [
+      "isoline residual check",
+      "vertical exaggeration isolation"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment"
+  ],
+  "summary": "Evaluate extracted contour vertices back against the field and keep vertical exaggeration out of the data.",
+  "objective": "Every extracted vertex evaluates to its labelled level within tolerance, and exaggeration changes no elevation or distance.",
+  "applies_when": [
+    "Isolines or level slices are extracted from a sampled height field.",
+    "Vertical exaggeration is available as a display control.",
+    "Grid resolution limits which features can be resolved."
+  ],
+  "check_method": "geometry",
+  "tags": [
+    "domain-validation",
+    "contours",
+    "resolution",
+    "display-transform"
+  ],
+  "subject_terms": [
+    "contour line",
+    "contour interval",
+    "height field",
+    "grid spacing",
+    "vertical exaggeration",
+    "saddle cell"
+  ],
+  "intent_signals": [
+    "the contours do not sit at the labelled heights",
+    "does exaggeration change the slope numbers"
+  ],
+  "example_prompts": [
+    "Check the contour extraction and exaggeration handling in this terrain scene."
+  ],
+  "negative_signals": [
+    "surveyed mapping products",
+    "flood or erosion modelling"
+  ],
+  "content": {
+    "principles": [
+      "A contour is defined by the field, so every extracted vertex should evaluate back to its labelled level. The residual is measured in field units; dividing by the local gradient gives only a first-order normal-distance estimate, which is undefined at a zero gradient and unreliable near critical points.",
+      "Extraction resolution bounds what can appear: features narrower than a couple of grid cells cannot be resolved, and a smooth line at that scale is interpolation rather than data. Refinement can also reconnect or split whole components around an unresolved saddle, so a change in topology is a legitimate refinement result rather than evidence of a defect.",
+      "Vertical exaggeration is a display transform that never changes elevations, levels or horizontal distances, and its factor must be visible wherever slope could be read."
+    ],
+    "implementation": [
+      "State whether verification evaluates the extraction interpolant or the underlying analytic field, since the second also measures discretization error, then for each extracted vertex record the difference from the labelled level in field units.",
+      "Where the local gradient magnitude is above a declared floor, also report the residual divided by it as a first-order normal distance; at or below that floor report the field-unit residual and mark the distance estimate unavailable.",
+      "Report the level set actually used and confirm each extracted line carries the level it is labelled with; a constant interval is an authored layer policy to check when it was declared, not a requirement of every contour dataset.",
+      "Halve the grid spacing, re-extract and compare the lines, recording both the convergence of shared features and any change in connectivity around saddles or near-level regions.",
+      "Inspect cells where the contour is ambiguous, such as a saddle with two crossings, and record the disambiguation rule used."
+    ],
+    "observable_checks": [
+      "Every extracted vertex evaluates to its labelled level within the declared tolerance in elevation units, with the gradient-scaled horizontal distance reported only where the gradient is above the declared floor and marked ill-conditioned or unavailable elsewhere.",
+      "Changing vertical exaggeration changes no elevation, level or horizontal distance in the data, and the factor is displayed wherever slope is visible.",
+      "Refinement is reported as observed convergence and topology change: shared features converge, and any component that appears, merges or splits is reported as previously unresolved structure rather than as new terrain or as a defect."
+    ]
+  },
+  "known_limits": [
+    "Applies to an authored or supplied height field; it establishes no geodetic datum, projection or survey accuracy.",
+    "Authored verification guidance; no extraction was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.terrain-contour-slices",
+    "recipe.terrain-island",
+    "recipe.divergent-ridge-crust-age"
+  ],
+  "claims": []
+}

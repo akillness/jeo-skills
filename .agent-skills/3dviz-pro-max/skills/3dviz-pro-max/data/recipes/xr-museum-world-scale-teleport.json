@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "id": "recipe.xr-museum-world-scale-teleport",
+  "title": {
+    "en": "XR museum world-scale teleport contract"
+  },
+  "aliases": {
+    "en": [
+      "bounded-floor museum",
+      "VR gallery teleport"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors"
+  ],
+  "summary": "Navigate a metre-authored museum using supplied walkable polygons and teleport targets while treating device bounded-floor geometry, authored collision and local-floor fallback as separate contracts.",
+  "objective": "Navigate a metre-authored museum using supplied walkable polygons and teleport targets while treating device bounded-floor geometry, authored collision and local-floor fallback as separate contracts.",
+  "tags": [
+    "WebXR bounded-floor",
+    "museum teleport",
+    "metre scale",
+    "walkable polygon",
+    "desktop fallback"
+  ],
+  "subject_terms": [
+    "WebXR bounded-floor",
+    "museum teleport",
+    "metre scale",
+    "walkable polygon",
+    "desktop fallback"
+  ],
+  "intent_signals": [
+    "Teleport through a museum at correct world scale with a desktop equivalent."
+  ],
+  "example_prompts": [
+    "Build a metre-scale museum with bounded-floor-aware teleport, explicit floor fallback and equivalent desktop exhibit navigation."
+  ],
+  "negative_signals": [
+    "device bounds prove authored walkability",
+    "headset mention proves deployment"
+  ],
+  "not_for": [
+    "Evacuation, accessibility or physical-space safety certification."
+  ],
+  "entities": [
+    {
+      "name": "Metre-scale gallery",
+      "guidance": "Blender authors walls, exhibits, collision proxies and teleport anchors in metres with stable IDs; glTF preserves asset scale, not XR reference spaces."
+    },
+    {
+      "name": "Walkable registry",
+      "guidance": "Store supplied authored walkable polygons and clearance class independently from device bounded-floor bounds; teleport targets pass authored walkability/collision only. Device bounds may drive a separate physical play-area overlay/guard."
+    },
+    {
+      "name": "Locomotion router",
+      "guidance": "Offer direct room/exhibit controls on desktop and a declared fade/instant teleport in immersive mode; continuous motion is optional rather than assumed."
+    }
+  ],
+  "state_contract": {
+    "model": "Request immersive-vr through knowledge.webxr-delivery-boundary. Prefer bounded-floor when enabled, but treat its device-supplied bounds only as physical play-area metadata. Validate every teleport destination solely against the authored walkable polygon/collision registry. If room-scale physical movement is visualized or guarded, evaluate the tracked viewer position against current device bounds in that reference-space frame as a separate status; never compare virtual destination coordinates to those bounds. If bounded-floor is unavailable, request local-floor only when declared; if that fails, any emulated floor offset is labeled authored calibration and never inferred. Teleport changes the application rig within the selected reference space, never the reference-space transform itself.",
+    "authority": "Blender/glTF owns metre-scale gallery geometry, colliders and target anchors. The user agent owns reference-space poses/bounds. Three.js/WebXR owns session/reference-space lifecycle, target validation, rig offset, fade state, controller loss and desktop-equivalent selection/reset.",
+    "actions": [
+      "Enter XR through the existing capability lifecycle.",
+      "Aim/select a valid teleport target.",
+      "Choose room/exhibit through equivalent desktop controls.",
+      "Recenter/reset application rig without rewriting source geometry."
+    ]
+  },
+  "invariants": [
+    "glTF asset scale is one metre per authored metre.",
+    "Device bounded-floor bounds never replace authored walkability/collision and are never used to accept or reject a virtual teleport destination.",
+    "A rejected/unknown target produces no rig move.",
+    "Fallback floor origin and calibration status remain visible."
+  ],
+  "motion_guidance": [
+    "Teleport uses a short authored fade or immediate cut with no hidden continuous acceleration; playback of the transition is presentation, not evidence of comfort for a device/user."
+  ],
+  "creative_affordances": [
+    "Use floor reticles, destination silhouettes and exhibit landmarks with shape/labels as well as color."
+  ],
+  "known_limits": [
+    "No headset, browser, floor calibration, comfort study, physical clearance, render or runtime was tested."
+  ],
+  "claims": [
+    {
+      "id": "claim.xr-webxr-reference-bounds",
+      "statement": "WebXR defines local, local-floor and bounded-floor reference-space types; bounded-floor exposes device-defined boundary geometry, while requesting a reference space can reject when the type is unsupported.",
+      "scope": "WebXR Device API Candidate Recommendation Draft 9 June 2026; device bounds do not certify application-authored walkability or accessibility.",
+      "source_refs": [
+        {
+          "source_id": "source.output-w3c-webxr",
+          "locator": "Sections 3.4 and 6.2-6.3, XRReferenceSpaceType and XRBoundedReferenceSpace.boundsGeometry"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "XR museum shell",
+      "structure": "Blender models gallery/exhibits/collision proxies at metre scale and exports named target anchors via glTF; no session, bounds or floor calibration is baked.",
+      "material": "Valid, blocked and unavailable destinations use distinct reticle shape and text; fade plane is runtime-only.",
+      "articulation": "Three.js validates teleport targets only against authored geometry, optionally displays device play-area status separately, and moves only an application rig."
+    }
+  ],
+  "physical_contract": {
+    "model": "controlled-locomotion",
+    "scope": "Application-rig teleport among validated authored targets; no physical-space or comfort certification.",
+    "state": [
+      "reference-space mode/status",
+      "authored walkable polygons",
+      "device play-area bounds and tracked-viewer status if supplied",
+      "application rig/teleport target"
+    ],
+    "driving": [
+      "Select commits one validated target."
+    ],
+    "contact": [
+      "Collision proxy validation is authored application logic, independent of device bounds."
+    ],
+    "checks": [
+      "Reject target outside authored walkability/collision without consulting device bounds.",
+      "When enabled, device-bounds status evaluates only tracked physical movement in its own reference-space frame.",
+      "Bounded-floor absence follows declared local-floor/desktop path.",
+      "Reset restores rig and selection exactly."
+    ]
+  },
+  "related_ids": [
+    "recipe.museum-route-object-inspection",
+    "knowledge.webxr-delivery-boundary",
+    "knowledge.modality-independent-action-map"
+  ]
+}

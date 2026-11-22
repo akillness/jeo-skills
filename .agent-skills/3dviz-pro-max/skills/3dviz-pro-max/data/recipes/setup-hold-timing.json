@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "id": "recipe.setup-hold-timing",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Setup, hold and the clock period budget"
+  },
+  "aliases": {
+    "en": [
+      "setup and hold time",
+      "clock period",
+      "metastability"
+    ]
+  },
+  "direction_ids": [
+    "logic-circuits"
+  ],
+  "summary": "Show a register timing budget as a scene where violating a window has a visible, named consequence.",
+  "objective": "Build a clocked path where I can stretch logic delay until the setup constraint fails, with the timing window drawn around the clock edge.",
+  "tags": [
+    "sequential logic",
+    "timing",
+    "clock"
+  ],
+  "subject_terms": [
+    "setup time",
+    "hold time",
+    "clock period",
+    "register",
+    "clock edge",
+    "dynamic discipline",
+    "metastability",
+    "timing violation"
+  ],
+  "intent_signals": [
+    "Show what setup and hold time mean around a clock edge.",
+    "Demonstrate a timing violation and what it does to stored state."
+  ],
+  "example_prompts": [
+    "Build a register-to-register path with adjustable logic delay and a setup constraint check.",
+    "Show the hold window and why a fast path can also fail."
+  ],
+  "negative_signals": [
+    "Not a static timing analysis tool for real designs; no libraries, corners or clock trees.",
+    "Not a probabilistic metastability model: no mean time between failures is computed."
+  ],
+  "not_for": [
+    "Not a static timing analysis tool for real designs; no libraries, corners or clock trees.",
+    "Not a probabilistic metastability model: no mean time between failures is computed."
+  ],
+  "entities": [
+    {
+      "name": "Register pair",
+      "guidance": "Two registers with visible data and clock inputs and an internal state indicator, so a captured value is an object property."
+    },
+    {
+      "name": "Timing window",
+      "guidance": "Draw the setup and hold windows as a bounded region around the clock edge on a time axis in the scene."
+    },
+    {
+      "name": "Verdict panel",
+      "guidance": "Show the budget arithmetic: clock period against register delay plus logic delay plus setup time, with the slack signed."
+    }
+  ],
+  "state_contract": {
+    "model": "Two registers with independent maximum (propagation) and minimum (contamination) delays, a combinational path with its own maximum and minimum delays, a clock period, and setup and hold values. The setup budget requires the clock period to be at least the launch register propagation delay plus the maximum logic delay plus the destination setup time; the hold budget requires the launch register contamination delay plus the minimum logic delay to be at least the destination hold time. Slack is signed for each budget separately, and a violated budget reports the captured value as not guaranteed.",
+    "authority": "The budget arithmetic is authoritative. The animation of the data edge must be drawn from the same numbers, so a visual arrival that contradicts the slack is a defect.",
+    "actions": [
+      "Change the logic delay or the clock period.",
+      "Trigger a single clock edge and inspect capture.",
+      "Toggle the setup and hold window overlays.",
+      "Reset delays and register state."
+    ]
+  },
+  "invariants": [
+    "A violation reports the captured value as not guaranteed rather than as a plausible zero or one; that is a conservative teaching output, not a claim that every violating hardware event becomes metastable.",
+    "The two budgets use different delays: setup uses the maximum path delay and hold uses the minimum. Reducing only the maximum logic delay leaves hold unchanged, but reducing the minimum logic delay can create a hold violation while setup still passes.",
+    "Slack is signed and its sign is consistent with the violation flag."
+  ],
+  "motion_guidance": [
+    "Animate the data edge arriving relative to the clock edge on the same time axis, so the window comparison is visual and numeric at once.",
+    "Show metastability as a settled-late or undefined indication rather than as a decorative flicker that implies a known outcome."
+  ],
+  "known_limits": [
+    "Teaching model with single-cycle paths; clock skew, jitter and multi-cycle paths are out of scope.",
+    "Metastability is shown qualitatively as an undefined state, which is not a resolution-time prediction.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-setup-hold-definition",
+      "statement": "Setup time is the interval during which the data input must be valid and stable before the rising clock edge, and hold time is the interval during which it must remain valid and stable after that edge.",
+      "scope": "Edge-triggered register discipline as taught.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-mit6004-sequential",
+          "locator": "5.1 slides, setup and hold time definitions"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-clock-period-budget",
+      "statement": "The clock period must be at least the sum of the launch register propagation delay, the logic propagation delay and the destination register setup time, and separately the launch register contamination delay plus the logic contamination delay must be at least the destination hold time.",
+      "scope": "Single clock domain without skew or jitter, as taught; the source states both inequalities with greater-than-or-equal, so any additional margin is a design choice rather than part of the rule.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-mit6004-sequential",
+          "locator": "5.1 slides, setup constraint and hold constraint inequalities"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-metastability",
+      "statement": "A bistable element has a balance point at which the smallest perturbation drives the voltages to one of the stable solutions, which is the metastable condition a timing violation can provoke.",
+      "scope": "Qualitative description as taught; no settling-time statistics are claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-mit6004-sequential",
+          "locator": "5.1 slides, metastable balance point"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Register pair",
+      "structure": "Blocks with a distinct clock input notch and an internal state readout window.",
+      "material": "Neutral bodies with a single reserved accent for the undefined state, so a violation is unmistakable.",
+      "articulation": "None. Only the state indicator and the animated edges change."
+    },
+    {
+      "family": "Timing window",
+      "structure": "A time axis rendered as a physical rail in the scene with the window as a solid band and the clock edge as a plane.",
+      "material": "Band uses a hatched fill so it stays readable when the data edge marker crosses it.",
+      "articulation": "The band rebuilds when setup or hold values change."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Discrete timing arithmetic and presentation; no analogue circuit simulation.",
+    "checks": [
+      "Negative slack always coincides with an undefined capture report.",
+      "Reducing the maximum logic delay restores a passing setup check without changing hold, while reducing the minimum logic delay is checked separately for a hold violation."
+    ]
+  },
+  "related_ids": [
+    "recipe.finite-state-machine",
+    "recipe.critical-path-delay",
+    "knowledge.state-playback"
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-projection-overreading-guard",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Projection stability review and an unstructured control run"
+  },
+  "aliases": {
+    "en": [
+      "cluster over-reading guard",
+      "projection seed stability"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data"
+  ],
+  "summary": "Judge which apparent structure in a projection survives reseeding, and include a control run with unstructured data.",
+  "objective": "Only structure stable across runs is described as a finding, and a control run is recorded beside the real one.",
+  "applies_when": [
+    "High-dimensional data is displayed through a dimensionality-reducing projection.",
+    "The method has a random seed or sensitive parameters.",
+    "A viewer may read apparent clusters as categories."
+  ],
+  "check_method": "visual",
+  "tags": [
+    "domain-validation",
+    "projection",
+    "over-reading",
+    "advisory"
+  ],
+  "subject_terms": [
+    "dimensionality reduction",
+    "seed",
+    "apparent cluster",
+    "control run",
+    "original vector",
+    "metric space"
+  ],
+  "intent_signals": [
+    "are these clusters real",
+    "the layout changes completely when I rerun it"
+  ],
+  "example_prompts": [
+    "Review whether the clusters in this embedding projection are stable."
+  ],
+  "negative_signals": [
+    "claiming semantic categories from a layout",
+    "benchmarking projection methods"
+  ],
+  "content": {
+    "principles": [
+      "A projection is a lossy map, so apparent clusters and distances belong to the projection as much as to the data; the check asks how much of the picture survives a change of parameters.",
+      "This review is advisory about being misled rather than aesthetic: it does not declare one layout more beautiful or more correct than another.",
+      "Original vectors remain the reference, so a distance readout must name its space and projected coordinates must never overwrite the source data."
+    ],
+    "implementation": [
+      "Recompute the projection with at least three seeds where the method is randomized, and with several settings of its main parameter; for a deterministic method reseeding is not independent evidence, so vary initialization, parameters or data subsampling instead and say which was varied.",
+      "Ask a specific written question of each pair of runs: do the same points stay grouped, and does any apparent gap between groups persist across all runs.",
+      "Run a control by projecting a dataset drawn from a specified distribution with no group structure, recording its sample size, dimension, normalization and the identical method parameters, and note whether that result also looks clustered.",
+      "Verify in the data that projected coordinates are stored separately from the original vectors and that every distance readout names its space."
+    ],
+    "observable_checks": [
+      "Structure appearing in only some runs is reported as unstable and is not described in the artifact as a finding.",
+      "The control run is recorded beside the real one with its distribution, sample size, dimension and normalization stated, so a reader can see how much apparent grouping the method produces on data with no groups.",
+      "Original vectors are unchanged after projection, and every distance readout states whether it belongs to the original or the projected space."
+    ]
+  },
+  "known_limits": [
+    "A stability and over-reading review; it cannot establish that stable structure is semantically meaningful, and judgments here are advisory rather than a universal standard.",
+    "Authored verification guidance; no projection was computed or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.embedding-projection",
+    "recipe.service-graph",
+    "recipe.sampling-mean-distribution"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-tsne-projection-purpose",
+      "statement": "t-SNE visualizes high-dimensional data by giving each data point a location in a two- or three-dimensional map, aiming to reveal structure at many different scales in a single map.",
+      "scope": "The stated purpose of the technique in the cited paper abstract; it is not a guarantee that distances or cluster separations in the map reproduce those in the original space.",
+      "source_refs": [
+        {
+          "source_id": "source.jmlr-tsne",
+          "locator": "Abstract"
+        }
+      ]
+    }
+  ]
+}

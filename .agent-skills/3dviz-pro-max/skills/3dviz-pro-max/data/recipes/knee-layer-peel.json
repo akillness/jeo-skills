@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "id": "recipe.knee-layer-peel",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Knee structures with layer peel"
+  },
+  "aliases": {
+    "en": [
+      "knee layer peel"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures"
+  ],
+  "summary": "Inspect the joint interior through reversible layer visibility.",
+  "objective": "Show a knee with a controlled peel that exposes the menisci and retains a reference pose.",
+  "tags": [
+    "knee",
+    "layer",
+    "peel"
+  ],
+  "example_prompts": [
+    "Show a knee with a controlled peel that exposes the menisci and retains a reference pose."
+  ],
+  "entities": [
+    {
+      "name": "Bones",
+      "guidance": "Preserve recognizable distal femur and proximal tibia landmarks from a sourced model; bone and cartilage need distinct restrained finishes."
+    },
+    {
+      "name": "Menisci",
+      "guidance": "Make separate named structures at their sourced locations; preserve curvature and thickness rather than flat generic washers."
+    },
+    {
+      "name": "Layer handles",
+      "guidance": "Separate peel controls from pose controls; retain dotted attachment/reference guides during displacement."
+    }
+  ],
+  "state_contract": {
+    "model": "Sourced structure IDs and immutable rest transforms; peel amount changes display offsets only.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Peel outer layers.",
+      "Isolate menisci with surrounding bones visible.",
+      "Restore rest pose."
+    ]
+  },
+  "invariants": [
+    "Reset reproduces original transforms exactly.",
+    "Exploded offsets do not change attachment metadata.",
+    "Do not treat the knee as a mechanically certified single-axis hinge."
+  ],
+  "motion_guidance": [
+    "Ease layers along authored nonintersecting display offsets, never a gravity simulation.",
+    "If flexion is added, obtain separate kinematic evidence and validate contacts; this record supplies no flexion limits."
+  ],
+  "known_limits": [
+    "No ligament force, cartilage deformation or joint load model.",
+    "Mesh landmarks and proportions need separate asset verification; the peel distances in the defaults are authored display offsets in scene units and are not anatomical thicknesses, which the cited section does not give.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.knee-layer-peel",
+      "statement": "Menisci in the knee provide cushioning between the articulating bones.",
+      "scope": "Qualitative structural function; no material or load parameters.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-synovial",
+          "locator": "9.4, articular discs and menisci paragraphs"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Bones",
+      "structure": "Preserve recognizable distal femur and proximal tibia landmarks from a sourced model; bone and cartilage need distinct restrained finishes.",
+      "material": "Matte ivory bone, smoother cartilage and a distinct meniscus family; no wet-metal appearance or decorative grooves presented as anatomy.",
+      "articulation": "Peel offsets preserve rest-pose attachments; no generic hinge is claimed as knee biomechanics."
+    },
+    {
+      "family": "Menisci",
+      "structure": "Make separate named structures at their sourced locations; preserve curvature and thickness rather than flat generic washers.",
+      "material": "Matte ivory bone, smoother cartilage and a distinct meniscus family; no wet-metal appearance or decorative grooves presented as anatomy.",
+      "articulation": "Peel offsets preserve rest-pose attachments; no generic hinge is claimed as knee biomechanics."
+    },
+    {
+      "family": "Layer handles",
+      "structure": "Separate peel controls from pose controls; retain dotted attachment/reference guides during displacement.",
+      "material": "Matte ivory bone, smoother cartilage and a distinct meniscus family; no wet-metal appearance or decorative grooves presented as anatomy.",
+      "articulation": "Peel offsets preserve rest-pose attachments; no generic hinge is claimed as knee biomechanics."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Semantic geometry/state presentation; no gravity, contact force or material simulation.",
+    "checks": [
+      "Reset reproduces original transforms exactly.",
+      "Exploded offsets do not change attachment metadata."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Illustrative display offsets: the cited synovial-joint section supports what the menisci do (claim.knee-layer-peel) but gives no layer thickness, no joint dimension and no separation distance, so every number below is an authored presentation choice and none describes anatomy. The schedule is deliberately linear in layer index so the expected offset of any layer is a single multiplication a check can verify, and so reset is exactly the t = 0 case rather than a separate code path. The ordering is outermost to innermost because that is the order a peel reveals them. Tunable: step size and layer count are free; what must not change is that the offset is composed with an immutable rest transform rather than written into it.",
+    "values": {
+      "parameters": {
+        "layer_order": {
+          "value": [
+            "skin and superficial fascia",
+            "joint capsule and synovial membrane",
+            "ligaments",
+            "menisci",
+            "articulating bone ends"
+          ],
+          "unit": "ordered list, outermost first",
+          "note": "authored teaching order; the structure IDs themselves come from the sourced mesh"
+        },
+        "layer_count": {
+          "value": 5,
+          "unit": "layers",
+          "note": "authored"
+        },
+        "peel_amount": {
+          "value": 0.0,
+          "unit": "normalised 0 to 1",
+          "note": "authored; 0 is the assembled reference state, 1 is fully peeled"
+        },
+        "per_layer_offset_step": {
+          "value": 0.03,
+          "unit": "m",
+          "note": "authored display separation per layer index at full peel; a display distance, not a tissue thickness"
+        },
+        "offset_direction": {
+          "value": "each layer's outward normal at its own rest pose",
+          "unit": "direction",
+          "note": "authored; fixed at rest so the explosion does not rotate with the camera"
+        },
+        "layer_thicknesses": {
+          "value": "no default; source gives none",
+          "unit": "m",
+          "note": "the cited section gives no anatomical thickness for any of these layers"
+        },
+        "joint_dimensions": {
+          "value": "no default; source gives none",
+          "unit": "m",
+          "note": "supply them with the mesh and its own source"
+        }
+      },
+      "equations": [
+        "offset_i = i * per_layer_offset_step * peel_amount, with i the layer index from 0 for the innermost visible layer",
+        "world_transform_i = rest_transform_i composed with translate(offset_i * normal_i)",
+        "reset is peel_amount = 0, which makes every offset exactly 0"
+      ],
+      "worked_example": {
+        "inputs": "The 5 authored layers with a 0.03 m step, peeled to peel_amount = 1.0 and then reset to 0.0",
+        "expected": "Offsets 0, 0.03, 0.06, 0.09 and 0.12 m, total spread 0.12 m between the innermost and outermost layer and 0.30 m of offset summed over all layers; after reset every layer's world transform equals its rest transform exactly, with a maximum component difference of 0.0 rather than a small residue, and every attachment record is byte-identical before and after",
+        "derivation": "offset_i = i x 0.03 x 1.0 for i = 0..4 gives 0, 0.03, 0.06, 0.09, 0.12 m; the sum is 0.30 m and the spread is the largest minus the smallest, 0.12 m. At peel_amount = 0 every term contains the factor 0, so the composed translation is the identity and the world transform is the rest transform itself - an exact equality, not a tolerance. That is the discriminating check: an implementation that accumulates the offset into the stored rest transform instead of composing with it will drift away from equality after peeling and resetting several times, and will fail this comparison even though a screenshot looks correct."
+      },
+      "tolerance": {
+        "reset_exactness": "exact equality of the reset transform with the rest transform; use an identity comparison, not an epsilon",
+        "offset_m": "1e-9 m on a computed offset against the formula",
+        "attachment_metadata": "unchanged: compare the attachment records before and after, not just the geometry"
+      }
+    }
+  }
+}

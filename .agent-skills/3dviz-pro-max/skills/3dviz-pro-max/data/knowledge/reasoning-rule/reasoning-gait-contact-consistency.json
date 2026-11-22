@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-gait-contact-consistency",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Tie stride length to travelled distance"
+  },
+  "aliases": {
+    "en": [
+      "foot skate",
+      "root motion",
+      "gait consistency"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art"
+  ],
+  "summary": "Derive body speed from foot contact, or drive feet from body speed, but never let the two be authored independently.",
+  "objective": "Make locomotion read as contact with the ground rather than as a sliding pose cycle.",
+  "applies_when": [
+    "A character or creature walks, runs, crawls or climbs across a surface.",
+    "A looping locomotion clip is played while a controller moves the root.",
+    "Movement speed is variable, or the ground is uneven."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "gait",
+    "walk cycle",
+    "foot plant",
+    "root motion",
+    "locomotion",
+    "stride"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "animation",
+    "locomotion"
+  ],
+  "intent_signals": [
+    "the feet slide",
+    "the walk looks like it is on ice",
+    "make the creature patrol the garden"
+  ],
+  "example_prompts": [
+    "Fix the sliding feet on the walking creature.",
+    "Let the creature slow down near the pond without the walk breaking."
+  ],
+  "negative_signals": [
+    "Floating, hovering or swimming actors with no ground contact.",
+    "Deliberately weightless or dreamlike motion where sliding is the intent."
+  ],
+  "not_for": [
+    "Floating, hovering or swimming actors with no ground contact.",
+    "Deliberately weightless or dreamlike motion where sliding is the intent."
+  ],
+  "content": {
+    "principles": [
+      "During a plant, the contact point should not move relative to the ground. Body displacement over one cycle therefore equals the stride the animation actually produces; if the controller speed and the clip disagree, the difference shows up as sliding.",
+      "There are two consistent architectures: motion extracted from the animation drives the body, or the body speed scales the playback rate of the cycle. Mixing them arbitrarily is what produces skate.",
+      "Uneven ground adds a second requirement: the planted foot must follow the surface height, otherwise the character floats on slopes and sinks on rises even when the horizontal speed is right.",
+      "Turning is part of the same budget. A body that rotates faster than the feet can step reads as a pivoting statue."
+    ],
+    "implementation": [
+      "Pick the authority: extract root displacement from the clip for authored gaits, or measure the cycle stride once and scale playback by the current speed for procedural control.",
+      "Blend between separate cycles at their natural speeds rather than stretching one clip across an implausible range.",
+      "Add a per-foot adjustment against the ground query for slopes and steps, and keep it small so it corrects rather than replaces the animation.",
+      "Constrain turn rate and add lean or a step-turn transition so heading changes cost time.",
+      "Give creatures rests, glances and speed changes rather than a constant loop; irregularity should come from the state machine, not from noise on the transform."
+    ],
+    "observable_checks": [
+      "Watch a single foot from a low camera through one full cycle: a planted foot that drifts backwards or forwards is skating.",
+      "Halve and double the movement speed and watch whether the cycle rate follows.",
+      "Walk across a slope and a step; the planted foot should stay in contact instead of hovering or penetrating.",
+      "Stop the actor abruptly: the pose should settle into a stance rather than freezing mid-stride."
+    ]
+  },
+  "related_ids": [
+    "recipe.garden-creature-patrol",
+    "knowledge.authored-locomotion",
+    "knowledge.articulation-from-motion"
+  ],
+  "creative_affordances": [
+    "Stylised gaits, exaggerated hops and impossible creatures remain fully available; the constraint is between contact and displacement, not a realism requirement.",
+    "Deliberate skating, such as a skid into a turn, is expressive when it is authored rather than accidental."
+  ],
+  "known_limits": [
+    "Authored motion guidance; no clip, controller or rendered gait has been measured for this record.",
+    "Clip playback alone does not provide obstacle avoidance, support or contact response; those need a separate model."
+  ],
+  "claims": []
+}

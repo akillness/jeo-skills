@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "id": "recipe.torque-driven-four-bar-dynamics",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Torque-driven planar four-bar dynamics"
+  },
+  "aliases": {
+    "en": [
+      "dynamic four-bar linkage",
+      "four-bar torque response"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "products-assemblies"
+  ],
+  "summary": "Integrate one planar four-bar generalized coordinate from applied torque while solving loop closure on a locked assembly branch.",
+  "objective": "Build a bounded four-bar where torque, gravity and damping evolve the crank state and every accepted step satisfies joint closure without branch flips.",
+  "tags": [
+    "four-bar linkage",
+    "torque dynamics",
+    "loop closure"
+  ],
+  "subject_terms": [
+    "generalized coordinate",
+    "assembly branch",
+    "effective inertia",
+    "torque",
+    "joint damping",
+    "closure residual"
+  ],
+  "intent_signals": [
+    "torque-driven four-bar dynamics",
+    "dynamic linkage branch lock"
+  ],
+  "example_prompts": [
+    "Apply a torque pulse to an open-branch four-bar and inspect crank speed, closure residual and energy."
+  ],
+  "negative_signals": [
+    "Not prescribed crank animation, motor sizing, stress, bearing contact or a certified mechanism design."
+  ],
+  "not_for": [
+    "No clearance, backlash, elasticity, impact, frictional joints or arbitrary spatial linkage."
+  ],
+  "entities": [
+    {
+      "name": "Links and pivots",
+      "guidance": "Blender authors rigid link shells and named pivot empties; numeric pivot-to-pivot lengths and mass properties are validated separately."
+    },
+    {
+      "name": "Dynamics ledger",
+      "guidance": "Three.js or an attached numerical module solves branch-locked positions and integrates q/qdot from torque; show closure and energy residuals."
+    }
+  ],
+  "state_contract": {
+    "model": "Four rigid planar links with ground length L1 and moving lengths L2,L3,L4 have one generalized coordinate q=theta2 on a selected open or crossed assembly branch. For each q, solve circle-intersection/vector-loop closure for theta3,theta4 and reject no-assembly, branch-change and toggle/singular states where the closure derivative or derived M-prime is undefined. Declare viscous generalized damping d>=0. From declared link masses, planar inertias and centers of mass compute kinetic energy T=.5*M(q)*qdot^2 and potential V(q). Evolve M(q)*qddot+.5*M_prime(q)*qdot^2+d*qdot+dV/dq=tau(t), using fixed dt and a named root/integrator method. Kinematic mode may preview q but is a separate non-dynamic state and cannot generate a torque history.",
+    "authority": "The numerical controller owns q, qdot, branch, closure solve, mass properties, torque and history. Blender pivot empties define construction references after unit validation; mesh animation never becomes input motion.",
+    "actions": [
+      "Select lengths and one assembly branch.",
+      "Apply a finite torque pulse or gravity and integrate one accepted step.",
+      "Preview a prescribed q only in labeled kinematic mode.",
+      "Reset to the exact assembled pose with zero velocity."
+    ]
+  },
+  "invariants": [
+    "Every accepted pose closes both loop equations within authored length-scaled tolerance.",
+    "M(q)>0 and all mass/inertia inputs are finite and nonnegative, including d>=0.",
+    "A step cannot enter a toggle/singular configuration where closure derivatives or M-prime are undefined, or switch assembly branch silently.",
+    "With tau=0 and d>0, energy cannot grow beyond numerical residual tolerance."
+  ],
+  "motion_guidance": [
+    "Play, pause and step advance the declared model clock only; reset restores parameters, state, solver budget, selections, errors and presentation transforms.",
+    "Use static before/after states and numeric tables for reduced motion; animation interpolates committed state and never supplies physical evidence."
+  ],
+  "creative_affordances": [
+    "Blender may shape distinctive apparatus, cutaways and materials; Three.js binds named parts to authoritative state and keeps units and error states readable.",
+    "Camera, color, trails and deformation gain are presentation controls and cannot change the numerical model."
+  ],
+  "known_limits": [
+    "One planar one-DOF rigid linkage away from toggle singularities; no claim of solver convergence, real mechanism clearance or fatigue life.",
+    "Authored, source-reviewed guidance only; no Blender export, numerical simulation, contact solve, browser or renderer was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.physics-fourbar-loop-branches",
+      "statement": "A planar four-bar position is constrained by a closed vector loop; the moving joint is at the intersection of circles fixed by the two adjacent link lengths, giving open and crossed configurations when two intersections exist.",
+      "scope": "Planar revolute four-bar position closure only.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-ual-fourbar-position",
+          "locator": "Position Analysis: graphical circle intersections and analytical closed vector loop"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Branch-locked linkage",
+      "structure": "Build link shells around exact pivot empties and leave clearance around joints for inspection; add ghosted alternate-circle intersections only as diagnostics.",
+      "material": "Distinct patterns identify links and branch; torque and residual use labels rather than decorative motion blur."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "One generalized-coordinate planar rigid four-bar with torque, gravity and viscous damping.",
+    "timestep": "Fixed dt; branch-locked closure solve followed by declared integration, rejecting failed closure or singular step.",
+    "state": [
+      "lengths, masses, inertias and centers",
+      "q, qdot and assembly branch",
+      "torque, gravity and damping"
+    ],
+    "colliders": [
+      "none; revolute pivots are mathematical constraints"
+    ],
+    "driving": [
+      "applied generalized torque and gravity"
+    ],
+    "contact": [
+      "ideal revolute closure only"
+    ],
+    "checks": [
+      "two loop residuals",
+      "positive effective inertia",
+      "branch continuity",
+      "unforced damped energy residual"
+    ]
+  },
+  "related_ids": [
+    "knowledge.reasoning-kinematics-versus-dynamics",
+    "recipe.robot-arm-forward-frames"
+  ]
+}

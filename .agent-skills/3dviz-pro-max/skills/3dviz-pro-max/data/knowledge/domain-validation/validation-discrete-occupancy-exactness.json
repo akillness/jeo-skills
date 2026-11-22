@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-discrete-occupancy-exactness",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Integer occupancy, orientation closure and exact solved test"
+  },
+  "aliases": {
+    "en": [
+      "polycube occupancy check",
+      "exact solved condition"
+    ]
+  },
+  "direction_ids": [
+    "spatial-puzzles"
+  ],
+  "summary": "Keep placement legality in integer cell sets and verify orientation closure and an exact solved condition.",
+  "objective": "Placed pieces occupy disjoint cells inside the target volume, and solved means exact set equality with the declared piece inventory used once.",
+  "applies_when": [
+    "Pieces occupy discrete cells in a grid volume.",
+    "Pieces can be rotated through a declared set of orientations.",
+    "A solved state must be reported to the viewer."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "occupancy",
+    "discrete-state",
+    "orientation"
+  ],
+  "subject_terms": [
+    "polycube",
+    "cell set",
+    "orientation index",
+    "disjoint placement",
+    "target volume",
+    "solved condition"
+  ],
+  "intent_signals": [
+    "two pieces overlap after rotating",
+    "when should this puzzle report solved"
+  ],
+  "example_prompts": [
+    "Check the occupancy rules of this voxel packing puzzle."
+  ],
+  "negative_signals": [
+    "rigid-body packing simulation",
+    "reproducing a commercial puzzle"
+  ],
+  "content": {
+    "principles": [
+      "Puzzle state is integer occupancy: a piece is a set of cells and legality is a set operation, so a rendered position never participates in the rule.",
+      "Orientation is a discrete operation on the cell set, so the allowed set must be closed under composition and contain an inverse for each element. Order four belongs to the quarter-turn axis generators only: a one hundred twenty degree turn about a body diagonal has order three, so testing every orientation by fourfold repetition is wrong.",
+      "Solved is set equality with the target plus the declared piece inventory used exactly once; a piece protruding outside the volume must fail even when every target cell is filled, and a target filled by the wrong multiset of pieces is not solved either."
+    ],
+    "implementation": [
+      "Represent each piece as a sorted tuple of integer cell offsets and each placement as an offset plus an orientation index, deriving the occupied set from those alone.",
+      "Verify disjointness by comparing the size of the union of placed sets with the sum of their sizes, and when they differ compute the pairwise intersections explicitly, since the size comparison detects an overlap without naming the pair. Check containment by set difference against the target volume.",
+      "Apply the fourfold test only to the quarter-turn axis generators, and verify the rest of the allowed set by composition closure and by each element reaching the identity after its own order; record that order with each orientation.",
+      "Where pieces carry asymmetric markings, compare labelled orientation state as well as occupied cells, because two physically different labelled orientations can produce the same normalized cell set.",
+      "Test the boundary cases: a piece flush with the volume boundary, a piece one cell outside it, and two pieces sharing a face but no cell."
+    ],
+    "observable_checks": [
+      "The union size equals the sum of piece sizes for every accepted arrangement; when it is smaller, the explicitly computed pairwise intersection names the overlapping pair and the shared cells.",
+      "Solved is reported only when the occupied set equals the target set exactly, so a protruding piece prevents a solved report even with all target cells covered.",
+      "Each quarter-turn generator returns an identical normalized cell set after four applications and every other allowed orientation returns after its own recorded order, with no drift, because the rule never touched a floating-point position."
+    ]
+  },
+  "known_limits": [
+    "Checks the discrete rule system of an authored instance; it does not establish that the instance is solvable, which needs an actual search.",
+    "Authored verification guidance; no puzzle implementation was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.voxel-packing-tray",
+    "recipe.sliding-block-escape",
+    "recipe.cubic-unit-cell-accounting"
+  ],
+  "claims": []
+}

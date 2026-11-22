@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-field-data-playback-bridge",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "output-profile",
+  "title": {
+    "en": "Precomputed field playback with declared units and time"
+  },
+  "aliases": {
+    "en": [
+      "scientific field playback bridge",
+      "timestep data handoff",
+      "playback is not simulation"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal",
+    "earth-environment",
+    "waves-optics-fields",
+    "astronomy-space"
+  ],
+  "summary": "Bring precomputed field or measurement time steps into a scene with their units, coordinates and time base intact, and never let playback be mistaken for a running solver.",
+  "objective": "Every displayed quantity has a stated unit and a stated time, and the interface makes clear that the scene is replaying stored values rather than computing them.",
+  "tags": [
+    "output-profile",
+    "data-bridge",
+    "playback",
+    "units",
+    "timestep",
+    "provenance"
+  ],
+  "subject_terms": [
+    "timestep series",
+    "field data",
+    "units attribute",
+    "time coordinate",
+    "reference datetime",
+    "coordinate variable",
+    "interpolation between steps",
+    "playback control",
+    "provenance"
+  ],
+  "intent_signals": [
+    "play back a simulation result",
+    "animate measured data over time",
+    "what units are these values in",
+    "is this scene actually simulating",
+    "the timeline skips unevenly"
+  ],
+  "example_prompts": [
+    "Replay a stored heat field over time with a scrubbable timeline.",
+    "Show measured terrain change across recorded dates.",
+    "Play a computed flow result and let me stop on any step."
+  ],
+  "negative_signals": [
+    "live solver required",
+    "purely decorative motion"
+  ],
+  "not_for": [
+    "Scenes that must compute a result from user input, which need a real solver and its own contract.",
+    "Decorative motion, which should not borrow the vocabulary of measured data."
+  ],
+  "content": {
+    "principles": [
+      "Playback and computation are different claims. A scene that steps through stored values must say so, because a viewer who believes a solver is running will draw conclusions the data does not support.",
+      "A number without a unit is not a measurement. Units belong with the data as it travels, not in a caption added later, and a dimensionless quantity should be marked as dimensionless rather than left blank by accident.",
+      "Time needs a base and a declared origin, but not necessarily a civil calendar. Elapsed simulation time in seconds from a stated zero is a legitimate mode; calendar-referenced data needs its reference instant and calendar preserved rather than a fabricated real-world epoch. What is never acceptable is treating a step index as if it were a time.",
+      "Calendar-like units are traps. Definitions of a year or a month in unit libraries need not match calendar years or months, so a series expressed in them can drift against the dates a viewer expects.",
+      "Coordinates are data too. Which axis is which, what its values mean and how grid cells relate to their coordinates all have to arrive with the field, or the scene will place it plausibly and wrongly.",
+      "Interpolation between stored steps is a display choice that manufactures values. It is acceptable when disclosed and misleading when silent, particularly when steps are unevenly spaced.",
+      "Provenance travels with the data: who produced it, from what model or instrument, at what resolution and with what known limitations."
+    ],
+    "implementation": [
+      "Define a small ingestion contract listing the field name, its unit string, its value range, its coordinate axes and the time base, and validate incoming data against it before anything is drawn.",
+      "Carry masks and missing-value markers through ingestion as first-class information, so an absent value is displayed as absent instead of being folded into the value range as an extreme.",
+      "Keep the time coordinate as a real quantity with a declared origin, either a reference instant with its calendar for observational or calendar-referenced data or an explicit zero for elapsed simulation time, rather than as an array index, and display the actual time on the timeline.",
+      "Avoid calendar-ambiguous units for the time axis, and if the source uses them, convert once at ingestion and record the conversion.",
+      "Show the current step's own time and the total number of stored steps, and make the timeline reflect uneven spacing rather than distributing steps evenly.",
+      "State the interpolation mode in the interface: stepped playback shows only stored values, while smooth playback shows synthesised intermediates and must be labelled.",
+      "Give playback honest controls: play, pause, step and reset, where reset returns to the first stored step and not to an arbitrary current value.",
+      "Display provenance where the viewer can reach it, including the source, the resolution and any known limitation of the dataset.",
+      "Hold the colour or scale mapping fixed across the whole series so a change on screen means a change in the data."
+    ],
+    "observable_checks": [
+      "Every displayed quantity shows a unit, and a dimensionless quantity is explicitly marked as such.",
+      "The timeline shows real times with a stated reference, and unevenly spaced steps appear unevenly spaced.",
+      "Pausing on a stored step and probing at a stored sample location displays exactly the stored value, with no temporal interpolation; probes away from a sample location are labelled as spatially reconstructed and follow the declared spatial rule.",
+      "Masked or missing values are shown as missing and do not appear at either end of the value range.",
+      "Reset returns to the first stored step, and stepping forward then back returns to the same values.",
+      "The interface states that the scene replays stored data, and nowhere implies that a solver is running.",
+      "The value-to-colour mapping and its range are identical at the first and last step."
+    ]
+  },
+  "creative_affordances": [
+    "Presentation of the field is fully open: cutaways, isosurfaces, streamline ribbons or abstract encodings are all legitimate on top of an honest data contract.",
+    "A designed timeline with narrative annotations is welcome as long as the underlying times remain the real ones."
+  ],
+  "known_limits": [
+    "This profile governs the handoff and the honesty of playback. It does not validate the science of the data, nor does it make the scene a simulation.",
+    "The metadata conventions cited here come from one community convention for gridded datasets; other data sources use different conventions and may carry less metadata.",
+    "Authored reusable guidance; no dataset was ingested and no runtime artifact was executed or observed for this record."
+  ],
+  "related_ids": [
+    "recipe.heat-rod-decay",
+    "recipe.divergent-ridge-crust-age",
+    "recipe.nozzle-continuity",
+    "knowledge.state-playback",
+    "knowledge.shared-unlit-quantitative-encoding",
+    "knowledge.shared-voxel-field-grid"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-cf-units-required",
+      "statement": "The CF metadata conventions require a units attribute for all variables that represent dimensional quantities apart from named exceptions, permit but do not require it for dimensionless quantities, require the value to be a string recognisable by the UDUNITS package with stated exceptions, note that case is significant in units strings, and state that a variable with no units attribute is assumed to be dimensionless.",
+      "scope": "Normative requirements of CF Conventions version 1.12 for units metadata, read on the access date. They govern the metadata that must accompany data; they do not validate the data values.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-cf-conventions",
+          "locator": "Section 3.1 Units; Section 3.1.1 Dimensionless units"
+        }
+      ]
+    },
+    {
+      "id": "claim.shared-cf-time-coordinate-units",
+      "statement": "The CF metadata conventions require a time coordinate's units string to comprise a unit physically equivalent to the second followed by the word since and a reference datetime, note that the UDUNITS definitions of a year as exactly 365.242198781 days and of a month as one twelfth of that year are not calendar quantities, and recommend that year and month therefore not be used.",
+      "scope": "Normative and advisory text of CF Conventions version 1.12 on time coordinate units, read on the access date. It defines how a time axis must be encoded and warns about calendar-ambiguous units.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-cf-conventions",
+          "locator": "Section 4.4.1 Time Coordinate Units"
+        }
+      ]
+    }
+  ]
+}

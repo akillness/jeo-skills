@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "id": "recipe.current-loop-magnetic-field",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Magnetic field of a current loop"
+  },
+  "aliases": {
+    "en": [
+      "current loop",
+      "axial magnetic field",
+      "solenoid"
+    ]
+  },
+  "direction_ids": [
+    "waves-optics-fields"
+  ],
+  "summary": "Build a field around a real conductor path and keep the on-axis analytic result distinct from off-axis numerical sampling.",
+  "objective": "Build a current loop whose on-axis field follows the analytic expression while off-axis probes are labelled as numerical samples.",
+  "tags": [
+    "magnetism",
+    "current loop",
+    "field"
+  ],
+  "subject_terms": [
+    "magnetic field",
+    "current loop",
+    "axial field",
+    "Biot-Savart",
+    "solenoid",
+    "field line",
+    "right-hand rule",
+    "superposition"
+  ],
+  "intent_signals": [
+    "Show the magnetic field around a loop of current.",
+    "Compare the field at the centre of a loop with the field along its axis."
+  ],
+  "example_prompts": [
+    "Build a current loop with an axial field readout and probe points along the axis.",
+    "Stack loops into a short solenoid and show the field between them."
+  ],
+  "negative_signals": [
+    "Not a full electromagnetic solver: no time variation, induced currents or materials.",
+    "Not a magnet design tool; no saturation, cores or losses."
+  ],
+  "not_for": [
+    "Not a full electromagnetic solver: no time variation, induced currents or materials.",
+    "Not a magnet design tool; no saturation, cores or losses."
+  ],
+  "entities": [
+    {
+      "name": "Conductor path",
+      "guidance": "Model the loop as a real conductor with a direction marker, since the field direction follows the current sense."
+    },
+    {
+      "name": "Axial probes",
+      "guidance": "Place probes along the axis where the analytic expression applies and label their values as analytic."
+    },
+    {
+      "name": "Off-axis sampling",
+      "guidance": "Use the stated periodic midpoint Biot-Savart quadrature, compare N with 2N and label the difference a refinement diagnostic rather than a certified error estimate. Exclude the stated neighborhood of every ideal filament."
+    }
+  ],
+  "state_contract": {
+    "model": "One or more coaxial circular ideal filaments of finite positive radius R, signed current I and axial offset z0. Each loop contributes axial Bz=mu0 I R^2/[2(R^2+(z-z0)^2)^(3/2)]. Off-axis evaluation uses a periodic midpoint quadrature with N=256 uniformly spaced conductor angles by default and a comparison against 2N; the difference is a refinement diagnostic, not a certified error bound. At angle phi use x=(R cos(phi),R sin(phi),z0), dl=(-R sin(phi),R cos(phi),0)dphi and dB=mu0 I dl cross (p-x)/(4 pi |p-x|^3). Reject probes within the chosen exclusion radius 0.02R of any filament, and label that radius as a numerical/display policy. Sum all loop contributions; at zero total field draw no direction. Wire thickness is display geometry only.",
+    "authority": "Loop radii, axial offsets and signed currents are authoritative; readouts and arrows derive from their superposition.",
+    "actions": [
+      "Change the current or the loop radius.",
+      "Move an axial probe and read the analytic value.",
+      "Add loops to form a short solenoid.",
+      "Reset the configuration."
+    ]
+  },
+  "invariants": [
+    "Reversing every loop current reverses the total field; changing just one loop recomputes the superposition. A zero vector has no direction.",
+    "For one loop, its own axial centre contribution equals the single-loop centre formula; for multiple loops every axial readout equals the sum of each shifted loop contribution, not the single-loop expression.",
+    "Off-axis arrows are labelled as numerical samples and state their sample count."
+  ],
+  "motion_guidance": [
+    "Animate current flow along the conductor as a moving marker to convey direction, not as an energy or speed claim.",
+    "Update field arrows continuously while a parameter changes; the on-axis magnitude follows the stated expression, which falls off as the inverse cube of distance far from the loop and is finite at the centre, so no single inverse-distance rule is implied."
+  ],
+  "known_limits": [
+    "Steady currents in thin conductors; no time-dependent fields, induction or magnetic materials.",
+    "Off-axis fidelity depends on quadrature, finite precision and probe distance from the ideal filament; refinement differences are diagnostics, not measured accuracy.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-loop-axial-field",
+      "statement": "On the axis of a circular current loop of radius R the magnetic field magnitude is mu-zero times current times R squared divided by twice the quantity axial distance squared plus R squared raised to the power three halves, which reduces at the centre to mu-zero times current divided by twice R.",
+      "scope": "Steady current in a thin circular loop, on-axis points only, as cited.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-current-loop",
+          "locator": "12.4, on-axis field expression and centre value"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-biot-savart",
+      "statement": "The Biot-Savart law gives the differential field contribution of a current element as mu-zero over four pi times I dl cross the unit vector to the field point divided by the square of the distance, and the field of a finite length of current-carrying wire is found by integrating that expression along the wire.",
+      "scope": "Steady currents in thin conductors; the idealised filament expression is singular on the wire itself, which is why the scene excludes a neighbourhood of the conductor from numerical sampling.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-biot-savart",
+          "locator": "12.1, differential contribution and integration along the wire"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Conductor path",
+      "structure": "A torus-section conductor with visible thickness, terminals and a current direction arrow following the wire. That thickness is display geometry only: the field model treats the conductor as an idealised filament, not as a finite cross-section current distribution.",
+      "material": "Conductive metal family with a distinct terminal material; keep the wire dark enough that field arrows remain legible.",
+      "articulation": "A travelling marker indicates current direction; the conductor itself is static."
+    },
+    {
+      "family": "Axial probes",
+      "structure": "Probe markers on a rail along the axis with numeric plates and a shared scale legend for arrow length.",
+      "material": "Analytic and numerical values use distinct plate styles so their provenance is visible at a glance.",
+      "articulation": "Probes slide along the axis and recompute continuously."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Static field evaluation and presentation; no dynamics, induction or material response.",
+    "checks": [
+      "For a single loop the centre value matches the analytic expression within tolerance; once further loops are added the single-loop centre expression no longer describes the total field, which is reported as a superposition.",
+      "Reversing all loop currents negates every nonzero total vector; zero vectors remain zero with no arrow."
+    ]
+  },
+  "related_ids": [
+    "recipe.point-charge-field-superposition",
+    "knowledge.conductor-surface",
+    "knowledge.signed-field-section"
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.object-isolation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "inspection-pattern",
+  "title": {
+    "en": "Object isolation with preserved context"
+  },
+  "aliases": {
+    "en": [
+      "object isolation"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "anatomy-structures",
+    "rigid-mechanics"
+  ],
+  "summary": "Give a selected object enough screen space to explain its parts without losing its identity in the scene.",
+  "objective": "Select a small object in the overview, isolate it, select an internal part and return; identity and camera context remain coherent.",
+  "tags": [
+    "inspection-pattern",
+    "object",
+    "isolation"
+  ],
+  "example_prompts": [
+    "Give a selected object enough screen space to explain its parts without losing its identity in the scene."
+  ],
+  "content": {
+    "principles": [
+      "Inspection is an alternate presentation of the selected object, not evidence that the object is correct.",
+      "Retain a compact orientation cue or return view so a detail still has a place in the whole."
+    ],
+    "implementation": [
+      "Save camera target, distance and scene visibility before isolating a stable object ID. Fit the entire assembly including open-door or extended-limb bounds.",
+      "Offer part selection and a neutral backdrop; keep active lighting changes explicit so material comparisons remain meaningful.",
+      "If using layers, configure both camera and picking filters. Include lights and helpers intentionally rather than assuming they follow the selected mesh."
+    ],
+    "observable_checks": [
+      "Select a small object in the overview, isolate it, select an internal part and return; identity and camera context remain coherent.",
+      "Isolation does not advance a paused simulation or reset its state unexpectedly."
+    ]
+  },
+  "known_limits": [
+    "Visibility isolation does not prove structural or physical correctness and may conceal environment contacts.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+  ],
+  "related_ids": [
+    "recipe.fantasy-village-diorama",
+    "recipe.knee-layer-peel",
+    "recipe.coupled-gears"
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-object-isolation",
+      "statement": "Object3D layers can filter camera visibility and ray-intersection tests.",
+      "scope": "Visibility/picking mechanism; the inspection workflow is authored.",
+      "source_refs": [
+        {
+          "source_id": "source.three-object3d",
+          "locator": "layers"
+        }
+      ]
+    }
+  ]
+}

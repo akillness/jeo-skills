@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "id": "recipe.versioned-story-save-migration",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Versioned branching-story save migration"
+  },
+  "aliases": {
+    "en": [
+      "narrative checkpoint migration",
+      "branching story save upgrade"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "Migrate a saved branching-story state through explicit schema versions, preserving immutable source data and rolling back on unknown or invalid nodes.",
+  "objective": "Build a reversible migration inspector where an old save is validated, transformed step by step and accepted only after destination invariants pass.",
+  "tags": [
+    "interactive story",
+    "save migration",
+    "schema version"
+  ],
+  "subject_terms": [
+    "save schema",
+    "migration chain",
+    "story node ID",
+    "choice history",
+    "checkpoint",
+    "rollback",
+    "unknown node"
+  ],
+  "intent_signals": [
+    "migrate a branching story save",
+    "versioned narrative checkpoint upgrade"
+  ],
+  "example_prompts": [
+    "Load a v1 branching-story save, preview v1→v2→v3 migrations, reject an unknown node and restore the original bytes."
+  ],
+  "negative_signals": [
+    "Not a universal save format, silent best-effort repair, cloud sync protocol or proof that narrative meaning is unchanged."
+  ],
+  "not_for": [
+    "No in-place mutation of the only save, guessed node mapping, hidden data deletion or downgrade without an explicit inverse."
+  ],
+  "entities": [
+    {
+      "name": "Story graph revision",
+      "guidance": "Store stable node/choice IDs, graph/content version and migration maps outside glTF; assets resolve from semantic IDs."
+    },
+    {
+      "name": "Migration workbench",
+      "guidance": "Keep source hash/bytes immutable, show each pure migration step, warnings, destination validation and atomic commit/rollback."
+    }
+  ],
+  "state_contract": {
+    "model": "A save envelope contains schemaVersion, storyGraphVersion, currentNodeId, ordered choice history, variables, checkpoint stack and optional extension data. Parse into an isolated copy, hash the original representation, then select an explicit contiguous migration chain vN→vN+1. Each step returns success, unsupported, invalid or error plus warnings and must not mutate its input. After the chain, validate destination node/choice IDs, variable types and checkpoint reachability against the pinned story graph. Commit atomically only on full success; otherwise retain original data and expose failure. New import/reset/retry increments generation and discards stale migration responses.",
+    "authority": "Three.js owns the versioned semantic state, model time, history and reset; Blender/glTF assets are named presentation resources only.",
+    "actions": [
+      "Import and inspect without committing.",
+      "Preview each migration diff and warning.",
+      "Commit only a fully validated destination or rollback.",
+      "Reset clears working state while retaining the immutable imported source until explicit removal."
+    ]
+  },
+  "invariants": [
+    "Original hash/content remains unchanged through preview and failure.",
+    "No migration skips a version unless an explicit edge declares that path.",
+    "Unknown node/choice mapping cannot be guessed silently.",
+    "Committed state validates against the exact destination graph/version and request generation."
+  ],
+  "motion_guidance": [
+    "Drive presentation from a seekable model time and derive every visible transform from current state; pause and scrub never advance hidden semantic state.",
+    "Provide a static sequence/list and reduced-motion mode that preserves text, order, choices and status."
+  ],
+  "creative_affordances": [
+    "Choose typography, assets, palette, staging and metaphor per the supplied brief and licensed material; no house style is mandatory.",
+    "Blender owns expressive geometry, rigs, sets and cue anchors; Three.js owns time, branch/state, captions, interruption and checkpoints."
+  ],
+  "known_limits": [
+    "Application-specific narrative schema and migration chain; storage success does not prove narrative equivalence, and extensions need explicit preservation/drop policy.",
+    "Authored, source-reviewed guidance only; no Blender export, audio playback, visitor study, show-control link, browser or renderer was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.art-indexeddb-transaction-clone",
+      "statement": "IndexedDB serializes stored record values with HTML StructuredSerializeForStorage and clones/retrieves them through the specified structured-deserialization path; it separately defines transactions that commit or abort. Application schema migration and semantic validation remain separate responsibilities.",
+      "scope": "IndexedDB 3 storage behavior; this recipe does not require IndexedDB or treat a storage transaction as proof of story validity.",
+      "source_refs": [
+        {
+          "source_id": "source.art-w3c-indexeddb",
+          "locator": "Record values and StructuredSerializeForStorage; §5.11 cloning/retrieving a value; transaction lifecycle, commit and abort"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Migration graph desk",
+      "structure": "Show source/destination save cards, version-step gates, story-node map and immutable original vault as distinct spatial regions.",
+      "material": "Success, warning, unsupported and error use text/icons plus color; deleted or unmapped fields remain explicit."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Spatial layout and motion communicate authored media/state; geometry and collisions have no physical authority.",
+    "timestep": "Evaluate from seekable authored time or discrete event state; no physics integration.",
+    "state": [
+      "versioned authored content",
+      "model time or event cursor",
+      "selection, accessibility and error state"
+    ],
+    "colliders": [
+      "optional interaction hit regions only"
+    ],
+    "driving": [
+      "authored cues and user actions"
+    ],
+    "contact": [
+      "none"
+    ],
+    "checks": [
+      "seek/reset state equality",
+      "missing asset/data fallback",
+      "presentation controls leave semantic data unchanged"
+    ]
+  },
+  "related_ids": [
+    "recipe.reversible-branching-storybook-scene",
+    "knowledge.reasoning-undo-is-the-inverse-move",
+    "knowledge.source-model-runtime-provenance-panel"
+  ]
+}

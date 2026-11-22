@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-exhaustive-search-for-solvability",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Support solvability claims with a solution or proof"
+  },
+  "aliases": {
+    "en": [
+      "exact cover",
+      "backtracking search",
+      "no solution claim"
+    ]
+  },
+  "direction_ids": [
+    "spatial-puzzles",
+    "algorithms-data-structures"
+  ],
+  "summary": "Use a valid solution to establish solvability and a complete proof, certificate or sound search for impossibility or uniqueness; report bounded search as unknown.",
+  "objective": "Match a solvability or hint claim to a method capable of establishing it.",
+  "applies_when": [
+    "A packing, tiling or placement puzzle offers hints, a solution or a solvability statement.",
+    "The scene reports that no solution exists.",
+    "A generator produces puzzles that are asserted to be solvable."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "exact cover",
+    "backtracking",
+    "search",
+    "solvability",
+    "tiling",
+    "hint"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "puzzle",
+    "search"
+  ],
+  "intent_signals": [
+    "give me a hint",
+    "is this solvable",
+    "generate a solvable puzzle"
+  ],
+  "example_prompts": [
+    "Generate a packing puzzle that is guaranteed solvable and can hint.",
+    "Tell me whether this arrangement can still be completed."
+  ],
+  "negative_signals": [
+    "Open-ended building where no completion condition exists.",
+    "Claims unsupported by a valid solution, complete proof or sound search; a search budget alone cannot establish impossibility."
+  ],
+  "not_for": [
+    "Open-ended building where no completion condition exists.",
+    "Claims unsupported by a valid solution, complete proof or sound search; a search budget alone cannot establish impossibility."
+  ],
+  "content": {
+    "principles": [
+      "Solvable and unsolvable are different claims with different costs. One completed solution proves solvability. Impossibility needs a proof: a complete search whose pruning provably preserves all solutions, a certificate from a solver, or an argument such as a colouring, parity or area invariant that rules out every arrangement without enumerating them.",
+      "Packing and tiling puzzles are naturally expressed as exact cover, where each cell must be covered exactly once and each piece used according to its rule, and depth-first backtracking with efficient undo of local structure is the classical method for enumerating solutions to such problems.",
+      "Generating a puzzle from a known solution is the cheap way to guarantee solvability, but it says nothing about uniqueness, which needs either a complete search or an argument that no second solution exists.",
+      "Hints must come from the search over the current state, not from the generator solution, otherwise a hint can contradict legal moves the player has already made."
+    ],
+    "implementation": [
+      "Model the puzzle as a covering problem over cells and pieces, so the same search serves solving, hinting and counting.",
+      "Generate from a valid solution when useful. Establish uniqueness with either a complete sound search or an independent proof/certificate; any difficulty claim needs its own declared basis rather than following automatically from solvability.",
+      "Derive hints from a search rooted at the current state so they remain valid after unusual play.",
+      "Bound the search explicitly and report when the bound was reached, since an aborted search is not a proof of unsolvability.",
+      "Report what the search covered: all solutions, first solution, or a bounded exploration.",
+      "Where an invariant settles the question, state it: a parity, colouring or area argument is a complete proof of impossibility and is usually cheaper and more explanatory than any search."
+    ],
+    "observable_checks": [
+      "Place pieces into a dead end and confirm the scene reports either a proven no-completion result or an honest unknown when its search budget expired; a bounded run is not required to reach a conclusive answer, only to say which it reached.",
+      "Compare the reported solution count on a small instance with a hand enumeration.",
+      "Ask for a hint after an unusual but legal sequence and confirm the hint is consistent with the current state.",
+      "Trigger the search bound and confirm the message distinguishes not found from does not exist."
+    ]
+  },
+  "related_ids": [
+    "recipe.voxel-packing-tray",
+    "recipe.sliding-block-escape"
+  ],
+  "creative_affordances": [
+    "Showing the search itself, including backtracking, is often a compelling scene in its own right.",
+    "Difficulty can be shaped by the generator without weakening the solvability guarantee."
+  ],
+  "known_limits": [
+    "Authored guidance citing the exact-cover framing and its classical backtracking technique; it prescribes no implementation and makes no performance claim.",
+    "When exhaustive search is impractical, a separate invariant or proof may still settle the claim. Without such evidence, report the unresolved result rather than asserting impossibility or uniqueness."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-exact-cover-backtracking",
+      "statement": "Puzzle problems such as tiling a tray with a fixed set of polyominoes can be expressed as exact cover problems and solved by depth-first backtracking search that uses reversible local operations on linked structures to undo choices efficiently.",
+      "scope": "Combinatorial search technique for exact cover formulations; it does not bound the running time for a specific puzzle instance.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-knuth-dancing-links",
+          "locator": "Abstract: exact cover, reversible linked-list operations and polyomino tiling example"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.gltf-roundtrip-asset-validation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "validation-profile",
+  "title": {
+    "en": "glTF export-to-load asset invariant validation"
+  },
+  "aliases": {
+    "en": [
+      "glTF asset parity suite",
+      "Blender to Three.js invariant comparison",
+      "GLB handoff validation"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "Compare a declared Blender baseline with the exported glTF and loaded Three.js scene, including geometry, hierarchy, skin, animation and application-owned resource lifecycle.",
+  "objective": "A one-way Blender export and Three.js load preserve each declared delivery invariant within its own tolerance; this does not claim a lossless .blend round trip or identical pixels.",
+  "applies_when": [
+    "A Blender scene or asset is delivered through glTF or GLB and the consumer needs reproducible evidence that chosen structural and temporal invariants survived export and load."
+  ],
+  "tags": [
+    "validation-profile",
+    "blender",
+    "gltf",
+    "threejs",
+    "asset-parity",
+    "lifecycle"
+  ],
+  "subject_terms": [
+    "evaluated mesh parity",
+    "bind pose",
+    "inverse bind matrices",
+    "animation channel time",
+    "loaded scene hierarchy",
+    "resource disposal"
+  ],
+  "intent_signals": [
+    "verify Blender asset after GLB load",
+    "compare bind pose and clip times after glTF export",
+    "check repeated load unload ownership"
+  ],
+  "example_prompts": [
+    "Validate that an evaluated Blender fixture, its two-joint skin and its animation key times survive GLB export and Three.js load.",
+    "Define a repeatable load-unload check for application-owned glTF resources without claiming garbage collection behavior."
+  ],
+  "negative_signals": [
+    "lossless Blender file round trip",
+    "pixel equality between Blender and Three.js",
+    "universal garbage collector guarantee"
+  ],
+  "not_for": [
+    "Certifying artistic equivalence from a schema-only pass.",
+    "Benchmarking load time, GPU memory or frame rate."
+  ],
+  "content": {
+    "principles": [
+      "Write the invariant manifest before export. Identity and array order may require exact equality; transforms, bounds and time use declared numeric tolerances; appearance needs a separate controlled visual regime.",
+      "Treat this as a one-way authoring-to-delivery comparison: editable Blender constructs may be evaluated or omitted deliberately, and importing the glTF back cannot prove that the .blend source was preserved.",
+      "A validator pass establishes format conformance within the validator's scope. It does not establish renderer appearance, semantic identity, correct application ownership or successful cleanup.",
+      "Resource disposal is a lifecycle subcase: release only application-owned geometries, materials, textures, image resources, skeletons and loader auxiliaries after their last consumer; shared resources require reference ownership."
+    ],
+    "implementation": [
+      "Create a small named fixture with an asymmetric evaluated modifier result, two material slots, a nested transform, a two-joint skinned strip with known joint order and inverse-bind baseline, one morph target, and one clip with distinct key times and interpolation modes. Record Blender version, exporter settings, source measurements and a stable application ID manifest.",
+      "Export once with the approved evaluated-mesh, skin and animation settings. Run the official glTF Validator and retain its full machine-readable report when available; inspect accessors, primitives, TEXCOORD and joint/animation references even when the report has no errors.",
+      "Load through the pinned GLTFLoader revision. Traverse the loaded graph and compare stable application IDs, hierarchy, primitive/material counts, bounds and transforms. Sample the bind pose and a bent pose, then compare clip targets, duration, key times and interpolation declarations. Names are diagnostic labels, not unique keys.",
+      "Exercise modifier parity by comparing the loaded silhouette and measured openings against the approved evaluated Blender result, not the editable cage. Explain expected vertex splits or triangulation rather than demanding equal edit-mesh counts.",
+      "For lifecycle evidence, count application-owned loaded instances and renderer-reported resources before load, after use, and after teardown plus a documented settling point. Remove scene references, stop mixers and dispose only owned resources, including separately owned image bitmaps where applicable. Repeat a bounded cycle to detect retained ownership; do not infer universal garbage collection from the counts."
+    ],
+    "observable_checks": [
+      "The fixture's asymmetric modifier result, nested transform, primitive/material assignment and declared bounds meet their exact or numeric acceptance rules after load.",
+      "Joint order and inverse-bind correspondence reproduce the approved bind and bent poses without an offset; the morph target affects the intended primitive.",
+      "Every expected animation target, key time, interpolation mode and duration is accounted for; missing, merged or resampled channels are reported against the exporter policy rather than hidden by playback.",
+      "The validator report and runtime comparison are reported separately. A clean validator report cannot turn a failed loaded invariant into a pass.",
+      "After the bounded load/unload sequence, no application-owned scene references or listeners remain and resource counts return to the declared baseline or an explained reusable cache plateau."
+    ]
+  },
+  "related_ids": [
+    "knowledge.blender-evaluated-mesh-handoff",
+    "knowledge.blender-deformation-animation-handoff",
+    "knowledge.gltf-articulated-asset-adapter",
+    "knowledge.gltf-compression-decoder-lifecycle"
+  ],
+  "creative_affordances": [
+    "Add stylized geometry or animation to the fixture as long as each asserted invariant remains isolated and measurable."
+  ],
+  "known_limits": [
+    "Different renderers can produce different pixels from a valid asset; this profile compares declared invariants and controlled observations.",
+    "Exporter and loader behavior is version dependent and must be pinned in actual evidence.",
+    "Resource counters can include internal caches and do not prove JavaScript garbage collection or absence of every leak.",
+    "Authored and source-checked procedure; no export, validator, load, animation sample or disposal cycle was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-gltf-structure-skin-animation",
+      "statement": "glTF 2.0 carries scene hierarchy, geometry attributes, skin joint ordering with optional inverse-bind matrices, and animations with timestamp inputs and target paths; object names are optional and are not guaranteed unique.",
+      "scope": "Normative glTF 2.0.1 asset semantics; application identity and comparison tolerances remain authored policy.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-khronos-gltf-animation",
+          "locator": "Sections 2.4 and 3.3 Indices and Names; 3.5; 3.7.2-3.7.3; 3.11; 5.7; optional name properties"
+        }
+      ]
+    },
+    {
+      "id": "claim.validation-blender-export-scope",
+      "statement": "Blender's glTF exporter exposes mesh, shape-key, armature, skinning and animation export controls, including a rest-position armature option and animation sampling choices.",
+      "scope": "Blender 4.5 LTS exporter documentation; exact installed exporter behavior must be recorded.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "Data > Mesh; Data > Shape Keys; Data > Armature; Data > Skinning; Animation"
+        }
+      ]
+    },
+    {
+      "id": "claim.validation-gltf-validator-local",
+      "statement": "The official glTF Validator web interface validates locally and offers command-line, package and editor integrations; its report may be truncated in the web interface when issue volume is large.",
+      "scope": "Official validator interface read 2026-09-08; this claim does not elevate conformance output into runtime or visual evidence.",
+      "source_refs": [
+        {
+          "source_id": "source.validation-khronos-gltf-validator",
+          "locator": "Web interface lines 2-13: local validation, alternate methods, truncated-report notice"
+        }
+      ]
+    },
+    {
+      "id": "claim.validation-three-resource-disposal",
+      "statement": "Three.js requires explicit disposal for obsolete geometries, materials and textures; material disposal does not dispose shared textures, ImageBitmap.close remains application-owned, and removing a mesh from a scene does not dispose its geometry or material.",
+      "scope": "Live official Three.js disposal guide read 2026-09-08; actual ownership and cache plateau are application-specific.",
+      "source_refs": [
+        {
+          "source_id": "source.validation-three-disposal",
+          "locator": "Geometries; Materials; Textures; Skinned Mesh; FAQ on automatic disposal and scene removal"
+        }
+      ]
+    }
+  ]
+}

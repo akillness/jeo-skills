@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "id": "recipe.standing-string-modes",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Standing wave modes on a fixed string"
+  },
+  "aliases": {
+    "en": [
+      "standing wave string",
+      "nodes and antinodes",
+      "normal modes resonance"
+    ]
+  },
+  "direction_ids": [
+    "waves-optics-fields"
+  ],
+  "summary": "Reveal stationary nodes while particles of a string oscillate transversely.",
+  "objective": "Create a fixed-end string with selectable harmonic number, nodes, antinodes and a slow-motion particle probe.",
+  "tags": [
+    "standing wave",
+    "harmonic",
+    "node"
+  ],
+  "subject_terms": [
+    "standing wave",
+    "harmonic",
+    "node",
+    "antinode",
+    "fixed ends",
+    "wave superposition"
+  ],
+  "intent_signals": [
+    "Create a fixed-end string with selectable harmonic number, nodes, antinodes and a slow-motion particle probe.",
+    "Reveal stationary nodes while particles of a string oscillate transversely."
+  ],
+  "example_prompts": [
+    "Create a fixed-end string with selectable harmonic number, nodes, antinodes and a slow-motion particle probe.",
+    "Create an explorable 3D explanation of standing wave string with particle probe."
+  ],
+  "negative_signals": [
+    "No damping, nonlinear tension change or energy transfer from a modeled driver."
+  ],
+  "not_for": [
+    "No damping, nonlinear tension change or energy transfer from a modeled driver."
+  ],
+  "entities": [
+    {
+      "name": "String and supports",
+      "guidance": "Build a thin curve or tube between fixed clamps; sample densely enough to resolve the selected mode and keep the baseline visible."
+    },
+    {
+      "name": "Nodes and envelope",
+      "guidance": "Mark x=j*L/n as stationary nodes; draw dotted amplitude envelopes without making them additional strings."
+    },
+    {
+      "name": "Particle probe",
+      "guidance": "Highlight one fixed-x material point and its vertical trajectory; display wavelength 2*L/n and frequency n*c/(2*L)."
+    }
+  ],
+  "state_contract": {
+    "model": "In SI units (length/displacement meters, time seconds), string length L>0, wave speed c>0, integer mode n>=1; y(x,t)=A*sin(n*pi*x/L)*cos(omega*t), omega=n*pi*c/L, with small amplitude relative to wavelength.",
+    "authority": "Mode number, amplitude and phase determine every sampled string point and probe; horizontal material coordinates remain fixed.",
+    "actions": [
+      "Choose a positive integer harmonic.",
+      "Play, pause or scrub phase.",
+      "Move a probe along the string.",
+      "Reset mode, amplitude and phase."
+    ]
+  },
+  "invariants": [
+    "Both endpoints and all declared nodes remain at zero displacement.",
+    "A material point moves transversely, not along the string toward the support.",
+    "Doubling mode number at fixed L and c doubles frequency."
+  ],
+  "motion_guidance": [
+    "Time advances the analytic phase; do not scroll a static sinusoidal mesh horizontally and label it a standing wave.",
+    "A change in mode starts a new declared state or uses an explicitly labeled transition."
+  ],
+  "known_limits": [
+    "No damping, nonlinear tension change or energy transfer from a modeled driver.",
+    "The resonance frequencies describe an ideal linear fixed-end string, not every real instrument.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.standing-string-modes",
+      "statement": "A fixed-end ideal string supports standing modes with nodes at both ends and frequencies that are integer multiples of c/(2*L).",
+      "scope": "Linear transverse waves with constant wave speed and fixed supports.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-standing-waves",
+          "locator": "16.6, fixed-end string normal modes"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "String and supports",
+      "structure": "Build a thin curve or tube between fixed clamps; sample densely enough to resolve the selected mode and keep the baseline visible.",
+      "material": "Matte string, neutral supports and clearly differentiated dashed envelope; particle marker has a stable material identity."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Analytic single standing mode of an ideal string.",
+    "state": [
+      "mode number",
+      "amplitude",
+      "phase",
+      "wave speed"
+    ],
+    "colliders": [
+      "No rigid-body colliders; any boundary is part of the declared mathematical model."
+    ],
+    "driving": [
+      "Analytic normal-mode displacement."
+    ],
+    "contact": [
+      "No collision or impact response is supplied by this field model."
+    ],
+    "timestep": "Evaluate the declared analytic state at paused or running model time; rendering never advances a second model.",
+    "checks": [
+      "All nodes remain stationary.",
+      "One-period playback restores every material point."
+    ]
+  }
+}

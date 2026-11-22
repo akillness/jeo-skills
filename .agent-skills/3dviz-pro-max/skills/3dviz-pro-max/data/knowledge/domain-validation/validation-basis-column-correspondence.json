@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-basis-column-correspondence",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Basis images against matrix columns without cumulative multiplication"
+  },
+  "aliases": {
+    "en": [
+      "matrix column check",
+      "cumulative transform detection"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra"
+  ],
+  "summary": "Confirm that displayed basis images equal the matrix columns and that geometry is transformed from the original vertices each time.",
+  "objective": "Basis endpoints match the matrix columns, and returning to the identity restores the stored original geometry exactly.",
+  "applies_when": [
+    "A scene links a matrix panel to transformed arrows, vectors or a reference shape.",
+    "The matrix can be animated or edited continuously.",
+    "Singular or orientation-reversing matrices are reachable."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "linear-map",
+    "matrix",
+    "accumulation"
+  ],
+  "subject_terms": [
+    "basis vector",
+    "matrix column",
+    "column-vector convention",
+    "row major",
+    "singular matrix",
+    "origin"
+  ],
+  "intent_signals": [
+    "the shape drifts while I animate the matrix",
+    "check that the arrows match the matrix columns"
+  ],
+  "example_prompts": [
+    "Check that this transformation demo applies the matrix to the original geometry."
+  ],
+  "negative_signals": [
+    "eigenvalue or SVD teaching",
+    "change-of-basis lessons"
+  ],
+  "content": {
+    "principles": [
+      "The displayed image of each basis vector is the corresponding column of the matrix, which is the cheapest check that the matrix in the panel is the matrix applied to the geometry.",
+      "Transformed geometry comes from applying the matrix to the original vertices; applying it to the previous frame result compounds the matrix, and after a few frames the picture disagrees with the numbers.",
+      "A linear map fixes the origin, so any visible translation is presentation and must be labelled as such."
+    ],
+    "implementation": [
+      "Read the three transformed basis endpoints from the scene and compare them component by component with the matrix columns shown in the panel.",
+      "Choose a test vector with distinct components, evaluate the product independently, and compare with the displayed image.",
+      "Animate the matrix for at least two hundred frames, return it to the identity, and compare the geometry against the stored original vertices.",
+      "Include a singular matrix and a matrix with negative determinant among the samples, since they exercise branches an invertible example never reaches."
+    ],
+    "observable_checks": [
+      "Each transformed basis endpoint equals its matrix column within display precision; a mismatch on exactly one axis usually indicates a row-major and column-major mix-up.",
+      "After animating and returning to the identity the geometry equals the stored originals; drift that grows with frame count identifies cumulative multiplication.",
+      "The origin stays fixed in every sample, and any visible translation is identified as a presentation offset rather than as part of the map."
+    ]
+  },
+  "known_limits": [
+    "Checks the correspondence between the displayed matrix and the displayed geometry; it does not teach or verify any decomposition of that matrix.",
+    "Authored verification guidance; no computation or render was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.linear-transformation-3d",
+    "recipe.determinant-volume",
+    "recipe.cross-product"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-matrix-columns-basis-images",
+      "statement": "A matrix represents the transformation that takes the j-th basis vector to the j-th column of the matrix, and any other vector is taken to the same linear combination of those columns.",
+      "scope": "Linear maps in fixed standard coordinates with the column-vector convention; no translation term is included.",
+      "source_refs": [
+        {
+          "source_id": "source.mit-matrices-transformations",
+          "locator": "32.5, paragraphs beginning 'A matrix represents' and 'Remember that any other vector'"
+        }
+      ]
+    }
+  ]
+}

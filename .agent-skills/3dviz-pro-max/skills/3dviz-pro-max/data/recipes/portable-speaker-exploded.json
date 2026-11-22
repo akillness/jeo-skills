@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "id": "recipe.portable-speaker-exploded",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Portable speaker exploded assembly"
+  },
+  "aliases": {
+    "en": [
+      "speaker teardown",
+      "exploded product view"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies"
+  ],
+  "summary": "Explain the authored part hierarchy of a small speaker through reversible separation.",
+  "objective": "Build a portable speaker with a grille, driver, enclosure and back cover that I can separate and reassemble.",
+  "tags": [
+    "speaker",
+    "grille",
+    "enclosure"
+  ],
+  "subject_terms": [
+    "speaker",
+    "grille",
+    "enclosure",
+    "driver",
+    "exploded assembly"
+  ],
+  "intent_signals": [
+    "explode product parts",
+    "inspect a bill of materials"
+  ],
+  "example_prompts": [
+    "Build a portable speaker with a grille, driver, enclosure and back cover that I can separate and reassemble.",
+    "Select each speaker part and show its original seat."
+  ],
+  "entities": [
+    {
+      "name": "Enclosure and cover",
+      "guidance": "Shell has wall thickness, lip, screw bosses and matching rear cover seats; avoid a solid cube interior."
+    },
+    {
+      "name": "Driver and grille",
+      "guidance": "Separate cone, surround, basket and perforated grille; align central axes."
+    },
+    {
+      "name": "Fasteners",
+      "guidance": "Give screws heads and insertion axes; preserve stable part identifiers."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Enclosure and cover",
+      "structure": "Shell has wall thickness, lip, screw bosses and matching rear cover seats; avoid a solid cube interior.",
+      "material": "Matte polymer shell with rubber-looking feet."
+    },
+    {
+      "family": "Driver and grille",
+      "structure": "Separate cone, surround, basket and perforated grille; align central axes.",
+      "material": "Paper-like cone, satin grille, subdued surround."
+    },
+    {
+      "family": "Fasteners",
+      "structure": "Give screws heads and insertion axes; preserve stable part identifiers.",
+      "material": "Dull steel."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored assembly tree with rest transforms, per-part explode axes, explosion scalar and selection; no electrical/acoustic model.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Scrub explode amount.",
+      "Isolate a part and its seat.",
+      "Restore assembled state."
+    ]
+  },
+  "invariants": [
+    "Explosion zero restores every rest transform exactly.",
+    "Part identity, count and material survive isolation.",
+    "Exploded display offsets never alter assembly coordinates."
+  ],
+  "motion_guidance": [
+    "Stagger cover and grille separation so hidden parts become visible before labels appear.",
+    "Companion Three.js tooling can implement hierarchy, ray picking and clipping; part placement remains domain data."
+  ],
+  "known_limits": [
+    "Invented product architecture; not a manufacturer teardown, acoustic design or repair instruction.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [],
+  "creative_affordances": [
+    "Axial separation exposes the nested construction while keeping connector lines short."
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Inspection offsets from rest assembly.",
+    "state": [
+      "rest transforms",
+      "explode scalar",
+      "selection"
+    ],
+    "colliders": [
+      "None; swept display envelopes checked for confusing intersections."
+    ],
+    "driving": [
+      "Offset interpolation."
+    ],
+    "contact": [
+      "No assembly force or screw-thread simulation."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Zero explosion restores exact transforms; isolate preserves selection identity."
+    ]
+  }
+}

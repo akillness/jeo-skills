@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "recipe.finite-state-machine",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Clocked finite-state machine explorer"
+  },
+  "aliases": {
+    "en": [
+      "finite state machine"
+    ]
+  },
+  "direction_ids": [
+    "logic-circuits"
+  ],
+  "summary": "Separate present state, next state and committed clock transitions.",
+  "objective": "Build a small Moore machine with input buttons and a clock-step control that exposes each transition.",
+  "tags": [
+    "finite",
+    "state",
+    "machine"
+  ],
+  "example_prompts": [
+    "Build a small Moore machine with input buttons and a clock-step control that exposes each transition."
+  ],
+  "entities": [
+    {
+      "name": "State nodes",
+      "guidance": "Use labeled shallow platforms with a distinct active outline; depth is layout only."
+    },
+    {
+      "name": "Transitions",
+      "guidance": "Arrowheads and input guards must remain legible, including self-loops; offset crossing edges."
+    },
+    {
+      "name": "Register panel",
+      "guidance": "Show present and next state separately with output tied to present state."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored total deterministic transition table and Moore output map; input changes preview next state, clock commits it.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Change input without advancing state.",
+      "Step one clock edge.",
+      "Replay an input sequence and reset."
+    ]
+  },
+  "invariants": [
+    "Exactly one transition exists for each state/input pair.",
+    "Present state changes only at a committed clock event.",
+    "Same initial state and inputs produce the same trace."
+  ],
+  "motion_guidance": [
+    "Animate a token between states only after committing the transition; lock or queue further steps.",
+    "Reset clears queued clock events and replay index."
+  ],
+  "known_limits": [
+    "No metastability, asynchronous circuit behavior or universal FSM synthesis.",
+    "Authored example semantics require their own trace checks.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.finite-state-machine",
+      "statement": "A deterministic FSM transition diagram needs mutually exclusive and collectively exhaustive outgoing transitions for its possible inputs.",
+      "scope": "Finite discrete inputs and declared states.",
+      "source_refs": [
+        {
+          "source_id": "source.mit-fsm",
+          "locator": "6.1, well-formed state transition diagram rules"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "State nodes",
+      "structure": "Use labeled shallow platforms with a distinct active outline; depth is layout only.",
+      "material": "Neutral node platforms with active outline and preview fill; state emphasis must survive a monochrome view."
+    },
+    {
+      "family": "Transitions",
+      "structure": "Arrowheads and input guards must remain legible, including self-loops; offset crossing edges.",
+      "material": "Neutral node platforms with active outline and preview fill; state emphasis must survive a monochrome view."
+    },
+    {
+      "family": "Register panel",
+      "structure": "Show present and next state separately with output tied to present state.",
+      "material": "Neutral node platforms with active outline and preview fill; state emphasis must survive a monochrome view."
+    }
+  ]
+}

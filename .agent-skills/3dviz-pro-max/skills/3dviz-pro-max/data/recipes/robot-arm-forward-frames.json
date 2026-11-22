@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "id": "recipe.robot-arm-forward-frames",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Robot arm forward-kinematics frames"
+  },
+  "aliases": {
+    "en": [
+      "serial manipulator",
+      "forward kinematics frames"
+    ]
+  },
+  "direction_ids": [
+    "robotics-control"
+  ],
+  "summary": "Connect joint coordinates to an articulated arm and inspectable endpoint frame.",
+  "objective": "Build a three-joint arm with joint sliders and visible base and tool frames derived from forward kinematics.",
+  "tags": [
+    "forward kinematics",
+    "serial arm",
+    "joint coordinates"
+  ],
+  "subject_terms": [
+    "forward kinematics",
+    "serial arm",
+    "joint coordinates",
+    "end effector",
+    "home pose"
+  ],
+  "intent_signals": [
+    "inspect robot frames",
+    "move a joint and see endpoint pose"
+  ],
+  "example_prompts": [
+    "Build a three-joint arm with joint sliders and visible base and tool frames derived from forward kinematics.",
+    "Show how changing the first joint moves downstream links while their lengths remain fixed."
+  ],
+  "entities": [
+    {
+      "name": "Robot links",
+      "guidance": "Use a fixed base, explicit joint-axis housings and rigid links with declared lengths."
+    },
+    {
+      "name": "Tool and frames",
+      "guidance": "Attach a small tool flange and labeled right-handed axis triads at base and tool."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Robot links",
+      "structure": "Use a fixed base, explicit joint-axis housings and rigid links with declared lengths.",
+      "material": "Powder-coated links with dark joint caps."
+    },
+    {
+      "family": "Tool and frames",
+      "structure": "Attach a small tool flange and labeled right-handed axis triads at base and tool.",
+      "material": "Distinct axis colors with x/y/z labels.",
+      "articulation": "Each link transform derives from the upstream joint chain."
+    }
+  ],
+  "state_contract": {
+    "model": "Declared open-chain kinematic model with home transform M, ordered joint axes and joint coordinate vector; use one documented transform convention.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Edit one joint within authored bounds.",
+      "Toggle local frames.",
+      "Reset to home configuration."
+    ]
+  },
+  "invariants": [
+    "Zero joint coordinates recover home transform M.",
+    "Endpoint frame and visible tool use the same transform.",
+    "Changing an upstream joint cannot stretch a rigid downstream link."
+  ],
+  "motion_guidance": [
+    "Use bounded joint-speed interpolation for playback; evaluate transforms from joint state every update.",
+    "Three.js companion tooling renders frames, pivots and picking; a kinematics routine owns matrix composition and units."
+  ],
+  "known_limits": [
+    "Kinematic teaching arm with authored dimensions, not calibrated industrial hardware.",
+    "No torque, payload, collision avoidance or controller safety claim.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [
+    {
+      "id": "claim.robot-arm-forward-frames",
+      "statement": "Forward kinematics maps an open-chain robot joint-coordinate vector to the end-effector frame relative to a fixed space frame; the home configuration is the zero-joint transform.",
+      "scope": "Open-chain rigid-link kinematics with declared joint axes and coordinate conventions.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-forward-kinematics",
+          "locator": "Transcript paragraphs defining forward kinematics, home configuration M and final general procedure"
+        }
+      ]
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Joint-driven rigid-link kinematics.",
+    "state": [
+      "joint coordinates",
+      "tool transform"
+    ],
+    "colliders": [
+      "Optional link envelopes for visible interference warnings, not a planner."
+    ],
+    "driving": [
+      "Joint sliders and bounded speed tracks."
+    ],
+    "contact": [
+      "No contact response or actuator forces."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Home transform equality; tool/frame agreement; fixed link lengths."
+    ]
+  }
+}

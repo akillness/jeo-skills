@@ -1,0 +1,50 @@
+// AgentCompute.compute (scenario-unity-shaders skill v0.1, 2026-09-24): the portable compute template.
+// Rules from the 6.3 Manual (compute, multiple platforms) that bite on this Mac (Metal):
+//   - no "//" comment on a #pragma kernel line (compile error), so kernel comments go above;
+//   - bounds check every thread against a count passed as a constant (Metal has no GetDimensions on
+//     buffers, and out-of-bounds access can hang non-DX GPUs);
+//   - atomics on a RWStructuredBuffer, never on an RWTexture (Metal has no texture atomics);
+//   - RWTexture2D<float4> matches an ARGBFloat / ARGBHalf / ARGB32 target (format qualifier rule for GL and Vulkan).
+// Kernels: SquareAdd (1D, 64 threads), Histogram (1D, buffer atomics), Pattern (2D, 8x8 into a texture).
+
+#pragma kernel SquareAdd
+#pragma kernel Histogram
+#pragma kernel Pattern
+
+StructuredBuffer<float> _Input;
+RWStructuredBuffer<float> _Output;
+RWStructuredBuffer<uint> _Bins;
+RWTexture2D<float4> _Target;
+uint _Count;
+uint _BinCount;
+float _Offset;
+uint2 _Size;
+float _Time01;
+
+[numthreads(64, 1, 1)]
+void SquareAdd(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= _Count) return;
+    float v = _Input[id.x];
+    _Output[id.x] = v * v + _Offset;
+}
+
+[numthreads(64, 1, 1)]
+void Histogram(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= _Count) return;
+    uint bin = min((uint)(saturate(_Input[id.x]) * _BinCount), _BinCount - 1);
+    InterlockedAdd(_Bins[bin], 1u);
+}
+
+[numthreads(8, 8, 1)]
+void Pattern(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= _Size.x || id.y >= _Size.y) return;
+    float2 uv = (id.xy + 0.5) / (float2)_Size;
+    float2 c = uv * 2.0 - 1.0;
+    float r = length(c);
+    float rings = 0.5 + 0.5 * cos(r * 40.0 - _Time01 * 6.2831853);
+    float3 col = lerp(float3(0.05, 0.10, 0.30), float3(1.0, 0.55, 0.15), rings * saturate(1.2 - r));
+    _Target[id.xy] = float4(col, 1.0);
+}

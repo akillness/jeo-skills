@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-generative",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Generative variation systems"
+  },
+  "aliases": {
+    "en": [
+      "procedural art",
+      "rule-based sculpture",
+      "generative scene"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "topology-symmetry"
+  ],
+  "summary": "Choose a small set of authored rules whose variations produce coherent families, with parameters that have observable roles.",
+  "objective": "Changing one control changes the intended visual property; reset reproduces the documented starting composition when reproducibility is promised.",
+  "tags": [
+    "style-profile",
+    "process-aesthetic",
+    "generative"
+  ],
+  "subject_terms": [
+    "procedural art",
+    "rule-based sculpture",
+    "generative scene",
+    "process aesthetic"
+  ],
+  "intent_signals": [
+    "Create generative art",
+    "Expose meaningful controls for procedural variation"
+  ],
+  "example_prompts": [
+    "Create a generative grove where branch density and curvature are separate editable design controls."
+  ],
+  "content": {
+    "principles": [
+      "Choose a small set of authored rules whose variations produce coherent families, with parameters that have observable roles.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Generate repeated elements with controlled spacing, scale and orientation ranges; retain a stable seed or saved result when reproducibility is useful.",
+      "Map material or color variation to named design parameters rather than unstructured randomness; use light to reveal the resulting pattern.",
+      "Provide an overview and local inspection; parameter changes may animate only if element identity and state interpretation remain clear."
+    ],
+    "observable_checks": [
+      "Changing one control changes the intended visual property; reset reproduces the documented starting composition when reproducibility is promised.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with geometric abstraction or natural-world themes; procedural appearance is not evidence of a biological or physical growth model.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

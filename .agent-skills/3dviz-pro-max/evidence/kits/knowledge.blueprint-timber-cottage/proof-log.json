@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-timber-cottage",
+  "record_revision": 2,
+  "asset": "templates/kits/buildings/timber-cottage.js",
+  "asset_sha256": "e945d5c736a43d6c6753782d140ac72b6b5853ec7148fd4c6dc59f22b569c412",
+  "params": {
+    "width": 4.2,
+    "depth": 3.4,
+    "storeys": 1,
+    "seed": 1,
+    "roofPitchDeg": 42
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-timber-cottage",
+    "module": "../buildings/timber-cottage.js",
+    "params": {
+      "width": 4.2,
+      "depth": 3.4,
+      "storeys": 1,
+      "seed": 1,
+      "roofPitchDeg": 42
+    },
+    "triangles": 3468,
+    "bounds_m": {
+      "min": [
+        -2.2700000089406966,
+        -4.768371586472142e-08,
+        -2.0167578738382317
+      ],
+      "max": [
+        2.2700000089406966,
+        4.730686876051386,
+        2.11
+      ],
+      "size": [
+        4.540000017881393,
+        4.730686923735101,
+        4.126757873838232
+      ]
+    },
+    "fit_distance_m": 11.3258,
+    "view_distances_m": {
+      "far": 27.182,
+      "mid": 13.591,
+      "close": 8.8342,
+      "detail": 1.5843
+    },
+    "sockets": [
+      "door",
+      "chimney",
+      "sign",
+      "lean-to"
+    ],
+    "detail_socket": "door",
+    "animated": false,
+    "colliders": [
+      "walls",
+      "roof",
+      "step"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "6005e410f6c55317a1abc018c9d1cfbd570d96151f0f4575bf6f2791329d1c61",
+    "mid.png": "04ae5bdef23942e5952c3fe8abedb741048adadc5fa65babe34c0375a9ec783a",
+    "close.png": "6fa542da5eadcfe88e73e018e44a649cf225d277f2e29e1724931242a6021112",
+    "detail.png": "67e4ce3b8e4914c587561820360dea94ca4634355fcedd2fba4c8542b109c853"
+  },
+  "motion": null,
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:50:14+00:00",
+  "finished": "2026-09-08T13:50:18+00:00"
+}

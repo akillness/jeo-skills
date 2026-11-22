@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "id": "recipe.fft-finite-window-spectrum-reconstruction",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Finite-window FFT spectrum and inverse reconstruction"
+  },
+  "aliases": {
+    "en": [
+      "DFT window leakage inspector",
+      "FFT bin and inverse reconstruction"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra",
+    "calculus-fields"
+  ],
+  "summary": "Compare one finite sampled signal under rectangular and tapered windows, reconstruct the exact windowed samples by inverse DFT, and distinguish bin spacing from true frequency resolution.",
+  "objective": "Make leakage, window response, coherent scaling and exact finite inverse reconstruction visible without presenting zero padding as new measured information.",
+  "tags": [
+    "FFT",
+    "DFT",
+    "spectral leakage",
+    "windowing"
+  ],
+  "subject_terms": [
+    "FFT",
+    "DFT",
+    "spectral leakage",
+    "windowing",
+    "inverse reconstruction",
+    "zero padding"
+  ],
+  "intent_signals": [
+    "Show why an off-bin sinusoid leaks across FFT bins and reconstruct the windowed samples exactly.",
+    "Compare rectangular and Hann windows with zero padding but keep the original record length visible."
+  ],
+  "example_prompts": [
+    "Show why an off-bin sinusoid leaks across FFT bins and reconstruct the windowed samples exactly.",
+    "Compare rectangular and Hann windows with zero padding but keep the original record length visible."
+  ],
+  "negative_signals": [
+    "Not a continuous Fourier-series harmonic editor.",
+    "Not proof of frequencies between samples or beyond Nyquist."
+  ],
+  "not_for": [
+    "Irregular samples, streaming STFT or statistical PSD confidence intervals.",
+    "Recovering the unwindowed signal after a window with zeros from windowed samples alone."
+  ],
+  "entities": [
+    {
+      "name": "Finite sample rail",
+      "guidance": "Show n=64..2048 real samples x_m at t_m=m*dt, the window w_m and product y_m=x_m w_m with the same stable index."
+    },
+    {
+      "name": "Linked complex spectrum",
+      "guidance": "Plot signed frequency bins f_k and complex Y_k, plus magnitude/phase; selected bin links its contribution to every reconstructed sample. Phase is unavailable when magnitude is zero or below the declared phase threshold."
+    },
+    {
+      "name": "Inverse reconstruction rail",
+      "guidance": "Compute yhat_m=(1/n) sum_k Y_k exp(2 pi i mk/n) under the declared convention and show max complex residual."
+    }
+  ],
+  "state_contract": {
+    "model": "Require finite dt>0, integer 64<=n<=2048 and finite real x_m. Choose rectangular w_m=1 or periodic Hann w_m=0.5(1-cos(2 pi m/n)); report coherent gain CG=sum_m w_m/n. Compute y_m=x_m w_m and Y_k=sum_m y_m exp(-2 pi i mk/n). Optional zero padding changes transform length nfft>=n but never the original n or record duration. Inverse reconstruction uses the same full complex n-point Y when checking y.",
+    "authority": "Numeric arrays, dt, window, transform length and normalization own every coordinate; mesh height and color are display only.",
+    "actions": [
+      "Choose on-bin or off-bin sinusoid preset and add bounded second component.",
+      "Switch window and recompute spectrum, coherent gain readout and inverse.",
+      "Change zero-padding factor while pinning n and dt.",
+      "Select a bin or sample; play/scrub contribution assembly; reset exactly."
+    ]
+  },
+  "invariants": [
+    "For x_m=cos(2 pi*8m/n), rectangular-window energy is confined to conjugate bins 8 and n-8 within numerical tolerance.",
+    "For an off-bin sinusoid, nonzero neighboring bins are labeled finite-window leakage, not extra physical tones.",
+    "Full forward then inverse DFT reconstructs y_m, not generally x_m; report max |yhat-y| and imaginary residue.",
+    "Zero padding makes a denser sampled spectrum but does not change duration n*dt or acquired samples.",
+    "Reject nonfinite input, nfft<n and inverse residual above declared tolerance."
+  ],
+  "motion_guidance": [
+    "Scrub integer samples or bins; interpolation is explanatory.",
+    "When window or n changes, invalidate spectrum and reconstruction atomically."
+  ],
+  "creative_affordances": [
+    "Use a braided phasor ring, translucent bin columns or engraved sample rail while preserving signed frequency and non-color window cues."
+  ],
+  "known_limits": [
+    "A finite record cannot establish a unique continuous spectrum or sub-bin tone without assumptions.",
+    "Window choice trades main-lobe width and sidelobes; no window is universally best. No computation was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.math-numpy-dft-convention",
+      "statement": "NumPy defines the forward DFT as A_k=sum from m=0 to n-1 of a_m exp(-2 pi i m k/n) and its inverse with 1/n and the opposite sign.",
+      "scope": "NumPy 2.2 documented convention; other libraries and normalization modes may differ.",
+      "source_refs": [
+        {
+          "source_id": "source.math-numpy-fft",
+          "locator": "Implementation details, forward and inverse DFT equations"
+        }
+      ]
+    },
+    {
+      "id": "claim.math-scipy-window-leakage",
+      "statement": "The SciPy spectral-analysis guide attributes sidelobe leakage for a finite-duration sine to confinement to a finite interval and describes windowing as suppressing secondary lobes at the cost of widening the main lobe.",
+      "scope": "Finite sampled spectral analysis in the cited guide; it does not identify a universal optimal window.",
+      "source_refs": [
+        {
+          "source_id": "source.math-scipy-spectral-analysis",
+          "locator": "Spectral Analysis, finite sine leakage and windowed DFT equation (7)"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Linked FFT instrument",
+      "structure": "Place sample/window/product rails below a signed-frequency spectrum and a separate reconstruction rail; keep zero padding as denser thin bin marks, not more input samples.",
+      "material": "Use one neutral window envelope, distinct magnitude and phase encodings, and hatch unresolved or thresholded values.",
+      "articulation": "A selected bin fans contribution curves to reconstruction samples; window tokens swap the numeric input atomically."
+    },
+    {
+      "family": "Blender-to-Three.js mathematical handoff",
+      "structure": "In Blender, author only static axes, labeled frames, selection glyphs and low-detail instrument housings at declared units; keep numeric curves, rasters, samples and component lattices out of baked mesh state.",
+      "material": "Use simple glTF-safe material slots and optional baked label atlases with explicit UVs. Export named anchors and static teaching geometry; unsupported procedural nodes, text and compositor marks require baked or runtime replacements.",
+      "articulation": "In Three.js, allocate numeric arrays from the validated input contract, generate dynamic lines/points/instances, bind selections by stable index, and rebuild all linked views atomically on parameter revision or reset."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Finite complex DFT of a windowed sample vector; no physical signal model.",
+    "timestep": "One integer sample or bin index per explanatory step; no continuous dynamics.",
+    "state": [
+      "sample vector and dt",
+      "window vector and transform convention",
+      "complex spectrum and reconstructed vector"
+    ],
+    "checks": [
+      "Run exact on-bin cosine preset.",
+      "Verify inverse residual against tolerance.",
+      "Confirm padding leaves n and duration unchanged."
+    ]
+  },
+  "related_ids": [
+    "recipe.fourier-harmonic-synthesis"
+  ]
+}

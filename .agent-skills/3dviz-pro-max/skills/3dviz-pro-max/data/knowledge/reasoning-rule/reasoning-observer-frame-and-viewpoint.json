@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-observer-frame-and-viewpoint",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Name the viewpoint that makes the phenomenon appear"
+  },
+  "aliases": {
+    "en": [
+      "reference frame",
+      "observer view",
+      "phases geometry"
+    ]
+  },
+  "direction_ids": [
+    "astronomy-space",
+    "earth-environment"
+  ],
+  "summary": "Show both the geometric configuration and the view from the observer, because many astronomical phenomena are viewpoint effects.",
+  "objective": "Connect an astronomical appearance to the geometry and the observer that produce it.",
+  "applies_when": [
+    "Phases, retrograde motion, eclipses, seasons or rise and set are explained.",
+    "The scene switches between an external view and a view from a surface.",
+    "The user asks what something looks like from a place at a time."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "reference frame",
+    "observer",
+    "phases",
+    "illumination",
+    "viewpoint",
+    "geometry"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "astronomy",
+    "frames"
+  ],
+  "intent_signals": [
+    "why does the moon have phases",
+    "what would I see from Earth",
+    "show it from outside and from the ground"
+  ],
+  "example_prompts": [
+    "Show the Moon phases from space and from the ground together.",
+    "Explain the phase using the Sun, Earth and Moon geometry."
+  ],
+  "negative_signals": [
+    "Purely decorative space scenes with no observational claim.",
+    "Abstract orbital mechanics with no observer."
+  ],
+  "not_for": [
+    "Purely decorative space scenes with no observational claim.",
+    "Abstract orbital mechanics with no observer."
+  ],
+  "content": {
+    "principles": [
+      "Many astronomical phenomena are relationships between a configuration and a viewpoint. Under the ordinary model of a distant unobscured Sun, half of the Moon is lit, and the phase is how much of that lit half is visible from Earth as the Moon travels through its orbit. That model has exceptions the scene may be showing: during a lunar eclipse the Earth blocks the direct sunlight, so the lit fraction is no longer simply half.",
+      "A single external view can show the geometry but not the appearance, and a single ground view can show the appearance but not the cause. Both together are the explanation.",
+      "The lit hemisphere is a property of the Sun direction, not of the observer, so the terminator must be derived from the light direction rather than authored to match a desired phase.",
+      "Naming the frame also fixes what is animated: an orbital view moves bodies, while a topocentric view moves the sky."
+    ],
+    "implementation": [
+      "Compute illumination from the actual source direction in the model, and derive the appearance for the observer rather than drawing a phase shape.",
+      "Provide linked views, external and observer-based, driven by the same state so they cannot disagree.",
+      "Label each view with its frame, and show the observer position in the external view.",
+      "Uniformly scaling center separations preserves center-to-center directions. A spherical, distant-observer phase construction based on those directions can therefore be preserved; a nearby or surface observer has different sightlines and perspective. Compute that observer appearance, angular size, parallax and shadow geometry from unscaled model values, or explicitly label a simplified depiction.",
+      "Let the viewer move the observer or the time and see both views respond together."
+    ],
+    "observable_checks": [
+      "Confirm the lit fraction seen in the observer view matches the geometry shown in the external view at every time.",
+      "Check that the illuminated hemisphere faces the light source in the external view, and that any eclipse the scene depicts removes direct illumination where the blocking body's shadow actually falls rather than leaving the simple half-lit rule in force.",
+      "Move the observer and confirm the appearance changes appropriately while the geometry does not.",
+      "Confirm each view is labelled with its frame so the two cannot be confused."
+    ]
+  },
+  "related_ids": [
+    "recipe.moon-phase-observer",
+    "recipe.earth-tilt-seasons",
+    "recipe.stellar-parallax-baseline"
+  ],
+  "creative_affordances": [
+    "Stylised skies, exaggerated body sizes and dramatic lighting remain available above the geometric relationship.",
+    "A hand-drawn or diagrammatic observer view can be clearer than a photorealistic one."
+  ],
+  "known_limits": [
+    "Authored guidance citing the qualitative geometry of lunar phases; it asserts no ephemeris, timing or positional accuracy.",
+    "Libration, atmospheric effects and precise phase timing are outside this rule."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-phase-geometry",
+      "statement": "In the idealized lunar-phase construction with a spherical Moon and distant unobscured sunlight, the sunward hemisphere is illuminated; the phase seen from Earth depends on which part is visible to the observer. The cycle of lunar phases repeats about every 29.5 days.",
+      "scope": "Qualitative Earth-Moon-Sun phase geometry under the spherical, distant-source and unobscured-light idealization. Eclipses, terrain shadows and finite-distance corrections are excluded from the half-lit construction; no ephemeris positions or exact phase times are provided.",
+      "source_refs": [
+        {
+          "source_id": "source.nasa-moon-phases",
+          "locator": "Why the Moon has phases: sunlight and the portion visible from Earth; roughly 29.5-day phase cycle, used here as an explicitly idealized unobscured construction"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-bioluminescent-deep-sea",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Bioluminescent deep sea"
+  },
+  "aliases": {
+    "en": [
+      "bioluminescent deep sea",
+      "abyssal glow",
+      "deep-sea bioluminescence"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment",
+    "environments-dioramas",
+    "anatomy-structures"
+  ],
+  "summary": "An abyss with no sun: the only light is made by the organisms in frame, falling off within a couple of metres into near-black water.",
+  "objective": "Every lit surface in the frame can be traced to a visible emitter within about 3 m of it; with the emitters disabled the frame goes to near-black rather than revealing a hidden fill light.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "named-look",
+    "emissive",
+    "underwater"
+  ],
+  "subject_terms": [
+    "deep sea",
+    "bioluminescent",
+    "abyss",
+    "abyssal",
+    "glowing organism",
+    "midnight zone",
+    "underwater dark"
+  ],
+  "intent_signals": [
+    "Bioluminescent deep sea creatures glowing in the dark",
+    "Abyss scene lit only by the animals",
+    "Deep sea trench with glowing organisms, no sunlight"
+  ],
+  "example_prompts": [
+    "A deep-sea vent field where the only light comes from bioluminescent organisms drifting past.",
+    "An abyssal jelly with a glowing band, lighting the silt beneath it as it drifts."
+  ],
+  "content": {
+    "principles": [
+      "There is no sun at this depth. Any ambient or directional fill above 0.2 immediately reads as a lit aquarium; darkness is the subject and the light is the event.",
+      "Triangulate three traits shared by deep-submersible footage, dark-field microscopy and stage lighting — (a) light arrives from inside the body being looked at, (b) the medium itself is visible and eats the light within metres, (c) the surrounding volume stays informationally empty so a single emitter can carry the whole frame. The traits are the requirement; no named film, series or artist is.",
+      "Silhouette rule: because most of each body is unlit, the emissive band is the silhouette. Author a 2-4 cm wide emissive strip that traces the readable outline (bell rim, lateral line, tentacle tips) rather than making the whole body glow, which flattens it into a blob.",
+      "Scale cues, always present: a 12 cm submersible lamp housing, a 30 cm ruler stake in the silt, or a 6.1 m equipment frame — without one, viewers cannot tell a 3 cm larva from a 3 m siphonophore.",
+      "Restraint is the palette: two emissive hue families (cyan-green #2ee6c8 and blue #5a7bff) plus one rare magenta accent (#ff5fa2) used on exactly one organism per scene."
+    ],
+    "implementation": [
+      "Emitters: each organism carries an emissive material at emissiveIntensity 6-10 — comfortably above the 1.0 bloom threshold — plus one PointLight of 20-35 candela with distance 8 m and decay 2 placed inside the body, so the falloff is visible as a gradient on nearby silt and on neighbouring animals.",
+      "Contrast contract: every non-emissive surface stays below 0.35 linear luminance; the pairing of emissiveIntensity 6-10 against a 1.0 bloom threshold is what makes glow the only thing the eye can find.",
+      "Water: FogExp2 colour #04121c at density 0.09 — an emitter is fully swallowed at roughly 25-35 m, which is why the scene needs no background geometry to feel enclosed.",
+      "Bodies: MeshPhysicalMaterial with transmission 0.85, thickness 0.06 m, ior 1.35, roughness 0.4 for gelatinous tissue; seafloor silt at roughness 0.95 with 3 cm displacement so the PointLight falloff has texture to land on.",
+      "Marine snow: 800-1500 instanced particles of 3-8 mm in a 12 m radius volume, drifting down at 0.03-0.08 m/s with a 0.01 m/s lateral wander; particles inside 1.5 m of an emitter pick up its colour and are the cheapest possible proof that the medium is water.",
+      "Motion: pulse and drift on a 5.0-9.0 s period with sine in-out easing and a 900 ms hold at the top of each pulse — nothing in this scene moves quickly, and the slow timing does as much work as the palette.",
+      "Post: bloom strength 0.9 at radius 0.85 with the threshold left at 1.0 so only the emitters bloom; vignette 0.45 closes the frame; AgX at exposure 1.15 holds the saturated cyan without the hue shift ACESFilmic gives highly saturated emissives."
+    ],
+    "observable_checks": [
+      "Disable every emissive material and PointLight: the frame goes to near-black. Anything still visible is a fill light that does not belong here.",
+      "Sample luminance on the silt at 1 m, 3 m and 8 m from an emitter: the values must fall off smoothly, confirming decay 2 and the 8 m distance are actually in effect.",
+      "Count hue families in a saturation-boosted screenshot: two, plus at most one magenta organism.",
+      "Toggle fog: with FogExp2 at 0.09 an emitter at 30 m is invisible; if it is still readable the density has been lowered and the sense of enclosure is gone."
+    ]
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for AgX tone mapping at renderer.toneMappingExposure 1.15 with three.js physically-based light units; under ACESFilmic the saturated cyan emissives shift toward white and every intensity needs re-tuning.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "A submersible lamp may be added as a second light story — a 6500K #ffffff SpotLight at 120 candela, 25° cone — but it must be motivated by a visible housing in frame and switched, so the abyss can be shown with and without it.",
+    "The look scales down to a specimen study: the same emissive-band logic on a single organism against pure #03070f is a legitimate product-style presentation.",
+    "Hue families are swappable (amber-and-violet reads as a hydrothermal variant) as long as the count stays at two plus one accent."
+  ],
+  "related_ids": [
+    "knowledge.theme-underwater-discovery",
+    "knowledge.emissive-practical-light-balance",
+    "knowledge.style-holographic"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "The entire look is a contrast contract between one high number and one low number: emitters run at emissiveIntensity 6-10 with 20-35 candela PointLights at decay 2, while every non-emissive surface is held below 0.35 linear, so the 1.0 bloom threshold separates the two populations cleanly and glow becomes the only readable light in the frame. FogExp2 at 0.09 swallows an emitter by roughly 25-35 m, which supplies enclosure without any background geometry, and AgX at exposure 1.15 is chosen over ACESFilmic because ACES desaturates and hue-shifts the saturated cyan-green that carries this palette.",
+    "values": {
+      "feeling": [
+        "still",
+        "alien",
+        "hushed"
+      ],
+      "palette": [
+        {
+          "hex": "#03070f",
+          "role": "abyssal background / deepest value"
+        },
+        {
+          "hex": "#0a2233",
+          "role": "near-field water body and silt mid"
+        },
+        {
+          "hex": "#2ee6c8",
+          "role": "primary cyan-green bioluminescent emissive"
+        },
+        {
+          "hex": "#5a7bff",
+          "role": "secondary blue emissive and distant motes"
+        },
+        {
+          "hex": "#ff5fa2",
+          "role": "rare magenta accent — one organism per scene"
+        }
+      ],
+      "value_structure": "80/15/5 dark/mid/light; only emitters and the volume within about 1.5 m of them exceed 0.6 luminance",
+      "saturation_rule": "non-emissive surfaces ≤ 20% HSL saturation; emissives 85-100%, limited to two hue families plus one rare magenta accent",
+      "sky": {
+        "model": "solid",
+        "zenith": "#03070f",
+        "horizon": "#03070f"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#04121c",
+        "density": 0.09
+      },
+      "lights": {
+        "key": {
+          "type": "PointLight",
+          "color": "#2ee6c8",
+          "intensity": 28,
+          "elevation_deg": 0,
+          "azimuth_deg": 0,
+          "castShadow": false,
+          "distance_m": 8,
+          "decay": 2,
+          "note": "the emitter is inside the organism: 20-35 candela paired with an emissiveIntensity 6-10 band, never a light floating in open water"
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#0a2233",
+          "ground": "#01050a",
+          "intensity": 0.12
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#14364f",
+          "intensity": 0.15,
+          "elevation_deg": 88,
+          "azimuth_deg": 0,
+          "castShadow": false
+        },
+        "ratio": "key:fill ≈ 20:1 — the darkest look in the set; nothing is lit that is not near a light-emitting body"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "AgX",
+        "exposure": 1.15
+      },
+      "camera": {
+        "fov_deg": 55,
+        "height_m": 1.2,
+        "pitch_deg": -6,
+        "orbit": {
+          "minPolar_deg": 55,
+          "maxPolar_deg": 100,
+          "minDist_m": 1.5,
+          "maxDist_m": 14
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.4,
+          0.95
+        ],
+        "metalness": [
+          0.0,
+          0.05
+        ],
+        "notes": "gelatinous bodies MeshPhysicalMaterial transmission 0.85, thickness 0.06 m, ior 1.35, roughness 0.4; emissive strip 2-4 cm wide tracing the silhouette at emissiveIntensity 6-10, never the whole body; seafloor silt roughness 0.95 with 3 cm displacement"
+      },
+      "motion": {
+        "sway_period_s": [
+          5.0,
+          9.0
+        ],
+        "ease": "sine in-out",
+        "hold_ms": 900
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.0,
+          "strength": 0.9,
+          "radius": 0.85
+        },
+        "vignette": 0.45,
+        "grain": 0.05,
+        "dof": "on: focus 3 m, f/2.0, near blur only"
+      },
+      "signature_technique": "Emissive intensity 6-10 held far above the 1.0 bloom threshold while every non-emissive surface stays under 0.35 linear, so the only light the viewer can locate is a body that is making it.",
+      "never": [
+        "ambient or hemisphere fill above 0.2",
+        "sunlight, god rays or caustics (this depth has none)",
+        "more than three emissive hue families",
+        "a fully lit background rock wall",
+        "untinted white ambient light"
+      ]
+    }
+  }
+}

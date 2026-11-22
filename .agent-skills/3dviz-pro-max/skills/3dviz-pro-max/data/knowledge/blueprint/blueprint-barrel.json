@@ -1,0 +1,304 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-barrel",
+  "revision": 3,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: coopered barrel"
+  },
+  "aliases": {
+    "en": [
+      "barrel kit",
+      "oak cask blueprint",
+      "village barrel module"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies"
+  ],
+  "summary": "A coopered oak barrel with bulged staves, four iron hoops and a three-plank head, parameterised by height, radius, stave count, bulge and seed.",
+  "objective": "At one metre the barrel reads as three tiers: a bulged silhouette with a proud chime, then individual staves and hoops, then rivets and per-stave hue.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "prop",
+    "village",
+    "barrel",
+    "cooperage"
+  ],
+  "subject_terms": [
+    "stave",
+    "iron hoop",
+    "chime",
+    "cask head",
+    "bulge",
+    "rivet"
+  ],
+  "intent_signals": [
+    "add barrels to a village scene",
+    "reusable cask prop",
+    "cooperage prop kit"
+  ],
+  "example_prompts": [
+    "Stack three barrels beside the tavern door.",
+    "I need a cask I can re-colour for a cellar scene."
+  ],
+  "not_for": [
+    "Any claim about historical cooperage dimensions or capacity.",
+    "A container that actually holds a simulated fluid volume."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/props/barrel.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "height",
+      "type": "number",
+      "range": [
+        0.6,
+        1.3
+      ],
+      "default": 0.94,
+      "unit": "m"
+    },
+    {
+      "name": "radius",
+      "type": "number",
+      "range": [
+        0.22,
+        0.5
+      ],
+      "default": 0.34,
+      "unit": "m"
+    },
+    {
+      "name": "staves",
+      "type": "integer",
+      "range": [
+        10,
+        24
+      ],
+      "default": 16
+    },
+    {
+      "name": "seed",
+      "type": "integer",
+      "range": [
+        0,
+        65535
+      ],
+      "default": 1
+    },
+    {
+      "name": "bulge",
+      "type": "number",
+      "range": [
+        0.0,
+        0.3
+      ],
+      "default": 0.2
+    },
+    {
+      "name": "gap",
+      "type": "number",
+      "range": [
+        0.02,
+        0.2
+      ],
+      "default": 0.06
+    }
+  ],
+  "sockets": [
+    {
+      "name": "lid",
+      "position_m": [
+        0,
+        0.94,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "base",
+      "position_m": [
+        0,
+        0,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "tap",
+      "position_m": [
+        0,
+        0.32,
+        0.34
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "bulged barrel profile: 34 cm at the belly falling to 27 cm at both heads",
+      "five iron hoops breaking the wooden surface by 1 cm each",
+      "stave ends standing 5 cm proud of the sunken head, the chime"
+    ],
+    "medium": [
+      "sixteen separate staves with a 6 percent gap between each pair",
+      "four stave courses whose joins are covered by the three middle hoops",
+      "a closed head sunk 5 cm below the stave ends, with two raised seam battens over it"
+    ],
+    "fine": [
+      "six rivet domes on every hoop, thirty in all, 2.4 cm across",
+      "1.2 cm chamfer on every stave edge, cut as geometry",
+      "per-stave hue jitter of 5 percent across the sixty-four stave segments",
+      "a bung boss on the top head, offset by a seeded amount from the centre"
+    ]
+  },
+  "footprint_m": [
+    0.73,
+    0.73
+  ],
+  "poly_budget": 3448,
+  "fits_looks": [
+    "knowledge.style-hand-painted",
+    "knowledge.style-stylized",
+    "knowledge.theme-heritage-fiction",
+    "knowledge.lighting-mood-dusk-golden-hour",
+    "knowledge.lighting-mood-overcast-soft"
+  ],
+  "content": {
+    "principles": [
+      "A barrel is recognised by its bulge before anything else: a cylinder with hoops painted on reads as a bucket at every distance.",
+      "The hoops sit where the stave courses join, so the one feature that must be covered is covered by the feature the eye counts.",
+      "Variation belongs in the seed: sixteen identically toned staves read as a texture, not as wood."
+    ],
+    "implementation": [
+      "Call create({ height, radius, staves, seed, bulge, gap }); the group is centred on its footprint with y = 0 at the ground.",
+      "Attach a tap, funnel or sack through the named sockets rather than by hand placing world coordinates.",
+      "Three instanced stave courses plus two instanced hoop-rivet fields keep the whole barrel at five draw calls."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible.",
+      "Two seeds differ visibly in stave tone while keeping the same silhouette.",
+      "The tap socket lands on the belly, not inside it: its z equals the radius parameter."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here measures a real cask, its capacity or its joinery.",
+    "The poly budget is the triangle count observed at default parameters; 24 staves costs about 4400 triangles.",
+    "The staves are four straight courses, not a continuous curve: at less than 30 cm from the surface the course joins are visible as facets.",
+    "T2 is the same geometry with runtime procedural surface and vertex occlusion (see knowledge.surface-tier-defaults); it adds no polygons and ships no files, and it reads at stylized-game quality, not photoreal."
+  ],
+  "creative_affordances": [
+    "Any parameter may be pushed outside its stated range; the range is the band that was proved, not a limit.",
+    "Drop bulge to zero and raise the gap for a water butt, or re-colour the hoops brass for a spice cask."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "height": 0.94,
+      "radius": 0.34,
+      "staves": 16,
+      "bulge": 0.2,
+      "gap": 0.06,
+      "bevel_m": 0.012,
+      "hoop_tube_m": 0.016,
+      "feeling": "worn tavern cellar"
+    },
+    "rationale": "Sized so the barrel reaches mid-thigh on a 1.7 m figure, which is what makes a row of them read as storage rather than as scenery bumps."
+  },
+  "related_ids": [
+    "knowledge.hollow-vessel-liquid-cavity",
+    "knowledge.hero-prop-detail-hierarchy",
+    "knowledge.blueprint-timber-cottage",
+    "recipe.fantasy-village-diorama"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "detail_socket": "lid",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-barrel/far.png",
+      "evidence/kits/knowledge.blueprint-barrel/mid.png",
+      "evidence/kits/knowledge.blueprint-barrel/close.png",
+      "evidence/kits/knowledge.blueprint-barrel/detail.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-barrel/proof-log.json"
+  },
+  "tiers": {
+    "T0": {
+      "mode": "proxy",
+      "size_m": [
+        0.73,
+        0.95,
+        0.73
+      ],
+      "poly_budget": 12,
+      "status": "generated",
+      "note": "Bevelled box from the proof log bounds; a cylinder proxy would be closer but the box is what every T0 uses."
+    },
+    "T2": {
+      "mode": "runtime",
+      "poly_budget": 3448,
+      "texture_budget": {
+        "maps": 3,
+        "resolution": 1024,
+        "families": 2
+      },
+      "families": {
+        "#a8794a": "wood",
+        "#b78e5e": "wood",
+        "#8d6a44": "wood",
+        "#3a3a40": "metal",
+        "#cfc9bd": "metal"
+      },
+      "ao": {
+        "samples": 13,
+        "radius_m": 0.45,
+        "ground_dirt_m": 0.6
+      },
+      "proof": {
+        "harness": "templates/kits/_harness/index.html",
+        "captures": [
+          "evidence/kits/knowledge.blueprint-barrel/T2/far.png",
+          "evidence/kits/knowledge.blueprint-barrel/T2/mid.png",
+          "evidence/kits/knowledge.blueprint-barrel/T2/close.png",
+          "evidence/kits/knowledge.blueprint-barrel/T2/detail.png"
+        ],
+        "log": "evidence/kits/knowledge.blueprint-barrel/T2/proof-log.json",
+        "detail_socket": "lid"
+      },
+      "status": "proved",
+      "note": "Every palette colour is mapped."
+    },
+    "T3": {
+      "mode": "gltf",
+      "status": "missing",
+      "note": "Blender hero tier planned in phase 9C; nothing is shipped yet."
+    },
+    "T4": {
+      "mode": "external",
+      "status": "missing",
+      "note": "No external asset ships with this skill."
+    }
+  }
+}

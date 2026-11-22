@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "id": "recipe.vessel-radius-resistance",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Ideal vessel radius and resistance"
+  },
+  "aliases": {
+    "en": [
+      "Poiseuille flow explainer",
+      "vascular resistance comparison"
+    ]
+  },
+  "direction_ids": [
+    "physiology-biomechanics"
+  ],
+  "summary": "Compare how an ideal tube model changes resistance when radius changes.",
+  "objective": "Show two ideal vessel tubes and compare flow when one radius is halved at fixed pressure difference.",
+  "tags": [
+    "vessel radius",
+    "Poiseuille",
+    "resistance"
+  ],
+  "subject_terms": [
+    "vessel radius",
+    "Poiseuille",
+    "resistance",
+    "viscosity",
+    "pressure difference"
+  ],
+  "intent_signals": [
+    "change vessel radius",
+    "compare flow at fixed pressure"
+  ],
+  "example_prompts": [
+    "Show two ideal vessel tubes and compare flow when one radius is halved at fixed pressure difference.",
+    "Let me change radius, viscosity and length while seeing the declared equation."
+  ],
+  "entities": [
+    {
+      "name": "Tube pair",
+      "guidance": "Build straight transparent cylindrical walls with visible lumen radius and length brackets."
+    },
+    {
+      "name": "Flow indicator",
+      "guidance": "Use an aggregate flow bar and optional tracer markers that are explicitly illustrative."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Tube pair",
+      "structure": "Build straight transparent cylindrical walls with visible lumen radius and length brackets.",
+      "material": "Schematic translucent wall and flat inlet/outlet discs."
+    },
+    {
+      "family": "Flow indicator",
+      "structure": "Use an aggregate flow bar and optional tracer markers that are explicitly illustrative.",
+      "material": "Distinct reference and comparison colors; no red-cell realism."
+    }
+  ],
+  "state_contract": {
+    "model": "Steady ideal cylindrical-tube relation R=8*eta*L/(pi*r^4), Q=deltaP/R; positive finite r,L,eta and declared compatible SI inputs.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Edit one parameter at a time.",
+      "Hold pressure difference fixed or hold flow fixed with explicit mode.",
+      "Reset comparison."
+    ]
+  },
+  "invariants": [
+    "Halving radius at fixed viscosity/length multiplies model resistance by 16.",
+    "Mode determines which dependent variable changes; labels cannot imply both flow and pressure were held fixed.",
+    "Reject nonpositive radius, length or viscosity."
+  ],
+  "motion_guidance": [
+    "Recompute scalar quantities directly on edits; smooth display only and retain numeric endpoint values.",
+    "Tracer speed is labeled illustrative unless a separately specified velocity field is implemented."
+  ],
+  "known_limits": [
+    "Ideal steady laminar Newtonian rigid-tube approximation; real blood and vessels need additional assumptions.",
+    "No pulsatility, branching network, vessel compliance or diagnostic prediction.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [
+    {
+      "id": "claim.vessel-radius-resistance",
+      "statement": "For the ideal tube relation used here, resistance is 8*eta*L/(pi*r^4) and flow is pressure difference divided by resistance.",
+      "scope": "Positive radius, length and viscosity; steady laminar Newtonian flow in an ideal cylindrical tube; physiology application is explanatory.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-resistance",
+          "locator": "Poiseuille equation and rearranged resistance equation preceding Blood Volume"
+        }
+      ]
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Algebraic steady-flow comparison.",
+    "state": [
+      "r",
+      "L",
+      "eta",
+      "deltaP",
+      "Q",
+      "R"
+    ],
+    "colliders": [
+      "No moving-body colliders."
+    ],
+    "driving": [
+      "Parameter evaluation, not time integration."
+    ],
+    "contact": [
+      "No cell-wall contact simulation."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Check 16-fold resistance ratio at half radius; reject invalid inputs."
+    ]
+  }
+}

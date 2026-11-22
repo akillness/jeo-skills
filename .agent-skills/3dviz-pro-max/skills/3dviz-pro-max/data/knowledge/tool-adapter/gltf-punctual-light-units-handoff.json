@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.gltf-punctual-light-units-handoff",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "glTF punctual light unit handoff from Blender to three.js"
+  },
+  "aliases": {
+    "en": [
+      "Blender Lighting Mode glTF export",
+      "KHR_lights_punctual candela lux",
+      "exported light intensity wrong in three.js",
+      "export_import_convert_lighting_mode"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors",
+    "products-assemblies"
+  ],
+  "summary": "Carry Blender lamp strengths through the exporter's Lighting Mode into KHR_lights_punctual candela and lux values, import them natively with GLTFLoader, and read them against a declared tone-mapping exposure.",
+  "objective": "Every imported light intensity can be traced to the Lighting Mode that produced it and to the renderer exposure it is viewed at, and changing the Lighting Mode changes the exported numbers rather than the scene.",
+  "tags": [
+    "tool-adapter",
+    "blender",
+    "threejs",
+    "gltf",
+    "lighting",
+    "units"
+  ],
+  "subject_terms": [
+    "KHR_lights_punctual",
+    "Lighting Mode",
+    "export_import_convert_lighting_mode",
+    "candela",
+    "lux",
+    "luminous intensity",
+    "illuminance",
+    "decay",
+    "toneMappingExposure",
+    "punctual light"
+  ],
+  "intent_signals": [
+    "exported lights are far too bright in three.js",
+    "which Lighting Mode should the glTF exporter use",
+    "what unit is a glTF light intensity",
+    "Blender lamp watts to three.js intensity",
+    "point light disappears at distance after import"
+  ],
+  "example_prompts": [
+    "Export this Blender lighting rig so the intensities still mean something in a three.js viewer.",
+    "Explain why my exported point light needs an intensity of thousands in the web viewer."
+  ],
+  "negative_signals": [
+    "photometric measurement of a real luminaire",
+    "baking lightmaps",
+    "area light shape sampling"
+  ],
+  "not_for": [
+    "Certifying the photometric output of a real lamp.",
+    "Matching two renderers pixel for pixel without fixing tone mapping and exposure first.",
+    "Area, mesh or IES lights, which the punctual extension does not describe."
+  ],
+  "content": {
+    "principles": [
+      "The exporter's Lighting Mode is a unit decision, not a brightness slider: it selects which conversion is applied between Blender lamp strengths and the glTF intensity number, so the same lamp exports different numbers under different modes.",
+      "Units differ by light type in the extension itself. A point or spot intensity is a luminous intensity in candela; a directional intensity is an illuminance in lux. A single global multiplier applied to every light after import therefore hides a unit error rather than fixing it.",
+      "Import is native, not a plugin decision: the loader lists KHR_lights_punctual among the extensions it supports directly, so a missing light is an export problem or a scene-graph problem, never a missing registration.",
+      "An intensity number is unusable without the exposure it was viewed through. Publish the tone-mapping mode and exposure beside any imported intensity, and re-grade with exposure rather than editing single lights."
+    ],
+    "implementation": [
+      "Set the unit conversion explicitly on the operator: `bpy.ops.export_scene.gltf(export_lights=True, export_import_convert_lighting_mode='SPEC')`. `'SPEC'` is the manual's `Standard: Physically-based glTF lighting units (cd, lx, nt)`, `'COMPAT'` is `Unitless: Non-physical, unitless lighting. Useful when exposure controls are not available`, and `'RAW'` is `Raw (Deprecated): Blender lighting strengths with no conversion`.",
+      "`export_lights` is the `Include > Punctual Lights` option and is what emits the `KHR_lights_punctual` extension; the operator signature defaults it to `False`, so a headless export that never sets it produces a glTF with no lights at all.",
+      "Read the exported numbers by type: a glTF `point` or `spot` light's `intensity` is luminous intensity in candela (lm/sr) and a `directional` light's `intensity` is illuminance in lux (lm/m2), both defaulting to `1.0`; `range` is a distance-cutoff hint supported only on point and spot; `spot.innerConeAngle` defaults to `0` and `spot.outerConeAngle` to `PI / 4.0`, both in radians.",
+      "Load with `GLTFLoader`, which lists `KHR_lights_punctual` in its supported-extension list, and take the lights from `gltf.scene`. Do not call `loader.register(...)` for punctual lights; registration is only needed for the extensions the page places under its external-user-plugin list.",
+      "Leave `pointLight.decay = 2`, the documented default the page says should not be changed in the context of physically-correct rendering, and leave `pointLight.distance = 0` (inverse-square attenuation to infinite distance) unless a glTF `range` cutoff has to be reproduced. Widen a pool with more, weaker lights rather than by flattening `decay`.",
+      "Declare `renderer.toneMapping` and `renderer.toneMappingExposure` (documented default `1`) at scene setup and record both next to the imported intensities. Fixing one blown highlight with `toneMappingExposure` re-grades every light at once, which is the correct global control but the wrong per-light fix.",
+      "When a rig was authored under `'COMPAT'` or `'RAW'`, say so in the asset notes: a round trip through a different Lighting Mode is not a no-op, and `'RAW'` applies no conversion at all, so its numbers are Blender strengths wearing glTF field names."
+    ],
+    "observable_checks": [
+      "The exported glTF JSON contains a `KHR_lights_punctual` block whose lights carry the unit expected for their `type`; a file exported with `export_lights=False` contains no such block and the loaded scene has no imported lights.",
+      "Re-exporting the same .blend with `export_import_convert_lighting_mode='SPEC'` and then with `'RAW'` produces different `intensity` values for the same lamp. Identical values mean the keyword never reached the operator.",
+      "A loaded point light reports `decay === 2`; halving its distance to a lit surface raises that surface's illumination by roughly four times. A visibly flatter response means `decay` was changed after import.",
+      "Setting `renderer.toneMappingExposure` to 1.0 and back reproduces the same image, showing that exposure is applied once globally and has not been baked into individual `light.intensity` values.",
+      "A spot light's `innerConeAngle` and `outerConeAngle` read as radians in the glTF JSON and satisfy `0 <= innerConeAngle < outerConeAngle <= PI / 2`."
+    ]
+  },
+  "known_limits": [
+    "The extension defines units, defaults and an attenuation recommendation; it does not define how any renderer maps candela into its own shading, so unit agreement does not imply an appearance match.",
+    "Blender keyword names, defaults and Lighting Mode behaviour change between releases; the operator page read for this record reported a 5.2 version selector while the exporter manual read was the 4.5 LTS page. Re-check both against the installed Blender.",
+    "Three.js documentation pages are unversioned; verify `decay`, `distance` and `toneMappingExposure` semantics against the installed release.",
+    "Authored reusable guidance: no Blender export, no glTF inspection and no renderer run was performed for this record."
+  ],
+  "creative_affordances": [
+    "Non-physical intensities and colour temperatures remain legitimate for expressive work; the requirement is that the Lighting Mode and the exposure are declared, not that the values are realistic.",
+    "A scene may deliberately re-author every light after import; say so, rather than presenting re-authored values as exported ones."
+  ],
+  "related_ids": [
+    "knowledge.three-light-units-and-exposure",
+    "knowledge.blender-view-transform-tone-mapping-table",
+    "knowledge.blender-headless-gltf-export-script",
+    "knowledge.blender-three-linear-color-handoff"
+  ],
+  "claims": [
+    {
+      "id": "claim.gltf-punctual-intensity-units",
+      "statement": "The KHR_lights_punctual extension defines a light's intensity units by type: point and spot lights use luminous intensity in candela (lm/sr) while directional lights use illuminance in lux (lm/m2), with a default of 1.0; range is a distance-cutoff hint supported only for point and spot lights; and a spot light's innerConeAngle and outerConeAngle are radians defaulting to 0 and PI / 4.0.",
+      "scope": "The ratified extension's own property definitions and defaults. It does not define how a renderer converts these units into shaded pixels, nor any tone mapping or exposure behaviour.",
+      "source_refs": [
+        {
+          "source_id": "source.khr-lights-punctual",
+          "locator": "Light Types table: intensity \"point and spot lights use luminous intensity in candela (lm/sr) while directional lights use illuminance in lux (lm/m2)\", Default 1.0; range \"Supported only for point and spot lights\"; Spot section innerConeAngle Default 0 and outerConeAngle Default PI / 4.0, both in radians"
+        }
+      ]
+    },
+    {
+      "id": "claim.blender-exporter-lighting-mode-conversion",
+      "statement": "The Blender glTF exporter exposes a Lighting Mode with three documented settings - Standard, described as physically-based glTF lighting units (cd, lx, nt), Unitless, described as non-physical unitless lighting useful when exposure controls are not available, and the deprecated Raw, described as Blender lighting strengths with no conversion - reachable from Python as export_import_convert_lighting_mode with the literal values 'SPEC', 'COMPAT' and 'RAW'; a separate Punctual Lights option, export_lights, exports directional, point and spot lights using the KHR_lights_punctual extension.",
+      "scope": "Documented exporter option names, literal values and descriptions on the accessed Blender manual and Python API pages. Keyword names and defaults change between Blender versions and no conversion formula is quoted, because neither page prints one.",
+      "source_refs": [
+        {
+          "source_id": "source.blender-bpy-export-scene-gltf",
+          "locator": "bpy.ops.export_scene.gltf(): export_import_convert_lighting_mode (Literal 'SPEC', 'COMPAT', 'RAW') – \"Lighting Mode, Optional backwards compatibility for non-standard render engines. Applies to lights\", signature default 'SPEC'; export_lights (bool) – \"Punctual Lights, Export directional, point, and spot lights. Uses 'KHR_lights_punctual' glTF extension\""
+        },
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "Properties > Data - Lighting > \"Lighting Mode ... Standard: Physically-based glTF lighting units (cd, lx, nt). Unitless: Non-physical, unitless lighting. Useful when exposure controls are not available. Raw (Deprecated): Blender lighting strengths with no conversion\"; Include > \"Punctual Lights Export directional, point, and spot lights. Uses the KHR_lights_punctual glTF extension\""
+        }
+      ]
+    },
+    {
+      "id": "claim.gltf-loader-punctual-native-import",
+      "statement": "The documented GLTFLoader supported-extension list includes KHR_lights_punctual, so punctual lights are imported by the loader itself, while a separate list on the same page names the extensions supported only by an external user plugin registered through the loader's register(callback) method.",
+      "scope": "The loader's documented extension lists as accessed. The page is unversioned and the split between native and plugin support changes between releases.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-three-gltf-loader",
+          "locator": "\"GLTFLoader supports the following glTF 2.0 extensions:\" list including KHR_lights_punctual, KHR_materials_anisotropy, KHR_materials_clearcoat, KHR_materials_emissive_strength, KHR_materials_ior, KHR_materials_specular, KHR_materials_transmission, KHR_materials_iridescence, KHR_materials_volume, KHR_meshopt_compression, EXT_meshopt_compression"
+        },
+        {
+          "source_id": "source.modeling-three-gltf-loader",
+          "locator": "\"The following glTF 2.0 extension is supported by an external user plugin:\" KHR_materials_variants, MSFT_texture_dds, KHR_animation_pointer, NEEDLE_progressive; .register(callback) \"Registers a plugin callback\"; the supported-extension list above it does not name KHR_materials_sheen"
+        }
+      ]
+    },
+    {
+      "id": "claim.three-decay-and-exposure-defaults",
+      "statement": "The renderer documents a point light's intensity in candela (cd) with a default of 1, a decay default of 2 that should not be changed in the context of physically-correct rendering, and a distance default of 0 meaning inverse-square attenuation to infinite distance; the renderer's own toneMappingExposure is documented as the exposure level of tone mapping with a default of 1.",
+      "scope": "Documented light and renderer property defaults of one library as accessed. Documentation pages are unversioned; these are library defaults, not measurements.",
+      "source_refs": [
+        {
+          "source_id": "source.lighting-three-point-light",
+          "locator": "intensity \"The light's strength/intensity measured in candela (cd). Default is 1\"; decay \"The amount the light dims along the distance of the light. In context of physically-correct rendering the default value should not be changed. Default is 2\"; distance Default is 0 (inverse-square law to infinite distance)"
+        },
+        {
+          "source_id": "source.shared-depth-three-webglrenderer",
+          "locator": "toneMapping : NoToneMapping | LinearToneMapping | ReinhardToneMapping | CineonToneMapping | ACESFilmicToneMapping | CustomToneMapping | AgXToneMapping | NeutralToneMapping, \"Default is NoToneMapping\"; toneMappingExposure \"Exposure level of tone mapping. Default is 1\"; outputColorSpace : SRGBColorSpace | LinearSRGBColorSpace, \"Default is SRGBColorSpace\""
+        }
+      ]
+    }
+  ]
+}

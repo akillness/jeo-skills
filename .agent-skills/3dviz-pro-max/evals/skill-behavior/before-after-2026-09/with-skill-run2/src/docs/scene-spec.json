@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "artifact_id": "lanternfall-village",
+  "objective": "Let a viewer explore an invented river village two hours after sunset and leave knowing that every light in it is carried, hung or tended by somebody.",
+  "selected_records": [
+    "knowledge.style-lantern-festival-riverside",
+    "knowledge.lighting-mood-night-lantern",
+    "recipe.fantasy-village-diorama"
+  ],
+  "custom_choices": [
+    "Terrain is one height field (village/terrain.js) sampled by the mesh, the buildings, the bridge and the keepers' routes, so placement and ground can never disagree.",
+    "Buildings are placed in (x, river offset) rather than absolute z, so retuning the meander moves the settlement with the water.",
+    "Five roof grammars (gable, hip, tiered, cone, and the tiered landmark) give the silhouette contrast the recipe asks for; only the bridge arch and the mill wheel are large curves.",
+    "Lantern reflections are additive streaks on the water rather than a real reflection pass: it is the record's signature technique at a cost the demand-driven loop can afford.",
+    "Selection state lives in the scene, not the DOM; the panel, the marker ring and the camera tween all read it."
+  ],
+  "runtime": {
+    "engine": "three@0.180.0",
+    "build": "vite@7.1.5",
+    "post": "postprocessing@6.39.4",
+    "pixel_ratio_cap": 2,
+    "remote_runtime_assets": false,
+    "physics": "none",
+    "render_scheduling": "Demand-driven RAF, max 60 fps, hidden-tab suspension, camera/UI invalidation; one 1024px PointLight shadow map."
+  },
+  "scenes": [
+    {
+      "id": "lanternfall",
+      "motion": "decorative, plus a discrete selection state transition",
+      "entities": [
+        "The Ferryman's Beacon (hero, four tiers, ~19.7 m)",
+        "12 further buildings with five roof grammars, two of them on stilts over the water",
+        "The Long Step: a 28-plank deck on two segmental stone arches",
+        "Cormorant Mill and its 4.4 m undershot wheel",
+        "scale cues: 2.0 m doors, 1.25 m quay wall, 4.5 m ferries, 0.35 m lanterns",
+        "25 lanterns (10 with PointLights, 15 emissive-only) plus their reflections",
+        "creatures: 2 lamp keepers with carried lights, 2 river drakes, 3 lamp moths",
+        "scatter: 54 hill pines, 120 reeds, 40 river stones, all instanced and jittered"
+      ],
+      "actions": [
+        "orbit",
+        "zoom",
+        "reset view",
+        "pause / resume ambient motion",
+        "select a building by clicking it or by its panel button",
+        "jump to one of five named views"
+      ],
+      "boundaries": [
+        "Entirely invented: no real town, festival, date, deity or brand.",
+        "No historical, structural or ecological claim; the drakes and the moths are fiction.",
+        "Dimensions in the readout are authored scale cues, not measurements.",
+        "Lighting values are authored art direction tuned for ACESFilmic at exposure 1.15, not photometry."
+      ],
+      "physical_contract": {
+        "model": "none",
+        "scope": "Authored kinematics only: keepers follow a polyline at ~1.05 m/s sampling the terrain height field; drakes follow an analytic path; nothing collides or rests.",
+        "time": "Elapsed-time driven, delta capped at 0.05 s by the render loop.",
+        "limits": [
+          "Keepers do not avoid each other or the scenery; their routes are authored to be clear.",
+          "The mill wheel turns at a fixed rate; it is not driven by any water model."
+        ]
+      }
+    }
+  ],
+  "claims_to_visuals": [],
+  "selection_scope": "The two knowledge records guided lighting, palette, materials, camera and motion timing; the recipe guided the settlement's composition. Terrain, layout, buildings, creatures and the selection interaction are authored for this scene."
+}

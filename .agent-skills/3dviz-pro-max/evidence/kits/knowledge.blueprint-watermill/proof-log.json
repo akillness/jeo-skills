@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-watermill",
+  "record_revision": 3,
+  "asset": "templates/kits/buildings/watermill.js",
+  "asset_sha256": "f074177b02b2a39bae8fc27d47eb94604840e4f9eb6791675f1d130f3de86b12",
+  "params": {
+    "width": 6,
+    "depth": 4.5,
+    "wheelRadius": 1.6,
+    "paddles": 14,
+    "roofPitchDeg": 42,
+    "speedRadPerSec": 0.55,
+    "seed": 1
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-watermill",
+    "module": "../buildings/watermill.js",
+    "params": {
+      "width": 6,
+      "depth": 4.5,
+      "wheelRadius": 1.6,
+      "paddles": 14,
+      "roofPitchDeg": 42,
+      "speedRadPerSec": 0.55,
+      "seed": 1
+    },
+    "triangles": 10192,
+    "bounds_m": {
+      "min": [
+        -3.1774999998509883,
+        -0.0011576886549704568,
+        -2.6113908626677076
+      ],
+      "max": [
+        6.312480681618639,
+        6.956929892217278,
+        2.699999999664724
+      ],
+      "size": [
+        9.489980681469627,
+        6.958087580872249,
+        5.3113908623324315
+      ]
+    },
+    "fit_distance_m": 18.8741,
+    "view_distances_m": {
+      "far": 45.298,
+      "mid": 22.649,
+      "close": 12.6,
+      "detail": 2.8306
+    },
+    "sockets": [
+      "wheel",
+      "door",
+      "loading-door",
+      "launder",
+      "ridge",
+      "sign"
+    ],
+    "detail_socket": "wheel",
+    "animated": true,
+    "colliders": [
+      "walls",
+      "roof",
+      "wheel"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "169e88b92cb1c51ab2f5a76d2edfa91669b18c6c0b77e863c8dd2e2b498277bb",
+    "mid.png": "018e5dce12bf08a8b1069d218b178ea9dc44b6dc0c5d3288ea567ed5e93a4d22",
+    "close.png": "6470e04a95d138fdeb546ed236c50adbf73e143ce67971c093bdef4628cfed25",
+    "detail.png": "49fa434108193e13a2cf30c5908924ed8bc8a060b70085381a2cd42754821f00",
+    "close-motion.png": "1e99cec9258e59520ffba0ddccd5a466c6166bbd1c0c7f7a821922b71ad5a60f"
+  },
+  "motion": {
+    "interval_ms": 400,
+    "simulated": true,
+    "animate_returned": true,
+    "differs": true,
+    "sha_before": "6470e04a95d138fdeb546ed236c50adbf73e143ce67971c093bdef4628cfed25",
+    "sha_after": "1e99cec9258e59520ffba0ddccd5a466c6166bbd1c0c7f7a821922b71ad5a60f"
+  },
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:50:22+00:00",
+  "finished": "2026-09-08T13:50:27+00:00"
+}

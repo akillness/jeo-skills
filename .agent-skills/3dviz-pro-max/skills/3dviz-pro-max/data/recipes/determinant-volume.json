@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "id": "recipe.determinant-volume",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Determinant and parallelepiped volume"
+  },
+  "aliases": {
+    "en": [
+      "determinant volume"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra"
+  ],
+  "summary": "Compare signed determinant with nonnegative geometric volume.",
+  "objective": "Drag three vectors and compare their determinant with the volume of the parallelepiped they span.",
+  "tags": [
+    "determinant",
+    "volume"
+  ],
+  "example_prompts": [
+    "Drag three vectors and compare their determinant with the volume of the parallelepiped they span."
+  ],
+  "entities": [
+    {
+      "name": "Edge vectors",
+      "guidance": "Use labeled u,v,w rooted at the same origin and a fixed right-handed frame."
+    },
+    {
+      "name": "Parallelepiped",
+      "guidance": "Build all eight vertices as sums of the three vectors; distinguish front/back with subdued transparency."
+    },
+    {
+      "name": "Readout",
+      "guidance": "Display signed determinant and absolute volume separately; keep collapsed edges inspectable."
+    }
+  ],
+  "state_contract": {
+    "model": "Three finite real column vectors, matrix [u v w], and vertex sums.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Drag a vector endpoint.",
+      "Swap two columns.",
+      "Choose coplanar case and reset."
+    ]
+  },
+  "invariants": [
+    "Volume equals absolute scalar triple product.",
+    "Column swap flips determinant sign while preserving volume.",
+    "Zero determinant is valid collapse, not input failure."
+  ],
+  "motion_guidance": [
+    "Recompute from current vectors every frame; never scale a cached volume from visual bounding boxes.",
+    "Allow pause at the zero crossing and label orientation reversal."
+  ],
+  "known_limits": [
+    "No inverse-based rendering; near-zero tolerance must be declared.",
+    "No general determinant algorithm or floating-point error certification supplied.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.determinant-volume",
+      "statement": "The volume of a parallelepiped spanned by u,v,w is |u dot (v cross w)|, the absolute determinant of their coordinate matrix.",
+      "scope": "Real 3D vectors in a fixed orthonormal frame.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-cross-product",
+          "locator": "2.4, Volume of a Parallelepiped and following determinant calculation"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Edge vectors",
+      "structure": "Use labeled u,v,w rooted at the same origin and a fixed right-handed frame.",
+      "material": "Neutral translucent faces with opaque vector rods and orientation cues; use double-sided rendering without hiding the singular collapse."
+    },
+    {
+      "family": "Parallelepiped",
+      "structure": "Build all eight vertices as sums of the three vectors; distinguish front/back with subdued transparency.",
+      "material": "Neutral translucent faces with opaque vector rods and orientation cues; use double-sided rendering without hiding the singular collapse."
+    },
+    {
+      "family": "Readout",
+      "structure": "Display signed determinant and absolute volume separately; keep collapsed edges inspectable.",
+      "material": "Neutral translucent faces with opaque vector rods and orientation cues; use double-sided rendering without hiding the singular collapse."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Semantic geometry/state presentation; no gravity, contact force or material simulation.",
+    "checks": [
+      "Volume equals absolute scalar triple product.",
+      "Column swap flips determinant sign while preserving volume."
+    ]
+  }
+}

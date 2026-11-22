@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blender-baked-deformation-runtime-adapter",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Blender baked deformation versus runtime simulation"
+  },
+  "aliases": {
+    "en": [
+      "soft-body cache export boundary",
+      "baked vertex deformation handoff",
+      "offline versus runtime soft body"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal",
+    "characters-motion-art",
+    "products-assemblies"
+  ],
+  "summary": "Choose whether Blender owns a baked deforming result or a runtime solver owns deformation, and transport only a declared supported representation rather than implying that glTF carries Blender's simulation cache.",
+  "objective": "A soft-body asset loads with one declared deformation owner: either a validated morph/skin/node-transform playback representation or a runtime solver initialized from authored geometry and parameters, never an undeclared Blender cache or simultaneous writers.",
+  "applies_when": [
+    "A Blender soft-body or other cached deformation is intended for a Three.js runtime.",
+    "The requested experience must choose fixed playback, interactive runtime response or a documented hybrid transition."
+  ],
+  "subject_terms": [
+    "Blender soft body cache",
+    "baked deformation",
+    "morph target animation",
+    "runtime soft-body solver",
+    "glTF animation limit",
+    "vertex correspondence"
+  ],
+  "tags": [
+    "tool-adapter",
+    "blender",
+    "gltf",
+    "soft-body"
+  ],
+  "intent_signals": [
+    "export a baked soft body to Three.js",
+    "decide cache playback versus runtime cloth",
+    "why did Blender physics disappear from glTF"
+  ],
+  "example_prompts": [
+    "Bake a short Blender soft-body deformation and convert it to a validated runtime playback representation.",
+    "Rebuild the deformable object in a runtime solver and keep the Blender cache only as a visual reference."
+  ],
+  "negative_signals": [
+    "Claiming the .blend point cache is embedded as glTF solver state.",
+    "Playing morph weights while a runtime soft-body solver writes the same vertices."
+  ],
+  "not_for": [
+    "Rigid node animation that needs no deformation.",
+    "Lossless round-trip of Blender modifiers, solver internals or cache files through core glTF."
+  ],
+  "content": {
+    "principles": [
+      "Decide ownership before export. Baked playback preserves sampled appearance and has no new contact response; runtime simulation preserves interactivity but must reconstruct model parameters and will not be identical merely because it starts from the same mesh.",
+      "Core glTF animation targets node translation, rotation, scale and morph weights. Blender soft-body cache, solver constraints, velocities, force fields and collision state require conversion, separate declared data or omission; their absence is not a loader bug.",
+      "For baked vertex playback, preserve vertex identity and topology across samples and select an actually supported transport such as bounded morph targets or another reviewed format. Do not promise arbitrary per-frame vertex caches through core glTF."
+    ],
+    "implementation": [
+      "In Blender, save the source scene and record version, frame range/rate, units, object transforms, modifier order, cache/bake status, topology count and collision/force-field inputs. Freeze edits or invalidate and rebake explicitly.",
+      "For playback, sample only the approved interval, validate stable vertex correspondence, convert to supported morph/skin/node channels or a separately versioned cache, and make Three.js playback the sole deformation writer. State memory and precision limits before choosing dense morph targets.",
+      "For runtime simulation, export the rest mesh plus reviewed collider/constraint/parameter metadata outside core animation as needed, initialize the chosen runtime solver explicitly, and use the baked result only as a comparison reference. Reset restores either frame-zero playback or complete solver initial state."
+    ],
+    "observable_checks": [
+      "Inspect the exported asset: list animation target paths and verify no claim that a Blender solver cache exists when only node TRS or morph weights are present.",
+      "For baked playback, compare named frames, vertex count/order, bounds and landmark positions after load; scrubbing backward reads stored animation rather than integrating a solver in reverse.",
+      "For runtime mode, perturb the object and observe a recomputed response, then reset all solver state. Enabling baked and runtime deformation on the same vertices is rejected."
+    ]
+  },
+  "related_ids": [
+    "knowledge.cloth-display-versus-simulation",
+    "knowledge.state-playback",
+    "knowledge.gltf-articulated-asset-adapter",
+    "knowledge.three-animation-mixer-adapter"
+  ],
+  "creative_affordances": [
+    "A split view can compare the Blender reference cache with runtime response, clearly labeling each owner.",
+    "Stylized squash, cloth, jelly or cable forms are welcome when their transport and physical claims remain explicit."
+  ],
+  "known_limits": [
+    "Core glTF has no general per-vertex cache or Blender soft-body solver-state contract; extensions or separate formats require their own adapter and evidence.",
+    "Morph-target counts, GPU memory, precision and loader support constrain dense cache conversion; this record sets no universal budget.",
+    "Blender cache appearance is not experimental validation of a material model, and no cache, export, Three.js playback or runtime simulation was executed here."
+  ],
+  "claims": [
+    {
+      "id": "claim.physics-blender-soft-cache",
+      "statement": "Blender 4.5 documents soft-body simulation as using its unified caching and baking system, and its rigid-body settings separately distinguish simulation-enabled Dynamic state from animation control through Animated.",
+      "scope": "Blender authoring and cache ownership; not a statement that caches are portable to glTF.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-blender-soft-cache",
+          "locator": "Soft Body > Settings > Cache overview"
+        },
+        {
+          "source_id": "source.physics-blender-rigid-settings",
+          "locator": "Dynamic and Animated settings"
+        }
+      ]
+    },
+    {
+      "id": "claim.physics-gltf-animation-boundary",
+      "statement": "Core glTF 2.0 animation stores keyframes targeting node translation, rotation, scale or morph-target weights and does not prescribe runtime playback behavior; it does not define transport of Blender soft-body solver state or caches.",
+      "scope": "Core glTF 2.0.1 animation contract; extensions or separate cache formats require separate review.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-khronos-gltf-animation",
+          "locator": "Section 3.11 Animations; note limiting animation to node transforms and morph weights; runtime-behavior note; 5.7.2 allowed target paths"
+        }
+      ]
+    }
+  ]
+}

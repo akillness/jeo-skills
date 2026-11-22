@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-anatomical-orientation-frame",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Anatomical side labelling and handedness of imported structures"
+  },
+  "aliases": {
+    "en": [
+      "left right orientation check",
+      "mirrored import detection"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures"
+  ],
+  "summary": "Verify that side labels come from the subject frame and that no structure is silently mirrored.",
+  "objective": "Side labels stay correct from every camera position and every world matrix has the expected handedness.",
+  "applies_when": [
+    "A model distinguishes left and right structures or laterality.",
+    "Geometry or volumes are imported from clinical or scanned data with their own coordinate convention.",
+    "Any transform in the chain may include a negative scale or a mirror."
+  ],
+  "check_method": "geometry",
+  "tags": [
+    "domain-validation",
+    "orientation",
+    "laterality",
+    "handedness"
+  ],
+  "subject_terms": [
+    "anatomical left",
+    "patient coordinate system",
+    "handedness",
+    "determinant",
+    "mirror",
+    "laterality"
+  ],
+  "intent_signals": [
+    "is that the left ventricle or just screen left",
+    "the imported scan looks mirrored"
+  ],
+  "example_prompts": [
+    "Check the left and right labelling of this heart model from every angle."
+  ],
+  "negative_signals": [
+    "clinical diagnosis",
+    "segmentation of patient data"
+  ],
+  "content": {
+    "principles": [
+      "Anatomical left and right belong to the subject, not to the screen; a side label must be derived from the subject frame and stay correct as the camera moves.",
+      "A mirrored import is a handedness change: a world matrix with negative determinant swaps sides while still looking plausible.",
+      "Reference conventions are explicit data, so the mapping from the source coordinate convention to the scene axes is written down rather than judged by eye."
+    ],
+    "implementation": [
+      "Write down the scene axes, the subject axes (anterior, superior, subject-left) and the exact mapping between them, including any intentional mirror.",
+      "Compute the determinant of the full world matrix of every imported structure and record its sign.",
+      "Place a landmark known to differ between sides and read its label from four camera positions, including directly behind the subject.",
+      "Inspect derived text as well: side labels, laterality filters and measurement panels often read from screen space instead of subject space."
+    ],
+    "observable_checks": [
+      "Every structure world matrix has positive determinant unless a mirror is declared for that structure; a negative determinant together with a side label is a failure, and a zero determinant is a collapsed transform reported as its own case.",
+      "The asymmetric landmark keeps its side label from all four camera positions, including from behind, where screen-space labelling flips.",
+      "The written convention mapping reproduces the landmark position; an unwritten mapping counts as unverified rather than as passing."
+    ]
+  },
+  "known_limits": [
+    "Checks orientation bookkeeping only; it does not verify anatomical accuracy, segmentation quality or fitness for any clinical use.",
+    "Authored verification guidance; no scene was run or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.heart-cutaway",
+    "recipe.skeletal-hierarchy",
+    "recipe.knee-layer-peel"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-patient-coordinate-axes",
+      "statement": "In the DICOM patient-based coordinate system the x axis increases toward the left hand side of the patient, the y axis toward the posterior side and the z axis toward the head.",
+      "scope": "DICOM patient-based coordinate system for biped patients; scene axes and rendering conventions are separate and must be mapped explicitly.",
+      "source_refs": [
+        {
+          "source_id": "source.validation-depth-dicom-patient-coordinates",
+          "locator": "C.7.6.2.1.1 patient-based coordinate system axis directions"
+        }
+      ]
+    }
+  ]
+}

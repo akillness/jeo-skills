@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-kinematics-versus-dynamics",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Choose prescribed motion or solved dynamics deliberately"
+  },
+  "aliases": {
+    "en": [
+      "kinematic or dynamic",
+      "constraint versus force",
+      "mechanism model"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "robotics-control"
+  ],
+  "summary": "Decide whether the motion is defined by constraints you impose or produced by forces you integrate, and keep the two from fighting.",
+  "objective": "Select the mechanical model that answers the question at the lowest correctness cost.",
+  "applies_when": [
+    "A mechanism, vehicle or assembly moves under mechanical rules.",
+    "Objects rest on, push or collide with each other.",
+    "A ratio, gear train or linkage defines the motion exactly."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "kinematics",
+    "dynamics",
+    "constraint",
+    "rigid body",
+    "gear ratio",
+    "solver"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "mechanics",
+    "modelling"
+  ],
+  "intent_signals": [
+    "do I need physics for this",
+    "the gears should stay meshed",
+    "make the blocks fall and stack"
+  ],
+  "example_prompts": [
+    "Animate a gear train that stays exactly in ratio.",
+    "Let objects fall and settle on the terrain."
+  ],
+  "negative_signals": [
+    "Decorative motion with no mechanical claim.",
+    "Continuum problems such as fluids and heat, which need field solvers rather than rigid-body models."
+  ],
+  "not_for": [
+    "Decorative motion with no mechanical claim.",
+    "Continuum problems such as fluids and heat, which need field solvers rather than rigid-body models."
+  ],
+  "content": {
+    "principles": [
+      "Prescribed kinematics puts the relationship under your control: a gear ratio, a cam profile or a four-bar linkage is evaluated directly, so it cannot accumulate solver error in the way an integrated contact can. That is authority, not a guarantee: singular linkage configurations, branch choices at assembly changes and ordinary floating-point evaluation still need handling, and a prescribed part will pass straight through another body unless a collision constraint is solved.",
+      "Solved dynamics gives emergence: stacking, toppling, friction and impact produce outcomes nobody authored, which is the reason to pay for a solver.",
+      "The two coexist through the engine body types. A body whose trajectory you impose should be kinematic so that it can push dynamic bodies, while a dynamic body should be driven by forces and impulses rather than by writing its position, since setting a position directly is a teleport rather than a physically meaningful action.",
+      "Mixing them carelessly produces the classic failure: a driven part that intersects, jitters or launches its neighbours because two authorities are writing the same transform."
+    ],
+    "implementation": [
+      "Ask what the scene must be right about. Exact ratios, defined paths and reproducible demonstrations favour kinematics; contact, balance and unpredictability favour dynamics.",
+      "Where both are needed, mark each body explicitly as fixed, kinematic or dynamic and keep that classification visible in the scene description.",
+      "For physically continuous dynamic motion, prefer forces, impulses or a declared velocity-control model. Explicit initialization, reset or teleport may write a dynamic pose directly when identified as such; avoid competing continuous authorities over the same transform.",
+      "Keep collision geometry separate from display geometry, choosing simple convex shapes for contact and detailed meshes for appearance.",
+      "State which quantities are exact by construction and which come from the solver, and give each a tolerance. Both kinds can be checked: a prescribed gear ratio should hold to evaluation precision, and a dynamic conservation law should hold within the solver's numerical tolerance."
+    ],
+    "observable_checks": [
+      "Run a kinematic mechanism for a long time and confirm the ratio or the linkage closure holds to evaluation precision, and separately check the configurations near singularities and branch switches, where a directly evaluated mechanism can still jump.",
+      "Push a driven part against a dynamic object and confirm the interaction is plausible rather than explosive.",
+      "Look for jitter or interpenetration at contacts, the usual signature of a contested transform.",
+      "Disable gravity or a force and confirm that motion which should be prescribed continues unchanged."
+    ]
+  },
+  "related_ids": [
+    "recipe.coupled-gears",
+    "recipe.projectile-trajectory",
+    "knowledge.three-rigid-body-adapter",
+    "knowledge.constrained-gear-motion"
+  ],
+  "creative_affordances": [
+    "Hybrid mechanisms are normal: an exact drive with dynamic debris is often the best of both.",
+    "A deliberately non-physical mechanism is fine when it is presented as an illustration.",
+    "A deliberate reset or teleport of a dynamic body is a legitimate operation when its non-physical nature is understood and stated; the rule concerns silent contests over a transform, not authorial control."
+  ],
+  "known_limits": [
+    "Authored model-selection guidance citing documented body-type behaviour; no simulation has been run for this record.",
+    "It does not evaluate solver accuracy or recommend a specific engine."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-body-types-and-control",
+      "statement": "A rigid-body engine distinguishes dynamic bodies affected by forces and contacts, fixed bodies that cannot move, and kinematic bodies whose trajectory is controlled by the user while the engine handles their interaction with dynamic bodies; directly setting the position of a dynamic body is a teleport rather than a physically realistic action, so forces, impulses or velocity changes are preferred.",
+      "scope": "Documented control model of one rigid-body engine; it does not describe solver accuracy or contact quality.",
+      "source_refs": [
+        {
+          "source_id": "source.rapier-rigid-bodies",
+          "locator": "Rigid-body types and the position versus forces discussion"
+        }
+      ]
+    }
+  ]
+}

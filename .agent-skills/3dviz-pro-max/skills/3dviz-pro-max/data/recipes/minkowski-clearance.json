@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "id": "recipe.minkowski-clearance",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Minkowski sum and clearance envelopes"
+  },
+  "aliases": {
+    "en": [
+      "Minkowski sum",
+      "clearance envelope",
+      "configuration space obstacle"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry"
+  ],
+  "summary": "Turn a clearance question into a solid: grow an obstacle by a moving part so the answer becomes a containment test.",
+  "objective": "Build a clearance study where the obstacle is offset by the shape of the moving part, so allowed positions of that part are a visible region.",
+  "tags": [
+    "minkowski sum",
+    "clearance",
+    "offset"
+  ],
+  "subject_terms": [
+    "Minkowski sum",
+    "clearance",
+    "offset surface",
+    "configuration space",
+    "convex decomposition",
+    "collision-free placement"
+  ],
+  "intent_signals": [
+    "Show which positions of a part avoid a collision with an obstacle.",
+    "Explain how offsetting an obstacle by a part shape answers a fit question."
+  ],
+  "example_prompts": [
+    "Build a Minkowski sum demonstration where I can move a part and see the forbidden region it generates.",
+    "Show the clearance envelope of a bracket around a fixed obstacle."
+  ],
+  "negative_signals": [
+    "Not a general path planner: this recipe shows the region, not a route through it.",
+    "Not a tolerance analysis or manufacturing fit study."
+  ],
+  "not_for": [
+    "Not a general path planner: this recipe shows the region, not a route through it.",
+    "Not a tolerance analysis or manufacturing fit study."
+  ],
+  "entities": [
+    {
+      "name": "Obstacle solid",
+      "guidance": "One fixed closed solid with clean faces; its role as the fixed operand should be stated in the scene, not inferred."
+    },
+    {
+      "name": "Moving part",
+      "guidance": "A second solid with a marked reference point, since the sum is only meaningful relative to a declared origin on the part."
+    },
+    {
+      "name": "Sum region",
+      "guidance": "Show the grown region as its own semi-transparent solid whose surface is generated, and mark the reference point of the part inside or outside it."
+    }
+  ],
+  "state_contract": {
+    "model": "Two closed solids, a declared reference point c on the moving part with local part coordinates R, and the forbidden set for that reference computed as C = O plus the set of c - r for r in R. Because the solids are closed and intersection counts as collision, C contains its boundary, so exact touching is reported as contact rather than as clearance. Membership of the reference point in C is the verdict; no contact force is computed.",
+    "authority": "The reference point position is authoritative for the verdict; the visible interpenetration of meshes is only a secondary cue and must agree with the test.",
+    "actions": [
+      "Move the part and read the inside or outside verdict.",
+      "Switch the reference point to a different feature of the part.",
+      "Toggle the sum region and the original obstacle.",
+      "Reset both solids and the reference point."
+    ]
+  },
+  "invariants": [
+    "The verdict is membership of the reference point in the closed forbidden region, computed with a stated predicate tolerance and never inferred from rendered overlap; boundary membership is reported as contact, a third outcome between clear and interpenetrating.",
+    "Changing the reference point changes the region: the two are one declaration and must update together.",
+    "The region always contains the obstacle itself when the part contains its own reference point.",
+    "Moving the world part moves its reference point through the forbidden region; the region itself is rebuilt only when an operand or the declared reference changes, and never translates with the part."
+  ],
+  "motion_guidance": [
+    "Move the part continuously and update the verdict at every step; a verdict that only updates on release hides the boundary case.",
+    "Highlight the moment the reference point crosses the region boundary, since that is the event of interest."
+  ],
+  "known_limits": [
+    "The documented convex-decomposition method splits nonconvex operands into convex pieces before combining their sums; other supported nonconvex methods may differ. Construction cost depends on the selected method and operands, with no interactive performance guarantee.",
+    "This recipe treats translation only; adding rotation changes the configuration space and is not covered here.",
+    "Boundary semantics are a declared choice: this recipe treats closed solids with touching as contact. A scene that wants touching to be legal must state open-set semantics consistently in the region, the verdict and the tolerance.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-minkowski-definition",
+      "statement": "The Minkowski sum of two point sets P and Q in d-dimensional space is the set of all sums p + q with p in P and q in Q.",
+      "scope": "Definition as stated in the cited documentation.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-cgal-minkowski-sum",
+          "locator": "3D Minkowski Sum of Polyhedra, definition"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-minkowski-motion-planning",
+      "statement": "In motion planning the Minkowski sum of the inverted robot and the obstacles describes the positions where the robot intersects an obstacle, so its complement gives the legal positions.",
+      "scope": "Translation-only configuration space as described in the cited documentation.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-cgal-minkowski-sum",
+          "locator": "3D Minkowski Sum of Polyhedra, motion planning use"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-minkowski-decomposition",
+      "statement": "One documented approach to non-convex operands decomposes both polyhedra into convex pieces, computes all pairwise sums and merges them, with a stated worst case of order n cubed times m cubed.",
+      "scope": "Cost and strategy of that one documented method; other methods exist and this recipe does not claim that every non-convex algorithm requires decomposition.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-cgal-minkowski-sum",
+          "locator": "3D Minkowski Sum of Polyhedra, decomposition method and complexity"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Sum region",
+      "structure": "A generated solid whose surface shows the rounded and swept features that come from the part shape, not a naive uniform offset.",
+      "material": "Semi-transparent with a visible silhouette edge so the boundary can be located when the camera is inside the region.",
+      "articulation": "Rebuilt whenever either operand or the reference point changes."
+    },
+    {
+      "family": "Moving part",
+      "structure": "A part with an obvious asymmetric feature so the shape of the grown region is clearly attributable to it.",
+      "material": "Opaque, contrasting with the region so overlap is legible; the reference point uses a dedicated marker material.",
+      "articulation": "Rigid translation only in this recipe; rotation is explicitly out of scope."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Geometric construction and containment testing; no rigid-body dynamics or contact response.",
+    "checks": [
+      "The containment verdict flips exactly when the reference point crosses the region boundary.",
+      "Rebuilding after a reference point change produces a translated region, not a different shape."
+    ]
+  },
+  "related_ids": [
+    "recipe.convex-hull-construction",
+    "knowledge.gravity-contact",
+    "knowledge.controlled-experiment"
+  ]
+}

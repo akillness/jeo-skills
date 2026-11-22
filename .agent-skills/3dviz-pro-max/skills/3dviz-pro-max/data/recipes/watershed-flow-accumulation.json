@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "id": "recipe.watershed-flow-accumulation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Flow direction, accumulation and stream networks"
+  },
+  "aliases": {
+    "en": [
+      "flow accumulation",
+      "watershed",
+      "drainage network"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment"
+  ],
+  "summary": "Derive drainage from a terrain grid so that a stream network is the result of a stated rule and a threshold, not a painted line.",
+  "objective": "Build a terrain grid where flow direction and accumulation are computed per cell and a threshold I control turns accumulation into a stream network.",
+  "tags": [
+    "hydrology",
+    "terrain",
+    "drainage"
+  ],
+  "subject_terms": [
+    "flow direction",
+    "flow accumulation",
+    "watershed",
+    "drainage network",
+    "threshold",
+    "sink",
+    "pour point",
+    "raster grid"
+  ],
+  "intent_signals": [
+    "Show how a stream network is derived from a terrain surface.",
+    "Explain flow accumulation and the threshold that defines a channel."
+  ],
+  "example_prompts": [
+    "Build a terrain with computed flow direction, accumulation and a threshold-driven stream network.",
+    "Show the watershed upstream of a pour point I select."
+  ],
+  "negative_signals": [
+    "Not a hydrological forecast or runoff volume model: no rainfall, infiltration or discharge is computed.",
+    "Not a substitute for surveyed hydrography."
+  ],
+  "not_for": [
+    "Not a hydrological forecast or runoff volume model: no rainfall, infiltration or discharge is computed.",
+    "Not a substitute for surveyed hydrography."
+  ],
+  "entities": [
+    {
+      "name": "Terrain grid",
+      "guidance": "Represent the surface as an explicit cell grid with elevations, since flow direction is a per-cell decision."
+    },
+    {
+      "name": "Direction field",
+      "guidance": "Show the chosen downslope direction per cell as discrete arrows, and name the direction rule used."
+    },
+    {
+      "name": "Accumulation and network",
+      "guidance": "Render accumulation as a per-cell quantity and derive the network by thresholding it, with the threshold visible and adjustable."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored deterministic D8 on a finite rectangular grid of square cells of side h=10 m by default and finite elevations; NoData cells are excluded. For each valid nonboundary cell choose the neighbor with largest strictly positive elevation drop divided by h for orthogonal or h sqrt(2) for diagonal movement. Exact slope ties choose smallest row-major cell index. Boundary cells are terminal outlets. Interior cells with no strictly lower valid neighbor are labeled unresolved flat/sink and terminal; no filling or equal-height routing is performed. NoData neighbors are barriers. Strict descent makes interior routing acyclic. Accumulation A counts upstream valid cells excluding the current cell: initialize A=0 and propagate A+1 to each successor in descending elevation order. The selected pour point must be valid; contributing area includes it and equals (A+1)h^2. Network cells satisfy A>=threshold; threshold is a finite nonnegative cell-count value. These boundary/tie/flat choices are authored policies, not a reproduction of all vendor tool defaults.",
+    "authority": "Elevation data and the declared D8 policy determine directions and accumulation; changing threshold recomputes the network selection but may legitimately leave that set unchanged.",
+    "actions": [
+      "Select a pour point and show its contributing area.",
+      "Adjust the network threshold.",
+      "Toggle the direction arrows and accumulation shading.",
+      "Reset terrain, threshold and selection."
+    ]
+  },
+  "invariants": [
+    "Under the declared single-successor D8 rule with nonnegative unit weights and no loops, accumulation is non-decreasing along any flow path. Multiple-flow routing splits a cell contribution between branches, so branch monotonicity would not hold and is not claimed for that mode.",
+    "The contributing area of a pour point contains every cell whose flow path reaches it and no others.",
+    "Unresolved interior flats/sinks are displayed as terminal cells; this model performs no filling. NoData is excluded from all counts and cannot receive a pour-point selection."
+  ],
+  "motion_guidance": [
+    "Animate the accumulation sweep from ridges downstream so the ordering of the computation is visible.",
+    "Recompute the selected network whenever the threshold moves. Moving between two accumulation values that no cell attains legitimately selects the same set, so recomputation rather than a visible change is what the scene guarantees."
+  ],
+  "known_limits": [
+    "Results depend on grid resolution, the routing rule and the sink and flat policies; a coarse grid can move a divide, and switching to a multiple-flow rule changes both the accumulation values and the invariants that apply.",
+    "Synthetic or supplied terrain only, and no claim is made about real catchments.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-flow-accumulation-definition",
+      "statement": "Flow accumulation gives each cell the accumulated weight of all cells flowing into it along the flow direction, with a default weight of one per cell so the value is the number of upstream cells.",
+      "scope": "Raster hydrology tool behaviour as documented; results depend on the flow direction raster supplied.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-esri-flow-accumulation",
+          "locator": "How Flow Accumulation works, accumulated weight and default weighting"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-stream-threshold",
+      "statement": "Cells with high flow accumulation indicate concentrated flow, and applying a threshold to accumulation is how a stream network is derived.",
+      "scope": "Threshold selection is an interpretation choice, not a measurement.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-esri-flow-accumulation",
+          "locator": "How Flow Accumulation works, stream network derivation"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-flow-routing-methods",
+      "statement": "A documented flow accumulation tool supports three routing algorithms, D8, Multiple Flow Direction and D-Infinity, requires the method used to build the flow direction raster to be specified, and never terminates if that raster contains a loop.",
+      "scope": "Routing options and termination requirement of one tool version; this recipe declares the deterministic D8 rule and does not claim its invariants for the multiple-flow modes.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-esri-flow-accumulation-tool",
+          "locator": "Flow Accumulation tool reference, supported flow modelling algorithms and looping warning"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Terrain grid",
+      "structure": "Elevation mesh with visible cell structure at close range and ridge and valley forms that are legible at overview scale.",
+      "material": "Matte terrain with hypsometric shading and a legend; keep the palette distinct from the accumulation palette.",
+      "articulation": "Static geometry; only overlays change."
+    },
+    {
+      "family": "Accumulation and network",
+      "structure": "Accumulation as a per-cell overlay and the network as tubes following cell centres with width scaled by accumulation.",
+      "material": "Sequential colour ramp with legend for accumulation and a single reserved accent for the thresholded network.",
+      "articulation": "Network rebuilds whenever the threshold changes."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Raster analysis over a static grid; no water motion, volume or timing is simulated.",
+    "checks": [
+      "Accumulation never decreases downstream.",
+      "Changing threshold recomputes A>=threshold without changing A; identical selections across a gap between attained accumulation values are valid."
+    ]
+  },
+  "related_ids": [
+    "recipe.terrain-contour-slices",
+    "recipe.streamflow-forecast-playback",
+    "knowledge.graph-in-space"
+  ]
+}

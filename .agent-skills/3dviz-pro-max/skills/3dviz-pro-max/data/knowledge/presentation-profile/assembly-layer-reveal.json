@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.assembly-layer-reveal",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "presentation-profile",
+  "title": {
+    "en": "Assembly layer reveal with stable identities"
+  },
+  "aliases": {
+    "en": [
+      "exploded view",
+      "layer reveal"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "anatomy-structures",
+    "architecture-interiors"
+  ],
+  "summary": "Reveal nested parts while retaining their original attachment, identity and recoverable assembled pose.",
+  "objective": "Reveal nested parts while retaining their original attachment, identity and recoverable assembled pose.",
+  "subject_terms": [
+    "exploded view",
+    "layer reveal",
+    "assembly inspection"
+  ],
+  "tags": [
+    "presentation-profile",
+    "assembly-layer-reveal"
+  ],
+  "intent_signals": [
+    "assembly inspection"
+  ],
+  "example_prompts": [
+    "Use assembly layer reveal with stable identities for the scene, preserving its model and user controls."
+  ],
+  "content": {
+    "principles": [
+      "Choose layer separation for depth relationships and an exploded layout for part relationships.",
+      "Presentation offsets should not rewrite the original mechanical or anatomical model."
+    ],
+    "implementation": [
+      "Store original part transforms, parent IDs and selection IDs before revealing layers.",
+      "Offset only the presentation nodes; add restrained connection guides where attachments become ambiguous.",
+      "Keep a whole-object thumbnail or restore action available during close inspection."
+    ],
+    "observable_checks": [
+      "Reset restores all original transforms and selected part identity.",
+      "A selected label continues to identify the same part throughout the reveal."
+    ]
+  },
+  "related_ids": [
+    "knowledge.cutaway-explode"
+  ],
+  "creative_affordances": [
+    "Adapt the layout, visual treatment and timing to the task; these are reusable design proposals, not mandatory templates."
+  ],
+  "known_limits": [
+    "Authored interaction/presentation guidance; no new scientific claim, accessibility certification or runtime verification is asserted."
+  ],
+  "claims": []
+}

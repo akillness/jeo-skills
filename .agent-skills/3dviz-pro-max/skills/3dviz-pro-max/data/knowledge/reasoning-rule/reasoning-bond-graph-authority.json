@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-bond-graph-authority",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Let a declared bond list define connectivity"
+  },
+  "aliases": {
+    "en": [
+      "bond graph",
+      "distance cutoff",
+      "connectivity source"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials",
+    "abstract-systems-data"
+  ],
+  "summary": "Take connectivity from the structure data, and if bonds are inferred from distances, state the cutoff and show it as inference.",
+  "objective": "Keep chemical connectivity a modelled fact rather than a by-product of a rendering heuristic.",
+  "applies_when": [
+    "A molecular or lattice structure is loaded from a file or generated.",
+    "Bonds are drawn between atoms, or hydrogen bonds and contacts are shown.",
+    "The user can move atoms or change the structure interactively."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "bond graph",
+    "connectivity",
+    "distance cutoff",
+    "hydrogen bond",
+    "inference",
+    "structure file"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "molecules",
+    "data-model"
+  ],
+  "intent_signals": [
+    "draw the bonds",
+    "show hydrogen bonds",
+    "why did that bond disappear"
+  ],
+  "example_prompts": [
+    "Show the water network with hydrogen bonds marked as interactions, not covalent bonds.",
+    "Load the structure and draw its bonds from the file."
+  ],
+  "negative_signals": [
+    "Purely visual molecule-like graphics with no chemical claim.",
+    "Coarse-grained or abstract models where bonds are not represented at all."
+  ],
+  "not_for": [
+    "Purely visual molecule-like graphics with no chemical claim.",
+    "Coarse-grained or abstract models where bonds are not represented at all."
+  ],
+  "content": {
+    "principles": [
+      "Connectivity is part of the structure, not part of the drawing. When bonds are recomputed from positions every frame, moving an atom silently rewrites the chemistry.",
+      "A distance threshold is an inference procedure with parameters. Used without disclosure it produces bonds that appear and vanish as geometry changes, which viewers read as chemical events.",
+      "Different interaction types deserve different visual treatment and different rules: covalent bonds, hydrogen bonds and contacts are not interchangeable lines.",
+      "If the scene lets the user move atoms, it must say whether the bond graph is fixed, recomputed, or edited by the user."
+    ],
+    "implementation": [
+      "Read connectivity from the source structure where one exists and keep it as data attached to the atoms.",
+      "If bonds must be inferred, state the rule and the cutoff on the artifact and mark inferred bonds distinctly from declared ones.",
+      "Give non-covalent interactions their own representation and their own criteria, and label them in the legend.",
+      "Decide the editing model explicitly: rigid graph with movable geometry, or a structure editor where bonds can change and the change is an action.",
+      "Preserve atom identity across edits so the graph and any per-atom annotation stay attached."
+    ],
+    "observable_checks": [
+      "Move an atom to the edge of the threshold and watch for bonds flickering; that is the inference showing through.",
+      "Compare the drawn bond count against the connectivity in the source data.",
+      "Confirm hydrogen bonds and contacts are visually and semantically distinct from covalent bonds.",
+      "Undo an edit and confirm the graph returns exactly, not approximately."
+    ]
+  },
+  "related_ids": [
+    "recipe.water-hydrogen-bond-network",
+    "recipe.molecular-shape-comparison"
+  ],
+  "creative_affordances": [
+    "Stylised bond rendering, from tubes to dashed fields to animated interactions, is free once the underlying graph is authoritative.",
+    "A deliberate distance-based contact map is a legitimate analysis view when presented as one."
+  ],
+  "known_limits": [
+    "Authored data-model guidance; no chemistry is asserted and no structure file has been validated for this record.",
+    "It does not recommend any specific bond-perception algorithm or cutoff value."
+  ],
+  "claims": []
+}

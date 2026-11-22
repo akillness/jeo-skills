@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-cinematic",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Cinematic staging"
+  },
+  "aliases": {
+    "en": [
+      "cinematic lighting",
+      "dramatic scene composition",
+      "film-like framing"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies"
+  ],
+  "summary": "Design attention through foreground, focal action and background separation instead of relying solely on glow or dark exposure.",
+  "objective": "The focal action stays visible throughout the move, text remains readable and dramatic darkness does not hide the mechanism being explained.",
+  "tags": [
+    "style-profile",
+    "presentation-aesthetic",
+    "cinematic"
+  ],
+  "subject_terms": [
+    "cinematic lighting",
+    "dramatic scene composition",
+    "film-like framing",
+    "presentation aesthetic"
+  ],
+  "intent_signals": [
+    "Use cinematic staging",
+    "Direct attention with framing light and a purposeful reveal"
+  ],
+  "example_prompts": [
+    "Stage a cinematic reveal of a mechanical watch, then let me inspect its moving parts."
+  ],
+  "content": {
+    "principles": [
+      "Design attention through foreground, focal action and background separation instead of relying solely on glow or dark exposure.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Arrange depth layers and purposeful negative space around the hero silhouette; keep foreground shapes from blocking required actions.",
+      "Use motivated-looking key and accent lights with a chosen contrast range; retain detail needed to understand the scene.",
+      "Plan a revealing camera move or hold, with a stable inspection view available for interactive tasks; time visual emphasis around a meaningful action."
+    ],
+    "observable_checks": [
+      "The focal action stays visible throughout the move, text remains readable and dramatic darkness does not hide the mechanism being explained.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with photorealistic, stylized or miniature subjects; cinematic is staging rather than a promise of a specific rendering technology.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

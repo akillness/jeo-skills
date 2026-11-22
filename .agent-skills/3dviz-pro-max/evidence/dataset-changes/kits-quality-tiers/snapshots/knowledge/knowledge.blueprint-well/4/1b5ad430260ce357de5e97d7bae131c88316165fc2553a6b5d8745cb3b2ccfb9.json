@@ -1,0 +1,331 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-well",
+  "revision": 4,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: stone draw-well"
+  },
+  "aliases": {
+    "en": [
+      "well kit",
+      "draw well blueprint",
+      "village wellhead module"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "A stone draw-well: three courses of dressed blocks under a coping ring, two posts, a shingled gable roof, a cranked windlass with coiled rope and a hanging bucket.",
+  "objective": "At three metres the well reads as a roof over a round drum, then block courses, shingle courses and the crank, then rope coils, iron bands and hue jitter.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "prop",
+    "village",
+    "well",
+    "stone"
+  ],
+  "subject_terms": [
+    "coping ring",
+    "windlass",
+    "crank arm",
+    "rope coil",
+    "shingle course",
+    "dressed block"
+  ],
+  "intent_signals": [
+    "add a well to a village square",
+    "draw well prop",
+    "stone wellhead kit"
+  ],
+  "example_prompts": [
+    "Put a well in the middle of the village square.",
+    "I need a wellhead with a working-looking crank and bucket."
+  ],
+  "not_for": [
+    "Any claim about well construction, depth or water safety.",
+    "A mechanism: the crank and windlass do not turn and the rope does not spool."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/props/well.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "radius",
+      "type": "number",
+      "range": [
+        0.45,
+        1.1
+      ],
+      "default": 0.66,
+      "unit": "m"
+    },
+    {
+      "name": "postHeight",
+      "type": "number",
+      "range": [
+        0.9,
+        1.9
+      ],
+      "default": 1.28,
+      "unit": "m"
+    },
+    {
+      "name": "seed",
+      "type": "integer",
+      "range": [
+        0,
+        65535
+      ],
+      "default": 1
+    },
+    {
+      "name": "blocks",
+      "type": "integer",
+      "range": [
+        8,
+        20
+      ],
+      "default": 12
+    },
+    {
+      "name": "wall",
+      "type": "number",
+      "range": [
+        0.14,
+        0.4
+      ],
+      "default": 0.24,
+      "unit": "m"
+    },
+    {
+      "name": "drumHeight",
+      "type": "number",
+      "range": [
+        0.5,
+        1.1
+      ],
+      "default": 0.72,
+      "unit": "m"
+    },
+    {
+      "name": "roofPitchDeg",
+      "type": "number",
+      "range": [
+        26,
+        52
+      ],
+      "default": 38,
+      "unit": "deg"
+    }
+  ],
+  "sockets": [
+    {
+      "name": "rim",
+      "position_m": [
+        0,
+        0.795,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "crank",
+      "position_m": [
+        0.694,
+        1.625,
+        0.25
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "bucket",
+      "position_m": [
+        0.12,
+        1.135,
+        0
+      ],
+      "normal": [
+        0,
+        -1,
+        0
+      ]
+    },
+    {
+      "name": "base",
+      "position_m": [
+        0,
+        0,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "a shingled gable 2.7 m up over a 1.32 m round stone drum",
+      "two posts carrying the roof clear of the well mouth",
+      "a bucket hanging over the mouth on its rope, clear of the coping"
+    ],
+    "medium": [
+      "three courses of twelve dressed blocks, each course offset half a block",
+      "a coping ring of twelve cap stones overhanging the drum by 3.7 cm",
+      "shingle courses laid five to the metre of slope, each lapping the one below",
+      "a cranked arm and handle standing off the end of the windlass"
+    ],
+    "fine": [
+      "five rope coils wound over the windlass barrel, each 2.8 cm thick",
+      "two iron bands on the windlass ends and an iron hoop around the bucket",
+      "1.8 cm chamfer on the blocks and 1.6 cm on the coping",
+      "per-block hue jitter of 7 percent across the thirty-six drum blocks"
+    ]
+  },
+  "footprint_m": [
+    1.47,
+    1.5
+  ],
+  "poly_budget": 2604,
+  "fits_looks": [
+    "knowledge.style-ghibli-painterly-pastoral",
+    "knowledge.style-hand-painted",
+    "knowledge.theme-heritage-fiction",
+    "knowledge.lighting-mood-overcast-soft"
+  ],
+  "content": {
+    "principles": [
+      "Offsetting every other course by half a block is what turns a ring of identical boxes into masonry; without it the drum reads as an extruded circle.",
+      "The roof is the silhouette and the crank is the story. Both have to survive the far view or the well reads as a stone tube.",
+      "The bucket hanging in the mouth is the cheapest way to say the well is in use."
+    ],
+    "implementation": [
+      "Call create({ radius, postHeight, seed, blocks, wall, drumHeight, roofPitchDeg }); the group is centred on the drum with y = 0 at the ground.",
+      "Set a figure at the crank socket or a pail on the rim socket; both are placed on real geometry, not on a bounding box.",
+      "Drum blocks, coping and shingles are five instanced fields, so the well costs about a dozen draw calls."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible.",
+      "The crank socket sits out past the post line: its x is greater than 0.3.",
+      "Two seeds differ visibly in block tone while keeping the same course offsets."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here measures a real well or its construction.",
+    "The poly budget is the triangle count observed at default parameters; twenty blocks a course costs about 3800 triangles.",
+    "Nothing turns: the crank, windlass and rope are static geometry, and the bucket hangs at a fixed depth.",
+    "T2 is the same geometry with runtime procedural surface and vertex occlusion (see knowledge.surface-tier-defaults); it adds no polygons and ships no files, and it reads at stylized-game quality, not photoreal."
+  ],
+  "creative_affordances": [
+    "Any parameter may be pushed outside its stated range; the range is the band that was proved, not a limit.",
+    "Drop the roof pitch and widen the radius for a village cistern, or re-colour the blocks dark and the shingles slate for a hill village."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "radius": 0.66,
+      "postHeight": 1.28,
+      "blocks": 12,
+      "wall": 0.24,
+      "drumHeight": 0.72,
+      "roofPitchDeg": 38,
+      "courses": 3,
+      "feeling": "worn village square"
+    },
+    "rationale": "A 79 cm coping is hip height on a 1.7 m figure, the height at which leaning over the rim reads as safe, and a 38 degree pitch keeps the roof from hiding the crank."
+  },
+  "related_ids": [
+    "knowledge.hollow-vessel-liquid-cavity",
+    "knowledge.gear-mechanism",
+    "knowledge.blueprint-timber-cottage",
+    "recipe.fantasy-village-diorama"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "detail_socket": "rim",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-well/far.png",
+      "evidence/kits/knowledge.blueprint-well/mid.png",
+      "evidence/kits/knowledge.blueprint-well/close.png",
+      "evidence/kits/knowledge.blueprint-well/detail.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-well/proof-log.json"
+  },
+  "tiers": {
+    "T0": {
+      "mode": "proxy",
+      "size_m": [
+        1.47,
+        2.69,
+        1.5
+      ],
+      "poly_budget": 12,
+      "status": "generated",
+      "note": "Bevelled box from the proof log bounds: the drum footprint and the roof ridge."
+    },
+    "T2": {
+      "mode": "runtime",
+      "poly_budget": 2604,
+      "texture_budget": {
+        "maps": 3,
+        "resolution": 1024,
+        "families": 5
+      },
+      "families": {
+        "#6d5335": "wood",
+        "#8a6a45": "wood",
+        "#7a5a49": "roof-tile",
+        "#34343a": "metal",
+        "#c2ab7e": "fabric",
+        "#9d968a": "stone",
+        "#b0a999": "stone"
+      },
+      "ao": {
+        "samples": 13,
+        "radius_m": 0.45,
+        "ground_dirt_m": 0.6
+      },
+      "status": "proved",
+      "note": "Six families are mapped: posts, windlass and bucket take wood, the little roof takes roof-tile, the windlass ironwork takes metal, the rope takes fabric, the drum block courses and the coping take stone. The blocks were left flat at revision 3 because repeatFor misjudged a 0.31 m extruded block as normalised UVs and magnified one ashlar 2.6x; kit-surface now keys ExtrudeGeometry by type, so revision 4 maps them.",
+      "proof": {
+        "harness": "templates/kits/_harness/index.html",
+        "captures": [
+          "evidence/kits/knowledge.blueprint-well/T2/far.png",
+          "evidence/kits/knowledge.blueprint-well/T2/mid.png",
+          "evidence/kits/knowledge.blueprint-well/T2/close.png",
+          "evidence/kits/knowledge.blueprint-well/T2/detail.png"
+        ],
+        "log": "evidence/kits/knowledge.blueprint-well/T2/proof-log.json",
+        "detail_socket": "rim"
+      }
+    },
+    "T3": {
+      "mode": "gltf",
+      "status": "missing",
+      "note": "No baked glTF ships for this blueprint: phase 9C baked only the two heroes (timber-cottage and watermill)."
+    },
+    "T4": {
+      "mode": "external",
+      "status": "missing",
+      "note": "No external asset ships with this skill."
+    }
+  }
+}

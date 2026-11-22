@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "id": "knowledge.deterministic-review-capture-package",
+  "knowledge_kind": "output-profile",
+  "title": {
+    "en": "Deterministic review capture package"
+  },
+  "aliases": {
+    "en": [
+      "review screenshot manifest",
+      "reproducible scene review bundle",
+      "capture provenance package"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "architecture-interiors",
+    "abstract-systems-data"
+  ],
+  "summary": "Pair each review image with exact application state, asset and software identities, capture settings and per-file digests so reviewers can reproduce the intended view and distinguish byte identity from visual approval.",
+  "objective": "A reviewer can reconstruct every named capture state, verify package bytes, and identify which visual differences remain outside the manifest’s determinism boundary.",
+  "tags": [
+    "output-profile",
+    "review-capture",
+    "manifest",
+    "sha-256",
+    "provenance"
+  ],
+  "subject_terms": [
+    "capture manifest",
+    "camera matrix",
+    "viewport DPR",
+    "asset digest",
+    "renderer revision",
+    "canvas toBlob",
+    "review state",
+    "byte identity"
+  ],
+  "intent_signals": [
+    "make review screenshots reproducible",
+    "which asset produced this image",
+    "capture package hash mismatch",
+    "same view different result"
+  ],
+  "example_prompts": [
+    "Package named product review views with their exact camera and toggle state.",
+    "Create a scene-review bundle whose screenshots can be traced to asset hashes.",
+    "Explain why matching archive hashes do not prove visual correctness."
+  ],
+  "negative_signals": [
+    "final cinematic sequence export",
+    "visual approval from checksum alone"
+  ],
+  "not_for": [
+    "Final time-sequence delivery already covered by frame-indexed animation export.",
+    "Treating a digest match as proof that an image is correct."
+  ],
+  "content": {
+    "principles": [
+      "A capture is a state record plus derived pixels. Store camera projection/world transform, scene time, selected IDs, visibility/layer state, material variants, environment, exposure/output transform, viewport CSS size, drawing-buffer size, pixel ratio and software/backend identity.",
+      "Determinism has a declared boundary. Exact bytes may vary with encoder, browser, renderer, GPU or driver even when the intended view matches; choose byte equality or a stated comparison method only after fixing the relevant inputs.",
+      "A digest identifies bytes, not meaning. Hash every manifest-listed file after serialization, but keep visual/domain review as a separate recorded result."
+    ],
+    "implementation": [
+      "Freeze authoritative scene state before capture and use named cameras or explicit matrices rather than the reviewer’s current orbit. Wait only on declared asset/readiness barriers; record any temporal history reset required by the renderer.",
+      "Capture an origin-clean, non-zero-size canvas through toBlob with an explicit supported media type, await its callback, and reject a null Blob; alternatively use a backend-specific readback path whose color, alpha and orientation conversion is documented. Treat SecurityError, zero-size input, null serialization and unsupported readiness as explicit package failures rather than blank-image fallbacks.",
+      "Write a versioned manifest containing capture ID, semantic purpose, state, asset hashes, app commit/build, Three.js revision, renderer/backend, browser/OS where relevant, viewport/drawing-buffer sizes, color/output settings, file names and digest algorithm. Hash the actual serialized files and include a verification table.",
+      "Keep the package immutable. A reviewer records visual acceptance, tolerance and annotations alongside the capture identity; changing an image, manifest or annotation creates a new package revision rather than overwriting evidence."
+    ],
+    "observable_checks": [
+      "Replaying each manifest state selects the same stable IDs and reproduces the declared camera, time, visibility and output settings before any pixel comparison.",
+      "Changing one image byte fails its file digest; restoring it passes. A passing digest is reported only as byte identity and never auto-marks visual review accepted.",
+      "A cross-origin asset that makes the canvas non-origin-clean, a zero-size canvas, or a null toBlob result causes an explicit failed capture with the responsible state or dependency identified.",
+      "Two supported encoders or backends may produce different bytes; the report applies the declared visual comparison boundary and retains both environment identities."
+    ]
+  },
+  "creative_affordances": [
+    "The package may use contact sheets, paired before/after views, sectional plates or annotated hero shots.",
+    "Review annotations can be spatial overlays or external prose as long as their source capture stays identifiable."
+  ],
+  "known_limits": [
+    "This profile does not guarantee cross-machine byte-identical pixels.",
+    "Web Crypto digest consumes the supplied bytes as one input; package tooling may choose another reviewed streaming hash implementation for large archives.",
+    "No screenshot, readback, digest, replay or visual comparison was run."
+  ],
+  "related_ids": [
+    "knowledge.shared-reproducible-animation-export",
+    "knowledge.source-model-runtime-provenance-panel",
+    "knowledge.shared-static-accessible-fallback",
+    "knowledge.validation-scrub-pose-determinism"
+  ],
+  "claims": [
+    {
+      "id": "claim.output-canvas-blob-origin",
+      "statement": "The HTML Standard defines canvas.toBlob as creating an image-file Blob, defaulting to PNG when the requested type is unsupported, and requires a SecurityError when the canvas bitmap is not origin-clean.",
+      "scope": "WHATWG HTML living standard canvas serialization read 2026-09-08; exact encoded bytes and supported optional formats remain user-agent dependent.",
+      "source_refs": [
+        {
+          "source_id": "source.output-html-canvas",
+          "locator": "HTMLCanvasElement.toBlob and canvas origin-clean security"
+        }
+      ]
+    },
+    {
+      "id": "claim.output-webcrypto-digest",
+      "statement": "Web Cryptography Level 2 defines SubtleCrypto.digest as copying the supplied bytes, applying the normalized digest algorithm and resolving a Promise with an ArrayBuffer containing the digest.",
+      "scope": "W3C Web Cryptography Level 2 First Public Working Draft dated 2025-04-22, read 2026-09-08; a digest establishes equality of the hashed byte sequence, not visual or semantic correctness.",
+      "source_refs": [
+        {
+          "source_id": "source.output-webcrypto",
+          "locator": "Section 14.3.5 The digest method"
+        }
+      ]
+    }
+  ]
+}

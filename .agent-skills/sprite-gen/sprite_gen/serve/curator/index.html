@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>sprite-gen curation</title>
+    <link rel="stylesheet" href="/curator.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="title">
+        <strong>sprite-gen</strong> <span id="t-title"></span>
+        <span id="character" class="muted"></span>
+      </div>
+      <div class="actions">
+        <span id="status" class="status"></span>
+        <button id="lang-toggle" type="button" class="ghost"></button>
+        <label id="pxgrid-wrap" class="unfake-apply" hidden>
+          <input type="checkbox" id="pxgrid-check" />
+          <span id="pxgrid-label"></span>
+        </label>
+        <label id="unfake-wrap" class="unfake-apply" hidden>
+          <input type="checkbox" id="unfake-apply" />
+          <span id="pp-label"></span>
+        </label>
+        <button id="compare-open" type="button" class="ghost"></button>
+        <button id="grid-toggle" type="button" class="ghost" hidden></button>
+        <span class="dl-wrap">
+          <button id="dl-main" type="button"></button>
+          <div id="dl-main-menu" class="dl-menu" hidden>
+            <button id="compose" type="button"></button>
+            <button id="export" type="button"></button>
+            <button id="export-gif" type="button"></button>
+          </div>
+        </span>
+      </div>
+    </header>
+    <div id="layout">
+      <aside id="sidebar"></aside>
+      <button id="sidebar-toggle" type="button" aria-label="toggle file tree">
+        <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true">
+          <path d="M10.5 2.5 5 8l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <main id="states"></main>
+    </div>
+    <footer class="hintbar" id="hintbar"></footer>
+    <script src="/src/util.js"></script>
+    <script src="/src/i18n.js"></script>
+    <script src="/src/tooltip.js"></script>
+    <script src="/src/view-nav.js"></script>
+    <script src="/src/store.js"></script>
+    <script src="/src/status.js"></script>
+    <script src="/src/progress.js"></script>
+    <script src="/src/persistence.js"></script>
+    <script src="/src/display.js"></script>
+    <script src="/src/transform-provider.js"></script>
+    <script src="/src/transforms.js"></script>
+    <script src="/src/lasso-select.js"></script>
+    <script src="/src/region-transform.js"></script>
+    <script src="/src/zones.js"></script>
+    <script src="/src/gen-trigger.js"></script>
+    <script src="/src/row-controls.js"></script>
+    <script src="/src/row-export.js"></script>
+    <script src="/src/tween.js"></script>
+    <script src="/src/breathe.js"></script>
+    <script src="/src/cards.js"></script>
+    <script src="/src/zoom-editor.js"></script>
+    <script src="/src/base-editor.js"></script>
+    <script src="/src/pipeline-tree.js"></script>
+    <script src="/src/atlas.js"></script>
+    <script src="/src/recolor.js"></script>
+    <script src="/src/compare.js"></script>
+    <script src="/src/chrome.js"></script>
+    <script src="/src/boot.js"></script>
+  </body>
+</html>

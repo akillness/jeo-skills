@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.slack-cable-tension",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Slack cable engagement and tension-only coupling"
+  },
+  "aliases": {
+    "en": [
+      "slack cable",
+      "tension only"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal",
+    "rigid-mechanics"
+  ],
+  "summary": "Move two cable endpoints and reveal the transition from slack to equal-and-opposite tensile forces.",
+  "objective": "Expose the authoritative model and its visible response: slack cable engagement and tension-only coupling.",
+  "applies_when": [
+    "An authored massless straight axial connector with fixed positive rest length, positive linear stiffness and zero damping; endpoint positions are prescribed for a force-response demonstration."
+  ],
+  "subject_terms": [
+    "slack cable",
+    "tension only",
+    "axial connector",
+    "unilateral spring"
+  ],
+  "tags": [
+    "physical-behavior",
+    "slack-cable-tension"
+  ],
+  "intent_signals": [
+    "Move two cable endpoints and reveal the transition from slack to equal-and-opposite tensile forces."
+  ],
+  "example_prompts": [
+    "Build an inspectable demonstration of slack cable engagement and tension-only coupling with parameter controls and a reset."
+  ],
+  "negative_signals": [
+    "Not inextensible constraints, rope bending, distributed mass, pulley friction, dynamic catenaries or damping/rebound prediction."
+  ],
+  "not_for": [
+    "Not inextensible constraints, rope bending, distributed mass, pulley friction, dynamic catenaries or damping/rebound prediction."
+  ],
+  "content": {
+    "principles": [
+      "A slack connector cannot push its endpoints apart. Prescribed endpoint movement and computed cable force must be identified separately.",
+      "This reduced element has no distributed sag state; a hanging curve is illustrative unless another model computes it."
+    ],
+    "implementation": [
+      "Own positions A,B in m, rest length L0>0 in m and k>0 in N/m. Let d=|B-A| and extension e=d-L0. For e<=0 set tension and both forces to zero without normalizing a zero-length vector. For e>0 set n=(B-A)/d, T=k*e, FA=T*n, FB=-T*n.",
+      "Move a clamp with a position control and show the other endpoint plus opposing arrows and an extension readout. Use a straight taut segment; a slack glyph or explicitly illustrative curve should not masquerade as a catenary or collision-resolved rope.",
+      "Reset restores endpoints,L0,k and any display curve. If endpoints are later made dynamic, apply these forces to their authoritative masses and velocities with a separately documented integration/contact model; never move them both by a tween and a force solver."
+    ],
+    "observable_checks": [
+      "For L0=1 m,k=100 N/m, d=0,0.8 or 1 m gives zero force; d=1.1 m gives 10 N directed toward the opposite endpoint.",
+      "Verify FA+FB=0 and T>=0; exchange endpoints and the force vectors exchange. Crossing the engagement length has continuous force with a slope change, without an undefined direction at coincident endpoints."
+    ]
+  },
+  "known_limits": [
+    "Not inextensible constraints, rope bending, distributed mass, pulley friction, dynamic catenaries or damping/rebound prediction.",
+    "Authored reusable guidance; no solver or rendered artifact has been tested for this record."
+  ],
+  "creative_affordances": [
+    "Use a cutaway, restrained ghost reference or annotated section only when it clarifies the modeled relation; a planar diagram remains valid when depth adds no information."
+  ],
+  "related_ids": [
+    "knowledge.compliant-spring-motion"
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-slack-cable-tension",
+      "statement": "MathWorks Cable represents longitudinal tension transfer. Its zero-mass no-slack case is equivalent to a parallel spring and damper, while enabling slack removes stiffness and damping in the slack regime. The undamped unilateral endpoint law here is an explicitly authored reduced model, not a reproduction of all block options.",
+      "scope": "An authored massless straight axial connector with fixed positive rest length, positive linear stiffness and zero damping; endpoint positions are prescribed for a force-response demonstration.",
+      "source_refs": [
+        {
+          "source_id": "source.object-physics-slack-cable-tension",
+          "locator": "Description; Equations, stretch and zero stiffness in slack; Model slack parameter"
+        }
+      ]
+    }
+  ]
+}

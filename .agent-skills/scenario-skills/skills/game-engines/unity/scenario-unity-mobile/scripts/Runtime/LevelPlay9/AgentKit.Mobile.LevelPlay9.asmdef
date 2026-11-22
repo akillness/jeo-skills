@@ -1,0 +1,25 @@
+{
+    "name": "AgentKit.Mobile.LevelPlay9",
+    "rootNamespace": "AgentKit.Mobile",
+    "references": [
+        "AgentKit.Mobile.Runtime",
+        "Unity.LevelPlay"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "AGENTKIT_LEVELPLAY9"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.services.levelplay",
+            "expression": "9.0.0",
+            "define": "AGENTKIT_LEVELPLAY9"
+        }
+    ],
+    "noEngineReferences": false
+}

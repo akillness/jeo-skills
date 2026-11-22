@@ -1,0 +1,26 @@
+{
+    "name": "AgentKit.TwoD.Cinemachine",
+    "rootNamespace": "AgentKit.TwoD",
+    "references": [
+        "AgentKit.TwoD.Runtime",
+        "Unity.Cinemachine",
+        "Unity.RenderPipelines.Universal.2D.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "AGENTKIT_CM3"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.cinemachine",
+            "expression": "3.0.0",
+            "define": "AGENTKIT_CM3"
+        }
+    ],
+    "noEngineReferences": false
+}

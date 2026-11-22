@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.lod-screen-error-continuity",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "geometry-profile",
+  "title": {
+    "en": "LOD screen-error and transition continuity"
+  },
+  "aliases": {
+    "en": [
+      "projected LOD geometry error",
+      "LOD transition popping"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "Choose geometry levels by declared projected discrepancies and camera conditions; distinguish application error policy from a distance-based LOD switch.",
+  "objective": "Geometry levels preserve the required silhouette and attachment cues throughout the intended cameras and state transitions.",
+  "applies_when": [
+    "An asset has multiple geometry levels and must retain declared shape cues under changing cameras, viewport sizes or poses."
+  ],
+  "tags": [
+    "geometry-profile",
+    "lod",
+    "screen-error",
+    "silhouette",
+    "hysteresis"
+  ],
+  "subject_terms": [
+    "LOD.update",
+    "camera zoom",
+    "projected landmark error",
+    "orthographic camera",
+    "visibility switch",
+    "semantic picking"
+  ],
+  "intent_signals": [
+    "mesh pops when changing detail",
+    "LOD fails after field of view change",
+    "orthographic zoom needs another mesh"
+  ],
+  "example_prompts": [
+    "Keep a tower silhouette stable when switching mesh detail during camera zoom.",
+    "Choose LODs for a deforming creature without moving its attachments."
+  ],
+  "negative_signals": [
+    "one polygon quota for every object",
+    "distance is a universal pixel-error bound"
+  ],
+  "not_for": [
+    "Selecting the overall hero prop detail hierarchy.",
+    "Proving a continuous geometric error bound from a few screenshots."
+  ],
+  "content": {
+    "principles": [
+      "Define which changes matter: silhouette, openings, moving joints, shadow or reflection shape, surface response and semantic attachment positions. A lower triangle count is not itself acceptable quality.",
+      "Projected discrepancy depends on object transforms, pose and camera projection, resolution and zoom; use explicit screen-space units and intended views. Sampled checks are evidence for those samples, not a proof over every camera.",
+      "Keep stable object identity and attachment frames outside disposable mesh levels. Choose an explicit picking and collision representation; replacing visible geometry must not silently change legal actions."
+    ],
+    "implementation": [
+      "In Blender, author each level from the same coordinate and semantic frame; preserve required openings and material regions. If simplifying a deformed asset, rebuild valid morph/skin correspondence for each level rather than copying incompatible arrays.",
+      "Compare projected landmarks and silhouette discrepancies against the chosen reference under the declared cameras, viewport units, poses and lights. Record the accepted tolerance per use case, including orthographic or large FOV changes.",
+      "Three.js r180 LOD switches visibility by distance divided by camera.zoom; it does not calculate silhouette error or fade meshes. Calibrate distances for bounded views or implement a declared projected-error selector and disable competing automatic selection. Revisit thresholds after projection, viewport, scale or pose changes.",
+      "Use hysteresis to avoid boundary chatter. If a fade or geometric transition is chosen, explicitly implement material/depth and picking ownership; hysteresis alone does not blend the two surfaces.",
+      "Register levels explicitly with `lod.addLevel( object, distance, hysteresis )` and read them back from `lod.levels`, documented as an array of `{ object, distance, hysteresis }`. Hysteresis is a fraction of the switch distance, so a small band such as 0.05-0.15 is a starting point to tune and record per asset, not a documented default.",
+      "`lod.update( camera )` performs the selection and `lod.autoUpdate` (documented default `true`) decides whether the renderer calls it for you. Set `lod.autoUpdate = false` when a projected-error selector owns the decision, and use `lod.getObjectForDistance( distance )` in a test to assert which level a given distance selects before trusting it in a scene."
+    ],
+    "observable_checks": [
+      "At each threshold, approach and retreat with static and animated poses; verify openings, attachment alignment and no unacceptable popping under the declared tolerance.",
+      "Changing viewport, FOV and orthographic zoom either selects an appropriate level or visibly reports the policy limit.",
+      "After switching and reset, selection resolves the same semantic object and collider ownership remains declared."
+    ]
+  },
+  "creative_affordances": [
+    "Use an intentional stylized switch when it serves the scene.",
+    "Preserve a few expressive edges while flattening unimportant surface detail."
+  ],
+  "known_limits": [
+    "No universal pixel threshold, polygon budget or proof from sampled views.",
+    "No LOD asset, projection comparison, render or raycast fixture ran."
+  ],
+  "related_ids": [
+    "knowledge.hero-prop-detail-hierarchy",
+    "knowledge.morph-target-topology-compatibility",
+    "knowledge.geometry-nodes-instance-handoff"
+  ],
+  "claims": [
+    {
+      "id": "claim.experience-lod-selection-boundary",
+      "statement": "Three.js r180 LOD.update uses camera-to-object world distance divided by camera.zoom, adjusts a level threshold by its hysteresis when that level is visible, and toggles level object visibility. It does not compute projected mesh discrepancy or blend geometry.",
+      "scope": "Pinned r180 implementation only; the projected-error policy here is application-authored.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-three-r180-lod",
+          "locator": "LOD.update(camera): distance/zoom, hysteresis and visibility assignments"
+        }
+      ]
+    }
+  ]
+}

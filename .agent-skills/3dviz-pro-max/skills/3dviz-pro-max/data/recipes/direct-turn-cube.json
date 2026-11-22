@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "id": "recipe.direct-turn-cube",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Direct-manipulation cube turns"
+  },
+  "aliases": {
+    "en": [
+      "direct turn cube"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles"
+  ],
+  "summary": "Translate face gestures into legal discrete moves while separating camera orbit.",
+  "objective": "Let me drag a cube face to preview a turn, then snap or cancel it and undo the committed move.",
+  "tags": [
+    "direct",
+    "turn",
+    "cube"
+  ],
+  "example_prompts": [
+    "Let me drag a cube face to preview a turn, then snap or cancel it and undo the committed move."
+  ],
+  "entities": [
+    {
+      "name": "Cubies",
+      "guidance": "Use individual beveled bodies with separate sticker/face surfaces and narrow gaps; preserve sticker IDs on local faces."
+    },
+    {
+      "name": "Turn preview",
+      "guidance": "Use a temporary layer pivot at the cube center with highlighted affected pieces."
+    },
+    {
+      "name": "Gesture cue",
+      "guidance": "Show selected face normal and legal turn direction before commitment."
+    }
+  ],
+  "state_contract": {
+    "model": "Integer cubie positions and discrete orientation; gesture owns a temporary angle, legal move engine owns committed state.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Pick face and drag beyond a declared dead zone.",
+      "Commit a quarter turn or cancel preview.",
+      "Undo and reset; allow orbit only outside active face gesture."
+    ]
+  },
+  "invariants": [
+    "Canceled gesture leaves state/history unchanged.",
+    "One gesture creates at most one move.",
+    "M followed by its inverse restores exact positions and orientations."
+  ],
+  "motion_guidance": [
+    "Convert drag direction in the picked face frame, independent of camera orientation.",
+    "Commit exact discrete state once; reconstruct mesh transforms and remove temporary pivot."
+  ],
+  "known_limits": [
+    "No physical friction, corner cutting or speedcubing hardware simulation.",
+    "Gesture arbitration and move correctness require runtime checks.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.direct-turn-cube",
+      "statement": "WCA outer-face notation distinguishes clockwise quarter turns, counterclockwise quarter turns and half turns.",
+      "scope": "Outer-face move subset; source does not prescribe gesture controls.",
+      "source_refs": [
+        {
+          "source_id": "source.wca-regulations-2026",
+          "locator": "12a1a–12a1c"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Cubies",
+      "structure": "Use individual beveled bodies with separate sticker/face surfaces and narrow gaps; preserve sticker IDs on local faces.",
+      "material": "Slightly rough dark cubie bodies with separate satin colored face surfaces; bevel highlights reveal gaps without obscuring face identity.",
+      "articulation": "Temporary layer pivot previews a turn; exact cubie orientation is committed once by the move engine."
+    },
+    {
+      "family": "Turn preview",
+      "structure": "Use a temporary layer pivot at the cube center with highlighted affected pieces.",
+      "material": "Slightly rough dark cubie bodies with separate satin colored face surfaces; bevel highlights reveal gaps without obscuring face identity.",
+      "articulation": "Temporary layer pivot previews a turn; exact cubie orientation is committed once by the move engine."
+    },
+    {
+      "family": "Gesture cue",
+      "structure": "Show selected face normal and legal turn direction before commitment.",
+      "material": "Slightly rough dark cubie bodies with separate satin colored face surfaces; bevel highlights reveal gaps without obscuring face identity.",
+      "articulation": "Temporary layer pivot previews a turn; exact cubie orientation is committed once by the move engine."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Semantic geometry/state presentation; no gravity, contact force or material simulation.",
+    "checks": [
+      "Canceled gesture leaves state/history unchanged.",
+      "One gesture creates at most one move."
+    ]
+  }
+}

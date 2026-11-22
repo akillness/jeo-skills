@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "id": "recipe.isotropic-seismic-plane-waves",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "P and S plane waves in an isotropic elastic solid"
+  },
+  "aliases": {
+    "en": [
+      "seismic body-wave polarization",
+      "elastic P and S waves",
+      "longitudinal and transverse plane waves"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment",
+    "waves-optics-fields"
+  ],
+  "summary": "Compare homogeneous isotropic P and S plane waves through particle displacement, propagation direction and modulus-dependent speed in a finite three-dimensional inspection window.",
+  "objective": "Switch between P and S polarization and inspect how propagation direction, displacement direction, wavelength and speed remain mathematically linked.",
+  "tags": [
+    "seismic wave",
+    "P wave",
+    "S wave",
+    "elasticity",
+    "polarization"
+  ],
+  "subject_terms": [
+    "compressional body wave",
+    "shear body wave",
+    "plane-wave polarization",
+    "bulk modulus",
+    "shear modulus",
+    "density",
+    "phase velocity",
+    "isotropic elastic solid"
+  ],
+  "intent_signals": [
+    "Show why P-particle motion is parallel to propagation while S-particle motion is transverse.",
+    "Compare P and S speeds from density, bulk modulus and shear modulus.",
+    "Animate a plane elastic wave through a three-dimensional material-point lattice."
+  ],
+  "example_prompts": [
+    "Build a 3D material lattice comparing P and S plane-wave polarization with visible wavefronts and speed equations.",
+    "Let me rotate the propagation direction and shear polarization while preserving their dot-product constraints."
+  ],
+  "negative_signals": [
+    "Not an earthquake forecast, hypocenter locator, travel-time inversion or hazard model.",
+    "Not a layered-Earth, anisotropic, attenuating, surface-wave, reflection or refraction simulation."
+  ],
+  "not_for": [
+    "Predicting earthquake occurrence, magnitude, damage, arrivals or site response.",
+    "Inferring real rock moduli from an uncalibrated display or treating enlarged displacement as ground-motion amplitude."
+  ],
+  "entities": [
+    {
+      "name": "Homogeneous elastic sample window",
+      "guidance": "Build a finite transparent cuboid containing a regular reference lattice of material points, but label it as a window into an unbounded homogeneous isotropic solid. Its faces are clipping planes, not reflecting or free boundaries. Resolve the wave with reference-point spacing along n no greater than lambda/10 or stop with an undersampling diagnostic."
+    },
+    {
+      "name": "Propagation and polarization frame",
+      "guidance": "Show unit propagation vector n and unit polarization e from a common origin. In P mode set e=n; in S mode constrain e dot n=0 and allow e to rotate around n. Do not name SH or SV unless a separate vertical/reference plane is explicitly defined."
+    },
+    {
+      "name": "Wavefront and displaced particles",
+      "guidance": "Draw several planes n dot x=constant separated by wavelength and displace each lattice point from its ghosted reference position by u=A*e*cos(k*n dot x-omega*t+phi). Arrows show displacement from reference, not particle transport with the front."
+    },
+    {
+      "name": "Speed and phase ruler",
+      "guidance": "Display rho, K, mu, k, wavelength, selected speed and omega. Track one named phase plane over model time and keep P and S comparison clocks synchronized."
+    }
+  ],
+  "state_contract": {
+    "model": "Use finite rho>0, bulk modulus K>0 and shear modulus mu>0 in consistent SI units, unit propagation n, finite wavenumber k>0, finite phase phi, finite 0<=t<=T and finite physical amplitude A with the authored small-strain input guard |A|*k<=0.05. Set vp=sqrt((K+4*mu/3)/rho) and vs=sqrt(mu/rho). For P choose e=n and omega=vp*k; for S choose unit e with e dot n=0 and omega=vs*k. Evaluate displacement at each fixed reference/material coordinate X as u(X,t)=A*e*cos(k*n dot X-omega*t+phi) inside a finite render window; wavelength lambda=2*pi/k. Use A_display=gain*A only in the render transform, retain A in numeric readouts, and cap |A_display|*k<=0.25 so exaggeration cannot fold the displayed P lattice; reject or diagnose values outside either authored bound.",
+    "authority": "Material parameters, wave kind, n, e, k, A, phase and model time own speed, displacement and phase planes. Camera, finite clipping window, arrow density, trails and display gain cannot change the physical state or turn the clipping faces into boundaries.",
+    "actions": [
+      "Switch between P and S wave state while preserving one propagation direction and shared material parameters.",
+      "Rotate n in three dimensions; in S mode rotate e only within the plane perpendicular to n.",
+      "Change positive rho, K, mu or wavelength and recompute speed and omega atomically.",
+      "Play, pause or scrub the shared analytic phase and compare synchronized P/S panels.",
+      "Adjust labeled displacement display gain, toggle reference points and phase planes, and reset model and view state."
+    ]
+  },
+  "invariants": [
+    "n and e are unit vectors within tolerance. P mode satisfies e=n; S mode satisfies e dot n=0 before any displacement is evaluated.",
+    "With K>0, mu>0 and rho>0, vp^2=(K+4*mu/3)/rho, vs^2=mu/rho and vp>vs; invalid or non-finite material inputs stop evaluation instead of being clamped.",
+    "A named constant-phase plane advances a distance v*Delta t along n, while each material point is evaluated at its fixed reference coordinate X, oscillates about that reference parallel to e and has zero net transport over a period.",
+    "Changing display gain alters rendered offsets and arrows only; physical A, speed, wavelength, omega and reference positions remain unchanged. The authored render guard |gain*A|*k<=0.25 prevents an exaggerated P display from folding and being mistaken for the physical solution, and lattice spacing along n remains no greater than lambda/10."
+  ],
+  "motion_guidance": [
+    "Evaluate the analytic phase from model time for seek-safe playback; do not advect material-point identities along the propagation direction.",
+    "Ghost the undeformed lattice and draw displacement arrows so longitudinal and transverse motion remain legible even with exaggerated display gain.",
+    "If P and S are side by side, use the same rho,K,mu,k and model-time origin; their different omega then produces the speed comparison rather than hand-tuned animation timing."
+  ],
+  "creative_affordances": [
+    "Use a transparent rock-like volume, sparse lattice, planar phase sheets and synchronized P/S twins, provided the homogeneous sample window and reference lattice stay explicit.",
+    "Compression tint for P and shear grid skew for S may reinforce polarization, but both must derive from displacement gradients and remain labeled qualitative if strain is not numerically displayed."
+  ],
+  "known_limits": [
+    "Single monochromatic small-amplitude plane wave in an unbounded homogeneous isotropic linear elastic solid; the authored |A|*k<=0.05 guard scopes the display but is not a universal material threshold. No source radiation pattern, geometrical spreading, attenuation, dispersion, heterogeneity, anisotropy, interfaces, mode conversion or surface waves.",
+    "The finite cuboid is a rendering window, so no face reflection, standing wave or edge effect is valid. K>0 and mu>0 intentionally restrict this recipe to a stable solid and exclude the fluid limit.",
+    "No Earth model, event data, forecast, hazard, damage or instrument response is supplied. This authored draft has no executed runtime or rendered observation."
+  ],
+  "claims": [
+    {
+      "id": "claim.physics-seismic-p-s-polarization-speeds",
+      "statement": "In an elastic medium, P-wave particle motion is in the propagation direction and S-wave particle motion is transverse; for homogeneous isotropic material the body-wave speeds are vp=sqrt((K+4*mu/3)/rho) and vs=sqrt(mu/rho).",
+      "scope": "Linear body waves in homogeneous isotropic elastic material described by density rho, bulk modulus K and shear modulus mu; no layered-Earth travel times, attenuation or surface-wave behavior.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-epa-seismic-velocities",
+          "locator": "Seismic Velocities, lines 4-14: body-wave definitions, particle-motion directions, and P/S speed equations"
+        },
+        {
+          "source_id": "source.physics-usgs-seismic-lecture",
+          "locator": "Lecture 2, PDF page 4 (index 3): P motion parallel, S motion perpendicular, alpha=Vp and beta=Vs formulas"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Elastic material lattice",
+      "structure": "Create immutable reference points and separate displaced glyph instances inside a clipped 3D lattice. Choose the finite display extent deliberately; two wavelengths are an optional framing aid, not a model requirement. Preserve point identity across scrubbing and the declared sampling-spacing limit.",
+      "material": "Reference points are low-contrast matte marks; displaced points and arrows use a high-contrast wave-kind accent. Rock texture is decorative and must not imply layers or fractures.",
+      "articulation": "Glyph offsets are analytic u at fixed reference coordinates; display gain is applied only in the render transform."
+    },
+    {
+      "family": "Wave coordinate instrument",
+      "structure": "Construct n and e arrows, wavelength bracket, phase planes and a metric ruler in one world frame. In S mode add a subtle perpendicular polarization disk around n.",
+      "material": "Use distinct shapes as well as colors for propagation and displacement. Phase planes are translucent and never occlude the particle arrows.",
+      "articulation": "Rotating n rebuilds the orthonormal frame; S polarization rotation stays on its perpendicular disk and P polarization remains locked to n."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Closed-form displacement field for one P or S plane wave in an unbounded homogeneous isotropic linear elastic solid, sampled within a finite display window.",
+    "timestep": "Evaluate u at fixed reference coordinates from the analytic phase over finite model time 0<=t<=T; no numerical wave solver, boundary update or rigid-body integration is present.",
+    "state": [
+      "positive finite density and elastic moduli",
+      "wave kind and orthonormal propagation/polarization frame",
+      "positive finite wavenumber and finite small physical amplitude",
+      "finite phase, time bound and model time"
+    ],
+    "colliders": [
+      "No colliders; cuboid faces are clipping planes only."
+    ],
+    "driving": [
+      "Closed-form harmonic plane-wave displacement at fixed material coordinates."
+    ],
+    "contact": [
+      "No fracture, impact, friction, interface traction or particle collision response is modeled."
+    ],
+    "checks": [
+      "Check finite inputs, |A|*k<=0.05, P parallelism or S orthogonality before evaluation.",
+      "Verify speed equations, vp>vs and lambda=2*pi/k from stored state.",
+      "Track a phase plane over a declared interval and verify displacement period closure.",
+      "Vary display gain within |gain*A|*k<=0.25 and assert physical state and measurements remain invariant; reject larger gain before displaying a folded P lattice."
+    ]
+  },
+  "related_ids": [
+    "recipe.standing-string-modes",
+    "knowledge.reasoning-boundary-conditions-are-the-model"
+  ]
+}

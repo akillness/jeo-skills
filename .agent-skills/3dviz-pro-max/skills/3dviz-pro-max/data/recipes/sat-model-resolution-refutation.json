@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "id": "recipe.sat-model-resolution-refutation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "SAT: a model versus a checked refutation"
+  },
+  "aliases": {
+    "en": [
+      "Boolean satisfiability workbench",
+      "CNF resolution certificate"
+    ]
+  },
+  "direction_ids": [
+    "logic-circuits"
+  ],
+  "summary": "Separate one successful assignment from a proof that no assignment can work.",
+  "objective": "Build a small CNF workbench where I can toggle Boolean assignments, inspect satisfied clauses and check a resolution refutation for an UNSAT formula.",
+  "tags": [
+    "SAT",
+    "UNSAT",
+    "CNF"
+  ],
+  "subject_terms": [
+    "SAT",
+    "UNSAT",
+    "CNF",
+    "satisfying assignment",
+    "resolution",
+    "empty clause",
+    "proof certificate"
+  ],
+  "intent_signals": [
+    "Build a small CNF workbench where I can toggle Boolean assignments, inspect satisfied clauses and check a resolution refutation for an UNSAT formula."
+  ],
+  "example_prompts": [
+    "Build a small CNF workbench where I can toggle Boolean assignments, inspect satisfied clauses and check a resolution refutation for an UNSAT formula."
+  ],
+  "negative_signals": [
+    "No scalable industrial SAT performance claim, DRAT parser, weighted MaxSAT or SMT theories."
+  ],
+  "not_for": [
+    "No scalable industrial SAT performance claim, DRAT parser, weighted MaxSAT or SMT theories."
+  ],
+  "entities": [
+    {
+      "name": "Clause cards",
+      "guidance": "Show literals as labeled slots on shallow clause cards and connect them to a shared assignment rail. Stack certificate layers by derivation index, with an explicit index legend."
+    },
+    {
+      "name": "Outcome panel",
+      "guidance": "Display SAT with a complete checked witness, UNSAT with checked refutation or complete bounded enumeration, and incomplete search separately."
+    }
+  ],
+  "state_contract": {
+    "model": "Declared finite atom set with at most eight atoms, set-valued clauses and Boolean assignments. Formula evaluation is AND over clause ORs. Certificate nodes are current input clauses or (parent1,parent2,pivot). Every leaf must equal a clause of the current input; each derived node k references already validated parent indices strictly less than k. Reject self, forward and cyclic references before checking pivot removal and union of the remaining literals. Bind the certificate to the current input revision. Keep assignment evaluation, search progress and certificate status separate.",
+    "authority": "The typed domain model owns each committed state and result. Geometry, labels and selection derive from that model; animation cannot certify a claim.",
+    "actions": [
+      "Edit a clause or toggle a variable; invalidate prior certificates and solver results.",
+      "Enumerate all assignments for this bounded input, or add/check one resolution step.",
+      "Load {A∨B, ¬A, ¬B}; derive B then the empty clause; compare a satisfiable variation."
+    ]
+  },
+  "invariants": [
+    "A failed assignment never establishes UNSAT; a single complete satisfying assignment establishes SAT.",
+    "The empty clause is false; an empty conjunction of clauses is true.",
+    "Reject a resolution step with absent/comatching pivot signs or altered nonpivot literals. Limit exhaustion remains incomplete.",
+    "Reject a forward/self parent reference or an unrecognized input leaf before reporting UNSAT, even if its local literal calculation looks valid."
+  ],
+  "motion_guidance": [
+    "Step commits one semantic action; pause freezes presentation and leaves the committed state inspectable. Reset cancels pending playback and restores the complete starting state.",
+    "Offer a static transition highlight and an equivalent readable table for reduced motion. Camera travel is presentation, not an inference or domain operation."
+  ],
+  "creative_affordances": [
+    "Use shallow sculptural cards, restrained materials and selective focus to expose relationships. Prefer a flat readable layout whenever depth has no declared role."
+  ],
+  "known_limits": [
+    "No scalable industrial SAT performance claim, DRAT parser, weighted MaxSAT or SMT theories.",
+    "Authored, source-reviewed guidance only; no generated artifact, solver integration, runtime behavior or visual check has run."
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Abstract symbols and logical state; mesh contact, light and motion have no causal role in the model."
+  },
+  "related_ids": [
+    "recipe.logic-gates"
+  ],
+  "object_craft": [
+    {
+      "family": "Clause cards",
+      "structure": "Show literals as labeled slots on shallow clause cards and connect them to a shared assignment rail. Stack certificate layers by derivation index, with an explicit index legend.",
+      "material": "Matte surfaces and high-contrast labels; distinguish status with text and border style as well as color."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim.sat-model-resolution-refutation",
+      "statement": "A propositional CNF formula is satisfiable when some Boolean assignment satisfies every clause. Binary resolution preserves consequences; deriving the empty clause from the input clauses certifies unsatisfiability.",
+      "scope": "Finite propositional CNF and explicitly checked binary-resolution derivations.",
+      "source_refs": [
+        {
+          "source_id": "source.cmu-resolution-2025",
+          "locator": "Sections 2–4, printed pages L14.2–L14.5"
+        }
+      ]
+    }
+  ]
+}

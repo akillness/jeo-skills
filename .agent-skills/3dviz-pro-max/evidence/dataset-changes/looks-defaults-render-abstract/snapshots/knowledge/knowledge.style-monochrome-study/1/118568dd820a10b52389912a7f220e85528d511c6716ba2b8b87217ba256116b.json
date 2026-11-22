@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-monochrome-study",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Monochrome form study"
+  },
+  "aliases": {
+    "en": [
+      "monochrome 3D",
+      "single hue sculpture",
+      "grayscale form study"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry",
+    "products-assemblies"
+  ],
+  "summary": "Use value, surface response and silhouette to study form with a deliberately restricted hue range.",
+  "objective": "Neighboring parts remain distinct without hue changes, and shadows do not erase the contour under inspection.",
+  "tags": [
+    "style-profile",
+    "palette-aesthetic",
+    "monochrome-study"
+  ],
+  "subject_terms": [
+    "monochrome 3D",
+    "single hue sculpture",
+    "grayscale form study",
+    "palette aesthetic"
+  ],
+  "intent_signals": [
+    "Make a monochrome form study",
+    "Use value and light to distinguish shape"
+  ],
+  "example_prompts": [
+    "Make a monochrome gear study where teeth, hubs and shafts remain easy to distinguish."
+  ],
+  "content": {
+    "principles": [
+      "Use value, surface response and silhouette to study form with a deliberately restricted hue range.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Prioritize curvature, edge treatment and spacing because color categories will not separate adjacent parts.",
+      "Choose a value range and broad light-dark relationships; use small finish differences only when they help read the shape.",
+      "Set a stable study view and a slow orbit; hold motion when comparing geometry variants under the same light."
+    ],
+    "observable_checks": [
+      "Neighboring parts remain distinct without hue changes, and shadows do not erase the contour under inspection.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with faceted, clay or minimalist forms; retain a separate readable legend when the underlying data needs categorical distinction.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

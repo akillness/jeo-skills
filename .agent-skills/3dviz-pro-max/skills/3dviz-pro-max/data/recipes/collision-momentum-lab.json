@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "id": "recipe.collision-momentum-lab",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Elastic and inelastic collisions in space"
+  },
+  "aliases": {
+    "en": [
+      "collision",
+      "momentum conservation",
+      "restitution"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics"
+  ],
+  "summary": "Compare momentum and kinetic energy across a one-dimensional central collision so that what is conserved and what is not becomes measurable.",
+  "objective": "Build a guided one-dimensional collision bench where two carts meet with a chosen restitution and the momentum and kinetic energy totals are shown before and after.",
+  "tags": [
+    "collision",
+    "momentum",
+    "energy"
+  ],
+  "subject_terms": [
+    "elastic collision",
+    "inelastic collision",
+    "momentum conservation",
+    "kinetic energy",
+    "coefficient of restitution",
+    "closed system",
+    "impulse"
+  ],
+  "intent_signals": [
+    "Compare an elastic and a perfectly inelastic collision.",
+    "Show that momentum is conserved while kinetic energy is not."
+  ],
+  "example_prompts": [
+    "Build a two-body collision bench with restitution control and before-and-after totals.",
+    "Show a perfectly inelastic collision where the bodies move off together."
+  ],
+  "negative_signals": [
+    "Not a contact mechanics or material deformation model.",
+    "Not a general physics engine tutorial; this recipe covers a single binary collision event."
+  ],
+  "not_for": [
+    "Not a contact mechanics or material deformation model.",
+    "Not a general physics engine tutorial; this recipe covers a single binary collision event."
+  ],
+  "entities": [
+    {
+      "name": "Colliding bodies",
+      "guidance": "Constrain both bodies to a single guide rail so the collision is central and one-dimensional: with velocities along one axis a single normal impulse fully determines the outcome, which is exactly the regime this recipe models."
+    },
+    {
+      "name": "Measurement panel",
+      "guidance": "Show total momentum as a vector and total kinetic energy as a scalar, both before and after the event."
+    },
+    {
+      "name": "Event marker",
+      "guidance": "Mark the collision instant explicitly, since every claim in the scene is a comparison across that instant."
+    }
+  ],
+  "state_contract": {
+    "model": "Two rigid bodies with positive masses moving on a common line in a closed system, a restitution coefficient e in the closed interval from 0 to 1, and an impulse applied along that line only while the bodies are approaching. Post-collision velocities follow from momentum conservation together with the restitution relation on the relative velocity. Rotation and tangential motion are excluded by the guide rail rather than ignored.",
+    "authority": "The resolved post-collision velocities are authoritative; the animation follows them. Reported totals are computed from the same velocities, never from separate authored numbers.",
+    "actions": [
+      "Set masses and initial velocities.",
+      "Choose restitution from perfectly inelastic to elastic.",
+      "Run the collision and inspect before-and-after totals.",
+      "Reset the bench."
+    ]
+  },
+  "invariants": [
+    "Total momentum after the event equals total momentum before it within the stated numerical tolerance.",
+    "Kinetic energy after the event never exceeds the energy before it.",
+    "At zero restitution the relative velocity along the line vanishes, so on this one-dimensional bench the bodies leave with a common velocity. In a general off-centre or oblique collision a zero normal restitution would only null the normal component, which is why the bench constrains the geometry.",
+    "The impulse acts only while the bodies approach; once the relative velocity separates them no further impulse is applied, so bodies never stick or re-collide within one event."
+  ],
+  "motion_guidance": [
+    "Slow the moment of contact or allow single-stepping through it, since everything interesting happens in one instant.",
+    "Keep pre-collision velocity arrows on screen as ghosts after the event so the comparison is direct."
+  ],
+  "known_limits": [
+    "Instantaneous binary collision with no contact duration, deformation or rotation transfer.",
+    "Restitution is a chosen parameter here, not a measured material property.",
+    "One-dimensional central collisions only. Off-centre impacts between arbitrary convex solids transfer angular momentum and need a contact model with tangential impulse, which this bench deliberately excludes.",
+    "Restitution is an authored parameter of the bench, not a measured material property, and the cited source classifies collisions without supplying a restitution law.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-collision-types",
+      "statement": "A collision in which the total kinetic energy of the system is conserved is elastic, a collision in which kinetic energy decreases is inelastic, and objects that stick together suffer the maximum loss of kinetic energy.",
+      "scope": "Classification for a closed system as cited.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-collisions",
+          "locator": "9.4, elastic, inelastic and perfectly inelastic collisions"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-momentum-conservation",
+      "statement": "A closed system always conserves momentum, although it may or may not conserve kinetic energy.",
+      "scope": "Closed system with no external impulse during the event, as cited.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-collisions",
+          "locator": "9.4, momentum conservation statement"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Colliding bodies",
+      "structure": "Simple solids with distinct silhouettes and a printed identity so they remain distinguishable after the exchange.",
+      "material": "Two contrasting materials with matching roughness so mass is communicated by a label rather than by shine.",
+      "articulation": "Bodies translate along their velocity vectors; rotation is not part of this recipe."
+    },
+    {
+      "family": "Measurement panel",
+      "structure": "A bench-side board with before and after columns for momentum components and kinetic energy.",
+      "material": "Opaque board, monospaced numerals and a fixed decimal count so small differences are visible.",
+      "articulation": "Values are captured at the event marker and then held."
+    }
+  ],
+  "physical_contract": {
+    "model": "rigid-body",
+    "scope": "Instantaneous binary collision resolved from conservation and restitution; no contact duration or deformation.",
+    "state": [
+      "masses",
+      "velocities",
+      "restitution",
+      "recorded totals"
+    ],
+    "colliders": [
+      "One convex collider per body, sized to the visible geometry."
+    ],
+    "contact": [
+      "Single impulse applied along the contact normal at the event instant."
+    ],
+    "timestep": "Fixed step with event detection; the event is resolved once per collision.",
+    "checks": [
+      "Momentum totals match across the event within tolerance.",
+      "Kinetic energy after is less than or equal to kinetic energy before."
+    ]
+  },
+  "related_ids": [
+    "recipe.projectile-trajectory",
+    "knowledge.gravity-contact",
+    "knowledge.physical-action-reset"
+  ]
+}

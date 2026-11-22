@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-fence-run",
+  "record_revision": 3,
+  "asset": "templates/kits/props/fence-run.js",
+  "asset_sha256": "e438bee08915c64d83648877cc40f1f4ec7fdbf5ff711895c77391045d008ff5",
+  "params": {
+    "length_m": 4.6,
+    "posts": 4,
+    "height": 1.18,
+    "seed": 1,
+    "sag": 0.055
+  },
+  "tier": "T2",
+  "kit": {
+    "blueprint": "knowledge.blueprint-fence-run",
+    "module": "../props/fence-run.js",
+    "params": {
+      "length_m": 4.6,
+      "posts": 4,
+      "height": 1.18,
+      "seed": 1,
+      "sag": 0.055
+    },
+    "tier": "T2",
+    "surface": {
+      "seed": 1,
+      "size": 1024,
+      "materials": 4,
+      "unmapped": [],
+      "uv": [
+        "world",
+        "normalised"
+      ],
+      "ms": 117.5,
+      "ao": {
+        "vertices": 227,
+        "casts": 793,
+        "ms": 7.2,
+        "skipped": null
+      }
+    },
+    "triangles": 2160,
+    "bounds_m": {
+      "min": [
+        -2.363738372270082,
+        -0.0015537645422881495,
+        -0.08201271410162993
+      ],
+      "max": [
+        2.384623349550979,
+        1.2734966006588122,
+        0.11873673927038908
+      ],
+      "size": [
+        4.748361721821061,
+        1.2750503652011003,
+        0.200749453372019
+      ]
+    },
+    "fit_distance_m": 7.1935,
+    "view_distances_m": {
+      "far": 17.2645,
+      "mid": 8.6322,
+      "close": 5.611,
+      "detail": 0.4319
+    },
+    "sockets": [
+      "start",
+      "end",
+      "gate"
+    ],
+    "detail_socket": "start",
+    "animated": false,
+    "colliders": [
+      "run"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "e9c84ae35ddcf7b09519011c3d87ab0cf525f0090c9f66d2f45ac02f0189a8a7",
+    "mid.png": "f529297ca437816d152093bf3ec67dd66f12f753df589a8b5d964f2192c250fc",
+    "close.png": "4f5d79f8f709ca3eb145bfc9c1c90f9c4aac1e83e108958b1689b1a5faa9921b",
+    "detail.png": "144cd50660e384df11928b89a3f0c313ba11f5c0ee785e09e7af909146dde49c"
+  },
+  "motion": null,
+  "gpu_requested": false,
+  "capture_mode": "swiftshader",
+  "webgl_renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T17:14:14+00:00",
+  "finished": "2026-09-08T17:14:19+00:00",
+  "surface": {
+    "families": {
+      "#8b6f4a": "wood",
+      "#ab8b60": "wood",
+      "#d8d2c6": "metal"
+    },
+    "seed": 1,
+    "size": 1024,
+    "ao": {
+      "samples": 13,
+      "radius_m": 0.38,
+      "ground_dirt_m": 0.6
+    }
+  }
+}

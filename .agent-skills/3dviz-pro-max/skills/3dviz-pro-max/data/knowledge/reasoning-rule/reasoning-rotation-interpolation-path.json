@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-rotation-interpolation-path",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Interpolate orientation on the rotation manifold"
+  },
+  "aliases": {
+    "en": [
+      "slerp",
+      "quaternion interpolation",
+      "orientation blending"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra",
+    "characters-motion-art",
+    "robotics-control"
+  ],
+  "summary": "Choose an orientation path for the intended motion; use sign-aligned quaternion interpolation when the objective is a shortest, constant-rate turn.",
+  "objective": "Choose an orientation interpolation whose intermediate states are valid rotations with predictable motion.",
+  "applies_when": [
+    "A camera, joint or object must move between two orientations.",
+    "Poses are blended, retargeted or keyframed.",
+    "An orientation is being integrated over time from angular velocity."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "quaternion",
+    "slerp",
+    "orientation",
+    "interpolation",
+    "angular velocity",
+    "rotation"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "rotation",
+    "animation"
+  ],
+  "intent_signals": [
+    "the rotation takes a strange path",
+    "blend between two orientations",
+    "camera tumbles when it turns"
+  ],
+  "example_prompts": [
+    "Move the camera between two orientations smoothly along the shortest turn.",
+    "Blend the two poses without the limbs collapsing."
+  ],
+  "negative_signals": [
+    "Single-axis rotations, where interpolating the angle is already correct.",
+    "Deliberately non-physical orientation effects."
+  ],
+  "not_for": [
+    "Single-axis rotations, where interpolating the angle is already correct.",
+    "Deliberately non-physical orientation effects."
+  ],
+  "content": {
+    "principles": [
+      "Two failure modes are usually merged and should not be. Interpolating the entries of a rotation matrix independently leaves the set of rotations, and the intermediate matrices can shear or scale. Interpolating Euler angles under a fixed convention does stay in the rotation group: every intermediate triple is a proper rotation. What Euler interpolation loses is path and rate control, producing an axis that wanders and a speed that varies, which is a different complaint from producing non-rotations.",
+      "For distinct non-antipodal unit-quaternion endpoints, spherical linear interpolation follows their shortest spherical arc at constant rate. Choosing endpoint signs for the shortest orientation path is a separate convention; prescribed turns and rotation splines can serve other motion objectives.",
+      "The unit quaternions q and -q represent the same orientation. For a shortest orientation path, align endpoint signs; identical orientations then remain fixed, including nonidentity orientations. A relative 180-degree orientation has endpoint dot product zero and two equally short directions about its relative axis, so declare the tie choice. A full revolution returning to the same orientation needs an explicit axis and angle schedule; endpoint orientations alone do not specify it.",
+      "Integrating orientation over time is a separate problem: a first-order step accumulates truncation error and requires renormalisation, so a naive integrator drifts."
+    ],
+    "implementation": [
+      "Store orientation as a unit quaternion or a proper rotation matrix. Before quaternion normalization, reject nonfinite components or zero norm as invalid orientation data; use a numerically safe norm evaluation. Convert to Euler angles for display under a stated convention and order when useful.",
+      "State the objective before choosing the interpolant. For a shortest, constant-rate turn use spherical interpolation between normalised endpoints with the sign chosen for the shorter arc; for a prescribed axis, a multi-turn motion or continuity across a sequence of keys, use an explicit axis and angle schedule or a rotation spline instead.",
+      "When integrating angular velocity, choose the step size deliberately and renormalise, and prefer a higher-order integrator where accuracy matters.",
+      "Keep orientation interpolation separate from position interpolation so the two can be timed independently.",
+      "For joint chains, interpolate each joint orientation rather than the end-effector pose, unless the task is defined at the end effector.",
+      "For shortest orientation interpolation, normalize valid endpoints and negate one endpoint when their dot product is negative. Clamp rounding excursions of the normalized dot product to the inverse-cosine domain. If the aligned endpoints coincide, retain that endpoint orientation; for nearly coincident endpoints use a stable interpolation such as normalized linear interpolation with its approximation stated. Never substitute the identity rotation or normalize the zero midpoint of unaligned antipodes. For a relative 180-degree turn, record the equal-length path choice; prescribed full or multiple revolutions use their explicit axis-angle schedule."
+    ],
+    "observable_checks": [
+      "Compare the interpolated matrices with the proper-rotation conditions under a numerical tolerance. Componentwise matrix blending can fail orthogonality; Euler interpolation under a fixed order remains a rotation, so assess its path and rate against the chosen objective rather than expecting shear.",
+      "Check the turn against the stated objective: the short arc where that was the goal, and the full prescribed path where a longer or multi-turn motion was intended. An unexpectedly long turn usually means an endpoint sign was not chosen.",
+      "Sample the intermediate orientations and confirm they remain valid rotations rather than drifting from unit length.",
+      "Play the interpolation at different durations and confirm the path is identical, only slower.",
+      "Use a fixed nonidentity endpoint twice and again with its quaternion sign reversed: shortest orientation interpolation must retain that orientation. Check the declared choice for a relative 180-degree turn and handle invalid zero/nonfinite quaternion input without normalization or a fabricated orientation."
+    ]
+  },
+  "related_ids": [
+    "recipe.robot-arm-forward-frames",
+    "knowledge.interruptible-focus",
+    "knowledge.three-scene-adapter"
+  ],
+  "creative_affordances": [
+    "Non-uniform timing, easing and staged turns remain free; the constraint is on the geometric path, not the pacing.",
+    "A deliberately wild tumble is fine when it is authored rather than an interpolation artefact."
+  ],
+  "known_limits": [
+    "Authored guidance citing one course treatment of quaternion interpolation; it does not compare higher-order orientation splines.",
+    "No runtime performance or numerical accuracy has been measured for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-slerp-shortest-path",
+      "statement": "Spherical linear interpolation between two distinct unit quaternions parametrises the shortest path connecting them on the unit quaternion sphere and performs the interpolation as a rotation about a fixed axis at constant angular velocity; integrating the quaternion differential equation with a first-order Euler step is inaccurate because of truncation error and requires renormalisation.",
+      "scope": "Interpolation and integration of rigid-body orientation for distinct, non-antipodal endpoints. It does not describe blending of full poses including position, and it does not claim that the shortest path is the right objective for every motion.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-jia-quaternion-notes",
+          "locator": "Appendix C Quaternion Interpolation; quaternion integration by Euler method"
+        }
+      ]
+    }
+  ]
+}

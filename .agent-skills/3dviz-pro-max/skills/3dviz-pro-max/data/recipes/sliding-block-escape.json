@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "id": "recipe.sliding-block-escape",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Sliding block escape board"
+  },
+  "aliases": {
+    "en": [
+      "3D sliding puzzle",
+      "block escape game"
+    ]
+  },
+  "direction_ids": [
+    "spatial-puzzles"
+  ],
+  "summary": "Slide authored rectangular blocks along constrained axes toward a visible exit.",
+  "objective": "Build an authored sliding-block escape puzzle with axis-constrained moves, undo and a visible goal exit.",
+  "tags": [
+    "sliding block",
+    "escape puzzle",
+    "grid board"
+  ],
+  "subject_terms": [
+    "sliding block",
+    "escape puzzle",
+    "grid board",
+    "legal move",
+    "exit"
+  ],
+  "intent_signals": [
+    "slide a block to an exit",
+    "show legal moves"
+  ],
+  "example_prompts": [
+    "Build an authored sliding-block escape puzzle with axis-constrained moves, undo and a visible goal exit.",
+    "Show all legal displacements for the selected block without moving other pieces."
+  ],
+  "entities": [
+    {
+      "name": "Board and exit",
+      "guidance": "Build shallow board walls with one explicit goal opening; align grid and block footprints."
+    },
+    {
+      "name": "Blocks",
+      "guidance": "Create rectangular prisms with stable IDs and direction engravings."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Board and exit",
+      "structure": "Build shallow board walls with one explicit goal opening; align grid and block footprints.",
+      "material": "Matte tray with contrasting exit trim."
+    },
+    {
+      "family": "Blocks",
+      "structure": "Create rectangular prisms with stable IDs and direction engravings.",
+      "material": "Smooth colored wood-looking finish; small visual gaps do not alter occupancy."
+    }
+  ],
+  "state_contract": {
+    "model": "Integer grid occupancy, immutable block dimensions, one allowed movement axis per block, goal block and exit rule; no rotations.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Select block and preview legal travel.",
+      "Commit a slide.",
+      "Undo or reset authored instance."
+    ]
+  },
+  "invariants": [
+    "Swept cells across the whole move are empty; empty destination alone is insufficient.",
+    "Only the goal block may leave through the designated opening.",
+    "Undo restores block poses and move count without rounding drift."
+  ],
+  "motion_guidance": [
+    "Tween accepted grid displacement with input locked or queued until commit completes.",
+    "Reject perpendicular dragging with axis feedback."
+  ],
+  "known_limits": [
+    "Puzzle rules and layout are authored, not a claim about a named commercial puzzle.",
+    "Do not advertise shortest solution without an actual exhaustive or appropriately proven search.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [],
+  "creative_affordances": [
+    "Shallow walls and engraved axes make legal movement visible even before interaction."
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Grid-constrained puzzle moves.",
+    "state": [
+      "block coordinates",
+      "occupancy",
+      "move stack"
+    ],
+    "colliders": [
+      "Swept grid occupancy and board bounds."
+    ],
+    "driving": [
+      "Axis-only accepted moves."
+    ],
+    "contact": [
+      "Discrete rule rejection, not friction or pushing dynamics."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Reject jump over occupied intermediate cells; undo restores move count."
+    ]
+  }
+}

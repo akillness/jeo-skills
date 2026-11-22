@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-glass-translucent",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Glass and translucent layering"
+  },
+  "aliases": {
+    "en": [
+      "glasslike objects",
+      "translucent sculpture",
+      "transparent material look"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "solid-geometry"
+  ],
+  "summary": "Use see-through appearance selectively to reveal depth, thickness or nested structure while keeping an opaque reference where needed.",
+  "objective": "The outer contour and intended interior remain distinguishable, and transparent parts do not disappear against the background.",
+  "tags": [
+    "style-profile",
+    "surface-aesthetic",
+    "glass-translucent"
+  ],
+  "subject_terms": [
+    "glasslike objects",
+    "translucent sculpture",
+    "transparent material look",
+    "surface aesthetic"
+  ],
+  "intent_signals": [
+    "Create a glass-like or translucent appearance",
+    "Reveal nested forms while preserving the outer contour"
+  ],
+  "example_prompts": [
+    "Create a translucent nested-solid sculpture with a readable outer contour and optional opaque comparison."
+  ],
+  "content": {
+    "principles": [
+      "Use see-through appearance selectively to reveal depth, thickness or nested structure while keeping an opaque reference where needed.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Model the boundaries and thickness that the chosen visual explanation needs; simplify overlapping layers that offer no useful information.",
+      "Try broad reflection shapes and contrasting backgrounds; treat colors and apparent transparency as authored presentation choices until independently specified.",
+      "Use an orbit that reveals both silhouette and interior; animate layer separation or a single object rather than all overlapping surfaces at once."
+    ],
+    "observable_checks": [
+      "The outer contour and intended interior remain distinguishable, and transparent parts do not disappear against the background.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with monochrome, technical illustration or miniature accents; appearance guidance does not specify optical constants or a renderer algorithm.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

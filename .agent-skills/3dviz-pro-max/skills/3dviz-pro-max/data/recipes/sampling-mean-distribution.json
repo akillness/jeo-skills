@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.sampling-mean-distribution",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Sampling means from a skewed population"
+  },
+  "aliases": {
+    "en": [
+      "sampling distribution of the mean",
+      "central limit theorem experiment",
+      "standard error visualization"
+    ]
+  },
+  "direction_ids": [
+    "probability-statistics"
+  ],
+  "summary": "Compare individual Bernoulli draws with the distribution of repeated sample means.",
+  "objective": "Show repeated sample means from a Bernoulli population and compare their spread with sqrt(p*(1-p)/n).",
+  "tags": [
+    "sample mean",
+    "central limit theorem",
+    "standard error"
+  ],
+  "subject_terms": [
+    "sample mean",
+    "central limit theorem",
+    "standard error",
+    "iid samples",
+    "skewed population",
+    "sampling distribution"
+  ],
+  "intent_signals": [
+    "Show repeated sample means from a Bernoulli population and compare their spread with sqrt(p*(1-p)/n).",
+    "Compare individual Bernoulli draws with the distribution of repeated sample means."
+  ],
+  "example_prompts": [
+    "Show repeated sample means from a Bernoulli population and compare their spread with sqrt(p*(1-p)/n).",
+    "Create an explorable 3D explanation of sampling distribution of the mean with mean histogram."
+  ],
+  "negative_signals": [
+    "Do not promise a universal n=30 threshold or normality for arbitrary dependent or infinite-variance data."
+  ],
+  "not_for": [
+    "Do not promise a universal n=30 threshold or normality for arbitrary dependent or infinite-variance data."
+  ],
+  "entities": [
+    {
+      "name": "Population tray",
+      "guidance": "Use labeled 0 and 1 outcome bins with declared probability p; separate population probabilities from the latest sample tokens."
+    },
+    {
+      "name": "Replicate lane",
+      "guidance": "Show n outcome tokens and a mean marker per selected replicate; depth stacks replicate identities without implying a third measured variable."
+    },
+    {
+      "name": "Mean histogram",
+      "guidance": "Use explicit bin edges on [0,1], normalized counts and a theoretical mean/standard-error ruler; label any density-normalized overlay separately."
+    }
+  ],
+  "state_contract": {
+    "model": "Use n>=1 independent Bernoulli(p) draws per replicate, 0<p<1. The mean is success count/n; exact mean p and standard error sqrt(p*(1-p)/n). Normal shape is an approximation whose quality depends on n and p.",
+    "authority": "A seeded array of completed replicate samples owns every mean and histogram count; the normal overlay is derived theory, not fitted evidence.",
+    "actions": [
+      "Generate a fixed number of replicates.",
+      "Increase sample size while restarting with a recorded seed.",
+      "Choose a strongly skewed p and compare approximation quality.",
+      "Inspect one replicate or reset all samples."
+    ]
+  },
+  "invariants": [
+    "Every sample mean is an integer multiple of 1/n.",
+    "Histogram counts equal the number of completed replicates.",
+    "Individual draw variability and standard error of the mean have separate labels."
+  ],
+  "motion_guidance": [
+    "Accumulate a mean only after its n draws complete; partial sample averages must be marked unfinished.",
+    "Replay does not resample; pause freezes the pending replicate index."
+  ],
+  "known_limits": [
+    "Do not promise a universal n=30 threshold or normality for arbitrary dependent or infinite-variance data.",
+    "At p=0 or 1 the distribution is degenerate; reject those inputs here or provide an explicit point-mass mode.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.sampling-mean-distribution",
+      "statement": "For independent identically distributed samples with finite variance, the sample mean has standard error sigma/sqrt(n); its standardized distribution approaches normal under the central limit theorem.",
+      "scope": "Asymptotic statement, not exact finite-sample normality; Bernoulli variance is p*(1-p).",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-sample-means",
+          "locator": "7.1, sampling distribution and standard error"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Population tray",
+      "structure": "Use labeled 0 and 1 outcome bins with declared probability p; separate population probabilities from the latest sample tokens.",
+      "material": "Discrete sample tokens and neutral histogram bins; retain numeric counts so perspective does not become the only comparison cue."
+    }
+  ]
+}

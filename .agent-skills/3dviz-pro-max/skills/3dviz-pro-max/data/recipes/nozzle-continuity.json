@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "id": "recipe.nozzle-continuity",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Flow rate through a narrowing conduit"
+  },
+  "aliases": {
+    "en": [
+      "equation of continuity",
+      "nozzle flow rate",
+      "incompressible pipe flow"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal"
+  ],
+  "summary": "Compare cross-sectional average speeds while a fixed volume flow passes through different pipe areas.",
+  "objective": "Build a cutaway nozzle with adjustable radii and linked cross-section disks showing A*v=Q.",
+  "tags": [
+    "continuity equation",
+    "volume flow rate",
+    "cross sectional area"
+  ],
+  "subject_terms": [
+    "continuity equation",
+    "volume flow rate",
+    "cross sectional area",
+    "average velocity",
+    "incompressible flow",
+    "nozzle"
+  ],
+  "intent_signals": [
+    "Build a cutaway nozzle with adjustable radii and linked cross-section disks showing A*v=Q.",
+    "Compare cross-sectional average speeds while a fixed volume flow passes through different pipe areas."
+  ],
+  "example_prompts": [
+    "Build a cutaway nozzle with adjustable radii and linked cross-section disks showing A*v=Q.",
+    "Create an explorable 3D explanation of equation of continuity with equal-volume packets."
+  ],
+  "negative_signals": [
+    "No pressure-drop, viscosity, pump, compressibility or free-jet model."
+  ],
+  "not_for": [
+    "No pressure-drop, viscosity, pump, compressibility or free-jet model."
+  ],
+  "entities": [
+    {
+      "name": "Conduit shell",
+      "guidance": "Create a smooth axisymmetric wall with two straight measurement sections and a short taper; a cutaway exposes the bore, not a second tube."
+    },
+    {
+      "name": "Section disks",
+      "guidance": "Place translucent disks normal to the axis at two locations, labeling radius, area and mean speed in SI units."
+    },
+    {
+      "name": "Equal-volume packets",
+      "guidance": "Compare equal-volume packets wholly inside the two straight constant-area measurement sections, with length V/A and V small enough to fit. In a taper, a finite packet would require integrating A(x) over its length; do not extend the local shortcut there."
+    }
+  ],
+  "state_contract": {
+    "model": "Steady incompressible flow with fixed Q>=0 and positive radius r(x); cross-sectional mean speed vbar(x)=Q/(pi*r(x)^2). This is a one-dimensional continuity model, not a solved velocity profile.",
+    "authority": "Conduit area and declared Q own average-speed values; tracer motion is a schematic encoding and does not establish local Navier-Stokes dynamics.",
+    "actions": [
+      "Change inlet or outlet radius above a declared positive minimum.",
+      "Change Q including zero.",
+      "Pause packets and inspect both cross-sections.",
+      "Reset geometry and flow rate."
+    ]
+  },
+  "invariants": [
+    "A1*vbar1=A2*vbar2=Q within tolerance.",
+    "Halving radius at fixed Q multiplies mean speed by four.",
+    "Zero flow gives zero mean speed and stationary packet indicators."
+  ],
+  "motion_guidance": [
+    "Keep the finite packet comparison at the straight stations. Optional point tracers on the axis may advance using vbar(x) with bounded steps, explicitly labeled schematic rather than finite material packets.",
+    "Do not show turbulence, vortices or a viscous velocity profile unless a separate model supplies them."
+  ],
+  "known_limits": [
+    "No pressure-drop, viscosity, pump, compressibility or free-jet model.",
+    "A single mean speed does not describe local velocity across the bore or wall boundary layers.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.nozzle-continuity",
+      "statement": "For steady incompressible flow without sources or sinks, cross-sectional area times average speed is the same volume flow rate at each section.",
+      "scope": "Cross-sectional average values in the declared steady conduit, not arbitrary unsteady flow.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-continuity",
+          "locator": "14.5, Flow Rate and its Relation to Velocity, equation 14.14"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Conduit shell",
+      "structure": "Create a smooth axisymmetric wall with two straight measurement sections and a short taper; a cutaway exposes the bore, not a second tube.",
+      "material": "Opaque outer shell with removable quadrant, pale fluid interior and thin high-contrast section rings; optical liquid appearance is illustrative."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Prescribed cross-sectional mean flow from continuity, not a fluid solver.",
+    "state": [
+      "Q",
+      "section radii",
+      "mean speeds",
+      "optional tracer parameter"
+    ],
+    "colliders": [
+      "No rigid-body colliders; any boundary is part of the declared mathematical model."
+    ],
+    "driving": [
+      "Q and area determine mean speed."
+    ],
+    "contact": [
+      "No collision or impact response is supplied by this field model."
+    ],
+    "timestep": "Evaluate the declared analytic state at paused or running model time; rendering never advances a second model.",
+    "checks": [
+      "Compare products A*v at both stations.",
+      "Reject zero or negative radius."
+    ]
+  }
+}

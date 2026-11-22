@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "id": "recipe.agv-zone-reservation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Guided vehicle traffic with zone reservation"
+  },
+  "aliases": {
+    "en": [
+      "AGV traffic",
+      "zone reservation",
+      "deadlock avoidance"
+    ]
+  },
+  "direction_ids": [
+    "operations-logistics"
+  ],
+  "summary": "Give vehicles a reservation rule that they must obtain before entering shared space, so traffic behaviour has an inspectable cause.",
+  "objective": "Build an invented guided-vehicle floor where vehicles reserve zones before entering them and I can watch a conflict being resolved.",
+  "tags": [
+    "agv",
+    "traffic",
+    "reservation"
+  ],
+  "subject_terms": [
+    "guided vehicle",
+    "zone reservation",
+    "intersection",
+    "right of way",
+    "deadlock",
+    "route",
+    "queue",
+    "floor layout"
+  ],
+  "intent_signals": [
+    "Show how automated vehicles avoid colliding at an intersection.",
+    "Build a warehouse floor with vehicles that reserve space before entering it."
+  ],
+  "example_prompts": [
+    "Build a guided vehicle floor with zone reservations, visible conflicts and a deadlock warning.",
+    "Show two vehicles arriving at the same intersection and one waiting for the reservation."
+  ],
+  "negative_signals": [
+    "Not a validated traffic control system and not a safety case for any real installation.",
+    "Not a physics vehicle model: no tyre forces, load shift or braking dynamics."
+  ],
+  "not_for": [
+    "Not a validated traffic control system and not a safety case for any real installation.",
+    "Not a physics vehicle model: no tyre forces, load shift or braking dynamics."
+  ],
+  "entities": [
+    {
+      "name": "Floor zones",
+      "guidance": "Partition the drivable floor into named zones with entry and exit points, since reservations are held on zones and not on positions."
+    },
+    {
+      "name": "Vehicles",
+      "guidance": "Model vehicles with a footprint, a route and a current reservation set, so waiting behaviour is explained by held or refused reservations."
+    },
+    {
+      "name": "Reservation board",
+      "guidance": "Show which vehicle holds which zone and which vehicles are waiting, so the traffic state is readable without guessing."
+    }
+  ],
+  "state_contract": {
+    "model": "A zone graph of single-capacity, non-preemptible zones with entry and exit points, vehicle routes as zone sequences, and a reservation table mapping zones to holders. A vehicle reserves every zone its full footprint will occupy, including turning clearance, before entering, and holds trailing zones until its tail clears them. Requests are made far enough ahead for bounded deceleration, and a declared first-come tie-break with a queue per zone resolves competing requests. A cycle of waiting holders is reported as a potential deadlock under this hold-and-wait model.",
+    "authority": "The reservation table is authoritative: a vehicle may not enter a zone it does not hold, regardless of the clearance the animation appears to show.",
+    "actions": [
+      "Dispatch a vehicle along a route.",
+      "Force a conflict at an intersection and watch reservations resolve it.",
+      "Inspect the reservation board and the waiting list.",
+      "Reset vehicles, routes and reservations."
+    ]
+  },
+  "invariants": [
+    "A vehicle enters only zones it currently holds, reserving every zone its swept footprint will occupy rather than only the zone under its centre, and releases a zone only once its tail has left it.",
+    "Two vehicles never hold the same single-capacity zone at the same time.",
+    "A cycle of waiting vehicles is reported as a potential deadlock, which is a genuine deadlock under the declared single-capacity non-preemptible hold-and-wait model; with multi-capacity zones or releasable holders a cycle alone would not establish it.",
+    "A request refused at the boundary itself is too late: requests are issued at the declared stopping distance so a refused vehicle halts before the zone."
+  ],
+  "motion_guidance": [
+    "Decelerate before a zone boundary when the reservation is not yet granted, so waiting looks like a decision rather than a freeze.",
+    "Show the reservation being granted at the moment motion resumes, linking cause and effect."
+  ],
+  "known_limits": [
+    "Invented facility and rules: no claim about any commercial fleet controller.",
+    "Deadlock detection here reports waiting cycles; it does not prove the policy is deadlock free.",
+    "The reservation policy is declared, not proved: reporting a waiting cycle is a detection, and no claim is made that the policy is deadlock free.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "object_craft": [
+    {
+      "family": "Vehicles",
+      "structure": "Low chassis with visible drive wheels, load deck, sensors and status lamps, sized against the zone geometry.",
+      "material": "Industrial finish with a distinct status lamp material; lamp state must be legible from the overview camera.",
+      "articulation": "Vehicles steer along route curves with bounded acceleration and turn rate; the load deck stays level."
+    },
+    {
+      "family": "Floor zones",
+      "structure": "Painted zone boundaries with entry markers and a raised curb at the layout perimeter.",
+      "material": "Floor markings as geometry decals with strong value contrast so zone edges survive shallow camera angles.",
+      "articulation": "Zone highlight material changes with reservation state."
+    }
+  ],
+  "physical_contract": {
+    "model": "controlled-locomotion",
+    "scope": "Authored steering along routes with reservation-gated entry; no tyre friction, load dynamics or contact resolution.",
+    "state": [
+      "vehicle poses",
+      "velocities",
+      "reservation table",
+      "waiting list"
+    ],
+    "colliders": [
+      "Vehicle footprints against zone boundaries and static obstacles."
+    ],
+    "driving": [
+      "Bounded acceleration and deceleration toward the next zone boundary; stop if the reservation is refused."
+    ],
+    "contact": [
+      "Vehicles stop at boundaries rather than overlapping; footprints never intersect."
+    ],
+    "timestep": "Fixed step with interpolated rendering.",
+    "checks": [
+      "No two vehicle footprints overlap at any step.",
+      "Every zone entry coincides with a granted reservation."
+    ]
+  },
+  "creative_affordances": [
+    "The facility can be a warehouse, a port or an invented workshop; the reservation logic is what carries the scene.",
+    "Vehicle character is a free design lever, from utilitarian pallet movers to expressive service robots."
+  ],
+  "related_ids": [
+    "recipe.warehouse-pick-tour",
+    "recipe.differential-drive-odometry",
+    "knowledge.authored-locomotion"
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.lighting-mood-dusk-golden-hour",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Golden hour dusk with a low warm key"
+  },
+  "aliases": {
+    "en": [
+      "golden hour lighting",
+      "dusk rig",
+      "late afternoon sun rig",
+      "long shadow sunset light"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors",
+    "earth-environment"
+  ],
+  "summary": "Set a low warm sun against a cool sky fill so long shadows describe the ground and every vertical picks up a rim.",
+  "objective": "Shadows are several times longer than their casters and run parallel, and the shaded side of each object is cool rather than black.",
+  "tags": [
+    "lighting-profile",
+    "dusk",
+    "golden-hour",
+    "sunset",
+    "warm-cool",
+    "long-shadows"
+  ],
+  "subject_terms": [
+    "sun elevation",
+    "long shadows",
+    "rim light",
+    "sky fill",
+    "warm key",
+    "colour temperature",
+    "atmospheric perspective",
+    "horizon band",
+    "shadow bias"
+  ],
+  "intent_signals": [
+    "make it golden hour",
+    "the scene looks like flat noon",
+    "add a sunset mood",
+    "give the buildings long shadows",
+    "warm up this exterior"
+  ],
+  "example_prompts": [
+    "Light a village exterior twenty minutes before sunset.",
+    "Give a terrain model long raking shadows that describe its relief.",
+    "Warm a street scene without losing detail on the shaded side."
+  ],
+  "negative_signals": [
+    "indoor studio product shot",
+    "quantitative solar position for a date and latitude"
+  ],
+  "not_for": [
+    "Interiors lit by controlled fixtures rather than by the sky.",
+    "Scenes that must state a real solar elevation for a date and latitude, which needs a sourced solar model."
+  ],
+  "content": {
+    "principles": [
+      "A low sun is a shape tool. At 6 deg elevation shadows run several times the height of their casters, and those shadows describe the ground plane better than any texture.",
+      "The warmth must be paid for with a cool counterpart. A warm key alone reads as an orange filter; a warm key against a blue sky fill reads as time of day.",
+      "The sun disc is the brightest thing in frame and everything else is graded relative to it, which is why exposure sits below 1 rather than the key being lowered.",
+      "Fog colour belongs to the horizon band, not to the zenith. Matching it makes distance dissolve into the sunset instead of into haze."
+    ],
+    "implementation": [
+      "Declare the sun direction once (elevation 6 deg, azimuth 250 deg) and drive the key, the rim and any painted-in shading from that single value.",
+      "Set the fill as a HemisphereLight with a cool sky and a warm-dark ground so undersides pick up bounce colour instead of going neutral.",
+      "Add the rim as a second weak DirectionalLight roughly opposite the key with castShadow false; it separates silhouettes from the sky without creating a competing shadow set.",
+      "Fit the shadow camera to the visible scene extent (20 m here); an oversized extent wastes the 2048 map and produces the stair-stepping usually blamed on bias.",
+      "Use normalBias 0.03 to remove shadow acne on curved surfaces before reaching for a larger negative bias, which detaches contact shadows.",
+      "Keep exposure at 0.9 and tune the key intensity against it; raising exposure to brighten the shade will clip the sky."
+    ],
+    "observable_checks": [
+      "Shadows on a common flat receiver run parallel and are at least three times the caster height, confirming the stated elevation.",
+      "A grayscale screenshot still separates lit from shaded planes, confirming the read does not depend on colour alone.",
+      "The shaded side of a neutral object samples as cool and non-zero, confirming the sky fill is present.",
+      "Turning fog off changes distance separation but leaves foreground exposure unchanged."
+    ]
+  },
+  "creative_affordances": [
+    "Sky and sun colours can be pushed well past anything a real sunset produces; the requirement is that all shadows still agree with the one declared direction.",
+    "The rim can be recoloured to an invented source, a second sun or a city glow, as long as it stays below the key."
+  ],
+  "known_limits": [
+    "Every number in this profile was tuned for ACESFilmic tone mapping at exposure 0.9; under a different tone-mapping curve or exposure the intensities and fog density must be re-derived, not copied.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "related_ids": [
+    "knowledge.three-light-units-and-exposure",
+    "knowledge.shared-stylized-outdoor-daylight",
+    "knowledge.shared-shadow-volume-fit"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Low warm key with a cool sky fill gives the long-shadow, rim-lit read of golden hour; fog matches the horizon band; exposure below 1 keeps the sun disc from clipping while the key at 3.2 still lifts the lit planes well clear of the fill. Kelvin-to-hex conversions here are authored approximations, not colorimetric transforms (2700K~#ffb46b, 3200K~#ffc58f, 4500K~#ffe4c4, 5600K~#fff4e5, 6500K~#ffffff, open shade 8000K~#cfe0ff).",
+    "values": {
+      "feeling": [
+        "nostalgic",
+        "warm",
+        "unhurried"
+      ],
+      "time_of_day": "20 min before sunset, sun elevation 6 deg",
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#ffb46b",
+          "intensity": 3.2,
+          "elevation_deg": 6,
+          "azimuth_deg": 250,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#6f8fc9",
+          "ground": "#4a3a2a",
+          "intensity": 0.5
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#ffd9a8",
+          "intensity": 0.8,
+          "elevation_deg": 12,
+          "azimuth_deg": 70,
+          "castShadow": false
+        },
+        "ratio": "key:fill ~ 6:1"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#3a4a7a",
+        "horizon": "#f2a55c"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#e8b07a",
+        "density": 0.02
+      },
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 0.9
+      },
+      "shadow": {
+        "mapSize": 2048,
+        "bias": -0.0002,
+        "normalBias": 0.03,
+        "camera_extent_m": 20
+      },
+      "environment": {
+        "type": "RoomEnvironment",
+        "intensity": 0.25
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.0,
+          "strength": 0.3,
+          "radius": 0.7
+        },
+        "vignette": 0.25,
+        "grain": 0.03,
+        "dof": "off"
+      },
+      "never": [
+        "white ambient",
+        "sun above 20 deg elevation",
+        "cyan sky at the horizon",
+        "shadows that disagree with the declared azimuth"
+      ],
+      "snippet": "const key=new THREE.DirectionalLight(0xffb46b,3.2);\nkey.position.setFromSphericalCoords(30,THREE.MathUtils.degToRad(90-6),THREE.MathUtils.degToRad(250));\nkey.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.normalBias=0.03;key.shadow.bias=-0.0002;\nconst c=key.shadow.camera;c.left=c.bottom=-20;c.right=c.top=20;c.updateProjectionMatrix();scene.add(key);\nscene.add(new THREE.HemisphereLight(0x6f8fc9,0x4a3a2a,0.5));\nconst rim=new THREE.DirectionalLight(0xffd9a8,0.8);\nrim.position.setFromSphericalCoords(30,THREE.MathUtils.degToRad(90-12),THREE.MathUtils.degToRad(70));scene.add(rim);\nscene.fog=new THREE.FogExp2(0xe8b07a,0.02);\nrenderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=0.9;"
+    }
+  }
+}

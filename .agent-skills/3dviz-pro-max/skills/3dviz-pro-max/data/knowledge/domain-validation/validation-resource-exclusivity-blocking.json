@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-resource-exclusivity-blocking",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Resource exclusivity, reservation order and blocked states"
+  },
+  "aliases": {
+    "en": [
+      "dock exclusivity check",
+      "reservation before movement"
+    ]
+  },
+  "direction_ids": [
+    "operations-logistics"
+  ],
+  "summary": "Check that a capacity-one resource has at most one owner, that movement follows reservation, and that blocked entities are named.",
+  "objective": "Ownership never exceeds capacity, movement happens only while the reservation is held, and unresolvable waits are reported as blocked.",
+  "applies_when": [
+    "Entities compete for docks, machines, bays or other limited resources.",
+    "A resource can be closed, disabled or taken out of service while busy.",
+    "Approach or travel animation is tied to gaining access."
+  ],
+  "check_method": "state",
+  "tags": [
+    "domain-validation",
+    "resource",
+    "mutual-exclusion",
+    "blocking"
+  ],
+  "subject_terms": [
+    "capacity",
+    "reservation",
+    "mutual exclusion",
+    "waiting queue",
+    "service time",
+    "blocked state"
+  ],
+  "intent_signals": [
+    "two trucks drove into the same dock",
+    "closing a dock while it was in use"
+  ],
+  "example_prompts": [
+    "Check the dock reservation rules when every dock is closed."
+  ],
+  "negative_signals": [
+    "scheduling optimisation",
+    "safety certification of real yard operations"
+  ],
+  "content": {
+    "principles": [
+      "A capacity-one resource is a mutual-exclusion invariant: at most one owner at any model time, and ownership is acquired before the entity commits to moving.",
+      "Waiting must be observable; an entity that can never proceed under the current policy is blocked, and blocked should be a state the model can name.",
+      "Closing a busy resource needs a declared rule — rejected, deferred until release, or preempted — because all three are defensible and only one is implemented."
+    ],
+    "implementation": [
+      "Record for every resource its current owner, its waiting queue and the acquisition timestamp, and evaluate ownership at each event boundary.",
+      "Run a contention fixture: more arrivals than resources, an arrival exactly at a service completion, a close request while busy, and a close of all resources while entities wait.",
+      "Compare acquisition against movement start using model time first and the queue sequence key when the two times are equal, since a reservation and the movement it authorises can legitimately commit at the same model time.",
+      "Measure waiting and service durations from model timestamps rather than animation completion callbacks, and report them with their model-time units."
+    ],
+    "observable_checks": [
+      "No resource has two owners at any event boundary, and entities in service never exceed total capacity.",
+      "Every entity that starts moving toward a resource already holds the reservation at that instant: acquisition time is less than or equal to movement time, the acquisition precedes it in event-sequence order when the times are equal, and ownership is held throughout the movement. Movement without a held reservation is the failure signal.",
+      "Closing a busy resource follows exactly the declared rule with a visible outcome, and with all resources closed the waiting entities are reported as blocked rather than waiting silently forever."
+    ]
+  },
+  "known_limits": [
+    "Checks the resource contract of an authored policy; it is not a scheduling optimality or utilisation study.",
+    "Authored verification guidance; no simulation was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.loading-dock-resource-board",
+    "recipe.parcel-sorter-events",
+    "recipe.warehouse-pick-tour"
+  ],
+  "claims": []
+}

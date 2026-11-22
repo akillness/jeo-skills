@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-parametric-construction-authority",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Keep the construction parameters, not the mesh"
+  },
+  "aliases": {
+    "en": [
+      "parametric geometry",
+      "regenerate not edit",
+      "construction state"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry",
+    "molecules-materials"
+  ],
+  "summary": "Hold the defining parameters of a geometric construction as state and rebuild the mesh from them on every change.",
+  "objective": "Make a geometry scene answer questions about its construction rather than only display a shape.",
+  "applies_when": [
+    "A shape is defined by a construction, such as a cutting plane, a profile, a radius or a set of points.",
+    "The viewer can change a parameter and expects the shape and the derived values to follow.",
+    "Measurements, intersections or classifications are displayed with the shape."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "parametric",
+    "construction",
+    "regeneration",
+    "cutting plane",
+    "profile",
+    "derived geometry"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "geometry",
+    "state"
+  ],
+  "intent_signals": [
+    "let me move the cutting plane",
+    "change the radius and see",
+    "explore the construction"
+  ],
+  "example_prompts": [
+    "Let me tilt the plane through the cone and see the section change.",
+    "Change the profile and rebuild the solid of revolution."
+  ],
+  "negative_signals": [
+    "Imported or sculpted meshes with no generating construction.",
+    "Static illustrations where no parameter is exposed."
+  ],
+  "not_for": [
+    "Imported or sculpted meshes with no generating construction.",
+    "Static illustrations where no parameter is exposed."
+  ],
+  "content": {
+    "principles": [
+      "In a construction scene the parameters are the subject and the mesh is a rendering of them. Editing vertices detaches the picture from the mathematics that is supposed to explain it.",
+      "Derived values must come from the parameters through the same path as the geometry, otherwise a label can report a number that the shape no longer has.",
+      "Regeneration makes boundary and degenerate cases reachable, which is where the mathematics is most instructive and where an edited mesh silently fails.",
+      "Tessellation quality is a display parameter and should be separable from the construction, so refining the mesh does not change the model."
+    ],
+    "implementation": [
+      "Store the construction inputs, such as plane normal and offset, radii, control points or an interval, as the authoritative state.",
+      "Rebuild geometry and every derived quantity from those inputs, and keep the rebuild cheap enough to run on each change.",
+      "Expose tessellation density as its own control and state, for each displayed quantity, whether it is analytic from the parameters or sampled from the mesh; analytic values should not move under refinement and sampled ones should be shown converging.",
+      "Handle the degenerate parameter values explicitly in the rebuild instead of allowing the mesh builder to produce a broken shape.",
+      "Persist the parameters, not the vertices, when the scene is saved or shared."
+    ],
+    "observable_checks": [
+      "Change one parameter and confirm the shape, the labels and the derived numbers all update together.",
+      "Refine the tessellation and confirm quantities computed from the mesh converge, while quantities computed analytically from the parameters stay unchanged. A readout that moves when only the display resolution changes is either a sampled quantity, which should say so, or an analytic quantity wrongly derived from the mesh.",
+      "Reload from the stored state and confirm an identical construction.",
+      "Drive a parameter to a boundary value and confirm the rebuild handles it deliberately."
+    ]
+  },
+  "related_ids": [
+    "recipe.conic-slicing",
+    "recipe.solid-of-revolution",
+    "recipe.polyhedron-net"
+  ],
+  "creative_affordances": [
+    "The visual treatment of a construction, including ghosted history and animated regeneration, is entirely free.",
+    "Sculpted decoration can be layered over a parametric core when the two are separated."
+  ],
+  "known_limits": [
+    "Authored state-model guidance; no runtime scene has been rebuilt or measured for this record.",
+    "It does not prescribe a modelling kernel or a tessellation algorithm."
+  ],
+  "claims": []
+}

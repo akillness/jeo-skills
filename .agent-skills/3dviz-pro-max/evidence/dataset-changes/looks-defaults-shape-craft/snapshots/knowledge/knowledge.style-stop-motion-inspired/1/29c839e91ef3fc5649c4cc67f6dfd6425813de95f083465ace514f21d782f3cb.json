@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-stop-motion-inspired",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Stop-motion-inspired timing"
+  },
+  "aliases": {
+    "en": [
+      "stop motion look",
+      "stepped puppet animation",
+      "handmade animation feel"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "Design visible held poses and deliberate handmade staging without presenting the result as photographed physical animation.",
+  "objective": "Held poses communicate the action and pause/reset return to the correct state; timing choices do not skip required puzzle moves or model events.",
+  "tags": [
+    "style-profile",
+    "motion-aesthetic",
+    "stop-motion-inspired"
+  ],
+  "subject_terms": [
+    "stop motion look",
+    "stepped puppet animation",
+    "handmade animation feel",
+    "motion aesthetic"
+  ],
+  "intent_signals": [
+    "Use stop-motion-inspired timing",
+    "Give a handmade figure deliberate held poses"
+  ],
+  "example_prompts": [
+    "Animate a handmade clay courier with clear held poses and a stable miniature set."
+  ],
+  "content": {
+    "principles": [
+      "Design visible held poses and deliberate handmade staging without presenting the result as photographed physical animation.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Build separate poseable pieces with readable joint placement; add sparse crafted imperfections that remain stable between poses.",
+      "Use a consistent studio-like light setup and selected surface texture so lighting does not obscure pose changes.",
+      "Choose an explicit pose cadence for decorative performance while preserving the authoritative timing and state of factual actions; keep camera motion calm."
+    ],
+    "observable_checks": [
+      "Held poses communicate the action and pause/reset return to the correct state; timing choices do not skip required puzzle moves or model events.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with clay, felt or papercraft; pose cadence is an art choice and must remain optional for user-controlled actions.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

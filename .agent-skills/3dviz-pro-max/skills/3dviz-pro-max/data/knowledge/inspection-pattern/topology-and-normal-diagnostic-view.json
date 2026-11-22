@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.topology-and-normal-diagnostic-view",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "inspection-pattern",
+  "title": {
+    "en": "Topology and normal diagnostic view"
+  },
+  "aliases": {
+    "en": [
+      "flipped-face inspection",
+      "exported triangle topology view",
+      "normal diagnostic overlay"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "Locate winding, normal, intersection and triangulation problems in both Blender source geometry and the delivered runtime primitive without treating wireframe as proof of validity.",
+  "objective": "A reported defect names the asset revision, source object or glTF node and primitive, diagnostic mode, affected element and whether it exists before or after evaluation/export.",
+  "applies_when": [
+    "A mesh shows holes, black faces, lighting seams, unstable n-gons or unexpected post-export triangles."
+  ],
+  "tags": [
+    "inspection-pattern",
+    "topology",
+    "normals",
+    "wireframe",
+    "export-parity"
+  ],
+  "subject_terms": [
+    "face orientation",
+    "vertex normal",
+    "triangle winding",
+    "edge incidence",
+    "non-manifold edge",
+    "self-intersection",
+    "evaluated mesh",
+    "glTF primitive index"
+  ],
+  "intent_signals": [
+    "find flipped normals after glTF export",
+    "wireframe looks fine but mesh has a hole",
+    "locate intersecting triangles by source object",
+    "n-gon triangulates differently at runtime"
+  ],
+  "example_prompts": [
+    "Add a temporary inspection mode for flipped faces and exported triangle boundaries.",
+    "Trace a shading crack from a runtime primitive back to the Blender source object."
+  ],
+  "negative_signals": [
+    "wireframe proves manifold",
+    "double-sided material fixes topology",
+    "recalculate normals without locating cause"
+  ],
+  "not_for": [
+    "Certified printability or structural analysis.",
+    "A permanent wireframe visual style with no diagnostic question."
+  ],
+  "content": {
+    "principles": [
+      "Inspect the representation that can fail: editable Blender mesh, evaluated export mesh and loaded runtime primitive are related but not identical.",
+      "Separate topology from shading. Triangle boundaries and edge incidence expose connectivity; face orientation and vertex-normal views expose direction and smoothing; neither substitutes for the other.",
+      "Wireframe can reveal tessellation but cannot alone prove closedness, manifoldness, winding consistency or absence of coincident and intersecting faces.",
+      "Diagnostics are reversible views. They identify elements and provenance without changing authoritative geometry, normals or material state."
+    ],
+    "implementation": [
+      "In Blender, inspect Face Orientation, seam/sharp markers, vertex or face indices and selected normals on the relevant source and evaluated state. Use Mesh Analysis only for the specific modes and limits it documents.",
+      "Export a frozen diagnostic revision with stable object keys. Record modifier state and triangulation ownership so a runtime triangle can be traced to the evaluated object even when edit-mode n-gons are gone.",
+      "At runtime, isolate one glTF node and primitive; draw a disposable edge or normal overlay from its actual position/index/normal buffers and label node, primitive and triangle or vertex index.",
+      "Compute explicit checks only when needed: boundary and non-manifold edge incidence, duplicate positions under a declared tolerance, degenerate triangle area, finite unit normals and winding-versus-normal disagreement. Keep open sheets and deliberate hard seams as stated exceptions.",
+      "Reset removes helpers and restores original material visibility without recomputing or replacing production attributes."
+    ],
+    "observable_checks": [
+      "Use fixtures with one reversed triangle, one boundary, one three-face edge, one degenerate triangle and one deliberate open sheet; each is classified by the declared check rather than one generic red state.",
+      "Compare Blender source, evaluated mesh and loaded primitive counts and identifiers; a difference is attributed to a named modifier/export step or left unresolved.",
+      "Toggle normal and topology overlays independently; changing the diagnostic view does not change the production mesh, material, bounding data or selection identity.",
+      "Select a reported runtime triangle and resolve its node/primitive and best available source object; missing element-level correspondence is disclosed."
+    ]
+  },
+  "related_ids": [
+    "knowledge.blender-evaluated-mesh-handoff",
+    "knowledge.hard-surface-bevel-normal-contract",
+    "knowledge.blender-three-tangent-normal-handoff",
+    "knowledge.inspectable-selection"
+  ],
+  "creative_affordances": [
+    "Use sparse arrows, edge classes, exploded problem islands or a synchronized source/runtime inset.",
+    "Keep deliberate open surfaces and hard edges visually distinct from failures."
+  ],
+  "known_limits": [
+    "Face Orientation is camera-relative visualization and typical outside-facing guidance, not proof that every surface should be closed or outward-facing.",
+    "Element-level source correspondence may be lost through modifiers, triangulation, merging or compression.",
+    "Authored source-checked diagnostic guidance; no mesh, export or renderer was inspected."
+  ],
+  "claims": [
+    {
+      "id": "claim.delivery-blender-face-orientation-analysis",
+      "statement": "Blender 4.5 Face Orientation displays faces whose normal points toward the camera in blue and away from it in red as a quick orientation check; Blender Mesh Analysis separately offers intersection and distortion displays with documented limitations.",
+      "scope": "Blender viewport diagnostics only; typical outside-blue guidance is not a manifoldness, printability or export guarantee.",
+      "source_refs": [
+        {
+          "source_id": "source.delivery-blender-mesh-overlays",
+          "locator": "Geometry: Face Orientation"
+        },
+        {
+          "source_id": "source.delivery-blender-mesh-analysis",
+          "locator": "Intersections; Distortion; Known Limitations"
+        }
+      ]
+    },
+    {
+      "id": "claim.delivery-gltf-normal-index-semantics",
+      "statement": "glTF 2.0 defines NORMAL as normalized XYZ vertex normals, optional indices as the accessor that selects vertices for a primitive, and topology modes whose index-count constraints differ for points, lines and triangle forms.",
+      "scope": "Delivered glTF primitive attributes and topology; no edit-mode face, seam, modifier or manifold metadata is implied.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Geometry > Meshes: primitive attributes, indices and topology types"
+        }
+      ]
+    }
+  ]
+}

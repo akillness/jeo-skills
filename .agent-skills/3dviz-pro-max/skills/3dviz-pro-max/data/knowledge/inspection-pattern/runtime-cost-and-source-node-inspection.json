@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.runtime-cost-and-source-node-inspection",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "inspection-pattern",
+  "title": {
+    "en": "Runtime cost and source-node inspection"
+  },
+  "aliases": {
+    "en": [
+      "renderer info provenance panel",
+      "draw call source node diagnostic",
+      "runtime resource inventory"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "abstract-systems-data"
+  ],
+  "summary": "Pair backend-scoped aggregate renderer counters with stable asset, node, primitive and resource identities without misreporting counters as GPU memory bytes, time or exact per-object cost.",
+  "objective": "A runtime inventory states what the renderer counted, over which frame/pass scope, and which source nodes and shared resources were present, while attribution uncertainty remains visible.",
+  "applies_when": [
+    "A loaded scene needs inspectable draw/resource provenance before a separately authorized performance investigation or cleanup check."
+  ],
+  "tags": [
+    "inspection-pattern",
+    "runtime-cost",
+    "renderer-info",
+    "draw-calls",
+    "provenance"
+  ],
+  "subject_terms": [
+    "renderer.info",
+    "draw calls",
+    "rendered triangles",
+    "active geometries",
+    "active textures",
+    "source node ID",
+    "primitive index",
+    "shared resource",
+    "pass scope"
+  ],
+  "intent_signals": [
+    "which glTF node contributes draw calls",
+    "renderer info is not GPU bytes",
+    "trace active texture to source asset",
+    "multi-pass counts reset at wrong time"
+  ],
+  "example_prompts": [
+    "Build a diagnostic inventory that relates WebGLRenderer.info totals to loaded glTF node and resource IDs.",
+    "Explain why hiding one object does not prove its exact GPU time or memory cost."
+  ],
+  "negative_signals": [
+    "calls equals milliseconds",
+    "texture count equals GPU bytes",
+    "subtract totals to assign exact object cost"
+  ],
+  "not_for": [
+    "Running a benchmark or setting a universal performance budget.",
+    "Claiming WebGLRenderer counters describe WebGPU or every renderer backend."
+  ],
+  "content": {
+    "principles": [
+      "Name the backend, renderer revision, frame and pass/reset scope before interpreting counters. A number without its counting window is not comparable.",
+      "WebGLRenderer.info exposes aggregate render counters and active resource-object counts. They are not GPU byte allocation, GPU duration, CPU frame time or automatic per-object attribution.",
+      "Source provenance is a separate inventory: asset revision, stable exported node key, loaded Object3D, glTF mesh/primitive and referenced geometry, material and textures. Shared resources remain shared rather than charged repeatedly.",
+      "Visibility toggles or isolated passes can provide controlled deltas, but caching, culling, instancing, batching, shadows, postprocessing and shared resources limit causal attribution."
+    ],
+    "implementation": [
+      "At load, build an application-side map from asset revision and exported stable keys to loaded nodes, primitives, geometries, materials and textures. Preserve source names only as readable labels, not unique identity.",
+      "For WebGLRenderer, capture renderer.info render calls, triangles, lines and points plus active geometry, texture and program inventory under a declared autoReset/reset policy. Record whether shadows, depth prepasses, postprocessing or multiple render calls are included.",
+      "Show selected node facts from geometry attributes/index, material slots, visibility, layers, instancing and shared-resource reference counts. Label theoretical primitive counts separately from renderer-observed frame totals.",
+      "If later diagnosis is authorized, compare controlled variants one at a time and report aggregate deltas as observations under that setup, not intrinsic per-object cost. Use timing or GPU-memory tools only through their separately documented interfaces.",
+      "On unload, release application-owned resources according to the disposal contract and observe inventory stabilization only as supporting evidence; counter changes alone do not prove absence of leaks."
+    ],
+    "observable_checks": [
+      "Render one declared WebGL frame/pass configuration and record the reset boundary; totals from an added shadow or postprocess pass are not mislabeled as one beauty pass.",
+      "Select two nodes sharing one geometry or texture; the provenance panel shows both references while the shared resource appears once in the unique-resource inventory.",
+      "Hide or isolate one node and explain any aggregate delta with culling, instancing, batching and extra passes considered; no exact GPU-time or byte claim is derived from renderer.info.",
+      "Unload and reload the asset under the same setup; stable node keys resolve consistently and unresolved or duplicated keys are reported before interpreting resource counts."
+    ]
+  },
+  "related_ids": [
+    "knowledge.gltf-compression-decoder-lifecycle",
+    "knowledge.shared-gltf-asset-bridge",
+    "knowledge.shared-interactive-web-scene",
+    "knowledge.inspectable-selection",
+    "knowledge.hard-surface-functional-assembly"
+  ],
+  "creative_affordances": [
+    "Use a source tree, resource-reference graph or selected-node delta panel according to the debugging question.",
+    "Highlight shared resources and extra passes visually without turning them into mandatory optimization targets."
+  ],
+  "known_limits": [
+    "No performance, memory-pressure, GPU timing or benchmark check was run or authorized.",
+    "The cited renderer.info contract is WebGLRenderer-specific at the pinned Three.js revision; other backends require separate verified instrumentation.",
+    "Aggregate deltas do not establish exact per-object cost or causality."
+  ],
+  "claims": [
+    {
+      "id": "claim.delivery-three-webglrenderer-info-counters",
+      "statement": "At Three.js commit 4457aa3c5de4a05bbae4e0bee2d99d994c38a2bb, WebGLRenderer.info documents per-frame render counts for calls, triangles, points and lines, counts of active geometries and textures, a programs array, and configurable autoReset/reset handling for multiple render passes.",
+      "scope": "Pinned WebGLRenderer aggregate statistics; the fields do not document GPU bytes, GPU or CPU time, or exact per-object attribution.",
+      "source_refs": [
+        {
+          "source_id": "source.delivery-three-webglrenderer-info",
+          "locator": "info; Info; InfoMemory; InfoRender; autoReset; reset"
+        }
+      ]
+    }
+  ]
+}

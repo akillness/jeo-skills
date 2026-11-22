@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "id": "recipe.newton-cubic-root-basin-inspector",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Newton basins for z cubed minus one"
+  },
+  "aliases": {
+    "en": [
+      "complex Newton fractal z3-1",
+      "cubic root basin inspector"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields",
+    "topology-symmetry"
+  ],
+  "summary": "Iterate Newton’s rule for f(z)=z^3-1 on a finite complex grid, classify only tolerance-confirmed roots, and lift one selected orbit without mistaking iteration count for time.",
+  "objective": "Link three analytic roots, a finite basin raster and one exact recurrence while exposing derivative singularity, divergence and unresolved samples.",
+  "tags": [
+    "Newton method",
+    "complex roots",
+    "basin of attraction",
+    "z cubed minus one"
+  ],
+  "subject_terms": [
+    "Newton method",
+    "complex roots",
+    "basin of attraction",
+    "z cubed minus one",
+    "iteration tolerance"
+  ],
+  "intent_signals": [
+    "Build Newton basins for z^3-1 with a selected complex orbit and unresolved pixels."
+  ],
+  "example_prompts": [
+    "Build Newton basins for z^3-1 with a selected complex orbit and unresolved pixels."
+  ],
+  "negative_signals": [
+    "Not the quadratic Julia recurrence z^2+c.",
+    "Not proof that finite pixel boundaries equal an exact fractal boundary."
+  ],
+  "not_for": [
+    "Arbitrary polynomials or certified root isolation.",
+    "Treating convergence speed as physical time."
+  ],
+  "entities": [
+    {
+      "name": "Finite basin floor",
+      "guidance": "Sample z0 at declared pixel centers; encode converged-to-root 0/1/2, singular, out-of-domain and unresolved with non-color cues."
+    },
+    {
+      "name": "Three analytic root beacons",
+      "guidance": "Place roots 1, exp(2pi i/3), exp(4pi i/3) exactly on the complex plane."
+    },
+    {
+      "name": "Selected orbit ladder",
+      "guidance": "Plot (Re z_n,Im z_n,n) with table, residual |z_n^3-1| and stop reason."
+    }
+  ],
+  "state_contract": {
+    "model": "For finite complex z0 in a bounded viewport, iterate z_(n+1)=z_n-(z_n^3-1)/(3z_n^2)=(2z_n^3+1)/(3z_n^2). Require 1<=N<=1000, finite tolerances 0<epsRoot<=0.1 and epsDeriv>0, and display bound R>1. At each stored z_n, first reject nonfinite arithmetic, then test each analytic root using both |z_n-rho_j|<=epsRoot and finite |z_n^3-1|<=epsRoot; only if none passes, test |3z_n^2|<=epsDeriv before division. Reject any nonfinite quotient or successor. Mark out-of-domain if |z_n|>R, without claiming divergence; otherwise continue or mark unresolved at N.",
+    "authority": "Complex recurrence and stop order own classification. Palette and extrusion cannot change it.",
+    "actions": [
+      "Select z0 and step/play/scrub its stored orbit.",
+      "Adjust N,tolerances or viewport and recompute all samples.",
+      "Toggle roots, singular mask, residual table and boundary uncertainty.",
+      "Reset all numeric and view state."
+    ]
+  },
+  "invariants": [
+    "Each classified root is one of the three analytic cube roots and passes the residual/tolerance check.",
+    "z0=1 remains at root 1.",
+    "z0=0 triggers the derivative guard before division.",
+    "A sample that already passes a root and residual check is classified converged before the derivative threshold is consulted; epsDeriv cannot override a valid root classification.",
+    "Any nonfinite input, residual, quotient or successor terminates with an explicit numeric-error status and is never colored as a root basin.",
+    "Increasing N at identical arithmetic preserves earlier first-convergence indices; unresolved may resolve.",
+    "Finite unresolved status is not nonconvergence proof, an out-of-domain stop is not divergence proof, and sampled color boundaries are not exact basin boundaries."
+  ],
+  "motion_guidance": [
+    "Orbit advances at integer iterations; connecting segments are explanatory.",
+    "Reverse scrub reads stored iterates and is not an inverse Newton map."
+  ],
+  "creative_affordances": [
+    "Use a tri-lobed ceramic floor or technical grid; selected orbit height encodes iteration index with an explicit label."
+  ],
+  "known_limits": [
+    "Newton convergence is local near simple roots; finite raster classifications depend on tolerance, bounds, arithmetic and resolution.",
+    "No numerical iteration or render was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.math-dlmf-newton-rule",
+      "statement": "NIST DLMF gives Newton’s iteration z_(n+1)=z_n-f(z_n)/f'(z_n) for real twice-continuously differentiable or complex analytic functions and states local quadratic convergence at a simple zero.",
+      "scope": "Local convergence statement under the cited smoothness/simple-zero conditions; it does not guarantee every initial point or finite raster classification.",
+      "source_refs": [
+        {
+          "source_id": "source.math-nist-dlmf-newton",
+          "locator": "Section 3.8(ii), equations 3.8.4 and local convergence statement"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Cubic Newton basin instrument",
+      "structure": "Use a shallow complex-plane floor, three root beacons and separate orbit ladder; avoid terrain height for every pixel.",
+      "material": "Three root classes use hue plus distinct hatch orientation; singular/out-of-domain/unresolved have separate textures.",
+      "articulation": "Selection pin moves on z0 floor and orbit marker steps among stored nodes."
+    },
+    {
+      "family": "Blender-to-Three.js mathematical handoff",
+      "structure": "In Blender, author only static axes, labeled frames, selection glyphs and low-detail instrument housings at declared units; keep numeric curves, rasters, samples and component lattices out of baked mesh state.",
+      "material": "Use simple glTF-safe material slots and optional baked label atlases with explicit UVs. Export named anchors and static teaching geometry; unsupported procedural nodes, text and compositor marks require baked or runtime replacements.",
+      "articulation": "In Three.js, allocate numeric arrays from the validated input contract, generate dynamic lines/points/instances, bind selections by stable index, and rebuild all linked views atomically on parameter revision or reset."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Finite Newton iteration in the complex plane; no continuous or physical dynamics.",
+    "timestep": "One recurrence per integer iteration.",
+    "state": [
+      "initial z0 and three exact roots",
+      "stored complex iterates and residuals",
+      "classification and stop reason"
+    ],
+    "checks": [
+      "Verify z0=1 fixed point.",
+      "Verify z0=0 guard.",
+      "Recompute after tolerance change."
+    ]
+  },
+  "related_ids": [
+    "recipe.quadratic-julia-escape-inspector"
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-label-implies-relation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "A label commits the geometry to a relation"
+  },
+  "aliases": {
+    "en": [
+      "named structure fidelity",
+      "anatomical relations",
+      "label accuracy"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures",
+    "molecules-materials"
+  ],
+  "summary": "When a structure is named, the model must preserve the relations that name carries, even if the shape is stylised.",
+  "objective": "Separate legitimate stylisation from changes that break what the label asserts.",
+  "applies_when": [
+    "Parts of a model carry anatomical, chemical or engineering names.",
+    "A simplified or stylised model is used for teaching.",
+    "Labels, callouts or a legend accompany the geometry."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "labels",
+    "topological relation",
+    "valve",
+    "connectivity",
+    "stylisation",
+    "teaching model"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "anatomy",
+    "claims"
+  ],
+  "intent_signals": [
+    "label the chambers and valves",
+    "simplified heart model",
+    "name the parts"
+  ],
+  "example_prompts": [
+    "Build a simplified heart that still shows which valve is between which chambers.",
+    "Label the parts without pretending the shape is exact."
+  ],
+  "negative_signals": [
+    "Unlabelled decorative anatomy or organic sculpture.",
+    "Diagrams that explicitly present themselves as metaphors rather than as the structure."
+  ],
+  "not_for": [
+    "Unlabelled decorative anatomy or organic sculpture.",
+    "Diagrams that explicitly present themselves as metaphors rather than as the structure."
+  ],
+  "content": {
+    "principles": [
+      "Naming is a claim. A shape called the tricuspid valve asserts a position in a specific flow path, and that assertion survives any amount of simplification of the shape itself.",
+      "Relations are what teaching models must preserve: what connects to what, what separates what, what lies inside what, and in which order flow passes through them.",
+      "Proportion, curvature and surface detail can be stylised heavily without breaking a relation; connectivity cannot.",
+      "A mislabelled relation is worse than an unlabelled model, because it is memorable and confidently wrong."
+    ],
+    "implementation": [
+      "List the relations each label commits to before modelling: this valve lies between these two chambers, this vessel leaves this chamber, this layer lies deep to that one.",
+      "Model the connectivity as explicit topology or as a graph beside the mesh, so the relation can be checked without inspecting geometry.",
+      "Choose a representation that makes the relation visible, such as a cutaway along the flow path rather than an exterior view with floating labels.",
+      "Where the shape is stylised, say so next to the labels rather than implying anatomical fidelity.",
+      "Cite the source for each named relation and keep the citation with the artifact so a later edit can be re-checked."
+    ],
+    "observable_checks": [
+      "Trace the modelled path in order and compare it with the sourced sequence; a swapped pair of valves shows immediately in the trace.",
+      "Hide the labels and ask whether the geometry still expresses the relation; if not, the labels are carrying the entire claim.",
+      "Check that a stylised simplification did not merge two structures that the labels treat as separate.",
+      "Confirm the model states its own level of fidelity where a viewer might read it as clinical."
+    ]
+  },
+  "related_ids": [
+    "recipe.heart-cutaway",
+    "recipe.water-hydrogen-bond-network"
+  ],
+  "creative_affordances": [
+    "Strong stylisation, colour coding and exploded spacing all remain available for teaching clarity.",
+    "A deliberately schematic model, such as a flow diagram of the same chambers, is often the more honest choice."
+  ],
+  "known_limits": [
+    "Authored guidance with one cited example of named cardiac relations; it does not verify any specific mesh.",
+    "No claim is made about clinical accuracy, pathology or individual variation."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-cardiac-valve-relations",
+      "statement": "The tricuspid valve lies between the right atrium and the right ventricle, the mitral or bicuspid valve lies between the left atrium and the left ventricle, and the pulmonary and aortic valves sit at the bases of the pulmonary trunk and the aorta respectively.",
+      "scope": "Normal human cardiac anatomy at the level of chamber and valve relations; it does not describe valve geometry, leaflet detail or pathology.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-heart",
+          "locator": "19.1, Chambers and Circulation through the Heart"
+        }
+      ]
+    }
+  ]
+}

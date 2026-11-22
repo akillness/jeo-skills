@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-long-hall",
+  "record_revision": 3,
+  "asset": "templates/kits/buildings/long-hall.js",
+  "asset_sha256": "02d426b90618d359c2164bff8ebf2600d96866898e55ae1093921991d5a52df1",
+  "params": {
+    "width": 12,
+    "depth": 5.5,
+    "wallHeight": 3,
+    "bayCount": 5,
+    "roofPitchDeg": 38,
+    "seed": 1
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-long-hall",
+    "module": "../buildings/long-hall.js",
+    "params": {
+      "width": 12,
+      "depth": 5.5,
+      "wallHeight": 3,
+      "bayCount": 5,
+      "roofPitchDeg": 38,
+      "seed": 1
+    },
+    "triangles": 11344,
+    "bounds_m": {
+      "min": [
+        -6.1874999998509885,
+        -3.4015061212144815e-08,
+        -3.1311419871508113
+      ],
+      "max": [
+        6.1874999998509885,
+        6.557556603991743,
+        4.179999986886979
+      ],
+      "size": [
+        12.374999999701977,
+        6.557556638006804,
+        7.31114197403779
+      ]
+    },
+    "fit_distance_m": 23.096,
+    "view_distances_m": {
+      "far": 55.4303,
+      "mid": 27.7152,
+      "close": 15,
+      "detail": 2.9371
+    },
+    "sockets": [
+      "door",
+      "porch-door",
+      "chimney-west",
+      "chimney-east",
+      "sign",
+      "lean-to"
+    ],
+    "detail_socket": "door",
+    "animated": false,
+    "colliders": [
+      "walls",
+      "roof",
+      "porch"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "3a5d5c1cc60a05582d10be9a19527878b547b0776d136ae1c41e7985b0330d68",
+    "mid.png": "e990f2519cd95040483d4c23f207b5df743fd57c2f3e006703281881fda63efa",
+    "close.png": "0fa8a6397a7a676d5cbedbb9e7a469a9075c45b2eb0ecefaf3b67763918eb166",
+    "detail.png": "07afaf27f6ef8292636569ad63c6fd6ad07a091935a932c84b78eefdad0dc77f"
+  },
+  "motion": null,
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:50:18+00:00",
+  "finished": "2026-09-08T13:50:22+00:00"
+}

@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.motion-style-with-state-legibility",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Motion style with state legibility"
+  },
+  "aliases": {
+    "en": [
+      "state-readable motion grammar",
+      "motion language for interaction states",
+      "reduced-motion state style"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "products-assemblies",
+    "operations-logistics"
+  ],
+  "summary": "Define a reusable timing and pose grammar whose selected, active, waiting, complete and error states remain distinguishable at hold frames, interruption points and reduced motion.",
+  "objective": "Motion gives unlike objects a shared character without making state depend on continuous movement or one transition finishing.",
+  "applies_when": [
+    "Animation communicates application or simulation state as well as atmosphere.",
+    "Characters, mechanisms and interface-linked objects need a shared motion character."
+  ],
+  "subject_terms": [
+    "motion style",
+    "state legibility",
+    "hold pose",
+    "reduced motion",
+    "interruption state",
+    "transition grammar"
+  ],
+  "tags": [
+    "style-profile",
+    "motion",
+    "state",
+    "accessibility"
+  ],
+  "intent_signals": [
+    "motion style that keeps state readable",
+    "shared timing language across character and machine",
+    "reduced-motion state cues"
+  ],
+  "example_prompts": [
+    "Give a courier and a parcel sorter the same quick-anticipate, firm-settle motion language while selected, jammed and complete states remain readable when paused."
+  ],
+  "negative_signals": [
+    "Encoding loading or error only through looping motion.",
+    "Assuming every transition reaches its authored end pose."
+  ],
+  "not_for": [
+    "A clip-authoring tutorial or animation retargeting contract.",
+    "A claim that one easing curve is universally legible."
+  ],
+  "content": {
+    "principles": [
+      "Separate state pose from transition flavor. Every meaningful state gets a stable geometry, material, label or pattern cue; anticipation, overshoot and cadence decorate the route between states.",
+      "Define entry, hold, exit and interruption behavior for each motion family. Preserve continuity from the sampled current pose and make priorities explicit when state changes overlap.",
+      "Provide a reduced-motion interpretation that preserves state and task completion while shortening, replacing or removing non-essential travel."
+    ],
+    "implementation": [
+      "In Blender, author representative holds and transitions for two unlike objects, such as a character and sorting gate. Keep named state holds distinct from decorative loops and retain source curves for revision.",
+      "Export supported transform, skeletal or morph tracks as glTF animation. List unsupported constraints, drivers and procedural timing as baked animation or runtime-owned logic; transport does not define application state priority.",
+      "In Three.js, map application state to stable visual cues, choose clips or procedural transitions, and sample the current result before interruption. Query the user motion preference and select a bounded reduced-motion variant without removing status or control feedback."
+    ],
+    "observable_checks": [
+      "Pause at each hold and at a mid-transition sample: selected, waiting, complete and error remain distinguishable through a non-motion cue.",
+      "Interrupt entry with exit and a decorative loop with an error state: no snap to an unrelated authored start and the higher-priority state wins.",
+      "Exercise the reduced-motion path: non-essential travel is minimized while state change, action completion and focus/selection feedback remain perceivable."
+    ]
+  },
+  "related_ids": [
+    "knowledge.interruptible-animation-transition",
+    "knowledge.loop-seam-continuity",
+    "knowledge.style-stop-motion-inspired",
+    "knowledge.accessible-spatial-controls"
+  ],
+  "creative_affordances": [
+    "Choose elastic, stepped, mechanical, weighty or restrained transitions per brief while keeping the same state/transition separation.",
+    "Allow distinct subjects to express the grammar through different joints, deformations or material pulses."
+  ],
+  "known_limits": [
+    "A detected preference is an input to the authored runtime policy; it does not prescribe one universal replacement animation.",
+    "No motion preference, clip interruption or state legibility test was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.style-prefers-reduced-motion-feature",
+      "statement": "Media Queries Level 5 defines prefers-reduced-motion as a discrete media feature with no-preference and reduce values for detecting a user request that the system minimize non-essential motion.",
+      "scope": "CSSWG Editor’s Draft read 2026-09-08; the application still owns which motion is essential and how state information is preserved.",
+      "source_refs": [
+        {
+          "source_id": "source.style-css-media-queries-5",
+          "locator": "Section 12.1 prefers-reduced-motion"
+        }
+      ]
+    }
+  ]
+}

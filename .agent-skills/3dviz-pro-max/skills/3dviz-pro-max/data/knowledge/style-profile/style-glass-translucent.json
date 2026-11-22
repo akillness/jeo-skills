@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-glass-translucent",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Glass and translucent layering"
+  },
+  "aliases": {
+    "en": [
+      "glasslike objects",
+      "translucent sculpture",
+      "transparent material look",
+      "frosted glass",
+      "refraction look"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "solid-geometry"
+  ],
+  "summary": "Use see-through appearance selectively to reveal depth, thickness or nested structure while keeping an opaque reference where needed.",
+  "objective": "The outer contour and intended interior remain distinguishable, and transparent parts do not disappear against the background.",
+  "tags": [
+    "style-profile",
+    "surface-aesthetic",
+    "glass-translucent"
+  ],
+  "subject_terms": [
+    "glasslike objects",
+    "translucent sculpture",
+    "transparent material look",
+    "surface aesthetic",
+    "frosted glass",
+    "refraction look"
+  ],
+  "intent_signals": [
+    "Create a glass-like or translucent appearance",
+    "Reveal nested forms while preserving the outer contour"
+  ],
+  "example_prompts": [
+    "Create a translucent nested-solid sculpture with a readable outer contour and optional opaque comparison."
+  ],
+  "content": {
+    "principles": [
+      "Use see-through appearance selectively to reveal depth, thickness or nested structure while keeping an opaque reference where needed."
+    ],
+    "implementation": [
+      "Model the boundaries and thickness that the chosen visual explanation needs; simplify overlapping layers that offer no useful information.",
+      "Try broad reflection shapes and contrasting backgrounds; treat colors and apparent transparency as authored presentation choices until independently specified.",
+      "Use an orbit that reveals both silhouette and interior; animate layer separation or a single object rather than all overlapping surfaces at once.",
+      "Set scene.environment from PMREMGenerator.fromScene(new RoomEnvironment()) or an HDRI before enabling transmission; MeshPhysicalMaterial with transmission 0.95, thickness 0.6-2.5, ior 1.5 and roughness 0.05 renders as an opaque dark shape without an environment.",
+      "Place a two-value backdrop (#16202b against #dfe7ef) behind the subject and keep one opaque interior part at or below 0.35 roughness, then confirm by screenshot that the outer contour survives against both halves."
+    ],
+    "observable_checks": [
+      "The outer contour and intended interior remain distinguishable, and transparent parts do not disappear against the background."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Glass has no colour of its own on screen - it borrows the environment - so the numbers require an environment map, keep the tint below 25% saturation and let thickness and attenuation distance rather than albedo carry the hue. Broad RectAreaLight sources at a 3:1 ratio are specified because a transparent object is read through the shape of the source reflected in it, and the split light/dark backdrop guarantees every silhouette edge crosses a value change instead of vanishing.",
+    "values": {
+      "feeling": [
+        "cool",
+        "fragile",
+        "layered"
+      ],
+      "palette": [
+        {
+          "hex": "#16202b",
+          "role": "backdrop dark half"
+        },
+        {
+          "hex": "#dfe7ef",
+          "role": "backdrop light half"
+        },
+        {
+          "hex": "#7fb6c9",
+          "role": "glass body tint / attenuation colour"
+        },
+        {
+          "hex": "#ffd9a0",
+          "role": "warm transmitted highlight and caustic"
+        },
+        {
+          "hex": "#223a4a",
+          "role": "opaque interior reference part"
+        }
+      ],
+      "value_structure": "30/40/30 dark/mid/light with a deliberate light-to-dark backdrop split, so every glass edge crosses a value boundary and cannot disappear",
+      "saturation_rule": "glass tint <= 25% HSL because colour should come from thickness rather than albedo; the opaque interior reference may reach 55%",
+      "sky": {
+        "model": "hdri",
+        "zenith": "#dfe7ef",
+        "horizon": "#b9c8d6"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#cfd9e2",
+        "density": 0.006
+      },
+      "lights": {
+        "key": {
+          "type": "RectAreaLight",
+          "color": "#fff6e8",
+          "intensity": 5.0,
+          "size_m": [
+            1.6,
+            0.9
+          ],
+          "elevation_deg": 40,
+          "azimuth_deg": 210,
+          "castShadow": false
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#cfe0f0",
+          "ground": "#2a3340",
+          "intensity": 0.4
+        },
+        "rim": {
+          "type": "RectAreaLight",
+          "color": "#cfe8ff",
+          "intensity": 3.0,
+          "size_m": [
+            1.2,
+            0.4
+          ],
+          "elevation_deg": 10,
+          "azimuth_deg": 30,
+          "castShadow": false
+        },
+        "ratio": "key:fill ~ 3:1; glass is read through the shape of the reflected source, so the source proportions matter more than its intensity"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.0
+      },
+      "camera": {
+        "fov_deg": 35,
+        "height_m": 1.1,
+        "pitch_deg": -3,
+        "orbit": {
+          "minPolar_deg": 60,
+          "maxPolar_deg": 88,
+          "minDist_m": 0.4,
+          "maxDist_m": 5
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.02,
+          0.35
+        ],
+        "metalness": [
+          0,
+          0
+        ],
+        "notes": "MeshPhysicalMaterial with transmission 0.95, thickness 0.6-2.5 (metres of glass path), ior 1.45-1.52, roughness 0.02-0.1 polished or 0.25-0.35 frosted, attenuationColor #7fb6c9 at attenuationDistance 0.8; scene.environment via PMREM is mandatory or transmission renders black"
+      },
+      "motion": {
+        "sway_period_s": [
+          5.0,
+          8.0
+        ],
+        "ease": "sine in-out",
+        "hold_ms": 600
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.05,
+          "strength": 0.25,
+          "radius": 0.6
+        },
+        "vignette": 0.2,
+        "grain": 0.02,
+        "dof": "front glass surface in focus at f/5.6 for stills; off during orbit"
+      },
+      "signature_technique": "a split backdrop, dark on one side and light on the other, so each glass edge crosses a value boundary and the silhouette is defined by refraction contrast rather than by an outline",
+      "never": [
+        "transmission without an environment map",
+        "every layer transparent at once with no opaque interior reference",
+        "glass on a flat black background",
+        "thickness left at 0, which renders a coloured film rather than a solid"
+      ]
+    }
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at exposure 1.0; re-tune every intensity, fog density and bloom threshold if you change the tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with monochrome, technical illustration or miniature accents; appearance guidance does not specify optical constants or a renderer algorithm."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

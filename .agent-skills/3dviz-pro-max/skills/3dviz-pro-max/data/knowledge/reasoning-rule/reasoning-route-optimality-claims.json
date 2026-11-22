@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-route-optimality-claims",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Do not call a heuristic route optimal"
+  },
+  "aliases": {
+    "en": [
+      "tour quality",
+      "route heuristic",
+      "optimality honesty"
+    ]
+  },
+  "direction_ids": [
+    "operations-logistics",
+    "algorithms-data-structures"
+  ],
+  "summary": "Say which method produced a route and what that method guarantees, especially when the scene shows a best path.",
+  "objective": "Keep routing scenes honest about the difference between a computed optimum, a bounded heuristic and a hand-authored path.",
+  "applies_when": [
+    "A pick tour, delivery route, patrol path or cable run is presented as good or best.",
+    "A route is recomputed when the user changes the targets.",
+    "A comparison between two routes is displayed."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "routing",
+    "tour",
+    "heuristic",
+    "optimality",
+    "nearest neighbour",
+    "path length"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "operations",
+    "claims"
+  ],
+  "intent_signals": [
+    "find the shortest picking route",
+    "optimise the tour",
+    "is this the best path"
+  ],
+  "example_prompts": [
+    "Show an efficient pick tour and say how it was computed.",
+    "Compare my route against a better one."
+  ],
+  "negative_signals": [
+    "Scenes where the path is decorative and no efficiency claim is made.",
+    "Shortest-path problems on a graph with a stated exact algorithm, where the guarantee is real."
+  ],
+  "not_for": [
+    "Scenes where the path is decorative and no efficiency claim is made.",
+    "Shortest-path problems on a graph with a stated exact algorithm, where the guarantee is real."
+  ],
+  "content": {
+    "principles": [
+      "Optimal is a mathematical claim about a stated objective under stated constraints. Without both, the word means nothing a viewer can check.",
+      "Three very different things look identical on screen: an exact solution for a small instance, a heuristic tour, and a path someone drew. The scene should distinguish them.",
+      "A route is optimal only with respect to its own cost function. A shortest-distance tour may be a poor route once aisle direction, congestion or handling time are included.",
+      "Comparison is more useful than a label: showing the improvement over a baseline tells the viewer more than an unverifiable claim of optimality."
+    ],
+    "implementation": [
+      "Name the method and the objective on the artifact: exact search on this many stops, nearest neighbour with two-opt improvement, or an authored demonstration path.",
+      "Display the cost in its units and, where a baseline exists, the improvement against it.",
+      "For small instances where exhaustive search is cheap, offer it explicitly so the viewer can see the gap between the heuristic and the true optimum.",
+      "State the constraints actually modelled, such as one-way aisles, capacity or time windows, and mark any that are ignored.",
+      "Recompute the route when the inputs change instead of leaving a stale path with a stale label."
+    ],
+    "observable_checks": [
+      "Ask the scene for its objective function; a route that cannot state what it minimises is not making a checkable claim.",
+      "On a small instance, compare the shown route with an exhaustive search result; a heuristic labelled optimal will eventually differ.",
+      "Add one stop and confirm the route and the reported cost both update.",
+      "Change a constraint that is supposedly modelled, such as blocking an aisle, and confirm the route responds."
+    ]
+  },
+  "related_ids": [
+    "recipe.warehouse-pick-tour",
+    "recipe.dijkstra-relaxation"
+  ],
+  "creative_affordances": [
+    "Heuristics are the right engineering answer at realistic sizes; the rule only asks that the label match the method.",
+    "Showing the search process itself, including rejected candidates, is often more instructive than the final route."
+  ],
+  "known_limits": [
+    "Authored honesty guidance about claims; it asserts no complexity result and provides no algorithm.",
+    "It does not evaluate whether a particular heuristic is appropriate for a given instance size."
+  ],
+  "claims": []
+}

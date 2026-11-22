@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-clothesline",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: pegged clothesline"
+  },
+  "aliases": {
+    "en": [
+      "clothesline kit",
+      "washing line blueprint",
+      "laundry prop module"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "Two braced poles carrying a sagging line of pegged washing, each sheet at its own width, drop, yaw and lean, parameterised by span, height, sheet count, sag and seed.",
+  "objective": "At three metres the line reads as two poles and a dipping rope with sheets breaking the gap, then braces and sheet angles, then pegs, hems and hue jitter.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "prop",
+    "village",
+    "clothesline",
+    "laundry"
+  ],
+  "subject_terms": [
+    "catenary sag",
+    "cloth panel",
+    "peg",
+    "hem",
+    "cross arm",
+    "brace"
+  ],
+  "intent_signals": [
+    "hang washing between the cottages",
+    "laundry line prop",
+    "lived-in village detail"
+  ],
+  "example_prompts": [
+    "String a washing line between the two cottages.",
+    "I need laundry that does not look like five identical rectangles."
+  ],
+  "not_for": [
+    "Any claim about textile behaviour, drape or cloth simulation.",
+    "Simulated cloth: the sheets are rigid panels hung at authored angles."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/props/clothesline.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "span",
+      "type": "number",
+      "range": [
+        2.0,
+        8.0
+      ],
+      "default": 4.2,
+      "unit": "m"
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "range": [
+        1.4,
+        2.6
+      ],
+      "default": 1.98,
+      "unit": "m"
+    },
+    {
+      "name": "sheets",
+      "type": "integer",
+      "range": [
+        1,
+        10
+      ],
+      "default": 5
+    },
+    {
+      "name": "seed",
+      "type": "integer",
+      "range": [
+        0,
+        65535
+      ],
+      "default": 1
+    },
+    {
+      "name": "sag",
+      "type": "number",
+      "range": [
+        0.05,
+        0.5
+      ],
+      "default": 0.22,
+      "unit": "m"
+    }
+  ],
+  "sockets": [
+    {
+      "name": "left",
+      "position_m": [
+        -2.1,
+        0,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "right",
+      "position_m": [
+        2.1,
+        0,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "line",
+      "position_m": [
+        0,
+        1.74,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "two 1.98 m poles carrying a rope that dips 22 cm at the middle of the span",
+      "five sheets of different widths and drops breaking the gap between the poles",
+      "a splayed foot block at the base of each pole"
+    ],
+    "medium": [
+      "a cross arm and two diagonal braces at the head of each pole",
+      "the rope built from fourteen chords of the sag curve, not one straight bar",
+      "each sheet yawed up to 14 degrees in plan and leaning up to 9 degrees"
+    ],
+    "fine": [
+      "two pegs on every sheet, 7.5 cm tall, gripping the line at the sheet corners",
+      "a darker hem strip 5 cm deep along the bottom edge of every sheet",
+      "per-sheet hue jitter of 28 percent of the hue wheel, so one panel is plainly a different colour of cloth from its neighbour"
+    ]
+  },
+  "footprint_m": [
+    4.62,
+    0.7
+  ],
+  "poly_budget": 1232,
+  "fits_looks": [
+    "knowledge.style-ghibli-painterly-pastoral",
+    "knowledge.style-tilt-shift-diorama",
+    "knowledge.lighting-mood-dusk-golden-hour",
+    "knowledge.theme-heritage-fiction"
+  ],
+  "content": {
+    "principles": [
+      "Washing sells a village as inhabited faster than any building detail, and it costs three instanced fields.",
+      "Sheets have to differ in width, drop and angle. Five identical panels read as a fence, not as laundry.",
+      "The hem is the fine-band feature that survives: it is a value change along an edge, so it holds at distances where a peg is already sub-pixel."
+    ],
+    "implementation": [
+      "Call create({ span, height, sheets, seed, sag }); the run is centred on the origin along X with y = 0 at the ground.",
+      "Anchor the poles at the left and right sockets, or attach a further run at either of them.",
+      "Sheets, hems and pegs are three instanced fields sharing one placement list, so a peg can never drift off its sheet."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible.",
+      "The line socket sits at the lowest point of the rope: its y equals height minus sag.",
+      "Two seeds produce visibly different sheet widths, drops and angles."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here simulates cloth or measures a real textile.",
+    "The poly budget is the triangle count observed at default parameters; ten sheets costs about 1900 triangles.",
+    "The sheets are rigid boxes: they do not respond to wind, and at very close range the flat bottom edge betrays that there is no drape."
+  ],
+  "creative_affordances": [
+    "Any parameter may be pushed outside its stated range; the range is the band that was proved, not a limit.",
+    "Re-colour the sheets to a dyed palette for a market pennant line, or drop the sheet count to one for a single blanket airing."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "span": 4.2,
+      "height": 1.98,
+      "sheets": 5,
+      "sag": 0.22,
+      "segments": 14,
+      "feeling": "lived-in village yard"
+    },
+    "rationale": "A 4.2 m span between cottages with 22 cm of sag puts the lowest sheet clear of a 1.7 m figure walking under it, which is the only proportion a viewer checks."
+  },
+  "related_ids": [
+    "knowledge.layered-garment-support",
+    "knowledge.three-instanced-scenery-adapter",
+    "knowledge.theme-functional-prop-grammar",
+    "recipe.fantasy-village-diorama"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-clothesline/far.png",
+      "evidence/kits/knowledge.blueprint-clothesline/mid.png",
+      "evidence/kits/knowledge.blueprint-clothesline/close.png",
+      "evidence/kits/knowledge.blueprint-clothesline/detail.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-clothesline/proof-log.json"
+  }
+}

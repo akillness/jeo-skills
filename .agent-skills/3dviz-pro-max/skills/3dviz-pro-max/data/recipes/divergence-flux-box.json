@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.divergence-flux-box",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Divergence and outward flux through a box"
+  },
+  "aliases": {
+    "en": [
+      "divergence theorem box",
+      "vector field flux",
+      "closed surface outward normals"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields"
+  ],
+  "summary": "Compare face-by-face flux with the volume integral of divergence for a linear field.",
+  "objective": "Make a transparent box in F=(a*x,b*y,c*z) with selectable faces, outward normals and a flux balance.",
+  "tags": [
+    "divergence",
+    "flux integral",
+    "outward normal"
+  ],
+  "subject_terms": [
+    "divergence",
+    "flux integral",
+    "outward normal",
+    "closed surface",
+    "vector field",
+    "Gauss divergence theorem"
+  ],
+  "intent_signals": [
+    "Make a transparent box in F=(a*x,b*y,c*z) with selectable faces, outward normals and a flux balance.",
+    "Compare face-by-face flux with the volume integral of divergence for a linear field."
+  ],
+  "example_prompts": [
+    "Make a transparent box in F=(a*x,b*y,c*z) with selectable faces, outward normals and a flux balance.",
+    "Create an explorable 3D explanation of divergence theorem box with face ledger."
+  ],
+  "negative_signals": [
+    "No singular sources or discontinuous fields; the demonstration is not a proof for arbitrary surfaces."
+  ],
+  "not_for": [
+    "No singular sources or discontinuous fields; the demonstration is not a proof for arbitrary surfaces."
+  ],
+  "entities": [
+    {
+      "name": "Flux box",
+      "guidance": "Construct six separately selectable oriented faces with a removable front face for inspection; opening a face visually does not remove it from the closed-surface calculation."
+    },
+    {
+      "name": "Field glyphs",
+      "guidance": "Place arrows on a regular grid with one documented magnitude scale; distinguish field arrows from unit outward normals."
+    },
+    {
+      "name": "Face ledger",
+      "guidance": "List signed flux through each face and their sum beside divergence times volume; highlight inward flux without flipping the outward normal."
+    }
+  ],
+  "state_contract": {
+    "model": "Axis-aligned box with positive side lengths; linear field F=(a*x,b*y,c*z), divergence a+b+c. Exact total outward flux=(a+b+c)*volume for any box translation.",
+    "authority": "Box bounds and field coefficients determine normal vectors, exact face integrals and volume total; arrow density is a view setting.",
+    "actions": [
+      "Change one coefficient through positive, zero and negative values.",
+      "Resize or translate the box with positive dimensions.",
+      "Inspect one face contribution.",
+      "Reset coefficients and bounds."
+    ]
+  },
+  "invariants": [
+    "Opposite faces have opposite outward normal directions.",
+    "The six signed face integrals equal the volume expression within roundoff.",
+    "A zero-divergence choice can have nonzero individual face fluxes."
+  ],
+  "motion_guidance": [
+    "Move field glyphs only when coefficients or samples change; decorative traveling particles are optional and must not be called a fluid solution.",
+    "Derive face normals from orientation, never from camera-facing directions."
+  ],
+  "known_limits": [
+    "No singular sources or discontinuous fields; the demonstration is not a proof for arbitrary surfaces.",
+    "An opened cutaway remains a presentation of the original closed boundary, clearly labeled.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.divergence-flux-box",
+      "statement": "For a sufficiently smooth vector field, outward flux through a closed boundary equals the volume integral of divergence.",
+      "scope": "Closed piecewise-smooth oriented boundary enclosing a solid, with the theorem regularity conditions.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-divergence",
+          "locator": "6.8, Divergence Theorem"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Flux box",
+      "structure": "Construct six separately selectable oriented faces with a removable front face for inspection; opening a face visually does not remove it from the closed-surface calculation.",
+      "material": "Neutral translucent faces with opaque edge frames; sign-coded flux badges remain readable independently of face opacity."
+    }
+  ]
+}

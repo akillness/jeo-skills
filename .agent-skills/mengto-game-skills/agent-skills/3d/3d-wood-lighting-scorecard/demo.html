@@ -1,0 +1,971 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Wood Lighting Scorecard</title>
+<meta name="description" content="Kibori's carved-timber lighting rig in a dark workshop: procedural grain, soft shadows, light shafts and dust, scored live out of 10 against an anchored rubric.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' rx='3' fill='%239d382c'/%3E%3Cpath d='M16 7v18M8 12h16M8 20h16' stroke='%23f2ece2' stroke-width='1.6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#f2ece2; --dim:rgba(242,236,226,.62); --faint:rgba(242,236,226,.38); --hair:rgba(242,236,226,.16);
+    --seal:#9d382c; --gold:#d9a566; --ok:#8fbf7a; --bad:#d9705a; --bg:#0a0806;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-weight:normal}
+  html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
+  #stage{position:fixed;inset:0}
+  canvas#gl{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .head{position:absolute;left:clamp(16px,3.4vw,48px);bottom:clamp(16px,4vh,44px);max-width:min(640px,calc(100vw - 32px));z-index:2;pointer-events:none}
+  .stack{font:500 11px/1.4 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
+  h1{font:400 clamp(36px,3.8vw,56px)/.95 var(--serif);letter-spacing:-.01em;margin:10px 0 12px;white-space:nowrap}
+  h1 i{font-style:italic;color:var(--gold)}
+  .lede{font:400 13px/1.55 var(--sans);color:var(--dim);max-width:58ch}
+  .panel{position:absolute;right:clamp(12px,2vw,28px);top:clamp(12px,3vh,32px);bottom:clamp(12px,3vh,32px);width:312px;z-index:3;
+    display:flex;flex-direction:column;gap:14px;padding:18px;border:1px solid var(--hair);border-radius:4px;
+    background:rgba(12,9,7,.80);overflow:auto;scrollbar-width:thin}
+  .panel h2{font:500 11px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+  .layers{display:grid;gap:2px}
+  .layers label{display:flex;align-items:center;gap:10px;min-height:32px;padding:0 8px;margin:0 -8px;font:400 13px/1.2 var(--sans);color:var(--dim);cursor:pointer;border-radius:3px}
+  .layers label:hover{background:rgba(242,236,226,.05)}
+  .layers input{appearance:none;width:30px;height:16px;border-radius:9px;border:1px solid var(--hair);background:rgba(242,236,226,.06);position:relative;flex:none;cursor:pointer;transition:background .2s,border-color .2s}
+  .layers input::after{content:"";position:absolute;left:2px;top:2px;width:10px;height:10px;border-radius:50%;background:var(--faint);transition:transform .2s,background .2s}
+  .layers input:checked{background:var(--seal);border-color:var(--seal)}
+  .layers input:checked::after{transform:translateX(14px);background:var(--ink)}
+  .layers input:focus-visible,.btns button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .layers label span{flex:1}
+  .layers label em{font:400 11px/1 var(--sans);font-style:normal;color:var(--faint);font-variant-numeric:tabular-nums}
+  .btns{display:flex;gap:8px}
+  .btns button{flex:1;min-height:36px;font:500 12px/1 var(--sans);letter-spacing:.08em;color:var(--ink);background:transparent;border:1px solid var(--hair);border-radius:3px;cursor:pointer}
+  .btns button:hover{border-color:var(--dim)}
+  .hud .tot{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}
+  .hud .tot b{font:400 46px/1 var(--serif);font-variant-numeric:tabular-nums}
+  .hud .tot small{font:400 11px/1.3 var(--sans);color:var(--faint);text-align:right}
+  .row{display:grid;grid-template-columns:1fr 34px;gap:2px 8px;align-items:center;margin-bottom:9px}
+  .row span{font:400 12px/1.2 var(--sans);color:var(--dim)}
+  .row b{font:500 12px/1 var(--sans);text-align:right;font-variant-numeric:tabular-nums}
+  .bar{grid-column:1/3;height:3px;background:rgba(242,236,226,.10);position:relative;border-radius:2px;overflow:visible}
+  .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--gold);border-radius:2px;transition:width .35s}
+  .bar::after{content:"";position:absolute;left:80%;top:-3px;bottom:-3px;width:1px;background:var(--faint)}
+  .row.low b{color:var(--bad)} .row.pass b{color:var(--ok)}
+  .note{font:400 11px/1.5 var(--sans);color:var(--faint)}
+  .foot{position:absolute;left:clamp(16px,3.4vw,48px);bottom:clamp(14px,3.4vh,36px);z-index:2;pointer-events:none;
+    font:400 11px/1.6 var(--sans);letter-spacing:.06em;color:var(--faint);max-width:min(560px,calc(100vw - 380px))}
+  .foot b{font-weight:500;color:var(--dim)}
+  #err{position:absolute;inset:0;display:none;place-items:center;text-align:center;font:400 14px/1.6 var(--sans);color:var(--dim);z-index:9;background:var(--bg)}
+  .chip{display:none}
+  .mhead{display:none}
+  @media (max-width:820px){
+    canvas#gl{height:54vh;bottom:auto}
+    .head{display:none}
+    .mhead{display:block;padding-bottom:12px;border-bottom:1px solid var(--hair)}
+    .mhead h1{font-size:34px;margin:8px 0 8px}
+    .mhead .lede{font-size:12.5px}
+    .panel{top:54vh;left:0;right:0;bottom:0;width:auto;border-radius:0;border:0;border-top:1px solid var(--hair);padding:14px 16px 24px;background:rgba(10,8,6,.96)}
+    .layers{grid-template-columns:1fr 1fr;column-gap:14px}
+    .layers label{min-height:34px} .layers label em{display:none}
+    #rows{display:grid;grid-template-columns:1fr 1fr;column-gap:16px}
+    .hud .tot b{font-size:36px}
+    .foot{display:none}
+    .chip{display:flex;position:absolute;right:12px;top:calc(54vh - 46px);z-index:2;align-items:baseline;gap:6px;padding:6px 10px;border:1px solid var(--hair);border-radius:3px;background:rgba(10,8,6,.8);font:400 11px/1 var(--sans);color:var(--dim)}
+    .chip b{font:400 24px/1 var(--serif);color:var(--ink)}
+  }
+  @media (prefers-reduced-motion:reduce){ .bar i,.layers input,.layers input::after{transition:none} }
+</style>
+<script type="importmap">
+{"imports":{"three":"https://unpkg.com/three@0.169.0/build/three.module.min.js","three/addons/":"https://unpkg.com/three@0.169.0/examples/jsm/"}}
+</script>
+</head>
+<body>
+<div id="stage">
+  <canvas id="gl" aria-label="A carved hinoki plaque, a keyaki post and a mallet on a workbench in a dark room, lit by one warm window"></canvas>
+  <header class="head">
+    <div class="stack">Three.js · WebGL · GLSL</div>
+    <h1>Wood <i>lighting</i> scorecard</h1>
+    <p class="lede">Grain needs raking light, shafts need a dark room, and ACES has to see the shafts before it clips them. Switch a layer off and the score shows what it was worth.</p>
+  </header>
+  <aside class="panel" aria-label="Quality layers and live score">
+    <header class="mhead"><div class="stack">Three.js · WebGL · GLSL</div><h1>Wood <i>lighting</i> scorecard</h1><p class="lede">Grain needs raking light, shafts need a dark room, and ACES has to see the shafts before it clips them. Switch a layer off and the score shows what it was worth.</p></header>
+    <section>
+      <h2>Layers</h2>
+      <div class="layers" id="layers"></div>
+      <div class="btns" style="margin-top:12px"><button id="allOff" type="button">Flat baseline</button><button id="allOn" type="button">All on</button></div>
+    </section>
+    <section class="hud" aria-live="polite">
+      <h2>Live score /10</h2>
+      <div class="tot"><b id="tot">--</b><small>lowest item <span id="low">--</span><br>target 8 on every line</small></div>
+      <div id="rows"></div>
+      <p class="note">Measured on this canvas by <b>metrics.js</b>, the same code <b>scorecard.mjs</b> runs headless. Proxy for a human judge, not a substitute.</p>
+    </section>
+  </aside>
+    <div class="chip" aria-hidden="true"><b id="chipN">--</b> / 10</div>
+  <div id="err">WebGL is unavailable in this browser.</div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+
+/* ==== metrics.js, inlined verbatim (scorecard.mjs --sync keeps it identical) ==== */
+/* Objective render metrics -> anchored 0-10 scores.
+   Works unchanged in the page (window.KiboriMetrics) and in Node (require).
+   Input: RGBA bytes of ONE captured frame + regions given as fractions of the frame.
+   Every sub-metric maps to a score through three anchors [v@3, v@6, v@9] (linear between and
+   beyond, clamped 0..10; anchors may run high->low for "lower is better"). Anchors are the
+   numbers written into references/rubric.md. */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.KiboriMetrics = factory();
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+  const LIN = new Float32Array(256);
+  for (let i = 0; i < 256; i++) { const v = i / 255; LIN[i] = v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
+  const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+  function anchor(v, a, cap) {      // a = [v3, v6, v9]; cap = [v9 ends, v3 again] for "too much is wrong too"
+    if (v == null || !isFinite(v)) return null;
+    const [a3, a6, a9] = a;
+    let s = (v - a3) / (a6 - a3) <= 1 ? 3 + 3 * (v - a3) / (a6 - a3) : 6 + 3 * (v - a6) / (a9 - a6);
+    s = clamp(s, 0, 10);
+    if (cap && v > cap[0]) s = Math.min(s, clamp(9 - 6 * (v - cap[0]) / (cap[1] - cap[0]), 0, 9));
+    return s;
+  }
+  const mean = a => a.length ? a.reduce((s, x) => s + x, 0) / a.length : 0;
+
+  function prep(rgba, W, H) {
+    const Y = new Float32Array(W * H), R = new Float32Array(W * H), B = new Float32Array(W * H);
+    for (let i = 0, j = 0; i < W * H; i++, j += 4) {
+      R[i] = rgba[j]; B[i] = rgba[j + 2];
+      Y[i] = 0.2126 * rgba[j] + 0.7152 * rgba[j + 1] + 0.0722 * rgba[j + 2];
+    }
+    return { W, H, Y, R, B, rgba };
+  }
+  function integral(F, W, H) {
+    const I = new Float64Array((W + 1) * (H + 1));
+    for (let y = 0; y < H; y++) { let row = 0;
+      for (let x = 0; x < W; x++) { row += F[y * W + x]; I[(y + 1) * (W + 1) + x + 1] = I[y * (W + 1) + x + 1] + row; } }
+    return I;
+  }
+  function boxAt(I, W, H, x, y, r) {
+    const x0 = Math.max(0, x - r), x1 = Math.min(W, x + r + 1), y0 = Math.max(0, y - r), y1 = Math.min(H, y + r + 1);
+    const s = I[y1 * (W + 1) + x1] - I[y0 * (W + 1) + x1] - I[y1 * (W + 1) + x0] + I[y0 * (W + 1) + x0];
+    return s / ((x1 - x0) * (y1 - y0));
+  }
+  function rect(f, W, H) { return [Math.round(f[0] * W), Math.round(f[1] * H), Math.round(f[2] * W), Math.round(f[3] * H)]; }
+  function hist(vals, scale) { const h = new Uint32Array(256 * scale + 1); for (const v of vals) h[clamp(Math.round(v * scale), 0, 256 * scale)]++; return h; }
+  function pct(h, n, p, scale) { let c = 0; const t = n * p; for (let i = 0; i < h.length; i++) { c += h[i]; if (c >= t) return i / scale; } return 255; }
+  function bil(Y, W, H, x, y) {
+    x = clamp(x, 0, W - 1.001); y = clamp(y, 0, H - 1.001);
+    const x0 = x | 0, y0 = y | 0, fx = x - x0, fy = y - y0, i = y0 * W + x0;
+    return (Y[i] * (1 - fx) + Y[i + 1] * fx) * (1 - fy) + (Y[i + W] * (1 - fx) + Y[i + W + 1] * fx) * fy;
+  }
+  function lineProfile(P, p0, p1, n, perp, k) {   // fractions -> px; averaged over +-k px across
+    const { W, H, Y } = P, x0 = p0[0] * W, y0 = p0[1] * H, x1 = p1[0] * W, y1 = p1[1] * H;
+    const dx = x1 - x0, dy = y1 - y0, L = Math.hypot(dx, dy) || 1, nx = -dy / L, ny = dx / L, out = [];
+    for (let i = 0; i < n; i++) { const t = i / (n - 1); let s = 0, c = 0;
+      for (let o = -k; o <= k; o++) { s += bil(Y, W, H, x0 + dx * t + nx * (perp + o), y0 + dy * t + ny * (perp + o)); c++; }
+      out.push(s / c); }
+    return out;
+  }
+  const smooth = (a, r) => a.map((_, i) => { let s = 0, c = 0; for (let j = Math.max(0, i - r); j <= Math.min(a.length - 1, i + r); j++) { s += a[j]; c++; } return s / c; });
+
+  /* ------------------------------------------------------------ measure */
+  function measure(rgba, W, H, R, opt) {
+    opt = opt || {};
+    const P = prep(rgba, W, H), { Y } = P;
+    const I1 = integral(Y, W, H), out = {}, items = [];
+    const item = (id, name, parts) => {
+      const ss = parts.map(p => p.score).filter(s => s != null);
+      items.push({ id, name, score: ss.length ? +mean(ss).toFixed(2) : null, parts });
+    };
+    const part = (k, v, a, note, cap) => ({ k, v: v == null ? null : +(+v).toFixed(4), anchors: a, cap: cap || undefined, score: (() => { const s = anchor(v, a, cap); return s == null ? null : +s.toFixed(2); })(), note: note || '' });
+
+    /* whole-frame tone ---------------------------------------------------- */
+    const all = new Float32Array(W * H); let clipN = 0, crushN = 0, wash = 0;
+    for (let i = 0, j = 0; i < W * H; i++, j += 4) {
+      all[i] = Y[i];
+      if (rgba[j] >= 254 || rgba[j + 1] >= 254 || rgba[j + 2] >= 254) clipN++;
+      if (Y[i] < 2) crushN++;
+    }
+    const hAll = hist(all, 4), pAll = q => pct(hAll, W * H, q, 4);
+    out.clipPct = 100 * clipN / (W * H); out.crushPct = 100 * crushN / (W * H);
+    out.p1 = pAll(0.01); out.p50 = pAll(0.5); out.p99 = pAll(0.99);
+    out.rangeStops = Math.log2(Math.max(LIN[Math.round(out.p99)], 1e-5) / Math.max(LIN[Math.round(out.p1)], 2e-4));
+
+    /* 1 materials / grain ------------------------------------------------- */
+    if (R.grain) {
+      const [x0, y0, x1, y1] = rect(R.grain.rect, W, H), ang = R.grain.angle || 0, ca = Math.cos(ang), sa = Math.sin(ang);
+      let sm = 0, n = 0, eAlong = 0, eAcross = 0, hp2 = 0, lowM = 0, low2 = 0;
+      for (let y = y0 + 1; y < y1 - 1; y++) for (let x = x0 + 1; x < x1 - 1; x++) {
+        const i = y * W + x, gx = (Y[i + 1] - Y[i - 1]) * 0.5, gy = (Y[i + W] - Y[i - W]) * 0.5;
+        const al = gx * ca + gy * sa, ac = -gx * sa + gy * ca; eAlong += al * al; eAcross += ac * ac;
+        const b4 = boxAt(I1, W, H, x, y, 4), b14 = boxAt(I1, W, H, x, y, 14);
+        hp2 += (Y[i] - b4) * (Y[i] - b4); lowM += b14; low2 += b14 * b14; sm += Y[i]; n++;
+      }
+      const mu = sm / n, lowMean = lowM / n;
+      out.grainContrast = Math.sqrt(hp2 / n) / Math.max(mu, 1);
+      out.grainAniso = eAcross / Math.max(eAlong, 1e-6);
+      out.toneVar = Math.sqrt(Math.max(0, low2 / n - lowMean * lowMean)) / Math.max(mu, 1);
+      item('grain', 'Materials & grain', [
+        part('grainContrast', out.grainContrast, [0.006, 0.022, 0.05], 'band-pass 1-8 px std / mean'),
+        part('grainAniso', out.grainAniso, [1.1, 1.9, 3.2], 'gradient energy across/along the grain axis'),
+        part('toneVar', out.toneVar, [0.008, 0.035, 0.08], 'broad tonal drift (cathedral arcs, ring bands)')]);
+    }
+
+    /* 2 key / fill contrast ----------------------------------------------- */
+    if (R.lit && R.shade) {
+      const m = r => { const [x0, y0, x1, y1] = rect(r, W, H); let s = 0, n = 0; for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) { s += LIN[Math.round(Y[y * W + x])]; n++; } return s / Math.max(n, 1); };
+      const lit = m(R.lit), shade = m(R.shade);
+      out.keyFillStops = Math.log2(Math.max(lit, 1e-5) / Math.max(shade, 1e-5)); out.shadeLin = shade;
+      item('keyfill', 'Key / fill contrast', [
+        part('keyFillStops', out.keyFillStops, [0.7, 1.7, 2.8], 'lit face vs shaded face, linear stops'),
+        part('rangeStops', out.rangeStops, [3.0, 5.0, 7.0], 'p99 / p1 whole frame, stops'),
+        part('shadeAlive', out.shadeLin * 1000, [1.5, 4, 10], 'shaded face linear x1000 (fill must not crush to 0)')]);
+    }
+
+    /* 3 shadows / contact ------------------------------------------------- */
+    if (R.shadow && R.litRef && R.contact) {
+      const m = r => { const [x0, y0, x1, y1] = rect(r, W, H); let s = 0, n = 0; for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) { s += LIN[Math.round(Y[y * W + x])]; n++; } return s / Math.max(n, 1); };
+      out.shadowRatio = m(R.litRef) / Math.max(m(R.shadow), 1e-5);
+      const prof = smooth(lineProfile(P, R.contact.p0, R.contact.p1, 64, 0, 2), 1), lin = prof.map(v => LIN[clamp(Math.round(v), 0, 255)]);
+      if (opt.debug) out.contactProfile = prof.map(v => Math.round(v));
+      const far = mean(lin.slice(-8)) || 1e-5;
+      out.contactDark = mean(lin.slice(0, 3)) / far;
+      let up = 0, tot = 0; for (let i = 1; i < 40; i++) { tot++; if (lin[i] >= lin[i - 1] * 0.985) up++; }
+      out.penumbraMono = up / tot;
+      /* peter-panning: a bright sliver between the object and its shadow = a drop in brightness moving away from contact */
+      let gap = 0; for (let i = 1; i < 16; i++) gap = Math.max(gap, (lin[i - 1] - lin[i]) / far); out.contactGap = gap;
+      item('shadow', 'Shadows & contact', [
+        part('shadowRatio', out.shadowRatio, [1.6, 3.5, 7], 'lit / shadowed bench, linear'),
+        part('contactDark', out.contactDark, [0.75, 0.42, 0.18], 'contact strip / open bench (lower is better)'),
+        part('penumbraMono', out.penumbraMono, [0.6, 0.8, 0.95], 'penumbra rises monotonically from contact'),
+        part('contactGap', out.contactGap, [0.30, 0.10, 0.02], 'bright sliver at the base = peter-panning (lower is better)')]);
+    }
+
+    /* 4 volumetric shafts + dust ----------------------------------------- */
+    if (R.shaft) {
+      const s = R.shaft, n = 48;
+      const ax = smooth(lineProfile(P, s.p0, s.p1, n, 0, 3), 1);
+      let off;
+      if (s.ref) off = smooth(lineProfile(P, s.ref.p0, s.ref.p1, n, 0, 3), 1);                    /* same heights, out of the beam */
+      else { const o1 = lineProfile(P, s.p0, s.p1, n, s.off, 3), o2 = lineProfile(P, s.p0, s.p1, n, -s.off, 3); off = o1.map((v, i) => (v + o2[i]) / 2); }
+      const d = ax.map((v, i) => v - off[i]);
+      out.shaftDelta = mean(d); out.shaftPeak = Math.max(...d);
+      const ds = smooth(d, 2); let r2 = 0; for (let i = 1; i < n - 1; i++) r2 += Math.abs(ds[i - 1] - 2 * ds[i] + ds[i + 1]);
+      out.shaftRough = (r2 / (n - 2)) / Math.max(out.shaftPeak, 1);
+      /* dust: soft specks brighter than their local mean, inside the beam volume minus a reference patch of dark wall outside it */
+      const specks = r => { const [x0, y0, x1, y1] = rect(r, W, H); let c = 0, tot = 0;
+        for (let y = Math.max(y0, 7); y < Math.min(y1, H - 7); y++) for (let x = Math.max(x0, 7); x < Math.min(x1, W - 7); x++) { tot++; if (Y[y * W + x] - boxAt(I1, W, H, x, y, 3) > 6) c++; }
+        return c / Math.max(tot, 1); };
+      out.dustFrac = R.dust ? Math.max(0, specks(R.dust.rect) - specks(R.dust.ref)) : 0;
+      item('shafts', 'Volumetric shafts & dust', [
+        part('shaftDelta', out.shaftDelta, [1.2, 4, 9], 'levels above the parallel off-axis strips; above 35 the beam is washing the blacks', [35, 70]),
+        part('shaftRough', out.shaftRough, [0.5, 0.22, 0.08], 'jaggedness of the falloff (lower is better)'),
+        part('dustFrac', out.dustFrac, [0.0002, 0.001, 0.003], 'soft specks 6+ levels above their 7 px neighbourhood, inside the beam minus a dark-wall patch')]);
+    }
+
+    /* 5 background rays --------------------------------------------------- */
+    if (R.bgRays) {
+      const b = R.bgRays, prof = smooth(lineProfile(P, b.p0, b.p1, 96, 0, Math.max(2, b.k || 10)), 1);
+      const sp = prof.slice().sort((a, c) => a - c); out.rayContrast = sp[Math.floor(sp.length * 0.92)] - sp[Math.floor(sp.length * 0.08)];
+      let peaks = 0; const sm2 = smooth(prof, 2); for (let i = 3; i < sm2.length - 3; i++) if (sm2[i] > sm2[i - 3] + 0.7 && sm2[i] > sm2[i + 3] + 0.7 && sm2[i] >= sm2[i - 1] && sm2[i] > sm2[i + 1]) peaks++;
+      out.rayPeaks = peaks;
+      item('rays', 'Background rays', [
+        part('rayContrast', out.rayContrast, [1.0, 3.0, 6.5], 'p92-p8 across the wall band, levels; above 45 the rays are a wall of glare', [45, 90]),
+        part('rayPeaks', out.rayPeaks, [1, 2, 4], 'distinct bands across the wall')]);
+    }
+
+    /* 6 colour / tone mapping -------------------------------------------- */
+    {
+      const parts = [
+        part('clipPct', out.clipPct, [4, 1.2, 0.25], '% of pixels with any channel >= 254 (lower is better)'),
+        part('p1', out.p1, [34, 18, 7], 'black point: p1 luma. High = volumetrics/ambient washed the blacks (lower is better)'),
+        part('crushPct', out.crushPct, [45, 22, 8], '% pixels < 2 (lower is better; a dark room still needs shadow detail)')];
+      if (R.litRef && R.shadow) {
+        const wb = r => { const [x0, y0, x1, y1] = rect(r, W, H); let s = 0, n = 0; for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) { s += P.R[y * W + x] - P.B[y * W + x]; n++; } return s / Math.max(n, 1); };
+        out.warmCool = wb(R.litRef) - wb(R.shadow);
+        parts.push(part('warmCool', out.warmCool, [1, 8, 18], 'R-B of the same bench in light minus in shadow: warm key over a cool fill'));
+      }
+      if (R.wall) {   /* posterisation: share of pixels sitting in long horizontal runs of one identical RGB triple */
+        const [x0, y0, x1, y1] = rect(R.wall, W, H); let flat = 0, tot = 0;
+        for (let y = y0; y < y1; y += 2) { let run = 1;
+          for (let x = x0 + 1; x <= x1; x++) {
+            const same = x < x1 && rgba[(y * W + x) * 4] === rgba[(y * W + x - 1) * 4] && rgba[(y * W + x) * 4 + 1] === rgba[(y * W + x - 1) * 4 + 1] && rgba[(y * W + x) * 4 + 2] === rgba[(y * W + x - 1) * 4 + 2];
+            if (same) run++; else { if (run >= 6 && rgba[(y * W + x - 1) * 4 + 1] > 5) flat += run; run = 1; } tot++; } }
+        out.flatRun = flat / Math.max(tot, 1);
+        parts.push(part('flatRun', out.flatRun, [0.5, 0.2, 0.04], 'share of wall pixels in runs of 6+ identical values = 8-bit banding (lower is better)'));
+      }
+      item('tone', 'Colour & tone mapping', parts);
+    }
+
+    /* 7 texture resolution / texel density -------------------------------- */
+    if (R.grain) {
+      const [x0, y0, x1, y1] = rect(R.grain.rect, W, H); let e = 0, n = 0;
+      for (let y = y0 + 1; y < y1 - 1; y++) for (let x = x0 + 1; x < x1 - 1; x++) { const i = y * W + x, l = Y[i] * 4 - Y[i - 1] - Y[i + 1] - Y[i - W] - Y[i + W]; e += l * l; n++; }
+      out.fineStd = Math.sqrt(e / n) / 2;
+      const parts = [part('fineStd', out.fineStd, [0.5, 1.4, 3.2], '1-px Laplacian std in levels (sharp, not blurry)')];
+      if (opt.texelPerPx != null) { out.texelPerPx = opt.texelPerPx; parts.push(part('texelPerPx', opt.texelPerPx, [0.45, 0.9, 1.6], 'source texels per device pixel at the finest grain band; <1 = magnified (soft)')); }
+      if (opt.shimmer != null) { out.shimmer = opt.shimmer; parts.push(part('shimmer', opt.shimmer, [3.2, 1.9, 1.15], 'half-pixel shift diff / expected from gradient; >2 = minification shimmer (lower is better)')); }
+      item('texture', 'Texture resolution & texel density', parts);
+    }
+
+    /* 8 specular / roughness realism ------------------------------------- */
+    if (R.spec) {
+      const [x0, y0, x1, y1] = rect(R.spec, W, H), lin = [], hpv = [];
+      let clip = 0, n = 0;
+      for (let y = y0 + 4; y < y1 - 4; y += 2) for (let x = x0 + 4; x < x1 - 4; x += 2) {
+        lin.push(LIN[Math.round(boxAt(I1, W, H, x, y, 6))]);           /* blurred: the broad sheen, not the grain */
+        const q = Y[y * W + x]; hpv.push(q - boxAt(I1, W, H, x, y, 3));
+        const i = (y * W + x) * 4; if (rgba[i] >= 250 && rgba[i + 1] >= 245) clip++; n++;
+      }
+      lin.sort((a, c) => a - c);
+      const at = q => lin[Math.min(lin.length - 1, Math.floor(lin.length * q))];
+      out.sheenSpread = at(0.95) / Math.max(at(0.25), 1e-5);
+      out.paintClip = clip / Math.max(n, 1);
+      /* roughness breakup: local texture inside the brightest quartile of the sheen */
+      let s = 0, c = 0, mu = 0; const thr = at(0.75); let k = 0;
+      for (let y = y0 + 4; y < y1 - 4; y += 2) for (let x = x0 + 4; x < x1 - 4; x += 2) { if (LIN[Math.round(boxAt(I1, W, H, x, y, 6))] >= thr) { s += hpv[k] * hpv[k]; mu += Y[y * W + x]; c++; } k++; }
+      out.hlBreakup = c ? Math.sqrt(s / c) / Math.max(mu / c, 1) : 0;
+      item('spec', 'Specular & roughness realism', [
+        part('sheenSpread', out.sheenSpread, [1.06, 1.3, 1.9], 'p95 / p25 of the blurred wood in linear light: a sheen that travels across the board'),
+        part('paintClip', out.paintClip, [0.05, 0.01, 0.0005], 'share of near-white pixels in the wood = plastic paint, not oil (lower is better)'),
+        part('hlBreakup', out.hlBreakup, [0.004, 0.018, 0.045], 'grain texture surviving inside the sheen: roughness map breaking it up')]);
+    }
+
+    const ss = items.map(i => i.score).filter(s => s != null);
+    return { metrics: Object.fromEntries(Object.entries(out).map(([k, v]) => [k, Array.isArray(v) ? v : +(+v).toFixed(4)])), items, total: ss.length ? +mean(ss).toFixed(2) : null, min: ss.length ? +Math.min(...ss).toFixed(2) : null };
+  }
+  return { measure, anchor };
+});
+/* ==== end metrics.js ==== */
+
+const $ = s => document.querySelector(s);
+const canvas = $('#gl');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let renderer;
+try{
+  renderer = new THREE.WebGLRenderer({canvas, antialias:false, alpha:false, powerPreference:'high-performance'});
+}catch(e){ $('#err').style.display='grid'; throw e; }
+
+/* ------------------------------------------------------------------ renderer
+   Ported from Kibori: linear half-float HDR target, MSAA 4, NO tone mapping in three;
+   ACES is done by hand in the last pass so additive shafts are summed before the curve. */
+THREE.ColorManagement.enabled = true;
+renderer.toneMapping = THREE.NoToneMapping;
+renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.autoClear = false;
+renderer.setClearColor(0x000000, 1);
+const MAX_SAMPLES = renderer.capabilities.isWebGL2 ? Math.min(4, renderer.capabilities.maxSamples || 4) : 0;
+const rt = new THREE.WebGLRenderTarget(2, 2, {type:THREE.HalfFloatType, depthBuffer:true, stencilBuffer:false,
+  minFilter:THREE.LinearFilter, magFilter:THREE.LinearFilter, samples:MAX_SAMPLES});
+
+/* ------------------------------------------------------------------ noise (Kibori NOISE, 2-D subset) */
+const NOISE = /* glsl */`
+  vec2 hash2(vec2 p){
+    p = vec2(dot(p,vec2(127.1,311.7)), dot(p,vec2(269.5,183.3)));
+    return fract(sin(p)*43758.5453123)*2.0-1.0;
+  }
+  float hash1(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123); }
+  float gnoise(vec2 x){
+    vec2 p = floor(x), w = fract(x);
+    vec2 u = w*w*w*(w*(w*6.0-15.0)+10.0);
+    float a = dot(hash2(p+vec2(0,0)), w-vec2(0,0));
+    float b = dot(hash2(p+vec2(1,0)), w-vec2(1,0));
+    float c = dot(hash2(p+vec2(0,1)), w-vec2(0,1));
+    float d = dot(hash2(p+vec2(1,1)), w-vec2(1,1));
+    return mix(mix(a,b,u.x), mix(c,d,u.x), u.y)*0.7+0.5;
+  }
+  float fbm(vec2 p, int oct){
+    float s=0.0,a=0.5,n=0.0;
+    for(int i=0;i<8;i++){ if(i>=oct) break; s+=a*gnoise(p); n+=a; p=p*2.03+11.7; a*=0.5; }
+    return s/max(n,1e-4);
+  }`;
+const QUAD_VS = `varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`;
+const quadGeo = new THREE.PlaneGeometry(2,2), quadCam = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+const quadScene = new THREE.Scene(), quadMesh = new THREE.Mesh(quadGeo, new THREE.MeshBasicMaterial());
+quadMesh.frustumCulled = false; quadScene.add(quadMesh);
+function pass(mat, target){ quadMesh.material = mat; renderer.setRenderTarget(target || null); renderer.clear(true,false,false); renderer.render(quadScene, quadCam); }
+
+/* ------------------------------------------------------------------ 3. wood: one shared periodic noise field, mip-filtered
+   The mip chain filters the anatomy before it reaches a pixel; every timber reads the same 1024^2 RGBA8 field. */
+let woodSerial = 0;
+function bakeField(size){
+  const t = new THREE.WebGLRenderTarget(size, size, {type:THREE.UnsignedByteType, depthBuffer:false, stencilBuffer:false,
+    minFilter:THREE.LinearMipmapLinearFilter, magFilter:THREE.LinearFilter, generateMipmaps:true, wrapS:THREE.RepeatWrapping, wrapT:THREE.RepeatWrapping});
+  t.texture.colorSpace = THREE.NoColorSpace;
+  const bake = new THREE.ShaderMaterial({vertexShader:QUAD_VS, fragmentShader:NOISE+`
+    varying vec2 vUv;
+    float periodicNoise(vec2 x){
+      vec2 p=floor(x),w=fract(x),u=w*w*w*(w*(w*6.0-15.0)+10.0);
+      float a=dot(hash2(mod(p,64.0)),w);
+      float b=dot(hash2(mod(p+vec2(1,0),64.0)),w-vec2(1,0));
+      float c=dot(hash2(mod(p+vec2(0,1),64.0)),w-vec2(0,1));
+      float d=dot(hash2(mod(p+vec2(1,1),64.0)),w-vec2(1,1));
+      return mix(mix(a,b,u.x),mix(c,d,u.x),u.y)*0.70+0.5;
+    }
+    void main(){
+      vec2 p=vUv*64.0;
+      float n=periodicNoise(p);
+      float f=n*0.60+periodicNoise(p*2.0+9.0)*0.27+periodicNoise(p*4.0+27.0)*0.13;
+      gl_FragColor=vec4(n,f,periodicNoise(p+vec2(31.7,11.9)),1.0);
+    }`, depthTest:false, depthWrite:false});
+  const prevT = renderer.getRenderTarget(), prevM = quadMesh.material;
+  try{ pass(bake, t); } finally { renderer.setRenderTarget(prevT); quadMesh.material = prevM; bake.dispose(); }
+  return t;
+}
+const FIELD_HI = bakeField(1024), FIELD_LO = bakeField(16);
+
+const WOOD_GLSL = /* glsl */`
+  struct Wood { vec3 col; float rough; float h; };
+  vec3 timberField(vec2 p){return texture2D(uWoodField,p/64.0).rgb;}
+  float timberN(vec2 p){return timberField(p).r;}
+  float seigaiha(vec2 p, out float rr){
+    /* rows 0.5 apart, columns 2 apart, alternate rows offset by 1; the lowest row is drawn last */
+    float best = 0.0; rr = 9.0;
+    float j0 = floor(p.y*2.0);
+    for(int k=3;k>=-2;k--){
+      float j = j0 + float(k);
+      float off = mod(j,2.0);
+      float cx = off + 2.0*floor((p.x-off)*0.5+0.5);
+      float r = length(vec2(p.x-cx, p.y-j*0.5));
+      if(r<1.0){ rr = r; best = 1.0; }
+    }
+    return best;
+  }
+  Wood woodSample(vec3 p){
+    vec3 q=p*uGrainScale;
+    vec2 cross2=(uAxis<0.5)?q.yz:(uAxis<1.5?q.xz:q.xy);
+    float along=(uAxis<0.5)?q.x:(uAxis<1.5?q.y:q.z);
+    vec3 grainAxis=(uAxis<0.5)?vec3(1,0,0):(uAxis<1.5?vec3(0,1,0):vec3(0,0,1));
+    float endgrain=pow(abs(dot(normalize(vWoodNormal),grainAxis)),6.0);
+    vec2 seed=vec2(uWoodSeed,uWoodSeed*0.637);
+    float across=cross2.x+cross2.y*0.63;
+    vec2 grainP=vec2(across,along);
+    vec3 broad=timberField(grainP*vec2(0.92,0.22)+seed);
+    vec3 curl=timberField(grainP*vec2(2.3,0.38)+seed+17.0);
+
+    /* Sparse branch stubs deflect nearby fibres into little eyes. The influence dies before each cell boundary, so there is no tiled seam. */
+    vec2 kg=grainP/vec2(1.85,4.6)+seed*0.19;
+    vec2 ki=floor(kg),kr=hash2(ki+seed);
+    vec2 kp=(fract(kg)-0.5-kr*0.23)*vec2(1.85,4.6);
+    float hasKnot=step(0.71,hash1(ki+seed*2.7));
+    float knotR=length(kp*vec2(1.0,0.30));
+    vec2 edgeFade=smoothstep(vec2(0.0),vec2(0.15),fract(kg))*smoothstep(vec2(0.0),vec2(0.15),1.0-fract(kg));
+    float knotFlow=hasKnot*exp(-knotR*knotR*21.0)*edgeFade.x*edgeFade.y;
+    float knotCore=hasKnot*(1.0-smoothstep(0.026,0.080,knotR));
+
+    /* The pith wanders along the log: flat-sawn faces turn into long cathedral arcs, and the same solid rings show on the end cuts. */
+    float pithDrift=(broad.r-0.5)*0.72+(curl.r-0.5)*0.19;
+    vec2 radial=cross2+vec2(-pithDrift,uOffAxis+0.48);
+    radial.x+=knotFlow*kp.x*0.85;
+    float radius=length(radial*vec2(1.0,0.56));
+    float growth=radius*uRingFreq;
+    growth+=(timberN(vec2(growth*0.31,uWoodSeed+4.2))-0.5)*2.5;
+    growth+=(curl.g-0.5)*0.80+knotFlow*0.60;
+    float ring=floor(growth),phase=fract(growth);
+    float annual=timberN(vec2(ring*0.73,uWoodSeed+25.0));
+    float lateWidth=0.065+annual*0.21;
+    float late=smoothstep(0.94-lateWidth,0.97-lateWidth,phase)*(1.0-smoothstep(0.965,1.0,phase));
+    float ringPx=fwidth(growth);
+    late=mix(late,lateWidth*0.65,smoothstep(0.16,0.72,ringPx));
+    float early=pow(clamp(phase,0.0,1.0),1.6);
+    early=mix(early,0.38,smoothstep(0.18,0.72,ringPx));
+
+    /* Interrupted longitudinal pores follow the same wandering grain; end grain turns them into small open cells. */
+    float fiberX=across+pithDrift*0.25+knotFlow*kp.x*0.38;
+    vec2 vesselP=mix(vec2(fiberX*96.0,along*7.5),cross2*88.0,endgrain);
+    vec3 vessels=timberField(vesselP+seed);
+    float vesselPx=max(length(dFdx(vesselP)),length(dFdy(vesselP)));
+    float pores=smoothstep(0.59,0.75,vessels.r)*smoothstep(0.40,0.65,vessels.b);
+    pores*=1.0-smoothstep(0.22,0.90,vesselPx);
+    vec2 fibreP=vec2(fiberX*230.0,along*2.4)+seed;
+    float fibres=(timberN(fibreP)-0.5)*(1.0-endgrain*0.75);
+    float fibrePx=max(length(dFdx(fibreP)),length(dFdy(fibreP)));
+    fibres*=1.0-smoothstep(0.18,0.85,fibrePx);
+    vec2 rayP=vec2(across*13.0,along*115.0)+seed+31.0;
+    vec3 rayField=timberField(rayP);
+    float rays=smoothstep(0.64,0.78,rayField.r)*smoothstep(0.42,0.66,rayField.b)*uRays;
+    float rayPx=max(length(dFdx(rayP)),length(dFdy(rayP)));
+    rays*=1.0-smoothstep(0.15,0.65,rayPx);
+    float checks=smoothstep(0.70,0.82,curl.b)*uChecks;
+    checks*=smoothstep(0.46,0.66,vessels.b)*(1.0-endgrain*0.5);
+    checks*=1.0-smoothstep(0.16,0.65,vesselPx);
+
+    float tone=0.075+late*0.40+early*0.070+pores*0.25-fibres*0.16+(broad.g-0.5)*0.23+knotCore*0.44+knotFlow*0.075;
+    tone = 0.30+(tone-0.30)*uToneGain;                     /* demo hook: widen the tonal range of a pale, oiled board */
+    Wood w;
+    w.col=mix(uPale,uDark,clamp(tone,0.035,0.83));
+    w.col*=0.93+annual*0.095+(curl.b-0.5)*0.045;
+    w.col=mix(w.col,uDark*0.68,checks*0.33);
+    w.col=mix(w.col,uPale*1.035,rays*0.26);
+    w.col*=1.0-endgrain*(0.045+pores*0.10);
+    w.rough=0.91+late*0.13+pores*0.19+(broad.b-0.5)*0.20-rays*0.075+knotCore*0.10+endgrain*0.14;
+    float ringRelief=1.0-smoothstep(0.07,0.24,ringPx);
+    float poreRelief=1.0-smoothstep(0.05,0.18,vesselPx);
+    float tool=(timberN(vec2(along*17.0,across*0.4)+seed)-0.5)*uTool;
+    w.h=late*0.20*ringRelief-pores*0.42*poreRelief+fibres*0.09+rays*0.06+tool*0.045-checks*0.20;
+
+    /* demo hook: seigaiha waves carved into the top of the plaque */
+    if(uCarve>0.5 && vWoodNormal.y>0.9){
+      vec2 sp = p.xz/0.15; float rr;
+      float inside = seigaiha(sp, rr);
+      vec2 a = vec2(abs(p.x-0.165)/0.265, abs(p.z)/0.27);          /* carved on the right two thirds, planed on the left */
+      float box = (1.0-smoothstep(0.90,1.0,a.x))*(1.0-smoothstep(0.86,1.0,a.y));
+      float band = fract(rr*2.0);
+      float groove = smoothstep(0.35,0.62,band)*(1.0-smoothstep(0.78,0.98,band));
+      float aa = 1.0-smoothstep(0.10,0.55,fwidth(rr*2.0));
+      groove *= inside*box*aa;
+      w.h -= groove*0.85; w.col *= 1.0-groove*0.42; w.rough += groove*0.06;
+    }
+    if(uFlat>0.5){ w.col=mix(uPale,uDark,0.30); w.rough=0.90; w.h=0.0; }
+    return w;
+  }
+  vec3 bumpNormal(vec3 posVS,vec3 nrm,float h,float scale){
+    vec3 sx=dFdx(posVS),sy=dFdy(posVS);
+    vec3 R1=cross(sy,nrm),R2=cross(nrm,sx);
+    float det=dot(sx,R1);
+    vec2 dH=vec2(dFdx(h),dFdy(h))*scale;
+    vec3 grad=sign(det)*(dH.x*R1+dH.y*R2);
+    float lim=abs(det)*0.38;
+    grad*=min(1.0,lim/max(length(grad),1e-20));
+    return normalize(abs(det)*nrm-grad);
+  }`;
+
+const woodMats = [], sharedU = {uFlat:{value:0}, uWoodField:{value:FIELD_HI.texture}};
+function woodMat(o = {}){
+  const {pale=0xc39a68, dark=0x6d4526, rough=0.62, grain=1.0, axis=1, ringFreq=5.2, offAxis=0.0, bump=0.11, metal=0.0, rays=0.15, checks=0.22, tool=0.0, carve=0, sheen=0.0, coat=0.0, env=0.40, toneGain=1.0, aniso=0.0} = o;
+  const m = new THREE.MeshPhysicalMaterial({color:0xffffff, roughness:Math.max(0.43,rough), metalness:metal,
+    clearcoat:coat, clearcoatRoughness:0.30, anisotropy:aniso, ior:1.43, specularIntensity:0.72, envMapIntensity:env,
+    sheen, sheenRoughness:0.45, sheenColor:new THREE.Color(pale).multiplyScalar(0.55)});
+  const U = {uPale:{value:new THREE.Color(pale)}, uDark:{value:new THREE.Color(dark)}, uGrainScale:{value:grain}, uAxis:{value:axis},
+    uRingFreq:{value:ringFreq}, uOffAxis:{value:offAxis}, uBump:{value:bump*0.020}, uRays:{value:rays}, uChecks:{value:checks},
+    uTool:{value:tool}, uWoodSeed:{value:(++woodSerial)*7.113}, uCarve:{value:carve}, uToneGain:{value:toneGain}};
+  m.onBeforeCompile = sh => {
+    Object.assign(sh.uniforms, U, sharedU);
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>','#include <common>\nvarying vec3 vOP;\nvarying vec3 vWoodNormal;')
+      .replace('#include <begin_vertex>','#include <begin_vertex>\n vOP=position;vWoodNormal=normal;');
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>',`#include <common>
+        varying vec3 vOP,vWoodNormal;
+        uniform vec3 uPale,uDark;
+        uniform float uGrainScale,uAxis,uRingFreq,uOffAxis,uBump,uRays,uChecks,uTool,uWoodSeed,uCarve,uFlat,uToneGain;
+        uniform sampler2D uWoodField;
+        ${NOISE}
+        ${WOOD_GLSL}`)
+      .replace('#include <map_fragment>','Wood W=woodSample(vOP);\n diffuseColor.rgb*=W.col;')
+      .replace('#include <roughnessmap_fragment>','float roughnessFactor=clamp(roughness*W.rough,0.35,1.0);')
+      .replace('#include <lights_physical_fragment>','#include <lights_physical_fragment>\n #ifdef USE_CLEARCOAT\n material.clearcoatRoughness = clamp(clearcoatRoughness*(0.4+0.6*pow(W.rough,3.0)),0.04,1.0);\n #endif')
+      .replace('#include <normal_fragment_maps>','normal = bumpNormal(-vViewPosition, normal, W.h, uBump);');
+  };
+  m.customProgramCacheKey = () => 'kb-wood';
+  m.userData.env0 = m.envMapIntensity;
+  woodMats.push(m);
+  return m;
+}
+
+/* ------------------------------------------------------------------ 4. HDR studio environment (window cards + warm bounce)
+   Real linear-HDR cards through PMREM. A canvas panorama would cap the window at display white. */
+function buildEnvironment(){
+  const studio = new THREE.Scene();
+  studio.background = new THREE.Color(0.045,0.050,0.060);
+  const cards = [];
+  function card(w,h,position,radiance){
+    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(w,h), new THREE.MeshBasicMaterial({color:new THREE.Color(...radiance), side:THREE.DoubleSide, toneMapped:false}));
+    mesh.position.set(...position); mesh.lookAt(0,0,0); studio.add(mesh); cards.push(mesh);
+  }
+  const windowFrame = new THREE.Group();
+  /* Kibori hung this at front-left; here the room's real window is behind-left, so the reflected window has to be there too
+     or every sheen mirrors a light that does not exist */
+  windowFrame.position.set(-2.3,4.3,-3.2); windowFrame.lookAt(0,0,0); windowFrame.scale.setScalar(0.5);
+  for(let row=0;row<3;row++)for(let col=0;col<4;col++){
+    const pane = new THREE.Mesh(new THREE.PlaneGeometry(1.24,1.38), new THREE.MeshBasicMaterial({color:new THREE.Color(3.8,3.55,3.05), side:THREE.DoubleSide, toneMapped:false}));
+    pane.position.set((col-1.5)*1.30,(row-1)*1.47,0); windowFrame.add(pane); cards.push(pane);
+  }
+  studio.add(windowFrame);
+  card(3.0,5.4,[6.0,1.6,2.0],[0.52,0.68,0.90]);
+  card(2.0,4.6,[2.5,2.2,-5.5],[1.50,1.22,0.88]);
+  card(7.5,2.2,[0,6.0,0],[0.52,0.55,0.60]);
+  card(9.0,9.0,[0,-4.0,0],[0.18,0.12,0.07]);
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const target = pmrem.fromScene(studio,0.025,0.1,40);
+  pmrem.dispose();
+  for(const m of cards){ m.geometry.dispose(); m.material.dispose(); }
+  return target.texture;
+}
+
+/* ------------------------------------------------------------------ scene */
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(34, 1.6, 0.08, 60);
+const ENV = buildEnvironment();
+scene.environment = ENV;           /* lights every material that has no envMap of its own */
+scene.environmentIntensity = 1.0;
+/* r163+: material.envMapIntensity only takes effect when material.envMap is set; scene.environment alone ignores it. */
+
+
+const TARGET = new THREE.Vector3(0.05, 0.50, -0.30);
+const DOWN = new THREE.Vector3(0.40,-0.75,0.45).normalize();      /* the way the window's light travels */
+const WINDOW = new THREE.Vector3(-0.60, 1.40, -1.0);               /* shoji centre in the back wall's face */
+const WIN_W = 1.50, WIN_H = 1.50;
+
+/* bench, wall with a real window opening: the wall casts, so the key lands only where the opening lets it */
+const benchMat = woodMat({pale:0x7a5b3c, dark:0x35200f, rough:0.70, axis:0, ringFreq:3.6, grain:0.8, bump:0.10, rays:0.5, env:0.25});
+const bench = new THREE.Mesh(new RoundedBoxGeometry(3.6,0.14,2.1,2,0.012), benchMat);
+bench.position.set(0.0,-0.07,0.02); bench.receiveShadow = true; scene.add(bench);
+const wallMat = woodMat({pale:0x3a2b1e, dark:0x150e09, rough:0.88, axis:1, ringFreq:2.4, grain:0.55, bump:0.06, rays:0.2, checks:0.10});
+{
+  const wx0 = WINDOW.x - WIN_W/2, wx1 = WINDOW.x + WIN_W/2, wy0 = WINDOW.y - WIN_H/2, wy1 = WINDOW.y + WIN_H/2, T = 0.10, zc = WINDOW.z - T/2;
+  const piece = (x0,x1,y0,y1) => { const m = new THREE.Mesh(new THREE.BoxGeometry(x1-x0,y1-y0,T), wallMat); m.position.set((x0+x1)/2,(y0+y1)/2,zc); m.castShadow = true; m.receiveShadow = true; scene.add(m); };
+  piece(-3.4,wx0,-0.14,3.6); piece(wx1,3.4,-0.14,3.6); piece(wx0,wx1,-0.14,wy0); piece(wx0,wx1,wy1,3.6);
+}
+
+/* the shoji: emissive paper in linear HDR (toneMapped:false) + dark kumiko bars that cast a lattice of shadow */
+{
+  const paperMat = new THREE.MeshBasicMaterial({color:new THREE.Color(1.15,0.86,0.52), toneMapped:false});
+  const paper = new THREE.Mesh(new THREE.PlaneGeometry(WIN_W,WIN_H), paperMat);
+  paper.position.copy(WINDOW).add(new THREE.Vector3(0,0,-0.06)); scene.add(paper);
+  const bar = new THREE.MeshStandardMaterial({color:0x1a120b, roughness:0.8});
+  for(let i=0;i<=0;i++){ const b=new THREE.Mesh(new THREE.BoxGeometry(0.014,WIN_H,0.03),bar); b.position.copy(WINDOW).add(new THREE.Vector3(i*WIN_W/4,0,-0.03)); b.castShadow = false; scene.add(b); }
+  for(let j=-1;j<=1;j++){ const b=new THREE.Mesh(new THREE.BoxGeometry(WIN_W,0.014,0.03),bar); b.position.copy(WINDOW).add(new THREE.Vector3(0,j*WIN_H/4,-0.03)); b.castShadow = false; scene.add(b); }
+}
+
+/* the carved plaque, post and mallet */
+const cast = [];
+function add(mesh, x, y, z, ry = 0){ mesh.position.set(x,y,z); mesh.rotation.y = ry; mesh.castShadow = true; mesh.receiveShadow = true; scene.add(mesh); cast.push(mesh); return mesh; }
+const plaqueMat = woodMat({pale:0x9a6c40, dark:0x452710, rough:0.30, axis:0, ringFreq:6.5, grain:1.4, bump:1.0, rays:0.0, checks:0.0, carve:1, sheen:0.35, coat:0.28, env:0.45, toneGain:1.5});
+const plaque = add(new THREE.Mesh(new RoundedBoxGeometry(0.98,0.05,0.62,3,0.010), plaqueMat), -0.20, 0.108, -0.36, 0.06);
+plaque.rotation.x = 0.27;      /* propped on an off-cut: the face tips toward the camera so the sheen and the carving both read */
+const wedge = add(new THREE.Mesh(new RoundedBoxGeometry(0.64,0.16,0.10,2,0.006), woodMat({pale:0x8f6c46, dark:0x4a2d19, rough:0.6, axis:0, grain:1.5, ringFreq:8, bump:0.4})), -0.20, 0.078, -0.63, 0.06);
+const postMat = woodMat({pale:0xa77c52, dark:0x563420, rough:0.55, axis:1, ringFreq:7.5, grain:1.4, bump:0.50, rays:0.6});
+const post = add(new THREE.Mesh(new RoundedBoxGeometry(0.14,0.52,0.14,3,0.008), postMat), 0.50, 0.26, -0.42, 0.30);
+const malletMat = woodMat({pale:0x9a7550, dark:0x55341c, rough:0.52, axis:0, ringFreq:9.0, grain:1.6, bump:0.45, rays:1.0});
+const headG = new THREE.CylinderGeometry(0.052,0.052,0.19,40); headG.rotateZ(Math.PI/2);
+const head = add(new THREE.Mesh(headG, malletMat), 0.30, 0.052, 0.04, -0.30);
+/* the handle runs out from the head's flank, toward the camera */
+const handleG = new THREE.CylinderGeometry(0.017,0.021,0.30,20); handleG.rotateX(Math.PI/2);
+const handle = add(new THREE.Mesh(handleG, woodMat({pale:0xae8a61, dark:0x5e4025, rough:0.5, axis:2, grain:2.0, ringFreq:10, bump:0.4})), 0.30, 0.052, 0.04, -0.30);
+{ /* it leaves the head's centre and rests on the bench at its far end: tilt so the tip touches instead of floating */
+  const base = new THREE.Vector3(0.30,0.052,0.04), tilt = Math.asin((0.052-0.0175)/0.30);
+  const dir = new THREE.Vector3(Math.sin(-0.30)*Math.cos(tilt), -Math.sin(tilt), Math.cos(-0.30)*Math.cos(tilt));
+  handle.rotation.set(0,0,0); handle.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1), dir);
+  handle.position.copy(base).addScaledVector(dir, 0.15);
+}
+
+/* ------------------------------------------------------------------ lights (Kibori constants) */
+const key = new THREE.DirectionalLight(0xfff2df, 2.00);
+key.position.copy(TARGET).addScaledVector(DOWN, -8);
+key.target.position.copy(TARGET);
+key.castShadow = true;
+const shadowSize = Math.min(renderer.capabilities.maxTextureSize, Math.max(innerWidth || 1440, 1) > 820 ? 4096 : 2048);
+key.shadow.mapSize.set(shadowSize, shadowSize);
+key.shadow.camera.near = 1; key.shadow.camera.far = 20;
+key.shadow.camera.left = -2.6; key.shadow.camera.right = 2.6; key.shadow.camera.top = 2.2; key.shadow.camera.bottom = -2.2;
+key.shadow.bias = -0.00025;
+key.shadow.normalBias = shadowSize > 2048 ? 0.0045 : 0.0085;
+key.shadow.radius = 2;
+scene.add(key, key.target);
+const fill = new THREE.DirectionalLight(0xaec7df, 0.60); fill.position.set(6,2.6,5); scene.add(fill);
+const rim  = new THREE.DirectionalLight(0xffdeb4, 0.72); rim.position.set(4,1.4,-9); scene.add(rim);
+const hemi = new THREE.HemisphereLight(0xb5c5d7, 0x35281c, 0.19); scene.add(hemi);
+renderer.shadowMap.autoUpdate = false; renderer.shadowMap.needsUpdate = true;   /* static scene: render the shadow map once */
+
+/* ------------------------------------------------------------------ contact shadow decals (Kibori multiplies AO into the scene; here a cheap baked pool) */
+const contactMat = new THREE.ShaderMaterial({transparent:true, depthWrite:false, uniforms:{uK:{value:1}},
+  vertexShader:`varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader:`varying vec2 vUv; uniform float uK; void main(){
+    vec2 d=(vUv-0.5)*2.0; float r=length(d); float a=pow(1.0-smoothstep(0.30,1.0,r),1.6);
+    gl_FragColor=vec4(0.0,0.0,0.0,a*0.78*uK); }`});
+const contacts = [];
+function contact(x,z,sx,sz,ry){ const m=new THREE.Mesh(new THREE.PlaneGeometry(1,1),contactMat); m.rotation.set(-Math.PI/2,0,ry); m.scale.set(sx,sz,1); m.position.set(x,0.0012,z); m.renderOrder=2; scene.add(m); contacts.push(m); }
+contact(-0.20,-0.36,1.06,0.66,0.06); contact(-0.20,-0.62,0.74,0.20,0.06); contact(0.50,-0.42,0.28,0.28,0.30); contact(0.30,0.04,0.30,0.16,-0.30); contact(0.23,0.27,0.14,0.36,-0.30);
+
+/* ------------------------------------------------------------------ 5g/5h. shafts + dust, ported
+   Additive planes: colour (1,.82,.56), alpha profile across^2.2 * fbm; drawn in linear HDR so the tone curve sees them. */
+function shaftMaterial(gain){
+  return new THREE.ShaderMaterial({
+    uniforms:{uTime:{value:0}, uGain:{value:gain}, uFade:{value:0.22}},
+    vertexShader:`varying vec2 vUv; varying float vY; void main(){ vUv=uv; vY=(modelMatrix*vec4(position,1.0)).y; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+    fragmentShader: NOISE + `
+      varying vec2 vUv; varying float vY; uniform float uTime, uGain, uFade;
+      void main(){
+        /* clamp before pow: a hair-negative edge coordinate makes this NaN, and NaN through additive blending is a black wedge */
+        float across = clamp(abs(vUv.x-0.5)*2.0, 0.0, 1.0);
+        float a = pow(max(0.0, 1.0-across), 2.2) * smoothstep(0.0,uFade,vUv.y) * smoothstep(1.0,0.42,vUv.y);   /* Kibori fades the foot over 0.30; here the beam has to reach the bench, so 0.22 */
+        a *= 0.55 + 0.45*clamp(fbm(vec2(vUv.x*3.5, vUv.y*1.4 - uTime*0.02), 3), 0.0, 1.0);
+        /* fade out toward the bench: where a shaft plane cuts a solid it draws a hard wedge, so the beam dies above the tallest timber */
+        a *= smoothstep(0.02, 0.34, vY);
+        gl_FragColor = vec4(vec3(1.0,0.82,0.56)*max(a,0.0)*uGain, 1.0);
+      }`,
+    transparent:true, blending:THREE.AdditiveBlending, depthWrite:false, depthTest:true, side:THREE.DoubleSide});
+}
+const shaftMat = shaftMaterial(0.13), backMat = shaftMaterial(0.08);
+const shaftGroup = new THREE.Group(), backGroup = new THREE.Group(); scene.add(shaftGroup, backGroup);
+const CAMPOS = new THREE.Vector3(0.60, 1.25, 2.55);
+const shaftAxes = [];
+function shaftPlane(origin, len, wid, mat, group){
+  const toCam = CAMPOS.clone().sub(origin).normalize();
+  const right = new THREE.Vector3().crossVectors(DOWN, toCam).normalize();
+  const nrm = new THREE.Vector3().crossVectors(right, DOWN).normalize();
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(wid, len), mat);
+  const basis = new THREE.Matrix4().makeBasis(right, DOWN.clone().negate(), nrm);   /* plane +y points back up the beam */
+  m.quaternion.setFromRotationMatrix(basis);
+  m.position.copy(origin).addScaledVector(DOWN, len/2);
+  m.renderOrder = 30; m.frustumCulled = false; group.add(m);
+  return {o:origin.clone(), len};
+}
+/* five beams across the opening; each starts in the window's face and runs along the light to the bench */
+[[-0.30,0.44],[-0.15,0.40],[0.0,0.52],[0.15,0.40],[0.30,0.44]].forEach(([dx,w],i)=>{
+  const o = WINDOW.clone().add(new THREE.Vector3(dx*WIN_W,0.0,0.06));
+  shaftAxes.push(shaftPlane(o, 2.75, w, shaftMat, shaftGroup));
+});
+/* rays that lie along the wall behind the timber: longer, dimmer, wider, kept just off the boards so they read as haze on them */
+[[-0.75,0.9],[-0.10,0.8],[0.15,0.30],[0.42,0.25],[0.75,0.40],[1.02,0.20],[1.28,0.35],[1.56,0.25],[1.86,0.40],[2.12,0.20]].forEach(([dx,w],i)=>{
+  const o = WINDOW.clone().add(new THREE.Vector3(dx,-0.20,0.025+i*0.004));
+  const right = new THREE.Vector3().crossVectors(DOWN, new THREE.Vector3(0,0,1)).normalize();
+  const nrm = new THREE.Vector3().crossVectors(right, DOWN).normalize();
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, 2.2), backMat);
+  m.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(right, DOWN.clone().negate(), nrm));
+  m.position.copy(o).addScaledVector(DOWN, 1.1); m.renderOrder = 29 + i*0.001; m.frustumCulled = false; backGroup.add(m);
+});
+
+let _s = 20260214; const rnd = () => { _s = (_s*1664525 + 1013904223) & 0xffffffff; return (_s>>>8)/16777216; };
+const N = 1900, pos = new Float32Array(N*3), aux = new Float32Array(N*2);
+for(let i=0;i<N;i++){
+  pos[i*3]   = -2.6 + rnd()*5.0;
+  pos[i*3+1] = -0.1 + rnd()*2.6;
+  pos[i*3+2] = -1.7 + rnd()*3.3;
+  aux[i*2]   = 0.35 + rnd()*1.15;
+  aux[i*2+1] = rnd()*6.283;
+}
+const dg = new THREE.BufferGeometry();
+dg.setAttribute('position', new THREE.Float32BufferAttribute(pos,3));
+dg.setAttribute('aux', new THREE.Float32BufferAttribute(aux,2));
+const dustMat = new THREE.ShaderMaterial({
+  uniforms:{uTime:{value:0}, uPx:{value:1}, uO:{value:shaftAxes.map(s=>s.o)}, uD:{value:DOWN.clone()}, uGain:{value:1}},
+  vertexShader:`
+    attribute vec2 aux; varying float vI; uniform float uTime, uPx, uGain; uniform vec3 uO[5]; uniform vec3 uD;
+    void main(){
+      vec3 p = position;
+      p.y = mod(p.y + 0.1 + uTime*0.014, 2.6) - 0.1;
+      p.y += sin(uTime*0.16 + aux.y)*0.06;
+      p.x += cos(uTime*0.11 + aux.y*1.7)*0.10;
+      vec4 mv = modelViewMatrix*vec4(p,1.0);
+      float d = -mv.z;
+      /* soft bokeh, not specks: near motes bigger and fainter, far ones smaller and a touch brighter */
+      float sz = aux.x*(17.0/max(0.6,d));
+      vI = (0.30 + 0.25*sin(uTime*0.35 + aux.y)) * smoothstep(10.0,2.0,d) * clamp(3.2/max(sz,1.0), 0.35, 1.2);
+      /* dust shows only where the light gathers: distance to the nearest beam axis */
+      float g = 0.0;
+      for(int i=0;i<5;i++){ vec3 q=p-uO[i]; float t=dot(q,uD); vec3 perp=q-uD*t; g=max(g, exp(-dot(perp,perp)*9.0)*smoothstep(-0.2,0.6,t)*smoothstep(4.2,2.6,t)); }
+      vI *= 0.05 + 0.95*g;
+      vI *= smoothstep(1.6, 3.6, sz);          /* nothing smaller than a soft dot: a 2 px speck reads as a star */
+      gl_PointSize = clamp(sz*uPx, 3.4*uPx, 46.0*uPx);
+      gl_Position = projectionMatrix*mv;
+      vI *= uGain;
+    }`,
+  fragmentShader:`
+    varying float vI;
+    void main(){
+      float r = length(gl_PointCoord-0.5);
+      float a = exp(-r*r*14.0)*(1.0-smoothstep(0.36,0.5,r));
+      gl_FragColor = vec4(vec3(1.0,0.84,0.62)*a*vI*3.2, 1.0);   /* daylight through the window: warm, not fire-orange */
+    }`,
+  transparent:true, blending:THREE.AdditiveBlending, depthWrite:false, depthTest:true});
+const dust = new THREE.Points(dg, dustMat); dust.frustumCulled = false; scene.add(dust);
+
+/* ------------------------------------------------------------------ final pass: sharpen, vignette, ACES, sRGB, grain (Kibori) */
+const finalMat = new THREE.ShaderMaterial({
+  uniforms:{uTex:{value:null}, uTime:{value:0}, uRes:{value:new THREE.Vector2(1,1)}, uSharp:{value:0.10}, uGrade:{value:1}},
+  vertexShader: QUAD_VS,
+  fragmentShader: NOISE + `
+    varying vec2 vUv; uniform sampler2D uTex; uniform float uTime, uSharp, uGrade; uniform vec2 uRes;
+    vec3 aces(vec3 x){ const float a=2.51,b=0.03,c=2.43,d=0.59,e=0.14; return clamp((x*(a*x+b))/(x*(c*x+d)+e), 0.0, 1.0); }
+    vec3 lin2srgb(vec3 c){ return mix(c*12.92, 1.055*pow(max(c,vec3(1e-5)),vec3(1.0/2.4))-0.055, step(0.0031308,c)); }
+    void main(){
+      vec2 px = 1.0/uRes, d = vUv-0.5;
+      vec3 col = texture2D(uTex, vUv).rgb;
+      /* small unsharp mask before tone mapping: most of what reads as "sharper" once MSAA has taken the jaggies out */
+      vec3 blur = (texture2D(uTex,vUv+vec2(px.x,0.0)).rgb+texture2D(uTex,vUv-vec2(px.x,0.0)).rgb+texture2D(uTex,vUv+vec2(0.0,px.y)).rgb+texture2D(uTex,vUv-vec2(0.0,px.y)).rgb)*0.25;
+      col += (col-blur)*uSharp;
+      float v = 1.0 - smoothstep(0.46, 1.20, length(d*vec2(1.02,1.0))*1.24);
+      col *= mix(1.0, 0.42+0.58*v, uGrade);
+      col = mix(min(max(col,0.0),vec3(1.0)), aces(max(col,0.0)), uGrade);
+      col = lin2srgb(col);
+      float g = hash1(vUv*uRes + fract(uTime)*137.0);
+      col += (g-0.5)*0.003*uGrade;                /* a 1/255 dither: breaks 8-bit banding in the dark gradients */
+      gl_FragColor = vec4(col,1.0);
+    }`,
+  depthTest:false, depthWrite:false});
+
+/* ------------------------------------------------------------------ layers */
+const S = {grain:true, field:true, env:true, key:true, fill:true, shadow:true, shafts:true, back:true, dust:true, grade:true};
+const LAYERS = [
+  ['grain','Wood grain & pores','procedural'],['field','Texture field 1024','vs 16'],['env','Studio reflections','PMREM'],
+  ['key','Warm key light','2.0'],['fill','Cool fill + rim','0.60'],['shadow','Soft + contact shadow','4096'],
+  ['shafts','Light shafts','5 planes'],['back','Rays on the wall','4 planes'],['dust','Dust in the beam','1900'],['grade','ACES grade','HDR'],
+];
+function applyState(){
+  sharedU.uFlat.value = S.grain ? 0 : 1;
+  sharedU.uWoodField.value = (S.field ? FIELD_HI : FIELD_LO).texture;
+  for(const m of woodMats) m.envMapIntensity = S.env ? m.userData.env0 : 0;
+  key.intensity = S.key ? 2.0 : 0;
+  fill.intensity = S.fill ? 0.60 : 0; rim.intensity = S.fill ? 0.72 : 0; hemi.intensity = S.fill ? 0.19 : 0.02;
+  if('intensity' in key.shadow) key.shadow.intensity = S.shadow ? 1 : 0;
+  contactMat.uniforms.uK.value = S.shadow ? 1 : 0;
+  shaftGroup.visible = S.shafts; backGroup.visible = S.back; dust.visible = S.dust;
+  finalMat.uniforms.uGrade.value = S.grade ? 1 : 0;
+  need = 1; measureSoon();
+}
+const layersEl = $('#layers');
+LAYERS.forEach(([id,label,hint]) => {
+  const l = document.createElement('label');
+  l.innerHTML = `<input type="checkbox" checked data-id="${id}"><span>${label}</span><em>${hint}</em>`;
+  layersEl.appendChild(l);
+});
+layersEl.addEventListener('change', e => { S[e.target.dataset.id] = e.target.checked; applyState(); });
+function setAll(v){ for(const k in S) S[k] = v; layersEl.querySelectorAll('input').forEach(i => i.checked = v); applyState(); }
+$('#allOff').onclick = () => setAll(false);
+$('#allOn').onclick = () => setAll(true);
+
+/* ------------------------------------------------------------------ sizing */
+let VW = 1, VH = 1, DPR = 1, need = 1;
+function resize(){
+  VW = Math.max(1, canvas.clientWidth || innerWidth || 1440); VH = Math.max(1, canvas.clientHeight || innerHeight || 900);
+  DPR = Math.min(window.devicePixelRatio || 1, 2);                       /* DPR cap 2 */
+  renderer.setPixelRatio(1); renderer.setSize(Math.round(VW*DPR), Math.round(VH*DPR), false);
+  rt.setSize(Math.round(VW*DPR), Math.round(VH*DPR));
+  finalMat.uniforms.uRes.value.set(Math.round(VW*DPR), Math.round(VH*DPR));
+  dustMat.uniforms.uPx.value = DPR * Math.min(1, VH/900) ;
+  /* wide desk view; on a portrait phone pull the camera back so the bench still fits */
+  camera.aspect = VW/VH; camera.fov = Math.max(34, 2*Math.atan(0.42/(VW/VH))*180/Math.PI);   /* keep 1.5 m of bench in a portrait frame */ camera.updateProjectionMatrix();
+  need = 1; measureSoon();
+}
+new ResizeObserver(resize).observe(canvas);
+
+/* ------------------------------------------------------------------ loop */
+const clock = {t: reduce ? 5.2 : 0, last: 0, paused: false, freeze: reduce, view: 0};
+let visible = true, raf = 0;
+function setCam(){
+  const th = clock.freeze ? 0 : Math.sin(clock.t*0.11)*0.045 + clock.view;
+  const c = Math.cos(th), s = Math.sin(th), off = CAMPOS.clone().sub(TARGET);
+  camera.position.set(TARGET.x + off.x*c + off.z*s, CAMPOS.y, TARGET.z - off.x*s + off.z*c);
+  camera.lookAt(TARGET); camera.updateMatrixWorld(true);
+}
+function drawFrame(){
+  setCam();
+  shaftMat.uniforms.uTime.value = backMat.uniforms.uTime.value = dustMat.uniforms.uTime.value = clock.t;
+  finalMat.uniforms.uTime.value = clock.freeze ? 0.5 : clock.t;
+  renderer.setRenderTarget(rt); renderer.clear(true,true,true); renderer.render(scene, camera);
+  finalMat.uniforms.uTex.value = rt.texture;
+  pass(finalMat, null);
+}
+let bufCtx = null, buf = null, wantMeasure = 0, lastMeasure = 0, lastResult = null;
+function measureNow(){
+  const w = 640, h = Math.max(1, Math.round(640*VH/VW));
+  if(!buf){ buf = document.createElement('canvas'); bufCtx = buf.getContext('2d', {willReadFrequently:true}); }
+  buf.width = w; buf.height = h;
+  bufCtx.drawImage(canvas, 0, 0, w, h);                                    /* same task as the render: no preserveDrawingBuffer needed */
+  const img = bufCtx.getImageData(0,0,w,h);
+  const res = KiboriMetrics.measure(img.data, w, h, regions(), {texelPerPx: KiboriScore.texelPerPx()});
+  lastResult = res; paintHud(res);
+}
+function measureSoon(){ wantMeasure = 1; }
+function frame(now){
+  raf = requestAnimationFrame(frame);
+  if(!visible || document.hidden) { clock.last = 0; return; }
+  const dt = clock.last ? Math.min(0.033, (now-clock.last)/1000) : 0; clock.last = now;      /* dt clamp 1/30 s; first frame after a pause is 0 */
+  if(!clock.freeze){ clock.t += dt; need = 1; }
+  if(!need) return; need = 0;
+  drawFrame();
+  if(wantMeasure && now - lastMeasure > (reduce ? 0 : 450)){ wantMeasure = 0; lastMeasure = now; measureNow(); }
+  else if(!clock.freeze && now - lastMeasure > 1400){ lastMeasure = now; measureNow(); }
+}
+document.addEventListener('visibilitychange', () => { clock.last = 0; if(!document.hidden) need = 1; });
+new IntersectionObserver(es => { visible = es[0].isIntersecting; clock.last = 0; if(visible) need = 1; }).observe(canvas);
+addEventListener('pointermove', e => { if(clock.freeze || e.target.closest('.panel')) return; clock.view = (e.clientX/innerWidth-0.5)*0.16; });
+
+/* ------------------------------------------------------------------ HUD */
+const rowsEl = $('#rows'), TARGET_SCORE = 8;
+function paintHud(res){
+  if(!res) return;
+  rowsEl.innerHTML = res.items.map(i => {
+    const s = i.score, cls = s == null ? '' : s >= TARGET_SCORE ? 'pass' : 'low';
+    return `<div class="row ${cls}"><span>${i.name}</span><b>${s == null ? '--' : s.toFixed(1)}</b><div class="bar"><i style="width:${(s||0)*10}%"></i></div></div>`;
+  }).join('');
+  $('#tot').textContent = res.total == null ? '--' : res.total.toFixed(1);
+  $('#low').textContent = res.min == null ? '--' : res.min.toFixed(1);
+  $('#chipN').textContent = $('#tot').textContent;
+}
+
+/* ------------------------------------------------------------------ regions + API for scorecard.mjs
+   Screen-space regions come from projecting world points through the live camera, so they survive any viewport. */
+const V = new THREE.Vector3();
+function P(x,y,z){ V.set(x,y,z).project(camera); return [(V.x+1)/2, (1-V.y)/2]; }
+function R(x0,z0,x1,z1,y=0){ const a=P(x0,y,z0), b=P(x1,y,z1), c=P(x0,y,z1), d=P(x1,y,z0), xs=[a[0],b[0],c[0],d[0]], ys=[a[1],b[1],c[1],d[1]]; return [Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)]; }
+const PV = new THREE.Vector3();
+function PL(mesh, lx, ly, lz){ PV.set(lx,ly,lz); mesh.localToWorld(PV); return P(PV.x,PV.y,PV.z); }       /* project a point given in a mesh's own frame */
+function RL(mesh, x0,z0,x1,z1, y){ const c=[PL(mesh,x0,y,z0),PL(mesh,x1,y,z1),PL(mesh,x0,y,z1),PL(mesh,x1,y,z0)]; return [Math.min(...c.map(a=>a[0])),Math.min(...c.map(a=>a[1])),Math.max(...c.map(a=>a[0])),Math.max(...c.map(a=>a[1]))]; }
+function regions(){
+  plaque.updateMatrixWorld(true);
+  /* world anchors: the plaque's carved top, the post's shaded flank, the pool of light, the post's shadow strip */
+  const g0 = PL(plaque,-0.40,0.025,-0.10), g1 = PL(plaque,-0.20,0.025,-0.10);
+  const ang = Math.atan2((g1[1]-g0[1])*VH, (g1[0]-g0[0])*VW);
+  const pf = P(0.51,0.26,-0.35);                                          /* post's camera-side flank */
+  const ex = -0.20+Math.cos(0.06)*0.20+Math.sin(0.06)*0.31, ez = -0.36-Math.sin(0.06)*0.20+Math.cos(0.06)*0.31, d = [Math.sin(0.06), Math.cos(0.06)];   /* plaque front edge */
+  const c0 = P(ex+d[0]*0.004,0,ez+d[1]*0.004), c1 = P(ex+d[0]*0.085,0,ez+d[1]*0.085);
+  const wbl = P(WINDOW.x-WIN_W/2, WINDOW.y-WIN_H/2, WINDOW.z);
+  const wbr = P(WINDOW.x+WIN_W/2, WINDOW.y-WIN_H/2, WINDOW.z);            /* the sill's right-hand corner on screen */
+  const s0 = [wbr[0]+0.05, wbr[1]+0.06], s1 = [wbr[0]+0.05, wbr[1]+0.22], r0 = [wbr[0]+0.17, wbr[1]+0.06], r1 = [wbr[0]+0.17, wbr[1]+0.22];   /* beams hang below the sill; the reference strip is the dark wall beside them */
+  const b0 = P(0.30,0.72,WINDOW.z+0.03), b1 = P(1.25,0.72,WINDOW.z+0.03);   /* wall haze right of the sill */
+  const w0 = P(0.30,0.95,-1.0), w1 = P(0.95,1.45,-1.0);
+  const sc = [0.50+0.533*0.30, -0.42+0.6*0.30];                           /* post shadow strip 0.3 up the post */
+  return {
+    grain:{rect:RL(plaque,-0.40,-0.20,-0.20,0.04,0.025), angle:ang},
+    spec:RL(plaque,-0.36,-0.22,-0.14,0.08,0.025),
+    lit:RL(plaque,-0.44,-0.24,-0.16,0.10,0.025), shade:[pf[0]-0.008,pf[1]-0.035,pf[0]+0.008,pf[1]+0.035],
+    shadow:R(sc[0]-0.025,sc[1]-0.025,sc[0]+0.025,sc[1]+0.025,0), litRef:R(0.50,-0.16,0.56,-0.10,0),
+    contact:{p0:c0, p1:c1},
+    shaft:{p0:s0, p1:s1, ref:{p0:r0, p1:r1}, off:60},
+    dust:{rect:[wbr[0]-0.25, wbr[1]+0.05, wbr[0]-0.02, wbr[1]+0.20], ref:[0.01, 0.12, Math.max(0.05, wbl[0]-0.03), 0.27]},
+    bgRays:{p0:b0, p1:b1, k:8},
+    wall:[Math.min(w0[0],w1[0]), Math.min(w0[1],w1[1]), Math.max(w0[0],w1[0]), Math.max(w0[1],w1[1])],
+  };
+}
+let ovl = null;
+function overlay(on){
+  if(!ovl){ ovl = document.createElement('canvas'); ovl.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1'; canvas.after(ovl); }
+  ovl.style.display = on ? 'block' : 'none'; if(!on) return;
+  ovl.width = VW; ovl.height = VH; const c = ovl.getContext('2d'), Rg = regions(); c.lineWidth = 1.5; c.font = '11px sans-serif';
+  const box = (r,col,t) => { c.strokeStyle = c.fillStyle = col; c.strokeRect(r[0]*VW, r[1]*VH, (r[2]-r[0])*VW, (r[3]-r[1])*VH); c.fillText(t, r[0]*VW+2, r[1]*VH-3); };
+  const line = (a,b,col,t) => { c.strokeStyle = c.fillStyle = col; c.beginPath(); c.moveTo(a[0]*VW,a[1]*VH); c.lineTo(b[0]*VW,b[1]*VH); c.stroke(); c.fillText(t, a[0]*VW+3, a[1]*VH); };
+  box(Rg.grain.rect,'#0f0','grain'); box(Rg.spec,'#ff0','spec'); box(Rg.lit,'#fff','lit'); box(Rg.shade,'#f0f','shade'); box(Rg.shadow,'#f80','shadow'); box(Rg.litRef,'#0ff','litRef'); box(Rg.wall,'#88f','wall');
+  line(Rg.contact.p0,Rg.contact.p1,'#f44','contact'); line(Rg.shaft.p0,Rg.shaft.p1,'#4f4','shaft'); line(Rg.bgRays.p0,Rg.bgRays.p1,'#4ff','bgRays');
+}
+window.KiboriScore = {
+  overlay, time: () => clock.t, frozen: () => clock.freeze,
+  ready: false,
+  regions, THREE_REV: THREE.REVISION,
+  layers: () => ({...S}),
+  set(id, v){ S[id] = v; layersEl.querySelector(`[data-id="${id}"]`).checked = v; applyState(); },
+  setAll,
+  freeze(v = true){ clock.freeze = v; if(v) clock.t = 5.2; need = 1; },
+  size(){ return {w: renderer.domElement.width, h: renderer.domElement.height, dpr: DPR}; },
+  render(nudgeX = 0, nudgeY = 0){ camera.clearViewOffset(); const w = renderer.domElement.width, h = renderer.domElement.height;
+    if(nudgeX || nudgeY) camera.setViewOffset(w, h, nudgeX, nudgeY, w, h); drawFrame(); if(nudgeX || nudgeY) camera.clearViewOffset(); },
+  measureLive(){ drawFrame(); measureNow(); return lastResult; },
+  texelPerPx(){                                                    /* finest grain band (fibres: 230 field cycles / m) at the bench centre */
+    const a = P(-0.3,0.05,0.0), b = P(-0.2,0.05,0.0), pxPerM = Math.hypot((b[0]-a[0])*VW*DPR, (b[1]-a[1])*VH*DPR) / 0.1;
+    const texPerM = 230 * 1.0 * (S.field ? 1024 : 16) / 64 / 1.0;       /* cycles/m * (texels per cycle) */
+    return texPerM / pxPerM; },
+};
+for(const m of woodMats) m.envMap = ENV;          /* explicit: envMapIntensity is only read when the material owns the map */
+resize(); applyState(); setCam();
+requestAnimationFrame(now => { drawFrame(); measureNow(); KiboriScore.ready = true; raf = requestAnimationFrame(frame); });
+</script>
+</body>
+</html>

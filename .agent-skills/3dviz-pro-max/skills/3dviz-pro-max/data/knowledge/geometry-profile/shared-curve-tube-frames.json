@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-curve-tube-frames",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "geometry-profile",
+  "title": {
+    "en": "Curves and tubes with a continuous swept frame"
+  },
+  "aliases": {
+    "en": [
+      "tube along a curve",
+      "swept frame continuity",
+      "curve arc length sampling"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "molecules-materials",
+    "waves-optics-fields",
+    "abstract-systems-data"
+  ],
+  "summary": "Sweep a cross-section along a curve with a frame that stays continuous, and sample by arc length rather than by raw parameter.",
+  "objective": "The swept profile keeps a stable orientation along the whole path, with no sudden flip at a straight or inflecting segment, and segment lengths match the declared sampling rule.",
+  "tags": [
+    "geometry-profile",
+    "curve",
+    "tube",
+    "sweep",
+    "frame",
+    "arc-length"
+  ],
+  "subject_terms": [
+    "space curve",
+    "arc length parameterization",
+    "Frenet frame",
+    "tangent normal binormal",
+    "rotation minimising frame",
+    "twist",
+    "inflection point",
+    "cross-section sweep",
+    "tube geometry"
+  ],
+  "intent_signals": [
+    "the tube twists suddenly",
+    "ribbon flips along the path",
+    "segments are uneven along the curve",
+    "draw a pipe along this route",
+    "bond cylinders between atoms"
+  ],
+  "example_prompts": [
+    "Sweep a flat ribbon along a knot without letting it flip.",
+    "Draw pipes along a routed path with even segment lengths.",
+    "Make an edge bundle in a graph read as tubes with consistent thickness."
+  ],
+  "negative_signals": [
+    "single straight cylinder between two points",
+    "flat two-dimensional line chart"
+  ],
+  "not_for": [
+    "Simple straight connectors, where a cylinder placed between two endpoints is clearer and cheaper.",
+    "Physically simulated cables or hair, whose shape comes from a solver."
+  ],
+  "content": {
+    "principles": [
+      "The curve carries two independent pieces of information: where the path goes and how the cross-section is rotated around it. Getting the path right does not make the rotation right.",
+      "A frame built from the curve's own bending is undefined wherever the curve stops bending. Straight segments and inflection points are exactly where such a frame flips, so a path that contains them needs a frame that is carried along instead of recomputed pointwise.",
+      "The curve parameter is not distance. Sampling by raw parameter puts many samples where the parameterisation is slow and few where it is fast, which shows up as uneven tube segments and uneven texture flow.",
+      "Twist is a design variable. Whether the ribbon should end with the same orientation it started with is a decision the record should make explicitly, particularly on a closed loop where the two ends must agree.",
+      "Cross-section shape and radius belong to the object's meaning: a data edge, a pipe and a tentacle should not all be the same eight-sided tube at the same radius."
+    ],
+    "implementation": [
+      "Sample the path by arc length so that segment lengths are comparable, and increase the number of length samples when the curve is long or highly non-uniform.",
+      "Propagate the cross-section orientation from one sample to the next by rotating the previous frame onto the new tangent, rather than rebuilding the frame from the local bending at each sample. This keeps the frame defined through straight and inflecting segments.",
+      "For a closed path, measure the mismatch between the first and last frame and distribute it as an even twist along the path, or state that the seam is intentionally visible.",
+      "Choose radial resolution from the silhouette: a tube seen at close range needs enough radial segments that its outline reads as round, while a distant edge in a graph rarely needs more than a few.",
+      "Taper, colour or vary the radius along arc length when the tube encodes a quantity, and record what the radius means so it is not read as decoration.",
+      "Add caps or explicit junction geometry where tubes meet, since abutting two tubes leaves a visible notch at any bend."
+    ],
+    "observable_checks": [
+      "Following the tube from end to end shows no sudden rotation of a texture stripe, a flat ribbon face or an asymmetric cross-section.",
+      "A straight segment inserted in the middle of a curved path does not cause the cross-section to flip.",
+      "Segment boundaries along the tube are evenly spaced when arc-length sampling is declared, measured on a long, unevenly parameterised curve.",
+      "On a closed loop the seam either shows no discontinuity or shows exactly the declared twist.",
+      "Reducing the radial segment count degrades the silhouette gradually rather than producing self-intersecting facets."
+    ]
+  },
+  "creative_affordances": [
+    "Non-circular cross-sections, deliberate twisting and varying profiles are strong expressive tools for ribbons, sculptures and stylised connectors.",
+    "A visible faceted tube can be part of the art direction; the continuity requirement is about the frame, not about smoothness."
+  ],
+  "known_limits": [
+    "This profile does not prevent a tube from self-intersecting where the path curves more tightly than the tube radius.",
+    "The frame condition cited here is a definition from calculus about when a curve-derived normal exists; it does not by itself specify a particular propagation algorithm.",
+    "Authored reusable guidance; no runtime artifact or rendered result has been observed for this record."
+  ],
+  "related_ids": [
+    "recipe.ribbon-motion-sculpture",
+    "recipe.mobius-orientation-trace",
+    "recipe.service-graph",
+    "knowledge.graph-in-space",
+    "knowledge.shared-parametric-surface-domain"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-frenet-normal-condition",
+      "statement": "For a curve with unit tangent vector T, the principal unit normal is defined as the normalised derivative of T only when that derivative is not the zero vector, and the binormal is the cross product of tangent and normal, so the tangent-normal-binormal frame is undefined wherever the unit tangent stops changing.",
+      "scope": "Textbook definition of the Frenet frame and the existence condition for its principal normal. It explains why a bending-derived frame fails on straight and inflecting segments; it does not prescribe a replacement construction.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-openstax-arc-length-curvature",
+          "locator": "Definition: principal unit normal vector; binormal vector; TNB frame"
+        }
+      ]
+    },
+    {
+      "id": "claim.shared-curve-arclength-sampling",
+      "statement": "In one widely used curve implementation, sampling at a raw interpolation factor and sampling at a fraction of arc length are separate operations, only the arc-length variant returns equidistant points, the cumulative length is computed from a fixed number of divisions defaulting to 200, and the documentation recommends increasing that number for very large curves.",
+      "scope": "Documented sampling behavior of one library as of the access date. It establishes that parameter sampling and arc-length sampling differ; the default division count is that library's default, not a general recommendation.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-curve",
+          "locator": "getPoint; getPointAt; getSpacedPoints; arcLengthDivisions"
+        }
+      ]
+    }
+  ]
+}

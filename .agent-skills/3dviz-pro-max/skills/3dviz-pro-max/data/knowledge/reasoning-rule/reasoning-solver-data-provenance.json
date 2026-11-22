@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-solver-data-provenance",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Label playback of external solver data"
+  },
+  "aliases": {
+    "en": [
+      "data playback",
+      "simulation provenance",
+      "downsampling"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal",
+    "earth-environment"
+  ],
+  "summary": "State the origin, units, time step and any resampling when a scene plays back results produced elsewhere.",
+  "objective": "Keep the distinction between a simulation running in the scene and a recording of one that ran elsewhere.",
+  "applies_when": [
+    "A field, deformation or flow animation comes from precomputed data.",
+    "Results were produced by another tool, dataset or offline run.",
+    "The scene invites parameter changes that the data cannot answer."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "playback",
+    "provenance",
+    "precomputed",
+    "resampling",
+    "units",
+    "time step"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "fields",
+    "provenance"
+  ],
+  "intent_signals": [
+    "play the simulation results",
+    "import the CFD output",
+    "can I change the parameters"
+  ],
+  "example_prompts": [
+    "Play back the imported simulation with its metadata visible.",
+    "Show the flow results and be clear about what I can change."
+  ],
+  "negative_signals": [
+    "Live solvers running in the scene, which have their own model disclosure.",
+    "Purely illustrative motion that makes no simulation claim."
+  ],
+  "not_for": [
+    "Live solvers running in the scene, which have their own model disclosure.",
+    "Purely illustrative motion that makes no simulation claim."
+  ],
+  "content": {
+    "principles": [
+      "Playback and simulation look identical on screen and are epistemically different. A recording answers only the questions its run answered.",
+      "The metadata is the model: solver, mesh or grid, time step, units, physical parameters and the run configuration determine what the frames mean.",
+      "Resampling in time or space is a transformation of the data, and interpolated frames are inferred rather than computed, so smoothness can suggest resolution that never existed.",
+      "Controls must match authority, which is broader than selecting a stored run. Selecting among runs, interpolating between them and evaluating a fitted surrogate are all legitimate when each is labelled with its method and its support, and when the scene says where the underlying runs actually are. What misleads is a control that implies a solve nobody ran."
+    ],
+    "implementation": [
+      "Carry the run metadata with the data and show it in the scene: source, solver, units, physical parameters, time step and spatial resolution.",
+      "Mark interpolated frames as interpolated, and state the interpolation method used between stored frames.",
+      "Classify each interactive parameter: selects a stored run, interpolates between stored runs, drives a labelled surrogate, or is fixed by the data. Show the parameter values actually covered so the viewer can see when a control is extrapolating.",
+      "Show the stored resolution honestly, for example by allowing the raw grid to be seen rather than only a smoothed render.",
+      "Distinguish derived quantities computed in the scene from quantities stored in the data."
+    ],
+    "observable_checks": [
+      "Ask which parameter values the data covers; a scene that cannot answer is not carrying its metadata.",
+      "Step to a stored frame and to an interpolated one and confirm the scene distinguishes them.",
+      "Confirm displayed units and magnitudes match the source metadata rather than being rescaled for appearance.",
+      "Move each parameter control and confirm the scene says what it did: selected another run, interpolated between runs with a named method, evaluated a labelled surrogate, or refused with an explanation."
+    ]
+  },
+  "related_ids": [
+    "recipe.heat-rod-decay",
+    "recipe.divergent-ridge-crust-age",
+    "knowledge.state-playback"
+  ],
+  "creative_affordances": [
+    "Beautiful rendering of imported results is entirely legitimate and often the point.",
+    "An artistic interpretation of data is fine when it is presented as interpretation rather than as the result."
+  ],
+  "known_limits": [
+    "Authored provenance guidance; it validates no dataset and asserts no simulation accuracy.",
+    "It does not prescribe a data format or a metadata schema."
+  ],
+  "claims": []
+}

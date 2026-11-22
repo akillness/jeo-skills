@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-skinned-articulated-rig",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "geometry-profile",
+  "title": {
+    "en": "Skinned rig with an owned bind pose and weight budget"
+  },
+  "aliases": {
+    "en": [
+      "skinned mesh rig",
+      "joint hierarchy and skin weights",
+      "bind pose ownership"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "anatomy-structures",
+    "robotics-control"
+  ],
+  "summary": "Separate the joint hierarchy that owns pose from the skin that follows it, and state the bind pose, weight budget and where deformation is allowed to be approximate.",
+  "objective": "Posing a joint moves only the region the record assigns to it, the rest pose can be restored exactly, and no vertex is left behind by an unnormalised weight.",
+  "tags": [
+    "geometry-profile",
+    "skinning",
+    "rig",
+    "joints",
+    "bind-pose",
+    "articulation"
+  ],
+  "subject_terms": [
+    "skinned mesh",
+    "joint hierarchy",
+    "bind pose",
+    "inverse bind matrix",
+    "skin weights",
+    "linear blend skinning",
+    "influence count",
+    "weight normalization",
+    "deformation region"
+  ],
+  "intent_signals": [
+    "the arm collapses when it bends",
+    "vertices stretch to the origin",
+    "rig a creature so it can walk",
+    "which bones should this vertex follow",
+    "the mesh does not return to its rest pose"
+  ],
+  "example_prompts": [
+    "Rig an invented creature so its shoulder carries the wing.",
+    "Make a limb bend without the elbow pinching to nothing.",
+    "Let me scrub a joint angle and return to the exact rest pose."
+  ],
+  "negative_signals": [
+    "rigid mechanical linkage with no soft deformation",
+    "static prop that never moves"
+  ],
+  "not_for": [
+    "Assemblies of rigid parts, where parenting transforms is simpler and more honest than skinning.",
+    "Physically simulated soft bodies, whose deformation comes from a solver rather than from joint weights."
+  ],
+  "content": {
+    "principles": [
+      "The joint hierarchy owns the pose and the skin follows it. Authoring a pose by editing skinned vertices instead of joints destroys the ability to restore the rest state.",
+      "The bind pose is a stored fact, not the current pose. Keep the transform that relates the undeformed mesh to each joint so the rig can be reset exactly and re-targeted safely.",
+      "Weights encode anatomy or construction, not a smoothing preference. A vertex should follow the parts that would actually carry it, and the transition band should sit where the material would actually bend.",
+      "Linear blending of joint transforms is an approximation. Volume loss at a strongly twisted or fully folded joint is inherent to the method, so either keep the deformation range within a stated limit or add explicit corrective geometry.",
+      "Not every moving part needs skinning. Rigid subparts such as a buckle, an eye or a tool can ride a joint as ordinary children and stay perfectly rigid."
+    ],
+    "implementation": [
+      "Name the joints semantically and keep the hierarchy shallow enough to explain: root, then load-bearing chains, then the small joints that only carry secondary motion.",
+      "Store one bind-pose transform per joint and keep the joint order fixed, since the weights index into that order and any reordering silently reassigns influence.",
+      "Keep the per-vertex influence count within a declared budget, and renormalise the remaining weights after dropping any influence so the sum stays at one.",
+      "Place the weight transition across the joint so that the band is roughly as wide as the material would bend; a knife-edge transition creates a visible crease, and an over-wide band makes both segments look soft.",
+      "Give a joint a real pivot at the anatomical or mechanical attachment. A pivot placed at the centre of a limb makes every rotation slide the mesh instead of hinging it.",
+      "Record the intended range of each joint and treat motion beyond it as out of scope rather than as a rendering defect.",
+      "Attach rigid accessories as children of the joint rather than weighting them, so they never inherit blending artefacts."
+    ],
+    "observable_checks": [
+      "Rotating one joint through its declared range moves only the region the record assigns to it; a hand joint does not drag the chest.",
+      "Returning every joint to its rest value restores the original silhouette exactly, with no accumulated drift after repeated posing.",
+      "No vertex flies to the scene origin or freezes in place, which is the visible signature of a missing or zero influence set.",
+      "At the extreme of the declared range, the joint shows the expected amount of narrowing and no self-intersection that the record has not accepted.",
+      "A rigid accessory parented to a joint stays perfectly rigid while the surrounding skin deforms."
+    ]
+  },
+  "creative_affordances": [
+    "Invented anatomy is welcome: extra joints, non-human proportions and asymmetric chains are legitimate as long as the hierarchy and weights are stated.",
+    "Stylised deformation, including exaggerated squash at a joint, is a design choice rather than a defect when the record says so."
+  ],
+  "known_limits": [
+    "This profile covers deformation authoring. It does not compute muscle behaviour, contact or collision between skin regions.",
+    "The influence limits cited here are the requirements of one asset format; a runtime may impose a smaller limit, and an authoring tool may allow more before export.",
+    "No claim is made that any weight distribution is anatomically correct; anatomical structure requires its own sourced evidence.",
+    "Authored reusable guidance; no runtime artifact or rendered result has been observed for this record."
+  ],
+  "related_ids": [
+    "recipe.garden-creature-patrol",
+    "recipe.lantern-keeper-puppet",
+    "recipe.skeletal-hierarchy",
+    "knowledge.articulated-limb",
+    "knowledge.articulation-from-motion"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-skin-weight-contract",
+      "statement": "In glTF 2.0 linear blend skinning each joint-and-weight attribute set carries at most four influences per vertex, weights must not be negative and a joint must not appear with more than one nonzero weight for a vertex, float weights should sum as close to one as reasonably possible while quantised weights must sum to the full integer range, inverse bind matrices bring skinned coordinates into each joint space, and the transform of the node carrying a skinned mesh must be ignored.",
+      "scope": "Normative requirements of the glTF 2.0 asset format for stored skinning data, read from the Khronos specification source. They constrain the exchanged file; a specific authoring tool or runtime may support fewer or more influences.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Geometry > Skins > Skinned Mesh Attributes; Geometry > Skins > Joint Hierarchy"
+        }
+      ]
+    }
+  ]
+}

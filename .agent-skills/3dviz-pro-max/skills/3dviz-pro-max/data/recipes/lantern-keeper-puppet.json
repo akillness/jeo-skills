@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "id": "recipe.lantern-keeper-puppet",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Lantern keeper puppet performance"
+  },
+  "aliases": {
+    "en": [
+      "articulated puppet",
+      "stylized character acting"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art"
+  ],
+  "summary": "Stage a readable miniature greeting with distinct anticipation, gesture and settle poses.",
+  "objective": "Create a lantern keeper who notices me, raises a light and settles into a greeting.",
+  "tags": [
+    "puppet",
+    "gesture",
+    "rig hierarchy"
+  ],
+  "subject_terms": [
+    "puppet",
+    "gesture",
+    "rig hierarchy",
+    "joint pivot",
+    "lantern"
+  ],
+  "intent_signals": [
+    "pose a character",
+    "scrub an acting beat"
+  ],
+  "example_prompts": [
+    "Create a lantern keeper who notices me, raises a light and settles into a greeting.",
+    "Let me inspect the puppet joints and adjust the wave amplitude."
+  ],
+  "entities": [
+    {
+      "name": "Puppet body",
+      "guidance": "Separate head, torso, pelvis, upper/lower limbs and mitten hands; preserve silhouette gaps."
+    },
+    {
+      "name": "Lantern prop",
+      "guidance": "Build frame, handle and inset luminous chamber with a grasp attachment point."
+    },
+    {
+      "name": "Small stage",
+      "guidance": "Include a shallow plinth and unobstructed gesture envelope."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Puppet body",
+      "structure": "Separate head, torso, pelvis, upper/lower limbs and mitten hands; preserve silhouette gaps.",
+      "material": "Painted wood with matte cloth sleeves.",
+      "articulation": "Local shoulder, elbow and wrist pivots; no scaling to reach."
+    },
+    {
+      "family": "Lantern prop",
+      "structure": "Build frame, handle and inset luminous chamber with a grasp attachment point.",
+      "material": "Dark metal frame and translucent warm panes.",
+      "articulation": "Parent to the hand grip only while held."
+    },
+    {
+      "family": "Small stage",
+      "structure": "Include a shallow plinth and unobstructed gesture envelope.",
+      "material": "Quiet felt backdrop with soft contact shadow."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored finite performance: idle, notice, lift, wave, settle; normalized clip time and immutable rest pose.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Play or scrub the greeting.",
+      "Select a joint to reveal its pivot.",
+      "Reset gesture and prop attachment."
+    ]
+  },
+  "invariants": [
+    "Lantern remains attached to the same hand grip throughout the wave.",
+    "Feet remain on authored stage anchors; changing amplitude cannot move the root.",
+    "Scrubbing to the same time yields the same pose."
+  ],
+  "motion_guidance": [
+    "Use overlapping but bounded head and wrist timing, with an anticipation pause before the main wave.",
+    "Three.js or another companion renderer owns skinning, picking and shadow inspection; the authored clip owns pose timing."
+  ],
+  "known_limits": [
+    "Performance animation, not muscle forces or balance simulation.",
+    "Extreme pose edits need silhouette and self-intersection inspection.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [],
+  "creative_affordances": [
+    "Warm lantern focus motivates the greeting and makes its direction legible."
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Authored planted puppet acting, no rigid-body contacts.",
+    "state": [
+      "clip time",
+      "joint poses",
+      "prop grip"
+    ],
+    "colliders": [
+      "Stage anchors and a visible gesture envelope; no collision solver."
+    ],
+    "driving": [
+      "Bounded authored joint tracks."
+    ],
+    "contact": [
+      "Feet stay at fixed support marks."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Check hand grip and ground anchors at lift and settle."
+    ]
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "id": "recipe.multi-head-attention-comparison",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Multi-head attention comparison without head averaging"
+  },
+  "aliases": {
+    "en": [
+      "multi-head attention inspector",
+      "attention head comparison"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "linear-algebra"
+  ],
+  "summary": "Compare two to eight supplied attention heads from their separate projections through concatenation and the output projection while retaining each head identity.",
+  "objective": "Compare two to eight supplied attention heads from their separate projections through concatenation and the output projection while retaining each head identity.",
+  "tags": [
+    "multi-head attention",
+    "tensor shapes",
+    "output projection",
+    "head comparison"
+  ],
+  "subject_terms": [
+    "multi-head attention",
+    "Q K V projections",
+    "head output",
+    "concatenation",
+    "output projection",
+    "attention is not causal attribution"
+  ],
+  "intent_signals": [
+    "Compare attention heads without averaging them away.",
+    "Trace a selected query through every head and the output projection."
+  ],
+  "example_prompts": [
+    "Compare attention heads without averaging them away."
+  ],
+  "negative_signals": [
+    "decorative motion presented as computation",
+    "camera position changes authoritative values",
+    "Claiming a head is a causal explanation or linguistic concept from its weights alone."
+  ],
+  "not_for": [
+    "Claiming a head is a causal explanation or linguistic concept from its weights alone.",
+    "Displaying only an average matrix when separate head outputs are required."
+  ],
+  "entities": [
+    {
+      "name": "Head lanes",
+      "guidance": "Keep projected Q_i, K_i, V_i, logits, row softmax and H_i selectable for every head."
+    },
+    {
+      "name": "Concatenation gate",
+      "guidance": "Preserve head order and offsets before W^O; do not average heads."
+    },
+    {
+      "name": "Output audit",
+      "guidance": "Show each head contribution to the selected final output coordinate through blocks of W^O."
+    }
+  ],
+  "state_contract": {
+    "model": "Accept real finite X_Q in R^(nq×dmodel), X_KV in R^(nk×dmodel), h in [2,8], nq,nk in [1,16], dmodel in [2,64], and per-head dk,dv in [1,16]. All numeric tensor inputs must be finite. The mask is a separate boolean permitted/excluded relation, not a numeric tensor. For each i require WQ_i shape dmodel×dk, WK_i dmodel×dk and WV_i dmodel×dv; compute Q_i=X_Q WQ_i, K_i=X_KV WK_i, V_i=X_KV WV_i and permitted logits L_i=Q_i K_i^T/sqrt(dk). Require every permitted logit finite, guard that every query has at least one permitted key, subtract the permitted-row maximum for stable softmax alpha_i, assign excluded keys exactly zero probability, and form H_i=alpha_i V_i. Concatenate H_1..H_h in declared order and require WO shape (sum_i dv)×dout with dout in [1,64]; Y=Concat(H_i)WO. Reject empty permitted-key rows, nonfinite numeric inputs or shape mismatch; do not encode exclusion by requiring an infinite numeric input.",
+    "authority": "Supplied finite tensors, ordered identifiers, basis conventions and provenance own semantic state. Blender/glTF assets are display-only; Three.js owns validation, calculation, linked selection, failure states and exact reset.",
+    "actions": [
+      "Select query and head.",
+      "Toggle a supplied valid mask.",
+      "Inspect pre/post output-projection contributions.",
+      "Reset tensors, head order, mask and selection."
+    ]
+  },
+  "invariants": [
+    "Every nonempty permitted attention row is nonnegative and sums to one within tolerance.",
+    "Each head output and concatenated block has the declared shape and order.",
+    "Y equals an independent Concat(H_i)WO recomputation within tolerance.",
+    "Reordering head lanes without identically permuting WO row blocks changes semantics and is rejected."
+  ],
+  "motion_guidance": [
+    "Animate score, softmax, head output, concatenate and project as ordered explanatory stages from one frozen tensor state; motion has no computation time meaning."
+  ],
+  "creative_affordances": [
+    "Choose any coherent laboratory, constellation or sculptural art direction while preserving exact labels, selectable identity and non-color encodings."
+  ],
+  "known_limits": [
+    "Documentary authored recipe only; no model training, checkpoint execution, quantum hardware, Blender export, browser, renderer or interactive runtime was run.",
+    "glTF transports neutral display assets only; tensors, checkpoints, citations, basis order, dtype and provenance remain external data."
+  ],
+  "claims": [
+    {
+      "id": "claim.aiq-multi-head-attention",
+      "statement": "Multi-head attention applies distinct learned query, key and value projections to each head, runs attention in parallel, concatenates the head outputs and applies a final output projection.",
+      "scope": "The multi-head attention definition in the Transformer paper; no claim that head weights explain model causality.",
+      "source_refs": [
+        {
+          "source_id": "source.mixed-grok-transformer-attention",
+          "locator": "Section 3.2.2, MultiHead and head_i equations and projection matrix shapes"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Parallel attention instrument",
+      "structure": "Blender authors a modular row of head frames, token tiles and one concatenation/output gate at neutral transforms; node names encode only visual part identity.",
+      "material": "Shape and line style distinguish queries, masks, probabilities, values and projected outputs; head color is redundant.",
+      "articulation": "Three.js owns matrices, stable token/head IDs, masks, all tensor arithmetic, block highlighting and reset."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Finite imported-data calculation and explanatory playback; no physical dynamics, model training, quantum device or causal attribution.",
+    "state": [
+      "ordered external data and provenance",
+      "declared dimensions, basis and numeric tolerance",
+      "derived readouts and selection state"
+    ],
+    "checks": [
+      "Every nonempty permitted attention row is nonnegative and sums to one within tolerance.",
+      "Each head output and concatenated block has the declared shape and order.",
+      "Y equals an independent Concat(H_i)WO recomputation within tolerance."
+    ]
+  },
+  "related_ids": [
+    "recipe.single-attention-head-aggregation",
+    "recipe.small-neural-forward-activations"
+  ]
+}

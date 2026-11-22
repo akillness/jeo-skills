@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "id": "recipe.open-signal-queue-network",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Open-boundary signal queue playback"
+  },
+  "aliases": {
+    "en": [
+      "signal plan comparison",
+      "open traffic queue"
+    ]
+  },
+  "direction_ids": [
+    "operations-logistics"
+  ],
+  "summary": "Compare finite supplied signal plans on an open movement network with explicit arrivals, routes, storage and saturation-service inputs, without reusing closed-lane car-following physics.",
+  "objective": "Compare finite supplied signal plans on an open movement network with explicit arrivals, routes, storage and saturation-service inputs, without reusing closed-lane car-following physics.",
+  "tags": [
+    "open traffic network",
+    "signal phase",
+    "saturation flow",
+    "boundary arrivals",
+    "queue spillback"
+  ],
+  "subject_terms": [
+    "open traffic network",
+    "signal phase",
+    "saturation flow",
+    "boundary arrivals",
+    "queue spillback"
+  ],
+  "intent_signals": [
+    "Open-boundary signal queue playback"
+  ],
+  "example_prompts": [
+    "Build open-boundary signal queue playback with explicit stable IDs, units, time, boundary inputs and stale/unavailable states."
+  ],
+  "negative_signals": [
+    "rendered motion proves operational correctness",
+    "planned state equals observed state"
+  ],
+  "not_for": [
+    "Safety certification, regulatory compliance, or operational control without qualified local review."
+  ],
+  "entities": [
+    {
+      "name": "Movement queues",
+      "guidance": "Define stable incoming-to-outgoing movement IDs, integer external arrivals per step, finite storage and a fixed downstream route."
+    },
+    {
+      "name": "Signal plans",
+      "guidance": "Store cycle epoch, phase intervals and permitted movements; reject conflicting simultaneously green movements using a supplied conflict matrix."
+    },
+    {
+      "name": "Service ledger",
+      "guidance": "Accumulate green service credit from supplied saturation flow and discharge whole vehicles only when queue and downstream storage permit."
+    }
+  ],
+  "state_contract": {
+    "model": "Accept a finite directed movement graph, step dt>0 seconds, horizon H, nonnegative integer external arrivals a[m,k], finite integer storage, fixed routes, supplied saturation rate s[m] vehicles/hour and periodic phase plan with explicit epoch. Each step snapshots all queues/storage, admits boundary arrivals into a next buffer, and computes all movement departures from the snapshot. Only a green movement accrues fractional credit c:=frac(c+s*dt/3600); its whole service opportunities are min(queue,floor(previous_fraction+s*dt/3600),downstream free reservations). Unused whole opportunities are discarded, red resets credit to zero, and retained credit is always in [0,1). For movements competing for the same downstream storage, allocate the snapshot-derived demands in a supplied stable reservation priority, record denied reservations, complete all reservations, then commit every departure/arrival once so no vehicle traverses multiple movements in one step. Mark rejected arrivals/spillback separately. Compare plans only with byte-identical arrivals, routes, storage, rates, reservation priority, horizon and initial queues.",
+    "authority": "Boundary arrivals, routing, storage, conflict matrix, stable reservation priority and plan epoch own traffic state. Blender/glTF supplies named roads, stop lines and signal heads; Three.js owns snapshot demand, deterministic reservations, queue/service arithmetic, phase state, rejected arrivals and exact reset.",
+    "actions": [
+      "Choose one of two supplied plans.",
+      "Step/play phase and queues.",
+      "Inspect movement service credit/spillback.",
+      "Reset common demand, initial queues, service credits, reservation priority and plan epoch."
+    ]
+  },
+  "invariants": [
+    "Vehicle conservation includes external arrivals, queues, in-network transfers, exits and explicitly rejected arrivals.",
+    "Red movements discharge zero and reset service credit; retained green fractional credit always lies in [0,1), with unused whole opportunities discarded.",
+    "All movement discharges use one queue snapshot and simultaneous downstream reservations; a vehicle moves at most one movement per step.",
+    "No movement exceeds supplied saturation service credit.",
+    "Plan comparison changes only phase schedule."
+  ],
+  "motion_guidance": [
+    "Playback restores stored model/event steps; animation between steps is explanatory and never changes authoritative counts, timestamps or completion state."
+  ],
+  "creative_affordances": [
+    "Use cutaways, small multiples, queues and non-color status glyphs while keeping assumptions and unavailable states visible."
+  ],
+  "known_limits": [
+    "A coarse deterministic queue model: no car following, lane changing, startup stochasticity, pedestrians, calibration, prediction or signal approval."
+  ],
+  "claims": [
+    {
+      "id": "claim.city-fhwa-signal-capacity",
+      "statement": "The FHWA Traffic Signal Timing Manual describes red-time queue formation, green-time discharge approaching saturation flow, oversaturation when arrivals exceed service, and movement capacity as saturation flow multiplied by effective-green ratio.",
+      "scope": "FHWA-HOP-08-024 Chapter 3 operational principles; this recipe’s discrete credits, storage and routing are authored simplifications.",
+      "source_refs": [
+        {
+          "source_id": "source.city-fhwa-signal-timing-ch3",
+          "locator": "Sections 3.3.1-3.3.4, including Equation 3-2"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Signalized movement table",
+      "structure": "Blender authors named approach lanes, stop lines, signal heads and reusable vehicle glyphs at neutral transforms; glTF carries stable movement IDs only.",
+      "material": "Phase, queue and spillback use shape/pattern plus hue; glow never means measured flow.",
+      "articulation": "Three.js binds external arrivals/routes, updates service credits and queues, places representative vehicles from counts and resets common inputs."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Open-boundary aggregate movement queues; no microscopic vehicle dynamics.",
+    "timestep": "Fixed dt seconds with snapshot, boundary-admission, simultaneous service/reservation, then one commit.",
+    "state": [
+      "boundary arrivals",
+      "movement queues/storage",
+      "phase/service credit",
+      "departures/rejections"
+    ],
+    "checks": [
+      "Red gives zero service.",
+      "Continuous green opportunities match s*duration/3600 up to discarded idle/block capacity and retained fractional credit <1; red resets credit.",
+      "Two plans share identical non-plan hashes."
+    ]
+  },
+  "related_ids": [
+    "recipe.closed-lane-car-following",
+    "recipe.agv-zone-reservation"
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-quadruped-walker",
+  "record_revision": 2,
+  "asset": "templates/kits/creatures/quadruped-walker.js",
+  "asset_sha256": "15b4d744dd6db53df691bce09000d3107bb714ec8ce4241bf52d6eb279196ea3",
+  "params": {
+    "scale": 1,
+    "strideM": 0.62,
+    "strideHz": 1.1,
+    "speed": 0,
+    "seed": 1,
+    "coat": "#b39a78",
+    "yawRateRad": 1.8
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-quadruped-walker",
+    "module": "../creatures/quadruped-walker.js",
+    "params": {
+      "scale": 1,
+      "strideM": 0.62,
+      "strideHz": 1.1,
+      "speed": 0,
+      "seed": 1,
+      "coat": "#b39a78",
+      "yawRateRad": 1.8
+    },
+    "triangles": 2472,
+    "bounds_m": {
+      "min": [
+        -0.21699999898672104,
+        8.940695891967998e-10,
+        -0.4854560226202011
+      ],
+      "max": [
+        0.21699999898672104,
+        1.2768958119991634,
+        0.833317192217357
+      ],
+      "size": [
+        0.4339999979734421,
+        1.2768958111050939,
+        1.3187732148375582
+      ]
+    },
+    "fit_distance_m": 2.7575,
+    "view_distances_m": {
+      "far": 6.6181,
+      "mid": 3.309,
+      "close": 2.1509,
+      "detail": 0.7527
+    },
+    "sockets": [
+      "harness",
+      "head",
+      "back"
+    ],
+    "detail_socket": "harness",
+    "animated": true,
+    "colliders": [
+      "trunk",
+      "head"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "5d070781a025e81c2cbed41ba0e48948e29707bacd766a200f1202c6d0fe526d",
+    "mid.png": "ecb7e8d0ffe533068767d3b1c6bef6956a14701d69346ae09ce116698db41c40",
+    "close.png": "bff30d320cf8986059a3ddfbc89054ea81b085215ae49976d5e49355ef6f2f0b",
+    "detail.png": "189b8bda5002e2fb8c53e59144fb539b103c6cc3fdd96e57305344b6316eb8ae",
+    "close-motion.png": "529205fe9b44c29374f4eb5b9d477e191600eea1d1e2d8aa706b81a3d75d0c8e"
+  },
+  "motion": {
+    "interval_ms": 400,
+    "simulated": true,
+    "animate_returned": true,
+    "differs": true,
+    "sha_before": "bff30d320cf8986059a3ddfbc89054ea81b085215ae49976d5e49355ef6f2f0b",
+    "sha_after": "529205fe9b44c29374f4eb5b9d477e191600eea1d1e2d8aa706b81a3d75d0c8e"
+  },
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:50:38+00:00",
+  "finished": "2026-09-08T13:50:42+00:00",
+  "post_encode": {
+    "file": "detail.png",
+    "bytes_before": 208887,
+    "bytes_after": 67124,
+    "method": "RGB, 256-colour adaptive palette, zlib 9 (decision D-5); the sha256 above is the re-encoded file"
+  }
+}

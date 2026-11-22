@@ -1,0 +1,4 @@
+interface:
+  display_name: "Paper Cinder Transition"
+  short_description: "Burn a page away: ember line, torn char, live scene behind"
+  default_prompt: "Use $paper-cinder-transition to change between chapters with a paper-burn line that chars the old scene and reveals the next one live behind it."

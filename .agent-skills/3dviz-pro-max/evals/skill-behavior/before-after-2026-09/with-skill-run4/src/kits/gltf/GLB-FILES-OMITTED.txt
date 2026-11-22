@@ -1,0 +1,8 @@
+The four .glb binaries this folder had (iron-lantern, stone-guildhall, timber-cottage-t3,
+watermill-t3) are byte-identical copies of the skill's own, verified by sha256 at publication.
+They were left out of the published tree for weight, exactly as node_modules/ and the build
+output were. To rebuild this run, copy them back from:
+
+    skills/3dviz-pro-max/templates/kits/gltf/
+
+This run loads two of them: timber-cottage-t3.glb (the T3 hero) and stone-guildhall.glb.

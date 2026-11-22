@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-frame-transport-nonorientable",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Frame transport, seam identification and boundary tracing"
+  },
+  "aliases": {
+    "en": [
+      "nonorientability transport check",
+      "mobius seam check"
+    ]
+  },
+  "direction_ids": [
+    "topology-symmetry"
+  ],
+  "summary": "Test non-orientability by transporting a local frame around the loop and verify the seam identification and boundary count.",
+  "objective": "One circuit reverses the transported normal, two restore it, the seam closes within tolerance and the boundary is traced as one component.",
+  "applies_when": [
+    "A surface is built by identifying edges with a twist or reversal.",
+    "Local normals or frames are used for shading, offsetting or ribbon construction.",
+    "The modelled ribbon has thickness while the mathematical statement does not."
+  ],
+  "check_method": "geometry",
+  "tags": [
+    "domain-validation",
+    "orientability",
+    "parallel-transport",
+    "seam"
+  ],
+  "subject_terms": [
+    "Moebius band",
+    "non-orientable",
+    "local frame",
+    "seam identification",
+    "boundary component",
+    "transverse coordinate"
+  ],
+  "intent_signals": [
+    "the shading flips halfway around the ribbon",
+    "check that the seam closes without a crack"
+  ],
+  "example_prompts": [
+    "Check the orientation transport and seam of this half-twisted band."
+  ],
+  "negative_signals": [
+    "proving general topological theorems",
+    "cutting or surgery simulation"
+  ],
+  "content": {
+    "principles": [
+      "Orientability is tested by transporting the surface normal, not any frame that happens to stay perpendicular to the centreline: on a planar circular centreline a constant vertical vector is perpendicular to every tangent and returns unchanged, so a curve-tangent construction can pass while saying nothing about the surface.",
+      "The seam is an identification rule, so the check is that the two parametrizations of the same points agree, including the sign flip of the transverse coordinate.",
+      "A modelled ribbon has thickness and an ordinary solid boundary; the mathematical statement concerns the zero-thickness surface and must be labelled that way."
+    ],
+    "implementation": [
+      "At each step compute both surface tangent directions, the longitudinal and the transverse partial derivatives of the parametrization, take their cross product to get the normal line, and choose the sign that is continuous with the previous step rather than recomputing an absolute normal from a formula that can itself flip.",
+      "Step the loop parameter in small increments along the centreline at a fixed transverse coordinate, and record the step size with the result, since the transported direction is only as good as the step.",
+      "Record the dot product of the transported unit normal with its starting value after one circuit and after two circuits, and confirm at every step that the transported vector stays perpendicular to both surface tangents.",
+      "Evaluate the seam condition by comparing positions at the start and end of the parameter range under the declared identification, which reverses the transverse coordinate, and report the maximum separation.",
+      "Trace the boundary by following the edge and count how many circuits of the loop parameter are needed before returning to the starting point."
+    ],
+    "observable_checks": [
+      "After one circuit the transported normal is antiparallel to its start and after two circuits it returns; the deviation from minus one and plus one measures transport step error and should shrink as the step shrinks. A vector that stays perpendicular to the centreline tangent but not to both surface tangents is not the normal and does not test orientability.",
+      "Seam separation stays within the tolerance declared for the mesh scale, with no visible crack and no duplicated rim.",
+      "Boundary tracing returns to its start only after covering both parameter edges, which is the single boundary component of the modelled band."
+    ]
+  },
+  "known_limits": [
+    "Demonstrates the declared construction; it is not a proof of non-orientability in general, and a thick printed ribbon is a different object from the mathematical band.",
+    "Authored verification guidance; no computation or render was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.mobius-orientation-trace",
+    "recipe.torus-euler-cells",
+    "recipe.ribbon-motion-sculpture"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-mobius-nonorientable",
+      "statement": "The Moebius band is a non-orientable surface, commonly described as having only one side and only one edge.",
+      "scope": "The zero-thickness mathematical band as described in the cited resource; a thick manufactured ribbon has an ordinary solid boundary.",
+      "source_refs": [
+        {
+          "source_id": "source.mit-mobius",
+          "locator": "Moebius band caption and image alt text"
+        }
+      ]
+    }
+  ]
+}

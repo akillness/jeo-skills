@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "id": "recipe.bounded-maintenance-procedure-state",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Bounded maintenance procedure state playback"
+  },
+  "aliases": {
+    "en": [
+      "maintenance workflow state",
+      "procedure hold point"
+    ]
+  },
+  "direction_ids": [
+    "operations-logistics",
+    "architecture-interiors"
+  ],
+  "summary": "Play a supplied acyclic maintenance procedure through tasks and exclusive decisions with evidence-gated completion, while keeping planned, reported and verified states distinct.",
+  "objective": "Play a supplied acyclic maintenance procedure through tasks and exclusive decisions with evidence-gated completion, while keeping planned, reported and verified states distinct.",
+  "tags": [
+    "maintenance procedure",
+    "BPMN task",
+    "exclusive gateway",
+    "hold evidence",
+    "equipment stable ID"
+  ],
+  "subject_terms": [
+    "maintenance procedure",
+    "BPMN task",
+    "exclusive gateway",
+    "hold evidence",
+    "equipment stable ID"
+  ],
+  "intent_signals": [
+    "Bounded maintenance procedure state playback"
+  ],
+  "example_prompts": [
+    "Build bounded maintenance procedure state playback with explicit stable IDs, units, time, boundary inputs and stale/unavailable states."
+  ],
+  "negative_signals": [
+    "rendered motion proves operational correctness",
+    "planned state equals observed state"
+  ],
+  "not_for": [
+    "Safety certification, regulatory compliance, or operational control without qualified local review."
+  ],
+  "entities": [
+    {
+      "name": "Procedure graph",
+      "guidance": "Use stable task/event/gateway IDs and a bounded acyclic BPMN subset: start/end, tasks, sequence flows and exclusive gateways only."
+    },
+    {
+      "name": "Equipment anchors",
+      "guidance": "Map each task to supplied equipment IDs and Blender anchors; mesh proximity never assigns work."
+    },
+    {
+      "name": "Evidence ledger",
+      "guidance": "A task enters reported-complete only with actor/time and required evidence references; verification is a separate supplied event."
+    }
+  ],
+  "state_contract": {
+    "model": "Accept one finite acyclic process with exactly one start, reachable end nodes, tasks, sequence flows and exclusive gateways. In this single-token subset, each task/start has exactly one outgoing flow, each end has none, and any branching node must be an Exclusive Gateway; parallel/inclusive/event/complex gateways are rejected. One token follows sequence flows. A task requires its predecessor token and supplied prerequisites; completion records actor/time and declared evidence IDs. At an exclusive gateway evaluate conditions in declared stable order: require exactly one true condition, otherwise take an explicit default only when none are true; multiple true conditions are an error. Distinguish planned, enabled, in-progress, reported-complete, verified and exception; playback never sends equipment commands.",
+    "authority": "The supplied procedure/version, token, actor/evidence events and equipment-ID map own state. Blender/glTF supplies static equipment parts and named task anchors; Three.js validates the subset, replays ordered events, exposes missing evidence and resets to planned state.",
+    "actions": [
+      "Select procedure version.",
+      "Advance supplied task event.",
+      "Choose supplied exclusive outcome.",
+      "Inspect evidence/provenance.",
+      "Reset planned state."
+    ]
+  },
+  "invariants": [
+    "The single token never branches: non-exclusive nodes have at most one outgoing flow, and an Exclusive Gateway requires exactly one true condition or its explicit default when none are true.",
+    "Reported complete and verified are distinct states.",
+    "Unknown/out-of-order event is quarantined.",
+    "Display state never actuates equipment."
+  ],
+  "motion_guidance": [
+    "Playback restores stored model/event steps; animation between steps is explanatory and never changes authoritative counts, timestamps or completion state."
+  ],
+  "creative_affordances": [
+    "Use cutaways, small multiples, queues and non-color status glyphs while keeping assumptions and unavailable states visible."
+  ],
+  "known_limits": [
+    "Not a work instruction, lockout/tagout system, maintenance approval or proof the physical action occurred; parallel/event subprocess semantics are excluded."
+  ],
+  "claims": [
+    {
+      "id": "claim.city-omg-bpmn-sequence-exclusive",
+      "statement": "OMG BPMN 2.0.2 defines Sequence Flow between flow nodes and Exclusive Gateways that select one outgoing path based on conditions, with an optional default flow when other conditions do not select a path.",
+      "scope": "BPMN 2.0.2 Sequence Flow and Exclusive Gateway semantics; evidence gates and maintenance status labels are authored application rules.",
+      "source_refs": [
+        {
+          "source_id": "source.city-omg-bpmn202",
+          "locator": "Sections 8.4.13 Sequence Flow (printed pages 95-98) and 10.6.2 Exclusive Gateway"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Maintenance state instrument",
+      "structure": "Blender authors equipment parts and task anchors as stable named nodes at neutral transforms; glTF carries no procedure truth or completion state.",
+      "material": "Planned/enabled/reported/verified/exception use icon and pattern, not hue alone.",
+      "articulation": "Three.js owns graph validation, token/event replay, evidence links, equipment highlighting and exact reset without actuator output."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Supplied finite procedure/event playback; no physical maintenance or equipment control.",
+    "state": [
+      "procedure version/graph",
+      "token and task states",
+      "actor/evidence events",
+      "equipment mapping"
+    ],
+    "checks": [
+      "Reject cycles/out-of-subset nodes.",
+      "Quarantine out-of-order event.",
+      "Keep reported and verified visibly distinct."
+    ]
+  },
+  "related_ids": [
+    "recipe.construction-sequence-playback",
+    "recipe.job-shop-schedule-playback"
+  ]
+}

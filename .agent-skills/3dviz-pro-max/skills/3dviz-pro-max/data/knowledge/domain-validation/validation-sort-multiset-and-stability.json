@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-sort-multiset-and-stability",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Sorted order, multiset preservation and tie-rule stability"
+  },
+  "aliases": {
+    "en": [
+      "sort permutation check",
+      "duplicate key order check"
+    ]
+  },
+  "direction_ids": [
+    "algorithms-data-structures"
+  ],
+  "summary": "Check that a sort preserves the input multiset, produces non-decreasing keys and keeps equal keys in their original order.",
+  "objective": "The multiset of identity and key pairs is preserved, output keys are non-decreasing, and equal keys retain increasing original indices.",
+  "applies_when": [
+    "A sorting process is animated with items that carry duplicate keys.",
+    "Items have an identity separate from their sort key.",
+    "Positions are interpolated between committed writes."
+  ],
+  "check_method": "state",
+  "tags": [
+    "domain-validation",
+    "sorting",
+    "stability",
+    "multiset"
+  ],
+  "subject_terms": [
+    "mergesort",
+    "stability",
+    "multiset",
+    "original index",
+    "merge range",
+    "auxiliary buffer"
+  ],
+  "intent_signals": [
+    "equal values swapped order",
+    "check that no items are lost while sorting"
+  ],
+  "example_prompts": [
+    "Check the stability and item conservation of this mergesort trace."
+  ],
+  "negative_signals": [
+    "sorting performance comparison",
+    "external or distributed sorting"
+  ],
+  "content": {
+    "principles": [
+      "A sort has two obligations: the output is ordered and it is a permutation of the input. Checking order alone accepts a routine that drops or duplicates items.",
+      "Stability is a property of the tie rule in this implementation rather than of mergesort in general, so it is verified with duplicate keys and original indices instead of assumed.",
+      "Animation is a view of committed writes, so interpolated positions must never become the record of where an item is."
+    ],
+    "implementation": [
+      "Run with a duplicate-heavy input where every key appears several times, and carry an original index with each item.",
+      "After sorting, compare the multiset of identity and key pairs with the input multiset, not merely per-key counts, and verify the output key sequence is non-decreasing; counting keys alone accepts an item whose identity was invented or overwritten.",
+      "For each group of equal keys check that original indices increase, which is the concrete form of the stability claim.",
+      "Check that each completed merge range is sorted when it completes and that auxiliary buffer copies are not counted as extra logical items."
+    ],
+    "observable_checks": [
+      "The multiset of identity and key pairs in the output equals the input multiset, so no identity is invented, dropped, duplicated or re-keyed.",
+      "Within every equal-key group the original indices increase; a single inversion disproves stability for this implementation.",
+      "Every completed merge range is sorted at completion, and the logical item count during a merge equals the input count with buffer copies excluded."
+    ]
+  },
+  "known_limits": [
+    "The cited source describes the mergesort structure but does not state that this implementation is stable, so stability here is an authored tie rule verified by the check rather than inherited from the source.",
+    "Authored verification guidance; no sort was executed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.stable-merge-sort-trace",
+    "recipe.breadth-first-frontier",
+    "recipe.dijkstra-relaxation"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-mergesort-structure",
+      "statement": "Top-down mergesort recursively sorts two halves and combines them with an abstract in-place merge that copies to an auxiliary array and merges back.",
+      "scope": "The mergesort structure described in the cited section; the source does not assert stability for this implementation.",
+      "source_refs": [
+        {
+          "source_id": "source.princeton-mergesort",
+          "locator": "Top-down mergesort and abstract in-place merge"
+        }
+      ]
+    }
+  ]
+}

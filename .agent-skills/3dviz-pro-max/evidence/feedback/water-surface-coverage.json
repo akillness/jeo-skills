@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "feedback_id": "feedback.water-surface-coverage",
+  "language": "en",
+  "received_at": "2026-09-07",
+  "provenance": "Sanitized user feedback and attributed implementation-parent diagnosis; no raw conversation or personal information.",
+  "observations": [
+    "The user saw a moving white patch and a pond that appeared unfilled."
+  ],
+  "reported_diagnosis": {
+    "observer": "implementation-parent",
+    "details": "The parent identified a flattened tube stream with metalness 0.25 and roughness 0.2, white highlights under the live light rig, and elevated flow markers. The parent is revising persistent water geometry and appearance and checking screenshots separately."
+  },
+  "hypotheses": [
+    "Explicit base coverage, water-level authority and independently inspected flow cues may prevent this failure in future artifacts."
+  ],
+  "limits": [
+    "This is qualitative feedback, not a benchmark.",
+    "Reported diagnosis is attributed to the parent; this dataset curator did not inspect the screenshots.",
+    "The revised records have no runtime improvement result; artifact validation is separate."
+  ],
+  "affected_record_ids": [
+    "knowledge.reasoning-terrain-height-authority",
+    "knowledge.material-response-check",
+    "recipe.terrain-island"
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-stone-bridge",
+  "record_revision": 2,
+  "asset": "templates/kits/buildings/stone-bridge.js",
+  "asset_sha256": "22aaf4608f9b34cf9573e841febee176a716b563de020760385b1d88925ee8a0",
+  "params": {
+    "span": 6,
+    "width": 3.4,
+    "rise": 1.5,
+    "springHeight": 0.9,
+    "voussoirCount": 15,
+    "approach": 1.7,
+    "parapetHeight": 0.95,
+    "seed": 1
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-stone-bridge",
+    "module": "../buildings/stone-bridge.js",
+    "params": {
+      "span": 6,
+      "width": 3.4,
+      "rise": 1.5,
+      "springHeight": 0.9,
+      "voussoirCount": 15,
+      "approach": 1.7,
+      "parapetHeight": 0.95,
+      "seed": 1
+    },
+    "triangles": 6048,
+    "bounds_m": {
+      "min": [
+        -4.739999771118164,
+        -5.2452087562215866e-08,
+        -2.269116881611377
+      ],
+      "max": [
+        4.739999771118164,
+        3.856080350993373,
+        2.269116881611377
+      ],
+      "size": [
+        9.479999542236328,
+        3.8560804034454605,
+        4.538233763222754
+      ]
+    },
+    "fit_distance_m": 16.3665,
+    "view_distances_m": {
+      "far": 39.2795,
+      "mid": 19.6398,
+      "close": 12.7658,
+      "detail": 2.3126
+    },
+    "sockets": [
+      "deck-centre",
+      "deck-west",
+      "deck-east",
+      "keystone",
+      "lantern"
+    ],
+    "detail_socket": "deck-centre",
+    "animated": false,
+    "colliders": [
+      "deck",
+      "parapet-north",
+      "parapet-south",
+      "abutments"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "6e2bdf32aea7666bc67762b6b09ed04512a67172353cae79f31f35789224556d",
+    "mid.png": "f7b8ff0789dada1541d985fe5eec76cbbc58a817ca08cdc88d9cf6b816bb070e",
+    "close.png": "af98675ddcb7592a6a33a431dfc7b01e78c46e45970570424a3c40470931f4e3",
+    "detail.png": "16978b06ef4d832daef7927bc5f4d0af9b6ae3a10d12652a2b4d21d86d385ae2"
+  },
+  "motion": null,
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:50:34+00:00",
+  "finished": "2026-09-08T13:50:38+00:00"
+}

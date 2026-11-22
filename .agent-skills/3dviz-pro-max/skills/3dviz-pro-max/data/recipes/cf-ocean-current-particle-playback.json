@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "id": "recipe.cf-ocean-current-particle-playback",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "CF ocean-current grid particle playback"
+  },
+  "aliases": {
+    "en": [
+      "CF conventions",
+      "ocean current grid"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment",
+    "calculus-fields"
+  ],
+  "summary": "Advect educational tracers over a supplied small regular rectilinear CF lon/lat current grid using one declared frozen local east/north tangent-plane approximation, only while time and every interpolation corner remain valid.",
+  "objective": "Advect educational tracers over a supplied small regular rectilinear CF lon/lat current grid using one declared frozen local east/north tangent-plane approximation, only while time and every interpolation corner remain valid.",
+  "tags": [
+    "CF conventions",
+    "ocean current grid",
+    "particle advection",
+    "missing data"
+  ],
+  "subject_terms": [
+    "CF conventions",
+    "ocean current grid",
+    "particle advection",
+    "missing data",
+    "calendar CRS"
+  ],
+  "intent_signals": [
+    "CF ocean-current grid particle playback"
+  ],
+  "example_prompts": [
+    "Build cf ocean-current grid particle playback with explicit units, frames, time and unavailable-data states."
+  ],
+  "negative_signals": [
+    "particle appearance proves physics",
+    "playback is a forecast"
+  ],
+  "not_for": [
+    "Operational forecasting or safety decisions."
+  ],
+  "entities": [
+    {
+      "name": "Field ledger",
+      "guidance": "Record dataset hash, CF version, u/v standard names/units, grid mapping, coordinates, vertical level, time units/calendar and fill/valid ranges."
+    },
+    {
+      "name": "Grid sampler",
+      "guidance": "Use bilinear horizontal plus linear time interpolation only inside one valid cell/bracket; reject missing corner or land mask."
+    },
+    {
+      "name": "Tracer trails",
+      "guidance": "Seed deterministic massless display tracers and store accepted solver states plus stop reason."
+    }
+  ],
+  "state_contract": {
+    "model": "Accept only a finite regular rectilinear CF grid with monotone 1D longitude, latitude and time coordinates and compatible eastward/northward velocity units converted to m/s. Declare finite R>0 and origin lon0,lat0; require every latitude including lat0 to satisfy |lat|<=80 degrees so cos(lat0) is safely nonzero, plus authored small-patch bound max(|(lon-lon0)*cos(lat0)|,|lat-lat0|)<=0.05 radians. Convert radians once to frozen local east/north metres X=R*cos(lat0)*(lon-lon0), Y=R*(lat-lat0), explicitly treating this as a local tangent approximation; in this declared frame set dX/dt=u_east and dY/dt=v_north. Bilinearly sample one regular horizontal cell and linearly sample one time bracket. Every RK4 stage requires an in-domain bracket and four valid corners at both endpoints; terminate on missing/fill/land data. Bound dt and duration; reject projected, curvilinear, rotated-pole, cross-dateline and larger grids.",
+    "authority": "The CF variable metadata, stable dataset hash, monotone lon/lat/time arrays, declared vertical slice/calendar and frozen local tangent convention own numeric state. Blender/glTF holds only a matching local-frame coast/terrain context; Three.js performs unit conversion, strict sampling, RK4 updates, stop reasons and seed-exact reset.",
+    "actions": [
+      "Choose dataset time/level.",
+      "Seed deterministic tracers.",
+      "Play/pause/scrub accepted states.",
+      "Toggle vectors/mask/uncertainty metadata.",
+      "Reset seed/time/solver."
+    ]
+  },
+  "invariants": [
+    "No interpolation across missing/land cells.",
+    "Every RK stage uses the one frozen local east/north tangent frame; projected, curvilinear, rotated-pole, cross-dateline or out-of-bound patches are rejected instead of silently mixing east/north components with grid axes.",
+    "Finite R>0 and the authored |latitude|<=80-degree guard keep the frozen tangent mapping invertible; this latitude cutoff is recipe policy, not a CF requirement.",
+    "Calendar/time units remain attached to playback time.",
+    "Trail brightness/length never represents mass or certainty."
+  ],
+  "motion_guidance": [
+    "Playback follows stored model/data time; reverse scrub is history and display interpolation never changes the numeric model."
+  ],
+  "creative_affordances": [
+    "Use scale-separated context, glyphs and trails while disclosing exaggeration and keeping uncertainty visible."
+  ],
+  "known_limits": [
+    "No forecast, dataset execution, numerical solve, render or runtime validation was performed."
+  ],
+  "claims": [
+    {
+      "id": "claim.env-cf-coordinate-missing-contract",
+      "statement": "CF Conventions define coordinate/grid-mapping metadata, time units and calendars, and missing/valid-range attributes for geophysical variables; coordinate values locate grid points.",
+      "scope": "CF 1.13 stable/current convention concepts read 2026-09-08; this recipe authors its stricter interpolation rejection policy.",
+      "source_refs": [
+        {
+          "source_id": "source.env-cf-conventions",
+          "locator": "Sections 2.5.1, 3.1, 4, 5.6 and Appendix A"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Ocean field table",
+      "structure": "Blender authors coastline/terrain context already transformed into the same declared frozen local east/north display frame plus reusable vector/particle glyphs; glTF exports static context, axes and stable node names, never CF arrays.",
+      "material": "Mask cells use pattern and boundary geometry; particles are visibly explanatory.",
+      "articulation": "Three.js owns CF metadata/input arrays, radians-to-frozen-ENU metres, east/north velocity binding, strict space/time interpolation, RK4 accepted states, explicit stop reasons and deterministic reset."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Massless tracer advection in supplied current data; no ocean forecast or particle physics.",
+    "timestep": "Bounded model-time RK4 step with validity checks at every stage.",
+    "state": [
+      "CF grid/time metadata",
+      "particle states and seed",
+      "accepted trails/stop reasons"
+    ],
+    "checks": [
+      "Constant-field displacement fixture.",
+      "Terminate at one missing corner.",
+      "Repeat same seed exactly."
+    ]
+  },
+  "related_ids": [
+    "recipe.vector-field-integration",
+    "recipe.map-projection-frames"
+  ]
+}

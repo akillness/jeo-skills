@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.loop-seam-continuity",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "motion-profile",
+  "title": {
+    "en": "Loop-seam continuity"
+  },
+  "aliases": {
+    "en": [
+      "cyclic clip seam",
+      "animation wrap continuity",
+      "loop value and velocity match"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "products-assemblies"
+  ],
+  "summary": "Author and test cyclic clips at the wrap as a boundary condition, checking pose and, where desired, first-derivative continuity under the exported interpolation and runtime loop mode.",
+  "objective": "A repeated cycle preserves intended rhythm without a pose pop, root jump, duplicate hold or velocity kink that the selected style did not request.",
+  "applies_when": [
+    "A walk, idle, mechanism or environmental motion repeats.",
+    "A clip uses LINEAR, STEP or CUBICSPLINE interpolation across an export/runtime boundary."
+  ],
+  "subject_terms": [
+    "loop seam",
+    "cyclic animation",
+    "CUBICSPLINE",
+    "wrap continuity",
+    "endpoint key",
+    "ping-pong"
+  ],
+  "tags": [
+    "motion-profile",
+    "loop",
+    "continuity",
+    "interpolation"
+  ],
+  "intent_signals": [
+    "fix a popping glTF animation loop",
+    "test pose and velocity at animation seam",
+    "make reverse and ping-pong loops stable"
+  ],
+  "example_prompts": [
+    "Loop a breathing motion without a pause caused by duplicate endpoints.",
+    "Preserve a deliberate stepped robot cycle while rejecting an accidental root jump."
+  ],
+  "negative_signals": [
+    "Assuming matching first and last values guarantee smooth velocity.",
+    "Treating zeroSlopeAtStart/End as proof that arbitrary exported endpoints form a seamless loop."
+  ],
+  "not_for": [
+    "One-shot arrival animation.",
+    "Root-displacement accumulation without a root-motion ownership policy."
+  ],
+  "content": {
+    "principles": [
+      "A loop seam joins the clip’s end to its start. Decide separately whether the style requires value continuity, first-derivative continuity, a deliberate step, or ping-pong reversal.",
+      "Inspect the exported clip, not only Blender playback. Sampling, optimization, clip duration and interpolation can change which endpoint values and tangents the runtime evaluates.",
+      "A duplicate terminal pose can be useful for authored timing but may add a hold when the runtime duration also wraps to the first pose. Establish the exact duration and endpoint convention per clip."
+    ],
+    "implementation": [
+      "In Blender, compare the start pose to the pose one cycle later and compare root displacement and tangent intent. Mark deliberate discontinuities instead of smoothing them by default.",
+      "Inspect glTF sampler times and interpolation. For CUBICSPLINE, evaluate both sides of the seam with the transported tangents; for LINEAR compare segment slopes; for STEP require the exact intentional jump. Configure AnimationAction loop mode and duration explicitly.",
+      "Test forward, negative timeScale and ping-pong independently. Record a small seam window of transforms/morph weights and derived finite-difference velocities; keep root displacement evaluation under the root-motion profile."
+    ],
+    "observable_checks": [
+      "Immediately before and after wrap, all channels satisfy the declared value tolerance; smooth loops also satisfy the declared finite-difference velocity tolerance.",
+      "The loop cadence contains neither an unintended extra terminal hold nor a missing beat at the seam.",
+      "Forward, reverse and ping-pong fixtures each exhibit the declared boundary behavior, including an intentionally stepped control clip."
+    ]
+  },
+  "related_ids": [
+    "knowledge.root-motion-runtime-ownership",
+    "knowledge.validation-scrub-pose-determinism",
+    "knowledge.three-animation-mixer-adapter",
+    "knowledge.clip-event-marker-contract"
+  ],
+  "creative_affordances": [
+    "Seams may be invisible, deliberately percussive, elastic, stepped or asymmetrical.",
+    "Different channels in one clip may intentionally use different continuity classes."
+  ],
+  "known_limits": [
+    "Three.js endpoint slope controls influence interpolation ending behavior but do not certify authored seam continuity.",
+    "Finite-difference tolerances depend on scale, frame interval and intended style.",
+    "No clip export or loop playback was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.motion-gltf-interpolation-modes",
+      "statement": "glTF 2.0 animation samplers support LINEAR, STEP and CUBICSPLINE interpolation and clamp output to the nearest endpoint outside the input range.",
+      "scope": "glTF 2.0.1 sampler behavior; runtime loop wrapping is outside the core file specification.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-khronos-gltf-animation",
+          "locator": "Section 3.11 Animations and Appendix C interpolation"
+        }
+      ]
+    },
+    {
+      "id": "claim.motion-three-loop-controls",
+      "statement": "Three.js AnimationAction exposes LoopOnce, LoopRepeat and LoopPingPong modes, wraps or clamps local time by loop state, and has configurable zeroSlopeAtStart and zeroSlopeAtEnd flags.",
+      "scope": "Live Three.js AnimationAction API; seam quality still requires observation.",
+      "source_refs": [
+        {
+          "source_id": "source.motion-three-animation-action",
+          "locator": "loop, time, zeroSlopeAtStart and zeroSlopeAtEnd"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "id": "recipe.historical-diorama",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Historical diorama with evidence layers"
+  },
+  "aliases": {
+    "en": [
+      "historical diorama"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas"
+  ],
+  "summary": "Organize a site reconstruction so documented remains and interpretive additions can be inspected separately.",
+  "objective": "Build a historical-site diorama with an evidence-layer toggle and dated labels for each reconstructed structure.",
+  "tags": [
+    "historical",
+    "diorama"
+  ],
+  "example_prompts": [
+    "Build a historical-site diorama with an evidence-layer toggle and dated labels for each reconstructed structure."
+  ],
+  "entities": [
+    {
+      "name": "Site shell",
+      "guidance": "Start from a sourced plan when supplied; model wall thickness, door openings and surviving foundation height before roof detail."
+    },
+    {
+      "name": "Reconstructed roof",
+      "guidance": "Keep conjectural geometry separately selectable; use a neutral hatch or material treatment distinct from documented fabric."
+    },
+    {
+      "name": "Visitor route",
+      "guidance": "Use human scale markers, grounded paths and conservative wall colliders; camera focus must not hide the evidence legend."
+    }
+  ],
+  "state_contract": {
+    "model": "Editorial scaffold: per-object evidence category, date range, provenance and presentation visibility. No historical site is asserted by this unspecialized recipe.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Select a structure to inspect its source or unresolved evidence.",
+      "Toggle remains, reconstruction and conjecture independently.",
+      "Reset to overview."
+    ]
+  },
+  "invariants": [
+    "A reconstructed object cannot be labeled documented without its own source locator.",
+    "Keep chronology consistent; do not silently combine phases of a site.",
+    "Camera routes respect walls and clearances if first-person navigation is enabled."
+  ],
+  "motion_guidance": [
+    "Reveal reconstruction with opacity or separation; label displacement as a presentation device.",
+    "Static site by default; people or carts require terrain support and collision contracts before movement."
+  ],
+  "known_limits": [
+    "No site, period, asset or historical claim has been verified here; obtain primary site plans and archaeological reports before asserting authenticity.",
+    "This creative editorial scaffold is not a certified historical reconstruction.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "object_craft": [
+    {
+      "family": "Site shell",
+      "structure": "Start from a sourced plan when supplied; model wall thickness, door openings and surviving foundation height before roof detail.",
+      "material": "Separate surviving fabric, reconstruction and conjecture with restrained surface/hatch treatments; do not imply a historically verified pigment or finish.",
+      "articulation": "Site geometry is static; reveal offsets preserve the immutable source transform."
+    },
+    {
+      "family": "Reconstructed roof",
+      "structure": "Keep conjectural geometry separately selectable; use a neutral hatch or material treatment distinct from documented fabric.",
+      "material": "Separate surviving fabric, reconstruction and conjecture with restrained surface/hatch treatments; do not imply a historically verified pigment or finish.",
+      "articulation": "Site geometry is static; reveal offsets preserve the immutable source transform."
+    },
+    {
+      "family": "Visitor route",
+      "structure": "Use human scale markers, grounded paths and conservative wall colliders; camera focus must not hide the evidence legend.",
+      "material": "Separate surviving fabric, reconstruction and conjecture with restrained surface/hatch treatments; do not imply a historically verified pigment or finish.",
+      "articulation": "Site geometry is static; reveal offsets preserve the immutable source transform."
+    }
+  ]
+}

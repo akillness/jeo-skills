@@ -1,0 +1,115 @@
+{
+  "id": "knowledge.damped-settling",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Damped settling versus perpetual oscillation"
+  },
+  "aliases": {
+    "en": [
+      "viscous damping",
+      "underdamped settle",
+      "sleeping rigid body"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "soft-fluid-thermal"
+  ],
+  "summary": "Choose an explicit dissipation model so released bodies come to rest, and keep engine damping or sleeping distinct from a measured viscous coefficient.",
+  "objective": "Compare a positive-stiffness oscillator released from rest at nonzero displacement: decaying crossings under damping below critical, or monotonic return at and above critical.",
+  "applies_when": [
+    "A released, struck or stacked body is expected to stop rather than loop forever.",
+    "The scene uses a spring, pendulum, pile or rigid-body solver that would otherwise conserve energy."
+  ],
+  "subject_terms": [
+    "damping",
+    "underdamped",
+    "critically damped",
+    "overdamped",
+    "settling",
+    "linear damping",
+    "angular damping",
+    "sleeping body"
+  ],
+  "tags": [
+    "physical-behavior",
+    "damping",
+    "settling"
+  ],
+  "intent_signals": [
+    "make the crate stop bouncing",
+    "shock absorber that settles without oscillating",
+    "why does the stack keep jittering"
+  ],
+  "example_prompts": [
+    "Drop a crate onto a floor so it bounces a few times then comes to rest.",
+    "Show a car body that returns to ride height after a bump without oscillating forever."
+  ],
+  "negative_signals": [
+    "Undamped simple harmonic motion that is meant to continue.",
+    "Optical roughness or material shininess treated as friction."
+  ],
+  "not_for": [
+    "Undamped oscillators whose period is the subject.",
+    "Claims that a renderer material parameter is a damping coefficient."
+  ],
+  "content": {
+    "principles": [
+      "Distinguish physical dissipation, engine damping and sleeping; they are different state transitions, not interchangeable measured coefficients.",
+      "For the comparison use finite m>0, k>0 and b>=0, x measured from equilibrium, x0 nonzero and v0=0. b=0 is undamped; 0<b<2 sqrt(mk) gives decaying oscillations.",
+      "For this release-from-rest comparison, critical damping returns without overshoot faster than overdamping. Arbitrary initial velocity can cause a single equilibrium crossing even in those regimes."
+    ],
+    "implementation": [
+      "Own displacement, velocity, equilibrium, m,k,b and initial conditions; use the closed form or integrate m x'' + b x' + k x=0 with a declared timestep and tolerance.",
+      "If using engine dynamics instead, set damping explicitly and inspect the documented sleep state. Do not map the engine coefficient to b without establishing that mapping.",
+      "Wake a sleeping body before an authored impulse. Pause preserves pose, velocity and time. Reset restores the complete initial state, including damping and intended sleep flags; wake a released test body so it can move."
+    ],
+    "observable_checks": [
+      "With x0 nonzero and v0=0, the underdamped branch crosses equilibrium and successive peak magnitudes decrease; b=0 has no decay.",
+      "At critical and overdamping, this release-from-rest comparison returns monotonically; do not apply that test to arbitrary launch velocities.",
+      "For an engine settling scene, declare speed and duration thresholds and inspect clearance independently of sleep. Pause/resume preserves momentum and reset reproduces the initial release."
+    ]
+  },
+  "related_ids": [
+    "knowledge.gravity-contact",
+    "knowledge.three-rigid-body-adapter",
+    "recipe.simple-pendulum"
+  ],
+  "creative_affordances": [
+    "Visible shock absorbers, dust puffs or sagging piles can communicate settling without changing the dissipation law.",
+    "A side-by-side underdamped versus overdamped pair is a free presentation choice."
+  ],
+  "known_limits": [
+    "Rapier damping is documented as a slow-down coefficient, including fake air friction; it is not a measured viscous drag law.",
+    "Sleeping stops further simulation of a slow body; it does not certify thermodynamic equilibrium.",
+    "Authored reusable guidance; no runtime artifact has been observed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-damped-settling-oscillator",
+      "statement": "For the linear viscously damped oscillator m x'' + b x' + k x=0 with m,k>0, positive damping below 2 sqrt(mk) produces oscillations with an exponentially decaying envelope. In a displacement-release comparison from rest, critical damping returns without overshoot faster than overdamping. Zero damping does not decay.",
+      "scope": "One-degree-of-freedom oscillator with finite positive mass and stiffness; the monotonic/fastest comparison fixes nonzero initial displacement and zero initial velocity. Not a rigid-body contact model.",
+      "source_refs": [
+        {
+          "source_id": "source.knowledge-depth-openstax-damped-oscillations",
+          "locator": "15.5, Eq15.23-15.26 and Figure15.27 displacement-release comparison"
+        }
+      ]
+    },
+    {
+      "id": "claim.knowledge-damped-settling-engine",
+      "statement": "Rapier applies a linear damping coefficient to linear velocity and an angular damping coefficient to angular velocity, with default 0.0 meaning no damping; a dynamic body that does not move or moves very slowly for a few seconds is marked sleeping and is no longer simulated until woken.",
+      "scope": "Rapier JavaScript rigid-body API as documented; not a measured fluid-drag law.",
+      "source_refs": [
+        {
+          "source_id": "source.rapier-rigid-bodies",
+          "locator": "Damping; Sleeping"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed"
+}

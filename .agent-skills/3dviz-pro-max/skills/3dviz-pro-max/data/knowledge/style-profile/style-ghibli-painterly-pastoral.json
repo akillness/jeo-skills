@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-ghibli-painterly-pastoral",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Painterly pastoral (hand-painted animation background look)"
+  },
+  "aliases": {
+    "en": [
+      "painterly pastoral",
+      "ghibli-style pastoral",
+      "hand-painted animation background look"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "earth-environment",
+    "architecture-interiors"
+  ],
+  "summary": "A wide sunlit countryside where the sky is the subject: flat cloud banks, grouped green value masses and one terracotta accent, painted rather than simulated.",
+  "objective": "The sky fills at least 45% of frame height and holds the brightest value in the frame; foliage reads as three to five painted value bands per canopy at the intended output size, not as individual leaves.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "named-look",
+    "daylight",
+    "painterly"
+  ],
+  "subject_terms": [
+    "ghibli",
+    "miyazaki",
+    "studio ghibli style",
+    "painterly pastoral",
+    "hand-painted background",
+    "anime landscape",
+    "countryside meadow",
+    "big sky"
+  ],
+  "intent_signals": [
+    "Make it look like Ghibli",
+    "Studio Ghibli style countryside with big clouds",
+    "Miyazaki-like painted sky over a meadow",
+    "Hand-painted animation background feel, not photoreal"
+  ],
+  "example_prompts": [
+    "A hillside meadow under towering summer clouds with one red-roofed cottage, painterly and hand-painted in feel.",
+    "Wide pastoral valley with a grass path, wind through the field and a painted sky."
+  ],
+  "content": {
+    "principles": [
+      "This is a painterly pastoral look inspired by the shared traits of hand-painted animation backgrounds; it does not require imitating, reproducing or crediting any named studio, film or artist, and no such name is part of the recipe.",
+      "Triangulate three traits shared by hand-painted animation backgrounds — (a) the sky is a designed subject with its own composition rather than a backdrop, (b) foliage and ground are grouped into a few painted value masses instead of per-element detail, (c) a single warm man-made accent anchors an otherwise green-and-blue field. Take those three traits; no named film or artist is a requirement.",
+      "Silhouette rule: two hill masses cross at different heights so the horizon is never a single straight line, and one vertical element (a lone tree, a pole, a chimney) breaks the horizon at roughly the one-third mark.",
+      "Scale cues, always present: door height 2.0 m, fence post 1.1 m, mature tree 9-14 m, and grass blades sized so a standing figure would clear them by 1.2 m.",
+      "The shadow floor stays above 0.12 luminance — hand-painted daylight has coloured shadows (sky-blue bounce), never black ones."
+    ],
+    "implementation": [
+      "Sky: gradient dome from #2f5f9e at zenith to #cfe3ef at horizon, plus cumulus banks modelled as flat card layers at three depths — 30 m, 120 m and 600 m — each with a 2-value paint (lit #fdfbf4, underside #cfe3ef) and no volumetric scattering.",
+      "Foliage: 3-5 flat value bands per canopy, 6% hue jitter and 8% scale jitter per instance on an InstancedMesh, and per-instance rotation so no two trees share a silhouette; canopies are read as masses, so keep polygon detail under 400 triangles per tree at mid distance.",
+      "Wind: vertex-shader sway with a 4.0-6.5 s period, 2.5° amplitude on grass and 1.2° on canopies, phase offset by world x so the field ripples as one wave instead of shivering in place.",
+      "Key light at 52° elevation, azimuth 135°, colour #fff2d8 at intensity 3.0 with castShadow true; hemisphere fill #8fb8e0 over #6b6a45 at 0.9 keeps shadows blue rather than black; a cool 0.5 rim at 20°/315° separates the hill edges from the sky.",
+      "Fog: FogExp2 #cfe3ef at density 0.012 — light enough to keep the meadow crisp, strong enough that the far ridge sits a full value lighter than the near one.",
+      "Ground albedo is painted in four masses (sunlit meadow, shaded meadow, path, exposed earth); resist per-blade texture detail, since the look comes from the value grouping, not the resolution."
+    ],
+    "observable_checks": [
+      "Grayscale screenshot: the cloud highlights are the only region above 0.9, and the darkest shadow never falls below 0.12.",
+      "Squint or downsample to 128 px: the frame resolves into four to six value masses, not into noise.",
+      "Turn off wind: the composition still reads; turn it on and the whole field moves as one travelling wave rather than as independent jitter.",
+      "Count hue families: blue sky, green field and one terracotta accent — a fourth saturated hue means the palette has drifted."
+    ]
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at renderer.toneMappingExposure 1.05 with three.js physically-based light units; re-tune every intensity under AgX, Neutral or a different exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Time of day is movable: keep the value grouping and drop the key to 20° elevation with a #ffcf9a tint for a late-afternoon variant without touching the material ranges.",
+    "The same grouping discipline carries an interior — a sunlit kitchen with four value masses and one warm accent reads from the identical palette logic.",
+    "The recipe never dictates subject matter: farms, coastal cliffs, rail sidings or a schoolyard all fit as long as the sky keeps its 45% of frame height and its own composition."
+  ],
+  "related_ids": [
+    "knowledge.style-painterly",
+    "knowledge.style-hand-painted",
+    "knowledge.shared-stylized-outdoor-daylight",
+    "knowledge.theme-fantasy-woodland"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "The look lives or dies on value grouping, so the numbers are chosen to suppress detail and protect the sky: fog density is a deliberately low 0.012 (a pastoral field must stay crisp while the far ridge lifts one value), and the hemisphere fill runs high at 0.9 against a 3.0 key — a 3.5:1 ratio — so shadows are blue-filled rather than black, which is the single most recognisable trait of hand-painted daylight. Bloom threshold sits at 1.1 with only 0.15 strength because the cumulus highlight at #fdfbf4 should be the brightest value without smearing into a glow, and exposure 1.05 keeps the mids open where the painted bands live.",
+    "values": {
+      "feeling": [
+        "open",
+        "nostalgic",
+        "sunlit"
+      ],
+      "palette": [
+        {
+          "hex": "#2f5f9e",
+          "role": "sky zenith / deepest cool value"
+        },
+        {
+          "hex": "#cfe3ef",
+          "role": "horizon haze, cloud underside, fog colour"
+        },
+        {
+          "hex": "#fdfbf4",
+          "role": "cumulus highlight (the only value above 0.9)"
+        },
+        {
+          "hex": "#7ea24d",
+          "role": "meadow mid green"
+        },
+        {
+          "hex": "#c96a4a",
+          "role": "terracotta accent (roof, cloth, single man-made mass)"
+        }
+      ],
+      "value_structure": "30/50/20 dark/mid/light; sky occupies ≥ 45% of frame height and carries the lightest mass",
+      "saturation_rule": "greens ≤ 50% HSL saturation; the single terracotta accent ≤ 65%; clouds under 8% saturation",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#2f5f9e",
+        "horizon": "#cfe3ef"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#cfe3ef",
+        "density": 0.012
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#fff2d8",
+          "intensity": 3.0,
+          "elevation_deg": 52,
+          "azimuth_deg": 135,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#8fb8e0",
+          "ground": "#6b6a45",
+          "intensity": 0.9
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#dfe9ff",
+          "intensity": 0.5,
+          "elevation_deg": 20,
+          "azimuth_deg": 315,
+          "castShadow": false
+        },
+        "ratio": "key:fill ≈ 3.5:1 on a neutral card; shadow floor never below 0.12 luminance"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.05
+      },
+      "camera": {
+        "fov_deg": 35,
+        "height_m": 1.5,
+        "pitch_deg": -2,
+        "orbit": {
+          "minPolar_deg": 62,
+          "maxPolar_deg": 90,
+          "minDist_m": 6,
+          "maxDist_m": 60
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.65,
+          0.95
+        ],
+        "metalness": [
+          0.0,
+          0.02
+        ],
+        "notes": "no specular hot spots anywhere; canopies painted as 3-5 flat value bands with 6% hue and 8% scale jitter per instance; ground albedo authored as four masses (sunlit meadow, shaded meadow, path, bare earth) rather than per-blade texture"
+      },
+      "motion": {
+        "sway_period_s": [
+          4.0,
+          6.5
+        ],
+        "ease": "sine in-out",
+        "hold_ms": 600
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.1,
+          "strength": 0.15,
+          "radius": 0.6
+        },
+        "vignette": 0.12,
+        "grain": 0.02,
+        "dof": "off"
+      },
+      "signature_technique": "Cumulus banks built as flat card layers at 30 m, 120 m and 600 m with the fog colour equal to the horizon, so the sky reads as a painted composition with its own depth rather than as a simulated volume.",
+      "never": [
+        "photoreal volumetric clouds",
+        "black shadows (floor stays above 0.12 luminance)",
+        "cyan-tinted grass",
+        "glossy plastic foliage",
+        "a uniform grid of identical trees"
+      ]
+    }
+  }
+}

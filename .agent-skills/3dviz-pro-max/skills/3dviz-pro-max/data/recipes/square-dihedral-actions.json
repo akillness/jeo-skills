@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.square-dihedral-actions",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Square symmetries as exact permutations"
+  },
+  "aliases": {
+    "en": [
+      "square symmetry group",
+      "dihedral group D4",
+      "rotation reflection composition"
+    ]
+  },
+  "direction_ids": [
+    "topology-symmetry"
+  ],
+  "summary": "Apply rotations and reflections to labeled square corners and compare operation order.",
+  "objective": "Show the eight symmetries of a labeled square and compare rotate-then-reflect with reflect-then-rotate.",
+  "tags": [
+    "dihedral group",
+    "D4",
+    "symmetry"
+  ],
+  "subject_terms": [
+    "dihedral group",
+    "D4",
+    "symmetry",
+    "permutation",
+    "reflection",
+    "noncommutative composition"
+  ],
+  "intent_signals": [
+    "Show the eight symmetries of a labeled square and compare rotate-then-reflect with reflect-then-rotate.",
+    "Apply rotations and reflections to labeled square corners and compare operation order."
+  ],
+  "example_prompts": [
+    "Show the eight symmetries of a labeled square and compare rotate-then-reflect with reflect-then-rotate.",
+    "Create an explorable 3D explanation of square symmetry group with composition table."
+  ],
+  "negative_signals": [
+    "The notation D4 here means eight symmetries; some texts use D8 for the same group."
+  ],
+  "not_for": [
+    "The notation D4 here means eight symmetries; some texts use D8 for the same group."
+  ],
+  "entities": [
+    {
+      "name": "Labeled square",
+      "guidance": "Use a thin plate with four distinct corner glyphs and a fixed ghost reference outline; preserve side adjacency."
+    },
+    {
+      "name": "Symmetry axes",
+      "guidance": "Draw reflection axes and rotation-center arcs separately, with a clear right-to-left or action-order composition convention."
+    },
+    {
+      "name": "Composition table",
+      "guidance": "Link selected table cells to two operation buttons and the exact resulting permutation; distinguish all 24 corner permutations from the eight square symmetries."
+    }
+  ],
+  "state_contract": {
+    "model": "Corners have fixed canonical labels in cyclic order. Represent each symmetry as a permutation of four vertices; r is a quarter turn and s a chosen axis reflection, with r^4=e, s^2=e and s*r*s=r^-1.",
+    "authority": "Permutation composition owns the resulting corner mapping; animation is a transition between exact group elements and commits once.",
+    "actions": [
+      "Apply a quarter turn or chosen reflection.",
+      "Compare both orders of a two-operation sequence.",
+      "Inspect all eight group elements.",
+      "Undo with inverse or reset to identity."
+    ]
+  },
+  "invariants": [
+    "Four quarter turns and two applications of the same reflection each restore identity.",
+    "Every committed operation preserves square adjacency and pairwise distances.",
+    "The selected noncommuting pair yields distinct labeled outcomes in the two orders."
+  ],
+  "motion_guidance": [
+    "A planar reflection may be displayed as an out-of-plane flip or an immediate map; label that animation path as presentation, not intermediate planar symmetries.",
+    "Lock or queue actions during a transition to avoid double composition."
+  ],
+  "known_limits": [
+    "The notation D4 here means eight symmetries; some texts use D8 for the same group.",
+    "A 3D cube rotation group is a different subject; this plate has a declared plane and labeled vertices.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.square-dihedral-actions",
+      "statement": "The square symmetry group consists of eight vertex permutations preserving the square.",
+      "scope": "The labels distinguish outcomes but do not change the geometric square symmetry set.",
+      "source_refs": [
+        {
+          "source_id": "source.judson-square-symmetry",
+          "locator": "14.3.1 A Geometric Example, printed page 245"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Labeled square",
+      "structure": "Use a thin plate with four distinct corner glyphs and a fixed ghost reference outline; preserve side adjacency.",
+      "material": "Matte plate, corner glyphs with redundant shape/color cues and a transparent ghost reference; avoid backface disappearance during flips."
+    }
+  ]
+}

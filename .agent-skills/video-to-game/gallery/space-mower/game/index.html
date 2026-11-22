@@ -1,0 +1,1585 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Space Mower</title>
+<link rel="icon" href="assets/icon_helmet.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #17324d;
+    --cream: #fffaf0;
+    --yellow: #ffd23f;
+    --orange: #ff8a2b;
+    --green: #63c43c;
+    --green-dk: #2f7d24;
+    --sky: #63b5ea;
+  }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #5aaee6; color: var(--ink);
+    font-family: 'Fredoka', ui-rounded, 'SF Pro Rounded', system-ui, sans-serif; user-select: none; -webkit-user-select: none; }
+  canvas { display: block; outline: none; }
+  .hidden { opacity: 0 !important; pointer-events: none !important; }
+  .gone { display: none !important; }
+
+  /* ---------- HUD ---------- */
+  #hud { position: fixed; inset: 0; pointer-events: none; transition: opacity .5s; }
+  .pill { background: rgba(255, 250, 240, .92); border-radius: 999px; box-shadow: 0 4px 0 rgba(23, 50, 77, .18), 0 10px 24px rgba(23, 50, 77, .12); }
+  #lives { position: absolute; left: 22px; top: 18px; display: flex; gap: 6px; padding: 6px 12px; }
+  #lives img { width: 38px; height: 38px; object-fit: contain; transition: transform .3s, opacity .3s, filter .3s; }
+  #lives img.lost { opacity: .28; filter: grayscale(1); transform: scale(.8); }
+  #center { position: absolute; left: 50%; top: 16px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  #prog { position: relative; width: min(46vw, 420px); height: 34px; padding: 5px; box-sizing: border-box; }
+  #progTrack { position: relative; width: 100%; height: 100%; border-radius: 999px; background: #d7ecc4; overflow: hidden; }
+  #progFill { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; border-radius: 999px;
+    background: linear-gradient(180deg, #8fe05a, #49a92d); transition: width .25s; }
+  #progTarget { position: absolute; top: -3px; bottom: -3px; width: 4px; margin-left: -2px; border-radius: 3px; background: var(--orange); box-shadow: 0 0 0 2px var(--cream); }
+  #progTxt { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: var(--ink); letter-spacing: .02em; }
+  #sub { display: flex; gap: 10px; align-items: center; font-weight: 600; font-size: 15px; }
+  #sub span { padding: 3px 12px; }
+  #combo { color: var(--cream); background: var(--orange); border-radius: 999px; padding: 3px 10px; font-weight: 700; transform: scale(0); transition: transform .18s cubic-bezier(.3,1.6,.6,1); }
+  #combo.on { transform: scale(1); }
+  #timer { position: absolute; right: 22px; top: 18px; display: flex; align-items: center; gap: 8px; padding: 6px 16px 6px 8px; font-weight: 700; font-size: 22px; min-width: 92px; }
+  #timer img { width: 34px; height: 34px; object-fit: contain; }
+  #timer.low { color: #e0412b; animation: pulse .5s infinite alternate; }
+  @keyframes pulse { to { transform: scale(1.07); } }
+  #boost { position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); width: 190px; height: 22px; padding: 4px 10px 4px 34px; box-sizing: border-box; }
+  #turboIco { position: absolute; left: 4px; top: -7px; width: 32px; height: 32px; object-fit: contain; }
+  #boostTrack { width: 100%; height: 100%; border-radius: 999px; background: #f1dfb8; overflow: hidden; }
+  #boostFill { width: 100%; height: 100%; background: linear-gradient(90deg, var(--orange), var(--yellow)); border-radius: 999px; }
+  #popups { position: absolute; inset: 0; overflow: hidden; }
+  .pop { position: absolute; transform: translate(-50%, -50%); font-weight: 700; font-size: 20px; color: var(--cream);
+    text-shadow: 0 2px 0 rgba(23,50,77,.55), 0 0 12px rgba(23,50,77,.25); animation: rise 1s ease-out forwards; white-space: nowrap; }
+  @keyframes rise { from { opacity: 1; margin-top: 0; } to { opacity: 0; margin-top: -60px; } }
+  #hit { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(255,120,40,0) 40%, rgba(255,70,30,.55)); opacity: 0; transition: opacity .25s; }
+
+  /* ---------- Title / banners ---------- */
+  #title { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity .6s; cursor: pointer; }
+  #logo { width: min(64vw, 620px); filter: drop-shadow(0 12px 24px rgba(10, 30, 70, .35)); animation: bob 3s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(-10px) rotate(-1deg); } }
+  #start { margin-top: 2vh; font-weight: 700; font-size: 24px; color: var(--ink); padding: 10px 26px; animation: blink 1.2s infinite; }
+  @keyframes blink { 50% { opacity: .55; } }
+  #keys { position: absolute; bottom: 26px; display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; padding: 0 16px; font-weight: 600; font-size: 15px; color: var(--cream); text-shadow: 0 2px 6px rgba(10,30,70,.6); }
+  #keys b { display: inline-block; min-width: 22px; padding: 1px 7px; margin-right: 4px; border-radius: 7px; background: rgba(255,250,240,.92); color: var(--ink); text-shadow: none; text-align: center; }
+  #best { margin-top: 10px; font-weight: 600; font-size: 16px; color: var(--cream); text-shadow: 0 2px 6px rgba(10,30,70,.6); }
+  #banner { position: fixed; left: 50%; top: 38%; transform: translate(-50%, -50%); text-align: center; pointer-events: none; transition: opacity .4s; }
+  #bannerBig { font-weight: 700; font-size: clamp(42px, 7vw, 84px); color: var(--cream); letter-spacing: .02em;
+    -webkit-text-stroke: 3px var(--ink); paint-order: stroke fill; text-shadow: 0 6px 0 rgba(23,50,77,.35); }
+  #bannerSmall { margin-top: 6px; font-weight: 600; font-size: clamp(18px, 2.3vw, 26px); color: var(--cream); text-shadow: 0 2px 8px rgba(10,30,70,.7); }
+  #loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: #5aaee6; transition: opacity .6s; z-index: 5; }
+  #loadBar { width: 240px; height: 16px; padding: 4px; }
+  #loadFill { width: 0%; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #8fe05a, #49a92d); transition: width .2s; }
+  #mute { position: fixed; right: 18px; bottom: 16px; font-weight: 600; font-size: 13px; color: var(--cream); text-shadow: 0 1px 4px rgba(10,30,70,.7); opacity: .8; }
+  @media (max-width: 640px) {
+    #lives img { width: 26px; height: 26px; }
+    #timer { font-size: 17px; min-width: 70px; }
+    #timer img { width: 24px; height: 24px; }
+    #prog { width: 40vw; }
+    #lives { left: 10px; } #timer { right: 10px; }
+  }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="hud" class="hidden">
+  <div id="lives" class="pill"></div>
+  <div id="center">
+    <div id="prog" class="pill"><div id="progTrack"><div id="progFill"></div><div id="progTarget"></div></div><span id="progTxt">0%</span></div>
+    <div id="sub"><span id="lvl" class="pill">LEVEL 1</span><span id="score" class="pill">0</span><span id="combo">x2</span></div>
+  </div>
+  <div id="timer" class="pill"><img id="clockIco" alt=""><span id="timeTxt">1:30</span></div>
+  <div id="boost" class="pill"><img id="turboIco" alt=""><div id="boostTrack"><div id="boostFill"></div></div></div>
+  <div id="popups"></div>
+  <div id="hit"></div>
+</div>
+<div id="title" class="hidden">
+  <img id="logo" alt="Space Mower">
+  <div id="start" class="pill">PRESS SPACE</div>
+  <div id="best"></div>
+  <div id="keys"><span><b>&uarr;</b><b>&darr;</b><b>&larr;</b><b>&rarr;</b> / <b>WASD</b> drive</span><span><b>SHIFT</b> turbo</span><span><b>M</b> sound</span></div>
+</div>
+<div id="banner" class="hidden"><div id="bannerBig"></div><div id="bannerSmall"></div></div>
+<div id="loading"><div id="loadBar" class="pill"><div id="loadFill"></div></div></div>
+<div id="mute"></div>
+
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+// =====================================================================
+//  SPACE MOWER — a tiny-planet lawn mowing arcade game.
+//  Every texture, sprite, model and sound in /assets was generated with fal.
+// =====================================================================
+const QS = new URLSearchParams(location.search);
+const DEBUG = QS.has('debug');
+const AUTOSTART = QS.has('autostart');
+const LOWQ = QS.get('q') === 'low';
+
+const R = 10;                     // planet radius (world units)
+const CUT_R = 0.66;               // mower cutting radius
+const MOWER_LEN = 1.75;           // mower model length
+const MAX_CRATERS = 32;
+const MOW_W = 2048, MOW_H = 1024; // equirect mowing mask
+const N_SAMPLES = 16000;          // scoring sample points
+// grass look (matched to the video frames): tuft density/size, tuft base..tip shading, ground brightness,
+// share of mown colour under the tall grass, tuft clustering, grass saturation
+const TN = 0.8, TS = 1.1, TB = 0.55, TT = 1.22, GL = 0.81, GM = 0.4, TC = 0.35, GS = 0.83;
+const N_TUFTS = Math.round((LOWQ ? 32000 : 72000) * TN * (R * R) / 100);
+
+const $ = id => document.getElementById(id);
+const clamp = THREE.MathUtils.clamp, lerp = THREE.MathUtils.lerp;
+const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+const damp = (a, b, k, dt) => lerp(a, b, 1 - Math.exp(-k * dt));
+function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+let rng = mulberry32(2028);
+const frand = Math.random;
+
+const UP = new THREE.Vector3(0, 1, 0), XA = new THREE.Vector3(1, 0, 0), YA = new THREE.Vector3(0, 1, 0);
+const _v1 = new THREE.Vector3(), _v2 = new THREE.Vector3(), _v3 = new THREE.Vector3(), _v4 = new THREE.Vector3();
+const _q1 = new THREE.Quaternion(), _q2 = new THREE.Quaternion(), _m1 = new THREE.Matrix4();
+
+// tangent offset (x right, z back) at the north pole -> unit direction (exponential map)
+function dirFromPole(x, z) {
+  const d = Math.hypot(x, z); if (d < 1e-6) return UP.clone();
+  const th = d / R, s = Math.sin(th) / d;
+  return new THREE.Vector3(x * s, Math.cos(th), z * s).normalize();
+}
+function randomDir(r = rng) { const u = r() * 2 - 1, t = r() * Math.PI * 2, s = Math.sqrt(1 - u * u); return new THREE.Vector3(s * Math.cos(t), u, s * Math.sin(t)); }
+function arc(a, b) { return Math.acos(clamp(a.dot(b), -1, 1)) * R; }
+function surfQuat(dir, yaw, out = new THREE.Quaternion()) {
+  out.setFromUnitVectors(UP, dir); return out.multiply(_q2.setFromAxisAngle(UP, yaw));
+}
+// random direction at arc distance d from dir
+function offsetDir(dir, d, ang) {
+  const t1 = _v3.crossVectors(Math.abs(dir.y) < 0.9 ? UP : XA, dir).normalize();
+  const t2 = _v4.crossVectors(dir, t1);
+  const tdir = t1.clone().multiplyScalar(Math.cos(ang)).addScaledVector(t2, Math.sin(ang));
+  const th = d / R;
+  return dir.clone().multiplyScalar(Math.cos(th)).addScaledVector(tdir, Math.sin(th)).normalize();
+}
+
+// ---------------------------------------------------------------------
+//  Renderer / scene / post
+// ---------------------------------------------------------------------
+const maxPR = Math.min(window.devicePixelRatio || 1, LOWQ ? 1 : 1.5);
+let pixelRatio = maxPR;
+const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+renderer.setPixelRatio(pixelRatio);
+renderer.setSize(innerWidth, innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.12;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.prepend(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0x9fd3f2, 16, 46);
+const camera = new THREE.PerspectiveCamera(48, innerWidth / innerHeight, 0.1, 900);
+
+const hemi = new THREE.HemisphereLight(0xe8f3ff, 0x5f8a2c, 0.85);
+scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xfff1dc, 2.9);
+sun.castShadow = true;
+sun.shadow.mapSize.set(LOWQ ? 1024 : 2048, LOWQ ? 1024 : 2048);
+Object.assign(sun.shadow.camera, { left: -17, right: 17, top: 17, bottom: -17, near: 1, far: 80 });
+sun.shadow.bias = -0.0004;
+sun.shadow.normalBias = 0.035;
+scene.add(sun, sun.target);
+const flash = new THREE.PointLight(0xffa040, 0, 9, 1.6);
+scene.add(flash);
+
+const size2 = new THREE.Vector2(); renderer.getDrawingBufferSize(size2);
+const composerRT = new THREE.WebGLRenderTarget(size2.x, size2.y, { type: THREE.HalfFloatType, samples: 4 });
+const composer = new EffectComposer(renderer, composerRT);
+composer.addPass(new RenderPass(scene, camera));
+const TiltShader = {
+  uniforms: { tDiffuse: { value: null }, uDir: { value: new THREE.Vector2(1, 0) }, uRes: { value: new THREE.Vector2(1, 1) },
+    uFocus: { value: 0.5 }, uBand: { value: 0.17 }, uAmount: { value: 22 } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
+  fragmentShader: `uniform sampler2D tDiffuse; uniform vec2 uDir, uRes; uniform float uFocus, uBand, uAmount; varying vec2 vUv;
+    void main(){
+      float dy = vUv.y - uFocus;
+      float d = max(0.0, abs(dy) - uBand) * (dy < 0.0 ? 1.25 : 0.3);
+      float r = d * uAmount;
+      if (r < 0.15) { gl_FragColor = texture2D(tDiffuse, vUv); return; }
+      vec4 s = vec4(0.0); float ws = 0.0;
+      for (int i = -6; i <= 6; i++) { float fi = float(i); float w = exp(-fi*fi/14.0);
+        s += texture2D(tDiffuse, vUv + uDir * (fi * r / 6.0) / uRes) * w; ws += w; }
+      gl_FragColor = s / ws; }`
+};
+const tiltH = new ShaderPass(TiltShader), tiltV = new ShaderPass(TiltShader);
+tiltV.uniforms.uDir.value.set(0, 1);
+composer.addPass(tiltH); composer.addPass(tiltV);
+const bloom = new UnrealBloomPass(new THREE.Vector2(size2.x / 2, size2.y / 2), 0.32, 0.55, 0.9);
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+const gradePass = new ShaderPass({
+  uniforms: { tDiffuse: { value: null }, uSat: { value: 1.07 }, uCon: { value: 1.04 }, uVig: { value: 0.55 }, uHit: { value: 0 } },
+  vertexShader: TiltShader.vertexShader,
+  fragmentShader: `uniform sampler2D tDiffuse; uniform float uSat, uCon, uVig, uHit; varying vec2 vUv;
+    void main(){ vec4 c = texture2D(tDiffuse, vUv);
+      float l = dot(c.rgb, vec3(0.299,0.587,0.114));
+      c.rgb = mix(vec3(l), c.rgb, uSat);
+      c.rgb = (c.rgb - 0.5) * uCon + 0.5;
+      vec2 q = vUv - 0.5; c.rgb *= 1.0 - dot(q,q) * uVig;
+      c.rgb = mix(c.rgb, vec3(1.0,0.45,0.2), uHit * smoothstep(0.15, 0.75, length(q)));
+      gl_FragColor = vec4(c.rgb, 1.0); }`
+});
+composer.addPass(gradePass);
+
+function onResize() {
+  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  renderer.setPixelRatio(pixelRatio); renderer.setSize(innerWidth, innerHeight);
+  composer.setPixelRatio(pixelRatio); composer.setSize(innerWidth, innerHeight);
+  renderer.getDrawingBufferSize(size2);
+  tiltH.uniforms.uRes.value.copy(size2); tiltV.uniforms.uRes.value.copy(size2);
+  tiltH.uniforms.uAmount.value = tiltV.uniforms.uAmount.value = 26 * size2.y / 720;
+}
+addEventListener('resize', onResize);
+
+// ---------------------------------------------------------------------
+//  Assets
+// ---------------------------------------------------------------------
+const manager = new THREE.LoadingManager();
+manager.onProgress = (u, l, t) => { $('loadFill').style.width = (l / t * 100).toFixed(0) + '%'; };
+const gltfLoader = new GLTFLoader(manager).setMeshoptDecoder(MeshoptDecoder);
+const texLoader = new THREE.TextureLoader(manager);
+const loadGLB = url => new Promise(res => gltfLoader.load(url, g => res(g.scene), undefined, () => { console.warn('missing', url); res(null); }));
+const loadTex = (url, srgb = true) => new Promise(res => texLoader.load(url, t => { if (srgb) t.colorSpace = THREE.SRGBColorSpace; res(t); }, undefined, () => { console.warn('missing', url); res(null); }));
+const AUDIO_FILES = { music: 'assets/music.mp3', engine: 'assets/sfx_engine.mp3', cut: 'assets/sfx_cut.mp3', impact: 'assets/sfx_impact.mp3',
+  whoosh: 'assets/sfx_whoosh.mp3', chime: 'assets/sfx_chime.mp3', bonk: 'assets/sfx_bonk.mp3', win: 'assets/sfx_win.mp3', hurt: 'assets/sfx_hurt.mp3' };
+const audioData = {};
+
+const A = {};
+async function loadAll() {
+  const glbs = { mower: 'mower', house: 'house', pine: 'pine', pine2: 'pine2', rock: 'rock', meteor: 'meteor', sign: 'sign', bush: 'bush', cloud: 'cloud' };
+  const texs = { tall: 'tex_grass_tall.jpg', cut: 'tex_grass_cut.jpg', tuft: 'tuft_atlas.png', flowers: 'flowers_atlas.png', skyDay: 'sky_day.jpg',
+    skySpace: 'sky_space.jpg', puff: 'fx_puff.png', dust: 'fx_dust.png', fire: 'fx_fire.png', ring: 'fx_ring.png', spark: 'fx_spark.png' };
+  const jobs = [];
+  for (const [k, f] of Object.entries(glbs)) jobs.push(loadGLB(`assets/${f}.glb`).then(s => A[k] = s));
+  for (const [k, f] of Object.entries(texs)) jobs.push(loadTex(`assets/${f}`).then(t => A[k] = t));
+  for (const [k, u] of Object.entries(AUDIO_FILES)) jobs.push(fetch(u).then(r => r.ok ? r.arrayBuffer() : null).then(b => { if (b) audioData[k] = b; }).catch(() => {}));
+  await Promise.all(jobs);
+  $('logo').onerror = () => { $('logo').style.display = 'none'; };
+  $('clockIco').onerror = () => { $('clockIco').style.display = 'none'; };
+  $('logo').src = 'assets/logo.webp';
+  $('clockIco').src = 'assets/icon_clock.png';
+  $('turboIco').onerror = () => { $('turboIco').style.display = 'none'; };
+  $('turboIco').src = 'assets/icon_turbo.png';
+}
+
+// normalize a model: base at y=0, centred in xz, scaled so that `dim` (x|y|z|xz) equals `size`
+function normalizeModel(src, size, dim = 'y') {
+  const root = new THREE.Group();
+  const m = src.clone(true);
+  root.add(m);
+  m.updateMatrixWorld(true);
+  const b = new THREE.Box3().setFromObject(m), s = b.getSize(new THREE.Vector3()), c = b.getCenter(new THREE.Vector3());
+  const ref = dim === 'xz' ? Math.max(s.x, s.z) : s[dim];
+  const k = size / ref;
+  const p0 = m.position.clone();
+  m.position.set((p0.x - c.x) * k, (p0.y - b.min.y) * k, (p0.z - c.z) * k);
+  m.scale.multiplyScalar(k);
+  root.userData.size = s.multiplyScalar(k);
+  return root;
+}
+function prepMaterials(obj, opts = {}) {
+  obj.traverse(o => {
+    if (!o.isMesh) return;
+    o.castShadow = opts.cast !== false; o.receiveShadow = opts.receive !== false;
+    if (opts.cloneMat) o.material = o.material.clone();
+    const m = o.material;
+    if (m && m.isMeshStandardMaterial) {
+      m.metalness = 0; m.roughness = opts.rough ?? 0.62; m.envMapIntensity = opts.env ?? 0.55;
+      if (m.map) { m.map.anisotropy = 4; }
+      if (opts.emissive) { m.emissive = new THREE.Color(opts.emissive); m.emissiveIntensity = opts.emissiveI ?? 0.2; if (m.map) m.emissiveMap = m.map; }
+      if (opts.color) m.color.multiply(new THREE.Color(opts.color));
+    }
+  });
+  return obj;
+}
+
+// ---------------------------------------------------------------------
+//  Mowing mask (equirect render target). R = cut, G/B = mowing direction
+// ---------------------------------------------------------------------
+const mowRT = new THREE.WebGLRenderTarget(MOW_W, MOW_H, { minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter,
+  wrapS: THREE.RepeatWrapping, wrapT: THREE.ClampToEdgeWrapping, depthBuffer: false, generateMipmaps: false });
+const MAX_STAMPS = 16;
+const brushMat = new THREE.ShaderMaterial({
+  uniforms: { uStamp: { value: Array.from({ length: MAX_STAMPS }, () => new THREE.Vector4()) },
+    uStampT: { value: Array.from({ length: MAX_STAMPS }, () => new THREE.Vector3()) }, uCount: { value: 0 }, uR: { value: R } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`,
+  fragmentShader: `
+    uniform vec4 uStamp[${MAX_STAMPS}]; uniform vec3 uStampT[${MAX_STAMPS}]; uniform int uCount; uniform float uR; varying vec2 vUv;
+    void main(){
+      float lon = (vUv.x - 0.5) * 6.2831853, lat = (vUv.y - 0.5) * 3.1415927;
+      vec3 d = vec3(cos(lat) * sin(lon), sin(lat), cos(lat) * cos(lon));
+      float a = 0.0; vec3 T = vec3(0.0);
+      for (int i = 0; i < ${MAX_STAMPS}; i++) {
+        if (i >= uCount) break;
+        float dist = length(d - uStamp[i].xyz) * uR;
+        float r = uStamp[i].w;
+        float m = 1.0 - smoothstep(r * 0.72, r, dist);
+        if (m > a) { a = m; T = uStampT[i]; }
+      }
+      if (a < 0.003) discard;
+      vec3 t1 = normalize(cross(vec3(1.0, 0.0, 0.0), d) + vec3(0.0, 1e-5, 0.0));
+      vec3 t2 = cross(d, t1);
+      gl_FragColor = vec4(1.0, dot(T, t1) * 0.5 + 0.5, dot(T, t2) * 0.5 + 0.5, a);
+    }`,
+  blending: THREE.CustomBlending, blendEquation: THREE.AddEquation,
+  blendSrc: THREE.SrcAlphaFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
+  blendSrcAlpha: THREE.OneFactor, blendDstAlpha: THREE.OneFactor,
+  depthTest: false, depthWrite: false
+});
+const brushScene = new THREE.Scene();
+const brushCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+const brushQuad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), brushMat);
+brushQuad.frustumCulled = false;
+brushScene.add(brushQuad);
+function clearMow() {
+  const prev = renderer.getRenderTarget();
+  const cc = new THREE.Color(); renderer.getClearColor(cc); const ca = renderer.getClearAlpha();
+  renderer.setRenderTarget(mowRT);
+  renderer.setClearColor(new THREE.Color().setRGB(0, 0.5, 0.5, THREE.LinearSRGBColorSpace), 0);
+  renderer.clear(true, false, false);
+  renderer.setRenderTarget(prev); renderer.setClearColor(cc, ca);
+}
+const pendingStamps = [];
+function flushStamps() {
+  if (!pendingStamps.length) return;
+  while (pendingStamps.length) {
+    const batch = pendingStamps.splice(0, MAX_STAMPS);
+    batch.forEach((s, i) => { brushMat.uniforms.uStamp.value[i].copy(s.v); brushMat.uniforms.uStampT.value[i].copy(s.t); });
+    brushMat.uniforms.uCount.value = batch.length;
+    const prev = renderer.getRenderTarget();
+    renderer.setRenderTarget(mowRT);
+    renderer.autoClear = false;
+    renderer.render(brushScene, brushCam);
+    renderer.autoClear = true;
+    renderer.setRenderTarget(prev);
+  }
+}
+
+// ---------------------------------------------------------------------
+//  Shared GLSL (craters + equirect helpers)
+// ---------------------------------------------------------------------
+const craterU = { value: Array.from({ length: MAX_CRATERS }, () => new THREE.Vector4(0, 1, 0, 0)) };
+const craterK = { value: new Float32Array(MAX_CRATERS) };
+const U = { uMow: { value: mowRT.texture }, uCrater: craterU, uCraterK: craterK, uR: { value: R }, uTime: { value: 0 },
+  uMower: { value: new THREE.Vector3(0, R, 0) }, uGrow: { value: 1 }, uSunDir: { value: new THREE.Vector3(0, 1, 0) },
+  uGrassTint: { value: new THREE.Vector3(0.245, 0.455, 0.41) },
+  uGroundTint: { value: new THREE.Vector3(0.92, 1.0, 0.85) },
+  uCutTint: { value: new THREE.Vector3(1.0, 1.38, 0.92) } };
+const GLSL_COMMON = `
+  uniform sampler2D uMow; uniform vec4 uCrater[${MAX_CRATERS}]; uniform float uCraterK[${MAX_CRATERS}];
+  uniform float uR; uniform float uTime; uniform vec3 uMower; uniform float uGrow; uniform vec3 uGrassTint; uniform vec3 uGroundTint; uniform vec3 uCutTint;
+  vec2 eqUV(vec3 d) { return vec2(atan(d.x, d.z) * 0.15915494 + 0.5, asin(clamp(d.y, -1.0, 1.0)) * 0.31830989 + 0.5); }
+  // crater field: height offset h, perturbed normal n, inside factor (0..1)
+  void craterField(vec3 d, out float h, out vec3 n, out float inside) {
+    h = 0.0; inside = 0.0; vec3 g = vec3(0.0);
+    for (int i = 0; i < ${MAX_CRATERS}; i++) {
+      float rad = uCrater[i].w; if (rad <= 0.0) continue;
+      vec3 c = uCrater[i].xyz;
+      float x = length(d - c) * uR / rad;
+      if (x > 1.7) continue;
+      float k = uCraterK[i];
+      float x2 = x * x; float bw = 1.0 - x2;
+      float bowl = x < 1.0 ? -bw * bw : 0.0;
+      float xr = (x - 1.0) / 0.3; float rim = exp(-xr * xr);
+      float D = 0.36 * rad * k, Hr = 0.12 * rad * k;
+      h += D * bowl + Hr * rim;
+      float dbowl = x < 1.0 ? 4.0 * x * bw : 0.0;
+      float drim = rim * (-2.0 * xr / 0.3);
+      vec3 rh = d - c * dot(d, c); float rl = length(rh);
+      if (rl > 1e-5) g += ((D * dbowl + Hr * drim) / rad) * (rh / rl);
+      inside = max(inside, (1.0 - smoothstep(0.92, 1.18, x)) * step(0.02, k));
+    }
+    n = normalize(d - g);
+  }
+`;
+
+// ---------------------------------------------------------------------
+//  Planet ground
+// ---------------------------------------------------------------------
+let ground, tufts, tuftMat, flowersMesh;
+function buildGround() {
+  for (const k of ['tall', 'cut']) if (A[k]) { A[k].wrapS = A[k].wrapT = THREE.RepeatWrapping; A[k].anisotropy = renderer.capabilities.getMaxAnisotropy(); }
+  const seg = LOWQ ? 220 : 360;
+  const geo = new THREE.SphereGeometry(R, seg, seg / 2);
+  const mat = new THREE.MeshLambertMaterial({ color: 0xffffff });
+  mat.onBeforeCompile = sh => {
+    Object.assign(sh.uniforms, U, { uTall: { value: A.tall }, uCut: { value: A.cut } });
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\n' + GLSL_COMMON + '\nvarying vec3 vObj; varying float vCrater; varying float vRim;')
+      .replace('#include <beginnormal_vertex>', `
+        vec3 gDir = normalize(position); float gH; vec3 gN; float gIn;
+        craterField(gDir, gH, gN, gIn);
+        vec3 objectNormal = gN;`)
+      .replace('#include <begin_vertex>', `vec3 transformed = gDir * (uR + gH); vObj = transformed; vCrater = gIn; vRim = gH;`);
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', '#include <common>\n' + GLSL_COMMON + `
+        uniform sampler2D uTall; uniform sampler2D uCut; varying vec3 vObj; varying float vCrater; varying float vRim;
+        vec3 tri(sampler2D t, vec3 p, vec3 w) { return texture2D(t, p.zy).rgb * w.x + texture2D(t, p.xz).rgb * w.y + texture2D(t, p.xy).rgb * w.z; }`)
+      .replace('#include <map_fragment>', `
+        vec3 nn = normalize(vObj);
+        vec2 muv = eqUV(nn);
+        vec4 mm = texture2D(uMow, muv);
+        float cl = max(cos(asin(clamp(nn.y, -1.0, 1.0))), 0.05);
+        float du = 0.32 / (6.2831853 * uR * cl), dv = 0.32 / (3.1415927 * uR);
+        float nb = 0.25 * (texture2D(uMow, muv + vec2(du, 0.0)).r + texture2D(uMow, muv - vec2(du, 0.0)).r
+                         + texture2D(uMow, muv + vec2(0.0, dv)).r + texture2D(uMow, muv - vec2(0.0, dv)).r);
+        float cut = smoothstep(0.3, 0.72, mm.r);
+        vec3 w = pow(abs(nn), vec3(4.0)); w /= (w.x + w.y + w.z);
+        vec3 p = vObj * 0.23;
+        vec3 tall = tri(uTall, p, w) * uGroundTint * ${GL.toFixed(3)};
+        vec3 mowd = tri(uCut, p * 1.15 + 0.37, w) * uCutTint;
+        vec2 e = mm.gb * 2.0 - 1.0;
+        if (dot(e, e) > 0.02) {
+          vec3 t1 = normalize(cross(vec3(1.0, 0.0, 0.0), nn) + vec3(0.0, 1e-5, 0.0)); vec3 t2 = cross(nn, t1);
+          vec3 T = normalize(e.x * t1 + e.y * t2);
+          vec3 V = normalize(cameraPosition - vObj); vec3 Vt = V - nn * dot(V, nn);
+          float lv = length(Vt);
+          if (lv > 1e-3) mowd *= 1.0 + 0.17 * dot(T, Vt / lv);
+        }
+        float edge = cut * (1.0 - smoothstep(0.35, 0.95, nb));
+        mowd *= 1.0 - 0.32 * edge;
+        tall = mix(tall, mowd * ${(GL * 0.9).toFixed(3)}, ${GM.toFixed(3)});
+        vec3 col = mix(tall, mowd, cut);
+        // craters: smooth bowl of flattened grass, slightly sun-bleached in the middle
+        vec3 crater = mowd * vec3(0.98, 1.0, 0.86);
+        col = mix(col, crater, smoothstep(0.0, 0.6, vCrater));
+        float md = length(vObj - uMower);
+        col *= 1.0 - 0.28 * (1.0 - smoothstep(0.3, 1.25, md));
+        col = mix(vec3(dot(col, vec3(0.3, 0.59, 0.11))), col, ${GS.toFixed(3)});
+        diffuseColor.rgb *= col;`);
+  };
+  mat.customProgramCacheKey = () => 'ground';
+  ground = new THREE.Mesh(geo, mat);
+  ground.receiveShadow = true;
+  ground.frustumCulled = false;
+  scene.add(ground);
+}
+
+// ---------------------------------------------------------------------
+//  Grass tufts (instanced, cut via the mowing mask in the vertex shader)
+// ---------------------------------------------------------------------
+function tuftGeometry() {
+  const pos = [], uv = [], nrm = [], idx = [];
+  for (let p = 0; p < 3; p++) {
+    const a = p * Math.PI / 3, cx = Math.cos(a), cz = Math.sin(a), base = pos.length / 3;
+    for (const [s, y] of [[-0.5, 0], [0.5, 0], [0.5, 1], [-0.5, 1]]) {
+      const lean = y * 0.08;
+      pos.push(cx * s * (1 + y * 0.25) + lean * cz, y, cz * s * (1 + y * 0.25) - lean * cx);
+      uv.push(s + 0.5, y); nrm.push(0, 1, 0);
+    }
+    idx.push(base, base + 1, base + 2, base, base + 2, base + 3);
+  }
+  const g = new THREE.InstancedBufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  g.setAttribute('normal', new THREE.Float32BufferAttribute(nrm, 3));
+  g.setIndex(idx);
+  return g;
+}
+function buildTufts(blockers) {
+  const geo = tuftGeometry();
+  const mat = new THREE.MeshLambertMaterial({ map: A.tuft, alphaTest: 0.42, side: THREE.DoubleSide, alphaToCoverage: true });
+  if (A.tuft) A.tuft.anisotropy = 4;
+  const cell = new Float32Array(N_TUFTS * 2), tint = new Float32Array(N_TUFTS * 4);
+  const mesh = new THREE.InstancedMesh(geo, mat, N_TUFTS);
+  const golden = Math.PI * (3 - Math.sqrt(5));
+  const d = new THREE.Vector3(), q = new THREE.Quaternion(), s = new THREE.Vector3(), p = new THREE.Vector3();
+  let n = 0;
+  const r = mulberry32(77);
+  for (let i = 0; i < N_TUFTS; i++) {
+    const y = 1 - (i + 0.5) / N_TUFTS * 2, rr = Math.sqrt(1 - y * y), th = golden * i;
+    d.set(Math.cos(th) * rr, y, Math.sin(th) * rr);
+    d.copy(offsetDir(d, r() * 0.09, r() * 6.283));
+    if (TC > 0) {
+      const nz = Math.sin(d.x * 7.1 + 1.3) * Math.sin(d.y * 6.3 + 0.7) * Math.sin(d.z * 8.2 + 2.1) + 0.6 * Math.sin(d.x * 17.0 + d.z * 13.0) * Math.sin(d.y * 15.0 + d.x * 5.0);
+      if (r() > 1 - TC * (1 - smooth(-0.55, 0.35, nz))) continue;
+    }
+    let blocked = false;
+    for (const b of blockers) if (b.grassFree && arc(d, b.dir) < b.grassFree) { blocked = true; break; }
+    if (blocked) continue;
+    surfQuat(d, r() * 6.283, q);
+    const hgt = (0.36 + r() * 0.22) * TS, wid = (0.42 + r() * 0.16) * TS;
+    s.set(wid, hgt, wid);
+    p.copy(d).multiplyScalar(R - 0.02);
+    mesh.setMatrixAt(n, _m1.compose(p, q, s));
+    const c = Math.floor(r() * 4);
+    cell[n * 2] = (c % 2) * 0.5; cell[n * 2 + 1] = Math.floor(c / 2) * 0.5;
+    const shade = 0.86 + r() * 0.22;
+    tint[n * 4] = shade * (0.95 + r() * 0.08); tint[n * 4 + 1] = shade; tint[n * 4 + 2] = shade * (0.9 + r() * 0.1); tint[n * 4 + 3] = r();
+    n++;
+  }
+  mesh.count = n;
+  geo.setAttribute('aCell', new THREE.InstancedBufferAttribute(cell, 2));
+  geo.setAttribute('aTint', new THREE.InstancedBufferAttribute(tint, 4));
+  mat.onBeforeCompile = sh => {
+    Object.assign(sh.uniforms, U);
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\n' + GLSL_COMMON + '\nattribute vec2 aCell; attribute vec4 aTint; varying vec4 vTint; varying float vH;')
+      .replace('#include <uv_vertex>', '#include <uv_vertex>\n#ifdef USE_MAP\n vMapUv = uv * 0.5 + aCell;\n#endif')
+      .replace('#include <begin_vertex>', `
+        vec3 transformed = vec3(position);
+        vec3 rootW = (modelMatrix * instanceMatrix * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
+        vec3 rdir = normalize(rootW);
+        float cutv = texture2D(uMow, eqUV(rdir)).r;
+        float alive = 1.0 - smoothstep(0.25, 0.55, cutv);
+        float cH; vec3 cN; float cIn; craterField(rdir, cH, cN, cIn);
+        alive *= 1.0 - cIn;
+        float g = smoothstep(aTint.w * 0.6, aTint.w * 0.6 + 0.4, uGrow);
+        alive *= g;
+        vH = position.y;
+        vTint = aTint;
+        transformed.y *= alive;
+        transformed.xz *= mix(0.3, 1.0, alive);
+        transformed.y += cH / max(0.001, length(instanceMatrix[1].xyz));`)
+      .replace('#include <project_vertex>', `
+        vec4 tWorld = modelMatrix * instanceMatrix * vec4(transformed, 1.0);
+        float hh = vH * vH;
+        vec3 side = normalize(instanceMatrix[0].xyz);
+        float wv = sin(uTime * 1.6 + dot(rootW, vec3(0.55, 0.35, 0.75)) * 1.4 + aTint.w * 6.2831) * 0.07
+                 + sin(uTime * 3.7 + aTint.w * 40.0) * 0.025;
+        tWorld.xyz += side * wv * hh;
+        vec3 toV = tWorld.xyz - uMower; float dM = length(toV);
+        tWorld.xyz += (toV / max(dM, 1e-3)) * (1.0 - smoothstep(0.5, 1.5, dM)) * 0.22 * hh;
+        vec4 mvPosition = viewMatrix * tWorld;
+        gl_Position = projectionMatrix * mvPosition;`)
+      .replace('#include <worldpos_vertex>', `
+        #if defined( USE_SHADOWMAP ) || defined( USE_ENVMAP ) || defined( DISTANCE )
+          vec4 worldPosition = tWorld;
+        #endif`);
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', '#include <common>\nvarying vec4 vTint; varying float vH; uniform vec3 uGrassTint;')
+      // crossed-quad tufts use the ground normal on both faces (no back-face flip, otherwise half the blades go black)
+      .replace('#include <normal_fragment_begin>', '#include <normal_fragment_begin>\n#ifdef DOUBLE_SIDED\n normal *= faceDirection;\n#endif')
+      .replace('#include <map_fragment>', `#include <map_fragment>
+        diffuseColor.rgb *= vTint.rgb * mix(vec3(${TB.toFixed(3)}), vec3(${TT.toFixed(3)}) * vec3(1.1, 1.05, 0.82), smoothstep(0.0, 0.95, vH)) * uGrassTint;
+        diffuseColor.rgb = mix(vec3(dot(diffuseColor.rgb, vec3(0.3, 0.59, 0.11))), diffuseColor.rgb, ${GS.toFixed(3)});`);
+  };
+  mat.customProgramCacheKey = () => 'tufts';
+  mesh.frustumCulled = false;
+  mesh.receiveShadow = true;
+  mesh.castShadow = false;
+  scene.add(mesh);
+  tufts = mesh; tuftMat = mat;
+}
+
+// ---------------------------------------------------------------------
+//  Scoring samples (Fibonacci sphere)
+// ---------------------------------------------------------------------
+const S_DIR = new Float32Array(N_SAMPLES * 3);
+const S_STATE = new Uint8Array(N_SAMPLES); // 0 grass, 1 cut, 2 blocked, 3 crater
+const S_BLOCK = new Uint8Array(N_SAMPLES);
+let S_valid = 0, S_cut = 0;
+function buildSamples(blockers) {
+  const golden = Math.PI * (3 - Math.sqrt(5));
+  const d = new THREE.Vector3();
+  for (let i = 0; i < N_SAMPLES; i++) {
+    const y = 1 - (i + 0.5) / N_SAMPLES * 2, r = Math.sqrt(1 - y * y), th = golden * i;
+    d.set(Math.cos(th) * r, y, Math.sin(th) * r);
+    S_DIR[i * 3] = d.x; S_DIR[i * 3 + 1] = d.y; S_DIR[i * 3 + 2] = d.z;
+    let b = 0;
+    for (const o of blockers) if (o.grassFree && arc(d, o.dir) < o.grassFree) { b = 1; break; }
+    S_BLOCK[i] = b;
+  }
+}
+function resetSamples() {
+  S_valid = 0; S_cut = 0;
+  for (let i = 0; i < N_SAMPLES; i++) { S_STATE[i] = S_BLOCK[i] ? 2 : 0; if (!S_BLOCK[i]) S_valid++; }
+}
+// cut all samples within radius of dir; returns number newly cut
+function cutSamples(dir, radius) {
+  const c = Math.cos(radius / R); let n = 0;
+  const x = dir.x, y = dir.y, z = dir.z;
+  for (let i = 0; i < N_SAMPLES; i++) {
+    if (S_STATE[i] !== 0) continue;
+    if (S_DIR[i * 3] * x + S_DIR[i * 3 + 1] * y + S_DIR[i * 3 + 2] * z > c) { S_STATE[i] = 1; n++; }
+  }
+  S_cut += n; return n;
+}
+function craterSamples(dir, radius) {
+  const c = Math.cos(radius / R);
+  for (let i = 0; i < N_SAMPLES; i++) {
+    const st = S_STATE[i]; if (st >= 2) continue;
+    if (S_DIR[i * 3] * dir.x + S_DIR[i * 3 + 1] * dir.y + S_DIR[i * 3 + 2] * dir.z > c) {
+      if (st === 1) S_cut--; S_valid--; S_STATE[i] = 3;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------
+//  Planet decoration & obstacles
+// ---------------------------------------------------------------------
+const obstacles = []; // {dir, r, kind, obj}
+const flowers = [];   // {dir, alive, idx}
+const props = new THREE.Group(); scene.add(props);
+function placeProp(src, dir, yaw, size, dim, opts = {}) {
+  if (!src) return null;
+  const o = normalizeModel(src, size, dim);
+  prepMaterials(o, opts);
+  o.quaternion.copy(surfQuat(dir, yaw));
+  o.position.copy(dir).multiplyScalar(R - (opts.sink ?? 0.05));
+  props.add(o);
+  return o;
+}
+function buildWorld() {
+  rng = mulberry32(2028);
+  const used = [];
+  const free = (d, rad) => used.every(u => arc(d, u.dir) > rad + u.r);
+  const add = (d, rad) => used.push({ dir: d, r: rad });
+  // keep the start area and the first straight run clear
+  add(UP.clone(), 1.6);
+  for (const z of [-2.6, -4.8, -7.0, -9.2]) add(dirFromPole(0, z), 1.25);
+
+  // the house (left of the start, door facing the player like the video's opening shot)
+  const hDir = dirFromPole(-4.4, -3.4);
+  const house = placeProp(A.house, hDir, 0.92, 3.1, 'xz', { rough: 0.7, env: 0.5, cloneMat: true });
+  obstacles.push({ dir: hDir, r: 1.75, kind: 'house', obj: house, grassFree: 1.55 }); add(hDir, 2.0);
+
+  // signposts
+  const signSpots = [[-1.9, -6.9, 0.4], [6.2, 4.5, 2.2], [-5.5, 7.5, -1.0]];
+  for (const [x, z, yaw] of signSpots) {
+    const d = dirFromPole(x, z);
+    const o = placeProp(A.sign, d, yaw, 1.55, 'y', { rough: 0.55 });
+    obstacles.push({ dir: d, r: 0.32, kind: 'sign', obj: o, grassFree: 0.12 }); add(d, 0.5);
+  }
+  // pine trees: a few placed like the video, the rest scattered
+  const treeSpots = [[2.6, -6.8], [5.6, -2.6], [-2.2, -8.6], [7.2, -6.2], [-7.2, -5.5], [3.0, 6.5]];
+  const trees = treeSpots.map(([x, z]) => dirFromPole(x, z));
+  for (let tries = 0; trees.length < 13 && tries < 900; tries++) {
+    const d = randomDir(); if (free(d, 1.5) && trees.every(t => arc(d, t) > 2.6)) trees.push(d);
+  }
+  for (const d of trees) {
+    if (!free(d, 0.9)) continue;
+    const h = 2.4 + rng() * 1.3;
+    const o = placeProp(rng() < 0.5 && A.pine2 ? A.pine2 : A.pine, d, rng() * 6.28, h, 'y', { rough: 0.75, env: 0.45, cloneMat: true });
+    obstacles.push({ dir: d, r: 0.62 * h / 3.2, h, kind: 'tree', obj: o, grassFree: 0.35 }); add(d, 0.9);
+  }
+  // boulders (grey rocks), some grouped
+  const rockSpots = [[-2.4, -1.5, 0.7], [-2.75, -0.4, 0.55], [-2.3, -4.4, 0.5], [6.8, -5.0, 1.5], [7.8, -3.8, 1.1], [7.2, -2.6, 0.8], [-6.0, -2.0, 0.9]];
+  const rocks = rockSpots.map(([x, z, s]) => ({ d: dirFromPole(x, z), s }));
+  for (let tries = 0; rocks.length < 18 && tries < 900; tries++) {
+    const d = randomDir(); if (free(d, 1.2)) rocks.push({ d, s: 0.6 + rng() * 0.9 });
+  }
+  for (const { d, s } of rocks) {
+    if (!free(d, s * 0.5)) continue;
+    const o = placeProp(A.rock, d, rng() * 6.28, s, 'xz', { rough: 0.85, env: 0.4, sink: 0.12 * s });
+    obstacles.push({ dir: d, r: s * 0.5, kind: 'rock', obj: o, grassFree: s * 0.42 }); add(d, s * 0.55);
+  }
+  // bushes
+  const bushSpots = [[-2.5, -2.6], [-2.2, -0.9], [-6.0, -2.4]];
+  const bushes = bushSpots.map(([x, z]) => dirFromPole(x, z));
+  for (let tries = 0; bushes.length < 16 && tries < 900; tries++) { const d = randomDir(); if (free(d, 0.8)) bushes.push(d); }
+  for (const d of bushes) {
+    if (!free(d, 0.3)) continue;
+    const s = 0.55 + rng() * 0.35;
+    const o = placeProp(A.bush, d, rng() * 6.28, s, 'xz', { rough: 0.8 });
+    obstacles.push({ dir: d, r: s * 0.38, kind: 'bush', obj: o, grassFree: s * 0.3 }); add(d, s * 0.4);
+  }
+  // flower patches (daisies) — mowing them gives bonus points + time
+  const patches = [[2.2, -2.6], [-1.0, 2.6], [3.5, 1.5]].map(([x, z]) => dirFromPole(x, z));
+  for (let i = 0; patches.length < 30 && i < 600; i++) { const d = randomDir(); if (free(d, 1.0)) patches.push(d); }
+  for (const pd of patches) {
+    const n = 5 + Math.floor(rng() * 6);
+    for (let k = 0; k < n; k++) {
+      const d = offsetDir(pd, rng() * 0.9, rng() * 6.283);
+      if (!free(d, 0.15)) continue;
+      flowers.push({ dir: d, alive: true, yaw: rng() * 6.283, s: 0.2 + rng() * 0.08, tilt: rng(), kind: rng() < 0.2 ? 2 : [0, 1, 3][Math.floor(rng() * 3)] });
+    }
+  }
+}
+let flowerMat;
+function buildFlowers() {
+  const geo = new THREE.PlaneGeometry(1, 1); geo.rotateX(-Math.PI / 2);
+  const cell = new Float32Array(flowers.length * 2);
+  flowers.forEach((f, i) => { f.idx = i; const c = f.kind ?? 0; cell[i * 2] = (c % 2) * 0.5; cell[i * 2 + 1] = (1 - Math.floor(c / 2)) * 0.5; });
+  geo.setAttribute('aCell', new THREE.InstancedBufferAttribute(cell, 2));
+  flowerMat = new THREE.MeshLambertMaterial({ map: A.flowers, alphaTest: 0.5, side: THREE.DoubleSide, emissive: 0xffffff, emissiveIntensity: 0.16 });
+  if (A.flowers) flowerMat.emissiveMap = A.flowers;
+  flowerMat.onBeforeCompile = sh => {
+    Object.assign(sh.uniforms, U);
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\n' + GLSL_COMMON + '\nattribute vec2 aCell;')
+      .replace('#include <uv_vertex>', '#include <uv_vertex>\n#ifdef USE_MAP\n vMapUv = uv * 0.5 + aCell;\n#endif\n#ifdef USE_EMISSIVEMAP\n vEmissiveMapUv = uv * 0.5 + aCell;\n#endif')
+      .replace('#include <project_vertex>', `
+        vec3 fRoot = (modelMatrix * instanceMatrix * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
+        vec3 fDir = normalize(fRoot);
+        float fCut = smoothstep(0.3, 0.7, texture2D(uMow, eqUV(fDir)).r);
+        vec4 tWorld = modelMatrix * instanceMatrix * vec4(transformed, 1.0);
+        tWorld.xyz -= fDir * fCut * 0.3;
+        tWorld.xyz += normalize(instanceMatrix[0].xyz) * sin(uTime * 1.6 + dot(fRoot, vec3(0.55, 0.35, 0.75)) * 1.4) * 0.03;
+        vec4 mvPosition = viewMatrix * tWorld;
+        gl_Position = projectionMatrix * mvPosition;`)
+      .replace('#include <worldpos_vertex>', `
+        #if defined( USE_SHADOWMAP ) || defined( USE_ENVMAP ) || defined( DISTANCE )
+          vec4 worldPosition = tWorld;
+        #endif`);
+  };
+  flowerMat.customProgramCacheKey = () => 'flowers';
+  flowersMesh = new THREE.InstancedMesh(geo, flowerMat, flowers.length);
+  flowersMesh.frustumCulled = false;
+  flowersMesh.receiveShadow = true;
+  scene.add(flowersMesh);
+  refreshFlowers();
+}
+function refreshFlowers(grow = 1) {
+  const q = new THREE.Quaternion(), s = new THREE.Vector3(), p = new THREE.Vector3(), tq = new THREE.Quaternion();
+  for (const f of flowers) {
+    surfQuat(f.dir, f.yaw, q);
+    q.multiply(tq.setFromAxisAngle(XA, (f.tilt - 0.5) * 0.5));
+    const k = f.alive ? grow : 0;
+    s.setScalar(f.s * 2.6 * k + 1e-4);
+    p.copy(f.dir).multiplyScalar(R + 0.36 + f.tilt * 0.08);
+    flowersMesh.setMatrixAt(f.idx, _m1.compose(p, q, s));
+  }
+  flowersMesh.instanceMatrix.needsUpdate = true;
+}
+
+// ---------------------------------------------------------------------
+//  Sky dome (camera-relative day sky, blends into space when zoomed out)
+// ---------------------------------------------------------------------
+let sky, atmo, clouds = [], spaceRocks = [];
+function buildSky() {
+  for (const k of ['skyDay', 'skySpace']) if (A[k]) { A[k].generateMipmaps = false; A[k].minFilter = THREE.LinearFilter; A[k].wrapS = THREE.RepeatWrapping; }
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { uDay: { value: A.skyDay }, uSpace: { value: A.skySpace }, uMix: { value: 0 } },
+    vertexShader: `varying vec3 vDir; void main(){ vDir = position; vec4 p = projectionMatrix * modelViewMatrix * vec4(position, 1.0); gl_Position = p.xyww; }`,
+    fragmentShader: `uniform sampler2D uDay, uSpace; uniform float uMix; varying vec3 vDir;
+      void main(){ vec3 d = normalize(vDir);
+        vec2 uv = vec2(atan(d.x, d.z) * 0.15915494 + 0.5, asin(clamp(d.y, -1.0, 1.0)) * 0.31830989 + 0.5);
+        vec2 uvd = vec2(uv.x, clamp(uv.y * 0.75 + 0.25, 0.0, 1.0));
+        vec2 uvs = vec2(uv.x * 2.0, clamp(asin(clamp(d.y, -1.0, 1.0)) / 2.0944 + 0.5, 0.002, 0.998));
+        vec3 a = texture2D(uDay, uvd).rgb; vec3 b = texture2D(uSpace, uvs).rgb;
+        a = mix(vec3(dot(a, vec3(0.3, 0.59, 0.11))), a, 0.82) * 1.06;
+        gl_FragColor = vec4(mix(a, b, uMix), 1.0); }`,
+    side: THREE.BackSide, depthWrite: false, depthTest: true, fog: false
+  });
+  sky = new THREE.Mesh(new THREE.SphereGeometry(400, 64, 32), mat);
+  sky.frustumCulled = false; sky.renderOrder = -10;
+  scene.add(sky);
+  // atmosphere halo (visible from orbit): camera-facing quad through the planet centre, glow peaking at the limb
+  atmo = new THREE.Mesh(new THREE.PlaneGeometry(R * 3.2, R * 3.2), new THREE.ShaderMaterial({
+    uniforms: { uI: { value: 1 }, uR: { value: R } },
+    vertexShader: `varying vec2 vP; void main(){ vP = position.xy; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `uniform float uI; uniform float uR; varying vec2 vP; void main(){
+      float r = length(vP) / uR;
+      float g = exp(-pow(max(r - 0.98, 0.0) / 0.13, 1.6)) * smoothstep(0.9, 1.0, r);
+      float a = g * uI;
+      gl_FragColor = vec4(vec3(0.55, 0.8, 1.0) * a, 1.0); }`,
+    transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, fog: false
+  }));
+  atmo.renderOrder = 2;
+  atmo.frustumCulled = false;
+  scene.add(atmo);
+  // clouds orbiting the asteroid
+  if (A.cloud) {
+    for (let i = 0; i < 11; i++) {
+      const c = normalizeModel(A.cloud, 3.2 + frand() * 3.2, 'xz');
+      c.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = false;
+        o.material = new THREE.MeshLambertMaterial({ color: 0xffffff, map: o.material.map || null, emissive: 0xc8dcf0, emissiveIntensity: 0.55, transparent: true, opacity: 0.96, side: THREE.DoubleSide }); } });
+      const pivot = new THREE.Object3D();
+      const axis = randomDir(frand);
+      const dir = randomDir(frand);
+      if (i < 3) dir.copy(dirFromPole([-6, 5, 1][i], [-5, -6, 8][i]));
+      pivot.userData = { axis, speed: (0.012 + frand() * 0.02) * (frand() < 0.5 ? -1 : 1) };
+      c.position.copy(dir).multiplyScalar(R + 8.5 + frand() * 5.5);
+      c.quaternion.copy(surfQuat(dir, frand() * 6.28));
+      pivot.add(c); scene.add(pivot); clouds.push(pivot);
+    }
+  }
+  // far tumbling space rocks (decor)
+  if (A.meteor) {
+    for (let i = 0; i < 9; i++) {
+      const m = normalizeModel(A.meteor, 0.5 + frand() * 0.9, 'xz');
+      prepMaterials(m, { rough: 0.8, env: 0.3, cast: false });
+      const pivot = new THREE.Object3D();
+      const dir = randomDir(frand);
+      m.position.copy(dir).multiplyScalar(R + 9 + frand() * 10);
+      pivot.userData = { axis: randomDir(frand), speed: 0.03 + frand() * 0.05, spin: new THREE.Vector3(frand(), frand(), frand()) };
+      pivot.add(m); scene.add(pivot); spaceRocks.push(pivot);
+    }
+  }
+}
+
+// ---------------------------------------------------------------------
+//  Billboard particle systems
+// ---------------------------------------------------------------------
+class Particles {
+  constructor(tex, max, additive = false) {
+    this.max = max; this.list = [];
+    const g = new THREE.InstancedBufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute([-0.5, -0.5, 0, 0.5, -0.5, 0, 0.5, 0.5, 0, -0.5, 0.5, 0], 3));
+    g.setAttribute('uv', new THREE.Float32BufferAttribute([0, 0, 1, 0, 1, 1, 0, 1], 2));
+    g.setIndex([0, 1, 2, 0, 2, 3]);
+    this.pos = new Float32Array(max * 3); this.col = new Float32Array(max * 4); this.sr = new Float32Array(max * 2);
+    g.setAttribute('iPos', new THREE.InstancedBufferAttribute(this.pos, 3).setUsage(THREE.DynamicDrawUsage));
+    g.setAttribute('iCol', new THREE.InstancedBufferAttribute(this.col, 4).setUsage(THREE.DynamicDrawUsage));
+    g.setAttribute('iSR', new THREE.InstancedBufferAttribute(this.sr, 2).setUsage(THREE.DynamicDrawUsage));
+    g.instanceCount = 0;
+    this.geo = g;
+    this.mat = new THREE.ShaderMaterial({
+      uniforms: { map: { value: tex } },
+      vertexShader: `attribute vec3 iPos; attribute vec4 iCol; attribute vec2 iSR; varying vec2 vUv; varying vec4 vCol;
+        void main(){ vUv = uv; vCol = iCol; vec4 mv = modelViewMatrix * vec4(iPos, 1.0);
+          float c = cos(iSR.y), s = sin(iSR.y); vec2 o = vec2(c * position.x - s * position.y, s * position.x + c * position.y) * iSR.x;
+          mv.xy += o; gl_Position = projectionMatrix * mv; }`,
+      fragmentShader: `uniform sampler2D map; varying vec2 vUv; varying vec4 vCol;
+        void main(){ vec4 t = texture2D(map, vUv); vec4 c = t * vCol; ${additive ? 'c.rgb *= c.a; if (max(c.r, max(c.g, c.b)) < 0.003) discard; gl_FragColor = vec4(c.rgb, 1.0);' : 'if (c.a < 0.01) discard; gl_FragColor = c;'} }`,
+      transparent: true, depthWrite: false,
+      blending: additive ? THREE.AdditiveBlending : THREE.NormalBlending
+    });
+    this.mesh = new THREE.Mesh(g, this.mat);
+    this.mesh.frustumCulled = false; this.mesh.renderOrder = additive ? 6 : 5;
+    scene.add(this.mesh);
+  }
+  spawn(p) {
+    if (this.list.length >= this.max) this.list.shift();
+    p.age = 0; p.rot = p.rot ?? frand() * 6.28; p.vr = p.vr ?? (frand() - 0.5) * 2; p.drag = p.drag ?? 1.5; p.grav = p.grav ?? 0;
+    p.c = p.c ?? [1, 1, 1]; p.a0 = p.a0 ?? 1; p.s1 = p.s1 ?? p.s0; p.fadeIn = p.fadeIn ?? 0.08;
+    this.list.push(p); return p;
+  }
+  update(dt) {
+    const L = this.list; let n = 0;
+    for (let i = L.length - 1; i >= 0; i--) { if ((L[i].age += dt) >= L[i].life) L.splice(i, 1); }
+    for (const p of L) {
+      const t = p.age / p.life;
+      if (p.grav) { _v1.copy(p.p).normalize(); p.v.addScaledVector(_v1, -p.grav * dt); }
+      p.v.multiplyScalar(Math.exp(-p.drag * dt));
+      p.p.addScaledVector(p.v, dt);
+      if (p.ground) { const l = p.p.length(); if (l < R + 0.05) { p.p.multiplyScalar((R + 0.05) / l); _v1.copy(p.p).normalize(); const vn = p.v.dot(_v1); if (vn < 0) p.v.addScaledVector(_v1, -vn * 1.5).multiplyScalar(0.6); } }
+      p.rot += p.vr * dt;
+      const a = p.a0 * Math.min(1, t / p.fadeIn) * (1 - smooth(p.fadeOut ?? 0.55, 1, t));
+      this.pos[n * 3] = p.p.x; this.pos[n * 3 + 1] = p.p.y; this.pos[n * 3 + 2] = p.p.z;
+      const col = p.c1 ? [lerp(p.c[0], p.c1[0], t), lerp(p.c[1], p.c1[1], t), lerp(p.c[2], p.c1[2], t)] : p.c;
+      this.col[n * 4] = col[0]; this.col[n * 4 + 1] = col[1]; this.col[n * 4 + 2] = col[2]; this.col[n * 4 + 3] = a;
+      this.sr[n * 2] = lerp(p.s0, p.s1, 1 - (1 - t) * (1 - t)); this.sr[n * 2 + 1] = p.rot;
+      n++;
+    }
+    this.geo.instanceCount = n;
+    for (const k of ['iPos', 'iCol', 'iSR']) this.geo.attributes[k].needsUpdate = true;
+  }
+  clear() { this.list.length = 0; }
+}
+let fxPuff, fxDust, fxFire, fxSpark;
+const PUFF_C = [0.45, 0.62, 0.4]; // grass clippings tint
+
+// ---------------------------------------------------------------------
+//  Audio (WebAudio)
+// ---------------------------------------------------------------------
+const Snd = {
+  ctx: null, buf: {}, muted: false, loops: {},
+  async init() {
+    if (this.ctx) return;
+    try { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+    this.master = this.ctx.createGain(); this.master.gain.value = 0.85; this.master.connect(this.ctx.destination);
+    await Promise.all(Object.entries(audioData).map(async ([k, b]) => { try { this.buf[k] = await this.ctx.decodeAudioData(b.slice(0)); } catch (e) { } }));
+    this.loop('music', 0.33); this.loop('engine', 0); this.loop('cut', 0);
+  },
+  loop(name, vol) {
+    if (!this.ctx || !this.buf[name]) return;
+    const src = this.ctx.createBufferSource(); src.buffer = this.buf[name]; src.loop = true;
+    const g = this.ctx.createGain(); g.gain.value = vol; src.connect(g).connect(this.master); src.start();
+    this.loops[name] = { src, g };
+  },
+  set(name, vol, rate) {
+    const l = this.loops[name]; if (!l) return;
+    l.g.gain.setTargetAtTime(vol, this.ctx.currentTime, 0.08);
+    if (rate) l.src.playbackRate.setTargetAtTime(rate, this.ctx.currentTime, 0.08);
+  },
+  play(name, vol = 1, rate = 1) {
+    if (!this.ctx || !this.buf[name]) return;
+    const src = this.ctx.createBufferSource(); src.buffer = this.buf[name]; src.playbackRate.value = rate * (0.94 + Math.random() * 0.12);
+    const g = this.ctx.createGain(); g.gain.value = vol; src.connect(g).connect(this.master); src.start();
+  },
+  toggle() { this.muted = !this.muted; if (this.master) this.master.gain.value = this.muted ? 0 : 0.85; $('mute').textContent = this.muted ? 'SOUND OFF (M)' : ''; }
+};
+
+// ---------------------------------------------------------------------
+//  Mower
+// ---------------------------------------------------------------------
+const mowerRoot = new THREE.Group(), mowerTilt = new THREE.Group(), mowerSpin = new THREE.Group();
+mowerRoot.add(mowerTilt); mowerTilt.add(mowerSpin); scene.add(mowerRoot);
+const M = { q: new THREE.Quaternion(), v: 0, steer: 0, yawRate: 0, boost: 1, boosting: false, stun: 0, inv: 0, hop: 0, hopV: 0, spin: 0,
+  bump: 0, pitch: 0, prevDeck: new THREE.Vector3(0, 1, 0), cutRate: 0, lastCut: 0 };
+const mUp = (o = new THREE.Vector3()) => o.set(0, 1, 0).applyQuaternion(M.q);
+const mFwd = (o = new THREE.Vector3()) => o.set(0, 0, -1).applyQuaternion(M.q);
+const mRight = (o = new THREE.Vector3()) => o.set(1, 0, 0).applyQuaternion(M.q);
+function buildMower() {
+  if (!A.mower) return;
+  const m = normalizeModel(A.mower, MOWER_LEN, 'xz');
+  prepMaterials(m, { rough: 0.62, env: 0.3, emissive: 0xffffff, emissiveI: 0.08 });   // low sky reflection keeps the suit white
+  m.rotation.y = Math.PI;
+  mowerSpin.add(m);
+}
+
+// ---------------------------------------------------------------------
+//  Meteors & craters
+// ---------------------------------------------------------------------
+const meteors = [];   // falling
+const craters = [];   // {dir, rad, k, rock, slot, age}
+const debris = [];
+function freeCraterSlot() {
+  for (let i = 0; i < MAX_CRATERS; i++) if (!craters.some(c => c.slot === i)) return i;
+  // recycle the oldest
+  const old = craters.shift(); if (old.rock) props.remove(old.rock);
+  const oi = obstacles.findIndex(o => o.crater === old); if (oi >= 0) obstacles.splice(oi, 1);
+  return old.slot;
+}
+function spawnMeteor(target) {
+  const ringMat = new THREE.MeshBasicMaterial({ map: A.ring, color: 0xffffff, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, depthTest: true, opacity: 0, fog: false });
+  const ring = new THREE.Mesh(new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2), ringMat);
+  ring.quaternion.copy(surfQuat(target, 0)); ring.position.copy(target).multiplyScalar(R + 0.4); ring.renderOrder = 8;
+  scene.add(ring);
+  const rad = 1.05 + frand() * 0.35;
+  const rock = A.meteor ? normalizeModel(A.meteor, 0.95 + rad * 0.25, 'xz') : new THREE.Mesh(new THREE.DodecahedronGeometry(0.5), new THREE.MeshStandardMaterial({ color: 0x333944 }));
+  prepMaterials(rock, { rough: 0.7, env: 0.22, emissive: 0xff6a20, emissiveI: 0.0, cloneMat: true });
+  rock.visible = false; scene.add(rock);
+  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: A.fire, color: 0xffffff, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true }));
+  glow.scale.setScalar(3.0); rock.add(glow);
+  // incoming path: the meteor appears in the sky just above the far horizon (in front of the chase camera),
+  // grows while the warning ring pulses, skims in over the curved surface and slams onto its target
+  const up = cam.upS, hd = cam.heading;
+  const ang = 1.45 + frand() * 0.2, latA = (frand() < 0.5 ? -1 : 1) * (0.42 + frand() * 0.3);   // off to the side, clear of the HUD
+  const startDir = up.clone().multiplyScalar(Math.cos(ang)).addScaledVector(hd, Math.sin(ang)).applyAxisAngle(up, latA).normalize();
+  const P = levelParams(G.level);
+  const p0 = startDir.clone().multiplyScalar(R + 6.5 + frand() * 1.5), p1 = target.clone().multiplyScalar(R + 0.2);
+  const pa = target.clone().multiplyScalar(R + 2.6);   // aim point above the target: streak in, then slam down
+  meteors.push({ target: target.clone(), p0, p1, pa, ring, rock, glow, rad, prev: p0.clone(), t: 0,
+    warn: P.warn, fall: 0.9, spinAxis: randomDir(frand), whoosh: false });
+}
+function pickMeteorTarget() {
+  const up = mUp(), fwd = mFwd(), P = levelParams(G.level);
+  for (let tries = 0; tries < 30; tries++) {
+    let d;
+    if (frand() < P.aimed) {
+      // aim where the mower will be
+      const lead = M.v * (P.warn + 0.9) * (0.6 + frand() * 0.5);
+      d = offsetDir(up, Math.abs(lead), 0); // placeholder replaced below
+      const th = lead / R;
+      d = up.clone().multiplyScalar(Math.cos(th)).addScaledVector(fwd, Math.sin(th)).normalize();
+      d = offsetDir(d, frand() * 1.6, frand() * 6.283);
+    } else {
+      const th = (2.5 + frand() * 6.5) / R, sideA = (frand() - 0.5) * 3.4;
+      d = up.clone().multiplyScalar(Math.cos(th)).addScaledVector(fwd.clone().applyAxisAngle(up, sideA), Math.sin(th)).normalize();
+    }
+    if (obstacles.some(o => (o.kind === 'house' || o.kind === 'tree') && arc(d, o.dir) < o.r + 1.2)) continue;
+    if (meteors.some(m => arc(d, m.target) < 2.2)) continue;
+    return d;
+  }
+  return null;
+}
+function impact(m) {
+  const d = m.target, up = d;
+  scene.remove(m.ring);
+  // crater
+  const slot = freeCraterSlot();
+  const c = { dir: d.clone(), rad: m.rad, k: 0, slot, age: 0, rock: m.rock };
+  craters.push(c);
+  craterU.value[slot].set(d.x, d.y, d.z, m.rad);
+  craterK.value[slot] = 0;
+  craterSamples(d, m.rad * 1.05);
+  obstacles.push({ dir: c.dir, r: m.rad * 0.62, kind: 'crater', crater: c });
+  // the meteor stays embedded in its crater
+  m.glow.visible = false;
+  m.rock.position.copy(d).multiplyScalar(R - m.rad * 0.36 * 0.55);
+  m.rock.userData.cool = 1;
+  props.attach(m.rock);
+  for (const f of flowers) if (f.alive && arc(f.dir, d) < m.rad * 1.1) { f.alive = false; f.dirty = true; }
+  refreshFlowers();
+  // fx
+  const p0 = d.clone().multiplyScalar(R + 0.2);
+  const t1 = new THREE.Vector3().crossVectors(Math.abs(d.y) < 0.9 ? UP : XA, d).normalize(), t2 = new THREE.Vector3().crossVectors(d, t1);
+  for (let i = 0; i < 22; i++) {
+    const a = i / 22 * 6.283 + frand() * 0.3, sp = 3 + frand() * 4;
+    const v = t1.clone().multiplyScalar(Math.cos(a) * sp).addScaledVector(t2, Math.sin(a) * sp).addScaledVector(up, 1 + frand() * 2.5);
+    fxDust.spawn({ p: p0.clone(), v, life: 0.9 + frand() * 0.8, s0: 0.7, s1: 2.4 + frand(), drag: 3.2, c: [0.93, 0.88, 0.78], a0: 0.95, fadeOut: 0.35 });
+  }
+  for (let i = 0; i < 16; i++) {
+    const a = frand() * 6.283, sp = 2 + frand() * 5;
+    const v = t1.clone().multiplyScalar(Math.cos(a) * sp).addScaledVector(t2, Math.sin(a) * sp).addScaledVector(up, 3 + frand() * 5);
+    fxPuff.spawn({ p: p0.clone(), v, life: 1.0 + frand() * 0.6, s0: 0.35 + frand() * 0.25, s1: 0.2, drag: 0.6, grav: 14, ground: true, c: PUFF_C });
+  }
+  for (let i = 0; i < 14; i++) {
+    const v = randomDir(frand).multiplyScalar(2 + frand() * 3).addScaledVector(up, 3);
+    fxFire.spawn({ p: p0.clone(), v, life: 0.35 + frand() * 0.25, s0: 1.4, s1: 0.4, drag: 3, c: [1, 0.75, 0.4], c1: [1, 0.3, 0.1] });
+  }
+  fxSpark.spawn({ p: p0.clone().addScaledVector(up, 0.1), v: new THREE.Vector3(), life: 0.28, s0: 1.0, s1: 7, c: [1, 0.8, 0.5], fadeIn: 0.01, fadeOut: 0.1 });
+  if (A.meteor) for (let i = 0; i < 6; i++) {
+    const b = normalizeModel(A.meteor, 0.16 + frand() * 0.16, 'xz'); prepMaterials(b, { env: 0.22, cast: false });
+    b.position.copy(p0);
+    const a = frand() * 6.283;
+    debris.push({ o: b, v: t1.clone().multiplyScalar(Math.cos(a) * 4).addScaledVector(t2, Math.sin(a) * 4).addScaledVector(up, 4 + frand() * 3), life: 2.2, spin: randomDir(frand) });
+    scene.add(b);
+  }
+  flash.position.copy(p0).addScaledVector(up, 1.0); flash.intensity = 60;
+  const dist = arc(mUp(), d);
+  shake(clamp(0.9 - dist * 0.07, 0.15, 0.9));
+  Snd.play('impact', clamp(1.1 - dist * 0.06, 0.25, 1));
+  if (G.state === 'play' && M.inv <= 0 && dist < m.rad + 0.55) hurt();
+}
+
+// ---------------------------------------------------------------------
+//  Game state
+// ---------------------------------------------------------------------
+const G = { state: 'loading', level: 1, score: 0, lives: 3, time: 0, target: 0.3, combo: 1, comboN: 0, comboT: 0, meteorT: 0, stateT: 0, best: 0 };
+try { G.best = +localStorage.getItem('spaceMowerBest') || 0; } catch (e) { }
+function levelParams(n) {
+  return {
+    target: Math.min(0.2 + 0.06 * (n - 1), 0.6),
+    time: 100 + 5 * Math.min(n - 1, 6),
+    meteorEvery: Math.max(1.4, 5.0 - 0.55 * (n - 1)),
+    warn: Math.max(1.15, 2.1 - 0.15 * (n - 1)),
+    aimed: Math.min(0.25 + 0.1 * (n - 1), 0.8),
+  };
+}
+const keys = {};
+addEventListener('keydown', e => {
+  keys[e.code] = true;
+  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) e.preventDefault();
+  if (e.code === 'KeyM') Snd.toggle();
+  if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) pressStart();
+});
+addEventListener('keyup', e => { keys[e.code] = false; });
+$('title').addEventListener('pointerdown', () => pressStart());
+function pressStart() {
+  if (G.state === 'title') { Snd.init(); startGame(); }
+  else if (G.state === 'over' && G.stateT > 1.6) { setState('title'); }
+}
+function setState(s) {
+  G.state = s; G.stateT = 0;
+  $('title').classList.toggle('hidden', s !== 'title');
+  $('hud').classList.toggle('hidden', !(s === 'play' || s === 'intro' || s === 'outro'));
+  if (s === 'title') {
+    $('best').textContent = G.best ? `BEST ${G.best.toLocaleString('en-US')}` : '';
+    banner('');
+  }
+}
+function banner(big, small = '') {
+  $('bannerBig').textContent = big; $('bannerSmall').textContent = small;
+  $('banner').classList.toggle('hidden', !big);
+}
+function startGame() {
+  G.level = 1; G.score = 0; G.lives = 3;
+  resetLevel();
+  setState('intro');
+  introBanner();
+}
+function introBanner() { banner(`LEVEL ${G.level}`, `Mow ${Math.round(G.target * 100)}% of the asteroid · dodge the meteors`); }
+function resetLevel() {
+  const P = levelParams(G.level);
+  G.target = P.target; G.time = P.time; G.meteorT = 2.5; G.combo = 1; G.comboN = 0; G.comboT = 0;
+  clearMow(); resetSamples();
+  for (const c of craters) { if (c.rock) props.remove(c.rock); craterU.value[c.slot].w = 0; craterK.value[c.slot] = 0; }
+  craters.length = 0;
+  for (let i = obstacles.length - 1; i >= 0; i--) if (obstacles[i].kind === 'crater') obstacles.splice(i, 1);
+  for (const m of meteors) { scene.remove(m.ring); scene.remove(m.rock); }
+  meteors.length = 0;
+  for (const f of flowers) f.alive = true;
+  M.q.identity(); M.v = 0; M.steer = 0; M.stun = 0; M.inv = 0; M.boost = 1; M.spin = 0; M.hop = 0; M.hopV = 0;
+  mUp(M.prevDeck);
+  U.uGrow.value = 0; G.grow = 0;
+  refreshFlowers(0);
+  updateHud(true);
+}
+function hurt() {
+  G.lives--; M.inv = 2.6; M.stun = 1.0; M.v = -2; M.hopV = 5.5; M.spin = 0;
+  G.combo = 1; G.comboN = 0;
+  Snd.play('hurt', 0.9);
+  $('hit').style.opacity = 1; setTimeout(() => $('hit').style.opacity = 0, 260);
+  gradePass.uniforms.uHit.value = 0.6;
+  shake(1.0);
+  updateHud(true);
+  if (G.lives <= 0) gameOver('OUT OF HELMETS');
+}
+function gameOver(reason) {
+  setState('over'); G.overHint = false;
+  banner('GAME OVER', `${reason} · SCORE ${G.score.toLocaleString('en-US')}`);
+  if (G.score > G.best) { G.best = G.score; try { localStorage.setItem('spaceMowerBest', G.best); } catch (e) { } }
+  Snd.set('engine', 0); Snd.set('cut', 0);
+}
+function levelComplete() {
+  const bonus = Math.round(G.time) * 50 * G.level;
+  G.score += bonus;
+  setState('outro');
+  banner('LAWN COMPLETE!', `+${bonus.toLocaleString('en-US')} TIME BONUS`);
+  Snd.play('win', 0.9);
+  Snd.set('cut', 0);
+  for (const m of meteors) { scene.remove(m.ring); scene.remove(m.rock); }
+  meteors.length = 0;
+  updateHud(true);
+}
+
+// ---------------------------------------------------------------------
+//  HUD
+// ---------------------------------------------------------------------
+const hudCache = {};
+function setText(id, t) { if (hudCache[id] !== t) { hudCache[id] = t; $(id).textContent = t; } }
+function updateHud(force) {
+  if (force) {
+    const lives = $('lives'); lives.innerHTML = '';
+    for (let i = 0; i < 3; i++) { const im = document.createElement('img'); im.src = 'assets/icon_helmet.png'; im.alt = ''; im.onerror = () => { im.style.visibility = 'hidden'; }; if (i >= G.lives) im.className = 'lost'; lives.appendChild(im); }
+    $('progTarget').style.left = '80%';
+    setText('lvl', `LEVEL ${G.level}`);
+  }
+  const pct = S_valid ? S_cut / S_valid : 0;
+  $('progFill').style.width = (Math.min(1, pct / (G.target * 1.25)) * 100).toFixed(1) + '%';
+  $('prog').classList.toggle('done', pct >= G.target);
+  setText('progTxt', `${Math.floor(pct * 100)}% / ${Math.round(G.target * 100)}%`);
+  setText('score', G.score.toLocaleString('en-US'));
+  const t = Math.max(0, Math.ceil(G.time)); setText('timeTxt', `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`);
+  $('timer').classList.toggle('low', G.time < 10 && G.state === 'play');
+  $('combo').classList.toggle('on', G.combo > 1);
+  setText('combo', `x${G.combo}`);
+  $('boostFill').style.width = (M.boost * 100).toFixed(0) + '%';
+
+}
+function popup(text, worldPos, color) {
+  _v1.copy(worldPos).project(camera);
+  if (_v1.z > 1) return;
+  const el = document.createElement('div'); el.className = 'pop'; el.textContent = text;
+  if (color) el.style.color = color;
+  el.style.left = ((_v1.x * 0.5 + 0.5) * innerWidth) + 'px'; el.style.top = ((-_v1.y * 0.5 + 0.5) * innerHeight) + 'px';
+  $('popups').appendChild(el); setTimeout(() => el.remove(), 1000);
+}
+
+// ---------------------------------------------------------------------
+//  Camera rig
+// ---------------------------------------------------------------------
+const cam = { pos: new THREE.Vector3(0, 40, 20), look: new THREE.Vector3(), up: new THREE.Vector3(0, 1, 0), heading: new THREE.Vector3(0, 0, -1),
+  upS: new THREE.Vector3(0, 1, 0), shake: 0, orbitA: 0, blend: 1, frameQ: new THREE.Quaternion() };
+function shake(a) { cam.shake = Math.max(cam.shake, a); }
+function chasePose(outPos, outLook, outUp) {
+  const up = cam.upS, f = cam.heading;
+  const speedK = clamp(Math.abs(M.v) / 9, 0, 1);
+  const back = 3.4 + speedK * 0.8, height = 5.6 + speedK * 0.45, side = -0.8;
+  const base = _v1.copy(mowerRoot.position);
+  outPos.copy(base).addScaledVector(up, height).addScaledVector(f, -back).addScaledVector(_v4.crossVectors(f, up), side);
+  outLook.copy(base).addScaledVector(f, 0.5).addScaledVector(up, 0.3);
+  outUp.copy(up);
+}
+function orbitPose(outPos, outLook, outUp, dist, dir) {
+  outPos.copy(dir).multiplyScalar(dist);
+  outLook.set(0, 0, 0);
+  outUp.copy(Math.abs(dir.y) > 0.95 ? XA : UP);
+}
+const _cp = new THREE.Vector3(), _cl = new THREE.Vector3(), _cu = new THREE.Vector3();
+const _op = new THREE.Vector3(), _ol = new THREE.Vector3(), _ou = new THREE.Vector3();
+function updateCamera(dt) {
+  // smooth local frame
+  const up = mUp(_v2);
+  cam.upS.lerp(up, 1 - Math.exp(-8 * dt)).normalize();
+  const f = mFwd(_v3);
+  cam.heading.lerp(f, 1 - Math.exp(-(G.state === 'play' ? 3.2 : 6) * dt));
+  cam.heading.addScaledVector(cam.upS, -cam.heading.dot(cam.upS)).normalize();
+  chasePose(_cp, _cl, _cu);
+  // orbit pose
+  let orbitDir, dist;
+  if (G.state === 'title' || G.state === 'loading') {
+    cam.orbitA += dt * 0.08;
+    orbitDir = _v4.set(Math.sin(cam.orbitA) * 0.62, 0.62, Math.cos(cam.orbitA) * 0.62).normalize();
+    dist = 31;
+  } else {
+    cam.orbitA += dt * 0.25;
+    const side = _v4.copy(mRight()).applyAxisAngle(cam.upS, cam.orbitA * 0.6);
+    orbitDir = cam.upS.clone().multiplyScalar(0.82).addScaledVector(side, 0.45).normalize();
+    dist = G.state === 'over' ? 30 : 33;
+  }
+  orbitPose(_op, _ol, _ou, dist, orbitDir);
+  // blend chase <-> orbit
+  let target = 0;
+  if (G.state === 'title' || G.state === 'loading') target = 1;
+  else if (G.state === 'intro') target = 1 - smooth(0.6, 2.6, G.stateT);
+  else if (G.state === 'outro') target = smooth(0.3, 2.4, G.stateT);
+  else if (G.state === 'over') target = smooth(0.8, 3.5, G.stateT);
+  cam.blend = target;
+  const b = cam.blend;
+  // spherical interpolation of the camera position around the planet (never crosses the ground)
+  const lc = _cp.length(), lo = _op.length();
+  const dc = _cp.clone().normalize(), dO = _op.clone().normalize();
+  const ang = Math.acos(clamp(dc.dot(dO), -1, 1));
+  let dirB;
+  if (ang < 1e-4) dirB = dc; else { const s = Math.sin(ang); dirB = dc.multiplyScalar(Math.sin((1 - b) * ang) / s).add(dO.multiplyScalar(Math.sin(b * ang) / s)).normalize(); }
+  const bb = b * b * (3 - 2 * b);
+  cam.pos.copy(dirB).multiplyScalar(lerp(lc, lo, bb) + Math.sin(b * Math.PI) * 4);
+  cam.look.lerpVectors(_cl, _ol, bb);
+  cam.up.lerpVectors(_cu, _ou, bb).normalize();
+  camera.position.copy(cam.pos);
+  if (cam.shake > 0.001) {
+    const s = cam.shake * cam.shake * 0.5;
+    camera.position.add(_v1.set(frand() - 0.5, frand() - 0.5, frand() - 0.5).multiplyScalar(s));
+    cam.shake = Math.max(0, cam.shake - dt * 1.8);
+  }
+  camera.up.copy(cam.up);
+  camera.lookAt(cam.look);
+  const fovT = 44 + (M.boosting ? 6 : 0) + b * 2;
+  camera.fov = damp(camera.fov, fovT, 4, dt); camera.updateProjectionMatrix();
+  // sky follows the camera, oriented with the local frame; blends into space when far
+  sky.position.copy(camera.position);
+  _q1.setFromUnitVectors(UP, cam.up.clone().lerp(cam.upS, 1 - bb).normalize());
+  sky.quaternion.copy(_q1);
+  const alt = camera.position.length() - R;
+  sky.material.uniforms.uMix.value = smooth(9, 20, alt);
+  atmo.material.uniforms.uI.value = smooth(12, 22, alt) * 0.9;
+  atmo.visible = alt > 11;
+  atmo.quaternion.copy(camera.quaternion);
+  scene.fog.near = 14 + Math.max(0, alt - 6) * 1.3; scene.fog.far = 44 + Math.max(0, alt - 6) * 2.5;
+  // focus band: wider when zoomed out
+  tiltH.uniforms.uBand.value = tiltV.uniforms.uBand.value = 0.17 + bb * 0.25;
+  tiltH.uniforms.uAmount.value = tiltV.uniforms.uAmount.value = 26 * size2.y / 720 * (1 - bb);
+}
+const _lc = new THREE.Vector3(), _ls = new THREE.Vector3(), _lr = new THREE.Vector3(), _lp = new THREE.Vector3();
+function updateLights() {
+  // the sun travels with the player so the visible side is always in daylight (light from upper right, shadows toward the camera/left)
+  const up = cam.upS, f = cam.heading, r = _lr.crossVectors(f, up).normalize();
+  const title = G.state === 'title' || G.state === 'loading';
+  const center = title ? _lc.set(0, 0, 0) : _lc.copy(mowerRoot.position);
+  const sunDir = _ls.copy(up).multiplyScalar(0.82).addScaledVector(r, 0.72).addScaledVector(f, 0.45).normalize();
+  if (title) {
+    const cp = _lp.copy(camera.position).normalize();
+    const side = _lr.crossVectors(camera.up, cp).normalize();
+    sunDir.copy(cp).multiplyScalar(0.55).addScaledVector(side, -0.75).addScaledVector(camera.up, 0.45).normalize();
+  }
+  sun.target.position.copy(center);
+  sun.position.copy(center).addScaledVector(sunDir, 35);
+  U.uSunDir.value.copy(sunDir);
+  hemi.position.copy(title ? camera.position : up);
+  const ext = title ? 13 : 17;
+  if (sun.shadow.camera.right !== ext) { Object.assign(sun.shadow.camera, { left: -ext, right: ext, top: ext, bottom: -ext }); sun.shadow.camera.updateProjectionMatrix(); }
+}
+
+// ---------------------------------------------------------------------
+//  Update
+// ---------------------------------------------------------------------
+const tmpDeck = new THREE.Vector3();
+function updateMower(dt) {
+  const playing = G.state === 'play';
+  const up = mUp(_v2), fwd = mFwd(_v3);
+  let thr = 0, steer = 0, wantBoost = false;
+  if (playing && M.stun <= 0) {
+    thr = (keys.KeyW || keys.ArrowUp || keys.KeyZ ? 1 : 0) - (keys.KeyS || keys.ArrowDown ? 1 : 0);
+    steer = (keys.KeyA || keys.ArrowLeft || keys.KeyQ ? 1 : 0) - (keys.KeyD || keys.ArrowRight ? 1 : 0);
+    wantBoost = !!(keys.ShiftLeft || keys.ShiftRight);
+  }
+  // boost
+  M.boosting = wantBoost && thr > 0 && (M.boosting ? M.boost > 0.02 : M.boost > 0.25);
+  M.boost = clamp(M.boost + (M.boosting ? -0.42 : 0.16) * dt, 0, 1);
+  const maxV = M.boosting ? 10.5 : 6.6;
+  if (thr > 0) M.v = Math.min(maxV, M.v + (M.v < 0 ? 16 : (M.boosting ? 18 : 9.5)) * dt);
+  else if (thr < 0) M.v = Math.max(-3.2, M.v - (M.v > 0 ? 15 : 7) * dt);
+  else M.v = damp(M.v, 0, 2.6, dt);
+  if (M.v > maxV) M.v = damp(M.v, maxV, 3, dt);
+  M.steer = damp(M.steer, steer, 11, dt);
+  const turn = M.steer * (M.v < -0.3 ? -1 : 1) * (1.55 + 0.9 * clamp(Math.abs(M.v) / 6, 0, 1)) * (M.boosting ? 0.8 : 1);
+  M.yawRate = turn;
+  M.q.multiply(_q1.setFromAxisAngle(YA, turn * dt));
+  M.q.multiply(_q1.setFromAxisAngle(XA, -M.v * dt / R));
+  M.q.normalize();
+  // collisions (tangent-plane circles)
+  const pos = mUp(_v4);
+  for (const o of obstacles) {
+    const d = arc(pos, o.dir), rs = o.r + 0.55;
+    if (d < rs) {
+      const axis = _v1.crossVectors(o.dir, pos);
+      if (axis.lengthSq() < 1e-10) axis.copy(mRight());
+      axis.normalize();
+      const fresh = o.kind === 'crater' && o.crater && o.crater.age < 0.8;
+      const push = fresh ? Math.min(rs - d, 7 * dt) : rs - d;
+      M.q.premultiply(_q1.setFromAxisAngle(axis, push / R));
+      // velocity response: bounce if driving into it
+      const away = _v1.copy(pos).sub(o.dir).normalize();
+      const into = -mFwd().dot(away) * M.v;
+      if (into > 0.6) {
+        if (M.bump <= 0 && playing) { Snd.play('bonk', clamp(into / 6, 0.3, 1)); shake(0.25); M.hopV = Math.max(M.hopV, 2.2); G.combo = 1; G.comboN = 0; }
+        M.v *= -0.35; M.bump = 0.35;
+      }
+      pos.copy(mUp());
+    }
+  }
+  M.bump -= dt;
+  // visual placement
+  const upNow = mUp(_v2);
+  // hop / bounce
+  M.hopV -= 22 * dt; M.hop += M.hopV * dt; if (M.hop < 0) { M.hop = 0; M.hopV = Math.abs(M.hopV) > 2 ? -M.hopV * 0.3 : 0; }
+  mowerRoot.position.copy(upNow).multiplyScalar(R + M.hop);
+  mowerRoot.quaternion.copy(M.q);
+  const speedK = clamp(Math.abs(M.v) / 7, 0, 1);
+  const accel = (M.v - (M.prevV ?? 0)) / Math.max(dt, 1e-3); M.prevV = M.v;
+  M.pitch = damp(M.pitch, clamp(-accel * 0.012, -0.12, 0.12), 6, dt);
+  const vib = (Math.sin(G.clock * 47) * 0.006 + Math.sin(G.clock * 31) * 0.004) * (0.4 + speedK);
+  mowerTilt.rotation.set(M.pitch + vib, 0, clamp(-M.yawRate * speedK * 0.09, -0.16, 0.16) + vib * 0.6);
+  mowerTilt.position.y = Math.abs(Math.sin(G.clock * 20)) * 0.02 * speedK;
+  if (M.stun > 0) { M.spin += dt * 13 * M.stun; M.stun -= dt; }
+  else M.spin = damp(M.spin, Math.round(M.spin / (Math.PI * 2)) * Math.PI * 2, 6, dt);
+  mowerSpin.rotation.y = M.spin;
+  if (M.inv > 0) { M.inv -= dt; mowerSpin.visible = Math.floor(M.inv * 12) % 2 === 0 || M.inv <= 0; } else mowerSpin.visible = true;
+  U.uMower.value.copy(mowerRoot.position);
+
+  // ---- mowing ----
+  const deck = tmpDeck.copy(upNow).multiplyScalar(R).addScaledVector(mFwd(_v3), 0.42).normalize();
+  if (playing || G.state === 'intro') {
+    const moved = arc(M.prevDeck, deck);
+    if (moved > 0.0005 || G.stateT < 0.05) {
+      const steps = Math.min(48, Math.max(1, Math.ceil(moved / 0.1)));
+      let fresh = 0;
+      const T = mFwd(_v1).clone();
+      for (let i = 1; i <= steps; i++) {
+        const s = M.prevDeck.clone().lerp(deck, i / steps).normalize();
+        pendingStamps.push({ v: new THREE.Vector4(s.x, s.y, s.z, CUT_R), t: T });
+        if (playing) fresh += cutSamples(s, CUT_R * 0.92);
+      }
+      M.prevDeck.copy(deck);
+      if (playing && fresh > 0) onFreshCut(fresh, dt);
+    }
+    // flowers
+    if (playing) for (const f of flowers) {
+      if (f.alive && arc(f.dir, deck) < CUT_R + 0.1) {
+        f.alive = false; refreshFlowers();
+        G.score += 100 * G.combo; G.time += 0.3;
+        Snd.play('chime', 0.55, 1 + frand() * 0.2);
+        const p = f.dir.clone().multiplyScalar(R + 0.4);
+        for (let i = 0; i < 7; i++) fxSpark.spawn({ p: p.clone(), v: randomDir(frand).multiplyScalar(1.5).addScaledVector(f.dir, 2), life: 0.6, s0: 0.35, s1: 0.1, drag: 2, c: [1, 0.95, 0.6] });
+        for (let i = 0; i < 6; i++) fxPuff.spawn({ p: p.clone(), v: randomDir(frand).multiplyScalar(1.2).addScaledVector(f.dir, 2.5), life: 0.9, s0: 0.16, s1: 0.1, grav: 6, c: [1, 1, 1], drag: 1 });
+        popup(`+${100 * G.combo}`, p, '#fff6c2');
+      }
+    }
+  }
+  M.cutRate = damp(M.cutRate, 0, 5, dt);
+  // engine sound
+  Snd.set('engine', G.state === 'play' || G.state === 'intro' ? 0.22 + speedK * 0.25 : 0.0, 0.8 + speedK * 0.55 + (M.boosting ? 0.25 : 0));
+  Snd.set('cut', G.state === 'play' ? clamp(M.cutRate / 90, 0, 0.6) : 0);
+  // exhaust / boost flame
+  if (G.state === 'play' || G.state === 'intro') {
+    const back = mowerRoot.position.clone().addScaledVector(mFwd(_v1), -0.85).addScaledVector(upNow, 0.55);
+    if (M.boosting) for (let i = 0; i < 2; i++) fxFire.spawn({ p: back.clone(), v: mFwd(_v1).multiplyScalar(-3 - frand() * 2).addScaledVector(upNow, 0.5).add(randomDir(frand).multiplyScalar(0.6)), life: 0.25, s0: 0.75, s1: 0.2, drag: 2, c: [1, 0.85, 0.5], c1: [1, 0.35, 0.1] });
+    if (frand() < dt * (3 + speedK * 6)) fxDust.spawn({ p: back.clone(), v: mFwd(_v1).multiplyScalar(-0.6).addScaledVector(upNow, 0.9), life: 0.9, s0: 0.16, s1: 0.5, drag: 1, c: [0.9, 0.93, 0.95], a0: 0.22 });
+  }
+}
+function onFreshCut(n, dt) {
+  M.cutRate += n / Math.max(dt, 1 / 120) * 0.15;
+  G.comboN += n; G.comboT = 0.85;
+  if (G.comboN > 70 * G.combo && G.combo < 5) { G.combo++; G.comboN = 0; Snd.play('chime', 0.3, 0.7 + G.combo * 0.1); }
+  G.score += n * 10 * G.combo;
+  // clippings: green puffs thrown from the side discharge + behind (like the video's trailing puffs)
+  const up = mUp(_v2), r = mRight(_v1).clone(), f = mFwd(_v3).clone();
+  const base = mowerRoot.position.clone().addScaledVector(up, 0.3);
+  const count = Math.min(4, Math.ceil(n / 5));
+  for (let i = 0; i < count; i++) {
+    const side = frand() < 0.65;
+    const p = base.clone().addScaledVector(side ? r : f, side ? 0.55 : -0.6);
+    const v = (side ? r.clone().multiplyScalar(1.6 + frand() * 1.6) : f.clone().multiplyScalar(-0.8 - frand())).addScaledVector(up, 1.6 + frand() * 1.4).add(randomDir(frand).multiplyScalar(0.5));
+    fxPuff.spawn({ p, v, life: 0.7 + frand() * 0.6, s0: 0.22 + frand() * 0.2, s1: 0.42 + frand() * 0.25, drag: 2.2, grav: 3.5, ground: true, c: PUFF_C, fadeOut: 0.5 });
+  }
+}
+function updateMeteors(dt) {
+  const P = levelParams(G.level);
+  if (G.state === 'play') {
+    G.meteorT -= dt;
+    if (G.meteorT <= 0) {
+      const t = pickMeteorTarget(); if (t) spawnMeteor(t);
+      G.meteorT = P.meteorEvery * (0.7 + frand() * 0.6);
+      // occasional shower
+      if (frand() < 0.12 + G.level * 0.03) { setTimeout(() => { if (G.state === 'play') { const t2 = pickMeteorTarget(); if (t2) spawnMeteor(t2); } }, 350); }
+    }
+  }
+  for (let i = meteors.length - 1; i >= 0; i--) {
+    const m = meteors[i]; m.t += dt;
+    const ringK = clamp(m.t / m.warn, 0, 1);
+    const pulse = 0.5 + 0.5 * Math.sin(m.t * (8 + ringK * 14));
+    m.ring.material.opacity = Math.min(1, m.t * 3) * (0.65 + 0.35 * pulse) * 1.4;
+    m.ring.visible = cam.blend < 0.5;
+    m.ring.scale.setScalar(m.rad * 2.2 * (1.25 - ringK * 0.25));
+    {
+      const total = m.warn + m.fall, u = clamp(m.t / total, 0, 1);
+      const a = Math.pow(u, 1.9);                       // slow drift far away, fast final dive
+      const dive = m.t > m.warn;
+      const ac = Math.min(1, a / 0.82);
+      const L = _v2.lerpVectors(m.p0, m.pa, ac);
+      L.setLength(Math.max(L.length() + 1.4 * ac * (1 - ac), R + 0.5));
+      L.lerp(m.p1, smooth(0.82, 1, a));
+      m.rock.visible = true;
+      m.rock.position.copy(L);
+      m.rock.rotateOnAxis(m.spinAxis, dt * (dive ? 7 : 2));
+      m.glow.material.opacity = dive ? 0.95 : 0.75;
+      m.glow.scale.setScalar((dive ? 2.4 : 1.9) + Math.sin(m.t * 40) * 0.2);
+      if (dive && !m.whoosh) { m.whoosh = true; Snd.play('whoosh', 0.6); }
+      const vdir = _v3.copy(m.rock.position).sub(m.prev); const sp = vdir.length() / Math.max(dt, 1e-3);
+      if (sp > 1e-3) vdir.normalize(); else vdir.copy(m.target).negate();
+      m.prev.copy(m.rock.position);
+      const nFire = dive ? 3 : (frand() < 0.6 ? 1 : 0);
+      for (let k = 0; k < nFire; k++) fxFire.spawn({ p: m.rock.position.clone().addScaledVector(vdir, -0.3 * k), v: vdir.clone().multiplyScalar(-2).add(randomDir(frand).multiplyScalar(0.6)), life: 0.3 + frand() * 0.2, s0: dive ? 1.2 : 0.9, s1: 0.3, drag: 1, c: [1, 0.8, 0.45], c1: [1, 0.25, 0.08] });
+      if (dive && frand() < 0.5) fxDust.spawn({ p: m.rock.position.clone(), v: vdir.clone().multiplyScalar(-1), life: 0.7, s0: 0.4, s1: 1.0, drag: 1, c: [0.5, 0.47, 0.46], a0: 0.4 });
+      if (u >= 1) { meteors.splice(i, 1); impact(m); }
+    }
+  }
+  // craters form / cool down
+  for (const c of craters) {
+    c.age += dt; c.k = Math.min(1, c.k + dt * 6);
+    craterK.value[c.slot] = 1 - Math.pow(1 - c.k, 3);
+    if (c.rock && c.rock.userData.cool > 0) {
+      c.rock.userData.cool = Math.max(0, c.rock.userData.cool - dt * 0.35);
+      c.rock.traverse(o => { if (o.isMesh && o.material.emissive) o.material.emissiveIntensity = c.rock.userData.cool * c.rock.userData.cool * 0.9; });
+    }
+  }
+  for (let i = debris.length - 1; i >= 0; i--) {
+    const d = debris[i]; d.life -= dt;
+    const n = _v1.copy(d.o.position).normalize();
+    d.v.addScaledVector(n, -16 * dt);
+    d.o.position.addScaledVector(d.v, dt);
+    d.o.rotateOnAxis(d.spin, dt * 8);
+    if (d.o.position.length() < R + 0.05) { d.o.position.setLength(R + 0.05); const vn = d.v.dot(n); if (vn < 0) d.v.addScaledVector(n, -vn * 1.4).multiplyScalar(0.5); }
+    if (d.life < 0.4) d.o.scale.multiplyScalar(Math.exp(-6 * dt));
+    if (d.life <= 0) { scene.remove(d.o); debris.splice(i, 1); }
+  }
+  flash.intensity = damp(flash.intensity, 0, 9, dt);
+}
+const _oa = new THREE.Vector3(), _ob = new THREE.Vector3(), _oc = new THREE.Vector3();
+function updateOcclusion(dt) {
+  // fade the house / trees only when they actually cover the mower on screen
+  const cpos = camera.position, mpos = _oa.copy(mowerRoot.position).addScaledVector(mUp(_ob), 0.6);
+  const dm = mpos.distanceTo(cpos);
+  const mS = mpos.clone().project(camera);
+  const k = 1 / Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
+  const active = G.state === 'play' || G.state === 'intro';
+  for (const o of obstacles) {
+    if (!(o.kind === 'house' || o.kind === 'tree') || !o.obj) continue;
+    const house = o.kind === 'house', h = o.h || 3;
+    const c = _oc.copy(o.dir).multiplyScalar(R + (house ? 1.4 : h * 0.5));
+    const dc = c.distanceTo(cpos);
+    let target = 1;
+    if (active && dc < dm - 0.6) {
+      const sc = c.project(camera);
+      const rad = (house ? 1.75 : h * 0.38) * k / dc;   // projected radius in NDC-y units
+      const dx = (sc.x - mS.x) * camera.aspect, dy = sc.y - mS.y;
+      if (Math.hypot(dx, dy) < rad + 0.06) target = 0.28;
+    }
+    o.fade = damp(o.fade ?? 1, target, 8, dt);
+    if (Math.abs((o.lastFade ?? 1) - o.fade) > 0.01 || (o.fade > 0.99 && o.lastFade !== 1)) {
+      const op = o.fade > 0.99 ? 1 : o.fade;
+      o.obj.traverse(m => { if (m.isMesh) { m.material.transparent = op < 1; m.material.opacity = op; m.material.depthWrite = op >= 1; } });
+      o.lastFade = op;
+    }
+  }
+}
+function updateWorld(dt) {
+  for (const c of clouds) {
+    c.rotateOnAxis(c.userData.axis, c.userData.speed * dt);
+    const cm = c.children[0]; cm.getWorldPosition(_v1);
+    let k = smooth(5, 11, _v1.distanceTo(camera.position));
+    // orbit views: clouds drifting between the camera and the planet turn see-through
+    const toC = _v2.copy(_v1).sub(camera.position), dP = camera.position.length();
+    if (cam.blend > 0.01 && toC.length() < dP) {
+      const disc = Math.asin(Math.min(1, (R + 2) / dP));
+      const ang = toC.angleTo(_v3.copy(camera.position).negate());
+      k *= 1 - 0.9 * cam.blend * (1 - smooth(disc * 0.8, disc * 1.3, ang));
+    }
+    cm.visible = k > 0.02;
+    cm.traverse(o => { if (o.isMesh) o.material.opacity = 0.96 * k; });
+  }
+  for (const s of spaceRocks) { s.rotateOnAxis(s.userData.axis, s.userData.speed * dt); s.children[0].rotation.x += dt * 0.3; s.children[0].rotation.y += dt * 0.2; }
+  fxPuff.update(dt); fxDust.update(dt); fxFire.update(dt); fxSpark.update(dt);
+  gradePass.uniforms.uHit.value = damp(gradePass.uniforms.uHit.value, 0, 4, dt);
+}
+function update(dt) {
+  G.clock = (G.clock || 0) + dt;
+  G.stateT += dt;
+  U.uTime.value = G.clock;
+  if (G.state === 'intro') {
+    G.grow = Math.min(1, G.grow + dt * 0.7); U.uGrow.value = G.grow;
+    refreshFlowers(smooth(0.3, 1, G.grow));
+    if (G.stateT > 2.8) { setState('play'); banner(''); }
+  } else if (G.state === 'play') {
+    G.time -= dt;
+    G.comboT -= dt; if (G.comboT <= 0 && G.combo > 1) { G.combo = 1; G.comboN = 0; }
+    if (S_valid && S_cut / S_valid >= G.target) levelComplete();
+    else if (G.time <= 0) { G.time = 0; gameOver("TIME'S UP"); }
+  } else if (G.state === 'outro') {
+    if (G.stateT > 4.6) { G.level++; resetLevel(); setState('intro'); introBanner(); }
+  } else if (G.state === 'title') {
+    U.uGrow.value = 1;
+  } else if (G.state === 'over') {
+    if (G.stateT > 1.6 && !G.overHint) { G.overHint = true; $('bannerSmall').textContent += ' · SPACE to retry'; }
+  }
+  updateMower(dt);
+  updateMeteors(dt);
+  updateWorld(dt);
+  updateCamera(dt);
+  updateOcclusion(dt);
+  updateLights();
+  if (G.state !== 'title') updateHud(false);
+}
+
+// ---------------------------------------------------------------------
+//  Main loop with adaptive resolution
+// ---------------------------------------------------------------------
+const clock = new THREE.Clock();
+let frameAcc = 0, frameN = 0;
+function loop() {
+  requestAnimationFrame(loop);
+  const rawDt = clock.getDelta();
+  const dt = Math.min(rawDt, 1 / 20);
+  if (!G.paused) update(dt);
+  flushStamps();
+  composer.render(dt);
+  frameAcc += rawDt; frameN++;
+  if (frameAcc > 2.5) {
+    const avg = frameAcc / frameN;
+    if (avg > 1 / 38 && pixelRatio > 0.7) { pixelRatio = Math.max(0.7, pixelRatio - 0.15); onResize(); }
+    else if (avg < 1 / 58 && pixelRatio < maxPR) { pixelRatio = Math.min(maxPR, pixelRatio + 0.1); onResize(); }
+    if (DEBUG) console.log('fps', (1 / avg).toFixed(1), 'pr', pixelRatio.toFixed(2));
+    frameAcc = 0; frameN = 0;
+  }
+}
+
+async function init() {
+  await loadAll();
+  buildWorld();
+  buildGround();
+  buildTufts(obstacles);
+  buildSamples(obstacles);
+  buildFlowers();
+  buildSky();
+  buildMower();
+  scene.environment = null;
+  if (A.skyDay) {
+    const pm = new THREE.PMREMGenerator(renderer);
+    const eq = A.skyDay.clone(); eq.mapping = THREE.EquirectangularReflectionMapping; eq.needsUpdate = true;
+    scene.environment = pm.fromEquirectangular(eq).texture; pm.dispose();
+  }
+  fxPuff = new Particles(A.puff, 500); fxDust = new Particles(A.dust, 400); fxFire = new Particles(A.fire, 500, true); fxSpark = new Particles(A.spark, 200, true);
+  resetSamples(); clearMow();
+  onResize();
+  updateCamera(0.016); updateLights();
+  try { if (renderer.compileAsync) await renderer.compileAsync(scene, camera); } catch (e) { }
+  $('loading').classList.add('hidden');
+  setTimeout(() => $('loading').classList.add('gone'), 700);
+  setState('title');
+  if (AUTOSTART) startGame();
+  loop();
+  if (DEBUG) window.__game = { G, M, keys, startGame, S: () => ({ valid: S_valid, cut: S_cut }), win: () => { S_cut = S_valid; }, snd: Snd, obstacles, camera, scene, spawnMeteor, mUp, pickMeteorTarget, renderer, meteors, craters,
+    // fixed-step simulation for deterministic captures: sim(seconds, ['ArrowUp', ...])
+    sim: (sec, down = []) => { G.paused = true; for (const k of down) keys[k] = true; for (let i = 0, n = Math.round(sec * 60); i < n; i++) { update(1 / 60); flushStamps(); } for (const k of down) keys[k] = false; return G.state; },
+    resume: () => { G.paused = false; } };
+}
+init();
+</script>
+<script src="../brand/gamepad.js"></script>
+</body>
+</html>

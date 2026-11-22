@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-unlit-quantitative-encoding",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Unlit encoding when colour carries the measurement"
+  },
+  "aliases": {
+    "en": [
+      "quantitative unlit shading",
+      "colour as data not light",
+      "no-shading data view"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields",
+    "earth-environment",
+    "abstract-systems-data",
+    "probability-statistics"
+  ],
+  "summary": "When colour encodes a quantity, remove shading from the encoded surface so that illumination cannot be mistaken for value.",
+  "objective": "A region with a given value shows the same colour regardless of its orientation to the camera or to any light in the scene.",
+  "tags": [
+    "lighting-profile",
+    "unlit",
+    "colormap",
+    "data-encoding",
+    "legend"
+  ],
+  "subject_terms": [
+    "unlit material",
+    "colour map",
+    "perceptual uniformity",
+    "sequential colormap",
+    "diverging colormap",
+    "legend",
+    "value range",
+    "shading contamination",
+    "greyscale conversion"
+  ],
+  "intent_signals": [
+    "the colour changes as I rotate the field",
+    "which colormap should I use",
+    "the legend does not match the surface",
+    "show temperature as colour",
+    "shading is hiding my data"
+  ],
+  "example_prompts": [
+    "Colour a scalar field so the legend can actually be trusted.",
+    "Show a signed quantity with a symmetric colour scale around zero.",
+    "Compare two time steps of the same field with one fixed range."
+  ],
+  "negative_signals": [
+    "material appearance study",
+    "photorealistic product presentation"
+  ],
+  "not_for": [
+    "Scenes whose subject is how a material responds to light.",
+    "Views where three-dimensional form must be read from shading rather than from an encoded value."
+  ],
+  "content": {
+    "principles": [
+      "If colour is data, light must not change it. Any diffuse or specular response applied to an encoded surface adds an orientation-dependent term the viewer cannot separate from the value.",
+      "An unlit material can still be modulated by fog, environment, light and ambient-occlusion inputs. Exclude those spatial appearance effects from encoded pixels while retaining the declared output conversion and tone-mapping path shared by the surface and legend.",
+      "Removing shading removes the main depth cue. The scene must return that cue by other means, since an unlit surface that reads as flat is a different failure from a shaded surface that reads as wrong.",
+      "The colour scale is part of the claim. The mapped range, the direction of the scale and any clipping at the ends must be shown, because the same field under two ranges tells two different stories.",
+      "Match the scale class to the quantity: an ordered quantity needs a scale whose lightness moves in one direction, a quantity with a meaningful centre needs a scale that is symmetric about that centre, and an unordered category set needs distinguishable hues rather than a ramp.",
+      "A scale whose lightness rises and falls creates bands that look like features in the data. Those bands survive printing and greyscale conversion as genuine misreadings.",
+      "Form and value can coexist if they are separated: shade a neutral context surface, and keep the encoded surface unlit."
+    ],
+    "implementation": [
+      "Use a material that is documented not to respond to lights for every surface whose colour carries a value, and explicitly disable the other appearance inputs that material still supports, including fog, environment maps, light maps and ambient-occlusion maps.",
+      "Fix the value-to-colour range explicitly and hold it constant across frames, time steps and compared variants; recompute it only on an explicit user action that is visible in the interface.",
+      "Show a legend that carries the numeric range, the units and the name of the quantity, and place it where it stays visible while the camera moves.",
+      "Mark values that fall outside the mapped range with a distinct treatment rather than silently clamping them to the end colour.",
+      "Return depth by means that do not touch the encoded pixels: outlines, a reference grid, isolines drawn on top, or a shaded neutral base beneath the encoded layer. Ambient occlusion composited over the encoded surface changes its colour and belongs on context geometry or in a separately labelled shaded view.",
+      "Render the legend through the same output conversion and tone-mapping path as the encoded surface. A legend drawn outside that path can disagree with the surface even when no light touches either of them.",
+      "Use greyscale to inspect lightness structure, including separate branches of a diverging scale. It does not establish colour-vision accessibility: check important sign and category distinctions separately, using suitable palettes and redundant labels or symbols for the intended audience.",
+      "Where an exact value matters, offer a probe readout rather than asking the viewer to match a colour against the legend by eye."
+    ],
+    "observable_checks": [
+      "Rotating the object leaves the colour of a given region unchanged; there is no bright edge facing the light and no dark edge away from it.",
+      "Two regions the record says share a value display the same colour, even at different orientations.",
+      "The legend endpoints match the declared value-to-colour mapping, which may deliberately be wider than the current frame's extremes; out-of-range values are marked rather than clamped silently.",
+      "Converting a screenshot to greyscale preserves the ordering of a sequential scale, and preserves the ordering within each branch of a diverging scale, whose two branches are intended to share lightness values across the centre.",
+      "A patch of the encoded surface and the corresponding patch of the legend match when both are sampled from the same rendered frame.",
+      "Switching time steps or variants does not change the legend range unless the interface shows that the range was recomputed."
+    ]
+  },
+  "creative_affordances": [
+    "The colour scale itself is a design surface: a custom ramp built for the subject is legitimate as long as its lightness behaviour and its range are stated.",
+    "Combining an unlit encoded layer with a stylised shaded context can be visually distinctive and still honest."
+  ],
+  "known_limits": [
+    "This profile governs how a value reaches the eye. It does not verify that the underlying values are correct.",
+    "The perceptual guidance cited here is documentation summarising published practice; no perceptual measurement was performed for this record and no specific colour scale is asserted to be optimal.",
+    "Authored reusable guidance; no runtime artifact or rendered result has been observed for this record.",
+    "A greyscale check is a useful robustness test, not certification of colour-vision accessibility for any particular audience."
+  ],
+  "related_ids": [
+    "recipe.divergence-flux-box",
+    "recipe.terrain-contour-slices",
+    "recipe.embedding-projection",
+    "knowledge.signed-field-section",
+    "knowledge.style-scientific-encoding",
+    "knowledge.shared-static-accessible-fallback"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-unlit-material-no-lights",
+      "statement": "One widely used renderer documents a basic mesh material as drawing geometry in a simple shaded or wireframe way and states explicitly that the material is not affected by lights.",
+      "scope": "Documented behavior of one library's unlit material as of the access date. It supports using such a material to keep colour independent of illumination; it says nothing about which colour mapping to choose.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-basic-material",
+          "locator": "class description"
+        }
+      ]
+    },
+    {
+      "id": "claim.shared-colormap-lightness-guidance",
+      "statement": "Plotting-library documentation states that for many applications a perceptually uniform colormap is preferred, that viewers interpret changes in the lightness parameter as changes in data better than changes in hue so colormaps with monotonically increasing lightness are better interpreted, that diverging scales suit data with a critical middle value while qualitative scales suit unordered information, that the commonly used jet colormap varies widely in lightness and is therefore a poor choice, and that colormaps which move from darker to lighter and back become uninterpretable when printed in greyscale.",
+      "scope": "Guidance published in the documentation of one plotting library, read on the access date. It reports established practice for data-to-colour mapping; it is not a perceptual experiment conducted for this record and does not name a single correct colormap.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-matplotlib-colormaps",
+          "locator": "Overview; Classes of colormaps; Miscellaneous colormaps; Grayscale conversion"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "id": "recipe.stair-flight-geometry",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Stair flight geometry and handrail height"
+  },
+  "aliases": {
+    "en": [
+      "stair riser and tread",
+      "handrail height",
+      "flight geometry"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors"
+  ],
+  "summary": "Generate a stair from riser and tread dimensions and check it against published provisions instead of eyeballing it.",
+  "objective": "Build a stair flight generated from floor-to-floor height where riser, tread and handrail height are checked against cited provisions.",
+  "tags": [
+    "stairs",
+    "circulation",
+    "dimensions"
+  ],
+  "subject_terms": [
+    "riser height",
+    "tread depth",
+    "stair flight",
+    "handrail",
+    "nosing",
+    "landing",
+    "floor to floor",
+    "headroom"
+  ],
+  "intent_signals": [
+    "Generate a stair between two floors and check its dimensions.",
+    "Show handrail height measured from the stair nosings."
+  ],
+  "example_prompts": [
+    "Build a parametric stair flight with riser, tread and handrail checks against cited provisions.",
+    "Show what happens to the stair when the floor-to-floor height changes."
+  ],
+  "negative_signals": [
+    "Not a code compliance review: only the cited provisions are checked, and jurisdictions differ.",
+    "Not a structural design of the stair or its supports."
+  ],
+  "not_for": [
+    "Not a code compliance review: only the cited provisions are checked, and jurisdictions differ.",
+    "Not a structural design of the stair or its supports."
+  ],
+  "entities": [
+    {
+      "name": "Flight generation",
+      "guidance": "Derive the riser count from floor-to-floor height and distribute it uniformly, since uniformity is itself a requirement."
+    },
+    {
+      "name": "Handrail and nosing",
+      "guidance": "Model the handrail as a continuous element measured vertically from the nosing line, with its height reported."
+    },
+    {
+      "name": "Check panel",
+      "guidance": "Report each checked dimension with its provision reference and a pass or fail state."
+    }
+  ],
+  "state_contract": {
+    "model": "A positive floor-to-floor height and a positive integer riser count, from which uniform riser height is derived; tread depth is edited directly and applied uniformly. Editing the riser count holds the floor height fixed and rederives riser height, while editing the floor height holds the riser count fixed unless the derived riser height would leave the cited range, in which case the count is rederived and the change is reported. A flight of n risers has n minus one treads plus the upper landing. Handrail height is measured vertically above the nosing line. Checks compare computed values against the cited provisions and name them.",
+    "authority": "The computed dimensions are authoritative; the drawn geometry is generated from them, so a stair cannot look compliant while the panel reports a failure.",
+    "actions": [
+      "Change the floor-to-floor height or the riser count.",
+      "Change the tread depth and rerun the checks.",
+      "Toggle the handrail and the nosing line.",
+      "Reset to the authored configuration."
+    ]
+  },
+  "invariants": [
+    "All risers in the flight are equal within the stated tolerance.",
+    "Every check names the provision it applies and reports pass or fail explicitly.",
+    "Changing the floor-to-floor height changes the riser height, or the riser count when the derived height would leave the cited range; which parameter was rederived is reported, never silently swapped.",
+    "Tread depth is uniform across the flight, as riser height is, and handrail height is measured vertically above the nosing line rather than normal to the flight slope."
+  ],
+  "motion_guidance": [
+    "Animate a walking figure at the correct scale up the flight so proportions are judged against a body, not only against numbers.",
+    "Update the checks live while a dimension is dragged, so the failure threshold is discoverable."
+  ],
+  "known_limits": [
+    "Only the cited United States provisions are checked; other jurisdictions and building types have different requirements.",
+    "Headroom, landings, guards and fire requirements are not checked by this recipe.",
+    "The walking figure is a scale reference only and implies no ergonomic or safety validation.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-stair-riser-tread",
+      "statement": "Published accessibility provisions require stair riser height to be at least four inches and at most seven inches with tread depth of at least eleven inches.",
+      "scope": "Provisions 504.2 of the cited United States standard, applicable to the elements it scopes; local codes and building types can impose different limits, and no whole-building compliance or structural claim is made.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-accessboard-ada-standards",
+          "locator": "Provision 504.2, treads and risers"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-handrail-height",
+      "statement": "Handrails are required to be mounted between thirty-four and thirty-eight inches, measured vertically from stair nosings or walking surfaces.",
+      "scope": "Provision 505.4 of the same cited standard, measured vertically from stair nosings or walking surfaces; same jurisdictional caveat.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-accessboard-ada-standards",
+          "locator": "Provision 505.4, handrail height"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Flight generation",
+      "structure": "Treads with modelled nosings and risers as real surfaces, plus stringers that follow the flight line.",
+      "material": "Timber or concrete family with a distinct nosing edge treatment so individual steps read in raking light.",
+      "articulation": "The flight rebuilds when any driving dimension changes."
+    },
+    {
+      "family": "Handrail and nosing",
+      "structure": "A continuous rail with brackets at spacing, and a dashed nosing line drawn through the tread edges.",
+      "material": "Metal rail against matte treads with the nosing line as a high-contrast overlay.",
+      "articulation": "The rail follows the nosing line at the current offset height."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Parametric geometry generation and dimensional checking; no structural or occupancy simulation.",
+    "state": [
+      "floor to floor height",
+      "riser count",
+      "tread depth",
+      "check results"
+    ],
+    "checks": [
+      "Riser heights are uniform across the flight.",
+      "Each reported check cites its provision and matches the modelled geometry."
+    ]
+  },
+  "related_ids": [
+    "recipe.courtyard-house-cutaway",
+    "recipe.accessible-clearance-study",
+    "knowledge.structural-coherence"
+  ]
+}

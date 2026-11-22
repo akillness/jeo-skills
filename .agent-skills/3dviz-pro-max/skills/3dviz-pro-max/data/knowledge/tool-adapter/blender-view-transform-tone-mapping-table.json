@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blender-view-transform-tone-mapping-table",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Blender view transform to three.js tone mapping table"
+  },
+  "aliases": {
+    "en": [
+      "AgX tone mapping in three.js",
+      "Khronos PBR Neutral view transform",
+      "Blender view transform equivalent",
+      "NeutralToneMapping AgXToneMapping mapping"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "Pair one Blender view transform with one three.js tone-mapping constant before comparing renders, and fix output color space, colour management and exposure as part of the same declaration.",
+  "objective": "Every Blender-to-three.js comparison names one mapped pair of view transform and tone-mapping constant, so an appearance difference can be attributed to lighting or materials rather than to the output transform.",
+  "tags": [
+    "tool-adapter",
+    "blender",
+    "threejs",
+    "tone-mapping",
+    "color-management",
+    "view-transform"
+  ],
+  "subject_terms": [
+    "view transform",
+    "AgX",
+    "Khronos PBR Neutral",
+    "Filmic",
+    "Standard",
+    "AgXToneMapping",
+    "NeutralToneMapping",
+    "NoToneMapping",
+    "ACESFilmicToneMapping",
+    "outputColorSpace",
+    "SRGBColorSpace",
+    "ColorManagement",
+    "toneMappingExposure"
+  ],
+  "intent_signals": [
+    "which three.js tone mapping matches AgX",
+    "Blender render looks different in the web viewer",
+    "what is the equivalent of Filmic in three.js",
+    "should I use ACESFilmic or AgX tone mapping",
+    "set output color space and tone mapping"
+  ],
+  "example_prompts": [
+    "Match my Blender AgX look in a three.js viewer before I start adjusting materials.",
+    "Tell me which three.js tone mapping constant corresponds to the Khronos PBR Neutral view."
+  ],
+  "negative_signals": [
+    "display calibration",
+    "colour grading a video edit",
+    "printing colour proof"
+  ],
+  "not_for": [
+    "Guaranteeing pixel identity between two renderers.",
+    "Colour science derivation or display calibration.",
+    "Choosing an artistic grade; this record fixes the transform so the grade can be judged."
+  ],
+  "content": {
+    "principles": [
+      "A view transform is an output decision applied at the end of the pipeline. Comparing two images rendered under different transforms says nothing about the materials underneath them.",
+      "The mapping is a small closed table, not a family of near-equivalents. Three of Blender's views have a same-named counterpart in the renderer's tone-mapping enumeration; the rest do not, and an unmapped view must be re-viewed rather than approximated.",
+      "Tone mapping and output color space are two separate settings and must both be declared. A dark or washed image is as often a colour-space mistake as a tone-mapping one.",
+      "Exposure is the only variable left once the pair is fixed. Compare at the documented default of 1 first; any other value is a deliberate grade that belongs in the report."
+    ],
+    "implementation": [
+      "Map the transform, one row at a time: Blender `Standard` -> `NoToneMapping` (the renderer's documented default); Blender `AgX` -> `AgXToneMapping`; Blender `Khronos PBR Neutral` -> `NeutralToneMapping`.",
+      "Blender `Filmic` has no counterpart. The documented `toneMapping` enumeration is `NoToneMapping | LinearToneMapping | ReinhardToneMapping | CineonToneMapping | ACESFilmicToneMapping | CustomToneMapping | AgXToneMapping | NeutralToneMapping` and contains no Filmic constant; `ACESFilmicToneMapping` is a separately named transform and neither page states that the two curves agree. The Blender manual marks `Filmic` deprecated and superseded by `AgX`, so re-view a Filmic reference under `AgX` before comparing rather than substituting `ACESFilmicToneMapping`.",
+      "Declare the whole output decision once at renderer construction:\n```js\nimport * as THREE from 'three';\nconst renderer = new THREE.WebGLRenderer( { antialias: true } );\nTHREE.ColorManagement.enabled = true;              // documented default\nrenderer.outputColorSpace = THREE.SRGBColorSpace;  // documented default\nrenderer.toneMapping = THREE.AgXToneMapping;       // pairs with Blender's AgX view\nrenderer.toneMappingExposure = 1.0;                // documented default; declare it anyway\n```",
+      "`renderer.outputColorSpace` accepts `SRGBColorSpace` or `LinearSRGBColorSpace` and is documented to default to `SRGBColorSpace`. Keep `SRGBColorSpace` for a display target; treat `LinearSRGBColorSpace` as a hand-off to an external grading step, never as a remedy for an image that looks too dark.",
+      "`THREE.ColorManagement.enabled` is documented as enabled by default and is what makes hexadecimal and CSS colour setters convert sRGB input into the Linear-sRGB working space. Record its value beside the comparison; do not toggle it to chase a match, because it changes every authored colour literal at once.",
+      "Annotate colour textures loaded outside the glTF path with `texture.colorSpace = SRGBColorSpace` and leave data maps unannotated, so the table above is comparing transforms rather than a decoding mistake.",
+      "Record the pair in the comparison report as `blender_view` and `three_tone_mapping` columns plus `outputColorSpace` and `toneMappingExposure`. A column whose Blender view is unmapped is flagged, not silently paired with the nearest-looking constant."
+    ],
+    "observable_checks": [
+      "Switching only `renderer.toneMapping` between `NoToneMapping` and `AgXToneMapping` changes the rendered image while glTF material factors and texture bytes stay identical.",
+      "A scene rendered with `toneMapping = NoToneMapping` and `outputColorSpace = SRGBColorSpace` is closer to a Blender `Standard` view than to any other row; if it is not, the difference lives in lighting or materials.",
+      "Setting `THREE.ColorManagement.enabled = false` visibly changes hexadecimal-authored colours, which identifies which colours pass through the conversion.",
+      "The comparison report names one Blender view and one tone-mapping constant per column; a column reading `Filmic` is reported as unmapped rather than compared."
+    ]
+  },
+  "known_limits": [
+    "The mapping is by shared name and documented intent. Neither source states that a Blender view and a same-named renderer constant implement an identical curve, so the pairing is a comparison protocol, not an equivalence proof.",
+    "Blender's view list and the renderer's tone-mapping enumeration both change between releases; the Blender page read here was the latest channel and the renderer page is unversioned.",
+    "The renderer page enumerates constants but prints no curve definitions, so no statement is made here about how any two transforms differ numerically.",
+    "Authored reusable guidance: no render, screenshot or numeric image comparison was produced for this record."
+  ],
+  "creative_affordances": [
+    "Any row may be chosen as the final look; the requirement is that the chosen pair is named, not that it is the most neutral one.",
+    "Exposure may be pushed away from 1 as a deliberate grade once the pair has been compared at 1."
+  ],
+  "related_ids": [
+    "knowledge.blender-three-linear-color-handoff",
+    "knowledge.shared-display-color-management",
+    "knowledge.three-light-units-and-exposure",
+    "knowledge.gltf-punctual-light-units-handoff"
+  ],
+  "claims": [
+    {
+      "id": "claim.blender-view-transform-catalogue",
+      "statement": "The Blender manual's Views list describes Standard as doing no extra conversion besides the conversion for the display, Khronos PBR Neutral as a tone mapping transform designed specifically for PBR color accuracy, AgX as a tone mapping transform that improves on Filmic and offers 16.5 stops of dynamic range, and Filmic as deprecated and superseded by AgX.",
+      "scope": "The documented view descriptions on the accessed page of the latest manual channel. The page prints no transfer curves, so no numerical relationship between views is asserted.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-blender-displays-views",
+          "locator": "Views: \"Standard: Does no extra conversion besides the conversion for the display\"; \"Khronos PBR Neutral: A tone mapping transform designed specifically for PBR color accuracy\"; \"AgX: A tone mapping transform that improves on Filmic, giving more photorealistic results. AgX offers 16.5 stops of dynamic range\"; \"Filmic: ... Filmic is deprecated and is superseded by AgX which improves handling of saturated colors\""
+        }
+      ]
+    },
+    {
+      "id": "claim.three-tone-mapping-constant-enumeration",
+      "statement": "The renderer documents toneMapping as one of NoToneMapping, LinearToneMapping, ReinhardToneMapping, CineonToneMapping, ACESFilmicToneMapping, CustomToneMapping, AgXToneMapping or NeutralToneMapping with a default of NoToneMapping, toneMappingExposure as the exposure level of tone mapping with a default of 1, and outputColorSpace as SRGBColorSpace or LinearSRGBColorSpace with a default of SRGBColorSpace; the enumeration contains no constant named for Blender's Filmic view.",
+      "scope": "The documented property enumerations and defaults of one unversioned library page as accessed. The absence of a Filmic constant is an observation about this list, not about any release's internal shader code.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-webglrenderer",
+          "locator": "toneMapping : NoToneMapping | LinearToneMapping | ReinhardToneMapping | CineonToneMapping | ACESFilmicToneMapping | CustomToneMapping | AgXToneMapping | NeutralToneMapping, \"Default is NoToneMapping\"; toneMappingExposure \"Exposure level of tone mapping. Default is 1\"; outputColorSpace : SRGBColorSpace | LinearSRGBColorSpace, \"Default is SRGBColorSpace\""
+        }
+      ]
+    },
+    {
+      "id": "claim.three-color-management-enabled-by-default",
+      "statement": "The renderer's colour-management documentation states that certain conversions for hexadecimal and CSS sRGB colours are made automatically when the ColorManagement API is enabled through THREE.ColorManagement.enabled = true, that ColorManagement is enabled by default, and that PNG or JPEG colour textures must be annotated with texture.colorSpace = SRGBColorSpace while the working space is Linear-sRGB.",
+      "scope": "Documented colour-management behaviour of one library as accessed. It concerns input annotation and automatic conversion, not tone mapping or display calibration.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-color-management",
+          "locator": "\"THREE.ColorManagement.enabled = true;\" and \"THREE.ColorManagement is enabled by default\"; color textures \"must be annotated with texture.colorSpace = SRGBColorSpace\"; working space Linear-sRGB"
+        }
+      ]
+    }
+  ]
+}

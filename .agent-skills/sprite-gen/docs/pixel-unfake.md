@@ -1,0 +1,147 @@
+# Pixel Unfake Fit (`fit` / `pixel_unfake`) — sprite-gen reference
+
+> Owns: The `fit` / `pixel_unfake` path for pixel-art targets and jitter-free locomotion · Index: [docs/README.md](README.md)
+
+## Backbone Lattice (from the README, 2026-09-09)
+
+AI-generated "pixel art" is not pixel art. The blocks wobble, the edges carry antialiasing, and the lattice drifts within a single row, so cutting on an even grid smears one block into the next. The community fix is to "unfake" the image — guess the block size from run lengths and re-quantize — but that measures each frame on its own, so a walk cycle's cell size breathes frame to frame.
+
+**Backbone Lattice** measures one grid for the whole subject and holds every cut to it. Per-frame pitch detection feeds a row-wide, cross-frame consensus that outvotes harmonic misdetections; that consensus grid is the *backbone* every cut snaps to. Cuts land on actual colour boundaries, and a minimum cell width proportional to the measured pitch keeps two neighbouring cuts from ever collapsing onto the same band. One backbone, so the same block stays the same size across a whole animation instead of jumping between frames.
+
+The result is verified against what shipped, not eyeballed on a hand-picked frame: every pixel-unfake run is re-derived from its own source strip and compared pixel by pixel. The shape you approved stays the shape you get; what changes is only where outlines and shading land, which is exactly what the backbone decides.
+
+> `SKILL.md` 허브에서 분리한 시나리오 상세. 픽셀아트 타깃, 지터 없는 locomotion, 게임-레디 청키 픽셀 출력이 필요할 때 이 문서를 따른다. 구현 내부(피치 검출·grid-snap·팔레트 단계별 코드 동작)는 [`architecture.md`](architecture.md) §6 참조.
+
+## `fit` object
+
+Optional `fit` object (opt-in; absent means legacy behavior). For pixel-art targets and jitter-free locomotion use:
+
+```json
+"fit": { "resample": "kcentroid", "align_x": "foot-centroid", "align_y": "bottom" }
+```
+
+- `resample` — `lanczos` (default) | `nearest` | `kcentroid`. `kcentroid` (Astropulse-style dominant-cluster downscale) keeps 1px dark outlines readable when the generated art's implied pixel grid does not match the target cell; `nearest` is crisp but drops off-grid outline pixels; `lanczos` blurs pixel art. `lanczos` is the smooth shrink for painted art: the frame's coverage is scaled by LANCZOS and its colour is mixed apart from it (`resize_cell`, [video-pipeline.md](video-pipeline.md) "Cells"), because LANCZOS over the keyed RGBA itself drew a lighter rim and a key tint at the edge that the keyed frame did not have — on the synthetic outlined figure of `tests/keyed_figure.py`, 137 to 978 pixels at 0.2x to 0.75x with a colour none of the pixels under them had, and none now.
+- `align_x` — `bbox-center` | `centroid` | `foot-centroid` (default) | `alpha-centroid`. Bbox-centering shifts the body left/right whenever a pose's content bbox width changes (extended arm/leg), which reads as per-frame horizontal jitter. `centroid` aligns the whole-alpha centroid; `foot-centroid` aligns the bottom-20% alpha (the legs), so trailing hair/capes do not pull the body off the cell axis — use it when the runtime mirrors the cell for left/right facing (flip pivots on the leg axis instead of teleporting the body). `alpha-centroid` (opt-in, perfectpixel-studio port — github.com/gykim80/perfectpixel-studio `internal/sprite/extract.go`, MIT) aligns the alpha-weighted centroid ignoring soft-matte fringe (α ≤ 10); crucially, in the `pixel_unfake` row path it is applied **per frame** instead of once per row union, so residual registration jitter from `register_row_frames` is cancelled (upstream measured σ 27.2px → 0.2px; jump arcs stay preserved via `ground_frames: false`).
+- `align_y` — `center` (default) | `bottom`. Bottom pins feet to a shared baseline (`cell_height - safe_margin_y`).
+
+`prepare_sprite_run.py` exposes these as `--fit-resample`, `--fit-align-x`, `--fit-align-y`, and `--fit-ground-frames` / `--no-fit-ground-frames`, plus the `pixel_unfake` family below as `--fit-pixel-unfake`, `--fit-logical-height`, `--fit-palette-size`, `--fit-detail-bias`, `--fit-outline {on,off,STRENGTH}`, `--fit-pitch-hint`. CLI flags override the same keys in `--request` JSON, one stderr line naming them ([run contract](run-contract.md#1-pipeline-stages)); either way the merged result is recorded in the run's `sprite-request.json` `fit` object (SSoT).
+
+With `fit.pixel_unfake: false`, extracted poses in each state row share one shrink
+ratio (`fit_scale`), chosen so that every pose, placed with its `align_x` anchor on
+the cell's centre line, stays inside the cell's safe area: the reach on either side
+of the anchor within half the safe width, the height within the safe height. A
+raised or extended weapon therefore neither shrinks only that pose's body nor
+pushes that pose off its anchor (a pose crossing the cell used to be pushed back
+in, body and all). With `bbox-center` the reach is half the width, so the ratio
+fits the widest pose by its width. This preserves scale already present in the
+generated row; it does not repair size drift drawn by the image model. A weapon
+held far to one side costs size in a square cell: give such a row a wider cell.
+Separate state rows can have different shrink ratios, and a single frame is a row
+of one. The pixel-unfake path keeps its own placement.
+
+## `pixel_unfake` mode
+
+For true pixel-unfake output (game-ready chunky pixel art with intact 1px outlines), use the `pixel_unfake` mode instead of `resample` — it removes ALL non-integer resampling:
+
+```json
+"fit": { "pixel_unfake": true, "logical_height": 64, "palette_size": 48, "align_x": "foot-centroid", "align_y": "bottom" }
+```
+
+**눌림 없음 — 유일한 동작** (maintainer 확정 2026-07-14, 옵트인 잔재 완전 제거 2026-07-17): 스냅된 네이티브 논리 크기를 유지한다 — `logical_height` 계약으로의 conform 축소는 칸을 병합해 디테일(눈·아웃라인)을 갈라먹는다. 과거의 `"conform": true` 옵트인은 **제거됐고 선언 시 요란하게 거부된다** — 제거된 결정이 플래그 하나로 되살아나는 회귀 경로였다 (회귀 2026-07-17: 높이 통일 시도가 이 플래그로 재발). 물리 한계(셀 바닥 마진 유지, `(cell_h − margin_y)/scale`)만 캡으로 강제되고 캡에 걸린 프레임은 경고로 관측된다. **안전영역(사방 여백 준수 상한)을 넘었지만 물리캡 이내인 여백 침범은 리롤 대상이 아니다** — 정보성 알림만 남는다(manifest warning + 큐레이터 줄 헤더 "여백 침범" 배지, maintainer 확정 2026-07-14). 실패는 없다. 이 판정은 함수 하나다 — `frames/extract.py` 의 `safe_area_fit`(프레임 크기 → 물리캡 `over` = 경고, 안전영역만 넘침 `soft` = 정보): 픽셀 스냅이 부르고, [`pixel-draw`](pixel-draw.md#the-safe-area) 의 G8 도 각 프레임의 불투명 상자 크기로 같은 함수를 부른다(캔버스 = 셀, 배율 1). 계약 키(logical_height)는 생성 목표/경고 기준일 뿐 강제 수단이 아니다.
+
+`logical_height` 를 **생략하면 셀 높이와 동일(1:1)** 이 기본이다 — 생성 프롬프트가 "TRUE `<셀>`x`<셀>` pixel grid" 를 명시하는 현행 레시피에서 원본 그리드 해상도를 그대로 따라간다(권장). 더 청키한 저해상 룩을 원할 때만 작은 값을 명시한다: 셀 64 + 로지컬 32 → 2× 청키 픽셀.
+
+**셀 높이의 정수 약수만 유효하다** (maintainer 2026-07-25). 격자 배율은 정수(`cell_h // logical_height`)라 약수가 아닌 선언은 반올림돼 사라진다 — 셀 64 + 로지컬 48 은 배율 1 로 접혀 **논리 높이가 64 로 되돌아간다**(선언은 아무 픽셀도 바꾸지 않음). 그 상태를 조용히 두지 않는다: 추출이 `fit.logical_height=<값> is not applied as declared` 경고를 남기고, 큐레이터 헤더 라벨과 큐레이션 행 지문은 선언값이 아니라 **파생 유효값**(`curation.effective_logical_height` / `pixel_snap_scale`)을 쓴다. 회귀 (hero synthetic_fixture_a·v8): `conform` 눌림이 제거된 뒤 남은 무효값 48 이 라벨을 "48px" 로 거짓 표기했고, 그 값을 지우는 편집만으로 프레임이 바이트 동일한데도 14행 큐레이션이 통째로 드롭됐다. 배율 식의 소유자는 `pixel_snap_scale` 한 곳이다 — 소비자(extract·웹뷰·compose)가 손으로 다시 유도하지 않는다(`tests/test_logical_height_contract.py`).
+
+Pipeline (unfake.js/pixeldetector-style): 포즈 컴포넌트를 먼저 분리한 뒤 **프레임별** 처리 — 엣지-정렬 스코어링 피치 검출(그리드선 ±w 에 색 경계가 모이는 비율 − 우연 기대치 |잉여류|/p 의 argmax; 창 폭 w 는 모든 p 에 동일하고 잉여류는 집합으로 세어 중복 합산하지 않는다 — w 를 p>=8 에서만 열면 참 피치가 자기 약수에게 져서 k=8,10,12,14 가 k/2 로 붕괴한다, `tests/test_pitch_ground_truth.py`) → 피치는 **소수**로 잰다 (AI 도트의 블록 폭은 정수로 안 떨어진다 — 예: 17.24px; 정수로 반올림하면 그 오차가 폭 전체에 누적돼 셀 경계가 블록 한가운데를 지난다). 격자선은 `_grid_edges` 가 길이를 셀 개수로 등분해 정수 픽셀로 확정하므로 **결과는 항상 정수 격자**다. **프레임 자체 검출 피치가 1순위 진실**이다 (maintainer 2026-07-20, plan `sprite-gen/per-frame-pixel-grid`: 합의를 프레임에 강제하면 측정차 0.5px/셀이 폭 전체에 누적돼 눈이 반쪽 나는 회귀) — 단, own 채택은 **합의 '피치 패밀리'(비율 1.1, `PITCH_FAMILY_RATIO`) 이내에서만**이다. 하모닉/붕괴 오검출(×2/×3·÷2/÷3)까지 own 으로 믿으면 한 프레임의 거대 native 가 행 일관 축소(`conform_row_logical`)의 배율을 끌어내려 행 전체가 콩알로 붕괴한다 (회귀 synthetic_fixture_a up_run frame-2, 2026-07-22: own 3.00 → native 87×162 → 행 전체 0.36배 → sparse 검증 전멸, plan `sprite-gen/pitch-outlier-guard-heal-isolation`). 패밀리 밖 = 합의로 스냅 + 프레임별 warning (`resolve_frame_pitch`, `tests/test_pitch_ground_truth.py`). 프레임별 검출값의 중앙값(붕괴값 필터)은 **자체 검출이 실패한 프레임의 fallback** 이기도 하며 적용 시 프레임별 warning. 전 프레임 검출 실패면 `fit.pitch_hint`(보통 베이스 검출값) → **위상은 프레임마다 셀 균일도 실측(`_best_phase`)으로** 다시 잡아 grid-snap → 네이티브 논리 크기 유지(물리 셀캡만 kCentroid 로 강제, `fit.conform` 은 요란하게 거부 — maintainer 2026-07-14/17: 계약으로의 conform 축소는 칸을 병합해 디테일을 갈아먹는다) → run-wide shared median-cut palette (`palette_size`, kills frame-to-frame color flicker) → alpha binarization → integer NEAREST upscale into the cell. `detail_bias` (default true) prefers a near-black minority cluster (share ≥ 0.40, luma < 70/255) so eyes and outlines survive dominant voting. The final display scale is `cell_height // logical_height` — e.g. cell 64 + logical 32 → crisp 2× chunky pixels. (폐기된 대안과 그 이유는 `CHANGELOG.md` v1.10.0.)
+
+## 위상은 근사가 아니라 실측으로 고른다
+
+피치를 맞게 재도 **위상이 틀리면 격자가 블록을 반으로 가른다.** 위상 출처는
+`_best_phase` — 후보 위상마다 실제 셀 균일도(`_grid_score_edges`)를 채점해 축별 8단계에서
+최선을 고른다. 피치 검출이 부산물로 내놓는 히스토그램 위상(`_axis_refine` 의 최적 창
+가중 무게중심)은 쓰지 않는다.
+
+이유는 그 근사가 **참 위상에서 최대 pitch/2 까지 밀리기 때문**이다 (회귀 maintainer
+2026-07-25, synthetic_fixture_b `down_jump` frame-0: 피치 13.00 에서 히스토그램 위상 y=2.02 vs
+실측 최적 y=8.12, 차이 6.1 ≈ pitch/2). `refine_edges_to_boundaries` 는 절단선을
+**±pitch/3 창 안에서만** 당기므로 이 크기의 위상 오차는 구조적으로 복구되지 않는다 —
+캐릭터 눈 4행이 3행으로 병합돼 8칸이 7칸이 됐다 (plan
+`sprite-gen/frame-pitch-consensus-eats-a-row`).
+
+피치가 고정된 상태에서 위상만 비교하므로, 균일도 지표의 '거친 격자 편애' 편향
+(칸이 클수록 칸 안이 균일해지는 자명한 편향)은 이 판정에 개입하지 않는다.
+
+**이 정책의 범위는 추출 스냅 경로다.** 큐레이터의 베이스 격자(`/api/base-grid`,
+`sprite_gen/serve/serve_curation.py`)는 여전히 `detect_pixel_grid` 가 돌려주는 히스토그램 위상으로
+절단선을 만든다. 그 절단선은 **표시용 오버레이 선 그리기에 그치지 않는다** — 베이스 편집기가
+각 블록의 중심 픽셀을 raw 에서 샘플해 논리 편집 캔버스를 만들고(`sprite_gen/serve/curator/src/base-editor.js`),
+논리 좌표 편집을 되돌릴 때 같은 절단선으로 raw 블록 전체를 채워 `base-source` 파일에 굽는다
+(`space: "logical"` ops). 즉 여기서도 위상이 밀리면 중심 샘플이 이웃 블록으로 넘어가고,
+칠한 칸이 실제 블록 경계를 가로질러 굳는다 — **추출 스냅에서 잡은 것과 같은 실패 계열**이다.
+
+그럼에도 이 정책을 그 경로에 강제하지 않는 이유는 두 가지다: (a) 대상이 `base-source` 라는
+별개 이미지(행의 identity 입력이지 추출 산출물이 아니다), (b) 사람이 화면으로 결과를 보며
+편집하는 경로라 잘못 찍히면 즉시 눈에 띈다. 그 경로의 위상 정확도를 올릴지는 **별건**이다 —
+"위험 없음" 이 아니라 "다른 이미지·다른 경로라 이 플랜에서 다루지 않음" 으로 읽어야 한다.
+
+**위상 출처를 바꿨을 때의 출력 변화** (plan `sprite-gen/frame-pitch-consensus-eats-a-row`):
+히스토그램 위상 → 실측 위상 전환의 전수 회귀는 68프레임 중 동일 53 / 변경 15(전부 ±1칸)다.
+이게 이 절이 말하는 정확도 개선의 실제 크기다.
+
+**비용**: 축별 8단계 = 최대 64조합을 전체 이미지 픽셀로 채점한다. 정확도를 택한 명시
+트레이드오프다 — 실측 위상이 히스토그램 근사보다 비싼 건 여전하고, 등가 최적화로 배수만
+줄었다 (plan `sprite-gen/best-phase-hotspot`: 채점을 정수 정확 산술로 재정식화해 채점 코어
+**7.91×**, `synthetic_fixture_b` 14상태 전체 추출 **4:20 → 1:57 = 2.22×**). 그 최적화는 **출력을 전혀
+바꾸지 않는다** — 프레임 PNG 204장 SHA-256 전부 동일이다. 위의 "변경 15" 와 헷갈리지 마라:
+그건 위상 출처 교체가 만든 변화이고, 최적화가 만든 변화는 0 이다.
+
+## Stage ownership (불변)
+
+픽셀 언페이크는 **row 추출 단계에서만** 적용한다. 베이스/앵커 생성 단계는 타깃 스타일(픽셀 룩 vs 2D 일러스트 vs 3D/실사풍)을 프롬프트·레퍼런스로 잠글 뿐, 픽셀 언페이크 후처리를 하지 않는다 — 베이스는 row 의 identity truth 라 가공 없이 원본으로 쓴다. 생성 프롬프트가 "TRUE NxN pixel grid" 를 명시해도 모델이 완벽한 균일 그리드로 그리지는 않으므로 정렬 강제는 여전히 추출 단계 몫이다.
+
+## 스타일의 SSoT 는 첨부된 베이스/앵커 이미지다
+
+프롬프트 텍스트로 체형·등신·볼살·아웃라인 굵기·디테일 밀도를 재기술하지 마라 — 텍스트가 레퍼런스와 경쟁해 identity 를 되돌린다. 행 프롬프트에는 "첨부 레퍼런스를 정확히 따라라(밀도·비율·아웃라인·팔레트)" + 모션 서술 + 레이아웃/크로마 규칙만 남긴다. `STYLE_DEFAULT` 도 이 원칙으로 고정돼 있다 — 강한 스타일 지시가 필요하면 베이스를 다시 뽑아 확정하는 게 정도다.
+
+## 픽셀 밀도는 프롬프트가 아니라 레퍼런스가 지배한다
+
+image_gen 은 출력 크기가 ~1024px 급 고정이라 "작게 생성"은 불가능하고, "TRUE NxN grid" 문구만으로는 밀도를 못 잠근다. 모델이 실제로 따라가는 것은 **첨부된 스타일 레퍼런스의 픽셀 블록 굵기**다: 진짜 저해상 도트(예: 24~64px 스프라이트를 NEAREST 확대한 것, 데모 스크린샷)를 붙이면 그 굵기로 그리고, 고해상 가짜-도트(1024px+ 생성물)를 붙이면 그 고밀도를 따라가 로지컬 축소에서 뭉개진다. **규칙: 픽셀 타깃 런의 스타일 레퍼런스는 반드시 타깃 로지컬 해상도급의 진짜 저해상 도트로 준비한다.** 가짜-도트 밖에 없으면 한 번 픽셀 언페이크로 잠근 결과물을 레퍼런스로 재사용한다. 단, **베이스 raw 가 이미 그리드-인식 생성물이면 그 raw 가 최상의 앵커다** — 픽셀 언페이크로 잠근 판을 앵커로 재투입하면 이중 열화로 얼굴/디테일이 뭉개진다.
+
+## 역할 계약
+
+AI 개입은 **raw 생성 한 곳뿐**이다 (`SKILL.md` 필수 게이트). 픽셀 언페이크(피치 검출→그리드 스냅→kCentroid→팔레트→아웃라인)는 모델 호출이 없는 **완전 결정론 코드**라 같은 입력이면 항상 같은 출력이다. 에셋 제작의 기본 프로세스 = 변환 후 **큐레이션뷰 자동 런치**, **픽셀 언페이크 적용 여부는 인간이 체크박스로 결정**. 사용자가 "뷰 생략하고 알아서 픽셀 이미지로" 라고 명시했을 때만 무인 처리한다.
+
+## 큐레이터 표시 규칙
+
+확대 표시는 항상 nearest(`image-rendering: pixelated`, 패시브) — 안티앨리어싱 확대가 실픽셀 품질을 뭉개 보이게 하는 착시를 막는다. 헤더의 **"픽셀 언페이크 격자" 체크박스**는 논리 픽셀 격자를 카드 위에 오버레이한다(표시 전용, 굽기 무관). `fit.pixel_unfake` 런은 요청 scale(간격 = `cell_height // logical_height`)로 그리고, 임포트/plain 런은 줄별로 측정한 블록 피치(label `auto`)로 그린다 — 격자를 알 수 있거나 측정 가능한 줄이면 토글이 뜬다. 피치를 측정할 수 없는 줄만 격자를 그리지 않는다(가짜 격자 금지). 표시 계약 SSoT 는 `docs/run-contract.md` §3(Pixel grid 행).
+
+## 전/후 쌍둥이 + 큐레이터 선택
+
+`fit.pixel_unfake` 런에서 추출은 픽셀 언페이크 결과(`frame-N.png`, canonical)와 함께 **적용 전 쌍둥이 두 개**를 저장한다: **셀 크기 `frame-N.plain.png`**(굽기용 — 아틀라스 슬롯이 셀 크기라 compose 가 이걸 읽는다)와 **고해상 `orig/frame-N.png`**(표시 전용 — S×셀, pp 해제 표시가 셀 확대 흐림 없이 원본 화질. S 는 행별 네이티브 배율: 프레임들의 컴포넌트 crop/최종 콘텐츠 bbox 비율 최대값의 ceil, 상한 `2048//cell` — 리샘플이 경미한 업스케일이 되도록 해 다운스케일 뭉갬을 금지한다. 구 고정 ×4 캡은 고피치 raw 를 눌러 "원본" 뷰가 원본이 아니게 됐다, maintainer 2026-07-23). 두 쌍둥이 모두 **픽셀 언페이크 프레임의 최종 콘텐츠 bbox 와 같은 풋프린트**에 앉힌다(`fit_component_to_bbox`) — 토글이 크기 변화 없이 픽셀 처리 품질만 비교하고, plain 굽기도 pp 줄과 같은 캐릭터 크기를 유지한다. (이전엔 legacy fit 이 가용영역을 채워 pp 결과보다 ~8% 크게 앉았고 토글 순간 크기가 튀었다.) 빈 프레임은 warning 으로 관측, 해당 쌍둥이만 빠진다.
+
+**변형 굽기도 격자를 지킨다**: 픽셀 변형을 굽는 줄의 큐레이션 변형(이동/확대/회전/기울이기/반전)은 BICUBIC 이 아니라 **NEAREST 샘플 + 셀 고정 논리 격자 재양자화**(`apply_transform(snap_scale=…)`, 스케일 SSoT = `curation.pixel_snap_scale`)로 굽는다 — 어떤 변형도 픽셀 격자를 뭉갤 수 없다. 큐레이션 웹뷰는 같은 양자화를 캔버스로 미러링해(`drawFrameInto`) **드래그하는 동안에도 스프라이트가 고정 격자에 실시간 스냅되어 보인다** (격자는 셀에 고정, 그림이 격자 단위로 이동). plain 변형을 굽는 줄은 격자 예술이 아니므로 부드럽게 굽는다 — 커버리지와 색을 나눠 매핑한다(`transform_cell`, [video-pipeline.md](video-pipeline.md) "Cells"). BICUBIC 으로 바로 굽던 때는 키잉 그림 가장자리에 소스에 없던 밝은 테두리와 키 색이 남았다.
+
+토글은 **줄(state) 단위**다: 쌍둥이가 실재하는 각 줄의 "생성 재료" 줄 우측(프레임 이미지 바로 위)에 **줄별 "픽셀 언페이크" 체크박스**가 뜨고, 우측 상단 체크박스는 **전체 토글**(모든 줄을 한번에 설정; 줄별 값이 섞이면 indeterminate 표시)이다. 픽셀 격자 오버레이도 같은 모양이다 — 격자를 아는 줄마다 줄별 "픽셀 격자" 체크박스 + 상단 "픽셀 격자 전체" 토글(표시 전용, 저장 안 함). 각 토글이 그 줄의 **표시와 굽기를 함께 결정**한다(별도 보기 토글 없음; curator `src/display.js`·`src/row-controls.js`, run-contract §3 원본화질 토글 행과 일치). 켠 줄은 canonical `frame-N.png`(픽셀 언페이크)를 표시·굽고, 끈 줄은 표시는 `orig/` 고해상본 우선(없으면 `.plain.png`)·굽기는 셀 크기 `.plain.png` 변형으로 전환하며(끈 줄은 스냅 격자가 아니므로 픽셀 격자 오버레이도 숨긴다) `curation.json` 의 `states.<state>.pixel_unfake`(줄별) + top-level `pixel_unfake`(전줄 균일할 때만 기록되는 런 기본값)에 저장된다. 해석 순서(줄별 > top-level > 기본 on)의 SSoT 는 `curation.frame_variant(curation, state)` 이고 compose·GIF·PNG export 전부 이 리졸버를 쓴다. 끈 줄의 plain 파일이 없으면 조용한 폴백 없이 에러다. report/manifest 에는 줄별 `animation.rows.<state>.frame_variant` 와 top-level 요약(`pixel`/`plain`/`mixed`)이 기록된다. 표시 계약 SSoT 는 [`run-contract.md`](run-contract.md) §3.
+
+## 은퇴 키 (`fit.pixel_perfect`) 와 이관
+
+`fit.pixel_perfect` 는 2026-07-25 에 `fit.pixel_unfake` 로 교체됐다. 기존 런은 무손실로 계속 돈다:
+
+- **읽기** — 로더(`runio.load_request`)가 은퇴 키를 현행 키로 **메모리에서만** 정규화한다. 런 파일은 바이트 그대로 남는다. 두 키가 동시에 있으면 hard fail (어느 쪽이 진실인지 코드가 고를 수 없다).
+- **디스크 이관** — 사용자가 명시적으로 부르는 단일 writer 에서만 한다:
+
+  ```bash
+  $SPRITE_GEN_ROOT/.venv/bin/sprite-gen migrate-request <run-dir>          # dry run
+  $SPRITE_GEN_ROOT/.venv/bin/sprite-gen migrate-request <run-dir> --apply  # 실제 쓰기
+  ```
+
+  request 편집 writer(리롤·트윈 테이크 기록, 뷰 fps 편집)와 **같은 배타락**(`runio.publish_guard`)을 잡고, 락 획득 후 문서를 fresh 재독한 뒤 원자 교체한다 — 그래서 이관과 편집이 서로의 쓰기를 잃을 수 없다. 값·의미는 그대로고 키 이름만 옮긴다.
+
+이관은 **선택**이다 — 안 해도 파이프라인은 정상 동작한다. 조회가 파일을 바꾸지 않는 이유와 사고 기록은 [`run-contract.md`](run-contract.md) §2-b-2 가 소유한다.
+
+## Related
+
+- [`../SKILL.md`](../SKILL.md) — canonical behavior contract (필수 게이트, SSoT 요청 스키마)
+- [`architecture.md`](architecture.md) — 추출 내부 구현 (피치 검출·grid-snap·팔레트 코드 동작)
+- [`curation.md`](curation.md) — 큐레이션뷰 사용법, `curation.json.pixel_unfake` 플래그

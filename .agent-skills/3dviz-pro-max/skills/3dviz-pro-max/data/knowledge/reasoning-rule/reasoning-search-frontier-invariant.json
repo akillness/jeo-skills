@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-search-frontier-invariant",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Show the frontier and the invariant it maintains"
+  },
+  "aliases": {
+    "en": [
+      "breadth-first frontier",
+      "level sets",
+      "queue contents"
+    ]
+  },
+  "direction_ids": [
+    "algorithms-data-structures"
+  ],
+  "summary": "Display the container that drives the search and the property that makes its result correct.",
+  "objective": "Make a graph search scene explain why the answer is correct, not just that it was found.",
+  "applies_when": [
+    "A traversal or search over a graph or grid is visualised.",
+    "The result is described as a shortest path or a reachable set.",
+    "The viewer watches nodes being discovered and settled."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "breadth-first search",
+    "frontier",
+    "queue",
+    "shortest path",
+    "levels",
+    "invariant"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "algorithms",
+    "graphs"
+  ],
+  "intent_signals": [
+    "show breadth first search",
+    "why is this the shortest path",
+    "what is in the queue"
+  ],
+  "example_prompts": [
+    "Animate breadth-first search with the frontier visible.",
+    "Show the levels of the search and the edge counts."
+  ],
+  "negative_signals": [
+    "Weighted shortest paths, which require a different invariant and algorithm.",
+    "Heuristic searches whose guarantees depend on the heuristic."
+  ],
+  "not_for": [
+    "Weighted shortest paths, which require a different invariant and algorithm.",
+    "Heuristic searches whose guarantees depend on the heuristic."
+  ],
+  "content": {
+    "principles": [
+      "Breadth-first search checks the vertices reachable by one edge, then by two, and so on, using a queue, and it computes a shortest path in the sense that no path from the source has fewer edges.",
+      "The level structure is the invariant, but it is not the queue. During an ordinary run the queue holds distances that are nondecreasing and span at most two adjacent levels: after the source enqueues a and b at distance one, processing a enqueues c at distance two, leaving b and c together. Settled distances are assigned level by level; the container legitimately straddles two of them.",
+      "Edge counts are not distances unless the edges are unweighted; the same picture with weights requires a different algorithm and a different claim.",
+      "The order in which neighbours are enqueued affects which shortest path is found but not its length, and showing that removes a common confusion."
+    ],
+    "implementation": [
+      "Show the queue as it really is, and if you also present a layer-at-a-time view, label it as a selected level rather than as the queue contents; do not suppress the mixed-level queue of a correct trace to make the picture tidy.",
+      "Display the queue contents in order alongside the graph, since the container is the mechanism.",
+      "Label each settled node with its distance in edges and keep those labels as the search proceeds.",
+      "State explicitly that the graph is unweighted, or switch to a weighted algorithm and change the claim.",
+      "Offer a control over neighbour order so the viewer can see the found path change while the distance does not."
+    ],
+    "observable_checks": [
+      "Confirm that settled distances are nondecreasing and that every node at one level is settled before any node at the next, while allowing the queue itself to contain two adjacent levels at once.",
+      "Compare a reported distance with a manually counted path on a small graph.",
+      "Change the neighbour order and confirm distances are unchanged while the specific path may differ.",
+      "Add a weight to an edge and confirm the scene either refuses the claim or switches to the appropriate algorithm."
+    ]
+  },
+  "related_ids": [
+    "recipe.breadth-first-frontier",
+    "recipe.layered-maze-navigation"
+  ],
+  "creative_affordances": [
+    "The frontier can be rendered as a wave, a growing shell or a set of tokens; the constraint is that it be visible.",
+    "Spatial embeddings such as mazes and terrain make the level structure especially legible."
+  ],
+  "known_limits": [
+    "Authored guidance citing the unweighted shortest-path property of breadth-first search; weighted and heuristic searches are outside it.",
+    "No runtime visualisation has been measured for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-bfs-fewest-edges",
+      "statement": "Breadth-first search explores a graph from a source by first checking the vertices reachable along one edge, then those reachable along two, using a queue of vertices whose adjacent vertices have not yet been examined, and it computes a shortest path from the source in the sense that no path to a discovered vertex has fewer edges.",
+      "scope": "Unweighted graphs; weighted shortest paths require a different algorithm.",
+      "source_refs": [
+        {
+          "source_id": "source.princeton-bfs",
+          "locator": "Breadth-first search; shortest path in number of edges and the queue-based procedure"
+        }
+      ]
+    }
+  ]
+}

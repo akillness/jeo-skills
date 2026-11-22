@@ -1,0 +1,284 @@
+{
+ "date": "2026-09-09",
+ "viewport": [
+  1440,
+  1000
+ ],
+ "checks": {
+  "dropSettled": {
+   "type": "string",
+   "value": "At rest · 0.00 m/s · 0.00 m above deck"
+  },
+  "push": {
+   "type": "string",
+   "value": "Moving · 0.13 m/s · 0.00 m above deck"
+  },
+  "pauseBefore": {
+   "type": "string",
+   "value": "Moving · 0.13 m/s · 0.00 m above deck"
+  },
+  "pauseAfter": {
+   "type": "string",
+   "value": "Moving · 0.13 m/s · 0.00 m above deck"
+  },
+  "reset": {
+   "type": "object",
+   "value": [
+    "0.6",
+    "1",
+    "Open inn door",
+    "At rest · 0.00 m/s · 0.00 m above deck"
+   ]
+  },
+  "matrix": {
+   "type": "object",
+   "value": {
+    "name": "Shape of a matrix",
+    "error": true,
+    "buttons": []
+   }
+  },
+  "cube": {
+   "type": "object",
+   "value": {
+    "name": "One face at a time",
+    "error": true,
+    "buttons": []
+   }
+  },
+  "lab": {
+   "type": "object",
+   "value": {
+    "name": "Object lab",
+    "error": true,
+    "buttons": []
+   }
+  },
+  "village": {
+   "type": "object",
+   "value": {
+    "name": "Latent Village",
+    "error": true,
+    "buttons": []
+   }
+  },
+  "mobile": {
+   "type": "object",
+   "value": {
+    "width": 390,
+    "scrollWidth": 390,
+    "canvas": {
+     "x": 0,
+     "y": 60,
+     "width": 390,
+     "height": 506.390625,
+     "top": 60,
+     "right": 390,
+     "bottom": 566.390625,
+     "left": 0
+    }
+   }
+  },
+  "scene_switch_scope": "Scene names and hidden error panel verified; button collection selector was absent and establishes no per-control coverage for other scenes."
+ },
+ "exceptions": [],
+ "artifact_revision": 9,
+ "browser": "Headless Chromium via Playwright 1.62.0 with --use-angle=metal: ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version). First revision of this example captured on a GPU; revisions 1-8 were SwiftShader, so frames are not like-for-like.",
+ "additional_visual_observations": [
+  "Mill close-up at zero flow shows 0.00 rad/s and closed sluice.",
+  "Door leaf rotates about jamb, exposing hollow doorway.",
+  "Cargo camera corrected after foliage occlusion; decorative scatter excluded from yard.",
+  "Moving fox retained within follow camera after fixed focus let it leave frame.",
+  "Narrow viewport390x844 has no horizontal document overflow; screenshot inspected.",
+  "Final moving-target camera tween was rechecked after removing its initial catch-up step. One malformed CDP evaluation was corrected; it was a harness syntax error, not an application exception."
+ ],
+ "tests": {
+  "node_suite": "32/32 sequential, including representative60second creature replay",
+  "build": "passed; existing large lazy chunk advisory",
+  "limits": [
+   "No full bridge traversal check",
+   "No physical-device smoothness benchmark",
+   "No full foot IK or actor-to-actor solver",
+   "No new exhaustive control checks of other3scenes"
+  ]
+ },
+ "files_sha256": {
+  "village-building-motion.js": "0b32262e1087f965190e7c1d42087930c5f5cc365a9f4b2c3ed4b0c73b8ba961",
+  "village-buildings.js": "f62abf6aeea86be2a2c14777cae8a5b42bed79375000ba2411fe8532c76829bd",
+  "village-buildings.test.js": "22122886f0472883331eca9b58ced0b0a0ba52499929c0733996cdd392deaca2",
+  "village-colliders.js": "c0ea5b81fdce116695ba87ae208ff525f4979cf471f0d3f6331ffa70f6373de6",
+  "village-creatures.js": "ab4edc8f24e2118c476886c872717e03df00fa254fe4590db8071b72ddc2b33e",
+  "village-landscape.js": "db8016a26d20e39f819f82542b41af0f36f4ea65d754ed96ffd31d6670bdd0f6",
+  "village-locomotion.js": "9e236c68d934ed044c4e526ac01d796ec56127a0814d4ff3a04281686cec6c34",
+  "village-locomotion.test.js": "ab6c2ba4747af417d738a9e8768704a0f574ec758c3b10a7f4867c498b03f838",
+  "village-physics.js": "9742d40e5a4fd0e6a2272aab173a32959608af5aabc3a8896d0302ea544f33e3",
+  "village-physics.test.js": "91f819c1af521e06fd9177e185a3ef76ce8fdf9ef8194c4e99d89469153e3659",
+  "village-scene.js": "086d61990e5202da79947cf05d62c5e715808104e97d99321041e719712009f8",
+  "village-support.js": "b7791287bdcaf722073d3211a59b1e9081fda00ea6fa1bebdb210ee7a4323248",
+  "village-support.test.js": "6e79d0b338f76064d991a70015a11f73c856548cfcdfd246da2a758019184fde",
+  "village-workshop-physics.js": "d7b34ff7c954b562132ccd1fd40f056c4d7e5e7a3ff96995bc11eebc20f4ea9b",
+  "village-workshop.js": "7a3e6551cc6cc0d9192b3d8b561db389bbcccedf40ae7e75f443ea2d5fa33e8f",
+  "village-workshop.test.js": "2bf6b2e29a44cd0bef887b7d966bf01b5e1a73a89aa92608260fef5ad5058b05",
+  "main.js": "3a0bfa0471f28c0f28ec89c20de5f2cf6e45ba18748c72194c779192da035f1d",
+  "style.css": "28cd256563352f2c6a36c6edf12a1e5cfd36b207c91c01f28135798dd2970658",
+  "index.html": "e87cfcb06d90f85c085f2f209010d50d4bc143e6469722e50dbca4e3f4e9410b"
+ },
+ "revisions": [
+  {
+   "artifact_revision": 7,
+   "date": "2026-09-08",
+   "change": "Atmosphere (gradient sky, FogExp2, RoomEnvironment PMREM), pmndrs bloom with the tone map moved into the composited frame, shared-material cache, InstancedMesh decorative scatter, in-canvas picking, viewer contract for capture.py",
+   "viewport": [
+    1280,
+    720
+   ],
+   "browser": "Headless Chromium via Playwright 1.62.0, SwiftShader software rendering. No hardware FPS claim.",
+   "tests": {
+    "node_suite": "33/33 pass (27 existing + 6 new picking tests)",
+    "build": "passed; index chunk 686.70 kB, physics chunk 2,854.92 kB unchanged; existing large-chunk advisory"
+   },
+   "observations": [
+    "capture-log.json: 7 views + 1 click, console_errors [] and page_errors [].",
+    "window.__renderStats().toneMapping === 0 (NoToneMapping) with the stack alive: the frame is tone mapped once, by the ToneMappingEffect.",
+    "Stack on vs stack off, same frame: three mid-scene patches within 1.9-3.3% luma. The sRGB background reads ~11% deeper with the stack on because it is toneMapped=false only on the canvas path.",
+    "Disable-emissive rebuild: no diffuse surface glows; lantern bulb core luma 206.0 -> 170.8, halo 179.0 -> 169.4.",
+    "Canvas click selects a landmark and flips its sidebar aria-pressed; a 60 px drag and a click on empty sky select nothing.",
+    "Draw calls per composited frame (shadow + colour + post): overview 1800, mill 1060, fox 1255; 17 programs.",
+    "Scene objects: 907 meshes + 5 InstancedMesh over 410 instances (was 1317 meshes); 169 materials, 145 from the shared cache."
+   ],
+   "limits": [
+    "Software renderer only; no GPU, mobile or frame-rate certification.",
+    "Draw-call counts are a single reading per view, not a benchmark.",
+    "Fog on/off A/B was not captured; the density was tuned across two builds.",
+    "The moon deer overlaps the fox in captures/fox.png; the follow camera still keeps the fox framed."
+   ],
+   "captures_kept": [
+    "captures/overview.png",
+    "captures/mill.png",
+    "captures/fox.png",
+    "captures/capture-log.json"
+   ],
+   "files_sha256": {
+    "main.js": "f124b40b152706cfb2038f8acfe0b99e5dd46777ee3f68746c2ccc34c4a24535",
+    "scene-kit.js": "f6461f269383b24172bf71c580be58989ec7d4fbb62231d475970aeefb789862",
+    "post-stack.js": "84f27401b9b56bc1d7af4db71da29dccac7d8de10eb57a04d4a8eaa0607c812c",
+    "village-picking.js": "9f3da6567f61fd89fdaa17688ac033047a70da2399aecfd7da40d7005c1b9ed8",
+    "village-picking.test.js": "05b88c0db5be72a2aec6832c19802cb3ea8289c924165f5c476f9fd6f98446c9",
+    "village-landscape.js": "df1213d98097e0d226fe00d7c0f607881bda216a9abb308dac7f8e1572f2eb67",
+    "village-buildings.js": "86e8f4a2f5eafec0fc468b38a64bf5ae0e675aac370614dd8ef9f4333dae0ee6",
+    "village-creatures.js": "a833ea7b5e6d045f14ab3ffb6f05094a53b26359051e8c6acfc1d12164182f60",
+    "village-scene.js": "ee4706cbb11686780bb21d25a5525480bf2d59bf0a408c3a633a1050210e18fa",
+    "style.css": "826c47f542253847004eb0930e8b6ad78c18edcf25a352209839148e81623044",
+    "index.html": "b0363f41477de343d49e6f1147444e9cb92c84f4a51c97473b165383f8e939ac",
+    "package.json": "e06c27a3843882d1c935d6f272f5b8b5ab13883b586532984c837f4b1e2b241e"
+   }
+  },
+  {
+   "artifact_revision": 8,
+   "date": "2026-09-08",
+   "change": "Buildings, props, planting and the moon deer mesh rebuilt on the shipped kit blueprints (examples/early-slice/kits); scene-kit.js became an adapter over kits/kit-core.js so the page has one material cache; landmark solids for the three blueprint buildings come from the blueprints' collider descriptors",
+   "viewport": [
+    1280,
+    720
+   ],
+   "browser": "Headless Chromium via Playwright 1.62.0, SwiftShader software rendering. No hardware FPS claim.",
+   "tests": {
+    "node_suite": "152/152 pass (146 pre-existing, unmodified, + 6 new kit-assembly tests)",
+    "build": "passed; index chunk 686.49 kB -> 740.88 kB (+7.9%), physics chunk 2,854.92 kB unchanged; existing large-chunk advisory"
+   },
+   "observations": [
+    "capture-log.json: 8 views + 1 click, console_errors [] and page_errors []; --motion-check 2000 --expect-motion reported differs=true (exit 0).",
+    "Captures were taken with --settle-ms 1400 because the focus tween runs 0.9 s; at the script's 300 ms default every named view is captured mid-tween, which is why the earlier mill frame read as a wide island shot.",
+    "Draw calls per composited frame (shadow + colour + post): overview 1800 -> 2902, fox 1255 -> 2029. The mill view was re-aimed at the wheel this revision (2.9,1.1,-1.9 d4.7 -> 3.5,1.25,-1.85 d6.4), so its 1060 -> 2075 is not like-for-like.",
+    "Scene objects: 1368 meshes + 94 InstancedMesh over 1859 instances (was 907 meshes + 5 InstancedMesh over 410); 314 distinct materials, 97 of them asked for through scene-kit.js and the rest by kit modules from the same kit-core cache.",
+    "Triangles in the composited overview frame: 335,679 (was 302,055 measured on the same view mid-rebuild; no pre-rebuild triangle reading exists for this view).",
+    "200-sample groundHeight/supportAt parity harness over the island: 0/200 differences before vs after the landscape rebuild.",
+    "World collider count 210 -> 164; the mill's declared solid is 11% smaller in volume than the box its meshes occupy, because the launder and hoist beam carry no collider.",
+    "The watermill blueprint's animate(dt) is never called: the hub at its `wheel` socket is re-hung under this scene's pivot and driven by the flow control. A test asserts the hub does not turn while the flow is closed."
+   ],
+   "limits": [
+    "Software renderer only; no GPU, mobile or frame-rate certification.",
+    "Draw-call counts are a single reading per view, not a benchmark.",
+    "Draw calls rose 61% on the overview: blueprint detail is paid for in meshes. No attempt was made to hide it by dropping blueprint parts.",
+    "The three-tail fox, dragon and owl keep their authored meshes; only the moon deer moved to quadruped-walker. The blueprint always builds horns, hooves and one tail.",
+    "The moon deer is 1.2 m tall as before, but its rig is 1.7x the blueprint's default so the locked-stride envelope still fits the village's navigation gaps; at the blueprint's own proportions the deer could not route out of the pond meadow.",
+    "planVillage() is unused: a seeded plan would move every landmark the tests, focus presets and captures name.",
+    "Landmark solids are one AABB per building by contract (village-buildings.test.js asserts five), so a canopy or a launder that is high in the air still widens the box it is unioned into."
+   ],
+   "captures_kept": [
+    "captures/overview.png",
+    "captures/mill.png",
+    "captures/fox.png",
+    "captures/capture-log.json"
+   ],
+   "files_sha256": {
+    "scene-kit.js": "6b6fc2f1e7e849ac28c554e4712e70cc0d1d870e73461680e0d39f747ee09f8a",
+    "village-buildings.js": "891900ccbfb9851021379f35a3f4ef48442504855a49639f2a898887a7cd5b6b",
+    "village-building-parts.js": "370f11b66cbd7dc528c4af3e7e7160e7d9e62caa97517d36edc9e071d275fb69",
+    "village-nature.js": "164f13c3404de6e5b083d85915e34de1bd7291439457efa8da0849e8c490fcb3",
+    "village-landscape.js": "b6d178ac326dac3a94e547f3c2fe33017cc295fd924d7e04e94b8fd48ff8bbad",
+    "village-creatures.js": "8850c6a1053547a5c5537f8513de1683ecf999a64b08a09a5a7f0b3d02a4d4e2",
+    "village-scene.js": "fe59c1e92418d3e2710cf28663203458e7f669af609590de063e1fe3ac77d641",
+    "village-kit-assembly.test.js": "faf32c29682f2d43bdaebc06bc676e7769101afa5f613b6bca4cdcedd6a681f2",
+    "captures/overview.png": "f862025a7de6549ac533c7d1cdd7bb2af75c20a90219d8236663293504ad2dc0",
+    "captures/mill.png": "87631e396e5c477669367193e140669ff5930c7101959b8d3fab8965841e8c7a",
+    "captures/fox.png": "db2921cb3facbb6b321317a5fd025af0938a3ee6c43b31c86289c46ee181c7d1",
+    "captures/capture-log.json": "c940d4fd850956356f6f1628a6e444845dc6e49a8ddbcba853586496e55104e1"
+   }
+  },
+  {
+   "artifact_revision": 9,
+   "date": "2026-09-09",
+   "change": "Landmarks and named yard props built through buildKit at T2 (procedural surface + vertex-baked occlusion); each landmark wrapped in a THREE.LOD beside a T0 blockout proxy; the Willow Watermill also loads the Blender-baked T3 hero kits/gltf/watermill-t3.glb, which draws from 9.49 m out. Instanced background stays T1 and is never wrapped in a LOD. Tier policy in village-tiers.js, family maps in village-tier-families.js.",
+   "viewport": [
+    1280,
+    720
+   ],
+   "browser": "Headless Chromium via Playwright 1.62.0 with --use-angle=metal: ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version). First revision of this example captured on a GPU; revisions 1-8 were SwiftShader, so frames are not like-for-like.",
+   "tests": {
+    "node_suite": "170/170 pass (159 pre-existing, unmodified, + 11 new tier tests)",
+    "build": "passed; index chunk 740.93 kB -> 805.50 kB (+8.7%, gzip 200.10 -> 219.37), new watermill-t3 chunk 45.88 kB and watermill-t3.glb 1,915.77 kB, physics chunk 2,854.92 kB unchanged; build output 3.6 MB -> 5.5 MB",
+    "host_probe": "quality_ceiling T3 (Blender 5.2.1 at the standard macOS install path); capture_mode_expected gpu"
+   },
+   "observations": [
+    "Draw calls per composited frame, same host and renderer before and after: overview 2902 -> 2330 (-19.7%), fox 2060 -> 1774 (-13.9%), mill close view 1955 -> 1955 (T2 adds no draw call).",
+    "Triangles: overview 335,679 -> 340,491 (the baked hero is 12,598 where the module is 10,604), mill 213,443 unchanged.",
+    "Frame time is vsync-bound at 8.3 ms median on this host before and after; no frame-rate claim is made in either direction.",
+    "Page to first frame 2,370 ms, of which 1,700 ms is the vertex occlusion bake (Morel Cottage 692 ms, Sunleaf Glasshouse 635 ms, watermill 155 ms, inn 114 ms, observatory 101 ms). The same build forced to T1 reaches first frame in 453 ms.",
+    "capture-log.json: 8 views + 1 click, console_errors [] and page_errors [], --motion-check 2000 --expect-motion differs=true, capture_mode gpu.",
+    "T2 coverage is partial and published: textured materials 21/13/9/3/14 and unmapped colours 28/18/42/14/14 for inn/observatory/watermill/cottage/glasshouse. The watermill's own T2 proof log lists the same jittered per-plank colours as unmapped.",
+    "window.__viewer.pinLevel(n) was used to inspect the T2 -> T3 switch at the mill view: wall brightness and roof relief change, the silhouette does not, and the T3 wheel is darker and softer than the procedural one.",
+    "The hero GLB was re-baked by parallel record work during this revision; the shipped frames are from kits/gltf/watermill-t3.glb at 1,915,772 bytes, sha256 81a4cdc9b674..."
+   ],
+   "limits": [
+    "One reading per view on one machine (Apple M4 Max, 40 GPU cores). Not a benchmark.",
+    "Under 2,000 draw calls at the overview was not reached: only the watermill has a bake, and a T0 blockout at the home view would be 90 px tall, so the proxy switch is clamped past the 40 m orbit ceiling.",
+    "No T1 level sits between T2 and T0 in the shipped LODs: at 40 m the inn's 1.2 m plaster tile is still 30 px, so a flat copy would cost a build and a pop and save no draw call. T1 remains the tier a host with no 2D canvas builds.",
+    "The T3 bake is frozen: no animate(dt), a wheel that cannot turn, and occlusion baked for one wheel orientation. That is why it is not the nearest LOD level.",
+    "The watermill kit is displayed at 0.42 scale, so its T2 tiles read about 2.4x finer than the pitch the proof captured; buildings/watermill.js exposes no size parameters.",
+    "captures/mill.png (537 kB) and captures/fox.png (520 kB) are over the 400 kB line the previous revision kept; re-encoding would invalidate the capture-log digests.",
+    "AO samples are 6 here against the records' 13, and maps are 512 against 1024: a delivery decision, stated in design-system.md."
+   ],
+   "captures_kept": [
+    "captures/overview.png",
+    "captures/mill.png",
+    "captures/fox.png",
+    "captures/capture-log.json"
+   ],
+   "files_sha256": {
+    "scene-kit.js": "57a5abc69c46821e476ef725adbee687276cca97762d423ddca1136742618356",
+    "main.js": "36ac77f909fc1f615599ac3e3b024f4ec95b35dc7d768543c909f3b18a7c2cbf",
+    "village-buildings.js": "4a7c7ea8efe8a2e137339da37680a7b38b02ab4d2009dc8b14e52fe84892edd8",
+    "village-nature.js": "d99d5165238b3b29d5a51fea0b02e089d349c20fff15227638913cf435a54620",
+    "village-scene.js": "2bb7079ab4b76245d53a3bf64d6081146118c8a1fd0fc5dbf19233290b9349c2",
+    "village-tiers.js": "9e1d70dce531b3baf5384c98a2449b1ab5686a52837f61634c766614d0c35f79",
+    "village-tier-families.js": "dd2358c4178dce8aac183b387149cbd3409ad0c50a5fb8b572ac94e4d3790782",
+    "village-tiers.test.js": "388ca5b5053ea8bd71fadfd3a1a114b2bd98199a14cb5e7134fb87c171308057",
+    "captures/overview.png": "7d41762f36f81e215a46a89a53431a049ff3c2c77e16acc0b8c47593b7883e92",
+    "captures/mill.png": "d1bf06d202f2fe6cbefd4cc2efb27658ed62ad0bf0b8152ff5574314b2ddbac7",
+    "captures/fox.png": "baf341f6f37e75645780fc54c4931eb3233124077fbd2a4de568abe7b7a6a142",
+    "captures/capture-log.json": "0e6704c50aa69efa0d9ca617f4ff38ff6f3f3853eb10e37136be49751d6ef44c"
+   }
+  }
+ ]
+}

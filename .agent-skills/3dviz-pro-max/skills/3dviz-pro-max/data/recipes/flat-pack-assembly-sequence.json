@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "id": "recipe.flat-pack-assembly-sequence",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Flat-pack furniture assembly sequence"
+  },
+  "aliases": {
+    "en": [
+      "assembly instructions",
+      "fastener inventory",
+      "build order"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies"
+  ],
+  "summary": "Turn an assembly into an ordered, checkable sequence where each step consumes real parts from a visible inventory.",
+  "objective": "Build a flat-pack shelf assembly where each step shows the parts and fasteners it consumes and refuses steps whose prerequisites are missing.",
+  "tags": [
+    "assembly",
+    "instructions",
+    "furniture"
+  ],
+  "subject_terms": [
+    "assembly sequence",
+    "fastener",
+    "dowel",
+    "cam lock",
+    "panel",
+    "prerequisite",
+    "inventory",
+    "orientation"
+  ],
+  "intent_signals": [
+    "Build a step-by-step furniture assembly I can follow in 3D.",
+    "Show which fasteners each assembly step uses."
+  ],
+  "example_prompts": [
+    "Build a flat-pack shelf assembly sequence with a fastener inventory and step prerequisites.",
+    "Show an assembly step being refused because an earlier step is incomplete."
+  ],
+  "negative_signals": [
+    "Not a real product assembly manual; the furniture and its fasteners are invented.",
+    "Not a structural analysis: no load capacity or stiffness is claimed."
+  ],
+  "not_for": [
+    "Not a real product assembly manual; the furniture and its fasteners are invented.",
+    "Not a structural analysis: no load capacity or stiffness is claimed."
+  ],
+  "entities": [
+    {
+      "name": "Panels and hardware",
+      "guidance": "Model panels with real thickness, edge banding and drilled holes in the right places, and model each fastener type as a distinct part."
+    },
+    {
+      "name": "Step graph",
+      "guidance": "Define steps with prerequisites and consumed parts, so the sequence is a graph rather than a slideshow."
+    },
+    {
+      "name": "Inventory tray",
+      "guidance": "Show remaining parts and fasteners in a tray that depletes as steps complete, since a leftover part at the end is diagnostic."
+    }
+  ],
+  "state_contract": {
+    "model": "Part inventory with counts, a step list where each step declares prerequisites, consumed parts and a resulting sub-assembly, and a completion state per step. Orientation of each panel is part of the step result.",
+    "authority": "The step graph is authoritative: a step cannot complete unless its prerequisites are complete and its parts are available, no matter what the animation shows.",
+    "actions": [
+      "Advance to the next available step.",
+      "Undo the last completed step.",
+      "Inspect a step and see its consumed parts.",
+      "Reset the assembly and refill the inventory."
+    ]
+  },
+  "invariants": [
+    "Every fastener consumed is removed from the loose-part inventory and appears in the assembly; parts that exist inside a sub-assembly are tracked separately from parts still loose in the tray.",
+    "A step whose prerequisites are incomplete is refused with a reason rather than silently reordered.",
+    "Undoing a step returns exactly the parts it consumed to the inventory."
+  ],
+  "motion_guidance": [
+    "Animate each part travelling to its position along a path that would be possible with the surrounding parts already in place.",
+    "Show fasteners engaging their holes rather than fading in, since the alignment is the point of the step."
+  ],
+  "known_limits": [
+    "Invented design: dimensions, hole patterns and fastener choices are authored, not from a real product.",
+    "The sequence checks prerequisites, not physical feasibility of a human performing the step.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "object_craft": [
+    {
+      "family": "Panels and hardware",
+      "structure": "Board panels with visible thickness, edge banding, drilled dowel holes and cam housings; fasteners modelled with real thread or cam geometry.",
+      "material": "Board material with a printed edge and a distinct hardware metal family, so wood and hardware never blur together.",
+      "articulation": "Panels translate and rotate into place along authored paths; the cam locks turn a quarter turn to engage, which is this invented design authored geometry rather than a universal cam-lock specification."
+    },
+    {
+      "family": "Inventory tray",
+      "structure": "A tray with labelled compartments holding the remaining parts in counted stacks.",
+      "material": "Neutral tray so parts remain the visual subject; empty compartments read clearly as empty.",
+      "articulation": "Parts leave the tray when consumed and return on undo."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Ordered assembly presentation with inventory bookkeeping; no gravity, contact or fastener preload.",
+    "state": [
+      "completed steps",
+      "inventory counts",
+      "part transforms"
+    ],
+    "checks": [
+      "Completion is decided by reaching the terminal step of the step graph. For this design, which declares an exact bill of materials with no spares, the loose-part inventory is also empty at that point, and any remainder is reported rather than treated as completion.",
+      "Undo restores both inventory and part transforms."
+    ]
+  },
+  "creative_affordances": [
+    "The furniture design is free: a shelf, a desk or an invented modular system all exercise the same sequence logic.",
+    "Instruction style can be diagrammatic or photographic as long as consumed parts stay countable."
+  ],
+  "related_ids": [
+    "recipe.portable-speaker-exploded",
+    "recipe.folding-desk-lamp",
+    "knowledge.assembly-layer-reveal"
+  ]
+}

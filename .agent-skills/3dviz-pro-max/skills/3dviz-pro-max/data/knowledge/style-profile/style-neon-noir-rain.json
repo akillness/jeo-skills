@@ -1,0 +1,222 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-neon-noir-rain",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Neon noir, rain-wet street"
+  },
+  "aliases": {
+    "en": [
+      "neon noir",
+      "rain-wet neon street",
+      "wet asphalt neon night"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "A night street where almost every surface is unlit and colour arrives only as neon reflected off wet asphalt and glass.",
+  "objective": "With the neon emissives disabled the street reads as a near-monochrome blue-grey block; with them on, two hue families and one warm practical account for essentially all the colour in frame.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "named-look",
+    "night",
+    "emissive"
+  ],
+  "subject_terms": [
+    "neon",
+    "rain-wet",
+    "neon noir",
+    "wet street",
+    "rainy night city",
+    "reflective asphalt",
+    "night alley"
+  ],
+  "intent_signals": [
+    "Neon noir rainy street at night",
+    "Blade Runner style wet neon city (as a mood cue, not a reproduction target)",
+    "Rain-wet asphalt reflecting neon signs",
+    "Dark alley lit only by signage"
+  ],
+  "example_prompts": [
+    "A rain-soaked back street at night with two neon signs and one warm doorway.",
+    "Wet neon-lit intersection, camera low, reflections doubling every sign."
+  ],
+  "content": {
+    "principles": [
+      "Colour is borrowed, not painted: unlit facades, road and clothing are near-neutral, and every saturated pixel in the frame comes from a neon source or its reflection. If the albedo is already colourful the neon has nothing to do.",
+      "Triangulate three traits shared by wet-night city photography, stage-lit theatre and hard-boiled black-and-white cinema — (a) two opposed hues carrying the composition instead of a key:fill ratio, (b) a wet floor that repeats every source, (c) large unbroken dark masses that let a small bright shape dominate. Take the three traits; a named film, studio or artist is a mood cue a user may say, never a requirement of this record.",
+      "Silhouette rule: the frame is built from three dark planes at different distances (near wall or fire escape, mid facade row, far tower band) each separated by fog value, with exactly one bright sign shape breaking the largest dark mass.",
+      "Scale cues, always present: door height 2.0 m, kerb 0.15 m, standing figure 1.75 m, and neon tube diameter 15-20 mm — without them a neon abstraction stops reading as a street.",
+      "Signage is invented: no real brand, logo, wordmark or trademarked typeface; use fictional business names, and keep any script legible enough to read as language rather than decoration."
+    ],
+    "implementation": [
+      "Neon: tubes as MeshStandardMaterial with emissiveIntensity 4-8 against a bloom threshold of 1.0, so signs clear the threshold and nothing else does. Pair each sign with a RectAreaLight matched to the tube's dimensions (roughly 2.4 m × 0.35 m) at intensity 6-10 — note that RectAreaLight casts no shadows in three.js, so add one SpotLight if a hard shadow is required by the shot.",
+      "Wet asphalt: base roughness 0.25-0.4 driven by a puddle mask (puddle 0.25, damp road 0.4, sheltered dry 0.75) with metalness 0. Add a scrolling normal map at 0.015 uv/s with normalScale 0.35 for rain ripple; the normal map, not the roughness value alone, is what makes a reflection shimmer rather than mirror.",
+      "Rain: 1200-2000 instanced streak quads in a 20 m column volume, each about 0.006 m × 0.18 m, falling at 6-9 m/s with 8% opacity and slight camera-facing billboarding, plus 60-90 splash sprites per second on surfaces within 8 m of the camera. Streaks read only when they cross a bright sign, so bias their spawn toward the lit third of the frame.",
+      "Cool rim: a SpotLight at #22d3ee, 45 candela, distance 18 m, decay 2, 38° cone with 0.6 penumbra at 30° elevation and 285° azimuth, castShadow true — this is the second hue family and the only shadow-caster in the rig.",
+      "Warm relief: one sodium practical (#f6b06a) at a doorway or window, 20-40 candela with decay 2, giving the frame its single warm note against the magenta and cyan.",
+      "Atmosphere: FogExp2 colour #1b2036 at density 0.055 so the far tower band sits a full value above the mid facades; the gradient sky lifts from #070a12 at zenith to #2a1f3a at the horizon as city glow, never as blue daylight.",
+      "Motion: hanging signs and cables sway on a 2.2-3.4 s period with sine in-out easing and a 300 ms hold; steam plumes drift at 0.4-0.8 m/s. Avoid flickering every sign — one flickering tube in the frame is a detail, three is a gimmick."
+    ],
+    "observable_checks": [
+      "Disable all neon emissives: the frame collapses to a near-monochrome blue-grey; anything that stays colourful is coloured albedo that should be neutralised.",
+      "Grayscale screenshot: only the tubes, their asphalt reflections and the sodium doorway exceed 0.8 luminance, and they cover roughly 10% of the frame.",
+      "Dry the road (set roughness to 0.75 everywhere) and compare: the reflected copies of each sign must disappear, confirming the wet surface is doing the work.",
+      "Count hue families: two neon hues plus one warm practical. A third neon hue means the palette has drifted.",
+      "Fog on/off: three distinct depth planes separate when fog is on."
+    ]
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for AgX tone mapping at renderer.toneMappingExposure 0.95 with three.js physically-based light units; ACESFilmic desaturates and hue-shifts the magenta and cyan emissives, so every intensity needs re-tuning if the tone mapping changes.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "The two neon hues are a choice, not a rule: amber-and-teal or green-and-violet hold the same structure as long as the pair stays opposed and the count stays at two plus one warm practical.",
+    "The look transfers indoors — an arcade, a laundromat or a noodle counter — by replacing the wet road with a wet counter or polished floor at the same 0.25-0.4 roughness.",
+    "Rain is removable: a post-rain variant keeps the wet asphalt and drops the streaks, trading motion for stillness without changing a single light value."
+  ],
+  "related_ids": [
+    "knowledge.theme-cyberpunk-city",
+    "knowledge.style-cinematic",
+    "knowledge.emissive-practical-light-balance"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "The composition is carried by hue opposition rather than a conventional key:fill ratio, so the numbers protect that: neon runs at emissiveIntensity 4-8 above a 1.0 bloom threshold while unlit albedo is capped at 15% saturation, which forces every colourful pixel in frame to be borrowed light. Wet asphalt at roughness 0.25-0.4 with a scrolling normal map is the mechanism that doubles each source into a reflection — dry the road and the look is gone — and AgX at exposure 0.95 is chosen over ACESFilmic because ACES pulls saturated magenta and cyan toward white at exactly the intensities this rig depends on.",
+    "values": {
+      "feeling": [
+        "tense",
+        "solitary",
+        "electric"
+      ],
+      "palette": [
+        {
+          "hex": "#0b0f1a",
+          "role": "deepest shadow / unlit facade"
+        },
+        {
+          "hex": "#16283f",
+          "role": "wet asphalt base, cool mid"
+        },
+        {
+          "hex": "#ff2e6b",
+          "role": "primary magenta neon emissive"
+        },
+        {
+          "hex": "#22d3ee",
+          "role": "secondary cyan neon emissive and rim"
+        },
+        {
+          "hex": "#f6b06a",
+          "role": "warm sodium practical (doorway, window, one interior)"
+        }
+      ],
+      "value_structure": "70/20/10 dark/mid/light; only neon tubes, their reflections and one sodium doorway exceed 0.8 luminance",
+      "saturation_rule": "unlit surfaces ≤ 15% HSL saturation; neon emissives 90-100%; exactly two neon hue families plus one warm practical",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#070a12",
+        "horizon": "#2a1f3a"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#1b2036",
+        "density": 0.055
+      },
+      "lights": {
+        "key": {
+          "type": "RectAreaLight",
+          "color": "#ff2e6b",
+          "intensity": 8,
+          "elevation_deg": 18,
+          "azimuth_deg": 100,
+          "castShadow": false,
+          "width_m": 2.4,
+          "height_m": 0.35,
+          "note": "the sign is the key: match the RectAreaLight to the emissive tube's dimensions; RectAreaLight casts no shadows in three.js, so add a SpotLight when the shot needs one"
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#2a3550",
+          "ground": "#0d1018",
+          "intensity": 0.25
+        },
+        "rim": {
+          "type": "SpotLight",
+          "color": "#22d3ee",
+          "intensity": 45,
+          "elevation_deg": 30,
+          "azimuth_deg": 285,
+          "castShadow": true,
+          "distance_m": 18,
+          "decay": 2,
+          "angle_deg": 38,
+          "penumbra": 0.6
+        },
+        "ratio": "key:fill ≈ 8:1 on a neutral card at the subject; the real composition is the contrast between the two neon hues, not the key:fill ratio"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "AgX",
+        "exposure": 0.95
+      },
+      "camera": {
+        "fov_deg": 50,
+        "height_m": 1.5,
+        "pitch_deg": 3,
+        "orbit": {
+          "minPolar_deg": 65,
+          "maxPolar_deg": 95,
+          "minDist_m": 2.5,
+          "maxDist_m": 18
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.25,
+          0.85
+        ],
+        "metalness": [
+          0.0,
+          0.6
+        ],
+        "notes": "wet asphalt roughness 0.25-0.4 via a puddle mask (puddle 0.25, damp 0.4, sheltered dry 0.75) plus a scrolling normal map at 0.015 uv/s with normalScale 0.35 for rain ripple; neon tubes emissiveIntensity 4-8 on 15-20 mm diameter geometry; wet metal up to metalness 0.6 at roughness 0.3; unlit albedo kept near-neutral"
+      },
+      "motion": {
+        "sway_period_s": [
+          2.2,
+          3.4
+        ],
+        "ease": "sine in-out",
+        "hold_ms": 300
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.0,
+          "strength": 0.75,
+          "radius": 0.7
+        },
+        "vignette": 0.4,
+        "grain": 0.06,
+        "dof": "on: focus 6 m, f/2.0, background bokeh from the far sign row"
+      },
+      "signature_technique": "Every neon source is authored twice — the emissive tube and its reflection in 0.25-0.4-roughness wet asphalt — so the street doubles its colour count without adding a single light.",
+      "never": [
+        "untinted white ambient light",
+        "dry ground (the reflection is the look)",
+        "more than two neon hue families plus one warm practical",
+        "evenly lit facades",
+        "a daylight-blue sky"
+      ]
+    }
+  }
+}

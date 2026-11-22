@@ -1,0 +1,14 @@
+{
+  "name": "video-to-game",
+  "description": "Gameplay video to playable browser game skills for coding agents",
+  "owner": { "name": "lovisdotio", "url": "https://github.com/lovisdotio" },
+  "plugins": [
+    {
+      "name": "video-to-game",
+      "source": "./",
+      "description": "Turn a gameplay video into a playable Three.js game with every asset generated on fal, checked side by side and playtested",
+      "category": "development",
+      "tags": ["threejs", "webgl", "game-development", "fal", "video-to-game"]
+    }
+  ]
+}

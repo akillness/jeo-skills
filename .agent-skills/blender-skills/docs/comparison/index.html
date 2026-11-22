@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skills vs No Skills</title>
+<meta name="description" content="Same model, same prompt: Blender results with and without Blender Agent Skills.">
+<style>
+  :root {
+    --bg: #111214; --panel: #1a1c1f; --line: #2b2e33; --text: #e8e9eb; --muted: #9a9ea6;
+    --no: #e0795f; --yes: #4fb3a6;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 48px 16px 80px; }
+  a { color: var(--yes); }
+  header h1 { font-size: clamp(28px, 4vw, 40px); margin: 0 0 8px; letter-spacing: -0.01em; }
+  header p { color: var(--muted); margin: 0; max-width: 720px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .chip { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 4px 12px; font-size: 13px; color: var(--muted); }
+  section { margin-top: 64px; }
+  h2 { font-size: 24px; margin: 0 0 4px; }
+  h2 span { color: var(--muted); font-weight: 500; }
+  .prompts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0 20px; }
+  .prompt { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; font-size: 14px; }
+  .prompt b { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+  .prompt.no b { color: var(--no); } .prompt.yes b { color: var(--yes); }
+  .prompt q { color: var(--text); quotes: none; }
+  .hint { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
+  h3 { font-size: 15px; color: var(--muted); font-weight: 600; margin: 28px 0 10px; }
+
+  /* before/after slider */
+  .slider { position: relative; overflow: hidden; border-radius: 10px; border: 1px solid var(--line); background: #000; user-select: none; touch-action: pan-y; cursor: ew-resize; }
+  .slider img { display: block; width: 100%; height: auto; pointer-events: none; }
+  .slider .top { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--pos, 50%)) 0 0); }
+  .slider .bar { position: absolute; top: 0; bottom: 0; left: var(--pos, 50%); width: 2px; margin-left: -1px; background: #fff; box-shadow: 0 0 8px rgba(0,0,0,.6); }
+  .slider .bar::after { content: "\2194"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 34px; height: 34px; border-radius: 50%; background: #fff; color: #111; display: grid; place-items: center; font-size: 16px; }
+  .tag { position: absolute; top: 10px; padding: 3px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; color: #111; pointer-events: none; }
+  .tag.no { left: 10px; background: var(--no); } .tag.yes { right: 10px; background: var(--yes); }
+  .slider input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; }
+
+  /* side by side */
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .pair figure { margin: 0; position: relative; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: #000; }
+  .pair video, .pair img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+  .pair.wide video { aspect-ratio: 16 / 9; }
+  .controls { display: flex; gap: 8px; margin-top: 10px; }
+  button { background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 6px 14px; font: inherit; font-size: 14px; cursor: pointer; }
+  button:hover { border-color: var(--muted); }
+
+  .notes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .note { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; font-size: 14px; }
+  .note b { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+  .note.no b { color: var(--no); } .note.yes b { color: var(--yes); }
+  .note ul { margin: 6px 0 0; padding-left: 18px; color: var(--muted); }
+  .table-wrap { overflow-x: auto; margin-top: 16px; border: 1px solid var(--line); border-radius: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--line); }
+  tr:last-child td { border-bottom: 0; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; background: var(--panel); }
+  th.no { color: var(--no); } th.yes { color: var(--yes); }
+  td.bad { color: var(--no); } td.good { color: var(--yes); }
+  .legend { display: inline-block; width: 10px; height: 10px; border-radius: 2px; background: #ff2a10; margin-right: 6px; vertical-align: middle; }
+  footer { margin-top: 72px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 20px; }
+
+  @media (max-width: 700px) {
+    main { padding-top: 32px; }
+    .prompts, .notes, .pair { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Skills vs No Skills</h1>
+    <p>Same model, same task, run twice: once with <a href="https://github.com/EL4CTEO/blender-skills">Blender Agent Skills</a>, once in an isolated environment without them. Every result is <b>one shot</b>: a single prompt, no follow-ups, no retries, nothing edited by hand.</p>
+    <div class="meta">
+      <span class="chip">Model: Opus 5.5 (medium)</span>
+      <span class="chip">Blender 5.2</span>
+      <span class="chip">One shot, no retries</span>
+      <span class="chip">5 tasks</span>
+    </div>
+  </header>
+
+  <!-- 1. Concrete -->
+  <section id="concrete">
+    <h2>1. 4K PBR concrete wall <span>/ texture + render</span></h2>
+    <div class="prompts">
+      <div class="prompt no"><b>Without skills</b><q>Create a 4k PBR concrete wall in Blender then render it, don't use any skills and don't sneak peek in other folders, isolated environment.</q></div>
+      <div class="prompt yes"><b>With skills</b><q>Create a 4k PBR concrete wall in Blender then render it, use any of the existing 20 Blender skills before proceeding.</q></div>
+    </div>
+    <h3>Hero render (3840 x 2160, downscaled)</h3>
+    <div class="slider"><img src="media/concrete-hero-skill.webp" alt="With skills"><img class="top" src="media/concrete-hero-noskill.webp" alt="Without skills"><div class="bar"></div><span class="tag no">Without</span><span class="tag yes">With skills</span><input type="range" min="0" max="100" value="50" aria-label="Compare"></div>
+    <h3>100% crop from the 4K render</h3>
+    <div class="slider"><img src="media/concrete-hero-skill-crop.webp" alt="With skills"><img class="top" src="media/concrete-hero-noskill-crop.webp" alt="Without skills"><div class="bar"></div><span class="tag no">Without</span><span class="tag yes">With skills</span><input type="range" min="0" max="100" value="50" aria-label="Compare"></div>
+    <h3>Detail camera</h3>
+    <div class="slider"><img src="media/concrete-detail-skill.webp" alt="With skills"><img class="top" src="media/concrete-detail-noskill.webp" alt="Without skills"><div class="bar"></div><span class="tag no">Without</span><span class="tag yes">With skills</span><input type="range" min="0" max="100" value="50" aria-label="Compare"></div>
+    <p class="hint">Drag to compare.</p>
+    <div class="notes">
+      <div class="note no"><b>Without skills produced</b><ul><li>BaseColor, Roughness, AO, Height, Normal (OpenGL + DirectX)</li><li>2 renders, 1 review sheet</li></ul></div>
+      <div class="note yes"><b>With skills produced</b><ul><li>Procedural source baked to BaseColor, Roughness, AO, Height, Normal</li><li>Packed ORM map (engine-ready)</li><li>Separate bake and scene scripts, 2 camera renders</li></ul></div>
+    </div>
+  </section>
+
+  <!-- 2. Blanket -->
+  <section id="blanket">
+    <h2>2. Blanket falling on a bed <span>/ cloth simulation + GIF</span></h2>
+    <div class="prompts">
+      <div class="prompt no"><b>Without skills</b><q>Create a Blender 3D scene animation of a blanket falling onto a bed mesh, realistic physics, export as GIF in the end, don't use any skills and don't sneak peek in other folders, isolated environment.</q></div>
+      <div class="prompt yes"><b>With skills</b><q>Create a Blender 3D scene animation of a blanket falling onto a bed mesh, realistic physics, export as GIF in the end, use any of the existing 20 Blender skills before proceeding.</q></div>
+    </div>
+    <div class="pair">
+      <figure><video src="media/blanket-noskill.mp4" poster="media/blanket-noskill-poster.webp" muted loop playsinline preload="auto"></video><span class="tag no">Without</span></figure>
+      <figure><video src="media/blanket-skill.mp4" poster="media/blanket-skill-poster.webp" muted loop playsinline preload="auto"></video><span class="tag yes">With skills</span></figure>
+    </div>
+    <div class="controls"><button class="play">Pause</button><button class="restart">Restart both</button></div>
+    <div class="notes">
+      <div class="note no"><b>Without skills produced</b><ul><li>96-frame GIF, 640 x 480</li><li>Plain blanket, bed without pillows</li></ul></div>
+      <div class="note yes"><b>With skills produced</b><ul><li>96-frame GIF, 560 x 420</li><li>Plaid fabric, pillows, baked cloth cache</li><li>QA review sheet of key frames</li></ul></div>
+    </div>
+  </section>
+
+  <!-- 3. Pistol -->
+  <section id="pistol">
+    <h2>3. PBR pistol <span>/ modeling + shot and reload animation</span></h2>
+    <div class="prompts">
+      <div class="prompt no"><b>Without skills</b><q>Create a realistic PBR pistol in Blender and animate it firing a shot and then reloading, render the animation and export as GIF in the end, don't use any skills and don't sneak peek in other folders, isolated environment.</q></div>
+      <div class="prompt yes"><b>With skills</b><q>Create a realistic PBR pistol in Blender and animate it firing a shot and then reloading, render the animation and export as GIF in the end, use any of the existing 20 Blender skills before proceeding.</q></div>
+    </div>
+    <div class="pair wide">
+      <figure><video src="media/pistol-noskill.mp4" poster="media/pistol-noskill-poster.webp" muted loop playsinline preload="auto"></video><span class="tag no">Without</span></figure>
+      <figure><video src="media/pistol-skill.mp4" poster="media/pistol-skill-poster.webp" muted loop playsinline preload="auto"></video><span class="tag yes">With skills</span></figure>
+    </div>
+    <div class="controls"><button class="play">Pause</button><button class="restart">Restart both</button></div>
+    <div class="notes">
+      <div class="note no"><b>Without skills produced</b><ul><li>96-frame GIF, 640 x 360</li><li>Test frames and a review sheet</li></ul></div>
+      <div class="note yes"><b>With skills produced</b><ul><li>88-frame GIF, 720 x 405</li><li>19 named parts (slide, barrel, mag, pins, sights)</li><li>Mesh QA pass: no z-fighting, no floating parts, clean manifold geometry</li><li>Multi-angle wireframe review renders</li></ul></div>
+    </div>
+  </section>
+
+  <!-- 4. Soldier -->
+  <section id="soldier">
+    <h2>4. RTS soldier <span>/ character + rig + walk cycle</span></h2>
+    <div class="prompts">
+      <div class="prompt no"><b>Without skills</b><q>Create me a Blender soldier game character asset for my RTS army game, fully rig it then create and render a walking animation with the soldier holding the gun, don't use any skills and don't sneak peek in other folders, isolated environment.</q></div>
+      <div class="prompt yes"><b>With skills</b><q>Create me a soldier game character asset for my RTS army game, fully rig it then create and render a walking animation with the soldier holding the gun, use any of the existing 20+ Blender skills before proceeding. don't sneak peek in other folders, isolated environment.</q></div>
+    </div>
+    <div class="pair wide">
+      <figure><video src="media/soldier-noskill.mp4" poster="media/soldier-noskill-poster.webp" muted loop playsinline preload="auto"></video><span class="tag no">Without</span></figure>
+      <figure><video src="media/soldier-skill.mp4" poster="media/soldier-skill-poster.webp" muted loop playsinline preload="auto"></video><span class="tag yes">With skills</span></figure>
+    </div>
+    <div class="controls"><button class="play">Pause</button><button class="restart">Restart both</button></div>
+    <div class="notes">
+      <div class="note no"><b>Without skills produced</b><ul><li>56-frame walk GIF, 640 x 360, 24 fps</li><li>FBX export, review shots</li></ul></div>
+      <div class="note yes"><b>With skills produced</b><ul><li>128-frame walk GIF, 640 x 360, 30 fps</li><li>Rig built from a metarig, skinning stress poses</li><li>Game exports: FBX and GLB (SK_Soldier)</li><li>Multi-angle QA renders (wireframe, materials, grip, feet)</li></ul></div>
+    </div>
+  </section>
+
+  <!-- 5. Nova low poly -->
+  <section id="nova">
+    <h2>5. Low poly rebuild <span>/ existing asset, half the triangles</span></h2>
+    <div class="prompts">
+      <div class="prompt no"><b>Without skills</b><q>Rebuild the asset Nova.blend into a game-ready low poly version at half its current triangle count, keep the silhouette, bake the high poly detail into normal maps, export it for Unity, render a side-by-side of the original and the low poly at the end, don't use any skills and don't sneak peek in other folders, isolated environment.</q></div>
+      <div class="prompt yes"><b>With skills</b><q>Rebuild the asset Nova.blend into a game-ready low poly version at half its current triangle count, keep the silhouette, bake the high poly detail into normal maps, export it for Unity, render a side-by-side of the original and the low poly at the end, use any of the existing 22 Blender skills before proceeding. don't sneak peek in other folders, isolated environment.</q></div>
+    </div>
+    <h3>The original: Nova.blend, 5,370 triangles</h3>
+    <div class="slider"><img src="media/nova-original-wire.webp" alt="Original with wireframe"><img class="top" src="media/nova-original-color.webp" alt="Original in color"><div class="bar"></div><span class="tag no" style="background:var(--muted)">Color</span><span class="tag yes" style="background:var(--muted)">Wireframe</span><input type="range" min="0" max="100" value="50" aria-label="Compare"></div>
+    <h3>The two low poly results, <span class="legend"></span>red = z-fighting faces</h3>
+    <div class="pair wide">
+      <figure><video src="media/nova-noskill-turntable.mp4" poster="media/nova-noskill-turntable-poster.webp" muted loop playsinline preload="auto"></video><span class="tag no">Without</span></figure>
+      <figure><video src="media/nova-skill-turntable.mp4" poster="media/nova-skill-turntable-poster.webp" muted loop playsinline preload="auto"></video><span class="tag yes">With skills</span></figure>
+    </div>
+    <div class="controls"><button class="play">Pause</button><button class="restart">Restart both</button></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Checked with blender-asset-qa</th><th class="no">Without skills</th><th class="yes">With skills</th></tr></thead>
+        <tbody>
+          <tr><td>Triangles (target 2,685)</td><td>2,685</td><td>2,665</td></tr>
+          <tr><td>Z-fighting (overlapping triangle pairs)</td><td class="bad">22</td><td class="good">0</td></tr>
+          <tr><td>Flipped / broken edges</td><td class="bad">1 / 1</td><td class="good">0 / 0</td></tr>
+          <tr><td>UV overlap (breaks the normal bake)</td><td class="bad">34%</td><td class="good">0.02%</td></tr>
+          <tr><td>Baked maps</td><td>Normal</td><td>Normal, AO, curvature, ID</td></tr>
+          <tr><td>Overall mesh check</td><td class="bad">Fail</td><td class="good">Pass</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="hint">Neither result kept the colors: the color texture lives outside the isolated folder, so neither run could load it. Both kept the color UV map, so the colors can be reconnected without rework. Turntables are shown in neutral clay with a wireframe overlay.</p>
+  </section>
+
+  <footer>Get the skills: <a href="https://github.com/EL4CTEO/blender-skills">github.com/EL4CTEO/blender-skills</a></footer>
+</main>
+<script>
+  document.querySelectorAll('.slider').forEach(function (s) {
+    var input = s.querySelector('input');
+    var set = function () { s.style.setProperty('--pos', input.value + '%'); };
+    input.addEventListener('input', set); set();
+  });
+
+  document.querySelectorAll('.pair').forEach(function (pair) {
+    var vids = Array.prototype.slice.call(pair.querySelectorAll('video'));
+    var controls = pair.nextElementSibling;
+    if (vids.length < 2 || !controls) return;
+    var playBtn = controls.querySelector('.play');
+    function playAll() { vids.forEach(function (v) { var p = v.play(); if (p) p.catch(function () {}); }); playBtn.textContent = 'Pause'; }
+    function restart() { vids.forEach(function (v) { v.currentTime = 0; }); playAll(); }
+    playBtn.addEventListener('click', function () {
+      if (vids[0].paused) { playAll(); } else { vids.forEach(function (v) { v.pause(); }); playBtn.textContent = 'Play'; }
+    });
+    controls.querySelector('.restart').addEventListener('click', restart);
+    // keep clips of similar length in step: when the first loops, restart the second
+    vids[0].addEventListener('seeked', function () {
+      if (vids[0].currentTime < 0.1 && Math.abs(vids[0].duration - vids[1].duration) < 0.5) vids[1].currentTime = 0;
+    });
+    restart();
+  });
+</script>
+</body>
+</html>

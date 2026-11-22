@@ -1,0 +1,1208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>Synthetic analytics example</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #0a0b0d;
+        --paper: #f9f7f4;
+        --accent: #c65b4c;
+        --line: #dedbd5;
+        --muted: #62666b;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font:
+          16px/1.5 Arial,
+          sans-serif;
+      }
+      header {
+        padding: 22px 5vw;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+      }
+      .brand {
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: -1.5px;
+      }
+      .tag {
+        color: var(--muted);
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+      main {
+        max-width: 1320px;
+        margin: auto;
+        padding: 34px 5vw 60px;
+      }
+      h1 {
+        font:
+          normal clamp(32px, 4vw, 52px)/1.05 Georgia,
+          serif;
+        margin: 10px 0 16px;
+      }
+      h2 {
+        font-size: 21px;
+        margin: 0 0 6px;
+      }
+      p {
+        margin: 8px 0 18px;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        padding: 20px 0;
+        margin-top: 20px;
+        border-top: 1px solid var(--line);
+      }
+      label {
+        display: grid;
+        gap: 5px;
+        font-size: 14px;
+      }
+      input,
+      select,
+      button {
+        font: inherit;
+        color: var(--ink);
+        padding: 10px 12px;
+        border: 1px solid #aaa59d;
+        border-radius: 7px;
+        background: white;
+        min-height: 43px;
+        max-width: 100%;
+      }
+      button {
+        cursor: pointer;
+      }
+      button.primary {
+        background: var(--ink);
+        color: white;
+        border-color: var(--ink);
+      }
+      :focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin: 16px 0 26px;
+      }
+      .card,
+      .panel {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 22px;
+      }
+      .card strong {
+        display: block;
+        font-size: 30px;
+        font-weight: 500;
+        letter-spacing: -1px;
+      }
+      .card span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1.25fr 1fr;
+        gap: 22px;
+        margin: 22px 0;
+      }
+      .panel {
+        overflow: hidden;
+      }
+      .bar {
+        display: grid;
+        grid-template-columns: minmax(110px, 1fr) 1.3fr 85px;
+        align-items: center;
+        gap: 12px;
+        margin: 13px 0;
+        font-size: 14px;
+      }
+      .bar .name {
+        overflow-wrap: anywhere;
+      }
+      .track {
+        background: #f3efea;
+        border-radius: 4px;
+        min-height: 16px;
+      }
+      .fill {
+        background: var(--accent);
+        border-radius: 4px;
+        height: 16px;
+      }
+      .value {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+      .scroll {
+        overflow: auto;
+        max-height: 510px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 14px;
+      }
+      th,
+      td {
+        padding: 12px 8px;
+        border-bottom: 1px solid var(--line);
+        overflow-wrap: anywhere;
+      }
+      th {
+        font-weight: 500;
+        color: var(--muted);
+      }
+      .notice {
+        border-left: 3px solid var(--accent);
+        padding: 12px 18px;
+        background: #f1e9e2;
+        margin: 20px 0;
+      }
+      #error {
+        color: #8c2b21;
+      }
+      .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      footer {
+        border-top: 1px solid var(--line);
+        padding-top: 18px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      @media (max-width: 800px) {
+        .cards {
+          grid-template-columns: 1fr 1fr;
+        }
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        header {
+          align-items: flex-start;
+        }
+        .tag {
+          max-width: 170px;
+          text-align: right;
+        }
+      }
+      @media (max-width: 480px) {
+        .cards {
+          grid-template-columns: 1fr;
+        }
+        main {
+          padding: 24px 16px;
+        }
+        .bar {
+          grid-template-columns: 1fr 1fr 65px;
+        }
+      }
+      @media print {
+        body {
+          background: white;
+        }
+        header {
+          padding: 0 0 15px;
+        }
+        main {
+          padding: 20px 0;
+        }
+        .filters,
+        .actions,
+        button {
+          display: none;
+        }
+        .panel,
+        .card {
+          break-inside: avoid;
+        }
+        .scroll {
+          max-height: none;
+          overflow: visible;
+        }
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .fill {
+          print-color-adjust: exact;
+        }
+        footer {
+          margin-top: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <span class="brand">Scenario</span
+      ><span class="tag">AI adoption / Observability</span>
+    </header>
+    <main>
+      <div class="tag">Usage intelligence</div>
+      <h1 id="title"></h1>
+      <p class="muted" id="scope"></p>
+      <div class="actions">
+        <button class="primary" id="download">Export filtered model CSV</button
+        ><button id="print">Print / Save as PDF</button>
+      </div>
+      <div class="filters" aria-label="Model activity filters">
+        <label>From (inclusive)<input id="start" type="date" /></label>
+        <label>Through (inclusive)<input id="end" type="date" /></label>
+        <label
+          >Model<select id="model">
+            <option value="">All models</option>
+          </select></label
+        >
+        <label
+          >Rank models by<select id="metric">
+            <option value="jobs">Jobs</option>
+            <option value="cu">CU</option>
+          </select></label
+        >
+        <label
+          >Identity<select id="identity">
+            <option value="">All identities</option>
+          </select></label
+        >
+        <button id="reset">Reset filters</button>
+      </div>
+      <p id="error" role="alert"></p>
+      <div class="cards">
+        <div class="card">
+          <strong id="total"></strong
+          ><span>Consumed CU / original full period</span>
+        </div>
+        <div class="card">
+          <strong id="cu"></strong><span>Model CU / filtered</span>
+        </div>
+        <div class="card">
+          <strong id="jobs"></strong><span>Model jobs / filtered</span>
+        </div>
+        <div class="card">
+          <strong id="breadth"></strong
+          ><span>Models with activity / filtered</span>
+        </div>
+      </div>
+      <div class="grid">
+        <section class="panel">
+          <h2 id="ranking-title">Most-used models</h2>
+          <p class="muted">Top 10 in the selected period.</p>
+          <div id="bars"></div>
+        </section>
+        <section class="panel">
+          <h2>Model CU by month</h2>
+          <p class="muted">
+            Selected models and dates. Partial months follow the date filter.
+          </p>
+          <div id="trend"></div>
+        </section>
+      </div>
+      <section class="panel">
+        <h2>Model detail</h2>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>CU</th>
+                <th>Jobs</th>
+                <th>API-key CU (subset)</th>
+              </tr>
+            </thead>
+            <tbody id="models"></tbody>
+          </table>
+        </div>
+      </section>
+      <div class="grid">
+        <section class="panel">
+          <h2>Who consumes CU?</h2>
+          <p class="muted">
+            Original full period. Model and date filters do not apply.
+          </p>
+          <div class="scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Identity</th>
+                  <th>Type</th>
+                  <th>CU</th>
+                </tr>
+              </thead>
+              <tbody id="people"></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="panel">
+          <h2>Read the numbers correctly</h2>
+          <p id="gap" class="notice"></p>
+          <div id="notes"></div>
+        </section>
+      </div>
+      <section class="panel" id="joint-panel">
+        <h2>User and model activity</h2>
+        <p class="muted">
+          Selected dates, model, identity and ranking metric. CU measures
+          generation activity.
+        </p>
+        <div id="joint"></div>
+      </section>
+      <footer id="source"></footer>
+    </main>
+    <script id="report-data" type="application/json">
+      {
+        "query": {
+          "scope": "team",
+          "start_date": "2026-06-01T00:00:00Z",
+          "end_date": "2026-08-31T23:59:59.999Z",
+          "include": ["entities", "modelUsages.daily"],
+          "response_format": "json"
+        },
+        "date_start": "2026-06-01",
+        "date_end": "2026-08-31",
+        "fetched_at": "2026-09-01T09:00:00Z",
+        "models": [
+          {
+            "id": "model_example_1",
+            "name": "Video model B",
+            "cu": 18900,
+            "jobs": 90,
+            "api_cu": 0
+          },
+          {
+            "id": "model_example_0",
+            "name": "Image model A",
+            "cu": 12600,
+            "jobs": 420,
+            "api_cu": 3600
+          },
+          {
+            "id": "model_example_2",
+            "name": "3D model C",
+            "cu": 7200,
+            "jobs": 24,
+            "api_cu": 0
+          },
+          {
+            "id": "model_example_3",
+            "name": "Audio model D",
+            "cu": 1800,
+            "jobs": 60,
+            "api_cu": 900
+          }
+        ],
+        "users": [
+          {
+            "name": "Artist 01",
+            "kind": "Human",
+            "cu": 23500,
+            "key": "identity-0"
+          },
+          {
+            "name": "Artist 02",
+            "kind": "Human",
+            "cu": 11000,
+            "key": "identity-1"
+          },
+          {
+            "name": "Automation",
+            "kind": "API identity",
+            "cu": 4500,
+            "key": "identity-2"
+          }
+        ],
+        "daily": [
+          {
+            "date": "2026-06-15",
+            "model": "model_example_0",
+            "cu": 3150.0,
+            "jobs": 104,
+            "api_cu": 900.0
+          },
+          {
+            "date": "2026-06-15",
+            "model": "model_example_1",
+            "cu": 4725.0,
+            "jobs": 22,
+            "api_cu": 0.0
+          },
+          {
+            "date": "2026-06-15",
+            "model": "model_example_2",
+            "cu": 1800.0,
+            "jobs": 6,
+            "api_cu": 0.0
+          },
+          {
+            "date": "2026-06-15",
+            "model": "model_example_3",
+            "cu": 450.0,
+            "jobs": 14,
+            "api_cu": 225.0
+          },
+          {
+            "date": "2026-07-15",
+            "model": "model_example_0",
+            "cu": 4410.0,
+            "jobs": 146,
+            "api_cu": 1260.0
+          },
+          {
+            "date": "2026-07-15",
+            "model": "model_example_1",
+            "cu": 6615.0,
+            "jobs": 31,
+            "api_cu": 0.0
+          },
+          {
+            "date": "2026-07-15",
+            "model": "model_example_2",
+            "cu": 2520.0,
+            "jobs": 8,
+            "api_cu": 0.0
+          },
+          {
+            "date": "2026-07-15",
+            "model": "model_example_3",
+            "cu": 630.0,
+            "jobs": 20,
+            "api_cu": 315.0
+          },
+          {
+            "date": "2026-08-15",
+            "model": "model_example_0",
+            "cu": 5040.0,
+            "jobs": 170,
+            "api_cu": 1440.0
+          },
+          {
+            "date": "2026-08-15",
+            "model": "model_example_1",
+            "cu": 7560.0,
+            "jobs": 37,
+            "api_cu": 0.0
+          },
+          {
+            "date": "2026-08-15",
+            "model": "model_example_2",
+            "cu": 2880.0,
+            "jobs": 10,
+            "api_cu": 0.0
+          },
+          {
+            "date": "2026-08-15",
+            "model": "model_example_3",
+            "cu": 720.0,
+            "jobs": 26,
+            "api_cu": 360.0
+          }
+        ],
+        "has_daily": true,
+        "total_cu": 39000,
+        "model_cu": 40500,
+        "model_gap": 1500,
+        "jobs": 594,
+        "notes": [
+          "Scope and dates match the MCP request; access is limited to the connected credential.",
+          "Consumed CU is after discounts. Model CU measures generation activity; the difference from overall consumption is not allocated to models.",
+          "CU and job counts measure usage, not productivity, ROI, seat activation, or time saved.",
+          "Overall and identity consumption cover the original full period. Model filters apply to generation activity only.",
+          "Per-user usage queries reconcile to every model's CU, API-key CU and job count."
+        ],
+        "joint": [
+          {
+            "user": "Artist 01",
+            "kind": "Human",
+            "model_id": "model_example_1",
+            "cu": 12600,
+            "jobs": 60,
+            "api_cu": 0,
+            "user_key": "identity-0"
+          },
+          {
+            "user": "Artist 01",
+            "kind": "Human",
+            "model_id": "model_example_0",
+            "cu": 7500,
+            "jobs": 250,
+            "api_cu": 0,
+            "user_key": "identity-0"
+          },
+          {
+            "user": "Artist 01",
+            "kind": "Human",
+            "model_id": "model_example_2",
+            "cu": 3600,
+            "jobs": 12,
+            "api_cu": 0,
+            "user_key": "identity-0"
+          },
+          {
+            "user": "Artist 01",
+            "kind": "Human",
+            "model_id": "model_example_3",
+            "cu": 600,
+            "jobs": 20,
+            "api_cu": 0,
+            "user_key": "identity-0"
+          },
+          {
+            "user": "Artist 02",
+            "kind": "Human",
+            "model_id": "model_example_1",
+            "cu": 6300,
+            "jobs": 30,
+            "api_cu": 0,
+            "user_key": "identity-1"
+          },
+          {
+            "user": "Artist 02",
+            "kind": "Human",
+            "model_id": "model_example_2",
+            "cu": 3600,
+            "jobs": 12,
+            "api_cu": 0,
+            "user_key": "identity-1"
+          },
+          {
+            "user": "Artist 02",
+            "kind": "Human",
+            "model_id": "model_example_0",
+            "cu": 1500,
+            "jobs": 50,
+            "api_cu": 0,
+            "user_key": "identity-1"
+          },
+          {
+            "user": "Artist 02",
+            "kind": "Human",
+            "model_id": "model_example_3",
+            "cu": 300,
+            "jobs": 10,
+            "api_cu": 0,
+            "user_key": "identity-1"
+          },
+          {
+            "user": "Automation",
+            "kind": "API identity",
+            "model_id": "model_example_0",
+            "cu": 3600,
+            "jobs": 120,
+            "api_cu": 3600,
+            "user_key": "identity-2"
+          },
+          {
+            "user": "Automation",
+            "kind": "API identity",
+            "model_id": "model_example_3",
+            "cu": 900,
+            "jobs": 30,
+            "api_cu": 900,
+            "user_key": "identity-2"
+          }
+        ],
+        "joint_daily": [
+          {
+            "date": "2026-06-15",
+            "model": "model_example_0",
+            "cu": 1875.0,
+            "jobs": 62,
+            "api_cu": 0.0,
+            "user_key": "identity-0"
+          },
+          {
+            "date": "2026-06-15",
+            "model": "model_example_1",
+            "cu": 3150.0,
+            "jobs": 15,
+            "api_cu": 0.0,
+            "user_key": "identity-0"
+          },
+          {
+            "date": "2026-06-15",
+            "model": "model_example_2",
+            "cu": 900.0,
+            "jobs": 3,
+            "api_cu": 0.0,
+            "user_key": "identity-0"
+          },
+          {
+            "date": "2026-06-15",
+            "model": "model_example_3",
+            "cu": 150.0,
+            "jobs": 5,
+            "api_cu": 0.0,
+            "user_key": "identity-0"
+          },
+          {
+            "date": "2026-07-15",
+            "model": "model_example_0",
+            "cu": 2625.0,
+            "jobs": 87,
+            "api_cu": 0.0,
+            "user_key": "identity-0"
+          },
+          {
+            "date": "2026-07-15",
+            "model": "model_example_1",
+            "cu": 4410.0,
+            "jobs": 21,
+            "api_cu": 0.0,
+            "user_key": "identity-0"
+          },
+          {
+            "date": "2026-07-15",
+            "model": "model_example_2",
+            "cu": 1260.0,
+            "jobs": 4,
+            "api_cu": 0.0,
+            "user_key": "identity-0"
+          },
+          {
+            "date": "2026-07-15",
+            "model": "model_example_3",
+            "cu": 210.0,
+            "jobs": 7,
+            "api_cu": 0.0,
+            "user_key": "identity-0"
+          },
+          {
+            "date": "2026-08-15",
+            "model": "model_example_0",
+            "cu": 3000.0,
+            "jobs": 101,
+            "api_cu": 0.0,
+            "user_key": "identity-0"
+          },
+          {
+            "date": "2026-08-15",
+            "model": "model_example_1",
+            "cu": 5040.0,
+            "jobs": 24,
+            "api_cu": 0.0,
+            "user_key": "identity-0"
+          },
+          {
+            "date": "2026-08-15",
+            "model": "model_example_2",
+            "cu": 1440.0,
+            "jobs": 5,
+            "api_cu": 0.0,
+            "user_key": "identity-0"
+          },
+          {
+            "date": "2026-08-15",
+            "model": "model_example_3",
+            "cu": 240.0,
+            "jobs": 8,
+            "api_cu": 0.0,
+            "user_key": "identity-0"
+          },
+          {
+            "date": "2026-06-15",
+            "model": "model_example_0",
+            "cu": 375.0,
+            "jobs": 12,
+            "api_cu": 0.0,
+            "user_key": "identity-1"
+          },
+          {
+            "date": "2026-06-15",
+            "model": "model_example_1",
+            "cu": 1575.0,
+            "jobs": 7,
+            "api_cu": 0.0,
+            "user_key": "identity-1"
+          },
+          {
+            "date": "2026-06-15",
+            "model": "model_example_2",
+            "cu": 900.0,
+            "jobs": 3,
+            "api_cu": 0.0,
+            "user_key": "identity-1"
+          },
+          {
+            "date": "2026-06-15",
+            "model": "model_example_3",
+            "cu": 75.0,
+            "jobs": 2,
+            "api_cu": 0.0,
+            "user_key": "identity-1"
+          },
+          {
+            "date": "2026-07-15",
+            "model": "model_example_0",
+            "cu": 525.0,
+            "jobs": 17,
+            "api_cu": 0.0,
+            "user_key": "identity-1"
+          },
+          {
+            "date": "2026-07-15",
+            "model": "model_example_1",
+            "cu": 2205.0,
+            "jobs": 10,
+            "api_cu": 0.0,
+            "user_key": "identity-1"
+          },
+          {
+            "date": "2026-07-15",
+            "model": "model_example_2",
+            "cu": 1260.0,
+            "jobs": 4,
+            "api_cu": 0.0,
+            "user_key": "identity-1"
+          },
+          {
+            "date": "2026-07-15",
+            "model": "model_example_3",
+            "cu": 105.0,
+            "jobs": 3,
+            "api_cu": 0.0,
+            "user_key": "identity-1"
+          },
+          {
+            "date": "2026-08-15",
+            "model": "model_example_0",
+            "cu": 600.0,
+            "jobs": 21,
+            "api_cu": 0.0,
+            "user_key": "identity-1"
+          },
+          {
+            "date": "2026-08-15",
+            "model": "model_example_1",
+            "cu": 2520.0,
+            "jobs": 13,
+            "api_cu": 0.0,
+            "user_key": "identity-1"
+          },
+          {
+            "date": "2026-08-15",
+            "model": "model_example_2",
+            "cu": 1440.0,
+            "jobs": 5,
+            "api_cu": 0.0,
+            "user_key": "identity-1"
+          },
+          {
+            "date": "2026-08-15",
+            "model": "model_example_3",
+            "cu": 120.0,
+            "jobs": 5,
+            "api_cu": 0.0,
+            "user_key": "identity-1"
+          },
+          {
+            "date": "2026-06-15",
+            "model": "model_example_0",
+            "cu": 900.0,
+            "jobs": 30,
+            "api_cu": 900.0,
+            "user_key": "identity-2"
+          },
+          {
+            "date": "2026-06-15",
+            "model": "model_example_3",
+            "cu": 225.0,
+            "jobs": 7,
+            "api_cu": 225.0,
+            "user_key": "identity-2"
+          },
+          {
+            "date": "2026-07-15",
+            "model": "model_example_0",
+            "cu": 1260.0,
+            "jobs": 42,
+            "api_cu": 1260.0,
+            "user_key": "identity-2"
+          },
+          {
+            "date": "2026-07-15",
+            "model": "model_example_3",
+            "cu": 315.0,
+            "jobs": 10,
+            "api_cu": 315.0,
+            "user_key": "identity-2"
+          },
+          {
+            "date": "2026-08-15",
+            "model": "model_example_0",
+            "cu": 1440.0,
+            "jobs": 48,
+            "api_cu": 1440.0,
+            "user_key": "identity-2"
+          },
+          {
+            "date": "2026-08-15",
+            "model": "model_example_3",
+            "cu": 360.0,
+            "jobs": 13,
+            "api_cu": 360.0,
+            "user_key": "identity-2"
+          }
+        ],
+        "joint_available": true,
+        "rank_by": "cu",
+        "top_models_per_user": 5,
+        "title": "Synthetic analytics example"
+      }
+    </script>
+    <script>
+      "use strict";
+      const report = JSON.parse(
+        document.getElementById("report-data").textContent,
+      );
+      const el = (id) => document.getElementById(id);
+      const fmt = (n) =>
+        n.toLocaleString(undefined, { maximumFractionDigits: 2 });
+      const put = (id, text) => {
+        el(id).textContent = text;
+      };
+      const first = report.date_start,
+        last = report.date_end;
+      let filtered = [];
+      put("title", report.title);
+      put(
+        "scope",
+        `${report.query.scope === "team" ? "All accessible projects" : "Selected project scope"} / ${report.query.start_date} through ${report.query.end_date}, inclusive / UTC`,
+      );
+      put(
+        "source",
+        `Source: Scenario MCP usage. Retrieved ${report.fetched_at}. Offline snapshot; ask your connected agent to refresh.`,
+      );
+      put("total", fmt(report.total_cu));
+      put(
+        "gap",
+        `Model minus overall CU: ${fmt(report.model_gap)}. Model generation and overall consumption are separate measures; this difference is not allocated to models.`,
+      );
+      report.notes.forEach((text) => {
+        const p = document.createElement("p");
+        p.className = "muted";
+        p.textContent = text;
+        el("notes").append(p);
+      });
+      function option(target, value, text) {
+        const o = document.createElement("option");
+        o.value = value;
+        o.textContent = text;
+        el(target).append(o);
+      }
+      report.models.forEach((m) => option("model", m.id, m.name));
+      report.users.forEach((u) => option("identity", u.key, u.name));
+      el("identity").disabled = !report.joint_available;
+      function rows(target, records) {
+        const body = el(target);
+        body.replaceChildren();
+        records.forEach((record) => {
+          const tr = document.createElement("tr");
+          record.forEach((v) => {
+            const td = document.createElement("td");
+            td.textContent = v;
+            tr.append(td);
+          });
+          body.append(tr);
+        });
+      }
+      function bars(target, pairs) {
+        const root = el(target);
+        root.replaceChildren();
+        if (!pairs.length) {
+          root.textContent = "No activity in this selection.";
+          return;
+        }
+        const maximum = Math.max(...pairs.map((p) => Math.abs(p[1])), 1);
+        pairs.forEach(([name, value]) => {
+          const row = document.createElement("div");
+          row.className = "bar";
+          const label = document.createElement("span");
+          label.className = "name";
+          label.textContent = name;
+          const track = document.createElement("div");
+          track.className = "track";
+          const fill = document.createElement("div");
+          fill.className = "fill";
+          fill.style.width = `${(Math.abs(value) / maximum) * 100}%`;
+          track.append(fill);
+          const amount = document.createElement("span");
+          amount.className = "value";
+          amount.textContent = fmt(value);
+          row.append(label, track, amount);
+          root.append(row);
+        });
+      }
+      function rankings(joint, metric) {
+        const root = el("joint");
+        root.replaceChildren();
+        if (!report.joint_available) {
+          root.textContent =
+            "User-filtered usage snapshots were not included. Fetch them through MCP to enable these rankings.";
+          return;
+        }
+        const names = new Map(report.models.map((m) => [m.id, m.name]));
+        const add = (title, pairs) => {
+          const h = document.createElement("h3");
+          h.textContent = title;
+          root.append(h);
+          if (!pairs.length) {
+            const p = document.createElement("p");
+            p.textContent = "No activity in this selection.";
+            root.append(p);
+          }
+          pairs.forEach(([label, rows]) => {
+            const p = document.createElement("p");
+            p.textContent =
+              label +
+              ": " +
+              rows
+                .map(
+                  ([name, r]) =>
+                    `${name} (${fmt(r.cu)} CU; ${fmt(r.jobs)} jobs)`,
+                )
+                .join("; ");
+            root.append(p);
+          });
+        };
+        const active = joint.filter((j) => j.jobs || j.cu);
+        add(
+          `Top ${report.top_models_per_user} models per identity / ${metric.toUpperCase()}`,
+          report.users
+            .filter((u) => active.some((j) => j.user_key === u.key))
+            .map((u) => [
+              u.name + " / " + u.kind,
+              active
+                .filter((j) => j.user_key === u.key)
+                .sort(
+                  (a, b) =>
+                    b[metric] - a[metric] ||
+                    a.model_id.localeCompare(b.model_id),
+                )
+                .slice(0, report.top_models_per_user)
+                .map((j) => [names.get(j.model_id), j]),
+            ]),
+        );
+        add(
+          `Top 5 identities for the top 10 models / ${metric.toUpperCase()}`,
+          filtered
+            .filter((m) => m.jobs || m.cu)
+            .slice(0, 10)
+            .map((m) => [
+              m.name,
+              active
+                .filter((j) => j.model_id === m.id)
+                .sort(
+                  (a, b) =>
+                    b[metric] - a[metric] ||
+                    a.user_key.localeCompare(b.user_key),
+                )
+                .slice(0, 5)
+                .map((j) => [
+                  report.users.find((u) => u.key === j.user_key).name,
+                  j,
+                ]),
+            ]),
+        );
+      }
+      function update() {
+        const start = el("start").value,
+          end = el("end").value,
+          model = el("model").value,
+          user = el("identity").value,
+          metric = el("metric").value;
+        const valid = start >= first && end <= last && start <= end;
+        put("error", valid ? "" : "Choose a date range inside this snapshot.");
+        el("download").disabled = !valid;
+        rows(
+          "people",
+          report.users
+            .filter((u) => !user || u.key === user)
+            .map((u) => [u.name, u.kind, fmt(u.cu)]),
+        );
+        if (!valid) {
+          filtered = [];
+          ["cu", "jobs", "breadth"].forEach((k) => put(k, "Unavailable"));
+          rows("models", []);
+          bars("bars", []);
+          bars("trend", []);
+          el("joint").replaceChildren();
+          return;
+        }
+        const sums = new Map(
+          report.models
+            .filter((m) => !model || m.id === model)
+            .map((m) => [m.id, { ...m, cu: 0, jobs: 0, api_cu: 0 }]),
+        );
+        const monthly = new Map(),
+          pairs = new Map();
+        const selected = (d) =>
+          (!model || (d.model || d.model_id) === model) &&
+          (!user || d.user_key === user);
+        const inPeriod = (d) => d.date >= start && d.date <= end;
+        if (report.has_daily) {
+          const source = user ? report.joint_daily : report.daily;
+          source
+            .filter((d) => selected(d) && inPeriod(d))
+            .forEach((d) => {
+              const m = sums.get(d.model);
+              if (!m) return;
+              ["cu", "jobs", "api_cu"].forEach((k) => (m[k] += d[k]));
+              monthly.set(
+                d.date.slice(0, 7),
+                (monthly.get(d.date.slice(0, 7)) || 0) + d.cu,
+              );
+            });
+          report.joint_daily
+            .filter((d) => selected(d) && inPeriod(d))
+            .forEach((d) => {
+              const key = JSON.stringify([d.user_key, d.model]);
+              const p = pairs.get(key) || {
+                user_key: d.user_key,
+                model_id: d.model,
+                cu: 0,
+                jobs: 0,
+              };
+              p.cu += d.cu;
+              p.jobs += d.jobs;
+              pairs.set(key, p);
+            });
+          filtered = [...sums.values()];
+        } else {
+          const source = user
+            ? report.joint.filter(selected).map((j) => ({
+                id: j.model_id,
+                name: report.models.find((m) => m.id === j.model_id).name,
+                ...j,
+              }))
+            : report.models.filter((m) => !model || m.id === model);
+          filtered = source.map((m) => ({ ...m }));
+          report.joint
+            .filter(selected)
+            .forEach((j) =>
+              pairs.set(JSON.stringify([j.user_key, j.model_id]), j),
+            );
+        }
+        filtered.sort(
+          (a, b) => b[metric] - a[metric] || a.id.localeCompare(b.id),
+        );
+        put("cu", fmt(filtered.reduce((s, m) => s + m.cu, 0)));
+        put("jobs", fmt(filtered.reduce((s, m) => s + m.jobs, 0)));
+        put("breadth", filtered.filter((m) => m.jobs || m.cu).length);
+        put(
+          "ranking-title",
+          metric === "jobs"
+            ? "Most-used models / jobs"
+            : "Highest model consumption / CU",
+        );
+        bars(
+          "bars",
+          filtered
+            .filter((m) => m.jobs || m.cu)
+            .slice(0, 10)
+            .map((m) => [m.name, m[metric]]),
+        );
+        if (report.has_daily) bars("trend", [...monthly.entries()].sort());
+        else
+          put(
+            "trend",
+            "Time buckets were not requested; trend and date filters are unavailable.",
+          );
+        rows(
+          "models",
+          filtered.map((m) => [m.name, fmt(m.cu), fmt(m.jobs), fmt(m.api_cu)]),
+        );
+        rankings([...pairs.values()], metric);
+      }
+      function reset() {
+        el("start").value = first;
+        el("end").value = last;
+        el("model").value = "";
+        el("identity").value = "";
+        el("metric").value = report.rank_by;
+        update();
+      }
+      ["start", "end", "model", "identity", "metric"].forEach((id) =>
+        el(id).addEventListener("change", update),
+      );
+      ["start", "end"].forEach((id) => {
+        el(id).min = first;
+        el(id).max = last;
+        el(id).disabled = !report.has_daily;
+      });
+      el("reset").addEventListener("click", reset);
+      el("print").addEventListener("click", () => window.print());
+      el("download").addEventListener("click", () => {
+        const cell = (v) => {
+          let s = String(v);
+          if (typeof v === "string" && /^[\s]*[=+@-]/.test(s)) s = "'" + s;
+          return '"' + s.replaceAll('"', '""') + '"';
+        };
+        const lines = [
+          [
+            "from_day_inclusive",
+            "through_day_inclusive",
+            "identity_filter",
+            "model_id",
+            "model",
+            "cu",
+            "jobs",
+            "api_key_cu_subset",
+          ],
+          ...filtered.map((m) => [
+            el("start").value,
+            el("end").value,
+            report.users.find((u) => u.key === el("identity").value)?.name ||
+              "All identities",
+            m.id,
+            m.name,
+            m.cu,
+            m.jobs,
+            m.api_cu,
+          ]),
+        ];
+        const url = URL.createObjectURL(
+          new Blob([lines.map((r) => r.map(cell).join(",")).join("\r\n")], {
+            type: "text/csv;charset=utf-8",
+          }),
+        );
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "model-usage.csv";
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      });
+      reset();
+    </script>
+  </body>
+</html>

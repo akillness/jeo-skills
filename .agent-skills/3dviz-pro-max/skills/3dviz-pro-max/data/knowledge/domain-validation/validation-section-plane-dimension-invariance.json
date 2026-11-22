@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-section-plane-dimension-invariance",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Section plane visibility without dimension change"
+  },
+  "aliases": {
+    "en": [
+      "cutaway invariance check",
+      "clipping plane space check"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors"
+  ],
+  "summary": "Verify that sectioning changes only visibility, that the plane lives in the same space as the geometry, and that caps are distinguishable.",
+  "objective": "Model dimensions are identical before and after every section position, including after the building is transformed.",
+  "applies_when": [
+    "A building or organ model is revealed with a movable section or clipping plane.",
+    "The cut model can be moved, rotated or re-anchored while the plane is active.",
+    "The cut exposes solid interiors that need caps or double-sided treatment."
+  ],
+  "check_method": "geometry",
+  "tags": [
+    "domain-validation",
+    "cutaway",
+    "clipping",
+    "dimensions"
+  ],
+  "subject_terms": [
+    "section plane",
+    "clipping plane",
+    "world space",
+    "cap surface",
+    "backface",
+    "level elevation"
+  ],
+  "intent_signals": [
+    "the section changed my room sizes",
+    "the cut interior looks hollow"
+  ],
+  "example_prompts": [
+    "Check that the cutaway of this house does not alter its dimensions."
+  ],
+  "negative_signals": [
+    "producing construction documents",
+    "structural analysis"
+  ],
+  "content": {
+    "principles": [
+      "Sectioning is a visibility operation: it changes what is drawn and never the model dimensions, room polygons or level elevations.",
+      "Coordinate space and attachment policy are separate decisions: a plane whose coefficients are given in world space may be intended to follow the model or to stay fixed while the model passes through it. Declare the attachment first, then check the behaviour it implies.",
+      "A clipped solid is hollow until you add a cap, and a cap is a presentation surface that must not read as a wall, slab or membrane."
+    ],
+    "implementation": [
+      "Record the model dimensions first: two room lengths, one wall thickness, one door width and the level elevations, read from the model data rather than from the screen.",
+      "Sweep the plane through at least five positions including exactly on a wall face and exactly on a level slab, then re-read the same five dimensions.",
+      "Repeat with the building translated and rotated. For a model-attached plane, transform the plane with the model and confirm the same feature stays cut; for a world-fixed plane, confirm the coefficients are unchanged and that the newly cut feature is the one the new pose places on the plane.",
+      "Inspect every cut for open backfaces and record whether a cap or a double-sided material was used and how the cap is distinguished from modelled surfaces."
+    ],
+    "observable_checks": [
+      "All five measured dimensions are identical before and after every section position; any difference at all is a failure, because sectioning must not touch the model.",
+      "After the building is translated and rotated the cut follows the declared attachment: the same feature stays cut for a model-attached plane, while a world-fixed plane keeps its coefficients and cuts whatever the new pose places on it. A result matching neither identifies the defect.",
+      "Cap surfaces are distinguishable from modelled surfaces, and room and level labels are unchanged by the cut."
+    ]
+  },
+  "known_limits": [
+    "A geometric and bookkeeping check of the cutaway; it makes no statement about code compliance, structure or constructability.",
+    "Authored verification guidance; no scene was run or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.courtyard-house-cutaway",
+    "recipe.building-service-layers",
+    "recipe.heart-cutaway"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-clipping-plane-space",
+      "statement": "In this renderer user clipping planes are specified in world space, and points whose signed distance to the plane is negative are not rendered.",
+      "scope": "three.js material clipping; CAD kernels and other renderers use their own conventions and may cap automatically.",
+      "source_refs": [
+        {
+          "source_id": "source.three-material-clipping",
+          "locator": "clippingPlanes property description"
+        }
+      ]
+    }
+  ]
+}

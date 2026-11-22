@@ -1,0 +1,115 @@
+# SPDX-License-Identifier: Apache-2.0
+[build-system]
+# 77, not 68: `license = "Apache-2.0"` below is the PEP 639 string form, which older
+# setuptools rejects outright — measured, backend called directly, this very tree:
+# 76.1.0 dies with "`project.license` must be valid exactly by one definition", 77.0.1
+# builds. Nobody hit it because pip's build isolation always fetches the newest setuptools,
+# but the floor was a claim about a build that could not happen.
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sprite-gen"
+# Release discipline: keep this package metadata version synchronized with
+# SKILL.md's `version:` field in the same release commit.
+version = "4.3.0"
+description = "Component-row pipeline for clean 2D game sprites and animation atlases"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+dependencies = [
+    "pillow>=13.0.0,<14",
+    # NumPy is a direct dependency, never a transitive ride-along: the chroma
+    # extraction path imports it directly and must not depend on some other
+    # package happening to pull it in.
+    # Keep the established 2.2.6 floor; dropping an older Python does not
+    # require upgrading NumPy. It is >= 2.0, which matters: the byte-identity
+    # contract for the extraction path depends on NEP 50 promotion rules, which
+    # only became the default in NumPy 2.0. The `<3` ceiling is there for the
+    # same reason — a major bump is free to change promotion again.
+    "numpy>=2.2.6,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    # The packaging guard builds a wheel and reads what is inside it, because the declarations
+    # below are a claim and only the build is the fact. That needs the declared build backend
+    # importable in the test environment — build isolation puts it somewhere the tests cannot
+    # see, and a modern `python -m venv` no longer provides it. Same floor as build-system.
+    "setuptools>=77",
+    # Many tests shell out to a pipeline step as a subprocess; a wrong path or a
+    # server that never returns would otherwise hang the whole suite silently.
+    # A per-test timeout turns that into a named failure. `signal` method (below)
+    # is required — the default `thread` method cannot interrupt a blocked
+    # subprocess.wait(), which is exactly the case that hangs here.
+    "pytest-timeout>=2.3",
+]
+# RIFE's torch backend (SPRITE_GEN_RIFE_BACKEND=torch, docs/loop-repair.md section 1): the binary's model in PyTorch (rife-v4.25 by default), for a
+# GPU host the binary cannot run on (Vulkan-less CUDA). 2.13.0 is the release it was measured on. PyPI's Linux x86-64
+# wheel is the CUDA 13 build; a host that runs it on the CPU only takes PyTorch's CPU index
+# (`pip install torch==2.13.0 --index-url https://download.pytorch.org/whl/cpu`) before the extra.
+torch = ["torch>=2.13.0,<3"]
+
+# The console script is what removes the "which python?" question: pip writes it
+# with a shebang naming the interpreter of the environment it was installed
+# into, so `sprite-gen <tool>` runs on that environment's dependencies without
+# anyone naming an interpreter. It fronts the same parser as
+# `python -m sprite_gen.cli`, so the two forms cannot drift.
+[project.scripts]
+sprite-gen = "sprite_gen.cli:main"
+
+[project.urls]
+Repository = "https://github.com/aldegad/sprite-gen"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Tests are grouped into per-domain folders (tests/<domain>/) so a domain can be
+# run alone (`pytest tests/effects`). conftest.py stays at the tests/ root and is
+# imported by name (`from conftest import run_script`) from every subfolder, so the
+# tests/ dir must be on sys.path.
+pythonpath = ["tests"]
+# A hung subprocess test must become a named failure, not a silent stall. 120s is
+# generous for the extract/compose subprocess tests. The method is left to
+# pytest-timeout, which takes signal (SIGALRM) where the platform has it — Linux and
+# macOS, where only signal interrupts a blocked subprocess.wait() — and thread on
+# Windows, which has no SIGALRM: naming signal here stopped pytest on Windows before
+# its first test.
+timeout = 120
+# One mark names a test of the real rife-ncnn-vulkan: tests/conftest.py skips it where no RIFE is
+# reachable, and `scripts/linux_lane.sh --rife-only` runs exactly the marked tests (`-m real_rife`).
+# Another names a test of the torch backend: skipped where PyTorch or the model is missing, run by
+# the lanes with none skipped (`-m torch_rife`, on SPRITE_GEN_RIFE_DEVICE; docs/release.md).
+# The last names a slow test: a plain `pytest` is the fast bundle, which tests/conftest.py makes by
+# deselecting the marked tests, and `pytest --full` runs every test, as the release lane does.
+markers = [
+    "real_rife: runs the real rife-ncnn-vulkan; skipped where none is reachable, run by `scripts/linux_lane.sh --rife-only`",
+    "torch_rife: runs RIFE's torch backend; skipped where PyTorch or the model is missing, run by the lanes with `-m torch_rife`",
+    "slow: a case takes 1 s or more, or the function's cases 5 s or more together (an 8-core M1); deselected unless `pytest --full`",
+]
+
+# The pipeline ships an importable sprite_gen package. The canonical invocation is the
+# console script declared above (`sprite-gen <tool>`); `scripts/<tool>.py` survives as a
+# backwards-compatible wrapper for callers that already name the file, and it is a wrapper
+# only — never the form docs teach, because a bare `python3` in a shell that never activated
+# the venv is a different interpreter than the one holding this file's dependencies
+# (`tests/test_entrypoint_interpreter.py` locks that rule for SKILL.md and docs/).
+#
+# Discovered, not hand-listed: a literal `packages = ["sprite_gen"]` silently dropped the
+# `sprite_gen.gen` subpackage from every built wheel, so `sprite-gen --help` (cli.py imports
+# `gen` at module scope) died on a non-editable install. The filesystem is the truth about
+# which packages exist; this derives from it so a new subpackage cannot go missing again.
+[tool.setuptools.packages.find]
+include = ["sprite_gen*"]
+
+# The curation SPA is package data, not a repo-side script asset: the server resolves it
+# relative to its own module (serve_curation.CURATOR_DIR), so it has to travel inside the
+# wheel or the installed console script serves a 404 shell. One location, no fallback.
+#
+# Whole subtree, not an extension list: setuptools expands these with glob(recursive=True),
+# where a single `*` stops at a directory boundary. A hand-listed `curator/src/*.js` therefore
+# drops `curator/src/<anything>/*.js` from the wheel the day someone nests a folder — measured,
+# not feared: adding curator/src/deep/new.js under the old patterns built a wheel without it.
+# `curator/**/*` derives the answer from the filesystem, the same fix as packages.find above.
+[tool.setuptools.package-data]
+sprite_gen = ["serve/curator/**/*", "serve/composer/**/*", "video/*.mjs"]

@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-stone-guildhall",
+  "record_revision": 4,
+  "asset": "templates/kits/gltf/stone-guildhall.glb",
+  "asset_sha256": "a09b2c7dd5479b5ae75c0fc2fdc529afbb9fd5f6dcbe80907e143dc9cfd7b6cf",
+  "params": {
+    "scale": 1
+  },
+  "tier": "T2",
+  "kit": {
+    "blueprint": "knowledge.blueprint-stone-guildhall",
+    "module": "../gltf/stone-guildhall.glb",
+    "params": {
+      "scale": 1
+    },
+    "tier": "T2",
+    "surface": {
+      "seed": 1,
+      "size": 1024,
+      "materials": 3,
+      "unmapped": [
+        "#45555d"
+      ],
+      "uv": [
+        "declared"
+      ],
+      "ms": 190.4,
+      "ao": {
+        "vertices": 19328,
+        "casts": 52832,
+        "ms": 11822.8,
+        "skipped": null
+      }
+    },
+    "triangles": 8908,
+    "bounds_m": {
+      "min": [
+        -4,
+        0,
+        -3.177022933959961
+      ],
+      "max": [
+        4,
+        8.170000076293945,
+        3.3899998664855957
+      ],
+      "size": [
+        8,
+        8.170000076293945,
+        6.567022800445557
+      ]
+    },
+    "fit_distance_m": 19.2769,
+    "view_distances_m": {
+      "far": 46.2645,
+      "mid": 23.1322,
+      "close": 15.036,
+      "detail": 2.4909
+    },
+    "sockets": [
+      "banner",
+      "chimney",
+      "door",
+      "lantern"
+    ],
+    "detail_socket": "door",
+    "animated": false,
+    "colliders": [],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "e4f3d66e893b3f80e6acb616c3f61207ccc7106a88fcdd3a4ad60f7fca267972",
+    "mid.png": "07ac6c41bcdbd8223d5b53a88fa26b4ce207e8c329e76791cef8076a26056ca3",
+    "close.png": "ef26d4ad01779a66f59c1e288faa3d8d907d874294ecc74b2f1dbefc5e671d53",
+    "detail.png": "f44cd75401562173be1e2d3a7278ea201919b2049a16f939724d7f9b7559a15e"
+  },
+  "motion": null,
+  "gpu_requested": false,
+  "capture_mode": "swiftshader",
+  "webgl_renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-09T00:30:58+00:00",
+  "finished": "2026-09-09T00:31:16+00:00",
+  "surface": {
+    "families": {
+      "#bfbcb5": "stone",
+      "#79614b": "wood",
+      "#996f65": "roof-tile"
+    },
+    "seed": 1,
+    "size": 1024,
+    "ao": {
+      "samples": 13,
+      "radius_m": 0.45,
+      "ground_dirt_m": 0.6
+    }
+  }
+}

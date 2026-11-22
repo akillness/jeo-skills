@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.three-pbr-adapter",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Three.js PBR material adapter"
+  },
+  "aliases": {
+    "en": [
+      "three pbr adapter"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "rigid-mechanics",
+    "solid-geometry"
+  ],
+  "summary": "Choose Standard or Physical materials from the optical requirement, then inspect the result under controlled lighting.",
+  "objective": "A neutral sample and target object are both visible under the same lighting, with no unexplained exposure changes between comparisons.",
+  "tags": [
+    "tool-adapter",
+    "three",
+    "pbr",
+    "adapter"
+  ],
+  "example_prompts": [
+    "Choose Standard or Physical materials from the optical requirement, then inspect the result under controlled lighting."
+  ],
+  "content": {
+    "principles": [
+      "Separate a surface specification from shader parameters so other renderers can implement the same intent.",
+      "Choose extra optical features only when the object needs them and the artifact can demonstrate them."
+    ],
+    "implementation": [
+      "Use MeshStandardMaterial for the metallic-roughness baseline; use MeshPhysicalMaterial when transmission or another supported extension is required.",
+      "Mark color textures with their intended color space and keep roughness and normal data as non-color inputs.",
+      "Record renderer version, tone mapping, exposure and environment with the material test. Recheck API details against the installed release."
+    ],
+    "observable_checks": [
+      "A neutral sample and target object are both visible under the same lighting, with no unexplained exposure changes between comparisons.",
+      "Changing optical roughness does not silently mutate collider friction or body mass."
+    ]
+  },
+  "known_limits": [
+    "Renderer parameters approximate appearance; they are not measurements or rigid-body properties.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+  ],
+  "related_ids": [
+    "recipe.fantasy-village-diorama",
+    "recipe.coupled-gears",
+    "recipe.solid-of-revolution"
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-three-pbr-adapter",
+      "statement": "MeshStandardMaterial implements metallic-roughness shading; color maps and non-color material maps have different color-space requirements.",
+      "scope": "Three.js material input semantics.",
+      "source_refs": [
+        {
+          "source_id": "source.three-standard-material",
+          "locator": "Opening description; map; roughnessMap; normalMap"
+        }
+      ]
+    }
+  ]
+}

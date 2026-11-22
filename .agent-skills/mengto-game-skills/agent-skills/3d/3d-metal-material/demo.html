@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3D Metal Material — Kibori</title>
+<meta name="description" content="Hyperrealistic PBR metal in Three.js: conductor F0 colours, roughness-varied finishes and an HDR studio with real bright cards to reflect. Extracted from Kibori.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' rx='3' fill='%239d382c'/%3E%3Cpath d='M16 7v18M8 12h16M16 13l-7 9M16 13l7 9' stroke='%23f2ece2' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400&amp;display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#f2ece2; --dim:rgba(242,236,226,.62); --hair:rgba(242,236,226,.16);
+    --accent:#dbad64; --sans:"Inter",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-weight:normal}
+  html,body{height:100%}
+  body{background:#0a0806;color:var(--ink);font-family:var(--sans);overflow:hidden;-webkit-font-smoothing:antialiased}
+  canvas#gl{position:fixed;inset:0;width:100%;height:100%;display:block}
+  .chrome{position:fixed;inset:0;pointer-events:none;z-index:5;padding:0 clamp(16px,3.2vw,44px)}
+  .chrome::before{content:"";position:absolute;left:0;right:0;bottom:0;height:200px;pointer-events:none;
+    background:linear-gradient(to top,rgba(9,7,5,.62),rgba(9,7,5,.2) 60%,rgba(9,7,5,0))}
+  .chrome::after{content:"";position:absolute;left:0;right:0;top:0;height:230px;pointer-events:none;
+    background:linear-gradient(to bottom,rgba(9,7,5,.62),rgba(9,7,5,0))}
+  .bar{position:absolute;left:clamp(16px,3.2vw,44px);right:clamp(16px,3.2vw,44px);top:22px;z-index:2;display:flex;justify-content:space-between;
+    font:11px/1 var(--sans);letter-spacing:.26em;text-transform:uppercase;color:rgba(242,236,226,.62)}
+  .bar b{color:var(--ink);letter-spacing:.3em}
+  .copy{position:absolute;left:clamp(16px,3.2vw,44px);top:64px;width:min(410px,calc(100% - 32px));z-index:2}
+  .kick{font:11px/1.6 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+  h1{font:400 clamp(44px,5.6vw,80px)/.95 var(--serif);letter-spacing:-.01em;margin:10px 0 14px}
+  h1 i{color:var(--accent)}
+  .lede{font:400 13.5px/1.62 var(--sans);color:var(--dim);max-width:400px}
+  .lede b{color:var(--ink)}
+  .panel{position:absolute;left:clamp(16px,3.2vw,44px);right:clamp(16px,3.2vw,44px);bottom:clamp(16px,3.4vh,36px);z-index:3;pointer-events:auto;
+    display:flex;flex-wrap:wrap;gap:14px 34px;align-items:flex-end}
+  fieldset{border:0;min-width:0}
+  legend{font:11px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:rgba(242,236,226,.52);margin-bottom:10px;padding:0}
+  .seg{display:flex;gap:0}
+  .seg label{position:relative}
+  .seg input{position:absolute;opacity:0;inset:0;width:100%;height:100%;cursor:pointer;margin:0}
+  .seg span{display:block;padding:10px 15px;min-height:40px;font:11px/20px var(--sans);letter-spacing:.16em;text-transform:uppercase;
+    color:var(--dim);border:1px solid var(--hair);margin-left:-1px;background:rgba(20,14,9,.55);transition:background .2s,color .2s,border-color .2s}
+  .seg label:first-child span{margin-left:0}
+  .seg input:checked+span{color:#1b130c;background:var(--accent);border-color:var(--accent)}
+  .seg input:focus-visible+span{outline:2px solid var(--ink);outline-offset:2px;z-index:2;position:relative}
+  .seg input:not(:checked):hover+span{color:var(--ink);border-color:rgba(242,236,226,.4)}
+  .sw{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:8px;vertical-align:-1px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.4)}
+  .row{display:flex;gap:10px;align-items:center}
+  button.tog{font:11px/20px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);background:rgba(20,14,9,.55);
+    border:1px solid rgba(219,173,100,.52);padding:10px 15px;min-height:40px;cursor:pointer}
+  button.tog[aria-pressed=true]{background:var(--accent);color:#1b130c;border-color:var(--accent)}
+  button.tog:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:150px;height:40px;background:transparent;cursor:pointer}
+  input[type=range]::-webkit-slider-runnable-track{height:1px;background:rgba(242,236,226,.4)}
+  input[type=range]::-moz-range-track{height:1px;background:rgba(242,236,226,.4)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--accent);margin-top:-6px;border:0}
+  input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:var(--accent);border:0}
+  input[type=range]:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .read{position:absolute;right:clamp(16px,3.2vw,44px);top:64px;z-index:2;text-align:right;font:11px/1.9 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-variant-numeric:tabular-nums}
+  .read b{color:var(--ink)}
+  .copy{transition:opacity .5s ease}
+  .chrome.macro .copy{opacity:.22}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .fail{position:fixed;inset:0;display:none;place-items:center;text-align:center;padding:24px;font:14px/1.6 var(--sans);color:var(--dim);z-index:9}
+  @media (max-width:760px){
+    .read{display:none}
+    .copy{top:56px}
+    h1{font-size:44px;margin:6px 0 10px}
+    .lede{font-size:12.5px;line-height:1.5}
+    .lede .x{display:none}
+    .panel{gap:10px 16px}
+    .seg span{padding:8px 9px;letter-spacing:.09em;font-size:11px}
+    input[type=range]{width:120px}
+    legend{margin-bottom:6px}
+  }
+  @media (max-width:420px){ .seg span{padding:8px 7px;letter-spacing:.05em} .seg .sw{display:none} button.tog{padding:8px 11px} }
+</style>
+<script type="importmap">
+{"imports":{"three":"https://unpkg.com/three@0.169.0/build/three.module.min.js"}}
+</script>
+</head>
+<body>
+<canvas id="gl" aria-label="Steel, brass, gold and copper objects on a dark bench, lit by a moving window"></canvas>
+<div class="fail" id="fail">WebGL is not available in this browser.</div>
+<div class="chrome">
+  <div class="bar"><b>Kibori 木彫</b><span>Materials · Metal</span></div>
+  <div class="copy">
+    <div class="kick">Three.js · WebGL · GLSL · PMREM studio</div>
+    <h1>3D Metal <i>Material</i></h1>
+    <p class="lede">Metal has no colour of its own, only <b>what it reflects</b>. Metalness 1, an F0 tint, no albedo, and a dark studio with a few white-hot windows to catch. Take the windows away and the same steel goes flat grey.<span class="x"> Turn the light and the panes slide across the plate.</span></p>
+  </div>
+  <div class="read" aria-hidden="true">
+    <div>Metal <b id="rM">Steel</b></div><div>Finish <b id="rF">Polished</b></div>
+    <div>Reflects <b id="rE">Studio</b></div><div>Roughness <b id="rR">0.09</b></div><div>Light <b id="rL">0°</b></div>
+  </div>
+  <form class="panel" onsubmit="return false" aria-label="Metal controls">
+    <fieldset><legend>Metal</legend>
+      <div class="seg" role="radiogroup" id="metal">
+        <label><input type="radio" name="metal" value="steel" checked><span><i class="sw" style="background:#c4c5c7"></i>Steel</span></label>
+        <label><input type="radio" name="metal" value="brass"><span><i class="sw" style="background:#e0c27a"></i>Brass</span></label>
+        <label><input type="radio" name="metal" value="gold"><span><i class="sw" style="background:#ffd27a"></i>Gold</span></label>
+        <label><input type="radio" name="metal" value="copper"><span><i class="sw" style="background:#e9a58e"></i>Copper</span></label>
+      </div>
+    </fieldset>
+    <fieldset><legend>Finish</legend>
+      <div class="seg" role="radiogroup" id="finish">
+        <label><input type="radio" name="finish" value="polished" checked><span>Polished</span></label>
+        <label><input type="radio" name="finish" value="brushed"><span>Brushed</span></label>
+        <label><input type="radio" name="finish" value="aged"><span>Aged</span></label>
+      </div>
+    </fieldset>
+    <fieldset><legend>Reflects</legend>
+      <div class="seg" role="radiogroup" id="env">
+        <label><input type="radio" name="env" value="studio" checked><span>Studio</span></label>
+        <label><input type="radio" name="env" value="workshop"><span>Floor</span></label>
+        <label><input type="radio" name="env" value="grey"><span>Grey</span></label>
+      </div>
+    </fieldset>
+    <fieldset><legend>Light</legend>
+      <div class="row"><input type="range" id="light" min="-100" max="100" value="0" aria-label="Light angle">
+      <button class="tog" id="orbit" aria-pressed="true" type="button">Orbit</button></div>
+    </fieldset>
+    <fieldset><legend>View</legend>
+      <button class="tog" id="macro" aria-pressed="false" type="button">Macro</button>
+    </fieldset>
+  </form>
+  <div class="sr" id="live" aria-live="polite"></div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+
+/* Mechanism: a conductor (metalness 1, F0 tint as `color`, no albedo) shows only its
+   environment, so the environment is real HDR cards in a dark room, prefiltered by PMREM, and the
+   finish is the roughness varying across the surface. Everything in the sections marked
+   KIBORI is ported from kibori.html unchanged except where noted. */
+const canvas = document.getElementById('gl');
+let renderer;
+try { renderer = new THREE.WebGLRenderer({canvas, antialias:false, alpha:false, powerPreference:'high-performance'}); }
+catch (e) { document.getElementById('fail').style.display = 'grid'; throw e; }
+THREE.ColorManagement.enabled = true;
+renderer.toneMapping = THREE.NoToneMapping;          // ACES is applied by hand in the final pass
+renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.autoClear = false;
+renderer.setClearColor(0x000000, 1);
+const MAX_SAMPLES = renderer.capabilities.isWebGL2 ? Math.min(4, renderer.capabilities.maxSamples || 4) : 0;
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---- KIBORI: shared GLSL noise (verbatim) ---- */
+const NOISE = /* glsl */`
+  vec2 hash2(vec2 p){
+    p = vec2(dot(p,vec2(127.1,311.7)), dot(p,vec2(269.5,183.3)));
+    return fract(sin(p)*43758.5453123)*2.0-1.0;
+  }
+  float hash1(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123); }
+  float gnoise(vec2 x){
+    vec2 p = floor(x), w = fract(x);
+    vec2 u = w*w*w*(w*(w*6.0-15.0)+10.0);
+    float a = dot(hash2(p+vec2(0,0)), w-vec2(0,0));
+    float b = dot(hash2(p+vec2(1,0)), w-vec2(1,0));
+    float c = dot(hash2(p+vec2(0,1)), w-vec2(0,1));
+    float d = dot(hash2(p+vec2(1,1)), w-vec2(1,1));
+    return mix(mix(a,b,u.x), mix(c,d,u.x), u.y)*0.7+0.5;
+  }
+  float fbm(vec2 p, int oct){
+    float s=0.0,a=0.5,n=0.0;
+    for(int i=0;i<8;i++){ if(i>=oct) break; s+=a*gnoise(p); n+=a; p=p*2.03+11.7; a*=0.5; }
+    return s/max(n,1e-4);
+  }
+`;
+const QUAD_VS = /* glsl */`varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`;
+
+/* ---- KIBORI section 3: steelMat, verbatim except (a) the material class is a parameter so brushed can
+   use MeshPhysicalMaterial anisotropy, (b) the roughness floor is a parameter, (c) an object-space
+   normal varying vStN is added so the aged finish can wear the bevels. ---- */
+function steelMat(col = 0xcfd3d6, rough = 0.19, Cls = THREE.MeshStandardMaterial, floor = 0.18){
+  const m = new Cls({color:col,
+    roughness:Math.max(floor,rough), metalness:1.0, envMapIntensity:0.94});
+  m.onBeforeCompile = sh => {
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vStP; varying vec3 vStN;')
+      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvStP = position; vStN = normal;');
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vStP; varying vec3 vStN;\n' + NOISE)
+      .replace('#include <color_fragment>', `
+        #include <color_fragment>
+        vec2 sp = vStP.xy + vStP.z*vec2(0.31,0.17);
+        float spw = max(length(dFdx(sp)),length(dFdy(sp)));
+        float forge = gnoise(sp*24.0);
+        forge = mix(forge,0.5,smoothstep(0.18,0.60,spw*24.0));
+        /* Polishing marks alter the satin reflection, with only a trace in
+           the albedo. They disappear smoothly below their pixel footprint. */
+        float polish = gnoise(vec2(sp.x*420.0,sp.y*4.0));
+        polish = mix(polish,0.5,smoothstep(0.15,0.55,spw*420.0));
+        float lamination = smoothstep(0.38,0.63,gnoise(sp*vec2(3.0,12.0)));
+        diffuseColor.rgb *= (0.96 + forge*0.06)*(0.97 + lamination*0.03);
+        float stRough = clamp(roughness + (forge-0.5)*0.075
+                              + (polish-0.5)*0.13 + (1.0-lamination)*0.035,
+                              ${floor.toFixed(2)},0.86);
+      `)
+      .replace('#include <roughnessmap_fragment>',
+               '#include <roughnessmap_fragment>\n roughnessFactor = stRough;');
+  };
+  return m;
+}
+
+/* ---- KIBORI section 4: HDR studio (verbatim). Linear radiance above 1 on real cards; the window
+   is 3.8 so a steel face reflecting it is ~2.1 before ACES. ---- */
+function buildEnvironment(){
+  const studio = new THREE.Scene();
+  studio.background = new THREE.Color(0.045,0.050,0.060);
+  const cards = [];
+  function card(w,h,position,radiance){
+    const geo = new THREE.PlaneGeometry(w,h);
+    const mat = new THREE.MeshBasicMaterial({
+      color:new THREE.Color(...radiance), side:THREE.DoubleSide, toneMapped:false,
+    });
+    const mesh = new THREE.Mesh(geo,mat);
+    mesh.position.set(...position); mesh.lookAt(0,0,0);
+    studio.add(mesh); cards.push(mesh);
+  }
+  const windowFrame=new THREE.Group();
+  windowFrame.position.set(-5.0,4.2,4.8);windowFrame.lookAt(0,0,0);
+  for(let row=0;row<3;row++)for(let col=0;col<4;col++){
+    const geo=new THREE.PlaneGeometry(1.08,1.20);   /* KIBORI: 1.24 x 1.38. Wider mullions so the bars survive a 256px cube and roughness .09 */
+    const mat=new THREE.MeshBasicMaterial({color:new THREE.Color(3.8,3.55,3.05),side:THREE.DoubleSide,toneMapped:false});
+    const pane=new THREE.Mesh(geo,mat);pane.position.set((col-1.5)*1.30,(row-1)*1.47,0);
+    windowFrame.add(pane);cards.push(pane);
+  }
+  studio.add(windowFrame);
+  card(3.0,5.4,[6.0,1.6,2.0],[0.52,0.68,0.90]);
+  card(2.0,4.6,[2.5,2.2,-5.5],[1.50,1.22,0.88]);
+  card(7.5,2.2,[0,6.0,0],[0.52,0.55,0.60]);
+  card(9.0,9.0,[0,-4.0,0],[0.18,0.12,0.07]);
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const target = pmrem.fromScene(studio,0.006,0.1,40);   /* KIBORI sigma 0.025 smeared the mullions away */
+  pmrem.dispose();
+  for(const mesh of cards){ mesh.geometry.dispose(); mesh.material.dispose(); }
+  return target.texture;
+}
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0x0a0806, 1.3, 3.3);
+const studioEnv = buildEnvironment();
+scene.environment = studioEnv;
+
+/* ---- KIBORI: chamferBox (verbatim). Real round arrises, six planar faces. ---- */
+function chamferBox(w, h, d, c, mat){
+  const r = Math.max(0.0001, Math.min(c, w*0.24, h*0.24, d*0.24));
+  const segments = r < 0.008 ? 3 : 5;
+  const g = new THREE.BoxGeometry(1, 1, 1, segments, segments, segments);
+  const pos = g.attributes.position, normal = g.attributes.normal;
+  const halfCell = 0.5 / segments;
+  const core = new THREE.Vector3(w/2-r, h/2-r, d/2-r);
+  const n = new THREE.Vector3();
+  for(let i=0;i<pos.count;i++){
+    const x=pos.getX(i), y=pos.getY(i), z=pos.getZ(i);
+    n.set(x-Math.sign(x)*halfCell, y-Math.sign(y)*halfCell, z-Math.sign(z)*halfCell).normalize();
+    pos.setXYZ(i, Math.sign(x)*core.x+n.x*r, Math.sign(y)*core.y+n.y*r, Math.sign(z)*core.z+n.z*r);
+    normal.setXYZ(i,n.x,n.y,n.z);
+  }
+  g.computeBoundingSphere();
+  const m = new THREE.Mesh(g, mat);
+  m.castShadow = true; m.receiveShadow = true;
+  return m;
+}
+
+/* ---- KIBORI: the workshop-floor reflection map baked for the blade (verbatim maths: PATCH table,
+   penumbra falloff, kumiko shadow bars). Only the polished plate reads it. ---- */
+function bakeBladeRoom(){
+  const EW = 1024, EH = 512, cv = document.createElement('canvas');
+  cv.width = EW; cv.height = EH;
+  const g2 = cv.getContext('2d');
+  const rg = g2.createLinearGradient(0, 0, 0, EH);
+  rg.addColorStop(0.00, '#070605'); rg.addColorStop(0.50, '#120d09');
+  rg.addColorStop(0.56, '#1c140c'); rg.addColorStop(1.00, '#1a120b');
+  g2.fillStyle = rg; g2.fillRect(0, 0, EW, EH);
+  const PATCH = [[-0.40, -0.72, 0.20, 0.25, 0.50], [0.02, 0.26, 0.18, 0.40, 0.42], [1.45, 0.80, 0.50, 0.12, 0.52],
+                 [3.30, 2.00, 1.00, 0.30, 0.50], [6.20, 3.30, 1.80, 0.30, 0.48]];
+  const j0 = Math.floor(EH*(0.5 + 8/180)), img = g2.getImageData(0, j0, EW, EH - j0), px = img.data;
+  const sq = t => { const u = Math.min(1, Math.max(0, t)); return u*u*(3 - 2*u); };
+  for (let j = j0; j < EH; j++) for (let i = 0; i < EW; i++){
+    let acc = 0;
+    for (let s = 0; s < 4; s++){
+      const el = (0.5 - (j + 0.25 + 0.5*(s >> 1))/EH)*Math.PI;
+      const az = Math.PI/2 - ((i + 0.25 + 0.5*(s & 1))/EW - 0.5)*Math.PI*2;
+      const ce = Math.cos(el), dy = -Math.sin(el);
+      const X = ce*Math.sin(az)/dy, Z = ce*Math.cos(az)/dy;
+      let v = 0.16*Math.exp(-((X + 0.10)*(X + 0.10) + (Z - 0.12)*(Z - 0.12))/0.05);
+      for (const [cx, cz, h, rot, b] of PATCH){
+        const c = Math.cos(rot), sn = Math.sin(rot), u = (X - cx)*c - (Z - cz)*sn, w = (X - cx)*sn + (Z - cz)*c;
+        const du = Math.max(0, Math.abs(u) - h), dw = Math.max(0, Math.abs(w) - h);
+        v = Math.max(v, b*0.50*Math.exp(-(du*du + dw*dw)/0.25));
+        const inside = sq((h - Math.abs(u))/0.22)*sq((h - Math.abs(w))/0.22);
+        if (inside <= 0) continue;
+        const fall = 0.62 + 0.38*(1 - (u*u + w*w)/(2*h*h));
+        const gu = Math.abs(((u/h + 1)*2 % 1 + 1) % 1 - 0.5), gw = Math.abs(((w/h + 1)*2 % 1 + 1) % 1 - 0.5);
+        const bar = Math.max(sq((0.11 - (0.5 - gu))/0.08), sq((0.11 - (0.5 - gw))/0.08));
+        v = Math.max(v, b*(0.50 + 0.50*inside)*fall*(1 - 0.45*bar*inside));
+      }
+      acc += v;
+    }
+    const v = acc/4, k = ((j - j0)*EW + i)*4;
+    if (v > 0.004){
+      px[k] = Math.min(255, px[k] + 255*v); px[k + 1] = Math.min(255, px[k + 1] + 226*v); px[k + 2] = Math.min(255, px[k + 2] + 176*v);
+    }
+  }
+  g2.putImageData(img, 0, j0);
+  const tex = new THREE.CanvasTexture(cv);
+  tex.colorSpace = THREE.SRGBColorSpace; tex.mapping = THREE.EquirectangularReflectionMapping;
+  const pm = new THREE.PMREMGenerator(renderer), room = pm.fromEquirectangular(tex).texture;
+  pm.dispose(); tex.dispose();
+  return room;
+}
+const _tb = performance.now(), bladeRoom = bakeBladeRoom(), bakeMs = performance.now() - _tb;   /* one-off, off the frame path */
+/* the failure, on demand: a uniform mid-grey room. PMREM of it has no structure to filter, so every
+   roughness returns the same flat tone and the metal reads as grey plastic. */
+const greyRoom = (() => {
+  const sc = new THREE.Scene(); sc.background = new THREE.Color(0.30,0.30,0.31);
+  const pm = new THREE.PMREMGenerator(renderer), t = pm.fromScene(sc, 0.04).texture; pm.dispose(); return t;
+})();
+
+/* ------------------------------------------------------------------ *
+ *  Metal library (this demo). F0 is linear reflectance at normal
+ *  incidence (Hoffman's measured values); it goes in `color`, and
+ *  the base is never lit diffusely because metalness is 1.
+ * ------------------------------------------------------------------ */
+const F0 = {
+  steel : [0.56, 0.57, 0.58],
+  brass : [0.89, 0.72, 0.36],
+  gold  : [1.00, 0.71, 0.29],
+  copper: [0.95, 0.64, 0.54],
+};
+const PATINA = {                          /* what the surface turns into as it ages */
+  steel : [0.16, 0.055, 0.02],            /* rust bloom */
+  brass : [0.09, 0.055, 0.02],            /* dark tarnish */
+  gold  : [0.13, 0.085, 0.03],            /* dirty lacquer wear */
+  copper: [0.10, 0.34, 0.27],             /* verdigris */
+};
+const FINISH = {                          /* base roughness of each finish, and the envMapIntensity it needs */
+  polished:{rough:0.09, env:1.0},
+  brushed :{rough:0.26, env:0.72},
+  aged    :{rough:0.36, env:0.85},
+};
+const patCol = {value:new THREE.Color()};
+const cache = new Map();
+const envRot = new THREE.Euler(0, 0, 0);
+
+/* finish layers over KIBORI's steelMat. Chained the same way KIBORI's `forged()` chains: the extra
+   code replaces the `roughnessFactor = stRough;` line, so it sees KIBORI's forge/polish noise. */
+function metalMat(kind, opts){
+  const room = false, edge = opts.edge ? 1 : 0;
+  const key = kind + edge;
+  if (cache.has(key)) return cache.get(key);
+  const f = FINISH[kind];
+  const Cls = kind === 'brushed' ? THREE.MeshPhysicalMaterial : THREE.MeshStandardMaterial;
+  const m = steelMat(0xffffff, f.rough, Cls, 0.05);
+  m.userData.env = f.env;
+  m.envMap = studioEnv;                               /* r163+: envMapIntensity is ignored without material.envMap */
+  m.envMapIntensity = f.env;
+  m.envMapRotation = envRot;
+  if (kind === 'brushed'){ m.anisotropy = 0.85; m.anisotropyRotation = 0; }
+  m.customProgramCacheKey = () => 'metal-' + key;
+  const base = m.onBeforeCompile;
+  m.onBeforeCompile = sh => {
+    base(sh);
+    sh.uniforms.uPatCol = patCol;
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', `#include <common>
+        uniform vec3 uPatCol;
+        /* height-field bump from screen derivatives (KIBORI irBump) */
+        vec3 mtBump(vec3 p, vec3 n, float h, float k){
+          vec3 dx = dFdx(p), dy = dFdy(p), r1 = cross(dy, n), r2 = cross(n, dx);
+          float det = dot(dx, r1);
+          return normalize(abs(det)*n - k*sign(det)*(dFdx(h)*r1 + dFdy(h)*r2)); }`)
+      .replace('roughnessFactor = stRough;', `roughnessFactor = stRough;
+        float dev = stRough - roughness;                                  /* KIBORI's forge/polish/lamination spread */
+        float fw = max(length(dFdx(vStP)),length(dFdy(vStP)));             /* pixel footprint in object units */
+        float edgeK = ${edge.toFixed(1)}*smoothstep(0.03,0.30,1.0 - max(max(abs(vStN.x),abs(vStN.y)),abs(vStN.z)));
+        /* fingerprints: broad low-frequency smears that rough up the mirror a little */
+        float smear = smoothstep(0.52,0.78,fbm(vStP.xy*vec2(11.0,9.0)+vStP.z*7.0+3.0,3));
+        /* micro-scratches at two angles, lost below their pixel footprint */
+        vec2 s1 = vec2(vStP.x*0.83+vStP.y*0.56, vStP.z*0.9-vStP.y*0.4+vStP.x*0.2);
+        vec2 s2 = vec2(vStP.x*0.30-vStP.y*0.95, vStP.z*0.8+vStP.x*0.6);
+        float sc1 = smoothstep(0.80,0.93,gnoise(vec2(s1.x*640.0, s1.y*7.0)));
+        float sc2 = smoothstep(0.82,0.94,gnoise(vec2(s2.x*900.0, s2.y*11.0)));
+        float scr = max(sc1,sc2)*(1.0-smoothstep(0.2,0.8,fw*640.0));
+        /* micro grain: 0.4 mm cells along the grinding direction, only resolved when a pixel is smaller than a cell */
+        float mg = mix(0.5, gnoise(vec2((vStP.y+vStP.z*0.7)*2600.0, vStP.x*160.0)), 1.0-smoothstep(0.15,0.7,fw*2600.0));
+        ${kind === 'polished' ? `
+        roughnessFactor = clamp(${f.rough.toFixed(3)} + dev*0.30 + smear*0.11 + scr*0.24 + (mg-0.5)*0.05, 0.045, 0.6);` : ''}
+        ${kind === 'brushed' ? `
+        /* long streaks along x: high frequency across the grain, near-zero along it */
+        float bw = 1.0 - smoothstep(0.2,0.8,fw*520.0);
+        float st1 = mix(0.5, gnoise(vec2((vStP.y+vStP.z)*520.0, vStP.x*5.0)), bw);
+        float st2 = mix(0.5, gnoise(vec2((vStP.y*0.7-vStP.z)*1500.0, vStP.x*9.0+4.0)), 1.0-smoothstep(0.2,0.8,fw*1500.0));
+        roughnessFactor = clamp(${f.rough.toFixed(3)} + dev*0.30 + (st1-0.5)*0.18 + (st2-0.5)*0.10 + smear*0.07 + scr*0.16 + (mg-0.5)*0.10 - edgeK*0.08, 0.10, 0.75);` : ''}
+        ${kind === 'aged' ? `
+        /* patina blooms in the crevices and flat faces and is worn off the bevels by handling */
+        float patBig = smoothstep(0.38,0.66,fbm(vStP.xy*vec2(4.0,3.5)+vStP.zy*2.0+1.3,3));
+        float patFine = smoothstep(0.52,0.70,fbm(vStP.xy*vec2(70.0,55.0)+vStP.zy*30.0+7.1,5));
+        float patDust = mix(1.0, smoothstep(0.30,0.72,gnoise(vStP.zy*vec2(900.0,700.0)+vStP.x*300.0)), 1.0-smoothstep(0.2,0.8,fw*900.0));
+        float pat = patBig*patFine*patDust;
+        float pit = fbm(vStP.zy*vec2(120.0,90.0)+vStP.x*60.0,3);
+        pat = clamp(pat*(1.0-edgeK*0.92)*1.15 + smear*0.06*(1.0-edgeK), 0.0, 1.0);
+        diffuseColor.rgb *= mix(1.0, 0.66, pat*0.6);                       /* metal darkens, colour comes from the tint below */
+        diffuseColor.rgb = mix(diffuseColor.rgb, uPatCol*(0.75+pit*0.5), pat*0.85);
+        roughnessFactor = clamp(${f.rough.toFixed(3)} + dev*1.3 + pat*0.42 + smear*0.08 + scr*0.22 + (mg-0.5)*0.14 - edgeK*0.26, 0.10, 0.95);
+        float agedH = (pit-0.5)*0.00006*pat + (fbm(vStP.zy*vec2(380.0,300.0),2)-0.5)*0.000012;
+        float agedPat = pat;` : ''}`)
+      .replace('#include <metalnessmap_fragment>', `#include <metalnessmap_fragment>
+        ${kind === 'aged' ? 'metalnessFactor = 1.0 - agedPat*0.72;' : ''}`)
+      .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
+        ${kind === 'aged' ? 'normal = mtBump(-vViewPosition, normal, agedH, 0.9);' : ''}`);
+  };
+  cache.set(key, m);
+  return m;
+}
+function setEnv(name){
+  state.env = name;
+  const env = name === 'workshop' ? bladeRoom : name === 'grey' ? greyRoom : studioEnv;
+  const k = name === 'workshop' ? 3.0 : name === 'grey' ? 1.4 : null;   /* 3.0 is KIBORI's envMapIntensity for the baked room */
+  cache.forEach(m => { m.envMap = env; m.envMapIntensity = k ?? m.userData.env;  });
+  document.getElementById('rE').textContent = {studio:'Studio', workshop:'Floor', grey:'Grey'}[name];
+}
+function setMetalColor(name){
+  cache.forEach(m => m.color.setRGB(...F0[name], THREE.LinearSRGBColorSpace));
+  patCol.value.setRGB(...PATINA[name], THREE.LinearSRGBColorSpace);
+}
+
+/* ------------------------------------------------------------------ *
+ *  Staging: a dark workshop bench, so there is nothing to reflect but the studio
+ * ------------------------------------------------------------------ */
+const camera = new THREE.PerspectiveCamera(34, 1, 0.02, 40);
+const parts = [];        /* {mesh, kind:'plate'|'edge'|'round'} */
+const holder = new THREE.Group(); scene.add(holder);
+
+/* bench: dark oak with a planed top (staging only: see 3d-wood-material) */
+{
+  const cv = document.createElement('canvas'); cv.width = 1024; cv.height = 512;
+  const g = cv.getContext('2d');
+  g.fillStyle = '#2a1c11'; g.fillRect(0,0,1024,512);
+  let s = 7; const R = () => { s = (s*1664525+1013904223)>>>0; return s/4294967296; };
+  for (let i = 0; i < 900; i++){
+    const y = R()*512, l = 200+R()*700, x = R()*1024, a = 0.03+R()*0.09;
+    g.strokeStyle = R() < .5 ? `rgba(12,7,3,${a})` : `rgba(96,66,38,${a*0.8})`;
+    g.lineWidth = 0.6+R()*1.6; g.beginPath(); g.moveTo(x,y); g.bezierCurveTo(x+l*.3,y+(R()-.5)*5,x+l*.6,y+(R()-.5)*5,x+l,y+(R()-.5)*3); g.stroke();
+  }
+  for (const x of [340, 700]){ g.fillStyle = 'rgba(6,4,2,.75)'; g.fillRect(x,0,2,512); }
+  const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  const bench = new THREE.Mesh(new THREE.BoxGeometry(3.4, 0.08, 6.0),
+    new THREE.MeshStandardMaterial({map:t, roughness:0.62, metalness:0, envMap:studioEnv, envMapIntensity:0.5}));
+  bench.position.set(0,-0.04,-0.9); bench.receiveShadow = true; scene.add(bench);
+}
+const woodMat = new THREE.MeshStandardMaterial({color:0x3a2616, roughness:0.62, metalness:0, envMap:studioEnv, envMapIntensity:0.5});
+
+/* contact shadow blobs: a dark radial fade under each object so nothing floats */
+const blobTex = (() => {
+  const cv = document.createElement('canvas'); cv.width = cv.height = 128;
+  const g = cv.getContext('2d'), gr = g.createRadialGradient(64,64,4,64,64,64);
+  gr.addColorStop(0,'rgba(0,0,0,.85)'); gr.addColorStop(0.45,'rgba(0,0,0,.45)'); gr.addColorStop(1,'rgba(0,0,0,0)');
+  g.fillStyle = gr; g.fillRect(0,0,128,128);
+  return new THREE.CanvasTexture(cv);
+})();
+function blob(x, z, w, d, rot = 0, o = 0.8){
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, d),
+    new THREE.MeshBasicMaterial({map:blobTex, transparent:true, opacity:o, depthWrite:false, polygonOffset:true, polygonOffsetFactor:-2}));
+  m.rotation.set(-Math.PI/2, 0, rot); m.position.set(x, 0.0008, z); scene.add(m);
+}
+function metalMesh(mesh, kind){ parts.push({mesh, kind}); holder.add(mesh); return mesh; }
+
+/* stand block, the plate sits in a groove in it */
+const stand = chamferBox(0.44, 0.034, 0.15, 0.004, woodMat);
+stand.position.set(0.02, 0.017, -0.12); stand.rotation.y = -0.38; scene.add(stand);
+/* hero plate: crowned a few degrees like a hand-polished blade, so a pane's reflection is a band that
+   travels as the light turns (KIBORI crown: K across, KL along) */
+const plateGeo = (() => {
+  const m = chamferBox(0.36, 0.23, 0.014, 0.0035, null);
+  const g = m.geometry, P = g.attributes.position, N = g.attributes.normal;
+  g.computeBoundingBox(); const bb = g.boundingBox, hw = (bb.max.x-bb.min.x)/2, hy = (bb.max.y-bb.min.y)/2;
+  const K = 0.21, KL = 0.09;
+  for (let i = 0; i < P.count; i++){
+    let nx = N.getX(i), ny = N.getY(i); const nz = N.getZ(i);
+    if (Math.abs(nz) < 0.9) continue;
+    nx += K*P.getX(i)/hw; ny += KL*P.getY(i)/hy;
+    const l = Math.hypot(nx, ny, nz); N.setXYZ(i, nx/l, ny/l, nz/l);
+  }
+  N.needsUpdate = true; return g;
+})();
+const plate = new THREE.Mesh(plateGeo, null); plate.castShadow = true; plate.receiveShadow = true;
+plate.rotation.set(-0.36, -0.38, 0, 'YXZ');     /* turned toward the window: the bisector of eye and pane, so the panes land on the plate */
+plate.position.set(0.02, 0.034 - 0.008 + 0.115*Math.cos(0.36), -0.12);
+metalMesh(plate, 'plate');
+
+/* chisel: blade + brass-style ferrule in the selected metal, dielectric handle. Touches at the tip and the handle. */
+const chisel = new THREE.Group();
+const blade = chamferBox(0.24, 0.008, 0.044, 0.0022, null); blade.position.set(0.12, 0, 0);
+metalMesh(blade, 'edge'); chisel.add(blade);
+const lathe = (pts, seg = 40) => new THREE.LatheGeometry(pts.map(p => new THREE.Vector2(p[0], p[1])), seg);
+const ferrule = new THREE.Mesh(lathe([[0.0,0],[0.0155,0],[0.0185,0.0016],[0.0192,0.004],[0.0192,0.017],[0.0182,0.0188],[0.0155,0.0195],[0.0,0.0195]]), null);
+ferrule.rotation.z = -Math.PI/2; ferrule.position.set(0.24, 0, 0); ferrule.castShadow = true;
+metalMesh(ferrule, 'round'); chisel.add(ferrule);
+const handle = new THREE.Mesh(lathe([[0,0],[0.0165,0],[0.0175,0.004],[0.0175,0.09],[0.0158,0.108],[0.0,0.112]]), woodMat);
+handle.rotation.z = -Math.PI/2; handle.position.set(0.2595, 0, 0); handle.castShadow = true; handle.receiveShadow = true;
+chisel.add(handle);
+chisel.position.set(-0.32, 0.004, 0.15); chisel.rotation.set(0, -0.10, 0.0356*0.365/0.3);
+scene.add(chisel);
+holder.updateMatrixWorld(true);
+
+/* ball bearing */
+const ball = new THREE.Mesh(new THREE.SphereGeometry(0.043, 96, 64), null);
+ball.position.set(0.30, 0.043, 0.04); ball.castShadow = true; ball.receiveShadow = true; metalMesh(ball, 'round');
+/* ring */
+const ring = new THREE.Mesh(new THREE.TorusGeometry(0.052, 0.0105, 48, 160), null);
+ring.rotation.x = -Math.PI/2; ring.position.set(0.16, 0.0105, 0.20); ring.castShadow = true; ring.receiveShadow = true; metalMesh(ring, 'round');
+/* ingot */
+const ingot = chamferBox(0.15, 0.036, 0.075, 0.008, null); ingot.position.set(-0.24, 0.018, 0.02); ingot.rotation.y = 0.34;
+metalMesh(ingot, 'edge');
+blob(0.02, -0.11, 0.50, 0.18, 0.10, 0.65); blob(0.30, 0.04, 0.15, 0.15, 0, 0.9); blob(0.16, 0.20, 0.17, 0.17, 0, 0.7);
+blob(-0.24, 0.02, 0.26, 0.17, -0.34, 0.75); blob(-0.20, 0.15, 0.44, 0.09, 0.10, 0.5);
+
+/* key light: a warm lamp that orbits; casts the bench shadows and puts a real specular lobe on rough metal */
+const sun = new THREE.DirectionalLight(0xffe2b8, 2.0);
+sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, {left:-0.7, right:0.7, top:0.7, bottom:-0.7, near:0.1, far:6});
+sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.002; sun.shadow.radius = 3;
+scene.add(sun, sun.target);
+scene.add(new THREE.HemisphereLight(0x8a94a8, 0x1a1008, 0.18));
+
+/* ------------------------------------------------------------------ *
+ *  State + material assignment
+ * ------------------------------------------------------------------ */
+const state = {env:'studio', metal:'steel', finish:'polished', macro:false, orbit:!REDUCED, angle:0.0};
+function applyMaterials(){
+  for (const p of parts){
+    const room = false;
+    const edge = p.kind === 'plate' || p.kind === 'edge';
+    p.mesh.material = metalMat(state.finish, {room, edge});
+  }
+  setMetalColor(state.metal); setEnv(state.env);
+  const f = FINISH[state.finish];
+  document.getElementById('rM').textContent = state.metal[0].toUpperCase() + state.metal.slice(1);
+  document.getElementById('rF').textContent = state.finish[0].toUpperCase() + state.finish.slice(1);
+  document.getElementById('rR').textContent = f.rough.toFixed(2);
+}
+
+/* ------------------------------------------------------------------ *
+ *  Post: HalfFloat MSAA scene target, small bloom, ACES + grain (KIBORI final pass)
+ * ------------------------------------------------------------------ */
+const rtOpt = {type:THREE.HalfFloatType, stencilBuffer:false, minFilter:THREE.LinearFilter, magFilter:THREE.LinearFilter};
+const rtScene = new THREE.WebGLRenderTarget(2,2,{...rtOpt, depthBuffer:true, samples:MAX_SAMPLES});
+const bloomOpt = {type:THREE.HalfFloatType, stencilBuffer:false, depthBuffer:false, minFilter:THREE.LinearFilter, magFilter:THREE.LinearFilter};
+const rtB1 = new THREE.WebGLRenderTarget(2,2,bloomOpt), rtB2 = new THREE.WebGLRenderTarget(2,2,bloomOpt);
+const quadGeo = new THREE.PlaneGeometry(2,2), quadCam = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+const quadScene = new THREE.Scene(), quadMesh = new THREE.Mesh(quadGeo, new THREE.MeshBasicMaterial()); quadScene.add(quadMesh);
+const extractMat = new THREE.ShaderMaterial({uniforms:{uTex:{value:null}, uTexel:{value:new THREE.Vector2()}}, vertexShader:QUAD_VS,
+  fragmentShader:`varying vec2 vUv; uniform sampler2D uTex; uniform vec2 uTexel;
+    vec3 tap(vec2 o){ vec3 c = texture2D(uTex, vUv+o*uTexel).rgb; return min(max(c-5.0, 0.0), 1.0); }   /* clamp: one hot glint pixel must not become a halo */
+    void main(){ gl_FragColor = vec4((tap(vec2(-1,-1))+tap(vec2(1,-1))+tap(vec2(-1,1))+tap(vec2(1,1)))*0.25, 1.0); }`,
+  depthTest:false, depthWrite:false});
+const blurMat = new THREE.ShaderMaterial({uniforms:{uTex:{value:null}, uDir:{value:new THREE.Vector2()}}, vertexShader:QUAD_VS,
+  fragmentShader:`varying vec2 vUv; uniform sampler2D uTex; uniform vec2 uDir;
+    void main(){ vec3 s = texture2D(uTex,vUv).rgb*0.2270;
+      s += (texture2D(uTex,vUv+uDir*1.385).rgb + texture2D(uTex,vUv-uDir*1.385).rgb)*0.3162;
+      s += (texture2D(uTex,vUv+uDir*3.231).rgb + texture2D(uTex,vUv-uDir*3.231).rgb)*0.0703;
+      gl_FragColor = vec4(s,1.0); }`, depthTest:false, depthWrite:false});
+const finalMat = new THREE.ShaderMaterial({
+  uniforms:{uTex:{value:null}, uB:{value:null}, uTime:{value:0}, uRes:{value:new THREE.Vector2(1,1)}, uSharp:{value:0.10}, uBloom:{value:0.22}},
+  vertexShader:QUAD_VS,
+  fragmentShader:NOISE + /* glsl */`
+    varying vec2 vUv; uniform sampler2D uTex, uB; uniform float uTime, uSharp, uBloom; uniform vec2 uRes;
+    vec3 aces(vec3 x){ const float a=2.51,b=0.03,c=2.43,d=0.59,e=0.14; return clamp((x*(a*x+b))/(x*(c*x+d)+e), 0.0, 1.0); }
+    vec3 lin2srgb(vec3 c){ return mix(c*12.92, 1.055*pow(max(c,vec3(1e-5)),vec3(1.0/2.4))-0.055, step(0.0031308,c)); }
+    void main(){
+      vec2 px = 1.0/uRes, d = vUv - 0.5;
+      vec3 col = texture2D(uTex, vUv).rgb;
+      vec3 blur = (texture2D(uTex, vUv+vec2(px.x,0.0)).rgb + texture2D(uTex, vUv-vec2(px.x,0.0)).rgb
+                 + texture2D(uTex, vUv+vec2(0.0,px.y)).rgb + texture2D(uTex, vUv-vec2(0.0,px.y)).rgb)*0.25;
+      col += (col - blur) * uSharp;
+      col += texture2D(uB, vUv).rgb * uBloom;
+      float v = 1.0 - smoothstep(0.46, 1.20, length(d*vec2(1.02,1.0))*1.24);
+      col *= 0.42 + 0.58*v;
+      col = aces(max(col, 0.0));
+      col = lin2srgb(col);
+      float g = hash1(vUv*uRes + fract(uTime)*137.0);
+      col += (g-0.5)*0.003;
+      gl_FragColor = vec4(col, 1.0);
+    }`, depthTest:false, depthWrite:false});
+function pass(mat, target){ quadMesh.material = mat; renderer.setRenderTarget(target); renderer.clear(); renderer.render(quadScene, quadCam); }
+
+let VW = 1, VH = 1, DPR = 1;
+function resize(){
+  const w = Math.max(1, innerWidth), h = Math.max(1, innerHeight);
+  DPR = Math.min(devicePixelRatio || 1, 2);                 /* cap 2 */
+  VW = w; VH = h;
+  renderer.setPixelRatio(1); renderer.setSize(Math.round(w*DPR), Math.round(h*DPR), false);
+  canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+  const pw = Math.round(w*DPR), ph = Math.round(h*DPR);
+  rtScene.setSize(pw, ph); rtB1.setSize(Math.max(2,pw>>2), Math.max(2,ph>>2)); rtB2.setSize(Math.max(2,pw>>2), Math.max(2,ph>>2));
+  finalMat.uniforms.uRes.value.set(pw, ph);
+  camera.aspect = w/h; updateCamera(true);
+}
+
+/* ------------------------------------------------------------------ *
+ *  Camera: hero frame and macro close-up
+ * ------------------------------------------------------------------ */
+const V = {
+  hero : {pos:new THREE.Vector3(0.0, 0.30, 0.92), tgt:new THREE.Vector3(0.0, 0.085, 0.02), fov:34},
+  heroM: {pos:new THREE.Vector3(0.0, 0.34, 1.26), tgt:new THREE.Vector3(0.0, 0.075, 0.03), fov:38},
+  macro: {pos:new THREE.Vector3(), tgt:new THREE.Vector3(), fov:22},
+};
+/* macro: the plate's lower-left bevel, close enough that the finish (scratches, streaks, patina) is the subject */
+{
+  plate.updateMatrixWorld(true);
+  V.macro.tgt.copy(plate.localToWorld(new THREE.Vector3(-0.10, 0.066, 0.007)));
+  V.macro.pos.copy(V.macro.tgt).add(new THREE.Vector3(0.05, 0.09, 0.30));
+}
+const cur = {pos:V.hero.pos.clone(), tgt:V.hero.tgt.clone(), fov:34}; let macroT = 0, macroGoal = 0;
+function updateCamera(force){
+  const portrait = camera.aspect < 0.85;
+  const a = portrait ? V.heroM : V.hero, b = V.macro;
+  const k = macroT*macroT*(3 - 2*macroT);
+  cur.pos.lerpVectors(a.pos, b.pos, k); cur.tgt.lerpVectors(a.tgt, b.tgt, k); cur.fov = a.fov + ((portrait ? 30 : b.fov) - a.fov)*k;
+  camera.fov = cur.fov; camera.position.copy(cur.pos); camera.lookAt(cur.tgt); camera.updateProjectionMatrix();
+}
+
+/* ------------------------------------------------------------------ *
+ *  Frame
+ * ------------------------------------------------------------------ */
+let t = 0, last = performance.now(), running = true, frames = 0, emaDt = 16.7;
+const ANG_RANGE = 1.15;                   /* rad of light sweep either side of centre */
+function setLight(a){                     /* a in [-1,1] */
+  state.angle = a;
+  const yaw = a*ANG_RANGE;
+  envRot.y = yaw*0.9;                     /* the window slides across the metal */
+  const r = 1.4, az = 0.55 + yaw;         /* the lamp goes with it */
+  sun.position.set(-Math.sin(az)*r, 1.2, Math.cos(az)*r*0.7 + 0.2); sun.target.position.set(0, 0.05, 0);
+  document.getElementById('rL').textContent = Math.round(a*60) + '°';
+}
+function render(){
+  const prev = renderer.getRenderTarget();
+  renderer.setRenderTarget(rtScene); renderer.clear();
+  renderer.render(scene, camera);
+  extractMat.uniforms.uTex.value = rtScene.texture; extractMat.uniforms.uTexel.value.set(1/rtScene.width, 1/rtScene.height);
+  pass(extractMat, rtB1);
+  blurMat.uniforms.uTex.value = rtB1.texture; blurMat.uniforms.uDir.value.set(1/rtB1.width, 0); pass(blurMat, rtB2);
+  blurMat.uniforms.uTex.value = rtB2.texture; blurMat.uniforms.uDir.value.set(0, 1/rtB1.height); pass(blurMat, rtB1);
+  finalMat.uniforms.uTex.value = rtScene.texture; finalMat.uniforms.uB.value = rtB1.texture; finalMat.uniforms.uTime.value = REDUCED ? 0 : t;
+  pass(finalMat, null);
+  renderer.setRenderTarget(prev);
+}
+const slider = document.getElementById('light');
+function loop(now){
+  requestAnimationFrame(loop);
+  if (document.hidden || !running){ last = now; return; }
+  const dt = Math.min((now - last)/1000, 1/30); last = now; t += dt;
+  emaDt += (dt*1000 - emaDt)*0.05; frames++;
+  let dirty = false;
+  if (Math.abs(macroT - macroGoal) > 1e-4){ macroT += (macroGoal - macroT)*(1 - Math.exp(-dt*5)); if (Math.abs(macroT-macroGoal)<1e-3) macroT = macroGoal; updateCamera(); dirty = true; }
+  if (state.orbit && !REDUCED){
+    const a = Math.sin(t*0.42)*0.95; setLight(a); slider.value = Math.round(a*100); dirty = true;
+  }
+  if (dirty || !REDUCED) render();
+}
+function still(){ render(); }
+/* the designed still under reduced motion: light parked where the window lands across the plate */
+if (REDUCED){ setLight(-0.30); slider.value = -30; }
+else setLight(0);
+
+/* ------------------------------------------------------------------ *
+ *  Controls
+ * ------------------------------------------------------------------ */
+const live = document.getElementById('live');
+document.querySelectorAll('input[name=metal]').forEach(i => i.addEventListener('change', () => {
+  state.metal = i.value; applyMaterials(); live.textContent = `${state.metal}, ${state.finish}`; if (REDUCED) still(); }));
+document.querySelectorAll('input[name=env]').forEach(i => i.addEventListener('change', () => {
+  setEnv(i.value); live.textContent = 'Reflecting ' + i.value; if (REDUCED) still(); }));
+document.querySelectorAll('input[name=finish]').forEach(i => i.addEventListener('change', () => {
+  state.finish = i.value; applyMaterials(); live.textContent = `${state.metal}, ${state.finish}`; if (REDUCED) still(); }));
+slider.addEventListener('input', () => { state.orbit = false; orbitBtn.setAttribute('aria-pressed','false'); setLight(slider.value/100); if (REDUCED) still(); });
+const orbitBtn = document.getElementById('orbit');
+if (REDUCED) orbitBtn.setAttribute('aria-pressed','false');
+orbitBtn.addEventListener('click', () => { state.orbit = !state.orbit; orbitBtn.setAttribute('aria-pressed', String(state.orbit)); last = performance.now(); });
+const macroBtn = document.getElementById('macro'), chromeEl = document.querySelector('.chrome');
+macroBtn.addEventListener('click', () => {
+  macroGoal = macroGoal ? 0 : 1; macroBtn.setAttribute('aria-pressed', String(!!macroGoal));
+  live.textContent = macroGoal ? 'Macro close-up' : 'Overview'; chromeEl.classList.toggle('macro', !!macroGoal);
+  if (REDUCED){ macroT = macroGoal; updateCamera(); still(); }
+});
+addEventListener('keydown', e => { if (e.key === 'm' || e.key === 'M') macroBtn.click(); });
+document.addEventListener('visibilitychange', () => { last = performance.now(); });
+new ResizeObserver(() => { resize(); if (REDUCED) still(); }).observe(document.documentElement);
+
+applyMaterials(); resize();
+if (location.search.includes('macro')){ macroGoal = macroT = 1; macroBtn.setAttribute('aria-pressed','true'); chromeEl.classList.add('macro'); updateCamera(); }
+render();
+window.__metal = {bakeMs, plate, state, THREE, renderer, scene, camera, applyMaterials, setLight, render, still, get emaDt(){ return emaDt; }, get frames(){ return frames; }, setMacro(v){ macroGoal = macroT = v; macroBtn.setAttribute('aria-pressed', String(!!v)); updateCamera(); }, pause(v){ running = !v; }};
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

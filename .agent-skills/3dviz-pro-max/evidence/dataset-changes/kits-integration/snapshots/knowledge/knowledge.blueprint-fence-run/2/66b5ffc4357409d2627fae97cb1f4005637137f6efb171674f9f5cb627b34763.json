@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-fence-run",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: paddock fence run"
+  },
+  "aliases": {
+    "en": [
+      "fence run kit",
+      "paddock rail blueprint",
+      "village fence module"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "earth-environment"
+  ],
+  "summary": "A paddock fence of instanced posts carrying three sagging rail courses, parameterised by length_m, post count, height, sag and seed.",
+  "objective": "At three metres the run reads as a post rhythm with rails dipping between every pair, then chamfered caps and leaning posts, then nail heads and hue jitter.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "prop",
+    "village",
+    "fence",
+    "boundary"
+  ],
+  "subject_terms": [
+    "rail sag",
+    "post cap",
+    "post lean",
+    "nail head",
+    "bay"
+  ],
+  "intent_signals": [
+    "fence a village paddock",
+    "repeatable fence run",
+    "boundary prop kit"
+  ],
+  "example_prompts": [
+    "Run a fence along the lane and around the paddock.",
+    "I need a fence I can lengthen without it looking cloned."
+  ],
+  "not_for": [
+    "Any claim about stock-proof fencing standards or spacings.",
+    "A collider mesh for animal containment: use the returned box collider instead."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/props/fence-run.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "length_m",
+      "type": "number",
+      "range": [
+        1.5,
+        24.0
+      ],
+      "default": 4.6,
+      "unit": "m"
+    },
+    {
+      "name": "posts",
+      "type": "integer",
+      "range": [
+        2,
+        20
+      ],
+      "default": 4
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "range": [
+        0.7,
+        1.8
+      ],
+      "default": 1.18,
+      "unit": "m"
+    },
+    {
+      "name": "seed",
+      "type": "integer",
+      "range": [
+        0,
+        65535
+      ],
+      "default": 1
+    },
+    {
+      "name": "sag",
+      "type": "number",
+      "range": [
+        0.0,
+        0.14
+      ],
+      "default": 0.055,
+      "unit": "m"
+    }
+  ],
+  "sockets": [
+    {
+      "name": "start",
+      "position_m": [
+        -2.3,
+        0,
+        0
+      ],
+      "normal": [
+        -1,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "end",
+      "position_m": [
+        2.3,
+        0,
+        0
+      ],
+      "normal": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "gate",
+      "position_m": [
+        0,
+        1.18,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "four posts spaced 1.53 m apart along a 4.6 m run",
+      "three rail courses dipping 5.5 cm at the middle of every bay",
+      "a chamfered four-sided cap on every post, 10 cm tall"
+    ],
+    "medium": [
+      "each rail bay built from four chords of the sag curve, not one straight bar",
+      "per-post lean of up to 3 degrees off vertical and 9 degrees in plan",
+      "rails set 26, 56 and 86 percent of the way up the post",
+      "rails nailed to one face of the posts, standing clear of the post line"
+    ],
+    "fine": [
+      "twenty-four nail domes, 4.2 cm across, a pair at every rail-to-post joint",
+      "1.4 cm chamfer on the posts and 1 cm on the rails",
+      "per-post hue jitter of 6 percent so no two posts share a tone"
+    ]
+  },
+  "footprint_m": [
+    4.75,
+    0.2
+  ],
+  "poly_budget": 2160,
+  "fits_looks": [
+    "knowledge.style-stylized",
+    "knowledge.style-hand-painted",
+    "knowledge.theme-fantasy-woodland",
+    "knowledge.lighting-mood-overcast-soft",
+    "knowledge.lighting-mood-dawn-cool"
+  ],
+  "content": {
+    "principles": [
+      "A straight rail is the single thing that makes a procedural fence read as a wire diagram. Four chords per bay is enough sag to kill that read.",
+      "Posts carry the rhythm; rails carry the line. Jitter the posts and the whole run stops looking cloned even though the rails are identical.",
+      "The run ends exactly on its length, so two runs butt together without a double post at the join."
+    ],
+    "implementation": [
+      "Call create({ length_m, posts, height, seed, sag }); the run is centred on the origin along X with y = 0 at the ground.",
+      "Butt runs together through the start and end sockets; both sit on the run ends, so no post is duplicated.",
+      "Posts, caps, rails and nails are four instanced fields, so a hundred metres of fence is still four draw calls per run."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible.",
+      "length_m 12 with 10 posts spans at least 7.5 m more than length_m 4 with 4 posts.",
+      "Two seeds lean the posts differently while the run keeps its length exactly."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here measures a real fence, its spacing or its stock rating.",
+    "The poly budget is the triangle count observed at the default four posts over 4.6 m; ten posts over 12 m costs about 5600 triangles. The budget is per default count.",
+    "The sag is a parabola, not a catenary: at sag values above about 0.1 m the difference becomes visible against a real rope."
+  ],
+  "creative_affordances": [
+    "Any parameter may be pushed outside its stated range; the range is the band that was proved, not a limit.",
+    "Raise sag and lower height for a rope corral, or set sag to zero and add posts for a stockade."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "length_m": 4.6,
+      "posts": 4,
+      "height": 1.18,
+      "sag": 0.055,
+      "post_w_m": 0.125,
+      "rail_courses": 3,
+      "feeling": "weathered paddock boundary"
+    },
+    "rationale": "1.18 m is waist height on a 1.7 m figure, the height at which a fence reads as a boundary rather than as a step, and a short default run keeps the whole fence inside the proof close view where its nails and chamfers can still be counted."
+  },
+  "related_ids": [
+    "knowledge.three-instanced-scenery-adapter",
+    "knowledge.framed-shelter",
+    "knowledge.hero-prop-detail-hierarchy",
+    "recipe.fantasy-village-diorama"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "detail_socket": "start",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-fence-run/far.png",
+      "evidence/kits/knowledge.blueprint-fence-run/mid.png",
+      "evidence/kits/knowledge.blueprint-fence-run/close.png",
+      "evidence/kits/knowledge.blueprint-fence-run/detail.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-fence-run/proof-log.json"
+  }
+}

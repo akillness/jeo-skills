@@ -392,7 +392,7 @@ See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-dem
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 451 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 466 skills · expand a category to see its skills.
 
 ### 🌐 Web (76)
 
@@ -512,9 +512,9 @@ Subcategories: `deployment` (2), `environment` (2), `observability` (3), `securi
 
 </details>
 
-### 🎮 Game (41)
+### 🎮 Game (55)
 
-Subcategories: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (7), `qa-performance` (4), `release` (2)
+Subcategories: `client` (10), `web` (5), `server` (1), `design-ui` (7), `audio` (1), `animation` (5), `motion-vfx` (4), `sprite-image` (3), `art-resources` (4), `storytelling` (0), `tooling` (8), `qa-performance` (5), `release` (2)
 
 <details>
 <summary>Show Game skills</summary>
@@ -562,12 +562,26 @@ Subcategories: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (
 | `donchitos-game-studios` |
 | `gamefactory-3a` |
 | `arnis` |
+| `unity-skills` |
+| `blender-skills` |
+| `scenario-skills` |
+| `threejs-game-skills` |
+| `mengto-game-skills` |
+| `video-to-game` |
+| `threejs-ability-casting` |
+| `isometric-voxel-builder` |
+| `game-perf` |
+| `sprite-gen` |
+| `mono-pix` |
+| `motion2mixamo` |
+| `unimate` |
+| `3d-vibe-coding` |
 
 </details>
 
-### 🎬 Creative Media (41)
+### 🎬 Creative Media (42)
 
-Subcategories: `image` (10), `video` (18), `motion` (2), `audio` (2), `presentation` (1), `diagram` (2), `design` (4), `capture` (0), `storytelling` (2)
+Subcategories: `image` (10), `video` (18), `motion` (2), `audio` (2), `presentation` (1), `diagram` (2), `design` (5), `capture` (0), `storytelling` (2)
 
 <details>
 <summary>Show Creative Media skills</summary>
@@ -615,6 +629,7 @@ Subcategories: `image` (10), `video` (18), `motion` (2), `audio` (2), `presentat
 | `diagram-design` |
 | `artcraft` |
 | `motionmaxxing` |
+| `3dviz-pro-max` |
 
 </details>
 

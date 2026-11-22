@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-rock-cluster",
+  "record_revision": 3,
+  "asset": "templates/kits/nature/rock-cluster.js",
+  "asset_sha256": "250fba5fb12c51caaa8d6a85c8c24e167d70c7470f2845b38b5c8485abccfbb8",
+  "params": {
+    "count": 8,
+    "seed": 1,
+    "spread": 1.05,
+    "rock": "#8e8b84"
+  },
+  "tier": "T2",
+  "kit": {
+    "blueprint": "knowledge.blueprint-rock-cluster",
+    "module": "../nature/rock-cluster.js",
+    "params": {
+      "count": 8,
+      "seed": 1,
+      "spread": 1.05,
+      "rock": "#8e8b84"
+    },
+    "tier": "T2",
+    "surface": {
+      "seed": 1,
+      "size": 1024,
+      "materials": 4,
+      "unmapped": [],
+      "uv": [
+        "world"
+      ],
+      "ms": 63.1,
+      "ao": {
+        "vertices": 600,
+        "casts": 1404,
+        "ms": 9.6,
+        "skipped": null
+      }
+    },
+    "triangles": 800,
+    "bounds_m": {
+      "min": [
+        -1.208001275470845,
+        -0.24095098674297333,
+        -1.315320448937598
+      ],
+      "max": [
+        1.056935789291905,
+        0.763011350991583,
+        1.3513508141040802
+      ],
+      "size": [
+        2.2649370647627496,
+        1.0039623377345563,
+        2.6666712630416782
+      ]
+    },
+    "fit_distance_m": 5.3212,
+    "view_distances_m": {
+      "far": 12.7709,
+      "mid": 6.3854,
+      "close": 4.1505,
+      "detail": 1.0753
+    },
+    "sockets": [
+      "base",
+      "perch",
+      "shelter"
+    ],
+    "detail_socket": "base",
+    "animated": false,
+    "colliders": [
+      "cluster"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "fc2f0474858dcbddd27fa6d5bf2e371ca3ba668947307090d583b3cc24a6ad58",
+    "mid.png": "174a87d9d7b46df6fe1cd01093bf10124cc663090a073bf14b6ca93c7f857b36",
+    "close.png": "ee8d8e5bb3022eb33aba0f07d3798ac279bfdd7aa9adc602df20595a3d88a133",
+    "detail.png": "5585d66673f1db99b5b5fc8b023533d663a341bf653ee4e0969f4e7aa63d346b"
+  },
+  "motion": null,
+  "gpu_requested": false,
+  "capture_mode": "swiftshader",
+  "webgl_renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T17:13:53+00:00",
+  "finished": "2026-09-08T17:13:57+00:00",
+  "surface": {
+    "families": {
+      "#7c7a73": "stone",
+      "#8e8b84": "stone"
+    },
+    "seed": 1,
+    "size": 1024,
+    "ao": {
+      "samples": 13,
+      "radius_m": 0.3,
+      "ground_dirt_m": 0.6
+    }
+  }
+}

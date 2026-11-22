@@ -1,0 +1,115 @@
+{
+  "id": "knowledge.fixed-step-interpolation-adapter",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Fixed-step solver with render interpolation"
+  },
+  "aliases": {
+    "en": [
+      "fix your timestep",
+      "accumulator alpha",
+      "Rapier dt 1/60"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "soft-fluid-thermal"
+  ],
+  "summary": "Advance the solver in fixed dt while the display interpolates previous and current poses, and never feed the interpolated pose back into the solver.",
+  "objective": "The solver steps a fixed positive dt; presentation interpolates completed states with a substep remainder; pause holds solver state and excludes paused wall time.",
+  "applies_when": [
+    "A numerical solver and a variable display rate share the frame loop.",
+    "The viewer would see stutter if physics were shown only at completed steps."
+  ],
+  "subject_terms": [
+    "fixed timestep",
+    "accumulator",
+    "render interpolation",
+    "spiral of death",
+    "IntegrationParameters dt",
+    "alpha blend"
+  ],
+  "tags": [
+    "tool-adapter",
+    "timestep",
+    "interpolation",
+    "solver"
+  ],
+  "intent_signals": [
+    "smooth physics on a 144 Hz display",
+    "decouple simulation from framerate",
+    "why does the box stutter"
+  ],
+  "example_prompts": [
+    "Step Rapier at 1/60 and interpolate body poses for the renderer.",
+    "Clamp catch-up steps so a hitch cannot spiral the solver."
+  ],
+  "negative_signals": [
+    "Passing frameTime straight into the integrator as dt.",
+    "Writing interpolated poses back into the physics world."
+  ],
+  "not_for": [
+    "Purely authored clips that already own presentation time.",
+    "Claims that a fixed step makes the engine scientifically valid."
+  ],
+  "content": {
+    "principles": [
+      "The renderer produces time; the solver consumes it in discrete dt slices. Leftover time stays in an accumulator.",
+      "Interpolation between previous and current solver state is a display trick. The simulated state remains the completed step.",
+      "A large hitch must be clamped or the solver spends the next frames catching up (the spiral of death). That clamp is a policy, not hidden magic."
+    ],
+    "implementation": [
+      "Choose an explicit positive dt and a positive integer step cap. Rapier documents 1/60 s as its default; verify the installed binding and configure the intended value. While running, clamp incoming wall-frame time to the declared maximum and add it to the accumulator. Before each fixed-dt integration, copy current poses to previous; then step once, save current poses and subtract dt.",
+      "As an authored bounded catch-up policy, after reaching the step cap drop any remaining whole dt slices, retain only the substep remainder, and report the discarded time. Thus 0 <= accumulator < dt before alpha=accumulator/dt; lerp positions and slerp quaternions between previous and current states. Do not feed interpolated poses or alpha into the solver.",
+      "While paused, neither accumulate wall time nor integrate; hold the displayed pose and substep remainder. On resume reset the wall-clock baseline so paused duration is excluded. Reset restores body state, sets previous=current to that initial state, clears the accumulator and resets the clock baseline.",
+      "Report frame-time clamping and dropped backlog as simulation time intentionally not advanced. This policy can slow model time relative to wall time; it does not guarantee collision detection or remove the need for suitable dt and collision settings."
+    ],
+    "observable_checks": [
+      "Changing display refresh does not change how far a freely falling body travels per second of model time, within the clamp policy.",
+      "A body moving at constant solver velocity appears between two completed poses rather than jumping a full dt when the display is faster than the solver.",
+      "Feeding interpolated poses into the next step is rejected: after pause, body translation matches the last completed step, not the blended mesh.",
+      "With a frame longer than the step budget, the chosen whole-backlog discard leaves alpha in [0,1), records dropped time and performs at most the cap. Pausing for a long interval adds no catch-up steps on resume."
+    ]
+  },
+  "related_ids": [
+    "knowledge.three-rigid-body-adapter",
+    "recipe.projectile-trajectory"
+  ],
+  "creative_affordances": [
+    "A ghost of the previous and next solver poses makes interpolation inspectable.",
+    "Slow-motion under the step cap can be presented as an honest performance mode."
+  ],
+  "known_limits": [
+    "Gaffer's article is game-loop guidance; it does not certify a particular engine.",
+    "Rapier dt default 1/60 s is from the Rust integration-parameters page; verify the installed JavaScript binding.",
+    "Authored reusable guidance; no runtime artifact has been observed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-fixed-step-interpolation-gaffer",
+      "statement": "A fixed-dt loop accumulates real frame time and integrates only with steps of size dt; leftover accumulator time is converted to an alpha in [0,1] used to interpolate previous and current physics state for rendering, including slerp of quaternions. A large frameTime should be clamped to avoid a spiral of death.",
+      "scope": "Glenn Fiedler, Fix Your Timestep! (2004); application loop design, not a particular engine's internals.",
+      "source_refs": [
+        {
+          "source_id": "source.knowledge-depth-gaffer-fix-your-timestep",
+          "locator": "Free the physics accumulator loop; The final touch interpolation alpha = accumulator/dt; clamp frameTime"
+        }
+      ]
+    },
+    {
+      "id": "claim.knowledge-fixed-step-interpolation-rapier",
+      "statement": "Rapier IntegrationParameters.dt is the timestep length used for each physics update, with default 1/60 seconds; smaller timesteps yield better accuracy and large timesteps increase linearisation error and may miss collisions of fast-moving objects.",
+      "scope": "Rapier Rust integration-parameters documentation; verify the installed JavaScript binding.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-rapier-integration-parameters",
+          "locator": "dt: default 1/60 s; smaller timesteps yield better accuracy; large timesteps worsen linearisation and may miss collisions"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed"
+}

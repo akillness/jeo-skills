@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-mode-sampling-and-nodes",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Node positions, transverse motion and spatial sampling of a mode"
+  },
+  "aliases": {
+    "en": [
+      "standing mode node check",
+      "spatial aliasing check"
+    ]
+  },
+  "direction_ids": [
+    "waves-optics-fields"
+  ],
+  "summary": "Check that nodes stay at rest, that points move transversely, and that the spatial sampling can represent the mode.",
+  "objective": "Nodes stay at zero over a full period, material coordinates are constant, and the sample count per mode is reported.",
+  "applies_when": [
+    "A scene animates a standing mode on a bounded medium.",
+    "Mode number, length or wave speed can be changed by the viewer.",
+    "The shape is drawn from a finite number of sampled points."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "standing-wave",
+    "sampling",
+    "nodes"
+  ],
+  "subject_terms": [
+    "node",
+    "antinode",
+    "mode number",
+    "wave speed",
+    "transverse displacement",
+    "samples per wavelength"
+  ],
+  "intent_signals": [
+    "the nodes move slightly",
+    "the string looks wrong at high mode numbers"
+  ],
+  "example_prompts": [
+    "Check the node positions and sampling of this standing wave scene."
+  ],
+  "negative_signals": [
+    "instrument acoustics modelling",
+    "damping or driving analysis"
+  ],
+  "content": {
+    "principles": [
+      "A standing mode has fixed nodes: the endpoints and interior nodes stay at zero displacement for all time, which is checked over a full period rather than in one frame.",
+      "Material points move transversely, so their coordinate along the medium does not change; a scene that translates points along the medium is showing a travelling picture rather than a standing mode.",
+      "Sampling the spatial shape is a signal-processing decision: below the representability limit the samples no longer determine the mode, and even above it a piecewise-linear curve through those samples is not an exact reconstruction, so tessellation adequacy for a visual error bound is a separate question from representability."
+    ],
+    "implementation": [
+      "Declare the fixture: mode index a positive integer, length and wave speed positive and finite, and a time sampling fine enough for the highest mode used. Then evaluate displacement at the endpoints and at each predicted node over at least one full period and record the maximum absolute value.",
+      "Track the coordinate along the medium of several material points over time and confirm it stays constant.",
+      "Compute the frequency from zero crossings taken in the same direction at a probe chosen for that mode with nonzero amplitude, never at a node, and reselect the probe when the mode index changes, since a valid probe for one mode can be a node of the next.",
+      "Sweep the number of spatial samples per mode from a few to several dozen and record the drawn curve, including the case of exactly two samples per wavelength, where an unfortunate phase makes every sample zero."
+    ],
+    "observable_checks": [
+      "Endpoint and node displacements stay zero to the precision of the evaluation over a full period; a node that oscillates identifies a wrong wavenumber.",
+      "Material coordinates stay constant, and doubling the mode number doubles the measured frequency at fixed length and wave speed, measured at a probe reselected for each mode using crossings in the same direction.",
+      "The sample count per mode is reported with any drawn shape; sampling at or below two samples per wavelength is declared rather than presented as the mode, and above that limit the reported tessellation error is a separate stated bound rather than an implication of representability."
+    ]
+  },
+  "known_limits": [
+    "Applies to an ideal linear fixed-end medium; damping, nonlinearity and driver coupling are outside this check.",
+    "Authored verification guidance; nothing was evaluated or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.standing-string-modes",
+    "recipe.planar-refraction-ray",
+    "recipe.heat-rod-decay"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-standing-mode-frequencies",
+      "statement": "A string fixed at both ends supports standing modes whose wavelength is twice the length divided by the mode number and whose frequency is the mode number times the wave speed divided by twice the length.",
+      "scope": "Linear transverse waves on an ideal fixed-end string with constant wave speed.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-standing-waves",
+          "locator": "16.6, normal modes, equations 16.15 and 16.16"
+        }
+      ]
+    },
+    {
+      "id": "claim.validation-sampling-bandlimit",
+      "statement": "A continuous signal can be reconstructed exactly from its uniform samples when its spectrum vanishes at and above half the sampling rate.",
+      "scope": "The sampling theorem as stated in the cited appendix, which concerns ideal reconstruction of a bandlimited signal. Representability sets a lower bound on sampling; it does not make a piecewise-linear curve drawn through those samples an exact reconstruction, and tessellation error is bounded separately.",
+      "source_refs": [
+        {
+          "source_id": "source.validation-depth-sampling-theorem",
+          "locator": "Sampling Theorem statement"
+        }
+      ]
+    }
+  ]
+}

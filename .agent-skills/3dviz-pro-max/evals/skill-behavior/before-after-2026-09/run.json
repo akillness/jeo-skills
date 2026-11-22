@@ -1,0 +1,142 @@
+{
+  "id": "before-after-2026-09",
+  "date": "2026-09-08",
+  "question": "Does loading 3dviz-pro-max change what an agent builds from the canonical prompt?",
+  "rounds": [
+    {
+      "run": "without-skill",
+      "artifact": "Emberhollow",
+      "skill_loaded": false,
+      "generated": "2026-09-08, before the scaffold fix"
+    },
+    {
+      "run": "with-skill",
+      "artifact": "Emberfall",
+      "skill_loaded": true,
+      "generated": "2026-09-08, before the scaffold fix"
+    },
+    {
+      "run": "with-skill-run2",
+      "artifact": "Lanternfall",
+      "skill_loaded": true,
+      "generated": "2026-09-08, after the scaffold fix (first-frame dt clamp + invalidate wiring) and after capture.py gained --motion-check/--expect-motion",
+      "note": "identical prompt and constraints to the other two; a fresh agent with no knowledge of the earlier runs"
+    },
+    {
+      "run": "with-skill-run3",
+      "artifact": "Threadwater Hollow",
+      "skill_loaded": true,
+      "generated": "2026-09-08, after the kit steps were added to SKILL.md and after both checklists gained item 15 (liveness) and item 16 (detail ladder)",
+      "note": "identical prompt and constraints to the other three; a fresh agent with no knowledge of the earlier runs; look resolved as knowledge.style-felt-wool over knowledge.lighting-mood-dusk-golden-hour"
+    },
+    {
+      "run": "with-skill-run4",
+      "artifact": "Lanternfall (the run's own title; run 2 independently chose the same name - the two scenes are unrelated)",
+      "skill_loaded": true,
+      "generated": "2026-09-09, after the quality tiers landed: tiers T0-T4 on all 22 blueprints, host-probe.py, the design-context.py --host quality brief, lodFor(), the two Blender-baked T3 heroes, and anti-slop item 17",
+      "note": "identical prompt and constraints to the other four; a fresh agent with no knowledge of the earlier runs; look resolved as knowledge.style-lantern-festival-riverside over knowledge.lighting-mood-night-lantern; hero (Ferryman's cottage) built at T3 from timber-cottage-t3.glb, the mill deliberately kept at T2 because the frozen T3 bake cannot turn its wheel, mid ground T2, background T1 instanced. The agent inspected its own build on the GPU; every scored frame was re-captured by the grader in SwiftShader with the runs 1-3 flags, and a labelled GPU set is published beside it and is not scored."
+    }
+  ],
+  "generation": {
+    "model": "Claude Opus (the same model for all five runs)",
+    "host": "Claude Code CLI on macOS (darwin 25.5.0, arm64)",
+    "agents": "five fresh subagents, no shared context, no human edits to any project; runs 1-3 and the baseline on 2026-09-08, run 4 on 2026-09-09",
+    "prompt": "prompt.txt - README.md line 19, verbatim, identical for all five runs",
+    "shared_constraints": [
+      "Vite + three 0.180.0, pnpm",
+      "one generation pass plus at most two self-fix iterations",
+      "no visual iteration beyond those two fix passes",
+      "the agent inspects its own build before reporting"
+    ],
+    "with_skill_extra": "the skill folder path plus the instruction 'read SKILL.md first'; nothing else was added to the prompt",
+    "self_inspection": {
+      "without-skill": "the agent drove its own build with Chrome DevTools Protocol screenshots",
+      "with-skill": "the agent used the skill's scripts/capture.py",
+      "with-skill-run2": "the agent used capture.py including the new --motion-check, emulated prefers-reduced-motion, and measured frame time in-page",
+      "with-skill-run3": "the agent used capture.py with --motion-check, emulated prefers-reduced-motion, measured frame time in-page, and counted its own detail-ladder bands",
+      "with-skill-run4": "the agent ran host-probe.py, took the quality brief from design-context.py --host --delivery web-desktop, and captured with capture.py --gpu --all-views --motion-check; it did not measure draw calls or frame time (its report says 'not measured' while its design system also asserts 60 fps, which the grader's measurement does not support)"
+    }
+  },
+  "grading": {
+    "grader": "a third Claude Opus agent in the same CLI session family - self-graded, not independent",
+    "n": "1 per condition",
+    "checklists": [
+      "skills/3dviz-pro-max/templates/checklists/visual-anti-slop.md (17 items)",
+      "skills/3dviz-pro-max/templates/checklists/inspection-per-frame.md (13 items)"
+    ],
+    "rescoring_note": "re-scored three times: when item 15 was added (26 -> 28 items), when item 16 was added (28 -> 29), and on 2026-09-09 when item 17 (surface on the hero) was added with the kit quality tiers (29 -> 30). Then item 9 was re-worded on 2026-09-09 (lightness floor) and re-read on all five runs at the same 30-item scale, which moved the totals from 20/18/22/23/24 to 21/19/23/23/25. Only the current 30-item totals should be quoted; the '15 items', '29' and the pre-floor 30-item figures that earlier revisions of this file carried are superseded.",
+    "every_png_opened": true,
+    "shared_conventions": [
+      "n-a means the item's prescribed toggle or sweep was not run; it is never counted as a pass",
+      "hue families and saturation come from the checklist's own posterise-to-eight test on the canvas region of the overview frame",
+      "item 9 was re-read on 2026-09-09 under its new lightness floor (the 45% cap applies to pixels at HSL L >= 0.2, and to surfaces rather than sky or emissives): same frames, same crops, same posterise, nothing regenerated. All five runs pass it now; four totals moved by one each",
+      "item 4 fails for a run if it fails in any graded frame",
+      "the unexplained-opt-out rule is charged once, in the docs row, not multiplied across items",
+      "item 16 is counted on the run's own declared hero, at the closest frame available, by counting features in the frame rather than by reading the artifact's own report",
+      "item 17 (surface on the hero) is counted on the same hero close-up frame as item 16: it asks for material texture and occlusion, not modelled relief. It fails in the baseline and runs 1-3 - none ships a texture map or baked occlusion - and passes only in run 4, whose hero is a Blender-baked T3 GLB. Item 17 and the T3 tier were authored in the same week by the same author, so this is the least independent result in the set."
+    ],
+    "scale": {
+      "total_items": 30,
+      "visual-anti-slop.md": 17,
+      "inspection-per-frame.md": 13,
+      "note": "item 15 (liveness) and item 16 (detail ladder) were added during this evaluation, each after a run failed it; item 17 (surface on the hero) was added on 2026-09-09 with the kit quality tiers. All five scorecards are scored on the 30-item scale; runs 1-3 and the baseline were re-scored from their existing frames, nothing was regenerated, and no earlier item's verdict changed. The /26, /28 and /29 totals are superseded."
+    },
+    "totals_out_of_30": {
+      "without-skill": "21 pass / 5 fail / 4 n-a",
+      "with-skill": "19 pass / 8 fail / 3 n-a",
+      "with-skill-run2": "23 pass / 4 fail / 3 n-a",
+      "with-skill-run3": "23 pass / 4 fail / 3 n-a",
+      "with-skill-run4": "25 pass / 2 fail / 3 n-a",
+      "note": "these are the post-floor item-9 totals (2026-09-09). Pre-floor they were 20/18/22/23/24; runs 2 and 3 tie now, and run 4 leads run 3 by two items rather than one."
+    }
+  },
+  "capture": {
+    "tool": "skills/3dviz-pro-max/scripts/capture.py",
+    "playwright_version": "1.62.0",
+    "viewport": "1280x720",
+    "renderer": "headless Chromium, SwiftShader software rasteriser - colours and frame rates are not GPU results",
+    "with-skill": "--all-views --click \"#pick-mill\" --click \"#reset\"",
+    "with-skill-run2": "--all-views --click \"#pick-mill\" --click \"#reset\" --motion-check 2000 --expect-motion",
+    "without-skill": "--ready-flag none --settle-ms 4000 --click \"#chips button:nth-of-type(8)\" --click \"#chips button:nth-of-type(9)\" --click \"#reset-cam\" (no viewer contract; nth-of-type(8) is the mill, (9) the beacon tower, matching the with-skill picks)",
+    "uniform_pass": "captures-uniform/ - all five builds captured with byte-identical flags: --ready-flag none --settle-ms 4000 --motion-check 2000 --expect-motion, SwiftShader. The only strictly comparable measurement, and the source of the liveness result and of image row 1.",
+    "extra_settled_frames": "pick-mill-settled.png in with-skill runs 1-3 and pick-cottage-settled.png in run 4: the hero's own pick button clicked, then a 5 s settle, to separate the focus framing from capture.py's 300 ms default settle against a ~0.9 s tween",
+    "post_processing": "every PNG in every run re-encoded identically: RGB, 256-colour adaptive palette, Floyd-Steinberg dither, zlib level 9, to stay under 400 KB. Capture-time and re-encoded hashes are both in each capture-log.json. One exception, left alone rather than treated differently: run 4's lane.png lands at 494 KB because it is the near-black defective frame and dither noise on a dark gradient does not compress.",
+    "with-skill-run3": "--all-views --click \"#pick-mill\" --click \"#reset\" --motion-check 2000 --expect-motion",
+    "with-skill-run4": "scored set, taken by the grader in SwiftShader: --all-views --click \"#pick-cottage-hero\" --click \"#reset\" --motion-check 2000 --expect-motion, plus a separate --settle-ms 5000 pass for pick-cottage-settled.png. The agent's own captures were --gpu and are not published; captures-gpu/ holds a grader-taken GPU set with the same views, labelled and not scored."
+  },
+  "instrumentation": {
+    "method": "WebGL draw functions and requestAnimationFrame wrapped by a Playwright init script, the same method for all five builds; no project exposes renderer.info, so this counts real GL draw calls rather than reading three's counter. For run 4 the wrapper also separates drawn frames from requestAnimationFrame callbacks that returned without drawing (the 60 fps cap produces those on a fast host); run 4's fps figures are drawn frames.",
+    "without-skill": "1928.5 draw calls per frame over 128 frames; 41 frames in 3 s (~13.7 fps)",
+    "with-skill": "2 frames drawn in total, then 0 frames and 0 draw calls in every subsequent 3 s window; ~1000 draw calls in the one measurable frame",
+    "with-skill-run2": "687.4 draw calls per frame; 34 frames in 3 s (~11.3 fps)",
+    "driven_checks": "selection, reset, pause/resume, canvas picking, orbit response, page overflow and prefers-reduced-motion were driven with Playwright on every build rather than read from the source",
+    "with-skill-run3": "4773.0 draw calls per frame; 15 frames in 3 s (~5.0 fps) - the highest cost of the four runs",
+    "with-skill-run4": "7242.0 draw calls and ~882,000 triangles per drawn frame; 7 drawn frames in 3 s (~2.3 fps), median 450 ms, SwiftShader - the highest cost of the five runs. On the unscored GPU set: 7485.2 draw calls, ~894,000 triangles, 139 drawn frames in 3 s (~46.3 fps), median 24.7 ms. The artifact measured none of this and its design system asserts 60 fps."
+  },
+  "liveness": {
+    "command": "capture.py --motion-check 2000 --expect-motion (identical for all three)",
+    "without-skill": "exit 0, differs: true (56e838b8... -> 7d0398d1...)",
+    "with-skill": "exit 5, differs: false (f327200d... twice) - frozen",
+    "with-skill-run2": "exit 0, differs: true (37a327d8... -> 739a5824...)",
+    "with-skill-run3": "exit 0, differs: true (40133c37... -> 7ac2e763...)",
+    "with-skill-run4": "exit 0, differs: true (eeba3a8a... -> 6233c8ab...) in the uniform SwiftShader pass"
+  },
+  "attribution": {
+    "liveness": "attributable to the scaffold fix by code inspection, not by statistics: run 2 carries the clamped first-frame dt (main.js:66) and passes invalidate into createCameraRig (main.js:49-50, rigs/camera-orbit-follow.js:16,27,29), while its scene.js:134 still holds the same `if (dt <= 0) return false;` that parked run 1",
+    "everything_else": "not attributable - palette, subject, layout, building count, draw-call count and the score difference are free variation between two independent generations at n=1 each",
+    "detail_ladder": "run 3 is the only run to pass item 16, and the kit blueprints are the plausible cause - but unlike the liveness fix there is no code-level mechanism tying the pass to a specific skill change, and a different agent modelling a different subject explains it equally well at n=1",
+    "cost": "draw calls rose 687 -> 4773 between runs 2 and 3 with no guidance covering it; not attributable in either direction, and unnoticed by run 3's own report"
+  },
+  "limits": [
+    "n=1 per condition: four artifacts, one prompt, no repeats and no variance estimate; the one-item gap between runs 2 and 3 is not a result",
+    "self-graded: the grader is the same model family that generated all four artifacts",
+    "software renderer: SwiftShader colour and speed are not what a GPU would produce",
+    "the scale changed three times, each time after a run failed the new item or alongside the feature that passes it; run 3's agent could read items 15 and 16 while runs 1-2's could not, and only run 4's could read item 17 - the one item it uniquely wins - so no pair is a clean A/B",
+    "the runs used different self-inspection tools, each round's including the check the previous round failed",
+    "capture symmetry is imperfect: the with-skill builds have a viewer contract and got five named views, the baseline has none; only captures-uniform/ is method-identical",
+    "toggle tests (light removal, fog, emissives, near-plane zoom) were not run for any artifact; those items are n-a, never pass",
+    "anti-slop item 9 (45% HSL saturation cap) was ill-posed for near-black bands; it was applied mechanically to all five in the first grading, then re-worded on 2026-09-09 with a L >= 0.2 lightness floor and re-read on the same frames. All five pass it now, so it separates no pair of runs; run 3 is the only run whose posterised bands all sit above the floor, and run 2 passes by having no band above the floor at all",
+    "run 4 inspected itself on a GPU and is graded on SwiftShader frames the grader took; its own fix decisions were made from frames that are not the frames scored here",
+    "three of run 4's seven named views are damaged by camera placement (lane inside a building, cottage blocked by a lantern post, square 37.5 % filled by a wall at the near plane); the run itself reports only the first two. Since 2026-09-09 capture.py measures view_quality per capture and --expect-usable exits 6: run backwards over these five runs it flags exactly those three frames (lane near-black, square and cottage flat-occluder) out of 42, catching the wall in cottage rather than the lantern post"
+  ]
+}

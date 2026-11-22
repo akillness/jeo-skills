@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-sampling-resolution-and-features",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Sample finely enough to resolve the feature"
+  },
+  "aliases": {
+    "en": [
+      "grid resolution",
+      "aliasing",
+      "adaptive sampling"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields",
+    "earth-environment"
+  ],
+  "summary": "Choose the sample spacing from the smallest feature that matters, and show that the result is stable under refinement.",
+  "objective": "Keep a discretised surface or field from hiding or inventing structure.",
+  "applies_when": [
+    "A continuous function or field is displayed as a mesh, contour set or arrow grid.",
+    "The function has narrow features, high curvature or oscillation.",
+    "Quantities such as extrema, contours or flux are read off the sampled version."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "sampling",
+    "resolution",
+    "aliasing",
+    "refinement",
+    "curvature",
+    "contour"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "calculus",
+    "discretisation"
+  ],
+  "intent_signals": [
+    "the surface looks wrong at high frequency",
+    "increase the resolution",
+    "where is the maximum"
+  ],
+  "example_prompts": [
+    "Plot the oscillating surface without aliasing.",
+    "Show the contours and let me refine the grid."
+  ],
+  "negative_signals": [
+    "Low-frequency functions where any reasonable grid resolves everything.",
+    "Exact analytic constructions that do not require sampling."
+  ],
+  "not_for": [
+    "Low-frequency functions where any reasonable grid resolves everything.",
+    "Exact analytic constructions that do not require sampling."
+  ],
+  "content": {
+    "principles": [
+      "A grid that undersamples an oscillation does not merely lose detail: it produces a smooth surface that looks correct and is wrong, which is more dangerous than an obviously coarse plot.",
+      "The relevant scale is the feature scale, not the domain size. A narrow ridge or a small basin sets the required spacing regardless of how large the plotted region is.",
+      "Extremes are especially fragile: the maximum of a sampled surface is a sample, not the maximum of the function, unless the sampling is fine relative to the peak width.",
+      "Refinement is the practical test. If the picture and the derived numbers change materially when the grid is refined, the coarse result was not resolving the function."
+    ],
+    "implementation": [
+      "State the smallest feature the scene intends to show and choose the sample spacing from it, then display the spacing.",
+      "Refine adaptively where curvature or gradient magnitude is high rather than raising the resolution everywhere.",
+      "Compute derived quantities from the same samples that produce the visual, and report them with the resolution used.",
+      "Offer a refinement control and show the change, so stability becomes part of the demonstration.",
+      "For arrow or glyph fields, decouple glyph density from data resolution, since a dense glyph field can imply data that does not exist."
+    ],
+    "observable_checks": [
+      "Double the resolution and compare the surface and the reported extrema; large changes mean the coarse grid was misleading.",
+      "Compare a sampled extremum against a local analytic or refined search near that point.",
+      "Look for regular patterns that follow the grid rather than the function, a signature of aliasing.",
+      "Confirm the displayed resolution matches the data actually used."
+    ]
+  },
+  "related_ids": [
+    "recipe.directional-derivative-surface",
+    "recipe.terrain-contour-slices"
+  ],
+  "creative_affordances": [
+    "Deliberately coarse, faceted plots are a valid aesthetic when the resolution is disclosed.",
+    "Multi-resolution presentations that show coarse and fine together can be more instructive than one refined mesh."
+  ],
+  "known_limits": [
+    "Authored discretisation guidance; it states no sampling theorem and prescribes no specific criterion.",
+    "No runtime plot has been generated or measured for this record."
+  ],
+  "claims": []
+}

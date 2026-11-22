@@ -1,0 +1,111 @@
+{
+  "id": "knowledge.procedural-texture-colorspace-adapter",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Procedural texture and colour-space lifecycle"
+  },
+  "aliases": {
+    "en": [
+      "CanvasTexture needsUpdate",
+      "SRGBColorSpace map",
+      "NoColorSpace data"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "waves-optics-fields",
+    "solid-geometry"
+  ],
+  "summary": "Mark procedural colour data with a colour space, mark non-colour data as none, and upload with needsUpdate without treating those pixels as physical properties.",
+  "objective": "A canvas colour map tagged sRGB and a roughness canvas tagged NoColorSpace stay visually distinct; omitting needsUpdate leaves the last GPU image.",
+  "applies_when": [
+    "A texture is generated or updated at runtime from a canvas, DataTexture or similar source.",
+    "Colour maps and data maps share an authoring path and could be mis-tagged."
+  ],
+  "subject_terms": [
+    "CanvasTexture",
+    "needsUpdate",
+    "SRGBColorSpace",
+    "LinearSRGBColorSpace",
+    "NoColorSpace",
+    "working colour space"
+  ],
+  "tags": [
+    "tool-adapter",
+    "texture",
+    "color-space",
+    "procedural"
+  ],
+  "intent_signals": [
+    "paint a flow map at runtime",
+    "why is my canvas texture too dark",
+    "procedural roughness without gamma"
+  ],
+  "example_prompts": [
+    "Generate a pond colour canvas as sRGB and a matching roughness canvas as non-colour data.",
+    "Update a procedural label texture each time the caption changes, with needsUpdate."
+  ],
+  "negative_signals": [
+    "Using roughness pixels as friction.",
+    "Leaving colourSpace at the default NoColorSpace on a PNG-like colour canvas."
+  ],
+  "not_for": [
+    "Display calibration or ICC workflows beyond Three.js sRGB/Linear-sRGB roles.",
+    "Claims that a correct colour space validates a physical BRDF."
+  ],
+  "content": {
+    "principles": [
+      "The working colour space is Linear-sRGB. Tag colour textures according to their actual encoding: SRGBColorSpace for sRGB colour pixels and LinearSRGBColorSpace for linear colour pixels. Non-colour normal or roughness data generally use NoColorSpace. CanvasTexture or DataTexture storage does not determine which meaning the pixels have.",
+      "needsUpdate is the upload contract. CanvasTexture sets it true once at construction; later canvas drawing still needs a fresh flag.",
+      "A procedural map is appearance or data. It does not become density, friction or temperature unless a separate model reads it as such and says so."
+    ],
+    "implementation": [
+      "Create CanvasTexture or DataTexture, set colorSpace from the pixel encoding and role before first use, and keep colour and non-colour sources distinct.",
+      "After drawing, set texture.needsUpdate = true. Do not change width, height, format or type in place; dispose and recreate instead.",
+      "Record renderer outputColorSpace with the test. Dispose textures when replacing a surface.",
+      "Never copy a colour canvas into a roughness slot without retagging NoColorSpace."
+    ],
+    "observable_checks": [
+      "A mid-grey sRGB colour canvas and the same bytes tagged NoColorSpace do not match under the same lighting.",
+      "Redrawing the canvas without needsUpdate leaves the previous GPU image; setting the flag shows the new drawing.",
+      "Changing a roughness canvas does not alter collider friction or mass."
+    ]
+  },
+  "related_ids": [
+    "knowledge.three-pbr-adapter",
+    "recipe.fantasy-village-diorama"
+  ],
+  "creative_affordances": [
+    "Hand-painted, noise or data-driven canvases are interchangeable if colour-space tags stay honest.",
+    "A split view of colour versus data tagging is a useful teaching layout."
+  ],
+  "known_limits": [
+    "Three.js documents sRGB and Linear-sRGB roles for typical web output; wider display gamuts are noted as not the web default.",
+    "Authored reusable guidance; no runtime artifact has been observed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-procedural-texture-colorspace-adapter",
+      "statement": "Colour PNG or JPEG textures must be annotated SRGBColorSpace while non-colour textures such as roughness or normal maps use NoColorSpace; Texture.needsUpdate triggers a GPU upload; CanvasTexture sets needsUpdate true at construction because a canvas can be used for rendering immediately.",
+      "scope": "Three.js colour-management roles and texture upload flags; not a measured BRDF or friction model.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-color-management",
+          "locator": "Input color space: colour textures SRGBColorSpace, non-colour textures NoColorSpace"
+        },
+        {
+          "source_id": "source.knowledge-depth-three-texture",
+          "locator": "colorSpace default NoColorSpace; needsUpdate GPU upload; dimensions/format/type cannot change after first use"
+        },
+        {
+          "source_id": "source.knowledge-depth-three-canvas-texture",
+          "locator": "CanvasTexture sets Texture.needsUpdate true immediately"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed"
+}

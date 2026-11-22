@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "id": "recipe.memory-allocation-fragmentation-trace",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Memory allocation: one first-fit fragmentation trace"
+  },
+  "aliases": {
+    "en": [
+      "contiguous heap allocation trace",
+      "first-fit split and coalesce inspector"
+    ]
+  },
+  "direction_ids": [
+    "algorithms-data-structures"
+  ],
+  "summary": "Replay one address-ordered heap so allocation failure, internal waste and external holes remain distinct.",
+  "objective": "Build a bounded contiguous-heap trace where aligned first-fit allocations split free blocks, frees coalesce adjacent blocks, and a request can fail despite enough total free bytes.",
+  "tags": [
+    "memory allocator",
+    "first fit",
+    "fragmentation"
+  ],
+  "subject_terms": [
+    "heap allocator",
+    "free list",
+    "first fit",
+    "address order",
+    "alignment",
+    "block split",
+    "coalescing",
+    "internal fragmentation",
+    "external fragmentation",
+    "allocation trace"
+  ],
+  "intent_signals": [
+    "heap fragmentation allocation trace",
+    "show first fit split and coalesce",
+    "request fails despite enough free memory"
+  ],
+  "example_prompts": [
+    "Replay a 64-byte first-fit heap: allocate 9,16,16,16 bytes, free selected blocks, show a 24-byte failure, then coalesce and retry."
+  ],
+  "negative_signals": [
+    "Not virtual memory, paging, garbage collection, compaction, concurrency, production malloc metadata, performance comparison or a general allocator simulator."
+  ],
+  "not_for": [
+    "No heap growth, relocation, compaction, thread safety, headers/boundary tags, best-fit/buddy/slab policy or claimed real allocator performance."
+  ],
+  "entities": [
+    {
+      "name": "Addressed heap rail",
+      "guidance": "Blender constructs a 64-cell or proportionally segmented rail with sturdy allocation blocks and removable ownership tags. Three.js owns byte intervals and positions pieces from exact addresses, never from physics."
+    },
+    {
+      "name": "Trace and metrics",
+      "guidance": "Show ordered free intervals, requested versus charged size, internal waste, total free bytes and largest hole at every committed step. A failed request remains in the trace without mutating the heap."
+    }
+  ],
+  "state_contract": {
+    "model": "One fixed contiguous half-open heap [0,64), 8-byte alignment, no headers, relocation, growth or compaction. Blocks are disjoint half-open intervals labeled free or allocated(owner,requested,charged); charged=ceil(requested/8)*8. The free list is address ordered. allocate(owner,n) rejects duplicate owner, n<=0 and overflow; it chooses the lowest-address free interval with length >= charged, allocates its prefix and preserves any remainder. free(owner) rejects unknown/double free and then repeatedly coalesces exactly adjacent free neighbors. Preset: allocate A=9 -> [0,16) with 7 internal bytes; B=16 -> [16,32); C=16 -> [32,48); D=16 -> [48,64). Free B and D: total free=32, largest hole=16, so E=24 fails from external fragmentation. Free C coalesces [16,64), then E=24 succeeds at [16,40).",
+    "authority": "Three.js owns intervals, ordering, arithmetic, trace snapshots and error states. Blender-authored blocks are visual identities whose transforms derive from addresses.",
+    "actions": [
+      "Allocate the next preset owner or enter a positive request; preview aligned charged size before commit.",
+      "Free one allocated owner and inspect each adjacent coalescing result as one committed operation.",
+      "Step backward/forward through immutable snapshots; reset restores one [0,64) free interval.",
+      "Compare total-free and largest-hole values at the failed and successful E requests."
+    ]
+  },
+  "invariants": [
+    "Sorted blocks partition [0,64) exactly: no gaps, overlap or zero-length interval; allocated plus free charged bytes always total 64.",
+    "Internal fragmentation is sum(charged-requested) inside allocated blocks. External fragmentation is represented by separated free intervals; total free alone does not imply a request fits.",
+    "First fit chooses the lowest-address adequate free interval in this address-ordered model and splits only when a positive remainder exists.",
+    "Free coalesces all directly adjacent free intervals. Invalid allocate/free actions and failed fit leave state and history unchanged except for a visible error result."
+  ],
+  "motion_guidance": [
+    "Step commits one discrete semantic action; pause freezes playback without changing committed state. Reset cancels pending animation and restores the complete preset, including clock, history, selection and error state.",
+    "Use a static before/after view and readable tables for reduced motion. Camera movement and token/message travel only explain a committed transition."
+  ],
+  "creative_affordances": [
+    "Blender may shape distinctive, stable parts and materials for the chosen metaphor; Three.js binds those parts to model IDs and derives every label, highlight and transform from semantic state. Color is reinforced with text, shape or pattern.",
+    "The layout may be sculptural, planar or spatial, provided ordering, identity and invalid states remain unambiguous."
+  ],
+  "known_limits": [
+    "One deliberately small pedagogical trace with fixed alignment and excluded metadata; it does not characterize a production allocator or compare policy performance.",
+    "Authored, source-reviewed guidance only; no Blender export, solver, allocator, TLS stack, browser, renderer or interactive artifact was run."
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Heap blocks are exact address intervals; apparent packing/contact and animated movement do not allocate memory."
+  },
+  "related_ids": [
+    "recipe.stable-merge-sort-trace"
+  ],
+  "object_craft": [
+    {
+      "family": "Heap block rail",
+      "structure": "Use a fixed engraved address bed, flush interval blocks and separate owner/request/charged tags. Preserve a visible hairline at every exact boundary and an unambiguous failed-request staging slot.",
+      "material": "Allocated owners use distinct patterns plus letters; free holes share one neutral material, while internal waste uses a hatch inside its allocated block."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim.memory-fragmentation-types",
+      "statement": "Unused capacity inside an allocated unit larger than requested is internal fragmentation; free capacity split among separate holes is external fragmentation. A simple allocator may manage a fixed contiguous byte region without relocation or compaction.",
+      "scope": "The chapter’s simplified free-space-management model and this recipe’s explicit fixed-heap specialization.",
+      "source_refs": [
+        {
+          "source_id": "source.ostep-free-space-management",
+          "locator": "Chapter 17, PDF pages 3–4 (PDF indices 1–2): internal/external fragmentation, no relocation and fixed contiguous region"
+        }
+      ]
+    },
+    {
+      "id": "claim.memory-first-fit-coalesce",
+      "statement": "First fit chooses the first sufficiently large free block and keeps the remainder free; address-ordered free lists make adjacent coalescing easier, and freeing neighboring chunks permits them to merge.",
+      "scope": "Address-ordered first fit with splitting and immediate coalescing; no performance guarantee.",
+      "source_refs": [
+        {
+          "source_id": "source.ostep-free-space-management",
+          "locator": "Chapter 17, PDF page 5 and pages 12–13 (PDF indices 3, 10–11): coalescing and First Fit"
+        }
+      ]
+    }
+  ]
+}

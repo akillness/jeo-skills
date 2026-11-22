@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "id": "recipe.logic-gates",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Boolean gate workbench"
+  },
+  "aliases": {
+    "en": [
+      "logic gates"
+    ]
+  },
+  "direction_ids": [
+    "logic-circuits"
+  ],
+  "summary": "Make a combinational circuit explain its output for each input combination.",
+  "objective": "Build a 3D gate board where toggling Boolean inputs updates a truth-table row and connected output.",
+  "tags": [
+    "logic",
+    "gates"
+  ],
+  "example_prompts": [
+    "Build a 3D gate board where toggling Boolean inputs updates a truth-table row and connected output."
+  ],
+  "entities": [
+    {
+      "name": "Gate blocks",
+      "guidance": "Use recognizable labeled gate symbols on shallow extrusions; sockets and wire endpoints must stay connected."
+    },
+    {
+      "name": "Signals",
+      "guidance": "Represent 0 and 1 with labels plus contrasting line styles; no brightness-only truth encoding."
+    },
+    {
+      "name": "Truth table",
+      "guidance": "Highlight the row computed from actual inputs, with gate expression adjacent."
+    }
+  ],
+  "state_contract": {
+    "model": "Acyclic Boolean graph, explicitly typed gate operators and input bits; zero-delay evaluator.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Toggle one input.",
+      "Select AND, OR, XOR or NOT.",
+      "Enumerate truth-table rows and reset."
+    ]
+  },
+  "invariants": [
+    "Gate output comes from the Boolean evaluator, not wire animation.",
+    "Reject unknown operators, non-bits and combinational cycles.",
+    "Every visible socket refers to a declared input/output port."
+  ],
+  "motion_guidance": [
+    "Signal pulses are illustrative highlights after evaluation; do not assign electrical propagation speed.",
+    "Reduced motion replaces pulses with a stable active-path outline."
+  ],
+  "known_limits": [
+    "No voltage, transistor, hazard or timing model.",
+    "Gate truth tables must be checked on all supported bit combinations when implemented.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.logic-gates",
+      "statement": "Boolean equations can specify combinational logic using AND, OR, XOR and unary NOT.",
+      "scope": "Boolean abstraction, not analog electronics.",
+      "source_refs": [
+        {
+          "source_id": "source.mit-combinational",
+          "locator": "4.1, Boolean equation specification"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Gate blocks",
+      "structure": "Use recognizable labeled gate symbols on shallow extrusions; sockets and wire endpoints must stay connected.",
+      "material": "Matte labeled gate housings, dark socket collars and clearly differentiated wire states using text plus line style; emissive glow is optional."
+    },
+    {
+      "family": "Signals",
+      "structure": "Represent 0 and 1 with labels plus contrasting line styles; no brightness-only truth encoding.",
+      "material": "Matte labeled gate housings, dark socket collars and clearly differentiated wire states using text plus line style; emissive glow is optional."
+    },
+    {
+      "family": "Truth table",
+      "structure": "Highlight the row computed from actual inputs, with gate expression adjacent.",
+      "material": "Matte labeled gate housings, dark socket collars and clearly differentiated wire states using text plus line style; emissive glow is optional."
+    }
+  ]
+}

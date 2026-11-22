@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-retro-low-resolution",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Retro low-resolution presentation"
+  },
+  "aliases": {
+    "en": [
+      "pixelated 3D",
+      "low resolution render",
+      "retro game look"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "spatial-puzzles"
+  ],
+  "summary": "Choose an intentional image-grid and detail hierarchy so pixel structure supports the scene instead of making controls unreadable.",
+  "objective": "Important objects remain identifiable during camera motion and selection feedback does not disappear into the coarse image.",
+  "tags": [
+    "style-profile",
+    "rendering-aesthetic",
+    "retro-low-resolution"
+  ],
+  "subject_terms": [
+    "pixelated 3D",
+    "low resolution render",
+    "retro game look",
+    "rendering aesthetic"
+  ],
+  "intent_signals": [
+    "Use a retro low-resolution presentation",
+    "Keep scene landmarks readable in a coarse image"
+  ],
+  "example_prompts": [
+    "Make a retro low-resolution maze whose exit, player marker and controls remain clear."
+  ],
+  "content": {
+    "principles": [
+      "Choose an intentional image-grid and detail hierarchy so pixel structure supports the scene instead of making controls unreadable.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Use clear silhouettes and large landmarks; keep tiny surface features subordinate to what survives the target image size.",
+      "Try a constrained palette and broad light shapes; decide deliberately whether texture pixels and output pixels share the same visual rhythm.",
+      "Use measured camera moves and inspect motion at output size; render labels and controls at a readable resolution independent of the stylized scene if needed."
+    ],
+    "observable_checks": [
+      "Important objects remain identifiable during camera motion and selection feedback does not disappear into the coarse image.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with voxel or low-poly geometry; retro styling does not mandate a specific historical console or its technical limits.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

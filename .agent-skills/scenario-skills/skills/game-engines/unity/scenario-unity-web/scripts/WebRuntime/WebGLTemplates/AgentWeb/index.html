@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>{{{ PRODUCT_NAME }}}</title>
+    <link rel="icon" href="data:,">
+    <!-- AGENTWEB_PRELOAD -->
+    <!-- AgentWeb template v2 (scenario-unity-web skill, 2026-09-24), built from the 6.3 Minimal template.
+         window.unityInstance for page -> game calls; loader banners routed to the console as
+         "AGENTWEB_BANNER" lines; a loading card (design the wait) with an optional tap-to-play step;
+         errorHandler + loader failures + C# errors reported to AGENTWEB_ERROR_URL (sendBeacon);
+         DPR capped on phones (AGENTWEB_MOBILE_MAX_DPR, ?dpr=<n> overrides); a browser gate for
+         WebAssembly 2023 builds (AGENTWEB_REQUIRE_WASM2023, set by WebJobs.ApplySettings); an ASTC
+         data variant hook for dual DXT/ASTC builds (ut_web.merge_texture_variants); a preload marker
+         (ut_web.add_preload). Custom variables are strings set with PlayerSettings.SetTemplateCustomValue.
+         Plain ES5 on purpose: an old browser must still parse this page to show the "update" message.
+         Portal note: CrazyGames ignores a Unity game's index.html and Poki rewrites it, so game logic
+         belongs in .jslib files; this page is for your own site, itch.io and tests. -->
+    <style>
+      html, body { margin: 0; padding: 0; background: {{{ BACKGROUND_COLOR }}}; overflow: hidden;
+                   -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+      #unity-canvas { display: block; margin: 0 auto; width: {{{ WIDTH }}}px; height: {{{ HEIGHT }}}px; background: {{{ BACKGROUND_COLOR }}}; touch-action: none; }
+      #agentweb-banner { position: fixed; left: 0; right: 0; bottom: 0; font: 13px/1.4 sans-serif; color: #fff; z-index: 3; }
+      #agentweb-banner div { padding: 6px 10px; }
+      #agentweb-card { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 320px; max-width: 86vw;
+                       padding: 20px 22px; border-radius: 10px; background: rgba(12, 14, 20, 0.92); color: #eef;
+                       font: 15px/1.45 sans-serif; text-align: center; z-index: 2; box-shadow: 0 6px 30px rgba(0,0,0,.4); }
+      #agentweb-card h1 { font-size: 20px; margin: 0 0 8px; }
+      #agentweb-tip { margin: 0 0 14px; opacity: .85; }
+      #agentweb-track { height: 6px; border-radius: 3px; background: #333a48; overflow: hidden; }
+      #agentweb-fill { height: 100%; width: 0; background: #4caf50; transition: width .15s; }
+      #agentweb-play { display: none; margin-top: 4px; padding: 12px 26px; font: 17px sans-serif; border: 0; border-radius: 8px;
+                       background: #4caf50; color: #fff; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <canvas id="unity-canvas" width={{{ WIDTH }}} height={{{ HEIGHT }}} tabindex="-1"></canvas>
+    <div id="agentweb-card">
+      <h1>{{{ PRODUCT_NAME }}}</h1>
+      <p id="agentweb-tip"></p>
+      <div id="agentweb-track"><div id="agentweb-fill"></div></div>
+      <button id="agentweb-play" type="button">Click or tap to play</button>
+    </div>
+    <div id="agentweb-banner"></div>
+    <script>
+      (function () {
+        var params = new URLSearchParams(location.search);
+        var canvas = document.querySelector("#unity-canvas");
+        var card = document.getElementById("agentweb-card");
+        var tipText = {{{ JSON.stringify(AGENTWEB_TIP) }}} || "Loading...";
+        var errorUrl = {{{ JSON.stringify(AGENTWEB_ERROR_URL) }}};
+        var mobileMaxDpr = parseFloat({{{ JSON.stringify(AGENTWEB_MOBILE_MAX_DPR) }}}) || 1;
+        var requireWasm2023 = {{{ JSON.stringify(AGENTWEB_REQUIRE_WASM2023) }}} === "true";
+        var tapToPlay = {{{ JSON.stringify(AGENTWEB_TAP_TO_PLAY) }}} === "true" || params.get("tap") === "1";
+        var agentWebDataVariants = null; // AGENTWEB_DATA_VARIANTS
+        var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        document.getElementById("agentweb-tip").textContent = tipText;
+        if (isMobile) {
+          canvas.style.width = "100%"; canvas.style.height = "100%"; canvas.style.position = "fixed";
+        }
+        window.__agentWeb = window.__agentWeb || { events: [] };
+        window.__agentWeb.progress = 0;
+
+        // Error capture (6.3 Manual, Debug production Web builds > Report browser errors): one JSON
+        // line in the console for tests, and a beacon to the collector when AGENTWEB_ERROR_URL is set.
+        var reported = 0;
+        window.AgentWebReportError = function (kind, message, stack) {
+          if (reported >= 20) return;
+          reported++;
+          var body = JSON.stringify({ kind: kind, message: String(message).slice(0, 2000), stack: String(stack || "").slice(0, 4000),
+                                      url: location.href, ua: navigator.userAgent, product: {{{ JSON.stringify(PRODUCT_NAME) }}},
+                                      version: {{{ JSON.stringify(PRODUCT_VERSION) }}}, t: Math.round(performance.now()) });
+          console.log("AGENTWEB_ERROR " + body);
+          if (errorUrl && navigator.sendBeacon) { try { navigator.sendBeacon(errorUrl, body); } catch (e) {} }
+        };
+        function banner(msg, type) {
+          console[type === "error" ? "error" : (type === "warning" ? "warn" : "log")]("AGENTWEB_BANNER [" + type + "] " + msg);
+          if (type === "error") window.AgentWebReportError("loader", msg, "");
+          var div = document.createElement("div");
+          div.style.background = type === "error" ? "#b00020" : "#8a6d00";
+          div.innerHTML = msg;
+          document.getElementById("agentweb-banner").appendChild(div);
+          if (type !== "error") setTimeout(function () { div.remove(); }, 5000);
+        }
+        function showCardMessage(text) {
+          document.getElementById("agentweb-tip").textContent = text;
+          document.getElementById("agentweb-track").style.display = "none";
+        }
+
+        // WebAssembly 2023 needs Chrome 91+, Firefox 89+, Safari 16.4+ (6.3 Manual, Prerequisites for
+        // WebAssembly 2023); Unity's own mobile floor is iOS Safari 15. SIMD support marks that floor:
+        // validate a one-function SIMD module before downloading megabytes that cannot compile.
+        var simdModule = new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0, 1, 5, 1, 96, 0, 1, 123, 3, 2, 1, 0, 10, 22, 1, 20, 0, 253, 12,
+                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11]);
+        var wasmOk = typeof WebAssembly === "object" && (!requireWasm2023 || WebAssembly.validate(simdModule));
+        window.__agentWeb.wasmGate = { required: requireWasm2023, ok: wasmOk };
+        if (!wasmOk) {
+          showCardMessage("This game needs a newer browser (Chrome 91+, Firefox 89+, Safari 16.4+ / iOS 16.4+).");
+          window.AgentWebReportError("unsupported_browser", "WebAssembly 2023 features missing", navigator.userAgent);
+          return;
+        }
+
+        function supportsAstc() {
+          try {
+            var c = document.createElement("canvas");
+            var gl = c.getContext("webgl2") || c.getContext("webgl");
+            return !!(gl && gl.getExtension("WEBGL_compressed_texture_astc"));
+          } catch (e) { return false; }
+        }
+        var config = {
+          arguments: [],
+          dataUrl: "Build/{{{ DATA_FILENAME }}}",
+          frameworkUrl: "Build/{{{ FRAMEWORK_FILENAME }}}",
+#if USE_THREADS
+          workerUrl: "Build/{{{ WORKER_FILENAME }}}",
+#endif
+#if USE_WASM
+          codeUrl: "Build/{{{ CODE_FILENAME }}}",
+#endif
+#if SYMBOLS_FILENAME
+          symbolsUrl: "Build/{{{ SYMBOLS_FILENAME }}}",
+#endif
+          streamingAssetsUrl: "StreamingAssets",
+          companyName: {{{ JSON.stringify(COMPANY_NAME) }}},
+          productName: {{{ JSON.stringify(PRODUCT_NAME) }}},
+          productVersion: {{{ JSON.stringify(PRODUCT_VERSION) }}},
+          showBanner: banner,
+          errorHandler: function (err, url, line) {
+            window.AgentWebReportError("js", String(err), url + ":" + line);
+            return false;                                  // false: Unity's own handling still runs
+          }
+        };
+        if (agentWebDataVariants && agentWebDataVariants.astc && supportsAstc()) config.dataUrl = agentWebDataVariants.astc;
+        window.__agentWeb.dataUrl = config.dataUrl;
+        // Render resolution: fill rate and memory on phones (CrazyGames forces DPR 1 on iOS and
+        // low-memory Android); ?dpr=<n> overrides for tests.
+        if (params.get("dpr")) config.devicePixelRatio = parseFloat(params.get("dpr"));
+        else if (isMobile) config.devicePixelRatio = Math.min(window.devicePixelRatio || 1, mobileMaxDpr);
+        window.__agentWeb.loadStart = performance.now();
+        // The loader is added only after the gate (Default template pattern), so an unsupported
+        // browser never downloads it.
+        var loader = document.createElement("script");
+        loader.src = "Build/{{{ LOADER_FILENAME }}}";
+        loader.onload = start;
+        loader.onerror = function () { banner("Unable to load Build/{{{ LOADER_FILENAME }}}", "error"); };
+        document.body.appendChild(loader);
+
+        function start() {
+        createUnityInstance(canvas, config, function (p) {
+          window.__agentWeb.progress = p;
+          document.getElementById("agentweb-fill").style.width = (100 * p) + "%";
+        }).then(function (unityInstance) {
+          window.unityInstance = unityInstance;               // page -> game: unityInstance.SendMessage(...)
+          window.__agentWeb.instanceReady = performance.now();
+          if (!tapToPlay) { card.style.display = "none"; return; }
+          // Tap to play: the first gesture unlocks audio and allows full screen (6.3 Manual, Audio in Web,
+          // Input in Web); pointerdown, because full screen requests only succeed on the next user event.
+          document.getElementById("agentweb-track").style.display = "none";
+          var play = document.getElementById("agentweb-play");
+          play.style.display = "inline-block";
+          play.addEventListener("pointerdown", function () {
+            card.style.display = "none";
+            window.__agentWeb.started = performance.now();
+            try { unityInstance.SendMessage("WebBridge", "OnPageEvent", JSON.stringify({ kind: "start", text: "", value: 0 })); } catch (e) {}
+          });
+        }).catch(function (message) {
+          banner(String(message), "error");
+        });
+        }
+      })();
+    </script>
+  </body>
+</html>

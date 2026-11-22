@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "id": "recipe.xr-ar-museum-placement-uncertainty",
+  "title": {
+    "en": "AR museum placement and occlusion uncertainty"
+  },
+  "aliases": {
+    "en": [
+      "WebXR hit-test exhibit",
+      "AR anchor uncertainty"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors"
+  ],
+  "summary": "Place one museum object from a WebXR hit-test pose, optionally maintain an anchor and depth occlusion when separately enabled, and expose pose loss, unsupported features and device-owned uncertainty.",
+  "objective": "Place one museum object from a WebXR hit-test pose, optionally maintain an anchor and depth occlusion when separately enabled, and expose pose loss, unsupported features and device-owned uncertainty.",
+  "tags": [
+    "WebXR hit test",
+    "AR anchor",
+    "depth sensing",
+    "museum object",
+    "occlusion unavailable"
+  ],
+  "subject_terms": [
+    "WebXR hit test",
+    "AR anchor",
+    "depth sensing",
+    "museum object",
+    "occlusion unavailable"
+  ],
+  "intent_signals": [
+    "Place a museum object in AR while showing anchor and occlusion availability."
+  ],
+  "example_prompts": [
+    "Build an AR exhibit placement using hit-test, optional anchor and optional depth occlusion with a desktop tabletop fallback."
+  ],
+  "negative_signals": [
+    "hit-test pose proves real surface accuracy",
+    "anchor promises cross-session persistence"
+  ],
+  "not_for": [
+    "Measurement, surveying, collision safety, preservation planning or device certification."
+  ],
+  "entities": [
+    {
+      "name": "Exhibit asset",
+      "guidance": "Blender authors a metre-scale plinth/object, footprint and optional coarse occlusion proxy; glTF contains no spatial map, camera image, hit-test or anchor."
+    },
+    {
+      "name": "Placement state",
+      "guidance": "Retain current hit-test result pose relative to the chosen base space and distinguish preview, committed unanchored, anchored, tracking-lost and unavailable."
+    },
+    {
+      "name": "Occlusion state",
+      "guidance": "Use device depth only when its independent feature is enabled. This bounded profile requests matchDepthView=true and samples only current-view depth information through normDepthBufferFromNormView and rawValueToMeters; unavailable/mismatched data selects no-depth or authored-proxy status."
+    }
+  ],
+  "state_contract": {
+    "model": "Enter immersive-ar through the existing lifecycle with hit-test required only when AR placement is chosen; anchors and depth-sensing are independently optional. Preview uses XRHitTestResult.getPose(baseSpace) for the current XRFrame. Commit a finite pose to the exhibit root. If anchors are enabled and createAnchor succeeds, update from its anchorSpace only while a current pose exists; otherwise retain explicit unanchored/lost state. This bounded depth path requests matchDepthView=true; sample only depth information associated with the current view, transform normalized view coordinates with normDepthBufferFromNormView and convert stored values using rawValueToMeters. Missing, zero, nonfinite or mismatched data selects the declared no-depth/authored-proxy state. Never infer persistence, confidence or environment geometry from absence. Desktop fallback places the same exhibit on an authored tabletop plane.",
+    "authority": "Blender/glTF owns exhibit scale, footprint, plinth and optional coarse proxy. The XR device/user agent owns hit-test, anchor tracking, camera/depth and reference spaces. Three.js owns independent feature lifecycles, pose-state labels, exhibit-root projection, privacy-aware disposal and desktop fallback/reset.",
+    "actions": [
+      "Request AR with declared required/optional features.",
+      "Preview/commit current valid hit pose.",
+      "Inspect anchor/depth availability and loss.",
+      "Delete placement/end session and clear device-derived state.",
+      "Use desktop tabletop placement."
+    ]
+  },
+  "invariants": [
+    "Hit-test, anchor and depth support/status are tracked independently.",
+    "No current pose means no new placement transform.",
+    "Depth absence, invalid zero/nonfinite samples or missing view-to-buffer transform never becomes fabricated occlusion geometry.",
+    "Session end deletes application references to anchors/depth and restores desktop state."
+  ],
+  "motion_guidance": [
+    "Pose smoothing may affect the preview only; committed raw pose/status remains inspectable, and loss freezes or hides according to a declared policy."
+  ],
+  "creative_affordances": [
+    "Use a placement footprint, surface-normal glyph and labeled occlusion modes without claiming accuracy."
+  ],
+  "known_limits": [
+    "Hit Test and Depth Sensing cited documents are Working Drafts and Anchors is an editor/community draft; implementation support can change. No device, permission, tracking, depth, privacy behavior, render or runtime was tested."
+  ],
+  "claims": [
+    {
+      "id": "claim.xr-hit-anchor-depth-separation",
+      "statement": "The WebXR Hit Test Working Draft defines frame-specific hit results whose getPose(baseSpace) returns an XRPose relative to a requested space. The separate Anchors draft defines createAnchor/anchorSpace. The separate Depth Sensing Working Draft configures depth usage/data format and matchDepthView, and exposes XRDepthInformation coordinate transforms and raw-to-metre scale; these are distinct optional capability lifecycles.",
+      "scope": "Hit Test WD 11 December 2025, Anchors editor draft read 2026-09-08, and Depth Sensing WD 10 December 2025; no browser/device support or accuracy is claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.xr-hit-test-wd2025",
+          "locator": "Sections 4-5, XRHitTestSource and XRHitTestResult.getPose(baseSpace)"
+        },
+        {
+          "source_id": "source.xr-anchors-editor",
+          "locator": "XRFrame.createAnchor and XRAnchor.anchorSpace interfaces"
+        },
+        {
+          "source_id": "source.xr-depth-sensing-wd2025",
+          "locator": "Sections 2.2-2.3 depth configuration including matchDepthView; 3.1-3.3 XRDepthInformation; 4 result interpretation"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "AR exhibit placement asset",
+      "structure": "Blender authors one metre-scale exhibit/plinth, footprint and optional coarse proxy; glTF exports static geometry only, excluding spatial maps and device data.",
+      "material": "Preview, anchored, unanchored, lost and no-depth states use label/glyph/outline.",
+      "articulation": "Three.js keeps feature lifecycles separate, applies only current finite poses to the exhibit root and disposes session-derived state."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Device-supplied pose/depth projection for one exhibit; no surface accuracy, collision or persistence guarantee.",
+    "state": [
+      "feature/session status",
+      "hit preview pose",
+      "committed/anchor pose status",
+      "depth configuration, current-view association, coordinate transform, scale and occlusion mode"
+    ],
+    "checks": [
+      "No hit pose prevents commit.",
+      "Anchor loss remains visible.",
+      "Depth sampling applies normDepthBufferFromNormView and rawValueToMeters only for the declared matchDepthView=true current-view path.",
+      "Depth-disabled/invalid/mismatched data uses declared no-depth/proxy mode and desktop fallback remains functional."
+    ]
+  },
+  "related_ids": [
+    "recipe.museum-route-object-inspection",
+    "knowledge.webxr-delivery-boundary",
+    "knowledge.modality-independent-action-map"
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "id": "recipe.rectangular-room-normal-modes",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Normal modes of a rigid rectangular room"
+  },
+  "aliases": {
+    "en": [
+      "shoebox room modes",
+      "rectangular acoustic eigenmodes",
+      "room pressure nodal planes"
+    ]
+  },
+  "direction_ids": [
+    "waves-optics-fields",
+    "architecture-interiors"
+  ],
+  "summary": "Inspect one analytic pressure eigenmode in a lossless rigid rectangular room, with its frequency, signed spatial lobes and nodal planes kept distinct from ray paths and reverberation models.",
+  "objective": "Change the room dimensions or integer mode triplet and inspect how the rigid-wall boundary condition determines eigenfrequency and three-dimensional pressure shape.",
+  "tags": [
+    "room acoustics",
+    "normal mode",
+    "Helmholtz equation",
+    "nodal plane"
+  ],
+  "subject_terms": [
+    "rectangular room modes",
+    "rigid acoustic boundary",
+    "zero Neumann boundary",
+    "pressure eigenfunction",
+    "eigenfrequency",
+    "axial mode",
+    "tangential mode",
+    "oblique mode"
+  ],
+  "intent_signals": [
+    "Show the standing pressure pattern of a rigid shoebox room.",
+    "Compare axial, tangential and oblique room modes in three dimensions.",
+    "Explain how changing a room dimension shifts a selected resonance frequency."
+  ],
+  "example_prompts": [
+    "Build a cutaway rectangular room with selectable acoustic mode indices, signed pressure lobes and nodal planes.",
+    "Let me resize a rigid room and inspect the analytic eigenfrequency and a pressure probe."
+  ],
+  "negative_signals": [
+    "Not a ray-tracing, impulse-response, RT60, absorption, diffusion or audio playback model.",
+    "Not a prediction of sound level from a loudspeaker or listener position."
+  ],
+  "not_for": [
+    "Estimating reverberation time, decay rate, damping, absorption, transmission or perceived loudness.",
+    "Claiming the ideal eigenmode is a calibrated response of a furnished or non-rigid room."
+  ],
+  "entities": [
+    {
+      "name": "Rigid rectangular cavity",
+      "guidance": "Build the domain 0<=x<=Lx, 0<=y<=Ly, 0<=z<=Lz in meters. Show all six mathematical boundary planes even when three display panels are hidden or translucent for inspection."
+    },
+    {
+      "name": "Signed pressure field",
+      "guidance": "Sample the normalized spatial eigenfunction Phi=cos(nx*pi*x/Lx)*cos(ny*pi*y/Ly)*cos(nz*pi*z/Lz) on declared slices or a sparse volume lattice. Encode sign redundantly with two hues and plus/minus labels; use opacity or glyph scale for |Phi| without implying calibrated pascals."
+    },
+    {
+      "name": "Nodal planes and mode label",
+      "guidance": "For each positive index ni, place interior zero-pressure planes at coordinate (2j+1)*Li/(2*ni), j=0,...,ni-1. Label the exact triplet, family and eigenfrequency; preserve different triplets when their frequencies are equal."
+    },
+    {
+      "name": "Pressure probe",
+      "guidance": "Place a draggable point inside the room and plot p_hat(t)=Ahat*Phi(probe)*cos(2*pi*f*t+phase). The probe reads the same normalized signed pressure as the field, and moving it never changes the mode."
+    }
+  ],
+  "state_contract": {
+    "model": "Use finite Lx,Ly,Lz,c>0, nonnegative integer indices (nx,ny,nz) not all zero, normalized amplitude |Ahat|<=1, phase phi and model time t. The rigid-wall eigenfunction is Phi(x,y,z)=cos(nx*pi*x/Lx)*cos(ny*pi*y/Ly)*cos(nz*pi*z/Lz); f=(c/2)*sqrt((nx/Lx)^2+(ny/Ly)^2+(nz/Lz)^2); normalized instantaneous pressure is p_hat=Ahat*Phi*cos(2*pi*f*t+phi). This is a single lossless mode of the homogeneous Helmholtz problem with normal pressure derivative zero at every wall. For a sampled field use at least eight intervals per half-wavelength on each axis with positive index (at least 8*ni intervals along axis i); otherwise stop with an undersampling diagnostic rather than displaying an aliased pattern.",
+    "authority": "Dimensions, sound speed, integer triplet, normalized amplitude, phase and model time own the field, nodes, label and probe. Cutaway state, opacity, slice position, color map and display gain reveal that state but cannot change f, Phi or p_hat.",
+    "actions": [
+      "Choose nonnegative integer indices, rejecting the all-zero triplet.",
+      "Resize one positive room dimension or change positive sound speed and recompute frequency, field and nodes atomically.",
+      "Play, pause or scrub the analytic phase from one model clock.",
+      "Move an orthogonal slice or pressure probe through the cavity.",
+      "Toggle boundary, node and sign legends and reset all parameters and view controls."
+    ]
+  },
+  "invariants": [
+    "At x=0,Lx, y=0,Ly and z=0,Lz, the outward-normal derivative of Phi is zero analytically; sample checks use a declared scale-aware tolerance and never substitute zero pressure as the rigid-wall condition.",
+    "Every declared nodal plane evaluates Phi=0 within tolerance, while a wall need not be a pressure node.",
+    "The displayed frequency is computed from the exact selected triplet. Distinct triplets with the same frequency remain distinct degenerate modes rather than being silently merged.",
+    "One period 1/f restores every normalized pressure sample; display gain and slice/cutaway controls leave all numeric samples unchanged. A sampled field meets the declared per-axis resolution guard before rendering."
+  ],
+  "motion_guidance": [
+    "Evaluate the analytic cosine phase at model time; do not translate the standing field through the room.",
+    "When geometry, c or indices change, create a new coherent model state and restart or preserve phase only through an explicitly labeled policy.",
+    "A slowed time control changes playback rate only; always display the physical f separately."
+  ],
+  "creative_affordances": [
+    "Use a dollhouse cutaway, three orthogonal movable slices, sparse signed voxels or nested isosurfaces, provided node locations and pressure sign remain inspectable.",
+    "A restrained pulse-like glow may follow the global oscillation phase, but it must not look like a ray traveling from a source."
+  ],
+  "known_limits": [
+    "Ideal homogeneous lossless fluid and perfectly rigid rectangular walls only; no source coupling, damping, absorption, impedance, furniture, openings, diffraction, diffusion, RT60, broadband response or sound-pressure-level calibration.",
+    "A single separable eigenmode is shown. Arbitrary sound fields require sourced modal coefficients and phase relationships that this recipe does not provide.",
+    "The volume lattice and panels are visualization samples, not a finite-element solution. This authored draft has no executed runtime or rendered observation."
+  ],
+  "claims": [
+    {
+      "id": "claim.physics-room-rigid-eigenmodes",
+      "statement": "For an empty rectangular room with rigid perfectly reflecting boundaries, pressure satisfies the Helmholtz eigenproblem with zero normal derivative at the walls; nonzero modes indexed by nonnegative integers have f=(c/2)*sqrt((nx/Lx)^2+(ny/Ly)^2+(nz/Lz)^2) and a spatial pressure shape proportional to the product of the three corresponding cosine factors.",
+      "scope": "Analytic modes of a homogeneous lossless rectangular cavity with perfectly rigid walls; the zero-frequency all-zero cavity mode is excluded and no decay or forced response is claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-mathworks-room-modes",
+          "locator": "Find Modes of Rectangular Room and Compare Simulation Eigenfrequencies and Modes, especially Helmholtz equation and rigid boundary at lines 94-107, frequency formula at lines 125-135, and pressure eigenfunction at lines 251-258"
+        }
+      ]
+    },
+    {
+      "id": "claim.physics-room-mode-families",
+      "statement": "For these rectangular-room indices, one nonzero index denotes an axial mode, one zero index denotes a tangential mode, and three nonzero indices denote an oblique mode.",
+      "scope": "Terminology for the cited rigid rectangular-room model, not a completeness claim for nonrectangular or impedance-boundary rooms.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-mathworks-room-modes",
+          "locator": "Axial, tangential and oblique mode sections at lines 216-217, 279-281 and 341-343"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Room boundary instrument",
+      "structure": "Construct a dimensioned wireframe at the exact six model planes and add removable thin display panels outside those planes so wall thickness never shifts a boundary coordinate.",
+      "material": "Use matte neutral wall panels, high-contrast dimension ticks and a persistent boundary-condition badge. Transparency is an inspection state, not acoustic transmissivity.",
+      "articulation": "Cutaway panels and slice handles move only in view state; resizing a dimension uses a separate numeric model control."
+    },
+    {
+      "family": "Pressure field instrument",
+      "structure": "Anchor signed samples, node planes and probe to the room coordinate frame. Keep enough depth separation and clipping control to reveal all three index directions.",
+      "material": "Use a colorblind-safe diverging palette centered on transparent or neutral zero, reinforced with plus/minus glyphs. Brightness and glyph size follow a labeled display gain.",
+      "articulation": "All samples oscillate from the same analytic phase; nodes remain stationary and the probe follows its fixed spatial coordinate."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Analytic single pressure eigenmode of a lossless homogeneous rigid rectangular cavity; visualization geometry has no collision physics.",
+    "timestep": "Evaluate the closed-form phase at the current model time. Frame delta may advance the clock, but field samples are recomputed from state rather than integrated.",
+    "state": [
+      "positive room dimensions and sound speed",
+      "nonzero nonnegative integer mode triplet",
+      "normalized amplitude and phase",
+      "model time and probe coordinate"
+    ],
+    "colliders": [
+      "No rigid-body colliders; six planes are acoustic boundary conditions only."
+    ],
+    "driving": [
+      "Closed-form eigenfunction and harmonic time factor."
+    ],
+    "contact": [
+      "No contact, impact, source or wall-force response is modeled."
+    ],
+    "checks": [
+      "Evaluate normal derivatives at all six boundaries and Phi on every nodal plane.",
+      "Require at least 8*ni sample intervals on each axis with positive ni before rendering a sampled field.",
+      "Recompute f independently from wavenumber magnitude and verify one-period closure.",
+      "Change display gain and assert stored normalized pressure and frequency do not change."
+    ]
+  },
+  "related_ids": [
+    "recipe.room-first-reflection-paths",
+    "recipe.standing-string-modes",
+    "knowledge.reasoning-boundary-conditions-are-the-model"
+  ]
+}

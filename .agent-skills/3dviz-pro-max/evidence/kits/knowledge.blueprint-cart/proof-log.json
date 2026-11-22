@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-cart",
+  "record_revision": 2,
+  "asset": "templates/kits/props/cart.js",
+  "asset_sha256": "b92cb9abc42d571cde6c44a1808fb67036e874d1bc14b4c9a34becf447dc5a9e",
+  "params": {
+    "width": 1.7,
+    "depth": 0.98,
+    "wheelRadius": 0.44,
+    "seed": 1,
+    "planks": 6,
+    "sideHeight": 0.34
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-cart",
+    "module": "../props/cart.js",
+    "params": {
+      "width": 1.7,
+      "depth": 0.98,
+      "wheelRadius": 0.44,
+      "seed": 1,
+      "planks": 6,
+      "sideHeight": 0.34
+    },
+    "triangles": 2592,
+    "bounds_m": {
+      "min": [
+        -2.251513095855713,
+        1.3351440453224228e-08,
+        -0.7449999988079071
+      ],
+      "max": [
+        0.895000000372529,
+        0.9440000017881395,
+        0.8073081086575985
+      ],
+      "size": [
+        3.146513096228242,
+        0.943999988436699,
+        1.5523081074655056
+      ]
+    },
+    "fit_distance_m": 5.3116,
+    "view_distances_m": {
+      "far": 12.7479,
+      "mid": 6.3739,
+      "close": 4.1431,
+      "detail": 1.0743
+    },
+    "sockets": [
+      "bed",
+      "yoke",
+      "axle",
+      "tail"
+    ],
+    "detail_socket": "bed",
+    "animated": true,
+    "colliders": [
+      "bed",
+      "wheels"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "7973f815aea096b9e4e46e2c29ee56003657e8e03a1b44a0d254f09e4073cedd",
+    "mid.png": "93f8e3cf8d60b1a10192871d329bedc0bb09a38870ee153a60eb7ac4d3333a6b",
+    "close.png": "8f49fe118018c72fa6cbb2a4bff69e8b3be00b3d5b3ec56d1f8a94c35e758426",
+    "detail.png": "d5fd39e7e9c6679a567db741105b8925313048fefaeb15bb8cce34769231542e",
+    "close-motion.png": "15aa36d768e7cefbcb5d426a0d2f278bb915f2783ee30d5cef3394b709401798"
+  },
+  "motion": {
+    "interval_ms": 400,
+    "simulated": true,
+    "animate_returned": true,
+    "differs": true,
+    "sha_before": "8f49fe118018c72fa6cbb2a4bff69e8b3be00b3d5b3ec56d1f8a94c35e758426",
+    "sha_after": "15aa36d768e7cefbcb5d426a0d2f278bb915f2783ee30d5cef3394b709401798"
+  },
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:51:14+00:00",
+  "finished": "2026-09-08T13:51:18+00:00"
+}

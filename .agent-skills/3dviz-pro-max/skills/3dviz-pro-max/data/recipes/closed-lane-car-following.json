@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "id": "recipe.closed-lane-car-following",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Car-following waves on a closed single lane"
+  },
+  "aliases": {
+    "en": [
+      "IDM ring road",
+      "periodic car-following model",
+      "closed-lane traffic wave"
+    ]
+  },
+  "direction_ids": [
+    "operations-logistics",
+    "environments-dioramas"
+  ],
+  "summary": "Simulate continuous car-following on a periodic lane and connect every vehicle's motion to its bumper gap, approaching rate and declared Intelligent Driver Model parameters.",
+  "objective": "Perturb one vehicle on a closed lane and inspect how gaps, accelerations and speed waves evolve without intersections, lane changes or boundary inflow.",
+  "tags": [
+    "traffic",
+    "car following",
+    "ring road",
+    "microscopic simulation"
+  ],
+  "subject_terms": [
+    "Intelligent Driver Model",
+    "bumper-to-bumper gap",
+    "approaching rate",
+    "desired time headway",
+    "periodic boundary",
+    "stop-and-go wave"
+  ],
+  "intent_signals": [
+    "Show cars following one another on a circular single lane.",
+    "Perturb a ring-road platoon and inspect whether a speed disturbance grows or decays.",
+    "Explain each car's acceleration from speed, headway and relative speed."
+  ],
+  "example_prompts": [
+    "Build an IDM ring road with 18 identical cars, a selectable headway arc and a speed-history cylinder.",
+    "Let me brake one car briefly, then inspect the resulting gap and speed wave on a closed lane."
+  ],
+  "negative_signals": [
+    "Not route planning, signal control, intersection traffic, overtaking or lane changing.",
+    "Not a calibrated forecast of a named road or a vehicle collision engine."
+  ],
+  "not_for": [
+    "Road-safety certification, autonomous-driving control or reconstruction of a real crash.",
+    "Inferring traffic capacity or stability for uncalibrated parameters from one animation."
+  ],
+  "entities": [
+    {
+      "name": "Closed lane and vehicles",
+      "guidance": "Build a single centerline loop of length L with lane-width context but no branches. Give every vehicle a visible front and rear bumper, stable ID, identical declared length by default, and ordered centerline coordinate q modulo L."
+    },
+    {
+      "name": "Follower-leader inspection",
+      "guidance": "For the selected car, draw the forward bumper-to-bumper arc s to its leader, show v, leader speed, Delta v=v-v_leader, desired gap s-star and acceleration. Keep the wraparound leader link visible at the periodic seam."
+    },
+    {
+      "name": "Space-time history",
+      "guidance": "Unwrap lane coordinate against time on a vertical panel or cylinder and plot vehicle traces plus a speed color legend. Height is model time; line brightness does not encode traffic flow unless explicitly calculated."
+    }
+  ],
+  "state_contract": {
+    "model": "For N>=2 fixed cyclic vehicle identities of length ell on a closed centerline of length L>N*ell, initialize unwrapped coordinates q_0<q_1<...<q_(N-1)<q_0+L and v_i>=0. Vehicle i<N-1 follows i+1 with s_i=q_(i+1)-q_i-ell; vehicle N-1 follows vehicle 0's next periodic image with s_(N-1)=q_0+L-q_(N-1)-ell. Delta v_i=v_i-v_leader. Modulo L is used only to map unwrapped q_i to rendered lane position, never to calculate a safety gap. With positive v0,a,b,T,s0 and exponent delta, use s-star=s0+v_i*T+v_i*Delta v_i/(2*sqrt(a*b)) and dv_i/dt=a*[1-(v_i/v0)^delta-(s-star/s_i)^2], dq_i/dt=v_i, matching the cited s1=0 IDM. Integrate all vehicles from one simultaneous state with declared tolerances and gap event functions. Before accepting each solver interval, detect whether any continuous gap reaches gap_epsilon or any speed reaches zero from above; terminate at the first located event and diagnose it rather than accepting an overtake, negative speed or overlap.",
+    "authority": "The simultaneous ODE state owns all vehicle transforms, gaps and histories. Wheel rotation, camera pursuit and interpolation never feed back into q or v. The circular mesh is parameterized by authoritative arclength, not used as a physics collider.",
+    "actions": [
+      "Select a follower and inspect its leader, actual gap, desired gap, approaching rate and acceleration.",
+      "Apply a bounded, explicitly external deceleration pulse to one vehicle, then return control to the IDM and mark the intervention interval.",
+      "Change density by rebuilding an evenly spaced initial state with a valid L>N*ell configuration.",
+      "Play, pause, scrub and compare unperturbed and perturbed runs from identical parameters.",
+      "Reset vehicles, parameters, perturbation and model time."
+    ]
+  },
+  "invariants": [
+    "Leader order and vehicle count remain fixed on the single closed lane: q_0<q_1<...<q_(N-1)<q_0+L throughout every accepted solver interval. A periodic seam changes rendered coordinates, not this unwrapped identity order.",
+    "The sum of all bumper gaps equals L-N*ell within arithmetic tolerance at every valid state.",
+    "Every acceleration is evaluated from the same time state before integration advances; sequentially moving cars would create order-dependent dynamics and is rejected.",
+    "Normal playback locates and stops at the first gap_epsilon or zero-speed crossing before accepting an interval that would overtake, overlap or become negative. The authored implementation does not claim that a finite-step integrator inherits a continuous model's collision-free analysis."
+  ],
+  "motion_guidance": [
+    "Map q modulo L to the lane centerline while retaining unwrapped q for continuous histories and seam-crossing interpolation.",
+    "Derive wheel angle from traveled arclength with a declared visual radius. Wheel spin is display kinematics and carries no tire-force claim.",
+    "A brake pulse is an external input shown on the time history; do not hide it inside a changed desired speed."
+  ],
+  "creative_affordances": [
+    "Use a compact proving ground, elevated urban loop or abstract traffic instrument, provided the lane remains single, closed and unbranched.",
+    "A vertical space-time curtain or cylindrical trace cage can make backward-propagating speed structures visible without claiming a three-dimensional roadway."
+  ],
+  "known_limits": [
+    "Identical deterministic vehicles on one homogeneous lane omit reaction noise, lane changes, intersections, heterogeneous drivers, grade, signals and network demand.",
+    "IDM parameters require calibration for quantitative traffic claims. This recipe illustrates one equation set and does not guarantee that a chosen run reproduces empirical stop-and-go traffic.",
+    "Finite-step collision and negative-speed handling remain numerical responsibilities. No solver run, scene runtime or rendered observation has been executed for this draft."
+  ],
+  "claims": [
+    {
+      "id": "claim.mixed-sol-idm-equations-ring",
+      "statement": "Treiber, Hennecke and Helbing define continuous single-lane car-following acceleration from vehicle speed, bumper-to-bumper gap and approaching rate; their IDM equations (6)-(7), with s1 set to zero for the simple identical-vehicle case, combine free-road acceleration with a squared desired-gap interaction term, and their stability analysis includes homogeneous traffic on a circular road.",
+      "scope": "The deterministic IDM and circular-road analysis in the cited 2000 paper; not a claim that this draft's numerical implementation, parameters or finite-step playback is calibrated or collision-free.",
+      "source_refs": [
+        {
+          "source_id": "source.mixed-sol-idm-2000",
+          "locator": "Section II.1 equations (2)-(3); Section II.2 equations (6)-(7) and s1=0 paragraph; Section II.4 first paragraph"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Closed-lane vehicle set",
+      "structure": "Low-poly cars have explicit front/rear faces, wheelbase cues and stable roof IDs; each sits on one shared centerline frame and retains a thin ground footprint for gap inspection.",
+      "material": "Neutral bodies with a selected outline and speed legend; brake lamps illuminate only during negative acceleration or the external pulse and are not collision sensors.",
+      "articulation": "Vehicle pose follows centerline arclength and tangent; front wheels need not steer on the authored kinematic path unless their visual steering is derived from centerline curvature."
+    },
+    {
+      "family": "Gap and history instrument",
+      "structure": "A thin lane-following headway ribbon joins bumpers, while a separate unwrapped space-time panel carries one trace per stable vehicle ID and an intervention band.",
+      "material": "Gap safety thresholds use line style and numeric labels as well as color. History traces remain readable through periodic seam crossings.",
+      "articulation": "The selected ribbon and time cursor update from the simultaneous ODE state; the history panel grows only along model time."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Longitudinal deterministic car-following along a prescribed periodic centerline; no rigid-body contact or steering dynamics.",
+    "timestep": "Use one declared ODE integrator for the simultaneous state with continuous gap and zero-speed event checks on every accepted interval. Log tolerance or maximum step, and compare minimum gap and speed traces after tightening tolerance or halving maximum step.",
+    "state": [
+      "unwrapped arclength q_i",
+      "nonnegative speed v_i",
+      "leader identity and bumper gap s_i",
+      "IDM parameters and external pulse"
+    ],
+    "colliders": [
+      "Vehicle footprints are diagnostic envelopes only; they do not resolve contact."
+    ],
+    "driving": [
+      "IDM longitudinal acceleration owns speed outside marked external intervention intervals.",
+      "Centerline mapping owns world pose and preserves periodic arclength."
+    ],
+    "contact": [
+      "A located s_i=gap_epsilon event terminates normal playback before the interval is accepted; modulo rendering never hides an overtake and vehicles never pass through or reorder."
+    ],
+    "checks": [
+      "Verify q_0<...<q_(N-1)<q_0+L and sum gaps=L-N*ell at every accepted output and event bracket.",
+      "Compare a uniform unperturbed run with the perturbed run under identical integration settings.",
+      "Repeat minimum-gap and speed extrema after tighter solver settings before interpreting a traffic wave."
+    ]
+  },
+  "related_ids": [
+    "recipe.agv-zone-reservation"
+  ]
+}

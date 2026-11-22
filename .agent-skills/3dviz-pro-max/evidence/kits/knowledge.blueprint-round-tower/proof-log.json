@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-round-tower",
+  "record_revision": 2,
+  "asset": "templates/kits/buildings/round-tower.js",
+  "asset_sha256": "705d89b48def0f126d5af6e1d805b6f97ab2d5a8969469b5fffc26d89aaab78c",
+  "params": {
+    "height": 8,
+    "baseRadius": 2.2,
+    "topRadius": 1.75,
+    "merlons": 14,
+    "slits": 5,
+    "doorHeight": 1.7,
+    "seed": 1
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-round-tower",
+    "module": "../buildings/round-tower.js",
+    "params": {
+      "height": 8,
+      "baseRadius": 2.2,
+      "topRadius": 1.75,
+      "merlons": 14,
+      "slits": 5,
+      "doorHeight": 1.7,
+      "seed": 1
+    },
+    "triangles": 5144,
+    "bounds_m": {
+      "min": [
+        -2.619999885559082,
+        -0.005000001702989851,
+        -2.619999885559082
+      ],
+      "max": [
+        2.619999885559082,
+        12.070000011920929,
+        5.1511741356632115
+      ],
+      "size": [
+        5.239999771118164,
+        12.075000013623919,
+        7.7711740212222935
+      ]
+    },
+    "fit_distance_m": 22.3463,
+    "view_distances_m": {
+      "far": 53.6311,
+      "mid": 26.8155,
+      "close": 17.4301,
+      "detail": 2.8492
+    },
+    "sockets": [
+      "door",
+      "banner",
+      "walkway",
+      "lantern",
+      "stair-foot"
+    ],
+    "detail_socket": "door",
+    "animated": false,
+    "colliders": [
+      "shaft",
+      "crown",
+      "stair"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "f1878a31d3a604b0098355b64be45633b2fa57ed56acedf47f9cf46dfe3119eb",
+    "mid.png": "91ca2a8c908d3de659a661e60d6c938cd0812148697b939255cf7a14e9685f98",
+    "close.png": "4ebacad0d6e5991e1a489217bf802885ab2c628520f64840bb2e789562132772",
+    "detail.png": "4a8b87b5e66b9ea5551284b3e01a62760d2903e6444f60b4979b64a545361263"
+  },
+  "motion": null,
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:50:27+00:00",
+  "finished": "2026-09-08T13:50:30+00:00"
+}

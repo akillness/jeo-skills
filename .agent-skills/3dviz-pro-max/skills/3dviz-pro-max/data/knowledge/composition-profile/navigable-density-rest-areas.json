@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.navigable-density-rest-areas",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "composition-profile",
+  "title": {
+    "en": "Navigable density with visual rest areas"
+  },
+  "aliases": {
+    "en": [
+      "dense scene breathing room",
+      "camera navigation rest zones",
+      "inspectable clutter composition"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors",
+    "abstract-systems-data"
+  ],
+  "summary": "Organize a dense scene into readable clusters, low-demand rest views and bounded navigation targets so exploration reveals detail without trapping the camera or erasing hierarchy.",
+  "objective": "A viewer can enter, inspect and leave every required dense cluster, recover orientation at quieter views, and use alternate controls without relying on one pointer gesture.",
+  "applies_when": [
+    "Many objects, labels or routes compete in one navigable scene.",
+    "Free orbit or pan can strand the camera inside geometry or far from meaningful targets."
+  ],
+  "subject_terms": [
+    "navigable density",
+    "visual rest area",
+    "camera target bounds",
+    "dense scene hierarchy",
+    "orientation recovery"
+  ],
+  "tags": [
+    "composition-profile",
+    "density",
+    "navigation",
+    "rest-area"
+  ],
+  "intent_signals": [
+    "make a dense 3D scene navigable",
+    "add quiet overview rest areas between clusters",
+    "stop orbit camera getting lost in clutter"
+  ],
+  "example_prompts": [
+    "Compose a dense night market into inspectable clusters with quiet overview landings and resettable targets.",
+    "Make a service graph navigable with cluster focus, keyboard-accessible alternatives and a stable home view."
+  ],
+  "negative_signals": [
+    "Filling every empty region with secondary props.",
+    "Calling unlimited orbit controls safe navigation without target or distance checks."
+  ],
+  "not_for": [
+    "Performance culling or level-of-detail policy.",
+    "A sparse scene whose problem is insufficient content rather than navigation."
+  ],
+  "content": {
+    "principles": [
+      "Rest is relational, not empty by rule: a quieter view reduces competing contrast, labels or motion long enough to recover hierarchy. Its visual style can remain rich.",
+      "Partition density by meaningful clusters and routes. Each cluster needs a stable target, entry view and exit/recovery path; free exploration remains an option rather than the only path.",
+      "Navigation constraints protect required views and model boundaries without turning the experience into a rigid tour. Provide visible home/focus actions and a non-pointer route to primary targets."
+    ],
+    "implementation": [
+      "In Blender, author named cluster collections, target empties, candidate home/rest cameras and coarse camera-clearance volumes. Do not treat object collections as a DOM focus order.",
+      "In Three.js, map targets to stable IDs and configure OrbitControls target and scene-specific pan/rotate/zoom plus distance/target-radius bounds. Add collision or camera-volume logic separately when solid boundaries matter; OrbitControls does not provide it.",
+      "Expose home, previous focus and cluster list actions. When crossing into a cluster, reduce or regroup labels/motion according to the presentation profile while keeping selection and world state intact."
+    ],
+    "observable_checks": [
+      "From home, reach each required cluster and return using pointer and the declared keyboard/button alternative. Continuous physically framed routes do not unintentionally pass through solid geometry; authored cuts, portals or scale transitions may cross when clearly presented as display-only.",
+      "Attempt extreme zoom, pan and target changes: declared bounds or recovery controls prevent a lost view, and reset returns to the saved home state.",
+      "At each rest view, the primary landmark and next actions remain clear at supported viewport sizes; hidden details remain discoverable rather than deleted."
+    ]
+  },
+  "related_ids": [
+    "knowledge.terrain-landmark-rhythm",
+    "knowledge.interruptible-focus",
+    "knowledge.responsive-spatial-label-hierarchy"
+  ],
+  "creative_affordances": [
+    "Rest areas may be courtyards, blank margins, dark pauses, slow-motion zones or uncluttered overview states.",
+    "Dense clusters can remain exuberant when routes and hierarchy are legible."
+  ],
+  "known_limits": [
+    "OrbitControls supplies orbit/dolly/pan and configurable limits but not collision avoidance, semantic target order or accessibility conformance.",
+    "Camera-clearance volumes and rest thresholds are scene-specific authored guidance.",
+    "No navigation, keyboard, collision or viewport test was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.experience-orbit-controls-boundary",
+      "statement": "Three.js OrbitControls orbits around a target, supports orbiting, dollying and panning, exposes enable switches and distance/target-radius limits, and can save and reset camera-control state.",
+      "scope": "Current addon mechanics; collision avoidance, semantic navigation order, focus management and alternate UI remain application responsibilities.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-three-orbit-controls",
+          "locator": "Class description; target; enablePan/Rotate/Zoom; distance and target-radius limits; saveState/reset"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,283 @@
+{
+ "frames": "rife-ncnn-vulkan 20221029, rife-v4.6, -x -z (the engine's rife.Rife), on an Apple M4 Max GPU (MoltenVK)",
+ "gpu_gap": "the same binary's frame of the pair on Mesa llvmpipe against this one: premultiplied RGBA 0..255 inside the box either covers, mean and largest absolute difference",
+ "pairs": {
+  "near25": {
+   "walker": "tests/video/test_rife.py _walker",
+   "legs": [
+    [
+     10,
+     -10
+    ],
+    [
+     4,
+     -4
+    ]
+   ],
+   "t": 0.25,
+   "sha256": {
+    "a": "c07f8d42865a544f404ade340019101e79bf345043d2500b7957745988100d95",
+    "b": "9ee8ef549f6c991a9cb8a3ef40fb04337e886eac0ec31b1505410c0a4e7e7384",
+    "ncnn": "dc787aca55fa64456401d94486dfef38975987b651d5e339085a73cb622a604a"
+   },
+   "faults": [],
+   "looks": [],
+   "measure": {
+    "dark_excess": -0.01238,
+    "partial_excess": 0.01815,
+    "outline_loss": 0.0,
+    "outline_shift": 0.0,
+    "ghost": 0.0,
+    "crossfade": 0.0,
+    "torn": 0.08203
+   },
+   "gpu_gap": {
+    "mean_abs": 0.0131,
+    "max_abs": 2.0
+   }
+  },
+  "mid50": {
+   "walker": "tests/video/test_rife.py _walker",
+   "legs": [
+    [
+     20,
+     -20
+    ],
+    [
+     8,
+     -8
+    ]
+   ],
+   "t": 0.5,
+   "sha256": {
+    "a": "303140af493632e85c083cd471fd3d006a6f63113dc0bf354a16b1df2dceb2e4",
+    "b": "de4aeab6f5cc2e527bec86fc1d4c6eceecd9863ebf5ba19d082e8fd6023bfa62",
+    "ncnn": "0ed5d2dcc0006134defac6a5c954bf480750d004d856d9724330304d11681589"
+   },
+   "faults": [
+    "torn"
+   ],
+   "looks": [],
+   "measure": {
+    "dark_excess": -0.01731,
+    "partial_excess": 0.02714,
+    "outline_loss": 0.00187,
+    "outline_shift": 0.00187,
+    "ghost": 0.0,
+    "crossfade": 0.0,
+    "torn": 0.39453
+   },
+   "gpu_gap": {
+    "mean_abs": 0.0274,
+    "max_abs": 4.0
+   }
+  },
+  "far50": {
+   "walker": "tests/video/test_rife.py _walker",
+   "legs": [
+    [
+     20,
+     -20
+    ],
+    [
+     -5,
+     5
+    ]
+   ],
+   "t": 0.5,
+   "sha256": {
+    "a": "303140af493632e85c083cd471fd3d006a6f63113dc0bf354a16b1df2dceb2e4",
+    "b": "d5bd7a3e9ed8fe69d81ea8c404a0d6dd0d0e41f835dfaeb3ff9e1d73192f043b",
+    "ncnn": "5394303cbaf23ddff0e623e3efc548ca153ea21c1db8be851b573876a58f5c88"
+   },
+   "faults": [
+    "outline",
+    "torn"
+   ],
+   "looks": [],
+   "measure": {
+    "dark_excess": -0.00717,
+    "partial_excess": 0.0346,
+    "outline_loss": 0.25856,
+    "outline_shift": 0.25856,
+    "ghost": 0.00028,
+    "crossfade": 0.0,
+    "torn": 0.66797
+   },
+   "gpu_gap": {
+    "mean_abs": 0.056,
+    "max_abs": 6.0
+   }
+  },
+  "cross50": {
+   "walker": "tests/video/test_rife.py _walker",
+   "legs": [
+    [
+     8,
+     -8
+    ],
+    [
+     -5,
+     5
+    ]
+   ],
+   "t": 0.5,
+   "sha256": {
+    "a": "de4aeab6f5cc2e527bec86fc1d4c6eceecd9863ebf5ba19d082e8fd6023bfa62",
+    "b": "d5bd7a3e9ed8fe69d81ea8c404a0d6dd0d0e41f835dfaeb3ff9e1d73192f043b",
+    "ncnn": "fff204462782c10947fe10c5077c7487d2bbde74eceb5685f13150edd1b98cfd"
+   },
+   "faults": [],
+   "looks": [],
+   "measure": {
+    "dark_excess": -0.02292,
+    "partial_excess": 0.01616,
+    "outline_loss": 0.0,
+    "outline_shift": 0.0,
+    "ghost": 0.0,
+    "crossfade": 0.0,
+    "torn": 0.11719
+   },
+   "gpu_gap": {
+    "mean_abs": 0.0188,
+    "max_abs": 3.0
+   }
+  },
+  "bnear50": {
+   "walker": "tests/video/test_crossfade.py _walker, outline BLACK, boot LIGHT_BOOTS, s=2",
+   "legs": [
+    [
+     10,
+     -10
+    ],
+    [
+     5,
+     -5
+    ]
+   ],
+   "t": 0.5,
+   "sha256": {
+    "a": "52f37a7859f61079d4a25f5f5bd57043e288313856e4e454c64622332bfe5d4d",
+    "b": "55007d88aceeaa251ed58b5f9c6c1122121dc66185d0f3873ecd9b3eb3bff6b7",
+    "ncnn": "9a9305ea78d41dd4a08a49515f8ada3dc17638622bcbe5bce1d4773b010de441"
+   },
+   "faults": [],
+   "looks": [],
+   "measure": {
+    "dark_excess": -0.01153,
+    "partial_excess": 0.0072,
+    "outline_loss": 0.0,
+    "outline_shift": 0.0,
+    "ghost": 0.0,
+    "crossfade": 0.0,
+    "torn": 0.0
+   },
+   "gpu_gap": {
+    "mean_abs": 0.0067,
+    "max_abs": 2.0
+   }
+  },
+  "bfar50": {
+   "walker": "tests/video/test_crossfade.py _walker, outline BLACK, boot LIGHT_BOOTS, s=2",
+   "legs": [
+    [
+     20,
+     -20
+    ],
+    [
+     -5,
+     5
+    ]
+   ],
+   "t": 0.5,
+   "sha256": {
+    "a": "2c245a60dd282fc824bb009a2e952271246c547ab49183474ef2e1fa0762c303",
+    "b": "fa7a2677636c987b9f984752197b8aa82f39ebf958f4a9459699dfef4c70f8a7",
+    "ncnn": "4dc2a1cde3c1265f81e332022c023b7fbef7c6c5374a738797a7a736e071537e"
+   },
+   "faults": [
+    "outline",
+    "ghost",
+    "torn"
+   ],
+   "looks": [
+    "crossfade"
+   ],
+   "measure": {
+    "dark_excess": -0.02254,
+    "partial_excess": 0.0237,
+    "outline_loss": 0.12573,
+    "outline_shift": 0.12573,
+    "ghost": 0.00427,
+    "crossfade": 0.05412,
+    "torn": 0.89906
+   },
+   "gpu_gap": {
+    "mean_abs": 0.2471,
+    "max_abs": 71.0
+   }
+  },
+  "bfar33": {
+   "walker": "tests/video/test_crossfade.py _walker, outline BLACK, boot LIGHT_BOOTS, s=2",
+   "legs": [
+    [
+     20,
+     -20
+    ],
+    [
+     -5,
+     5
+    ]
+   ],
+   "t": 0.3333,
+   "sha256": {
+    "a": "2c245a60dd282fc824bb009a2e952271246c547ab49183474ef2e1fa0762c303",
+    "b": "fa7a2677636c987b9f984752197b8aa82f39ebf958f4a9459699dfef4c70f8a7",
+    "ncnn": "38dacfe35e5719f806d18977d1a994496e06abe130613814c886a5846c79d807"
+   },
+   "faults": [
+    "outline",
+    "torn"
+   ],
+   "looks": [],
+   "measure": {
+    "dark_excess": -0.01883,
+    "partial_excess": 0.0185,
+    "outline_loss": 0.13247,
+    "outline_shift": 0.13247,
+    "ghost": 7e-05,
+    "crossfade": 0.0,
+    "torn": 0.75546
+   },
+   "gpu_gap": {
+    "mean_abs": 0.2395,
+    "max_abs": 76.0
+   }
+  }
+ },
+ "alike": {
+  "rife-v4.6": {
+   "pairs": [
+    "bfar33",
+    "bfar50",
+    "bnear50",
+    "cross50",
+    "far50",
+    "mid50",
+    "near25"
+   ],
+   "picked": "2026-10-21, of ten candidate pairs: the binary's rife-v4.6 frame with -x -z on an Apple M4 Max GPU (MoltenVK) and on Mesa llvmpipe, and the torch backend's on a CPU, the same faults and looks, every reading at least a tenth of its bound away from it. near50 is left out (a torn reading 8 % from its bound on llvmpipe); far25 and swap50 met the rule and were not added. Run by name (SPRITE_GEN_RIFE_MODEL_NAME=rife-v4.6)."
+  },
+  "rife-v4.25": {
+   "pairs": [
+    "bfar33",
+    "bnear50",
+    "cross50",
+    "far50",
+    "mid50",
+    "near25"
+   ],
+   "picked": "2026-11-01, of the same ten candidates by the same rule: the binary's rife-v4.25 frame with no augmentation (TNTwise rife-ncnn-vulkan 20250112) on an Apple M4 Max GPU (MoltenVK) and on Mesa llvmpipe, and the torch backend's on the CPU of each. bfar50 is left out: on llvmpipe the binary's frame reads a cross-fade of 0.01645, over the look's bound (0.015) by less than a tenth of it, and the torch backend's 0.01198, under it. near50, far25 and swap50 met the rule and were not added: near50 and far25 are near25's and far50's pairs at another t, with the same verdict."
+  }
+ }
+}

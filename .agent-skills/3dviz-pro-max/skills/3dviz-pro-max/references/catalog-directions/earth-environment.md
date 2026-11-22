@@ -1,0 +1,22 @@
+# Earth Environment
+
+Generated from canonical data. Read only the records relevant to the task.
+
+[Back to catalog](../catalog-index.md)
+
+Use the optional `scripts/resolve.py <record-id>` helper to read one record with its sources.
+
+- [CF ocean-current grid particle playback](../../data/recipes/cf-ocean-current-particle-playback.json) — `recipe.cf-ocean-current-particle-playback`: Advect educational tracers over a supplied small regular rectilinear CF lon/lat current grid using one declared frozen local east/north tangent-plane approximation, only while time and every interpolation corner remain valid.
+- [Divergent ridge and crust-age bands](../../data/recipes/divergent-ridge-crust-age.json) — `recipe.divergent-ridge-crust-age`: Expose the distinction between prescribed plate separation, newly formed crust and a computed geodynamic solution.
+- [Axial tilt and seasonal sunlight](../../data/recipes/earth-tilt-seasons.json) — `recipe.earth-tilt-seasons`: Compare seasonal illumination on a tilted globe without confusing orbital distance with the cause of seasons.
+- [Bounded Fisher reaction-diffusion front](../../data/recipes/fisher-reaction-diffusion-front.json) — `recipe.fisher-reaction-diffusion-front`: Simulate the one-dimensional Fisher equation on a finite interval with a declared zero-flux stencil and conservative explicit-step positivity guard, as an idealized historical model rather than a forecast.
+- [Finite irrigation scenario-envelope comparison](../../data/recipes/irrigation-finite-scenario-envelope.json) — `recipe.irrigation-finite-scenario-envelope`: Run the existing bounded root-zone budget over a finite supplied set of provenance-labeled scenarios under one shared forcing schedule, then display their daywise envelope without treating it as a probability distribution or confidence interval.
+- [P and S plane waves in an isotropic elastic solid](../../data/recipes/isotropic-seismic-plane-waves.json) — `recipe.isotropic-seismic-plane-waves`: Compare homogeneous isotropic P and S plane waves through particle displacement, propagation direction and modulus-dependent speed in a finite three-dimensional inspection window.
+- [Layered atmosphere absorption-only chord](../../data/recipes/layered-atmosphere-absorption-ray.json) — `recipe.layered-atmosphere-absorption-ray`: Integrate a fixed straight chord through concentric piecewise-homogeneous absorbing shells and accumulate optical depth with Beer–Lambert attenuation, excluding refraction, scattering and weather.
+- [Flat layered attenuating seismic rays](../../data/recipes/layered-attenuating-seismic-rays.json) — `recipe.layered-attenuating-seismic-rays`: Trace one declared P or S geometric ray through flat constant-velocity layers while keeping travel time, interface refraction and phenomenological Q_x attenuation explicit.
+- [Geographic and projected coordinate frames](../../data/recipes/map-projection-frames.json) — `recipe.map-projection-frames`: Show the globe and its projected plane at once so distortion becomes something measured rather than described.
+- [Predator-prey cycles in phase space and model time](../../data/recipes/predator-prey-phase-time.json) — `recipe.predator-prey-phase-time`: Link an idealized two-population interaction model to its time series, phase portrait and bounded time-lifted trajectory without presenting aggregate state as individual animal behavior.
+- [Root-zone irrigation water budget](../../data/recipes/root-zone-irrigation-budget.json) — `recipe.root-zone-irrigation-budget`: Balance daily root-zone depletion from rain, runoff, irrigation, capillary rise, evapotranspiration and deep percolation while keeping every flux and modeling assumption visible.
+- [Streamflow guidance playback on a river network](../../data/recipes/streamflow-forecast-playback.json) — `recipe.streamflow-forecast-playback`: Play modelled streamflow over a river network while keeping guidance, observation and visualisation clearly separated.
+- [Terrain contours linked to a height field](../../data/recipes/terrain-contour-slices.json) — `recipe.terrain-contour-slices`: Connect equal-elevation contour lines with horizontal slices through a labeled synthetic terrain.
+- [Flow direction, accumulation and stream networks](../../data/recipes/watershed-flow-accumulation.json) — `recipe.watershed-flow-accumulation`: Derive drainage from a terrain grid so that a stream network is the result of a stated rule and a threshold, not a painted line.

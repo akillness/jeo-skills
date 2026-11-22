@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "id": "recipe.two-qubit-mixed-state-entanglement",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Two-qubit mixed-state partial-transpose inspector"
+  },
+  "aliases": {
+    "en": [
+      "two-qubit PPT inspector",
+      "mixed-state entanglement"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra",
+    "abstract-systems-data",
+    "waves-optics-fields"
+  ],
+  "summary": "Inspect a supplied two-qubit density matrix, its reductions and partial-transpose spectrum with the exact 2×2 Peres-Horodecki separability boundary.",
+  "objective": "Inspect a supplied two-qubit density matrix, its reductions and partial-transpose spectrum with the exact 2×2 Peres-Horodecki separability boundary.",
+  "tags": [
+    "mixed quantum state",
+    "partial transpose",
+    "PPT",
+    "two qubits"
+  ],
+  "subject_terms": [
+    "two-qubit density matrix",
+    "partial transpose",
+    "PPT criterion",
+    "separability",
+    "negativity",
+    "tensor order"
+  ],
+  "intent_signals": [
+    "Inspect a mixed two-qubit state with partial transpose and reduced states.",
+    "Show why two local Bloch vectors do not encode joint entanglement."
+  ],
+  "example_prompts": [
+    "Inspect a mixed two-qubit state with partial transpose and reduced states."
+  ],
+  "negative_signals": [
+    "decorative motion presented as computation",
+    "camera position changes authoritative values",
+    "Using PPT sufficiency outside 2×2 or 2×3."
+  ],
+  "not_for": [
+    "Using PPT sufficiency outside 2×2 or 2×3.",
+    "Encoding a two-qubit state as one Bloch vector."
+  ],
+  "entities": [
+    {
+      "name": "Joint matrix",
+      "guidance": "Show all 16 complex entries in basis |00>,|01>,|10>,|11> with Hermiticity and eigenvalue checks."
+    },
+    {
+      "name": "Partial transpose",
+      "guidance": "For T_B map rho_(i j,k l) to rho_(i l,k j) and preserve tensor labels."
+    },
+    {
+      "name": "Marginals",
+      "guidance": "Show separate rho_A and rho_B Bloch vectors beside joint/PPT spectra."
+    }
+  ],
+  "state_contract": {
+    "model": "Accept one finite complex 4×4 rho in declared |q_A q_B> order and one finite eps in [1e-12,1e-6]. Use this same eps for Hermiticity, trace, input-spectrum residual and partial-transpose verdict policy. Reject an input eigenvalue below -eps; if the minimum lies in [-eps,eps], accept only as approximately PSD with the residual visible and do not silently project or certify exact positivity. Form rho_A and rho_B by partial trace. Form rho^(T_B)_(i j,k l)=rho_(i l,k j); compute Hermitian eigenvalues. Classify lambda_min<-eps as NPT and entangled; lambda_min>eps as positive/PPT within the declared eigensolver and tolerance, which invokes the 2x2 separability theorem at the mathematical model boundary; classify [-eps,eps] as numerically unresolved. Exact analytic presets may separately carry their proven boundary verdict. Optional negativity N=(||rho^(T_B)||_1-1)/2 is a diagnostic, not a universal operational resource claim. Presets include maximally mixed, product mixture, Bell pure state and Werner rho_W=p|Psi-><Psi-|+(1-p)I/4 with p in [0,1].",
+    "authority": "Supplied finite tensors, ordered identifiers, basis conventions and provenance own semantic state. Blender/glTF assets are display-only; Three.js owns validation, calculation, linked selection, failure states and exact reset.",
+    "actions": [
+      "Load/edit matrix and validate.",
+      "Select an element and view its partial-transpose destination.",
+      "Sweep a bounded Werner p preset.",
+      "Reset rho, tensor order, tolerance and selection."
+    ]
+  },
+  "invariants": [
+    "rho and both reductions are Hermitian, trace one and PSD within declared tolerance.",
+    "Partial transpose is an index permutation, remains Hermitian and trace one, and does not mutate rho.",
+    "For two qubits, lambda_min<-eps is a numerical NPT entanglement result, lambda_min>eps is a numerical PPT-side result governed by the 2x2 theorem, and [-eps,eps] remains unresolved unless an exact analytic preset supplies the verdict.",
+    "A passive qubit-order change permutes rho, reductions, labels and transpose subsystem together."
+  ],
+  "motion_guidance": [
+    "Werner-parameter motion recomputes the matrix and spectra analytically; it is not decoherence or laboratory time."
+  ],
+  "creative_affordances": [
+    "Choose any coherent laboratory, constellation or sculptural art direction while preserving exact labels, selectable identity and non-color encodings."
+  ],
+  "known_limits": [
+    "Documentary authored recipe only; no model training, checkpoint execution, quantum hardware, Blender export, browser, renderer or interactive runtime was run.",
+    "glTF transports neutral display assets only; tensors, checkpoints, citations, basis order, dtype and provenance remain external data."
+  ],
+  "claims": [
+    {
+      "id": "claim.aiq-peres-partial-transpose",
+      "statement": "Peres proved that positivity of the partial transpose is a necessary condition for a bipartite density matrix to be separable.",
+      "scope": "Finite bipartite states; necessity alone is not general sufficiency.",
+      "source_refs": [
+        {
+          "source_id": "source.aiq-peres-ppt",
+          "locator": "Abstract and equations (1)-(4), definition and positivity of the partially transposed matrix"
+        }
+      ]
+    },
+    {
+      "id": "claim.aiq-horodecki-two-qubit-ppt",
+      "statement": "The Horodeckis proved that positivity under partial transpose is necessary and sufficient for separability in 2×2 and 2×3 systems, while it is not sufficient in general.",
+      "scope": "The 2×2 result applies to this two-qubit recipe; no higher-dimensional sufficiency claim.",
+      "source_refs": [
+        {
+          "source_id": "source.aiq-horodecki-ppt",
+          "locator": "Abstract; introduction pages 2-3; conclusion"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Joint-state and PPT matrix instrument",
+      "structure": "Blender authors two marginal ball frames and paired 4×4 matrix lattices at neutral transforms; glTF contains no quantum state.",
+      "material": "Signed eigenvalue glyphs use shape plus color; the tolerance band has its own hatch and label.",
+      "articulation": "Three.js owns complex matrices, tensor indexing, partial trace/transpose, Hermitian eigensolve, preset sweep and reset."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Finite imported-data calculation and explanatory playback; no physical dynamics, model training, quantum device or causal attribution.",
+    "state": [
+      "ordered external data and provenance",
+      "declared dimensions, basis and numeric tolerance",
+      "derived readouts and selection state"
+    ],
+    "checks": [
+      "rho and both reductions are Hermitian, trace one and PSD within declared tolerance.",
+      "Partial transpose is an index permutation, remains Hermitian and trace one, and does not mutate rho.",
+      "For two qubits only, lambda_min<-eps is the numerical NPT result, lambda_min>eps is the numerical PPT-side result governed by the separability theorem, and [-eps,eps] remains unresolved unless an exact analytic preset supplies the verdict."
+    ]
+  },
+  "related_ids": [
+    "recipe.two-qubit-bell-correlations",
+    "recipe.single-qubit-bloch-ball"
+  ]
+}

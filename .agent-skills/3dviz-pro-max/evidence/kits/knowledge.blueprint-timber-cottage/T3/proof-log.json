@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-timber-cottage",
+  "record_revision": 5,
+  "asset": "templates/kits/buildings/timber-cottage.js",
+  "asset_sha256": "e945d5c736a43d6c6753782d140ac72b6b5853ec7148fd4c6dc59f22b569c412",
+  "params": {
+    "width": 4.2,
+    "depth": 3.4,
+    "storeys": 1,
+    "seed": 1,
+    "roofPitchDeg": 42
+  },
+  "tier": "T3",
+  "kit": {
+    "blueprint": "knowledge.blueprint-timber-cottage",
+    "module": "../gltf/timber-cottage-t3.glb",
+    "params": {
+      "width": 4.2,
+      "depth": 3.4,
+      "storeys": 1,
+      "seed": 1,
+      "roofPitchDeg": 42
+    },
+    "tier": "T1",
+    "surface": null,
+    "triangles": 4140,
+    "bounds_m": {
+      "min": [
+        -2.269999921321869,
+        0,
+        -2.009952187538147
+      ],
+      "max": [
+        2.269999623298645,
+        4.730686902999878,
+        2.1100000143051147
+      ],
+      "size": [
+        4.539999544620514,
+        4.730686902999878,
+        4.119952201843262
+      ]
+    },
+    "fit_distance_m": 11.3205,
+    "view_distances_m": {
+      "far": 27.1693,
+      "mid": 13.5847,
+      "close": 8.83,
+      "detail": 1.5837
+    },
+    "sockets": [
+      "chimney",
+      "door",
+      "lean-to",
+      "sign"
+    ],
+    "detail_socket": "door",
+    "animated": false,
+    "colliders": [],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "25a77b95c510d93d75b772c05d0c959a52f0316b6ebb1fe68a379b3836ae07b7",
+    "mid.png": "9735b0e66378102a365be19010ed9a32cc3a58731477ecab395eb54419d961f8",
+    "close.png": "cdee8f19c3a9819fd35d03655c29bd9caeaf1190f65811ee3e39097e0410afc9",
+    "detail.png": "ca8f2ca85342d2595d8d1155e143cbeae18d9b42e6592779f515ebb85c63526e"
+  },
+  "motion": null,
+  "gpu_requested": true,
+  "capture_mode": "gpu",
+  "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T17:04:44+00:00",
+  "finished": "2026-09-08T17:04:50+00:00"
+}

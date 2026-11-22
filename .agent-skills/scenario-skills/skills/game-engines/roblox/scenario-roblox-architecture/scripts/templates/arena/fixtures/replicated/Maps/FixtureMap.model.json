@@ -1,0 +1,1 @@
+{"className": "Model", "children": [{"name": "Floor", "className": "Part", "properties": {"Anchored": true, "Size": [20, 2, 20], "CFrame": [-200, -1, -200, 1, 0, 0, 0, 1, 0, 0, 0, 1], "Color": [0.36, 0.38, 0.42], "Material": "SmoothPlastic"}}]}

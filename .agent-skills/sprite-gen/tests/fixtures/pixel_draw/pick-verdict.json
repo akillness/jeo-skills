@@ -1,0 +1,22 @@
+{
+ "candidates": [
+  {
+   "label": "A",
+   "subject_read": 5,
+   "craft": 4,
+   "consistency": 0,
+   "verdict": "ship",
+   "note": "Clean dark outline, consistent top-left lighting and clear highlight; reads instantly as a glossy slime."
+  },
+  {
+   "label": "B",
+   "subject_read": 5,
+   "craft": 4,
+   "consistency": 0,
+   "verdict": "ship",
+   "note": "Nice glossy rim highlight and subtle base bulge, though the jagged right edge is slightly less clean than A."
+  }
+ ],
+ "best": "A",
+ "any_shippable": true
+}

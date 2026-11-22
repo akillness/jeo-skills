@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-bottleneck-legibility",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Show the constraint, not just the movement"
+  },
+  "aliases": {
+    "en": [
+      "bottleneck visibility",
+      "utilisation display",
+      "flow legibility"
+    ]
+  },
+  "direction_ids": [
+    "operations-logistics",
+    "abstract-systems-data"
+  ],
+  "summary": "Encode waiting, utilisation and starvation directly, because moving objects alone hide where a process is limited.",
+  "objective": "Compose an operational scene around the question the viewer actually has: what limits this system.",
+  "applies_when": [
+    "A process scene is meant to explain performance rather than to decorate.",
+    "Several stations, lanes or resources operate at different rates.",
+    "A user asks what to change to make the process faster."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "bottleneck",
+    "utilisation",
+    "starvation",
+    "blocking",
+    "work in progress",
+    "flow"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "operations",
+    "composition"
+  ],
+  "intent_signals": [
+    "where is the hold-up",
+    "which station is the bottleneck",
+    "make the flow readable"
+  ],
+  "example_prompts": [
+    "Make it obvious which station is holding up the line.",
+    "Show which pickers are idle and which are overloaded."
+  ],
+  "negative_signals": [
+    "Scenes intended purely as atmosphere, such as a busy factory backdrop.",
+    "Single-resource processes where the constraint is not in question."
+  ],
+  "not_for": [
+    "Scenes intended purely as atmosphere, such as a busy factory backdrop.",
+    "Single-resource processes where the constraint is not in question."
+  ],
+  "content": {
+    "principles": [
+      "Motion is a poor encoder of performance. A fast conveyor and a slow one look similar in a short clip, while a growing buffer in front of a station is unmistakable.",
+      "The informative quantities are accumulations and idleness: work waiting, resources idle, and time blocked. These are the direct evidence of a constraint.",
+      "A bottleneck is a system property, not a station property. It moves when the mix or the capacity changes, so the display should be able to show it moving.",
+      "Adding more moving objects to convey busyness usually reduces legibility; adding one honest accumulation usually increases it."
+    ],
+    "implementation": [
+      "Give every station a visible buffer whose length is the real queue, so accumulation is spatially legible rather than a number in a corner.",
+      "Encode resource state with a persistent channel such as colour or a status band: idle, working, blocked, down.",
+      "Include a compact time series or sparkline of queue length or utilisation, since a bottleneck is a pattern over time rather than a single frame.",
+      "Give the viewer a control that changes one capacity and let them watch the constraint move, which teaches more than a static label.",
+      "Keep the framing wide enough that the accumulation and the affected stations are visible together."
+    ],
+    "observable_checks": [
+      "Pause at a random moment and ask which station is limiting, then check the answer against the model. Reading a queue length, a utilisation figure or a sparkline is a legitimate way to answer; what fails the check is an encoding that supports no correct answer, or one whose visual impression contradicts the underlying numbers.",
+      "Increase capacity at the labelled bottleneck and compare the result against the declared network model: the accumulation should move to the next binding constraint, or clear entirely when demand is below every remaining station's capacity. A backlog that simply disappears is the correct outcome in that case, not a missing bottleneck.",
+      "Check that idle and blocked states are distinguishable, since both look like a stopped machine.",
+      "Confirm the buffer visualisation is bounded and readable when the queue becomes very long."
+    ]
+  },
+  "related_ids": [
+    "recipe.parcel-sorter-events",
+    "recipe.warehouse-pick-tour",
+    "knowledge.comparison-stage"
+  ],
+  "creative_affordances": [
+    "Abstract or metaphorical encodings such as water levels or pressure gauges are welcome when the mapping is explained.",
+    "A stylised factory can carry accurate flow information; legibility does not require a chart aesthetic."
+  ],
+  "known_limits": [
+    "Authored composition guidance; it makes no performance claim about any real facility and no runtime scene was inspected.",
+    "Identifying the true constraint still requires a valid model of the process."
+  ],
+  "claims": []
+}

@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "id": "recipe.reaction-coordinate-energy-profile",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Reaction coordinate: sourced energy profile"
+  },
+  "aliases": {
+    "en": [
+      "reaction coordinate",
+      "energy profile"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Plot supplied energy samples against one declared coordinate without turning interpolation or a sampled peak into a mechanism.",
+  "objective": "Build a reaction-coordinate energy inspector where every point retains coordinate definition, energy kind, units and provenance, and transition-state labels require explicit source annotation.",
+  "tags": [
+    "reaction coordinate",
+    "energy profile",
+    "sample provenance"
+  ],
+  "subject_terms": [
+    "reaction coordinate",
+    "potential energy profile",
+    "Gibbs energy profile",
+    "relative energy",
+    "sampled maximum",
+    "transition state annotation",
+    "energy units"
+  ],
+  "intent_signals": [
+    "inspect declared energy along reaction coordinate",
+    "energy profile maximum is not automatically transition state"
+  ],
+  "example_prompts": [
+    "Plot a supplied bond-distance coordinate against relative electronic energy and compare its sampled maximum with a separately annotated transition state."
+  ],
+  "negative_signals": [
+    "Not an IRC, NEB, geometry optimization, transition-state search, free-energy calculation, kinetics model or mechanism proof."
+  ],
+  "not_for": [
+    "No inferred saddle point, rate constant, elementary-step claim, mixed energy kinds/units or interpolated values presented as calculations."
+  ],
+  "entities": [
+    {
+      "name": "Molecular snapshots",
+      "guidance": "Blender supplies a stable molecular stage and optional source snapshots keyed to sample IDs. Three.js moves only to supplied coordinates and never deforms one sample into a computed intermediate."
+    },
+    {
+      "name": "Profile and provenance rail",
+      "guidance": "Three.js owns ordered q/E samples, units, baseline and annotations. Selecting a curve segment reveals its bracketing source samples and labels interpolation as display-only."
+    }
+  ],
+  "state_contract": {
+    "model": "A finite ordered table of sample_id, scalar q, relative energy E, coordinate definition/unit, energy kind/unit, method/source and optional source-authored stationary-point annotation. q values must be finite and strictly increasing; all samples share one coordinate definition, energy kind, unit and provenance regime. Choose and display an explicit reference E_ref and plot ΔE=E-E_ref. A polyline or named display interpolant may guide the eye but creates no scientific samples or extrema. A local maximum among samples is labeled sampled maximum only; transition state/saddle/minimum labels require compatible source annotations, not screen shape.",
+    "authority": "Three.js owns validated samples, conversions, selection and provenance. Blender owns illustrative snapshot meshes; neither layer calculates energies or reaction paths.",
+    "actions": [
+      "Load a homogeneous sample table and choose its declared relative-energy reference.",
+      "Scrub only among source samples; optionally display interpolation with a persistent non-computed label.",
+      "Compare a sampled maximum with an explicitly sourced stationary-point annotation.",
+      "Reject duplicate/nonfinite q, incompatible units/energy kinds, missing coordinate definition or unsupported annotations; reset restores the initial sample."
+    ]
+  },
+  "invariants": [
+    "Each plotted marker corresponds one-to-one with a supplied sample ID and retains its original q, E and provenance.",
+    "Energy subtraction and any unit conversion are explicit and applied consistently; potential, electronic, enthalpy and Gibbs-energy profiles are not silently mixed.",
+    "A sampled or interpolated maximum is not sufficient to establish a saddle point or transition state.",
+    "Geometry tweening, curve smoothness and barrier height from sparse samples do not establish a mechanism or rate."
+  ],
+  "motion_guidance": [
+    "Step commits one source frame or declared transformation; pause preserves committed state and reset restores data, view, selections and errors.",
+    "Offer a static frame/table alternative. Tweened atom, curve or surface motion explains correspondence only and never creates scientific samples."
+  ],
+  "creative_affordances": [
+    "Blender may establish a distinctive molecular stage, lattice frame and stable atom/orbital glyph families; Three.js binds them to scientific IDs and data.",
+    "Materials, camera and composition remain flexible when units, provenance, sign, identity and uncertainty stay legible without color alone."
+  ],
+  "known_limits": [
+    "One supplied 1D coordinate and homogeneous energy table only; no multidimensional surface, vibrational correction, uncertainty inference, kinetics or mechanism certification.",
+    "Authored, source-reviewed guidance only; no chemistry calculation, trajectory conversion, Blender export, browser, renderer or interactive artifact was run."
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Scientific coordinates and annotations drive display; mesh contact and animation do not compute chemistry."
+  },
+  "related_ids": [
+    "recipe.molecular-shape-comparison",
+    "recipe.hessian-critical-points"
+  ],
+  "object_craft": [
+    {
+      "family": "Energy-profile bench",
+      "structure": "Use a precise q/E rail with detachable sample pedestals and a linked molecular stage; keep source points physically distinct from the thin display interpolant.",
+      "material": "Source samples use solid markers with IDs; interpolation is translucent/dashed, and stationary annotations use text plus shape."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim.reaction-coordinate-definition",
+      "statement": "IUPAC defines a reaction coordinate as a geometric parameter, or sometimes an approximating non-geometric parameter, that measures progress of an elementary reaction; examples include bond lengths, bond angles or combinations.",
+      "scope": "Terminology for a declared coordinate; not evidence that an arbitrary chosen coordinate is a minimum-energy path.",
+      "source_refs": [
+        {
+          "source_id": "source.iupac-reaction-coordinate",
+          "locator": "Gold Book entry R05168, definition and notes linking reaction coordinate to potential-energy profiles and paths"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.multi-selection-hierarchy",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "interaction-profile",
+  "title": {
+    "en": "Multi-selection across a scene hierarchy"
+  },
+  "aliases": {
+    "en": [
+      "hierarchical multi-select",
+      "selection set and active item",
+      "group transform selection"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "architecture-interiors",
+    "abstract-systems-data"
+  ],
+  "summary": "Maintain a semantic selection set, active item and focus independently while hierarchy rules prevent double-transforming parents and descendants.",
+  "objective": "Additive, range, group and clear actions select predictable semantic objects through both spatial picking and a readable companion control.",
+  "applies_when": [
+    "A user inspects, hides, compares or transforms more than one semantic scene object."
+  ],
+  "tags": [
+    "interaction-profile",
+    "multi-selection",
+    "hierarchy",
+    "focus",
+    "group-transform"
+  ],
+  "subject_terms": [
+    "selection set",
+    "active item",
+    "focus item",
+    "selection anchor",
+    "additive selection",
+    "range selection",
+    "ancestor descendant selection",
+    "group pivot"
+  ],
+  "intent_signals": [
+    "select several machine parts",
+    "shift select a range in the scene tree",
+    "parent and child both move twice",
+    "keyboard multi-select companion list"
+  ],
+  "example_prompts": [
+    "Select several building modules from the scene or hierarchy and hide them together.",
+    "Transform a group without applying the delta twice to selected descendants."
+  ],
+  "negative_signals": [
+    "store selection on material color",
+    "equate keyboard focus with selection",
+    "transform selected parent and child independently"
+  ],
+  "not_for": [
+    "Single-object inspection with no set operation.",
+    "Region selection algorithms for dense point clouds."
+  ],
+  "content": {
+    "principles": [
+      "Store selection as semantic IDs. Keep the focused control, active item, range anchor and selected set as distinct state because each serves a different interaction role.",
+      "Declare hierarchy policy: selecting a group may select the group as one semantic object, its eligible descendants, or both for inspection, but a group transform must have a unique effective root set.",
+      "Spatial hits, tree rows, search results and Select All feed the same selection reducer so modifiers and clear behavior do not diverge by view.",
+      "Selection feedback must survive mesh or material replacement and remain distinct from scientific coloring, hover and locked state."
+    ],
+    "implementation": [
+      "Map every hit or row to a stable semantic ID and expose a readable companion list or tree for essential selection tasks.",
+      "Define replace, toggle, add, range and clear actions explicitly. Do not infer platform modifiers inside the model reducer; input adapters translate them into those actions.",
+      "Before a group operation, reduce the selected set to effective roots by removing any selected descendant whose selected ancestor already carries that transform; compute and display the authored group pivot.",
+      "When objects become hidden, deleted, filtered or locked, apply a stated retention policy and announce the resulting selected count and active item through the companion UI.",
+      "Reset selection separately from resetting the scene model unless the product contract explicitly combines them."
+    ],
+    "observable_checks": [
+      "Select a parent and child, apply one translation, and verify the child receives one world-space delta rather than two.",
+      "Run replace, additive, toggle, range, Select All and clear through spatial and companion paths; selected IDs, active ID and visible feedback agree.",
+      "Hide, delete, lock and recreate render nodes for selected semantic objects; the declared retention policy holds without stale highlights.",
+      "Keyboard focus can move without silently changing selection unless the chosen companion pattern explicitly uses selection-follows-focus."
+    ]
+  },
+  "related_ids": [
+    "knowledge.inspectable-selection",
+    "knowledge.linked-plot-spatial-selection",
+    "knowledge.constraint-aware-object-manipulation",
+    "knowledge.hard-surface-functional-assembly"
+  ],
+  "creative_affordances": [
+    "Use outlines, brackets, a temporary group hull or a shared pivot to show the selected set.",
+    "Offer named selection sets for assemblies, floors or analysis cohorts."
+  ],
+  "known_limits": [
+    "The WAI listbox pattern applies to the companion DOM control, not directly to WebGL hit testing.",
+    "Hierarchy-selection semantics and modifier conventions are application contracts.",
+    "Authored and source-checked guidance; no assistive-technology or runtime test was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.experience-wai-multiselect-models",
+      "statement": "The WAI-ARIA APG listbox pattern describes two keyboard interaction models for multiple selection, recommends a model that does not require holding modifier keys while navigating, and distinguishes focus from selection except where selection-follows-focus is deliberately chosen.",
+      "scope": "Authoring-practice guidance for a companion DOM listbox; it does not define scene hierarchy semantics or certify canvas accessibility.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-wai-listbox",
+          "locator": "Keyboard Interaction: Multiple Selection; notes distinguishing focus and selection"
+        }
+      ]
+    }
+  ]
+}

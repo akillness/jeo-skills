@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-stone-bridge",
+  "record_revision": 3,
+  "asset": "templates/kits/buildings/stone-bridge.js",
+  "asset_sha256": "22aaf4608f9b34cf9573e841febee176a716b563de020760385b1d88925ee8a0",
+  "params": {
+    "span": 6,
+    "width": 3.4,
+    "rise": 1.5,
+    "springHeight": 0.9,
+    "voussoirCount": 15,
+    "approach": 1.7,
+    "parapetHeight": 0.95,
+    "seed": 1
+  },
+  "tier": "T2",
+  "kit": {
+    "blueprint": "knowledge.blueprint-stone-bridge",
+    "module": "../buildings/stone-bridge.js",
+    "params": {
+      "span": 6,
+      "width": 3.4,
+      "rise": 1.5,
+      "springHeight": 0.9,
+      "voussoirCount": 15,
+      "approach": 1.7,
+      "parapetHeight": 0.95,
+      "seed": 1
+    },
+    "tier": "T2",
+    "surface": {
+      "seed": 1,
+      "size": 1024,
+      "materials": 14,
+      "unmapped": [
+        "#5f6d4b"
+      ],
+      "uv": [
+        "world"
+      ],
+      "ms": 63.7,
+      "ao": {
+        "vertices": 3864,
+        "casts": 9568,
+        "ms": 36.1,
+        "skipped": null
+      }
+    },
+    "triangles": 6048,
+    "bounds_m": {
+      "min": [
+        -4.739999771118164,
+        -5.2452087562215866e-08,
+        -2.269116881611377
+      ],
+      "max": [
+        4.739999771118164,
+        3.856080350993373,
+        2.269116881611377
+      ],
+      "size": [
+        9.479999542236328,
+        3.8560804034454605,
+        4.538233763222754
+      ]
+    },
+    "fit_distance_m": 16.3665,
+    "view_distances_m": {
+      "far": 39.2795,
+      "mid": 19.6398,
+      "close": 12.7658,
+      "detail": 2.3126
+    },
+    "sockets": [
+      "deck-centre",
+      "deck-west",
+      "deck-east",
+      "keystone",
+      "lantern"
+    ],
+    "detail_socket": "deck-centre",
+    "animated": false,
+    "colliders": [
+      "deck",
+      "parapet-north",
+      "parapet-south",
+      "abutments"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "94ba27a16d467823be8772014c68d70e1ee626e1de83665e77267eeff09a1ba5",
+    "mid.png": "df45d4be4f7af1293c37fdda04d1ba48d2561f63f69215f6004ee095e9576018",
+    "close.png": "e55dd84785f667b81e07b272db8af3641a667d3de1fe04ad1ddd948ec813d2b7",
+    "detail.png": "fcff603036b992e962a1a6677b03a53702b4e33b29a8a9645fff8c7f5a1a7460"
+  },
+  "motion": null,
+  "gpu_requested": false,
+  "capture_mode": "swiftshader",
+  "webgl_renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T17:13:46+00:00",
+  "finished": "2026-09-08T17:13:52+00:00",
+  "surface": {
+    "families": {
+      "#a79c8c": "stone",
+      "#7e7466": "stone",
+      "#8f887c": "stone",
+      "#8e8577": "stone",
+      "#afa698": "stone",
+      "#9c9283": "stone",
+      "#958b7d": "stone",
+      "#9f9585": "stone",
+      "#b9b1a6": "stone",
+      "#7d7569": "stone",
+      "#bdb6ab": "stone",
+      "#938a7b": "stone",
+      "#b7b3ac": "stone",
+      "#b2a99d": "stone"
+    },
+    "seed": 1,
+    "size": 1024,
+    "ao": {
+      "samples": 13,
+      "radius_m": 0.45,
+      "ground_dirt_m": 0.6
+    }
+  }
+}

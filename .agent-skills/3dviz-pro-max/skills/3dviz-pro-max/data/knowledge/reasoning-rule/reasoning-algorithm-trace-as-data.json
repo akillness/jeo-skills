@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-algorithm-trace-as-data",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Record the algorithm trace, then play it"
+  },
+  "aliases": {
+    "en": [
+      "step trace",
+      "algorithm playback",
+      "step backward"
+    ]
+  },
+  "direction_ids": [
+    "algorithms-data-structures",
+    "operations-logistics"
+  ],
+  "summary": "Run the algorithm to produce an explicit sequence of states, and drive the visualisation from that sequence.",
+  "objective": "Give an algorithm scene a state model that supports stepping in both directions and inspecting any moment.",
+  "applies_when": [
+    "An algorithm is animated step by step.",
+    "The viewer can pause, step forwards or backwards, or jump to a step.",
+    "Data structure contents such as a queue or a heap are displayed alongside."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "algorithm trace",
+    "step",
+    "playback",
+    "state history",
+    "instrumentation",
+    "undo"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "algorithms",
+    "state"
+  ],
+  "intent_signals": [
+    "step through the algorithm",
+    "go back a step",
+    "show what the queue holds"
+  ],
+  "example_prompts": [
+    "Animate the search step by step and let me step backwards.",
+    "Jump to the moment the node was settled."
+  ],
+  "negative_signals": [
+    "Static illustrations of a finished result such as a final path.",
+    "Interactive sandboxes where the user rather than an algorithm drives the state."
+  ],
+  "not_for": [
+    "Static illustrations of a finished result such as a final path.",
+    "Interactive sandboxes where the user rather than an algorithm drives the state."
+  ],
+  "content": {
+    "principles": [
+      "Animating an algorithm by mutating the display as it runs makes the display the only record, so stepping backwards becomes an inverse-operation problem that is usually harder than the algorithm itself.",
+      "A trace is a list of states or of state deltas. With it, any step is directly addressable, and the visual is a pure function of the step index.",
+      "The trace should capture the algorithmic state, including the auxiliary structures, not just what is currently highlighted, because those structures are usually the lesson.",
+      "Colour is a view of state. Restoring a previous colour is not restoring a previous state, and the difference becomes visible the moment the viewer steps back and then forwards again."
+    ],
+    "implementation": [
+      "Instrument the algorithm to emit a state snapshot or a delta at each meaningful step, including the containers and the current decision.",
+      "Render each frame from the state reconstructed for the current cursor: directly from a snapshot, or from the nearest earlier checkpoint plus the ordered deltas up to that cursor. A delta on its own does not carry the whole state, so reconstruction, not the raw entry, is what makes seeking and stepping the same operation.",
+      "Include the reason for each step in the trace, such as which edge was relaxed or which comparison was made, and display it.",
+      "Keep the trace bounded by capping steps or by storing deltas with periodic snapshots for long runs.",
+      "Regenerate the trace when the input changes rather than patching the existing one."
+    ],
+    "observable_checks": [
+      "Step forward several steps and back to the start and confirm the state matches the initial state exactly, including auxiliary structures.",
+      "Jump directly to a middle step and compare the reconstructed state, including auxiliary containers, with the state reached by sequential playback to the same cursor.",
+      "Confirm the displayed container contents match the trace rather than being maintained separately.",
+      "Change the input and confirm the whole trace is rebuilt rather than partially updated."
+    ]
+  },
+  "related_ids": [
+    "recipe.breadth-first-frontier",
+    "recipe.dijkstra-relaxation",
+    "recipe.stable-merge-sort-trace"
+  ],
+  "creative_affordances": [
+    "The visual language for steps, from highlights to physical tokens moving, is free once the trace is authoritative.",
+    "Non-linear presentations such as small multiples of key steps work from the same trace."
+  ],
+  "known_limits": [
+    "Authored state-model guidance; no runtime visualisation has been exercised for this record.",
+    "Trace storage for very large inputs needs a strategy this rule does not prescribe."
+  ],
+  "claims": []
+}

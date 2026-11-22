@@ -1,0 +1,328 @@
+{
+  "version": 1,
+  "tag": "skill:scenario-sprite-animation:grid",
+  "purpose": "Optional layout and alignment guides; not a guarantee of generated pose alignment.",
+  "coordinate_convention": "Top-left origin, pixels, cell boxes exclude right and bottom bounds.",
+  "templates": [
+    {
+      "name": "sprite-grid-4x4-v1",
+      "canvas": [1024, 1024],
+      "columns": 4,
+      "rows": 4,
+      "frame_count": 16,
+      "order": "row-major",
+      "cell_size": [256, 256],
+      "padding": 0,
+      "gutter": 0,
+      "cell_guides": {
+        "inset": 32,
+        "center_x": 128,
+        "baseline_y": 208
+      },
+      "cells": [
+        {
+          "index": 0,
+          "box": [0, 0, 256, 256],
+          "anchor": [128, 208]
+        },
+        {
+          "index": 1,
+          "box": [256, 0, 256, 256],
+          "anchor": [384, 208]
+        },
+        {
+          "index": 2,
+          "box": [512, 0, 256, 256],
+          "anchor": [640, 208]
+        },
+        {
+          "index": 3,
+          "box": [768, 0, 256, 256],
+          "anchor": [896, 208]
+        },
+        {
+          "index": 4,
+          "box": [0, 256, 256, 256],
+          "anchor": [128, 464]
+        },
+        {
+          "index": 5,
+          "box": [256, 256, 256, 256],
+          "anchor": [384, 464]
+        },
+        {
+          "index": 6,
+          "box": [512, 256, 256, 256],
+          "anchor": [640, 464]
+        },
+        {
+          "index": 7,
+          "box": [768, 256, 256, 256],
+          "anchor": [896, 464]
+        },
+        {
+          "index": 8,
+          "box": [0, 512, 256, 256],
+          "anchor": [128, 720]
+        },
+        {
+          "index": 9,
+          "box": [256, 512, 256, 256],
+          "anchor": [384, 720]
+        },
+        {
+          "index": 10,
+          "box": [512, 512, 256, 256],
+          "anchor": [640, 720]
+        },
+        {
+          "index": 11,
+          "box": [768, 512, 256, 256],
+          "anchor": [896, 720]
+        },
+        {
+          "index": 12,
+          "box": [0, 768, 256, 256],
+          "anchor": [128, 976]
+        },
+        {
+          "index": 13,
+          "box": [256, 768, 256, 256],
+          "anchor": [384, 976]
+        },
+        {
+          "index": 14,
+          "box": [512, 768, 256, 256],
+          "anchor": [640, 976]
+        },
+        {
+          "index": 15,
+          "box": [768, 768, 256, 256],
+          "anchor": [896, 976]
+        }
+      ],
+      "files": {
+        "grid": {
+          "file": "sprite-grid-4x4-v1-grid.png",
+          "sha256": "0b24a6aebfe588c06c5b5437a7296d789041a9006353328a89283bd287faea32",
+          "asset_id": "asset_8U1kggSG5ypxJBnVRxdcd5WU"
+        },
+        "alignment-guide": {
+          "file": "sprite-grid-4x4-v1-alignment-guide.png",
+          "sha256": "da73b6d7a10a4b9c74d9d1bc76b75ff6782865052fb31fd4c0dcaa4599c35575",
+          "asset_id": "asset_nGE3ePf8NkdUxmiTF5jDnGgS"
+        }
+      }
+    },
+    {
+      "name": "sprite-grid-6x6-v1",
+      "canvas": [1536, 1536],
+      "columns": 6,
+      "rows": 6,
+      "frame_count": 36,
+      "order": "row-major",
+      "cell_size": [256, 256],
+      "padding": 0,
+      "gutter": 0,
+      "cell_guides": {
+        "inset": 32,
+        "center_x": 128,
+        "baseline_y": 208
+      },
+      "cells": [
+        {
+          "index": 0,
+          "box": [0, 0, 256, 256],
+          "anchor": [128, 208]
+        },
+        {
+          "index": 1,
+          "box": [256, 0, 256, 256],
+          "anchor": [384, 208]
+        },
+        {
+          "index": 2,
+          "box": [512, 0, 256, 256],
+          "anchor": [640, 208]
+        },
+        {
+          "index": 3,
+          "box": [768, 0, 256, 256],
+          "anchor": [896, 208]
+        },
+        {
+          "index": 4,
+          "box": [1024, 0, 256, 256],
+          "anchor": [1152, 208]
+        },
+        {
+          "index": 5,
+          "box": [1280, 0, 256, 256],
+          "anchor": [1408, 208]
+        },
+        {
+          "index": 6,
+          "box": [0, 256, 256, 256],
+          "anchor": [128, 464]
+        },
+        {
+          "index": 7,
+          "box": [256, 256, 256, 256],
+          "anchor": [384, 464]
+        },
+        {
+          "index": 8,
+          "box": [512, 256, 256, 256],
+          "anchor": [640, 464]
+        },
+        {
+          "index": 9,
+          "box": [768, 256, 256, 256],
+          "anchor": [896, 464]
+        },
+        {
+          "index": 10,
+          "box": [1024, 256, 256, 256],
+          "anchor": [1152, 464]
+        },
+        {
+          "index": 11,
+          "box": [1280, 256, 256, 256],
+          "anchor": [1408, 464]
+        },
+        {
+          "index": 12,
+          "box": [0, 512, 256, 256],
+          "anchor": [128, 720]
+        },
+        {
+          "index": 13,
+          "box": [256, 512, 256, 256],
+          "anchor": [384, 720]
+        },
+        {
+          "index": 14,
+          "box": [512, 512, 256, 256],
+          "anchor": [640, 720]
+        },
+        {
+          "index": 15,
+          "box": [768, 512, 256, 256],
+          "anchor": [896, 720]
+        },
+        {
+          "index": 16,
+          "box": [1024, 512, 256, 256],
+          "anchor": [1152, 720]
+        },
+        {
+          "index": 17,
+          "box": [1280, 512, 256, 256],
+          "anchor": [1408, 720]
+        },
+        {
+          "index": 18,
+          "box": [0, 768, 256, 256],
+          "anchor": [128, 976]
+        },
+        {
+          "index": 19,
+          "box": [256, 768, 256, 256],
+          "anchor": [384, 976]
+        },
+        {
+          "index": 20,
+          "box": [512, 768, 256, 256],
+          "anchor": [640, 976]
+        },
+        {
+          "index": 21,
+          "box": [768, 768, 256, 256],
+          "anchor": [896, 976]
+        },
+        {
+          "index": 22,
+          "box": [1024, 768, 256, 256],
+          "anchor": [1152, 976]
+        },
+        {
+          "index": 23,
+          "box": [1280, 768, 256, 256],
+          "anchor": [1408, 976]
+        },
+        {
+          "index": 24,
+          "box": [0, 1024, 256, 256],
+          "anchor": [128, 1232]
+        },
+        {
+          "index": 25,
+          "box": [256, 1024, 256, 256],
+          "anchor": [384, 1232]
+        },
+        {
+          "index": 26,
+          "box": [512, 1024, 256, 256],
+          "anchor": [640, 1232]
+        },
+        {
+          "index": 27,
+          "box": [768, 1024, 256, 256],
+          "anchor": [896, 1232]
+        },
+        {
+          "index": 28,
+          "box": [1024, 1024, 256, 256],
+          "anchor": [1152, 1232]
+        },
+        {
+          "index": 29,
+          "box": [1280, 1024, 256, 256],
+          "anchor": [1408, 1232]
+        },
+        {
+          "index": 30,
+          "box": [0, 1280, 256, 256],
+          "anchor": [128, 1488]
+        },
+        {
+          "index": 31,
+          "box": [256, 1280, 256, 256],
+          "anchor": [384, 1488]
+        },
+        {
+          "index": 32,
+          "box": [512, 1280, 256, 256],
+          "anchor": [640, 1488]
+        },
+        {
+          "index": 33,
+          "box": [768, 1280, 256, 256],
+          "anchor": [896, 1488]
+        },
+        {
+          "index": 34,
+          "box": [1024, 1280, 256, 256],
+          "anchor": [1152, 1488]
+        },
+        {
+          "index": 35,
+          "box": [1280, 1280, 256, 256],
+          "anchor": [1408, 1488]
+        }
+      ],
+      "files": {
+        "grid": {
+          "file": "sprite-grid-6x6-v1-grid.png",
+          "sha256": "68148db38f0e058efbe145725d8fe7cdb534faa9fd5ae4943647c3e0bd7a918d",
+          "asset_id": "asset_vpSevkPui9Dfg87ysZMbqWT3"
+        },
+        "alignment-guide": {
+          "file": "sprite-grid-6x6-v1-alignment-guide.png",
+          "sha256": "db6285994ce60db596bd91b9cf3ec67e801c25db98c0a38e882020067ee6f57b",
+          "asset_id": "asset_HdGHjXquUF7yQwJAkea8pqYC"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.point-charge-field-superposition",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Electric field from two stationary charges"
+  },
+  "aliases": {
+    "en": [
+      "electric field superposition",
+      "dipole field arrows",
+      "Coulomb point charges"
+    ]
+  },
+  "direction_ids": [
+    "waves-optics-fields"
+  ],
+  "summary": "Add two point-charge field contributions and distinguish direction from magnitude near singularities.",
+  "objective": "Show two stationary charges with a movable field probe, separate contribution arrows and their vector sum.",
+  "tags": [
+    "electric field",
+    "Coulomb law",
+    "superposition"
+  ],
+  "subject_terms": [
+    "electric field",
+    "Coulomb law",
+    "superposition",
+    "dipole",
+    "point charge",
+    "field magnitude"
+  ],
+  "intent_signals": [
+    "Show two stationary charges with a movable field probe, separate contribution arrows and their vector sum.",
+    "Add two point-charge field contributions and distinguish direction from magnitude near singularities."
+  ],
+  "example_prompts": [
+    "Show two stationary charges with a movable field probe, separate contribution arrows and their vector sum.",
+    "Create an explorable 3D explanation of electric field superposition with vector probe."
+  ],
+  "negative_signals": [
+    "No magnetic fields, radiation, finite-size charge distribution or dielectric boundaries."
+  ],
+  "not_for": [
+    "No magnetic fields, radiation, finite-size charge distribution or dielectric boundaries."
+  ],
+  "entities": [
+    {
+      "name": "Charge markers",
+      "guidance": "Use signed labeled spheres at canonical point-charge locations; visible radius denotes an exclusion region, not a physical charge distribution."
+    },
+    {
+      "name": "Field samples",
+      "guidance": "Place sparse arrows on a regular 3D lattice, with separate direction-only and magnitude-scaled modes; mark clipped magnitudes."
+    },
+    {
+      "name": "Vector probe",
+      "guidance": "Show E1, E2 and Etotal at one safe probe point with a vector addition construction and common units."
+    }
+  ],
+  "state_contract": {
+    "model": "In SI vacuum units (charges in coulombs, distances in meters, field in N/C), E(r)=k*sum(q_i*(r-r_i)/|r-r_i|^3) outside excluded balls around charge positions. Charges and positions are finite; a declared minimum probe distance avoids singular evaluation.",
+    "authority": "Charge values, positions and probe coordinates own field vectors; glyph normalization affects display only and is disclosed.",
+    "actions": [
+      "Move charges while keeping exclusion regions explicit.",
+      "Change charge sign or magnitude.",
+      "Drag a probe outside the forbidden regions.",
+      "Toggle contribution vectors or reset the configuration."
+    ]
+  },
+  "invariants": [
+    "The total vector equals the sum of contributions before any visual normalization.",
+    "A single-charge field magnitude falls by a factor of four when distance doubles.",
+    "At a symmetric equal-charge midpoint the sum can be zero; do not normalize the zero vector."
+  ],
+  "motion_guidance": [
+    "Update the static field after parameter changes; no oscillation or force-driven charge trajectory is implied.",
+    "If field lines are added, integrate the declared field with singularity stopping rules; their density is a chosen encoding, not countable physical threads."
+  ],
+  "known_limits": [
+    "No magnetic fields, radiation, finite-size charge distribution or dielectric boundaries.",
+    "Moving a source is an edit between electrostatic configurations, not a time-dependent electrodynamics solution.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.point-charge-field-superposition",
+      "statement": "The electric field of multiple point charges is the vector sum of their individual Coulomb fields.",
+      "scope": "Electrostatic vacuum point-charge model away from source singularities.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-electric-field",
+          "locator": "5.4, point-charge field and superposition"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Charge markers",
+      "structure": "Use signed labeled spheres at canonical point-charge locations; visible radius denotes an exclusion region, not a physical charge distribution.",
+      "material": "Matte signed charge markers with shape/text redundancy; transparent exclusion spheres and thin field arrows avoid falsely solid field lines."
+    }
+  ]
+}

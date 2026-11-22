@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "id": "recipe.map-projection-frames",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Geographic and projected coordinate frames"
+  },
+  "aliases": {
+    "en": [
+      "map projection",
+      "coordinate reference system",
+      "projection distortion"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment"
+  ],
+  "summary": "Show the globe and its projected plane at once so distortion becomes something measured rather than described.",
+  "objective": "Build a globe and a projection surface where I can compare shapes, areas and distances between the angular and the planar coordinate frames.",
+  "tags": [
+    "projection",
+    "coordinates",
+    "distortion"
+  ],
+  "subject_terms": [
+    "geographic coordinate system",
+    "projected coordinate system",
+    "datum",
+    "ellipsoid",
+    "map projection",
+    "distortion",
+    "graticule",
+    "geodesic"
+  ],
+  "intent_signals": [
+    "Show how a map projection distorts shape and area.",
+    "Compare geographic coordinates with a projected coordinate system."
+  ],
+  "example_prompts": [
+    "Build a globe with a projection surface and comparison patches that show distortion.",
+    "Show a great-circle route and its projected path on the same screen."
+  ],
+  "negative_signals": [
+    "Not a geodesy toolkit: datum transformations and their accuracy are outside this recipe.",
+    "Not a claim about any specific dataset or projection parameter set unless the scene states it."
+  ],
+  "not_for": [
+    "Not a geodesy toolkit: datum transformations and their accuracy are outside this recipe.",
+    "Not a claim about any specific dataset or projection parameter set unless the scene states it."
+  ],
+  "entities": [
+    {
+      "name": "Globe and graticule",
+      "guidance": "Model the globe with a real graticule and named reference features, since a projection is a mapping of those features."
+    },
+    {
+      "name": "Projection surface",
+      "guidance": "Two optional planar views for spherical plate carree and spherical Mercator; they are mathematical coordinate maps, not claims of literal ray projection onto a cylinder."
+    },
+    {
+      "name": "Comparison patches",
+      "guidance": "Place equal-area or equal-shape test patches at several latitudes and report their projected measurements."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored spherical teaching model with R=6371000 m as a chosen rounded radius, not an ellipsoid or survey datum. Angles are radians internally; central meridian lambda0=0 and zero false easting/northing. Offer spherical plate carree x=R wrap(lambda-lambda0), y=R phi, and spherical Mercator x=R wrap(lambda-lambda0), y=R ln(tan(pi/4+phi/2)), with wrap in [-pi,pi). Both display only |phi|<=85 degrees, an authored common comparison window; Mercator poles are outside its mathematical domain. Split curves and polygons at the antimeridian and clip at the window, never connect across a seam. Globe coordinates are R(cos(phi)cos(lambda),cos(phi)sin(lambda),sin(phi)). A patch is a geodesic disk of fixed radius ell=100000 m: for center unit c and local orthonormal tangent vectors e1,e2, its boundary is R[cos(ell/R)c+sin(ell/R)(e1 cos(t)+e2 sin(t))], t in [0,2pi). Moving c rigidly relocates the same disk; its spherical area is 2 pi R^2[1-cos(ell/R)]. For route endpoint unit vectors u,v use sigma=atan2(|u cross v|,u dot v) and distance R sigma. For 0<sigma<pi the great-circle arc is R[sin((1-s)sigma)u+sin(s sigma)v]/sin(sigma), 0<=s<=1; coincident endpoints give zero distance and a point, antipodal/near-antipodal endpoints are reported as requiring a route-plane choice and are not interpolated. Near-coincident arcs may use normalized linear interpolation labeled approximate. Planar route lengths and polygon areas are sampled estimates with display resolution and refinement differences shown; they are not spherical measurements.",
+    "authority": "The angular coordinates are authoritative; projected coordinates are derived. A measurement without a stated frame and unit is not a result.",
+    "actions": [
+      "Switch the projection family.",
+      "Move a test patch to a different latitude.",
+      "Toggle the graticule and the geodesic route.",
+      "Reset projection, patches and camera."
+    ]
+  },
+  "invariants": [
+    "Every reported measurement names its frame and unit; angular degrees are never compared directly with linear metres.",
+    "Test patches keep their identity across projections so their distortion can be compared.",
+    "A geodesic route on the globe and its projected image are shown as the same route, not as two independent curves.",
+    "A test patch keeps its intrinsic ground dimensions as it moves in latitude, so any change in its projected size is distortion rather than a change of the patch itself.",
+    "Each projection declares its valid domain, seam and pole treatment; positions outside that domain are reported rather than wrapped silently."
+  ],
+  "motion_guidance": [
+    "A morph between globe and map is optional and labeled a display interpolation, without assigning measurement meaning to intermediate poses.",
+    "Move patches slowly across latitudes so the growth or shear of the projected patch is legible."
+  ],
+  "known_limits": [
+    "Only the two stated spherical mappings and the common 85-degree display window are implemented; no ellipsoidal datum transformations or surveying accuracy.",
+    "The rounded sphere radius is an authored teaching choice; changing to an ellipsoid requires different projection and geodesic formulas.",
+    "Spherical formulas are written in the model and referenced to PROJ documentation; geometric patch and great-circle constructions are authored analytic choices. Sampled planar measurements expose their resolution and clipping status.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-coordinate-system-kinds",
+      "statement": "Geographic coordinate systems are based on a three-dimensional ellipsoidal or spherical surface with locations defined by angular measurements, while projected coordinate systems are planar and use linear measurements for coordinates.",
+      "scope": "Standard GIS definitions as stated in the cited vendor documentation.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-esri-coordinate-systems",
+          "locator": "Coordinate systems, map projections, and transformations, geographic and projected definitions"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-projection-distortion",
+      "statement": "There is no way to transpose a curved surface to a flat surface without some distortion, so projections make different compromises: some preserve area, others preserve local angles, and others preserve specific distances or directions.",
+      "scope": "General property of map projections as cited; which property a given projection preserves must be stated per projection.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-esri-coordinate-systems",
+          "locator": "Coordinate systems, map projections, and transformations, distortion and compromises"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-spherical-map-formulas",
+      "statement": "The spherical Mercator forward map uses x=k0 R lambda and y=k0 R ln(tan(pi/4+phi/2)); spherical equidistant cylindrical coordinates use longitude scaled by the cosine of the standard parallel and latitude offset from the origin. With zero standard parallel and origin, plate carree has x=R lambda and y=R phi in linear units.",
+      "scope": "Spherical forward formulas with longitude relative to the central meridian. This recipe chooses k0=1 and zero standard parallel/origin; its radius and 85-degree display crop are authored parameters, not measured accuracy claims.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-proj-spherical-mercator",
+          "locator": "Mathematical definition, Spherical form, Forward projection; +R sphere radius in meters"
+        },
+        {
+          "source_id": "source.recipe-depth-proj-spherical-eqc",
+          "locator": "Mathematical definition, Spherical formulas, Forward projection; +R sphere radius in meters"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Globe and graticule",
+      "structure": "A sphere of the declared model radius with graticule, reference meridian and labeled reference points; seams and clipped polar regions remain visible.",
+      "material": "Matte globe with high-contrast graticule; keep the surface unlit enough that projected overlays stay readable.",
+      "articulation": "The globe rotates for viewing only; coordinates are never changed by camera motion."
+    },
+    {
+      "family": "Comparison patches",
+      "structure": "Fixed intrinsic-radius geodesic disks with center marks and local tangent axes in both views; clipped patches are labeled and are not used for whole-patch area comparison.",
+      "material": "Identical patch material in both views so any visual difference is genuinely geometric.",
+      "articulation": "Patches are re-projected whenever the projection or their position changes."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Spherical coordinate transformation and analytic/sampled geometric measurements; no ellipsoidal, terrain or hydrological model.",
+    "state": [
+      "selected projection",
+      "patch positions",
+      "measurement readouts"
+    ],
+    "checks": [
+      "Every readout states its frame and units.",
+      "Switching projections preserves patch identity and updates all measurements."
+    ]
+  },
+  "related_ids": [
+    "recipe.terrain-contour-slices",
+    "recipe.stellar-parallax-baseline",
+    "knowledge.comparison-stage"
+  ]
+}

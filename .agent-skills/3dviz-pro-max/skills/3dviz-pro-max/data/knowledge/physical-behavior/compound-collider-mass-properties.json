@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.compound-collider-mass-properties",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Compound collider mass, inertia and offset contract"
+  },
+  "aliases": {
+    "en": [
+      "compound rigid-body collider",
+      "center-of-mass offset",
+      "multi-collider mass properties"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "products-assemblies",
+    "robotics-control"
+  ],
+  "summary": "Build one rigid body from several parent-relative colliders while keeping dimensions, density, center of mass and inertia consistent with applied scale and the visual origin.",
+  "objective": "An asymmetric compound body uses declared collider offsets and one mass policy; its reported center of mass and rotational response change predictably when a weighted collider moves, without visual/collision scale mismatch.",
+  "applies_when": [
+    "One simulated part needs multiple primitive or convex colliders attached to one rigid body.",
+    "Visual origin, collider offsets or non-unit Blender object scale could change the center of mass or inertia."
+  ],
+  "subject_terms": [
+    "compound collider",
+    "mass properties",
+    "center of mass",
+    "angular inertia",
+    "collider density",
+    "parent-relative offset",
+    "applied scale"
+  ],
+  "tags": [
+    "physical-behavior",
+    "collider",
+    "mass",
+    "inertia"
+  ],
+  "intent_signals": [
+    "compound collider with correct center of mass",
+    "offset payload changes inertia",
+    "apply Blender scale before physics"
+  ],
+  "example_prompts": [
+    "Approximate a hammer with separate head and handle colliders and show its computed center of mass.",
+    "Build an asymmetric chassis collider whose mass and rotational response follow its scaled geometry."
+  ],
+  "negative_signals": [
+    "Scaling only the Three.js mesh after collider dimensions were captured.",
+    "Adding explicit body mass properties while leaving nonzero collider density and assuming no contribution is added."
+  ],
+  "not_for": [
+    "A deformable body whose mass distribution changes continuously.",
+    "Certification of a real product's inertia without measured geometry and density."
+  ],
+  "content": {
+    "principles": [
+      "Choose one mass policy: density/mass on attached colliders and solver recomputation, or explicit body mass properties with collider contributions deliberately zeroed. Do not unknowingly add both.",
+      "Each collider shape, rotation and translation is expressed relative to the rigid-body frame. The visual mesh, body origin and collider overlay must use the same unit/axis/scale conversion.",
+      "Treat scale as geometry input, not a late display adjustment. Apply or explicitly bake Blender object scale before computing primitive half-extents, offsets, mass, center of mass and inertia; reject zero, negative, nonfinite or unsupported shear."
+    ],
+    "implementation": [
+      "Author named collider proxies in Blender or reviewed metadata, record their local transforms and intended densities, then convert once into the runtime body frame. Keep the render mesh independently detailed.",
+      "Create all colliders on one body using explicit dimensions and parent-relative transforms. After attachment, query mass, local/world center of mass and principal inertia where the binding permits; store expected totals for a small analytic fixture.",
+      "Reset restores collider geometry, offsets, density/mass policy, body pose and velocity together. Rebuild or recompute mass properties after an edit that represents physical shape or size. Cosmetic animation on a separate visual child may change its display scale only when it is explicitly declared nonphysical and never used to imply changed collision extent or mass."
+    ],
+    "observable_checks": [
+      "Overlay each collider and its body-local axes on the visual mesh; after axis/unit conversion, named landmarks and bounds align within declared tolerance.",
+      "Two equal-density equal-volume colliders placed symmetrically yield a center of mass on the symmetry plane; increasing one density moves it toward that collider.",
+      "Removing or offsetting a collider changes reported mass properties and torque response. An explicit-mass fixture with zero-density colliders does not receive hidden collider mass."
+    ]
+  },
+  "related_ids": [
+    "knowledge.three-rigid-body-adapter",
+    "knowledge.gravity-contact",
+    "knowledge.circular-shaft-torsion"
+  ],
+  "creative_affordances": [
+    "Collider proxies may resemble workshop jigs, translucent shells or schematic volumes while the visible object keeps its chosen style.",
+    "Center-of-mass and principal-axis markers can be optional inspection layers."
+  ],
+  "known_limits": [
+    "Primitive or convex approximations may not reproduce the real body's mass distribution; declared density is a model input, not measured truth.",
+    "Triangle-mesh collider mass behavior and nonuniform scaling vary by engine and shape; this record requires explicit converted geometry rather than assuming universal support.",
+    "Authored guidance only; no Blender export, collider construction, mass query or torque test was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.physics-compound-collider-mass",
+      "statement": "Rapier rigid-body mass properties comprise mass, angular inertia and center of mass. Attached colliders add shape-and-density-derived contributions, and explicit additional mass properties do not prevent those collider contributions unless collider densities are set to zero.",
+      "scope": "Rapier JavaScript mass-property model; it does not certify the fidelity of an authored collider approximation.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-rapier-mass-properties",
+          "locator": "Mass/angular inertia/center-of-mass definitions; collider contribution; explicit additional properties and zero-density warning"
+        }
+      ]
+    },
+    {
+      "id": "claim.physics-compound-collider-offset",
+      "statement": "Rapier collider descriptors accept shape dimensions, density, rotation and translation relative to an attached rigid body, and the body's mass properties are the sum of explicit body properties plus attached-collider properties.",
+      "scope": "Rapier JavaScript collider construction; unit and axis conversion from Blender remains application responsibility.",
+      "source_refs": [
+        {
+          "source_id": "source.rapier-colliders",
+          "locator": "Primitive dimensions; setTranslation/setRotation relative to attached body; density and mass-properties sum"
+        }
+      ]
+    },
+    {
+      "id": "claim.physics-blender-applied-transform",
+      "statement": "Blender's Apply operations transfer object transform coordinates to object data while visually retaining the object, and applying scale resets the object scale to one; modifiers and constraints may depend on the original transform, and armature application has additional limits.",
+      "scope": "Blender 4.5 object-transform authoring; deriving runtime collider values remains an authored conversion step.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-blender-apply-transform",
+          "locator": "Transforms overview, Scale, and Armature Objects warning"
+        }
+      ]
+    }
+  ]
+}

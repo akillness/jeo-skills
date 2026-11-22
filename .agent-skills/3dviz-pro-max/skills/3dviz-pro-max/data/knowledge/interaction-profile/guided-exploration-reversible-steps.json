@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.guided-exploration-reversible-steps",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "interaction-profile",
+  "title": {
+    "en": "Guided exploration with reversible steps and explicit reset"
+  },
+  "aliases": {
+    "en": [
+      "guided 3D exercise",
+      "stepwise exploration reset"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles",
+    "algorithms-data-structures",
+    "products-assemblies"
+  ],
+  "summary": "Structure a short exploration around observable state changes while keeping Back, Retry and Exit predictable.",
+  "objective": "Guide a viewer through a spatial task with explicit steps, then let Back, Retry and Exit restore their documented model and presentation states.",
+  "subject_terms": [
+    "guided exploration",
+    "reversible steps",
+    "checkpoint",
+    "reset scope",
+    "state restoration"
+  ],
+  "tags": [
+    "interaction-profile",
+    "guided-exploration-reversible-steps"
+  ],
+  "intent_signals": [
+    "Guide a viewer through a spatial task with explicit steps, then let Back, Retry and Exit restore their documented model and presentation states."
+  ],
+  "example_prompts": [
+    "Guide a viewer through a spatial task with explicit steps, then let Back, Retry and Exit restore their documented model and presentation states."
+  ],
+  "content": {
+    "principles": [
+      "Each step should pose one inspectable question and name the state change needed to answer it. Do not advance merely because a decorative animation ended.",
+      "Separate lesson position, model state and presentation state. Back through a tutorial is not necessarily an inverse physical process or algorithm operation."
+    ],
+    "implementation": [
+      "Describe each step with stable ID, instruction, precondition, allowed actions and a completion predicate over authoritative state. Keep manual Next available for observation-only steps rather than pretending to detect understanding.",
+      "Capture an entry snapshot and per-step checkpoints, including relevant model inputs, time, random seed or recorded results, selection and presentation transforms. Restore from a checkpoint when reversing a simulation would be invalid.",
+      "Define distinct Reset step, Restart guide and Exit guide policies. Exit can restore the entry snapshot or retain the experiment by explicit choice; do not silently overwrite user exploration performed before the guide.",
+      "Apply step changes atomically and cancel pending transitions when navigating away. Give unavailable prerequisites a visible explanation. Offer immediate transitions under reduced motion and keep focus on the newly active instruction."
+    ],
+    "observable_checks": [
+      "Change an allowed parameter in step 2, enter step 3, then Back and Retry: model inputs, time and displayed explanation match the documented step-2 checkpoint.",
+      "Navigate Back or Exit halfway through a transition: the cancelled callback cannot later move the model into the abandoned step.",
+      "Restart the guide after free exploration, then exit using the entry-restore option: prior camera, selected entity and model state return as documented, with no stale completion flags."
+    ]
+  },
+  "known_limits": [
+    "This is an authored teaching workflow, not evidence of learning effectiveness or a domain solver. External irreversible actions must not be presented as reversible lesson steps.",
+    "Draft authored guidance; no renderer, interaction artifact or scientific result was executed for this record."
+  ],
+  "creative_affordances": [
+    "Choose layout and visual emphasis to support the stated inspection task; these are design proposals rather than proven usability improvements."
+  ],
+  "related_ids": [
+    "knowledge.parameter-experiment",
+    "knowledge.accessible-spatial-controls"
+  ],
+  "claims": []
+}

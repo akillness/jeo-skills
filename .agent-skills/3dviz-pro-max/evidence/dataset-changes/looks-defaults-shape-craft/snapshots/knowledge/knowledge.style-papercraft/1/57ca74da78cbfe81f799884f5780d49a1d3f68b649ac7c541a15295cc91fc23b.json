@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-papercraft",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Papercraft construction cues"
+  },
+  "aliases": {
+    "en": [
+      "paper craft",
+      "cut paper diorama",
+      "folded card scene"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "solid-geometry"
+  ],
+  "summary": "Express a made-from-sheet proposal through folds, cut edges and layered panels rather than adding paper texture alone.",
+  "objective": "Panel edges and layer order remain readable; a claimed buildable pattern must be checked separately instead of inferred from this appearance.",
+  "tags": [
+    "style-profile",
+    "construction-aesthetic",
+    "papercraft"
+  ],
+  "subject_terms": [
+    "paper craft",
+    "cut paper diorama",
+    "folded card scene",
+    "construction aesthetic"
+  ],
+  "intent_signals": [
+    "Use papercraft construction cues",
+    "Show cut edges folded panels and layers"
+  ],
+  "example_prompts": [
+    "Make a papercraft town with folded roof panels, visible cut edges and layered trees."
+  ],
+  "content": {
+    "principles": [
+      "Express a made-from-sheet proposal through folds, cut edges and layered panels rather than adding paper texture alone.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Build sheets with visible boundaries and small thickness where useful; place fold seams and tabs only where the proposed construction needs them.",
+      "Use matte-looking surfaces, selective printed color and soft light that reveals overlapping layers.",
+      "Offer a three-quarter view plus inspection of a fold; animated folding uses explicit pivots and states if construction is being explained."
+    ],
+    "observable_checks": [
+      "Panel edges and layer order remain readable; a claimed buildable pattern must be checked separately instead of inferred from this appearance.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with technical-illustration labels or toy-miniature staging; playful impossible folds may be used when clearly presented as fiction.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

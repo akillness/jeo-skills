@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "id": "recipe.sarcomere-sliding-filaments",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Sarcomere sliding filament comparison"
+  },
+  "aliases": {
+    "en": [
+      "muscle contraction mechanism",
+      "sarcomere bands"
+    ]
+  },
+  "direction_ids": [
+    "physiology-biomechanics"
+  ],
+  "summary": "Compare relaxed and shortened sarcomeres without shrinking the filaments themselves.",
+  "objective": "Show a sarcomere shortening while thick and thin filament lengths stay fixed.",
+  "tags": [
+    "sarcomere",
+    "actin",
+    "myosin"
+  ],
+  "subject_terms": [
+    "sarcomere",
+    "actin",
+    "myosin",
+    "Z disc",
+    "A band",
+    "I band"
+  ],
+  "intent_signals": [
+    "explain muscle shortening",
+    "compare band widths"
+  ],
+  "example_prompts": [
+    "Show a sarcomere shortening while thick and thin filament lengths stay fixed.",
+    "Let me label the Z discs and compare the A band and I band during contraction."
+  ],
+  "entities": [
+    {
+      "name": "Sarcomere boundaries",
+      "guidance": "Use two Z-disc plates and a central M-line; repeat only enough filament pairs to clarify overlap."
+    },
+    {
+      "name": "Filaments",
+      "guidance": "Separate thin rods anchored to Z discs from thick central rods and a few illustrative myosin heads."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Sarcomere boundaries",
+      "structure": "Use two Z-disc plates and a central M-line; repeat only enough filament pairs to clarify overlap.",
+      "material": "Schematic muted plates with readable band brackets."
+    },
+    {
+      "family": "Filaments",
+      "structure": "Separate thin rods anchored to Z discs from thick central rods and a few illustrative myosin heads.",
+      "material": "Distinct matte colors and a text legend, not tissue-realistic texture.",
+      "articulation": "Slide thin filaments relative to thick ones; do not scale rods."
+    }
+  ],
+  "state_contract": {
+    "model": "Illustrative shortening parameter within an authored non-overlap-invalid range; Z-disc positions and band brackets derived from constant filament lengths.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Scrub shortening.",
+      "Toggle relaxed reference.",
+      "Select a band and reset."
+    ]
+  },
+  "invariants": [
+    "Thin and thick filament lengths remain fixed.",
+    "A-band width remains fixed while Z-disc separation decreases.",
+    "Band labels follow derived boundaries and cannot swap when camera rotates."
+  ],
+  "motion_guidance": [
+    "Translate thin filaments toward the center symmetrically.",
+    "Any head cycling is explicitly a slowed illustrative cue, not synchronized molecular kinetics."
+  ],
+  "known_limits": [
+    "Schematic geometry and dimensionless phase; not calibrated ultrastructure, force-length data or diagnostic evidence.",
+    "No ATP kinetics, neural excitation or fatigue model.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [
+    {
+      "id": "claim.sarcomere-sliding-filaments",
+      "statement": "During sliding-filament shortening, Z lines approach each other and the I band narrows while A-band width stays constant.",
+      "scope": "Skeletal-muscle sarcomere illustration under the sliding-filament model; not a quantitative force model.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-sarcomere",
+          "locator": "The Sliding Filament Model of Contraction; Figure 10.10"
+        }
+      ]
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Qualitative cellular mechanism.",
+    "state": [
+      "shortening parameter",
+      "Z-disc positions"
+    ],
+    "colliders": [
+      "None; schematic filament overlap is intentional."
+    ],
+    "driving": [
+      "Bounded authored shortening."
+    ],
+    "contact": [
+      "No molecular contact solver."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Filament lengths and A-band width remain unchanged between reference poses."
+    ]
+  }
+}

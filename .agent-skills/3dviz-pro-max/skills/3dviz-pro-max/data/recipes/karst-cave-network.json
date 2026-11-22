@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "id": "recipe.karst-cave-network",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Karst cave network with vertical connectivity"
+  },
+  "aliases": {
+    "en": [
+      "cave system",
+      "underground chambers",
+      "vertical traversal"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas"
+  ],
+  "summary": "Compose an underground world where the interesting decisions are vertical: which chamber connects to which, and by what route.",
+  "objective": "Build an explorable cave system with chambers on several levels, a water line and passages I can actually traverse.",
+  "tags": [
+    "cave",
+    "underground",
+    "exploration"
+  ],
+  "subject_terms": [
+    "cave system",
+    "chamber",
+    "passage",
+    "stalactite",
+    "flowstone",
+    "sump",
+    "vertical connectivity",
+    "underground water"
+  ],
+  "intent_signals": [
+    "Build an underground cave I can explore on foot.",
+    "Design a cave system with several levels and a water line."
+  ],
+  "example_prompts": [
+    "Build a karst cave network with connected chambers, a lit entrance shaft and a flooded lower passage.",
+    "Design an explorable cave with vertical drops and a route I can follow with a lamp."
+  ],
+  "negative_signals": [
+    "Not a speleological survey or a model of any real cave.",
+    "Not a geological formation simulation; growth of formations is authored, not computed."
+  ],
+  "not_for": [
+    "Not a speleological survey or a model of any real cave.",
+    "Not a geological formation simulation; growth of formations is authored, not computed."
+  ],
+  "entities": [
+    {
+      "name": "Chamber shells",
+      "guidance": "Carve chambers as closed volumes with distinct silhouettes and ceiling heights; a cave made from one tube reads as a corridor, not a system."
+    },
+    {
+      "name": "Connections",
+      "guidance": "Author each connection as a named passage with a stated traversal type: walk, crawl, climb or swim; a connection the actor cannot use is a wall."
+    },
+    {
+      "name": "Formations and water",
+      "guidance": "Place formations where water would have run, and keep the water surface a single declared level per basin so flooded passages are consistent."
+    }
+  ],
+  "state_contract": {
+    "model": "Chamber graph with named passages, per-passage traversal type, a water level per basin, and an actor position with a support surface reference. Lighting state is a separate carried resource.",
+    "authority": "The chamber graph owns connectivity: if a passage is not in the graph, no visual gap may be traversable. Water level is authored per basin and is not simulated.",
+    "actions": [
+      "Move between chambers along authored passages.",
+      "Raise or lower a basin water level and see which passages become impassable.",
+      "Carry, place or drop the light source.",
+      "Reset actor position, light and water levels."
+    ]
+  },
+  "invariants": [
+    "Every visible opening is either a real passage in the graph or is visibly blocked.",
+    "Support and immersion decide movement, not height above a water level: the actor may stand on a dry ledge that overlooks a flooded passage, but may not stand on an inundated floor deeper than the declared wading limit or hover over water without a stated swim or boat capability.",
+    "Light is a resource with a position: illumination falls off from the lamp and can spill through an opening into an adjacent chamber, so visibility follows geometry rather than a per-chamber on or off flag.",
+    "If a basin level rises around an actor already inside a passage, the scene applies its declared rule for that case (stop, evacuate to the nearest supported cell, or an authored swim transition) rather than only blocking new entries."
+  ],
+  "motion_guidance": [
+    "Constrain the actor to the cave floor with authored slope and step limits, and block movement rather than letting the camera pass through rock.",
+    "Move the light with the carrier so shadows shift as it travels; a globally lit cave loses the whole subject."
+  ],
+  "known_limits": [
+    "Invented geology: formation shapes and chamber layout are art direction, not a karst process model.",
+    "Water is a static level per basin; there is no flow, drainage or infiltration model.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "object_craft": [
+    {
+      "family": "Chamber shells",
+      "structure": "Irregular carved volumes with distinct ceiling profiles, breakdown blocks on the floor and visible bedding planes in the walls.",
+      "material": "Damp rock family with variation in roughness between wet flowstone and dry breakdown; keep values low so the lamp is the brightest thing in the scene.",
+      "articulation": "Static geometry; only the water surface and the actor move."
+    },
+    {
+      "family": "Formations and water",
+      "structure": "Stalactites and stalagmites modelled as tapered solids with drip tips, plus rimstone pools with real lips.",
+      "material": "Translucent calcite with subsurface warmth against a colder still-water surface; both must read under lamp light alone.",
+      "articulation": "Water surface translates vertically with the basin level and clips passages accordingly."
+    },
+    {
+      "family": "Actor and lamp",
+      "structure": "A capsule actor with a hand-held lamp whose mount is visible, so the light has a source object.",
+      "material": "Lamp emissive plus a warm falloff; the actor material stays desaturated so the lamp dominates.",
+      "articulation": "The lamp is parented to the carrier and can be detached and left in a chamber."
+    }
+  ],
+  "physical_contract": {
+    "model": "controlled-locomotion",
+    "scope": "Authored walking, climbing and optional swimming on cave surfaces; no rockfall, buoyancy or hydrology.",
+    "state": [
+      "actor position",
+      "velocity",
+      "current chamber",
+      "carried light",
+      "basin water levels"
+    ],
+    "colliders": [
+      "Capsule actor against carved cave surfaces and breakdown blocks."
+    ],
+    "driving": [
+      "Bounded acceleration and turn rate; climbing only at authored climb passages."
+    ],
+    "contact": [
+      "Sweep movement and slide along walls; block entry to passages whose traversal type is unavailable."
+    ],
+    "timestep": "Fixed simulation step with interpolated rendering.",
+    "checks": [
+      "The actor cannot leave the cave volume at any point of an authored route.",
+      "Raising a water level blocks the passages it should and the actor is stopped there."
+    ]
+  },
+  "creative_affordances": [
+    "Choose the geological character freely: fissure-dominated, chamber-dominated or a collapsed doline entrance all work.",
+    "The light source can be a lantern, a helmet lamp or a glowing organism, as long as it stays a positioned object."
+  ],
+  "related_ids": [
+    "recipe.terrain-island",
+    "knowledge.theme-underwater-discovery",
+    "knowledge.authored-locomotion"
+  ]
+}

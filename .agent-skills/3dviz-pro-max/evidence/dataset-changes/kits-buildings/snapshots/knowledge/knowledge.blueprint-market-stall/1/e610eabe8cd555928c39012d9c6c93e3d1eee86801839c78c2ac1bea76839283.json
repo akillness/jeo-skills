@@ -1,0 +1,293 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-market-stall",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: trestle market stall"
+  },
+  "aliases": {
+    "en": [
+      "market stall kit",
+      "market awning blueprint",
+      "trader stall module"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "A trestle market stall with a striped canopy that sags between its posts, a scalloped valance, a plank counter on trestles, crates, sacks and loose produce, and a hanging price board.",
+  "objective": "Seen from about four metres the stall reads as three tiers: pitched canopy and valance fringe with goods breaking the counter line, then stripes, trestles and crates, then rope lashings and per-fruit hue variation.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "building",
+    "village",
+    "market",
+    "stall"
+  ],
+  "subject_terms": [
+    "awning",
+    "valance",
+    "counter",
+    "trestle",
+    "crate",
+    "produce"
+  ],
+  "intent_signals": [
+    "build a market stall",
+    "village market awning module",
+    "trader stall kit"
+  ],
+  "example_prompts": [
+    "Line the market square with four stalls selling different goods.",
+    "I need a striped market awning with a counter and produce."
+  ],
+  "not_for": [
+    "Any claim about the trade, prices or goods of a real market.",
+    "Cloth simulation: the canopy sag is authored geometry, not solved."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/buildings/market-stall.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "width",
+      "type": "number",
+      "range": [
+        1.8,
+        4.5
+      ],
+      "default": 2.8,
+      "unit": "m"
+    },
+    {
+      "name": "depth",
+      "type": "number",
+      "range": [
+        1.2,
+        2.8
+      ],
+      "default": 1.9,
+      "unit": "m"
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "range": [
+        1.9,
+        3.0
+      ],
+      "default": 2.4,
+      "unit": "m"
+    },
+    {
+      "name": "stripes",
+      "type": "integer",
+      "range": [
+        4,
+        14
+      ],
+      "default": 8
+    },
+    {
+      "name": "seed",
+      "type": "integer",
+      "range": [
+        0,
+        65535
+      ],
+      "default": 1
+    }
+  ],
+  "sockets": [
+    {
+      "name": "front",
+      "position_m": [
+        0,
+        0,
+        1.1
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "counter",
+      "position_m": [
+        0,
+        0.92,
+        0.75
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "goods-left",
+      "position_m": [
+        -0.84,
+        1.24,
+        0.6
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "goods-right",
+      "position_m": [
+        0.84,
+        1.04,
+        0.63
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "sign",
+      "position_m": [
+        -0.84,
+        2.28,
+        0.9
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "keeper",
+      "position_m": [
+        0,
+        0,
+        -1.3
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ]
+    },
+    {
+      "name": "ridge",
+      "position_m": [
+        0,
+        2.72,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "pitched canopy ridge at 2.72 m with a scalloped valance hanging off the front eave",
+      "stacked crates and a produce heap breaking the straight line of the counter top",
+      "four corner posts on stone pads, with the counter overhanging the front pair"
+    ],
+    "medium": [
+      "eight canopy stripes alternating cloth and red, each drooping toward mid-span so the roof reads as cloth over a frame",
+      "counter of three separate boards with real gaps, on four splayed trestle legs and a kick board",
+      "five crates standing on the counter boards with a darker slat band across each, two of them stacked a course higher",
+      "two faceted sacks tied at the neck leaning at the front corner, and a hanging price board on two eye hooks"
+    ],
+    "fine": [
+      "two rope lashings at every post head, 14 cm across, each seeded to a different angle",
+      "twenty-two pieces of produce with per-piece hue jitter, scale and rotation",
+      "chipped paint patch on the price board and its painted crossed glyph standing 8 mm proud",
+      "chamfered arrises on the posts, counter boards and crates, cut as geometry"
+    ]
+  },
+  "footprint_m": [
+    2.8,
+    1.9
+  ],
+  "poly_budget": 3104,
+  "fits_looks": [
+    "knowledge.style-lantern-festival-riverside",
+    "knowledge.style-hand-painted",
+    "knowledge.style-toy-miniature",
+    "knowledge.style-tilt-shift-diorama",
+    "knowledge.lighting-mood-night-lantern"
+  ],
+  "content": {
+    "principles": [
+      "Cloth is read by its sag. A canopy of flat panels is a roof; the same panels drooping at mid-span are fabric.",
+      "The goods are the subject. The frame exists to present crates and produce at counter height, so keep the timber quiet and let the colour sit on the goods.",
+      "A stall must read from the front. Everything the customer sees is on +Z, and the keeper socket is behind the counter where a figure belongs.",
+      "Keep the goods forward, on the counter boards. Anything pushed to the back of a stall sits in the canopy's own shadow and stops reading at any distance."
+    ],
+    "implementation": [
+      "Call create({ width, depth, height, stripes, seed }); the returned group is centred on its footprint with y = 0 at the ground plane.",
+      "Attach more goods, a lantern or a banner through the goods-left, goods-right and sign sockets.",
+      "Place a vendor at the keeper socket; its normal points out of the back of the stall.",
+      "Face the front socket at the path: it is the side the counter, the goods and the price board are all built for, and the side the proof frames."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible in the frame.",
+      "Two instances with different seeds vary the produce heap, the crate angles and the rope lashings.",
+      "The canopy sag is visible in the far frame: the ridge line is not straight across the width."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here is a measurement of any real market stall or trade.",
+    "The poly budget is the triangle count observed at default parameters; 14 stripes costs about 3500 triangles.",
+    "footprint_m is the post plan. The built bounding box is 3.0 x 2.8 m because the canopy, the counter and the sacks all overhang it.",
+    "The canopy sag is an authored sine droop, not a cloth solve; it does not respond to wind, gravity or the frame spacing.",
+    "Tuned against ACESFilmic tone mapping at exposure 1.0 with no post-processing."
+  ],
+  "creative_affordances": [
+    "Any parameter may be pushed outside its stated range; the range is the band that was proved, not a limit.",
+    "Swap the stripe colour and the produce colour per stall to make a row of traders from one blueprint."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "width": 2.8,
+      "depth": 1.9,
+      "height": 2.4,
+      "stripes": 8,
+      "counterHeight_m": 0.92,
+      "canopySag_m": 0.13,
+      "feeling": "busy sunlit market colour"
+    },
+    "rationale": "A 0.92 m counter and a 2.4 m post height put the valance just above a 1.7 m figure's eye line, and eight stripes over 3 m give a 38 cm stripe that still alternates legibly at the far proof distance."
+  },
+  "related_ids": [
+    "knowledge.deformable-prop-support-cage",
+    "knowledge.hero-prop-detail-hierarchy",
+    "knowledge.modular-environment-kit-sockets",
+    "knowledge.theme-functional-prop-grammar"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-market-stall/far.png",
+      "evidence/kits/knowledge.blueprint-market-stall/mid.png",
+      "evidence/kits/knowledge.blueprint-market-stall/close.png",
+      "evidence/kits/knowledge.blueprint-market-stall/detail.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-market-stall/proof-log.json"
+  }
+}

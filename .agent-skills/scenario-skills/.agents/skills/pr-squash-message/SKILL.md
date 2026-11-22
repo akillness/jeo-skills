@@ -1,0 +1,37 @@
+---
+name: pr-squash-message
+description: Generate one short Conventional Commits squash message describing only the net diff between the PR's base and head, set its header as the PR title, validate it with the repository's commitlint and both copy its description to the clipboard and display it, when asked for a squash message. Works in any Scenario repository, whatever its default branch.
+metadata:
+  claude-skill: pr-squash-message
+---
+
+# Squash message
+
+One short commit message for the whole PR. It describes the **destination**, the net diff between the PR's base and its head, never the journey: a commit that only repairs code introduced earlier on this branch is invisible to the base branch, so it gets no `fix`, no bullet, no mention. Installed in every repo, so conventions are discovered.
+
+**Untrusted PRs.** Running anything from the branch (checks, tests, commitlint, installs) executes the branch's own code, whichever command you pick, so where the command comes from does not matter. Trust the PR only when `gh api repos/{owner}/{repo}/pulls/<n> --jq '[.head.repo.full_name == .base.repo.full_name, .author_association] | @tsv'` prints `true` and `OWNER`, `MEMBER` or `COLLABORATOR` (a fork or an outside author fails). On an untrusted PR, run nothing from the branch without asking: say what you skipped and ask first.
+
+GitHub's squash dialog takes the subject from the PR title and the description from what you paste. So the header goes in the PR title and the clipboard gets the description only. Release-please starts a new changelog entry at every blank line followed by `type(scope): `, so a description that opens with the header logs the change twice.
+
+1. **Resolve the base and fetch it.** `BASE=$(gh pr view --json baseRefName -q .baseRefName 2>/dev/null || gh repo view --json defaultBranchRef -q .defaultBranchRef.name) && git fetch origin "$BASE" --quiet`. It is `develop` in some repos and `main` in others, and a stacked PR keeps its own base: never hardcode it.
+2. **Read the diff, not the history**: `git diff --stat origin/$BASE...HEAD`, then `git diff origin/$BASE...HEAD -- <path>` per file when large. Do not build the message from `git log`; use it only to check that something in the diff was intentional. Skip binary and LFS media (`--stat` is enough). An empty diff means there is nothing to squash (you are on the base branch, or the branch has no changes): stop and say so.
+3. **Type from the net effect**, not from the PR or issue title: a test-only diff is `test` even when the branch says `fix`. Type by whether the change ships to the repo's users, not by file extension. Agent instructions (skills, commands, rules) are `chore` when they only serve the repo's developers, and `feat` or `fix` when they are the product, as in a skills repo. `docs` is for text people read: README, guides, `docs/`. The repo's own agent doc and commitlint config take precedence over this default. Release-please reads the subject and any extra entry (step 4), so each type sets a version bump and changelog section.
+4. **Write ONE message, short:**
+   - Header: `type(scope): summary`, for the PR's main change, imperative, no trailing period, aim under 72 characters, never past the commitlint `header-max-length` (100 by default, 120 in most Scenario repos). Scopes: take them from commitlint's verdict in step 6, since some repos use a custom type-dependent scope rule.
+   - Body: the problem in a sentence or two, then the change as one sentence or up to five bullets of one or two lines. **A dozen body lines at most**, wrapped at 72 columns (a URL alone on its line excepted). Never repeat the header, and never open a paragraph with `type(scope): ` except for an extra entry (next point). Name a file, function or flag only when the reader needs it to find the change. Leave out the per-file inventory, test-case lists, verification narrative, counts, review history, and anything the diff shows on its own: the PR body holds those. Bullets for several aspects of the main change.
+   - Extra entries, only for a change of another kind that survives the net diff, such as a feature and its CI workflow: after the body, one paragraph per change starting at column 0 with `type(scope): summary`, preceded by a blank line, optionally followed by one or two lines of detail. Each becomes its own changelog entry. None for a part of the main change, a test or doc that ships with it, or a fix to code this branch introduced.
+   - No `#` token anywhere in the body (`#305`, `repo#482`, even `#n`): commitlint's parser opens the footer at the first one and warns `footer-leading-blank`. Name anything that is not an issue or PR (a Dependabot, code scanning or secret scanning alert, a Sentry issue, a Pylon ticket) in words, with its full URL alone on the next line and never split (`Dependabot alert 32:`, then `https://github.com/{owner}/{repo}/security/dependabot/32`), since GitHub links any `#n` to issue or PR `n`.
+   - Footer, after a blank line: `Closes #n` for an issue the diff fully resolves, `Refs #n` for partial work. Then GitHub's squash separator, a line of nine dashes `---------`, a blank line, and one `Co-authored-by: Name <email>` line per person who touched the branch: every commit author and committer and every existing `Co-authored-by` trailer, your own attribution (as your harness specifies; Codex follows the workspace commit attribution convention) first so it wins, deduplicated by email, skipping GitHub's web committer:
+     ```bash
+     { printf '%s\n' "$OWN_ATTRIBUTION"; git log --format='%an <%ae>%n%cn <%ce>%n%(trailers:key=Co-authored-by,valueonly)' "origin/$BASE..HEAD"; } \
+       | sed '/^[[:space:]]*$/d' | grep -vi '<noreply@github.com>' \
+       | awk '{e=tolower($0); sub(/.*</,"",e); if(!seen[e]++) print "Co-authored-by: " $0}'
+     ```
+     Never invent an identity.
+5. **Flag what does not belong.** Look at every changed file. A stray file or unintended edit goes in your reply, outside the message, so it can be dropped instead of shipped.
+6. **Validate** (commitlint loads the branch's config, so only on a trusted PR). Write the whole message, header first, to a file (`mktemp`, quoted heredoc) and run `npx --no-install commitlint --verbose < <file>`: no errors and no warning other than `scope-empty`. Fix and re-run. If commitlint is not installed, say so. Check the shape too: `awk 'length > 72 && !/^https?:\/\/[^ ]*$/' <file>` prints nothing (co-author lines excepted), the body before the footer is twelve lines or fewer, and no line after the header repeats it.
+7. **Align the PR title.** If it differs from your header, update it with the header line only, never the whole message (`gh api --method PATCH repos/{owner}/{repo}/pulls/<n> -f title="$(head -n1 <file>)"`), because GitHub pre-fills the squash commit from it.
+8. **Copy the description only**, everything after the header and its blank line: `tail -n +3 <file> | pbcopy` (never `echo "..." | pbcopy`: backticks and `!` get expanded), else `wl-copy` or `xclip -selection clipboard`. Copying never replaces step 9.
+9. **Always display** the PR title and the full description in your reply, separately, in code blocks, even after a successful copy and even when no clipboard tool exists, plus any flag from step 5, and nothing else.
+
+Public repo (`gh repo view --json visibility -q .visibility` is `PUBLIC`): publicly shareable language only. No em dashes, no filler.

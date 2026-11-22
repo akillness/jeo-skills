@@ -1,0 +1,11 @@
+{
+  "name": "video-to-game",
+  "displayName": "Video to Game",
+  "version": "1.0.0",
+  "description": "Gameplay video to playable game: study an AI-generated (or any) gameplay clip, generate every image, 3D model and sound with fal to match it, build the game in Three.js, compare it side by side with the video, and play it with a keyboard scenario that films its best seconds.",
+  "author": { "name": "Lovis Odin", "url": "https://github.com/lovisdotio" },
+  "homepage": "https://github.com/lovisdotio/video-to-game",
+  "repository": "https://github.com/lovisdotio/video-to-game",
+  "license": "MIT",
+  "keywords": ["threejs", "webgl", "game-development", "video-to-game", "fal", "generative-assets", "playtest", "image-to-3d"]
+}

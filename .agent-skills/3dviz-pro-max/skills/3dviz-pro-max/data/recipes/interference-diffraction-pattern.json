@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "id": "recipe.interference-diffraction-pattern",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Two-slit interference and single-slit diffraction"
+  },
+  "aliases": {
+    "en": [
+      "double slit",
+      "diffraction minima",
+      "fringe spacing"
+    ]
+  },
+  "direction_ids": [
+    "waves-optics-fields"
+  ],
+  "summary": "Keep slit separation and slit width as separate controls so the fringe pattern and its envelope have separate causes.",
+  "objective": "Build a slit experiment where changing separation moves the fringes and changing slit width moves the diffraction minima, with both conditions displayed.",
+  "tags": [
+    "interference",
+    "diffraction",
+    "optics"
+  ],
+  "subject_terms": [
+    "double slit",
+    "single slit",
+    "fringe spacing",
+    "path difference",
+    "diffraction minimum",
+    "wavelength",
+    "coherent light",
+    "screen distance"
+  ],
+  "intent_signals": [
+    "Show the difference between slit separation and slit width in an interference pattern.",
+    "Explain where the diffraction minima fall."
+  ],
+  "example_prompts": [
+    "Build a two-slit interference scene with adjustable separation, slit width, wavelength and screen distance.",
+    "Show the single-slit envelope over the two-slit fringes."
+  ],
+  "negative_signals": [
+    "Not a full wave propagation solver; the pattern is computed from the cited far-field conditions.",
+    "Not a spectroscopy or grating design tool."
+  ],
+  "not_for": [
+    "Not a full wave propagation solver; the pattern is computed from the cited far-field conditions.",
+    "Not a spectroscopy or grating design tool."
+  ],
+  "entities": [
+    {
+      "name": "Slit plane",
+      "guidance": "Model the barrier with real apertures whose separation and width are separate measurable dimensions."
+    },
+    {
+      "name": "Screen pattern",
+      "guidance": "Compute the intensity curve from the product model, mark interference orders and diffraction minima with distinct integer labels, and show optional sampled peak estimates separately without assigning exact order locations to them."
+    },
+    {
+      "name": "Path difference overlay",
+      "guidance": "For a screen probe draw the two geometric paths and label their exact length difference separately from the far-field d sin(theta) approximation."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored Fraunhofer fixture with finite positive wavelength lambda, slit width a, separation d > a and screen distance D; require D >= 100 (d+a)^2/lambda as a conservative chosen far-field admission rule, not a universal accuracy bound. Normalized intensity is sinc^2(pi a sin(theta)/lambda) cos^2(pi d sin(theta)/lambda), with sinc(0)=1. Integer interference-order markers use d sin(theta)=m lambda; diffraction minima use a sin(theta)=n lambda for nonzero n. Missing orders are labeled. Only |m lambda/d| < 1 gives finite screen positions y=D tan(arcsin(m lambda/d)); clip to the authored finite screen extent. Equality is a grazing angular marker with no finite screen position; larger ratios have no propagating order. The optional y=m lambda D/d readout is labeled small-angle approximation. Draw the product curve and order markers separately; numerical peak estimates, if enabled, are derived from that curve and labeled with sampling/refinement settings.",
+    "authority": "The geometric parameters are authoritative and every marked position is computed from them; the rendered brightness is an illustration of the computed pattern.",
+    "actions": [
+      "Change wavelength, separation, width or screen distance.",
+      "Select a screen point and inspect its path difference.",
+      "Toggle the single-slit envelope.",
+      "Reset all parameters."
+    ]
+  },
+  "invariants": [
+    "At fixed wavelength and screen distance, larger separation compresses interference-order angles; larger slit width narrows the central diffraction envelope when its first minima exist. Unsupported far-field settings pause the analytic presentation.",
+    "Interference-order markers correspond to integer path differences, which is not the same as the local maxima of the product intensity: an order that coincides with a diffraction minimum is marked missing with zero intensity, and true peaks of the product can sit slightly away from the order positions.",
+    "Interference orders use integer m and diffraction minima use nonzero n; product peak estimates use a separate marker style and never inherit an integer-order label as an exact peak location.",
+    "Finite screen order markers require |m lambda/d| < 1 and screen-bound inclusion. Grazing orders at equality are reported off-screen without evaluating tan(pi/2); invalid far-field or parameter settings produce a named unsupported-model state."
+  ],
+  "motion_guidance": [
+    "Animate parameter changes continuously so the pattern reorganises visibly rather than jumping between presets.",
+    "Animate a wavefront travelling from each slit only as an illustration, clearly separated from the computed pattern."
+  ],
+  "known_limits": [
+    "Far-field conditions with narrow slits as cited; near-field behaviour is out of scope.",
+    "Screen brightness is a display mapping of computed intensity, not a photometric prediction.",
+    "Exact drawn path lengths and the far-field d sin(theta) approximation are different models; residual differences between them are labelled rather than hidden.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-double-slit-conditions",
+      "statement": "For two slits separated by d, constructive interference occurs where d times the sine of the angle equals an integer multiple of the wavelength and destructive interference where it equals a half-integer multiple, with the distance to the mth bright fringe on a screen given by m times wavelength times screen distance divided by d.",
+      "scope": "Narrow coherent slits in the far field. The screen formula y = m lambda D / d additionally assumes small angles, so the scene either bounds the angles or uses the tangent form for order positions.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-interference",
+          "locator": "3.2, Equations 3.4, 3.5 and 3.6"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-single-slit-minima",
+      "statement": "For a single slit of width a, destructive minima occur where a times the sine of the angle equals a nonzero integer multiple of the wavelength, and the central maximum is wider than the maxima on either side.",
+      "scope": "Far-field single-slit diffraction as cited.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-single-slit",
+          "locator": "4.1, single-slit destructive condition and central maximum"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-double-slit-envelope",
+      "statement": "The finite-width two-slit intensity pattern is the product of the two-point-source interference pattern and the single-slit diffraction pattern. An interference order coincident with a diffraction minimum is missing. Integer interference orders need not locate the exact maxima of the product: the envelope slope can shift a peak.",
+      "scope": "Far-field product model for finite-width slits; it is an intensity model for the pattern shape, not a photometric prediction of measured brightness.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-double-slit-diffraction",
+          "locator": "4.3, Two-Slit Diffraction Pattern and missing orders; Example 4.3 Significance explains the shift of the actual peak from the interference-order angle"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Slit plane",
+      "structure": "A barrier with cut apertures whose edges are visible geometry, plus dimension annotations for separation and width.",
+      "material": "Opaque barrier with a matte finish so the light path is the only bright element in the scene.",
+      "articulation": "Aperture geometry rebuilds when separation or width changes."
+    },
+    {
+      "family": "Screen pattern",
+      "structure": "A screen surface carrying the computed intensity plus tick markers with order labels at each computed feature.",
+      "material": "A stated intensity mapping with a legend; markers are opaque so they remain readable on bright fringes.",
+      "articulation": "Markers and intensity update together whenever a parameter changes."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Analytic far-field pattern computation and presentation; no time-domain wave solver.",
+    "checks": [
+      "Interference-order markers satisfy d sin(theta)=m lambda within tolerance; actual maxima of the product intensity need not. Missing orders have zero product intensity, and optional peak estimates follow the product rather than the integer-order equation.",
+      "Order spacing decreases with increasing separation at fixed wavelength and screen distance; exact inverse proportionality of screen spacing is checked only for the declared small-angle approximation."
+    ]
+  },
+  "related_ids": [
+    "recipe.standing-string-modes",
+    "recipe.planar-refraction-ray",
+    "knowledge.signed-field-section"
+  ]
+}

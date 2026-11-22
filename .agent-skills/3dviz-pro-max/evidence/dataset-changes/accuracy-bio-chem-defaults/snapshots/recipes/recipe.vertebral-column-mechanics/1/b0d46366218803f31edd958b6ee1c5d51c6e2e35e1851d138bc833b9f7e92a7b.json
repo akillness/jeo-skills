@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "id": "recipe.vertebral-column-mechanics",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Vertebral column regions, curves and disc structure"
+  },
+  "aliases": {
+    "en": [
+      "spine curves",
+      "intervertebral disc",
+      "vertebral regions"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures"
+  ],
+  "summary": "Build a segmented spine whose regional counts and curvatures stay correct while an authored flexion envelope is explored.",
+  "objective": "Create a vertebral column I can bend within an authored limit while keeping regional labels, curvature naming and disc structure visible.",
+  "tags": [
+    "spine",
+    "vertebra",
+    "disc"
+  ],
+  "subject_terms": [
+    "vertebral column",
+    "cervical",
+    "thoracic",
+    "lumbar",
+    "sacrum",
+    "coccyx",
+    "anulus fibrosus",
+    "nucleus pulposus",
+    "spinal curvature"
+  ],
+  "intent_signals": [
+    "Show how the spine is segmented and where its curves are.",
+    "Explain the parts of an intervertebral disc in three dimensions."
+  ],
+  "example_prompts": [
+    "Create a labelled vertebral column with regional colours, the four curves and a cutaway disc.",
+    "Let me flex the lumbar region within a stated limit and see the disc cross-section respond."
+  ],
+  "negative_signals": [
+    "Not a validated range-of-motion or spinal load model; no disc pressure or injury prediction.",
+    "Not a patient-specific or imaging-derived spine."
+  ],
+  "not_for": [
+    "Not a validated range-of-motion or spinal load model; no disc pressure or injury prediction.",
+    "Not a patient-specific or imaging-derived spine."
+  ],
+  "entities": [
+    {
+      "name": "Vertebra stack",
+      "guidance": "Model each vertebra as a body, pedicles and a spinous process with its own region tag and index; do not repeat one identical mesh through all regions."
+    },
+    {
+      "name": "Intervertebral discs",
+      "guidance": "Build each disc as a layered anulus ring around a distinct inner nucleus volume so a cutaway reveals two materials, not a painted stripe."
+    },
+    {
+      "name": "Curve reference",
+      "guidance": "Draw the column centre curve with the four curvature spans named separately, plus an upright reference silhouette that stays visible during flexion."
+    }
+  ],
+  "state_contract": {
+    "model": "Ordered vertebra list with region tags and per-joint angles bounded by an authored envelope; disc geometry is derived from adjacent vertebra transforms. No load, stress or tissue model.",
+    "authority": "The joint angle list is authoritative. Disc wedge shape and the centre curve are recomputed from it; the reference silhouette is a stored pose, never a live copy.",
+    "actions": [
+      "Flex or extend a selected region within the authored envelope.",
+      "Open a disc cutaway at a chosen level.",
+      "Toggle region labels and the neutral reference silhouette.",
+      "Reset all joint angles to the neutral pose."
+    ]
+  },
+  "invariants": [
+    "Regional counts stay fixed under any pose: seven cervical, twelve thoracic and five lumbar vertebrae.",
+    "Disc volume is not created or destroyed by the display: a wedge that opens on one side must close on the other.",
+    "Joint angles clamp at the authored envelope instead of continuing to rotate."
+  ],
+  "motion_guidance": [
+    "Distribute a bend across the vertebrae of the selected region rather than hinging at a single joint.",
+    "Ease the motion and keep the neutral silhouette on screen so the change stays measurable."
+  ],
+  "known_limits": [
+    "The flexion envelope is an authored teaching choice, not a sourced clinical range of motion.",
+    "Ligaments, muscles and the spinal cord are omitted or shown only as context.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-vertebral-regions",
+      "statement": "The vertebral column contains seven cervical vertebrae, twelve thoracic vertebrae designated T1 to T12 and five lumbar vertebrae, with a sacrum formed from five fused sacral vertebrae and a coccyx from four small coccygeal vertebrae.",
+      "scope": "Typical adult counts as taught; numerical variants exist in individuals and are not modelled.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-vertebral-column",
+          "locator": "7.3, Regions of the Vertebral Column"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-spinal-curves",
+      "statement": "The thoracic and sacrococcygeal curves are primary curves retained from fetal curvature, while the cervical and lumbar curves are secondary curves that develop after birth.",
+      "scope": "Naming and developmental grouping of the four curves; no angle values are asserted.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-vertebral-column",
+          "locator": "7.3, Curvatures of the Vertebral Column"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-disc-structure",
+      "statement": "An intervertebral disc has a tough fibrous outer anulus fibrosus and a softer, gel-like nucleus pulposus with a high water content that resists compression.",
+      "scope": "Two-component disc composition; no stiffness, pressure or degeneration behaviour is claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-vertebral-column",
+          "locator": "7.3, Intervertebral disc description"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Vertebra stack",
+      "structure": "Distinct body, pedicle and process masses per vertebra with region-specific proportions; cervical bodies smaller than lumbar bodies.",
+      "material": "Dense matte bone with slight porosity variation between cortical rim and interior cut faces; region tint applied as a thin overlay so it can be switched off.",
+      "articulation": "Each vertebra is a child of a per-joint pivot placed at the disc centre, so a joint angle moves everything above it."
+    },
+    {
+      "family": "Intervertebral discs",
+      "structure": "Concentric anulus lamellae around a rounded nucleus volume, with a capped cutaway surface at the inspected level.",
+      "material": "Fibrous, directionally shaded anulus against a smoother translucent nucleus; the two materials must differ in roughness, not only in colour.",
+      "articulation": "Disc shape is driven by adjacent vertebra transforms: it wedges as the joint rotates."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Authored articulation within a declared envelope and cutaway presentation; no tissue mechanics, contact or load.",
+    "state": [
+      "per-joint angle",
+      "selected region",
+      "cutaway level"
+    ],
+    "checks": [
+      "Angles clamp at the envelope and reset returns exactly to neutral.",
+      "Region counts and labels are unchanged after any pose change."
+    ]
+  },
+  "related_ids": [
+    "recipe.skeletal-hierarchy",
+    "recipe.knee-layer-peel",
+    "knowledge.articulation-from-motion"
+  ]
+}

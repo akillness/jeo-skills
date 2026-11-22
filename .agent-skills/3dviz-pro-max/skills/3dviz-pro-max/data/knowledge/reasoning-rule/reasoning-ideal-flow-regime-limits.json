@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-ideal-flow-regime-limits",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Keep parameter ranges inside the model regime"
+  },
+  "aliases": {
+    "en": [
+      "Poiseuille limits",
+      "regime boundary",
+      "slider range"
+    ]
+  },
+  "direction_ids": [
+    "physiology-biomechanics",
+    "soft-fluid-thermal"
+  ],
+  "summary": "State the assumptions behind an idealised relationship and restrict interactive ranges to where it holds.",
+  "objective": "Prevent an interactive control from driving a valid formula into a regime where it no longer describes anything.",
+  "applies_when": [
+    "A scene exposes sliders over a physical relationship such as resistance, flow or pressure.",
+    "A strong nonlinear dependence, such as a fourth power, is being demonstrated.",
+    "The user can push a parameter to an extreme value."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "Poiseuille",
+    "resistance",
+    "laminar flow",
+    "regime",
+    "assumptions",
+    "parameter range"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "physiology",
+    "regime"
+  ],
+  "intent_signals": [
+    "show how radius affects flow",
+    "vessel resistance demo",
+    "what happens if the vessel narrows"
+  ],
+  "example_prompts": [
+    "Demonstrate how vessel radius changes resistance and say where the model stops working.",
+    "Add a radius slider with a sensible range."
+  ],
+  "negative_signals": [
+    "Qualitative illustrations that display no formula and invite no parameter reading.",
+    "Full computational fluid dynamics, which has its own model and validation."
+  ],
+  "not_for": [
+    "Qualitative illustrations that display no formula and invite no parameter reading.",
+    "Full computational fluid dynamics, which has its own model and validation."
+  ],
+  "content": {
+    "principles": [
+      "An idealised relationship carries assumptions that the picture does not show. The relationship between vessel radius and resistance assumes steady laminar flow of a fluid of given viscosity in a rigid tube of given length.",
+      "Strong power laws make range choices consequential: resistance varies inversely with the fourth power of the radius, so halving the radius multiplies resistance by sixteen and a slider that reaches near zero produces meaningless magnitudes.",
+      "A control range is itself a claim about the model. Allowing an input outside the regime asserts that the displayed output is still meaningful there.",
+      "Naming which quantities are held constant is as important as naming the one that varies, since real systems change several at once."
+    ],
+    "implementation": [
+      "Write the assumptions next to the control: what is held constant, what regime is assumed, and what the units are.",
+      "Bound the slider to the regime and explain the bound, rather than clamping silently at an arbitrary value.",
+      "Show the held-constant quantities as visible parameters so the viewer sees the whole model, not one dial.",
+      "Where the interesting behaviour is the power law, show the ratio or a logarithmic readout so the magnitude is legible.",
+      "If a value outside the regime must be reachable, mark the output as outside the model rather than plotting it as a result."
+    ],
+    "observable_checks": [
+      "Drive the parameter to each end of its range and confirm the output remains finite, labelled and consistent with the stated assumptions.",
+      "Verify the power law numerically: a factor of two in radius should produce a factor of sixteen in resistance if the model is implemented as stated.",
+      "Confirm the held-constant quantities are actually held constant in the implementation.",
+      "Check that the displayed units accompany every numeric readout."
+    ]
+  },
+  "related_ids": [
+    "recipe.vessel-radius-resistance",
+    "recipe.nozzle-continuity"
+  ],
+  "creative_affordances": [
+    "The visual metaphor for resistance can be pressure, effort, colour or a mechanical analogue; the constraint is on the regime, not the imagery.",
+    "Comparative views of two vessels are often clearer than a single slider."
+  ],
+  "known_limits": [
+    "Authored parameter-scoping guidance citing one idealised physiological relationship; it does not model pulsatile flow, vessel compliance or non-Newtonian blood behaviour.",
+    "No calibrated physiological values are asserted."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-resistance-radius-fourth-power",
+      "statement": "In the Poiseuille description of blood flow, resistance is inversely proportional to the fourth power of the vessel radius, with vessel length and blood viscosity treated as the other determinants that normally change only slowly.",
+      "scope": "Idealised steady laminar flow in a tube; it does not describe turbulent, pulsatile or compliant vessel behaviour.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-resistance",
+          "locator": "20.2, Poiseuille relationship and the resistance equation"
+        }
+      ]
+    }
+  ]
+}

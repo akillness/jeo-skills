@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-mating-feature-detail",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Spend detail on the features that join parts"
+  },
+  "aliases": {
+    "en": [
+      "mating features",
+      "joinery detail",
+      "how parts connect"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "architecture-interiors",
+    "environments-dioramas"
+  ],
+  "summary": "Model bosses, clips, seams, gaskets and joinery before adding surface ornament, because they explain how the object is made.",
+  "objective": "Direct modelling effort towards the features that make an assembly legible and buildable.",
+  "applies_when": [
+    "An object is presented as manufactured or built rather than sculpted.",
+    "A close viewing distance, cutaway or exploded view will show how parts meet.",
+    "An object looks like a smooth blob or like separate shapes floating next to each other."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "mating feature",
+    "fastener",
+    "seam",
+    "gasket",
+    "joinery",
+    "manufacturing detail"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "object-craft",
+    "product"
+  ],
+  "intent_signals": [
+    "it looks like plastic blobs",
+    "show how the housing closes",
+    "make the joinery believable"
+  ],
+  "example_prompts": [
+    "Make the speaker housing look like two moulded shells that actually close.",
+    "Show how the timber frame joints carry the roof."
+  ],
+  "negative_signals": [
+    "Distant background props where these features cannot be resolved.",
+    "Abstract or diagrammatic objects where construction is not the subject."
+  ],
+  "not_for": [
+    "Distant background props where these features cannot be resolved.",
+    "Abstract or diagrammatic objects where construction is not the subject."
+  ],
+  "content": {
+    "principles": [
+      "Objects communicate manufacture through their junctions: a parting line, a screw boss, a lap joint or a welded seam says more about an object than another bevel on a flat face.",
+      "Junctions also carry consequence. A gasket implies a sealed volume, a clip implies a service opening, and a mortise implies a load path.",
+      "Detail spent where nothing joins is invisible work. Detail at a junction is read from a distance because it interrupts the silhouette and catches light differently.",
+      "Material follows the junction: the same joint in timber, aluminium and moulded polymer has different thickness, radius and tolerance."
+    ],
+    "implementation": [
+      "List the junctions before the surfaces: what closes against what, what is fastened, what slides, what seals.",
+      "Give each junction its minimum expressive geometry, such as a recess, a lip, a fastener head or a visible fillet, sized for the intended viewing distance.",
+      "Match feature scale to the process you are implying: moulded parts get draft, radii and ejector marks; machined parts get chamfers and tool radii; timber gets shoulders and pegs.",
+      "Show clearance where parts move relative to each other, since a zero gap on a moving joint reads as a fused mass.",
+      "Only after these are in place, add ornament, wear and branding, which then have real edges to accumulate against."
+    ],
+    "observable_checks": [
+      "Look along a junction at a grazing angle: parts that interpenetrate or float apart are visible there first.",
+      "Where the object claims to be serviceable, ask how each part would be removed and look for the fastener, clip or opening that allows it. A part with no such feature is not thereby impossible: welded, bonded, cast-in, moulded-in and sacrificial parts are ordinary, and the honest outcome is to say the part is not serviceable rather than to add a fastener that the design does not have.",
+      "Compare feature size against the implied process; a moulded shell with knife edges and no draft reads as an approximation.",
+      "Check that a cutaway or exploded view reveals internal features rather than empty shells."
+    ]
+  },
+  "related_ids": [
+    "recipe.folding-desk-lamp",
+    "recipe.portable-speaker-exploded",
+    "knowledge.framed-shelter",
+    "knowledge.dielectric-surface"
+  ],
+  "creative_affordances": [
+    "Fantasy and invented technology benefit from the same treatment; invent the process, then be consistent with it.",
+    "Deliberate seamlessness, such as a single cast form, is a valid choice when the object story supports it."
+  ],
+  "known_limits": [
+    "Authored modelling guidance; it asserts no manufacturing standard, tolerance value or material property.",
+    "Real engineering fits, draft angles and clearances need engineering sources rather than this rule."
+  ],
+  "claims": []
+}

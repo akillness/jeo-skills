@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-service-layer-coordination",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Coordinate building systems in one coordinate model"
+  },
+  "aliases": {
+    "en": [
+      "MEP layers",
+      "clash detection",
+      "system coordination"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "abstract-systems-data"
+  ],
+  "summary": "Keep structure and each service system in one shared coordinate model, and detect clashes geometrically rather than visually.",
+  "objective": "Make multi-system building views informative about conflicts instead of merely colourful.",
+  "applies_when": [
+    "Structure, ducts, pipes, cabling or ventilation appear in the same model.",
+    "Layers or systems can be toggled independently.",
+    "The scene claims that systems fit within a ceiling void, shaft or wall."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "building services",
+    "MEP",
+    "clash detection",
+    "layers",
+    "coordination",
+    "ceiling void"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "architecture",
+    "systems"
+  ],
+  "intent_signals": [
+    "show the services in the ceiling",
+    "do the ducts clash with the beams",
+    "toggle the systems"
+  ],
+  "example_prompts": [
+    "Show the ventilation, plumbing and structure as separate switchable systems.",
+    "Find where the duct runs into a beam."
+  ],
+  "negative_signals": [
+    "Single-system diagrams where coordination is not in question.",
+    "Schematic riser diagrams that intentionally abandon true geometry."
+  ],
+  "not_for": [
+    "Single-system diagrams where coordination is not in question.",
+    "Schematic riser diagrams that intentionally abandon true geometry."
+  ],
+  "content": {
+    "principles": [
+      "Systems only coordinate if they share one origin, one unit and one level datum. Independently authored layers that look aligned in one view are not coordinated.",
+      "Visual overlap is not a clash. Two elements can appear to cross from one angle and not intersect at all; only a geometric test answers the question.",
+      "Toggling a system is a view operation and must not delete or move anything, otherwise the coordination model changes whenever someone inspects it.",
+      "Real coordination includes tolerance: insulation, hangers, access space and installation sequence occupy volume beyond the nominal element."
+    ],
+    "implementation": [
+      "Define one project origin and level datum and place every system against it; record any imported system offset explicitly at the point of import.",
+      "Give each element a system and a level so filtering is a data query rather than a hand-maintained list of objects.",
+      "Run an actual intersection test between systems and report the pair, the location and the overlap, then let the view fly to that location.",
+      "Model the service envelope, not just the pipe: add insulation thickness and access allowance where they matter.",
+      "Keep visibility state separate from the model so the clash report is independent of what is currently shown."
+    ],
+    "observable_checks": [
+      "Hide and show each system in turn and confirm nothing else changes position or existence.",
+      "Introduce a deliberate intersection and confirm it is reported with a location rather than found by eye.",
+      "Check a suspect area from two different camera angles; apparent clashes that resolve with the angle were never real.",
+      "Compare the clear ceiling void against the deepest element with its allowances included."
+    ]
+  },
+  "related_ids": [
+    "recipe.building-service-layers",
+    "knowledge.assembly-layer-reveal",
+    "knowledge.graph-in-space"
+  ],
+  "creative_affordances": [
+    "System colour coding, transparency and highlight styles are free design decisions; only the coordinate model and the test are constrained.",
+    "A schematic system diagram can accompany the coordinated model as long as the two are not confused."
+  ],
+  "known_limits": [
+    "Authored coordination guidance; no clash-detection run or building model has been verified for this record.",
+    "It does not encode any building standard, service sizing rule or installation tolerance."
+  ],
+  "claims": []
+}

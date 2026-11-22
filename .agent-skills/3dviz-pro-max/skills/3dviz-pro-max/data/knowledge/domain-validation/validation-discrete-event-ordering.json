@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-discrete-event-ordering",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Discrete event ordering and replay determinism"
+  },
+  "aliases": {
+    "en": [
+      "event queue order check",
+      "simulation replay determinism"
+    ]
+  },
+  "direction_ids": [
+    "operations-logistics"
+  ],
+  "summary": "Verify that model time comes from the event queue, that ties break deterministically and that replays match.",
+  "objective": "Two runs from the same initial state produce identical event logs, and playback speed changes only wall-clock duration.",
+  "applies_when": [
+    "Entities move between queues, resources and destinations under a discrete-event model.",
+    "Several events can be scheduled for the same model time.",
+    "A viewer can change playback speed, pause or replay the scenario."
+  ],
+  "check_method": "state",
+  "tags": [
+    "domain-validation",
+    "discrete-event",
+    "determinism",
+    "scheduling"
+  ],
+  "subject_terms": [
+    "event queue",
+    "model time",
+    "tie-break",
+    "insertion order",
+    "replay",
+    "playback speed"
+  ],
+  "intent_signals": [
+    "the sorter gives different results each run",
+    "check that speeding up playback does not change the outcome"
+  ],
+  "example_prompts": [
+    "Check that this parcel sorter replays identically at any playback speed."
+  ],
+  "negative_signals": [
+    "throughput optimisation study",
+    "controlling real conveyor hardware"
+  ],
+  "content": {
+    "principles": [
+      "Model time belongs to the event queue; animation duration is a rendering artifact and must never advance or gate the model.",
+      "Simultaneity is normal, so the queue needs a total order: scheduled time first and then a declared tie-break such as a strictly increasing insertion counter, otherwise replays diverge.",
+      "Every state change is the effect of a dequeued event; a state change made inside a render callback is outside the model and cannot be replayed."
+    ],
+    "implementation": [
+      "Log each scheduled and executed event as model time, tie-break key, event type and entity ID, and keep the log for the whole run.",
+      "Author a fixture that forces ties: two arrivals at the same time, a service completion coinciding with an arrival, and a cancellation scheduled at the same time as the event it cancels.",
+      "Run the fixture twice from the same initial state and compare logs line by line, then run it again at a different playback speed and with the window backgrounded.",
+      "Search the queue for any event scheduled earlier than the current model time; that is the signature of a callback writing state directly."
+    ],
+    "observable_checks": [
+      "The two runs produce identical logs entry for entry, including the order of tied events.",
+      "Changing playback speed changes wall-clock duration only: model timestamps, ordering and final counts are unchanged.",
+      "No event is dequeued with a timestamp earlier than the previous one; a violation names the code path that bypassed the queue."
+    ]
+  },
+  "known_limits": [
+    "Determinism of the trace says nothing about whether the authored arrival and service times resemble any real operation.",
+    "Authored verification guidance; no simulation was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.parcel-sorter-events",
+    "recipe.loading-dock-resource-board",
+    "recipe.finite-state-machine"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-simulation-tie-order",
+      "statement": "In this discrete-event framework the queue keys events by scheduled time with a strictly increasing event identifier as tie-break, so events scheduled for the same time are processed in the order they were scheduled.",
+      "scope": "SimPy scheduling documentation; other frameworks define their own tie-break, which must be declared rather than assumed.",
+      "source_refs": [
+        {
+          "source_id": "source.validation-depth-simpy-scheduling",
+          "locator": "Time and Scheduling: event queue tuple and same-time ordering"
+        }
+      ]
+    }
+  ]
+}

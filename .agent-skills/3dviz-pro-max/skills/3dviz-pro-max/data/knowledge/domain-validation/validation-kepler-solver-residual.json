@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-kepler-solver-residual",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Kepler solve residual and equal-area quadrature"
+  },
+  "aliases": {
+    "en": [
+      "orbit solver convergence",
+      "equal area check"
+    ]
+  },
+  "direction_ids": [
+    "astronomy-space"
+  ],
+  "summary": "Report the transcendental solve residual and check equal areas by quadrature on the returned positions.",
+  "objective": "The Kepler residual stays below tolerance, swept areas over equal times agree within reported quadrature error, and the circular case is uniform.",
+  "applies_when": [
+    "Orbital position comes from solving a transcendental relation each step.",
+    "Eccentricity can be varied, including to zero.",
+    "The scene asserts an equal-area property."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "orbit",
+    "solver",
+    "quadrature"
+  ],
+  "subject_terms": [
+    "Kepler equation",
+    "eccentric anomaly",
+    "mean anomaly",
+    "swept area",
+    "focus",
+    "eccentricity"
+  ],
+  "intent_signals": [
+    "does this orbit really sweep equal areas",
+    "check whether the solver converged"
+  ],
+  "example_prompts": [
+    "Check the orbit solver and equal-area behaviour in this Kepler scene."
+  ],
+  "negative_signals": [
+    "ephemeris prediction",
+    "n-body or perturbation modelling"
+  ],
+  "content": {
+    "principles": [
+      "A transcendental solve needs a reported residual and an iteration budget, because a viewer cannot tell from the picture whether it converged. The residual bounds the anomaly error only through the derivative one minus eccentricity times the cosine of the eccentric anomaly, which approaches zero as eccentricity approaches one, so the tolerance is chosen per eccentricity rather than fixed.",
+      "Equal-area sweeping is checked by quadrature on the returned positions rather than assumed from the formula that produced them.",
+      "Zero eccentricity is the control case: the orbit becomes a circle with uniform angular motion, so any residual nonuniformity there is numerical or a modelling error."
+    ],
+    "implementation": [
+      "Declare the domain first: semi-major axis and gravitational parameter strictly positive, eccentricity at least zero and below one, angles in radians with a stated wrap convention. Then record for each evaluation the mean anomaly, the iteration count, the final residual and whether the budget was exhausted.",
+      "Sample positions at equal model-time intervals and compute the area swept in each interval about the focus by polygon quadrature, then refine by adding substeps inside those same equal-duration windows; comparing shorter windows instead would shrink the absolute areas trivially and prove nothing.",
+      "Repeat at several eccentricities including zero and the largest supported value, recording the worst residual, the residual tolerance chosen for that eccentricity and the worst area spread at each.",
+      "Verify the focus by comparing the distance from the primary to the ellipse centre with eccentricity times the semi-major axis."
+    ],
+    "observable_checks": [
+      "The Kepler residual stays below the tolerance declared for that eccentricity at every sample, and any nonconvergence is reported instead of silently returning the last iterate.",
+      "Swept areas over equal time intervals agree within the stated quadrature error, and refining substeps inside the same windows reduces the spread toward that error floor; the spread and the error estimate are both reported rather than asserting exact equality or requiring a strictly decreasing sequence below roundoff.",
+      "At zero eccentricity the angular rate is uniform and the primary sits at the centre, while at nonzero eccentricity the primary sits at a focus."
+    ]
+  },
+  "known_limits": [
+    "An ideal two-body model; no perturbations, relativity, ephemeris data or current planetary positions are represented.",
+    "Authored verification guidance; nothing was computed or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.kepler-equal-area-orbit",
+    "recipe.moon-phase-observer",
+    "recipe.stellar-parallax-baseline"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-kepler-first-second-law",
+      "statement": "Each planet's orbit about the Sun is an ellipse with the Sun at one focus, and the line joining a planet to the Sun sweeps equal areas during equal time intervals.",
+      "scope": "The ideal two-body description in the cited public page; no ephemeris, perturbation or present-day position claim.",
+      "source_refs": [
+        {
+          "source_id": "source.nasa-kepler",
+          "locator": "Kepler's first and second laws"
+        }
+      ]
+    }
+  ]
+}

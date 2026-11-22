@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "id": "recipe.sensorthings-telemetry-freshness-sync",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "SensorThings telemetry freshness and ordering view"
+  },
+  "aliases": {
+    "en": [
+      "operational digital twin sync",
+      "stale telemetry"
+    ]
+  },
+  "direction_ids": [
+    "operations-logistics",
+    "architecture-interiors"
+  ],
+  "summary": "Reconcile a finite supplied SensorThings observation stream into stable scene objects while preserving phenomenon, result and arrival times and showing stale, late, duplicate or conflicting data without treating telemetry as truth.",
+  "objective": "Reconcile a finite supplied SensorThings observation stream into stable scene objects while preserving phenomenon, result and arrival times and showing stale, late, duplicate or conflicting data without treating telemetry as truth.",
+  "tags": [
+    "SensorThings API",
+    "telemetry freshness",
+    "phenomenonTime",
+    "resultTime",
+    "arrival order"
+  ],
+  "subject_terms": [
+    "SensorThings API",
+    "telemetry freshness",
+    "phenomenonTime",
+    "resultTime",
+    "arrival order"
+  ],
+  "intent_signals": [
+    "SensorThings telemetry freshness and ordering view"
+  ],
+  "example_prompts": [
+    "Build sensorthings telemetry freshness and ordering view with explicit stable IDs, units, time, boundary inputs and stale/unavailable states."
+  ],
+  "negative_signals": [
+    "rendered motion proves operational correctness",
+    "planned state equals observed state"
+  ],
+  "not_for": [
+    "Safety certification, regulatory compliance, or operational control without qualified local review."
+  ],
+  "entities": [
+    {
+      "name": "Binding registry",
+      "guidance": "Map Thing/Datastream/ObservedProperty IDs and unit metadata to stable scene object/property IDs; unknown mappings remain quarantined."
+    },
+    {
+      "name": "Observation ledger",
+      "guidance": "Retain observation ID, phenomenonTime, resultTime/validTime if supplied, arrival sequence, result, quality metadata and provenance."
+    },
+    {
+      "name": "Freshness gate",
+      "guidance": "Apply a declared per-property age threshold against chosen display time; never rewrite event time to arrival time."
+    }
+  ],
+  "state_contract": {
+    "model": "Accept a bounded instant-only subset: every phenomenonTime is one finite timestamp, not an interval, with stable observation/Datastream IDs and monotone local arrival sequence. Preserve phenomenonTime, resultTime (including null), optional validTime and original result/unit. Reject interval phenomenonTime for this recipe. Deduplicate identical IDs/content; quarantine same ID with conflicting content. Order history by phenomenonTime plus stable ID while retaining arrival order and marking late data. For live display choose the latest nonconflicting observation valid at display time under an explicit per-property policy; if resultTime is null, result-age freshness is unavailable and arrival age may be shown only as transport age. Stale/unmapped/invalid values never overwrite last-valid state silently.",
+    "authority": "SensorThings IDs, observation payloads/times, unit/binding registry and declared freshness policy own state. Blender/glTF provides static equipment/city geometry and stable node targets; Three.js buffers arrivals, reconciles observations, labels stale/conflict/unavailable state and resets to a recorded snapshot.",
+    "actions": [
+      "Ingest next recorded observation.",
+      "Scrub phenomenon-time history or arrival order.",
+      "Inspect freshness/conflict reason.",
+      "Reset to recorded snapshot."
+    ]
+  },
+  "invariants": [
+    "phenomenonTime is a required instant in this bounded subset; resultTime and arrival time remain distinct, and interval phenomenonTime is rejected.",
+    "Conflicting duplicate IDs never overwrite silently.",
+    "Stale display is labeled and cannot masquerade as current truth.",
+    "Telemetry changes display state only, never proves physical state or issues control."
+  ],
+  "motion_guidance": [
+    "Playback restores stored model/event steps; animation between steps is explanatory and never changes authoritative counts, timestamps or completion state."
+  ],
+  "creative_affordances": [
+    "Use cutaways, small multiples, queues and non-color status glyphs while keeping assumptions and unavailable states visible."
+  ],
+  "known_limits": [
+    "No sensor calibration, delivery guarantee, truth validation, prediction, privacy clearance or actuator path is supplied; currentness is an authored display policy."
+  ],
+  "claims": [
+    {
+      "id": "claim.city-ogc-sensorthings-observation-time",
+      "statement": "OGC SensorThings API 1.1 Observation entities include phenomenonTime for when the observation happens, result for the estimated observed-property value, resultTime for when the result was generated, optional resultQuality and optional validTime; the standard notes resultTime may be null when omitted by a constrained device.",
+      "scope": "OGC 18-088 Observation data model; arrival sequence, deduplication, freshness thresholds and scene binding are authored application policy.",
+      "source_refs": [
+        {
+          "source_id": "source.city-ogc-sensorthings11",
+          "locator": "Section 8.2.4.2 and Table 18, Observation properties"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Telemetry-bound operations twin",
+      "structure": "Blender authors static equipment/site context with stable node anchors; glTF carries render geometry and node IDs only, never live observations or semantic truth.",
+      "material": "Fresh, stale, late, conflict and unavailable states combine icon, label and pattern.",
+      "articulation": "Three.js owns binding registry, ordered observation buffer, time/freshness policy, safe last-valid projection and snapshot reset."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Finite recorded telemetry reconciliation and display; no control or truth inference.",
+    "state": [
+      "binding registry",
+      "observation/time ledger",
+      "arrival sequence",
+      "freshness/conflict projection"
+    ],
+    "checks": [
+      "Replay out-of-order fixture.",
+      "Detect conflicting duplicate ID.",
+      "Null resultTime yields unavailable result-age, not fabricated timestamp."
+    ]
+  },
+  "related_ids": [
+    "knowledge.reasoning-span-causality-and-time",
+    "knowledge.source-model-runtime-provenance-panel"
+  ]
+}

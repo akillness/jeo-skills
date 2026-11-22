@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.ball-bearing-race-cage-assembly",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "object-archetype",
+  "title": {
+    "en": "Ball-bearing rings, raceways and cage"
+  },
+  "aliases": {
+    "en": [
+      "ball bearing cutaway",
+      "bearing cage",
+      "inner outer raceway"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies"
+  ],
+  "summary": "Expose a caged radial ball-bearing assembly with readable race grooves, ball spacing and optional cover layers.",
+  "objective": "Expose a caged radial ball-bearing assembly with readable race grooves, ball spacing and optional cover layers.",
+  "tags": [
+    "object-archetype",
+    "ball bearing cutaway",
+    "bearing cage",
+    "inner outer raceway"
+  ],
+  "subject_terms": [
+    "ball bearing cutaway",
+    "bearing cage",
+    "inner outer raceway",
+    "rolling elements",
+    "bearing assembly"
+  ],
+  "intent_signals": [
+    "Expose a caged radial ball-bearing assembly with readable race grooves, ball spacing and optional cover layers."
+  ],
+  "example_prompts": [
+    "Build an explorable ball-bearing rings, raceways and cage and expose its construction at close range."
+  ],
+  "content": {
+    "principles": [
+      "Choose a single-row caged ball-bearing representation; a plain bushing or full-complement bearing is a different construction. Balls occupy the annulus between rings, while the cage positions them.",
+      "Separate assembled geometry from an exploded inspection layout; an exploded view is not necessarily a physically possible disassembly sequence."
+    ],
+    "implementation": [
+      "Build coaxial inner and outer rings with bore, outer diameter, finite axial width and recessed race profiles. Place a declared count of equal balls on one pitch circle and create cage pockets around them. Check room for cage walls and neighboring balls before adding chamfers.",
+      "Name shaft seat, housing seat, ring shoulders, ball set and cage separately. If shields or seals are depicted, keep them removable display layers with their own thickness; hiding a cover does not remove the ring beneath it.",
+      "Store the assembled transforms and one explode factor. Offset component groups along labeled inspection axes and restore exact rest transforms at zero. Use selection to expose a race cross-section; retain ball identity across layout changes.",
+      "Default to static assembled/exploded inspection. An optional relative ring-angle control must be labeled a pose demonstration; do not invent ball spin and cage speed as independent clocks and call it no-slip bearing motion.",
+      "For a miniature show bore, outer ring and a few readable ball highlights. At close range add cage bridges, shoulder relief and cover seat edges. Finish contrast may separate cage from rings; roughness is not friction or a load rating."
+    ],
+    "observable_checks": [
+      "In the assembled cross-section, ball centers lie on the declared pitch circle, neighboring balls are separated and each cage pocket aligns with its ball.",
+      "Measure nonzero ring and cage-wall thickness; removing an inspection cover reveals the intended parts rather than an empty decorative cylinder.",
+      "Explode, select one ball, restore and reset: IDs and original coaxial alignment are preserved."
+    ]
+  },
+  "known_limits": [
+    "No Hertz contact, preload, lubricant film, clearance class, speed rating or lifetime prediction. Grooves and display clearances need a specific manufacturer drawing if claimed dimensionally accurate.",
+    "Authored construction and prospective checks; no runtime artifact, render or material test has been executed for this record."
+  ],
+  "creative_affordances": [
+    "A cut-metal teaching model or a flat-colored toy can emphasize the same ring/ball/cage structure without microscopic wear."
+  ],
+  "claims": [
+    {
+      "id": "claim.craft-depth-ball-bearing-race-cage-assembly",
+      "statement": "NSK describes typical rolling bearings as inner and outer rings, rolling elements and a cage; ball bearings use balls as rolling elements, and the cage positions them.",
+      "scope": "Typical caged rolling-bearing structure; no claim that every bearing contains these four components.",
+      "source_refs": [
+        {
+          "source_id": "source.craft-depth-ball-bearing-race-cage-assembly",
+          "locator": "Structure & Function: Ball Bearing; Outer Ring; Inner Ring; Rolling Elements; Cage"
+        }
+      ]
+    }
+  ]
+}

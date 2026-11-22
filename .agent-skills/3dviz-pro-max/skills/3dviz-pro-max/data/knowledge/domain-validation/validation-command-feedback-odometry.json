@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-command-feedback-odometry",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Requested command, applied motion and estimated pose kept distinct"
+  },
+  "aliases": {
+    "en": [
+      "odometry source check",
+      "command timeout behaviour"
+    ]
+  },
+  "direction_ids": [
+    "robotics-control"
+  ],
+  "summary": "Separate requested motion, wheel feedback and pose estimate, and verify timeout and reset behaviour.",
+  "objective": "The pose estimate follows the declared source, staleness is detected within the enabled timeout before the stop policy applies, and reset clears the stored command as well as pose and wheel history.",
+  "applies_when": [
+    "A mobile robot scene distinguishes commanded and measured motion.",
+    "Odometry can be computed from feedback or from commands.",
+    "Command delivery can stall or stop."
+  ],
+  "check_method": "state",
+  "tags": [
+    "domain-validation",
+    "odometry",
+    "command-feedback",
+    "timeout"
+  ],
+  "subject_terms": [
+    "body twist",
+    "wheel command",
+    "wheel feedback",
+    "pose estimate",
+    "wheel separation",
+    "command timeout"
+  ],
+  "intent_signals": [
+    "odometry looks perfect because it uses the commands",
+    "the robot kept moving after commands stopped"
+  ],
+  "example_prompts": [
+    "Check the odometry source and timeout behaviour of this mobile robot scene."
+  ],
+  "negative_signals": [
+    "localisation accuracy claims",
+    "real hardware integration"
+  ],
+  "content": {
+    "principles": [
+      "Requested motion, applied wheel motion and estimated pose are three distinct quantities, so an odometry display that silently uses commands is describing intent rather than motion.",
+      "Command staleness is a detection rule, not a stopping guarantee: after the declared timeout the controller marks the command stale and applies its stop policy, and how long motion then takes depends on deceleration limits. A timeout of zero disables the feature, so the check requires it enabled.",
+      "Geometry parameters carry units and meaning, since wheel radius and separation convert between body and wheel quantities and a wrong value gives a consistent but wrong pose."
+    ],
+    "implementation": [
+      "Log requested body velocity, commanded wheel velocities, wheel feedback and integrated pose at every control step, marking which source odometry used.",
+      "Run a nonzero trajectory with odometry taken from feedback and from commands and compare both estimates against the model ground-truth pose; a zero command or an exactly unit response makes the two modes agree and tests nothing.",
+      "Introduce a deliberate feedback discrepancy with a response factor other than one and confirm that feedback-based odometry follows the feedback while command-based odometry does not.",
+      "With the timeout enabled, stop sending commands and record two separate quantities: the control tick at which staleness is detected, compared with the timeout plus a declared scheduling allowance, and the time and distance until motion actually stops under the deceleration limits. Then reset and confirm pose, wheel history and the stored command itself are cleared."
+    ],
+    "observable_checks": [
+      "With a scaled feedback response the two odometry modes diverge, which is the signal that the source switch is real rather than cosmetic.",
+      "With timeout enabled, detect staleness on the first eligible control tick after the timeout threshold, following the declared > or >= convention, and no later than threshold plus the scheduling allowance. This allowance is upper-bound slack, not extra waiting time. Verify stopping separately against the stated deceleration/stop-response tolerance and log the policy.",
+      "Reset clears or invalidates the stored command as well as the pose estimate and wheel history; resetting only the command age would make a stale nonzero command fresh again, which is the specific failure this check exists to catch."
+    ]
+  },
+  "known_limits": [
+    "An educational adapter check; it does not calibrate odometry, model wheel slip or certify any real controller integration.",
+    "Authored verification guidance; no robot or controller was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.differential-drive-odometry",
+    "recipe.robot-arm-forward-frames",
+    "recipe.garden-creature-patrol"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-differential-drive-responsibilities",
+      "statement": "The documented differential-drive controller translates body velocity commands into wheel commands using wheel radius and wheel separation, computes odometry from feedback unless an open-loop setting makes it use commanded values, and treats a command as stale after a configured timeout whose zero value disables the feature.",
+      "scope": "The cited controller documentation for the rolling development version, read this session; borrowing these responsibility boundaries claims no working hardware integration.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-differential-drive",
+          "locator": "Description, open_loop, wheel_radius, wheel_separation and command timeout parameters"
+        }
+      ]
+    }
+  ]
+}

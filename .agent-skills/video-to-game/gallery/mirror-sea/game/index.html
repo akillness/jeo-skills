@@ -1,0 +1,1294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mirror Sea</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --ink: #fffaf2; --ink-soft: rgba(255, 250, 242, .78); }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #d9d3dc; }
+  canvas#c { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; outline: none; }
+  #ui { position: fixed; inset: 0; pointer-events: none; font-family: 'Cormorant Garamond', Georgia, serif; color: var(--ink); user-select: none; }
+  .fade { transition: opacity 2.2s ease; }
+  .hidden { opacity: 0 !important; }
+  #veil { position: absolute; inset: 0; background: #e9e1dc; transition: opacity 2.6s ease; }
+  #loading { position: absolute; left: 50%; bottom: 14vh; transform: translateX(-50%); width: min(240px, 46vw); height: 1px; background: rgba(120, 110, 130, .25); transition: opacity 1s; }
+  #loading i { display: block; height: 100%; width: 0; background: rgba(90, 84, 110, .8); transition: width .25s; }
+  #title { position: absolute; left: 50%; top: 12vh; transform: translateX(-50%); width: min(800px, 94vw); text-align: center; }
+  #title img { width: min(580px, 74vw); margin: 0 auto; display: block; filter: drop-shadow(0 2px 16px rgba(72, 62, 112, .42)) drop-shadow(0 0 2px rgba(72, 62, 112, .25)); }
+  #title .press { margin-top: 1.4vh; font-size: clamp(15px, 1.5vw, 21px); letter-spacing: .38em; text-transform: lowercase; color: var(--ink); text-shadow: 0 1px 10px rgba(70, 60, 110, .6); animation: breathe 3.4s ease-in-out infinite; }
+  #title .keys { margin-top: 1.1vh; font-size: clamp(12px, 1.05vw, 15px); letter-spacing: .16em; color: var(--ink); text-shadow: 0 1px 8px rgba(60, 52, 100, .75); }
+  @keyframes breathe { 0%, 100% { opacity: .35 } 50% { opacity: 1 } }
+  #memories { position: absolute; top: 26px; left: 50%; transform: translateX(-50%); display: flex; gap: 18px; align-items: center; }
+  #memories .m { width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid rgba(255, 252, 246, .9); box-shadow: 0 0 10px rgba(255, 236, 214, .5), inset 0 0 0 0 rgba(255,255,255,0); transition: background-color 1.6s ease, transform 1.6s ease, box-shadow 1.6s ease; position: relative; }
+  #memories .m i { position: absolute; inset: 1px; border-radius: 50%; background: rgba(255, 252, 246, .95); transform: scale(0); transition: transform .35s ease; }
+  #memories .m.found { background: rgba(255, 252, 246, .96); transform: scale(1.18); box-shadow: 0 0 16px rgba(255, 226, 190, .9); }
+  #memories .m.home { width: 15px; height: 15px; }
+  #memories .m.dim { opacity: .35; }
+  #end { position: absolute; left: 50%; top: 5vh; transform: translateX(-50%); width: min(460px, 64vw); text-align: center; }
+  #end img { width: 100%; display: block; filter: drop-shadow(0 2px 16px rgba(72, 62, 112, .42)); }
+  #end .press { margin-top: 1.4vh; font-size: clamp(14px, 1.4vw, 19px); letter-spacing: .34em; text-transform: lowercase; text-shadow: 0 1px 10px rgba(70, 60, 110, .6); animation: breathe 3.4s ease-in-out infinite; }
+  #mute { position: absolute; right: 18px; bottom: 14px; font-size: 13px; letter-spacing: .2em; color: var(--ink-soft); text-shadow: 0 1px 6px rgba(60, 52, 100, .7); }
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<canvas id="c" tabindex="0"></canvas>
+<div id="ui">
+  <div id="veil"></div>
+  <div id="loading"><i></i></div>
+  <div id="title" class="fade hidden">
+    <img src="assets/title.png" alt="Mirror Sea">
+    <div class="press">press any key</div>
+    <div class="keys">WASD / arrows walk &nbsp;·&nbsp; shift run &nbsp;·&nbsp; space leap &nbsp;·&nbsp; Q E turn &nbsp;·&nbsp; or hold the mouse</div>
+  </div>
+  <div id="memories" class="fade hidden"></div>
+  <div id="end" class="fade hidden">
+    <img src="assets/title.png" alt="Mirror Sea">
+    <div class="press">press any key to walk again</div>
+  </div>
+  <div id="mute" class="fade hidden">M · sound</div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+/* =====================================================================
+   MIRROR SEA — a boy walks barefoot across an endless mirror-calm sea at dawn.
+   Each step sends ripples that reveal watercolor memories beneath the surface.
+   Every image / model / sound in assets/ was generated with fal.
+   ===================================================================== */
+
+const Q = new URLSearchParams(location.search);
+const DEMO = Q.get('demo');                    // ?demo=1: autopilot (attract mode / automated playthrough checks)
+const $ = (id) => document.getElementById(id);
+const clamp = THREE.MathUtils.clamp, lerp = THREE.MathUtils.lerp, smooth = THREE.MathUtils.smoothstep;
+const damp = (a, b, k, dt) => lerp(a, b, 1 - Math.exp(-k * dt));
+const DEG = Math.PI / 180;
+
+// ---------------------------------------------------------------- config
+const CFG = {
+  walkSpeed: 2.15, runSpeed: 4.6,
+  skySpanH: 200 * DEG,              // horizontal angle covered by sky.jpg (the two halves overlap by 20° on each side)
+  skyAspect: 949 / 4096,            // h / w of sky.jpg (bottom row = horizon)
+  skyBackSpanH: 200 * DEG,          // horizontal angle covered by sky_back.jpg (centred behind the boy)
+  sunUV: [0.4158, 0.0950],          // centre of the painted sun measured in sky.jpg
+  maskOrigin: [0, -72], maskSize: 300, maskRes: 1024,
+  decay: 0.012,                     // reveal fades per second (unless the memory is restored)
+  goal: 0.45,                       // fraction of a memory to uncover
+};
+
+const MEMORIES = [
+  { key: 'dog',   x: -17, z: -34,  r: 10.5, color: [1.0, 0.86, 0.68],
+    objs: [{ m: 'dog', x: 0.6, z: -0.8, ry: 2.2, size: 1.75 }, { m: 'bush', x: -3.6, z: -3.2, ry: 0.6, size: 2.4 }] },
+  { key: 'tree',  x:  27, z: -60,  r: 12.5, color: [0.93, 1.0, 0.78],
+    objs: [{ m: 'tree', x: 0, z: -1.5, ry: 0.4, size: 8.5 }, { m: 'bush', x: 3.4, z: 1.2, ry: 2.0, size: 2.2 }, { m: 'bush', x: -3.8, z: 0.6, ry: 4.1, size: 1.8 }] },
+  { key: 'wagon', x: -31, z: -90,  r: 10.0, color: [1.0, 0.8, 0.82],
+    objs: [{ m: 'wagon', x: 0, z: 0, ry: -0.7, size: 2.4 }, { m: 'bush', x: 2.6, z: -2.4, ry: 1.2, size: 2.0 }] },
+  { key: 'home',  x:   4, z: -128, r: 19.0, final: true, color: [1.0, 0.9, 0.72],
+    objs: [{ m: 'house', x: 0, z: -6.5, ry: 0, size: 10.5 }, { m: 'tree', x: -12.5, z: -7.5, ry: 1.3, size: 8.5 },
+           { m: 'bush', x: -4.6, z: -2.0, ry: 0.3, size: 2.6 }, { m: 'bush', x: 4.6, z: -2.0, ry: 2.4, size: 2.4 },
+           { m: 'bush', x: -8.4, z: -2.6, ry: 1.1, size: 2.1 }, { m: 'bush', x: 8.6, z: -3.4, ry: 3.3, size: 2.8 },
+           { m: 'dog', x: 3.6, z: 1.4, ry: 2.6, size: 1.75 }, { m: 'wagon', x: 9.0, z: 1.2, ry: 0.9, size: 2.3 }] },
+];
+
+// ---------------------------------------------------------------- renderer
+const canvas = $('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false, stencil: false, powerPreference: 'high-performance' });
+const DPR = Math.min(window.devicePixelRatio || 1, Q.get('dpr') ? +Q.get('dpr') : 1.5);
+renderer.setPixelRatio(DPR);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+const HALF = THREE.HalfFloatType;
+
+const rtMain   = new THREE.WebGLRenderTarget(4, 4, { type: HALF, samples: 4 });
+const rtMirror = new THREE.WebGLRenderTarget(4, 4, { type: HALF });
+const rtBloomA = new THREE.WebGLRenderTarget(4, 4, { type: HALF, depthBuffer: false });
+const rtBloomB = new THREE.WebGLRenderTarget(4, 4, { type: HALF, depthBuffer: false });
+const maskOpts = { type: HALF, depthBuffer: false, minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, generateMipmaps: false };
+let rtMaskA = new THREE.WebGLRenderTarget(CFG.maskRes, CFG.maskRes, maskOpts);
+let rtMaskB = new THREE.WebGLRenderTarget(CFG.maskRes, CFG.maskRes, maskOpts);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 6000);
+camera.layers.enable(2);   // layer 2 = the memories beneath the surface (hidden from the mirror camera)
+
+// full-screen helper
+const fsCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+const fsMesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2));
+fsMesh.frustumCulled = false;
+const fsScene = new THREE.Scene(); fsScene.add(fsMesh);
+const FS_VERT = `varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`;
+function fsPass(mat, target) { fsMesh.material = mat; renderer.setRenderTarget(target); renderer.render(fsScene, fsCam); }
+
+// ---------------------------------------------------------------- GLSL helpers
+const NOISE = /* glsl */`
+float hash12(vec2 p){ vec3 p3 = fract(vec3(p.xyx) * 0.1031); p3 += dot(p3, p3.yzx + 33.33); return fract((p3.x + p3.y) * p3.z); }
+float vnoise(vec2 p){ vec2 i = floor(p); vec2 f = fract(p); vec2 u = f*f*(3.0-2.0*f);
+  float a = hash12(i), b = hash12(i+vec2(1.0,0.0)), c = hash12(i+vec2(0.0,1.0)), d = hash12(i+vec2(1.0,1.0));
+  return mix(mix(a,b,u.x), mix(c,d,u.x), u.y); }
+float fbm(vec2 p){ float s = 0.0, a = 0.5; for (int i = 0; i < 4; i++){ s += a*vnoise(p); p = p*2.03 + 17.17; a *= 0.5; } return s; }
+`;
+// Two hand-painted halves of the dawn sky: sky.jpg faces the sun, sky_back.jpg is the view behind the boy.
+const SKYLOOK = /* glsl */`
+uniform sampler2D tSky; uniform sampler2D tSkyB; uniform float uSpanH, uSpanV, uSpanHB, uSpanVB;
+vec3 skyLook(vec3 d, float bias){
+  float az = atan(d.x, -d.z);
+  float el = asin(clamp(d.y, -1.0, 1.0));
+  float u = 0.5 + az / uSpanH;
+  float uu = 1.0 - abs(1.0 - mod(u, 2.0));
+  vec3 cf = texture2D(tSky, vec2(uu, clamp(el / uSpanV, 0.004, 0.996)), bias).rgb;
+  float azb = az - sign(az) * 3.14159265;
+  float ub = 0.5 + azb / uSpanHB;
+  float uub = 1.0 - abs(1.0 - mod(ub, 2.0));
+  vec3 cb = texture2D(tSkyB, vec2(uub, clamp(el / uSpanVB, 0.004, 0.996)), bias).rgb;
+  return mix(cf, cb, smoothstep(1.40, 1.74, abs(az)));      // blend only where both paintings are valid (80°..100°)
+}
+`;
+
+// ---------------------------------------------------------------- loading
+const manager = new THREE.LoadingManager();
+manager.onProgress = (_u, l, t) => { $('loading').firstElementChild.style.width = (100 * l / t).toFixed(0) + '%'; };
+const texLoader = new THREE.TextureLoader(manager);
+const gltfLoader = new GLTFLoader(manager);
+const loadTex = (f, { srgb = true, repeat = false, mips = true } = {}) => new Promise((res) => texLoader.load('assets/' + f, (t) => {
+  if (srgb) t.colorSpace = THREE.SRGBColorSpace;
+  if (repeat) t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.generateMipmaps = mips; t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  res(t);
+}, undefined, () => { console.warn('missing texture', f); res(null); }));
+const loadGLB = (f) => new Promise((res) => gltfLoader.load('assets/' + f, res, undefined, (e) => { console.warn('missing model', f, e); res(null); }));
+
+const [skyTex, skyBackTex, hillsTex, meadowTex, ripTex, moteTex, paperTex, boyG, walkG, runG, dogG, houseG, treeG, wagonG, bushG] = await Promise.all([
+  loadTex('sky.jpg'), loadTex('sky_back.jpg'), loadTex('hills.png'), loadTex('meadow.jpg', { repeat: true }), loadTex('ripples.png', { srgb: false }),
+  loadTex('motes.png', { srgb: false }), loadTex('paper.jpg', { repeat: true }),
+  loadGLB('boy_idle.glb'), loadGLB('boy_walk_anim.glb'), loadGLB('boy_run_anim.glb'),
+  loadGLB('dog.glb'), loadGLB('house.glb'), loadGLB('tree.glb'), loadGLB('wagon.glb'), loadGLB('bush.glb'),
+]);
+const whiteTex = new THREE.DataTexture(new Uint8Array([255, 255, 255, 255]), 1, 1); whiteTex.needsUpdate = true;
+
+// ---------------------------------------------------------------- sun & sky
+const sunAz = (CFG.sunUV[0] - 0.5) * CFG.skySpanH;
+const sunEl = CFG.sunUV[1] * CFG.skySpanH * CFG.skyAspect;
+const sunDir = new THREE.Vector3(Math.sin(sunAz) * Math.cos(sunEl), Math.sin(sunEl), -Math.cos(sunAz) * Math.cos(sunEl)).normalize();
+const skyB = skyBackTex || skyTex || whiteTex;
+const skyBAspect = skyB.image ? skyB.image.height / skyB.image.width : CFG.skyAspect;
+const skyCommon = { tSky: { value: skyTex || whiteTex }, uSpanH: { value: CFG.skySpanH }, uSpanV: { value: CFG.skySpanH * CFG.skyAspect },
+  tSkyB: { value: skyB }, uSpanHB: { value: CFG.skyBackSpanH }, uSpanVB: { value: CFG.skyBackSpanH * skyBAspect } };
+const G = { time: { value: 0 }, warm: { value: 0 }, sunDir: { value: sunDir } };   // shared uniforms
+
+const skyMat = new THREE.ShaderMaterial({
+  uniforms: { ...skyCommon, uTime: G.time, uWarm: G.warm, uSunDir: G.sunDir, uZenith: { value: new THREE.Color(0xcfcbe8) } },
+  side: THREE.BackSide, depthWrite: false, depthFunc: THREE.LessEqualDepth,
+  vertexShader: `varying vec3 vDir; void main(){ vDir = position; vec4 p = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0); gl_Position = p.xyww; }`,
+  fragmentShader: /* glsl */`
+    uniform float uTime, uWarm; uniform vec3 uSunDir, uZenith;
+    varying vec3 vDir;
+    ${NOISE}
+    ${SKYLOOK}
+    void main(){
+      vec3 d = normalize(vDir);
+      vec3 col = skyLook(d, 0.0);
+      float el = asin(clamp(d.y, -1.0, 1.0));
+      col = mix(col, uZenith, smoothstep(0.85, 1.4, el / uSpanV));
+      // the sun: the large painted disk is dissolved into the surrounding glow and a smaller, crisper sun
+      // is drawn in its place (the video's sun is a small soft disk low over the horizon)
+      float saz = atan(uSunDir.x, -uSunDir.z), sel = asin(clamp(uSunDir.y, -1.0, 1.0));
+      float az = atan(d.x, -d.z);
+      float dAz = az - saz; dAz -= 6.2831853 * floor((dAz + 3.14159265) / 6.2831853);
+      float er = length(vec2(dAz / 0.090, (el - sel) / 0.060));
+      if (er < 1.3) {
+        vec3 ringc = vec3(0.0);
+        for (int i = 0; i < 10; i++) {
+          float a = float(i) * 0.6283185;
+          float raz = saz + cos(a) * 0.122, rel = max(sel + sin(a) * 0.081, 0.004);
+          ringc += skyLook(vec3(sin(raz) * cos(rel), sin(rel), -cos(raz) * cos(rel)), 3.0);
+        }
+        col = mix(col, ringc / 10.0, smoothstep(1.28, 0.5, er));
+      }
+      vec3 side = normalize(cross(uSunDir, vec3(0.0, 1.0, 0.0)));
+      vec3 sp = d - uSunDir * dot(d, uSunDir);
+      float ang = dot(sp, sp) > 1e-10 ? atan(dot(sp, vec3(0.0, 1.0, 0.0)), dot(sp, side)) : 0.0;   // atan(0,0) is undefined
+      float rays = vnoise(vec2(ang * 7.0, uTime * 0.04)) * vnoise(vec2(ang * 19.0 + 3.0, uTime * 0.07 + 5.0));
+      float sang = acos(clamp(dot(d, uSunDir), -1.0, 1.0));
+      col = mix(col, vec3(1.0, 0.975, 0.93) * 1.16, smoothstep(0.0170, 0.0138, sang));
+      col += vec3(1.0, 0.86, 0.66) * (exp(-sang * 46.0) * 0.32 + exp(-sang * 10.0) * 0.10 + rays * exp(-sang * 12.0) * 0.07) * (1.0 + uWarm * 0.6);
+      col *= mix(vec3(1.0), vec3(1.05, 1.0, 0.92), uWarm);
+      gl_FragColor = vec4(col, 1.0);
+      #include <colorspace_fragment>
+    }`,
+});
+const sky = new THREE.Mesh(new THREE.SphereGeometry(4000, 64, 32), skyMat);
+sky.renderOrder = -100; sky.frustumCulled = false;
+scene.add(sky);
+
+// ---------------------------------------------------------------- distant hills (parallax layers)
+const hazeColor = new THREE.Color(0xd9cfd6);
+const hills = [];
+function addHill(u0, u1, v0, v1, az, dist, width, k, haze, taperOn = 1) {
+  if (!hillsTex) return;
+  const img = hillsTex.image; const aspect = ((u1 - u0) * img.width) / ((v1 - v0) * img.height);
+  const geo = new THREE.PlaneGeometry(width, width / aspect);
+  const uv = geo.attributes.uv;
+  for (let i = 0; i < uv.count; i++) uv.setXY(i, lerp(u0, u1, uv.getX(i)), lerp(v0, v1, uv.getY(i)));
+  geo.translate(0, width / aspect * 0.5 - width / aspect * 0.06, 0);
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { map: { value: hillsTex }, uHaze: { value: hazeColor }, uHazeAmt: { value: haze }, uWarm: G.warm, uW: { value: width }, uTaperOn: { value: taperOn } },
+    transparent: true, depthWrite: false,
+    vertexShader: `uniform float uW; varying vec2 vUv; varying float vY; varying float vLu; void main(){ vUv = uv; vLu = position.x / uW + 0.5; vec4 w = modelMatrix * vec4(position, 1.0); vY = w.y; gl_Position = projectionMatrix * viewMatrix * w; }`,
+    fragmentShader: /* glsl */`
+      uniform sampler2D map; uniform vec3 uHaze; uniform float uHazeAmt, uWarm, uTaperOn; varying vec2 vUv; varying float vY; varying float vLu;
+      void main(){
+        // the painted ridge is cut by the image edge: let its silhouette slope down to the sea, then dissolve into haze
+        float taper = smoothstep(0.55, 1.0, vLu) * uTaperOn;
+        vec4 t = texture2D(map, vec2(vUv.x, vUv.y + taper * taper * 0.75));
+        float ends = smoothstep(0.0, 0.05, vLu) * mix(1.0, smoothstep(1.0, 0.9, vLu), uTaperOn);
+        float a = t.a * ends; if (a < 0.02) discard;
+        float h = uHazeAmt + (1.0 - uHazeAmt) * 0.45 * exp(-max(vY, 0.0) * 0.03) + taper * 0.25;
+        vec3 c = mix(t.rgb, uHaze * mix(vec3(1.0), vec3(1.04, 1.0, 0.94), uWarm), clamp(h, 0.0, 1.0));
+        gl_FragColor = vec4(c, a);
+        #include <colorspace_fragment>
+      }`,
+  });
+  const m = new THREE.Mesh(geo, mat);
+  m.userData = { base: new THREE.Vector3(Math.sin(az) * dist, 0, -Math.cos(az) * dist), k };
+  m.lookAt(0, 0, 0); m.rotation.set(0, -az, 0);
+  m.renderOrder = -50; m.frustumCulled = false;
+  scene.add(m); hills.push(m);
+}
+
+// ---------------------------------------------------------------- reflection (mirror camera)
+const mirrorCam = new THREE.PerspectiveCamera();
+const texMatrix = new THREE.Matrix4();
+const _mp = { plane: new THREE.Plane(), n: new THREE.Vector3(0, 1, 0), rp: new THREE.Vector3(), cp: new THREE.Vector3(), rot: new THREE.Matrix4(),
+  look: new THREE.Vector3(), view: new THREE.Vector3(), target: new THREE.Vector3(), clip: new THREE.Vector4(), q: new THREE.Vector4() };
+function updateMirror() {
+  const m = _mp;
+  m.rp.set(camera.position.x, 0, camera.position.z);
+  m.cp.setFromMatrixPosition(camera.matrixWorld);
+  m.view.subVectors(m.rp, m.cp);
+  m.view.reflect(m.n).negate(); m.view.add(m.rp);
+  m.rot.extractRotation(camera.matrixWorld);
+  m.look.set(0, 0, -1).applyMatrix4(m.rot).add(m.cp);
+  m.target.subVectors(m.rp, m.look); m.target.reflect(m.n).negate(); m.target.add(m.rp);
+  mirrorCam.position.copy(m.view);
+  mirrorCam.up.set(0, 1, 0).applyMatrix4(m.rot).reflect(m.n);
+  mirrorCam.lookAt(m.target);
+  mirrorCam.far = camera.far;
+  mirrorCam.updateMatrixWorld();
+  mirrorCam.projectionMatrix.copy(camera.projectionMatrix);
+  texMatrix.set(0.5, 0, 0, 0.5, 0, 0.5, 0, 0.5, 0, 0, 0.5, 0.5, 0, 0, 0, 1);
+  texMatrix.multiply(mirrorCam.projectionMatrix).multiply(mirrorCam.matrixWorldInverse);
+  m.plane.setFromNormalAndCoplanarPoint(m.n, m.rp).applyMatrix4(mirrorCam.matrixWorldInverse);
+  m.clip.set(m.plane.normal.x, m.plane.normal.y, m.plane.normal.z, m.plane.constant);
+  const e = mirrorCam.projectionMatrix.elements;
+  m.q.x = (Math.sign(m.clip.x) + e[8]) / e[0];
+  m.q.y = (Math.sign(m.clip.y) + e[9]) / e[5];
+  m.q.z = -1.0; m.q.w = (1.0 + e[10]) / e[14];
+  m.clip.multiplyScalar(2.0 / m.clip.dot(m.q));
+  e[2] = m.clip.x; e[6] = m.clip.y; e[10] = m.clip.z + 1.0 - 0.003; e[14] = m.clip.w;
+  mirrorCam.projectionMatrixInverse.copy(mirrorCam.projectionMatrix).invert();
+}
+
+// ---------------------------------------------------------------- reveal mask (ping-pong, world space)
+const MAXR = 24, MAXI = 4;
+const ripU = Array.from({ length: MAXR }, () => new THREE.Vector4(0, 0, 0, 0));
+const islU = Array.from({ length: MAXI }, () => new THREE.Vector4(0, 0, 1, 0));
+const islB = Array.from({ length: MAXI }, () => new THREE.Vector4(0, 0, 0, 0));
+const bloomU = Array.from({ length: MAXI }, () => new THREE.Vector4(0, 0, 0, 0));
+const maskXf = new THREE.Vector3(CFG.maskOrigin[0], CFG.maskOrigin[1], CFG.maskSize);
+const maskMat = new THREE.ShaderMaterial({
+  uniforms: { tPrev: { value: null }, uRip: { value: ripU }, uBloom: { value: bloomU }, uMaskXf: { value: maskXf }, uDecay: { value: 0 }, uClear: { value: 0 } },
+  vertexShader: FS_VERT,
+  fragmentShader: /* glsl */`
+    #define MAXR ${MAXR}
+    #define MAXI ${MAXI}
+    uniform sampler2D tPrev; uniform vec4 uRip[MAXR]; uniform vec4 uBloom[MAXI]; uniform vec3 uMaskXf; uniform float uDecay, uClear;
+    varying vec2 vUv;
+    ${NOISE}
+    void main(){
+      vec2 xz = uMaskXf.xy + (vUv - 0.5) * uMaskXf.z;
+      float m = texture2D(tPrev, vUv).r * (1.0 - uClear);
+      m = max(m - uDecay, 0.0);
+      float n = fbm(xz * 0.42) - 0.5;
+      for (int i = 0; i < MAXR; i++){
+        vec4 r = uRip[i]; if (r.w <= 0.001) continue;
+        float d = length(xz - r.xy) + n * 1.3;
+        m = max(m, smoothstep(r.z * 1.08 + 0.45, r.z * 1.08 - 0.7, d) * clamp(r.w * 1.6, 0.0, 1.0));
+      }
+      for (int i = 0; i < MAXI; i++){
+        vec4 b = uBloom[i]; if (b.w <= 0.001) continue;
+        float d = length(xz - b.xy) + n * 4.0;
+        m = max(m, smoothstep(b.z + 3.0, b.z - 3.0, d) * b.w);
+      }
+      if (isnan(m) || isinf(m)) m = 0.0;   // self-heal: never let a bad value persist in the ping-pong mask
+      gl_FragColor = vec4(m, 0.0, 0.0, 1.0);
+    }`,
+});
+
+// ---------------------------------------------------------------- water
+const waterU = {
+  ...skyCommon,
+  tReflect: { value: rtMirror.texture }, uTexMatrix: { value: texMatrix },
+  tMask: { value: rtMaskA.texture }, uMaskXf: { value: maskXf },
+  tMeadow: { value: meadowTex || whiteTex }, uRes: { value: new THREE.Vector2(1, 1) },
+  uRip: { value: ripU }, uIsl: { value: islU }, uIslB: { value: islB },
+  uBoy: { value: new THREE.Vector4(0, 0, 0, 1) }, uSunDir: G.sunDir, uTime: G.time, uWarm: G.warm,
+  uPathOn: { value: 0 }, uPath: { value: new THREE.Vector4() },
+  uPathHome: { value: new THREE.Vector4(MEMORIES[3].x + 0.3, MEMORIES[3].z - 3.0, MEMORIES[3].x + 1.5, MEMORIES[3].z + 17.0) },
+  uDeep: { value: new THREE.Color(0x26496d) }, uMid: { value: new THREE.Color(0x4a6f96) }, uGlint: { value: new THREE.Color(0xfff1da) },
+};
+const waterMat = new THREE.ShaderMaterial({
+  uniforms: waterU,
+  vertexShader: `varying vec3 vWorld; void main(){ vec4 w = modelMatrix * vec4(position, 1.0); vWorld = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`,
+  fragmentShader: /* glsl */`
+    #define MAXR ${MAXR}
+    #define MAXI ${MAXI}
+    uniform sampler2D tReflect; uniform mat4 uTexMatrix;
+    uniform sampler2D tMask; uniform vec3 uMaskXf;
+    uniform sampler2D tMeadow; uniform vec2 uRes;
+    uniform vec4 uRip[MAXR]; uniform vec4 uIsl[MAXI]; uniform vec4 uIslB[MAXI];
+    uniform vec4 uBoy; uniform vec3 uSunDir; uniform float uTime, uWarm, uPathOn; uniform vec4 uPath;
+    uniform vec3 uDeep, uMid, uGlint; uniform vec4 uPathHome;
+    varying vec3 vWorld;
+    ${NOISE}
+    ${SKYLOOK}
+    void main(){
+      vec3 wp = vWorld; vec2 xz = wp.xz;
+      vec3 toCam = cameraPosition - wp; float dist = length(toCam); vec3 V = toCam / dist;
+      float t = uTime;
+
+      // --- ripples: travelling rings perturb the mirror
+      vec2 g = vec2(0.0);
+      for (int i = 0; i < MAXR; i++){
+        vec4 r = uRip[i]; if (r.w <= 0.001) continue;
+        vec2 dv = xz - r.xy; float d = length(dv) + 1e-3;
+        float x = d - r.z;
+        g += (dv / d) * sin(x * 6.5) * exp(-x * x * 1.6) * r.w;
+      }
+      vec2 q = xz * 0.09 + vec2(t * 0.012, t * 0.008);
+      g += 0.30 * (vec2(vnoise(q), vnoise(q + 7.3)) - 0.5) * smoothstep(500.0, 30.0, dist);
+
+      // --- mirror reflection
+      vec4 pc = uTexMatrix * vec4(wp, 1.0);
+      vec2 ruv = pc.xy / pc.w + g * 0.010;
+      vec3 refl = texture2D(tReflect, ruv).rgb * vec3(0.86, 0.90, 0.97);
+      float cosT = clamp(V.y, 0.0, 1.0);
+      float F = 0.05 + 0.92 * pow(1.0 - cosT, 5.0);
+
+      // --- body colour of the sea (seen straight down), pebbles below
+      vec3 under = mix(uDeep, uMid, smoothstep(0.62, 0.04, cosT));
+      vec2 pxz = xz - V.xz / max(V.y, 0.2) * 0.8;
+      float peb = smoothstep(0.66, 0.74, vnoise(pxz * 0.36 + 31.0)) * smoothstep(50.0, 6.0, dist);
+      under *= 1.0 - 0.20 * peb;
+
+      // --- memories beneath the surface
+      vec2 muv = (xz - uMaskXf.xy) / uMaskXf.z + 0.5;
+      float mask = 0.0;
+      if (muv.x > 0.0 && muv.x < 1.0 && muv.y > 0.0 && muv.y < 1.0) mask = texture2D(tMask, muv).r;
+      float en = fbm(xz * 0.2);
+      float field = 0.0, hint = 0.0;
+      for (int i = 0; i < MAXI; i++){
+        vec4 I = uIsl[i]; if (I.w <= 0.001) continue;
+        float d = length(xz - I.xy) / I.z;
+        float f = smoothstep(1.0, 0.68, d + (en - 0.5) * 0.42) * I.w;
+        field = max(field, f);
+        hint = max(hint, f * uIslB[i].y);
+      }
+      float rv = mask * field;
+      float wc = smoothstep(0.10, 0.62, rv + (fbm(xz * 0.75 + 3.0) - 0.5) * 0.32);
+      // two scales / rotations of the painted meadow, blended by noise, so the tile never repeats visibly
+      vec2 r2 = mat2(0.8, -0.6, 0.6, 0.8) * xz;
+      vec3 mA = texture2D(tMeadow, xz / 9.0).rgb;
+      vec3 mB = texture2D(tMeadow, r2 / 14.0 + 0.37).rgb;
+      vec3 meadow = mix(mA, mB, smoothstep(0.35, 0.65, fbm(xz * 0.06 + 11.0)));
+      meadow *= 0.86 + 0.28 * vnoise(xz * 0.04);
+      meadow = mix(meadow, meadow * vec3(0.84, 0.95, 1.06), 0.42);
+      meadow = mix(vec3(dot(meadow, vec3(0.3, 0.5, 0.2))), meadow, 0.86);
+      {
+        vec2 pa = uPathHome.xy, pb = uPathHome.zw, pab = pb - pa;
+        float ph = clamp(dot(xz - pa, pab) / dot(pab, pab), 0.0, 1.0);
+        vec2 pq = pa + pab * ph; pq.x += sin(ph * 3.2) * 1.4 * ph;
+        float pd = length(xz - pq) + (vnoise(xz * 1.3) - 0.5) * 0.45;
+        float pathM = smoothstep(1.05, 0.72, pd) * (1.0 - smoothstep(0.82, 1.0, ph));
+        vec3 stone = vec3(0.70, 0.71, 0.69) * (0.9 + 0.16 * vnoise(xz * 2.7));
+        meadow = mix(meadow, stone, pathM * 0.82);
+      }
+
+      under = mix(under, under * vec3(0.74, 0.83, 0.90), hint * (1.0 - wc) * 0.6);   // hidden memory: a dark watercolour bloom
+      vec3 base = mix(under, meadow, wc);
+      float rim = smoothstep(0.02, 0.3, wc) * smoothstep(0.85, 0.35, wc);
+      base = mix(base, vec3(0.80, 0.84, 0.88), rim * 0.28);                          // misty, half-remembered edge
+      float memA = wc;
+
+      // boy: contact darkening + long dawn shadow on revealed ground
+      vec2 rel = xz - uBoy.xy;
+      vec2 sdir = -normalize(uSunDir.xz);
+      float along = dot(rel, sdir), across = dot(rel, vec2(-sdir.y, sdir.x));
+      float sl = 4.2;
+      float sh = smoothstep(-0.15, 0.2, along) * smoothstep(sl, sl * 0.3, along) * smoothstep(0.32, 0.08, abs(across) + along * 0.02);
+      base *= 1.0 - 0.36 * sh * memA * uBoy.w;
+      base *= 1.0 - 0.10 * smoothstep(0.8, 0.0, length(rel)) * uBoy.w;
+
+      float reflAmt = F * (1.0 - 0.86 * memA);
+      vec3 col = mix(base, refl, reflAmt);
+
+      // --- sun glitter
+      vec3 N = normalize(vec3(-g.x * 0.35, 1.0, -g.y * 0.35));
+      vec3 R = reflect(-V, N);
+      float sa = pow(max(dot(R, uSunDir), 0.0), 260.0);
+      float sn = vnoise(xz * vec2(1.4, 3.8) + vec2(t * 0.4, -t * 0.25));
+      col += uGlint * sa * smoothstep(0.55, 0.88, sn) * 2.4 * (1.0 - memA);
+
+      // --- thin wind lines on the far water
+      float sk = vnoise(vec2(xz.x * 0.012 + t * 0.006, xz.y * 0.28));
+      float streak = smoothstep(0.83, 0.87, sk) * smoothstep(22.0, 70.0, dist) * smoothstep(1100.0, 250.0, dist);
+      col = mix(col, vec3(1.0, 0.985, 0.96), streak * 0.42 * (1.0 - memA));
+
+      // --- a path of light toward the last memory
+      if (uPathOn > 0.001){
+        vec2 a = uPath.xy, b = uPath.zw; vec2 ab = b - a; float L = max(dot(ab, ab), 1e-3);
+        float h = clamp(dot(xz - a, ab) / L, 0.0, 1.0);
+        float dd = length(xz - a - ab * h);
+        float band = smoothstep(2.4, 0.0, dd + (vnoise(xz * 0.6 + t * 0.25) - 0.5) * 1.4);
+        float sp = smoothstep(0.80, 0.96, vnoise(xz * 2.6 + vec2(t * 0.9, -t * 0.6)));
+        col += uGlint * band * (0.08 + sp * 1.1) * uPathOn * smoothstep(0.0, 0.04, h) * (1.0 - memA * 0.8);
+      }
+
+      // --- haze into the horizon
+      vec3 hd = vec3(-V.x, 0.0, -V.z); hd = dot(hd, hd) > 1e-8 ? normalize(hd) : vec3(0.0, 0.0, -1.0);
+      vec3 hz = skyLook(hd, 2.0);
+      col = mix(col, hz, smoothstep(120.0, 2600.0, dist) * 0.9);
+      gl_FragColor = vec4(col, 1.0);
+      #include <colorspace_fragment>
+    }`,
+});
+const water = new THREE.Mesh(new THREE.PlaneGeometry(9000, 9000).rotateX(-Math.PI / 2), waterMat);
+water.frustumCulled = false; water.renderOrder = -10;
+scene.add(water);
+
+// ---------------------------------------------------------------- ripple decals (calligraphic rings)
+const RIP_MAX = 72;
+const ripGeo = new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2);
+const ripAttr = new THREE.InstancedBufferAttribute(new Float32Array(RIP_MAX * 4), 4);
+ripGeo.setAttribute('aRip', ripAttr);
+const ripMat = new THREE.ShaderMaterial({
+  uniforms: { tRip: { value: ripTex || whiteTex } }, transparent: true, depthWrite: false,
+  vertexShader: /* glsl */`
+    attribute vec4 aRip; varying vec2 vUv; varying vec2 vCell; varying float vA;
+    void main(){
+      float c = cos(aRip.z), s = sin(aRip.z); vec2 p = uv - 0.5; p = vec2(c * p.x - s * p.y, s * p.x + c * p.y);
+      vUv = p + 0.5; vA = aRip.y;
+      float v = aRip.x; vCell = vec2(mod(v, 2.0), floor(v / 2.0)) * 0.5;
+      gl_Position = projectionMatrix * viewMatrix * modelMatrix * instanceMatrix * vec4(position, 1.0);
+    }`,
+  fragmentShader: /* glsl */`
+    uniform sampler2D tRip; varying vec2 vUv; varying vec2 vCell; varying float vA;
+    void main(){
+      vec2 uv = clamp(vUv, 0.004, 0.996) * 0.5 + vCell;
+      float a = smoothstep(0.10, 0.75, texture2D(tRip, uv).r) * vA;
+      if (a < 0.004) discard;
+      gl_FragColor = vec4(vec3(1.0, 0.985, 0.955), a);
+      #include <colorspace_fragment>
+    }`,
+});
+const ripMesh = new THREE.InstancedMesh(ripGeo, ripMat, RIP_MAX);
+ripMesh.frustumCulled = false; ripMesh.renderOrder = 5; ripMesh.count = 0;
+scene.add(ripMesh);
+
+// ---------------------------------------------------------------- particles (motes / droplets / dust)
+const PR = () => renderer.getPixelRatio() * (innerHeight / 900);
+function makeMoteMaterial(cell, color, additive = true) {
+  return new THREE.ShaderMaterial({
+    uniforms: { tMote: { value: moteTex || whiteTex }, uCell: { value: new THREE.Vector2(...cell) }, uColor: { value: new THREE.Color(...color) },
+      uTime: G.time, uState: { value: 0 }, uCenter: { value: new THREE.Vector3() }, uRadius: { value: 8 }, uHeight: { value: 6 }, uSize: { value: 1 },
+      uBurst: { value: 0 }, uPR: { value: 1 } },
+    transparent: true, depthWrite: false, blending: additive ? THREE.AdditiveBlending : THREE.NormalBlending,
+    vertexShader: /* glsl */`
+      attribute vec4 aSeed; uniform vec3 uCenter; uniform float uRadius, uHeight, uTime, uState, uSize, uBurst, uPR;
+      varying float vA;
+      void main(){
+        float sp = 0.35 + aSeed.w * 0.55;
+        float life = fract(uTime * sp * 0.10 + aSeed.z);
+        float ang = aSeed.x * 6.2831853; float rad = sqrt(aSeed.y) * uRadius * (1.0 + uBurst * 0.6);
+        vec3 p = uCenter + vec3(cos(ang) * rad, 0.0, sin(ang) * rad);
+        p.y = 0.15 + life * uHeight * (1.0 + uBurst * 2.2);
+        p.x += sin(uTime * 0.6 + aSeed.z * 30.0) * 0.7 * life;
+        p.z += cos(uTime * 0.5 + aSeed.w * 20.0) * 0.7 * life;
+        vA = smoothstep(0.0, 0.12, life) * smoothstep(1.0, 0.5, life) * uState * (0.55 + 0.45 * sin(uTime * 2.7 + aSeed.z * 40.0)) * 0.8;
+        vec4 mv = modelViewMatrix * vec4(p, 1.0);
+        vA *= smoothstep(1.2, 7.0, -mv.z);                    // never a bright blob in the boy's face
+        gl_PointSize = uSize * uPR * (0.55 + aSeed.w * 0.9) * 140.0 / max(-mv.z, 0.6);
+        gl_Position = projectionMatrix * mv;
+      }`,
+    fragmentShader: /* glsl */`
+      uniform sampler2D tMote; uniform vec2 uCell; uniform vec3 uColor; varying float vA;
+      void main(){ vec2 pc = vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y);
+        float a = smoothstep(0.03, 1.0, texture2D(tMote, clamp(pc, 0.01, 0.99) * 0.5 + uCell).r) * vA; if (a < 0.003) discard;
+        gl_FragColor = vec4(uColor, a);
+        #include <colorspace_fragment>
+      }`,
+  });
+}
+function seedGeometry(n) {
+  const g = new THREE.BufferGeometry();
+  const s = new Float32Array(n * 4); for (let i = 0; i < s.length; i++) s[i] = Math.random();
+  g.setAttribute('aSeed', new THREE.BufferAttribute(s, 4));
+  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(n * 3), 3));
+  return g;
+}
+// mote atlas cells (uv origin bottom-left): [0,.5]=orb  [.5,.5]=sparkle  [0,0]=petal  [.5,0]=seed
+const CELL = { orb: [0, 0.5], spark: [0.5, 0.5], petal: [0, 0], seed: [0.5, 0] };
+
+// ambient dust drifting in the dawn light (wraps around the camera)
+const dustMat = new THREE.ShaderMaterial({
+  uniforms: { tMote: { value: moteTex || whiteTex }, uTime: G.time, uCam: { value: new THREE.Vector3() }, uPR: { value: 1 }, uWarm: G.warm },
+  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  vertexShader: /* glsl */`
+    attribute vec4 aSeed; uniform float uTime, uPR; uniform vec3 uCam; varying float vA;
+    void main(){
+      vec3 box = vec3(60.0, 9.0, 60.0);
+      vec3 p = aSeed.xyz * box + vec3(uTime * 0.25, sin(uTime * 0.2 + aSeed.w * 6.0) * 0.4, uTime * 0.12);
+      p = mod(p - uCam + box * 0.5, box) - box * 0.5 + uCam; p.y = abs(p.y - uCam.y) + 0.3;
+      vec4 mv = modelViewMatrix * vec4(p, 1.0);
+      vA = (0.25 + 0.75 * sin(uTime * 1.3 + aSeed.w * 30.0) * 0.5 + 0.5) * smoothstep(30.0, 6.0, -mv.z) * smoothstep(0.8, 3.0, -mv.z);
+      gl_PointSize = uPR * (0.6 + aSeed.w) * 40.0 / max(-mv.z, 0.5);
+      gl_Position = projectionMatrix * mv;
+    }`,
+  fragmentShader: /* glsl */`
+    uniform sampler2D tMote; varying float vA;
+    void main(){ vec2 pc = vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y);
+      float a = smoothstep(0.03, 1.0, texture2D(tMote, clamp(pc, 0.01, 0.99) * 0.5 + vec2(0.0, 0.5)).r) * vA * 0.55; if (a < 0.003) discard;
+      gl_FragColor = vec4(vec3(1.0, 0.93, 0.82), a);
+      #include <colorspace_fragment>
+    }`,
+});
+const dust = new THREE.Points(seedGeometry(260), dustMat); dust.frustumCulled = false; dust.renderOrder = 8;
+scene.add(dust);
+
+// splash droplets (CPU simulated)
+const DROP_MAX = 360;
+const dropGeo = new THREE.BufferGeometry();
+const dropPos = new Float32Array(DROP_MAX * 3), dropLife = new Float32Array(DROP_MAX), dropVel = new Float32Array(DROP_MAX * 3);
+dropGeo.setAttribute('position', new THREE.BufferAttribute(dropPos, 3));
+dropGeo.setAttribute('aLife', new THREE.BufferAttribute(dropLife, 1));
+const dropMat = new THREE.ShaderMaterial({
+  uniforms: { tMote: { value: moteTex || whiteTex }, uPR: { value: 1 } }, transparent: true, depthWrite: false,
+  vertexShader: `attribute float aLife; uniform float uPR; varying float vA; void main(){ vA = clamp(aLife * 2.0, 0.0, 1.0); vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_PointSize = aLife > 0.0 ? uPR * 9.0 / max(-mv.z, 0.5) * 10.0 : 0.0; gl_Position = projectionMatrix * mv; }`,
+  fragmentShader: `uniform sampler2D tMote; varying float vA; void main(){ vec2 pc = vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y); float a = smoothstep(0.03, 1.0, texture2D(tMote, clamp(pc,0.01,0.99) * 0.5 + vec2(0.0, 0.5)).r) * vA; if (a < 0.01) discard; gl_FragColor = vec4(vec3(1.0, 0.99, 0.97), a);
+    #include <colorspace_fragment>
+  }`,
+});
+const drops = new THREE.Points(dropGeo, dropMat); drops.frustumCulled = false; drops.renderOrder = 9;
+scene.add(drops);
+let dropHead = 0;
+function splash(x, z, n, power) {
+  for (let i = 0; i < n; i++) {
+    const k = dropHead = (dropHead + 1) % DROP_MAX;
+    const a = Math.random() * Math.PI * 2, s = (0.35 + Math.random() * 0.8) * power;
+    dropPos[k * 3] = x; dropPos[k * 3 + 1] = 0.02; dropPos[k * 3 + 2] = z;
+    dropVel[k * 3] = Math.cos(a) * s; dropVel[k * 3 + 1] = (1.1 + Math.random() * 1.4) * power; dropVel[k * 3 + 2] = Math.sin(a) * s;
+    dropLife[k] = 0.5 + Math.random() * 0.4;
+  }
+}
+function updateDrops(dt) {
+  for (let k = 0; k < DROP_MAX; k++) {
+    if (dropLife[k] <= 0) continue;
+    dropLife[k] -= dt;
+    dropVel[k * 3 + 1] -= 9.0 * dt;
+    dropPos[k * 3] += dropVel[k * 3] * dt; dropPos[k * 3 + 1] += dropVel[k * 3 + 1] * dt; dropPos[k * 3 + 2] += dropVel[k * 3 + 2] * dt;
+    if (dropPos[k * 3 + 1] < 0) { dropLife[k] = 0; }
+  }
+  dropGeo.attributes.position.needsUpdate = true; dropGeo.attributes.aLife.needsUpdate = true;
+}
+
+// ---------------------------------------------------------------- lights for the boy
+const hemi = new THREE.HemisphereLight(0xf1e8ef, 0x6d8db0, 2.1);
+const sunLight = new THREE.DirectionalLight(0xffd9b4, 1.5); sunLight.position.copy(sunDir).multiplyScalar(100);
+const fill = new THREE.DirectionalLight(0xd2dcf0, 0.75); fill.position.set(0.3, 0.8, 1).multiplyScalar(100);
+scene.add(hemi, sunLight, fill);
+
+// ---------------------------------------------------------------- the boy
+const boy = { root: new THREE.Group(), pos: new THREE.Vector3(0, 0, 0), heading: Math.PI, speed: 0, y: 0, vy: 0, air: false, leapCD: 0,
+  mixer: null, actions: {}, feet: [], footDown: [true, true], footRest: 0.07, model: null };
+scene.add(boy.root);
+const rimU = { value: new THREE.Color(0xffe2c4).multiplyScalar(0.55) };
+function toonify(mat) {
+  const m = new THREE.MeshLambertMaterial({ map: mat.map || null, color: 0xffffff });
+  m.onBeforeCompile = (sh) => {
+    sh.uniforms.uRim = rimU;
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', '#include <common>\nuniform vec3 uRim;')
+      .replace('#include <opaque_fragment>', `{ float rim = pow(1.0 - clamp(dot(normal, normalize(vViewPosition)), 0.0, 1.0), 2.6); outgoingLight += uRim * rim; outgoingLight = mix(outgoingLight, outgoingLight * vec3(1.02, 0.99, 1.03), 0.5); }\n#include <opaque_fragment>`);
+  };
+  return m;
+}
+if (boyG) {
+  const model = boyG.scene;
+  model.traverse((o) => { if (o.isMesh) { o.material = toonify(o.material); o.frustumCulled = false; } });
+  boy.model = model; boy.root.add(model);
+  boy.mixer = new THREE.AnimationMixer(model);
+  const idleClip = boyG.animations[0];
+  const walkClip = walkG && walkG.animations[0], runClip = runG && runG.animations[0];
+  const strip = (clip) => { if (!clip) return null; clip.tracks = clip.tracks.filter((tr) => !(tr.name.endsWith('.position') && !tr.name.startsWith('Hips'))); return clip; };
+  [['idle', idleClip], ['walk', strip(walkClip)], ['run', strip(runClip)]].forEach(([k, c]) => {
+    if (!c) return; const a = boy.mixer.clipAction(c); a.play(); a.setEffectiveWeight(k === 'idle' ? 1 : 0); boy.actions[k] = a;
+  });
+  model.traverse((o) => { if (o.isBone && /^(LeftFoot|RightFoot)$/.test(o.name)) boy.feet[o.name === 'LeftFoot' ? 0 : 1] = o; });
+  // measure foot rest height in the idle pose
+  boy.mixer.update(0); model.updateMatrixWorld(true);
+  const tmp = new THREE.Vector3();
+  if (boy.feet[0]) boy.footRest = boy.feet[0].getWorldPosition(tmp).y;
+}
+
+// ---------------------------------------------------------------- memory objects
+// The painted 3D memories live in the main scene on layer 2 (the mirror camera never sees them: they are under the
+// surface, not on it). They dissolve in through the same reveal mask as the meadow, are tinted by the sea until they
+// are restored, and turn translucent right around the boy when they stand between him and the camera.
+const memU = { tMask: { value: rtMaskA.texture }, uMaskXf: { value: maskXf }, uSunDir: G.sunDir, uTime: G.time, uTint: { value: new THREE.Color(0x6f8fae) },
+  uHaze: { value: new THREE.Color(0xd9cfd6) }, uBoyScr: { value: new THREE.Vector4(0.5, 0.5, 0.12, 6) }, uResM: { value: new THREE.Vector2(1, 1) } };
+function memoryMaterial(src, opts = {}) {
+  const uniforms = { ...memU, map: { value: (src && src.map) || whiteTex }, uReveal: { value: 0 }, uGlow: { value: 0 }, uSway: { value: opts.sway || 0 }, uBreath: { value: opts.breath || 0 } };
+  return new THREE.ShaderMaterial({
+    uniforms, side: THREE.DoubleSide, transparent: true, depthWrite: true,
+    vertexShader: /* glsl */`
+      uniform float uTime, uSway, uBreath; varying vec2 vUv; varying vec3 vN; varying vec3 vW; varying float vViewZ;
+      void main(){
+        vUv = uv; vec3 p = position;
+        float hy = max(p.y + 0.5, 0.0);
+        p.x += uSway * sin(uTime * 0.8 + p.y * 2.0 + p.z) * hy * hy * 0.018;
+        p.z += uSway * cos(uTime * 0.6 + p.x * 1.7) * hy * hy * 0.010;
+        p *= 1.0 + uBreath * 0.014 * sin(uTime * 2.2);
+        vec4 w = modelMatrix * vec4(p, 1.0); vW = w.xyz; vN = normalize(mat3(modelMatrix) * normal);
+        vec4 mv = viewMatrix * w; vViewZ = -mv.z;
+        gl_Position = projectionMatrix * mv;
+      }`,
+    fragmentShader: /* glsl */`
+      uniform sampler2D map; uniform sampler2D tMask; uniform vec3 uMaskXf; uniform vec3 uSunDir, uTint, uHaze; uniform float uReveal, uGlow, uTime;
+      uniform vec4 uBoyScr; uniform vec2 uResM;
+      varying vec2 vUv; varying vec3 vN; varying vec3 vW; varying float vViewZ;
+      ${NOISE}
+      void main(){
+        vec2 muv = (vW.xz - uMaskXf.xy) / uMaskXf.z + 0.5;
+        float m = max(texture2D(tMask, muv).r, uReveal);
+        float nn = fbm(vW.xz * 1.2 + vW.y * 0.8);
+        float a = smoothstep(0.22, 0.6, m * 1.15 - (nn - 0.5) * 0.55 - max(vW.y - 0.5, 0.0) * 0.02 * (1.0 - uReveal));
+        vec2 d = (gl_FragCoord.xy / uResM - uBoyScr.xy) * vec2(uResM.x / uResM.y, 1.0);
+        float xray = smoothstep(uBoyScr.w - 0.3, uBoyScr.w - 1.4, vViewZ) * smoothstep(uBoyScr.z, uBoyScr.z * 0.5, length(d));
+        a *= 1.0 - 0.7 * xray;
+        if (a < 0.02) discard;
+        vec3 b = texture2D(map, vUv).rgb;
+        vec3 n = normalize(vN); if (!gl_FrontFacing) n = -n;
+        vec3 L = normalize(vec3(uSunDir.x, 0.75, uSunDir.z));
+        float l = dot(n, L) * 0.5 + 0.5;
+        vec3 col = b * (0.58 + 0.36 * l) + b * 0.08 * (n.y * 0.5 + 0.5);
+        col = mix(col, uTint, 0.30 * (1.0 - uReveal) + 0.04);          // still under the sea until restored
+        col += vec3(1.0, 0.84, 0.62) * uGlow * 0.22;
+        col = mix(col, uHaze, smoothstep(40.0, 420.0, vViewZ) * 0.65);   // aerial haze
+        gl_FragColor = vec4(col, a);
+        #include <colorspace_fragment>
+      }`,
+  });
+}
+const SOURCE = { dog: dogG, house: houseG, tree: treeG, wagon: wagonG, bush: bushG };
+function placeObject(key, size) {
+  const g = SOURCE[key]; if (!g) return null;
+  const obj = g.scene.clone(true);
+  const box = new THREE.Box3().setFromObject(obj); const s = new THREE.Vector3(); box.getSize(s);
+  const k = size / Math.max(s.x, s.y, s.z);
+  const holder = new THREE.Group(); const inner = new THREE.Group();
+  inner.add(obj); obj.scale.setScalar(k);
+  const c = new THREE.Vector3(); box.getCenter(c);
+  obj.position.set(-c.x * k, -box.min.y * k, -c.z * k);
+  holder.add(inner);
+  const mats = [];
+  holder.traverse((o) => {
+    o.layers.set(2);
+    if (o.isMesh) { o.material = memoryMaterial(o.material, { sway: key === 'tree' || key === 'bush' ? (key === 'tree' ? 1 : 0.5) : 0, breath: key === 'dog' ? 1 : 0 }); o.frustumCulled = false; o.renderOrder = 2; mats.push(o.material); }
+  });
+  holder.userData.mats = mats;
+  return holder;
+}
+
+// ---------------------------------------------------------------- beacons: a soft column of light over each hidden memory
+// (the orb sprite of motes.png stretched into a pillar; it is reflected by the mirror sea like everything else)
+const beaconGeo = new THREE.PlaneGeometry(1, 1).translate(0, 0.5, 0);
+function makeBeacon(color) {
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { tMote: { value: moteTex || whiteTex }, uColor: { value: new THREE.Color(...color) }, uA: { value: 0 }, uTime: G.time, uSize: { value: new THREE.Vector2(4.2, 18) } },
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    vertexShader: /* glsl */`
+      uniform vec2 uSize; varying vec2 vUv;
+      void main(){
+        vUv = uv;
+        vec3 c = (modelMatrix * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
+        vec3 toCam = vec3(cameraPosition.x - c.x, 0.0, cameraPosition.z - c.z);
+        toCam = length(toCam) > 1e-3 ? normalize(toCam) : vec3(0.0, 0.0, 1.0);
+        vec3 right = vec3(toCam.z, 0.0, -toCam.x);
+        vec3 p = c + right * position.x * uSize.x + vec3(0.0, position.y * uSize.y, 0.0);
+        gl_Position = projectionMatrix * viewMatrix * vec4(p, 1.0);
+      }`,
+    fragmentShader: /* glsl */`
+      uniform sampler2D tMote; uniform vec3 uColor; uniform float uA, uTime; varying vec2 vUv;
+      void main(){
+        float core = smoothstep(0.03, 1.0, texture2D(tMote, vec2(clamp(vUv.x, 0.02, 0.98) * 0.5, 0.75)).r);
+        float v = vUv.y;
+        float fade = smoothstep(0.0, 0.06, v) * pow(clamp(1.0 - v, 0.0, 1.0), 1.6);   // clamp: pow(negative) is NaN
+        float shimmer = 0.75 + 0.25 * sin(uTime * 1.3 + v * 9.0);
+        float a = core * fade * shimmer * uA;
+        if (a < 0.002) discard;
+        gl_FragColor = vec4(uColor, a);
+        #include <colorspace_fragment>
+      }`,
+  });
+  const m = new THREE.Mesh(beaconGeo, mat); m.frustumCulled = false; m.renderOrder = 6;
+  return m;
+}
+
+// ---------------------------------------------------------------- memories (islands) & HUD
+const hud = $('memories');
+const islands = MEMORIES.map((def, i) => {
+  const isl = { def, i, found: false, active: !def.final, coverage: 0, bloom: 0, bloomT: -1, glow: 0, objs: [], cells: null, cellXZ: null, hint: 0 };
+  const n = Math.ceil(def.r * 2), cells = [];
+  for (let a = 0; a < n; a++) for (let b = 0; b < n; b++) {
+    const x = def.x - def.r + (a + 0.5), z = def.z - def.r + (b + 0.5);
+    if (Math.hypot(x - def.x, z - def.z) < def.r * 0.86) cells.push(x, z);
+  }
+  isl.cellXZ = new Float32Array(cells); isl.cells = new Float32Array(cells.length / 2);
+  def.objs.forEach((o) => {
+    const h = placeObject(o.m, o.size); if (!h) return;
+    h.position.set(def.x + o.x, -0.02, def.z + o.z); h.rotation.y = o.ry; scene.add(h); isl.objs.push(h);
+  });
+  isl.motes = new THREE.Points(seedGeometry(def.final ? 140 : 80), makeMoteMaterial(CELL.orb, def.color));
+  isl.motes.frustumCulled = false; isl.motes.renderOrder = 7;
+  isl.motes.material.uniforms.uCenter.value.set(def.x, 0, def.z);
+  isl.motes.material.uniforms.uRadius.value = def.r * 0.75;
+  isl.motes.material.uniforms.uHeight.value = def.final ? 9 : 6;
+  isl.motes.material.uniforms.uSize.value = def.final ? 1.4 : 1.15;
+  scene.add(isl.motes);
+  isl.beacon = makeBeacon(def.color); isl.beacon.position.set(def.x, 0, def.z); scene.add(isl.beacon);
+  const dot = document.createElement('div'); dot.className = 'm' + (def.final ? ' home dim' : ''); hud.appendChild(dot); isl.dot = dot;
+  return isl;
+});
+
+// ---------------------------------------------------------------- ripples (gameplay + visuals)
+const ripples = [];
+function spawnRipple(x, z, opts = {}) {
+  const big = !!opts.big;
+  const r = { x, z, t: 0, life: big ? 3.6 : 2.2, rmax: big ? 6.8 : (opts.rmax || 2.6), strength: big ? 1.4 : (opts.strength || 1),
+    variant: (Math.random() * 4) | 0, rot: Math.random() * Math.PI * 2, delay: opts.delay || 0, visual: opts.visual !== false, reveal: opts.reveal !== false };
+  ripples.push(r);
+  if (ripples.length > 60) ripples.shift();
+  return r;
+}
+const rippleRadius = (r) => { const k = clamp((r.t - r.delay) / r.life, 0, 1); return r.rmax * (1 - Math.pow(1 - k, 2.2)); };
+const _m4 = new THREE.Matrix4(), _q = new THREE.Quaternion(), _s = new THREE.Vector3(), _p = new THREE.Vector3(), _up = new THREE.Vector3(0, 1, 0);
+const footRings = [{ a: 0, x: 0, z: 0 }, { a: 0, x: 0, z: 0 }];
+function updateRipples(dt) {
+  for (const r of ripples) r.t += dt;
+  for (let i = ripples.length - 1; i >= 0; i--) if (ripples[i].t > ripples[i].life + ripples[i].delay + 0.1) ripples.splice(i, 1);
+  // uniforms: newest first
+  let u = 0;
+  for (let i = ripples.length - 1; i >= 0 && u < MAXR; i--) {
+    const r = ripples[i]; if (r.t < r.delay) continue;
+    const k = clamp((r.t - r.delay) / r.life, 0, 1);   // clamped: Math.pow(negative, x) is NaN
+    ripU[u++].set(r.x, r.z, rippleRadius(r), r.strength * Math.pow(1 - k, 1.4) * (r.reveal ? 1 : 0.6));
+  }
+  for (; u < MAXR; u++) ripU[u].set(0, 0, 0, 0);
+  // decals
+  let n = 0;
+  for (const r of ripples) {
+    if (!r.visual || r.t < r.delay || n >= RIP_MAX - 2) continue;
+    const k = clamp((r.t - r.delay) / r.life, 0, 1);   // clamped: Math.pow(negative, x) is NaN
+    const rad = rippleRadius(r);
+    const a = smooth(k, 0, 0.06) * Math.pow(1 - k, 1.3) * (r.rmax > 4 ? 0.95 : 0.8);
+    _p.set(r.x, 0.012, r.z); _q.setFromAxisAngle(_up, 0); _s.set(rad * 2.25, 1, rad * 2.25);
+    _m4.compose(_p, _q, _s); ripMesh.setMatrixAt(n, _m4);
+    ripAttr.setXYZW(n, r.variant, a, r.rot + k * 0.25, 0); n++;
+  }
+  for (const f of footRings) {
+    if (f.a < 0.01) continue;
+    _p.set(f.x, 0.014, f.z); _s.set(0.36, 1, 0.36); _m4.compose(_p, _q.identity(), _s); ripMesh.setMatrixAt(n, _m4);
+    ripAttr.setXYZW(n, 0, f.a, 0, 0); n++;
+  }
+  ripMesh.count = n; ripMesh.instanceMatrix.needsUpdate = true; ripAttr.needsUpdate = true;
+}
+
+// ---------------------------------------------------------------- audio (WebAudio, all clips generated with fal)
+const AUD = { ctx: null, ready: null, bufs: {}, master: null, musicBus: null, amb: null, muted: false, started: false, nextMusic: 0 };
+const AUDIO_FILES = { music: 'music.mp3', ambience: 'ambience.mp3', step: 'step.mp3', splash: 'splash.mp3', chime: 'chime.mp3', bark: 'bark.mp3', bloom: 'bloom.mp3' };
+function audioInit() {                      // created on the first user gesture; every caller waits for the same decode
+  if (AUD.ready) return AUD.ready;
+  AUD.ready = (async () => {
+    try {
+      AUD.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      AUD.master = AUD.ctx.createGain(); AUD.master.gain.value = AUD.muted ? 0 : 0.9; AUD.master.connect(AUD.ctx.destination);
+      AUD.musicBus = AUD.ctx.createGain(); AUD.musicBus.gain.value = 0.0001; AUD.musicBus.connect(AUD.master);
+      await Promise.all(Object.entries(AUDIO_FILES).map(async ([k, f]) => {
+        try { const r = await fetch('assets/' + f); if (!r.ok) return; AUD.bufs[k] = await AUD.ctx.decodeAudioData(await r.arrayBuffer()); } catch (e) { console.warn('audio', f, e); }
+      }));
+    } catch (e) { console.warn('no audio', e); }
+  })();
+  return AUD.ready;
+}
+function play(k, { gain = 1, rate = 1, pan = 0, loop = false, when = 0, bus = null } = {}) {
+  if (!AUD.ctx || !AUD.bufs[k]) return null;
+  const src = AUD.ctx.createBufferSource(); src.buffer = AUD.bufs[k]; src.loop = loop; src.playbackRate.value = rate;
+  const g = AUD.ctx.createGain(); g.gain.value = gain;
+  let node = src;
+  if (pan && AUD.ctx.createStereoPanner) { const p = AUD.ctx.createStereoPanner(); p.pan.value = clamp(pan, -1, 1); node.connect(p); node = p; }
+  node.connect(g); g.connect(bus || AUD.master); src.start(AUD.ctx.currentTime + when);
+  return { src, g };
+}
+// the 2-minute piece is re-scheduled with a long crossfade, so it never clicks or restarts abruptly
+const XFADE = 7;
+function scheduleMusic(at) {
+  const buf = AUD.bufs.music; if (!buf) return;
+  const src = AUD.ctx.createBufferSource(); src.buffer = buf;
+  const g = AUD.ctx.createGain(); const end = at + buf.duration;
+  g.gain.setValueAtTime(0.0001, at); g.gain.exponentialRampToValueAtTime(1, at + XFADE);
+  g.gain.setValueAtTime(1, end - XFADE); g.gain.linearRampToValueAtTime(0.0001, end - 0.05);
+  src.connect(g); g.connect(AUD.musicBus); src.start(at); src.stop(end);
+  AUD.nextMusic = end - XFADE;
+}
+function audioTick() { if (AUD.started && AUD.ctx && AUD.bufs.music && AUD.ctx.currentTime > AUD.nextMusic - 1.5) scheduleMusic(AUD.nextMusic); }
+function startMusic() {
+  if (AUD.started || !AUD.ctx) return; AUD.started = true;
+  AUD.ctx.resume();
+  const t = AUD.ctx.currentTime;
+  scheduleMusic(t + 0.05);
+  AUD.musicBus.gain.setValueAtTime(0.0001, t); AUD.musicBus.gain.exponentialRampToValueAtTime(0.42, t + 6);
+  AUD.amb = play('ambience', { gain: 0.0001, loop: true });
+  if (AUD.amb) { AUD.amb.g.gain.setValueAtTime(0.0001, t); AUD.amb.g.gain.exponentialRampToValueAtTime(0.32, t + 4); }
+}
+function toggleMute() { AUD.muted = !AUD.muted; if (AUD.master) AUD.master.gain.setTargetAtTime(AUD.muted ? 0 : 0.9, AUD.ctx.currentTime, 0.2); }
+function panFor(x, z) { // stereo pan of a world point relative to the camera
+  const v = new THREE.Vector3(x, 0, z).sub(camera.position); const right = new THREE.Vector3(1, 0, 0).applyQuaternion(camera.quaternion);
+  return clamp(v.normalize().dot(right), -1, 1) * 0.8;
+}
+
+// ---------------------------------------------------------------- input
+const keys = new Set();
+const pointer = { down: false, x: 0, y: 0, nx: 0, ny: 0, target: null };
+addEventListener('keydown', (e) => {
+  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) e.preventDefault();
+  keys.add(e.code); onAnyInput();
+  if (e.code === 'KeyM') toggleMute();
+  if (e.code === 'Space') wantLeap = true;
+});
+addEventListener('keyup', (e) => keys.delete(e.code));
+addEventListener('blur', () => keys.clear());
+canvas.addEventListener('pointerdown', (e) => { pointer.down = true; setPointer(e); onAnyInput(); canvas.setPointerCapture(e.pointerId); });
+canvas.addEventListener('pointermove', (e) => setPointer(e));
+canvas.addEventListener('pointerup', () => { pointer.down = false; });
+canvas.addEventListener('pointercancel', () => { pointer.down = false; });
+function setPointer(e) { pointer.x = e.clientX; pointer.y = e.clientY; pointer.nx = e.clientX / innerWidth * 2 - 1; pointer.ny = -(e.clientY / innerHeight) * 2 + 1; }
+let wantLeap = false;
+
+// ---------------------------------------------------------------- game state
+const state = { mode: 'loading', t: 0, found: 0, endT: -1, focus: 0, introT: 0, pathOn: 0, warm: 0, fade: 1, lastStepSide: 0 };
+const camRig = { yaw: 0.02, pitch: -0.11, dist: 4.8, lookYaw: 0, lookPitch: 0, h: 0.95 };
+const _v = new THREE.Vector3(), _v2 = new THREE.Vector3();
+const raycaster = new THREE.Raycaster(); const waterPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+
+function onAnyInput() {
+  if (state.mode === 'title') startGame();
+  else if (state.mode === 'end' && state.t - state.endT > 13) resetGame();
+  audioInit().then(() => { if (state.mode !== 'title' && state.mode !== 'loading') startMusic(); });
+}
+function startGame() {
+  state.mode = 'play'; state.introT = 0;
+  $('title').classList.add('hidden'); $('memories').classList.remove('hidden'); $('mute').classList.remove('hidden');
+  audioInit().then(startMusic);
+}
+function resetGame() {
+  state.mode = 'play'; state.found = 0; state.endT = -1; state.pathOn = 0; state.warm = 0;
+  islands.forEach((isl) => { isl.found = false; isl.active = !isl.def.final; isl.coverage = 0; isl.bloom = 0; isl.bloomT = -1; isl.cells.fill(0); isl.dot.className = 'm' + (isl.def.final ? ' home dim' : ''); isl.objs.forEach((o) => o.userData.mats.forEach((m) => { m.uniforms.uReveal.value = 0; m.uniforms.uGlow.value = 0; })); });
+  maskMat.uniforms.uClear.value = 1;
+  boy.pos.set(0, 0, 0); boy.heading = Math.PI; boy.y = 0; boy.vy = 0; boy.air = false; camRig.yaw = 0.02;
+  if (AUD.musicBus) AUD.musicBus.gain.setTargetAtTime(0.42, AUD.ctx.currentTime, 2);
+  $('end').classList.add('hidden'); $('memories').classList.remove('hidden');
+}
+
+function memoryFound(isl) {
+  isl.found = true; isl.bloomT = 0; state.found++; demo.inside = false;
+  isl.dot.classList.add('found');
+  play('chime', { gain: 0.75, pan: panFor(isl.def.x, isl.def.z) * 0.5 });
+  if (isl.def.key === 'dog') play('bark', { gain: 0.55, pan: panFor(isl.def.x, isl.def.z), when: 1.4 });
+  spawnRipple(isl.def.x, isl.def.z, { big: true, visual: true });
+  for (let k = 0; k < 3; k++) spawnRipple(isl.def.x + (Math.random() - 0.5) * 6, isl.def.z + (Math.random() - 0.5) * 6, { big: true, delay: 0.4 + k * 0.5 });
+  const smalls = islands.filter((i) => !i.def.final);
+  if (!isl.def.final && smalls.every((i) => i.found)) {
+    const home = islands.find((i) => i.def.final); home.active = true; home.dot.classList.remove('dim');
+    play('bloom', { gain: 0.5, when: 2.2 });
+  }
+  if (isl.def.final) { state.mode = 'end'; state.endT = state.t; play('bloom', { gain: 0.8 }); play('bark', { gain: 0.45, when: 4.5 }); if (AUD.musicBus) AUD.musicBus.gain.setTargetAtTime(0.62, AUD.ctx.currentTime, 2); }
+}
+
+// ---------------------------------------------------------------- update
+const clock = new THREE.Clock();
+const _bs = { c: new THREE.Vector3(), h: new THREE.Vector3(), f: new THREE.Vector3(), v: new THREE.Vector3() };
+let decayAcc = 0;
+const tmpV = new THREE.Vector3();
+
+function update(dt) {
+  state.t += dt; G.time.value = state.t;
+  audioTick();
+  const playing = state.mode === 'play' || state.mode === 'end';
+
+  // ---- input → desired direction (camera relative)
+  let ix = 0, iz = 0;
+  if (playing) {
+    if (keys.has('KeyW') || keys.has('ArrowUp')) iz += 1;
+    if (keys.has('KeyS') || keys.has('ArrowDown')) iz -= 1;
+    if (keys.has('KeyA') || keys.has('ArrowLeft')) ix -= 1;
+    if (keys.has('KeyD') || keys.has('ArrowRight')) ix += 1;
+  }
+  const fwd = _v.set(-Math.sin(camRig.yaw), 0, -Math.cos(camRig.yaw));
+  const right = _v2.set(Math.cos(camRig.yaw), 0, -Math.sin(camRig.yaw));
+  let dx = fwd.x * iz + right.x * ix, dz = fwd.z * iz + right.z * ix;
+  if (playing && pointer.down && ix === 0 && iz === 0) {
+    raycaster.setFromCamera({ x: pointer.nx, y: pointer.ny }, camera);
+    if (raycaster.ray.intersectPlane(waterPlane, tmpV)) { const ddx = tmpV.x - boy.pos.x, ddz = tmpV.z - boy.pos.z; const L = Math.hypot(ddx, ddz); if (L > 0.6) { dx = ddx / L; dz = ddz / L; } }
+  }
+  if (state.mode === 'end') {
+    const home = islands.find((i) => i.def.final).def;
+    const ex = home.x + 1.2 - boy.pos.x, ez = home.z + 2.2 - boy.pos.z, L = Math.hypot(ex, ez);
+    if (L > 0.5) { dx = ex / L; dz = ez / L; } else { dx = 0; dz = 0; boy.heading += ((((Math.PI - boy.heading) % (Math.PI * 2)) + Math.PI * 3) % (Math.PI * 2) - Math.PI) * (1 - Math.exp(-2 * dt)); }
+  }
+  if (DEMO && playing && state.mode !== 'end') { const tg = demoTarget(); if (tg) { const ddx = tg.x - boy.pos.x, ddz = tg.z - boy.pos.z, L = Math.hypot(ddx, ddz); if (L > 0.5) { dx = ddx / L; dz = ddz / L; } } }
+  const mag = Math.hypot(dx, dz);
+  const run = keys.has('ShiftLeft') || keys.has('ShiftRight');
+  const targetSpeed = mag > 0.01 ? (run ? CFG.runSpeed : CFG.walkSpeed) : 0;
+  boy.speed = damp(boy.speed, targetSpeed, targetSpeed > boy.speed ? 3.2 : 5.0, dt);
+  if (mag > 0.01) {
+    const h = Math.atan2(dx, dz);
+    let dh = ((h - boy.heading + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
+    boy.heading += dh * (1 - Math.exp(-8 * dt));
+  }
+  const hx = Math.sin(boy.heading), hz = Math.cos(boy.heading);
+  boy.pos.x += hx * boy.speed * dt; boy.pos.z += hz * boy.speed * dt;
+  // soft boundary around the archipelago of memories
+  const cx = boy.pos.x - 0, cz = boy.pos.z + 70, cd = Math.hypot(cx, cz);
+  if (cd > 165) { boy.pos.x -= cx / cd * (cd - 165) * 0.08; boy.pos.z -= cz / cd * (cd - 165) * 0.08; }
+
+  // ---- leap
+  boy.leapCD -= dt;
+  if (wantLeap && playing && !boy.air && boy.leapCD <= 0) { boy.air = true; boy.vy = 4.2; boy.leapCD = 0.9; play('step', { gain: 0.35, rate: 1.25 }); }
+  wantLeap = false;
+  if (boy.air) {
+    boy.vy -= 11.5 * dt; boy.y += boy.vy * dt;
+    if (boy.y <= 0) { boy.y = 0; boy.air = false; spawnRipple(boy.pos.x, boy.pos.z, { big: true }); spawnRipple(boy.pos.x, boy.pos.z, { rmax: 3.2, delay: 0.25 }); splash(boy.pos.x, boy.pos.z, 26, 1.3); play('splash', { gain: 0.8, rate: 0.95 + Math.random() * 0.1 }); }
+  }
+
+  // ---- animation blend
+  if (boy.mixer) {
+    const sp = boy.speed;
+    const wWalk = smooth(sp, 0.05, 0.9) * (1 - smooth(sp, 2.6, 4.0)), wRun = smooth(sp, 2.6, 4.0), wIdle = 1 - smooth(sp, 0.05, 0.9);
+    const A = boy.actions;
+    if (A.idle) A.idle.setEffectiveWeight(wIdle);
+    if (A.walk) { A.walk.setEffectiveWeight(wWalk); A.walk.timeScale = clamp(sp / 1.25, 0.6, 2.0); }
+    if (A.run) { A.run.setEffectiveWeight(wRun); A.run.timeScale = clamp(sp / 4.2, 0.8, 1.4); }
+    boy.mixer.update(dt);
+  }
+  boy.root.position.set(boy.pos.x, boy.y - 0.03 * (1 - smooth(boy.y, 0, 0.1)), boy.pos.z);   // ankle-deep: soles just under the mirror
+  boy.root.rotation.y = boy.heading;
+  boy.root.updateMatrixWorld(true);
+
+  // ---- footsteps → ripples
+  const moving = boy.speed > 0.4 && !boy.air;
+  boy.feet.forEach((f, i) => {
+    if (!f) return;
+    f.getWorldPosition(tmpV);
+    const fy = tmpV.y - boy.y - boy.footRest;
+    const ring = footRings[i]; ring.x = tmpV.x; ring.z = tmpV.z;
+    ring.a = damp(ring.a, boy.air ? 0 : (fy < 0.06 ? 0.95 : 0.25), 10, dt);
+    if (!boy.footDown[i] && fy < 0.025 && moving) {
+      boy.footDown[i] = true;
+      spawnRipple(tmpV.x, tmpV.z, { rmax: 2.7 + Math.random() * 0.6 + (boy.speed > 3 ? 0.6 : 0) });
+      if (Math.random() < 0.4) spawnRipple(tmpV.x, tmpV.z, { rmax: 1.2, delay: 0.18, strength: 0.6 });
+      splash(tmpV.x, tmpV.z, boy.speed > 3 ? 7 : 3, boy.speed > 3 ? 0.8 : 0.5);
+      play('step', { gain: 0.22 + Math.random() * 0.08, rate: 0.9 + Math.random() * 0.25, pan: i ? 0.12 : -0.12 });
+    } else if (boy.footDown[i] && fy > 0.07) boy.footDown[i] = false;
+  });
+  if (!boy.feet.length && moving) { // fallback cadence if no skeleton
+    state.lastStepSide += dt * boy.speed * 1.6; if (state.lastStepSide > 1) { state.lastStepSide = 0; spawnRipple(boy.pos.x, boy.pos.z); }
+  }
+  updateRipples(dt);
+  updateDrops(dt);
+
+  // ---- memories: coverage on a coarse CPU grid (mirrors the GPU mask)
+  decayAcc += dt;
+  let focus = 0;
+  for (const isl of islands) {
+    const d = isl.def; const bd = Math.hypot(boy.pos.x - d.x, boy.pos.z - d.z);
+    if (isl.active && !isl.found) {
+      if (bd < d.r + 12) {
+        const cells = isl.cells, xz = isl.cellXZ;
+        for (let c = 0; c < cells.length; c++) cells[c] = Math.max(0, cells[c] - CFG.decay * dt);
+        for (let u = 0; u < MAXR; u++) {
+          const r = ripU[u]; if (r.w <= 0.001) continue;
+          if (Math.hypot(r.x - d.x, r.y - d.z) > d.r + r.z + 1) continue;
+          const rr = r.z * 1.05;
+          for (let c = 0; c < cells.length; c++) { const ex = xz[c * 2] - r.x, ez = xz[c * 2 + 1] - r.y; if (ex * ex + ez * ez < rr * rr) cells[c] = 1; }
+        }
+        let s = 0; for (let c = 0; c < cells.length; c++) s += cells[c];
+        isl.coverage = s / cells.length;
+        if (isl.coverage > CFG.goal) memoryFound(isl);
+      } else {
+        for (let c = 0; c < isl.cells.length; c++) isl.cells[c] = Math.max(0, isl.cells[c] - CFG.decay * dt);
+        isl.coverage = Math.max(0, isl.coverage - CFG.decay * dt);
+      }
+    }
+    if (isl.active || isl.found) focus = Math.max(focus, smooth(d.r * 1.15 - bd, 0, 6) * (isl.found ? 0.7 : 1));
+    // bloom (a restored memory floods outward and stays)
+    if (isl.found) {
+      isl.bloomT += dt;
+      const finalR = d.final ? 58 : d.r * 1.08;
+      isl.bloom = finalR * (1 - Math.pow(1 - clamp(isl.bloomT / (d.final ? 9 : 3.2), 0, 1), 2.4));
+      isl.glow = Math.max(0, 1 - isl.bloomT / 4) ;
+    }
+    // per-island shader + objects
+    const I = isl.i;
+    islU[I].set(d.x, d.z, isl.found ? Math.max(d.r, isl.bloom) : d.r, isl.active || isl.found ? 1 : 0);
+    isl.hint = damp(isl.hint, isl.active && !isl.found ? 1 : 0, 1.5, dt);
+    islB[I].set(isl.found ? 1 : 0, isl.hint, 0, 0);
+    bloomU[I].set(d.x, d.z, isl.bloom, isl.found ? 1 : 0);
+    const revealTarget = isl.found ? 1 : 0;
+    for (const o of isl.objs) for (const m of o.userData.mats) { m.uniforms.uReveal.value = damp(m.uniforms.uReveal.value, revealTarget, 0.9, dt); m.uniforms.uGlow.value = isl.glow; }
+    const beaconOn = isl.active && !isl.found ? 0.5 * smooth(bd, d.r * 0.8, d.r * 2.4) : 0;
+    isl.beacon.material.uniforms.uA.value = damp(isl.beacon.material.uniforms.uA.value, beaconOn, 0.8, dt);
+    isl.beacon.visible = isl.beacon.material.uniforms.uA.value > 0.003;
+    const mu = isl.motes.material.uniforms;
+    mu.uState.value = damp(mu.uState.value, isl.found ? (isl.bloomT < 3 ? 1.4 : 0) : (isl.active ? 0.85 + 0.6 * isl.coverage : 0), 1.2, dt);
+    mu.uBurst.value = isl.found ? clamp(isl.bloomT / 3, 0, 1) : 0;
+    mu.uPR.value = PR();
+  }
+  state.focus = damp(state.focus, focus, 1.4, dt);
+
+  // memory "pull": a soft chime grows as you uncover
+  for (const isl of islands) {
+    const lv = Math.floor(isl.coverage * 5);
+    if (!isl.found && isl.active && lv > (isl.lastLv || 0)) play('chime', { gain: 0.10 + lv * 0.04, rate: 0.6 + lv * 0.12, pan: panFor(isl.def.x, isl.def.z) * 0.4 });
+    isl.lastLv = isl.found ? 0 : lv;
+  }
+
+  // ---- decay accumulator for the GPU mask (half-float friendly)
+  maskMat.uniforms.uDecay.value = 0;
+  if (decayAcc > 0.25) { maskMat.uniforms.uDecay.value = CFG.decay * decayAcc; decayAcc = 0; }
+
+  // ---- path of light to the last memory
+  const home = islands.find((i) => i.def.final);
+  state.pathOn = damp(state.pathOn, home.active && !home.found ? 1 : 0, 0.6, dt);
+  waterU.uPathOn.value = state.pathOn;
+  waterU.uPath.value.set(boy.pos.x, boy.pos.z, home.def.x, home.def.z);
+
+  // ---- dawn warms as memories return
+  const warmTarget = state.found / islands.length + (state.mode === 'end' ? 0.25 : 0);
+  state.warm = damp(state.warm, warmTarget, 0.5, dt); G.warm.value = state.warm;
+  waterU.uBoy.value.set(boy.pos.x, boy.pos.z, boy.y, 1);
+
+  // ---- camera
+  updateCamera(dt);
+
+  // ---- where the boy is on screen (memories dissolve in front of him)
+  {
+    const c = _bs.c.set(boy.pos.x, boy.y + 0.65, boy.pos.z).project(camera);
+    const hd = _bs.h.set(boy.pos.x, boy.y + 1.4, boy.pos.z).project(camera);
+    const ft = _bs.f.set(boy.pos.x, boy.y - 0.05, boy.pos.z).project(camera);
+    const vz = _bs.v.set(boy.pos.x, boy.y + 0.65, boy.pos.z).applyMatrix4(camera.matrixWorldInverse).z;
+    memU.uBoyScr.value.set(c.x * 0.5 + 0.5, c.y * 0.5 + 0.5, Math.abs(hd.y - ft.y) * 0.5 * 0.85 + 0.015, -vz);
+  }
+
+  // ---- hills parallax
+  for (const h of hills) { const u = h.userData; h.position.set(u.base.x + camera.position.x * u.k, 0, u.base.z + camera.position.z * u.k); }
+  sky.position.copy(camera.position);
+  water.position.set(Math.round(camera.position.x / 50) * 50, 0, Math.round(camera.position.z / 50) * 50);
+  dustMat.uniforms.uCam.value.copy(boy.pos); dustMat.uniforms.uPR.value = PR(); dropMat.uniforms.uPR.value = PR();
+
+  // ---- ending
+  if (state.mode === 'end') {
+    const e = state.t - state.endT;
+    if (e > 13.5) $('end').classList.remove('hidden');
+    if (e > 3) $('memories').classList.add('hidden');
+  }
+}
+
+function updateCamera(dt) {
+  const intro = state.mode === 'title' || state.mode === 'loading';
+  const ending = state.mode === 'end';
+  const endT = ending ? smooth(state.t - state.endT, 0.5, 9) : 0;
+  // look offset from the pointer (gentle parallax of the 3D camera)
+  const lookYaw = intro ? Math.sin(state.t * 0.07) * 0.12 : (pointer.down || ending ? 0 : clamp(pointer.nx, -1, 1) * 0.10);
+  camRig.lookYaw = damp(camRig.lookYaw, lookYaw, 2, dt);
+  if (ending) {
+    // the closing shot: three-quarter view from behind the boy, the house and its garden ahead, sky above
+    let d = ((0.32 - camRig.yaw + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
+    camRig.yaw += d * (1 - Math.exp(-0.7 * dt));
+  } else if (!intro) {
+    // lazy follow of the walking direction (calm third-person) + Q / E to turn the camera
+    if (keys.has('KeyQ')) camRig.yaw += 1.4 * dt;
+    if (keys.has('KeyE')) camRig.yaw -= 1.4 * dt;
+    if (boy.speed > 0.5) {
+      const want = boy.heading + Math.PI; // camera sits behind the boy
+      let d = ((want - camRig.yaw + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
+      const backwards = Math.abs(d) > 2.3;
+      if (!backwards) camRig.yaw += d * (1 - Math.exp(-0.55 * dt)) * smooth(boy.speed, 0.5, 2.0);
+    }
+  } else {
+    camRig.yaw = damp(camRig.yaw, 0.02, 1.0, dt);
+    boy.heading = damp(boy.heading, 2.45, 2.0, dt);
+  }
+  const f = state.focus;
+  // above a memory the camera rises and tilts down, as in the video, so the painted world opens beneath the boy
+  const endT2 = ending ? smooth(state.t - state.endT, 10, 19) : 0;   // then the camera lifts its eyes to the dawn sky
+  const pitch = intro ? -0.085 : lerp(lerp(-0.2, -0.40, f), -0.115, endT);
+  const dist = intro ? 4.6 : lerp(lerp(6.4, 8.2, f), 16.5, endT);
+  const h = intro ? 0.95 : lerp(0.9, 1.9, endT);
+  const k = intro ? 1.2 : (ending ? 0.8 : 1.6);
+  camRig.pitch = damp(camRig.pitch, pitch, k, dt); camRig.dist = damp(camRig.dist, dist, k, dt); camRig.h = damp(camRig.h, h, k, dt);
+  const yaw = camRig.yaw + camRig.lookYaw;
+  const cp = Math.cos(camRig.pitch), sp = Math.sin(camRig.pitch);
+  // at the end the camera aims between the boy and his home
+  const home = islands.find((i) => i.def.final).def;
+  const ax = lerp(boy.pos.x, home.x + 0.5, endT * 0.55), az = lerp(boy.pos.z, home.z - 5, endT * 0.55);
+  const tx = ax, ty = camRig.h + boy.y * 0.35, tz = az;
+  const breathe = Math.sin(state.t * 0.5) * 0.04;
+  camera.position.set(tx + Math.sin(yaw) * cp * camRig.dist, ty - sp * camRig.dist + breathe, tz + Math.cos(yaw) * cp * camRig.dist);
+  camera.lookAt(tx - Math.sin(yaw) * 0.6, ty + breathe * 0.5 + endT2 * camRig.dist * 0.13, tz - Math.cos(yaw) * 0.6);   // the camera stays above the sea; only its gaze lifts
+  camera.updateMatrixWorld();
+}
+
+// ---------------------------------------------------------------- post-processing
+const brightMat = new THREE.ShaderMaterial({ uniforms: { tSrc: { value: null } }, vertexShader: FS_VERT, fragmentShader: /* glsl */`
+  uniform sampler2D tSrc; varying vec2 vUv;
+  void main(){ vec3 c = texture2D(tSrc, vUv).rgb; if (any(isnan(c)) || any(isinf(c))) c = vec3(0.0); float l = max(c.r, max(c.g, c.b)); gl_FragColor = vec4(c * smoothstep(1.0, 1.7, l), 1.0); }` });
+const blurMat = new THREE.ShaderMaterial({ uniforms: { tSrc: { value: null }, uDir: { value: new THREE.Vector2() } }, vertexShader: FS_VERT, fragmentShader: /* glsl */`
+  uniform sampler2D tSrc; uniform vec2 uDir; varying vec2 vUv;
+  void main(){ vec3 c = texture2D(tSrc, vUv).rgb * 0.227;
+    c += (texture2D(tSrc, vUv + uDir * 1.38).rgb + texture2D(tSrc, vUv - uDir * 1.38).rgb) * 0.316;
+    c += (texture2D(tSrc, vUv + uDir * 3.23).rgb + texture2D(tSrc, vUv - uDir * 3.23).rgb) * 0.070;
+    gl_FragColor = vec4(c, 1.0); }` });
+const finalMat = new THREE.ShaderMaterial({
+  uniforms: { tScene: { value: rtMain.texture }, tBloom: { value: rtBloomB.texture }, tPaper: { value: paperTex || whiteTex }, uRes: { value: new THREE.Vector2(1, 1) },
+    uWarm: G.warm, uFade: { value: 1 }, uFadeCol: { value: new THREE.Color(0xeae2dc) }, uTime: G.time },
+  vertexShader: FS_VERT,
+  fragmentShader: /* glsl */`
+    uniform sampler2D tScene, tBloom, tPaper; uniform vec2 uRes; uniform float uWarm, uFade, uTime; uniform vec3 uFadeCol;
+    varying vec2 vUv;
+    void main(){
+      vec3 c = texture2D(tScene, vUv).rgb;
+      if (any(isnan(c)) || any(isinf(c))) c = vec3(0.8);   // safety net: one bad pixel must never become a hole
+      c += texture2D(tBloom, vUv).rgb * 0.42;
+      c = c / (1.0 + 0.10 * c);                                   // soft shoulder
+      float l = dot(c, vec3(0.2126, 0.7152, 0.0722));
+      c = mix(c, c * vec3(0.95, 0.96, 1.05), (1.0 - l) * 0.35);   // lavender shadows
+      c *= mix(vec3(1.0), vec3(1.05, 1.0, 0.93), uWarm * 0.5);    // the dawn warms
+      vec3 paper = texture2D(tPaper, vUv * uRes / 1100.0).rgb;
+      c *= mix(vec3(1.0), paper / max(dot(paper, vec3(0.3333)), 0.2), 0.10);
+      c *= 0.97 + 0.06 * paper.g;
+      vec2 q = vUv - 0.5; c *= mix(0.80, 1.0, smoothstep(0.9, 0.25, length(q * vec2(1.0, 0.85))));
+      c = mix(c, uFadeCol, uFade);
+      gl_FragColor = vec4(c, 1.0);
+      #include <colorspace_fragment>
+    }`,
+});
+
+// ---------------------------------------------------------------- resize
+function resize() {
+  const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false);
+  const pw = Math.floor(w * DPR), ph = Math.floor(h * DPR);
+  rtMain.setSize(pw, ph); rtMirror.setSize(Math.floor(pw * 0.5), Math.floor(ph * 0.5));
+  rtBloomA.setSize(Math.floor(pw / 4), Math.floor(ph / 4)); rtBloomB.setSize(Math.floor(pw / 4), Math.floor(ph / 4));
+  waterU.uRes.value.set(pw, ph); finalMat.uniforms.uRes.value.set(pw, ph);
+  camera.aspect = w / h; camera.fov = w / h < 1 ? 52 : 38; camera.updateProjectionMatrix();
+}
+addEventListener('resize', resize); resize();
+
+// ---------------------------------------------------------------- render
+function render() {
+  // 1. reveal mask
+  maskMat.uniforms.tPrev.value = rtMaskA.texture;
+  fsPass(maskMat, rtMaskB);
+  maskMat.uniforms.uClear.value = 0;
+  [rtMaskA, rtMaskB] = [rtMaskB, rtMaskA];
+  waterU.tMask.value = rtMaskA.texture; memU.tMask.value = rtMaskA.texture;
+  for (const isl of islands) for (const o of isl.objs) for (const m of o.userData.mats) m.uniforms.tMask.value = rtMaskA.texture;
+
+  // 2. memories beneath the surface (seen through the water)
+  memU.uResM.value.set(rtMain.width, rtMain.height);
+
+  // 3. mirror
+  updateMirror();
+  water.visible = false; ripMesh.visible = false; drops.visible = false; dust.visible = false;
+  renderer.setRenderTarget(rtMirror); renderer.setClearColor(0xd8cfd8, 1); renderer.clear(); renderer.render(scene, mirrorCam);
+  water.visible = true; ripMesh.visible = true; drops.visible = true; dust.visible = true;
+
+  // 4. main
+  renderer.setRenderTarget(rtMain); renderer.clear(); renderer.render(scene, camera);
+
+  // 5. bloom + final
+  brightMat.uniforms.tSrc.value = rtMain.texture; fsPass(brightMat, rtBloomA);
+  blurMat.uniforms.tSrc.value = rtBloomA.texture; blurMat.uniforms.uDir.value.set(1.6 / rtBloomA.width, 0); fsPass(blurMat, rtBloomB);
+  blurMat.uniforms.tSrc.value = rtBloomB.texture; blurMat.uniforms.uDir.value.set(0, 1.6 / rtBloomA.height); fsPass(blurMat, rtBloomA);
+  blurMat.uniforms.tSrc.value = rtBloomA.texture; blurMat.uniforms.uDir.value.set(3.2 / rtBloomA.width, 0); fsPass(blurMat, rtBloomB);
+  blurMat.uniforms.tSrc.value = rtBloomB.texture; blurMat.uniforms.uDir.value.set(0, 3.2 / rtBloomA.height); fsPass(blurMat, rtBloomA);
+  finalMat.uniforms.tBloom.value = rtBloomA.texture;
+  fsPass(finalMat, null);
+}
+
+// ---------------------------------------------------------------- dev helper: scripted walk (headless verification only)
+const demo = { ang: 0, lastT: 0, leapT: 0, inside: false };
+function demoTarget() {
+  const order = islands.filter((i) => i.active && !i.found);
+  if (!order.length) return null;
+  const isl = order[0]; const d = isl.def;
+  const bd = Math.hypot(boy.pos.x - d.x, boy.pos.z - d.z);
+  const dt = Math.min(0.05, state.t - demo.lastT); demo.lastT = state.t;
+  if (bd > d.r * 0.95 && !demo.inside) return { x: d.x, z: d.z };
+  if (!demo.inside) { demo.inside = true; demo.ang = Math.atan2(boy.pos.z - d.z, boy.pos.x - d.x); }
+  // walk a breathing circle inside the memory, leaping now and then (as a player would)
+  const rr = d.r * (0.3 + 0.42 * (0.5 + 0.5 * Math.sin(state.t * 0.13)));
+  demo.ang += dt * CFG.walkSpeed * 0.9 / rr;
+  if (state.t - demo.leapT > 2.6) { demo.leapT = state.t; wantLeap = true; }
+  return { x: d.x + Math.cos(demo.ang) * rr, z: d.z + Math.sin(demo.ang) * rr };
+}
+
+// ---------------------------------------------------------------- start
+if (hillsTex) {
+  // hills.png: a small islet (u 0–0.2) and a long ridge with its own islet (u 0.2–1), as in the video: right of the sun
+  const HL = [
+    { u0: 0.00, u1: 0.20, v0: 0.0, v1: 1.0, az: 0.07, dist: 900, width: 115, k: 0.90, haze: 0.22, taper: 0 },
+    { u0: 0.20, u1: 1.00, v0: 0.0, v1: 1.0, az: 0.42, dist: 1500, width: 560, k: 0.95, haze: 0.28, taper: 1 },
+  ];
+  HL.forEach((h) => addHill(h.u0, h.u1, h.v0, h.v1, h.az, h.dist, h.width, h.k, h.haze, h.taper));
+}
+state.mode = 'title';
+$('loading').classList.add('hidden');
+setTimeout(() => { $('veil').style.opacity = 0; $('title').classList.remove('hidden'); }, 200);
+if (DEMO) setTimeout(() => startGame(), 400);
+
+let first = true;
+renderer.setAnimationLoop(() => {
+  let dt = Math.min(clock.getDelta(), 1 / 20);
+  if (first) { dt = 1 / 60; first = false; }
+  update(dt);
+  finalMat.uniforms.uFade.value = state.fade = damp(state.fade, state.mode === 'loading' ? 1 : 0, 1.2, dt);
+  render();
+});
+window.__mirror = { state, boy, islands, camRig, AUD, memoryFound };   // read-only handle for automated checks
+</script>
+<script src="../brand/gamepad.js"></script>
+</body>
+</html>

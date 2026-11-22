@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "id": "recipe.solid-of-revolution",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Profile to solid of revolution"
+  },
+  "aliases": {
+    "en": [
+      "solid of revolution"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry"
+  ],
+  "summary": "Connect a nonnegative profile, its sweep and volume slices.",
+  "objective": "Revolve a nonnegative curve around the x axis and show how disk slices estimate its volume.",
+  "tags": [
+    "solid",
+    "of",
+    "revolution"
+  ],
+  "example_prompts": [
+    "Revolve a nonnegative curve around the x axis and show how disk slices estimate its volume."
+  ],
+  "entities": [
+    {
+      "name": "Profile",
+      "guidance": "Keep the generating curve and filled source region visible in a fixed plane with axis units."
+    },
+    {
+      "name": "Sweep shell",
+      "guidance": "Derive rings from radius f(x), retain seam continuity and cap endpoints; show surface versus filled volume distinctly."
+    },
+    {
+      "name": "Disk samples",
+      "guidance": "Use thin translucent disks with width labels; opacity must not imply density."
+    }
+  ],
+  "state_contract": {
+    "model": "Continuous nonnegative f on [a,b], x-axis rotation and numerical quadrature configuration.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Choose profile and interval.",
+      "Scrub revolution angle.",
+      "Adjust disk count and compare volume estimate."
+    ]
+  },
+  "invariants": [
+    "Radius equals f(x), not diameter.",
+    "At full revolution the shell agrees with the sampled profile.",
+    "Display cubic units; separate quadrature error from mesh resolution."
+  ],
+  "motion_guidance": [
+    "Sweep angle is presentation progress, not physical rotation dynamics.",
+    "Show disk estimates at rest to avoid conflating a transient partial sweep with full volume."
+  ],
+  "known_limits": [
+    "Functions crossing the axis or cavities need a separate region/washer contract.",
+    "Numerical integration implementation and convergence remain untested.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.solid-of-revolution",
+      "statement": "For continuous nonnegative f, revolving the region under f on [a,b] around the x axis gives volume integral_a^b pi*f(x)^2 dx.",
+      "scope": "Disk method for the bounded region specified.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-disk-method",
+          "locator": "2.2, Rule: The Disk Method, equation 2.3"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Profile",
+      "structure": "Keep the generating curve and filled source region visible in a fixed plane with axis units.",
+      "material": "Faint sweep shell, opaque generating curve and translucent disks; avoid opacity gradients that suggest density."
+    },
+    {
+      "family": "Sweep shell",
+      "structure": "Derive rings from radius f(x), retain seam continuity and cap endpoints; show surface versus filled volume distinctly.",
+      "material": "Faint sweep shell, opaque generating curve and translucent disks; avoid opacity gradients that suggest density."
+    },
+    {
+      "family": "Disk samples",
+      "structure": "Use thin translucent disks with width labels; opacity must not imply density.",
+      "material": "Faint sweep shell, opaque generating curve and translucent disks; avoid opacity gradients that suggest density."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Semantic geometry/state presentation; no gravity, contact force or material simulation.",
+    "checks": [
+      "Radius equals f(x), not diameter.",
+      "At full revolution the shell agrees with the sampled profile."
+    ]
+  }
+}

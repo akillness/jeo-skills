@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.material-fdm-layer-seam",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "FDM print layers and perimeter-start seams"
+  },
+  "aliases": {
+    "en": [
+      "FDM surface layers",
+      "FFF print seam",
+      "perimeter start"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies"
+  ],
+  "summary": "Separate layer stepping and perimeter-start marks from paint or random damage when depicting an extrusion-printed part.",
+  "objective": "Separate layer stepping and perimeter-start marks from paint or random damage when depicting an extrusion-printed part.",
+  "tags": [
+    "material-profile",
+    "FDM surface layers",
+    "FFF print seam",
+    "perimeter start"
+  ],
+  "subject_terms": [
+    "FDM surface layers",
+    "FFF print seam",
+    "perimeter start",
+    "printed plastic texture",
+    "build direction",
+    "layer lines"
+  ],
+  "intent_signals": [
+    "Separate layer stepping and perimeter-start marks from paint or random damage when depicting an extrusion-printed part."
+  ],
+  "example_prompts": [
+    "Build an explorable fdm print layers and perimeter-start seams and expose its construction at close range."
+  ],
+  "content": {
+    "principles": [
+      "Choose a declared build direction and perimeter strategy. A layer band, a start/end seam and a scratch are different features; distribute them according to that construction instead of applying isotropic noise.",
+      "The source explicitly exempts spiral-vase mode from ordinary perimeter start/end seams. Do not paint a vertical seam onto every possible extrusion-print process."
+    ],
+    "implementation": [
+      "Store a local build axis, authored layer height, seam placement policy and finish state with the part. Use a simple constant-layer teaching preset; do not present it as parsed toolpath data. Layer bands follow build height even when the finished object is rotated in the scene.",
+      "On a curved test shell depict finite layer stepping where it changes silhouette; use small normal/roughness variation for unresolved bead detail elsewhere. Preserve modeled wall thickness and actual openings independently of the shading pattern.",
+      "Place local start/end marks at the declared perimeter positions. Compare aligned and scattered placements as authored examples; do not equate random seam placement with random pits everywhere or claim a particular strength gain.",
+      "Top and bottom faces have their own authored line layout rather than repeating sidewall bands. A sanded or coated preset can reduce visible microdetail; keep that finish separate from the underlying shape and label any explanatory uncoated inset.",
+      "At overview scale merge unresolved layer marks into a stable surface response. At close range retain a few coherent seam and bead transitions without requiring every filament strand to be a mesh. Offer a build-axis overlay, seam highlight and finish toggle."
+    ],
+    "observable_checks": [
+      "Rotate the object: layer orientation follows its manufacturing frame, not the camera or world up.",
+      "Switch aligned to scattered seam positions: layer height, shell dimensions and openings stay unchanged; only the authored start/end locations change.",
+      "Compare sidewall, sloped silhouette and top surface at two distances; no exaggerated displacement closes a hole or turns fine layers into structural ribs."
+    ]
+  },
+  "known_limits": [
+    "No slicer execution, G-code validation, actual printability, interlayer strength, porosity or calibrated polymer optics. Spiral-vase, variable layers and scarf seams need separately specified depiction.",
+    "Authored construction and prospective checks; no runtime artifact, render or material test has been executed for this record."
+  ],
+  "creative_affordances": [
+    "Use a rough prototype, smooth finished product or exaggerated teaching closeup; a refined print need not visibly advertise every layer."
+  ],
+  "claims": [
+    {
+      "id": "claim.craft-depth-material-fdm-layer-seam",
+      "statement": "Prusa explains that ordinary perimeter loops start and end at a location that can create a visible seam, distinguishes seam placement options, and identifies spiral-vase mode as an exception.",
+      "scope": "Perimeter-based FFF/FDM seam explanation; no universal seam visibility or material-strength guarantee.",
+      "source_refs": [
+        {
+          "source_id": "source.craft-depth-material-fdm-layer-seam",
+          "locator": "Opening explanation; Seam Position subsections Aligned and Random; final Vase mode exception"
+        }
+      ]
+    }
+  ]
+}

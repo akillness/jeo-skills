@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "id": "recipe.training-trajectory-checkpoint-inspector",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Training trajectory checkpoint inspector"
+  },
+  "aliases": {
+    "en": [
+      "checkpoint trajectory",
+      "training-state path inspector"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "linear-algebra"
+  ],
+  "summary": "Inspect a trusted pre-extracted sequence of model checkpoints through comparable metrics and one fixed declared projection without loading or executing checkpoint binaries.",
+  "objective": "Inspect a trusted pre-extracted sequence of model checkpoints through comparable metrics and one fixed declared projection without loading or executing checkpoint binaries.",
+  "tags": [
+    "training checkpoint",
+    "state dict",
+    "fixed projection",
+    "metric provenance"
+  ],
+  "subject_terms": [
+    "checkpoint manifest",
+    "training step",
+    "optimizer state",
+    "parameter vector",
+    "fixed projection",
+    "evaluation split"
+  ],
+  "intent_signals": [
+    "Inspect supplied training checkpoints along one fixed projected trajectory.",
+    "Compare checkpoint metrics without pretending the 3D path is full parameter-space distance."
+  ],
+  "example_prompts": [
+    "Inspect supplied training checkpoints along one fixed projected trajectory."
+  ],
+  "negative_signals": [
+    "decorative motion presented as computation",
+    "camera position changes authoritative values",
+    "Loading arbitrary pickle or executing an untrusted model."
+  ],
+  "not_for": [
+    "Loading arbitrary pickle or executing an untrusted model.",
+    "Inferring why training changed from a projected path or loss trace."
+  ],
+  "entities": [
+    {
+      "name": "Checkpoint ledger",
+      "guidance": "Store stable checkpoint ID, run ID, step/epoch, hashes, framework/version and available component names."
+    },
+    {
+      "name": "Fixed projection frame",
+      "guidance": "Use one supplied center c and one 3×D basis B for all checkpoints; axes and basis hash stay visible."
+    },
+    {
+      "name": "Metric rails",
+      "guidance": "Separate training metrics from fixed-evaluation metrics and retain dataset/split/evaluator provenance."
+    }
+  ],
+  "state_contract": {
+    "model": "Accept 2..64 trusted, pre-extracted manifest entries from one declared run. Each entry has unique ID, integer step, optional epoch, component hashes, metric records with split/evaluator IDs, and optionally a finite parameter vector theta_t of a shared declared key/shape/order with D in [1,4096]. For spatial display require one finite fixed B in R^(3×D) and center c in R^D, supplied or derived once from the complete accepted set and then frozen; y_t=B(theta_t-c). Do not deserialize or execute `.pt`, `.pth`, pickle, TorchScript or arbitrary code. If vectors are absent, accept supplied projection coordinates only when their method, center, basis/hash and source checkpoint IDs are present, and disable full-space distance checks.",
+    "authority": "Supplied finite tensors, ordered identifiers, basis conventions and provenance own semantic state. Blender/glTF assets are display-only; Three.js owns validation, calculation, linked selection, failure states and exact reset.",
+    "actions": [
+      "Select/step checkpoints in source step order.",
+      "Compare named metrics only when split/evaluator definitions match.",
+      "Toggle projected path, metric rails and full-space distance when available.",
+      "Reset checkpoint, projection and metric selections."
+    ]
+  },
+  "invariants": [
+    "Every displayed point uses the same center, basis, parameter key order and D.",
+    "A 3D segment length is labeled projected distance; full parameter-space distance is shown only from compatible complete vectors.",
+    "Metrics with different dataset, split, preprocessing or evaluator identity are not placed on one comparable scale without an explicit bridge.",
+    "Untrusted or executable checkpoint containers remain unavailable rather than being opened."
+  ],
+  "motion_guidance": [
+    "Playback follows discrete checkpoint steps; interpolation is a display bridge and never an unsaved training state."
+  ],
+  "creative_affordances": [
+    "Choose any coherent laboratory, constellation or sculptural art direction while preserving exact labels, selectable identity and non-color encodings."
+  ],
+  "known_limits": [
+    "Documentary authored recipe only; no model training, checkpoint execution, quantum hardware, Blender export, browser, renderer or interactive runtime was run.",
+    "glTF transports neutral display assets only; tensors, checkpoints, citations, basis order, dtype and provenance remain external data.",
+    "The optional evaluation view displays supplied scalar metrics only; it does not run probes or infer generalization."
+  ],
+  "claims": [
+    {
+      "id": "claim.aiq-pytorch-general-checkpoint",
+      "statement": "PyTorch documents a general training checkpoint as a dictionary that may include epoch, model state_dict, optimizer state_dict and loss, and explains that optimizer state is needed to resume training state.",
+      "scope": "PyTorch checkpoint organization example; it does not define cross-run comparability or a universal checkpoint schema.",
+      "source_refs": [
+        {
+          "source_id": "source.aiq-pytorch-checkpoint",
+          "locator": "What is a state_dict?; Saving & Loading a General Checkpoint, save/load examples and explanatory paragraphs"
+        }
+      ]
+    },
+    {
+      "id": "claim.aiq-untrusted-model-boundary",
+      "statement": "PyTorch security guidance says models are programs, warns that running untrusted models is equivalent to running untrusted code, and advises treating checkpoint trust and deserialization as a security boundary.",
+      "scope": "PyTorch security guidance current when read; the recipe avoids deserialization entirely and does not certify any format as universally safe.",
+      "source_refs": [
+        {
+          "source_id": "source.aiq-pytorch-security",
+          "locator": "Using PyTorch Securely; Untrusted models; distributed checkpoint trust warning"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Checkpoint trajectory observatory",
+      "structure": "Blender authors neutral checkpoint pylons, metric rails and a reusable three-axis projection cage; no weights or training data enter glTF.",
+      "material": "Glyph shape separates saved state, metric observation and unavailable comparison; line style marks projection versus full-space readout.",
+      "articulation": "Three.js ingests validated pre-extracted JSON, owns step ordering, projection arithmetic, comparability gates, provenance panels and exact reset."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Finite imported-data calculation and explanatory playback; no physical dynamics, model training, quantum device or causal attribution.",
+    "state": [
+      "ordered external data and provenance",
+      "declared dimensions, basis and numeric tolerance",
+      "derived readouts and selection state"
+    ],
+    "checks": [
+      "Every displayed point uses the same center, basis, parameter key order and D.",
+      "A 3D segment length is labeled projected distance; full parameter-space distance is shown only from compatible complete vectors.",
+      "Metrics with different dataset, split, preprocessing or evaluator identity are not placed on one comparable scale without an explicit bridge."
+    ]
+  },
+  "related_ids": [
+    "recipe.two-parameter-loss-slice-gradient",
+    "recipe.small-neural-forward-activations",
+    "knowledge.state-playback",
+    "knowledge.reasoning-embedding-distance-caveats"
+  ]
+}

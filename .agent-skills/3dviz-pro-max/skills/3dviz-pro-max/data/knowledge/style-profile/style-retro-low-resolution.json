@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-retro-low-resolution",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Retro low-resolution presentation"
+  },
+  "aliases": {
+    "en": [
+      "pixelated 3D",
+      "low resolution render",
+      "retro game look",
+      "PS1 style",
+      "CRT look"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "spatial-puzzles"
+  ],
+  "summary": "Choose an intentional image-grid and detail hierarchy so pixel structure supports the scene instead of making controls unreadable.",
+  "objective": "Important objects remain identifiable during camera motion and selection feedback does not disappear into the coarse image.",
+  "tags": [
+    "style-profile",
+    "rendering-aesthetic",
+    "retro-low-resolution"
+  ],
+  "subject_terms": [
+    "pixelated 3D",
+    "low resolution render",
+    "retro game look",
+    "rendering aesthetic",
+    "PS1 style",
+    "CRT look"
+  ],
+  "intent_signals": [
+    "Use a retro low-resolution presentation",
+    "Keep scene landmarks readable in a coarse image"
+  ],
+  "example_prompts": [
+    "Make a retro low-resolution maze whose exit, player marker and controls remain clear."
+  ],
+  "content": {
+    "principles": [
+      "Choose an intentional image-grid and detail hierarchy so pixel structure supports the scene instead of making controls unreadable."
+    ],
+    "implementation": [
+      "Use clear silhouettes and large landmarks; keep tiny surface features subordinate to what survives the target image size.",
+      "Try a constrained palette and broad light shapes; decide deliberately whether texture pixels and output pixels share the same visual rhythm.",
+      "Use measured camera moves and inspect motion at output size; render labels and controls at a readable resolution independent of the stylized scene if needed.",
+      "Render at 320x240 (426x240 for 16:9) into a WebGLRenderTarget with NearestFilter and no mipmaps, then upscale to the canvas with integer scaling; keep the HUD, labels and selection outline on a separate full-resolution CSS2D layer.",
+      "Cap textures at 128x128 with a 16-colour palette and quantise vertex positions to a 1/16 m grid in the vertex shader for the period wobble; leave collision and picking geometry unquantised so controls stay accurate."
+    ],
+    "observable_checks": [
+      "Important objects remain identifiable during camera motion and selection feedback does not disappear into the coarse image."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "The look lives in the sampling grid rather than in the shading, so the numbers here are chosen for what survives four pixels: a six-hue palette, a three-step value ramp and a key:fill near 2.5:1 that never lets a face go fully black. Neutral tone mapping at exposure 1.0 and bloom at zero are deliberate, because a filmic curve and a bloom halo reintroduce exactly the smooth highlight roll-off the period hardware could not produce.",
+    "values": {
+      "feeling": [
+        "nostalgic",
+        "blocky",
+        "playful"
+      ],
+      "palette": [
+        {
+          "hex": "#2b1e4a",
+          "role": "background / deepest value"
+        },
+        {
+          "hex": "#4b6fb5",
+          "role": "sky band / cool mid"
+        },
+        {
+          "hex": "#8fb87c",
+          "role": "ground / dominant mid"
+        },
+        {
+          "hex": "#e0b45a",
+          "role": "warm accent, landmarks"
+        },
+        {
+          "hex": "#f2ece0",
+          "role": "highlight / player marker"
+        }
+      ],
+      "value_structure": "50/35/15 dark/mid/light; three luminance steps per material so the coarse grid reads as bands rather than as noise",
+      "saturation_rule": "six hues maximum; non-focal surfaces <= 55% HSL saturation, the interactive marker is the only element above 75%",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#2b1e4a",
+        "horizon": "#4b6fb5"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#4b6fb5",
+        "density": 0.03
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#fff0d0",
+          "intensity": 2.2,
+          "elevation_deg": 45,
+          "azimuth_deg": 315,
+          "castShadow": false
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#4b6fb5",
+          "ground": "#2b1e4a",
+          "intensity": 0.9
+        },
+        "rim": {
+          "type": "none"
+        },
+        "ratio": "key:fill ~ 2.5:1; a test sphere must show exactly three distinct shading steps and no fully black face"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "Neutral",
+        "exposure": 1.0
+      },
+      "camera": {
+        "fov_deg": 60,
+        "height_m": 3.2,
+        "pitch_deg": -22,
+        "orbit": {
+          "minPolar_deg": 45,
+          "maxPolar_deg": 80,
+          "minDist_m": 6,
+          "maxDist_m": 24
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.9,
+          1.0
+        ],
+        "metalness": [
+          0,
+          0
+        ],
+        "notes": "MeshLambertMaterial or vertex-lit MeshBasicMaterial; texture magFilter and minFilter NearestFilter, generateMipmaps false, textures 64x64-128x128 on 16-colour palettes; blob shadow decals instead of shadow maps"
+      },
+      "motion": {
+        "sway_period_s": [
+          2.0,
+          3.0
+        ],
+        "ease": "stepped 12 fps",
+        "hold_ms": 250
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.2,
+          "strength": 0.0,
+          "radius": 0.0
+        },
+        "vignette": 0.0,
+        "grain": 0.0,
+        "dof": "off"
+      },
+      "signature_technique": "render the scene into a 320x240 nearest-filtered target and upscale by an integer factor, with a 4x4 ordered dither on the colour ramp and affine (non-perspective-correct) UV interpolation on large ground planes",
+      "never": [
+        "antialiasing on the low-resolution target",
+        "smooth per-pixel specular highlights",
+        "a 16-bit gradient across a large sky",
+        "text or controls rendered inside the 320x240 buffer"
+      ]
+    }
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for Neutral tone mapping at exposure 1.0; re-tune every intensity, fog density and bloom threshold if you change the tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with voxel or low-poly geometry; retro styling does not mandate a specific historical console or its technical limits."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

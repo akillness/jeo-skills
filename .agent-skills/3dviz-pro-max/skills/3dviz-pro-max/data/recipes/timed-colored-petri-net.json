@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "id": "recipe.timed-colored-petri-net",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Timed colored Petri net: bindings and model time"
+  },
+  "aliases": {
+    "en": [
+      "timed CP-net token workbench",
+      "colored token discrete-event net"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data"
+  ],
+  "summary": "Bind typed token values and advance an explicit model clock without turning animation duration into net semantics.",
+  "objective": "Build a bounded timed colored Petri-net inspector where I choose a legal variable binding, fire it atomically, and advance model time only when no ready binding remains.",
+  "tags": [
+    "colored Petri net",
+    "timed tokens",
+    "discrete-event model"
+  ],
+  "subject_terms": [
+    "timed colored Petri net",
+    "CP-net",
+    "color set",
+    "token multiset",
+    "binding element",
+    "guard",
+    "timestamp",
+    "global clock",
+    "model time",
+    "output delay"
+  ],
+  "intent_signals": [
+    "colored tokens with timed transitions",
+    "inspect token binding guards and timestamps",
+    "advance a CP-net global clock"
+  ],
+  "example_prompts": [
+    "Make a small timed colored Petri net where red and blue jobs have different delays and I can inspect every enabled binding."
+  ],
+  "negative_signals": [
+    "Not a plain weighted P/T net, stochastic net, time-Petri interval model, performance predictor or proof of liveness, fairness or boundedness."
+  ],
+  "not_for": [
+    "No stochastic timing, transition time intervals, unbounded color domains, inhibitor/reset arcs, state-space proof or real-time wall-clock coupling."
+  ],
+  "entities": [
+    {
+      "name": "Typed places and tokens",
+      "guidance": "Blender builds stable trays, transition gates and token families with readable silhouettes; token instances show value, multiplicity and availability timestamp rather than relying on hue."
+    },
+    {
+      "name": "Binding and clock inspector",
+      "guidance": "Three.js owns finite color sets, typed multisets, variable bindings, guards, the discrete global clock and atomic history. Show color-enabled separately from ready-at-current-time."
+    }
+  ],
+  "state_contract": {
+    "model": "Finite places and transitions; every place declares a finite color set. A marking maps each place to a multiset of typed tokens (value, availability timestamp). Each transition has typed input patterns, output expressions, a Boolean guard and nonnegative integer output delays. A binding is color-enabled when its substituted input multiset is available and its guard is true; it is ready at model time tau only when every consumed timed token has timestamp <= tau. Firing at tau atomically consumes the bound inputs and creates outputs timestamped tau+delay. Stay at tau while a ready binding exists; when none exists, advance only to the least later time at which a color-enabled binding becomes ready. A declared tie policy selects among simultaneous ready bindings without claiming fairness.",
+    "authority": "Three.js owns the typed model, clock and history. Blender-authored meshes are stable presentation parts; tween duration never advances the model clock.",
+    "actions": [
+      "Select a transition and inspect all finite legal bindings with guard and readiness reasons.",
+      "Fire one chosen ready binding atomically, or reject the attempt without partial token movement.",
+      "Advance to the next event time only when no binding is ready; step back by restoring an exact snapshot.",
+      "Load a two-color service preset in which output delay depends on the bound job color."
+    ]
+  },
+  "invariants": [
+    "Every token value belongs to its place color set; ill-typed arc expressions, negative delays and out-of-domain bindings are errors that commit no state.",
+    "A future-stamped token may satisfy the color/multiset pattern but cannot be consumed before its timestamp.",
+    "Firing is one marking update at tau: there is no semantic intermediate state with inputs removed and outputs not yet created.",
+    "Clock advance cannot skip a ready binding at the current time and cannot use render-frame delta as model time."
+  ],
+  "motion_guidance": [
+    "Step commits one discrete semantic action; pause freezes playback without changing committed state. Reset cancels pending animation and restores the complete preset, including clock, history, selection and error state.",
+    "Use a static before/after view and readable tables for reduced motion. Camera movement and token/message travel only explain a committed transition."
+  ],
+  "creative_affordances": [
+    "Blender may shape distinctive, stable parts and materials for the chosen metaphor; Three.js binds those parts to model IDs and derives every label, highlight and transform from semantic state. Color is reinforced with text, shape or pattern.",
+    "The layout may be sculptural, planar or spatial, provided ordering, identity and invalid states remain unambiguous."
+  ],
+  "known_limits": [
+    "Finite declared colors and nonnegative integer model time only; no stochastic distributions, transition intervals, hierarchy, state-space analysis or fairness guarantee.",
+    "Authored, source-reviewed guidance only; no Blender export, solver, allocator, TLS stack, browser, renderer or interactive artifact was run."
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Typed tokens and model time are abstract state; mesh motion and collisions have no causal role."
+  },
+  "related_ids": [
+    "recipe.petri-net-weighted-firing",
+    "recipe.parcel-sorter-events"
+  ],
+  "object_craft": [
+    {
+      "family": "Typed token workbench",
+      "structure": "Use keyed token silhouettes that visibly fit their declared place trays; duplicate tokens stack or fan while retaining multiplicity badges. Put the model-time dial beside the binding table.",
+      "material": "Assign restrained color families plus engraved value/type glyphs and timestamp tabs; reserve emission for the currently selected ready binding."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim.timed-colored-petri-net-bindings",
+      "statement": "Colored Petri nets use typed token values and multisets; variables in arc inscriptions form transition bindings, and a Boolean guard permits only bindings that evaluate true.",
+      "scope": "The finite CPN subset declared by this recipe; not plain anonymous-token P/T-net semantics.",
+      "source_refs": [
+        {
+          "source_id": "source.cpntools-cpn-language",
+          "locator": "Slides 22–29 and 42: multisets, typed arc variables, binding elements and Boolean guards"
+        }
+      ]
+    },
+    {
+      "id": "claim.timed-colored-petri-net-time",
+      "statement": "In the documented timed CP-net semantics, token timestamps state their earliest usable model time; a binding must be color-enabled and ready, occurrences are instantaneous, output delays timestamp produced tokens, and the global clock advances when no binding can execute at the current time.",
+      "scope": "CPN Tools-style timestamp semantics with a discrete clock and nonnegative output delays; not general time-Petri intervals.",
+      "source_refs": [
+        {
+          "source_id": "source.cpntools-timed-resource-allocation",
+          "locator": "PDF pages 2–4 (PDF indices 1–3): global clock, readiness, instantaneous occurrence, clock advance and @+ output delay"
+        }
+      ]
+    }
+  ]
+}

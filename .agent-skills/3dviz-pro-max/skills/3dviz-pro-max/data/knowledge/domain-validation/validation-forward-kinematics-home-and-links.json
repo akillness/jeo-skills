@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-forward-kinematics-home-and-links",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Home configuration recovery and rigid link invariants"
+  },
+  "aliases": {
+    "en": [
+      "zero configuration check",
+      "rigid link geometry check"
+    ]
+  },
+  "direction_ids": [
+    "robotics-control"
+  ],
+  "summary": "Verify that zero joint values recover the declared home transform and that each link keeps its rigid internal geometry as joints move.",
+  "objective": "The zero configuration reproduces the home transform and each link keeps its rigid internal geometry as joints move.",
+  "applies_when": [
+    "An articulated chain is driven by joint coordinates.",
+    "A home or zero configuration is declared.",
+    "A tool frame is displayed alongside the computed endpoint."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "kinematics",
+    "frames",
+    "conventions"
+  ],
+  "subject_terms": [
+    "forward kinematics",
+    "home configuration",
+    "joint axis",
+    "link length",
+    "end-effector frame",
+    "transform convention"
+  ],
+  "intent_signals": [
+    "the arm stretches when I move the shoulder",
+    "check the zero pose of this arm"
+  ],
+  "example_prompts": [
+    "Check the forward kinematics conventions of this teaching arm."
+  ],
+  "negative_signals": [
+    "torque and payload analysis",
+    "industrial robot calibration"
+  ],
+  "content": {
+    "principles": [
+      "The zero joint vector must return the declared home transform; if it does not, the convention in the code differs from the documented one and every later pose is suspect.",
+      "Links are rigid, but consecutive joint-frame origins are not a rigid pair: a prismatic joint or a frame placed off the link changes that distance legitimately. Measure the distance between markers rigidly attached to the same link, and check declared joint displacement separately.",
+      "One transform convention is declared and used everywhere, because mixing conventions produces poses that look plausible in some configurations and wrong in others."
+    ],
+    "implementation": [
+      "Evaluate the chain at the zero vector and compare the resulting end-effector transform with the declared home transform, reporting translation error as a length and rotation error as an angle with their own tolerances; a zero vector lying outside the operating limits is still a valid convention test.",
+      "Attach at least two markers to each link at fixed link-local offsets, sample at least a dozen joint vectors within limits, and record every within-link marker distance together with each declared joint displacement.",
+      "Compare the displayed tool frame with the computed end-effector frame and confirm that any visual tool offset is part of the declared model rather than an extra transform.",
+      "Recompute one sampled pose with an independently written implementation of the same convention and compare the results."
+    ],
+    "observable_checks": [
+      "The zero configuration reproduces the home transform within the separate translation and rotation tolerances; a rotational mismatch of exactly a quarter turn suggests an axis convention difference rather than a numerical one.",
+      "Within-link marker distances are constant across all sampled configurations and each prismatic displacement matches its commanded value; a within-link distance that varies is a defect whose cause still has to be found, since transform order, a wrong joint axis and a mis-declared joint type all produce it.",
+      "The displayed tool and the computed endpoint coincide, and the transform convention is written down beside the result."
+    ]
+  },
+  "known_limits": [
+    "Checks kinematic bookkeeping for an authored chain; it says nothing about payload, dynamics, collision avoidance or hardware calibration.",
+    "Authored verification guidance; no chain was evaluated or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.robot-arm-forward-frames",
+    "recipe.inverse-kinematics-target",
+    "recipe.coupled-gears"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-forward-kinematics-home",
+      "statement": "Forward kinematics finds the end-effector frame relative to a fixed frame from the vector of joint values, and the home configuration is the end-effector transform when all joint values are zero.",
+      "scope": "Open-chain rigid-link kinematics with declared joint axes and one documented convention.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-forward-kinematics",
+          "locator": "Definition of forward kinematics and of the home configuration M in the product of exponentials formula"
+        }
+      ]
+    }
+  ]
+}

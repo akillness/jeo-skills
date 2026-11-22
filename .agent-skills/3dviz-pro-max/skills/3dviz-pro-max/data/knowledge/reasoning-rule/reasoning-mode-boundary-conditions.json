@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-mode-boundary-conditions",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Let boundary conditions select the modes"
+  },
+  "aliases": {
+    "en": [
+      "standing wave modes",
+      "harmonics",
+      "node placement"
+    ]
+  },
+  "direction_ids": [
+    "waves-optics-fields",
+    "soft-fluid-thermal"
+  ],
+  "summary": "Derive allowed wavelengths and frequencies from the boundary conditions rather than choosing shapes that look like modes.",
+  "objective": "Make a standing-wave scene demonstrate why only certain modes exist.",
+  "applies_when": [
+    "A standing-wave system is shown with its declared boundary conditions, medium and dispersion model; the explicit harmonic and scaling examples below use an ideal fixed-fixed nondispersive string.",
+    "Mode numbers, harmonics or resonance are displayed.",
+    "The viewer can change length, tension or mode number."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "standing wave",
+    "normal mode",
+    "node",
+    "harmonic",
+    "boundary condition",
+    "superposition"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "waves",
+    "modes"
+  ],
+  "intent_signals": [
+    "show the harmonics",
+    "why only certain frequencies",
+    "change the string length"
+  ],
+  "example_prompts": [
+    "Show the first few modes of a string fixed at both ends.",
+    "Let me change the length and watch the frequencies shift."
+  ],
+  "negative_signals": [
+    "Travelling-wave scenes with no boundaries.",
+    "Decorative wave motion with no frequency claim."
+  ],
+  "not_for": [
+    "Travelling-wave scenes with no boundaries.",
+    "Decorative wave motion with no frequency claim."
+  ],
+  "content": {
+    "principles": [
+      "The boundary conditions select the modes. For a string fixed at both ends the ends must be nodes, so the allowed wavelengths are twice the length divided by the mode number and the frequencies are integer multiples of the fundamental.",
+      "For the ideal one-dimensional string, a standing mode can be expressed as equal-amplitude, equal-frequency waves traveling in opposite directions with the appropriate relative phase. Other geometries use their own mode representation.",
+      "Drawing a shape that looks like a mode without deriving it produces near-misses: nodes slightly off the ends, or a frequency that does not follow the length.",
+      "The doubling relationship is exact for the ideal uniform non-dispersive string fixed at both ends: doubling the mode index halves the wavelength and doubles the frequency. Other systems index differently, such as a fixed-free string whose modes are the odd multiples of its fundamental, and membranes, cavities and stiff or dispersive strings have spectra that are not integer multiples at all."
+    ],
+    "implementation": [
+      "Derive the mode shape and its frequency from the boundary condition and the mode number, and drive the animation from that derivation.",
+      "Display the wavelength, frequency and mode number together with the units so the relationships are visible.",
+      "For the one-dimensional string construction, optionally show its two counter-propagating components alongside the standing mode. For other systems, show components justified by that system's mode model.",
+      "Support changing the physical parameters, such as length or wave speed, and show the frequencies following.",
+      "Where different boundary conditions are available, such as one free end, present the different allowed set rather than reusing the same series."
+    ],
+    "observable_checks": [
+      "Confirm nodes fall exactly at the fixed ends for every mode.",
+      "For the fixed-fixed ideal string, double the mode index and confirm the wavelength halves and the frequency doubles. For any other boundary condition or medium, compare against that system's own mode set instead of assuming the harmonic series.",
+      "For a fixed mode in a geometrically similar nondispersive fixture with wave speed held constant, check inverse-length frequency scaling. Otherwise compute the expected spectrum from the declared geometry, boundary conditions and dispersion rather than imposing this scaling.",
+      "For the one-dimensional string fixture, compare the sum of its two traveling-wave components with the standing pattern. For other media compare against the declared mode construction instead."
+    ]
+  },
+  "related_ids": [
+    "recipe.standing-string-modes",
+    "recipe.heat-rod-decay"
+  ],
+  "creative_affordances": [
+    "Visual treatment of the wave, including exaggerated amplitude and trails, is free as long as the mode structure is derived.",
+    "Physical staging with a real instrument metaphor is a good way to motivate the boundary condition."
+  ],
+  "known_limits": [
+    "Authored modelling guidance citing the fixed-end string modes; other geometries and boundary conditions have different mode sets.",
+    "Amplitude, damping and driving are not addressed by this rule."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-fixed-string-modes",
+      "statement": "On a string fixed at both ends the allowed standing-wave wavelengths are twice the length divided by the mode number and the corresponding frequencies are the mode number times the fundamental, and standing waves result from the superposition of identical waves travelling in opposite directions.",
+      "scope": "Ideal string fixed at both ends; other boundary conditions and dispersive media give different mode sets.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-standing-waves",
+          "locator": "16.6, standing waves on a string fixed at both ends and superposition"
+        }
+      ]
+    }
+  ]
+}

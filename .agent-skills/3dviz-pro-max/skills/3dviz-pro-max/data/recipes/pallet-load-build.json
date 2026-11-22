@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "id": "recipe.pallet-load-build",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Pallet build with stability rules"
+  },
+  "aliases": {
+    "en": [
+      "pallet loading",
+      "stacking pattern",
+      "load stability"
+    ]
+  },
+  "direction_ids": [
+    "operations-logistics"
+  ],
+  "summary": "Build a load where each placement is checked against authored stacking rules, so a pallet is a validated structure rather than a pile.",
+  "objective": "Build a pallet loading scene where cartons are placed by pattern, support and weight rules are checked and violations are reported.",
+  "tags": [
+    "pallet",
+    "loading",
+    "stacking"
+  ],
+  "subject_terms": [
+    "pallet",
+    "carton",
+    "stacking pattern",
+    "overhang",
+    "load stability",
+    "support area",
+    "weight limit",
+    "interlock"
+  ],
+  "intent_signals": [
+    "Build a pallet load with cartons stacked by a pattern.",
+    "Check whether a stacking arrangement is stable enough to ship."
+  ],
+  "example_prompts": [
+    "Build a pallet loading scene with layer patterns, support checks and an overhang warning.",
+    "Show a carton placement rejected because it lacks support underneath."
+  ],
+  "negative_signals": [
+    "Not a certified packaging or transport stability test.",
+    "Not a rigid-body stacking simulation; support rules here are authored geometric checks."
+  ],
+  "not_for": [
+    "Not a certified packaging or transport stability test.",
+    "Not a rigid-body stacking simulation; support rules here are authored geometric checks."
+  ],
+  "entities": [
+    {
+      "name": "Pallet and cartons",
+      "guidance": "Model the pallet deck with real board gaps and cartons with dimensions and weights, since both matter to the rules."
+    },
+    {
+      "name": "Placement rules",
+      "guidance": "Check support area beneath each carton, overhang beyond the pallet edge, and cumulative weight on lower layers."
+    },
+    {
+      "name": "Layer patterns",
+      "guidance": "Offer pattern presets such as column and interlocked, since the pattern changes both stability and cube utilisation."
+    }
+  ],
+  "state_contract": {
+    "model": "Pallet dimensions with deck boards and gaps, a carton list with unique IDs, dimensions and weights, and per-placement measurements: support fraction as the area of the union of actual contact footprints directly beneath the carton at its bottom elevation divided by its own footprint area, overhang beyond the pallet edge, and cumulative weight carried by each layer. Overlapping supports are unioned rather than summed, and pallet gaps are not counted as support. Carton interpenetration is rejected independently of the support and overhang rules.",
+    "authority": "The measured geometry is authoritative for every rule; a placement that looks supported but measures below the threshold must be reported as failing.",
+    "actions": [
+      "Place a carton manually or apply a pattern to a layer.",
+      "Inspect a placement and read its support fraction and overhang.",
+      "Change the pattern and compare cube utilisation.",
+      "Reset the pallet."
+    ]
+  },
+  "invariants": [
+    "A placement below the support threshold is reported, with the measured fraction shown.",
+    "Overhang beyond the pallet edge is measured and reported rather than tolerated.",
+    "Cumulative weight per layer is tracked, so a heavy carton placed high is visible in the report.",
+    "Cartons never interpenetrate, and that rejection is independent of the support and overhang thresholds.",
+    "Carton IDs survive a pattern change: replacing a layer pattern re-places the same cartons rather than creating anonymous copies."
+  ],
+  "motion_guidance": [
+    "Animate each carton being placed along a path that clears the cartons already present.",
+    "Keep failing placements visible in their reported state rather than snapping them into a valid position."
+  ],
+  "known_limits": [
+    "Authored geometric rules, not a physical stability test: real stability depends on carton strength, friction, wrapping and transport forces.",
+    "Thresholds used are illustrative unless replaced with values from the operation being modelled.",
+    "Cumulative layer weight is bookkeeping, not a load-path or box-crush calculation, and a heavy carton placed high is reported without any inference about stability.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "object_craft": [
+    {
+      "family": "Pallet and cartons",
+      "structure": "Pallet with modelled deck boards, blocks and gaps; cartons with flap seams, printed labels and slight variation in dimensions.",
+      "material": "Timber pallet and corrugated carton families with visible fibre direction; keep labels legible for identification.",
+      "articulation": "Cartons translate and rotate into place and remain rigid."
+    },
+    {
+      "family": "Placement rules",
+      "structure": "Support fraction visualised as the overlap footprint under the carton, and overhang as a measured offset at the edge.",
+      "material": "Overlay materials distinct from the cartons, with hatching so failures are visible in monochrome.",
+      "articulation": "Overlays rebuild after each placement or pattern change."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Geometric placement checks and bookkeeping; no gravity, friction or collapse simulation.",
+    "state": [
+      "carton placements",
+      "support measurements",
+      "layer weights"
+    ],
+    "checks": [
+      "Support fraction and overhang match the modelled geometry.",
+      "Reset clears all placements and reports."
+    ]
+  },
+  "creative_affordances": [
+    "Pattern design is a genuine creative and operational lever; interlocked layers trade cube utilisation for stability.",
+    "The scene can be a shipping dock, a production line end or an invented depot without changing the rules."
+  ],
+  "related_ids": [
+    "recipe.warehouse-pick-tour",
+    "recipe.loading-dock-resource-board",
+    "knowledge.structural-coherence"
+  ]
+}

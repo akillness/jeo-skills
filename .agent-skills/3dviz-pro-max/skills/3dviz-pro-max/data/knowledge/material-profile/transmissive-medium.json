@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.transmissive-medium",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Transmissive pane or vessel"
+  },
+  "aliases": {
+    "en": [
+      "transmissive medium"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "solid-geometry"
+  ],
+  "summary": "Model transparent parts with inspectable boundaries and optical thickness assumptions.",
+  "objective": "The intended pane or vessel boundary remains visible and the reference behind it is recognizable through the chosen finish.",
+  "tags": [
+    "material-profile",
+    "transmissive",
+    "medium"
+  ],
+  "example_prompts": [
+    "Model transparent parts with inspectable boundaries and optical thickness assumptions."
+  ],
+  "content": {
+    "principles": [
+      "State whether the object is a thin pane or a closed volume before selecting optical settings.",
+      "Keep handles, rims and support frames visible so the transparent object still reads as constructed."
+    ],
+    "implementation": [
+      "Use MeshPhysicalMaterial transmission with opacity 1; choose thickness intentionally, with 0 representing a thin wall.",
+      "Record mesh scale alongside thickness and attenuation settings; thickness uses mesh coordinates while attenuation distance uses world units.",
+      "Place a contrasting reference behind the pane and compare front, oblique and edge views before adding tint."
+    ],
+    "observable_checks": [
+      "The intended pane or vessel boundary remains visible and the reference behind it is recognizable through the chosen finish.",
+      "A thickness change produces an inspectable optical difference in the test setup or is reported as inconclusive."
+    ]
+  },
+  "known_limits": [
+    "No measured glass spectrum, caustic accuracy or arbitrary nested-volume correctness is asserted.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+  ],
+  "related_ids": [
+    "recipe.fantasy-village-diorama",
+    "recipe.solid-of-revolution",
+    "knowledge.three-pbr-adapter"
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-transmissive-medium",
+      "statement": "Transmission uses opacity 1; zero thickness denotes thin walls. Thickness is in mesh space; attenuation distance is in world units.",
+      "scope": "Documented MeshPhysicalMaterial parameters, not an optical validation.",
+      "source_refs": [
+        {
+          "source_id": "source.three-physical-material",
+          "locator": "transmission; thickness; attenuationDistance"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-holographic",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Holographic display metaphor"
+  },
+  "aliases": {
+    "en": [
+      "hologram look",
+      "projected interface aesthetic",
+      "luminous wire display",
+      "hologram",
+      "sci-fi projection UI"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "products-assemblies"
+  ],
+  "summary": "Use a visibly authored projected-display metaphor to reveal layers or selection, without claiming a real optical hologram.",
+  "objective": "Layer depth and active selection remain legible without relying on bloom, and the view identifies any metaphorical projection effect.",
+  "tags": [
+    "style-profile",
+    "surface-aesthetic",
+    "holographic"
+  ],
+  "subject_terms": [
+    "hologram look",
+    "projected interface aesthetic",
+    "luminous wire display",
+    "surface aesthetic",
+    "hologram",
+    "sci-fi projection UI"
+  ],
+  "intent_signals": [
+    "Use a holographic display metaphor",
+    "Present a luminous layered diagram without claiming real holography"
+  ],
+  "example_prompts": [
+    "Show a holographic-style service map with stable node identities and independently pausable scan decoration."
+  ],
+  "content": {
+    "principles": [
+      "Use a visibly authored projected-display metaphor to reveal layers or selection, without claiming a real optical hologram."
+    ],
+    "implementation": [
+      "Simplify internal layers and add a clear boundary or display base where useful; choose which edges carry the main shape.",
+      "Use restrained luminous accents, transparent-looking fills and a darker neutral reference; preserve contrast for labels and selected objects.",
+      "Favor a slow orbit or deliberate layer reveal; decorative scan motion should be independently pausable and should not generate model state.",
+      "Author the projection as additive emissive - new THREE.MeshBasicMaterial({color: 0x3fd0ff, transparent: true, opacity: 0.45, blending: THREE.AdditiveBlending, depthWrite: false}) - and add UnrealBloomPass at threshold 1.0, strength 0.6, radius 0.8 over a #04070f to #0b1c33 gradient background.",
+      "Scroll a 2-on / 2-off horizontal scanline mask at 0.12 screen-heights per second across the emissive pass, then verify legibility with bloom disabled; if layers stop separating, raise material opacity rather than bloom strength."
+    ],
+    "observable_checks": [
+      "Layer depth and active selection remain legible without relying on bloom, and the view identifies any metaphorical projection effect."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "A hologram is light drawn over darkness, so the palette keeps every physical surface below 12% saturation and gives the two emissive hues, cyan and violet, the entire colour budget on a dark gradient sky rather than flat black. Bloom sits at strength 0.6 with threshold 1.0 because that is enough to read as glow while the additive, depthWrite-false material still carries the layer separation on its own - the record's own check is that the image survives with bloom switched off.",
+    "values": {
+      "feeling": [
+        "luminous",
+        "weightless",
+        "synthetic"
+      ],
+      "palette": [
+        {
+          "hex": "#04070f",
+          "role": "display void / deepest value"
+        },
+        {
+          "hex": "#0b1c33",
+          "role": "gradient horizon glow"
+        },
+        {
+          "hex": "#3fd0ff",
+          "role": "primary hologram cyan"
+        },
+        {
+          "hex": "#a06bff",
+          "role": "secondary layer violet"
+        },
+        {
+          "hex": "#eaffff",
+          "role": "core highlight / selected element"
+        }
+      ],
+      "value_structure": "75/15/10 dark/mid/light; the emissive lines are the only elements above 0.7 luminance",
+      "saturation_rule": "two emissive hues only; every physical surface stays <= 12% saturation so the projection reads as light rather than as paint",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#04070f",
+        "horizon": "#0b1c33"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#071426",
+        "density": 0.03
+      },
+      "lights": {
+        "key": {
+          "type": "PointLight",
+          "color": "#3fd0ff",
+          "intensity": 6,
+          "elevation_deg": -80,
+          "azimuth_deg": 0,
+          "castShadow": false,
+          "note": "projector base uplight, decay 2, distance 4 m"
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#0b2a44",
+          "ground": "#04070f",
+          "intensity": 0.25
+        },
+        "rim": {
+          "type": "none"
+        },
+        "ratio": "emissive-dominant: the practical uplight contributes roughly one tenth of the emissive pass, and the image must still read with bloom disabled"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.1
+      },
+      "camera": {
+        "fov_deg": 40,
+        "height_m": 1.5,
+        "pitch_deg": -6,
+        "orbit": {
+          "minPolar_deg": 55,
+          "maxPolar_deg": 88,
+          "minDist_m": 1.5,
+          "maxDist_m": 12
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.2,
+          0.9
+        ],
+        "metalness": [
+          0,
+          0.6
+        ],
+        "notes": "emissive or MeshBasicMaterial with blending AdditiveBlending, transparent true, depthWrite false, opacity 0.35-0.6; the projector base stays opaque and physically lit so the hologram has something to sit on"
+      },
+      "motion": {
+        "sway_period_s": [
+          2.0,
+          3.0
+        ],
+        "ease": "linear",
+        "hold_ms": 200
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.0,
+          "strength": 0.6,
+          "radius": 0.8
+        },
+        "vignette": 0.3,
+        "grain": 0.05,
+        "dof": "off"
+      },
+      "signature_technique": "a 2-on / 2-off horizontal scanline mask scrolling at 0.12 screen-heights per second over the emissive pass, plus a 0.35-opacity additive ground reflection under the projector base",
+      "never": [
+        "relying on bloom to make layers legible",
+        "reusing the hologram cyan for a data-encoded channel",
+        "claiming real optical holography",
+        "opaque emissive surfaces with depthWrite left on"
+      ]
+    }
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at exposure 1.1; re-tune every intensity, fog density and bloom threshold if you change the tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with wireframe or scientific encoding while keeping data colors distinct from decorative scan colors."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

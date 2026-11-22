@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "id": "recipe.orbital-reference-frames",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Reference frames and time for orbital scenes"
+  },
+  "aliases": {
+    "en": [
+      "inertial frame",
+      "body-fixed frame",
+      "frame transformation"
+    ]
+  },
+  "direction_ids": [
+    "astronomy-space"
+  ],
+  "summary": "Make the frame an explicit object: the same trajectory drawn in an inertial and a rotating frame looks completely different, and both are correct.",
+  "objective": "Build a scene where one satellite trajectory can be shown in an inertial frame or in a body-fixed rotating frame, with the frame named in every readout.",
+  "tags": [
+    "reference frame",
+    "orbit",
+    "time"
+  ],
+  "subject_terms": [
+    "inertial frame",
+    "body-fixed frame",
+    "rotating frame",
+    "frame transformation",
+    "epoch",
+    "ground track",
+    "state vector",
+    "orientation"
+  ],
+  "intent_signals": [
+    "Show the same orbit in an inertial frame and in an Earth-fixed frame.",
+    "Explain why a ground track drifts westward."
+  ],
+  "example_prompts": [
+    "Build an orbit viewer that switches between inertial and body-fixed frames with the frame labelled.",
+    "Show a satellite trajectory and its ground track derived from the same states."
+  ],
+  "negative_signals": [
+    "Not an ephemeris or mission planning tool: no propagation accuracy, perturbations or manoeuvres are claimed.",
+    "Not a source of real satellite positions unless a dataset is supplied and cited."
+  ],
+  "not_for": [
+    "Not an ephemeris or mission planning tool: no propagation accuracy, perturbations or manoeuvres are claimed.",
+    "Not a source of real satellite positions unless a dataset is supplied and cited."
+  ],
+  "entities": [
+    {
+      "name": "Frame axes",
+      "guidance": "Draw both frames as visible axis triads anchored at the same origin, since the transformation between them is the subject."
+    },
+    {
+      "name": "Trajectory in two frames",
+      "guidance": "Draw the same state history in each frame, so the difference is a transformation and not two authored curves."
+    },
+    {
+      "name": "Frame-tagged readouts",
+      "guidance": "Tag every position, velocity and angle readout with the frame it is expressed in."
+    }
+  ],
+  "state_contract": {
+    "model": "A state history sampled at epochs in one primary frame with a declared common origin, and a time-dependent rotation R(t) to a body-fixed frame. Positions transform as r_body = R r_primary, while velocities require the derivative term, v_body = R v_primary plus the derivative of R applied to r_primary. Each historical sample is transformed with the rotation at its own epoch, never with the current orientation. The epoch and time system are stated, and no propagation accuracy is claimed.",
+    "authority": "The primary-frame states are authoritative; the alternative view is a transformation of the same data, never a separately authored path.",
+    "actions": [
+      "Switch the display frame.",
+      "Scrub time and watch the body-fixed view rotate.",
+      "Toggle the ground track derived from the same states.",
+      "Reset epoch, frame and camera."
+    ]
+  },
+  "invariants": [
+    "Switching frames never changes the stored state history. Positions rotate with R at each sample epoch, and any velocity shown in the rotating frame includes the frame-rate term; a velocity rotated by R alone is a defect.",
+    "Every numeric readout names its frame; an unlabelled coordinate is treated as an error.",
+    "The ground track is derived from the same states, using a declared sphere or ellipsoid, a stated longitude convention and explicit seam handling at the antimeridian."
+  ],
+  "motion_guidance": [
+    "Animate the frame change as a rotation over a short interval so the viewer sees the transformation rather than a cut.",
+    "Advance time at a stated ratio with the epoch and elapsed time visible."
+  ],
+  "known_limits": [
+    "Frame conventions and time systems are numerous; a scene must state exactly which ones it implements.",
+    "This recipe covers presentation and transformation, not orbit determination or propagation accuracy.",
+    "Frame and time-system labels do not by themselves implement a precise rotation model; the scene names the rotation model it uses and keeps the no-propagation-accuracy limit.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-reference-frame-requirement",
+      "statement": "Space geometry software distinguishes inertial frames such as an Earth mean equator and equinox frame, which do not rotate with respect to the star background, from body-fixed frames such as an Earth rotating frame, and requires the frame to be named when a state is requested.",
+      "scope": "Frame vocabulary and the requirement to specify a frame as documented; the scene must state the specific frames it implements.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-naif-frames",
+          "locator": "Frames Required Reading, inertial and body-fixed frames and frame specification"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Frame axes",
+      "structure": "Two labelled axis triads with distinct shaft profiles so they remain distinguishable when nearly aligned.",
+      "material": "One reserved accent per frame with strong value separation; labels are opaque plates.",
+      "articulation": "The body-fixed triad rotates with the modelled body rotation rate."
+    },
+    {
+      "family": "Trajectory in two frames",
+      "structure": "A tube along the state history with time ticks, drawn from the same samples in either frame.",
+      "material": "Identical trajectory material in both frames so the viewer attributes differences to the frame, not to styling.",
+      "articulation": "Rebuilt on frame switch from the same underlying samples."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Frame transformation and presentation of supplied or authored states; no force model or propagation.",
+    "state": [
+      "state history",
+      "epoch",
+      "selected frame"
+    ],
+    "checks": [
+      "Frame switching preserves the state history exactly.",
+      "Every readout displays its frame label."
+    ]
+  },
+  "related_ids": [
+    "recipe.kepler-equal-area-orbit",
+    "recipe.earth-tilt-seasons",
+    "knowledge.comparison-stage"
+  ]
+}

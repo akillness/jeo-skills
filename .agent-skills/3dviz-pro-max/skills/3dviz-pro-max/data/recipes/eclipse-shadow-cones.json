@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "id": "recipe.eclipse-shadow-cones",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Eclipse shadow cones and node alignment"
+  },
+  "aliases": {
+    "en": [
+      "umbra and penumbra",
+      "eclipse geometry",
+      "orbital tilt"
+    ]
+  },
+  "direction_ids": [
+    "astronomy-space"
+  ],
+  "summary": "Build the shadow as real cones between finite bodies so partial, total and annular conditions follow from which cone contains the observer.",
+  "objective": "Build an eclipse geometry scene with umbra and penumbra cones and an orbital tilt that explains why eclipses do not happen every month.",
+  "tags": [
+    "eclipse",
+    "shadow",
+    "geometry"
+  ],
+  "subject_terms": [
+    "umbra",
+    "penumbra",
+    "eclipse",
+    "shadow cone",
+    "orbital tilt",
+    "node",
+    "alignment",
+    "observer position"
+  ],
+  "intent_signals": [
+    "Show why eclipses do not happen every month.",
+    "Explain umbra and penumbra with real shadow geometry."
+  ],
+  "example_prompts": [
+    "Build an eclipse scene with umbra and penumbra cones and a tiltable orbit to show eclipse seasons.",
+    "Show what an observer sees inside the umbra compared with the penumbra."
+  ],
+  "negative_signals": [
+    "Not an eclipse prediction tool: no dates, contact times or paths of totality are computed.",
+    "Not to scale in distances unless the scene states an exaggeration factor."
+  ],
+  "not_for": [
+    "Not an eclipse prediction tool: no dates, contact times or paths of totality are computed.",
+    "Not to scale in distances unless the scene states an exaggeration factor."
+  ],
+  "entities": [
+    {
+      "name": "Bodies and light source",
+      "guidance": "Model the illuminating body with a finite radius, since a point source would produce no penumbra at all."
+    },
+    {
+      "name": "Shadow cones",
+      "guidance": "Construct umbra, penumbra and antumbra from the tangent lines between the finite source and the occulting body. The umbra ends at its apex: beyond that point the continuation is the antumbra, where the source is not fully covered, and it must never be drawn as full shadow."
+    },
+    {
+      "name": "Observer view",
+      "guidance": "Classify the observer as none, partial, total or annular from the angular discs of source and occulter at the observer position, and show a local view that agrees with that classification."
+    }
+  ],
+  "state_contract": {
+    "model": "Two spheres with positive radii and a declared ordering of source and occulter, separations with a stated exaggeration factor, and umbra, penumbra and antumbra cones from tangent constructions. The observer classification is none, partial, total or annular, computed from the angular sizes and separation of the two discs seen from the observer, using the same scale as the cone construction. Whether an eclipse occurs is decided by that geometric overlap, not by exact node alignment.",
+    "authority": "The geometric construction is authoritative: the observer view must agree with cone membership, and a shadow drawn without tangent geometry is decoration.",
+    "actions": [
+      "Move the occulting body along its tilted orbit.",
+      "Move the observer across the shadow.",
+      "Change the tilt and find the alignment where an eclipse occurs.",
+      "Reset bodies, tilt and observer."
+    ]
+  },
+  "invariants": [
+    "A finite-radius source always produces both an umbra and a penumbra, and the umbral cone terminates at its apex; where the apex falls short of the target the antumbra is drawn and annular conditions are reported rather than extending the umbra.",
+    "The observer view matches the classification: fully covered in the umbra, a ring in the antumbra, partly covered in the penumbra and uncovered outside, with the same scale used for the cones and for the observer view.",
+    "Eclipses occur within a window around the nodes, not only at exact node crossings, because the bodies are finite; the scene reports no eclipse only when the computed geometry misses the target, and at zero orbital tilt there is no unique node line at all.",
+    "The drawn umbra ends at the computed apex L_umbra = R_occ d / (R_src - R_occ) measured from the occulter centre; a target beyond that distance is classified annular from the antumbra rather than total, and the same radii and separation feed the formula, the cone mesh and the observer classification."
+  ],
+  "motion_guidance": [
+    "Animate the occulting body along its orbit so the near misses at most months are seen, not just the aligned case.",
+    "Keep the scale exaggeration constant and stated during motion so the geometry stays interpretable."
+  ],
+  "known_limits": [
+    "Distances and radii are exaggerated for visibility; angular sizes in the scene are not real angular sizes unless stated.",
+    "Atmospheric refraction, limb darkening and the resulting colour of a totally eclipsed body are not modelled.",
+    "Distances and radii are exaggerated for visibility with a stated factor, and the same factor is used for the cone construction and for the observer classification so the two cannot disagree.",
+    "The tangent construction assumes a source larger than the occulter and positive separated radii; equal or larger occulters change the cone structure and are outside the supported regime.",
+    "The umbral-length formula is authored similar-triangles geometry in scene units under the stated exaggeration, not a sourced astronomical measurement; no real body radii or separations are recorded by this recipe.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-shadow-cones",
+      "statement": "The shadow of a body comprises a dark inner umbra where the source is completely blocked and a fainter outer penumbra where it is only partially blocked, and during an annular eclipse the part of the shadow extending from the end of the umbra is called the antumbra, where observers see an annular eclipse while those in the penumbra see a partial one.",
+      "scope": "Geometric shadow structure for a finite-radius source, including the antumbra beyond the umbral apex; no eclipse dates, contact times or angular sizes are claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-nasa-eclipse-geometry",
+          "locator": "Why Do Eclipses Happen, umbra, penumbra and the antumbra in the annular case"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-eclipse-node-alignment",
+      "statement": "Solar eclipses require the occulting body to pass between the source and the observer body at new moon, and because that orbit is inclined by about five degrees the shadow usually passes above or below, so eclipses occur only during limited eclipse seasons rather than every month.",
+      "scope": "Qualitative alignment condition as cited; no eclipse dates or predictions are claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-nasa-eclipse-geometry",
+          "locator": "Why Do Eclipses Happen, alignment, orbital tilt and eclipse seasons"
+        }
+      ]
+    }
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Scene-unit construction values, not astronomical measurements. The record deliberately exaggerates distances and radii, and the cited source gives no radii or separations, so no real body sizes are recorded here. The umbral length formula is similar-triangles geometry rather than a sourced fact: the external tangent touching both spheres gives R_occ / L = R_src / (d + L), hence L = R_occ d / (R_src - R_occ). The illustrative numbers are chosen so the apex falls inside the scene, making the antumbra visible; the regime is a source strictly larger than the occulter with positive separated radii, and the same exaggeration factor must be used for the cones and for the observer classification.",
+    "values": {
+      "parameters": {
+        "source_radius": {
+          "value": 5.0,
+          "unit": "scene units"
+        },
+        "occulter_radius": {
+          "value": 1.0,
+          "unit": "scene units"
+        },
+        "centre_separation": {
+          "value": 20.0,
+          "unit": "scene units"
+        }
+      },
+      "equations": [
+        "L_umbra = R_occ * d / (R_src - R_occ), the axial distance from the occulter centre to the umbral apex",
+        "similar triangles: R_occ / L_umbra = R_src / (d + L_umbra)",
+        "beyond L_umbra the cone continues as the antumbra and must not be drawn as full shadow",
+        "valid only for R_src > R_occ; at R_src = R_occ the umbra is a cylinder and at R_src < R_occ it never closes"
+      ],
+      "worked_example": {
+        "inputs": "R_src = 5.0, R_occ = 1.0, d = 20.0 scene units",
+        "expected": "L_umbra = 5.0 scene units, so the umbral apex sits 5 units beyond the occulter centre and a target placed further away than that lies in the antumbra and sees an annular, not a total, eclipse",
+        "derivation": "L_umbra = 1.0 * 20.0 / (5.0 - 1.0) = 20.0 / 4.0 = 5.0"
+      }
+    }
+  },
+  "object_craft": [
+    {
+      "family": "Bodies and light source",
+      "structure": "Spheres with a modelled terminator and a finite-radius source whose limb is visible, plus a scale caption.",
+      "material": "Unlit night sides rather than ambient-filled ones, so the shadow geometry is not softened by fill light.",
+      "articulation": "Bodies orbit along authored paths; the tilt rotates the orbital plane."
+    },
+    {
+      "family": "Shadow cones",
+      "structure": "Cone geometry constructed from tangent lines, drawn as translucent volumes with visible apex and boundaries.",
+      "material": "Distinct translucent materials and legend labels for umbra, penumbra and antumbra; the apex and annular continuation are visible.",
+      "articulation": "Cones are rebuilt whenever positions or radii change."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Geometric shadow construction and presentation; no gravitational dynamics or radiative transfer.",
+    "state": [
+      "body positions",
+      "orbital tilt",
+      "observer position",
+      "cone membership"
+    ],
+    "checks": [
+      "Observer view agrees with the cone containing the observer.",
+      "Near-node but not exactly on-node configurations may still eclipse. Report none only when the observer angular discs do not overlap; at zero inclination there is no unique node line."
+    ]
+  },
+  "related_ids": [
+    "recipe.moon-phase-observer",
+    "recipe.earth-tilt-seasons",
+    "knowledge.signed-field-section"
+  ]
+}

@@ -1,0 +1,278 @@
+{
+ "className": "Model",
+ "children": [
+  {
+   "name": "Floor",
+   "className": "Part",
+   "properties": {
+    "Anchored": true,
+    "Size": [
+     100,
+     2,
+     100
+    ],
+    "CFrame": [
+     400,
+     -1,
+     0,
+     1,
+     0,
+     0,
+     0,
+     1,
+     0,
+     0,
+     0,
+     1
+    ],
+    "Color": [
+     0.3,
+     0.34,
+     0.3
+    ],
+    "Material": "Grass"
+   }
+  },
+  {
+   "name": "Pillar1",
+   "className": "Part",
+   "properties": {
+    "Anchored": true,
+    "Size": [
+     6,
+     16,
+     6
+    ],
+    "CFrame": [
+     385,
+     8,
+     -15,
+     1,
+     0,
+     0,
+     0,
+     1,
+     0,
+     0,
+     0,
+     1
+    ],
+    "Color": [
+     0.6,
+     0.6,
+     0.62
+    ],
+    "Material": "Rock"
+   }
+  },
+  {
+   "name": "Pillar2",
+   "className": "Part",
+   "properties": {
+    "Anchored": true,
+    "Size": [
+     6,
+     16,
+     6
+    ],
+    "CFrame": [
+     415,
+     8,
+     -15,
+     1,
+     0,
+     0,
+     0,
+     1,
+     0,
+     0,
+     0,
+     1
+    ],
+    "Color": [
+     0.6,
+     0.6,
+     0.62
+    ],
+    "Material": "Rock"
+   }
+  },
+  {
+   "name": "Pillar3",
+   "className": "Part",
+   "properties": {
+    "Anchored": true,
+    "Size": [
+     6,
+     16,
+     6
+    ],
+    "CFrame": [
+     385,
+     8,
+     15,
+     1,
+     0,
+     0,
+     0,
+     1,
+     0,
+     0,
+     0,
+     1
+    ],
+    "Color": [
+     0.6,
+     0.6,
+     0.62
+    ],
+    "Material": "Rock"
+   }
+  },
+  {
+   "name": "Pillar4",
+   "className": "Part",
+   "properties": {
+    "Anchored": true,
+    "Size": [
+     6,
+     16,
+     6
+    ],
+    "CFrame": [
+     415,
+     8,
+     15,
+     1,
+     0,
+     0,
+     0,
+     1,
+     0,
+     0,
+     0,
+     1
+    ],
+    "Color": [
+     0.6,
+     0.6,
+     0.62
+    ],
+    "Material": "Rock"
+   }
+  },
+  {
+   "name": "Lava",
+   "className": "Part",
+   "properties": {
+    "Anchored": true,
+    "Size": [
+     10,
+     1,
+     10
+    ],
+    "CFrame": [
+     360,
+     0.5,
+     40,
+     1,
+     0,
+     0,
+     0,
+     1,
+     0,
+     0,
+     0,
+     1
+    ],
+    "Color": [
+     1,
+     0.35,
+     0.1
+    ],
+    "Material": "Neon",
+    "Tags": [
+     "Hazard"
+    ]
+   }
+  },
+  {
+   "name": "Spawns",
+   "className": "Folder",
+   "children": [
+    {
+     "name": "A",
+     "className": "Part",
+     "properties": {
+      "Anchored": true,
+      "Size": [
+       6,
+       1,
+       6
+      ],
+      "CFrame": [
+       400,
+       0.5,
+       -40,
+       1,
+       0,
+       0,
+       0,
+       1,
+       0,
+       0,
+       0,
+       1
+      ],
+      "Color": [
+       0.9,
+       0.9,
+       0.9
+      ],
+      "Material": "SmoothPlastic",
+      "Transparency": 1,
+      "CanCollide": false,
+      "CanTouch": false,
+      "CanQuery": false
+     }
+    },
+    {
+     "name": "B",
+     "className": "Part",
+     "properties": {
+      "Anchored": true,
+      "Size": [
+       6,
+       1,
+       6
+      ],
+      "CFrame": [
+       400,
+       0.5,
+       40,
+       1,
+       0,
+       0,
+       0,
+       1,
+       0,
+       0,
+       0,
+       1
+      ],
+      "Color": [
+       0.9,
+       0.9,
+       0.9
+      ],
+      "Material": "SmoothPlastic",
+      "Transparency": 1,
+      "CanCollide": false,
+      "CanTouch": false,
+      "CanQuery": false
+     }
+    }
+   ]
+  }
+ ]
+}

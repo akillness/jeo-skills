@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-fence-run",
+  "record_revision": 2,
+  "asset": "templates/kits/props/fence-run.js",
+  "asset_sha256": "e438bee08915c64d83648877cc40f1f4ec7fdbf5ff711895c77391045d008ff5",
+  "params": {
+    "length_m": 4.6,
+    "posts": 4,
+    "height": 1.18,
+    "seed": 1,
+    "sag": 0.055
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-fence-run",
+    "module": "../props/fence-run.js",
+    "params": {
+      "length_m": 4.6,
+      "posts": 4,
+      "height": 1.18,
+      "seed": 1,
+      "sag": 0.055
+    },
+    "triangles": 2160,
+    "bounds_m": {
+      "min": [
+        -2.363738372270082,
+        -0.0015537645422881495,
+        -0.08201271410162993
+      ],
+      "max": [
+        2.384623349550979,
+        1.2734966006588122,
+        0.11873673927038908
+      ],
+      "size": [
+        4.748361721821061,
+        1.2750503652011003,
+        0.200749453372019
+      ]
+    },
+    "fit_distance_m": 7.1935,
+    "view_distances_m": {
+      "far": 17.2645,
+      "mid": 8.6322,
+      "close": 5.611,
+      "detail": 0.4319
+    },
+    "sockets": [
+      "start",
+      "end",
+      "gate"
+    ],
+    "detail_socket": "start",
+    "animated": false,
+    "colliders": [
+      "run"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "7548098887342dff7ef8302735a6b8e90b60d76dadfcfac905c4dc75f3422725",
+    "mid.png": "c39a33749fa8631d3d1cfa9d3288ee87123c6a80dbd22dbccc43cca10bac3715",
+    "close.png": "f955ae9ce24ac0d7b21e57d3abceabb6a6380410438d58e32d9d7e10423a1849",
+    "detail.png": "f1535f3f27b3e78225a23b9064b9d501be22cb153036c6a448116545e66ec5fe"
+  },
+  "motion": null,
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:51:10+00:00",
+  "finished": "2026-09-08T13:51:14+00:00"
+}

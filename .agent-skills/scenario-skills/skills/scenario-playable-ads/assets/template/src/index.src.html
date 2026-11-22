@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <!-- network:head -->
+    <title>GAME NAME</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: #5ec8ff;
+        touch-action: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      canvas {
+        display: block;
+        touch-action: none;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <script>
+      // Everything the runtime needs. Each double-brace asset token is replaced by a data URI of assets/web/<name> at build time.
+      window.GAME_CFG = {
+        store: {
+          ios: "https://apps.apple.com/app/game-name/id0000000000",
+          android:
+            "https://play.google.com/store/apps/details?id=com.example.game",
+        },
+        font: "HudFont",
+        fontData: "{{font.woff2}}",
+        ink: "#13244d",
+        clearColor: "#5ec8ff",
+        ctaLabel: "PLAY FREE",
+        logo: "logo",
+        sideBg: "bg",
+        sideTint: "rgba(20,50,120,0.3)",
+        music: "music",
+        musicVolume: 0.4,
+        mute: "bl", // the runtime always draws the mute button; this only moves it ('bl' | 'br' | 'tl' | 'tr' | {x, y})
+        soundGap: 0.3, // no sound repeats faster than about 3 times a second (skill runtime)
+        images: {
+          bg: "{{bg.webp}}",
+          logo: "{{logo.webp}}",
+          piece: "{{piece.webp}}",
+          star: "{{star.webp}}",
+          hero: "{{hero.webp}}",
+          coin: "{{coin.webp}}",
+        },
+        sounds: {
+          pop: "{{pop.mp3}}",
+          payoff: "{{payoff.mp3}}",
+          win: "{{win.mp3}}",
+          fail: "{{fail.mp3}}",
+          music: "{{music.mp3}}",
+        },
+      };
+    </script>
+    <!-- include: runtime/runtime.js -->
+    <!-- include: src/game.js -->
+  </body>
+</html>

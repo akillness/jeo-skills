@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "id": "recipe.service-graph",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Service graph with trace inspection"
+  },
+  "aliases": {
+    "en": [
+      "service graph"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data"
+  ],
+  "summary": "Connect service nodes to observed trace relationships while exposing incomplete coverage.",
+  "objective": "Build a service graph from a trace fixture and let me inspect synchronous calls and asynchronous span links.",
+  "tags": [
+    "service",
+    "graph"
+  ],
+  "example_prompts": [
+    "Build a service graph from a trace fixture and let me inspect synchronous calls and asynchronous span links."
+  ],
+  "entities": [
+    {
+      "name": "Services",
+      "guidance": "Use stable service labels with restrained extrusion; node size must have a stated meaning or stay uniform."
+    },
+    {
+      "name": "Edges",
+      "guidance": "Distinguish parent-child calls from span links using labels and line style; direction follows the data contract."
+    },
+    {
+      "name": "Trace inspector",
+      "guidance": "Show trace/span IDs in a technical inspection panel and time range; keep source records available."
+    }
+  ],
+  "state_contract": {
+    "model": "Explicitly labeled trace fixture or observed dataset, stable service identity, spans and causal links; layout is independent of timing.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Select an edge to inspect supporting spans.",
+      "Filter a declared time window.",
+      "Replay the trace and reset filters."
+    ]
+  },
+  "invariants": [
+    "Every asserted observed edge has supporting input records.",
+    "Missing spans do not imply that no dependency exists.",
+    "Do not treat asynchronous links as an ordinary nested synchronous call."
+  ],
+  "motion_guidance": [
+    "Use trace timestamps for playback only when supplied; label synthetic timing otherwise.",
+    "Layout relaxation never changes service identity or causal edges."
+  ],
+  "known_limits": [
+    "Not a complete network map; trace sampling and instrumentation gaps remain visible.",
+    "No monitoring connector or live data is bundled.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.service-graph",
+      "statement": "Span links can associate causally related spans, including asynchronous work tracked in another trace.",
+      "scope": "OpenTelemetry link semantics; no claim that links exhaust all causality.",
+      "source_refs": [
+        {
+          "source_id": "source.opentelemetry-traces",
+          "locator": "Span Links"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Services",
+      "structure": "Use stable service labels with restrained extrusion; node size must have a stated meaning or stay uniform.",
+      "material": "Uniform subdued service solids and distinct call/link line styles; glow must not imply unmeasured traffic volume."
+    },
+    {
+      "family": "Edges",
+      "structure": "Distinguish parent-child calls from span links using labels and line style; direction follows the data contract.",
+      "material": "Uniform subdued service solids and distinct call/link line styles; glow must not imply unmeasured traffic volume."
+    },
+    {
+      "family": "Trace inspector",
+      "structure": "Show trace/span IDs in a technical inspection panel and time range; keep source records available.",
+      "material": "Uniform subdued service solids and distinct call/link line styles; glow must not imply unmeasured traffic volume."
+    }
+  ]
+}

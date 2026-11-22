@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "id": "recipe.vessel-radius-resistance",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Ideal vessel radius and resistance"
+  },
+  "aliases": {
+    "en": [
+      "Poiseuille flow explainer",
+      "vascular resistance comparison"
+    ]
+  },
+  "direction_ids": [
+    "physiology-biomechanics"
+  ],
+  "summary": "Compare how an ideal tube model changes resistance when radius changes.",
+  "objective": "Show two ideal vessel tubes and compare flow when one radius is halved at fixed pressure difference.",
+  "tags": [
+    "vessel radius",
+    "Poiseuille",
+    "resistance"
+  ],
+  "subject_terms": [
+    "vessel radius",
+    "Poiseuille",
+    "resistance",
+    "viscosity",
+    "pressure difference"
+  ],
+  "intent_signals": [
+    "change vessel radius",
+    "compare flow at fixed pressure"
+  ],
+  "example_prompts": [
+    "Show two ideal vessel tubes and compare flow when one radius is halved at fixed pressure difference.",
+    "Let me change radius, viscosity and length while seeing the declared equation."
+  ],
+  "entities": [
+    {
+      "name": "Tube pair",
+      "guidance": "Build straight transparent cylindrical walls with visible lumen radius and length brackets."
+    },
+    {
+      "name": "Flow indicator",
+      "guidance": "Use an aggregate flow bar and optional tracer markers that are explicitly illustrative."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Tube pair",
+      "structure": "Build straight transparent cylindrical walls with visible lumen radius and length brackets.",
+      "material": "Schematic translucent wall and flat inlet/outlet discs."
+    },
+    {
+      "family": "Flow indicator",
+      "structure": "Use an aggregate flow bar and optional tracer markers that are explicitly illustrative.",
+      "material": "Distinct reference and comparison colors; no red-cell realism."
+    }
+  ],
+  "state_contract": {
+    "model": "Steady ideal cylindrical-tube relation R=8*eta*L/(pi*r^4), Q=deltaP/R; positive finite r,L,eta and declared compatible SI inputs.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Edit one parameter at a time.",
+      "Hold pressure difference fixed or hold flow fixed with explicit mode.",
+      "Reset comparison."
+    ]
+  },
+  "invariants": [
+    "Halving radius at fixed viscosity/length multiplies model resistance by 16.",
+    "Mode determines which dependent variable changes; labels cannot imply both flow and pressure were held fixed.",
+    "Reject nonpositive radius, length or viscosity."
+  ],
+  "motion_guidance": [
+    "Recompute scalar quantities directly on edits; smooth display only and retain numeric endpoint values.",
+    "Tracer speed is labeled illustrative unless a separately specified velocity field is implemented."
+  ],
+  "known_limits": [
+    "Ideal steady laminar Newtonian rigid-tube approximation; real blood and vessels need additional assumptions.",
+    "The cited section states the fourth-power relation and the 16-fold ratios but gives no numeric viscosity, vessel length or radius, so the defaults carry ratios and no absolute SI inputs; any absolute numbers a scene uses are the contributor's and must be declared as such.",
+    "No pulsatility, branching network, vessel compliance or diagnostic prediction.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [
+    {
+      "id": "claim.vessel-radius-resistance",
+      "statement": "For the ideal tube relation used here, resistance is 8*eta*L/(pi*r^4) and flow is pressure difference divided by resistance.",
+      "scope": "Positive radius, length and viscosity; steady laminar Newtonian flow in an ideal cylindrical tube; physiology application is explanatory.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-resistance",
+          "locator": "Poiseuille equation and rearranged resistance equation preceding Blood Volume"
+        }
+      ]
+    },
+    {
+      "id": "claim.vessel-radius-fourth-power",
+      "statement": "Resistance is inversely proportional to the vessel radius raised to the fourth power, so if an artery or arteriole constricts to one-half of its original radius the resistance to flow increases 16 times, and if it dilates to twice its initial radius the resistance falls to one sixteenth of its original value and flow increases 16 times.",
+      "scope": "The ratio consequences of the fourth-power dependence at fixed viscosity, length and pressure difference. The section states no numeric viscosity, length or radius.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-resistance",
+          "locator": "20.2 Blood Flow, Blood Pressure, and Resistance: \"Blood flow = pi delta P r^4 / 8 eta lambda\" and \"Resistance = 8 eta lambda / pi r^4\"; \"Blood flow = delta P / Resistance\"; \"resistance is inversely proportional to the radius of the blood vessel (one-half of the vessel's diameter) raised to the fourth power (R = 1/r^4)\"; \"if an artery or arteriole constricts to one-half of its original radius, the resistance to flow will increase 16 times\"; \"if an artery or arteriole dilates to twice its initial radius, then resistance in the vessel will decrease to 1/16 of its original value and flow will increase 16 times\""
+        }
+      ]
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Algebraic steady-flow comparison.",
+    "state": [
+      "r",
+      "L",
+      "eta",
+      "deltaP",
+      "Q",
+      "R"
+    ],
+    "colliders": [
+      "No moving-body colliders."
+    ],
+    "driving": [
+      "Parameter evaluation, not time integration."
+    ],
+    "contact": [
+      "No cell-wall contact simulation."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Check 16-fold resistance ratio at half radius; reject invalid inputs."
+    ]
+  },
+  "defaults": {
+    "provenance": "source-backed",
+    "tunable": false,
+    "claim_ids": [
+      "claim.vessel-radius-resistance",
+      "claim.vessel-radius-fourth-power"
+    ],
+    "rationale": "The relation, the exponent and both 16-fold ratios restate the cited section (claim.vessel-radius-resistance, claim.vessel-radius-fourth-power). Absolute inputs are deliberately absent rather than invented: the section prints no viscosity, length or radius, so viscosity, length, radius and pressure difference are recorded as no default and the scene must take them from the user as a declared compatible SI set. What the defaults do fix is the part that is sourced and exactly checkable - the exponent 4 and the ratios 16 and 1/16 - which is also what the recipe's own invariant tests. Not tunable: these are the relation's own numbers, and changing the exponent changes the physics rather than the styling.",
+    "values": {
+      "parameters": {
+        "radius_exponent": {
+          "value": 4,
+          "unit": "dimensionless",
+          "note": "sourced: R proportional to 1/r^4"
+        },
+        "radius_ratio_constriction": {
+          "value": 0.5,
+          "unit": "dimensionless",
+          "note": "sourced case: constriction to one-half of the original radius"
+        },
+        "resistance_ratio_at_half_radius": {
+          "value": 16,
+          "unit": "dimensionless",
+          "note": "sourced result"
+        },
+        "radius_ratio_dilation": {
+          "value": 2.0,
+          "unit": "dimensionless",
+          "note": "sourced case: dilation to twice the initial radius"
+        },
+        "resistance_ratio_at_double_radius": {
+          "value": 0.0625,
+          "unit": "dimensionless",
+          "note": "sourced as one sixteenth; flow rises 16 times at fixed pressure difference"
+        },
+        "dynamic_viscosity": {
+          "value": "no default; source gives none",
+          "unit": "Pa*s",
+          "note": "the section names viscosity as a factor without printing a value"
+        },
+        "vessel_length": {
+          "value": "no default; source gives none",
+          "unit": "m"
+        },
+        "vessel_radius": {
+          "value": "no default; source gives none",
+          "unit": "m",
+          "note": "the recipe compares two radii, so the absolute value cancels in every sourced statement"
+        },
+        "pressure_difference": {
+          "value": "no default; source gives none",
+          "unit": "Pa"
+        }
+      },
+      "equations": [
+        "R = 8 * eta * L / (pi * r^4)",
+        "Q = delta_P / R",
+        "R2 / R1 = (r1 / r2)^4",
+        "Q2 / Q1 = (r2 / r1)^4 at fixed delta_P"
+      ],
+      "worked_example": {
+        "inputs": "Any valid positive eta, L and delta_P held fixed while the radius is halved (r2 = r1 / 2), then the same baseline while the radius is doubled (r2 = 2 r1)",
+        "expected": "Halving the radius multiplies resistance by exactly 16 and divides flow by 16; doubling it divides resistance by 16 and multiplies flow by 16",
+        "derivation": "R = 8 eta L / (pi r^4), so R2/R1 = (r1/r2)^4 and every constant cancels. With r2 = r1/2 the ratio is (1/(1/2))^4 = 2^4 = 16; at fixed delta_P, Q = delta_P / R gives Q2/Q1 = 1/16 = 0.0625. With r2 = 2 r1 the ratio is (1/2)^4 = 1/16 = 0.0625 and Q2/Q1 = 16. Both results match the section's own wording, and the halved-radius case is the recipe's stated invariant. Note the trap the exponent creates: a control that edits diameter rather than radius produces the same factor 16, but a control that edits cross-sectional area produces a factor of 4 for the same 16-fold resistance change, so the label must say which quantity it edits."
+      },
+      "tolerance": {
+        "ratio": "rtol 1e-12 in double precision; these are exact powers of two and any drift is an implementation error, not a modelling tolerance",
+        "inputs": "reject non-positive radius, length or viscosity before computing rather than returning an infinity"
+      }
+    }
+  }
+}

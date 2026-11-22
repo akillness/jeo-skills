@@ -1,0 +1,50 @@
+/* Palette variables are the LOOK swatches: knowledge.style-lantern-festival-riverside.
+   The viewport is sized by its container; main.js reads that box in the ResizeObserver. */
+:root {
+  --ink: #efe2c8;
+  --panel: #16203a;
+  --panel-deep: #101830;
+  --edge: #2c3557;
+  --accent: #f2b25c;
+  --accent-deep: #c8642e;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #0b1120; color: var(--ink); font: 15px/1.5 system-ui, sans-serif; }
+.layout { display: grid; grid-template-columns: 1fr 21rem; min-height: 100vh; }
+.viewport { position: relative; min-width: 0; }
+#world { display: block; width: 100%; height: 100%; cursor: crosshair; }
+#error {
+  position: absolute; inset: auto 1rem 1rem; margin: 0; padding: 0.75rem 1rem;
+  background: #40161a; border: 1px solid #a33; border-radius: 6px;
+}
+.panel {
+  padding: 1.4rem; background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+  border-left: 1px solid var(--edge); overflow-y: auto; max-height: 100vh;
+}
+.eyebrow { margin: 0; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); opacity: 0.85; }
+h1 { margin: 0.2rem 0 0.5rem; font: 600 30px/1.1 Georgia, 'Times New Roman', serif; }
+h2 { margin: 1.2rem 0 0.5rem; font: 600 11px/1 system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.6; }
+.lede { margin: 0 0 0.5rem; opacity: 0.85; font-size: 14px; }
+#views, #picks, .controls { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 0.4rem; }
+.controls { margin-top: 1.2rem; }
+button {
+  padding: 0.4rem 0.7rem; color: var(--ink); background: #1e2946;
+  border: 1px solid var(--edge); border-radius: 5px; font: inherit; font-size: 13px; cursor: pointer;
+}
+button:hover { border-color: var(--accent); }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button[aria-pressed='true'] { background: var(--accent-deep); border-color: var(--accent); color: #fff4e2; }
+.readout {
+  margin: 1rem 0 0; padding: 0.8rem 0.9rem; background: #0e1729;
+  border: 1px solid var(--edge); border-left: 3px solid var(--accent); border-radius: 5px;
+}
+.readout h3 { margin: 0 0 0.35rem; font: 600 17px/1.2 Georgia, serif; color: var(--accent); }
+.readout p { margin: 0 0 0.35rem; font-size: 13.5px; }
+.dims { font-size: 12px; opacity: 0.65; font-variant-numeric: tabular-nums; }
+.fineprint { margin: 1rem 0 0; font-size: 11.5px; line-height: 1.45; opacity: 0.55; }
+@media (max-width: 760px) {
+  .layout { grid-template-columns: 1fr; }
+  .viewport { height: 58vh; }
+  .panel { border-left: 0; border-top: 1px solid var(--edge); max-height: none; }
+}

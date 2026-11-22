@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "id": "recipe.buoyancy-floating-equilibrium",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Buoyancy and floating equilibrium"
+  },
+  "aliases": {
+    "en": [
+      "Archimedes principle",
+      "floating",
+      "displaced volume"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal"
+  ],
+  "summary": "Make the displaced volume an explicit object so flotation becomes a balance the viewer can watch settle.",
+  "objective": "Build a floating body whose submerged volume, displaced fluid weight and net force are computed and shown as it settles to its waterline.",
+  "tags": [
+    "buoyancy",
+    "flotation",
+    "displacement"
+  ],
+  "subject_terms": [
+    "Archimedes principle",
+    "buoyant force",
+    "displaced fluid",
+    "waterline",
+    "density",
+    "submerged volume",
+    "equilibrium"
+  ],
+  "intent_signals": [
+    "Show why a body floats at a particular depth.",
+    "Explain buoyancy as the weight of displaced fluid."
+  ],
+  "example_prompts": [
+    "Build a floating body with a computed waterline and a displaced volume readout.",
+    "Show what happens to the waterline when I change the body density or the fluid density."
+  ],
+  "negative_signals": [
+    "Not a naval architecture tool: rotational stability, metacentric height and free surface effects are out of scope.",
+    "Not a fluid solver; the fluid is a static level, not a simulated liquid."
+  ],
+  "not_for": [
+    "Not a naval architecture tool: rotational stability, metacentric height and free surface effects are out of scope.",
+    "Not a fluid solver; the fluid is a static level, not a simulated liquid."
+  ],
+  "entities": [
+    {
+      "name": "Floating body",
+      "guidance": "Model a body whose submerged volume changes non-linearly with depth, so the equilibrium search is interesting rather than trivial."
+    },
+    {
+      "name": "Displaced volume",
+      "guidance": "Show the displaced fluid as its own visible volume, since the buoyant force is its weight and nothing else."
+    },
+    {
+      "name": "Force balance",
+      "guidance": "Draw weight and buoyant force as opposed arrows with a signed net value that goes to zero at equilibrium."
+    }
+  ],
+  "state_contract": {
+    "model": "A rigid body of positive mass m and closed displacement geometry of volume V, and a fluid at rest of positive density rho with a fixed world free surface. Submerged volume is obtained by clipping the body at that surface, the buoyant force is the weight of the displaced fluid, and vertical motion is damped toward equilibrium. Three regimes are distinguished: floating equilibrium when m is less than rho V, neutral buoyancy when m equals rho V with no unique depth, and no buoyant equilibrium when m exceeds rho V. A body resting on the bottom carries an additional normal force that this force balance does not model.",
+    "authority": "The computed submerged volume is authoritative for the force; the waterline is an outcome of the balance, never an authored constant.",
+    "actions": [
+      "Change body density or mass.",
+      "Change fluid density.",
+      "Push the body down and release it.",
+      "Reset to the authored configuration."
+    ]
+  },
+  "invariants": [
+    "In the floating regime the weight of displaced fluid at equilibrium equals the weight of the body within the stated tolerance; the equality is not asserted for a bottom-supported body, where a normal force outside this model also acts.",
+    "A body denser than the fluid reaches no buoyant equilibrium above the bottom and is reported as sinking; a body of exactly the fluid density is reported as neutrally buoyant with no unique depth rather than settled at an arbitrary one.",
+    "The displayed displaced volume always matches the volume of body below the waterline.",
+    "The world free surface height is fixed; what changes with density or mass is the hull draft measured from the keel, and the readout names which of the two it reports."
+  ],
+  "motion_guidance": [
+    "Damp the vertical settle so the equilibrium is approached visibly. That damping is an equilibrium-search device, not modelled viscosity or wave drag, and is labelled as such in the scene.",
+    "Keep the displaced volume visible during motion so the changing force has a visible cause."
+  ],
+  "known_limits": [
+    "Vertical translation only: no heel, trim or rotational stability, so this recipe cannot say whether a shape capsizes.",
+    "Static fluid at rest; waves, sloshing and viscosity are not modelled.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-archimedes-principle",
+      "statement": "The buoyant force on an object equals the weight of the fluid it displaces, and an object remains suspended at its present depth when the buoyant force equals its weight.",
+      "scope": "Static fluid at rest as cited; rotational stability is a separate question.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-archimedes",
+          "locator": "14.4, Archimedes' principle and the suspension condition"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Floating body",
+      "structure": "A hull-like solid with a varying cross-section and visible draft marks along its side.",
+      "material": "Matte body material with a wetted-surface variation below the waterline so the submerged portion is legible.",
+      "articulation": "The body translates vertically only; its geometry is rigid."
+    },
+    {
+      "family": "Displaced volume",
+      "structure": "A translucent solid generated by clipping the body at the free surface, shown beside or beneath the body.",
+      "material": "Low-opacity fluid-like material distinct from the body so the two volumes are never confused.",
+      "articulation": "Regenerated every time the waterline changes."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Vertical force balance with computed displacement; no rotation, waves, viscosity or fluid flow.",
+    "state": [
+      "vertical position",
+      "vertical velocity",
+      "submerged volume"
+    ],
+    "driving": [
+      "Gravity and buoyant force from displaced fluid weight, with damping."
+    ],
+    "timestep": "Fixed step with damping toward equilibrium; rendering interpolates.",
+    "checks": [
+      "Net force is within tolerance of zero at the settled waterline.",
+      "Increasing fluid density reduces the displaced volume required to balance the same weight, so the hull rises and its draft decreases while the world free surface stays fixed."
+    ]
+  },
+  "related_ids": [
+    "recipe.hydrostatic-depth-pressure",
+    "recipe.nozzle-continuity",
+    "knowledge.transmissive-medium"
+  ]
+}

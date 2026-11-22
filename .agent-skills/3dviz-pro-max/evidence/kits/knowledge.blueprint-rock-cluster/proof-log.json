@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-rock-cluster",
+  "record_revision": 2,
+  "asset": "templates/kits/nature/rock-cluster.js",
+  "asset_sha256": "250fba5fb12c51caaa8d6a85c8c24e167d70c7470f2845b38b5c8485abccfbb8",
+  "params": {
+    "count": 8,
+    "seed": 1,
+    "spread": 1.05,
+    "rock": "#8e8b84"
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-rock-cluster",
+    "module": "../nature/rock-cluster.js",
+    "params": {
+      "count": 8,
+      "seed": 1,
+      "spread": 1.05,
+      "rock": "#8e8b84"
+    },
+    "triangles": 800,
+    "bounds_m": {
+      "min": [
+        -1.208001275470845,
+        -0.24095098674297333,
+        -1.315320448937598
+      ],
+      "max": [
+        1.056935789291905,
+        0.763011350991583,
+        1.3513508141040802
+      ],
+      "size": [
+        2.2649370647627496,
+        1.0039623377345563,
+        2.6666712630416782
+      ]
+    },
+    "fit_distance_m": 5.3212,
+    "view_distances_m": {
+      "far": 12.7709,
+      "mid": 6.3854,
+      "close": 4.1505,
+      "detail": 1.0753
+    },
+    "sockets": [
+      "base",
+      "perch",
+      "shelter"
+    ],
+    "detail_socket": "base",
+    "animated": false,
+    "colliders": [
+      "cluster"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "39458ed175bd39a3181ad7579cc4f5c0c787128b1f91c9d9a26ee2df35da9171",
+    "mid.png": "3dbc4d0a1de151aae74c252513916f7b6f09615c202e141d7b6c08cca7a612e8",
+    "close.png": "2bf446417da50c7f56012e00b03b790a1a026c749e1f7868dfe540e462012b2b",
+    "detail.png": "3ad5841aa2b702e3b018686602444471b947ab11049aa6e8b77ecb1e3ee715f3"
+  },
+  "motion": null,
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:51:03+00:00",
+  "finished": "2026-09-08T13:51:07+00:00"
+}

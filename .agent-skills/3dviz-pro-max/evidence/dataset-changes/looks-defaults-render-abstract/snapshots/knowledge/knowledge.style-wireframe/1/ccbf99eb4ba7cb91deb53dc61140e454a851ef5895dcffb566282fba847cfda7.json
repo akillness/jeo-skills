@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-wireframe",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Wireframe structure view"
+  },
+  "aliases": {
+    "en": [
+      "wire frame",
+      "edge mesh view",
+      "mesh structure presentation"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry",
+    "products-assemblies"
+  ],
+  "summary": "Use selected edges to expose construction or relationships, deciding whether the view shows mesh topology, component outlines or an abstract graph.",
+  "objective": "Dense rear edges do not overwhelm the selected structure and the legend identifies what a line represents.",
+  "tags": [
+    "style-profile",
+    "representation-aesthetic",
+    "wireframe"
+  ],
+  "subject_terms": [
+    "wire frame",
+    "edge mesh view",
+    "mesh structure presentation",
+    "representation aesthetic"
+  ],
+  "intent_signals": [
+    "Show a wireframe structure view",
+    "Reveal selected edges and explain their meaning"
+  ],
+  "example_prompts": [
+    "Show a wireframe mechanical assembly with selected component edges and an optional solid reference view."
+  ],
+  "content": {
+    "principles": [
+      "Use selected edges to expose construction or relationships, deciding whether the view shows mesh topology, component outlines or an abstract graph.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Choose meaningful edges and suppress irrelevant tessellation where the task permits; preserve the distinction between a true mesh edge and an annotation.",
+      "Set line contrast against a quiet fill or background; optionally combine translucent surfaces and highlighted selected edges.",
+      "Offer orbit and a focus/isolation view; animate meaningful edits or component motion while keeping edge identities comprehensible."
+    ],
+    "observable_checks": [
+      "Dense rear edges do not overwhelm the selected structure and the legend identifies what a line represents.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with technical illustration or holographic presentation; a wireframe skin does not itself validate topology or hidden structure.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

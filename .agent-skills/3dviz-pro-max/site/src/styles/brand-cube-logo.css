@@ -1,0 +1,121 @@
+/* The nav mark built as a cube. Rest pose is `rotateX(-35.264deg) rotateY(45deg)`: the isometric
+   view whose projection is the mark's hexagon — vertical edges vertical, three faces towards the
+   reader. Every face is `backface-visibility: hidden`, so only the faces turned towards the reader
+   ever paint; a convex body's front faces never overlap, so the turn reads as solid — no back
+   edges show through, nothing z-fights. Each face is one rim wider than the body, so its rim
+   straddles the cube edge the way the mark's stroke straddles its path: that is what keeps the
+   line one weight everywhere, an outer edge drawn by one face and an inner edge by two faces over
+   the same band (both green, so the overlap does not show) rather than two bands side by side.
+   Imported by brand-cube-logo.tsx; the reduced-motion guard in app.css stops the turn.
+   Playwright's bundled WebKit paints every preserve-3d subtree flat — a textbook cube too — so it
+   shows this mark as one parallelogram. Safari itself is correct: check there before believing a
+   screenshot that calls the cube broken. */
+
+.brand-cube {
+  /* Chromium rasters a 3D subtree at its layout size and resamples it, which leaves a 32px cube
+     soft. So it is built four times over: every length below is an on-screen size divided by this. */
+  --cube-shrink: 0.25;
+  /* A rim of w reads at 0.71w on screen in this pose, so 2.45px is the mark's 1.73px line. */
+  --cube-rim: calc(2.45px / var(--cube-shrink));
+  /* Isometric projection scales every cube axis by 0.8165, so a body of e plus the rim straddling
+     it draws a hexagon 1.414(e + w) wide and 1.633(e + w) tall. 18px across the rims, corners
+     blunted as below, measures out as the mark's own 24.5 x 27.5px hexagon to within a quarter
+     pixel — the drawn hexagon is a shade squatter than a true isometric one. */
+  --cube-edge: calc((18px - 2.45px) / var(--cube-shrink));
+  --cube-half: calc(var(--cube-edge) / 2);
+  --cube-swell: calc(var(--cube-shrink) * 1.18);
+  --cube-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  position: relative;
+  display: block;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  perspective: 340px; /* keeps the resting silhouette the mark's, still grows the leading corner */
+}
+
+.brand-cube__turn,
+.brand-cube__box,
+.brand-cube__face {
+  position: absolute;
+  box-sizing: border-box;
+}
+
+/* The turn is the outer element: it turns about the screen diagonal and leaves the pose below it
+   alone, so whatever the animation does the mark settles back into the drawn mark exactly. */
+.brand-cube__turn {
+  inset: 0;
+  transform-style: preserve-3d;
+  animation: brand-cube-turn 1.1s var(--cube-ease) 0.15s 1 both;
+}
+
+.brand-cube__box {
+  top: 50%;
+  transform-style: preserve-3d;
+  left: 50%;
+  width: var(--cube-edge);
+  height: var(--cube-edge);
+  margin: calc(var(--cube-half) * -1) 0 0 calc(var(--cube-half) * -1);
+  transform: rotateX(-35.264deg) rotateY(45deg);
+  transition: transform 420ms var(--cube-ease);
+}
+
+/* Under the pointer the body turns a third of a turn about the corner facing the reader, and back
+   when it leaves. That axis is a symmetry of both the cube and the drawn hexagon, so the mark
+   spins in place and lands on itself, dot included. */
+.brand-cube:hover .brand-cube__box {
+  transform: rotateX(-35.264deg) rotateY(45deg) rotate3d(-1, -1, 1, 120deg);
+}
+
+.brand-cube__face {
+  inset: calc(var(--cube-rim) / -2);
+  border: var(--cube-rim) solid var(--color-green);
+  /* Blunts the corners about as much as the mark's round joins do. */
+  border-radius: calc(1.8px / var(--cube-shrink));
+  background: var(--color-cream);
+  backface-visibility: hidden;
+}
+
+.brand-cube__face--front { transform: translateZ(var(--cube-half)); }
+.brand-cube__face--back { transform: rotateY(180deg) translateZ(var(--cube-half)); }
+.brand-cube__face--right { transform: rotateY(90deg) translateZ(var(--cube-half)); }
+.brand-cube__face--left { transform: rotateY(-90deg) translateZ(var(--cube-half)); }
+.brand-cube__face--top { transform: rotateX(90deg) translateZ(var(--cube-half)); }
+.brand-cube__face--bottom { transform: rotateX(-90deg) translateZ(var(--cube-half)); }
+
+/* The mark's lime dot rides the vertex the three visible faces share, hanging off the box rather
+   than off a face: `translate3d` puts it on that corner in cube space, the rotations undo the pose
+   so it faces the reader as a true circle, and the lift floats the whole disc clear of the three
+   face planes crossing there — under it the browser splits the disc against them and nicks the
+   ring, and since the corner projects onto the perspective origin the lift shifts it nowhere. The
+   half-size step comes first because it cancels a layout offset in the cube's plane, not ours. */
+.brand-cube__dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* The mark's 5.33px dot and 1.07px ring, less the 5% the lift below magnifies them by. */
+  width: calc(5.06px / var(--cube-shrink));
+  height: calc(5.06px / var(--cube-shrink));
+  border: calc(1.02px / var(--cube-shrink)) solid var(--color-green);
+  border-radius: 50%;
+  background: var(--color-lime);
+  backface-visibility: hidden;
+  transform: translate(-50%, -50%)
+    translate3d(calc(var(--cube-half) * -1), calc(var(--cube-half) * -1), var(--cube-half))
+    rotateY(-45deg) rotateX(35.264deg) translateZ(calc(3px / var(--cube-shrink)));
+}
+
+/* One turn about the screen diagonal, swelling at the halfway point. The scale is also what puts
+   the four-times-over layout back at 32px, which is why it belongs here. */
+@keyframes brand-cube-turn {
+  0% {
+    transform: rotate3d(1, 1, 0, 0deg) scale3d(var(--cube-shrink), var(--cube-shrink), var(--cube-shrink));
+  }
+
+  50% {
+    transform: rotate3d(1, 1, 0, 180deg) scale3d(var(--cube-swell), var(--cube-swell), var(--cube-swell));
+  }
+
+  100% {
+    transform: rotate3d(1, 1, 0, 360deg) scale3d(var(--cube-shrink), var(--cube-shrink), var(--cube-shrink));
+  }
+}

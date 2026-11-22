@@ -1,0 +1,21 @@
+# lychee reads this file from the repository root (.github/workflows/links.yml).
+
+# 429 says nothing about the link: app.scenario.com answers it to every
+# automated request, and a weekly scan of thousands of links meets rate limits.
+accept = ["200..=299", "429"]
+
+exclude = [
+  # Bot protection answers automated requests with 403 (x.com only from CI runners).
+  '^https://discussions\.unity\.com/',
+  '^https://polycount\.com/',
+  '^https://x\.com/',
+  # Ad network help centers behind the same kind of bot protection.
+  '^https://help\.moloco\.com/',
+  '^https://support\.accelerate\.liftoff\.io/',
+  '^https://support\.vungle\.com/',
+  # A URL pattern named in prose, read as a link.
+  '^https://devforum\.roblox\.com/t/$',
+  # A bare URL whose id holds two underscores, which Markdown reads as emphasis
+  # and lychee cuts there.
+  '^https://www\.youtube\.com/watch\?v=$',
+]

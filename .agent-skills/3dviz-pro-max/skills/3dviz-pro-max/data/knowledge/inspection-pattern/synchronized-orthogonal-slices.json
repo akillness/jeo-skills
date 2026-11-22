@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.synchronized-orthogonal-slices",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "inspection-pattern",
+  "title": {
+    "en": "Synchronized orthogonal slices with one probe point"
+  },
+  "aliases": {
+    "en": [
+      "linked axial sagittal coronal views",
+      "orthogonal slice crosshair"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures",
+    "soft-fluid-thermal",
+    "earth-environment"
+  ],
+  "summary": "Coordinate three slice planes and a 3D locator through one authoritative source-space point.",
+  "objective": "Show three orthogonal slices and a 3D locator; moving a probe in any view must identify the same source location in every view.",
+  "subject_terms": [
+    "orthogonal slices",
+    "crosshair",
+    "multiplanar reconstruction",
+    "source-space probe"
+  ],
+  "tags": [
+    "inspection-pattern",
+    "synchronized-orthogonal-slices"
+  ],
+  "intent_signals": [
+    "Show three orthogonal slices and a 3D locator; moving a probe in any view must identify the same source location in every view."
+  ],
+  "example_prompts": [
+    "Show three orthogonal slices and a 3D locator; moving a probe in any view must identify the same source location in every view."
+  ],
+  "content": {
+    "principles": [
+      "Use a shared probe point to answer where a feature lies across sections; merely placing three slice images side by side does not establish correspondence.",
+      "Declare source axis convention, voxel-to-model mapping and which properties are linked. Share coordinates without assuming that three plane orientations should become identical."
+    ],
+    "implementation": [
+      "Keep dataset revision, source-space probe, plane basis and time index in one state owner. A drag maps viewport coordinates through that view plane into source space, then commits once; derive all other crosshairs and offsets from the resulting point.",
+      "For an orthogonal mode keep plane normals mutually perpendicular in the declared model frame. For oblique acquisition, distinguish source index axes from anatomical/world axes; do not silently label index-aligned planes anatomical.",
+      "Use the same volume, time and declared interpolation policy for corresponding scalar samples. Label discrete segmentation sampling separately; clamp a probe only with visible feedback, or show an out-of-bounds state.",
+      "Offer link toggles with explicit scope, numeric point entry and reset for probe/orientation. A shared cursor does not require all zoom, pan and legend controls to be shared."
+    ],
+    "observable_checks": [
+      "Use a labeled synthetic anisotropic volume with known orientation. Select one landmark in each view in turn: source coordinates, time index and 3D locator agree after the declared transform.",
+      "Pan or resize one viewport without moving the probe: its reported source coordinate remains fixed. Switch interpolation and verify the disclosure changes with it.",
+      "Move outside the data extent and return, then reset; no stale crosshair or accidental recursion leaves one view on the previous point."
+    ]
+  },
+  "known_limits": [
+    "Requires known spatial transforms and registration when multiple datasets are compared. Linked views do not perform registration, segmentation or diagnosis.",
+    "Draft authored guidance; no renderer, interaction artifact or scientific result was executed for this record."
+  ],
+  "creative_affordances": [
+    "Choose layout and visual emphasis to support the stated inspection task; these are design proposals rather than proven usability improvements."
+  ],
+  "related_ids": [
+    "knowledge.signed-field-section",
+    "knowledge.geometric-measurement-model-units"
+  ],
+  "claims": [
+    {
+      "id": "claim.slicer-slice-link-scope",
+      "statement": "Slicer documents linked slice-view groups, synchronization of selected display properties, and a crosshair action shared across views; center synchronization is specifically described for parallel views.",
+      "scope": "Slicer documented UI behavior; the proposed source-space state owner and orthogonal-view contract are authored.",
+      "source_refs": [
+        {
+          "source_id": "source.slicer-linked-slice-views",
+          "locator": "Slice View: View link button and view group; Mouse & Keyboard Shortcuts: Slice views, Shift + mouse move"
+        }
+      ]
+    }
+  ]
+}

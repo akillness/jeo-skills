@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-market-stall",
+  "record_revision": 2,
+  "asset": "templates/kits/buildings/market-stall.js",
+  "asset_sha256": "58ffbe3490badb19b64cf7500de98d1edcb4498b0c0c8fce1da36a32d54222a9",
+  "params": {
+    "width": 2.8,
+    "depth": 1.9,
+    "height": 2.4,
+    "stripes": 8,
+    "seed": 1
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-market-stall",
+    "module": "../buildings/market-stall.js",
+    "params": {
+      "width": 2.8,
+      "depth": 1.9,
+      "height": 2.4,
+      "stripes": 8,
+      "seed": 1
+    },
+    "triangles": 3104,
+    "bounds_m": {
+      "min": [
+        -1.514000000357628,
+        -4.768371586472142e-08,
+        -1.1933202516485557
+      ],
+      "max": [
+        1.514000000357628,
+        2.75999999910593,
+        1.5642572757524806
+      ],
+      "size": [
+        3.028000000715256,
+        2.7600000467896457,
+        2.757577527401036
+      ]
+    },
+    "fit_distance_m": 7.2199,
+    "view_distances_m": {
+      "far": 17.3277,
+      "mid": 8.6639,
+      "close": 5.6315,
+      "detail": 1.1466
+    },
+    "sockets": [
+      "front",
+      "counter",
+      "goods-left",
+      "goods-right",
+      "sign",
+      "keeper",
+      "ridge"
+    ],
+    "detail_socket": "front",
+    "animated": false,
+    "colliders": [
+      "frame",
+      "counter",
+      "canopy"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "807201ec8b684fadce6c671a922046472f485d678e73149f0d901dc58dd5da3f",
+    "mid.png": "6773bf9a3a8edb25ea2fe33ccc77ca92668c14915a94b0f602162d25f84e0fc2",
+    "close.png": "ad45654adb0482f2ba3798d695e7e8a9294926951226cc71ba6dd5496654c9d1",
+    "detail.png": "90f90ff901ea79066b9d7b3f47f4438fe0e5d3b6fe68c72093c8b0b7fffaeeb5"
+  },
+  "motion": null,
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:50:30+00:00",
+  "finished": "2026-09-08T13:50:34+00:00"
+}

@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+#
+# CodeRabbit configuration for skills. It adds to the organization's central CodeRabbit
+# configuration: with inheritance on, lists are combined and a value set here wins over the
+# central one. Keep here only what is specific to this repository.
+#
+# Which copy of this file a review reads: for a pull request from a branch of this repository,
+# opened by an organization member or a collaborator with write access, the one on the pull
+# request branch; for any other pull request, forks included, the one on its base commit. A
+# branch created before a change picks it up once it includes that change.
+#
+# To see the settings in force and where each comes from, comment
+# "@coderabbitai configuration" on any pull request.
+
+inheritance: true
+
+reviews:
+  profile: assertive
+  path_instructions:
+    # Same path as the organization's documentation rule, so this entry replaces it here: that
+    # rule reports only broken commands, paths and links, too narrow where Markdown is the product.
+    - path: "**/*.md"
+      instructions: >-
+        Apply REVIEW.md: it says what to report on this repository's Markdown, at what severity,
+        and which generated or vendored files to skip. The published skills under skills/ are the
+        product, so a finding there is reviewed as a skill defect, not a documentation remark.
+
+knowledge_base:
+  code_guidelines:
+    # Apply both review documents to every file; by default each governs only its own folder.
+    filePatterns:
+      - files: ".cursor/BUGBOT.md"
+        applyTo: "**/*"
+      - files: "REVIEW.md"
+        applyTo: "**/*"

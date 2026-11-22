@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "id": "recipe.predator-prey-phase-time",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Predator-prey cycles in phase space and model time"
+  },
+  "aliases": {
+    "en": [
+      "Lotka-Volterra phase portrait",
+      "predator-prey time lift",
+      "two-population interaction model"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment",
+    "calculus-fields"
+  ],
+  "summary": "Link an idealized two-population interaction model to its time series, phase portrait and bounded time-lifted trajectory without presenting aggregate state as individual animal behavior.",
+  "objective": "Change a positive initial population or rate parameter and inspect how one authoritative solution appears in ecosystem, phase-plane and time views.",
+  "tags": [
+    "population dynamics",
+    "predator-prey",
+    "phase portrait",
+    "ordinary differential equation"
+  ],
+  "subject_terms": [
+    "Lotka-Volterra equations",
+    "predator-prey cycle",
+    "positive equilibrium",
+    "phase trajectory",
+    "population time series",
+    "conserved level curve"
+  ],
+  "intent_signals": [
+    "Show predator and prey abundance cycling through time and phase space.",
+    "Explain why the predator peak follows the prey peak in the idealized interaction model.",
+    "Compare the same numerical solution as a phase curve and a time-lifted path."
+  ],
+  "example_prompts": [
+    "Build a bounded-time Lotka-Volterra scene with linked population columns, phase portrait and time-lifted orbit.",
+    "Let me move the positive initial state and inspect the equilibrium and conserved-quantity drift."
+  ],
+  "negative_signals": [
+    "Not an individual-agent hunting simulation or a calibrated wildlife forecast.",
+    "Not a logistic-growth, food-web, disease or spatial-diffusion model."
+  ],
+  "not_for": [
+    "Estimating real population counts, extinction probability or management policy.",
+    "Claiming that all predator-prey systems have neutral closed cycles."
+  ],
+  "entities": [
+    {
+      "name": "Aggregate ecosystem state",
+      "guidance": "Use two clearly labeled abundance columns or fields over a small habitat base. Their height or occupied fraction represents x(t) and y(t) on a visible scale; repeated animal glyphs are illustrative samples and must not imply a discrete agent count or collisions."
+    },
+    {
+      "name": "Phase board and nullclines",
+      "guidance": "Draw positive x-y axes, the prey nullcline y=alpha/beta, predator nullcline x=gamma/delta, their positive equilibrium, a direction field and the selected trajectory. Keep equal data scales or declare independent axis scaling."
+    },
+    {
+      "name": "Time lift and linked slices",
+      "guidance": "Plot (x(t),y(t),t) over the finite modeled interval and move one shared time plane through it. Project the intersection to the phase board and to x(t), y(t) traces so depth is model time rather than decoration."
+    }
+  ],
+  "state_contract": {
+    "model": "For positive x,y and positive finite parameters, solve dx/dt=x*(alpha-beta*y), dy/dt=y*(delta*x-gamma) on 0<=t<=T. The authored interaction uses dimensionless abundance and time unless a supplied dataset defines units. Default bounds are 0.05<=x0,y0<=8, 0.05<=alpha,beta,gamma,delta<=3 and 0<T<=100; these are scene-input guards, not ecological constants. Use one declared ODE solver and tolerances. Before evaluating any logarithm, require every queried and stored x,y to remain strictly positive; terminate with a solver diagnostic first if that guard fails. Independently compute H=delta*x-gamma*ln(x)+beta*y-alpha*ln(y), whose derivative cancels to zero for the stated equations, and report numerical drift relative to H(x0,y0).",
+    "authority": "Parameters, initial state, solver settings and model time own every abundance glyph, trace and phase marker. Camera movement, glyph count and vertical display gain never alter x or y.",
+    "actions": [
+      "Drag a positive initial state on the phase board and recompute all linked views.",
+      "Change one rate parameter and rebuild nullclines, equilibrium and solution from t=0.",
+      "Play, pause or scrub the shared model-time cursor without advancing separate view clocks.",
+      "Toggle direction field, nullclines and H-drift readout.",
+      "Reset parameters, initial state, solver controls and time."
+    ]
+  },
+  "invariants": [
+    "For accepted positive inputs the analytic vector field leaves each coordinate axis invariant; a numerical step that produces x<=0 or y<=0 is rejected before evaluating logarithms in H and triggers a smaller-step or solver diagnostic rather than being silently clipped.",
+    "The positive equilibrium is (gamma/delta, alpha/beta), where both displayed derivatives are zero within declared floating-point tolerance.",
+    "For the exact stated ODE, H=delta*x-gamma*ln(x)+beta*y-alpha*ln(y) is constant. Numerical playback reports maximum H drift and compares it after tightening solver tolerance; a pretty closed curve is not the check.",
+    "The phase marker, time-lift intersection, ecosystem columns and time-series cursor all evaluate the same stored solution at the same t."
+  ],
+  "motion_guidance": [
+    "Interpolate only through the solver's dense output or declared saved samples; label straight connectors as display interpolation if dense output is unavailable.",
+    "Use peak markers computed from sign changes of the relevant derivative. Do not hand-offset predator motion merely to create a visual lag.",
+    "Reverse scrubbing reevaluates stored history; it is not a biological reversal experiment."
+  ],
+  "creative_affordances": [
+    "The habitat may be meadow, marine or abstract, but species styling must remain subordinate to the aggregate-state legend.",
+    "Use a transparent time ribbon, restrained particle density or stacked habitat rings while preserving axis labels and linked selection."
+  ],
+  "known_limits": [
+    "The classic two-species model omits carrying capacity, satiation, age structure, stochasticity, migration, refuge, seasons and observation error; its cycles are a property of this idealized equation set.",
+    "The bounded input and time window keep the artifact inspectable; they do not impose a biological upper bound or prove global behavior for modified models.",
+    "Numerical conservation depends on solver and tolerances. This authored recipe has no executed solver, scene runtime or rendered observation."
+  ],
+  "claims": [
+    {
+      "id": "claim.mixed-sol-lotka-equations-equilibrium",
+      "statement": "Lotka's 1920 interaction model writes two rates as X1'=X1(A1-B1*X2) and X2'=X2(A2*X1-B2), gives the nonzero equilibrium X1=B2/A2 and X2=A1/B1, and identifies oscillatory character after translating around that equilibrium.",
+      "scope": "The equations, equilibrium and local oscillatory discussion on journal pages 412-413 of the original paper; not evidence that the model calibrates a real ecosystem or that richer predator-prey models share its neutral cycles.",
+      "source_refs": [
+        {
+          "source_id": "source.mixed-sol-lotka-1920",
+          "locator": "Journal page 412, equations (8), (10), (12); page 413, paragraph following equations (15)-(19)"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Aggregate habitat instrument",
+      "structure": "A low habitat slab carries two spatially separated abundance wells, each with a scale post, base tick and readable species label; sampled creature silhouettes sit inside the wells without becoming stateful agents.",
+      "material": "Matte terrain and two colorblind-safe population accents, reinforced by shape and labels. Column transparency must not obscure the quantitative top edge.",
+      "articulation": "Column height and optional sample density derive from x(t) and y(t); individual glyph paths are decorative and remain disabled in analytic inspection mode."
+    },
+    {
+      "family": "Phase-time instrument",
+      "structure": "A planar phase board, orthogonal time ruler and elevated trajectory form one labeled coordinate assembly with a movable slicing plane and projection guides.",
+      "material": "Neutral axes, distinct prey and predator traces, and a third selection accent; depth fog must not hide the equilibrium or current slice.",
+      "articulation": "The time plane translates along the time axis while linked markers update from the same stored sample."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Aggregate two-state ODE over a finite dimensionless time interval; no rigid-body or agent contact.",
+    "timestep": "Use a declared adaptive or fixed-step ODE method. Record tolerances or step size and repeat the H-drift comparison with tighter tolerance or half maximum step before interpreting the orbit.",
+    "state": [
+      "positive prey abundance x",
+      "positive predator abundance y",
+      "model time t",
+      "rate parameters and solver settings"
+    ],
+    "checks": [
+      "Evaluate both derivatives at the positive equilibrium.",
+      "Compare linked views at named time samples and report maximum H drift.",
+      "Reject or diagnose any nonpositive numerical state instead of applying a display-only clamp."
+    ]
+  },
+  "related_ids": [
+    "recipe.autonomous-planar-phase-portrait"
+  ]
+}

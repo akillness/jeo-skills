@@ -1,0 +1,93 @@
+{
+  "skill": "scenario-admin-analytics",
+  "verdict": "pass with notes",
+  "tested_commit": "8ed2b5423d978cd66d3eb2a69c004b11cd107259",
+  "run_date_utc": "2026-09-17",
+  "mode": "fresh managed subagent",
+  "model_identifier": "not exposed",
+  "mechanical": {
+    "spec": {
+      "passed": true,
+      "skills": 62
+    },
+    "tests": {
+      "passed": true,
+      "analytics_tests": 16
+    }
+  },
+  "scenario_calls": {
+    "usage_reads": 15,
+    "generations": 0,
+    "dry_runs": 0,
+    "uploads": 0,
+    "writes": 0
+  },
+  "checks": {
+    "source": {
+      "passed": true,
+      "checks": [
+        "overall after-discount consumption sum",
+        "all consumption identities queried",
+        "same scope and dates for every identity",
+        "each identity consumption matches parent",
+        "every model CU/job/API-subset sum matches parent",
+        "each model time bucket matches per-identity sum"
+      ]
+    },
+    "accounting": {
+      "passed": true,
+      "checks": [
+        "generation categories equal model CU",
+        "model CU plus recorded refunds and non-model operations equals consumed CU",
+        "overlapping overall series excluded from additive bridge"
+      ]
+    },
+    "export": {
+      "passed": true,
+      "checks": [
+        "CU top-five rankings independently reproduced from each MCP response",
+        "jobs top-five rankings independently reproduced from each MCP response",
+        "retrieval timestamps preserved in both dashboards",
+        "three-month CSV every model/month/metric matches source time buckets"
+      ]
+    },
+    "dashboard": {
+      "passed": true,
+      "checks": [
+        "default totals",
+        "identity filter",
+        "combined identity/model filter",
+        "inclusive single-day filter",
+        "jobs metric",
+        "filtered CSV matches selection",
+        "out-of-range dates rejected",
+        "reset",
+        "mobile layout",
+        "no browser errors or external requests"
+      ],
+      "screenshots": [
+        "dashboard-overview.png",
+        "dashboard-filtered.png",
+        "dashboard-mobile.png"
+      ]
+    }
+  },
+  "cache": {
+    "fresh_lookup": true,
+    "requires_all_user_snapshots": true,
+    "preserves_retrieval_timestamps": true,
+    "scenario_fetches_after_rerank_lookup": 0
+  },
+  "visual": {
+    "live_report_pages_inspected": 5,
+    "supplement_pages_inspected": 2
+  },
+  "limitations": [
+    "The standalone CLI attempt stopped at local permission restrictions; the managed subagent completed the run.",
+    "Every host integration and the chat-only fallback were not exercised live.",
+    "Nonzero discounts were covered by regression fixtures, not observed in the live sample.",
+    "Activity pagination was not exhausted; complete usage time buckets supplied the accounting explanation.",
+    "One initial unfiltered discovery response included signed metadata in private tool output; public evidence excludes it."
+  ],
+  "privacy": "No live identifiers, customer metrics, raw responses, signed links, or live screenshots are included. Synthetic examples are separate renderer evidence."
+}

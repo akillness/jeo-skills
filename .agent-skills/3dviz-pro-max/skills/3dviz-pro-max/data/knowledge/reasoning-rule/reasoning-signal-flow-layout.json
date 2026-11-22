@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-signal-flow-layout",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Lay out a circuit so the flow is readable"
+  },
+  "aliases": {
+    "en": [
+      "schematic layout",
+      "signal direction",
+      "junction clarity"
+    ]
+  },
+  "direction_ids": [
+    "logic-circuits",
+    "abstract-systems-data"
+  ],
+  "summary": "Keep a consistent flow direction, disambiguate crossings and junctions, and use depth only where it clarifies.",
+  "objective": "Make a spatial circuit or graph legible enough that structure can be read without tracing every line.",
+  "applies_when": [
+    "A circuit, dataflow graph or network is arranged spatially.",
+    "Connections cross, branch or fan out.",
+    "A three-dimensional layout is being considered for a fundamentally planar diagram."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "schematic",
+    "layout",
+    "signal flow",
+    "crossing",
+    "fan-out",
+    "legibility"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "logic",
+    "composition"
+  ],
+  "intent_signals": [
+    "the wires are a mess",
+    "arrange the circuit clearly",
+    "should this be 3D"
+  ],
+  "example_prompts": [
+    "Lay out the adder so the carry chain is easy to follow.",
+    "Make the connections readable without a tangle."
+  ],
+  "negative_signals": [
+    "Deliberately chaotic or artistic network imagery.",
+    "Physical layouts where the geometry is dictated by a real board or device."
+  ],
+  "not_for": [
+    "Deliberately chaotic or artistic network imagery.",
+    "Physical layouts where the geometry is dictated by a real board or device."
+  ],
+  "content": {
+    "principles": [
+      "Convention carries information cheaply. A consistent left-to-right or bottom-to-top flow lets a viewer read direction without arrowheads on every segment.",
+      "Crossings and junctions are the main source of misreading. A branch and a crossing look identical unless the junction is marked or the crossing is bridged.",
+      "Depth in three dimensions solves occlusion badly: lines at different depths appear to cross from most angles, so a third axis should carry meaning such as stage, layer or time rather than being used to spread a planar graph.",
+      "Layout stability matters across edits: if positions change every time the circuit is modified, the viewer loses the mental map they had built."
+    ],
+    "implementation": [
+      "Order elements by logical depth along the flow axis, so a signal never has to travel backwards without a visible reason.",
+      "Mark junctions explicitly and route crossings to be visually distinct, for example with a jog or a bridge.",
+      "If a third axis is used, bind it to a meaningful quantity such as bit position, pipeline stage or hierarchy level, and label it.",
+      "Keep positions stable under edits by anchoring the layout to identities rather than recomputing a free layout each time.",
+      "Provide a hover or selection mode that highlights a whole net, which handles the residual ambiguity of any layout."
+    ],
+    "observable_checks": [
+      "Trace one signal end to end using the interaction the design actually offers. In a static diagram that must work without interaction; in a layout that deliberately relies on hover or selection highlighting, test that the highlight resolves the ambiguity quickly and consistently rather than counting any click as a failure.",
+      "Rotate a three-dimensional layout and confirm that apparent crossings do not change the reading, which tests whether depth is doing real work.",
+      "Add an element and confirm existing positions remain recognisable.",
+      "Check that every junction is distinguishable from a crossing at the intended zoom level."
+    ]
+  },
+  "related_ids": [
+    "recipe.logic-gates",
+    "recipe.service-graph",
+    "knowledge.graph-in-space"
+  ],
+  "creative_affordances": [
+    "Stylised, sculptural or physical-object circuit presentations remain valid when flow and junctions stay legible.",
+    "Deliberately dense layouts can be an aesthetic choice if a highlight mode provides the reading path."
+  ],
+  "known_limits": [
+    "Authored composition guidance; it cites no perceptual study and no layout algorithm is prescribed.",
+    "No runtime layout has been evaluated for this record."
+  ],
+  "claims": []
+}

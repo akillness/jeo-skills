@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.planar-refraction-ray",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Refraction at a planar interface"
+  },
+  "aliases": {
+    "en": [
+      "Snell law refraction",
+      "light bending interface",
+      "incident transmitted ray"
+    ]
+  },
+  "direction_ids": [
+    "waves-optics-fields"
+  ],
+  "summary": "Change the incident angle and indices while measuring both rays from the same surface normal.",
+  "objective": "Build a planar two-medium refraction diagram with adjustable indices, angle arcs and a calculated transmitted ray.",
+  "tags": [
+    "refraction",
+    "Snell law",
+    "refractive index"
+  ],
+  "subject_terms": [
+    "refraction",
+    "Snell law",
+    "refractive index",
+    "surface normal",
+    "incident angle",
+    "geometrical optics"
+  ],
+  "intent_signals": [
+    "Build a planar two-medium refraction diagram with adjustable indices, angle arcs and a calculated transmitted ray.",
+    "Change the incident angle and indices while measuring both rays from the same surface normal."
+  ],
+  "example_prompts": [
+    "Build a planar two-medium refraction diagram with adjustable indices, angle arcs and a calculated transmitted ray.",
+    "Create an explorable 3D explanation of Snell law refraction with index controls."
+  ],
+  "negative_signals": [
+    "No Fresnel intensity, absorption, polarization, diffraction or dispersion unless extended with additional sourced models."
+  ],
+  "not_for": [
+    "No Fresnel intensity, absorption, polarization, diffraction or dispersion unless extended with additional sourced models."
+  ],
+  "entities": [
+    {
+      "name": "Media boundary",
+      "guidance": "Use two labeled half-space slabs separated by one flat plane and a removable front cutaway for an uncluttered ray view."
+    },
+    {
+      "name": "Rays and normal",
+      "guidance": "Draw incident and transmitted segments in a common plane, an explicit normal and angle arcs measured from it; rays are direction guides, not solid rods."
+    },
+    {
+      "name": "Index controls",
+      "guidance": "Show n1,n2 and the sine-ratio calculation; display the absence of a real transmitted angle rather than clamping invalid arcsin input."
+    }
+  ],
+  "state_contract": {
+    "model": "Positive refractive indices n1,n2; incident angle theta1 in [0,pi/2). Compute s=(n1/n2)*sin(theta1). For s<=1 use theta2=asin(s); for s>1 report no propagating refracted ray in this model.",
+    "authority": "The analytic Snell calculation determines ray directions and angle labels; transparent material rendering does not calculate the educational ray.",
+    "actions": [
+      "Change incident angle below grazing incidence.",
+      "Change either positive refractive index.",
+      "Inspect equal-index and normal-incidence cases.",
+      "Reset inputs and ray view."
+    ]
+  },
+  "invariants": [
+    "n1*sin(theta1)=n2*sin(theta2) when a propagating refracted ray exists.",
+    "At normal incidence the direction is unchanged.",
+    "Equal indices produce equal angles; invalid transmitted solutions are never shown as a fabricated ray."
+  ],
+  "motion_guidance": [
+    "Rebuild direction geometry from the current calculation after each edit.",
+    "Optional traveling dots indicate direction only; they do not claim optical phase, speed or intensity unless separately modeled."
+  ],
+  "known_limits": [
+    "No Fresnel intensity, absorption, polarization, diffraction or dispersion unless extended with additional sourced models.",
+    "The no-transmitted-ray branch identifies the Snell boundary; a full total-internal-reflection treatment needs a reflection model and its assumptions.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.planar-refraction-ray",
+      "statement": "Refraction at an interface obeys n1*sin(theta1)=n2*sin(theta2), with angles measured from the surface normal.",
+      "scope": "Planar geometrical-optics interface between media with declared refractive indices.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-refraction",
+          "locator": "1.3, law of refraction and angles measured from normal"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Media boundary",
+      "structure": "Use two labeled half-space slabs separated by one flat plane and a removable front cutaway for an uncluttered ray view.",
+      "material": "Subtle translucent slabs and opaque ray/normal overlays; glass-like materials are illustrative rather than an optical solver."
+    }
+  ]
+}

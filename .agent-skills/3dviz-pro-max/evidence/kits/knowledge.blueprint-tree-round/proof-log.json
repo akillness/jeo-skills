@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-tree-round",
+  "record_revision": 2,
+  "asset": "templates/kits/nature/tree-round.js",
+  "asset_sha256": "0d2266570f20fb23cb7320955842a407a61e356a1c047c2f7f7868dc07474415",
+  "params": {
+    "seed": 1,
+    "age": 1,
+    "lean": 0.09,
+    "height": 3.4,
+    "radius": 0.19,
+    "leaf": "#6a9150"
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-tree-round",
+    "module": "../nature/tree-round.js",
+    "params": {
+      "seed": 1,
+      "age": 1,
+      "lean": 0.09,
+      "height": 3.4,
+      "radius": 0.19,
+      "leaf": "#6a9150"
+    },
+    "triangles": 860,
+    "bounds_m": {
+      "min": [
+        -1.5287694835467747,
+        -0.04658231884241104,
+        -1.2727221669461382
+      ],
+      "max": [
+        1.4922584354916317,
+        3.157670252554773,
+        1.5093898794856848
+      ],
+      "size": [
+        3.0210279190384064,
+        3.204252571397184,
+        2.782112046431823
+      ]
+    },
+    "fit_distance_m": 7.6151,
+    "view_distances_m": {
+      "far": 18.2762,
+      "mid": 9.1381,
+      "close": 5.9398,
+      "detail": 1.3182
+    },
+    "sockets": [
+      "base",
+      "canopy",
+      "swing"
+    ],
+    "detail_socket": "base",
+    "animated": true,
+    "colliders": [
+      "trunk",
+      "canopy"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "d9fdcd6fe38bd155b25103e164e8074d6e613fea868999504f6274720661fc8b",
+    "mid.png": "ae91bb56a3f29112bd9c3cb30ef68b723016f2c5392cb2d177bd6e475886869b",
+    "close.png": "9c04866b8b305b279aca832ac6d3de6171e4f1cb1cbb694846062b3a8770410e",
+    "detail.png": "683756fdce3f75d365e77a7f5ea38ccdd724bb14e2ea8ed648fcec6e6d128b1e",
+    "close-motion.png": "260b0bbaff6a63b7f0cce2b19e1f6b0dc6530a72d7355b7ece8451313503fa2c"
+  },
+  "motion": {
+    "interval_ms": 400,
+    "simulated": true,
+    "animate_returned": true,
+    "differs": true,
+    "sha_before": "9c04866b8b305b279aca832ac6d3de6171e4f1cb1cbb694846062b3a8770410e",
+    "sha_after": "260b0bbaff6a63b7f0cce2b19e1f6b0dc6530a72d7355b7ece8451313503fa2c"
+  },
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:50:50+00:00",
+  "finished": "2026-09-08T13:50:54+00:00"
+}

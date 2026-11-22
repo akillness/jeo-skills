@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.theme-heritage-fiction",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "theme-profile",
+  "title": {
+    "en": "Heritage-inspired fictional town"
+  },
+  "aliases": {
+    "en": [
+      "heritage fiction",
+      "invented old town",
+      "historic-inspired setting"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "Propose an invented town with visible layers of repair and reuse, separating creative heritage atmosphere from reconstruction claims.",
+  "objective": "Buildings have distinct uses and accessible entrances; labels never identify an invented detail as an authenticated historical fact.",
+  "tags": [
+    "theme-profile",
+    "fictional-setting",
+    "heritage-fiction"
+  ],
+  "subject_terms": [
+    "heritage fiction",
+    "invented old town",
+    "historic-inspired setting"
+  ],
+  "intent_signals": [
+    "Set the scene in a heritage-inspired fictional town",
+    "Use heritage fiction as the narrative setting"
+  ],
+  "example_prompts": [
+    "Create a fictional old port quarter with repaired shops and courtyards, without claiming a specific historical reconstruction."
+  ],
+  "content": {
+    "principles": [
+      "Propose an invented town with visible layers of repair and reuse, separating creative heritage atmosphere from reconstruction claims.",
+      "Theme supplies setting and motifs; choose geometry style, rendering approach and factual model independently."
+    ],
+    "implementation": [
+      "Vary rooflines, wall additions and shop fronts around a coherent street width; indicate which additions are part of the fictional story.",
+      "Use selected weathering and repaired surfaces at chosen locations rather than uniform age noise; light the street for readable human-scale details.",
+      "Provide street and courtyard views; use a small everyday activity as the scene focus rather than generic continuous crowd motion."
+    ],
+    "observable_checks": [
+      "Buildings have distinct uses and accessible entrances; labels never identify an invented detail as an authenticated historical fact.",
+      "Inspect one focal object close up and the complete route or spatial relationship from an overview."
+    ]
+  },
+  "known_limits": [
+    "Authored fictional setting guidance; no rendered artifact or runtime improvement has been observed for this record.",
+    "This proposal does not establish historical, cultural, scientific or engineering facts."
+  ],
+  "creative_affordances": [
+    "Combine with hand-painted, miniature or restrained realism; a real place or era requires its own referenced research and uncertainty labels.",
+    "Replace motifs or combine settings to suit the user brief; maintain a readable organizing idea rather than treating these suggestions as a fixed asset list."
+  ],
+  "related_ids": [
+    "knowledge.framed-shelter",
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

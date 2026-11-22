@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-watermill",
+  "record_revision": 6,
+  "asset": "templates/kits/buildings/watermill.js",
+  "asset_sha256": "f074177b02b2a39bae8fc27d47eb94604840e4f9eb6791675f1d130f3de86b12",
+  "params": {
+    "width": 6,
+    "depth": 4.5,
+    "wheelRadius": 1.6,
+    "paddles": 14,
+    "roofPitchDeg": 42,
+    "speedRadPerSec": 0.55,
+    "seed": 1
+  },
+  "tier": "T3",
+  "kit": {
+    "blueprint": "knowledge.blueprint-watermill",
+    "module": "../gltf/watermill-t3.glb",
+    "params": {
+      "width": 6,
+      "depth": 4.5,
+      "wheelRadius": 1.6,
+      "paddles": 14,
+      "roofPitchDeg": 42,
+      "speedRadPerSec": 0.55,
+      "seed": 1
+    },
+    "tier": "T1",
+    "surface": null,
+    "triangles": 12598,
+    "bounds_m": {
+      "min": [
+        -3.177500069141388,
+        -0.001157522201538086,
+        -2.598008155822754
+      ],
+      "max": [
+        6.312480688095093,
+        6.943547248840332,
+        2.6999999284744263
+      ],
+      "size": [
+        9.48998075723648,
+        6.94470477104187,
+        5.29800808429718
+      ]
+    },
+    "fit_distance_m": 18.8556,
+    "view_distances_m": {
+      "far": 45.2534,
+      "mid": 22.6267,
+      "close": 12.6,
+      "detail": 2.8283
+    },
+    "sockets": [
+      "door",
+      "launder",
+      "loading-door",
+      "ridge",
+      "sign",
+      "wheel"
+    ],
+    "detail_socket": "wheel",
+    "animated": false,
+    "colliders": [],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "ba6d1d24795fdd61416ed8255c22984c34527976531417d8cc63a8b51eebd6d8",
+    "mid.png": "a7cc345ec213e88598ac4853917cce8bda0f160aa3d231b3b9ad789b086ae8ee",
+    "close.png": "89c4937c6c5dc55e5e265f4e316a7b9ebf55608bae933d3d7b517fa5441c8076",
+    "detail.png": "a0a319329ba90f6057c8bbf7ab1dc9cf44f67c95d991ce5dd098b6d86afc5bf9"
+  },
+  "motion": null,
+  "gpu_requested": true,
+  "capture_mode": "gpu",
+  "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T17:04:50+00:00",
+  "finished": "2026-09-08T17:04:55+00:00"
+}

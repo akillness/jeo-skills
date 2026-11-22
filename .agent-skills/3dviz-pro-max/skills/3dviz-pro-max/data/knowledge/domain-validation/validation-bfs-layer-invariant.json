@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-bfs-layer-invariant",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Frontier layer invariants of a breadth-first traversal"
+  },
+  "aliases": {
+    "en": [
+      "bfs queue invariant check",
+      "discovery marking check"
+    ]
+  },
+  "direction_ids": [
+    "algorithms-data-structures"
+  ],
+  "summary": "Check that dequeued distances are non-decreasing, vertices are enqueued once and predecessor chains match reported distances.",
+  "objective": "The traversal log satisfies the layer invariants for reachable vertices, and every reachable predecessor chain length equals the reported distance.",
+  "applies_when": [
+    "A traversal is animated over a graph with a visible frontier.",
+    "Distances or layers are reported to the viewer.",
+    "The layout suggests spatial distances that are not the graph metric."
+  ],
+  "check_method": "state",
+  "tags": [
+    "domain-validation",
+    "graph-traversal",
+    "invariant",
+    "queue"
+  ],
+  "subject_terms": [
+    "breadth-first search",
+    "FIFO queue",
+    "frontier",
+    "predecessor",
+    "edge count",
+    "disconnected component"
+  ],
+  "intent_signals": [
+    "a vertex was visited twice",
+    "check the distances in this traversal"
+  ],
+  "example_prompts": [
+    "Check the frontier invariants of this breadth-first search scene."
+  ],
+  "negative_signals": [
+    "weighted shortest paths",
+    "performance benchmarking"
+  ],
+  "content": {
+    "principles": [
+      "Breadth-first order is an invariant of the queue rather than of the drawing: dequeued distances are non-decreasing and consecutive values differ by at most one.",
+      "Discovery marks on enqueue, not on dequeue; marking late is the classic defect that enqueues a vertex twice and inflates the frontier.",
+      "Distance here is edge count, so the geometric length of a drawn edge must never influence the traversal or the reported distance."
+    ],
+    "implementation": [
+      "Instrument the traversal to log every enqueue and dequeue with the vertex, its assigned distance and the current queue contents.",
+      "After the run verify that dequeued distances are non-decreasing and that consecutive values differ by zero or one.",
+      "Reconstruct the predecessor chain of every reachable vertex back to the source and compare its length with the reported distance, listing unreachable vertices separately.",
+      "Include a disconnected component and a graph with several equally short paths, then re-run with a different neighbour order."
+    ],
+    "observable_checks": [
+      "Each vertex reachable from the source is enqueued exactly once, no vertex is enqueued after being dequeued, and unreachable vertices are never enqueued at all.",
+      "Dequeued distances never decrease and never jump by more than one; a larger jump identifies a queue being used as a stack.",
+      "Every reachable vertex has a predecessor chain to the source whose length equals its reported distance; unreachable vertices have no chain and no finite distance, and a different neighbour order changes only which equally short tree appears."
+    ]
+  },
+  "known_limits": [
+    "Applies to unweighted traversal; it says nothing about weighted cost, optimality under weights, or running time.",
+    "Authored verification guidance; no traversal was executed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.breadth-first-frontier",
+    "recipe.dijkstra-relaxation",
+    "recipe.layered-maze-navigation"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-bfs-shortest-path-edges",
+      "statement": "Breadth-first search maintains a queue of vertices that have been marked but whose adjacency lists have not been checked, and for any vertex reachable from the source it computes a path with the fewest edges.",
+      "scope": "Unweighted graphs; fewest edges rather than weighted cost or drawn length.",
+      "source_refs": [
+        {
+          "source_id": "source.princeton-bfs",
+          "locator": "Breadth-first search: queue of marked vertices and the shortest-path property"
+        }
+      ]
+    }
+  ]
+}

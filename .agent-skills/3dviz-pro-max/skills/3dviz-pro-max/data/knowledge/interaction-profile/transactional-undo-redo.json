@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.transactional-undo-redo",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "interaction-profile",
+  "title": {
+    "en": "Transactional undo and redo"
+  },
+  "aliases": {
+    "en": [
+      "one drag one undo",
+      "atomic editor history",
+      "cancel without history"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "spatial-puzzles",
+    "environments-dioramas"
+  ],
+  "summary": "Record one semantic command per committed user intention and restore every coupled state field together on undo or redo.",
+  "objective": "A continuous preview becomes one undoable command, cancellation creates none, and undo restores model state rather than only its current rendering.",
+  "applies_when": [
+    "An interactive editor or configurator offers undo and a single action can change transforms, hierarchy, occupancy, annotations or derived views together."
+  ],
+  "tags": [
+    "interaction-profile",
+    "undo",
+    "redo",
+    "transaction",
+    "history"
+  ],
+  "subject_terms": [
+    "semantic command",
+    "transaction boundary",
+    "preview coalescing",
+    "undo stack",
+    "redo stack",
+    "before state",
+    "after state",
+    "atomic restore"
+  ],
+  "intent_signals": [
+    "one drag creates hundreds of undo steps",
+    "undo restores mesh but not occupied socket",
+    "cancelled edit appears in history",
+    "redo after a divergent edit"
+  ],
+  "example_prompts": [
+    "Make moving and reparenting a module one undoable editor action.",
+    "Undo an annotation move together with its anchor and label metadata."
+  ],
+  "negative_signals": [
+    "record every pointermove",
+    "undo only the visible transform",
+    "reuse browser text history as scene history"
+  ],
+  "not_for": [
+    "Immutable playback with no editing history.",
+    "Distributed collaborative undo, which requires an explicit concurrency model beyond this profile."
+  ],
+  "content": {
+    "principles": [
+      "History records semantic model operations, not raw input events or animation frames. Begin and preview are provisional; commit is the history boundary.",
+      "A command owns all coupled state it changes: model values, parentage, local transforms, occupancy, selected IDs and annotation anchors where applicable.",
+      "Use a validated inverse when the operation is truly invertible; otherwise retain sufficient before state. Both paths restore authoritative state and regenerate views.",
+      "Undo and reset are separate: undo walks committed history, redo reapplies an undone command, and reset returns to a declared baseline under its own policy."
+    ],
+    "implementation": [
+      "At interaction begin, create a transaction with target IDs and the minimum complete before state. Update a derived preview without appending history entries.",
+      "On commit, revalidate, capture after state, apply coupled writes atomically and append one command. On cancel or failure, restore before state and discard the transaction.",
+      "Undo through the same model mutation boundary, then derive hierarchy, transforms, selection and visuals. Redo reuses the stored command; a new divergent commit clears the redo branch unless the product explicitly exposes branching history.",
+      "Keep scene history separate from focused text-field history. Input adapters decide whether an undo signal belongs to text editing, the scene or neither.",
+      "Label destructive or non-reversible external effects separately; this local scene-history profile must not imply it can reverse network publication or file overwrite."
+    ],
+    "observable_checks": [
+      "Drag through many preview updates and commit once; history grows by one, then undo and redo restore exact before and after model states.",
+      "Cancel, lose capture before commit and fail validation in separate trials; none changes history or leaves coupled state partially updated.",
+      "Move and reparent a nested object with an occupied socket, then undo; parent, local transform, world result and both occupancy maps return together.",
+      "Undo, make a different commit and invoke redo; behavior follows the declared branch policy without resurrecting an invalid command."
+    ]
+  },
+  "related_ids": [
+    "knowledge.reasoning-undo-is-the-inverse-move",
+    "knowledge.validation-slot-occupancy-integrity",
+    "knowledge.guided-exploration-reversible-steps",
+    "knowledge.constraint-aware-object-manipulation"
+  ],
+  "creative_affordances": [
+    "Show concise action labels or a scrub-able local history when it helps users understand reversibility.",
+    "Animate undo from restored model states without making animation frames authoritative."
+  ],
+  "known_limits": [
+    "Input Events historyUndo and historyRedo concern editing hosts and do not implement custom 3D history.",
+    "Memory bounds, persistence and collaborative conflict resolution are product-specific.",
+    "Authored and source-checked guidance; no undo runtime was executed."
+  ],
+  "claims": [
+    {
+      "id": "claim.experience-input-events-history-scope",
+      "statement": "Input Events Level 2 defines historyUndo as an intention to undo the last editing action and historyRedo as an intention to redo the last undone editing action for editing hosts.",
+      "scope": "W3C Working Draft text-input event vocabulary only; it does not specify transaction boundaries or a custom 3D scene history implementation.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-input-events2",
+          "locator": "Section 6.1.2 inputType table: historyUndo; historyRedo"
+        }
+      ]
+    }
+  ]
+}

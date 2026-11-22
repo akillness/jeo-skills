@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-section-flux-conservation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Section-to-section flow conservation and area scaling"
+  },
+  "aliases": {
+    "en": [
+      "continuity check",
+      "mean speed area product"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal"
+  ],
+  "summary": "Verify that area times mean speed is constant along a conduit and that speed responds to the square of the radius.",
+  "objective": "The area-speed product is constant within tolerance, halving the radius quadruples the mean speed, and zero flow is stationary.",
+  "applies_when": [
+    "A scene shows steady incompressible flow through a changing cross section.",
+    "Tracer glyphs or packets encode speed.",
+    "A viewer can set the flow rate, including to zero."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "continuity",
+    "units",
+    "scaling"
+  ],
+  "subject_terms": [
+    "volume flow rate",
+    "cross-sectional area",
+    "mean speed",
+    "nozzle",
+    "tracer glyph"
+  ],
+  "intent_signals": [
+    "the speed only doubles when the radius halves",
+    "check the continuity relation in this nozzle"
+  ],
+  "example_prompts": [
+    "Check the continuity relation along this nozzle scene."
+  ],
+  "negative_signals": [
+    "Navier-Stokes solving",
+    "pressure drop or pump sizing"
+  ],
+  "content": {
+    "principles": [
+      "Continuity fixes a product rather than a speed, so the invariant to check along the conduit is area times mean speed.",
+      "Area depends on the square of the radius, so a radius change appears squared in the speed. A linear response means the modelled dependence is wrong; substituting a diameter for a radius instead changes the area by a constant factor of four and leaves the squared response intact, which is why one independently computed absolute case is needed alongside the ratios.",
+      "A cross-sectional mean speed is not a velocity profile, and tracer motion is a schematic encoding rather than a computed flow field."
+    ],
+    "implementation": [
+      "Hold the volume flow fixed, require every section area to be positive and finite, then evaluate area and mean speed at several sections including the smallest and largest radius and record their product with units.",
+      "Compute one absolute case by hand from a stated radius and flow with their units, and compare it with the displayed area and speed; state whether the input is a radius or a diameter.",
+      "Compare mean speeds at radius pairs in the ratio two to one and record the speed ratio.",
+      "Set the volume flow to zero and confirm every derived speed is zero and every tracer indicator is stationary, and treat that case separately from the speed ratios, where a zero flow would make the ratio an indeterminate zero over zero.",
+      "Check unit bookkeeping explicitly, since squared length units times length per time must give volume per time in the displayed value, and state whether the reported speed is a signed axial mean, which carries the flow direction, or a magnitude, which represents the size of the flow only."
+    ],
+    "observable_checks": [
+      "The area-speed product is the same at every section within a declared tolerance that separates arithmetic error, where areas come from a closed form, from geometry-sampling error, where areas are measured from a mesh; a systematic trend along the conduit identifies an area computation error.",
+      "At fixed flow, halving the radius multiplies the mean speed by four; a factor of two identifies a linear rather than squared area dependence, while the independently computed absolute case is what catches a diameter-for-radius substitution.",
+      "Zero flow gives zero mean speed and stationary indicators and is reported without forming a speed ratio, and the artifact states that one mean speed does not describe the profile across the bore."
+    ]
+  },
+  "known_limits": [
+    "A one-dimensional continuity relation; it computes no pressure drop, viscosity effect, compressibility or boundary layer.",
+    "Authored verification guidance; no flow was computed or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.nozzle-continuity",
+    "recipe.hydrostatic-depth-pressure",
+    "recipe.vessel-radius-resistance"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-continuity-area-speed",
+      "statement": "For steady incompressible flow the product of cross-sectional area and average speed is the same at each section, and the volume flow rate equals area times average velocity.",
+      "scope": "Cross-sectional average values in a conduit without sources or sinks, as stated in the cited section.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-continuity",
+          "locator": "14.5, flow rate and the equation of continuity, equation 14.14"
+        }
+      ]
+    }
+  ]
+}

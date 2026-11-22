@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-structure-identity-persistence",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Structure identity through clipping, isolation and reset"
+  },
+  "aliases": {
+    "en": [
+      "label anchor integrity",
+      "structure id persistence"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures"
+  ],
+  "summary": "Check that structure identity, naming and label anchoring survive every presentation operation.",
+  "objective": "Every rendered component resolves to exactly one structure and every structure keeps its declared component set through clipping, isolation and explode, returning to the load-time inventory after reset.",
+  "applies_when": [
+    "Named structures can be clipped, isolated, exploded or hidden.",
+    "Labels or callouts are anchored to geometry rather than to fixed screen positions.",
+    "Selection and visibility can be changed independently."
+  ],
+  "check_method": "state",
+  "tags": [
+    "domain-validation",
+    "identity",
+    "labels",
+    "presentation"
+  ],
+  "subject_terms": [
+    "structure ID",
+    "label anchor",
+    "isolation",
+    "clipping",
+    "inventory",
+    "selection"
+  ],
+  "intent_signals": [
+    "the label moved to the wrong chamber after clipping",
+    "check that isolate does not rename anything"
+  ],
+  "example_prompts": [
+    "Check that structure labels stay attached through clipping and isolation."
+  ],
+  "negative_signals": [
+    "authoring new anatomy meshes",
+    "clinical annotation workflows"
+  ],
+  "content": {
+    "principles": [
+      "Structure identity is data on the structure, not the position of a label in the viewport; clipping, isolation and explode change presentation only.",
+      "A structure may legitimately own several components: submeshes, material splits, paired instances or levels of detail. The invariant is that each rendered component belongs to one structure and each structure keeps its declared set, not that the relation is one to one.",
+      "Label anchors are derived from the geometry of the identified structure and are checked in model or world coordinates, because a screen ray at the anchor can legitimately hit an occluder or a callout leader, so hit testing alone cannot decide whether a label is attached correctly.",
+      "Selection and visibility are separate axes: a hidden structure stays selected and identified unless the model explicitly says otherwise."
+    ],
+    "implementation": [
+      "Capture the load-time inventory of structure ID, display name, group, laterality and the set of components it owns, and treat it as read-only.",
+      "Apply clip, isolate, explode and reset in sequence, and after each step read back the owning structure of every rendered component and the anchor position each label resolves to in model coordinates.",
+      "Verify the mapping in both directions: every component resolves to exactly one structure, and every structure resolves to its declared component set with nothing added or dropped.",
+      "Include a structure fully hidden by clipping and confirm that it remains selectable from the structure tree and still reports its own ID."
+    ],
+    "observable_checks": [
+      "Every rendered component maps to exactly one structure after every operation, every structure keeps its declared component set, and the whole inventory matches the load-time inventory after reset.",
+      "Each label anchor lies on geometry owned by the structure it names, verified in model or world coordinates; where an occluder or callout treatment is declared, the anchor still resolves to the named structure even though a screen ray does not reach it.",
+      "Hiding or exploding changes no name, group or laterality value in the inventory."
+    ]
+  },
+  "known_limits": [
+    "Checks identity bookkeeping; it does not verify that names or groupings are anatomically correct, which is a separate sourcing question.",
+    "Authored verification guidance; no scene was run or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.heart-cutaway",
+    "recipe.knee-layer-peel",
+    "recipe.skeletal-hierarchy"
+  ],
+  "claims": []
+}

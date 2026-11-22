@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-bond-provenance-not-distance",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Edge provenance for intramolecular and illustrative connections"
+  },
+  "aliases": {
+    "en": [
+      "hydrogen bond edge provenance",
+      "authored edge list check"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Confirm that guide edges are authored typed references to atoms rather than inferred from an unstated distance cutoff.",
+  "objective": "Every edge carries two atom references, a type and a provenance, and endpoints follow their atoms when molecules move.",
+  "applies_when": [
+    "A scene draws associations between molecules in addition to covalent bonds.",
+    "Molecules or groups can be moved, rotated or duplicated.",
+    "A viewer might read an illustrative connection as a measured interaction."
+  ],
+  "check_method": "state",
+  "tags": [
+    "domain-validation",
+    "edges",
+    "provenance",
+    "representation"
+  ],
+  "subject_terms": [
+    "intramolecular bond",
+    "intermolecular association",
+    "edge list",
+    "distance cutoff",
+    "endpoint reference"
+  ],
+  "intent_signals": [
+    "the dashed lines stayed behind when I moved the molecule",
+    "are these hydrogen bonds inferred or authored"
+  ],
+  "example_prompts": [
+    "Check how the intermolecular guide edges in this water network were decided."
+  ],
+  "negative_signals": [
+    "force-field simulation",
+    "predicting bond energies"
+  ],
+  "content": {
+    "principles": [
+      "An intermolecular guide edge is authored data with a purpose; it is not the output of a distance threshold, and no universal cutoff exists to substitute for that decision.",
+      "Covalent bonds within a molecule and illustrative associations between molecules are different edge types with different endpoints and rendering, so the model must carry the type.",
+      "Endpoints are references to atoms, so moving a molecule updates its guides automatically; an edge drawn from copied positions becomes false as soon as anything moves."
+    ],
+    "implementation": [
+      "Store each edge as two atom references plus a type and a provenance note, and forbid any construction path that infers edges from distance without an explicit labelled rule.",
+      "Translate and rotate one molecule, then re-read every edge endpoint from the model to confirm it still refers to the same atoms and follows them.",
+      "Select one edge of each type and read back both endpoint molecule identifiers and the edge type.",
+      "If a distance-based helper is used while authoring, record its cutoff and mark the resulting edges as inferred so the artifact never presents them as measured."
+    ],
+    "observable_checks": [
+      "Every edge resolves to two atom references and a declared type; an edge without provenance fails even when it looks reasonable.",
+      "After a molecule is moved, all of its guide endpoints follow, and a selected edge reports the correct pair of molecule identifiers.",
+      "No panel presents an inferred edge as a measured or predicted interaction, and any authoring cutoff is reported together with the edges it produced."
+    ]
+  },
+  "known_limits": [
+    "Checks data provenance and reference integrity; it does not establish that the illustrated associations occur in a real sample.",
+    "Authored verification guidance; no scene was run or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.water-hydrogen-bond-network",
+    "recipe.molecular-shape-comparison",
+    "recipe.service-graph"
+  ],
+  "claims": []
+}

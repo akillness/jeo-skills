@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "artifact_id": "lanternfall-river-village",
+  "objective": "Let a viewer explore a small fictional river village at civil dusk, lit only by paper lanterns, and select any building to learn what it is and how it was built.",
+  "selected_records": [
+    "knowledge.style-lantern-festival-riverside",
+    "knowledge.lighting-mood-night-lantern",
+    "recipe.fantasy-village-diorama",
+    "knowledge.blueprint-timber-cottage",
+    "knowledge.blueprint-long-hall",
+    "knowledge.blueprint-watermill",
+    "knowledge.blueprint-round-tower",
+    "knowledge.blueprint-market-stall",
+    "knowledge.blueprint-stone-bridge",
+    "knowledge.blueprint-stone-guildhall",
+    "knowledge.blueprint-lantern-post",
+    "knowledge.blueprint-well",
+    "knowledge.blueprint-cart",
+    "knowledge.blueprint-barrel",
+    "knowledge.blueprint-crate",
+    "knowledge.blueprint-fence-run",
+    "knowledge.blueprint-clothesline",
+    "knowledge.blueprint-signboard",
+    "knowledge.blueprint-tree-round",
+    "knowledge.blueprint-tree-conifer",
+    "knowledge.blueprint-reeds",
+    "knowledge.blueprint-rock-cluster",
+    "knowledge.blueprint-biped-walker",
+    "knowledge.blueprint-quadruped-walker"
+  ],
+  "custom_choices": [
+    "Terrain: a rolling height field carved by a river, flattened into a west-bank terrace and raised into an east bluff, with a levelled pad stamped under every building (world/terrain.js). No blueprint covers terrain.",
+    "River: a THREE.Reflector under two transparent ripple layers whose canvas normal maps scroll along 37 and 128 degrees - the look's 'every lantern appears twice' technique made real rather than faked with mirrored sprites.",
+    "Paper lanterns and their cords: lathe geometry hung between two lantern-post 'hook' sockets, swaying on seeded sines.",
+    "Lane ribbons that sample the height field, so a lane climbing to the bridge stays on the ground.",
+    "Selection ring instead of a material tint: kit materials come from a shared cache, so tinting one building would tint every clone of it.",
+    "The mill is built at T2 rather than its available T3 bake, because the bake freezes the wheel."
+  ],
+  "runtime": {
+    "engine": "three@0.180.0",
+    "build": "vite@7.1.5",
+    "post": "postprocessing@6.39.4 (bloom 1.0/0.28/0.6, vignette 0.25, ACESFilmic applied last)",
+    "pixel_ratio_cap": 2,
+    "remote_runtime_assets": false,
+    "physics": "none",
+    "render_scheduling": "Demand-driven RAF, max 60 fps, hidden-tab suspension, camera/selection/control invalidation; 2048px directional shadow map, one 512px point shadow."
+  },
+  "scenes": [
+    {
+      "id": "lanternfall",
+      "motion": "decorative (procedural gait, scrolling ripple maps, seeded sway)",
+      "entities": [
+        "hero: Ferryman's cottage, T3 Blender-baked GLB",
+        "landmark: watch tower, 9.5 m on a 3.4 m bluff",
+        "stone bridge over the river, the only large curved mass",
+        "river mill with a turning overshot wheel",
+        "stone guildhall, shipped Blender-authored GLB",
+        "3 further cottages, a long hall, 3 market stalls",
+        "10 lantern posts, 7 hanging paper lanterns, 12 dynamic point lights",
+        "scale cue: 1.75 m biped figure, 2.0 m doors, 0.35 m lanterns",
+        "2 biped walkers, 2 quadruped walkers on seeded routes",
+        "64-instance far-field scrub with per-instance jitter"
+      ],
+      "actions": [
+        "orbit",
+        "zoom",
+        "reset view",
+        "select a building by click",
+        "select a building by name",
+        "pause and resume motion",
+        "jump to seven named views"
+      ],
+      "boundaries": [
+        "Fictional town, river and businesses; no real place, festival, date or brand is depicted.",
+        "No ecology, hydrology or structural claim: the kits are authored creative starting points.",
+        "Terrain, water depth and building spacing are composed for the frame, not surveyed."
+      ],
+      "physical_contract": {
+        "model": "controlled-locomotion (kit walkers only)",
+        "scope": "metres; gait phase advances by distance travelled over stride length so a planted foot holds its world position",
+        "time": "variable dt capped at 0.05 s per frame; dt = 0 while paused",
+        "limits": [
+          "No collision, no ground contact solving beyond a height-field lookup, no dynamics."
+        ]
+      }
+    }
+  ],
+  "claims_to_visuals": [],
+  "selection_scope": "The style and lighting records guided the palette, fog, light values, camera and post; the blueprint records supplied every building, prop, plant and creature. Terrain, water, paper lanterns, lanes, embers and the selection UI are custom and are listed under custom_choices."
+}

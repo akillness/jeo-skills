@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.breakable-joint-threshold-contract",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Breakable joint measurement and threshold contract"
+  },
+  "aliases": {
+    "en": [
+      "breakable constraint",
+      "joint reaction threshold",
+      "destruction connector release"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "products-assemblies",
+    "environments-dioramas"
+  ],
+  "summary": "Release a constraint from a declared solver measurement with compatible units and an explicit unsupported-backend fallback.",
+  "objective": "A joint breaks once for a traceable threshold crossing, while render motion cannot masquerade as reaction-force measurement.",
+  "applies_when": [
+    "A machine connector, destructible prop or educational joint releases in response to simulated loading."
+  ],
+  "tags": [
+    "physical-behavior",
+    "breakable-joint",
+    "impulse",
+    "solver",
+    "units"
+  ],
+  "subject_terms": [
+    "joint reaction",
+    "breaking threshold",
+    "linear impulse",
+    "average force",
+    "physics substep",
+    "constraint removal",
+    "fracture approximation"
+  ],
+  "intent_signals": [
+    "break a joint when force exceeds a limit",
+    "Blender breaking threshold in Three.js",
+    "Rapier JavaScript joint impulse unavailable"
+  ],
+  "example_prompts": [
+    "Make a hanging prop detach when its measured joint load exceeds the declared limit.",
+    "Explain why copying the Blender breakable threshold into a browser force slider is unsafe."
+  ],
+  "negative_signals": [
+    "infer joint force from mesh speed",
+    "contact force equals joint reaction",
+    "divide by render delta",
+    "sum force and torque without units"
+  ],
+  "not_for": [
+    "Predicting real material failure, crack propagation or certified structural safety.",
+    "An authored break animation whose trigger is intentionally scripted rather than load-driven."
+  ],
+  "content": {
+    "principles": [
+      "Choose the backend and exact supported measurement before offering a load-triggered break control. A source-level possibility is not a callable browser API.",
+      "Specify quantity, units, coordinate frame, selected axes, sign or magnitude rule, sampling interval and threshold comparison. Keep linear and angular quantities separate; never take a mixed-unit spatial-vector norm as a physical load.",
+      "A contact event, displacement error or body velocity is not automatically a joint reaction. Label an intentionally chosen proxy as an approximation with its own rule.",
+      "Constraint release is a simulation state transition. Three.js displays the resulting body poses; particles, sound and cracks may decorate the event without causing or measuring it."
+    ],
+    "implementation": [
+      "In Blender author separate pieces, stable connector/body IDs, joint frames, collision shapes and reset poses. Treat exported geometry and any custom connector description separately; reconstruct constraints explicitly in the chosen runtime.",
+      "Inspect the installed solver binding for a supported post-step joint measurement and its interval semantics. The reviewed Rapier JavaScript ImpulseJoint page supplies no documented reaction getter; do not invent joint.impulse() or substitute a contact-force event. Use a verified adapter/backend, a declared baked playback, or clearly labeled scripted release when measurement is unavailable.",
+      "For supported measurements, sample at the documented simulation boundary. If a reported linear impulse covers delta_t, convert to average force only using that same nonzero interval; do not use render-frame time, blindly sum warm-start accumulators, or claim this average is a peak.",
+      "Compare the declared component or like-unit magnitude to its matching threshold. State any persistence or filtering policy and the delay it introduces; a per-step impulse threshold and an average-force threshold describe different rules.",
+      "Queue joint removal once at a backend-safe boundary, preserve the dynamic bodies current poses and velocities, and update connector state and any collision-filter policy deliberately. Do not inject an extra explosion impulse unless it is a separately declared effect.",
+      "Reset recreates original bodies/constraints or restores a supported complete baseline, clears pending break events and measurement history, restores filters, and resets render interpolation so a broken pose does not leak into the next run."
+    ],
+    "observable_checks": [
+      "A later authorized check records backend/version, measured quantity, source API, units, interval and threshold alongside one intact-to-broken event; unavailable readout produces an explicit unsupported state.",
+      "Use a scoped below/above-threshold fixture and reset: release occurs once and reset restores the intended constraint and collision configuration. These are proposed checks, not results.",
+      "Change render cadence while holding the simulation step and inputs fixed; the trigger consumes simulation samples only. Any later step-size comparison must keep force-versus-impulse semantics explicit rather than demand universal numerical invariance.",
+      "Inspect release continuity and label any visual-only burst; unsupported joint measurement is never represented by a working measured-force slider."
+    ]
+  },
+  "related_ids": [
+    "knowledge.kinematic-dynamic-velocity-handoff",
+    "knowledge.compound-collider-mass-properties",
+    "knowledge.three-rigid-body-adapter"
+  ],
+  "creative_affordances": [
+    "Choose whimsical detachable lanterns, mechanical latches or educational load indicators without prescribing a realistic art style.",
+    "Use a scripted break for storytelling when it is honestly presented as authored behavior."
+  ],
+  "known_limits": [
+    "An impulse/force threshold is a simplified release rule, not validated fracture mechanics.",
+    "The JavaScript API-page observation does not rule out supported future versions or explicitly verified custom bindings.",
+    "No Blender export, solver, renderer, browser or threshold fixture was executed."
+  ],
+  "claims": [
+    {
+      "id": "claim.delivery-blender-breaking-impulse",
+      "statement": "Blender 4.5 exposes Breakable for rigid-body constraints except Motor, and describes Threshold as the impulse strength required to break the constraint.",
+      "scope": "Blender authoring setting, not a force value or an automatically transported runtime constraint.",
+      "source_refs": [
+        {
+          "source_id": "source.delivery-blender-breakable",
+          "locator": "Common Options / Settings: Breakable and Threshold"
+        }
+      ]
+    },
+    {
+      "id": "claim.delivery-rapier-js-joint-readout-boundary",
+      "statement": "The Rapier JavaScript ImpulseJoint API page read on 2026-09-08 lists anchors, bodies, frames, contact settings, validity and type methods; it does not document a public joint-reaction force or impulse getter.",
+      "scope": "Bounded observation of this JavaScript API page; no claim that every Rapier version, Rust API, raw binding or third-party adapter lacks such access.",
+      "source_refs": [
+        {
+          "source_id": "source.delivery-rapier-js-joint",
+          "locator": "Complete public methods index and method descriptions"
+        }
+      ]
+    },
+    {
+      "id": "claim.delivery-impulse-average-force-interval",
+      "statement": "For a force integrated over a nonzero time interval, linear impulse J equals the average force over that same interval multiplied by its duration, so F_avg = J / delta_t.",
+      "scope": "Vector relation for the same measured interval; an average is not an instantaneous peak force or a material fracture law.",
+      "source_refs": [
+        {
+          "source_id": "source.delivery-impulse-average-force",
+          "locator": "Equations 9.3, 9.4, 9.5"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.double-integral-columns",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Signed double integral as a column sum"
+  },
+  "aliases": {
+    "en": [
+      "double Riemann sum",
+      "double integral columns",
+      "signed volume integration"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields"
+  ],
+  "summary": "Partition a rectangular domain into signed columns and compare numerical quadrature with an analytic integral.",
+  "objective": "Show signed midpoint columns under f(x,y)=x*x-y and let me refine the partition while tracking integral error.",
+  "tags": [
+    "double integral",
+    "Riemann sum",
+    "midpoint quadrature"
+  ],
+  "subject_terms": [
+    "double integral",
+    "Riemann sum",
+    "midpoint quadrature",
+    "signed volume",
+    "rectangle partition",
+    "integration error"
+  ],
+  "intent_signals": [
+    "Show signed midpoint columns under f(x,y)=x*x-y and let me refine the partition while tracking integral error.",
+    "Partition a rectangular domain into signed columns and compare numerical quadrature with an analytic integral."
+  ],
+  "example_prompts": [
+    "Show signed midpoint columns under f(x,y)=x*x-y and let me refine the partition while tracking integral error.",
+    "Create an explorable 3D explanation of double Riemann sum with convergence panel."
+  ],
+  "negative_signals": [
+    "No general guarantee that arbitrary quadrature error decreases monotonically for every integrand."
+  ],
+  "not_for": [
+    "No general guarantee that arbitrary quadrature error decreases monotonically for every integrand."
+  ],
+  "entities": [
+    {
+      "name": "Signed columns",
+      "guidance": "Build one prism per cell with base at z=0 and height abs(f); put negative columns below the plane, retaining signed numeric labels."
+    },
+    {
+      "name": "Surface and partition",
+      "guidance": "Overlay the sampled smooth surface and domain grid; show dx and dy separately with a selected cell footprint."
+    },
+    {
+      "name": "Convergence panel",
+      "guidance": "Display positive subtotal, negative subtotal, signed total and absolute error to -1/3; never call absolute column volume the integral."
+    }
+  ],
+  "state_contract": {
+    "model": "On [-1,1] x [0,1], midpoint quadrature sums f(xi,yj)*dx*dy; the exact integral of x*x-y is -1/3. Require positive integer partition counts.",
+    "authority": "Partition cells and their sample values own both column geometry and arithmetic; sum signed contributions rather than mesh volumes.",
+    "actions": [
+      "Refine x or y cell counts separately.",
+      "Select a cell to inspect sample coordinates and its signed contribution.",
+      "Toggle surface or column isolation.",
+      "Restore the original partition and view."
+    ]
+  },
+  "invariants": [
+    "Cell footprints tile the same fixed rectangle without overlap or gaps.",
+    "The sum of positive and negative subtotals equals the displayed integral estimate.",
+    "Zero-height cells have zero contribution; they do not become minimum-height bars."
+  ],
+  "motion_guidance": [
+    "Interpolate column resizing only for presentation; commit the new partition and arithmetic atomically.",
+    "A refinement sequence is a sequence of approximations, not time evolution of a physical solid."
+  ],
+  "known_limits": [
+    "No general guarantee that arbitrary quadrature error decreases monotonically for every integrand.",
+    "Prism height units times domain area units determine integral units; visual vertical exaggeration is disclosed.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.double-integral-columns",
+      "statement": "A double integral over a rectangle is represented by the limit of sums of sampled function values multiplied by cell areas.",
+      "scope": "Integrable function on a rectangular domain; signed values may produce negative contributions.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-double-integrals",
+          "locator": "5.1, double Riemann sums and signed volume"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Signed columns",
+      "structure": "Build one prism per cell with base at z=0 and height abs(f); put negative columns below the plane, retaining signed numeric labels.",
+      "material": "Two legible positive/negative colors with hatching and a neutral zero plane; transparent surface must not hide column boundaries."
+    }
+  ]
+}

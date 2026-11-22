@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blender-three-procedural-shader-portability",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Bake or reconstruct a Blender procedural shader"
+  },
+  "aliases": {
+    "en": [
+      "procedural material export decision",
+      "Blender nodes to Three custom shader",
+      "bake versus TSL"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies",
+    "characters-motion-art",
+    "abstract-systems-data"
+  ],
+  "summary": "Choose texture baking, portable glTF parameters or a deliberate Three.js shader reconstruction according to which procedural behavior must remain editable or camera-dependent at runtime.",
+  "objective": "Every Blender-only shader feature has a named transport decision, and the Three.js result preserves the approved spatial scale, animation ownership and output pipeline without implying automatic node translation.",
+  "applies_when": [
+    "A Blender material uses procedural coordinates, noises, ramps, vector math or renderer-specific layers beyond the exporter-recognized glTF graph.",
+    "The runtime appearance must be implemented in Three.js through textures, built-in PBR inputs, ShaderMaterial or node materials/TSL."
+  ],
+  "constraint_level": "correctness",
+  "tags": [
+    "reasoning-rule",
+    "shader-portability",
+    "baking",
+    "tsl",
+    "shader-material",
+    "gltf"
+  ],
+  "subject_terms": [
+    "procedural shader",
+    "texture bake",
+    "UV bake",
+    "ShaderMaterial",
+    "RawShaderMaterial",
+    "NodeMaterial",
+    "TSL",
+    "WebGLRenderer",
+    "WebGPURenderer",
+    "uniform animation"
+  ],
+  "intent_signals": [
+    "Blender procedural texture disappeared in glTF",
+    "should I bake this material",
+    "port Blender nodes to TSL",
+    "keep procedural pattern animated in browser",
+    "ShaderMaterial or node material"
+  ],
+  "example_prompts": [
+    "Move this animated Blender scanline material into a Three.js viewer.",
+    "Decide whether to bake or reconstruct this procedural stone shader."
+  ],
+  "negative_signals": [
+    "claim arbitrary Blender nodes export automatically",
+    "treat WebGLRenderer and WebGPURenderer as identical",
+    "static color texture already portable"
+  ],
+  "not_for": [
+    "Simple portable Principled materials already represented by glTF parameters and textures.",
+    "Promising backend parity without testing the chosen Three.js revision and target devices."
+  ],
+  "content": {
+    "principles": [
+      "First classify the procedural feature: object-anchored static appearance, view/light-dependent shading, or time/state-dependent behavior. That classification decides whether a texture can carry the result.",
+      "Bake object-anchored static signals when finite texture resolution is acceptable. Reconstruct effects that must respond to camera, light, world position, time or interaction at runtime.",
+      "glTF carries a defined material model and extensions, not Blender's general shader graph. Exporter recognition is a boundary to design against, not a failure to hide.",
+      "Three.js shader choices are renderer-specific and revision-sensitive. ShaderMaterial/onBeforeCompile belongs to the WebGLRenderer path documented today; WebGPURenderer directs custom material work toward node materials and TSL, with WebGPU or WebGL 2 backends under that renderer.",
+      "A reconstructed procedural material is a new implementation. Preserve equations, coordinate spaces, units, seeds and animation state explicitly rather than judging only one matching screenshot."
+    ],
+    "implementation": [
+      "Inventory each non-portable Blender node group and mark which outputs feed base color, roughness, normal, emission, opacity or displacement. Record coordinate source and physical scale before choosing a transport.",
+      "For baking, unwrap stable UVs, choose resolution from the closest intended view, include padding, bake each material role separately, and keep color outputs distinct from linear data outputs. Reconnect baked images through exporter-recognized nodes.",
+      "For reconstruction, write a small language-neutral shader specification: inputs, coordinate frame, range, seed, time source, expected outputs and two reference samples. Then implement it in the renderer path selected by the app.",
+      "Record Three.js revision and whether the app uses WebGLRenderer, WebGPURenderer with WebGPU, or WebGPURenderer forced/fallen back to WebGL 2. Test the chosen path; do not infer compatibility from TSL's ability to generate both WGSL and GLSL.",
+      "Use a hybrid when useful: bake expensive stationary structure and reconstruct only the low-dimensional animated or view-dependent term. Keep one owner for time so texture animation and application state reset together."
+    ],
+    "observable_checks": [
+      "A UV seam, object rotation and scale change reveal whether the procedural coordinate frame was preserved rather than accidentally changed from object to world or UV space.",
+      "Reference points match the recorded shader specification within a declared tolerance for scalar/data outputs; visual-only layers use named patch comparisons under fixed light and view.",
+      "Pause, seek and reset return every animated shader uniform and application state to the declared values.",
+      "The tested report names Three.js revision, renderer and actual backend; success on WebGPU does not silently certify the WebGL 2 fallback or WebGLRenderer."
+    ]
+  },
+  "creative_affordances": [
+    "Simplify a procedural network into a bolder authored graphic pattern when exact reproduction is not part of the brief.",
+    "Use a hybrid baked/procedural treatment to keep macro variation editable while fixing expensive microdetail."
+  ],
+  "known_limits": [
+    "Baking loses view dependence, continuous zoom detail and runtime editability; custom shaders add maintenance and backend testing responsibility.",
+    "WebGPURenderer and TSL capabilities are evolving; current documentation calls the renderer experimental.",
+    "Authored reusable guidance; no shader was baked, compiled or rendered for this record."
+  ],
+  "related_ids": [
+    "knowledge.shared-gltf-asset-bridge",
+    "knowledge.shared-display-color-management",
+    "knowledge.blender-three-linear-color-handoff"
+  ],
+  "claims": [
+    {
+      "id": "claim.blender-three-exporter-recognized-materials",
+      "statement": "Blender's glTF exporter constructs glTF materials from recognized material node arrangements rather than transporting an arbitrary Blender shader graph, and its manual documents specific arrangements for supported material inputs.",
+      "scope": "Current Blender glTF exporter documentation; recognized arrangements and extensions can change between Blender versions.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "Materials; Exported Materials"
+        }
+      ]
+    },
+    {
+      "id": "claim.blender-three-renderer-shader-boundary",
+      "statement": "Current Three.js documentation describes WebGPURenderer as supporting node materials and TSL with WebGPU and WebGL 2 backends, states that ShaderMaterial, RawShaderMaterial and onBeforeCompile customizations are not supported by WebGPURenderer and must be ported, and calls WebGPURenderer experimental; WebGLRenderer remains maintained for pure WebGL 2 applications.",
+      "scope": "Live Three.js migration guidance accessed 2026-09-08; capabilities may change by revision and do not establish identical backend output.",
+      "source_refs": [
+        {
+          "source_id": "source.blender-three-webgpu",
+          "locator": "Overview; Migration; State of WebGLRenderer"
+        },
+        {
+          "source_id": "source.three-material-clipping",
+          "locator": "onBeforeCompile"
+        }
+      ]
+    }
+  ]
+}

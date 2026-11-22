@@ -1,0 +1,35 @@
+```pixels
+PALETTE
+. transparent
+o #2a1f2e
+r #d84040
+R #8a2030
+s #d0d8e0
+m #8a94a0
+d #5a6270
+p #f0c098
+P #c88a68
+b #3a6ad0
+B #26408a
+l #6a9ae8
+n #7a4a28
+N #4a2c18
+FRAME front
+......oooo......
+.....orrrRo.....
+....ossrRmdo....
+...ossmmmmddo...
+..osmmmmmmmddo..
+..oddddddddddo..
+..ompppppppPdo..
+..ompoppppoPdo..
+..omppppppPPdo..
+...omPPPPPPdo...
+.osmlbbbbbbBmdo.
+.osmlbbbbbBBmdo.
+.oppnnnssnnnPPo.
+..oolbbbbbBBoo..
+...onnNoonnNo...
+...oooooooooo...
+END
+```

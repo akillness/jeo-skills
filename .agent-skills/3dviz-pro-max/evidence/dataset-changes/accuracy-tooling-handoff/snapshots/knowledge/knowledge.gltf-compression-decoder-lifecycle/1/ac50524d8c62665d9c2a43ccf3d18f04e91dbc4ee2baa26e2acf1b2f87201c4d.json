@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.gltf-compression-decoder-lifecycle",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "glTF compression decoder lifecycle"
+  },
+  "aliases": {
+    "en": [
+      "Draco Meshopt KTX2 loader setup",
+      "Basis transcoder lifecycle"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "Inspect compressed glTF extensions, configure matching Three.js decoders before load, expose failure/fallback, and dispose loader and asset resources by ownership.",
+  "objective": "A compressed asset loads through its declared dependency or reaches an explicit fallback/error without hiding fidelity or cleanup obligations.",
+  "applies_when": [
+    "A glTF uses Draco, Meshopt or KTX2/Basis compression."
+  ],
+  "tags": [
+    "tool-adapter",
+    "gltf",
+    "compression",
+    "draco",
+    "meshopt",
+    "ktx2"
+  ],
+  "subject_terms": [
+    "KHR_draco_mesh_compression",
+    "KHR_meshopt_compression",
+    "EXT_meshopt_compression",
+    "KHR_texture_basisu",
+    "setMeshoptDecoder",
+    "detectSupport"
+  ],
+  "intent_signals": [
+    "GLB fails after Draco compression",
+    "KTX2 transcoder path missing",
+    "setMeshoptDecoder before load"
+  ],
+  "example_prompts": [
+    "Wire a viewer for Draco geometry and KTX2 textures with fallback.",
+    "Debug a Meshopt decoder CDN failure."
+  ],
+  "negative_signals": [
+    "one decoder handles geometry and textures",
+    "garbage collection disposes GPU resources"
+  ],
+  "not_for": [
+    "Choosing artistic texture resolution.",
+    "Claiming unmeasured compression ratios."
+  ],
+  "content": {
+    "principles": [
+      "Draco and Meshopt address geometry/buffers; KTX2/Basis addresses texture images and transcoding.",
+      "Inspect extensionsUsed/Required; optional is useful only with a valid fallback.",
+      "Decoder configuration, workers, asset resources and application state have separate owners.",
+      "Record Three.js revision, renderer/backend, decoder versions and asset URLs."
+    ],
+    "implementation": [
+      "Inventory extension names, required status, fallback buffers/images and producer settings.",
+      "Configure Draco path, documented Meshopt decoder path, and KTX2 transcoder plus actual-renderer support detection before load.",
+      "Expose dependency and URL on failure; use only a packaged verified fallback.",
+      "Compare decoded silhouette, UVs, normals, morphs and color/non-color textures.",
+      "Dispose owned scene resources and KTX2 internals; do not dispose shared decoders during dependent loads."
+    ],
+    "observable_checks": [
+      "A matrix covers uncompressed and each claimed compression path plus missing-dependency failure.",
+      "Decoder URLs resolve and path failure differs from invalid asset.",
+      "Decoded attributes and texture roles meet fixture invariants.",
+      "Repeated load/unload does not accumulate owned resources or workers."
+    ]
+  },
+  "creative_affordances": [
+    "Keep a core-format fallback for one critical asset.",
+    "Use distinct compression choices by asset role."
+  ],
+  "known_limits": [
+    "Support depends on browser, device, hosting and versions.",
+    "No byte or decode-time threshold is claimed.",
+    "No compression, network, decode or disposal observation ran."
+  ],
+  "related_ids": [
+    "knowledge.shared-gltf-asset-bridge",
+    "knowledge.blender-evaluated-mesh-handoff",
+    "knowledge.blender-three-linear-color-handoff"
+  ],
+  "claims": [
+    {
+      "id": "claim.craft-gltf-compression-fallbacks",
+      "statement": "KHR_draco_mesh_compression defines decoder and required-extension behavior; KHR_texture_basisu carries KTX2 Basis images with runtime transcoding and optional core-image fallback; KHR_meshopt_compression operates on buffer views and defines fallback packaging.",
+      "scope": "Cited extension contracts; inspect each asset and producer settings.",
+      "source_refs": [
+        {
+          "source_id": "source.craft-khr-draco",
+          "locator": "Status; Overview; glTF Schema Updates; Conformance; Implementation note"
+        },
+        {
+          "source_id": "source.craft-khr-texture-basisu",
+          "locator": "Status; Overview; glTF Schema Updates; Using Without a Fallback; Additional requirements"
+        },
+        {
+          "source_id": "source.craft-khr-meshopt",
+          "locator": "Status; Overview; Specifying compressed views; Fallback buffers"
+        }
+      ]
+    },
+    {
+      "id": "claim.craft-three-decoder-setup",
+      "statement": "Current GLTFLoader documents Draco, Meshopt and KTX2/Basis support and setup methods; KTX2Loader requires support detection with the selected renderer before loading and exposes disposal, while DRACOLoader requires configuration before decoding and recommends reuse.",
+      "scope": "Live docs accessed 2026-09-08; exact KHR/EXT Meshopt paths and lifecycle are revision-specific.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-three-gltf-loader",
+          "locator": "Extension support list; setDRACOLoader; setKTX2Loader; setMeshoptDecoder; image-bitmap disposal note"
+        },
+        {
+          "source_id": "source.craft-three-draco-loader",
+          "locator": "Class description; reuse recommendation; setDecoderPath; setWorkerLimit; code example"
+        },
+        {
+          "source_id": "source.craft-three-ktx2-loader",
+          "locator": "Class description; detectSupport; setTranscoderPath; setWorkerLimit; dispose"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-tilt-shift-diorama",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Tilt-shift diorama (fake-miniature photography)"
+  },
+  "aliases": {
+    "en": [
+      "tilt-shift miniature",
+      "diorama photo",
+      "fake miniature photography"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors",
+    "operations-logistics"
+  ],
+  "summary": "A full-size scene photographed as if it were a tabletop model: high telephoto camera, a narrow horizontal band of sharp focus, lifted saturation and hard small-scale sun.",
+  "objective": "A single horizontal sharp band covering 18-25% of frame height contains the hero, and blur increases monotonically toward the top and bottom edges of the frame.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "named-look",
+    "depth-of-field",
+    "miniature"
+  ],
+  "subject_terms": [
+    "tilt-shift",
+    "miniature",
+    "diorama photo",
+    "fake miniature",
+    "model village photograph",
+    "toy town",
+    "aerial diorama"
+  ],
+  "intent_signals": [
+    "Make it look like a tilt-shift miniature",
+    "Diorama photo of a city block from above",
+    "Fake miniature effect, toy-like scale",
+    "Shoot the scene like a tabletop model"
+  ],
+  "example_prompts": [
+    "A tilt-shift view of a harbour loading yard so it reads as a tabletop model.",
+    "Miniature-looking city intersection seen from a high telephoto camera with a narrow band of focus."
+  ],
+  "content": {
+    "principles": [
+      "The illusion is optical, not geometric: the scene may be full-size and correctly proportioned, and the miniature read comes entirely from focus falloff, camera height and colour lift.",
+      "Triangulate three traits shared by fake-miniature photographs — (a) a high, steeply-pitched telephoto viewpoint, (b) a single narrow band of sharpness with symmetric blur ramps, (c) colour and contrast lifted past reality so surfaces look like painted plastic. Those three traits are the recipe; no named photographer, film or artist is required.",
+      "Silhouette rule: masses must be blocky and separable from above — roofs, containers, vehicles and tree crowns read as distinct rounded-rectangular tops with 1.5-3 m gaps between them; a scene that overlaps into one continuous roof plane cannot be saved by focus.",
+      "Scale cues run the opposite way here: keep real-world dimensions honest (door 2.0 m, bus 12 m, container 6.1 m, lane 3.2 m) so the eye's only evidence for 'model' is the optics — a fake-miniature look built by shrinking objects reads as a broken scene, not a diorama.",
+      "Aerial haze is deliberately absent. Depth separation comes from the focus ramp, hard cast shadows and the 1.5-3 m gaps between masses, so this look intentionally opts out of the usual fog requirement and says so."
+    ],
+    "implementation": [
+      "Camera: 22° vertical FOV (telephoto), 45 m height, -38° pitch, orbit clamped to 25-55° polar and 40-120 m distance. Wide lenses restore full-size perspective cues and kill the effect.",
+      "Depth of field: focus distance 60 m at an f/1.4 equivalent aperture; the fully sharp band spans 20% of frame height (acceptable range 18-25%), and the blur ramps symmetrically to a 12 px circle of confusion at the top and bottom edges at 1080p. Scale the CoC target with output height so a 4K render keeps the same apparent falloff.",
+      "Colour grade: lift global saturation +18% and contrast +10% over the physically plausible values; the hero accent (#d94f3d) is allowed 80% saturation while everything non-focal stays at or below 55%.",
+      "Sun: DirectionalLight #fff6e2 at 3.4, elevation 58°, azimuth 140°, castShadow true, shadow map 2048 with normalBias 0.03 — high sun and hard, short shadows are how models are lit on a table.",
+      "Materials: a moulded-plastic finish — roughness 0.35-0.5 on vehicles with clearcoat 0.15, 0.6-0.8 on ground and roofs, and every edge bevelled at 2-3 mm so it catches a highlight. Suppress detail below 5 cm: seams, small text and micro-scratches break the toy read.",
+      "Motion: move vehicles and figures at 0.6-0.8× plausible speed with a hold of 250 ms at stops and a linear ease — smooth realistic easing reads as full-size, slightly mechanical timing reads as model."
+    ],
+    "observable_checks": [
+      "Measure the sharp band in the rendered frame: 18-25% of frame height, and the hero sits inside it.",
+      "Blur monotonicity: sample circle-of-confusion at 10%, 30%, 50%, 70% and 90% of frame height — it must fall to a minimum inside the band and rise on both sides.",
+      "Disable the DOF pass: the frame should immediately read as an ordinary aerial photograph. If it still looks miniature, the geometry has been shrunk instead of the optics changed.",
+      "Check the saturation histogram: the non-focal peak sits at or below 55% while at least one accent region exceeds 70%."
+    ]
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at renderer.toneMappingExposure 1.0 with three.js physically-based light units; re-tune every intensity under AgX, Neutral or a different exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "The band can be tilted off horizontal by up to 15° to follow a road or quay; keep it a single band, since two focus zones destroy the read.",
+    "Night variants work if the practicals stay hard-edged: keep the DOF band, drop the key to 0.4 and let street lamps at 30-60 candela with decay 2 carry the frame.",
+    "Subject is free — rail yards, market squares, construction sites, airports — as long as the masses stay separable from above."
+  ],
+  "related_ids": [
+    "knowledge.style-toy-miniature",
+    "knowledge.style-cinematic",
+    "knowledge.theme-coastal-exploration"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Every number here serves one perceptual trick: a real camera close to a small object has a shallow depth of field, so simulating that falloff at a 60 m focus distance with an f/1.4-equivalent aperture and a 20%-of-frame-height sharp band convinces the eye the subject is centimetres across. The 22° FOV and 45 m height remove wide-angle perspective divergence that would betray full scale, the +18% saturation and +10% contrast imitate painted model surfaces, and fog is set to none on purpose because aerial haze is a full-size depth cue that directly fights the illusion.",
+    "values": {
+      "feeling": [
+        "playful",
+        "precise",
+        "toy-like"
+      ],
+      "palette": [
+        {
+          "hex": "#e8e4dc",
+          "role": "pavement and roofs — dominant light mid"
+        },
+        {
+          "hex": "#3b4a63",
+          "role": "cast shadow / deepest value"
+        },
+        {
+          "hex": "#d94f3d",
+          "role": "hero accent (bus, one roof, a crane)"
+        },
+        {
+          "hex": "#4f9d69",
+          "role": "park and tree-crown green mid"
+        },
+        {
+          "hex": "#f2c14e",
+          "role": "secondary warm accent (markings, awnings)"
+        }
+      ],
+      "value_structure": "25/55/20 dark/mid/light; the sharp band holds the two highest-contrast elements in the frame",
+      "saturation_rule": "global saturation lifted +18% over plausible reality; non-focal ≤ 55% HSL, hero accent ≤ 80%",
+      "sky": {
+        "model": "solid",
+        "zenith": "#cfe0ee",
+        "horizon": "#cfe0ee"
+      },
+      "fog": {
+        "type": "none",
+        "color": "#cfe0ee",
+        "density": 0.0
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#fff6e2",
+          "intensity": 3.4,
+          "elevation_deg": 58,
+          "azimuth_deg": 140,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#bcd4ea",
+          "ground": "#6d6558",
+          "intensity": 0.6
+        },
+        "rim": {
+          "type": "none"
+        },
+        "ratio": "key:fill ≈ 5:1 — hard, short shadows are what sunlight on a tabletop model looks like"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.0
+      },
+      "camera": {
+        "fov_deg": 22,
+        "height_m": 45.0,
+        "pitch_deg": -38,
+        "orbit": {
+          "minPolar_deg": 25,
+          "maxPolar_deg": 55,
+          "minDist_m": 40,
+          "maxDist_m": 120
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.35,
+          0.8
+        ],
+        "metalness": [
+          0.0,
+          0.1
+        ],
+        "notes": "moulded-plastic finish: vehicles roughness 0.35-0.5 with clearcoat 0.15, ground and roofs 0.6-0.8; 2-3 mm bevel on every visible edge so it catches a highlight; suppress all detail below 5 cm"
+      },
+      "motion": {
+        "sway_period_s": [
+          2.0,
+          3.0
+        ],
+        "ease": "linear",
+        "hold_ms": 250
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.2,
+          "strength": 0.15,
+          "radius": 0.4
+        },
+        "vignette": 0.3,
+        "grain": 0.02,
+        "dof": "on: focus distance 60 m, f/1.4 equivalent, sharp band 20% of frame height (18-25%), symmetric ramp reaching a 12 px circle of confusion at the top and bottom edges at 1080p"
+      },
+      "signature_technique": "A horizontal sharp band of 18-25% of frame height with symmetric blur ramps above and below, plus a +18% saturation and +10% contrast lift — the viewer infers scale from focus falloff, never from object size.",
+      "never": [
+        "fog or aerial haze (it restores full-size depth cues)",
+        "eye-level or low camera",
+        "FOV above 35°",
+        "uniform blur across the whole frame",
+        "photoreal detail density on figures and vehicles"
+      ]
+    }
+  }
+}

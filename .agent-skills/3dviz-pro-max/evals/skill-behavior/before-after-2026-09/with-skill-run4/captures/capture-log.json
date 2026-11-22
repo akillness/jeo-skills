@@ -1,0 +1,110 @@
+{
+ "url": "http://127.0.0.1:55958/",
+ "dir": "/private/tmp/claude-501/-Users-viettran-Documents-coding-me-side-projects-3dviz-pro-max/6ededbf8-2c81-4261-8df9-f7d2b5af956a/scratchpad/eval/with-skill-run4/dist",
+ "viewport": {
+  "width": 1280,
+  "height": 720
+ },
+ "ready_flag": "__sceneReady",
+ "ready_timeout": false,
+ "motion": {
+  "interval_ms": 2000,
+  "differs": true,
+  "sha_before": "2c468b2242503f42e1fd2ec4b297cb08c79ea917ffbc9b43bd1f5d7a34698d6c",
+  "sha_after": "8a22ec957028b05397fc9314d58c558a1138e1a566a071717711a218d012c336"
+ },
+ "gpu_requested": false,
+ "capture_mode": "swiftshader",
+ "webgl_renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+ "image_format": "png",
+ "views": [
+  {
+   "name": "default",
+   "file": "default.png",
+   "sha256": "2c468b2242503f42e1fd2ec4b297cb08c79ea917ffbc9b43bd1f5d7a34698d6c",
+   "sha256_reencoded": "bbc7f56d6c49a21e7dbdb4dc0f1b5724318047a382908d659351a3809c74d980"
+  },
+  {
+   "name": "default-motion",
+   "file": "default-motion.png",
+   "sha256": "8a22ec957028b05397fc9314d58c558a1138e1a566a071717711a218d012c336",
+   "sha256_reencoded": "86bf350ea96fba106d3b687b810010f4b858b9666350d01a020c7ee14db9aa8d"
+  },
+  {
+   "name": "overview",
+   "file": "overview.png",
+   "sha256": "900b1e76f73b05dbc6050b1c0ec26e3378e7bf66eed49a7a468a00a37a7c5611",
+   "requested": "overview",
+   "applied": true,
+   "sha256_reencoded": "2bfb66243a70e13090bd70a7b75fe2fd642828e6318c7307fdbe1e5262c74d50"
+  },
+  {
+   "name": "square",
+   "file": "square.png",
+   "sha256": "4d086771a1302f93544640e24b9c62a26e2306642cf164647cb133e9d86b6f2e",
+   "requested": "square",
+   "applied": true,
+   "sha256_reencoded": "cb641a952c58998f841abd0c512bd4ad371116d0e6b4c451282356e7f2778036"
+  },
+  {
+   "name": "bridge",
+   "file": "bridge.png",
+   "sha256": "6c16e9bce26f7fe44b5cdfadad5c6dd431e65ed6e12e759f67fc579b9bb49520",
+   "requested": "bridge",
+   "applied": true,
+   "sha256_reencoded": "7ceac4810254a1b48a1b0f8d0fc3483141e9553d31a08bd0cb2d3e934077f0fe"
+  },
+  {
+   "name": "mill",
+   "file": "mill.png",
+   "sha256": "3eb0cb78a400ae8070a47594444004e57124e09935a50c44aa98a39be7216603",
+   "requested": "mill",
+   "applied": true,
+   "sha256_reencoded": "07915061cf7130e9d3e336245a915281f88dc0e9d111008626365cc38ce3d071"
+  },
+  {
+   "name": "bluff",
+   "file": "bluff.png",
+   "sha256": "18b47cdc6b2739920e0461d0581579309b9af27e1667ce04a0c1d78207405570",
+   "requested": "bluff",
+   "applied": true,
+   "sha256_reencoded": "3ddd58f8f782275efa32187afd2708e9754aa0f96d04e6ce620ef61b5e7d59ae"
+  },
+  {
+   "name": "lane",
+   "file": "lane.png",
+   "sha256": "6fa7de8dae7f18ffcbe886bd8567f200ad7451239478c97af64c003a602fd162",
+   "requested": "lane",
+   "applied": true,
+   "sha256_reencoded": "287750c9875b7db04d416627c31084933a5824db0fc722da87609a744658f30b"
+  },
+  {
+   "name": "cottage",
+   "file": "cottage.png",
+   "sha256": "25053fcc800e86de9a796904a49ef82002bf0dd8cb4ed277a3c65211d37f1329",
+   "requested": "cottage",
+   "applied": true,
+   "sha256_reencoded": "0eddfc30d5b1e7fce5909ca3f8ef69d9636d41542f36f561a7e22eeffb6e1d6d"
+  }
+ ],
+ "clicks": [
+  {
+   "selector": "#pick-cottage-hero",
+   "file": "click-0-pick-cottage-hero.png",
+   "sha256": "e080ee3a01fb7b9fcd60b8c69526bf01001ec3233ea53d9d5514a91d8ba77e32",
+   "sha256_reencoded": "d34ba97b1225753de2eec09b48a5412041344b3e787d920f7d169d66677ddd84"
+  },
+  {
+   "selector": "#reset",
+   "file": "click-1-reset.png",
+   "sha256": "5d1e5bcd578906701d717ecd3f137f3fa8d25bcb441cf6ac2c9d49f2636fc7fd",
+   "sha256_reencoded": "f9fa4b7fe219936a30366f800022cdc101384e4e1f4ef4a60ddd854103e918b7"
+  }
+ ],
+ "console_errors": [],
+ "page_errors": [],
+ "started": "2026-09-08T17:47:54+00:00",
+ "finished": "2026-09-08T17:48:52+00:00",
+ "playwright_version": "1.62.0",
+ "post_processing": "PNGs re-encoded after capture, identically for every run: RGB, 256-colour adaptive palette (median cut, Floyd-Steinberg dither), zlib level 9, to hold every file under 400 KB. 'sha256' is the capture-time hash of the original frame; 'sha256_reencoded' is the hash of the file in this folder."
+}

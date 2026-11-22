@@ -1,0 +1,290 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-round-tower",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: battered round stone tower"
+  },
+  "aliases": {
+    "en": [
+      "round tower kit",
+      "watchtower blueprint",
+      "crenellated tower module"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "A battered round stone tower with a corbelled crenellated crown, a conical cap and banner, arrow slits spiralling up the shaft, and an outside stair to a raised door.",
+  "objective": "Seen from about seventeen metres the tower reads as three tiers: tapered shaft with a crenellated crown and cone cap, then merlons, corbel ring and string courses, then merlon capstones, worn tread nosings and banner ties.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "building",
+    "village",
+    "tower",
+    "stone"
+  ],
+  "subject_terms": [
+    "batter",
+    "crenellation",
+    "merlon",
+    "corbel ring",
+    "arrow slit",
+    "conical cap"
+  ],
+  "intent_signals": [
+    "build a watchtower",
+    "round stone tower module",
+    "crenellated tower kit"
+  ],
+  "example_prompts": [
+    "Put a watchtower on the ridge above the village.",
+    "I need a round tower with a stair up to a raised door."
+  ],
+  "not_for": [
+    "Any claim about the defensive design or masonry of a specific historical tower.",
+    "Structural analysis of masonry."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/buildings/round-tower.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "height",
+      "type": "number",
+      "range": [
+        5.0,
+        14.0
+      ],
+      "default": 8,
+      "unit": "m"
+    },
+    {
+      "name": "baseRadius",
+      "type": "number",
+      "range": [
+        1.4,
+        3.2
+      ],
+      "default": 2.2,
+      "unit": "m"
+    },
+    {
+      "name": "topRadius",
+      "type": "number",
+      "range": [
+        1.1,
+        2.8
+      ],
+      "default": 1.75,
+      "unit": "m"
+    },
+    {
+      "name": "merlons",
+      "type": "integer",
+      "range": [
+        8,
+        22
+      ],
+      "default": 14
+    },
+    {
+      "name": "slits",
+      "type": "integer",
+      "range": [
+        2,
+        8
+      ],
+      "default": 5
+    },
+    {
+      "name": "doorHeight",
+      "type": "number",
+      "range": [
+        0.6,
+        3.0
+      ],
+      "default": 1.7,
+      "unit": "m"
+    },
+    {
+      "name": "seed",
+      "type": "integer",
+      "range": [
+        0,
+        65535
+      ],
+      "default": 1
+    }
+  ],
+  "sockets": [
+    {
+      "name": "door",
+      "position_m": [
+        0,
+        1.7,
+        2.144
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "banner",
+      "position_m": [
+        0,
+        11.97,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "walkway",
+      "position_m": [
+        0,
+        8.56,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "lantern",
+      "position_m": [
+        0,
+        6.9,
+        1.819
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "stair-foot",
+      "position_m": [
+        0,
+        0,
+        5.314
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "shaft tapering from a 5.24 m splayed plinth to a 3.5 m crown, so the outline is never a parallel-sided tube",
+      "crenellated crown and conical cap breaking the sky, with a banner pole reaching 11.97 m",
+      "external stair wedge running 4.8 m out from the tower centre to the raised door at 1.7 m"
+    ],
+    "medium": [
+      "fourteen merlons with embrasures between them around a corbel ring that projects 34 cm past the shaft",
+      "five projecting string courses dividing the shaft, plus the splayed plinth at the base",
+      "five arrow slits climbing the shaft on a slow spiral, each in a dressed frame standing 14 cm proud of the curved wall so the recess reads without cutting a hole in the drum",
+      "an emissive first-floor window with glazing bars, and a seven-voussoir semicircular arch over the recessed plank door",
+      "a landing on two corbels at door height, reached by a seven-step flight"
+    ],
+    "fine": [
+      "a lighter capstone on every third merlon, 14 cm thick, chamfered on its arris",
+      "worn lighter nosing on each stair tread, seeded in length so no two rub the same",
+      "a lighter keystone at the crown of the door arch, and every voussoir yawed back onto the curve of the drum rather than laid on one flat plane",
+      "three banner panels each hanging at a different seeded angle"
+    ]
+  },
+  "footprint_m": [
+    5.2,
+    5.2
+  ],
+  "poly_budget": 5144,
+  "fits_looks": [
+    "knowledge.style-stylized",
+    "knowledge.style-cinematic",
+    "knowledge.style-hand-painted",
+    "knowledge.lighting-mood-fog-shafts",
+    "knowledge.lighting-mood-dusk-golden-hour"
+  ],
+  "content": {
+    "principles": [
+      "A round tower lives or dies on its batter. A cylinder with parallel sides reads as a silo at every distance.",
+      "The crown is where the reading happens: corbel ring, then merlons, then cap. Three stacked rings give a tower more identity than any amount of surface detail.",
+      "A defensive door is raised and reached by a stair to a landing; putting it on the ground plane throws away the whole idea.",
+      "An arch on a round tower must follow the drum. Seven voussoirs laid on one flat plane read as scattered blocks; the same seven yawed onto the curve read as an arch."
+    ],
+    "implementation": [
+      "Call create({ height, baseRadius, topRadius, merlons, slits, doorHeight, seed }); the shaft is centred on the origin with y = 0 at the ground.",
+      "Attach a flag, brazier or lantern through the banner, walkway and lantern sockets.",
+      "The first-floor window carries an emissive material, so a night look reads without post-processing."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible in the frame.",
+      "topRadius below baseRadius always: equal radii remove the batter and the tower stops reading as masonry.",
+      "Two instances with different seeds move the arrow slits around the shaft and re-rub the tread nosings."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here is a measurement of any real tower, fortification or material.",
+    "The poly budget is the triangle count observed at default parameters; 22 merlons and 8 slits cost about 6600 triangles.",
+    "footprint_m is the plinth diameter. The stair carries the built bounding box out to 7.8 m in +Z, which a layout must allow for.",
+    "The shaft is a single tapered drum at 24 radial segments; at very close range the silhouette is faceted rather than round.",
+    "Tuned against ACESFilmic tone mapping at exposure 1.0 with no post-processing.",
+    "The shaft is a solid drum: openings are dressed surrounds standing proud of the curved wall rather than holes cut through it, which reads correctly from outside and not at all from within."
+  ],
+  "creative_affordances": [
+    "Any parameter may be pushed outside its stated range; the range is the band that was proved, not a limit.",
+    "Drop the cap and raise merlons for a ruin, or lift doorHeight to 3 m and lengthen the stair for a keep."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "height": 8,
+      "baseRadius": 2.2,
+      "topRadius": 1.75,
+      "merlons": 14,
+      "slits": 5,
+      "doorHeight": 1.7,
+      "radialSegments": 24,
+      "feeling": "weathered defensive stone",
+      "stringCourses": 5
+    },
+    "rationale": "A 0.45 m batter over 8 m is about 3 degrees, enough to read at the mid proof distance without looking like a cone, and 14 merlons around a 3.8 m crown give a 0.85 m pitch that stays countable in the close frame."
+  },
+  "related_ids": [
+    "knowledge.masonry-arch-centering",
+    "knowledge.hard-surface-functional-assembly",
+    "knowledge.modular-environment-kit-sockets",
+    "knowledge.hero-prop-detail-hierarchy"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "detail_socket": "door",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-round-tower/far.png",
+      "evidence/kits/knowledge.blueprint-round-tower/mid.png",
+      "evidence/kits/knowledge.blueprint-round-tower/close.png",
+      "evidence/kits/knowledge.blueprint-round-tower/detail.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-round-tower/proof-log.json"
+  }
+}

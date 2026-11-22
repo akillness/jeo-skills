@@ -1,0 +1,50 @@
+/* style.css - the panel wears the same wool palette as the scene: felt shadow ground, oatmeal
+   ink, one dyed accent. Keep the viewport sized by its container; main.js reads that box. */
+:root {
+  --ink: #f0e5d4;
+  --panel: #2a2521;
+  --edge: #46403a;
+  --accent: #e2725b;
+  --sage: #7f9b8e;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #1a1613; color: var(--ink); font: 15px/1.5 system-ui, sans-serif; }
+.layout { display: grid; grid-template-columns: 1fr 21rem; min-height: 100vh; }
+.viewport { position: relative; min-width: 0; }
+#world { display: block; width: 100%; height: 100%; }
+#error {
+  position: absolute; inset: auto 1rem 1rem; margin: 0; padding: 0.75rem 1rem;
+  background: #40161a; border: 1px solid #a33; border-radius: 6px;
+}
+.panel { padding: 1.4rem; background: var(--panel); border-left: 1px solid var(--edge); overflow-y: auto; }
+.eyebrow { margin: 0; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage); }
+h1 { margin: 0.25rem 0 0.5rem; font: 600 30px/1.1 Georgia, serif; }
+.lede { margin: 0 0 1.2rem; opacity: 0.85; }
+.label {
+  margin: 1.1rem 0 0.5rem; font: 600 11px/1 system-ui, sans-serif;
+  letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.55;
+}
+#views, #buildings, .controls { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 0.6rem; }
+button {
+  padding: 0.4rem 0.7rem; color: var(--ink); background: #38312b;
+  border: 1px solid var(--edge); border-radius: 5px; font: inherit; cursor: pointer;
+}
+button:hover { border-color: var(--accent); }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #241a16; font-weight: 600; }
+#buildings button { font-size: 13px; }
+.readout {
+  margin: 0.8rem 0 0; padding: 0.85rem 0.95rem; min-height: 7.5rem;
+  background: #221d19; border: 1px solid var(--edge); border-left: 3px solid var(--accent); border-radius: 5px;
+}
+.readout h2 { margin: 0 0 0.15rem; font: 600 19px/1.2 Georgia, serif; }
+.readout p { margin: 0.35rem 0 0; font-size: 14px; }
+.readout .role { color: var(--sage); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.readout .metric, .readout .hint { opacity: 0.65; font-size: 12.5px; }
+.stats { margin: 1rem 0 0; font-size: 12px; opacity: 0.5; }
+@media (max-width: 760px) {
+  .layout { grid-template-columns: 1fr; }
+  .viewport { height: 58vh; }
+  .panel { border-left: 0; border-top: 1px solid var(--edge); }
+}

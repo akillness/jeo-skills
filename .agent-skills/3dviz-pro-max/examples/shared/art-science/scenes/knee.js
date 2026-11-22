@@ -1,0 +1,18 @@
+import {THREE,mat,line,label,tube} from '../scene-kit.js';
+import {study} from '../study-kit.js';
+import {loadAnatomy,anatomySources,anatomyCredit} from '../anatomy-assets.js';
+const PARTS=['FMA24474','FMA24477','FMA24480','FMA24486'];
+export async function createScene(){
+ const {group,objects}=await loadAnatomy(PARTS,{center:[-80,-77,407],scale:.022,material:()=>new THREE.MeshPhysicalMaterial({color:'#d9c4a3',roughness:.62,side:THREE.DoubleSide})});
+ let separation=0,angle=0,showLigaments=true;const tibial=new THREE.Group(),patellar=new THREE.Group();group.add(tibial,patellar);
+ const clips=[new THREE.Plane(new THREE.Vector3(0,-1,0),2.3),new THREE.Plane(new THREE.Vector3(0,1,0),2.3)];
+ objects.forEach(o=>{o.material.clippingPlanes=clips;if(['FMA24477','FMA24480'].includes(o.userData.id))tibial.add(o);if(o.userData.id==='FMA24486')patellar.add(o);});
+ const guide=new THREE.Group();group.add(guide);const lig=mat('#a9bbb0',.65);const links=[];
+ // Attachment markers are an explicitly schematic overlay, separate from the source bone geometry.
+ const ligamentData=[{a:[-.32,-.1,-.24],b:[.25,-.32,.12]},{a:[.28,-.07,.15],b:[-.18,-.3,-.25]}];
+ for(const d of ligamentData){const o=new THREE.Mesh(new THREE.CylinderGeometry(.035,.035,1,12),lig);guide.add(o);links.push(o);}
+ const annotations=new THREE.Group();group.add(annotations);for(const [text,p] of [['FEMUR',[-1.3,1.2,0]],['PATELLA',[1.3,.35,1]],['TIBIA',[-1.2,-1.6,0]],['FIBULA',[1,-1.4,-.1]]])label(text,p,'#d8c6ad',.13,annotations);
+ function refresh(){tibial.rotation.x=angle*Math.PI/180;tibial.position.y=-separation*.55;patellar.position.z=separation*.9;guide.visible=showLigaments;ligamentData.forEach((d,i)=>{const a=new THREE.Vector3(...d.a),b=new THREE.Vector3(...d.b).applyAxisAngle(new THREE.Vector3(1,0,0),tibial.rotation.x).add(tibial.position),delta=b.clone().sub(a);links[i].position.copy(a).addScaledVector(delta,.5);links[i].scale.y=delta.length();links[i].quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());});}
+ const reset=()=>{separation=angle=0;showLigaments=true;patellar.visible=true;refresh();};reset();
+ return study(group,{lighting:{exposure:.84,key:9,fill:2.5,rim:10},reset,controls:[{id:'layers',label:'Explode the bone assembly',type:'range',min:0,max:1,step:.01,get:()=>separation,set:v=>{separation=v;refresh();}},{id:'hinge',label:'Illustrative hinge angle (degrees)',type:'range',min:0,max:45,step:1,get:()=>angle,set:v=>{angle=v;refresh();}},{id:'ligaments',label:'Show / hide schematic cruciate guides',type:'button',set:()=>{showLigaments=!showLigaments;refresh();}},{id:'patella',label:'Reveal / hide the patella',type:'button',set:()=>patellar.visible=!patellar.visible}],stats:()=>[{label:'Source bones',value:'Femur · tibia · fibula · patella'},{label:'Hinge illustration',value:angle+'°'},{label:'Contact mechanics',value:'Not simulated'}],views:{overview:{position:[3.7,1.9,8.3],target:[0,-.15,0]},detail:{position:[2.2,.7,4.4],target:[0,0,0]}},note:'Registered source bone anatomy with cropped shafts. Cruciate guides have authored attachment locations and are schematic, not segmented ligament meshes. The optional fixed-axis hinge only illustrates a degree of freedom: real knee rolling, sliding, patellar tracking, cartilage, menisci and load-dependent contact are not solved. Resting anatomy and exploded inspection are the reliable views; the hinge is not a patient motion prediction.',craft:anatomyCredit,sources:[...anatomySources,{title:'OpenStax — Knee and selected synovial joints',url:'https://openstax.org/books/anatomy-and-physiology-2e/pages/9-6-anatomy-of-selected-synovial-joints'}]});
+}

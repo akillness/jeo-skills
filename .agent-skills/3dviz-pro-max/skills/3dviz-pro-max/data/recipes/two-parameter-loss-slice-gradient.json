@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "id": "recipe.two-parameter-loss-slice-gradient",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Two-parameter loss slice and gradient"
+  },
+  "aliases": {
+    "en": [
+      "2D loss slice",
+      "gradient descent surface",
+      "loss landscape cross-section"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields",
+    "abstract-systems-data"
+  ],
+  "summary": "Distinguish a true two-parameter loss from a two-direction slice through a higher-dimensional model and show gradients in the coordinates actually displayed.",
+  "objective": "Choose a declared two-parameter model or a recorded high-dimensional slice, inspect the surface coordinates, and verify each displayed gradient or projected optimization step.",
+  "tags": [
+    "loss surface",
+    "gradient",
+    "parameter slice",
+    "optimization"
+  ],
+  "subject_terms": [
+    "empirical loss",
+    "gradient descent",
+    "two-parameter model",
+    "two-direction slice",
+    "filter normalization",
+    "projected optimization path",
+    "finite difference",
+    "loss landscape"
+  ],
+  "intent_signals": [
+    "Show a loss surface and gradient steps for two parameters.",
+    "Explain why a 2D neural-network loss plot is only a slice of a higher-dimensional parameter space."
+  ],
+  "example_prompts": [
+    "Build a two-parameter loss and gradient explorer with a mode for a labeled two-direction slice through a high-dimensional network."
+  ],
+  "negative_signals": [
+    "complete loss landscape",
+    "optimizer benchmark",
+    "generalization guarantee",
+    "unlabeled terrain metaphor"
+  ],
+  "not_for": [
+    "Calling one 2D slice the complete loss landscape of a high-dimensional network.",
+    "Comparing apparent sharpness across models without a compatible direction convention.",
+    "Treating a projected trajectory as if all parameter motion lay in the displayed plane."
+  ],
+  "entities": [
+    {
+      "name": "Loss surface",
+      "guidance": "In true-parameter mode label horizontal axes v1 and v2 with their model meaning. In slice mode label them alpha and beta and expose theta*=center plus directions delta and eta. Vertical height is evaluated scalar loss."
+    },
+    {
+      "name": "Gradient and step",
+      "guidance": "Show the local gradient in the displayed coordinates, the negative-gradient direction, learning rate, and next point. State whether it is an analytic gradient, automatic differentiation result, finite-difference estimate, or projection of a high-dimensional gradient."
+    },
+    {
+      "name": "Optimization trajectory",
+      "guidance": "Link every vertex to an actual parameter or slice coordinate and loss evaluation. For a projected high-dimensional path, report the projection basis and residual or captured variance rather than drawing unexplained terrain motion."
+    }
+  ],
+  "state_contract": {
+    "model": "Two exclusive modes. True mode evaluates an explicitly supplied differentiable scalar C(v1,v2). Slice mode evaluates f(alpha,beta)=L(theta*+alpha delta+beta eta) for fixed high-dimensional theta*, delta, eta, dataset/evaluation mode, and any held-fixed state. The displayed slice gradient is (partial f/partial alpha, partial f/partial beta); it is not automatically the full gradient of L.",
+    "authority": "The declared loss function, data/evaluation state, coordinate mode, center, directions, sampling grid, gradient method, and trajectory records own the surface and readouts. Camera exaggeration, mesh interpolation, contour spacing, and color scale change no loss value.",
+    "actions": [
+      "Switch between true two-parameter and high-dimensional slice modes with axes and definitions replaced together.",
+      "Select a point and inspect its parameter state, loss, displayed-coordinate gradient, and finite-difference comparison.",
+      "Take one declared gradient-descent step in true mode or follow a supplied projected path in slice mode.",
+      "Toggle raw versus declared normalized directions and recompute the slice rather than rescaling old heights.",
+      "Refine the sample grid locally, compare shared sample points, and reset coordinates, trajectory, sampling, and camera."
+    ]
+  },
+  "invariants": [
+    "Every surface height at a stored grid coordinate equals a fresh loss evaluation for the exact declared parameter state within tolerance.",
+    "A true-mode step satisfies v_next=v-gamma*grad C for the displayed learning rate gamma; loss decrease is checked rather than assumed for finite gamma.",
+    "In slice mode, alpha and beta map to theta*+alpha delta+beta eta exactly, and a displayed 3D position never masquerades as a full parameter vector.",
+    "Changing direction normalization or held-fixed state creates a new slice identity and recomputes values; it does not relabel an existing mesh."
+  ],
+  "motion_guidance": [
+    "Animate a step between two evaluated states only after showing its numerical endpoints; the path is an interpolation unless intermediate loss evaluations are supplied.",
+    "Vertical camera scale and log color transforms must have visible legends and must not alter gradient arrows in data coordinates."
+  ],
+  "creative_affordances": [
+    "Use terrain, contours, transparent tangent planes, or linked small multiples while retaining exact coordinate and loss readouts.",
+    "True and slice modes may share visual language but need unmistakable titles, axis names, and dimension notes."
+  ],
+  "known_limits": [
+    "A two-direction slice samples one affine plane in a high-dimensional parameter space and can miss structure outside that plane.",
+    "Apparent sharpness depends on direction scaling and model symmetries; the cited filter-wise normalization is one paper-specific comparison method, not a universal invariant.",
+    "A projected optimizer path may omit substantial motion, and a stochastic-gradient step need not align with the full-batch gradient shown on a surface.",
+    "Authored recipe and prospective checks only; no model, optimization run, loss mesh, scene, or rendered result was executed or observed."
+  ],
+  "claims": [
+    {
+      "id": "claim.mixed-grok-two-direction-loss-slice",
+      "statement": "A two-dimensional neural-network loss visualization can be defined as f(alpha,beta)=L(theta*+alpha delta+beta eta); Li et al. also normalize each direction filter to the norm of the corresponding parameter filter to reduce scale artifacts in comparisons.",
+      "scope": "The two-direction slice and filter-wise normalization method in Li et al.; it is not the complete high-dimensional loss landscape or a universal sharpness measure.",
+      "source_refs": [
+        {
+          "source_id": "source.mixed-grok-loss-landscape-li",
+          "locator": "Sections 3-4, equation 1 and filter-wise normalization equation"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Loss-slice instrument",
+      "structure": "Keep mesh samples, contours, selected point, gradient, trajectory, coordinate definition, and slice provenance as linked but separately selectable objects. Preserve data coordinates under camera exaggeration.",
+      "material": "Use contours and labels in addition to height and color. True-parameter and slice modes receive persistent badges and axis titles."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Calculated scalar field, derivatives, and recorded parameter steps; terrain appearance has no mechanical physics.",
+    "checks": [
+      "Re-evaluate selected mesh samples and finite-difference the displayed-coordinate gradient.",
+      "Verify mode, basis, direction normalization, held-fixed state, and path projection remain attached to every slice revision."
+    ]
+  }
+}

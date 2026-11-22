@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "id": "recipe.twisty-cube-3x3-face-turns",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "3 by 3 cube face-turn player"
+  },
+  "aliases": {
+    "en": [
+      "3x3 cube moves",
+      "3×3 cube face turns",
+      "Rubik cube algorithm player"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles"
+  ],
+  "summary": "Model legal outer-layer turns with exact discrete state and animate their presentation without using mesh transforms as the puzzle state.",
+  "objective": "Let a viewer apply, inspect, undo, and replay valid face-turn sequences on a conventional 3 by 3 cube.",
+  "tags": [
+    "cube",
+    "permutation",
+    "face-turn",
+    "discrete-state"
+  ],
+  "example_prompts": [
+    "Animate R U R' U' one move at a time and let me undo each move.",
+    "Build a 3x3 cube where face buttons still mean the same thing after orbiting the camera."
+  ],
+  "claims": [
+    {
+      "id": "claim.cube-face-notation",
+      "statement": "The face letters F, B, R, L, U, D denote outer-slice quarter-turns; prime denotes the opposite quarter-turn and suffix 2 denotes a half-turn.",
+      "scope": "The face-move subset of WCA notation, not wide moves or whole-puzzle rotations.",
+      "source_refs": [
+        {
+          "source_id": "source.wca-regulations-2026",
+          "locator": "12a1a–12a1c"
+        }
+      ]
+    },
+    {
+      "id": "claim.cube-turn-viewpoint",
+      "statement": "Clockwise is read from outside the named face; a prime move is its inverse.",
+      "scope": "Conventional 3 by 3 outer-face moves; the viewpoint is independent of the scene camera.",
+      "source_refs": [
+        {
+          "source_id": "source.cubing-basic-moves-draft",
+          "locator": "2.1.1–2.1.2"
+        }
+      ]
+    }
+  ],
+  "entities": [
+    {
+      "name": "Cubies and stickers",
+      "guidance": "Assign persistent identities; attach each sticker to its owning cubie and outward local normal."
+    },
+    {
+      "name": "Face controls",
+      "guidance": "Display U, D, L, R, F, B independently of colors, with prime and half-turn choices."
+    },
+    {
+      "name": "Move history",
+      "guidance": "Record only committed moves; expose the current turn and queue separately."
+    }
+  ],
+  "state_contract": {
+    "model": "Start solved. Represent each visible cubie with an exact integer grid position and an orientation from the cube rotation group; render stickers from this state.",
+    "frame": "Right-handed coordinates: R is +x, U is +y, F is +z. Opposite faces use negative axes. A clockwise turn is -90 degrees about the outward face normal.",
+    "actions": [
+      "Accept only F B R L U D, each optionally followed by ASCII prime or 2; reject unsupported tokens explicitly.",
+      "Select the named outer layer from committed coordinates, rotate its positions and orientations exactly, then commit once.",
+      "Queue moves in input order; undo a committed move using its inverse. Reset cancels the current animation and queue before restoring solved state."
+    ],
+    "authority": "Discrete state owns the puzzle. An in-flight turn interpolates a presentation transform; it must not round live mesh positions into state.",
+    "initialization": "Only solved state and replay of legal supported moves are accepted. Arbitrary face-color imports require a separate reachability validator."
+  },
+  "invariants": [
+    "Each cubie identity appears once; each grid slot has one cubie and stickers retain their ownership.",
+    "Four quarter-turns of any face restore the complete state; each move followed by its inverse restores the complete state.",
+    "Unaffected cubies do not change; stickers and orientations of the moving layer rotate together.",
+    "A mixed sequence followed by the reversed sequence of inverse moves restores state. These are required implementation checks, not recorded passes.",
+    "Orbiting the camera changes no puzzle state or face identity."
+  ],
+  "motion_guidance": [
+    "Animate one layer around the cube center, commit its exact endpoint once, then start the next queued move.",
+    "Pause freezes interpolation; resume finishes the same move. Reduced motion may commit immediately while showing the move label.",
+    "Rebuild the settled render from committed state after each turn to avoid accumulated transform drift."
+  ],
+  "creative_affordances": [
+    "Vary background, bevels, lighting, and sticker patterns; retain distinct face labels and recognizable sticker ownership."
+  ],
+  "known_limits": [
+    "No solver, arbitrary-state validation, wide moves, slice moves, or competition-grade scrambling is supplied.",
+    "Supercube center-orientation goals and physical mechanism simulation are outside this recipe.",
+    "Move conventions are source-checked; the implementation invariants remain unrun until a real player exists."
+  ]
+}

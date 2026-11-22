@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "id": "recipe.kepler-equal-area-orbit",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Kepler ellipse with equal-time swept areas"
+  },
+  "aliases": {
+    "en": [
+      "Kepler orbit",
+      "equal areas equal times",
+      "elliptical orbital motion"
+    ]
+  },
+  "direction_ids": [
+    "astronomy-space"
+  ],
+  "summary": "Advance a body nonuniformly around an ellipse and compare sectors swept in equal time intervals.",
+  "objective": "Build a Kepler ellipse with the primary at one focus, a time scrubber and equal-time swept-area sectors.",
+  "tags": [
+    "Kepler laws",
+    "elliptical orbit",
+    "eccentric anomaly"
+  ],
+  "subject_terms": [
+    "Kepler laws",
+    "elliptical orbit",
+    "eccentric anomaly",
+    "mean anomaly",
+    "periapsis",
+    "swept area"
+  ],
+  "intent_signals": [
+    "Build a Kepler ellipse with the primary at one focus, a time scrubber and equal-time swept-area sectors.",
+    "Advance a body nonuniformly around an ellipse and compare sectors swept in equal time intervals."
+  ],
+  "example_prompts": [
+    "Build a Kepler ellipse with the primary at one focus, a time scrubber and equal-time swept-area sectors.",
+    "Create an explorable 3D explanation of Kepler orbit with swept sectors."
+  ],
+  "negative_signals": [
+    "No current planetary positions, perturbations, relativity, n-body interaction or ephemeris accuracy."
+  ],
+  "not_for": [
+    "No current planetary positions, perturbations, relativity, n-body interaction or ephemeris accuracy."
+  ],
+  "entities": [
+    {
+      "name": "Primary and orbit",
+      "guidance": "Place the primary marker at the focus, not ellipse center; draw major axis, focus offset and labeled periapsis/apoapsis."
+    },
+    {
+      "name": "Orbiting body",
+      "guidance": "Use a visible body marker with disclosed size exaggeration; preserve distance coordinates even when body radius is enlarged for selection."
+    },
+    {
+      "name": "Swept sectors",
+      "guidance": "Shade sectors formed by the focus and positions at equal time increments, with numeric areas computed from the orbital model."
+    }
+  ],
+  "state_contract": {
+    "model": "Ideal bound two-body relative orbit in a plane: a>0 in meters, gravitational parameter mu>0 in m^3/s^2, time in seconds and 0<=e<=0.85. Mean anomaly M=M0+sqrt(mu/a^3)*t; solve E-e*sin(E)=M, then x=a*(cos(E)-e), y=a*sqrt(1-e*e)*sin(E).",
+    "authority": "Orbital elements and model time determine analytic positions through a bounded Kepler-equation solve; display orbit sampling does not determine speed.",
+    "actions": [
+      "Scrub or play orbital time.",
+      "Change eccentricity or semimajor axis, explicitly restarting the initial condition.",
+      "Compare equal-duration sectors near periapsis and apoapsis.",
+      "Reset orbit parameters and epoch."
+    ]
+  },
+  "invariants": [
+    "Equal model-time intervals sweep equal areas within solver and quadrature tolerance.",
+    "The primary stays at a focus; e=0 reduces to a circle with uniform angular motion.",
+    "Computed Kepler residual remains below a declared tolerance; nonconvergence is reported."
+  ],
+  "motion_guidance": [
+    "Use safeguarded iteration or bracketed fallback for eccentric anomaly; never assume uniform true-anomaly advancement.",
+    "Keep one model clock and unwrap phase consistently across complete revolutions."
+  ],
+  "known_limits": [
+    "No current planetary positions, perturbations, relativity, n-body interaction or ephemeris accuracy.",
+    "The primary is a focus in relative coordinates; a barycentric two-body display requires a separate mass-ratio transform.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.kepler-equal-area-orbit",
+      "statement": "Bound Keplerian planetary orbits are ellipses with the Sun at a focus and sweep equal areas in equal times.",
+      "scope": "Ideal Kepler model; current solar-system observations are not represented.",
+      "source_refs": [
+        {
+          "source_id": "source.nasa-kepler",
+          "locator": "Kepler First and Second Laws"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Primary and orbit",
+      "structure": "Place the primary marker at the focus, not ellipse center; draw major axis, focus offset and labeled periapsis/apoapsis.",
+      "material": "Dark neutral background with restrained body finishes and legible sector boundaries; glow is decorative and not used to infer luminosity."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Analytic planar Kepler orbit evaluated via Kepler equation.",
+    "state": [
+      "a",
+      "e",
+      "mu",
+      "mean anomaly",
+      "eccentric anomaly",
+      "time"
+    ],
+    "colliders": [
+      "No rigid-body colliders; any boundary is part of the declared mathematical model."
+    ],
+    "driving": [
+      "Two-body orbital relation with declared gravitational parameter."
+    ],
+    "contact": [
+      "No collision or impact response is supplied by this field model."
+    ],
+    "timestep": "Evaluate the declared analytic state at paused or running model time; rendering never advances a second model.",
+    "checks": [
+      "Equal-time sectors agree in area.",
+      "Check periapsis a*(1-e) and apoapsis a*(1+e)."
+    ]
+  }
+}

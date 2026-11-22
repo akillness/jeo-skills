@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-embedding-distance-caveats",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Do not read distances off a nonlinear embedding"
+  },
+  "aliases": {
+    "en": [
+      "t-SNE caveats",
+      "cluster size",
+      "projection artefacts"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "probability-statistics"
+  ],
+  "summary": "Present nonlinear projections with their interpretation limits and let the viewer vary the parameters that change the picture.",
+  "objective": "Keep an embedding scene from asserting similarity relationships the projection does not preserve.",
+  "applies_when": [
+    "High-dimensional data is displayed through a non-linear neighbour embedding such as t-SNE, whose caveats below apply directly.",
+    "Clusters, gaps or distances in the projection are discussed.",
+    "The projection has parameters such as perplexity or a random seed.",
+    "Another dimensionality reduction is used, such as a linear projection, and its own interpretation rules must be stated instead of inheriting these."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "embedding",
+    "t-SNE",
+    "projection",
+    "cluster",
+    "perplexity",
+    "interpretation"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "data",
+    "claims"
+  ],
+  "intent_signals": [
+    "these clusters are far apart",
+    "project the embeddings",
+    "why does the plot keep changing"
+  ],
+  "example_prompts": [
+    "Show the embedding projection with its interpretation caveats.",
+    "Let me change the projection parameters and see how the picture changes."
+  ],
+  "negative_signals": [
+    "Linear projections such as principal components, where distance behaviour differs and can be stated exactly.",
+    "Data with genuine spatial coordinates, where position is not a projection artefact."
+  ],
+  "not_for": [
+    "Linear projections such as principal components, where distance behaviour differs and can be stated exactly.",
+    "Data with genuine spatial coordinates, where position is not a projection artefact."
+  ],
+  "content": {
+    "principles": [
+      "The projection is a lossy transformation with its own dynamics. In t-SNE plots the relative sizes of clusters cannot be read, because the method expands dense clusters and contracts sparse ones, and the distances between well-separated clusters may mean nothing.",
+      "Parameters change the answer. Perplexity balances local against global structure, and there may be no single value that captures distances across all clusters, so a single plot is one view among many.",
+      "Because the layout is stochastic and parameter-dependent, a scene should make reruns and parameter changes available rather than presenting one run as the structure of the data.",
+      "Neighbourhood membership is not guaranteed by an embedding: check important similarity claims in the original space. Choose caveats by method. PCA can report component loadings and calculated explained variance; an arbitrary linear map has no automatic PCA variance-ordering interpretation."
+    ],
+    "implementation": [
+      "State the method, its parameters and the random seed in the scene, and make reruns possible.",
+      "Provide parameter controls and show how the picture changes, which is the most direct way to convey the limitation.",
+      "Support checking a claim in the original space, for example by reporting original-space distances for selected points.",
+      "For a neighbour embedding, avoid implying that coordinate rulers measure original-space distance. For a linear projection, label the actual map or components; report explained variance only when that quantity has been defined and calculated for the chosen method, such as PCA.",
+      "Where a claim about similarity matters, verify it against the source data rather than the projection."
+    ],
+    "observable_checks": [
+      "Rerun with a different seed and compare explicitly: report which features of the picture persist and which move. A stable result may look almost unchanged, which is informative rather than a failure, and a conclusion that does not survive reseeding must be surfaced as unstable rather than quietly retained.",
+      "Change the perplexity or equivalent parameter and observe how cluster spacing and size change.",
+      "Select two points that appear close and compare their distance in the original space.",
+      "Confirm each readout names its space and method. A neighbour-embedding ruler must not imply original-space distance; a linear projection should identify its map/components and show explained variance only when defined and computed, not merely because the map is linear."
+    ]
+  },
+  "related_ids": [
+    "recipe.embedding-projection",
+    "knowledge.reasoning-distribution-encoding-choice"
+  ],
+  "creative_affordances": [
+    "Embeddings remain excellent for exploration and for finding candidates to inspect; the rule restricts the claims, not the use.",
+    "Animated transitions between parameter settings can be an engaging way to teach the caveat."
+  ],
+  "known_limits": [
+    "Authored guidance citing published interpretation caveats for one method; other projection methods have their own behaviours not covered here.",
+    "It does not evaluate any specific embedding implementation."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-tsne-interpretation-limits",
+      "statement": "In t-SNE plots the relative sizes of clusters cannot be read because the method naturally expands dense clusters and contracts sparse ones, distances between well-separated clusters may mean nothing, and the perplexity parameter trades local against global structure so that different values produce substantially different pictures.",
+      "scope": "Interpretation limits of t-SNE embeddings; other dimensionality-reduction methods behave differently.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-distill-tsne",
+          "locator": "Cluster sizes mean nothing; distances between clusters might not mean anything; perplexity discussion"
+        }
+      ]
+    }
+  ]
+}

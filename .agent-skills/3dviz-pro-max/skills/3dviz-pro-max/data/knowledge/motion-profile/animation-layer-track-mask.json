@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.animation-layer-track-mask",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "motion-profile",
+  "title": {
+    "en": "Animation layers and track masks"
+  },
+  "aliases": {
+    "en": [
+      "upper-body animation mask",
+      "additive gesture layer",
+      "filtered animation clip"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "products-assemblies"
+  ],
+  "summary": "Build layers from explicit track ownership: filter bindings for anatomical or functional masks, and convert true offset motion to an additive clip against a named reference pose.",
+  "objective": "Base locomotion, overlays and facial or prop layers combine predictably without stealing root or unrelated channels.",
+  "applies_when": [
+    "A character needs a locomotion base with an upper-body gesture or aim overlay.",
+    "Several clips affect different named bones, morphs or object properties."
+  ],
+  "subject_terms": [
+    "animation layer",
+    "track mask",
+    "additive clip",
+    "reference pose",
+    "binding whitelist",
+    "blend weight"
+  ],
+  "tags": [
+    "motion-profile",
+    "layers",
+    "track-filter",
+    "additive"
+  ],
+  "intent_signals": [
+    "mask an animation to upper body in Three.js",
+    "layer a gesture over locomotion",
+    "convert a clip to additive correctly"
+  ],
+  "example_prompts": [
+    "Layer a waving arm over a walk while leaving legs and root translation to the base clip.",
+    "Add a subtle breathing offset against a documented reference pose."
+  ],
+  "negative_signals": [
+    "Assuming AnimationAction weight is an anatomical mask.",
+    "Playing two normal clips that own the same property without defining their blend intent."
+  ],
+  "not_for": [
+    "Retargeting incompatible skeletons.",
+    "Per-vertex deformation masks."
+  ],
+  "content": {
+    "principles": [
+      "A layer is a set of owned property bindings plus a blend mode and weight envelope. Three.js action weight blends whole actions; an anatomical mask therefore requires a derived clip whose track set contains only the allowed bindings.",
+      "Normal clips contribute keyed values; an additive layer represents offsets from a declared reference pose. Convert or author the clip for additive blending before selecting additive blend mode.",
+      "Masks should be semantic and inspectable: prefer stable bone/property names and explicit include/exclude rules, with root translation and other single-owner channels excluded from overlays."
+    ],
+    "implementation": [
+      "In Blender, organize actions around stable bone and shape-key names, make the base/reference pose reproducible, and keep intended overlay channels separate enough to audit after export.",
+      "In Three.js, clone or construct a derived AnimationClip, parse each KeyframeTrack binding, resolve the actual target node/property under the loaded root, and retain it only when that resolved target is on the semantic whitelist; do not trust a raw name prefix alone. Clone the intended target clip before AnimationUtils.makeClipAdditive because the utility returns the updated target clip, then set action weights and lifecycle explicitly.",
+      "Record collisions where two active layers target the same property. Reset stops active actions and restores base pose, layer weights and reference state rather than relying on disabled actions to reset themselves."
+    ],
+    "observable_checks": [
+      "With overlay weight zero, the result matches the base clip; with the base frozen, only whitelisted bones or morphs change as the overlay weight rises.",
+      "The upper-body layer does not change root translation, legs or unlisted prop channels; every retained track resolves to the expected loaded node/property, and missing or ambiguous targets fail the layer audit rather than being accepted by prefix.",
+      "An additive layer at its reference frame produces zero visible offset; normal and additive variants are visibly distinguishable on the same fixture."
+    ]
+  },
+  "related_ids": [
+    "knowledge.three-animation-mixer-adapter",
+    "knowledge.blender-deformation-animation-handoff",
+    "knowledge.gltf-articulated-asset-adapter",
+    "knowledge.root-motion-runtime-ownership"
+  ],
+  "creative_affordances": [
+    "Masks may follow anatomy, machinery subsystems, costume pieces, facial regions or storytelling beats.",
+    "Layer weights and easing may be restrained, exaggerated or deliberately asymmetric."
+  ],
+  "known_limits": [
+    "Three.js does not expose a general anatomical mask object in the cited APIs; track filtering is application-authored.",
+    "Constraint, driver and NLA behavior may require Blender export sampling.",
+    "No layer playback or visual comparison was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.motion-three-action-blending",
+      "statement": "Three.js AnimationAction exposes normal/additive blend modes and an action-wide weight; multiple actions can be blended, but the API does not make that weight a per-bone mask.",
+      "scope": "Live Three.js AnimationAction API; the mask construction is authored guidance.",
+      "source_refs": [
+        {
+          "source_id": "source.motion-three-animation-action",
+          "locator": "blendMode and weight properties"
+        }
+      ]
+    },
+    {
+      "id": "claim.motion-three-additive-conversion",
+      "statement": "Three.js AnimationUtils.makeClipAdditive converts a clip to additive format relative to a reference frame and optional reference clip.",
+      "scope": "Live Three.js AnimationUtils API; reference choice remains project-owned.",
+      "source_refs": [
+        {
+          "source_id": "source.motion-three-animation-utils",
+          "locator": "makeClipAdditive(targetClip, referenceFrame, referenceClip, fps)"
+        }
+      ]
+    },
+    {
+      "id": "claim.motion-three-track-bindings",
+      "statement": "A Three.js KeyframeTrack targets a named property, and PropertyBinding parses paths including node, bone and indexed-property forms.",
+      "scope": "Live Three.js track and binding APIs; filter rules must be validated against loaded names.",
+      "source_refs": [
+        {
+          "source_id": "source.motion-three-keyframe-track",
+          "locator": "Class description, name and interpolation"
+        },
+        {
+          "source_id": "source.motion-three-property-binding",
+          "locator": "parseTrackName supported forms and findNode"
+        }
+      ]
+    }
+  ]
+}

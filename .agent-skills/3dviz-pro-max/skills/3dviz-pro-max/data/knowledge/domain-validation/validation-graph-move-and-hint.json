@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-graph-move-and-hint",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Edge-authoritative movement and reproducible hints"
+  },
+  "aliases": {
+    "en": [
+      "maze adjacency check",
+      "hint reproducibility"
+    ]
+  },
+  "direction_ids": [
+    "spatial-puzzles"
+  ],
+  "summary": "Confirm that accepted moves follow stored edges, including level changes, and that hints are computed or reported unavailable.",
+  "objective": "Every accepted move and every hint step corresponds to an edge of the stored graph at its recorded revision.",
+  "applies_when": [
+    "Movement is constrained to an authored graph rather than to free space.",
+    "The projection can make unconnected cells look adjacent.",
+    "The interface offers hints or automatic paths."
+  ],
+  "check_method": "state",
+  "tags": [
+    "domain-validation",
+    "graph",
+    "adjacency",
+    "hints"
+  ],
+  "subject_terms": [
+    "traversable edge",
+    "inter-level link",
+    "path stack",
+    "reachability",
+    "hint path",
+    "graph revision"
+  ],
+  "intent_signals": [
+    "it let me walk through a wall that looked open",
+    "the hint arrow points nowhere"
+  ],
+  "example_prompts": [
+    "Check that moves in this layered maze follow the stored graph."
+  ],
+  "negative_signals": [
+    "free-body navigation",
+    "evacuation modelling"
+  ],
+  "content": {
+    "principles": [
+      "The traversable graph is authoritative: two cells that look adjacent in projection are not connected unless an edge says so.",
+      "Level changes are ordinary edges of a declared kind, and treating them as a special case invites moves that no edge supports.",
+      "A hint is either a computed path over that graph or an honest unavailable, and the two unavailable reasons are different: a completed search that found no path means unreachable, while an exhausted budget or a paused search means undetermined."
+    ],
+    "implementation": [
+      "Store cells and edges explicitly, including inter-level links, and route every accepted move through an edge lookup.",
+      "Attempt moves that are geometrically adjacent but unlinked, and moves across a level boundary with and without a link.",
+      "Compute reachability from start to goal before publishing the instance and record the result together with the graph revision it was computed from.",
+      "When a hint is requested compute the path with a documented search over the same graph, including its neighbour and tie-break rule, and record the path with its length; if the search completes without a path, report unreachable, and if it stops on a budget, report undetermined."
+    ],
+    "observable_checks": [
+      "Every accepted move corresponds to an edge in the stored graph; a move without an edge names the projection that misled the input layer.",
+      "The path history is a walk in the graph, so consecutive entries are always linked and each undo removes one step under the declared history policy.",
+      "A hint either reproduces a path that the same search with the same declared tie rule finds over the current graph, or reports unreachable or undetermined with the reason; a different path of equal validity is not a defect unless exact path equality was declared, but a path the search cannot reproduce at all is removed."
+    ]
+  },
+  "known_limits": [
+    "Checks movement and hint provenance over an authored graph; it does not evaluate maze quality or claim minimal solutions.",
+    "Authored verification guidance; no maze implementation was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.layered-maze-navigation",
+    "recipe.breadth-first-frontier",
+    "recipe.sliding-block-escape"
+  ],
+  "claims": []
+}

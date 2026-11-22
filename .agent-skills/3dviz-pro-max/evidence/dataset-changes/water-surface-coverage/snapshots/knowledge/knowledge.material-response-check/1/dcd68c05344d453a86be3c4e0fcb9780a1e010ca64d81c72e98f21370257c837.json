@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.material-response-check",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "validation-profile",
+  "title": {
+    "en": "Material and lighting response inspection"
+  },
+  "aliases": {
+    "en": [
+      "material response check"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "rigid-mechanics",
+    "solid-geometry"
+  ],
+  "summary": "Verify that selected finishes are visibly distinguishable under repeatable viewing conditions.",
+  "objective": "A viewer can distinguish the intended material roles without relying on labels alone.",
+  "tags": [
+    "validation-profile",
+    "material",
+    "response",
+    "check"
+  ],
+  "example_prompts": [
+    "Verify that selected finishes are visibly distinguishable under repeatable viewing conditions."
+  ],
+  "content": {
+    "principles": [
+      "Judge materials on the target object and a simple reference sample; geometry can hide or exaggerate a finish.",
+      "Keep a written distinction between authored appearance, source-backed shader semantics and measured physical properties."
+    ],
+    "implementation": [
+      "Save the light rig, environment, exposure and camera distance. Capture front and grazing views with a neutral reference.",
+      "Compare dielectric, bare metal and transmissive parts using the relevant material profiles. Change only one setting at a time.",
+      "Record unreadable reflections, lost silhouettes, transparency artifacts and scale-inconsistent texture detail with the view that reveals them."
+    ],
+    "observable_checks": [
+      "A viewer can distinguish the intended material roles without relying on labels alone.",
+      "A repeated baseline produces the same visual comparison; inconclusive differences are reported as inconclusive."
+    ]
+  },
+  "known_limits": [
+    "No universal roughness value or objective realism score is prescribed; art direction can deliberately simplify response.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+  ],
+  "related_ids": [
+    "recipe.fantasy-village-diorama",
+    "recipe.coupled-gears",
+    "recipe.solid-of-revolution"
+  ],
+  "claims": []
+}

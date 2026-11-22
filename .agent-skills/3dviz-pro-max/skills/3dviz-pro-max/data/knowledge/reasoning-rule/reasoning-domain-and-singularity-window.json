@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-domain-and-singularity-window",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Plot only where the function is defined"
+  },
+  "aliases": {
+    "en": [
+      "domain restriction",
+      "asymptote handling",
+      "plot window"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields",
+    "probability-statistics"
+  ],
+  "summary": "Restrict the sampled domain, handle poles and undefined regions explicitly, and state the window and clamping used.",
+  "objective": "Prevent a surface plot from inventing geometry where the function has none.",
+  "applies_when": [
+    "A function surface, field or contour set is generated from an expression.",
+    "The function has poles, branch cuts, or regions where it is undefined.",
+    "The viewer can pan, zoom or change parameters."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "domain",
+    "singularity",
+    "asymptote",
+    "clamping",
+    "plot window",
+    "undefined region"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "calculus",
+    "plotting"
+  ],
+  "intent_signals": [
+    "the surface has spikes",
+    "plot this function",
+    "it blows up near the origin"
+  ],
+  "example_prompts": [
+    "Plot the surface and handle the pole sensibly.",
+    "Show the function only where it is defined."
+  ],
+  "negative_signals": [
+    "Smooth bounded functions on a fixed domain, where the issue does not arise.",
+    "Sampled data sets, which have their own coverage question rather than a domain question."
+  ],
+  "not_for": [
+    "Smooth bounded functions on a fixed domain, where the issue does not arise.",
+    "Sampled data sets, which have their own coverage question rather than a domain question."
+  ],
+  "content": {
+    "principles": [
+      "A mesh generator will happily connect a huge value to a small one and draw a wall. That wall is a rendering artefact, not a feature of the function, and viewers read it as geometry.",
+      "Undefined is different from large. A region outside the domain should be absent, not drawn at a clamped height, or the plot asserts values that do not exist.",
+      "Clamping is a legitimate choice but it is a display transformation, so the clamp value must be shown or the vertical axis becomes meaningless.",
+      "The window is part of the claim: a function looks completely different over different ranges, and a viewer who cannot see the window cannot interpret the shape."
+    ],
+    "implementation": [
+      "Evaluate with explicit domain checks and mark samples as undefined rather than substituting a number.",
+      "Break the mesh at undefined samples and across poles instead of interpolating through them, so the surface has real holes.",
+      "If clamping, display the clamp threshold and mark clamped regions visually so they are not read as flat plateaux.",
+      "Show the axis ranges and the sample resolution on the artifact, and update them when the viewer pans or zooms.",
+      "Give a stated behaviour for parameter values that make the function degenerate, rather than leaving the mesh generator to improvise."
+    ],
+    "observable_checks": [
+      "Zoom towards a pole and confirm the surface breaks rather than forming a smooth wall.",
+      "Check that undefined regions are absent rather than flat.",
+      "Confirm the displayed axis range and clamp value match what is drawn.",
+      "Increase the sample resolution and confirm features persist rather than appearing or disappearing."
+    ]
+  },
+  "related_ids": [
+    "recipe.directional-derivative-surface",
+    "recipe.divergence-flux-box"
+  ],
+  "creative_affordances": [
+    "Artistic treatment of the surface, including colour mapping and lighting, is unconstrained.",
+    "A deliberately clipped view can be the clearest presentation when the clipping is visible."
+  ],
+  "known_limits": [
+    "Authored plotting guidance; no runtime plot has been generated or inspected for this record.",
+    "It does not prescribe a sampling algorithm or an adaptive refinement strategy."
+  ],
+  "claims": []
+}

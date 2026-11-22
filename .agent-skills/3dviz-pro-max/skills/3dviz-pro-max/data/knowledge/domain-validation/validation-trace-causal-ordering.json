@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-trace-causal-ordering",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Causal ordering, link semantics and status distinctness in a trace"
+  },
+  "aliases": {
+    "en": [
+      "trace order check",
+      "async link semantics"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data"
+  ],
+  "summary": "Verify that results never precede their calls, that one index drives every view, and that links are not shown as nested calls.",
+  "objective": "The ordering contains no result before its call, panel and animation agree at every index, and parent, link and lifecycle values are each preserved as recorded.",
+  "applies_when": [
+    "A scene replays a recorded or authored sequence of operations.",
+    "Some work is asynchronous or linked rather than nested.",
+    "Entries carry a status such as pending, succeeded or failed."
+  ],
+  "check_method": "state",
+  "tags": [
+    "domain-validation",
+    "trace",
+    "causality",
+    "status"
+  ],
+  "subject_terms": [
+    "span",
+    "parent-child relationship",
+    "span link",
+    "trace index",
+    "pending status",
+    "replay"
+  ],
+  "intent_signals": [
+    "the result appears before the call",
+    "the panel and the animation disagree"
+  ],
+  "example_prompts": [
+    "Check the causal ordering of this agent trace scene."
+  ],
+  "negative_signals": [
+    "production observability tooling",
+    "claiming a live vendor integration"
+  ],
+  "content": {
+    "principles": [
+      "A trace has causal structure: a result cannot precede the call it answers, and the display should be driven by the same ordered structure as the state panel.",
+      "Parent-child and link are two independent relations, and a span may carry both. Parenthood does not assert that the child interval nests inside the parent, and asynchronous work is not required to be a link rather than a child, so both relations are preserved as recorded instead of being reinterpreted.",
+      "An authored lifecycle of pending, succeeded and failed is a different vocabulary from a telemetry status field whose values are Unset, Error and Ok with Unset as the default; map between them explicitly instead of assuming a default status means work is still in progress."
+    ],
+    "implementation": [
+      "Derive the display order from recorded identifiers and relations rather than from raw distributed timestamps or arrival order, index that ordering once, and drive both the animation and the state panel from the single index.",
+      "Verify for every result entry that its corresponding call appears earlier in the ordering, listing any violation with both identifiers; when the call is absent from the data, report a missing call rather than synthesising one.",
+      "Include one entry that carries a link and one that carries both a parent and a link, and confirm each relation is rendered and described as itself, with no interval nesting asserted from parenthood alone.",
+      "Write down the mapping from any telemetry status field to the authored lifecycle, then step through a failed entry and a pending entry and confirm each keeps its lifecycle value through selection, filtering and replay."
+    ],
+    "observable_checks": [
+      "No result appears before its call in the ordering; a violation names the pair, since the picture alone will not reveal it.",
+      "The state panel and the animation agree at every sampled index because both read the same index.",
+      "Linked entries are drawn and described as links while parented entries keep their parent, an entry carrying both keeps both, and the authored lifecycle values stay distinguishable from any telemetry status after filtering and replay."
+    ]
+  },
+  "known_limits": [
+    "Checks an authored or supplied trace for internal consistency; it does not establish that the trace describes any real system.",
+    "Authored verification guidance; no trace was replayed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.agent-harness",
+    "recipe.service-graph",
+    "recipe.finite-state-machine"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-span-links-causality",
+      "statement": "A span represents a unit of work, child spans represent sub-operations of a parent span, links associate a span with one or more other spans to imply a causal relationship, and span status takes the values Unset, Error or Ok with Unset as the default and Ok set explicitly by a developer.",
+      "scope": "The tracing data model described in the cited documentation. The page presents links as an optional way to associate causally related spans, including work in another trace, and does not state that asynchronous work may not be a child span or that a span may not have both a parent and links.",
+      "source_refs": [
+        {
+          "source_id": "source.opentelemetry-traces",
+          "locator": "Spans, parent-child relationships, span links and the Span Status values"
+        }
+      ]
+    }
+  ]
+}

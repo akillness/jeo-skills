@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-exploded-offset-is-display",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Treat exploded offsets as display, not assembly state"
+  },
+  "aliases": {
+    "en": [
+      "exploded view",
+      "display transform",
+      "assembly reset"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "architecture-interiors",
+    "anatomy-structures"
+  ],
+  "summary": "Keep the assembled transform authoritative and apply separation as a derived display offset that can always be undone.",
+  "objective": "Let a viewer separate and reassemble parts without losing the true assembly relationship.",
+  "applies_when": [
+    "Parts of a product, mechanism or body can be pulled apart for inspection.",
+    "A layer peel, section or explode control exists in the scene.",
+    "Selection, labels or measurements must survive while parts are separated."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "exploded view",
+    "assembly",
+    "display transform",
+    "reset",
+    "part identity",
+    "inspection"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "assembly",
+    "state"
+  ],
+  "intent_signals": [
+    "explode the assembly",
+    "pull the layers apart",
+    "put it back together"
+  ],
+  "example_prompts": [
+    "Let me explode the speaker and return it to assembled with one control.",
+    "Peel the layers apart and keep the labels attached."
+  ],
+  "negative_signals": [
+    "Disassembly that is a real state change, such as a puzzle where removing a part alters what is legal next.",
+    "Destructive operations such as cutting, where the original geometry is not meant to return."
+  ],
+  "not_for": [
+    "Disassembly that is a real state change, such as a puzzle where removing a part alters what is legal next.",
+    "Destructive operations such as cutting, where the original geometry is not meant to return."
+  ],
+  "content": {
+    "principles": [
+      "Explosion answers a viewing question, not a question about the product. The assembled pose is the fact; the separated pose is a lens.",
+      "Storing only the exploded transform destroys the relationship: reassembly then becomes an approximation, and a second explode from a dragged pose compounds the error.",
+      "Offset direction is a layout choice with an optional stronger reading. When the scene claims to show how the product comes apart, separating each part along its real removal direction makes the explosion an assembly diagram and that direction becomes checkable. When the explosion is only an inspection lens, a curved, staged or straight-out path that passes visually through neighbouring parts is legitimate.",
+      "Identity must survive the transformation: the part selected while exploded is the same part when assembled, and labels, highlights and measurements must follow it."
+    ],
+    "implementation": [
+      "Store the assembled local transform of each part as the authoritative value and compute the displayed transform as assembled composed with an explode offset scaled by one factor.",
+      "For a claimed assembly or removal sequence, derive offsets from validated assembly or removal directions. For inspection-only layouts, choose and disclose display offsets without implying feasible removal paths. Let nested subassemblies explode within their parent group.",
+      "Make reset restore the factor to zero rather than replaying an animation towards remembered coordinates, so it works from any intermediate state.",
+      "Keep part identity, selection and labels bound to the part record, not to a position in space.",
+      "If the user can drag a part, decide explicitly whether the drag edits the display offset or the assembled transform, and show which."
+    ],
+    "observable_checks": [
+      "Explode partially, drag a part, then reset: everything must return exactly to the assembled pose with no drift.",
+      "Select a part while exploded, collapse the view, and confirm the same part is still selected and highlighted.",
+      "Explode a nested subassembly and check that its children move with it instead of scattering globally.",
+      "If, and only if, the scene claims a removal or assembly sequence, compare the exploded directions against how the product actually comes apart; parts that would have to pass through neighbouring solid parts then indicate a wrong direction rather than a stylistic path."
+    ]
+  },
+  "related_ids": [
+    "recipe.portable-speaker-exploded",
+    "knowledge.cutaway-explode",
+    "knowledge.assembly-layer-reveal",
+    "knowledge.inspectable-selection"
+  ],
+  "creative_affordances": [
+    "The explosion path can be staged, curved or sequenced for drama as long as the underlying offset remains derived and reversible.",
+    "Partial explosions that isolate one subsystem are often clearer than a full starburst."
+  ],
+  "known_limits": [
+    "Authored state-contract guidance; no runtime artifact has been exercised for this record.",
+    "Says nothing about whether the modelled assembly matches a real product; that needs its own sources."
+  ],
+  "claims": []
+}

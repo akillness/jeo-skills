@@ -1,0 +1,1504 @@
+{
+  "scope": "Authored known-intent lexical regressions; not a held-out semantic evaluation or a measured BM25 advantage.",
+  "cases": [
+    {
+      "query": "hillside paths terrain collision",
+      "expected_id": "recipe.terrain-island",
+      "within_top": 3
+    },
+    {
+      "query": "heart chambers valve cutaway",
+      "expected_id": "recipe.heart-cutaway",
+      "within_top": 3
+    },
+    {
+      "query": "knee menisci cruciate ligaments",
+      "expected_id": "recipe.knee-layer-peel",
+      "within_top": 3
+    },
+    {
+      "query": "cone plane ellipse parabola hyperbola",
+      "expected_id": "recipe.conic-slicing",
+      "within_top": 3
+    },
+    {
+      "query": "matrix determinant volume",
+      "expected_id": "recipe.determinant-volume",
+      "within_top": 3
+    },
+    {
+      "query": "perpendicular vector cross product",
+      "expected_id": "recipe.cross-product",
+      "within_top": 3
+    },
+    {
+      "query": "binary carry full adder",
+      "expected_id": "recipe.full-adder",
+      "within_top": 3
+    },
+    {
+      "query": "finite state clock transition",
+      "expected_id": "recipe.finite-state-machine",
+      "within_top": 3
+    },
+    {
+      "query": "cube drag face turn",
+      "expected_id": "recipe.direct-turn-cube",
+      "within_top": 3
+    },
+    {
+      "query": "pendulum angle gravity",
+      "expected_id": "recipe.simple-pendulum",
+      "within_top": 3
+    },
+    {
+      "query": "projectile first contact collision",
+      "expected_id": "recipe.projectile-trajectory",
+      "within_top": 3
+    },
+    {
+      "query": "gear tooth ratio",
+      "expected_id": "recipe.coupled-gears",
+      "within_top": 3,
+      "collection": "recipes",
+      "note": "Pinned to recipes: with the collection default now all, knowledge.gear-mechanism and a validation profile share this vocabulary and outrank the recipe. The expected record is owned by another dataset family, so its search fields were left untouched rather than tuned to win this case."
+    },
+    {
+      "query": "agent tool loop memory",
+      "expected_id": "recipe.agent-harness",
+      "within_top": 3
+    },
+    {
+      "query": "service trace graph",
+      "expected_id": "recipe.service-graph",
+      "within_top": 3
+    },
+    {
+      "query": "embedding projection neighborhood",
+      "expected_id": "recipe.embedding-projection",
+      "within_top": 3
+    },
+    {
+      "query": "timber framing roof support",
+      "expected_id": "knowledge.framed-shelter",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "object-archetype"
+    },
+    {
+      "query": "metal conductor roughness",
+      "expected_id": "knowledge.conductor-surface",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "material-profile"
+    },
+    {
+      "query": "gravity bouncing contact",
+      "expected_id": "knowledge.gravity-contact",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "physical-behavior"
+    },
+    {
+      "query": "Three.js rigid body synchronization",
+      "expected_id": "knowledge.three-rigid-body-adapter",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "tool-adapter"
+    },
+    {
+      "query": "repeat experiment compare parameter",
+      "expected_id": "knowledge.controlled-experiment",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "inspection-pattern"
+    },
+    {
+      "query": "physical pause reset",
+      "expected_id": "knowledge.physical-action-reset",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "validation-profile"
+    },
+    {
+      "query": "puppet lantern keeper pivots",
+      "expected_id": "recipe.lantern-keeper-puppet",
+      "within_top": 3
+    },
+    {
+      "query": "speaker exploded assembly parts",
+      "expected_id": "recipe.portable-speaker-exploded",
+      "within_top": 3
+    },
+    {
+      "query": "courtyard house cutaway",
+      "expected_id": "recipe.courtyard-house-cutaway",
+      "within_top": 3
+    },
+    {
+      "query": "parcel sorter event queue",
+      "expected_id": "recipe.parcel-sorter-events",
+      "within_top": 3
+    },
+    {
+      "query": "sarcomere actin myosin sliding",
+      "expected_id": "recipe.sarcomere-sliding-filaments",
+      "within_top": 3
+    },
+    {
+      "query": "molecular shape electron pair",
+      "expected_id": "recipe.molecular-shape-comparison",
+      "within_top": 3
+    },
+    {
+      "query": "directional derivative surface gradient",
+      "expected_id": "recipe.directional-derivative-surface",
+      "within_top": 3
+    },
+    {
+      "query": "binomial trials probability outcomes",
+      "expected_id": "recipe.binomial-trial-lattice",
+      "within_top": 3
+    },
+    {
+      "query": "torus Euler cells",
+      "expected_id": "recipe.torus-euler-cells",
+      "within_top": 3
+    },
+    {
+      "query": "Dijkstra edge relaxation",
+      "expected_id": "recipe.dijkstra-relaxation",
+      "within_top": 3
+    },
+    {
+      "query": "voxel packing tray",
+      "expected_id": "recipe.voxel-packing-tray",
+      "within_top": 3
+    },
+    {
+      "query": "heat rod fixed ends decay",
+      "expected_id": "recipe.heat-rod-decay",
+      "within_top": 3
+    },
+    {
+      "query": "planar interface refraction ray",
+      "expected_id": "recipe.planar-refraction-ray",
+      "within_top": 3
+    },
+    {
+      "query": "robot forward kinematics frames",
+      "expected_id": "recipe.robot-arm-forward-frames",
+      "within_top": 3
+    },
+    {
+      "query": "terrain elevation contour slices",
+      "expected_id": "recipe.terrain-contour-slices",
+      "within_top": 3
+    },
+    {
+      "query": "Kepler equal time swept area",
+      "expected_id": "recipe.kepler-equal-area-orbit",
+      "within_top": 3
+    },
+    {
+      "query": "felt wool stitched creature",
+      "expected_id": "knowledge.style-felt-wool",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "style-profile"
+    },
+    {
+      "query": "papercraft folded panels",
+      "expected_id": "knowledge.style-papercraft",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "style-profile"
+    },
+    {
+      "query": "scientific encoding units legend",
+      "expected_id": "knowledge.style-scientific-encoding",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "style-profile"
+    },
+    {
+      "query": "fictional heritage town repairs",
+      "expected_id": "knowledge.theme-heritage-fiction",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "theme-profile"
+    },
+    {
+      "query": "signed scalar section legend",
+      "expected_id": "knowledge.signed-field-section",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "presentation-profile"
+    },
+    {
+      "query": "hero object close view",
+      "expected_id": "knowledge.hero-and-context",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "composition-profile"
+    },
+    {
+      "query": "discrete playback pause reset",
+      "expected_id": "knowledge.state-playback",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "motion-profile"
+    },
+    {
+      "query": "parameter experiment repeat reset",
+      "expected_id": "knowledge.parameter-experiment",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "interaction-profile"
+    },
+    {
+      "query": "inspect mesh closure with hard edges and split vertices",
+      "collection": "knowledge",
+      "kind": "geometry-profile",
+      "expected_id": "knowledge.shared-indexed-manifold-mesh",
+      "within_top": 3
+    },
+    {
+      "query": "volume data index to world coordinates and cell centered samples",
+      "collection": "knowledge",
+      "kind": "geometry-profile",
+      "expected_id": "knowledge.shared-voxel-field-grid",
+      "within_top": 3
+    },
+    {
+      "query": "linear HDR environment texture input color space",
+      "collection": "knowledge",
+      "kind": "lighting-profile",
+      "expected_id": "knowledge.shared-display-color-management",
+      "within_top": 3
+    },
+    {
+      "query": "preserve motion timing when exporting at a different frame rate",
+      "collection": "knowledge",
+      "kind": "output-profile",
+      "expected_id": "knowledge.shared-reproducible-animation-export",
+      "within_top": 3
+    },
+    {
+      "query": "WebGL context lost and restored recreate GPU scene resources",
+      "collection": "knowledge",
+      "kind": "output-profile",
+      "expected_id": "knowledge.shared-interactive-web-scene",
+      "within_top": 3
+    },
+    {
+      "query": "radius diameter fourth power absolute resistance",
+      "collection": "knowledge",
+      "kind": "domain-validation",
+      "expected_id": "knowledge.validation-radius-power-law-scaling",
+      "within_top": 3
+    },
+    {
+      "query": "bound joint clamp reject valid pose",
+      "collection": "knowledge",
+      "kind": "domain-validation",
+      "expected_id": "knowledge.validation-joint-limit-rejection",
+      "within_top": 3
+    },
+    {
+      "query": "Dijkstra zero weight tie predecessor cycle",
+      "collection": "knowledge",
+      "kind": "domain-validation",
+      "expected_id": "knowledge.validation-relaxation-monotonicity",
+      "within_top": 3
+    },
+    {
+      "query": "fixed heat mode exponential amplitude decay",
+      "collection": "knowledge",
+      "kind": "domain-validation",
+      "expected_id": "knowledge.validation-analytic-decay-rate",
+      "within_top": 3
+    },
+    {
+      "query": "timeout command feedback odometry",
+      "collection": "knowledge",
+      "kind": "domain-validation",
+      "expected_id": "knowledge.validation-command-feedback-odometry",
+      "within_top": 3
+    },
+    {
+      "query": "lattice BCC FCC boundary sites count",
+      "collection": "knowledge",
+      "kind": "domain-validation",
+      "expected_id": "knowledge.validation-lattice-site-accounting",
+      "within_top": 3
+    },
+    {
+      "query": "quaternion sign equivalent orientation shortest rotation path",
+      "expected_id": "knowledge.reasoning-rotation-interpolation-path",
+      "collection": "knowledge",
+      "kind": "reasoning-rule",
+      "within_top": 3
+    },
+    {
+      "query": "solid revolution generating region inner radius washer",
+      "expected_id": "knowledge.reasoning-revolution-axis-and-profile",
+      "collection": "knowledge",
+      "kind": "reasoning-rule",
+      "within_top": 3
+    },
+    {
+      "query": "clocked current next state atomic commit",
+      "expected_id": "knowledge.reasoning-clocked-commit-separation",
+      "collection": "knowledge",
+      "kind": "reasoning-rule",
+      "within_top": 3
+    },
+    {
+      "query": "explicit diffusion stability amplification time step",
+      "expected_id": "knowledge.reasoning-explicit-scheme-stability",
+      "collection": "knowledge",
+      "kind": "reasoning-rule",
+      "within_top": 3
+    },
+    {
+      "query": "VSEPR molecular geometry electron pairs",
+      "expected_id": "knowledge.reasoning-electron-geometry-versus-shape",
+      "collection": "knowledge",
+      "kind": "reasoning-rule",
+      "within_top": 3
+    },
+    {
+      "query": "scatter plot PCA variance projection",
+      "expected_id": "knowledge.reasoning-embedding-distance-caveats",
+      "collection": "knowledge",
+      "kind": "reasoning-rule",
+      "within_top": 3
+    },
+    {
+      "query": "show C5 C6 contributions to axillary nerve",
+      "expected_id": "recipe.brachial-plexus-routing",
+      "within_top": 3
+    },
+    {
+      "query": "SVD reflection collapse singular values",
+      "expected_id": "recipe.svd-sphere-to-ellipsoid",
+      "within_top": 3
+    },
+    {
+      "query": "heap insert delete preserve keys",
+      "expected_id": "recipe.binary-heap-operations",
+      "within_top": 3
+    },
+    {
+      "query": "double slit finite width missing orders",
+      "expected_id": "recipe.interference-diffraction-pattern",
+      "within_top": 3
+    },
+    {
+      "query": "joint velocity acceleration time scaling",
+      "expected_id": "recipe.joint-trajectory-time-scaling",
+      "within_top": 3
+    },
+    {
+      "query": "watershed D8 accumulation raster",
+      "expected_id": "recipe.watershed-flow-accumulation",
+      "within_top": 3
+    },
+    {
+      "query": "timber end grain cut face",
+      "expected_id": "knowledge.material-wood-cut-grain",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "material-profile"
+    },
+    {
+      "query": "water surface ripples permanent coverage",
+      "expected_id": "knowledge.material-water-surface-cues",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "material-profile"
+    },
+    {
+      "query": "quadruped torso feet support",
+      "expected_id": "knowledge.quadruped-body-support",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "object-archetype"
+    },
+    {
+      "query": "watermill shaft bearings drivetrain",
+      "expected_id": "knowledge.watermill-drive-train",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "object-archetype"
+    },
+    {
+      "query": "rolling sliding slip friction",
+      "expected_id": "knowledge.rolling-versus-sliding",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "physical-behavior"
+    },
+    {
+      "query": "liquid fill level versus flow speed",
+      "expected_id": "knowledge.liquid-coverage-versus-flow",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "physical-behavior"
+    },
+    {
+      "query": "fixed timestep accumulator render interpolation",
+      "expected_id": "knowledge.fixed-step-interpolation-adapter",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "tool-adapter"
+    },
+    {
+      "query": "canvas texture color space normal map",
+      "expected_id": "knowledge.procedural-texture-colorspace-adapter",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "tool-adapter"
+    },
+    {
+      "query": "square wave harmonics Gibbs overshoot",
+      "expected_id": "recipe.fourier-harmonic-synthesis",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "complex plane infinity stereographic projection",
+      "expected_id": "recipe.riemann-sphere-reciprocal-map",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "mixed quantum state density matrix purity",
+      "expected_id": "recipe.single-qubit-bloch-ball",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "SAT unsatisfiable resolution certificate",
+      "expected_id": "recipe.sat-model-resolution-refutation",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "Petri tokens weighted transition firing",
+      "expected_id": "recipe.petri-net-weighted-firing",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "pattern string mismatch prefix fallback",
+      "expected_id": "recipe.kmp-prefix-pattern-dfa",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "synchronized axial sagittal coronal probe",
+      "expected_id": "knowledge.synchronized-orthogonal-slices",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "measure distance model coordinates units",
+      "expected_id": "knowledge.geometric-measurement-model-units",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "confidence interval uncertainty interpretation",
+      "expected_id": "knowledge.uncertainty-interval-encoding",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "zipper teeth tape slider opening",
+      "expected_id": "knowledge.zipper-tape-slider-closure",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "bearing inner outer race cage balls",
+      "expected_id": "knowledge.ball-bearing-race-cage-assembly",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "3D printed perimeter layer seam",
+      "expected_id": "knowledge.material-fdm-layer-seam",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "piston connecting rod crank stroke",
+      "expected_id": "knowledge.slider-crank-closure",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "belt pulley friction tension slip limit",
+      "expected_id": "knowledge.flat-belt-traction-bound",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "elastic sphere indentation contact force",
+      "expected_id": "knowledge.hertz-sphere-contact",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "DICOM pixel spacing slope intercept",
+      "expected_id": "knowledge.dicom-image-frame-value-bridge",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "molecular trajectory atom order topology",
+      "expected_id": "knowledge.molecular-topology-trajectory-identity-bridge",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "netcdf packed fill missing scale offset",
+      "expected_id": "knowledge.cf-packed-field-decoding-validation",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "daily root zone depletion irrigation deep percolation",
+      "expected_id": "recipe.root-zone-irrigation-budget",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "closed single lane bumper gap IDM traffic wave",
+      "expected_id": "recipe.closed-lane-car-following",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "RAG top-k passage retrieval provenance weights",
+      "expected_id": "recipe.rag-retrieval-provenance",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "single attention head row softmax value aggregation",
+      "expected_id": "recipe.single-attention-head-aggregation",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "mandible jaw opening rotation translation hinge axis",
+      "expected_id": "recipe.dental-bite-moving-hinge-illustration",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "brain atlas label volume voxel world affine region",
+      "expected_id": "recipe.supplied-brain-atlas-region-inspection",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "fixed c Julia dynamical plane starting points escape radius critical orbit",
+      "expected_id": "recipe.quadratic-julia-escape-inspector",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "Bell pair four amplitudes reduced density joint Pauli correlation tensor",
+      "expected_id": "recipe.two-qubit-bell-correlations",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "rectangular rigid room acoustic normal modes eigenfrequencies nodal planes",
+      "expected_id": "recipe.rectangular-room-normal-modes",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "seismic P S plane waves isotropic elastic solid polarization",
+      "expected_id": "recipe.isotropic-seismic-plane-waves",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "accessible museum route object inspection wayfinding exhibit",
+      "expected_id": "recipe.museum-route-object-inspection",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "cyberpunk layered city neon rain hologram megastructure",
+      "expected_id": "knowledge.theme-cyberpunk-city",
+      "within_top": 3,
+      "collection": "knowledge",
+      "kind": "theme-profile"
+    },
+    {
+      "query": "Apply Blender modifiers before exporting mesh silhouette",
+      "expected_id": "knowledge.blender-evaluated-mesh-handoff",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Bevel edges overlap and flat face highlights look warped",
+      "expected_id": "knowledge.hard-surface-bevel-normal-contract",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "UV atlas seams bake cage texel density padding",
+      "expected_id": "knowledge.uv-atlas-bake-correspondence",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Geometry Nodes instance realization versus glTF instancing",
+      "expected_id": "knowledge.geometry-nodes-instance-handoff",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Exported door rotates around wrong pivot with wrong units",
+      "expected_id": "knowledge.gltf-transform-pivot-handoff",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Blender armature shape keys animation clips fighting runtime controls",
+      "expected_id": "knowledge.blender-deformation-animation-handoff",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Blender material darker in Three roughness color space",
+      "expected_id": "knowledge.blender-three-linear-color-handoff",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Pack occlusion roughness metalness channels for glTF",
+      "expected_id": "knowledge.blender-three-metalrough-orm-translation",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Mirrored UV island normal map lighting inverted",
+      "expected_id": "knowledge.blender-three-tangent-normal-handoff",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Blender procedural shader bake or rebuild TSL",
+      "expected_id": "knowledge.blender-three-procedural-shader-portability",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Environment reflections appear but no cast shadows PMREM",
+      "expected_id": "knowledge.blender-three-ibl-shadow-ownership",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Leaves alpha mask glass transmission sorting",
+      "expected_id": "knowledge.blender-three-transparency-boundaries",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Blender volume absorption glTF thickness attenuation IOR",
+      "expected_id": "knowledge.blender-three-thick-volume-handoff",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Release spinning animated object into physics preserving center of mass velocity",
+      "expected_id": "knowledge.kinematic-dynamic-velocity-handoff",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Compound collider offsets density inertia center of mass",
+      "expected_id": "knowledge.compound-collider-mass-properties",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Physics pause resume reset timeline stale interpolation",
+      "expected_id": "knowledge.physics-timeline-lifecycle",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Export Blender soft body baked vertex cache versus runtime simulation",
+      "expected_id": "knowledge.blender-baked-deformation-runtime-adapter",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Hard surface housing removable panel seam fastener receiving flange",
+      "expected_id": "knowledge.hard-surface-functional-assembly",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Modular wall sockets corners stairs elevation kit joins",
+      "expected_id": "knowledge.modular-environment-kit-sockets",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Deformable bag cage keep opening thickness attachment seated",
+      "expected_id": "knowledge.deformable-prop-support-cage",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Hero prop detail hierarchy camera distance LOD identity",
+      "expected_id": "knowledge.hero-prop-detail-hierarchy",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Blender lightmap bake runtime lighting counted twice",
+      "expected_id": "knowledge.baked-runtime-lightmap-ownership",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Emissive lamp mesh glows but nearby room not illuminated",
+      "expected_id": "knowledge.emissive-practical-light-balance",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Local reflection capture zone versus diffuse light probe",
+      "expected_id": "knowledge.local-reflection-probe-scope",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Moving shadow flickers exposure stability invalidation",
+      "expected_id": "knowledge.temporal-shadow-exposure-stability",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Project a replaceable warning decal onto a curved machine; roughness mark distorts around the corner",
+      "expected_id": "knowledge.layered-decal-surface-handoff",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Carved stone height map needs silhouette, raycast and collider: displacement or parallax",
+      "expected_id": "knowledge.height-detail-representation-boundary",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "GLB requires Draco Meshopt KTX2 decoder paths, support detection, fallback and unload cleanup",
+      "expected_id": "knowledge.gltf-compression-decoder-lifecycle",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "KHR_texture_transform picks wrong UV channel and rotated atlas tile bleeds in mipmaps",
+      "expected_id": "knowledge.gltf-texture-transform-atlas-handoff",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Extract root motion into a parent controller without applying translation twice, including reverse loop wrap",
+      "expected_id": "knowledge.root-motion-runtime-ownership",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Three.js upper body animation mask filtered bone tracks additive reference pose",
+      "expected_id": "knowledge.animation-layer-track-mask",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Blender timeline marker sidecar event manifest reverse playback loop duplicate footstep",
+      "expected_id": "knowledge.clip-event-marker-contract",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Facial morph expression clip conflicts with procedural blink morphTargetInfluences channel owner",
+      "expected_id": "knowledge.morph-expression-channel-ownership",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "glTF animation loop pops at seam compare endpoint value velocity CUBICSPLINE",
+      "expected_id": "knowledge.loop-seam-continuity",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Interrupt a Three.js crossfade midway cancel old fade warp preserve current blended weights",
+      "expected_id": "knowledge.interruptible-animation-transition",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Responsive 3D labels narrow mobile viewport occlusion hidden label still discoverable focus order",
+      "expected_id": "knowledge.responsive-spatial-label-hierarchy",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Collapse advanced Three.js controls but show nondefault state aria-expanded reset scope",
+      "expected_id": "knowledge.progressive-control-disclosure",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Panel distinguishes source data model transform authored illustration runtime not-run provenance",
+      "expected_id": "knowledge.source-model-runtime-provenance-panel",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Compose cutaway with cut surface foreground revealed interior depth and retained context",
+      "expected_id": "knowledge.sectional-depth-composition",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Camera journey overview intermediate landmark micro detail without model rescaling",
+      "expected_id": "knowledge.macro-to-micro-scale-transition",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Matched 3D small multiples equal scale shared legend linked selection scissor viewports",
+      "expected_id": "knowledge.linked-spatial-small-multiples",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Dense explorable scene visual rest areas bounded camera targets home recovery",
+      "expected_id": "knowledge.navigable-density-rest-areas",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "LOD mesh silhouette pops when field of view or orthographic zoom changes",
+      "expected_id": "knowledge.lod-screen-error-continuity",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Morph target vertex order scrambled after decimation despite matching accessor count",
+      "expected_id": "knowledge.morph-target-topology-compatibility",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Drag a child machine part only along its local rail; orbit must not commit and lost pointer capture must cancel",
+      "expected_id": "knowledge.constraint-aware-object-manipulation",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Show a stable ghost preview when two compatible sockets compete, then atomically commit occupancy on release",
+      "expected_id": "knowledge.snap-preview-and-commit",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Multi-select parent and child from a keyboard companion list without applying group transform twice",
+      "expected_id": "knowledge.multi-selection-hierarchy",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "One continuous drag should create one undo entry and restore transform parent socket and annotation together",
+      "expected_id": "knowledge.transactional-undo-redo",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Pin an editable note to an object-local point so it follows a reparented part and becomes orphaned on deletion",
+      "expected_id": "knowledge.spatial-annotation-authoring",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Map select move commit and cancel across mouse touch keyboard and optional WebXR without double commits",
+      "expected_id": "knowledge.modality-independent-action-map",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Find a flipped face and unexpected exported triangles, then trace the runtime primitive back to the Blender evaluated mesh",
+      "expected_id": "knowledge.topology-and-normal-diagnostic-view",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Checker squares stretch and atlas seams bleed; inspect texel density, UV islands, TEXCOORD set and transform",
+      "expected_id": "knowledge.uv-seam-and-density-inspection",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Elbow collapses after glTF export; inspect JOINTS_1 WEIGHTS_1 bind pose and selected vertex influences",
+      "expected_id": "knowledge.skin-weight-and-deformation-inspection",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Roughness and metalness channels look swapped; isolate ORM red green blue roles and color transfer",
+      "expected_id": "knowledge.pbr-channel-isolation-inspection",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Relate WebGLRenderer info draw calls triangles and active textures to glTF source nodes without claiming GPU bytes or per-object timing",
+      "expected_id": "knowledge.runtime-cost-and-source-node-inspection",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Compare evaluated Blender modifier silhouette bind pose and animation key times after GLB load, then check owned resource teardown",
+      "expected_id": "knowledge.gltf-roundtrip-asset-validation",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Validate glTF PBR texture channels UV set tangent normal direction color space and lightmap double lighting",
+      "expected_id": "knowledge.color-normal-material-parity",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Check canvas selection stable semantic ID against companion controls keyboard and non-drag pointer alternative",
+      "expected_id": "knowledge.interactive-scene-accessibility-validation",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Progressively load a large glTF scene shell first abort stale detail requests partial stage retry",
+      "expected_id": "knowledge.progressive-asset-streaming-output",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Reusable Three.js iframe embed protocol ResizeObserver postMessage origin instance teardown",
+      "expected_id": "knowledge.embeddable-scene-contract",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "WebXR immersive session denied xr-spatial-tracking reference space desktop fallback",
+      "expected_id": "knowledge.webxr-delivery-boundary",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Reproducible review screenshot package camera state viewport renderer revision asset SHA-256 manifest",
+      "expected_id": "knowledge.deterministic-review-capture-package",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "KHR_animation_pointer animate glTF material factor camera FOV Three GLTFLoader external plugin",
+      "expected_id": "knowledge.gltf-animation-pointer-runtime-adapter",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Breakable joint threshold force impulse timestep Rapier JavaScript reaction readout",
+      "expected_id": "knowledge.breakable-joint-threshold-contract",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "shared cut corner silhouette grammar across a character and transit shelter unlike assets",
+      "expected_id": "knowledge.graphic-shape-language-across-asset-types",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "stylized PBR broad highlight roles metal roughness palette glTF green blue channels",
+      "expected_id": "knowledge.stylized-pbr-material-response",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "motion style state remains readable when paused interrupted or prefers reduced motion",
+      "expected_id": "knowledge.motion-style-with-state-legibility",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "high contrast stylized 3D selection warning cues without relying on red green color alone",
+      "expected_id": "knowledge.accessible-high-contrast-stylization",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Design a functional set dressing grammar with prop roles, support logic, service access, control state and wear placement across a repair bench and pump station",
+      "expected_id": "knowledge.theme-functional-prop-grammar",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Tell an interrupted greenhouse repair story through blocked routes used tools repair marks and inspectable clues at several scales",
+      "expected_id": "knowledge.environmental-story-clue-layers",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Generate seeded market lane and service courtyard variants from one modular kit without cloned props or changing stable identities",
+      "expected_id": "knowledge.modular-theme-variation-without-cloning",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Historical-looking is not verified; distinguish sourced reconstruction interpretation and invented old-town scenery with provenance and rights",
+      "expected_id": "knowledge.historical-reference-versus-fiction-boundary",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Choose a convex compound or trimesh collider that preserves a doorway support surface and insertion socket without copying render triangles",
+      "expected_id": "knowledge.reasoning-mesh-collider-functional-fidelity",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "Choose texture resolution mipmaps and anisotropy from projected camera pixels and oblique screen footprint",
+      "expected_id": "knowledge.reasoning-texture-screen-footprint",
+      "within_top": 3,
+      "collection": "knowledge"
+    },
+    {
+      "query": "FFT leakage finite window off-bin sinusoid zero padding inverse reconstruct windowed samples",
+      "expected_id": "recipe.fft-finite-window-spectrum-reconstruction",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "saddle-node fold bifurcation normal form equilibrium branch stable unstable bounded time trace",
+      "expected_id": "recipe.saddle-node-normal-form-branch-time",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "Newton fractal basins z cubed minus one derivative singular unresolved complex orbit",
+      "expected_id": "recipe.newton-cubic-root-basin-inspector",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "CP Tucker tensor factorization reconstruct components core factor matrices residual lattice",
+      "expected_id": "recipe.cp-tucker-tensor-component-reconstruction",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "colored tokens with typed bindings guards timestamps and timed transitions global model clock",
+      "expected_id": "recipe.timed-colored-petri-net",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "8-bit SMT bit-vector wraparound signed unsigned model versus checked UNSAT proof",
+      "expected_id": "recipe.bit-vector-smt-model-proof",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "heap fragmentation allocation trace first fit alignment split coalesce request fails despite total free bytes",
+      "expected_id": "recipe.memory-allocation-fragmentation-trace",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "sanitized TLS 1.3 handshake message state teaching no secret values and no security proof claim",
+      "expected_id": "recipe.cryptographic-protocol-message-state",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "Build a non-cubic Pyraminx state model with uppercase two-layer turns lowercase tip moves exact piece orientations and 120 degree inverse closure",
+      "expected_id": "recipe.pyraminx-legal-move-state",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "Show why a Rubik cube internal core and sliding edge corner connectors permit a face turn using a labeled patent-grounded cutaway",
+      "expected_id": "recipe.twisty-mechanism-cutaway",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "Teach the beginner cube layer method with goal predicates hints preserved pieces checkpoints and reversible step undo",
+      "expected_id": "recipe.guided-layer-method-tutorial",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "Import a cube facelet state with no move history validate parity twist flip call an external solver and verify its returned sequence by replay",
+      "expected_id": "recipe.imported-cube-state-solver-verification",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "dry skull foramina exploded cranial fossa internal external route laterality",
+      "expected_id": "recipe.skull-foramina-exploded-route-atlas",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "DICOM spatial registration source registered Frame of Reference UID affine matrix landmark residual",
+      "expected_id": "recipe.dicom-spatial-registration-landmark-residuals",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "Enhanced CT multiframe shared per-frame functional groups dimension index original frame",
+      "expected_id": "recipe.enhanced-dicom-frame-dimension-inspector",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "supplied OpenSim muscle tendon geometry path wrapping points joint coordinate playback",
+      "expected_id": "recipe.supplied-opensim-muscle-wrap-path-playback",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "reaction breaks and forms bonds across trajectory frames explicit atom mapping provenance",
+      "expected_id": "recipe.reactive-trajectory-topology-change",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "unwrap molecule through periodic boundary fixed orthorhombic cell image counters ambiguity",
+      "expected_id": "recipe.periodic-trajectory-temporal-unwrapping",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "reaction coordinate relative energy profile sampled maximum not automatically transition state",
+      "expected_id": "recipe.reaction-coordinate-energy-profile",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "calculated spectrum oscillator strength mixed orbital contributions isosurface not total electron density",
+      "expected_id": "recipe.spectral-transition-orbital-inspector",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "forced rectangular room resonance modal damping sinusoidal drive energy residual",
+      "expected_id": "recipe.forced-damped-room-response",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "flat layered seismic ray refraction travel time frequency Q attenuation critical interface",
+      "expected_id": "recipe.layered-attenuating-seismic-rays",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "torque driven four bar dynamics branch lock loop closure effective inertia",
+      "expected_id": "recipe.torque-driven-four-bar-dynamics",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "simply supported bridge moving point loads reactions section moment influence line",
+      "expected_id": "recipe.bridge-load-path-beam-model",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "XPBD soft body pinned boundary compliance timestep substeps iterations residual",
+      "expected_id": "recipe.general-soft-body-boundary-test",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "rigid robot contact task dynamic solver kinematic target controller force contact state",
+      "expected_id": "recipe.robot-contact-task-execution",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "IAU SOFA ICRS catalog observer horizon UTC UT1 DUT1 proper motion constellation playback",
+      "expected_id": "recipe.observer-frame-constellation-playback",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "absorption only straight chord homogeneous atmospheric shells optical depth Beer Lambert beta inverse metres",
+      "expected_id": "recipe.layered-atmosphere-absorption-ray",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "CF regular rectilinear ocean current grid RK4 particle advection missing corner land mask calendar CRS",
+      "expected_id": "recipe.cf-ocean-current-particle-playback",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "Fisher equation bounded 1D zero flux finite difference positivity guard reaction diffusion front",
+      "expected_id": "recipe.fisher-reaction-diffusion-front",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "finite supplied irrigation scenario envelope shared forcing hash root zone depletion not confidence interval",
+      "expected_id": "recipe.irrigation-finite-scenario-envelope",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "evacuation bottleneck finite capacity network blocked exit occupant conservation educational scenario",
+      "expected_id": "recipe.finite-egress-network-capacity-playback",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "open boundary traffic arrivals fixed routes signal saturation flow queue spillback plan comparison",
+      "expected_id": "recipe.open-signal-queue-network",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "CityGML featureID urban alternatives base hash CRS epoch semantic geometry change differencer",
+      "expected_id": "recipe.citygml-stable-id-scenario-diff",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "maintenance procedure BPMN exclusive gateway evidence reported complete verified equipment IDs",
+      "expected_id": "recipe.bounded-maintenance-procedure-state",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "SensorThings telemetry phenomenonTime resultTime stale late duplicate conflict digital twin sync",
+      "expected_id": "recipe.sensorthings-telemetry-freshness-sync",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "compare multiple attention heads separate projections concatenate output projection without averaging heads",
+      "expected_id": "recipe.multi-head-attention-comparison",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "inspect trusted pre-extracted training checkpoints with one fixed projection basis and comparable metrics no pickle execution",
+      "expected_id": "recipe.training-trajectory-checkpoint-inspector",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "two-qubit mixed density matrix partial transpose eigenvalues PPT separability 2x2",
+      "expected_id": "recipe.two-qubit-mixed-state-entanglement",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "single-qubit Kraus operators CPTP completeness Bloch affine channel composition",
+      "expected_id": "recipe.single-qubit-channel-map",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "three-qubit GHZ eight amplitudes XXX XYY YXY YYX parity reduced states",
+      "expected_id": "recipe.three-qubit-ghz-correlations",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "map supplied music phrases beats and tempo onto spatial motion without acoustic simulation",
+      "expected_id": "recipe.music-structure-spatial-mapping",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "kinetic typography timed words captions pause static transcript reduced motion",
+      "expected_id": "recipe.kinetic-typography-stage",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "stage lighting cue with camera performer blocking standby go interruption checkpoint",
+      "expected_id": "recipe.stage-previsualization-cue-stack",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "synthetic consented museum visitor route evaluation dwell missing data no causal inference",
+      "expected_id": "recipe.museum-visitor-evaluation-playback",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "migrate branching story save schema versions unknown node atomic rollback original hash",
+      "expected_id": "recipe.versioned-story-save-migration",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "WebXR museum bounded-floor teleport authored walkable polygon local-floor desktop fallback metre scale",
+      "expected_id": "recipe.xr-museum-world-scale-teleport",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "two-hand XR product grab gripSpace finite separation scale clamp controller pose loss product root",
+      "expected_id": "recipe.xr-two-hand-product-manipulation",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "AR museum exhibit placement hit-test anchor depth occlusion unavailable uncertainty desktop tabletop",
+      "expected_id": "recipe.xr-ar-museum-placement-uncertainty",
+      "within_top": 3,
+      "collection": "recipes"
+    },
+    {
+      "query": "painterly ghibli pastoral",
+      "expected_id": "knowledge.style-ghibli-painterly-pastoral",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "golden hour lighting",
+      "expected_id": "knowledge.lighting-mood-dusk-golden-hour",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "follow camera behind character",
+      "expected_id": "knowledge.camera-orbit-follow-rig",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "tilt shift miniature look",
+      "expected_id": "knowledge.style-tilt-shift-diorama",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "neon rain wet street at night",
+      "expected_id": "knowledge.style-neon-noir-rain",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "deep sea glow creatures",
+      "expected_id": "knowledge.style-bioluminescent-deep-sea",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "lantern festival river town",
+      "expected_id": "knowledge.style-lantern-festival-riverside",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "fog light shafts god rays",
+      "expected_id": "knowledge.lighting-mood-fog-shafts",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "sun position time of day",
+      "expected_id": "knowledge.lighting-time-of-day-sun-arc",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "ocean water shader foam",
+      "expected_id": "knowledge.material-water-surface-cues",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "AgX tone mapping blender to three",
+      "expected_id": "knowledge.blender-view-transform-tone-mapping-table",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "headless blender export glb script",
+      "expected_id": "knowledge.blender-headless-gltf-export-script",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "half timbered cottage module",
+      "expected_id": "knowledge.blueprint-timber-cottage",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "water wheel building kit",
+      "expected_id": "knowledge.blueprint-watermill",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "market stall with canopy",
+      "expected_id": "knowledge.blueprint-market-stall",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "stone arch bridge",
+      "expected_id": "knowledge.blueprint-stone-bridge",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "walking four legged creature rig",
+      "expected_id": "knowledge.blueprint-quadruped-walker",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "lantern post prop",
+      "expected_id": "knowledge.blueprint-lantern-post",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "how much detail on a hero object",
+      "expected_id": "knowledge.hero-detail-ladder-defaults",
+      "within_top": 3,
+      "collection": "all"
+    },
+    {
+      "query": "reusable building blueprint with sockets",
+      "expected_id": "knowledge.blueprint-long-hall",
+      "within_top": 3,
+      "collection": "all"
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-drag-to-cell-commit",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Continuous drag quantized to a legal discrete move"
+  },
+  "aliases": {
+    "en": [
+      "slide quantization check",
+      "swept corridor commit"
+    ]
+  },
+  "direction_ids": [
+    "spatial-puzzles"
+  ],
+  "summary": "Check that a drag proposes a quantized cell offset and that the whole swept corridor is tested before committing.",
+  "objective": "Moves through occupied cells are rejected, quantization follows a declared rule, and cancelled drags leave no trace.",
+  "applies_when": [
+    "A viewer drags pieces that move along constrained axes on a grid.",
+    "A move can cross several cells in one gesture.",
+    "The interface offers undo or a move counter."
+  ],
+  "check_method": "interaction",
+  "tags": [
+    "domain-validation",
+    "quantization",
+    "swept-move",
+    "undo"
+  ],
+  "subject_terms": [
+    "axis projection",
+    "cell quantization",
+    "swept corridor",
+    "move count",
+    "cancel",
+    "rounding rule"
+  ],
+  "intent_signals": [
+    "the block jumped through another block",
+    "a half-cell drag behaves inconsistently"
+  ],
+  "example_prompts": [
+    "Check the sliding move rules when a drag crosses several cells."
+  ],
+  "negative_signals": [
+    "physics-based pushing",
+    "claiming a shortest solution"
+  ],
+  "content": {
+    "principles": [
+      "A drag is a continuous input over a discrete model: the pointer proposes a candidate cell offset and the model accepts or rejects it as a whole.",
+      "For a sliding move the entire swept corridor must be free rather than only the destination, and the corridor covers every cell touched by the whole piece along the way, not only the cells under its anchor. The moving piece own starting cells are excluded from the obstacle set, since a piece does not block itself.",
+      "Quantization needs a stated rule covering which cell a partial drag resolves to, what happens exactly halfway between two cells, and how halfway rounding behaves for negative offsets, where rounding toward zero, away from zero and toward positive infinity all differ."
+    ],
+    "implementation": [
+      "Project the pointer displacement onto the allowed axis, convert it to a signed cell count with the declared rounding rule, and record the raw and quantized values.",
+      "Enumerate every cell the whole piece passes through from its current position to the candidate, remove the piece own starting cells from the obstacle set, test the remainder for occupancy, and confirm every swept cell stays inside the board before committing.",
+      "Script the cases: a drag of exactly half a cell in each direction, a drag past a blocking piece, a drag that becomes illegal mid-way, a drag that would leave the board, and a release outside the board.",
+      "Record piece poses and move count before and after each case, and whether an undo entry was created."
+    ],
+    "observable_checks": [
+      "A move whose corridor crosses an occupied cell is rejected even when the destination is free; accepting it is the failure this check targets.",
+      "The exact half-cell drag resolves by the declared rounding rule in both directions and gives the same result every time from the same start; a rule that rounds positive and negative halves inconsistently is reported.",
+      "Rejected and cancelled drags create no undo entry and leave poses identical, and undo restores poses and move count together."
+    ]
+  },
+  "known_limits": [
+    "Covers input quantization and move legality; it does not evaluate difficulty, feel or solution length.",
+    "Authored verification guidance; no interface was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.sliding-block-escape",
+    "recipe.voxel-packing-tray",
+    "recipe.direct-turn-cube"
+  ],
+  "claims": []
+}

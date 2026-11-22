@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-conservation-check-for-flow",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Check the conserved quantity across the domain"
+  },
+  "aliases": {
+    "en": [
+      "continuity",
+      "mass conservation",
+      "flow rate check"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal",
+    "operations-logistics"
+  ],
+  "summary": "Derive downstream quantities from the conservation law and verify that what enters the domain leaves or accumulates.",
+  "objective": "Give a flow or transport scene a check that reveals leaks in the model.",
+  "applies_when": [
+    "Fluid, heat or material moves through a conduit, network or region.",
+    "Cross-section, velocity or flow rate is displayed.",
+    "The scene claims that flow speeds up or slows down for a physical reason."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "continuity",
+    "flow rate",
+    "cross section",
+    "conservation",
+    "incompressible",
+    "balance"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "fluids",
+    "validation"
+  ],
+  "intent_signals": [
+    "why does it speed up in the nozzle",
+    "show the flow rate",
+    "does the flow balance"
+  ],
+  "example_prompts": [
+    "Show why flow accelerates through the narrow section.",
+    "Check that the flow into the network equals the flow out."
+  ],
+  "negative_signals": [
+    "Compressible or high-speed flows, where the simple relation does not hold.",
+    "Decorative particle streams that model no transport."
+  ],
+  "not_for": [
+    "Compressible or high-speed flows, where the simple relation does not hold.",
+    "Decorative particle streams that model no transport."
+  ],
+  "content": {
+    "principles": [
+      "Conservation is the strongest available check on a transport model. For steady incompressible flow with no sources or sinks, the volume flow rate is the cross-sectional area times the cross-section-averaged normal speed, and that product is the same at every section, so a narrower section carries a faster average speed. Heat and material transport with sources, storage or reactions need their own balance with those terms, not this area-speed equality.",
+      "A visual that shows particles speeding up without preserving the product is showing an effect without its cause, and it will disagree with any number the scene displays.",
+      "Balance also localises errors: checking inflow against outflow plus accumulation identifies where the model is leaking rather than merely reporting that it does.",
+      "The assumptions matter: incompressibility and the absence of sources or sinks are the conditions under which the simple relation applies."
+    ],
+    "implementation": [
+      "Compute the downstream speed from the conservation relation and the geometry rather than authoring it, so the visual follows the physics.",
+      "Display the conserved quantity and its units, and show it staying constant across the sections.",
+      "For a network, report inflow, outflow and accumulation per node and highlight any imbalance.",
+      "State the assumptions, including incompressibility and the absence of sources and sinks, next to the display.",
+      "Say what your particles are. Equal-volume tracers emitted at a fixed rate into a steady flow correctly encode flux, and their spacing stretches where the flow accelerates; illustrative particles seeded for visual density encode nothing quantitative and should be labelled that way. Streamline density is a third convention with its own seeding rule."
+    ],
+    "observable_checks": [
+      "Measure the product of area and cross-section-averaged normal speed at several sections of a steady incompressible conduit flow with no leaks and confirm it is constant within tolerance.",
+      "Change the constriction and confirm the downstream speed changes by the expected factor.",
+      "Sum inflows and outflows over a closed region and confirm the balance holds.",
+      "Confirm the particle scheme matches its stated meaning: fixed-rate equal-volume tracers should keep a constant count crossing each section per unit time while their spacing changes with speed, and a decorative emitter should not be presented as a flux measurement."
+    ]
+  },
+  "related_ids": [
+    "recipe.nozzle-continuity",
+    "recipe.hydrostatic-depth-pressure"
+  ],
+  "creative_affordances": [
+    "The visual language for flow, whether particles, ribbons, arrows or colour, is a free choice above the conservation check.",
+    "Deliberately stylised flow is fine when no rate is claimed."
+  ],
+  "known_limits": [
+    "Authored validation guidance citing the incompressible continuity relation; compressible, unsteady and turbulent flows are outside it.",
+    "No fluid simulation has been run for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-incompressible-continuity",
+      "statement": "For an incompressible fluid with no sources or sinks the volume flow rate equals cross-sectional area times the average speed and is the same at every section of a conduit, so the product of area and average speed at one section equals that product at another.",
+      "scope": "Steady incompressible flow in a conduit with the speed taken as the cross-section average of the normal component. Compressible, unsteady or source-bearing transport requires additional terms.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-continuity",
+          "locator": "14.5, flow rate and its relation to velocity, equation of continuity"
+        }
+      ]
+    }
+  ]
+}

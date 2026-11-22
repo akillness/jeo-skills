@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "id": "recipe.secondary-motion-chain",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Cape and hair follow-through chains"
+  },
+  "aliases": {
+    "en": [
+      "secondary motion",
+      "follow through",
+      "spring chain"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art"
+  ],
+  "summary": "Add trailing motion that is driven by the character rather than looped beside it, with limits that keep it from exploding.",
+  "objective": "Build a character whose cape and hair lag behind its motion through a driven chain with stated stiffness, damping and collision limits.",
+  "tags": [
+    "secondary motion",
+    "cape",
+    "hair"
+  ],
+  "subject_terms": [
+    "secondary motion",
+    "follow through",
+    "overlap",
+    "spring damper",
+    "chain",
+    "stiffness",
+    "damping",
+    "collision radius"
+  ],
+  "intent_signals": [
+    "Add a cape that trails behind my character believably.",
+    "Make hair that follows head motion with a slight delay."
+  ],
+  "example_prompts": [
+    "Build a character with a cape and hair chain that lag behind sudden movements and settle afterwards.",
+    "Show the spring parameters for secondary motion and what happens when they are too stiff."
+  ],
+  "negative_signals": [
+    "Not a full cloth solver: no self-collision, shear resistance or fabric material identification.",
+    "Not a claim of physical accuracy in fabric behaviour."
+  ],
+  "not_for": [
+    "Not a full cloth solver: no self-collision, shear resistance or fabric material identification.",
+    "Not a claim of physical accuracy in fabric behaviour."
+  ],
+  "entities": [
+    {
+      "name": "Driver skeleton",
+      "guidance": "Identify the driving joints explicitly, since secondary motion is defined relative to a driver that owns the primary animation."
+    },
+    {
+      "name": "Follower chains",
+      "guidance": "Build hair and cape as chains of segments with declared rest poses, stiffness, damping and maximum deflection."
+    },
+    {
+      "name": "Collision proxies",
+      "guidance": "Add simple capsule or sphere proxies on the body so followers do not pass through the character."
+    }
+  ],
+  "state_contract": {
+    "model": "Driver joint transforms from the primary animation, follower chain states with position and velocity per segment, spring and damping parameters, deflection limits, and body collision proxies. Each substep integrates forces, then applies a declared constraint order: swept-segment collision push-out first, then length projection, repeated for a stated iteration count. If both cannot be satisfied, freeze follower updates and report an unresolved constraint state. A previous pose is only a display fallback, not proof of validity against the current moving driver or proxies. Resume only after reinitialization passes the constraints for the current driver.",
+    "authority": "The driver animation is authoritative and is never modified by the followers; followers may be clamped but must not push the character.",
+    "actions": [
+      "Move or animate the character and watch the followers lag.",
+      "Change stiffness and damping and compare settling.",
+      "Toggle collision proxy visibility, and separately enable or disable collision itself, which is reported because disabling it suspends the stay-outside behaviour.",
+      "Reset follower state to the rest pose."
+    ]
+  },
+  "invariants": [
+    "Followers never move the driver; the influence is one way.",
+    "Accepted follower states preserve segment length within the stated tolerance; unresolved constraint states are explicitly reported rather than counted as passing.",
+    "With collision enabled, accepted states pass swept-segment collision and length checks. If their projections conflict, the reported unresolved state makes no unconditional collision or length guarantee.",
+    "The rest pose is defined relative to the current driver transforms, so resetting while the driver has moved returns the chain to its driver-relative rest rather than to a stale world pose. Validate the reset against current proxies; an impossible overlapping rest pose is reported as unresolved rather than silently accepted."
+  ],
+  "motion_guidance": [
+    "Offset each chain segment slightly in phase so the trailing motion reads as a wave rather than a rigid swing.",
+    "Damp the settle so motion stops; a cape that never comes to rest looks unfinished and hides parameter problems."
+  ],
+  "known_limits": [
+    "Explicit spring chains can diverge at large timesteps or extreme stiffness; the recipe requires a stated step and clamps.",
+    "Wind here is an authored input, not a simulated flow field.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "object_craft": [
+    {
+      "family": "Follower chains",
+      "structure": "Cape as a segmented panel with a real collar attachment and hem weight, hair as tapered strands grouped into a few clumps rather than many identical strands.",
+      "material": "Fabric with visible weave and a distinct back-face treatment; hair clumps with anisotropic highlights so motion is readable.",
+      "articulation": "Each segment follows its parent with spring and damping toward the rest direction, clamped by the deflection limit."
+    },
+    {
+      "family": "Collision proxies",
+      "structure": "Capsules on torso, shoulders and head sized slightly larger than the visible mesh.",
+      "material": "Debug-only material, hidden by default; visible proxies use a wire style that does not hide the character.",
+      "articulation": "Proxies follow the driver skeleton exactly."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "One-way driven spring chains with damping and simple collision; no cloth self-collision or aerodynamic solving.",
+    "state": [
+      "segment positions",
+      "segment velocities",
+      "driver transforms"
+    ],
+    "driving": [
+      "Spring restoring force toward the rest direction plus damping and an authored wind input."
+    ],
+    "contact": [
+      "Attempt swept-segment collision correction without moving the driver; failed joint collision/length constraints enter the declared unresolved state."
+    ],
+    "timestep": "Fixed step with substeps for stiff settings and interpolated rendering.",
+    "checks": [
+      "Accepted states meet length tolerance and, when enabled, collision constraints even during fast motion; failed attempts are reported as unresolved.",
+      "Reset uses the current driver-relative rest pose with zero velocity and validates constraints; invalid rest geometry is reported, not labelled a valid reset."
+    ]
+  },
+  "creative_affordances": [
+    "Chain count and clumping are style levers: three heavy cape panels read very differently from twelve light ones.",
+    "The same chain model serves tails, straps, lanterns on cords and hanging tools."
+  ],
+  "related_ids": [
+    "recipe.ribbon-motion-sculpture",
+    "recipe.mass-spring-cloth-contract",
+    "knowledge.articulation-from-motion"
+  ]
+}

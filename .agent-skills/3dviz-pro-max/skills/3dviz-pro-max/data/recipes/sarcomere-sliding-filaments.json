@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "id": "recipe.sarcomere-sliding-filaments",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Sarcomere sliding filament comparison"
+  },
+  "aliases": {
+    "en": [
+      "muscle contraction mechanism",
+      "sarcomere bands"
+    ]
+  },
+  "direction_ids": [
+    "physiology-biomechanics"
+  ],
+  "summary": "Compare relaxed and shortened sarcomeres without shrinking the filaments themselves.",
+  "objective": "Show a sarcomere shortening while thick and thin filament lengths stay fixed.",
+  "tags": [
+    "sarcomere",
+    "actin",
+    "myosin"
+  ],
+  "subject_terms": [
+    "sarcomere",
+    "actin",
+    "myosin",
+    "Z disc",
+    "A band",
+    "I band"
+  ],
+  "intent_signals": [
+    "explain muscle shortening",
+    "compare band widths"
+  ],
+  "example_prompts": [
+    "Show a sarcomere shortening while thick and thin filament lengths stay fixed.",
+    "Let me label the Z discs and compare the A band and I band during contraction."
+  ],
+  "entities": [
+    {
+      "name": "Sarcomere boundaries",
+      "guidance": "Use two Z-disc plates and a central M-line; repeat only enough filament pairs to clarify overlap."
+    },
+    {
+      "name": "Filaments",
+      "guidance": "Separate thin rods anchored to Z discs from thick central rods and a few illustrative myosin heads."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Sarcomere boundaries",
+      "structure": "Use two Z-disc plates and a central M-line; repeat only enough filament pairs to clarify overlap.",
+      "material": "Schematic muted plates with readable band brackets."
+    },
+    {
+      "family": "Filaments",
+      "structure": "Separate thin rods anchored to Z discs from thick central rods and a few illustrative myosin heads.",
+      "material": "Distinct matte colors and a text legend, not tissue-realistic texture.",
+      "articulation": "Slide thin filaments relative to thick ones; do not scale rods."
+    }
+  ],
+  "state_contract": {
+    "model": "Illustrative shortening parameter within an authored non-overlap-invalid range; Z-disc positions and band brackets derived from constant filament lengths. The filament lengths, the valid sarcomere-length range and the band formulas are given in defaults.values, so I band and H zone are computed from sarcomere length and never authored per pose.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Scrub shortening.",
+      "Toggle relaxed reference.",
+      "Select a band and reset."
+    ]
+  },
+  "invariants": [
+    "Thin and thick filament lengths remain fixed.",
+    "A-band width remains fixed while Z-disc separation decreases.",
+    "Band labels follow derived boundaries and cannot swap when camera rotates."
+  ],
+  "motion_guidance": [
+    "Translate thin filaments toward the center symmetrically.",
+    "Any head cycling is explicitly a slowed illustrative cue, not synchronized molecular kinetics."
+  ],
+  "known_limits": [
+    "Schematic geometry and dimensionless phase; not calibrated ultrastructure, force-length data or diagnostic evidence. The filament and sarcomere lengths in the defaults are authored illustrative values: the cited section gives no sarcomere length, filament length or band width, only the 10 nm power-stroke displacement.",
+    "The lower end of the authored length range is where the thin-filament tips meet; real fibres shorten past that point with thin-thin overlap, which this recipe does not model.",
+    "No ATP kinetics, neural excitation or fatigue model.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [
+    {
+      "id": "claim.sarcomere-sliding-filaments",
+      "statement": "During sliding-filament shortening, Z lines approach each other and the I band narrows while A-band width stays constant.",
+      "scope": "Skeletal-muscle sarcomere illustration under the sliding-filament model; not a quantitative force model.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-sarcomere",
+          "locator": "The Sliding Filament Model of Contraction; Figure 10.10"
+        }
+      ]
+    },
+    {
+      "id": "claim.sarcomere-power-stroke",
+      "statement": "During the power stroke of cross-bridge cycling the filaments move approximately 10 nm toward the M-line.",
+      "scope": "One displacement per power stroke as printed in the cited section; it is not a sarcomere length, a filament length or a shortening velocity.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-sarcomere",
+          "locator": "10.3 Muscle Fiber Contraction and Relaxation, cross-bridge cycling: \"the filaments move approximately 10 nm toward the M-line\"; sliding filament description \"When a sarcomere contracts, the Z lines move closer together, and the I band becomes smaller. The A band stays the same width\""
+        }
+      ]
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Qualitative cellular mechanism.",
+    "state": [
+      "shortening parameter",
+      "Z-disc positions"
+    ],
+    "colliders": [
+      "None; schematic filament overlap is intentional."
+    ],
+    "driving": [
+      "Bounded authored shortening."
+    ],
+    "contact": [
+      "No molecular contact solver."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Filament lengths and A-band width remain unchanged between reference poses."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Illustrative dimensions: the cited section states only that the Z lines approach, the I band narrows and the A band keeps its width (claim.sarcomere-sliding-filaments), plus a single 10 nm power-stroke displacement (claim.sarcomere-power-stroke, the one sourced number here and the only one that may be cited as fact). Every length below is an authored teaching choice, picked so the band arithmetic is exact and the invariant is testable: with a 1.6 um thick filament and 1.0 um thin filaments, the I band is sarcomere length minus 1.6 and the H zone is sarcomere length minus 2.0, both in micrometres, and the valid range ends exactly where the thin-filament tips meet. Tunable as a set: change one filament length and the range bounds and both band formulas must be recomputed, or the A-band invariant silently breaks.",
+    "values": {
+      "parameters": {
+        "thick_filament_length": {
+          "value": 1.6,
+          "unit": "um",
+          "note": "authored; equals the A-band width, which is the quantity the invariant holds constant"
+        },
+        "thin_filament_length": {
+          "value": 1.0,
+          "unit": "um",
+          "note": "authored; measured from each Z disc inward"
+        },
+        "sarcomere_length_relaxed": {
+          "value": 2.4,
+          "unit": "um",
+          "note": "authored reference pose"
+        },
+        "sarcomere_length_shortened": {
+          "value": 2.2,
+          "unit": "um",
+          "note": "authored contracted pose used by the worked example"
+        },
+        "sarcomere_length_valid_range": {
+          "value": [
+            2.0,
+            2.4
+          ],
+          "unit": "um",
+          "note": "authored; the lower bound is 2 x thin filament length, where the thin tips meet and the H zone closes"
+        },
+        "power_stroke_displacement": {
+          "value": 10,
+          "unit": "nm",
+          "note": "sourced via claim.sarcomere-power-stroke; 0.01 um, so one power stroke is 5 percent of the 0.2 um shortening in the worked example"
+        },
+        "band_colours": {
+          "value": "no default; source gives none",
+          "unit": "hex",
+          "note": "band identity must be readable from derived boundaries and labels, not from a colour convention this recipe invents"
+        }
+      },
+      "equations": [
+        "I_band_total = sarcomere_length - thick_filament_length",
+        "I_band_per_side = I_band_total / 2",
+        "H_zone = sarcomere_length - 2 * thin_filament_length",
+        "A_band = thick_filament_length (constant under every pose)",
+        "valid while sarcomere_length >= 2 * thin_filament_length"
+      ],
+      "worked_example": {
+        "inputs": "Relaxed sarcomere 2.4 um shortened to 2.2 um, with a 1.6 um thick filament and 1.0 um thin filaments held at fixed length",
+        "expected": "A band stays 1.6 um; I band narrows from 0.8 um to 0.6 um total (0.4 to 0.3 um per side); H zone narrows from 0.4 um to 0.2 um; Z-disc separation falls by 0.2 um, which is 20 power strokes at the sourced 10 nm each",
+        "derivation": "I_band_total = L - 1.6, so 2.4 - 1.6 = 0.8 um and 2.2 - 1.6 = 0.6 um; halve for each side. H_zone = L - 2.0, so 0.4 um then 0.2 um. A_band = 1.6 um in both poses because it is the thick filament itself, which is the recipe's invariant. Shortening = 2.4 - 2.2 = 0.2 um = 200 nm, and 200 / 10 = 20 power strokes. Boundary check: at L = 2.0 um the H zone reaches 0 and the thin tips meet, which is why the valid range stops there; any implementation that reports a negative H zone has shortened past the modelled range instead of clamping."
+      },
+      "tolerance": {
+        "length_um": "1e-6 um on derived band boundaries; they are exact differences, not measurements",
+        "a_band_constancy": "the A band must be bit-identical between poses, not merely close: it is a stored length, never a recomputed one",
+        "range_clamp": "clamp at 2.0 um rather than allowing a negative H zone"
+      }
+    }
+  }
+}

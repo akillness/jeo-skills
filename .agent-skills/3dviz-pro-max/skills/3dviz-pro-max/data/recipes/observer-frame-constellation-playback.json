@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "id": "recipe.observer-frame-constellation-playback",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Observer-frame constellation and horizon playback"
+  },
+  "aliases": {
+    "en": [
+      "constellation observer",
+      "ICRS catalog"
+    ]
+  },
+  "direction_ids": [
+    "astronomy-space"
+  ],
+  "summary": "Transform supplied catalog directions and constellation line identities into an observer horizon frame at declared site and times, retaining catalog epoch and unavailable proper-motion fields.",
+  "objective": "Transform supplied catalog directions and constellation line identities into an observer horizon frame at declared site and times, retaining catalog epoch and unavailable proper-motion fields.",
+  "tags": [
+    "constellation observer",
+    "ICRS catalog",
+    "UTC UT1",
+    "horizon frame"
+  ],
+  "subject_terms": [
+    "constellation observer",
+    "ICRS catalog",
+    "UTC UT1",
+    "horizon frame",
+    "proper motion"
+  ],
+  "intent_signals": [
+    "Observer-frame constellation and horizon playback"
+  ],
+  "example_prompts": [
+    "Build observer-frame constellation and horizon playback with explicit units, frames, time and unavailable-data states."
+  ],
+  "negative_signals": [
+    "particle appearance proves physics",
+    "playback is a forecast"
+  ],
+  "not_for": [
+    "Operational forecasting or safety decisions."
+  ],
+  "entities": [
+    {
+      "name": "Catalog sphere",
+      "guidance": "Accept supplied star IDs, ICRS directions, reference epoch and optional proper motion/parallax/radial velocity; absent terms stay absent."
+    },
+    {
+      "name": "Observer horizon",
+      "guidance": "Declare longitude, geodetic latitude, height, UTC, DUT1, polar motion and atmosphere/refraction policy."
+    },
+    {
+      "name": "Constellation links",
+      "guidance": "Lines connect stable catalog IDs as cultural display metadata; they do not create physical star relationships."
+    }
+  ],
+  "state_contract": {
+    "model": "Pin the IAU SOFA 2023-10-11 C interface and call iauAtco13 for each supplied J2000.0 ICRS catalog row. Require finite rc/dc radians; pr is dRA/dt (not dRA/dt*cos(dec)) and pd is dDec/dt, both radians per Julian year, with parallax arcseconds and radial velocity km/s. Each motion field must be supplied or explicitly declared zero; a non-J2000 catalog requires a separately validated preliminary epoch transformation. Encode UTC using iauDtf2d; supply matching DUT1=UT1-UTC seconds, east-positive WGS84 longitude/geodetic latitude radians, ellipsoid height metres, polar motion xp/yp radians, pressure hPa, temperature Celsius, relative humidity and wavelength micrometres. An explicit pressure=0 policy disables the refraction contribution. Reject status -1 unacceptable date; retain status +1 as a visible dubious-year warning rather than silently accepting it. Require finite observed azimuth/zenith-distance radians.",
+    "authority": "Supplied catalog fields and epoch, pinned SOFA routine/version, UTC encoding, matched Earth-orientation/site/atmosphere inputs and returned numeric directions own state. Blender/glTF contains only the horizon/cardinal context; Three.js binds computed radians to star/link buffers and restores the exact input ledger.",
+    "actions": [
+      "Set site and UTC/DUT1.",
+      "Scrub declared times.",
+      "Toggle horizon/refraction policy/links.",
+      "Reset exact catalog and observer state."
+    ]
+  },
+  "invariants": [
+    "Catalog epoch and time scale are always visible.",
+    "Below-horizon status derives from numeric observed direction, not mesh occlusion.",
+    "Missing catalog motion terms are never replaced by zero unless input explicitly declares zero.",
+    "Constellation line identity survives sorting and magnitude filtering."
+  ],
+  "motion_guidance": [
+    "Playback follows stored model/data time; reverse scrub is history and display interpolation never changes the numeric model."
+  ],
+  "creative_affordances": [
+    "Use scale-separated context, glyphs and trails while disclosing exaggeration and keeping uncertainty visible."
+  ],
+  "known_limits": [
+    "No forecast, dataset execution, numerical solve, render or runtime validation was performed."
+  ],
+  "claims": [
+    {
+      "id": "claim.env-sofa-observed-astrometry",
+      "statement": "IAU SOFA Astrometry Tools documents iauAtco13 from J2000.0 ICRS right ascension/declination, RA and Dec proper motions, parallax and radial velocity through two-part UTC, DUT1, WGS84 terrestrial site, polar motion and atmosphere inputs to observed azimuth and zenith distance, with the listed units; RA proper motion is dRA/dt rather than dRA/dt*cos(dec), and return status distinguishes dubious from unacceptable dates. SOFA Time Scale Tools distinguishes UTC and UT1 and requires caller-supplied UT1-UTC for matching UTC; release 19 is dated 2023-10-11.",
+      "scope": "SOFA Astrometry Tools C cookbook revision 1.13 and Time Scale C cookbook revision 1.63 dated 2023-05-31, used with SOFA release 19; input availability and accuracy remain caller responsibilities.",
+      "source_refs": [
+        {
+          "source_id": "source.env-iau-sofa-astrometry-c",
+          "locator": "Sections 1.1-1.2 and detailed iauAtco13 listing, printed pages 55-57 (PDF viewer pages 58-60)"
+        },
+        {
+          "source_id": "source.env-iau-sofa-time-c",
+          "locator": "Sections 3.5 and 4.3.1; iauDtf2d/iauUtcut1 guidance, PDF pages 12-24 and 63"
+        },
+        {
+          "source_id": "source.env-iau-sofa-release-19",
+          "locator": "Issue 2023-10-11 release date and unified nineteenth-release statement"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Horizon dome instrument",
+      "structure": "Blender authors a unit-radius horizon dome, north/east cardinal frame, ground mask and observatory silhouette in a documented local ENU display frame; glTF exports only these static named nodes.",
+      "material": "Stars use size plus label/shape, not brightness alone; horizon and below-horizon states differ geometrically.",
+      "articulation": "Three.js retains the catalog/input ledger, invokes the pinned SOFA binding outside glTF, converts returned azimuth/zenith-distance radians into ENU directions, rebuilds stable-ID link buffers, marks below-horizon state and resets inputs exactly."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Reference-frame transformation and catalog playback; no orbital or stellar physics.",
+    "state": [
+      "catalog records/epoch",
+      "observer and Earth-orientation inputs",
+      "observed directions/time"
+    ],
+    "checks": [
+      "Known zenith/cardinal fixture.",
+      "Time-scale labels present.",
+      "No missing motion imputation."
+    ]
+  },
+  "related_ids": [
+    "recipe.orbital-reference-frames",
+    "recipe.moon-phase-observer"
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "id": "recipe.three-qubit-ghz-correlations",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Three-qubit GHZ correlation inspector"
+  },
+  "aliases": {
+    "en": [
+      "GHZ state correlations",
+      "three-qubit Pauli parity"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra",
+    "abstract-systems-data",
+    "waves-optics-fields"
+  ],
+  "summary": "Inspect an ordered three-qubit GHZ state through its eight amplitudes, one- and two-qubit reductions and exact three-body Pauli parity settings.",
+  "objective": "Inspect an ordered three-qubit GHZ state through its eight amplitudes, one- and two-qubit reductions and exact three-body Pauli parity settings.",
+  "tags": [
+    "GHZ state",
+    "three qubits",
+    "Pauli correlation",
+    "tensor order"
+  ],
+  "subject_terms": [
+    "three-qubit GHZ",
+    "eight amplitudes",
+    "XXX",
+    "XYY",
+    "YXY",
+    "YYX",
+    "reduced density matrix"
+  ],
+  "intent_signals": [
+    "Inspect GHZ correlations without replacing the joint state by Bloch arrows.",
+    "Compare the four XXX XYY YXY YYX parity settings for GHZ plus and minus."
+  ],
+  "example_prompts": [
+    "Inspect GHZ correlations without replacing the joint state by Bloch arrows."
+  ],
+  "negative_signals": [
+    "decorative motion presented as computation",
+    "camera position changes authoritative values",
+    "Claiming a hardware Bell test or faster-than-light signaling."
+  ],
+  "not_for": [
+    "Claiming a hardware Bell test or faster-than-light signaling.",
+    "Encoding the eight-amplitude state by three local Bloch vectors."
+  ],
+  "entities": [
+    {
+      "name": "Eight-amplitude spine",
+      "guidance": "Use declared order |000> through |111>; show complex signs and normalization."
+    },
+    {
+      "name": "Reduction deck",
+      "guidance": "Show three 2×2 single reductions and three 4×4 pair reductions separately."
+    },
+    {
+      "name": "Parity stations",
+      "guidance": "Show X/Y setting per qubit, joint expectation and allowed outcome-product parity without generating hidden predetermined values."
+    }
+  ],
+  "state_contract": {
+    "model": "Accept one finite complex eight-amplitude pure state in declared |q_A q_B q_C> binary order, reject zero/nonfinite norm, normalize and form rho=|psi><psi|. GHZ+ is (|000>+|111>)/sqrt(2), GHZ- uses the minus sign. Compute all one- and two-qubit partial traces. For O in {XXX,XYY,YXY,YYX}, compute <psi|O|psi>. Exact GHZ+ has expectations (+1,-1,-1,-1); GHZ- has (-1,+1,+1,+1). Disable GHZ badges outside the exact-preset tolerance. Marginal states and correlators never replace the full joint state.",
+    "authority": "Supplied finite tensors, ordered identifiers, basis conventions and provenance own semantic state. Blender/glTF assets are display-only; Three.js owns validation, calculation, linked selection, failure states and exact reset.",
+    "actions": [
+      "Load GHZ plus/minus preset.",
+      "Select a one- or two-qubit reduction.",
+      "Select one Pauli setting and inspect amplitude pairing and parity.",
+      "Passively reorder qubits with complete index/operator/label permutation.",
+      "Reset state, order, setting and selection."
+    ]
+  },
+  "invariants": [
+    "State and reduction traces equal one; all are Hermitian and PSD within tolerance.",
+    "For both exact presets each one-qubit reduction is I/2 and each pair reduction is (|00><00|+|11><11|)/2.",
+    "The four declared three-body expectations have the preset-specific signs and magnitude one within tolerance.",
+    "A passive tensor reorder preserves physics only when amplitudes, reductions, operator factors and labels permute together."
+  ],
+  "motion_guidance": [
+    "Setting changes recompute an expectation from one frozen state; they do not animate measurement collapse, signaling or pre-existing outcomes."
+  ],
+  "creative_affordances": [
+    "Choose any coherent laboratory, constellation or sculptural art direction while preserving exact labels, selectable identity and non-color encodings."
+  ],
+  "known_limits": [
+    "Documentary authored recipe only; no model training, checkpoint execution, quantum hardware, Blender export, browser, renderer or interactive runtime was run.",
+    "glTF transports neutral display assets only; tensors, checkpoints, citations, basis order, dtype and provenance remain external data."
+  ],
+  "claims": [
+    {
+      "id": "claim.aiq-mermin-ghz-correlations",
+      "statement": "Mermin presents a three-spin GHZ state that is a simultaneous eigenstate of the three mixed X/Y Pauli products and has the opposite eigenvalue for XXX; the product constraints yield perfect three-body correlations.",
+      "scope": "Mermin’s GHZ-minus phase convention gives XYY, YXY and YYX eigenvalue +1 and XXX eigenvalue -1; the recipe derives the reversed signs for GHZ-plus explicitly.",
+      "source_refs": [
+        {
+          "source_id": "source.aiq-mermin-ghz",
+          "locator": "Section III, equations (3)-(5), measurement-product discussion and Appendix state vector"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Three-station GHZ parity observatory",
+      "structure": "Blender authors three equal stations, an eight-rail amplitude spine and four parity plaques at neutral transforms.",
+      "material": "Qubit identity, Pauli setting and parity each have redundant glyph/line encodings; local centers are visually distinct from the joint spine.",
+      "articulation": "Three.js owns amplitude order, reductions, tensor operators, expectation arithmetic, complete passive reorder and reset."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Finite imported-data calculation and explanatory playback; no physical dynamics, model training, quantum device or causal attribution.",
+    "state": [
+      "ordered external data and provenance",
+      "declared dimensions, basis and numeric tolerance",
+      "derived readouts and selection state"
+    ],
+    "checks": [
+      "State and reduction traces equal one; all are Hermitian and PSD within tolerance.",
+      "For both exact presets each one-qubit reduction is I/2 and each pair reduction is (|00><00|+|11><11|)/2.",
+      "The four declared three-body expectations have the preset-specific signs and magnitude one within tolerance."
+    ]
+  },
+  "related_ids": [
+    "recipe.two-qubit-bell-correlations",
+    "recipe.single-qubit-bloch-ball"
+  ]
+}

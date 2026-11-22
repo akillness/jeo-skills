@@ -1,0 +1,64 @@
+# GUI paths and code substitutes (scenario-roblox-environment)
+
+An agent cannot drag terrain brushes, paint in the viewport or move a plugin's sun handle. Each row
+gives the path a human uses in Studio (Next Gen UI, default since 2026-01-05) and the substitute
+this skill runs in code. Paths come from the Creator Docs unless the row names a video. Settings
+marked "file-only" refuse scripts: set them in the Properties panel or the place file (Rojo
+`$properties`).
+
+## Terrain
+
+| Task                                                                         | Studio path (human)                                                                                | Code substitute (agent)                                                                                                |
+| ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Open the Terrain Editor                                                      | **Home** tab > **Terrain Editor**, or **Window > 3D**                                              | not needed                                                                                                             |
+| Generate land                                                                | Terrain Editor > **Create** > **Generate**                                                         | `TerrainKit.heightfield` with a height function (P2)                                                                   |
+| Import a heightmap                                                           | Terrain Editor > **Create** > **Import**                                                           | decode the image offline into a height function, then `heightfield` [added]                                            |
+| Clear terrain                                                                | Terrain Editor > **Create** > **Clear**                                                            | `workspace.Terrain:Clear()`                                                                                            |
+| Fill, Draw, Sculpt                                                           | Terrain Editor > **Edit** > **Fill**, **Draw**, **Sculpt**                                         | `FillBlock`, `FillBall`, `FillWedge`, `FillCylinder`; `TerrainKit.fromParts` from blockout parts (P13)                 |
+| Part to Terrain (BONES -DoOf32pkPo 00:02:13, SmartyRBX CippiATeZ54 00:00:35) | the Part to Terrain tool shown in those videos; the current Terrain Editor page lists no converter | `TerrainKit.fromParts(parts, material)`; blocks, wedges, balls and cylinders                                           |
+| Smooth                                                                       | Terrain Editor > **Edit** > **Smooth**                                                             | `TerrainKit.smooth(min, max, passes)` (box blur over `ReadVoxels` and `WriteVoxels`)                                   |
+| Flatten a path                                                               | Terrain Editor > **Edit** > **Flatten**                                                            | `FillBlock` with `Enum.Material.Air` above the path height, then a fill below it                                       |
+| Paint materials                                                              | Terrain Editor > **Edit** > **Paint**                                                              | `TerrainKit.heightfield` material function; `TerrainKit.paintUnder` for floors; `Terrain:ReplaceMaterial` for a region |
+| Sea level                                                                    | Terrain Editor > **Edit** > **Sea Level**                                                          | `TerrainKit.water(min, max, level)` (`WriteVoxelChannels` LiquidOccupancy)                                             |
+| Copy or move terrain                                                         | Terrain Editor > **Edit** > **Select**, then **Transform**                                         | `ReadVoxels` on the source region, `WriteVoxels` on the target                                                         |
+| Grass blades (file-only)                                                     | Explorer > **Workspace > Terrain** > Properties > **Decoration**, **GrassLength**                  | Rojo `$properties` on Terrain; Lune read-back (O6)                                                                     |
+| Terrain material colors                                                      | Explorer > **Terrain** > Properties > **MaterialColors**                                           | `Terrain:SetMaterialColor(material, color)`                                                                            |
+| Clouds                                                                       | Explorer > **Terrain** > insert **Clouds**                                                         | `Instance.new("Clouds")` parented to `workspace.Terrain` (Looks `effects.clouds`)                                      |
+
+## Parts, CSG and collision
+
+| Task                                                        | Studio path (human)                                                                    | Code substitute (agent)                                                                                                                              |
+| ----------------------------------------------------------- | -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Union, Intersect, Negate, Separate                          | **Model** tab boolean tools; on Mac Shift+Cmd+G, Shift+Cmd+I, Shift+Cmd+N, Shift+Cmd+U | `GeometryService:UnionAsync`, `IntersectAsync`, `SubtractAsync`; Separate has no API, so keep the source parts                                       |
+| See collision fidelity                                      | Visualization Options widget (upper right of the 3D viewport) > **Collision fidelity** | `GetPartsInPart` with a character-sized box and a ray through each opening (P5); `WorldCheck.debugViews(true)` for a capture (queued, live test L15) |
+| Set fidelity                                                | select the union > Properties > **CollisionFidelity**                                  | write `CollisionFidelity`, then yield once before reading it back                                                                                    |
+| Wireframe for junk triangles (Kaiwala Ahn2P_4TDrU 00:05:19) | the wireframe view shown in the video                                                  | `PartOperation.TriangleCount`; `EnvAudit` flags `union-triangles`; `settings().Rendering.RenderCSGTrianglesDebug` (queued, live test L15)            |
+| Find invisible blockers                                     | Explorer, parts with Transparency 1                                                    | `WorldCheck.invisibleColliders`, then `WorldCheck.mark` boxes for a capture ([`verification.md`](verification.md))                                   |
+
+## Materials
+
+| Task                      | Studio path (human)                                                                    | Code substitute (agent)                                                                                                                                 |
+| ------------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Material Manager          | **Window > 3D > Material**, or the Material widget's picker                            | `MaterialKit.variant`, `MaterialKit.kit`                                                                                                                |
+| Apply a material to parts | Material Manager > hover a material > **Apply to Selected Parts**                      | `MaterialKit.dress(root, byRole)`                                                                                                                       |
+| Set a material override   | Material Manager > click the variant > inspector > **Overrides** > **Set as Override** | `MaterialService:SetBaseMaterialOverride` from a command; scripts cannot write the `<Material>Name` properties, so persist the choice in the place file |
+| Find broken variant names | none                                                                                   | `MaterialKit.links(root)`, `EnvAudit` `variant-missing`                                                                                                 |
+
+## Lighting
+
+| Task                                                     | Studio path (human)                                                                     | Code substitute (agent)                                                                                                    |
+| -------------------------------------------------------- | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Aim the sun (DatBoiEle aq0Fi0R2FAY 00:02:11)             | Sun Adjuster plugin, Roblox asset 301432759, then drag                                  | `Looks.aimSun(direction)`: a ClockTime and GeographicLatitude search, under 1 degree of error (P8)                         |
+| Insert Atmosphere, Sky, Bloom, ColorCorrection, SunRays  | Explorer > **Lighting** > insert object                                                 | `Looks.apply(look)` creates or updates them                                                                                |
+| Lighting style (file-only Technology)                    | Explorer > **Lighting** > Properties > **LightingStyle**, **PrioritizeLightingQuality** | write `LightingStyle` and `PrioritizeLightingQuality` from code; `Technology` only in the place file                       |
+| See effects at full quality (BONES 6zSe8cuBB_I 00:03:09) | **Studio Settings > Rendering > Editor Quality Level**, highest                         | `settings().Rendering.EditQualityLevel` (PluginSecurity, not yet run); until then judge Bloom in a playtest or on a device |
+| Compare looks                                            | the viewport, by eye                                                                    | `E.capture_set` from fixed cameras, `E.look_metrics`, `E.sheet`, then open the sheet                                       |
+
+## Streaming
+
+| Task                                      | Studio path (human)                                                                                                          | Code substitute (agent)                                                                                                      |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Streaming radii and integrity (file-only) | Explorer > **Workspace** > Properties > Streaming section                                                                    | Rojo `$properties` on Workspace; `E.lune_audit(place)` reads them back                                                       |
+| Per-model streaming                       | select the model > Properties > **ModelStreamingMode**, **LevelOfDetail**                                                    | write `ModelStreamingMode` and `LevelOfDetail` from code; check presence on the client in a playtest (P11)                   |
+| Streaming debug overlay                   | in a playtest, Shift+Cmd+F3 (Shift+Ctrl+F3 on Windows), then Shift+1 to the fourth panel, Streaming (Instance streaming doc) | `WorldCheck.positions` on the server and `WorldCheck.presence` on the client per stop ([`verification.md`](verification.md)) |
+| SLIM tint modes                           | Visualization Options > SLIM tint mode; Edit offers only TranscoderStatus (SLIM doc)                                         | none tested                                                                                                                  |

@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-hand-painted",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Hand-painted surface accents"
+  },
+  "aliases": {
+    "en": [
+      "hand painted textures",
+      "painted prop finish",
+      "illustrated texture",
+      "vertex paint",
+      "stylized texture painting"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies"
+  ],
+  "summary": "Place authored marks where they explain shape, use or attention rather than covering every surface with equal detail.",
+  "objective": "Brush marks stay attached to the intended part, seams are unobtrusive, and detail survives the normal viewing distance.",
+  "tags": [
+    "style-profile",
+    "surface-aesthetic",
+    "hand-painted"
+  ],
+  "subject_terms": [
+    "hand painted textures",
+    "painted prop finish",
+    "illustrated texture",
+    "surface aesthetic"
+  ],
+  "intent_signals": [
+    "Add hand-painted surface detail",
+    "Align brushwork with object construction"
+  ],
+  "example_prompts": [
+    "Create a hand-painted market stall with brushwork following each timber and cloth panel."
+  ],
+  "content": {
+    "principles": [
+      "Place authored marks where they explain shape, use or attention rather than covering every surface with equal detail."
+    ],
+    "implementation": [
+      "Model the silhouette and major relief; assign surface regions so brushwork can follow boards, cloth or panels.",
+      "Paint selected gradients, edge accents and variation; keep illumination choices deliberate so painted highlights do not fight the scene light.",
+      "Use close and mid-distance views to set mark scale; move the camera around a static object before approving animated lighting.",
+      "Author at 512 px/m texel density on hero props and 256 px/m on background, and keep painted marks 8-20 px wide at that density so they survive a 2 m viewing distance.",
+      "Paint three values per material region (base, occlusion at 0.7x, edge light at 1.3x), hold hue jitter within +/-8 degrees, and leave about 40% of each surface unmarked so the marks read as intent."
+    ],
+    "observable_checks": [
+      "Brush marks stay attached to the intended part, seams are unobtrusive, and detail survives the normal viewing distance."
+    ]
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at renderer.toneMappingExposure 1.0; re-tune intensities and fog density under a different tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with stylized or low-poly forms; painted appearance is not evidence of historical fabrication or measured material behavior."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Here the painting, not the rig, owns the value structure, so the key:fill ratio is flattened to 2:1 and the light colours are kept under 20% saturation - a strong directional rig would re-shade surfaces that already contain painted occlusion and edge light. Roughness stays high (0.7-0.95) with no normal maps so no specular competes with the painted highlights.",
+    "values": {
+      "feeling": [
+        "crafted",
+        "warm",
+        "illustrative"
+      ],
+      "palette": [
+        {
+          "hex": "#3b2f2a",
+          "role": "painted deep shadow / crevice"
+        },
+        {
+          "hex": "#7a5c3e",
+          "role": "mid wood and plaster"
+        },
+        {
+          "hex": "#d9b382",
+          "role": "lit plaster"
+        },
+        {
+          "hex": "#a8b96b",
+          "role": "painted foliage"
+        },
+        {
+          "hex": "#c65b3c",
+          "role": "accent cloth or sign"
+        }
+      ],
+      "value_structure": "35/45/20 dark/mid/light; the darks come from painted occlusion, not from the light rig",
+      "saturation_rule": "painted texture carries the saturation (accent up to 70%); scene light colours stay under 20% saturation so they do not double-tint the art",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#4a5a72",
+        "horizon": "#e6d9c2"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#e6d9c2",
+        "density": 0.02
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#fff2dd",
+          "intensity": 2.2,
+          "elevation_deg": 40,
+          "azimuth_deg": 305,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#b7c8dd",
+          "ground": "#6b5442",
+          "intensity": 1.0
+        },
+        "rim": {
+          "type": "none"
+        },
+        "ratio": "key:fill ~ 2:1 - deliberately flat so the painted values are not overwritten"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.0
+      },
+      "camera": {
+        "fov_deg": 42,
+        "height_m": 1.6,
+        "pitch_deg": -6,
+        "orbit": {
+          "minPolar_deg": 55,
+          "maxPolar_deg": 88,
+          "minDist_m": 1.5,
+          "maxDist_m": 20
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.7,
+          0.95
+        ],
+        "metalness": [
+          0.0,
+          0.0
+        ],
+        "notes": "roughness read from the painted map (0.7 varnished, 0.95 raw timber); no normal maps - relief lives in the diffuse painting"
+      },
+      "motion": {
+        "sway_period_s": [
+          3.2,
+          4.8
+        ],
+        "ease": "sine in-out",
+        "hold_ms": 350
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.1,
+          "strength": 0.12,
+          "radius": 0.4
+        },
+        "vignette": 0.2,
+        "grain": 0.03,
+        "dof": "off"
+      },
+      "signature_technique": "occlusion and edge light painted into the diffuse map, then lit at a flat 2:1 ratio so the painting remains the dominant value structure",
+      "never": [
+        "uniform noise texture over every surface",
+        "untinted white ambient light",
+        "specular strong enough to compete with painted highlights",
+        "a visible tiling seam across a focal part",
+        "flat black background"
+      ]
+    }
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "id": "recipe.xr-two-hand-product-manipulation",
+  "title": {
+    "en": "XR two-hand product manipulation contract"
+  },
+  "aliases": {
+    "en": [
+      "two controller product grab",
+      "bimanual scale inspect"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies"
+  ],
+  "summary": "Inspect one tabletop product using stable authored handle frames, one-hand rigid grab and a bounded two-hand transform on the product root, with controller-loss and desktop alternatives explicit.",
+  "objective": "Inspect one tabletop product using stable authored handle frames, one-hand rigid grab and a bounded two-hand transform on the product root, with controller-loss and desktop alternatives explicit.",
+  "tags": [
+    "WebXR input source",
+    "two-hand grab",
+    "gripSpace",
+    "product inspection",
+    "desktop fallback"
+  ],
+  "subject_terms": [
+    "WebXR input source",
+    "two-hand grab",
+    "gripSpace",
+    "product inspection",
+    "desktop fallback"
+  ],
+  "intent_signals": [
+    "Manipulate a product with two XR inputs and equivalent desktop controls."
+  ],
+  "example_prompts": [
+    "Build a two-hand XR inspection of a modular camera rig with finite scale clamps and controller-loss handling."
+  ],
+  "negative_signals": [
+    "scale the tracking world",
+    "assume every controller has gripSpace"
+  ],
+  "not_for": [
+    "Force, ergonomics, hand biomechanics or hardware compatibility certification."
+  ],
+  "entities": [
+    {
+      "name": "Product root",
+      "guidance": "Blender authors one metre-scale product root with stable part/handle frames; glTF transports those frames and editable-part IDs."
+    },
+    {
+      "name": "Input bindings",
+      "guidance": "Resolve current XRInputSource handedness/profiles and every targetRaySpace/gripSpace pose into one declared base/reference space each frame; targetRaySpace may select, while non-null gripSpace supplies held-object pose."
+    },
+    {
+      "name": "Transform transaction",
+      "guidance": "Snapshot product transform, a stable source ordering, both hand poses in the common base space, hand separation and an up/fallback frame at grab start; commit only finite one-hand or two-hand product-root transforms."
+    }
+  ],
+  "state_contract": {
+    "model": "Choose one declared base/reference space and resolve every grip pose into it before transform math. One-hand grab stores T_object0 and inverse(T_grip0_in_base)*T_object0, then applies the current grip pose in that same base. Two-hand start requires two distinct tracked sources in a saved stable order, finite common-space grip poses and baseline separation d0>epsilon. Each frame compute midpoint translation and axis a=(p2-p1)/d. Project the saved up reference perpendicular to a; if its norm<=epsilon, try one explicitly saved fallback vector, and if that projection is also ill-conditioned freeze/reject the update rather than create a new basis. Otherwise normalize the projected up, construct the declared handed orientation, and apply scale s=clamp(d/d0,smin,smax) with 0<smin<=smax only to the product root, never camera, reference space or tracking world. If either pose is lost, freeze last valid transform and require an explicit transition to one-hand continuation, cancel-to-snapshot or desktop mode.",
+    "authority": "Blender/glTF owns product hierarchy, origin, metre scale, colliders and handle frames. The user agent owns live XRInputSource/grip poses and profiles. Three.js owns the grab transaction, finite guards, product-root transform, loss policy, undo/reset and modality-independent command mapping.",
+    "actions": [
+      "Select/grab one authored handle.",
+      "Add/remove second tracked grip explicitly.",
+      "Cancel/undo/reset transform.",
+      "Use desktop orbit/translate/scale controls with the same bounds."
+    ]
+  },
+  "invariants": [
+    "Product parts retain local transforms under root manipulation.",
+    "Two-hand update is unavailable when d0<=epsilon, current separation<=epsilon, a grip pose is nonfinite/not in the declared common space, or both saved up/fallback projections are ill-conditioned.",
+    "Camera/reference space/tracking world is never scaled.",
+    "Controller loss, source reordering or orientation degeneracy cannot jump or silently commit a new baseline."
+  ],
+  "motion_guidance": [
+    "Pose updates apply from the saved transaction baseline rather than integrating frame deltas, preventing drift; smoothing, if used, is display policy with raw target retained."
+  ],
+  "creative_affordances": [
+    "Highlight handles and show a scale ruler/axis without imitating physical force."
+  ],
+  "known_limits": [
+    "No controller profile, hand tracking, ergonomics, collision response, headset, render or runtime was tested."
+  ],
+  "claims": [
+    {
+      "id": "claim.xr-inputsource-spaces-profiles",
+      "statement": "WebXR XRInputSource provides targetRaySpace, optional gripSpace, handedness and an ordered profiles list; input-source objects are live and applications comparing state across frames must copy the relevant values.",
+      "scope": "WebXR Device API Candidate Recommendation Draft 9 June 2026; the bimanual transform, clamps and loss transition are authored interaction rules.",
+      "source_refs": [
+        {
+          "source_id": "source.output-w3c-webxr",
+          "locator": "Section 10.1 XRInputSource attributes, profiles ordering and live-object note"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Tabletop product grab rig",
+      "structure": "Blender creates the product root, stable part pivots, handle empties and simplified colliders in metres; glTF exports hierarchy and handles, not controller mappings.",
+      "material": "Hovered/grabbed/second-hand/unavailable handles differ by outline and glyph.",
+      "articulation": "Three.js resolves live grip poses into one declared base space, uses saved source order and a guarded orientation frame, applies the bounded transform to the product root only, handles pose loss and shares actions with desktop controls."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Kinematic product-root inspection transform; no hand force or rigid-body dynamics.",
+    "state": [
+      "product snapshot/current transform",
+      "declared base space and ordered input-source identities/common-space poses",
+      "one/two-hand separation and up/fallback baseline",
+      "loss/degeneracy/undo state"
+    ],
+    "checks": [
+      "Zero baseline/current separation rejects two-hand update.",
+      "Common-space conversion or both orientation-frame projections failing freezes without jump.",
+      "Drop either pose freezes without jump.",
+      "Desktop and XR obey identical scale bounds/reset."
+    ]
+  },
+  "related_ids": [
+    "recipe.modular-camera-rig",
+    "knowledge.modality-independent-action-map",
+    "knowledge.webxr-delivery-boundary"
+  ]
+}

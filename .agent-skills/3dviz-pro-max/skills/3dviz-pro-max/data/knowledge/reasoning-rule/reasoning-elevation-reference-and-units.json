@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-elevation-reference-and-units",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Say what elevation is measured from"
+  },
+  "aliases": {
+    "en": [
+      "vertical datum",
+      "sea level reference",
+      "height units"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment"
+  ],
+  "summary": "Declare the vertical reference and units of a height field before using it for flooding, visibility or cut and fill.",
+  "objective": "Make height-based claims interpretable by stating what zero means.",
+  "applies_when": [
+    "A water level, flood surface or sea level is displayed against terrain.",
+    "Heights are compared between datasets or against a threshold.",
+    "Cut and fill, visibility or clearance is computed from elevation."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "vertical datum",
+    "elevation reference",
+    "water level",
+    "height units",
+    "flood surface",
+    "threshold"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "geospatial",
+    "units"
+  ],
+  "intent_signals": [
+    "show a two metre flood",
+    "how high is this point",
+    "raise the water level"
+  ],
+  "example_prompts": [
+    "Show flooding at a given level and say what the level is measured from.",
+    "Compare these two elevation datasets."
+  ],
+  "negative_signals": [
+    "Invented terrain where heights are arbitrary and stated as such.",
+    "Relative height comparisons within one dataset where no absolute claim is made."
+  ],
+  "not_for": [
+    "Invented terrain where heights are arbitrary and stated as such.",
+    "Relative height comparisons within one dataset where no absolute claim is made."
+  ],
+  "content": {
+    "principles": [
+      "A height is meaningless without its reference. The same numeric value can mean height above a modelled sea surface, above a local ground level, or above an arbitrary model origin, and these differ by amounts comparable to the effects being visualised.",
+      "Water surfaces are the clearest case: a flood level drawn as a flat plane at a numeric height asserts a relationship to a vertical reference that the scene rarely states.",
+      "Mixing datasets multiplies the risk, because two sources can use different references and different units while both looking like plausible terrain.",
+      "Even for invented worlds, declaring the reference and units makes later edits and comparisons possible."
+    ],
+    "implementation": [
+      "Record the vertical reference and units with the elevation data and display them where heights are shown.",
+      "Express thresholds such as flood levels in the same reference, and label them rather than showing a bare number.",
+      "Convert datasets to one reference on import, and report the conversion instead of shifting a layer by eye.",
+      "Where the reference is unknown, say so and present the result as relative rather than absolute.",
+      "Show a reference marker in the scene, such as a datum line or a known landmark height."
+    ],
+    "observable_checks": [
+      "Ask what zero means in the scene; if the answer is not recorded, no absolute height claim can be supported.",
+      "Compare a known landmark height against the model value.",
+      "Load a second dataset and compare heights at coincident points after converting references, expecting agreement only within the stated accuracy of both sources and only where they describe the same surface: a bare-earth model and a surface model that includes vegetation or buildings legitimately differ, as do datasets from different epochs.",
+      "Change the water level by a stated amount and confirm the inundated area changes consistently with the terrain."
+    ]
+  },
+  "related_ids": [
+    "recipe.terrain-contour-slices",
+    "knowledge.reasoning-crs-before-measurement"
+  ],
+  "creative_affordances": [
+    "Illustrative flood or sea-level scenes remain valuable; declaring the reference is what keeps them honest.",
+    "Fictional worlds can invent a datum and use it consistently."
+  ],
+  "known_limits": [
+    "Authored disclosure guidance; no vertical datum, geoid model or conversion is asserted and no dataset is validated.",
+    "Real datum transformations require geodetic sources and tools beyond this rule."
+  ],
+  "claims": []
+}

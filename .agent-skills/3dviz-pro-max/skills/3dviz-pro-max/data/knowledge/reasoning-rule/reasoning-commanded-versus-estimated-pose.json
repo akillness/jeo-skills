@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-commanded-versus-estimated-pose",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Distinguish commanded, estimated and true pose"
+  },
+  "aliases": {
+    "en": [
+      "odometry drift",
+      "dead reckoning",
+      "pose sources"
+    ]
+  },
+  "direction_ids": [
+    "robotics-control",
+    "abstract-systems-data"
+  ],
+  "summary": "Keep the commanded motion, the estimate from sensors and the simulated ground truth as separate quantities and show which is drawn.",
+  "objective": "Make a robot navigation scene honest about what the robot knows versus what is true.",
+  "applies_when": [
+    "A mobile robot or vehicle moves and reports its position.",
+    "Odometry, dead reckoning or localisation is part of the subject.",
+    "A path is drawn from the robot own estimate."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "odometry",
+    "dead reckoning",
+    "drift",
+    "ground truth",
+    "estimate",
+    "open loop"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "robotics",
+    "estimation"
+  ],
+  "intent_signals": [
+    "show the robot path",
+    "why does it drift",
+    "the map does not line up"
+  ],
+  "example_prompts": [
+    "Show the commanded path and the odometry estimate side by side.",
+    "Demonstrate why wheel odometry drifts over time."
+  ],
+  "negative_signals": [
+    "Scenes where the robot pose is simply authored and no estimation is claimed.",
+    "Fully localised systems where the estimate is the subject of a different treatment."
+  ],
+  "not_for": [
+    "Scenes where the robot pose is simply authored and no estimation is claimed.",
+    "Fully localised systems where the estimate is the subject of a different treatment."
+  ],
+  "content": {
+    "principles": [
+      "Three different quantities are routinely drawn with the same arrow: what was commanded, what the robot estimates, and where it actually is. Conflating them removes the entire subject of estimation.",
+      "Odometry is computed from wheel feedback, and a controller can also be configured to compute it from the commanded values instead. Which one drifts more depends on the error model: with ideal actuation and correct geometry both agree exactly, command-based estimation ignores slip and actuation error, and noisy or miscalibrated feedback can be the worse of the two. The documentation establishes the authority of each source, not a ranking of their errors.",
+      "Parameter errors show up as systematic distortions rather than noise: an incorrect wheel separation makes curves wrong, and an incorrect wheel radius makes the robot move faster or slower than expected.",
+      "Drift accumulates under a declared error model: slip, wheel-radius error, quantisation or noise. State that model, because without one there is nothing to expect and nothing to check, and a demonstration then needs enough travel and turning for the modelled error to become visible."
+    ],
+    "implementation": [
+      "Draw only the poses you actually have. Commanded and estimated poses are always available; a true pose exists only in simulation or from an independent reference such as a motion capture system or a survey, and must not be manufactured from the same estimate.",
+      "State whether odometry uses feedback or commanded values, since the two behave differently.",
+      "Expose the geometric parameters, such as wheel separation and radius, and let the viewer perturb them to see the characteristic error signature.",
+      "Show the accumulated error over the run rather than only the instantaneous difference.",
+      "Where a correction such as a landmark or map update exists, show what it actually does: a filter usually adjusts the estimate incrementally with a covariance, while a hard reset to a known pose is a different, stronger operation. Say which one the scene implements."
+    ],
+    "observable_checks": [
+      "Drive a closed loop and compare the closure error against the declared error model: with the ideal model the estimate closes and that is correct, while with slip or a radius error it should fail to close by roughly the predicted amount. A true path that fails to close points at the controller or the plant, not at the estimator.",
+      "Perturb the wheel separation and confirm the error appears in curves rather than as random noise.",
+      "Switch between feedback and commanded odometry and confirm the difference matches the modelled error source: identical results under ideal actuation, and a divergence that grows with the modelled slip or miscalibration.",
+      "Confirm every drawn path is labelled with which pose it represents."
+    ]
+  },
+  "related_ids": [
+    "recipe.differential-drive-odometry"
+  ],
+  "creative_affordances": [
+    "Presentation of uncertainty, from a growing ellipse to a fading trail, is a free design choice.",
+    "A deliberately exaggerated drift makes the lesson visible in a short run when the exaggeration is stated."
+  ],
+  "known_limits": [
+    "Authored guidance citing one controller documentation for odometry sources and parameter effects; it does not model wheel slip or sensor noise characteristics.",
+    "No robot or simulation has been run for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-odometry-source-and-parameters",
+      "statement": "A differential drive controller computes odometry from hardware feedback, and when configured for open-loop operation it computes odometry from the commanded values instead; an incorrect wheel separation parameter makes the robot behave incorrectly in curves and an incorrect wheel radius makes it move faster or slower than expected.",
+      "scope": "Documented behaviour of one differential-drive controller implementation; it does not quantify drift for any specific robot.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-differential-drive",
+          "locator": "Odometry from feedback; open_loop parameter; wheel_separation and wheel_radius descriptions"
+        }
+      ]
+    }
+  ]
+}

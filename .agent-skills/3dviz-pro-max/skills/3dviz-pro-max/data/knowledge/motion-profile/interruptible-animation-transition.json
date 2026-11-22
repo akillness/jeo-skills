@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.interruptible-animation-transition",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "motion-profile",
+  "title": {
+    "en": "Interruptible animation transition"
+  },
+  "aliases": {
+    "en": [
+      "crossfade interruption policy",
+      "animation transition state machine",
+      "pose-preserving retargeted fade"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "products-assemblies"
+  ],
+  "summary": "Model crossfades as explicit transition state and, when interrupted, begin the new transition from the currently evaluated action weights and pose after cancelling obsolete fade and warp schedules.",
+  "objective": "Rapid input changes remain responsive and continuous without zombie actions, weight spikes or a snap back to an old transition endpoint.",
+  "applies_when": [
+    "Users or gameplay can request a new animation before the current crossfade completes.",
+    "Actions use fading, time warping or synchronized phase."
+  ],
+  "subject_terms": [
+    "interruptible transition",
+    "crossfade",
+    "stopFading",
+    "stopWarping",
+    "action weight",
+    "transition state"
+  ],
+  "tags": [
+    "motion-profile",
+    "transition",
+    "crossfade",
+    "state-machine"
+  ],
+  "intent_signals": [
+    "interrupt a Three.js animation crossfade cleanly",
+    "change target clip during a fade",
+    "avoid zombie animation actions"
+  ],
+  "example_prompts": [
+    "Crossfade walk to run, then interrupt toward idle without a pose snap.",
+    "Retarget a mechanical action while preserving the visible blended pose."
+  ],
+  "negative_signals": [
+    "Starting a new fade while obsolete scheduled fades and warps still control the same actions.",
+    "Calling reset on every source action before sampling the current blended state."
+  ],
+  "not_for": [
+    "Authoritative gameplay-state selection.",
+    "Physics momentum handoff."
+  ],
+  "content": {
+    "principles": [
+      "A transition owns source actions, target action, effective weights, optional phase mapping, elapsed time and completion policy. The request policy decides queue, replace, ignore or immediate cut.",
+      "Interruption starts from the currently evaluated mixture. Cancel obsolete scheduled fades and warps, retain only actions needed to represent the current pose as far as the chosen mixer model allows, then schedule the new weight envelope.",
+      "Crossfade continuity is observable rather than automatic: clips may differ in contact phase, root ownership, additive reference or bound channels, so define optional phase synchronization and mismatch diagnostics."
+    ],
+    "implementation": [
+      "In Blender, provide clear action names/ranges, stable rest pose and, when transitions need phase matching, authored contact or phase metadata outside core glTF channels.",
+      "In Three.js, keep an application transition object rather than inferring state from one action. Before replacing a transition, sample effective weights/time, call stopFading and stopWarping on affected actions, set the replacement start weights, then play/fade the new target. Use crossFadeFrom/crossFadeTo only with their reset/play prerequisites made explicit.",
+      "On completion, stop or disable obsolete zero-weight actions deliberately. On cancel/reset, clear transition metadata, stop schedules and restore action time, weights, enabled/paused state and root ownership together."
+    ],
+    "observable_checks": [
+      "A walk-to-run fade interrupted halfway by idle changes no sampled joint, morph or root-owned transform beyond the declared one-frame tolerance at the request instant.",
+      "Ten rapid alternating requests leave only the declared active/source actions with finite weights whose normal-layer total follows the project policy; no obsolete warp continues.",
+      "Forward, paused and negative-playback interruptions finish or cancel according to the declared policy, and reset reproduces the same initial pose and action state."
+    ]
+  },
+  "related_ids": [
+    "knowledge.interruptible-focus",
+    "knowledge.three-animation-mixer-adapter",
+    "knowledge.animation-layer-track-mask",
+    "knowledge.root-motion-runtime-ownership",
+    "knowledge.state-playback"
+  ],
+  "creative_affordances": [
+    "Transitions may snap, smear, overshoot, freeze-frame, phase-match or use stylized additive bridges when declared.",
+    "Input policies may favor responsiveness, choreography or accessibility without one mandated aesthetic."
+  ],
+  "known_limits": [
+    "A weighted clip mixture cannot exactly preserve every arbitrary evaluated pose after actions are removed; pose snapshots or generated bridge clips require separate design.",
+    "Crossfading does not preserve physics momentum or contact constraints.",
+    "No animation state machine or mixer playback was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.motion-three-crossfade-controls",
+      "statement": "Three.js AnimationAction provides fadeIn/fadeOut, crossFadeFrom/crossFadeTo, optional time warping, effective weight/time-scale controls, and stopFading/stopWarping.",
+      "scope": "Live Three.js AnimationAction scheduling API; interruption policy remains application-owned.",
+      "source_refs": [
+        {
+          "source_id": "source.motion-three-animation-action",
+          "locator": "crossFadeFrom, crossFadeTo, fadeIn, fadeOut, setEffectiveWeight, stopFading, stopWarping and warp"
+        }
+      ]
+    },
+    {
+      "id": "claim.motion-three-action-reset-state",
+      "statement": "Disabling a Three.js AnimationAction stops its influence without resetting its local time; clampWhenFinished affects a normally completed final loop and does not govern interrupted actions.",
+      "scope": "Live Three.js AnimationAction lifecycle semantics.",
+      "source_refs": [
+        {
+          "source_id": "source.motion-three-animation-action",
+          "locator": "enabled and clampWhenFinished properties"
+        }
+      ]
+    }
+  ]
+}

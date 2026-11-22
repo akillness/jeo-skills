@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.periodic-molecule-image-validation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Periodic molecular images without fabricated motion"
+  },
+  "aliases": {
+    "en": [
+      "periodic molecular frames",
+      "wrap versus unwrap"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Validate wrapping and whole-molecule reconstruction as coordinate transformations distinct from temporal unwrapping or alignment.",
+  "objective": "Inspect a molecule crossing a periodic cell and distinguish wrapped atoms, an intact molecular image and any separately supplied continuous trajectory.",
+  "tags": [
+    "domain-validation",
+    "periodic-molecule-image-validation"
+  ],
+  "subject_terms": [
+    "periodic molecular frames",
+    "wrap versus unwrap",
+    "whole molecule image",
+    "periodic cell"
+  ],
+  "intent_signals": [
+    "Inspect a molecule crossing a periodic cell and distinguish wrapped atoms, an intact molecular image and any separately supplied continuous trajectory."
+  ],
+  "example_prompts": [
+    "Inspect a molecule crossing a periodic cell and distinguish wrapped atoms, an intact molecular image and any separately supplied continuous trajectory."
+  ],
+  "applies_when": [
+    "Validate wrapping and whole-molecule reconstruction as coordinate transformations distinct from temporal unwrapping or alignment."
+  ],
+  "content": {
+    "principles": [
+      "Name the transformation being displayed: wrapping a frame, making a molecule whole, rigid-body alignment, and reconstructing continuous travel answer different questions.",
+      "Preserve original coordinates and cell metadata. A molecule that appears broken at a cell boundary should not be repaired by inventing new bonds or by deleting a fragment."
+    ],
+    "implementation": [
+      "Use the current frame cell with the declared box-vector convention, including nonorthogonal cells when supported. If the cell is missing or degenerate, report periodic transformation unavailable rather than assuming a unit cube.",
+      "For MDAnalysis wrap choose the compound scope; keeping a compound together does not require every atom to lie inside the primary cell. For whole-molecule unwrap require appropriate connectivity and keep its in-place coordinate mutation out of preserved source frames.",
+      "Store transformation order, reference selections and cell revision with derived coordinates. Treat per-frame whole-molecule reconstruction as insufficient authority for a diffusion path; only offer temporal unwrapping when a separately documented continuity method and assumptions are supplied.",
+      "Seek from the unmodified requested frame and its cell, or from a reproducible declared transform cache. Disable interpolation across a periodic jump unless interpolation is explicitly performed in an appropriate reconstructed representation."
+    ],
+    "observable_checks": [
+      "For a synthetic bonded pair at x=9.8 and x=0.2 in a 10-unit periodic axis, whole-image reconstruction presents a 0.4-unit separation without changing atom or bond identity.",
+      "Wrap by compound and permit peripheral atoms outside the box when the compound center is inside; do not flag that documented behavior as failed atom-wise wrapping.",
+      "Seek frame 8, frame 2, then frame 8: derived coordinates match the declared transform result, source coordinates remain intact, and a missing-cell frame reports unavailable."
+    ]
+  },
+  "known_limits": [
+    "No diffusion estimator, minimum-image algorithm or temporal unwrapping implementation is supplied. Connectivity-based reconstruction is unsuitable for unsupported reactive/bond-changing systems.",
+    "Authored source-reviewed guidance only; no import adapter, runtime artifact or scientific pipeline was implemented or executed."
+  ],
+  "creative_affordances": [
+    "Use a compact source-versus-display inspector to expose the specific transformation; layout and emphasis are authored choices, not validated usability findings."
+  ],
+  "related_ids": [
+    "knowledge.molecular-topology-trajectory-identity-bridge",
+    "knowledge.validation-bond-angle-measurement"
+  ],
+  "claims": [
+    {
+      "id": "claim.mdanalysis-wrap-whole-molecule",
+      "statement": "MDAnalysis wrap shifts atoms or chosen compounds into a cell; compound wrapping may leave some atoms outside. Its unwrap transformation moves atoms to avoid split molecular bonds and modifies positions in place.",
+      "scope": "MDAnalysis 2.10.0 per-frame image transformations; does not establish temporal continuity.",
+      "source_refs": [
+        {
+          "source_id": "source.mdanalysis-periodic-wrap-unwrap",
+          "locator": "wrap Notes and compound parameter; unwrap description and in-place modification"
+        }
+      ]
+    }
+  ],
+  "check_method": "state"
+}

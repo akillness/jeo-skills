@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.hard-surface-bevel-normal-contract",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "geometry-profile",
+  "title": {
+    "en": "Hard-surface bevel geometry and normal contract"
+  },
+  "aliases": {
+    "en": [
+      "bevel weighted normals handoff",
+      "hard edge highlight geometry",
+      "custom split normal decision"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "architecture-interiors",
+    "environments-dioramas"
+  ],
+  "summary": "Design bevels for visible highlight width, constrain overlap, and decide whether exported geometry normals or destination recomputation owns hard-surface shading.",
+  "objective": "Rounded highlights survive glTF import without self-intersections, melted large faces, or accidental shading changes when Three.js displays the evaluated mesh.",
+  "applies_when": [
+    "A manufactured, architectural, or environment asset needs finite edge radii and stable large-face shading."
+  ],
+  "tags": [
+    "geometry-profile",
+    "hard-surface",
+    "bevel",
+    "custom-normals",
+    "gltf"
+  ],
+  "subject_terms": [
+    "Bevel modifier",
+    "Clamp Overlap",
+    "Harden Normals",
+    "custom split normals",
+    "Face Strength",
+    "Weighted Normal",
+    "grazing highlight",
+    "edge radius"
+  ],
+  "intent_signals": [
+    "bevel shading looks melted",
+    "rounded edges vanished in browser",
+    "custom normals after export",
+    "bevel self intersection"
+  ],
+  "example_prompts": [
+    "Prepare a beveled appliance enclosure whose large panels stay visually flat in Three.js.",
+    "Set a reusable edge-radius policy for a modular sci-fi corridor kit."
+  ],
+  "negative_signals": [
+    "Use normal smoothing to fake a silhouette-changing radius",
+    "Add segments without checking delivered triangles"
+  ],
+  "not_for": [
+    "Organic subdivision surfaces.",
+    "Tangent-space normal-map interpretation, which belongs to the rendering handoff."
+  ],
+  "content": {
+    "principles": [
+      "A bevel serves two visible jobs: it changes silhouette at sufficient scale and creates a highlight transition. Width is an object-space design quantity; segment count is a sampling choice.",
+      "Topology and normals are separate decisions. Hardened or weighted normals can stabilize broad faces, but they cannot repair overlapping bevel geometry or replace an edge radius visible in silhouette.",
+      "Choose one normal owner. Export approved split normals when art-directed shading matters; recompute in Three.js only under a documented crease policy and accept that it is a different asset interpretation."
+    ],
+    "implementation": [
+      "Apply object scale before judging an absolute bevel width. Group edge widths by physical role, such as casing, panel and micro-edge, rather than assigning arbitrary values per object.",
+      "Use the minimum segments that make the grazing highlight and target silhouette acceptable at the closest camera. Enable Clamp Overlap or reduce width where concave features collide; inspect the resulting geometry rather than relying on the toggle alone.",
+      "For hardened-normal shading, create the custom split-normal data required by the modifier and use Face Strength with a Weighted Normal workflow when that is the chosen large-face policy.",
+      "Export the evaluated mesh with normals. In Three.js, retain imported normals and let the material/light setup reveal them; do not silently call a recompute step during load.",
+      "Build a test coupon containing an outer corner, concave notch, narrow slot and large planar panel. Review wireframe, face normals and a moving grazing light."
+    ],
+    "observable_checks": [
+      "The coupon has no intersecting or collapsed bevel faces at the narrow slot and concave notch.",
+      "A grazing light produces continuous edge bands while the large panel remains visually planar.",
+      "Imported vertex/triangle counts and normals are stable across repeated exports with the same settings; a deliberate normal recomputation yields a detectable comparison difference."
+    ]
+  },
+  "related_ids": [
+    "knowledge.blender-evaluated-mesh-handoff",
+    "knowledge.blender-three-tangent-normal-handoff",
+    "knowledge.shared-gltf-asset-bridge",
+    "knowledge.shared-indexed-manifold-mesh"
+  ],
+  "creative_affordances": [
+    "Exaggerate a hero object's radius for readable highlights while keeping background props simpler.",
+    "Use deliberately faceted bevels for a stylized machined look when silhouette review approves them."
+  ],
+  "known_limits": [
+    "The correct radius and segment count depend on scale, camera distance and lighting.",
+    "This record does not define normal-map tangent conventions.",
+    "Authored reusable guidance; no export, import or runtime artifact was executed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.modeling-blender-bevel-normals",
+      "statement": "Blender's Bevel modifier exposes width and segment controls, Clamp Overlap limits width to avoid overlapping intersections, and Harden Normals adjusts bevel-face vertex normals to match surrounding faces while requiring a custom split normals attribute; Face Strength can be used with a Weighted Normal modifier.",
+      "scope": "Documented Blender 4.5 Bevel modifier controls; the source does not select artistic values or promise a particular renderer result.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-blender-bevel",
+          "locator": "Width; Segments; Clamp Overlap; Harden Normals; Face Strength"
+        }
+      ]
+    }
+  ]
+}

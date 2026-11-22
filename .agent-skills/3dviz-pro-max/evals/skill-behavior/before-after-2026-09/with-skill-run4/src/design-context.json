@@ -1,0 +1,551 @@
+{
+  "objective": "explorable fantasy river village at dusk lit by paper lanterns with selectable buildings and walking creatures",
+  "status": "candidates",
+  "candidate_groups": {
+    "recipes": {
+      "status": "candidates",
+      "query": "explorable fantasy river village at dusk lit by paper lanterns with selectable buildings and walking creatures",
+      "algorithm": "weighted-field-bm25",
+      "index_version": 4,
+      "expanded_terms": [],
+      "hint": "",
+      "catalog_hash": "a68a0bcd25304f1c037890e9240ad15f4b13028ac6081eb81b86054e62018c04",
+      "results": [
+        {
+          "id": "recipe.fantasy-village-diorama",
+          "revision": 1,
+          "title": "Fantasy village diorama",
+          "path": "data/recipes/environments-dioramas.json",
+          "collection": "recipes",
+          "kind": "recipe",
+          "score": 98.101894,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "summary",
+            "objective",
+            "tags",
+            "example_prompts"
+          ],
+          "summary": "Compose a small invented settlement around a memorable landmark, readable paths, and contrasting building silhouettes."
+        },
+        {
+          "id": "recipe.streamflow-forecast-playback",
+          "revision": 1,
+          "title": "Streamflow guidance playback on a river network",
+          "path": "data/recipes/opus5-recipe-depth-earth-environment-depth.json",
+          "collection": "recipes",
+          "kind": "recipe",
+          "score": 62.66469,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "summary",
+            "objective",
+            "intent_signals",
+            "example_prompts",
+            "subject_terms"
+          ],
+          "summary": "Play modelled streamflow over a river network while keeping guidance, observation and visualisation clearly separated."
+        },
+        {
+          "id": "recipe.hydrostatic-depth-pressure",
+          "revision": 1,
+          "title": "Hydrostatic pressure at equal depth",
+          "path": "data/recipes/soft-fluid-thermal.json",
+          "collection": "recipes",
+          "kind": "recipe",
+          "score": 26.254423,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "summary",
+            "objective",
+            "intent_signals",
+            "example_prompts"
+          ],
+          "summary": "Compare pressure probes at the same depth in differently shaped stationary containers."
+        }
+      ],
+      "notice": "Lexical candidates only. Interpret negation and intent before choosing. Scores are not probabilities; no match does not limit creative capability."
+    }
+  },
+  "context": {
+    "catalog_hash": "a68a0bcd25304f1c037890e9240ad15f4b13028ac6081eb81b86054e62018c04",
+    "bundle_hash": "130a28c5912bbb9d2eef474968f9403d8aa8687e8f6a0db7e080844993212ae9",
+    "selected_ids": [
+      "recipe.fantasy-village-diorama",
+      "recipe.streamflow-forecast-playback",
+      "recipe.hydrostatic-depth-pressure"
+    ],
+    "records": [
+      {
+        "schema_version": 1,
+        "id": "recipe.fantasy-village-diorama",
+        "revision": 1,
+        "status": "active",
+        "record_kind": "creative",
+        "title": {
+          "en": "Fantasy village diorama"
+        },
+        "aliases": {
+          "en": [
+            "storybook village",
+            "miniature fantasy settlement"
+          ]
+        },
+        "direction_ids": [
+          "environments-dioramas"
+        ],
+        "summary": "Compose a small invented settlement around a memorable landmark, readable paths, and contrasting building silhouettes.",
+        "objective": "Create an explorable miniature world with a coherent visual story and room for unexpected architecture.",
+        "tags": [
+          "worldbuilding",
+          "diorama",
+          "village"
+        ],
+        "example_prompts": [
+          "Build a hillside village whose lanterns collect falling stars.",
+          "Make a rainy miniature settlement growing around an enormous teapot."
+        ],
+        "entities": [
+          {
+            "name": "Landmark",
+            "guidance": "Choose one strong silhouette and give it breathing room."
+          },
+          {
+            "name": "Homes and gathering spaces",
+            "guidance": "Vary roof profiles and clustering; connect entrances to visible paths."
+          },
+          {
+            "name": "Terrain and vegetation",
+            "guidance": "Use terraces, roots, or islands to organize depth and sightlines."
+          }
+        ],
+        "creative_affordances": [
+          "Start with a story constraint: what do the inhabitants value, collect, or fear? Let it shape the landmark and daily-life details.",
+          "Explore asymmetry, improbable materials, exaggerated scale, and palettes beyond conventional medieval fantasy.",
+          "Use a limited family of shapes for cohesion; reserve a contrasting shape for the landmark.",
+          "Choose orbit inspection, a few authored viewpoints, or a static composition according to the requested artifact."
+        ],
+        "motion_guidance": [
+          "Optional lantern sway, drifting leaves, or chimney wisps can suggest life without forcing a population simulation.",
+          "Provide a still or reduced-motion presentation; keep decorative motion separate from camera input."
+        ],
+        "known_limits": [
+          "Entirely invented setting; no claim of historical, structural, or ecological accuracy.",
+          "Spatial readability and style guidance are editorial suggestions, not universal aesthetic rules.",
+          "No bundled models, textures, or observed render evaluation."
+        ],
+        "_path": "data/recipes/environments-dioramas.json"
+      },
+      {
+        "schema_version": 1,
+        "id": "recipe.streamflow-forecast-playback",
+        "revision": 1,
+        "status": "active",
+        "record_kind": "mixed",
+        "title": {
+          "en": "Streamflow guidance playback on a river network"
+        },
+        "aliases": {
+          "en": [
+            "streamflow forecast",
+            "model guidance",
+            "river network playback"
+          ]
+        },
+        "direction_ids": [
+          "earth-environment"
+        ],
+        "summary": "Play modelled streamflow over a river network while keeping guidance, observation and visualisation clearly separated.",
+        "objective": "Build a river network where forecast streamflow values animate over time with their provenance, horizon and guidance status stated on screen.",
+        "tags": [
+          "hydrology",
+          "forecast",
+          "playback"
+        ],
+        "subject_terms": [
+          "streamflow",
+          "river reach",
+          "forecast horizon",
+          "model guidance",
+          "observation",
+          "time series",
+          "provenance",
+          "ensemble"
+        ],
+        "intent_signals": [
+          "Play back modelled streamflow along a river network.",
+          "Show forecast guidance without presenting it as observed data."
+        ],
+        "example_prompts": [
+          "Build a river network playback of streamflow values with a time cursor and a provenance panel.",
+          "Compare a forecast horizon with observations at a gauge location."
+        ],
+        "negative_signals": [
+          "Not a hydrological model: nothing is computed here, and the scene must not imply prediction.",
+          "Not an operational warning tool; official forecasts and warnings come from the responsible agency."
+        ],
+        "not_for": [
+          "Not a hydrological model: nothing is computed here, and the scene must not imply prediction.",
+          "Not an operational warning tool; official forecasts and warnings come from the responsible agency."
+        ],
+        "entities": [
+          {
+            "name": "River network",
+            "guidance": "Build the network as connected reaches with identifiers, since every value in the dataset belongs to a reach."
+          },
+          {
+            "name": "Time series playback",
+            "guidance": "Bind values to a time axis with the forecast issue time and horizon shown, so a frame is always attributable."
+          },
+          {
+            "name": "Provenance panel",
+            "guidance": "State the source model, its version, the horizon, the units and whether values are guidance or observations."
+          }
+        ],
+        "state_contract": {
+          "model": "Reach geometry with identifiers, per-reach time series from a supplied dataset with issue time, lead time and valid time distinguished, an explicit mapping from observation stations to reach identifiers, a playback index over valid time, and a provenance record. Missing values are shown as gaps rather than interpolated across by default. Observations and model guidance are separate series.",
+          "authority": "The supplied dataset is authoritative and read-only; the scene may interpolate for display but must mark interpolated frames as such.",
+          "actions": [
+            "Scrub or play the time index.",
+            "Select a reach and inspect its series.",
+            "Toggle observations against guidance.",
+            "Reset playback and reload the dataset."
+          ]
+        },
+        "invariants": [
+          "Every displayed value names its reach, its units, and which time it refers to: issue time, lead time or valid time. Comparisons between series are aligned on valid time.",
+          "Guidance and observation series are never merged into a single unlabelled curve.",
+          "Playback beyond the dataset horizon stops and says so instead of extrapolating."
+        ],
+        "motion_guidance": [
+          "Play frames at a stated real-time to model-time ratio with the model clock visible.",
+          "Animate reach width or colour from the value with a legend; do not animate flow particles at speeds that imply a computed velocity."
+        ],
+        "known_limits": [
+          "No dataset is bundled: the user supplies data, its licence and its provenance.",
+          "Modelled guidance can differ substantially from observations. The scene may display a numerical difference between aligned series; what it cannot do is establish forecast skill, which needs a verification study rather than a viewer.",
+          "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+        ],
+        "claims": [
+          {
+            "id": "claim.rd-national-water-model-guidance",
+            "statement": "A continental-scale water model simulates and forecasts streamflow for millions of river reaches with short, medium and long range forecast horizons, and its output is described as guidance that complements official river forecasts at a much smaller number of locations.",
+            "scope": "Coverage and guidance status as described on the cited page; no forecast values were retrieved or republished here.",
+            "source_refs": [
+              {
+                "source_id": "source.recipe-depth-noaa-national-water-model",
+                "locator": "About the National Water Model, coverage and forecast horizons"
+              }
+            ]
+          }
+        ],
+        "object_craft": [
+          {
+            "family": "River network",
+            "structure": "Reaches as tubes following channel centrelines with junctions modelled as real confluences.",
+            "material": "Neutral channel material with the value encoded by a legended colour ramp and by a width glyph. That width is a data glyph, not wetted river width or flood extent; the reach centreline and topology stay fixed while the glyph varies.",
+            "articulation": "Reach geometry is static; only value-driven appearance and the time cursor change."
+          },
+          {
+            "family": "Provenance panel",
+            "structure": "A panel in the scene listing model, version, issue time, horizon, units and licence.",
+            "material": "Opaque plate with fixed layout so provenance stays visible in any screenshot.",
+            "articulation": "Updates only when a different dataset is loaded."
+          }
+        ],
+        "physical_contract": {
+          "model": "none",
+          "scope": "Dataset playback and presentation; no hydrological computation.",
+          "checks": [
+            "Every frame shows its model time and provenance.",
+            "Playback stops at the end of the dataset horizon."
+          ]
+        },
+        "related_ids": [
+          "recipe.watershed-flow-accumulation",
+          "recipe.cfd-field-playback",
+          "knowledge.state-playback"
+        ],
+        "_path": "data/recipes/opus5-recipe-depth-earth-environment-depth.json"
+      },
+      {
+        "schema_version": 1,
+        "id": "recipe.hydrostatic-depth-pressure",
+        "revision": 1,
+        "status": "active",
+        "record_kind": "mixed",
+        "title": {
+          "en": "Hydrostatic pressure at equal depth"
+        },
+        "aliases": {
+          "en": [
+            "hydrostatic pressure",
+            "liquid pressure depth",
+            "communicating vessels pressure"
+          ]
+        },
+        "direction_ids": [
+          "soft-fluid-thermal"
+        ],
+        "summary": "Compare pressure probes at the same depth in differently shaped stationary containers.",
+        "objective": "Show two differently shaped liquid vessels with movable depth probes and pressure arrows derived from p=p0+rho*g*h.",
+        "tags": [
+          "hydrostatics",
+          "density",
+          "gauge pressure"
+        ],
+        "subject_terms": [
+          "hydrostatics",
+          "density",
+          "gauge pressure",
+          "absolute pressure",
+          "depth",
+          "static fluid"
+        ],
+        "intent_signals": [
+          "Show two differently shaped liquid vessels with movable depth probes and pressure arrows derived from p=p0+rho*g*h.",
+          "Compare pressure probes at the same depth in differently shaped stationary containers."
+        ],
+        "example_prompts": [
+          "Show two differently shaped liquid vessels with movable depth probes and pressure arrows derived from p=p0+rho*g*h.",
+          "Create an explorable 3D explanation of hydrostatic pressure with depth and pressure rulers."
+        ],
+        "negative_signals": [
+          "No stratification, compressible gas, dynamic pressure or container structural analysis."
+        ],
+        "not_for": [
+          "No stratification, compressible gas, dynamic pressure or container structural analysis."
+        ],
+        "entities": [
+          {
+            "name": "Vessel cutaways",
+            "guidance": "Build a narrow cylinder and broad stepped vessel with clear inner walls and horizontal surfaces; keep the liquid explicitly at rest."
+          },
+          {
+            "name": "Pressure probes",
+            "guidance": "Place small probe disks at selected equal depths and draw normal pressure arrows using a shared pressure-to-length scale."
+          },
+          {
+            "name": "Depth and pressure rulers",
+            "guidance": "Show h from the free surface, rho, g and separate gauge/absolute readouts; units are meters, kg/m^3 and pascals."
+          }
+        ],
+        "state_contract": {
+          "model": "Static liquid with constant density rho>0, uniform g>0, common absolute surface pressure p0>=0 and depth h>=0 below each free surface. Gauge pressure rho*g*h; absolute pressure adds p0.",
+          "authority": "Density, gravity, free-surface height and probe depth own all pressures. Container shape affects the display geometry, not this point-pressure relation.",
+          "actions": [
+            "Drag probes vertically within the liquid.",
+            "Link probes to equal depth across vessels.",
+            "Change density or surface pressure.",
+            "Reset probes and physical inputs."
+          ]
+        },
+        "invariants": [
+          "Equal depths with the same liquid and surface pressure give equal pressure regardless of vessel width.",
+          "Gauge pressure is zero at the free surface.",
+          "Pressure arrows act normal to the local probe face; their lengths do not represent liquid speed."
+        ],
+        "motion_guidance": [
+          "Probe dragging is an inspection action; no sloshing or flow is generated by moving a diagram probe.",
+          "If surface height changes, recompute depth from the new surface before updating pressure."
+        ],
+        "known_limits": [
+          "No stratification, compressible gas, dynamic pressure or container structural analysis.",
+          "This point-pressure model does not by itself compute total force on a curved wall.",
+          "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+        ],
+        "claims": [
+          {
+            "id": "claim.hydrostatic-depth-pressure",
+            "statement": "Pressure in a stationary constant-density liquid increases by rho*g*h below its free surface under uniform gravity.",
+            "scope": "Static liquid with the same imposed surface pressure and density.",
+            "source_refs": [
+              {
+                "source_id": "source.openstax-hydrostatics",
+                "locator": "14.1, pressure variation with depth, p=p0+rho*g*h"
+              }
+            ]
+          }
+        ],
+        "object_craft": [
+          {
+            "family": "Vessel cutaways",
+            "structure": "Build a narrow cylinder and broad stepped vessel with clear inner walls and horizontal surfaces; keep the liquid explicitly at rest.",
+            "material": "Translucent liquid and matte vessel cutaway edges; pressure arrows and depth rulers use opaque marks independent of refraction."
+          }
+        ],
+        "physical_contract": {
+          "model": "numerical-dynamics",
+          "scope": "Static analytic pressure field; no flow simulation.",
+          "state": [
+            "density",
+            "gravity",
+            "surface pressure",
+            "probe depths"
+          ],
+          "colliders": [
+            "No rigid-body colliders; any boundary is part of the declared mathematical model."
+          ],
+          "driving": [
+            "Uniform gravity and liquid depth determine pressure."
+          ],
+          "contact": [
+            "No collision or impact response is supplied by this field model."
+          ],
+          "timestep": "Evaluate the declared analytic state at paused or running model time; rendering never advances a second model.",
+          "checks": [
+            "Equal-depth probe pressures agree.",
+            "Gauge pressure vanishes at h=0."
+          ]
+        },
+        "_path": "data/recipes/soft-fluid-thermal.json"
+      }
+    ],
+    "sources": [
+      {
+        "id": "source.openstax-hydrostatics",
+        "url": "https://openstax.org/books/university-physics-volume-1/pages/14-1-fluids-density-and-pressure",
+        "title": "OpenStax Physics 1: Fluids, Density and Pressure",
+        "locator": "14.1, pressure variation with depth, p=p0+rho*g*h",
+        "scope": "Constant-density static liquid in uniform gravity.",
+        "accessed_at": "2026-09-07",
+        "version": "Official teaching/reference page read 2026-09-07; web content may change.",
+        "redistribution": "Link and independently authored guidance only; no source images, code, data tables or long text reproduced."
+      },
+      {
+        "id": "source.recipe-depth-noaa-national-water-model",
+        "url": "https://water.noaa.gov/about/nwm",
+        "title": "NOAA: About the National Water Model",
+        "accessed_at": "2026-09-07",
+        "locator": "Coverage and outputs: streamflow simulation and forecasts for over 2.7 million river reaches, 1 km and 100/250 m grids, and short, medium and long range forecast horizons described as guidance",
+        "scope": "Existence, coverage and guidance status of a public model; no forecast values were retrieved or republished.",
+        "version": "Web page read 2026-09-07 through the session web tool; content may change.",
+        "redistribution": "Public link and independently authored summary only; no source text or assets redistributed."
+      }
+    ],
+    "notice": "These are authored records and source metadata, not new source reads or runtime verification. Apply only the guidance relevant to the task."
+  },
+  "next_step": "Interpret the user constraints and negation yourself. Select useful records, research factual claims, then synthesize a coherent design with custom choices. Do not present this retrieval output as a completed design system or treat absent matches as a capability limit. Assemble from the listed blueprints where one fits; write custom geometry only for what none of them covers, and say which in design-system.md.",
+  "blueprints": [
+    {
+      "id": "knowledge.blueprint-lantern-post",
+      "title": "Blueprint: wrought iron lantern post",
+      "asset": "templates/kits/props/lantern-post.js",
+      "kind": "procedural-js",
+      "footprint_m": [
+        0.82,
+        0.49
+      ],
+      "poly_budget": 2248,
+      "sockets": [
+        "base",
+        "hook",
+        "lamp"
+      ],
+      "detail_ladder": {
+        "silhouette": [
+          "a 2.82 m shaft with a glazed head hanging 39 cm off its axis",
+          "a three-step base flare widening from 17 cm to 38 cm at the ground",
+          "the pyramid cap and ball finial breaking the top of the head"
+        ],
+        "medium": [
+          "a bracket arm with a seven-link scroll curling under it from post to arm",
+          "three collars dividing the shaft into four segments, each 6 cm proud of it",
+          "four glazing bars, one across the middle of each emissive pane"
+        ],
+        "fine": [
+          "eighteen bolt domes, 3.8 cm across: four per collar, four on the base plate, two on the arm",
+          "1.8 cm chamfer on the shaft and 2.4 cm on the base blocks",
+          "per-instance hue jitter of 5 percent on the glass colour, applied through materialFor so the shared material cache is never mutated"
+        ]
+      },
+      "params": {
+        "height": 2.82,
+        "headSize": 0.34,
+        "seed": 1,
+        "iron": "#5f636d",
+        "glass": "#ffd9a0"
+      }
+    },
+    {
+      "id": "knowledge.blueprint-market-stall",
+      "title": "Blueprint: trestle market stall",
+      "asset": "templates/kits/buildings/market-stall.js",
+      "kind": "procedural-js",
+      "footprint_m": [
+        2.8,
+        1.9
+      ],
+      "poly_budget": 3104,
+      "sockets": [
+        "front",
+        "counter",
+        "goods-left",
+        "goods-right",
+        "sign",
+        "keeper",
+        "ridge"
+      ],
+      "detail_ladder": {
+        "silhouette": [
+          "pitched canopy ridge at 2.72 m with a scalloped valance hanging off the front eave",
+          "stacked crates and a produce heap breaking the straight line of the counter top",
+          "four corner posts on stone pads, with the counter overhanging the front pair"
+        ],
+        "medium": [
+          "eight canopy stripes alternating cloth and red, each drooping toward mid-span so the roof reads as cloth over a frame",
+          "counter of three separate boards with real gaps, on four splayed trestle legs and a kick board",
+          "five crates standing on the counter boards with a darker slat band across each, two of them stacked a course higher",
+          "two faceted sacks tied at the neck leaning at the front corner, and a hanging price board on two eye hooks"
+        ],
+        "fine": [
+          "two rope lashings at every post head, 14 cm across, each seeded to a different angle",
+          "twenty-two pieces of produce with per-piece hue jitter, scale and rotation",
+          "chipped paint patch on the price board and its painted crossed glyph standing 8 mm proud",
+          "chamfered arrises on the posts, counter boards and crates, cut as geometry"
+        ]
+      },
+      "params": {
+        "width": 2.8,
+        "depth": 1.9,
+        "height": 2.4,
+        "stripes": 8,
+        "seed": 1
+      }
+    }
+  ],
+  "quality_brief": {
+    "delivery": "web-desktop",
+    "ceiling": "T3",
+    "ceiling_reason": "Blender 5.2.1 >= 4.2 found via standard install path + --version",
+    "capture_mode_expected": "gpu",
+    "role_rules": {
+      "hero": "the host ceiling, capped by the delivery target",
+      "mid": "T2 (procedural surface, no shipped bytes)",
+      "background": "T1 (instanced repeat, flat material)",
+      "layout": "T0 (blockout proxy for placement and collision)"
+    },
+    "per_blueprint": {
+      "knowledge.blueprint-lantern-post": {
+        "role": "mid",
+        "tier": "T2",
+        "reason": "mid ground: procedural surface, no shipped bytes; the record declares T2 proved"
+      },
+      "knowledge.blueprint-market-stall": {
+        "role": "mid",
+        "tier": "T2",
+        "reason": "mid ground: procedural surface, no shipped bytes; the record declares T2 proved"
+      }
+    },
+    "draw_call_note": "Background and repeated objects stay one InstancedMesh at T1 and are never wrapped in a LOD. Eval run 3 measured 4,773 draw calls at 5 fps with every object built as a separate mesh - that measurement is the concrete reason this note exists. An instanced field is one draw call whatever the count; a LOD per repeat adds a per-frame update and removes no draws.",
+    "note": "Recommendations, not limits. Raise or lower any of them and say so in design-system.md. Every blueprint also has a T0 proxy (kits/kit-lod.js blockout) for the layout pass, whatever tier it finally renders at."
+  }
+}

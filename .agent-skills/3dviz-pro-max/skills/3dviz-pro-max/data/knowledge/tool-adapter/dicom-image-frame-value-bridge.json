@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.dicom-image-frame-value-bridge",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "DICOM image frames: patient coordinates and modality values"
+  },
+  "aliases": {
+    "en": [
+      "DICOM image import",
+      "patient coordinate frame"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures"
+  ],
+  "summary": "Import a bounded conventional CT/MRI image stack without replacing spatial metadata or calibrated values with display pixels.",
+  "objective": "Inspect a DICOM stack with shuffled filenames and verify source-frame positions and decoded values before applying a viewing window.",
+  "tags": [
+    "tool-adapter",
+    "dicom-image-frame-value-bridge"
+  ],
+  "subject_terms": [
+    "DICOM image import",
+    "patient coordinate frame",
+    "ImagePositionPatient",
+    "ImageOrientationPatient",
+    "PixelSpacing",
+    "modality LUT"
+  ],
+  "intent_signals": [
+    "Inspect a DICOM stack with shuffled filenames and verify source-frame positions and decoded values before applying a viewing window."
+  ],
+  "example_prompts": [
+    "Inspect a DICOM stack with shuffled filenames and verify source-frame positions and decoded values before applying a viewing window."
+  ],
+  "applies_when": [
+    "Import a bounded conventional CT/MRI image stack without replacing spatial metadata or calibrated values with display pixels."
+  ],
+  "content": {
+    "principles": [
+      "Keep decoded stored samples, modality-transformed values and display colors as separate stages. A bright pixel is not itself a measurement.",
+      "Use a conventional biped image-stack scope with known plane metadata. Unsupported enhanced multiframe or nonparallel acquisitions must remain explicitly unsupported rather than flattened into a plausible volume."
+    ],
+    "implementation": [
+      "A format-aware reader owns transfer-syntax decoding and signed pixel interpretation. Preserve per-frame identity, patient-space origin/orientation, spacing and declared value transform; do not infer these from filenames or the scene camera.",
+      "Map a zero-based column i and row j to S+i*columnSpacing*X+j*rowSpacing*Y, where X and Y are the first and second orientation triples. PixelSpacing stores row then column spacing. Keep the biped patient frame distinct from renderer axes.",
+      "For a parallel stack order frames by their position projected onto the common plane normal. Check duplicate positions and unequal spacing; reject an assumed regular grid or retain explicit frame planes when the assumption fails. Nominal SliceThickness is not a substitute for measured inter-frame positions.",
+      "Apply either the documented modality LUT or slope/intercept path once as applicable, record output units, then apply display mapping separately. Do not label MRI or arbitrary rescale output HU without supporting metadata. Keep source values available to the probe."
+    ],
+    "observable_checks": [
+      "Use synthetic origin S=(10,20,30), orientation X=(1,0,0), Y=(0,1,0), spacing(row,column)=(2,3): pixel(i,j)=(1,2) maps to (13,24,30) mm. Shuffling filenames leaves positions unchanged.",
+      "For slope 2, intercept -100 and stored value 75, probe modality value 50 in declared units. Changing window/color mapping leaves that value fixed.",
+      "Supply duplicate/nonparallel frame planes or missing required geometry: import reports the unsupported condition instead of silently stacking by file order."
+    ]
+  },
+  "known_limits": [
+    "Does not cover enhanced functional groups, diffusion/time grouping, quantitative MRI calibration, segmentation, registration or diagnostic validation.",
+    "Authored source-reviewed guidance only; no import adapter, runtime artifact or scientific pipeline was implemented or executed."
+  ],
+  "creative_affordances": [
+    "Use a compact source-versus-display inspector to expose the specific transformation; layout and emphasis are authored choices, not validated usability findings."
+  ],
+  "related_ids": [
+    "knowledge.synchronized-orthogonal-slices",
+    "knowledge.validation-anatomical-orientation-frame"
+  ],
+  "claims": [
+    {
+      "id": "claim.dicom-pixel-plane-position",
+      "statement": "DICOM defines image position at the first voxel center, orientation as row/column direction cosines and Pixel Spacing as row then column distances in millimeters.",
+      "scope": "Conventional Image Plane Module; biped patient-axis interpretation.",
+      "source_refs": [
+        {
+          "source_id": "source.validation-depth-dicom-patient-coordinates",
+          "locator": "C.7.6.2 Table C.7-10; C.7.6.2.1.1 zero-based pixel mapping and biped axes"
+        }
+      ]
+    },
+    {
+      "id": "claim.dicom-stored-modality-value",
+      "statement": "The Modality LUT Module uses either one modality LUT or rescale slope/intercept, with rescaled output m*SV+b and output units specified by Rescale Type.",
+      "scope": "Applicable DICOM Modality LUT Module, not every image IOD or every MRI calibration path.",
+      "source_refs": [
+        {
+          "source_id": "source.dicom-modality-lut-rescale",
+          "locator": "C.11.1; Table C.11-1b Rescale Intercept/Slope/Type; C.11.1.1.2"
+        }
+      ]
+    }
+  ]
+}

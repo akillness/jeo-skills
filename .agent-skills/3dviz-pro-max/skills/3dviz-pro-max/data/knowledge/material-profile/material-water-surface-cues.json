@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.material-water-surface-cues",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Stylized water surface with independent flow cues"
+  },
+  "aliases": {
+    "en": [
+      "persistent pond surface",
+      "water material and flow overlays"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "earth-environment"
+  ],
+  "summary": "Establish water coverage and its light response independently of the animated marks used to suggest current.",
+  "objective": "Keep a filled water surface readable when its current cues stop or are hidden.",
+  "tags": [
+    "material-profile",
+    "water",
+    "pond",
+    "stream"
+  ],
+  "subject_terms": [
+    "water",
+    "pond",
+    "stream",
+    "shoreline",
+    "surface coverage",
+    "flow cues",
+    "reflections"
+  ],
+  "intent_signals": [
+    "Keep a filled water surface readable when its current cues stop or are hidden."
+  ],
+  "example_prompts": [
+    "Create a storybook pond joined to a stream: keep the water present at zero current and use restrained moving marks to show flow."
+  ],
+  "content": {
+    "principles": [
+      "The base surface, its optical appearance and authored current indicators are distinct layers of responsibility. The cited multi-scale wave technique is an available rendering approach, not a required simulation or proof of water quantity.",
+      "Declare basin floor, water level or stream profile and bridge deck in the same frame with separate surface identities. Changing a flow cue need not change water coverage."
+    ],
+    "implementation": [
+      "Build a permanent footprint for a depicted filled, non-draining water body; put ripples, foam marks or arrows over it with an intentional small separation. Hide cues to inspect the base surface before tuning their motion.",
+      "Choose opaque stylization, translucent treatment or transmission according to the brief. Under the intended camera/light rig, compare broad highlight size and contrast; adjust material, light or surface normals only after distinguishing glare from missing or buried geometry.",
+      "Keep cue density and width in scene scale, align movement with the authored stream route, and soften or remove cues at boundaries where they would read as floating white boards. Geometry waves can change silhouette; shading or overlay detail has a different role.",
+      "For an unchanged-level, non-draining authored model, zero flow preserves coverage and stops its current indicators; pause freezes phase and reset restores declared level/footprint and cue state. A physical draining or wave model needs its own contract."
+    ],
+    "observable_checks": [
+      "With cues hidden, overhead and grazing views still show the intended wet area while dry banks and the bridge deck remain correctly exposed.",
+      "At zero authored flow, the pond does not disappear and the wheel/current response follows the stated control contract; no universal wave-stop claim is made.",
+      "Compare a frozen base-only view and a moving-cue view at fixed exposure: water remains legible rather than becoming only a traveling white patch."
+    ]
+  },
+  "known_limits": [
+    "No hydrodynamic conservation, depth reconstruction, physical foam generation, calibrated reflectance or guaranteed transparency ordering is supplied.",
+    "Authored modeling and inspection guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Flat graphic water, reflective water, hand-painted swirls and diagrammatic flow arrows are alternatives; none is mandatory."
+  ],
+  "related_ids": [
+    "knowledge.reasoning-terrain-height-authority",
+    "knowledge.material-response-check",
+    "recipe.terrain-island"
+  ],
+  "claims": [
+    {
+      "id": "claim.material-depth-water-surface-cues",
+      "statement": "Finch's GPU Gems water-rendering approach combines geometric base-mesh undulations with dynamic normal-map detail for waves below the geometric resolution.",
+      "scope": "Description of the 2004 rendering approach only; its historical hardware discussion and realism claims are not adopted.",
+      "source_refs": [
+        {
+          "source_id": "source.material-depth-water-scales",
+          "locator": "Introduction and 1.2 The Sum of Sines Approximation, opening discussion of geometry and texture space"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "id": "recipe.dicom-spatial-registration-landmark-residuals",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "DICOM registration landmark residual inspector"
+  },
+  "aliases": {
+    "en": [
+      "DICOM spatial registration",
+      "Frame of Reference UID"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures",
+    "linear-algebra"
+  ],
+  "summary": "Apply a supplied DICOM Spatial Registration matrix chain between original Frame-of-Reference UIDs and show illustrative paired-landmark residuals without computing or certifying registration accuracy.",
+  "objective": "Apply a supplied DICOM Spatial Registration matrix chain between original Frame-of-Reference UIDs and show illustrative paired-landmark residuals without computing or certifying registration accuracy.",
+  "tags": [
+    "DICOM spatial registration",
+    "Frame of Reference UID",
+    "affine matrix",
+    "landmark residual"
+  ],
+  "subject_terms": [
+    "DICOM spatial registration",
+    "Frame of Reference UID",
+    "affine matrix",
+    "landmark residual"
+  ],
+  "intent_signals": [
+    "DICOM registration landmark residual inspector"
+  ],
+  "example_prompts": [
+    "Build dicom registration landmark residual inspector with explicit provenance, laterality, frame and unavailable-state checks."
+  ],
+  "negative_signals": [
+    "mesh similarity proves anatomical correctness",
+    "infer missing clinical data from geometry"
+  ],
+  "not_for": [
+    "Diagnosis, treatment, procedure guidance or patient-specific inference."
+  ],
+  "entities": [
+    {
+      "name": "Frame ledger",
+      "guidance": "Retain source/registered UIDs, patient-coordinate millimetres, laterality, matrix type and row-major values."
+    },
+    {
+      "name": "Transform chain",
+      "guidance": "Display source-to-registered direction and the explicit column-vector chain Mtotal=Mn*...*M2*M1, where M1 is the first encoded item applied."
+    },
+    {
+      "name": "Illustrative residuals",
+      "guidance": "For supplied native-frame pairs, show e_i=q_i-pi(Mtotal[p_i,1]) and ||e_i|| in millimetres; label them illustrative residuals, never TRE or clinical accuracy."
+    }
+  ],
+  "state_contract": {
+    "model": "Accept a finite DICOM Matrix Sequence M1..Mn, each parsed from 16 row-major values, with affine last row [0,0,0,1], original source/registered Frame-of-Reference UIDs, millimetre units and 3..100 declared source/target point pairs. For column vectors, apply the first encoded item first: p' = Mn(...M2(M1 p)), so Mtotal=Mn*...*M2*M1. Inversion must be explicit and nonsingular. For pair i compute e_i=q_i-pi(Mtotal[p_i,1]) in the registered native frame, d_i=||e_i|| millimetres and RMS=sqrt(sum d_i^2/N); these are illustrative supplied-pair residuals, not TRE or registration accuracy.",
+    "authority": "Supplied source records, identifiers, frames and curated labels own state. Blender/glTF geometry is display-only; Three.js owns validated runtime binding and exact reset.",
+    "actions": [
+      "Toggle pre/post transform.",
+      "Select matrix or pair.",
+      "Reset chain, frames and selection."
+    ]
+  },
+  "invariants": [
+    "For a matrix labeled RIGID, check only its upper 3x3 R with R^T R approximately I and det(R) approximately +1, plus affine last row [0,0,0,1]; do not test the translated 4x4 matrix itself for orthonormality.",
+    "Matrix direction and original UIDs remain visible.",
+    "Pair filtering never changes the full-set RMS readout.",
+    "Singular requested inverse, nonfinite value or UID mismatch stops."
+  ],
+  "motion_guidance": [
+    "Pre/post playback evaluates the immutable source points through the supplied source-to-registered matrix chain; Blender supplies neutral axes/glyphs, glTF carries no authoritative registration transform, and Three.js parses row-major DICOM values, calls Matrix4.set with row entries, composes Mn...M1, computes residuals and resets."
+  ],
+  "creative_affordances": [
+    "Use restrained cutaways, translucent planes and non-color selection cues without implying clinical confidence."
+  ],
+  "known_limits": [
+    "Documentary source review only; no dataset, patient record, simulation, specialist clinical validation or runtime was used."
+  ],
+  "claims": [
+    {
+      "id": "claim.biomed-dicom-spatial-registration",
+      "statement": "DICOM PS3.3 defines Spatial Registration as a relationship between Frames of Reference and encodes row-major 4x4 source-to-registered matrices with RIGID, RIGID_SCALE and AFFINE types; for column-vector evaluation the first Matrix Sequence item acts first, so three encoded items compose as M3(M2(M1 x)).",
+      "scope": "DICOM PS3.3 2026c A.39 and C.20.2; matrix presence does not establish registration quality.",
+      "source_refs": [
+        {
+          "source_id": "source.biomed-dicom-spatial-registration",
+          "locator": "A.39.1; C.20.2 Matrix Sequence and C.20.2.1.1-.2"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Registration frame instrument",
+      "structure": "Blender authors neutral source/registered axes and landmark glyph prototypes at identity only; export them via glTF with stable node names and never bake a patient/reference registration into mesh vertices or node transforms.",
+      "material": "Source/target shapes differ without relying on hue.",
+      "articulation": "Three.js parses each DICOM row-major matrix into Matrix4.set row entries, owns Mn*...*M1 composition, immutable native-frame points, millimetre residual arithmetic, frame labels and reset."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Display of supplied educational or derived biomedical records; no tissue mechanics or diagnostic model.",
+    "state": [
+      "source identity and license",
+      "laterality and coordinate frames",
+      "validated selection/playback state"
+    ],
+    "checks": [
+      "Reject ambiguous side, unit or frame.",
+      "Reset exact source-space transforms.",
+      "Keep unavailable data explicit."
+    ]
+  },
+  "related_ids": [
+    "knowledge.dicom-image-frame-value-bridge"
+  ]
+}

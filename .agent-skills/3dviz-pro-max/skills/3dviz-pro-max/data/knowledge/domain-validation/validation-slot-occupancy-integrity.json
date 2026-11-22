@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-slot-occupancy-integrity",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Slot occupancy and undo integrity in a configurator"
+  },
+  "aliases": {
+    "en": [
+      "configurator occupancy check",
+      "mount and undo integrity"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies"
+  ],
+  "summary": "Check that slot occupancy stays one-to-one, previews never commit, and undo restores occupancy and transforms together.",
+  "objective": "Forward and reverse occupancy maps agree after every committed operation and after every undo.",
+  "applies_when": [
+    "Accessories or modules mount into named slots with compatibility rules.",
+    "A candidate can be previewed before it is committed.",
+    "The interface offers undo, presets or saved configurations."
+  ],
+  "check_method": "state",
+  "tags": [
+    "domain-validation",
+    "configurator",
+    "occupancy",
+    "undo"
+  ],
+  "subject_terms": [
+    "slot",
+    "attachment",
+    "occupancy map",
+    "compatibility table",
+    "preview",
+    "commit"
+  ],
+  "intent_signals": [
+    "two accessories ended up in one slot",
+    "undo left the mesh but cleared the slot"
+  ],
+  "example_prompts": [
+    "Check the slot rules and undo behaviour of this camera rig configurator."
+  ],
+  "negative_signals": [
+    "claiming compatibility with real hardware",
+    "pricing or inventory logic"
+  ],
+  "content": {
+    "principles": [
+      "A configurator is a small typed graph: each slot holds at most one attachment and each attachment has exactly one parent slot. Everything visual follows from those two statements.",
+      "A preview is not a commitment; an invalid candidate must never appear in the committed occupancy map, not even for one frame.",
+      "Undo restores occupancy and transforms together, because restoring one without the other produces a plausible picture over an inconsistent model."
+    ],
+    "implementation": [
+      "Represent occupancy as a slot-to-attachment map plus its reverse, and recompute the reverse from the forward map after every committed operation.",
+      "Write down the history policy first, including whether entries are per commit or coalesced, whether depth is bounded, and whether a redo cursor and a saved baseline exist, because undo integrity can only be compared against a stated policy.",
+      "Run a fixed operation script instead of random clicking: mount A, mount B into the same slot, mount an incompatible accessory, mount a child onto a slot whose parent was removed, then undo three times.",
+      "After each step dump occupancy, each mounted transform and each mesh scene-graph parent, and compare the three descriptions with one another.",
+      "Include a candidate that is legal by slot type but illegal by geometry, so that the rule which rejected it is identified explicitly."
+    ],
+    "observable_checks": [
+      "Forward and reverse occupancy maps agree after every committed operation, and every mounted mesh scene parent matches its recorded slot.",
+      "A rejected mount leaves occupancy, transforms and history unchanged, and the history matches the declared policy: one entry per commit under an unbounded per-commit policy, or the coalescing, bounded depth and baseline behaviour that policy actually specifies.",
+      "Each undo restores the occupancy and the transforms of the same step; a step that restores one but not the other is reported with its index."
+    ]
+  },
+  "known_limits": [
+    "Checks model integrity of an authored compatibility table; it does not validate that the table describes any real product system.",
+    "Authored verification guidance; no interface was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.modular-camera-rig",
+    "recipe.portable-speaker-exploded",
+    "recipe.folding-desk-lamp"
+  ],
+  "claims": []
+}

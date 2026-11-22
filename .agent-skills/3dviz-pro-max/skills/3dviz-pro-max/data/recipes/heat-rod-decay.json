@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "id": "recipe.heat-rod-decay",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Heat diffusion along a rod with fixed end temperatures"
+  },
+  "aliases": {
+    "en": [
+      "heat equation rod",
+      "thermal diffusion",
+      "cooling sine temperature profile"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal"
+  ],
+  "summary": "Watch an exact temperature mode decay while the rod itself stays geometrically fixed.",
+  "objective": "Show heat diffusion in a one-dimensional rod with fixed cold ends, a temperature probe and an analytic profile.",
+  "tags": [
+    "heat equation",
+    "thermal diffusivity",
+    "Dirichlet boundary"
+  ],
+  "subject_terms": [
+    "heat equation",
+    "thermal diffusivity",
+    "Dirichlet boundary",
+    "temperature field",
+    "Fourier mode",
+    "analytic diffusion"
+  ],
+  "intent_signals": [
+    "Show heat diffusion in a one-dimensional rod with fixed cold ends, a temperature probe and an analytic profile.",
+    "Watch an exact temperature mode decay while the rod itself stays geometrically fixed."
+  ],
+  "example_prompts": [
+    "Show heat diffusion in a one-dimensional rod with fixed cold ends, a temperature probe and an analytic profile.",
+    "Create an explorable 3D explanation of heat equation rod with probe and clock."
+  ],
+  "negative_signals": [
+    "Only one-dimensional constant-diffusivity conduction with fixed end temperatures; no radiation, convection or phase changes."
+  ],
+  "not_for": [
+    "Only one-dimensional constant-diffusivity conduction with fixed end temperatures; no radiation, convection or phase changes."
+  ],
+  "entities": [
+    {
+      "name": "Rod and end reservoirs",
+      "guidance": "Use a straight segmented cylinder with an unbroken silhouette and clearly marked fixed-temperature end clamps; segment color samples the same field as the graph."
+    },
+    {
+      "name": "Temperature profile",
+      "guidance": "Place a linked x-temperature curve beside the rod, with a fixed legend in kelvin excess or degrees of temperature difference."
+    },
+    {
+      "name": "Probe and clock",
+      "guidance": "Slide a probe along x; display exact current temperature, model time and decay time L*L/(kappa*pi*pi)."
+    }
+  ],
+  "state_contract": {
+    "model": "For 0<=x<=L, L>0 and diffusivity kappa>0, temperature excess u=A*sin(pi*x/L)*exp(-kappa*(pi/L)^2*t), A>=0,t>=0. Ends have zero excess; T=Tbase+u.",
+    "authority": "Analytic field evaluation owns rod colors, temperature profile and probes. The rod does not deform or move because temperature changes.",
+    "actions": [
+      "Change amplitude, positive length or diffusivity while resetting time.",
+      "Play, pause or scrub nonnegative time.",
+      "Move the temperature probe.",
+      "Reset temperature field and clock."
+    ]
+  },
+  "invariants": [
+    "Both ends remain at the baseline temperature.",
+    "For A>=0 the interior excess remains nonnegative and does not increase with time.",
+    "Doubling length at fixed diffusivity multiplies the decay time by four."
+  ],
+  "motion_guidance": [
+    "Evaluate the analytic solution at model time, not by blending between arbitrarily chosen color frames.",
+    "Use a fixed temperature legend across playback so cooling remains visible."
+  ],
+  "known_limits": [
+    "Only one-dimensional constant-diffusivity conduction with fixed end temperatures; no radiation, convection or phase changes.",
+    "The amplitude is an initial condition, not a continuously active heater; temperature color is not visible incandescence.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.heat-rod-decay",
+      "statement": "Zero-endpoint heat-equation sine modes decay exponentially, with decay rate proportional to diffusivity and the square of spatial frequency.",
+      "scope": "Constant coefficient u_t=kappa*u_xx with homogeneous Dirichlet boundaries.",
+      "source_refs": [
+        {
+          "source_id": "source.lebl-heat-equation",
+          "locator": "4.6, separation of variables; Example 4.6.2"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Rod and end reservoirs",
+      "structure": "Use a straight segmented cylinder with an unbroken silhouette and clearly marked fixed-temperature end clamps; segment color samples the same field as the graph.",
+      "material": "Neutral rod geometry beneath a perceptually ordered thermal palette; end clamps remain a fixed reference, without emissive glow implying radiation."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Analytic one-dimensional heat field; no numerical solver or mechanical deformation.",
+    "state": [
+      "temperature excess",
+      "position x",
+      "time",
+      "diffusivity"
+    ],
+    "colliders": [
+      "No rigid-body colliders; any boundary is part of the declared mathematical model."
+    ],
+    "driving": [
+      "Conduction equation with fixed temperature boundaries."
+    ],
+    "contact": [
+      "No collision or impact response is supplied by this field model."
+    ],
+    "timestep": "Evaluate the declared analytic state at paused or running model time; rendering never advances a second model.",
+    "checks": [
+      "Endpoints stay zero excess.",
+      "At one decay time the central excess is A/e."
+    ]
+  }
+}

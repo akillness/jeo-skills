@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-scene-scale-depth-budget",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Scene unit consistency and depth range budget"
+  },
+  "aliases": {
+    "en": [
+      "scale and depth budget check",
+      "unit consistency check"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas"
+  ],
+  "summary": "Confirm that every asset shares the declared linear unit and that the camera depth range is chosen from what the shot needs.",
+  "objective": "Imported assets measure correctly in the declared unit and the near/far range is justified by the nearest and farthest surfaces in the shot.",
+  "applies_when": [
+    "A scene combines assets from more than one authoring source or file format.",
+    "A viewer will read sizes, distances or clearances from the scene.",
+    "The shot mixes close foreground detail with a distant horizon or landmark."
+  ],
+  "check_method": "state",
+  "tags": [
+    "domain-validation",
+    "scale",
+    "units",
+    "camera"
+  ],
+  "subject_terms": [
+    "scene unit",
+    "import scale",
+    "near plane",
+    "far plane",
+    "depth precision",
+    "metre"
+  ],
+  "intent_signals": [
+    "my imported building is the wrong size",
+    "distant surfaces flicker when the camera orbits"
+  ],
+  "example_prompts": [
+    "Check that this village scene uses one consistent unit and a sane depth range."
+  ],
+  "negative_signals": [
+    "choosing an art style",
+    "optimising draw calls"
+  ],
+  "content": {
+    "principles": [
+      "A scene has one declared linear unit; an asset that arrives in another convention silently rescales every clearance, camera distance and light falloff downstream.",
+      "Near and far are a precision budget rather than framing controls: the available depth resolution is spread across that range, so an unnecessarily small near plane in a large world produces coplanar-surface flicker that looks like a modelling defect.",
+      "Scale evidence should be an object a viewer already knows — a door, a step, a figure — not only a number in a panel."
+    ],
+    "implementation": [
+      "Declare the scene unit and record the import scale factor for each asset family; apply the conversion once at import rather than per instance.",
+      "Measure three reference dimensions from the scene graph after import (a doorway height, a step rise, the landmark height) and compare them with the authored intent in the same unit.",
+      "Record the camera near and far values and their ratio, then list the nearest and farthest surfaces the shot actually needs and tighten near upward and far downward to that need.",
+      "Provoke the failure deliberately: place two nearly coplanar surfaces, such as a path decal on the ground and a sign on a wall, at the far end of the shot and inspect them while orbiting at the largest ratio you intend to keep."
+    ],
+    "observable_checks": [
+      "Every asset family resolves to the same effective unit; a family needing a different scale factor is either corrected at import or documented with that factor.",
+      "The three measured reference dimensions match the authored intent within the tolerance you declared for the scene, for example one centimetre in a metre-scale village.",
+      "Coplanar test surfaces stay stable while the camera orbits; observed flicker is recorded together with the near, far and ratio that produced it, because that triple is the actionable evidence."
+    ]
+  },
+  "known_limits": [
+    "Depth artifacts also depend on renderer settings and buffer configuration; this record checks the authored range, not a specific GPU result.",
+    "Authored verification guidance; no scene was run or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.fantasy-village-diorama",
+    "recipe.terrain-island",
+    "recipe.courtyard-house-cutaway"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-scene-unit-convention",
+      "statement": "glTF uses a right-handed coordinate system, defines +Y as up, and expresses all linear distances in meters.",
+      "scope": "The glTF 2.0 asset convention only; other formats and authoring tools declare their own units and axes.",
+      "source_refs": [
+        {
+          "source_id": "source.validation-depth-gltf-coordinates",
+          "locator": "Coordinate System and Units"
+        }
+      ]
+    },
+    {
+      "id": "claim.validation-depth-precision-budget",
+      "statement": "Renderer depth precision is spread between the camera near and far planes, so near should be set as far out and far as close in as the scene allows.",
+      "scope": "three.js perspective-camera guidance; the visible artifact depends on the renderer and depth-buffer configuration.",
+      "source_refs": [
+        {
+          "source_id": "source.validation-depth-three-camera-depth",
+          "locator": "Cameras: near and far settings and depth precision discussion"
+        }
+      ]
+    }
+  ]
+}

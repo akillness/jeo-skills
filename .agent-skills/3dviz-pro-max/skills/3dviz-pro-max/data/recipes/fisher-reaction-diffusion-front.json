@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "id": "recipe.fisher-reaction-diffusion-front",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Bounded Fisher reaction-diffusion front"
+  },
+  "aliases": {
+    "en": [
+      "Fisher equation",
+      "reaction diffusion"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment",
+    "calculus-fields"
+  ],
+  "summary": "Simulate the one-dimensional Fisher equation on a finite interval with a declared zero-flux stencil and conservative explicit-step positivity guard, as an idealized historical model rather than a forecast.",
+  "objective": "Simulate the one-dimensional Fisher equation on a finite interval with a declared zero-flux stencil and conservative explicit-step positivity guard, as an idealized historical model rather than a forecast.",
+  "tags": [
+    "Fisher equation",
+    "reaction diffusion",
+    "traveling front",
+    "finite difference"
+  ],
+  "subject_terms": [
+    "Fisher equation",
+    "reaction diffusion",
+    "traveling front",
+    "finite difference"
+  ],
+  "intent_signals": [
+    "Bounded Fisher reaction-diffusion front"
+  ],
+  "example_prompts": [
+    "Build bounded fisher reaction-diffusion front with explicit units, frames, time and unavailable-data states."
+  ],
+  "negative_signals": [
+    "particle appearance proves physics",
+    "playback is a forecast"
+  ],
+  "not_for": [
+    "Operational forecasting or safety decisions."
+  ],
+  "entities": [
+    {
+      "name": "One-dimensional habitat",
+      "guidance": "Use x in [0,L], u in [0,1], diffusion D>0, growth r>=0 and zero-flux endpoints implemented by mirrored ghost values."
+    },
+    {
+      "name": "Field ribbon",
+      "guidance": "Show u(x,t), diffusion curvature and reaction r*u*(1-u) in linked strips."
+    },
+    {
+      "name": "Front markers",
+      "guidance": "Threshold locations are derived readouts with grid/time resolution displayed, not organism particles."
+    }
+  ],
+  "state_contract": {
+    "model": "Solve u_t=D*u_xx+r*u*(1-u) on a finite interval of length L>0 with an integer N>=3 uniform nodes, dx=L/(N-1), finite D>0, r>=0 and 0<=u0<=1. Use the centered second difference and forward Euler. Let lambda=D*dt/dx^2 and a=r*dt; accept only finite dt>0, lambda>=0, a>=0 and 2*lambda+a<=1, an authored sufficient bound for this update to preserve [0,1] in exact arithmetic. Enforce zero-flux endpoints with mirrored ghost values u[-1]=u[1] and u[N]=u[N-2]. Store only finite accepted states and fail visibly if roundoff exceeds a declared [0,1] tolerance.",
+    "authority": "Finite L/N/D/r/dt, the stored field u, mirrored-ghost boundary rule and accepted-step ledger own the model. Blender/glTF contains only a static habitat rail/ticks/glyph prototypes; Three.js allocates N values, updates the stencil, derives front readouts and restores the exact initial array.",
+    "actions": [
+      "Choose bounded initial bump/step.",
+      "Adjust D/r within stability guard.",
+      "Play/scrub stored model time.",
+      "Toggle diffusion/reaction/front readouts.",
+      "Reset grid, parameters and state."
+    ]
+  },
+  "invariants": [
+    "No state is accepted when stability guards fail.",
+    "Endpoint updates use the declared mirrored-ghost zero-flux stencil; no periodic branch is silently substituted.",
+    "u remains in [0,1] within tolerance or run fails visibly.",
+    "Particle decorations never drive or validate the field."
+  ],
+  "motion_guidance": [
+    "Playback follows stored model/data time; reverse scrub is history and display interpolation never changes the numeric model."
+  ],
+  "creative_affordances": [
+    "Use scale-separated context, glyphs and trails while disclosing exaggeration and keeping uncertainty visible."
+  ],
+  "known_limits": [
+    "This is Fisher's historical simplest one-dimensional frequency model, presented for equation study rather than endorsement, policy, empirical ecology or population forecast. The finite domain, zero-flux boundary and explicit solver are authored choices.",
+    "No numerical simulation, convergence study, render or runtime validation was performed."
+  ],
+  "claims": [
+    {
+      "id": "claim.env-fisher-reaction-diffusion",
+      "statement": "Fisher’s 1937 paper models a frequency p on a one-dimensional habitat by partial p/partial t = k partial-squared p/partial x-squared + m p q with q=1-p, under explicitly simplified uniform diffusion and selection assumptions.",
+      "scope": "Fisher’s simplest idealized advantageous-gene model; this recipe’s finite domain, boundary conditions and solver are authored numerical choices and not ecological forecast validation.",
+      "source_refs": [
+        {
+          "source_id": "source.env-fisher-1937",
+          "locator": "Section I, equation (1) and surrounding simplest-conditions discussion"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Reaction-diffusion ribbon",
+      "structure": "Blender authors a unit-length habitat rail, endpoint caps, grid-tick and field-column glyph prototypes; glTF exports static named display assets with no baked solution front.",
+      "material": "Field level and reaction/diffusion terms use height/pattern plus hue.",
+      "articulation": "Three.js scales the rail by L, instantiates N samples, owns the mirrored-ghost stencil and positivity gate, updates height/material buffers from stored u, derives threshold readouts and resets the exact u0 array."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Idealized finite-difference Fisher equation; no individual agents or real forecast.",
+    "timestep": "Fixed dt with lambda=D*dt/dx^2, a=r*dt and authored sufficient positivity guard 2*lambda+a<=1.",
+    "state": [
+      "grid/parameters/boundary",
+      "field array u",
+      "stored times/front readouts"
+    ],
+    "checks": [
+      "As a separate zero-diffusion analytic unit fixture outside accepted D>0 inputs, compare one cell with the logistic update.",
+      "r=0 diffusion-smoothing fixture with zero-flux endpoints.",
+      "Reject a step when 2*lambda+a>1 or arithmetic becomes nonfinite."
+    ]
+  },
+  "related_ids": [
+    "recipe.predator-prey-phase-time",
+    "recipe.vector-field-integration"
+  ]
+}

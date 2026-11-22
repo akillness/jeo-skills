@@ -1,0 +1,8 @@
+{
+  "name": "scenario-kinetic-film-project",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "playwright": "1.65.0"
+  }
+}

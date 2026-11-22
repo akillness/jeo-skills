@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-technical-illustration",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Technical illustration clarity"
+  },
+  "aliases": {
+    "en": [
+      "technical 3D illustration",
+      "diagrammatic product view",
+      "instructional cutaway"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "anatomy-structures"
+  ],
+  "summary": "Prioritize identifiable parts, ordered reveals and unambiguous labels while distinguishing sourced structure from authored simplification.",
+  "objective": "Labels point to the intended part from the supported view and displacement for explanation is not confused with the assembled geometry.",
+  "tags": [
+    "style-profile",
+    "representation-aesthetic",
+    "technical-illustration"
+  ],
+  "subject_terms": [
+    "technical 3D illustration",
+    "diagrammatic product view",
+    "instructional cutaway",
+    "representation aesthetic"
+  ],
+  "intent_signals": [
+    "Create a technical illustration",
+    "Explain parts with controlled reveals and clear labels"
+  ],
+  "example_prompts": [
+    "Create a technical exploded-camera illustration with leader lines and a reset to the assembled body."
+  ],
+  "content": {
+    "principles": [
+      "Prioritize identifiable parts, ordered reveals and unambiguous labels while distinguishing sourced structure from authored simplification.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Model the features needed by the explanation; choose cutaway or exploded offsets that retain stable part identities and an assembly reference.",
+      "Use restrained surface color, clear edge contrast and broad lighting that supports part separation.",
+      "Provide a repeatable camera and controlled reveal steps; offer reset to the assembled state and avoid decorative movement during a reading task."
+    ],
+    "observable_checks": [
+      "Labels point to the intended part from the supported view and displacement for explanation is not confused with the assembled geometry.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with monochrome, papercraft or stylized surfaces; measured dimensions and anatomical claims require their own source/geometry checks.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

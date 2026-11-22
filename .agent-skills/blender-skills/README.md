@@ -1,0 +1,81 @@
+<p align="center"><img src="assets/banner.png" width="420" alt="Blender Agent Skills"></p>
+
+<h1 align="center">Blender Agent Skills</h1>
+
+Professional Blender workflows packaged as **Agent Skills** for AI coding agents: Claude Code, Codex, OpenCode, Gemini CLI, GitHub Copilot and Cursor.
+
+There are 28 skills covering the full 3D pipeline (modeling, UVs, texturing, baking, rigging, animation, clothing, hair, environments, stylized looks, optimization, export, rendering, video, weather, simulation and QA), built for **Blender 5.2 LTS+ (verified on 5.3)**. Every script is tested in a real Blender.
+
+## Install
+
+**Claude Code** (plugin):
+```
+/plugin marketplace add EL4CTEO/blender-skills
+/plugin install blender-agent-skills@blender-agent-skills
+```
+
+**Any agent** (clone, then run the installer):
+```bash
+git clone https://github.com/EL4CTEO/blender-skills
+./blender-skills/install/install.sh          # macOS / Linux
+.\blender-skills\install\install.ps1         # Windows
+```
+The default installs into `~/.claude/skills` and `~/.agents/skills`. `.agents/skills` is read by Codex, OpenCode, Gemini CLI, Copilot and Cursor. Options: `--agent claude|codex|opencode|gemini|copilot|cursor|all`, `--project DIR` for a single project, `--uninstall`.
+
+**Requirements:** Blender 5.2 LTS or newer. **Update to Blender 5.3.0 for the best experience:** every skill is verified on it, and it adds KTX2 web export, the compositor effects stack and Gaussian splats. Optional: a Blender MCP server lets agents work in your open Blender. Without one, agents run Blender in the background.
+
+## Skills
+
+| Skill | What it does |
+|---|---|
+| `blender-core` | Start here: runs code, routes tasks, 5.x API rules |
+| `blender-scene-setup` | Units, naming, collections, asset libraries |
+| `blender-hardsurface-modeling` | Bevels, booleans, weighted normals |
+| `blender-sculpting` | Organic sculpting workflow |
+| `blender-retopology-uv` | Retopology, UVs, texel density |
+| `blender-pbr-materials` | Correct PBR materials from textures |
+| `blender-texturing` | Edge wear, grime, dust, decals, trim sheets |
+| `blender-texture-baking` | Normal, AO and curvature maps, ORM |
+| `blender-geometry-nodes` | Procedural modeling from simple JSON |
+| `blender-character-rigging` | Rigify, skinning, game skeletons |
+| `blender-facial-shapekeys` | ARKit 52 blendshapes, visemes |
+| `blender-animation` | Actions, mocap retargeting, loop checks, root motion |
+| `blender-clothing` | Clothes that follow the body without clipping |
+| `blender-hair-grooming` | Hair, fur and game hair cards |
+| `blender-game-optimization` | Budgets, LODs, draw calls |
+| `blender-export-pipelines` | Roblox, Unity, Unreal, Godot, web, USD |
+| `blender-rendering` | Cycles and EEVEE, batch rendering |
+| `blender-lighting-lookdev` | Studio lighting, HDRI, turntables |
+| `blender-stylized-npr` | Toon/anime shading and outlines |
+| `blender-environment-kits` | Terrain, forests, modular level kits |
+| `blender-video-editing` | Edit videos, track cameras |
+| `blender-simulation` | Rigid bodies, cloth, fluids |
+| `blender-time-of-day` | Golden hour, night, fog and mood lighting |
+| `blender-weather-fx` | Rain, snow, wet streets, puddles, lightning |
+| `blender-addon-development` | Blender extensions |
+| `blender-pipeline-automation` | Batch jobs and file conversion |
+| `blender-asset-qa` | Catches z-fighting, floating parts, bad normals, weights and textures |
+| `blender-workflow-recipes` | Complete asset playbooks |
+
+## With vs without skills
+
+Same model, same prompts, outputs with the skills vs without them: **[see the comparison](https://el4cteo.github.io/blender-skills/comparison/)**.
+
+<a href="https://el4cteo.github.io/blender-skills/comparison/"><img src="docs/comparison/media/preview.jpg" alt="Concrete wall: without skills (left) vs with skills (right)"></a>
+
+## Try it
+
+> "Make a game-ready crate for Unreal with baked normals and LODs."
+> "Rig this character with Rigify and export it to Unity with a walk cycle."
+> "Check this model for z-fighting and floating parts, then export it for Roblox."
+> "Make this street a rainy night with puddles and lightning."
+> "Give my character a shirt and hair cards, then retarget this Mixamo run onto it."
+
+## Development
+
+```bash
+python tools/validate_skills.py   # spec + token budget checks
+python tools/run_tests.py         # 67 headless Blender tests (BLENDER_EXE to override)
+```
+
+MIT License

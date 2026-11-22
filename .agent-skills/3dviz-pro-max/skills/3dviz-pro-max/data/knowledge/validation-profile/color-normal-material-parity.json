@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.color-normal-material-parity",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "validation-profile",
+  "title": {
+    "en": "Color, normal and material-role parity validation"
+  },
+  "aliases": {
+    "en": [
+      "PBR texture role validation",
+      "UV tangent color handoff check",
+      "lightmap contribution parity"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "architecture-interiors",
+    "environments-dioramas"
+  ],
+  "summary": "Validate UV/tangent orientation, texture channel roles, transfer functions and baked-versus-runtime lighting ownership with isolated fixtures before judging a composed look.",
+  "objective": "Each imported material input has the declared UV set, channel packing, transfer function, tangent orientation and lighting owner, and controlled diagnostic views expose swaps, inversions or double-lighting.",
+  "applies_when": [
+    "A Blender-authored glTF uses PBR textures, tangent-space normals, multiple UV sets, baked illumination or a mix of baked and runtime light contributions."
+  ],
+  "tags": [
+    "validation-profile",
+    "pbr",
+    "color-management",
+    "normal-map",
+    "uv",
+    "lightmap"
+  ],
+  "subject_terms": [
+    "base color sRGB",
+    "metallic roughness channels",
+    "normal tangent handedness",
+    "TEXCOORD parity",
+    "lightmap double lighting"
+  ],
+  "intent_signals": [
+    "check texture roles after glTF load",
+    "diagnose inverted normal or wrong UV channel",
+    "verify lightmap without double lighting"
+  ],
+  "example_prompts": [
+    "Validate a Blender material chart containing base color, roughness, metalness, normals and two UV sets after Three.js load.",
+    "Test a baked interior with lightmap-only, runtime-only and combined views before tone mapping."
+  ],
+  "negative_signals": [
+    "one pixel threshold for every renderer",
+    "judge channel wiring from beauty render alone",
+    "bind a Combined beauty bake as a lighting-only map"
+  ],
+  "not_for": [
+    "Physical calibration of real materials or displays.",
+    "Proving visual identity across distinct render engines."
+  ],
+  "content": {
+    "principles": [
+      "Test transport semantics before aesthetic similarity. A convincing beauty render can hide a swapped ORM channel, incorrect color transfer, mirrored tangent basis or duplicated light contribution.",
+      "Use separate acceptance regimes: exact texture role and TEXCOORD references, numeric factor/channel probes, directional visual tests for tangent normals, and contribution-isolation views for lightmaps.",
+      "Compare pre-tone linear diagnostics for lighting ratios and transfer errors, then evaluate the intended display transform separately. Do not use display pixels as linear-light measurements.",
+      "A lightmap validation begins from a contribution manifest. The bake and runtime may share the final look only when direct, indirect, AO and emission ownership is declared without accidental duplication."
+    ],
+    "implementation": [
+      "Author a compact Blender chart with labeled dielectric and metal patches, independent red/green/blue packed-channel probes, an asymmetric tangent-space normal stamp crossing a mirrored or rotated UV boundary, and two deliberately different UV grids. Freeze the exact exported mesh and texture files used by the check.",
+      "Inspect the glTF material JSON and accessors: record material factors, image/texture indices, channel roles, normal scale, and each texture's texCoord. In Three.js inspect loaded material slots and texture colorSpace annotations for the pinned revision.",
+      "Render or inspect one variable at a time when runtime evidence is authorized: unlit/base-color identification, roughness-only response, metalness boundary, four-direction normal lighting, UV index colors, lightmap-only, runtime-only and combined. Keep environment, exposure, camera and tone mapping fixed within each comparison.",
+      "For baked illumination, use a lighting-only product suitable for the runtime slot and record whether direct, indirect, AO and emissive contributions are present. Disable runtime copies for the isolation pass, then re-enable only contributions excluded by policy.",
+      "Record exact wiring failures separately from visual-regime failures. A transport pass can coexist with an appearance mismatch caused by renderer, tone mapper, environment or unsupported extension."
+    ],
+    "observable_checks": [
+      "Base color and emissive inputs decode as color data while normal, roughness and metalness remain non-color data; the declared packed channels drive only their intended response.",
+      "The UV identification grid proves the referenced TEXCOORD set for every texture; tangent detail stays raised rather than dented as the light moves through four directions.",
+      "A pre-tone neutral ramp reveals no unintended transfer-function application, clipping or channel multiplication within the declared numeric tolerance.",
+      "Lightmap-only and runtime-only views account for the combined result; an overbright receiver or duplicated shadow/direct lobe fails the ownership manifest.",
+      "Intentional stylization remains valid when its altered values and contribution ownership are declared and repeatable."
+    ]
+  },
+  "related_ids": [
+    "knowledge.uv-atlas-bake-correspondence",
+    "knowledge.blender-three-tangent-normal-handoff",
+    "knowledge.blender-three-metalrough-orm-translation",
+    "knowledge.baked-runtime-lightmap-ownership",
+    "knowledge.blender-three-linear-color-handoff"
+  ],
+  "creative_affordances": [
+    "Use exaggerated probe colors, graphic normals or theatrical baked light to make errors legible; the test chart need not resemble the final art direction."
+  ],
+  "known_limits": [
+    "A controlled chart does not certify every texture or camera in a production scene.",
+    "Tone mapping, display calibration and backend differences require their own declared regime.",
+    "Core glTF does not itself define the application lightmap binding asserted by a Three.js scene.",
+    "Authored and source-checked procedure; no bake, export, decode or render was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-gltf-material-role-semantics",
+      "statement": "glTF 2.0 defines TEXCOORD-indexed texture bindings, sRGB decoding for base color, linear transfer for metallic-roughness and normal data, green roughness and blue metalness packing, and tangent-space normal semantics.",
+      "scope": "Normative glTF 2.0.1 core metallic-roughness material semantics; extensions and application lightmaps require separate checks.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-khronos-gltf-animation",
+          "locator": "Sections 3.7.2 attributes; 3.8 texture coordinates; 3.9.2 metallic-roughness; 3.9.3 additional textures; 5.20 and 5.30 texCoord"
+        }
+      ]
+    },
+    {
+      "id": "claim.validation-three-color-input-roles",
+      "statement": "Three.js documents a Linear-sRGB working space, sRGB annotations for common color textures, no color-space annotation for common non-color maps, and separate output conversion; open-domain lightmaps may use Linear-sRGB formats such as OpenEXR.",
+      "scope": "Live official Three.js color-management guide read 2026-09-08; actual file encoding and renderer revision must be recorded.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-color-management",
+          "locator": "Roles of color spaces: Input, Working and Output color spaces; color and non-color textures"
+        }
+      ]
+    }
+  ]
+}

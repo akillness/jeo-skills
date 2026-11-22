@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-joint-limit-in-model",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Enforce joint limits in the model, not in the pose"
+  },
+  "aliases": {
+    "en": [
+      "range of motion",
+      "hyperextension",
+      "joint clamping"
+    ]
+  },
+  "direction_ids": [
+    "physiology-biomechanics",
+    "robotics-control",
+    "characters-motion-art"
+  ],
+  "summary": "Clamp articulation to the axes and ranges the joint actually permits before the pose reaches the renderer.",
+  "objective": "Keep articulated anatomy and mechanisms from producing poses their joints cannot reach.",
+  "applies_when": [
+    "A skeleton, limb or mechanism is posed interactively or by a solver.",
+    "A joint is described by name, such as hinge, pivot or ball and socket.",
+    "Motion is driven by data, physics or inverse kinematics rather than by hand."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "joint limits",
+    "range of motion",
+    "hinge joint",
+    "uniaxial",
+    "flexion",
+    "extension"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "biomechanics",
+    "articulation"
+  ],
+  "intent_signals": [
+    "the knee bends backwards",
+    "limit the joint rotation",
+    "pose the skeleton"
+  ],
+  "example_prompts": [
+    "Let me pose the knee but stop it bending the wrong way.",
+    "Constrain the arm joints to realistic motion."
+  ],
+  "negative_signals": [
+    "Stylised characters whose exaggerated articulation is deliberate.",
+    "Purely decorative rigs with no anatomical or mechanical claim."
+  ],
+  "not_for": [
+    "Stylised characters whose exaggerated articulation is deliberate.",
+    "Purely decorative rigs with no anatomical or mechanical claim."
+  ],
+  "content": {
+    "principles": [
+      "A joint has an axis structure, not just a range. A hinge joint permits bending and straightening about a single axis, while a ball and socket joint is multiaxial, so allowing three free rotations at a hinge is already wrong before any limit is considered.",
+      "Flexion decreases the angle at a joint and extension increases it; extension beyond the normal range is hyperextension, which in a body is described as abnormal or injurious rather than as a valid pose.",
+      "Limits belong to the model because several consumers depend on them: the interactive handle, the inverse-kinematic solver, the animation retarget and any physical constraint.",
+      "Clamping in the renderer hides the violation instead of preventing it, and leaves the underlying state outside the valid set."
+    ],
+    "implementation": [
+      "Give each joint an explicit type, axis or axes, and a range for each degree of freedom, stored with the model rather than in the pose data.",
+      "Apply the constraint when the state is set, so the stored joint values are always inside the permitted set.",
+      "Make a solver respect the limits during iteration rather than clamping only its final answer, otherwise the reported residual is misleading.",
+      "Show the constraint to the user, for example by resisting a drag at the limit and displaying the current angle.",
+      "Mark deliberately exaggerated joints as stylistic so a limit violation is not mistaken for a bug."
+    ],
+    "observable_checks": [
+      "Drag each joint past its limit and confirm the stored value, not just the drawn pose, stops at the boundary.",
+      "Check a hinge for unintended rotation about the other two axes.",
+      "Run the solver towards an unreachable target and confirm it reports the residual rather than passing through the limit.",
+      "Play back imported motion data and confirm out-of-range frames are reported instead of silently absorbed."
+    ]
+  },
+  "related_ids": [
+    "recipe.knee-layer-peel",
+    "recipe.inverse-kinematics-target",
+    "knowledge.articulated-limb"
+  ],
+  "creative_affordances": [
+    "Invented anatomy can have any joint structure; declare it and constrain it consistently.",
+    "A comparison mode that shows an unconstrained pose next to a constrained one is a strong teaching device."
+  ],
+  "known_limits": [
+    "Authored articulation guidance citing joint-type and movement definitions; it asserts no numerical range of motion for any specific joint.",
+    "Real ranges vary with individual, age, load and coupling between joints, which this rule does not model."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-joint-axes-and-hyperextension",
+      "statement": "Hinge and pivot joints are uniaxial, permitting motion in a single plane such as flexion and extension or rotation, while ball and socket joints are multiaxial; flexion decreases the angle at a joint, extension increases it, and hyperextension is extension beyond the normal range of motion and is described as abnormal or injurious.",
+      "scope": "Human joint classification and movement terminology; no numerical range of motion is given.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-synovial",
+          "locator": "9.4, hinge joints as uniaxial and ball-and-socket joints as multiaxial"
+        },
+        {
+          "source_id": "source.reasoning-depth-openstax-body-movements",
+          "locator": "9.5, flexion and extension; hyperextension beyond the normal range"
+        }
+      ]
+    }
+  ]
+}

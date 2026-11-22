@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "id": "recipe.fourier-harmonic-synthesis",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Fourier harmonic synthesis with complex phasors"
+  },
+  "aliases": {
+    "en": [
+      "Fourier synthesis",
+      "odd harmonics",
+      "square wave partial sum"
+    ]
+  },
+  "direction_ids": [
+    "waves-optics-fields",
+    "calculus-fields"
+  ],
+  "summary": "Connect a finite bank of odd harmonics to a square-wave approximation and expose truncation near jumps.",
+  "objective": "Change harmonic count and inspect which rotating component contributes to the instantaneous sum.",
+  "tags": [
+    "Fourier synthesis",
+    "odd harmonics",
+    "square wave partial sum",
+    "phasor chain"
+  ],
+  "subject_terms": [
+    "Fourier synthesis",
+    "odd harmonics",
+    "square wave partial sum",
+    "phasor chain",
+    "Gibbs phenomenon",
+    "complex exponential",
+    "frequency components",
+    "signal reconstruction"
+  ],
+  "intent_signals": [
+    "Change harmonic count and inspect which rotating component contributes to the instantaneous sum.",
+    "Connect a finite bank of odd harmonics to a square-wave approximation and expose truncation near jumps."
+  ],
+  "example_prompts": [
+    "Build an explorable fourier harmonic synthesis with complex phasors. Change harmonic count and inspect which rotating component contributes to the instantaneous sum."
+  ],
+  "entities": [
+    {
+      "name": "Phasor assembly",
+      "guidance": "Draw tip-to-tail arrows in an equal-scale real/imaginary plane, one for each retained odd harmonic; arrow k has length4/(pi*(2k+1)). Put frequency and coefficient labels on selectable parts."
+    },
+    {
+      "name": "Complex time trace",
+      "guidance": "Construct a sampled curve (t, Re S_N(t), Im S_N(t)), with all three axes labeled; the third dimension encodes the second complex component, not decorative depth. Link its imaginary projection to a conventional t-versus-amplitude panel."
+    },
+    {
+      "name": "Target and jump inspection",
+      "guidance": "Overlay the target sign(sin t) away from integer multiples of pi. Mark jumps with open endpoints and the midpoint value0 as the series convention; do not connect target jumps with sloped interpolation."
+    }
+  ],
+  "state_contract": {
+    "model": "Use dimensionless phase t in[0,2pi] and integer1<=N<=32. S_N(t)=sum(k=0..N-1)4*exp(i*(2k+1)*t)/(pi*(2k+1)); f_N=Im S_N. The square-wave preset fixes these coefficients. Sampling for display uses M>=16*(2N-1) intervals per period plus a doubling comparison; this is an authored resolution rule, not a universal error bound.",
+    "authority": "N, phase, sample count and preset own every arrow and trace. A camera orbit or hidden component does not change its numerical contribution; use a separately labeled mute action to alter the sum.",
+    "actions": [
+      "Select a harmonic and reveal its coefficient, frequency and component trace.",
+      "Change N and rebuild the finite sum; retain phase.",
+      "Scrub or play phase, pause without phase drift, and zoom around a jump.",
+      "Optional coefficient editing enters a labeled custom finite-series mode; square-wave convergence labels are then disabled.",
+      "Reset N, phase, sample count and preset."
+    ]
+  },
+  "invariants": [
+    "Tip-to-tail endpoint equals the independently summed real/imaginary components within a declared floating-point tolerance.",
+    "For the square preset f_N(0)=f_N(pi)=0 analytically; at t+pi the imaginary sum changes sign.",
+    "Increasing N does not justify a uniform-error-to-zero claim across a discontinuity. Check sampled extrema with doubled resolution before quoting a displayed peak."
+  ],
+  "motion_guidance": [
+    "Derive each phasor angle from harmonic number times the same phase; never give it an independent clock.",
+    "A cursor projects the complex trace into its imaginary waveform. The connecting segments interpolate displayed samples, not the infinite Fourier series."
+  ],
+  "known_limits": [
+    "This is a finite authored synthesis bank, not a measured spectrum, FFT, audio reconstruction guarantee or band-unlimited sampler.",
+    "Gibbs overshoot narrows toward a jump as N grows but its limiting relative height does not vanish; avoid claiming every finite N has exactly the asymptotic overshoot.",
+    "Authored recipe and prospective checks only; no runtime artifact or rendered result has been observed."
+  ],
+  "claims": [
+    {
+      "id": "claim.handbook-math-fourier-harmonic-synthesis",
+      "statement": "The period-2pi odd square wave has Fourier series (4/pi) sum over positive odd n of sin(nt)/n. Its partial sums exhibit Gibbs overshoot near jumps; increasing the number of terms does not eliminate the limiting overshoot height.",
+      "scope": "Odd square-wave Fourier series and its jump behavior; not arbitrary sampled-signal reconstruction.",
+      "source_refs": [
+        {
+          "source_id": "source.handbook-math-fourier",
+          "locator": "22.6.1 square-wave partial sums and 22.6.2 Gibbs phenomenon, PDF page index 202; Eq.34 at index206"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Fourier harmonic synthesis with complex phasors",
+      "structure": "Keep phasor pivots, vector tips, projection guides and the time-trace frame separately selectable. Rescaling a view must not silently alter coefficient lengths relative to one another.",
+      "material": "Use independent line weights, shapes and labels for mathematical roles. Color and surface finish are presentation choices; do not infer material physics from them."
+    }
+  ],
+  "creative_affordances": [
+    "A mechanical-looking harmonic bank, clean signal lab or playful ribbon trace can express the same sum; no particular shader or hardware is required."
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Derived mathematical geometry and authored inspection; no contact dynamics or calibrated physical artifact.",
+    "checks": [
+      "Tip-to-tail endpoint equals the independently summed real/imaginary components within a declared floating-point tolerance.",
+      "For the square preset f_N(0)=f_N(pi)=0 analytically; at t+pi the imaginary sum changes sign."
+    ]
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-dual-scale-disclosure",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Sizes and distances rarely share one scale"
+  },
+  "aliases": {
+    "en": [
+      "solar system scale",
+      "two scale factors",
+      "not to scale"
+    ]
+  },
+  "direction_ids": [
+    "astronomy-space",
+    "molecules-materials"
+  ],
+  "summary": "Use separate declared scale factors for body sizes and separations when one scale would make the scene unusable.",
+  "objective": "Keep astronomical scenes legible without implying that their proportions are true.",
+  "applies_when": [
+    "Planets, moons, stars or atoms are shown together with their separations.",
+    "Orbits or distances are drawn at a size that fits a screen.",
+    "The viewer might infer relative sizes or distances from the image."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "scale",
+    "astronomical distance",
+    "orbit radius",
+    "body size",
+    "scale factor",
+    "disclosure"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "astronomy",
+    "scale"
+  ],
+  "intent_signals": [
+    "show the solar system",
+    "are these to scale",
+    "make the planets visible"
+  ],
+  "example_prompts": [
+    "Show the inner planets with their orbits and be clear about the scale.",
+    "Build a scale model I can switch between size scale and distance scale."
+  ],
+  "negative_signals": [
+    "Single-body scenes where no separation is shown.",
+    "True-scale models where both can honestly share one factor."
+  ],
+  "not_for": [
+    "Single-body scenes where no separation is shown.",
+    "True-scale models where both can honestly share one factor."
+  ],
+  "content": {
+    "principles": [
+      "Astronomical size and separation differ by orders of magnitude, so a single-scale model is usually impractical: making both accurate at once requires a model that spreads over a great distance, which is why educational activities note that displaying both accurately is difficult or impossible in a small model.",
+      "Using two scale factors is legitimate and standard. Failing to say so is what turns a useful diagram into a misconception, because viewers routinely take planet spacing from illustrations.",
+      "The choice should follow the question: a scene about seasons or phases needs correct geometry and can compress distance, while a scene about the emptiness of space needs correct distance and can drop body detail.",
+      "The same problem appears at molecular and structural scales whenever object size and separation differ by orders of magnitude."
+    ],
+    "implementation": [
+      "Keep true values in the model and apply separate declared factors for body radius and for separation.",
+      "Display both factors persistently, and include them in exports.",
+      "Offer a switch to a single-scale mode where the emptiness itself is part of the explanation. It is a useful option, not an obligation: a scene answering a question about geometry or phase can disclose its factors without carrying a second view.",
+      "Use a familiar reference object or a scale bar so the compression is perceptible.",
+      "Uniformly scaling center separations preserves center-to-center directions. That can preserve the spherical distant-observer phase model, but independent radius scaling changes apparent sizes, parallax, finite-observer sightlines and shadow cones. Compute these from true geometry, preserve the relevant ratios, or label the depiction illustrative; disclosure alone does not correct a mis-scaled calculation."
+    ],
+    "observable_checks": [
+      "If single-scale mode is offered, confirm that it uses one declared factor for body sizes and separations and preserves their true relative proportions.",
+      "Compare the ratio of two drawn separations against the true ratio; a scene that also compresses non-uniformly should say so.",
+      "Confirm the scale factors appear in the scene and in any exported image.",
+      "Check the particular preserved quantity: center directions under uniform separation scaling, and phase only under the declared spherical distant-observer construction. Verify finite-observer appearance, apparent size, parallax and shadows against true geometry when claimed as accurate."
+    ]
+  },
+  "related_ids": [
+    "recipe.kepler-equal-area-orbit",
+    "recipe.moon-phase-observer",
+    "recipe.stellar-parallax-baseline"
+  ],
+  "creative_affordances": [
+    "Beautiful compressed solar-system scenes are the norm and remain valid with disclosure.",
+    "Logarithmic or segmented distance scales are legitimate alternatives when labelled."
+  ],
+  "known_limits": [
+    "Authored scale guidance citing an educational statement about the difficulty of single-scale models; it asserts no specific astronomical distance or radius.",
+    "It does not prescribe scale factors for any particular scene."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-solar-system-scale-difficulty",
+      "statement": "Because planetary sizes and orbital distances differ by orders of magnitude, it is difficult or even impossible to display both planet size and distance accurately in a small model, and a model accurate in both would need to extend over a very large distance.",
+      "scope": "Practical scale-model limitations for the solar system; it does not provide specific sizes or distances.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-jpl-scale-solar-system",
+          "locator": "Discussion of representing size and distance on one scale"
+        }
+      ]
+    }
+  ]
+}

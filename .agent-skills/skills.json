@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 451,
+  "skill_count": 466,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -267,7 +267,21 @@
       "fastnoise2",
       "donchitos-game-studios",
       "gamefactory-3a",
-      "arnis"
+      "arnis",
+      "unity-skills",
+      "blender-skills",
+      "scenario-skills",
+      "threejs-game-skills",
+      "mengto-game-skills",
+      "video-to-game",
+      "threejs-ability-casting",
+      "isometric-voxel-builder",
+      "game-perf",
+      "sprite-gen",
+      "mono-pix",
+      "motion2mixamo",
+      "unimate",
+      "3d-vibe-coding"
     ],
     "creative-media": [
       "aura-asset-images",
@@ -310,7 +324,8 @@
       "voicestudio",
       "diagram-design",
       "artcraft",
-      "motionmaxxing"
+      "motionmaxxing",
+      "3dviz-pro-max"
     ],
     "cli-tools": [
       "context7",
@@ -744,11 +759,15 @@
         "terrain3d",
         "godot-voxel-tools",
         "recast-navigation",
-        "the-forge"
+        "the-forge",
+        "mengto-game-skills"
       ],
       "web": [
         "agentic-gamedev-skills",
-        "web-game-development"
+        "web-game-development",
+        "threejs-game-skills",
+        "video-to-game",
+        "isometric-voxel-builder"
       ],
       "server": [
         "multiplayer-game-architecture"
@@ -768,18 +787,26 @@
       "animation": [
         "animato",
         "unirig",
-        "ozz-animation"
+        "ozz-animation",
+        "motion2mixamo",
+        "unimate"
       ],
       "motion-vfx": [
         "dalamud-vfx-editor",
         "game-vfx",
-        "effekseer"
+        "effekseer",
+        "threejs-ability-casting"
       ],
       "sprite-image": [
-        "perfectpixel"
+        "perfectpixel",
+        "sprite-gen",
+        "mono-pix"
       ],
       "art-resources": [
-        "material-maker"
+        "material-maker",
+        "blender-skills",
+        "scenario-skills",
+        "3d-vibe-coding"
       ],
       "storytelling": [],
       "tooling": [
@@ -789,13 +816,15 @@
         "fastnoise2",
         "donchitos-game-studios",
         "gamefactory-3a",
-        "arnis"
+        "arnis",
+        "unity-skills"
       ],
       "qa-performance": [
         "game-build-log-triage",
         "game-demo-feedback-triage",
         "game-performance-profiler",
-        "wai-play"
+        "wai-play",
+        "game-perf"
       ],
       "release": [
         "game-ci-cd-pipeline",
@@ -854,7 +883,8 @@
         "open-design",
         "blender-mcp",
         "higgsfield-brandkit",
-        "artcraft"
+        "artcraft",
+        "3dviz-pro-max"
       ],
       "capture": [],
       "storytelling": [
@@ -16550,6 +16580,427 @@
       "keyword": "motionmaxxing",
       "version": "1.0.0",
       "source": "https://github.com/Tejashmakwana/motionmaxxing"
+    },
+    {
+      "name": "unity-skills",
+      "description": "Unity Technologies official agent skills for automated project creation, builds, package management, URP rendering, and editor workflow automation.",
+      "category": "game",
+      "subcategory": "tooling",
+      "interface": "workflow",
+      "path": "unity-skills/SKILL.md",
+      "tags": [
+        "unity",
+        "game-engine",
+        "build",
+        "urp",
+        "packages",
+        "xr",
+        "shader-graph"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "unity-skills",
+      "version": "1.0.0",
+      "source": "https://github.com/Unity-Technologies/skills"
+    },
+    {
+      "name": "blender-skills",
+      "description": "28 professional Blender workflows as Agent Skills covering 3D modeling, UV unwrapping, retopology, character rigging, texture baking, and export pipelines via natural language.",
+      "category": "game",
+      "subcategory": "art-resources",
+      "interface": "workflow",
+      "path": "blender-skills/SKILL.md",
+      "tags": [
+        "blender",
+        "3d-modeling",
+        "retopology",
+        "uv",
+        "rigging",
+        "baking",
+        "animation",
+        "export"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "blender-skills",
+      "version": "1.0.0",
+      "source": "https://github.com/EL4CTEO/blender-skills"
+    },
+    {
+      "name": "scenario-skills",
+      "description": "Scenario AI agent skills for generating game textures, skyboxes, audio, and 3D assets with expert DCC integrations for Blender, Maya, ZBrush, Unreal, and Unity.",
+      "category": "game",
+      "subcategory": "art-resources",
+      "interface": "workflow",
+      "path": "scenario-skills/SKILL.md",
+      "tags": [
+        "scenario",
+        "textures",
+        "skybox",
+        "3d-assets",
+        "maya",
+        "zbrush",
+        "unreal",
+        "unity"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "scenario-skills",
+      "version": "1.0.0",
+      "source": "https://github.com/scenario-labs/skills"
+    },
+    {
+      "name": "threejs-game-skills",
+      "description": "Autonomous Three.js game director skills that coordinate gameplay systems, AAA graphics shaders, UI design, spatial audio, and automated verification.",
+      "category": "game",
+      "subcategory": "web",
+      "interface": "workflow",
+      "path": "threejs-game-skills/SKILL.md",
+      "tags": [
+        "threejs",
+        "webgl",
+        "game-director",
+        "shaders",
+        "gameplay",
+        "audio",
+        "ui"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "threejs-game-skills",
+      "version": "1.0.0",
+      "source": "https://github.com/majidmanzarpour/threejs-game-skills"
+    },
+    {
+      "name": "mengto-game-skills",
+      "description": "Curated game development skills for combat animation, monster and enemy AI systems, procedural level design, and playtesting by DesignCode.",
+      "category": "game",
+      "subcategory": "client",
+      "interface": "workflow",
+      "path": "mengto-game-skills/SKILL.md",
+      "tags": [
+        "combat",
+        "animation",
+        "enemy-ai",
+        "level-design",
+        "playtest",
+        "designcode"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "mengto-game-skills",
+      "version": "1.0.0",
+      "source": "https://github.com/MengTo/Skills"
+    },
+    {
+      "name": "video-to-game",
+      "description": "Analyzes gameplay video footage frame-by-frame, synthesizes game assets, and generates playable browser games via fal API.",
+      "category": "game",
+      "subcategory": "web",
+      "interface": "workflow",
+      "path": "video-to-game/SKILL.md",
+      "tags": [
+        "video-to-game",
+        "gameplay-analysis",
+        "frame-synthesis",
+        "browser-game",
+        "fal-ai"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "video-to-game",
+      "version": "1.0.0",
+      "source": "https://github.com/lovisdotio/video-to-game"
+    },
+    {
+      "name": "3dviz-pro-max",
+      "description": "Creative 3D visualization skill that transforms single-line architectural or creative concepts into interactive, walkable WebGL 3D scenes.",
+      "category": "creative-media",
+      "subcategory": "design",
+      "interface": "workflow",
+      "path": "3dviz-pro-max/SKILL.md",
+      "tags": [
+        "3d-visualization",
+        "webgl",
+        "threejs",
+        "walkable-scene",
+        "creative-coding"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "3dviz-pro-max",
+      "version": "1.0.0",
+      "source": "https://github.com/viettranx/3dviz-pro-max"
+    },
+    {
+      "name": "threejs-ability-casting",
+      "description": "League of Legends style linear skillshot ability casting VFX sandbox implemented with pure GLSL shaders in Three.js without external textures.",
+      "category": "game",
+      "subcategory": "motion-vfx",
+      "interface": "workflow",
+      "path": "threejs-ability-casting/SKILL.md",
+      "tags": [
+        "threejs",
+        "glsl",
+        "shaders",
+        "skillshot",
+        "vfx",
+        "ability-casting"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "threejs-ability-casting",
+      "version": "1.0.0",
+      "source": "https://github.com/achrefelouafi/LinearAbiltyCastingThreeJS"
+    },
+    {
+      "name": "isometric-voxel-builder",
+      "description": "Isometric voxel island builder on a 14x14 grid with block stacking, custom shaders, and lightweight browser runtime for game prototyping.",
+      "category": "game",
+      "subcategory": "web",
+      "interface": "workflow",
+      "path": "isometric-voxel-builder/SKILL.md",
+      "tags": [
+        "isometric",
+        "voxel",
+        "town-builder",
+        "grid-building",
+        "threejs",
+        "webgl"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "isometric-voxel-builder",
+      "version": "1.0.0",
+      "source": "https://github.com/boona13/mykonos-island-voxels"
+    },
+    {
+      "name": "game-perf",
+      "description": "Automated game performance optimization skill that analyzes and repairs 10 frame drop patterns across Three.js, PixiJS, Phaser, and React games.",
+      "category": "game",
+      "subcategory": "qa-performance",
+      "interface": "cli",
+      "path": "game-perf/SKILL.md",
+      "tags": [
+        "game-perf",
+        "fps-optimization",
+        "frame-drop",
+        "threejs",
+        "pixijs",
+        "phaser"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "game-perf",
+      "version": "1.0.0",
+      "source": "https://github.com/gykim80/andrew_game_perf"
+    },
+    {
+      "name": "sprite-gen",
+      "description": "Generates 2D game character sprites, pose variations, transparent animation atlases, and motion loop videos from a single reference image.",
+      "category": "game",
+      "subcategory": "sprite-image",
+      "interface": "workflow",
+      "path": "sprite-gen/SKILL.md",
+      "tags": [
+        "sprite-gen",
+        "2d-sprites",
+        "sprite-sheet",
+        "animation-atlas",
+        "motion-loops"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "sprite-gen",
+      "version": "1.0.0",
+      "source": "https://github.com/aldegad/sprite-gen"
+    },
+    {
+      "name": "mono-pix",
+      "description": "Snaps blurry AI-generated pseudo-pixel-art into true discrete pixel grids with palette quantization and transparent sprite sheet export.",
+      "category": "game",
+      "subcategory": "sprite-image",
+      "interface": "workflow",
+      "path": "mono-pix/SKILL.md",
+      "tags": [
+        "mono-pix",
+        "pixel-art",
+        "grid-alignment",
+        "palette-quantization",
+        "sprites"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "mono-pix",
+      "version": "1.0.0",
+      "source": "https://github.com/handsupmin/mono-pix"
+    },
+    {
+      "name": "motion2mixamo",
+      "description": "Extracts and retargets human body motion from single video or photo sources to Adobe Mixamo character rigs with GLB export.",
+      "category": "game",
+      "subcategory": "animation",
+      "interface": "workflow",
+      "path": "motion2mixamo/SKILL.md",
+      "tags": [
+        "motion-capture",
+        "mixamo",
+        "retargeting",
+        "character-rig",
+        "glb-export"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "motion2mixamo",
+      "version": "1.0.0",
+      "source": "https://github.com/MaxLiu22/Motion2MixamoRig"
+    },
+    {
+      "name": "unimate",
+      "description": "Unified text-to-motion generation model supporting arbitrary skeletal topologies (humanoids, quadrupeds, birds, dragons) with custom GLB/FBX support.",
+      "category": "game",
+      "subcategory": "animation",
+      "interface": "workflow",
+      "path": "unimate/SKILL.md",
+      "tags": [
+        "unimate",
+        "text-to-motion",
+        "arbitrary-skeleton",
+        "quadruped",
+        "glb",
+        "fbx"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "unimate",
+      "version": "1.0.0",
+      "source": "https://github.com/Friedrich-M/UniMate"
+    },
+    {
+      "name": "3d-vibe-coding",
+      "description": "Comprehensive 386-page 3D Vibe Coding handbook and demo toolset covering image-to-3D, retopology, decimation, rigging, and troubleshooting indexes.",
+      "category": "game",
+      "subcategory": "art-resources",
+      "interface": "workflow",
+      "path": "3d-vibe-coding/SKILL.md",
+      "tags": [
+        "3d-vibe-coding",
+        "retopology",
+        "decimation",
+        "rigging",
+        "troubleshooting",
+        "handbook"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "3d-vibe-coding",
+      "version": "1.0.0",
+      "source": "https://github.com/alchaincyf/3d-vibe-coding-handbook"
     }
   ]
 }

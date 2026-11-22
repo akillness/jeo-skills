@@ -1,0 +1,5 @@
+Pillow>=13,<14
+numpy>=2.5.4,<3
+scipy>=1.18.1,<2
+fonttools>=4.68.0,<5
+brotli>=1.2.1,<2

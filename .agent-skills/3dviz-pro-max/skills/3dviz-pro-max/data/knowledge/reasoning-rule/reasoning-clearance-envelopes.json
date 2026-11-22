@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-clearance-envelopes",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Model clearances as geometry, not as impressions"
+  },
+  "aliases": {
+    "en": [
+      "circulation clearance",
+      "turning space",
+      "furniture layout check"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "operations-logistics"
+  ],
+  "summary": "Represent required free space as explicit volumes and test furniture and equipment against them.",
+  "objective": "Turn a plausible-looking layout into one whose circulation can actually be verified.",
+  "applies_when": [
+    "Furniture, equipment or storage is arranged in a room or facility.",
+    "The user asks whether a space works, is usable or is accessible.",
+    "Doors, drawers or machine covers must open."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "clearance",
+    "circulation",
+    "turning space",
+    "door swing",
+    "layout",
+    "accessibility"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "architecture",
+    "layout"
+  ],
+  "intent_signals": [
+    "will a wheelchair fit",
+    "arrange the furniture",
+    "check the walkways"
+  ],
+  "example_prompts": [
+    "Arrange the studio and show the circulation space that has to stay clear.",
+    "Check whether the door swings clash with the furniture."
+  ],
+  "negative_signals": [
+    "Purely visual interior renders where usability is not claimed.",
+    "Exterior or landscape scenes with no enclosed circulation."
+  ],
+  "not_for": [
+    "Purely visual interior renders where usability is not claimed.",
+    "Exterior or landscape scenes with no enclosed circulation."
+  ],
+  "content": {
+    "principles": [
+      "Clearance is negative space with rules. If it is only implied by where objects happen to be, nothing can test it and it silently disappears during layout changes.",
+      "Some clearances are published requirements with a defined measurement state. The ADA Standards specify a 60 inch minimum diameter circular turning space, and a 32 inch minimum clear width at a doorway measured between the face of the door and the stop with a swinging door open 90 degrees, rising to 36 inches for openings deeper than 24 inches. A model that measures a doorway in its closed state is not evaluating the same quantity.",
+      "Swept volumes matter as much as static footprints, but overlap is not automatically a failure: doors are permitted to swing into turning spaces under 304.4, so each zone needs its own rule about what may enter it and when.",
+      "Clearance failures are usually invisible in a pretty render and obvious in plan, which is why the check should not rely on the hero view."
+    ],
+    "implementation": [
+      "Instantiate clearance zones as real objects in the model with a name, a source provision and an explicit list of what is permitted to occupy or sweep through them, not as an unwritten intention.",
+      "Attach swept volumes to the objects that generate them so moving a cabinet moves its drawer clearance with it.",
+      "Test overlap in the model against each zone's own permission list and report the specific pair and the overlap amount, rather than colouring the whole room red or rejecting every intersection.",
+      "Show clearances in a plan or overhead mode where the geometry is unambiguous, and let the viewer toggle them.",
+      "Where a clearance is deliberately not met, mark it and say which requirement is unmet instead of removing the zone."
+    ],
+    "observable_checks": [
+      "Move one piece of furniture into a circulation path and confirm the model reports a specific conflict.",
+      "Open every door and drawer to its measured state and check swept volumes against the permissions you declared: a door sweeping through a turning space is allowed, while a cabinet standing in the clear width of a doorway is not.",
+      "Verify the turning space by testing the actual clear diameter against surrounding geometry, and measure doorway clear width with the swinging door at 90 degrees rather than from the frame opening.",
+      "Switch to plan view; clearance problems hidden by perspective usually appear immediately."
+    ]
+  },
+  "related_ids": [
+    "recipe.studio-furniture-layout",
+    "recipe.warehouse-pick-tour",
+    "knowledge.accessible-spatial-controls"
+  ],
+  "creative_affordances": [
+    "Clearance zones can be presented subtly, as floor patterns, light or material changes, rather than as engineering overlays.",
+    "A design may claim only some requirements; scope the checked set explicitly instead of implying full compliance."
+  ],
+  "known_limits": [
+    "Authored layout guidance citing two specific accessibility dimensions; it is not an accessibility audit and omits reach ranges, thresholds and many other provisions.",
+    "The cited standard applies to United States regulated construction; other jurisdictions differ."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-ada-clearances",
+      "statement": "The ADA Accessibility Standards specify a circular turning space of 60 inches, or 1525 millimetres, minimum diameter, permit doors to swing into turning spaces, and require doorways to provide a clear width of 32 inches, or 815 millimetres, minimum measured between the face of the door and the stop with a swinging door open 90 degrees, increasing to 36 inches, or 915 millimetres, minimum for openings more than 24 inches deep.",
+      "scope": "United States accessibility standard for regulated construction. It fixes these specific dimensions and the door-swing allowance, and does not cover other jurisdictions, other clearance provisions or the reach and approach requirements a full review would need.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-ada-turning-space",
+          "locator": "304.3.1 circular turning space; 304.4 door swing"
+        },
+        {
+          "source_id": "source.reasoning-depth-ada-standards",
+          "locator": "404.2.3 clear width, measurement with the door open 90 degrees and the 36 inch requirement for deep openings"
+        }
+      ]
+    }
+  ]
+}

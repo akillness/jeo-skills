@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.gravity-contact",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Gravity and contact as an observable action"
+  },
+  "aliases": {
+    "en": [
+      "gravity contact"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "environments-dioramas"
+  ],
+  "summary": "Release a body onto a support with visible initial state, contact behavior and a reproducible reset.",
+  "objective": "Release from two declared heights and record distinct first-contact times; neither object visibly passes through the support.",
+  "tags": [
+    "physical-behavior",
+    "gravity",
+    "contact"
+  ],
+  "example_prompts": [
+    "Release a body onto a support with visible initial state, contact behavior and a reproducible reset."
+  ],
+  "content": {
+    "principles": [
+      "Choose analytic first-contact termination or solver-driven contact before animating. State authority must belong to that model.",
+      "A downward loop is insufficient evidence: expose an action whose outcome depends on the selected initial conditions."
+    ],
+    "implementation": [
+      "Declare distance and time units, gravity, body shape, floor shape and initial clearance. Render the contact geometry as an optional overlay.",
+      "For solver contact, give the falling item a dynamic body and a non-sensor collider; assign the support a collision shape.",
+      "Use a fixed simulation step with bounded catch-up and document pause behavior. Reset pose, velocities, clock and accumulated steps."
+    ],
+    "observable_checks": [
+      "Release from two declared heights and record distinct first-contact times; neither object visibly passes through the support.",
+      "Pause freezes model time; reset then release reproduces the initial configuration within a declared tolerance."
+    ]
+  },
+  "known_limits": [
+    "Contact tolerances, bounce and friction require explicit configuration; this record supplies no universal coefficients.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+  ],
+  "related_ids": [
+    "recipe.projectile-trajectory",
+    "recipe.fantasy-village-diorama",
+    "knowledge.three-rigid-body-adapter"
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-gravity-contact",
+      "statement": "Dynamic Rapier bodies respond to forces and contacts; a body without a collider has no shape for contact response.",
+      "scope": "Rapier dynamics boundary; analytic stop-on-contact is a separate authored option.",
+      "source_refs": [
+        {
+          "source_id": "source.rapier-rigid-bodies",
+          "locator": "Rigid-body type; opening collider explanation"
+        }
+      ]
+    }
+  ]
+}

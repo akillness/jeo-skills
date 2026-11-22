@@ -1,0 +1,109 @@
+{
+  "id": "knowledge.section-plane-clipping-adapter",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Clipping planes for section inspection"
+  },
+  "aliases": {
+    "en": [
+      "localClippingEnabled",
+      "clippingPlanes",
+      "section plane"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "anatomy-structures",
+    "products-assemblies"
+  ],
+  "summary": "Cut a view with world-space planes on the renderer or a material, and treat the cut as inspection rather than a solid or a physical slice.",
+  "objective": "Enabling a plane hides the negative half-space of assigned materials; disabling localClippingEnabled ignores object planes; the uncut assembly pose is unchanged.",
+  "applies_when": [
+    "A house, machine or anatomical model must be opened along a plane without exploding parts.",
+    "Global and per-object clips need to be distinguished."
+  ],
+  "subject_terms": [
+    "clipping plane",
+    "section plane",
+    "localClippingEnabled",
+    "clipShadows",
+    "clipIntersection",
+    "world-space plane"
+  ],
+  "tags": [
+    "tool-adapter",
+    "clipping",
+    "inspection",
+    "section"
+  ],
+  "intent_signals": [
+    "section the building",
+    "cutaway plane I can drag",
+    "see inside the housing"
+  ],
+  "example_prompts": [
+    "Drag a world-space plane through a house so interior walls appear, without moving the assembly.",
+    "Clip one part locally while leaving the rest intact, with localClippingEnabled on."
+  ],
+  "negative_signals": [
+    "Hiding triangles and calling the hole a designed interior.",
+    "Using a clip plane as a boolean that updates physics colliders by default."
+  ],
+  "not_for": [
+    "Watertight CAD booleans, FEM sections or medical segmentation accuracy.",
+    "WebGPU ClippingGroup, which the docs restrict to WebGPURenderer."
+  ],
+  "content": {
+    "principles": [
+      "A clipping plane is a rendering test: points with negative signed distance to a world-space plane are not drawn. The assembly transform stays put.",
+      "Renderer.clippingPlanes apply globally. Material.clippingPlanes apply to that material and require localClippingEnabled.",
+      "A clip does not cap the solid, does not author interiors, and does not slice colliders unless you build those separately."
+    ],
+    "implementation": [
+      "Create THREE.Plane(normal, constant) in world space. Assign globally on the renderer or per material. Set renderer.localClippingEnabled true for material planes.",
+      "Keep a rest assembly. The plane is an inspection parameter, not a cumulative explode offset.",
+      "If shadows must match the cut, set material.clipShadows. If a cap is required, author a section mesh; hidden fragments are not a cap.",
+      "To disable global clipping, clear renderer.clippingPlanes. To disable material-level clipping, clear the relevant material planes or set renderer.localClippingEnabled=false; that flag does not disable global planes. Reset restores the declared uncut configuration and original assembly pose."
+    ],
+    "observable_checks": [
+      "In local-only mode with no global renderer planes, moving a material plane reveals interior faces of its assigned objects; objects without that local plane remain whole. Global planes instead affect all rendered objects.",
+      "With localClippingEnabled=false, material planes have no effect while global renderer planes still clip. Re-enable local clipping to restore the material cuts, and clear global planes to remove global cuts.",
+      "At the default assembly pose, disabling the plane returns every vertex to the same world position as before the inspection."
+    ]
+  },
+  "related_ids": [
+    "knowledge.cutaway-explode",
+    "recipe.courtyard-house-cutaway",
+    "knowledge.object-isolation"
+  ],
+  "creative_affordances": [
+    "Tinted caps, hatch fills or ghosted far sides are presentation on top of the same plane.",
+    "Multiple planes with clipIntersection are a layout choice for a corner cut."
+  ],
+  "known_limits": [
+    "Clipping is a WebGL fragment discard; it does not certify watertight interiors or anatomical layers.",
+    "ClippingGroup is documented for WebGPURenderer only and is not this adapter.",
+    "Authored reusable guidance; no runtime artifact has been observed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-section-plane-clipping-adapter",
+      "statement": "Material.clippingPlanes are world-space THREE.Plane objects that clip points with negative signed distance, and they require WebGLRenderer.localClippingEnabled to be true. WebGLRenderer.clippingPlanes apply globally in world space. clipShadows clips shadows according to those material planes.",
+      "scope": "Three.js WebGL clipping configuration; not solid reconstruction or physics cutting.",
+      "source_refs": [
+        {
+          "source_id": "source.three-material-clipping",
+          "locator": "clippingPlanes; clipShadows; localClippingEnabled required for material planes"
+        },
+        {
+          "source_id": "source.shared-depth-three-webglrenderer",
+          "locator": "clippingPlanes; localClippingEnabled"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed"
+}

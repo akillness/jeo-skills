@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-radius-power-law-scaling",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Fourth-power radius scaling checked by ratios"
+  },
+  "aliases": {
+    "en": [
+      "resistance scaling check",
+      "power law exponent check"
+    ]
+  },
+  "direction_ids": [
+    "physiology-biomechanics"
+  ],
+  "summary": "Verify a fourth-power resistance relation with radius ratios, a declared control variable and rejected invalid inputs.",
+  "objective": "Halving the radius multiplies the computed resistance by sixteen, one independently computed absolute case matches the display, and the panel states which variable is held constant.",
+  "applies_when": [
+    "A model compares an algebraic relation across parameter values rather than simulating flow.",
+    "The relation contains a high power that makes unit and radius-versus-diameter mistakes invisible in a single number.",
+    "A viewer can move a parameter toward zero or a nonphysical value."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "scaling",
+    "units",
+    "algebraic-model"
+  ],
+  "subject_terms": [
+    "resistance",
+    "radius",
+    "viscosity",
+    "volume flow",
+    "pressure difference",
+    "exponent"
+  ],
+  "intent_signals": [
+    "check the radius exponent in this resistance demo",
+    "is it holding flow or pressure constant"
+  ],
+  "example_prompts": [
+    "Check the fourth-power radius behaviour of this vessel resistance comparison."
+  ],
+  "negative_signals": [
+    "diagnosing a patient",
+    "pulsatile or branching network modelling"
+  ],
+  "content": {
+    "principles": [
+      "Ratios and absolute values check different things: a ratio isolates the exponent while cancelling every constant factor, so a radius-for-diameter substitution, which shifts the result by a factor of sixteen and leaves the exponent at minus four, is invisible to ratios and needs one independently computed absolute case.",
+      "A comparison needs a declared control variable: holding volume flow constant and holding pressure difference constant give different visible answers, and a display implying both is wrong.",
+      "Inputs have a valid domain; radius, length and viscosity must be positive and finite, and zero radius is a division by zero rather than an infinitely resistive vessel to draw."
+    ],
+    "implementation": [
+      "Compute resistance from the declared tube relation with all inputs in one consistent unit system, and print the units beside every number.",
+      "Evaluate resistance ratios for the radius pairs r and half r, and r and double r, at fixed length and viscosity, then compare resistance across several radii on a logarithmic scale to read the exponent.",
+      "Compute one absolute case by hand from a stated radius, length and viscosity with their units and compare it with the displayed value, and state whether the input field is a radius or a diameter, because that substitution shifts the absolute value by a factor of sixteen without moving the exponent.",
+      "Run both modes explicitly, fixed pressure difference with flow derived and fixed flow with pressure difference derived, and label which variable is held in each panel.",
+      "Feed the boundary and invalid inputs: zero radius, negative viscosity, a non-numeric entry, and a radius small enough to overflow the reciprocal."
+    ],
+    "observable_checks": [
+      "Halving the radius multiplies computed resistance by sixteen and doubling divides it by sixteen, within the relative tolerance you declare; for well-conditioned finite inputs in the normal double-precision range this arithmetic stays accurate far beyond one part in a million, so a visible deviation there is a modelling error rather than roundoff. That expectation does not extend to the deliberately extreme inputs below.",
+      "The exponent read from the logarithmic comparison is minus four within the same tolerance; a value near minus two means the modelled dependence itself is wrong, an area-like square instead of the fourth power, since a radius-for-diameter substitution would leave this slope unchanged.",
+      "The independently computed absolute case matches the displayed value with matching units, and the panel states whether its input is a radius or a diameter.",
+      "Nonpositive or non-numeric inputs are rejected with a message, extreme inputs that overflow the reciprocal are reported as out of range rather than shown as a number, and no panel presents both flow and pressure difference as held constant at the same time."
+    ]
+  },
+  "known_limits": [
+    "Checks an ideal steady laminar rigid-tube relation; it makes no claim about blood, compliant vessels or any clinical prediction.",
+    "Authored verification guidance; no computation was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.vessel-radius-resistance",
+    "recipe.nozzle-continuity",
+    "recipe.hydrostatic-depth-pressure"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-poiseuille-resistance-radius",
+      "statement": "In the ideal tube relation resistance equals eight times viscosity times length divided by pi times the fourth power of the radius, so a vessel constricting to half its radius increases resistance sixteen times.",
+      "scope": "Steady laminar Newtonian flow in an ideal cylindrical tube as presented in the cited physiology section; real vessels and blood need further assumptions.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-resistance",
+          "locator": "Poiseuille equation, rearranged resistance equation and the one-half radius example"
+        }
+      ]
+    }
+  ]
+}

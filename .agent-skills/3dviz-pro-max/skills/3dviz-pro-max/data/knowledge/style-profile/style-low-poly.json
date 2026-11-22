@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-low-poly",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Low-poly shape economy"
+  },
+  "aliases": {
+    "en": [
+      "low poly",
+      "low polygon scene",
+      "simple polygonal forms",
+      "poly art",
+      "flat-shaded mesh"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies"
+  ],
+  "summary": "Spend geometric detail on the contour and meaningful part boundaries rather than distributing it evenly.",
+  "objective": "The subject remains recognizable from multiple views, and simplification has not removed a handle, support or required joint.",
+  "tags": [
+    "style-profile",
+    "geometry-aesthetic",
+    "low-poly"
+  ],
+  "subject_terms": [
+    "low poly",
+    "low polygon scene",
+    "simple polygonal forms",
+    "geometry aesthetic"
+  ],
+  "intent_signals": [
+    "Use low-poly geometry",
+    "Simplify polygons while retaining meaningful parts"
+  ],
+  "example_prompts": [
+    "Build a low-poly product viewer with simplified panels and a clearly modeled hinge."
+  ],
+  "content": {
+    "principles": [
+      "Spend geometric detail on the contour and meaningful part boundaries rather than distributing it evenly."
+    ],
+    "implementation": [
+      "Use fewer, deliberately placed faces on broad masses; retain enough segments around turning joints and focal outlines to express their shapes.",
+      "Try a small palette with broad light separation; choose smooth or flat surface shading independently of polygon count.",
+      "Frame the strongest outline first, then orbit slowly to inspect corners; animate articulated groups instead of relying on dense surface deformation.",
+      "Budget 800-2500 triangles for a hero prop and 120-400 for background instances; keep 8-12 segments around a turning joint and 3-5 along a straight run.",
+      "Set flatShading true with a 30 degree normal split so facets come from real normals rather than a map, and cap each object at 5 flat colours applied as vertex colours."
+    ],
+    "observable_checks": [
+      "The subject remains recognizable from multiple views, and simplification has not removed a handle, support or required joint."
+    ]
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at renderer.toneMappingExposure 1.05; re-tune intensities and fog density under a different tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with toon/cel shading, clay or painted finishes; low-poly does not require every surface to appear faceted."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Low-poly reads only when each plane resolves as one unmixed value, so the rig uses a single hard 55 degree key at a 3.5:1 ratio and exactly three roughness values - gradients and normal maps would blur the facet borders that the geometry budget paid for. The palette is deliberately saturated and only five colours wide because with no texture detail the colour blocks carry all of the subject identification.",
+    "values": {
+      "feeling": [
+        "crisp",
+        "open",
+        "graphic"
+      ],
+      "palette": [
+        {
+          "hex": "#16324f",
+          "role": "deep water / shadow plane"
+        },
+        {
+          "hex": "#2e7d6b",
+          "role": "mid foliage mass"
+        },
+        {
+          "hex": "#7fc4a0",
+          "role": "lit foliage / upper plane"
+        },
+        {
+          "hex": "#f2d15c",
+          "role": "sunlit ground"
+        },
+        {
+          "hex": "#e0603c",
+          "role": "single accent (roof, marker)"
+        }
+      ],
+      "value_structure": "40/40/20 dark/mid/light; every plane is one flat value, no gradients",
+      "saturation_rule": "background instances <= 55% saturation; the single accent colour up to 85%",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#2b5f8f",
+        "horizon": "#cfe7f2"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#cfe7f2",
+        "density": 0.012
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#fff2d0",
+          "intensity": 3.4,
+          "elevation_deg": 55,
+          "azimuth_deg": 300,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#9ec8e8",
+          "ground": "#56603f",
+          "intensity": 0.9
+        },
+        "rim": {
+          "type": "none"
+        },
+        "ratio": "key:fill ~ 3.5:1; no rim, because a third value on a flat plane reads as an error"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.05
+      },
+      "camera": {
+        "fov_deg": 38,
+        "height_m": 2.2,
+        "pitch_deg": -14,
+        "orbit": {
+          "minPolar_deg": 50,
+          "maxPolar_deg": 85,
+          "minDist_m": 3,
+          "maxDist_m": 26
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.6,
+          0.9
+        ],
+        "metalness": [
+          0.0,
+          0.05
+        ],
+        "notes": "flat-shaded normals, no normal or roughness maps; three roughness values only (0.6 painted, 0.75 stone, 0.9 ground)"
+      },
+      "motion": {
+        "sway_period_s": [
+          3.0,
+          4.5
+        ],
+        "ease": "sine in-out",
+        "hold_ms": 200
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.1,
+          "strength": 0.12,
+          "radius": 0.35
+        },
+        "vignette": 0.15,
+        "grain": 0.0,
+        "dof": "off"
+      },
+      "signature_technique": "one hard 55 degree key with flatShading so each authored plane resolves to a single value and the contour does the describing",
+      "never": [
+        "smooth-shaded normals on the hero",
+        "gradient or noise textures",
+        "untinted white ambient light",
+        "more than five colours on one object",
+        "uniform grid placement of instances"
+      ]
+    }
+  }
+}

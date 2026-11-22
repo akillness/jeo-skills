@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.sectional-depth-composition",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "composition-profile",
+  "title": {
+    "en": "Sectional depth composition"
+  },
+  "aliases": {
+    "en": [
+      "cutaway depth staging",
+      "section foreground middle background",
+      "layered section narrative"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "anatomy-structures",
+    "products-assemblies"
+  ],
+  "summary": "Compose a section as foreground edge, cut surface, revealed interior and retained context so depth relationships stay readable while the intact model and section state remain recoverable.",
+  "objective": "A cutaway tells where the cut occurs, what material it crosses and how the revealed parts continue in depth without presenting renderer clipping as a physical removal.",
+  "applies_when": [
+    "A section or cutaway must explain nested spatial relationships.",
+    "A clipping plane alone produces a technically open view but weak depth order or ambiguous cut surfaces."
+  ],
+  "subject_terms": [
+    "sectional depth",
+    "cut surface hierarchy",
+    "cutaway composition",
+    "foreground section edge",
+    "revealed interior"
+  ],
+  "tags": [
+    "composition-profile",
+    "section",
+    "cutaway",
+    "depth"
+  ],
+  "intent_signals": [
+    "compose a cutaway with readable depth layers",
+    "show foreground cut edge and interior context",
+    "section view without hollow paper"
+  ],
+  "example_prompts": [
+    "Compose a house section with cut walls, room depth and an exterior context strip.",
+    "Stage an anatomical section so the cut surface, deeper organs and retained body outline remain distinguishable."
+  ],
+  "negative_signals": [
+    "Deleting the front geometry and losing the intact state.",
+    "Using identical contrast for cut surfaces and deep background parts."
+  ],
+  "not_for": [
+    "The renderer API for clipping planes and caps.",
+    "Measured scientific slicing or segmentation validation."
+  ],
+  "content": {
+    "principles": [
+      "Treat the section plane as a compositional boundary. Give the cut surface, first revealed layer, deeper context and exterior remainder distinct but related roles.",
+      "Preserve enough continuation cues—edges, supports, lumens, routes or silhouette—to show how revealed parts connect beyond the cut.",
+      "Decide whether the view is an explanatory lens over intact lighting/physics or depicts removed material; align shadows, caps and language with that decision."
+    ],
+    "implementation": [
+      "In Blender, keep intact source collections and author section-ready interiors, thickness and candidate cameras. Use a duplicate presentation collection only when destructive authoring is unavoidable and label it as such.",
+      "In Three.js, delegate plane mechanics to the related clipping adapter. Compose a cap/edge treatment, depth contrast, context shell and label exclusions around the runtime plane; glTF does not transport the active section state.",
+      "Provide a plane indicator or section title and reset. Do not let clipped render visibility change quantities, colliders or source geometry unless a separate model operation owns that change."
+    ],
+    "observable_checks": [
+      "Move the section through a junction: the cut location and material thickness remain legible, deeper parts do not masquerade as cut faces, and continuity cues persist.",
+      "Disable the section and compare world transforms, quantities and colliders with the intact state; they remain unchanged for a display-only section.",
+      "From the authored camera and one oblique inspection angle, the viewer can distinguish foreground cut, revealed layer and retained context without relying on color alone."
+    ]
+  },
+  "related_ids": [
+    "knowledge.section-plane-clipping-adapter",
+    "knowledge.reasoning-section-plane-versus-deletion",
+    "knowledge.signed-field-section"
+  ],
+  "creative_affordances": [
+    "Use poche, hatching, glow edges, ghosted shells or restrained exploded offsets as long as their meaning is stated.",
+    "A fixed dollhouse cut can be stronger than a movable plane for a single narrative shot."
+  ],
+  "known_limits": [
+    "Clipping does not create caps or reconstruct hidden interiors; those require authored geometry or a separate rendering method.",
+    "No section, shadow, cap or reset behavior was rendered."
+  ],
+  "claims": [
+    {
+      "id": "claim.experience-section-clipping-boundary",
+      "statement": "Three.js material clipping planes are world-space planes that discard negative signed-distance fragments, require WebGLRenderer local clipping for material planes, and expose separate intersection and shadow-clipping controls.",
+      "scope": "Render clipping only; capping, depth hierarchy, object continuity and collider behavior are outside this API.",
+      "source_refs": [
+        {
+          "source_id": "source.three-material-clipping",
+          "locator": "clippingPlanes; clipIntersection; clipShadows; localClippingEnabled requirement"
+        }
+      ]
+    }
+  ]
+}

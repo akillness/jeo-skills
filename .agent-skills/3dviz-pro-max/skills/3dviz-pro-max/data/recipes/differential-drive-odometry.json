@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "id": "recipe.differential-drive-odometry",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Differential-drive command and odometry view"
+  },
+  "aliases": {
+    "en": [
+      "two wheel robot",
+      "mobile robot odometry"
+    ]
+  },
+  "direction_ids": [
+    "robotics-control"
+  ],
+  "summary": "Distinguish requested motion, applied wheel motion and estimated pose in a teaching mobile robot.",
+  "objective": "Build a two-wheel robot view with commanded motion, wheel feedback and an odometry trail shown separately.",
+  "tags": [
+    "differential drive",
+    "wheel radius",
+    "wheel separation"
+  ],
+  "subject_terms": [
+    "differential drive",
+    "wheel radius",
+    "wheel separation",
+    "odometry",
+    "command timeout"
+  ],
+  "intent_signals": [
+    "compare command and feedback",
+    "inspect a mobile robot turn"
+  ],
+  "example_prompts": [
+    "Build a two-wheel robot view with commanded motion, wheel feedback and an odometry trail shown separately.",
+    "Inject a clearly synthetic wheel-feedback mismatch and show why commanded travel is not a measurement."
+  ],
+  "entities": [
+    {
+      "name": "Mobile base",
+      "guidance": "Create chassis, two coaxial driven wheels and passive support; show wheel-radius and axle-separation brackets."
+    },
+    {
+      "name": "Pose indicators",
+      "guidance": "Use separate actual-model and estimated-pose outlines, plus heading arrow and trail legend."
+    },
+    {
+      "name": "Command panel",
+      "guidance": "Show command age, applied speed and feedback mode with explicit units."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Mobile base",
+      "structure": "Create chassis, two coaxial driven wheels and passive support; show wheel-radius and axle-separation brackets.",
+      "material": "Matte chassis, rubber-looking tires and metal-looking hubs."
+    },
+    {
+      "family": "Pose indicators",
+      "structure": "Use separate actual-model and estimated-pose outlines, plus heading arrow and trail legend.",
+      "material": "Solid body for model pose and dashed outline for estimate."
+    },
+    {
+      "family": "Command panel",
+      "structure": "Show command age, applied speed and feedback mode with explicit units.",
+      "material": "Flat readable values attached to the base frame legend."
+    }
+  ],
+  "state_contract": {
+    "model": "Teaching adapter state separates requested body twist, limited wheel commands, synthetic wheel feedback and integrated pose estimate; declare planar convention, positive wheel dimensions and whether feedback or commands drive odometry. The wheel-to-body map is explicit: with wheel radius r, wheel separation b (the cited source writes the separation as 2d, so b = 2d) and signed wheel angular rates omega_L and omega_R positive for forward motion, the body twist is v = r (omega_L + omega_R) / 2 along the chassis x axis and omega = r (omega_R - omega_L) / b about the chassis z axis. Pose is integrated in the declared planar frame as x += v cos(theta) dt, y += v sin(theta) dt, theta += omega dt, evaluating cos and sin at the midpoint theta + omega dt / 2 rather than at the step start; the order (twist first, then integrate, then publish) is part of the contract because integrating with the pre-update heading biases every turn outward.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Command forward and turn velocity.",
+      "Toggle declared synthetic feedback mismatch.",
+      "Expire command, stop and reset pose/trails."
+    ]
+  },
+  "invariants": [
+    "Feedback-mode odometry uses feedback values rather than silently substituting requested commands.",
+    "Stale commands trigger the configured stop policy.",
+    "Reset clears pose estimate, wheel history and command age together.",
+    "Odometry integrates the same wheel rates it displays: v and omega are recomputed from omega_L and omega_R by the declared equations rather than copied from the requested body twist, so a feedback mismatch changes the estimate.",
+    "The integration order is fixed and stated: wheel rates to body twist, body twist to pose over one declared dt with the midpoint heading, then publish. Straight driving (omega_L = omega_R) must leave theta exactly unchanged."
+  ],
+  "motion_guidance": [
+    "Bound applied velocity, acceleration and turn rate; derive wheel spin from the same applied wheel state.",
+    "A companion renderer handles trail and chassis transforms; the controller/odometry adapter owns motion state."
+  ],
+  "known_limits": [
+    "Educational synthetic adapter, not a running ROS hardware controller or calibrated localization system.",
+    "No slip/contact identification, uncertainty calibration or obstacle-avoidance guarantee.",
+    "Cited Rolling development API must be checked against a chosen implementation version.",
+    "The scalar forms v = r (omega_L + omega_R) / 2 and omega = r (omega_R - omega_L) / b are the standard reduction of the cited 3x2 F matrix, which the source states as twist components per unit wheel velocity rather than as these two equations; they assume rolling without slip, equal wheel radii and a rigid separation.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [
+    {
+      "id": "claim.differential-drive-odometry",
+      "statement": "The documented differential-drive controller translates body velocity commands to wheel commands; feedback supplies odometry unless open-loop mode uses commands, and command timeout can stop motion.",
+      "scope": "ros2_control Rolling documentation read 2026-09-07; the recipe borrows these responsibility boundaries and does not claim a working hardware integration.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-differential-drive",
+          "locator": "Description, Feedback, Other features, wheel_separation, wheel_radius and open_loop parameters"
+        }
+      ]
+    },
+    {
+      "id": "claim.differential-drive-wheel-twist-matrix",
+      "statement": "The cited section defines odometry as \"the process of estimating the chassis configuration from wheel motions\" and gives the differential-drive wheel-to-chassis map as a 3-by-2 matrix F relating wheel-angle increments to the planar body twist V_b: the chassis frame is midway between the wheels, the wheel radius is r, and \"the planar twist provided by unit velocity of the left wheel has minus-r over 2d in angular velocity and r over 2 in the x_b direction\", with the right wheel the same but with an opposite angular component. The twist is then integrated over the timestep with the matrix exponential and expressed in the space frame, and \"odometry errors tend to accumulate over time\".",
+      "scope": "Structure, parameters and integration order of differential-drive odometry as printed in the cited video transcript, which uses half-separation d. The page gives no numeric wheel radius, separation or timestep, and does not print the reduced scalar forms used by this recipe; those are the ordinary algebraic restatement of the quoted F columns with b = 2d, and the Euler pose update with a midpoint heading is an authored substitute for the matrix exponential.",
+      "source_refs": [
+        {
+          "source_id": "source.modern-robotics-wheeled-odometry",
+          "locator": "13.4 Odometry transcript: \"Odometry is the process of estimating the chassis configuration from wheel motions\"; \"For a car or a diff-drive, the chassis frame {b} is midway between the wheels. The radius of the wheels is r\"; \"the planar twist provided by unit velocity of the left wheel has minus-r over 2d in angular velocity and r over 2 in the x_b direction\"; \"The 3-by-2 F matrix relates the wheel increments to the chassis twist V_b\"; \"odometry errors tend to accumulate over time\""
+        }
+      ]
+    }
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "The equations restate the cited 3x2 F matrix in its usual scalar form (claim.differential-drive-wheel-twist-matrix) with b = 2d, but the numbers are not: the cited page gives no wheel radius, separation or timestep, so r, b and dt here are illustrative small-robot values chosen to make the worked example easy to check by hand and to keep omega dt small enough that the midpoint-heading Euler step stands in for the matrix exponential. The pose update itself is an authored first-order substitute for that exponential. Tune r, b and dt to the modelled base; the equations are not tunable.",
+    "values": {
+      "parameters": {
+        "wheel_radius": {
+          "value": 0.05,
+          "unit": "m"
+        },
+        "wheel_separation": {
+          "value": 0.3,
+          "unit": "m"
+        },
+        "timestep": {
+          "value": 0.01,
+          "unit": "s"
+        }
+      },
+      "equations": [
+        "v = r (omega_L + omega_R) / 2",
+        "omega = r (omega_R - omega_L) / b, with b the wheel separation (b = 2d in the cited notation)",
+        "theta_mid = theta + omega dt / 2   (recommended; use theta itself only for a declared first-order variant)",
+        "x += v cos(theta_mid) dt",
+        "y += v sin(theta_mid) dt",
+        "theta += omega dt",
+        "integration order: wheel rates -> body twist -> pose over one dt -> publish"
+      ],
+      "worked_example": {
+        "inputs": "omega_L = 10 rad/s, omega_R = 12 rad/s, r = 0.05 m, b = 0.3 m, dt = 0.01 s, starting pose (x, y, theta) = (0, 0, 0)",
+        "expected": "v = 0.55 m/s, omega = 0.3333 rad/s (turn radius v / omega = 1.65 m); after one step with the midpoint heading theta_mid = 0.001667 rad the pose is x = 0.005500 m, y = 9.17e-6 m, theta = 0.003333 rad",
+        "derivation": "v = 0.05 (10 + 12) / 2 = 0.55; omega = 0.05 (12 - 10) / 0.3 = 0.1 / 0.3 = 0.3333; theta_mid = 0 + 0.3333 * 0.01 / 2 = 0.001667; x = 0.55 cos(0.001667) 0.01 = 0.0055; y = 0.55 sin(0.001667) 0.01 = 9.17e-6; theta = 0 + 0.3333 * 0.01 = 0.003333"
+      },
+      "tolerance": {
+        "rule": "Compare integrated pose against the analytic arc for constant wheel rates using the default tolerance rule (knowledge.validation-default-tolerance-rule) unless this record states its own; the first-order step carries a truncation error of order omega dt squared, so state that regime with any position comparison.",
+        "straight_line_heading": "exact: omega_L = omega_R must leave theta bit-identical"
+      }
+    }
+  },
+  "physical_contract": {
+    "model": "controlled-locomotion",
+    "scope": "Planar teaching robot with explicit command/feedback separation.",
+    "state": [
+      "body pose",
+      "wheel state",
+      "command age",
+      "odometry pose"
+    ],
+    "colliders": [
+      "Chassis footprint and authored ground bounds."
+    ],
+    "driving": [
+      "Limited body commands converted to wheel motion by declared adapter."
+    ],
+    "contact": [
+      "Flat support only; stop at scene boundary, no wheel contact solver."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Timeout stop; wheel mismatch changes estimate under feedback mode; reset clears both trails."
+    ]
+  }
+}

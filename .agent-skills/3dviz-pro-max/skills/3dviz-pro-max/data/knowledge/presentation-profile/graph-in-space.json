@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.graph-in-space",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "presentation-profile",
+  "title": {
+    "en": "Spatial graph with explicit relationship meaning"
+  },
+  "aliases": {
+    "en": [
+      "3D graph",
+      "edge routing"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "algorithms-data-structures",
+    "operations-logistics"
+  ],
+  "summary": "Use depth to organize a network while keeping edge direction, grouping and algorithm state readable.",
+  "objective": "Use depth to organize a network while keeping edge direction, grouping and algorithm state readable.",
+  "subject_terms": [
+    "3D graph",
+    "edge routing",
+    "network layout"
+  ],
+  "tags": [
+    "presentation-profile",
+    "graph-in-space"
+  ],
+  "intent_signals": [
+    "network layout"
+  ],
+  "example_prompts": [
+    "Use spatial graph with explicit relationship meaning for the scene, preserving its model and user controls."
+  ],
+  "content": {
+    "principles": [
+      "Give spatial grouping a declared purpose; do not imply that geometric distance is measured latency or similarity unless it is.",
+      "A simpler layered view may communicate a dense graph better than an arbitrary cloud."
+    ],
+    "implementation": [
+      "Separate node identity, graph connectivity and chosen layout positions.",
+      "Encode edge direction consistently and make crossings selectable or inspectable.",
+      "Highlight algorithm state through a separate channel from structural groups, with an optional flat view."
+    ],
+    "observable_checks": [
+      "Changing layout preserves node IDs, edge endpoints and algorithm results.",
+      "An inspected edge states its direction and relationship meaning."
+    ]
+  },
+  "related_ids": [
+    "recipe.service-graph"
+  ],
+  "creative_affordances": [
+    "Adapt the layout, visual treatment and timing to the task; these are reusable design proposals, not mandatory templates."
+  ],
+  "known_limits": [
+    "Authored interaction/presentation guidance; no new scientific claim, accessibility certification or runtime verification is asserted."
+  ],
+  "claims": []
+}

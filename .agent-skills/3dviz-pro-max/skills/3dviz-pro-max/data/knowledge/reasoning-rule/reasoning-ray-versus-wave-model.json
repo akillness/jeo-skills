@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-ray-versus-wave-model",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Pick the optical model the scene can justify"
+  },
+  "aliases": {
+    "en": [
+      "geometric optics",
+      "wave optics",
+      "model validity"
+    ]
+  },
+  "direction_ids": [
+    "waves-optics-fields"
+  ],
+  "summary": "Use rays where features are much larger than the wavelength and waves where interference is the subject, and never mix them silently.",
+  "objective": "Choose an optical model whose validity condition the scene actually satisfies.",
+  "applies_when": [
+    "Light interacts with lenses, interfaces, slits, apertures or films.",
+    "The scene shows both ray paths and wave phenomena.",
+    "A user changes a feature size relative to the wavelength."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "ray model",
+    "geometric optics",
+    "wave optics",
+    "wavelength",
+    "interference",
+    "validity"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "optics",
+    "modelling"
+  ],
+  "intent_signals": [
+    "trace the rays through the lens",
+    "show the interference pattern",
+    "why do rays not explain this"
+  ],
+  "example_prompts": [
+    "Trace rays through the lens and say where the ray model stops working.",
+    "Show interference and explain why rays cannot describe it."
+  ],
+  "negative_signals": [
+    "Purely artistic light effects with no optical claim.",
+    "Radiometric rendering questions, which concern energy transport rather than these models."
+  ],
+  "not_for": [
+    "Purely artistic light effects with no optical claim.",
+    "Radiometric rendering questions, which concern energy transport rather than these models."
+  ],
+  "content": {
+    "principles": [
+      "The ray model treats light as travelling in straight lines that change direction at interfaces, and it is the appropriate description when light interacts with objects several times larger than its wavelength.",
+      "Interference, diffraction and thin-film colour are wave phenomena. Drawing them with rays produces an image that cannot be explained by the model it appears to use.",
+      "Mixing the two in one picture without saying so leaves the viewer unable to tell which parts are ray results and which are wave results, and invites wrong generalisation.",
+      "The transition is itself a subject: showing an aperture shrinking towards the wavelength scale is a strong way to show where geometric optics fails."
+    ],
+    "implementation": [
+      "State the model in the scene, along with the feature sizes and the wavelength being assumed.",
+      "Keep ray results and wave results visually distinct, and label any composite view.",
+      "Where both models appear, keep their provenance legible. Separate panels are the simplest way; a single labelled overlay is equally acceptable when each element says which model produced it. What is not acceptable is an unlabelled composite that invites the viewer to attribute wave features to the ray construction.",
+      "Let the viewer change the feature size relative to the wavelength and observe where the ray description stops being adequate.",
+      "Restrict claims to the physics your method actually includes rather than to its name: a purely geometric ray construction says nothing about fringe spacing, while methods also called ray tracing may carry interference, polarisation or spectral terms. State the included effects."
+    ],
+    "observable_checks": [
+      "Compare the feature size in the scene with the stated wavelength and confirm the chosen model matches the regime.",
+      "Check that no fringes or diffraction appear in a purely ray-based view.",
+      "Shrink an aperture towards the wavelength scale and confirm the scene reports the model boundary.",
+      "Confirm labels distinguish ray-derived and wave-derived elements."
+    ]
+  },
+  "related_ids": [
+    "recipe.planar-refraction-ray",
+    "recipe.standing-string-modes"
+  ],
+  "creative_affordances": [
+    "Stylised light effects for atmosphere are fine when separated from the modelled optics.",
+    "Deliberate exaggeration of fringe spacing or ray divergence helps teaching when disclosed."
+  ],
+  "known_limits": [
+    "Authored model-selection guidance citing the validity condition for the ray model; it does not implement either model.",
+    "Polarisation, dispersion and coherence are not addressed by this rule."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-ray-model-validity",
+      "statement": "The ray model describes light as travelling in straight lines that change direction when interacting with materials, and geometric optics applies when light interacts with objects several times larger than its wavelength, so that wave characteristics are negligible in those situations.",
+      "scope": "Validity boundary between geometric and wave optics; it does not specify a precise threshold for a given configuration.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-openstax-propagation-of-light",
+          "locator": "1.1, ray model and the condition on object size relative to wavelength"
+        }
+      ]
+    }
+  ]
+}

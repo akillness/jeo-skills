@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-cart",
+  "record_revision": 3,
+  "asset": "templates/kits/props/cart.js",
+  "asset_sha256": "b92cb9abc42d571cde6c44a1808fb67036e874d1bc14b4c9a34becf447dc5a9e",
+  "params": {
+    "width": 1.7,
+    "depth": 0.98,
+    "wheelRadius": 0.44,
+    "seed": 1,
+    "planks": 6,
+    "sideHeight": 0.34
+  },
+  "tier": "T2",
+  "kit": {
+    "blueprint": "knowledge.blueprint-cart",
+    "module": "../props/cart.js",
+    "params": {
+      "width": 1.7,
+      "depth": 0.98,
+      "wheelRadius": 0.44,
+      "seed": 1,
+      "planks": 6,
+      "sideHeight": 0.34
+    },
+    "tier": "T2",
+    "surface": {
+      "seed": 1,
+      "size": 1024,
+      "materials": 9,
+      "unmapped": [],
+      "uv": [
+        "world",
+        "normalised"
+      ],
+      "ms": 116.7,
+      "ao": {
+        "vertices": 2762,
+        "casts": 11869,
+        "ms": 68.2,
+        "skipped": null
+      }
+    },
+    "triangles": 2592,
+    "bounds_m": {
+      "min": [
+        -2.251513095855713,
+        1.3351440453224228e-08,
+        -0.7449999988079071
+      ],
+      "max": [
+        0.895000000372529,
+        0.9440000017881395,
+        0.8073081086575985
+      ],
+      "size": [
+        3.146513096228242,
+        0.943999988436699,
+        1.5523081074655056
+      ]
+    },
+    "fit_distance_m": 5.3116,
+    "view_distances_m": {
+      "far": 12.7479,
+      "mid": 6.3739,
+      "close": 4.1431,
+      "detail": 1.0743
+    },
+    "sockets": [
+      "bed",
+      "yoke",
+      "axle",
+      "tail"
+    ],
+    "detail_socket": "bed",
+    "animated": true,
+    "colliders": [
+      "bed",
+      "wheels"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "1521fb661092d65b5774918e4da8e6965d07121614c097031a430e483dfb04ff",
+    "mid.png": "05276fa793378637774d4a8cf01402d27875ecc638ebde7a106506c8132643e8",
+    "close.png": "32f954c4fcd72c50e84daca08277a6dc88b899290070d90f545810c6ba74ece2",
+    "detail.png": "3c9d6bffd4e228e7ef6fe7f7b93ce9ca9a0d61dbc363f8bed4194679f6ffea59",
+    "close-motion.png": "8163bf5cd1aabb69e281376802ab36e550b884f73a7a43216dff55081b79eb12"
+  },
+  "motion": {
+    "interval_ms": 700,
+    "simulated": true,
+    "animate_returned": true,
+    "differs": true,
+    "sha_before": "32f954c4fcd72c50e84daca08277a6dc88b899290070d90f545810c6ba74ece2",
+    "sha_after": "8163bf5cd1aabb69e281376802ab36e550b884f73a7a43216dff55081b79eb12"
+  },
+  "gpu_requested": false,
+  "capture_mode": "swiftshader",
+  "webgl_renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T17:15:17+00:00",
+  "finished": "2026-09-08T17:15:24+00:00",
+  "surface": {
+    "families": {
+      "#a57f52": "wood",
+      "#6f5334": "wood",
+      "#5d4529": "wood",
+      "#33333a": "metal",
+      "#c6bfb2": "metal"
+    },
+    "seed": 1,
+    "size": 1024,
+    "ao": {
+      "samples": 13,
+      "radius_m": 0.28,
+      "ground_dirt_m": 0.6
+    }
+  }
+}

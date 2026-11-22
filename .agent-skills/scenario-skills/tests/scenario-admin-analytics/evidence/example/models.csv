@@ -1,0 +1,5 @@
+start_inclusive,end_inclusive,model_id,model,cu,jobs,api_key_cu_subset
+2026-06-01T00:00:00Z,2026-08-31T23:59:59.999Z,model_example_1,Video model B,18900,90,0
+2026-06-01T00:00:00Z,2026-08-31T23:59:59.999Z,model_example_0,Image model A,12600,420,3600
+2026-06-01T00:00:00Z,2026-08-31T23:59:59.999Z,model_example_2,3D model C,7200,24,0
+2026-06-01T00:00:00Z,2026-08-31T23:59:59.999Z,model_example_3,Audio model D,1800,60,900

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#fffaf2" />
+    <title>3Dviz Pro Max — Turn an idea into a 3D scene worth exploring</title>
+    <meta
+      name="description"
+      content="A skill that gives your agent the knowledge, looks, kits and checks to visualize any subject in 3D — anatomy, maths, mechanisms, imagined worlds."
+    />
+    <link rel="canonical" href="https://3dviz.dev/" />
+    <meta name="robots" content="index,follow" />
+
+    <!-- The mark of site-nav.tsx as a tile; the raster sizes are rendered from the SVG by
+         scripts/social-assets.py. -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Share cards: absolute URLs, because a crawler resolves them against nothing. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="3Dviz Pro Max" />
+    <meta property="og:title" content="3Dviz Pro Max — Turn an idea into a 3D scene worth exploring" />
+    <meta
+      property="og:description"
+      content="A skill that gives your agent the knowledge, looks, kits and checks to visualize any subject in 3D — anatomy, maths, mechanisms, imagined worlds."
+    />
+    <meta property="og:url" content="https://3dviz.dev/" />
+    <meta property="og:image" content="https://3dviz.dev/og/3dviz-pro-max.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="The 3Dviz Pro Max wordmark beside a rendered village: a timber bridge over a pond and a striped market stall."
+    />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="3Dviz Pro Max — Turn an idea into a 3D scene worth exploring" />
+    <meta
+      name="twitter:description"
+      content="A skill that gives your agent the knowledge, looks, kits and checks to visualize any subject in 3D — anatomy, maths, mechanisms, imagined worlds."
+    />
+    <meta name="twitter:image" content="https://3dviz.dev/og/3dviz-pro-max.jpg" />
+    <meta
+      name="twitter:image:alt"
+      content="The 3Dviz Pro Max wordmark beside a rendered village: a timber bridge over a pond and a striped market stall."
+    />
+
+    <!-- Only the display face is preloaded: it paints the H1 in the LCP box. The mono face carries
+         kickers and captions and arrives with the stylesheet. -->
+    <link
+      rel="preload"
+      href="/fonts/outfit-latin-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        "name": "3Dviz Pro Max",
+        "description": "A skill that gives your agent the knowledge, looks, kits and checks to visualize any subject in 3D — anatomy, maths, mechanisms, imagined worlds.",
+        "url": "https://3dviz.dev/",
+        "image": "https://3dviz.dev/og/3dviz-pro-max.jpg",
+        "codeRepository": "https://github.com/viettranx/3dviz-pro-max",
+        "license": "https://opensource.org/license/mit",
+        "programmingLanguage": ["JavaScript", "Python"],
+        "applicationCategory": "DeveloperApplication"
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

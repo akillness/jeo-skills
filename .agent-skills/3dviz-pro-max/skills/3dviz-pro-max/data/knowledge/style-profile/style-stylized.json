@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-stylized",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Stylized proportions"
+  },
+  "aliases": {
+    "en": [
+      "stylized 3D",
+      "expressive shape design",
+      "stylised 3D",
+      "exaggerated proportions"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "Choose one proportional exaggeration that gives the subject character while preserving its identifying parts.",
+  "objective": "At thumbnail size the defining silhouette is legible; in a close view functional parts still connect.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "stylized"
+  ],
+  "subject_terms": [
+    "stylized 3D",
+    "expressive shape design",
+    "art direction"
+  ],
+  "intent_signals": [
+    "Use expressive stylized proportions",
+    "Emphasize a character-defining silhouette"
+  ],
+  "example_prompts": [
+    "Make a stylized hill village with oversized roofs and readable building entrances."
+  ],
+  "content": {
+    "principles": [
+      "Choose one proportional exaggeration that gives the subject character while preserving its identifying parts."
+    ],
+    "implementation": [
+      "Enlarge a roof, head or primary joint; repeat a smaller echo of that shape in secondary details rather than distorting every dimension.",
+      "Group surfaces into a few distinct finishes and use a broad key light to separate the primary masses.",
+      "Begin with a three-quarter view; give motion a clear anticipation and settling pose appropriate to the fictional action.",
+      "Push exactly one dimension to 1.6-2.0x its reference proportion and echo that shape at 0.3-0.4x in two secondary details; hold every other dimension within +/-10% so the part stays identifiable.",
+      "Read the silhouette as a 128 px thumbnail: the exaggerated mass should occupy 35-45% of the subject's bounding height and hold at least 3:1 luminance contrast against the backdrop."
+    ],
+    "observable_checks": [
+      "At thumbnail size the defining silhouette is legible; in a close view functional parts still connect."
+    ]
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at renderer.toneMappingExposure 1.0; re-tune intensities and fog density under a different tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with hand-painted surfaces or low-poly geometry; stylization describes authored emphasis, not a mandatory mesh budget."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Stylisation is carried by one dominant mass, so the rig is built to make that mass the brightest and the only element above 0.8 luminance: a 45 degree key throws its silhouette back onto the ground as a second reading of the same shape. The 4:1 key:fill ratio keeps the secondary echoes legible instead of crushing them, and three separated roughness steps stop the exaggerated parts from merging into one plastic finish.",
+    "values": {
+      "feeling": [
+        "playful",
+        "confident",
+        "warm"
+      ],
+      "palette": [
+        {
+          "hex": "#2b2340",
+          "role": "deep shadow / backdrop base"
+        },
+        {
+          "hex": "#6c5b9a",
+          "role": "cool mid transition"
+        },
+        {
+          "hex": "#f0c46a",
+          "role": "sunlit primary mass (warm mid)"
+        },
+        {
+          "hex": "#e2684f",
+          "role": "accent on the exaggerated feature"
+        },
+        {
+          "hex": "#8fb98a",
+          "role": "supporting foliage / secondary mass"
+        }
+      ],
+      "value_structure": "30/50/20 dark/mid/light; the exaggerated mass owns the only values above 0.8",
+      "saturation_rule": "supporting masses <= 50% HSL saturation; the exaggerated feature may reach 80%",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#2b2340",
+        "horizon": "#c8b7d8"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#c8b7d8",
+        "density": 0.018
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#fff0d4",
+          "intensity": 3.0,
+          "elevation_deg": 45,
+          "azimuth_deg": 315,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#a9b8e0",
+          "ground": "#4a3f38",
+          "intensity": 0.7
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#cfd8ff",
+          "intensity": 0.6,
+          "elevation_deg": 20,
+          "azimuth_deg": 130,
+          "castShadow": false
+        },
+        "ratio": "key:fill ~ 4:1 measured on a neutral card at the hero mass"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.0
+      },
+      "camera": {
+        "fov_deg": 45,
+        "height_m": 1.5,
+        "pitch_deg": -8,
+        "orbit": {
+          "minPolar_deg": 55,
+          "maxPolar_deg": 85,
+          "minDist_m": 2.5,
+          "maxDist_m": 18
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.45,
+          0.8
+        ],
+        "metalness": [
+          0.0,
+          0.1
+        ],
+        "notes": "three distinct roughness steps only - 0.45 painted metal, 0.65 wood, 0.8 cloth - so exaggerated masses never share one finish"
+      },
+      "motion": {
+        "sway_period_s": [
+          2.4,
+          3.6
+        ],
+        "ease": "back-out with 12% overshoot",
+        "hold_ms": 250
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.05,
+          "strength": 0.18,
+          "radius": 0.4
+        },
+        "vignette": 0.18,
+        "grain": 0.02,
+        "dof": "off"
+      },
+      "signature_technique": "a single 1.8x hero exaggeration lit by a 45 degree key so its cast shadow repeats the exaggerated shape on the ground plane",
+      "never": [
+        "equal exaggeration on every axis",
+        "untinted white ambient light",
+        "flat black background",
+        "one roughness value across all parts",
+        "symmetric front-on framing"
+      ]
+    }
+  }
+}

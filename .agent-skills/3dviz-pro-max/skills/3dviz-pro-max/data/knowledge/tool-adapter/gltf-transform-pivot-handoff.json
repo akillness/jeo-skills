@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.gltf-transform-pivot-handoff",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Local transform, unit, axis, origin and pivot handoff"
+  },
+  "aliases": {
+    "en": [
+      "Blender origin to glTF pivot",
+      "Y-up meter transform handoff",
+      "nested pivot node"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "characters-motion-art",
+    "architecture-interiors"
+  ],
+  "summary": "Freeze one coordinate conversion and encode working pivots through node hierarchy so imported local transforms remain decomposable, measurable and animation-ready.",
+  "objective": "The loaded asset has correct metre scale, orientation, hierarchy and hinge centers without compensating root transforms or double-applied rotations.",
+  "applies_when": [
+    "A Blender asset with meaningful origins, parents, non-uniform scale, hinges or animated parts is delivered through glTF to Three.js."
+  ],
+  "tags": [
+    "tool-adapter",
+    "transforms",
+    "pivot",
+    "origin",
+    "coordinate-system",
+    "units"
+  ],
+  "subject_terms": [
+    "glTF Y up",
+    "metres",
+    "node TRS",
+    "matrix decomposition",
+    "Blender object origin",
+    "helper pivot node",
+    "matrixWorld",
+    "local versus world transform"
+  ],
+  "intent_signals": [
+    "model imports rotated or scaled",
+    "door rotates around wrong point",
+    "nested object double transform",
+    "apply transforms before glTF"
+  ],
+  "example_prompts": [
+    "Export a Blender cabinet whose doors pivot on their hinges and measure correctly in metres in Three.js.",
+    "Debug a nested GLB that is upright only after a compensating root rotation."
+  ],
+  "negative_signals": [
+    "Apply axis conversion in both exporter and loader",
+    "Bake a moving pivot by repeatedly rewriting vertex positions",
+    "Animate a non-decomposable node matrix"
+  ],
+  "not_for": [
+    "Geospatial coordinate precision at planetary scales.",
+    "Physics center-of-mass selection, which can differ from the visual pivot."
+  ],
+  "content": {
+    "principles": [
+      "A node transform is local to its parent; world pose is the composed hierarchy. Diagnose the first incorrect local transform instead of adding a compensating world transform at the root.",
+      "glTF fixes right-handed axes and metres. Convert once at export and keep application coordinates consistent with the loaded asset.",
+      "A working pivot is represented robustly by hierarchy: place a pivot parent at the hinge and offset the visible mesh child. This survives formats that carry node transforms but no authoring-tool origin workflow."
+    ],
+    "implementation": [
+      "Set Blender scene units and model dimensions explicitly. Apply scale where geometry operations require stable object-space widths, then recheck dimensions; preserve intended object rotations/translations and parent inverses.",
+      "For each articulated part, create a parent node or Empty at the hinge/pivot and offset the mesh child relative to it. Name the pivot semantically and animate the pivot node, not displaced mesh vertices.",
+      "Export with Y Up as the single Blender-to-glTF conversion. Avoid flattening hierarchy when semantic pivots are required; if a node matrix is non-decomposable and must animate, remodel it as decomposable translation, quaternion rotation and scale nodes.",
+      "Load with GLTFLoader. In Three.js, keep imported local position/quaternion/scale and inspect matrixWorld after hierarchy update. Application controls own changes to the named pivot node.",
+      "Include a one-metre calibration bar, asymmetric +X/+Z markers and a hinged panel. Compare local TRS, world endpoints and hinge position numerically after import."
+    ],
+    "observable_checks": [
+      "The calibration bar measures 1.0 in runtime units and axis markers face the declared directions with no compensating root rotation.",
+      "Rotating the pivot parent keeps the hinge point fixed while the mesh child follows the expected arc.",
+      "Reparenting or updating the hierarchy produces the predicted matrixWorld; local transforms remain decomposable and finite."
+    ]
+  },
+  "related_ids": [
+    "knowledge.shared-gltf-asset-bridge",
+    "knowledge.three-scene-adapter",
+    "knowledge.blender-evaluated-mesh-handoff"
+  ],
+  "creative_affordances": [
+    "One visual mesh can sit under several semantic transform nodes when controls need staged motion.",
+    "A visible axis/pivot debug layer can become part of an educational inspection mode."
+  ],
+  "known_limits": [
+    "Visual pivot, physics center of mass and manipulation handle may be different application concepts.",
+    "This contract covers local-scale scenes, not floating-origin geospatial systems.",
+    "Authored reusable guidance; no export, import or runtime artifact was executed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.modeling-gltf-transform-contract",
+      "statement": "glTF 2.0 uses a right-handed coordinate system with positive Y up, positive Z forward and metres for linear distances; a node has either a matrix or translation, rotation and scale properties, animated nodes target TRS rather than matrix, and local transforms compose in translation-rotation-scale order. Blender's exporter offers Y Up conversion, while Three.js Object3D exposes local transforms and a composed matrixWorld.",
+      "scope": "glTF 2.0 coordinate and node semantics plus documented Blender 4.5 and current Three.js APIs; pivot hierarchy design is authored guidance.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Coordinate System and Units; Nodes and Hierarchy; Transformations; Animations"
+        },
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "Transform > Y Up; Include > Data > Scene Graph > Flatten Object Hierarchy"
+        },
+        {
+          "source_id": "source.three-object3d",
+          "locator": "position; quaternion; scale; matrix; matrixWorld"
+        }
+      ]
+    }
+  ]
+}

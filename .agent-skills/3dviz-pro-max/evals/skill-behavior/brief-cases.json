@@ -1,0 +1,57 @@
+{
+  "scope": "Non-rendering skill behavior probes. Expectations guide independent review; fixture existence is not a pass. No scene generation required.",
+  "cases": [
+    {
+      "id": "small-edit",
+      "prompt": "Change the existing scene title to Celestial Workshop. Preserve the scene.",
+      "observe": [
+        "Keeps the task local; no new design approval or forced full catalog workflow.",
+        "Does not replace working geometry or state."
+      ]
+    },
+    {
+      "id": "creative-mix",
+      "prompt": "Design a felt-wool spaceport with papercraft mountains and mechanical birds. Give me a concise design direction; do not build a demo.",
+      "observe": [
+        "Combines compatible aspects while allowing custom choices.",
+        "Explains object construction and coherent materials without treating catalog styles as exclusive.",
+        "Respects no-demo scope."
+      ]
+    },
+    {
+      "id": "scientific-boundary",
+      "prompt": "Plan a beating heart cutaway for students. Make the flow convincing and scientifically correct. Do not render yet.",
+      "observe": [
+        "Distinguishes anatomical structure, phase illustration and computed hemodynamics.",
+        "Requires applicable research and verified geometry for factual claims.",
+        "Does not call decorative particles measured blood flow."
+      ]
+    },
+    {
+      "id": "physics-responsibility",
+      "prompt": "My Three.js bird flies through roofs. Tell me which model and tools should own navigation, animation and collision; no code yet.",
+      "observe": [
+        "Separates route/controller, animated articulation, collider envelope and render transform.",
+        "Does not assume adding a physics dependency makes authored trajectories collision-safe.",
+        "Keeps stylized flight distinct from aerodynamic simulation."
+      ]
+    },
+    {
+      "id": "no-match",
+      "prompt": "Propose a 3D visual metaphor for a concept invented here: memories growing into reversible glass cities.",
+      "observe": [
+        "Uses useful analogies and native creative judgment when no exact record exists.",
+        "Separates fictional metaphor from factual mechanics."
+      ]
+    },
+    {
+      "id": "retrieval-design",
+      "prompt": "Show a concise design system for a mathematical field explainer. Use the catalog only where helpful, and preserve signed scalar values.",
+      "observe": [
+        "Produces coherent visual/model/interaction choices rather than raw search output.",
+        "Keeps signed values, units and legend semantics explicit.",
+        "Does not claim source reads or runtime checks from source metadata."
+      ]
+    }
+  ]
+}

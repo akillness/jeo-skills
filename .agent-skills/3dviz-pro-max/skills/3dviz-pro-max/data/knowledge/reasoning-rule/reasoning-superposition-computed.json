@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-superposition-computed",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Compute the summed field, do not overlay two animations"
+  },
+  "aliases": {
+    "en": [
+      "field superposition",
+      "vector sum",
+      "interference"
+    ]
+  },
+  "direction_ids": [
+    "waves-optics-fields",
+    "calculus-fields"
+  ],
+  "summary": "Evaluate the total field as the sum of contributions at each point, rather than layering separate visuals.",
+  "objective": "Make combined-source scenes show genuine interference and cancellation.",
+  "applies_when": [
+    "Two or more sources, charges or waves contribute to one field.",
+    "Interference, cancellation or a null region is part of the message.",
+    "Sources can be moved or their strengths changed."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "superposition",
+    "vector sum",
+    "interference",
+    "cancellation",
+    "point charge",
+    "field"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "fields",
+    "computation"
+  ],
+  "intent_signals": [
+    "show two charges together",
+    "where does the field cancel",
+    "add the waves"
+  ],
+  "example_prompts": [
+    "Show the field of two charges and where it cancels.",
+    "Let me move the sources and watch the combined pattern."
+  ],
+  "negative_signals": [
+    "Single-source fields, where no combination is needed.",
+    "Nonlinear media, where simple superposition does not apply."
+  ],
+  "not_for": [
+    "Single-source fields, where no combination is needed.",
+    "Nonlinear media, where simple superposition does not apply."
+  ],
+  "content": {
+    "principles": [
+      "Superposition is a computation, not a compositing operation. The total electric field of several sources is the vector sum of the fields each source would produce alone, evaluated at the same point.",
+      "Blending two rendered images cannot produce cancellation, because visual layers add brightness where fields subtract, which is precisely backwards at a null.",
+      "The interesting structure lives in the sum: nulls, saddle points and the shape of the transition are what a viewer should discover, and they exist only in the computed field.",
+      "The magnitude falls with distance in a specific way for each source type, so the sum is sensitive to placement, which makes moving the sources a genuinely informative interaction.",
+      "The vector sum stated here is the electrostatic case. Wave superposition adds signed or complex amplitudes with their phases, so a scene that combines waves must sum amplitudes rather than magnitudes, and interference nulls come from phase, not from opposed direction vectors."
+    ],
+    "implementation": [
+      "Evaluate each source contribution at each sample point and sum the vectors before any visual mapping.",
+      "Choose the visual encoding after the sum: arrows, streamlines and magnitude colouring all derive from the summed vector field. Equipotential surfaces are a different object: they require the scalar potential, summed from the same sources with a stated reference point, and are not level sets of the field magnitude.",
+      "Handle the singular neighbourhood of a point source explicitly, with a stated cutoff or masked region.",
+      "Let sources be moved and the field recomputed, and mark null regions where the summed magnitude falls below a stated threshold.",
+      "Keep the sample resolution visible, since a coarse grid can miss a narrow null entirely."
+    ],
+    "observable_checks": [
+      "Test both classic configurations and check the sign of the reasoning. Two equal same-sign charges give a genuine field null at the midpoint, because their contributions point in opposite directions. Two equal and opposite charges do the reverse: at the midpoint both contributions point from the positive towards the negative charge and reinforce, while it is the potential, not the field, that vanishes on the perpendicular bisector.",
+      "Compare a computed sample against a hand computation for a simple configuration.",
+      "Move one source and confirm the whole pattern updates rather than one layer sliding.",
+      "Refine the sample grid near a null and confirm the null is a real feature rather than a sampling artefact."
+    ]
+  },
+  "related_ids": [
+    "recipe.point-charge-field-superposition",
+    "recipe.standing-string-modes",
+    "recipe.divergence-flux-box"
+  ],
+  "creative_affordances": [
+    "Encoding of the summed field is free: particles, ribbons, colour or displacement all work.",
+    "Artistic exaggeration of magnitude is acceptable when the mapping is stated."
+  ],
+  "known_limits": [
+    "Authored computation guidance citing the superposition of point-charge fields; nonlinear media and time-retarded fields are outside it.",
+    "No runtime field computation has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-field-superposition",
+      "statement": "The total electric field of several source charges is the vector sum of the fields that each source charge produces independently at that point, and the field of a single point charge is directed radially with magnitude proportional to the charge divided by the square of the distance.",
+      "scope": "Electrostatic fields of stationary point charges in vacuum; it does not cover time-varying or nonlinear situations.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-electric-field",
+          "locator": "5.4, point-charge field and superposition of source charges"
+        }
+      ]
+    }
+  ]
+}

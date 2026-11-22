@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-item-conservation-ledger",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Item conservation ledger across operations transitions"
+  },
+  "aliases": {
+    "en": [
+      "parcel conservation check",
+      "inventory ledger invariant"
+    ]
+  },
+  "direction_ids": [
+    "operations-logistics"
+  ],
+  "summary": "Account for every unit of declared quantity at every event boundary so that transfers cannot create, destroy or duplicate it.",
+  "objective": "The ledger sum equals the declared quantity introduced in the current epoch at every event boundary, with no negative components.",
+  "applies_when": [
+    "Items move between queues, transit segments, resources and an exit.",
+    "Capacity limits can block a transfer part way through.",
+    "Quantities are picked, split or merged against a requested amount."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "conservation",
+    "inventory",
+    "transactions"
+  ],
+  "subject_terms": [
+    "ledger",
+    "conservation",
+    "capacity",
+    "atomic transfer",
+    "requested quantity",
+    "exit set"
+  ],
+  "intent_signals": [
+    "a parcel disappeared when the chute filled",
+    "inventory went negative during picking"
+  ],
+  "example_prompts": [
+    "Check that no parcels are lost when a chute reaches capacity."
+  ],
+  "negative_signals": [
+    "forecasting real demand",
+    "financial reconciliation"
+  ],
+  "content": {
+    "principles": [
+      "Every unit of quantity is somewhere: in exactly one queue, transit segment, resource or the exited set. The conserved total is the declared quantity, not the number of entities, because a legal split turns one parcel into two while conserving what they carry.",
+      "Counts are nonnegative integers; a model that can show a negative count has an ordering or atomicity defect, not a display defect.",
+      "A transfer is one transaction: the source decrement and the destination increment commit together or not at all.",
+      "Conservation is stated against an epoch: initial stock, later injections and every reset define what the running total is compared with, so a reset starts a new epoch rather than breaking the invariant."
+    ],
+    "implementation": [
+      "Define the ledger explicitly, listing initial stock, injected quantity, quantity per queue, in transit, in service, exited, and rejected or discarded if those states exist, and record the epoch identifier with each evaluation.",
+      "Evaluate the ledger at every event boundary rather than per frame, and record the sum next to the event that just completed.",
+      "Force the interesting cases: a destination at capacity, a transfer interrupted by pause or reset, two transfers competing for the last capacity unit, a request larger than the remaining quantity, and a split or merge if the model allows one.",
+      "For a split or merge, record parent and child identifiers as lineage and check that child quantity sums to parent quantity; entity count legitimately changes there while quantity does not.",
+      "Keep a second ledger per order line where one exists: cumulative picked against requested, plus each step delta against the remainder that existed before that step."
+    ],
+    "observable_checks": [
+      "The ledger sum equals the epoch total at every event boundary; the first boundary where it differs identifies the transition to fix.",
+      "No ledger component becomes negative, cumulative picked never exceeds requested, and each pick delta never exceeds the remainder before that step. Cumulative picked equal to requested is a completed line, not a violation.",
+      "A blocked transfer leaves source and destination unchanged; a partially applied transfer is reported with its event index, which is exactly the atomicity failure this check exists to expose."
+    ]
+  },
+  "known_limits": [
+    "A bookkeeping invariant over an authored scenario; it does not validate arrival rates, service times or real throughput.",
+    "Authored verification guidance; no simulation was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.parcel-sorter-events",
+    "recipe.warehouse-pick-tour",
+    "recipe.loading-dock-resource-board"
+  ],
+  "claims": []
+}

@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.cf-packed-field-decoding-validation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "CF packed fields: mask before scale, preserve coordinates"
+  },
+  "aliases": {
+    "en": [
+      "CF packed data",
+      "NetCDF missing values"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment",
+    "soft-fluid-thermal"
+  ],
+  "summary": "Validate CF-NetCDF missing-value decoding and coordinate metadata before constructing a scalar field or time sequence.",
+  "objective": "Decode a packed CF field with fill values and nontrivial coordinate variables, then verify probes show only valid physical values at their declared locations.",
+  "tags": [
+    "domain-validation",
+    "cf-packed-field-decoding-validation"
+  ],
+  "subject_terms": [
+    "CF packed data",
+    "NetCDF missing values",
+    "scale_factor add_offset",
+    "auxiliary coordinates"
+  ],
+  "intent_signals": [
+    "Decode a packed CF field with fill values and nontrivial coordinate variables, then verify probes show only valid physical values at their declared locations."
+  ],
+  "example_prompts": [
+    "Decode a packed CF field with fill values and nontrivial coordinate variables, then verify probes show only valid physical values at their declared locations."
+  ],
+  "applies_when": [
+    "Validate CF-NetCDF missing-value decoding and coordinate metadata before constructing a scalar field or time sequence."
+  ],
+  "content": {
+    "principles": [
+      "Distinguish stored packed numbers, valid decoded quantities and display colors. Missing data must not become a real extreme value or zero sample.",
+      "Keep dimensions, coordinate variables, units and time metadata attached to each selected field. An array axis called x is not enough to establish a geographic position."
+    ],
+    "implementation": [
+      "Record whether the reader already applied masking/scaling. With raw packed input, evaluate missing and valid-range metadata in the packed domain, mask invalid samples, then scale valid values and add offset once. Never repeat decoding on an already-decoded array.",
+      "Use decoded units for probes and legends; preserve the raw representation and decoding metadata for inspection. Exclude masked samples from displayed extrema and show an all-missing field explicitly.",
+      "Resolve dimensions and any auxiliary coordinates/grid mapping instead of assuming evenly spaced Cartesian indices. Preserve the supplied time unit/calendar, and report unsupported calendars or coordinates before labeling a timeline or geographic view.",
+      "Limit this bridge to the supported regular/explicit-coordinate array representation. Reject unsupported gathering, mesh topology or coordinate-subsampling encodings rather than reshaping them into a regular grid."
+    ],
+    "observable_checks": [
+      "With raw values [-32768,0,100], fill=-32768, scale=0.1 and offset=273.15, show missing, 273.15 and 283.15 in declared decoded units; the fill value never affects the legend range.",
+      "Pass the already-decoded values through the display bridge: they remain unchanged and are not scaled a second time.",
+      "Use equal array dimensions with different coordinate values; locations follow coordinates. An all-missing field shows no invented zero-valued surface, and unsupported time metadata produces an explicit limitation."
+    ]
+  },
+  "known_limits": [
+    "Decoding does not validate forecast quality, conservation, observation calibration or uncertainty. Reprojection and numerical resampling need separately verified methods.",
+    "Authored source-reviewed guidance only; no import adapter, runtime artifact or scientific pipeline was implemented or executed."
+  ],
+  "creative_affordances": [
+    "Use a compact source-versus-display inspector to expose the specific transformation; layout and emphasis are authored choices, not validated usability findings."
+  ],
+  "related_ids": [
+    "knowledge.shared-field-data-playback-bridge",
+    "knowledge.uncertainty-interval-encoding"
+  ],
+  "claims": [
+    {
+      "id": "claim.cf-packed-mask-before-transform",
+      "statement": "CF 1.12 treats missing/valid-range indicators for packed variables in the external packed domain and requires valid-value checks before scaling; decoding multiplies by scale_factor before adding add_offset, with units describing unpacked values.",
+      "scope": "CF 1.12 sections 2.5.1 and 8.1; application decoding state must prevent double application.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-cf-conventions",
+          "locator": "2.5.1 Missing data, valid and actual range of data; 8.1 Packed Data"
+        }
+      ]
+    },
+    {
+      "id": "claim.cf-coordinate-variable-association",
+      "statement": "CF associates field dimensions with coordinate variables and supports auxiliary coordinate variables identified by the coordinates attribute; grid mapping metadata can supply geographic interpretation.",
+      "scope": "CF 1.12 sections 5, 5.2 and 5.6; not a projection implementation.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-cf-conventions",
+          "locator": "5 Coordinate Systems and Domain; 5.2 Two-Dimensional Latitude, Longitude Coordinate Variables; 5.6 Horizontal Coordinate Reference Systems, Grid Mappings, and Projections"
+        }
+      ]
+    }
+  ],
+  "check_method": "state"
+}

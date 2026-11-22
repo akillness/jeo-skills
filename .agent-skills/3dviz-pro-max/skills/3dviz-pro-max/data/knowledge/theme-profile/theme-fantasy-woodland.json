@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.theme-fantasy-woodland",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "theme-profile",
+  "title": {
+    "en": "Fantasy woodland community"
+  },
+  "aliases": {
+    "en": [
+      "fantasy woodland",
+      "enchanted forest village",
+      "storybook grove"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "Make a fictional community legible through shared paths, sheltered gathering spaces and a recurring woodland motif.",
+  "objective": "Paths visibly reach the important buildings and magical accents do not conceal entrances or characters.",
+  "tags": [
+    "theme-profile",
+    "fictional-setting",
+    "fantasy-woodland"
+  ],
+  "subject_terms": [
+    "fantasy woodland",
+    "enchanted forest village",
+    "storybook grove"
+  ],
+  "intent_signals": [
+    "Set the scene in a fantasy woodland community",
+    "Use fantasy woodland as the narrative setting"
+  ],
+  "example_prompts": [
+    "Create an enchanted woodland settlement whose residents visibly travel between distinct workplaces."
+  ],
+  "content": {
+    "principles": [
+      "Make a fictional community legible through shared paths, sheltered gathering spaces and a recurring woodland motif.",
+      "Theme supplies setting and motifs; choose geometry style, rendering approach and factual model independently."
+    ],
+    "implementation": [
+      "Shape houses around invented root or mushroom forms, but give entrances, bridges and supports readable connections.",
+      "Use a deliberate mix of timber-like, leaf-like and luminous accents with a warm focal light; keep the forest background grouped.",
+      "Offer an inviting path-level view and an overview; give residents distinct routes and rest points rather than universal bobbing."
+    ],
+    "observable_checks": [
+      "Paths visibly reach the important buildings and magical accents do not conceal entrances or characters.",
+      "Inspect one focal object close up and the complete route or spatial relationship from an overview."
+    ]
+  },
+  "known_limits": [
+    "Authored fictional setting guidance; no rendered artifact or runtime improvement has been observed for this record.",
+    "This proposal does not establish historical, cultural, scientific or engineering facts."
+  ],
+  "creative_affordances": [
+    "Combine with clay, painterly or stylized realism; the setting is invented and any real ecological claim needs separate grounding.",
+    "Replace motifs or combine settings to suit the user brief; maintain a readable organizing idea rather than treating these suggestions as a fixed asset list."
+  ],
+  "related_ids": [
+    "knowledge.framed-shelter",
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

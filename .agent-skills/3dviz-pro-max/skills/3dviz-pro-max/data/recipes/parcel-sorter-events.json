@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "id": "recipe.parcel-sorter-events",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Parcel sorter event playback"
+  },
+  "aliases": {
+    "en": [
+      "sorting conveyor",
+      "parcel routing simulation"
+    ]
+  },
+  "direction_ids": [
+    "operations-logistics"
+  ],
+  "summary": "Follow parcels through an invented sorter whose routing decisions and queues are inspectable.",
+  "objective": "Create an invented parcel sorter with arrival, scan, divert and exit events I can step through.",
+  "tags": [
+    "parcel",
+    "sorter",
+    "queue"
+  ],
+  "subject_terms": [
+    "parcel",
+    "sorter",
+    "queue",
+    "diverter",
+    "discrete event"
+  ],
+  "intent_signals": [
+    "trace a parcel route",
+    "step warehouse events"
+  ],
+  "example_prompts": [
+    "Create an invented parcel sorter with arrival, scan, divert and exit events I can step through.",
+    "Pause a chute and show which parcels are blocked."
+  ],
+  "entities": [
+    {
+      "name": "Conveyor and gates",
+      "guidance": "Model belt bed, rollers, side rails and a diverter with a visible pivot."
+    },
+    {
+      "name": "Parcels and chutes",
+      "guidance": "Use distinct package sizes, persistent labels and destination-coded chute mouths."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Conveyor and gates",
+      "structure": "Model belt bed, rollers, side rails and a diverter with a visible pivot.",
+      "material": "Dark belt, galvanized-looking rails and painted gate."
+    },
+    {
+      "family": "Parcels and chutes",
+      "structure": "Use distinct package sizes, persistent labels and destination-coded chute mouths.",
+      "material": "Kraft paper and matte chute panels."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored discrete-event model: unique parcel IDs, destination, queue position, scanner status and chute capacity; ordered events use time plus stable sequence tie-break.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Step next event.",
+      "Block or reopen a chute.",
+      "Inspect parcel history and reset the same input schedule."
+    ]
+  },
+  "invariants": [
+    "Each parcel belongs to exactly one queue, transit segment or exited set.",
+    "A full destination blocks transfer; a parcel cannot vanish.",
+    "Reset restores event queue, capacities and parcel history."
+  ],
+  "motion_guidance": [
+    "Interpolate travel only between committed event endpoints; pause interpolation with event time.",
+    "Diverter pose follows the selected transfer rather than an independent decorative oscillation."
+  ],
+  "known_limits": [
+    "Synthetic operations scenario; arrival/service times are explicit authored inputs, not measured throughput.",
+    "No conveyor traction, crushing or real equipment control.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [],
+  "creative_affordances": [
+    "Visible chute mouths and persistent parcel markings connect queue state to spatial routing."
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Event-driven conveyor illustration.",
+    "state": [
+      "event time",
+      "parcel location",
+      "gate state"
+    ],
+    "colliders": [
+      "Lane and package envelopes for spacing validation."
+    ],
+    "driving": [
+      "Committed event transfers."
+    ],
+    "contact": [
+      "No collision response; queue spacing and route assignment are model rules."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Blocked chute retains parcel; replay has identical event order."
+    ]
+  }
+}

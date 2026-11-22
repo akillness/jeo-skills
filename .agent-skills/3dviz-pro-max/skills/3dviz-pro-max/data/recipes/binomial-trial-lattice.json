@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.binomial-trial-lattice",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Binomial outcomes and repeated trials"
+  },
+  "aliases": {
+    "en": [
+      "binomial distribution",
+      "Bernoulli trial lattice",
+      "coin toss probability"
+    ]
+  },
+  "direction_ids": [
+    "probability-statistics"
+  ],
+  "summary": "Connect independent binary trial paths to exact probabilities and observed counts.",
+  "objective": "Build a binomial trial lattice with editable trial count and success probability, exact probability bars and seeded sample paths.",
+  "tags": [
+    "binomial",
+    "Bernoulli",
+    "independent trials"
+  ],
+  "subject_terms": [
+    "binomial",
+    "Bernoulli",
+    "independent trials",
+    "success probability",
+    "probability mass",
+    "seeded sampling"
+  ],
+  "intent_signals": [
+    "Build a binomial trial lattice with editable trial count and success probability, exact probability bars and seeded sample paths.",
+    "Connect independent binary trial paths to exact probabilities and observed counts."
+  ],
+  "example_prompts": [
+    "Build a binomial trial lattice with editable trial count and success probability, exact probability bars and seeded sample paths.",
+    "Create an explorable 3D explanation of binomial distribution with sample inspector."
+  ],
+  "negative_signals": [
+    "This lattice is not a simulated Galton board; no contact physics or fairness inference from a rendered path."
+  ],
+  "not_for": [
+    "This lattice is not a simulated Galton board; no contact physics or fairness inference from a rendered path."
+  ],
+  "entities": [
+    {
+      "name": "Trial lattice",
+      "guidance": "Place nodes by trial number and successes; use depth only to separate highlighted paths, not as a probability dimension."
+    },
+    {
+      "name": "Outcome bars",
+      "guidance": "Display k=0..n with equal-width bars whose heights encode probability mass; overlay empirical relative frequency with a different mark style."
+    },
+    {
+      "name": "Sample inspector",
+      "guidance": "Show selected trial outcomes, seed, number of completed samples and expected count n*p."
+    }
+  ],
+  "state_contract": {
+    "model": "Integer n in [1,20], probability p in [0,1]; X counts successes in n independent Bernoulli trials. Compute the exact PMF, handling p=0 and p=1 explicitly.",
+    "authority": "An immutable seeded trial sequence owns sample outcomes; lattice nodes represent (trial index,success count), not physical ball collisions.",
+    "actions": [
+      "Set n and p, clearing incompatible sample history.",
+      "Generate one sample or a bounded batch from the current seed.",
+      "Replay one already recorded path.",
+      "Reset seed, samples and parameters."
+    ]
+  },
+  "invariants": [
+    "Exact masses sum to one within numerical tolerance.",
+    "At p=0 all mass is at k=0; at p=1 all mass is at k=n.",
+    "Empirical counts sum to completed samples; playback never generates new random outcomes."
+  ],
+  "motion_guidance": [
+    "Animate a marker along its precomputed branch choices; visual speed does not affect likelihood.",
+    "Pause between or within trace steps without consuming random numbers."
+  ],
+  "known_limits": [
+    "This lattice is not a simulated Galton board; no contact physics or fairness inference from a rendered path.",
+    "Finite sample frequencies fluctuate and need not match exact probabilities.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.binomial-trial-lattice",
+      "statement": "A binomial variable counts successes in a fixed number of independent two-outcome trials with constant success probability.",
+      "scope": "The experiment must satisfy the binomial assumptions; n and p are declared inputs.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-binomial",
+          "locator": "4.3, binomial experiment criteria and distribution formula"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Trial lattice",
+      "structure": "Place nodes by trial number and successes; use depth only to separate highlighted paths, not as a probability dimension.",
+      "material": "Matte node tokens and thin branch rails; use labels for success/failure and a common vertical probability scale."
+    }
+  ]
+}

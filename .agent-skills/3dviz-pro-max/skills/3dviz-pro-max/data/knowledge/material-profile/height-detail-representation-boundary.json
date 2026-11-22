@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.height-detail-representation-boundary",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Height detail representation boundary"
+  },
+  "aliases": {
+    "en": [
+      "bump displacement parallax decision",
+      "Blender height to Three.js"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "Assign height detail to baked shading, exported geometry, material displacement or renderer-specific parallax according to silhouette and interaction needs.",
+  "objective": "Height produces promised cues without implying rendered shader displacement updates CPU geometry, bounds, raycasts or colliders.",
+  "applies_when": [
+    "A Blender surface uses height data and runtime must preserve shading, silhouette, shadows, picking or contact."
+  ],
+  "tags": [
+    "material-profile",
+    "height-map",
+    "displacement",
+    "bump",
+    "parallax"
+  ],
+  "subject_terms": [
+    "Displace modifier",
+    "bumpMap",
+    "displacementMap",
+    "parallax mapping",
+    "vertex density",
+    "CPU BufferGeometry",
+    "collider boundary"
+  ],
+  "intent_signals": [
+    "height map flat at silhouette",
+    "displacement does not update raycast",
+    "parallax or geometry for bricks"
+  ],
+  "example_prompts": [
+    "Choose height detail for carved stone with grazing relief but no collision.",
+    "Carry terrain height with explicit visual and collider ownership."
+  ],
+  "negative_signals": [
+    "all height maps change geometry",
+    "shader displacement updates collider automatically"
+  ],
+  "not_for": [
+    "Arbitrary volumetric deformation.",
+    "Tangent-basis debugging after representation is chosen."
+  ],
+  "content": {
+    "principles": [
+      "Bump or normal changes lighting, geometry changes silhouette, material displacement changes rendered vertices, and parallax approximates view-dependent depth.",
+      "A directional height field cannot represent overhangs or undercuts.",
+      "Keep geometry where section, picking or collision must agree; bake small static relief when texture resolution suffices.",
+      "Runtime displacement and parallax are revision/backend sensitive and do not prove CPU queries see the display surface."
+    ],
+    "implementation": [
+      "Record Blender coordinates, direction, Strength, Midlevel and mesh density.",
+      "Bake shading detail onto frozen UVs and follow the tangent-normal handoff.",
+      "For geometry, evaluate before export and measure bounds and silhouette; own collider geometry separately.",
+      "For runtime displacement, use non-color data, sufficient vertices and scale/bias; separately own bounds, raycast and collider policy.",
+      "For parallax, specify UV convention, height range, steps, backend and grazing fallback."
+    ],
+    "observable_checks": [
+      "Flat, grazing and silhouette views distinguish shading-only from geometry detail.",
+      "A marked height ramp verifies sign, scale and midpoint.",
+      "Frustum, selection and collider overlay are checked separately from rendering.",
+      "Unsupported shaders or insufficient tessellation reach a named fallback."
+    ]
+  },
+  "creative_affordances": [
+    "Combine modeled macro chips, baked mid relief and runtime micro detail.",
+    "Flatten distant relief into graphic shading."
+  ],
+  "known_limits": [
+    "No universal tessellation or parallax-step threshold.",
+    "No bake, export, shader, bounds, raycast or collider check ran."
+  ],
+  "related_ids": [
+    "knowledge.blender-evaluated-mesh-handoff",
+    "knowledge.blender-three-tangent-normal-handoff",
+    "knowledge.blender-three-procedural-shader-portability"
+  ],
+  "claims": [
+    {
+      "id": "claim.craft-blender-displace-vertices",
+      "statement": "Blender 4.5's Displace modifier moves mesh vertices from texture values, supports axis, normal, custom-normal or RGB-to-XYZ directions, and computes signed displacement from texture value minus Midlevel multiplied by Strength.",
+      "scope": "Blender 4.5 mesh modifier; fidelity depends on sampling, coordinates and stack order.",
+      "source_refs": [
+        {
+          "source_id": "source.craft-blender-displace",
+          "locator": "Displace Modifier; Options: Coordinates, Direction, Strength, Midlevel"
+        }
+      ]
+    },
+    {
+      "id": "claim.craft-three-bump-displacement",
+      "statement": "Current MeshStandardMaterial documents bumpMap as lighting-only with no geometry change, while displacementMap changes rendered vertex positions and recommends a matching normal map because normals are not recomputed from displaced vertices.",
+      "scope": "Rendering API; no CPU BufferGeometry, bounds, raycast or collider mutation claim.",
+      "source_refs": [
+        {
+          "source_id": "source.three-standard-material",
+          "locator": "bumpMap; displacementMap; displacementBias; displacementScale"
+        }
+      ]
+    }
+  ]
+}

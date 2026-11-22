@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-small-angle-validity",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Say where the idealised formula stops applying"
+  },
+  "aliases": {
+    "en": [
+      "small angle approximation",
+      "pendulum period",
+      "model validity"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "waves-optics-fields"
+  ],
+  "summary": "Show the assumptions behind a closed-form result and what happens as the scene leaves the range where it holds.",
+  "objective": "Keep an interactive physical demonstration from reporting a formula outside its validity.",
+  "applies_when": [
+    "A closed-form period, frequency or trajectory is displayed.",
+    "An amplitude, angle or parameter can be increased by the viewer.",
+    "The scene compares a formula with a simulated or measured result."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "small angle",
+    "approximation",
+    "pendulum",
+    "period",
+    "validity",
+    "idealisation"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "mechanics",
+    "regime"
+  ],
+  "intent_signals": [
+    "swing it further",
+    "why is the period wrong",
+    "show the pendulum formula"
+  ],
+  "example_prompts": [
+    "Show the pendulum period formula and where it breaks down.",
+    "Compare the ideal period with the simulated one at large amplitude."
+  ],
+  "negative_signals": [
+    "Scenes with no formula displayed and no quantitative claim.",
+    "Exact analytic solutions with no approximation involved."
+  ],
+  "not_for": [
+    "Scenes with no formula displayed and no quantitative claim.",
+    "Exact analytic solutions with no approximation involved."
+  ],
+  "content": {
+    "principles": [
+      "A closed-form result is a package of assumptions. The simple pendulum period expression assumes a point mass on a massless string with no dissipation and small amplitude; the source gives about fifteen degrees as that range, describing the sine of the angle and the angle as differing by less than one percent. Treat fifteen degrees as a rough pedagogical boundary rather than a strict bound: at exactly fifteen degrees the relative difference between the angle and its sine is about one point one percent, so a validation gate needs its own stated error metric and threshold.",
+      "Interactive controls invite users straight out of the valid range, and a formula that keeps reporting a value there is silently wrong rather than obviously wrong.",
+      "The comparison is the lesson: showing the ideal value beside a simulated or measured one makes the departure visible and quantitative.",
+      "Assumptions also constrain the model geometry: a heavy rod is not a point mass on a massless string, so the displayed object should match the model or the mismatch should be stated.",
+      "Say which error you are bounding. The difference between the angle and its sine is the force approximation; the resulting error in the period is a different quantity with its own dependence on amplitude, and quoting one as if it were the other misstates the accuracy."
+    ],
+    "implementation": [
+      "Display the assumptions with the formula, including the range where the approximation is claimed to hold.",
+      "Mark the valid range on the control, and change the presentation of the reported value outside it rather than continuing silently.",
+      "Where possible, show a numerically integrated result beside the closed form and plot the difference as the parameter grows.",
+      "Match the visual object to the model, or state the simplification explicitly when it does not.",
+      "Report units for every quantity and state whether values are illustrative or measured."
+    ],
+    "observable_checks": [
+      "Increase the amplitude well beyond the stated range and confirm the ideal and simulated periods visibly diverge and that the scene says so.",
+      "Set the amplitude within the range and confirm the two agree within the stated tolerance.",
+      "Change the length and confirm the period follows the square-root relationship.",
+      "Confirm the displayed assumptions match what the model actually implements, including whether damping exists."
+    ]
+  },
+  "related_ids": [
+    "recipe.simple-pendulum",
+    "recipe.standing-string-modes"
+  ],
+  "creative_affordances": [
+    "The departure from the ideal is often the most interesting part of the scene and can be dramatised.",
+    "A deliberately exaggerated pendulum is a good subject when its regime is stated."
+  ],
+  "known_limits": [
+    "Authored guidance citing one closed-form result and its stated small-angle condition; it does not provide the large-amplitude correction.",
+    "No simulation has been run for this record, so no numerical agreement is asserted."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-pendulum-small-angle",
+      "statement": "The simple pendulum period expression, giving the period as two pi times the square root of the length divided by the gravitational acceleration, applies to a point mass suspended by a string of negligible mass and is presented for small angles, with the source giving less than about fifteen degrees, or about 0.26 radians, as the range where it describes the sine of the angle and the angle as differing by less than one percent.",
+      "scope": "Idealised simple pendulum without dissipation, reported as the source states it. It does not describe physical pendulums, large-amplitude motion or damped systems, and the quoted percentage is the source's rounded pedagogical figure rather than a validated bound.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-pendulum",
+          "locator": "15.4, The Simple Pendulum, period expression and small-angle condition"
+        }
+      ]
+    }
+  ]
+}

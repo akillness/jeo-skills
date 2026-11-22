@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.material-oxidized-metal-layers",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Exposed metal and weathered surface layers"
+  },
+  "aliases": {
+    "en": [
+      "oxidized metal finish",
+      "patina and bare metal layers"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "rigid-mechanics",
+    "environments-dioramas"
+  ],
+  "summary": "Distinguish exposed substrate, adherent weathering and raised flakes without treating every patch as the same metal finish.",
+  "objective": "Make a worn metal fitting reveal which surface layer the viewer is seeing.",
+  "tags": [
+    "material-profile",
+    "oxidized metal",
+    "patina",
+    "corrosion layer"
+  ],
+  "subject_terms": [
+    "oxidized metal",
+    "patina",
+    "corrosion layer",
+    "bare metal",
+    "coating mask",
+    "flaking"
+  ],
+  "intent_signals": [
+    "Make a worn metal fitting reveal which surface layer the viewer is seeing."
+  ],
+  "example_prompts": [
+    "Model a fictional weathered bell with exposed polished handling areas and a distinct patina layer."
+  ],
+  "content": {
+    "principles": [
+      "Use a layer map tied to the object history: exposed substrate, coating and deposits are separate appearance decisions. Do not label a chosen green or orange palette as chemical identification.",
+      "The cited layered model supports separate scattering behavior; it does not imply every oxide is an opaque dielectric or that every corroded surface uses the same shader."
+    ],
+    "implementation": [
+      "Author masks around chosen sheltered, handled or chipped regions. Preserve unweathered reference patches so the exposed substrate can be compared with the outer layer.",
+      "Reserve mesh thickness for flakes that lift or affect the contour; use shallower relief for adhered texture. Keep patch size and flake thickness distinct from fine roughness.",
+      "Move a broad light or reflection card across the fitting at fixed exposure; tune the layer and substrate response separately. Provide a simpler masked material approximation when a full layered shader is unnecessary."
+    ],
+    "observable_checks": [
+      "At an exposed edge, the viewer can distinguish outer material from substrate using relief or reflection response as well as color.",
+      "A flake claimed to lift from the surface has a visible separation or thickness at an oblique angle.",
+      "Switch to a neutral light rig: authored green patina remains surface color rather than an unexplained emissive glow."
+    ]
+  },
+  "known_limits": [
+    "No corrosion kinetics, alloy composition, conductivity or load-bearing integrity is established by this finish.",
+    "Authored modeling and inspection guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Clean, heavily encrusted, painted or graphic patchwork finishes are valid; wear need not be compulsory decoration."
+  ],
+  "related_ids": [
+    "knowledge.conductor-surface",
+    "knowledge.material-response-check"
+  ],
+  "claims": [
+    {
+      "id": "claim.material-depth-oxidized-metal-layers",
+      "statement": "PBRT models coated conductors with a dielectric interface and describes adding a scattering layer to represent effects such as tarnish or weathering.",
+      "scope": "PBRT layered rendering model, not a chemical classification or a required implementation.",
+      "source_refs": [
+        {
+          "source_id": "source.material-depth-layered-scattering",
+          "locator": "14.3.3 Coated Diffuse and Coated Conductor Materials, opening paragraph and Figure 14.22 caption"
+        }
+      ]
+    }
+  ]
+}

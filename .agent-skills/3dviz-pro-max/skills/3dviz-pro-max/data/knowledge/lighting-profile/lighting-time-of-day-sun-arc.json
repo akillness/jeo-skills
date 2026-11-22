@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.lighting-time-of-day-sun-arc",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Time of day as a sun arc: elevation, colour and shadow length"
+  },
+  "aliases": {
+    "en": [
+      "time of day",
+      "sun position",
+      "sunrise",
+      "sunset",
+      "blue hour",
+      "sun arc",
+      "daylight cycle"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors",
+    "earth-environment"
+  ],
+  "summary": "Pick one sun elevation and azimuth for the hour you want, then read key colour, intensity and shadow length off a single table so every light in the scene agrees with that one direction.",
+  "objective": "The stated hour is legible without a caption: shadow length matches the sun elevation, the shaded side carries the complementary sky colour, and no second light contradicts the declared direction.",
+  "tags": [
+    "lighting-profile",
+    "time-of-day",
+    "sun",
+    "sunrise",
+    "sunset",
+    "golden-hour",
+    "blue-hour",
+    "dawn",
+    "dusk",
+    "noon",
+    "sun-arc",
+    "shadow-length"
+  ],
+  "subject_terms": [
+    "sun elevation",
+    "sun azimuth",
+    "sun position",
+    "time of day",
+    "sun arc",
+    "shadow length",
+    "colour temperature",
+    "dawn",
+    "morning",
+    "noon",
+    "afternoon",
+    "golden hour",
+    "dusk",
+    "blue hour",
+    "civil twilight",
+    "key light colour"
+  ],
+  "intent_signals": [
+    "what sun position for this time of day",
+    "set the scene at mid-morning",
+    "move the sun to sunrise",
+    "make the shadows the right length for noon",
+    "animate the sun across the day",
+    "sun position time of day"
+  ],
+  "example_prompts": [
+    "Set the terrain scene at 9am and get the shadow length right.",
+    "Move a street scene from noon to blue hour in one pass.",
+    "Choose a sun elevation that makes the roof forms read."
+  ],
+  "negative_signals": [
+    "real solar position for a given date and latitude",
+    "interior scene lit only by fixtures"
+  ],
+  "not_for": [
+    "Astronomical or engineering solar position, which requires a sourced solar model with date, latitude and longitude.",
+    "Solar gain, irradiance or daylight-factor analysis, which needs measured units rather than authored intensities."
+  ],
+  "content": {
+    "principles": [
+      "Elevation is the whole story of the hour. Shadow length is the cotangent of the elevation, so 5 deg gives shadows about eleven times the caster height, 25 deg about two, and 60 deg about half: the number the viewer reads first.",
+      "Colour follows elevation because low sun travels through more atmosphere. Warm key against a blue fill at the ends of the day, near-neutral key against a pale fill in the middle.",
+      "Azimuth is a composition choice, not a physical one here. Put the sun off the camera axis so shadows run across the frame and describe the ground.",
+      "After sunset the key is gone but the sky is not: blue hour is a bright hemispheric fill with no cast shadow, and treating it as a dim sun produces the usual wrong-looking dusk.",
+      "Every value in the table is relative to a stated tone mapping and exposure; copying an intensity into a different exposure changes the hour it reads as."
+    ],
+    "implementation": [
+      "Choose the hour, then take elevation, key colour, key intensity and fill from the sun_arc table and set the DirectionalLight from spherical coordinates once.",
+      "Set the hemisphere fill sky colour to the complement of the key: cool blue for warm low sun, pale neutral for high sun, and a saturated blue at civil dusk.",
+      "Fit the shadow camera to the visible extent and expect a longer extent at low elevations, because the shadows themselves are long.",
+      "Verify the shadow-length ratio against the table with a single vertical test post before dressing the scene.",
+      "To animate the day, interpolate elevation and azimuth along the arc and drive colour and intensity from the same parameter, so the three never disagree.",
+      "At dusk (elevation below 0 deg) turn castShadow off on the key or remove the key entirely and raise the hemisphere fill; keep a warm horizon band in the sky gradient.",
+      "State the tone mapping and exposure alongside the chosen row; these values assume ACESFilmic at exposure 1.0."
+    ],
+    "observable_checks": [
+      "A one-metre vertical post casts a shadow whose length matches the table row within about ten percent.",
+      "All shadows in the frame run parallel and agree with the single declared azimuth.",
+      "The shaded side of a neutral object samples cool and non-zero at low sun, and near-neutral at midday.",
+      "At the dusk row there is no cast shadow anywhere, and the scene still separates ground from sky.",
+      "A grayscale screenshot still reads the hour from shadow length alone."
+    ]
+  },
+  "creative_affordances": [
+    "Colours can be pushed far past any real sky as long as the shadow length and the single sun direction still agree with the stated hour.",
+    "The arc can be compressed, reversed or given an invented second sun; the table is a starting geometry, not a calendar."
+  ],
+  "known_limits": [
+    "Authored creative table, not a solar model: no date, latitude, longitude, atmospheric turbidity or measured irradiance is represented, and the Kelvin-to-hex colours are authored approximations rather than colorimetric transforms.",
+    "Intensities were tuned for ACESFilmic tone mapping at exposure 1.0 and must be re-derived under any other curve or exposure.",
+    "No renderer was run for this record: the shadow-length ratios are trigonometric, while the colours and intensities are authored."
+  ],
+  "related_ids": [
+    "knowledge.lighting-mood-dawn-cool",
+    "knowledge.lighting-mood-dusk-golden-hour",
+    "knowledge.lighting-mood-overcast-soft",
+    "knowledge.lighting-mood-fog-shafts",
+    "knowledge.lighting-mood-night-lantern",
+    "knowledge.lighting-mood-noir-hard-key",
+    "knowledge.lighting-mood-underwater",
+    "knowledge.lighting-mood-dark-studio-product",
+    "knowledge.three-light-units-and-exposure"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Rows are spaced so each reads as a distinct hour rather than a slider position: 5, 25, 60, 35, 8 and -2 deg elevation give shadow ratios of about 11.4, 2.1, 0.6, 1.4, 7.1 and none. The ratios are cot(elevation) and are exact; the colours and intensities are authored for ACESFilmic at exposure 1.0 and are the part to retune first.",
+    "values": {
+      "feeling": [
+        "temporal",
+        "grounded",
+        "atmospheric"
+      ],
+      "sun_arc": {
+        "dawn": {
+          "elevation_deg": 5,
+          "azimuth_deg": 95,
+          "key_color": "#ffd2b0",
+          "key_intensity": 1.6,
+          "fill_sky": "#8fa8d8",
+          "shadow_length_x_height": 11.4,
+          "note": "pale key, cool ambient, mist sits low"
+        },
+        "morning": {
+          "elevation_deg": 25,
+          "azimuth_deg": 120,
+          "key_color": "#ffe4c4",
+          "key_intensity": 2.8,
+          "fill_sky": "#9db8e0",
+          "shadow_length_x_height": 2.14,
+          "note": "shadows still describe form"
+        },
+        "noon": {
+          "elevation_deg": 60,
+          "azimuth_deg": 180,
+          "key_color": "#fff4e5",
+          "key_intensity": 3.6,
+          "fill_sky": "#b8cbe8",
+          "shadow_length_x_height": 0.58,
+          "note": "flattest hour; form has to come from material and fill"
+        },
+        "afternoon": {
+          "elevation_deg": 35,
+          "azimuth_deg": 240,
+          "key_color": "#ffe0b8",
+          "key_intensity": 3.0,
+          "fill_sky": "#a6c0e4",
+          "shadow_length_x_height": 1.43,
+          "note": "reliable default for exteriors"
+        },
+        "golden_hour": {
+          "elevation_deg": 8,
+          "azimuth_deg": 255,
+          "key_color": "#ffb46b",
+          "key_intensity": 3.2,
+          "fill_sky": "#6f8fc9",
+          "shadow_length_x_height": 7.12,
+          "note": "see knowledge.lighting-mood-dusk-golden-hour for the full rig"
+        },
+        "dusk_civil": {
+          "elevation_deg": -2,
+          "azimuth_deg": 265,
+          "key_color": "none",
+          "key_intensity": 0.0,
+          "fill_sky": "#4a6ba8",
+          "shadow_length_x_height": null,
+          "note": "blue hour: hemisphere fill only, no cast shadow, warm horizon band"
+        }
+      },
+      "shadow_length_rule": "length / caster height = cot(elevation); check with one vertical post before dressing the scene",
+      "fill": {
+        "type": "HemisphereLight",
+        "ground": "#4a3a2a",
+        "intensity": 0.5
+      },
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.0
+      },
+      "azimuth_rule": "keep the sun 30-70 deg off the camera axis so shadows cross the frame",
+      "never": [
+        "a second light that casts shadows in a different direction",
+        "a dim sun standing in for blue hour",
+        "noon elevation with golden-hour colour",
+        "claiming a real solar position for a date and latitude"
+      ],
+      "snippet": "const row=SUN_ARC[hour];\nconst sun=new THREE.DirectionalLight(new THREE.Color(row.key_color),row.key_intensity);\nsun.position.setFromSphericalCoords(60,THREE.MathUtils.degToRad(90-row.elevation_deg),THREE.MathUtils.degToRad(row.azimuth_deg));\nsun.castShadow=row.key_intensity>0;scene.add(sun);\nscene.add(new THREE.HemisphereLight(new THREE.Color(row.fill_sky),0x4a3a2a,0.5));\nrenderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;"
+    }
+  }
+}

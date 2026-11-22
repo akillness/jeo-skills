@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "id": "recipe.enhanced-dicom-frame-dimension-inspector",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Enhanced DICOM acquisition-frame inspector"
+  },
+  "aliases": {
+    "en": [
+      "Enhanced CT",
+      "multiframe functional groups"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures",
+    "abstract-systems-data"
+  ],
+  "summary": "Inspect a supplied Enhanced CT object through shared/per-frame functional groups and dimension-index presentation while preserving original one-based frame identity.",
+  "objective": "Inspect a supplied Enhanced CT object through shared/per-frame functional groups and dimension-index presentation while preserving original one-based frame identity.",
+  "tags": [
+    "Enhanced CT",
+    "multiframe functional groups",
+    "Dimension Index Sequence",
+    "frame identity"
+  ],
+  "subject_terms": [
+    "Enhanced CT",
+    "multiframe functional groups",
+    "Dimension Index Sequence",
+    "frame identity"
+  ],
+  "intent_signals": [
+    "Enhanced DICOM acquisition-frame inspector"
+  ],
+  "example_prompts": [
+    "Build enhanced dicom acquisition-frame inspector with explicit provenance, laterality, frame and unavailable-state checks."
+  ],
+  "negative_signals": [
+    "mesh similarity proves anatomical correctness",
+    "infer missing clinical data from geometry"
+  ],
+  "not_for": [
+    "Diagnosis, treatment, procedure guidance or patient-specific inference."
+  ],
+  "entities": [
+    {
+      "name": "Frame ledger",
+      "guidance": "List SOP Instance UID, original frame number and dimension-index values separately from presentation order."
+    },
+    {
+      "name": "Functional groups",
+      "guidance": "Show whether a selected value came from Shared or its matching Per-Frame item."
+    },
+    {
+      "name": "Derived plane card",
+      "guidance": "Place only frames with valid position/orientation in patient coordinates; otherwise retain metadata-only state."
+    }
+  ],
+  "state_contract": {
+    "model": "Accept an authorized/de-identified supplied multiframe instance with NumberOfFrames>=1. Preserve source order. Resolve the single Shared Functional Groups item, which may be empty. The Per-Frame Functional Groups Sequence may be absent when all per-frame groups are empty; when present it has one item per frame, individual items may be empty, and its count equals NumberOfFrames. A functional-group macro cannot occur in both Shared and Per-Frame. Follow Dimension Index pointers rather than assuming z or time.",
+    "authority": "Supplied source records, identifiers, frames and curated labels own state. Blender/glTF geometry is display-only; Three.js owns validated runtime binding and exact reset.",
+    "actions": [
+      "Select/scrub frame.",
+      "Switch source versus dimension-guided order.",
+      "Toggle shared/per-frame provenance.",
+      "Reset order and selection."
+    ]
+  },
+  "invariants": [
+    "Sorting never renumbers the frame.",
+    "A functional-group macro is resolved from Shared or Per-Frame, never both; absent or empty conditional groups remain explicit.",
+    "First dimension is slowest-varying presentation guidance, not automatically anatomy or time.",
+    "No patient identifiers enter glTF, screenshots or fixtures.",
+    "Missing plane geometry remains unavailable."
+  ],
+  "motion_guidance": [
+    "Scrubbing changes only selected source frame and derived display plane: Blender exports a generic card/axes shell with no instance pixels or patient metadata, while Three.js retains one-based source identity, resolves conditional Shared/Per-Frame metadata and drives planes only when source orientation/position is valid."
+  ],
+  "creative_affordances": [
+    "Use restrained cutaways, translucent planes and non-color selection cues without implying clinical confidence."
+  ],
+  "known_limits": [
+    "Documentary source review only; no dataset, patient record, simulation, specialist clinical validation or runtime was used."
+  ],
+  "claims": [
+    {
+      "id": "claim.biomed-dicom-multiframe-groups",
+      "statement": "DICOM PS3.3 specifies one Shared Functional Groups item that may be empty. Per-Frame Functional Groups is conditional: it is required if any frame has a nonempty per-frame group and, when present, has one possibly empty item per frame. A functional-group macro cannot occur in both sequences. Dimension pointers and values organize presentation, with the first dimension slowest-varying.",
+      "scope": "DICOM PS3.3 2026c C.7.6.16, C.7.6.17 and 7.5.2; meaning follows the referenced macro/IOD.",
+      "source_refs": [
+        {
+          "source_id": "source.biomed-dicom-multiframe",
+          "locator": "C.7.6.16 Table C.7.6.16-1 and C.7.6.16.1.1-.2"
+        },
+        {
+          "source_id": "source.biomed-dicom-multiframe-dimensions",
+          "locator": "C.7.6.17 opening guidance and C.7.6.17.1"
+        },
+        {
+          "source_id": "source.biomed-dicom-dimension-organization",
+          "locator": "7.5.2 Dimension Organization"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Frame ledger and plane deck",
+      "structure": "Blender authors one generic unit plane card, axes and neutral panel at identity; glTF exports only these reusable display assets, with no instance pixels, UIDs or patient metadata.",
+      "material": "Neutral cards distinguish source/shared/per-frame state without medical heat-map semantics.",
+      "articulation": "Three.js owns authorized frame records, conditional Shared/Per-Frame resolution, one-based identity, source-to-presentation ordering, patient-frame plane transforms and scrub/reset state."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Display of supplied educational or derived biomedical records; no tissue mechanics or diagnostic model.",
+    "state": [
+      "source identity and license",
+      "laterality and coordinate frames",
+      "validated selection/playback state"
+    ],
+    "checks": [
+      "Reject ambiguous side, unit or frame.",
+      "Reset exact source-space transforms.",
+      "Keep unavailable data explicit."
+    ]
+  },
+  "related_ids": [
+    "knowledge.dicom-image-frame-value-bridge"
+  ]
+}

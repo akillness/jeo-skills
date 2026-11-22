@@ -1,0 +1,103 @@
+{
+  "id": "knowledge.buoyancy-displacement",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Buoyancy as weight of displaced fluid"
+  },
+  "aliases": {
+    "en": [
+      "Archimedes force",
+      "fraction submerged",
+      "float or sink"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal",
+    "rigid-mechanics"
+  ],
+  "summary": "Apply a buoyant force from displaced volume rather than painting a water line, and keep that hydrostatic shortcut distinct from flow or stability.",
+  "objective": "Compare the equilibrium draft of a sealed freely floating body with the initial upward or downward acceleration of a body released in still liquid.",
+  "applies_when": [
+    "A body is placed in a still liquid and the question is whether it floats, sinks or hovers.",
+    "Draft, load line or ballast is used to explain displacement, not free-surface waves."
+  ],
+  "subject_terms": [
+    "buoyant force",
+    "Archimedes principle",
+    "displaced volume",
+    "average density",
+    "fraction submerged",
+    "hydrostatic"
+  ],
+  "tags": [
+    "physical-behavior",
+    "buoyancy",
+    "hydrostatic"
+  ],
+  "intent_signals": [
+    "why does the boat sit lower when loaded",
+    "float a cork and sink a stone",
+    "approximate buoyancy without CFD"
+  ],
+  "example_prompts": [
+    "Float a sealed hull and a solid block of the same mass in a tank and compare draft.",
+    "Let me change object density and see the submerged fraction follow the density ratio."
+  ],
+  "negative_signals": [
+    "Wavy water shaders with no displaced volume.",
+    "Metacentric ship-stability claims from a single upward arrow."
+  ],
+  "not_for": [
+    "Free-surface CFD, sloshing or planing hydrodynamics.",
+    "Rotational stability or metacentre, which the cited section does not cover."
+  ],
+  "content": {
+    "principles": [
+      "Buoyancy equals displaced-fluid weight. The density-ratio submerged fraction describes free floating equilibrium, not every transient pose.",
+      "Use sealed, nonflooding displacement geometry, finite positive volume and fluid density, and no external floor or tether support in the equilibrium comparison.",
+      "This model fixes orientation and vertical alignment; it does not infer rotational stability from an arbitrary force application point."
+    ],
+    "implementation": [
+      "Own mass, sealed displacement volume, fluid density, water level and a monotone displaced-volume function of draft. Keep body density derived from mass/volume.",
+      "For quasi-static floating with 0<m<rho_fluid V_total, solve rho_fluid V_displaced=m over the admissible draft interval. At neutral density a fully submerged body has no uniquely selected depth. If heavier, report no free floating equilibrium rather than clamp to a false draft.",
+      "An optional transient vertical branch owns velocity and applies F=rho_fluid V_displaced g-m g. Apply force through the center of mass with rotation constrained. It does not promise convergence; any added drag is an explicitly authored dissipative model, not an Archimedes calibration.",
+      "Show equilibrium and transient readouts separately. Pause preserves velocity and time; reset restores initial pose, velocity, fluid level, mass and volume."
+    ],
+    "observable_checks": [
+      "At the solved freely floating equilibrium, V_displaced/V_total equals mean object density/fluid density within tolerance.",
+      "A fully submerged heavier body released from rest initially accelerates downward. An upward-moving heavy body may continue upward briefly while decelerating.",
+      "Changing appearance alone leaves mass and displacement unchanged. Do not reject undamped transient bobbing merely because it has not settled."
+    ]
+  },
+  "related_ids": [
+    "recipe.buoyancy-floating-equilibrium",
+    "recipe.hydrostatic-depth-pressure",
+    "knowledge.gravity-contact"
+  ],
+  "creative_affordances": [
+    "Cutaway hulls, ballast tanks and load-line marks make displacement legible.",
+    "Stylised boats may still use the same density-ratio check if they claim to float."
+  ],
+  "known_limits": [
+    "The cited Archimedes section is static buoyancy in fluid at rest; metacentre and wave-making are not covered.",
+    "Overlap-volume estimators miss concavities, trapped air and free-surface setup unless modelled.",
+    "Authored reusable guidance; no runtime artifact has been observed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-buoyancy-displacement",
+      "statement": "The buoyant force equals the weight of displaced fluid. With gravity and buoyancy as the only vertical forces, their imbalance determines vertical acceleration; released from rest the body initially rises or sinks accordingly. At freely floating equilibrium the submerged-volume fraction equals mean object density divided by fluid density.",
+      "scope": "Still constant-density liquid, sealed nonflooding displacement, no floor or tether support; equilibrium fraction is separate from transients and excludes rotational stability.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-archimedes",
+          "locator": "14.4, Archimedes' Principle; release-from-rest passage; Density and Archimedes' Principle"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed"
+}

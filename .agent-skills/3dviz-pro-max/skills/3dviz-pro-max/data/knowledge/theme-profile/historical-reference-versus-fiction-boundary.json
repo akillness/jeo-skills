@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.historical-reference-versus-fiction-boundary",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "theme-profile",
+  "title": {
+    "en": "Historical reference versus fictional invention boundary"
+  },
+  "aliases": {
+    "en": [
+      "historical-looking is not verified",
+      "reference provenance boundary",
+      "fictional heritage labeling"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors",
+    "characters-motion-art"
+  ],
+  "summary": "Keep sourced reconstruction, informed interpretation and free invention visibly separate while allowing fictional scenes to remix broad craft and age cues.",
+  "objective": "Every externally presented historical or cultural assertion points to reviewed evidence and uncertainty, while invented forms, labels and stories are clearly described as fiction.",
+  "applies_when": [
+    "A fictional or interpretive scene uses real-world reference images, collection objects, period cues, place names, scripts, dress or ritual forms."
+  ],
+  "tags": [
+    "theme-profile",
+    "historical-boundary",
+    "fiction",
+    "provenance",
+    "cultural-reference"
+  ],
+  "subject_terms": [
+    "reference ledger",
+    "historical claim",
+    "informed interpretation",
+    "fictional invention",
+    "provenance",
+    "rights",
+    "uncertainty label"
+  ],
+  "intent_signals": [
+    "historical-looking is not historically verified",
+    "separate museum evidence from invented scene dressing",
+    "label which old-town details are fictional"
+  ],
+  "example_prompts": [
+    "Create an invented port workshop inspired by broad repair and material cues, with no claim that its machinery reconstructs a real place.",
+    "Build an interpretive gallery room where sourced object facts and fictional connective scenes use different labels."
+  ],
+  "negative_signals": [
+    "looks old therefore authentic",
+    "mix living cultural symbols as generic decoration",
+    "copy reference asset without rights review",
+    "invent citation after modeling"
+  ],
+  "not_for": [
+    "Replacing historians, culture bearers, curators or rights holders when a project makes specific public claims.",
+    "Using this creative record as evidence for dates, provenance, construction, dress, language, ritual or technology."
+  ],
+  "content": {
+    "principles": [
+      "Classify each consequential element as sourced reconstruction, evidence-bounded interpretation or free invention before describing it publicly.",
+      "Visual plausibility and repeated online imagery are not evidence. Specific claims about a people, place, object, event or period need reviewed sources and uncertainty appropriate to the claim.",
+      "As an authored project policy, track factual support and reproduction permission in separate review fields; do not approve redistribution from citation alone.",
+      "Avoid token motifs that stand in for a whole living culture. When cultural specificity matters, involve appropriate expertise and preserve names, context and disagreement rather than blending markers into generic atmosphere.",
+      "Fiction remains flexible when it says what is invented. Broad age, repair, craft and material cues can be remixed without attaching unsupported real-world attribution."
+    ],
+    "implementation": [
+      "Maintain a reference ledger outside the mesh with element ID, intended claim, source locator, rights status, interpretation note, reviewer and unresolved uncertainty. Leave entries explicitly invented when no factual claim is intended.",
+      "In Blender, assign stable semantic IDs and evidence-class metadata to claim-bearing objects or parts. Keep reference images and source notes out of redistribution unless rights permit them.",
+      "For the fictional port workshop, invent names and machinery while using repair, support and material-age cues as creative grammar; label it fictional. For the interpretive gallery, isolate sourced objects from invented transitions and scenery.",
+      "Export only the metadata needed for presentation, such as claim class, public label key and source-record key. Project review must not approve redistribution or source fidelity from the presence of a glTF extras field alone.",
+      "In Three.js, render sourced facts, bounded interpretations and fictional connective text with distinct labels available in the accessible companion interface; link claim-bearing items to the reviewed source record where publication allows.",
+      "When evidence changes, update the ledger and affected labels as one content revision. Reset changes interaction state, not provenance or claim classification."
+    ],
+    "observable_checks": [
+      "Audit every specific date, place, named culture, historical function or reconstruction statement; each has a source record and uncertainty or is rewritten as fiction.",
+      "Inspect a sourced object, an interpretive reconstruction and an invented prop; their public labels clearly distinguish the three classes without relying on color alone.",
+      "Trace a visible claim-bearing element through Blender semantic ID, exported metadata, runtime object and companion source entry.",
+      "Review reference images, scans, typefaces and copied assets separately for allowed use; no factual citation is presented as permission.",
+      "Remove unreviewed cultural markers and named attributions; the fictional composition still works through spatial, functional and material choices.",
+      "Revise one evidence entry and verify every affected runtime label changes together while saved interaction state and unrelated fiction remain stable."
+    ]
+  },
+  "creative_affordances": [
+    "Create alternate fictional histories or composite places when the brief invites them, using clear invented labels rather than counterfeit provenance.",
+    "Show uncertainty as multiple interpretive variants, layered reconstruction states or curator notes when the evidence genuinely supports more than one reading."
+  ],
+  "known_limits": [
+    "Authored workflow guidance with no historical, cultural, legal or rights determination for any specific project.",
+    "This record supplies no factual claims or sources; each real-world assertion requires its own evidence and review."
+  ],
+  "related_ids": [
+    "knowledge.theme-heritage-fiction",
+    "knowledge.reasoning-heritage-evidence-separation",
+    "knowledge.theme-ceremonial-stage",
+    "knowledge.spatial-annotation-authoring"
+  ],
+  "claims": []
+}

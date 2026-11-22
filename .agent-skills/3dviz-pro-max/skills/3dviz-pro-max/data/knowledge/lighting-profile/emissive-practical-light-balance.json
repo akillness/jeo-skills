@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.emissive-practical-light-balance",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Emissive practical and scene-light balance"
+  },
+  "aliases": {
+    "en": [
+      "visible emitter versus illumination",
+      "practical light rig",
+      "emissive fixture handoff"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "characters-motion-art",
+    "products-assemblies"
+  ],
+  "summary": "Separate the visible glowing surface of a practical fixture from the mechanism that illuminates nearby receivers, then tune them under one declared exposure.",
+  "objective": "A lamp, sign or screen reads as luminous while nearby surfaces receive intentional light from a declared runtime light, baked field or probe rather than an assumed emissive-material side effect.",
+  "applies_when": [
+    "A visible emissive mesh should appear to light a room or nearby prop.",
+    "Blender reference lighting must be approximated in a Three.js runtime."
+  ],
+  "subject_terms": [
+    "emissive material",
+    "practical light",
+    "receiver illumination",
+    "area light",
+    "exposure",
+    "baked emission"
+  ],
+  "tags": [
+    "lighting-profile",
+    "emissive",
+    "practical-light",
+    "exposure"
+  ],
+  "intent_signals": [
+    "make an emissive screen light nearby objects",
+    "balance a visible bulb and its area light",
+    "stop neon from clipping without darkening room"
+  ],
+  "example_prompts": [
+    "Build a neon sign with a visible emissive tube and a separately inspectable receiver-light mechanism.",
+    "Match a softbox prop using an emissive panel plus a RectAreaLight or a baked contribution."
+  ],
+  "negative_signals": [
+    "Raising emissiveIntensity and assuming every neighboring material will receive more light.",
+    "Tuning the visible emitter and exposure independently until the receiver mechanism is unknowable."
+  ],
+  "not_for": [
+    "Volumetric glow or bloom implementation.",
+    "Physically certified photometry across renderers."
+  ],
+  "content": {
+    "principles": [
+      "Visible emission and received illumination are separate responsibilities in a standard Three.js material/light setup. Name both owners even when Blender rendered them as one authored fixture.",
+      "Choose a receiver mechanism per need: direct runtime light for movement, baked indirect illumination for static scenes, or a reviewed probe/other renderer feature. Distinguish Blender's visible Emit surface pass from indirect receiver lighting caused by emissive objects; excluding Emit alone does not establish that bounced emissive illumination was excluded. Do not silently enable several copies.",
+      "Tune in a controlled order: lock exposure and reference materials, set receiver illumination, then set visible emissive color/intensity and any separate post effect."
+    ],
+    "implementation": [
+      "In Blender, name the emitter mesh and any reference light separately. If baking, record visible Emit, direct and indirect contribution controls separately; do not use the Emit toggle alone as the ownership test for emissive light bounced onto receivers.",
+      "In Three.js, bind emissive/emissiveMap with the documented color space, then create and aim the declared receiver light or bind the bake/probe. When choosing RectAreaLight, use a supported PBR material and initialize the backend-specific LTC data: RectAreaLightUniformsLib for WebGLRenderer, or RectAreaLightTexturesLib with RectAreaLightNode.setLTC for WebGPURenderer. Do not infer an area light from the mesh automatically.",
+      "Provide emitter-only and receiver-only toggles plus a neutral diffuse card at known positions; keep exposure fixed during the comparison."
+    ],
+    "observable_checks": [
+      "With receiver lights disabled, the fixture remains visibly emissive while the neutral card loses that mechanism’s illumination.",
+      "Moving a runtime practical changes receiver illumination; a baked practical remains visibly static and is labeled accordingly.",
+      "Highlights and bright emitter detail remain readable under the declared tone mapping/exposure, without using exposure changes to conceal ownership errors."
+    ]
+  },
+  "related_ids": [
+    "knowledge.blender-three-ibl-shadow-ownership",
+    "knowledge.blender-three-linear-color-handoff",
+    "knowledge.shared-light-comparison-rig"
+  ],
+  "creative_affordances": [
+    "Practical fixtures may be neon, screens, magical runes, furnace mouths or stylized panels.",
+    "Receiver-light shape and falloff may be art directed after the mechanism is declared."
+  ],
+  "known_limits": [
+    "MeshStandardMaterial emission alone is not a general GI solver.",
+    "RectAreaLight support, materials and shadows vary; the cited current class does not cast shadows.",
+    "No Blender light transport, Three.js light, tone mapping or render was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.lighting-three-emissive-material",
+      "statement": "MeshStandardMaterial emissive is a material color unaffected by other lighting; emissiveMap is color data typically tagged SRGBColorSpace and is modulated by emissive color and intensity.",
+      "scope": "Three.js visible material emission; it does not establish illumination of other objects.",
+      "source_refs": [
+        {
+          "source_id": "source.three-standard-material",
+          "locator": "emissive, emissiveIntensity and emissiveMap properties"
+        },
+        {
+          "source_id": "source.shared-depth-three-color-management",
+          "locator": "Color textures and working color space"
+        }
+      ]
+    },
+    {
+      "id": "claim.lighting-three-area-light",
+      "statement": "Three.js RectAreaLight is a separate rectangular light with no shadow support; current documentation limits it to PBR materials and requires backend-specific LTC initialization through RectAreaLightUniformsLib for WebGLRenderer or RectAreaLightTexturesLib with RectAreaLightNode.setLTC for WebGPURenderer.",
+      "scope": "Current Three.js direct-light mechanism; pin and verify the installed backend/revision and initializer imports.",
+      "source_refs": [
+        {
+          "source_id": "source.lighting-three-rect-area-light",
+          "locator": "Important Notes and Code Example: PBR-only, no shadows, and backend-specific LTC initialization"
+        }
+      ]
+    },
+    {
+      "id": "claim.lighting-blender-emission-bake",
+      "statement": "Blender Cycles exposes an Emit bake type for material surface emission and a selectable Emit contribution in Combined baking alongside separate direct and indirect lighting controls; therefore the bake configuration, not the Emit label alone, determines the retained lighting product.",
+      "scope": "Blender bake controls only. The documented Emit surface term must not be conflated with indirect illumination received after light from an emissive object bounces.",
+      "source_refs": [
+        {
+          "source_id": "source.lighting-blender-cycles-baking",
+          "locator": "Bake Type Emit and Combined Influence Emit"
+        }
+      ]
+    }
+  ]
+}

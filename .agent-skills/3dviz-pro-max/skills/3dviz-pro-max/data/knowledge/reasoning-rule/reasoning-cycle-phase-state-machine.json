@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-cycle-phase-state-machine",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Drive physiological cycles from an explicit phase model"
+  },
+  "aliases": {
+    "en": [
+      "cardiac phases",
+      "respiratory cycle",
+      "phase state machine"
+    ]
+  },
+  "direction_ids": [
+    "physiology-biomechanics",
+    "anatomy-structures"
+  ],
+  "summary": "Represent a biological cycle as ordered phases with stated transition causes, and derive motion and labels from the current phase.",
+  "objective": "Make a cycle animation express the causal ordering of its phases rather than a smooth loop.",
+  "applies_when": [
+    "A scene animates breathing, heartbeat, gait or another repeating physiological cycle.",
+    "Phase names, pressures, volumes or valve states are displayed.",
+    "The viewer can pause, step or scrub through the cycle."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "cycle",
+    "phase",
+    "state machine",
+    "ventilation",
+    "pressure gradient",
+    "timing"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "physiology",
+    "state"
+  ],
+  "intent_signals": [
+    "animate the breathing cycle",
+    "show the phases of the heartbeat",
+    "step through inspiration"
+  ],
+  "example_prompts": [
+    "Animate ventilation with named phases and the pressure that drives each one.",
+    "Let me step through the cycle one phase at a time."
+  ],
+  "negative_signals": [
+    "Ambient idle breathing on a character, which is decoration rather than explanation.",
+    "Continuous field simulations where phases are not the organising concept."
+  ],
+  "not_for": [
+    "Ambient idle breathing on a character, which is decoration rather than explanation.",
+    "Continuous field simulations where phases are not the organising concept."
+  ],
+  "content": {
+    "principles": [
+      "A cycle is a sequence of causes, not a sine wave. Naming the phases and their transitions is what makes the animation explanatory.",
+      "The driving quantity should be visible. In ventilation, thoracic volume change alters intrapulmonary pressure relative to atmospheric pressure, and air flows down the resulting gradient, so the pressure difference is the cause and the airflow is the consequence.",
+      "Motion, labels and derived readouts must all come from the same phase state, or the picture and the caption can disagree at the transitions.",
+      "Phase durations are usually unequal, and forcing them into equal spans misrepresents the timing that clinicians and students actually care about."
+    ],
+    "implementation": [
+      "Define phases as an explicit ordered set with entry conditions, and hold the current phase and phase progress as the authoritative state.",
+      "Derive every visible element from that state: geometry, arrows, valve or airway state, and numeric readouts.",
+      "Display the driving quantity and its sign, so the viewer sees the gradient that produces the flow rather than only the flow.",
+      "Support stepping to phase boundaries as well as continuous playback, since the boundaries are where the causes change.",
+      "Use sourced relative durations where they matter, and label the timing as illustrative when they are not sourced."
+    ],
+    "observable_checks": [
+      "Step to each phase boundary and confirm the geometry, the arrows and the labels change together.",
+      "Check the sign of the driving quantity against the direction of the displayed flow in every phase.",
+      "Confirm the phase sequence cannot skip or run backwards during a speed change.",
+      "Compare the relative phase durations against the stated source or the stated illustrative choice."
+    ]
+  },
+  "related_ids": [
+    "recipe.ventilation-pressure-phases",
+    "knowledge.state-playback"
+  ],
+  "creative_affordances": [
+    "The visual language for pressure, from arrows to colour gradients to a moving needle, is a free choice.",
+    "A schematic bellows or piston abstraction can teach the causal chain more clearly than a realistic thorax."
+  ],
+  "known_limits": [
+    "Authored state-model guidance citing one physiological driving relationship; it is not a respiratory or cardiac simulation.",
+    "No numerical pressure, volume or timing values are asserted by this rule."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-ventilation-pressure-gradient",
+      "statement": "During inspiration the increase in thoracic volume lowers intra-alveolar pressure below atmospheric pressure and air flows in, while during expiration the decrease in volume raises intrapulmonary pressure above atmospheric pressure and air flows out, because air moves from higher to lower pressure.",
+      "scope": "Quiet human ventilation described qualitatively; no pressure or volume magnitudes are asserted.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-breathing",
+          "locator": "22.3, Mechanisms of Breathing and pressure relationships"
+        }
+      ]
+    }
+  ]
+}

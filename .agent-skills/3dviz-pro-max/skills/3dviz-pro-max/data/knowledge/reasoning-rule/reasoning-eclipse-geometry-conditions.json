@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-eclipse-geometry-conditions",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Explain why an alignment is rare, not just how it looks"
+  },
+  "aliases": {
+    "en": [
+      "eclipse conditions",
+      "orbital tilt",
+      "alignment geometry"
+    ]
+  },
+  "direction_ids": [
+    "astronomy-space"
+  ],
+  "summary": "Model the tilt that makes eclipses occasional, because a coplanar model predicts one every cycle.",
+  "objective": "Keep an alignment scene from teaching that eclipses happen every orbit.",
+  "applies_when": [
+    "Eclipses, transits, occultations or shadow geometry are shown.",
+    "The scene models more than one orbital plane.",
+    "A viewer might ask why this does not happen every month."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "eclipse",
+    "orbital tilt",
+    "shadow",
+    "alignment",
+    "node",
+    "geometry"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "astronomy",
+    "geometry"
+  ],
+  "intent_signals": [
+    "show a solar eclipse",
+    "why not every month",
+    "align the shadow"
+  ],
+  "example_prompts": [
+    "Show why eclipses do not happen at every new Moon.",
+    "Model the shadow geometry with the orbital tilt included."
+  ],
+  "negative_signals": [
+    "Phase demonstrations that do not discuss eclipses.",
+    "Artistic eclipse imagery with no geometric claim."
+  ],
+  "not_for": [
+    "Phase demonstrations that do not discuss eclipses.",
+    "Artistic eclipse imagery with no geometric claim."
+  ],
+  "content": {
+    "principles": [
+      "A coplanar model produces an eclipse every cycle, which is the single most common error in these scenes and directly contradicts observation.",
+      "Eclipses are occasional because the Moon does not orbit in the same plane as the Earth's orbit around the Sun: the orbital inclination is measured against that reference plane, not against the moving Sun-Earth line. An eclipse needs the alignment to occur near a node, where the two planes cross, and near enough within a finite angular tolerance rather than exactly on it.",
+      "Shadow geometry needs real extent and produces more than two regions. A source of finite angular size casts an umbra, a surrounding penumbra and, beyond the umbra's tip, an antumbra: which of these reaches the observer decides whether a solar eclipse is total, partial or annular, and NASA describes the annular case as occurring when the Moon is at or near its farthest point from Earth. A hard-edged shadow from a point source cannot express any of this.",
+      "Scale compression interacts with this: compressing distance while keeping body sizes large makes shadows and alignments geometrically impossible, so the preserved quantities must be stated."
+    ],
+    "implementation": [
+      "Include the orbital tilt in the model and let alignment occur only when the geometry allows it, rather than scripting an eclipse.",
+      "Model the shadow with a source of finite angular size so the umbra and penumbra structure exists.",
+      "Let the viewer step through several cycles and observe the shadow missing, which is the demonstration.",
+      "State which quantities are true and which are compressed, particularly if sizes and distances use different factors.",
+      "Avoid asserting eclipse dates or durations unless they come from a computed ephemeris, and say which one."
+    ],
+    "observable_checks": [
+      "Step through several cycles and confirm most produce no eclipse.",
+      "Confirm the shadow model produces the regions the depicted event needs, selected from the actual geometry: umbra and penumbra for a total eclipse, antumbra for an annular one, and penumbra alone for a partial or penumbral event. Requiring a full and a partial region at the observer would reject valid annular and partial events.",
+      "Check that alignment events occur near a node, within the angular tolerance your geometry implies, rather than exactly at the crossing or at arbitrary points in the orbit.",
+      "Confirm any stated date or duration is attributed to a computation or a source."
+    ]
+  },
+  "related_ids": [
+    "recipe.moon-phase-observer",
+    "knowledge.reasoning-dual-scale-disclosure"
+  ],
+  "creative_affordances": [
+    "Dramatic eclipse visuals remain fully available above a correct geometric model.",
+    "A deliberately schematic diagram of the tilt is often the clearest way to make the point."
+  ],
+  "known_limits": [
+    "Authored guidance citing a qualitative statement that the Moon orbit is tilted; the inclination value in degrees was not read in this session and is not claimed.",
+    "It provides no ephemeris, eclipse prediction or timing capability."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-eclipse-tilt-condition",
+      "statement": "Solar eclipses do not occur every month because the Moon does not orbit in the same plane in which the Sun and Earth lie, so the shadow usually passes above or below; a total solar eclipse occurs when the Moon completely blocks the face of the Sun, an annular eclipse when the Moon is at or near its farthest point from Earth, a partial eclipse when the three bodies are not perfectly lined up, and a hybrid eclipse can shift between annular and total across the curved surface of Earth.",
+      "scope": "Qualitative eclipse geometry and event types as described by the cited agency pages. Neither page read gives the orbital inclination in degrees or names the orbital nodes, so no numerical tilt is claimed here.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-nasa-eclipse-faq",
+          "locator": "Why eclipses do not happen every month"
+        },
+        {
+          "source_id": "source.reasoning-depth-nasa-eclipse-types",
+          "locator": "Total, annular, partial and hybrid solar eclipses; the Moon not orbiting in the same plane as the Sun and Earth"
+        }
+      ]
+    }
+  ]
+}

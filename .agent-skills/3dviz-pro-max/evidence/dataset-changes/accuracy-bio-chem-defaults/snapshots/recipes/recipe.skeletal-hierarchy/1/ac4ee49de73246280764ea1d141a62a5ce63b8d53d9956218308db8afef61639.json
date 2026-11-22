@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "id": "recipe.skeletal-hierarchy",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Skeletal hierarchy explorer"
+  },
+  "aliases": {
+    "en": [
+      "skeletal hierarchy"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures"
+  ],
+  "summary": "Connect named bones to axial and appendicular groupings.",
+  "objective": "Build a skeletal explorer where selecting a group highlights its bones without losing left/right identity.",
+  "tags": [
+    "skeletal",
+    "hierarchy"
+  ],
+  "example_prompts": [
+    "Build a skeletal explorer where selecting a group highlights its bones without losing left/right identity."
+  ],
+  "entities": [
+    {
+      "name": "Skeleton",
+      "guidance": "Use distinct skull, vertebral chain, thoracic cage and limb silhouettes; avoid identical cylinders for all bones at close range."
+    },
+    {
+      "name": "Group tree",
+      "guidance": "Keep anatomical membership separate from render parenting; bilateral bones have stable side-aware IDs."
+    },
+    {
+      "name": "Bone material",
+      "guidance": "Use a low-gloss neutral family with selection outline; color is an interface cue, not a pathology map."
+    }
+  ],
+  "state_contract": {
+    "model": "Bone identity, anatomical group and laterality; visual hierarchy is not a biomechanical joint model.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Select axial or appendicular group.",
+      "Focus one bone and inspect its parent group.",
+      "Reset all visibility."
+    ]
+  },
+  "invariants": [
+    "Selection changes emphasis without renaming or reparenting anatomy.",
+    "Girdles belong to appendicular grouping.",
+    "Do not infer mechanical articulation from category membership."
+  ],
+  "motion_guidance": [
+    "Use a camera focus or group reveal; keep bone rest positions intact.",
+    "Any exploded view preserves reference lines to the rest pose."
+  ],
+  "known_limits": [
+    "No patient-specific anatomy or skeletal motion validation.",
+    "A verified mesh and complete naming inventory are required for a comprehensive atlas.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.skeletal-hierarchy",
+      "statement": "The appendicular skeleton comprises the limbs and their attachments to the axial skeleton.",
+      "scope": "Adult human skeletal grouping.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-skeleton",
+          "locator": "7.1, The Appendicular Skeleton"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Skeleton",
+      "structure": "Use distinct skull, vertebral chain, thoracic cage and limb silhouettes; avoid identical cylinders for all bones at close range.",
+      "material": "Low-gloss neutral bone with selection outlines; group colors are interface coding, not tissue properties.",
+      "articulation": "Anatomical grouping is separate from render parenting; no mechanical articulation is inferred."
+    },
+    {
+      "family": "Group tree",
+      "structure": "Keep anatomical membership separate from render parenting; bilateral bones have stable side-aware IDs.",
+      "material": "Low-gloss neutral bone with selection outlines; group colors are interface coding, not tissue properties.",
+      "articulation": "Anatomical grouping is separate from render parenting; no mechanical articulation is inferred."
+    },
+    {
+      "family": "Bone material",
+      "structure": "Use a low-gloss neutral family with selection outline; color is an interface cue, not a pathology map.",
+      "material": "Low-gloss neutral bone with selection outlines; group colors are interface coding, not tissue properties.",
+      "articulation": "Anatomical grouping is separate from render parenting; no mechanical articulation is inferred."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Semantic geometry/state presentation; no gravity, contact force or material simulation.",
+    "checks": [
+      "Selection changes emphasis without renaming or reparenting anatomy.",
+      "Girdles belong to appendicular grouping."
+    ]
+  }
+}

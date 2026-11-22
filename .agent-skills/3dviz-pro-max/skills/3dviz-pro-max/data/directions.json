@@ -1,0 +1,98 @@
+[
+  {
+    "id": "environments-dioramas",
+    "summary": "Worlds, dioramas, heritage; spatial connectivity and consistent scale"
+  },
+  {
+    "id": "characters-motion-art",
+    "summary": "Characters, creatures, expression; hierarchy/pivot and continuous motion"
+  },
+  {
+    "id": "products-assemblies",
+    "summary": "Products, disassembly/assembly; identity/transform of assembled parts"
+  },
+  {
+    "id": "architecture-interiors",
+    "summary": "Houses, interiors, BIM view; dimensions and building components"
+  },
+  {
+    "id": "operations-logistics",
+    "summary": "Discrete operations; queues, resources and events"
+  },
+  {
+    "id": "anatomy-structures",
+    "summary": "Structural anatomy; hierarchy and names/sources"
+  },
+  {
+    "id": "physiology-biomechanics",
+    "summary": "Biological function; phases, kinematics and scope of evidence"
+  },
+  {
+    "id": "molecules-materials",
+    "summary": "Molecules/materials; bond graph and representation"
+  },
+  {
+    "id": "solid-geometry",
+    "summary": "Spatial geometry; constructions and degeneracies"
+  },
+  {
+    "id": "linear-algebra",
+    "summary": "Vectors/matrices; the same transformation for shape and numbers"
+  },
+  {
+    "id": "calculus-fields",
+    "summary": "Functions, fields, integrals; domain and error"
+  },
+  {
+    "id": "probability-statistics",
+    "summary": "Distributions and samples; density/probability and units"
+  },
+  {
+    "id": "topology-symmetry",
+    "summary": "Topological/symmetry structure; no proofs inferred from the picture"
+  },
+  {
+    "id": "logic-circuits",
+    "summary": "Boolean/clock/constraints; the evaluator decides the result"
+  },
+  {
+    "id": "algorithms-data-structures",
+    "summary": "Algorithms; state trace and invariants"
+  },
+  {
+    "id": "twisty-puzzles",
+    "summary": "Permutation and orientation; legal moves, inverse"
+  },
+  {
+    "id": "spatial-puzzles",
+    "summary": "Spatial fitting and discrete rules"
+  },
+  {
+    "id": "rigid-mechanics",
+    "summary": "Rigid-body mechanics/kinematics; explicit forces or constraints"
+  },
+  {
+    "id": "soft-fluid-thermal",
+    "summary": "Continuum/field; solver and approximation"
+  },
+  {
+    "id": "waves-optics-fields",
+    "summary": "Waves/optics/electromagnetism; ray/wave model and units"
+  },
+  {
+    "id": "robotics-control",
+    "summary": "Robots/control; frames and joint limits"
+  },
+  {
+    "id": "earth-environment",
+    "summary": "Terrain/earth; coordinates, data and scale"
+  },
+  {
+    "id": "astronomy-space",
+    "summary": "Space; reference frames, time, scale"
+  },
+  {
+    "id": "abstract-systems-data",
+    "summary": "Abstract systems; meaningful mapping and state independent of the visual"
+  }
+]

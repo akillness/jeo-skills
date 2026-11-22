@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-volume-visualization-stack",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "output-profile",
+  "title": {
+    "en": "Direct volume view with an owned transfer function"
+  },
+  "aliases": {
+    "en": [
+      "volume rendering output",
+      "transfer function ownership",
+      "sampled volume display"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures",
+    "soft-fluid-thermal",
+    "molecules-materials",
+    "earth-environment"
+  ],
+  "summary": "Show a sampled volume directly by mapping value to colour and opacity, and treat that mapping and the sampling step as declared, adjustable parts of the result.",
+  "objective": "The transfer function and the sampling step are visible and adjustable, and a structure that appears or disappears when they change is recognised as a mapping effect rather than as data.",
+  "tags": [
+    "output-profile",
+    "volume-rendering",
+    "transfer-function",
+    "sampling-step",
+    "opacity"
+  ],
+  "subject_terms": [
+    "direct volume rendering",
+    "transfer function",
+    "scalar opacity",
+    "gradient opacity",
+    "sample distance",
+    "three-dimensional texture",
+    "compositing order",
+    "value range",
+    "quality and cost"
+  ],
+  "intent_signals": [
+    "show the inside of a scanned volume",
+    "the structure only appears at some opacity settings",
+    "volume looks foggy and unreadable",
+    "how dense should the sampling be",
+    "render the whole field without extracting a surface"
+  ],
+  "example_prompts": [
+    "Show a scanned volume directly and let me change the opacity mapping.",
+    "Compare a surface extraction against a direct volume view of the same field.",
+    "Reveal an interior structure without cutting the volume open."
+  ],
+  "negative_signals": [
+    "single surface boundary needed",
+    "flat two-dimensional slice only"
+  ],
+  "not_for": [
+    "Cases where one boundary surface answers the question, which are cheaper and clearer as an extracted surface.",
+    "Diagnostic or measurement claims, which need an instrument-grade pipeline rather than an appearance mapping."
+  ],
+  "content": {
+    "principles": [
+      "A direct volume view shows every sample along a ray, so what the viewer sees is a mapping decision as much as a data fact. Two transfer functions over the same volume can support opposite readings.",
+      "Opacity is the sharpest tool and the easiest to misuse. A narrow opacity ramp manufactures a crisp boundary that the data may not contain, and a broad one buries structure in fog.",
+      "Colour and opacity answer different questions and should be authored as separate curves: colour distinguishes value ranges, opacity decides what is visible at all.",
+      "Emphasising where the field changes rapidly is a second, independent lever. Making opacity depend on the local rate of change highlights boundaries, and its effect combines with the value-based opacity rather than replacing it.",
+      "Sampling step is a quality and cost dial with a visible signature. Too coarse a step produces banding and missed thin features; too fine a step costs time without adding information beyond the data's own resolution.",
+      "Opacity is defined over a distance, so the step size and the opacity mapping are coupled. Halving the step doubles the number of samples along a ray, and unless the per-sample opacity is corrected for the actual sample distance the volume becomes visibly more opaque for the same transfer function.",
+      "Order matters. Semi-transparent accumulation depends on compositing in a consistent direction, and inconsistent ordering shows as flicker when the camera crosses an axis.",
+      "A direct view and an extracted surface are complementary evidence. Agreement between them is informative; disagreement usually points at the threshold or the transfer function rather than at the data."
+    ],
+    "implementation": [
+      "Load the field into a three-dimensional sampled texture and record its dimensions, value range and units alongside it, and be aware that default filtering and mipmap settings for such textures are usually nearest and disabled and must be set deliberately.",
+      "Author the colour mapping and the opacity mapping as separate editable curves over the value range, and show both to the viewer rather than hiding them in code.",
+      "Add a rate-of-change opacity term only as an explicit second control, and state that the resulting opacity combines the two terms.",
+      "Expose the sampling step, or an explicit quality setting that drives it, and state whether the step is fixed or adjusted automatically to hold a frame budget, since an automatically adjusted step changes image quality with the interaction.",
+      "Record the physical voxel spacing and the distance over which the opacity mapping is defined. Use a mapper that owns the distance correction, or apply the correction explicitly when compositing independently, so that changing the step changes quality and cost rather than apparent density.",
+      "Fix the compositing direction relative to the camera and check the volume from opposite sides for consistent accumulation.",
+      "Provide a cut plane or a region restriction so an interior structure can be isolated without abandoning the direct view.",
+      "Present the transfer function as part of the result, and keep it fixed when two volumes or two time steps are compared.",
+      "When a boundary matters, show an extracted surface next to the direct view and state which one the conclusion rests on."
+    ],
+    "observable_checks": [
+      "Changing the opacity mapping visibly changes which structures are seen, and the interface makes that dependence apparent rather than presenting one mapping as the truth.",
+      "Coarsening the sampling step introduces aliasing or drops thin features where the volume has structure at that scale, and refining it converges under a stated image-difference criterion; a smooth or nearly constant volume may show neither effect, and absolute invariance is not the test.",
+      "Rotating the camera through opposite viewing directions produces consistent accumulation without flicker at the crossing.",
+      "Compared volumes or time steps use the same transfer function and the same value range, which is stated with the comparison.",
+      "Where a structure has a definable boundary, it appears in both the direct view and an extracted surface at a corresponding threshold. Features that a broad or gradient-dependent transfer function emphasises need not appear in any single isosurface, so a disagreement is investigated rather than treated as a data defect."
+    ]
+  },
+  "creative_affordances": [
+    "Volume rendering supports strongly atmospheric and abstract looks; a stylised transfer function is legitimate when it is declared as expressive.",
+    "Combining a direct volume with surfaces, slices and annotation layers is encouraged where each layer's role is stated."
+  ],
+  "known_limits": [
+    "This profile governs the mapping and sampling contract. It does not certify that any structure seen in the volume is real or clinically meaningful.",
+    "The transfer-function composition and sampling controls cited here are documented for one visualisation toolkit and one renderer, and do not describe every volume renderer.",
+    "No volume was rendered and no performance was measured for this record.",
+    "Authored reusable guidance; no runtime artifact has been executed or observed for this record."
+  ],
+  "related_ids": [
+    "recipe.knee-layer-peel",
+    "recipe.heat-rod-decay",
+    "recipe.water-hydrogen-bond-network",
+    "knowledge.shared-voxel-field-grid",
+    "knowledge.shared-isosurface-threshold",
+    "knowledge.shared-unlit-quantitative-encoding"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-transfer-function-composition",
+      "statement": "One visualisation toolkit documents volume appearance as colour, scalar opacity and gradient-magnitude opacity defined by separate one-dimensional functions, states that an unset scalar or gradient opacity function is treated as a constant value of one, states that when both scalar and gradient opacity are set the opacity is the product of the two functions, exposes the unit distance on which the scalar opacity transfer function is defined, and offers an alternative two-dimensional transfer function indexed by scalar value and gradient magnitude.",
+      "scope": "Documented transfer-function model of the VTK toolkit as of the access date. It describes how one implementation composes appearance; it makes no claim that any mapping is diagnostically valid.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-vtk-volume-property",
+          "locator": "Detailed Description: 1D transfer functions and their combination; 2D transfer functions; SetScalarOpacityUnitDistance"
+        }
+      ]
+    },
+    {
+      "id": "claim.shared-volume-sample-distance-tradeoff",
+      "statement": "One GPU volume ray-cast mapper exposes an explicit distance between samples used when automatic adjustment is off, an image-space sampling distance, an automatic adjustment mode in which the image sampling distance is varied to meet the render time allocated to the volume, and an option to compute the sample distance from the input data spacing.",
+      "scope": "Documented sampling controls of one GPU volume mapper as of the access date. They establish that sampling density is an explicit quality and time trade-off; no rendering time was measured for this record.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-vtk-gpu-raycast-mapper",
+          "locator": "SetSampleDistance; SetImageSampleDistance; SetAutoAdjustSampleDistances; SetLockSampleDistanceToInputSpacing"
+        }
+      ]
+    },
+    {
+      "id": "claim.shared-3d-texture-defaults",
+      "statement": "One widely used renderer documents a three-dimensional data texture created from raw data with width, height and depth parameters, whose magnification and minification filters both default to nearest sampling, whose depth wrapping defaults to clamping to the edge, and for which vertical flipping and mipmap generation are disabled by default with an unpack alignment of one.",
+      "scope": "Documented defaults of one library's three-dimensional texture container as of the access date. They identify settings that must be chosen deliberately for volume sampling; they are not a rendering algorithm.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-data3dtexture",
+          "locator": "class description; magFilter; minFilter; wrapR; flipY; unpackAlignment; generateMipmaps defaults"
+        }
+      ]
+    }
+  ]
+}

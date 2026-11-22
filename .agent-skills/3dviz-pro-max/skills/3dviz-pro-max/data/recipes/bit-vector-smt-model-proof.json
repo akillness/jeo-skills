@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "id": "recipe.bit-vector-smt-model-proof",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Bit-vector SMT: model, wraparound and proof boundary"
+  },
+  "aliases": {
+    "en": [
+      "fixed-width SMT workbench",
+      "machine-word satisfiability inspector"
+    ]
+  },
+  "direction_ids": [
+    "logic-circuits"
+  ],
+  "summary": "Keep width, modular arithmetic, signed interpretation and solver evidence explicit.",
+  "objective": "Build a finite bit-vector SMT inspector where I set widths and signedness, check a returned SAT model, and distinguish solver-reported UNSAT from an independently checked proof.",
+  "tags": [
+    "SMT",
+    "bit-vector",
+    "modular arithmetic"
+  ],
+  "subject_terms": [
+    "SMT bit-vector",
+    "FixedSizeBitVectors",
+    "bit width",
+    "bvadd",
+    "wraparound",
+    "signed bit-vector",
+    "unsigned bit-vector",
+    "SAT model",
+    "UNSAT proof",
+    "unknown"
+  ],
+  "intent_signals": [
+    "prove a fixed-width bit-vector constraint",
+    "inspect SMT wraparound model",
+    "distinguish UNSAT result from checked proof"
+  ],
+  "example_prompts": [
+    "Show why an 8-bit x can satisfy x+1=0, then compare unsigned x<1 with signed x<1 and expose the solver evidence boundary."
+  ],
+  "negative_signals": [
+    "Not integer arithmetic, floating-point theory, symbolic-width reasoning, hardware equivalence for arbitrary circuits or a universal proof-certificate checker."
+  ],
+  "not_for": [
+    "No symbolic or zero widths, quantifiers, arrays, floating point, optimizer, automatic solver installation or unsupported proof-format verification."
+  ],
+  "entities": [
+    {
+      "name": "Word lanes",
+      "guidance": "Blender supplies a reusable bit-cell rail, carry arc and result card. Three.js instantiates exactly m cells, labels MSB/LSB and renders the same bits under unsigned and two-complement signed interpretations."
+    },
+    {
+      "name": "Evidence panel",
+      "guidance": "Keep formula hash, backend/version, result, model values, model re-evaluation and proof availability as separate fields; never badge a solver response as a checked proof merely because its animation completed."
+    }
+  ],
+  "state_contract": {
+    "model": "Quantifier-free formulas over k variables of fixed positive widths m_i, with a bounded supported operator set: equality, Boolean connectives, bvnot, bvand, bvor, bvadd, extract, concat and explicit signed/unsigned comparisons. Bit-vector values are exact bit strings; arithmetic results reduce modulo 2^m. Track not-run/running/sat/unsat/unknown/error separately. Bind results to the exact formula, declarations and backend version. On SAT, store a complete model for declared variables and re-evaluate every supported assertion. On UNSAT, label only solver-reported UNSAT unless an emitted proof artifact is accepted by a named independent checker; proof-unavailable and proof-unchecked remain visible. For tiny presets, exhaustive enumeration visits product_i 2^(m_i) assignments and may independently establish SAT/UNSAT when completed.",
+    "authority": "The exact formula and evidence object own status. Blender creates stable word-lane geometry; Three.js owns parsing, exact bit operations, backend calls/imports, enumeration and reset.",
+    "actions": [
+      "Edit widths, signed/unsigned operators or assertions and invalidate all previous results.",
+      "Check using an available backend, import provenance-labeled output, or exhaustively enumerate a tiny preset.",
+      "Inspect a SAT model bit by bit and replay exact assertion evaluation.",
+      "Request proof display only when a proof artifact exists; otherwise preserve the solver-result boundary."
+    ]
+  },
+  "invariants": [
+    "Operands to fixed-width binary operators have the declared compatible widths; reject width-zero, implicit widening and ambiguous signedness.",
+    "For width m, bvadd is reduced modulo 2^m; in 8 bits #xFF + #x01 = #x00.",
+    "The same bit pattern can have different signed and unsigned integer interpretations; labels and comparison operators must declare which one is used.",
+    "A SAT badge requires a model that re-evaluates all supported assertions. An unknown/error result is not UNSAT, and solver-reported UNSAT is not automatically an independently checked proof."
+  ],
+  "motion_guidance": [
+    "Step commits one discrete semantic action; pause freezes playback without changing committed state. Reset cancels pending animation and restores the complete preset, including clock, history, selection and error state.",
+    "Use a static before/after view and readable tables for reduced motion. Camera movement and token/message travel only explain a committed transition."
+  ],
+  "creative_affordances": [
+    "Blender may shape distinctive, stable parts and materials for the chosen metaphor; Three.js binds those parts to model IDs and derives every label, highlight and transform from semantic state. Color is reinforced with text, shape or pattern.",
+    "The layout may be sculptural, planar or spatial, provided ordering, identity and invalid states remain unambiguous."
+  ],
+  "known_limits": [
+    "Finite, quantifier-free supported operators only. Solver proof syntax and trust vary; unsupported nodes make local model/proof checking unavailable rather than guessed.",
+    "Authored, source-reviewed guidance only; no Blender export, solver, allocator, TLS stack, browser, renderer or interactive artifact was run."
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Bits and solver evidence are exact symbolic state; lights, motion and contact do not perform inference."
+  },
+  "related_ids": [
+    "recipe.smt-arithmetic-model-status",
+    "recipe.sat-model-resolution-refutation",
+    "recipe.logic-gates"
+  ],
+  "object_craft": [
+    {
+      "family": "Fixed-width word rail",
+      "structure": "Build modular bit-cell strips with a removable signed-interpretation bracket, explicit carry-out gutter and formula/evidence cards arranged as distinct layers.",
+      "material": "Use paired texture/pattern states for 0/1 and an outline for model-assigned cells; never use green alone to mean verified."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim.bit-vector-smt-semantics",
+      "statement": "SMT-LIB fixed-size bit-vectors have positive fixed width; bv2nat ranges from 0 to 2^m-1, the signed interpretation subtracts 2^m when the top bit is set, and bvadd is defined through conversion back to width m, giving modular arithmetic.",
+      "scope": "SMT-LIB 2.7 FixedSizeBitVectors theory as updated 2025-09-09; supported operators declared by this recipe.",
+      "source_refs": [
+        {
+          "source_id": "source.smtlib-fixed-size-bitvectors",
+          "locator": "Sort and function declarations; definition of bv2nat, bv2int, nat2bv[m] and bvadd"
+        }
+      ]
+    },
+    {
+      "id": "claim.bit-vector-smt-result-evidence",
+      "statement": "The Z3 C API retrieves a model after a satisfiable check when model construction is enabled; proof retrieval requires proof generation to have been enabled and the last result to be UNSAT, while unknown is a separate result with a reason API.",
+      "scope": "Z3 API result and artifact availability; no claim that a returned proof was independently checked.",
+      "source_refs": [
+        {
+          "source_id": "source.z3-solver-result-api",
+          "locator": "Z3_solver_check; Z3_solver_get_model; Z3_solver_get_proof; Z3_solver_get_reason_unknown"
+        }
+      ]
+    }
+  ]
+}

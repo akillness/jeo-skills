@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-stop-motion-inspired",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Stop-motion-inspired timing"
+  },
+  "aliases": {
+    "en": [
+      "stop motion look",
+      "stepped puppet animation",
+      "handmade animation feel",
+      "stopmo",
+      "animation on twos"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "Design visible held poses and deliberate handmade staging without presenting the result as photographed physical animation.",
+  "objective": "Held poses communicate the action and pause/reset return to the correct state; timing choices do not skip required puzzle moves or model events.",
+  "tags": [
+    "style-profile",
+    "motion-aesthetic",
+    "stop-motion-inspired"
+  ],
+  "subject_terms": [
+    "stop motion look",
+    "stepped puppet animation",
+    "handmade animation feel",
+    "motion aesthetic"
+  ],
+  "intent_signals": [
+    "Use stop-motion-inspired timing",
+    "Give a handmade figure deliberate held poses"
+  ],
+  "example_prompts": [
+    "Animate a handmade clay courier with clear held poses and a stable miniature set."
+  ],
+  "content": {
+    "principles": [
+      "Design visible held poses and deliberate handmade staging without presenting the result as photographed physical animation."
+    ],
+    "implementation": [
+      "Build separate poseable pieces with readable joint placement; add sparse crafted imperfections that remain stable between poses.",
+      "Use a consistent studio-like light setup and selected surface texture so lighting does not obscure pose changes.",
+      "Choose an explicit pose cadence for decorative performance while preserving the authoritative timing and state of factual actions; keep camera motion calm.",
+      "Sample decorative animation on twos at 12 fps (each pose held 2 frames of a 24 fps timeline) while keeping authoritative state transitions on ones so interaction timing stays exact.",
+      "Offset each puppet's pose phase by 40-120 ms and add 0.3-0.8 mm of per-pose positional jitter on hero pieces only; leave the camera on a smooth 24 fps track."
+    ],
+    "observable_checks": [
+      "Held poses communicate the action and pause/reset return to the correct state; timing choices do not skip required puzzle moves or model events."
+    ]
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at renderer.toneMappingExposure 0.95; re-tune intensities and fog density under a different tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with clay, felt or papercraft; pose cadence is an art choice and must remain optional for user-controlled actions."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "The look is cadence first, surface second, so the rig is a fixed studio setup - a 60 cd SpotLight key and a 24 cd back spot on a small tabletop set - that never moves, letting the 12 fps pose steps be the only thing changing between frames. Exposure sits at 0.95 so the practical highlights on felt and painted wood stay under clipping, and a 2% fingerprint mask held constant between poses reads as handling rather than as flicker.",
+    "values": {
+      "feeling": [
+        "handmade",
+        "deliberate",
+        "theatrical"
+      ],
+      "palette": [
+        {
+          "hex": "#2a2622",
+          "role": "set shadow"
+        },
+        {
+          "hex": "#6b5f4e",
+          "role": "mid built set (board, felt)"
+        },
+        {
+          "hex": "#c9b48f",
+          "role": "lit set surface"
+        },
+        {
+          "hex": "#f0e2c4",
+          "role": "practical highlight"
+        },
+        {
+          "hex": "#b4523f",
+          "role": "painted puppet accent"
+        }
+      ],
+      "value_structure": "35/45/20 dark/mid/light; the puppet holds the lightest mid so pose changes stay visible",
+      "saturation_rule": "the built set <= 40% saturation; the puppet up to 65% so the performer separates from the set",
+      "sky": {
+        "model": "solid",
+        "zenith": "#d6cbb4",
+        "horizon": "#d6cbb4"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#d6cbb4",
+        "density": 0.01
+      },
+      "lights": {
+        "key": {
+          "type": "SpotLight",
+          "color": "#ffeacb",
+          "intensity": 60,
+          "elevation_deg": 48,
+          "azimuth_deg": 315,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#c9d4e0",
+          "ground": "#4a4038",
+          "intensity": 0.5
+        },
+        "rim": {
+          "type": "SpotLight",
+          "color": "#fff2e0",
+          "intensity": 24,
+          "elevation_deg": 30,
+          "azimuth_deg": 140,
+          "castShadow": false
+        },
+        "ratio": "key:fill ~ 4:1 measured on a grey card at the puppet; spot intensities are candela with decay 2"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 0.95
+      },
+      "camera": {
+        "fov_deg": 35,
+        "height_m": 0.45,
+        "pitch_deg": -2,
+        "orbit": {
+          "minPolar_deg": 70,
+          "maxPolar_deg": 92,
+          "minDist_m": 0.6,
+          "maxDist_m": 4
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.6,
+          0.9
+        ],
+        "metalness": [
+          0.0,
+          0.1
+        ],
+        "notes": "visible craft materials - felt 0.9, painted wood 0.65, brass armature 0.35 at metalness 0.8 on joints - plus a 2% fingerprint smudge mask held constant between poses"
+      },
+      "motion": {
+        "sway_period_s": [
+          2.4,
+          3.6
+        ],
+        "ease": "stepped at 12 fps (on twos)",
+        "hold_ms": 500
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.1,
+          "strength": 0.15,
+          "radius": 0.4
+        },
+        "vignette": 0.25,
+        "grain": 0.05,
+        "dof": "focus 0.8 m, f/5.6 equivalent, whole puppet inside the sharp band"
+      },
+      "signature_technique": "12 fps stepped decorative motion under a fixed candela studio key, so the frame-to-frame cadence rather than the surface carries the handmade read",
+      "never": [
+        "motion blur over stepped animation",
+        "untinted white ambient light",
+        "stepping user-controlled interaction timing",
+        "flat black background",
+        "perfectly clean unhandled surfaces"
+      ]
+    }
+  }
+}

@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "id": "recipe.two-qubit-bell-correlations",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Two-qubit Bell-state marginals and joint correlations"
+  },
+  "aliases": {
+    "en": [
+      "Bell pair correlation inspector",
+      "two-qubit singlet state",
+      "entangled qubit marginals"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra",
+    "abstract-systems-data",
+    "waves-optics-fields"
+  ],
+  "summary": "Inspect a normalized four-amplitude two-qubit state through its two reduced states and joint Pauli correlations, with Bell presets that make locally mixed marginals coexist with definite pair correlations.",
+  "objective": "Load a Bell state, rotate two measurement axes, and compare full amplitudes, reduced density matrices, joint probabilities and correlation without encoding the pair as one Bloch vector.",
+  "tags": [
+    "Bell state",
+    "two qubits",
+    "entanglement",
+    "joint correlation",
+    "partial trace"
+  ],
+  "subject_terms": [
+    "Bell pair",
+    "spin singlet",
+    "two-qubit pure state",
+    "computational basis order",
+    "reduced density matrix",
+    "marginal Bloch vector",
+    "Pauli correlation tensor",
+    "joint measurement probabilities"
+  ],
+  "intent_signals": [
+    "Show why a Bell pair can have maximally mixed single-qubit marginals and strong joint correlations.",
+    "Inspect all four two-qubit amplitudes and preserve the order of the tensor-product basis.",
+    "Rotate two spin measurement axes and compare the singlet correlation with minus their dot product."
+  ],
+  "example_prompts": [
+    "Build a two-qubit Bell-state inspector with four amplitude rails, two marginal Bloch balls and a joint correlation tensor.",
+    "Load the singlet, rotate Alice and Bob axes, and show joint outcome probabilities plus the correlation while both local Bloch vectors remain zero."
+  ],
+  "negative_signals": [
+    "Not a single-qubit Bloch-sphere lesson or two independent classical arrows.",
+    "Not a quantum circuit simulator, hardware run, loophole-free Bell experiment or faster-than-light signaling demonstration."
+  ],
+  "not_for": [
+    "Representing an entangled two-qubit state by one three-component Bloch vector.",
+    "Inferring individual measurement outcomes, communication, nonlocal dynamics or experimental statistics from expectation values alone."
+  ],
+  "entities": [
+    {
+      "name": "Ordered four-amplitude state spine",
+      "guidance": "Display psi=(a00,a01,a10,a11) in the declared basis order |q_A q_B>=(|00>,|01>,|10>,|11>). Show real and imaginary parts, magnitude, phase and normalization. A wire swap must explicitly permute a01 and a10 rather than relabeling the same array."
+    },
+    {
+      "name": "Two marginal Bloch balls",
+      "guidance": "Compute rho_A and rho_B by partial trace and derive a separate Bloch vector for each. For every Bell preset both tips sit at the center with rho=I/2; hide direction arrowheads at zero and do not merge the balls into a joint-state sphere."
+    },
+    {
+      "name": "Joint measurement frame",
+      "guidance": "Give observers A and B independent unit-axis handles. Display the four projector probabilities p_st for outcomes s,t in {-1,+1}, their marginals, C=sum(s*t*p_st), and the 3x3 tensor T_mn=<sigma_m tensor sigma_n>. Keep pair data visually connected across the two stations."
+    }
+  ],
+  "state_contract": {
+    "model": "Use the ordered normalized pure state psi=a00|00>+a01|01>+a10|10>+a11|11>. Require all complex amplitudes finite and squared norm finite and strictly positive before normalization; reject a zero or nonfinite norm. After normalization require sum |aij|^2=1 within declared tolerance. Presets are Phi+=(|00>+|11>)/sqrt(2), Phi-=(|00>-|11>)/sqrt(2), Psi+=(|01>+|10>)/sqrt(2), and singlet Psi-=(|01>-|10>)/sqrt(2). Form rho=|psi><psi|. Compute (rho_A)_(i,k)=sum_j a_(i,j) conjugate(a_(k,j)) and (rho_B)_(j,l)=sum_i a_(i,j) conjugate(a_(i,l)); derive each marginal Bloch vector independently. Require each measurement-axis input finite with strictly positive norm, then normalize it to unit u or v or reject it; a zero axis has no projector direction. For outcomes s,t in {-1,+1}, use projectors P_s(u)=(I+s*u dot sigma)/2 and p_st=<psi|P_s(u) tensor P_t(v)|psi>. Compute C(u,v)=sum s*t*p_st and T_mn=<psi|sigma_m tensor sigma_n|psi>. For Psi-, T=-I and C=-u dot v. Editing amplitudes away from a preset changes the label to general two-qubit pure state; it does not retain a Bell-state badge.",
+    "authority": "The ordered amplitude vector owns rho, both reductions, both Bloch vectors, joint probabilities and correlation tensor. Axis handles own measurement settings only and do not rotate or collapse the stored state. Camera orientation never becomes a measurement axis.",
+    "actions": [
+      "Load any of the four exact Bell presets and inspect its ordered amplitudes and phase signs.",
+      "Rotate A and B unit measurement axes and update joint probabilities, marginals and correlation from the same projectors.",
+      "Apply a global phase to all four amplitudes and verify every density-matrix and probability view is unchanged.",
+      "Passively reorder the basis from |q_A q_B> to |q_B q_A> by explicitly permuting a01 and a10 while relabeling every tensor factor, reduction, operator and observer; do not describe this representational change as applying a physical SWAP gate.",
+      "Edit and normalize a general two-qubit pure state, with Bell-specific claims and badges disabled when the exact preset tolerance fails.",
+      "Reset state, tensor order, measurement axes, phase display and selected matrix element."
+    ]
+  },
+  "invariants": [
+    "The displayed state norm and trace of rho equal one within tolerance; rho, rho_A and rho_B are Hermitian and positive semidefinite within the declared numeric policy.",
+    "For all four Bell presets, rho_A=rho_B=I/2 and both marginal Bloch vectors are zero, while rho is rank one. Two zero marginal vectors therefore do not encode the joint state.",
+    "For the singlet Psi-, T_xx=T_yy=T_zz=-1 and off-diagonal T entries are zero within tolerance; equal measurement axes give correlation -1 and opposite axes give +1.",
+    "For any valid axes and state, all four joint probabilities are nonnegative within tolerance, sum to one, and their row and column sums equal the displayed A and B marginals.",
+    "Multiplying all amplitudes by one unit-modulus global phase leaves rho, reductions, tensor and probabilities unchanged.",
+    "A passive change of declared tensor order permutes state indices, reductions, labels and operator factors together while preserving the physical state; a visual relabel without the a01/a10 permutation fails, and a physical SWAP operation is a separate action."
+  ],
+  "motion_guidance": [
+    "Axis-handle motion changes the measurement setting continuously and recomputes expectations; it does not animate hidden predetermined outcomes or state collapse.",
+    "Amplitude transitions between presets are labeled authored interpolation through normalized state space and are not claimed as a physical gate sequence unless an explicit unitary path is supplied. Before linear interpolation, phase-align endpoints to avoid an artificial antipodal cancellation; if the intermediate norm is zero or nonfinite, stop with a diagnostic rather than normalize it.",
+    "Reverse scrubbing restores stored authored states and settings; it does not reverse a measurement."
+  ],
+  "creative_affordances": [
+    "Connect the two marginal instruments with four probability ribbons or a central correlation lattice, provided ribbon width is derived from p_st and remains readable without color.",
+    "Use paired observatories, a laboratory bench or an abstract tensor sculpture while keeping the basis order, operator factors and exact values visible."
+  ],
+  "known_limits": [
+    "This recipe covers normalized two-qubit pure states with Bell presets and projective Pauli-axis expectations. Mixed joint states, POVMs, channels, decoherence and more qubits require a different state contract.",
+    "Expectation values and exact probabilities are analytic model outputs, not sampled detections. No hardware, shot noise, detector model, locality test or statistical confidence analysis is included.",
+    "The singlet correlation source concerns spin-one-half systems. The abstract qubit display does not claim a particle trajectory, spatial wavefunction or instantaneous signal.",
+    "No matrix engine, scene runtime, renderer, interaction or quantum device was run for this authored recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.experience-math-bell-singlet-correlation",
+      "statement": "For a pair of spin-one-half particles in the singlet state, equal-axis spin-component measurements are perfectly anticorrelated, and the quantum expectation for unit measurement directions u and v is their negative dot product.",
+      "scope": "Ideal singlet-state spin-component expectation values with outcomes scaled to plus or minus one; not individual outcomes, signaling, detector imperfections or a complete experimental Bell test.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-math-bell-1964",
+          "locator": "Section II, journal pages 195-196: singlet setup and equal-axis anticorrelation; equation (3) on page 196: quantum correlation P(u,v)=-u dot v"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Two-station correlation instrument",
+      "structure": "Build two equal-scale axis gimbals and marginal balls around a central ordered amplitude spine. The joint tensor and four outcome cells bridge the stations so pair information cannot be mistaken for either local state.",
+      "material": "Give A and B distinct shape coding as well as restrained color. Use a neutral center for zero Bloch vectors and signed texture or glyphs for positive and negative tensor entries.",
+      "articulation": "Each gimbal rotates its own unit axis; amplitude controls alter the authoritative joint state; a qubit-order switch visibly permutes the middle amplitude rails and observer labels."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Analytic finite-dimensional complex state, density matrices and projective-measurement expectations; no spacetime, particle-contact or hardware dynamics.",
+    "state": [
+      "ordered normalized four-component complex state",
+      "declared tensor-factor order",
+      "two reduced density matrices and marginal Bloch vectors",
+      "two unit measurement axes",
+      "joint probabilities and Pauli correlation tensor"
+    ],
+    "checks": [
+      "For every Bell preset verify normalization, rank-one joint density matrix and maximally mixed reductions.",
+      "For Psi- verify T=-I and C(u,v)=-u dot v at equal, opposite, orthogonal and one generic pair of axes.",
+      "Apply a global phase and compare all density and probability outputs element by element.",
+      "Swap tensor order and verify the middle amplitudes, reductions, operator factors and labels permute consistently."
+    ]
+  },
+  "related_ids": [
+    "recipe.single-qubit-bloch-ball"
+  ]
+}

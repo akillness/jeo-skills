@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "id": "recipe.trefoil-knot-diagram",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Trefoil knot, crossings and invariants"
+  },
+  "aliases": {
+    "en": [
+      "trefoil knot",
+      "knot diagram",
+      "crossing number"
+    ]
+  },
+  "direction_ids": [
+    "topology-symmetry"
+  ],
+  "summary": "Keep the spatial curve and its projected diagram in one scene, so a crossing count belongs to the projection and not to the knot.",
+  "objective": "Build a trefoil where I can rotate the projection direction, count crossings in the shadow diagram and see that the tabulated crossing number is a minimum, not a picture property.",
+  "tags": [
+    "knot",
+    "crossing",
+    "invariant"
+  ],
+  "subject_terms": [
+    "knot",
+    "trefoil",
+    "crossing number",
+    "knot diagram",
+    "projection",
+    "over and under strand",
+    "knot invariant",
+    "ambient isotopy"
+  ],
+  "intent_signals": [
+    "Show the difference between a knot and one of its diagrams.",
+    "Explain why a knot has a minimum crossing number."
+  ],
+  "example_prompts": [
+    "Build a trefoil knot with a projected diagram whose crossings I can count as I rotate the projection.",
+    "Show a deformed trefoil that still has the same tabulated invariants."
+  ],
+  "negative_signals": [
+    "Not a knot classification tool: this recipe does not compute invariants from arbitrary user curves.",
+    "Not a rope or physical cord simulation; no contact, friction or thickness dynamics."
+  ],
+  "not_for": [
+    "Not a knot classification tool: this recipe does not compute invariants from arbitrary user curves.",
+    "Not a rope or physical cord simulation; no contact, friction or thickness dynamics."
+  ],
+  "entities": [
+    {
+      "name": "Space curve",
+      "guidance": "Build the knot as a closed tube along a parametrised curve with no self-intersection at the modelled radius."
+    },
+    {
+      "name": "Projection diagram",
+      "guidance": "Draw a diagram on a plane with explicit over and under breaks at crossings, generated from the current projection direction."
+    },
+    {
+      "name": "Crossing markers",
+      "guidance": "Mark each crossing in the diagram with its sign and let the count be displayed, since a bad projection direction can create degenerate tangencies."
+    }
+  ],
+  "state_contract": {
+    "model": "A parametrised closed curve, a projection direction, a computed crossing set with over and under assignment, and a tabulated invariant record shown as reference data rather than as a computed result.",
+    "authority": "The space curve is authoritative for the knot; the diagram is derived from the projection direction, and any deformation control must preserve the curve being embedded.",
+    "actions": [
+      "Rotate the projection direction and recount crossings.",
+      "Deform the curve within an authored isotopy and confirm the tabulated invariants are unchanged.",
+      "Toggle the tube, the centreline and the diagram plane.",
+      "Reset the curve and the projection."
+    ]
+  },
+  "invariants": [
+    "The tube never self-intersects; a deformation that would pinch it is rejected rather than rendered.",
+    "The displayed crossing count is a property of the current projection and can exceed the tabulated crossing number.",
+    "Non-generic projections are reported as invalid diagrams rather than counted: tangencies, triple crossings and crossings that coincide with the projection of a vertex all invalidate the diagram, and the minimum-crossing comparison applies only to valid generic diagrams."
+  ],
+  "motion_guidance": [
+    "Animate deformations slowly so the viewer can see that no strand passes through another.",
+    "Rotate the projection direction continuously and recompute crossing locations and over-under data every time. The count itself changes only at transitions between generic projections, so an unchanged count over a small rotation is expected rather than evidence of a stale diagram."
+  ],
+  "known_limits": [
+    "Tabulated invariants are displayed as reference data from a knot table, not computed by the scene.",
+    "Mirror and orientation conventions differ between tables, so handedness is not asserted here.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-trefoil-tabulation",
+      "statement": "The trefoil is tabulated as knot 3_1 with crossing number 3, and its entry lists an Alexander polynomial and a Jones polynomial.",
+      "scope": "Reference-table data for the catalogued knot as displayed; polynomial normalisation and mirror conventions vary between tables, so the scene should show the values as quoted from its chosen table.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-knot-atlas-trefoil",
+          "locator": "Knot Atlas entry 3_1, data table"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Space curve",
+      "structure": "Swept tube with enough radial segments that the over and under passes stay round where strands come close.",
+      "material": "Matte tube with a length-varying stripe so the traversal direction and any twist are visible during deformation.",
+      "articulation": "The curve is deformed by control points; the tube is rebuilt from the curve each time."
+    },
+    {
+      "family": "Projection diagram",
+      "structure": "Flat strokes with real gaps at under-strands, drawn on a bounded plane with a visible border.",
+      "material": "High-contrast strokes on a plain plate; the diagram must stay readable when the 3D tube is behind it.",
+      "articulation": "Regenerated whenever the projection direction or the curve changes."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Authored deformation of a curve and projection; no rope physics or self-collision solving.",
+    "checks": [
+      "No self-intersection at the modelled tube radius during any authored deformation.",
+      "Recompute crossing locations and over-under data after projection changes; a small generic change may preserve the count. Compare against the tabulated minimum only for valid generic diagrams, and report nongeneric projections as invalid."
+    ]
+  },
+  "related_ids": [
+    "recipe.mobius-orientation-trace",
+    "recipe.torus-euler-cells",
+    "knowledge.structural-coherence"
+  ]
+}

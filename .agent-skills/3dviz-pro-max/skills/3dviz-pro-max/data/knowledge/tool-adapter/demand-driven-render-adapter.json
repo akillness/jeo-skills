@@ -1,0 +1,115 @@
+{
+  "id": "knowledge.demand-driven-render-adapter",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Demand-driven rendering, pause and visibility"
+  },
+  "aliases": {
+    "en": [
+      "render on demand",
+      "setAnimationLoop",
+      "Object3D visible"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies",
+    "architecture-interiors"
+  ],
+  "summary": "Render when something that the viewer can see has changed, and keep render pause separate from simulation pause and from object visibility.",
+  "objective": "A still inspection scene draws on camera or control changes; hiding an object with visible false omits it; stopping the animation loop stops draws without implying the solver stopped.",
+  "applies_when": [
+    "The scene is an inspector, catalog or paused model rather than a continuously animated game.",
+    "Battery, heat or a paused simulation should not keep redrawing a static frame."
+  ],
+  "subject_terms": [
+    "render on demand",
+    "requestAnimationFrame",
+    "setAnimationLoop",
+    "visibility",
+    "pause",
+    "change event"
+  ],
+  "tags": [
+    "tool-adapter",
+    "three",
+    "rendering",
+    "pause"
+  ],
+  "intent_signals": [
+    "stop redrawing when nothing moves",
+    "hide the helper mesh",
+    "pause the view without stepping physics"
+  ],
+  "example_prompts": [
+    "Render this product viewer only when the orbit camera or a GUI control changes.",
+    "Hide a layer with Object3D.visible and confirm it is no longer drawn."
+  ],
+  "negative_signals": [
+    "A continuous loop on a still CAD model.",
+    "Assuming renderer.pause stops Rapier."
+  ],
+  "not_for": [
+    "XR sessions or games that must present every display refresh.",
+    "Claims that skipping draws validates a simulation."
+  ],
+  "content": {
+    "principles": [
+      "Continuous requestAnimationFrame is appropriate when something animates. A still inspector should draw when camera, data or controls change.",
+      "Object3D.visible decides whether that object is rendered. It is not a physics sleep flag.",
+      "setAnimationLoop is the documented place to attach or clear a Three.js frame callback. Clearing it stops draws; it does not by itself stop a solver."
+    ],
+    "implementation": [
+      "If the world is still, render once and subscribe to controls, resize, GUI and load events. Coalesce requests with a single rAF flag as in the official on-demand pattern.",
+      "If the world animates, use setAnimationLoop and decide whether pause stops the mixer, the solver, the loop, or all three. Show that policy in the UI.",
+      "Toggle inspection helpers with visible rather than disposing them, unless resources must be freed.",
+      "When the document is hidden, dropping the loop is a power choice; resume must restore the intended policy.",
+      "Stop the continuous loop with `renderer.setAnimationLoop( null )` and drive the still scene from one coalesced request: raise a `needsRender` flag in the control, resize, GUI and load callbacks and call `renderer.render( scene, camera )` at most once per `requestAnimationFrame`.",
+      "Hand the loop back with `renderer.setAnimationLoop( fn )` when the world animates again, rather than starting a private `requestAnimationFrame` chain beside it. Two loops rendering the same scene double the draw cost and make the declared pause policy impossible to test.",
+      "Toggle an inspection helper with `helper.visible = false` and `helper.visible = true` - the documented flag deciding whether the 3D object gets rendered, default `true` - and reserve `dispose()` for resources that genuinely have to be freed, since a disposed helper cannot be brought back by flipping a boolean."
+    ],
+    "observable_checks": [
+      "In on-demand mode, orbiting or resizing produces a new frame and an idle camera does not keep a rAF loop spinning.",
+      "Setting an object's visible to false omits it from the next render; the simulation state, if any, is unchanged.",
+      "Clearing setAnimationLoop stops further draws while a separately paused flag is required before claiming the solver is frozen."
+    ]
+  },
+  "related_ids": [
+    "knowledge.interruptible-focus",
+    "knowledge.object-isolation"
+  ],
+  "creative_affordances": [
+    "A paused inspector can still allow camera motion; that is a product choice.",
+    "Visibility toggles can stage cutaways without mutating simulation transforms."
+  ],
+  "known_limits": [
+    "The Three.js on-demand article is application guidance, not a benchmark of battery savings.",
+    "Installed controls and XR managers may require a continuous loop; recheck the host.",
+    "Authored reusable guidance; no runtime artifact has been observed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-demand-driven-render-adapter",
+      "statement": "The Three.js rendering-on-demand guide states that a continuous animation loop wastes power when nothing animates and that the scene should render when something changes. Object3D.visible controls whether the object is rendered. WebGLRenderer.setAnimationLoop is the advised API for defining the animation loop rather than calling requestAnimationFrame by hand.",
+      "scope": "Three.js rendering control and visibility; not a physics pause contract.",
+      "source_refs": [
+        {
+          "source_id": "source.knowledge-depth-three-rendering-on-demand",
+          "locator": "Opening: continuous rAF wastes power when nothing animates; render when something changes"
+        },
+        {
+          "source_id": "source.three-object3d",
+          "locator": "visible: when true the 3D object gets rendered"
+        },
+        {
+          "source_id": "source.shared-depth-three-webglrenderer",
+          "locator": "setAnimationLoop"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "revision": 2,
+  "status": "active",
+  "record_kind": "mixed"
+}

@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.stylized-pbr-material-response",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Stylized PBR material response"
+  },
+  "aliases": {
+    "en": [
+      "authored metal roughness palette",
+      "stylized physically based response",
+      "controlled highlight language"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "Art-direct a compact family of highlight widths, roughness transitions and material-role contrasts while keeping glTF metallic-roughness transport explicit.",
+  "objective": "Unlike assets share a recognizable light-response language, yet metal, dielectric, painted and emissive roles remain distinguishable under the target lighting.",
+  "applies_when": [
+    "A stylized scene uses PBR materials rather than a fully unlit or toon-only pipeline.",
+    "Materials match by swatch in Blender but drift under runtime lighting."
+  ],
+  "subject_terms": [
+    "stylized PBR",
+    "metallic roughness palette",
+    "highlight language",
+    "material response bands",
+    "glTF material handoff"
+  ],
+  "tags": [
+    "style-profile",
+    "materials",
+    "pbr",
+    "gltf"
+  ],
+  "intent_signals": [
+    "stylized materials that remain PBR",
+    "consistent highlight widths across props and architecture",
+    "controlled metal roughness response"
+  ],
+  "example_prompts": [
+    "Give an enamel kettle and a stone arch a shared broad-highlight language while preserving metal, coating and stone roles after glTF export."
+  ],
+  "negative_signals": [
+    "Using base color alone to label every material.",
+    "Assuming a Blender viewport node network is the interchange contract."
+  ],
+  "not_for": [
+    "A cel-shading band implementation.",
+    "Measured spectral material reconstruction."
+  ],
+  "content": {
+    "principles": [
+      "Define response roles before values: broad quiet body, narrow focal glint, broken granular response, and optional emissive accent. Map each asset material to a role, then tune within it.",
+      "Use stylization to compress or exaggerate response differences deliberately. Keep metal/dielectric identity and transport assumptions inspectable rather than treating every bright highlight as paint.",
+      "Judge the response under the target key, fill and environment plus one stress rotation; a pleasing front view alone is insufficient."
+    ],
+    "implementation": [
+      "In Blender, author a response swatch board beside two unlike assets. Keep base color, metallic, roughness, normal frequency and emissive intent separable; bake unsupported procedural marks to declared textures.",
+      "Export glTF metallic-roughness data and inventory material slots. The core texture stores roughness in green and metalness in blue with linear encoding; custom ramps, layered node logic and compositor treatment need baking, extensions or a Three.js rebuild.",
+      "In Three.js, load the transported PBR values first, then add optional response quantization, rim or outline as a documented runtime layer. Retest under the actual environment map and tone mapping; do not silently compensate by rewriting all source values."
+    ],
+    "observable_checks": [
+      "A rotating light or object produces the declared broad, narrow and broken response roles on both unlike assets without collapsing them into the same material.",
+      "Inspect exported channels and runtime material values: a roughness/metalness swap or color-space mistake is visible in the swatch board before scene review.",
+      "Disable custom runtime shading: the base glTF materials remain interpretable and the missing stylized layer is explicitly recorded rather than mistaken for export loss."
+    ]
+  },
+  "related_ids": [
+    "knowledge.style-stylized-realism",
+    "knowledge.style-cel-shaded",
+    "knowledge.blender-three-metalrough-orm-translation",
+    "knowledge.blender-three-linear-color-handoff"
+  ],
+  "creative_affordances": [
+    "Use a two-band roughness family, oversized soft glints or sparse high-frequency breakup according to the brief.",
+    "Reserve one response exception for the focal or interactive material."
+  ],
+  "known_limits": [
+    "glTF metallic-roughness transport does not reproduce arbitrary Blender shader graphs or guarantee identical lighting and tone mapping.",
+    "The response roles and swatch choices are authored guidance, not measured material truth. No runtime comparison was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.style-gltf-metalrough-channels",
+      "statement": "glTF 2.0 metallic-roughness materials sample roughness from the green channel and metalness from the blue channel of the metallic-roughness texture, require linear encoding for those values, and ignore red and alpha for these calculations.",
+      "scope": "Khronos glTF 2.0.1 core metallic-roughness material; extensions and renderer-specific stylization remain separate.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-khronos-gltf-animation",
+          "locator": "Sections 3.9.2 and 5.22.5 metallicRoughnessTexture"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "id": "knowledge.bvh-spatial-query-adapter",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "BVH spatial queries against a mesh"
+  },
+  "aliases": {
+    "en": [
+      "MeshBVH",
+      "shapecast",
+      "accelerated raycast"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "spatial-puzzles",
+    "environments-dioramas"
+  ],
+  "summary": "Accelerate mesh queries with a bounds tree whose input positions and bounds match the selected pose; choose ordinary, baked or skinned geometry support explicitly. A hit is not a contact solver.",
+  "objective": "Raycasts against a BVH-enabled mesh return triangle hits; a shapecast sphere reports intersection; editing positions without refit yields stale bounds.",
+  "applies_when": [
+    "Picking, snapping, clearance or first-hit tests run against a dense static or rarely deformed mesh.",
+    "Naive triangle tests are too slow for the interaction."
+  ],
+  "subject_terms": [
+    "bounding volume hierarchy",
+    "MeshBVH",
+    "shapecast",
+    "raycastFirst",
+    "boundsTree",
+    "refit"
+  ],
+  "tags": [
+    "tool-adapter",
+    "bvh",
+    "picking",
+    "spatial-query"
+  ],
+  "intent_signals": [
+    "pick a triangle on a dense mesh",
+    "does this sphere overlap the sculpture",
+    "accelerate raycasting"
+  ],
+  "example_prompts": [
+    "Build a MeshBVH on a statue so first-hit picking stays responsive.",
+    "Shapecast a probe sphere against a building mesh and highlight overlaps."
+  ],
+  "negative_signals": [
+    "Using BVH hits as rigid-body contacts without a solver.",
+    "Querying an ordinary rest-position MeshBVH after changing only skeleton or morph state."
+  ],
+  "not_for": [
+    "Querying changed geometry with stale bounds, or expecting ordinary MeshBVH refit/rebuild to evaluate skinning or morph targets from unchanged base positions.",
+    "Claims that a spatial query validates physics."
+  ],
+  "content": {
+    "principles": [
+      "A BVH is an acceleration structure for queries against triangles or other primitives. It answers hits, not impulses.",
+      "Direct MeshBVH queries expect shapes in the geometry's local frame. World-space rays must be transformed in and hits transformed out.",
+      "Ordinary MeshBVH operates on geometry positions. Direct position edits need refit or rebuild; skin/morph changes need an evaluated geometry path first. The current API separately provides SkinnedMeshBVH for posed SkinnedMeshes, with refit after skeleton updates. Instanced scenery needs an instance-aware query path."
+    ],
+    "implementation": [
+      "Compute geom.boundsTree = new MeshBVH(geom) or computeBoundsTree(). Optionally replace Mesh.raycast with acceleratedRaycast and set raycaster.firstHitOnly when only the first hit is required.",
+      "For custom volumes use shapecast or intersectsSphere/intersectsBox with their documented coordinate transforms. Invert the mesh world matrix for a direct local-space query. A world sphere remains an exact sphere under rigid/uniform-scale transforms only; nonuniform scale requires an ellipsoid-capable test or a clearly labeled conservative enclosing-sphere probe.",
+      "After direct position edits, refit the ordinary tree or rebuild as needed. For skin/morph input, StaticGeometryGenerator can bake evaluated positions: regenerate into the compatible target geometry before refitting its MeshBVH. Alternatively use the documented SkinnedMeshBVH path for a SkinnedMesh and refit after skeleton updates; verify the installed library exposes it. Rebuilding an ordinary tree from unchanged base positions does not evaluate a pose.",
+      "Dispose the tree with the geometry. Reset of a scene must not keep a tree from a deleted mesh."
+    ],
+    "observable_checks": [
+      "A ray aimed at a triangle returns a hit with instance or face data; a ray through empty space returns none.",
+      "A sphere shapecast that contains a vertex reports intersection; moving it clear reports none.",
+      "After changing direct positions or regenerating baked positions, update the bounds and compare probes with the evaluated surface. For the SkinnedMeshBVH path, update skeleton state and refit before the posed probe. A rest-position rebuild must not be accepted as a posed-surface check."
+    ]
+  },
+  "related_ids": [
+    "knowledge.object-isolation",
+    "recipe.studio-furniture-layout"
+  ],
+  "creative_affordances": [
+    "Hit highlights, probe ghosts and depth-limited BVH helpers are inspection chrome.",
+    "A coarse collision mesh can sit beside a dense render mesh; query the one you claim."
+  ],
+  "known_limits": [
+    "three-mesh-bvh is a third-party acceleration library, not a physics engine and not part of the core Three.js runtime.",
+    "Ordinary MeshBVH, baked geometry and newer SkinnedMeshBVH have distinct input/update contracts; API availability must be checked against the installed version. Geometry groups and local query coordinates still apply.",
+    "Authored reusable guidance; no runtime artifact has been observed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-bvh-spatial-query-adapter",
+      "statement": "three-mesh-bvh provides MeshBVH raycasting and spatial queries, including generalized shapecast traversal. Direct MeshBVH queries use the geometry local frame. Ordinary MeshBVH requires evaluated geometry positions: direct position edits can be followed by refit, while skin/morph poses can be baked with StaticGeometryGenerator before updating/refitting the tree. The current API separately documents SkinnedMeshBVH for posed SkinnedMesh queries, with refit after skeleton updates.",
+      "scope": "Current three-mesh-bvh README and linked API.md read 2026-09-07; distinguish ordinary MeshBVH from baking and newer SkinnedMeshBVH, and verify installed API availability. Not a contact solver.",
+      "source_refs": [
+        {
+          "source_id": "source.knowledge-depth-three-mesh-bvh",
+          "locator": "Opening BVH description; MeshBVH construction and shapecast/raycast; Gotchas: tree not dynamic for morph/skinning; local-frame queries"
+        },
+        {
+          "source_id": "source.knowledge-depth-three-mesh-bvh",
+          "locator": "README Additional BVHs and linked https://github.com/gkjohnson/three-mesh-bvh/blob/master/API.md: SkinnedMeshBVH; StaticGeometryGenerator and generate (bake evaluated positions, then MeshBVH.refit)."
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed"
+}

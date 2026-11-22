@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-small-angle-approximation-bound",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Approximation bound, angle units and exaggeration isolation"
+  },
+  "aliases": {
+    "en": [
+      "small angle validity check",
+      "half angle convention"
+    ]
+  },
+  "direction_ids": [
+    "astronomy-space"
+  ],
+  "summary": "Compare an exact angle with its small-angle approximation across a distance sweep and keep visual exaggeration out of the numbers.",
+  "objective": "The baseline definition and angle convention are declared, approximation error is measured with absolute and relative bounds across the displayed regime, and exaggeration changes no computed value.",
+  "applies_when": [
+    "A scene derives distance from a measured angle and a known baseline.",
+    "The true angles are far too small to draw at true scale.",
+    "The interface reports an angle that could be a half angle or a full separation."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "approximation",
+    "units",
+    "conventions"
+  ],
+  "subject_terms": [
+    "parallax angle",
+    "baseline",
+    "small-angle approximation",
+    "radian",
+    "arcsecond",
+    "angular exaggeration"
+  ],
+  "intent_signals": [
+    "is this the half angle or the full displacement",
+    "when does the small angle formula stop being accurate"
+  ],
+  "example_prompts": [
+    "Check the angle convention and approximation bound in this parallax scene."
+  ],
+  "negative_signals": [
+    "astrometric measurement pipelines",
+    "distance inference from noisy data"
+  ],
+  "content": {
+    "principles": [
+      "An approximation needs a stated error bound and regime; replacing a tangent by its argument is valid only while the angle is small, and the scene should say how small.",
+      "Angle units are part of the formula, since the linear relation holds with the angle in radians and a display in arcseconds needs an explicit conversion.",
+      "Visual exaggeration is necessary to see the geometry and must never leak into the computed angle or distance."
+    ],
+    "implementation": [
+      "Define the baseline length before computing anything: with endpoint separation B and the target on the perpendicular bisector at distance d, the half angle is the inverse tangent of B over two d, while a centre-to-endpoint baseline b gives the inverse tangent of b over d. Require b and d positive and finite, then compute the exact inverse tangent and the linear approximation and record both with units.",
+      "Sweep the distance over several orders of magnitude and record the difference between exact and approximate values using an absolute bound as well as a relative one, since relative error is undefined as the angle approaches zero.",
+      "State whether the reported angle is the half angle from one baseline endpoint or the full separation between the two sightlines, and check the factor of two in the symmetric configuration.",
+      "Record the exaggeration factor applied to the drawn angle and confirm the computed values are unaffected by it."
+    ],
+    "observable_checks": [
+      "At fixed baseline a larger distance gives a smaller angle, and exact and approximate values agree within the declared absolute and relative bounds for the displayed regime, with the baseline definition, both values and the bounds reported together.",
+      "The full sightline separation equals twice the half angle in the symmetric configuration, and both the angle convention and the baseline definition are labelled, since a factor of two enters through either one.",
+      "Changing the visual exaggeration changes no computed angle or distance; if it does, the display is feeding the model."
+    ]
+  },
+  "known_limits": [
+    "The cited source describes the observing geometry qualitatively and states no half-angle convention or formula, so the symmetric baseline and half-angle definition are authored modelling choices verified internally.",
+    "Authored verification guidance; nothing was computed or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.stellar-parallax-baseline",
+    "recipe.kepler-equal-area-orbit",
+    "recipe.cross-product"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-parallax-distance-geometry",
+      "statement": "Stellar parallax uses the apparent displacement of a star seen from observing positions six months apart together with the known Earth-Sun distance to infer distance by trigonometry, and the apparent displacement is smaller for more distant stars, staying under one arcsecond even for the nearest.",
+      "scope": "The qualitative geometry described in the cited page; it does not state a half-angle convention or an explicit formula.",
+      "source_refs": [
+        {
+          "source_id": "source.esa-parallax",
+          "locator": "Parallax explanation: six-month observing positions, trigonometric distance and the sub-arcsecond scale"
+        }
+      ]
+    }
+  ]
+}

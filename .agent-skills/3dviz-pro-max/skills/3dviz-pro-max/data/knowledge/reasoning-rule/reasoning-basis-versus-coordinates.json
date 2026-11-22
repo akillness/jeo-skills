@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-basis-versus-coordinates",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Separate the vector from its coordinates"
+  },
+  "aliases": {
+    "en": [
+      "change of basis",
+      "coordinates versus arrow",
+      "basis relabelling"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra",
+    "robotics-control"
+  ],
+  "summary": "Show that a change of basis relabels a fixed geometric object, while a transformation moves it.",
+  "objective": "Prevent the common conflation of changing coordinates with changing the world.",
+  "applies_when": [
+    "Two bases, frames or coordinate systems appear in the same scene.",
+    "Coordinates are displayed for a vector, point or pose.",
+    "The user can switch between a world view and a local or camera view."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "basis",
+    "coordinates",
+    "change of basis",
+    "frame",
+    "representation",
+    "invariance"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "linear-algebra",
+    "frames"
+  ],
+  "intent_signals": [
+    "show the same vector in another basis",
+    "convert to the local frame",
+    "why did the numbers change"
+  ],
+  "example_prompts": [
+    "Show one vector with its coordinates in two different bases.",
+    "Switch to the object frame without moving anything."
+  ],
+  "negative_signals": [
+    "Single-frame scenes where no alternative coordinates are shown.",
+    "Cases where the object really is being transformed, which is the opposite operation."
+  ],
+  "not_for": [
+    "Single-frame scenes where no alternative coordinates are shown.",
+    "Cases where the object really is being transformed, which is the opposite operation."
+  ],
+  "content": {
+    "principles": [
+      "A vector is determined by the linear combination of basis vectors that produces it, so the same geometric arrow has different coordinate triples in different bases while remaining the same arrow.",
+      "Changing basis and applying a transformation can produce identical numeric changes, which is why the scene must show which one occurred.",
+      "A scene that animates the object when the basis changes teaches that coordinates are the object, which is the misconception the demonstration should remove.",
+      "The distinction becomes practical wherever frames stack: camera, object and world coordinates are the same points described differently."
+    ],
+    "implementation": [
+      "Keep geometry in one reference representation and compute displayed coordinates per basis, rather than storing coordinates and reinterpreting them.",
+      "On a basis change, animate the axes and the grid while the object stays fixed in space, and say so on screen.",
+      "Show both coordinate triples at once during the transition so the viewer sees two descriptions of one object.",
+      "Provide the paired demonstration: the same numeric change produced by a transformation, with the object moving and the axes fixed.",
+      "Label every coordinate readout with the basis it is expressed in."
+    ],
+    "observable_checks": [
+      "Change basis and confirm the object does not move relative to other fixed geometry.",
+      "Confirm both coordinate readouts are labelled with their basis and update simultaneously.",
+      "Apply a transformation and a basis change that produce the same numbers and confirm the scene distinguishes them.",
+      "Convert to the second basis and back and confirm the coordinates return within a tolerance chosen for the scale and conditioning of the two bases; a skewed or nearly singular basis loses digits, so exact equality is the wrong test in floating point."
+    ]
+  },
+  "related_ids": [
+    "recipe.linear-transformation-3d",
+    "recipe.robot-arm-forward-frames"
+  ],
+  "creative_affordances": [
+    "Presentation of the two descriptions, whether side by side, ghosted or as an animated relabelling, is a free design choice.",
+    "Non-orthogonal and skewed bases make the point more strongly and are worth showing."
+  ],
+  "known_limits": [
+    "Authored conceptual guidance citing the basis-combination definition; it does not derive change-of-basis matrices.",
+    "Affine frames with a translated origin add a component not covered here."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-vector-coordinates-in-a-basis",
+      "statement": "A vector is expressed as a linear combination of basis vectors, and the transformation of that vector follows the same combination of the images of the basis vectors, so the coordinates describe the vector relative to a chosen basis rather than being the vector itself.",
+      "scope": "Finite-dimensional vector spaces with a chosen basis; affine translation is not included.",
+      "source_refs": [
+        {
+          "source_id": "source.mit-matrices-transformations",
+          "locator": "32.5, basis images and linear combination"
+        }
+      ]
+    }
+  ]
+}

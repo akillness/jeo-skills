@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "id": "recipe.terrain-island",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Terrain island with grounded exploration"
+  },
+  "aliases": {
+    "en": [
+      "terrain island"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas"
+  ],
+  "summary": "Compose a traversable island around a ridge, sheltered inlet and readable path.",
+  "objective": "Build an island I can explore, with terrain-aware walkers and a clear route from jetty to lookout.",
+  "tags": [
+    "terrain",
+    "island"
+  ],
+  "example_prompts": [
+    "Build an island I can explore, with terrain-aware walkers and a clear route from jetty to lookout."
+  ],
+  "entities": [
+    {
+      "name": "Terrain",
+      "guidance": "Author silhouette before detail: ridge, saddle, shore shelf and cliff faces. Use rough rock, softer soil and low-gloss water as distinct material families; avoid uniform noise."
+    },
+    {
+      "name": "Jetty and lookout",
+      "guidance": "Model posts into the support surface, deck thickness, rail joints and visible steps; inspect at walking distance."
+    },
+    {
+      "name": "Walker",
+      "guidance": "Give feet, hips and a head a readable hierarchy; derive stride from traveled distance, plant feet against the support surface."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored height field and static obstacles; controlled capsule actor with position, velocity and bounded steering acceleration in illustrative metres.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Select route waypoint; reject unreachable targets.",
+      "Pause or reset actor position and velocity.",
+      "Toggle terrain and obstacle collider overlay."
+    ]
+  },
+  "invariants": [
+    "Collider includes body clearance; buildings and cliff walls block movement.",
+    "Sample support height and normal; enforce authored slope and step limits and block water unless swimming is implemented.",
+    "Bridge deck is a distinct support surface above water; do not sample seabed through it."
+  ],
+  "motion_guidance": [
+    "Use fixed simulation steps, sweep capsule across movement and slide/stop at contact; interpolate rendering.",
+    "Constrain feet to terrain, limit heading change, and keep acceleration bounded in free motion; gravity only in unsupported states."
+  ],
+  "known_limits": [
+    "Invented terrain, not a geologic or erosion model.",
+    "Navigation and contact implementation remain required; a waypoint curve alone does not establish clearance.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "object_craft": [
+    {
+      "family": "Terrain",
+      "structure": "Author silhouette before detail: ridge, saddle, shore shelf and cliff faces. Use rough rock, softer soil and low-gloss water as distinct material families; avoid uniform noise.",
+      "material": "Rough cliff rock, softer matte soil, directional timber grain and a low-gloss water family; use contact darkening sparingly at supports.",
+      "articulation": "Parent feet to legs and legs to pelvis; heading follows resolved velocity, foot placement follows the selected support surface."
+    },
+    {
+      "family": "Jetty and lookout",
+      "structure": "Model posts into the support surface, deck thickness, rail joints and visible steps; inspect at walking distance.",
+      "material": "Rough cliff rock, softer matte soil, directional timber grain and a low-gloss water family; use contact darkening sparingly at supports.",
+      "articulation": "Parent feet to legs and legs to pelvis; heading follows resolved velocity, foot placement follows the selected support surface."
+    },
+    {
+      "family": "Walker",
+      "structure": "Give feet, hips and a head a readable hierarchy; derive stride from traveled distance, plant feet against the support surface.",
+      "material": "Rough cliff rock, softer matte soil, directional timber grain and a low-gloss water family; use contact darkening sparingly at supports.",
+      "articulation": "Parent feet to legs and legs to pelvis; heading follows resolved velocity, foot placement follows the selected support surface."
+    }
+  ],
+  "physical_contract": {
+    "model": "controlled-locomotion",
+    "scope": "Terrain-aware authored walking; no hydrodynamics.",
+    "state": [
+      "position",
+      "velocity",
+      "heading",
+      "support surface ID"
+    ],
+    "colliders": [
+      "Capsule actor encompassing body; support contact handles feet.",
+      "Transformed static wall/roof bounds; terrain and bridge supports."
+    ],
+    "driving": [
+      "Bound free-motion acceleration and turn rate; brake or replan at blocked route."
+    ],
+    "contact": [
+      "Sweep movement, remove inward velocity, slide or stop.",
+      "Terrain normal, slope and step limits decide support; water is blocked."
+    ],
+    "timestep": "Fixed simulation step with accumulated remainder; interpolate render transforms.",
+    "checks": [
+      "Complete a route without penetration at declared tolerance.",
+      "Stop at shoreline and cliff; traverse bridge on its deck.",
+      "Pause and reset clear stale velocity."
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Horizontal Scroll Scenes"
+  short_description: "Scenes laid left to right, driven by vertical scroll, with dwell, burn or pan moves, and safe skip and reload"
+  default_prompt: "Use $horizontal-scroll-scenes to turn this page into five scenes on one fixed stage that advance left to right as the user scrolls down, with a dwell and a move per scene, an index that follows, and correct reverse, fast-skip and reload."

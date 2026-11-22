@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-heritage-evidence-separation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Keep reconstruction separate from evidence"
+  },
+  "aliases": {
+    "en": [
+      "heritage visualisation",
+      "evidence and hypothesis",
+      "paradata"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "When a scene depicts a real historical place, show which parts are attested, which are inferred and which are invented.",
+  "objective": "Prevent a plausible reconstruction from being read as surviving evidence, and record the decisions that produced it.",
+  "applies_when": [
+    "A scene depicts a real site, building, artefact or period rather than a fictional one.",
+    "The user asks how it looked, or the scene is described as a reconstruction.",
+    "Surviving remains and reconstructed volumes appear in the same view."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "heritage",
+    "reconstruction",
+    "archaeology",
+    "evidence",
+    "hypothesis",
+    "paradata"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "heritage",
+    "provenance"
+  ],
+  "intent_signals": [
+    "show how the villa looked",
+    "reconstruct the ruined abbey",
+    "historical site visualisation"
+  ],
+  "example_prompts": [
+    "Reconstruct the excavated house and mark what is actually known.",
+    "Show the ruin as it stands and the proposed roof separately."
+  ],
+  "negative_signals": [
+    "Openly fictional worlds and period-flavoured fantasy, which need no evidence apparatus.",
+    "Contemporary buildings documented from measured drawings, where the uncertainty question is different."
+  ],
+  "not_for": [
+    "Openly fictional worlds and period-flavoured fantasy, which need no evidence apparatus.",
+    "Contemporary buildings documented from measured drawings, where the uncertainty question is different."
+  ],
+  "content": {
+    "principles": [
+      "A rendered surface looks equally certain everywhere. Without a distinction, a conjectured roof pitch reads as strongly as a surviving wall footing.",
+      "The London Charter asks that computer-based visualisation of cultural heritage convey the status of the knowledge it represents, including the distinction between evidence and hypothesis, and that the interpretive decisions be documented.",
+      "Uncertainty is usually structured, not uniform: plan may be well attested while elevation, roofing, colour and furnishing are progressively less so."
+    ],
+    "implementation": [
+      "Split the model by evidence status rather than by material: surviving fabric, inferred from comparable sites, and free interpretation, each as its own toggleable group.",
+      "Give the statuses a visual code the viewer can read without a manual, such as full material for surviving fabric and a reduced or schematic treatment for conjecture, with a legend.",
+      "Keep a short note beside the artifact for each conjectural element: what it is based on, which alternative was rejected, and who made the decision.",
+      "Where two reconstructions are defensible, offer both as switchable variants instead of quietly picking one."
+    ],
+    "observable_checks": [
+      "Turn off every conjectural group; what remains should match the documented evidence and should not collapse into an unreadable fragment without explanation.",
+      "Ask of any surface which category it belongs to; a surface with no answer has not been classified.",
+      "Confirm the legend or note travels with any exported image or clip, since a screenshot separated from its key loses the distinction.",
+      "Check that decorative detail added for atmosphere is not sitting inside the evidenced group."
+    ]
+  },
+  "related_ids": [
+    "recipe.historical-diorama",
+    "knowledge.theme-heritage-fiction"
+  ],
+  "creative_affordances": [
+    "The visual code for uncertainty is a design decision: transparency, hatching, desaturation, wireframe or a separate ghost pass all work if they are legible and explained.",
+    "An interpretive scene may still be beautiful and atmospheric; separating status does not require a clinical presentation."
+  ],
+  "known_limits": [
+    "Authored guidance that cites a practice standard; it does not certify any specific reconstruction, and no runtime artifact has been checked.",
+    "The charter is normative guidance rather than a mathematical invariant, so this rule stays advisory."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-heritage-status-of-knowledge",
+      "statement": "The London Charter requires that computer-based visualisation of cultural heritage convey the status of the knowledge it represents, including distinctions between evidence and hypothesis, and that the interpretive decisions behind a visualisation be documented and disseminated.",
+      "scope": "Practice guidance for cultural-heritage visualisation. It prescribes documentation and transparency, not the geometry of any particular reconstruction.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-london-charter",
+          "locator": "Introduction; status of knowledge and Principle 4 documentation of interpretive decisions"
+        }
+      ]
+    }
+  ]
+}

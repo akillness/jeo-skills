@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "id": "recipe.conic-slicing",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Double-cone section explorer"
+  },
+  "aliases": {
+    "en": [
+      "conic slicing"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry"
+  ],
+  "summary": "Relate a movable plane to its intersection with a double cone.",
+  "objective": "Let me tilt a plane through a double cone and inspect circle, ellipse, parabola and hyperbola cases.",
+  "tags": [
+    "conic",
+    "slicing"
+  ],
+  "example_prompts": [
+    "Let me tilt a plane through a double cone and inspect circle, ellipse, parabola and hyperbola cases."
+  ],
+  "entities": [
+    {
+      "name": "Double cone",
+      "guidance": "Use both nappes and clearly mark the apex; transparency must not obscure the intersection curve."
+    },
+    {
+      "name": "Section plane",
+      "guidance": "Render a thin bounded display patch with normal arrow; identify the mathematical plane as unbounded."
+    },
+    {
+      "name": "Intersection",
+      "guidance": "Compute a curve from the same cone and plane equations; crop with endpoint indicators rather than fake closed loops."
+    }
+  ],
+  "state_contract": {
+    "model": "Right circular double cone and normalized plane equation; finite mesh is a viewport crop.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Move and tilt plane.",
+      "Choose nondegenerate section presets.",
+      "Show equations and reset."
+    ]
+  },
+  "invariants": [
+    "Curve points satisfy both equations within declared numeric tolerance.",
+    "A plane through the apex requires a separate degenerate classification.",
+    "A clipped parabola or hyperbola must not be called a bounded curve."
+  ],
+  "motion_guidance": [
+    "Derive each frame from plane parameters; transition progress is not physical time.",
+    "Use static presets around the parabola threshold to avoid misleading numeric flicker."
+  ],
+  "known_limits": [
+    "No robust arbitrary quadric classifier supplied.",
+    "Finite tessellation and near-tangent numerical conditioning need implementation checks.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.conic-slicing",
+      "statement": "Nondegenerate plane sections of a right circular double cone include circles, ellipses, parabolas and hyperbolas.",
+      "scope": "Plane avoids the apex; classification depends on relation to the generators.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-conics",
+          "locator": "1.5, opening discussion and Figure 1.44"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Double cone",
+      "structure": "Use both nappes and clearly mark the apex; transparency must not obscure the intersection curve.",
+      "material": "Translucent cone shell, faint plane fill and opaque intersection stroke; sufficient depth contrast to see both nappes without glossy clutter."
+    },
+    {
+      "family": "Section plane",
+      "structure": "Render a thin bounded display patch with normal arrow; identify the mathematical plane as unbounded.",
+      "material": "Translucent cone shell, faint plane fill and opaque intersection stroke; sufficient depth contrast to see both nappes without glossy clutter."
+    },
+    {
+      "family": "Intersection",
+      "structure": "Compute a curve from the same cone and plane equations; crop with endpoint indicators rather than fake closed loops.",
+      "material": "Translucent cone shell, faint plane fill and opaque intersection stroke; sufficient depth contrast to see both nappes without glossy clutter."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Semantic geometry/state presentation; no gravity, contact force or material simulation.",
+    "checks": [
+      "Curve points satisfy both equations within declared numeric tolerance.",
+      "A plane through the apex requires a separate degenerate classification."
+    ]
+  }
+}

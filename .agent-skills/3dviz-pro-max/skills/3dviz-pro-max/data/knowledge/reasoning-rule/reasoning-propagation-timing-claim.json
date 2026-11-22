@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-propagation-timing-claim",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Animated signals are a timing claim"
+  },
+  "aliases": {
+    "en": [
+      "signal travel animation",
+      "propagation delay",
+      "timing honesty"
+    ]
+  },
+  "direction_ids": [
+    "logic-circuits",
+    "waves-optics-fields"
+  ],
+  "summary": "If a scene animates a signal moving along a wire, either model the delay or say the motion is illustrative.",
+  "objective": "Keep pleasing signal animations from implying a timing model that does not exist.",
+  "applies_when": [
+    "Pulses, glows or particles travel along connections to show activity.",
+    "The scene discusses speed, latency, critical path or race conditions.",
+    "Several paths of different length are animated together."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "propagation delay",
+    "critical path",
+    "signal animation",
+    "timing",
+    "latency",
+    "illustration"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "logic",
+    "claims"
+  ],
+  "intent_signals": [
+    "animate the signal travelling",
+    "which path is slowest",
+    "show the critical path"
+  ],
+  "example_prompts": [
+    "Animate the adder carrying and show which path takes longest.",
+    "Make the signal flow visible without pretending it is timed."
+  ],
+  "negative_signals": [
+    "Static logic views with no motion.",
+    "Scenes where the animation is explicitly decorative and labelled as such."
+  ],
+  "not_for": [
+    "Static logic views with no motion.",
+    "Scenes where the animation is explicitly decorative and labelled as such."
+  ],
+  "content": {
+    "principles": [
+      "Motion along a wire encodes time. A viewer will read the arrival order and the speed as information whether or not the author intended it.",
+      "There is a real quantity available: the propagation delay of a combinational circuit corresponds to the longest path from inputs to outputs, so a scene that wants to talk about speed has something concrete to model.",
+      "Logical depth is not delay. Under an equal-delay abstraction, arrival order follows gate count, but with real per-element delays two gates of one unit each and a single gate of two units arrive together, correctly. Animate from summed modelled delays, and if you have no delay model, say the motion shows connectivity.",
+      "The honest options are symmetrical: model per-element delay and derive the animation from it, or state that the motion shows connectivity rather than timing."
+    ],
+    "implementation": [
+      "If timing is part of the message, give each element a delay, propagate arrival times through the graph and drive the animation from the computed times.",
+      "Highlight the longest path explicitly rather than leaving the viewer to infer it from motion.",
+      "If timing is not modelled, keep the animation uniform and label it as showing connectivity or activity.",
+      "Keep readouts labeled settled consistent with the steady evaluator. If transient values are displayed, label them and derive them from the declared delay model at the selected time; they may differ from the settled result until propagation completes.",
+      "State the units of any displayed delay, and mark values as illustrative when they are not from a device model."
+    ],
+    "observable_checks": [
+      "Compare arrival times against the summed modelled delays along each path, not against gate counts. Simultaneous arrival on paths of different depth is a fault only under an equal-delay abstraction; with unequal element delays it can be exactly right.",
+      "Pause mid-animation and confirm the reported values match what the model says for that moment: a settled readout must match the evaluator, while an explicitly labelled transient view may legitimately differ from the settled values until the modelled delays have elapsed.",
+      "Confirm the claimed longest path matches the computed one after an edit.",
+      "Check that any displayed delay carries units and a source or an illustrative label."
+    ]
+  },
+  "related_ids": [
+    "recipe.full-adder",
+    "recipe.logic-gates"
+  ],
+  "creative_affordances": [
+    "Expressive signal effects remain welcome; they simply need an accurate caption.",
+    "A deliberately slowed, exaggerated propagation is an excellent teaching device when labelled."
+  ],
+  "known_limits": [
+    "Authored guidance citing the definition of propagation delay; it asserts no delay values for any real technology.",
+    "It does not model glitches, hazards or analogue edge behaviour."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-propagation-delay-longest-path",
+      "statement": "The propagation delay of a combinational circuit corresponds to the longest path from inputs to outputs through the circuit.",
+      "scope": "Digital combinational timing at the level of gate-delay counting; it does not give physical delay values or account for hazards.",
+      "source_refs": [
+        {
+          "source_id": "source.mit-combinational",
+          "locator": "4.1, propagation delay as the longest path from inputs to outputs"
+        }
+      ]
+    }
+  ]
+}

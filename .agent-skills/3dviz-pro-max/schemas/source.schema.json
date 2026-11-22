@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Source contract",
+  "description": "Structural authoring schema. scripts/validate.py additionally checks semantic references, content hashes and evidence linkage; it is not a generic JSON Schema evaluator.",
+  "type": "object",
+  "properties": {
+    "id": {"type": "string", "minLength": 1, "pattern": "^source\\.[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "url": {"type": "string", "minLength": 1, "format": "uri", "pattern": "^https?://"},
+    "title": {"type": "string", "minLength": 1},
+    "accessed_at": {"type": "string", "minLength": 1, "format": "date"},
+    "locator": {"type": "string", "minLength": 1},
+    "scope": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "minLength": 1},
+    "redistribution": {"type": "string", "minLength": 1}
+  },
+  "required": ["id", "url", "title", "accessed_at", "locator", "scope"]
+}

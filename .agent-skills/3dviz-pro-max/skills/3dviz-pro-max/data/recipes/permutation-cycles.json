@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "id": "recipe.permutation-cycles",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Piece permutation cycle explorer"
+  },
+  "aliases": {
+    "en": [
+      "permutation cycles"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles"
+  ],
+  "summary": "Show where pieces move without mistaking position cycles for complete puzzle state.",
+  "objective": "Trace a cube move as cycles of piece positions, with orientation shown separately.",
+  "tags": [
+    "permutation",
+    "cycles"
+  ],
+  "example_prompts": [
+    "Trace a cube move as cycles of piece positions, with orientation shown separately."
+  ],
+  "entities": [
+    {
+      "name": "Position slots",
+      "guidance": "Keep fixed slot labels while identifiable pieces move; separate edge and corner groups."
+    },
+    {
+      "name": "Cycle arcs",
+      "guidance": "Route directional arcs outside the solid; color by cycle and add order numbers."
+    },
+    {
+      "name": "Orientation marks",
+      "guidance": "Use local face marks attached to pieces so twists remain visible after a cycle closes."
+    }
+  ],
+  "state_contract": {
+    "model": "Bijection from source slots to destination slots plus separate orientation state; derive cycles by visited-slot traversal.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Apply one legal move.",
+      "Select a cycle and step its mapping.",
+      "Toggle fixed points, invert mapping and reset."
+    ]
+  },
+  "invariants": [
+    "Each piece and destination appears exactly once in the permutation.",
+    "Cycle display must match the move engine, not a separately authored animation.",
+    "A returned position alone does not imply solved orientation."
+  ],
+  "motion_guidance": [
+    "Interpolate visual travel separately from the exact mapping.",
+    "Freeze slot labels; show ghost source pieces to explain cycle direction."
+  ],
+  "known_limits": [
+    "Cycle notation here is positional; legal-state validation still needs a complete puzzle model.",
+    "Do not advertise arbitrary user permutations as reachable cube states.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.permutation-cycles",
+      "statement": "A finite permutation decomposes into disjoint cycles; position cycles of cube pieces alone do not fully encode their orientations.",
+      "scope": "Finite piece-position permutation, not a facelet-only representation.",
+      "source_refs": [
+        {
+          "source_id": "source.jaap-permutations",
+          "locator": "Section 5, disjoint cycles and cube orientation discussion"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Position slots",
+      "structure": "Keep fixed slot labels while identifiable pieces move; separate edge and corner groups.",
+      "material": "Neutral slot markers, distinguishable piece faces and contrasting numbered cycle arcs; preserve local orientation marks during motion.",
+      "articulation": "Piece-local orientation marks follow pieces; fixed slot labels never inherit the moving piece transform."
+    },
+    {
+      "family": "Cycle arcs",
+      "structure": "Route directional arcs outside the solid; color by cycle and add order numbers.",
+      "material": "Neutral slot markers, distinguishable piece faces and contrasting numbered cycle arcs; preserve local orientation marks during motion.",
+      "articulation": "Piece-local orientation marks follow pieces; fixed slot labels never inherit the moving piece transform."
+    },
+    {
+      "family": "Orientation marks",
+      "structure": "Use local face marks attached to pieces so twists remain visible after a cycle closes.",
+      "material": "Neutral slot markers, distinguishable piece faces and contrasting numbered cycle arcs; preserve local orientation marks during motion.",
+      "articulation": "Piece-local orientation marks follow pieces; fixed slot labels never inherit the moving piece transform."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Semantic geometry/state presentation; no gravity, contact force or material simulation.",
+    "checks": [
+      "Each piece and destination appears exactly once in the permutation.",
+      "Cycle display must match the move engine, not a separately authored animation."
+    ]
+  }
+}

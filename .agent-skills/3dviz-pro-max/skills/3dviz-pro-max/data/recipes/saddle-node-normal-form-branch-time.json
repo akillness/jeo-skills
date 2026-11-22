@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "id": "recipe.saddle-node-normal-form-branch-time",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Saddle-node normal form branch and bounded time trace"
+  },
+  "aliases": {
+    "en": [
+      "fold bifurcation normal form",
+      "one-dimensional saddle-node inspector"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields"
+  ],
+  "summary": "Explore dx/dt=r-x^2 only on a declared bounded state/time window, linking its equilibrium branch, derivative stability and time trace through r=0.",
+  "objective": "Show two, one or zero equilibria as r crosses zero and stop numerical playback at the state boundary rather than hiding finite-time escape.",
+  "tags": [
+    "saddle-node bifurcation",
+    "fold bifurcation",
+    "nonlinear ODE",
+    "equilibrium branch"
+  ],
+  "subject_terms": [
+    "saddle-node bifurcation",
+    "fold bifurcation",
+    "nonlinear ODE",
+    "equilibrium branch",
+    "stability"
+  ],
+  "intent_signals": [
+    "Build the saddle-node normal form with equilibrium branch and linked time trace."
+  ],
+  "example_prompts": [
+    "Build the saddle-node normal form with equilibrium branch and linked time trace."
+  ],
+  "negative_signals": [
+    "Not a generic nonlinear bifurcation explorer.",
+    "Not a physical tipping forecast."
+  ],
+  "not_for": [
+    "Hopf, pitchfork, transcritical or multi-dimensional systems.",
+    "Global claims about an original system away from the local normal form."
+  ],
+  "entities": [
+    {
+      "name": "Equilibrium branch",
+      "guidance": "Plot r=x^2 with stable x=+sqrt(r) and unstable x=-sqrt(r) for r>0, meeting at (0,0); use line style and arrows, not color alone."
+    },
+    {
+      "name": "One-dimensional phase line",
+      "guidance": "At selected r show xdot=r-x^2 arrows and exact equilibrium markers."
+    },
+    {
+      "name": "Bounded time trace",
+      "guidance": "Integrate only for |x|<=Xmax and 0<=t<=Tmax with solver/tolerance disclosed; terminate at boundary and label it."
+    }
+  ],
+  "state_contract": {
+    "model": "Use only xdot=r-x^2 with finite -1<=r<=1, finite |x0|<=Xmax, 1<=Xmax<=20 and 0<Tmax<=100. Equilibria solve x*=±sqrt(r) for r>0 and x*=0 at r=0. Stability is from f_x=-2x. Integrate with an adaptive ODE solver and terminate when |x| reaches Xmax or time reaches Tmax; never wrap or clamp.",
+    "authority": "r, x0, solver state and analytic equilibria own geometry. Camera and arrow scale do not affect stability.",
+    "actions": [
+      "Sweep r through zero and rebuild branch/phase line.",
+      "Choose x0, play, pause and scrub stored accepted states.",
+      "Toggle analytic equilibrium and derivative labels.",
+      "Reset r,x0,window,solver and time."
+    ]
+  },
+  "invariants": [
+    "For r>0 the positive equilibrium has f_x<0 and is locally stable; the negative has f_x>0 and is unstable.",
+    "At r=0 the equilibria meet and f_x=0, so do not label linear asymptotic stability from the derivative test.",
+    "For r<0 there is no real equilibrium and xdot<0 everywhere.",
+    "Every displayed time point lies inside accepted solver output before the first boundary event.",
+    "Changing r invalidates prior time trace."
+  ],
+  "motion_guidance": [
+    "Playback follows stored solver time; reverse scrub is history, not reverse integration.",
+    "Slow display near r=0 may reveal a bottleneck but display speed never changes model time."
+  ],
+  "creative_affordances": [
+    "Use a folded metal branch rail and bead trajectory or a plain mathematical board; keep stable/unstable cues redundant."
+  ],
+  "known_limits": [
+    "The normal form is local theory and not a calibrated forecast.",
+    "Finite solver traces do not prove asymptotic behavior; no integration was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.math-mit-saddle-node-normal-form",
+      "statement": "MIT OCW notes give dx/dt=r-x^2 as the saddle-node normal form and describe a local equilibrium branch turning so that one side has no critical point and the other has two.",
+      "scope": "Local one-dimensional saddle-node normal form near the bifurcation; authored bounds and solver policy are separate.",
+      "source_refs": [
+        {
+          "source_id": "source.math-mit-saddle-node",
+          "locator": "PDF pages 6-7, equation (2.10), Remark 6 and Theorem 1"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Fold bifurcation instrument",
+      "structure": "Mount the r-x branch plane beside a phase line and narrow time strip with one shared r slider.",
+      "material": "Stable and unstable branches differ by solid/dashed form and arrow direction as well as hue.",
+      "articulation": "The r slider moves a section plane; x0 bead launches a stored bounded trace."
+    },
+    {
+      "family": "Blender-to-Three.js mathematical handoff",
+      "structure": "In Blender, author only static axes, labeled frames, selection glyphs and low-detail instrument housings at declared units; keep numeric curves, rasters, samples and component lattices out of baked mesh state.",
+      "material": "Use simple glTF-safe material slots and optional baked label atlases with explicit UVs. Export named anchors and static teaching geometry; unsupported procedural nodes, text and compositor marks require baked or runtime replacements.",
+      "articulation": "In Three.js, allocate numeric arrays from the validated input contract, generate dynamic lines/points/instances, bind selections by stable index, and rebuild all linked views atomically on parameter revision or reset."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Bounded numerical dynamics of dx/dt=r-x^2; no physical prediction.",
+    "timestep": "Adaptive accepted ODE time; display interpolation does not advance the solver.",
+    "state": [
+      "parameter r and initial x0",
+      "accepted (t,x) trace",
+      "equilibria and boundary-event status"
+    ],
+    "checks": [
+      "Check analytic equilibrium residuals.",
+      "Check derivative stability signs.",
+      "Terminate before displaying |x|>Xmax."
+    ]
+  },
+  "related_ids": [
+    "recipe.autonomous-planar-phase-portrait"
+  ]
+}

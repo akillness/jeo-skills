@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "id": "knowledge.gltf-animation-pointer-runtime-adapter",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "KHR_animation_pointer material and camera runtime adapter"
+  },
+  "aliases": {
+    "en": [
+      "KHR_animation_pointer Three.js",
+      "animate glTF material factors",
+      "glTF camera parameter animation"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "architecture-interiors",
+    "characters-motion-art"
+  ],
+  "summary": "Inspect KHR_animation_pointer targets and route only supported mutable glTF properties through a versioned Three.js loader plugin/capability matrix, with visible failure and ownership rules.",
+  "objective": "Material or camera parameter animation plays only when the exact pointer, accessor type and registered loader capability are supported; unsupported required use fails visibly and never silently degrades into a static claim.",
+  "tags": [
+    "tool-adapter",
+    "glTF",
+    "KHR_animation_pointer",
+    "GLTFLoader",
+    "animation"
+  ],
+  "subject_terms": [
+    "animation pointer",
+    "JSON pointer target",
+    "material factor animation",
+    "camera field of view",
+    "GLTFLoader plugin",
+    "mutable property",
+    "extensionsRequired"
+  ],
+  "intent_signals": [
+    "animate base color in glTF",
+    "KHR_animation_pointer ignored in Three.js",
+    "camera FOV animation from Blender",
+    "register animation pointer plugin"
+  ],
+  "example_prompts": [
+    "Load glTF material-factor animation through an explicit Three.js plugin.",
+    "Audit KHR_animation_pointer camera targets before playback.",
+    "Fail visibly when a required animation-pointer capability is absent."
+  ],
+  "negative_signals": [
+    "ordinary node TRS animation",
+    "generic custom script execution"
+  ],
+  "not_for": [
+    "Core node translation, rotation, scale and morph-weight channels already handled by base glTF animation.",
+    "Treating arbitrary extras pointers as safe executable behavior."
+  ],
+  "content": {
+    "principles": [
+      "KHR_animation_pointer standardizes transport targets; it does not guarantee that a particular Three.js loader build maps every mutable property to the intended runtime object.",
+      "Capability is three-part: the asset declares extension use, the pointer and accessor satisfy the Khronos object model, and the registered loader/plugin version resolves that pointer to a supported runtime binding.",
+      "Property ownership still applies. Do not animate a material factor or camera parameter simultaneously from a pointer clip and application controls unless a composition policy explicitly arbitrates the channel."
+    ],
+    "implementation": [
+      "In Blender, if the chosen exporter exposes an animation-pointer path, record its exact version and compatible export mode, then inspect the exported animations, extensionsUsed/extensionsRequired, pointer strings, target property presence, sampler interpolation and output accessor types. Do not infer support from a moving Blender viewport or from a different exporter’s documentation.",
+      "At application startup, record Three.js revision, GLTFLoader revision and animation-pointer plugin package/commit. Register the plugin before parsing. The current official GLTFLoader page lists KHR_animation_pointer under external user plugins rather than built-in extensions, so absence of registration is a capability failure for this path.",
+      "Allowlist reviewed pointer families such as declared material factors or camera fields; resolve them against the loaded asset/runtime mapping and reject undefined, immutable, incompatible or application-specific extras unless a separate resolver contract exists.",
+      "If the extension is required and unsupported, stop with an actionable error naming extension, pointer and version. If optional, retain the declared static property and label the missing animation; never claim that core GLTFLoader supplied the motion."
+    ],
+    "observable_checks": [
+      "A minimal baseColorFactor pointer and a perspective-camera field-of-view pointer match the inspected glTF accessors and change only their owned runtime properties under the registered compatible plugin.",
+      "The same fixtures without plugin registration produce the declared unsupported-capability result; they are not reported as successfully animated because the model loaded.",
+      "Within one animation, an invalid pointer, an absent property without a spec-defined default and present enclosing object, mismatched accessor type, duplicate/overlapping target, or unallowlisted extras pointer fails preflight with a specific diagnostic.",
+      "Application control of a pointer-owned camera/material channel follows the declared arbitration policy and reset restores the transported default."
+    ]
+  },
+  "creative_affordances": [
+    "Pointer animation can drive designed material transitions, camera optics or extension properties supported by the chosen stack.",
+    "Custom resolvers remain possible as separately reviewed application adapters."
+  ],
+  "known_limits": [
+    "The official Three.js documentation describes KHR_animation_pointer through an external user plugin, not built-in GLTFLoader support.",
+    "Exporter production of KHR_animation_pointer is tool, version and mode dependent; verify the selected exporter from its own primary documentation or inspected output.",
+    "No export, plugin install, load, pointer resolution or playback was run."
+  ],
+  "related_ids": [
+    "knowledge.clip-event-marker-contract",
+    "knowledge.morph-expression-channel-ownership",
+    "knowledge.three-animation-mixer-adapter",
+    "knowledge.gltf-compression-decoder-lifecycle"
+  ],
+  "claims": [
+    {
+      "id": "claim.output-khr-animation-pointer-contract",
+      "statement": "KHR_animation_pointer is a ratified glTF extension that targets mutable asset properties through JSON pointers; the target path is pointer, node is omitted, pointer properties must exist or have a defined default while their enclosing object is present, accessor values must match the object-model type, and one animation may not target the same property more than once including array/element overlap.",
+      "scope": "Ratified Khronos KHR_animation_pointer specification on main as read 2026-09-08; application-specific extras interpretation and runtime mapping are outside the portable core contract.",
+      "source_refs": [
+        {
+          "source_id": "source.output-khr-animation-pointer",
+          "locator": "Status, Overview, Operation and Extension Usage"
+        }
+      ]
+    },
+    {
+      "id": "claim.output-three-animation-pointer-plugin",
+      "statement": "The current official Three.js GLTFLoader documentation lists KHR_animation_pointer as supported by an external user plugin, while the referenced Needle plugin documents registering GLTFAnimationPointerExtension through loader.register and identifies material, camera, light and morph targets among its mappings.",
+      "scope": "Live Three.js GLTFLoader documentation and Needle plugin main README read 2026-09-08; this is not built-in core-loader support and compatibility must be pinned and verified for the installed revisions.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-three-gltf-loader",
+          "locator": "Supported extensions: external user plugins; register method"
+        },
+        {
+          "source_id": "source.output-needle-animation-pointer",
+          "locator": "README Animate anything and How to use registration example"
+        }
+      ]
+    }
+  ]
+}

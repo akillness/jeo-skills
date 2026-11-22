@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-flux-divergence-balance",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Face flux sum against the divergence volume integral"
+  },
+  "aliases": {
+    "en": [
+      "divergence theorem balance check",
+      "outward normal sign check"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields"
+  ],
+  "summary": "Compute face fluxes and the divergence volume integral independently and reconcile them, including the divergence-free case.",
+  "objective": "The six signed face values sum to the volume expression, and the chosen divergence-free fixture totals zero while at least two opposite face pairs carry flux.",
+  "applies_when": [
+    "A scene demonstrates a flux and divergence relationship on a closed boundary.",
+    "Faces or normals can be inspected individually.",
+    "The field coefficients can be set so that divergence vanishes."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "flux",
+    "divergence",
+    "orientation"
+  ],
+  "subject_terms": [
+    "outward normal",
+    "face flux",
+    "divergence",
+    "closed surface",
+    "volume integral"
+  ],
+  "intent_signals": [
+    "my flux total is off by one face",
+    "check the divergence theorem demo"
+  ],
+  "example_prompts": [
+    "Check the face fluxes against the divergence integral in this box scene."
+  ],
+  "negative_signals": [
+    "computational fluid dynamics solving",
+    "proving the theorem"
+  ],
+  "content": {
+    "principles": [
+      "The relationship is a balance between two independently computed numbers, the sum of outward face fluxes and the volume integral of divergence; deriving one from the other proves nothing.",
+      "Orientation is the usual error: opposite faces carry opposite outward normals, and a sign slip on one face is invisible in the picture while changing the total.",
+      "A divergence-free field is the sharpest case only with a fixture whose faces actually carry flux; some divergence-free choices make every face flux zero and test nothing, so the cancelling fixture is chosen deliberately."
+    ],
+    "implementation": [
+      "Evaluate the six face integrals independently, each with its own outward normal, and record all six signed values before summing.",
+      "Evaluate the volume side from the divergence expression and the box volume and compare it with the face sum, and state whether the quadrature rule integrates this fixture exactly, because otherwise the difference is quadrature error rather than roundoff.",
+      "Translate the box without changing its size and repeat. Position independence holds for the constant-divergence fixture used here, not for smooth fields in general: with the field whose first component is the square of the first coordinate, the divergence varies with position and the translated total legitimately changes, so recompute the volume integral after translating rather than assuming invariance.",
+      "Run a divergence-free coefficient set and a set with one coefficient zero, so a face contributing nothing is distinguished from a face contributing an error."
+    ],
+    "observable_checks": [
+      "The six signed face values sum to the volume expression within the stated error budget, which is roundoff only when the rule integrates the fixture exactly; a discrepancy equal to twice one face value points directly at that face having a reversed normal, since flipping a normal both removes and re-adds that flux.",
+      "For the chosen divergence-free fixture the total is zero while at least two opposite face pairs carry nonzero flux, which is where a sign error is most visible.",
+      "Translating the box leaves the total unchanged for the constant-divergence fixture, and for any other field the recomputed volume integral still matches the face sum; any cutaway view is labelled as a presentation of the same closed boundary rather than as an open surface."
+    ]
+  },
+  "known_limits": [
+    "Applies to smooth fields on the declared closed boundary; singular sources or discontinuous fields fall outside the stated conditions.",
+    "Authored verification guidance; no computation or render was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.divergence-flux-box",
+    "recipe.directional-derivative-surface",
+    "recipe.point-charge-field-superposition"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-divergence-theorem-statement",
+      "statement": "For a vector field with continuous partial derivatives on an open region containing a solid, the outward flux through the piecewise smooth closed boundary equals the volume integral of the divergence over that solid.",
+      "scope": "The regularity and outward-orientation conditions stated in the cited theorem; not a proof for arbitrary or singular fields.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-divergence",
+          "locator": "6.8, Theorem 6.20 The Divergence Theorem"
+        }
+      ]
+    }
+  ]
+}

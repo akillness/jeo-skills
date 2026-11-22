@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "version": "0.1.0",
+  "collections": {
+    "recipes": "recipes/*.json",
+    "sources": "sources.json",
+    "directions": "directions.json",
+    "knowledge": "knowledge/**/*.json"
+  },
+  "search": {
+    "version": 4,
+    "tokenizer": "unicode-notation-v1",
+    "algorithm": "weighted-field-bm25",
+    "k1": 1.2,
+    "b": 0.75,
+    "fields": {
+      "title.en": 3.0,
+      "aliases.en": 3.0,
+      "summary": 1.5,
+      "objective": 1.5,
+      "tags": 2.0,
+      "intent_signals": 1.0,
+      "example_prompts": 0.5,
+      "subject_terms": 1.5,
+      "applies_when": 1.0,
+      "defaults.values.feeling": 1.0
+    },
+    "query_aliases": {
+      "painterly": [
+        "ghibli",
+        "watercolor",
+        "gouache",
+        "hand-painted"
+      ],
+      "ghibli": [
+        "painterly",
+        "pastoral",
+        "hand-painted"
+      ],
+      "golden hour": [
+        "dusk",
+        "sunset",
+        "low-sun",
+        "warm"
+      ],
+      "sunset": [
+        "dusk",
+        "golden",
+        "low-sun"
+      ],
+      "sunrise": [
+        "dawn",
+        "cool",
+        "low-sun"
+      ],
+      "follow cam": [
+        "orbit",
+        "follow",
+        "camera",
+        "rig"
+      ],
+      "follow camera": [
+        "orbit",
+        "follow",
+        "camera",
+        "rig"
+      ],
+      "third person": [
+        "orbit",
+        "follow",
+        "camera",
+        "rig"
+      ],
+      "chase camera": [
+        "follow",
+        "camera",
+        "orbit"
+      ],
+      "god rays": [
+        "fog",
+        "shafts",
+        "volumetric"
+      ],
+      "moody": [
+        "noir",
+        "low-key"
+      ],
+      "cozy": [
+        "warm",
+        "lantern"
+      ],
+      "miniature": [
+        "tilt-shift",
+        "diorama"
+      ],
+      "underwater": [
+        "caustics",
+        "bioluminescent"
+      ],
+      "foam": [
+        "water",
+        "shoreline",
+        "surface"
+      ],
+      "night market": [
+        "lantern",
+        "practical"
+      ],
+      "cinematic": [
+        "noir",
+        "anamorphic",
+        "grade"
+      ],
+      "time of day": [
+        "sun",
+        "elevation",
+        "arc"
+      ],
+      "sun position": [
+        "elevation",
+        "azimuth",
+        "arc"
+      ],
+      "blue hour": [
+        "dusk",
+        "twilight",
+        "cool"
+      ]
+    }
+  },
+  "layout_version": 2
+}

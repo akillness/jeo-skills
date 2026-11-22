@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.material-corrugated-board-edge",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Corrugated board liners, flute direction and cut edges"
+  },
+  "aliases": {
+    "en": [
+      "corrugated cardboard",
+      "fluted board edge",
+      "paper liners"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies"
+  ],
+  "summary": "Make a corrugated panel read as liners around a fluted medium, especially where edges, folds and torn surfaces expose its construction.",
+  "objective": "Make a corrugated panel read as liners around a fluted medium, especially where edges, folds and torn surfaces expose its construction.",
+  "tags": [
+    "material-profile",
+    "corrugated cardboard",
+    "fluted board edge",
+    "paper liners"
+  ],
+  "subject_terms": [
+    "corrugated cardboard",
+    "fluted board edge",
+    "paper liners",
+    "cardboard thickness",
+    "box crease"
+  ],
+  "intent_signals": [
+    "Make a corrugated panel read as liners around a fluted medium, especially where edges, folds and torn surfaces expose its construction."
+  ],
+  "example_prompts": [
+    "Build an explorable corrugated board liners, flute direction and cut edges and expose its construction at close range."
+  ],
+  "content": {
+    "principles": [
+      "Single-wall board is not a solid brown slab with stripes on every face. Its internal flute direction determines which edge cuts reveal repeated flute openings.",
+      "Separate printed liner artwork from board structure; ink does not continue through an exposed flute cavity."
+    ],
+    "implementation": [
+      "For the authored single-wall preset create two liner skins and one thin corrugated medium bonded between them. Give all paper sheets finite thickness and keep the flute amplitude within the liner gap; use a rounded repeating section with one explicit axis.",
+      "Use actual cavity geometry on an exposed hero edge and a simpler bounded edge representation farther away. Keep large front faces mostly continuous; do not emboss the full flute wave onto the printed liner without an explicitly chosen surface defect.",
+      "Assign front/back printing in liner coordinates; a torn patch removes the affected liner locally and exposes the medium underneath. A crushed crease is an authored deformed region, not a prediction from paper strength. Keep cut edges, folds and glue seams as distinct features.",
+      "When constructing box flaps, carry material axes with the panel fold. Avoid coincident double walls or gaps at the fold hinge; use a finite-radius fold or a clearly schematic hinge as appropriate to the chosen style.",
+      "Compare unprinted, printed and torn patches under one light. Favor edge silhouette and paper thickness in closeups; reserve fine fibers and speckle for a scale where they remain resolved."
+    ],
+    "observable_checks": [
+      "Inspect perpendicular panel edges: the chosen flute direction yields different cut profiles rather than the same repeated holes on every edge.",
+      "Hide the front liner: the medium remains a thin continuous corrugation between the rear liner and the original front contact plane.",
+      "Fold or resize a panel: liner printing follows the panel and the flute scale does not silently change unless the material preset changes."
+    ]
+  },
+  "known_limits": [
+    "No box strength, crushing, moisture, insulation or recyclability certification. Flute dimensions and bend damage are authored unless a specific grade is sourced.",
+    "Authored construction and prospective checks; no runtime artifact, render or material test has been executed for this record."
+  ],
+  "creative_affordances": [
+    "Clean white packaging, kraft board, colorful toy construction or enlarged educational flutes can use the same layer contract."
+  ],
+  "claims": [
+    {
+      "id": "claim.craft-depth-material-corrugated-board-edge",
+      "statement": "FEFCO describes single-wall corrugated board as a fluted paper medium glued between two liners; single-face board has only one liner.",
+      "scope": "Layer construction only; no numerical material property or environmental claim.",
+      "source_refs": [
+        {
+          "source_id": "source.craft-depth-material-corrugated-board-edge",
+          "locator": "How is corrugated made?, first paragraph and following single-wall/single-face distinction"
+        }
+      ]
+    }
+  ]
+}

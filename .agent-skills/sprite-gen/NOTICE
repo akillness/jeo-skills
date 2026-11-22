@@ -1,0 +1,54 @@
+sprite-gen
+Copyright 2026 Alex Kim
+
+This project is inspired by the Apache-2.0 licensed hatch-pet component-row
+workflow. sprite-gen targets generic game sprite atlases and does not include
+Codex pet assets, pet packages, or hatch-pet visual assets.
+
+The `align_x: "alpha-centroid"` frame alignment (sprite_gen/extract.py) is a
+port of the alpha-weighted mass-centroid alignment from perfectpixel-studio
+(https://github.com/gykim80/perfectpixel-studio, internal/sprite/extract.go),
+Copyright Andrew Kim (gykim80), MIT License.
+
+The `segmentation: "projection"` frame separation (sprite_gen/segment.py) is a
+port of the projection-profile + DP optimal-cut segmentation from
+perfectpixel-studio (https://github.com/gykim80/perfectpixel-studio,
+internal/sprite/segment.go), Copyright Andrew Kim (gykim80), MIT License.
+
+The opt-in `chroma.mode: "ycbcr"` background matting (sprite_gen/extract.py) is
+a port of the chrominance-plane matting — CbCr border-mode key detection,
+Hermite soft matte, key-direction despill, border flood fill and the pure-key
+rematte self-diagnostic — from perfectpixel-studio
+(https://github.com/gykim80/perfectpixel-studio, internal/sprite/chroma.go),
+Copyright Andrew Kim (gykim80), MIT License.
+
+The estimation-only `estimate_pixel_grid_runlen` pitch estimator
+(sprite_gen/extract.py) is a port of the unfake same-color run-length mode
+block-size estimation from perfectpixel-studio
+(https://github.com/gykim80/perfectpixel-studio, internal/sprite/pixelize.go),
+Copyright Andrew Kim (gykim80), MIT License.
+
+RIFE's torch backend (sprite_gen/video/rife_torch.py) writes again the IFNet of
+rife-v4.6 — its structure and parameter names, and its warp — from Practical-RIFE
+(https://github.com/hzwer/Practical-RIFE, commit f6b5132, train_log/IFNet_HDv3.py
+and model/warplayer.py), Copyright (c) 2021 hzwer, MIT License.
+
+It writes again the IFNet of rife-v4.25 — its encoder and five blocks, their
+structure and parameter names — from Practical-RIFE's 4.25 model
+(https://github.com/hzwer/Practical-RIFE, the v4.25 train_log of 2024-09-19,
+train_log/IFNet_HDv3.py), Copyright (c) 2021 hzwer, MIT License. Practical-RIFE's
+README: "The content of these links is under the same MIT license as this
+project." The 4.25 weights it runs are that model's published flownet.pkl
+(sha256 6615790efd627772917205db291f51cd392528a157ecbb2ecaeec3bff8eb6de2) as
+TNTwise's rife-ncnn-vulkan converts them, read from the release zip.
+
+Its test-time augmentation — the pair turned eight ways and run both ways in time,
+the flows averaged at every level — follows rife-ncnn-vulkan 20221029
+(https://github.com/nihui/rife-ncnn-vulkan, src/rife.cpp RIFE::process_v4 and its
+rife_*_tta shaders), Copyright (c) 2020 nihui, MIT License.
+
+`sprite-gen rife install` downloads TNTwise's fork of rife-ncnn-vulkan, release
+20250112 (https://github.com/TNTwise/rife-ncnn-vulkan), Copyright (c) 2020 nihui,
+MIT License, its LICENSE kept in the install: the binary, which sprite-gen runs
+as an external tool, and its rife-v4.25 and rife-v4.6 models (Practical-RIFE's
+weights, MIT, as above), which both backends read. sprite-gen ships none of them.

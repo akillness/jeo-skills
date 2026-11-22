@@ -1,0 +1,57 @@
+# Lint for every Python script the skills ship, run by `pnpm lint:py` (AGENTS.md, "Repo tooling").
+# Pyflakes rules (unused imports and variables, undefined names, broken f-strings), plus SIM115: a
+# file opened outside a `with` block, which the code-quality bot kept finding in review. A handle
+# no `with` can hold, such as a lock returned to its caller, carries `# noqa: SIM115` and the reason.
+# S110 fails an `except` (bare, `Exception` or `BaseException`) whose body is only `pass`, since a
+# swallowed error lets a run report success. A comment beside the `pass` does not satisfy it: a
+# deliberate one carries `# noqa: S110` and the reason on the `except` line.
+# Formatting and style stay with each script's author.
+extend-exclude = [".agents"] # vendored dev skills, refreshed by `npx skills update`
+
+[lint]
+select = ["F", "SIM115", "S110"]
+
+# Expert scripts that predate S110, one entry per file with its count of hits, so a new file is
+# checked. Review them family by family (tracked in issue #375); remove a file's entry once each of
+# its clauses is fixed or carries a `# noqa: S110` with the reason. Recount a file with
+# `uvx ruff@0.16.10 check --select S110 --config 'lint.per-file-ignores = {}' <file>`.
+[lint.per-file-ignores]
+"skills/dcc/blender/scenario-blender-expert/scripts/bx_review.py" = ["S110"] # 1
+"skills/dcc/blender/scenario-blender-hair/scripts/bx_hair.py" = ["S110"] # 1
+"skills/dcc/blender/scenario-blender-lighting-rendering/scripts/bx_light.py" = ["S110"] # 1
+"skills/dcc/blender/scenario-blender-texturing-shading/scripts/bx_materials.py" = ["S110"] # 1
+"skills/dcc/blender/scenario-blender-uv-baking/scripts/bx_uvbake.py" = ["S110"] # 1
+"skills/dcc/maya/scenario-maya-animation/scripts/mx_anim.py" = ["S110"] # 2
+"skills/dcc/maya/scenario-maya-deformation/scripts/mx_skin.py" = ["S110"] # 4
+"skills/dcc/maya/scenario-maya-expert/scripts/mx_audit.py" = ["S110"] # 1
+"skills/dcc/maya/scenario-maya-expert/scripts/mx_bridge_server.py" = ["S110"] # 7
+"skills/dcc/maya/scenario-maya-expert/scripts/mx_review.py" = ["S110"] # 3
+"skills/dcc/maya/scenario-maya-expert/scripts/mx_run.py" = ["S110"] # 1
+"skills/dcc/maya/scenario-maya-expert/scripts/mx_validate.py" = ["S110"] # 6
+"skills/dcc/maya/scenario-maya-fx/scripts/mx_fx.py" = ["S110"] # 3
+"skills/dcc/maya/scenario-maya-groom/scripts/mx_groom.py" = ["S110"] # 17
+"skills/dcc/maya/scenario-maya-lighting-rendering/scripts/mx_light.py" = ["S110"] # 6
+"skills/dcc/maya/scenario-maya-lookdev/scripts/mx_shade.py" = ["S110"] # 1
+"skills/dcc/maya/scenario-maya-modeling/scripts/mx_modeling.py" = ["S110"] # 3
+"skills/dcc/maya/scenario-maya-pipeline-scripting/scripts/mx_pipeline.py" = ["S110"] # 1
+"skills/dcc/maya/scenario-maya-retopology-uv/scripts/mx_retopology_uv.py" = ["S110"] # 2
+"skills/dcc/maya/scenario-maya-rigging/scripts/mx_rig.py" = ["S110"] # 7
+"skills/dcc/zbrush/scenario-zbrush-expert/scripts/zb_ops.py" = ["S110"] # 1
+"skills/dcc/zbrush/scenario-zbrush-hard-surface/scripts/zb_hardsurface.py" = ["S110"] # 2
+"skills/dcc/zbrush/scenario-zbrush-pose-print/scripts/zb_pose.py" = ["S110"] # 1
+"skills/dcc/zbrush/scenario-zbrush-retopology-export/scripts/zb_retopology_export.py" = ["S110"] # 1
+"skills/game-engines/godot/scenario-godot-expert/scripts/gd_run.py" = ["S110"] # 1
+"skills/game-engines/godot/scenario-godot-performance-export/scripts/gd_perf.py" = ["S110"] # 1
+"skills/game-engines/unity/scenario-unity-expert/scripts/ut_env.py" = ["S110"] # 1
+"skills/game-engines/unity/scenario-unity-expert/scripts/ut_live.py" = ["S110"] # 1
+"skills/game-engines/unreal/scenario-unreal-animation/scripts/ue_anim.py" = ["S110"] # 5
+"skills/game-engines/unreal/scenario-unreal-cinematics/scripts/cine_render_callbacks.py" = ["S110"] # 1
+"skills/game-engines/unreal/scenario-unreal-cinematics/scripts/ue_cine.py" = ["S110"] # 5
+"skills/game-engines/unreal/scenario-unreal-expert/scripts/ue_review.py" = ["S110"] # 1
+"skills/game-engines/unreal/scenario-unreal-expert/scripts/ue_run.py" = ["S110"] # 4
+"skills/game-engines/unreal/scenario-unreal-lighting-rendering/scripts/ue_light.py" = ["S110"] # 10
+"skills/game-engines/unreal/scenario-unreal-materials/scripts/ue_materials.py" = ["S110"] # 5
+"skills/game-engines/unreal/scenario-unreal-pipeline-automation/scripts/ue_contact_sheet_job.py" = ["S110"] # 1
+"skills/game-engines/unreal/scenario-unreal-pipeline-automation/scripts/ue_pipeline.py" = ["S110"] # 3
+"skills/game-engines/unreal/scenario-unreal-vfx/scripts/ue_vfx.py" = ["S110"] # 3
+"skills/game-engines/unreal/scenario-unreal-world-building/scripts/ue_world.py" = ["S110"] # 2

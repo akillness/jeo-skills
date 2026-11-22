@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-mesh-collider-functional-fidelity",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "constraint_level": "correctness",
+  "title": {
+    "en": "Choose collider detail from functional contacts"
+  },
+  "aliases": {
+    "en": [
+      "functional collider fidelity",
+      "render mesh versus collision proxy",
+      "preserve collision openings"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "rigid-mechanics",
+    "architecture-interiors"
+  ],
+  "summary": "Choose primitive, compound, convex or triangle-mesh collision geometry from the contacts, openings and support regions the experience promises, independently of decorative render detail and mass policy.",
+  "objective": "The collider preserves every declared pass-through opening, support patch and contact silhouette needed by the interaction while omitting decorative detail that has no physical or query consequence.",
+  "applies_when": [
+    "A detailed Blender render mesh needs a simpler runtime collision or query representation and gameplay, manipulation or simulation depends on holes, cavities, support surfaces or contact location."
+  ],
+  "tags": [
+    "reasoning-rule",
+    "collider",
+    "functional-fidelity",
+    "blender",
+    "rapier",
+    "threejs"
+  ],
+  "subject_terms": [
+    "collision proxy",
+    "compound collider",
+    "convex decomposition",
+    "triangle mesh collider",
+    "functional opening",
+    "support surface",
+    "contact silhouette"
+  ],
+  "intent_signals": [
+    "can I simplify this mesh collider without blocking the doorway",
+    "choose convex compound or trimesh for a detailed prop",
+    "keep support contacts while dropping decorative geometry"
+  ],
+  "example_prompts": [
+    "Choose a collision proxy for a chair whose seat must support objects and whose leg gaps remain traversable.",
+    "Simplify a machine housing collider while preserving a socket that receives an interactive part."
+  ],
+  "negative_signals": [
+    "render triangle parity is collision fidelity",
+    "collision complexity determines mass automatically",
+    "use dynamic triangle meshes everywhere"
+  ],
+  "not_for": [
+    "A purely decorative object that is never queried and has no contact behavior.",
+    "Choosing artistic mesh topology when no collision or spatial query exists."
+  ],
+  "content": {
+    "principles": [
+      "Collision fidelity is functional. Preserve geometry that changes allowed motion, support, containment, hit location or a promised query; render-only bevels, engravings and tiny gaps may be omitted when they have no declared consequence.",
+      "A convex hull closes cavities and holes. If passage or insertion through a concavity matters, use supported primitives/convex pieces that leave it open, a supported compound/convex decomposition, or a backend-appropriate concave representation under its body-type limits.",
+      "The chosen backend and body role constrain the representation. Do not generalize one engine's dynamic triangle-mesh behavior to another, and do not infer stability or performance from collider class alone.",
+      "Collision shape, visual shape and mass distribution are separate contracts. A simplified proxy may preserve contact while mass and inertia come from declared densities or explicit body properties."
+    ],
+    "implementation": [
+      "In Blender, keep the high-detail render mesh and author named collision proxies with the same unit, axis, origin and scale conversion. Mark functional openings, insertion envelopes, support patches and contact landmarks before simplifying.",
+      "Classify each collider use as fixed environment, moving rigid body, sensor or query-only geometry. Consult the installed backend for supported primitive, convex, compound, decomposition, heightfield and triangle-mesh forms, including body-type and scaling limits.",
+      "Start with primitives or convex pieces that preserve the marked functions. Add pieces only when a fixture shows a lost opening, false support, premature collision or missed contact; never chase visual triangle parity as an automatic goal.",
+      "For Rapier specifically, avoid treating a triangle mesh as a solid interior and heed its warning against triangle-mesh colliders on dynamic bodies; use supported convex decomposition/compound shapes for moving non-convex bodies unless the actual backend/version establishes another bounded path.",
+      "Set collider density or explicit mass properties through the separate mass contract. Export or store proxy identity and local transforms explicitly; core render geometry does not declare solver ownership."
+    ],
+    "observable_checks": [
+      "A clearance fixture passes through every declared functional opening and is blocked by every declared barrier; decorative holes omitted from the proxy are listed as nonfunctional.",
+      "Support fixtures rest or query-hit on the intended patches without floating on a closed convex hull or falling through simplified gaps.",
+      "Contact markers occur near the declared silhouette landmarks for representative approach directions; a simpler proxy that changes an important lever arm or insertion stop fails.",
+      "Changing only mass policy changes reported mass/inertia behavior without silently changing the collider outline, and changing only the proxy does not claim measured material density."
+    ]
+  },
+  "related_ids": [
+    "knowledge.compound-collider-mass-properties",
+    "knowledge.three-rigid-body-adapter",
+    "knowledge.bvh-spatial-query-adapter",
+    "knowledge.gravity-contact"
+  ],
+  "creative_affordances": [
+    "Stylized objects may use deliberately simplified collision so long as the promised interaction communicates and respects that shape.",
+    "Invisible guide funnels or forgiving contact volumes are valid accessibility choices when disclosed and kept out of scientific claims."
+  ],
+  "known_limits": [
+    "No collider representation is universally best; backend, scale, body type and query needs control support and robustness.",
+    "Preserving representative fixtures does not certify all continuous collision paths or real-world structural behavior.",
+    "Authored source-checked reasoning; no Blender proxy, Rapier world, collision query or solver step was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-rapier-collider-shape-boundaries",
+      "statement": "Rapier JavaScript documents primitive, convex, compound, triangle-mesh and heightfield collider forms; it notes that triangle meshes have no interior, discourages triangle meshes on dynamic rigid bodies, and recommends convex decomposition with a compound shape for moving non-convex objects.",
+      "scope": "Current Rapier JavaScript guidance read 2026-09-08; other engines and versions require their own support check.",
+      "source_refs": [
+        {
+          "source_id": "source.rapier-colliders",
+          "locator": "Shapes overview; Convex meshes; Triangle meshes and polylines; warning for dynamic rigid bodies"
+        }
+      ]
+    },
+    {
+      "id": "claim.reasoning-rapier-collider-mass-separation",
+      "statement": "Rapier collider descriptors can set density, and a nonzero-density collider attached to a rigid body contributes to that body's mass and angular inertia.",
+      "scope": "Rapier JavaScript collider mass behavior; it does not make visual detail or a proxy shape a measured real-world mass distribution.",
+      "source_refs": [
+        {
+          "source_id": "source.rapier-colliders",
+          "locator": "Creation and insertion example: setDensity and attached collider mass contribution"
+        }
+      ]
+    }
+  ]
+}

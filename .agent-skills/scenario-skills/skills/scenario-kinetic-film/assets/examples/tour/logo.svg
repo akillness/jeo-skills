@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 200" width="840" height="200">
+  <!-- A placeholder mark for the tour: m1-m4 drop in one by one, then w1 wipes on. Replace with your logo. -->
+  <path id="m1" fill="#ffffff" d="M10 10h80v80H10z"/>
+  <path id="m2" fill="#ffffff" d="M110 10h80v80h-80z"/>
+  <path id="m3" fill="#ffffff" d="M10 110h80v80H10z"/>
+  <path id="m4" fill="#ffffff" d="M110 110h80v80h-80z"/>
+  <path id="w1" fill="#ffffff" d="M250 70h580v60H250z"/>
+</svg>

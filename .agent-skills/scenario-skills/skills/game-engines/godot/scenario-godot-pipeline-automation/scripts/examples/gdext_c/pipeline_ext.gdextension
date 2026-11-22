@@ -1,0 +1,11 @@
+[configuration]
+
+entry_symbol = "pipeline_ext_init"
+compatibility_minimum = "4.7"
+reloadable = false
+
+[libraries]
+
+macos.debug = "res://bin/libpipeline_ext.dylib"
+macos.release = "res://bin/libpipeline_ext.dylib"
+linux.x86_64 = "res://bin/libpipeline_ext.so"

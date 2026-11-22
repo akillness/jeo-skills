@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "id": "recipe.riemann-sphere-reciprocal-map",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Reciprocal complex mapping on the Riemann sphere"
+  },
+  "aliases": {
+    "en": [
+      "Riemann sphere",
+      "complex plane mapping",
+      "stereographic projection"
+    ]
+  },
+  "direction_ids": [
+    "topology-symmetry",
+    "calculus-fields"
+  ],
+  "summary": "Relate a bounded complex-plane viewport to the unit sphere and show how reciprocal mapping exchanges zero and infinity.",
+  "objective": "Drag a complex point through zero using explicit exceptional states and compare z with1/z on linked spheres.",
+  "tags": [
+    "Riemann sphere",
+    "complex plane mapping",
+    "stereographic projection",
+    "reciprocal map"
+  ],
+  "subject_terms": [
+    "Riemann sphere",
+    "complex plane mapping",
+    "stereographic projection",
+    "reciprocal map",
+    "extended complex plane",
+    "north pole infinity",
+    "complex inversion"
+  ],
+  "intent_signals": [
+    "Drag a complex point through zero using explicit exceptional states and compare z with1/z on linked spheres.",
+    "Relate a bounded complex-plane viewport to the unit sphere and show how reciprocal mapping exchanges zero and infinity."
+  ],
+  "example_prompts": [
+    "Build an explorable reciprocal complex mapping on the riemann sphere. Drag a complex point through zero using explicit exceptional states and compare z with1/z on linked spheres."
+  ],
+  "entities": [
+    {
+      "name": "Equatorial plane and unit sphere",
+      "guidance": "Use mathematical coordinates(X,Y,Z), sphere centered at0 and plane Z=0. Mark north pole N=(0,0,1), south pole and equator; keep geometric axes equal-scale. The plane is a clipped viewport, not the entire complex plane."
+    },
+    {
+      "name": "Projection construction",
+      "guidance": "Join N, selected sphere point and finite plane point with one secant. At N replace the finite intersection by an infinity label rather than a very large fake coordinate."
+    },
+    {
+      "name": "Input and output map",
+      "guidance": "Show matched unit spheres for z and w=1/z with linked labels. In this convention reciprocal mapping sends sphere point(X,Y,Z) to(X,-Y,-Z), a half-turn about X; a finite output panel clips out-of-view values with direction/label."
+    }
+  ],
+  "state_contract": {
+    "model": "For finite z=x+iy, P=(2x,2y,x*x+y*y-1)/(1+x*x+y*y). Inverse z=(X+iY)/(1-Z) for Z!=1. Maintain a tagged infinity value at N. The bounded recipe map is w=1/z with 0 mapped to infinity and infinity mapped to0; use the direct sphere half-turn for these exceptional states.",
+    "authority": "A selected extended-complex value and viewport bounds own both sphere markers and readouts. Spheres use exact unit geometry; visible secants and output-plane clipping are display state, never substitute numerical infinity.",
+    "actions": [
+      "Drag a finite plane point or a sphere point and update both views.",
+      "Choose exact zero, one, i and infinity reference states.",
+      "Toggle reciprocal mapping and show correspondence without interpolating through an invalid complex division.",
+      "Reset point, map selection, viewport and camera independently."
+    ]
+  },
+  "invariants": [
+    "P has unit norm within declared tolerance; z=0 maps to south pole and |z|=1 to equator.",
+    "For finite nonzero z in the display range, applying reciprocal twice returns z within a scale-aware tolerance.",
+    "North pole is the one infinity point for every direction; output clipping does not indicate a mathematical singularity except at input zero."
+  ],
+  "motion_guidance": [
+    "The sphere half-turn can be animated as an explicitly labeled transition between input and mapped state; intermediate angles are not the function1/z.",
+    "Near N, use stable sphere coordinates and a tagged or clipped plane readout rather than overflow or division by a tiny1-Z."
+  ],
+  "known_limits": [
+    "This covers one reciprocal map, not arbitrary meromorphic functions, branch cuts, essential singularities or all Mobius transformations.",
+    "Finite sphere tessellation and pointer precision cannot resolve an arbitrarily small neighborhood of the pole. Projection is not area-preserving and sphere distances are not complex-plane Euclidean distances.",
+    "Authored recipe and prospective checks only; no runtime artifact or rendered result has been observed."
+  ],
+  "claims": [
+    {
+      "id": "claim.handbook-math-riemann-sphere-reciprocal-map",
+      "statement": "North-pole stereographic projection identifies the unit sphere, apart from(0,0,1), with the complex plane by z=(X+iY)/(1-Z); the north pole represents the single point at infinity of the extended complex plane.",
+      "scope": "Unit sphere centered at origin, equatorial complex plane, north-pole projection; other sphere conventions differ.",
+      "source_refs": [
+        {
+          "source_id": "source.handbook-math-riemann",
+          "locator": "4.4 and 4.4.1 point at infinity; 4.4.2 stereographic projection, PDF indices36-37"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Reciprocal complex mapping on the Riemann sphere",
+      "structure": "Build two sphere grids and an equatorial plane frame with consistent coordinate labels; projection lines meet a shared point rather than near-miss decorative arcs.",
+      "material": "Use independent line weights, shapes and labels for mathematical roles. Color and surface finish are presentation choices; do not infer material physics from them."
+    }
+  ],
+  "creative_affordances": [
+    "Use wireframe globes, translucent shells or a polished mathematical instrument; allow plane-only inspection alongside the spatial construction."
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Derived mathematical geometry and authored inspection; no contact dynamics or calibrated physical artifact.",
+    "checks": [
+      "P has unit norm within declared tolerance; z=0 maps to south pole and |z|=1 to equator.",
+      "For finite nonzero z in the display range, applying reciprocal twice returns z within a scale-aware tolerance."
+    ]
+  }
+}

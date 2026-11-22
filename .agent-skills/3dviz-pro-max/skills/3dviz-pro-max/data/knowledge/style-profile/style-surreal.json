@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-surreal",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Surreal spatial invention"
+  },
+  "aliases": {
+    "en": [
+      "dreamlike 3D",
+      "impossible scene",
+      "surreal sculpture",
+      "dream logic scene",
+      "impossible geometry"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "Choose a purposeful impossible relationship and support it with otherwise coherent local visual cues.",
+  "objective": "The visual contradiction reads as intentional, selected objects remain reachable and factual labels do not silently inherit the fiction.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "surreal"
+  ],
+  "subject_terms": [
+    "dreamlike 3D",
+    "impossible scene",
+    "surreal sculpture",
+    "art direction",
+    "dream logic scene",
+    "impossible geometry"
+  ],
+  "intent_signals": [
+    "Create a surreal spatial relationship",
+    "Stage an intentional impossible transformation"
+  ],
+  "example_prompts": [
+    "Create a surreal floating library where stairs become tree branches and the paths remain explorable."
+  ],
+  "content": {
+    "principles": [
+      "Choose a purposeful impossible relationship and support it with otherwise coherent local visual cues."
+    ],
+    "implementation": [
+      "Invert scale, suspend a terrain fragment or blend object categories; keep a few ordinary anchors so the intended surprise remains legible.",
+      "Use a palette and light continuity that joins the invented world, or make an intentional light discontinuity part of the stated concept.",
+      "Stage the impossible relation from a clear view; use slow transformation or unusual motion to develop the idea without obscuring navigation.",
+      "Keep exactly one contradiction per view and place two ordinary anchors at true scale within 5 m of it - a 2.0 m door and a seated figure - so the break is measurable rather than merely vague.",
+      "Cast the key at 12 degrees elevation for shadows 6-10x object height, then author the anomaly's shadow deliberately as correct, missing or displaced; that single decision, not the object, carries the surreal read."
+    ],
+    "observable_checks": [
+      "The visual contradiction reads as intentional, selected objects remain reachable and factual labels do not silently inherit the fiction."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Strangeness needs a credible world to violate, so the numbers keep the world quiet - 40% maximum saturation, thin fog at 0.012 so the far plane stays unnaturally crisp, ordinary materials on the impossible object - and spend the whole budget on one anomaly at 75% saturation. A 28-degree lens at 1.2 m with a slight upward pitch and a 12-degree key producing shadows 6-10x object height are the classic dream-image geometry: deep space, long shadows, eye level just below normal.",
+    "values": {
+      "feeling": [
+        "uncanny",
+        "still",
+        "dreamlike"
+      ],
+      "palette": [
+        {
+          "hex": "#241b3a",
+          "role": "night-violet void / deepest value"
+        },
+        {
+          "hex": "#6b4f8f",
+          "role": "mid violet mass"
+        },
+        {
+          "hex": "#e8b7c8",
+          "role": "impossible sky, rose light"
+        },
+        {
+          "hex": "#f2e6c8",
+          "role": "warm sand ground plane"
+        },
+        {
+          "hex": "#3fbfa8",
+          "role": "the single wrong colour, worn only by the anomaly"
+        }
+      ],
+      "value_structure": "45/35/20 dark/mid/light; the impossible element sits at the highest local contrast inside an otherwise even field",
+      "saturation_rule": "the world stays <= 40% HSL so the one anomaly at ~75% reads as a rule break rather than as decoration",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#241b3a",
+        "horizon": "#e8b7c8"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#d9a9bd",
+        "density": 0.012
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#ffd9c2",
+          "intensity": 2.4,
+          "elevation_deg": 12,
+          "azimuth_deg": 95,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#8f6fbf",
+          "ground": "#d8c39a",
+          "intensity": 0.5
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#3fbfa8",
+          "intensity": 0.7,
+          "elevation_deg": 30,
+          "azimuth_deg": 250,
+          "castShadow": false
+        },
+        "ratio": "key:fill ~ 5:1 with shadows 6-10x object height; the rim is deliberately unmotivated and is part of the concept"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 0.95
+      },
+      "camera": {
+        "fov_deg": 28,
+        "height_m": 1.2,
+        "pitch_deg": 2,
+        "orbit": {
+          "minPolar_deg": 65,
+          "maxPolar_deg": 95,
+          "minDist_m": 3,
+          "maxDist_m": 80
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.3,
+          0.9
+        ],
+        "metalness": [
+          0,
+          0.3
+        ],
+        "notes": "render the impossible object with ordinary credible materials; the contradiction must be spatial, never a shader trick"
+      },
+      "motion": {
+        "sway_period_s": [
+          6.0,
+          10.0
+        ],
+        "ease": "sine in-out",
+        "hold_ms": 1200
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.1,
+          "strength": 0.2,
+          "radius": 0.8
+        },
+        "vignette": 0.3,
+        "grain": 0.04,
+        "dof": "anchor object in focus at f/5.6; the anomaly stays sharp"
+      },
+      "signature_technique": "a long low key at 12 degrees whose shadows agree with the ground but not with the floating mass, so the eye finds the contradiction through the shadow before it finds the object",
+      "never": [
+        "contradicting everything at once",
+        "glow used as a substitute for strangeness",
+        "letting a factual label inherit the fiction",
+        "a second impossible element competing with the first"
+      ]
+    }
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at exposure 0.95; re-tune every intensity, fog density and bloom threshold if you change the tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with photorealistic surfaces or minimalist staging; mark invented causal or physical behavior as fictional."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

@@ -1,0 +1,535 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Single sprite-gen CLI entrypoint."""
+
+from __future__ import annotations
+
+import argparse
+from pathlib import Path
+from typing import Callable
+
+from sprite_gen import _modules, gen
+from sprite_gen.background import tile
+from sprite_gen.curate import anchor
+from sprite_gen.compose import compose_atlas, compose_cycle, compose_gif, export_aseprite, export_pngs
+from sprite_gen.qa import correction_loop, inspect, preview, score, motion
+from sprite_gen.qa import holds as inspect_holds
+from sprite_gen.qa import handed as handed_check
+from sprite_gen.frames import cutout, extract, slice_sheet, unpack_atlas
+from sprite_gen.gen import gen_set, logo, pixel_draw, prepare, video
+from sprite_gen.video import batch as video_batch
+from sprite_gen.video import canvas as video_canvas
+from sprite_gen.video import frames as video_frames
+from sprite_gen.video import loop as video_loop
+from sprite_gen.video import clip_prompt as video_prompt
+from sprite_gen.video import align as video_align
+from sprite_gen.video import follow as video_follow
+from sprite_gen.video import follow_inspect as video_follow_inspect
+from sprite_gen.video import sway as video_sway
+from sprite_gen.video import sway_inspect as video_sway_inspect
+from sprite_gen.video import set_sheet as video_set_sheet
+from sprite_gen.video import stop as video_stop
+from sprite_gen.video import chain as video_chain
+from sprite_gen.video import compare as video_compare
+from sprite_gen.video import restoration as video_restoration
+from sprite_gen.video import source as video_source
+from sprite_gen.video import rife_install
+from sprite_gen.video import face_bake, face_pack
+from sprite_gen.effects import breathe, recolor, shadow
+from sprite_gen.scene import render, inspect_scene
+from sprite_gen.serve import serve_compose, serve_curation
+from sprite_gen.spec import migrate_breathe, migrate_request
+from sprite_gen.workflow import capabilities, guide, preferences
+from sprite_gen.util.console import utf8_streams
+
+
+def _parse_frames(value: str) -> list[int]:
+    frames = [int(part.strip()) for part in value.split(",") if part.strip()]
+    if not frames:
+        raise argparse.ArgumentTypeError("at least one frame number is required")
+    if any(frame <= 0 for frame in frames):
+        raise argparse.ArgumentTypeError("frame numbers are 1-based and must be positive")
+    return frames
+
+
+def _parse_frame_order(value: str) -> list[int]:
+    frames = [int(part.strip()) for part in value.split(",") if part.strip()]
+    if not frames:
+        raise argparse.ArgumentTypeError("frame order must contain at least one frame")
+    if any(frame <= 0 for frame in frames):
+        raise argparse.ArgumentTypeError("frame order is 1-based and must be positive")
+    return frames
+
+
+def _parse_grid(value: str) -> tuple[int, int]:
+    cols, rows = value.lower().split("x")
+    return int(cols), int(rows)
+
+
+def _add_extract(p: argparse.ArgumentParser) -> None:
+    p.add_argument("--run-dir", required=True, type=Path)
+    p.add_argument("--states", default="all")
+    p.add_argument("--key-threshold", type=float, default=96.0)
+    p.add_argument("--fringe-key-threshold", type=float, default=180.0)
+    p.add_argument("--fringe-delta", type=float, default=18.0)
+    p.add_argument("--fringe-unmix-reach", type=int, default=None)
+    p.add_argument("--spill-max-fraction", type=float, default=None)
+    p.add_argument("--decontam", choices=extract.DECONTAM_MODES, default=None)
+    p.add_argument("--segmentation", choices=("components", "projection"), default=None)
+    p.add_argument("--allow-slot-fallback", action="store_true")
+    p.add_argument("--min-used-pixels", type=int, default=None)
+    p.add_argument("--edge-margin", type=int, default=2)
+    p.add_argument("--edge-pixel-threshold", type=int, default=24)
+    p.add_argument("--chroma-adjacent-threshold", type=float, default=150.0)
+    p.add_argument("--chroma-adjacent-pixel-threshold", type=int, default=120)
+    p.add_argument("--small-outlier-ratio", type=float, default=0.35)
+    p.add_argument("--large-outlier-ratio", type=float, default=2.75)
+
+
+def _add_compose_atlas(p: argparse.ArgumentParser) -> None:
+    p.add_argument("--run-dir", required=True, type=Path)
+    p.add_argument("--atlas", default="sprite-sheet-alpha.png")
+    p.add_argument("--manifest", default="manifest.json")
+    p.add_argument("--report", default="sprite-sheet-alpha.report.json")
+    p.add_argument("--min-used-pixels", type=int, default=None)
+
+
+def _add_preview(p: argparse.ArgumentParser) -> None:
+    p.add_argument("--run-dir", required=True, type=Path)
+    p.add_argument("--delay-ticks", type=int)
+
+
+def _add_compose_cycle(p: argparse.ArgumentParser) -> None:
+    p.add_argument("--run-dir", required=True, type=Path)
+    p.add_argument("--state", required=True)
+    p.add_argument("--frames", type=_parse_frames)
+    p.add_argument("--name", required=True)
+    p.add_argument("--duration-ms", type=int, default=190)
+    p.add_argument("--delay-ticks", type=int)
+    p.add_argument("--note", default="")
+
+
+def _add_compose_gif(p: argparse.ArgumentParser) -> None:
+    p.add_argument("inputs", nargs="*", type=Path)
+    p.add_argument("--frame-dir", type=Path)
+    p.add_argument("--frame-order", type=_parse_frame_order)
+    p.add_argument("--run-dir", type=Path)
+    p.add_argument("--out-dir", type=Path)
+    p.add_argument("--output", type=Path)
+    p.add_argument("--delay-ticks", type=int, default=17)
+    p.add_argument("--loop-count", type=int, default=0)
+    p.add_argument("--contact-output", type=Path)
+    p.add_argument("--manifest-output", type=Path)
+    p.add_argument("--alpha-threshold", type=int, default=8)
+
+
+def _add_unpack_atlas(p: argparse.ArgumentParser) -> None:
+    p.add_argument("--atlas", type=Path)
+    p.add_argument("--manifest", type=Path)
+    p.add_argument("--pngs-dir", type=Path)
+    p.add_argument("--state-name", default="items")
+    p.add_argument("--out-dir", type=Path)
+    p.add_argument("--grid", type=_parse_grid)
+    p.add_argument("--cell", type=_parse_grid)
+    p.add_argument("--direction")
+    p.add_argument("--states")
+    p.add_argument("--auto", action="store_true")
+    p.add_argument("--force", action="store_true")
+
+
+def _add_export_pngs(p: argparse.ArgumentParser) -> None:
+    p.add_argument("--run-dir", required=True, type=Path)
+    p.add_argument("--state")
+    p.add_argument("--out-dir", type=Path)
+    p.add_argument("--selected-only", action="store_true")
+
+
+def _add_slice_sheet(p: argparse.ArgumentParser) -> None:
+    p.add_argument("--sheet", required=True, type=Path)
+    p.add_argument("--out-dir", required=True, type=Path)
+    p.add_argument("--chroma-key", required=True, help=slice_sheet.CHROMA_KEY_HELP)
+    p.add_argument("--grid", type=_parse_grid, default=(3, 2), help="COLSxROWS, default 3x2")
+    p.add_argument("--names", help="comma-separated output names, one per cell in reading order")
+    p.add_argument("--prefix", default="")
+    p.add_argument("--cell-width", type=int, default=512)
+    p.add_argument("--cell-height", type=int, default=768)
+    p.add_argument("--baseline-y", type=float, default=725.0)
+    p.add_argument("--target-height", type=float, default=645.0)
+    p.add_argument("--key-threshold", type=float, default=slice_sheet.DEFAULT_KEY_THRESHOLD)
+    p.add_argument("--fringe-key-threshold", type=float, default=slice_sheet.DEFAULT_FRINGE_KEY_THRESHOLD)
+    p.add_argument("--fringe-delta", type=float, default=slice_sheet.DEFAULT_FRINGE_DELTA)
+    p.add_argument("--fringe-unmix-reach", type=int, default=4)
+    p.add_argument("--spill-max-fraction", type=float, default=0.005)
+    p.add_argument("--noise-min", type=int, default=slice_sheet.DEFAULT_NOISE_MIN)
+    p.add_argument("--debris-fraction", type=float, default=slice_sheet.DEFAULT_DEBRIS_FRACTION)
+    p.add_argument("--alpha-floor", type=int, default=0, help=slice_sheet.ALPHA_FLOOR_HELP)
+    p.add_argument("--alpha-edge", type=int, default=2, help=slice_sheet.ALPHA_EDGE_HELP)
+    p.add_argument("--scale", choices=slice_sheet.SCALES, default="cell", help=slice_sheet.SCALE_HELP)
+    p.add_argument("--fit", choices=slice_sheet.FITS, default="none", help=slice_sheet.FIT_HELP)
+
+
+def _add_inspect(p: argparse.ArgumentParser) -> None:
+    p.add_argument("--run-dir", required=True, type=Path)
+    p.add_argument("--states", default="all")
+    p.add_argument("--report", default="sprite-inspect.report.json")
+    p.add_argument("--histogram-min", type=float, default=inspect.DEFAULT_HISTOGRAM_MIN)
+    p.add_argument("--dhash-min", type=float, default=inspect.DEFAULT_DHASH_MIN)
+    p.add_argument("--motion-min", type=float, default=inspect.DEFAULT_MOTION_MIN)
+    p.add_argument("--key-threshold", type=float, default=96.0)
+    p.add_argument("--fringe-key-threshold", type=float, default=180.0)
+    p.add_argument("--fringe-delta", type=float, default=18.0)
+    p.add_argument("--fringe-unmix-reach", type=int, default=None)
+    p.add_argument("--spill-max-fraction", type=float, default=None)
+    p.add_argument("--chroma-mode", choices=extract.CHROMA_MODES, default=None)
+    p.add_argument("--decontam", choices=extract.DECONTAM_MODES, default=None)
+    p.add_argument("--no-write", action="store_true")
+
+
+def _add_score(p: argparse.ArgumentParser) -> None:
+    p.add_argument("--inspect-report", required=True, type=Path)
+    p.add_argument("--output", default="sprite-score.report.json")
+    p.add_argument("--no-write", action="store_true")
+
+
+def _add_gen(p: argparse.ArgumentParser) -> None:
+    gen.add_arguments(p)
+
+
+def _add_cutout(p: argparse.ArgumentParser) -> None:
+    cutout.add_arguments(p)
+
+
+def _add_video(p: argparse.ArgumentParser) -> None:
+    video.add_arguments(p)
+
+
+def _add_anchor(p: argparse.ArgumentParser) -> None:
+    anchor.add_arguments(p)
+
+
+def _add_correction_loop(p: argparse.ArgumentParser) -> None:
+    p.add_argument("--run-dir", required=True, type=Path)
+    p.add_argument("--states", default="all")
+    p.add_argument("--out-dir", type=Path)
+    p.add_argument("--max-passes", type=int, default=3)
+    p.add_argument("--pass-score", type=float, default=90.0)
+    p.add_argument("--provider-command")
+    p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--no-preserve-best", action="store_true")
+
+
+COMMANDS: dict[str, tuple[str, Callable[[argparse.ArgumentParser], None], Callable[..., int]]] = {
+    "background-tile": ("Quilt a repeating RGBA background and measure its join.", tile.add_arguments, tile.run),
+    "shadow": ("Project silhouette shadows from any supported asset.", shadow.add_arguments, shadow.run),
+    "inspect-motion": ("Measure asset timing and contact evidence without changing animation.", motion.add_arguments, motion.run),
+    "inspect-holds": ("Count the frames on which a figure shows the picture of the frame before, by its alpha, a key, a box or a log of its cells; --gate fails on one no list of holds meant names.", inspect_holds.add_arguments, inspect_holds.run),
+    "scene-render": ("Render referenced assets using scene placement, camera and lighting.", render.add_arguments, render.run),
+    "scene-inspect": ("Measure scene loops, viewport clipping and repeated joins.", inspect_scene.add_arguments, inspect_scene.run),
+    "workflow": ("Resolve image/sprite choices, check access and guide the next conversation step.", guide.add_arguments, guide.run),
+    "defaults": ("Show, explicitly save or clear the defaults for each user workflow.", preferences.add_arguments, preferences.run),
+    # Read off this table and the parser it builds (docs/capabilities.md): a verb added here is listed there.
+    "capabilities": (
+        "Print what this engine can do as one JSON line: every verb and its arguments, read off this CLI's parser, the providers each verb may call and be billed by, and the provider address and login variables.",
+        capabilities.add_arguments,
+        capabilities.run,
+    ),
+    "prepare": ("Prepare a sprite-gen component-row run.", prepare.add_arguments, prepare.run),
+    "extract": ("Extract component-row sprite strips into clean RGBA frames.", _add_extract, extract.run),
+    "compose-atlas": (
+        "Compose component-row frames into a game atlas and runtime manifest.",
+        _add_compose_atlas,
+        compose_atlas.run,
+    ),
+    "preview": ("Build motion-QA previews for a sprite-gen run.", _add_preview, preview.run),
+    "compose-cycle": (
+        "Compose a QA-approved manual frame subset into a selected cycle.",
+        _add_compose_cycle,
+        compose_cycle.run,
+    ),
+    "compose-gif": ("Compose selected sprite frames into a clean transparent GIF.", _add_compose_gif, compose_gif.run),
+    "unpack-atlas": (
+        "Unpack a composed sprite sheet back into a curator-ready run directory.",
+        _add_unpack_atlas,
+        unpack_atlas.run,
+    ),
+    "export-pngs": ("Export curated frames back to named PNGs.", _add_export_pngs, export_pngs.run),
+    "export-aseprite": (
+        "Export the composed atlas as Aseprite-compatible JSON metadata.",
+        export_aseprite.add_arguments,
+        export_aseprite.run,
+    ),
+    "anchor": (
+        "Resolve/bake the direction anchor ref from curated truth (or pin which frame is the anchor).",
+        _add_anchor,
+        anchor.run,
+    ),
+    "migrate-breathe": (
+        "Migrate a run's retired split-line breathe sidecar to the envelope schema.",
+        migrate_breathe.add_arguments,
+        migrate_breathe.run,
+    ),
+    # The only writer that changes the request schema on disk. Reads (`runio.load_request`
+    # and everything through it) normalize retired keys in memory and leave the file byte
+    # for byte — a query must never rewrite a canonical run.
+    "migrate-request": (
+        "Migrate a run's retired sprite-request keys to the current schema.",
+        migrate_request.add_arguments,
+        migrate_request.run,
+    ),
+    "slice-sheet": (
+        "Slice a multi-figure grid sheet into per-cell standing cuts (tachi-e).",
+        _add_slice_sheet,
+        slice_sheet.run,
+    ),
+    "gen": (
+        "Generate one image via a provider (codex image_gen / grok Imagine on a subscription login first (an API key only without one, billed per call and said), or openai Images API for servers/SaaS, billed per call) into a verified PNG.",
+        _add_gen,
+        gen.run,
+    ),
+    "cutout": (
+        "Cut a uniform (white/ivory/solid) background off an imported image into a clean transparent PNG.",
+        _add_cutout,
+        cutout.run,
+    ),
+    "gen-set": (
+        "Generate every state row of a prepared run, N at a time — one report per row, table.md, non-zero exit on any failure.",
+        gen_set.add_arguments,
+        gen_set.run,
+    ),
+    # Same declaration-once rule (docs/logo.md): a mood image with the title in it, its lettering redrawn on a key, the key removed.
+    "logo": (
+        "Typography logo: a title screen or poster with the title lettered in it, only its lettering redrawn on a chroma key, the key removed with glows and partial alpha kept; the text is read back and a misspelt logo refused.",
+        logo.add_arguments,
+        logo.run,
+    ),
+    # Same declaration-once rule: the module owns its argument surface (docs/pixel-draw.md).
+    "pixel-draw": (
+        "Experimental: Claude Opus draws 8..48 px pixel art as a pixel grid: gates, row repair, a pick of candidates; grid.txt is the truth, PNGs byte-reproducible (your Claude subscription first; without a login ANTHROPIC_API_KEY, billed per call).",
+        pixel_draw.add_arguments,
+        pixel_draw.run,
+    ),
+    "video": (
+        "Animate a still (or pin a last frame / guide with references) into a verified mp4 via Grok Imagine (your own grok login or XAI_API_KEY).",
+        _add_video,
+        video.run,
+    ),
+    # Same declaration-once rule: the module owns the argument surface. Extend and edit force
+    # the classic model and inherit resolution/length from the input clip (docs/video.md).
+    "video-extend": (
+        "Continue an existing clip by N seconds via Grok Imagine (POST /v1/videos/extensions).",
+        video.add_extend_arguments,
+        video.run_extend,
+    ),
+    "video-edit": (
+        "Edit an existing clip (≤ 8.7 s) with a prompt via Grok Imagine (POST /v1/videos/edits).",
+        video.add_edit_arguments,
+        video.run_edit,
+    ),
+    "video-resume": (
+        "Ask again for a clip a video / video-extend / video-edit run left unfinished, by its request_id (no new POST, nothing bought twice).",
+        video.add_resume_arguments,
+        video.run_resume,
+    ),
+    # Video -> sprite pipeline (docs/video-pipeline.md): canvas -> video -> frames -> loop, or video-set for a batch.
+    "video-canvas": (
+        "Pad a base still into the canvas a motion state needs (tall for jumps, wide for attacks, square otherwise).",
+        video_canvas.add_arguments,
+        video_canvas.run,
+    ),
+    # The prompt alone, for a clip made by a video MCP on the user's agent (ZCRE); the engine never calls it.
+    "video-prompt": (
+        "Print the clip prompt video-set would send for one (direction, state), for a clip made elsewhere (a video MCP such as ZCRE); --json adds the duration, end-frame pin and loop cut.",
+        video_prompt.add_arguments,
+        video_prompt.run,
+    ),
+    "video-frames": (
+        "Extract a clip's frames and key the chroma out into RGBA frames (edge-contact checked).",
+        video_frames.add_arguments,
+        video_frames.run,
+    ),
+    "video-loop": (
+        "Find the true period in keyed frames and emit one seamless cycle: strip + meta, transparent GIF, WebP.",
+        video_loop.add_arguments,
+        video_loop.run,
+    ),
+    "video-loop-compare": (
+        "Compare final loop strip/meta bytes; report improvement, regression or unverified evidence.",
+        video_compare.add_arguments,
+        video_compare.run,
+    ),
+    "video-source-manifest": (
+        "Record actual clip, canvas and ordered keyed bytes from an existing extraction for source verification.",
+        video_source.add_arguments,
+        video_source.run,
+    ),
+    "video-loop-repair": (
+        "Restore one damaged cell of the current cut from verified source pixels; preserve timing and normal cells.",
+        video_restoration.add_arguments,
+        video_restoration.run,
+    ),
+    "video-set": (
+        "Directions x states end to end (canvas -> video -> frames -> loop), rate-limit aware, one report per item.",
+        video_batch.add_arguments,
+        video_batch.run,
+    ),
+    # Handedness (docs/video-pipeline.md#handedness--an-item-on-one-side): an asymmetric item's side, checked by its colour per frame.
+    "handed-check": (
+        "Check that a colour-marked asymmetric item (a watch on one wrist) is on the side its handedness puts it in every frame of a still or loop; a board for the eye.",
+        handed_check.add_arguments,
+        handed_check.run,
+    ),
+    "video-cycle-align": (
+        "One cycle length for every direction of a set: resample each loop to the median length (RIFE between source frames only), start on a foot strike.",
+        video_align.add_arguments,
+        video_align.run,
+    ),
+    "video-sway": (
+        "The Sway layer: a soft part of a looping body sways with the body's motion, an ellipse of the strip moved as a damped mass on the body's own bob (after video-cycle-align), or of a cycle's frames at their own size (--frames, --out); on the breath, late behind the Breathe layer's chest (--breathe). Old name video-follow, still run.",
+        video_sway.add_arguments,
+        video_sway.run,
+    ),
+    # The same request as video-sway, answered by the same code, written down instead of over the loop.
+    "video-sway-inspect": (
+        "Where video-sway carries each region in every cell and what it would change there, with nothing moved: a record and two boards of every cell, for whoever says what is inside an ellipse. Old name video-follow-inspect, still run.",
+        video_sway_inspect.add_arguments,
+        video_sway_inspect.run,
+    ),
+    "video-set-sheet": (
+        "The directions of one set on one sheet: rows in compass order (S SW W NW N NE E SE), one cell holding every body box, one ground line under every cell, no row scaled; an optional centre picture stood on the same line at the rows' standing height.",
+        video_set_sheet.add_arguments,
+        video_set_sheet.run,
+    ),
+    "video-stop": (
+        "A walk or run that stops: the clip's own start played backwards from where it reaches the loop to the still it was filmed from, cut as a one-shot strip beside the loop (seam, drift, speed and refusals reported).",
+        video_stop.add_arguments,
+        video_stop.run,
+    ),
+    "video-chain": (
+        "Pieces of keyed clips on one canvas played as one move: where they join and when each frame shows is yours, the frames between, no picture shown again and the record are the engine's.",
+        video_chain.add_arguments,
+        video_chain.run,
+    ),
+    # The face layer (docs/face-parts.md): a talking clip's lower face cut to be laid on body motions, and a line baked
+    # with the pack's own player.
+    "video-face": (
+        "A face pack: a talking clip's lower face (mouth, jaw, cheeks) cut into smile and neutral sets, anchored on every frame of the body motions it is laid on, with the player that picks its frames to a voice.",
+        face_pack.add_arguments,
+        face_pack.run,
+    ),
+    "face-bake": (
+        "Bake a line ahead: a body motion with the face layer talking to a voice, picked by the pack's player (node), as frames, sound and a report; a jump the laying put in is refused.",
+        face_bake.add_arguments,
+        face_bake.run,
+    ),
+    "rife": (
+        "install: download the pinned RIFE (rife-ncnn-vulkan, sha256-checked) into the user data directory, where the loop repair finds it.",
+        rife_install.add_arguments,
+        rife_install.run,
+    ),
+    # The argument surface is `serve_curation.add_arguments` itself, not a copy of it: the
+    # webview's own `--help` and this subcommand are the same declaration, so `sprite-gen
+    # curation` cannot drift from the launch form the READMEs still document.
+    "curation": (
+        "Serve the curation webview for one run directory.",
+        serve_curation.add_arguments,
+        serve_curation.run,
+    ),
+    # The pre-run half of curation: a blank-screen assembly canvas where a human
+    # mounts a folder and drags files onto rows to compose a sprite, instead of
+    # an agent arranging a --pngs-dir folder by hand. Same declaration-once rule
+    # as `curation` — the subcommand reuses the module's own add_arguments/run.
+    "compose": (
+        "Serve the composition canvas — mount a folder and assemble sprite rows.",
+        serve_compose.add_arguments,
+        serve_compose.run,
+    ),
+    "recolor": (
+        "Bake deterministic palette-swap variant sheets from a base sheet + recolor spec.",
+        recolor.add_recolor_arguments,
+        recolor.run,
+    ),
+    "recolor-palette": (
+        "Draft a palette map (distinct opaque colours by frequency) from a base sheet.",
+        recolor.add_palette_arguments,
+        recolor.run_palette,
+    ),
+    # The Breathe layer for frames that are not a curation run (a video loop's cells): the sidecar's values, its
+    # normalization and its bake, so the same values give the same bytes either way.
+    "breathe": (
+        "Lay the Breathe layer over a folder of loop frames: pixel (default) or smooth (large illustrations, video frames); smooth can choose its beat to miss the hands (--avoid-region).",
+        breathe.add_arguments,
+        breathe.run,
+    ),
+    "inspect": ("Inspect sprite rows for frame-count, identity, and motion defects.", _add_inspect, inspect.run),
+    "score": ("Score a sprite inspect report and emit correction hints.", _add_score, score.run),
+    "correction-loop": (
+        "Run a bounded inspect -> score -> correction-hint loop.",
+        _add_correction_loop,
+        correction_loop.run,
+    ),
+}
+
+
+# Old verb names, kept: each parses its new verb's arguments and runs its own module's `run`, which does the same
+# and says the old name in what it prints.
+VERB_ALIASES: dict[str, tuple[str, Callable[..., int]]] = {
+    "video-follow": ("video-sway", video_follow.run),
+    "video-follow-inspect": ("video-sway-inspect", video_follow_inspect.run),
+}
+
+
+def command_domains() -> dict[str, list[str]]:
+    """Verbs grouped by domain, derived from each verb's `run` module — never hand-listed."""
+    groups: dict[str, list[str]] = {d: [] for d in _modules.DOMAIN_ORDER}
+    for name, (_description, _add_args, run) in COMMANDS.items():
+        groups[_modules.domain_of(run.__module__)].append(name)
+    return {d: verbs for d, verbs in groups.items() if verbs}
+
+
+def _help_description() -> str:
+    lines = ["sprite-gen — assets and scenes in one CLI. Workflows compose independent commands."]
+    for title, entries in (("sprite pipelines", _modules.PIPELINES),
+                           ("standalone tool groups", _modules.TOOL_GROUPS),
+                           ("scene workflow", _modules.WORKFLOWS)):
+        lines += ["", f"{title}:"]
+        for item in entries:
+            label = f"{item['key']}  {item['name']}"
+            lines.append(f"  {label:<20} {item['chain']}   ({item['doc']})")
+    lines += ["", "tools by domain:"]
+    width = max(len(v) for v in COMMANDS)
+    for domain, verbs in command_domains().items():
+        lines.append(f"  [{domain}] {_modules.DOMAIN_TITLE[domain]}")
+        for verb in verbs:
+            lines.append(f"    {verb:<{width}}  {COMMANDS[verb][0]}")
+    lines += ["", "run `sprite-gen <tool> --help` for a tool's arguments."]
+    return "\n".join(lines)
+
+
+def _build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="sprite-gen", description=_help_description(), formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    sub = parser.add_subparsers(dest="command", required=True, metavar="<tool>")
+    for name, (description, add_args, _run) in COMMANDS.items():
+        aliases = [old for old, (new, _old_run) in VERB_ALIASES.items() if new == name]
+        sp = sub.add_parser(name, aliases=aliases, description=description)
+        add_args(sp)
+    return parser
+
+
+def main(argv: list[str] | None = None) -> int:
+    utf8_streams()
+    parser = _build_parser()
+    args = parser.parse_args(argv)
+    if getattr(args, "_retired_pp", False):
+        from sprite_gen.gen.prepare import RETIRED_PP_MESSAGE
+
+        raise SystemExit(RETIRED_PP_MESSAGE)
+    kwargs = vars(args).copy()
+    kwargs.pop("_retired_pp", None)
+    command = kwargs.pop("command")
+    run_fn = VERB_ALIASES[command][1] if command in VERB_ALIASES else COMMANDS[command][2]
+    return run_fn(**kwargs)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

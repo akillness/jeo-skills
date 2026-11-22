@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "id": "recipe.binary-heap-operations",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Binary heap, sift operations and heapsort"
+  },
+  "aliases": {
+    "en": [
+      "binary heap",
+      "priority queue",
+      "heapsort"
+    ]
+  },
+  "direction_ids": [
+    "algorithms-data-structures"
+  ],
+  "summary": "Show one structure in two views at once: the array indices that own the data and the tree that explains the ordering.",
+  "objective": "Build a binary heap where inserting and removing the maximum animate swim and sink while both array and tree views stay in step.",
+  "tags": [
+    "heap",
+    "priority queue",
+    "sorting"
+  ],
+  "subject_terms": [
+    "binary heap",
+    "heap order",
+    "swim",
+    "sink",
+    "priority queue",
+    "delete the maximum",
+    "array representation",
+    "heapsort"
+  ],
+  "intent_signals": [
+    "Show how a binary heap keeps its largest item at the root.",
+    "Animate heapsort with both the tree and the array visible."
+  ],
+  "example_prompts": [
+    "Build a binary heap with insert and delete-maximum operations and a linked array view.",
+    "Show the swim and sink paths as compare-and-exchange steps."
+  ],
+  "negative_signals": [
+    "Not a general priority queue survey: pairing heaps, Fibonacci heaps and indexed queues are out of scope.",
+    "Not a performance benchmark; compare counts are structural, not timings."
+  ],
+  "not_for": [
+    "Not a general priority queue survey: pairing heaps, Fibonacci heaps and indexed queues are out of scope.",
+    "Not a performance benchmark; compare counts are structural, not timings."
+  ],
+  "entities": [
+    {
+      "name": "Heap nodes",
+      "guidance": "Place nodes on a tree layout but store them as an array with visible indices, since the array is the real structure."
+    },
+    {
+      "name": "Operation trail",
+      "guidance": "Show the current compare-and-exchange pair and the path already travelled, so a swim or sink is a path and not a jump."
+    },
+    {
+      "name": "Counter panel",
+      "guidance": "Count compares and exchanges for the current operation and for the session, so cost is observed rather than asserted."
+    }
+  ],
+  "state_contract": {
+    "model": "A one-based array with an active heap size: the parent of position k greater than 1 is at floor(k/2) and its children are at 2k and 2k+1. Heap order is restored by swim after insertion and by sink after removing the maximum. During heapsort the active size shrinks and the sorted suffix beyond it is no longer part of the heap. Removing from an empty heap and taking the parent of the root are declared error outcomes, not silent operations.",
+    "authority": "The array is authoritative. Tree node positions are a layout of that array, so a node cannot move in the tree without an array exchange.",
+    "actions": [
+      "Insert a key and watch it swim.",
+      "Remove the maximum and watch the last key sink.",
+      "Run heapsort step by step.",
+      "Reset to the authored starting array."
+    ]
+  },
+  "invariants": [
+    "Heap order holds over the active prefix after every completed operation: no node in that prefix exceeds its parent. The sorted suffix produced by heapsort is checked separately for ascending order and is not expected to satisfy heap order.",
+    "Every visual exchange corresponds to exactly one array exchange and one increment of the counter.",
+    "Removing the maximum always removes the root and never a different node with the same key.",
+    "Comparisons and exchanges conserve the key multiset, and heapsort only permutes the original items. A completed insertion adds exactly the inserted item; a completed delete-max removes exactly the root item from the pre-operation heap."
+  ],
+  "motion_guidance": [
+    "Animate one compare-and-exchange at a time and let it be stepped, since the ordering argument lives in the individual step.",
+    "Keep partial states visible: a heap mid-sink is temporarily invalid, and that is the point of the animation."
+  ],
+  "known_limits": [
+    "Sorted output ordering for equal keys is not stable, and the recipe should say so when duplicates are present.",
+    "Compare counts are exact for the shown run only; they are not asymptotic proofs.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-heap-order-array",
+      "statement": "A binary tree is heap-ordered when each node key is at least as large as the keys of its children, and in the one-based array representation the parent of the node in position k is at position k divided by two while its children are at positions 2k and 2k+1.",
+      "scope": "One-based indexing with integer division, so the parent rule applies to positions greater than one; the root has no parent.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-algs4-priority-queues",
+          "locator": "2.4 Priority Queues, heap-ordered definition and array representation"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-heap-compare-bounds",
+      "statement": "In an n-item priority queue the heap algorithms use no more than 1 plus lg n compares for insert and no more than 2 lg n compares for removing the maximum, and heapsort uses fewer than 2 n lg n compares and exchanges.",
+      "scope": "Compare and exchange counts as cited, not wall-clock timings.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-algs4-priority-queues",
+          "locator": "2.4 Priority Queues, running time guarantees and heapsort"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Heap nodes",
+      "structure": "Node bodies with a key plate and an index plate on different faces so both identities are readable.",
+      "material": "Neutral node material with one accent for the active comparison pair and a second for the completed path.",
+      "articulation": "Nodes swap positions along an arc during an exchange so the exchange itself is visible."
+    },
+    {
+      "family": "Operation trail",
+      "structure": "A ribbon following the root-to-node path with tick marks at each visited level.",
+      "material": "Semi-transparent ribbon that never hides the node key plates.",
+      "articulation": "The ribbon grows with the operation and clears when it completes."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Discrete data structure operations with animated presentation; no physical motion.",
+    "state": [
+      "array contents",
+      "operation step index",
+      "compare and exchange counts"
+    ],
+    "checks": [
+      "Heap order holds over the active prefix after each completed operation, and the suffix is verified as sorted.",
+      "Counter increments match the number of animated exchanges."
+    ]
+  },
+  "related_ids": [
+    "recipe.dijkstra-relaxation",
+    "recipe.stable-merge-sort-trace",
+    "knowledge.state-playback"
+  ]
+}

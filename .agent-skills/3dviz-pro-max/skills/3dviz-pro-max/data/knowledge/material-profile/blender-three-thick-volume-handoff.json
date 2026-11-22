@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blender-three-thick-volume-handoff",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Thick transmissive volume handoff"
+  },
+  "aliases": {
+    "en": [
+      "Blender volume absorption to glTF",
+      "KHR materials volume in Three.js",
+      "thickness attenuation IOR handoff"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "anatomy-structures"
+  ],
+  "summary": "Transport an intentionally closed Blender transmissive solid through glTF volume, transmission and IOR extensions into a Three.js physical material while preserving thickness units and attenuation meaning.",
+  "objective": "A closed test fixture with baked or explicitly declared thickness variation becomes progressively more attenuated at larger thickness values, keeps a stable thin-wall fallback, and exposes unsupported runtime refraction instead of silently presenting alpha-blended glass.",
+  "tags": [
+    "material-profile",
+    "gltf",
+    "volume",
+    "transmission",
+    "thickness",
+    "attenuation",
+    "ior"
+  ],
+  "subject_terms": [
+    "KHR_materials_volume",
+    "KHR_materials_transmission",
+    "KHR_materials_ior",
+    "thicknessFactor",
+    "thicknessTexture green channel",
+    "attenuationDistance",
+    "attenuationColor",
+    "MeshPhysicalMaterial thickness",
+    "volume absorption",
+    "closed manifold mesh"
+  ],
+  "intent_signals": [
+    "thick glass has no depth color after export",
+    "Blender volume absorption in Three.js",
+    "wire KHR materials volume",
+    "thickness map channel",
+    "attenuation distance changes with model scale"
+  ],
+  "example_prompts": [
+    "Carry this thick colored-glass bottle from Blender into Three.js with visible path-length attenuation.",
+    "Diagnose why my closed transmissive solid still renders like an infinitely thin sheet."
+  ],
+  "negative_signals": [
+    "general explanation of glass",
+    "open foliage card",
+    "alpha blend for missing coverage",
+    "scattering medium simulation"
+  ],
+  "not_for": [
+    "Open surfaces, cutout foliage or gauze whose transparency is coverage.",
+    "Participating-media scattering, dispersion or nested-volume certification."
+  ],
+  "content": {
+    "principles": [
+      "Volume is an extension contract layered on transmission: nonzero thickness changes a thin surface into a boundary around a homogeneous medium, so the authoring mesh must close that medium.",
+      "Keep scale explicit. glTF thickness is expressed in mesh coordinate space and follows node transforms, while attenuation distance is expressed in world-space units; an accidental scale change alters the apparent absorption path.",
+      "Base color tints the boundary response; attenuation color and distance describe color change along travel through the medium. Do not tune them as interchangeable color pickers.",
+      "IOR controls dielectric reflection and volume refraction through its extension. It is a material input, not proof that the runtime resolves every overlapping or nested refractive surface.",
+      "This record transports parameters and states observable consequences. General optics and artistic glass-lighting choices remain in the linked material and lighting profiles."
+    ],
+    "implementation": [
+      "In Blender, use a closed, consistently oriented mesh for the volumetric region. Connect transmission and supported volume absorption through the glTF exporter arrangements; record Blender version, export extensions and object scale.",
+      "Choose thicknessFactor in mesh-coordinate units and, when thickness varies, supply a Non-Color thickness texture in its specified green channel. Keep a simple constant-thickness wedge beside the production mesh for diagnosis.",
+      "Export KHR_materials_transmission with KHR_materials_volume and KHR_materials_ior when nondefault IOR is intended. Inspect extensionsUsed and the actual material JSON rather than assuming the viewport node graph was transported.",
+      "After GLTFLoader, inspect the MeshPhysicalMaterial transmission, thickness/thicknessMap, attenuationColor, attenuationDistance and ior values. Record Three.js revision and renderer/backend; test support on every claimed target.",
+      "Provide an explicit fallback state: thin transmissive surface, opaque stylized shell or disabled feature notice. Do not silently substitute low-opacity blending for an unsupported thick-volume claim."
+    ],
+    "observable_checks": [
+      "A fixture using a baked thicknessMap or separate stepped materials with explicit thickness values shows stronger attenuation at larger declared thickness while equal-thickness regions remain consistent under fixed lighting; geometry alone is not treated as proof of the raster thickness estimate.",
+      "Uniformly scaling the asset and its declared world relationship produces the expected documented change or is compensated by an explicitly revised attenuation distance; no hidden unit conversion occurs.",
+      "Setting thickness to zero selects the declared thin-wall comparison and removes the path-length-dependent volume effect without changing alpha coverage.",
+      "The loaded material inventory and glTF JSON show transmission and volume extensions and values. KHR_materials_ior is present when a nondefault IOR is intended; when omitted, the inspection records the extension default of 1.5. Unsupported backends are recorded as unavailable rather than passed."
+    ]
+  },
+  "creative_affordances": [
+    "Exaggerate attenuation color or thickness zoning for a stylized prop when the result is identified as authored appearance.",
+    "Choose a thin-shell or opaque cutaway fallback when runtime volume support would obscure the object or exceed the interaction budget."
+  ],
+  "known_limits": [
+    "KHR_materials_volume specifies a homogeneous absorbing medium and excludes scattering; the thickness texture is a lossy real-time approximation.",
+    "Nested transparent layers, scene-object refraction and backend support remain renderer-specific and require runtime inspection.",
+    "No material constants are claimed as measured values, and no Blender export or Three.js render was run for this record."
+  ],
+  "related_ids": [
+    "knowledge.transmissive-medium",
+    "knowledge.shared-transmissive-enclosure-light",
+    "knowledge.blender-three-transparency-boundaries",
+    "knowledge.blender-three-ibl-shadow-ownership"
+  ],
+  "claims": [
+    {
+      "id": "claim.blender-three-volume-extension-contract",
+      "statement": "The ratified KHR_materials_volume extension requires a transmissive extension to take effect, defines nonzero thickness as a volume boundary around a homogeneous medium on a closed manifold mesh, stores thickness texture values in green multiplied by thicknessFactor, expresses thickness in mesh coordinate space and attenuationDistance in world space, and excludes scattering.",
+      "scope": "KHR_materials_volume extension contract for homogeneous absorbing media; implementation notes do not guarantee a specific raster refraction algorithm.",
+      "source_refs": [
+        {
+          "source_id": "source.blender-three-khr-volume",
+          "locator": "Status; Dependencies; Overview; Properties; Thickness Texture; Attenuation"
+        }
+      ]
+    },
+    {
+      "id": "claim.blender-three-volume-runtime-parameters",
+      "statement": "KHR_materials_ior defines a material IOR with default 1.5 and states that it affects refraction with KHR_materials_volume; current Three.js MeshPhysicalMaterial exposes ior, thickness/thicknessMap, attenuationColor, attenuationDistance and transmission, with the thickness map sampled from green and treated as non-color data.",
+      "scope": "Ratified glTF extension parameters and current Three.js MeshPhysicalMaterial API; actual GLTFLoader mapping and renderer/backend output require version-specific runtime verification.",
+      "source_refs": [
+        {
+          "source_id": "source.blender-three-khr-ior",
+          "locator": "Status; Overview; Extending Materials; Interaction with other extensions"
+        },
+        {
+          "source_id": "source.three-physical-material",
+          "locator": "ior; thickness; thicknessMap; transmission; attenuationColor; attenuationDistance"
+        },
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "Transmission; Volume"
+        }
+      ]
+    }
+  ]
+}

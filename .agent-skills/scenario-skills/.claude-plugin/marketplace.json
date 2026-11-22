@@ -1,0 +1,369 @@
+{
+  "name": "scenario-skills",
+  "owner": {
+    "name": "Scenario",
+    "url": "https://scenario.com"
+  },
+  "metadata": {
+    "description": "Agent Skills for creating production-ready images, video, audio, 3D, and custom models with Scenario, plus expert tools for DCC software and game engines"
+  },
+  "plugins": [
+    {
+      "name": "01.-getting-started",
+      "description": "Connect the Scenario MCP server and learn the core generation loop every other skill builds on.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/scenario"
+      ]
+    },
+    {
+      "name": "02.-finding-a-direction",
+      "description": "Turn a blank brief into references, options someone can choose between, and a moodboard the next batch runs from.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/scenario-inspiration"
+      ]
+    },
+    {
+      "name": "03.-images",
+      "description": "Generate and edit images: model choice, sizing, references, masked edits, post-processing tools, and letter-perfect text overlay cards.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/scenario-image",
+        "./skills/scenario-multi-reference",
+        "./skills/scenario-product-shots",
+        "./skills/scenario-brand-kit",
+        "./skills/scenario-image-editing",
+        "./skills/scenario-text-overlay",
+        "./skills/scenario-storyboards",
+        "./skills/scenario-comic-creator",
+        "./skills/scenario-thumbnails"
+      ]
+    },
+    {
+      "name": "04.-game-art-and-3d",
+      "description": "Sprites, icons, tilesets, textures, skyboxes, 3D models, and walkable spaces for games, the web, and interactive scenes.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/scenario-game-assets",
+        "./skills/scenario-sprite-animation",
+        "./skills/scenario-side-view-game-kit",
+        "./skills/scenario-blender-2d-animation",
+        "./skills/scenario-textures",
+        "./skills/scenario-skyboxes",
+        "./skills/scenario-3d",
+        "./skills/scenario-video-to-motion",
+        "./skills/scenario-blender",
+        "./skills/scenario-patina-retexture",
+        "./skills/scenario-orbit-views",
+        "./skills/scenario-walkable-room",
+        "./skills/scenario-playable-ads"
+      ]
+    },
+    {
+      "name": "05.-video-and-audio",
+      "description": "Video generation, editing, and color grading, kinetic-type launch films, seamless motion loops, music, sound effects, voice, and speech.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/scenario-video",
+        "./skills/scenario-video-editing",
+        "./skills/scenario-video-color-grade",
+        "./skills/scenario-seedance-music-video",
+        "./skills/scenario-seedance-storyboard",
+        "./skills/scenario-seedance-drafts",
+        "./skills/scenario-video-ads",
+        "./skills/scenario-game-ua-ads",
+        "./skills/scenario-ad-variants",
+        "./skills/scenario-audio",
+        "./skills/scenario-video-assembly",
+        "./skills/scenario-motion-loops",
+        "./skills/scenario-kinetic-film",
+        "./skills/scenario-caption-studio"
+      ]
+    },
+    {
+      "name": "06.-socials",
+      "description": "Made for social feeds and chat apps: UGC-style creator videos, fan-cam reactions from a photo, trend reels recast with your own character, kinetic-typography lyric videos, and animated ChatGPT and Codex pets, new or updated.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/scenario-ugc",
+        "./skills/scenario-fan-cam",
+        "./skills/scenario-reel-recast",
+        "./skills/scenario-kinetic-music-video",
+        "./skills/scenario-chatgpt-pet-create",
+        "./skills/scenario-chatgpt-pet-update"
+      ]
+    },
+    {
+      "name": "07.-consistency-and-custom-models",
+      "description": "Hold one character, product, or style across a whole set, and train custom models on your own art.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/scenario-consistency",
+        "./skills/scenario-identity-library",
+        "./skills/scenario-model-training"
+      ]
+    },
+    {
+      "name": "08.-reviewing-and-organizing-output",
+      "description": "Read finished assets back: caption them, extract a style or a control map, check a batch against a brief or the Quality Gate, compare candidate models on one brief, file the keepers, and delete or restore what goes.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/scenario-asset-analysis",
+        "./skills/scenario-quality-gate",
+        "./skills/scenario-refine-loop",
+        "./skills/scenario-model-comparison",
+        "./skills/scenario-delete-restore"
+      ]
+    },
+    {
+      "name": "09.-formats-and-placements",
+      "description": "Ship one approved master, image or video, to every placement: ratios, safe zones, and platform specs from social feeds to shops, storefronts, and print.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/scenario-formats"
+      ]
+    },
+    {
+      "name": "10.-workflows-and-apps",
+      "description": "Discover, run, build, and publish Scenario workflows (apps), and migrate graphs from Weavy, ComfyUI, or other node editors.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/scenario-workflows",
+        "./skills/scenario-workflow-authoring"
+      ]
+    },
+    {
+      "name": "11.-troubleshooting",
+      "description": "Get past a blocked generation, and turn a stuck session into a reproducible public issue.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/scenario-moderation",
+        "./skills/scenario-report"
+      ]
+    },
+    {
+      "name": "12.-team-administration",
+      "description": "Govern a team from the agent: which models it can run, who is on it and in which projects, per-member spend caps, API key roles, and who spent what.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/scenario-team-admin",
+        "./skills/scenario-admin-analytics",
+        "./skills/scenario-task-tracking"
+      ]
+    },
+    {
+      "name": "13.-image-model-families",
+      "description": "The top image families in depth: generation and editing modes, reference rules, and the caps that differ per member.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/scenario-gpt-image",
+        "./skills/scenario-mai-image",
+        "./skills/scenario-seedream",
+        "./skills/scenario-gemini-image",
+        "./skills/scenario-reve",
+        "./skills/scenario-ideogram",
+        "./skills/scenario-grok-imagine-image",
+        "./skills/scenario-luma-image"
+      ]
+    },
+    {
+      "name": "14.-video-model-families",
+      "description": "The top video families in depth: conditioning modes, native audio, editing and extension, and per-member caps and costs.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/scenario-minimax-video",
+        "./skills/scenario-gemini-omni",
+        "./skills/scenario-grok-imagine-video",
+        "./skills/scenario-veo",
+        "./skills/scenario-seedance",
+        "./skills/scenario-kling",
+        "./skills/scenario-vidu",
+        "./skills/scenario-wan",
+        "./skills/scenario-runway",
+        "./skills/scenario-luma-video"
+      ]
+    },
+    {
+      "name": "15.-audio-model-families",
+      "description": "The top audio families in depth: music, covers and stems, sound effects, speech, dubbing, and video scoring.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/scenario-minimax-music",
+        "./skills/scenario-elevenlabs",
+        "./skills/scenario-ace-step",
+        "./skills/scenario-sonilo"
+      ]
+    },
+    {
+      "name": "16.-3d-model-families",
+      "description": "The top 3D families in depth: mesh generation, retexture and rigging toolchains, portraits, and explorable worlds and splats.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/scenario-meshy",
+        "./skills/scenario-rodin",
+        "./skills/scenario-sparc3d",
+        "./skills/scenario-3d-worlds"
+      ]
+    },
+    {
+      "name": "17.-expert-tools-zbrush",
+      "description": "DCC software. A lead and eight specialists that drive Maxon ZBrush 2026 through its agent bridge: sculpting, characters and creatures, stylized work, hard surface, polypaint and renders, posing and 3D print, retopology and export, automation. The bridge was proven live; full live tests of every skill are still pending.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/dcc/zbrush/scenario-zbrush-expert",
+        "./skills/dcc/zbrush/scenario-zbrush-automation",
+        "./skills/dcc/zbrush/scenario-zbrush-character-creature",
+        "./skills/dcc/zbrush/scenario-zbrush-hard-surface",
+        "./skills/dcc/zbrush/scenario-zbrush-paint-render",
+        "./skills/dcc/zbrush/scenario-zbrush-pose-print",
+        "./skills/dcc/zbrush/scenario-zbrush-retopology-export",
+        "./skills/dcc/zbrush/scenario-zbrush-sculpting",
+        "./skills/dcc/zbrush/scenario-zbrush-stylized"
+      ]
+    },
+    {
+      "name": "18.-expert-tools-blender",
+      "description": "DCC software. A lead and fourteen specialists that drive Blender 5.2 through Python, headless or in a live session: sculpting, retopology, UVs and baking, shading, hair, rigging, animation, previs, blockouts for render-to-real video, Geometry Nodes, lighting, Grease Pencil, hard surface, export to game engines. Twelve test suites pass headless on Blender 5.2.1.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/dcc/blender/scenario-blender-expert",
+        "./skills/dcc/blender/scenario-blender-animation",
+        "./skills/dcc/blender/scenario-blender-blockout",
+        "./skills/dcc/blender/scenario-blender-export",
+        "./skills/dcc/blender/scenario-blender-geometry-nodes",
+        "./skills/dcc/blender/scenario-blender-grease-pencil",
+        "./skills/dcc/blender/scenario-blender-hair",
+        "./skills/dcc/blender/scenario-blender-hard-surface",
+        "./skills/dcc/blender/scenario-blender-lighting-rendering",
+        "./skills/dcc/blender/scenario-blender-previs-storyboard",
+        "./skills/dcc/blender/scenario-blender-retopology",
+        "./skills/dcc/blender/scenario-blender-rigging",
+        "./skills/dcc/blender/scenario-blender-sculpting",
+        "./skills/dcc/blender/scenario-blender-texturing-shading",
+        "./skills/dcc/blender/scenario-blender-uv-baking"
+      ]
+    },
+    {
+      "name": "19.-expert-tools-maya",
+      "description": "DCC software. A lead and ten specialists that drive Autodesk Maya 2027 through Python, batch or live: modeling, retopology and UVs, rigging, skinning, animation, groom, FX, look dev, Arnold lighting and rendering, pipeline scripting.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/dcc/maya/scenario-maya-expert",
+        "./skills/dcc/maya/scenario-maya-animation",
+        "./skills/dcc/maya/scenario-maya-deformation",
+        "./skills/dcc/maya/scenario-maya-fx",
+        "./skills/dcc/maya/scenario-maya-groom",
+        "./skills/dcc/maya/scenario-maya-lighting-rendering",
+        "./skills/dcc/maya/scenario-maya-lookdev",
+        "./skills/dcc/maya/scenario-maya-modeling",
+        "./skills/dcc/maya/scenario-maya-pipeline-scripting",
+        "./skills/dcc/maya/scenario-maya-retopology-uv",
+        "./skills/dcc/maya/scenario-maya-rigging"
+      ]
+    },
+    {
+      "name": "20.-expert-tools-unreal-engine",
+      "description": "Game engine. A lead and nine specialists that drive Unreal Engine 5.8 on macOS through Editor Python, headless jobs, and Epic's Unreal MCP server: world building, materials, lighting and rendering, gameplay, animation, cinematics, VFX, pipeline automation, performance.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/game-engines/unreal/scenario-unreal-expert",
+        "./skills/game-engines/unreal/scenario-unreal-animation",
+        "./skills/game-engines/unreal/scenario-unreal-cinematics",
+        "./skills/game-engines/unreal/scenario-unreal-gameplay",
+        "./skills/game-engines/unreal/scenario-unreal-lighting-rendering",
+        "./skills/game-engines/unreal/scenario-unreal-materials",
+        "./skills/game-engines/unreal/scenario-unreal-performance",
+        "./skills/game-engines/unreal/scenario-unreal-pipeline-automation",
+        "./skills/game-engines/unreal/scenario-unreal-vfx",
+        "./skills/game-engines/unreal/scenario-unreal-world-building"
+      ]
+    },
+    {
+      "name": "21.-expert-tools-unity",
+      "description": "Game engine. A lead and thirteen specialists that drive Unity 6.3 LTS on macOS through batch mode, a live editor, and command-line builds: architecture, gameplay, 2D, animation, UI, VFX, shaders, rendering and lighting, world building, performance, mobile, Web, pipeline automation. Every procedure was run live in Unity 6.3.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/game-engines/unity/scenario-unity-expert",
+        "./skills/game-engines/unity/scenario-unity-2d",
+        "./skills/game-engines/unity/scenario-unity-animation",
+        "./skills/game-engines/unity/scenario-unity-architecture",
+        "./skills/game-engines/unity/scenario-unity-gameplay",
+        "./skills/game-engines/unity/scenario-unity-mobile",
+        "./skills/game-engines/unity/scenario-unity-performance",
+        "./skills/game-engines/unity/scenario-unity-pipeline-automation",
+        "./skills/game-engines/unity/scenario-unity-rendering-lighting",
+        "./skills/game-engines/unity/scenario-unity-shaders",
+        "./skills/game-engines/unity/scenario-unity-ui",
+        "./skills/game-engines/unity/scenario-unity-vfx",
+        "./skills/game-engines/unity/scenario-unity-web",
+        "./skills/game-engines/unity/scenario-unity-world-building"
+      ]
+    },
+    {
+      "name": "22.-expert-tools-godot",
+      "description": "Game engine. A lead and thirteen specialists that drive Godot 4.7 on macOS through headless jobs, windowed captures, GUT and gdUnit4 tests, and command-line exports: architecture, gameplay, 2D, 3D worlds, animation, UI, VFX, shaders, rendering and lighting, audio, multiplayer, performance and export, pipeline automation. Every procedure was run live in Godot 4.7.2.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/game-engines/godot/scenario-godot-expert",
+        "./skills/game-engines/godot/scenario-godot-2d",
+        "./skills/game-engines/godot/scenario-godot-3d-world",
+        "./skills/game-engines/godot/scenario-godot-animation",
+        "./skills/game-engines/godot/scenario-godot-architecture",
+        "./skills/game-engines/godot/scenario-godot-audio",
+        "./skills/game-engines/godot/scenario-godot-gameplay",
+        "./skills/game-engines/godot/scenario-godot-multiplayer",
+        "./skills/game-engines/godot/scenario-godot-performance-export",
+        "./skills/game-engines/godot/scenario-godot-pipeline-automation",
+        "./skills/game-engines/godot/scenario-godot-rendering-lighting",
+        "./skills/game-engines/godot/scenario-godot-shaders",
+        "./skills/game-engines/godot/scenario-godot-ui",
+        "./skills/game-engines/godot/scenario-godot-vfx"
+      ]
+    },
+    {
+      "name": "23.-expert-tools-roblox-studio",
+      "description": "Game engine. A lead and thirteen specialists that drive Roblox Studio on macOS through its built-in MCP server, playtests driven by code, offline Luau checks, and Rojo builds: architecture, Luau, networking and security, data, tooling, environment, VFX and audio, UI, animation, gameplay, assets and avatar items, performance, monetization. Procedures were run live in Roblox Studio 0.743.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/game-engines/roblox/scenario-roblox-expert",
+        "./skills/game-engines/roblox/scenario-roblox-animation",
+        "./skills/game-engines/roblox/scenario-roblox-architecture",
+        "./skills/game-engines/roblox/scenario-roblox-assets",
+        "./skills/game-engines/roblox/scenario-roblox-data",
+        "./skills/game-engines/roblox/scenario-roblox-environment",
+        "./skills/game-engines/roblox/scenario-roblox-gameplay",
+        "./skills/game-engines/roblox/scenario-roblox-luau",
+        "./skills/game-engines/roblox/scenario-roblox-monetization",
+        "./skills/game-engines/roblox/scenario-roblox-networking",
+        "./skills/game-engines/roblox/scenario-roblox-performance",
+        "./skills/game-engines/roblox/scenario-roblox-tooling",
+        "./skills/game-engines/roblox/scenario-roblox-ui",
+        "./skills/game-engines/roblox/scenario-roblox-vfx-audio"
+      ]
+    }
+  ]
+}

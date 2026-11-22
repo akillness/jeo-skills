@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-voxel",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Voxel cell composition"
+  },
+  "aliases": {
+    "en": [
+      "voxel art",
+      "block world",
+      "grid-built 3D"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "spatial-puzzles"
+  ],
+  "summary": "Choose a visible cell rhythm and use clustered blocks to express larger silhouettes rather than scattering isolated cubes.",
+  "objective": "The grid remains coherent at joins and selected blocks can be distinguished; detail does not collapse into flicker at the intended view.",
+  "tags": [
+    "style-profile",
+    "geometry-aesthetic",
+    "voxel"
+  ],
+  "subject_terms": [
+    "voxel art",
+    "block world",
+    "grid-built 3D",
+    "geometry aesthetic"
+  ],
+  "intent_signals": [
+    "Build a voxel composition",
+    "Arrange grid-aligned blocks into readable forms"
+  ],
+  "example_prompts": [
+    "Create a voxel forest island using broad tree clusters and a readable stepped path."
+  ],
+  "content": {
+    "principles": [
+      "Choose a visible cell rhythm and use clustered blocks to express larger silhouettes rather than scattering isolated cubes.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Set a consistent cell scale for the main subject; use larger clusters for masses and purposeful stepped edges for detail.",
+      "Group cell colors by surface role and use light that separates steps without turning every cube into a competing highlight.",
+      "Frame the cell structure from an oblique view; snap edits to the authored grid while keeping camera motion independently smooth if desired."
+    ],
+    "observable_checks": [
+      "The grid remains coherent at joins and selected blocks can be distinguished; detail does not collapse into flicker at the intended view.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with retro-low-resolution rendering or minimalist color; a voxel appearance is not automatically volumetric measured data.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

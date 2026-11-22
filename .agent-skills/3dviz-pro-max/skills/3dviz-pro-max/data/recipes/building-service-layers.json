@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "id": "recipe.building-service-layers",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Building service layer coordination"
+  },
+  "aliases": {
+    "en": [
+      "MEP coordination illustration",
+      "duct pipe cable layers"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors"
+  ],
+  "summary": "Inspect invented building services with layer toggles and explicit geometric clash markers.",
+  "objective": "Show a floor slab with ducts, pipes and cable trays I can isolate to inspect a crossing.",
+  "tags": [
+    "duct",
+    "pipe",
+    "cable tray"
+  ],
+  "subject_terms": [
+    "duct",
+    "pipe",
+    "cable tray",
+    "service layer",
+    "geometric clash"
+  ],
+  "intent_signals": [
+    "separate building services",
+    "inspect a service crossing"
+  ],
+  "example_prompts": [
+    "Show a floor slab with ducts, pipes and cable trays I can isolate to inspect a crossing.",
+    "Flag overlapping service envelopes without claiming building compliance."
+  ],
+  "entities": [
+    {
+      "name": "Structure",
+      "guidance": "Slab, columns and a service zone with authored elevations and penetrations."
+    },
+    {
+      "name": "Services",
+      "guidance": "Rectangular ducts with elbows, round pipes with joints and open cable trays with side rails."
+    },
+    {
+      "name": "Clash markers",
+      "guidance": "Place a small bounded marker at the intersecting envelope with both element names."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Structure",
+      "structure": "Slab, columns and a service zone with authored elevations and penetrations.",
+      "material": "Quiet concrete-looking surfaces."
+    },
+    {
+      "family": "Services",
+      "structure": "Rectangular ducts with elbows, round pipes with joints and open cable trays with side rails.",
+      "material": "Distinct matte layer colors; material appearance does not encode fire rating."
+    },
+    {
+      "family": "Clash markers",
+      "structure": "Place a small bounded marker at the intersecting envelope with both element names.",
+      "material": "High-contrast outline, not opaque flashing spheres."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored element IDs, centerlines, cross sections, layer visibility and geometric envelope intersections.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Isolate a service family.",
+      "Select a clash pair.",
+      "Adjust a routing control point and recompute intersections."
+    ]
+  },
+  "invariants": [
+    "Hidden elements remain in clash queries unless the query filter explicitly excludes them.",
+    "Reported pair IDs match highlighted geometry.",
+    "Routing edits preserve endpoint connections."
+  ],
+  "motion_guidance": [
+    "Animate layer separation only as a labeled inspection offset.",
+    "Recompute geometry and query envelopes together after routing edits."
+  ],
+  "known_limits": [
+    "No hydraulic, HVAC, structural or regulatory adequacy claim; envelopes are authored approximations.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [],
+  "creative_affordances": [
+    "Different section shapes identify service families even when color is unavailable."
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Geometric coordination view.",
+    "state": [
+      "routing points",
+      "visibility",
+      "clash pairs"
+    ],
+    "colliders": [
+      "Declared conservative service envelopes."
+    ],
+    "driving": [
+      "Control-point editing."
+    ],
+    "contact": [
+      "Intersection detection only, no contact response."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Known intersecting pair highlights both IDs; layer hiding leaves query policy visible."
+    ]
+  }
+}

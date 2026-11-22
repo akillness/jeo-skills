@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "id": "recipe.replicated-log-consensus",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Replicated log and leader-based consensus"
+  },
+  "aliases": {
+    "en": [
+      "replicated log",
+      "consensus",
+      "leader election"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data"
+  ],
+  "summary": "Give each replica its own visible log so agreement becomes a comparison between logs rather than a claim.",
+  "objective": "Build a cluster view where a leader replicates log entries, followers apply them in order and I can partition the network to see what stalls.",
+  "tags": [
+    "consensus",
+    "replication",
+    "distributed"
+  ],
+  "subject_terms": [
+    "replicated log",
+    "leader",
+    "follower",
+    "log entry",
+    "commit index",
+    "consensus",
+    "state machine",
+    "network partition"
+  ],
+  "intent_signals": [
+    "Show how replicas agree on an ordered log.",
+    "Demonstrate what a network partition does to a replicated cluster."
+  ],
+  "example_prompts": [
+    "Build a consensus cluster where I can append entries, partition nodes and watch logs converge.",
+    "Show a leader replicating entries and followers applying them in the same order."
+  ],
+  "negative_signals": [
+    "Not an implementation of any specific consensus protocol; this is a teaching view with a declared, simplified rule set.",
+    "Not a performance, latency or availability model for any real system."
+  ],
+  "not_for": [
+    "Not an implementation of any specific consensus protocol; this is a teaching view with a declared, simplified rule set.",
+    "Not a performance, latency or availability model for any real system."
+  ],
+  "entities": [
+    {
+      "name": "Replica nodes",
+      "guidance": "Give every node its own log column, current term or epoch and role badge, so disagreement is visible per node."
+    },
+    {
+      "name": "Message flow",
+      "guidance": "Show append and acknowledgement messages as objects in flight that can be delayed or dropped, since message loss is the interesting case."
+    },
+    {
+      "name": "Commit marker",
+      "guidance": "Draw the commit point on each log explicitly, so applied and merely stored entries are visually different."
+    }
+  ],
+  "state_contract": {
+    "model": "A fixed leader and fixed membership with no elections: per-node logs of ordered entries, per-index acknowledgements, in-flight messages with delay, drop and deliver controls, and a commit rule that an entry is committed once a declared majority has acknowledged it. Committed entries are applied in index order. Convergence after healing additionally requires retry of undelivered messages, which is a declared part of this simplified rule set.",
+    "authority": "The per-node logs are authoritative. A node may only apply an entry after the stated commit condition, and the shared state view must be a replay of committed entries rather than a separate object.",
+    "actions": [
+      "Append a client entry at the leader.",
+      "Delay, drop or deliver a message.",
+      "Partition the cluster and heal it.",
+      "Reset all logs and roles."
+    ]
+  },
+  "invariants": [
+    "Two nodes never apply different entries at the same log index. Uncommitted suffixes may legitimately differ between nodes, so agreement is asserted over applied entries only.",
+    "An entry is applied only after the stated commit condition holds, not when it is merely received.",
+    "After healing, logs converge only with the fixed leader, retry and eventual successful delivery of required messages; continued drops may prevent convergence and are reported. Recovery preserves leader index order rather than interleaving divergent suffixes."
+  ],
+  "motion_guidance": [
+    "Animate messages travelling with visible latency so ordering and loss are observable events.",
+    "Do not fade a node into agreement; agreement must be reached by delivered messages."
+  ],
+  "known_limits": [
+    "Fixed leader and membership only; no term changes, election algorithm or log compaction is simulated.",
+    "The scene demonstrates behaviour under authored scenarios and proves nothing about a protocol implementation.",
+    "Fixed leader and fixed membership: elections, term changes and log compaction are outside this rule set, and adding elections would need safe leadership and log-matching rules that this scene does not model.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-consensus-log-agreement",
+      "statement": "Consensus algorithms are used so that servers agree on the commands in their logs, and once a decision is reached it is final; the algorithm must ensure that if one state machine applies a given command as its nth command, no other state machine applies a different nth command.",
+      "scope": "Safety framing quoted from the cited project page, which concerns commands applied by state machines. This recipe implements a simplified fixed-leader rule set that the page does not analyse, so nothing here is a proof that the simplified rule is safe.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-raft-consensus",
+          "locator": "Raft project page, consensus and replicated state machines"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Replica nodes",
+      "structure": "Node bodies carrying a vertical log stack of entry tiles with index labels and a role badge on the front face.",
+      "material": "Neutral node material with one accent reserved for the current leader and a distinct treatment for unreachable nodes.",
+      "articulation": "Entry tiles stack upward as entries are appended; the commit marker slides along the stack."
+    },
+    {
+      "family": "Message flow",
+      "structure": "Message capsules travelling along explicit link tubes between nodes, with a visible direction and payload label.",
+      "material": "Capsule materials differ for append and acknowledgement so traffic type is readable at a glance.",
+      "articulation": "Capsules pause when delayed and vanish with a distinct cue when dropped."
+    }
+  ],
+  "physical_contract": {
+    "model": "controlled-locomotion",
+    "scope": "Authored message transport along links at chosen speeds; no physical dynamics or collision.",
+    "state": [
+      "per-node logs",
+      "roles",
+      "in-flight messages",
+      "commit indices"
+    ],
+    "driving": [
+      "Message speed and delivery are set by the scenario controls, not by forces."
+    ],
+    "checks": [
+      "No two nodes apply different entries at the same index; uncommitted suffixes are excluded from the comparison.",
+      "With retry enabled and the leader stable, committed prefixes become identical across reachable nodes after healing; with drops still active the scene reports non-convergence rather than forcing agreement."
+    ]
+  },
+  "related_ids": [
+    "recipe.service-graph",
+    "recipe.finite-state-machine",
+    "knowledge.state-playback"
+  ]
+}

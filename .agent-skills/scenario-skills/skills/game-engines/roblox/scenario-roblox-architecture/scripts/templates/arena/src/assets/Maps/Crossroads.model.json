@@ -1,0 +1,214 @@
+{
+ "className": "Model",
+ "children": [
+  {
+   "name": "Floor",
+   "className": "Part",
+   "properties": {
+    "Anchored": true,
+    "Size": [
+     100,
+     2,
+     100
+    ],
+    "CFrame": [
+     400,
+     -1,
+     0,
+     1,
+     0,
+     0,
+     0,
+     1,
+     0,
+     0,
+     0,
+     1
+    ],
+    "Color": [
+     0.36,
+     0.38,
+     0.42
+    ],
+    "Material": "Slate"
+   }
+  },
+  {
+   "name": "CoverA",
+   "className": "Part",
+   "properties": {
+    "Anchored": true,
+    "Size": [
+     20,
+     8,
+     2
+    ],
+    "CFrame": [
+     400,
+     4,
+     -15,
+     1,
+     0,
+     0,
+     0,
+     1,
+     0,
+     0,
+     0,
+     1
+    ],
+    "Color": [
+     0.55,
+     0.5,
+     0.45
+    ],
+    "Material": "Concrete"
+   }
+  },
+  {
+   "name": "CoverB",
+   "className": "Part",
+   "properties": {
+    "Anchored": true,
+    "Size": [
+     20,
+     8,
+     2
+    ],
+    "CFrame": [
+     400,
+     4,
+     15,
+     1,
+     0,
+     0,
+     0,
+     1,
+     0,
+     0,
+     0,
+     1
+    ],
+    "Color": [
+     0.55,
+     0.5,
+     0.45
+    ],
+    "Material": "Concrete"
+   }
+  },
+  {
+   "name": "Lava",
+   "className": "Part",
+   "properties": {
+    "Anchored": true,
+    "Size": [
+     10,
+     1,
+     10
+    ],
+    "CFrame": [
+     400,
+     0.5,
+     40,
+     1,
+     0,
+     0,
+     0,
+     1,
+     0,
+     0,
+     0,
+     1
+    ],
+    "Color": [
+     1,
+     0.35,
+     0.1
+    ],
+    "Material": "Neon",
+    "Tags": [
+     "Hazard"
+    ]
+   }
+  },
+  {
+   "name": "Spawns",
+   "className": "Folder",
+   "children": [
+    {
+     "name": "A",
+     "className": "Part",
+     "properties": {
+      "Anchored": true,
+      "Size": [
+       6,
+       1,
+       6
+      ],
+      "CFrame": [
+       360,
+       0.5,
+       0,
+       1,
+       0,
+       0,
+       0,
+       1,
+       0,
+       0,
+       0,
+       1
+      ],
+      "Color": [
+       0.9,
+       0.9,
+       0.9
+      ],
+      "Material": "SmoothPlastic",
+      "Transparency": 1,
+      "CanCollide": false,
+      "CanTouch": false,
+      "CanQuery": false
+     }
+    },
+    {
+     "name": "B",
+     "className": "Part",
+     "properties": {
+      "Anchored": true,
+      "Size": [
+       6,
+       1,
+       6
+      ],
+      "CFrame": [
+       440,
+       0.5,
+       0,
+       1,
+       0,
+       0,
+       0,
+       1,
+       0,
+       0,
+       0,
+       1
+      ],
+      "Color": [
+       0.9,
+       0.9,
+       0.9
+      ],
+      "Material": "SmoothPlastic",
+      "Transparency": 1,
+      "CanCollide": false,
+      "CanTouch": false,
+      "CanQuery": false
+     }
+    }
+   ]
+  }
+ ]
+}

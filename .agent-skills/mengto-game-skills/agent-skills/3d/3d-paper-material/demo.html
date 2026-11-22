@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3D Paper Material — Washi, Cotton Rag, Kraft</title>
+<meta name="description" content="Three.js · WebGL · GLSL. Procedural paper: fibre height field, torn deckle mask, four-layer thickness and back-lit transmission.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' rx='3' fill='%239d382c'/%3E%3Cpath d='M16 7v18M8 12h16M16 13l-7 9M16 13l7 9' stroke='%23f2ece2' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;800&amp;display=swap&amp;text=和紙木彫" rel="stylesheet">
+<style>
+  :root{
+    --ink:#f2ece2;
+    --dim:rgba(242,236,226,.66);
+    --hair:rgba(242,236,226,.18);
+    --gold:#dbad64;
+    --red:#a3392c;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+    --mincho:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-weight:normal}
+  html,body{height:100%;background:#0a0806;color:var(--ink);overflow:hidden}
+  body{font:normal 14px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+  canvas#gl{position:fixed;inset:0;width:100%;height:100%;display:block}
+  .vig{position:fixed;inset:0;pointer-events:none;
+    background:radial-gradient(120% 90% at 62% 48%,rgba(10,8,6,0) 45%,rgba(10,8,6,.55) 100%),
+      linear-gradient(to right,rgba(10,8,6,.62),rgba(10,8,6,0) 46%),
+      linear-gradient(to top,rgba(10,8,6,.55),rgba(10,8,6,0) 30%)}
+  .copy{position:fixed;left:clamp(20px,4vw,56px);top:clamp(22px,5vh,52px);width:min(430px,44vw);z-index:2;
+    transition:opacity .5s ease}
+  .kick{display:flex;align-items:center;gap:13px;margin-bottom:16px;font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--gold)}
+  .kick s{display:block;width:34px;height:1px;background:var(--gold);text-decoration:none;flex:none}
+  h1{font:normal clamp(42px,5.1vw,76px)/.94 var(--serif);letter-spacing:-.016em;text-wrap:balance}
+  h1 em{font-family:var(--mincho);font-style:normal;font-size:.3em;letter-spacing:.14em;margin-left:.5em;
+    color:rgba(242,236,226,.78);white-space:nowrap;vertical-align:.4em}
+  .stack{margin:16px 0 10px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+  .lede{font:italic normal clamp(16px,1.35vw,20px)/1.34 var(--serif);color:rgba(242,236,226,.82);max-width:34ch;text-wrap:pretty}
+  .copy.macro{opacity:.0;pointer-events:none}
+
+  .panel{position:fixed;left:clamp(20px,4vw,56px);bottom:clamp(20px,4.5vh,44px);width:min(430px,calc(100vw - 40px));z-index:3;
+    display:grid;gap:14px;padding:18px 20px 16px;border:1px solid var(--hair);
+    background:linear-gradient(180deg,rgba(27,19,12,.74),rgba(15,10,7,.86));backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+  fieldset{border:0;min-width:0;display:grid;gap:8px}
+  legend,.lab{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);padding:0;float:left;width:100%;margin-bottom:8px}
+  .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:1px solid var(--hair)}
+  .seg label{position:relative;display:block;cursor:pointer}
+  .seg input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+  .seg span{display:block;text-align:center;padding:9px 6px;font-size:12px;letter-spacing:.08em;color:var(--dim);
+    border-left:1px solid var(--hair);transition:background .2s,color .2s;white-space:nowrap}
+  .seg label:first-child span{border-left:0}
+  .seg input:checked+span{background:rgba(219,173,100,.16);color:var(--ink);box-shadow:inset 0 -2px 0 var(--red)}
+  .seg input:focus-visible+span{outline:2px solid var(--gold);outline-offset:-2px}
+  .seg input:disabled+span{opacity:.35;cursor:default}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .row .name{font-size:12px;letter-spacing:.08em;color:var(--ink)}
+  .sw{position:relative;width:42px;height:22px;flex:none}
+  .sw input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer;z-index:1}
+  .sw i{position:absolute;inset:0;border:1px solid var(--hair);border-radius:11px;background:rgba(242,236,226,.06);transition:background .25s}
+  .sw i::after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--dim);transition:transform .25s,background .25s}
+  .sw input:checked+i{background:rgba(163,57,44,.55)}
+  .sw input:checked+i::after{transform:translateX(20px);background:#f6dcb0}
+  .sw input:focus-visible+i{outline:2px solid var(--gold);outline-offset:2px}
+  .rng{display:grid;grid-template-columns:84px 1fr 34px;align-items:center;gap:10px;font-size:12px;letter-spacing:.08em}
+  .rng output{font-size:11px;color:var(--dim);text-align:right;font-variant-numeric:tabular-nums}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:22px;background:transparent;cursor:pointer}
+  input[type=range]::-webkit-slider-runnable-track{height:1px;background:var(--hair)}
+  input[type=range]::-moz-range-track{height:1px;background:var(--hair)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:#f6dcb0;margin-top:-6px;border:0}
+  input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:#f6dcb0;border:0}
+  input[type=range]:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .note{font-size:11px;letter-spacing:.06em;color:var(--dim);line-height:1.5;min-height:34px}
+  .note b{color:var(--ink)}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  #fail{position:fixed;inset:0;display:none;place-items:center;text-align:center;padding:40px;font:italic 24px/1.3 var(--serif);z-index:9}
+  @media (max-width:760px){
+    .copy{width:calc(100vw - 40px);top:16px}
+    h1{font-size:40px}
+    .stack{margin:10px 0 6px;letter-spacing:.12em}
+    .lede{display:none}
+    .panel{padding:12px 14px 10px;gap:10px;bottom:10px}
+    .panel .note{display:none}
+    .rng{grid-template-columns:84px 1fr 30px}
+    body.macro .rng{display:none}
+    .vig{background:radial-gradient(120% 90% at 50% 50%,rgba(10,8,6,0) 45%,rgba(10,8,6,.5) 100%),
+      linear-gradient(to bottom,rgba(10,8,6,.7),rgba(10,8,6,0) 22%),linear-gradient(to top,rgba(10,8,6,.7),rgba(10,8,6,0) 30%)}
+  }
+  @media (max-height:640px) and (min-width:761px){ .lede{display:none} .panel{gap:9px;padding:12px 16px} }
+</style>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.169.0/build/three.module.min.js"}}</script>
+</head>
+<body>
+<canvas id="gl" aria-label="A sheet of paper pinned to a dark wall, drawn in real time" role="img"></canvas>
+<div class="vig" aria-hidden="true"></div>
+<div id="fail">WebGL is not available in this browser.</div>
+
+<header class="copy" id="copy">
+  <div class="kick"><s></s>Three.js · WebGL · GLSL</div>
+  <h1>3D Paper Material<em>和紙</em></h1>
+  <p class="stack">Canvas 2D paints the maps · no image files · no shader libraries</p>
+  <p class="lede">A fibre height field, a torn-edge mask, four offset layers and light that passes through where the sheet is thin. Take any one away and it is a white plane.</p>
+</header>
+
+<section class="panel" aria-label="Paper controls">
+  <fieldset>
+    <legend>Paper stock</legend>
+    <div class="seg" role="radiogroup" aria-label="Paper stock">
+      <label><input type="radio" name="stock" value="washi" checked><span>Washi</span></label>
+      <label><input type="radio" name="stock" value="cotton"><span>Cotton rag</span></label>
+      <label><input type="radio" name="stock" value="kraft"><span>Kraft</span></label>
+    </div>
+  </fieldset>
+  <div class="row"><span class="name" id="lb-back">Back-light</span>
+    <span class="sw"><input type="checkbox" id="back" aria-labelledby="lb-back"><i></i></span></div>
+  <div class="row"><span class="name" id="lb-macro">Macro close-up</span>
+    <span class="sw"><input type="checkbox" id="macro" aria-labelledby="lb-macro"><i></i></span></div>
+  <fieldset id="focusSet">
+    <legend>Macro focus</legend>
+    <div class="seg" role="radiogroup" aria-label="Macro focus">
+      <label><input type="radio" name="focus" value="edge" checked><span>Deckle edge</span></label>
+      <label><input type="radio" name="focus" value="ink"><span>Ink bleed</span></label>
+      <label><input type="radio" name="focus" value="fibre"><span>Fibres</span></label>
+    </div>
+  </fieldset>
+  <label class="rng"><span>Corner curl</span><input type="range" id="curl" min="0" max="1" step="0.01" value="0.55"><output id="curlO">0.55</output></label>
+  <label class="rng"><span>Edge age</span><input type="range" id="age" min="0" max="1" step="0.01" value="0.35"><output id="ageO">0.35</output></label>
+  <p class="note" id="status" role="status" aria-live="polite"></p>
+</section>
+
+<script type="module">
+import * as THREE from 'three';
+
+const canvas = document.getElementById('gl');
+const RM = matchMedia('(prefers-reduced-motion: reduce)');
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:false, powerPreference:'high-performance'});
+} catch (e) { document.getElementById('fail').style.display = 'grid'; throw e; }
+THREE.ColorManagement.enabled = true;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.VSMShadowMap;
+const DPR = () => Math.min(2, window.devicePixelRatio || 1);          /* DPR cap 2 */
+renderer.setClearColor(0x0a0806, 1);
+
+/* ------------------------------------------------------------------ sheet size
+   A4 in scene units: 1 unit = 134.8 mm. The geometry is bigger than the sheet by
+   a margin M so a torn edge can run outside the nominal rectangle. */
+const SW = 1.55, SH = 2.2, M = 0.06, GW = SW + 2*M, GH = SH + 2*M;
+const MM = 134.8;                                   /* mm per unit */
+const PPU_B = 990;                                  /* base texel density, px per unit */
+const BW = Math.round(GW*PPU_B/8)*8, BH = Math.round(GH*PPU_B/8)*8;
+const DWIN = 0.5, DPX = 1536;                       /* macro window: 0.5 unit at 1536 px = 3072 px/unit */
+const TS = 3400;                                    /* tear samples per unit along an edge */
+
+/* ------------------------------------------------------------------ ported from kibori.html: the noise library, verbatim */
+const NOISE = /* glsl */`
+  vec2 hash2(vec2 p){
+    p = vec2(dot(p,vec2(127.1,311.7)), dot(p,vec2(269.5,183.3)));
+    return fract(sin(p)*43758.5453123)*2.0-1.0;
+  }
+  vec3 hash3(vec3 p){
+    p = vec3(dot(p,vec3(127.1,311.7,74.7)),dot(p,vec3(269.5,183.3,246.1)),dot(p,vec3(113.5,271.9,124.6)));
+    return fract(sin(p)*43758.5453123)*2.0-1.0;
+  }
+  float hash1(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123); }
+  float gnoise(vec2 x){
+    vec2 p = floor(x), w = fract(x);
+    vec2 u = w*w*w*(w*(w*6.0-15.0)+10.0);
+    float a = dot(hash2(p+vec2(0,0)), w-vec2(0,0));
+    float b = dot(hash2(p+vec2(1,0)), w-vec2(1,0));
+    float c = dot(hash2(p+vec2(0,1)), w-vec2(0,1));
+    float d = dot(hash2(p+vec2(1,1)), w-vec2(1,1));
+    return mix(mix(a,b,u.x), mix(c,d,u.x), u.y)*0.7+0.5;
+  }
+  float gnoise3(vec3 x){
+    vec3 p = floor(x), w = fract(x);
+    vec3 u = w*w*w*(w*(w*6.0-15.0)+10.0);
+    float n = 0.0;
+    for(int k=0;k<2;k++)for(int j=0;j<2;j++)for(int i=0;i<2;i++){
+      vec3 o = vec3(float(i),float(j),float(k));
+      float wgt = mix(1.0-u.x,u.x,o.x)*mix(1.0-u.y,u.y,o.y)*mix(1.0-u.z,u.z,o.z);
+      n += wgt * dot(hash3(p+o), w-o);
+    }
+    return n*0.8+0.5;
+  }
+  float fbm(vec2 p, int oct){
+    float s=0.0,a=0.5,n=0.0;
+    for(int i=0;i<8;i++){ if(i>=oct) break; s+=a*gnoise(p); n+=a; p=p*2.03+11.7; a*=0.5; }
+    return s/max(n,1e-4);
+  }
+  float fbm3(vec3 p, int oct){
+    float s=0.0,a=0.5,n=0.0;
+    for(int i=0;i<6;i++){ if(i>=oct) break; s+=a*gnoise3(p); n+=a; p=p*2.07+7.3; a*=0.5; }
+    return s/max(n,1e-4);
+  }
+  float ridged3(vec3 p, int oct){
+    float s=0.0,a=0.5,n=0.0;
+    for(int i=0;i<6;i++){ if(i>=oct) break;
+      s+=a*(1.0-abs(gnoise3(p)*2.0-1.0)); n+=a; p=p*2.11+5.7; a*=0.5; }
+    return s/max(n,1e-4);
+  }
+  float ridged(vec2 p, int oct){
+    float s=0.0,a=0.5,n=0.0;
+    for(int i=0;i<8;i++){ if(i>=oct) break; s+=a*(1.0-abs(gnoise(p)*2.0-1.0)); n+=a; p=p*2.11+5.3; a*=0.5; }
+    return s/max(n,1e-4);
+  }
+`;
+
+/* ------------------------------------------------------------------ paper stocks */
+const STOCKS = {
+  washi:{ label:'Washi', tint:0xf0e8d2, rough:0.93, sheen:0.4, alb:[0.42,0.16], height:0.0017, thick:0.0045,
+    fa:[1.9,54], fb:[44,2.3], fibreRelief:0.55, tooth:230, toothAmp:0.09, laid:[110,0.28,0.0], speck:[190,0.9955],
+    crease:0.5, trans:1.0, edgeTone:[0.94,0.88,0.76], tearA:[64,72,60,76], fray:[1,1,1,1], frayScale:12, feather:6, age:0.35, seed:11 },
+  cotton:{ label:'Cotton rag', tint:0xf0eee6, rough:0.9, sheen:0.25, alb:[0.30,0.08], height:0.0024, thick:0.0085,
+    fa:[15,17], fb:[16,14], fibreRelief:0.32, tooth:430, toothAmp:0.17, laid:[150,0.55,0.5], speck:[240,0.9985],
+    crease:0.9, trans:0.42, edgeTone:[0.93,0.90,0.82], tearA:[3,58,3,54], fray:[0,0.7,0,0.7], frayScale:6, feather:3.2, age:0.25, seed:23 },
+  kraft:{ label:'Kraft', tint:0xa88f70, rough:0.96, sheen:0.10, alb:[0.36,0.14], height:0.0034, thick:0.011,
+    fa:[7,26], fb:[26,7], fibreRelief:0.8, tooth:300, toothAmp:0.20, laid:[0,0,0], speck:[150,0.984],
+    crease:0.75, trans:0.16, edgeTone:[0.82,0.66,0.46], tearA:[96,3,4,3], fray:[1.2,0,0,0], frayScale:8, feather:4.5, age:0.4, seed:37 }
+};
+const CREASE = {c:[-0.10,0.10], dir:[0.22,1.0]};
+
+/* ------------------------------------------------------------------ scene */
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0a0806);
+const camera = new THREE.PerspectiveCamera(28, 1, 0.02, 40);
+
+/* the room: a dark charred wall well behind the sheet, so its shadow falls away from it */
+const WALL_Z = -1.05;
+{
+  const c = document.createElement('canvas'); c.width = 1024; c.height = 768;
+  const g = c.getContext('2d'); g.fillStyle = '#2b1d13'; g.fillRect(0,0,1024,768);
+  let s = 7; const r = () => (s = (s*16807)%2147483647)/2147483647;
+  for (let i = 0; i < 9; i++){ const x = i*128; g.fillStyle = `rgba(0,0,0,${0.35+r()*0.25})`; g.fillRect(x,0,3,768); }
+  for (let i = 0; i < 1400; i++){ g.fillStyle = r() < 0.5 ? 'rgba(0,0,0,0.10)' : 'rgba(120,80,45,0.05)';
+    g.fillRect(r()*1024, r()*768, 1+r()*2, 30+r()*260); }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4;
+  const wall = new THREE.Mesh(new THREE.PlaneGeometry(14, 10.5),
+    new THREE.MeshStandardMaterial({map:t, color:0xffffff, roughness:0.95, metalness:0, emissive:0xffffff, emissiveMap:t, emissiveIntensity:0.06}));
+  wall.position.set(0, 0, WALL_Z); wall.receiveShadow = true; scene.add(wall);
+}
+const key = new THREE.SpotLight(0xffe2bd, 110, 0, 0.42, 1.0, 2.0);
+key.position.set(-4.7, 2.5, 3.5); key.target.position.set(0.1, -0.1, 0);
+key.castShadow = true; key.shadow.mapSize.set(2048, 2048);
+key.shadow.bias = -0.0003; key.shadow.normalBias = 0.012; key.shadow.radius = 7; key.shadow.blurSamples = 20;
+key.shadow.camera.near = 3; key.shadow.camera.far = 12;
+scene.add(key, key.target);
+const hemi = new THREE.HemisphereLight(0x8a7f6b, 0x150d08, 0.7); scene.add(hemi);
+const fill = new THREE.DirectionalLight(0xffd6a8, 0.42); fill.position.set(2.2, 0.6, 4.0); scene.add(fill);
+const rim = new THREE.DirectionalLight(0xb8c4d8, 0.35); rim.position.set(3.5, 0.4, 2.0); scene.add(rim);
+const lamp = new THREE.PointLight(0xffb46a, 0, 0, 2.0); lamp.position.set(0.25, 0.0, -0.6); scene.add(lamp);
+
+/* ------------------------------------------------------------------ small deterministic helpers (kibori's own) */
+const lcg = seed => { let sd = seed|0; return () => { sd = (sd*1664525 + 1013904223) & 0xffffffff; return (sd>>>8)/16777216; }; };
+const h1 = (i, s) => { let n = Math.imul(i, 374761393) + Math.imul(s, 668265263) | 0;
+  n = Math.imul(n ^ n >>> 13, 1274126177); return ((n ^ n >>> 16) >>> 0)/4294967296; };
+const n1 = (x, s) => { const i = Math.floor(x), f = x - i, u = f*f*(3 - 2*f);
+  const a = h1(i, s); return a + (h1(i + 1, s) - a)*u; };
+const fbmJ = (x, s, o) => { let v = 0, a = 0.5, n = 0;
+  for (let k = 0; k < o; k++){ v += a*n1(x, s + k*31); n += a; x *= 2.07; a *= 0.5; } return v/n; };
+const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a)/(b - a))); return t*t*(3 - 2*t); };
+
+/* A torn edge is not a wave. The tear runs straight for a while, turns,
+   runs again; the fibres fray it at the finest scale. (kibori's tearLine, unchanged) */
+function tearLine(n, A, rf, seed){
+  const y = new Float32Array(n);
+  let s = 0, v = 0, m = 0, q = 0;
+  for (let i = 0; i < n; i++){
+    s += -s*0.08 + (rf() - 0.5)*0.40;
+    if (rf() < 0.006) s += (rf() - 0.5)*4.0;
+    v += s*0.5; v -= v*0.02;
+    y[i] = v; m += v; q += v*v;
+  }
+  m /= n; const sd = Math.sqrt(Math.max(1e-6, q/n - m*m));
+  for (let i = 0; i < n; i++){
+    y[i] = A*(0.14*(y[i] - m)/sd + 1.7*(fbmJ(i/320, seed, 2) - 0.5) + 0.55*(fbmJ(i/64, seed + 3, 2) - 0.5)
+              + 0.16*(fbmJ(i/9, seed + 7, 2) - 0.5)) + (rf() - 0.5)*0.45;
+  }
+  return y;
+}
+
+/* One torn edge as data: its outline, the fibres pulled out past it, and the
+   paler feathered strip where the sheet thins before it parts. The fray loop is
+   kibori's fray() with the draw calls turned into records, so the same fibres
+   can be painted at any resolution (overview and macro must agree). */
+function buildEdge(n, A, rf, seed, kind, frayAmt, frayScale, featherScale){
+  const edge = tearLine(n, A, rf, seed);
+  const fib = [];
+  if (frayAmt > 0){
+    for (let x = 0; x < n; x += 0.45 + rf()*0.9){
+      if (rf() < 0.35) continue;
+      const i = Math.min(n - 1, x | 0), yE = edge[i];
+      const long = rf() < 0.05;
+      const len = (long ? 5 + rf()*10 : 0.8 + rf()*rf()*5.5)*frayScale;
+      const ang = Math.PI/2 + (rf() - 0.5)*(long ? 2.2 : 1.7);
+      const y0 = yE - rf()*2.2, dx = Math.cos(ang)*len, dy = Math.sin(ang)*len;
+      const al = long ? 0.18 + rf()*0.22 : 0.30 + rf()*0.45;
+      const lw = long ? 0.3 + rf()*0.25 : 0.35 + rf()*0.4;
+      const bend = (rf() - 0.5)*len*0.5;
+      if (rf() > Math.min(1, frayAmt)) continue;
+      fib.push(x, y0, dx, dy, bend, al, lw);
+    }
+  }
+  const feather = new Float32Array(Math.ceil(n/2));
+  for (let i = 0, k = 0; i < n; i += 2, k++)
+    feather[k] = (0.4 + 3.2*Math.pow(fbmJ(i/26, kind*13 + 4, 3), 2.2) + 0.6*n1(i/3.1, kind + 5))*featherScale*(frayAmt > 0 ? 1 : 0.25);
+  return {n, edge, fib: new Float32Array(fib), feather};
+}
+
+/* ------------------------------------------------------------------ the ink: painted in milli-units */
+function paintInk(g, ctxScale){
+  const rf = lcg(0x5eed1e);
+  const fam = '"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif';
+  g.save();
+  g.fillStyle = '#000'; g.strokeStyle = '#000'; g.lineJoin = 'round'; g.lineCap = 'round';
+  g.shadowColor = 'rgba(0,0,0,0.78)'; g.shadowBlur = 4.4*ctxScale;               /* the bleed halo: below the ink threshold, so only fibres carry it out */
+  g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.font = `800 640px ${fam}`;
+  const ox = M*1000, oy = M*1000;
+  for (const [ch, cx, cy] of [['木', 1062, 640], ['彫', 1062, 1350]]){
+    g.fillText(ch, ox + cx, oy + cy);
+    g.lineWidth = 9; g.strokeText(ch, ox + cx, oy + cy);
+  }
+  /* the enso: a loaded brush that thins and dries out as it turns */
+  const ecx = ox + 560, ecy = oy + 1560, R = 330, a0 = -1.05, sweep = 5.55;
+  g.shadowBlur = 2.6*ctxScale;
+  for (let b = 0; b < 46; b++){
+    const off = (b/45 - 0.5)*56 + (rf() - 0.5)*5, dry = 0.55 + rf()*0.45;
+    let pen = false; g.lineWidth = 3.5 + rf()*4;
+    let prevD = false;
+    for (let t = 0; t <= 1; t += 0.004){
+      const w = Math.pow(Math.sin(Math.min(1, t*1.06)*Math.PI*0.5 + 0.0), 0.5)*(1 - 0.5*t);
+      const inside = Math.abs(off) < 28*(1 - 0.72*Math.pow(t, 1.6));
+      const drop = t > dry && rf() < (t - dry)*3.4;
+      const a = a0 + sweep*t, rr = R + off*(0.5 + 0.5*w) + 9*Math.sin(t*9.0);
+      const x = ecx + Math.cos(a)*rr*1.0, y = ecy + Math.sin(a)*rr*1.0;
+      if (inside && !drop){ if (!pen || prevD){ g.beginPath(); g.moveTo(x, y); pen = true; } else g.lineTo(x, y); }
+      else if (pen){ g.stroke(); pen = false; }
+      prevD = drop;
+    }
+    if (pen) g.stroke();
+  }
+  g.restore();
+}
+
+/* ------------------------------------------------------------------ mask painting (Canvas 2D → RGBA bytes)
+   R thin (feathered strip)  G silhouette  B ink (with bleed halo)  A blurred silhouette (edge age)
+   win: rectangle of the sheet plane, in units, measured from the geometry's top-left corner. */
+function paintMasks(win, W, H, st, model, out){
+  const kx = W/win.w, ky = H/win.h, ppu = kx;
+  const mk = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; return c; };
+  const silC = mk(), thinC = mk(), inkC = mk(), ageC = mk();
+  const gs = silC.getContext('2d'), gt = thinC.getContext('2d'), gi = inkC.getContext('2d'), ga = ageC.getContext('2d');
+  gs.fillStyle = '#000'; gs.fillRect(0,0,W,H); gt.fillStyle = '#000'; gt.fillRect(0,0,W,H);
+  const T0 = (a,b,c,d,e,f) => [a,b,c,d,e,f];
+  const step = Math.max(1, Math.floor(TS/ppu/1.5));
+  /* the outline, walked round the four torn edges */
+  const S = model.sides;
+  const poly = [];
+  for (let i = 0; i < S[0].n; i += step) poly.push(M + i/TS, M - S[0].edge[i]/TS);
+  for (let j = 0; j < S[1].n; j += step) poly.push(M + SW + S[1].edge[j]/TS, M + j/TS);
+  for (let i = S[2].n - 1; i >= 0; i -= step) poly.push(M + i/TS, M + SH + S[2].edge[i]/TS);
+  for (let j = S[3].n - 1; j >= 0; j -= step) poly.push(M - S[3].edge[j]/TS, M + j/TS);
+  const tracePoly = g => { g.beginPath(); g.moveTo(poly[0], poly[1]); for (let k = 2; k < poly.length; k += 2) g.lineTo(poly[k], poly[k+1]); g.closePath(); };
+  const base = [kx, 0, 0, ky, -win.x0*kx, -win.y0*ky];
+  gs.setTransform(...base); gs.fillStyle = '#fff'; tracePoly(gs); gs.fill();
+  /* the fray: fibres standing proud of each edge, local (i along, y outward) → sheet */
+  const sideM = k => {
+    const e = (M - win.x0)*kx, f = (M - win.y0)*ky, ex = (M + SW - win.x0)*kx, fy = (M + SH - win.y0)*ky;
+    return [ [kx/TS, 0, 0, -ky/TS, e, f], [0, ky/TS, kx/TS, 0, ex, f],
+             [kx/TS, 0, 0, ky/TS, e, fy], [0, ky/TS, -kx/TS, 0, e, f] ][k];
+  };
+  gs.strokeStyle = '#fff'; gs.lineCap = 'round';
+  for (let k = 0; k < 4; k++){
+    const m = sideM(k), fb = S[k].fib, N = fb.length/7;
+    gs.setTransform(...m);
+    const px = Math.abs(m[0]) + Math.abs(m[1]);                          /* canvas px per local px */
+    for (let q = 0; q < N; q++){
+      const o = q*7, x = fb[o], y0 = fb[o+1], dx = fb[o+2], dy = fb[o+3], bend = fb[o+4];
+      /* cull to the window */
+      const cx = m[0]*x + m[2]*y0 + m[4], cy = m[1]*x + m[3]*y0 + m[5];
+      if (cx < -60 || cy < -60 || cx > W + 60 || cy > H + 60) continue;
+      gs.globalAlpha = Math.min(1, fb[o+5]*1.25); gs.lineWidth = Math.max(fb[o+6]*1.7, 0.7/px);
+      gs.beginPath(); gs.moveTo(x, y0); gs.quadraticCurveTo(x + dx/2 + bend, y0 + dy/2, x + dx, y0 + dy); gs.stroke();
+    }
+    gs.globalAlpha = 1;
+    /* the feathered strip, thinner paper inside the tear */
+    gt.setTransform(...m); gt.fillStyle = '#fff'; gt.shadowColor = '#fff'; gt.shadowBlur = Math.max(1, 3.0*px*0 + 1.2);
+    const ed = S[k].edge, fe = S[k].feather, n = S[k].n;
+    gt.beginPath(); gt.moveTo(0, ed[0]);
+    for (let i = 0, q = 0; i < n; i += 2, q++) gt.lineTo(i, ed[i] - fe[q]);
+    for (let i = (n - 1) & ~1; i >= 0; i -= 2) gt.lineTo(i, ed[i] + 0.4);
+    gt.closePath(); gt.fill();
+  }
+  gt.setTransform(1,0,0,1,0,0);
+  /* edge age: the silhouette, blurred by a shadow drawn off to the side so only the blur lands (kibori's scorch trick) */
+  const X = 20000;
+  ga.setTransform(kx, 0, 0, ky, -win.x0*kx + X, -win.y0*ky);
+  ga.shadowColor = '#000'; ga.shadowBlur = 0.075*ppu; ga.shadowOffsetX = -X; ga.shadowOffsetY = 0;
+  ga.fillStyle = '#000'; tracePoly(ga); ga.fill();
+  /* the ink */
+  gi.setTransform(kx/1000, 0, 0, ky/1000, -win.x0*kx, -win.y0*ky);
+  paintInk(gi, ppu*0.0045);
+  const D = [thinC, silC, inkC, ageC].map(c => c.getContext('2d').getImageData(0,0,W,H).data);
+  for (let r = 0; r < H; r++){
+    const dr = H - 1 - r;
+    for (let x = 0; x < W; x++){
+      const s = (r*W + x)*4, o = (dr*W + x)*4;
+      out[o] = D[0][s]; out[o+1] = D[1][s]; out[o+2] = D[2][s+3]; out[o+3] = D[3][s+3];
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ the fibre field: baked to a half-float target
+   The formation, kozo fibre and bark-fleck expressions are washiMat() from
+   kibori.html; the stock, tooth, laid/chain lines and crease are added around them. */
+const bakeMat = new THREE.ShaderMaterial({
+  depthTest:false, depthWrite:false,
+  uniforms:{ uQ0:{value:new THREE.Vector2()}, uQs:{value:new THREE.Vector2()},
+    uFa:{value:new THREE.Vector2()}, uFb:{value:new THREE.Vector2()}, uTooth:{value:300}, uToothAmp:{value:0.1},
+    uLaid:{value:new THREE.Vector3()}, uSpeck:{value:new THREE.Vector2()}, uCrease:{value:0.5},
+    uCr:{value:new THREE.Vector4()}, uFibreRelief:{value:1} },
+  vertexShader:`varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy,0.0,1.0); }`,
+  fragmentShader: NOISE + `
+    varying vec2 vUv; uniform vec2 uQ0,uQs,uFa,uFb,uSpeck; uniform float uTooth,uToothAmp,uCrease,uFibreRelief;
+    uniform vec3 uLaid; uniform vec4 uCr;
+    void main(){
+      vec2 q = uQ0 + vUv*uQs;
+      /* one pixel across the sheet: an unfiltered cell hash finer than that is salt and pepper, not paper */
+      float fw = max(length(dFdx(q)), length(dFdy(q)));
+      /* formation — the cloudy thick-and-thin of a couched sheet */
+      float form = fbm(q*2.6, 4)*0.62 + fbm(q*7.4, 3)*0.38;
+      /* kozo fibres, long in both directions where the sheet was laid */
+      /* real strands wander: warp the lattice a little so no fibre runs ruler-straight */
+      vec2 qw = q + 0.014*vec2(gnoise(q*6.0) - 0.5, gnoise(q*6.0 + 13.3) - 0.5);
+      /* and the grain of the sheet turns from place to place, as it does where pulp flowed round the screen */
+      float ta = (gnoise(q*2.1 + 9.0) - 0.5)*1.5;
+      qw = mat2(cos(ta), -sin(ta), sin(ta), cos(ta))*qw;
+      float fa = ridged(vec2(qw.x*uFa.x, qw.y*uFa.y), 3);
+      float fb = ridged(vec2(qw.x*uFb.x, qw.y*uFb.y), 3);
+      float fibre = max(smoothstep(0.91,0.995,fa), smoothstep(0.92,0.995,fb));
+      fibre = mix(fibre, 0.12, smoothstep(0.16, 0.55, fw*112.0));
+      /* and a finer, fainter set between them: the wisps that make a sheet read as felted */
+      float fa2 = ridged(vec2(qw.x*uFa.x*2.7 + 3.1, qw.y*uFa.y*2.7), 2);
+      float fb2 = ridged(vec2(qw.x*uFb.x*2.7, qw.y*uFb.y*2.7 + 7.7), 2);
+      float fine = max(smoothstep(0.90,0.99,fa2), smoothstep(0.90,0.99,fb2));
+      fine = mix(fine, 0.06, smoothstep(0.16, 0.55, fw*112.0*2.7));
+      fibre = max(fibre, fine*0.55);
+      /* flecks of bark left in the pulp */
+      float speck = smoothstep(uSpeck.y, 1.0, hash1(floor(q*uSpeck.x)));
+      speck = mix(speck, 0.006, smoothstep(0.18, 0.50, fw*uSpeck.x));
+      /* a fleck is a shred, not a square: round the cell off into a stretched ellipse */
+      { vec2 cq = (fract(q*uSpeck.x) - 0.5)*vec2(1.0, 1.9); speck *= smoothstep(0.5, 0.12, length(cq)); }
+      /* tooth: the fine surface grain that catches raking light */
+      float tooth = gnoise(q*uTooth)*0.65 + gnoise(q*uTooth*2.7 + 5.0)*0.35;
+      tooth = mix(tooth, 0.5, smoothstep(0.15, 0.55, fw*uTooth*1.3));
+      /* laid lines (the mould's wires) and chain lines (its ribs) */
+      float laid = 0.5, chain = 0.0;
+      if (uLaid.x > 0.0){
+        float wob = (gnoise(q*vec2(1.5, 9.0)) - 0.5)*0.6;
+        laid = smoothstep(0.35, 1.0, 0.5 + 0.5*sin(6.2832*(q.y*uLaid.x + wob)));
+        laid = mix(laid, 0.5, smoothstep(0.15, 0.5, fw*uLaid.x));
+        float cx = (fract(q.x/0.19 + 0.5 + wob*0.02) - 0.5)*0.19;
+        chain = exp(-pow(cx/0.0045, 2.0));
+      }
+      /* the crease: a fold that was opened out, fibres broken and whitened along it */
+      vec2 cd = normalize(uCr.zw);
+      float dd = dot(q - uCr.xy, vec2(-cd.y, cd.x)) + (gnoise(q*30.0) - 0.5)*0.0022;
+      float crease = exp(-pow(dd/0.0030, 2.0))*uCrease;
+      float crease2 = exp(-pow(dd/0.020, 2.0))*uCrease;
+      float white = crease*(0.35 + 0.65*gnoise(q*380.0));
+      float h = 0.5 + (form - 0.5)*0.12 + fibre*uFibreRelief*0.34 + (tooth - 0.5)*uToothAmp
+              - speck*0.20 + (laid - 0.5)*uLaid.y*0.16 - chain*uLaid.z*0.10 - crease*0.55 - crease2*0.06;
+      float formT = form + (0.5 - laid)*uLaid.y*0.12 - chain*uLaid.z*0.14 - crease*0.10;
+      gl_FragColor = vec4(h, formT, min(1.0, fibre + white*0.6), speck);
+    }`
+});
+const quadScene = new THREE.Scene(), quadCam = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+const quadMesh = new THREE.Mesh(new THREE.PlaneGeometry(2,2), bakeMat); quadScene.add(quadMesh);
+const mkRT = (w, h) => {
+  const rt = new THREE.WebGLRenderTarget(w, h, {type:THREE.HalfFloatType, format:THREE.RGBAFormat,
+    minFilter:THREE.LinearMipmapLinearFilter, magFilter:THREE.LinearFilter, generateMipmaps:true,
+    depthBuffer:false, samples:0});                                     /* samples:0 — a multisampled half-float target resolves to garbage */
+  rt.texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  return rt;
+};
+const rtBase = mkRT(BW, BH), rtDet = mkRT(DPX, DPX);
+function bake(rt, q0x, q0y, qw, qh, st){
+  const u = bakeMat.uniforms;
+  u.uQ0.value.set(q0x, q0y); u.uQs.value.set(qw, qh);
+  u.uFa.value.set(...st.fa); u.uFb.value.set(...st.fb); u.uTooth.value = st.tooth; u.uToothAmp.value = st.toothAmp;
+  u.uLaid.value.set(...st.laid); u.uSpeck.value.set(...st.speck); u.uCrease.value = st.crease;
+  u.uCr.value.set(CREASE.c[0], CREASE.c[1], CREASE.dir[0], CREASE.dir[1]); u.uFibreRelief.value = st.fibreRelief;
+  const pr = renderer.getRenderTarget();
+  renderer.setRenderTarget(rt); renderer.render(quadScene, quadCam); renderer.setRenderTarget(pr);
+}
+const mkMaskTex = (w, h) => {
+  const t = new THREE.DataTexture(new Uint8Array(w*h*4), w, h, THREE.RGBAFormat, THREE.UnsignedByteType);
+  t.minFilter = THREE.LinearMipmapLinearFilter; t.magFilter = THREE.LinearFilter; t.generateMipmaps = true;
+  t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy()); t.flipY = false; return t;
+};
+const maskBase = mkMaskTex(BW, BH), maskDet = mkMaskTex(DPX, DPX);
+
+/* ------------------------------------------------------------------ the garden outside the back-lit sheet (kibori's shoji atlas idea):
+   R = open sky, G = the sun where nothing stands in front of it. Sampled through a paper-blurred mip. */
+const atlasTex = (() => {
+  const W = 512, H = Math.round(512*GH/GW);
+  const mk = fill => { const c = document.createElement('canvas'); c.width = W; c.height = H;
+    const g = c.getContext('2d'); g.fillStyle = fill; g.fillRect(0,0,W,H); return [c, g]; };
+  const [oc, og] = mk('#fff'), [sc, sg] = mk('#000');
+  const rg = sg.createRadialGradient(W*0.66, H*0.30, 6, W*0.66, H*0.30, W*0.62);
+  rg.addColorStop(0, '#fff'); rg.addColorStop(0.35, '#d6d6d6'); rg.addColorStop(1, '#000');
+  sg.fillStyle = rg; sg.fillRect(0,0,W,H);
+  const rf = lcg(0x7a11);
+  const stems = g => {
+    g.fillStyle = '#000'; g.strokeStyle = '#000'; g.shadowColor = '#000'; g.shadowBlur = 3; g.lineCap = 'round';
+    for (const [x, w, lean] of [[W*0.13, 15, 0.02], [W*0.30, 10, -0.03], [W*0.86, 17, 0.01]]){
+      g.lineWidth = w;
+      g.beginPath(); g.moveTo(x, H + 10); g.lineTo(x + lean*H, -10); g.stroke();
+      g.lineWidth = w + 5;                                              /* nodes */
+      for (let y = H*0.06; y < H; y += H*0.115 + rf()*H*0.02){
+        g.beginPath(); g.moveTo(x + lean*(H - y) - w*0.5, y); g.lineTo(x + lean*(H - y) + w*0.5, y); g.stroke();
+      }
+      for (let k = 0; k < 26; k++){                                     /* leaf sprays */
+        const y = rf()*H*0.75, side = rf() < 0.5 ? -1 : 1, ln = 40 + rf()*70, a = (rf()*0.6 - 0.1)*side;
+        const bx = x + lean*(H - y);
+        g.save(); g.translate(bx, y); g.rotate(-Math.PI/2 + side*(0.55 + a));
+        g.beginPath(); g.ellipse(ln*0.5, 0, ln*0.5, 3.2 + rf()*2.4, 0, 0, 6.2832); g.fill(); g.restore();
+      }
+    }
+  };
+  stems(og); stems(sg);
+  const od = og.getImageData(0,0,W,H).data, sd = sg.getImageData(0,0,W,H).data;
+  const buf = new Uint8Array(W*H*4);
+  for (let r = 0; r < H; r++) for (let x = 0; x < W; x++){
+    const s = (r*W + x)*4, o = ((H - 1 - r)*W + x)*4;
+    buf[o] = od[s]; buf[o+1] = sd[s]; buf[o+2] = 0; buf[o+3] = 255;
+  }
+  const t = new THREE.DataTexture(buf, W, H, THREE.RGBAFormat, THREE.UnsignedByteType);
+  t.minFilter = THREE.LinearMipmapLinearFilter; t.magFilter = THREE.LinearFilter; t.generateMipmaps = true; t.needsUpdate = true;
+  return t;
+})();
+
+/* ------------------------------------------------------------------ paper geometry: hung from two pins, one corner rolled up, one opened crease */
+const SEG_X = 168, SEG_Y = 240;
+const smoothB = (a, b, x) => smooth(a, b, x);
+function displace(x, y, curl, out){
+  /* soft bow of a hung sheet: fuller toward the free end, a little twist */
+  const t = (GH/2 - y)/GH;                                          /* 0 top … 1 bottom */
+  let X = x, Y = y, Z = 0.10*Math.pow(t, 1.3)*(1 - Math.pow(2*x/GW, 2)) + 0.045*(x/GW)*t;
+  /* the opened crease: a mountain fold that has relaxed, apex toward the viewer */
+  const cl = Math.hypot(CREASE.dir[0], CREASE.dir[1]);
+  const d = ((x - CREASE.c[0])*(-CREASE.dir[1]) + (y - CREASE.c[1])*CREASE.dir[0])/cl;
+  Z += -0.05*(Math.sqrt(d*d + 0.028*0.028) - 0.028)*(0.15 + 0.85*t);
+  /* the pins draw the sheet toward the viewer round each head */
+  for (const px of [-0.52, 0.52]){
+    const r2 = (x - px)*(x - px) + (y - (SH/2 - 0.12))*(y - (SH/2 - 0.12));
+    Z += 0.016*Math.exp(-r2/(0.05*0.05));
+  }
+  /* the lower right corner rolled toward the viewer: proper cylinder roll, so length is kept */
+  const nx = 0.62, ny = -0.78, R = 0.23, th = 2.6*curl;
+  const p0x = SW/2*1.0 - nx*0.55 + 0.0, p0y = -SH/2 - ny*0.55;
+  const s = (x - p0x)*nx + (y - p0y)*ny;
+  if (s > 0 && th > 0.001){
+    const thc = Math.min(s/R, th);
+    const a = R*Math.sin(thc) + (s - R*thc)*Math.cos(thc);
+    const b = R*(1 - Math.cos(thc)) + (s - R*thc)*Math.sin(thc);
+    X = x - nx*s + nx*a; Y = y - ny*s + ny*a; Z += b;
+  }
+  out[0] = X; out[1] = Y; out[2] = Z; return out;
+}
+const geoFront = new THREE.PlaneGeometry(GW, GH, SEG_X, SEG_Y);
+const layerGeos = [1,2,3].map(() => geoFront.clone());
+const tmp = [0,0,0];
+function shapeSheet(curl, thick){
+  const P = geoFront.attributes.position, flat = geoFront.userData.flat || (geoFront.userData.flat = P.array.slice());
+  for (let i = 0; i < P.count; i++){
+    displace(flat[i*3], flat[i*3+1], curl, tmp); P.setXYZ(i, tmp[0], tmp[1], tmp[2]);
+  }
+  P.needsUpdate = true; geoFront.computeVertexNormals(); geoFront.computeBoundingSphere(); geoFront.computeBoundingBox();
+  const N = geoFront.attributes.normal;
+  layerGeos.forEach((g, k) => {
+    const Q = g.attributes.position, off = thick*(k + 1)/3;
+    for (let i = 0; i < P.count; i++)
+      Q.setXYZ(i, P.getX(i) - N.getX(i)*off, P.getY(i) - N.getY(i)*off, P.getZ(i) - N.getZ(i)*off);
+    Q.needsUpdate = true; g.attributes.normal.array.set(N.array); g.attributes.normal.needsUpdate = true;
+    g.computeBoundingSphere(); g.computeBoundingBox();
+  });
+}
+function surfacePoint(sx, sy_down, out){                           /* sheet-plane coords (from the geometry's top-left, y down) → world point + normal */
+  const x = sx - GW/2, y = GH/2 - sy_down;
+  displace(x, y, +curlEl.value, tmp); const P = new THREE.Vector3(tmp[0], tmp[1], tmp[2]);
+  displace(x + 0.004, y, +curlEl.value, tmp); const a = new THREE.Vector3(tmp[0], tmp[1], tmp[2]).sub(P);
+  displace(x, y + 0.004, +curlEl.value, tmp); const b = new THREE.Vector3(tmp[0], tmp[1], tmp[2]).sub(P);
+  out.p = P; out.n = a.cross(b).normalize(); if (out.n.z < 0) out.n.negate(); return out;
+}
+
+/* ------------------------------------------------------------------ the paper material: MeshPhysicalMaterial, patched */
+const dummyTex = new THREE.DataTexture(new Uint8Array([128,128,128,255]), 1, 1, THREE.RGBAFormat); dummyTex.needsUpdate = true;
+const SU = {                                                        /* uniforms shared by every layer of the sheet */
+  tFB:{value:rtBase.texture}, tFD:{value:rtDet.texture}, tMB:{value:maskBase}, tMD:{value:maskDet}, uOut:{value:atlasTex},
+  uWin:{value:new THREE.Vector4(0,0,1,1)}, uWinOn:{value:0}, uTint:{value:new THREE.Color()}, uHeight:{value:0.002},
+  uBack:{value:0}, uTr:{value:1}, uAge:{value:0.35}, uAlb:{value:new THREE.Vector2(0.3,0.1)}, uHs:{value:new THREE.Vector2(GW/2, GH/2)}, uEdgeTone:{value:new THREE.Vector3(1,1,1)}
+};
+function paperMat(layer){
+  const m = new THREE.MeshPhysicalMaterial({color:0xffffff, roughness:0.93, metalness:0, side:THREE.DoubleSide,
+    sheen:0.5, sheenRoughness:0.55, sheenColor:new THREE.Color(0xfff3dc), specularIntensity:0.4,
+    bumpMap:dummyTex, bumpScale:1, alphaToCoverage:true});   /* coverage, not a cut: a fibre at 40% alpha lands as 1–2 of 4 MSAA samples */
+  m.onBeforeCompile = sh => {
+    Object.assign(sh.uniforms, SU, {uLayer:{value:layer}});
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\nvarying vec2 vSUv;')
+      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvSUv = uv;');
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', `#include <common>
+        varying vec2 vSUv;
+        uniform sampler2D tFB, tFD, tMB, tMD, uOut; uniform vec4 uWin; uniform float uWinOn, uHeight, uBack, uTr, uAge, uLayer;
+        uniform vec3 uTint, uEdgeTone; uniform vec2 uHs, uAlb;
+        ${NOISE}
+        float winW(vec2 uv){ vec2 w = (uv - uWin.xy)/uWin.zw; return uWinOn*smoothstep(0.0, 0.06, min(min(w.x, w.y), min(1.0 - w.x, 1.0 - w.y))); }
+        vec4 sampF(vec2 uv){ vec2 w = clamp((uv - uWin.xy)/uWin.zw, 0.0, 1.0);
+          return mix(texture2D(tFB, uv), texture2D(tFD, w), winW(uv)); }
+        vec4 sampM(vec2 uv){ vec2 w = clamp((uv - uWin.xy)/uWin.zw, 0.0, 1.0);
+          return mix(texture2D(tMB, uv), texture2D(tMD, w), winW(uv)); }`)
+      .replace('#include <bumpmap_pars_fragment>', `
+        /* height in world units, so slope = dh/dx and the relief does not depend on how far away you stand */
+        vec2 dHdxy_fwd(){
+          vec2 dx = dFdx(vSUv), dy = dFdy(vSUv);
+          float H0 = sampF(vSUv).x;
+          return uHeight*vec2(sampF(vSUv + dx).x - H0, sampF(vSUv + dy).x - H0);
+        }
+        vec3 perturbNormalArb(vec3 surf_pos, vec3 surf_norm, vec2 dHdxy, float faceDirection){
+          vec3 sX = dFdx(surf_pos), sY = dFdy(surf_pos);
+          vec3 R1 = cross(sY, surf_norm), R2 = cross(surf_norm, sX);
+          float fDet = dot(sX, R1)*faceDirection;
+          vec3 vGrad = sign(fDet)*(dHdxy.x*R1 + dHdxy.y*R2);
+          return normalize(abs(fDet)*surf_norm - vGrad);
+        }`)
+      .replace('#include <color_fragment>', `#include <color_fragment>
+        vec2 pQ = (vSUv - 0.5)*2.0*uHs;
+        vec4 pF = sampF(vSUv);
+        vec4 pM = sampM(vSUv);
+        float pInk = uLayer > 0.5 ? 0.0 : smoothstep(0.62, 0.85, pM.b + pF.b*0.40 + (0.5 - pF.g)*0.50 + (gnoise(pQ*210.0) - 0.5)*0.16)*smoothstep(0.03, 0.16, pM.b);
+        float eD = smoothstep(0.55, 1.0, pM.a);
+        float toast = (1.0 - eD)*smoothstep(0.12, 0.45, pM.a)*uAge*(0.55 + 0.9*fbm(pQ*9.0, 3));
+        float fox = smoothstep(0.80, 0.90, fbm(pQ*13.0 + 3.0, 3))*uAge*0.6*(0.25 + 0.75*(1.0 - eD));
+        float pd = 0.92 + (pF.g - 0.5)*uAlb.x + pF.b*uAlb.y + pM.r*0.05;
+        vec3 alb = uTint*pd;
+        alb = mix(alb, vec3(0.30, 0.22, 0.14)*uTint*2.2, clamp(pF.a*0.7, 0.0, 0.8));        /* bark flecks */
+        alb = mix(alb, alb*vec3(0.62, 0.42, 0.24), clamp(toast, 0.0, 1.0)*0.9);           /* toasted edge */
+        alb = mix(alb, alb*vec3(0.68, 0.50, 0.30), clamp(fox, 0.0, 1.0));                  /* foxing */
+        alb = mix(alb, vec3(0.012, 0.010, 0.009), pInk*0.97);
+        if (uLayer > 0.5) alb = uTint*uEdgeTone*(0.9 + 0.2*pF.b);
+        diffuseColor.rgb = alb;
+        /* Lit through, not on (washiMat, BACKLIT): sky everywhere, the sun where nothing stands in front of it.
+           The middle sees the most of both; thick patches of the formation and the fibre bundles hold the light
+           back, thin ones let it through. */
+        vec4 pA = texture2D(uOut, vSUv, 1.4);
+        vec2 hs = uHs; vec2 kk = pQ/hs; kk.y += 0.18;
+        float bowl = exp(-dot(kk, kk)*0.85);
+        float pEdge = smoothstep(0.0, 0.32, min(hs.x - abs(pQ.x), hs.y - abs(pQ.y)));
+        vec3 sky = vec3(0.44, 0.49, 0.56)*(0.85 + 0.15*pQ.y/hs.y)*(0.30 + 0.70*pA.r);
+        vec3 sunC = mix(vec3(1.0, 0.46, 0.18), vec3(1.0, 0.68, 0.40), bowl)*1.9;
+        vec3 pL = (sky*(0.65 + 0.35*bowl) + sunC*pA.g*(0.25 + 0.95*bowl))*(0.55 + 0.45*pEdge);
+        float ptr = 0.74 + (0.5 - pF.g)*0.85 + (0.5 - fbm(pQ*1.1 + 7.0, 3))*0.45 - pF.b*0.22 - pF.a*0.45;
+        ptr = max(0.0, ptr*uTr + pM.r*0.45*uTr) * (1.0 - pInk*0.93);
+        vec3 pBack = pL*ptr*mix(vec3(1.0), uTint, 0.35)*uBack*(uLayer > 0.5 ? 0.7 : 1.0);
+      `)
+      .replace('#include <alphamap_fragment>', '#include <alphamap_fragment>\n        diffuseColor.a *= smoothstep(0.04, 0.55, pM.g);')
+      .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>
+        roughnessFactor = clamp(roughnessFactor + (0.5 - pF.x)*0.28 - pInk*0.30, 0.3, 1.0);`)
+      .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n        totalEmissiveRadiance += pBack;');
+  };
+  m.customProgramCacheKey = () => 'paper' + layer;
+  return m;
+}
+const matFront = paperMat(0), matLayer = paperMat(1);
+const sheet = new THREE.Mesh(geoFront, matFront); sheet.castShadow = true; sheet.receiveShadow = true;
+sheet.customDepthMaterial = new THREE.MeshDepthMaterial({depthPacking:THREE.RGBADepthPacking, alphaMap:maskBase, alphaTest:0.5});
+scene.add(sheet);
+const layers = layerGeos.map(g => { const m = new THREE.Mesh(g, matLayer); m.receiveShadow = true; scene.add(m); return m; });
+
+/* the pins: lacquered black beads, the only thing touching the sheet */
+const pinMat = new THREE.MeshPhysicalMaterial({color:0x0c0806, roughness:0.28, clearcoat:1, clearcoatRoughness:0.15});
+const pins = [-0.52, 0.52].map(px => {
+  const m = new THREE.Mesh(new THREE.SphereGeometry(0.03, 32, 20), pinMat); m.scale.set(1, 1, 0.6); m.castShadow = true;
+  scene.add(m); m.userData.px = px; return m;
+});
+function placePins(){
+  for (const m of pins){
+    displace(m.userData.px, SH/2 - 0.12, 0, tmp);   /* pins sit on the uncurled top; use current shape */
+    displace(m.userData.px, SH/2 - 0.12, +curlEl.value, tmp);
+    m.position.set(tmp[0], tmp[1], tmp[2] + 0.02);
+  }
+}
+
+/* ------------------------------------------------------------------ state, rebuild, controls */
+const $ = id => document.getElementById(id);
+const curlEl = $('curl'), ageEl = $('age'), backEl = $('back'), macroEl = $('macro');
+let stockKey = 'washi', model = null, focusKey = 'edge';
+const FOCUS = {
+  edge:{sx:M + SW, sy:M + SH/2 + 0.60, yaw:-1.1, pitch:0.14, d:0.50, label:'Deckle edge: fibres pulled out past the tear, four layers of thickness, toasted rim'},
+  ink:{sx:M + 1.06, sy:M + 0.64, yaw:0.20, pitch:0.30, d:0.50, label:'Ink bleed: sumi wicks along the fibres and stiffens the sheet'},
+  fibre:{sx:M + 0.42, sy:M + 0.55, yaw:0.16, pitch:0.22, d:0.46, label:'Fibre: formation clouds, kozo strands and bark flecks under raking light'}
+};
+const texel = {base:PPU_B/MM, det:DPX/DWIN/MM};
+
+function buildModel(st){
+  const rf = lcg(0x9e3779b9 ^ st.seed);
+  const lens = [SW, SH, SW, SH];
+  return {sides: lens.map((len, k) => buildEdge(Math.floor(len*TS) + 1, st.tearA[k], rf, st.seed + k*17 + 3, k, st.fray[k], st.frayScale, st.feather))};
+}
+let detailKey = '';
+function rebuildBase(){
+  const st = STOCKS[stockKey];
+  const t0 = performance.now();
+  model = buildModel(st);
+  paintMasks({x0:0, y0:0, w:GW, h:GH}, BW, BH, st, model, maskBase.image.data); maskBase.needsUpdate = true;
+  bake(rtBase, -GW/2, -GH/2, GW, GH, st);
+  SU.uTint.value.set(st.tint); SU.uHeight.value = st.height; SU.uTr.value = st.trans;
+  SU.uEdgeTone.value.set(...st.edgeTone); SU.uAlb.value.set(...st.alb);
+  matFront.roughness = matLayer.roughness = st.rough; matFront.sheen = matLayer.sheen = st.sheen;
+  shapeSheet(+curlEl.value, st.thick); placePins();
+  detailKey = ''; rebuildDetail();
+  return performance.now() - t0;
+}
+function rebuildDetail(){
+  if (!macroEl.checked){ SU.uWinOn.value = 0; return; }
+  const key = stockKey + '|' + focusKey; if (key === detailKey) { SU.uWinOn.value = 1; return; }
+  detailKey = key;
+  const f = FOCUS[focusKey], st = STOCKS[stockKey];
+  const x0 = f.sx - DWIN/2, y0 = f.sy - DWIN/2;                      /* window in sheet-plane units (top-left origin, y down) */
+  paintMasks({x0, y0, w:DWIN, h:DWIN}, DPX, DPX, st, model, maskDet.image.data); maskDet.needsUpdate = true;
+  /* bake in centred, y-up sheet coordinates */
+  bake(rtDet, x0 - GW/2, GH/2 - (y0 + DWIN), DWIN, DWIN, st);
+  SU.uWin.value.set(x0/GW, 1 - (y0 + DWIN)/GH, DWIN/GW, DWIN/GH); SU.uWinOn.value = 1;
+}
+function say(){
+  const st = STOCKS[stockKey];
+  $('status').innerHTML = macroEl.checked
+    ? `<b>${st.label}</b> · ${FOCUS[focusKey].label}. ${texel.det.toFixed(1)} px/mm.`
+    : `<b>${st.label}</b> · ${backEl.checked ? 'lit from behind' : 'lit from the front'}. ${texel.base.toFixed(1)} px/mm; macro bakes ${texel.det.toFixed(1)} px/mm.`;
+}
+
+/* camera */
+let W = 1, H = 1, camPos = new THREE.Vector3(0, 0, 8), camLook = new THREE.Vector3(), viewShift = 0, viewShiftY = 0, macroT = 0;
+const wantPos = new THREE.Vector3(), wantLook = new THREE.Vector3();
+function resize(){
+  W = innerWidth; H = innerHeight;
+  renderer.setPixelRatio(DPR()); renderer.setSize(W, H, false);
+  camera.aspect = W/H; camera.updateProjectionMatrix(); need = true;
+}
+new ResizeObserver(() => { if (innerWidth > 0 && innerHeight > 0) resize(); }).observe(document.documentElement);
+function overviewPose(t, out){
+  const portrait = W/H < 1.0;
+  const tanH = Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
+  const dH = (SH*1.16)/(2*tanH*(portrait ? 0.48 : 0.78)), dW = (SW*1.10)/(2*tanH*camera.aspect);
+  const d = Math.max(dH, dW);
+  const sway = RM.matches ? 0 : Math.sin(t*0.17)*0.30, lift = RM.matches ? 0 : Math.sin(t*0.11 + 1.0)*0.07;
+  out.pos = new THREE.Vector3(-0.75 + sway, 0.22 + lift, d); out.look = new THREE.Vector3(0.05, -0.02, 0);
+  out.shift = portrait ? 0 : 0.17; out.shiftY = portrait ? -0.095 : 0;
+}
+const tgt = {};
+function macroPose(out){
+  const f = FOCUS[focusKey], s = {}; surfacePoint(f.sx, f.sy, s);
+  const up = new THREE.Vector3(0,1,0), R = new THREE.Vector3().crossVectors(up, s.n).normalize(), U = new THREE.Vector3().crossVectors(s.n, R).normalize();
+  const dir = s.n.clone().add(R.multiplyScalar(Math.tan(f.yaw)*(-1))).add(U.multiplyScalar(Math.tan(f.pitch))).normalize();
+  const portrait = W/H < 1.0;
+  out.pos = s.p.clone().add(dir.multiplyScalar(f.d*(portrait ? 1.5 : 1)));
+  out.look = s.p.clone(); out.shift = portrait ? 0 : 0.10; out.shiftY = portrait ? 0.20 : 0;
+}
+
+/* lighting state eases between front-lit and back-lit */
+let backV = 0;
+function applyLights(v){
+  key.intensity = 110*(1 - 0.86*v); hemi.intensity = 0.7*(1 - 0.6*v); fill.intensity = 0.42*(1 - 0.75*v); rim.intensity = 0.35*(1 - 0.7*v);
+  lamp.intensity = 3.4*v; SU.uBack.value = v*1.0;
+  renderer.toneMappingExposure = 1.0 + 0.0*v;
+}
+
+let need = true, last = 0, clockT = 0, running = false, hiddenPause = false;
+function frame(now){
+  running = false;
+  if (hiddenPause) return;
+  const dt = Math.min(1/30, Math.max(0, (now - last)/1000)); last = now;
+  if (!RM.matches) clockT += dt;
+  const a = RM.matches ? 1 : 1 - Math.exp(-dt*4.2);
+  const wantBack = backEl.checked ? 1 : 0;
+  const b2 = backV + (wantBack - backV)*(RM.matches ? 1 : 1 - Math.exp(-dt*3.5));
+  const moving = Math.abs(b2 - backV) > 1e-3; backV = Math.abs(b2 - wantBack) < 1e-3 ? wantBack : b2; if (moving || backV === wantBack) applyLights(backV);
+  const wm = macroEl.checked ? 1 : 0; macroT += (wm - macroT)*a;
+  const ov = {}, mc = {}; overviewPose(clockT, ov);
+  if (macroEl.checked || macroT > 0.002) macroPose(mc); else Object.assign(mc, ov);
+  const k = macroT*macroT*(3 - 2*macroT);
+  wantPos.copy(ov.pos).lerp(mc.pos, k); wantLook.copy(ov.look).lerp(mc.look, k);
+  const shift = ov.shift*(1 - k) + mc.shift*k, shiftY = ov.shiftY*(1 - k) + mc.shiftY*k;
+  camera.position.copy(wantPos); camera.lookAt(wantLook);
+  camera.setViewOffset(W, H, -shift*W, -shiftY*H, W, H);
+  camera.updateMatrixWorld();
+  if (SU.uWinOn.value > 0 && !macroEl.checked && macroT < 0.01){ SU.uWinOn.value = 0; }
+  copyEl.classList.toggle('macro', macroEl.checked); document.body.classList.toggle('macro', macroEl.checked);
+  renderer.render(scene, camera);
+  const anim = !RM.matches && !hiddenPause;                          /* idle sway keeps running unless the user asked for stillness */
+  const settling = Math.abs(macroT - wm) > 0.001 || Math.abs(backV - wantBack) > 0.001;
+  if (anim || settling || need){ need = false; if (!RM.matches || settling) schedule(); }
+}
+const copyEl = $('copy');
+function schedule(){ if (!running){ running = true; requestAnimationFrame(frame); } }
+function poke(){ need = true; schedule(); }
+document.addEventListener('visibilitychange', () => {
+  hiddenPause = document.hidden;
+  if (!hiddenPause){ last = performance.now(); poke(); }                 /* reset the time base: no integrating the pause */
+});
+RM.addEventListener?.('change', poke);
+
+let rebuildQ = 0;
+function queueRebuild(kind){
+  cancelAnimationFrame(rebuildQ);
+  rebuildQ = requestAnimationFrame(() => { kind === 'all' ? rebuildBase() : rebuildDetail(); say(); poke(); });
+}
+document.querySelectorAll('input[name=stock]').forEach(r => r.addEventListener('change', () => {
+  stockKey = r.value; ageEl.value = STOCKS[stockKey].age; ageO(); SU.uAge.value = +ageEl.value; queueRebuild('all'); }));
+document.querySelectorAll('input[name=focus]').forEach(r => r.addEventListener('change', () => { focusKey = r.value; queueRebuild('detail'); }));
+backEl.addEventListener('change', () => { say(); poke(); });
+macroEl.addEventListener('change', () => {
+  document.querySelectorAll('input[name=focus]').forEach(r => r.disabled = !macroEl.checked);
+  if (macroEl.checked) { rebuildDetail(); }
+  say(); poke();
+});
+const ageO = () => { $('ageO').textContent = (+ageEl.value).toFixed(2); };
+ageEl.addEventListener('input', () => { ageO(); SU.uAge.value = +ageEl.value; poke(); });
+let curlQ = 0;
+curlEl.addEventListener('input', () => {
+  $('curlO').textContent = (+curlEl.value).toFixed(2);
+  cancelAnimationFrame(curlQ); curlQ = requestAnimationFrame(() => { shapeSheet(+curlEl.value, STOCKS[stockKey].thick); placePins(); poke(); });
+});
+document.querySelectorAll('input[name=focus]').forEach(r => r.disabled = true);
+
+/* ------------------------------------------------------------------ boot */
+async function boot(){
+  try { await Promise.race([document.fonts.load('800 64px "Shippori Mincho"', '木彫'), new Promise(r => setTimeout(r, 1500))]); } catch(e){}
+  resize();
+  SU.uAge.value = STOCKS[stockKey].age; ageEl.value = STOCKS[stockKey].age; ageO();
+  const t = rebuildBase();
+  applyLights(0); say(); poke();
+  window.__paper = {ms:t, scene, layers, sheet, key, poke, THREE, ready:true, renderer, SU, STOCKS, setStock:k => { const r = document.querySelector(`input[name=stock][value=${k}]`); r.checked = true; r.dispatchEvent(new Event('change')); },
+    get camPos(){ return camera.position; }};
+}
+boot();
+</script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.skin-weight-and-deformation-inspection",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "inspection-pattern",
+  "title": {
+    "en": "Skin weight and deformation inspection"
+  },
+  "aliases": {
+    "en": [
+      "weight heatmap pose test",
+      "joint influence inspection",
+      "skinned mesh deformation audit"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "anatomy-structures",
+    "products-assemblies"
+  ],
+  "summary": "Pair source weight visualization with exported joint/weight inspection and deliberate pose fixtures so numerical influence and visible deformation failures remain traceable.",
+  "objective": "A collapsing, detached or pinched region identifies its vertices, joint influences, bind context and failing pose without treating a heatmap as proof of deformation quality.",
+  "applies_when": [
+    "A Blender-authored skinned mesh deforms differently in source and Three.js playback or needs localized weight diagnosis."
+  ],
+  "tags": [
+    "inspection-pattern",
+    "skinning",
+    "weights",
+    "deformation",
+    "bind-pose"
+  ],
+  "subject_terms": [
+    "vertex weight",
+    "joint influence",
+    "JOINTS_0",
+    "WEIGHTS_0",
+    "inverse bind matrix",
+    "bind pose",
+    "weight heatmap",
+    "pose fixture"
+  ],
+  "intent_signals": [
+    "elbow collapses after glTF export",
+    "find unweighted vertices",
+    "compare joint influences at a pinched shoulder",
+    "runtime skin uses wrong bind pose"
+  ],
+  "example_prompts": [
+    "Inspect the vertices causing a shoulder collapse across Blender and the loaded skin.",
+    "Show active weights and exported joint indices for an unweighted garment region."
+  ],
+  "negative_signals": [
+    "red heatmap means good deformation",
+    "normalize weights to hide wrong joints",
+    "test only rest pose"
+  ],
+  "not_for": [
+    "Designing an anatomical muscle simulation.",
+    "Guaranteeing a universal maximum number of influences supported by every runtime."
+  ],
+  "content": {
+    "principles": [
+      "Weight values and deformation are related diagnostics. A correct-looking heatmap can still bind to the wrong joint or fail in motion; a bad pose must be traced back to numerical influences and bind context.",
+      "Compare the same source revision, skeleton, bind pose and animation sample. Rest-pose agreement alone does not exercise skinning.",
+      "Inspect all delivered JOINTS_n and WEIGHTS_n sets that the target runtime actually consumes, and disclose dropped or pruned influences rather than assuming one VEC4 is universal.",
+      "Diagnostic colors are temporary views and may have customized ranges; report numbers and joint identities for selected vertices."
+    ],
+    "implementation": [
+      "In Blender, inspect active-group weights, zero or unreferenced vertices, locked groups and normalization state. Select suspect vertices and record their source vertex groups and evaluated mesh revision.",
+      "Author a small pose suite around the actual joint: rest, moderate bend, expected extreme, twist and any attachment contact pose. Preserve camera and comparison sample across source and runtime.",
+      "After load, identify the SkinnedMesh, skeleton and primitive; expose selected vertex JOINTS_n and WEIGHTS_n values, their resolved joint names or stable IDs, weight sum and whether additional sets are present and supported.",
+      "Compare source and runtime silhouettes, volume cues, penetrations and attached landmarks at the same pose. Attribute differences to influence transport, bind transforms, skeleton hierarchy, morph order or renderer support only after inspecting that boundary.",
+      "Reset the skeleton, animation time, selected vertices and temporary diagnostic material to the exact pre-inspection state."
+    ],
+    "observable_checks": [
+      "Use fixtures with an unreferenced vertex, wrong-joint influence, non-unit float weight sum, influence in JOINTS_1/WEIGHTS_1 and a valid rigid attachment; each produces a distinct report.",
+      "At rest and at each pose fixture, selected landmark positions and silhouettes are compared between Blender and runtime under the declared transform convention.",
+      "Select one vertex in the visible failure and list every consumed joint index, resolved joint identity and weight; a missing additional set is reported rather than silently ignored.",
+      "Leaving inspection restores the original animation owner, bind state, material and selected model state without altering the asset."
+    ]
+  },
+  "related_ids": [
+    "knowledge.shared-skinned-articulated-rig",
+    "knowledge.blender-deformation-animation-handoff",
+    "knowledge.deformable-prop-support-cage",
+    "knowledge.inspectable-selection"
+  ],
+  "creative_affordances": [
+    "Combine a joint-isolation tree, selected-vertex table and synchronized pose inset.",
+    "Use threshold bands or influence glyphs alongside the familiar heatmap when exact values matter."
+  ],
+  "known_limits": [
+    "Acceptable deformation is task- and pose-specific; this profile supplies diagnostics rather than a universal weighting recipe.",
+    "Runtime support for additional joint/weight sets must be checked for the installed loader and renderer.",
+    "Authored source-checked diagnostic guidance; no rig, export, animation or renderer was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.delivery-blender-weight-visualization",
+      "statement": "Blender 4.5 Weight Paint visualizes the active vertex group's weights with a configurable cold-to-hot gradient, can distinguish unreferenced vertices in black, and documents normalized-weight tools including Normalize All and Auto Normalize.",
+      "scope": "Blender source authoring visualization; colors do not identify exported joint indices or establish deformation quality.",
+      "source_refs": [
+        {
+          "source_id": "source.delivery-blender-weight-paint",
+          "locator": "The Weighting Color Code; Normalized Weight Workflow; Auto Normalize"
+        }
+      ]
+    },
+    {
+      "id": "claim.delivery-gltf-joint-weight-sets",
+      "statement": "glTF 2.0 defines JOINTS_n as indices into skin.joints and WEIGHTS_n as their per-vertex influence weights, uses VEC4 accessors per set, requires nonnegative weights, and allows additional consecutively paired sets when more than four influences are present; clients may support only one set, which can affect animation.",
+      "scope": "Core glTF skin attribute contract; this does not promise that a particular loader consumes all sets or that valid values yield good deformation.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Geometry > Skins > Skinned Mesh Attributes"
+        }
+      ]
+    }
+  ]
+}

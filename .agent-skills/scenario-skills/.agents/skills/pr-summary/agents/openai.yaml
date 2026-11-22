@@ -1,0 +1,4 @@
+interface:
+  display_name: 'PR Summary'
+  short_description: 'Refresh the current pull request description'
+  default_prompt: 'Use $pr-summary to refresh the description of the current pull request.'

@@ -1,0 +1,26 @@
+{
+    "name": "AgentKit.PipelineCli",
+    "rootNamespace": "AgentKit.PipelineCli",
+    "references": [
+        "Unity.Pipeline"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "AGENTKIT_HAS_PIPELINE"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.pipeline",
+            "expression": "0.0.1",
+            "define": "AGENTKIT_HAS_PIPELINE"
+        }
+    ],
+    "noEngineReferences": false
+}

@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "id": "recipe.deposited-protein-binding-site-inspection",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Deposited protein binding-site inspection"
+  },
+  "aliases": {
+    "en": [
+      "protein ligand pocket",
+      "binding-site viewer",
+      "PDB ligand contacts"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Inspect a ligand and nearby residues from a supplied authoritative deposited structure while preserving atom, assembly and model metadata.",
+  "objective": "Select a deposited ligand, vary an explicit heavy-atom cutoff and inspect which source residues enter the site.",
+  "tags": [
+    "protein structure",
+    "ligand",
+    "binding site",
+    "PDB"
+  ],
+  "subject_terms": [
+    "protein-ligand complex",
+    "heavy-atom distance",
+    "binding-site residues",
+    "biological assembly",
+    "alternate location",
+    "angstrom"
+  ],
+  "intent_signals": [
+    "Inspect residues around a ligand in a PDB structure.",
+    "Show a protein binding pocket from supplied coordinates."
+  ],
+  "example_prompts": [
+    "Build an inspector for ligand MK1 in supplied PDB entry 1HSG, showing heavy-atom distances and deposited metadata."
+  ],
+  "negative_signals": [
+    "docking prediction",
+    "drug affinity score",
+    "therapeutic recommendation"
+  ],
+  "not_for": [
+    "Predicting binding affinity, efficacy, druggability or biological function.",
+    "Inventing missing atoms, bonds, hydrogens or alternate conformations without an explicit derived-data step."
+  ],
+  "entities": [
+    {
+      "name": "Deposited structure identity",
+      "guidance": "Show entry ID, entry version, model, assembly, chain/asym IDs, ligand component ID, experimental method and resolution from the supplied record."
+    },
+    {
+      "name": "Ligand and site residues",
+      "guidance": "Preserve source atom IDs and coordinates in angstroms; select residues by minimum non-hydrogen atom distance to the chosen ligand."
+    },
+    {
+      "name": "Pocket context",
+      "guidance": "Show enough surrounding protein to distinguish an exposed groove from an enclosed pocket; any surface algorithm, probe radius and grid spacing are derived settings."
+    },
+    {
+      "name": "Measurement probe",
+      "guidance": "Draw selected atom-to-atom distances in angstroms. Label inferred interaction categories separately from deposited atoms and measured distances."
+    }
+  ],
+  "state_contract": {
+    "model": "A supplied mmCIF/PDB entry and selected biological assembly own atom identity and Cartesian coordinates in angstroms. For cutoff c, default 4.0 angstrom, select each polymer residue having at least one non-hydrogen atom within c of a selected ligand non-hydrogen atom.",
+    "authority": "Deposited entry/version, model, assembly, atom_site identifiers, coordinates, occupancy and B values own the view. Cutoff, atom radii, surface algorithm and visual encoding are declared derivations.",
+    "actions": [
+      "Select a deposited ligand instance and assembly.",
+      "Change cutoff from 3.5 to 6.0 angstrom and recompute the residue set.",
+      "Inspect source IDs, occupancy, B value and one measured distance.",
+      "Toggle site sticks, context and derived pocket surface; reset without losing provenance."
+    ]
+  },
+  "invariants": [
+    "An accelerated neighbour search exactly matches a brute-force non-hydrogen all-pairs residue set for the same cutoff.",
+    "Every displayed atom and residue resolves to its deposited identifier; coordinates, occupancy and B values round-trip to parsed source values.",
+    "Cutoff and distances display angstrom units and are invariant under camera or display scaling.",
+    "Any alternate-location filtering and biological-assembly transform are disclosed rather than silently flattened."
+  ],
+  "motion_guidance": [
+    "Cutoff changes are discrete recomputations; interpolation between old and new surfaces is presentation only.",
+    "Camera fly-throughs do not imply ligand trajectories or docking."
+  ],
+  "creative_affordances": [
+    "Use ribbon context, clipped molecular surface, labelled sticks or a focused pocket diorama while retaining source identity and measurement legibility."
+  ],
+  "known_limits": [
+    "A distance-defined residue set is an inspection convention, not proof of binding energy, interaction type or biological relevance.",
+    "Deposited coordinates are an experimental model with method, resolution, occupancy and conformer limits.",
+    "Authored and source-reviewed draft only; no structure parser, surface extraction or renderer was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.mixed-biomed-binding-site-four-angstrom",
+      "statement": "Khazanov and Carlson defined a ligand binding site as protein residues having at least one non-hydrogen atom within 4.0 angstrom of a ligand non-hydrogen atom.",
+      "scope": "The cited study's reproducible selection convention; not a universal physical boundary or interaction definition.",
+      "source_refs": [
+        {
+          "source_id": "source.mixed-biomed-binding-site-cutoff",
+          "locator": "Methods, Large, Non-redundant Data Set of Binding Sites, paragraphs 1-4"
+        }
+      ]
+    },
+    {
+      "id": "claim.mixed-biomed-1hsg-source-identity",
+      "statement": "RCSB entry 1HSG version 1.3 identifies a 2.00-angstrom X-ray HIV-1 protease complex whose biological assembly is a homodimer and whose deposited ligand component is MK1.",
+      "scope": "RCSB PDB entry 1HSG metadata as accessed; use the cited entry version rather than generalizing to other structures.",
+      "source_refs": [
+        {
+          "source_id": "source.mixed-biomed-pdb-1hsg",
+          "locator": "Entry identity and version; Experimental Data Snapshot; Biological Assembly 1; Small Molecules MK1"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Protein-ligand inspection assembly",
+      "structure": "Keep polymer chains, ligand instances, waters, alternates, site residues, measurements and derived surfaces as stable selectable groups.",
+      "material": "Atom and chain colours carry declared categories; translucency and surface polish must not imply occupancy, confidence or affinity."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Static deposited-coordinate inspection; no docking, molecular dynamics or contact forces.",
+    "checks": [
+      "Brute-force and accelerated cutoff selections match exactly.",
+      "Source atom metadata and measured angstrom distances round-trip."
+    ]
+  },
+  "related_ids": [
+    "knowledge.inspectable-selection",
+    "knowledge.geometric-measurement-model-units",
+    "knowledge.reasoning-molecular-representation-choice",
+    "knowledge.validation-structure-identity-persistence"
+  ]
+}

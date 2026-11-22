@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.constraint-aware-object-manipulation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "interaction-profile",
+  "title": {
+    "en": "Constraint-aware object manipulation"
+  },
+  "aliases": {
+    "en": [
+      "axis-constrained drag",
+      "legal direct manipulation",
+      "local world transform handle"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "spatial-puzzles",
+    "architecture-interiors"
+  ],
+  "summary": "Turn pointer or discrete input into a previewed model operation with an explicit axis, coordinate frame, legality rule and cancel path.",
+  "objective": "Dragging a nested part changes the intended model state once, never leaks into camera control, and rolls back cleanly when input is cancelled or capture is lost before semantic commit.",
+  "applies_when": [
+    "A viewer translates, rotates or scales a semantic object under project constraints rather than freely posing a disposable mesh."
+  ],
+  "tags": [
+    "interaction-profile",
+    "direct-manipulation",
+    "constraints",
+    "pointer-capture",
+    "nested-transform"
+  ],
+  "subject_terms": [
+    "manipulation transaction",
+    "translation axis",
+    "rotation axis",
+    "local space",
+    "world space",
+    "pointer capture",
+    "pointercancel",
+    "lostpointercapture",
+    "camera arbitration"
+  ],
+  "intent_signals": [
+    "drag a part only along its rail",
+    "camera orbit must not move the puzzle piece",
+    "cancel a nested object drag",
+    "keyboard equivalent for transform handle"
+  ],
+  "example_prompts": [
+    "Let me slide a valve handle along its authored rail with pointer and step controls.",
+    "Rotate a child joint in local space while its parent assembly is transformed."
+  ],
+  "negative_signals": [
+    "free transform every mesh",
+    "treat every pointer move as a committed edit",
+    "use screen deltas as world coordinates"
+  ],
+  "not_for": [
+    "Passive camera orbit with no object edit.",
+    "A physics grab whose solver, forces and collision constraints own motion."
+  ],
+  "content": {
+    "principles": [
+      "Begin a manipulation from a stable semantic ID and a model-state snapshot; render meshes and handles are views of that target.",
+      "Declare operation, axis or plane, pivot and coordinate frame. Convert the candidate through the parent's current world transform before applying limits in the frame where those limits were authored.",
+      "Preview and commit are different states. A pointer move may update a reversible preview, while release or an explicit Commit action creates one model operation only after legality checks.",
+      "One input sequence has one owner. Object manipulation suppresses competing orbit or selection actions only for its active lifetime and restores them on commit, cancel, pointer cancellation or capture loss."
+    ],
+    "implementation": [
+      "Export stable part identity, pivot helpers and optional guide geometry from Blender; keep permissions, constraint equations, input ownership and commit semantics in application state.",
+      "At begin, record pointer ID, selected semantic target, starting model state, parent world matrix, operation, frame and active input adapter. Capture that pointer on the interaction surface when the browser path uses Pointer Events.",
+      "Intersect the active axis or plane, calculate a candidate in the declared frame, clamp or reject it through the domain rule, then derive the nested object's local transform from its parent rather than assigning a world pose as local data.",
+      "Disable camera controls while the manipulation owns input. On pointerup, commit one legal command and mark the sequence terminal before capture-release events run. On Escape, pointercancel, pre-commit capture loss, target deletion or permission loss, restore the start state and create no history entry; a later lostpointercapture only cleans up an already terminal sequence.",
+      "Offer labeled step, numeric or endpoint controls for essential drag actions, with the same validation and commit path as spatial input."
+    ],
+    "observable_checks": [
+      "Test a transformed parent with local and world modes: the handle, candidate, committed model state and rendered child agree in the declared frame.",
+      "Start on a handle, cross outside the canvas, cancel, lose capture before release and remove the target in separate cases; each declared cancel path restores the exact start state and camera controls. After a successful pointerup, the ensuing capture loss performs cleanup without undoing the committed operation.",
+      "Orbit input never commits a model operation, and an active object drag never changes the camera.",
+      "Pointer, keyboard and labeled discrete controls produce equivalent legal model operations and a single history entry per commit."
+    ]
+  },
+  "related_ids": [
+    "knowledge.inspectable-selection",
+    "knowledge.accessible-spatial-controls",
+    "knowledge.gltf-transform-pivot-handoff",
+    "knowledge.reasoning-permutation-state-authority",
+    "knowledge.validation-gesture-move-arbitration"
+  ],
+  "creative_affordances": [
+    "Choose a rail, arc, plane, ghosted pose or numeric affordance that explains the actual constraint.",
+    "Use haptic or sound feedback when available, while keeping visible and textual state feedback."
+  ],
+  "known_limits": [
+    "TransformControls is an optional Three.js addon, not an application legality or history system.",
+    "No universal drag threshold, axis convention or camera-control library is prescribed.",
+    "Authored and source-checked guidance; no pointer, Blender, Three.js or XR interaction was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.experience-transform-controls-frame-snap",
+      "statement": "Current Three.js TransformControls is an addon for transforming an attached Object3D rather than the scene camera; it exposes translate, rotate and scale modes, local or world space, and numeric translation, rotation and scale snapping properties.",
+      "scope": "Current documented addon surface; application legality, coordinate conversion, camera arbitration and transaction semantics remain outside this API.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-three-transform-controls",
+          "locator": "Class description; mode; space; translationSnap; rotationSnap; scaleSnap; attach"
+        }
+      ]
+    },
+    {
+      "id": "claim.experience-pointer-capture-cancel",
+      "statement": "Pointer Events Level 3 defines pointer capture so subsequent pointer events covered by capture target the capturing element, while click, auxclick and contextmenu use separate dispatch rules; it defines pointer-stream suppression to fire pointercancel and implicitly release capture, and pointerup or pointercancel also causes capture release and lostpointercapture when necessary.",
+      "scope": "Browser event delivery only; whether an application commits or rolls back its preview is an authored policy.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-pointer-events3",
+          "locator": "Sections 4.1.3.2–4.1.3.3; 4.2.12.3; 9.1–9.5"
+        }
+      ]
+    }
+  ]
+}

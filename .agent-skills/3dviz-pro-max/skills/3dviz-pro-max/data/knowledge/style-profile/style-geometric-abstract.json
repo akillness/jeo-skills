@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-geometric-abstract",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Geometric abstraction"
+  },
+  "aliases": {
+    "en": [
+      "abstract geometry",
+      "shape-based abstraction",
+      "geometric sculpture",
+      "hard-edge abstraction",
+      "primitive field"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "solid-geometry"
+  ],
+  "summary": "Build a visual language from a small vocabulary of geometric relationships with an explicit distinction between metaphor and measured quantities.",
+  "objective": "Viewers can distinguish a decorative relationship from a labeled data mapping, and overlapping forms do not hide the main structure.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "geometric-abstract"
+  ],
+  "subject_terms": [
+    "abstract geometry",
+    "shape-based abstraction",
+    "geometric sculpture",
+    "art direction",
+    "hard-edge abstraction",
+    "primitive field"
+  ],
+  "intent_signals": [
+    "Use geometric abstraction",
+    "Compose a visual language from repeated shapes"
+  ],
+  "example_prompts": [
+    "Create a geometric-abstract sculpture of an agent network with an explicit legend for each shape."
+  ],
+  "content": {
+    "principles": [
+      "Build a visual language from a small vocabulary of geometric relationships with an explicit distinction between metaphor and measured quantities."
+    ],
+    "implementation": [
+      "Repeat and vary primitives through scale, interval and orientation; when shapes encode entities, keep identity stable across views.",
+      "Use material and light contrast to separate groups rather than adding ornamental texture to every primitive.",
+      "Offer a view that reveals the organizing relation; animate transformations or group movement with clear state ownership.",
+      "Drive the whole field from three numbers - spacing 0.8 m, scale ratio 1.15 per step, yaw 12 degrees per step - and expose them as named controls; a rule with more than three parameters stops reading as a rule.",
+      "Build the field as one InstancedMesh and tint at most 5% of instances with setColorAt plus emissiveIntensity 0.6, so the single exception survives a grayscale screenshot while the rest stays inside one value band."
+    ],
+    "observable_checks": [
+      "Viewers can distinguish a decorative relationship from a labeled data mapping, and overlapping forms do not hide the main structure."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Geometric abstraction reads when the viewer can infer the rule and then see it broken, so the numbers hold the repeated field inside one narrow value band at 45% saturation and give the single exception both hue and emissive headroom. A 32-degree lens and a 4:1 key at 50 degrees elevation are chosen so identical primitives still present three distinct face values, which is what keeps a field of cubes from collapsing into a flat pattern.",
+    "values": {
+      "feeling": [
+        "ordered",
+        "cool",
+        "deliberate"
+      ],
+      "palette": [
+        {
+          "hex": "#10131c",
+          "role": "void background"
+        },
+        {
+          "hex": "#2f4b7c",
+          "role": "primary family, structural masses"
+        },
+        {
+          "hex": "#66a0d9",
+          "role": "secondary family, repeated elements"
+        },
+        {
+          "hex": "#f2c14e",
+          "role": "accent, the element that breaks the rule"
+        },
+        {
+          "hex": "#e8eef5",
+          "role": "highlight and label plate"
+        }
+      ],
+      "value_structure": "55/30/15 dark/mid/light; the repeated field stays inside one value band so the single rule-breaking form reads first",
+      "saturation_rule": "two hue families (blue structure, amber accent); repeated elements <= 45% HSL, the accent <= 80% and applied to at most 5% of instances",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#10131c",
+        "horizon": "#1c2740"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#1c2740",
+        "density": 0.02
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#f2f6ff",
+          "intensity": 2.6,
+          "elevation_deg": 50,
+          "azimuth_deg": 320,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#4a6fa5",
+          "ground": "#14161d",
+          "intensity": 0.6
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#7fd0ff",
+          "intensity": 0.9,
+          "elevation_deg": 8,
+          "azimuth_deg": 140,
+          "castShadow": false
+        },
+        "ratio": "key:fill ~ 4:1 so a cube shows three clearly separated face values and the field reads as volume rather than pattern"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.0
+      },
+      "camera": {
+        "fov_deg": 32,
+        "height_m": 2.4,
+        "pitch_deg": -12,
+        "orbit": {
+          "minPolar_deg": 25,
+          "maxPolar_deg": 80,
+          "minDist_m": 4,
+          "maxDist_m": 60
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.4,
+          0.7
+        ],
+        "metalness": [
+          0,
+          0.2
+        ],
+        "notes": "one shared material for the whole field with per-instance colour through InstancedMesh.setColorAt; the accent instance also carries emissive 0.6 so it survives desaturation"
+      },
+      "motion": {
+        "sway_period_s": [
+          12.0,
+          18.0
+        ],
+        "ease": "linear",
+        "hold_ms": 0
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.05,
+          "strength": 0.2,
+          "radius": 0.5
+        },
+        "vignette": 0.25,
+        "grain": 0.02,
+        "dof": "off"
+      },
+      "signature_technique": "one interval rule - spacing 0.8 m, scale x1.15 per step, 12 degrees yaw per step - applied to a single primitive and broken exactly once",
+      "never": [
+        "a uniform square grid unless the subject genuinely is a grid",
+        "a different colour per instance",
+        "ornamental texture on primitives",
+        "letting a decorative arrangement imply a measured quantity"
+      ]
+    }
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at exposure 1.0; re-tune every intensity, fog density and bloom threshold if you change the tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with generative rules or monochrome study; geometry used as metaphor does not become proof of a mathematical claim."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

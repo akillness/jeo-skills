@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-density-is-not-probability",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Read probability as area, not as height"
+  },
+  "aliases": {
+    "en": [
+      "density versus probability",
+      "area under the curve",
+      "continuous distribution"
+    ]
+  },
+  "direction_ids": [
+    "probability-statistics"
+  ],
+  "summary": "Present continuous distributions so the shaded region carries the probability and the curve height is labelled as density.",
+  "objective": "Stop a density plot from being read as a probability at a point.",
+  "applies_when": [
+    "A continuous distribution is shown as a curve, surface or solid.",
+    "An interval probability is displayed or selected by the viewer.",
+    "A three-dimensional presentation of a distribution is being considered."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "probability density",
+    "area under the curve",
+    "interval probability",
+    "continuous distribution",
+    "units"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "statistics",
+    "interpretation"
+  ],
+  "intent_signals": [
+    "what is the probability at this value",
+    "shade the interval",
+    "show the normal distribution"
+  ],
+  "example_prompts": [
+    "Let me drag an interval and read its probability.",
+    "Show the density and the probability separately."
+  ],
+  "negative_signals": [
+    "Discrete distributions, where bar heights are probabilities.",
+    "Histogram counts, which are a different quantity again."
+  ],
+  "not_for": [
+    "Discrete distributions, where bar heights are probabilities.",
+    "Histogram counts, which are a different quantity again."
+  ],
+  "content": {
+    "principles": [
+      "For a distribution represented by a probability density, the probability of an interval is the area under the density over that interval, the total area over the whole support is exactly one, and the probability of any single exact value is zero because a vertical line has no width. Any truncation of the display leaves tail mass outside the picture, which should be reported rather than absorbed.",
+      "The height of the curve is a density with units of probability per unit of the variable, so its numeric value depends on the units chosen and is not comparable across differently scaled axes.",
+      "Because probability is area, an interactive interval is the natural control, and shading is the natural encoding.",
+      "In three dimensions the same rule becomes volume under a surface, and perceived volume is an unreliable channel, which is a reason to prefer slices or marginals."
+    ],
+    "implementation": [
+      "Make the primary interaction an interval or region selection with the resulting probability displayed, rather than a point readout.",
+      "Label the vertical axis as density with its units, and label the shaded quantity as probability.",
+      "Compute the shaded probability by integrating the same density that is drawn, and state the method if it is numerical.",
+      "Show the total area normalising to one, since that is what makes the density interpretable.",
+      "If a three-dimensional presentation is used, provide a slice or marginal view where the area interpretation is still readable."
+    ],
+    "observable_checks": [
+      "Shrink the selected interval towards zero width and confirm the reported probability tends to zero rather than to the curve height.",
+      "Integrate over the whole support and confirm the total is one within the stated numerical tolerance.",
+      "Change the units of the variable and confirm the density height changes while the interval probability does not.",
+      "Compare a tall narrow region with a short wide one of equal area and confirm the reported probabilities match."
+    ]
+  },
+  "related_ids": [
+    "recipe.normal-density-window",
+    "recipe.binomial-trial-lattice"
+  ],
+  "creative_affordances": [
+    "The visual treatment of the shaded region, including animation as the interval moves, is a free design choice.",
+    "Physical metaphors such as accumulated sand or water can help when the mapping to area is explicit."
+  ],
+  "known_limits": [
+    "Authored interpretation guidance citing the area interpretation of continuous distributions; it does not cover mixed or discrete distributions.",
+    "Numerical integration accuracy is an implementation matter not addressed here."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-probability-equals-area",
+      "statement": "For continuous probability distributions the probability is the area under the density curve over an interval, the total area under the curve is one, and the probability that the variable equals any single exact value is zero because the corresponding region has zero width.",
+      "scope": "Distributions that are represented by a probability density. Discrete distributions assign nonzero probability to individual values, and continuous distributions without a density are outside the statement.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-openstax-continuous-probability",
+          "locator": "5.1, probability equals area, total area one, zero probability at a point"
+        }
+      ]
+    }
+  ]
+}

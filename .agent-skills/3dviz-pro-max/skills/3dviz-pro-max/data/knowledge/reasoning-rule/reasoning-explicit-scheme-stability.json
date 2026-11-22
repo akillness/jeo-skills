@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-explicit-scheme-stability",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Respect the stability limit of an explicit scheme"
+  },
+  "aliases": {
+    "en": [
+      "CFL condition",
+      "diffusion stability",
+      "step size limit"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal",
+    "rigid-mechanics"
+  ],
+  "summary": "Check the declared explicit scheme and boundary discretization against its stability condition; use the one-dimensional diffusion bound only in its stated regime.",
+  "objective": "Prevent a field simulation from producing growing oscillations that look like physics.",
+  "applies_when": [
+    "A one-dimensional diffusion field uses forward Euler with centered spatial differences on a uniform grid and constant positive diffusivity.",
+    "Resolution, timestep or diffusivity changes within that model require rechecking the diffusion number.",
+    "For another explicit scheme, equation, dimension or boundary discretization, derive its own amplification condition before applying a timestep bound."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "stability",
+    "explicit scheme",
+    "time step",
+    "grid spacing",
+    "diffusion coefficient",
+    "instability"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "fields",
+    "numerics"
+  ],
+  "intent_signals": [
+    "the simulation blows up",
+    "increase the resolution",
+    "speed up the heat simulation"
+  ],
+  "example_prompts": [
+    "Simulate heat diffusion that stays stable when I refine the grid.",
+    "Show what happens when the time step is too large."
+  ],
+  "negative_signals": [
+    "Implicit or spectral schemes, which have different stability behaviour.",
+    "Analytic solutions evaluated directly, where no stepping occurs."
+  ],
+  "not_for": [
+    "Implicit or spectral schemes, which have different stability behaviour.",
+    "Analytic solutions evaluated directly, where no stepping occurs."
+  ],
+  "content": {
+    "principles": [
+      "Explicit schemes are conditionally stable, and the familiar limit belongs to one specific scheme. For the forward-Euler update with centred differences on a uniform one-dimensional grid with constant positive diffusivity, the time step must keep the diffusion number at or below one half. Two- and three-dimensional grids, variable coefficients, other boundary discretisations, wave equations and implicit schemes each have their own condition, and a zero diffusivity makes the limit undefined rather than infinite.",
+      "Violating the limit means susceptible modes are amplified rather than damped, which the reference run at a diffusion number of about zero point five three shows as a solution that blows up. It is not a guarantee that every run visibly explodes: a uniform field stays uniform, and a short run may end before the growth is visible. Below the limit, an initially rough field is also not required to look smooth immediately.",
+      "The quadratic dependence has a strong practical consequence: halving the grid spacing requires quartering the time step, so a resolution control silently multiplies the cost and can cross the limit.",
+      "Because instability is fast and obvious once you know its signature, it is better exposed with a warning than hidden by clamping the field values."
+    ],
+    "implementation": [
+      "Validate positive finite spacing and the declared diffusivity regime, then compute the bound for the actual scheme and boundary treatment. Handle zero diffusivity as a separate no-diffusion case without dividing by it; do not reuse this bound for a different equation.",
+      "Recompute the limit whenever resolution or the coefficient changes, and adjust or refuse the change with an explanation.",
+      "Display the current stability number so the viewer can see the margin.",
+      "Do not clamp field values to hide divergence; report the instability and let the viewer see the characteristic growing oscillation.",
+      "Offer an implicit or smaller-step alternative when the explicit limit makes the interaction impractical, and say which scheme is running."
+    ],
+    "observable_checks": [
+      "Choose a nonzero perturbation whose amplification factor under the actual grid and boundary scheme is known. Compare parameter choices for which its factor has magnitude below one and above one over a declared horizon; expect decay and growth respectively. A constant state does not test an unstable mode.",
+      "Refine the grid and confirm the step is reduced automatically by the expected factor.",
+      "Confirm the displayed stability number matches the parameters actually used.",
+      "Verify a stable run conserves or decays the field appropriately rather than accumulating high-frequency noise.",
+      "Alternatively evaluate the amplification factor of the scheme for the modes on your grid and confirm its magnitude is at most one; that is a direct check of the condition rather than a wait for visible failure."
+    ]
+  },
+  "related_ids": [
+    "recipe.heat-rod-decay",
+    "knowledge.parameter-experiment"
+  ],
+  "creative_affordances": [
+    "Deliberately showing an unstable run is an excellent teaching device when labelled.",
+    "The visual encoding of the field, from colour to displacement, is unconstrained by the stability rule."
+  ],
+  "known_limits": [
+    "Authored numerics guidance citing the stability condition for the explicit scheme applied to one-dimensional diffusion; other equations, dimensions and schemes have different conditions.",
+    "No simulation has been run for this record, so no numerical result is asserted."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-explicit-diffusion-stability",
+      "statement": "For the uniform-grid forward Euler scheme with centered spatial differences for one-dimensional diffusion, the cited analysis gives the diffusion-number bound F = diffusivity times timestep divided by grid spacing squared at or below one half. Stability requires the relevant mode amplification factors to have magnitude at most one; violating that condition amplifies susceptible modes, without requiring every initial state or finite run to visibly blow up.",
+      "scope": "One-dimensional constant-positive-diffusivity scheme under the boundary treatments analyzed by the source. Other discretizations require their own mode or matrix analysis; the bound is not a claim about every explicit method or every observed trajectory.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-explicit-diffusion-stability",
+          "locator": "Sections 10.2.1 and 10.2.2: eigenvalue and Fourier-mode amplification criteria, forward Euler diffusion-number bound; section 10.2.3 blow-up example"
+        }
+      ]
+    }
+  ]
+}

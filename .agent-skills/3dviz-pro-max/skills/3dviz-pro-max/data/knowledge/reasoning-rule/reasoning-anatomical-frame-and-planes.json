@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-anatomical-frame-and-planes",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Fix the anatomical frame before labelling sides"
+  },
+  "aliases": {
+    "en": [
+      "anatomical position",
+      "subject left",
+      "section planes"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures",
+    "physiology-biomechanics"
+  ],
+  "summary": "Use the standard anatomical reference frame, name section planes correctly, and remember that left means the subject left.",
+  "objective": "Prevent mirrored and misnamed anatomy, which is the most common silent error in anatomical scenes.",
+  "applies_when": [
+    "A human body, organ or region is modelled and labelled with directional or sectional terms.",
+    "A cut, slice or section is presented and named.",
+    "Left and right structures differ, as in the heart, lungs or liver.",
+    "Non-human anatomy is modelled and a species-appropriate frame and vocabulary must be chosen instead of the human upright conventions."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "anatomical position",
+    "sagittal",
+    "coronal",
+    "transverse",
+    "laterality",
+    "orientation"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "anatomy",
+    "conventions"
+  ],
+  "intent_signals": [
+    "label the heart chambers",
+    "slice the body",
+    "which side is left"
+  ],
+  "example_prompts": [
+    "Show a transverse section of the thorax with correct left and right labels.",
+    "Build an anatomy view with named planes."
+  ],
+  "negative_signals": [
+    "Stylised characters and creature designs with no anatomical labelling.",
+    "Non-anatomical objects that merely use body-shaped forms."
+  ],
+  "not_for": [
+    "Stylised characters and creature designs with no anatomical labelling.",
+    "Non-anatomical objects that merely use body-shaped forms."
+  ],
+  "content": {
+    "principles": [
+      "Human anatomical description assumes a standard position: the body upright, feet forward and parallel, so that directional terms have a fixed meaning independent of how the model is currently posed. Quadruped and other non-human anatomy uses its own reference posture and directional terms, so the human frame must not be applied to it by default.",
+      "Right and left refer to the subject being viewed, not the observer. A front-facing view therefore places the subject left structures on the viewer right, and mirroring a mesh silently swaps every laterality claim.",
+      "The section vocabulary is precise: sagittal separates right from left, frontal or coronal separates anterior from posterior, and transverse separates superior from inferior. A plane presented with the wrong name teaches the wrong term.",
+      "Because directional terms are tied to the standard position, they must not be recomputed from the current camera or the current pose."
+    ],
+    "implementation": [
+      "Establish an explicit body frame in the scene, aligned with the standard position, and derive every anatomical label and section name from it.",
+      "Mark laterality in the data on each structure rather than deriving it from a coordinate sign, so mirroring the geometry cannot flip a label unnoticed.",
+      "Name each section plane from the body frame and show its orientation with a small indicator, since the same cut looks different once the model is rotated.",
+      "Include an orientation cue in the view, such as an anterior marker or a subject-left indicator, especially in section views.",
+      "When posing an animated or articulated body, keep the reference frame attached to the body root so terms remain valid."
+    ],
+    "observable_checks": [
+      "Verify a known asymmetric structure against typical anatomy: in the usual arrangement the heart apex points to the subject left, which appears on the viewer right in a front view. A departure is evidence to investigate, not proof of a defect, because situs inversus and other documented variants exist; check the asset provenance before treating an atypical laterality as a mirroring error, and never silently correct a documented variant to the typical template.",
+      "Rotate the model 180 degrees and confirm the labels stay with their structures instead of following the camera.",
+      "Cut along each named plane in turn and confirm the resulting section matches the definition of that plane.",
+      "Check imported assets for accidental mirroring by testing one laterality-specific structure rather than by appearance."
+    ]
+  },
+  "related_ids": [
+    "recipe.heart-cutaway",
+    "recipe.skeletal-hierarchy",
+    "recipe.knee-layer-peel"
+  ],
+  "creative_affordances": [
+    "Stylisation, transparency and exaggerated spacing remain available; only the frame and the naming are constrained.",
+    "Non-standard views, such as an oblique cut, are fine when the plane is described rather than mislabelled."
+  ],
+  "known_limits": [
+    "Authored guidance citing a standard terminology source; the geometry of any specific anatomical model still requires its own verification.",
+    "Comparative and veterinary anatomy use related but different directional conventions."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-anatomical-frame",
+      "statement": "Human anatomical description uses a standard anatomical position with the body upright and toes forward, in which right and left refer to the sides of the subject being viewed, and the sagittal, frontal and transverse planes divide the body into right and left, anterior and posterior, and superior and inferior parts respectively.",
+      "scope": "Human anatomical terminology conventions only. It does not describe the geometry of any particular organ and does not apply to non-human anatomy, which uses its own reference posture and directional terms.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-openstax-anatomical-terminology",
+          "locator": "1.6, anatomical position, right and left from the subject perspective, and the three body planes"
+        }
+      ]
+    }
+  ]
+}

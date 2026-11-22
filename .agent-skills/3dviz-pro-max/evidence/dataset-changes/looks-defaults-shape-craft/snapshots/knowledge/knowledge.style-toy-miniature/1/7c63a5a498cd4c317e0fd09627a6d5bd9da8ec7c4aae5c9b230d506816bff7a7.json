@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-toy-miniature",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Toy miniature scale cues"
+  },
+  "aliases": {
+    "en": [
+      "toy diorama",
+      "miniature set",
+      "collectible figure style"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies"
+  ],
+  "summary": "Present the subject as a deliberately crafted small object using a readable base, tactile parts and selective oversizing.",
+  "objective": "The base and part treatment convey the intended miniature reading, and focus effects never hide the currently selected component.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "toy-miniature"
+  ],
+  "subject_terms": [
+    "toy diorama",
+    "miniature set",
+    "collectible figure style",
+    "art direction"
+  ],
+  "intent_signals": [
+    "Present the scene as a toy miniature",
+    "Emphasize tactile parts and a crafted display base"
+  ],
+  "example_prompts": [
+    "Build a collectible miniature village on a crafted base with individually readable doors."
+  ],
+  "content": {
+    "principles": [
+      "Present the subject as a deliberately crafted small object using a readable base, tactile parts and selective oversizing.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Thicken fragile-looking parts for the imagined toy design, separate assembly seams and keep one consistent miniature scale cue.",
+      "Use clean painted finishes, small wear accents and a studio key; shallow-focus treatment is optional and should not obscure inspection.",
+      "Use a tabletop-height orbit or slightly elevated view, then offer close inspection; restrained mechanical or playful motion can reinforce the crafted object."
+    ],
+    "observable_checks": [
+      "The base and part treatment convey the intended miniature reading, and focus effects never hide the currently selected component.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with low-poly, clay or glass accents; toy appearance does not change the units of an underlying factual model.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

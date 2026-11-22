@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "id": "recipe.projectile-trajectory",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Projectile trajectory and first contact"
+  },
+  "aliases": {
+    "en": [
+      "projectile trajectory"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics"
+  ],
+  "summary": "Keep position, velocity and acceleration consistent through ballistic flight.",
+  "objective": "Launch a ball with editable initial velocity and compare its path with velocity and acceleration vectors until ground contact.",
+  "tags": [
+    "projectile",
+    "trajectory"
+  ],
+  "example_prompts": [
+    "Launch a ball with editable initial velocity and compare its path with velocity and acceleration vectors until ground contact."
+  ],
+  "entities": [
+    {
+      "name": "Projectile",
+      "guidance": "Use a visible sphere with a matching contact radius; keep center trajectory distinct from lowest surface point."
+    },
+    {
+      "name": "Ground",
+      "guidance": "Render a flat support plane with a metric grid and a clear impact marker."
+    },
+    {
+      "name": "Vector overlay",
+      "guidance": "Use separate units/scales for displacement, velocity and acceleration; retain horizontal/vertical components."
+    }
+  ],
+  "state_contract": {
+    "model": "Uniform gravity a=(0,-g,0), finite initial position p0 and velocity v0 in SI units, g>0, sphere radius>0 and horizontal plane height h; analytic ballistic flight until first ground contact. Initial clearance c=p0.y-h-radius must be nonnegative.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Set launch state while paused; reject non-finite inputs, nonpositive gravity/radius and negative initial clearance.",
+      "Play or scrub pre-impact trajectory.",
+      "Reset and compare two initial conditions."
+    ]
+  },
+  "invariants": [
+    "During free flight only, p(t)=p0+v0*t+0.5*a*t*t and v(t)=v0+a*t.",
+    "At the apex vertical velocity is zero but acceleration is still downward.",
+    "Stop at first contact of sphere surface with ground; do not continue through the floor.",
+    "If initial clearance is zero and v0y<=0, contact is immediate at t=0. If touching with v0y>0, allow departure and stop at the later descending root; never choose the departure root as impact."
+  ],
+  "motion_guidance": [
+    "Validate initial clearance before playback. For c=0 and v0y<=0 set contact at t=0; otherwise solve the later descending root of c+v0y*t-0.5*g*t^2=0. Evaluate analytic state only up to that contact time, avoiding frame-end penetration.",
+    "Declare stop-on-impact; a bounce needs a new restitution/contact model and post-impact state."
+  ],
+  "known_limits": [
+    "No drag, spin, lift or terrain beyond the flat plane.",
+    "No bounce dynamics is claimed; a visible ball uses a contact radius but free flight treats mass as a point.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.projectile-trajectory",
+      "statement": "Without air resistance, uniform gravity gives constant horizontal velocity and vertical position y=y0+v0y*t-0.5*g*t^2.",
+      "scope": "Flight before contact, upward-positive vertical axis.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-projectile",
+          "locator": "4.3, equations 4.19, 4.21 and 4.22"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Projectile",
+      "structure": "Use a visible sphere with a matching contact radius; keep center trajectory distinct from lowest surface point.",
+      "material": "Matte sphere, neutral ground grid and separate vector styles; sphere radius is geometric even if its surface finish is decorative."
+    },
+    {
+      "family": "Ground",
+      "structure": "Render a flat support plane with a metric grid and a clear impact marker.",
+      "material": "Matte sphere, neutral ground grid and separate vector styles; sphere radius is geometric even if its surface finish is decorative."
+    },
+    {
+      "family": "Vector overlay",
+      "structure": "Use separate units/scales for displacement, velocity and acceleration; retain horizontal/vertical components.",
+      "material": "Matte sphere, neutral ground grid and separate vector styles; sphere radius is geometric even if its surface finish is decorative."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Analytic constant-acceleration ballistic model, terminated at first sphere-plane contact.",
+    "state": [
+      "position",
+      "velocity",
+      "acceleration",
+      "simulation time",
+      "contact flag"
+    ],
+    "colliders": [
+      "Sphere matching visible radius; static horizontal plane."
+    ],
+    "driving": [
+      "Uniform gravity only; analytic state evaluation from immutable launch state."
+    ],
+    "contact": [
+      "Reject initial clearance c=p0.y-h-radius<0; any tolerance-based snapping must be explicitly declared before contact classification.",
+      "For c=0 and v0y<=0, contact is immediate at t=0. For c=0 and v0y>0, select return time 2*v0y/g rather than the zero departure root.",
+      "For c>0, select the positive descending root; use a numerically stable quadratic evaluation for strongly downward initial velocity. Stop playback at contact; no restitution model."
+    ],
+    "timestep": "Evaluate at simulation time; clip advancement to analytic impact time even across long render frames.",
+    "checks": [
+      "At a free-flight apex vy=0 while ay=-g.",
+      "Reject initially penetrating launch state.",
+      "Touching launches with zero or downward vertical velocity stop at t=0; touching upward launch returns at 2*v0y/g.",
+      "An initially elevated downward launch hits at the positive descending root without frame-end penetration.",
+      "Reset restores p0,v0,time=0, discards previous contact history and reclassifies immediate contact from the launch state."
+    ]
+  }
+}

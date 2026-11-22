@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.geometric-measurement-model-units",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "inspection-pattern",
+  "title": {
+    "en": "Geometric measurement in declared model coordinates and units"
+  },
+  "aliases": {
+    "en": [
+      "3D distance ruler",
+      "model space measurement"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "anatomy-structures",
+    "architecture-interiors"
+  ],
+  "summary": "Measure chosen geometry in a declared metric frame while camera and explanatory display transforms stay separate.",
+  "objective": "Measure a known model-space segment, move the camera and change display scale, and keep its labeled physical distance unchanged.",
+  "subject_terms": [
+    "measurement",
+    "distance",
+    "units",
+    "model coordinates",
+    "screen coordinates",
+    "endpoint snapping"
+  ],
+  "tags": [
+    "inspection-pattern",
+    "geometric-measurement-model-units"
+  ],
+  "intent_signals": [
+    "Measure a known model-space segment, move the camera and change display scale, and keep its labeled physical distance unchanged."
+  ],
+  "example_prompts": [
+    "Measure a known model-space segment, move the camera and change display scale, and keep its labeled physical distance unchanged."
+  ],
+  "content": {
+    "principles": [
+      "Choose the quantity before placing a ruler: straight-line distance, surface path, projected distance and clearance are different tasks. Label the selected method and unit.",
+      "Keep endpoints in the declared metric model frame. Pixel length is a screen annotation and must not be presented as physical size without an explicit calibration model."
+    ],
+    "implementation": [
+      "Import origin, axis orientation, scale and units with the geometry. Convert picked display positions back through presentation transforms, then into the declared metric frame before computing distance; reject unavailable or singular mappings.",
+      "Store endpoint attachment IDs and local coordinates, or source coordinates for fixed probes. State whether a measurement follows deformation or freezes its original source snapshot; invalidate detached endpoints on data replacement.",
+      "Expose snap type, endpoint coordinates and uncertainty/precision appropriate to the source. For voxel data include spacing and orientation; do not assume one index step equals one millimeter.",
+      "Convert numerical values and labels together when switching units. Use an independent overlay for readable text; moving label anchors must not modify measurement endpoints. Provide undo-last-point and clear-measurement actions."
+    ],
+    "observable_checks": [
+      "Use a 3-4-5 segment in a metric frame: report 5 declared units. Orbit, zoom, resize and apply an explanatory display offset; the stored metric result stays 5.",
+      "Import anisotropic axis spacing and a rotated frame; verify two known landmarks by the documented affine transform, not by pixel distance.",
+      "Switch meters to millimeters for a 0.125 m segment: display 125 mm. Delete an endpoint attachment and show invalid measurement instead of retaining a plausible old number."
+    ]
+  },
+  "known_limits": [
+    "This is a measurement interaction contract, not calibrated metrology. Nonlinear deformation, geodesics, CRS distances and clinical measurements need domain-specific algorithms and validation.",
+    "Draft authored guidance; no renderer, interaction artifact or scientific result was executed for this record."
+  ],
+  "creative_affordances": [
+    "Choose layout and visual emphasis to support the stated inspection task; these are design proposals rather than proven usability improvements."
+  ],
+  "related_ids": [
+    "knowledge.synchronized-orthogonal-slices",
+    "knowledge.uncertainty-interval-encoding"
+  ],
+  "claims": [
+    {
+      "id": "claim.slicer-index-anatomical-affine",
+      "statement": "Slicer documents image-index to anatomical coordinates as an affine map: the linear part carries directions and axis scaling, while translation locates the first voxel.",
+      "scope": "Coordinate mapping for image data; the reusable ruler interaction and other geometry metrics are authored.",
+      "source_refs": [
+        {
+          "source_id": "source.slicer-coordinate-transform",
+          "locator": "Image coordinate system; Image transformation; Coordinate system convention in Slicer"
+        }
+      ]
+    }
+  ]
+}

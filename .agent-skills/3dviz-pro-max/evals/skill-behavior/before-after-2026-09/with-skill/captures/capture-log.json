@@ -1,0 +1,78 @@
+{
+  "url": "http://127.0.0.1:<port>/",
+  "dir": "<scratch>/eval/with-skill/dist",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "ready_flag": "__sceneReady",
+  "ready_timeout": false,
+  "views": [
+    {
+      "name": "default",
+      "file": "default.png",
+      "sha256": "f327200d1cac1993a20fdddb338131cb79332fa521f9e05bb8f67c56073a9206",
+      "sha256_reencoded": "e069d14216285f0a9a672214403219c5104c9ccf25a447db0325c2a85fd9543c"
+    },
+    {
+      "name": "overview",
+      "file": "overview.png",
+      "sha256": "f327200d1cac1993a20fdddb338131cb79332fa521f9e05bb8f67c56073a9206",
+      "requested": "overview",
+      "applied": true,
+      "sha256_reencoded": "e069d14216285f0a9a672214403219c5104c9ccf25a447db0325c2a85fd9543c"
+    },
+    {
+      "name": "beacon",
+      "file": "beacon.png",
+      "sha256": "03bdd7bfa4f0fd8054defdd27bcd27eeb5be68049819a13acc507abce20b563e",
+      "requested": "beacon",
+      "applied": true,
+      "sha256_reencoded": "02979bba7c6646653b18e8aa5ec1b07ce4f61cf80536020512415789a24ed4dd"
+    },
+    {
+      "name": "lane",
+      "file": "lane.png",
+      "sha256": "eaba31c223efa8a098d24ff2f6c0b5cae482f7eec95ce78f81af01440b814ae3",
+      "requested": "lane",
+      "applied": true,
+      "sha256_reencoded": "2b7b5fc434e7990cf30456bbe4d55ce068ff936a36ed37cb0ab5534da9753a70"
+    },
+    {
+      "name": "millpond",
+      "file": "millpond.png",
+      "sha256": "d54496494552ffe423137c66cff5de6b7d95ff43bf294e02bcbdfe1a2df04103",
+      "requested": "millpond",
+      "applied": true,
+      "sha256_reencoded": "58682235660b255e7860d6b6fbabad610cb0b4dd573b1221508a7cdfca1bb649"
+    },
+    {
+      "name": "terraces",
+      "file": "terraces.png",
+      "sha256": "7798f8745f6953c77c8408d7c409f4aab9a25c31b4ce3b22ed43c024ad05220d",
+      "requested": "terraces",
+      "applied": true,
+      "sha256_reencoded": "2b3c0e121a7262b296c3aaba3e333505d99c7a76bad37716df3109372e0117f7"
+    }
+  ],
+  "clicks": [
+    {
+      "selector": "#pick-mill",
+      "file": "click-0-pick-mill.png",
+      "sha256": "2adf698cd15647ad422c263dafef061200fc653ec625c82e06215ca347a54ef7",
+      "sha256_reencoded": "a5b4bc50d8057dcd132af7bd8819bba2e2f82465d8cbe94c0b63aade2c243179"
+    },
+    {
+      "selector": "#reset",
+      "file": "click-1-reset.png",
+      "sha256": "2f88639c443424407d0c25796d3fa394e72d7a2a01f71b9b4213262492119bbf",
+      "sha256_reencoded": "bb7a2fe279f93a4b452bedf75ceaaa1fdd0e33d862599cde799859aeacf3ff86"
+    }
+  ],
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T10:19:11+00:00",
+  "finished": "2026-09-08T10:19:22+00:00",
+  "playwright_version": "1.62.0",
+  "post_processing": "PNGs re-encoded after capture, identically for every run: RGB, 256-colour adaptive palette (median cut, Floyd-Steinberg dither), zlib level 9, to hold every file under 400 KB. 'sha256' is the capture-time hash of the original frame; 'sha256_reencoded' is the hash of the file in this folder."
+}

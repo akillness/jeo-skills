@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "id": "recipe.guided-layer-method-tutorial",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Reversible guided layer-method tutorial"
+  },
+  "aliases": {
+    "en": [
+      "step-by-step beginner cube guide",
+      "reversible layer tutorial",
+      "guided Rubik solve lesson"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles"
+  ],
+  "summary": "Turn a declared beginner layer sequence into inspectable goal predicates, legal move demonstrations, learner commits, hints and exact step-level undo rather than an irreversible animation playlist.",
+  "objective": "A learner can identify the current subgoal, preview why a legal sequence preserves earlier work, attempt it, undo or retry, and resume from the exact committed state.",
+  "tags": [
+    "twisty-puzzle",
+    "tutorial",
+    "layer-method",
+    "reversible-guidance"
+  ],
+  "subject_terms": [
+    "first layer",
+    "middle layer",
+    "final layer",
+    "goal predicate",
+    "hint ladder",
+    "step undo",
+    "algorithm preview"
+  ],
+  "intent_signals": [
+    "teach a layer method step by step",
+    "undo one tutorial step without restarting",
+    "show which solved pieces an algorithm preserves"
+  ],
+  "example_prompts": [
+    "Build a cube tutorial from daisy through final-layer edges with steppable previews, learner turns and reversible checkpoints."
+  ],
+  "negative_signals": [
+    "autoplay the solve",
+    "judge only animation completion",
+    "hide notation behind color",
+    "one mistake forces reset"
+  ],
+  "not_for": [
+    "Claiming the method is fastest, optimal or best for every learner.",
+    "Competition coaching, motor-skill assessment or an exhaustive algorithm database."
+  ],
+  "entities": [
+    {
+      "name": "Goal predicate",
+      "guidance": "Compute the current lesson goal and preserved-piece set from canonical cube state, not from clip time or a screenshot."
+    },
+    {
+      "name": "Move workspace",
+      "guidance": "Show notation, affected layer, preview endpoint and changed/preserved pieces before a demonstration commits."
+    },
+    {
+      "name": "Checkpoint ledger",
+      "guidance": "Store the exact state, lesson step, learner history and hint level at each semantic checkpoint."
+    }
+  ],
+  "state_contract": {
+    "model": "A standard 3×3 exact piece-state engine plus a versioned lesson plan. Each step declares prerequisite predicate, target predicate, permitted setup, demonstration sequence, preserved predicate, hint ladder and completion rule.",
+    "authority": "The cube engine determines legality and goal completion. The tutorial controller owns prompts, hint level and checkpoints; animation never advances a lesson by itself.",
+    "actions": [
+      "Request a conceptual hint, affected-piece preview or exact next-move hint.",
+      "Preview, step, commit or cancel a demonstration; learner turns use the same legal engine.",
+      "Undo one move or restore the prior semantic checkpoint; reset returns to the declared lesson start. Checkpoint restore is one controller transaction over cube state and lesson metadata."
+    ],
+    "initialization": "Accept the guide's declared start or a validated reachable 3×3 state that satisfies the selected step prerequisite; otherwise explain which prerequisite is absent."
+  },
+  "invariants": [
+    "Every displayed move is legal and uses the declared notation frame.",
+    "Completing a step means its state predicate is true; finishing a clip or consuming a move list is insufficient.",
+    "A demonstration followed by its reversed inverse moves restores exact cube state; it does not by itself restore hint level, focus or other controller metadata.",
+    "Step restore transactionally returns cube state, history, hint level, focus, camera target and highlighted pieces to the checkpoint.",
+    "Earlier-layer preservation is checked after each committed demonstration where the lesson declares it."
+  ],
+  "motion_guidance": [
+    "In Blender, author readable cubie shells, face patterns and optional exploded layer markers; do not bake instructional state into mesh names alone.",
+    "Three.js owns goal highlighting, move arrows, move queue, checkpoint transactions and accessible text controls.",
+    "Pause between moves and let reduced motion jump to exact endpoints while keeping notation and changed-piece explanation visible."
+  ],
+  "object_craft": [
+    {
+      "family": "Instruction cube",
+      "structure": "Individual beveled cubies with distinct face tiles, narrow gaps and stable piece IDs.",
+      "material": "Satin face colors paired with symbols or labels; selected and preserved sets use boundary/pattern cues.",
+      "articulation": "One temporary layer pivot presents a move; exact state rebuild follows commit."
+    },
+    {
+      "family": "Goal and move board",
+      "structure": "A companion panel or in-world board with current goal, notation tokens, hint depth and checkpoint control.",
+      "material": "High-contrast text and non-color status icons readable at the tutorial camera.",
+      "articulation": "Updates from lesson state and remains operable without direct dragging."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Exact legal cube state with guided presentation; no mechanism physics or timing-performance assessment.",
+    "state": [
+      "cube state",
+      "lesson step",
+      "checkpoint",
+      "hint level",
+      "move history"
+    ],
+    "checks": [
+      "Goal and preserved predicates match exact state.",
+      "Undo and checkpoint restore are exact and reversible."
+    ]
+  },
+  "creative_affordances": [
+    "Use ghost pieces, cycle arrows, exploded layers, narrated text or a small-multiple before/after view according to the learner.",
+    "Allow alternate legal sequences when they declare the same target and preserved predicates."
+  ],
+  "known_limits": [
+    "The cited official page supplies one staged guide sequence, not a proof of teaching effectiveness, completeness or optimality.",
+    "No learner study, tutorial interaction, cube engine or algorithm was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.puzzles-official-layer-guide-stages",
+      "statement": "The official Rubik’s 3×3 solution-guide page presents an ordered beginner sequence covering a daisy, white cross, white corners, middle layer, then yellow-cross and final-layer corner and edge stages.",
+      "scope": "The live official guide structure read 2026-09-08; this claim does not assert optimality, completeness for arbitrary methods or measured learning benefit.",
+      "source_refs": [
+        {
+          "source_id": "source.puzzles-rubiks-solution-guide",
+          "locator": "3×3 Learn to solve sequence: daisy, white cross, white corners, middle layer, yellow cross, orient corners, position yellow corners, position yellow edges"
+        }
+      ]
+    }
+  ],
+  "related_ids": [
+    "recipe.twisty-cube-3x3-face-turns",
+    "knowledge.state-playback",
+    "knowledge.transactional-undo-redo",
+    "knowledge.validation-move-inverse-closure"
+  ]
+}

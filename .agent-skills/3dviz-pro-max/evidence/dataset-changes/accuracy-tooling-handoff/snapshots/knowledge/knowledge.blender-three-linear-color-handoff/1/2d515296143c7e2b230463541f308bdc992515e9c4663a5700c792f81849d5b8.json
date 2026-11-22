@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blender-three-linear-color-handoff",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Blender-to-Three linear color handoff"
+  },
+  "aliases": {
+    "en": [
+      "Blender Three color mismatch",
+      "texture color role handoff",
+      "AgX versus Three output"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "characters-motion-art",
+    "molecules-materials"
+  ],
+  "summary": "Carry scene-linear material inputs through glTF, classify every texture as color or data, and compare Blender with Three.js under explicitly named display transforms.",
+  "objective": "A neutral swatch, a saturated color patch and one roughness-driven highlight remain explainably related across Blender and Three.js without decoding a data map or applying an output transform twice.",
+  "tags": [
+    "tool-adapter",
+    "blender",
+    "threejs",
+    "gltf",
+    "color-management",
+    "linear-workflow"
+  ],
+  "subject_terms": [
+    "scene-linear",
+    "Linear-sRGB",
+    "sRGB texture",
+    "Non-Color Data",
+    "AgX",
+    "Khronos PBR Neutral",
+    "tone mapping",
+    "outputColorSpace",
+    "base color texture",
+    "roughness map"
+  ],
+  "intent_signals": [
+    "Blender material is darker in Three.js",
+    "AgX render does not match glTF viewer",
+    "roughness texture looks washed out",
+    "which textures use sRGB",
+    "avoid double gamma on exported model"
+  ],
+  "example_prompts": [
+    "Make this Blender product material read consistently in a Three.js glTF viewer.",
+    "Diagnose why my base color matches but the roughness response changes after export."
+  ],
+  "negative_signals": [
+    "calibrate a physical display",
+    "copy viewport pixels exactly across unrelated tone mappers",
+    "pure geometry with no material comparison"
+  ],
+  "not_for": [
+    "Display calibration or spectral color accuracy.",
+    "Guaranteeing pixel identity between different renderers, samplers, lights or tone mappers."
+  ],
+  "content": {
+    "principles": [
+      "Separate three responsibilities: Blender assigns image roles and authors scene-linear material values, glTF transports defined color encodings and material factors, and Three.js decodes inputs into its working space before one output conversion.",
+      "Base color and emissive images are color; normal, roughness, metalness, occlusion and masks are data. A visually gray image is not automatically color data.",
+      "A Blender view transform such as AgX or Khronos PBR Neutral is a display look, not texture content to bake into base color for a normal glTF material.",
+      "Pixel equality is meaningful only after fixing lights, environment, exposure, tone mapping, output color space, camera and renderer version on both sides. Otherwise compare named appearance relationships and record the differing pipelines."
+    ],
+    "implementation": [
+      "In Blender, mark base-color and emissive images with their actual color encoding and mark normal, roughness, metalness, occlusion and mask inputs as Non-Color. Keep the source texture assignment visible in the material graph.",
+      "Export through the recognized glTF material arrangement instead of baking Blender's display transform into ordinary material textures. Preserve a small neutral/color/roughness swatch asset beside the production asset.",
+      "Load glTF through GLTFLoader so its material texture annotations are interpreted by the loader. For manually loaded PNG or JPEG color maps, assign sRGB; leave non-color maps unannotated as color. Keep renderer output color space and tone mapping explicit in the app configuration.",
+      "Build a comparison matrix with one Blender view and one Three.js output configuration per column. State software versions and renderer backend. Change one axis at a time before adjusting material factors.",
+      "If a custom Three shader participates, confirm it performs the required output color conversion for the chosen renderer path; do not compensate for a missing conversion by retinting source textures."
+    ],
+    "observable_checks": [
+      "A flat normal-map test patch stays neutral and its lighting does not acquire the contrast shift expected from sRGB decoding.",
+      "The roughness ramp changes highlight width monotonically while its underlying data values remain unchanged across the handoff.",
+      "Switching only Blender's view transform changes the displayed Blender image but does not alter exported texture bytes or glTF material factors.",
+      "The comparison report names Blender version/view, Three.js revision/renderer backend, environment, exposure, tone mapping and output color space before calling a mismatch a material defect."
+    ]
+  },
+  "creative_affordances": [
+    "Choose a graded or stylized final look on either side after the transport comparison is stable; keep a neutral diagnostic view available.",
+    "Exact pixel matching may be replaced by an authored perceptual match when the two output transforms intentionally differ."
+  ],
+  "known_limits": [
+    "This extends the existing shared color-management profile with a Blender-glTF-Three handoff; it does not derive color science or certify displays.",
+    "Blender and Three.js defaults change across releases, so every implementation records actual versions and backend.",
+    "Authored reusable guidance; no Blender export, Three.js runtime or rendered comparison was run for this record."
+  ],
+  "related_ids": [
+    "knowledge.shared-display-color-management",
+    "knowledge.shared-pbr-studio-environment",
+    "knowledge.three-pbr-adapter"
+  ],
+  "claims": [
+    {
+      "id": "claim.blender-three-color-input-roles",
+      "statement": "Blender documents scene-linear rendering, Non-Color handling for data images, and selectable display views, while Three.js documents Linear-sRGB as its working space, sRGB annotation for ordinary color textures, no color-space annotation for normal and roughness data, and an explicit output color-space conversion.",
+      "scope": "Current documented color-management conventions of Blender and Three.js as accessed; they do not imply identical tone mapping or pixel output.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-blender-color-spaces",
+          "locator": "Linear Workflow; Working Space; Images and Video (Non-Color Data)"
+        },
+        {
+          "source_id": "source.shared-depth-blender-displays-views",
+          "locator": "Overview; Views"
+        },
+        {
+          "source_id": "source.shared-depth-three-color-management",
+          "locator": "Roles of color spaces; Input, Working and Output color space"
+        }
+      ]
+    },
+    {
+      "id": "claim.blender-three-color-gltf-encoding",
+      "statement": "glTF 2.0 requires the RGB components of base-color textures to use the sRGB transfer function, while metallic-roughness, normal and occlusion values use linear transfer functions.",
+      "scope": "glTF 2.0 core material texture encodings; extension textures must follow their own specifications.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Materials > Metallic-Roughness Material; Additional Textures"
+        }
+      ]
+    }
+  ]
+}

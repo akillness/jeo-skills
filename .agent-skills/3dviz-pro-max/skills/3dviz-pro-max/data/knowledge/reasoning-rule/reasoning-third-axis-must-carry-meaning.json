@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-third-axis-must-carry-meaning",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Spend the third dimension on information"
+  },
+  "aliases": {
+    "en": [
+      "when to use 3D",
+      "occlusion cost",
+      "depth as encoding"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "probability-statistics"
+  ],
+  "summary": "Use depth when it encodes a variable or a real spatial relationship, not to make a flat diagram look richer.",
+  "objective": "Decide honestly whether a data scene benefits from being three-dimensional.",
+  "applies_when": [
+    "An abstract diagram, graph or chart is being built in three dimensions.",
+    "Elements occlude each other or change apparent size with distance.",
+    "The viewer must compare values or trace connections."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "dimensionality",
+    "occlusion",
+    "perspective distortion",
+    "depth encoding",
+    "graph layout",
+    "readability"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "data",
+    "composition"
+  ],
+  "intent_signals": [
+    "make it 3D",
+    "the bars at the back are hidden",
+    "should this be a flat chart"
+  ],
+  "example_prompts": [
+    "Decide whether this system diagram benefits from three dimensions.",
+    "Lay out the graph so depth carries the hierarchy."
+  ],
+  "negative_signals": [
+    "Genuinely spatial subjects such as buildings, terrain or molecules.",
+    "Scenes whose purpose is exploration and atmosphere rather than reading values."
+  ],
+  "not_for": [
+    "Genuinely spatial subjects such as buildings, terrain or molecules.",
+    "Scenes whose purpose is exploration and atmosphere rather than reading values."
+  ],
+  "content": {
+    "principles": [
+      "Depth costs before it pays: it introduces occlusion, perspective scaling that distorts comparison, and a navigation burden, all of which apply even when the third axis carries nothing.",
+      "It earns its cost when the third axis encodes something real, such as time, hierarchy depth, a third variable, or a genuine spatial relationship, or when the interaction of moving through the data is the point.",
+      "Value comparison is the weakest use. Perspective makes equal quantities look different by position, which is exactly the comparison a chart exists to support.",
+      "The decision is not all or nothing: a three-dimensional scene can carry a flat, readable panel for the quantitative part."
+    ],
+    "implementation": [
+      "Name what depth is doing before building: encoding a variable, expressing a real spatial relationship, or supporting exploration and atmosphere. Only the first two support quantitative reading. Decorative or experiential depth is a legitimate choice; what it must not do is invite a measurement it cannot support.",
+      "Where depth is used for a variable, provide an orthographic or aligned view so comparisons are not distorted by perspective.",
+      "Give the viewer a canonical viewpoint to return to, since arbitrary angles make a spatial layout unreadable.",
+      "Reduce occlusion structurally through layering, transparency or filtering rather than expecting the viewer to orbit.",
+      "Pair the spatial view with a flat panel for values that must be compared precisely."
+    ],
+    "observable_checks": [
+      "Ask what depth is doing and check the scene against that answer: where it encodes a variable, confirm the reading is honest and undistorted; where it is exploratory or decorative, confirm no quantitative claim rests on it.",
+      "Compare two elements with equal values at different depths and see whether they read as equal.",
+      "Count how many elements are hidden from the default viewpoint.",
+      "Confirm a return-to-default view exists and that the default is the intended reading position."
+    ]
+  },
+  "related_ids": [
+    "recipe.embedding-projection",
+    "recipe.service-graph",
+    "knowledge.graph-in-space"
+  ],
+  "creative_affordances": [
+    "Spatial data worlds can be delightful and memorable; the rule asks for a reason, not for restraint.",
+    "Deliberately non-quantitative spatial metaphors are valid when precise reading is not claimed."
+  ],
+  "known_limits": [
+    "Authored composition guidance; it cites no perceptual study and no user testing was performed.",
+    "No runtime scene has been evaluated for this record."
+  ],
+  "claims": []
+}

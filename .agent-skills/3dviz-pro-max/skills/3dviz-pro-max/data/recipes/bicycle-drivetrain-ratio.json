@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "id": "recipe.bicycle-drivetrain-ratio",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Bicycle drivetrain and gear ratio"
+  },
+  "aliases": {
+    "en": [
+      "gear ratio",
+      "chain drive",
+      "cassette"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies"
+  ],
+  "summary": "Connect chainring and sprocket sizes to wheel rotation through a chain that shares one linear speed.",
+  "objective": "Build a bicycle drivetrain where changing the chainring or sprocket changes the wheel turns per pedal turn, with the chain path staying consistent.",
+  "tags": [
+    "bicycle",
+    "drivetrain",
+    "gear ratio"
+  ],
+  "subject_terms": [
+    "chainring",
+    "sprocket",
+    "cassette",
+    "chain",
+    "gear ratio",
+    "cadence",
+    "derailleur",
+    "tangential speed"
+  ],
+  "intent_signals": [
+    "Show how bicycle gearing changes wheel turns per pedal turn.",
+    "Build a chain drive whose ratio I can change."
+  ],
+  "example_prompts": [
+    "Build a bicycle drivetrain with selectable chainring and sprocket and a wheel turns per pedal turn readout.",
+    "Show the chain path changing when the derailleur shifts."
+  ],
+  "negative_signals": [
+    "Not a ride dynamics, power or performance model; no watts, speeds or gradients.",
+    "Not a specific manufacturer drivetrain or compatibility guide."
+  ],
+  "not_for": [
+    "Not a ride dynamics, power or performance model; no watts, speeds or gradients.",
+    "Not a specific manufacturer drivetrain or compatibility guide."
+  ],
+  "entities": [
+    {
+      "name": "Rotating group",
+      "guidance": "Model crank, chainring, sprockets and wheel as separate rotating parts with declared tooth counts and radii."
+    },
+    {
+      "name": "Chain path",
+      "guidance": "Route the chain over the engaged chainring and sprocket with straight runs and correct wrap, since the shared chain speed is the whole argument."
+    },
+    {
+      "name": "Ratio readout",
+      "guidance": "Display the engaged tooth counts and the resulting wheel turns per crank turn, updating on every shift."
+    }
+  ],
+  "state_contract": {
+    "model": "A fixed-drive kinematic demonstrator: crank, chainring, sprockets and wheel are rigidly coupled through the engaged pair, with no freewheel or coasting. Pitch radii are taken proportional to tooth count, so the engaged ratio is the tooth-count ratio and the chain is modelled as inextensible and non-slipping. Discrete link and chordal effects are excluded by declaration. Wheel rotation is derived from the crank angle through that ratio, and the chain link inventory and total length are conserved across a shift.",
+    "authority": "The engaged pair is authoritative for the ratio; the animated rotation of every part is derived from one crank input so no part can drift out of sync.",
+    "actions": [
+      "Turn the crank and watch the wheel rotate.",
+      "Shift to a different chainring or sprocket.",
+      "Toggle the chain path and the ratio readout.",
+      "Reset the drivetrain to its starting gear."
+    ]
+  },
+  "invariants": [
+    "Under the inextensible non-slipping chain assumption the chain has one linear speed, so the tangential speeds at both engaged pitch radii are equal; that is a declared modelling assumption of this demonstrator, not a consequence of the cited rotation relation alone.",
+    "With driving chainring tooth count fixed, a larger driven sprocket gives fewer wheel turns per crank turn.",
+    "The chain link inventory and total length are conserved through a shift: either the transition is modelled with the tensioner taking up the wrap-length change, or it is elided and the chain is rebuilt to a declared state."
+  ],
+  "motion_guidance": [
+    "Derive every rotation from the crank angle so pedalling backwards reverses the whole drivetrain consistently.",
+    "Animate the shift as the chain moving across teeth rather than as an instant snap between gears."
+  ],
+  "known_limits": [
+    "Idealised rigid chain with no slack, stretch, friction or losses, and a fixed drive with no freewheel: reversing the crank reverses every driven part only because coasting is excluded by declaration.",
+    "Tooth counts and geometry are illustrative; this is not a component compatibility model.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-tangential-angular-speed",
+      "statement": "The tangential speed of a point on a rotating body equals its distance from the axis times the angular velocity, so points at different radii on a rigid rotating body share angular velocity but differ in tangential speed.",
+      "scope": "The cited relation covers a point on a rotating rigid body. Equating the chain speed to the tangential speed at each engaged pitch radius is this recipe's inextensible non-slipping chain assumption, and pitch radii proportional to tooth count is a declared smooth approximation rather than exact tooth engagement.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-rotation",
+          "locator": "10.1, tangential speed and angular velocity relation"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Rotating group",
+      "structure": "Chainring and sprockets with real tooth profiles, a crank with pedal spindles and a wheel with spokes and a hub.",
+      "material": "Machined metal families with distinct finishes for chainring, cassette and chain; keep the chain darker so its path reads against the teeth.",
+      "articulation": "All rotations derive from the crank angle through the engaged ratio."
+    },
+    {
+      "family": "Chain path",
+      "structure": "Link geometry following a path with straight runs and wrap arcs, plus a tensioner cage with two pulleys.",
+      "material": "Slightly oiled metal look with per-link variation so motion is legible without strobing.",
+      "articulation": "The chain path rebuilds when the engaged pair changes; links advance along it with the drivetrain."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Kinematic ratio propagation from a single input; no forces, torque, friction or chain dynamics.",
+    "state": [
+      "crank angle",
+      "engaged chainring",
+      "engaged sprocket"
+    ],
+    "checks": [
+      "Wheel turns per crank turn match the engaged tooth-count ratio.",
+      "Reversing the crank reverses every driven part."
+    ]
+  },
+  "related_ids": [
+    "recipe.coupled-gears",
+    "knowledge.gear-mechanism",
+    "knowledge.constrained-gear-motion"
+  ]
+}

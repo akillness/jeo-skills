@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fire-Paper Loader"
+  short_description: "A burning-paper ring loader drawn by a worker from the head"
+  default_prompt: "Use $fire-paper-loader to add a burning-paper ring loader that starts from the head in a worker and hands off to the page without a stall."

@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "id": "recipe.embedding-projection",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Embedding projection inspector"
+  },
+  "aliases": {
+    "en": [
+      "embedding projection"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data"
+  ],
+  "summary": "Explore a projection while retaining access to original vector relationships.",
+  "objective": "Show an embedding dataset projected into 3D with point selection, metadata and an original-space distance inspector.",
+  "tags": [
+    "embedding",
+    "projection"
+  ],
+  "example_prompts": [
+    "Show an embedding dataset projected into 3D with point selection, metadata and an original-space distance inspector."
+  ],
+  "entities": [
+    {
+      "name": "Points",
+      "guidance": "Use consistent glyph size unless explicitly encoding a field; stable IDs survive filtering."
+    },
+    {
+      "name": "Selection",
+      "guidance": "Link selected point to original vector metadata and nearest-neighbor readout; avoid hover-only access."
+    },
+    {
+      "name": "Projection frame",
+      "guidance": "Label axes as projection coordinates without invented semantic units; use restrained depth cues."
+    }
+  ],
+  "state_contract": {
+    "model": "Supplied vector matrix and IDs plus a recorded projection method, parameters, seed and output coordinates; no dataset is bundled.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Select point and inspect original-space neighbors.",
+      "Filter metadata without silently refitting.",
+      "Compare recorded projections and reset."
+    ]
+  },
+  "invariants": [
+    "Projection coordinates never overwrite original vectors.",
+    "Distance readout identifies its metric and whether it is original or projected space.",
+    "Do not infer semantic categories or global distances from attractive clusters alone."
+  ],
+  "motion_guidance": [
+    "Camera orbit changes no data.",
+    "Refitting is a deliberate action with a new projection revision; interpolation between fits is presentation only."
+  ],
+  "known_limits": [
+    "Source abstract establishes 2D/3D projection purpose, not distance preservation or cluster truth.",
+    "Requires a real dataset and computed or supplied projection; random points must be labeled synthetic.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.embedding-projection",
+      "statement": "t-SNE maps high-dimensional data points to positions in a two- or three-dimensional visualization.",
+      "scope": "Method purpose described by the original paper abstract; no preservation guarantee.",
+      "source_refs": [
+        {
+          "source_id": "source.jmlr-tsne",
+          "locator": "Abstract"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Points",
+      "structure": "Use consistent glyph size unless explicitly encoding a field; stable IDs survive filtering.",
+      "material": "Uniform matte glyphs unless a legend explicitly maps a field; use selection outline and depth cues without invented density coding."
+    },
+    {
+      "family": "Selection",
+      "structure": "Link selected point to original vector metadata and nearest-neighbor readout; avoid hover-only access.",
+      "material": "Uniform matte glyphs unless a legend explicitly maps a field; use selection outline and depth cues without invented density coding."
+    },
+    {
+      "family": "Projection frame",
+      "structure": "Label axes as projection coordinates without invented semantic units; use restrained depth cues.",
+      "material": "Uniform matte glyphs unless a legend explicitly maps a field; use selection outline and depth cues without invented density coding."
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "_note": "What the user supplied. Everything the build is allowed to know about the game is in this folder. List only the files you have.",
+  "game_name": "GAME NAME",
+  "files": {
+    "screen_recording": "gameplay.mp4",
+    "screenshots": ["screenshot.png"],
+    "logo": "logo.png"
+  },
+  "store_links": {
+    "ios": "https://apps.apple.com/app/game-name/id0000000000",
+    "android": "https://play.google.com/store/apps/details?id=com.example.game"
+  },
+  "genre": { "family": "puzzle", "id": "sort-puzzle" },
+  "product_model": "hybrid-casual",
+  "game_description": "In the user's words: what the player does, what makes it fun, what the ad should show. Required when genre is \"other\".",
+  "ad_networks": ["meta", "google"],
+  "hook": {
+    "id": "power-spike",
+    "label": "One line the ad promises",
+    "pitch": "Two sentences: what the player does after the first touch and how the ad ends."
+  },
+  "_scenario": {
+    "team_id": "team_...",
+    "project_id": "proj_...",
+    "uploaded_frames": ["asset_..."]
+  }
+}

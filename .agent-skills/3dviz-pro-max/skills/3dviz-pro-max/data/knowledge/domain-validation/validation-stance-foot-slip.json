@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-stance-foot-slip",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Stance foot slip against root travel"
+  },
+  "aliases": {
+    "en": [
+      "foot slip measurement",
+      "gait travel consistency"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art"
+  ],
+  "summary": "Measure whether planted feet stay planted while the root travels, and whether travel per cycle matches the authored stride.",
+  "objective": "The declared contact anchor holds its position relative to its support while flagged, and steady-speed travel per gait cycle matches the stride the controller intends.",
+  "applies_when": [
+    "A character or creature travels along a route with an authored walk or run cycle.",
+    "Root motion comes from a controller rather than from baked root translation in the clip.",
+    "The scene includes acceleration, turning or stopping."
+  ],
+  "check_method": "geometry",
+  "tags": [
+    "domain-validation",
+    "locomotion",
+    "gait",
+    "foot-contact"
+  ],
+  "subject_terms": [
+    "stance phase",
+    "foot slip",
+    "stride length",
+    "gait cycle",
+    "root motion",
+    "arc length"
+  ],
+  "intent_signals": [
+    "the creature looks like it is skating",
+    "check the walk cycle against the travel speed"
+  ],
+  "example_prompts": [
+    "Check whether this creature slides while walking its patrol route."
+  ],
+  "negative_signals": [
+    "balance or muscle simulation",
+    "retargeting animation between skeletons"
+  ],
+  "content": {
+    "principles": [
+      "Root travel and gait phase come from one clock in a controlled-locomotion character; foot slip is the observable disagreement between them.",
+      "A stance foot constrains a declared contact anchor, not the foot bone origin: during foot roll the bone origin translates while the heel or toe contact stays planted, so the anchor is named before anything is measured.",
+      "Stride length times cadence is the travel speed a fixed-stride gait supports, so that ratio is a check in the steady-speed regime only; a controller that stretches stride or rescales gait phase is checked against its declared adaptation policy instead."
+    ],
+    "implementation": [
+      "Declare the contact anchor for each foot (heel, toe or contact-patch centre) and sample its position together with the pose of the support it stands on, every fixed model step rather than every rendered frame, across at least three complete cycles at constant speed.",
+      "For each stance interval report the maximum displacement of the anchor relative to its support, which equals world displacement only when that support is static; this value is the slip magnitude in scene length units.",
+      "Separately compute travel per cycle from the root path arc length and divide it by the stride the controller intends for that cycle; report this dimensionless ratio against its own dimensionless threshold, never reusing the length threshold from the slip measurement.",
+      "Repeat during acceleration, through a turn at the tightest authored radius and through the stop, and record the stride and phase policy the controller uses there; outside steady speed the fixed-ratio expectation does not apply and the policy is what gets checked."
+    ],
+    "observable_checks": [
+      "Stance slip stays below an authored length threshold recorded together with the intended viewing distance and framing; a fraction of the contact-patch length is a reasonable starting point, but whether a given slip reads on screen is a viewing-condition judgment rather than a property of the number.",
+      "In the steady-speed segment, travel per cycle divided by the intended stride stays at one within the declared dimensionless tolerance; a constant ratio other than one identifies a speed or scale mismatch rather than an animation defect.",
+      "After root velocity reaches zero at the stop, the last stance anchor does not translate relative to its support, and any deliberate settle motion is declared rather than absorbed into the slip threshold."
+    ]
+  },
+  "known_limits": [
+    "Measures kinematic consistency of authored motion; it says nothing about balance, ground reaction forces or biological plausibility.",
+    "Slip readability depends on camera distance, framing and playback speed, so the threshold is an authored viewing-condition choice and does not transfer unchanged between shots.",
+    "Authored verification guidance; no scene was run or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.garden-creature-patrol",
+    "recipe.terrain-island",
+    "recipe.lantern-keeper-puppet"
+  ],
+  "claims": []
+}

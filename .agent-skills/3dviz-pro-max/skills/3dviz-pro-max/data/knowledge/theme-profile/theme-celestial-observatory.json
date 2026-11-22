@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.theme-celestial-observatory",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "theme-profile",
+  "title": {
+    "en": "Celestial observatory fiction"
+  },
+  "aliases": {
+    "en": [
+      "cosmic observatory",
+      "star garden",
+      "celestial sanctuary"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "astronomy-space"
+  ],
+  "summary": "Use an invented observing place to connect intimate human-scale instruments with an expansive sky composition.",
+  "objective": "The observatory remains navigable in the dark, and decorative stars or orbital motifs are identified as invented when appropriate.",
+  "tags": [
+    "theme-profile",
+    "fictional-setting",
+    "celestial-observatory"
+  ],
+  "subject_terms": [
+    "cosmic observatory",
+    "star garden",
+    "celestial sanctuary"
+  ],
+  "intent_signals": [
+    "Set the scene in a celestial observatory fiction",
+    "Use cosmic observatory as the narrative setting"
+  ],
+  "example_prompts": [
+    "Build a fictional celestial observatory with an inspectable telescope and explicitly decorative sky motifs."
+  ],
+  "content": {
+    "principles": [
+      "Use an invented observing place to connect intimate human-scale instruments with an expansive sky composition.",
+      "Theme supplies setting and motifs; choose geometry style, rendering approach and factual model independently."
+    ],
+    "implementation": [
+      "Compose platforms, viewing apertures and a focal instrument with distinct silhouettes; decide whether celestial forms are symbolic or data-driven.",
+      "Use a restrained dark field and selected luminous accents while keeping stairs, rails and controls visible.",
+      "Offer an instrument-level view and a sky-oriented view; symbolic orbits may animate, but sourced astronomical views must use their own frame/time contract."
+    ],
+    "observable_checks": [
+      "The observatory remains navigable in the dark, and decorative stars or orbital motifs are identified as invented when appropriate.",
+      "Inspect one focal object close up and the complete route or spatial relationship from an overview."
+    ]
+  },
+  "known_limits": [
+    "Authored fictional setting guidance; no rendered artifact or runtime improvement has been observed for this record.",
+    "This proposal does not establish historical, cultural, scientific or engineering facts."
+  ],
+  "creative_affordances": [
+    "Combine with surreal, minimalist or glass-like forms; a celestial theme alone does not establish accurate positions, scales or seasons.",
+    "Replace motifs or combine settings to suit the user brief; maintain a readable organizing idea rather than treating these suggestions as a fixed asset list."
+  ],
+  "related_ids": [
+    "knowledge.framed-shelter",
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

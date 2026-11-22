@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "id": "recipe.pipeline-throughput",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Pipelining, latency and throughput"
+  },
+  "aliases": {
+    "en": [
+      "pipeline stages",
+      "throughput",
+      "latency"
+    ]
+  },
+  "direction_ids": [
+    "logic-circuits"
+  ],
+  "summary": "Separate how long one item takes from how often items finish, and tie both to the slowest stage.",
+  "objective": "Build a pipelined datapath where I can insert registers between stages and watch latency and throughput move in opposite directions.",
+  "tags": [
+    "pipeline",
+    "throughput",
+    "latency"
+  ],
+  "subject_terms": [
+    "pipeline",
+    "pipeline register",
+    "latency",
+    "throughput",
+    "clock period",
+    "stage delay",
+    "slowest stage",
+    "K-stage pipeline"
+  ],
+  "intent_signals": [
+    "Show why adding pipeline stages raises throughput but not latency.",
+    "Explain how the slowest stage sets the clock period."
+  ],
+  "example_prompts": [
+    "Build a pipelined circuit where I can add pipeline registers and see latency and throughput update.",
+    "Show tokens flowing through a K-stage pipeline with a per-stage delay readout."
+  ],
+  "negative_signals": [
+    "Not a processor microarchitecture recipe: hazards, forwarding and stalls are out of scope.",
+    "Not a performance measurement of any real device."
+  ],
+  "not_for": [
+    "Not a processor microarchitecture recipe: hazards, forwarding and stalls are out of scope.",
+    "Not a performance measurement of any real device."
+  ],
+  "entities": [
+    {
+      "name": "Stage blocks",
+      "guidance": "Model each combinational stage as a block with its own delay value and an output register position that can be present or absent."
+    },
+    {
+      "name": "Token flow",
+      "guidance": "Send identified tokens through the pipeline so the same item can be followed end to end while others enter behind it."
+    },
+    {
+      "name": "Performance readout",
+      "guidance": "Display clock period, latency and throughput together, each derived from the current stage delays."
+    }
+  ],
+  "state_contract": {
+    "model": "A chain of combinational stages with finite positive delays and a register configuration. The clock period is the maximum stage delay over the current grouping, where removing a register merges contiguous blocks and sums their delays. Latency is reported both in clock periods (the stage count) and in model time units; throughput is reported both as one item per clock and as one over the period in items per model-time unit. The reciprocal is evaluated only for a finite positive period.",
+    "authority": "Stage delays and register placement are authoritative; the three performance numbers are always recomputed and never authored independently.",
+    "actions": [
+      "Insert or remove a pipeline register between stages.",
+      "Change a stage delay and observe the clock period.",
+      "Follow one token through the pipeline.",
+      "Reset the configuration."
+    ]
+  },
+  "invariants": [
+    "Every path from input to output crosses the same number of registers; an unbalanced insertion is rejected.",
+    "The clock period equals the largest stage delay after the current grouping, so reducing one of several tied slowest stages leaves it unchanged; the period is compared against the recomputed maximum rather than against the edited stage.",
+    "Adding a register increases the latency measured in clock periods while throughput stays one item per clock; measured in model time the two need not move oppositely, since a perfectly balanced split can leave time latency unchanged and splitting a non-critical stage can leave throughput unchanged."
+  ],
+  "motion_guidance": [
+    "Advance tokens one stage per clock tick with a visible tick marker; smooth continuous sliding hides the discrete nature of the pipeline.",
+    "Keep token identity visible across stages so latency can be observed for a specific item."
+  ],
+  "known_limits": [
+    "Idealised pipeline with no hazards, no bubbles and zero register overhead beyond the declared delays.",
+    "Throughput here is per clock, not a wall-clock measurement.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-latency-throughput",
+      "statement": "Latency is the time to process a particular input, and throughput is the rate at which the system produces outputs.",
+      "scope": "Definitions as taught for synchronous systems.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-mit6004-performance",
+          "locator": "7.1 slides, latency and throughput definitions"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-pipeline-period",
+      "statement": "A K-stage pipeline has exactly K registers on every path from input to output, its latency is K times the clock period, its throughput is the clock frequency, and the clock period is set by the propagation delay of the slowest stage.",
+      "scope": "Well-formed synchronous pipeline as taught, with register overhead folded into the stated stage delays; the clock period follows the slowest stage, which need not be unique.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-mit6004-performance",
+          "locator": "7.1 slides, K-stage pipeline latency, throughput and clock period"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Stage blocks",
+      "structure": "Blocks arranged along a visible datapath rail with slots between them where registers can be dropped in.",
+      "material": "Uniform stage material so the slowest stage can be marked by a single reserved accent rather than by size.",
+      "articulation": "Registers appear and disappear in slots; stages themselves do not move."
+    },
+    {
+      "family": "Token flow",
+      "structure": "Small labelled carriers that occupy exactly one stage at a time, with a queue indicator at the input.",
+      "material": "Per-token identity colour from a small repeating palette plus a printed index, so identity survives palette reuse.",
+      "articulation": "Tokens step one stage per tick and are removed at the output."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Discrete tick-based token movement; no physical transport or contact.",
+    "state": [
+      "stage delays",
+      "register configuration",
+      "token positions",
+      "tick index"
+    ],
+    "checks": [
+      "All input-to-output paths report the same register count.",
+      "Reducing the unique slowest stage delay reduces the clock period and raises throughput in items per model-time unit; with tied slowest stages the period is unchanged until every tie is reduced."
+    ]
+  },
+  "related_ids": [
+    "recipe.critical-path-delay",
+    "recipe.parcel-sorter-events",
+    "knowledge.state-playback"
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "id": "recipe.museum-visitor-evaluation-playback",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Museum visitor evaluation event playback"
+  },
+  "aliases": {
+    "en": [
+      "consented museum route replay",
+      "synthetic visitor inspection analysis"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "Replay supplied or synthetic route and object-inspection events with provenance and missing-data states, without fabricating visitors or inferring causal behavior.",
+  "objective": "Build a privacy-bounded evaluation view where I inspect ordered visits, dwell intervals and interaction outcomes for one declared dataset revision.",
+  "tags": [
+    "museum evaluation",
+    "event playback",
+    "visitor route"
+  ],
+  "subject_terms": [
+    "synthetic data",
+    "consent status",
+    "time origin",
+    "dwell interval",
+    "missing event",
+    "aggregate",
+    "provenance"
+  ],
+  "intent_signals": [
+    "museum visitor evaluation playback",
+    "consented route event replay"
+  ],
+  "example_prompts": [
+    "Replay a synthetic museum route dataset and compare exhibit dwell counts while labeling missing consent and unknown intervals."
+  ],
+  "negative_signals": [
+    "Not live surveillance, identity inference, emotion detection, causal UX proof or a universal museum metric."
+  ],
+  "not_for": [
+    "No face/device fingerprinting, fabricated observed visitors, cross-dataset identity join or unlabeled synthetic records."
+  ],
+  "entities": [
+    {
+      "name": "Evaluation dataset",
+      "guidance": "Accept supplied consented or explicitly synthetic records only; store dataset revision, collection purpose, consent/permission label, time origin, clock domain and missingness policy."
+    },
+    {
+      "name": "Route and exhibit view",
+      "guidance": "Map event exhibit IDs to the accessible museum scene, but preserve unmapped/unknown IDs in a ledger instead of inventing positions."
+    }
+  ],
+  "state_contract": {
+    "model": "An immutable dataset revision contains pseudonymous session IDs only when supplied and authorized, ordered events (enter/leave/select/inspect/complete/error), timestamps in one declared clock domain, exhibit IDs and optional accessibility/input mode fields. Synthetic sessions carry an explicit synthetic=true label. Reject missing permission according to project policy; never convert it to observed data. Stable-sort equal timestamps by original sequence. Dwell intervals require a matched enter/leave policy and otherwise remain unknown. Aggregates expose denominator, missingness and filter revision; comparisons are descriptive and never causal. Reset clears filters, playback cursor and selection, not source data.",
+    "authority": "Three.js owns the versioned semantic state, model time, history and reset; Blender/glTF assets are named presentation resources only.",
+    "actions": [
+      "Load an authorized supplied or labeled synthetic dataset.",
+      "Replay one session or inspect an aggregate with denominator.",
+      "Filter by declared fields without exposing identity.",
+      "Reset cursor/filters and export only policy-approved aggregate data."
+    ]
+  },
+  "invariants": [
+    "Every displayed path/event maps to an exact source record or is visibly unknown.",
+    "Synthetic and supplied observations never merge without labels.",
+    "Missing consent/permission never becomes an inferred approval.",
+    "Dwell and completion aggregates retain unknown/missing cases and make no causal claim."
+  ],
+  "motion_guidance": [
+    "Drive presentation from a seekable model time and derive every visible transform from current state; pause and scrub never advance hidden semantic state.",
+    "Provide a static sequence/list and reduced-motion mode that preserves text, order, choices and status."
+  ],
+  "creative_affordances": [
+    "Choose typography, assets, palette, staging and metaphor per the supplied brief and licensed material; no house style is mandatory.",
+    "Blender owns expressive geometry, rigs, sets and cue anchors; Three.js owns time, branch/state, captions, interruption and checkpoints."
+  ],
+  "known_limits": [
+    "Project policy and dataset fields must be reviewed for the actual study; this profile supplies no legal determination, consent form, anonymity guarantee or statistical inference.",
+    "Authored, source-reviewed guidance only; no Blender export, audio playback, visitor study, show-control link, browser or renderer was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.art-high-resolution-time-domain",
+      "statement": "High Resolution Time defines a monotonic time value relative to a time origin and explains that time origins can differ between contexts; timestamps therefore need an explicit origin/domain before comparison.",
+      "scope": "Web performance time coordinates; event meaning, consent and study interpretation remain authored dataset policy.",
+      "source_refs": [
+        {
+          "source_id": "source.art-w3c-hr-time",
+          "locator": "Time concepts, monotonic clock, time origin and translating timestamps between globals"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Evaluation route table",
+      "structure": "Use subdued anonymous path ribbons, exhibit ID pylons and a synchronized event table; unknown locations remain in an unplaced lane.",
+      "material": "Patterns distinguish synthetic, supplied and missing states; density color never implies satisfaction or causation."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Spatial layout and motion communicate authored media/state; geometry and collisions have no physical authority.",
+    "timestep": "Evaluate from seekable authored time or discrete event state; no physics integration.",
+    "state": [
+      "versioned authored content",
+      "model time or event cursor",
+      "selection, accessibility and error state"
+    ],
+    "colliders": [
+      "optional interaction hit regions only"
+    ],
+    "driving": [
+      "authored cues and user actions"
+    ],
+    "contact": [
+      "none"
+    ],
+    "checks": [
+      "seek/reset state equality",
+      "missing asset/data fallback",
+      "presentation controls leave semantic data unchanged"
+    ]
+  },
+  "related_ids": [
+    "recipe.museum-route-object-inspection",
+    "knowledge.source-model-runtime-provenance-panel",
+    "knowledge.spatial-annotation-authoring"
+  ]
+}

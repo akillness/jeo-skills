@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-motion-source-selection",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Pick the motion source that matches the requirement"
+  },
+  "aliases": {
+    "en": [
+      "clip versus procedural",
+      "animation authority",
+      "motion model choice"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "rigid-mechanics"
+  ],
+  "summary": "Choose authored clips, procedural functions or solved dynamics by what the motion must respond to, and keep one owner per transform.",
+  "objective": "Select a motion model with the right responsiveness and correctness cost instead of defaulting to the most familiar one.",
+  "applies_when": [
+    "A character, creature or mechanism must move and the technique has not been chosen.",
+    "Motion must react to user input, terrain, collisions or a physical parameter.",
+    "An existing animation needs to respond to something it was not authored for."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "animation clip",
+    "procedural animation",
+    "physics simulation",
+    "motion model",
+    "responsiveness"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "motion",
+    "tooling"
+  ],
+  "intent_signals": [
+    "make it react when I push it",
+    "animate the performance",
+    "should it be physics or animation"
+  ],
+  "example_prompts": [
+    "The puppet should perform a scripted gesture but react when the user drags it.",
+    "Decide whether this creature needs physics or a hand-authored motion."
+  ],
+  "negative_signals": [
+    "Static scenes and single camera moves.",
+    "Numerical simulations whose model is fixed by the subject rather than by expressive needs."
+  ],
+  "not_for": [
+    "Static scenes and single camera moves.",
+    "Numerical simulations whose model is fixed by the subject rather than by expressive needs."
+  ],
+  "content": {
+    "principles": [
+      "Authored clips give exact artistic control and are inexpensive to evaluate, but they are not free: a mixer still advances clip time and updates the animated properties every frame. What a clip lacks is a dynamics solve, so it cannot avoid an obstacle, absorb an impact or respond to a changed mass.",
+      "Procedural motion, driven by time, parameters or a simple controller, responds continuously and stays cheap and predictable, at the cost of hand-crafted nuance.",
+      "Solved dynamics produces responses nobody authored, which is exactly the point when contact and momentum are the subject; the price is that the solver, not the artist, owns the transforms, and that direct pose writes fight it.",
+      "The important question is not which is most advanced but what the motion must answer to: a rehearsed performance, a continuous parameter, or a physical interaction."
+    ],
+    "implementation": [
+      "Classify the motion first: rehearsed performance, parameter response, or physical consequence. Choose clip, procedural or solver accordingly, and record the choice with the artifact.",
+      "Mix by body part or by phase rather than per frame: an authored upper-body gesture over a procedural walk, or an authored fall that hands over to the solver at release.",
+      "Where a solver owns a body, drive it through forces, impulses or velocities; setting the transform directly is a teleport and is not a physically meaningful action.",
+      "Use kinematic bodies for objects that must follow an authored path but still push dynamic objects, and keep that distinction explicit in the scene description.",
+      "Give every moving transform exactly one owner at a time and make handovers explicit events."
+    ],
+    "observable_checks": [
+      "Interact with the object in a way the author did not anticipate, such as pushing during a gesture; a clip-only actor ignores it entirely.",
+      "Look for the signature of a fight over ownership: jitter, interpenetration or objects snapping back to a path after a collision.",
+      "Choose a parameter change with a predicted consequence and compare the result against that prediction: apply the same impulse to bodies of different mass and check that the resulting speeds differ in the predicted ratio, or change the pair friction coefficient while a body is actually sliding on a contact. A null result from an undiscriminating test proves nothing, because ideal free-fall acceleration is independent of mass and an airborne or already resting body need not respond to a friction change.",
+      "Pause playback and confirm the actor holds a coherent pose rather than a blend artefact.",
+      "Trace which value the moving transform actually reads each frame: a clip track, a procedural expression or a solver pose. Ownership is the fact; the visual result can look identical either way."
+    ]
+  },
+  "related_ids": [
+    "recipe.ribbon-motion-sculpture",
+    "knowledge.three-rigid-body-adapter",
+    "knowledge.state-playback"
+  ],
+  "creative_affordances": [
+    "Hybrid pipelines are normal and welcome; the rule asks for explicit ownership, not purity.",
+    "A stylised, non-physical response can be the better artistic answer even where a solver was available."
+  ],
+  "known_limits": [
+    "Authored selection guidance with one documented engine behaviour cited; no runtime comparison of techniques was performed.",
+    "Says nothing about which specific engine or library to install."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-dynamic-body-control-boundary",
+      "statement": "In Rapier, directly changing the position of a rigid body is equivalent to teleporting it, which is not a physically realistic action; forces, impulses or velocity changes are the recommended way to move dynamic bodies, while kinematic bodies are user-controlled and fixed bodies do not move.",
+      "scope": "Documented behaviour of one rigid-body engine; it describes control responsibilities, not the accuracy of any particular simulation.",
+      "source_refs": [
+        {
+          "source_id": "source.rapier-rigid-bodies",
+          "locator": "Rigid-body types; position setting versus forces and impulses"
+        }
+      ]
+    },
+    {
+      "id": "claim.reasoning-clip-playback-update",
+      "statement": "A Three.js animation mixer is a player for animations on a particular object, and its update method advances the mixer time and updates the animation; it is normally called once per frame with the delta time from a clock or timer.",
+      "scope": "Documented playback behaviour of one animation system. It establishes that clip playback performs per-frame work, not that any particular scene is or is not simulated.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-three-animation-mixer",
+          "locator": "AnimationMixer description and update(deltaTime) in the render loop"
+        }
+      ]
+    }
+  ]
+}

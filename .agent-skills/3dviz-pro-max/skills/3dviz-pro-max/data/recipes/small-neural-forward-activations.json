@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "id": "recipe.small-neural-forward-activations",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Small neural-network forward activations"
+  },
+  "aliases": {
+    "en": [
+      "tiny ReLU network inspector",
+      "forward-pass activations",
+      "pre-activation and activation view"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "linear-algebra"
+  ],
+  "summary": "Make every affine contribution, pre-activation, ReLU result, and output of a small two-layer network inspectable for one input.",
+  "objective": "Drag a two-component input or edit one weight and trace the exact forward calculation through a bounded hidden layer to one output.",
+  "tags": [
+    "neural network",
+    "forward pass",
+    "ReLU",
+    "activation"
+  ],
+  "subject_terms": [
+    "feed-forward neural network",
+    "affine layer",
+    "pre-activation",
+    "ReLU activation",
+    "hidden units",
+    "weight matrix",
+    "bias vector",
+    "forward propagation"
+  ],
+  "intent_signals": [
+    "Show every activation in a small neural-network forward pass.",
+    "Explain the difference between weighted input, pre-activation, and post-activation."
+  ],
+  "example_prompts": [
+    "Build an interactive 2-h-1 ReLU network where I can inspect every weighted contribution, pre-activation, hidden activation, and final output."
+  ],
+  "negative_signals": [
+    "backpropagation",
+    "large convolutional model",
+    "biological spiking neuron",
+    "training benchmark"
+  ],
+  "not_for": [
+    "Presenting activation magnitude as causal importance.",
+    "Representing a high-dimensional production model with invented tiny weights.",
+    "Animating backpropagation or optimization without a separate contract."
+  ],
+  "entities": [
+    {
+      "name": "Input and parameters",
+      "guidance": "Show x, W1, b1, W2, and b2 with exact shapes and editable numeric values. Each edge exposes the product of its source activation and weight, not only edge thickness."
+    },
+    {
+      "name": "Hidden pre-activations and activations",
+      "guidance": "For each hidden unit r, display z1_r=sum_j W1_rj x_j+b1_r and a1_r=max(0,z1_r) as distinct signed and nonnegative marks."
+    },
+    {
+      "name": "Output and input-plane field",
+      "guidance": "Display y=W2 a1+b2 as the bounded recipe's linear readout. An optional surface over the two-input plane is sampled from the same network state; its vertical axis is output value, while its x and y axes are actual input coordinates."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored 2-h-1 network with 1<=h<=8: x in R^2, W1 in R^(h x 2), b1 in R^h, z1=W1x+b1, a1=ReLU(z1) elementwise, W2 in R^(1 x h), b2 scalar, and y=W2a1+b2. The output is linear so sign and scale remain visible; a probability interpretation requires a separately declared output activation.",
+    "authority": "The numeric input and parameter tensors own every contribution, z1, a1, and y. The node layout, edge curves, glyph sizes, and sampled surface resolution are presentation state.",
+    "actions": [
+      "Drag or type the two input coordinates and recompute the full forward pass.",
+      "Select a hidden unit to inspect every W1_rj x_j contribution, bias, z1_r, and ReLU result.",
+      "Edit one weight or bias with the affected values highlighted from the same recomputation.",
+      "Probe the optional input-plane output surface and compare its value with the network readout.",
+      "Reset input, parameters, hidden width, selection, surface resolution, and camera."
+    ]
+  },
+  "invariants": [
+    "Every displayed z1, a1, and y matches an independent matrix calculation from the displayed input and parameters within tolerance.",
+    "For each hidden unit, z1_r<0 implies a1_r=0, while z1_r>=0 implies a1_r=z1_r under the declared ReLU convention.",
+    "Changing b1_r by Delta changes z1_r by exactly Delta before activation and does not directly change other hidden pre-activations.",
+    "At a sampled probe coordinate, the optional surface value equals the graph's scalar y for the same input and parameters."
+  ],
+  "motion_guidance": [
+    "Stage the affine calculation, activation, and output readout without implying that values are particles traveling with physical delays.",
+    "When a parameter changes, interpolate glyph geometry only after the numerical target state is computed; intermediate display values are labeled interpolation unless recomputed."
+  ],
+  "creative_affordances": [
+    "Use a compact circuit bench, layered matrix board, or activation landscape, provided exact numbers and shapes remain accessible.",
+    "Signed stems may show z and disks or bars may show a, with redundant labels for zero and sign."
+  ],
+  "known_limits": [
+    "This is one authored 2-h-1 ReLU network with a linear output, not a claim about all neural architectures, learned representations, or training behavior.",
+    "The two-dimensional input plane and optional 3D output surface use real model dimensions; node placement depth is diagram layout only.",
+    "Activation magnitude and edge contribution are local numerical quantities, not general explanations of a prediction.",
+    "Authored recipe and prospective checks only; no training, model runtime, scene, or rendered result was run or observed."
+  ],
+  "claims": [
+    {
+      "id": "claim.mixed-grok-two-layer-relu-forward",
+      "statement": "A position-wise feed-forward network in the original Transformer applies two linear transformations with a ReLU between them, written FFN(x)=max(0,xW1+b1)W2+b2.",
+      "scope": "The feed-forward sublayer described in Section 3.3 of the original Transformer; the recipe's 2-h-1 tensor orientation is an explicitly authored small worked instance.",
+      "source_refs": [
+        {
+          "source_id": "source.mixed-grok-transformer-attention",
+          "locator": "Section 3.3, equation 2"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Small forward-pass instrument",
+      "structure": "Keep tensors, scalar contributions, pre-activation marks, activation marks, and the sampled input surface as separate linked objects. Use stable unit indices after width changes.",
+      "material": "Encode signed z and nonnegative ReLU output with distinct shapes and labels. Edge width may reinforce absolute weight only when a numeric legend remains visible."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Numerical forward-map state rendered as linked diagram and sampled surface; no biological or physical dynamics.",
+    "checks": [
+      "Recompute the complete 2-h-1 forward map from displayed tensors.",
+      "Verify surface probes and graph values use identical input and parameters."
+    ]
+  }
+}

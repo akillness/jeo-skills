@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "id": "recipe.big-cube-wide-turns",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Wide turns and inner slices on larger cubes"
+  },
+  "aliases": {
+    "en": [
+      "4x4 cube",
+      "wide turn notation",
+      "inner slice"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles"
+  ],
+  "summary": "Model a larger cube where a move addresses a contiguous range of layers and centre pieces carry individual identity even when they look interchangeable.",
+  "objective": "Build a four-layer cube where outer block turns and inner slice turns are distinct legal moves with correct notation.",
+  "tags": [
+    "big cube",
+    "notation",
+    "slice"
+  ],
+  "subject_terms": [
+    "wide turn",
+    "outer block move",
+    "inner slice",
+    "centre piece",
+    "edge pairing",
+    "notation",
+    "layer count"
+  ],
+  "intent_signals": [
+    "Show the difference between a wide turn and an outer face turn.",
+    "Model a 4x4 cube with correct move notation."
+  ],
+  "example_prompts": [
+    "Build a 4x4 cube with wide turns and inner slice moves I can apply and undo.",
+    "Show which pieces an outer block move affects compared with a single-layer turn."
+  ],
+  "negative_signals": [
+    "Not a solving method or parity-algorithm database for larger cubes.",
+    "Not a physical mechanism model: internal cores and cuttings are out of scope."
+  ],
+  "not_for": [
+    "Not a solving method or parity-algorithm database for larger cubes.",
+    "Not a physical mechanism model: internal cores and cuttings are out of scope."
+  ],
+  "entities": [
+    {
+      "name": "Layer model",
+      "guidance": "Represent the cube as indexed layers per axis so a move can address a contiguous block of layers rather than a single face."
+    },
+    {
+      "name": "Piece classes",
+      "guidance": "Distinguish corner, edge and centre piece classes explicitly, since larger cubes have multiple centres per face that are not individually fixed."
+    },
+    {
+      "name": "Notation display",
+      "guidance": "Show the notation for each applied move alongside the layer block it turned, so notation and effect are checkable against each other."
+    }
+  ],
+  "state_contract": {
+    "model": "Exact discrete state over indexed layers per axis. A move is a face, a contiguous layer range measured from that face (start depth and count, so outer block moves are the special case starting at depth 1) and a turn amount, with declared legal ranges. Competition notation is used for outer block moves; an inner-only slice is expressed in the scene as its own notation and is equivalent to the difference of two outer blocks. A move history supports undo, and pending and committed move labels are separate.",
+    "authority": "The layer block definition is authoritative: an animation that rotates a different set of layers than the move declares is a defect.",
+    "actions": [
+      "Apply an outer single-layer turn.",
+      "Apply a wide turn covering two layers.",
+      "Apply an inner slice turn only.",
+      "Undo the last move or reset to solved."
+    ]
+  },
+  "invariants": [
+    "A move rotates exactly the contiguous layer range it declares: an outer block starts at the face, an inner slice starts deeper, and the animated block always matches the declared range.",
+    "Undo restores the exact prior state including centre piece positions.",
+    "Centre pieces are tracked individually in the exact state, so permuting same-coloured centres is a state change even though an unmarked puzzle looks identical; visual solvedness and state identity are reported separately."
+  ],
+  "motion_guidance": [
+    "Animate the whole addressed block as one rigid rotation; animating layers separately would imply moves the model does not have.",
+    "Show the pending move label as the animation begins and move it to the committed history only when the state changes, so a cancelled or in-flight move is never recorded as executed."
+  ],
+  "known_limits": [
+    "Notation conventions differ between sources and puzzle sizes; the scene must state which convention it implements.",
+    "Larger cubes introduce solving parity cases that this recipe does not address.",
+    "The cited regulations define outer block moves only; inner-only slice moves are a scene convention here, expressible as the difference of two outer blocks.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-outer-block-moves",
+      "statement": "Competition notation for cubes with more than three layers defines outer block moves in which an outer slice turns together with adjacent inner slices, written with the number of slices n to move in the range greater than one and less than the number of layers, with n omitted meaning two slices.",
+      "scope": "Outer block moves as published in the cited article, re-read in this session. The same document has no separate inner-slice article, so any inner-only slice notation used in a scene is that scene's own convention and must be declared as such.",
+      "source_refs": [
+        {
+          "source_id": "source.wca-regulations-2026",
+          "locator": "Article 12a2, outer block moves and the range of n"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Layer model",
+      "structure": "Cubies of uniform size with visible gaps so layer boundaries are countable at a glance.",
+      "material": "Standard face palette with slightly varied value per centre piece so individual centres remain distinguishable.",
+      "articulation": "A move rotates a parented block of cubies about the face axis and reparents them on completion."
+    },
+    {
+      "family": "Notation display",
+      "structure": "A move ticker anchored in the scene showing the current and previous moves.",
+      "material": "Monospaced opaque plate so notation stays legible against the puzzle.",
+      "articulation": "The ticker updates when a move commits, not when it starts animating."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Exact discrete state with animated block rotation; no mechanism or contact simulation.",
+    "state": [
+      "piece permutation",
+      "orientation",
+      "move history"
+    ],
+    "checks": [
+      "Undo returns the exact previous state.",
+      "The animated block matches the layer count declared by the move."
+    ]
+  },
+  "related_ids": [
+    "recipe.twisty-cube-3x3-face-turns",
+    "recipe.direct-turn-cube",
+    "knowledge.state-playback"
+  ]
+}

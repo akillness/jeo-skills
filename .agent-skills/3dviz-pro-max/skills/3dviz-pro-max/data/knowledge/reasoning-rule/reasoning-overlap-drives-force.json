@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-overlap-drives-force",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Let the mechanism change the geometry that causes it"
+  },
+  "aliases": {
+    "en": [
+      "sliding filament",
+      "length tension",
+      "mechanistic geometry"
+    ]
+  },
+  "direction_ids": [
+    "physiology-biomechanics",
+    "molecules-materials"
+  ],
+  "summary": "When a scene explains a mechanism, animate the geometric quantity that does the work, not a colour or a proxy.",
+  "objective": "Make mechanistic animations show the actual structural change that the explanation depends on.",
+  "applies_when": [
+    "A scene explains how a structure produces force, motion or binding.",
+    "A slider or playback controls the degree of contraction, binding or engagement.",
+    "A quantity such as force or output is displayed alongside the structure."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "sliding filament",
+    "sarcomere",
+    "overlap",
+    "mechanism",
+    "length tension",
+    "structural change"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "physiology",
+    "mechanism"
+  ],
+  "intent_signals": [
+    "show how muscle contracts",
+    "animate the filaments",
+    "why does force change with length"
+  ],
+  "example_prompts": [
+    "Show a sarcomere contracting with the bands changing correctly.",
+    "Explain why force depends on how much the filaments overlap."
+  ],
+  "negative_signals": [
+    "Decorative pulsing or glow effects used to suggest activity.",
+    "Whole-body motion where the internal mechanism is not the subject."
+  ],
+  "not_for": [
+    "Decorative pulsing or glow effects used to suggest activity.",
+    "Whole-body motion where the internal mechanism is not the subject."
+  ],
+  "content": {
+    "principles": [
+      "An explanation lives in the changing geometry. If the animation shortens a whole block or brightens a colour, the viewer learns that something happened, not how.",
+      "In the sliding filament model the filaments do not change length; the thin filaments slide past the thick ones, the Z lines approach, the I band narrows and the A band keeps its width. That specific pattern is the content.",
+      "Structural sourcing does not supply a force model. Constant filament lengths and moving band boundaries are supported structure; a force readout needs its own sourced relationship, with stated activation and operating assumptions. Either show force from a separately sourced length-tension curve, correctly parameterised to the same sarcomere length, or show no force at all.",
+      "Getting the invariant wrong is a visible error: filaments that shorten teach exactly the misconception the model exists to correct."
+    ],
+    "implementation": [
+      "Model the components whose relative positions carry the mechanism, and drive them from one parameter such as sarcomere length.",
+      "Keep the invariant explicit in the construction: fixed filament lengths with variable overlap, rather than scaled meshes.",
+      "Derive the displayed bands, zones or measurements from the same geometry so they cannot drift.",
+      "Include the range where the mechanism degrades, such as too little or excessive overlap, since the ends of the range are where the explanation is tested.",
+      "Where force appears, label its origin and its assumptions: a reproduced length-tension curve from a cited source, or a model whose parameters are stated. A sourced measurement curve is not wrong merely because it is not recomputed from the displayed mesh overlap; what must agree is the sarcomere-length parameter used by both."
+    ],
+    "observable_checks": [
+      "Measure the modelled filament lengths across the range; any change means the geometry contradicts the mechanism.",
+      "Check the band widths at several lengths: the A band should keep its width while the I band narrows.",
+      "If a force readout is shown, confirm it is driven by the same sarcomere-length parameter as the geometry and that its source or model is named; a structural view with no force claim passes this check by showing nothing.",
+      "Push the parameter to its extremes and confirm the model behaves sensibly instead of inverting."
+    ]
+  },
+  "related_ids": [
+    "recipe.sarcomere-sliding-filaments"
+  ],
+  "creative_affordances": [
+    "Schematic proportions, exaggerated spacing and colour coding all help; the invariant is the constancy of filament length, not visual realism.",
+    "An accompanying abstract diagram of overlap against force is a legitimate companion view."
+  ],
+  "known_limits": [
+    "Authored mechanism guidance citing one structural model; it does not assert numerical force values or molecular kinetics.",
+    "Cross-bridge cycling detail and calcium regulation are outside this rule."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-sliding-filament-invariant",
+      "statement": "In the sliding filament model of contraction the thin filaments are pulled past the thick filaments without the filaments themselves changing length, so that the Z lines move closer together and the I band becomes smaller while the A band keeps the same width.",
+      "scope": "Structural description of skeletal muscle contraction at the sarcomere level; it does not describe force magnitudes or molecular kinetics.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-sarcomere",
+          "locator": "10.3, The Sliding Filament Model of Contraction"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "tag": "skill:scenario-game-assets:isometric",
+  "canvas": [1024, 1024],
+  "region_convention": "white=region; adapt to the model schema",
+  "templates": [
+    {
+      "name": "diamond-ground-v1",
+      "anchor": [512, 704],
+      "ground_polygon": [
+        [512, 512],
+        [896, 704],
+        [512, 896],
+        [128, 704]
+      ],
+      "grid_steps": [
+        [384, 192],
+        [-384, 192]
+      ],
+      "thickness": 0,
+      "projection": "2:1 dimetric",
+      "files": {
+        "reference": {
+          "file": "diamond-ground-v1-reference.png",
+          "sha256": "79d6dc0b2921756068659e3c42068d50612a7cfe713106e5e429e52afe873e05",
+          "asset_id": "asset_N6hMk5eQjifLnVfBXHNTFaLs"
+        },
+        "ground-region": {
+          "file": "diamond-ground-v1-ground-region.png",
+          "sha256": "50068f2b97160a220c61332d45adaa5be5847a5b95231f5c70fec9623ae304e2",
+          "asset_id": "asset_kn14fDMRzxY4PQpJKi5xdvA6"
+        },
+        "side-region": {
+          "file": "empty-side-region-v1.png",
+          "sha256": "c8b6bb3e837f846489438b47ae42f3960b820a17095ea66df3c5fa00fcd60665",
+          "asset_id": "asset_dmRcoYtxibBRjoQdrnrVrtop"
+        },
+        "object-region": {
+          "file": "diamond-ground-v1-object-region.png",
+          "sha256": "18f60fa47c914317d14284df079e2eb8500a26821348359682e4109829ea82fb",
+          "asset_id": "asset_gftmMMh2pcMGASMpF7oxDAPM"
+        }
+      }
+    },
+    {
+      "name": "diamond-slab-v1",
+      "anchor": [512, 704],
+      "ground_polygon": [
+        [512, 512],
+        [896, 704],
+        [512, 896],
+        [128, 704]
+      ],
+      "grid_steps": [
+        [384, 192],
+        [-384, 192]
+      ],
+      "thickness": 32,
+      "projection": "2:1 dimetric",
+      "files": {
+        "reference": {
+          "file": "diamond-slab-v1-reference.png",
+          "sha256": "75a6ef77324d9b7be6413cc393353c7c9f7eabe8aff642fbea21fc1ab1bb9abb",
+          "asset_id": "asset_cAfnjzYzwJHodBFjQS58uYiV"
+        },
+        "ground-region": {
+          "file": "diamond-slab-v1-ground-region.png",
+          "sha256": "50068f2b97160a220c61332d45adaa5be5847a5b95231f5c70fec9623ae304e2",
+          "asset_id": "asset_kn14fDMRzxY4PQpJKi5xdvA6"
+        },
+        "side-region": {
+          "file": "diamond-slab-v1-side-region.png",
+          "sha256": "b4115b8b18be7329b372f5d35999d3705b521af69ce348b307bfd1dcc2f081a4",
+          "asset_id": "asset_L2je76tvAxtVjoNNUAkPig9x"
+        },
+        "object-region": {
+          "file": "diamond-slab-v1-object-region.png",
+          "sha256": "2f3390b039df909c963950812a81175f9a328290c20b5e398244c443ed0dd5d2",
+          "asset_id": "asset_QJgeUyd3R4akRotKJbCj7hHe"
+        }
+      }
+    },
+    {
+      "name": "hex-ground-v1",
+      "anchor": [512, 704],
+      "ground_polygon": [
+        [320, 538],
+        [704, 538],
+        [896, 704],
+        [704, 870],
+        [320, 870],
+        [128, 704]
+      ],
+      "grid_steps": [
+        [576, 166],
+        [0, 332]
+      ],
+      "thickness": 0,
+      "projection": "30 degree hex",
+      "files": {
+        "reference": {
+          "file": "hex-ground-v1-reference.png",
+          "sha256": "426f3becc118a21574bfeec6e17b0091d01916303e6c927652fac22f7408a0d1",
+          "asset_id": "asset_RSag6LfWcoCHggGs9PqQUrw7"
+        },
+        "ground-region": {
+          "file": "hex-ground-v1-ground-region.png",
+          "sha256": "5e90f1946ee084873d5dc0c54ad52ee1337ecfc83365bd3a45064fbcb202b539",
+          "asset_id": "asset_HtuA8HcpPvW2b3JqVR2Z1gWP"
+        },
+        "side-region": {
+          "file": "empty-side-region-v1.png",
+          "sha256": "c8b6bb3e837f846489438b47ae42f3960b820a17095ea66df3c5fa00fcd60665",
+          "asset_id": "asset_dmRcoYtxibBRjoQdrnrVrtop"
+        },
+        "object-region": {
+          "file": "hex-ground-v1-object-region.png",
+          "sha256": "1386f492535b417685cdffd8313a1284d58378af5a4f7d4aad9333d46cfb760a",
+          "asset_id": "asset_36vhM61E7ddRS9tZzZ6WsUGk"
+        }
+      }
+    },
+    {
+      "name": "hex-slab-v1",
+      "anchor": [512, 704],
+      "ground_polygon": [
+        [320, 538],
+        [704, 538],
+        [896, 704],
+        [704, 870],
+        [320, 870],
+        [128, 704]
+      ],
+      "grid_steps": [
+        [576, 166],
+        [0, 332]
+      ],
+      "thickness": 32,
+      "projection": "30 degree hex",
+      "files": {
+        "reference": {
+          "file": "hex-slab-v1-reference.png",
+          "sha256": "80344bbab84d201b4a15c8569be0378e6bf4b82c042bf833c4764f34eb237587",
+          "asset_id": "asset_X176ACo6FPT1s8dcYTN7FtBG"
+        },
+        "ground-region": {
+          "file": "hex-slab-v1-ground-region.png",
+          "sha256": "5e90f1946ee084873d5dc0c54ad52ee1337ecfc83365bd3a45064fbcb202b539",
+          "asset_id": "asset_HtuA8HcpPvW2b3JqVR2Z1gWP"
+        },
+        "side-region": {
+          "file": "hex-slab-v1-side-region.png",
+          "sha256": "95c1d1341fb603871e5f5e37eecf49c413d432264fac08b9ded8ddbd142e3b25",
+          "asset_id": "asset_VmAtN7QvC5GoutcsCrmaU1NE"
+        },
+        "object-region": {
+          "file": "hex-slab-v1-object-region.png",
+          "sha256": "902266c666ffd100912f9a20dd6691092e5b9f8cd1b00d5eb2f587c8be553e17",
+          "asset_id": "asset_iK7eBLaH6jLF9ADQ28x717gn"
+        }
+      }
+    }
+  ]
+}

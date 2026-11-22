@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "id": "recipe.cross-product",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Cross product orientation and area"
+  },
+  "aliases": {
+    "en": [
+      "cross product"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra"
+  ],
+  "summary": "Link ordered vectors, their normal and spanned parallelogram.",
+  "objective": "Let me drag two vectors and see their cross product, right-hand direction and parallelogram area.",
+  "tags": [
+    "cross",
+    "product"
+  ],
+  "example_prompts": [
+    "Let me drag two vectors and see their cross product, right-hand direction and parallelogram area."
+  ],
+  "entities": [
+    {
+      "name": "Inputs",
+      "guidance": "Draw u and v with labels, consistent length scale and a common origin."
+    },
+    {
+      "name": "Normal",
+      "guidance": "Use an arrow whose length follows the actual cross product; annotate zero result rather than normalizing it."
+    },
+    {
+      "name": "Area patch",
+      "guidance": "Use vertices 0,u,u+v,v; subdued surface and visible boundary keep vector order legible."
+    }
+  ],
+  "state_contract": {
+    "model": "Ordered real vectors u,v and computed cross product in a right-handed orthonormal frame.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Drag input endpoints.",
+      "Swap vector order.",
+      "Choose parallel or zero-vector case."
+    ]
+  },
+  "invariants": [
+    "Result is orthogonal to both inputs within tolerance.",
+    "Swap reverses result; parallel inputs give zero.",
+    "Normal length represents area units; disclose any display scaling."
+  ],
+  "motion_guidance": [
+    "Compute from current inputs; avoid independently animated normal rotation.",
+    "At degeneracy hide direction arrowhead and label direction undefined for zero result."
+  ],
+  "known_limits": [
+    "No torque or mechanics claim included.",
+    "Rendering and numeric tolerances still need artifact checks.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.cross-product",
+      "statement": "The cross product is perpendicular to both input vectors and its magnitude gives the area of their parallelogram.",
+      "scope": "Real 3D vectors; zero product has no direction.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-cross-product",
+          "locator": "2.4, cross product definition and Using the Cross Product"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Inputs",
+      "structure": "Draw u and v with labels, consistent length scale and a common origin.",
+      "material": "Distinct matte vector rods, subdued area fill and a high-contrast result arrow; legend explains squared units for result magnitude."
+    },
+    {
+      "family": "Normal",
+      "structure": "Use an arrow whose length follows the actual cross product; annotate zero result rather than normalizing it.",
+      "material": "Distinct matte vector rods, subdued area fill and a high-contrast result arrow; legend explains squared units for result magnitude."
+    },
+    {
+      "family": "Area patch",
+      "structure": "Use vertices 0,u,u+v,v; subdued surface and visible boundary keep vector order legible.",
+      "material": "Distinct matte vector rods, subdued area fill and a high-contrast result arrow; legend explains squared units for result magnitude."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Semantic geometry/state presentation; no gravity, contact force or material simulation.",
+    "checks": [
+      "Result is orthogonal to both inputs within tolerance.",
+      "Swap reverses result; parallel inputs give zero."
+    ]
+  }
+}

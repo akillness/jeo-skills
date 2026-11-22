@@ -1,0 +1,1654 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Whale Song</title>
+<link rel="icon" type="image/webp" href="assets/ui_orb.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root { --ink: #eaf6ff; --soft: rgba(234, 246, 255, .72); --accent: #9fe9ff; }
+  html, body { margin: 0; height: 100%; background: #0c3653; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; }
+  body { font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif; color: var(--ink); }
+  canvas { display: block; width: 100vw; height: 100vh; }
+  .overlay { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; transition: opacity 1.4s ease; }
+  #loading { background: #0c3653; z-index: 30; font-size: 18px; letter-spacing: .42em; text-transform: uppercase; color: var(--soft); }
+  #loading .bar { width: 220px; height: 1px; background: rgba(255, 255, 255, .15); margin-top: 18px; overflow: hidden; }
+  #loading .bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+  #title { z-index: 20; opacity: 0; }
+  #title img, #end img { width: min(64vw, 860px); }
+  .prompt { margin-top: 1.5vh; font-size: clamp(15px, 1.5vw, 21px); letter-spacing: .36em; text-transform: uppercase; color: var(--soft); animation: breathe 3.4s ease-in-out infinite; }
+  .keys { margin-top: 3vh; font-size: clamp(14px, 1.2vw, 17px); letter-spacing: .12em; color: rgba(234, 246, 255, .66); text-align: center; line-height: 2; }
+  kbd { font: 500 .78em ui-sans-serif, system-ui, -apple-system, sans-serif; letter-spacing: .04em; color: var(--ink); border: 1px solid rgba(234, 246, 255, .38); border-radius: 4px; padding: .05em .45em; margin: 0 .12em; }
+  @keyframes breathe { 0%, 100% { opacity: .42; } 50% { opacity: 1; } }
+  #hud { position: fixed; inset: 0; pointer-events: none; z-index: 10; opacity: 0; transition: opacity 1.6s; }
+  #breath { position: absolute; left: 28px; bottom: 26px; display: flex; align-items: center; gap: 10px; transition: transform .25s; }
+  #breath .ico { width: 30px; height: 30px; background: url(assets/ui_bubble.webp) center/contain no-repeat; }
+  #breath .track { width: 160px; height: 4px; border-radius: 2px; background: rgba(255, 255, 255, .14); overflow: hidden; }
+  #breath .fill { height: 100%; width: 100%; background: linear-gradient(90deg, #7fd8f5, #effcff); border-radius: 2px; }
+  #breath.low .fill { background: linear-gradient(90deg, #ff8f7f, #ffd9cf); }
+  #breath.low { animation: pulse .9s ease-in-out infinite; }
+  @keyframes pulse { 50% { transform: scale(1.06); } }
+  #notes { position: absolute; right: 30px; top: 20px; display: flex; align-items: center; gap: 6px; font-size: 28px; letter-spacing: .06em; text-shadow: 0 0 18px rgba(120, 220, 255, .5); }
+  #notes .ico { width: 40px; height: 40px; background: url(assets/ui_orb.webp) center/contain no-repeat; }
+  #notes.pop span { animation: pop .35s ease-out; display: inline-block; }
+  @keyframes pop { 40% { transform: scale(1.35); } }
+  #progress { position: absolute; left: 50%; top: 32px; transform: translateX(-50%); width: min(36vw, 420px); height: 1px; background: rgba(255, 255, 255, .22); }
+  #progress .tick { position: absolute; top: -3px; width: 1px; height: 7px; background: rgba(255, 255, 255, .4); }
+  #progress .dot { position: absolute; top: -4px; width: 9px; height: 9px; margin-left: -4px; border-radius: 50%; background: #effcff; box-shadow: 0 0 12px #9fe9ff; }
+  #progress .end { position: absolute; right: -5px; top: -5px; width: 11px; height: 11px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .55); }
+  #verse { position: absolute; left: 0; right: 0; top: 14vh; text-align: center; font-size: clamp(24px, 2.8vw, 42px); font-style: italic; letter-spacing: .14em; opacity: 0; transition: opacity 1.8s ease; text-shadow: 0 0 26px rgba(8, 40, 70, .7); }
+  #hint { position: absolute; left: 0; right: 0; bottom: 8vh; text-align: center; font-size: clamp(16px, 1.45vw, 21px); letter-spacing: .14em; color: rgba(234, 246, 255, .82); opacity: 0; transition: opacity 1s; text-shadow: 0 0 18px rgba(8, 40, 70, .8); }
+  #end { z-index: 20; opacity: 0; }
+  #end .stats { margin-top: 1vh; font-size: clamp(18px, 1.9vw, 27px); letter-spacing: .22em; text-align: center; line-height: 1.8; }
+  #end .stats em { color: var(--accent); font-style: normal; }
+  #fps { position: fixed; left: 8px; top: 6px; font: 11px monospace; color: #9fe9ff; z-index: 40; display: none; }
+</style>
+</head>
+<body>
+<div id="loading" class="overlay"><div>Whale Song</div><div class="bar"><i></i></div></div>
+<div id="title" class="overlay">
+  <img src="assets/title_alpha.webp" alt="Whale Song">
+  <div class="prompt">press any key to dive</div>
+  <div class="keys"><kbd>W A S D</kbd> / <kbd>&larr; &uarr; &darr; &rarr;</kbd> swim &nbsp;&middot;&nbsp; <kbd>Shift</kbd> kick &nbsp;&middot;&nbsp; <kbd>Space</kbd> sing<br>Glide along the whale's song &middot; follow her to the light</div>
+</div>
+<div id="hud">
+  <div id="progress"><div class="end"></div><div class="dot"></div></div>
+  <div id="notes"><div class="ico"></div><span id="noteCount">0</span></div>
+  <div id="breath"><div class="ico"></div><div class="track"><div class="fill"></div></div></div>
+  <div id="verse"></div>
+  <div id="hint"></div>
+</div>
+<div id="end" class="overlay">
+  <img src="assets/title_alpha.webp" alt="">
+  <div class="stats" id="endStats"></div>
+  <div class="prompt">press enter to dive again</div>
+</div>
+<div id="fps"></div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+
+// =====================================================================
+//  utils
+// =====================================================================
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+const lerp = (a, b, t) => a + (b - a) * t;
+const smooth = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const damp = (a, b, k, dt) => lerp(a, b, 1 - Math.exp(-k * dt));
+const hash = (n) => { const s = Math.sin(n * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
+function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+let rng = mulberry32(20261012);
+const R = (a, b) => a + (b - a) * rng();
+const V3 = (x = 0, y = 0, z = 0) => new THREE.Vector3(x, y, z);
+const params = new URLSearchParams(location.search);
+const DEBUG = params.has('debug');
+
+// =====================================================================
+//  world layout
+// =====================================================================
+const WORLD_END = 1235;
+const ASCENT_X = 950;
+const SURFACE_Y = 116;
+const VERSES = [
+  { x: 0, name: 'I · The Reef' },
+  { x: 230, name: 'II · The Open Blue' },
+  { x: 590, name: 'III · The Shoal' },
+  { x: ASCENT_X, name: 'IV · The Ascent' },
+];
+function routeY(x) { if (x <= ASCENT_X) return 0; return (SURFACE_Y - 5) * smooth((x - ASCENT_X) / 235); }
+function verseAt(x) { let v = 0; for (let i = 0; i < VERSES.length; i++) if (x >= VERSES[i].x) v = i; return v; }
+const VENTS = [38, 175, 320, 455, 600, 745, 880, 1010];
+const WS = 1.45; // whale scale: a truly giant ghost whale, as in the video (model normalised to 27 m, shown ~39 m)
+
+// =====================================================================
+//  renderer / scene / post
+// =====================================================================
+const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+const PR = Math.min(window.devicePixelRatio || 1, 1.75);
+renderer.setPixelRatio(PR);
+renderer.setSize(innerWidth, innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.prepend(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 0.3, 1200);
+camera.position.set(0, 2, 18);
+
+const rt = new THREE.WebGLRenderTarget(innerWidth * PR, innerHeight * PR, { type: THREE.HalfFloatType, samples: renderer.capabilities.isWebGL2 ? 4 : 0 });
+const composer = new EffectComposer(renderer, rt);
+composer.setPixelRatio(PR);
+composer.setSize(innerWidth, innerHeight);
+composer.addPass(new RenderPass(scene, camera));
+composer.addPass(new ShaderPass({
+  uniforms: { tDiffuse: { value: null } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+  fragmentShader: `uniform sampler2D tDiffuse; varying vec2 vUv;
+    void main(){ vec4 c = texture2D(tDiffuse, vUv); vec3 v = c.rgb;
+      if (any(isnan(v)) || any(isinf(v))) v = vec3(0.0);
+      gl_FragColor = vec4(clamp(v, 0.0, 24.0), 1.0); }`,
+}));
+const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.6, 0.45, 0.88);
+composer.addPass(bloom);
+
+const FinalShader = {
+  uniforms: {
+    tDiffuse: { value: null }, tPaper: { value: null }, uRes: { value: new THREE.Vector2(innerWidth, innerHeight) },
+    uTime: { value: 0 }, uVignette: { value: 0.45 }, uDesat: { value: 0 }, uLow: { value: 0 },
+    uFlash: { value: 0 }, uFlashCol: { value: new THREE.Color(1, 1, 1) }, uFade: { value: 1 }, uFadeCol: { value: new THREE.Color('#0c3653') },
+  },
+  vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+  fragmentShader: `
+    uniform sampler2D tDiffuse; uniform sampler2D tPaper; uniform vec2 uRes; uniform float uTime, uVignette, uDesat, uLow, uFlash, uFade;
+    uniform vec3 uFlashCol, uFadeCol; varying vec2 vUv;
+    vec3 toSRGB(vec3 c){ c = max(c, 0.0); return mix(c * 12.92, 1.055 * pow(c, vec3(1.0/2.4)) - 0.055, step(vec3(0.0031308), c)); }
+    void main(){
+      vec2 uv = vUv + vec2(sin(vUv.y * 17.0 + uTime * 1.2), cos(vUv.x * 13.0 + uTime * 0.9)) * 0.0007;
+      vec3 c = texture2D(tDiffuse, uv).rgb;
+      float l = dot(c, vec3(0.2126, 0.7152, 0.0722));
+      c = mix(c, vec3(l) * vec3(0.82, 0.94, 1.08), uDesat);
+      c = toSRGB(c);
+      // watercolor paper grain (generated texture, mean ~0.955): centred and amplified
+      float g = dot(texture2D(tPaper, vUv * uRes / 820.0).rgb, vec3(0.3333));
+      c *= 1.0 + (g - 0.955) * 2.4 * (1.0 - 0.65 * smoothstep(0.45, 0.95, dot(c, vec3(0.333))));
+      vec2 q = vUv - 0.5; q.x *= uRes.x / uRes.y;
+      float vig = smoothstep(1.05, 0.22, length(q) * (1.0 + uLow * 0.9));
+      c *= mix(1.0, vig, uVignette + uLow * 0.25);
+      c = mix(c, uFlashCol, clamp(uFlash, 0.0, 1.0));
+      c = mix(c, uFadeCol, clamp(uFade, 0.0, 1.0));
+      gl_FragColor = vec4(c, 1.0);
+    }`,
+};
+const finalPass = new ShaderPass(FinalShader);
+composer.addPass(finalPass);
+
+// =====================================================================
+//  loading
+// =====================================================================
+const manager = new THREE.LoadingManager();
+const texLoader = new THREE.TextureLoader(manager);
+const gltfLoader = new GLTFLoader(manager);
+function tex(url, o = {}) {
+  const t = texLoader.load(url);
+  t.colorSpace = o.linear ? THREE.NoColorSpace : THREE.SRGBColorSpace;
+  if (o.repeat) t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  if (o.mirror) t.wrapS = t.wrapT = THREE.MirroredRepeatWrapping;
+  t.anisotropy = 4;
+  return t;
+}
+const T = {
+  deep: tex('assets/bg_deep.jpg', { mirror: true }),
+  surf: tex('assets/bg_surface.jpg', { mirror: true }),
+  rocksA: tex('assets/rocks_a.webp'), rocksB: tex('assets/rocks_b.webp'),
+  reefA: tex('assets/reef_a.webp'), reefB: tex('assets/reef_b.webp'),
+  jelly: tex('assets/jelly_alpha.webp'),
+  orb: tex('assets/fx_orb.webp'), bubble: tex('assets/fx_bubble.webp'), spark: tex('assets/fx_spark.webp'), dot: tex('assets/fx_dot.webp'),
+  streak: tex('assets/streak.webp', { repeat: true }),
+  rays: tex('assets/godrays.webp'),
+  caustics: tex('assets/caustics.webp', { repeat: true, linear: true }),
+  paper: tex('assets/paper.webp', { repeat: true, linear: true }),
+  scarf: tex('assets/scarf.webp', { mirror: true }),
+};
+const MODELS = {};
+for (const n of ['whale', 'diver', 'fish']) gltfLoader.load(`assets/${n}.glb`, (g) => { MODELS[n] = g; });
+const loadBar = document.querySelector('#loading .bar i');
+manager.onProgress = (url, loaded, total) => { loadBar.style.width = (100 * loaded / total).toFixed(0) + '%'; };
+manager.onError = (url) => console.warn('failed to load', url);
+manager.onLoad = () => { try { init(); } catch (e) { console.error(e); } };
+
+// =====================================================================
+//  shared GLSL
+// =====================================================================
+const FOG = `
+  uniform vec3 uFogColor; uniform float uFogDensity;
+  vec3 applyFog(vec3 c, vec3 wp, float k){ float d = length(wp - cameraPosition); return mix(c, uFogColor, (1.0 - exp(-uFogDensity * d)) * k); }`;
+const fogU = () => ({ uFogColor: SHARED.fogColor, uFogDensity: SHARED.fogDensity });
+const SHARED = { fogColor: { value: new THREE.Color('#14557a') }, fogDensity: { value: 0.0075 }, time: { value: 0 } };
+
+// =====================================================================
+//  audio (WebAudio; generated tracks + small synths)
+// =====================================================================
+const AudioSys = {
+  ctx: null, buffers: {}, ready: false,
+  init() {
+    if (this.ctx) return;
+    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+    const ctx = this.ctx = new AC();
+    this.master = ctx.createGain(); this.master.gain.value = 0.9; this.master.connect(ctx.destination);
+    this.musicBus = ctx.createGain(); this.musicBus.gain.value = 0; this.musicBus.connect(this.master);
+    this.sfx = ctx.createGain(); this.sfx.gain.value = 0.9; this.sfx.connect(this.master);
+    // generated impulse response for a deep underwater reverb
+    const len = ctx.sampleRate * 3.6, ir = ctx.createBuffer(2, len, ctx.sampleRate);
+    for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.6); }
+    this.verb = ctx.createConvolver(); this.verb.buffer = ir;
+    this.verbOut = ctx.createGain(); this.verbOut.gain.value = 0.55;
+    this.verb.connect(this.verbOut); this.verbOut.connect(this.master);
+    // low-pass "underwater" filter on the whole sfx bus
+    this.lp = ctx.createBiquadFilter(); this.lp.type = 'lowpass'; this.lp.frequency.value = 5200; this.lp.connect(this.sfx);
+    const files = { music: 'assets/music.mp3', ambience: 'assets/ambience.mp3', call1: 'assets/whale_call_1.mp3', call2: 'assets/whale_call_2.mp3', call3: 'assets/whale_call_3.mp3', hum: 'assets/hum.mp3' };
+    for (const [k, u] of Object.entries(files)) {
+      fetch(u).then(r => r.ok ? r.arrayBuffer() : Promise.reject(u)).then(b => ctx.decodeAudioData(b)).then(buf => {
+        this.buffers[k] = buf;
+        if (k === 'music' && this.wantMusic) this.startMusic();
+        if (k === 'ambience' && this.wantMusic) this.startAmbience();
+      }).catch(() => {});
+    }
+  },
+  resume() { if (this.ctx && this.ctx.state !== 'running') this.ctx.resume(); },
+  startMusic() {
+    this.wantMusic = true;
+    if (!this.ctx || !this.buffers.music || this.musicSrc) return;
+    const s = this.ctx.createBufferSource(); s.buffer = this.buffers.music; s.loop = true; s.connect(this.musicBus); s.start();
+    this.musicSrc = s;
+    this.musicBus.gain.cancelScheduledValues(this.ctx.currentTime);
+    this.musicBus.gain.setValueAtTime(0, this.ctx.currentTime);
+    this.musicBus.gain.linearRampToValueAtTime(0.5, this.ctx.currentTime + 6);
+  },
+  startAmbience() {
+    if (!this.ctx || !this.buffers.ambience || this.ambSrc) return;
+    const s = this.ctx.createBufferSource(); s.buffer = this.buffers.ambience; s.loop = true;
+    const g = this.ctx.createGain(); g.gain.value = 0.32; s.connect(g); g.connect(this.master); s.start(); this.ambSrc = s;
+  },
+  play(name, { vol = 1, rate = 1, wet = 0.4, pan = 0 } = {}) {
+    if (!this.ctx || !this.buffers[name]) return;
+    const s = this.ctx.createBufferSource(); s.buffer = this.buffers[name]; s.playbackRate.value = rate;
+    const g = this.ctx.createGain(); g.gain.value = vol;
+    const p = this.ctx.createStereoPanner ? this.ctx.createStereoPanner() : null;
+    s.connect(g); if (p) { p.pan.value = pan; g.connect(p); p.connect(this.lp); } else g.connect(this.lp);
+    const w = this.ctx.createGain(); w.gain.value = wet; g.connect(w); w.connect(this.verb);
+    s.start();
+  },
+  // pentatonic glass chime (D major pentatonic), index climbs along a line
+  chime(i, vol = 0.22) {
+    if (!this.ctx) return;
+    const scale = [0, 2, 4, 7, 9];
+    const semi = scale[i % 5] + 12 * Math.floor(i / 5);
+    const f = 587.33 * Math.pow(2, Math.min(semi, 26) / 12);
+    const t = this.ctx.currentTime;
+    const out = this.ctx.createGain(); out.gain.setValueAtTime(0, t); out.gain.linearRampToValueAtTime(vol, t + 0.008); out.gain.exponentialRampToValueAtTime(0.0008, t + 2.4);
+    out.connect(this.lp); const w = this.ctx.createGain(); w.gain.value = 0.8; out.connect(w); w.connect(this.verb);
+    [[1, 1], [2.01, 0.35], [3.98, 0.12], [0.5, 0.18]].forEach(([m, a]) => {
+      const o = this.ctx.createOscillator(); o.type = 'sine'; o.frequency.value = f * m;
+      const g = this.ctx.createGain(); g.gain.value = a; o.connect(g); g.connect(out); o.start(t); o.stop(t + 2.5);
+    });
+  },
+  sting() {
+    if (!this.ctx) return;
+    const t = this.ctx.currentTime;
+    const o = this.ctx.createOscillator(); o.type = 'sawtooth'; o.frequency.setValueAtTime(220, t); o.frequency.exponentialRampToValueAtTime(70, t + 0.5);
+    const o2 = this.ctx.createOscillator(); o2.type = 'square'; o2.frequency.setValueAtTime(233, t); o2.frequency.exponentialRampToValueAtTime(74, t + 0.5);
+    const f = this.ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 900;
+    const g = this.ctx.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.18, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.6);
+    o.connect(f); o2.connect(f); f.connect(g); g.connect(this.lp); o.start(t); o2.start(t); o.stop(t + 0.7); o2.stop(t + 0.7);
+  },
+  heartbeat() {
+    if (!this.ctx) return;
+    const t = this.ctx.currentTime;
+    [0, 0.22].forEach((d, k) => {
+      const o = this.ctx.createOscillator(); o.type = 'sine'; o.frequency.setValueAtTime(62, t + d); o.frequency.exponentialRampToValueAtTime(38, t + d + 0.18);
+      const g = this.ctx.createGain(); g.gain.setValueAtTime(0.0001, t + d); g.gain.exponentialRampToValueAtTime(k ? 0.16 : 0.24, t + d + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + d + 0.25);
+      o.connect(g); g.connect(this.master); o.start(t + d); o.stop(t + d + 0.3);
+    });
+  },
+  bubbles(vol = 0.12) {
+    if (!this.ctx) return;
+    const t = this.ctx.currentTime;
+    for (let k = 0; k < 4; k++) {
+      const o = this.ctx.createOscillator(); o.type = 'sine'; const d = k * 0.07 + Math.random() * 0.05; const f0 = 380 + Math.random() * 500;
+      o.frequency.setValueAtTime(f0, t + d); o.frequency.exponentialRampToValueAtTime(f0 * 2.2, t + d + 0.08);
+      const g = this.ctx.createGain(); g.gain.setValueAtTime(0.0001, t + d); g.gain.exponentialRampToValueAtTime(vol, t + d + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + d + 0.1);
+      o.connect(g); g.connect(this.lp); o.start(t + d); o.stop(t + d + 0.12);
+    }
+  },
+  setUnderwater(depthK) { if (this.lp) this.lp.frequency.value = lerp(2600, 9000, depthK); },
+};
+
+// =====================================================================
+//  input
+// =====================================================================
+const keys = new Set();
+const pressed = new Set();
+addEventListener('keydown', (e) => {
+  if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(e.code)) e.preventDefault();
+  if (!keys.has(e.code)) pressed.add(e.code);
+  keys.add(e.code);
+  anyInput();
+});
+addEventListener('keyup', (e) => keys.delete(e.code));
+addEventListener('blur', () => keys.clear());
+const pointer = { down: false, x: 0, y: 0, t0: 0, world: V3() };
+renderer.domElement.addEventListener('pointerdown', (e) => { pointer.down = true; pointer.x = e.clientX; pointer.y = e.clientY; pointer.t0 = performance.now(); anyInput(); });
+addEventListener('pointermove', (e) => { pointer.x = e.clientX; pointer.y = e.clientY; });
+addEventListener('pointerup', () => { if (pointer.down && performance.now() - pointer.t0 < 220 && G.state === 'play') pressed.add('Space'); pointer.down = false; });
+function readInput() {
+  let x = 0, y = 0, kick = keys.has('ShiftLeft') || keys.has('ShiftRight'), sing = pressed.has('Space') || pressed.has('KeyE');
+  if (keys.has('ArrowLeft') || keys.has('KeyA')) x -= 1;
+  if (keys.has('ArrowRight') || keys.has('KeyD')) x += 1;
+  if (keys.has('ArrowUp') || keys.has('KeyW')) y += 1;
+  if (keys.has('ArrowDown') || keys.has('KeyS')) y -= 1;
+  const pads = navigator.getGamepads ? navigator.getGamepads() : [];
+  for (const p of pads) {
+    if (!p) continue;
+    if (Math.abs(p.axes[0]) > 0.18) x += p.axes[0];
+    if (Math.abs(p.axes[1]) > 0.18) y -= p.axes[1];
+    if (p.buttons[0] && p.buttons[0].pressed) { if (!G.padA) sing = true; G.padA = true; } else G.padA = false;
+    if ((p.buttons[7] && p.buttons[7].value > 0.3) || (p.buttons[5] && p.buttons[5].pressed)) kick = true;
+  }
+  if (pointer.down && performance.now() - pointer.t0 > 120) {
+    const v = V3((pointer.x / innerWidth) * 2 - 1, -(pointer.y / innerHeight) * 2 + 1, 0.5).unproject(camera).sub(camera.position).normalize();
+    const t = -camera.position.z / v.z; const wp = camera.position.clone().addScaledVector(v, t);
+    const dx = wp.x - diver.pos.x, dy = wp.y - diver.pos.y, d = Math.hypot(dx, dy);
+    if (d > 0.6) { x += dx / d * clamp(d / 3, 0, 1); y += dy / d * clamp(d / 3, 0, 1); }
+    if (d > 9) kick = true;
+  }
+  const l = Math.hypot(x, y); if (l > 1) { x /= l; y /= l; }
+  return { x, y, kick, sing };
+}
+
+// =====================================================================
+//  game state
+// =====================================================================
+const G = {
+  state: 'loading', t: 0, playT: 0, notes: 0, notesTotal: 0, faints: 0, stings: 0, breath: 100, verse: -1,
+  checkpoint: V3(4, 0, 0), flash: 0, flashCol: new THREE.Color(1, 1, 1), fade: 1, shake: 0, hints: {}, lastHeart: 0,
+  endT: 0, lightK: 0, firstRide: false, songsHeard: 0, padA: false,
+};
+const diver = { pos: V3(4, 0, 0), vel: V3(), facing: 1, riding: null, rideS: 0, rideSpeed: 0, rideOff: 0, detachT: 0, detachLine: null, invuln: 0, hurt: 0, kickPhase: 0, kickAmp: 0.3, dolphin: 0, glow: 0, singCD: 0, bubbleT: 0, quat: new THREE.Quaternion(), speed: 0, push: 0 };
+let whale, diverObj, scarf, backdrop, rays = [], silTiles = [], snow, bubbles, sparks, rings = [], streaks = [], reefs = [], surface, fishSchool, ventObjs = [];
+const lines = [], notes = [], jellies = [];
+const spawnedChunks = new Set();
+
+// =====================================================================
+//  scenery
+// =====================================================================
+function makeBackdrop() {
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.ShaderMaterial({
+    uniforms: { tDeep: { value: T.deep }, tSurf: { value: T.surf }, uMix: { value: 0 }, uOff: { value: new THREE.Vector2() }, uAspect: { value: innerWidth / innerHeight }, uImgAspect: { value: 21 / 9 }, uBright: { value: 1 } },
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.99999, 1.0); }`,
+    fragmentShader: `
+      uniform sampler2D tDeep, tSurf; uniform float uMix, uAspect, uImgAspect, uBright; uniform vec2 uOff; varying vec2 vUv;
+      void main(){
+        vec2 q = vUv - 0.5; float s = uAspect / uImgAspect;
+        if (s > 1.0) q.y /= s; else q.x *= s;
+        vec2 uv = q * 0.86 + 0.5 + uOff;
+        vec3 c = mix(texture2D(tDeep, uv).rgb, texture2D(tSurf, uv).rgb, uMix);
+        // grade toward the video's palette: hue a few degrees from teal to cobalt, slightly richer
+        const vec3 k = vec3(0.57735); float h = 0.16 - 0.06 * uMix;
+        c = c * cos(h) + cross(k, c) * sin(h) + k * dot(k, c) * (1.0 - cos(h));
+        c = max(mix(vec3(dot(c, vec3(0.2126, 0.7152, 0.0722))), c, 1.12), 0.0);
+        gl_FragColor = vec4(c * uBright, 1.0);
+      }`,
+    depthWrite: false, depthTest: false,
+  }));
+  m.frustumCulled = false; m.renderOrder = -100; scene.add(m); return m;
+}
+
+function makeRays() {
+  for (let i = 0; i < 8; i++) {
+    const mat = new THREE.MeshBasicMaterial({ map: T.rays, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0, color: new THREE.Color('#8fd4ea') });
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), mat); m.renderOrder = -60; scene.add(m); rays.push(m);
+  }
+}
+function updateRays(t) {
+  const S = 30, cx = camera.position.x;
+  rays.forEach((m, i) => {
+    const slot = Math.floor(cx / S) + i - 3;
+    const h = hash(slot * 3.7);
+    const z = -26 - h * 34;
+    m.position.set(slot * S + h * 14, camera.position.y * 0.85 + routeY(slot * S) * 0.15 + 12 + h * 10, z);
+    m.scale.set(22 + h * 22, 90, 1);
+    m.rotation.z = -0.32 + h * 0.12;
+    const fl = 0.55 + 0.45 * Math.sin(t * (0.21 + h * 0.2) + h * 30);
+    m.material.opacity = (0.12 + 0.16 * fl) * (0.75 + G.lightK * 0.3);
+  });
+}
+
+const SIL_LAYERS = [
+  { z: -250, w: 300, spacing: 300, fog: 0.8, shade: 1.0, y: [-6, 16], order: -45 },
+  { z: -150, w: 170, spacing: 175, fog: 0.66, shade: 0.95, y: [-12, 2], order: -44 },
+  { z: -82, w: 90, spacing: 112, fog: 0.5, shade: 0.9, y: [-13, -4], order: -43 },
+];
+function silMaterial(map, order) {
+  return new THREE.ShaderMaterial({
+    uniforms: { map: { value: map }, uFlip: { value: 0 }, uFog: { value: 0.3 }, uShade: { value: 1 }, uOpacity: { value: 1 }, ...fogU() },
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `uniform sampler2D map; uniform float uFlip, uFog, uShade, uOpacity; uniform vec3 uFogColor; varying vec2 vUv;
+      void main(){ vec2 uv = vec2(mix(vUv.x, 1.0 - vUv.x, uFlip), vUv.y); vec4 t = texture2D(map, uv);
+        if (t.a < 0.02) discard;
+        vec3 r = max(mix(vec3(dot(t.rgb, vec3(0.2126, 0.7152, 0.0722))), t.rgb, 1.7), 0.0) * vec3(0.7, 0.95, 1.2);
+        vec3 c = mix(r * uShade, uFogColor, uFog);
+        gl_FragColor = vec4(c, t.a * uOpacity); }`,
+    transparent: true, depthWrite: false,
+  });
+}
+const silFills = [];
+function makeSilhouettes() {
+  SIL_LAYERS.forEach((L, li) => {
+    const n = Math.ceil(2 * (Math.abs(L.z) + 20) * Math.tan(THREE.MathUtils.degToRad(34)) * 1.9 / L.spacing) + 3;
+    for (let i = 0; i < n; i++) {
+      const mat = silMaterial(T.rocksA, L.order);
+      const m = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), mat); m.renderOrder = L.order; scene.add(m);
+      silTiles.push({ m, L, i, n });
+    }
+    // the deep below each layer: a soft dark band so tile bottoms never show
+    const fm = new THREE.ShaderMaterial({
+      uniforms: { uCol: { value: new THREE.Color('#123659') }, uFog: { value: L.fog }, uShade: { value: L.shade }, ...fogU() },
+      vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+      fragmentShader: `uniform vec3 uCol, uFogColor; uniform float uFog, uShade; varying vec2 vUv;
+        void main(){ float a = smoothstep(1.0, 0.86, vUv.y); gl_FragColor = vec4(mix(uCol * uShade, uFogColor, uFog), a); }`,
+      transparent: true, depthWrite: false,
+    });
+    const f = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), fm); f.renderOrder = L.order - 0.5; scene.add(f); silFills.push({ m: f, L });
+  });
+}
+function updateSilhouettes() {
+  const cx = camera.position.x;
+  const fillTop = {};
+  for (const s of silTiles) {
+    const L = s.L;
+    const slot = Math.floor(cx / L.spacing) + s.i - Math.floor(s.n / 2);
+    const h1 = hash(slot * 1.31 + L.z), h2 = hash(slot * 2.17 + L.z * 0.3), h3 = hash(slot * 0.71 + 9 + L.z);
+    const useB = h1 > 0.5; const map = useB ? T.rocksB : T.rocksA;
+    if (s.m.material.uniforms.map.value !== map) s.m.material.uniforms.map.value = map;
+    const img = map.image; const asp = img ? img.width / img.height : 2.36;
+    const w = L.w * (0.85 + h2 * 0.35), hgt = w / asp;
+    const x = slot * L.spacing + (h3 - 0.5) * L.spacing * 0.45;
+    const base = Math.min(routeY(x), 30);
+    // y range = where the tallest peaks reach (peaks sit ~10% below the top of the image)
+    const top = base + lerp(L.y[0], L.y[1], h2);
+    const cy = top - hgt * 0.5 + hgt * 0.1;
+    s.m.position.set(x, cy, L.z - h3 * 8);
+    s.m.scale.set(w, hgt, 1);
+    const u = s.m.material.uniforms;
+    u.uFlip.value = h3 > 0.5 ? 1 : 0;
+    u.uFog.value = clamp(L.fog + G.lightK * 0.2, 0, 0.95);
+    u.uShade.value = L.shade;
+    const bottom = cy - hgt * 0.36;
+    fillTop[L.z] = Math.max(fillTop[L.z] ?? -1e9, bottom);
+  }
+  for (const f of silFills) {
+    const L = f.L, top = fillTop[L.z] + 2;
+    const H = 400;
+    f.m.position.set(cx, top - H / 2, L.z - 4);
+    f.m.scale.set(L.w * 8, H, 1);
+    f.m.material.uniforms.uFog.value = clamp(L.fog + G.lightK * 0.2, 0, 0.95);
+  }
+}
+
+function spriteMesh(map, w, h, opts = {}) {
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { map: { value: map }, uFog: { value: opts.fog ?? 0.1 }, uShade: { value: opts.shade ?? 1 }, uOpacity: { value: 1 }, uFlip: { value: opts.flip ? 1 : 0 }, ...fogU() },
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `uniform sampler2D map; uniform float uFog, uShade, uOpacity, uFlip; uniform vec3 uFogColor; varying vec2 vUv;
+      void main(){ vec4 t = texture2D(map, vec2(mix(vUv.x, 1.0 - vUv.x, uFlip), vUv.y)); if (t.a < 0.02) discard;
+        gl_FragColor = vec4(mix(t.rgb * uShade, uFogColor, uFog), t.a * uOpacity); }`,
+    transparent: true, depthWrite: false,
+  });
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat); m.renderOrder = opts.order ?? 0; return m;
+}
+function makeReefs() {
+  const aspA = T.reefA.image ? T.reefA.image.width / T.reefA.image.height : 1;
+  const aspB = T.reefB.image ? T.reefB.image.width / T.reefB.image.height : 1.5;
+  // start: colourful reef wall foreground-left (as in the first frames of the video) + mid-depth clusters
+  const add = (map, asp, x, y, z, h, o) => { const m = spriteMesh(map, h * asp, h, o); m.position.set(x, y, z); scene.add(m); reefs.push(m); return m; };
+  add(T.reefA, aspA, -2.5, -9.5, 5.5, 16, { fog: 0.03, order: 30 });
+  add(T.reefA, aspA, -32, -10, -12, 22, { fog: 0.18, shade: 0.9, flip: true, order: -20 });
+  add(T.reefA, aspA, 26, -18, -22, 20, { fog: 0.3, shade: 0.85, order: -21 });
+  add(T.reefA, aspA, 70, -17, -34, 22, { fog: 0.42, shade: 0.8, flip: true, order: -22 });
+  // end: hanging reef overhang near the surface (last frame of the video)
+  G.endReefs = [
+    add(T.reefB, aspB, 1186, SURFACE_Y - 4, 3, 15, { fog: 0.03, order: 30 }),
+    add(T.reefB, aspB, 1140, SURFACE_Y - 1, -20, 22, { fog: 0.25, shade: 0.9, flip: true, order: -20 }),
+    add(T.reefB, aspB, 1232, SURFACE_Y + 1, -12, 18, { fog: 0.18, order: -19 }),
+  ];
+}
+
+function makeSurface() {
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { uTime: SHARED.time, uCaustic: { value: T.caustics }, uWater: { value: new THREE.Color('#5ec3e0') }, uSun: { value: new THREE.Vector2(1185, -30) }, uK: { value: 0 } },
+    vertexShader: `varying vec3 vW; void main(){ vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`,
+    fragmentShader: `uniform float uTime, uK; uniform sampler2D uCaustic; uniform vec3 uWater; uniform vec2 uSun; varying vec3 vW;
+      void main(){ vec2 p = vW.xz * 0.035;
+        float c = min(texture2D(uCaustic, p + vec2(uTime * 0.012, uTime * 0.008)).r, texture2D(uCaustic, p * 1.37 - vec2(uTime * 0.01, -uTime * 0.013)).r);
+        float sun = exp(-length(vW.xz - uSun) * 0.018);
+        vec3 col = mix(uWater, vec3(0.92, 0.99, 1.0), 0.35 + 0.65 * sun) + c * 0.45;
+        float fade = exp(-length(vW.xz - cameraPosition.xz) * 0.0045);
+        gl_FragColor = vec4(col * (0.85 + sun * 0.45), (0.3 + 0.4 * sun) * fade * uK); }`,
+    transparent: true, depthWrite: false, side: THREE.DoubleSide,
+  });
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(900, 900), mat);
+  m.rotation.x = Math.PI / 2; m.position.set(1150, SURFACE_Y, -80); m.renderOrder = -30; scene.add(m); return m;
+}
+
+// =====================================================================
+//  particles
+// =====================================================================
+const POINT_VS = `attribute float aSize; attribute float aAlpha; uniform float uScale; varying float vA;
+  void main(){ vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_PointSize = aSize * uScale / max(0.5, -mv.z); vA = aAlpha; gl_Position = projectionMatrix * mv; }`;
+const POINT_FS = `uniform sampler2D map; uniform vec3 uColor; varying float vA;
+  void main(){ vec4 t = texture2D(map, gl_PointCoord); gl_FragColor = vec4(uColor * t.rgb * vA, 1.0); }`;
+const pointScale = { value: 600 };
+class Pool {
+  constructor(n, map, color, order = 12) {
+    this.n = n; this.i = 0;
+    this.pos = new Float32Array(n * 3); this.size = new Float32Array(n); this.alpha = new Float32Array(n);
+    this.vel = new Float32Array(n * 3); this.life = new Float32Array(n); this.max = new Float32Array(n); this.s0 = new Float32Array(n); this.kind = new Uint8Array(n); this.seed = new Float32Array(n);
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(this.pos, 3).setUsage(THREE.DynamicDrawUsage));
+    g.setAttribute('aSize', new THREE.BufferAttribute(this.size, 1).setUsage(THREE.DynamicDrawUsage));
+    g.setAttribute('aAlpha', new THREE.BufferAttribute(this.alpha, 1).setUsage(THREE.DynamicDrawUsage));
+    this.mat = new THREE.ShaderMaterial({ uniforms: { map: { value: map }, uColor: { value: new THREE.Color(color) }, uScale: pointScale }, vertexShader: POINT_VS, fragmentShader: POINT_FS, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
+    this.pts = new THREE.Points(g, this.mat); this.pts.frustumCulled = false; this.pts.renderOrder = order; scene.add(this.pts); this.g = g;
+  }
+  spawn(p, v, life, size, kind = 0) {
+    const i = this.i; this.i = (this.i + 1) % this.n;
+    this.pos.set([p.x, p.y, p.z], i * 3); this.vel.set([v.x, v.y, v.z], i * 3);
+    this.life[i] = life; this.max[i] = life; this.s0[i] = size; this.size[i] = size; this.alpha[i] = 1; this.kind[i] = kind; this.seed[i] = Math.random() * 100;
+  }
+  update(dt, t) {
+    for (let i = 0; i < this.n; i++) {
+      if (this.life[i] <= 0) { this.alpha[i] = 0; this.size[i] = 0; continue; }
+      this.life[i] -= dt;
+      if (this.life[i] <= 0) { this.life[i] = 0; this.alpha[i] = 0; this.size[i] = 0; continue; }
+      const k = this.life[i] / this.max[i];
+      const j = i * 3;
+      if (this.kind[i] === 1) { // bubble: rise, wobble, grow
+        this.vel[j + 1] = Math.min(this.vel[j + 1] + dt * 2.2, 4.5);
+        this.pos[j] += Math.sin(t * 6 + this.seed[i]) * dt * 0.5;
+        this.size[i] = this.s0[i] * (1 + (1 - k) * 0.5);
+        this.alpha[i] = Math.min(1, k * 3) * 0.9;
+      } else { // spark: drag + fade
+        this.vel[j] *= 1 - dt * 2.2; this.vel[j + 1] *= 1 - dt * 2.2; this.vel[j + 2] *= 1 - dt * 2.2;
+        this.size[i] = this.s0[i] * (0.4 + 0.6 * k);
+        this.alpha[i] = Math.pow(k, 0.7);
+      }
+      this.pos[j] += this.vel[j] * dt; this.pos[j + 1] += this.vel[j + 1] * dt; this.pos[j + 2] += this.vel[j + 2] * dt;
+    }
+    this.g.attributes.position.needsUpdate = true; this.g.attributes.aSize.needsUpdate = true; this.g.attributes.aAlpha.needsUpdate = true;
+  }
+}
+function makeSnow() {
+  const n = 1400, pos = new Float32Array(n * 3), size = new Float32Array(n), alpha = new Float32Array(n);
+  for (let i = 0; i < n; i++) { pos[i * 3] = R(-60, 60); pos[i * 3 + 1] = R(-40, 40); pos[i * 3 + 2] = R(-55, 10); size[i] = R(0.05, 0.16) * (rng() < 0.08 ? 2.5 : 1); alpha[i] = R(0.25, 0.85); }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('aSize', new THREE.BufferAttribute(size, 1)); g.setAttribute('aAlpha', new THREE.BufferAttribute(alpha, 1));
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { map: { value: T.dot }, uColor: { value: new THREE.Color('#bfeeff') }, uScale: pointScale, uCam: { value: V3() }, uTime: SHARED.time },
+    vertexShader: `attribute float aSize; attribute float aAlpha; uniform float uScale, uTime; uniform vec3 uCam; varying float vA;
+      void main(){ vec3 box = vec3(120.0, 80.0, 65.0); vec3 c = uCam + vec3(0.0, 0.0, -24.0);
+        vec3 p = position + vec3(uTime * 0.25, -uTime * 0.12, 0.0) + vec3(sin(uTime * 0.4 + position.y) * 0.6, sin(uTime * 0.3 + position.x) * 0.4, 0.0);
+        p = c + mod(p - c + box * 0.5, box) - box * 0.5;
+        vec4 mv = modelViewMatrix * vec4(p, 1.0); gl_PointSize = aSize * uScale / max(0.5, -mv.z);
+        vA = aAlpha * smoothstep(80.0, 30.0, -mv.z) * smoothstep(0.5, 4.0, -mv.z); gl_Position = projectionMatrix * mv; }`,
+    fragmentShader: POINT_FS, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  });
+  const p = new THREE.Points(g, mat); p.frustumCulled = false; p.renderOrder = 13; scene.add(p); return p;
+}
+
+// pulse rings (whale song / diver song)
+function makeRings() {
+  for (let i = 0; i < 6; i++) {
+    const mat = new THREE.ShaderMaterial({
+      uniforms: { uA: { value: 0 }, uW: { value: 0.03 }, uCol: { value: new THREE.Color('#9fe9ff') } },
+      vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+      fragmentShader: `uniform float uA, uW; uniform vec3 uCol; varying vec2 vUv; void main(){ float r = length(vUv * 2.0 - 1.0);
+        float a = exp(-pow((r - 0.93) / uW, 2.0)) + 0.06 * smoothstep(0.95, 0.3, r); gl_FragColor = vec4(uCol * a * uA, 1.0); }`,
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    });
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat); m.visible = false; m.renderOrder = 14; scene.add(m);
+    rings.push({ m, t: 0, dur: 1, r0: 0, r1: 1, a: 1, follow: null });
+  }
+}
+function spawnRing(pos, r1, dur, col, width = 0.03, a = 1, follow = null) {
+  const r = rings.find(r => !r.m.visible) || rings[0];
+  r.m.visible = true; r.t = 0; r.dur = dur; r.r1 = r1; r.a = a; r.follow = follow; r.m.position.copy(pos);
+  r.m.material.uniforms.uCol.value.set(col); r.m.material.uniforms.uW.value = width;
+}
+function updateRings(dt) {
+  for (const r of rings) {
+    if (!r.m.visible) continue;
+    r.t += dt; const k = r.t / r.dur; if (k >= 1) { r.m.visible = false; continue; }
+    if (r.follow) r.m.position.copy(r.follow);
+    const e = 1 - Math.pow(1 - k, 2.2);
+    r.m.scale.setScalar(Math.max(0.01, r.r1 * e));
+    r.m.quaternion.copy(camera.quaternion);
+    r.m.material.uniforms.uA.value = r.a * (1 - k) * Math.min(1, k * 8);
+  }
+}
+// speed streaks around the diver (the thin light lines of the video)
+function makeStreaks() {
+  for (let i = 0; i < 18; i++) {
+    const mat = new THREE.ShaderMaterial({
+      uniforms: { map: { value: T.streak }, uA: { value: 0 }, uCol: { value: new THREE.Color('#bff4ff') } },
+      vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+      fragmentShader: `uniform sampler2D map; uniform float uA; uniform vec3 uCol; varying vec2 vUv; void main(){ float t = texture2D(map, vUv).r; gl_FragColor = vec4(uCol * t * uA * 1.6, 1.0); }`,
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    });
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), mat); m.visible = false; m.renderOrder = 15; scene.add(m);
+    streaks.push({ m, t: 0, dur: 1, vel: V3() });
+  }
+}
+function spawnStreak(pos, dir, len, dur, a = 1) {
+  const s = streaks.find(s => !s.m.visible); if (!s) return;
+  s.m.visible = true; s.t = 0; s.dur = dur; s.a = a; s.m.position.copy(pos); s.m.rotation.set(0, 0, Math.atan2(dir.y, dir.x)); s.m.scale.set(len, len * 0.035, 1);
+  s.vel.copy(dir).multiplyScalar(-2);
+}
+function updateStreaks(dt) {
+  for (const s of streaks) {
+    if (!s.m.visible) continue;
+    s.t += dt; const k = s.t / s.dur; if (k >= 1) { s.m.visible = false; continue; }
+    s.m.position.addScaledVector(s.vel, dt);
+    s.m.material.uniforms.uA.value = s.a * Math.sin(Math.PI * k);
+  }
+}
+
+// =====================================================================
+//  the whale
+// =====================================================================
+const WHALE_VS = `
+  uniform float uTime, uSwim, uHeadX, uLen, uFin, uPhase;
+  varying vec2 vUv; varying vec3 vN; varying vec3 vW; varying float vS;
+  void main(){
+    vec3 p = position;
+    float s = clamp((uHeadX - p.x) / uLen, 0.0, 1.0);
+    float ph = s * 4.2 - uPhase;
+    float amp = uSwim * (0.10 + 1.55 * pow(s, 2.3));
+    p.y += amp * sin(ph);
+    float lat = abs(p.z);
+    float fin = smoothstep(2.4, 7.5, lat) * smoothstep(0.12, 0.28, s) * (1.0 - smoothstep(0.42, 0.7, s));
+    p.y += fin * (lat - 2.4) * (0.17 * sin(uPhase * 0.62 + 0.9) + uFin);
+    vec3 n = normal;
+    vS = s; vUv = uv;
+    vec4 w = modelMatrix * vec4(p, 1.0); vW = w.xyz;
+    vN = normalize(mat3(modelMatrix) * n);
+    gl_Position = projectionMatrix * viewMatrix * w;
+  }`;
+const WHALE_FS = `
+  uniform sampler2D map; uniform sampler2D uCaustic; uniform float uTime, uSing, uBand, uAlpha, uGlow;
+  varying vec2 vUv; varying vec3 vN; varying vec3 vW; varying float vS;
+  ${FOG}
+  void main(){
+    vec3 base = texture2D(map, vUv).rgb;
+    // ghost grade (video look): the cream belly of the generated design turns icy white,
+    // the slate patches lean to the video's soft cobalt, the whole body pales a little
+    float warm = smoothstep(0.03, 0.14, base.r - base.b);
+    float lum = dot(base, vec3(0.299, 0.587, 0.114));
+    base = mix(base, vec3(0.84, 0.93, 0.99) * (0.92 + 0.16 * lum), warm);
+    base = mix(vec3(dot(base, vec3(0.3333))), base, 1.3) * vec3(0.9, 0.97, 1.06);
+    base = mix(base, vec3(0.86, 0.94, 1.0), 0.12);
+    vec3 N = normalize(vN); vec3 V = normalize(cameraPosition - vW);
+    float ndv = abs(dot(N, V));
+    float fres = pow(1.0 - ndv, 2.0);
+    float top = clamp(N.y * 0.5 + 0.5, 0.0, 1.0);
+    vec3 col = base * (0.8 + 0.32 * top);
+    vec2 cuv = vW.xz * 0.05 + vec2(uTime * 0.02, uTime * 0.013);
+    float c = min(texture2D(uCaustic, cuv).r, texture2D(uCaustic, cuv * 1.31 + vec2(0.31, -uTime * 0.017)).r);
+    col += vec3(0.75, 0.92, 1.0) * c * 0.38 * smoothstep(0.05, 0.8, N.y);
+    col = mix(col, vec3(0.88, 0.97, 1.0), fres * 0.6);
+    float band = exp(-pow((vS - uBand) / 0.04, 2.0)) * uSing;
+    col += vec3(0.5, 0.9, 1.0) * (band * 0.5 + uSing * 0.1 + uGlow * 0.12);
+    col = applyFog(col, vW, 1.0);
+    float a = clamp(mix(uAlpha, 1.0, fres * 0.75) + band * 0.15, 0.0, 1.0);
+    gl_FragColor = vec4(col, a);
+  }`;
+function buildWhale() {
+  let geo, map;
+  MODELS.whale.scene.traverse((o) => { if (o.isMesh && !geo) { geo = o.geometry.clone(); map = o.material.map; } });
+  geo.applyMatrix4(new THREE.Matrix4().makeRotationY(Math.PI / 2)); // head (+Z) -> +X
+  geo.computeBoundingBox();
+  const c = geo.boundingBox.getCenter(V3());
+  geo.translate(-c.x, -c.y, -c.z);
+  const len0 = geo.boundingBox.max.x - geo.boundingBox.min.x;
+  const S = 27 / len0; geo.scale(S, S, S);
+  geo.computeBoundingBox();
+  const uniforms = {
+    map: { value: map }, uCaustic: { value: T.caustics }, uTime: SHARED.time, uPhase: { value: 0 }, uSwim: { value: 1 },
+    uHeadX: { value: geo.boundingBox.max.x }, uLen: { value: geo.boundingBox.max.x - geo.boundingBox.min.x },
+    uFin: { value: 0 }, uSing: { value: 0 }, uBand: { value: -1 }, uAlpha: { value: 0.8 }, uGlow: { value: 0 }, ...fogU(),
+  };
+  const pre = new THREE.Mesh(geo, new THREE.ShaderMaterial({ uniforms, vertexShader: WHALE_VS, fragmentShader: 'void main(){ gl_FragColor = vec4(0.0); }', colorWrite: false, transparent: true, depthWrite: true }));
+  const body = new THREE.Mesh(geo, new THREE.ShaderMaterial({ uniforms, vertexShader: WHALE_VS, fragmentShader: WHALE_FS, transparent: true, depthWrite: false, depthFunc: THREE.LessEqualDepth }));
+  pre.renderOrder = 4; body.renderOrder = 5; pre.frustumCulled = body.frustumCulled = false;
+  const group = new THREE.Group(); group.add(pre, body); group.scale.setScalar(WS); scene.add(group);
+  return {
+    group, uniforms, pos: V3(-60, -16, -24), heading: V3(1, 0.05, 0).normalize(), speed: 7, phase: 0,
+    mode: 'title', modeT: 0, off: V3(19, -10.5, -14), songCD: 3, autoT: 7, singT: -1, answerT: -1, bank: 0, quat: new THREE.Quaternion(),
+    headPos: V3(), lastSongAt: -99,
+  };
+}
+const _m4 = new THREE.Matrix4(), _x = V3(), _y = V3(), _z = V3(), _q = new THREE.Quaternion();
+function updateWhale(dt, t) {
+  const W = whale;
+  W.modeT += dt;
+  // choose the escort offset relative to the diver
+  let target;
+  if (W.mode === 'title') {
+    const a = t * 0.06;
+    target = V3(10 + Math.cos(a) * 60, -14 + Math.sin(a * 1.7) * 6, -40 + Math.sin(a) * 18);
+  } else if (W.mode === 'end') {
+    target = V3(diver.pos.x + 30, SURFACE_Y + 60, -14);
+  } else {
+    // slowly cycle between: ahead-below (lead), beneath the diver (pass, like the video), below-behind
+    const cyc = (W.modeT % 42) / 42;
+    const want = cyc < 0.3 ? V3(16, -10.5, -14) : cyc < 0.78 ? V3(4, -9, -12.5) : V3(-10, -11.5, -15);
+    if (W.mode === 'intro') want.set(-24, -10, -13);
+    W.off.lerp(want, 1 - Math.exp(-dt * 0.35));
+    const lead = diver.vel.clone().multiplyScalar(0.9);
+    target = V3(diver.pos.x + W.off.x + lead.x, diver.pos.y + W.off.y + lead.y * 0.4, W.off.z);
+    if (W.mode === 'intro' && W.modeT > 9) { W.mode = 'escort'; W.modeT = 0; }
+  }
+  const to = target.clone().sub(W.pos);
+  const dist = to.length();
+  const desiredDir = to.clone().normalize();
+  // whales never pitch too hard
+  desiredDir.y = clamp(desiredDir.y, -0.55, 0.85); desiredDir.z = clamp(desiredDir.z, -0.4, 0.4); desiredDir.normalize();
+  const turn = (W.mode === 'end' ? 0.9 : 0.55) * dt;
+  const ang = W.heading.angleTo(desiredDir);
+  const prev = W.heading.clone();
+  if (ang > 1e-4) W.heading.lerp(desiredDir, Math.min(1, turn / ang)).normalize();
+  const behind = W.pos.x < diver.pos.x - 4;
+  const wantSpeed = W.mode === 'title' ? 7 : W.mode === 'end' ? 16 : clamp(dist * 0.55 + Math.max(0, diver.vel.x) * (behind ? 1.05 : 0.6), 2.5, behind ? 27 : 19);
+  W.speed = damp(W.speed, wantSpeed, 0.7, dt);
+  W.pos.addScaledVector(W.heading, W.speed * dt);
+  if (W.mode !== 'title') W.pos.z = clamp(W.pos.z, -19, -11);
+  // leash: a lost whale quietly re-enters from off-screen, behind and below the diver
+  if (W.mode === 'escort' || W.mode === 'intro') {
+    const halfW = (camera.position.z - W.pos.z) * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.aspect + 23;
+    const off = Math.abs(W.pos.x - camera.position.x) > halfW || Math.abs(W.pos.y - camera.position.y) > 34;
+    const lost = Math.abs(W.pos.x - diver.pos.x) > 65 || Math.abs(W.pos.y - diver.pos.y) > 32 || (W.mode === 'escort' && W.heading.x < -0.2 && W.pos.x < diver.pos.x - 25);
+    if (off && lost) {
+      W.pos.set(diver.pos.x - halfW - 8, diver.pos.y - 13, -14);
+      W.heading.set(1, 0.16, 0).normalize(); W.speed = Math.max(12, diver.vel.x + 6);
+      _x.copy(W.heading); _z.crossVectors(_x, V3(0, 1, 0)).normalize(); _y.crossVectors(_z, _x).normalize();
+      _m4.makeBasis(_x, _y, _z); W.quat.setFromRotationMatrix(_m4);
+    }
+  }
+  // bank into turns
+  const yawRate = (prev.x * W.heading.y - prev.y * W.heading.x) / Math.max(dt, 1e-4);
+  W.bank = damp(W.bank, clamp(-yawRate * 0.9, -0.5, 0.5), 2, dt);
+  // basis: local X = heading, Y = up, Z = lateral
+  _x.copy(W.heading); _z.crossVectors(_x, V3(0, 1, 0)).normalize(); _y.crossVectors(_z, _x).normalize();
+  _m4.makeBasis(_x, _y, _z); _q.setFromRotationMatrix(_m4);
+  _q.multiply(new THREE.Quaternion().setFromAxisAngle(V3(1, 0, 0), W.bank));
+  W.quat.slerp(_q, 1 - Math.exp(-dt * 3));
+  W.group.position.copy(W.pos); W.group.quaternion.copy(W.quat);
+  W.phase += dt * (0.7 + W.speed * 0.09);
+  W.uniforms.uPhase.value = W.phase;
+  W.uniforms.uSwim.value = damp(W.uniforms.uSwim.value, 0.55 + W.speed * 0.05, 1, dt);
+  W.headPos.copy(V3(12 * WS, 0.5 * WS, 0).applyQuaternion(W.quat).add(W.pos));
+  // song animation (glow band travelling head -> tail)
+  if (W.singT >= 0) {
+    W.singT += dt;
+    W.uniforms.uSing.value = Math.min(1, W.singT * 3) * Math.max(0, 1 - (W.singT - 2.2) * 0.8);
+    W.uniforms.uBand.value = W.singT / 2.6;
+    if (W.singT > 3.6) { W.singT = -1; W.uniforms.uSing.value = 0; }
+  }
+  W.uniforms.uGlow.value = damp(W.uniforms.uGlow.value, diver.riding ? 1 : 0.2, 1.5, dt);
+  // song scheduling
+  if (G.state === 'play' && W.mode !== 'end') {
+    W.songCD -= dt; W.autoT -= dt;
+    if (W.answerT >= 0) { W.answerT -= dt; if (W.answerT < 0) whaleSing(); }
+    else if (W.autoT <= 0 && W.songCD <= 0) whaleSing();
+  }
+}
+
+// =====================================================================
+//  the diver (+ procedural red scarf)
+// =====================================================================
+const DIVER_VS = `
+  uniform float uKick, uKickAmp, uDolphin, uTime;
+  varying vec2 vUv; varying vec3 vN; varying vec3 vW;
+  void main(){
+    vec3 p = position;
+    float below = max(0.0, -0.02 - p.y);
+    float k = clamp(below / 0.55, 0.0, 1.0);
+    float side = p.z > 0.0 ? 0.0 : 3.14159;
+    float ph = uKick - k * 1.4 + mix(side, 0.0, uDolphin);
+    p.x += uKickAmp * pow(k, 1.5) * 0.085 * sin(ph);
+    // hair sway (hair hangs behind the back: -x)
+    float hair = smoothstep(-0.02, -0.07, p.x) * smoothstep(0.36, 0.1, p.y) * step(0.02, p.y);
+    p.x += hair * 0.02 * sin(uTime * 3.1 + p.y * 14.0);
+    p.z += hair * 0.012 * sin(uTime * 2.3 + p.y * 9.0);
+    vUv = uv;
+    vec4 w = modelMatrix * vec4(p, 1.0); vW = w.xyz;
+    vN = normalize(mat3(modelMatrix) * normal);
+    gl_Position = projectionMatrix * viewMatrix * w;
+  }`;
+const DIVER_FS = `
+  uniform sampler2D map; uniform float uHurt, uGlow;
+  varying vec2 vUv; varying vec3 vN; varying vec3 vW;
+  ${FOG}
+  void main(){
+    vec3 base = texture2D(map, vUv).rgb;
+    vec3 N = normalize(vN); vec3 L = normalize(vec3(-0.25, 1.0, 0.45));
+    float ndl = dot(N, L) * 0.5 + 0.5;
+    vec3 col = base * (0.7 + 0.45 * ndl);
+    vec3 V = normalize(cameraPosition - vW);
+    float rim = pow(1.0 - max(dot(N, V), 0.0), 3.0);
+    col += vec3(0.55, 0.88, 1.0) * rim * (0.28 + uGlow * 0.9);
+    col = mix(col, vec3(1.0, 0.35, 0.3), uHurt * 0.65);
+    col = applyFog(col, vW, 0.45);
+    gl_FragColor = vec4(col, 1.0);
+  }`;
+function buildDiver() {
+  let geo, map;
+  MODELS.diver.scene.traverse((o) => { if (o.isMesh && !geo) { geo = o.geometry.clone(); map = o.material.map; } });
+  geo.translate(0, -0.08, 0); // pivot near the waist
+  const uniforms = { map: { value: map }, uKick: { value: 0 }, uKickAmp: { value: 0.3 }, uDolphin: { value: 0 }, uTime: SHARED.time, uHurt: { value: 0 }, uGlow: { value: 0 }, ...fogU() };
+  const mesh = new THREE.Mesh(geo, new THREE.ShaderMaterial({ uniforms, vertexShader: DIVER_VS, fragmentShader: DIVER_FS }));
+  mesh.scale.setScalar(2.05 / 0.98);
+  mesh.frustumCulled = false;
+  const root = new THREE.Group(); root.add(mesh); scene.add(root);
+  return { root, mesh, uniforms, neck: V3(0.025, 0.245, 0), head: V3(0.03, 0.33, 0) };
+}
+function buildScarf() {
+  const N = 20;
+  const p = [], prev = [];
+  for (let i = 0; i < N; i++) { p.push(V3(-i * 0.08, 0, 0)); prev.push(V3(-i * 0.08, 0, 0)); }
+  const pos = new Float32Array(N * 2 * 3), uv = new Float32Array(N * 2 * 2), shade = new Float32Array(N * 2), idx = [];
+  for (let i = 0; i < N; i++) { uv.set([i / (N - 1) * 3, 0, i / (N - 1) * 3, 1], i * 4); if (i < N - 1) { const a = i * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); } }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos, 3).setUsage(THREE.DynamicDrawUsage));
+  g.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  g.setAttribute('aShade', new THREE.BufferAttribute(shade, 1).setUsage(THREE.DynamicDrawUsage));
+  g.setIndex(idx);
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { map: { value: T.scarf }, ...fogU() },
+    vertexShader: `attribute float aShade; varying vec2 vUv; varying float vS; varying vec3 vW; void main(){ vUv = uv; vS = aShade; vW = position; gl_Position = projectionMatrix * viewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `uniform sampler2D map; varying vec2 vUv; varying float vS; varying vec3 vW; ${FOG}
+      void main(){ vec3 t = texture2D(map, vUv * vec2(1.0, 0.5) + vec2(0.0, 0.25)).rgb; vec3 c = t * (0.62 + 0.5 * vS); float edge = smoothstep(0.0, 0.12, vUv.y) * smoothstep(1.0, 0.88, vUv.y);
+        c *= 0.85 + 0.15 * edge; gl_FragColor = vec4(applyFog(c, vW, 0.4), 1.0); }`,
+    side: THREE.DoubleSide,
+  });
+  const mesh = new THREE.Mesh(g, mat); mesh.frustumCulled = false; mesh.renderOrder = 2; scene.add(mesh);
+  return { N, p, prev, g, pos, shade, mesh, seg: 0.075 };
+}
+const _v = V3(), _w = V3(), _side = V3(), _dir = V3();
+function resetScarf() {
+  if (!scarf || !diverObj) return;
+  diverObj.root.position.copy(diver.pos); diverObj.root.updateMatrixWorld(true);
+  const root = diverObj.mesh.localToWorld(diverObj.neck.clone());
+  const back = V3(0, -1, 0).applyQuaternion(diver.quat); // towards her feet
+  for (let i = 0; i < scarf.N; i++) { scarf.p[i].copy(root).addScaledVector(back, i * scarf.seg); scarf.prev[i].copy(scarf.p[i]); }
+}
+function updateScarf(dt, t) {
+  const S = scarf;
+  diverObj.root.updateMatrixWorld(true);
+  const root = diverObj.mesh.localToWorld(diverObj.neck.clone());
+  S.p[0].copy(root);
+  const sp = diver.vel.length();
+  const flutterA = 2.5 + sp * 1.8;
+  for (let i = 1; i < S.N; i++) {
+    const p = S.p[i], q = S.prev[i];
+    _v.subVectors(p, q).multiplyScalar(Math.exp(-dt * 2.6));
+    q.copy(p);
+    _dir.subVectors(p, S.p[i - 1]).normalize();
+    _side.set(-_dir.y, _dir.x, 0);
+    const k = i / S.N;
+    const f = Math.sin(t * 8.5 - i * 0.62) * flutterA * k + Math.sin(t * 3.1 - i * 0.3) * 1.2 * k;
+    _v.addScaledVector(_side, f * dt * dt);
+    _v.y += 0.35 * dt * dt; // slightly buoyant fabric
+    _v.z += Math.sin(t * 2.0 + i * 0.4) * 0.6 * k * dt * dt;
+    p.add(_v);
+  }
+  for (let it = 0; it < 4; it++) {
+    for (let i = 1; i < S.N; i++) {
+      const a = S.p[i - 1], b = S.p[i];
+      _w.subVectors(b, a); const d = _w.length() || 1e-5; const diff = (d - S.seg) / d;
+      if (i === 1) b.addScaledVector(_w, -diff);
+      else { a.addScaledVector(_w, diff * 0.5); b.addScaledVector(_w, -diff * 0.5); }
+    }
+    S.p[0].copy(root);
+  }
+  const cam = camera.position;
+  for (let i = 0; i < S.N; i++) {
+    const a = S.p[Math.max(0, i - 1)], b = S.p[Math.min(S.N - 1, i + 1)];
+    _dir.subVectors(b, a).normalize();
+    _w.subVectors(cam, S.p[i]).normalize();
+    _side.crossVectors(_dir, _w).normalize();
+    const tw = 0.75 * Math.sin(t * 2.4 - i * 0.33);
+    const n2 = V3().crossVectors(_dir, _side);
+    _side.multiplyScalar(Math.cos(tw)).addScaledVector(n2, Math.sin(tw));
+    const u = i / (S.N - 1);
+    const width = (0.045 + 0.04 * smooth(u * 5)) * (1 - 0.55 * u * u);
+    const P = S.p[i];
+    S.pos.set([P.x + _side.x * width, P.y + _side.y * width, P.z + _side.z * width, P.x - _side.x * width, P.y - _side.y * width, P.z - _side.z * width], i * 6);
+    const sh = Math.abs(Math.cos(tw)); S.shade[i * 2] = sh; S.shade[i * 2 + 1] = sh;
+  }
+  S.g.attributes.position.needsUpdate = true; S.g.attributes.aShade.needsUpdate = true;
+}
+
+// =====================================================================
+//  song lines + notes
+// =====================================================================
+const LINE_VS = `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`;
+// The video's song is a braid of fine brush strokes (white core, cyan edge) that drift apart and cross.
+// One ridable line = a main stroke + two companion filaments wandering around it, tapered at both ends.
+const LINE_FS = `
+  uniform float uDrawn, uLen, uTime, uFade, uRiderS, uRiding, uSeed, uDim; uniform sampler2D uStreak; varying vec2 vUv;
+  float strand(float v, float c, float w){ float d = (v - c) / w; return exp(-d * d); }
+  void main(){
+    float s = vUv.x, v = vUv.y;
+    if (s > uDrawn) discard;
+    float drawing = step(uDrawn, uLen - 0.05);
+    float head = exp(-(uDrawn - s) * 0.5) * drawing;
+    float ends = smoothstep(0.0, 7.0, s) * smoothstep(uLen, uLen - 12.0, s);
+    float taper = 0.3 + 0.7 * ends;
+    float spread = 0.25 + 0.75 * ends;
+    float c1 = 0.46 * sin(s * 0.105 + uSeed * 6.3 + uTime * 0.35) * spread;
+    float c2 = -0.4 * sin(s * 0.07 + uSeed * 3.1 + 1.7 - uTime * 0.27) * spread;
+    float br = texture2D(uStreak, vec2(s / 23.0 + uSeed, 0.5)).r;
+    float br2 = texture2D(uStreak, vec2(s / 15.0 + uSeed * 1.7 + 0.5, 0.5)).r;
+    float main = strand(v, 0.0, 0.05 * taper) * (0.75 + 0.25 * br);
+    float comp = strand(v, c1, 0.04 * taper) * smoothstep(0.15, 0.7, br) + strand(v, c2, 0.036 * taper) * smoothstep(0.2, 0.75, br2) * 0.85;
+    float halo = strand(v, 0.0, 0.24) * 0.17 + (strand(v, c1, 0.14) + strand(v, c2, 0.14)) * 0.05;
+    float shimmer = 0.78 + 0.22 * sin(s * 0.8 - uTime * 5.0 + uSeed * 6.0);
+    float rider = uRiding * exp(-pow((s - uRiderS) / 8.0, 2.0));
+    float boost = (1.0 + head * 1.4 + rider * 0.6) * ends * uFade * uDim;
+    vec3 col = vec3(0.9, 0.99, 1.0) * (main + comp * 0.8) * (0.8 + 0.25 * shimmer) + vec3(0.2, 0.74, 1.0) * halo * shimmer * (1.0 + rider);
+    gl_FragColor = vec4(col * boost, 1.0);
+  }`;
+const lineDim = { value: 1 };
+class SongLine {
+  constructor(pts, opts) {
+    this.pts = pts; this.cum = [0];
+    for (let i = 1; i < pts.length; i++) this.cum.push(this.cum[i - 1] + pts[i].distanceTo(pts[i - 1]));
+    this.len = this.cum[this.cum.length - 1];
+    this.drawn = 0; this.delay = opts.delay || 0; this.age = 0; this.life = opts.life || 14; this.fade = 1; this.speed = 34; this.chime = 0; this.dead = false;
+    const n = pts.length, W = 0.8;
+    const pos = new Float32Array(n * 6), uv = new Float32Array(n * 4), idx = [];
+    for (let i = 0; i < n; i++) {
+      const a = pts[Math.max(0, i - 1)], b = pts[Math.min(n - 1, i + 1)];
+      const dx = b.x - a.x, dy = b.y - a.y, l = Math.hypot(dx, dy) || 1; const nx = -dy / l, ny = dx / l;
+      const p = pts[i];
+      pos.set([p.x + nx * W, p.y + ny * W, p.z, p.x - nx * W, p.y - ny * W, p.z], i * 6);
+      uv.set([this.cum[i], 1, this.cum[i], -1], i * 4);
+      if (i < n - 1) { const k = i * 2; idx.push(k, k + 1, k + 2, k + 1, k + 3, k + 2); }
+    }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('uv', new THREE.BufferAttribute(uv, 2)); g.setIndex(idx);
+    this.mat = new THREE.ShaderMaterial({
+      uniforms: { uDrawn: { value: 0 }, uLen: { value: this.len }, uTime: SHARED.time, uFade: { value: 1 }, uRiderS: { value: -100 }, uRiding: { value: 0 }, uSeed: { value: Math.random() }, uStreak: { value: T.streak }, uDim: lineDim },
+      vertexShader: LINE_VS, fragmentShader: LINE_FS, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+    });
+    this.mesh = new THREE.Mesh(g, this.mat); this.mesh.renderOrder = 10; this.mesh.frustumCulled = false; scene.add(this.mesh);
+  }
+  at(s, out = V3()) {
+    s = clamp(s, 0, this.len);
+    let lo = 0, hi = this.cum.length - 1;
+    while (hi - lo > 1) { const m = (lo + hi) >> 1; if (this.cum[m] < s) lo = m; else hi = m; }
+    const seg = this.cum[hi] - this.cum[lo] || 1; const k = (s - this.cum[lo]) / seg;
+    return out.copy(this.pts[lo]).lerp(this.pts[hi], k);
+  }
+  tangent(s, out = V3()) { const a = this.at(s - 0.6), b = this.at(s + 0.6); return out.subVectors(b, a).normalize(); }
+  closest(p) {
+    let best = 1e9, bi = 0;
+    for (let i = 0; i < this.pts.length; i += 2) { const q = this.pts[i]; const d = (q.x - p.x) ** 2 + (q.y - p.y) ** 2; if (d < best) { best = d; bi = i; } }
+    let s = this.cum[bi], bd = Math.sqrt(best);
+    for (let i = Math.max(0, bi - 2); i <= Math.min(this.pts.length - 1, bi + 2); i++) { const q = this.pts[i]; const d = Math.hypot(q.x - p.x, q.y - p.y); if (d < bd) { bd = d; s = this.cum[i]; } }
+    return { s, d: bd };
+  }
+  update(dt) {
+    if (this.delay > 0) { this.delay -= dt; this.mat.uniforms.uDrawn.value = -1; return; }
+    this.age += dt;
+    this.drawn = Math.min(this.len, this.drawn + this.speed * dt);
+    const fadeStart = this.life - 2.2;
+    this.fade = this.age < fadeStart ? 1 : Math.max(0, 1 - (this.age - fadeStart) / 2.2);
+    const u = this.mat.uniforms; u.uDrawn.value = this.drawn; u.uFade.value = this.fade;
+    if (this.fade <= 0) this.dispose();
+  }
+  dispose() { this.dead = true; scene.remove(this.mesh); this.mesh.geometry.dispose(); this.mat.dispose(); }
+}
+
+const noteMat = () => new THREE.SpriteMaterial({ map: T.orb, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, color: new THREE.Color('#ffffff') });
+class Note {
+  constructor(line, s) {
+    this.line = line; this.s = s; this.pos = line.at(s).clone(); this.base = this.pos.clone();
+    this.sp = new THREE.Sprite(noteMat()); this.sp.scale.setScalar(0.001); this.sp.renderOrder = 11; this.sp.position.copy(this.pos); scene.add(this.sp);
+    this.state = 'hidden'; this.t = 0; this.seed = Math.random() * 10; this.magnet = false;
+    G.notesTotal++;
+  }
+  update(dt, t) {
+    if (this.line.dead && this.state !== 'taken') { this.kill(); return; }
+    if (this.state === 'hidden') { if (this.line.delay <= 0 && this.line.drawn >= this.s) { this.state = 'live'; this.t = 0; } else return; }
+    this.t += dt;
+    if (this.state === 'live') {
+      if (this.magnet) { this.base.lerp(diver.pos, 1 - Math.exp(-dt * 6)); }
+      const pop = this.t < 0.5 ? 1 + 0.35 * Math.sin(this.t / 0.5 * Math.PI) : 1;
+      const k = Math.min(1, this.t * 4) * pop * this.line.fade;
+      this.sp.scale.setScalar(1.15 * k * (0.9 + 0.1 * Math.sin(t * 5 + this.seed)));
+      this.sp.position.copy(this.base); this.sp.position.y += Math.sin(t * 2 + this.seed) * 0.12;
+      this.sp.material.opacity = this.line.fade;
+      if (this.line.fade <= 0.02) this.kill();
+    } else if (this.state === 'taken') {
+      const k = this.t / 0.35;
+      this.sp.scale.setScalar(1.15 + k * 2.2); this.sp.material.opacity = 1 - k;
+      if (k >= 1) this.kill();
+    }
+  }
+  take() {
+    this.state = 'taken'; this.t = 0;
+    G.notes++; G.breath = Math.min(100, G.breath + 5);
+    AudioSys.chime(this.line.chime++);
+    for (let i = 0; i < 14; i++) sparks.spawn(this.sp.position, V3(R(-1, 1), R(-1, 1), R(-0.4, 0.4)).normalize().multiplyScalar(R(2, 6)), R(0.4, 0.9), R(0.18, 0.4));
+    hud.pop();
+  }
+  kill() { this.state = 'dead'; scene.remove(this.sp); this.sp.material.dispose(); }
+}
+
+function whaleSing() {
+  const W = whale;
+  W.singT = 0; W.songCD = 6.0; W.autoT = R(9, 12); W.answerT = -1; W.lastSongAt = G.t;
+  G.songsHeard++;
+  const call = ['call1', 'call2', 'call3'][Math.floor(rng() * 3)];
+  AudioSys.play(call, { vol: 0.95, rate: R(0.92, 1.06), wet: 0.6 });
+  spawnRing(W.headPos.clone(), 40, 3.4, '#9fe9ff', 0.014, 0.5);
+  spawnRing(W.headPos.clone(), 22, 2.6, '#e8fbff', 0.025, 0.35);
+  G.songBreathGiven = false;
+  // the song draws glowing lines through the water, ahead of the diver
+  const v = verseAt(diver.pos.x);
+  const count = v === 0 ? 2 : 3;
+  const offs = [[-0.6, 3.2], [-3.6, 1.2, 4.2], [-3.4, 0.6, 4.4]][Math.min(count - 1, 2)];
+  const L = v === 3 ? R(95, 125) : R(75, 105);
+  const x0 = diver.pos.x + R(-7, -3);
+  const dyStart = diver.pos.y - routeY(diver.pos.x);
+  const bandTarget = R(-5, 5);
+  for (let k = 0; k < count; k++) {
+    const off = offs[k] + R(-0.5, 0.5);
+    const amp = R(1.6, 4.2), freq = R(0.028, 0.05) * Math.PI * 2, ph = R(0, 6.28);
+    const pts = [];
+    for (let a = 0; a <= L; a += 0.5) {
+      const x = x0 + a;
+      const env = smooth(a / 22);
+      const lateral = lerp(dyStart, bandTarget, smooth(a / 70)) + off * (0.55 + 0.45 * env) + amp * Math.sin(a * freq * 0.1 + ph) * env;
+      const y = routeY(x) + clamp(lateral, -17, 17);
+      pts.push(V3(x, y, Math.sin(a * 0.05 + ph) * 0.4 * env));
+    }
+    const line = new SongLine(pts, { delay: k * 0.16 + 0.1, life: L / 34 + 11 });
+    lines.push(line);
+    const guards = v === 0 ? 0 : v === 1 ? (k === 1 ? 1 : 0) : (k !== 2 ? 1 : 0);
+    for (let gI = 0; gI < guards; gI++) {
+      const gp = line.at(R(30, 58)); gp.y += R(-0.3, 0.3); gp.z = 0;
+      const j = new Jelly(gp); j.guard = true; j.vel.set(0, 0.05, 0); jellies.push(j);
+    }
+    for (let s = R(9, 13); s < line.len - 6; s += R(8.5, 11.5)) {
+      const p = line.at(s);
+      if (jellies.some(j => j.pos.distanceTo(p) < 2.2)) continue;
+      notes.push(new Note(line, s));
+    }
+  }
+  if (!G.hints.song) showHint('The whale sings — glide along her song', 4.5, 'song');
+}
+
+// =====================================================================
+//  jellyfish (hazards), air vents, fish school
+// =====================================================================
+class Jelly {
+  constructor(p, deco = false) {
+    this.pos = p.clone(); this.vel = V3(R(-0.2, 0.2), R(0.1, 0.3), 0); this.phase = R(0, 6.28); this.deco = deco; this.size = deco ? R(2, 3.2) : R(2.3, 2.9);
+    this.sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: T.jelly, transparent: true, depthWrite: false, color: new THREE.Color(deco ? '#8fb2dc' : '#ffffff'), opacity: deco ? 0.45 : 0.92 }));
+    this.sp.renderOrder = deco ? -5 : 9; scene.add(this.sp); this.dead = false; this.repel = V3(); this.alarm = 0;
+    // soft bioluminescent halo (additive) so it glows in the deep
+    this.halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: T.dot, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, color: new THREE.Color(deco ? '#5a6fae' : '#ff7fd0'), opacity: deco ? 0.25 : 0.5 }));
+    this.halo.renderOrder = deco ? -6 : 8; scene.add(this.halo);
+    const img = T.jelly.image; this.asp = img ? img.height / img.width : 1.4;
+  }
+  get bell() { return V3(this.pos.x, this.pos.y + this.size * this.asp * 0.3, this.pos.z); }
+  get tail() { return V3(this.pos.x, this.pos.y - this.size * this.asp * 0.2, this.pos.z); }
+  update(dt, t) {
+    this.phase += dt * 2.1;
+    const pulse = Math.max(0, Math.sin(this.phase));
+    this.vel.y = damp(this.vel.y, this.guard ? 0.05 + pulse * 0.25 : 0.15 + pulse * 0.9, 3, dt);
+    this.vel.x = Math.sin(t * 0.3 + this.phase * 0.1) * 0.25;
+    this.pos.addScaledVector(this.vel, dt).addScaledVector(this.repel, dt);
+    this.repel.multiplyScalar(Math.exp(-dt * 2));
+    const sx = this.size * (1 - 0.07 * pulse), sy = this.size * this.asp * (1 + 0.07 * pulse);
+    this.sp.scale.set(sx, sy, 1); this.sp.position.copy(this.pos);
+    this.halo.position.copy(this.bell); const hs = this.size * (1.5 + 0.25 * pulse) * (1 - 0.6 * G.lightK); this.halo.scale.set(hs, hs, 1);
+    if (!this.deco) {
+      const d = this.pos.distanceTo(diver.pos);
+      this.alarm = damp(this.alarm, d < 7 ? 1 : 0, 3, dt);
+      this.sp.material.opacity = 0.82 + 0.18 * this.alarm;
+      this.halo.material.opacity = 0.45 + 0.35 * this.alarm * (0.6 + 0.4 * Math.sin(t * 9));
+    }
+  }
+  kill() { this.dead = true; scene.remove(this.sp); this.sp.material.dispose(); scene.remove(this.halo); this.halo.material.dispose(); }
+}
+
+function makeVents() {
+  for (const x of VENTS) {
+    const yb = routeY(x) - 20, yt = routeY(x) + 16;
+    const glow = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: T.rays, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.32, color: new THREE.Color('#a8ecff') }));
+    glow.position.set(x, (yb + yt) / 2, -0.6); glow.scale.set(5, yt - yb, 1); glow.rotation.z = Math.PI; glow.renderOrder = 8; scene.add(glow);
+    ventObjs.push({ x, yb, yt, glow, emit: 0, sound: 0 });
+  }
+}
+function updateVents(dt, t) {
+  for (const v of ventObjs) {
+    const near = Math.abs(v.x - camera.position.x) < 70;
+    v.glow.visible = near;
+    if (!near) continue;
+    v.glow.material.opacity = 0.22 + 0.08 * Math.sin(t * 1.7 + v.x);
+    v.emit -= dt;
+    while (v.emit < 0) { v.emit += 0.045; bubbles.spawn(V3(v.x + R(-0.9, 0.9), v.yb + R(0, 6), R(-0.5, 0.5)), V3(R(-0.2, 0.2), R(2.5, 4.2), 0), (v.yt - v.yb) / 4.2, R(0.18, 0.5), 1); }
+    if (G.state === 'play' && Math.abs(diver.pos.x - v.x) < 1.9 && diver.pos.y > v.yb && diver.pos.y < v.yt + 2) {
+      const before = G.breath; G.breath = Math.min(100, G.breath + 34 * dt);
+      v.sound -= dt; if (v.sound <= 0 && before < 99) { AudioSys.bubbles(0.1); v.sound = 0.35; }
+      if (!G.hints.vent && before < 99) showHint('Rising bubbles refill your breath', 3.5, 'vent');
+    }
+  }
+}
+
+function buildFish() {
+  let geo, map;
+  MODELS.fish.scene.traverse((o) => { if (o.isMesh && !geo) { geo = o.geometry.clone(); map = o.material.map; } });
+  geo.computeBoundingBox();
+  const bb = geo.boundingBox, size = bb.getSize(V3());
+  // fish model faces along its longest horizontal axis; normalise so the head points to +X
+  if (size.z > size.x) geo.applyMatrix4(new THREE.Matrix4().makeRotationY(Math.PI / 2));
+  geo.computeBoundingBox(); const c = geo.boundingBox.getCenter(V3()); geo.translate(-c.x, -c.y, -c.z);
+  const L = geo.boundingBox.max.x - geo.boundingBox.min.x; geo.scale(0.75 / L, 0.75 / L, 0.75 / L);
+  if (FISH_FLIP) geo.applyMatrix4(new THREE.Matrix4().makeRotationY(Math.PI));
+  const N = 230;
+  const seeds = new Float32Array(N); for (let i = 0; i < N; i++) seeds[i] = Math.random() * 100;
+  geo.setAttribute('aSeed', new THREE.InstancedBufferAttribute(seeds, 1));
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { map: { value: map }, uTime: SHARED.time, ...fogU() },
+    vertexShader: `attribute float aSeed; uniform float uTime; varying vec2 vUv; varying vec3 vW; varying vec3 vN; varying float vB;
+      void main(){ vec3 p = position; float t = clamp((0.1 - p.x) / 0.45, 0.0, 1.0);
+        p.z += sin(uTime * 9.0 + aSeed - p.x * 9.0) * 0.07 * t * t;
+        vec4 w = modelMatrix * instanceMatrix * vec4(p, 1.0); vW = w.xyz; vUv = uv;
+        vN = normalize(mat3(modelMatrix * instanceMatrix) * normal); vB = fract(aSeed * 7.13);
+        gl_Position = projectionMatrix * viewMatrix * w; }`,
+    fragmentShader: `uniform sampler2D map; varying vec2 vUv; varying vec3 vW; varying vec3 vN; varying float vB; ${FOG}
+      void main(){ vec3 c = texture2D(map, vUv).rgb; float up = vN.y * 0.5 + 0.5; c *= 0.75 + 0.35 * up;
+        c = mix(c, c * 2.2 + vec3(0.12, 0.18, 0.2), step(0.86, vB) * 0.6);
+        gl_FragColor = vec4(applyFog(c, vW, 1.0), 1.0); }`,
+  });
+  const inst = new THREE.InstancedMesh(geo, mat, N); inst.frustumCulled = false; inst.renderOrder = 1; scene.add(inst);
+  const fish = [];
+  for (let i = 0; i < N; i++) {
+    const school = i < 170 ? 0 : (i < 200 ? 1 : 2);
+    const o = V3(R(-1, 1), R(-1, 1), R(-1, 1)); if (o.length() > 1) o.normalize();
+    o.multiply(school === 0 ? V3(16, 6.5, 9) : V3(5, 2.5, 3));
+    fish.push({ pos: V3(9999, 0, 0), vel: V3(3, 0, 0), off: o, school, seed: R(0, 100), scale: R(0.75, 1.3) });
+  }
+  return { inst, fish, centers: [V3(640, 8, -6), V3(120, 10, -14), V3(380, -9, -16)], active: [false, false, false] };
+}
+let FISH_FLIP = false;
+const _mtx = new THREE.Matrix4(), _qq = new THREE.Quaternion(), _sc = V3();
+function updateFish(dt, t) {
+  const F = fishSchool; if (!F) return;
+  const d = diver.pos;
+  // school centres: the big shoal lives in verse III, two small groups roam elsewhere
+  const c0 = F.centers[0];
+  const tx0 = clamp(d.x + 16 + 8 * Math.sin(t / 7), 600, 960);
+  c0.x = damp(c0.x, tx0, 1.2, dt); c0.y = damp(c0.y, routeY(c0.x) + 7 + 4 * Math.sin(t / 5), 0.5, dt); c0.z = -5 + 3 * Math.sin(t / 9);
+  const c1 = F.centers[1]; c1.x = damp(c1.x, d.x + 22 + 10 * Math.sin(t / 6), 0.25, dt); c1.y = routeY(c1.x) + 10 + 3 * Math.sin(t / 4); c1.z = -16;
+  const c2 = F.centers[2]; c2.x = damp(c2.x, d.x - 8 + 14 * Math.sin(t / 8 + 2), 0.25, dt); c2.y = routeY(c2.x) - 9 + 3 * Math.sin(t / 5); c2.z = -20;
+  const visible = (c) => Math.abs(c.x - camera.position.x) < 90;
+  for (let i = 0; i < F.fish.length; i++) {
+    const f = F.fish[i], c = F.centers[f.school];
+    if (!visible(c)) { f.pos.set(c.x + f.off.x, c.y + f.off.y, c.z + f.off.z); _mtx.makeScale(0, 0, 0); F.inst.setMatrixAt(i, _mtx); continue; }
+    const rot = t * 0.15 + f.seed;
+    const tgt = V3(c.x + f.off.x * Math.cos(rot * 0.2) + Math.sin(t * 0.7 + f.seed) * 1.2, c.y + f.off.y + Math.sin(t * 0.9 + f.seed) * 0.8, c.z + f.off.z);
+    const acc = tgt.sub(f.pos).multiplyScalar(1.1).addScaledVector(f.vel, -0.6);
+    const away = V3().subVectors(f.pos, d); const dd = away.length();
+    if (dd < 6) acc.addScaledVector(away.normalize(), (6 - dd) * 9);
+    if (whale) { const aw = V3().subVectors(f.pos, whale.pos); const dw = aw.length(); if (dw < 11 * WS) acc.addScaledVector(aw.normalize(), (11 * WS - dw) * 2.5); }
+    f.vel.addScaledVector(acc, dt);
+    const sp = f.vel.length(); if (sp > 9) f.vel.multiplyScalar(9 / sp); if (sp < 1.5) f.vel.addScaledVector(V3(1, 0, 0), 1.5 - sp);
+    f.pos.addScaledVector(f.vel, dt);
+    _x.copy(f.vel).normalize(); _z.crossVectors(_x, V3(0, 1, 0)).normalize(); _y.crossVectors(_z, _x);
+    _m4.makeBasis(_x, _y, _z); _qq.setFromRotationMatrix(_m4);
+    _mtx.compose(f.pos, _qq, _sc.setScalar(f.scale));
+    F.inst.setMatrixAt(i, _mtx);
+  }
+  F.inst.instanceMatrix.needsUpdate = true;
+}
+
+// =====================================================================
+//  chunks: jellyfish placement as the diver advances
+// =====================================================================
+function spawnChunk(ci) {
+  if (spawnedChunks.has(ci)) return; spawnedChunks.add(ci);
+  const x0 = ci * 40; if (x0 < 60 || x0 > WORLD_END) return;
+  const v = verseAt(x0);
+  const r = mulberry32(ci * 7919 + 13);
+  const n = v === 0 ? 0 : v === 1 ? (r() < 0.7 ? 1 : 2) : v === 2 ? 2 + (r() < 0.5 ? 1 : 0) : 2;
+  for (let i = 0; i < n; i++) {
+    const x = x0 + r() * 40;
+    if (VENTS.some(vx => Math.abs(vx - x) < 6)) continue;
+    jellies.push(new Jelly(V3(x, routeY(x) + (r() * 2 - 1) * 12, 0)));
+  }
+  // drifting background jellies for depth
+  if (v >= 1 && r() < 0.6) { const x = x0 + r() * 40; jellies.push(new Jelly(V3(x, routeY(x) + (r() * 2 - 1) * 14, -18 - r() * 15), true)); }
+}
+
+// =====================================================================
+//  HUD
+// =====================================================================
+const $ = (s) => document.querySelector(s);
+const hud = {
+  el: $('#hud'), fill: $('#breath .fill'), breath: $('#breath'), count: $('#noteCount'), notes: $('#notes'), dot: $('#progress .dot'), verse: $('#verse'), hint: $('#hint'),
+  init() { const p = $('#progress'); VERSES.forEach((v) => { const t = document.createElement('div'); t.className = 'tick'; t.style.left = (100 * v.x / WORLD_END) + '%'; p.appendChild(t); }); },
+  pop() { this.notes.classList.remove('pop'); void this.notes.offsetWidth; this.notes.classList.add('pop'); },
+  update() {
+    this.fill.style.width = G.breath.toFixed(1) + '%';
+    this.breath.classList.toggle('low', G.breath < 28);
+    this.count.textContent = G.notes;
+    this.dot.style.left = (100 * clamp(diver.pos.x / WORLD_END, 0, 1)).toFixed(2) + '%';
+  },
+};
+let hintTimer = 0, verseTimer = 0;
+function showHint(text, dur = 3.5, key) { if (key) { if (G.hints[key]) return; G.hints[key] = true; } hud.hint.textContent = text; hud.hint.style.opacity = 1; hintTimer = dur; }
+function showVerse(i) { hud.verse.textContent = VERSES[i].name; hud.verse.style.opacity = 1; verseTimer = 4; }
+
+// =====================================================================
+//  init
+// =====================================================================
+function init() {
+  backdrop = makeBackdrop();
+  makeRays(); makeSilhouettes(); makeReefs(); surface = makeSurface();
+  snow = makeSnow();
+  bubbles = new Pool(700, T.bubble, '#dff7ff', 12);
+  sparks = new Pool(500, T.spark, '#bdf3ff', 16);
+  makeRings(); makeStreaks(); makeVents();
+  whale = buildWhale();
+  diverObj = buildDiver();
+  scarf = buildScarf();
+  fishSchool = buildFish();
+  hud.init();
+  // settle the scarf behind the diver before the first frame
+  diver.pos.set(4, 0, 0);
+  orientDiver(1, true);
+  resetScarf();
+  for (let i = 0; i < 90; i++) updateScarf(1 / 60, i / 60);
+  G.state = 'title';
+  $('#loading').style.opacity = 0;
+  setTimeout(() => { $('#loading').style.display = 'none'; }, 1500);
+  $('#title').style.opacity = 1;
+  G.fade = 1;
+  if (params.has('autostart')) startGame();
+  if (params.has('jump')) { startGame(); teleport(+params.get('jump')); }
+  window.__wg = { G, diver, whale, lines, notes, jellies, teleport, startGame, camera, scene, rays, rings, ventObjs, reefs, silTiles };
+  requestAnimationFrame(loop);
+}
+
+function anyInput() {
+  AudioSys.init(); AudioSys.resume();
+  if (G.state === 'title' && performance.now() > 600) startGame();
+  else if (G.state === 'over' && G.endT > 9.5 && (keys.has('Enter') || keys.has('NumpadEnter') || pointer.down)) location.reload();
+}
+function startGame() {
+  if (G.state !== 'title') return;
+  G.state = 'play'; G.playT = 0;
+  $('#title').style.opacity = 0; hud.el.style.opacity = 1;
+  if (!navigator.userActivation || navigator.userActivation.hasBeenActive) AudioSys.init(); // debug starts (?jump) wait for a real gesture
+  AudioSys.startMusic(); AudioSys.startAmbience();
+  whale.mode = 'intro'; whale.modeT = 0; whale.pos.set(diver.pos.x + 50, -14, -15); whale.heading.set(-1, 0.12, 0).normalize(); whale.quat.identity(); whale.autoT = 4.5; whale.songCD = 0;
+  showHint('Swim with W A S D or the arrow keys', 4.5, 'swim');
+}
+function teleport(x) {
+  if (diver.riding) { diver.riding.mat.uniforms.uRiding.value = 0; diver.riding = null; }
+  for (const L of lines) if (!L.dead) L.dispose();
+  lines.length = 0;
+  diver.pos.set(x, routeY(x), 0); diver.vel.set(4, 0, 0); G.checkpoint.copy(diver.pos);
+  whale.autoT = 1.5; whale.songCD = 0;
+  whale.pos.set(x - 14, routeY(x) - 11, -14); whale.mode = 'escort'; whale.modeT = 0;
+  orientDiver(1, true); resetScarf();
+}
+
+// =====================================================================
+//  diver control & physics
+// =====================================================================
+const _f = V3(), _b = V3(), _l = V3();
+function orientDiver(dt, snap = false) {
+  const v = diver.vel; const sp = v.length();
+  if (Math.abs(v.x) > 0.6) diver.facing = Math.sign(v.x);
+  let fwd = sp > 0.35 ? _f.copy(v).normalize() : _f.set(diver.facing, 0, 0);
+  if (!diver.riding && sp < 2.5) { // idle: relax toward a near-horizontal, gently drifting pose
+    const k = sp / 2.5; fwd.lerp(V3(diver.facing, 0.12, 0), 1 - k).normalize();
+  }
+  _l.set(0, 0, diver.facing);
+  _b.crossVectors(fwd, _l).normalize();
+  _l.crossVectors(_b, fwd).normalize();
+  _m4.makeBasis(_b, fwd, _l);
+  _q.setFromRotationMatrix(_m4);
+  // roll a little so we see her back from above, like the video
+  _q.multiply(new THREE.Quaternion().setFromAxisAngle(V3(0, 1, 0), -0.42 * diver.facing));
+  if (snap) diver.quat.copy(_q); else diver.quat.slerp(_q, 1 - Math.exp(-dt * 7));
+  diverObj.root.quaternion.copy(diver.quat);
+  diverObj.root.position.copy(diver.pos);
+}
+
+function updateDiver(dt, t, inp) {
+  const d = diver;
+  d.invuln = Math.max(0, d.invuln - dt); d.singCD = Math.max(0, d.singCD - dt); d.detachT = Math.max(0, d.detachT - dt);
+  d.hurt = damp(d.hurt, 0, 4, dt);
+  const canControl = G.state === 'play';
+  if (!canControl) { inp = { x: 0, y: 0, kick: false, sing: false }; }
+  if (G.state === 'end' || G.state === 'over') { inp = { x: 0.08, y: 0.36, kick: false, sing: false }; }
+
+  // ---- sing ----
+  if (inp.sing && d.singCD <= 0 && canControl) {
+    d.singCD = 0.9;
+    spawnRing(d.pos.clone(), 7, 1.0, '#dffaff', 0.03, 0.6, d.pos);
+    AudioSys.play('hum', { vol: 0.55, rate: [1, 1.122, 1.26, 1.498, 1.682][Math.floor(rng() * 5)], wet: 0.7 });
+    for (const n of notes) if (n.state === 'live' && n.base.distanceTo(d.pos) < 10) n.magnet = true;
+    for (const j of jellies) { const a = V3().subVectors(j.pos, d.pos); const dist = a.length(); if (dist < 7 && !j.deco) j.repel.addScaledVector(a.normalize(), (7 - dist) * 1.6); }
+    if (whale.songCD <= 0 && whale.answerT < 0) { whale.answerT = 0.7; }
+    if (!G.hints.call && G.songsHeard >= 1) G.hints.call = true;
+  }
+
+  // ---- riding a song line ----
+  if (d.riding) {
+    const L = d.riding;
+    const tgtSpeed = inp.kick ? 20 : 15.5;
+    d.rideSpeed = damp(d.rideSpeed, tgtSpeed, 2.2, dt);
+    d.rideS += d.rideSpeed * dt;
+    // she can't overtake the pen while the song is still being drawn; once drawn, she glides off its end
+    if (L.drawn < L.len && d.rideS > L.drawn - 1.5) { d.rideS = L.drawn - 1.5; }
+    const tan = L.tangent(d.rideS);
+    const nrm = V3(-tan.y, tan.x, 0);
+    const perp = inp.x * nrm.x + inp.y * nrm.y;
+    d.rideOff = clamp(d.rideOff + perp * dt * 2.4, -0.8, 0.8);
+    if (Math.abs(perp) < 0.2) d.rideOff = damp(d.rideOff, 0, 2, dt);
+    d.push = Math.abs(perp) > 0.7 ? d.push + dt : 0;
+    const p = L.at(d.rideS).addScaledVector(nrm, d.rideOff);
+    d.vel.subVectors(p, d.pos).divideScalar(Math.max(dt, 1e-4)); d.vel.z = 0; // the line's slight depth wobble must not turn her toward the camera
+    d.vel.clampLength(0, 26);
+    d.pos.copy(p); d.pos.z = damp(d.pos.z, 0, 4, dt);
+    L.mat.uniforms.uRiding.value = 1; L.mat.uniforms.uRiderS.value = d.rideS;
+    G.breath = Math.min(100, G.breath + 4.5 * dt);
+    d.kickAmp = damp(d.kickAmp, 0.22, 3, dt); d.dolphin = damp(d.dolphin, 1, 3, dt); d.kickPhase += dt * 5;
+    d.glow = damp(d.glow, 1, 4, dt);
+    const end = d.rideS >= L.len - 1.2 || L.fade < 0.3 || d.push > 0.22 || L.dead;
+    if (end) {
+      d.vel.copy(tan).setZ(0).multiplyScalar(d.rideSpeed * 0.75);
+      if (d.push > 0.22) d.vel.addScaledVector(nrm, Math.sign(perp) * 5);
+      else if (d.rideS >= L.len - 1.2) for (let i = 0; i < 10; i++) sparks.spawn(d.pos, V3(R(-1, 1), R(-1, 1), R(-0.3, 0.3)).normalize().multiplyScalar(R(1.5, 4)).addScaledVector(tan, 3), R(0.4, 0.8), R(0.15, 0.35));
+      L.mat.uniforms.uRiding.value = 0; d.detachLine = L; d.detachT = 0.7; d.riding = null;
+    }
+    // speed streaks (video look)
+    if (Math.random() < dt * 22) {
+      const off = V3(R(-1, 1), R(-1, 1), R(-1.5, 0.6)).multiplyScalar(2.2);
+      spawnStreak(d.pos.clone().add(off).addScaledVector(tan, R(-3, 1)), tan, R(3, 8), R(0.35, 0.7), R(0.5, 1));
+    }
+    if (Math.random() < dt * 30) sparks.spawn(d.pos.clone().addScaledVector(tan, -1.1), V3(R(-0.5, 0.5), R(-0.5, 0.5), R(-0.3, 0.3)), R(0.5, 1), R(0.12, 0.3));
+  } else {
+    // ---- free swimming ----
+    const maxSp = inp.kick ? 8.6 : 5.6, acc = inp.kick ? 20 : 13;
+    const il = Math.hypot(inp.x, inp.y);
+    d.vel.x += inp.x * acc * dt; d.vel.y += inp.y * acc * dt;
+    const sp = d.vel.length();
+    if (sp > maxSp) d.vel.multiplyScalar(damp(sp, maxSp, 3.5, dt) / sp);
+    d.vel.multiplyScalar(Math.exp(-dt * (il > 0.1 ? 0.6 : 1.15)));
+    d.vel.y += Math.sin(t * 1.3) * 0.12 * dt; // gentle buoyancy bob
+    // keep near the route (soft bounds)
+    const ry = routeY(d.pos.x), dy = d.pos.y - ry;
+    if (Math.abs(dy) > 22) d.vel.y -= Math.sign(dy) * (Math.abs(dy) - 22) * 3 * dt;
+    if (d.pos.x < -6) d.vel.x += (-6 - d.pos.x) * 4 * dt;
+    if (d.pos.y > SURFACE_Y - 2) d.vel.y -= (d.pos.y - SURFACE_Y + 2) * 6 * dt;
+    d.pos.addScaledVector(d.vel, dt); d.pos.z = damp(d.pos.z, 0, 3, dt);
+    d.kickAmp = damp(d.kickAmp, il > 0.1 ? (inp.kick ? 1.35 : 1.0) : 0.28, 3, dt);
+    d.dolphin = damp(d.dolphin, 0, 3, dt);
+    d.kickPhase += dt * (il > 0.1 ? (inp.kick ? 11 : 7.5) : 2.4);
+    d.glow = damp(d.glow, 0, 2, dt);
+    // breath
+    G.breath -= dt * (canControl ? (inp.kick && il > 0.1 ? 3.4 : 1.7) : 0);
+    // catch a line
+    if (canControl) {
+      for (const L of lines) {
+        if (L.dead || L.delay > 0 || L.fade < 0.5) continue;
+        if (L === d.detachLine && d.detachT > 0) continue;
+        const c = L.closest(d.pos);
+        if (c.d < 1.35 && c.s < L.drawn - 2 && c.s < L.len - 4) {
+          const tan = L.tangent(c.s);
+          if (d.vel.dot(tan) > -1.5) {
+            const lp = L.at(c.s), ln = V3(-tan.y, tan.x, 0);
+            d.riding = L; d.rideS = c.s; d.rideSpeed = Math.max(8, d.vel.dot(tan)); d.push = 0;
+            d.rideOff = clamp((d.pos.x - lp.x) * ln.x + (d.pos.y - lp.y) * ln.y, -0.8, 0.8);
+            AudioSys.chime(L.chime + 2, 0.12); spawnRing(d.pos.clone(), 3, 0.6, '#ffffff', 0.08, 0.7);
+            if (!G.firstRide) { G.firstRide = true; setTimeout(() => showHint('Press Space to sing — the whale answers', 4.5, 'call'), 2500); }
+            break;
+          }
+        }
+      }
+    }
+  }
+  // bubbles from the diver
+  d.bubbleT -= dt;
+  if (d.bubbleT <= 0) {
+    d.bubbleT = R(0.9, 2.2);
+    const head = diverObj.mesh.localToWorld(diverObj.head.clone());
+    const n = Math.floor(R(2, 5));
+    for (let i = 0; i < n; i++) bubbles.spawn(head.clone().add(V3(R(-0.1, 0.1), R(0, 0.2), R(-0.1, 0.1))), V3(R(-0.3, 0.3), R(0.6, 1.4), 0), R(1.8, 3.2), R(0.07, 0.16), 1);
+  }
+  // shader params
+  diverObj.uniforms.uKick.value = d.kickPhase;
+  diverObj.uniforms.uKickAmp.value = d.kickAmp;
+  diverObj.uniforms.uDolphin.value = d.dolphin;
+  diverObj.uniforms.uHurt.value = d.hurt + (d.invuln > 0 ? 0.25 * (Math.sin(t * 30) > 0 ? 1 : 0) : 0);
+  diverObj.uniforms.uGlow.value = d.glow;
+  orientDiver(dt);
+  d.speed = d.vel.length();
+}
+
+// collisions & pickups
+const _a = V3(), _bb = V3();
+function segDist(p, a, b) { _bb.subVectors(b, a); const tt = clamp(_a.subVectors(p, a).dot(_bb) / _bb.lengthSq(), 0, 1); return _a.copy(a).addScaledVector(_bb, tt).distanceTo(p); }
+function interactions(dt) {
+  const d = diver;
+  const f = V3(0, 1, 0).applyQuaternion(d.quat);
+  const head = d.pos.clone().addScaledVector(f, 0.85), feet = d.pos.clone().addScaledVector(f, -1.0);
+  // notes
+  for (const n of notes) {
+    if (n.state !== 'live') continue;
+    const r = d.riding ? 1.6 : 1.25;
+    if (segDist(n.sp.position, head, feet) < r) n.take();
+  }
+  // jellyfish stings
+  if (d.invuln <= 0 && G.state === 'play') {
+    for (const j of jellies) {
+      if (j.deco || j.dead) continue;
+      const bell = j.bell;
+      if (Math.abs(bell.x - d.pos.x) > 4) continue;
+      // bell (r~0.55) + tentacles (thin capsule below it) vs the diver's body capsule (r~0.3)
+      const tl = j.tail;
+      let hit = segDist(bell, head, feet) < 0.85;
+      if (!hit) for (let k = 1; k <= 4 && !hit; k++) { const q = bell.clone().lerp(tl, k / 4); hit = segDist(q, head, feet) < 0.55; }
+      if (hit) {
+        G.breath = Math.max(0, G.breath - 18); G.stings++;
+        const away = V3().subVectors(d.pos, bell).setZ(0).normalize();
+        if (d.riding) { d.riding.mat.uniforms.uRiding.value = 0; d.detachLine = d.riding; d.detachT = 1.0; d.riding = null; }
+        d.vel.copy(away).multiplyScalar(9);
+        d.invuln = 1.5; d.hurt = 1; G.flash = 0.35; G.flashCol.set('#ff8a7a'); G.shake = 0.5;
+        AudioSys.sting();
+        for (let i = 0; i < 16; i++) sparks.spawn(bell, V3(R(-1, 1), R(-1, 1), 0).normalize().multiplyScalar(R(2, 5)), R(0.3, 0.7), R(0.15, 0.35));
+        if (!G.hints.jelly) showHint('Jellyfish sting — sing to push them away', 4, 'jelly');
+        break;
+      }
+    }
+  }
+  // the song wave gives breath when it washes over the diver
+  if (whale.singT > 0.6 && whale.singT < 1.4 && !G.songBreathGiven) { G.songBreathGiven = true; G.breath = Math.min(100, G.breath + 6); }
+}
+
+// =====================================================================
+//  camera
+// =====================================================================
+const camState = { pos: V3(0, 3, 22), look: V3(), dist: 18, fov: 40, init: false };
+function updateCamera(dt, t) {
+  const d = diver;
+  const ascentK = smooth((d.pos.x - ASCENT_X + 30) / 160);
+  let target, dist, yaw, pitch;
+  if (G.state === 'title') {
+    target = V3(d.pos.x + 3 + Math.sin(t * 0.05) * 2, d.pos.y + 0.5, 0);
+    dist = 19; yaw = 0.18 * Math.sin(t * 0.04) - 0.08; pitch = 0.12;
+  } else {
+    const lead = V3(d.vel.x, d.vel.y, 0).multiplyScalar(0.33);
+    target = d.pos.clone().add(lead);
+    const wk = smooth(1 - Math.abs(whale.pos.x - d.pos.x) / 38) * smooth(1 - Math.abs(whale.pos.y - d.pos.y + 7) / 14);
+    camState.whaleK = damp(camState.whaleK || 0, wk, 1.2, dt);
+    target.y += lerp(0.6, 2.5, ascentK) - camState.whaleK * 2.4;
+    dist = 17 + clamp(d.speed - 6, 0, 14) * 0.38 + (whale.singT >= 0 ? 2 : 0) + ascentK * 3 + camState.whaleK * 3;
+    yaw = 0.11 * Math.sin(t * 0.07) + clamp(d.vel.x, -12, 12) * 0.004;
+    pitch = lerp(0.13 + 0.04 * Math.sin(t * 0.05), -0.32, ascentK);
+    if (G.state === 'end' || G.state === 'over') { pitch = -0.42; dist = 24; }
+  }
+  if (DEBUG && params.has('zoom')) dist = +params.get('zoom');
+  camState.dist = damp(camState.dist, dist, 1.5, dt);
+  const cd = camState.dist;
+  const want = V3(target.x + Math.sin(yaw) * cd, target.y + Math.sin(pitch) * cd, Math.cos(yaw) * Math.cos(pitch) * cd);
+  if (!camState.init) { camState.pos.copy(want); camState.look.copy(target); camState.init = true; }
+  camState.pos.lerp(want, 1 - Math.exp(-dt * 2.6));
+  camState.look.lerp(target, 1 - Math.exp(-dt * 4));
+  camera.position.copy(camState.pos);
+  if (G.shake > 0) { camera.position.x += (Math.random() - 0.5) * G.shake; camera.position.y += (Math.random() - 0.5) * G.shake; G.shake = Math.max(0, G.shake - dt * 1.4); }
+  camera.lookAt(camState.look);
+  camState.fov = damp(camState.fov, 40 + clamp(d.speed - 8, 0, 12) * 0.45, 2, dt);
+  camera.fov = camState.fov; camera.updateProjectionMatrix();
+}
+
+// =====================================================================
+//  atmosphere (water colour, light) driven by depth/progress
+// =====================================================================
+const C_DEEP = new THREE.Color('#0f4a6d'), C_SURF = new THREE.Color('#3f9fc4'), C_REEF = new THREE.Color('#14587d');
+function updateAtmosphere(dt) {
+  const k = clamp(diver.pos.y / (SURFACE_Y - 10), 0, 1);
+  G.lightK = damp(G.lightK, k, 1.5, dt);
+  const fog = SHARED.fogColor.value;
+  fog.copy(C_DEEP).lerp(C_SURF, G.lightK);
+  SHARED.fogDensity.value = lerp(0.0078, 0.0055, G.lightK);
+  backdrop.material.uniforms.uMix.value = smooth(G.lightK * 1.2);
+  backdrop.material.uniforms.uBright.value = 1 - G.lightK * 0.12;
+  bloom.threshold = lerp(0.88, 1.35, G.lightK); bloom.strength = lerp(0.6, 0.38, G.lightK);
+  backdrop.material.uniforms.uOff.value.set(Math.sin(camera.position.x * 0.0021) * 0.06 + (camera.rotation.y) * -0.25, clamp(camera.position.y * 0.0012, -0.05, 0.12) + camera.rotation.x * 0.25);
+  surface.material.uniforms.uK.value = smooth((diver.pos.y - 30) / 60);
+  lineDim.value = 1 - 0.4 * G.lightK;
+  AudioSys.setUnderwater(G.lightK);
+}
+
+// =====================================================================
+//  main loop
+// =====================================================================
+let last = performance.now(), fpsAcc = 0, fpsN = 0;
+function loop(now) {
+  requestAnimationFrame(loop);
+  let dt = (now - last) / 1000; last = now;
+  dt = Math.min(dt, 1 / 20);
+  G.t += dt; const t = G.t; SHARED.time.value = t;
+  const inp = readInput(); pressed.clear();
+
+  if (G.state === 'play') {
+    G.playT += dt;
+    // verses
+    const v = verseAt(diver.pos.x);
+    if (v !== G.verse) { G.verse = v; showVerse(v); }
+    // checkpoints every 100 m
+    if (diver.pos.x > G.checkpoint.x + 100) G.checkpoint.set(diver.pos.x, routeY(diver.pos.x) + 2, 0);
+    // chunk spawning
+    const ci = Math.floor((diver.pos.x + 110) / 40); for (let c = ci - 3; c <= ci; c++) spawnChunk(c);
+    // breath / faint
+    if (G.breath < 28) { G.lastHeart -= dt; if (G.lastHeart <= 0) { AudioSys.heartbeat(); G.lastHeart = lerp(0.7, 1.2, G.breath / 28); } if (!G.hints.breath) showHint('Out of breath — ride her song or find rising bubbles', 4.5, 'breath'); }
+    if (G.breath <= 0) { G.state = 'faint'; G.faintT = 0; G.faints++; hintTimer = 0; hud.hint.style.opacity = 0; if (diver.riding) { diver.riding.mat.uniforms.uRiding.value = 0; diver.riding = null; } }
+    // the end: reaching the light
+    if (diver.pos.y > SURFACE_Y - 24 || diver.pos.x > WORLD_END) {
+      G.state = 'end'; G.endT = 0; whale.mode = 'end'; whale.modeT = 0; hud.el.style.opacity = 0;
+      AudioSys.play('call1', { vol: 1, rate: 0.9, wet: 0.8 });
+      if (diver.riding) { diver.riding.mat.uniforms.uRiding.value = 0; diver.riding = null; }
+      // frame the last shot like the video: reef ledges hanging above, the light beyond
+      const [a, b, c] = G.endReefs, d = diver.pos;
+      a.position.set(d.x + 28, d.y + 21, 3); b.position.set(d.x - 22, d.y + 29, -20); c.position.set(d.x + 52, d.y + 30, -12); // keep her rising path clear, ledge top-right as in the last frame
+      showHint('', 0.01);
+    }
+  } else if (G.state === 'faint') {
+    G.faintT += dt;
+    G.fade = smooth(G.faintT / 1.6);
+    if (G.faintT > 2.2) {
+      // the whale carries her back to the last calm water
+      diver.pos.copy(G.checkpoint); diver.vel.set(3, 0, 0); G.breath = 75;
+      for (const L of lines) if (!L.dead) L.dispose();
+      lines.length = 0;
+      whale.pos.set(diver.pos.x - 16, diver.pos.y - 11, -14); whale.heading.set(1, 0, 0);
+      orientDiver(1, true); resetScarf();
+      G.state = 'play'; G.fade = 1; whale.autoT = 2.5; whale.songCD = 0;
+      showHint('The whale carried you back', 3);
+    }
+  } else if (G.state === 'end') {
+    G.endT += dt;
+    if (G.endT > 2.5) { G.flashCol.set('#eafcff'); G.flash = smooth((G.endT - 2.5) / 4.5); }
+    if (G.endT > 6.5) { G.fade = smooth((G.endT - 6.5) / 2.5) * 0.9; finalPass.uniforms.uFadeCol.value.set('#0e4a68'); }
+    if (G.endT > 7.5 && G.state !== 'over') {
+      G.state = 'over';
+      const pct = G.notesTotal ? Math.round(100 * G.notes / G.notesTotal) : 0;
+      const mm = Math.floor(G.playT / 60), ss = Math.floor(G.playT % 60).toString().padStart(2, '0');
+      $('#endStats').innerHTML = `you sang <em>${G.notes}</em> of her <em>${G.notesTotal}</em> notes &middot; harmony <em>${pct}%</em><br>${mm}:${ss} beneath the waves${G.faints ? ` &middot; ${G.faints} time${G.faints > 1 ? 's' : ''} carried` : ''}`;
+      $('#end').style.opacity = 1;
+    }
+  }
+
+  if (G.state === 'title') { diver.vel.set(Math.sin(t * 0.5) * 0.3, Math.sin(t * 0.7) * 0.25, 0); diver.pos.addScaledVector(diver.vel, dt); diver.kickPhase += dt * 2; diverObj.uniforms.uKick.value = diver.kickPhase; diverObj.uniforms.uKickAmp.value = 0.35; orientDiver(dt); }
+  else updateDiver(dt, t, inp);
+  G.breath = clamp(G.breath, 0, 100);
+
+  updateWhale(dt, t);
+  for (const L of lines) L.update(dt);
+  for (let i = lines.length - 1; i >= 0; i--) if (lines[i].dead) { if (diver.riding === lines[i]) diver.riding = null; lines.splice(i, 1); }
+  for (const n of notes) n.update(dt, t);
+  for (let i = notes.length - 1; i >= 0; i--) if (notes[i].state === 'dead') notes.splice(i, 1);
+  for (const j of jellies) { j.update(dt, t); if (j.pos.x < diver.pos.x - 90 || j.pos.y > routeY(j.pos.x) + 40) j.kill(); }
+  for (let i = jellies.length - 1; i >= 0; i--) if (jellies[i].dead) jellies.splice(i, 1);
+  if (G.state === 'play') interactions(dt);
+  updateFish(dt, t);
+  updateVents(dt, t);
+  updateScarf(dt, t);
+  updateCamera(dt, t);
+  updateAtmosphere(dt);
+  updateRays(t); updateSilhouettes();
+  snow.material.uniforms.uCam.value.copy(camera.position);
+  bubbles.update(dt, t); sparks.update(dt, t);
+  updateRings(dt); updateStreaks(dt);
+  // the pen-heads of lines being drawn leave sparkles
+  for (const L of lines) if (L.delay <= 0 && L.drawn < L.len) { const p = L.at(L.drawn); if (Math.random() < 0.8) sparks.spawn(p, V3(R(-1, 1), R(-1, 1), 0), R(0.3, 0.6), R(0.2, 0.45)); }
+
+  // post
+  pointScale.value = (innerHeight * PR) / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
+  const fu = finalPass.uniforms;
+  fu.uTime.value = t;
+  if (G.state === 'title' || G.state === 'play') G.fade = damp(G.fade, 0, G.state === 'title' ? 0.9 : 2, dt);
+  if (G.state === 'over') { G.endT += dt; G.fade = Math.min(0.9, G.fade + dt * 0.4); }
+  fu.uFade.value = G.fade;
+  if (G.state !== 'end' && G.state !== 'over') G.flash = Math.max(0, G.flash - dt * 1.2);
+  fu.uFlash.value = G.flash; fu.uFlashCol.value.copy(G.flashCol);
+  const low = G.state === 'play' ? smooth((30 - G.breath) / 30) : 0;
+  fu.uLow.value = damp(fu.uLow.value, low, 3, dt); fu.uDesat.value = fu.uLow.value * 0.7;
+  if (hintTimer > 0) { hintTimer -= dt; if (hintTimer <= 0) hud.hint.style.opacity = 0; }
+  if (verseTimer > 0) { verseTimer -= dt; if (verseTimer <= 0) hud.verse.style.opacity = 0; }
+  if (G.state === 'play' || G.state === 'faint') hud.update();
+  composer.render(dt);
+  if (DEBUG) { fpsAcc += dt; fpsN++; if (fpsAcc > 0.5) { const el = $('#fps'); el.style.display = 'block'; el.textContent = `${(fpsN / fpsAcc).toFixed(0)} fps  x=${diver.pos.x.toFixed(0)} y=${diver.pos.y.toFixed(0)} breath=${G.breath.toFixed(0)} lines=${lines.length} notes=${G.notes}/${G.notesTotal} ${G.state}`; fpsAcc = 0; fpsN = 0; } }
+}
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight); composer.setSize(innerWidth, innerHeight); bloom.setSize(innerWidth, innerHeight);
+  finalPass.uniforms.uRes.value.set(innerWidth, innerHeight);
+  if (backdrop) backdrop.material.uniforms.uAspect.value = innerWidth / innerHeight;
+});
+finalPass.uniforms.tPaper.value = T.paper;
+</script>
+</body>
+</html>

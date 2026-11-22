@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.graphic-shape-language-across-asset-types",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Graphic shape language across asset types"
+  },
+  "aliases": {
+    "en": [
+      "cross-object shape grammar",
+      "shared silhouette language",
+      "graphic form system"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "characters-motion-art",
+    "products-assemblies"
+  ],
+  "summary": "Define a small grammar of masses, cuts, edges and exceptions, then translate its relationships into unlike objects without forcing them into one silhouette.",
+  "objective": "A character and a shelter, or a product and an environment module, read as one authored world while each remains identifiable and functional.",
+  "applies_when": [
+    "Several unlike asset families need a shared visual identity.",
+    "A named style is already chosen but its geometry decisions are inconsistent across objects."
+  ],
+  "subject_terms": [
+    "shape language",
+    "silhouette grammar",
+    "cross-object art direction",
+    "negative space",
+    "motif translation"
+  ],
+  "tags": [
+    "style-profile",
+    "shape-language",
+    "art-direction",
+    "cross-object"
+  ],
+  "intent_signals": [
+    "make a character and building feel from the same world",
+    "translate a graphic motif across unlike assets",
+    "consistent silhouettes without cloning shapes"
+  ],
+  "example_prompts": [
+    "Give a courier character and a transit shelter the same cut-corner and suspended-gap language while keeping the doorway and limbs functional."
+  ],
+  "negative_signals": [
+    "Copying one outline onto every asset.",
+    "Calling a palette alone a shape language."
+  ],
+  "not_for": [
+    "A historical definition of a named visual movement.",
+    "A mechanical interface or clearance specification."
+  ],
+  "content": {
+    "principles": [
+      "Write the grammar as relationships: which masses dominate, how curves meet flats, where gaps open, and which functional parts may break the pattern. Do not prescribe a universal count or ratio.",
+      "Translate a motif by role. A cut corner on a handheld tool can become a roof return or a character cuff; literal repetition is optional.",
+      "Keep one declared exception class for identity, function or focal emphasis so consistency does not erase subject meaning."
+    ],
+    "implementation": [
+      "Build a two-column Blender proof with unlike objects at the same intended screen scale. Block primary masses first; use named bevel, taper, inset and negative-space decisions before surface detail.",
+      "Mark motif roles in object/material names or review notes. Export final geometry, normals and material slots through glTF; treat Grease Pencil strokes, compositor outlines and non-exported procedural effects as authored source that needs baked texture, mesh representation or an explicitly rebuilt Three.js effect.",
+      "In Three.js, preserve object identity and motif roles while choosing screen-space outline/detail thresholds per camera. Do not let responsive simplification remove a functional opening, grasp point or selection boundary."
+    ],
+    "observable_checks": [
+      "At thumbnail scale, identify each subject and point to at least two shared relationships without relying on color.",
+      "Rotate both objects to a second required view: the grammar still appears, but doors, limbs, handles and mating edges remain plausible.",
+      "Disable runtime outlines and post effects: transported geometry still carries the declared primary shape language; any missing authored effect is listed as a runtime owner."
+    ]
+  },
+  "related_ids": [
+    "knowledge.style-stylized",
+    "knowledge.style-geometric-abstract",
+    "knowledge.hero-prop-detail-hierarchy",
+    "knowledge.hard-surface-bevel-normal-contract"
+  ],
+  "creative_affordances": [
+    "Use rounded slabs, blade-like tapers, scalloped voids or asymmetrical interruptions; the record chooses a translation method, not an aesthetic.",
+    "Let a focal object deliberately break one relationship when the brief needs contrast."
+  ],
+  "known_limits": [
+    "Authored creative proposal; it does not prove aesthetic preference, historical authenticity or functional engineering.",
+    "No Blender export or Three.js view was run."
+  ],
+  "claims": []
+}

@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.three-scene-adapter",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Three.js scene assembly and transform adapter"
+  },
+  "aliases": {
+    "en": [
+      "three scene adapter"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "anatomy-structures",
+    "rigid-mechanics"
+  ],
+  "summary": "Map semantic parts to stable scene nodes with deliberate local and world coordinate ownership.",
+  "objective": "Moving the assembly root moves all intended parts exactly once; moving a joint leaves its support in place.",
+  "tags": [
+    "tool-adapter",
+    "three",
+    "scene",
+    "adapter"
+  ],
+  "example_prompts": [
+    "Map semantic parts to stable scene nodes with deliberate local and world coordinate ownership."
+  ],
+  "content": {
+    "principles": [
+      "Use semantic assembly IDs independently of mesh names and rendering detail.",
+      "Keep decorative transforms beneath the node that owns the functional pose."
+    ],
+    "implementation": [
+      "Create one root per selectable assembly and child groups for moving subassemblies. Keep an explicit ID-to-node map.",
+      "Object3D matrix is local and matrixWorld is world space; declare which space each input and model output uses.",
+      "For inspection, preserve the simulation hierarchy and use presentation offsets or a separate view copy. Dispose owned geometry and materials when replacing an assembly."
+    ],
+    "observable_checks": [
+      "Moving the assembly root moves all intended parts exactly once; moving a joint leaves its support in place.",
+      "Return from inspection restores the original transform values and selection identity."
+    ]
+  },
+  "known_limits": [
+    "Three.js transform hierarchy does not enforce mechanical joints or contact. Resource cleanup depends on ownership and installed APIs.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+  ],
+  "related_ids": [
+    "recipe.fantasy-village-diorama",
+    "recipe.skeletal-hierarchy",
+    "recipe.coupled-gears"
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-three-scene-adapter",
+      "statement": "Object3D exposes child nodes and distinct local and world transformation matrices.",
+      "scope": "Scene representation, not physical constraints.",
+      "source_refs": [
+        {
+          "source_id": "source.three-object3d",
+          "locator": "matrix; matrixWorld; children"
+        }
+      ]
+    }
+  ]
+}

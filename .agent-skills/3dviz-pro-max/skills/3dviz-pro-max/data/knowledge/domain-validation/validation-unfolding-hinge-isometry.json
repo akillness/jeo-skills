@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-unfolding-hinge-isometry",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Face isometry and hinge coincidence during unfolding"
+  },
+  "aliases": {
+    "en": [
+      "net folding isometry check",
+      "hinge endpoint coincidence"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry"
+  ],
+  "summary": "Verify that folding preserves within-face distances and areas while hinge endpoints stay coincident throughout the motion.",
+  "objective": "Face measurements are constant across the fold, hinge endpoints never separate, and the flat and closed states meet their overlap and seam conditions.",
+  "applies_when": [
+    "A polyhedron unfolds to a planar net or folds back along a hinge tree.",
+    "Panels are treated as zero-thickness mathematical faces.",
+    "A viewer can stop the motion anywhere between flat and closed."
+  ],
+  "check_method": "geometry",
+  "tags": [
+    "domain-validation",
+    "unfolding",
+    "isometry",
+    "hinges"
+  ],
+  "subject_terms": [
+    "net",
+    "hinge",
+    "dihedral angle",
+    "isometry",
+    "seam",
+    "face overlap"
+  ],
+  "intent_signals": [
+    "the faces stretch while folding",
+    "check that this net closes into the solid"
+  ],
+  "example_prompts": [
+    "Check that this cube net folds without stretching its faces."
+  ],
+  "negative_signals": [
+    "sheet metal bend allowances",
+    "cloth or paper physics"
+  ],
+  "content": {
+    "principles": [
+      "Folding is an isometry of each face: within a face every pairwise distance and the area are invariants throughout the motion, and only dihedral angles change.",
+      "A hinge is a shared edge, so its endpoints must coincide for both faces at every instant; the check belongs on endpoint positions rather than on the rendered seam.",
+      "A valid net is a claim about one specific adjacency tree; the existence of unfoldings in general does not make an arbitrary authored tree fold to the target solid."
+    ],
+    "implementation": [
+      "Sample the fold parameter at ten values from flat to closed and, at each, compute for every face its corner-to-corner distances and its area.",
+      "For every hinge compute the distance between the two faces copies of each shared endpoint at the same samples.",
+      "At the flat configuration compute pairwise interior overlap area, and at the closed configuration compute the gap between every pair of seam edges that should meet.",
+      "Record the fold parameter alongside every measurement so a failure identifies where in the motion it appears."
+    ],
+    "observable_checks": [
+      "Within-face distances and areas are constant across all samples to the precision of the geometry; a drifting value means vertices are being moved independently rather than by a rigid face transform.",
+      "Hinge endpoint separation stays at zero within the tolerance declared from the model scale; separation that grows with the fold angle points at an incorrect rotation axis.",
+      "The flat state shows zero interior overlap area and the closed state has all seam gaps within tolerance; a net failing either is reported as not folding to the target instead of being nudged visually."
+    ]
+  },
+  "known_limits": [
+    "Treats panels as zero-thickness faces; sheet thickness, material behaviour and fabrication allowances are outside this check.",
+    "Authored verification guidance; no computation or render was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.polyhedron-net",
+    "recipe.conic-slicing",
+    "recipe.mobius-orientation-trace"
+  ],
+  "claims": []
+}

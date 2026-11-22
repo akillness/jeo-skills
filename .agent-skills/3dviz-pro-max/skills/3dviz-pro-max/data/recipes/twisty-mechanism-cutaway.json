@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "id": "recipe.twisty-mechanism-cutaway",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Twisty-puzzle mechanism cutaway and turn explanation"
+  },
+  "aliases": {
+    "en": [
+      "Rubik cube internal mechanism cutaway",
+      "core connector turn explanation",
+      "exploded twisty puzzle mechanism"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles",
+    "products-assemblies"
+  ],
+  "summary": "Use a patent-grounded 3×3 mechanism example to explain how centers, sliding piece connectors and an interior element retain pieces while a face layer turns, clearly labeling illustrative clearance and physics limits.",
+  "objective": "A viewer can isolate center, edge, corner, connector and core roles, follow one layer turn, and distinguish cited mechanism relationships from invented display geometry.",
+  "tags": [
+    "twisty-puzzle",
+    "cutaway",
+    "mechanism",
+    "patent",
+    "exploded-view"
+  ],
+  "subject_terms": [
+    "interior connecting element",
+    "center connector",
+    "edge connector",
+    "corner connector",
+    "sliding interconnect",
+    "layer rotation",
+    "cutaway"
+  ],
+  "intent_signals": [
+    "show why the internal core permits a turn",
+    "explain Rubik cube center edge corner retention",
+    "build an exploded puzzle mechanism"
+  ],
+  "example_prompts": [
+    "Create a cutaway of one disclosed 3×3 puzzle mechanism and animate a top-layer turn without presenting it as a universal speedcube design."
+  ],
+  "negative_signals": [
+    "transparent shell alone explains mechanics",
+    "claim simulated friction",
+    "copy patent figure as a model",
+    "universal modern cube mechanism"
+  ],
+  "not_for": [
+    "Manufacturing dimensions, patent advice, product safety or comparative performance.",
+    "A physical simulation of spring load, friction, wear, flex or corner cutting."
+  ],
+  "entities": [
+    {
+      "name": "Core and center connection",
+      "guidance": "Show the interior element and one center connector/sleeve relationship as the fixed reference for a face axis."
+    },
+    {
+      "name": "Edge and corner feet",
+      "guidance": "Expose simplified sliding connector forms that remain retained by the interior element while changing slots."
+    },
+    {
+      "name": "Cutaway controls",
+      "guidance": "Offer assembled, sectioned, isolated, exploded and turn-step states with an always-visible illustrative label."
+    }
+  ],
+  "state_contract": {
+    "model": "One cited mechanism family is represented by semantic components and authored cutaway/explode parameters; a separate standard 3×3 discrete move engine owns piece permutation and orientation.",
+    "authority": "The patent claim supports named relationships only. The application's discrete puzzle state owns the turn; cutaway and exploded transforms are explanatory presentation.",
+    "actions": [
+      "Isolate core, center, edge or corner role.",
+      "Move a clipping plane or explode slider without changing assembly state.",
+      "Step one named outer-face turn and reset all presentation controls."
+    ]
+  },
+  "invariants": [
+    "A cutaway never changes the legal piece permutation or orientation.",
+    "The center role remains on its face axis while moving edge and corner roles change slots under the move engine.",
+    "Invented clearances, section colors and simplified feet are labeled illustrative and never reported as measured from the patent.",
+    "Reset restores assembled transforms, clipping state, labels and puzzle state."
+  ],
+  "motion_guidance": [
+    "In Blender, model original simplified shells and connector sections from the cited relationships rather than tracing patent figures; leave clearance gaps visible and author an exploded hierarchy.",
+    "Export semantic role IDs, face-axis pivots and assembled matrices; Three.js owns clipping, isolation, explode amount and synchronized legal-turn playback.",
+    "During a turn, fade or section nonparticipating shells and keep the retained connector path visible without pretending collision response is computed."
+  ],
+  "object_craft": [
+    {
+      "family": "Interior and connectors",
+      "structure": "Central interior body, one center sleeve/connector, and simplified edge/corner feet with sectional thickness and readable mating paths.",
+      "material": "Neutral opaque shells, darker core and distinct section-surface hatch; avoid glass-only depth confusion.",
+      "articulation": "Outer layer follows the exact face pivot; explode and clipping transforms remain independent."
+    },
+    {
+      "family": "Piece shells",
+      "structure": "Beveled center, edge and corner bodies with separated face tiles and enough authored gap for the illustration.",
+      "material": "Low-gloss bodies with patterned face tiles and a diagnostic interior accent.",
+      "articulation": "Moving shells follow the discrete turn group and return to rebuilt exact endpoints."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Patent-informed explanatory geometry only; no contact, friction, elasticity, tolerance stack or manufacturing validation.",
+    "checks": [
+      "No visible interpenetration in the authored section sequence.",
+      "Labels continuously distinguish cited relationships from illustrative geometry."
+    ]
+  },
+  "creative_affordances": [
+    "Use a quarter-section, peel-away shell, exploded ring or synchronized schematic inset.",
+    "Simplify hidden geometry according to the teaching question while keeping role and retention path explicit."
+  ],
+  "known_limits": [
+    "The cited patent describes one embodiment and refers to classic mechanics; this recipe does not claim universality or reproduce exact dimensions.",
+    "No CAD comparison, patent figure reproduction, collision test, mechanism assembly or turn was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.puzzles-patent-cube-mechanism",
+      "statement": "US6974130B2 describes a 3×3×3 embodiment with 26 center, corner and edge elements connected to an interior element; its center connector is rigidly connected to a sleeve while corner and edge connectors slidingly interconnect with the interior element, allowing those pieces to change positions as a face plate rotates.",
+      "scope": "Relationships in the cited disclosed embodiment, especially Figures 1 and 3–7; not dimensions, universal modern speedcube construction, friction or clearance performance.",
+      "source_refs": [
+        {
+          "source_id": "source.puzzles-cube-mechanism-patent",
+          "locator": "Detailed Description, paragraphs describing Figures 1 and 3–7; elements 21–24 and connectors 41–43"
+        }
+      ]
+    }
+  ],
+  "related_ids": [
+    "recipe.twisty-cube-3x3-face-turns",
+    "knowledge.object-isolation",
+    "knowledge.cutaway-explode",
+    "knowledge.hard-surface-functional-assembly"
+  ]
+}

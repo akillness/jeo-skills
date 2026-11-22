@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-visual-channel-legend",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Distinguish data encodings from decorative variation"
+  },
+  "aliases": {
+    "en": [
+      "encoding legend",
+      "unmapped channels",
+      "data mapping"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "operations-logistics"
+  ],
+  "summary": "Declare what visual channels encode and distinguish those mappings from freely authored decorative variation.",
+  "objective": "Make an abstract data scene readable by fixing the mapping between appearance and meaning.",
+  "applies_when": [
+    "Abstract entities such as services, nodes, records or agents are displayed.",
+    "Size, colour, height, motion or spacing vary between elements.",
+    "A viewer is expected to draw conclusions from the arrangement."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "encoding",
+    "legend",
+    "visual channel",
+    "mapping",
+    "colour scale",
+    "abstract data"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "data",
+    "presentation"
+  ],
+  "intent_signals": [
+    "what does the size mean",
+    "visualise the system",
+    "make it look alive"
+  ],
+  "example_prompts": [
+    "Visualise the service graph with a clear legend for size and colour.",
+    "Show system health without decorative noise."
+  ],
+  "negative_signals": [
+    "Artistic pieces that make no data claim.",
+    "Physical scenes where appearance is determined by the object rather than by data."
+  ],
+  "not_for": [
+    "Artistic pieces that make no data claim.",
+    "Physical scenes where appearance is determined by the object rather than by data."
+  ],
+  "content": {
+    "principles": [
+      "Viewers may interpret variations in size, colour or motion as data. Make intended mappings clear and distinguish decorative choices where confusion would affect the explanation.",
+      "Variation that looks like an encoding but is not is the problem, and it is usually invisible to the author who knows it means nothing. The fix is to make the mapping legible, not to forbid variety: redundant encodings that bind several channels to one field are useful, and clearly decorative variation, such as ambient movement in a background, is fine when nobody could read it as data.",
+      "Motion can encode state changes or support atmosphere and exploration. Choose its purpose deliberately and make any quantitative meaning explicit.",
+      "The legend is part of the visualisation, not documentation: if the mapping is not visible in the scene, the encoding cannot be read."
+    ],
+    "implementation": [
+      "Classify visual channels as data-bound, fixed, or explicitly decorative. State each data mapping; decorative channels may vary without implying measured values.",
+      "Provide an in-scene legend with the scale and units for each mapped channel, including whether a scale is linear or logarithmic.",
+      "Use animation for the declared purpose, whether data changes, transitions or decoration. Ambient motion may be nonuniform when it remains distinguishable from a quantitative encoding.",
+      "Choose colour scales appropriate to the data type, distinguishing categorical, sequential and diverging cases, and state the mapping for the neutral point.",
+      "Keep the mapping stable across time and views so an element does not change meaning when the layout changes."
+    ],
+    "observable_checks": [
+      "Check each varying channel against its declared purpose: verify data mappings, and confirm decorative variation is not presented as a measurement. An explicitly decorative channel does not need a data binding.",
+      "Confirm the legend appears in the scene and in exports.",
+      "Change one data field and confirm exactly the channels bound to that field respond, and that no channel bound to another field moves; redundant encoding of the same field across several channels is expected, not a fault.",
+      "Check that two elements with equal values in the encoded fields look the same in those channels. They may still differ elsewhere, through category colour, selection state or their own identity, so compare channel by channel rather than expecting identical objects."
+    ]
+  },
+  "related_ids": [
+    "recipe.service-graph",
+    "recipe.agent-harness",
+    "knowledge.graph-in-space"
+  ],
+  "creative_affordances": [
+    "Rich visual worlds and nonuniform decorative motion are welcome; keep their purpose distinct from quantitative data encodings.",
+    "A deliberately atmospheric background is fine when it is clearly separated from the encoded elements."
+  ],
+  "known_limits": [
+    "Authored presentation guidance; it cites no perceptual research and reports no user testing.",
+    "It does not recommend specific colour scales or accessibility palettes."
+  ],
+  "claims": []
+}

@@ -1,0 +1,163 @@
+/* Motion for "How one sentence becomes a scene" (#loop). Every rule is scoped under
+   `.loop-motion`, a class loop-section.tsx adds from JavaScript only and never when the reader
+   asked for less motion — without it the section is its finished, fully visible self. Only
+   opacity and transform animate, so nothing in the flow ever moves its neighbours.
+   The file is imported by loop-motion.tsx; app.css keeps the global reduced-motion escape. */
+
+.loop-motion {
+  --loop-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* A block: hidden until its own first intersection, then a 14 px rise. `backwards` fill holds the
+   start frame during the delay and hands the element back to its static style at the end, so the
+   cards keep their design tilt (Tailwind v4 writes it to `rotate`, not `transform`) and the route
+   chips can still lift on hover afterwards. */
+.loop-motion .loop-reveal {
+  opacity: 0;
+}
+
+.loop-motion .loop-reveal.is-in {
+  opacity: 1;
+  animation: loop-rise 520ms var(--loop-ease) var(--stagger, 0ms) backwards;
+}
+
+/* Items inside a revealed block: the three decide tiles, the three loop cards, the probe rows. */
+.loop-motion .is-in .loop-item {
+  animation: loop-rise 460ms var(--loop-ease) var(--stagger, 0ms) backwards;
+}
+
+@keyframes loop-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* The dashed connectors grow from the block above, so the eye follows the flow down. */
+.loop-motion .loop-connector {
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.loop-motion .loop-connector.is-in {
+  transform: none;
+  animation: loop-draw 420ms var(--loop-ease) var(--stagger, 0ms) backwards;
+}
+
+@keyframes loop-draw {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+/* The prompt types itself in a word at a time. The words are ordinary text nodes separated by
+   ordinary spaces, so the sentence stays whole for a screen reader and for copy-paste. */
+.loop-motion .loop-word {
+  display: inline-block;
+}
+
+.loop-motion .is-in .loop-word {
+  animation: loop-type 300ms var(--loop-ease) var(--stagger, 0ms) backwards;
+}
+
+@keyframes loop-type {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+/* Chips pop rather than rise; the route chips also lift under the pointer (Tailwind utilities on
+   `translate`, which is a separate property from the `transform` this animation uses). */
+.loop-motion .is-in .loop-chip {
+  animation: loop-pop 380ms var(--loop-ease) var(--stagger, 0ms) backwards;
+}
+
+@keyframes loop-pop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.94);
+  }
+}
+
+/* "Still limited" is the one chip that is not good news: it nudges once, after the others land.
+   The second animation has no fill, so the pop owns `transform` until the nudge actually runs. */
+.loop-motion .is-in .loop-chip-shake {
+  animation-name: loop-pop, loop-nudge;
+  animation-duration: 380ms, 300ms;
+  animation-timing-function: var(--loop-ease), ease-in-out;
+  animation-delay: var(--stagger, 0ms), calc(var(--stagger, 0ms) + 420ms);
+  animation-fill-mode: backwards, none;
+}
+
+@keyframes loop-nudge {
+  30% {
+    transform: translateX(-2px);
+  }
+  70% {
+    transform: translateX(2px);
+  }
+}
+
+/* The host-probe diagram's connectors draw themselves, and the node each one points at pops in
+   after it arrives. `pathLength={1}` on every path lets this one keyframe draw a line of any
+   length; the rounded ends are shape, not motion, so they are not scoped to `.loop-motion`. */
+.loop-line path {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.loop-motion .is-in .loop-line path {
+  animation: loop-draw-line 420ms var(--loop-ease) var(--stagger, 0ms) backwards;
+}
+
+@keyframes loop-draw-line {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+
+/* The loop badge's glyph turns once when the box is reached, and again under the pointer — the
+   reveal uses `transform`, the hover a transition on `rotate`, so neither restarts the other. */
+.loop-motion .loop-glyph {
+  display: inline-block;
+  transition: rotate 620ms var(--loop-ease);
+}
+
+.loop-motion .is-in .loop-glyph {
+  animation: loop-spin 600ms var(--loop-ease);
+}
+
+.loop-motion .loop-badge:hover .loop-glyph {
+  rotate: 360deg;
+}
+
+@keyframes loop-spin {
+  from {
+    transform: rotate(-360deg);
+  }
+}
+
+/* Marching ants on the loop box: an inset rounded rect replaces the CSS dashed border while the
+   section is armed, and only drifts while the box is on screen. One slow, low-contrast cycle. */
+/* The dashed edge is an inset rounded rect rather than a CSS border, because a border cannot
+   march; the dashes are drawn whether or not the section is armed. */
+.loop-ants {
+  stroke-dasharray: 6 6;
+}
+
+.loop-motion .loop-ants {
+  animation: loop-ants 8s linear infinite;
+  animation-play-state: paused;
+}
+
+.loop-motion .is-marching .loop-ants {
+  animation-play-state: running;
+}
+
+@keyframes loop-ants {
+  to {
+    /* A whole number of 12 px dash periods, so the cycle joins itself invisibly. */
+    stroke-dashoffset: -180px;
+  }
+}

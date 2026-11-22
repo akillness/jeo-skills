@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.physical-action-reset",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "validation-profile",
+  "title": {
+    "en": "Physical action, pause and reset validation"
+  },
+  "aliases": {
+    "en": [
+      "physical action reset"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "environments-dioramas"
+  ],
+  "summary": "Validate a visible causal action against the declared model and restore its full initial state.",
+  "objective": "Pause stops simulation time and motion; reset restores poses, velocities, input values, histories and pending time accumulation.",
+  "tags": [
+    "validation-profile",
+    "physical",
+    "action",
+    "reset"
+  ],
+  "example_prompts": [
+    "Validate a visible causal action against the declared model and restore its full initial state."
+  ],
+  "content": {
+    "principles": [
+      "Separate verification of equations or solver configuration from observation of the rendered interaction.",
+      "Choose a small representative scenario with a clear failure signal rather than testing every possible parameter."
+    ],
+    "implementation": [
+      "Write initial state, action, expected outcome, tolerance and model limits before running. Include the camera view needed to see contact or constrained motion.",
+      "Run one release or impulse, pause mid-action, single-step if supported and reset. Inspect model state as well as the rendered result.",
+      "For a kinematic obstacle case, verify the authored query/controller prevents penetration or disclose that obstacle avoidance is outside scope.",
+      "Record passed, failed, skipped or not-run for each observation; a data validator cannot stand in for this runtime check."
+    ],
+    "observable_checks": [
+      "Pause stops simulation time and motion; reset restores poses, velocities, input values, histories and pending time accumulation.",
+      "The named action visibly responds to its input and the observed result stays inside the stated model limits."
+    ]
+  },
+  "known_limits": [
+    "This profile is not a promise of stable arbitrary configurations or a full dynamics certification.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+  ],
+  "related_ids": [
+    "recipe.projectile-trajectory",
+    "recipe.coupled-gears",
+    "recipe.fantasy-village-diorama"
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-physical-action-reset",
+      "statement": "Kinematic Rapier bodies follow prescribed motion and ignore contact forces; avoiding obstacles requires additional handling.",
+      "scope": "A reason to check the application boundary, not proof that a particular scene handles it.",
+      "source_refs": [
+        {
+          "source_id": "source.rapier-rigid-bodies",
+          "locator": "Rigid-body type; Position"
+        }
+      ]
+    }
+  ]
+}

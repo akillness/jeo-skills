@@ -1,0 +1,104 @@
+{
+  "id": "knowledge.gltf-articulated-asset-adapter",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "glTF articulated asset and linear-blend skin adapter"
+  },
+  "aliases": {
+    "en": [
+      "glTF skin",
+      "JOINTS_0 WEIGHTS_0",
+      "ignore skinned mesh node transform"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "products-assemblies",
+    "anatomy-structures"
+  ],
+  "summary": "Load articulated glTF so joint nodes own the pose, the skinned mesh node transform is ignored, and keyframe channels remain animation rather than physics.",
+  "objective": "Posing a listed joint deforms the skinned mesh; translating the skinned mesh node does not double-transform vertices; a clip does not write solver velocities.",
+  "applies_when": [
+    "A glTF or GLB character, creature or mechanism with skins or animated nodes is brought into the scene.",
+    "The asset has a joint hierarchy that must stay the pose authority."
+  ],
+  "subject_terms": [
+    "glTF 2.0",
+    "linear blend skinning",
+    "inverse bind matrices",
+    "JOINTS_0",
+    "WEIGHTS_0",
+    "node TRS animation"
+  ],
+  "tags": [
+    "tool-adapter",
+    "gltf",
+    "skinning",
+    "articulated"
+  ],
+  "intent_signals": [
+    "import a skinned character",
+    "why did the mesh leave the skeleton",
+    "play the glTF clip without physics"
+  ],
+  "example_prompts": [
+    "Load a skinned glTF creature so moving a listed joint deforms the mesh and the mesh node transform is ignored.",
+    "Play the asset's walk clip as authored animation, not as a rigid-body simulation."
+  ],
+  "negative_signals": [
+    "Parenting a skinned mesh under a physics body that also writes world matrices.",
+    "Treating glTF animation channels as contact dynamics."
+  ],
+  "not_for": [
+    "Runtime behaviour beyond what the asset format specifies; glTF does not mandate a renderer or solver.",
+    "Inverse-kinematics solvers, which are application code rather than glTF."
+  ],
+  "content": {
+    "principles": [
+      "Joint nodes listed by the skin own the pose. Linear blend skinning forms each vertex transform as a weighted sum of those joint matrices.",
+      "The transform of the node that instances the skinned mesh must be ignored for skinning. Applying it as well double-transforms the vertices.",
+      "glTF animation stores keyframes of node TRS and morph weights. Playing those channels is authored motion. It is not a physics engine and the format does not require one."
+    ],
+    "implementation": [
+      "Parse skins.joints and inverse bind matrices. Map each joint index to a stable node. Keep application pose on those nodes.",
+      "Feed JOINTS_n and WEIGHTS_n into the skinning path. Do not apply the skinned mesh node's world matrix to skinned vertices.",
+      "If a clip is playing, one mixer or glTF animation player writes joint TRS. If a physics ragdoll is used instead, disable the clip or retarget explicitly; never both.",
+      "On dispose, release GPU buffers and inverse-bind data. Reset restores bind pose from the asset, not from a leftover simulation."
+    ],
+    "observable_checks": [
+      "Rotating a listed joint deforms the mesh; a non-joint child mesh parented to that joint follows the joint without being skinned unless it has its own skin.",
+      "Translating the skinned mesh node leaves skinned vertices unmoved relative to the joints, matching the ignore-mesh-node-transform rule.",
+      "Starting the asset clip does not create rigid-body velocities; pausing the mixer freezes joint TRS."
+    ]
+  },
+  "related_ids": [
+    "recipe.skeletal-hierarchy",
+    "knowledge.articulated-limb"
+  ],
+  "creative_affordances": [
+    "Stylised or realistic skins can share the same joint contract.",
+    "A joint-axis overlay is a free inspection aid."
+  ],
+  "known_limits": [
+    "glTF is an asset format and does not mandate runtime behaviour, renderer or scientific validity.",
+    "Many older tools mis-author colour space or bind matrices; installed loader versions must be rechecked.",
+    "Authored reusable guidance; no runtime artifact has been observed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-gltf-articulated-asset-adapter",
+      "statement": "glTF 2.0 supports linear blend skinning: per-vertex transforms are weighted linear sums of joint matrices from skin.joints, using JOINTS_n and WEIGHTS_n; only those joint transforms are applied to the skinned mesh and the skinned mesh node's transform must be ignored. glTF animation is keyframe animation of node transforms and morph weights, and the format does not mandate runtime behaviour.",
+      "scope": "Normative glTF 2.0 skinning and animation semantics; not a physics or IK specification.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Skins; Joint Hierarchy (skinned mesh node transform MUST be ignored); Skinned Mesh Attributes; Animations (key frame node transforms); runtime-independence"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed"
+}

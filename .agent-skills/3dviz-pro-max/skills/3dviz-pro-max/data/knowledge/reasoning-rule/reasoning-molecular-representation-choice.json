@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-molecular-representation-choice",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Choose the molecular representation that shows the question"
+  },
+  "aliases": {
+    "en": [
+      "ball and stick",
+      "space filling",
+      "ribbon diagram"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials",
+    "anatomy-structures"
+  ],
+  "summary": "Pick ball-and-stick, space-filling or ribbon by whether the viewer needs connectivity, occupied volume or fold, and say which radii the spheres use.",
+  "objective": "Match the molecular representation to the structural question instead of defaulting to one style.",
+  "applies_when": [
+    "A molecule, complex or material structure is being displayed.",
+    "The scene discusses shape, packing, docking, bonding or folding.",
+    "Sphere sizes or stick thicknesses might be read as physical quantities."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "molecular representation",
+    "ball and stick",
+    "space filling",
+    "ribbon",
+    "van der Waals",
+    "connectivity"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "molecules",
+    "representation"
+  ],
+  "intent_signals": [
+    "show the molecule",
+    "how do these two molecules fit together",
+    "display the protein fold"
+  ],
+  "example_prompts": [
+    "Show the molecule so the bond angles are readable.",
+    "Show how the two molecules pack against each other."
+  ],
+  "negative_signals": [
+    "Decorative molecule motifs used as ornament.",
+    "Materials scenes where the unit cell rather than the individual molecule is the subject."
+  ],
+  "not_for": [
+    "Decorative molecule motifs used as ornament.",
+    "Materials scenes where the unit cell rather than the individual molecule is the subject."
+  ],
+  "content": {
+    "principles": [
+      "Each representation answers a different question. Ball-and-stick shows connectivity and angles with atoms drawn small; space-filling draws a sphere around each atom to show relative atomic size and overall shape; backbone and ribbon diagrams show the fold rather than every atom.",
+      "The sphere radius in a ball-and-stick model is a drawing convention, not a measured quantity, so it must not be read as atomic size; only the space-filling representation is intended to convey relative size.",
+      "Sticks are also a convention: bond order, length and strength are not conveyed by thickness unless a legend says so.",
+      "Mixing representations is legitimate and often best, for example a ribbon with an all-atom active site, provided the switch is visible."
+    ],
+    "implementation": [
+      "State the structural question first: connectivity and geometry, occupied volume and contact, or overall fold and comparison.",
+      "Choose the representation accordingly, and give the viewer a way to switch while keeping the same orientation and selection.",
+      "Declare the radius convention used for spheres in a legend, and keep it consistent across compared structures.",
+      "Keep the element colour convention consistent and legible, and state it rather than assuming familiarity.",
+      "When comparing two structures, hold representation, radii and orientation fixed so the difference is structural rather than stylistic."
+    ],
+    "observable_checks": [
+      "Ask which question the current representation answers; if the scene is about packing but shows small balls with long sticks, the choice is wrong.",
+      "Switch representation and confirm the orientation, selection and labels are preserved.",
+      "Check that sphere sizes are stated as a convention rather than implied to be measured.",
+      "Compare two structures and confirm that only the structure differs, not the drawing parameters."
+    ]
+  },
+  "related_ids": [
+    "recipe.molecular-shape-comparison",
+    "recipe.water-hydrogen-bond-network",
+    "recipe.cubic-unit-cell-accounting"
+  ],
+  "creative_affordances": [
+    "Stylised, illustrative molecular art remains valid when it is not presented as a structural reading.",
+    "Hybrid and cutaway representations are often the clearest answer for a specific question."
+  ],
+  "known_limits": [
+    "Authored representation guidance citing a general description of representation styles; no specific radius values are asserted here.",
+    "It does not evaluate any structure file, force field or docking result."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-molecular-representation-styles",
+      "statement": "Ball-and-stick diagrams draw small balls for atoms connected by sticks representing covalent bonds, spacefilling diagrams draw a sphere around each atom to show the relative size of the atom and the overall shape, and backbone or ribbon diagrams trace the chain with helices and strands to make folding comparisons legible.",
+      "scope": "Conventions of molecular graphics representations; the numerical radii used by any particular program are not claimed here.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-pdb101-representations",
+          "locator": "Ball and stick, spacefilling, and backbone or ribbon diagram descriptions"
+        }
+      ]
+    }
+  ]
+}

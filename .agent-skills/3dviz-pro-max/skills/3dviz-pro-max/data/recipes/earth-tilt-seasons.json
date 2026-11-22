@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.earth-tilt-seasons",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Axial tilt and seasonal sunlight"
+  },
+  "aliases": {
+    "en": [
+      "Earth seasons tilt",
+      "solstice equinox sunlight",
+      "seasonal illumination globe"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment"
+  ],
+  "summary": "Compare seasonal illumination on a tilted globe without confusing orbital distance with the cause of seasons.",
+  "objective": "Build a tilted Earth globe on a schematic circular orbit with a fixed spin axis, latitude probe and solstice comparisons.",
+  "tags": [
+    "axial tilt",
+    "seasons",
+    "solstice"
+  ],
+  "subject_terms": [
+    "axial tilt",
+    "seasons",
+    "solstice",
+    "equinox",
+    "day length",
+    "solar incidence"
+  ],
+  "intent_signals": [
+    "Build a tilted Earth globe on a schematic circular orbit with a fixed spin axis, latitude probe and solstice comparisons.",
+    "Compare seasonal illumination on a tilted globe without confusing orbital distance with the cause of seasons."
+  ],
+  "example_prompts": [
+    "Build a tilted Earth globe on a schematic circular orbit with a fixed spin axis, latitude probe and solstice comparisons.",
+    "Create an explorable 3D explanation of Earth seasons tilt with latitude probe."
+  ],
+  "negative_signals": [
+    "No weather, temperature, atmosphere, cloud or climate feedback model."
+  ],
+  "not_for": [
+    "No weather, temperature, atmosphere, cloud or climate feedback model."
+  ],
+  "entities": [
+    {
+      "name": "Globe and axis",
+      "guidance": "Use a sphere with equator, latitude rings, poles and an extended axis visibly parallel to its saved inertial reference at all orbital positions."
+    },
+    {
+      "name": "Orbit and sunlight",
+      "guidance": "Draw a circular orbit guide and parallel light-direction arrows; disclose independent planet-size and distance scales."
+    },
+    {
+      "name": "Latitude probe",
+      "guidance": "Mark one latitude and show its daily path through illuminated and dark hemispheres; compare opposite seasonal positions."
+    }
+  ],
+  "state_contract": {
+    "model": "Circular illustrative orbit; spin axis has fixed inertial direction and obliquity beta, nominally about 23.5 degrees. Parallel sunlight determines day/night and local incidence from surface normal dot sun direction.",
+    "authority": "Orbital phase, spin phase, latitude and obliquity determine illumination geometry; camera and exaggerated body sizes are presentation controls.",
+    "actions": [
+      "Scrub orbital phase and spin independently.",
+      "Choose latitude and compare Northern/Southern Hemisphere locations.",
+      "Set zero tilt as a controlled comparison.",
+      "Reset obliquity, phases and camera."
+    ]
+  },
+  "invariants": [
+    "The axis does not continuously lean toward the Sun as the planet orbits.",
+    "Opposite hemispheres have opposite seasonal illumination changes.",
+    "At zero tilt on the circular orbit, a fixed nonpolar latitude has no tilt-driven seasonal variation."
+  ],
+  "motion_guidance": [
+    "Use separate orbital and rotation clocks with disclosed compression; a year must not accidentally equal one spin.",
+    "Derive the terminator from light direction rather than a hand-painted day/night texture tied to the camera."
+  ],
+  "known_limits": [
+    "No weather, temperature, atmosphere, cloud or climate feedback model.",
+    "Schematic circular orbit and parallel illumination omit eccentricity, atmospheric refraction and the finite solar disk.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.earth-tilt-seasons",
+      "statement": "Earth axial tilt changes the sunlight received by the hemispheres during the year and is the principal cause of seasons.",
+      "scope": "Illumination geometry; a climate response is not computed.",
+      "source_refs": [
+        {
+          "source_id": "source.nasa-seasons",
+          "locator": "Earth tilt and seasonal sunlight explanation"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Globe and axis",
+      "structure": "Use a sphere with equator, latitude rings, poles and an extended axis visibly parallel to its saved inertial reference at all orbital positions.",
+      "material": "Diffuse globe with subdued land/ocean contrast, crisp latitude marks and a clearly lit hemisphere; no texture is claimed as current Earth observation."
+    }
+  ]
+}

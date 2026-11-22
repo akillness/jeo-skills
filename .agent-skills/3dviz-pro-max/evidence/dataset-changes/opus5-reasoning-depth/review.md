@@ -1,0 +1,7 @@
+# Conditional reasoning editorial review
+
+The batch contains 96 conditional recommendations across 24 directions, classified as advisory choices or correctness constraints within a declared model. Claude Opus 5 researched and authored the records, then resumed the same session to address independent review. Three reviewers inspected the corrected emitted data. Parent and worker corrections aligned 25 records, followed by independent targeted closure in all three subject groups.
+
+Corrections distinguish generating regions from curves, model state from display state, valid orientation paths, numerical regimes, finite sampling uncertainty, geometric versus molecular structure, applicable projection metrics, physical contact and path constraints, and explicit reset/transition contracts. Three changed claims were checked again against the OpenStax molecular geometry chapter, the ULB explicit-diffusion material and NASA phase geometry guidance; their source locators and evidence scopes were refreshed. One review counterexample was itself corrected by exact arithmetic before it was used as evidence.
+
+These are authored recommendations and proposed observations, not executed simulation or artifact results. Final targeted editorial rechecks and candidate schema/evidence validation passed within their stated scopes. No renderer, solver, host installation or new demo ran for this batch. The recorded source scopes and limitations remain part of each claim.

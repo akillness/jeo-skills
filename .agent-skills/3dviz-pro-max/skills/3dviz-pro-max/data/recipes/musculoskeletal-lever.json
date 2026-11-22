@@ -1,0 +1,257 @@
+{
+  "schema_version": 1,
+  "id": "recipe.musculoskeletal-lever",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Bone, joint and muscle as a lever system"
+  },
+  "aliases": {
+    "en": [
+      "moment arm",
+      "muscle lever",
+      "joint torque geometry"
+    ]
+  },
+  "direction_ids": [
+    "physiology-biomechanics"
+  ],
+  "summary": "Expose effort, fulcrum and load geometry on a limb so a moment arm becomes a measurable distance rather than an illustration.",
+  "objective": "Build a limb lever model where I can move the load and the muscle attachment and read the resulting moment arms.",
+  "tags": [
+    "lever",
+    "moment arm",
+    "biomechanics"
+  ],
+  "subject_terms": [
+    "lever",
+    "fulcrum",
+    "effort",
+    "load",
+    "moment arm",
+    "muscle attachment",
+    "joint torque"
+  ],
+  "intent_signals": [
+    "Show why a muscle attachment position changes the effort needed.",
+    "Explain the lever geometry of an elbow or ankle in 3D."
+  ],
+  "example_prompts": [
+    "Build a limb lever demonstration with a movable load and a visible moment arm for the muscle.",
+    "Let me drag the muscle insertion and see how the lever geometry changes."
+  ],
+  "negative_signals": [
+    "Not a validated musculoskeletal dynamics model: no muscle force, activation or metabolic cost.",
+    "Not a lever-class taxonomy: this recipe does not assign first, second or third class labels."
+  ],
+  "not_for": [
+    "Not a validated musculoskeletal dynamics model: no muscle force, activation or metabolic cost.",
+    "Not a lever-class taxonomy: this recipe does not assign first, second or third class labels."
+  ],
+  "entities": [
+    {
+      "name": "Bone segments",
+      "guidance": "Two rigid segments meeting at one joint centre, each with a marked attachment site and a visible long axis."
+    },
+    {
+      "name": "Muscle line of action",
+      "guidance": "Draw the muscle as a straight line of action between origin and insertion with an explicit perpendicular distance to the joint centre."
+    },
+    {
+      "name": "Load and readout",
+      "guidance": "Attach a movable load marker on the distal segment and display both moment arms as measured distances with units stated as illustrative."
+    }
+  ],
+  "state_contract": {
+    "model": "Two-segment linkage with a joint centre, an origin and insertion point, a load position and a joint angle. Moment arms are computed as perpendicular distances from the joint centre to each line of action. The three lever classes and the sourced forearm geometry are enumerated in defaults.values.state_table and defaults.values.parameters; force magnitudes are computed only in the worked torque balance, not simulated over time.",
+    "authority": "Geometry is authoritative: every displayed distance is recomputed from the current points, so dragging any point immediately updates the readout.",
+    "actions": [
+      "Drag the insertion point along the bone.",
+      "Move the load along the distal segment.",
+      "Change the joint angle within the authored range.",
+      "Reset all points and the angle to the reference pose."
+    ]
+  },
+  "invariants": [
+    "The fulcrum stays at the joint centre; dragging an attachment never moves it.",
+    "A moment arm is the perpendicular distance to the line of action, so it changes with joint angle even when attachment points do not move.",
+    "When the line of action passes through the joint centre the moment arm displays as zero rather than as a small residue."
+  ],
+  "motion_guidance": [
+    "Animate the joint angle slowly enough that both moment arms can be read while moving.",
+    "Do not animate the muscle line thickening as if it were contracting force; thickness here is a display choice."
+  ],
+  "known_limits": [
+    "Idealised straight line of action: no muscle wrapping, pennation, tendon compliance or multi-joint muscles.",
+    "The default distances and masses are one worked textbook forearm example, not an anthropometric dataset; any other limb geometry must be re-derived rather than scaled from these numbers.",
+    "The cited lever-class page states a mechanical-advantage regime for second and third class levers only; for a first class lever the regime depends on the arm ratio and no default is claimed.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-lever-roles",
+      "statement": "In the musculoskeletal system bones act as stiff levers, the articular endings of bones in synovial joints act as fulcrums, contracting skeletal muscle supplies the effort, and the load is the object lifted or the resistance to the movement.",
+      "scope": "Role assignment only. The section read did not enumerate lever classes, so no class label is claimed here.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-lever-system",
+          "locator": "11.1, The Lever System of Muscle and Bone Interactions"
+        }
+      ]
+    },
+    {
+      "id": "claim.lever-forearm-torque-balance",
+      "statement": "In the cited worked forearm example the biceps attaches 0.0400 m from the elbow joint, the forearm weight acts at 0.160 m and the held load at 0.380 m; balancing torques about the joint gives a biceps force of 470 N supporting a total weight of 63.7 N, which the section describes as a force 7.38 times the weight supported, and it states that muscles attached close to joints give mechanical advantages much less than one.",
+      "scope": "One statics example at a single elbow angle with a straight line of action; the section supplies the distances, the two masses and the resulting force, not a range of limb geometries.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-physics-muscle-joint-torques",
+          "locator": "9.6, Example 9.4 with Figure 9.25: torque balance written \"r2wa+r3wb=r1FB\" with the distances \"0.0400 m\", \"0.160 m\" and \"0.380 m\" and the masses \"2.50 kg\", \"4.00 kg\", \"6.50 kg\" totalling \"63.7 N\"; result \"FB=470 N\" and \"the biceps muscle is exerting a force 7.38 times the weight supported\"; \"most muscles are attached to bones via tendons close to joints, causing these systems to have mechanical advantages much less than one\""
+        }
+      ]
+    },
+    {
+      "id": "claim.lever-class-taxonomy",
+      "statement": "Body levers fall into three classes: first class levers have the fulcrum in the middle, second class levers have the resistance in the middle and always give a mechanical advantage greater than one while the load moves a shorter distance than the effort, and third class levers have the effort in the middle, always increase range of motion and always have a mechanical advantage less than one; the cited page uses the calf raising the heel as a second class example and the biceps pulling on the forearm between the elbow joint and the load as a third class example.",
+      "scope": "Class taxonomy, one body example per class and the mechanical-advantage regime for second and third class levers. The page states no regime for a first class lever beyond its dependence on the arm lengths, and no numeric muscle forces are taken from it.",
+      "source_refs": [
+        {
+          "source_id": "source.libretexts-body-levers",
+          "locator": "6.2 Body Levers: \"First class levers have the fulcrum in the middle, between the load and resistance\"; \"Second class levers have resistance in the middle\" with a smaller effort moving a larger load and the load moving a shorter distance; \"Third class levers have the effort in the middle\", always increasing range of motion with mechanical advantage less than one; calf/heel and biceps/forearm body examples"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Bone segments",
+      "structure": "Shafts with distinguishable proximal and distal ends and a marked attachment ridge rather than a smooth cylinder.",
+      "material": "Matte bone with a subtly different surface at attachment sites so the insertion reads as a real feature.",
+      "articulation": "Distal segment rotates about the joint centre; attachment markers are parented to their segment and move with it."
+    },
+    {
+      "family": "Muscle line of action",
+      "structure": "A straight tensile element with end caps at origin and insertion plus a dashed perpendicular drop to the joint centre.",
+      "material": "A single saturated accent reserved for the line of action, with the perpendicular drawn in a neutral value so the two are not confused.",
+      "articulation": "The line re-solves from current endpoints each frame; it never stores a stale direction."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Geometric measurement of an authored linkage; no forces, torques in newton metres or dynamics.",
+    "state": [
+      "joint angle",
+      "origin and insertion points",
+      "load position"
+    ],
+    "checks": [
+      "Moment arm reads zero when the line of action passes through the joint centre.",
+      "Reset restores the reference pose and the original readouts."
+    ]
+  },
+  "related_ids": [
+    "recipe.knee-layer-peel",
+    "knowledge.parameter-experiment",
+    "knowledge.comparison-stage"
+  ],
+  "defaults": {
+    "provenance": "source-backed",
+    "tunable": true,
+    "claim_ids": [
+      "claim.rd-lever-roles",
+      "claim.lever-forearm-torque-balance",
+      "claim.lever-class-taxonomy"
+    ],
+    "rationale": "Every distance, mass and force below is read from the cited forearm example (claim.lever-forearm-torque-balance) and the class table restates the cited lever-class page (claim.lever-class-taxonomy); the roles of bone, joint, muscle and load restate claim.rd-lever-roles. Two entries are derived arithmetic on those numbers and say so: the 9.80 m/s2 gravitational acceleration implied by 63.7 N / 6.50 kg, and the 0.105 mechanical advantage from 0.0400 m / 0.380 m. Tunable as a starting geometry: change the joint angle or the attachment and the moment arms must be recomputed, because the 470 N result belongs to this one configuration.",
+    "values": {
+      "parameters": {
+        "muscle_moment_arm": {
+          "value": 0.04,
+          "unit": "m",
+          "note": "biceps insertion to elbow joint; sourced"
+        },
+        "forearm_weight_moment_arm": {
+          "value": 0.16,
+          "unit": "m",
+          "note": "forearm centre of gravity to joint; sourced"
+        },
+        "load_moment_arm": {
+          "value": 0.38,
+          "unit": "m",
+          "note": "held load to joint; sourced"
+        },
+        "forearm_mass": {
+          "value": 2.5,
+          "unit": "kg",
+          "note": "sourced"
+        },
+        "load_mass": {
+          "value": 4.0,
+          "unit": "kg",
+          "note": "sourced"
+        },
+        "total_supported_weight": {
+          "value": 63.7,
+          "unit": "N",
+          "note": "sourced; equals the 6.50 kg total"
+        },
+        "muscle_force": {
+          "value": 470,
+          "unit": "N",
+          "note": "sourced result of the torque balance"
+        },
+        "gravitational_acceleration": {
+          "value": 9.8,
+          "unit": "m/s^2",
+          "note": "derived: 63.7 N / 6.50 kg; the section prints the weight, not g"
+        },
+        "mechanical_advantage": {
+          "value": 0.105,
+          "unit": "dimensionless",
+          "note": "derived: 0.0400 m / 0.380 m, the effort-to-load arm ratio for the held load alone"
+        },
+        "joint_angle": {
+          "value": "no default; source gives none",
+          "unit": "deg",
+          "note": "the example is drawn at one flexed pose without stating the angle, so the recipe reads the angle from its own linkage"
+        }
+      },
+      "equations": [
+        "F_muscle * r_muscle = w_forearm * r_forearm + w_load * r_load",
+        "MA = r_effort / r_load",
+        "force ratio = F_muscle / total supported weight"
+      ],
+      "state_table": [
+        {
+          "class": "first class",
+          "order_fulcrum_load_effort": "fulcrum in the middle, between the effort and the load",
+          "body_example": "head and neck balancing on the vertebral column",
+          "mechanical_advantage_regime": "no default; the cited page gives none - it depends on which arm is longer, so a first class lever can favour force or favour range of motion but not both"
+        },
+        {
+          "class": "second class",
+          "order_fulcrum_load_effort": "resistance (load) in the middle, between the fulcrum and the effort",
+          "body_example": "calf muscle raising the heel, with the ball of the foot as the fulcrum",
+          "mechanical_advantage_regime": "always greater than one: a smaller effort moves a larger load, and the load moves a shorter distance than the effort"
+        },
+        {
+          "class": "third class",
+          "order_fulcrum_load_effort": "effort in the middle, between the fulcrum and the load",
+          "body_example": "biceps pulling on the forearm between the elbow joint (fulcrum) and the load in the hand",
+          "mechanical_advantage_regime": "always less than one: the effort exceeds the load, and in exchange the load moves farther than the effort"
+        }
+      ],
+      "worked_example": {
+        "inputs": "Third class forearm from the cited example: biceps arm 0.0400 m, forearm weight 2.50 kg at 0.160 m, load 4.00 kg at 0.380 m, g = 9.80 m/s^2",
+        "expected": "F_muscle = 470 N, which is 7.38 times the 63.7 N total weight supported; mechanical advantage of the held load alone = 0.105",
+        "derivation": "w_forearm = 2.50 * 9.80 = 24.5 N and w_load = 4.00 * 9.80 = 39.2 N, total 63.7 N. Torque balance about the joint: F_muscle = (24.5 * 0.160 + 39.2 * 0.380) / 0.0400 = (3.92 + 14.90) / 0.0400 = 18.82 / 0.0400 = 470 N. Force ratio 470 / 63.7 = 7.38, matching the section. The arm ratio 0.0400 / 0.380 = 0.105 is smaller than the reciprocal force ratio 63.7 / 470 = 0.136 because the forearm's own weight acts at the shorter 0.160 m arm; a single-load lever would make the two agree."
+      },
+      "tolerance": {
+        "force_N": "+/- 1 N against the 470 N reference; the section rounds to three significant figures",
+        "moment_arm_m": "+/- 0.001 m",
+        "zero_moment_arm": "display exactly 0 when the line of action passes through the joint centre rather than a small residue"
+      }
+    }
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "id": "recipe.courtyard-house-cutaway",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Courtyard house cutaway"
+  },
+  "aliases": {
+    "en": [
+      "house sectional model",
+      "architectural dollhouse"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors"
+  ],
+  "summary": "Reveal a fictional courtyard dwelling while keeping room boundaries and levels legible.",
+  "objective": "Design a courtyard house I can section vertically to inspect its rooms and roof.",
+  "tags": [
+    "courtyard",
+    "floor slab",
+    "wall opening"
+  ],
+  "subject_terms": [
+    "courtyard",
+    "floor slab",
+    "wall opening",
+    "section plane",
+    "room boundary"
+  ],
+  "intent_signals": [
+    "cut away a house",
+    "inspect room adjacency"
+  ],
+  "example_prompts": [
+    "Design a courtyard house I can section vertically to inspect its rooms and roof.",
+    "Let me select a room and compare plan and eye-level views."
+  ],
+  "entities": [
+    {
+      "name": "Building shell",
+      "guidance": "Give slabs thickness, walls actual door/window openings and roof parapet edges."
+    },
+    {
+      "name": "Courtyard and circulation",
+      "guidance": "Lay out a central open court, doors, sheltered walkway and clear room names."
+    },
+    {
+      "name": "Section cap",
+      "guidance": "Generate or clearly distinguish a section fill at exposed solids."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Building shell",
+      "structure": "Give slabs thickness, walls actual door/window openings and roof parapet edges.",
+      "material": "Light plaster, concrete-looking slab edges and darker roof finish."
+    },
+    {
+      "family": "Courtyard and circulation",
+      "structure": "Lay out a central open court, doors, sheltered walkway and clear room names.",
+      "material": "Stone paving with timber-looking threshold details."
+    },
+    {
+      "family": "Section cap",
+      "structure": "Generate or clearly distinguish a section fill at exposed solids.",
+      "material": "Flat section hatch or warm neutral cap."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored metric plan dimensions, level elevations, room polygons, active section plane and visibility filters.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Move section plane.",
+      "Select room or level.",
+      "Switch plan and eye-level cameras."
+    ]
+  },
+  "invariants": [
+    "Sectioning changes visibility, never room dimensions.",
+    "Openings align across wall thickness and frames.",
+    "Room labels derive from stable room IDs."
+  ],
+  "motion_guidance": [
+    "Move the section plane slowly enough to understand newly exposed boundaries.",
+    "Three.js companion tools may handle clipping and picking; geometry construction must own valid openings and caps."
+  ],
+  "known_limits": [
+    "Concept design, not structural analysis, permit documentation or code-compliance evaluation.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [],
+  "creative_affordances": [
+    "Courtyard void provides a consistent orientation anchor in both plan and section."
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Architectural inspection, no occupants or rigid bodies.",
+    "state": [
+      "section offset",
+      "room selection"
+    ],
+    "colliders": [
+      "Not applicable."
+    ],
+    "driving": [
+      "Camera and clipping controls."
+    ],
+    "contact": [
+      "No contact simulation."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Inspect section cap, room boundaries and opening alignment."
+    ]
+  }
+}

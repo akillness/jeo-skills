@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-pbr-studio-environment",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Environment-led studio lighting for physically based materials"
+  },
+  "aliases": {
+    "en": [
+      "PBR studio environment",
+      "image-based studio light",
+      "environment as key light"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "molecules-materials",
+    "environments-dioramas"
+  ],
+  "summary": "Let a controlled environment carry most of the illumination, and add discrete lights only for the shaping the environment cannot supply.",
+  "objective": "Metal and dielectric parts separate by their reflections rather than by their base colour, and the environment can be rotated without changing which parts read as metal.",
+  "tags": [
+    "lighting-profile",
+    "pbr",
+    "environment",
+    "studio",
+    "image-based-lighting"
+  ],
+  "subject_terms": [
+    "environment lighting",
+    "image-based lighting",
+    "metallic roughness",
+    "reflection",
+    "key light",
+    "fill light",
+    "rim light",
+    "environment rotation",
+    "studio setup"
+  ],
+  "intent_signals": [
+    "metal looks like grey plastic",
+    "product shot lighting",
+    "reflections look flat",
+    "how do I light a PBR model",
+    "the object has no highlight"
+  ],
+  "example_prompts": [
+    "Light a product so its metal and painted parts are clearly different.",
+    "Set up a neutral studio for comparing two material finishes.",
+    "Rotate the environment to find a reading angle for a curved surface."
+  ],
+  "negative_signals": [
+    "quantitative colour encoding must not be shaded",
+    "flat diagram with no lighting"
+  ],
+  "not_for": [
+    "Views where colour carries data and any shading would corrupt the reading.",
+    "Outdoor scenes whose whole point is a directional sun and sky."
+  ],
+  "content": {
+    "principles": [
+      "In a metallic-roughness workflow the environment is the main light source for reflective materials. A metal with nothing around it to reflect has almost nothing to show, which is why isolated metal renders as dull grey.",
+      "The environment is a light, not a backdrop. Deciding what the object reflects is a lighting decision even when the environment is never visible behind the object.",
+      "Discrete lights should have a stated job: a highlight the environment cannot place, a separation rim, or a shadow that grounds the object. A light without a job usually flattens the result.",
+      "Roughness is what turns a light into a shape. A narrow highlight reads as polish, a broad one reads as satin, and reading the difference requires an environment with real variation rather than a uniform grey dome.",
+      "The same environment applied to every object in a comparison is what makes the comparison fair. Changing the environment between variants changes the conclusion."
+    ],
+    "implementation": [
+      "Choose the environment first and state what it represents: a soft box array, an interior, an open sky. Give it real large-scale variation, since a perfectly uniform environment removes the reflections that read as material.",
+      "Apply the environment at the scene level so all physically based materials receive it consistently, and be aware that a material carrying its own explicit environment map will not be overridden by the scene-level setting.",
+      "Control environment brightness through its own intensity, and control the visible backdrop separately, so the lighting can be adjusted without changing what the viewer sees behind the object.",
+      "Rotate the environment to place its bright regions where the object needs a highlight; this is usually a faster and more reversible control than moving several discrete lights.",
+      "Add at most a small number of named discrete lights, each with a written purpose, and check whether removing each one changes anything the record cares about.",
+      "Give the object light from below by a named mechanism rather than by assuming a floor will bounce it: an environment contribution, a baked or global-illumination solution, or an explicit weak fill light. A direct-light rasteriser produces no bounce from an ordinary visible floor, and a floating object with nothing from below reads as a cut-out.",
+      "Keep the environment fixed while material variants are being judged, and change one thing at a time."
+    ],
+    "observable_checks": [
+      "Turning the object shows a moving highlight whose width matches the roughness the record assigns to each part.",
+      "A metal part and a painted part at the same base colour are still distinguishable, and remain distinguishable when the environment is rotated.",
+      "Removing each named discrete light produces a visible loss the record can name; a light whose removal changes nothing is not doing the job it claims.",
+      "Every object in a comparison is under the same environment, with the same intensity and rotation.",
+      "Raising environment intensity brightens the reflections and the diffuse response together, and does not silently change the visible backdrop unless that was intended."
+    ]
+  },
+  "creative_affordances": [
+    "The environment can be invented, stylised or coloured for narrative purposes; it does not have to be a photographic studio.",
+    "Strong single-source lighting, deep shadow and high-contrast staging remain available choices when the record states the intent."
+  ],
+  "known_limits": [
+    "Using a physically based material model and an environment does not make a render photometrically accurate; brightness units, exposure and display transform all remain open decisions.",
+    "The scene-level environment behaviour cited here is documented for one renderer and does not describe how other engines resolve material-level and scene-level environments.",
+    "Authored reusable guidance; no runtime artifact or rendered result has been observed for this record."
+  ],
+  "related_ids": [
+    "recipe.portable-speaker-exploded",
+    "recipe.modular-camera-rig",
+    "knowledge.conductor-surface",
+    "knowledge.dielectric-surface",
+    "knowledge.shared-display-color-management",
+    "knowledge.shared-light-comparison-rig"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-scene-environment-scope",
+      "statement": "In one widely used renderer a scene-level environment map is applied to all physical materials in the scene but does not overwrite an environment map already assigned on a material, environment intensity and rotation affect only that environment, and background blurriness and background intensity affect only the visible background rather than the lighting.",
+      "scope": "Documented scene properties of one library as of the access date. They describe where environment lighting is resolved and what the background controls do not affect; they make no photometric claim.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-scene",
+          "locator": "environment; environmentIntensity; environmentRotation; backgroundBlurriness; backgroundIntensity"
+        }
+      ]
+    },
+    {
+      "id": "claim.shared-metallic-basecolor-meaning",
+      "statement": "In the glTF 2.0 metallic-roughness model the base colour is interpreted differently by metalness: for a metal it is the measured reflectance at normal incidence, while for a non-metal it is the reflected diffuse colour and a fixed linear value of four percent is used for normal-incidence reflectance, which cannot be specified separately.",
+      "scope": "Normative material-model text of the glTF 2.0 specification, read from the Khronos specification source. It defines how one parameter set is interpreted; it does not assert that any authored value matches a measured material.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Materials > Metallic-Roughness Material"
+        }
+      ]
+    }
+  ]
+}

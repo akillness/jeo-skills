@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "id": "recipe.polyhedron-net",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Polyhedron net folding"
+  },
+  "aliases": {
+    "en": [
+      "polyhedron net"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry"
+  ],
+  "summary": "Keep face identity and shared edges visible while unfolding a solid.",
+  "objective": "Show a cube net folding into a cube, with hinge edges and matching cut edges highlighted.",
+  "tags": [
+    "polyhedron",
+    "net"
+  ],
+  "example_prompts": [
+    "Show a cube net folding into a cube, with hinge edges and matching cut edges highlighted."
+  ],
+  "entities": [
+    {
+      "name": "Faces",
+      "guidance": "Use thin panels with labeled front/back and consistent edge lengths; render thickness only as a display offset."
+    },
+    {
+      "name": "Hinges",
+      "guidance": "Place each pivot on the shared edge, with child faces inheriting upstream hinge motion."
+    },
+    {
+      "name": "Cut edges",
+      "guidance": "Give matching seams the same ID and distinct endpoint markers; do not hide overlaps with transparency."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored valid cube net, face adjacency and hinge spanning tree; zero-thickness mathematical panels.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Scrub fold progress.",
+      "Select a face to trace its neighboring edges.",
+      "Reset flat or closed."
+    ]
+  },
+  "invariants": [
+    "Hinge endpoint distances remain equal throughout motion.",
+    "Flat configuration has no interior face overlap; closed target has matching seam positions.",
+    "Do not claim every planar adjacency tree folds to the target solid."
+  ],
+  "motion_guidance": [
+    "Compute transforms from rest pose and hinge angles, not cumulative rotations.",
+    "Check intermediate face intersections; endpoint correctness does not establish a collision-free folding path."
+  ],
+  "known_limits": [
+    "Source demonstrates unfoldings, not the particular authored hinge path; that path requires geometric validation.",
+    "No sheet thickness, flexible material or fabrication allowance model.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.polyhedron-net",
+      "statement": "Polyhedron unfoldings can be presented as planar nets that assemble into their intended solids.",
+      "scope": "Existence illustrated by the cited cube and other examples; not a claim about every net.",
+      "source_refs": [
+        {
+          "source_id": "source.demaine-unfolding",
+          "locator": "Opening description and Real Models table"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Faces",
+      "structure": "Use thin panels with labeled front/back and consistent edge lengths; render thickness only as a display offset.",
+      "material": "Two-sided matte panels with distinct front/back values and crisp seam labels; visual thickness is explicitly separate from zero-thickness geometry.",
+      "articulation": "Hinge pivots lie on shared edges; downstream panels inherit upstream transforms from immutable rest coordinates."
+    },
+    {
+      "family": "Hinges",
+      "structure": "Place each pivot on the shared edge, with child faces inheriting upstream hinge motion.",
+      "material": "Two-sided matte panels with distinct front/back values and crisp seam labels; visual thickness is explicitly separate from zero-thickness geometry.",
+      "articulation": "Hinge pivots lie on shared edges; downstream panels inherit upstream transforms from immutable rest coordinates."
+    },
+    {
+      "family": "Cut edges",
+      "structure": "Give matching seams the same ID and distinct endpoint markers; do not hide overlaps with transparency.",
+      "material": "Two-sided matte panels with distinct front/back values and crisp seam labels; visual thickness is explicitly separate from zero-thickness geometry.",
+      "articulation": "Hinge pivots lie on shared edges; downstream panels inherit upstream transforms from immutable rest coordinates."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Semantic geometry/state presentation; no gravity, contact force or material simulation.",
+    "checks": [
+      "Hinge endpoint distances remain equal throughout motion.",
+      "Flat configuration has no interior face overlap; closed target has matching seam positions."
+    ]
+  }
+}

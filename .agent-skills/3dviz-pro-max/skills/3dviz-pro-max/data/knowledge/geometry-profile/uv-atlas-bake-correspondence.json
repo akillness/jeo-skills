@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.uv-atlas-bake-correspondence",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "geometry-profile",
+  "title": {
+    "en": "UV atlas and source-to-target bake correspondence"
+  },
+  "aliases": {
+    "en": [
+      "selected-to-active bake handoff",
+      "UV seam padding contract",
+      "texel density atlas"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "Make seams, UV-set roles, island scale, projection cage and padding explicit so a high-detail source bakes repeatably onto the exact low-detail mesh exported to glTF.",
+  "objective": "The imported low mesh samples the intended atlas without overlaps, projection leaks, visible mip seams, or a bake that no longer corresponds to delivered topology.",
+  "applies_when": [
+    "A low-detail glTF mesh receives baked texture data from a separate high-detail source or uses multiple UV sets with distinct roles."
+  ],
+  "tags": [
+    "geometry-profile",
+    "uv",
+    "texel-density",
+    "atlas",
+    "baking",
+    "gltf"
+  ],
+  "subject_terms": [
+    "UV seams",
+    "Average Island Scale",
+    "Pack Islands margin",
+    "Selected to Active",
+    "bake cage",
+    "ray distance",
+    "UV0 UV1",
+    "texCoord index",
+    "mipmap padding"
+  ],
+  "intent_signals": [
+    "bake bleeds across UV islands",
+    "uneven texel density",
+    "high poly details project onto wrong part",
+    "which UV set reaches glTF"
+  ],
+  "example_prompts": [
+    "Prepare a low-poly vehicle atlas from a high-poly source with stable padding and a documented second UV set.",
+    "Fix seams that appear only when a baked prop recedes in the Three.js camera."
+  ],
+  "negative_signals": [
+    "Interpret tangent-space handedness",
+    "Mirror tangent normal maps without the rendering contract",
+    "Pack islands before freezing delivery topology"
+  ],
+  "not_for": [
+    "Runtime tangent-space normal-map handedness or UV-mirror interpretation; those belong to the rendering handoff.",
+    "Procedural triplanar materials that deliberately use no UV atlas."
+  ],
+  "content": {
+    "principles": [
+      "A bake is a correspondence from source surface samples to target UV texels. The target mesh, UV map, cage and source selection together define that correspondence.",
+      "Texel density and padding solve different problems: island scale allocates resolution, while gutter pixels protect filtering and mip levels at island boundaries.",
+      "UV-set roles must cross the boundary by index. Name maps for humans, but inspect which TEXCOORD_n each glTF texture actually references."
+    ],
+    "implementation": [
+      "Freeze the target object's evaluated topology before final unwrap and bake. Mark seams at hidden or natural boundaries, minimize stretch, then use Average Island Scale as a starting point and override only for explicitly prioritized surfaces.",
+      "Pack the delivery UV set into the intended tile with a margin derived from the lowest expected mip, atlas resolution and filtering. Keep intentional overlaps in a separately documented set or isolate them before baking unique detail.",
+      "Use Selected to Active with the low target active and only the approved high source selected. Choose extrusion/max ray distance or an explicit cage; if using a cage copy, preserve the target face count and face order.",
+      "Bake an identification pass before expensive maps: assign distinct source-region colors and verify that every low-mesh island receives the expected source. Then bake production data without changing target topology, UVs or cage.",
+      "Export all required UV maps and inspect the GLB's TEXCOORD indices and material texCoord references. Three.js owns texture assignment and sampling; the asset owns vertex UV coordinates and texture-to-set selection.",
+      "Test the imported atlas close up and at receding distances against a high-contrast seam chart; log any intentional density exception."
+    ],
+    "observable_checks": [
+      "A checker has comparable scale on equal-priority surfaces and reveals no unintended overlap or severe stretch.",
+      "The source-region identification bake lands on the correct target parts without projection from the opposite side or neighbouring component.",
+      "At distant mip levels, island boundaries remain free of unrelated color bleed; GLB inspection confirms the expected TEXCOORD_n per texture role."
+    ]
+  },
+  "related_ids": [
+    "knowledge.blender-evaluated-mesh-handoff",
+    "knowledge.blender-three-tangent-normal-handoff",
+    "knowledge.shared-gltf-asset-bridge"
+  ],
+  "creative_affordances": [
+    "Allocate more texels to faces users inspect and fewer to hidden undersides when the exception is documented.",
+    "Use a second non-overlapping set for baked data while retaining a tiled set for repeated surface detail."
+  ],
+  "known_limits": [
+    "Padding needs depend on resolution, filtering, compression and the minimum displayed mip.",
+    "This record deliberately does not govern normal-map tangent basis or mirrored-UV handedness.",
+    "Authored reusable guidance; no bake, export, import or runtime artifact was executed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.modeling-uv-bake-boundary",
+      "statement": "Blender's UV tools can approximately equalize island scale and pack islands with a specified margin; Cycles Selected to Active projects from selected source objects to the active target using ray distance, extrusion or a cage, requires a cage copy to keep the same topology and face order, and generates margin around UV islands to reduce filtering and mipmap seam discontinuities.",
+      "scope": "Blender 4.5 UV and Cycles bake controls; required numerical margins and artistic seam placement remain authored decisions.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-blender-uv-editing",
+          "locator": "Average Island Scale; Pack Islands; Minimize Stretch"
+        },
+        {
+          "source_id": "source.modeling-blender-cycles-baking",
+          "locator": "Selected to Active; Cage; Margin"
+        }
+      ]
+    },
+    {
+      "id": "claim.modeling-gltf-uv-set-selection",
+      "statement": "glTF texture information selects a texture-coordinate attribute by integer texCoord index, while Blender's exporter can include UV attributes and warns that discontinuous UVs can split exported vertices.",
+      "scope": "glTF 2.0 texture-coordinate selection plus Blender 4.5 exporter behavior; it does not define tangent-space interpretation.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Texture Info; Meshes > Mesh Primitives > TEXCOORD_n"
+        },
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "Meshes; Data > Mesh > UVs"
+        }
+      ]
+    }
+  ]
+}

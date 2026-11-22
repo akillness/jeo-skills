@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blender-three-tangent-normal-handoff",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Tangent-space normal bake and handedness handoff"
+  },
+  "aliases": {
+    "en": [
+      "green channel flipped normal map",
+      "MikkTSpace glTF tangent basis",
+      "mirrored UV normal seam"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "Bake and transport tangent-space normals with a fixed UV set, tangent convention and handedness sign so mirrored islands and seams do not invert lighting in Three.js.",
+  "objective": "A beveled test mesh preserves bump direction and seam continuity under a rotating light in Blender and Three.js, including intentionally mirrored UV regions.",
+  "tags": [
+    "tool-adapter",
+    "normal-map",
+    "tangent-space",
+    "mikktspace",
+    "handedness",
+    "uv-seams"
+  ],
+  "subject_terms": [
+    "tangent-space normal map",
+    "TANGENT VEC4",
+    "tangent.w",
+    "bitangent sign",
+    "MikkTSpace",
+    "green channel",
+    "Normal Map node",
+    "mirrored UV island",
+    "UV seam",
+    "normalScale y"
+  ],
+  "intent_signals": [
+    "normal map dents point outward",
+    "lighting flips across mirrored UV",
+    "green channel normal map mismatch",
+    "bake high poly normals for glTF",
+    "seam appears only in Three.js"
+  ],
+  "example_prompts": [
+    "Bake this sculpt to a low-poly glTF without inverted normal-map details.",
+    "Fix a mirrored UV seam that changes lighting direction in Three.js."
+  ],
+  "negative_signals": [
+    "object-space normal map",
+    "displacement that changes silhouette",
+    "normal map as color texture"
+  ],
+  "not_for": [
+    "Replacing geometry where silhouette or parallax must change.",
+    "Assuming all normal-map tools use the same Y convention."
+  ],
+  "content": {
+    "principles": [
+      "A tangent-space normal is meaningful only with the mesh normals, the UV set and the tangent basis used to interpret it. Treat those as one asset contract.",
+      "glTF stores a tangent direction plus a handedness sign and derives the bitangent from normal, tangent and that sign. Mirrored UVs therefore need correct vertex splits and signs rather than a global guess.",
+      "A green-channel flip is a convention conversion. Apply it once at bake, image preprocessing or runtime normal scale, record where it occurs, and remove compensating flips elsewhere.",
+      "Normal maps change shading, not silhouette. Use geometry or displacement when the outline or actual contact surface must carry the detail."
+    ],
+    "implementation": [
+      "Finalize low-poly vertex normals, triangulation and the UV set before the approved bake. Keep a cage or ray-distance choice with the source asset so a rebake is reproducible.",
+      "In Blender Cycles, bake tangent-space normals using the glTF exporter manual's stated +X, +Y, +Z channel orientation, save the image, mark it Non-Color and connect it through a Tangent Space Normal Map node to Principled Normal.",
+      "Export tangents when the pipeline requires the authored basis, or verify that the consumer generates the glTF-recommended MikkTSpace basis from the same positions, normals and normal-map UVs. Do not recompute mesh normals after baking without rebaking.",
+      "On Three.js import, first use the GLTFLoader-created material. If a separately loaded map uses the opposite handedness, negate the Y component of normalScale once and document that conversion.",
+      "Include a test asset with diagonal embossing, a hard-normal boundary, a UV seam and a mirrored island; rotate a single light or the object so directional inversions cannot hide in a static environment."
+    ],
+    "observable_checks": [
+      "Embossed details remain raised rather than becoming dents under light from four directions.",
+      "The mirrored island preserves the intended bump direction and does not show a sign-flipped lobe at its boundary.",
+      "A seam close-up under grazing light shows only the declared UV/normal discontinuity; changing camera position does not reveal a new tangent seam.",
+      "A silhouette comparison confirms that normal-mapped relief does not claim geometric depth or alter contact."
+    ]
+  },
+  "creative_affordances": [
+    "Deliberately inverted or amplified normals may create a graphic engraved look when named as stylization.",
+    "For distant assets, omit fine normal detail and spend texture bandwidth on base-color or roughness variation that survives the shot."
+  ],
+  "known_limits": [
+    "Tangent generation and import behavior are software-version dependent; inspect the actual exported attributes and target renderer.",
+    "Mirrored UVs can also expose padding and compression seams beyond tangent handedness.",
+    "Authored reusable guidance; no bake, export or render was run for this record."
+  ],
+  "related_ids": [
+    "knowledge.dielectric-surface",
+    "knowledge.three-pbr-adapter",
+    "knowledge.blender-three-metalrough-orm-translation"
+  ],
+  "claims": [
+    {
+      "id": "claim.blender-three-gltf-tangent-basis",
+      "statement": "glTF 2.0 defines TANGENT as normalized XYZ plus a W sign for tangent-basis handedness, derives bitangent as cross(normal, tangent.xyz) multiplied by tangent.w, and recommends default MikkTSpace tangent calculation when tangents are absent but a normal texture is used.",
+      "scope": "glTF 2.0 mesh tangent semantics; exact implementation behavior still depends on the consumer.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Geometry > Meshes: attribute semantics and tangent generation; Materials > Additional Textures: normal texture"
+        }
+      ]
+    },
+    {
+      "id": "claim.blender-three-normal-convention-tools",
+      "statement": "Blender's glTF exporter manual specifies a Tangent Space Normal Map node, Non-Color image data and +X,+Y,+Z bake orientation for glTF, while Three.js documents that a left-handed normal-map convention can be compensated by negating the Y component of normalScale.",
+      "scope": "Current Blender export guidance and Three.js MeshStandardMaterial API; this is a convention conversion rather than proof that every asset needs a flip.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "Normal Map"
+        },
+        {
+          "source_id": "source.three-standard-material",
+          "locator": "normalMap; normalScale"
+        }
+      ]
+    }
+  ]
+}

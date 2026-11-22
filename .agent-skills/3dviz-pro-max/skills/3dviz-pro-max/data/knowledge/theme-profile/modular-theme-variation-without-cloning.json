@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.modular-theme-variation-without-cloning",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "theme-profile",
+  "title": {
+    "en": "Modular theme variation without cloning"
+  },
+  "aliases": {
+    "en": [
+      "deterministic themed variants",
+      "modular kit storytelling",
+      "variation grammar without repetition"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors",
+    "products-assemblies"
+  ],
+  "summary": "Create coherent variation from compatible modules, role-driven proportions, local story state and deterministic choices instead of scattering identical clones or random decoration.",
+  "objective": "Two seeded layouts remain recognizably related, navigable and functionally legible while repeated modules vary by role and retain stable identities across reload and reset.",
+  "applies_when": [
+    "A modular environment or prop family needs many variants without losing authored composition, route clarity or state persistence."
+  ],
+  "tags": [
+    "theme-profile",
+    "modular-variation",
+    "deterministic-seed",
+    "environment-kit"
+  ],
+  "subject_terms": [
+    "module socket",
+    "variant family",
+    "deterministic seed",
+    "role-based variation",
+    "silhouette rhythm",
+    "shared identity",
+    "layout constraint"
+  ],
+  "intent_signals": [
+    "vary modular rooms without obvious clones",
+    "seed a coherent themed kit",
+    "keep selected modules stable after reload"
+  ],
+  "example_prompts": [
+    "Generate a compact market lane and a service courtyard from the same fictional kit with different role and wear distributions.",
+    "Build two research outpost layouts whose modules share interfaces but not identical silhouettes or prop scatter."
+  ],
+  "negative_signals": [
+    "uniform random scale",
+    "randomize every property",
+    "duplicate hero prop everywhere",
+    "seed changes object identity"
+  ],
+  "not_for": [
+    "Unconstrained procedural generation presented as guaranteed playable or accessible.",
+    "Historical settlement patterns or cultural motifs without separate research."
+  ],
+  "content": {
+    "principles": [
+      "Lock connection and clearance rules before varying silhouette, finish and story detail. Variation cannot repair incompatible sockets or blocked routes.",
+      "Vary by role and neighborhood: entrance, service, gathering, storage and landmark modules need different proportions and prop density.",
+      "Use structured families and weighted choices, not independent randomness on every attribute. Reserve distinctive variants for landmarks and state changes.",
+      "Separate stable semantic identity from visual variant. A saved selection or annotation should resolve even when a permitted visual choice changes.",
+      "A seed reproduces choices; it does not prove the result is composed well. Keep authored constraints and inspection checks around generation."
+    ],
+    "implementation": [
+      "In Blender, author a kit with named sockets, pivots, clearance envelopes, role tags, compatible variant families and at least one plain fallback for each required role.",
+      "Build two authored reference compositions, such as a market lane and service courtyard, to prove the kit supports different arrangements before adding runtime variation.",
+      "Export explicit module, socket, role, variant-family and stable-instance identifiers. Convert source-only Geometry Nodes or collection logic into realized geometry, retained metadata or an application reconstruction contract as chosen.",
+      "In Three.js, derive variation from a versioned seed plus semantic instance ID, apply choices in a stable order and keep route-critical dimensions and interaction anchors outside cosmetic randomization.",
+      "Distribute wear, signage, clutter and active states from local story conditions: frequently used entrances differ from sealed storage; repaired modules reuse grammar but receive a traceable exception.",
+      "Persist the seed, generator version and any user-authored overrides. Reset restores the declared layout and variants rather than drawing a new scene accidentally."
+    ],
+    "observable_checks": [
+      "Generate the same seed twice: module identities, socket connections, required clearances and variants match exactly.",
+      "Generate two approved seeds: both preserve entrances and routes, while landmark silhouette, neighborhood rhythm and story traces differ visibly.",
+      "Select and annotate a stable module, reload, and resolve the same semantic instance without depending on its display name or traversal order.",
+      "Inspect repeated modules side by side; variation follows their role or local story rather than arbitrary per-axis scale and noise.",
+      "Substitute each nonessential variant with its fallback; connection, interaction and reset contracts still hold.",
+      "Change generator version deliberately and report migration or invalidated overrides instead of silently reshuffling a saved scene."
+    ]
+  },
+  "creative_affordances": [
+    "Allow hand-authored landmark overrides on top of deterministic neighborhoods while keeping them in the saved state contract.",
+    "Use color, material age, roofline, attachments or occupancy as separate variation axes, choosing only those that serve the brief."
+  ],
+  "known_limits": [
+    "Authored variation guidance; no generator, navigation evaluation, runtime layout or usability result was observed.",
+    "A reproducible seed establishes repeatability only, not quality, accessibility or absence of collisions."
+  ],
+  "related_ids": [
+    "knowledge.modular-environment-kit-sockets",
+    "knowledge.reasoning-part-identity-and-variants",
+    "knowledge.theme-science-fiction-outpost",
+    "knowledge.theme-coastal-exploration"
+  ],
+  "claims": []
+}

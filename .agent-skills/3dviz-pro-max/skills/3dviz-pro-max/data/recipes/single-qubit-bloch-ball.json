@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "id": "recipe.single-qubit-bloch-ball",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Single-qubit pure and mixed states on the Bloch ball"
+  },
+  "aliases": {
+    "en": [
+      "Bloch sphere",
+      "Bloch ball",
+      "single qubit"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra",
+    "waves-optics-fields"
+  ],
+  "summary": "Relate a single-qubit density matrix to a point in the Bloch ball and distinguish pure-state phase from statistical mixing.",
+  "objective": "Drag a valid Bloch vector and compare density-matrix entries, purity and computational-basis probabilities.",
+  "tags": [
+    "Bloch sphere",
+    "Bloch ball",
+    "single qubit",
+    "density matrix"
+  ],
+  "subject_terms": [
+    "Bloch sphere",
+    "Bloch ball",
+    "single qubit",
+    "density matrix",
+    "pure state",
+    "mixed state",
+    "Pauli coordinates",
+    "global phase",
+    "quantum state visualization"
+  ],
+  "intent_signals": [
+    "Drag a valid Bloch vector and compare density-matrix entries, purity and computational-basis probabilities.",
+    "Relate a single-qubit density matrix to a point in the Bloch ball and distinguish pure-state phase from statistical mixing."
+  ],
+  "example_prompts": [
+    "Build an explorable single-qubit pure and mixed states on the bloch ball. Drag a valid Bloch vector and compare density-matrix entries, purity and computational-basis probabilities."
+  ],
+  "entities": [
+    {
+      "name": "State sphere and vector",
+      "guidance": "Draw a unit sphere with labeled +X,+Y,+Z axes and six basis reference points. The vector tip may lie inside; its length is a state-space quantity, not a spatial electron location."
+    },
+    {
+      "name": "Density matrix tiles",
+      "guidance": "Display rho=1/2[[1+rz,rx-i*ry],[rx+i*ry,1-rz]] with separately labeled real and imaginary tiles. Link a selected component to its Bloch axis without projecting complex entries onto arbitrary heights."
+    },
+    {
+      "name": "Pure-state chart and mixture chord",
+      "guidance": "At unit radius show |psi>=cos(theta/2)|0>+exp(i*phi)sin(theta/2)|1>, theta polar from+Z and phi azimuth from+X toward+Y. For a mixture of two chosen pure endpoints, show the chord point p*rA+(1-p)*rB and weightp; interior points have no single pure ket."
+    }
+  ],
+  "state_contract": {
+    "model": "Authoritative real r=(rx,ry,rz) satisfies |r|<=1; reject invalid numeric edits rather than silently changing them. rho=(I+r dot sigma)/2 in the stated Pauli convention. Derived eigenvalues=(1+|r|)/2,(1-|r|)/2; purity=(1+|r|^2)/2; P0=(1+rz)/2,P1=(1-rz)/2. Mixture p in[0,1] is a convex combination of density matrices, not a coherent amplitude sum.",
+    "authority": "Bloch vector or an explicitly selected two-endpoint mixture owns rho and readouts. For pure chart coordinates r=(sin theta cos phi,sin theta sin phi,cos theta); at poles azimuth is irrelevant, and at r=0 direction is undefined. Camera rotation never changes the state.",
+    "actions": [
+      "Select |0>,|1>,|+>,|->,|+i>,|-i> or the maximally mixed state.",
+      "Edit r with a validity indicator, or move a handle restricted to the ball.",
+      "Vary mixture weight and compare different ensembles giving the same rho.",
+      "Toggle a pure-state global phase display: rho, Bloch point and probabilities stay unchanged.",
+      "Reset vector, mixture endpoints/weight and chart selections; pause any demonstration animation without changing the state."
+    ]
+  },
+  "invariants": [
+    "rho is Hermitian with trace1 and nonnegative eigenvalues within declared numerical tolerance.",
+    "Pure states have |r|=1 and purity1; r=0 gives rho=I/2, purity1/2 and no unique direction.",
+    "The equal mixture of opposite poles and equal mixture of opposite X states both yield r=0; neither equals the pure |+> state.",
+    "Computational-basis probabilities sum to1; changing pure-state azimuth at fixed theta leaves them unchanged but changes other-axis components away from poles."
+  ],
+  "motion_guidance": [
+    "Any animated route is an explicitly authored state-preparation or mixture sweep; do not call a straight interior chord unitary evolution.",
+    "At poles retain a harmless UI azimuth choice but mark it nonunique. Hide directional arrowhead at zero rather than normalizing zero."
+  ],
+  "known_limits": [
+    "One qubit only; the ball does not represent the full joint state or entanglement of multiple qubits, nor an electron orbit or wavefunction in physical space.",
+    "No hardware execution, measurement sample generator, noise channel or calibrated quantum-control pulse is supplied. Mixture decompositions are not generally unique.",
+    "Authored recipe and prospective checks only; no runtime artifact or rendered result has been observed."
+  ],
+  "claims": [
+    {
+      "id": "claim.handbook-math-single-qubit-bloch-ball",
+      "statement": "For one qubit, pure states up to global phase correspond to unit Bloch vectors with coordinates(sin theta cos phi,sin theta sin phi,cos theta) in the Pauli decomposition rho=(I+r dot sigma)/2. Convex mixtures give points inside the ball, including the maximally mixed state I/2 at its center.",
+      "scope": "One qubit, normalized density matrices, conventional Pauli axes, global-phase equivalence and mixtures; not electron position.",
+      "source_refs": [
+        {
+          "source_id": "source.handbook-math-bloch",
+          "locator": "Qubit states as points on a sphere; Pauli decomposition; Six important examples; Convex combinations of points"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Single-qubit pure and mixed states on the Bloch ball",
+      "structure": "Make the sphere, vector, six reference pins, mixture chord and matrix panel separate objects with one shared state identity. Labels carry ket signs and i explicitly, not only hue.",
+      "material": "Use independent line weights, shapes and labels for mathematical roles. Color and surface finish are presentation choices; do not infer material physics from them."
+    }
+  ],
+  "creative_affordances": [
+    "A minimal geometric instrument or a translucent teaching sculpture can share the same density-matrix contract; the matrix and probability panels may remain planar for readability."
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Derived mathematical geometry and authored inspection; no contact dynamics or calibrated physical artifact.",
+    "checks": [
+      "rho is Hermitian with trace1 and nonnegative eigenvalues within declared numerical tolerance.",
+      "Pure states have |r|=1 and purity1; r=0 gives rho=I/2, purity1/2 and no unique direction."
+    ]
+  }
+}

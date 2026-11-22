@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "id": "recipe.orbital-isosurface-phase-probability",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Orbital isosurfaces: phase versus probability"
+  },
+  "aliases": {
+    "en": [
+      "molecular orbital phase",
+      "signed orbital isosurface",
+      "wavefunction probability density"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials",
+    "waves-optics-fields"
+  ],
+  "summary": "Compare signed orbital-amplitude contours with the non-negative squared amplitude of one supplied, identified one-particle orbital grid.",
+  "objective": "Flip the global sign of a supplied real one-particle orbital grid and observe phase colours swap while its squared-amplitude geometry stays fixed.",
+  "tags": [
+    "molecular orbital",
+    "isosurface",
+    "phase sign",
+    "probability density"
+  ],
+  "subject_terms": [
+    "wavefunction amplitude",
+    "orbital sign",
+    "nodal surface",
+    "squared amplitude",
+    "CUBE grid",
+    "atomic units",
+    "global phase"
+  ],
+  "intent_signals": [
+    "Explain orbital phase versus probability.",
+    "Compare signed orbital and squared-amplitude isosurfaces."
+  ],
+  "example_prompts": [
+    "Load my identified orbital CUBE grid and create linked signed-amplitude and squared-amplitude views with independent unit-labelled isovalues."
+  ],
+  "negative_signals": [
+    "electron trajectory",
+    "positive and negative electron lobes",
+    "electronic-structure calculation"
+  ],
+  "not_for": [
+    "Running quantum chemistry, comparing methods or claiming a chosen contour is an orbital boundary.",
+    "Treating lobe sign as charge, spin or electron location."
+  ],
+  "entities": [
+    {
+      "name": "Supplied grid identity",
+      "guidance": "Require molecule, calculation/method metadata, orbital or dataset ID, origin, three axis vectors, counts, units and file integrity before interpretation."
+    },
+    {
+      "name": "Signed amplitude view",
+      "guidance": "Extract separate +c and -c surfaces from the raw real field and pair colour with explicit plus/minus labels; show a zero-centred signed slice and optional node."
+    },
+    {
+      "name": "Squared-amplitude view",
+      "guidance": "Compute q(r)=|phi(r)|^2 from the same real one-particle orbital samples and use an independent non-negative isovalue and units; call it a probability density only after declared normalization and a numerical normalization check, and never call it the full many-electron density."
+    },
+    {
+      "name": "Shared spatial frame",
+      "guidance": "Use one source grid transform and linked camera so differences cannot arise from alignment, cropping or display scale."
+    }
+  ],
+  "state_contract": {
+    "model": "Load a supplied one-particle orbital field phi[i,j,k] that is real up to one global phase, on origin o and axis-step vectors a1,a2,a3. Preserve native atomic units. Derive q=|phi|^2 sample-wise. Signed surfaces use thresholds +/-c_phi; q uses independent c_q because amplitude and squared amplitude have different dimensions. Enable probability-density wording only when source metadata declares normalization and the finite-grid integral sum(q)*|a1 dot (a2 cross a3)| agrees with 1 within a stated truncation/discretization tolerance; otherwise label q only as squared orbital amplitude. An occupied-orbital contribution to electron density additionally requires declared occupancy and is outside the default comparison.",
+    "authority": "Supplied dataset ID, field semantics, ordering, origin, axes, counts and units own geometry. Sign flip, squaring, thresholding, interpolation and mesh extraction are explicit reversible derivations.",
+    "actions": [
+      "Change signed and squared-field isovalues independently with units visible.",
+      "Move a shared slice probe and inspect source phi and derived q values.",
+      "Flip phi globally and compare both panels.",
+      "Toggle node and mesh-resolution comparison; reset derivations and camera."
+    ]
+  },
+  "invariants": [
+    "For every sample q equals |phi| squared within floating-point tolerance and q is non-negative.",
+    "Negating all phi samples swaps +c/-c phase assignments while q samples and q-isosurface measurements remain unchanged within declared tolerance.",
+    "Probability-density wording remains disabled unless declared normalization and the finite-grid integral check pass within a stated tolerance.",
+    "Grid coordinate reconstruction uses the three supplied axis vectors and data ordering; a known asymmetric fixture detects axis transposition.",
+    "For a declared analytic fixture, doubling sampling density does not change lobe count, and extracted vertices satisfy the interpolated isovalue residual tolerance."
+  ],
+  "motion_guidance": [
+    "A global sign flip is a discrete representational comparison; an animated colour swap between endpoints is not time evolution.",
+    "Keep both linked cameras synchronized while allowing a planar signed slice for values hidden by surfaces."
+  ],
+  "creative_affordances": [
+    "Use translucent lobes, cutaway nodes or sculptural lighting, with redundant plus/minus glyphs and legends that remain clear without colour."
+  ],
+  "known_limits": [
+    "An isosurface is a chosen contour of a sampled field, not a hard orbital boundary or an electron path.",
+    "A molecular orbital is not the full many-electron wavefunction. This recipe's |phi|^2 panel is a normalized one-particle orbital probability-density illustration only when the declared and numerical normalization gate passes; it is not total electron density unless occupations and all required orbitals are supplied and combined separately.",
+    "For a general complex orbital, two-colour sign is insufficient; this bounded recipe accepts only an orbital that is real up to one global phase, not an isolated real component of a complex orbital.",
+    "CUBE conventions and field units must come from the supplied producer metadata; the community format page is not an official Gaussian standard.",
+    "Authored and source-reviewed draft only; no cube parser, quantum calculation, mesh extraction or renderer was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.mixed-biomed-cube-grid-semantics",
+      "statement": "Gaussian cubegen can write molecular-orbital and density grids and documents that cube-file values are in atomic units; the representative h5cube account describes the origin, three voxel-axis records, ordered scalar data and multi-dataset signaling that an importer must validate against its producer.",
+      "scope": "Gaussian cubegen output plus the explicitly unofficial representative-file account; producer variants still require validation.",
+      "source_refs": [
+        {
+          "source_id": "source.mixed-biomed-gaussian-cubegen",
+          "locator": "Usage; Kind keyword table; notes following the command syntax"
+        },
+        {
+          "source_id": "source.mixed-biomed-cube-format",
+          "locator": "File Structure; Field descriptions for NATOMS, ORIGIN, axis records, DSET_IDS and DATA"
+        }
+      ]
+    },
+    {
+      "id": "claim.mixed-biomed-amplitude-squared-probability",
+      "statement": "Born's statistical interpretation assigns probability through a wavefunction amplitude's squared modulus; in this bounded normalized one-particle illustration, changing a real orbital's global sign therefore leaves |phi|^2 unchanged.",
+      "scope": "A normalized one-particle orbital probability-density illustration only; a molecular orbital is not the full many-electron wavefunction or total electron density.",
+      "source_refs": [
+        {
+          "source_id": "source.mixed-biomed-born-statistical-interpretation",
+          "locator": "Nobel Lecture page 262, paragraphs beginning 'This concept could at once be carried over' and 'The square of the amplitude'"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Linked orbital field assembly",
+      "structure": "Keep source grid frame, nuclei, signed surfaces, node, slice, derived squared field and legends separately inspectable but source-linked.",
+      "material": "Use phase colours only for signed amplitude; the squared field uses a non-negative encoding. Shading supports form and does not change scalar meaning."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Static supplied-field derivation and inspection; no particle dynamics or electronic-structure solver.",
+    "checks": [
+      "Global sign flip preserves q and swaps signed phase assignments.",
+      "Grid-order fixture, isovalue residual and resolution comparison pass."
+    ]
+  },
+  "related_ids": [
+    "knowledge.shared-voxel-field-grid",
+    "knowledge.shared-isosurface-threshold",
+    "knowledge.signed-field-section",
+    "knowledge.shared-field-data-playback-bridge"
+  ]
+}

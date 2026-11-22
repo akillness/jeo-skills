@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-mesh-versus-combinatorial-model",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Do not read connectivity off the render mesh"
+  },
+  "aliases": {
+    "en": [
+      "seams and duplicate vertices",
+      "topological model",
+      "mesh limitations"
+    ]
+  },
+  "direction_ids": [
+    "topology-symmetry",
+    "molecules-materials"
+  ],
+  "summary": "Keep a separate combinatorial structure when the scene makes connectivity or orientability claims, because rendering meshes split vertices.",
+  "objective": "Avoid basing a topological or structural claim on a representation built for rendering.",
+  "applies_when": [
+    "A surface is textured, has hard edges, or was exported from a modelling tool.",
+    "The scene claims closure, orientability, adjacency or a cell count.",
+    "Paths are traced across a surface, as in a one-sided walk."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "mesh topology",
+    "duplicate vertices",
+    "seam",
+    "adjacency",
+    "orientability",
+    "manifold"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "topology",
+    "geometry"
+  ],
+  "intent_signals": [
+    "trace a path around the band",
+    "is the mesh closed",
+    "the surface looks continuous"
+  ],
+  "example_prompts": [
+    "Trace a continuous path around the Moebius band and show it returns flipped.",
+    "Check whether this surface is actually closed."
+  ],
+  "negative_signals": [
+    "Purely visual surfaces where no connectivity claim is made.",
+    "Analytic surfaces evaluated directly, where the parametrisation already provides connectivity."
+  ],
+  "not_for": [
+    "Purely visual surfaces where no connectivity claim is made.",
+    "Analytic surfaces evaluated directly, where the parametrisation already provides connectivity."
+  ],
+  "content": {
+    "principles": [
+      "A rendering mesh is optimised for shading, not for topology. Texture seams, hard edges and per-face normals split vertices, so a visually continuous surface is often several disconnected patches in the data.",
+      "Topological checks depend on the declared decomposition and surface type. In a simplicial surface interior edges have two incident triangles, boundary edges one, and distinct triangles share at most one edge. General finite cells use attaching maps and incidence multiplicity instead: one face can contribute twice to an edge, and two faces can share several edges. A Moebius band or cut sheet legitimately has a boundary. Surface claims also require valid local neighbourhoods, not edge counts alone.",
+      "Claims about orientability or one-sidedness must be transported through adjacency, so they need an adjacency structure that survives the render representation.",
+      "Keeping the two structures separate is also practical: the visual mesh can be refined, welded or decimated without disturbing the model that carries the claim."
+    ],
+    "implementation": [
+      "Build the combinatorial model first, with vertices, edges, faces and their adjacency, and generate the render mesh from it.",
+      "Where a mesh is imported, prefer authored seam or vertex correspondence and component provenance to reconstruct adjacency. Proximity welding is a heuristic that can invent connections: two sheets that merely touch or cross, or a seam that was cut deliberately while keeping coincident positions, become joined by it, and a quotient identification the model intends may not be coincident in the embedding at all. Treat proximity as a candidate list for review, not an automatic merge.",
+      "Trace paths and transport frames through the adjacency structure rather than by walking the rendered triangles.",
+      "After any approved weld, revalidate the structure, including vertex neighbourhoods, and record the reconstruction assumptions with the model so a later reader knows which adjacency was authored and which was inferred.",
+      "Keep the tolerance used for welding visible, since it determines what counts as connected."
+    ],
+    "observable_checks": [
+      "Count boundary edges using the declared attaching data and incidence multiplicity, rather than distinct face IDs. One face incidence identifies a boundary edge in the surface model; it is expected for a surface with boundary and a defect in one claimed closed. A single face contributing two incidences is permitted by an appropriate general cell gluing.",
+      "Walk the authored adjacency and compare component count with the declared model; apparent contact or continuity in the rendering alone does not require two sheets to be connected.",
+      "Trace a path across a texture seam and confirm it continues rather than terminating.",
+      "Compare vertex and component counts before and after any approved weld, inspect changed local neighbourhoods, and verify the result against the authored correspondence. A component merge can recover an intended render seam or invent a connection between separate sheets; geometry and count changes alone do not distinguish them."
+    ]
+  },
+  "related_ids": [
+    "recipe.mobius-orientation-trace",
+    "recipe.torus-euler-cells"
+  ],
+  "creative_affordances": [
+    "Visual treatment, including seams that are visible on purpose, remains free once the claim rests on the combinatorial model.",
+    "Deliberately open or torn surfaces are legitimate subjects when described accurately."
+  ],
+  "known_limits": [
+    "Authored representation guidance citing triangulation conditions; it does not provide a mesh repair algorithm.",
+    "The welding tolerance is scene-dependent and is not specified here."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-triangulation-conditions",
+      "statement": "In the triangulation of a compact surface described in the cited note, each edge belongs to the boundaries of exactly two faces, two faces share at most one edge, and two edges meet in at most one common vertex.",
+      "scope": "Conditions for a combinatorial decomposition of a compact surface without boundary. A surface with boundary has edges bordering a single face, and a rendering mesh need not satisfy any of these conditions.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-cambridge-euler-characteristic",
+          "locator": "Triangulation conditions on edges, faces and vertices"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "universe": 0,
+  "places": [
+    { "name": "start", "place": 0, "code": "build/ship.rbxl", "file": "build/start.rbxl" }
+  ]
+}

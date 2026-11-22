@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "id": "recipe.water-hydrogen-bond-network",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Water hydrogen-bond illustration"
+  },
+  "aliases": {
+    "en": [
+      "intermolecular water attraction",
+      "hydrogen bond versus covalent bond"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Distinguish intramolecular O-H bonds from selected illustrative intermolecular connections.",
+  "objective": "Create a small group of water molecules with solid O-H bonds and dashed illustrative hydrogen bonds.",
+  "tags": [
+    "water network",
+    "hydrogen bond",
+    "covalent bond"
+  ],
+  "subject_terms": [
+    "water network",
+    "hydrogen bond",
+    "covalent bond",
+    "intermolecular",
+    "donor acceptor"
+  ],
+  "intent_signals": [
+    "explain hydrogen bonding",
+    "distinguish bond types"
+  ],
+  "example_prompts": [
+    "Create a small group of water molecules with solid O-H bonds and dashed illustrative hydrogen bonds.",
+    "Select a dashed link to show that it connects two separate molecules."
+  ],
+  "entities": [
+    {
+      "name": "Water molecules",
+      "guidance": "Use a small number of bent O-H units with stable molecule and atom IDs."
+    },
+    {
+      "name": "Intermolecular guides",
+      "guidance": "Connect authored donor hydrogen and neighboring oxygen endpoints with dashed lines."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Water molecules",
+      "structure": "Use a small number of bent O-H units with stable molecule and atom IDs.",
+      "material": "Labeled oxygen/hydrogen colors and solid covalent sticks."
+    },
+    {
+      "family": "Intermolecular guides",
+      "structure": "Connect authored donor hydrogen and neighboring oxygen endpoints with dashed lines.",
+      "material": "Thin dashed contrasting material with a legend."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored molecule placements and explicit illustrative intermolecular edge list; no distance-threshold bond inference or dynamic equilibrium.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Select a molecular unit or intermolecular edge.",
+      "Toggle dashed guides.",
+      "Explode the group for identification then restore it."
+    ]
+  },
+  "invariants": [
+    "Solid bonds connect atoms within one molecule; illustrated dashed edges connect distinct molecules.",
+    "Moving a display group updates its guide endpoints.",
+    "A selected edge exposes both endpoint molecule IDs."
+  ],
+  "motion_guidance": [
+    "Use a static network by default; any regrouping is labeled presentation, not bond kinetics.",
+    "Retain clear separation of the two bond styles from all camera angles."
+  ],
+  "known_limits": [
+    "Illustrative small network, not liquid water structure, bond lifetime or force-field simulation: the cluster size, the placements and the edge list are authored, and the cited section states no distance, angle or energy for a hydrogen bond.",
+    "No universal hydrogen-bond cutoff, energy or occupancy prediction; the edges are declared data, not inferred from a distance threshold, which is why the defaults record no cutoff.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [
+    {
+      "id": "claim.water-hydrogen-bond-network",
+      "statement": "Water molecules can participate in intermolecular hydrogen-bond interactions, distinct from their intramolecular covalent O-H bonds.",
+      "scope": "Water example only; illustrative edge selection does not establish a quantitative hydrogen-bond detection rule.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-hydrogen-bonds",
+          "locator": "Hydrogen Bonding; Figure 10.10"
+        }
+      ]
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Presentation of an authored molecular network.",
+    "state": [
+      "molecule transforms",
+      "guide edges"
+    ],
+    "colliders": [
+      "None; geometry does not solve intermolecular forces."
+    ],
+    "driving": [
+      "Selection and optional display separation."
+    ],
+    "contact": [
+      "No force or contact calculation."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Dashed links connect different molecules and remain attached to their endpoint atoms."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Illustrative network: the cited section establishes only that water molecules take part in intermolecular hydrogen bonds distinct from their covalent O-H bonds (claim.water-hydrogen-bond-network) and gives no distance, angle, energy or coordination number, so every number here is an authored teaching choice and none may be cited as a measured property. The cluster is sized so the bookkeeping is exact and checkable: one central molecule with four neighbours gives 4 dashed edges and 10 covalent bonds, and both counts are combinatorial, so a build that reports anything else has either inferred edges from distance or attached one to the wrong molecule. The two donor and two acceptor roles on the central molecule are the reason four is the chosen neighbour count, not a claim about liquid water. Tunable: any cluster size works, but the expected counts in the worked example must be recomputed with it.",
+    "values": {
+      "parameters": {
+        "molecule_count": {
+          "value": 5,
+          "unit": "molecules",
+          "note": "authored: one central molecule plus four neighbours"
+        },
+        "intermolecular_edge_count": {
+          "value": 4,
+          "unit": "dashed edges",
+          "note": "authored: two edges where the central molecule donates a hydrogen, two where it accepts"
+        },
+        "covalent_bonds_per_molecule": {
+          "value": 2,
+          "unit": "O-H bonds",
+          "note": "structural, not a tunable display choice"
+        },
+        "edge_record_fields": {
+          "value": [
+            "donor_molecule_id",
+            "donor_hydrogen_id",
+            "acceptor_molecule_id",
+            "acceptor_oxygen_id"
+          ],
+          "unit": "schema",
+          "note": "authored: an edge is declared data so that selecting it can expose both endpoint molecule IDs"
+        },
+        "hydrogen_bond_distance": {
+          "value": "no default; source gives none",
+          "unit": "pm",
+          "note": "the cited section states no O to O or H to O distance"
+        },
+        "hydrogen_bond_angle": {
+          "value": "no default; source gives none",
+          "unit": "deg"
+        },
+        "hydrogen_bond_energy": {
+          "value": "no default; source gives none",
+          "unit": "kJ/mol"
+        },
+        "distance_cutoff_for_inference": {
+          "value": "no default; none is used",
+          "unit": "pm",
+          "note": "edges are authored, never inferred, so no cutoff exists to tune"
+        }
+      },
+      "equations": [
+        "covalent bond count = 2 * molecule_count",
+        "a dashed edge is valid only while donor_molecule_id != acceptor_molecule_id",
+        "moving a display group applies the same transform to its atoms and to every edge endpoint anchored on them"
+      ],
+      "worked_example": {
+        "inputs": "The authored 5-molecule cluster: central molecule M0 donating two hydrogen bonds to M1 and M2 and accepting two from M3 and M4",
+        "expected": "10 solid covalent O-H bonds, 4 dashed intermolecular edges, 0 dashed edges with both endpoints in the same molecule, and M0 appearing as an endpoint of all 4; after translating M0 by any vector all 4 dashed endpoints follow it and the 10 covalent bonds keep their lengths exactly",
+        "derivation": "Covalent bonds = 2 per molecule x 5 molecules = 10. Dashed edges are the declared list, so the count is 4 by construction; the check is that each of the 4 has two different molecule IDs, and that summing the edges incident on M0 gives 4 (2 donated plus 2 accepted). The translation case is the discriminating one: if a dashed endpoint is stored as a world-space point rather than as an atom reference, the edge detaches when M0 moves while the covalent bonds do not, which is exactly the defect the recipe's invariant names."
+      },
+      "tolerance": {
+        "counts": "exact integers; these are bookkeeping results, not measurements",
+        "endpoint_attachment": "after any display transform, an edge endpoint must coincide with its anchor atom to within 1e-9 display units",
+        "covalent_length_drift": "0 under display transforms: covalent bond lengths must not change at all when a group moves"
+      }
+    }
+  }
+}

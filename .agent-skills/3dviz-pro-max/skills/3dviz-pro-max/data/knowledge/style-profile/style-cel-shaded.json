@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-cel-shaded",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Cel-shaded bands"
+  },
+  "aliases": {
+    "en": [
+      "cel shading",
+      "toon shading",
+      "flat light bands",
+      "anime shading",
+      "outline pass"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "products-assemblies"
+  ],
+  "summary": "Compose deliberately limited light bands to make form readable through graphic value regions.",
+  "objective": "Eyes, handles and joints remain distinct in both light and shadow; contour thickness is usable at the delivery size.",
+  "tags": [
+    "style-profile",
+    "surface-aesthetic",
+    "cel-shaded"
+  ],
+  "subject_terms": [
+    "cel shading",
+    "toon shading",
+    "flat light bands",
+    "surface aesthetic"
+  ],
+  "intent_signals": [
+    "Use cel shading",
+    "Combine toon light bands with clear silhouettes"
+  ],
+  "example_prompts": [
+    "Give a low-poly delivery creature toon lighting without losing the face in shadow."
+  ],
+  "content": {
+    "principles": [
+      "Compose deliberately limited light bands to make form readable through graphic value regions."
+    ],
+    "implementation": [
+      "Keep silhouette geometry smooth or angular as the subject needs; tune band placement around major planes rather than adding unnecessary contours.",
+      "Choose a small set of light/shadow values and test them against the palette; optional contour lines should not swallow tiny parts.",
+      "Hold a diagnostic light while orbiting the object; in animation inspect transitions so band changes do not distract from the action.",
+      "Quantise the diffuse ramp to 2 bands for props and 3 for faces with the terminator at N dot L = 0.45 and a 0.02-wide smoothstep, so the band edge stays clean without aliasing.",
+      "Draw the contour with an inverted-hull pass at 1.5 px at 1080p (2.5 px at 2160p), scaled by view distance, and drop the outline entirely on parts smaller than 12 px on screen."
+    ],
+    "observable_checks": [
+      "Eyes, handles and joints remain distinct in both light and shadow; contour thickness is usable at the delivery size."
+    ]
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for Neutral tone mapping at renderer.toneMappingExposure 1.0; re-tune intensities and fog density under a different tone mapping or exposure - ACESFilmic rolls the band edges together and softens the intended step.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with low-poly or smoothly rounded geometry; cel shading and polygon count are separate choices."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Neutral tone mapping at exposure 1.0 is chosen deliberately: a filmic curve compresses the top band into the mid band and destroys the hard step that defines the style. The rim at 0.45x key gives the contour a light edge so the 1.5 px inverted hull is not the only thing separating the subject from the background, and the shadow band is a hue-shifted version of the light band rather than a grey multiply so two values still carry colour.",
+    "values": {
+      "feeling": [
+        "graphic",
+        "bold",
+        "clean"
+      ],
+      "palette": [
+        {
+          "hex": "#22283a",
+          "role": "shadow band"
+        },
+        {
+          "hex": "#4f5d7a",
+          "role": "mid band on props"
+        },
+        {
+          "hex": "#f5efe3",
+          "role": "light band"
+        },
+        {
+          "hex": "#e94f37",
+          "role": "graphic accent"
+        },
+        {
+          "hex": "#3aa17e",
+          "role": "secondary graphic mass"
+        }
+      ],
+      "value_structure": "two bands carry 80% of the frame; the third band is reserved for the focal head or handle",
+      "saturation_rule": "the shadow band is the light band hue-shifted 15 degrees toward blue at 0.8x value, never a grey multiply; non-focal <= 50% saturation",
+      "sky": {
+        "model": "solid",
+        "zenith": "#dfe8f0",
+        "horizon": "#dfe8f0"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#dfe8f0",
+        "density": 0.006
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#ffffff",
+          "intensity": 3.0,
+          "elevation_deg": 42,
+          "azimuth_deg": 310,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#b9cfe6",
+          "ground": "#5a5348",
+          "intensity": 0.6
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#ffe9c9",
+          "intensity": 1.4,
+          "elevation_deg": 18,
+          "azimuth_deg": 120,
+          "castShadow": false
+        },
+        "ratio": "key:fill ~ 5:1; rim ~ 0.45x key so the contour reads without producing a second terminator"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "Neutral",
+        "exposure": 1.0
+      },
+      "camera": {
+        "fov_deg": 40,
+        "height_m": 1.6,
+        "pitch_deg": -4,
+        "orbit": {
+          "minPolar_deg": 60,
+          "maxPolar_deg": 90,
+          "minDist_m": 2,
+          "maxDist_m": 16
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.55,
+          0.8
+        ],
+        "metalness": [
+          0.0,
+          0.0
+        ],
+        "notes": "banded diffuse ramp with a single stepped specular; no normal maps - they break band edges into noise"
+      },
+      "motion": {
+        "sway_period_s": [
+          2.8,
+          4.0
+        ],
+        "ease": "sine in-out with a 2-frame step at pose ends",
+        "hold_ms": 280
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.15,
+          "strength": 0.15,
+          "radius": 0.35
+        },
+        "vignette": 0.1,
+        "grain": 0.0,
+        "dof": "off"
+      },
+      "signature_technique": "a 2-3 band diffuse ramp plus a 1.5 px inverted-hull outline and a 0.45x rim that lifts the contour off the flat backdrop",
+      "never": [
+        "soft gradient shading between bands",
+        "untinted white ambient light",
+        "an outline thicker than 3 px at 1080p",
+        "normal-mapped surface noise",
+        "flat black background"
+      ]
+    }
+  }
+}

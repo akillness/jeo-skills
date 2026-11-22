@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.lighting-mood-noir-hard-key",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Noir single hard key with a controlled black level"
+  },
+  "aliases": {
+    "en": [
+      "film noir key light",
+      "hard key lighting",
+      "single source noir rig",
+      "high contrast chiaroscuro"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "architecture-interiors",
+    "environments-dioramas"
+  ],
+  "summary": "Light from one hard source at a steep ratio and let most of the frame fall away, while holding the black level just above zero.",
+  "objective": "A single shadow set is present at a key-to-fill ratio of at least 8:1, and the darkest sampled pixel is still above zero.",
+  "tags": [
+    "lighting-profile",
+    "noir",
+    "chiaroscuro",
+    "hard-light",
+    "high-contrast",
+    "single-source"
+  ],
+  "subject_terms": [
+    "hard shadow",
+    "key to fill ratio",
+    "black level",
+    "chiaroscuro",
+    "spot light",
+    "penumbra",
+    "negative fill",
+    "silhouette",
+    "shadow core"
+  ],
+  "intent_signals": [
+    "make it look like film noir",
+    "one dramatic light only",
+    "high contrast black and white mood",
+    "the scene is too evenly lit",
+    "hard shadows across the wall"
+  ],
+  "example_prompts": [
+    "Light a single figure so the shadow falls across the wall behind them.",
+    "Set an interrogation-room mood with one source and no fill.",
+    "Give an alley scene a hard raking light and deep shadow."
+  ],
+  "negative_signals": [
+    "even documentary lighting",
+    "product catalogue shot"
+  ],
+  "not_for": [
+    "Scenes that must show every surface clearly, where losing half the frame is a fault.",
+    "Product or measurement work that needs even, shadow-free coverage."
+  ],
+  "content": {
+    "principles": [
+      "One source means one shadow set. The moment a second light casts, the look collapses into ordinary dramatic lighting.",
+      "The ratio is the style. Below about 8:1 the image reads as moody; at 8:1 and above it reads as noir.",
+      "Black level is a decision, not an accident. Shadow cores held at a few percent above zero keep shape information and stop the image looking like a rendering error.",
+      "Hard light comes from a small source. Narrow the cone and reduce the penumbra rather than raising the intensity.",
+      "What is hidden carries the composition. Choose which third of the subject is lit before choosing where the light goes."
+    ],
+    "implementation": [
+      "Use one SpotLight at about 900 cd with decay 2, a 28 deg cone and penumbra 0.15, positioned high and to one side (62 deg elevation, 300 deg azimuth).",
+      "Allow only a HemisphereLight at 0.1 as fill; anything more collapses the ratio, and no rim light is used.",
+      "Keep a dark gradient background rather than flat black so the frame still has a horizon and the subject silhouette has something to sit against.",
+      "Use AgX tone mapping at exposure 0.85: its shadow handling keeps the cores separable at this ratio where a steeper curve would crush them.",
+      "Add grain at 0.08, higher than any other profile here, because a nearly black frame shows banding first and grain hides it.",
+      "Check the black level by sampling the darkest region; if it reads zero, raise the hemisphere fill by 0.02 at a time rather than raising exposure."
+    ],
+    "observable_checks": [
+      "Exactly one shadow set is visible in frame; every shadow traces back to the same source.",
+      "A sampled neutral card in the key reads at least eight times the value of the same card in the fill.",
+      "The darkest pixel in frame is above zero, confirming the black level rule.",
+      "A grayscale screenshot still reads as a composition, since colour is contributing almost nothing here."
+    ]
+  },
+  "creative_affordances": [
+    "The key colour can be any temperature, including hard cyan or sodium orange, as long as it stays the only caster.",
+    "Practical sources like a sign or a window can be added as visible emissive elements provided they do not become a second key."
+  ],
+  "known_limits": [
+    "Every number in this profile was tuned for AgX tone mapping at exposure 0.85; under a different tone-mapping curve or exposure the intensities and fog density must be re-derived, not copied.",
+    "The 8:1 ratio was tuned against AgX at exposure 0.85; under ACESFilmic the same lights read a stop flatter and the ratio must be re-derived.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "related_ids": [
+    "knowledge.three-light-units-and-exposure",
+    "knowledge.theme-cyberpunk-city",
+    "knowledge.shared-surface-feature-inspection-light"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "A noir read comes from one hard source and a ratio steep enough that most of the frame is unlit, so a single narrow spot at 900 cd works against a hemisphere fill of just 0.1 for a ratio well past 8:1. AgX at 0.85 is chosen over a steeper curve because it keeps the shadow cores separable instead of crushing them, which is what makes the black-level rule achievable; the dark gradient sky and 0.08 grain exist to stop the near-black areas banding or reading as an empty buffer. Kelvin-to-hex conversions here are authored approximations, not colorimetric transforms (2700K~#ffb46b, 3200K~#ffc58f, 4500K~#ffe4c4, 5600K~#fff4e5, 6500K~#ffffff, open shade 8000K~#cfe0ff).",
+    "values": {
+      "feeling": [
+        "tense",
+        "severe",
+        "cinematic"
+      ],
+      "time_of_day": "night interior or unlit alley; no ambient daylight",
+      "lights": {
+        "key": {
+          "type": "SpotLight",
+          "color": "#f2f4ff",
+          "intensity": 900,
+          "decay": 2,
+          "distance": 0,
+          "angle_deg": 28,
+          "penumbra": 0.15,
+          "elevation_deg": 62,
+          "azimuth_deg": 300,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#2a3140",
+          "ground": "#0d0f14",
+          "intensity": 0.1
+        },
+        "rim": {
+          "type": "none",
+          "note": "deliberately absent; a rim would give a second read and soften the ratio"
+        },
+        "ratio": "key:fill >= 8:1 measured on a neutral card; 12:1 is still within the style"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#06070a",
+        "horizon": "#14161c"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#0e1014",
+        "density": 0.02
+      },
+      "tone_mapping": {
+        "mode": "AgX",
+        "exposure": 0.85
+      },
+      "shadow": {
+        "mapSize": 2048,
+        "bias": -0.0002,
+        "normalBias": 0.02,
+        "camera_extent_m": 14
+      },
+      "environment": {
+        "type": "none",
+        "intensity": 0.0
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.1,
+          "strength": 0.2,
+          "radius": 0.5
+        },
+        "vignette": 0.5,
+        "grain": 0.08,
+        "dof": "off",
+        "black_level": "darkest sampled pixel held at 3-6% linear, never clipped to zero"
+      },
+      "never": [
+        "a fill light strong enough to bring the ratio under 8:1",
+        "a second shadow-casting light",
+        "shadow cores clipped to pure black",
+        "a flat black background with no gradient"
+      ],
+      "snippet": "const key=new THREE.SpotLight(0xf2f4ff,900,0,THREE.MathUtils.degToRad(28),0.15,2);\nkey.position.setFromSphericalCoords(6,THREE.MathUtils.degToRad(90-62),THREE.MathUtils.degToRad(300));\nkey.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.normalBias=0.02;key.shadow.bias=-0.0002;\nscene.add(key);scene.add(key.target);\nscene.add(new THREE.HemisphereLight(0x2a3140,0x0d0f14,0.1));\nscene.fog=new THREE.FogExp2(0x0e1014,0.02);\nrenderer.toneMapping=THREE.AgXToneMapping;renderer.toneMappingExposure=0.85;"
+    }
+  }
+}

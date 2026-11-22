@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-well",
+  "record_revision": 5,
+  "asset": "templates/kits/props/well.js",
+  "asset_sha256": "c3293b4ae16f74b830f816e8fa0b256aadabdcd6f9f5c2feabd26fd40ecd87a9",
+  "params": {
+    "radius": 0.66,
+    "postHeight": 1.28,
+    "seed": 1,
+    "blocks": 12,
+    "wall": 0.24,
+    "drumHeight": 0.72,
+    "roofPitchDeg": 38
+  },
+  "tier": "T1",
+  "kit": {
+    "blueprint": "knowledge.blueprint-well",
+    "module": "../props/well.js",
+    "params": {
+      "radius": 0.66,
+      "postHeight": 1.28,
+      "seed": 1,
+      "blocks": 12,
+      "wall": 0.24,
+      "drumHeight": 0.72,
+      "roofPitchDeg": 38
+    },
+    "tier": "T1",
+    "surface": null,
+    "triangles": 2716,
+    "bounds_m": {
+      "min": [
+        -0.734000027179718,
+        0.007199998013675213,
+        -0.7551517579055125
+      ],
+      "max": [
+        0.734000027179718,
+        2.6956507937398753,
+        0.755151781390063
+      ],
+      "size": [
+        1.468000054359436,
+        2.6884507957262,
+        1.5103035392955755
+      ]
+    },
+    "fit_distance_m": 4.9927,
+    "view_distances_m": {
+      "far": 11.9826,
+      "mid": 5.9913,
+      "close": 3.8943,
+      "detail": 1.0418
+    },
+    "sockets": [
+      "rim",
+      "crank",
+      "bucket",
+      "base"
+    ],
+    "detail_socket": "rim",
+    "animated": false,
+    "colliders": [
+      "drum",
+      "roof"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "1fc0914e60172f20f70ff1a8187c03fe70c0bf595cbd88e6541a07eab6434a10",
+    "mid.png": "befc831c5070e719f537571cc6268da3e9defeffd30bad583cc72903a238d2fc",
+    "close.png": "a43b0bd9c2ff9f4a9dbabc28026f7ebbc60761c71ab6dd13e2fb8a0bc8bcaca2",
+    "detail.png": "e9fe250fe1126cf04620fe5c20adda4c2b0c588b990de4156f53f71e3431c990"
+  },
+  "motion": null,
+  "gpu_requested": false,
+  "capture_mode": "swiftshader",
+  "webgl_renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-09T00:01:26+00:00",
+  "finished": "2026-09-09T00:01:31+00:00"
+}

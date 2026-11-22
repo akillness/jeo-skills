@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-crs-before-measurement",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Project before measuring anything geographic"
+  },
+  "aliases": {
+    "en": [
+      "coordinate reference system",
+      "degrees are not metres",
+      "projection distortion"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment",
+    "abstract-systems-data"
+  ],
+  "summary": "State the coordinate reference system, and convert to a suitable projected system before computing distance, area or slope.",
+  "objective": "Prevent geographic scenes from computing measurements in units that are not lengths.",
+  "applies_when": [
+    "Geographic data such as terrain, imagery, routes or boundaries is used.",
+    "Distances, areas, slopes or volumes are computed or displayed and a measurement model has to be chosen.",
+    "Several data layers from different sources are combined."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "coordinate reference system",
+    "projection",
+    "latitude longitude",
+    "UTM",
+    "distortion",
+    "measurement"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "geospatial",
+    "units"
+  ],
+  "intent_signals": [
+    "measure the distance on the map",
+    "the layers do not line up",
+    "compute the area"
+  ],
+  "example_prompts": [
+    "Build a terrain scene with a stated coordinate system and correct distances.",
+    "Combine these layers so they align."
+  ],
+  "negative_signals": [
+    "Invented terrain with no geographic reference.",
+    "Global visualisations that make no measurement claim."
+  ],
+  "not_for": [
+    "Invented terrain with no geographic reference.",
+    "Global visualisations that make no measurement claim."
+  ],
+  "content": {
+    "principles": [
+      "Geographic coordinate reference systems describe positions in degrees of latitude and longitude, while projected systems use Cartesian coordinates in linear units, commonly metres but also feet in some national systems. Treating degrees as if they were a linear unit is the error: a degree of longitude shrinks towards the poles, so plane geometry on raw latitude and longitude gives distances and areas that are simply wrong.",
+      "Projecting is one valid answer, not the only one. Geodesic calculation on a stated ellipsoid measures distance and polygon area directly from latitude and longitude, and is the natural choice for long or global measurements. What matters is that a measurement model is declared. No flat map preserves conformity, distance and area together, so a projection is chosen for the property the analysis needs: an equal-area projection does preserve area, and a conformal one preserves local angles, each at the cost of the others.",
+      "Alignment problems between layers usually mean mismatched reference systems rather than bad data, and they cannot be fixed by nudging one layer into place.",
+      "Vertical units are a separate question from horizontal ones, and mixing feet with metres is a common silent error in elevation work."
+    ],
+    "implementation": [
+      "Record the reference system of every layer as it enters the scene, and convert explicitly rather than assuming a common frame.",
+      "Choose the measurement model deliberately and state it: a projected system suited to the region and the quantity, a geodesic computation on a named ellipsoid, or an appropriate local or geocentric approach for the task.",
+      "Perform distance, area and slope computations in the declared model, never as plane geometry on unprojected degrees, and report the units of the result.",
+      "State the vertical units and reference separately from the horizontal ones.",
+      "Show the extent of the scene, since distortion depends on the region covered."
+    ],
+    "observable_checks": [
+      "Measure a distance of known length, such as a surveyed baseline or a grid interval, and confirm the reported value.",
+      "Measure two baselines of equal known physical length at different latitudes and compare the reported values against the distortion your declared model allows. A difference is diagnostic only against that expectation: in a projected system some variation is correct, and treating equal angular intervals as equal lengths is the actual error to look for.",
+      "Overlay two layers and check alignment at several separated points rather than only at the centre.",
+      "Confirm every reported measurement carries units and a named reference system."
+    ]
+  },
+  "related_ids": [
+    "recipe.terrain-contour-slices",
+    "recipe.divergent-ridge-crust-age"
+  ],
+  "creative_affordances": [
+    "Stylised or artistic cartography remains available; the constraint applies to computed measurements.",
+    "A deliberately distorted projection can be the subject of the scene when it is named."
+  ],
+  "known_limits": [
+    "Authored guidance citing a practical GIS treatment of coordinate systems and distortion; it recommends no specific projection for any region.",
+    "It does not address geoid models or vertical datum transformations in detail."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-geographic-versus-projected-crs",
+      "statement": "Geographic coordinate reference systems describe positions in degrees of latitude and longitude while projected systems use Cartesian coordinates such as easting and northing in linear units, map projections cannot preserve all of angular conformity, distance and area at the same time so a projection must be chosen for the intended analysis, and geodesic algorithms solve the inverse problem for the distance between two points given latitude and longitude and compute polygon area on the ellipsoid directly.",
+      "scope": "Practical coordinate-system handling and measurement models for geographic data. It does not prescribe a projection or an ellipsoid for any specific region, and it does not claim that every projection distorts every property.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-qgis-crs",
+          "locator": "Geographic versus projected coordinate reference systems; impossibility of preserving all characteristics in one projection"
+        },
+        {
+          "source_id": "source.reasoning-depth-proj-geodesic",
+          "locator": "Direct and inverse geodesic problems; distance from the inverse problem and geodesic polygon area"
+        }
+      ]
+    }
+  ]
+}

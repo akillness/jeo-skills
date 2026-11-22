@@ -1,0 +1,40 @@
+{
+  "name": "3dviz-pro-max-site",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build-data": "node scripts/build-data.mjs",
+    "predev": "pnpm build-data",
+    "dev": "vite",
+    "typecheck": "tsc --noEmit",
+    "prebuild": "pnpm build-data && pnpm typecheck",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173",
+    "bundle-examples": "bash scripts/bundle-examples.sh",
+    "check:budgets": "node scripts/check-budgets.mjs",
+    "pretest": "pnpm build-data",
+    "test": "node --test --test-concurrency=1 tests/*.test.mjs"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@types/three": "0.180.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "tailwindcss": "^4.1.0",
+    "typescript": "^5.9.3",
+    "vite": "7.1.5"
+  },
+  "packageManager": "pnpm@10.30.1",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

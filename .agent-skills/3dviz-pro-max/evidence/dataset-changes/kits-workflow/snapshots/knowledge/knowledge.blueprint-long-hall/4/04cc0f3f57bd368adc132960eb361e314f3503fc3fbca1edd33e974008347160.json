@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-long-hall",
+  "revision": 4,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: five-bay timber long hall"
+  },
+  "aliases": {
+    "en": [
+      "long hall kit",
+      "village meeting hall blueprint",
+      "five-bay hall module"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "A five-bay timber long hall with two doors, a covered porch, a hanging sign and a chimney at each end of the ridge, parameterised by width, depth, wall height, bay count, roof pitch and seed.",
+  "objective": "Seen from about fifteen metres the hall reads as three tiers: long ridge with two chimneys and a porch, then a bay rhythm of posts and recessed openings, then pegs, sill drips and worn step nosings.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "building",
+    "village",
+    "hall",
+    "timber"
+  ],
+  "subject_terms": [
+    "long hall",
+    "bay rhythm",
+    "porch",
+    "gable roof",
+    "half-timbered",
+    "twin chimneys",
+    "attachment socket",
+    "reusable building module"
+  ],
+  "intent_signals": [
+    "build a village meeting hall",
+    "long timber building module",
+    "multi-bay hall kit",
+    "reusable building module with attachment sockets"
+  ],
+  "example_prompts": [
+    "Put a long hall at the head of the village green.",
+    "I need a wide timber building with a porch and two chimneys."
+  ],
+  "not_for": [
+    "Load-bearing or code-compliant construction geometry.",
+    "Any claim about the joinery or plan of a specific historical hall."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/buildings/long-hall.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "width",
+      "type": "number",
+      "range": [
+        8.0,
+        18.0
+      ],
+      "default": 12,
+      "unit": "m"
+    },
+    {
+      "name": "depth",
+      "type": "number",
+      "range": [
+        4.0,
+        7.5
+      ],
+      "default": 5.5,
+      "unit": "m"
+    },
+    {
+      "name": "wallHeight",
+      "type": "number",
+      "range": [
+        2.6,
+        4.2
+      ],
+      "default": 3,
+      "unit": "m"
+    },
+    {
+      "name": "bayCount",
+      "type": "integer",
+      "range": [
+        3,
+        8
+      ],
+      "default": 5
+    },
+    {
+      "name": "roofPitchDeg",
+      "type": "number",
+      "range": [
+        30,
+        52
+      ],
+      "default": 38,
+      "unit": "deg"
+    },
+    {
+      "name": "seed",
+      "type": "integer",
+      "range": [
+        0,
+        65535
+      ],
+      "default": 1
+    }
+  ],
+  "sockets": [
+    {
+      "name": "door",
+      "position_m": [
+        2.204,
+        0,
+        2.75
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "porch-door",
+      "position_m": [
+        -2.204,
+        0,
+        2.75
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "chimney-west",
+      "position_m": [
+        -3.241,
+        6.539,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "chimney-east",
+      "position_m": [
+        3.541,
+        6.539,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "sign",
+      "position_m": [
+        3.304,
+        2.55,
+        2.75
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "lean-to",
+      "position_m": [
+        -6,
+        0,
+        0
+      ],
+      "normal": [
+        -1,
+        0,
+        0
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "12 m ridge at 5.15 m with a 30 cm eave overhang, unbroken along the whole length",
+      "two brick chimneys with stone caps and clay pots breaking the ridge at 6.54 m",
+      "monopitch porch standing 1.4 m clear of the front wall on two posts and stone pads"
+    ],
+    "medium": [
+      "five-bay rhythm: six frame posts per long wall standing 7 cm proud of the plaster, with top plate, sill beam, mid rail and corner braces kept clear of the openings",
+      "windows recessed 12 cm behind a 24 cm wall with a 7 cm frame and two glazing bars, cut as real holes",
+      "roof laid as lapped tile courses, roughly three per metre of slope, with a barge board at each verge",
+      "two plank doors set back in their reveals under timber hoods, each on a projecting stone step"
+    ],
+    "fine": [
+      "hexagonal peg heads 9 cm across at every frame joint, three per post: sill, mid rail and plate",
+      "sill drip groove under each window, a 2.4 cm shadow line below the sill lip",
+      "clenched nail heads and strap hinges on the door leaves, 2.4 cm across",
+      "one slipped tile per slope and per-course hue jitter of about 4 percent",
+      "worn lighter arris along each stone step nosing and along the sill beams"
+    ]
+  },
+  "footprint_m": [
+    12.0,
+    5.5
+  ],
+  "poly_budget": 11344,
+  "fits_looks": [
+    "knowledge.style-ghibli-painterly-pastoral",
+    "knowledge.style-hand-painted",
+    "knowledge.style-stylized",
+    "knowledge.lighting-mood-dusk-golden-hour",
+    "knowledge.lighting-mood-overcast-soft"
+  ],
+  "content": {
+    "principles": [
+      "A long building is read by its bay rhythm: repeat one bay honestly and let the seed move the posts, rather than modelling five different bays.",
+      "The porch exists to break a 12 m eave line. Without one interruption the silhouette is a shed no matter how good the surface is.",
+      "Two chimneys placed off centre say the hall has two hearths and therefore two rooms; one central chimney would say something else."
+    ],
+    "implementation": [
+      "Call create({ width, depth, wallHeight, bayCount, roofPitchDeg, seed }); the returned group is centred on its footprint with y = 0 at the ground plane.",
+      "Attach chimney pots, banners or a lean-to through the named sockets rather than by hand-placing world coordinates.",
+      "bayCount drives the opening count directly, so a wider hall gets more bays rather than wider windows."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible in the frame.",
+      "Two instances with different seeds move the frame posts and the chimney positions while keeping the same ridge line.",
+      "The door socket lands on the front wall face, on the bay that is not under the porch: its z equals half the depth parameter."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here is a measurement of any real hall, joinery method or material.",
+    "The poly budget is the triangle count observed at default parameters, not a guarantee at every combination; bayCount 8 costs about 13800 triangles.",
+    "footprint_m is the nominal plan. The built bounding box is 12.4 x 7.3 m because the eaves, the porch and the door steps all project past it.",
+    "Tuned against ACESFilmic tone mapping at exposure 1.0 with no post-processing; a different exposure changes how the fine band reads."
+  ],
+  "creative_affordances": [
+    "Any parameter may be pushed outside its stated range; the range is the band that was proved, not a limit.",
+    "Swap the palette to move the hall between the listed looks, or raise wallHeight and drop roofPitchDeg for a barn rather than a hall."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "width": 12,
+      "depth": 5.5,
+      "wallHeight": 3,
+      "bayCount": 5,
+      "roofPitchDeg": 38,
+      "porchRun_m": 1.4,
+      "wallThickness_m": 0.24,
+      "feeling": "communal weathered timber"
+    },
+    "rationale": "Five bays over 12 m give a 2.3 m bay, wide enough for a 1 m window with plaster either side, and the 38 degree pitch keeps the ridge below twice the wall height so the hall reads long rather than tall."
+  },
+  "related_ids": [
+    "knowledge.blueprint-timber-cottage",
+    "knowledge.framed-shelter",
+    "knowledge.modular-environment-kit-sockets",
+    "knowledge.hero-prop-detail-hierarchy",
+    "recipe.fantasy-village-diorama"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "detail_socket": "door",
+    "max_close_m": 15.0,
+    "captures": [
+      "evidence/kits/knowledge.blueprint-long-hall/far.png",
+      "evidence/kits/knowledge.blueprint-long-hall/mid.png",
+      "evidence/kits/knowledge.blueprint-long-hall/close.png",
+      "evidence/kits/knowledge.blueprint-long-hall/detail.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-long-hall/proof-log.json"
+  }
+}

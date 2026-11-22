@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "id": "recipe.periodic-trajectory-temporal-unwrapping",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Periodic trajectory: temporal unwrapping"
+  },
+  "aliases": {
+    "en": [
+      "periodic trajectory",
+      "trajectory unwrapping"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Separate wrapped cell images from one conditionally reconstructed continuous path in a fixed orthorhombic cell.",
+  "objective": "Build a periodic-trajectory inspector that compares wrapped and temporally unwrapped coordinates, exposes image counters, and rejects ambiguous undersampled crossings.",
+  "tags": [
+    "periodic trajectory",
+    "trajectory unwrapping",
+    "minimum image"
+  ],
+  "subject_terms": [
+    "periodic boundary conditions",
+    "wrapped coordinates",
+    "unwrapped trajectory",
+    "orthorhombic cell",
+    "image counter",
+    "fractional coordinate",
+    "half-box condition",
+    "molecule whole"
+  ],
+  "intent_signals": [
+    "unwrap molecule through periodic boundary",
+    "show wrapped versus continuous particle path"
+  ],
+  "example_prompts": [
+    "Unwrap a molecule crossing a fixed orthorhombic box, show image counters, and flag a frame jump at exactly half a box."
+  ],
+  "negative_signals": [
+    "Not a triclinic or changing-cell algorithm, integrator, diffusion calculation or guarantee that undersampled motion is recoverable."
+  ],
+  "not_for": [
+    "No time-varying cell, triclinic lattice, missing sequential frames, ambiguous half-box displacement, bond-changing trajectory or physical-property calculation."
+  ],
+  "entities": [
+    {
+      "name": "Wrapped cell and replicas",
+      "guidance": "Blender constructs a precise orthorhombic cell cage, translucent neighboring images and atom glyphs. Three.js owns wrapped positions, image counters and derived unwrapped positions."
+    },
+    {
+      "name": "Continuity inspector",
+      "guidance": "Show component deltas, chosen integer image shift and assumption status for each sequential pair. Keep wrapped and unwrapped paths in linked views rather than overwriting source coordinates."
+    }
+  ],
+  "state_contract": {
+    "model": "Fixed orthorhombic cell lengths Lx,Ly,Lz>0 and strictly sequential frames with wrapped coordinates in [0,Lj). Initialize u0=w0 unless explicit source-provided integer image counters define u0=w0+n0L. Applicability requires a credible producer/sampling bound that each true per-frame component displacement is strictly less than Lj/2; wrapped deltas alone cannot establish this bound. For each tracked particle and axis j, d=w_i-w_(i-1); reject an exact half-box tie within declared tolerance, set d*=d-Lj*round(d/Lj), update the integer image counter consistently, and u_i=u_(i-1)+d*. Without the displacement bound, mark reconstruction unavailable rather than infer undersampling. Optional molecule-whole mode requires fixed supplied bonds and an anchor: make each frame whole through a declared spanning tree under a compatible minimum-image bound, verify non-tree bond closure, then temporally unwrap the anchor and apply its image shift to the whole group.",
+    "authority": "Source wrapped coordinates remain immutable. Three.js owns the declared reconstruction, ambiguity flags and dual views; Blender supplies cell/replica geometry only.",
+    "actions": [
+      "Step sequentially and inspect wrapped delta, chosen image shift and unwrapped coordinate.",
+      "Toggle source-wrapped, per-particle continuity and validated molecule-whole views without changing data.",
+      "Load an exact-half-box fixture or remove the producer displacement guarantee and preserve ambiguity/unavailable status rather than guessing.",
+      "Reset clears derived counters/paths and returns to source frame zero."
+    ]
+  },
+  "invariants": [
+    "Unwrapped coordinates rewrap to the source wrapped coordinate modulo each fixed box length within input tolerance.",
+    "The reconstruction requires an independently credible strict less-than-half-box component-displacement bound between stored frames; wrapped endpoints cannot reveal a hidden larger displacement, and an exact half-box delta is ambiguous.",
+    "Per-particle continuity does not guarantee a whole molecule. Molecule-whole mode requires fixed topology, a declared anchor/tree and cycle-closure checks.",
+    "Frame skipping, reordering or cell-length change invalidates accumulated image counters."
+  ],
+  "motion_guidance": [
+    "Step commits one source frame or declared transformation; pause preserves committed state and reset restores data, view, selections and errors.",
+    "Offer a static frame/table alternative. Tweened atom, curve or surface motion explains correspondence only and never creates scientific samples."
+  ],
+  "creative_affordances": [
+    "Blender may establish a distinctive molecular stage, lattice frame and stable atom/orbital glyph families; Three.js binds them to scientific IDs and data.",
+    "Materials, camera and composition remain flexible when units, provenance, sign, identity and uncertainty stay legible without color alone."
+  ],
+  "known_limits": [
+    "Fixed orthorhombic box only. u0 defaults to the first wrapped image unless source image counters are supplied. Undersampling beyond half a box cannot be detected from wrapped endpoints alone; without a credible bound reconstruction is unavailable, and no diffusion or dynamical correctness is claimed.",
+    "Authored, source-reviewed guidance only; no chemistry calculation, trajectory conversion, Blender export, browser, renderer or interactive artifact was run."
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Scientific coordinates and annotations drive display; mesh contact and animation do not compute chemistry."
+  },
+  "related_ids": [
+    "recipe.cubic-unit-cell-accounting",
+    "recipe.water-hydrogen-bond-network"
+  ],
+  "object_craft": [
+    {
+      "family": "Periodic cell comparator",
+      "structure": "Build one exact cell cage with ghost replicas and two synchronized path rails; image-counter tiles should stay attached to semantic atom IDs, not transient mesh order.",
+      "material": "Use solid source positions and patterned derived images; mark ambiguity with a stop glyph and text, never a smoothed guess."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim.periodic-unwrapping-purpose-limit",
+      "statement": "Periodic simulations commonly store coordinates wrapped into a unit cell, while analyses such as mean-square displacement may require continuous unwrapped trajectories; published work documents artifacts when unwrapping does not handle its cell assumptions correctly.",
+      "scope": "Motivation and limitations from Kulke and Vermaas; this recipe deliberately specializes to a fixed orthorhombic cell instead of implementing their changing-cell algorithm.",
+      "source_refs": [
+        {
+          "source_id": "source.kulke-vermaas-unwrapping",
+          "locator": "Abstract and Introduction: wrapped origin-cell output, continuous trajectories, uses and artifacts under changing boxes"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.uncertainty-interval-encoding",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "presentation-profile",
+  "title": {
+    "en": "Uncertainty intervals with explicit statistical meaning"
+  },
+  "aliases": {
+    "en": [
+      "confidence band versus observed range",
+      "measurement uncertainty display"
+    ]
+  },
+  "direction_ids": [
+    "probability-statistics",
+    "soft-fluid-thermal",
+    "earth-environment"
+  ],
+  "summary": "Expose uncertainty type and units without treating every translucent band as a confidence interval.",
+  "objective": "Show an estimate with an uncertainty band whose legend states whether it is a confidence interval, expanded measurement uncertainty or observed min-max range.",
+  "subject_terms": [
+    "uncertainty encoding",
+    "confidence interval",
+    "expanded uncertainty",
+    "observed range",
+    "coverage factor"
+  ],
+  "tags": [
+    "presentation-profile",
+    "uncertainty-interval-encoding"
+  ],
+  "intent_signals": [
+    "Show an estimate with an uncertainty band whose legend states whether it is a confidence interval, expanded measurement uncertainty or observed min-max range."
+  ],
+  "example_prompts": [
+    "Show an estimate with an uncertainty band whose legend states whether it is a confidence interval, expanded measurement uncertainty or observed min-max range."
+  ],
+  "content": {
+    "principles": [
+      "Keep the estimated quantity and the meaning of its interval explicit. An observed min-max range describes the displayed observations; do not relabel it as inferential confidence.",
+      "Separate missing uncertainty from zero uncertainty. Treat selection emphasis and uncertainty styling as different channels so picking an object does not imply increased confidence."
+    ],
+    "implementation": [
+      "Require interval metadata alongside bounds: target quantity, unit, interval type, method, source/revision and applicable confidence level or coverage factor. Render unknown fields as unknown rather than supplying a default 95 percent.",
+      "For measurement expanded uncertainty show the supplied U and k with the estimate; attach assumptions supporting a confidence interpretation. For mean confidence intervals show the estimator and level; for observed ranges identify the observation set.",
+      "Choose error bars for sparse point estimates, ribbons for ordered scalar samples or a separately explained spatial envelope for positional bounds. Do not turn a scalar value interval into geometric thickness without defining the mapping.",
+      "Provide numeric bounds and a legend in addition to opacity. Keep missing/censored intervals distinct and disclose any clipping; toggling uncertainty must not alter the estimate or domain scale silently."
+    ],
+    "observable_checks": [
+      "Supply identical numeric bounds with different interval types: each legend and detail panel preserves the distinct meanings instead of displaying a generic confidence label.",
+      "Feed one missing interval, one zero-width interval and one asymmetric interval. All remain distinguishable, with the supplied bounds preserved.",
+      "Set U=0.2 units and k=2 without distribution assumptions: show those values without automatically claiming 95 percent confidence."
+    ]
+  },
+  "known_limits": [
+    "The pattern consumes uncertainty metadata; it does not estimate uncertainty or certify calibration. Pointwise intervals do not by themselves establish simultaneous coverage of a whole surface.",
+    "Draft authored guidance; no renderer, interaction artifact or scientific result was executed for this record."
+  ],
+  "creative_affordances": [
+    "Choose layout and visual emphasis to support the stated inspection task; these are design proposals rather than proven usability improvements."
+  ],
+  "related_ids": [
+    "knowledge.signed-field-section",
+    "knowledge.geometric-measurement-model-units"
+  ],
+  "claims": [
+    {
+      "id": "claim.nist-expanded-uncertainty-definition",
+      "statement": "NIST defines expanded uncertainty U as k times combined standard uncertainty; interpreting k=2 as approximately 95 percent requires the stated normal-distribution and reliable-standard-deviation conditions.",
+      "scope": "Measurement expanded uncertainty under the source assumptions, not a universal interval rule.",
+      "source_refs": [
+        {
+          "source_id": "source.nist-expanded-uncertainty-coverage",
+          "locator": "Expanded uncertainty; Coverage factor"
+        }
+      ]
+    },
+    {
+      "id": "claim.nist-mean-confidence-interpretation",
+      "statement": "NIST describes mean confidence limits as uncertainty in an estimated mean and associates frequentist coverage with repeated applications of the interval procedure, not a probability assigned to a particular fixed interval.",
+      "scope": "Frequentist confidence intervals for a mean; no inference for arbitrary distributions or Bayesian intervals.",
+      "source_refs": [
+        {
+          "source_id": "source.nist-confidence-limits-mean",
+          "locator": "1.3.5.2 Purpose: Interval Estimate for Mean, confidence-coefficient interpretation"
+        }
+      ]
+    }
+  ]
+}

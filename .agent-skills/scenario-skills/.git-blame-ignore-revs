@@ -1,0 +1,6 @@
+# Commits that only reformat, which `git blame` should skip. GitHub reads this file
+# automatically; locally, run `git config blame.ignoreRevsFile .git-blame-ignore-revs` once.
+# Add the squash SHA from main after the reformat merges, never a branch commit.
+
+# style: wrap markdown prose at 100 columns (#247)
+88ccf8281c78dc49037cf8e0a5e531b1d687d591

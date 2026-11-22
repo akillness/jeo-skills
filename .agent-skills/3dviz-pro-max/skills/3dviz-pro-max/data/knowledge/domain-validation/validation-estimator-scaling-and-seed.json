@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-estimator-scaling-and-seed",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Standard error scaling and reproducible sampling"
+  },
+  "aliases": {
+    "en": [
+      "sample size scaling check",
+      "seeded replicate check"
+    ]
+  },
+  "direction_ids": [
+    "probability-statistics"
+  ],
+  "summary": "Check that the spread of sample means falls with the square root of sample size and that replays reuse the stored draws.",
+  "objective": "Quadrupling the sample size halves the observed spread of means within a predeclared rule or an advisory verdict, and replays read the stored draws.",
+  "applies_when": [
+    "A scene compares individual draws with a distribution of sample means.",
+    "Draws are independent and identically distributed with finite variance, and sample size or replicate count can be changed by the viewer.",
+    "A theoretical curve is drawn over the empirical histogram."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "sampling",
+    "standard-error",
+    "reproducibility"
+  ],
+  "subject_terms": [
+    "sample mean",
+    "standard error",
+    "replicate",
+    "seed",
+    "central limit theorem",
+    "histogram"
+  ],
+  "intent_signals": [
+    "the histogram does not narrow when I increase n",
+    "check that replay uses the same samples"
+  ],
+  "example_prompts": [
+    "Check the standard error scaling in this sampling distribution scene."
+  ],
+  "negative_signals": [
+    "claiming a normality threshold",
+    "production statistical analysis"
+  ],
+  "content": {
+    "principles": [
+      "The spread of a sample mean shrinks with the square root of sample size, so quadrupling the size halves the standard error; that ratio is a cleaner check than any single value.",
+      "Individual draw variability and variability of the mean are different quantities with different labels, and showing them on one axis without saying so is the misreading this check targets.",
+      "The immutable stored sample is the replay record; a seed alone reproduces draws only together with the generator algorithm, its version and the order in which values were consumed, and a replay that draws fresh randomness is a different experiment."
+    ],
+    "implementation": [
+      "Generate the replicates once and store them, recording the generator algorithm, its version, the seed and the consumption order alongside; every later view reads that stored array rather than regenerating.",
+      "Compute the empirical spread of the sample means at several sample sizes, such as four, sixteen and sixty-four, and compare successive ratios with the square-root prediction under a rule declared before the run, for example an interval for the ratio derived from the replicate count, or an explicitly advisory verdict when no such interval is declared.",
+      "Compare the empirical spread with the theoretical standard error for the declared distribution and report both, with the replicate count that supports the comparison.",
+      "Test the degenerate parameter values where the underlying variance is zero and confirm the model rejects them or shows an explicit point mass."
+    ],
+    "observable_checks": [
+      "Quadrupling the sample size halves the empirical spread of the means within the predeclared interval, or the result is reported as an advisory trend; the replicate count is reported either way, because a count alone is not a tolerance.",
+      "For a count-based statistic the sample size times each sample mean is an integer within floating-point tolerance, and histogram counts sum to the number of completed replicates.",
+      "Replaying reads the stored draws and reproduces them exactly; regeneration from the seed is only expected to match when the generator algorithm, version and consumption order are unchanged, and any theoretical overlay is labelled as derived theory rather than as a fit to the data."
+    ]
+  },
+  "known_limits": [
+    "The normal approximation is asymptotic; this check assumes independent identically distributed draws with finite variance and licenses no universal sample-size threshold.",
+    "Authored verification guidance; no computation or render was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.sampling-mean-distribution",
+    "recipe.binomial-trial-lattice",
+    "recipe.normal-density-window"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-sample-mean-standard-error",
+      "statement": "For random samples of size n the sampling distribution of the mean has standard deviation equal to the population standard deviation divided by the square root of n, and the distribution of means follows the normal distribution more closely as sample size increases.",
+      "scope": "The central limit theorem statement in the cited section; it is asymptotic and promises no exact normality at any particular sample size.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-sample-means",
+          "locator": "7.1, sampling distribution of the mean and the standard error"
+        }
+      ]
+    }
+  ]
+}

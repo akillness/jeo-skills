@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-wireframe",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Wireframe structure view"
+  },
+  "aliases": {
+    "en": [
+      "wire frame",
+      "edge mesh view",
+      "mesh structure presentation",
+      "blueprint lines",
+      "edge overlay"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry",
+    "products-assemblies"
+  ],
+  "summary": "Use selected edges to expose construction or relationships, deciding whether the view shows mesh topology, component outlines or an abstract graph.",
+  "objective": "Dense rear edges do not overwhelm the selected structure and the legend identifies what a line represents.",
+  "tags": [
+    "style-profile",
+    "representation-aesthetic",
+    "wireframe"
+  ],
+  "subject_terms": [
+    "wire frame",
+    "edge mesh view",
+    "mesh structure presentation",
+    "representation aesthetic",
+    "blueprint lines",
+    "edge overlay"
+  ],
+  "intent_signals": [
+    "Show a wireframe structure view",
+    "Reveal selected edges and explain their meaning"
+  ],
+  "example_prompts": [
+    "Show a wireframe mechanical assembly with selected component edges and an optional solid reference view."
+  ],
+  "content": {
+    "principles": [
+      "Use selected edges to expose construction or relationships, deciding whether the view shows mesh topology, component outlines or an abstract graph."
+    ],
+    "implementation": [
+      "Choose meaningful edges and suppress irrelevant tessellation where the task permits; preserve the distinction between a true mesh edge and an annotation.",
+      "Set line contrast against a quiet fill or background; optionally combine translucent surfaces and highlighted selected edges.",
+      "Offer orbit and a focus/isolation view; animate meaningful edits or component motion while keeping edge identities comprehensible.",
+      "Build edges with new THREE.EdgesGeometry(geometry, 30) so only feature edges survive tessellation, then draw the occluded pass as the same geometry with depthTest false and opacity 0.3; use Line2/LineMaterial when a width above 1 px is needed.",
+      "Keep line #6fd0ff on background #0b1b2b for roughly 6:1 contrast, reserve #ffffff for the selected edge and #ffb347 for annotation and dimension lines; run with fog off, dof off and antialiasing on, because any blur destroys the only signal in the image."
+    ],
+    "observable_checks": [
+      "Dense rear edges do not overwhelm the selected structure and the legend identifies what a line represents."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "A wireframe image is 80% background, so the composition is line density and the palette exists only to keep three line jobs apart: structure in cyan, selection in white, annotation in amber. Fog, depth of field and bloom are all set to none because a 1 px line carries no gradient to blur - depth is expressed instead by dropping occluded edges to 0.3 opacity - and Neutral tone mapping at exposure 1.0 keeps the flat line colours exactly as authored.",
+    "values": {
+      "feeling": [
+        "analytic",
+        "weightless",
+        "precise"
+      ],
+      "palette": [
+        {
+          "hex": "#0b1b2b",
+          "role": "background field, blueprint navy"
+        },
+        {
+          "hex": "#1e3a52",
+          "role": "occluded / back-facing lines"
+        },
+        {
+          "hex": "#6fd0ff",
+          "role": "primary edge colour"
+        },
+        {
+          "hex": "#ffffff",
+          "role": "selected or active edge"
+        },
+        {
+          "hex": "#ffb347",
+          "role": "annotation and dimension lines, never mesh edges"
+        }
+      ],
+      "value_structure": "80/12/8 dark/mid/light; the frame is mostly empty background so line density itself is the composition",
+      "saturation_rule": "one cyan line family plus one amber annotation family; occluded lines drop to 30% opacity rather than changing hue",
+      "sky": {
+        "model": "solid",
+        "zenith": "#0b1b2b",
+        "horizon": "#0b1b2b"
+      },
+      "fog": {
+        "type": "none",
+        "color": "#0b1b2b",
+        "density": 0
+      },
+      "lights": {
+        "key": {
+          "type": "none",
+          "note": "LineSegments with LineBasicMaterial are unlit; edge colour is authored, not shaded"
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#2a4a66",
+          "ground": "#0b1b2b",
+          "intensity": 0.35
+        },
+        "rim": {
+          "type": "none"
+        },
+        "ratio": "unlit lines; the optional translucent shell is lit only by the 0.35 hemisphere so it can never out-value a line"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "Neutral",
+        "exposure": 1.0
+      },
+      "camera": {
+        "fov_deg": 30,
+        "height_m": 1.8,
+        "pitch_deg": -10,
+        "projection": "orthographic preferred for reading topology; perspective at fov 30 only when depth ordering must be disambiguated",
+        "orbit": {
+          "minPolar_deg": 15,
+          "maxPolar_deg": 90,
+          "minDist_m": 1,
+          "maxDist_m": 40
+        }
+      },
+      "materials": {
+        "roughness": [
+          1.0,
+          1.0
+        ],
+        "metalness": [
+          0,
+          0
+        ],
+        "notes": "LineSegments with LineBasicMaterial at #6fd0ff, linewidth 1 (Line2/LineMaterial above 1 px); occluded edges as a second pass at opacity 0.3 with depthTest false; optional shell as MeshBasicMaterial at opacity 0.08"
+      },
+      "motion": {
+        "sway_period_s": [
+          16.0,
+          24.0
+        ],
+        "ease": "linear",
+        "hold_ms": 0
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.2,
+          "strength": 0.0,
+          "radius": 0.0
+        },
+        "vignette": 0.15,
+        "grain": 0.0,
+        "dof": "off"
+      },
+      "signature_technique": "two-pass edges - visible edges at full opacity plus the same EdgesGeometry redrawn with depthTest false at 0.3 opacity - so hidden structure is present without competing",
+      "never": [
+        "fog or depth-of-field blur on lines",
+        "antialiasing disabled",
+        "annotation and mesh edges sharing one colour",
+        "full tessellation edges where EdgesGeometry at 30 degrees is enough"
+      ]
+    }
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for Neutral tone mapping at exposure 1.0; re-tune every intensity, fog density and bloom threshold if you change the tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with technical illustration or holographic presentation; a wireframe skin does not itself validate topology or hidden structure."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

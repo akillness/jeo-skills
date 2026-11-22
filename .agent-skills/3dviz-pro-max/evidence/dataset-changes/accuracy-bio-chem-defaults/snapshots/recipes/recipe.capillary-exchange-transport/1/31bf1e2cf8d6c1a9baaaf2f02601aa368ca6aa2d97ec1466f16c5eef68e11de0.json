@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "id": "recipe.capillary-exchange-transport",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Classical Starling capillary exchange diagram"
+  },
+  "aliases": {
+    "en": [
+      "Starling forces",
+      "classical capillary filtration diagram",
+      "net filtration pressure"
+    ]
+  },
+  "direction_ids": [
+    "physiology-biomechanics"
+  ],
+  "summary": "Build the classical two-pressure Starling teaching diagram and mark on the same scene where the revised steady-state view disagrees with it.",
+  "objective": "Build a classical Starling capillary diagram with a movable probe, and let me switch on an annotation showing that steady sustained reabsorption is not what the revised literature reports.",
+  "tags": [
+    "capillary",
+    "filtration",
+    "transport"
+  ],
+  "subject_terms": [
+    "capillary hydrostatic pressure",
+    "blood colloid osmotic pressure",
+    "net filtration pressure",
+    "filtration",
+    "reabsorption",
+    "interstitial fluid",
+    "lymphatic",
+    "Starling principle",
+    "classical model",
+    "glycocalyx",
+    "revised Starling principle"
+  ],
+  "intent_signals": [
+    "Explain why fluid leaves a capillary at one end and returns at the other.",
+    "Show the pressure balance that drives capillary exchange."
+  ],
+  "example_prompts": [
+    "Build a capillary exchange model with a movable probe and a signed net filtration readout.",
+    "Show filtration at the arterial end and reabsorption at the venous end with the pressures that cause each."
+  ],
+  "negative_signals": [
+    "Not a calibrated transport model: no patient values, oedema prediction or drug behaviour.",
+    "Not a molecular diffusion or solute transport simulation."
+  ],
+  "not_for": [
+    "Not a calibrated transport model: no patient values, oedema prediction or drug behaviour.",
+    "Not a molecular diffusion or solute transport simulation."
+  ],
+  "entities": [
+    {
+      "name": "Capillary segment",
+      "guidance": "One tube with a declared arterial and venous end, an endothelial wall thickness and a surrounding interstitial volume that is visibly a separate space."
+    },
+    {
+      "name": "Pressure pair",
+      "guidance": "Show the two opposing pressures as opposed arrows anchored at the probe, with length driven by the authored profile and the sign of their difference labelled."
+    },
+    {
+      "name": "Lymphatic return",
+      "guidance": "Include a lymphatic capillary as a distinct vessel that receives excess interstitial fluid, so the daily imbalance has somewhere to go."
+    }
+  ],
+  "state_contract": {
+    "model": "Classical two-pressure Starling teaching model: position along the capillary drives an authored capillary hydrostatic pressure profile and a near-constant blood colloid osmotic pressure, and their difference selects filtration or reabsorption. Interstitial hydrostatic pressure, interstitial oncotic pressure and the glycocalyx sub-layer are deliberately omitted, which is exactly why the scene labels the model classical. A revised-view annotation layer states that sustained venous-end reabsorption is not reported at steady state in the vessels studied.",
+    "authority": "The probe position and the authored profile are authoritative for everything the classical layer draws. The revised-view annotation is text and markers only: it must never be blended into the classical arrows as though the scene computed a revised result.",
+    "actions": [
+      "Drag the probe from the arterial to the venous end.",
+      "Toggle the interstitial space and the lymphatic vessel.",
+      "Show the crossover point where the difference is zero.",
+      "Reset the probe and the profile to the authored defaults.",
+      "Toggle the revised-view annotation that marks the classical reabsorption segment as disputed."
+    ]
+  },
+  "invariants": [
+    "Within the classical layer the two pressure arrows point in opposite directions and their difference is the only quantity that decides direction; the scene never presents that difference as the complete set of forces acting across a real vessel wall.",
+    "At the crossover point the net arrow disappears rather than flipping through a nonzero length.",
+    "Filtered fluid that is not reabsorbed is accounted for by the lymphatic vessel, not deleted from the scene; the reabsorption segment is drawn only while the classical layer is selected and carries its classical label wherever it appears."
+  ],
+  "motion_guidance": [
+    "Move fluid markers only where the current sign says fluid moves; a marker crossing the wall in the wrong direction is a defect, not a flourish.",
+    "Keep any looping motion slow and explicitly labelled as illustrative, since no flow rate is computed."
+  ],
+  "known_limits": [
+    "Pressure profiles are illustrative shapes; the recipe asserts direction and balance, not millimetres of mercury at any point.",
+    "Single-capillary teaching view; capillary beds, recruitment and organ-specific behaviour are out of scope.",
+    "This is an explicitly historical classical Starling diagram for comparing assumptions. The revised literature reports constant filtration without sustained steady-state reabsorption in the vessels studied, so the venous-end reabsorption segment is a property of the classical model rather than an established universal physiological behaviour.",
+    "Interstitial hydrostatic pressure, interstitial oncotic pressure and glycocalyx-based oncotic differences are omitted from the modelled balance; a revised-model recipe would need its own research and its own state, not a silent equation swap here.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-net-filtration-pressure",
+      "statement": "In the classical Starling teaching model, net filtration pressure is the difference between capillary hydrostatic pressure, which drives fluid out of the capillary, and blood colloid osmotic pressure, which is credited with reabsorption of water.",
+      "scope": "Simplified historical textbook model as taught. It omits interstitial hydrostatic and interstitial oncotic terms and the glycocalyx sub-layer, and is presented here as a diagram to read, not as a current complete description of transvascular exchange.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-capillary-exchange",
+          "locator": "20.3, capillary hydrostatic pressure, blood colloid osmotic pressure and net filtration pressure"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-lymphatic-balance",
+      "statement": "That same textbook illustrates the balance with whole-body daily totals of approximately 24 litres filtered against 20.4 litres reabsorbed, with the excess picked up by lymphatic capillaries.",
+      "scope": "Illustrative totals quoted from one teaching text, attributed to it rather than presented as current calibrated whole-body physiology; they are not scaled to the single modelled segment.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-capillary-exchange",
+          "locator": "20.3, daily filtration and reabsorption totals"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-steady-state-filtration",
+      "statement": "A review of transvascular fluid exchange reports that exchange vessels show negligible to appreciable constant filtration but no sustained reabsorption of fluid from the interstitium into the vasculature, and that the glycocalyx, rather than the entire vessel wall, represents the effective osmotic barrier.",
+      "scope": "Steady-state behaviour of the vessels discussed in that review. It is cited to bound the classical diagram, not to supply a revised quantitative model, and it does not license generalising any single experiment to every human tissue.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-ncbi-capillary-revision",
+          "locator": "Chapter 1, steady-state filtration, absence of sustained reabsorption and glycocalyx as osmotic barrier"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Capillary segment",
+      "structure": "Thin-walled tube with a visible lumen and a distinguishable outer wall, plus an interstitial shell that is a separate closed volume.",
+      "material": "Translucent wall over an opaque lumen so the probe stays visible inside; interstitial space uses a low-density scatter look that never competes with the arrows.",
+      "articulation": "None. Only the probe and fluid markers move."
+    },
+    {
+      "family": "Pressure pair",
+      "structure": "Two arrow families with a common anchor and a shared scale bar so their lengths are comparable at a glance.",
+      "material": "Two hues with clearly different values plus differing arrowhead shapes, so the pair remains distinguishable without colour.",
+      "articulation": "Arrow length rebuilds from the profile each time the probe moves."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Profile evaluation and marker presentation; no fluid solver, no elasticity and no solute transport.",
+    "state": [
+      "probe position",
+      "signed net filtration value"
+    ],
+    "checks": [
+      "The signed readout changes sign exactly once along the segment.",
+      "Markers move outward where the readout is positive and inward where it is negative."
+    ]
+  },
+  "related_ids": [
+    "recipe.vessel-radius-resistance",
+    "knowledge.signed-field-section",
+    "knowledge.parameter-experiment"
+  ]
+}

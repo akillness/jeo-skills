@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "id": "recipe.chirality-stereocenter",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Chirality and non-superimposable mirror images"
+  },
+  "aliases": {
+    "en": [
+      "enantiomers",
+      "stereocenter",
+      "handedness of molecules"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Let a viewer attempt to superimpose two mirror-image molecules and fail for a structural reason they can inspect.",
+  "objective": "Build a pair of enantiomers I can rotate and translate freely to test whether they can be superimposed, with the four different substituents labelled.",
+  "tags": [
+    "chirality",
+    "stereochemistry",
+    "enantiomer"
+  ],
+  "subject_terms": [
+    "enantiomer",
+    "chirality",
+    "stereocenter",
+    "tetrahedral carbon",
+    "mirror plane",
+    "substituent",
+    "superimposable"
+  ],
+  "intent_signals": [
+    "Show why two mirror-image molecules are not the same molecule.",
+    "Let me try to line up a molecule with its mirror image."
+  ],
+  "example_prompts": [
+    "Build an enantiomer pair I can rotate to test superimposition, with a mirror plane I can toggle.",
+    "Show a tetrahedral carbon with four different groups and its mirror image side by side."
+  ],
+  "negative_signals": [
+    "Not a quantum chemistry, energy or optical rotation calculation.",
+    "Not a reaction mechanism or stereochemical nomenclature trainer."
+  ],
+  "not_for": [
+    "Not a quantum chemistry, energy or optical rotation calculation.",
+    "Not a reaction mechanism or stereochemical nomenclature trainer."
+  ],
+  "entities": [
+    {
+      "name": "Molecule pair",
+      "guidance": "Two complete molecules built from the same substituent set with opposite handedness at the stereocenter, each independently transformable."
+    },
+    {
+      "name": "Stereocenter marker",
+      "guidance": "Highlight the central atom and its four bonds with distinct substituent labels, since handedness is only meaningful when all four differ."
+    },
+    {
+      "name": "Mirror reference",
+      "guidance": "Provide a toggleable mirror plane and a ghost image of the reflected molecule so the comparison is explicit rather than remembered."
+    }
+  ],
+  "state_contract": {
+    "model": "Two rigid molecules with independent orientation, a stereocenter with four labelled substituents, and a superimposition test that compares corresponding atom positions within a stated tolerance.",
+    "authority": "Atom identity and connectivity are authoritative; the superimposition verdict is computed from corresponding labelled atoms, never from a visual impression.",
+    "actions": [
+      "Rotate and translate either molecule freely.",
+      "Run the superimposition test and read the residual mismatch.",
+      "Toggle the mirror plane and the reflected ghost.",
+      "Reset both molecules to their reference poses."
+    ]
+  },
+  "invariants": [
+    "Rigid rotation and translation never change chirality; only reflection does.",
+    "The superimposition test reports failure with a residual value, not merely a verdict.",
+    "If two substituents are made identical the model must state that the centre is no longer a stereocenter."
+  ],
+  "motion_guidance": [
+    "Animate rotation smoothly and let the viewer stop at any orientation; the failure to superimpose must remain inspectable at rest.",
+    "Do not snap the molecules into alignment as a reward; snapping would assert a false result."
+  ],
+  "known_limits": [
+    "One stereocenter only; molecules with multiple centres, meso forms and conformational change are out of scope.",
+    "Bond lengths and angles are idealised for teaching, not optimised geometry.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-enantiomer-definition",
+      "statement": "When a tetrahedral carbon carries four different substituents, the molecule and its mirror image cannot be brought into coincidence by rotation or translation, and the two forms are called enantiomers.",
+      "scope": "Single tetrahedral stereocentre only, independently paraphrased from the cited section. Molecules with several stereocentres, meso forms and other sources of chirality are outside this recipe.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-enantiomers",
+          "locator": "5.1, enantiomers and the four-different-substituent condition"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Molecule pair",
+      "structure": "Ball-and-stick construction with consistent atom radii and bond radii, plus a clearly modelled tetrahedral arrangement at the centre.",
+      "material": "Element-coded matte spheres with one reserved accent for the stereocenter; keep the two molecules identical in material so only geometry differs.",
+      "articulation": "Each molecule is a rigid transform group; substituents do not rotate independently in this recipe."
+    },
+    {
+      "family": "Mirror reference",
+      "structure": "A bounded plane with a visible edge rather than an infinite sheet, plus a semi-transparent reflected ghost.",
+      "material": "Low-opacity ghost with a different surface treatment so it is never mistaken for a third molecule.",
+      "articulation": "The ghost is regenerated from the current pose of its source molecule."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Rigid presentation transforms and a geometric comparison; no molecular dynamics or energetics.",
+    "checks": [
+      "The superimposition test fails for the enantiomer pair at any orientation.",
+      "The same test succeeds when a molecule is compared with a rotated copy of itself."
+    ]
+  },
+  "related_ids": [
+    "recipe.molecular-shape-comparison",
+    "knowledge.comparison-stage",
+    "knowledge.controlled-experiment"
+  ]
+}

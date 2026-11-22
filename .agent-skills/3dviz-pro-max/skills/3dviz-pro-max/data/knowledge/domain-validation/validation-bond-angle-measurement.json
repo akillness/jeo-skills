@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-bond-angle-measurement",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Bond angle measured from coordinates, not from projection"
+  },
+  "aliases": {
+    "en": [
+      "molecular angle measurement check",
+      "camera independent angle"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Measure displayed bond angles from atom coordinates and confirm they are camera independent and guide independent.",
+  "objective": "Measured angles match the declared idealized values within a stated tolerance from every camera orientation.",
+  "applies_when": [
+    "A molecular scene reports or implies bond angles.",
+    "Electron-pair guides, lobes or domain markers can be shown alongside atoms.",
+    "The molecule can be rotated or the camera orbited."
+  ],
+  "check_method": "geometry",
+  "tags": [
+    "domain-validation",
+    "molecular-geometry",
+    "measurement",
+    "vsepr"
+  ],
+  "subject_terms": [
+    "bond angle",
+    "tetrahedral",
+    "bent geometry",
+    "lone pair",
+    "electron-pair geometry",
+    "atom coordinates"
+  ],
+  "intent_signals": [
+    "the water angle changes as I orbit",
+    "check the H-O-H angle in this model"
+  ],
+  "example_prompts": [
+    "Check the measured bond angles of this water and methane comparison."
+  ],
+  "negative_signals": [
+    "quantum chemistry calculation",
+    "experimental structure refinement"
+  ],
+  "content": {
+    "principles": [
+      "A displayed bond angle is a measurement on the coordinates, so compute it from atom positions rather than trusting the step that placed them.",
+      "The measurement is camera independent; a readout that changes while orbiting is measuring the screen projection instead of the geometry.",
+      "Guides are not atoms: lone-pair lobes and domain markers must never enter the atom count or the angle computation."
+    ],
+    "implementation": [
+      "Reject zero-length or non-finite bond vectors before normalizing, then compute the angle between the two normalized bond vectors with an inverse cosine guarded against arguments slightly outside minus one to one, and report degrees. Clamping the cosine alone would turn coincident atoms into a plausible angle.",
+      "Evaluate every hydrogen-carbon-hydrogen angle in the tetrahedral case and the hydrogen-oxygen-hydrogen angle in the bent case, comparing with the idealized values declared as inputs.",
+      "Repeat the measurement from at least three camera orientations and after any interaction that moves the whole molecule.",
+      "Toggle every guide on and off, then re-read atom count, bond count and each angle, and include a fixture with two coincident atoms to confirm that the degenerate branch reports rather than measures."
+    ],
+    "observable_checks": [
+      "Measured angles match the declared idealized inputs within a stated tolerance; about five hundredths of a degree is tight enough to expose a placement error while absorbing float noise, and the tolerance is reported with the value.",
+      "Angles are identical from every camera orientation to within the reported measurement tolerance; systematic variation with the view identifies a projected measurement.",
+      "Guide visibility changes no atom count, bond count or measured angle, and a degenerate bond vector produces a reported error rather than an angle."
+    ]
+  },
+  "known_limits": [
+    "Checks that the scene reproduces its declared idealized geometry; idealized VSEPR values are not experimental structure determinations.",
+    "Authored verification guidance; no scene was run or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.molecular-shape-comparison",
+    "recipe.water-hydrogen-bond-network",
+    "recipe.cross-product"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-water-methane-geometry",
+      "statement": "Methane has a tetrahedral molecular structure, and water has a tetrahedral electron-pair geometry with a bent molecular structure whose bond angle is 104.5 degrees.",
+      "scope": "Introductory idealized VSEPR description from the cited section; not an experimentally refined structure or an electron-density statement.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-molecular-shape",
+          "locator": "Figure 7.17 tetrahedral methane and Example 7.13 water bond angle"
+        }
+      ]
+    }
+  ]
+}

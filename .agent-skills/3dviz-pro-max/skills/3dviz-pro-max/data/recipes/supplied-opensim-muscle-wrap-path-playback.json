@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "id": "recipe.supplied-opensim-muscle-wrap-path-playback",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Supplied OpenSim muscle wrapping-path playback"
+  },
+  "aliases": {
+    "en": [
+      "OpenSim",
+      "muscle tendon path"
+    ]
+  },
+  "direction_ids": [
+    "physiology-biomechanics"
+  ],
+  "summary": "Play supplied OpenSim muscle-tendon path samples across one bounded joint coordinate, preserving body frames and point identity without recomputing wrap contact or physiology.",
+  "objective": "Play supplied OpenSim muscle-tendon path samples across one bounded joint coordinate, preserving body frames and point identity without recomputing wrap contact or physiology.",
+  "tags": [
+    "OpenSim",
+    "muscle tendon path",
+    "wrap object",
+    "via point"
+  ],
+  "subject_terms": [
+    "OpenSim",
+    "muscle tendon path",
+    "wrap object",
+    "via point",
+    "joint coordinate"
+  ],
+  "intent_signals": [
+    "Supplied OpenSim muscle wrapping-path playback"
+  ],
+  "example_prompts": [
+    "Build supplied opensim muscle wrapping-path playback with explicit provenance, laterality, frame and unavailable-state checks."
+  ],
+  "negative_signals": [
+    "mesh similarity proves anatomical correctness",
+    "infer missing clinical data from geometry"
+  ],
+  "not_for": [
+    "Diagnosis, treatment, procedure guidance or patient-specific inference."
+  ],
+  "entities": [
+    {
+      "name": "Model ledger",
+      "guidance": "Record model/version, source license, side, unit, body frames and coordinate samples."
+    },
+    {
+      "name": "Ordered path",
+      "guidance": "Preserve origin, insertion, via and supplied wrap points with parent body at every sample."
+    },
+    {
+      "name": "Wrap objects",
+      "guidance": "Display declared simplified objects; do not infer contact or reroute from Blender mesh proximity."
+    }
+  ],
+  "state_contract": {
+    "model": "Accept finite stored coordinate samples from a named OpenSim model; each sample carries its own ordered path-point list with stable point ID, index and declared parent body frame. Transform each point from that body frame. Interpolate display between adjacent samples only when count, ordered IDs and parent-frame correspondence match; otherwise step at the declared topology change. Tables and polyline length snap to supplied samples.",
+    "authority": "Supplied source records, identifiers, frames and curated labels own state. Blender/glTF geometry is display-only; Three.js owns validated runtime binding and exact reset.",
+    "actions": [
+      "Select muscle/sample.",
+      "Step/play/scrub coordinate.",
+      "Toggle frames and wrap objects.",
+      "Reset exact sample and visibility."
+    ]
+  },
+  "invariants": [
+    "Side, origin and insertion identity stay fixed.",
+    "Polyline length is not labeled fiber length, strain, force or moment arm.",
+    "Nonfinite points or duplicate/missing per-sample IDs stop that sample. A legitimate declared point-set/topology change is shown as a step discontinuity, never silently interpolated or rejected merely for changing count.",
+    "Displayed contact status is supplied, never recomputed."
+  ],
+  "motion_guidance": [
+    "Coordinate playback selects supplied source-frame samples; Blender exports generic body proxies, wrap objects and point/tube glyph prototypes in their neutral frames, while Three.js applies declared body transforms and interpolates only matching per-sample point topology, stepping across declared topology changes without recomputing contact."
+  ],
+  "creative_affordances": [
+    "Use restrained cutaways, translucent planes and non-color selection cues without implying clinical confidence."
+  ],
+  "known_limits": [
+    "Documentary source review only; no dataset, patient record, simulation, specialist clinical validation or runtime was used."
+  ],
+  "claims": [
+    {
+      "id": "claim.biomed-opensim-geometry-path",
+      "statement": "OpenSim documentation represents muscle-tendon paths by ordered line-connected points; paths may use via or wrapping points, and its FAQ describes simplified sphere, cylinder, ellipsoid and torus wrap objects rather than arbitrary meshes.",
+      "scope": "Current OpenSim tutorial and FAQ read 2026-09-08; model-specific path correctness and physiology are outside the claim.",
+      "source_refs": [
+        {
+          "source_id": "source.biomed-opensim-paths",
+          "locator": "Tutorial 1, Muscles in a Model"
+        },
+        {
+          "source_id": "source.biomed-opensim-faq",
+          "locator": "FAQ, Can the geometry of the muscles be changed? wrapping answer"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Muscle path playback rig",
+      "structure": "Blender authors generic body proxies, declared simplified wrap objects, body-frame axes and reusable point/tube glyphs at neutral transforms; glTF carries these named display assets, not sampled paths as authoritative anatomy.",
+      "material": "Fixed, via and wrap points differ by glyph and hue; wrap objects stay translucent.",
+      "articulation": "Three.js owns supplied per-sample indexed point lists, parent-body transforms, correspondence validation, conditional interpolation or step playback, tube rebuild, sample-exact readouts and reset."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Display of supplied educational or derived biomedical records; no tissue mechanics or diagnostic model.",
+    "state": [
+      "source identity and license",
+      "laterality and coordinate frames",
+      "validated selection/playback state"
+    ],
+    "checks": [
+      "Reject ambiguous side, unit or frame.",
+      "Reset exact source-space transforms.",
+      "Keep unavailable data explicit."
+    ]
+  },
+  "related_ids": [
+    "recipe.musculoskeletal-lever"
+  ]
+}

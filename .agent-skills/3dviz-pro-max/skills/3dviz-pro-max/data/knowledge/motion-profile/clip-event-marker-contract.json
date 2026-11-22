@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.clip-event-marker-contract",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "motion-profile",
+  "title": {
+    "en": "Clip-event marker contract"
+  },
+  "aliases": {
+    "en": [
+      "animation notify manifest",
+      "timeline marker transport",
+      "direction-aware clip events"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "products-assemblies"
+  ],
+  "summary": "Transport authored event markers through a separate manifest and dispatch them by interval crossing, because clip lifecycle events do not represent arbitrary marker payloads.",
+  "objective": "Footsteps, cues and interaction beats fire once under forward/reverse playback, wrapping, large time steps, seeks and interruptions according to declared policy.",
+  "applies_when": [
+    "Animation timing must trigger sounds, particles, state changes or interaction windows.",
+    "Blender markers are used as authoring cues for a glTF animation."
+  ],
+  "subject_terms": [
+    "timeline marker",
+    "animation event",
+    "notify",
+    "loop event",
+    "finished event",
+    "seek policy"
+  ],
+  "tags": [
+    "motion-profile",
+    "events",
+    "markers",
+    "playback"
+  ],
+  "intent_signals": [
+    "export Blender timeline markers as runtime events",
+    "avoid duplicate footsteps at loop wrap",
+    "dispatch animation events in reverse"
+  ],
+  "example_prompts": [
+    "Author named footfall markers in Blender and consume a sidecar event manifest in Three.js.",
+    "Define whether a scrub or interrupted clip fires skipped animation cues."
+  ],
+  "negative_signals": [
+    "Assuming Blender marker names become core glTF animation channels.",
+    "Using only mixer loop and finished events for arbitrary in-clip cues."
+  ],
+  "not_for": [
+    "Authoritative gameplay events that cannot depend on presentation timing.",
+    "Continuous curve sampling."
+  ],
+  "content": {
+    "principles": [
+      "Core glTF animation expresses sampled property channels, not a general event-marker stream. Treat named Blender markers as source annotations and export a versioned sidecar or reviewed extras convention with clip identity and normalized or second-based time.",
+      "Dispatch arbitrary cues from time-interval crossings. The policy must cover forward and negative playback, exact endpoints, wrap, ping-pong, multiple loops crossed in one update, seeks, pauses and clip interruption.",
+      "Three.js mixer loop and finished events describe action lifecycle. They can help partition traversal, but do not replace the application marker manifest."
+    ],
+    "implementation": [
+      "In Blender, name markers uniquely within their scope, associate them with the intended action/clip, and record the source frame rate when converting whole-frame positions to seconds.",
+      "At runtime, retain previous and current local clip time plus loop count/parity and traversal sign. Enumerate every crossed marker in effective evaluated-clip order: `(previous,current]` forward and `[current,previous)` reverse, splitting every wrapped interval and assigning a stable marker ID plus loop iteration for deduplication. Under LoopPingPong, derive effective clip direction from loop parity as well as playback sign; signed loopDelta reports crossed boundaries but does not alone identify the alternating evaluated direction.",
+      "Declare seek and interruption behavior per event class: suppress cosmetic events during scrub, optionally reconstruct stateful windows from absolute time, and never replay a one-shot merely because a blend reevaluates the same pose."
+    ],
+    "observable_checks": [
+      "A fixture with two markers crossed in one large update emits both in traversal order, once each.",
+      "Forward wrap, reverse wrap and multiple-boundary steps produce the declared sequence without missing or duplicating the seam marker; LoopPingPong tests derive alternating effective direction from parity rather than treating signed loopDelta as sufficient.",
+      "Scrub, pause/resume and mid-clip interruption match the manifest policy, while Three.js loop/finished listeners remain identifiable as lifecycle events."
+    ]
+  },
+  "related_ids": [
+    "knowledge.validation-discrete-event-ordering",
+    "knowledge.state-playback",
+    "knowledge.three-animation-mixer-adapter",
+    "knowledge.loop-seam-continuity"
+  ],
+  "creative_affordances": [
+    "Events may drive footsteps, sparks, subtitles, musical accents, squash anticipation or ritual cues.",
+    "The manifest may use frames, seconds or normalized phase when conversion and clip identity are explicit."
+  ],
+  "known_limits": [
+    "Blender markers occur on whole frames, limiting subframe authoring precision in the cited interface.",
+    "Sidecar or extras schemas are application conventions, not core glTF guarantees.",
+    "No marker exporter or event dispatcher was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.motion-blender-marker-frames",
+      "statement": "Blender markers denote significant animation frames, carry names, and are placed at whole frame numbers; pose markers are specific to armatures and shape keys.",
+      "scope": "Blender 4.5 marker authoring only; export transport is not asserted.",
+      "source_refs": [
+        {
+          "source_id": "source.motion-blender-markers",
+          "locator": "Markers overview, whole-frame note, and Types"
+        }
+      ]
+    },
+    {
+      "id": "claim.motion-gltf-animation-scope",
+      "statement": "glTF 2.0 animation consists of samplers and channels targeting node TRS or morph weights; arbitrary clip events are not a core target path.",
+      "scope": "glTF 2.0.1 core; applications may define separately reviewed extras/extensions.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-khronos-gltf-animation",
+          "locator": "Sections 3.11, 5.5 and 5.7.2"
+        }
+      ]
+    },
+    {
+      "id": "claim.motion-three-action-lifecycle-events",
+      "statement": "Three.js r180 AnimationAction source dispatches `loop` with signed loopDelta and `finished` with playback direction while updating action time.",
+      "scope": "Pinned Three.js r180 source; these are lifecycle events, not arbitrary authored markers.",
+      "source_refs": [
+        {
+          "source_id": "source.motion-three-r180-animation-action",
+          "locator": "_updateTime: finished and loop dispatchEvent payloads"
+        }
+      ]
+    }
+  ]
+}

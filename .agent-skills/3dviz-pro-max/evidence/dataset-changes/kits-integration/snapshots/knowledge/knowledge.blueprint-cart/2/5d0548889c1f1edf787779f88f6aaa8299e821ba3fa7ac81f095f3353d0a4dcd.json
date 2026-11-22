@@ -1,0 +1,262 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-cart",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: two-wheeled farm cart"
+  },
+  "aliases": {
+    "en": [
+      "cart kit",
+      "hand cart blueprint",
+      "village wagon module"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies"
+  ],
+  "summary": "A two-wheeled farm cart with eight-spoke wheels, a planked bed, side stanchions and draught shafts, with an animate(dt) that rolls the wheels.",
+  "objective": "At three metres the cart reads as two wheel discs and a shaft line breaking a bed, then spokes, hubs and bed planks, then the iron tyre, hub caps and nail heads.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "prop",
+    "village",
+    "cart",
+    "wheel",
+    "animated"
+  ],
+  "subject_terms": [
+    "spoked wheel",
+    "felloe",
+    "iron tyre",
+    "hub cap",
+    "draught shaft",
+    "stanchion"
+  ],
+  "intent_signals": [
+    "add a cart to a village scene",
+    "spoked wheel prop",
+    "wagon prop kit"
+  ],
+  "example_prompts": [
+    "Park a cart outside the mill with sacks on the bed.",
+    "I need a cart whose wheels I can roll when it is pulled."
+  ],
+  "not_for": [
+    "Any claim about historical cartwright practice or load capacity.",
+    "A vehicle with steering, suspension or a physics drive train."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/props/cart.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "width",
+      "type": "number",
+      "range": [
+        1.1,
+        2.6
+      ],
+      "default": 1.7,
+      "unit": "m"
+    },
+    {
+      "name": "depth",
+      "type": "number",
+      "range": [
+        0.7,
+        1.5
+      ],
+      "default": 0.98,
+      "unit": "m"
+    },
+    {
+      "name": "wheelRadius",
+      "type": "number",
+      "range": [
+        0.28,
+        0.7
+      ],
+      "default": 0.44,
+      "unit": "m"
+    },
+    {
+      "name": "seed",
+      "type": "integer",
+      "range": [
+        0,
+        65535
+      ],
+      "default": 1
+    },
+    {
+      "name": "planks",
+      "type": "integer",
+      "range": [
+        4,
+        9
+      ],
+      "default": 6
+    },
+    {
+      "name": "sideHeight",
+      "type": "number",
+      "range": [
+        0.15,
+        0.6
+      ],
+      "default": 0.34,
+      "unit": "m"
+    }
+  ],
+  "sockets": [
+    {
+      "name": "bed",
+      "position_m": [
+        0,
+        0.624,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "yoke",
+      "position_m": [
+        -2.172,
+        0.494,
+        0
+      ],
+      "normal": [
+        -1,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "axle",
+      "position_m": [
+        0.102,
+        0.464,
+        0
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "tail",
+      "position_m": [
+        0.9,
+        0.784,
+        0
+      ],
+      "normal": [
+        1,
+        0,
+        0
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "two 93 cm wheels standing clear of a bed 62 cm above the ground",
+      "two draught shafts reaching 1.5 m forward to a cross bar",
+      "a raked prop leg under the tail, so the cart stands rather than floats"
+    ],
+    "medium": [
+      "eight tapered spokes and a barrel hub on each wheel",
+      "six bed planks with 12 mm gaps between them, framed by an edge rail",
+      "three stanchions and a side board on each long side"
+    ],
+    "fine": [
+      "a 4.8 cm iron tyre band standing proud of the felloe on both wheels",
+      "a domed hub cap on the outer face of each wheel",
+      "twelve nail domes down the bed plank ends, 2.6 cm across",
+      "per-spoke hue jitter of 5 percent so the sixteen spokes differ"
+    ]
+  },
+  "footprint_m": [
+    3.15,
+    1.55
+  ],
+  "poly_budget": 2592,
+  "fits_looks": [
+    "knowledge.style-hand-painted",
+    "knowledge.style-stylized-realism",
+    "knowledge.theme-heritage-fiction",
+    "knowledge.lighting-mood-dusk-golden-hour"
+  ],
+  "content": {
+    "principles": [
+      "The wheel is the whole read. Eight spokes and a hub is the least that separates a cart from a box on two discs.",
+      "The iron tyre, not the felloe, meets the ground, so the axle sits at radius plus tyre thickness; a cart resting on its felloe hovers by two centimetres.",
+      "A cart wants a reason to be still: the raked prop leg is that reason and it costs one box."
+    ],
+    "implementation": [
+      "Call create({ width, depth, wheelRadius, seed, planks, sideHeight }); the group is centred on the bed with y = 0 at the ground.",
+      "animate(dt, speed) rolls both wheels about the axle and returns true when it moved; it returns false for dt <= 0, which is the liveness contract.",
+      "Load the bed through the bed socket and hitch through the yoke socket."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible.",
+      "animate(0) and animate(-1) both return false; animate(0.25) returns true and turns both wheel groups.",
+      "The wheels touch the ground: the group bounding box minimum y is zero."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here measures a real cart, wheel or axle.",
+    "The poly budget is the triangle count observed at default parameters.",
+    "animate() spins the wheels in place; it does not move the cart, and nothing couples wheel rotation to a travelled distance except the speed argument you pass.",
+    "Rolling the wheels inflates the group bounding box, because an axis-aligned box around a rotated instance grows: measure the cart before calling animate."
+  ],
+  "creative_affordances": [
+    "Any parameter may be pushed outside its stated range; the range is the band that was proved, not a limit.",
+    "Raise sideHeight and narrow the width for a costermonger barrow, or drop the sides entirely for a timber dray."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "width": 1.7,
+      "depth": 0.98,
+      "wheelRadius": 0.44,
+      "planks": 6,
+      "sideHeight": 0.34,
+      "spokes": 8,
+      "feeling": "working village cart"
+    },
+    "rationale": "A 44 cm wheel puts the bed at hip height on a 1.7 m figure, which is the height at which loading the cart reads as plausible in a still frame."
+  },
+  "related_ids": [
+    "knowledge.gear-mechanism",
+    "knowledge.hero-prop-detail-hierarchy",
+    "knowledge.reasoning-mesh-collider-functional-fidelity",
+    "recipe.fantasy-village-diorama"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "detail_socket": "bed",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-cart/far.png",
+      "evidence/kits/knowledge.blueprint-cart/mid.png",
+      "evidence/kits/knowledge.blueprint-cart/close.png",
+      "evidence/kits/knowledge.blueprint-cart/detail.png",
+      "evidence/kits/knowledge.blueprint-cart/close-motion.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-cart/proof-log.json"
+  }
+}

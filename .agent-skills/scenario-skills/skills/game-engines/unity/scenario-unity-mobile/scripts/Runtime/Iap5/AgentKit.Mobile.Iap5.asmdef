@@ -1,0 +1,26 @@
+{
+    "name": "AgentKit.Mobile.Iap5",
+    "rootNamespace": "AgentKit.Mobile",
+    "references": [
+        "AgentKit.Mobile.Runtime",
+        "Unity.Purchasing",
+        "Unity.Services.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "AGENTKIT_IAP5"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.purchasing",
+            "expression": "5.0.0",
+            "define": "AGENTKIT_IAP5"
+        }
+    ],
+    "noEngineReferences": false
+}

@@ -1,0 +1,634 @@
+{
+ "format": "rig_preprocess-annotation/1",
+ "asset": "Eagle",
+ "notes": [],
+ "face_pair": {
+  "right": "Bip01_R_Thigh",
+  "left": "Bip01_L_Thigh",
+  "body_axis": false,
+  "source": "thigh",
+  "check": false
+ },
+ "face_pair_alternatives": [
+  [
+   "Bip01_R_Thigh",
+   "Bip01_L_Thigh",
+   "Thigh"
+  ],
+  [
+   "BN_Wing_R_01",
+   "BN_Wing_L_01",
+   "Wing"
+  ],
+  [
+   "Bip01_R_Calf",
+   "Bip01_L_Calf",
+   "Shin"
+  ],
+  [
+   "Bip01_R_Foot",
+   "Bip01_L_Foot",
+   "Foot"
+  ],
+  [
+   "Bip01_R_HorseLink",
+   "Bip01_L_HorseLink",
+   "Fetlock"
+  ],
+  [
+   "BN_Toe_R_30",
+   "BN_Toe_L_30",
+   "Toe"
+  ],
+  [
+   "BN_Tai_R_01",
+   "BN_Tai_L_01",
+   "Tail"
+  ]
+ ],
+ "n_flagged": 0,
+ "joints": [
+  {
+   "index": 0,
+   "raw": "Bip01_Pelvis",
+   "parent": null,
+   "label": "Hips",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 1,
+   "raw": "Bip01_Spine",
+   "parent": "Bip01_Pelvis",
+   "label": "Spine",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 2,
+   "raw": "BN_Tai_01",
+   "parent": "Bip01_Pelvis",
+   "label": "Tail",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 3,
+   "raw": "Bip01_Spine1",
+   "parent": "Bip01_Spine",
+   "label": "Spine",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 4,
+   "raw": "Bip01_L_Thigh",
+   "parent": "Bip01_Spine",
+   "label": "Left Thigh",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 5,
+   "raw": "Bip01_R_Thigh",
+   "parent": "Bip01_Spine",
+   "label": "Right Thigh",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 6,
+   "raw": "BN_Tai_L_01",
+   "parent": "BN_Tai_01",
+   "label": "Left Tail",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 7,
+   "raw": "BN_Tai_R_01",
+   "parent": "BN_Tai_01",
+   "label": "Right Tail",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 8,
+   "raw": "BN_Wing_R_01",
+   "parent": "Bip01_Spine1",
+   "label": "Right Wing",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 9,
+   "raw": "BN_Wing_L_01",
+   "parent": "Bip01_Spine1",
+   "label": "Left Wing",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 10,
+   "raw": "Bip01_Neck",
+   "parent": "Bip01_Spine1",
+   "label": "Neck",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 11,
+   "raw": "Bip01_L_Calf",
+   "parent": "Bip01_L_Thigh",
+   "label": "Left Shin",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 12,
+   "raw": "Bip01_R_Calf",
+   "parent": "Bip01_R_Thigh",
+   "label": "Right Shin",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 13,
+   "raw": "BN_Tai_L_02",
+   "parent": "BN_Tai_L_01",
+   "label": "Left Tail",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 14,
+   "raw": "BN_Tai_R_02",
+   "parent": "BN_Tai_R_01",
+   "label": "Right Tail",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 15,
+   "raw": "BN_Wing_R_02",
+   "parent": "BN_Wing_R_01",
+   "label": "Right Wing",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 16,
+   "raw": "BN_Wing_L_02",
+   "parent": "BN_Wing_L_01",
+   "label": "Left Wing",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 17,
+   "raw": "Bip01_Neck1",
+   "parent": "Bip01_Neck",
+   "label": "Neck",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 18,
+   "raw": "Bip01_L_HorseLink",
+   "parent": "Bip01_L_Calf",
+   "label": "Left Fetlock",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 19,
+   "raw": "Bip01_R_HorseLink",
+   "parent": "Bip01_R_Calf",
+   "label": "Right Fetlock",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 20,
+   "raw": "BN_Wing_R_03",
+   "parent": "BN_Wing_R_02",
+   "label": "Right Wing",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 21,
+   "raw": "BN_Wing_L_03",
+   "parent": "BN_Wing_L_02",
+   "label": "Left Wing",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 22,
+   "raw": "Bip01_Neck2",
+   "parent": "Bip01_Neck1",
+   "label": "Neck",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 23,
+   "raw": "Bip01_L_Foot",
+   "parent": "Bip01_L_HorseLink",
+   "label": "Left Foot",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 24,
+   "raw": "Bip01_R_Foot",
+   "parent": "Bip01_R_HorseLink",
+   "label": "Right Foot",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 25,
+   "raw": "BN_Wing_R_05",
+   "parent": "BN_Wing_R_03",
+   "label": "Right Wing",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 26,
+   "raw": "BN_Wing_R_04",
+   "parent": "BN_Wing_R_03",
+   "label": "Right Wing",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 27,
+   "raw": "BN_Wing_L_05",
+   "parent": "BN_Wing_L_03",
+   "label": "Left Wing",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 28,
+   "raw": "BN_Wing_L_04",
+   "parent": "BN_Wing_L_03",
+   "label": "Left Wing",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 29,
+   "raw": "Bip01_Head",
+   "parent": "Bip01_Neck2",
+   "label": "Head",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 30,
+   "raw": "BN_Toe_L_30",
+   "parent": "Bip01_L_Foot",
+   "label": "Left Toe",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 31,
+   "raw": "BN_Toe_L_10",
+   "parent": "Bip01_L_Foot",
+   "label": "Left Toe",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 32,
+   "raw": "BN_Toe_L_20",
+   "parent": "Bip01_L_Foot",
+   "label": "Left Toe",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 33,
+   "raw": "BN_Toe_L_00",
+   "parent": "Bip01_L_Foot",
+   "label": "Left Toe",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 34,
+   "raw": "Bip01_L_Toe0",
+   "parent": "Bip01_L_Foot",
+   "label": "Left Toe",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 35,
+   "raw": "BN_Toe_R_30",
+   "parent": "Bip01_R_Foot",
+   "label": "Right Toe",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 36,
+   "raw": "BN_Toe_R_10",
+   "parent": "Bip01_R_Foot",
+   "label": "Right Toe",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 37,
+   "raw": "BN_Toe_R_20",
+   "parent": "Bip01_R_Foot",
+   "label": "Right Toe",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 38,
+   "raw": "BN_Toe_R_00",
+   "parent": "Bip01_R_Foot",
+   "label": "Right Toe",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 39,
+   "raw": "Bip01_R_Toe0",
+   "parent": "Bip01_R_Foot",
+   "label": "Right Toe",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 40,
+   "raw": "BN_Wing_R_06",
+   "parent": "BN_Wing_R_05",
+   "label": "Right Wing",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 41,
+   "raw": "BN_Wing_L_06",
+   "parent": "BN_Wing_L_05",
+   "label": "Left Wing",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 42,
+   "raw": "BN_Jaw",
+   "parent": "Bip01_Head",
+   "label": "Jaw",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 43,
+   "raw": "BN_Toe_L_31",
+   "parent": "BN_Toe_L_30",
+   "label": "Left Toe",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 44,
+   "raw": "BN_Toe_L_11",
+   "parent": "BN_Toe_L_10",
+   "label": "Left Toe",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 45,
+   "raw": "BN_Toe_L_21",
+   "parent": "BN_Toe_L_20",
+   "label": "Left Toe",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 46,
+   "raw": "BN_Toe_L_01",
+   "parent": "BN_Toe_L_00",
+   "label": "Left Toe",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 47,
+   "raw": "BN_Toe_R_31",
+   "parent": "BN_Toe_R_30",
+   "label": "Right Toe",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 48,
+   "raw": "BN_Toe_R_11",
+   "parent": "BN_Toe_R_10",
+   "label": "Right Toe",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 49,
+   "raw": "BN_Toe_R_21",
+   "parent": "BN_Toe_R_20",
+   "label": "Right Toe",
+   "source": "template",
+   "check": false
+  },
+  {
+   "index": 50,
+   "raw": "BN_Toe_R_01",
+   "parent": "BN_Toe_R_00",
+   "label": "Right Toe",
+   "source": "template",
+   "check": false
+  }
+ ],
+ "vocabulary": {
+  "format": "[Left |Right ][Qualifier ]Part[ End], e.g. 'Left Front Leg', 'Right Index Finger End'. Qualifier: Front, Back, Middle, Rear, Hind, Inner, Outer, Upper, Lower. No numbers: every joint of a chain takes the same label (Spine, Spine, Spine; Tail, Tail), its last joint 'End' ('Tail End'). 'Bone' only for a joint that is no body part.",
+  "parts": [
+   "Abdomen",
+   "Anal Fin",
+   "Ankle",
+   "Antenna",
+   "Appendage",
+   "Arm",
+   "Back Claw",
+   "Back Hip",
+   "Back Paw",
+   "Bag",
+   "Barbel",
+   "Base",
+   "Belly",
+   "Belt",
+   "Body",
+   "Bone",
+   "Branch",
+   "Cannon",
+   "Cape",
+   "Caudal Fin",
+   "Center",
+   "Chain",
+   "Cheek",
+   "Chest",
+   "Chin",
+   "Claw",
+   "Cloth",
+   "Collar",
+   "Crest",
+   "Door",
+   "Dorsal Fin",
+   "Dorsal Plate",
+   "Ear",
+   "Elbow",
+   "Elbow Back",
+   "End",
+   "Eye",
+   "Eyeball",
+   "Eyebrow",
+   "Eyelid",
+   "Fang",
+   "Feather",
+   "Fetlock",
+   "Fin",
+   "Finger",
+   "Foot",
+   "Forearm",
+   "Forearm Twist",
+   "Front Hoof",
+   "Front Leg",
+   "Front Leg End",
+   "Front Paw",
+   "Front Shoulder",
+   "Fur",
+   "Gill",
+   "Hair",
+   "Halter",
+   "Hand",
+   "Hand Claw",
+   "Handle",
+   "Hat",
+   "Head",
+   "Head End",
+   "Heel",
+   "Hind Leg",
+   "Hind Leg End",
+   "Hip",
+   "Hips",
+   "Hoof",
+   "Horn",
+   "IK Chain",
+   "Index Finger",
+   "Inner Claw",
+   "Inner Finger",
+   "Inner Hand Claw",
+   "Inner Toe",
+   "Jaw",
+   "Jiggle",
+   "Knee",
+   "Large Mandible",
+   "Leaf",
+   "Leg",
+   "Lever",
+   "Lid",
+   "Lip",
+   "Lower Body",
+   "Lower Eyelid",
+   "Lower Front Lip",
+   "Lower Jaw",
+   "Lower Left Lip",
+   "Lower Lip",
+   "Lower Mandible",
+   "Lower Right Lip",
+   "Mandible",
+   "Mane",
+   "Metacarpus",
+   "Middle Claw",
+   "Middle Finger",
+   "Middle Hand Claw",
+   "Middle Leg",
+   "Middle Leg End",
+   "Middle Toe",
+   "Mouth",
+   "Muzzle",
+   "Neck",
+   "Neck Muscle",
+   "Nose",
+   "Outer Claw",
+   "Outer Finger",
+   "Outer Hand Claw",
+   "Outer Toe",
+   "Palm",
+   "Pastern",
+   "Paw",
+   "Pectoral Fin",
+   "Pelvic Fin",
+   "Pelvis",
+   "Petal",
+   "Phalanges",
+   "Pincer",
+   "Pinky Finger",
+   "Prop",
+   "Propeller",
+   "Rear Hoof",
+   "Reins",
+   "Ribcage",
+   "Ring Finger",
+   "Root",
+   "Rope",
+   "Scapula",
+   "Scarf",
+   "Shell",
+   "Shield",
+   "Shin",
+   "Shin Twist",
+   "Shoulder",
+   "Skirt",
+   "Skull",
+   "Skull Base",
+   "Spine",
+   "Stem",
+   "Stinger",
+   "Strap",
+   "Tail",
+   "Tail Twist",
+   "Tentacle",
+   "Thigh",
+   "Thigh Muscle",
+   "Thigh Twist",
+   "Thumb Finger",
+   "Toe",
+   "Toe End",
+   "Tongue",
+   "Twist",
+   "Upper Arm",
+   "Upper Arm Twist",
+   "Upper Body",
+   "Upper Eyelid",
+   "Upper Jaw",
+   "Upper Left Lip",
+   "Upper Lip",
+   "Upper Right Lip",
+   "Waist",
+   "Weapon",
+   "Wheel",
+   "Whisker",
+   "Wing",
+   "Wrist",
+   "Wrist Back"
+  ]
+ }
+}

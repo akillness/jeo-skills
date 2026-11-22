@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.comparison-stage",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "composition-profile",
+  "title": {
+    "en": "Controlled comparison stage"
+  },
+  "aliases": {
+    "en": [
+      "before after comparison",
+      "matched camera"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra",
+    "probability-statistics",
+    "molecules-materials"
+  ],
+  "summary": "Make differences interpretable by holding the relevant viewing conditions consistent.",
+  "objective": "Make differences interpretable by holding the relevant viewing conditions consistent.",
+  "subject_terms": [
+    "before after comparison",
+    "matched camera",
+    "reference geometry"
+  ],
+  "tags": [
+    "composition-profile",
+    "comparison-stage"
+  ],
+  "intent_signals": [
+    "reference geometry"
+  ],
+  "example_prompts": [
+    "Use controlled comparison stage for the scene, preserving its model and user controls."
+  ],
+  "content": {
+    "principles": [
+      "Choose which variable changes and which conditions remain fixed before designing the comparison.",
+      "A reference view should help interpretation rather than double all visual clutter."
+    ],
+    "implementation": [
+      "Use aligned axes, shared scales and compatible camera framing when comparing quantities.",
+      "Keep a ghost reference, split view or explicit toggle according to occlusion and screen space.",
+      "Annotate any independently normalized scale or changed illumination that affects interpretation."
+    ],
+    "observable_checks": [
+      "The reported difference comes from the selected variable, not an undisclosed scale or camera change.",
+      "Reset restores the same comparison baseline."
+    ]
+  },
+  "related_ids": [
+    "knowledge.controlled-experiment"
+  ],
+  "creative_affordances": [
+    "Adapt the layout, visual treatment and timing to the task; these are reusable design proposals, not mandatory templates."
+  ],
+  "known_limits": [
+    "Authored interaction/presentation guidance; no new scientific claim, accessibility certification or runtime verification is asserted."
+  ],
+  "claims": []
+}

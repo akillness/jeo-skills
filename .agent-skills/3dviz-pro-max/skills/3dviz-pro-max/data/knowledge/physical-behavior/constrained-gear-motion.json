@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.constrained-gear-motion",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Constrained gear motion from one driver"
+  },
+  "aliases": {
+    "en": [
+      "constrained gear motion"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics"
+  ],
+  "summary": "Expose signed speed coupling and distinguish imposed gear kinematics from contact dynamics.",
+  "objective": "Hold driver angular speed and driver pitch radius constant, then double the follower pitch radius: the follower angular speed magnitude becomes half its previous value under this imposed model.",
+  "tags": [
+    "physical-behavior",
+    "constrained",
+    "gear",
+    "motion"
+  ],
+  "example_prompts": [
+    "Expose signed speed coupling and distinguish imposed gear kinematics from contact dynamics."
+  ],
+  "content": {
+    "principles": [
+      "Use one driver angle and derive the follower; never integrate two independent decorative rotations.",
+      "Declare positive rotation axes and a fixed initial phase before checking a signed constraint."
+    ],
+    "implementation": [
+      "For external pitch circles impose r1*omega1+r2*omega2=0 with positive radii and fixed center distance r1+r2. This is an authored no-slip constraint.",
+      "Derive follower angle from driver angle plus saved phase offset. Show pitch circles and tangent-velocity arrows in an inspection mode.",
+      "Changing speed preserves current angles; reset explicitly restores the initial phases."
+    ],
+    "observable_checks": [
+      "Hold driver angular speed and driver pitch radius constant, then double the follower pitch radius: the follower angular speed magnitude becomes half its previous value under this imposed model.",
+      "Pause at contact: the signed tangent-speed residual is within a declared numerical tolerance."
+    ]
+  },
+  "known_limits": [
+    "No tooth-force, backlash, friction, motor torque or stress model. A decorative tooth mesh must be checked separately.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+  ],
+  "related_ids": [
+    "recipe.coupled-gears",
+    "knowledge.gear-mechanism"
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-constrained-gear-motion",
+      "statement": "Tangential speed for fixed-axis rotation is radius times angular speed.",
+      "scope": "The two-gear relation is an authored deduction under the stated external no-slip constraint.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-rotation",
+          "locator": "10.1, equation 10.4"
+        }
+      ]
+    }
+  ]
+}

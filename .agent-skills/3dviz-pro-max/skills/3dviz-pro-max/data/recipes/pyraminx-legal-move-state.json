@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "id": "recipe.pyraminx-legal-move-state",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Pyraminx legal-move state and turn player"
+  },
+  "aliases": {
+    "en": [
+      "tetrahedral twisty puzzle state",
+      "Pyraminx move table",
+      "non-cubic legal turn puzzle"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles",
+    "spatial-puzzles"
+  ],
+  "summary": "Drive a tetrahedral twisty puzzle from versioned discrete piece permutations and orientations, including distinct main-layer and tip moves, without inferring state from mesh transforms.",
+  "objective": "A viewer can apply, preview, undo and replay supported Pyraminx moves while piece identity, orientation, notation frame and legal reachability remain exact.",
+  "tags": [
+    "pyraminx",
+    "tetrahedral-puzzle",
+    "legal-moves",
+    "discrete-state"
+  ],
+  "subject_terms": [
+    "Pyraminx",
+    "U L R B",
+    "tip move",
+    "120 degree turn",
+    "piece permutation",
+    "piece orientation",
+    "legal move table"
+  ],
+  "intent_signals": [
+    "build a non-cubic twisty puzzle",
+    "animate Pyraminx tip and layer turns",
+    "keep tetrahedral piece orientation exact"
+  ],
+  "example_prompts": [
+    "Build a Pyraminx player where U and u are distinct legal moves and camera orbit never changes their meaning."
+  ],
+  "negative_signals": [
+    "reuse cube face-turn tables",
+    "round mesh transforms into state",
+    "accept arbitrary sticker shuffles",
+    "claim every tetrahedral puzzle uses this model"
+  ],
+  "not_for": [
+    "A universal model for all tetrahedral or corner-turning puzzles.",
+    "Competition scrambling, solving optimality or physical turning performance."
+  ],
+  "entities": [
+    {
+      "name": "Tetrahedral piece set",
+      "guidance": "Use stable IDs for the authored core, tips and every main-layer piece; attach colored or patterned facelets to their owning shell."
+    },
+    {
+      "name": "Move-table manifest",
+      "guidance": "Store each supported token as an exact bijection over piece slots plus a discrete orientation update, with its inverse and affected-shell list."
+    },
+    {
+      "name": "Notation frame",
+      "guidance": "Show the WCA reference orientation and distinguish uppercase two-layer turns from lowercase vertex-only turns independently of camera orbit."
+    }
+  ],
+  "state_contract": {
+    "model": "Start from a versioned solved manifest that enumerates piece IDs, compatible slots, discrete orientations and exact move tables for U L R B u l r b and their primes. Only states produced by those tables are accepted in this recipe.",
+    "frame": "Use the WCA reference orientation for labels: bottom face horizontal and front face toward the holder. Turn direction belongs to that puzzle frame, not the current camera.",
+    "actions": [
+      "Parse only the declared tokens and reject unsupported suffixes.",
+      "Preview one affected shell group about its authored vertex axis, then commit its exact table once.",
+      "Undo with the stored inverse token; reset cancels preview and queue before restoring the solved manifest."
+    ],
+    "authority": "The discrete manifest owns slot and orientation state. Blender and Three.js transforms are derived presentation and never become the legal-state source.",
+    "initialization": "Solved state plus legal supported move replay only; arbitrary facelet import requires a puzzle-specific validator outside this recipe."
+  },
+  "invariants": [
+    "Every move table is a bijection on compatible slots and leaves every unaffected piece unchanged.",
+    "Each 120-degree move applied three times restores exact piece positions and orientations; a move followed by its prime does the same.",
+    "Uppercase and lowercase tokens have different affected sets but share the declared vertex axis.",
+    "A sequence followed by reversed inverse tokens restores the entire state exactly, including tip orientations.",
+    "Orbiting or changing display style changes no notation, piece identity or puzzle state."
+  ],
+  "motion_guidance": [
+    "In Blender, author separate shells with pivots on the declared vertex axes, narrow visible gaps and enough illustrated clearance for the chosen display turn.",
+    "In Three.js, attach only affected rendered pieces to a temporary pivot, interpolate 120 degrees, commit once and rebuild settled transforms from discrete state.",
+    "Pause freezes presentation; reduced motion may commit immediately while keeping token, affected pieces and result visible."
+  ],
+  "object_craft": [
+    {
+      "family": "Tetrahedral shells",
+      "structure": "Author individually identifiable tip, edge and inner visible shells around a simple hidden core; use consistent mating rims and explicit vertex-axis pivots.",
+      "material": "Use satin body plastic with separate colored or patterned face surfaces; retain labels or patterns so state does not depend on hue alone.",
+      "articulation": "Shell transforms are reconstructed from piece slot and orientation after each committed table."
+    },
+    {
+      "family": "Turn-axis guide",
+      "structure": "Use a removable axis rod, affected-layer outline and ghost endpoint outside the puzzle silhouette.",
+      "material": "One high-contrast diagnostic accent distinct from face coding.",
+      "articulation": "Guide follows preview angle and disappears after commit or cancel."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Legal discrete moves with authored turn presentation; no friction, contact force, corner cutting or manufacturing tolerance simulation.",
+    "state": [
+      "piece slots",
+      "piece orientations",
+      "move queue",
+      "preview token and angle"
+    ],
+    "checks": [
+      "Move bijection and inverse closure are exact.",
+      "Illustrated shells do not visibly interpenetrate over the declared display turn."
+    ]
+  },
+  "creative_affordances": [
+    "Use translucent, patterned, engraved or sculpted face treatments while preserving semantic piece/face identification.",
+    "Change turn easing and staging without changing move tables or commit semantics."
+  ],
+  "known_limits": [
+    "The authored manifest, not the source, defines the exact piece taxonomy and move-table representation; it must be reviewed as implementation data.",
+    "No puzzle, move table, animation or reachability validator was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.puzzles-wca-pyraminx-notation",
+      "statement": "WCA Regulations 12e orient Pyraminx with the bottom face horizontal and front face toward the holder, use uppercase U L R B for clockwise 120-degree turns of the corresponding two layers, lowercase u l r b for clockwise 120-degree vertex turns, and primes for the counter-clockwise forms.",
+      "scope": "WCA competition notation at version April 1, 2026; it does not define this recipe's internal piece IDs, orientation codes or move-table implementation.",
+      "source_refs": [
+        {
+          "source_id": "source.puzzles-wca-pyraminx-notation",
+          "locator": "Article 12, regulations 12e1–12e3"
+        }
+      ]
+    }
+  ],
+  "related_ids": [
+    "recipe.twisty-cube-3x3-face-turns",
+    "recipe.permutation-cycles",
+    "knowledge.validation-move-inverse-closure",
+    "knowledge.modality-independent-action-map"
+  ]
+}

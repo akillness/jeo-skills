@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-unit-cell-fractional-accounting",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Count unit-cell atoms by fractional occupancy"
+  },
+  "aliases": {
+    "en": [
+      "unit cell counting",
+      "lattice occupancy",
+      "atoms per cell"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials",
+    "solid-geometry"
+  ],
+  "summary": "Count fully occupied monatomic simple-cubic, BCC and FCC conventional cells using geometric boundary sharing, distinct from partial site occupancy.",
+  "objective": "Support the counting argument for the declared monatomic cubic cell; route other lattices or bases to their own accounting.",
+  "applies_when": [
+    "A fully occupied monatomic simple-cubic, BCC or FCC conventional cell is displayed.",
+    "The scene counts atoms or derives density for one of those declared cubic cells.",
+    "Neighbouring copies of one of those cubic cells are shown to explain boundary sharing."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "unit cell",
+    "lattice",
+    "fractional occupancy",
+    "body-centred cubic",
+    "face-centred cubic",
+    "stoichiometry"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "materials",
+    "counting"
+  ],
+  "intent_signals": [
+    "how many atoms in the unit cell",
+    "show a face centred cubic cell",
+    "explain the lattice counting"
+  ],
+  "example_prompts": [
+    "Show a face-centred cubic cell and explain why it contains four atoms.",
+    "Build a lattice where I can see how corner atoms are shared."
+  ],
+  "negative_signals": [
+    "Decorative lattice patterns with no counting claim.",
+    "Amorphous solids, which have no unit cell at all. Molecular and multi-element crystals do have unit cells, but their accounting runs over a basis of molecules or several atom types rather than the single-atom cubic cases treated here."
+  ],
+  "not_for": [
+    "Decorative lattice patterns with no counting claim.",
+    "Amorphous solids, which have no unit cell at all. Molecular and multi-element crystals do have unit cells, but their accounting runs over a basis of molecules or several atom types rather than the single-atom cubic cases treated here."
+  ],
+  "content": {
+    "principles": [
+      "For the fully occupied monatomic cubic cells treated here, a corner site contributes one eighth, a face site one half and an interior site one whole atom, giving one atom for simple cubic, two for BCC and four for FCC. Other cell shapes, bases and site occupancies require their own accounting before applying a counting rule.",
+      "Whole spheres at the corners are not themselves an error. They are the natural picture when the spheres denote atom centres or when the neighbouring cells are shown, and they mislead only when the scene states a count without explaining the sharing. Either clip the spheres to the cell, show the neighbourhood, or label the convention.",
+      "The cell is a repeating unit, not an isolated object, so the neighbouring cells that share those atoms are part of the explanation.",
+      "Derived quantities such as density or formula unit depend on this count, so an error propagates into every number the scene reports. Keep the geometric sharing fraction separate from partial site occupancy or disorder, which is a different quantity that happens to share the word fractional."
+    ],
+    "implementation": [
+      "Draw shared atoms as sectioned spheres clipped to the cell, or offer a toggle between whole atoms in context and the fraction inside the cell.",
+      "Identify the supported cubic structure and compute its count from site positions and boundary-sharing weights. A change to a different basis, lattice system or partial site occupancy routes to its own specified accounting instead of reusing these cubic counts.",
+      "Show at least a neighbourhood of cells on demand so the sharing is visible rather than asserted.",
+      "Keep the coordination and packing story separate from the counting story; both matter, but they are different views.",
+      "Where the model reports density or stoichiometry, derive it from the computed count and show the intermediate numbers."
+    ],
+    "observable_checks": [
+      "Ask the scene to compute its own count and compare it with the stated value for each cell type.",
+      "Expand the lattice by one cell in each direction and confirm shared atoms coincide exactly rather than overlapping or gapping.",
+      "Toggle between whole-atom and clipped-fraction views and confirm the stated count stays the same and matches the explanation shown beside it, rather than changing with the drawing style.",
+      "Changing among the supported fully occupied monatomic cubic structures updates every derived number. An unsupported lattice, basis or occupancy is reported and routed to separate accounting."
+    ]
+  },
+  "related_ids": [
+    "recipe.cubic-unit-cell-accounting"
+  ],
+  "creative_affordances": [
+    "Colour, transparency and exploded neighbourhood views are all good ways to make sharing visible.",
+    "An abstract count diagram beside the lattice often teaches faster than the lattice alone."
+  ],
+  "known_limits": [
+    "Authored counting guidance citing cubic cases; other lattice systems and multi-element bases need their own treatment.",
+    "It asserts no lattice parameter, radius or density value for any real material."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-unit-cell-occupancy",
+      "statement": "An atom at a unit-cell corner contributes one eighth of an atom to that cell, an atom centred on a face contributes one half, and an atom in the cell interior contributes one whole atom, so a simple cubic cell contains one atom, a body-centred cubic cell two and a face-centred cubic cell four.",
+      "scope": "Cubic unit cells of a single atom type. Other lattice systems, multi-element structures and molecular crystals need accounting over their own basis, and this geometric sharing fraction is distinct from partial site occupancy or disorder.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-cubic-lattices",
+          "locator": "10.6, fractional occupancy and atoms per cell for simple cubic, BCC and FCC"
+        }
+      ]
+    }
+  ]
+}

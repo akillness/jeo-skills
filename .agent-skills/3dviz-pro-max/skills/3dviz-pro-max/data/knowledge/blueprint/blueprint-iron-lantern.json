@@ -1,0 +1,265 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-iron-lantern",
+  "revision": 5,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: iron post lantern (Blender glTF)"
+  },
+  "aliases": {
+    "en": [
+      "iron lantern glb",
+      "post lantern glTF asset",
+      "village lamp post blueprint",
+      "emissive lantern glb"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies"
+  ],
+  "summary": "A Blender-authored wrought iron post lantern exported as a 136 KB GLB: post on a stepped base, brass collars, hook arm with a diagonal stay, a four-pane glazed head whose material carries KHR_materials_emissive_strength, and three sockets in glTF node extras.",
+  "objective": "Give a night village a light source that reads as a made object rather than a glowing box: the head must show corner posts, panes and a capped pyramid roof at three metres, and rivet-scale chamfers at arm's length.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "gltf",
+    "glb",
+    "prop",
+    "lantern",
+    "blender",
+    "emissive"
+  ],
+  "subject_terms": [
+    "KHR_materials_emissive_strength",
+    "emission strength",
+    "GLB",
+    "node extras",
+    "bevel modifier",
+    "post lantern",
+    "glazing"
+  ],
+  "intent_signals": [
+    "glb lamp post for a village",
+    "emissive lantern gltf asset",
+    "blender exported lantern with a lamp socket",
+    "where to attach a point light on a lantern"
+  ],
+  "example_prompts": [
+    "Line the village lane with iron lanterns and put a warm point light in each one.",
+    "I need a lantern GLB whose glass already glows without post-processing."
+  ],
+  "not_for": [
+    "Photometric accuracy: the emissive strength is an art value, not a measured luminance.",
+    "A light source in itself -- the GLB is exported with export_lights=False, so the punctual light comes from the scene rig, not from the asset.",
+    "Historical claims about wrought iron street lighting of any period or place."
+  ],
+  "asset": {
+    "kind": "gltf-asset",
+    "path": "templates/kits/gltf/iron-lantern.glb"
+  },
+  "params": [
+    {
+      "name": "scale",
+      "type": "number",
+      "range": [
+        0.6,
+        1.6
+      ],
+      "default": 1,
+      "unit": "x"
+    }
+  ],
+  "sockets": [
+    {
+      "name": "base",
+      "position_m": [
+        0,
+        0,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "lamp",
+      "position_m": [
+        0,
+        2.96,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "hook",
+      "position_m": [
+        0,
+        2.6,
+        -0.44
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "3.55 m post-and-head profile: a 2.36 m post over a stepped base, a 44 cm glazed head and a four-sided pyramid cap with a finial",
+      "hook arm reaching 44 cm off the post at 2.6 m, breaking the vertical so the lantern reads as ironwork rather than a bollard",
+      "0.46 m x 0.67 m footprint including the arm, small enough to sit against a wall or a path edge"
+    ],
+    "medium": [
+      "four 3.5 cm corner posts framing the head, with the glass sitting inboard of them so the head reads as a cage, not a cube",
+      "four glazing panes 28 cm wide carrying an emissive factor of (1.0, 0.58, 0.22) at strength 1.8, exported through KHR_materials_emissive_strength",
+      "two brass collars at 0.62 m and 2.46 m and a diagonal stay under the hook arm at 38 degrees"
+    ],
+    "fine": [
+      "6 mm two-segment chamfer on every iron edge, so the post reads as forged stock with rounded arrises rather than as a extruded rectangle",
+      "the 12 cm brass finial and the 26 cm pyramid cap, four-sided and rotated 45 degrees so a corner faces the viewer",
+      "three material slots separated by roughness and metalness: iron 0.50/0.30, brass 0.30/0.35, glazing 0.16/0.0"
+    ]
+  },
+  "footprint_m": [
+    0.46,
+    0.67
+  ],
+  "poly_budget": 1944,
+  "fits_looks": [
+    "knowledge.style-hand-painted",
+    "knowledge.style-stylized",
+    "knowledge.lighting-mood-night-lantern",
+    "knowledge.lighting-mood-dusk-golden-hour"
+  ],
+  "content": {
+    "principles": [
+      "An emissive material is not a light. It makes the glass read as lit from the inside; the illumination of everything around it still has to come from a punctual light placed at the lamp socket.",
+      "Emissive strength above 1 is the only reason KHR_materials_emissive_strength is written at all: at or below 1 the exporter keeps everything in emissiveFactor and the extension never appears.",
+      "A small prop earns its detail ladder through separation, not through polygon count: cage posts inboard of the glass, collars proud of the post, a cap that overhangs the head."
+    ],
+    "implementation": [
+      "Load it through the thin wrapper templates/kits/gltf/iron-lantern.js: `const { group, sockets } = await create({ scale: 1 });`. create returns a Promise because the geometry lives in a file.",
+      "Attach the point light at the lamp socket (0, 2.96, 0) rather than at the group origin, or the light will sit at the foot of the post.",
+      "Regenerate with: Blender -b --factory-startup --python-exit-code 1 --python templates/kits/blender/export-village-assets.py -- --asset iron-lantern --out templates/kits/gltf/iron-lantern.glb",
+      "Exporter keywords, verified present on Blender 5.2.1 LTS (111 operator properties): export_format='GLB', export_apply=True, export_yup=True, export_extras=True, export_lights=False, export_draco_mesh_compression_enable=False, export_animation_mode='ACTIONS', export_force_sampling=True.",
+      "export_lights=False is deliberate: KHR_lights_punctual is not written, so the asset never fights the scene's own lighting rig."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features across close.png and detail.png: at least two from each detail-ladder band must be visible. The lantern is 3.55 m tall and 0.46 m wide, so the harness close view crops the cap and finial -- those two silhouette features are counted in mid.png and detail.png instead.",
+      "Parse the GLB JSON chunk: extensionsUsed contains KHR_materials_emissive_strength and the LanternGlass material's emissiveStrength is above 1 (examples/early-slice/kits-gltf.test.js asserts this).",
+      "KHR_lights_punctual must not appear anywhere in the file, since the asset was exported with export_lights=False."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry and an art-directed emission value. Nothing here measures a real lamp, a real flame or a real luminance.",
+    "The mesh is built in bpy from the parameters in export-village-assets.py rather than opened from a .blend, so no binary source is committed and the asset is reproducible from the script; the shape can only be changed by editing Python.",
+    "The poly budget is the exported triangle count (1944 triangles) at the authored parameters. There are no LODs, so a lane of forty lanterns is 78k triangles.",
+    "136 KB uncompressed, inside the 2 MB validator cap; Draco is off on purpose because the offline proof harness vendors no decoder.",
+    "A renderer that ignores KHR_materials_emissive_strength falls back to emissiveFactor alone, so the glass reads about 1.8 times dimmer rather than failing loudly.",
+    "Blender 5.2.1 LTS keyword presence was checked with bpy.ops.export_scene.gltf.get_rna_type().properties; no comparison was made against the 4.5 documentation the source record was written from.",
+    "T2 has been available for this blueprint since phase 10C: the harness hands a loaded glTF to the same finishKit a module goes through, and the runtime surface is keyed on the GLB baseColor hexes listed in tiers.T2.families. It costs a per-load UV-scale measurement over every triangle and a vertex-AO bake over 3888 vertices (0.66 s on the proof host, 50 ms for the metal family); it can only surface a colour a hex maps, and an authored map baked into the asset would be tier T3."
+  ],
+  "creative_affordances": [
+    "The emissive strength is a dial: drop it to 1.0 for a daytime scene and the extension disappears from a re-export entirely.",
+    "Scale is free -- 0.7 reads as a hand lantern on a bracket, 1.4 as a market square standard.",
+    "Swap the LanternGlass base colour after loading for a green or blue flame without touching the geometry."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "scale": 1,
+      "post_height_m": 2.72,
+      "head_centre_m": 2.96,
+      "emissive_strength": 1.8,
+      "bevel_m": 0.006,
+      "bevel_segments": 2,
+      "feeling": "warm forged iron on a wet lane"
+    },
+    "rationale": "Head height was set so the glazing sits above a 1.7 m figure's eye line and the emissive panes stay in frame at the far proof distance; the bevel is a third of the cottage's because the stock is a third the thickness."
+  },
+  "related_ids": [
+    "knowledge.blender-headless-gltf-export-script",
+    "knowledge.gltf-material-extension-matrix",
+    "knowledge.gltf-punctual-light-units-handoff",
+    "knowledge.blueprint-stone-guildhall",
+    "knowledge.hero-prop-detail-hierarchy",
+    "recipe.fantasy-village-diorama"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "detail_socket": "hook",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-iron-lantern/far.png",
+      "evidence/kits/knowledge.blueprint-iron-lantern/mid.png",
+      "evidence/kits/knowledge.blueprint-iron-lantern/close.png",
+      "evidence/kits/knowledge.blueprint-iron-lantern/detail.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-iron-lantern/proof-log.json"
+  },
+  "tiers": {
+    "T0": {
+      "mode": "proxy",
+      "size_m": [
+        0.46,
+        3.55,
+        0.67
+      ],
+      "poly_budget": 12,
+      "status": "generated",
+      "note": "Bevelled box from the proof log bounds: the post height and the lantern head."
+    },
+    "T2": {
+      "mode": "runtime",
+      "poly_budget": 1944,
+      "texture_budget": {
+        "maps": 3,
+        "resolution": 1024,
+        "families": 1
+      },
+      "families": {
+        "#696973": "metal",
+        "#e5c886": "metal"
+      },
+      "ao": {
+        "samples": 13,
+        "radius_m": 0.45,
+        "ground_dirt_m": 0.6
+      },
+      "proof": {
+        "harness": "templates/kits/_harness/index.html",
+        "captures": [
+          "evidence/kits/knowledge.blueprint-iron-lantern/T2/far.png",
+          "evidence/kits/knowledge.blueprint-iron-lantern/T2/mid.png",
+          "evidence/kits/knowledge.blueprint-iron-lantern/T2/close.png",
+          "evidence/kits/knowledge.blueprint-iron-lantern/T2/detail.png"
+        ],
+        "log": "evidence/kits/knowledge.blueprint-iron-lantern/T2/proof-log.json",
+        "detail_socket": "hook"
+      },
+      "status": "proved",
+      "note": "Proved in phase 10C by the same two fixes as the guildhall: _harness/blueprint-views.loadBlueprint hands the loaded glTF to kit-surface.finishKit, and the harness measures the asset UV scale -- 3.2 m per UV unit here -- into geometry.userData.uv_m so repeatFor does not read a packed atlas as metres. Iron #696973 and brass #e5c886 both map to metal; the emissive glazing #3f3830 has no family and stays flat, which is deliberate -- a lit pane must not carry a roughness map. Judged on the frames: at the 4.15 m close view post, arm and head read as dark hammered iron and the two brass collars carry a visible grain, where T1 is flat black; at the 0.82 m detail view the brushed streaks run around the post rather than along it, because the export unwraps u around the section and T2 has no per-mesh map rotation."
+    },
+    "T3": {
+      "mode": "gltf",
+      "status": "missing",
+      "note": "The record's own asset is already a baked glTF, so T1 and T3 would be the same file; no second, higher bake ships."
+    },
+    "T4": {
+      "mode": "external",
+      "status": "missing",
+      "note": "No external asset ships with this skill."
+    }
+  }
+}

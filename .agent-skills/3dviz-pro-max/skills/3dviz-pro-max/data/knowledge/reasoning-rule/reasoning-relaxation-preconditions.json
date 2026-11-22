@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-relaxation-preconditions",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "State the precondition that makes a greedy result final"
+  },
+  "aliases": {
+    "en": [
+      "Dijkstra weights",
+      "relaxation",
+      "settled distances"
+    ]
+  },
+  "direction_ids": [
+    "algorithms-data-structures",
+    "operations-logistics"
+  ],
+  "summary": "Show relaxation as the update mechanism and the nonnegative-weight precondition that lets settled distances stay final.",
+  "objective": "Prevent a weighted shortest-path scene from producing confidently wrong answers on inputs outside its assumptions.",
+  "applies_when": [
+    "A weighted shortest-path algorithm is visualised or used for routing.",
+    "Edge weights are editable by the viewer.",
+    "Distances are displayed as final once a node is settled."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "Dijkstra",
+    "relaxation",
+    "nonnegative weights",
+    "priority queue",
+    "settled",
+    "shortest path tree"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "algorithms",
+    "graphs"
+  ],
+  "intent_signals": [
+    "find the cheapest route",
+    "edit the edge weights",
+    "why is this node finished"
+  ],
+  "example_prompts": [
+    "Show Dijkstra relaxing edges with the priority queue visible.",
+    "Let me change weights and see the tree update."
+  ],
+  "negative_signals": [
+    "Unweighted searches, where a queue-based traversal suffices.",
+    "Graphs with negative weights, which require a different algorithm."
+  ],
+  "not_for": [
+    "Unweighted searches, where a queue-based traversal suffices.",
+    "Graphs with negative weights, which require a different algorithm."
+  ],
+  "content": {
+    "principles": [
+      "Relaxation is the whole mechanism: it tests whether the best known route to a vertex improves by going through another vertex, and updates the record if so. Showing it makes the algorithm comprehensible.",
+      "The algorithm solves the single-source shortest-path problem in edge-weighted digraphs with nonnegative weights, repeatedly adding the non-tree vertex with the lowest known distance. The nonnegative condition is what makes that greedy choice safe.",
+      "Allowing a negative weight without changing the algorithm produces answers that look authoritative and are wrong, which is worse than refusing the input.",
+      "The priority queue is the state that explains the order, so hiding it removes the reason one vertex was chosen before another."
+    ],
+    "implementation": [
+      "Validate weights on input and refuse or switch algorithms when a negative weight appears, with an explanation rather than a silent result.",
+      "Visualise each relaxation as an event: the edge tested, the old distance and the new one, so improvement is legible.",
+      "Show the priority queue ordering next to the graph, and mark settled vertices distinctly from tentative ones.",
+      "Keep the shortest-path tree as explicit predecessor data so the displayed path is derived rather than drawn separately.",
+      "Recompute on weight edits rather than patching, and show which distances changed."
+    ],
+    "observable_checks": [
+      "Introduce a negative weight and confirm the scene refuses or switches rather than reporting a distance.",
+      "Confirm a settled vertex distance never decreases afterwards during a run.",
+      "Compare a reported path cost against the sum of its edge weights.",
+      "Increase a weight on the current best path and confirm the tree updates coherently."
+    ]
+  },
+  "related_ids": [
+    "recipe.dijkstra-relaxation",
+    "recipe.warehouse-pick-tour"
+  ],
+  "creative_affordances": [
+    "The metaphor for cost, from terrain height to time to fuel, is free as long as the units are stated.",
+    "Showing the failed relaxations as well as the successful ones is often the most instructive presentation."
+  ],
+  "known_limits": [
+    "Authored guidance citing the relaxation definition and the nonnegative-weight condition; negative-weight algorithms are outside it.",
+    "No runtime implementation has been benchmarked or verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-dijkstra-nonnegative-weights",
+      "statement": "Relaxing an edge tests whether the best known path to its destination improves by going through its source and updates the record if so, and Dijkstra algorithm solves the single-source shortest-paths problem in edge-weighted digraphs with nonnegative weights by repeatedly relaxing and adding to the tree the non-tree vertex with the lowest known distance.",
+      "scope": "Weighted shortest paths with nonnegative edge weights; graphs with negative weights require different algorithms.",
+      "source_refs": [
+        {
+          "source_id": "source.princeton-shortest-paths",
+          "locator": "Relaxation; Dijkstra algorithm and the nonnegative weight condition"
+        }
+      ]
+    }
+  ]
+}

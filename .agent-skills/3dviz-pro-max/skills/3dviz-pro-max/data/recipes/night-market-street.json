@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "id": "recipe.night-market-street",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Night market street with layered light"
+  },
+  "aliases": {
+    "en": [
+      "night market",
+      "street scene",
+      "practical lights"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas"
+  ],
+  "summary": "Build a dense street where the lighting is made of many small owned sources and the crowd flows along readable lanes.",
+  "objective": "Build a night market street I can walk down, with stalls, hanging lamps, steam and a crowd that keeps to lanes.",
+  "tags": [
+    "street",
+    "night",
+    "market"
+  ],
+  "subject_terms": [
+    "night market",
+    "stall",
+    "practical light",
+    "awning",
+    "crowd flow",
+    "signage",
+    "street furniture",
+    "atmosphere"
+  ],
+  "intent_signals": [
+    "Build a busy night market street scene I can explore.",
+    "Design a night street where the lighting comes from the stalls themselves."
+  ],
+  "example_prompts": [
+    "Build a night market street with lit stalls, hanging lamps and pedestrians walking in lanes.",
+    "Design a dense market street with legible circulation and stall variety."
+  ],
+  "negative_signals": [
+    "Not a crowd dynamics or evacuation simulation.",
+    "Not a real place: signage, goods and architecture are invented."
+  ],
+  "not_for": [
+    "Not a crowd dynamics or evacuation simulation.",
+    "Not a real place: signage, goods and architecture are invented."
+  ],
+  "entities": [
+    {
+      "name": "Stall modules",
+      "guidance": "Author a small set of stall archetypes with real structure: frame, counter, awning, storage below and goods above, then vary them rather than repeating one prop."
+    },
+    {
+      "name": "Practical lights",
+      "guidance": "Give every visible light a physical fixture and a declared owner stall, so the light plan and the object plan are the same plan."
+    },
+    {
+      "name": "Crowd lanes",
+      "guidance": "Define walking lanes with widths and let pedestrians follow them with spacing, so density reads as circulation and not as a scatter."
+    }
+  ],
+  "state_contract": {
+    "model": "Street layout with stall slots, per-stall light fixtures with on and off states, lane graph with capacity, and pedestrian agents with position, speed and a target lane. Trading state per stall is a discrete value.",
+    "authority": "The lane graph and stall slots own the layout; pedestrians follow the lanes and never walk through stalls. Light state belongs to its stall and is not a global switch.",
+    "actions": [
+      "Walk down the street and stop at a stall.",
+      "Open or close a stall and see its light and crowd change.",
+      "Change the time of evening to shift ambient light while practicals stay on.",
+      "Reset crowd positions and stall states."
+    ]
+  },
+  "invariants": [
+    "Every local artificial light reads as belonging to a visible fixture. Sky and moon ambience and a declared editorial fill remain legitimate art choices; what the rule forbids is an invisible lamp standing in for a stall fixture.",
+    "Pedestrians stay inside lane bounds and maintain a minimum spacing rather than overlapping.",
+    "A closed stall goes dark, which is this scene authored trading rule rather than a universal property of markets, and its queue follows the declared dispersal or reroute behaviour instead of standing at an unlit counter.",
+    "Lane capacity is checked at spawn and at junctions: agents queue or reroute when a lane is full instead of overlapping, and movement is swept so a crowded junction never resolves by interpenetration."
+  ],
+  "motion_guidance": [
+    "Give pedestrians bounded acceleration and turn rate so the crowd changes direction believably at junctions.",
+    "Animate steam, awning sway and hanging lamp motion at different frequencies, since synchronised motion reads as a single mechanical loop."
+  ],
+  "known_limits": [
+    "Signage and goods are invented: avoid reproducing real brands and trademarks. Ordinary writing systems and languages are welcome, and a legible invented business name is usually the better choice than illegible decoration.",
+    "Crowd behaviour is authored steering, not a validated pedestrian model.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "object_craft": [
+    {
+      "family": "Stall modules",
+      "structure": "Frame, counter, canopy and storage as separate parts with visible joints, plus goods arranged as stacks rather than as a texture.",
+      "material": "Worn timber and painted metal families with fabric awnings; keep material variation between stalls so repetition is not read as cloning.",
+      "articulation": "Awnings and hanging goods sway on a shared wind parameter with per-object phase."
+    },
+    {
+      "family": "Practical lights",
+      "structure": "Bulb, shade and cable modelled explicitly, with cables sagging between anchor points.",
+      "material": "Warm emissive bulbs with a distinct cooler signage family, so the two light types stay separable.",
+      "articulation": "Lamps swing gently and their light follows the fixture transform."
+    },
+    {
+      "family": "Crowd lanes",
+      "structure": "Simple pedestrians with readable silhouettes, carrying bags or food so their purpose is legible.",
+      "material": "Desaturated clothing palette with a few accent characters so the crowd supports rather than competes with the stalls.",
+      "articulation": "Feet are planted from travelled distance; heading follows resolved velocity."
+    }
+  ],
+  "physical_contract": {
+    "model": "controlled-locomotion",
+    "scope": "Authored pedestrian steering along lanes with spacing; no physical crowd forces or contact resolution.",
+    "state": [
+      "agent positions",
+      "velocities",
+      "target lanes",
+      "stall trading states"
+    ],
+    "colliders": [
+      "Capsule agents against stall bounds and street furniture."
+    ],
+    "driving": [
+      "Bounded acceleration and turn rate toward the next lane waypoint with spacing avoidance."
+    ],
+    "contact": [
+      "Agents slide along stall bounds and do not overlap each other beyond the stated spacing."
+    ],
+    "timestep": "Fixed step with interpolated rendering.",
+    "checks": [
+      "No agent path crosses a stall footprint.",
+      "Closing a stall darkens only its own fixtures."
+    ]
+  },
+  "creative_affordances": [
+    "The market can be coastal, mountain or fictional; the lighting logic survives any culture-neutral art direction.",
+    "Weather is a free choice: light rain adds reflections that make the practical lights work harder."
+  ],
+  "related_ids": [
+    "recipe.fantasy-village-diorama",
+    "knowledge.theme-solarpunk-community",
+    "knowledge.authored-locomotion"
+  ]
+}

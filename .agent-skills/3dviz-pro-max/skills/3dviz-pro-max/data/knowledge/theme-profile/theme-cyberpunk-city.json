@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.theme-cyberpunk-city",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "theme-profile",
+  "title": {
+    "en": "Cyberpunk layered city fiction"
+  },
+  "aliases": {
+    "en": [
+      "cyberpunk city",
+      "neon megablock",
+      "high-tech street fiction"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "Build an invented high-density city from visible layers of access, repair, infrastructure and contested information rather than covering every surface with neon.",
+  "objective": "A viewer can trace street, service and elevated routes, identify a focal inhabited place, inspect one retrofit object and read state changes in both bright and dark regions.",
+  "claims": [],
+  "tags": [
+    "theme-profile",
+    "fictional-setting",
+    "cyberpunk-city"
+  ],
+  "subject_terms": [
+    "cyberpunk city",
+    "neon megablock",
+    "layered future street",
+    "retrofit infrastructure"
+  ],
+  "intent_signals": [
+    "set the scene in a cyberpunk city",
+    "make a dense neon district with readable infrastructure",
+    "create a high-tech street diorama"
+  ],
+  "example_prompts": [
+    "Create a cyberpunk night market inside a retrofitted megablock with traceable public and service routes, an inspectable kiosk and state-driven signs."
+  ],
+  "negative_signals": [
+    "uniform neon applied to every edge",
+    "generic science-fiction outpost",
+    "historically authentic city reconstruction",
+    "rain and holograms without a spatial organizing idea"
+  ],
+  "not_for": [
+    "Claims about a real city, culture, surveillance system, technology or future social outcome without separate research.",
+    "Scenes where emissive decoration overwhelms route, face, control or object-state legibility."
+  ],
+  "content": {
+    "principles": [
+      "Organize the city as stacked public, private and service layers whose access and power relationships are spatially legible; density should create choices and occlusion, not undifferentiated clutter.",
+      "Treat cyberpunk as authored fiction. Names, scripts, clothing and street forms should come from the brief or researched setting rather than a careless collage of living cultures.",
+      "Make technology look installed, adapted and maintained through mounts, cable paths, access panels, drainage and repair patches; let one or two hero systems carry the theme.",
+      "Preserve dark atmosphere with value hierarchy and local contrast. Emission marks active information or power state and never becomes the only cue for routes, selection or danger.",
+      "Choose physical behavior by narrative function: prescribed shutters, fans and sign rigs use controlled transforms, while dropped debris or vehicle contact needs an explicit separate model only when interaction depends on it."
+    ],
+    "implementation": [
+      "Shape a base street canyon, elevated crossing and exposed service route around one inhabited focal volume. Use bridges, stairs, lift doors, conduits and canopy supports with visible attachment logic.",
+      "Craft kiosks and retrofit machines from structural shells, replaceable faceplates, fasteners, vents, cable glands and a reachable service panel; avoid floating screens with no support or input path.",
+      "Separate matte painted composite or coated metal masses from wet rough pavement, transparent polymer covers and small polished wear zones. Reflections and rain are presentation layers, not friction or weather simulation.",
+      "Use a restrained set of cool information lights against warmer occupied interiors or street pools. Keep non-emissive fill sufficient to read silhouettes and material breaks when signs are disabled.",
+      "Drive sign content, shutters, lifts and traffic markers from explicit fictional state. Offset fan rotation, crowd pauses and signage cycles by role; avoid universal synchronized pulsing.",
+      "Provide street, elevated and service-overview cameras plus close inspection of one retrofit. If vehicles share the space, declare lane, speed, avoidance and contact ownership rather than animating meshes through pedestrians."
+    ],
+    "observable_checks": [
+      "From the main view, trace the public path to the focal place and distinguish it from the service route without relying on hue alone.",
+      "Disable emissive materials: primary silhouettes, stairs, entrances, the selected object and its service access remain readable under base lighting.",
+      "Inspect the hero kiosk or machine: shell, mounting, access panel, vents and cable path form a plausible authored assembly rather than disconnected detail decals.",
+      "Toggle a powered or alert state: the correct signs and mechanisms change once from state, while unrelated decoration and navigation remain stable.",
+      "Pause motion and reset the scene: shutters, fans, lifts, signs, vehicles and camera return to their documented states with no delayed callback.",
+      "Review cultural markers and labels against the brief; remove ungrounded claims or present the district explicitly as invented."
+    ]
+  },
+  "known_limits": [
+    "Authored creative proposal; no rendered artifact, cultural-authenticity review or usability improvement has been observed for this record.",
+    "Wet appearance does not compute weather, drainage, tire grip or pedestrian safety; fictional machinery does not establish engineering feasibility.",
+    "This dedicated theme may combine with many visual styles, but it does not replace geometry, interaction, accessibility or simulation contracts."
+  ],
+  "creative_affordances": [
+    "Shift the balance toward noir, graphic-novel, miniature, clean corporate or improvised street fiction while retaining layered access and maintenance logic.",
+    "Use rain, fog, volumetric light or holographic graphics sparingly to reveal depth and power state rather than conceal unfinished structure.",
+    "Replace megablock scale with a single apartment, workshop, transit platform or alley when a smaller human story is the focus."
+  ],
+  "related_ids": [
+    "knowledge.theme-science-fiction-outpost",
+    "knowledge.material-oxidized-metal-layers",
+    "knowledge.inspectable-selection",
+    "knowledge.interruptible-focus",
+    "knowledge.authored-locomotion"
+  ]
+}

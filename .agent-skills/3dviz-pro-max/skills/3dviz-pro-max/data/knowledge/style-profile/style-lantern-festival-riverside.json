@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-lantern-festival-riverside",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Riverside lantern festival (Southeast-Asia-inspired, fictional)"
+  },
+  "aliases": {
+    "en": [
+      "riverside lantern festival",
+      "river lantern night",
+      "Hội An-inspired river town"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "A fictional dusk river town lit from within: warm paper practicals against a cooling blue-violet sky, wet stone reflecting both.",
+  "objective": "In a grayscale screenshot the lanterns and their reflections are the only regions above 0.85 luminance, and with every emissive disabled the bridge, gate and roof line still read from rim and fill alone.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "named-look",
+    "night",
+    "practical-light"
+  ],
+  "subject_terms": [
+    "lantern festival",
+    "river lanterns",
+    "Hội An-inspired",
+    "paper lanterns",
+    "dusk river town",
+    "riverside night market",
+    "practical light scene"
+  ],
+  "intent_signals": [
+    "Build a lantern festival scene on a river at dusk",
+    "Hội An-inspired old town at night, fictional town and signage",
+    "Warm paper lanterns doubled in wet stone and water"
+  ],
+  "example_prompts": [
+    "Make a fictional riverside lantern festival at civil dusk with paper lanterns over a stone quay and boats on the water.",
+    "A walkable dusk river street lit only by hanging lanterns and their reflections."
+  ],
+  "content": {
+    "principles": [
+      "The look is a fictional Southeast-Asia-inspired composite: do not name or depict a real town, a real festival date, a real deity or a real brand; shop signage uses invented business names, and religious iconography is never used as decoration.",
+      "Triangulate three references from different media and take one trait from each — dusk photography of a lantern-lit river town (practical density: 1 lantern per 2.5-4 m of street frontage), hand-painted animation night exteriors (a two-stop painted sky gradient rather than stars), and watercolour game art (value grouping into three masses). Take the traits, not the titles: no named film, studio or artist is required to build this look.",
+      "Silhouette rule: the bridge arch is the only large curved mass; every building is a stack of rectangles with a 30° roof pitch, and exactly one landmark (a gate or tower) stands 2× the height of its neighbours on the right third of the frame.",
+      "Scale cues, always present: door height 2.0 m, lantern diameter 0.35 m, boat length 4.5 m, quay wall 1.2 m, and one seated figure on the quay for human reference.",
+      "Warm and cool must both be present in every view: the lantern warmth (#f2b25c) reads only because the sky and shadow side stay in the blue-violet band (#1b2a4a to #5a4b7a)."
+    ],
+    "implementation": [
+      "Lantern practicals: hang lanterns 2.5-4.0 m apart at 2.8-3.6 m height. Each lantern is an emissive mesh (emissive #f2b25c, emissiveIntensity 3.0, roughness 0.9, transmission 0.4, thickness 0.02 m) plus a PointLight of 40-80 candela with distance 6 m and decay 2. Cap dynamic lights at 12 and make the rest emissive-only, otherwise the frame budget goes to lights nobody can point at.",
+      "Wet ground: a single quay plane with a puddle roughness map — puddle 0.15, damp stone 0.35, sheltered dry stone 0.6 — and a scrolling normal map at 0.012 uv/s so lantern reflections shimmer instead of sitting still. The water plane itself is roughness 0.15, metalness 0.0, with two normal layers scrolling at 0.02 uv/s along 37° and 128°.",
+      "Wall plaster: roughness 0.75-0.9, metalness 0, vertex-colour grime darkening 20% in the bottom 0.4 m and under the eaves; roof tiles roughness 0.7 as overlapping courses with 5% hue jitter per row so the roof plane never reads as one flat quad.",
+      "Atmosphere: FogExp2 colour #3a3560 at density 0.045 — the fog colour equals the sky horizon band so distant roofs dissolve into the sky rather than stacking as silhouettes on a clean edge.",
+      "Motion: each lantern sways on a seeded sine of period 3.2-4.8 s and amplitude 3°, phase-offset by its x-position; boats bob with a 5.5 s period and 2 cm amplitude; camera focus eases out cubic over 900 ms and remains interruptible.",
+      "Composition: three-quarter view from the river with the lantern bridge on the right third and a boat prow in the foreground-left; no moon and no stars, so the sky stays a pure two-stop gradient."
+    ],
+    "observable_checks": [
+      "Grayscale screenshot: lanterns and their water reflections are the only regions above 0.85 luminance; the quay and walls stay between 0.15 and 0.55.",
+      "Disable every emissive material: the bridge arch, gate and roof line still read as separate masses from the hemisphere fill and the #8a7bb8 rim alone.",
+      "Toggle fog off and on: at least three roof planes separate into foreground, mid and background depth layers when fog is on.",
+      "Count the dynamic PointLights in the scene graph: 12 or fewer, and removing any one of them visibly changes the frame."
+    ]
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at renderer.toneMappingExposure 0.9 with three.js physically-based light units; every intensity must be re-tuned under AgX, Neutral or a different exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "The palette survives a season change: swap the lantern paper hue toward #f2d08a for a cooler festival night, keeping the sky band and the 4:1 key:fill ratio.",
+    "The look works as a walkable street or as a boxed diorama; in diorama mode enable DOF (focus 8 m, f/2.8) and drop the dynamic light cap to 6.",
+    "Nothing here fixes the architecture: stilt houses, a covered market or a single-bridge scene all hold as long as the practical spacing, value split and warm/cool separation are kept."
+  ],
+  "related_ids": [
+    "knowledge.emissive-practical-light-balance",
+    "knowledge.theme-heritage-fiction",
+    "knowledge.style-painterly"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "The scene has no sun, so the whole read depends on practicals: lanterns sit at 40-80 candela with decay 2 so their 6 m falloff is visible on plaster and water, and everything else lives in a narrow 0.15-0.55 luminance band that lets 10% of the frame carry all the light. Fog colour is set equal to the sky horizon band (#3a3560 against #5a4b7a) because a dusk river town reads as depth only when far roofs dissolve rather than stack, and exposure 0.9 with ACESFilmic keeps the lantern paper just above the 1.0 bloom threshold without blowing the emissive to white.",
+    "values": {
+      "feeling": [
+        "gentle",
+        "expectant",
+        "communal"
+      ],
+      "palette": [
+        {
+          "hex": "#1b2a4a",
+          "role": "sky zenith / deepest shadow"
+        },
+        {
+          "hex": "#5a4b7a",
+          "role": "sky horizon band, cool fill"
+        },
+        {
+          "hex": "#f2b25c",
+          "role": "lantern paper emissive (primary warm)"
+        },
+        {
+          "hex": "#c8642e",
+          "role": "lantern frame, roof tile, accent warm"
+        },
+        {
+          "hex": "#e8d9b8",
+          "role": "ochre wall plaster catching lantern light"
+        }
+      ],
+      "value_structure": "60/30/10 dark/mid/light; lanterns and their reflections are the only elements above 0.85 luminance",
+      "saturation_rule": "non-focal surfaces ≤ 45% HSL saturation; only lantern emissives exceed 70%",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#1b2a4a",
+        "horizon": "#5a4b7a"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#3a3560",
+        "density": 0.045
+      },
+      "lights": {
+        "key": {
+          "type": "PointLight",
+          "color": "#f2b25c",
+          "intensity": 60,
+          "elevation_deg": 12,
+          "azimuth_deg": 0,
+          "castShadow": false,
+          "distance_m": 6,
+          "decay": 2,
+          "note": "practical cluster, not a single key: each lantern carries 40-80 candela; at most 12 are dynamic, the rest are emissive-only"
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#5a4b7a",
+          "ground": "#2a1f1a",
+          "intensity": 0.35
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#8a7bb8",
+          "intensity": 0.4,
+          "elevation_deg": 8,
+          "azimuth_deg": 210,
+          "castShadow": true
+        },
+        "ratio": "key:fill ≈ 4:1 measured on a neutral card held at the main lantern"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 0.9
+      },
+      "camera": {
+        "fov_deg": 42,
+        "height_m": 1.6,
+        "pitch_deg": -4,
+        "orbit": {
+          "minPolar_deg": 60,
+          "maxPolar_deg": 92,
+          "minDist_m": 4,
+          "maxDist_m": 22
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.15,
+          0.9
+        ],
+        "metalness": [
+          0.0,
+          0.05
+        ],
+        "notes": "wet stone 0.15-0.35 via puddle mask (puddle 0.15, damp 0.35, dry 0.6); water plane roughness 0.15 with two normal layers scrolling 0.02 uv/s at 37° and 128°; wall plaster 0.75-0.9 with 20% vertex-colour grime in the bottom 0.4 m; lantern paper roughness 0.9, transmission 0.4, thickness 0.02 m"
+      },
+      "motion": {
+        "sway_period_s": [
+          3.2,
+          4.8
+        ],
+        "ease": "sine in-out",
+        "hold_ms": 500
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.0,
+          "strength": 0.35,
+          "radius": 0.6
+        },
+        "vignette": 0.25,
+        "grain": 0.03,
+        "dof": "off for walkable; focus 8 m at f/2.8 for diorama stills"
+      },
+      "signature_technique": "Fresnel-boosted reflection on the wet quay and river so every lantern appears twice — once in the air, once in the water — doubling the light count without adding a light.",
+      "never": [
+        "untinted white ambient light",
+        "cyan water",
+        "rainbow-hued lanterns",
+        "dead-centre symmetric camera at eye level",
+        "flat black sky"
+      ]
+    }
+  }
+}

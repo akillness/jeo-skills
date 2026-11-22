@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.baked-runtime-lightmap-ownership",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Baked and runtime lightmap ownership"
+  },
+  "aliases": {
+    "en": [
+      "double-lighting-safe lightmap",
+      "baked illuminance handoff",
+      "lightmap UV and encoding contract"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "products-assemblies"
+  ],
+  "summary": "Assign every direct, indirect, ambient-occlusion and emissive contribution to the bake or runtime before binding a lighting-only lightmap product, with a bake-safe unwrap/channel and explicit linear-light encoding.",
+  "objective": "A baked scene preserves intended static illumination without adding the same contribution again at runtime, while seams, channel selection and encoding remain inspectable.",
+  "applies_when": [
+    "Static illumination is baked in Blender for a Three.js scene.",
+    "A scene mixes a lightmap with runtime lights, shadows or emissive materials."
+  ],
+  "subject_terms": [
+    "lightmap",
+    "baked illuminance",
+    "UV channel",
+    "Linear-sRGB",
+    "double lighting",
+    "bake margin"
+  ],
+  "tags": [
+    "lighting-profile",
+    "lightmap",
+    "baking",
+    "color-management"
+  ],
+  "intent_signals": [
+    "avoid double lighting after a Blender bake",
+    "bind a lightmap to the intended UV channel",
+    "diagnose overbright baked scenes"
+  ],
+  "example_prompts": [
+    "Bake indirect room lighting but keep a runtime sun without counting it twice.",
+    "Give modular walls a dedicated lightmap unwrap and verify seams and linear encoding."
+  ],
+  "negative_signals": [
+    "Adding runtime copies of contributions already present in the bake.",
+    "Treating a display-ready sRGB image as linear illuminance."
+  ],
+  "not_for": [
+    "Dynamic GI or moving-light shadow fidelity.",
+    "General base-color, ORM or normal-map baking."
+  ],
+  "content": {
+    "principles": [
+      "Write a contribution manifest before baking: state whether direct, indirect, AO and emission are included. Runtime may add only deliberately excluded contributions or an explicitly authored extra look.",
+      "A lightmap is illumination data. Keep its sampling UVs non-overlapping at the baked resolution, include island margin, and declare its linear-light encoding separately from display color.",
+      "Use an existing UV layout only when it is non-overlapping, sufficiently padded and stable for the bake; otherwise author a dedicated lightmap unwrap. Always bind the intended channel explicitly. The exact Three.js attribute/channel path is version dependent, so inspect the installed revision."
+    ],
+    "implementation": [
+      "In Blender, choose or create a bake-safe UV set and target, record Combined contribution toggles and margin, then derive a lighting-only illuminance product appropriate for the runtime lightMap slot. Do not bind an arbitrary Combined beauty result containing material color, glossy response or visible emission and shade it again as a lightmap.",
+      "In Three.js, bind the map to the verified channel, set the documented colorSpace for the chosen file encoding, and enable only the runtime lights/shadows allowed by the contribution manifest.",
+      "Provide diagnostic toggles for lightmap-only, runtime-only and combined views; reset restores the declared combined configuration."
+    ],
+    "observable_checks": [
+      "The lightmap follows the intended faces with no overlaps or mip seam bleed at the tested distance.",
+      "Lightmap-only plus runtime-only predicts the combined view; duplicated direct or indirect light is visible as a failed overbright comparison.",
+      "Before tone mapping, a neutral gray receiver and open-domain bright patch retain expected linear-light ratios after decode; then verify display output separately and record renderer revision and texture channel."
+    ]
+  },
+  "related_ids": [
+    "knowledge.blender-three-ibl-shadow-ownership",
+    "knowledge.uv-atlas-bake-correspondence",
+    "knowledge.blender-three-linear-color-handoff"
+  ],
+  "creative_affordances": [
+    "Use stained light, theatrical pools or stylized baked gradients as long as ownership stays explicit.",
+    "Expose contribution toggles as a teaching or debugging view."
+  ],
+  "known_limits": [
+    "A static bake cannot respond correctly to moved geometry or lights.",
+    "A full Combined or beauty bake is not automatically a valid MeshStandardMaterial lightMap; material-color, glossy and visible-emission terms require a declared conversion or different prelit presentation path.",
+    "Core glTF transport of an application lightmap binding is not asserted here.",
+    "No UV unwrap, bake, export, texture decode or render was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.lighting-blender-bake-components",
+      "statement": "Blender Cycles baking requires a UV map and target and lets Combined lighting contributions including direct, indirect, AO and emission be selected; image baking can extend margins around UV islands to avoid filtering and mipmap seams.",
+      "scope": "Blender 4.5 Cycles bake controls; the ownership manifest is authored guidance.",
+      "source_refs": [
+        {
+          "source_id": "source.lighting-blender-cycles-baking",
+          "locator": "Setup; Combined Influence toggles; Margin"
+        }
+      ]
+    },
+    {
+      "id": "claim.lighting-three-lightmap-slot",
+      "statement": "Three.js MeshStandardMaterial documents lightMap as pre-baked illuminance, describes a second UV set, and recommends an explicit colorSpace with LinearSRGBColorSpace common for HDR lightmaps.",
+      "scope": "Live Three.js docs; installed UV-channel API and asset encoding must be verified.",
+      "source_refs": [
+        {
+          "source_id": "source.three-standard-material",
+          "locator": "lightMap property"
+        },
+        {
+          "source_id": "source.shared-depth-three-color-management",
+          "locator": "Input color space and open-domain light-map guidance"
+        }
+      ]
+    }
+  ]
+}

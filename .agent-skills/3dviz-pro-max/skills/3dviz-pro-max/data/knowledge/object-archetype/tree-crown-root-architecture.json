@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.tree-crown-root-architecture",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "object-archetype",
+  "title": {
+    "en": "Tree crown, branch junctions and site-specific roots"
+  },
+  "aliases": {
+    "en": [
+      "tree root and crown assembly",
+      "branch collar and root architecture"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "earth-environment",
+    "characters-motion-art"
+  ],
+  "summary": "Model a tree as a connected trunk, branch hierarchy, foliage distribution and independently chosen root architecture rather than mirrored cones above and below ground.",
+  "objective": "Keep branching and root attachment readable while distinguishing species/site evidence from procedural variation and decorative wind.",
+  "tags": [
+    "object-archetype",
+    "tree-crown-root-architecture"
+  ],
+  "subject_terms": [
+    "tree crown",
+    "trunk flare",
+    "branch junction",
+    "lateral root",
+    "taproot",
+    "tamarack",
+    "root collar",
+    "foliage cluster"
+  ],
+  "intent_signals": [
+    "roots mirror the canopy incorrectly",
+    "make tree branching readable",
+    "cutaway tree and underground roots"
+  ],
+  "example_prompts": [
+    "Create a tamarack-inspired tree cutaway with shallow spreading roots and clearly authored crown geometry.",
+    "Design a stylized woodland tree whose branch attachments remain coherent during a wind animation."
+  ],
+  "content": {
+    "principles": [
+      "Root architecture depends on the chosen species and site. The cited tamarack account describes shallow spreading roots and peatland individuals without taproots; it is a counterexample to a mandatory deep central root.",
+      "Separate the trunk/branch skeleton from foliage placement. Foliage clusters should explain the chosen crown silhouette without hiding every branch attachment.",
+      "Choose root architecture independently of crown geometry. An ornamental mirrored tree-of-life motif is a valid fictional design, but it should not be labeled a measured root excavation.",
+      "Growth, wind deformation and seasonal visibility are separate authored state changes; waving branches do not establish elastic properties or tree stability."
+    ],
+    "implementation": [
+      "Build a rooted branch graph with persistent parent IDs, attachment locations, taper profiles and local frames. Generate child geometry from the parent attachment rather than placing detached cones near a trunk.",
+      "Shape a visible trunk flare/root collar and route major roots into a declared soil volume. For a tamarack-inspired peatland example, choose lateral roots without a taproot; use separate evidence before generalizing to another species or substrate.",
+      "Use bark direction, branch junction transitions and exposed cut faces to distinguish woody structure. Place leaf or needle clusters in named crown regions and vary density to retain useful negative space.",
+      "For decorative wind, keep branch origins attached and drive bounded local bending from an authored phase hierarchy. Do not scale entire child subtrees in a way that changes their stated rest lengths unless growth is the chosen model.",
+      "Represent soil as a removable cutaway layer with roots remaining in their original coordinates. Label truncated roots at the cutaway boundary rather than implying their full extent is visible.",
+      "Store branch seed/topology, root variant, wind phase and seasonal visibility for exact reconstruction. Use simplified collision envelopes separately from visual foliage, and identify when moving branches are only decorative."
+    ],
+    "observable_checks": [
+      "Remove foliage and orbit the tree: every branch joins its declared parent and roots meet the trunk without unexplained gaps.",
+      "Toggle the soil section: roots retain world positions and clipped boundaries are marked consistently.",
+      "At maximum authored wind bend, attachment points remain continuous and the trunk does not detach from its ground/root interface.",
+      "Compare two site variants: a change in root assumptions updates the root model and caption, not just the bark color."
+    ]
+  },
+  "known_limits": [
+    "Tamarack source does not establish a universal root-depth number, a fixed crown/root ratio or a growth algorithm.",
+    "Procedural branching and decorative bending do not predict anchorage, windthrow, water uptake or arboricultural safety.",
+    "Authored modeling guidance and prospective checks; no runtime artifact has been executed for this record."
+  ],
+  "creative_affordances": [
+    "Use sparse, dense, twisted, geometric or fantastical crowns; the seed, branch hierarchy and species/site labels should remain deliberate rather than enforcing botanical realism on fiction."
+  ],
+  "claims": [
+    {
+      "id": "claim.object-depth-tree-crown-root-architecture",
+      "statement": "The USDA Forest Service tamarack account describes a typically shallow, spreading root system and states that peatland tamaracks do not form taproots.",
+      "scope": "Larix laricina in the specified species/site account; no extrapolation to all trees.",
+      "source_refs": [
+        {
+          "source_id": "source.object-depth-usfs-tamarack-roots",
+          "locator": "Rooting Habit: opening paragraph, shallow spreading roots and peatland tamaracks without taproots."
+        }
+      ]
+    }
+  ],
+  "related_ids": []
+}

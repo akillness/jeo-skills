@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.framed-shelter",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "object-archetype",
+  "title": {
+    "en": "Framed shelter with readable assembly"
+  },
+  "aliases": {
+    "en": [
+      "framed shelter",
+      "post and beam shelter",
+      "timber shelter framing"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas"
+  ],
+  "summary": "Construct a shelter from foundation, posts, beams, roof and infill so support and enclosure can be inspected.",
+  "objective": "From an isolated oblique view, trace roof-to-frame-to-ground connections without unexplained floating members.",
+  "tags": [
+    "object-archetype",
+    "framed",
+    "shelter"
+  ],
+  "example_prompts": [
+    "Construct a shelter from foundation, posts, beams, roof and infill so support and enclosure can be inspected."
+  ],
+  "content": {
+    "principles": [
+      "Authored visual archetype: identify what supports, what encloses and what opens before choosing decorative motifs.",
+      "Repeat a bay dimension to give doors, posts and roof edges a shared scale; vary the silhouette without losing the assembly."
+    ],
+    "implementation": [
+      "Create named foundation, frame, roof and infill groups. Place post feet at the foundation and give roof members visible bearing locations.",
+      "Give doors thickness, jambs and a hinge-side pivot. Reserve clearance through the opening before adding trim.",
+      "Represent joints with a few purposeful seams or brackets; use a removable wall or roof for inspection."
+    ],
+    "observable_checks": [
+      "From an isolated oblique view, trace roof-to-frame-to-ground connections without unexplained floating members.",
+      "Open the door through its declared range; it clears jambs and can be closed to its saved rest pose.",
+      "Removing infill reveals the same frame, not a second disconnected interior model."
+    ]
+  },
+  "known_limits": [
+    "A coherent visual assembly does not certify loads, joinery, weather resistance or construction safety.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+  ],
+  "related_ids": [
+    "recipe.fantasy-village-diorama",
+    "recipe.historical-diorama"
+  ],
+  "claims": [],
+  "subject_terms": [
+    "foundation",
+    "posts",
+    "beams",
+    "roof support",
+    "infill",
+    "structural frame"
+  ],
+  "intent_signals": [
+    "show how the roof connects to the shelter frame",
+    "inspect a timber building with its wall panels removed"
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "3D Paper Material"
+  short_description: "Fibre, deckle edge, thickness and back-lit washi, cotton rag and kraft"
+  default_prompt: "Use $3d-paper-material to build a sheet of washi that shows fibres, a torn deckle edge, real thickness and light passing through it, not a flat white plane."

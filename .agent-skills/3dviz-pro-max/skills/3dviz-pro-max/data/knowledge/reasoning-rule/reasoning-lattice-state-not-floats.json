@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-lattice-state-not-floats",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Keep discrete puzzles on integer cells"
+  },
+  "aliases": {
+    "en": [
+      "grid state",
+      "occupancy set",
+      "snapping"
+    ]
+  },
+  "direction_ids": [
+    "spatial-puzzles",
+    "environments-dioramas"
+  ],
+  "summary": "Store piece positions as integer lattice coordinates and test placement by set occupancy rather than by geometry.",
+  "objective": "Make a spatial puzzle exact so that fitting, collision and completion are decidable rather than approximate.",
+  "applies_when": [
+    "Pieces occupy cells of a grid, tray, board or voxel volume.",
+    "Pieces are dragged, rotated or dropped into place.",
+    "Completion, overlap or legality must be decided."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "lattice",
+    "voxel",
+    "occupancy",
+    "snapping",
+    "discrete state",
+    "collision test"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "puzzle",
+    "state"
+  ],
+  "intent_signals": [
+    "the piece almost fits",
+    "snap to the grid",
+    "detect when the tray is full"
+  ],
+  "example_prompts": [
+    "Build a voxel packing puzzle where pieces snap and overlaps are impossible.",
+    "Tell me when the tray is completely filled."
+  ],
+  "negative_signals": [
+    "Continuous fitting problems such as jigsaw edges or physical stacking.",
+    "Free-form sandbox building where exact packing is not the point."
+  ],
+  "not_for": [
+    "Continuous fitting problems such as jigsaw edges or physical stacking.",
+    "Free-form sandbox building where exact packing is not the point."
+  ],
+  "content": {
+    "principles": [
+      "A discrete puzzle is a combinatorial object. Once positions are floating-point, two pieces can overlap by a fraction, a tray can be almost full, and completion becomes a question of tolerance rather than of fact.",
+      "Occupancy sets make the important operations trivial and exact: overlap is set intersection, completion is set equality with the target region, and legality is a membership test.",
+      "Rotation of a lattice piece is itself discrete. Precomputing the distinct orientations of each piece avoids re-deriving them from rotated meshes and eliminates rounding at every rotation.",
+      "Snapping is presentation. It should show the discrete position the model already holds, not be the mechanism by which the model becomes discrete. A free-moving or explicitly invalid preview is a legitimate interface as long as the commit is discrete and validated."
+    ],
+    "implementation": [
+      "Represent each piece as a set of integer cell offsets plus a placement, and derive the rendered transform from that placement.",
+      "Enumerate the distinct lattice orientations of each piece once and reference them by index during play.",
+      "Test placement by set operations against the occupied cells and the tray region, and report the specific conflicting cells.",
+      "Drive the drag interaction by projecting the pointer to a candidate cell and evaluating that candidate against occupancy and the board limits. The preview may show an illegal candidate, marked as rejected, or follow the pointer smoothly off-grid; what must stay discrete and validated is the committed placement.",
+      "Detect completion by comparing the union of placed cells with the target region together with the invariants that make the union meaningful: pairwise non-overlap and the piece-use rule. A union alone loses multiplicity, so either check those invariants at completion or rely on a placement path that has guaranteed them all along."
+    ],
+    "observable_checks": [
+      "Attempt to place a piece one cell into an occupied region and confirm the model refuses rather than allowing a near-fit.",
+      "Rotate a piece through all its orientations and confirm the cell set matches the precomputed orientation exactly.",
+      "Fill the tray and confirm completion fires from the set comparison rather than from a visual check.",
+      "Drag rapidly and confirm no piece ends between cells."
+    ]
+  },
+  "related_ids": [
+    "recipe.voxel-packing-tray",
+    "recipe.sliding-block-escape",
+    "recipe.layered-maze-navigation"
+  ],
+  "creative_affordances": [
+    "Non-cubic lattices, hexagonal boards and layered grids all work with the same discipline.",
+    "Physical-feeling drag, wobble and settle animations remain available over an exact model."
+  ],
+  "known_limits": [
+    "Authored state-model guidance; no runtime puzzle has been exercised for this record.",
+    "It does not provide a solver or a difficulty measure."
+  ],
+  "claims": []
+}

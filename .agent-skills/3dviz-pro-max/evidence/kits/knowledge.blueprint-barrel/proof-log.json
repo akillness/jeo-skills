@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-barrel",
+  "record_revision": 2,
+  "asset": "templates/kits/props/barrel.js",
+  "asset_sha256": "e82c88bb55431931a15431672815daf4f2e97dbaa13436c898832ede36f820d0",
+  "params": {
+    "height": 0.94,
+    "radius": 0.34,
+    "staves": 16,
+    "seed": 1,
+    "bulge": 0.2,
+    "gap": 0.06
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-barrel",
+    "module": "../props/barrel.js",
+    "params": {
+      "height": 0.94,
+      "radius": 0.34,
+      "staves": 16,
+      "seed": 1,
+      "bulge": 0.2,
+      "gap": 0.06
+    },
+    "triangles": 3448,
+    "bounds_m": {
+      "min": [
+        -0.3637999892234802,
+        -0.00405915779992938,
+        -0.3631440983768166
+      ],
+      "max": [
+        0.3637999892234802,
+        0.9440591335296631,
+        0.36299189576118657
+      ],
+      "size": [
+        0.7275999784469604,
+        0.9481182913295925,
+        0.7261359941380032
+      ]
+    },
+    "fit_distance_m": 2.0444,
+    "view_distances_m": {
+      "far": 4.9065,
+      "mid": 2.4532,
+      "close": 1.5946,
+      "detail": 0.7671
+    },
+    "sockets": [
+      "lid",
+      "base",
+      "tap"
+    ],
+    "detail_socket": "lid",
+    "animated": false,
+    "colliders": [
+      "barrel"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "b61a0b226c3511aa2612665793286dee3a143f984e17929961aa4f7599b2fad4",
+    "mid.png": "6c1c84d1ee398175499215525ddbe0bd00f38f62560e04755e558fd52f06f881",
+    "close.png": "5bf84a6ab66695be8f3b3064a9c7d8764603e58ce8f0ae1e8ce3ffde60a40f2d",
+    "detail.png": "29a385f8c34c6c6be68af8c98a010049ce9f070f264553742765cfca8323bb55"
+  },
+  "motion": null,
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:49:40+00:00",
+  "finished": "2026-09-08T13:49:43+00:00"
+}

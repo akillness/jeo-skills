@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "id": "recipe.hanoi-optimal-bound",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Towers of Hanoi and its optimal move bound"
+  },
+  "aliases": {
+    "en": [
+      "Towers of Hanoi",
+      "optimal moves",
+      "disc puzzle"
+    ]
+  },
+  "direction_ids": [
+    "spatial-puzzles"
+  ],
+  "summary": "Let a viewer play the puzzle while the known minimum move count stays visible as a target rather than a decoration.",
+  "objective": "Build a Towers of Hanoi where my move count is compared with the minimum for that disc count and illegal placements are refused.",
+  "tags": [
+    "hanoi",
+    "puzzle",
+    "optimal"
+  ],
+  "subject_terms": [
+    "Towers of Hanoi",
+    "legal move",
+    "move count",
+    "optimal solution",
+    "recursive strategy",
+    "disc ordering",
+    "peg"
+  ],
+  "intent_signals": [
+    "Let me solve Towers of Hanoi and compare my moves with the minimum.",
+    "Show the recursive strategy for the disc puzzle in 3D."
+  ],
+  "example_prompts": [
+    "Build a Towers of Hanoi puzzle with legal move enforcement and a comparison against the optimal count.",
+    "Show the recursive solution being replayed move by move."
+  ],
+  "negative_signals": [
+    "Not a general puzzle solver; the optimal strategy here is the known recursive one for three pegs.",
+    "Not a physics toy: discs do not topple, bounce or collide."
+  ],
+  "not_for": [
+    "Not a general puzzle solver; the optimal strategy here is the known recursive one for three pegs.",
+    "Not a physics toy: discs do not topple, bounce or collide."
+  ],
+  "entities": [
+    {
+      "name": "Discs and pegs",
+      "guidance": "Model discs with clearly ordered radii and pegs with a visible stack height, so an illegal placement would be obvious even without the rule check."
+    },
+    {
+      "name": "Rule enforcement",
+      "guidance": "Refuse a move that places a larger disc on a smaller one and say why, rather than allowing it and marking it red."
+    },
+    {
+      "name": "Move ledger",
+      "guidance": "Show the move count, the minimum for the current disc count and the difference, updating on every committed move."
+    }
+  ],
+  "state_contract": {
+    "model": "Three pegs holding ordered disc stacks, a legal move test, a move counter and the computed minimum of 2 to the power n minus 1 for n discs. Replay of the recursive solution is a separate stored sequence.",
+    "authority": "The stack state is authoritative and rules are enforced before any animation begins, so an animated move always corresponds to a legal committed move.",
+    "actions": [
+      "Pick up the top disc of a peg and drop it on another.",
+      "Undo the last move.",
+      "Replay the recursive optimal solution.",
+      "Change the disc count and reset."
+    ]
+  },
+  "invariants": [
+    "Only the top disc of a peg can be moved, and it may never land on a smaller disc.",
+    "The optimal replay applies to a complete source tower, so replay first rebases to that configuration; from there it finishes in exactly 2 to the power n minus 1 moves. An interrupted replay is reported as interrupted rather than as a completed count.",
+    "Undo restores both the stacks and the move counter.",
+    "A drop back onto the source peg is a no-op that does not increment the counter, and input is ignored while a move animation is in flight."
+  ],
+  "motion_guidance": [
+    "Animate a move as lift, travel and place so the disc never passes through a peg or another disc.",
+    "Keep the optimal replay steppable; a continuous animation cannot be counted."
+  ],
+  "known_limits": [
+    "The bound cited is for the classical three-peg problem; adding pegs changes it and is out of scope.",
+    "Illegal moves are prevented, so the scene does not teach recovery from an invalid state.",
+    "The stored optimal sequence grows exponentially, so the disc count is bounded by a declared maximum.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-hanoi-bound",
+      "statement": "The recursive solution moves the top n minus one discs aside, moves the largest disc and then moves the rest back, taking 2 to the power n minus 1 moves for n discs.",
+      "scope": "Classical three-peg puzzle as cited.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-princeton-recursion",
+          "locator": "Section 2.3 Recursion, Towers of Hanoi move count"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Discs and pegs",
+      "structure": "Discs as chamfered rings with clearly stepped radii and pegs as tapered posts with a base plate.",
+      "material": "Ordered material ramp by size so the size order is readable even in monochrome; base plate matte to avoid competing highlights.",
+      "articulation": "A held disc is parented to a carry transform and reparented to the target peg only after the move commits."
+    },
+    {
+      "family": "Move ledger",
+      "structure": "A physical counter board beside the pegs showing moves used, the minimum and the difference.",
+      "material": "Opaque plate with high-contrast numerals so the count is readable from the play camera.",
+      "articulation": "Updates on commit and on undo."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Discrete legal-move puzzle with animated carries; no contact physics or gravity.",
+    "state": [
+      "peg stacks",
+      "held disc",
+      "move count"
+    ],
+    "checks": [
+      "Illegal drops are refused before any state change.",
+      "Optimal replay completes in the stated number of moves."
+    ]
+  },
+  "related_ids": [
+    "recipe.recursion-call-stack",
+    "recipe.sliding-block-escape",
+    "knowledge.state-playback"
+  ]
+}

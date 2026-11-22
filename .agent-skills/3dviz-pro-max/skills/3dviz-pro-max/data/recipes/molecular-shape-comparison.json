@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "id": "recipe.molecular-shape-comparison",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Molecular shape and electron-pair geometry"
+  },
+  "aliases": {
+    "en": [
+      "VSEPR methane water",
+      "molecular geometry comparison"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Contrast methane and water while distinguishing atoms from electron-pair guides.",
+  "objective": "Compare methane and water in 3D and let me show electron-pair guides separately from atoms.",
+  "tags": [
+    "VSEPR",
+    "methane",
+    "water"
+  ],
+  "subject_terms": [
+    "VSEPR",
+    "methane",
+    "water",
+    "tetrahedral",
+    "bent",
+    "lone pair"
+  ],
+  "intent_signals": [
+    "compare molecular shapes",
+    "toggle electron-pair geometry"
+  ],
+  "example_prompts": [
+    "Compare methane and water in 3D and let me show electron-pair guides separately from atoms.",
+    "Rotate water to see why a tetrahedral electron-pair arrangement does not mean four bonded atoms."
+  ],
+  "entities": [
+    {
+      "name": "Atoms and bonds",
+      "guidance": "Construct each molecule from explicit element IDs, bonds and positions; sticks terminate at atom centers."
+    },
+    {
+      "name": "Lone-pair guides",
+      "guidance": "Use translucent lobes distinct from atom spheres and include an electron-pair legend."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Atoms and bonds",
+      "structure": "Construct each molecule from explicit element IDs, bonds and positions; sticks terminate at atom centers.",
+      "material": "Conventional labeled element colors; sphere sizes are display radii."
+    },
+    {
+      "family": "Lone-pair guides",
+      "structure": "Use translucent lobes distinct from atom spheres and include an electron-pair legend.",
+      "material": "Soft transparent guide material, never a photoreal electron cloud."
+    }
+  ],
+  "state_contract": {
+    "model": "Selected molecule with fixed idealized coordinates and independent guide visibility; methane tetrahedral, water bent using cited 104.5-degree schematic bond angle.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Switch molecule.",
+      "Toggle lone pairs and angle bracket.",
+      "Rotate or reset camera."
+    ]
+  },
+  "invariants": [
+    "Water always has two bonded hydrogens; guide visibility never adds atoms.",
+    "Methane retains four C-H bonds.",
+    "Camera motion never changes measured bond angle."
+  ],
+  "motion_guidance": [
+    "Avoid morphing methane atoms into water atoms; transition through distinct named models.",
+    "Renderer tooling owns cylinders, labels and picking; molecule connectivity is authoritative data."
+  ],
+  "known_limits": [
+    "VSEPR illustration, not electron density, molecular dynamics or an experimentally fitted structure.",
+    "Display radii and bond lengths are not van der Waals or measured values unless separately supplied: the cited section gives bond angles only, so the defaults carry angles and no bond length.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [
+    {
+      "id": "claim.molecular-shape-comparison",
+      "statement": "Methane has tetrahedral molecular geometry. Water has tetrahedral electron-pair geometry but bent molecular geometry, with a bond angle about 104.5 degrees.",
+      "scope": "Introductory idealized VSEPR comparison of CH4 and H2O; no quantitative electronic-structure claim.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-molecular-shape",
+          "locator": "Figure 7.17 and Example 7.13 / Figure 7.23"
+        }
+      ]
+    },
+    {
+      "id": "claim.molecular-shape-ideal-angles",
+      "statement": "The ideal electron-pair geometries have fixed angles: linear 180 degrees, trigonal planar 120 degrees, tetrahedral 109.5 degrees, trigonal bipyramidal 90 and 120 degrees, and octahedral 90 or 180 degrees. Methane has a tetrahedral arrangement of its hydrogen atoms and, having no lone pairs, a molecular structure identical to its electron-pair geometry, whereas the greater space taken by lone pairs reduces the water bond angle to 104.5 degrees, below the ideal tetrahedral value.",
+      "scope": "Ideal VSEPR angles and the lone-pair reduction that separates water's molecular geometry from its electron-pair geometry. No bond lengths, atomic radii or energies are claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-molecular-shape",
+          "locator": "7.6 Molecular Structure and Polarity, electron-pair geometry table and the water discussion: tetrahedral \"all angles 109.5 degrees\"; linear 180, trigonal planar 120, trigonal bipyramidal 90 and 120, octahedral 90 or 180; methane with \"a tetrahedral arrangement of the hydrogen atoms\" where \"the molecular structure is identical to the electron pair geometry\"; for water \"the bond angle is 104.5 deg\", smaller than the ideal tetrahedral angle because lone pairs occupy more space than bonding pairs"
+        }
+      ]
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Static idealized molecular geometry.",
+    "state": [
+      "molecule ID",
+      "guide visibility"
+    ],
+    "colliders": [
+      "None; display spheres are not collision radii."
+    ],
+    "driving": [
+      "Camera and selection only."
+    ],
+    "contact": [
+      "No interatomic forces."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Count bonds and confirm water guide toggles leave atom count unchanged."
+    ]
+  },
+  "defaults": {
+    "provenance": "source-backed",
+    "tunable": true,
+    "claim_ids": [
+      "claim.molecular-shape-comparison",
+      "claim.molecular-shape-ideal-angles"
+    ],
+    "rationale": "Both angles are printed in the cited section and carried by claim.molecular-shape-comparison and claim.molecular-shape-ideal-angles; the coordinates below are the exact placements that realise those sourced angles at unit bond length, so a build can be checked against arccos values rather than by eye. Bond length is deliberately absent: the section gives angles only, and the record already warns that display radii are not measured properties, so lengths stay a display unit chosen by the scene. Tunable in bond length and display radius; the two angles are not tunable, because they are the content the recipe exists to show.",
+    "values": {
+      "parameters": {
+        "methane_bond_angle": {
+          "value": 109.5,
+          "unit": "deg",
+          "note": "sourced ideal tetrahedral angle; the exact value realised by the coordinates below is arccos(-1/3) = 109.4712 deg"
+        },
+        "water_bond_angle": {
+          "value": 104.5,
+          "unit": "deg",
+          "note": "sourced; smaller than tetrahedral because lone pairs occupy more space"
+        },
+        "water_electron_pair_geometry": {
+          "value": "tetrahedral",
+          "unit": "category",
+          "note": "sourced: four electron pairs, two bonding and two lone"
+        },
+        "water_molecular_geometry": {
+          "value": "bent",
+          "unit": "category",
+          "note": "sourced"
+        },
+        "methane_hydrogen_directions": {
+          "value": [
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              -1,
+              -1
+            ],
+            [
+              -1,
+              1,
+              -1
+            ],
+            [
+              -1,
+              -1,
+              1
+            ]
+          ],
+          "unit": "unnormalised directions from the carbon; divide by sqrt(3) for unit length",
+          "note": "exact realisation of the sourced tetrahedral angle"
+        },
+        "water_hydrogen_directions": {
+          "value": [
+            [
+              0.79016,
+              0.61292,
+              0.0
+            ],
+            [
+              -0.79016,
+              0.61292,
+              0.0
+            ]
+          ],
+          "unit": "unit vectors from the oxygen",
+          "note": "each at half of 104.5 deg from the +y symmetry axis: sin(52.25 deg) = 0.79016, cos(52.25 deg) = 0.61292"
+        },
+        "bond_length": {
+          "value": "no default; source gives none",
+          "unit": "pm",
+          "note": "the section gives angles only; pick a display unit and say it is a display unit"
+        },
+        "display_atom_radius": {
+          "value": "no default; source gives none",
+          "unit": "pm",
+          "note": "not a van der Waals radius unless separately supplied and sourced"
+        }
+      },
+      "equations": [
+        "angle(H-X-H) = arccos(u1 . u2) for unit bond direction vectors",
+        "tetrahedral: u_i . u_j = -1/3 for every pair, giving arccos(-1/3) = 109.4712 deg",
+        "water: u1 . u2 = cos(104.5 deg) = -0.2504",
+        "a rigid camera transform leaves every dot product unchanged"
+      ],
+      "worked_example": {
+        "inputs": "Methane with the four hydrogens along (+-1,+-1,+-1)/sqrt(3) with an even number of minus signs, and water with two hydrogens at +-52.25 degrees from the +y axis in the xy plane, both at unit bond length",
+        "expected": "Every methane H-C-H angle measures 109.4712 degrees, matching the sourced ideal 109.5 to within 0.03 degrees; the water H-O-H angle measures exactly 104.5 degrees; both readings are unchanged by any camera orbit, and toggling the lone-pair guides changes neither the atom count (5 for methane, 3 for water) nor either angle",
+        "derivation": "Methane: u1 . u2 = (1 x 1 + 1 x -1 + 1 x -1)/3 = -1/3, so the angle is arccos(-1/3) = 109.4712 deg; the same holds for all six pairs by symmetry. Water: u1 . u2 = -0.79016^2 + 0.61292^2 + 0 = -0.62435 + 0.37567 = -0.24868, and arccos(-0.24868) = 104.4 deg; using the exact half-angle 52.25 deg gives cos(104.5 deg) = -0.25038 and the angle back to 104.5 deg, so the coordinates should be stored to at least five decimals or derived from the angle at load time. Camera check: dot products are invariant under rotation, so the measured angle cannot change with the view - if it does, the measurement is being taken in screen space."
+      },
+      "tolerance": {
+        "angle_deg": "+/- 0.1 deg on a measured angle against its sourced value; the 109.4712 exact value differs from the section's rounded 109.5 by 0.03 deg, which is a rounding difference, not an error",
+        "atom_count": "exact: guide visibility must never change it",
+        "camera_invariance": "the measured angle must be identical to 1e-9 deg before and after any camera move"
+      }
+    }
+  }
+}

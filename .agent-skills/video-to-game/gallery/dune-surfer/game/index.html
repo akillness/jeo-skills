@@ -1,0 +1,2290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Dune Surfer</title>
+<link rel="icon" type="image/png" href="assets/sun.png" />
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#24121b;color:#fff3e2;
+    font-family:ui-rounded,"SF Pro Rounded","Avenir Next","Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+    -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+  #c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;outline:none}
+  .hidden{opacity:0!important;pointer-events:none!important}
+  .hud{position:fixed;pointer-events:none;transition:opacity .6s ease}
+  #score{left:30px;top:20px;font-weight:800;font-size:42px;letter-spacing:.01em;
+    text-shadow:0 2px 14px rgba(90,30,40,.45),0 1px 0 rgba(90,30,40,.35)}
+  #mult{left:32px;top:72px;font-weight:800;font-size:19px;letter-spacing:.12em;color:#ffe0a8;
+    text-shadow:0 2px 10px rgba(90,30,40,.5)}
+  #dist{right:30px;top:26px;font-weight:700;font-size:17px;letter-spacing:.14em;color:#fff0dc;opacity:.9;
+    text-shadow:0 2px 10px rgba(90,30,40,.5)}
+  #day{left:50%;top:28px;transform:translateX(-50%);display:flex;align-items:center;gap:10px}
+  #daytrack{width:min(240px,34vw);height:7px;border-radius:7px;background:rgba(70,28,45,.38);overflow:hidden;
+    box-shadow:inset 0 0 0 1px rgba(255,236,210,.18)}
+  #dayfill{height:100%;width:100%;border-radius:7px;background:linear-gradient(90deg,#ff6d4a,#ffb35c 55%,#ffe39a);
+    transform-origin:left center}
+  #sunico{width:16px;height:16px;border-radius:50%;background:radial-gradient(circle,#fff6d8 0 38%,#ffc56a 60%,rgba(255,170,90,0) 72%)}
+  #day.low #dayfill{animation:pulse .8s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.45}}
+  #marker{position:fixed;left:0;top:0;pointer-events:none;transform:translate(-50%,-100%);text-align:center;
+    font-weight:800;font-size:13px;letter-spacing:.12em;color:#fff1c9;text-shadow:0 1px 8px rgba(80,30,40,.7);transition:opacity .3s}
+  #marker .dia{width:14px;height:14px;margin:0 auto 4px;transform:rotate(45deg);border:2px solid #ffe7a6;
+    background:rgba(255,200,110,.25);box-shadow:0 0 12px rgba(255,210,130,.8)}
+  #pops{position:fixed;left:50%;top:21%;transform:translateX(-50%);pointer-events:none;text-align:center;width:90vw}
+  .pop{font-weight:800;letter-spacing:.08em;white-space:nowrap;animation:pop 1.7s cubic-bezier(.2,.8,.2,1) forwards;
+    text-shadow:0 2px 16px rgba(90,25,40,.6),0 1px 0 rgba(90,25,40,.4)}
+  .pop.big{font-size:34px;color:#fff4dc}
+  .pop.small{font-size:19px;color:#ffd99a}
+  .pop.bad{font-size:28px;color:#ffb0a0}
+  .pop.gold{font-size:30px;color:#ffe9a6}
+  @keyframes pop{0%{opacity:0;transform:translateY(14px) scale(.85)}10%{opacity:1;transform:translateY(0) scale(1.06)}
+    20%{transform:scale(1)}72%{opacity:1}100%{opacity:0;transform:translateY(-34px)}}
+  #title,#over,#loading{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;transition:opacity .8s ease;pointer-events:none}
+  #title{justify-content:flex-start;padding-top:6vh}
+  #logo{width:min(64vw,720px);max-height:40vh;object-fit:contain;filter:drop-shadow(0 8px 30px rgba(90,30,40,.35))}
+  #logoText{display:none;font-size:clamp(48px,9vw,120px);font-weight:900;letter-spacing:.06em;color:#fff1da;
+    text-shadow:0 6px 30px rgba(120,40,40,.5)}
+  .tag{margin-top:6px;font-size:clamp(14px,1.6vw,19px);letter-spacing:.32em;text-transform:uppercase;color:#fff3e2;
+    text-shadow:0 2px 12px rgba(90,30,40,.6)}
+  .start{position:fixed;bottom:15vh;left:0;right:0;font-weight:800;font-size:clamp(16px,2vw,22px);letter-spacing:.3em;
+    color:#fff6e6;text-shadow:0 2px 14px rgba(90,30,40,.7);animation:breathe 2.2s ease-in-out infinite}
+  @keyframes breathe{50%{opacity:.45}}
+  .keys{position:fixed;bottom:6vh;left:0;right:0;display:flex;gap:26px;justify-content:center;flex-wrap:wrap;
+    font-size:13px;letter-spacing:.14em;color:#ffe9d0;text-shadow:0 1px 8px rgba(80,30,40,.8)}
+  .keys b{display:inline-block;min-width:18px;padding:3px 7px;margin-right:6px;border-radius:6px;
+    background:rgba(255,240,220,.16);box-shadow:inset 0 0 0 1px rgba(255,240,220,.35);font-weight:800}
+  #over h1{margin:0;font-size:clamp(46px,8vw,96px);font-weight:900;letter-spacing:.12em;color:#ffe3c2;
+    text-shadow:0 6px 34px rgba(60,10,40,.7)}
+  #over .final{margin-top:10px;font-size:clamp(30px,4.5vw,54px);font-weight:800;color:#fff}
+  #over .sub{margin-top:8px;font-size:15px;letter-spacing:.24em;color:#ffd7b0;text-transform:uppercase}
+  #over .again{margin-top:38px;font-size:17px;font-weight:800;letter-spacing:.3em;animation:breathe 2.2s ease-in-out infinite}
+  #loading{background:#24121b;color:#ffe2c0;font-size:14px;letter-spacing:.3em;text-transform:uppercase}
+  #loadbar{margin-top:16px;width:200px;height:3px;background:rgba(255,226,192,.15);border-radius:3px;overflow:hidden}
+  #loadfill{height:100%;width:0;background:#ffb768;transition:width .2s}
+  #mute{position:fixed;right:18px;bottom:16px;font-size:12px;letter-spacing:.2em;color:#ffe8cf;opacity:.55;pointer-events:none}
+  @media (max-width:700px){#score{font-size:32px;left:18px}#mult{left:20px;top:58px}#dist{right:18px}.keys{display:none}
+    .pop{white-space:normal;line-height:1.15}.pop.small{font-size:16px}.pop.big{font-size:28px}
+    #over .sub{font-size:12px;letter-spacing:.14em;padding:0 16px}}
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<canvas id="c" tabindex="0"></canvas>
+
+<div id="score" class="hud hidden">0</div>
+<div id="mult" class="hud hidden"></div>
+<div id="dist" class="hud hidden">0 m</div>
+<div id="day" class="hud hidden"><div id="sunico"></div><div id="daytrack"><div id="dayfill"></div></div></div>
+<div id="marker" class="hidden"><div class="dia"></div><span></span></div>
+<div id="pops"></div>
+
+<div id="title" class="hidden">
+  <img id="logo" src="assets/logo.png" alt="Dune Surfer" />
+  <div id="logoText">DUNE SURFER</div>
+  <div class="tag">Ride the dunes &middot; chase the sunset</div>
+  <div class="start" id="startTxt">PRESS SPACE TO RIDE</div>
+  <div class="keys">
+    <span><b>&larr;</b><b>&rarr;</b>carve / spin</span>
+    <span><b>&darr;</b>tuck for speed</span>
+    <span><b>SPACE</b>hold &amp; release to jump</span>
+    <span><b>&uarr;</b><b>&darr;</b>in the air: flip</span>
+    <span><b>SPACE</b>in the air: grab</span>
+  </div>
+</div>
+
+<div id="over" class="hidden">
+  <h1>SUNSET</h1>
+  <div class="final" id="finalScore">0</div>
+  <div class="sub" id="finalSub"></div>
+  <div class="again" id="againTxt">PRESS SPACE TO RIDE AGAIN</div>
+</div>
+
+<div id="loading"><div>Shaping the dunes</div><div id="loadbar"><div id="loadfill"></div></div></div>
+<div id="mute" class="hidden">M &middot; SOUND</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+const params = new URLSearchParams(location.search);
+const LOW = params.get('q') === 'low';
+const DEMO = params.has('demo');          // skip title, bot rides (captures / attract)
+const TEST = params.get('test');
+const D2R = Math.PI / 180;
+
+/* ------------------------------------------------------------------ utils */
+const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
+const lerp = (a, b, t) => a + (b - a) * t;
+const smoothstep = (e0, e1, x) => { const t = clamp((x - e0) / (e1 - e0), 0, 1); return t * t * (3 - 2 * t); };
+const damp = (a, b, rate, dt) => lerp(a, b, 1 - Math.exp(-rate * dt));
+const wrapPi = (a) => { a = (a + Math.PI) % (2 * Math.PI); if (a < 0) a += 2 * Math.PI; return a - Math.PI; };
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const hashInts = (a, b) => (Math.imul(a + 7919, 0x9E3779B1) ^ Math.imul(b + 104729, 0x85EBCA77)) | 0;
+
+/* ------------------------------------------------------------ terrain (JS) */
+/* The dune field is a pure function H(x,z). The exact same maths runs in GLSL
+   (vertex displacement + per-pixel normals) and here (physics, props, camera). */
+let NV = 0, NX = 0, NY = 0;
+function hsh(x, y) {
+  let h = Math.imul((x + 65536) | 0, 0x27d4eb2d) ^ Math.imul((y + 65536) | 0, 0x165667b1);
+  h ^= h >>> 15; h = Math.imul(h, 0x2c1b3c6d);
+  h ^= h >>> 12; h = Math.imul(h, 0x297a2d39);
+  h ^= h >>> 15;
+  return (h >>> 0) / 4294967295;
+}
+function vnoise(px, py) {
+  const ix = Math.floor(px), iy = Math.floor(py);
+  const fx = px - ix, fy = py - iy;
+  const ux = fx * fx * fx * (fx * (fx * 6 - 15) + 10), uy = fy * fy * fy * (fy * (fy * 6 - 15) + 10);
+  const dux = 30 * fx * fx * (fx * (fx - 2) + 1), duy = 30 * fy * fy * (fy * (fy - 2) + 1);
+  const a = hsh(ix, iy), b = hsh(ix + 1, iy), c = hsh(ix, iy + 1), d = hsh(ix + 1, iy + 1);
+  const k1 = b - a, k2 = c - a, k4 = a - b - c + d;
+  NV = a + k1 * ux + k2 * uy + k4 * ux * uy;
+  NX = dux * (k1 + k4 * uy);
+  NY = duy * (k2 + k4 * ux);
+}
+let PV = 0, PD = 0;
+function dprof(p, c) {               // dune cross-section: kicker windward flank, crisp (slightly rounded) crest, slip face
+  const tw = p / c, tl = (1 - p) / (1 - c);
+  const W = tw * tw, dW = 2 * tw / c, L = tl * tl, dL = -2 * tl / (1 - c);
+  const k = 0.12;
+  const h = clamp(0.5 + 0.5 * (L - W) / k, 0, 1);
+  PV = L + (W - L) * h - k * h * (1 - h);
+  PD = dL + (dW - dL) * h;
+}
+const LAM = 66, CREST = 0.62, TAU = Math.PI * 2;
+let TGX = 0, TGZ = 0;                // gradient of the last terrain() call
+function terrain(x, z) {
+  const s = -z;
+  let h, hx, hs;
+  vnoise(x / 430, s / 430);
+  h = 24 * (NV - 0.5); hx = 24 * NX / 430; hs = 24 * NY / 430;
+  vnoise(x / 170 + 17.3, s / 170 + 41.1);
+  h += 8 * (NV - 0.5); hx += 8 * NX / 170; hs += 8 * NY / 170;
+  vnoise(x / 190 + 5.2, s / 300 + 1.7);
+  const w1 = NV, w1x = NX / 190, w1s = NY / 300;
+  vnoise(x / 80 - 3.1, s / 110 + 9.4);
+  const w2 = NV, w2x = NX / 80, w2s = NY / 110;
+  const phi = s / LAM + 1.8 * (w1 - 0.5) + 0.7 * (w2 - 0.5);
+  const phx = 1.8 * w1x + 0.7 * w2x;
+  const phs = 1 / LAM + 1.8 * w1s + 0.7 * w2s;
+  const p = phi - Math.floor(phi);
+  dprof(p, CREST);
+  const Ps = PV, dPs = PD;
+  const ang = TAU * (p - CREST);
+  const Psm = 0.5 + 0.5 * Math.cos(ang), dPsm = -Math.PI * Math.sin(ang);
+  vnoise(x / 240 + 11.7, s / 330 - 6.3);
+  const kt = (NV - 0.25) / 0.4;
+  let k, dk;
+  if (kt <= 0) { k = 0; dk = 0; } else if (kt >= 1) { k = 1; dk = 0; } else { k = kt * kt * (3 - 2 * kt); dk = 6 * kt * (1 - kt) / 0.4; }
+  const kx = dk * NX / 240, ks = dk * NY / 330;
+  const Pm = Psm + (Ps - Psm) * k;
+  const dPm = dPsm + (dPs - dPsm) * k;
+  vnoise(x / 170 - 21.4, s / 240 + 3.3);
+  const gr = 1 + 0.5 * clamp(s / 8000, 0, 1);
+  const dgr = (s > 0 && s < 8000) ? 0.5 / 8000 : 0;
+  const base = 0.15 + 0.85 * NV * NV;
+  const A = 11 * gr * base;
+  const Ax = 11 * gr * 0.85 * 2 * NV * NX / 170;
+  const As = 11 * gr * 0.85 * 2 * NV * NY / 240 + 11 * dgr * base;
+  h += A * Pm;
+  hx += Ax * Pm + A * (dPm * phx + (Ps - Psm) * kx);
+  hs += As * Pm + A * (dPm * phs + (Ps - Psm) * ks);
+  const u2 = (0.52 * x + 0.854 * s) / 38 + 0.9 * (w2 - 0.5);
+  const u2x = 0.52 / 38 + 0.9 * w2x, u2s = 0.854 / 38 + 0.9 * w2s;
+  dprof(u2 - Math.floor(u2), 0.6);
+  const P2 = PV, dP2 = PD;
+  vnoise(x / 120 + 7.7, s / 150 + 7.7);
+  const A2 = 3.4 * NV, A2x = 3.4 * NX / 120, A2s = 3.4 * NY / 150;
+  h += A2 * P2; hx += A2x * P2 + A2 * dP2 * u2x; hs += A2s * P2 + A2 * dP2 * u2s;
+  const u3 = (-0.6 * x + 0.8 * s) / 27 + 0.6 * (w1 - 0.5);
+  const u3x = -0.6 / 27 + 0.6 * w1x, u3s = 0.8 / 27 + 0.6 * w1s;
+  dprof(u3 - Math.floor(u3), 0.58);
+  const P3 = PV, dP3 = PD;
+  vnoise(x / 90 - 13.1, s / 90 + 2.9);
+  const A3 = 1.9 * NV, A3x = 1.9 * NX / 90, A3s = 1.9 * NY / 90;
+  h += A3 * P3; hx += A3x * P3 + A3 * dP3 * u3x; hs += A3s * P3 + A3 * dP3 * u3s;
+  vnoise(x / 11 + 3.3, s / 11 - 7.9);
+  h += 0.35 * (NV - 0.5); hx += 0.35 * NX / 11; hs += 0.35 * NY / 11;
+  TGX = hx; TGZ = -hs;
+  return h;
+}
+function terrainHs(x, z) {           // simplified field used for cast shadows
+  const s = -z;
+  vnoise(x / 430, s / 430); let h = 24 * (NV - 0.5);
+  vnoise(x / 170 + 17.3, s / 170 + 41.1); h += 8 * (NV - 0.5);
+  vnoise(x / 190 + 5.2, s / 300 + 1.7); const w1 = NV;
+  vnoise(x / 80 - 3.1, s / 110 + 9.4); const w2 = NV;
+  const phi = s / LAM + 1.8 * (w1 - 0.5) + 0.7 * (w2 - 0.5);
+  const p = phi - Math.floor(phi);
+  dprof(p, CREST); const P = PV;
+  const Psm = 0.5 + 0.5 * Math.cos(TAU * (p - CREST));
+  vnoise(x / 240 + 11.7, s / 330 - 6.3); const kk = smoothstep(0.25, 0.65, NV);
+  vnoise(x / 170 - 21.4, s / 240 + 3.3);
+  const A = 11 * (1 + 0.5 * clamp(s / 8000, 0, 1)) * (0.15 + 0.85 * NV * NV);
+  h += A * (Psm + (P - Psm) * kk);
+  const u2 = (0.52 * x + 0.854 * s) / 38 + 0.9 * (w2 - 0.5);
+  vnoise(x / 120 + 7.7, s / 150 + 7.7); const a2 = 3.4 * NV;
+  dprof(u2 - Math.floor(u2), 0.6);
+  h += a2 * PV;
+  return h;
+}
+function terrainShadow(x, y, z, L) {  // CPU soft shadow toward the sun (props + rider tint)
+  let t = 2.6, res = 1;
+  for (let i = 0; i < 22; i++) {
+    const qx = x + L.x * t, qy = y + L.y * t, qz = z + L.z * t;
+    const d = qy - terrainHs(qx, qz);
+    res = Math.min(res, 7 * d / t);
+    if (res < 0) break;
+    t *= 1.3;
+  }
+  return smoothstep(0, 1, res);
+}
+
+/* ------------------------------------------------------------ terrain (GLSL) */
+const TERRAIN_GLSL = /* glsl */`
+float hsh(int x, int y){
+  uint h = (uint(x + 65536) * 0x27d4eb2du) ^ (uint(y + 65536) * 0x165667b1u);
+  h ^= h >> 15u; h *= 0x2c1b3c6du; h ^= h >> 12u; h *= 0x297a2d39u; h ^= h >> 15u;
+  return float(h) * (1.0 / 4294967295.0);
+}
+vec3 vnoise(vec2 p){
+  vec2 i = floor(p); vec2 f = p - i;
+  int ix = int(i.x); int iy = int(i.y);
+  vec2 u = f*f*f*(f*(f*6.0-15.0)+10.0);
+  vec2 du = 30.0*f*f*(f*(f-2.0)+1.0);
+  float a = hsh(ix,iy), b = hsh(ix+1,iy), c = hsh(ix,iy+1), d = hsh(ix+1,iy+1);
+  float k1 = b-a, k2 = c-a, k4 = a-b-c+d;
+  return vec3(a + k1*u.x + k2*u.y + k4*u.x*u.y, du.x*(k1 + k4*u.y), du.y*(k2 + k4*u.x));
+}
+vec2 dprof(float p, float c){
+  float tw = p/c, tl = (1.0 - p)/(1.0 - c);
+  float W = tw*tw, dW = 2.0*tw/c, L = tl*tl, dL = -2.0*tl/(1.0 - c);
+  const float k = 0.12;
+  float h = clamp(0.5 + 0.5*(L - W)/k, 0.0, 1.0);
+  return vec2(L + (W - L)*h - k*h*(1.0 - h), dL + (dW - dL)*h);
+}
+const float LAM = 66.0;
+const float CREST = 0.62;
+const float TAU = 6.283185307179586;
+vec3 terrainHDl(vec2 xz, float fine);
+vec3 terrainHD(vec2 xz){ return terrainHDl(xz, 1.0); }
+vec3 terrainHDl(vec2 xz, float fine){
+  float x = xz.x, s = -xz.y;
+  vec3 n; float h, hx, hs;
+  n = vnoise(vec2(x/430.0, s/430.0));
+  h = 24.0*(n.x-0.5); hx = 24.0*n.y/430.0; hs = 24.0*n.z/430.0;
+  n = vnoise(vec2(x/170.0 + 17.3, s/170.0 + 41.1));
+  h += 8.0*(n.x-0.5); hx += 8.0*n.y/170.0; hs += 8.0*n.z/170.0;
+  vec3 w1 = vnoise(vec2(x/190.0 + 5.2, s/300.0 + 1.7));
+  vec3 w2 = vnoise(vec2(x/80.0 - 3.1, s/110.0 + 9.4));
+  float w1x = w1.y/190.0, w1s = w1.z/300.0, w2x = w2.y/80.0, w2s = w2.z/110.0;
+  float phi = s/LAM + 1.8*(w1.x-0.5) + 0.7*(w2.x-0.5);
+  float phx = 1.8*w1x + 0.7*w2x;
+  float phs = 1.0/LAM + 1.8*w1s + 0.7*w2s;
+  float p = fract(phi);
+  vec2 P = dprof(p, CREST);
+  float ang = TAU*(p - CREST);
+  float Psm = 0.5 + 0.5*cos(ang), dPsm = -3.141592653589793*sin(ang);
+  n = vnoise(vec2(x/240.0 + 11.7, s/330.0 - 6.3));
+  float kt = (n.x - 0.25)/0.4; float k; float dk;
+  if (kt <= 0.0){ k = 0.0; dk = 0.0; } else if (kt >= 1.0){ k = 1.0; dk = 0.0; } else { k = kt*kt*(3.0-2.0*kt); dk = 6.0*kt*(1.0-kt)/0.4; }
+  float kx = dk*n.y/240.0, ks = dk*n.z/330.0;
+  float Pm = Psm + (P.x - Psm)*k;
+  float dPm = dPsm + (P.y - dPsm)*k;
+  n = vnoise(vec2(x/170.0 - 21.4, s/240.0 + 3.3));
+  float gr = 1.0 + 0.5*clamp(s/8000.0, 0.0, 1.0);
+  float dgr = (s > 0.0 && s < 8000.0) ? 0.5/8000.0 : 0.0;
+  float base = 0.15 + 0.85*n.x*n.x;
+  float A = 11.0*gr*base;
+  float Ax = 11.0*gr*0.85*2.0*n.x*n.y/170.0;
+  float As = 11.0*gr*0.85*2.0*n.x*n.z/240.0 + 11.0*dgr*base;
+  h += A*Pm;
+  hx += Ax*Pm + A*(dPm*phx + (P.x - Psm)*kx);
+  hs += As*Pm + A*(dPm*phs + (P.x - Psm)*ks);
+  float u2 = (0.52*x + 0.854*s)/38.0 + 0.9*(w2.x-0.5);
+  float u2x = 0.52/38.0 + 0.9*w2x, u2s = 0.854/38.0 + 0.9*w2s;
+  vec2 P2 = dprof(fract(u2), 0.6);
+  n = vnoise(vec2(x/120.0 + 7.7, s/150.0 + 7.7));
+  float A2 = 3.4*n.x, A2x = 3.4*n.y/120.0, A2s = 3.4*n.z/150.0;
+  h += A2*P2.x; hx += A2x*P2.x + A2*P2.y*u2x; hs += A2s*P2.x + A2*P2.y*u2s;
+  float u3 = (-0.6*x + 0.8*s)/27.0 + 0.6*(w1.x-0.5);
+  float u3x = -0.6/27.0 + 0.6*w1x, u3s = 0.8/27.0 + 0.6*w1s;
+  vec2 P3 = dprof(fract(u3), 0.58);
+  n = vnoise(vec2(x/90.0 - 13.1, s/90.0 + 2.9));
+  float A3 = 1.9*n.x, A3x = 1.9*n.y/90.0, A3s = 1.9*n.z/90.0;
+  float f3 = clamp(fine * 2.0, 0.0, 1.0);
+  h += A3*P3.x; hx += f3*(A3x*P3.x + A3*P3.y*u3x); hs += f3*(A3s*P3.x + A3*P3.y*u3s);
+  n = vnoise(vec2(x/11.0 + 3.3, s/11.0 - 7.9));
+  h += 0.35*(n.x-0.5); hx += fine*0.35*n.y/11.0; hs += fine*0.35*n.z/11.0;
+  return vec3(h, hx, -hs);
+}
+float terrainHs(vec2 xz){
+  float x = xz.x, s = -xz.y;
+  float h = 24.0*(vnoise(vec2(x/430.0, s/430.0)).x - 0.5);
+  h += 8.0*(vnoise(vec2(x/170.0 + 17.3, s/170.0 + 41.1)).x - 0.5);
+  float w1 = vnoise(vec2(x/190.0 + 5.2, s/300.0 + 1.7)).x;
+  float w2 = vnoise(vec2(x/80.0 - 3.1, s/110.0 + 9.4)).x;
+  float phi = s/LAM + 1.8*(w1-0.5) + 0.7*(w2-0.5);
+  float p = fract(phi);
+  float P = dprof(p, CREST).x;
+  float Psm = 0.5 + 0.5*cos(TAU*(p - CREST));
+  float kk = smoothstep(0.25, 0.65, vnoise(vec2(x/240.0 + 11.7, s/330.0 - 6.3)).x);
+  float na = vnoise(vec2(x/170.0 - 21.4, s/240.0 + 3.3)).x;
+  float A = 11.0*(1.0 + 0.5*clamp(s/8000.0, 0.0, 1.0))*(0.15 + 0.85*na*na);
+  h += A*(Psm + (P - Psm)*kk);
+  float u2 = (0.52*x + 0.854*s)/38.0 + 0.9*(w2-0.5);
+  h += 3.4*vnoise(vec2(x/120.0 + 7.7, s/150.0 + 7.7)).x * dprof(fract(u2), 0.6).x;
+  return h;
+}
+`;
+
+/* ------------------------------------------------------------- sky (GLSL) */
+const SKY_GLSL = /* glsl */`
+uniform sampler2D uSky;
+uniform sampler2D uSkyDusk;
+uniform float uDusk;
+uniform vec3 uSkyP;          // x: horizontal span (rad), y: vertical span above horizon (rad), z: horizon v (from top)
+vec2 skyUV(vec3 d){
+  float az = atan(d.x, -d.z);
+  float el = asin(clamp(d.y, -1.0, 1.0));
+  float u = 0.5 + az / uSkyP.x;
+  u = 1.0 - abs(1.0 - mod(u, 2.0));
+  float vt = uSkyP.z * (1.0 - el / uSkyP.y);
+  vt = clamp(vt, 0.002, 0.998);
+  return vec2(u, 1.0 - vt);
+}
+vec3 skySample(vec3 d){
+  vec2 uv = skyUV(d);
+  return mix(texture2D(uSky, uv).rgb, texture2D(uSkyDusk, uv).rgb, uDusk);
+}
+vec3 hazeColor(vec3 dir){
+  vec3 d = normalize(vec3(dir.x, 0.0, dir.z));
+  d = normalize(vec3(d.x, 0.035, d.z));
+  vec2 uv = skyUV(d);
+  return mix(textureLod(uSky, uv, 4.0).rgb, textureLod(uSkyDusk, uv, 4.0).rgb, uDusk);
+}
+`;
+
+/* ----------------------------------------------------------- renderer etc */
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance', stencil: false });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, LOW ? 1 : 1.5));
+renderer.setSize(innerWidth, innerHeight, false);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.NoToneMapping;
+renderer.setClearColor(0xe8b688, 1);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.15, 9000);
+camera.position.set(0, 30, 30);
+
+const composerTarget = new THREE.WebGLRenderTarget(innerWidth, innerHeight, { type: THREE.HalfFloatType, samples: LOW ? 0 : 4 });
+const composer = new EffectComposer(renderer, composerTarget);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.3, 0.55, 0.93);
+if (!LOW) composer.addPass(bloom);
+const GradeShader = {
+  uniforms: { tDiffuse: { value: null }, uTime: { value: 0 }, uFlash: { value: 0 }, uDusk: { value: 0 } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
+  fragmentShader: /* glsl */`
+    uniform sampler2D tDiffuse; uniform float uTime; uniform float uFlash; uniform float uDusk; varying vec2 vUv;
+    void main(){
+      vec4 c = texture2D(tDiffuse, vUv);
+      vec2 d = vUv - 0.5; d.x *= 1.3;
+      float v = smoothstep(0.92, 0.28, length(d));
+      c.rgb *= mix(vec3(0.58, 0.42, 0.55), vec3(1.0), v);
+      c.rgb = mix(c.rgb, c.rgb * vec3(0.86, 0.74, 0.98), uDusk * 0.5);
+      c.rgb += uFlash * vec3(1.0, 0.86, 0.62);
+      float g = fract(sin(dot(vUv * vec2(1931.7, 1087.3) + fract(uTime) * 61.0, vec2(12.9898, 78.233))) * 43758.5453);
+      c.rgb += (g - 0.5) * 0.010;
+      gl_FragColor = c;
+    }`,
+};
+const gradePass = new ShaderPass(GradeShader);
+composer.addPass(gradePass);
+composer.addPass(new OutputPass());
+
+/* ---------------------------------------------------------------- loading */
+const manager = new THREE.LoadingManager();
+const loadFill = document.getElementById('loadfill');
+manager.onProgress = (u, a, b) => { loadFill.style.width = (100 * a / b).toFixed(0) + '%'; };
+const texLoader = new THREE.TextureLoader(manager);
+const gltfLoader = new GLTFLoader(manager);
+function loadTex(url, srgb = true) {
+  return new Promise((res) => texLoader.load(url, (t) => { if (srgb) t.colorSpace = THREE.SRGBColorSpace; res(t); }, undefined, () => { console.warn('missing texture', url); res(null); }));
+}
+function loadGLB(url) {
+  return new Promise((res) => gltfLoader.load(url, (g) => res(g), undefined, (e) => { console.warn('missing model', url, e); res(null); }));
+}
+function loadImage(url) {
+  return new Promise((res) => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = url; });
+}
+
+/* ------------------------------------------------------------------- sun */
+const SUN_AZ = -20 * D2R;
+const DAY_MAX = 90, DAY_START = 72;
+const sunDir = new THREE.Vector3();
+let sunElev = 14 * D2R;
+function setSun(elevRad) {
+  sunElev = elevRad;
+  sunDir.set(Math.sin(SUN_AZ) * Math.cos(elevRad), Math.sin(elevRad), -Math.cos(SUN_AZ) * Math.cos(elevRad)).normalize();
+}
+setSun(sunElev);
+
+/* palettes sampled from the source video (lit sand / shadow / terminator / sun) */
+const PAL = {
+  day:  { lit: new THREE.Color('#d98a55'), shade: new THREE.Color('#55262c'), mid: new THREE.Color('#b65a3c'), sun: new THREE.Color('#ffc890'),
+          hemiSky: new THREE.Color('#cfa7c0'), hemiGround: new THREE.Color('#b8653f'), light: new THREE.Color('#ffd1a1'), dust: new THREE.Color('#ee8f4f') },
+  dusk: { lit: new THREE.Color('#b8553e'), shade: new THREE.Color('#2f1628'), mid: new THREE.Color('#8e3a3a'), sun: new THREE.Color('#ff7b52'),
+          hemiSky: new THREE.Color('#6d4a78'), hemiGround: new THREE.Color('#6a2c33'), light: new THREE.Color('#ff8a5a'), dust: new THREE.Color('#b8603f') },
+};
+
+/* --------------------------------------------------------------- uniforms */
+const U = {
+  uSunDir: { value: sunDir },
+  uSunCol: { value: PAL.day.sun.clone() },
+  uLit: { value: PAL.day.lit.clone() },
+  uShade: { value: PAL.day.shade.clone() },
+  uMid: { value: PAL.day.mid.clone() },
+  uSky: { value: null },
+  uSkyDusk: { value: null },
+  uDusk: { value: 0 },
+  uSkyP: { value: new THREE.Vector3(160 * D2R, 45 * D2R, 0.75) },
+  uFogDen: { value: 1 / 1150 },
+  uRipple: { value: null },
+  uRippleOn: { value: 0 },
+  uRDepth: { value: null },
+  uRMat: { value: new THREE.Matrix4() },
+  uROn: { value: 0 },
+  uPDepth: { value: null },
+  uPMat: { value: new THREE.Matrix4() },
+  uShadowFar: { value: LOW ? 600 : 1300 },
+  uSunUp: { value: 1 },
+  uTime: { value: 0 },
+};
+
+/* ------------------------------------------------------------- sky dome */
+const skyMat = new THREE.ShaderMaterial({
+  uniforms: { uSky: U.uSky, uSkyDusk: U.uSkyDusk, uDusk: U.uDusk, uSkyP: U.uSkyP },
+  vertexShader: /* glsl */`
+    varying vec3 vDir;
+    void main(){ vDir = position; vec4 p = projectionMatrix * modelViewMatrix * vec4(position, 1.0); gl_Position = p.xyww; }`,
+  fragmentShader: /* glsl */`
+    ${SKY_GLSL}
+    varying vec3 vDir;
+    void main(){ gl_FragColor = vec4(skySample(normalize(vDir)), 1.0);
+      #include <colorspace_fragment>
+    }`,
+  side: THREE.BackSide, depthWrite: false,
+});
+const sky = new THREE.Mesh(new THREE.SphereGeometry(1, 64, 32), skyMat);
+sky.scale.setScalar(4000);
+sky.frustumCulled = false;
+sky.renderOrder = -10;
+scene.add(sky);
+
+let sunSprite = null;
+
+/* ------------------------------------------------------------- terrain mesh */
+function makeTerrainGeometry() {
+  const NF = LOW ? 180 : 300, NB = LOW ? 36 : 60, NS = LOW ? 120 : 200;
+  const RF = 2900, RB = 420, RS = 2500;
+  const warp = (t, R) => R * (0.06 * t + 0.94 * t * t * t);
+  const zs = [], xs = [];
+  for (let j = NF; j >= 1; j--) zs.push(-warp(j / NF, RF));
+  zs.push(0);
+  for (let j = 1; j <= NB; j++) zs.push(warp(j / NB, RB));
+  for (let i = NS; i >= 1; i--) xs.push(-warp(i / NS, RS));
+  xs.push(0);
+  for (let i = 1; i <= NS; i++) xs.push(warp(i / NS, RS));
+  const W = xs.length, H = zs.length;
+  const pos = new Float32Array(W * H * 3);
+  let k = 0;
+  for (let j = 0; j < H; j++) for (let i = 0; i < W; i++) { pos[k++] = xs[i]; pos[k++] = 0; pos[k++] = zs[j]; }
+  const idx = new Uint32Array((W - 1) * (H - 1) * 6);
+  let m = 0;
+  for (let j = 0; j < H - 1; j++) for (let i = 0; i < W - 1; i++) {
+    const a = j * W + i, b = a + 1, c = a + W, d = c + 1;
+    idx[m++] = a; idx[m++] = c; idx[m++] = b; idx[m++] = b; idx[m++] = c; idx[m++] = d;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  g.setIndex(new THREE.BufferAttribute(idx, 1));
+  g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 1e5);
+  return { geo: g, snapX: warp(1 / NS, RS), snapZ: warp(1 / NF, RF) };
+}
+const TERR = makeTerrainGeometry();
+const terrainMat = new THREE.ShaderMaterial({
+  uniforms: U,
+  vertexShader: /* glsl */`
+    uniform vec3 uSunDir;
+    uniform float uShadowFar;
+    varying vec3 vWorld;
+    varying float vShadow;
+    ${TERRAIN_GLSL}
+    void main(){
+      vec4 wp = modelMatrix * vec4(position, 1.0);
+      wp.y = terrainHD(wp.xz).x;
+      vWorld = wp.xyz;
+      float dc = length(wp.xz - cameraPosition.xz);
+      float sh = 1.0;
+      if (dc < uShadowFar) {
+        vec3 P = wp.xyz + vec3(0.0, 0.45, 0.0);
+        float t = 2.6, res = 1.0;
+        for (int i = 0; i < ${LOW ? 16 : 22}; i++) {
+          vec3 q = P + uSunDir * t;
+          float d = q.y - terrainHs(q.xz);
+          res = min(res, 7.0 * d / t);
+          if (res < 0.0) break;
+          t *= ${LOW ? '1.42' : '1.3'};
+        }
+        sh = smoothstep(0.0, 1.0, res);
+        sh = mix(sh, 1.0, smoothstep(uShadowFar * 0.75, uShadowFar, dc));
+      }
+      vShadow = sh;
+      gl_Position = projectionMatrix * viewMatrix * wp;
+    }`,
+  fragmentShader: /* glsl */`
+    uniform vec3 uSunDir, uSunCol, uLit, uShade, uMid;
+    uniform float uFogDen, uRippleOn, uROn, uTime, uSunUp;
+    uniform sampler2D uRipple, uRDepth, uPDepth;
+    uniform mat4 uRMat, uPMat;
+    varying vec3 vWorld;
+    varying float vShadow;
+    ${TERRAIN_GLSL}
+    ${SKY_GLSL}
+    const vec2 PD[12] = vec2[12](vec2(-0.326,-0.406), vec2(-0.840,-0.074), vec2(-0.696,0.457), vec2(-0.203,0.621),
+      vec2(0.962,-0.195), vec2(0.473,-0.480), vec2(0.519,0.767), vec2(0.185,-0.893), vec2(0.507,0.064),
+      vec2(0.896,0.412), vec2(-0.322,-0.933), vec2(-0.792,-0.598));
+    float shadowMap(sampler2D tex, mat4 M, vec3 wp, float radius, float bias){
+      vec4 sc = M * vec4(wp, 1.0);
+      vec3 c = sc.xyz / sc.w * 0.5 + 0.5;
+      if (c.x <= 0.0 || c.x >= 1.0 || c.y <= 0.0 || c.y >= 1.0 || c.z >= 1.0) return 1.0;
+      float s = 0.0;
+      for (int i = 0; i < 12; i++) {
+        float d = texture2D(tex, c.xy + PD[i] * radius).r;
+        s += (c.z - bias > d) ? 0.0 : 1.0;
+      }
+      s /= 12.0;
+      vec2 e = min(c.xy, 1.0 - c.xy);
+      return mix(1.0, s, smoothstep(0.0, 0.06, min(e.x, e.y)));
+    }
+    float riderShadow(vec3 wp){
+      if (uROn < 0.5) return 1.0;
+      return min(shadowMap(uRDepth, uRMat, wp, 1.6 / 2048.0, 0.0015), shadowMap(uPDepth, uPMat, wp, 1.4 / 2048.0, 0.0010));
+    }
+    void main(){
+      vec3 V = cameraPosition - vWorld; float dist = length(V); V /= dist;
+      vec3 T = terrainHDl(vWorld.xz, 1.0 - smoothstep(120.0, 520.0, dist));
+      vec3 N = normalize(vec3(-T.y, 1.0, -T.z));
+      float slope = length(T.yz);
+      float NdL = dot(N, uSunDir);
+      float sh = vShadow * riderShadow(vWorld);
+      float direct = smoothstep(-0.035, 0.30, NdL) * sh;
+      // wind ripples (fal texture used as a height map): a light-dependent band layered on the dune shading
+      float rip = uRippleOn * (1.0 - smoothstep(0.5, 0.95, slope)) * (1.0 - smoothstep(14.0, 190.0, dist));
+      if (rip > 0.002) {
+        vec2 ruv = vec2(vWorld.x * 0.1 + 0.22 * sin(vWorld.z * 0.031), vWorld.z * 0.19 + 0.3 * sin(vWorld.x * 0.023));
+        float e = 0.0035;
+        float h0 = texture2D(uRipple, ruv).r;
+        float hx = texture2D(uRipple, ruv + vec2(e, 0.0)).r;
+        float hz = texture2D(uRipple, ruv + vec2(0.0, e)).r;
+        vec2 g = vec2(hx - h0, hz - h0) / e;
+        vec3 N1 = normalize(N + vec3(-g.x * 0.1, 0.0, -g.y * 0.19) * 0.032);
+        float dl = dot(N1, uSunDir) - NdL;
+        float near = smoothstep(3.0, 16.0, dist);       // softer right under the camera
+        direct = clamp(direct + clamp(dl * 1.7, -0.2, 0.26) * rip * mix(0.2, 1.0, sh) * uSunUp * mix(0.55, 1.0, near), 0.0, 1.0);
+      }
+      float facing = clamp(NdL, 0.0, 1.0);
+      vec3 lit = uLit * (0.80 + 0.55 * facing);
+      vec3 col = mix(uShade * (0.92 + 0.22 * clamp(N.y, 0.0, 1.0)), lit, direct);
+      float band = direct * (1.0 - smoothstep(0.02, 0.32, NdL));
+      col = mix(col, uMid, band * 0.38);
+      // back-lit sheen when looking toward the low sun
+      float fres = pow(1.0 - clamp(dot(N, V), 0.0, 1.0), 5.0);
+      float toward = pow(clamp(dot(-V, uSunDir), 0.0, 1.0), 3.0);
+      col += uSunCol * fres * toward * 0.45 * direct * (1.0 - smoothstep(250.0, 900.0, dist));
+      // aerial haze, coloured by the sky in that direction
+      vec3 hz = hazeColor(-V);
+      float f = 1.0 - exp(-pow(dist * uFogDen, 1.35));
+      f = max(f, smoothstep(2200.0, 2850.0, dist));
+      col = mix(col, hz, f);
+      gl_FragColor = vec4(col, 1.0);
+      #include <colorspace_fragment>
+    }`,
+});
+const terrainMesh = new THREE.Mesh(TERR.geo, terrainMat);
+terrainMesh.frustumCulled = false;
+scene.add(terrainMesh);
+
+/* ----------------------------------------------------------------- lights */
+const sunLight = new THREE.DirectionalLight(PAL.day.light.clone(), 2.4);
+scene.add(sunLight); scene.add(sunLight.target);
+const hemi = new THREE.HemisphereLight(PAL.day.hemiSky.clone(), PAL.day.hemiGround.clone(), 1.05);
+scene.add(hemi);
+
+/* shared fog injection for standard materials: same sky-coloured haze as the terrain */
+function patchMaterial(mat, opts = {}) {
+  mat.onBeforeCompile = (sh) => {
+    Object.assign(sh.uniforms, { uSky: U.uSky, uSkyDusk: U.uSkyDusk, uDusk: U.uDusk, uSkyP: U.uSkyP, uFogDen: U.uFogDen,
+      uSunDir: U.uSunDir, uSunCol: U.uSunCol, uSunVis: opts.sunVis || { value: 1 }, uRim: { value: opts.rim || 0 },
+      uRimPow: { value: opts.rimPow || 2.5 }, uSat: { value: opts.sat || 1 }, uLift: { value: opts.lift || 1 },
+      uMapLodMax: { value: opts.mapLodMax ?? 99 },
+      uFill: opts.fill || { value: new THREE.Color(0, 0, 0) } });
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vWPos;')
+      .replace('#include <worldpos_vertex>', `#include <worldpos_vertex>
+        vec4 wpp = vec4(transformed, 1.0);
+        #ifdef USE_INSTANCING
+          wpp = instanceMatrix * wpp;
+        #endif
+        vWPos = (modelMatrix * wpp).xyz;`);
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', `#include <common>
+        varying vec3 vWPos;
+        uniform float uFogDen; uniform vec3 uSunDir; uniform vec3 uSunCol; uniform float uSunVis; uniform float uRim; uniform vec3 uFill;
+        uniform float uRimPow; uniform float uSat; uniform float uLift; uniform float uMapLodMax;
+        ${SKY_GLSL}`)
+      .replace('#include <map_fragment>', `
+        #ifdef USE_MAP
+          vec4 sampledDiffuseColor;
+          if (uMapLodMax < 15.0) {
+            // the Meshy atlas is packed edge to edge: coarse mips bleed white seams into the hoodie, so cap the mip level
+            vec2 tsz = vec2(textureSize(map, 0));
+            vec2 ddx = dFdx(vMapUv * tsz), ddy = dFdy(vMapUv * tsz);
+            float lod = 0.5 * log2(max(max(dot(ddx, ddx), dot(ddy, ddy)), 1e-8));
+            sampledDiffuseColor = textureLod(map, vMapUv, clamp(lod, 0.0, uMapLodMax));
+          } else {
+            sampledDiffuseColor = texture2D(map, vMapUv);
+          }
+          diffuseColor *= sampledDiffuseColor;
+        #endif
+        // optional albedo grade (identity for everything but the rider and board)
+        diffuseColor.rgb = pow(max(diffuseColor.rgb, vec3(0.0)), vec3(uLift));
+        diffuseColor.rgb = max(mix(vec3(dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722))), diffuseColor.rgb, uSat), 0.0);`)
+      .replace('#include <lights_fragment_end>', `#include <lights_fragment_end>
+        reflectedLight.directDiffuse *= uSunVis; reflectedLight.directSpecular *= uSunVis;`)
+      .replace('#include <opaque_fragment>', `
+        {
+          vec3 Vw = normalize(cameraPosition - vWPos);
+          vec3 Nw = normalize((vec4(normal, 0.0) * viewMatrix).xyz);
+          float rimF = pow(1.0 - clamp(dot(Nw, Vw), 0.0, 1.0), uRimPow) * pow(clamp(dot(-Vw, uSunDir) * 0.5 + 0.5, 0.0, 1.0), 2.0);
+          outgoingLight += uSunCol * rimF * uRim * uSunVis;
+          outgoingLight += diffuseColor.rgb * uFill * (0.6 + 0.4 * Nw.y + 0.5 * max(Nw.y, 0.0) * max(Nw.y, 0.0));
+          float dd = length(cameraPosition - vWPos);
+          float ff = 1.0 - exp(-pow(dd * uFogDen, 1.35));
+          outgoingLight = mix(outgoingLight, hazeColor(vWPos - cameraPosition), ff);
+        }
+        #include <opaque_fragment>`);
+  };
+  mat.customProgramCacheKey = () => 'dune-' + (opts.rim ? 'r' : 'n');
+  return mat;
+}
+
+/* ------------------------------------------------------------ shadow pass */
+const SHADOW_RES = LOW ? 1024 : 2048;
+const shadowRT = new THREE.WebGLRenderTarget(SHADOW_RES, SHADOW_RES, { depthBuffer: true });
+shadowRT.depthTexture = new THREE.DepthTexture(SHADOW_RES, SHADOW_RES);
+shadowRT.depthTexture.type = THREE.UnsignedIntType;
+const shadowCam = new THREE.OrthographicCamera(-7, 7, 7, -7, 1, 260);       // tight: the surfer's own crisp shadow
+shadowCam.layers.set(3);
+const propShadowRT = new THREE.WebGLRenderTarget(SHADOW_RES, SHADOW_RES, { depthBuffer: true });
+propShadowRT.depthTexture = new THREE.DepthTexture(SHADOW_RES, SHADOW_RES);
+propShadowRT.depthTexture.type = THREE.UnsignedIntType;
+const propShadowCam = new THREE.OrthographicCamera(-46, 46, 46, -46, 1, 400);  // wide: cacti, rocks, arches
+propShadowCam.layers.set(1);
+U.uPDepth.value = propShadowRT.depthTexture;
+const depthMat = new THREE.MeshDepthMaterial();
+U.uRDepth.value = shadowRT.depthTexture;
+
+/* ------------------------------------------------------------------ rider */
+const boardGroup = new THREE.Group();   // origin = contact point, -Z = nose
+const riderGroup = new THREE.Group();   // sideways stance
+boardGroup.add(riderGroup);
+scene.add(boardGroup);
+const RIG = { bones: {}, bindL: {}, W: {}, Winv: {}, model: null, ok: false };
+const riderSunVis = { value: 1 };
+const RIDER_FILL = { value: new THREE.Color(0.34, 0.16, 0.44) };  // violet sky fill: the hoodie reads deep indigo in the backlight, as in the video
+const PROP_FILL = { value: new THREE.Color(0.16, 0.13, 0.20) };
+let boardMesh = null;
+let deckY = 0.07;
+
+function setupRider(gltf) {
+  const model = gltf.scene;
+  model.traverse((o) => {
+    if (o.isMesh) {
+      o.frustumCulled = false;
+      o.layers.enable(3);
+      const m = o.material;
+      if (m && m.isMeshStandardMaterial) {
+        m.roughness = 0.85; m.metalness = 0.0;
+        patchMaterial(m, { sunVis: riderSunVis, rim: 1.5, rimPow: 6, sat: 1.1, fill: RIDER_FILL, mapLodMax: 1.5 });
+      }
+    }
+  });
+  riderGroup.add(model);
+  riderGroup.rotation.y = -Math.PI / 2;
+  model.updateMatrixWorld(true);
+  const rootQ = new THREE.Quaternion(); model.getWorldQuaternion(rootQ); const rootQi = rootQ.clone().invert();
+  model.traverse((o) => {
+    if (o.isBone) {
+      RIG.bones[o.name] = o;
+      RIG.bindL[o.name] = o.quaternion.clone();
+      const wq = new THREE.Quaternion(); o.getWorldQuaternion(wq);
+      const W = rootQi.clone().multiply(wq);
+      RIG.W[o.name] = W; RIG.Winv[o.name] = W.clone().invert();
+    }
+  });
+  RIG.model = model;
+  RIG.ok = !!RIG.bones.Hips;
+}
+function setupBoard(gltf) {
+  const g = gltf.scene;
+  g.traverse((o) => { if (o.isMesh) { o.layers.enable(3); o.frustumCulled = false; if (o.material && o.material.isMeshStandardMaterial) { o.material.roughness = 0.7; patchMaterial(o.material, { sunVis: riderSunVis, rim: 0.8, rimPow: 4, sat: 1.15 }); } } });
+  const box = new THREE.Box3().setFromObject(g);
+  const size = box.getSize(new THREE.Vector3());
+  const holder = new THREE.Group();
+  holder.add(g);
+  // longest horizontal axis -> Z (nose/tail), thinnest axis -> Y
+  const dims = [size.x, size.y, size.z];
+  const thin = dims.indexOf(Math.min(...dims));
+  if (thin === 0) g.rotation.z = Math.PI / 2; else if (thin === 2) g.rotation.x = Math.PI / 2;
+  g.updateMatrixWorld(true);
+  let b2 = new THREE.Box3().setFromObject(g);
+  let s2 = b2.getSize(new THREE.Vector3());
+  if (s2.x > s2.z) { g.rotation.y += Math.PI / 2; g.updateMatrixWorld(true); b2 = new THREE.Box3().setFromObject(g); s2 = b2.getSize(new THREE.Vector3()); }
+  const sc = 1.32 / s2.z;
+  holder.scale.setScalar(sc);
+  const c2 = b2.getCenter(new THREE.Vector3());
+  g.position.sub(new THREE.Vector3(c2.x, b2.min.y, c2.z));
+  boardMesh = holder;
+  deckY = Math.max(0.035, s2.y * sc * 0.55);
+  boardGroup.add(holder);
+}
+
+/* pose library: model space angles (deg) [x: flex fwd, y: twist, z: abduct]; rider faces +Z, travel toward -X */
+const POSES = {
+  ride: {   // the video's low surf crouch
+    Spine02: [16, -12, 0], Spine01: [10, -9, 0], Spine: [6, -6, 0], neck: [-12, -20, 0], Head: [-10, -32, 0],
+    LeftUpLeg: [-56, 0, 14], LeftLeg: [94, 0, 0], LeftFoot: [-34, 0, 0],
+    RightUpLeg: [-56, 0, -14], RightLeg: [94, 0, 0], RightFoot: [-34, 0, 0],
+    LeftArm: [0, -22, 18], LeftForeArm: [0, -28, 0], RightArm: [0, 26, -14], RightForeArm: [0, 34, 0],
+  },
+  tuck: {
+    Spine02: [24, -12, 0], Spine01: [16, -9, 0], Spine: [10, -6, 0], neck: [-26, -20, 0], Head: [-22, -32, 0],
+    LeftUpLeg: [-80, 0, 12], LeftLeg: [122, 0, 0], LeftFoot: [-40, 0, 0],
+    RightUpLeg: [-80, 0, -12], RightLeg: [122, 0, 0], RightFoot: [-40, 0, 0],
+    LeftArm: [-22, -48, 6], LeftForeArm: [0, -42, 0], RightArm: [-22, 48, -6], RightForeArm: [0, 42, 0],
+  },
+  air: {
+    Spine02: [8, -10, 0], Spine01: [5, -8, 0], Spine: [3, -5, 0], neck: [-6, -18, 0], Head: [-4, -30, 0],
+    LeftUpLeg: [-66, 0, 15], LeftLeg: [104, 0, 0], LeftFoot: [-36, 0, 0],
+    RightUpLeg: [-66, 0, -15], RightLeg: [104, 0, 0], RightFoot: [-36, 0, 0],
+    LeftArm: [0, -14, 48], LeftForeArm: [0, -18, 0], RightArm: [0, 14, -46], RightForeArm: [0, 18, 0],
+  },
+  grab: {
+    Spine02: [34, -22, 0], Spine01: [22, -14, 0], Spine: [14, -8, 0], neck: [-30, -18, 0], Head: [-24, -30, 0],
+    LeftUpLeg: [-92, 0, 12], LeftLeg: [130, 0, 0], LeftFoot: [-38, 0, 0],
+    RightUpLeg: [-92, 0, -12], RightLeg: [130, 0, 0], RightFoot: [-38, 0, 0],
+    LeftArm: [0, -10, 70], LeftForeArm: [0, -12, 0], RightArm: [-58, 24, 30], RightForeArm: [0, 22, 0],
+  },
+  crash: {
+    Spine02: [-18, 0, 0], Spine01: [-10, 0, 0], Spine: [-6, 0, 0], neck: [-14, 0, 0], Head: [-10, 0, 0],
+    LeftUpLeg: [-26, 0, 24], LeftLeg: [40, 0, 0], LeftFoot: [-10, 0, 0],
+    RightUpLeg: [-8, 0, -28], RightLeg: [56, 0, 0], RightFoot: [-10, 0, 0],
+    LeftArm: [0, 0, 96], LeftForeArm: [0, -30, 0], RightArm: [0, 0, -96], RightForeArm: [0, 30, 0],
+  },
+  stand: {
+    Spine02: [2, -6, 0], Spine01: [1, -4, 0], Spine: [0, -2, 0], neck: [0, -18, 0], Head: [-2, -36, 0],
+    LeftUpLeg: [-10, 0, 13], LeftLeg: [18, 0, 0], LeftFoot: [-8, 0, 0],
+    RightUpLeg: [-10, 0, -13], RightLeg: [18, 0, 0], RightFoot: [-8, 0, 0],
+    LeftArm: [0, -6, -18], LeftForeArm: [0, -14, 0], RightArm: [0, 6, 18], RightForeArm: [0, 14, 0],
+  },
+};
+const POSE_BONES = [...new Set(Object.values(POSES).flatMap((p) => Object.keys(p)))];
+const _e = new THREE.Euler(), _q = new THREE.Quaternion();
+const poseOut = {};
+for (const n of POSE_BONES) poseOut[n] = [0, 0, 0];
+const ZERO3 = [0, 0, 0];
+// layered blend: ride -> tuck -> air -> grab -> crash -> stand (each weight 0..1)
+const POSE_ORDER = ['tuck', 'air', 'grab', 'crash', 'stand'];
+function applyPose(w, t, lean = 0) {
+  if (!RIG.ok) return;
+  for (const name of POSE_BONES) {
+    const o = poseOut[name];
+    const r = POSES.ride[name] || ZERO3;
+    o[0] = r[0]; o[1] = r[1]; o[2] = r[2];
+    for (const key of POSE_ORDER) {
+      const wt = w[key] || 0; if (wt <= 0.001) continue;
+      const p = POSES[key][name] || ZERO3;
+      o[0] += (p[0] - o[0]) * wt; o[1] += (p[1] - o[1]) * wt; o[2] += (p[2] - o[2]) * wt;
+    }
+  }
+  // carving: lean into the turn (toe side = forward flex, heel side = back), knees absorb
+  poseOut.Spine02[0] += lean * 10; poseOut.Spine01[0] += lean * 7;
+  poseOut.LeftUpLeg[0] -= Math.abs(lean) * 8; poseOut.RightUpLeg[0] -= Math.abs(lean) * 8;
+  poseOut.LeftLeg[0] += Math.abs(lean) * 12; poseOut.RightLeg[0] += Math.abs(lean) * 12;
+  // procedural life: balance arms, crash flailing
+  const fl = w.crash || 0;
+  const wob = Math.sin(t * 3.1) * 6 + Math.sin(t * 7.3) * 2.5;
+  poseOut.LeftArm[2] += wob * (1 - fl) + Math.sin(t * 19) * 38 * fl;
+  poseOut.RightArm[2] += -wob * 0.8 * (1 - fl) + Math.sin(t * 17 + 1) * 38 * fl;
+  poseOut.LeftArm[1] += Math.sin(t * 13) * 30 * fl;
+  poseOut.LeftUpLeg[0] += Math.sin(t * 15) * 25 * fl;
+  poseOut.RightUpLeg[0] += Math.sin(t * 14 + 2) * 25 * fl;
+  poseOut.Spine02[0] += Math.sin(t * 2.3) * 2.0;
+  for (const name of POSE_BONES) {
+    const b = RIG.bones[name]; if (!b) continue;
+    const a = poseOut[name];
+    _e.set(a[0] * D2R, a[1] * D2R, a[2] * D2R, 'YXZ');
+    _q.setFromEuler(_e);
+    b.quaternion.copy(RIG.bindL[name]).multiply(RIG.Winv[name]).multiply(_q).multiply(RIG.W[name]);
+  }
+}
+const _v1 = new THREE.Vector3(), _v2 = new THREE.Vector3(), _v3 = new THREE.Vector3();
+function anchorFeet() {
+  if (!RIG.ok) return;
+  const m = RIG.model;
+  m.position.set(0, 0, 0);
+  riderGroup.updateMatrixWorld(true);
+  const lf = RIG.bones.LeftFoot, rf = RIG.bones.RightFoot;
+  lf.getWorldPosition(_v1); rf.getWorldPosition(_v2);
+  riderGroup.worldToLocal(_v1); riderGroup.worldToLocal(_v2);
+  // model-space -> riderGroup local: model sits at origin of riderGroup (no extra transform)
+  const midX = (_v1.x + _v2.x) * 0.5, midZ = (_v1.z + _v2.z) * 0.5;
+  const footY = Math.min(_v1.y, _v2.y);
+  m.position.set(-midX, deckY - (footY - 0.105), -midZ);
+}
+
+/* ---------------------------------------------------------------- sash */
+const SASH_N = 9;
+const sash = { p: [], o: [], mesh: null, ok: false };
+function initSash() {
+  const geo = new THREE.BufferGeometry();
+  const pos = new Float32Array(SASH_N * 2 * 3);
+  const idx = [];
+  for (let i = 0; i < SASH_N - 1; i++) { const a = i * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  geo.setIndex(idx);
+  const mat = patchMaterial(new THREE.MeshStandardMaterial({ color: 0xcfdcf0, roughness: 0.9, side: THREE.DoubleSide }), { sunVis: riderSunVis, rim: 1.0 });
+  sash.mesh = new THREE.Mesh(geo, mat);
+  sash.mesh.frustumCulled = false;
+  sash.mesh.layers.enable(3);
+  scene.add(sash.mesh);
+  for (let i = 0; i < SASH_N; i++) { sash.p.push(new THREE.Vector3()); sash.o.push(new THREE.Vector3()); }
+}
+function sashAnchor(out) {
+  const hips = RIG.bones.Spine02 || RIG.bones.Hips;
+  if (!hips) { out.copy(boardGroup.position).y += 1; return; }
+  hips.getWorldPosition(out);
+  // the knot sits on the rider's right hip, slightly behind
+  _v3.set(-0.16, -0.12, -0.08).applyQuaternion(RIG.model.getWorldQuaternion(_q));
+  out.add(_v3);
+}
+function updateSash(dt, vel) {
+  if (!sash.mesh || !RIG.ok) return;
+  const a = sashAnchor(_v1);
+  if (!sash.ok) { for (let i = 0; i < SASH_N; i++) { sash.p[i].copy(_v1); sash.o[i].copy(_v1); } sash.ok = true; }
+  const seg = 0.085;
+  const drag = 0.9;
+  for (let i = 1; i < SASH_N; i++) {
+    const p = sash.p[i], o = sash.o[i];
+    const vx = (p.x - o.x) * drag, vy = (p.y - o.y) * drag, vz = (p.z - o.z) * drag;
+    o.copy(p);
+    // gravity + air stream from the rider's motion + a little flutter
+    p.x += vx - vel.x * 0.0009 + Math.sin(performance.now() * 0.013 + i) * 0.003;
+    p.y += vy - 9.8 * dt * dt * 0.6 + Math.sin(performance.now() * 0.017 + i * 1.7) * 0.003;
+    p.z += vz - vel.z * 0.0009;
+  }
+  sash.p[0].copy(_v1);
+  for (let it = 0; it < 3; it++) {
+    for (let i = 1; i < SASH_N; i++) {
+      const a2 = sash.p[i - 1], b2 = sash.p[i];
+      _v2.subVectors(b2, a2); const L = _v2.length() || 1e-4;
+      b2.copy(a2).addScaledVector(_v2, seg / L);
+    }
+  }
+  // build a camera-facing strip
+  const pos = sash.mesh.geometry.attributes.position.array;
+  for (let i = 0; i < SASH_N; i++) {
+    const p = sash.p[i];
+    const q = sash.p[Math.min(i + 1, SASH_N - 1)], r = sash.p[Math.max(i - 1, 0)];
+    _v2.subVectors(q, r).normalize();
+    _v3.subVectors(camera.position, p).normalize();
+    _v3.crossVectors(_v2, _v3).normalize().multiplyScalar(0.032 * (1 - i / SASH_N * 0.4));
+    pos[i * 6] = p.x + _v3.x; pos[i * 6 + 1] = p.y + _v3.y; pos[i * 6 + 2] = p.z + _v3.z;
+    pos[i * 6 + 3] = p.x - _v3.x; pos[i * 6 + 4] = p.y - _v3.y; pos[i * 6 + 5] = p.z - _v3.z;
+  }
+  sash.mesh.geometry.attributes.position.needsUpdate = true;
+  sash.mesh.geometry.computeVertexNormals();
+}
+
+/* ------------------------------------------------------------ particles */
+const MAXP = LOW ? 500 : 1100;
+const PART = {
+  n: 0,
+  pos: new Float32Array(MAXP * 3), vel: new Float32Array(MAXP * 3),
+  age: new Float32Array(MAXP), life: new Float32Array(MAXP), s0: new Float32Array(MAXP), s1: new Float32Array(MAXP),
+  rot: new Float32Array(MAXP), rv: new Float32Array(MAXP), shade: new Float32Array(MAXP), a0: new Float32Array(MAXP), kind: new Uint8Array(MAXP),
+  vari: new Uint8Array(MAXP),        // which of the 4 fal dust puffs (2x2 atlas cell)
+};
+const pGeo = new THREE.InstancedBufferGeometry();
+pGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([-0.5, -0.5, 0, 0.5, -0.5, 0, 0.5, 0.5, 0, -0.5, 0.5, 0]), 3));
+pGeo.setAttribute('uv', new THREE.BufferAttribute(new Float32Array([0, 0, 1, 0, 1, 1, 0, 1]), 2));
+pGeo.setIndex([0, 1, 2, 0, 2, 3]);
+const iPos = new THREE.InstancedBufferAttribute(new Float32Array(MAXP * 3), 3).setUsage(THREE.DynamicDrawUsage);
+const iDat = new THREE.InstancedBufferAttribute(new Float32Array(MAXP * 4), 4).setUsage(THREE.DynamicDrawUsage);
+pGeo.setAttribute('iPos', iPos); pGeo.setAttribute('iDat', iDat);
+pGeo.instanceCount = 0;
+const pMat = new THREE.ShaderMaterial({
+  uniforms: { uTex: { value: null }, uAtlas: { value: 0 }, uDust: { value: PAL.day.dust.clone() }, uShade: U.uShade, uSunCol: U.uSunCol, uSunDir: U.uSunDir,
+    uSunUp: U.uSunUp, uSky: U.uSky, uSkyDusk: U.uSkyDusk, uDusk: U.uDusk, uSkyP: U.uSkyP, uFogDen: U.uFogDen, uGold: { value: new THREE.Color('#ffe6a0') } },
+  vertexShader: /* glsl */`
+    uniform float uAtlas;
+    attribute vec3 iPos; attribute vec4 iDat;
+    varying vec2 vUv; varying float vA; varying float vShade; varying vec3 vW; varying float vGold;
+    void main(){
+      // iDat.w = shade (0..1) + 2 * gold + 4 * puff variant
+      float vari = floor(iDat.w / 4.0);
+      float rem = iDat.w - vari * 4.0;
+      vec2 cell = vec2(mod(vari, 2.0), floor(vari / 2.0));
+      vUv = mix(uv, (uv + vec2(cell.x, 1.0 - cell.y)) * 0.5, uAtlas);
+      float c = cos(iDat.z), s = sin(iDat.z);
+      vec2 corner = mat2(c, s, -s, c) * position.xy * abs(iDat.x);
+      vec4 mv = viewMatrix * vec4(iPos, 1.0);
+      mv.xy += corner;
+      gl_Position = projectionMatrix * mv;
+      vA = iDat.y; vShade = fract(rem); vGold = step(1.5, rem); vW = iPos;
+    }`,
+  fragmentShader: /* glsl */`
+    uniform sampler2D uTex; uniform vec3 uDust, uShade, uSunCol, uGold, uSunDir; uniform float uFogDen, uSunUp;
+    ${SKY_GLSL}
+    varying vec2 vUv; varying float vA; varying float vShade; varying vec3 vW; varying float vGold;
+    void main(){
+      vec4 t = texture2D(uTex, vUv);           // fal puff atlas (alpha derived from its luminance)
+      float lum = max(t.r, max(t.g, t.b));
+      float a = t.a * vA;
+      if (a < 0.004) discard;
+      // like the source video, the spray stays a warm orange even inside a dune's shadow
+      float warm = (0.3 + 0.7 * vShade) * mix(0.55, 1.0, uSunUp);      // ...until the sun has set
+      vec3 c = mix(uShade * 1.5 + uDust * 0.22, uDust, warm) * (0.62 + 0.6 * lum);
+      // the low sun shines through the plume (forward scattering)
+      float fwd = pow(clamp(dot(normalize(vW - cameraPosition), uSunDir), 0.0, 1.0), 6.0);
+      c += uSunCol * (0.08 + 0.45 * fwd) * (0.35 + 0.65 * vShade) * mix(0.35, 1.0, uSunUp);
+      c = mix(c, uGold * 1.35, vGold);
+      float d = length(cameraPosition - vW);
+      a *= smoothstep(0.8, 3.5 + vGold * 4.0, d);          // never let a sprite fill the lens
+      float ff = 1.0 - exp(-pow(d * uFogDen, 1.35));
+      c = mix(c, hazeColor(vW - cameraPosition), ff);
+      gl_FragColor = vec4(c, a);
+      #include <colorspace_fragment>
+    }`,
+  transparent: true, depthWrite: false,
+});
+const particles = new THREE.Mesh(pGeo, pMat);
+particles.frustumCulled = false;
+particles.renderOrder = 5;
+scene.add(particles);
+function emit(x, y, z, vx, vy, vz, size0, size1, life, alpha, shade, kind = 0) {
+  if (PART.n >= MAXP) return;
+  const i = PART.n++;
+  PART.pos[i * 3] = x; PART.pos[i * 3 + 1] = y; PART.pos[i * 3 + 2] = z;
+  PART.vel[i * 3] = vx; PART.vel[i * 3 + 1] = vy; PART.vel[i * 3 + 2] = vz;
+  PART.age[i] = 0; PART.life[i] = life; PART.s0[i] = size0; PART.s1[i] = size1;
+  PART.rot[i] = Math.random() * TAU; PART.rv[i] = (Math.random() - 0.5) * 1.5; PART.shade[i] = shade; PART.a0[i] = alpha; PART.kind[i] = kind;
+  PART.vari[i] = (Math.random() * 4) | 0;
+}
+function updateParticles(dt) {
+  let i = 0;
+  const P3 = PART.pos, V3 = PART.vel;
+  while (i < PART.n) {
+    PART.age[i] += dt;
+    if (PART.age[i] >= PART.life[i]) {      // swap-remove
+      const j = --PART.n;
+      if (i !== j) {
+        P3[i * 3] = P3[j * 3]; P3[i * 3 + 1] = P3[j * 3 + 1]; P3[i * 3 + 2] = P3[j * 3 + 2];
+        V3[i * 3] = V3[j * 3]; V3[i * 3 + 1] = V3[j * 3 + 1]; V3[i * 3 + 2] = V3[j * 3 + 2];
+        PART.age[i] = PART.age[j]; PART.life[i] = PART.life[j]; PART.s0[i] = PART.s0[j]; PART.s1[i] = PART.s1[j];
+        PART.rot[i] = PART.rot[j]; PART.rv[i] = PART.rv[j]; PART.shade[i] = PART.shade[j]; PART.a0[i] = PART.a0[j]; PART.kind[i] = PART.kind[j];
+        PART.vari[i] = PART.vari[j];
+      }
+      continue;
+    }
+    const k = PART.kind[i];
+    const drag = k === 1 ? 0.6 : 1.6;
+    V3[i * 3] *= Math.exp(-drag * dt); V3[i * 3 + 2] *= Math.exp(-drag * dt);
+    V3[i * 3 + 1] = V3[i * 3 + 1] * Math.exp(-drag * dt) + (k === 1 ? -0.4 : -2.2) * dt;
+    P3[i * 3] += (V3[i * 3] + WIND_X) * dt; P3[i * 3 + 1] += V3[i * 3 + 1] * dt; P3[i * 3 + 2] += (V3[i * 3 + 2] + WIND_Z) * dt;
+    PART.rot[i] += PART.rv[i] * dt;
+    i++;
+  }
+  const ip = iPos.array, id = iDat.array;
+  for (let j = 0; j < PART.n; j++) {
+    const t = PART.age[j] / PART.life[j];
+    ip[j * 3] = P3[j * 3]; ip[j * 3 + 1] = P3[j * 3 + 1]; ip[j * 3 + 2] = P3[j * 3 + 2];
+    id[j * 4] = lerp(PART.s0[j], PART.s1[j], 1 - (1 - t) * (1 - t));
+    id[j * 4 + 1] = PART.a0[j] * smoothstep(0, 0.08, t) * (1 - smoothstep(0.35, 1, t));
+    id[j * 4 + 2] = PART.rot[j];
+    id[j * 4 + 3] = Math.min(PART.shade[j], 0.999) + (PART.kind[j] === 2 ? 2 : 0) + PART.vari[j] * 4;
+  }
+  iPos.needsUpdate = true; iDat.needsUpdate = true;
+  pGeo.instanceCount = PART.n;
+}
+const WIND_X = -0.6, WIND_Z = -1.2;
+
+/* ---------------------------------------------------------------- trail */
+const TRAIL_N = 300;
+const trail = { pts: [] };
+const trGeo = new THREE.BufferGeometry();
+const trPos = new Float32Array(TRAIL_N * 2 * 3), trA = new Float32Array(TRAIL_N * 2), trU = new Float32Array(TRAIL_N * 2);
+trGeo.setAttribute('position', new THREE.BufferAttribute(trPos, 3).setUsage(THREE.DynamicDrawUsage));
+trGeo.setAttribute('aA', new THREE.BufferAttribute(trA, 1).setUsage(THREE.DynamicDrawUsage));
+trGeo.setAttribute('aU', new THREE.BufferAttribute(trU, 1));
+const trIdx = new Uint32Array((TRAIL_N - 1) * 6);
+trGeo.setIndex(new THREE.BufferAttribute(trIdx, 1).setUsage(THREE.DynamicDrawUsage));
+const trMat = new THREE.ShaderMaterial({
+  uniforms: { uShade: U.uShade, uLit: U.uLit, uFogDen: U.uFogDen, uSky: U.uSky, uSkyDusk: U.uSkyDusk, uDusk: U.uDusk, uSkyP: U.uSkyP },
+  vertexShader: `attribute float aA; attribute float aU; varying float vA; varying float vU; varying vec3 vW;
+    void main(){ vA = aA; vU = aU; vW = position; gl_Position = projectionMatrix * viewMatrix * vec4(position, 1.0); }`,
+  fragmentShader: /* glsl */`
+    uniform vec3 uShade, uLit; uniform float uFogDen;
+    ${SKY_GLSL}
+    varying float vA; varying float vU; varying vec3 vW;
+    void main(){
+      float x = abs(vU * 2.0 - 1.0);
+      float groove = 1.0 - smoothstep(0.35, 1.0, x);
+      float lip = smoothstep(0.55, 0.85, x) * (1.0 - smoothstep(0.85, 1.0, x));
+      vec3 c = mix(uShade * 1.35, uLit * 1.15, lip);
+      float a = vA * max(groove * 0.55, lip * 0.4);
+      float d = length(cameraPosition - vW);
+      c = mix(c, hazeColor(vW - cameraPosition), 1.0 - exp(-pow(d * uFogDen, 1.35)));
+      gl_FragColor = vec4(c, a);
+      #include <colorspace_fragment>
+    }`,
+  transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -4,
+});
+const trailMesh = new THREE.Mesh(trGeo, trMat);
+trailMesh.frustumCulled = false;
+trailMesh.renderOrder = 2;
+scene.add(trailMesh);
+function trailPush(x, z, rx, rz, brk) {
+  const last = trail.pts[trail.pts.length - 1];
+  if (!brk && last && !last.brk && (x - last.x) ** 2 + (z - last.z) ** 2 < 0.36) return;
+  trail.pts.push({ x, z, rx, rz, t: clock.elapsedTime, brk });
+  if (trail.pts.length > TRAIL_N) trail.pts.shift();
+}
+function updateTrail() {
+  const now = clock.elapsedTime;
+  while (trail.pts.length && now - trail.pts[0].t > 9) trail.pts.shift();
+  const n = trail.pts.length;
+  let m = 0;
+  for (let i = 0; i < n; i++) {
+    const p = trail.pts[i];
+    const w = 0.34;
+    const xl = p.x - p.rx * w, zl = p.z - p.rz * w, xr = p.x + p.rx * w, zr = p.z + p.rz * w;
+    trPos[i * 6] = xl; trPos[i * 6 + 1] = terrain(xl, zl) + 0.03; trPos[i * 6 + 2] = zl;
+    trPos[i * 6 + 3] = xr; trPos[i * 6 + 4] = terrain(xr, zr) + 0.03; trPos[i * 6 + 5] = zr;
+    const age = now - p.t;
+    const a = (1 - smoothstep(4, 9, age)) * smoothstep(0, 0.15, age + 0.05);
+    trA[i * 2] = a; trA[i * 2 + 1] = a;
+    trU[i * 2] = 0; trU[i * 2 + 1] = 1;
+    if (i < n - 1 && !trail.pts[i + 1].brk) {
+      const a0 = i * 2;
+      trIdx[m++] = a0; trIdx[m++] = a0 + 2; trIdx[m++] = a0 + 1; trIdx[m++] = a0 + 1; trIdx[m++] = a0 + 2; trIdx[m++] = a0 + 3;
+    }
+  }
+  trGeo.setDrawRange(0, m);
+  trGeo.attributes.position.needsUpdate = true; trGeo.attributes.aA.needsUpdate = true; trGeo.attributes.aU.needsUpdate = true;
+  trGeo.index.needsUpdate = true;
+}
+
+/* ----------------------------------------------------------------- props */
+const PROPS = { types: {}, chunks: new Map(), CH: 40, R: LOW ? 360 : 520, obstacles: [], dirty: true, lastCX: 1e9, lastCZ: 1e9 };
+function prepProp(gltf, height, opts = {}) {
+  if (!gltf) return null;
+  const root = gltf.scene;
+  root.updateMatrixWorld(true);
+  const parts = [];
+  root.traverse((o) => { if (o.isMesh) parts.push(o); });
+  if (!parts.length) return null;
+  const box = new THREE.Box3().setFromObject(root);
+  const size = box.getSize(new THREE.Vector3());
+  const sc = height / size.y;
+  const center = box.getCenter(new THREE.Vector3());
+  const meshes = parts.map((o) => {
+    const g = o.geometry.clone();
+    g.applyMatrix4(o.matrixWorld);
+    g.translate(-center.x, -box.min.y, -center.z);
+    g.scale(sc * (opts.stretchX || 1), sc, sc);
+    if (opts.sink) g.translate(0, -opts.sink * height, 0);
+    g.computeBoundingSphere();
+    const m = o.material.clone();
+    if (m.isMeshStandardMaterial) { m.roughness = opts.rough ?? 0.9; m.metalness = 0; }
+    patchMaterial(m, { rim: opts.rim || 0.25, fill: PROP_FILL });
+    return { geo: g, mat: m };
+  });
+  return { meshes, radius: Math.max(size.x * (opts.stretchX || 1), size.z) * sc * 0.5, height, footprint: [size.x * sc * (opts.stretchX || 1), size.z * sc] };
+}
+function makeInstanced(type, cap) {
+  const T = PROPS.types[type];
+  if (!T) return;
+  T.inst = T.meshes.map(({ geo, mat }) => {
+    const im = new THREE.InstancedMesh(geo, mat, cap);
+    im.count = 0; im.frustumCulled = false;
+    im.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    im.setColorAt(0, new THREE.Color(1, 1, 1));
+    if (type !== 'grass') im.layers.enable(1);
+    scene.add(im);
+    return im;
+  });
+  T.cap = cap;
+}
+function genChunk(cx, cz) {
+  const rng = mulberry32(hashInts(cx, cz));
+  const CH = PROPS.CH;
+  const s = -(cz + 0.5) * CH;
+  const items = [];
+  const dens = clamp(0.35 + s / 9000, 0.35, 1.0);
+  const tries = 4;
+  for (let t = 0; t < tries; t++) {
+    const x = (cx + rng()) * CH, z = (cz + rng()) * CH;
+    const r = rng();
+    const y = terrain(x, z);
+    const slope = Math.hypot(TGX, TGZ);
+    const nearStart = Math.hypot(x - START.x, z - START.z) < 40;
+    if (nearStart) continue;
+    let type = null;
+    if (r < 0.16 * dens) type = 'cactus';
+    else if (r < 0.26 * dens + 0.02) type = 'rock';
+    else if (r < 0.62) type = 'grass';
+    if (!type || !PROPS.types[type]) continue;
+    if (type !== 'grass' && slope > 0.45) continue;
+    if (type === 'grass' && slope > 0.7) continue;
+    const scale = type === 'cactus' ? 0.75 + rng() * 0.6 : type === 'rock' ? 0.55 + rng() * 0.9 : 0.6 + rng() * 0.8;
+    const it = { type, x, y, z, rot: rng() * TAU, scale, tilt: (rng() - 0.5) * 0.12, sun: 1 };
+    items.push(it);
+    if (type === 'grass') {  // grass grows in little clumps
+      const nn = 1 + Math.floor(rng() * 3);
+      for (let k = 0; k < nn; k++) {
+        const gx = x + (rng() - 0.5) * 3, gz = z + (rng() - 0.5) * 3;
+        items.push({ type: 'grass', x: gx, y: terrain(gx, gz), z: gz, rot: rng() * TAU, scale: 0.5 + rng() * 0.6, tilt: 0, sun: 1 });
+      }
+    }
+  }
+  // big hoodoo formations, rare
+  if (rng() < 0.013 && PROPS.types.hoodoo) {
+    const x = (cx + rng()) * CH, z = (cz + rng()) * CH;
+    if (Math.hypot(x - START.x, z - START.z) > 160) {
+      items.push({ type: 'hoodoo', x, y: terrain(x, z), z, rot: rng() * TAU, scale: 0.7 + rng() * 0.9, tilt: 0, sun: 1 });
+    }
+  }
+  for (const it of items) it.sun = terrainShadow(it.x, it.y + 1.2, it.z, sunDir);
+  return { items, sunT: 0 };
+}
+const _m4 = new THREE.Matrix4(), _pq = new THREE.Quaternion(), _ps = new THREE.Vector3(), _pp = new THREE.Vector3(), _pe = new THREE.Euler();
+const _col = new THREE.Color();
+function rebuildProps(camX, camZ) {
+  const CH = PROPS.CH;
+  const ccx = Math.floor(camX / CH), ccz = Math.floor(camZ / CH);
+  const RC = Math.ceil(PROPS.R / CH);
+  const need = new Set();
+  for (let dz = -RC; dz <= Math.ceil(RC * 0.35); dz++) for (let dx = -RC; dx <= RC; dx++) {
+    if (dx * dx + dz * dz > RC * RC) continue;
+    const key = (ccx + dx) + ',' + (ccz + dz);
+    need.add(key);
+    if (!PROPS.chunks.has(key)) PROPS.chunks.set(key, genChunk(ccx + dx, ccz + dz));
+  }
+  for (const key of PROPS.chunks.keys()) if (!need.has(key)) PROPS.chunks.delete(key);
+  const counts = {};
+  for (const tname in PROPS.types) counts[tname] = 0;
+  for (const tname in PROPS.types) if (!PROPS.types[tname]) delete PROPS.types[tname];
+  PROPS.obstacles.length = 0;
+  for (const [, ch] of PROPS.chunks) {
+    for (const it of ch.items) {
+      const T = PROPS.types[it.type]; if (!T || !T.inst) continue;
+      const c = counts[it.type];
+      if (c >= T.cap) continue;
+      counts[it.type] = c + 1;
+      _pe.set(it.tilt, it.rot, it.tilt * 0.5, 'YXZ');
+      _pq.setFromEuler(_pe);
+      _ps.setScalar(it.scale);
+      _pp.set(it.x, it.y, it.z);
+      _m4.compose(_pp, _pq, _ps);
+      const sv = it.sun;
+      if (it.type === 'grass') _col.setRGB(lerp(0.55, 1.0, sv), lerp(0.42, 1.0, sv), lerp(0.55, 1.0, sv));
+      else _col.setRGB(lerp(0.55, 1.0, sv), lerp(0.42, 1.0, sv), lerp(0.55, 1.0, sv));
+      for (const im of T.inst) { im.setMatrixAt(c, _m4); im.setColorAt(c, _col); }
+      if (it.type !== 'grass') {
+        const r = it.type === 'cactus' ? 0.45 * it.scale : T.radius * it.scale * (it.type === 'hoodoo' ? 0.62 : 0.72);
+        PROPS.obstacles.push({ x: it.x, z: it.z, y: it.y, r, top: T.height * it.scale * (it.type === 'rock' ? 0.85 : 1), type: it.type });
+      }
+    }
+  }
+  for (const tname in PROPS.types) {
+    const T = PROPS.types[tname]; if (!T || !T.inst) continue;
+    for (const im of T.inst) { im.count = counts[tname]; im.instanceMatrix.needsUpdate = true; if (im.instanceColor) im.instanceColor.needsUpdate = true; }
+  }
+}
+function refreshPropShadows() {  // the sun moves: re-evaluate a few chunks per frame
+  let budget = 3;
+  for (const [, ch] of PROPS.chunks) {
+    if (budget <= 0) break;
+    if (Math.abs(ch.sunT - sunElev) > 0.6 * D2R) {
+      for (const it of ch.items) it.sun = terrainShadow(it.x, it.y + 1.2, it.z, sunDir);
+      ch.sunT = sunElev; budget--; PROPS.dirty = true;
+    }
+  }
+}
+
+/* grass: crossed billboards with the fal sprite */
+function makeGrassType(tex) {
+  if (!tex) return;
+  const g1 = new THREE.PlaneGeometry(1.1, 0.8); g1.translate(0, 0.38, 0);
+  const g2 = g1.clone(); g2.rotateY(Math.PI / 2);
+  const geo = mergeSimple([g1, g2]);
+  const mat = patchMaterial(new THREE.MeshStandardMaterial({ map: tex, alphaTest: 0.45, side: THREE.DoubleSide, roughness: 1 }), { rim: 0.6 });
+  PROPS.types.grass = { meshes: [{ geo, mat }], radius: 0.4, height: 0.8 };
+}
+function mergeSimple(geos) {
+  const pos = [], nor = [], uv = [], idx = [];
+  let off = 0;
+  for (const g of geos) {
+    const p = g.attributes.position.array, n = g.attributes.normal.array, u = g.attributes.uv.array, ii = g.index.array;
+    pos.push(...p); nor.push(...n); uv.push(...u);
+    for (const k of ii) idx.push(k + off);
+    off += p.length / 3;
+  }
+  const out = new THREE.BufferGeometry();
+  out.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  out.setAttribute('normal', new THREE.Float32BufferAttribute(nor.map((v, i) => (i % 3 === 1 ? 1 : v * 0.2)), 3));
+  out.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  out.setIndex(idx);
+  return out;
+}
+
+/* ---------------------------------------------------------------- arches */
+const ARCH = { proto: null, list: [], nextS: 0, n: 0, width: 50, height: 28 };
+function spawnArch() {
+  if (!ARCH.proto) return;
+  const s = ARCH.nextS;
+  const rng = mulberry32(hashInts(ARCH.n * 31 + 5, 77));
+  const xBase = P.x + clamp(Math.sin(P.heading) * (s + P.z) * 0.6, -120, 120);
+  let bestX = xBase, bestH = 1e9;
+  for (let k = 0; k < 7; k++) {         // settle it in a low corridor so it is visible and rideable
+    const x = xBase + (k - 3) * 9 + (rng() - 0.5) * 6;
+    const h = terrain(x, -s) + 0.25 * Math.abs(x - xBase);
+    if (h < bestH) { bestH = h; bestX = x; }
+  }
+  const x = bestX, z = -s;
+  const yL = terrain(x - ARCH.width * 0.3, z), yR = terrain(x + ARCH.width * 0.3, z), yC = terrain(x, z);
+  const y = Math.min(yL, yR, yC) - 1.5;
+  const g = new THREE.Group();
+  for (const { geo, mat } of ARCH.proto.meshes) { const m = new THREE.Mesh(geo, mat); m.layers.enable(1); g.add(m); }
+  g.position.set(x, y, z);
+  g.rotation.y = (rng() - 0.5) * 0.25;
+  scene.add(g);
+  ARCH.list.push({ x, y, z, s, g, passed: false, missed: false });
+  ARCH.n++;
+  ARCH.nextS = s + clamp(520 + ARCH.n * 45, 520, 900);
+}
+function resetArches(startS) {
+  for (const a of ARCH.list) scene.remove(a.g);
+  ARCH.list.length = 0; ARCH.n = 0;
+  ARCH.nextS = startS + 420;
+}
+
+/* ---------------------------------------------------------------- state */
+const clock = new THREE.Clock();
+const START = { x: 0, z: -60, y: 0 };
+function findStart() {
+  let best = -1e9, bz = -60, bx = 0;
+  for (let x = -60; x <= 60; x += 6) for (let s = 30; s <= 260; s += 1.5) {
+    const h = terrain(x, -s);
+    const ahead = terrain(x, -s - 24);
+    const score = h - Math.abs(x) * 0.02 + (h - ahead) * 0.6;
+    if (score > best) { best = score; bz = -s; bx = x; }
+  }
+  START.x = bx; START.z = bz; START.y = terrain(bx, bz);
+}
+findStart();
+
+const G = 24, G_SLOPE = 16.5;
+const P = {
+  x: START.x, y: START.y, z: START.z, heading: 0, speed: 0, vx: 0, vy: 0, vz: 0,
+  grounded: true, spin: 0, flip: 0, spinVel: 0, flipVel: 0, airTime: 0, grabTime: 0,
+  charge: 0, charging: false, tuckW: 0, airW: 0, grabW: 0, crashW: 0, standW: 1, chargeW: 0,
+  lean: 0, nrm: new THREE.Vector3(0, 1, 0), crashT: 0, invuln: 0, stance: 1,
+  takeoffT: 0, lastS: -START.z, boardQ: new THREE.Quaternion(), crashSpinX: 0, crashSpinZ: 0, sunVis: 1, prevY: START.y,
+};
+const GAME = {
+  state: 'loading', score: 0, mult: 1, multT: 0, daylight: DAY_START, dist: 0, best: 0, tricks: 0, arches: 0,
+  overT: 0, sunsetT: 0, shake: 0, flash: 0, kick: 0, startS: -START.z, sunFade: DEMO ? 1 : 0,
+};
+const STATS = { crashes: 0, landings: 0, tricks: 0, maxSpeed: 0, maxAir: 0, gates: 0, airborne: 0 };
+window.__stats = STATS;
+window.__game = GAME;
+try { GAME.best = +localStorage.getItem('duneSurferBest') || 0; } catch (e) { GAME.best = 0; }
+
+/* ---------------------------------------------------------------- input */
+const keys = {};
+const keyAt = {};
+function mapKey(code) {
+  switch (code) {
+    case 'ArrowLeft': case 'KeyA': return 'left';
+    case 'ArrowRight': case 'KeyD': return 'right';
+    case 'ArrowUp': case 'KeyW': return 'up';
+    case 'ArrowDown': case 'KeyS': return 'down';
+    case 'Space': return 'jump';
+    case 'Enter': case 'NumpadEnter': return 'enter';
+    case 'KeyM': return 'mute';
+    default: return null;
+  }
+}
+const input = { steer: 0, tuck: false, jumpHeld: false, up: false, down: false };
+let jumpReleasedEdge = false, jumpPressedEdge = false;
+addEventListener('keydown', (e) => {
+  const k = mapKey(e.code); if (!k) return;
+  e.preventDefault();
+  if (keys[k]) return;
+  keys[k] = true; keyAt[k] = clock.elapsedTime;
+  initAudio();
+  if ((k === 'jump' || k === 'enter') && onStartKey()) { keys.jump = false; return; }   // the start press never becomes a jump
+  if (k === 'jump') jumpPressedEdge = true;
+  if (k === 'mute') toggleMute();
+});
+addEventListener('keyup', (e) => {
+  const k = mapKey(e.code); if (!k) return;
+  e.preventDefault();
+  keys[k] = false;
+  if (k === 'jump') jumpReleasedEdge = true;
+});
+// touch / mouse: left third steer left, right third steer right, middle hold = jump charge
+const touch = { left: false, right: false, jump: false };
+canvas.addEventListener('pointerdown', (e) => {
+  initAudio();
+  canvas.setPointerCapture(e.pointerId);
+  const x = e.clientX / innerWidth;
+  if (GAME.state !== 'ride') { onStartKey(); return; }
+  if (x < 0.33) touch.left = true; else if (x > 0.67) touch.right = true; else { touch.jump = true; jumpPressedEdge = true; keyAt.jump = clock.elapsedTime; }
+});
+const endTouch = () => { if (touch.jump) jumpReleasedEdge = true; touch.left = touch.right = touch.jump = false; };
+canvas.addEventListener('pointerup', endTouch);
+canvas.addEventListener('pointercancel', endTouch);
+
+function readInput() {
+  let steer = (keys.right || touch.right ? 1 : 0) - (keys.left || touch.left ? 1 : 0);
+  let tuck = !!keys.down;
+  let jumpHeld = !!keys.jump || touch.jump;
+  const pads = navigator.getGamepads ? navigator.getGamepads() : [];
+  for (const gp of pads) {
+    if (!gp) continue;
+    const ax = gp.axes[0] || 0;
+    if (Math.abs(ax) > 0.2) steer = ax;
+    if (gp.buttons[14]?.pressed) steer = -1;
+    if (gp.buttons[15]?.pressed) steer = 1;
+    const a = gp.buttons[0]?.pressed;
+    if (a && !GAME.padA) { jumpPressedEdge = true; keyAt.jump = clock.elapsedTime; onStartKey(); }
+    if (!a && GAME.padA) jumpReleasedEdge = true;
+    GAME.padA = a;
+    if (a) jumpHeld = true;
+    if ((gp.axes[1] || 0) > 0.5 || gp.buttons[13]?.pressed || gp.buttons[6]?.pressed) tuck = true;
+    GAME.padUp = (gp.axes[1] || 0) < -0.5 || gp.buttons[12]?.pressed;
+    GAME.padDown = (gp.axes[1] || 0) > 0.5 || gp.buttons[13]?.pressed;
+  }
+  input.steer = steer; input.tuck = tuck; input.jumpHeld = jumpHeld;
+  // flips only count when the key went down after take-off (so holding tuck through a lip never flips)
+  input.up = (!!keys.up && keyAt.up > P.takeoffT) || !!GAME.padUp;
+  input.down = (!!keys.down && keyAt.down > P.takeoffT) || !!GAME.padDown;
+}
+
+/* ------------------------------------------------------------------ bot */
+const BOT = { holdJump: false, spinDir: 1, wantSpin: 0, flip: 0, seed: mulberry32(99) };
+function botInput() {
+  const fx = Math.sin(P.heading), fz = -Math.cos(P.heading);
+  let steer = 0;
+  // head for the next arch, dodge obstacles
+  const arch = ARCH.list.find((a) => !a.passed && !a.missed);
+  if (arch) {
+    const dx = arch.x - P.x, ds = arch.s - (-P.z);
+    const want = Math.atan2(dx, Math.max(ds, 30));
+    steer = clamp((want - P.heading) * 2.2, -1, 1);
+  } else steer = clamp(-P.heading * 1.5, -1, 1);
+  for (const o of PROPS.obstacles) {
+    const dx = o.x - P.x, dz = o.z - P.z;
+    const along = dx * fx + dz * fz;
+    if (along < 0 || along > 26) continue;
+    const lat = dx * Math.cos(P.heading) + dz * Math.sin(P.heading);
+    if (Math.abs(lat) < o.r + 1.6) steer = lat > 0 ? -1 : 1;
+  }
+  let tuck = false, jumpHeld = false;
+  if (P.grounded) {
+    terrain(P.x, P.z);
+    const sl = TGX * fx + TGZ * fz;
+    tuck = sl < -0.05;
+    const hNow = terrain(P.x, P.z);
+    const hA = terrain(P.x + fx * 6, P.z + fz * 6);
+    const hB = terrain(P.x + fx * 2, P.z + fz * 2);
+    const nearLip = sl > 0.05 && hA < hB + 0.15;
+    if (BOT.ollie === undefined || P.airTime > 0) BOT.ollie = P.speed > 15 && BOT.seed() < 0.6;
+    if (BOT.ollie && sl > 0.12 && !nearLip) jumpHeld = true;   // charge going up the kicker
+    if (nearLip) jumpHeld = false;                              // release on the lip
+    BOT.wantSpin = BOT.seed() < 0.55 ? (BOT.seed() < 0.5 ? 1 : -1) : 0;
+    BOT.flip = BOT.seed() < 0.15 ? -1 : 0;
+    void hNow;
+  } else {
+    // pick a rotation that fits the predicted air time, stop just before it completes
+    const vyT = P.vy;
+    const hBelow = P.y - terrain(P.x, P.z);
+    const tLand = (vyT + Math.sqrt(Math.max(0, vyT * vyT + 2 * G * hBelow))) / G;
+    if (P.airTime < 0.05) BOT.spinTarget = tLand > 1.3 ? TAU : tLand > 0.75 ? Math.PI : 0;
+    if (BOT.wantSpin && BOT.spinTarget && Math.abs(P.spin) < BOT.spinTarget - 0.35) steer = BOT.wantSpin;
+    else steer = 0;
+    jumpHeld = P.airTime > 0.25 && tLand > 0.5;   // grab
+    if (P.airTime < 0.05) BOT.doFlip = BOT.flip < 0 && tLand > 1.2;
+    input.down = !!BOT.doFlip && Math.abs(P.flip) < TAU - 0.7;
+    input.up = false;
+  }
+  if (BOT.holdJump && !jumpHeld) jumpReleasedEdge = true;
+  if (!BOT.holdJump && jumpHeld) { jumpPressedEdge = true; keyAt.jump = clock.elapsedTime; }
+  BOT.holdJump = jumpHeld;
+  input.steer = steer; input.tuck = tuck; input.jumpHeld = jumpHeld;
+}
+
+/* --------------------------------------------------------------- physics */
+const WIND = 5.2;
+function resetPlayer() {
+  P.x = START.x; P.z = START.z; P.y = terrain(P.x, P.z);
+  P.heading = 0; P.speed = 9; P.grounded = true; P.spin = 0; P.flip = 0; P.spinVel = 0; P.flipVel = 0;
+  P.crashT = 0; P.invuln = 1; P.stance = 1; P.airTime = 0; P.charge = 0; P.charging = false;
+  P.lastS = -P.z; P.nrm.set(0, 1, 0); P.prevY = P.y;
+  trail.pts.length = 0; PART.n = 0;
+  PROPS.chunks.clear(); PROPS.lastCX = 1e9;
+  resetArches(-P.z);
+  sash.ok = false;
+}
+function takeoff(vx, vy, vz) {
+  P.grounded = false; P.vx = vx; P.vy = vy; P.vz = vz;
+  P.airTime = 0; P.spin = 0; P.flip = 0; P.spinVel = 0; P.flipVel = 0; P.grabTime = 0;
+  P.takeoffT = clock.elapsedTime;
+  trailPush(P.x, P.z, Math.cos(P.heading), Math.sin(P.heading), true);
+}
+function stepGround(dt) {
+  terrain(P.x, P.z);
+  const gx = TGX, gz = TGZ;
+  const fx = Math.sin(P.heading), fz = -Math.cos(P.heading);
+  const rx = Math.cos(P.heading), rz = Math.sin(P.heading);
+  const sl = gx * fx + gz * fz;
+  const sr = gx * rx + gz * rz;
+  const inv = 1 / Math.sqrt(1 + sl * sl);
+  const crashing = P.crashT > 0;
+  const tuck = !crashing && input.tuck && !P.charging ? 1 : 0;
+  // slopes pull with a softer gravity than the air (keeps momentum over tall dunes);
+  // tucking digs in: big boost downhill, mild penalty uphill (release before the climb!)
+  const geff = G_SLOPE * (1 + tuck * (sl < 0 ? 0.95 : 0.35));
+  let acc = -geff * sl * inv;
+  const v = P.speed;
+  acc -= (tuck ? 0.0009 : 0.0017) * v * v + 0.25;
+  acc += WIND * Math.max(0, 1 - v / 36);
+  if (crashing) acc -= 9;
+  const steer = crashing ? 0 : input.steer;
+  P.speed = Math.max(crashing ? 0 : 7, v + acc * dt - Math.abs(steer) * v * 0.05 * dt);
+  P.speed = Math.min(P.speed, 64);
+  const turn = steer * lerp(2.2, 1.1, clamp(v / 42, 0, 1));
+  P.heading += turn * dt;
+  P.heading += clamp(-sr * 0.8, -0.8, 0.8) * dt * (1 - Math.abs(steer)) * 0.7;   // drawn to the fall line
+  const lim = 1.15;
+  if (P.heading > lim) P.heading -= (P.heading - lim) * Math.min(1, 5 * dt);
+  if (P.heading < -lim) P.heading -= (P.heading + lim) * Math.min(1, 5 * dt);
+  P.lean = damp(P.lean, steer * clamp(v / 22, 0.3, 1), 6, dt);
+  const hs = P.speed * inv;
+  const nx = P.x + fx * hs * dt, nz = P.z + fz * hs * dt;
+  const h1 = terrain(nx, nz);
+  const vyS = P.speed * sl * inv;
+  const yBall = P.y + vyS * dt - 0.5 * G * dt * dt;
+  P.x = nx; P.z = nz;
+  if (!crashing && h1 < yBall - 0.012 && P.speed > 7) {
+    takeoff(fx * hs, vyS, fz * hs);
+    P.y = yBall;
+  } else {
+    P.y = h1;
+  }
+}
+function stepAir(dt) {
+  const grab = input.jumpHeld && P.airTime > 0.12 ? 1 : 0;
+  P.vy -= G * (1 + 0.25 * grab) * dt;
+  // a touch of air control
+  const hsp = Math.hypot(P.vx, P.vz);
+  let hd = Math.atan2(P.vx, -P.vz);
+  hd += input.steer * 0.12 * dt;
+  P.vx = Math.sin(hd) * hsp; P.vz = -Math.cos(hd) * hsp;
+  P.heading = hd;
+  P.spinVel = damp(P.spinVel, input.steer * 7.4, 12, dt);
+  P.spin += P.spinVel * dt;
+  if (Math.abs(input.steer) < 0.1) {     // settle towards the nearest clean 180
+    const tgt = Math.round(P.spin / Math.PI) * Math.PI;
+    if (Math.abs(P.spin - tgt) < 0.6) P.spin = damp(P.spin, tgt, 7, dt);
+  }
+  const fin = (input.down ? 1 : 0) - (input.up ? 1 : 0);   // down: back flip (nose up), up: front flip
+  P.flipVel = damp(P.flipVel, fin * 6.0, 10, dt);
+  P.flip += P.flipVel * dt;
+  if (!fin) {
+    const tgt = Math.round(P.flip / TAU) * TAU;
+    if (Math.abs(P.flip - tgt) < 0.8) P.flip = damp(P.flip, tgt, 4.5, dt);
+  }
+  P.x += P.vx * dt; P.y += P.vy * dt; P.z += P.vz * dt;
+  P.airTime += dt;
+  if (grab) P.grabTime += dt;
+  const h = terrain(P.x, P.z);
+  if (P.y <= h) { P.y = h; land(TGX, TGZ); }
+}
+const _n = new THREE.Vector3(), _vel = new THREE.Vector3(), _vt = new THREE.Vector3();
+function land(gx, gz) {
+  _n.set(-gx, 1, -gz).normalize();
+  _vel.set(P.vx, P.vy, P.vz);
+  const spd = _vel.length();
+  const vn = _vel.dot(_n);
+  _vt.copy(_vel).addScaledVector(_n, -vn);
+  const impact = Math.asin(clamp(-vn / Math.max(spd, 1e-3), 0, 1));
+  const eY0 = Math.abs(wrapPi(P.spin)), eY1 = Math.abs(wrapPi(P.spin - Math.PI));
+  const eYaw = Math.min(eY0, eY1);
+  const ePitch = Math.abs(wrapPi(P.flip));
+  const big = P.airTime > 0.32;
+  const clean = !big || (eYaw < 0.68 && ePitch < 0.85);
+  P.grounded = true;
+  STATS.landings++; STATS.maxAir = Math.max(STATS.maxAir, P.airTime);
+  if (!clean) { crash('wipeout', eYaw >= 0.68 ? 'landing-yaw' : 'landing-flip'); return; }
+  P.heading = clamp(Math.atan2(_vt.x, -_vt.z), -1.3, 1.3);
+  let ns = _vt.length();
+  const perfect = big && impact < 0.21;
+  if (big) ns *= perfect ? 1.12 : (1 - 0.34 * Math.sin(impact));
+  P.speed = clamp(ns, 6, 64);
+  // a 180 landing ends with a quick revert: the board pivots back so the rider keeps his back to the camera
+  if (big) {
+    scoreLanding(perfect, impact);
+    landFX(perfect ? 1.0 : 0.6 + impact);
+    if (perfect) {
+      GAME.kick = 1;
+      for (let i = 0; i < 26; i++) {
+        const a = Math.random() * TAU;
+        emit(P.x, P.y + 0.6, P.z, Math.cos(a) * 3, 1.5 + Math.random() * 2.5, Math.sin(a) * 3, 0.18, 0.5, 0.8 + Math.random() * 0.5, 0.9, 1, 2);
+      }
+    }
+  }
+  P.spin = 0; P.flip = 0; P.spinVel = 0; P.flipVel = 0;
+}
+function crash(why, cause = why) {
+  if (P.crashT > 0) return;
+  STATS.crashes++;
+  STATS.causes = STATS.causes || {}; STATS.causes[cause] = (STATS.causes[cause] || 0) + 1;
+  P.crashT = 1.7;
+  P.grounded = true;
+  P.speed = Math.max(4, P.speed * 0.35);
+  P.crashSpinX = (Math.random() < 0.5 ? -1 : 1) * (5 + Math.random() * 4);
+  P.crashSpinZ = (Math.random() - 0.5) * 6;
+  GAME.mult = 1; GAME.multT = 0;
+  if (GAME.state === 'ride') { GAME.daylight = Math.max(0, GAME.daylight - 3); popup(why === 'cactus' ? 'OUCH! CACTUS' : 'WIPEOUT', 'bad'); popup('-3 s daylight', 'small'); }
+  GAME.shake = 1.0;
+  burst(P.x, P.y + 0.4, P.z, 30, 1.1);
+  sfx('crash', 1.7);
+}
+function stepPhysics(dt) {
+  if (P.crashT > 0) {
+    P.crashT -= dt;
+    if (P.crashT <= 0) { P.crashT = 0; P.invuln = 1.3; P.spin = 0; P.flip = 0; }
+  }
+  if (P.invuln > 0) P.invuln -= dt;
+  // jump charge / pop
+  if (P.grounded && P.crashT <= 0) {
+    if (input.jumpHeld) { P.charging = true; P.charge = Math.min(1, P.charge + dt / 0.55); }
+  }
+  if (jumpReleasedEdge) {
+    if (P.grounded && P.charging && P.crashT <= 0) {
+      terrain(P.x, P.z);
+      const fx = Math.sin(P.heading), fz = -Math.cos(P.heading);
+      const sl = TGX * fx + TGZ * fz;
+      const inv = 1 / Math.sqrt(1 + sl * sl);
+      const pop = 4.2 + 5.4 * P.charge;
+      takeoff(fx * P.speed * inv, P.speed * sl * inv + pop, fz * P.speed * inv);
+      P.y += 0.05;
+      sfx('jump', 0.5 + P.charge * 0.4);
+      burst(P.x, P.y, P.z, 10 + 14 * P.charge, 0.6);
+    }
+    P.charging = false; P.charge = 0;
+  }
+  if (!input.jumpHeld && P.grounded) { P.charging = false; P.charge = 0; }
+  if (P.grounded) stepGround(dt); else { stepAir(dt); STATS.airborne += dt; }
+  STATS.maxSpeed = Math.max(STATS.maxSpeed, P.grounded ? P.speed : Math.hypot(P.vx, P.vz));
+  // obstacles
+  if (P.crashT <= 0 && P.invuln <= 0) {
+    for (const o of PROPS.obstacles) {
+      const dx = o.x - P.x, dz = o.z - P.z;
+      const rr = o.r + 0.35;
+      if (dx * dx + dz * dz < rr * rr && P.y < o.y + o.top) {
+        crash(o.type === 'cactus' ? 'cactus' : 'wipeout', o.type);
+        // push out of the obstacle
+        const d = Math.hypot(dx, dz) || 1;
+        P.x -= dx / d * (rr - d + 0.1); P.z -= dz / d * (rr - d + 0.1);
+        break;
+      }
+    }
+  }
+}
+
+/* ---------------------------------------------------------- scoring/fx */
+const popsEl = document.getElementById('pops');
+function popup(text, cls = 'big') {
+  const d = document.createElement('div');
+  d.className = 'pop ' + cls; d.textContent = text;
+  popsEl.appendChild(d);
+  while (popsEl.children.length > 4) popsEl.removeChild(popsEl.firstChild);
+  setTimeout(() => d.remove(), 1750);
+}
+function scoreLanding(perfect, impact) {
+  const half = Math.round(Math.abs(P.spin) / Math.PI);
+  const flips = Math.round(Math.abs(P.flip) / TAU);
+  const spinPts = [0, 100, 260, 480, 760, 1100, 1500, 2000][Math.min(half, 7)];
+  const flipPts = 550 * flips;
+  const airPts = Math.floor(Math.max(0, P.airTime - 0.4) * 70);
+  const grabPts = Math.floor(P.grabTime * 160);
+  const names = [];
+  if (half) names.push(half * 180 + '');
+  if (flips) names.push((P.flip > 0 ? 'BACKFLIP' : 'FRONTFLIP') + (flips > 1 ? ' x' + flips : ''));
+  if (P.grabTime > 0.35) names.push('GRAB');
+  if (!names.length && P.airTime > 1.1) names.push('BIG AIR');
+  const isTrick = names.length > 0;
+  let pts = spinPts + flipPts + airPts + grabPts;
+  if (perfect) pts = Math.round(pts * 1.5) + 100;
+  if (isTrick) { GAME.mult = Math.min(8, GAME.mult + 1); GAME.multT = 9; GAME.tricks++; STATS.tricks++; }
+  const total = pts * GAME.mult;
+  if (GAME.state === 'ride') {
+    GAME.score += total;
+    let bonus = half * 0.8 + flips * 3 + (perfect ? 1 : 0) + (P.grabTime > 0.35 ? 1 : 0);
+    if (bonus > 0) GAME.daylight = Math.min(DAY_MAX, GAME.daylight + bonus);
+    if (isTrick) popup(names.join(' + ') + (GAME.mult > 1 ? '  x' + GAME.mult : ''), 'big');
+    if (perfect && P.airTime > 0.5) popup('PERFECT LANDING', 'gold');
+    if (total > 0 && (isTrick || perfect)) popup('+' + total.toLocaleString('en-US') + (bonus >= 1 ? '   +' + Math.round(bonus) + 's' : ''), 'small');
+  }
+  sfx('land', perfect ? 1.0 : 1.5);
+  if (isTrick && GAME.state === 'ride') sfx('trick', 0.55);
+}
+function burst(x, y, z, n, power) {
+  const sv = P.sunVis;
+  for (let i = 0; i < n; i++) {
+    const a = Math.random() * TAU, sp = (1 + Math.random() * 4) * power;
+    emit(x + (Math.random() - 0.5) * 0.8, y + Math.random() * 0.3, z + (Math.random() - 0.5) * 0.8,
+      Math.cos(a) * sp, 1 + Math.random() * 3 * power, Math.sin(a) * sp,
+      0.4 + Math.random() * 0.4, 1.3 + Math.random() * 1.2 * power, 0.9 + Math.random() * 0.9, 0.34, sv);
+  }
+}
+function landFX(k) {
+  burst(P.x, P.y + 0.1, P.z, Math.floor(12 + 12 * k), 0.8 + 0.4 * k);
+  GAME.shake = Math.max(GAME.shake, 0.25 + 0.3 * k);
+}
+function archFX(a) {
+  for (let i = 0; i < 70; i++) {
+    const t = Math.random(), ang = Math.random() * TAU;
+    emit(a.x + (Math.random() - 0.5) * ARCH.width * 0.24, a.y + 3 + Math.random() * ARCH.height * 0.6, a.z,
+      Math.cos(ang) * 2, 1 + Math.random() * 2, Math.sin(ang) * 2, 0.18, 0.55, 1.4 + t, 0.85, 1, 2);
+  }
+}
+
+/* ----------------------------------------------------------------- audio */
+const AUDIO = { ctx: null, buf: {}, master: null, loops: {}, muted: false, ready: false };
+const AUDIO_FILES = { music: 'assets/audio/music.mp3', wind: 'assets/audio/wind.mp3', carve: 'assets/audio/carve.mp3',
+  jump: 'assets/audio/jump.mp3', land: 'assets/audio/land.mp3', crash: 'assets/audio/crash.mp3', chime: 'assets/audio/chime.mp3', trick: 'assets/audio/trick.mp3' };
+async function initAudio() {
+  if (AUDIO.ctx) { if (AUDIO.ctx.state === 'suspended') AUDIO.ctx.resume(); return; }
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    AUDIO.ctx = ctx;
+    AUDIO.master = ctx.createGain(); AUDIO.master.gain.value = 0.9; AUDIO.master.connect(ctx.destination);
+    await Promise.all(Object.entries(AUDIO_FILES).map(async ([k, url]) => {
+      try { const r = await fetch(url); if (!r.ok) return; const ab = await r.arrayBuffer(); AUDIO.buf[k] = await ctx.decodeAudioData(ab); } catch (e) { /* optional */ }
+    }));
+    for (const k of ['music', 'wind', 'carve']) {
+      if (!AUDIO.buf[k]) continue;
+      const src = ctx.createBufferSource(); src.buffer = AUDIO.buf[k]; src.loop = true;
+      const g = ctx.createGain(); g.gain.value = 0;
+      src.connect(g); g.connect(AUDIO.master); src.start();
+      AUDIO.loops[k] = g;
+    }
+    AUDIO.ready = true;
+    document.getElementById('mute').classList.remove('hidden');
+  } catch (e) { console.warn('audio unavailable', e); }
+}
+function sfx(name, vol = 1, rate = 1) {
+  if (!AUDIO.ready || !AUDIO.buf[name] || AUDIO.muted) return;
+  const ctx = AUDIO.ctx;
+  const src = ctx.createBufferSource(); src.buffer = AUDIO.buf[name]; src.playbackRate.value = rate * (0.94 + Math.random() * 0.12);
+  const g = ctx.createGain(); g.gain.value = vol;
+  src.connect(g); g.connect(AUDIO.master); src.start();
+}
+function toggleMute() {
+  AUDIO.muted = !AUDIO.muted;
+  if (AUDIO.master) AUDIO.master.gain.setTargetAtTime(AUDIO.muted ? 0 : 0.9, AUDIO.ctx.currentTime, 0.1);
+}
+function updateAudio(dt) {
+  if (!AUDIO.ready) return;
+  const t = AUDIO.ctx.currentTime;
+  const L = AUDIO.loops;
+  const sp = clamp(P.speed / 40, 0, 1);
+  if (L.music) L.music.gain.setTargetAtTime(GAME.state === 'over' ? 0.22 : 0.42, t, 0.5);
+  if (L.wind) L.wind.gain.setTargetAtTime(0.12 + 0.55 * sp + (P.grounded ? 0 : 0.15), t, 0.15);
+  if (L.carve) L.carve.gain.setTargetAtTime(P.grounded && P.crashT <= 0 ? (0.08 + 0.5 * sp) * (0.7 + 0.5 * Math.abs(input.steer)) : 0, t, 0.06);
+}
+
+/* ------------------------------------------------------------------ HUD */
+const el = (id) => document.getElementById(id);
+const HUD = { score: el('score'), mult: el('mult'), dist: el('dist'), day: el('day'), dayfill: el('dayfill'), marker: el('marker'), title: el('title'), over: el('over') };
+const markerText = HUD.marker.querySelector('span');
+let shownScore = 0;
+function showHUD(on) { for (const k of ['score', 'mult', 'dist', 'day']) HUD[k].classList.toggle('hidden', !on); }
+function updateHUD(dt) {
+  shownScore = GAME.score < shownScore ? GAME.score : lerp(shownScore, GAME.score, 1 - Math.exp(-dt * 10));
+  HUD.score.textContent = Math.round(shownScore).toLocaleString('en-US');
+  HUD.mult.textContent = GAME.mult > 1 ? 'COMBO x' + GAME.mult : '';
+  HUD.dist.textContent = Math.floor(GAME.dist).toLocaleString('en-US') + ' m';
+  HUD.dayfill.style.transform = `scaleX(${clamp(GAME.daylight / DAY_MAX, 0, 1)})`;
+  HUD.day.classList.toggle('low', GAME.daylight < 12 && GAME.state === 'ride');
+  // next arch marker
+  const a = ARCH.list.find((q) => !q.passed && !q.missed);
+  if (a && GAME.state === 'ride') {
+    _v1.set(a.x, a.y + ARCH.height * 1.05, a.z).project(camera);
+    const d = Math.max(0, a.s - (-P.z));
+    const behind = _v1.z > 1;
+    const onScreen = !behind && Math.abs(_v1.x) < 0.92 && Math.abs(_v1.y) < 0.9;
+    let sx = (_v1.x * 0.5 + 0.5) * innerWidth, sy = (-_v1.y * 0.5 + 0.5) * innerHeight;
+    let arrow = '';
+    if (!onScreen) {                         // pin to the left / right edge, under the HUD
+      const left = behind ? _v1.x > 0 : _v1.x < 0;
+      sx = left ? 64 : innerWidth - 64; sy = innerHeight * 0.36; arrow = left ? '\u25C0 ' : ' \u25B6';
+    }
+    sx = clamp(sx, 64, innerWidth - 64); sy = clamp(sy, 130, innerHeight * 0.72);
+    HUD.marker.style.left = sx + 'px'; HUD.marker.style.top = sy + 'px';
+    markerText.textContent = arrow.startsWith('\u25C0') ? arrow + Math.round(d) + ' m' : Math.round(d) + ' m' + arrow;
+    // step aside while a trick / gate popup is on screen in the same area
+    const underPops = popsEl.children.length > 0 && sy < innerHeight * 0.38 && Math.abs(sx - innerWidth / 2) < 320;
+    HUD.marker.classList.toggle('hidden', (d < 25 && onScreen) || underPops);
+  } else HUD.marker.classList.add('hidden');
+}
+
+/* -------------------------------------------------------------- camera */
+const CAM = { yaw: 0, pos: new THREE.Vector3(), look: new THREE.Vector3(), off: new THREE.Vector3(), ry: 0, fov: 56, init: false, orbit: 0 };
+const _off = new THREE.Vector3();
+function updateCamera(dt, t) {
+  const sp = P.grounded ? P.speed : Math.hypot(P.vx, P.vz);
+  const travel = P.grounded ? P.heading : Math.atan2(P.vx, -P.vz);
+  CAM.yaw = damp(CAM.yaw, travel * 0.82, P.grounded ? 2.6 : 1.4, dt);
+  const fx = Math.sin(CAM.yaw), fz = -Math.cos(CAM.yaw);
+  const rx = Math.cos(CAM.yaw), rz = Math.sin(CAM.yaw);
+  const air = P.grounded ? 0 : smoothstep(0.15, 0.9, P.airTime);
+  const dist = 4.15 + clamp(sp, 0, 50) * 0.032 + air * 2.2;
+  const height = 1.6 + clamp(sp, 0, 50) * 0.011 + air * 1.2;
+  const side = (1.05 + air * 0.5) * clamp(camera.aspect / 1.6, 0.25, 1);   // narrow (portrait) screens: centre the surfer
+  // the offset is smoothed in the rider's frame: no speed-dependent lag
+  _off.set(-fx * dist + rx * side, height, -fz * dist + rz * side);
+  if (!CAM.init) { CAM.off.copy(_off); CAM.ry = P.y; CAM.init = true; }
+  CAM.off.lerp(_off, 1 - Math.exp(-dt * 3.5));
+  CAM.ry = damp(CAM.ry, P.y, 13, dt);             // tight: the surfer must never leave the frame
+  let tx = P.x + CAM.off.x, tz = P.z + CAM.off.z, ty = CAM.ry + CAM.off.y;
+  const gy = terrain(tx, tz) + 1.3;
+  if (ty < gy) ty = gy;
+  // keep the rider visible over crests
+  const mx = (tx + P.x) * 0.5, mz = (tz + P.z) * 0.5;
+  const my = terrain(mx, mz) + 1.0;
+  const lineY = (ty + P.y + 1) * 0.5;
+  if (my > lineY) ty += (my - lineY) * 2;
+  // a rock / cactus / hoodoo between the lens and the surfer: rise above it instead of losing him
+  const sx = P.x - tx, sz = P.z - tz, sl2 = sx * sx + sz * sz || 1;
+  for (const o of PROPS.obstacles) {
+    const ox = o.x - tx, oz = o.z - tz;
+    if (ox * ox + oz * oz > 400) continue;
+    const u = clamp((ox * sx + oz * sz) / sl2, 0, 1);
+    if (u <= 0.02 || u >= 0.98) continue;
+    const ex = tx + sx * u - o.x, ez = tz + sz * u - o.z;
+    if (ex * ex + ez * ez > (o.r + 0.6) * (o.r + 0.6)) continue;
+    // camera height that lets the sight line to the rider's chest clear the obstacle top
+    const top = o.y + o.top + 0.5, chest = P.y + 1.0;
+    const need = chest + (top - chest) / Math.max(1 - u, 0.05);
+    if (need > ty) ty = Math.min(need, P.y + 9);
+  }
+  CAM.pos.set(tx, CAM.pos.y ? damp(CAM.pos.y, ty, 12, dt) : ty, tz);
+  if (CAM.pos.y < gy) CAM.pos.y = gy;
+  const lx = P.x + fx * 8 + rx * 0.35, lz = P.z + fz * 8 + rz * 0.35;
+  let ly = CAM.ry + 0.95 + air * 0.4;
+  // framing guard: keep the surfer between ~25% and ~80% of the screen height
+  const toR = Math.atan2(P.y + 0.9 - CAM.pos.y, Math.hypot(P.x - CAM.pos.x, P.z - CAM.pos.z));
+  const toL = Math.atan2(ly - CAM.pos.y, Math.hypot(lx - CAM.pos.x, lz - CAM.pos.z));
+  const half = CAM.fov * D2R * 0.5;
+  const dlt = toR - toL;
+  if (dlt < -half * 0.62) ly -= Math.tan(-dlt - half * 0.62) * Math.hypot(lx - CAM.pos.x, lz - CAM.pos.z);
+  if (dlt > half * 0.5) ly += Math.tan(dlt - half * 0.5) * Math.hypot(lx - CAM.pos.x, lz - CAM.pos.z);
+  CAM.look.set(lx, ly, lz);
+  camera.position.copy(CAM.pos);
+  const sk = GAME.shake * GAME.shake;
+  if (sk > 0.001) {
+    camera.position.x += (Math.sin(t * 61) + Math.sin(t * 37)) * 0.08 * sk;
+    camera.position.y += (Math.sin(t * 53) + Math.sin(t * 29)) * 0.08 * sk;
+  }
+  camera.lookAt(CAM.look);
+  const fov = 52 + clamp((sp - 12) / 38, 0, 1) * 11 + air * 4 + GAME.kick * 7;
+  CAM.fov = damp(CAM.fov, fov, 3, dt);
+  GAME.kick = Math.max(0, GAME.kick - dt * 1.8);
+  camera.fov = CAM.fov;
+  camera.updateProjectionMatrix();
+}
+
+/* ------------------------------------------------------------ title cam */
+function titleCamera(dt, t) {
+  CAM.orbit += dt * 0.12;
+  const a = Math.sin(CAM.orbit) * 0.5 + 0.12;
+  const r = 6.5;
+  const tx = P.x + Math.sin(a) * r, tz = P.z + Math.cos(a) * r;
+  const ty = Math.max(P.y + 1.3, terrain(tx, tz) + 1.0);
+  camera.position.set(tx, ty, tz);
+  camera.lookAt(P.x - Math.sin(a) * 4 + sunDir.x * 6, P.y + 1.6, P.z - 10);
+  camera.fov = 52; camera.updateProjectionMatrix();
+  CAM.init = false;
+}
+
+/* ------------------------------------------------------------ rider vis */
+const _bq = new THREE.Quaternion(), _bm = new THREE.Matrix4(), _up = new THREE.Vector3(), _fw = new THREE.Vector3(), _rt = new THREE.Vector3(), _bk = new THREE.Vector3();
+const _qa = new THREE.Quaternion(), _qb = new THREE.Quaternion(), _ea = new THREE.Euler();
+function updateRiderVisual(dt, t) {
+  terrain(P.x, P.z);
+  _up.set(-TGX, 1, -TGZ).normalize();
+  P.nrm.lerp(_up, 1 - Math.exp(-dt * 14)).normalize();
+  boardGroup.position.set(P.x, P.y + 0.02, P.z);
+  let target;
+  if (P.grounded) {
+    _fw.set(Math.sin(P.heading), 0, -Math.cos(P.heading));
+    _fw.addScaledVector(P.nrm, -_fw.dot(P.nrm)).normalize();
+    _bk.copy(_fw).negate();
+    _rt.crossVectors(P.nrm, _bk).normalize();
+    _bm.makeBasis(_rt, P.nrm, _bk);
+    _qa.setFromRotationMatrix(_bm);
+    _qb.setFromAxisAngle(_v3.set(0, 0, 1), -P.lean * 0.42);   // roll onto the inside edge
+    target = _qa.multiply(_qb);
+  } else {
+    const hsp = Math.hypot(P.vx, P.vz);
+    const pitch = Math.atan2(P.vy, hsp) * 0.55;
+    _ea.set(pitch + P.flip, -(P.heading + P.spin), -P.spinVel * 0.03, 'YXZ');
+    target = _qa.setFromEuler(_ea);
+  }
+  if (P.crashT > 0) {                          // tumble, then settle back on the board
+    const ct = 1.7 - P.crashT;
+    const k = 1 - smoothstep(0.9, 1.5, ct);
+    _ea.set(ct * P.crashSpinX * k, -P.heading + ct * P.crashSpinZ * 0.4 * k, Math.sin(ct * 7) * 0.5 * k, 'YXZ');
+    target = _qa.setFromEuler(_ea);
+  }
+  if (GAME.snapBoard) { P.boardQ.copy(target); GAME.snapBoard = false; }
+  P.boardQ.slerp(target, 1 - Math.exp(-dt * (P.grounded ? 16 : 22)));
+  boardGroup.quaternion.copy(P.boardQ);
+  riderGroup.rotation.y = P.stance > 0 ? -Math.PI / 2 : Math.PI / 2;
+  // pose weights
+  const charge = P.charging ? 0.35 + 0.65 * P.charge : 0;
+  const tuckT = P.grounded && P.crashT <= 0 ? Math.max(input.tuck ? 1 : 0, charge) : 0;
+  P.tuckW = damp(P.tuckW, tuckT, 10, dt);
+  P.airW = damp(P.airW, !P.grounded ? 1 : 0, 9, dt);
+  P.grabW = damp(P.grabW, !P.grounded && input.jumpHeld && P.airTime > 0.12 ? 1 : 0, 9, dt);
+  P.crashW = damp(P.crashW, P.crashT > 0.25 ? 1 : 0, 10, dt);
+  P.standW = damp(P.standW, GAME.state === 'title' || (GAME.state === 'over' && P.speed < 2.5) ? 1 : 0, 3, dt);
+  const w = { tuck: P.tuckW, air: P.airW * (1 - P.grabW), grab: P.grabW, crash: P.crashW, stand: P.standW };
+  const lean = P.grounded ? -P.lean * P.stance : 0;
+  applyPose(w, t, lean);
+  anchorFeet();
+  // sun visibility for the rider (dune shadows)
+  const sv = terrainShadow(P.x, P.y + 1.0, P.z, sunDir);
+  P.sunVis = damp(P.sunVis, sv, 8, dt);
+  riderSunVis.value = 0.18 + 0.82 * P.sunVis;
+}
+
+/* -------------------------------------------------------------- effects */
+let emitAcc = 0;
+function updateEffects(dt) {
+  const fx = Math.sin(P.heading), fz = -Math.cos(P.heading);
+  const sp = P.grounded ? P.speed : 0;
+  if (P.grounded && sp > 4) {
+    // the video's rooster tail: a dense rope of orange puffs that starts small at the tail and billows out behind
+    const rate = (26 + sp * 3.0) * (1 + Math.abs(input.steer) * 1.3 + (input.tuck ? 0.4 : 0)) * (P.crashT > 0 ? 1.4 : 1);
+    emitAcc += rate * dt;
+    const tailX = P.x - fx * 0.55, tailZ = P.z - fz * 0.55;
+    const rx = Math.cos(P.heading), rz = Math.sin(P.heading);
+    const side = input.steer;
+    while (emitAcc > 1) {
+      emitAcc -= 1;
+      const lat = (Math.random() - 0.5) * 0.4 - side * 0.35;
+      const up = 0.35 + Math.random() * 1.1 + Math.abs(side) * 1.3;
+      const back = -sp * (0.06 + Math.random() * 0.14);
+      emit(tailX + rx * lat, P.y + 0.1, tailZ + rz * lat,
+        fx * back - rx * side * (1.5 + Math.random() * 2.5) + (Math.random() - 0.5) * 0.9,
+        up, fz * back - rz * side * (1.5 + Math.random() * 2.5) + (Math.random() - 0.5) * 0.9,
+        0.24 + Math.random() * 0.2, 0.85 + Math.random() * 0.9 + sp * 0.03, 0.9 + Math.random() * 0.9, 0.5 + Math.min(0.2, sp * 0.006), P.sunVis);
+    }
+    trailPush(P.x, P.z, Math.cos(P.heading), Math.sin(P.heading), false);
+  } else emitAcc = 0;
+  // fine sand grains whipping past at high speed
+  if (sp > 22 && Math.random() < dt * (sp - 20) * 1.2) {
+    const a = Math.random() * TAU, r = 1.5 + Math.random() * 4;
+    emit(P.x + Math.cos(a) * r + fx * 6, P.y + 0.3 + Math.random() * 2.2, P.z + Math.sin(a) * r + fz * 6,
+      -fx * sp * 0.9, 0.2, -fz * sp * 0.9, 0.08, 0.16, 0.45, 0.5, P.sunVis, 1);
+  }
+  // golden motes drifting inside the next sun gates (readable from far away)
+  for (const a of ARCH.list) {
+    if (a.passed || a.missed) continue;
+    const d = a.s - (-P.z);
+    if (d < -5 || d > 700) continue;
+    if (Math.random() < dt * 14) {
+      const u = (Math.random() - 0.5) * ARCH.width * 0.22;
+      const cs = Math.cos(a.g.rotation.y), sn = Math.sin(a.g.rotation.y);
+      emit(a.x + u * cs, a.y + 2 + Math.random() * ARCH.height * 0.7, a.z - u * sn,
+        (Math.random() - 0.5) * 0.6, 0.4 + Math.random() * 0.8, (Math.random() - 0.5) * 0.6, 0.5, 1.6, 2.5, 0.9, 1, 2);
+    }
+  }
+  // wind-blown sand off nearby crests
+  if (Math.random() < dt * 9) {
+    const a = (Math.random() - 0.5) * 1.6 + CAM.yaw;
+    const r = 28 + Math.random() * 70;
+    const x = P.x + Math.sin(a) * r, z = P.z - Math.cos(a) * r;
+    const y = terrain(x, z);
+    if (Math.hypot(TGX, TGZ) > 0.25) {
+      const sv = terrainShadow(x, y + 0.5, z, sunDir);
+      for (let k = 0; k < 3; k++) emit(x + Math.random(), y + 0.2, z + Math.random(), WIND_X * 2, 0.3 + Math.random() * 0.5, WIND_Z * 2,
+        0.45, 1.1 + Math.random() * 1.1, 2.0 + Math.random(), 0.07, sv, 1);
+    }
+  }
+}
+
+/* ------------------------------------------------------------- daylight */
+const _cA = new THREE.Color(), _cB = new THREE.Color();
+function updateDaylight(dt) {
+  if (GAME.state === 'ride') GAME.daylight = Math.max(0, GAME.daylight - dt);
+  let day = GAME.daylight;
+  let elevDeg = lerp(0.4, 16.5, clamp(day / DAY_MAX, 0, 1));
+  if (GAME.state === 'sunset' || GAME.state === 'over') { GAME.sunsetT += dt; elevDeg = 0.4 - Math.min(GAME.sunsetT, 6) * 0.9; }
+  setSun(elevDeg * D2R);
+  U.uSunUp.value = smoothstep(-0.5, 7, elevDeg);
+  const dusk = GAME.state === 'over' || GAME.state === 'sunset' ? clamp(0.85 + GAME.sunsetT * 0.05, 0, 1) : 1 - smoothstep(0, 30, day);
+  U.uDusk.value = damp(U.uDusk.value, dusk * 0.9, 1.5, dt);
+  const k = U.uDusk.value;
+  const lowSun = clamp(elevDeg / 16, -0.2, 1);
+  U.uLit.value.copy(PAL.day.lit).lerp(PAL.dusk.lit, k);
+  U.uShade.value.copy(PAL.day.shade).lerp(PAL.dusk.shade, k);
+  U.uMid.value.copy(PAL.day.mid).lerp(PAL.dusk.mid, k);
+  U.uSunCol.value.copy(PAL.day.sun).lerp(PAL.dusk.sun, k);
+  pMat.uniforms.uDust.value.copy(PAL.day.dust).lerp(PAL.dusk.dust, k);
+  sunLight.color.copy(PAL.day.light).lerp(PAL.dusk.light, k);
+  sunLight.intensity = lerp(1.0, 2.5, smoothstep(-0.05, 0.5, lowSun));
+  hemi.color.copy(PAL.day.hemiSky).lerp(PAL.dusk.hemiSky, k);
+  hemi.groundColor.copy(PAL.day.hemiGround).lerp(PAL.dusk.hemiGround, k);
+  hemi.intensity = lerp(1.05, 0.75, k);
+  gradePass.uniforms.uDusk.value = k;
+  sunLight.position.copy(boardGroup.position).addScaledVector(sunDir, 60);
+  sunLight.target.position.copy(boardGroup.position);
+  if (sunSprite) {
+    sunSprite.position.copy(camera.position).addScaledVector(sunDir, 3200);
+    GAME.sunFade = damp(GAME.sunFade, GAME.state === 'title' ? 0 : 1, 2.5, dt);   // the logo carries its own sun on the title screen
+    sunSprite.material.opacity = smoothstep(-2.5, 0.2, elevDeg) * GAME.sunFade;
+    sunSprite.material.color.setRGB(lerp(0.82, 1.4, k), lerp(0.74, 0.66, k), lerp(0.58, 0.4, k));   // creamy disc like the video, orange at dusk
+  }
+}
+
+/* -------------------------------------------------------------- arches */
+function updateArches() {
+  if (!ARCH.proto) return;
+  const s = -P.z;
+  while (ARCH.nextS < s + 1300) spawnArch();
+  for (const a of ARCH.list) {
+    if (a.passed || a.missed) continue;
+    if (P.lastS < a.s && s >= a.s) {
+      const local = (P.x - a.x) * Math.cos(a.g.rotation.y) - (P.z - a.z) * Math.sin(a.g.rotation.y);
+      if (Math.abs(local) < ARCH.width * 0.125 && P.y < a.y + ARCH.height * 0.8) {
+        a.passed = true;
+        STATS.gates++;
+        if (GAME.state === 'ride') {
+          GAME.daylight = Math.min(DAY_MAX, GAME.daylight + 14);
+          GAME.score += 500 * GAME.mult; GAME.arches++;
+          popup('SUN GATE  +14s', 'gold');
+          popup('+' + (500 * GAME.mult).toLocaleString('en-US'), 'small');
+          GAME.flash = 0.35;
+        }
+        archFX(a);
+        sfx('chime', 1.1);
+      } else a.missed = true;
+    }
+  }
+  for (let i = ARCH.list.length - 1; i >= 0; i--) {
+    const a = ARCH.list[i];
+    if (a.s < s - 350) { scene.remove(a.g); ARCH.list.splice(i, 1); }
+  }
+  // arches are colliders at their legs
+  P.lastS = s;
+}
+function archCollide() {
+  if (P.crashT > 0 || P.invuln > 0) return;
+  for (const a of ARCH.list) {
+    const dz = P.z - a.z;
+    if (Math.abs(dz) > 5) continue;
+    const local = (P.x - a.x) * Math.cos(a.g.rotation.y) - dz * Math.sin(a.g.rotation.y);
+    const leg = Math.abs(local);
+    if (leg > ARCH.width * 0.14 && leg < ARCH.width * 0.47 && P.y < a.y + ARCH.height * 0.55) { crash('wipeout', 'arch'); P.speed = 3; return; }
+  }
+}
+
+/* ------------------------------------------------------------ game flow */
+function startRide() {
+  resetPlayer();
+  GAME.state = 'ride'; GAME.score = 0; shownScore = 0; GAME.mult = 1; GAME.daylight = DAY_START; GAME.dist = 0; GAME.tricks = 0; GAME.arches = 0;
+  GAME.sunsetT = 0; GAME.startS = -P.z;
+  HUD.title.classList.add('hidden'); HUD.over.classList.add('hidden');
+  showHUD(true);
+  P.speed = 11;
+  CAM.init = false;
+  popsEl.innerHTML = '';
+  popup('RIDE!', 'gold');
+  clearTimeout(GAME.hintT);
+  GAME.hintT = setTimeout(() => { if (GAME.state === 'ride' && !GAME.arches) popup('Ride through SUN GATES to keep the sun up', 'small'); }, 2600);
+}
+function toTitle() {
+  resetPlayer();
+  P.speed = 0;
+  GAME.state = 'title'; GAME.daylight = DAY_START; GAME.sunsetT = 0;
+  HUD.title.classList.remove('hidden'); HUD.over.classList.add('hidden');
+  showHUD(false);
+}
+function onStartKey() {
+  if (GAME.state === 'title') { startRide(); return true; }
+  if (GAME.state === 'over' && GAME.overT > 1.2) { startRide(); return true; }
+  return false;
+}
+function endRun() {
+  GAME.state = 'sunset'; GAME.sunsetT = 0;
+  popup('THE SUN HAS SET', 'gold');
+}
+function showOver() {
+  GAME.state = 'over'; GAME.overT = 0;
+  const newBest = GAME.score > GAME.best;
+  if (newBest) { GAME.best = GAME.score; try { localStorage.setItem('duneSurferBest', String(GAME.best)); } catch (e) { /* private mode */ } }
+  el('finalScore').textContent = GAME.score.toLocaleString('en-US');
+  el('finalSub').textContent = `${Math.floor(GAME.dist).toLocaleString('en-US')} m · ${GAME.tricks} tricks · ${GAME.arches} sun gates · ${newBest ? 'new best!' : 'best ' + GAME.best.toLocaleString('en-US')}`;
+  HUD.over.classList.remove('hidden');
+  showHUD(false);
+  HUD.marker.classList.add('hidden');
+}
+
+/* ------------------------------------------------------------ shadows */
+function renderDepth(cam, rt, center, back) {
+  cam.position.copy(center).addScaledVector(sunDir, back);
+  cam.lookAt(center);
+  cam.updateMatrixWorld();
+  cam.updateProjectionMatrix();
+  renderer.setRenderTarget(rt);
+  renderer.clear(true, true, false);
+  renderer.render(scene, cam);
+}
+const _sc = new THREE.Vector3();
+function renderShadowPass() {
+  const prevOverride = scene.overrideMaterial;
+  scene.overrideMaterial = depthMat;
+  const oldBg = renderer.getClearColor(new THREE.Color()); const oldA = renderer.getClearAlpha();
+  renderer.setClearColor(0xffffff, 1);
+  const c = boardGroup.position;
+  renderDepth(shadowCam, shadowRT, _sc.copy(c).setY(c.y + 0.8), 120);
+  U.uRMat.value.multiplyMatrices(shadowCam.projectionMatrix, shadowCam.matrixWorldInverse);
+  // wide map centred a little ahead of the surfer (where the camera looks)
+  _sc.set(c.x + Math.sin(CAM.yaw) * 22, c.y, c.z - Math.cos(CAM.yaw) * 22);
+  _sc.x = Math.round(_sc.x / 2) * 2; _sc.z = Math.round(_sc.z / 2) * 2;
+  renderDepth(propShadowCam, propShadowRT, _sc, 200);
+  U.uPMat.value.multiplyMatrices(propShadowCam.projectionMatrix, propShadowCam.matrixWorldInverse);
+  renderer.setRenderTarget(null);
+  renderer.setClearColor(oldBg, oldA);
+  scene.overrideMaterial = prevOverride;
+  U.uROn.value = 1;
+}
+
+/* --------------------------------------------------------------- loop */
+let acc = 0;
+const FPS = { n: 0, t0: performance.now(), fps: 0 };
+window.__fps = FPS;
+function frame() {
+  FPS.n++; const nowMs = performance.now(); if (nowMs - FPS.t0 > 1000) { FPS.fps = FPS.n * 1000 / (nowMs - FPS.t0); FPS.n = 0; FPS.t0 = nowMs; }
+  const dtRaw = Math.min(clock.getDelta(), 0.1);
+  const t = clock.elapsedTime;
+  U.uTime.value = t;
+  gradePass.uniforms.uTime.value = t;
+  if (GAME.state === 'title') {
+    // hero shot: the surfer waits on the crest, facing the low sun
+    input.steer = 0; input.tuck = false; input.jumpHeld = false;
+    P.speed = 0; P.grounded = true; P.y = terrain(P.x, P.z);
+    jumpReleasedEdge = false; jumpPressedEdge = false;
+    updateRiderVisual(dtRaw, t);
+    titleCamera(dtRaw, t);
+    updateDaylight(dtRaw);
+    const cx = Math.floor(camera.position.x / PROPS.CH), cz = Math.floor(camera.position.z / PROPS.CH);
+    if (cx !== PROPS.lastCX || cz !== PROPS.lastCZ || PROPS.dirty) { rebuildProps(camera.position.x, camera.position.z); PROPS.lastCX = cx; PROPS.lastCZ = cz; PROPS.dirty = false; }
+    updateEffects(dtRaw);
+    updateParticles(dtRaw);
+    updateTrail();
+    updateSash(dtRaw, _vel.set(0, 0, 0));
+    updateAudio(dtRaw);
+  } else if (GAME.state === 'ride' || GAME.state === 'sunset' || GAME.state === 'over') {
+    if (GAME.state === 'ride' && !DEMO) readInput(); else botInput();
+    if (GAME.state === 'sunset' || GAME.state === 'over') { input.steer *= 0.3; input.tuck = false; input.jumpHeld = false; input.up = input.down = false; }
+    // physics at fixed 120 Hz
+    acc += dtRaw;
+    const h = 1 / 120;
+    let steps = 0;
+    while (acc >= h && steps < 12) {
+      stepPhysics(h);
+      jumpReleasedEdge = false; jumpPressedEdge = false;
+      acc -= h; steps++;
+    }
+    if (GAME.state === 'sunset' || GAME.state === 'over') { P.speed = Math.max(0, P.speed - dtRaw * 6); }
+    if (GAME.state === 'ride' || GAME.state === 'sunset') GAME.dist = Math.max(GAME.dist, -P.z - GAME.startS);
+    if (GAME.multT > 0) { GAME.multT -= dtRaw; if (GAME.multT <= 0) GAME.mult = 1; }
+    if (GAME.state === 'ride' && GAME.daylight <= 0) endRun();
+    if (GAME.state === 'sunset' && GAME.sunsetT > 2.6) showOver();
+    if (GAME.state === 'over') GAME.overT += dtRaw;
+    updateArches();
+    archCollide();
+    const cx = Math.floor(camera.position.x / PROPS.CH), cz = Math.floor(camera.position.z / PROPS.CH);
+    if (cx !== PROPS.lastCX || cz !== PROPS.lastCZ || PROPS.dirty) { rebuildProps(camera.position.x, camera.position.z); PROPS.lastCX = cx; PROPS.lastCZ = cz; PROPS.dirty = false; }
+    refreshPropShadows();
+    updateRiderVisual(dtRaw, t);
+    updateCamera(dtRaw, t);
+    updateDaylight(dtRaw);
+    updateEffects(dtRaw);
+    updateParticles(dtRaw);
+    updateTrail();
+    _vel.set(P.grounded ? Math.sin(P.heading) * P.speed : P.vx, P.grounded ? 0 : P.vy, P.grounded ? -Math.cos(P.heading) * P.speed : P.vz);
+    updateSash(dtRaw, _vel);
+    updateHUD(dtRaw);
+    updateAudio(dtRaw);
+    GAME.shake = Math.max(0, GAME.shake - dtRaw * 2.2);
+    GAME.flash = Math.max(0, GAME.flash - dtRaw * 1.5);
+    gradePass.uniforms.uFlash.value = GAME.flash * 0.35;
+  }
+  // adaptive resolution: keep the frame rate up on modest GPUs
+  if (FPS.fps > 0 && t > 4) {
+    const pr = renderer.getPixelRatio();
+    if (FPS.fps < 42 && pr > 0.75 && t - (GAME.prT || 0) > 3) { renderer.setPixelRatio(Math.max(0.75, pr - 0.25)); onResize(); GAME.prT = t; }
+  }
+  // terrain grid follows the camera (snapped to its own spacing)
+  terrainMesh.position.set(Math.round(camera.position.x / TERR.snapX) * TERR.snapX, 0, Math.round(camera.position.z / TERR.snapZ) * TERR.snapZ);
+  sky.position.copy(camera.position);
+  renderShadowPass();
+  composer.render();
+  requestAnimationFrame(frame);
+}
+
+/* --------------------------------------------------------------- resize */
+function onResize() {
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h, false);
+  composer.setPixelRatio(renderer.getPixelRatio());
+  composer.setSize(w, h);
+  bloom.setSize(w, h);
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+}
+addEventListener('resize', onResize);
+
+/* ----------------------------------------------------------- terrain test */
+function terrainParityTest() {
+  const N = 48;
+  const rt = new THREE.WebGLRenderTarget(N, N, { type: THREE.FloatType, format: THREE.RGBAFormat });
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { uO: { value: new THREE.Vector2(-1234.5, -5678.25) }, uS: { value: 13.37 } },
+    vertexShader: `void main(){ gl_Position = vec4(position.xy, 0.0, 1.0); }`,
+    fragmentShader: TERRAIN_GLSL + `
+      uniform vec2 uO; uniform float uS;
+      void main(){ vec2 ij = floor(gl_FragCoord.xy); vec2 xz = uO + ij * uS; vec3 t = terrainHD(xz); gl_FragColor = vec4(t, terrainHs(xz)); }`,
+  });
+  const sc = new THREE.Scene(); sc.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat));
+  const oc = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  renderer.setRenderTarget(rt); renderer.render(sc, oc); renderer.setRenderTarget(null);
+  const buf = new Float32Array(N * N * 4);
+  renderer.readRenderTargetPixels(rt, 0, 0, N, N, buf);
+  let mh = 0, mg = 0, ms = 0;
+  for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
+    const x = -1234.5 + i * 13.37, z = -5678.25 + j * 13.37;
+    const h = terrain(x, z), k = (j * N + i) * 4;
+    mh = Math.max(mh, Math.abs(h - buf[k]));
+    mg = Math.max(mg, Math.abs(TGX - buf[k + 1]), Math.abs(TGZ - buf[k + 2]));
+    ms = Math.max(ms, Math.abs(terrainHs(x, z) - buf[k + 3]));
+  }
+  console.log('TERRAIN_PARITY maxHeightErr=' + mh.toExponential(2) + ' maxGradErr=' + mg.toExponential(2) + ' maxShadowFieldErr=' + ms.toExponential(2));
+  window.__parity = { mh, mg, ms };
+}
+
+/* ------------------------------------------------------------------ boot */
+async function boot() {
+  if (matchMedia('(pointer: coarse)').matches) {          // phones / tablets
+    el('startTxt').textContent = 'TAP TO RIDE';
+    el('againTxt').textContent = 'TAP TO RIDE AGAIN';
+  }
+  if (TEST === 'terrain') { terrainParityTest(); }
+  const [skyDay, skyFallback, skyDusk, sunTex, dustTex, ripImg, grassTex, rider, board, cactus, rocks, hoodoo, archG] = await Promise.all([
+    loadTex('assets/sky_day.jpg'), loadTex('assets/sky_panorama.jpg'), loadTex('assets/sky_dusk.jpg'), loadTex('assets/sun.png'),
+    loadTex('assets/dust_sheet.png').then((t) => t ? Object.assign(t, { isAtlas: true }) : loadTex('assets/dust.png')),
+    loadTex('assets/sand_ripples.png', false), loadTex('assets/grass.png'),
+    loadGLB('assets/rider_rigged.glb'), loadGLB('assets/board.glb'), loadGLB('assets/cactus.glb'), loadGLB('assets/rocks.glb'),
+    loadGLB('assets/hoodoo.glb'), loadGLB('assets/arch.glb'),
+  ]);
+  const skyT = skyDay || skyFallback;
+  for (const tx of [skyT, skyDusk]) if (tx) { tx.wrapS = THREE.ClampToEdgeWrapping; tx.anisotropy = 4; }
+  U.uSky.value = skyT;
+  U.uSkyDusk.value = skyDusk || skyT;
+  if (!skyDay && skyFallback) { /* the fallback panorama has the sun painted in: keep the sun where it is drawn */ }
+  if (sunTex) {
+    sunSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: sunTex, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, fog: false, color: new THREE.Color(0.82, 0.74, 0.58) }));
+    sunSprite.scale.setScalar(2 * 3200 * Math.tan(18 * D2R));   // disc ~13 deg wide like the source video
+    sunSprite.renderOrder = -5;
+    scene.add(sunSprite);
+  }
+  if (dustTex) { pMat.uniforms.uTex.value = dustTex; pMat.uniforms.uAtlas.value = dustTex.isAtlas ? 1 : 0; }
+  if (ripImg) {
+    ripImg.wrapS = ripImg.wrapT = THREE.RepeatWrapping;
+    ripImg.anisotropy = 8;
+    U.uRipple.value = ripImg; U.uRippleOn.value = 1;
+  }
+  if (rider) setupRider(rider);
+  if (board) setupBoard(board);
+  initSash();
+  PROPS.types.cactus = prepProp(cactus, 3.6, { rim: 0.7 });
+  PROPS.types.rock = prepProp(rocks, 2.4, { sink: 0.12 });
+  PROPS.types.hoodoo = prepProp(hoodoo, 42, { sink: 0.06 });
+  if (grassTex) makeGrassType(grassTex);
+  makeInstanced('cactus', 420); makeInstanced('rock', 300); makeInstanced('hoodoo', 40); makeInstanced('grass', 1600);
+  if (archG) { ARCH.proto = prepProp(archG, ARCH.height, { sink: 0.03, stretchX: 1.4, rim: 0.4 }); if (ARCH.proto) ARCH.width = ARCH.proto.footprint[0]; }
+  const logoFail = () => { el('logo').style.display = 'none'; el('logoText').style.display = 'block'; };
+  el('logo').onerror = logoFail;
+  if (el('logo').complete && el('logo').naturalWidth === 0) logoFail();
+  document.getElementById('loading').classList.add('hidden');
+  if (DEMO) { startRide(); GAME.daylight = +(params.get('day') || 60); }
+  else toTitle();
+  GAME.snapBoard = true;
+  frame();
+}
+boot();
+</script>
+</body>
+</html>

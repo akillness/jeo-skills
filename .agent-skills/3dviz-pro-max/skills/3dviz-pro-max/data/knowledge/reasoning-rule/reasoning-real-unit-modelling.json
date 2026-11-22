@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-real-unit-modelling",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Model in real units when dimensions are claimed"
+  },
+  "aliases": {
+    "en": [
+      "units convention",
+      "dimensional accuracy",
+      "code dimensions"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "products-assemblies"
+  ],
+  "summary": "Fix one unit convention, model to real dimensions, and check any geometry that carries a regulated or dimensional claim.",
+  "objective": "Keep a scene that talks about dimensions consistent with the dimensions it depicts.",
+  "applies_when": [
+    "A scene shows a building, room, ramp, stair or furniture at implied real size.",
+    "The user asks whether something fits, is reachable or meets a named accessibility provision.",
+    "Dimensions, areas or clearances are displayed or exported.",
+    "A compliance statement is made and the scene can say whether it models new construction or an existing facility."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "units",
+    "dimensions",
+    "ramp slope",
+    "accessibility",
+    "stairs",
+    "scale consistency"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "architecture",
+    "dimensions"
+  ],
+  "intent_signals": [
+    "is this ramp usable",
+    "model the apartment to scale",
+    "check the dimensions"
+  ],
+  "example_prompts": [
+    "Model the entrance ramp at a compliant slope and show the numbers.",
+    "Build the studio to real dimensions so I can check what fits."
+  ],
+  "negative_signals": [
+    "Stylised or fantasy architecture that makes no dimensional claim.",
+    "Diagram scenes where proportion is symbolic."
+  ],
+  "not_for": [
+    "Stylised or fantasy architecture that makes no dimensional claim.",
+    "Diagram scenes where proportion is symbolic."
+  ],
+  "content": {
+    "principles": [
+      "A unit convention is a project-wide contract. Mixing imported assets authored in different units is the usual source of doors that are too small and rooms that are too tall.",
+      "Displaying a dimension turns geometry into a claim. If the label says the ramp rises one in twelve, the geometry must be that slope, not an approximation chosen for looks.",
+      "Regulated dimensions come from published standards and carry their own exceptions. The ADA Standards require a ramp running slope not steeper than 1:12 and a maximum rise of 30 inches per run, but 405.2 explicitly permits steeper slopes in existing sites, buildings and facilities under Table 405.2 where space limitations require them. A checkable claim therefore has to name which case it evaluates.",
+      "Jurisdiction matters: a dimension that satisfies one standard may fail another, so the standard must be named alongside the number."
+    ],
+    "implementation": [
+      "Declare the unit, typically one unit equal to one metre, and normalise every imported asset to it on entry rather than scaling ad hoc in the scene.",
+      "Derive circulation geometry from named dimensions held as data, so changing a rise recomputes the ramp rather than requiring a remodel.",
+      "Name the standard, the edition and the case being evaluated, such as new construction or an existing facility under the steeper-slope exception, and mark values that are illustrative rather than checked.",
+      "Compute slope, rise, headroom and clear width from the geometry and display them, instead of asserting a value that was typed in.",
+      "Keep a known reference object in the scene during authoring so gross unit errors are visible immediately."
+    ],
+    "observable_checks": [
+      "Measure the built geometry rather than trusting the parameter: a computed rise over run that disagrees with the label exposes a broken derivation.",
+      "Place a standard door, a person or a metre stick in the scene; unit errors show as absurd proportions.",
+      "Change a driving dimension and confirm dependent geometry, landings and labels all update.",
+      "Check the extremes for the case you claimed: the maximum rise before a landing is required, and, where the existing-facility exception is invoked, the rise limit that goes with the steeper slope rather than the general 1:12 value."
+    ]
+  },
+  "related_ids": [
+    "recipe.studio-furniture-layout",
+    "recipe.courtyard-house-cutaway"
+  ],
+  "creative_affordances": [
+    "Expressive geometry can coexist with checked dimensions; only the elements carrying the claim need to be constrained.",
+    "Where a design deliberately exceeds a standard, say so; a stated non-compliant design is more useful than a silently wrong one."
+  ],
+  "known_limits": [
+    "Authored dimensional guidance citing two specific accessibility provisions; it is not a compliance review and covers no other code requirement.",
+    "The cited standard applies to United States regulated construction; other jurisdictions differ."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-ada-ramp-slope",
+      "statement": "The ADA Accessibility Standards require ramp runs to have a running slope not steeper than 1:12 with a maximum rise of 30 inches, or 760 millimetres, per run, and provide an exception permitting steeper running slopes in existing sites, buildings and facilities in accordance with Table 405.2 where such slopes are necessary due to space limitations.",
+      "scope": "United States accessibility standard for regulated construction. It does not cover other jurisdictions, structural design, or any surface other than ramps, and the exception applies only to existing facilities.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-ada-standards",
+          "locator": "405.2 running slope and its existing-facility exception with Table 405.2; 405.6 rise"
+        }
+      ]
+    }
+  ]
+}

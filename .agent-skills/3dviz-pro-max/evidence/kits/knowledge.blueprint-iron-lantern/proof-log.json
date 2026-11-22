@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-iron-lantern",
+  "record_revision": 2,
+  "asset": "templates/kits/gltf/iron-lantern.glb",
+  "asset_sha256": "77330025ec60646b7d8c4ac989d3b9128cbd38f38a53e87e997b213cd150eedd",
+  "params": {
+    "scale": 1
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-iron-lantern",
+    "module": "../gltf/iron-lantern.glb",
+    "params": {
+      "scale": 1
+    },
+    "triangles": 1944,
+    "bounds_m": {
+      "min": [
+        -0.23000000417232513,
+        0,
+        -0.4399999976158142
+      ],
+      "max": [
+        0.23000000417232513,
+        3.549999952316284,
+        0.23000000417232513
+      ],
+      "size": [
+        0.46000000834465027,
+        3.549999952316284,
+        0.6700000017881393
+      ]
+    },
+    "fit_distance_m": 5.324,
+    "view_distances_m": {
+      "far": 12.7776,
+      "mid": 6.3888,
+      "close": 4.1527,
+      "detail": 0.8193
+    },
+    "sockets": [
+      "base",
+      "hook",
+      "lamp"
+    ],
+    "detail_socket": "hook",
+    "animated": false,
+    "colliders": [],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "a00780480f90783dbdbadd3f0461ea3224fb503289f5cd573e046351f5ee622f",
+    "mid.png": "2975ecced90dd05197f53d66e14d4e301f9d9d47e2c04dba345585c9e0c8a1fd",
+    "close.png": "de655144987918c09c5d9dcda2ca07eb5709aa2bbf28785233e77af0f1d9a297",
+    "detail.png": "dd0f4e9afc0b65cef9051da0cd4f52bdf13c39cbf0fc551ccdc3bab3e030ad32"
+  },
+  "motion": null,
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:49:36+00:00",
+  "finished": "2026-09-08T13:49:40+00:00"
+}

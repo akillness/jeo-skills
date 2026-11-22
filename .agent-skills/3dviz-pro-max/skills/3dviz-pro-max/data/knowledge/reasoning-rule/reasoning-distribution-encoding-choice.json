@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-distribution-encoding-choice",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Prefer slices and marginals over solid distributions"
+  },
+  "aliases": {
+    "en": [
+      "joint density display",
+      "volume perception",
+      "conditional slice"
+    ]
+  },
+  "direction_ids": [
+    "probability-statistics",
+    "abstract-systems-data"
+  ],
+  "summary": "Encode multivariate distributions with sections, marginals and conditionals rather than relying on perceived volume or opacity.",
+  "objective": "Choose an encoding for a distribution that a viewer can actually read quantitatively.",
+  "applies_when": [
+    "A joint distribution over two or more variables is displayed.",
+    "A three-dimensional density, cloud or volume rendering is being considered.",
+    "The viewer must compare regions or read a conditional relationship."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "joint distribution",
+    "marginal",
+    "conditional",
+    "volume rendering",
+    "perception",
+    "encoding"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "statistics",
+    "presentation"
+  ],
+  "intent_signals": [
+    "show the joint distribution",
+    "compare the two clusters",
+    "render the density in 3D"
+  ],
+  "example_prompts": [
+    "Show the joint density and let me take conditional slices.",
+    "Compare the spread of these two variables."
+  ],
+  "negative_signals": [
+    "Single-variable distributions, where the area encoding already works.",
+    "Cases where the spatial structure itself is the subject rather than the probability."
+  ],
+  "not_for": [
+    "Single-variable distributions, where the area encoding already works.",
+    "Cases where the spatial structure itself is the subject rather than the probability."
+  ],
+  "content": {
+    "principles": [
+      "Perceived volume and accumulated transparency are risky quantitative channels: occlusion hides the far side, and the apparent intensity of a volume rendering depends on the viewing direction and the transfer function rather than on the density alone. This record treats that as a design risk to test with your audience, not as a measured perceptual result.",
+      "Slices, marginals and conditionals reduce the problem to encodings that are readable, and they correspond to the questions people actually ask about a joint distribution.",
+      "A three-dimensional presentation earns its cost only when the third axis carries structure that projections destroy, such as a genuinely trivariate interaction.",
+      "Whatever the encoding, the quantity being encoded must be stated: density, cumulative probability, count or estimate are different things."
+    ],
+    "implementation": [
+      "Offer a marginal for each variable and a conditional slice control, driven from the same underlying distribution as any spatial view.",
+      "If a volume view is used, pair it with a section plane the viewer can move, and label whether opacity encodes density or accumulated probability.",
+      "State the estimator when the distribution comes from data, including bandwidth or binning, since those change the picture.",
+      "Keep the axes and their units visible, and use a legend that maps the visual channel to the quantity.",
+      "Where regions must be compared, provide a numeric readout for the selected regions instead of relying on perception."
+    ],
+    "observable_checks": [
+      "Ask a comparison question, such as which region carries more probability, and confirm the display supports a numeric answer.",
+      "Rotate a volume view and check whether the apparent density changes with viewing angle, which reveals an accumulation artefact.",
+      "Confirm the marginal panels are computed from the same distribution as the spatial view.",
+      "Change the estimator parameters and observe how much of the visible structure survives."
+    ]
+  },
+  "related_ids": [
+    "recipe.sampling-mean-distribution",
+    "recipe.embedding-projection",
+    "knowledge.signed-field-section"
+  ],
+  "creative_affordances": [
+    "Expressive volume renderings remain valuable for conveying overall shape when quantitative reading is not claimed.",
+    "Small-multiple conditional slices are often more beautiful as well as more readable than one dense cloud."
+  ],
+  "known_limits": [
+    "Authored presentation guidance; it cites no perceptual study and reports no user testing.",
+    "No runtime rendering has been evaluated for this record."
+  ],
+  "claims": []
+}

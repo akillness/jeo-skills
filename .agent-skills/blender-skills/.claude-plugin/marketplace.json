@@ -1,0 +1,12 @@
+{
+  "name": "blender-agent-skills",
+  "description": "Blender 5.3 workflow skills for AI agents",
+  "owner": { "name": "EL4CTEO" },
+  "plugins": [
+    {
+      "name": "blender-agent-skills",
+      "source": "./",
+      "description": "28 tested Blender skills: model, UV, texture, bake, rig, animate, clothe, groom, build environments, toon, optimize, export, render, edit video, weather, QA"
+    }
+  ]
+}

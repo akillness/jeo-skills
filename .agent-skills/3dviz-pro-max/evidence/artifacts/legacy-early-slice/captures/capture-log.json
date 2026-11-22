@@ -1,0 +1,349 @@
+{
+  "url": "http://127.0.0.1:59794/",
+  "dir": "examples/early-slice/dist",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "ready_flag": "__sceneReady",
+  "ready_timeout": false,
+  "motion": {
+    "interval_ms": 2000,
+    "differs": true,
+    "sha_before": "f21271dd6920e1cdaf69a9070d1e4f96aad330ceeeea8e402cb4d82d1fba8696",
+    "sha_after": "02feb445b95632a3f0bb4ecdb5c321dd1883afacfb8ff761e50774bc55ec625d"
+  },
+  "gpu_requested": true,
+  "capture_mode": "gpu",
+  "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+  "image_format": "png",
+  "views": [
+    {
+      "name": "default",
+      "file": "default.png",
+      "sha256": "f21271dd6920e1cdaf69a9070d1e4f96aad330ceeeea8e402cb4d82d1fba8696",
+      "view_quality": {
+        "region": {
+          "x": 355,
+          "y": 76,
+          "width": 925,
+          "height": 644
+        },
+        "wall_fraction": 0,
+        "wall_columns": 0,
+        "wall_luma": null,
+        "wall_rest_luma": 0.431,
+        "luma_mean": 0.4307,
+        "luma_std": 0.1909,
+        "luma_median_cell": 0.4616,
+        "dark_fraction": 0,
+        "flat_fraction": 0.1667,
+        "flat_cells": 96,
+        "flat_luma": 0.1694,
+        "rest_luma": 0.4833,
+        "measured": true,
+        "usable": true,
+        "reason": "usable"
+      }
+    },
+    {
+      "name": "default-motion",
+      "file": "default-motion.png",
+      "sha256": "02feb445b95632a3f0bb4ecdb5c321dd1883afacfb8ff761e50774bc55ec625d",
+      "view_quality": {
+        "region": {
+          "x": 355,
+          "y": 76,
+          "width": 925,
+          "height": 644
+        },
+        "wall_fraction": 0,
+        "wall_columns": 0,
+        "wall_luma": null,
+        "wall_rest_luma": 0.4309,
+        "luma_mean": 0.4306,
+        "luma_std": 0.1909,
+        "luma_median_cell": 0.4611,
+        "dark_fraction": 0,
+        "flat_fraction": 0.1667,
+        "flat_cells": 96,
+        "flat_luma": 0.1694,
+        "rest_luma": 0.4832,
+        "measured": true,
+        "usable": true,
+        "reason": "usable"
+      }
+    },
+    {
+      "name": "overview",
+      "file": "overview.png",
+      "sha256": "0691d4a5ff6aeb09e0ff3e23e41d33780981b1874de650a4ca9a50e91af185d3",
+      "requested": "overview",
+      "applied": true,
+      "view_quality": {
+        "region": {
+          "x": 355,
+          "y": 76,
+          "width": 925,
+          "height": 644
+        },
+        "wall_fraction": 0,
+        "wall_columns": 0,
+        "wall_luma": null,
+        "wall_rest_luma": 0.431,
+        "luma_mean": 0.4307,
+        "luma_std": 0.191,
+        "luma_median_cell": 0.4611,
+        "dark_fraction": 0,
+        "flat_fraction": 0.1667,
+        "flat_cells": 96,
+        "flat_luma": 0.1694,
+        "rest_luma": 0.4833,
+        "measured": true,
+        "usable": true,
+        "reason": "usable"
+      }
+    },
+    {
+      "name": "mill",
+      "file": "mill.png",
+      "sha256": "5918c14f80e2929cdc8c886b17cea726387c2fe69ccdb1b94edafa624913bc87",
+      "requested": "mill",
+      "applied": true,
+      "view_quality": {
+        "region": {
+          "x": 355,
+          "y": 76,
+          "width": 925,
+          "height": 644
+        },
+        "wall_fraction": 0,
+        "wall_columns": 0,
+        "wall_luma": null,
+        "wall_rest_luma": 0.4604,
+        "luma_mean": 0.4598,
+        "luma_std": 0.227,
+        "luma_median_cell": 0.4573,
+        "dark_fraction": 0.0029,
+        "flat_fraction": 0.0729,
+        "flat_cells": 42,
+        "flat_luma": 0.1622,
+        "rest_luma": 0.4838,
+        "measured": true,
+        "usable": true,
+        "reason": "usable"
+      }
+    },
+    {
+      "name": "pond",
+      "file": "pond.png",
+      "sha256": "8dba7b29965688f84d05e29f9aa188266e16dc9a855a37e73b6d48107019832d",
+      "requested": "pond",
+      "applied": true,
+      "view_quality": {
+        "region": {
+          "x": 355,
+          "y": 76,
+          "width": 925,
+          "height": 644
+        },
+        "wall_fraction": 0,
+        "wall_columns": 0,
+        "wall_luma": null,
+        "wall_rest_luma": 0.6325,
+        "luma_mean": 0.6324,
+        "luma_std": 0.1802,
+        "luma_median_cell": 0.6696,
+        "dark_fraction": 0,
+        "flat_fraction": 0.0382,
+        "flat_cells": 22,
+        "flat_luma": 0.3546,
+        "rest_luma": 0.6435,
+        "measured": true,
+        "usable": true,
+        "reason": "usable"
+      }
+    },
+    {
+      "name": "door",
+      "file": "door.png",
+      "sha256": "f60d3dd48fb034ec15584bf20c6c1e33dbb163ee7c418806fef09c05f35568dd",
+      "requested": "door",
+      "applied": true,
+      "view_quality": {
+        "region": {
+          "x": 355,
+          "y": 76,
+          "width": 925,
+          "height": 644
+        },
+        "wall_fraction": 0,
+        "wall_columns": 0,
+        "wall_luma": null,
+        "wall_rest_luma": 0.4952,
+        "luma_mean": 0.4948,
+        "luma_std": 0.2322,
+        "luma_median_cell": 0.4708,
+        "dark_fraction": 0.0032,
+        "flat_fraction": 0.1458,
+        "flat_cells": 84,
+        "flat_luma": 0.801,
+        "rest_luma": 0.443,
+        "measured": true,
+        "usable": true,
+        "reason": "usable"
+      }
+    },
+    {
+      "name": "cargo",
+      "file": "cargo.png",
+      "sha256": "4b7fbe4000ea7d14d28a2d9bae541477112a2d1155945d402f7100ff19965dd4",
+      "requested": "cargo",
+      "applied": true,
+      "view_quality": {
+        "region": {
+          "x": 355,
+          "y": 76,
+          "width": 925,
+          "height": 644
+        },
+        "wall_fraction": 0,
+        "wall_columns": 0,
+        "wall_luma": null,
+        "wall_rest_luma": 0.5995,
+        "luma_mean": 0.5995,
+        "luma_std": 0.1347,
+        "luma_median_cell": 0.621,
+        "dark_fraction": 0.0001,
+        "flat_fraction": 0.0052,
+        "flat_cells": 3,
+        "flat_luma": 0.3446,
+        "rest_luma": 0.6009,
+        "measured": true,
+        "usable": true,
+        "reason": "usable"
+      }
+    },
+    {
+      "name": "fox",
+      "file": "fox.png",
+      "sha256": "4f4dd90d91fe9f8f7b915b97924044f9dba45dc05d3fc97361b75688f16f7fd2",
+      "requested": "fox",
+      "applied": true,
+      "view_quality": {
+        "region": {
+          "x": 355,
+          "y": 76,
+          "width": 925,
+          "height": 644
+        },
+        "wall_fraction": 0,
+        "wall_columns": 0,
+        "wall_luma": null,
+        "wall_rest_luma": 0.5822,
+        "luma_mean": 0.5818,
+        "luma_std": 0.2125,
+        "luma_median_cell": 0.5874,
+        "dark_fraction": 0.0014,
+        "flat_fraction": 0.0365,
+        "flat_cells": 21,
+        "flat_luma": 0.2512,
+        "rest_luma": 0.5947,
+        "measured": true,
+        "usable": true,
+        "reason": "usable"
+      }
+    },
+    {
+      "name": "layout",
+      "file": "layout.png",
+      "sha256": "960d5989c478e3be3f9c9a294ad74efbe1b83b7eefcfb127b1fc189a8f32dcd9",
+      "requested": "layout",
+      "applied": true,
+      "view_quality": {
+        "region": {
+          "x": 355,
+          "y": 76,
+          "width": 925,
+          "height": 644
+        },
+        "wall_fraction": 0,
+        "wall_columns": 0,
+        "wall_luma": null,
+        "wall_rest_luma": 0.4848,
+        "luma_mean": 0.4843,
+        "luma_std": 0.2015,
+        "luma_median_cell": 0.5391,
+        "dark_fraction": 0,
+        "flat_fraction": 0.2153,
+        "flat_cells": 124,
+        "flat_luma": 0.1928,
+        "rest_luma": 0.5649,
+        "measured": true,
+        "usable": true,
+        "reason": "usable"
+      }
+    },
+    {
+      "name": "bridge",
+      "file": "bridge.png",
+      "sha256": "32e752dd6e5eda6b8ce2d7c5cf3d7ba5f593912f80c825e8520256cbaa52a379",
+      "requested": "bridge",
+      "applied": true,
+      "view_quality": {
+        "region": {
+          "x": 355,
+          "y": 76,
+          "width": 925,
+          "height": 644
+        },
+        "wall_fraction": 0,
+        "wall_columns": 0,
+        "wall_luma": null,
+        "wall_rest_luma": 0.5287,
+        "luma_mean": 0.5283,
+        "luma_std": 0.2438,
+        "luma_median_cell": 0.5332,
+        "dark_fraction": 0.0062,
+        "flat_fraction": 0.099,
+        "flat_cells": 57,
+        "flat_luma": 0.8292,
+        "rest_luma": 0.4957,
+        "measured": true,
+        "usable": true,
+        "reason": "usable"
+      }
+    }
+  ],
+  "clicks": [
+    {
+      "selector": "#village-door",
+      "file": "click-0-village-door.png",
+      "sha256": "0cc095910c65be154259d62e0d9891de22d3978bf1ec66256f063ffa660cd143"
+    }
+  ],
+  "unusable_views": [],
+  "view_quality_thresholds": {
+    "dark_luma": 0.06,
+    "near_black_luma_mean": 0.04,
+    "near_black_dark_fraction": 0.85,
+    "flat_min_fraction": 0.3,
+    "flat_luma_gap": 0.25,
+    "wall_min_fraction": 0.2,
+    "wall_column_std": 0.03,
+    "low_contrast_luma_std": 0.04,
+    "grid_cols": 32,
+    "grid_rows": 18
+  },
+  "measured_region": {
+    "x": 355,
+    "y": 76,
+    "width": 925,
+    "height": 644
+  },
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-09T00:41:27+00:00",
+  "finished": "2026-09-09T00:41:47+00:00",
+  "playwright_version": "1.62.0"
+}

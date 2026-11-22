@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paper Cinder Transition</title>
+<meta name="description" content="A burning line sweeps across the frame: the next chapter is live behind it, the old one frozen ahead of it. Vanilla JavaScript, WebGL 2 and GLSL.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' rx='3' fill='%239d382c'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400&amp;display=swap&amp;text=%E7%B4%99%E7%84%BC%E9%89%8B%E6%9C%A8%E5%BD%AB" rel="stylesheet">
+<style>
+  :root{
+    --ink:#f2ece2;
+    --dim:rgba(242,236,226,.66);
+    --hair:rgba(242,236,226,.18);
+    --chip:rgba(12,9,7,.62);
+    --ember:#e8551c;
+    --gutter:clamp(16px,2.4vw,36px);
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+    --mincho:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;font-weight:normal}
+  html,body{height:100%}
+  body{background:#0a0806;color:var(--ink);font-family:var(--sans);overflow:hidden;
+    -webkit-font-smoothing:antialiased}
+  #stage{position:fixed;inset:0;display:block;width:100%;height:100%}
+  .head{position:fixed;z-index:2;left:var(--gutter);top:var(--gutter);width:min(560px,calc(100vw - 2*var(--gutter)));
+    padding:18px 20px 18px;background:var(--chip);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    border:0;outline:1px solid var(--hair);outline-offset:-1px;border-radius:14px}
+  .head .stack{font:12px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ember)}
+  .head h1{font:400 clamp(30px,3.4vw,44px)/1.02 var(--serif);letter-spacing:-.01em;margin:8px 0 10px}
+  .head p{font:13px/1.55 var(--sans);color:var(--dim);max-width:52ch}
+  .head p b{font-weight:normal;color:var(--ink)}
+  .bar{position:fixed;z-index:2;left:50%;bottom:var(--gutter);transform:translateX(-50%);
+    display:flex;align-items:center;gap:14px;padding:10px 12px;max-width:calc(100vw - 2*var(--gutter));
+    background:var(--chip);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    border:0;outline:1px solid var(--hair);outline-offset:-1px;border-radius:999px}
+  .bar button{white-space:nowrap;font:13px/1 var(--sans);color:var(--ink);background:transparent;border:0;outline:1px solid var(--hair);
+    outline-offset:-1px;border-radius:999px;min-height:40px;padding:0 18px;cursor:pointer;
+    transition:background .2s,outline-color .2s}
+  .bar button:hover{background:rgba(242,236,226,.10);outline-color:rgba(242,236,226,.4)}
+  .bar button.next{background:var(--ember);outline-color:transparent;color:#160a04}
+  .bar button.next:hover{background:#f26a30}
+  .bar button:focus-visible,.bar input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .dots{display:flex;gap:6px}
+  .dots button{min-width:40px;padding:0;font-variant-numeric:tabular-nums}
+  .dots button[aria-current="true"]{background:rgba(242,236,226,.16);outline-color:var(--ink)}
+  .speed{display:flex;align-items:center;gap:10px;font:12px/1 var(--sans);color:var(--dim);white-space:nowrap}
+  .speed input{width:96px;accent-color:var(--ember);height:40px}
+  .speed output{min-width:3.4em;color:var(--ink);font-variant-numeric:tabular-nums}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .fail{position:fixed;inset:0;z-index:3;display:none;place-items:center;text-align:center;padding:32px;
+    font:16px/1.5 var(--sans);color:var(--dim);background:#0a0806}
+  @media (max-width:640px){
+    .head{padding:14px 16px}
+    .head p{font-size:12px}
+    .bar{gap:8px;padding:8px;border-radius:999px}
+    .bar button{padding:0 14px}
+    .bar .lg{display:none}
+    .prev{min-width:44px;padding:0}
+    .speed{display:none}
+  }
+  @media (max-height:520px){.head p{display:none}}
+</style>
+</head>
+<body>
+<canvas id="stage" aria-label="Three chapters of a timber workshop, changing by a burning paper edge" role="img"></canvas>
+
+<header class="head">
+  <div class="stack">Vanilla JavaScript · WebGL 2 · GLSL</div>
+  <h1>Paper Cinder Transition</h1>
+  <p>A ragged front burns across the frame. <b>The next chapter runs live behind it</b>; the old one stays frozen ahead of it. Noise is baked once, so the flame costs a few texture taps a pixel. No Three.js.</p>
+</header>
+
+<div class="bar" role="group" aria-label="Chapter transition controls">
+  <button type="button" class="prev" aria-label="Previous chapter">&larr;<span class="lg"> Prev</span></button>
+  <div class="dots" role="group" aria-label="Chapters">
+    <button type="button" data-i="0" aria-label="Chapter 1, Paper">1</button>
+    <button type="button" data-i="1" aria-label="Chapter 2, Char">2</button>
+    <button type="button" data-i="2" aria-label="Chapter 3, Cedar">3</button>
+  </div>
+  <button type="button" class="next" aria-label="Next chapter">Burn<span class="lg"> to next</span> &rarr;</button>
+  <label class="speed">Burn time <input id="dur" type="range" min="1.5" max="5" step="0.1" value="3"><output id="durOut" for="dur">3.0 s</output></label>
+</div>
+<div class="sr" id="live" aria-live="polite" role="status"></div>
+<div class="fail" id="fail" role="alert"></div>
+
+<script>
+'use strict';
+/* ============================================================== *
+ *  Paper cinder transition — ported from KIBORI (kibori.html)
+ *  EDGE + NOISE + the burn pass are the page's own GLSL, verbatim;
+ *  everything else here is a small raw-WebGL2 host for them.
+ * ============================================================== */
+
+/* ---- the page's own GLSL (copied, not rewritten) ---- */
+const NOISE = String.raw`  vec2 hash2(vec2 p){
+    p = vec2(dot(p,vec2(127.1,311.7)), dot(p,vec2(269.5,183.3)));
+    return fract(sin(p)*43758.5453123)*2.0-1.0;
+  }
+  vec3 hash3(vec3 p){
+    p = vec3(dot(p,vec3(127.1,311.7,74.7)),dot(p,vec3(269.5,183.3,246.1)),dot(p,vec3(113.5,271.9,124.6)));
+    return fract(sin(p)*43758.5453123)*2.0-1.0;
+  }
+  float hash1(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123); }
+  float gnoise(vec2 x){
+    vec2 p = floor(x), w = fract(x);
+    vec2 u = w*w*w*(w*(w*6.0-15.0)+10.0);
+    float a = dot(hash2(p+vec2(0,0)), w-vec2(0,0));
+    float b = dot(hash2(p+vec2(1,0)), w-vec2(1,0));
+    float c = dot(hash2(p+vec2(0,1)), w-vec2(0,1));
+    float d = dot(hash2(p+vec2(1,1)), w-vec2(1,1));
+    return mix(mix(a,b,u.x), mix(c,d,u.x), u.y)*0.7+0.5;
+  }
+  float gnoise3(vec3 x){
+    vec3 p = floor(x), w = fract(x);
+    vec3 u = w*w*w*(w*(w*6.0-15.0)+10.0);
+    float n = 0.0;
+    for(int k=0;k<2;k++)for(int j=0;j<2;j++)for(int i=0;i<2;i++){
+      vec3 o = vec3(float(i),float(j),float(k));
+      float wgt = mix(1.0-u.x,u.x,o.x)*mix(1.0-u.y,u.y,o.y)*mix(1.0-u.z,u.z,o.z);
+      n += wgt * dot(hash3(p+o), w-o);
+    }
+    return n*0.8+0.5;
+  }
+  float fbm(vec2 p, int oct){
+    float s=0.0,a=0.5,n=0.0;
+    for(int i=0;i<8;i++){ if(i>=oct) break; s+=a*gnoise(p); n+=a; p=p*2.03+11.7; a*=0.5; }
+    return s/max(n,1e-4);
+  }
+  float fbm3(vec3 p, int oct){
+    float s=0.0,a=0.5,n=0.0;
+    for(int i=0;i<6;i++){ if(i>=oct) break; s+=a*gnoise3(p); n+=a; p=p*2.07+7.3; a*=0.5; }
+    return s/max(n,1e-4);
+  }
+  float ridged3(vec3 p, int oct){
+    float s=0.0,a=0.5,n=0.0;
+    for(int i=0;i<6;i++){ if(i>=oct) break;
+      s+=a*(1.0-abs(gnoise3(p)*2.0-1.0)); n+=a; p=p*2.11+5.7; a*=0.5; }
+    return s/max(n,1e-4);
+  }
+  float ridged(vec2 p, int oct){
+    float s=0.0,a=0.5,n=0.0;
+    for(int i=0;i<8;i++){ if(i>=oct) break; s+=a*(1.0-abs(gnoise(p)*2.0-1.0)); n+=a; p=p*2.11+5.3; a*=0.5; }
+    return s/max(n,1e-4);
+  }
+`;
+const EDGE = String.raw`    /* ---- The burning edge: one look for the loader's ring, the intro and
+       every burn (the page's burn pass reads this same text). It is drawn in
+       CSS pixels: xc is the distance to the front (+ ahead of it, - burnt), g
+       the paper's own coordinates, so the grain, the embers and the splits
+       stay put on the paper while the front passes over them, and aa is a
+       device pixel in CSS px, so every hard edge is crisp to the pixel.
+       wht: how wide it burns here (0.3-2.6, it swells and pinches), how hot
+       (0-1, high only in a few stretches), a scale on the whole band (1;
+       less on a ring still small, which must stay a rim with black inside
+       it, never a glowing disc), and how alive (0.15-1: some stretches all
+       but out), each wandering along the edge and over time. ---- */
+    /* the loader's ring is drawn at about two-thirds size while the page
+       loads, and opens out to full size over the intro's first stretch;
+       the loader and the intro both draw it through this, so the hand-off
+       is the same ring at the same size */
+    float kbScale(float u){ return mix(0.67, 1.0, smoothstep(0.335, 0.55, u)); }
+    float kbGrad(float f, float pxH, float nominal){
+    #ifdef KB_NO_DERIV
+      return nominal;
+    #else
+      return clamp(length(vec2(dFdx(f), dFdy(f)))*pxH, 0.35*nominal, 3.0*nominal);
+    #endif
+    }
+    /* distance in pixels to where v crosses zero: a line drawn this way is
+       a pixel wide wherever it runs, never a soft blotch */
+    float kbLinePx(float v, float nominalPerPx){
+    #ifdef KB_NO_DERIV
+      return abs(v)/nominalPerPx;
+    #else
+      return abs(v)/max(length(vec2(dFdx(v), dFdy(v))), 0.25*nominalPerPx);
+    #endif
+    }
+    vec4 kbEdgeWHT(vec2 e, float t){
+      /* one slow field decides what each stretch is doing, so the edge never
+         reads as a stroke: some arcs burn wide and hot, others narrow and
+         dull, and some are all but out; it drifts slowly as it burns */
+      float b = fbm(e*2.6 + vec2(t*0.24, -t*0.17) + 13.0, 3);
+      float life = 0.03 + 0.97*smoothstep(0.42, 0.60, b);
+      float w = (0.20 + 2.60*smoothstep(0.40, 0.66, b + 0.14*(gnoise(e*6.0 + vec2(t*0.70, 1.0)) - 0.5)))
+              * (0.80 + 0.40*gnoise(e*1.6 + vec2(t*0.95, 3.0)));
+      float hn = gnoise(e*4.1 + 31.0 + vec2(0.0, -t*0.08));
+      float h = smoothstep(0.55, 0.80, b + 0.35*(hn - 0.5))*(0.75 + 0.25*sin(t*2.1 + hn*9.0));
+      return vec4(w, h, 1.0, life);
+    }
+    /* hashes and a value noise with no sin in them, for the pixel-sized
+       grain (fixed on the paper, so it never swims) */
+    float kbHash(vec2 p){ vec3 q = fract(p.xyx*0.1031); q += dot(q, q.yzx + 33.33); return fract((q.x + q.y)*q.z); }
+    vec2 kbHash2(vec2 p){ vec3 q = fract(p.xyx*vec3(0.1031, 0.1030, 0.0973)); q += dot(q, q.yzx + 33.33); return fract((q.xx + q.yz)*q.zy); }
+    float kbVN(vec2 x){ vec2 i = floor(x), f = fract(x); f = f*f*(3.0 - 2.0*f);
+      return mix(mix(kbHash(i), kbHash(i + vec2(1.0, 0.0)), f.x), mix(kbHash(i + vec2(0.0, 1.0)), kbHash(i + vec2(1.0, 1.0)), f.x), f.y); }
+    /* The page's burn pass has its noise baked (KB_BAKED), made once at
+       load: a tileable texture of fbm and ridged of three octaves, one
+       gradient octave and ridged of two on a 16-cell period, so an octave stack costs a
+       texture tap (the lines take it; the ring keeps its own noise, so it
+       stays the loader's ring); and kbHash's own values for 2048 x 2048
+       cells round the origin, which give kbVN exactly — the same grain as
+       the loader's, in one tap: filtered between cell centres, at the
+       smoothstep of the fraction */
+    #ifdef KB_BAKED
+    uniform sampler2D uKbN, uKbH;
+    float kbFbmT(vec2 x){ return texture2D(uKbN, x*0.0625).r; }
+    float kbRidT(vec2 x){ return texture2D(uKbN, x*0.0625).g; }
+    float kbGnT(vec2 x){ return texture2D(uKbN, x*0.0625).b; }
+    float kbRid2T(vec2 x){ return texture2D(uKbN, x*0.0625).a; }   /* ridged, two octaves */
+    float kbV(vec2 x){ vec2 i = floor(x), f = fract(x); f = f*f*(3.0 - 2.0*f);
+      return texture2D(uKbH, (i + 1024.5 + f)*0.00048828125).r; }
+    #define KBGN(x) kbGnT(x)
+    #define KBFBM(x) kbFbmT(x)
+    #define KBRID(x) kbRidT(x)
+    /* a line's width, heat and life, as kbEdgeWHT but off the baked noise */
+    vec4 kbEdgeWHTb(vec2 e, float t){
+      float b = kbFbmT(e*2.6 + vec2(t*0.24, -t*0.17) + 13.0);
+      float life = 0.03 + 0.97*smoothstep(0.42, 0.60, b);
+      float w = (0.20 + 2.60*smoothstep(0.40, 0.66, b + 0.14*(kbGnT(e*6.0 + vec2(t*0.70, 1.0)) - 0.5)))
+              * (0.80 + 0.40*kbGnT(e*1.6 + vec2(t*0.95, 3.0)));
+      float hn = kbGnT(e*4.1 + 31.0 + vec2(0.0, -t*0.08));
+      float h = smoothstep(0.55, 0.80, b + 0.35*(hn - 0.5))*(0.75 + 0.25*sin(t*2.1 + hn*9.0));
+      return vec4(w, h, 1.0, life);
+    }
+    #else
+    float kbV(vec2 x){ return kbVN(x); }
+    #define KBGN(x) gnoise(x)
+    #define KBFBM(x) fbm(x, 2)
+    #define KBRID(x) ridged(x, 3)
+    #endif
+    /* coverage of v > 0 over w, the change in v across a device pixel,
+       worked out from v's own scale rather than taken with derivatives:
+       the page skips whole regions before these run, and a derivative
+       taken past such a branch came back as 2x2 blocks — stair-steps and
+       loose flecks along the skipped region's edge */
+    float kbAA(float v, float w){ return clamp(0.5 + v/max(w, 1e-5), 0.0, 1.0); }
+    /* the ember zone's width, px: 12-66 on a line, wide where it burns hot,
+       narrow where it is dying, and on a small ring never under 3.5-7 px
+       (as wide as it burns there): thinner, the rim read as a drawn outline,
+       and even, as a drawn 'o' */
+    float kbZoneW(vec4 wht){ return max((18.0 + 20.0*min(wht.x, 2.6))*wht.z*(0.55 + 0.45*wht.w), 3.5 + 3.5*smoothstep(0.3, 2.0, wht.x)); }
+    /* The ember ramp every colour of the fire keeps to, before the tone
+       curve: deep red, red-orange, orange, warm yellow-orange; nothing on it
+       is pale or grey (the old yellow went cream at full heat and khaki when
+       dimmed), and nothing is bright enough to bloom, so the flame keeps a
+       hard edge on the frame ahead of it. A dim stretch goes down the ramp,
+       never just darker. */
+    vec3 kbRamp(float h){
+      vec3 c = mix(vec3(0.11, 0.006, 0.0007), vec3(0.34, 0.032, 0.0025), smoothstep(0.00, 0.33, h));
+      c = mix(c, vec3(0.90, 0.13, 0.012), smoothstep(0.33, 0.66, h));
+      return mix(c, vec3(1.13, 0.30, 0.036), smoothstep(0.66, 1.00, h));
+    }
+    /* where the ember zone ends: its lip, W px back, torn */
+    float kbLipD(float W, vec2 g){
+      vec2 gr = mat2(0.80, -0.60, 0.60, 0.80)*g;
+      return W*(0.78 + 0.30*kbV(gr*0.035 + 6.0)) + 1.5*(kbV(gr*0.22 + 1.0) - 0.5);
+    }
+    /* The front, as the footer's paper burns: a bright thread of ember that
+       beads and pinches along its length (an even stroke read as neon), gold
+       where it runs hot and dull red where it is nearly out, with a tight
+       glow a few px round it; behind it the ember zone, packed solid and
+       graded smoothly by its heat — yellow at the front, orange, deep red
+       at a crisp torn lip, the hot stretches carrying the yellow further
+       back (hard steps read as a poster). All of it alive: heat pulses run
+       along it both ways and roll back through the zone, patches flicker,
+       the beads drift. sA runs along the edge, px. */
+    vec3 kbFlame(float xc, float xb, float sA, vec4 wht, vec2 g, float t, float aa){
+      float hot = wht.y, life = wht.w, dist = max(-xc, 0.0);
+      float W = kbZoneW(wht);
+      float behind = clamp(0.5 - xc/aa, 0.0, 1.0);          /* burnt, to the pixel */
+      float run = 0.5*kbV(vec2(sA*0.018 - t*1.30, 2.0)) + 0.5*kbV(vec2(sA*0.027 + t*1.70, 5.0));
+      float flk = kbV(vec2(sA*0.110, t*7.0) + 3.0);
+      float roll = kbV(vec2(sA*0.060, dist*0.090 - t*2.6) + 11.0);
+      float heat = clamp(0.30 + 0.55*hot + 0.50*(run - 0.5) + 0.22*(flk - 0.5), 0.0, 1.0)*(0.30 + 0.70*life);
+      float bead = 0.50 + 1.00*kbV(vec2(sA*0.085 - t*0.8, 7.0));
+      float wc = max(0.7, (0.9 + 2.6*heat)*bead*min(1.0, wht.z*2.5));   /* the thread, ~1-5 px */
+      float core = behind*exp(-dist/wc) + (1.0 - behind)*exp(-max(xc, 0.0)/0.35)*0.35;
+      float glow = exp(-abs(xc + 0.5*wc)/(2.0 + 2.8*heat))*heat*min(1.0, wht.z*2.0);
+      float k = dist/W;
+      vec2 gr = mat2(0.80, -0.60, 0.60, 0.80)*g, ga = mat2(0.94, 0.34, -0.34, 0.94)*g;
+      float gT = kbV(g*0.045 + vec2(t*0.90, -t*0.50));
+      /* a few holes drawn out along the grain, drifting */
+      float cl = kbV(ga*vec2(0.12, 0.42) + vec2(t*0.5, -t*0.8) + 4.0)*0.6 + kbV(gr*0.50 + 9.0)*0.4;
+      float lit = kbAA(cl - (0.10 + 0.40*k*k + 0.12*(0.5 - life)), 0.45*aa)*behind;
+      lit *= kbAA(kbLipD(W, g) - dist, aa);
+      float tau = clamp(1.0 - k*(1.05 - 0.40*hot) + 0.22*(gT - 0.5) + 0.34*(run - 0.5) + 0.24*(roll - 0.5) + 0.12*(flk - 0.5) - 0.30*(1.0 - life), 0.0, 1.0);
+      vec3 ember = mix(vec3(0.34, 0.022, 0.003), vec3(0.86, 0.20, 0.024), smoothstep(0.05, 0.42, tau));
+      ember = mix(ember, vec3(1.02, 0.38, 0.055), smoothstep(0.42, 0.76, tau));
+      ember = mix(ember, vec3(1.10, 0.64, 0.17), smoothstep(0.86, 1.0, tau)*(0.30 + 0.70*hot));
+      float band = lit*(0.20 + 0.82*tau*tau)*(1.0 + mix(0.16, 0.50, k)*(kbV(gr*0.60) - 0.5))*(0.35 + 0.65*life);
+      vec3 coreC = mix(vec3(1.40, 0.56, 0.09), vec3(1.85, 1.02, 0.30), heat);
+      coreC = mix(vec3(0.38, 0.05, 0.008), coreC, smoothstep(0.06, 0.55, life));
+      return coreC*core + ember*band + vec3(0.95, 0.20, 0.022)*glow*0.60;
+    }
+    /* the char's crust behind the lip: 3-6 px of it, hard and flaky, before
+       the black: rgb its colour, a its cover */
+    vec4 kbCrust(float xc, float sA, vec4 wht, vec2 g, float aa){
+      float dist = max(-xc, 0.0), W = kbZoneW(wht), lipD = kbLipD(W, g);
+      float cw = 3.0 + 3.0*kbV(vec2(sA*0.12, 1.7));
+      float cov = kbAA(dist - lipD, aa)*kbAA(lipD + cw - dist, aa);
+      float flake = kbAA(kbV(g*0.55 + 2.0) - 0.52, 0.30*aa);
+      return vec4(mix(vec3(0.0030, 0.0022, 0.0016), vec3(0.022, 0.016, 0.011), flake), cov);
+    }
+    /* the char: near black with a fibrous grain, and, where it lies behind a
+       burning line, a dim ash-grey mottling and flecks drawn out along the
+       grain (ash 1); the loader's hole is quiet char with neither (ash 0) */
+    vec3 kbCharCol(vec2 g, float ash){
+      vec2 gr = mat2(0.80, -0.60, 0.60, 0.80)*g;
+      float f = 0.55*kbV(gr*0.85 + 3.1) + 0.45*kbV(vec2(g.x*0.22 + g.y*0.10, g.y*0.95 - g.x*0.35) + 7.7);
+      vec3 c = vec3(0.0085, 0.0062, 0.0048)*(0.60 + 0.80*f);   /* sumi charcoal, as the footer's */
+      if (ash <= 0.0) return c;
+      vec2 ga = mat2(0.94, 0.34, -0.34, 0.94)*g;
+      float mott = kbV(g*0.09 + 6.0)*0.6 + kbV(gr*0.33 + 2.0)*0.4;
+      float fl = kbAA(kbV(ga*vec2(0.17, 0.60) + 11.0) - 0.80, 0.30)*smoothstep(0.45, 0.70, kbV(g*0.045 + 2.0));
+      return c + (vec3(0.010, 0.0085, 0.0068)*smoothstep(0.50, 0.90, mott) + vec3(0.010, 0.0085, 0.007)*fl*(0.35 + 0.85*kbV(g*0.21 + 5.0)))*ash;
+    }
+    /* the char burning through, never a flat slab: pores open in it as it
+       ages (a: 0 at the ember zone's lip, 1 at its far edge), ragged, down
+       to whatever lies beneath (no glowing rims: round the pores they
+       joined into one drawn line along the edge); they open while you
+       watch, as the fire moves on and in their own slow breathing. Its cover */
+    float kbPores(vec2 g, float a, float t, float aa){
+      vec2 gr = mat2(0.80, -0.60, 0.60, 0.80)*g;
+      float n = 0.50*kbV(gr*0.060 + 21.0) + 0.32*kbV(g*0.17 + 4.0) + 0.18*kbV(gr*0.46 + 8.0);
+      float thr = -0.12 + 0.95*a + 0.16*(kbV(g*0.022 + vec2(t*0.45, -t*0.30) + 2.0) - 0.5);
+      float v = n - thr, w = 0.08*aa;
+      return kbAA(v, w);
+    }
+    /* the char's far edge, a noise along the edge only (a 2-D noise cut
+       loose islands of char that floated on the new frame): a line's, by
+       its height, px */
+    float kbEdgeNLine(float s){
+      return 0.60*kbV(vec2(s*0.026, 3.1)) + 0.40*(1.0 - abs(2.0*kbV(vec2(s*0.072, 7.3)) - 1.0));
+    }
+    /* a ring's, round it: noise on a circle, so it closes on itself */
+    float kbEdgeNRing(vec2 dir){
+      return 0.60*kbV(dir*6.0 + 3.1) + 0.40*(1.0 - abs(2.0*kbV(dir*17.0 + 7.3) - 1.0));
+    }
+    /* how charred: from the front, through the ember zone, then a band of
+       char bedW px more (as its edge noise n says), to the char's own torn
+       edge, a pixel wide. xb is the distance to the broad front at its
+       nominal slope, smooth and never blowing up where the field runs flat
+       (the true slope, constant over each 2x2 block, stair-stepped the edge
+       and opened holes in the char there), and the fine terms move the
+       front off it by at most fs px: the far edge is taken from it, so no
+       island of char is ever cut loose; and it always covers the embers */
+    float kbBed(float xc, float xb, float fs, float n, float zoneW, float bedW, float aa, vec2 g){
+      /* and a tear of a few px on it, at two scales, together gentler than
+         the front's own slope, so it frays without cutting a piece loose */
+      vec2 gt = mat2(0.80, -0.60, 0.60, 0.80)*g;
+      float edge = zoneW + fs + bedW*(0.35 + 1.10*n) + 8.0*(kbV(gt*0.08 + 4.0) - 0.5) + 3.0*(kbV(gt*0.25 + 9.0) - 0.5);
+      return clamp(0.5 - xc/aa, 0.0, 1.0)*max(kbAA(edge + min(xb, 0.0), aa), kbAA(zoneW*1.12 + 3.0 + xc, aa));
+    }
+    /* what still glows in the char just behind the ember zone: thin grain
+       drawn out along its fibres, each thread at its own brightness,
+       cooling and thinning within 20-40 px (patches read as leopard spots) */
+    vec3 kbCharGlow(float xc, vec2 g, vec4 wht, float aa, float t, float specks){
+      float dist = -xc, W = kbZoneW(wht);
+      if (dist < 0.85*W || dist > W + 40.0) return vec3(0.0);
+      vec2 ga = mat2(0.94, 0.34, -0.34, 0.94)*g;
+      float fade = exp(-max(dist - 0.92*W, 0.0)/11.0)*smoothstep(0.85*W, 0.98*W, dist);
+      float thread = kbV(ga*vec2(0.075, 0.75) + 17.0);
+      float st = kbAA(thread - 0.78 + 0.08*fade, 0.10*aa)*smoothstep(0.45, 0.65, kbV(ga*vec2(0.03, 0.10) + 3.0));
+      float br = (0.30 + 0.70*kbV(ga*vec2(0.025, 0.22) + vec2(t*0.8, -t*0.5) + 9.0))*(0.60 + 0.40*kbV(ga*vec2(0.05, 0.3) + vec2(0.0, t*4.0) + 23.0));
+      return kbRamp(0.12 + 0.45*fade)*st*fade*br*(0.35 + 0.65*wht.w);
+    }`;
+
+/* ---- WebGL2 → the page's WebGL1-style GLSL ---- */
+const es3 = s => s.replace(/gl_FragColor/g, 'fragColor');
+const HEAD = '#version 300 es\nprecision highp float;precision highp sampler2D;\nout vec4 fragColor;\n#define texture2D texture\n';
+const VS = '#version 300 es\nout vec2 vUv;void main(){vec2 p=vec2(float((gl_VertexID<<1)&2),float(gl_VertexID&2));vUv=p;gl_Position=vec4(p*2.0-1.0,0.0,1.0);}';
+
+/* ---- constants from KIBORI ---- */
+const K = {
+  HALF: 0.215,               /* half the burn band's width, screen heights */
+  FRONT_A: -0.26, FRONT_B: 1.62,   /* front = -0.26 + 1.62*rc: in off frame, out off frame */
+  SCENE_LO: 0.75,            /* live scene scale during a burn (compMat stays full res) */
+  REST_MS: 150, XFADE_S: 0.30,     /* full-size scene cross-fades in after 150 ms of rest, over 0.3 s */
+  REACH: 0.16,               /* live-scene scissor margin past the band: bays, haze */
+  DPR_CAP: 2, DT_MAX: 1/30,
+  SEED_STEP: 17.3
+};
+
+/* ---- chapters ---- */
+const CHAPTERS = [
+  {side:'L', kicker:'01 · Paper', kanji:'紙', title:'Paper before the fire', body:'Washi, cedar lattice and a slow patch of daylight. Press next: the line enters from the side the next chapter’s words sit.', ink:[28,19,12], soft:[74,54,38]},
+  {side:'R', kicker:'02 · Char', kanji:'焼', title:'What the fire leaves', body:'A lantern in a night workshop. Behind the line the scene is live and still flickering; ahead of it, the last frame is frozen.', ink:[242,236,226], soft:[190,176,160]},
+  {side:'L', kicker:'03 · Cedar', kanji:'銉', title:'Plane it back to grain', body:'Raking light across cedar. The line goes on to the next chapter from either side, forward or in reverse.', ink:[248,240,228], soft:[230,208,180]}
+];
+
+/* ---- state ---- */
+const S = {
+  cur:0, trans:null, pending:null, t:0, auto:true, idle:0, dur:3.0, restAt:0, resLo:0, hold:null,
+  reduced: matchMedia('(prefers-reduced-motion: reduce)').matches,
+  inView:true, W:0, H:0, dpr:1
+};
+matchMedia('(prefers-reduced-motion: reduce)').addEventListener?.('change', e => { S.reduced = e.matches; S.dirty = true; });
+
+const canvas = document.getElementById('stage');
+const failEl = document.getElementById('fail');
+const fail = m => { failEl.textContent = m; failEl.style.display = 'grid'; };
+const gl = canvas.getContext('webgl2', {antialias:false, alpha:false, depth:false, stencil:false, powerPreference:'high-performance', preserveDrawingBuffer:false});
+if (!gl || !(gl.getExtension('EXT_color_buffer_float') || gl.getExtension('EXT_color_buffer_half_float'))){
+  fail('This demo needs WebGL 2 with half-float render targets.');
+  throw new Error('webgl2 unavailable');
+}
+gl.getExtension('OES_texture_float_linear');
+
+/* ---- tiny GL host ---- */
+const vao = gl.createVertexArray();
+const progs = new Map();
+function program(fs){
+  let P = progs.get(fs); if (P) return P;
+  const mk = (t, s) => { const sh = gl.createShader(t); gl.shaderSource(sh, s); gl.compileShader(sh);
+    if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(sh)); return sh; };
+  const p = gl.createProgram();
+  gl.attachShader(p, mk(gl.VERTEX_SHADER, VS)); gl.attachShader(p, mk(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(p);
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+  P = {p, loc:{}}; progs.set(fs, P); return P;
+}
+const frag = (body, defs = '') => es3(HEAD + defs + body);
+
+function makeRT(w, h, kind, wrap){
+  const rt = {w:0, h:0, kind, wrap, tex:gl.createTexture(), fb:gl.createFramebuffer()};
+  sizeRT(rt, w, h); return rt;
+}
+function sizeRT(rt, w, h){
+  w = Math.max(2, Math.round(w)); h = Math.max(2, Math.round(h));
+  if (rt.w === w && rt.h === h) return;
+  rt.w = w; rt.h = h;
+  gl.bindTexture(gl.TEXTURE_2D, rt.tex);
+  if (rt.kind === 'h')      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, w, h, 0, gl.RGBA, gl.HALF_FLOAT, null);
+  else if (rt.kind === 'r') gl.texImage2D(gl.TEXTURE_2D, 0, gl.R16F, w, h, 0, gl.RED, gl.HALF_FLOAT, null);
+  else                      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+  const wr = rt.wrap ? gl.REPEAT : gl.CLAMP_TO_EDGE;
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wr);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wr);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, rt.fb);
+  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, rt.tex, 0);
+}
+/* pass(fragment, uniforms, target|null, scissor?) */
+function pass(P, u, rt, sc){
+  gl.useProgram(P.p);
+  let unit = 0;
+  for (const k in u){
+    let l = P.loc[k]; if (l === undefined) l = P.loc[k] = gl.getUniformLocation(P.p, k);
+    if (l === null) continue;
+    const v = u[k];
+    if (typeof v === 'number') gl.uniform1f(l, v);
+    else if (v && v.tex){ gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, v.tex); gl.uniform1i(l, unit++); }
+    else if (v instanceof WebGLTexture){ gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, v); gl.uniform1i(l, unit++); }
+    else if (v.length === 2) gl.uniform2f(l, v[0], v[1]);
+    else if (v.length === 3) gl.uniform3f(l, v[0], v[1], v[2]);
+  }
+  gl.bindFramebuffer(gl.FRAMEBUFFER, rt ? rt.fb : null);
+  const w = rt ? rt.w : canvas.width, h = rt ? rt.h : canvas.height;
+  gl.viewport(0, 0, w, h);
+  if (sc){ gl.enable(gl.SCISSOR_TEST); gl.scissor(sc[0], sc[1], sc[2], sc[3]); }
+  gl.bindVertexArray(vao);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+  if (sc) gl.disable(gl.SCISSOR_TEST);
+}
+
+/* ================================================================
+ *  The scenes: three shader-drawn rooms, each with its words in a
+ *  texture. They are the staging; the burn does not care what they are.
+ * ================================================================ */
+const SCENE_FS = frag(`
+in vec2 vUv;
+uniform float uTime, uAsp, uScene, uPxH, uUseText;
+uniform sampler2D uText;
+vec3 lin(vec3 c){ return pow(c, vec3(2.2)); }
+vec2 bars(float v, float cell, float w, float aa){
+  float d = abs(fract(v/cell + 0.5) - 0.5)*cell;
+  return vec2(smoothstep(w + aa, w - aa, d), d);
+}
+/* 1 - washi behind a cedar lattice, cloud-light drifting over it */
+vec3 scene0(vec2 q, float t){
+  float fib = fbm(q*vec2(9.0, 38.0) + 3.0, 4)*0.6 + fbm(q*vec2(46.0, 7.0) + 9.0, 3)*0.4;
+  vec3 paper = vec3(0.80, 0.70, 0.56)*(0.84 + 0.30*fib);
+  float cl = fbm(q*vec2(0.9, 1.4) + vec2(t*0.035, 0.0), 4);
+  float sun = smoothstep(0.35, 0.75, cl);
+  paper *= 0.74 + 0.46*sun;
+  paper = mix(paper, paper*vec3(1.12, 0.97, 0.78), sun*0.6);
+  float aa = 1.0/uPxH, cell = 0.36;
+  vec2 bv = bars(q.x, cell, 0.0062, aa);
+  vec2 bh = bars(q.y + 0.09, cell, 0.0062, aa);
+  vec2 bt = bars(q.y + 0.09 + cell*0.5, cell, 0.0036, aa);
+  float shade = 1.0 - 0.20*max(smoothstep(0.034, 0.0, bv.y), max(smoothstep(0.034, 0.0, bh.y), 0.7*smoothstep(0.022, 0.0, bt.y)));
+  paper *= shade;
+  float bar = max(bv.x, max(bh.x, bt.x*0.85));
+  float gr = fbm(vec2(q.x*3.0 + q.y*40.0, q.y*3.0 + q.x*40.0), 3);
+  vec3 wood = vec3(0.105, 0.052, 0.022)*(0.55 + 0.9*gr);
+  return mix(paper, wood, bar);
+}
+/* 2 - a night workshop lit by one paper lantern, flickering */
+vec3 scene1(vec2 q, float t){
+  float pw = 0.21, pid = floor(q.x/pw);
+  float seam = smoothstep(0.0, 0.006, abs(fract(q.x/pw) - 0.5)*pw - (pw*0.5 - 0.005));
+  float g = fbm(vec2(q.x*26.0 + pid*7.3, q.y*2.0 + pid*3.1), 4);
+  float g2 = fbm(vec2(q.x*90.0, q.y*4.0 + pid), 2);
+  vec3 wood = vec3(0.030, 0.019, 0.014)*(0.45 + 0.9*g)*(0.85 + 0.3*g2);
+  wood *= mix(0.25, 1.0, smoothstep(0.0, 0.006, (0.5 - abs(fract(q.x/pw) - 0.5))*pw));
+  vec2 L = vec2(-0.27*uAsp, 0.05);
+  float flick = 0.86 + 0.09*sin(t*7.3)*sin(t*3.1 + 1.0) + 0.09*(gnoise(vec2(t*6.0, 1.7)) - 0.5)*2.0;
+  vec2 d = q - L;
+  float I = flick/(1.0 + 30.0*dot(d, d));
+  I *= 0.75 + 0.5*fbm(q*vec2(3.0, 5.0) + vec2(t*0.35, 0.0), 3);
+  vec3 col = wood*vec3(1.0, 0.42, 0.13)*I*5.0 + wood*vec3(0.20, 0.30, 0.55)*0.18;
+  vec2 a = abs(d) - vec2(0.070, 0.112);
+  float sd = length(max(a, 0.0)) + min(max(a.x, a.y), 0.0) - 0.014;
+  float aa = 1.0/uPxH;
+  float body = smoothstep(aa, -aa, sd);
+  float lat = max(bars(d.x, 0.070, 0.0022, aa).x, bars(d.y, 0.076, 0.0022, aa).x);
+  vec3 paperL = vec3(0.92, 0.33, 0.065)*(0.80 + 0.26*flick)*(1.0 - 0.30*smoothstep(0.02, 0.13, length(d)));
+  paperL = mix(paperL, vec3(0.06, 0.03, 0.015), lat*0.9);
+  col += vec3(0.95, 0.34, 0.07)*exp(-max(sd, 0.0)*11.0)*0.22*flick*(1.0 - body);   /* the lantern's own halo */
+  return mix(col, paperL, body);
+}
+/* 3 - raking light across planed cedar boards */
+vec3 scene2(vec2 q, float t){
+  float pl = 0.30, pid = floor((q.y + 0.07)/pl);
+  float tone = 0.82 + 0.36*fract(sin(pid*12.9898)*43758.5453);
+  float ring = q.y*52.0 + (fbm(vec2(q.x*0.45 + pid*3.7, q.y*1.6) + 2.0, 4) - 0.5)*6.0 + pid*9.0;
+  float late = pow(0.5 + 0.5*sin(ring*6.2832), 3.0);
+  float pore = fbm(vec2(q.x*1.4 + pid*5.0, q.y*150.0), 3);
+  vec3 wood = mix(vec3(0.30, 0.140, 0.052), vec3(0.15, 0.062, 0.020), late*0.85)*(0.80 + 0.34*pore)*tone*0.78;
+  float sm = abs(fract((q.y + 0.07)/pl) - 0.5)*pl;
+  wood *= mix(0.30, 1.0, smoothstep(0.0, 0.005, pl*0.5 - sm));
+  float lb = exp(-pow((q.x*0.8 + q.y*0.3 - (mod(t*0.11, 2.6) - 1.3))*2.0, 2.0));
+  wood *= 0.78 + 0.52*lb;
+  return wood;
+}
+void main(){
+  vec2 q = (vUv - 0.5)*vec2(uAsp, 1.0);
+  vec3 c = uScene < 0.5 ? scene0(q, uTime) : (uScene < 1.5 ? scene1(q, uTime) : scene2(q, uTime));
+  if (uUseText > 0.5){ vec4 tx = texture2D(uText, vUv); c = mix(c, lin(tx.rgb), tx.a); }   /* only the frozen frame carries its words; the live side gets them at full size in the burn pass */
+  gl_FragColor = vec4(min(c, vec3(1.1)), 1.0);   /* stays under the bloom threshold, so a rest frame carries none */
+}`, NOISE);
+
+/* ================================================================
+ *  The burn pass — KIBORI's compMat, its line branch (horiz), with the
+ *  page's own text between the markers.
+ * ================================================================ */
+const COMP_FS = frag(`
+in vec2 vUv;
+uniform sampler2D uTo, uFrom, uToText;
+vec3 lin(vec3 c){ return pow(c, vec3(2.2)); }
+uniform float uAspect, uTime, uSeed, uFront, uChar, uDir, uSame, uClip, uPxH, uPxS, uMode, uFade;
+vec3 liveAt(vec2 uv){ vec4 tx = texture2D(uToText, uv); return mix(texture2D(uTo, uv).rgb, lin(tx.rgb), tx.a); }
+vec3 fromAt(vec2 uv){ return texture2D(uFrom, uv).rgb; }
+void main(){
+  vec3 to = liveAt(vUv);
+  if (uMode > 1.5){ gl_FragColor = vec4(mix(fromAt(vUv), to, uFade), 1.0); return; }   /* reduced motion: a plain cross-fade */
+  const bool horiz = true;
+  const float maxR = 1.0, Tr = 0.0;   /* the ring's; unused by the line */
+  const float HALF = ${K.HALF};
+  float sc = 1.0, pxR = uPxH*sc;
+  if (uFront < -0.55){ gl_FragColor = vec4(fromAt(vUv), 1.0); return; }
+  if (uFront >  1.55){ gl_FragColor = vec4(to, 1.0); return; }
+  vec2  p  = (vUv - vec2(0.5)) * vec2(uAspect, 1.0);
+  float hx = uDir > 0.0 ? vUv.x : 1.0 - vUv.x;
+  if (hx - uFront > HALF + 0.15){ gl_FragColor = vec4(fromAt(vUv), 1.0); return; }
+  if (uFront - hx > 0.25 - HALF){ gl_FragColor = vec4(to, 1.0); return; }
+      float field, fieldS, xBpx = 0.0;
+      vec4 rb = vec4(0.0);
+      /* each burn its own silhouette: how many broad bays run up the frame,
+         how deep they are and how far it leans, from its seed */
+      vec2 sv = fract(vec2(0.6180, 0.7549)*uSeed + vec2(0.13, 0.41));
+      vec2 qs = vec2(0.9, mix(2.0, 3.6, sv.x)), q = p*qs;
+      float gradL = 0.0;
+      if (horiz){
+        /* its broad shape, and its slope from the same a few px off: the
+           baked noise's slope is constant across each of its texels, and
+           taken per pixel it striped the band across the line */
+        vec2 dq = qs*4.0*uPxS/uPxH;
+        float fS0 = (kbFbmT(q*1.10 + uSeed) - 0.50)*mix(0.055, 0.115, sv.y)
+                  + (kbFbmT(mat2(0.96, 0.28, -0.28, 0.96)*q*2.60 + uSeed*3.1 + 21.0) - 0.50)*mix(0.050, 0.030, sv.y);
+        float fSx = (kbFbmT((q + vec2(dq.x, 0.0))*1.10 + uSeed) - 0.50)*mix(0.055, 0.115, sv.y)
+                  + (kbFbmT(mat2(0.96, 0.28, -0.28, 0.96)*(q + vec2(dq.x, 0.0))*2.60 + uSeed*3.1 + 21.0) - 0.50)*mix(0.050, 0.030, sv.y);
+        float fSy = (kbFbmT((q + vec2(0.0, dq.y))*1.10 + uSeed) - 0.50)*mix(0.055, 0.115, sv.y)
+                  + (kbFbmT(mat2(0.96, 0.28, -0.28, 0.96)*(q + vec2(0.0, dq.y))*2.60 + uSeed*3.1 + 21.0) - 0.50)*mix(0.050, 0.030, sv.y);
+        float hStep = 4.0*uPxS/uPxH;
+        gradL = length(vec2((uDir > 0.0 ? 1.0 : -1.0)/uAspect + (fSx - fS0)/hStep, (sv.x - 0.5)*0.07 + (fSy - fS0)/hStep));
+        fieldS = hx + fS0 + p.y*(sv.x - 0.5)*0.07;
+        field  = fieldS;
+      }
+      float grad = horiz ? clamp(gradL, 0.35/uAspect, 3.0/uAspect) : kbGrad(fieldS, pxR, 1.0/maxR);
+      float T = horiz ? (uFront + HALF) : Tr;
+      if (horiz){
+        /* the same for a line: its fine notches move it at most 0.014, so
+           more than 62 px ahead (past its scorch) only the frame being left,
+           and more than 125 px behind only the live frame */
+        float xB = (fieldS - T)/grad*pxR/uPxS, slack = 0.026/grad*pxR/uPxS;
+        xBpx = (fieldS - T)*uAspect*pxR/uPxS;   /* at its nominal slope (see kbBed) */
+        if (xB - slack > 62.0){ gl_FragColor = vec4(fromAt(vUv), 1.0); return; }
+        if (xB < -125.0 && xBpx < -125.0){   /* (its char's edge is taken from the broad front) */
+          gl_FragColor = vec4(to, 1.0); return;
+        }
+        /* (each on its own turn of the baked tile, so none repeats up the line) */
+        float crys  = kbRidT(mat2(0.87, 0.49, -0.49, 0.87)*q* 6.40 + uSeed*7.7 +  5.0);
+        float lace  = kbRid2T(mat2(0.62, -0.78, 0.78, 0.62)*q*15.00 + uSeed*2.3 + 13.0);
+        field = fieldS + (crys-0.62)*0.014 + (lace-0.62)*0.006 + (kbRid2T(mat2(0.39, 0.92, -0.92, 0.39)*q*34.0 + uSeed + 3.0) - 0.62)*0.0025;
+        /* and licking: fine tongues that climb the line and flicker, so the
+           front is never still (at most 0.012 more, in the slack above) */
+        field += (kbGnT(vec2(q.x*4.0 + uSeed, q.y*6.0 - uTime*1.1)) - 0.5)*0.022
+               + (kbGnT(vec2(q.x*11.0 + 3.0, q.y*16.0 - uTime*2.8) + uSeed) - 0.5)*0.010;
+      }
+      float s = field - T;                       /* <0 = the fire has reached it */
+      float d = s/grad;
+      /* and in CSS px, the edge's own measure; aaC a device pixel */
+      float cpx = pxR/uPxS, aaC = 1.0/uPxS, xc = d*cpx;
+      vec2 g = p*cpx;
+      /* the new frame from the front back, cut to the pixel: a ramp as wide
+         as the field's own slope showed it through the old one ahead of the
+         flame, a see-through copy of the edge */
+      float reveal = clamp(0.5 - xc/aaC, 0.0, 1.0);
+
+      /* a little heat shimmer at the flame and no more — about a pixel: more
+         bent the lattice and the shoji bars standing beside the line */
+      vec2 ruv = vUv;
+      float heat = exp(-abs(xc)/18.0);
+      if (heat > 0.03){
+        vec2 fl = vec2(g.x*0.070 + uSeed, g.y*0.055 - uTime*2.2);
+        ruv = clamp(vUv + (vec2(kbGnT(fl), kbGnT(fl + 7.3)) - 0.5)*heat*(1.8/uPxH), vec2(0.001), vec2(0.999));
+        to = liveAt(ruv);
+      }
+      vec3 col;
+      if (horiz){
+        /* Ahead of the line, the station being left, frozen; behind it, the
+           live one ahead — the line reveals where you are going instead of
+           the floor between. */
+        col = mix(fromAt(ruv), to, reveal);
+        /* the line that takes the lockup off burns the text, not the room:
+           it dies out at the text column's edge (uClip), short of the panel */
+        float lineK = uChar*(1.0 - smoothstep(uClip - 0.018, uClip, hx));
+        /* its swells, hot and dying stretches run along it and drift over
+           time, the same across its width: taken off its height alone, so
+           the band's edges never cut a piece loose */
+        vec2 e = vec2(uSeed*0.37 + 3.0, p.y*1.9 + uSeed);
+        vec4 wh = kbEdgeWHTb(e, uTime);
+        wh.x = mix(wh.x, max(wh.x, 1.0), uSame);   /* the lockup's line burns as broad as a chapter's */
+        vec2 gp = g + uSeed*vec2(31.0, 17.0);             /* a fresh patch of paper per burn */
+        /* ahead of the flame the frozen frame scorches: 20-40 px of it, in
+           three tones — a faint tan, a brown, a dark brown against the flame
+           — each reaching out as far as the grain and a coarser noise let
+           it, so every boundary is broken and none copies the flame's
+           outline; the outermost is barely a tint. One edge: the flame's */
+        float tw = 20.0 + 20.0*kbV(vec2(gp.y*0.034, 5.0));
+        float sgr = kbV(mat2(0.94, 0.34, -0.34, 0.94)*gp*vec2(0.16, 0.36) + 5.0)*0.5 + kbV(mat2(0.80, -0.60, 0.60, 0.80)*gp*0.45)*0.5;
+        float brk = kbV(gp*0.06 + 8.0)*0.6 + kbV(mat2(0.28, 0.96, -0.96, 0.28)*gp*0.19 + 1.0)*0.4;
+        /* one continuous darkening from the flame out, over a reach that
+           the noise varies: no steps, so no drawn outlines */
+        float tk = clamp(1.0 - xc/(tw*(0.65 + 0.70*brk)), 0.0, 1.0);   /* 1 at the flame, 0 at its reach */
+        float scA = tk*tk*(0.70 + 0.30*sgr);
+        col = mix(col, col*mix(vec3(0.80, 0.62, 0.42), vec3(0.20, 0.10, 0.045), tk), step(0.0, xc)*scA*lineK);
+        /* behind it the ember zone, 25-45 px, and a band of char 25-40 px
+           more, near black and grained, crumbling off the live scene along a
+           ragged edge crisp to the pixel */
+        float bed = kbBed(xc, xBpx, 12.0, kbEdgeNLine(gp.y), kbZoneW(wh), 26.0, aaC, gp);
+        float po = kbPores(gp, clamp((-xc - 1.05*kbZoneW(wh))/40.0, 0.0, 1.0), uTime, aaC);
+        col = mix(col, kbCharCol(gp, 1.0), bed*po*lineK);
+        vec4 crust = kbCrust(xc, gp.y, wh, gp, aaC);
+        col = mix(col, crust.rgb, crust.a*lineK);
+        col += (kbFlame(xc, xBpx, gp.y, wh, gp, uTime, aaC) + kbCharGlow(xc, gp, wh, aaC, uTime, 0.0))*lineK;
+        /* (no smoke: it never read as more than grey lines at this scale)*/
+      }
+      gl_FragColor = vec4(col, 1.0);
+}`, NOISE + '#define KB_BAKED\n' + EDGE);
+
+/* ---- baking: made once, exactly as the page does ---- */
+const BAKE_HASH = frag(`in vec2 vUv;
+void main(){ gl_FragColor = vec4(kbHash(floor(vUv*2048.0) - 1024.0), 0.0, 0.0, 1.0); }`, NOISE + EDGE);
+const BAKE_NOISE = frag(`in vec2 vUv;
+float gnP(vec2 x, float per, vec2 off){
+  vec2 i = floor(x), w = fract(x), u = w*w*w*(w*(w*6.0 - 15.0) + 10.0);
+  vec2 i0 = mod(i, per) + off, i1 = mod(i + 1.0, per) + off;
+  float a = dot(hash2(i0), w), b = dot(hash2(vec2(i1.x, i0.y)), w - vec2(1.0, 0.0));
+  float c = dot(hash2(vec2(i0.x, i1.y)), w - vec2(0.0, 1.0)), d = dot(hash2(i1), w - vec2(1.0, 1.0));
+  return mix(mix(a, b, u.x), mix(c, d, u.x), u.y)*0.7 + 0.5;
+}
+float fbmP(vec2 x, float per, vec2 off){
+  float s = 0.0, a = 0.5, n = 0.0;
+  for (int i = 0; i < 3; i++){ s += a*gnP(x, per, off + float(i)*17.0); n += a; x *= 2.0; per *= 2.0; a *= 0.5; }
+  return s/n;
+}
+float ridP(vec2 x, float per, vec2 off, int oct){
+  float s = 0.0, a = 0.5, n = 0.0;
+  for (int i = 0; i < 3; i++){ if (i >= oct) break; s += a*(1.0 - abs(gnP(x, per, off + float(i)*23.0)*2.0 - 1.0)); n += a; x *= 2.0; per *= 2.0; a *= 0.5; }
+  return s/n;
+}
+void main(){
+  vec2 x = vUv*16.0;
+  gl_FragColor = vec4(fbmP(x, 16.0, vec2(0.0)), ridP(x, 16.0, vec2(301.0, 17.0), 3), gnP(x, 16.0, vec2(57.0, 211.0)), ridP(x, 16.0, vec2(113.0, 419.0), 2));
+}`, NOISE);
+
+/* ---- bloom (the page's own: bright pass, half-res blur, quarter-res blur) ---- */
+const BRIGHT_FS = frag(`in vec2 vUv; uniform sampler2D uTex; uniform float uThresh;
+void main(){
+  vec3 c = texture2D(uTex,vUv).rgb;
+  float l = max(max(c.r,c.g),c.b);
+  float k = max(0.0, l-uThresh)/max(l,1e-4);
+  gl_FragColor = vec4(c*k*k*0.25, 1.0);   /* 0..4 packed into 8 bits */
+}`);
+const BLUR_FS = frag(`in vec2 vUv; uniform sampler2D uTex; uniform vec2 uDir;
+void main(){
+  vec3 s = texture2D(uTex,vUv).rgb*0.2270270;
+  s += (texture2D(uTex,vUv+uDir*1.3846153).rgb + texture2D(uTex,vUv-uDir*1.3846153).rgb)*0.3162162;
+  s += (texture2D(uTex,vUv+uDir*3.2307692).rgb + texture2D(uTex,vUv-uDir*3.2307692).rgb)*0.0702702;
+  gl_FragColor = vec4(s,1.0);
+}`);
+const DOWN_FS = frag(`in vec2 vUv; uniform sampler2D uTex;
+void main(){ gl_FragColor = vec4(texture2D(uTex,vUv).rgb,1.0); }`);
+const MIX_FS = frag(`in vec2 vUv; uniform sampler2D uLo, uHi, uText; uniform float uK;
+void main(){
+  vec3 c = mix(texture2D(uLo, vUv).rgb, texture2D(uHi, vUv).rgb, uK);
+  vec4 tx = texture2D(uText, vUv);
+  gl_FragColor = vec4(min(mix(c, pow(tx.rgb, vec3(2.2)), tx.a), vec3(1.1)), 1.0);   /* the words, full size, over whichever scene is showing */
+}`);
+/* the page's final pass: bloom in, vignette, ACES, sRGB, a hair of grain */
+const FINAL_FS = frag(`in vec2 vUv;
+uniform sampler2D uTex, uB1, uB2; uniform float uTime, uBloom; uniform vec2 uRes;
+vec3 aces(vec3 x){ const float a=2.51,b=0.03,c=2.43,d=0.59,e=0.14; return clamp((x*(a*x+b))/(x*(c*x+d)+e), 0.0, 1.0); }
+vec3 lin2srgb(vec3 c){ return mix(c*12.92, 1.055*pow(max(c,vec3(1e-5)),vec3(1.0/2.4))-0.055, step(0.0031308,c)); }
+void main(){
+  vec2 d = vUv - 0.5;
+  vec3 col = texture2D(uTex, vUv).rgb;
+  col += texture2D(uB1, vUv).rgb * 0.26 * 4.0 * uBloom;
+  col += texture2D(uB2, vUv).rgb * 0.34 * 4.0 * uBloom;
+  float v = 1.0 - smoothstep(0.46, 1.20, length(d*vec2(1.02,1.0))*1.24);
+  col *= 0.42 + 0.58*v;
+  col = lin2srgb(aces(max(col, 0.0)));
+  float g = hash1(vUv*uRes + fract(uTime)*137.0);
+  col += (g-0.5)*0.003;
+  gl_FragColor = vec4(col, 1.0);
+}`, NOISE);
+
+/* ---- programs ---- */
+let P = {};
+try {
+  P.scene = program(SCENE_FS); P.comp = program(COMP_FS);
+  P.hash = program(BAKE_HASH); P.noise = program(BAKE_NOISE);
+  P.bright = program(BRIGHT_FS); P.blur = program(BLUR_FS); P.down = program(DOWN_FS);
+  P.mix = program(MIX_FS); P.final = program(FINAL_FS);
+} catch (e){ fail('Shader error: ' + e.message.slice(0, 300)); throw e; }
+
+/* baked once at start: fbm/ridged/gradient in one tileable 1024^2 texture, kbHash's lattice in a 2048^2 table */
+const noiseRT = makeRT(1024, 1024, 'h', true), hashRT = makeRT(2048, 2048, 'r', true);
+pass(P.noise, {}, noiseRT); pass(P.hash, {}, hashRT);
+
+/* ---- targets, sized from the viewport ---- */
+let rtLive, rtLo, rtFrom, rtComp, rtMix, rtG1, rtG2, rtG3, rtG4;
+const texts = CHAPTERS.map(() => ({tex:gl.createTexture()}));
+
+function fontsReady(){
+  return Promise.all([
+    document.fonts.load('96px "Instrument Serif"'), document.fonts.load('16px "Inter"'),
+    document.fonts.load('22px "Shippori Mincho"', '紙焼鉋')
+  ]).catch(() => {});
+}
+function drawText(i, W, H, dpr){
+  const c = document.createElement('canvas'); c.width = Math.round(W*dpr); c.height = Math.round(H*dpr);
+  const x = c.getContext('2d'); x.scale(dpr, dpr);
+  const ch = CHAPTERS[i], rgb = a => `rgb(${a[0]},${a[1]},${a[2]})`;
+  const narrow = W < 700, pad = narrow ? 24 : Math.max(48, W*0.07);
+  const bw = narrow ? W - pad*2 : Math.min(560, W*0.42);
+  const bx = ch.side === 'L' ? pad : W - pad - bw;
+  const tSize = narrow ? 46 : Math.round(Math.min(104, Math.max(60, W*0.068)));
+  const wrap = (s, font, max) => { x.font = font; const out = []; let line = '';
+    for (const w of s.split(' ')){ const t = line ? line + ' ' + w : w; if (x.measureText(t).width > max && line){ out.push(line); line = w; } else line = t; }
+    if (line) out.push(line); return out; };
+  const tFont = `${tSize}px "Instrument Serif", Georgia, serif`, bFont = `${narrow ? 15 : 17}px "Inter", system-ui, sans-serif`;
+  const tl = wrap(ch.title, tFont, bw), bl = wrap(ch.body, bFont, Math.min(bw, 440));
+  const tLH = tSize*1.02, bLH = (narrow ? 15 : 17)*1.55;
+  const total = 44 + tl.length*tLH + 22 + bl.length*bLH;
+  let y = H*(narrow ? 0.60 : 0.54) - total/2;
+  x.textBaseline = 'alphabetic'; x.fillStyle = rgb(ch.soft);
+  x.font = `12px "Inter", system-ui, sans-serif`; x.letterSpacing = '0.26em';
+  x.fillText(ch.kicker.toUpperCase(), bx, y + 12);
+  x.letterSpacing = '0px';
+  x.font = `22px "Shippori Mincho", "Hiragino Mincho ProN", serif`; x.fillText(ch.kanji, bx + bw - 22, y + 14);
+  y += 44 + tSize*0.86;
+  x.fillStyle = rgb(ch.ink); x.font = tFont;
+  for (const l of tl){ x.fillText(l, bx, y); y += tLH; }
+  y += 22 - tSize*0.86 + bLH*0.75;
+  x.fillStyle = rgb(ch.soft); x.font = bFont;
+  for (const l of bl){ x.fillText(l, bx, y); y += bLH; }
+  gl.bindTexture(gl.TEXTURE_2D, texts[i].tex);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+  gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, c);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+}
+function resize(){
+  const W = Math.floor(canvas.clientWidth), H = Math.floor(canvas.clientHeight);
+  if (W < 2 || H < 2) return;                                   /* a zero viewport builds nothing */
+  const dpr = Math.min(window.devicePixelRatio || 1, K.DPR_CAP);
+  const pw = Math.round(W*dpr), ph = Math.round(H*dpr);
+  if (W === S.W && H === S.H && dpr === S.dpr && rtLive) return;
+  S.W = W; S.H = H; S.dpr = dpr;
+  canvas.width = pw; canvas.height = ph;
+  const go = (rt, w, h, k, wr) => rt ? (sizeRT(rt, w, h), rt) : makeRT(w, h, k, wr);
+  rtLive = go(rtLive, pw, ph, 'h'); rtFrom = go(rtFrom, pw, ph, 'h'); rtComp = go(rtComp, pw, ph, 'h'); rtMix = go(rtMix, pw, ph, 'h');
+  rtLo = go(rtLo, pw*K.SCENE_LO, ph*K.SCENE_LO, 'h');
+  rtG1 = go(rtG1, pw >> 1, ph >> 1, 'b'); rtG2 = go(rtG2, pw >> 1, ph >> 1, 'b');
+  rtG3 = go(rtG3, pw >> 2, ph >> 2, 'b'); rtG4 = go(rtG4, pw >> 2, ph >> 2, 'b');
+  CHAPTERS.forEach((_, i) => drawText(i, W, H, dpr));
+  S.dirty = true;
+}
+new ResizeObserver(resize).observe(canvas);
+new IntersectionObserver(es => { S.inView = es[0].isIntersecting; }).observe(canvas);
+
+/* ---- one scene into a target ---- */
+function drawScene(i, rt, t, sc, withText){
+  pass(P.scene, {uTime:t, uAsp:S.W/S.H, uScene:i, uPxH:rt.h, uText:texts[i], uUseText:withText ? 1 : 0}, rt, sc);
+}
+const stillT = 6.0;             /* the reduced-motion still: a fixed instant, never animating */
+
+/* ---- transitions ---- */
+const sideOf = i => CHAPTERS[i].side === 'R' ? -1 : 1;
+function go(to, opts = {}){
+  to = ((to % CHAPTERS.length) + CHAPTERS.length) % CHAPTERS.length;
+  if (S.trans){ S.pending = to; return; }                      /* a press mid-burn queues; the last one wins */
+  if (to === S.cur) return;
+  const from = S.cur;
+  S.trans = {from, to, f:0, dir:sideOf(to), seed:(to + 1)*K.SEED_STEP, frozenAt:S.t, hold:opts.hold ?? null, first:true};
+  document.getElementById('live').textContent = `Chapter ${to + 1} of ${CHAPTERS.length}, ${CHAPTERS[to].kicker.split('·')[1].trim()}`;
+  syncUI(to);
+}
+function finish(){
+  S.cur = S.trans.to; S.trans = null; S.restAt = performance.now(); S.idle = 0;
+  const n = S.pending; S.pending = null;
+  if (n !== null && n !== S.cur) go(n);
+  syncUI(S.trans ? S.trans.to : S.cur);
+}
+function syncUI(active){
+  document.querySelectorAll('.dots button').forEach(b => b.setAttribute('aria-current', String(+b.dataset.i === active)));
+}
+document.querySelector('.next').onclick = () => go((S.trans ? (S.pending ?? S.trans.to) : S.cur) + 1);
+document.querySelector('.prev').onclick = () => go((S.trans ? (S.pending ?? S.trans.to) : S.cur) - 1);
+document.querySelectorAll('.dots button').forEach(b => b.onclick = () => go(+b.dataset.i));
+const durEl = document.getElementById('dur'), durOut = document.getElementById('durOut');
+durEl.oninput = () => { S.dur = +durEl.value; durOut.textContent = S.dur.toFixed(1) + ' s'; };
+addEventListener('pointerdown', () => { S.auto = false; }, true);
+addEventListener('keydown', e => {
+  S.auto = false;
+  if (e.target.tagName === 'INPUT' || e.metaKey || e.ctrlKey || e.altKey) return;
+  const base = S.trans ? (S.pending ?? S.trans.to) : S.cur;
+  if (e.key === 'ArrowRight' || e.key === 'PageDown' || (e.key === ' ' && e.target.tagName !== 'BUTTON')){ e.preventDefault(); go(base + 1); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp'){ e.preventDefault(); go(base - 1); }
+  else if (/^[1-3]$/.test(e.key)) go(+e.key - 1);
+});
+
+/* ---- frame ---- */
+let last = 0;
+document.addEventListener('visibilitychange', () => { last = 0; });    /* resume without integrating the pause */
+function frame(now){
+  requestAnimationFrame(frame);
+  if (!rtLive || document.hidden || !S.inView){ last = 0; return; }
+  const dt = last ? Math.min(K.DT_MAX, (now - last)/1000) : 0; last = now;
+  const reduced = S.reduced;
+  if (!reduced) S.t += dt;
+  const tS = reduced ? stillT : S.t;
+  /* the first screen shows the burn without a click: it plays itself until the first touch */
+  if (S.auto && !S.trans && !reduced){ S.idle += dt; if (S.idle > (S.cur === 0 && S.t < 3 ? 1.4 : 2.6)){ S.idle = 0; go(S.cur + 1); } }
+  const T = S.trans;
+  let front = 0, fade = 0;
+  if (T){
+    if (reduced){ T.f = Math.min(1, T.f + dt/0.35); fade = T.f*T.f*(3 - 2*T.f); }
+    else if (T.hold !== null) T.f = T.hold;
+    else T.f = Math.min(1, T.f + dt/S.dur);
+    const raw = Math.min(1, Math.max(0, (T.f - 0.01)/0.97));          /* the line's own clock */
+    front = K.FRONT_A + K.FRONT_B*raw;                                /* linear: it travels, it does not rush the middle */
+    if (T.first){ drawScene(T.from, rtFrom, reduced ? stillT : T.frozenAt, null, true); T.first = false; }   /* the frame being left, frozen */
+  }
+  if (!T && reduced && !S.dirty) return;          /* the reduced-motion still redraws only when something changed */
+
+  const idx = T ? T.to : S.cur;
+  const trans = !!T && !reduced;
+  if (trans){ S.resLo = 1; S.restAt = now; }
+  else if (S.resLo > 0 && now - S.restAt > K.REST_MS) S.resLo = Math.max(0, S.resLo - dt/K.XFADE_S);
+  const lo = S.resLo > 0 && !reduced, xf = lo && S.resLo < 1;
+  const live = lo ? rtLo : rtLive;
+  /* the live scene is drawn only where it is seen: behind the line, plus its reach */
+  let sc = null;
+  if (trans){
+    const reach = Math.min(1, Math.max(0, front + K.HALF + K.REACH));
+    const x0 = T.dir > 0 ? 0 : Math.floor((1 - reach)*live.w), x1 = T.dir > 0 ? Math.ceil(reach*live.w) : live.w;
+    sc = [x0, 0, Math.max(1, x1 - x0), live.h];
+  }
+  drawScene(idx, live, tS, sc);
+  if (xf) drawScene(idx, rtLive, tS);
+  let src = live;
+  if (!T){    /* at rest: the scene (cross-fading up from 0.75 scale if it just was) plus its words at full size */
+    const k = lo ? (1 - S.resLo)*(1 - S.resLo)*(3 - 2*(1 - S.resLo)) : 1;
+    pass(P.mix, {uLo:lo ? rtLo : rtLive, uHi:rtLive, uK:k, uText:texts[idx]}, rtMix); src = rtMix;
+  }
+  let bloom = 0;
+  if (T){
+    pass(P.comp, {uTo:live, uToText:texts[idx], uKbN:noiseRT, uKbH:hashRT, uFrom:rtFrom, uMode:reduced ? 2 : 1, uFade:fade,
+      uAspect:S.W/S.H, uTime:tS, uSeed:T.dir === undefined ? 0 : T.seed, uFront:front, uDir:T.dir,
+      uChar:1, uSame:0, uClip:9, uPxH:rtComp.h, uPxS:rtComp.h/S.H}, rtComp);
+    src = rtComp;
+    if (!reduced){
+      bloom = 1;
+      pass(P.bright, {uTex:rtComp, uThresh:1.15}, rtG1);
+      pass(P.blur, {uTex:rtG1, uDir:[1/rtG1.w, 0]}, rtG2);
+      pass(P.blur, {uTex:rtG2, uDir:[0, 1/rtG1.h]}, rtG1);
+      pass(P.down, {uTex:rtG1}, rtG3);
+      pass(P.blur, {uTex:rtG3, uDir:[2.1/rtG3.w, 0]}, rtG4);
+      pass(P.blur, {uTex:rtG4, uDir:[0, 2.1/rtG3.h]}, rtG3);
+    }
+  }
+  pass(P.final, {uTex:src, uB1:rtG1, uB2:rtG3, uTime:tS, uBloom:bloom, uRes:[canvas.width, canvas.height]}, null);
+  S.dirty = false;
+  if (T && T.f >= 1 && T.hold === null) finish();
+}
+
+/* test hooks: __cinder.hold(from,to,f) parks a held burn at progress f; release() lets it run */
+window.__cinder = {
+  state: () => ({cur:S.cur, trans:S.trans && {from:S.trans.from, to:S.trans.to, f:S.trans.f}, pending:S.pending, resLo:S.resLo, t:S.t, w:canvas.width, h:canvas.height}),
+  go,
+  hold(from, to, f){ S.auto = false; S.trans = null; S.cur = from; S.pending = null; go(to, {hold:f}); },
+  setHold(f){ if (S.trans) S.trans.hold = f; },
+  release(){ if (S.trans) S.trans.hold = null; }
+};
+
+fontsReady().then(() => { resize(); CHAPTERS.forEach((_, i) => drawText(i, S.W, S.H, S.dpr)); S.dirty = true;
+  syncUI(0); requestAnimationFrame(frame);
+  const q = new URLSearchParams(location.search);
+  if (q.has('hold')) window.__cinder.hold(+(q.get('from') || 0), +(q.get('to') || 1), +q.get('hold'));
+});
+</script>
+</body>
+</html>

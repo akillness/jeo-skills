@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "id": "recipe.symmetry-operations-tolerance",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Symmetry operations found under a tolerance"
+  },
+  "aliases": {
+    "en": [
+      "symmetry detection",
+      "rotation and mirror operations",
+      "tolerance"
+    ]
+  },
+  "direction_ids": [
+    "topology-symmetry"
+  ],
+  "summary": "Apply candidate symmetry operations to a 3D arrangement and let the tolerance that decides success be an explicit control.",
+  "objective": "Build a symmetry inspector where each candidate rotation or reflection is applied to an atom arrangement and accepted or rejected against a visible distance tolerance.",
+  "tags": [
+    "symmetry",
+    "operations",
+    "tolerance"
+  ],
+  "subject_terms": [
+    "symmetry operation",
+    "rotation axis",
+    "mirror plane",
+    "inversion centre",
+    "point group",
+    "tolerance",
+    "lattice",
+    "invariance"
+  ],
+  "intent_signals": [
+    "Show which symmetry operations leave an arrangement unchanged.",
+    "Explain how a tolerance changes the symmetry that is detected."
+  ],
+  "example_prompts": [
+    "Build a 3D symmetry inspector with candidate rotations and mirrors and an adjustable matching tolerance.",
+    "Show a slightly distorted arrangement losing a symmetry operation as the tolerance tightens."
+  ],
+  "negative_signals": [
+    "Not a crystallographic space-group determination service; this recipe illustrates the test, it does not certify a group.",
+    "Not a claim about any real material sample."
+  ],
+  "not_for": [
+    "Not a crystallographic space-group determination service; this recipe illustrates the test, it does not certify a group.",
+    "Not a claim about any real material sample."
+  ],
+  "entities": [
+    {
+      "name": "Site arrangement",
+      "guidance": "Place labelled sites with exact coordinates so a mapped site can be compared with a target site by identity, not by appearance."
+    },
+    {
+      "name": "Operation gizmos",
+      "guidance": "Show the axis, plane or centre of the candidate operation as geometry, so an accepted operation has a visible element."
+    },
+    {
+      "name": "Match report",
+      "guidance": "Report the distinct target assigned to each image and its residual under the species-preserving bijection. If no tolerance-respecting assignment exists, report assignment failure. Nearest-target distances may be shown separately as proximity diagnostics and never determine acceptance."
+    }
+  ],
+  "state_contract": {
+    "model": "A finite Cartesian arrangement of labelled sites (the periodic crystallographic case is out of scope here), a candidate operation given as a rotation part W and a translation part w, and an acceptance test requiring a one-to-one species-preserving assignment of every image to a distinct target site within the declared distance tolerance. Nearest-neighbour matching alone is reported only as a proximity diagnostic.",
+    "authority": "The site coordinates and the tolerance are authoritative; acceptance is a computed comparison and must never be asserted by an author-chosen colour.",
+    "actions": [
+      "Apply a candidate operation and inspect the per-site distances.",
+      "Change the tolerance and watch acceptance flip.",
+      "Perturb a site and repeat the test.",
+      "Reset sites, operation and tolerance."
+    ]
+  },
+  "invariants": [
+    "An operation maps sites onto sites of the same species; a mapping onto a different species is a failure regardless of distance.",
+    "Acceptance always cites the tolerance value used, and results are never reported as exact.",
+    "Composition is re-evaluated, never assumed: accepting an operation within tolerance does not imply its square is accepted, since residuals accumulate. A single site with a candidate translation of three quarters of the tolerance passes once and fails when squared.",
+    "Acceptance requires a bijection between images and targets: three collinear same-species sites can each have a near target while two images compete for the same one, which is a failure rather than a match."
+  ],
+  "motion_guidance": [
+    "Animate the operation as a continuous motion of ghost copies toward their targets, so a near miss is visible as a residual gap.",
+    "Do not snap ghosts onto targets: snapping would erase the residual that the tolerance is judging."
+  ],
+  "known_limits": [
+    "Detected symmetry depends entirely on the tolerance; a looser tolerance can accept a distorted arrangement.",
+    "This recipe treats operations individually and does not derive the group they generate.",
+    "This recipe treats a finite arrangement in Cartesian coordinates. The cited crystallographic notation uses fractional coordinates against lattice basis vectors, so a periodic mode would need lattice declaration, periodic image matching and the metric conversion before reusing it.",
+    "Ghost interpolation toward targets is presentation: a mirror or inversion is not reached by a continuous family of rigid symmetry operations.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-symmetry-operation-form",
+      "statement": "A symmetry operation consists of a rotation part W and a translation part w and acts on coordinates as x mapped to W x plus w.",
+      "scope": "Crystallographic convention as documented; a pure point operation has zero translation part.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-spglib-definitions",
+          "locator": "Definitions and conventions, symmetry operation"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-symmetry-tolerance",
+      "statement": "A documented symmetry finder takes an explicit distance tolerance in Cartesian coordinates, with a separate angle tolerance in degrees for basis vectors.",
+      "scope": "Tolerance parameters of one library version, quoted as definitions. That any detected symmetry set depends on the tolerance chosen is this recipe's modelling statement, demonstrated by its own acceptance test rather than asserted from the cited page.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-spglib-variables",
+          "locator": "Variables, symprec and angle_tolerance definitions"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Site arrangement",
+      "structure": "Distinct site markers per species with a small orientation tick, so a rotation that maps a site onto itself is still visible.",
+      "material": "Species-coded matte materials plus a reserved accent for the ghost images produced by the operation.",
+      "articulation": "Sites are static; ghosts move under the candidate operation."
+    },
+    {
+      "family": "Operation gizmos",
+      "structure": "Axis rods with rotation order labels, bounded mirror planes with visible borders, and a distinct inversion centre marker.",
+      "material": "Thin translucent plane and opaque axis so the element is legible both edge-on and face-on.",
+      "articulation": "Gizmo geometry is rebuilt when the candidate operation changes."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Geometric mapping and comparison under a stated tolerance; no energetics or dynamics.",
+    "state": [
+      "site list",
+      "candidate operation",
+      "tolerance",
+      "per-site residuals"
+    ],
+    "checks": [
+      "Tightening the tolerance can only remove accepted operations, never add them.",
+      "Species mismatches are rejected even at large tolerance."
+    ]
+  },
+  "related_ids": [
+    "recipe.square-dihedral-actions",
+    "recipe.cubic-unit-cell-accounting",
+    "knowledge.controlled-experiment"
+  ]
+}

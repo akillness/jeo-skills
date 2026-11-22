@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blender-headless-gltf-export-script",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Headless Blender glTF export script"
+  },
+  "aliases": {
+    "en": [
+      "blender background python export glb",
+      "bpy.ops.export_scene.gltf script",
+      "automate glTF export from command line",
+      "blender CLI export pipeline"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "characters-motion-art",
+    "operations-logistics"
+  ],
+  "summary": "Run the Blender glTF exporter from a background process with an explicit keyword set, read job arguments from sys.argv after the -- separator, and fail the process loudly when the export does not produce a file.",
+  "objective": "The same command produces the same .glb from the same .blend without a UI, and any failure leaves a non-zero process exit code rather than a silently missing or truncated file.",
+  "tags": [
+    "tool-adapter",
+    "blender",
+    "gltf",
+    "automation",
+    "cli",
+    "headless"
+  ],
+  "subject_terms": [
+    "blender --background",
+    "--python",
+    "sys.argv",
+    "bpy.ops.export_scene.gltf",
+    "export_format",
+    "export_apply",
+    "export_yup",
+    "export_extras",
+    "export_lights",
+    "export_draco_mesh_compression_enable",
+    "export_animation_mode",
+    "export_force_sampling",
+    "--python-exit-code"
+  ],
+  "intent_signals": [
+    "export glb from blender without opening the UI",
+    "script the glTF exporter in a build pipeline",
+    "pass an output path to a blender python script",
+    "blender export exit code for CI",
+    "which bpy keyword applies modifiers on export"
+  ],
+  "example_prompts": [
+    "Write a headless Blender command that exports this scene to a GLB in a build step.",
+    "Automate the glTF export of a folder of .blend files with checked exit codes."
+  ],
+  "negative_signals": [
+    "interactive modelling steps",
+    "render farm frame rendering",
+    "choosing an art direction"
+  ],
+  "not_for": [
+    "Rendering frames or animations, which uses different command-line options.",
+    "Guaranteeing that a keyword exists in a Blender version other than the one checked.",
+    "Deciding what the asset should contain; this record only automates the export of an approved scene."
+  ],
+  "content": {
+    "principles": [
+      "A headless export is a contract between three things: the command line that starts Blender, the argument slice the script is allowed to read, and the explicit keyword set passed to the operator. Leaving any of the three implicit makes the build non-reproducible.",
+      "Never rely on the exporter's remembered UI settings. The operator's own defaults apply in a background process, so every option that matters to the asset is passed explicitly even when it happens to match the default.",
+      "Argument order is part of the contract: the manual states arguments are executed in the order they are given, so the .blend must be loaded before the script that inspects it runs.",
+      "A build step that cannot fail is not a check. Give the process a way to exit non-zero for both Python exceptions and a missing output file."
+    ],
+    "implementation": [
+      "Invoke as `blender -b file.blend --python export.py -- --out scene.glb`. `-b, --background` runs in background (UI-less), `-P, --python <filepath>` runs the given Python script file, and `--` ends option processing so the following arguments are passed unchanged and reachable from Python's `sys.argv`.",
+      "Slice the job arguments inside the script rather than parsing the whole vector: `argv = sys.argv[sys.argv.index('--') + 1:]`, then hand `argv` to `argparse`. Before the separator, `sys.argv` still holds Blender's own options and will confuse any parser.",
+      "Call the operator with every asset-relevant keyword spelled out:\n```python\nimport bpy, sys, argparse, os\nargv = sys.argv[sys.argv.index('--') + 1:]   # everything after the -- separator\nparser = argparse.ArgumentParser()\nparser.add_argument('--out', required=True)\nargs = parser.parse_args(argv)\nbpy.ops.export_scene.gltf(\n    filepath=args.out,\n    export_format='GLB',\n    export_apply=True,\n    export_yup=True,\n    export_extras=True,\n    export_lights=True,\n    export_draco_mesh_compression_enable=False,\n    export_animation_mode='ACTIONS',\n    export_force_sampling=True,\n)\nif not os.path.exists(args.out) or os.path.getsize(args.out) == 0:\n    sys.exit(1)\n```",
+      "Each keyword has a named counterpart in the exporter UI: `export_apply` is `Apply Modifiers`, `export_yup` is `+Y Up` / `Y Up`, `export_extras` is `Custom Properties` (written into the glTF `extras` field), `export_lights` is `Punctual Lights` (which emits `KHR_lights_punctual`), `export_draco_mesh_compression_enable` is the `Data - Compression` option that compresses meshes with Google Draco, `export_animation_mode` is `Animation mode`, and `export_force_sampling` is `Always Sample Animations`.",
+      "`export_apply=True` is documented as `Apply Modifiers, Apply modifiers (excluding Armatures) to mesh objects -WARNING: prevents exporting shape keys`. Do not set it on an asset whose shape keys have to survive the export; choose one or the other per asset and record which.",
+      "`export_animation_mode` is a literal enum of `'ACTIONS' | 'ACTIVE_ACTIONS' | 'BROADCAST' | 'NLA_TRACKS' | 'SCENE'` with `'ACTIONS'` as the signature default; pair it with `export_force_sampling=True` when constraint-, driver- or procedurally-driven motion has to be baked into sampled channels.",
+      "Add `--python-exit-code 1` to the command line so an uncaught Python exception sets a non-zero exit code (the option sets the exit code in [0..255] to exit with if a Python exception is raised), and assert in the script that the file at `filepath` exists and is non-empty before returning.",
+      "`export_format` is typed as a plain `str` on the current API page and no accepted values are enumerated there, while `filter_glob` defaults to `'*.glb'`. Treat `'GLB'` as the single-file value to verify against the installed Blender rather than as a value quoted from that page."
+    ],
+    "observable_checks": [
+      "Running the command twice on an unchanged .blend produces the same output file, and a deliberately raised exception in the script leaves a non-zero shell exit code.",
+      "Flipping `export_apply` between `True` and `False` changes the vertex count of a modifier-driven mesh in the output, confirming the keyword reached the operator rather than a remembered UI preset.",
+      "With `export_extras=True`, an object custom property appears in the glTF `extras` field; with `export_lights=True`, `KHR_lights_punctual` appears in the file.",
+      "With `export_draco_mesh_compression_enable=False`, `KHR_draco_mesh_compression` does not appear in `extensionsUsed`.",
+      "Moving `--python export.py` before the .blend path changes the result, demonstrating that arguments are executed in the order they are given."
+    ]
+  },
+  "known_limits": [
+    "Operator keyword names, defaults and enum values change between Blender releases. The API page read for this record reported a 5.2 version selector while the command-line page read was 4.5 LTS; re-check every keyword against the installed version.",
+    "The API page does not enumerate the accepted values of `export_format`, so `'GLB'` is used here as a value to verify locally rather than as a quotation.",
+    "The pages document option names and descriptions, not the exporter's internal conversion behaviour; nothing here asserts what geometry or animation data actually results.",
+    "Authored reusable guidance: no Blender process was executed and no .glb was produced or inspected for this record."
+  ],
+  "creative_affordances": [
+    "The keyword set is a starting contract; add, remove or flip options per asset family as long as the chosen set is recorded with the asset.",
+    "The argument parser may carry any project-specific job options after the `--` separator."
+  ],
+  "related_ids": [
+    "knowledge.gltf-punctual-light-units-handoff",
+    "knowledge.gltf-material-extension-matrix",
+    "knowledge.blender-evaluated-mesh-handoff"
+  ],
+  "claims": [
+    {
+      "id": "claim.blender-cli-background-python-argv",
+      "statement": "The Blender command-line manual documents -b, --background as running in background (often used for UI-less rendering), -P, --python <filepath> as running the given Python script file, --python-exit-code <code> as setting the exit code in the range 0 to 255 to exit with if a Python exception is raised, and -- as ending option processing so that following arguments are passed unchanged and accessed via Python's sys.argv, and states that arguments are executed in the order they are given.",
+      "scope": "Documented command-line options of the accessed 4.5 LTS manual page. Exporter option names are not documented on this page.",
+      "source_refs": [
+        {
+          "source_id": "source.blender-cli-arguments-4-5",
+          "locator": "Render Options \"-b, --background  Run in background (often used for UI-less rendering)\"; Python Options \"-P, --python <filepath>  Run the given Python script file\" and \"--python-exit-code <code>  Set the exit-code in [0..255] to exit if a Python exception is raised\"; Misc Options \"--  End option processing, following arguments passed unchanged. Access via Python's sys.argv\"; Argument Order \"Arguments are executed in the order they are given\""
+        }
+      ]
+    },
+    {
+      "id": "claim.bpy-gltf-export-keyword-names",
+      "statement": "The Blender Python API page for bpy.ops.export_scene.gltf() lists the keywords export_format, export_apply (Apply Modifiers, documented as preventing the export of shape keys), export_yup (+Y Up), export_extras (Custom Properties, exported as glTF extras), export_lights (Punctual Lights), export_draco_mesh_compression_enable (Draco Mesh Compression), export_animation_mode (a literal of 'ACTIONS', 'ACTIVE_ACTIONS', 'BROADCAST', 'NLA_TRACKS' and 'SCENE') and export_force_sampling (Always Sample Animations), with export_format typed as a plain string whose accepted values the page does not enumerate.",
+      "scope": "Exact keyword names, types and descriptions on the accessed current API build. Keyword names and defaults differ between Blender versions and the page documents no export behaviour beyond these descriptions.",
+      "source_refs": [
+        {
+          "source_id": "source.blender-bpy-export-scene-gltf",
+          "locator": "bpy.ops.export_scene.gltf() parameter list: export_format (str) \"Format, Output format\"; export_apply (bool) \"Apply Modifiers, Apply modifiers (excluding Armatures) to mesh objects -WARNING: prevents exporting shape keys\"; export_yup (bool) \"+Y Up, Export using glTF convention, +Y up\"; export_extras (bool) \"Custom Properties, Export custom properties as glTF extras\"; export_lights (bool) \"Punctual Lights\"; export_draco_mesh_compression_enable (bool) \"Draco Mesh Compression, Compress mesh using Draco\"; export_animation_mode (Literal 'ACTIONS', 'ACTIVE_ACTIONS', 'BROADCAST', 'NLA_TRACKS', 'SCENE') signature default 'ACTIONS'; export_force_sampling (bool) \"Always Sample Animations\"; filter_glob default '*.glb'"
+        }
+      ]
+    },
+    {
+      "id": "claim.blender-gltf-exporter-ui-option-labels",
+      "statement": "The Blender glTF exporter manual documents the matching user-interface options - Custom Properties exporting custom properties as glTF extras, Punctual Lights exporting directional, point and spot lights using the KHR_lights_punctual extension, Y Up exporting using the glTF convention of +Y up, Apply Modifiers exporting objects using the evaluated mesh, a Data - Compression section that compresses meshes using Google Draco, and an Animation mode option - and states that custom properties are stored in the extras field on the corresponding glTF object.",
+      "scope": "Documented UI option labels and descriptions of the accessed 4.5 LTS add-on manual page, used to name the Python keywords. The page does not document Python keyword spellings.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "Properties > Include > \"Custom Properties Export custom properties as glTF extras\", \"Cameras\", \"Punctual Lights\"; Transform > \"Y Up Export using glTF convention, +Y up\"; Data - Mesh > \"Apply Modifiers Export objects using the evaluated mesh\"; Data - Compression > \"Compress meshes using Google Draco\"; Animation > \"Animation mode\"; Custom Properties section (\"stored in the extras field on the corresponding object\")"
+        }
+      ]
+    }
+  ]
+}

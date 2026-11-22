@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.directional-derivative-surface",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Directional derivative on a quadratic surface"
+  },
+  "aliases": {
+    "en": [
+      "directional derivative",
+      "gradient and level curves",
+      "steepest ascent surface"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields"
+  ],
+  "summary": "Rotate a direction on a height field and compare the measured slope with the gradient dot product.",
+  "objective": "Build a quadratic surface with a draggable sample point, a rotating unit direction and a linked slope readout.",
+  "tags": [
+    "gradient",
+    "directional derivative",
+    "unit vector"
+  ],
+  "subject_terms": [
+    "gradient",
+    "directional derivative",
+    "unit vector",
+    "partial derivative",
+    "level curve",
+    "tangent slope"
+  ],
+  "intent_signals": [
+    "Build a quadratic surface with a draggable sample point, a rotating unit direction and a linked slope readout.",
+    "Rotate a direction on a height field and compare the measured slope with the gradient dot product."
+  ],
+  "example_prompts": [
+    "Build a quadratic surface with a draggable sample point, a rotating unit direction and a linked slope readout.",
+    "Create an explorable 3D explanation of directional derivative with level curves and readout."
+  ],
+  "negative_signals": [
+    "Not a general optimizer or particle force model."
+  ],
+  "not_for": [
+    "Not a general optimizer or particle force model."
+  ],
+  "entities": [
+    {
+      "name": "Height mesh",
+      "guidance": "Sample the rectangular domain into a regular indexed mesh; preserve a visible zero plane and equal x/y scale."
+    },
+    {
+      "name": "Direction and tangent",
+      "guidance": "Draw u in the domain plane and a lifted tangent segment with vertical change D_u f; do not label the lifted 3D vector as the 2D gradient."
+    },
+    {
+      "name": "Level curves and readout",
+      "guidance": "Add selected-height contours, signed slope value and an angle dial; use length and labels as well as color."
+    }
+  ],
+  "state_contract": {
+    "model": "Use f(x,y)=x*x+2*y*y on [-2,2]^2; grad f=(2*x,4*y), u=(cos(a),sin(a)), D_u f=grad f dot u. Coordinates are mathematical units.",
+    "authority": "The selected domain point and direction angle determine surface point, analytic gradient and directional derivative; camera orbit changes none of them.",
+    "actions": [
+      "Drag the sample point within the domain.",
+      "Rotate the unit direction without changing its norm.",
+      "Toggle finite-difference comparison with a positive step that stays inside the domain.",
+      "Reset point, angle and comparison step."
+    ]
+  },
+  "invariants": [
+    "At the origin grad f is zero; no unique steepest direction is displayed.",
+    "Opposite unit directions give opposite signed slopes.",
+    "A direction perpendicular to a nonzero gradient has zero directional derivative."
+  ],
+  "motion_guidance": [
+    "Animate only the direction dial or a deliberately parameterized point path; derive all arrows from current analytic values.",
+    "Keep arrow display gain explicit and compare finite differences only as approximations."
+  ],
+  "known_limits": [
+    "Not a general optimizer or particle force model.",
+    "A finite triangulation approximates the smooth surface; its face normals do not replace the analytic derivative.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.directional-derivative-surface",
+      "statement": "For a differentiable scalar function, the directional derivative along a unit vector equals its gradient dotted with that vector.",
+      "scope": "Differentiability and a unit domain direction; the chosen quadratic is an authored example.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-gradient",
+          "locator": "4.6, Theorem 4.12 and gradient properties"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Height mesh",
+      "structure": "Sample the rectangular domain into a regular indexed mesh; preserve a visible zero plane and equal x/y scale.",
+      "material": "Matte surface with restrained height palette; opaque arrows and contour strokes retain signs without relying on specular lighting."
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "id": "knowledge.three-instanced-scenery-adapter",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Instanced mesh for repeated scenery"
+  },
+  "aliases": {
+    "en": [
+      "InstancedMesh setMatrixAt",
+      "instanceMatrix needsUpdate",
+      "repeated props"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "operations-logistics"
+  ],
+  "summary": "Draw many copies of one geometry through instance matrices, and keep those matrices from pretending each copy is a simulated body.",
+  "objective": "Moving one instance via setMatrixAt moves only that copy after needsUpdate; disposing the InstancedMesh frees its GPU buffers.",
+  "applies_when": [
+    "Trees, crates, cobbles, bolts or other repeated props share geometry and material.",
+    "Draw-call cost of one mesh per prop is the problem, not per-instance physics."
+  ],
+  "subject_terms": [
+    "InstancedMesh",
+    "instanceMatrix",
+    "setMatrixAt",
+    "setColorAt",
+    "draw calls",
+    "repeated scenery"
+  ],
+  "tags": [
+    "tool-adapter",
+    "three",
+    "instancing",
+    "scenery"
+  ],
+  "intent_signals": [
+    "thousands of identical trees",
+    "crate stack that is just copies",
+    "instance colours without extra materials"
+  ],
+  "example_prompts": [
+    "Scatter a hundred identical lanterns with InstancedMesh and let me recolour one instance.",
+    "Use instancing for cobbles, not a physics body per stone."
+  ],
+  "negative_signals": [
+    "One InstancedMesh whose instance matrices are also written by a rigid-body island without a documented copy step.",
+    "Claiming instancing simulates contact among instances."
+  ],
+  "not_for": [
+    "Unique articulated heroes that need their own skeleton.",
+    "Per-instance materials that actually differ in shader feature set rather than a colour tint."
+  ],
+  "content": {
+    "principles": [
+      "Instancing is a draw technique for many objects that share geometry and material but not world transforms. It is not a particle solver.",
+      "Each instance's pose lives in instanceMatrix. The parent Object3D transform still moves the whole batch.",
+      "If a subset of instances must collide, give those copies real bodies and treat instancing as presentation, or accept that the batch has no contacts."
+    ],
+    "implementation": [
+      "Create InstancedMesh(geometry, material, count). Write poses with setMatrixAt and tints with setColorAt. Set instanceMatrix.needsUpdate (and instanceColor.needsUpdate) after edits.",
+      "Keep an application array of instance ids to semantic props. Raycast hits expose instanceId; map that back to the prop, not to a fake body.",
+      "Recompute bounding sphere after large pose edits if picking or culling misses instances.",
+      "Call dispose when replacing the batch. Reset restores authored matrices, not leftover simulation.",
+      "Write the batch by index and flush once: `mesh.setMatrixAt( index, matrix )` for poses and `mesh.setColorAt( index, color )` for tints, then set `mesh.instanceMatrix.needsUpdate = true` and `mesh.instanceColor.needsUpdate = true` after the loop, not inside it. Every index must satisfy `0 <= index < mesh.count`.",
+      "Read back with `mesh.getMatrixAt( index, matrix )` and `mesh.getColorAt( index, color )` so a reset restores authored values rather than leftover simulation, and call `mesh.computeBoundingSphere()` after large pose edits so culling and picking stop missing instances.",
+      "When one material has to cover several geometries, `BatchedMesh` is the documented alternative: `const batched = new THREE.BatchedMesh( maxInstanceCount, maxVertexCount, maxIndexCount, material );` then `batched.addGeometry( geometry )` returns a geometry id and `batched.addInstance( geometryId )` returns an instance id used with the same `setMatrixAt( instanceId, matrix )` and `setColorAt( instanceId, color )` calls; `batched.instanceCount` and `batched.maxInstanceCount` bound the batch."
+    ],
+    "observable_checks": [
+      "setMatrixAt on one index, with needsUpdate, moves only that instance; neighbours stay put.",
+      "setColorAt changes that instance's tint without cloning a material.",
+      "A physics debug overlay, if present, does not show a collider per decorative instance unless one was actually created."
+    ]
+  },
+  "related_ids": [
+    "recipe.fantasy-village-diorama",
+    "knowledge.three-scene-adapter"
+  ],
+  "creative_affordances": [
+    "Colour, scale and slight rotation variation among instances is a free art direction.",
+    "A few unique hero meshes can sit beside an instanced crowd of the same prop."
+  ],
+  "known_limits": [
+    "InstancedMesh requires shared geometry and material(s); it does not create rigid bodies or establish scientific packing.",
+    "Authored reusable guidance; no runtime artifact has been observed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-three-instanced-scenery-adapter",
+      "statement": "InstancedMesh is a mesh with instanced rendering for a large number of objects that share geometry and material(s) but have different world transformations; setMatrixAt writes a local transform that is uploaded when instanceMatrix.needsUpdate is set true, and dispose frees the GPU resources of that instance.",
+      "scope": "Three.js InstancedMesh API; instancing is a rendering batch, not a contact model.",
+      "source_refs": [
+        {
+          "source_id": "source.knowledge-depth-three-instanced-mesh",
+          "locator": "Opening description; setMatrixAt and instanceMatrix.needsUpdate; dispose"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "revision": 2,
+  "status": "active",
+  "record_kind": "mixed"
+}

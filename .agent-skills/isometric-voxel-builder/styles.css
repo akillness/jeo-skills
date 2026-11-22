@@ -1,0 +1,760 @@
+/* Mykonos Island Voxels — UI styling.
+   The aesthetic: cream/parchment background, soft pastel cards, cobalt-blue accents,
+   warm Mediterranean light. All shapes are CSS only; in-game art is the generated pack. */
+
+:root {
+    --cream: #f4ede0;
+    --cream-2: #ede4d2;
+    --paper: #fbf6ec;
+    --ink: #2b2a26;
+    --ink-soft: #51504a;
+    --muted: #8a8678;
+    --line: #d9d0bd;
+    --shadow: 0 8px 24px rgba(60, 50, 30, 0.10), 0 2px 6px rgba(60, 50, 30, 0.06);
+    --shadow-lg: 0 18px 48px rgba(60, 50, 30, 0.16), 0 4px 12px rgba(60, 50, 30, 0.08);
+    --cobalt: #1b5ba8;
+    --cobalt-2: #2e6fbc;
+    --cobalt-light: #d6e6f6;
+    --terracotta: #c4622e;
+    --leaf: #3d7355;
+    --bougainvillea: #d85b8e;
+    --sand: #e8d4a8;
+    --water: #6ec8e0;
+    --radius: 14px;
+    --radius-sm: 10px;
+    --radius-lg: 22px;
+    --edge-gap: 16px;
+    --left-rail-width: 72px;
+    /* Title card height (roughly): 12px padding + 44px logo + 12px padding ≈ 68px.
+       Toolbar anchors directly under this with a single edge-gap so the title
+       and toolbar read as one connected left rail rather than two floating cards. */
+    --title-card-height: 68px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-family: 'Inter', 'SF Pro Text', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    color: var(--ink);
+    background: linear-gradient(180deg, #f6efe1 0%, #ebe1cc 100%);
+    /* iOS Safari sometimes "rubber-band" scrolls the page even when
+       overflow is hidden — this disables it so swipe gestures stay
+       inside the canvas where they belong. */
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Use the dynamic viewport unit when available — on mobile Safari
+       100vh includes the URL bar's hidden area, leaving the bottom of
+       the canvas chopped off. 100dvh follows the actual visible area. */
+    height: 100dvh;
+}
+
+#app.hidden { display: none; }
+
+#game-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    display: block;
+    background:
+        radial-gradient(ellipse at 50% 30%, #fbf6ec 0%, #f0e7d2 60%, #e3d6ba 100%);
+    cursor: crosshair;
+    /* Stop the browser from interpreting touch gestures (scroll, pinch
+       zoom, double-tap zoom, swipe-back nav). The InputManager handles
+       all of them in JS now. */
+    touch-action: none;
+}
+
+/* The touch-controls cheatsheet variant is a no-op on mouse devices —
+   a media query below swaps it in on coarse-pointer devices. */
+.ins-grid--touch { display: none; }
+
+/* ── Loading screen ─────────────────────────────────────────────── */
+
+#loading-screen {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(180deg, #f6efe1, #e8dcc1);
+    z-index: 999;
+}
+#loading-screen.hidden { display: none; }
+
+.loading-card {
+    background: var(--paper);
+    border-radius: var(--radius-lg);
+    padding: 36px 48px;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+    width: 360px;
+}
+.loading-logo {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 12px;
+    background:
+        radial-gradient(circle at 50% 40%, var(--cobalt) 0 18%, transparent 19%),
+        linear-gradient(180deg, #fff 60%, #efe7d3 100%);
+    border-radius: 16px;
+    box-shadow: inset 0 -6px 0 rgba(0,0,0,0.04);
+    position: relative;
+}
+.loading-logo::after {
+    content: '';
+    position: absolute;
+    bottom: 8px; left: 50%; transform: translateX(-50%);
+    width: 30px; height: 4px; background: var(--cobalt);
+    border-radius: 2px;
+}
+.loading-title { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+.loading-sub   { color: var(--muted); margin-top: 4px; font-size: 13px; }
+
+.loading-bar {
+    margin-top: 20px;
+    height: 6px;
+    width: 100%;
+    background: var(--cream-2);
+    border-radius: 999px;
+    overflow: hidden;
+}
+.loading-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--cobalt), var(--cobalt-2));
+    transition: width 0.18s ease;
+}
+.loading-status {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+}
+
+/* ── Title card ────────────────────────────────────────────────── */
+
+#title-card {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px 12px 12px;
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    z-index: 10;
+    user-select: none;
+}
+.title-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background:
+        linear-gradient(180deg, #fff, #f0e6cf);
+    position: relative;
+    box-shadow: inset 0 -4px 0 rgba(0,0,0,0.04);
+}
+.title-logo::before {
+    content: '';
+    position: absolute;
+    width: 26px; height: 14px;
+    border-radius: 13px 13px 0 0;
+    background: var(--cobalt);
+    left: 50%; top: 8px; transform: translateX(-50%);
+}
+.title-logo::after {
+    content: '';
+    position: absolute;
+    width: 4px; height: 14px;
+    background: var(--cobalt);
+    border-radius: 2px;
+    left: 50%; top: 22px; transform: translateX(-50%);
+}
+.title-text h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--cobalt);
+}
+.title-text p {
+    margin: 2px 0 0;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* ── Toolbar ───────────────────────────────────────────────────── */
+
+#toolbar {
+    position: fixed;
+    /* Anchored under the title card to form a single left rail.
+       Vertically centering this used to leave it floating in the dead
+       middle of the canvas, disconnected from the title above and the
+       help below. Top-anchoring fixes the imbalance. */
+    top: calc(var(--edge-gap) + var(--title-card-height) + 12px);
+    left: var(--edge-gap);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 8px;
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    z-index: 10;
+}
+.tool {
+    width: 60px;
+    padding: 10px 6px 8px;
+    border: 0;
+    background: transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--ink-soft);
+    transition: background 0.15s ease, color 0.15s ease, transform 0.05s ease;
+    font: inherit;
+}
+.tool:hover { background: var(--cream-2); }
+.tool:active { transform: scale(0.97); }
+.tool.active {
+    background: var(--cobalt-light);
+    color: var(--cobalt);
+}
+.tool .ti {
+    /* Icons are drawn on a 44×44 logical canvas. We display them at 36px
+       (was 22px) so the glyph reads at a glance, sized to roughly fill
+       the toolbar button without crowding the label below. */
+    width: 36px;
+    height: 36px;
+    display: block;
+}
+.tool span.label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+/* ── Palette ──────────────────────────────────────────────────── */
+
+#palette {
+    position: fixed;
+    right: 12px;
+    top: 12px;
+    bottom: 92px;
+    width: 168px;
+    background: var(--paper);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+    z-index: 10;
+    padding: 6px 6px 6px;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+}
+
+#palette-tabs {
+    display: flex;
+    gap: 2px;
+    padding: 0 2px 4px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex-shrink: 0;
+}
+#palette-tabs::-webkit-scrollbar { display: none; }
+.tab {
+    border: 0;
+    background: transparent;
+    padding: 4px 6px;
+    border-radius: 6px 6px 0 0;
+    font: inherit;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    cursor: pointer;
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.tab:hover { color: var(--ink-soft); background: var(--cream-2); }
+.tab.active {
+    color: var(--cobalt);
+    border-bottom: 2px solid var(--cobalt);
+    margin-bottom: -1px;
+}
+
+#palette-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 2px 2px 4px;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    flex: 1 1 auto;
+    align-content: start;
+}
+#palette-grid::-webkit-scrollbar { width: 4px; }
+#palette-grid::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+.swatch {
+    background: var(--cream);
+    border-radius: 8px;
+    padding: 4px 3px 3px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    text-align: center;
+    user-select: none;
+    transition: transform 0.05s ease, border-color 0.15s ease, background 0.15s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+.swatch:hover { background: #f6ecd5; transform: translateY(-1px); }
+.swatch.selected {
+    border-color: var(--cobalt);
+    background: var(--cobalt-light);
+}
+.swatch canvas, .swatch img {
+    width: 38px;
+    height: 38px;
+    image-rendering: pixelated;
+    object-fit: contain;
+    pointer-events: none;
+}
+.swatch .name {
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    line-height: 1.1;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* ── HUD (right side) ─────────────────────────────────────────── */
+
+#hud {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    width: 168px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+    background: var(--paper);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+    padding: 6px 8px;
+    z-index: 10;
+    font-size: 11px;
+}
+.hud-row { display: flex; align-items: center; gap: 5px; }
+.hud-clock {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 700;
+    font-size: 11px;
+    color: var(--ink);
+}
+.sun-icon {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 50% 50%, #ffc24a 0 35%, #f0a623 36% 60%, transparent 61%);
+    box-shadow: 0 0 5px rgba(240, 166, 35, 0.5);
+    position: relative;
+}
+
+.hud-toggles {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    width: 100%;
+    margin-top: 4px;
+    padding-top: 5px;
+    border-top: 1px solid var(--line);
+}
+.toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+}
+.toggle input { display: none; }
+.toggle .switch {
+    width: 22px;
+    height: 12px;
+    background: #d8d2c4;
+    border-radius: 999px;
+    position: relative;
+    transition: background 0.15s ease;
+    flex-shrink: 0;
+}
+.toggle .switch::after {
+    content: '';
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #fff;
+    top: 2px; left: 2px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    transition: transform 0.15s ease;
+}
+.toggle input:checked + .switch { background: #6ec07a; }
+.toggle input:checked + .switch::after { transform: translateX(10px); }
+
+.hud-layers {
+    display: none;
+}
+
+/* ── Instructions panel ────────────────────────────────────────── */
+
+/* The controls help is a collapsible disclosure (native <details>):
+   - Closed: a small "?" badge in the bottom-left, easy to ignore.
+   - Open: the full keyboard cheatsheet expands above the badge.
+   Defaulting to closed reclaims a big chunk of bottom-left canvas
+   space and removes the visual competition with the right-side palette. */
+#instructions {
+    position: fixed;
+    left: var(--edge-gap);
+    bottom: var(--edge-gap);
+    z-index: 30;
+    background: rgba(251, 246, 236, 0.94);
+    backdrop-filter: blur(8px);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+    color: var(--ink-soft);
+    font-size: 11px;
+    overflow: hidden;
+    max-width: 280px;
+    transition: box-shadow 0.18s ease;
+}
+#instructions[open] {
+    box-shadow: var(--shadow-lg);
+}
+
+.ins-summary {
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px 8px 8px;
+    color: var(--cobalt);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    transition: background 0.15s ease;
+}
+.ins-summary:hover { background: rgba(214, 230, 246, 0.45); }
+.ins-summary::-webkit-details-marker { display: none; }
+.ins-summary::marker { display: none; content: ''; }
+
+.ins-badge {
+    width: 22px;
+    height: 22px;
+    border-radius: 7px;
+    background: var(--cobalt);
+    color: var(--paper);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 13px;
+    line-height: 1;
+    flex-shrink: 0;
+    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.10);
+}
+.ins-summary-label { color: var(--cobalt); }
+.ins-summary-hint {
+    margin-left: 4px;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0;
+    text-transform: none;
+}
+#instructions[open] .ins-summary-hint { display: none; }
+#instructions[open] .ins-summary {
+    border-bottom: 1px solid var(--line);
+}
+
+.ins-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px 10px;
+    align-items: center;
+    line-height: 1.2;
+    padding: 9px 12px 11px;
+}
+.key {
+    min-width: 60px;
+    padding: 2px 6px;
+    border: 1px solid rgba(27, 91, 168, 0.18);
+    border-radius: 5px;
+    background: rgba(214, 230, 246, 0.65);
+    color: var(--cobalt);
+    font-weight: 800;
+    font-size: 9.5px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* ── Toast ────────────────────────────────────────────────────── */
+
+#toast {
+    position: fixed;
+    left: 50%;
+    top: 16px;
+    transform: translate(-50%, -20px);
+    padding: 8px 16px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 100;
+}
+#toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+/* ── Responsive: tablet (≤900px) ──────────────────────────────── */
+
+@media (max-width: 900px) {
+    #palette {
+        width: calc(100vw - 32px);
+        right: 16px;
+        top: auto;
+        bottom: calc(16px + env(safe-area-inset-bottom));
+        height: 180px;
+    }
+    #palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
+    }
+    /* HUD is duplicate info on small screens — palette dominates the
+       bottom edge already. The compact controls badge stays so the
+       cheatsheet is still discoverable on touch / portrait layouts;
+       it lifts up to clear the bottom palette. */
+    #hud { display: none; }
+    #instructions {
+        bottom: calc(180px + 24px + env(safe-area-inset-bottom));
+    }
+    /* Open state on narrow screens: cap the height so the cheatsheet
+       can scroll instead of pushing offscreen. */
+    #instructions[open] .ins-grid {
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+}
+
+/* ── Responsive: phone portrait (≤640px) ──────────────────────── */
+
+/* Below 640px we're almost certainly on a phone in portrait. The
+   redesign here optimises for the realities of one-thumb operation
+   on a small screen:
+     • The title card collapses to logo + short name to reclaim space.
+     • The toolbar shrinks to icon-only and tucks against the safe-area
+       inset on the left.
+     • The palette becomes a full-width bottom sheet with bigger swatches.
+     • The controls badge uses a 44px touch target and floats above the
+       palette out of thumb-reach so it isn't tapped accidentally. */
+
+@media (max-width: 640px) {
+    :root {
+        --edge-gap: 10px;
+        --title-card-height: 52px;
+    }
+
+    /* Compact title card: logo + just the headline, subtitle hidden
+       (it's prose, not a tool). Anchor with safe-area inset so the
+       iPhone notch doesn't sit on top of the title text. */
+    #title-card {
+        top: calc(10px + env(safe-area-inset-top));
+        left: calc(10px + env(safe-area-inset-left));
+        padding: 8px 12px 8px 8px;
+        gap: 8px;
+        border-radius: var(--radius-sm);
+    }
+    .title-logo {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+    }
+    .title-logo::before { width: 22px; height: 12px; top: 6px; }
+    .title-logo::after  { width: 3px; height: 12px; top: 18px; }
+    .title-text h1 { font-size: 15px; line-height: 1.1; }
+    .title-text p  { display: none; }
+
+    /* Toolbar: drop the labels (icons are already self-evident at this
+       size) and tighten everything so it doesn't crowd the canvas.
+       Each tool is still ≥44×44 touch target — Apple/Material guideline
+       minimum — and the icon now visually fills the button instead of
+       hiding in the middle of it. */
+    #toolbar {
+        top: calc(10px + env(safe-area-inset-top) + var(--title-card-height) + 8px);
+        left: calc(8px + env(safe-area-inset-left));
+        padding: 6px 5px;
+        gap: 4px;
+        border-radius: var(--radius-sm);
+    }
+    .tool {
+        width: 50px;
+        padding: 7px 4px;
+        gap: 2px;
+    }
+    .tool .ti { width: 32px; height: 32px; }
+    .tool span.label { display: none; }
+
+    /* Palette: full-width bottom sheet, taller, larger swatches sized
+       for fingertips. Sits above the iOS home indicator. */
+    #palette {
+        left: calc(8px + env(safe-area-inset-left));
+        right: calc(8px + env(safe-area-inset-right));
+        width: auto;
+        bottom: calc(8px + env(safe-area-inset-bottom));
+        height: 200px;
+        padding: 4px 6px 6px;
+    }
+    #palette-tabs {
+        gap: 4px;
+        padding: 2px 2px 4px;
+    }
+    .tab {
+        font-size: 11px;
+        padding: 6px 10px;
+        min-height: 32px;
+    }
+    #palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+        gap: 6px;
+    }
+    .swatch { padding: 6px 4px 4px; min-height: 78px; }
+    .swatch canvas, .swatch img { width: 44px; height: 44px; }
+    .swatch .name { font-size: 10px; height: 22px; }
+
+    /* Controls badge: bigger target, lifted above the palette sheet,
+       and with the open panel scrollable so a long cheatsheet doesn't
+       spill off the top of the screen. */
+    #instructions {
+        left: calc(8px + env(safe-area-inset-left));
+        bottom: calc(200px + 16px + env(safe-area-inset-bottom));
+        max-width: calc(100vw - 16px - env(safe-area-inset-left) - env(safe-area-inset-right));
+    }
+    .ins-summary {
+        padding: 10px 14px 10px 10px;
+        min-height: 44px;
+    }
+    .ins-badge { width: 26px; height: 26px; font-size: 14px; }
+    .ins-summary-hint { display: none; }
+    #instructions[open] .ins-grid {
+        max-height: 40vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Toast clears the safe-area + title-card on phones. */
+    #toast {
+        top: calc(env(safe-area-inset-top) + 8px);
+        font-size: 12px;
+        padding: 7px 14px;
+    }
+}
+
+/* ── Responsive: very small phones (≤380px) ───────────────────── */
+
+/* On a 360-class device the bottom palette + toolbar would otherwise
+   eat the canvas. Tighten further: 5-tool grid that wraps, smaller
+   palette swatches. */
+@media (max-width: 380px) {
+    .tool { width: 46px; padding: 6px 3px; }
+    .tool .ti { width: 28px; height: 28px; }
+    #palette { height: 184px; }
+    #palette-grid { grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); }
+    .swatch canvas, .swatch img { width: 38px; height: 38px; }
+    #instructions { bottom: calc(184px + 14px + env(safe-area-inset-bottom)); }
+}
+
+/* ── Responsive: phone landscape ──────────────────────────────── */
+
+/* Landscape on a phone (short height, wide layout): bring the palette
+   back to the right side as a slim column instead of eating the bottom
+   third of the screen, and shrink the title back even further. */
+@media (max-height: 480px) and (orientation: landscape) {
+    #title-card {
+        padding: 6px 10px 6px 6px;
+    }
+    .title-logo { width: 32px; height: 32px; }
+    .title-text h1 { font-size: 14px; }
+    .title-text p  { display: none; }
+
+    #toolbar {
+        top: calc(8px + env(safe-area-inset-top));
+        left: calc(8px + env(safe-area-inset-left));
+        padding: 5px 4px;
+        gap: 3px;
+    }
+    .tool { width: 44px; padding: 6px 3px; }
+    .tool .ti { width: 26px; height: 26px; }
+    .tool span.label { display: none; }
+
+    #palette {
+        top: calc(8px + env(safe-area-inset-top));
+        right: calc(8px + env(safe-area-inset-right));
+        bottom: calc(8px + env(safe-area-inset-bottom));
+        left: auto;
+        width: 200px;
+        height: auto;
+    }
+    #palette-grid { grid-template-columns: repeat(2, 1fr); }
+    #instructions {
+        bottom: calc(8px + env(safe-area-inset-bottom));
+        left: calc(8px + env(safe-area-inset-left));
+    }
+}
+
+/* ── Coarse-pointer (touch device) cheatsheet swap ────────────── */
+
+/* On any pointer-coarse device (phones, tablets, touch laptops in
+   tablet mode) the keyboard shortcuts are useless — swap to the
+   touch-gesture cheatsheet. Pure CSS, no JS detection needed. */
+@media (pointer: coarse) {
+    .ins-grid--mouse { display: none; }
+    .ins-grid--touch { display: grid; }
+    /* Touch devices often have a crosshair-incompatible cursor. */
+    #game-canvas { cursor: default; }
+}

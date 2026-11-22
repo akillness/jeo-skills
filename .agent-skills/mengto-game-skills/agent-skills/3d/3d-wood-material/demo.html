@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Procedural Wood Grain</title>
+<meta name="description" content="Three.js, WebGL and GLSL: one MeshPhysicalMaterial patched with growth rings, cathedral figure, pores, rays and tool marks, no image textures, ported from the Kibori workshop.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' rx='3' fill='%239d382c'/%3E%3Cpath d='M16 7v18M8 12h16M16 13l-7 9M16 13l7 9' stroke='%23f2ece2' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400&display=swap" rel="stylesheet">
+<link rel="modulepreload" href="https://unpkg.com/three@0.169.0/build/three.module.min.js" crossorigin>
+<style>
+  :root{
+    --ink:#f2ece2; --dim:rgba(242,236,226,.68); --hair:rgba(242,236,226,.16);
+    --gold:#dbad64; --red:#9d382c; --panel:rgba(16,11,7,.78);
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+    --pad:clamp(16px,2.4vw,30px);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-weight:normal}
+  html,body{height:100%}
+  body{background:#0a0806;color:var(--ink);font-family:var(--sans);overflow:hidden;-webkit-font-smoothing:antialiased}
+  #gl{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab;outline:none}
+  #gl:active{cursor:grabbing}
+  #gl:focus-visible{box-shadow:inset 0 0 0 1px var(--gold)}
+  .shade{position:fixed;inset:0;pointer-events:none;
+    background:linear-gradient(to right,rgba(9,7,5,.62),rgba(9,7,5,0) 46%),
+               linear-gradient(to top,rgba(9,7,5,.72),rgba(9,7,5,0) 34%)}
+  .head{position:fixed;left:var(--pad);top:var(--pad);max-width:min(440px,calc(100vw - 2*var(--pad)));pointer-events:none}
+  .kick{font:normal 11px/1.4 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+  h1{font:normal clamp(38px,5.2vw,74px)/.98 var(--serif);letter-spacing:-.005em;margin:12px 0 14px}
+  h1 i{font-style:normal;font-size:.5em;margin-left:.4em;color:var(--dim);vertical-align:.18em;font-family:"Hiragino Mincho ProN","Yu Mincho",serif}
+  .head p{font:italic normal clamp(16px,1.3vw,19px)/1.36 var(--serif);color:rgba(242,236,226,.84);text-wrap:pretty}
+  .head p+p{margin-top:10px;font:normal 11px/1.55 var(--sans);letter-spacing:.08em;color:var(--dim);text-transform:none}
+  .panel{position:fixed;right:var(--pad);bottom:var(--pad);width:min(372px,calc(100vw - 2*var(--pad)));
+    background:var(--panel);border:1px solid var(--hair);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    padding:16px 18px 14px;display:grid;gap:13px}
+  fieldset{border:0;display:grid;gap:7px;min-width:0}
+  legend,.lab{font:normal 11px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--dim);padding:0}
+  .seg{display:flex;flex-wrap:wrap;gap:6px}
+  .seg label{position:relative}
+  .seg input{position:absolute;opacity:0;inset:0;cursor:pointer}
+  .seg span{display:block;padding:8px 11px;border:1px solid var(--hair);font:normal 12px/1 var(--sans);letter-spacing:.06em;color:var(--dim);transition:background .2s,color .2s,border-color .2s}
+  .seg input:checked+span{background:rgba(219,173,100,.16);border-color:rgba(219,173,100,.7);color:var(--ink)}
+  .seg input:focus-visible+span{outline:2px solid var(--gold);outline-offset:2px}
+  .seg input:hover+span{color:var(--ink)}
+  .row{display:grid;grid-template-columns:96px 1fr 38px;align-items:center;gap:10px}
+  .row output{font:normal 11px/1 var(--sans);color:var(--ink);text-align:right;font-variant-numeric:tabular-nums}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:24px;background:transparent;cursor:pointer}
+  input[type=range]::-webkit-slider-runnable-track{height:1px;background:rgba(242,236,226,.34)}
+  input[type=range]::-moz-range-track{height:1px;background:rgba(242,236,226,.34)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--ink);margin-top:-6px;border:0}
+  input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:var(--ink);border:0}
+  input[type=range]:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .btns{display:flex;flex-wrap:wrap;gap:6px}
+  button{font:normal 12px/1 var(--sans);letter-spacing:.06em;color:var(--ink);background:transparent;border:1px solid var(--hair);padding:9px 12px;cursor:pointer;transition:background .2s,border-color .2s}
+  button:hover{border-color:rgba(219,173,100,.7)}
+  button[aria-pressed=true]{background:rgba(219,173,100,.16);border-color:rgba(219,173,100,.7)}
+  button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .chk{display:flex;align-items:center;gap:9px;font:normal 12px/1.3 var(--sans);letter-spacing:.04em;color:var(--dim);cursor:pointer}
+  .chk input{accent-color:var(--gold);width:15px;height:15px}
+  .chk input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .read{font:normal 11px/1.5 var(--sans);letter-spacing:.06em;color:var(--dim);font-variant-numeric:tabular-nums;border-top:1px solid var(--hair);padding-top:10px}
+  .read b{color:var(--ink);font-weight:normal}
+  .tag{position:fixed;left:var(--pad);bottom:var(--pad);font:normal 11px/1.5 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:rgba(242,236,226,.5);pointer-events:none}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  #boot{position:fixed;inset:0;display:grid;place-items:center;background:#0a0806;font:normal 11px/1 var(--sans);letter-spacing:.26em;text-transform:uppercase;color:rgba(242,236,226,.52);transition:opacity .5s;z-index:9}
+  #boot.gone{opacity:0;pointer-events:none}
+  @media (max-width:820px){
+    .head p+p{display:none}
+    h1{font-size:clamp(34px,11vw,54px)}
+    .panel{left:var(--pad);right:var(--pad);width:auto;padding:12px 14px;gap:9px;max-height:40vh;overflow:auto}
+    .row{grid-template-columns:82px 1fr 34px}
+    .tag{display:none}
+    .seg span{padding:7px 9px}
+  }
+  @media (prefers-reduced-motion:reduce){ #boot{transition:none} }
+</style>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.169.0/build/three.module.min.js"}}</script>
+</head>
+<body>
+<canvas id="gl" tabindex="0" aria-label="Wood boards on a bench. Drag to orbit, scroll to zoom, arrow keys to orbit."></canvas>
+<div class="shade"></div>
+<header class="head">
+  <div class="kick">Three.js · WebGL · GLSL &mdash; MeshPhysicalMaterial, no image textures</div>
+  <h1>Procedural Wood Grain<i>木目</i></h1>
+  <p>One 1024&sup2; noise field, mip-filtered, drives rings, cathedral arcs, pores, rays and tool marks for colour, roughness and relief together. It stays wood at 10 cm; a tiled photo does not.</p>
+  <p>Detail fades by its own screen-space footprint (<code>fwidth</code>), so grazing and distant boards never shimmer. Drag to orbit, scroll to zoom.</p>
+</header>
+<form class="panel" id="panel" onsubmit="return false" aria-label="Wood controls">
+  <fieldset><legend>Species</legend>
+    <div class="seg" id="species">
+      <label><input type="radio" name="sp" value="keyaki" checked><span>Keyaki</span></label>
+      <label><input type="radio" name="sp" value="sugi"><span>Sugi</span></label>
+      <label><input type="radio" name="sp" value="hinoki"><span>Hinoki</span></label>
+      <label><input type="radio" name="sp" value="kuri"><span>Kuri</span></label>
+    </div></fieldset>
+  <fieldset><legend>Finish</legend>
+    <div class="seg" id="finish">
+      <label><input type="radio" name="fn" value="raw"><span>Raw</span></label>
+      <label><input type="radio" name="fn" value="oil" checked><span>Oil</span></label>
+      <label><input type="radio" name="fn" value="wax"><span>Wax</span></label>
+      <label><input type="radio" name="fn" value="lacquer"><span>Urushi</span></label>
+    </div></fieldset>
+  <div class="row"><label class="lab" for="tool">Tool marks</label><input id="tool" type="range" min="0" max="1.6" step="0.01" value="0.5"><output id="toolO">0.50</output></div>
+  <div class="row"><label class="lab" for="relief">Relief</label><input id="relief" type="range" min="0" max="3" step="0.05" value="1.8"><output id="reliefO">1.8</output></div>
+  <div class="row"><label class="lab" for="scale">Grain scale</label><input id="scale" type="range" min="0.5" max="2" step="0.05" value="1"><output id="scaleO">1.0</output></div>
+  <div class="btns" role="group" aria-label="Camera">
+    <button type="button" data-view="hero" aria-pressed="true">Overview</button>
+    <button type="button" data-view="face" aria-pressed="false">Macro face</button>
+    <button type="button" data-view="end" aria-pressed="false">Macro end grain</button>
+  </div>
+  <label class="chk"><input type="checkbox" id="naive"> Swap in the failure: one tiled colour map, flat roughness</label>
+  <div class="read" id="read" aria-live="polite">&nbsp;</div>
+</form>
+<div class="tag">Kibori 木彫 &mdash; timber material</div>
+<div id="boot" role="status">Sawing the boards</div>
+
+<script type="module">
+import * as THREE from 'three';
+
+const canvas = document.getElementById('gl');
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const Q = new URLSearchParams(location.search);
+
+/* Renderer: the page tone-maps by hand in its own final pass; the demo lets
+   three do it (ACES) so the material is judged through one standard chain. */
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:false, powerPreference:'high-performance', preserveDrawingBuffer:Q.has('cap')});
+THREE.ColorManagement.enabled = true;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.autoUpdate = false;                 /* static set: bake the shadows once */
+renderer.setClearColor(0x0a0806, 1);
+const MAXAN = renderer.capabilities.getMaxAnisotropy();
+
+/* ===== ported from kibori.html, unchanged ============================== */
+const NOISE = /* glsl */`
+  vec2 hash2(vec2 p){
+    p = vec2(dot(p,vec2(127.1,311.7)), dot(p,vec2(269.5,183.3)));
+    return fract(sin(p)*43758.5453123)*2.0-1.0;
+  }
+  vec3 hash3(vec3 p){
+    p = vec3(dot(p,vec3(127.1,311.7,74.7)),dot(p,vec3(269.5,183.3,246.1)),dot(p,vec3(113.5,271.9,124.6)));
+    return fract(sin(p)*43758.5453123)*2.0-1.0;
+  }
+  float hash1(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123); }
+  float gnoise(vec2 x){
+    vec2 p = floor(x), w = fract(x);
+    vec2 u = w*w*w*(w*(w*6.0-15.0)+10.0);
+    float a = dot(hash2(p+vec2(0,0)), w-vec2(0,0));
+    float b = dot(hash2(p+vec2(1,0)), w-vec2(1,0));
+    float c = dot(hash2(p+vec2(0,1)), w-vec2(0,1));
+    float d = dot(hash2(p+vec2(1,1)), w-vec2(1,1));
+    return mix(mix(a,b,u.x), mix(c,d,u.x), u.y)*0.7+0.5;
+  }
+  float gnoise3(vec3 x){
+    vec3 p = floor(x), w = fract(x);
+    vec3 u = w*w*w*(w*(w*6.0-15.0)+10.0);
+    float n = 0.0;
+    for(int k=0;k<2;k++)for(int j=0;j<2;j++)for(int i=0;i<2;i++){
+      vec3 o = vec3(float(i),float(j),float(k));
+      float wgt = mix(1.0-u.x,u.x,o.x)*mix(1.0-u.y,u.y,o.y)*mix(1.0-u.z,u.z,o.z);
+      n += wgt * dot(hash3(p+o), w-o);
+    }
+    return n*0.8+0.5;
+  }
+  float fbm(vec2 p, int oct){
+    float s=0.0,a=0.5,n=0.0;
+    for(int i=0;i<8;i++){ if(i>=oct) break; s+=a*gnoise(p); n+=a; p=p*2.03+11.7; a*=0.5; }
+    return s/max(n,1e-4);
+  }
+  float fbm3(vec3 p, int oct){
+    float s=0.0,a=0.5,n=0.0;
+    for(int i=0;i<6;i++){ if(i>=oct) break; s+=a*gnoise3(p); n+=a; p=p*2.07+7.3; a*=0.5; }
+    return s/max(n,1e-4);
+  }
+  float ridged3(vec3 p, int oct){
+    float s=0.0,a=0.5,n=0.0;
+    for(int i=0;i<6;i++){ if(i>=oct) break;
+      s+=a*(1.0-abs(gnoise3(p)*2.0-1.0)); n+=a; p=p*2.11+5.7; a*=0.5; }
+    return s/max(n,1e-4);
+  }
+  float ridged(vec2 p, int oct){
+    float s=0.0,a=0.5,n=0.0;
+    for(int i=0;i<8;i++){ if(i>=oct) break; s+=a*(1.0-abs(gnoise(p)*2.0-1.0)); n+=a; p=p*2.11+5.3; a*=0.5; }
+    return s/max(n,1e-4);
+  }
+`;
+
+const QUAD_VS = /* glsl */`
+  varying vec2 vUv;
+  void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }
+`;
+
+const quadGeo   = new THREE.PlaneGeometry(2,2);
+const quadCam   = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+const quadScene = new THREE.Scene();
+const quadMesh  = new THREE.Mesh(quadGeo, new THREE.MeshBasicMaterial());
+quadMesh.frustumCulled = false;
+quadScene.add(quadMesh);
+function pass(mat, target){
+  quadMesh.material = mat;
+  renderer.setRenderTarget(target || null);
+  renderer.clear(true, false, false);
+  renderer.render(quadScene, quadCam);
+}
+/* All timber shares a small, seamless noise field. Its mip chain filters the
+   anatomy before it reaches a pixel; no image assets or per-board maps load. */
+let woodFieldTarget = null, woodMaterialSerial = 0;
+function getWoodField(){
+  if(woodFieldTarget) return woodFieldTarget.texture;
+  woodFieldTarget = new THREE.WebGLRenderTarget(1024,1024,{
+    type:THREE.UnsignedByteType,depthBuffer:false,stencilBuffer:false,
+    minFilter:THREE.LinearMipmapLinearFilter,magFilter:THREE.LinearFilter,
+    generateMipmaps:true,wrapS:THREE.RepeatWrapping,wrapT:THREE.RepeatWrapping,
+  });
+  woodFieldTarget.texture.name = 'Shared timber anatomy field';
+  woodFieldTarget.texture.colorSpace = THREE.NoColorSpace;
+  const bake = new THREE.ShaderMaterial({vertexShader:QUAD_VS,
+    fragmentShader:NOISE+`
+      varying vec2 vUv;
+      float periodicNoise(vec2 x){
+        vec2 p=floor(x),w=fract(x),u=w*w*w*(w*(w*6.0-15.0)+10.0);
+        float a=dot(hash2(mod(p,64.0)),w);
+        float b=dot(hash2(mod(p+vec2(1,0),64.0)),w-vec2(1,0));
+        float c=dot(hash2(mod(p+vec2(0,1),64.0)),w-vec2(0,1));
+        float d=dot(hash2(mod(p+vec2(1,1),64.0)),w-vec2(1,1));
+        return mix(mix(a,b,u.x),mix(c,d,u.x),u.y)*0.70+0.5;
+      }
+      void main(){
+        vec2 p=vUv*64.0;
+        float n=periodicNoise(p);
+        float f=n*0.60+periodicNoise(p*2.0+9.0)*0.27
+                    +periodicNoise(p*4.0+27.0)*0.13;
+        gl_FragColor=vec4(n,f,periodicNoise(p+vec2(31.7,11.9)),1.0);
+      }`,depthTest:false,depthWrite:false});
+  const target=renderer.getRenderTarget(),oldMaterial=quadMesh.material;
+  try { pass(bake,woodFieldTarget); }
+  finally { renderer.setRenderTarget(target);quadMesh.material=oldMaterial;bake.dispose(); }
+  return woodFieldTarget.texture;
+}
+const WOOD_GLSL = /* glsl */`
+  struct Wood { vec3 col; float rough; float h; };
+  vec3 timberField(vec2 p){return texture2D(uWoodField,p/64.0).rgb;}
+  float timberN(vec2 p){return timberField(p).r;}
+
+  Wood woodSample(vec3 p){
+    vec3 q=p*uGrainScale;
+    vec2 cross2=(uAxis<0.5)?q.yz:(uAxis<1.5?q.xz:q.xy);
+    float along=(uAxis<0.5)?q.x:(uAxis<1.5?q.y:q.z);
+    vec3 grainAxis=(uAxis<0.5)?vec3(1,0,0):(uAxis<1.5?vec3(0,1,0):vec3(0,0,1));
+    float endgrain=pow(abs(dot(normalize(vWoodNormal),grainAxis)),6.0);
+    vec2 seed=vec2(uWoodSeed,uWoodSeed*0.637);
+    float across=cross2.x+cross2.y*0.63;
+    vec2 grainP=vec2(across,along);
+    vec3 broad=timberField(grainP*vec2(0.92,0.22)+seed);
+    vec3 curl=timberField(grainP*vec2(2.3,0.38)+seed+17.0);
+
+    /* Sparse branch stubs deflect nearby fibres into little eyes. The
+       influence dies before each cell boundary, so there is no tiled seam. */
+    vec2 kg=grainP/vec2(1.85,4.6)+seed*0.19;
+    vec2 ki=floor(kg),kr=hash2(ki+seed);
+    vec2 kp=(fract(kg)-0.5-kr*0.23)*vec2(1.85,4.6);
+    float hasKnot=step(0.71,hash1(ki+seed*2.7));
+    float knotR=length(kp*vec2(1.0,0.30));
+    vec2 edgeFade=smoothstep(vec2(0.0),vec2(0.15),fract(kg))
+                 *smoothstep(vec2(0.0),vec2(0.15),1.0-fract(kg));
+    float knotFlow=hasKnot*exp(-knotR*knotR*21.0)*edgeFade.x*edgeFade.y;
+    float knotCore=hasKnot*(1.0-smoothstep(0.026,0.080,knotR));
+
+    /* The pith wanders along the log. Nonuniform radial growth and a second
+       slow field turn flat-sawn faces into long cathedral arcs, while the
+       very same solid rings remain visible on the end cuts. */
+    float pithDrift=(broad.r-0.5)*0.72+(curl.r-0.5)*0.19;
+    vec2 radial=cross2+vec2(-pithDrift,uOffAxis+0.48);
+    radial.x+=knotFlow*kp.x*0.85;
+    float radius=length(radial*vec2(1.0,0.56));
+    float growth=radius*uRingFreq;
+    growth+=(timberN(vec2(growth*0.31,uWoodSeed+4.2))-0.5)*2.5;
+    growth+=(curl.g-0.5)*0.80+knotFlow*0.60;
+    float ring=floor(growth),phase=fract(growth);
+    float annual=timberN(vec2(ring*0.73,uWoodSeed+25.0));
+    float lateWidth=0.065+annual*0.21;
+    float late=smoothstep(0.94-lateWidth,0.97-lateWidth,phase)
+              *(1.0-smoothstep(0.965,1.0,phase));
+    float ringPx=fwidth(growth);
+    late=mix(late,lateWidth*0.65,smoothstep(0.16,0.72,ringPx));
+    float early=pow(clamp(phase,0.0,1.0),1.6);
+    early=mix(early,0.38,smoothstep(0.18,0.72,ringPx));
+
+    /* Interrupted longitudinal pores follow the same wandering grain.
+       End grain changes them into small open cells, never stretched lines. */
+    float fiberX=across+pithDrift*0.25+knotFlow*kp.x*0.38;
+    vec2 vesselP=mix(vec2(fiberX*96.0,along*7.5),cross2*88.0,endgrain);
+    vec3 vessels=timberField(vesselP+seed);
+    float vesselPx=max(length(dFdx(vesselP)),length(dFdy(vesselP)));
+    float pores=smoothstep(0.59,0.75,vessels.r)*smoothstep(0.40,0.65,vessels.b);
+    pores*=1.0-smoothstep(0.22,0.90,vesselPx);
+    vec2 fibreP=vec2(fiberX*230.0,along*2.4)+seed;
+    float fibres=(timberN(fibreP)-0.5)*(1.0-endgrain*0.75);
+    float fibrePx=max(length(dFdx(fibreP)),length(dFdy(fibreP)));
+    fibres*=1.0-smoothstep(0.18,0.85,fibrePx);
+    vec2 rayP=vec2(across*13.0,along*115.0)+seed+31.0;
+    vec3 rayField=timberField(rayP);
+    float rays=smoothstep(0.64,0.78,rayField.r)*smoothstep(0.42,0.66,rayField.b)*uRays;
+    float rayPx=max(length(dFdx(rayP)),length(dFdy(rayP)));
+    rays*=1.0-smoothstep(0.15,0.65,rayPx);
+    float checks=smoothstep(0.70,0.82,curl.b)*uChecks;
+    checks*=smoothstep(0.46,0.66,vessels.b)*(1.0-endgrain*0.5);
+    checks*=1.0-smoothstep(0.16,0.65,vesselPx);
+
+    float tone=0.075+late*0.40+early*0.070+pores*0.25-fibres*0.16
+              +(broad.g-0.5)*0.23+knotCore*0.44+knotFlow*0.075;
+    Wood w;
+    w.col=mix(uPale,uDark,clamp(tone,0.035,0.83));
+    w.col*=0.93+annual*0.095+(curl.b-0.5)*0.045;
+    w.col=mix(w.col,uDark*0.68,checks*0.33);
+    w.col=mix(w.col,uPale*1.035,rays*0.26);
+    w.col*=1.0-endgrain*(0.045+pores*0.10);
+    w.rough=0.91+late*0.13+pores*0.19+(broad.b-0.5)*0.20
+            -rays*0.075+knotCore*0.10+endgrain*0.14;
+    float ringRelief=1.0-smoothstep(0.07,0.24,ringPx);
+    float poreRelief=1.0-smoothstep(0.05,0.18,vesselPx);
+    float tool=(timberN(vec2(along*17.0,across*0.4)+seed)-0.5)*uTool;
+    w.h=late*0.20*ringRelief-pores*0.42*poreRelief+fibres*0.09
+       +rays*0.06+tool*0.045-checks*0.20;
+    return w;
+  }
+
+  vec3 bumpNormal(vec3 posVS,vec3 nrm,float h,float scale){
+    vec3 sx=dFdx(posVS),sy=dFdy(posVS);
+    vec3 R1=cross(sy,nrm),R2=cross(nrm,sx);
+    float det=dot(sx,R1);
+    vec2 dH=vec2(dFdx(h),dFdy(h))*scale;
+    vec3 grad=sign(det)*(dH.x*R1+dH.y*R2);
+    float lim=abs(det)*0.38;
+    grad*=min(1.0,lim/max(length(grad),1e-20));
+    return normalize(abs(det)*nrm-grad);
+  }
+`;
+
+function woodMat(o = {}){
+  const {
+    pale=0xc39a68,dark=0x6d4526,rough=0.62,grain=1.0,
+    axis=1,ringFreq=5.2,offAxis=0.0,bump=0.11,metal=0.0,
+    rays=0.8,checks=0.22,tool=0.0,extra=null,
+  }=o;
+  const m=new THREE.MeshPhysicalMaterial({
+    color:0xffffff,roughness:Math.max(0.43,rough),metalness:metal,
+    clearcoat:0,ior:1.43,specularIntensity:0.72,envMapIntensity:0.66,
+  });
+  const U={
+    uPale:{value:new THREE.Color(pale)},uDark:{value:new THREE.Color(dark)},
+    uGrainScale:{value:grain},uAxis:{value:axis},uRingFreq:{value:ringFreq},
+    uOffAxis:{value:offAxis},uBump:{value:bump*0.020},
+    uRays:{value:rays},uChecks:{value:checks},uTool:{value:tool},
+    uWoodSeed:{value:(++woodMaterialSerial)*7.113},
+  };
+  /* Keep render-target textures outside userData: material clones serialize
+     userData, while every cloned shader can safely share this stable field. */
+  const fieldUniform={value:getWoodField()};
+  m.userData.U=U;
+  m.onBeforeCompile=sh=>{
+    Object.assign(sh.uniforms,U,{uWoodField:fieldUniform});
+    sh.vertexShader=sh.vertexShader
+      .replace('#include <common>','#include <common>\nvarying vec3 vOP;\nvarying mat3 vNMat;\nvarying vec3 vWoodNormal;')
+      .replace('#include <begin_vertex>','#include <begin_vertex>\n vOP=position;vNMat=normalMatrix;vWoodNormal=normal;');
+    sh.fragmentShader=sh.fragmentShader
+      .replace('#include <common>',
+        `#include <common>
+         varying vec3 vOP,vWoodNormal;
+         varying mat3 vNMat;
+         uniform vec3 uPale,uDark;
+         uniform float uGrainScale,uAxis,uRingFreq,uOffAxis,uBump;
+         uniform float uRays,uChecks,uTool,uWoodSeed;
+         uniform sampler2D uWoodField;
+         ${NOISE}
+         ${WOOD_GLSL}
+         /*__WOOD_END__*/`)
+      .replace('#include <map_fragment>',
+        `Wood W=woodSample(vOP);
+         diffuseColor.rgb*=W.col;
+         ${extra||''}`)
+      .replace('#include <roughnessmap_fragment>',
+        `float roughnessFactor=clamp(roughness*W.rough,0.35,1.0);`)
+      .replace('#include <normal_fragment_maps>',
+        `normal = bumpNormal(-vViewPosition, normal, W.h, uBump);`);
+  };
+  return m;
+}
+function buildEnvironment(){
+  /* Actual linear HDR cards produce broad white reflections on blade edges
+     and lacquer. A canvas panorama capped the window at display white. */
+  const studio = new THREE.Scene();
+  studio.background = new THREE.Color(0.045,0.050,0.060);
+  const cards = [];
+  function card(w,h,position,radiance){
+    const geo = new THREE.PlaneGeometry(w,h);
+    const mat = new THREE.MeshBasicMaterial({
+      color:new THREE.Color(...radiance), side:THREE.DoubleSide,
+      toneMapped:false,
+    });
+    const mesh = new THREE.Mesh(geo,mat);
+    mesh.position.set(...position); mesh.lookAt(0,0,0);
+    studio.add(mesh); cards.push(mesh);
+  }
+  const windowFrame=new THREE.Group();
+  windowFrame.position.set(-5.0,4.2,4.8);windowFrame.lookAt(0,0,0);
+  for(let row=0;row<3;row++)for(let col=0;col<4;col++){
+    const geo=new THREE.PlaneGeometry(1.24,1.38);
+    const mat=new THREE.MeshBasicMaterial({color:new THREE.Color(3.8,3.55,3.05),side:THREE.DoubleSide,toneMapped:false});
+    const pane=new THREE.Mesh(geo,mat);pane.position.set((col-1.5)*1.30,(row-1)*1.47,0);
+    windowFrame.add(pane);cards.push(pane);
+  }
+  studio.add(windowFrame);
+  card(3.0,5.4,[6.0,1.6,2.0],[0.52,0.68,0.90]);
+  card(2.0,4.6,[2.5,2.2,-5.5],[1.50,1.22,0.88]);
+  card(7.5,2.2,[0,6.0,0],[0.52,0.55,0.60]);
+  card(9.0,9.0,[0,-4.0,0],[0.18,0.12,0.07]);
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const target = pmrem.fromScene(studio,0.025,0.1,40);
+  pmrem.dispose();
+  for(const mesh of cards){ mesh.geometry.dispose(); mesh.material.dispose(); }
+  return target.texture;
+}
+function chamferBox(w, h, d, c, mat, along='z'){
+  /* Small, genuinely round arrises catch a continuous studio highlight.
+     The six centre faces remain planar; only the edge and corner patches
+     curve. Dimensions and grain axes stay exact, including the sawn ends. */
+  const r = Math.max(0.0001, Math.min(c, w*0.24, h*0.24, d*0.24));
+  const segments = r < 0.008 ? 3 : 5;
+  const g = new THREE.BoxGeometry(1, 1, 1, segments, segments, segments);
+  const pos = g.attributes.position, normal = g.attributes.normal;
+  const halfCell = 0.5 / segments;
+  const core = new THREE.Vector3(w/2-r, h/2-r, d/2-r);
+  const n = new THREE.Vector3();
+  for(let i=0;i<pos.count;i++){
+    const x=pos.getX(i), y=pos.getY(i), z=pos.getZ(i);
+    n.set(x-Math.sign(x)*halfCell, y-Math.sign(y)*halfCell,
+          z-Math.sign(z)*halfCell).normalize();
+    pos.setXYZ(i, Math.sign(x)*core.x+n.x*r,
+                  Math.sign(y)*core.y+n.y*r,
+                  Math.sign(z)*core.z+n.z*r);
+    normal.setXYZ(i,n.x,n.y,n.z);
+  }
+  g.computeBoundingSphere();
+  const m = new THREE.Mesh(g, mat);
+  m.castShadow = true; m.receiveShadow = true;
+  return m;
+}
+
+function woodBox(w,h,d, mat, px,py,pz, ox,oy,oz){
+  const g = chamferBox(w,h,d,Math.min(w,h,d)*0.055,mat).geometry;
+  if (ox || oy || oz) g.translate(ox,oy,oz);
+  const m = new THREE.Mesh(g, mat);
+  m.position.set(px-(ox||0), py-(oy||0), pz-(oz||0));
+  return m;
+}
+const URUSHI = `{
+    vec3 an = abs(normalize(vWoodNormal));
+    vec3 ga = uAxis < 0.5 ? vec3(1,0,0) : (uAxis < 1.5 ? vec3(0,1,0) : vec3(0,0,1));
+    float eg = pow(dot(an, ga), 6.0);
+    float arris = smoothstep(0.03, 0.17, 1.0 - max(an.x, max(an.y, an.z)));
+    float rub = arris*smoothstep(-0.12, 0.30, gnoise(vOP.xy*31.0 + vOP.zx*17.0));
+    vec3 c = diffuseColor.rgb;
+    float l = dot(c, vec3(0.3, 0.55, 0.15))/dot(uPale, vec3(0.3, 0.55, 0.15));
+    c *= pow(clamp(l, 0.03, 1.2), uLac.x)*(1.0 - eg*uLac.y);
+    c *= mix(vec3(1.0), vec3(1.0, 0.88, 0.76), uLac.z);
+    diffuseColor.rgb = mix(c, uPale*0.95, rub*uLac.w);
+    W.rough = mix(W.rough, 1.35, rub*0.6);
+  }`;
+  /* A board is sawn at a slant to its log, so the pith runs off through its
+     face and the rings come up as nested flames: the wood field is sheared
+     along the board's length (uFig) instead of only offset. */
+const lacquer = (m, cc, ccr, fig, lac) => {
+    const f0 = m.onBeforeCompile, U = {uFig:{value:new THREE.Vector4(...fig)}, uLac:{value:new THREE.Vector4(...lac)}};
+    m.userData.U2 = U; m.clearcoat = cc; m.clearcoatRoughness = ccr;
+    m.onBeforeCompile = sh => {
+      f0(sh); Object.assign(sh.uniforms, U);
+      sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nuniform vec4 uFig;')
+        .replace('vOP=position;', 'vOP=position+vec3(0.0,uFig.z+position.x*uFig.x,uFig.w+position.x*uFig.y);');
+      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform vec4 uLac;');
+    };
+    m.customProgramCacheKey = () => 'kb-sashimono-urushi';
+    return m;
+  };
+/* ======================================================================= */
+
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0a0806);
+scene.environment = buildEnvironment();
+scene.environmentIntensity = 0.85;
+const camera = new THREE.PerspectiveCamera(34, 1, 0.01, 60);
+
+/* ---- species (constants lifted from the workshop's materials) ---- */
+const SPECIES = {
+  keyaki:{name:'Keyaki', pale:0x8a5f38, dark:0x3d2412, rough:0.62, grain:1.5, ringFreq:20, offAxis:0.75, bump:0.10, rays:0.35, checks:0.02, tool:0.12},
+  sugi:  {name:'Sugi',   pale:0xc8a579, dark:0x9b774d, rough:0.58, grain:1.8, ringFreq:30, offAxis:2.8, bump:0.06, rays:0.30, checks:0.02, tool:0.30},
+  hinoki:{name:'Hinoki', pale:0xd8c096, dark:0x8a6b40, rough:0.50, grain:2.2, ringFreq:42, offAxis:1.6, bump:0.04, rays:0.15, checks:0.0,  tool:0.2},
+  kuri:  {name:'Kuri',   pale:0x6f4d2c, dark:0x2c1a0b, rough:0.55, grain:3.0, ringFreq:22, offAxis:1.4, bump:0.08, rays:0.50, checks:0.10, tool:0.15},
+};
+const OIL = `{ diffuseColor.rgb = pow(diffuseColor.rgb, vec3(1.16)); W.rough *= 0.88; }`;
+const FINISH = {
+  raw:    {cc:0.0,  ccr:0.5,  extra:null,   key:'wood-raw'},
+  oil:    {cc:0.10, ccr:0.55, extra:OIL,    key:'wood-oil'},
+  wax:    {cc:0.22, ccr:0.38, extra:null,   key:'wood-wax'},
+  lacquer:{cc:0.42, ccr:0.40, extra:URUSHI, key:'kb-sashimono-urushi'},
+};
+const state = {species:'keyaki', finish:'oil', tool:0.5, relief:1.8, scale:1, naive:false};
+
+/* One material per slot. A slot's seed is fixed, so changing species or finish
+   keeps its grain where it was. Sharing one material would print the same grain on every board. */
+function makeWood(speciesId, finishId, slot, axis){
+  const P = SPECIES[speciesId], F = FINISH[finishId];
+  const keep = woodMaterialSerial; woodMaterialSerial = 40 + slot*3;
+  const o = {pale:P.pale, dark:P.dark, rough:P.rough, grain:P.grain*state.scale, axis, ringFreq:P.ringFreq,
+    offAxis:P.offAxis, bump:P.bump*state.relief, rays:P.rays, checks:P.checks, tool:state.tool, extra:F.extra};
+  let m = woodMat(o);
+  m.userData.base = {grain:P.grain, bump:P.bump*0.020};
+  if (finishId==='lacquer') m = lacquer(m, F.cc, F.ccr, [0,0,0,0], [0.5,0.55,0.15,0.5]);
+  else { m.clearcoat = F.cc; m.clearcoatRoughness = F.ccr; m.customProgramCacheKey = () => F.key; }
+  woodMaterialSerial = keep;
+  return m;
+}
+/* The failure, for contrast: one 256 px tile, repeated, one roughness, a plastic sheen. */
+let naiveTex = null;
+function makeNaive(pale, dark){
+  if (!naiveTex){
+    const c = document.createElement('canvas'); c.width = c.height = 256; const x = c.getContext('2d');
+    x.fillStyle = '#9a6b40'; x.fillRect(0,0,256,256);
+    let s = 7; const r = () => (s = (s*16807)%2147483647)/2147483647;
+    for (let i=0;i<70;i++){ const y=r()*256, h=1+r()*4; x.fillStyle = r()>.5 ? 'rgba(60,32,14,.35)' : 'rgba(200,150,95,.3)'; x.fillRect(0,y,256,h); }
+    naiveTex = new THREE.CanvasTexture(c); naiveTex.colorSpace = THREE.SRGBColorSpace;
+    naiveTex.wrapS = naiveTex.wrapT = THREE.RepeatWrapping; naiveTex.repeat.set(3,1);
+  }
+  return new THREE.MeshStandardMaterial({map:naiveTex, roughness:0.32, metalness:0, color:0xffffff});
+}
+
+/* ---- the set: a bench, a wall behind it, a plank, an end-grain block, four swatches ---- */
+const wallMat = woodMat({pale:0x1a1511, dark:0x0e0b08, rough:0.97, grain:0.8, axis:1, ringFreq:9.0, offAxis:0.55, bump:0.05, rays:0.0, checks:0.30});
+const benchMat = woodMat({pale:0x2c2016, dark:0x110a05, rough:0.86, grain:2.4, axis:0, ringFreq:14, offAxis:5.0, bump:0.10});
+const bench = woodBox(7.0, 0.16, 3.0, benchMat, 0,-0.08,0.2, 3.1,7.2,1.7); bench.receiveShadow = true;
+scene.add(bench);
+for (let i=0;i<7;i++){
+  const b = woodBox(1.0, 3.4, 0.10, wallMat, -3+i*1.0, 1.55, -1.42, i*1.3, 0, 0); b.receiveShadow = true; scene.add(b);
+}
+const parts = [];         /* {mesh, slot, axis, sp} */
+function addPart(w,h,d, x,z, slot, axis, sp, ox, oy, oz){
+  const mat = makeWood(sp||state.species, state.finish, slot, axis);
+  const m = woodBox(w,h,d, mat, x, h/2, z, ox, oy, oz);     /* rests on y = 0, the bench top */
+  m.castShadow = true; m.receiveShadow = true; scene.add(m);
+  parts.push({mesh:m, slot, axis, sp, w,h,d});
+  return m;
+}
+/* hero plank, grain along x; block with the grain up so its top is end grain */
+addPart(1.7, 0.16, 0.62, -0.30, -0.08, 1, 0, null, 2.3, 0.4, 1.1);
+addPart(0.42, 0.42, 0.42, 1.10, -0.30, 2, 1, null, 5.0, 0.0, 3.3);
+const SW = ['keyaki','sugi','hinoki','kuri'];
+SW.forEach((id,i)=> addPart(0.44, 0.06, 0.30, -1.14 + i*0.50, 0.66, 10+i, 0, id, 1.7+i*3.1, 0.2, 0.9+i));
+/* the swatches' edge is toward camera: the arris and the end grain read at a glance */
+
+/* ---- light: a low warm window, and the studio cards in the environment ---- */
+const key = new THREE.DirectionalLight(0xffe0b0, 4.2);
+key.position.set(-4.4, 3.8, 3.6); key.target.position.set(0.1,0,0);
+key.castShadow = true; key.shadow.mapSize.set(2048,2048);
+Object.assign(key.shadow.camera,{left:-3.2,right:3.2,top:2.4,bottom:-2.4,near:0.5,far:14});
+key.shadow.bias = -0.0004; key.shadow.normalBias = 0.012; key.shadow.radius = 3;
+scene.add(key, key.target);
+const fill = new THREE.HemisphereLight(0x6a7890, 0x2a1a0c, 0.35); scene.add(fill);
+renderer.shadowMap.needsUpdate = true;
+
+/* ---- naive swap ---- */
+function applyMaterials(){
+  for (const p of parts){
+    const old = p.mesh.material;
+    p.mesh.material = state.naive ? makeNaive() : makeWood(p.sp||state.species, state.finish, p.slot, p.axis);
+    if (old !== p.mesh.material) old.dispose();
+  }
+  renderer.shadowMap.needsUpdate = true;
+}
+function liveWood(f){ for (const p of parts){ const m = p.mesh.material; if (m.userData.U) f(m.userData.U, m.userData.base); } }
+
+/* ---- camera ---- */
+const VIEWS = {
+  hero:{t:[0.0,0.10,0.10], d:3.4, az:0.42, el:0.50},
+  face:{t:[-0.55,0.16,-0.08], d:0.34, az:0.30, el:0.62},
+  end: {t:[1.10,0.42,-0.30], d:0.30, az:0.25, el:1.10},
+};
+const cam = {t:new THREE.Vector3(), d:3.4, az:0.42, el:0.5};
+const goal = {t:new THREE.Vector3(), d:3.4, az:0.42, el:0.5};
+let viewName = 'hero', userTouched = false;
+function setView(n, snap){
+  viewName = n; const v = VIEWS[n]; goal.t.set(...v.t); goal.d = v.d; goal.az = v.az; goal.el = v.el;
+  if (snap) { cam.t.copy(goal.t); cam.d = goal.d; cam.az = goal.az; cam.el = goal.el; }
+  document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view===n)));
+  userTouched = n!=='hero'; dirty = true;
+}
+function place(){
+  const ce = Math.cos(cam.el);
+  camera.position.set(cam.t.x + Math.sin(cam.az)*ce*cam.d, cam.t.y + Math.sin(cam.el)*cam.d, cam.t.z + Math.cos(cam.az)*ce*cam.d);
+  camera.lookAt(cam.t);
+}
+let dragging = false, lx = 0, ly = 0;
+canvas.addEventListener('pointerdown', e => { dragging = true; lx = e.clientX; ly = e.clientY; canvas.setPointerCapture(e.pointerId); userTouched = true; });
+canvas.addEventListener('pointerup', e => { dragging = false; });
+canvas.addEventListener('pointermove', e => {
+  if (!dragging) return;
+  const k = 0.006 * Math.min(1, cam.d/1.5 + 0.25);
+  goal.az -= (e.clientX-lx)*k; goal.el = Math.max(0.06, Math.min(1.5, goal.el + (e.clientY-ly)*k)); lx = e.clientX; ly = e.clientY; dirty = true;
+});
+canvas.addEventListener('wheel', e => { e.preventDefault(); goal.d = Math.max(0.10, Math.min(6, goal.d*Math.exp(e.deltaY*0.0012))); userTouched = true; dirty = true; }, {passive:false});
+canvas.addEventListener('keydown', e => {
+  const s = 0.08; let hit = true;
+  if (e.key==='ArrowLeft') goal.az += s; else if (e.key==='ArrowRight') goal.az -= s;
+  else if (e.key==='ArrowUp') goal.el = Math.min(1.5, goal.el+s); else if (e.key==='ArrowDown') goal.el = Math.max(0.06, goal.el-s);
+  else if (e.key==='+'||e.key==='=') goal.d = Math.max(0.10, goal.d*0.85); else if (e.key==='-') goal.d = Math.min(6, goal.d/0.85);
+  else hit = false;
+  if (hit){ e.preventDefault(); userTouched = true; dirty = true; }
+});
+
+/* ---- controls ---- */
+const $ = id => document.getElementById(id);
+document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => setView(b.dataset.view, REDUCED)));
+$('species').addEventListener('change', e => { state.species = e.target.value; if(!state.naive) applyMaterials(); dirty = true; });
+$('finish').addEventListener('change', e => { state.finish = e.target.value; if(!state.naive) applyMaterials(); dirty = true; });
+$('naive').addEventListener('change', e => { state.naive = e.target.checked; applyMaterials(); dirty = true; });
+$('tool').addEventListener('input', e => { state.tool = +e.target.value; $('toolO').textContent = state.tool.toFixed(2); liveWood(U => U.uTool.value = state.tool); dirty = true; });
+$('relief').addEventListener('input', e => { state.relief = +e.target.value; $('reliefO').textContent = state.relief.toFixed(1); liveWood((U,b) => U.uBump.value = b.bump*state.relief); dirty = true; });
+$('scale').addEventListener('input', e => { state.scale = +e.target.value; $('scaleO').textContent = state.scale.toFixed(1); liveWood((U,b) => U.uGrainScale.value = b.grain*state.scale); dirty = true; });
+
+/* ---- size, loop ---- */
+let W = 0, H = 0, dpr = 1, dirty = true, last = 0, running = true;
+function resize(){
+  const w = canvas.clientWidth, h = canvas.clientHeight; if (!w || !h) return;
+  dpr = Math.min(2, window.devicePixelRatio || 1);
+  if (w===W && h===H && renderer.getPixelRatio()===dpr) return;
+  W = w; H = h; renderer.setPixelRatio(dpr); renderer.setSize(w, h, false);
+  camera.aspect = w/h;
+  /* portrait: pull back so the board still fits the width */
+  camera.fov = w/h < 0.9 ? 34/Math.max(0.55, w/h) : 34; camera.updateProjectionMatrix(); dirty = true;
+}
+new ResizeObserver(resize).observe(canvas); resize();
+
+function readout(){
+  const pxPerUnit = H*dpr / (2*cam.d*Math.tan(camera.fov*Math.PI/360));
+  const cm = cam.d*10;   /* the plank is 17 cm thick in the demo's own units: 1 unit = 10 cm */
+  $('read').innerHTML = `Camera <b>${cam.d.toFixed(2)}</b> u from the surface (${cm.toFixed(0)} cm) &middot; <b>${pxPerUnit.toFixed(0)}</b> device px per unit &middot; ${W*dpr|0}&times;${H*dpr|0}`;
+}
+function frame(now){
+  requestAnimationFrame(frame);
+  if ((document.hidden && frame.shown) || !running) { last = 0; return; }
+  const dt = Math.min(1/30, last ? (now-last)/1000 : 1/60); last = now;
+  if (!REDUCED && !userTouched && viewName==='hero' && !dragging) { goal.az += dt*0.045; dirty = true; }
+  const k = REDUCED ? 1 : 1 - Math.exp(-dt*5.5);
+  const dd = Math.abs(goal.d-cam.d)+Math.abs(goal.az-cam.az)+Math.abs(goal.el-cam.el)+goal.t.distanceTo(cam.t);
+  if (dd > 1e-4){
+    cam.d += (goal.d-cam.d)*k; cam.az += (goal.az-cam.az)*k; cam.el += (goal.el-cam.el)*k; cam.t.lerp(goal.t, k); dirty = true;
+  }
+  if (!dirty) return;
+  dirty = false; place(); renderer.render(scene, camera); readout();
+  if (!frame.shown){ frame.shown = true; $('boot').classList.add('gone'); window.__ready = true; }
+}
+document.addEventListener('visibilitychange', () => { last = 0; dirty = true; });
+window.__wood = {renderer, scene, camera, cam, goal, setView, state, parts, applyMaterials, THREE, dirty:()=>{dirty=true;}};
+setView(Q.get('view')||'hero', true);
+if (Q.has('d')) { goal.d = cam.d = +Q.get('d'); }
+if (Q.has('el')) { goal.el = cam.el = +Q.get('el'); }
+if (Q.has('az')) { goal.az = cam.az = +Q.get('az'); }
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

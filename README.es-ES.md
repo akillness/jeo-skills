@@ -341,7 +341,7 @@ y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 451 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 466 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (76)
 
@@ -461,9 +461,9 @@ Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `secur
 
 </details>
 
-### 🎮 Juego (41)
+### 🎮 Juego (55)
 
-Subcategorías: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (7), `qa-performance` (4), `release` (2)
+Subcategorías: `client` (10), `web` (5), `server` (1), `design-ui` (7), `audio` (1), `animation` (5), `motion-vfx` (4), `sprite-image` (3), `art-resources` (4), `storytelling` (0), `tooling` (8), `qa-performance` (5), `release` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -511,12 +511,26 @@ Subcategorías: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` 
 | `donchitos-game-studios` |
 | `gamefactory-3a` |
 | `arnis` |
+| `unity-skills` |
+| `blender-skills` |
+| `scenario-skills` |
+| `threejs-game-skills` |
+| `mengto-game-skills` |
+| `video-to-game` |
+| `threejs-ability-casting` |
+| `isometric-voxel-builder` |
+| `game-perf` |
+| `sprite-gen` |
+| `mono-pix` |
+| `motion2mixamo` |
+| `unimate` |
+| `3d-vibe-coding` |
 
 </details>
 
-### 🎬 Medios Creativos (41)
+### 🎬 Medios Creativos (42)
 
-Subcategorías: `image` (10), `video` (18), `motion` (2), `audio` (2), `presentation` (1), `diagram` (2), `design` (4), `capture` (0), `storytelling` (2)
+Subcategorías: `image` (10), `video` (18), `motion` (2), `audio` (2), `presentation` (1), `diagram` (2), `design` (5), `capture` (0), `storytelling` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -564,6 +578,7 @@ Subcategorías: `image` (10), `video` (18), `motion` (2), `audio` (2), `presenta
 | `diagram-design` |
 | `artcraft` |
 | `motionmaxxing` |
+| `3dviz-pro-max` |
 
 </details>
 

@@ -1,0 +1,48 @@
+/* style.css - panel colours are the LOOK swatches: dusk ink, ember accent, cool selection blue.
+   The viewport is sized by its container; main.js reads that box in the ResizeObserver. */
+:root {
+  --ink: #f4e9d8;
+  --panel: #221c26;
+  --panel-deep: #1a151d;
+  --edge: #3b3040;
+  --accent: #ffb46b;
+  --cool: #cfe4ff;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #14101a; color: var(--ink); font: 15px/1.55 system-ui, sans-serif; }
+.layout { display: grid; grid-template-columns: 1fr 22rem; min-height: 100vh; }
+.viewport { position: relative; min-width: 0; }
+#world { display: block; width: 100%; height: 100%; touch-action: none; }
+#error {
+  position: absolute; inset: auto 1rem 1rem; margin: 0; padding: 0.75rem 1rem;
+  background: #40161a; border: 1px solid #a33; border-radius: 6px;
+}
+.panel { padding: 1.4rem 1.3rem 2rem; background: var(--panel); border-left: 1px solid var(--edge); overflow-y: auto; }
+.eyebrow { margin: 0; font-size: 11.5px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--accent); }
+h1 { margin: 0.3rem 0 0.5rem; font: 600 30px/1.12 Georgia, 'Times New Roman', serif; }
+h2 { margin: 1.4rem 0 0.5rem; font: 600 11.5px/1 system-ui, sans-serif; letter-spacing: 0.13em; text-transform: uppercase; opacity: 0.6; }
+.lede { margin: 0 0 0.5rem; opacity: 0.86; }
+#views, .picks, .controls { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 0.6rem; }
+button {
+  padding: 0.4rem 0.7rem; color: var(--ink); background: #2e2633;
+  border: 1px solid var(--edge); border-radius: 5px; font: inherit; font-size: 13.5px; cursor: pointer;
+}
+button:hover { border-color: var(--accent); }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button[aria-pressed='true'] { background: #3d3346; border-color: var(--cool); color: #ffffff; }
+.readout {
+  margin: 1.2rem 0 1rem; padding: 0.9rem 1rem; background: var(--panel-deep);
+  border: 1px solid var(--edge); border-left: 3px solid var(--cool); border-radius: 6px;
+}
+.readout h3 { margin: 0; font: 600 19px/1.2 Georgia, serif; }
+.program { margin: 0.2rem 0 0; font-size: 13.5px; color: var(--accent); }
+#sel-facts { margin: 0.7rem 0 0; display: grid; grid-template-columns: auto; gap: 0.1rem; font-size: 13px; }
+#sel-facts dt { font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.55; margin-top: 0.5rem; }
+#sel-facts dd { margin: 0; }
+.note { margin: 0.6rem 0 0; font-size: 12px; opacity: 0.5; }
+@media (max-width: 780px) {
+  .layout { grid-template-columns: 1fr; }
+  .viewport { height: 58vh; }
+  .panel { border-left: 0; border-top: 1px solid var(--edge); }
+}

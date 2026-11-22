@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.root-motion-runtime-ownership",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "motion-profile",
+  "title": {
+    "en": "Root-motion runtime ownership"
+  },
+  "aliases": {
+    "en": [
+      "in-place versus authored locomotion",
+      "root delta extraction",
+      "single world-transform owner"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "products-assemblies"
+  ],
+  "summary": "Choose whether clip root channels or an application controller own world displacement, then remove the duplicate contribution when extracting root deltas.",
+  "objective": "Locomotion remains continuous across forward, reverse, wrap, seek and reset without double translation or an unexplained snap.",
+  "applies_when": [
+    "An exported character clip contains translation or rotation on a root node or root bone.",
+    "An application controller must move the character while skeletal animation supplies the pose."
+  ],
+  "subject_terms": [
+    "root motion",
+    "in-place clip",
+    "root delta",
+    "world transform",
+    "loop wrap",
+    "reverse playback"
+  ],
+  "tags": [
+    "motion-profile",
+    "root-motion",
+    "ownership",
+    "animation"
+  ],
+  "intent_signals": [
+    "extract root motion without moving twice",
+    "keep locomotion continuous through animation loops",
+    "reverse a root-motion clip"
+  ],
+  "example_prompts": [
+    "Make a walk clip drive a controller while its skeleton stays aligned.",
+    "Switch between authored root motion and in-place navigation with one declared owner."
+  ],
+  "negative_signals": [
+    "Applying the animated root transform and the same extracted delta to its parent.",
+    "Treating animation displacement as certified physical velocity or collision motion."
+  ],
+  "not_for": [
+    "Rigid-body handoff and contact response.",
+    "General animation-state blending without root displacement."
+  ],
+  "content": {
+    "principles": [
+      "Declare one world-displacement owner per mode: either retain authored root channels under a stationary parent, or let the application/controller integrate extracted deltas while neutralizing those same root components in the evaluated pose.",
+      "Extraction is a transform-space operation. Sample the designated root in a declared parent or world space, compute direction-aware deltas including rotation, and define how the delta is split when playback crosses a loop boundary.",
+      "Animation timing does not certify collision, momentum, path feasibility or foot contact; a physics or navigation system must own those constraints separately."
+    ],
+    "implementation": [
+      "In Blender, name the motion root, preserve a stable rest hierarchy, state whether each action is authored in-place or with root displacement, and export the intended object/bone transform channels. Keep helper constraints and unsupported properties baked only when their evaluated motion is required.",
+      "In Three.js, place the visual/animated root beneath a controller parent. For controller-owned motion, retain the previous unneutralized canonical motion-root sample separately, advance/evaluate the designated source, capture its new unneutralized sample before changing the visual pose, and compute direction-aware deltas in the declared space. Alternatively evaluate the source independently at previous and current clip times. Split wrap traversal into explicit segments, neutralize the owned component from the child pose, then apply the composed delta once to the controller; never use the already-neutralized child as the next prior sample. For clip-owned motion, leave the channel intact and do not also integrate it.",
+      "On reverse, wrap, seek, clip change and reset, use explicit policies. A seek may recompute absolute controller placement or suppress displacement; reset restores controller transform, root pose, action time and accumulated loop displacement together."
+    ],
+    "observable_checks": [
+      "A forward then reverse pass returns the controller and root to the same declared pose within the chosen numeric tolerance.",
+      "An off-axis translating and turning loop crosses its seam without doubled translation, doubled yaw or a one-frame snap; the test asserts that the cached prior sample is the unneutralized canonical root value rather than the displayed neutralized child pose.",
+      "Toggling between clip-owned and controller-owned modes at the same evaluated time preserves the visible world pose; collision behavior is reported separately."
+    ]
+  },
+  "related_ids": [
+    "knowledge.gltf-transform-pivot-handoff",
+    "knowledge.three-animation-mixer-adapter",
+    "knowledge.blender-deformation-animation-handoff",
+    "knowledge.physics-timeline-lifecycle"
+  ],
+  "creative_affordances": [
+    "Root motion may describe realistic walking, stylized gliding, mechanical travel or non-Euclidean staging.",
+    "The controller may consume only planar translation, full 3D translation, yaw, or a project-specific declared subset."
+  ],
+  "known_limits": [
+    "Core glTF carries node transform animation but assigns no root-motion meaning or collision behavior.",
+    "No exporter, animation playback, navigation or physics runtime was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.motion-gltf-root-channels",
+      "statement": "Core glTF animation channels target node translation, rotation, scale or morph weights; the specification does not define a root-motion extraction semantic.",
+      "scope": "glTF 2.0.1 core animation transport; ownership and extraction are application design.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-khronos-gltf-animation",
+          "locator": "Sections 3.11 and 5.7.2: channels target node TRS or weights"
+        }
+      ]
+    },
+    {
+      "id": "claim.motion-three-negative-playback",
+      "statement": "Three.js AnimationAction timeScale may be negative for backward playback, while action time is wrapped or clamped according to loop state.",
+      "scope": "Live Three.js AnimationAction API; verify installed revision.",
+      "source_refs": [
+        {
+          "source_id": "source.motion-three-animation-action",
+          "locator": "time, timeScale and loop properties"
+        }
+      ]
+    }
+  ]
+}

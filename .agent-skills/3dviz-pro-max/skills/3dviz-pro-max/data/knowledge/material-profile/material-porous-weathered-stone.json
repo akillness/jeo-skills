@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.material-porous-weathered-stone",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Stone pores, grain and weathered edges"
+  },
+  "aliases": {
+    "en": [
+      "porous stone appearance",
+      "weathered masonry surface"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "environments-dioramas",
+    "products-assemblies"
+  ],
+  "summary": "Separate mineral-scale texture, visible pits, erosion and deposits so stone detail explains scale and exposure.",
+  "objective": "Make a weathered stone object readable at both monument and hand-inspection scales.",
+  "tags": [
+    "material-profile",
+    "stone",
+    "porosity",
+    "weathering"
+  ],
+  "subject_terms": [
+    "stone",
+    "porosity",
+    "weathering",
+    "pitting",
+    "mineral grain",
+    "erosion"
+  ],
+  "intent_signals": [
+    "Make a weathered stone object readable at both monument and hand-inspection scales."
+  ],
+  "example_prompts": [
+    "Create a carved stone fountain with coherent shallow pits, softened exposed edges and restrained runoff stains."
+  ],
+  "content": {
+    "principles": [
+      "Choose a stone and exposure story or state that it is fictional. Generic noise alone does not establish a particular rock type or weathering process.",
+      "Use the source as evidence that weathering can affect both volume and appearance; an authored approximation is not the paper's moisture/mineral simulation."
+    ],
+    "implementation": [
+      "Separate coarse broken contours, mid-scale pits and fine mineral variation. Put a chip into geometry when it changes the rim or casts a meaningful recess shadow; keep unresolved grain in surface shading.",
+      "Align optional stains with the authored runoff/deposit story and interrupts such as ledges, rather than copying one vertical streak onto every orientation.",
+      "Compare a broad diffuse view and a raking light close-up at fixed exposure; adjust pore depth and roughness independently so fine grain does not look like uniformly inflated gravel."
+    ],
+    "observable_checks": [
+      "At the same world scale, neighboring blocks have compatible grain/pit sizes unless distinct stone is intended.",
+      "Silhouette erosion remains visible with textures hidden; color-only weathering does not pretend to remove volume.",
+      "An overview retains carved features and mortar boundaries rather than losing them under high-contrast noise."
+    ]
+  },
+  "known_limits": [
+    "No generic erosion rate, stone age, strength, permeability or wetness-to-friction mapping.",
+    "Authored modeling and inspection guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Stylized facet groups or painted grain can carry the same hierarchy; pristine or polished stone need not be made porous-looking."
+  ],
+  "related_ids": [
+    "knowledge.dielectric-surface",
+    "knowledge.material-response-check"
+  ],
+  "claims": [
+    {
+      "id": "claim.material-depth-porous-weathered-stone",
+      "statement": "Dorsey and colleagues model weathered stone using moisture and mineral transport within a porous near-surface volume, with erosion changing its surface shape.",
+      "scope": "Description of the authors' 1999 rendering model, not a prediction for arbitrary stone.",
+      "source_refs": [
+        {
+          "source_id": "source.material-depth-weathered-stone",
+          "locator": "Abstract paragraphs 1-3"
+        }
+      ]
+    }
+  ]
+}

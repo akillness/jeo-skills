@@ -1,0 +1,14 @@
+[run]
+source = skills
+omit =
+    */skills/dcc/*
+    */skills/game-engines/*
+parallel = true
+relative_files = true
+patch = subprocess
+data_file = coverage/.coverage
+
+[report]
+skip_empty = true
+# Skill script folders hold no __init__.py; without this, a script no test runs never appears.
+include_namespace_packages = true

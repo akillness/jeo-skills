@@ -1,0 +1,44 @@
+{
+  "url": "http://127.0.0.1:<port>/",
+  "dir": "<scratch>/eval/without-skill/dist",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "ready_flag": "none",
+  "ready_timeout": false,
+  "views": [
+    {
+      "name": "default",
+      "file": "default.png",
+      "sha256": "f8023b5605f2cf221623281d25a1bfc4cbe1247b87e5c1fba9be9ff6206b905e",
+      "sha256_reencoded": "691a6b6dcbde94ccc2709cc0ebbbe1e83ac33a10140f80a39d1732cda788c3ec"
+    }
+  ],
+  "clicks": [
+    {
+      "selector": "#chips button:nth-of-type(8)",
+      "file": "click-0-chips-button-nth-of-type-8.png",
+      "sha256": "4f919a29e15ea490ac5cc7cf0c857f9078d1e9c00b1583e8b45971c0e008b621",
+      "sha256_reencoded": "c5d02fdeee44b500f738ca43e7084cb470c7ebf64eb4cd0177ebbe49dfa18496"
+    },
+    {
+      "selector": "#chips button:nth-of-type(9)",
+      "file": "click-1-chips-button-nth-of-type-9.png",
+      "sha256": "d47564381dcf660aebe240b1ebfd8237de3939a2be28e227b85a16b8c61bb917",
+      "sha256_reencoded": "3f202816d243213d16bc9c91913f07f60be2660e4328a5e79535a1a44787abed"
+    },
+    {
+      "selector": "#reset-cam",
+      "file": "click-2-reset-cam.png",
+      "sha256": "e0d5e84d27c014252d5390194476f49d9fd17d4740050112e03c7425200504e9",
+      "sha256_reencoded": "d236d9337402fe3999e5b4eb60ad20d76f7f777df5334dcae6e5043f180ca61b"
+    }
+  ],
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T10:19:38+00:00",
+  "finished": "2026-09-08T10:19:59+00:00",
+  "playwright_version": "1.62.0",
+  "post_processing": "PNGs re-encoded after capture, identically for every run: RGB, 256-colour adaptive palette (median cut, Floyd-Steinberg dither), zlib level 9, to hold every file under 400 KB. 'sha256' is the capture-time hash of the original frame; 'sha256_reencoded' is the hash of the file in this folder."
+}

@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.watermill-drive-train",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "object-archetype",
+  "title": {
+    "en": "Watermill wheel, transmission and working load"
+  },
+  "aliases": {
+    "en": [
+      "complete watermill mechanism",
+      "waterwheel shaft and millstone drive"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "rigid-mechanics"
+  ],
+  "summary": "Connect a waterwheel to a readable transmission and working machine, keeping the water representation separate from the chosen drive model.",
+  "objective": "Let a viewer follow the drive from water admission through a supported wheel shaft to a visible useful output and see how controls alter that chain.",
+  "tags": [
+    "object-archetype",
+    "watermill-drive-train"
+  ],
+  "subject_terms": [
+    "waterwheel",
+    "millrace",
+    "sluice",
+    "shaft",
+    "bearing",
+    "belt drive",
+    "grain elevator",
+    "millstone"
+  ],
+  "intent_signals": [
+    "waterwheel rotates but drives nothing",
+    "cutaway mill transmission",
+    "connect water flow control to working machinery"
+  ],
+  "example_prompts": [
+    "Build a mill cutaway where a wheel drives a shaft, transmission and grain-handling mechanism.",
+    "Design a fictional watermill with meaningful stop and restart states, while labeling its motion as illustrative."
+  ],
+  "content": {
+    "principles": [
+      "The cited Peirce Mill example connects wheel rotation through a shaft to gears, belts, an elevator and machinery. Use that complete power-chain idea without copying undocumented ratios or claiming every mill has the same layout.",
+      "Separate water admission, wheel/shaft rotation, transmission and working load. Give every rotating axis a visible support and every output a declared connection.",
+      "Choose wheel type and entry/exit path together. An invented paddle or bucket layout is acceptable, but the depicted water path should explain where the authored driving action is applied.",
+      "A flow control may drive an illustrative speed response; it is not automatically a calculation of hydraulic power, inertia, torque or grain throughput."
+    ],
+    "implementation": [
+      "Create millrace/flume, gate, wheel rim/spokes and paddles or buckets, axle, two bearing housings, transmission stages and output machine as named groups. Show water entry and a downstream exit without moving the base water volume merely to convey flow.",
+      "Place wheel geometry around the actual shaft pivot. Attach rigidly joined hubs to that shaft; keep stationary bearing housings outside its rotating group. Make transmission axis changes visible with a chosen gear or belt arrangement.",
+      "For an illustrative drive, store gate opening, target speed, actual displayed speed, drive phase and optional disengagement state. Use bounded acceleration/deceleration and derive all coupled part phases from one authoritative drive phase with declared authored ratios and sign conventions.",
+      "If the visual includes teeth or a belt, inspect the contact region: use matched geometric motion or clearly schematic pitch wheels. Do not independently spin downstream parts at unrelated clocks.",
+      "Give the working output a visible consequence such as a rotating runner stone, a reciprocating linkage or moving elevator buckets. Treat grain particles and production counters as schematic unless supported by a transport model.",
+      "Offer gate, stop/resume and transmission cutaway controls. Decide whether disengagement is modeled before exposing it, and reset wheel phase, output state, gate setting and display timers consistently."
+    ],
+    "observable_checks": [
+      "A slow rotation shows wheel and shaft remaining attached while bearing housings stay fixed.",
+      "Zero commanded drive brings the authored coupled machinery to its declared rest behavior; downstream parts do not continue from an independent animation clock.",
+      "The cutaway reveals a continuous named chain to the output rather than a shaft ending inside an unexplained wall.",
+      "Stop midway, resume and reset: coupled phases remain consistent and no extra work count appears during pause."
+    ]
+  },
+  "known_limits": [
+    "Historical source supports the Peirce Mill power-chain description, not this fictional layout, gear ratios or waterwheel efficiency.",
+    "Schematic speed response, decorative water marks and particles are not a hydraulic or grain-processing simulation.",
+    "Authored modeling guidance and prospective checks; no runtime artifact has been executed for this record."
+  ],
+  "creative_affordances": [
+    "Choose undershot, overshot, horizontal or explicitly fantastical wheel forms with a coherent authored water path; vary scale, enclosure and transmission visibility."
+  ],
+  "claims": [
+    {
+      "id": "claim.object-depth-watermill-drive-train",
+      "statement": "The NPS Peirce Mill panel describes water turning a wheel whose shaft drove gears, belts, a grain elevator and other machinery.",
+      "scope": "Documented Peirce Mill interpretation; no universal mill configuration or quantitative power claim.",
+      "source_refs": [
+        {
+          "source_id": "source.object-depth-nps-peirce-drive",
+          "locator": "Interpretive panel transcript, paragraph beginning Peirce Mill represents: wheel, shaft, gears, belts and grain elevator."
+        }
+      ]
+    }
+  ],
+  "related_ids": [
+    "knowledge.gear-mechanism"
+  ]
+}

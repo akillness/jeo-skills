@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "id": "recipe.reconciliation-control-loop",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Desired state, observed state and a reconciliation loop"
+  },
+  "aliases": {
+    "en": [
+      "control loop",
+      "desired versus actual state",
+      "drift and convergence"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data"
+  ],
+  "summary": "Model an operator loop where the difference between requested and observed state drives every action taken.",
+  "objective": "Build a reconciliation view where I can change the desired state, inject drift and watch a controller issue actions until observed matches desired.",
+  "tags": [
+    "reconciliation",
+    "control loop",
+    "operations"
+  ],
+  "subject_terms": [
+    "desired state",
+    "observed state",
+    "control loop",
+    "reconciliation",
+    "drift",
+    "convergence",
+    "controller",
+    "resource"
+  ],
+  "intent_signals": [
+    "Show how a controller keeps a system at its desired state.",
+    "Demonstrate drift being corrected by a reconciliation loop."
+  ],
+  "example_prompts": [
+    "Build a control loop view with a desired state panel, an observed state panel and a queue of corrective actions.",
+    "Let me delete a running unit and watch the controller recreate it."
+  ],
+  "negative_signals": [
+    "Not a model of any specific cluster, product or version behaviour.",
+    "Not a capacity or scheduling simulator; placement decisions here are illustrative."
+  ],
+  "not_for": [
+    "Not a model of any specific cluster, product or version behaviour.",
+    "Not a capacity or scheduling simulator; placement decisions here are illustrative."
+  ],
+  "entities": [
+    {
+      "name": "Desired specification",
+      "guidance": "Show the requested state as an editable specification object, since every action must be traceable to a difference from it."
+    },
+    {
+      "name": "Observed inventory",
+      "guidance": "Show actual units as separate objects that can be removed or altered outside the controller, so drift can be created deliberately."
+    },
+    {
+      "name": "Action queue",
+      "guidance": "Queue each corrective action with the difference that produced it, so actions are explained rather than merely animated."
+    }
+  ],
+  "state_contract": {
+    "model": "A desired specification, an observed inventory, a difference computation and a queue of corrective actions applied over discrete ticks. Actions are idempotent in intent: repeating a reconcile with no difference produces no action.",
+    "authority": "The difference between desired and observed is authoritative for every action; no action may be generated from a timer alone.",
+    "actions": [
+      "Edit the desired specification.",
+      "Delete or corrupt an observed unit to inject drift.",
+      "Step one reconcile tick.",
+      "Reset both states to the authored baseline."
+    ]
+  },
+  "invariants": [
+    "A reconcile tick with no difference enqueues no action.",
+    "Every enqueued action names the specific difference that caused it.",
+    "Repeated ticks converge toward zero difference or the scene reports that convergence stalled.",
+    "Queued actions carry the desired-state generation and resource identity they were derived from; a later edit cancels or revalidates them instead of leaving a stale action to execute.",
+    "Reconciling again before a queued action completes does not enqueue a duplicate for the same resource and generation."
+  ],
+  "motion_guidance": [
+    "Animate actions taking effect over ticks so the loop is a sequence of observations and responses, not an instant snap.",
+    "Show the difference count shrinking as actions complete, since that is the evidence that the loop is working."
+  ],
+  "known_limits": [
+    "A teaching loop with immediate, always-successful actions unless failure is injected deliberately.",
+    "Real controllers contend with partial failures, rate limits and races that this recipe only gestures at.",
+    "A declared tick bound ends the run: if the difference is not resolved within it the scene reports a stalled loop, and failed actions are reported rather than retried forever. No-op when already equal is weaker than idempotent effects under retry, and only the former is modelled.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-control-loop-reconciliation",
+      "statement": "A control loop is a non-terminating loop that regulates the state of a system; a controller tracks at least one resource type whose specification represents the desired state, and it makes or requests changes to move the current state closer to that desired state.",
+      "scope": "Reconciliation framing from official documentation of one platform; the modelled controller here is illustrative.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-kubernetes-controllers",
+          "locator": "Kubernetes Controllers concept page, control loop and desired state"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Observed inventory",
+      "structure": "Unit objects on a floor grid with health badges and an identity plate, so removal and recreation are visible events.",
+      "material": "Neutral unit material with a reserved accent for units created during the current reconcile.",
+      "articulation": "Units appear and disappear at tick boundaries rather than continuously."
+    },
+    {
+      "family": "Action queue",
+      "structure": "A queue rail with action cards showing the action and its triggering difference.",
+      "material": "Card plates opaque with a distinct treatment for completed and failed actions.",
+      "articulation": "Cards advance along the rail as ticks process them."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Discrete tick-based state changes; no physical transport or contact.",
+    "state": [
+      "desired specification",
+      "observed inventory",
+      "action queue",
+      "tick index"
+    ],
+    "checks": [
+      "A tick with zero difference produces zero actions.",
+      "Injected drift is corrected within a bounded number of ticks or reported as stalled."
+    ]
+  },
+  "related_ids": [
+    "recipe.agent-harness",
+    "recipe.service-graph",
+    "knowledge.state-playback"
+  ]
+}

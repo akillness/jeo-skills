@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.hertz-sphere-contact",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Hertz sphere contact patch and elastic approach"
+  },
+  "aliases": {
+    "en": [
+      "Hertz contact",
+      "elastic spheres"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "soft-fluid-thermal"
+  ],
+  "summary": "Link sphere approach, repulsive load and a growing pressure patch in a bounded elastic-contact model.",
+  "objective": "Expose the authoritative model and its visible response: hertz sphere contact patch and elastic approach.",
+  "applies_when": [
+    "Two homogeneous isotropic linear-elastic spheres in frictionless nonadhesive quasi-static normal contact; circular contact radius is much smaller than either sphere radius."
+  ],
+  "subject_terms": [
+    "Hertz contact",
+    "elastic spheres",
+    "contact patch",
+    "effective modulus"
+  ],
+  "tags": [
+    "physical-behavior",
+    "hertz-sphere-contact"
+  ],
+  "intent_signals": [
+    "Link sphere approach, repulsive load and a growing pressure patch in a bounded elastic-contact model."
+  ],
+  "example_prompts": [
+    "Build an inspectable demonstration of hertz sphere contact patch and elastic approach with parameter controls and a reset."
+  ],
+  "negative_signals": [
+    "Not adhesion, plastic indentation, rough surfaces, tangential friction, impact damping or a complete displacement-field solver."
+  ],
+  "not_for": [
+    "Not adhesion, plastic indentation, rough surfaces, tangential friction, impact damping or a complete displacement-field solver."
+  ],
+  "content": {
+    "principles": [
+      "The load law computes an elastic response to prescribed approach; it does not simulate impact or dissipate energy.",
+      "Use actual model metres for contact calculations; an enlarged inset is a display transform."
+    ],
+    "implementation": [
+      "Own positive radii RA,RB in m, Young moduli EA,EB in Pa and stable isotropic Poisson ratios -1<nuA,nuB<0.5. Set 1/Rstar=1/RA+1/RB and 1/Estar=(1-nuA^2)/EA+(1-nuB^2)/EB. For approach delta>0, a=sqrt(Rstar*delta) and F=(4/3)*Estar*sqrt(Rstar)*delta^(3/2) in N.",
+      "For separated or just-touching state delta<=0 set F=0 and omit the patch. For delta>0 show p(rho)=3F/(2*pi*a*a)*sqrt(1-rho*rho/(a*a)) only for 0<=rho<=a; zero outside. Guard the zero-load division.",
+      "Vary approach or modulus and derive load, patch and labels together. Show the approach of distant undeformed references; two overlapping undeformed spheres are only a schematic, not a resolved deformation field. Use an optional pressure-disk inset and state its magnification. Expose a/RA and a/RB so invalid small-contact regimes are visible."
+    ],
+    "observable_checks": [
+      "Multiplying positive delta by four multiplies a by two and F by eight at fixed materials and radii.",
+      "Integrating displayed axisymmetric pressure gives F; pressure vanishes at the edge. At separation there is neither tensile force nor a residual patch."
+    ]
+  },
+  "known_limits": [
+    "Not adhesion, plastic indentation, rough surfaces, tangential friction, impact damping or a complete displacement-field solver.",
+    "Authored reusable guidance; no solver or rendered artifact has been tested for this record."
+  ],
+  "creative_affordances": [
+    "Use a cutaway, restrained ghost reference or annotated section only when it clarifies the modeled relation; a planar diagram remains valid when depth adds no information."
+  ],
+  "related_ids": [
+    "knowledge.gravity-contact"
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-hertz-sphere-contact",
+      "statement": "For small frictionless elastic sphere contact, effective radius and modulus determine a=(3FRstar/(4Estar))^(1/3), approach delta=a^2/Rstar and pressure p(rho)=3F/(2*pi*a^2)*sqrt(1-rho^2/a^2). Eliminating a gives F proportional to delta^(3/2).",
+      "scope": "Two homogeneous isotropic linear-elastic spheres in frictionless nonadhesive quasi-static normal contact; circular contact radius is much smaller than either sphere radius.",
+      "source_refs": [
+        {
+          "source_id": "source.object-physics-hertz-sphere-contact",
+          "locator": "Section 5.4.10 Frictionless contact between two elastic spheres; relations between P,h,a and contact pressure"
+        }
+      ]
+    }
+  ]
+}

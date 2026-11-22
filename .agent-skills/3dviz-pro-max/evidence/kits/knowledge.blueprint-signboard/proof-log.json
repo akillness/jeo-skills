@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-signboard",
+  "record_revision": 2,
+  "asset": "templates/kits/props/signboard.js",
+  "asset_sha256": "c219159de172bd4ce1dbed8b68a4c0a41c8d44bdb7212b67a463d7a521833f72",
+  "params": {
+    "height": 2.62,
+    "reach": 0.86,
+    "boardWidth": 0.78,
+    "boardHeight": 0.52,
+    "seed": 1,
+    "postWidth": 0.11
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-signboard",
+    "module": "../props/signboard.js",
+    "params": {
+      "height": 2.62,
+      "reach": 0.86,
+      "boardWidth": 0.78,
+      "boardHeight": 0.52,
+      "seed": 1,
+      "postWidth": 0.11
+    },
+    "triangles": 2156,
+    "bounds_m": {
+      "min": [
+        -0.17499999701976776,
+        -1.7881393449270533e-09,
+        -0.17499999701976776
+      ],
+      "max": [
+        0.8400000071525573,
+        2.6274999998509885,
+        0.17500001192092896
+      ],
+      "size": [
+        1.015000004172325,
+        2.627500001639128,
+        0.3500000089406967
+      ]
+    },
+    "fit_distance_m": 4.1495,
+    "view_distances_m": {
+      "far": 9.9587,
+      "mid": 4.9793,
+      "close": 3.2366,
+      "detail": 0.958
+    },
+    "sockets": [
+      "base",
+      "bracket",
+      "swing-a",
+      "swing-b"
+    ],
+    "detail_socket": "base",
+    "animated": false,
+    "colliders": [
+      "post",
+      "board"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "ab800d0842cd8b964c7709fdf2c3077ed94c01ecc342d2eccf26c74ecd7cb060",
+    "mid.png": "4d4eadd823b4953aac36cb239c9a88d22e66dd7e6d79ae7279a500d15f8093e2",
+    "close.png": "97ed2513706b283ab44e422ddc80b8d7b6d0feeb8ce6709ae260792098e8ab3b",
+    "detail.png": "547089872a8c112386cea6ce3c38a709cddbb1147c3b767e9d7b0b83109071dd"
+  },
+  "motion": null,
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:51:25+00:00",
+  "finished": "2026-09-08T13:51:28+00:00"
+}

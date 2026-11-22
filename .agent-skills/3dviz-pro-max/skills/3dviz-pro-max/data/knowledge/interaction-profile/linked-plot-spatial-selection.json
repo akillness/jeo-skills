@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.linked-plot-spatial-selection",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "interaction-profile",
+  "title": {
+    "en": "Linked plot and 3D selection through stable entity IDs"
+  },
+  "aliases": {
+    "en": [
+      "brush plot highlight 3D",
+      "linked scatterplot selection"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "probability-statistics",
+    "earth-environment"
+  ],
+  "summary": "Make a plot mark and a spatial object select the same semantic entity despite sorting, filtering or mesh replacement.",
+  "objective": "Let a plot brush highlight matching 3D entities and let spatial selection identify their plotted observations after sorting and filtering.",
+  "subject_terms": [
+    "linked views",
+    "brushing",
+    "stable entity IDs",
+    "plot selection"
+  ],
+  "tags": [
+    "interaction-profile",
+    "linked-plot-spatial-selection"
+  ],
+  "intent_signals": [
+    "Let a plot brush highlight matching 3D entities and let spatial selection identify their plotted observations after sorting and filtering."
+  ],
+  "example_prompts": [
+    "Let a plot brush highlight matching 3D entities and let spatial selection identify their plotted observations after sorting and filtering."
+  ],
+  "content": {
+    "principles": [
+      "Use semantic entity identity as the shared selection authority; a plot index and a mesh index are temporary presentation addresses.",
+      "Define whether selection addresses an entity, one time sample, or an aggregate. An aggregated mark must disclose its members rather than inventing a one-to-one link."
+    ],
+    "implementation": [
+      "Store selected entity IDs separately from hover, brush extent and visibility. Map plot data and hit meshes to those IDs; use a composite entity/time key when selecting observations rather than whole entities.",
+      "If using D3, bind marks with a key derived from the stable ID. Validate key uniqueness within the join; keyed DOM joins alone do not synchronize a Three.js scene.",
+      "Route both views through one selection reducer. Programmatic redraws consume selection without re-emitting user actions. Define replace/add/toggle semantics and distinguish a selected hidden entity from a deleted entity.",
+      "Show a visible selected-count/list control and a clear action. Preserve scientific color encodings by using outlines, badges or separate emphasis; retain filtering independently when clearing selection."
+    ],
+    "observable_checks": [
+      "Select entity B, reverse plot order and replace its render mesh: B stays selected. A missing or duplicated ID is surfaced rather than selecting its new array neighbor.",
+      "Brush an aggregate of three entities, hide one via filtering, and inspect the selected count; visible and hidden membership follow the declared policy.",
+      "Clear selection from either view and confirm both views and metadata clear once while plot filter and model time remain unchanged."
+    ]
+  },
+  "known_limits": [
+    "Identity must come from data ownership or a documented import mapping. This pattern does not establish that unrelated datasets describe the same entities.",
+    "Draft authored guidance; no renderer, interaction artifact or scientific result was executed for this record."
+  ],
+  "creative_affordances": [
+    "Choose layout and visual emphasis to support the stated inspection task; these are design proposals rather than proven usability improvements."
+  ],
+  "related_ids": [
+    "knowledge.inspectable-selection",
+    "knowledge.graph-in-space"
+  ],
+  "claims": [
+    {
+      "id": "claim.d3-keyed-join-identity",
+      "statement": "D3 selection.data uses positional matching by default; a key function instead matches data and elements by string key, with duplicate keys assigned to enter or exit selections.",
+      "scope": "D3 DOM binding semantics only; cross-view state ownership is authored guidance.",
+      "source_refs": [
+        {
+          "source_id": "source.d3-selection-keyed-join",
+          "locator": "selection.data(data, key): default join-by-index, string key matching and duplicate keys"
+        }
+      ]
+    }
+  ]
+}

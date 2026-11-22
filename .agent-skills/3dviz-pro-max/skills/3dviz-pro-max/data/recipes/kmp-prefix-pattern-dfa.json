@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "id": "recipe.kmp-prefix-pattern-dfa",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "KMP pattern DFA: prefix recovery on mismatch"
+  },
+  "aliases": {
+    "en": [
+      "KMP string matching automaton",
+      "prefix-suffix matching"
+    ]
+  },
+  "direction_ids": [
+    "algorithms-data-structures"
+  ],
+  "summary": "Derive transition behavior from a concrete pattern and explain why a mismatch can preserve a partial match.",
+  "objective": "Build a KMP pattern DFA for ABABAC where stepping a text character reveals the matched prefix, mismatch fallback and first complete occurrence.",
+  "tags": [
+    "KMP",
+    "string pattern",
+    "DFA"
+  ],
+  "subject_terms": [
+    "KMP",
+    "string pattern",
+    "DFA",
+    "matched prefix",
+    "restart state",
+    "substring search",
+    "mismatch fallback"
+  ],
+  "intent_signals": [
+    "Build a KMP pattern DFA for ABABAC where stepping a text character reveals the matched prefix, mismatch fallback and first complete occurrence."
+  ],
+  "example_prompts": [
+    "Build a KMP pattern DFA for ABABAC where stepping a text character reveals the matched prefix, mismatch fallback and first complete occurrence."
+  ],
+  "negative_signals": [
+    "First occurrence only; no regex syntax, multi-pattern matching, grapheme segmentation or streaming all-overlap reporting. Pattern/alphabet limits are interface bounds, not complexity measurements."
+  ],
+  "not_for": [
+    "First occurrence only; no regex syntax, multi-pattern matching, grapheme segmentation or streaming all-overlap reporting. Pattern/alphabet limits are interface bounds, not complexity measurements."
+  ],
+  "entities": [
+    {
+      "name": "Prefix ladder",
+      "guidance": "Place state cards in order with their full prefix labels and mismatch arrows routed in a separate labeled edge lane. Link to a text ribbon with consumed index; depth separates annotations only."
+    },
+    {
+      "name": "Transition table",
+      "guidance": "Pin δ for the selected state beside the longest-suffix explanation, making repeated-prefix recovery visible without rereading consumed text."
+    }
+  ],
+  "state_contract": {
+    "model": "Declare a nonempty finite set of unique symbol IDs as the alphabet, nonempty pattern P of length m and text T as arrays of those symbol IDs. Indices and reported offsets count array symbols, not bytes or grapheme clusters. Reject duplicate alphabet declarations and out-of-alphabet input. Build the pattern DFA with states 0…m; j is matched-prefix length before the next input. For j<m, δ(j,c) is the longest prefix length k≤m whose prefix is a suffix of P[0:j]+c. Step is enabled only if i<|T| and j<m. Commit j←δ(j,T[i]), i←i+1; stop on j=m and report first-match start i−m. At text exhaustion with j<m report not-found without accessing T[i], including when the text is empty.",
+    "authority": "The typed domain model owns each committed state and result. Geometry, labels and selection derive from that model; animation cannot certify a claim.",
+    "actions": [
+      "Edit pattern/alphabet and rebuild the table; reject empty pattern or out-of-alphabet symbols.",
+      "Step one text symbol and inspect the selected transition/table cell.",
+      "Compare ABABABAC against ABABAC, undo a consumed character and reset."
+    ]
+  },
+  "invariants": [
+    "Exactly one transition exists per declared character in every nonterminal state; fallback is pattern-derived rather than an arbitrary edge.",
+    "For ABABABAC and pattern ABABAC, the first match starts at zero-based index 2.",
+    "Mismatch may retain a nonzero prefix. No next-character transition is performed after terminal state m in this first-match mode.",
+    "Empty text yields not-found without a character read. Exhaustion and a found match both disable further Step actions. Report offsets in the declared symbol-array indexing units."
+  ],
+  "motion_guidance": [
+    "Step commits one semantic action; pause freezes presentation and leaves the committed state inspectable. Reset cancels pending playback and restores the complete starting state.",
+    "Offer a static transition highlight and an equivalent readable table for reduced motion. Camera travel is presentation, not an inference or domain operation."
+  ],
+  "creative_affordances": [
+    "Use shallow sculptural cards, restrained materials and selective focus to expose relationships. Prefer a flat readable layout whenever depth has no declared role."
+  ],
+  "known_limits": [
+    "First occurrence only; no regex syntax, multi-pattern matching, grapheme segmentation or streaming all-overlap reporting. Pattern/alphabet limits are interface bounds, not complexity measurements.",
+    "Authored, source-reviewed guidance only; no generated artifact, solver integration, runtime behavior or visual check has run."
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Abstract symbols and logical state; mesh contact, light and motion have no causal role in the model."
+  },
+  "related_ids": [
+    "recipe.finite-state-machine"
+  ],
+  "object_craft": [
+    {
+      "family": "Prefix ladder",
+      "structure": "Place state cards in order with their full prefix labels and mismatch arrows routed in a separate labeled edge lane. Link to a text ribbon with consumed index; depth separates annotations only.",
+      "material": "Matte surfaces and high-contrast labels; distinguish status with text and border style as well as color."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim.kmp-prefix-pattern-dfa",
+      "statement": "The KMP pattern DFA precomputes mismatch transitions from a restart state and consumes text with table transitions until the first full pattern match or text exhaustion.",
+      "scope": "Finite declared alphabet and nonempty pattern; first-match semantics of the Princeton implementation.",
+      "source_refs": [
+        {
+          "source_id": "source.princeton-kmp-dfa",
+          "locator": "Constructor DFA preprocessing and search(String txt), source lines 58–70 and 102–111"
+        }
+      ]
+    }
+  ]
+}

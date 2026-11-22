@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "id": "recipe.daylight-shading-study",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Daylight and shading study over a day"
+  },
+  "aliases": {
+    "en": [
+      "sun path",
+      "shading",
+      "solar geometry"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors"
+  ],
+  "summary": "Drive shadows from a documented solar position algorithm and keep the difference between geometry and photometry explicit.",
+  "objective": "Build a room and facade where I can move through a day and a year, with sun position from a documented algorithm and shading depth as a design variable.",
+  "tags": [
+    "daylight",
+    "shading",
+    "sun path"
+  ],
+  "subject_terms": [
+    "sun path",
+    "solar altitude",
+    "solar azimuth",
+    "shading device",
+    "overhang",
+    "orientation",
+    "equinox",
+    "solstice"
+  ],
+  "intent_signals": [
+    "Show how a shading overhang performs across the day.",
+    "Build a sun path study for a room facade."
+  ],
+  "example_prompts": [
+    "Build a daylight study with a sun path, adjustable overhang depth and shadow patterns through the day.",
+    "Compare summer and winter shading for the same facade."
+  ],
+  "negative_signals": [
+    "Not a daylight metric or energy simulation: no illuminance, glare metrics or annual energy results.",
+    "Not a certified solar position service; the algorithm and its accuracy must be stated."
+  ],
+  "not_for": [
+    "Not a daylight metric or energy simulation: no illuminance, glare metrics or annual energy results.",
+    "Not a certified solar position service; the algorithm and its accuracy must be stated."
+  ],
+  "entities": [
+    {
+      "name": "Room and facade",
+      "guidance": "Model the opening with real reveal depth, frame and glazing plane, since shading depends on those dimensions."
+    },
+    {
+      "name": "Shading device",
+      "guidance": "Make overhang depth, fin spacing and offset explicit parameters, because the study exists to compare them."
+    },
+    {
+      "name": "Sun path",
+      "guidance": "Draw the sun path arcs for selected dates with the current position marked and the algorithm named."
+    }
+  ],
+  "state_contract": {
+    "model": "Site latitude and longitude, a date and a clock time with a declared time zone or UTC offset, a declared north and up convention, and solar altitude and azimuth from a named published algorithm implemented by the scene. Shadows are geometric projections of the modelled facade. When the sun is below the horizon the scene reports night rather than projecting a shadow, and the shadow receiver has a declared finite extent for very low sun angles. Nothing here claims photometric quantities.",
+    "authority": "The computed sun direction is authoritative for shadows; a light placed by eye that disagrees with it is a defect.",
+    "actions": [
+      "Scrub time of day and date.",
+      "Change overhang depth or fin spacing.",
+      "Switch facade orientation.",
+      "Reset location, date and geometry."
+    ]
+  },
+  "invariants": [
+    "Shadow direction always follows the computed sun direction, including at low sun angles.",
+    "Changing only the date changes the computed sun direction. The rendered pattern can still be identical when the sun is below the horizon or nothing illuminated is in frame, so identical images are not evidence that the algorithm is unused.",
+    "Any brightness shown is labelled as illustrative, not as an illuminance value."
+  ],
+  "motion_guidance": [
+    "Animate the day continuously and let the viewer stop at any time, since the extremes are the interesting states.",
+    "Keep a reference shadow from a chosen hour visible while scrubbing so comparison is direct."
+  ],
+  "known_limits": [
+    "Geometric shading only: sky models, interreflection, glazing transmittance and glare are out of scope.",
+    "Solar position accuracy depends on the algorithm used; the cited calculator states its own accuracy limits.",
+    "The scene must name and implement a specific solar-position algorithm; citing a calculator establishes provenance for the approach, not the accuracy of an unspecified implementation.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-solar-position-provenance",
+      "statement": "A public solar calculator states that its calculations are based on published astronomical algorithms and gives explicit accuracy limits for sunrise and sunset times, while also warning that the calculator is no longer actively supported or maintained and that its accuracy and functionality are not guaranteed.",
+      "scope": "Provenance and the maintenance status of one public calculator, re-read in this session. Its accuracy statement concerns sunrise and sunset event times, not sun angles or shadow positions, and it does not transfer to whatever algorithm a scene actually implements.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-noaa-solar-calculator",
+          "locator": "Solar Calculation Details, basis and accuracy statements"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Room and facade",
+      "structure": "Wall assembly with reveal depth, window frame, sill and a floor that receives the shadow pattern.",
+      "material": "Neutral interior surfaces with a matte floor so shadow edges stay legible; avoid glossy floors that hide the pattern.",
+      "articulation": "Facade orientation rotates the whole assembly relative to the site frame, not the sun."
+    },
+    {
+      "family": "Sun path",
+      "structure": "Arc geometry for selected dates with hour markers and a sun marker on the current position.",
+      "material": "Thin arcs with opaque hour labels; the marker is the only emissive element so it stays findable.",
+      "articulation": "Arcs regenerate when latitude or date selection changes."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Geometric shadow study driven by a computed sun direction; no photometric or thermal simulation.",
+    "state": [
+      "date",
+      "time",
+      "site coordinates",
+      "shading parameters"
+    ],
+    "checks": [
+      "Shadow direction matches the computed sun azimuth and altitude.",
+      "Changing the date alone changes the computed solar altitude and azimuth for the same clock time; the drawn pattern may legitimately look identical when the sun is below the horizon or no illuminated receiver is in view, so the check inspects the solar inputs and compares selected sun-above-horizon reference cases."
+    ]
+  },
+  "related_ids": [
+    "recipe.earth-tilt-seasons",
+    "recipe.building-service-layers",
+    "knowledge.comparison-stage"
+  ]
+}

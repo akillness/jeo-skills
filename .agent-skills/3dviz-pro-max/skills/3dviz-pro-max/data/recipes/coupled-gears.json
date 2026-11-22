@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "id": "recipe.coupled-gears",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Coupled gear kinematics"
+  },
+  "aliases": {
+    "en": [
+      "coupled gears"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics"
+  ],
+  "summary": "Drive meshing gears from a shared angular constraint with inspectable pitch circles.",
+  "objective": "Show two external gears with pitch circles, opposite rotation and a shared speed constraint.",
+  "tags": [
+    "coupled",
+    "gears"
+  ],
+  "example_prompts": [
+    "Show two external gears with pitch circles, opposite rotation and a shared speed constraint."
+  ],
+  "entities": [
+    {
+      "name": "Gear wheels",
+      "guidance": "Model distinct hub, shaft, rim and teeth; use machined-metal roughness at rims and darker bearing housings."
+    },
+    {
+      "name": "Pitch circles",
+      "guidance": "Overlay tangent pitch circles and the contact tangent; tooth profile is not the pitch circle."
+    },
+    {
+      "name": "Bearing support",
+      "guidance": "Keep shaft centers fixed and align pivots to their axes; give housings visible bores."
+    }
+  ],
+  "state_contract": {
+    "model": "Ideal externally tangent pitch circles with fixed radii r1,r2>0; imposed no-slip constraint r1*omega1+r2*omega2=0. Author-derived kinematic model, not tooth contact dynamics.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Edit input angular speed.",
+      "Pause and inspect contact tangent velocities.",
+      "Reset phase and speed."
+    ]
+  },
+  "invariants": [
+    "Angular velocities satisfy the declared signed radius constraint.",
+    "Centers remain separated by r1+r2.",
+    "Visual tooth phases and spacing must be checked through a complete cycle."
+  ],
+  "motion_guidance": [
+    "Integrate one driver angle at fixed steps and derive follower angle from the constraint and initial phase.",
+    "Ramp commanded angular velocity with a declared angular acceleration limit; do not rotate wheels with unrelated loops."
+  ],
+  "known_limits": [
+    "The cited source supports v=r*omega; the two-wheel coupling is an authored deduction under the stated no-slip constraint.",
+    "No verified involute tooth generator, backlash, torque, stress or collision solver. Use pitch-circle visualization if teeth cannot be made to mesh.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.coupled-gears",
+      "statement": "For fixed-axis rotation, tangential speed at radius r is r times angular speed.",
+      "scope": "This supports the pitch-circle kinematic deduction only; it does not certify a gear design.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-rotation",
+          "locator": "10.1, equation 10.4"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Gear wheels",
+      "structure": "Model distinct hub, shaft, rim and teeth; use machined-metal roughness at rims and darker bearing housings.",
+      "material": "Machined-metal rims, darker bearing housings and subtly contrasting hubs; avoid mirror finish that conceals tooth interference.",
+      "articulation": "Each shaft and wheel share an axis; follower angle derives from driver angle and the signed pitch-radius constraint."
+    },
+    {
+      "family": "Pitch circles",
+      "structure": "Overlay tangent pitch circles and the contact tangent; tooth profile is not the pitch circle.",
+      "material": "Machined-metal rims, darker bearing housings and subtly contrasting hubs; avoid mirror finish that conceals tooth interference.",
+      "articulation": "Each shaft and wheel share an axis; follower angle derives from driver angle and the signed pitch-radius constraint."
+    },
+    {
+      "family": "Bearing support",
+      "structure": "Keep shaft centers fixed and align pivots to their axes; give housings visible bores.",
+      "material": "Machined-metal rims, darker bearing housings and subtly contrasting hubs; avoid mirror finish that conceals tooth interference.",
+      "articulation": "Each shaft and wheel share an axis; follower angle derives from driver angle and the signed pitch-radius constraint."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Constrained ideal kinematics, no rigid-body contact solver.",
+    "state": [
+      "driver angle",
+      "driver angular velocity",
+      "commanded angular acceleration",
+      "derived follower angle"
+    ],
+    "colliders": [
+      "None in the ideal pitch-circle model; do not claim tooth collision response."
+    ],
+    "driving": [
+      "One angular input and signed no-slip radius constraint."
+    ],
+    "contact": [
+      "Pitch circles tangent by construction; inspect visible tooth interference separately."
+    ],
+    "timestep": "Fixed driver angle update; follower derived from driver, render interpolation only.",
+    "checks": [
+      "Signed tangent velocity constraint holds.",
+      "Full cycle returns tooth phase without drift."
+    ]
+  }
+}

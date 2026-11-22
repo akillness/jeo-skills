@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "id": "recipe.inverse-kinematics-target",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Inverse-kinematics target and residual"
+  },
+  "aliases": {
+    "en": [
+      "robot IK solver",
+      "Jacobian endpoint target"
+    ]
+  },
+  "direction_ids": [
+    "robotics-control"
+  ],
+  "summary": "Make numerical target solving visible, including residuals and non-convergence.",
+  "objective": "Let me drag a target for a planar arm and inspect each numerical IK iteration and its endpoint error.",
+  "tags": [
+    "inverse kinematics",
+    "Jacobian",
+    "pseudoinverse"
+  ],
+  "subject_terms": [
+    "inverse kinematics",
+    "Jacobian",
+    "pseudoinverse",
+    "target residual",
+    "singularity"
+  ],
+  "intent_signals": [
+    "drag an IK target",
+    "inspect solver convergence"
+  ],
+  "example_prompts": [
+    "Let me drag a target for a planar arm and inspect each numerical IK iteration and its endpoint error.",
+    "Show failure honestly when the target cannot be reached within the iteration budget."
+  ],
+  "entities": [
+    {
+      "name": "Planar arm",
+      "guidance": "Build base and rigid links with visible revolute pivots constrained to one plane."
+    },
+    {
+      "name": "Target and residual",
+      "guidance": "Use a target ring distinct from the actual endpoint; join them with an error segment."
+    },
+    {
+      "name": "Iteration trail",
+      "guidance": "Show a bounded history of endpoint candidates with iteration indices."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Planar arm",
+      "structure": "Build base and rigid links with visible revolute pivots constrained to one plane.",
+      "material": "Matte links and dark axis cylinders."
+    },
+    {
+      "family": "Target and residual",
+      "structure": "Use a target ring distinct from the actual endpoint; join them with an error segment.",
+      "material": "Contrasting target outline and solid actual endpoint marker."
+    },
+    {
+      "family": "Iteration trail",
+      "structure": "Show a bounded history of endpoint candidates with iteration indices.",
+      "material": "Fading small dots, never a decorative trajectory claim."
+    }
+  ],
+  "state_contract": {
+    "model": "Declared forward map f(q), Jacobian J(q), target x*, initial guess, iteration count and residual norm; numerical update uses a documented pseudoinverse method with step bound and stopping tolerance.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Move target while solver is paused.",
+      "Step an iteration or solve to budget.",
+      "Reset initial guess and compare convergence."
+    ]
+  },
+  "invariants": [
+    "Success requires computed residual below the declared tolerance and valid joint bounds.",
+    "Budget exhaustion or invalid numeric state reports failure without snapping tool to target.",
+    "The target marker is never used as the rendered tool position."
+  ],
+  "motion_guidance": [
+    "Display discrete candidates; interpolation between candidates is presentation and not a collision-free trajectory.",
+    "Stop at the iteration budget and retain the last valid joint vector and residual."
+  ],
+  "known_limits": [
+    "Local numerical method; convergence depends on initial guess and singularities.",
+    "Non-convergence alone is not proof of global unreachability; no torque or motion-planning guarantee.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [
+    {
+      "id": "claim.inverse-kinematics-target",
+      "statement": "Numerical inverse kinematics can iteratively update joint values using a Jacobian pseudoinverse and endpoint error; initial guess and singularities affect convergence.",
+      "scope": "Local Newton-Raphson-style coordinate formulation; no guarantee of a globally reachable solution or collision-free motion.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-inverse-kinematics",
+          "locator": "Transcript paragraphs on initial guess, Jacobian pseudoinverse and stopping on endpoint error"
+        }
+      ]
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Numerical pose solving, not physical robot dynamics.",
+    "state": [
+      "q",
+      "target",
+      "residual",
+      "iteration count"
+    ],
+    "colliders": [
+      "Link envelopes may flag candidate interference but do not certify trajectory clearance."
+    ],
+    "driving": [
+      "Bounded numerical joint updates."
+    ],
+    "contact": [
+      "No collision response."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Unreachable target retains nonzero residual and honest failure; endpoint always derives from f(q)."
+    ]
+  }
+}

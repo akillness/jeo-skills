@@ -1,0 +1,218 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-crate",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: nailed shipping crate"
+  },
+  "aliases": {
+    "en": [
+      "crate kit",
+      "packing box blueprint",
+      "market crate module"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "operations-logistics"
+  ],
+  "summary": "A nailed shipping crate of horizontal planks between four corner posts, with a diagonal brace and a battened lid, parameterised by size, plank count and seed.",
+  "objective": "At one metre the crate reads as posts breaking a cube, then planks with gaps and a brace, then nail domes and per-plank hue.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "prop",
+    "village",
+    "crate",
+    "cargo"
+  ],
+  "subject_terms": [
+    "plank gap",
+    "corner post",
+    "diagonal brace",
+    "nail head",
+    "lid batten"
+  ],
+  "intent_signals": [
+    "add crates to a market scene",
+    "stackable cargo prop",
+    "packing box kit"
+  ],
+  "example_prompts": [
+    "Stack crates behind the market stall.",
+    "I need a cargo box I can scale from a parcel to a shipping case."
+  ],
+  "not_for": [
+    "Any claim about packaging standards, load ratings or pallet dimensions.",
+    "A container with a working, openable lid."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/props/crate.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "size",
+      "type": "number",
+      "range": [
+        0.3,
+        1.2
+      ],
+      "default": 0.62,
+      "unit": "m"
+    },
+    {
+      "name": "planks",
+      "type": "integer",
+      "range": [
+        3,
+        6
+      ],
+      "default": 4
+    },
+    {
+      "name": "seed",
+      "type": "integer",
+      "range": [
+        0,
+        65535
+      ],
+      "default": 1
+    },
+    {
+      "name": "braced",
+      "type": "boolean",
+      "default": true
+    }
+  ],
+  "sockets": [
+    {
+      "name": "lid",
+      "position_m": [
+        0,
+        0.682,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "base",
+      "position_m": [
+        0,
+        0,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "label",
+      "position_m": [
+        0,
+        0.372,
+        0.342
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "four corner posts standing 1.8 cm proud of every face, breaking the cube",
+      "a battened lid overhanging the box by 2 cm on all four sides",
+      "a diagonal brace crossing two opposite faces at 40 degrees"
+    ],
+    "medium": [
+      "four planks a side with an 11 mm gap between each pair and at both ends",
+      "lid planks running across the side planks, with two battens over them",
+      "the brace laid over the planks, not flush with them",
+      "a dark inner liner behind the plank gaps, so a gap reads as depth not as sky"
+    ],
+    "fine": [
+      "thirty-two dome nail heads, 2.8 cm across, two at each plank end",
+      "9 mm chamfer on every plank edge and 1.1 cm on the posts",
+      "per-plank hue jitter of 5 percent across the sixteen side planks"
+    ]
+  },
+  "footprint_m": [
+    0.67,
+    0.68
+  ],
+  "poly_budget": 2156,
+  "fits_looks": [
+    "knowledge.style-low-poly",
+    "knowledge.style-stylized",
+    "knowledge.theme-industrial-workshop",
+    "knowledge.lighting-mood-overcast-soft"
+  ],
+  "content": {
+    "principles": [
+      "A crate is a frame with a skin, not a box: the corner posts are what carry the silhouette once the planks flatten out at distance.",
+      "Gaps are cheaper than texture and they survive every lighting change, because a gap is a shadow the geometry casts on itself.",
+      "Nails are the smallest authored feature; they only pay off if they sit on a surface that already reads, which is why they land on the posts."
+    ],
+    "implementation": [
+      "Call create({ size, planks, seed, braced }); the group is centred on its footprint with y = 0 at the ground.",
+      "Stack crates through the lid socket: it sits on the batten tops, so a stack never intersects.",
+      "Sixteen side planks and thirty-two nails are two instanced fields, so a wall of crates stays cheap."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible.",
+      "Two seeds differ visibly in plank tone while keeping the same silhouette.",
+      "The lid socket clears the lid battens: stacking two crates leaves no intersection."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here measures a real packing case or its load.",
+    "The poly budget is the triangle count observed at default parameters; six planks a side costs about 2800 triangles.",
+    "braced: false removes the diagonal and with it one medium-band feature, so the ladder claim holds only at the default."
+  ],
+  "creative_affordances": [
+    "Any parameter may be pushed outside its stated range; the range is the band that was proved, not a limit.",
+    "Re-colour the planks pale and the posts dark for a tea chest, or darken everything for a powder crate."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "size": 0.62,
+      "planks": 4,
+      "braced": true,
+      "gap_m": 0.011,
+      "bevel_m": 0.009,
+      "feeling": "well used market cargo"
+    },
+    "rationale": "620 mm is the size at which a crate reads as two-handed cargo next to a 1.7 m figure, and four planks is the fewest that still shows a rhythm of gaps."
+  },
+  "related_ids": [
+    "knowledge.hero-prop-detail-hierarchy",
+    "knowledge.theme-functional-prop-grammar",
+    "knowledge.blueprint-timber-cottage",
+    "recipe.fantasy-village-diorama"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-crate/far.png",
+      "evidence/kits/knowledge.blueprint-crate/mid.png",
+      "evidence/kits/knowledge.blueprint-crate/close.png",
+      "evidence/kits/knowledge.blueprint-crate/detail.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-crate/proof-log.json"
+  }
+}

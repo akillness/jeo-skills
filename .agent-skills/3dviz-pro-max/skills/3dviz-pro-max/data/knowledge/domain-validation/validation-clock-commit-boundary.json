@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-clock-commit-boundary",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Present state, next state preview and clock commit"
+  },
+  "aliases": {
+    "en": [
+      "clocked transition check",
+      "transition coverage check"
+    ]
+  },
+  "direction_ids": [
+    "logic-circuits"
+  ],
+  "summary": "Verify that state changes only at clock events, that transitions cover every state and input pair, and that traces replay.",
+  "objective": "Present state is unchanged between clock events, every state and input pair has exactly one transition, and repeated runs match.",
+  "applies_when": [
+    "A machine distinguishes present state from a previewed next state.",
+    "A clock, step or commit control advances the machine.",
+    "Inputs can change between clock events."
+  ],
+  "check_method": "state",
+  "tags": [
+    "domain-validation",
+    "state-machine",
+    "clocking",
+    "coverage"
+  ],
+  "subject_terms": [
+    "present state",
+    "next state",
+    "clock edge",
+    "transition table",
+    "total function",
+    "trace"
+  ],
+  "intent_signals": [
+    "the state changed before I clocked it",
+    "check the transition table is complete"
+  ],
+  "example_prompts": [
+    "Check the clocked transitions of this state machine scene."
+  ],
+  "negative_signals": [
+    "asynchronous circuit design",
+    "metastability analysis"
+  ],
+  "content": {
+    "principles": [
+      "Present state and next state are different variables, so a preview must never be written into the present state before the clock event; a legal self-loop makes them equal in value while still being a committed transition.",
+      "Determinism requires a total transition function: exactly one transition for every state and input pair, checked as coverage rather than assumed from a diagram.",
+      "Replay is the observable of determinism, so the same initial state and input sequence must produce the same trace every time."
+    ],
+    "implementation": [
+      "Enumerate the product of states and inputs and confirm exactly one transition per pair, listing any pair with none or several.",
+      "Change inputs repeatedly without clocking, recording present state after each change, then clock once and record the selected transition, the committed present state and whether it was a self-loop.",
+      "Run a fixed input sequence twice from the same initial state and compare traces step by step, including outputs.",
+      "Include an input change coinciding with the clock event and record the declared rule that resolves the coincidence."
+    ],
+    "observable_checks": [
+      "Every state and input pair has exactly one transition, and a missing pair is reported rather than silently defaulting to staying in place.",
+      "Present state is unchanged by input edits between clock events, and each clock event selects and commits exactly one transition; on a self-loop the committed value equals the previous one, which is a correct commit rather than a missed one.",
+      "Two runs of the same sequence produce identical traces, and the coincident-edge case follows the declared rule rather than varying between runs."
+    ]
+  },
+  "known_limits": [
+    "Covers a declared synchronous deterministic machine; metastability, asynchronous inputs and synthesis are outside this check.",
+    "Authored verification guidance; no machine was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.finite-state-machine",
+    "recipe.logic-gates",
+    "recipe.parcel-sorter-events"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-fsm-transition-wellformed",
+      "statement": "In a well-formed state transition diagram the transitions leaving each state are mutually exclusive and collectively exhaustive, so exactly one transition is selected for each combination of current state and input, and a rising clock edge triggers the move to the next state.",
+      "scope": "Synchronous deterministic finite state machines as described in the cited section.",
+      "source_refs": [
+        {
+          "source_id": "source.mit-fsm",
+          "locator": "6.1, well-formed state transition diagram rules and clock edge behaviour"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "id": "recipe.skeletal-hierarchy",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Skeletal hierarchy explorer"
+  },
+  "aliases": {
+    "en": [
+      "skeletal hierarchy"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures"
+  ],
+  "summary": "Connect named bones to axial and appendicular groupings.",
+  "objective": "Build a skeletal explorer where selecting a group highlights its bones without losing left/right identity.",
+  "tags": [
+    "skeletal",
+    "hierarchy"
+  ],
+  "example_prompts": [
+    "Build a skeletal explorer where selecting a group highlights its bones without losing left/right identity."
+  ],
+  "entities": [
+    {
+      "name": "Skeleton",
+      "guidance": "Use distinct skull, vertebral chain, thoracic cage and limb silhouettes; avoid identical cylinders for all bones at close range."
+    },
+    {
+      "name": "Group tree",
+      "guidance": "Keep anatomical membership separate from render parenting; bilateral bones have stable side-aware IDs."
+    },
+    {
+      "name": "Bone material",
+      "guidance": "Use a low-gloss neutral family with selection outline; color is an interface cue, not a pathology map."
+    }
+  ],
+  "state_contract": {
+    "model": "Bone identity, anatomical group and laterality; visual hierarchy is not a biomechanical joint model.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Select axial or appendicular group.",
+      "Focus one bone and inspect its parent group.",
+      "Reset all visibility."
+    ]
+  },
+  "invariants": [
+    "Selection changes emphasis without renaming or reparenting anatomy.",
+    "Girdles belong to appendicular grouping.",
+    "Do not infer mechanical articulation from category membership."
+  ],
+  "motion_guidance": [
+    "Use a camera focus or group reveal; keep bone rest positions intact.",
+    "Any exploded view preserves reference lines to the rest pose."
+  ],
+  "known_limits": [
+    "No patient-specific anatomy or skeletal motion validation.",
+    "A verified mesh and complete naming inventory are required for a comprehensive atlas: the defaults give the adult group totals from the cited section, not a per-bone list, so a scene must still supply names.",
+    "The counts are the adult figures; the cited section does not give a newborn or per-region breakdown beyond the axial contents named here.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.skeletal-hierarchy",
+      "statement": "The appendicular skeleton comprises the limbs and their attachments to the axial skeleton.",
+      "scope": "Adult human skeletal grouping.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-skeleton",
+          "locator": "7.1, The Appendicular Skeleton"
+        }
+      ]
+    },
+    {
+      "id": "claim.skeletal-hierarchy-bone-counts",
+      "statement": "For adults there are 206 bones in the skeleton; the axial skeleton of the adult consists of 80 bones including the skull, the vertebral column and the thoracic cage, and there are 126 bones in the appendicular skeleton, which includes all bones of the upper and lower limbs plus the bones that attach each limb to the axial skeleton.",
+      "scope": "Adult totals for the two divisions and what each division contains. No per-bone inventory, no laterality counts and no developmental variation are claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-skeleton",
+          "locator": "7.1 Divisions of the Skeletal System: \"For adults, there are 206 bones in the skeleton\"; \"The axial skeleton of the adult consists of 80 bones, including the skull, the vertebral column, and the thoracic cage\"; \"There are 126 bones in the appendicular skeleton of an adult\"; \"The appendicular skeleton includes all bones of the upper and lower limbs, plus the bones that attach each limb to the axial skeleton\"; \"The axial skeleton forms the vertical, central axis of the body and includes all bones of the head, neck, chest, and back\""
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Skeleton",
+      "structure": "Use distinct skull, vertebral chain, thoracic cage and limb silhouettes; avoid identical cylinders for all bones at close range.",
+      "material": "Low-gloss neutral bone with selection outlines; group colors are interface coding, not tissue properties.",
+      "articulation": "Anatomical grouping is separate from render parenting; no mechanical articulation is inferred."
+    },
+    {
+      "family": "Group tree",
+      "structure": "Keep anatomical membership separate from render parenting; bilateral bones have stable side-aware IDs.",
+      "material": "Low-gloss neutral bone with selection outlines; group colors are interface coding, not tissue properties.",
+      "articulation": "Anatomical grouping is separate from render parenting; no mechanical articulation is inferred."
+    },
+    {
+      "family": "Bone material",
+      "structure": "Use a low-gloss neutral family with selection outline; color is an interface cue, not a pathology map.",
+      "material": "Low-gloss neutral bone with selection outlines; group colors are interface coding, not tissue properties.",
+      "articulation": "Anatomical grouping is separate from render parenting; no mechanical articulation is inferred."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Semantic geometry/state presentation; no gravity, contact force or material simulation.",
+    "checks": [
+      "Selection changes emphasis without renaming or reparenting anatomy.",
+      "Girdles belong to appendicular grouping."
+    ]
+  },
+  "defaults": {
+    "provenance": "source-backed",
+    "tunable": false,
+    "claim_ids": [
+      "claim.skeletal-hierarchy",
+      "claim.skeletal-hierarchy-bone-counts"
+    ],
+    "rationale": "The three totals and the contents of each division restate the cited section (claim.skeletal-hierarchy-bone-counts, claim.skeletal-hierarchy). They exist so the grouping the recipe teaches has an arithmetic consequence a build can check: the two group counts must reconstruct the total, which is exactly the test that catches a girdle filed under the axial skeleton. Nothing here is tunable, because these are counts, not settings, and a scene that models fewer bones should report its own coverage against 206 rather than redefining it.",
+    "values": {
+      "parameters": {
+        "total_bones_adult": {
+          "value": 206,
+          "unit": "bones",
+          "note": "sourced"
+        },
+        "axial_bones": {
+          "value": 80,
+          "unit": "bones",
+          "note": "sourced; skull, vertebral column and thoracic cage"
+        },
+        "appendicular_bones": {
+          "value": 126,
+          "unit": "bones",
+          "note": "sourced; limbs plus the bones attaching each limb to the axial skeleton, which is where the girdles belong"
+        },
+        "group_enumeration": {
+          "value": [
+            "axial",
+            "appendicular"
+          ],
+          "unit": "categories",
+          "note": "sourced division of the skeleton"
+        },
+        "laterality_values": {
+          "value": [
+            "left",
+            "right",
+            "midline"
+          ],
+          "unit": "categories",
+          "note": "authored bookkeeping category; the section gives no left/right counts"
+        },
+        "per_bone_inventory": {
+          "value": "no default; source gives none",
+          "unit": "list",
+          "note": "7.1 gives division totals, not a named list of all 206 bones"
+        }
+      },
+      "equations": [
+        "axial_bones + appendicular_bones = total_bones_adult",
+        "coverage = modelled bone count / 206"
+      ],
+      "worked_example": {
+        "inputs": "The two sourced division totals, and a pectoral girdle bone (a scapula) asked to declare its group",
+        "expected": "80 + 126 = 206, matching the sourced total exactly; the scapula reports appendicular, and moving it to axial breaks the sum by making the axial count 81 and the appendicular 125",
+        "derivation": "80 + 126 = 206. The girdles attach the limbs to the axial skeleton and the section places attaching bones in the appendicular skeleton, so a scapula is appendicular even though it sits on the trunk - the recipe's stated invariant. The arithmetic is what makes that testable: any misfiled bone leaves the total at 206 but changes both group counts, so a build should assert both group counts and their sum, not the total alone."
+      },
+      "tolerance": {
+        "counts": "exact integers; these are inventory totals, not measurements",
+        "partial_models": "a scene modelling fewer bones must report its coverage against 206 rather than asserting a different total"
+      }
+    }
+  }
+}

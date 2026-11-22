@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "id": "recipe.hepatic-portal-route",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Hepatic portal blood route"
+  },
+  "aliases": {
+    "en": [
+      "portal circulation",
+      "liver blood route",
+      "two capillary beds"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures"
+  ],
+  "summary": "Show a named venous route that passes through two capillary beds before rejoining the systemic return.",
+  "objective": "Build a hepatic portal route where I can follow a labelled blood token from intestinal capillaries through the liver into the inferior vena cava.",
+  "tags": [
+    "vascular",
+    "portal system",
+    "route"
+  ],
+  "subject_terms": [
+    "hepatic portal vein",
+    "superior mesenteric vein",
+    "splenic vein",
+    "hepatic vein",
+    "inferior vena cava",
+    "portal circulation",
+    "venous route"
+  ],
+  "intent_signals": [
+    "Explain why gut blood reaches the liver before the rest of the body.",
+    "Show a vascular route with an inspectable direction of flow."
+  ],
+  "example_prompts": [
+    "Build a hepatic portal route diagram with a token I can step from the intestine to the inferior vena cava.",
+    "Show which veins join to form the hepatic portal vein and where blood leaves the liver."
+  ],
+  "negative_signals": [
+    "Not a haemodynamic solver: no pressure, resistance or velocity is computed.",
+    "Not an imaging-derived vascular model and not usable for clinical interpretation."
+  ],
+  "not_for": [
+    "Not a haemodynamic solver: no pressure, resistance or velocity is computed.",
+    "Not an imaging-derived vascular model and not usable for clinical interpretation."
+  ],
+  "entities": [
+    {
+      "name": "Vessel route graph",
+      "guidance": "Model each named vessel as a directed tube between explicit junction nodes; the junction where the superior mesenteric and splenic veins meet must be a real node, not an overlap."
+    },
+    {
+      "name": "Organ volumes",
+      "guidance": "Give the liver a lobed block with a soft capsule surface and the intestine a simplified loop; both are context volumes and should be visually quieter than the vessels."
+    },
+    {
+      "name": "Flow token",
+      "guidance": "Use one labelled token whose position is an index along the route, so its state is inspectable and reversible."
+    }
+  ],
+  "state_contract": {
+    "model": "Directed vessel graph with named edges, junction nodes, and a token position expressed as an edge plus a fraction along it. No pressure, flow rate or mixing model.",
+    "authority": "The graph owns direction and connectivity; arrows, token motion and labels are rendered from it. Reversing playback must move the token backwards along the same edges.",
+    "actions": [
+      "Step the token forward or backward one segment.",
+      "Select a vessel to show its name, its upstream contributors and its downstream target.",
+      "Toggle organ context and cutaway of the liver.",
+      "Reset the token to the intestinal capillary bed."
+    ]
+  },
+  "invariants": [
+    "Each edge stores one physiological direction that no interaction rewrites. Forward playback advances the token only along those directions; stepping backwards is history replay through edges already visited and is labelled as replay rather than as reverse flow.",
+    "The route passes through two capillary beds, and the second bed is inside the liver.",
+    "Vessel identity survives cutaway: hiding the liver capsule does not rename or merge vessels."
+  ],
+  "motion_guidance": [
+    "Move the token at a readable constant index rate; do not vary speed to suggest velocity differences that are not modelled.",
+    "Any pulsation is decorative and must be labelled as such, since this recipe has no cardiac cycle."
+  ],
+  "known_limits": [
+    "Route topology only; vessel diameters, lengths and branching counts are schematic.",
+    "Hepatic arterial supply is present as context and is not the subject of the sourced claims.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-portal-vein-formation",
+      "statement": "The hepatic portal vein begins with the confluence of the superior mesenteric and splenic veins.",
+      "scope": "Named formation of the vessel; the cited text also places this at vertebral level L2, which this recipe does not model.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-hepatic-portal",
+          "locator": "20.5, Hepatic Portal System, formation sentence"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-hepatic-vein-drainage",
+      "statement": "Blood processed by the liver leaves through the right, left and middle hepatic veins and flows into the inferior vena cava.",
+      "scope": "Outflow route naming only; no flow split between the three veins is modelled.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-hepatic-portal",
+          "locator": "20.5, Hepatic Portal System, hepatic vein outflow sentence"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Vessel route graph",
+      "structure": "Tubes with constant cross-section per named vessel and mitred junctions at nodes; keep tube radius a labelled schematic choice, not a measurement.",
+      "material": "Two-family venous and arterial palette with a value difference as well as a hue difference, so the route stays readable in greyscale.",
+      "articulation": "None. The token moves along a curve; the vessels themselves do not deform."
+    },
+    {
+      "family": "Organ volumes",
+      "structure": "Lobed liver block with a shallow hilum recess where vessels enter, and a simplified intestinal loop with visible mesenteric attachment.",
+      "material": "Soft, slightly translucent capsule over an opaque interior so the internal branch can be revealed by clipping rather than by fading the whole organ.",
+      "articulation": "Clipping plane and opacity are display controls only."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Token indexing along an authored route and cutaway presentation; no fluid dynamics.",
+    "checks": [
+      "Stepping forward then backward returns the token to the same edge and offset.",
+      "The token visits the liver bed exactly once per traversal."
+    ]
+  },
+  "related_ids": [
+    "recipe.heart-cutaway",
+    "knowledge.graph-in-space",
+    "knowledge.cutaway-explode"
+  ],
+  "defaults": {
+    "provenance": "source-backed",
+    "tunable": false,
+    "claim_ids": [
+      "claim.rd-portal-vein-formation",
+      "claim.rd-hepatic-vein-drainage"
+    ],
+    "rationale": "The route below is exactly what this record's existing claims already state: the hepatic portal vein begins at the confluence of the superior mesenteric and splenic veins, and processed blood leaves the liver through the right, left and middle hepatic veins into the inferior vena cava. No new source was needed. What the defaults add is the countable form of that route - how many named edges a traversal crosses, how many capillary beds it passes and how many distinct complete routes the three hepatic veins produce - so the recipe's two checks compare against numbers instead of against a picture. Vessel calibres and lengths carry no default because the cited section gives none. Not tunable: the topology is the sourced content.",
+    "values": {
+      "parameters": {
+        "capillary_beds_per_traversal": {
+          "value": 2,
+          "unit": "beds",
+          "note": "the splanchnic bed upstream of the portal vein and the hepatic sinusoids inside the liver"
+        },
+        "named_edges_per_traversal": {
+          "value": 5,
+          "unit": "edges",
+          "note": "bed to tributary vein, tributary confluence to hepatic portal vein, portal vein to sinusoids, sinusoids to a hepatic vein, hepatic vein to inferior vena cava"
+        },
+        "portal_vein_tributaries": {
+          "value": [
+            "superior mesenteric vein",
+            "splenic vein"
+          ],
+          "unit": "named vessels",
+          "note": "sourced confluence that forms the hepatic portal vein"
+        },
+        "hepatic_veins": {
+          "value": [
+            "right",
+            "left",
+            "middle"
+          ],
+          "unit": "named vessels",
+          "note": "sourced outflow to the inferior vena cava"
+        },
+        "distinct_complete_routes": {
+          "value": 3,
+          "unit": "routes",
+          "note": "derived: one per hepatic vein, all other segments shared"
+        },
+        "token_position": {
+          "value": {
+            "edge_id": "string",
+            "fraction": 0.0
+          },
+          "unit": "schema",
+          "note": "position is an edge plus a fraction along it, so a traversal is replayable exactly"
+        },
+        "vessel_diameters": {
+          "value": "no default; source gives none",
+          "unit": "m",
+          "note": "the cited section gives topology, not calibres"
+        },
+        "flow_rate": {
+          "value": "no default; out of scope",
+          "unit": "mL/min",
+          "note": "there is no pressure, flow or mixing model in this recipe"
+        }
+      },
+      "equations": [
+        "distinct complete routes = number of hepatic veins, since every earlier segment is shared",
+        "a traversal is valid only if it enters the liver bed exactly once",
+        "stepping forward then backward returns the token to the same (edge_id, fraction) pair"
+      ],
+      "worked_example": {
+        "inputs": "One token traversal from the intestinal capillary bed to the inferior vena cava, taking the middle hepatic vein; then step forward five times and back five times",
+        "expected": "5 named edges crossed, exactly 2 capillary beds visited with the liver bed visited once, 3 distinct complete routes available in total, and after the forward-and-back sequence the token is on the same edge at the same fraction, bit for bit",
+        "derivation": "Edges: intestinal bed to superior mesenteric vein (1), confluence with the splenic vein into the hepatic portal vein (2), portal vein into the hepatic sinusoids (3), sinusoids into the middle hepatic vein (4), middle hepatic vein into the inferior vena cava (5). Beds: the intestinal bed and the hepatic sinusoids, so 2, and the count of visits to the liver bed is 1 - a route that re-entered it would have crossed a portal-systemic shortcut this model does not contain. Routes: only the fourth and fifth edges differ between alternatives, and there are 3 hepatic veins, so 3 complete routes. Reversibility: because position is (edge_id, fraction) rather than an interpolated world point, stepping back is exact replay of visited edges, not reverse flow - the record's own distinction, and the reason the comparison is exact equality rather than a distance tolerance."
+      },
+      "tolerance": {
+        "counts": "exact integers for edges, beds and routes",
+        "token_position": "exact equality of (edge_id, fraction) after a forward-and-back sequence; do not compare interpolated world positions",
+        "edge_direction": "each edge stores one physiological direction that no interaction rewrites"
+      }
+    }
+  }
+}

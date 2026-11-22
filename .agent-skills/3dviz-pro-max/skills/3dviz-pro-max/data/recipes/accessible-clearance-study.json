@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "id": "recipe.accessible-clearance-study",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Accessible route clearances and turning space"
+  },
+  "aliases": {
+    "en": [
+      "turning space",
+      "clear width",
+      "accessible route"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors"
+  ],
+  "summary": "Place a cited turning space in a room and, separately, sweep a conservative clearance envelope, keeping the two reports distinct instead of calling every overlap a code failure.",
+  "objective": "Build a room where I can place a 60 inch turning space and check it against the modelled obstructions, and separately drive a clearance envelope along a route as a conservative geometric demonstration.",
+  "tags": [
+    "accessibility",
+    "clearance",
+    "layout"
+  ],
+  "subject_terms": [
+    "accessible route",
+    "turning space",
+    "clear width",
+    "manoeuvring clearance",
+    "envelope",
+    "obstruction",
+    "circulation"
+  ],
+  "intent_signals": [
+    "Check whether a room layout leaves enough turning space.",
+    "Test an accessible route through a floor plan in 3D."
+  ],
+  "example_prompts": [
+    "Build an accessible clearance study with a turning space check and a movable envelope along a route.",
+    "Show which furniture placement blocks the required clearance."
+  ],
+  "negative_signals": [
+    "Not an accessibility compliance certification; only the cited provisions are represented.",
+    "Not an occupancy, evacuation or ergonomics simulation."
+  ],
+  "not_for": [
+    "Not an accessibility compliance certification; only the cited provisions are represented.",
+    "Not an occupancy, evacuation or ergonomics simulation."
+  ],
+  "entities": [
+    {
+      "name": "Room and furniture",
+      "guidance": "Model walls, doors and furniture with real footprints, since every clearance test is against those footprints."
+    },
+    {
+      "name": "Clearance envelope",
+      "guidance": "Represent the tested space as a real volume, not a floor decal. Two distinct tests use it: a turning-space placement at the cited 60 inch diameter, and a conservative moving envelope that reports any geometric overlap along a route. Their results are reported separately and never merged."
+    },
+    {
+      "name": "Findings list",
+      "guidance": "Record each finding with its test of origin, the obstruction involved and whether contact was a boundary touch or an intrusion, so a fix can be targeted and a permitted condition is not mistaken for a failure."
+    }
+  ],
+  "state_contract": {
+    "model": "Room geometry with obstruction footprints and door leaves, a turning space of the cited 60 inch diameter, and a separately declared conservative clearance envelope with a route. The turning-space test reports intrusion of modelled obstructions into the placed space; the envelope sweep reports geometric overlap along the route. Exact boundary contact is a distinct outcome from intrusion. The scene does not evaluate the additional provisions of the same section, including door swing and knee and toe clearance allowances, and says so in its report.",
+    "authority": "Geometry is authoritative for both tests, and each result names which test produced it. A geometric overlap is never labelled a code failure, because the recipe does not read the provisions that permit particular overlaps.",
+    "actions": [
+      "Drive the conservative envelope along the route and read its overlap report, which is a geometric demonstration rather than a provision test.",
+      "Place the turning space and run the placement test, which reports intrusions only.",
+      "Move a piece of furniture and rerun the tests.",
+      "Reset the layout and the route."
+    ]
+  },
+  "invariants": [
+    "The conservative envelope sweep reports every geometric overlap, including door swings, as an overlap of that demonstration. The turning-space test reports intrusions into the placed space and states that door-swing and clearance allowances in the standard are not evaluated here.",
+    "Every failure names at least one obstruction.",
+    "Moving furniture reruns the affected tests rather than leaving stale results.",
+    "A minimum-size space whose surfaces exactly touch a wall is reported as boundary contact, not as an intrusion, so an exactly fitting space does not fail on a shared boundary."
+  ],
+  "motion_guidance": [
+    "Move the envelope continuously so the first point of failure is visible, not merely reported at the end.",
+    "Show the door swing as a swept volume when doors are involved, since a closed door hides the real constraint."
+  ],
+  "known_limits": [
+    "Only the cited turning space provision is represented here; complete accessible design covers many more requirements.",
+    "Real manoeuvring depends on user, device and surface, which a geometric envelope cannot capture.",
+    "The same section contains further provisions, including a T-shaped alternative and rules about door swing and knee and toe clearances, whose text was not read here. Anything this recipe reports about those conditions would be unfounded, so it reports geometry and names the untested provisions instead.",
+    "A 60 inch turning space is not a moving wheelchair footprint and not an accessible-route width test; route criteria would need their own sourced dimensions.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-turning-space",
+      "statement": "Published accessibility provisions specify a turning space of at least a 60 inch diameter circle, or a T-shaped space defined elsewhere in the same section.",
+      "scope": "Only the 304.3 sentence was read. The T-shape geometry in 304.3.2 and the door-swing provision 304.4 were not retrievable in this session, so this recipe implements the circular space only and does not assert what those other provisions require or permit.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-accessboard-ada-standards",
+          "locator": "Provision 304.3, turning space size"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Room and furniture",
+      "structure": "Walls with thickness, doors with modelled leaves and furniture with accurate footprints and toe clearances.",
+      "material": "Quiet interior materials so the envelope and findings remain the brightest elements.",
+      "articulation": "Furniture translates and rotates on the floor plane; doors swing about their hinges."
+    },
+    {
+      "family": "Clearance envelope",
+      "structure": "A cylindrical volume at the cited circular turning-space diameter, with a marked reference point. The separate moving envelope has explicitly authored dimensions and height; neither test implements a T-shaped space.",
+      "material": "Translucent envelope with an opaque outline so intersections are visible from above and from eye level.",
+      "articulation": "The envelope follows the route and rotates to the tested orientation."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Geometric intersection testing and presentation; no locomotion dynamics or contact response.",
+    "state": [
+      "envelope pose",
+      "route positions",
+      "findings list"
+    ],
+    "checks": [
+      "Report intrusions with the named obstruction and test of origin, distinguishing exact boundary contact. A geometric overlap is not a code failure, and untested door-swing or clearance allowances remain unevaluated.",
+      "Reset clears findings and restores the authored layout."
+    ]
+  },
+  "related_ids": [
+    "recipe.studio-furniture-layout",
+    "recipe.stair-flight-geometry",
+    "knowledge.accessible-spatial-controls"
+  ]
+}

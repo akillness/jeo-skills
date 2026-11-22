@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.hero-and-context",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "composition-profile",
+  "title": {
+    "en": "Hero object with supporting context"
+  },
+  "aliases": {
+    "en": [
+      "hero object",
+      "detail hierarchy"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "anatomy-structures"
+  ],
+  "summary": "Give an important object enough visual space to communicate its construction without losing its role in the scene.",
+  "objective": "Give an important object enough visual space to communicate its construction without losing its role in the scene.",
+  "subject_terms": [
+    "hero object",
+    "detail hierarchy",
+    "close-up framing"
+  ],
+  "tags": [
+    "composition-profile",
+    "hero-and-context"
+  ],
+  "intent_signals": [
+    "close-up framing"
+  ],
+  "example_prompts": [
+    "Use hero object with supporting context for the scene, preserving its model and user controls."
+  ],
+  "content": {
+    "principles": [
+      "Concentrate detail where the viewer can inspect it and where it explains identity or function.",
+      "Supporting scenery should create context without competing for every contrast and highlight."
+    ],
+    "implementation": [
+      "Choose an overview and a close viewing distance before distributing geometric detail.",
+      "Vary supporting forms and lighting while keeping the hero silhouette readable.",
+      "Provide a focus action that preserves the selected object and an easy route back to the overview."
+    ],
+    "observable_checks": [
+      "The hero can be identified in overview and its key joints or layers can be read close up.",
+      "Focus does not move the object, alter simulation state or strand the camera inside geometry."
+    ]
+  },
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "creative_affordances": [
+    "Adapt the layout, visual treatment and timing to the task; these are reusable design proposals, not mandatory templates."
+  ],
+  "known_limits": [
+    "Authored interaction/presentation guidance; no new scientific claim, accessibility certification or runtime verification is asserted."
+  ],
+  "claims": []
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.theme-science-fiction-outpost",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "theme-profile",
+  "title": {
+    "en": "Science-fiction outpost"
+  },
+  "aliases": {
+    "en": [
+      "sci-fi base",
+      "science fiction colony",
+      "futuristic outpost"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "Give a fictional remote station a readable purpose through zones for arrival, work, habitation and maintenance.",
+  "objective": "A viewer can distinguish habitation from machinery and can trace the route between the landing area and the entrance.",
+  "tags": [
+    "theme-profile",
+    "fictional-setting",
+    "science-fiction-outpost"
+  ],
+  "subject_terms": [
+    "sci-fi base",
+    "science fiction colony",
+    "futuristic outpost"
+  ],
+  "intent_signals": [
+    "Set the scene in a science-fiction outpost",
+    "Use sci-fi base as the narrative setting"
+  ],
+  "example_prompts": [
+    "Design a sci-fi mountain outpost with connected living modules and an inspectable docking mechanism."
+  ],
+  "content": {
+    "principles": [
+      "Give a fictional remote station a readable purpose through zones for arrival, work, habitation and maintenance.",
+      "Theme supplies setting and motifs; choose geometry style, rendering approach and factual model independently."
+    ],
+    "implementation": [
+      "Repeat an authored module interface but vary silhouettes by function; expose selected ducts, docking parts or access panels.",
+      "Separate structural shells, service markings and small status accents; use a clear exterior key plus interior light where people would look.",
+      "Use an arrival view followed by selectable zones; doors and equipment act from explicit fictional state rather than random pulses."
+    ],
+    "observable_checks": [
+      "A viewer can distinguish habitation from machinery and can trace the route between the landing area and the entrance.",
+      "Inspect one focal object close up and the complete route or spatial relationship from an overview."
+    ]
+  },
+  "known_limits": [
+    "Authored fictional setting guidance; no rendered artifact or runtime improvement has been observed for this record.",
+    "This proposal does not establish historical, cultural, scientific or engineering facts."
+  ],
+  "creative_affordances": [
+    "Combine with low-poly, photorealistic ambition or holographic overlays; invented technology is not evidence of feasible engineering.",
+    "Replace motifs or combine settings to suit the user brief; maintain a readable organizing idea rather than treating these suggestions as a fixed asset list."
+  ],
+  "related_ids": [
+    "knowledge.framed-shelter",
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

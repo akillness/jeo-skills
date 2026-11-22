@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.responsive-spatial-label-hierarchy",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "presentation-profile",
+  "title": {
+    "en": "Responsive spatial label hierarchy"
+  },
+  "aliases": {
+    "en": [
+      "adaptive 3D labels",
+      "decluttered annotation layers",
+      "mobile spatial callouts"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "anatomy-structures",
+    "architecture-interiors"
+  ],
+  "summary": "Rank labels by task importance, anchor them to stable scene identities, and reflow or collapse their DOM presentation without erasing access to hidden information.",
+  "objective": "Labels remain legible and discoverable across viewport width, zoom, camera motion, occlusion and localization expansion while semantic reading/focus order stays intentional.",
+  "applies_when": [
+    "Many objects need labels or callouts in a responsive browser view.",
+    "Some labels may be hidden visually to control crowding but must remain discoverable through selection, search, a list or details panel."
+  ],
+  "subject_terms": [
+    "spatial label hierarchy",
+    "CSS2DRenderer",
+    "label occlusion",
+    "responsive callout",
+    "focus order",
+    "reflow"
+  ],
+  "tags": [
+    "presentation-profile",
+    "labels",
+    "responsive",
+    "accessibility"
+  ],
+  "intent_signals": [
+    "labels that survive narrow mobile view",
+    "declutter overlapping 3D annotations",
+    "hidden label remains discoverable without hover"
+  ],
+  "example_prompts": [
+    "Build responsive labels for a dense anatomy scene and keep every hidden structure reachable from a semantic list.",
+    "Place room labels in 3D, reflow their detail panel at narrow widths, and preserve keyboard order."
+  ],
+  "negative_signals": [
+    "Treating camera distance as semantic importance.",
+    "Removing a label from both the viewport and every alternative access path."
+  ],
+  "not_for": [
+    "Rasterized artistic lettering that is not interface content.",
+    "A domain-specific labeling ontology or factual naming standard."
+  ],
+  "content": {
+    "principles": [
+      "Separate anchor identity, semantic content and screen layout. World position proposes a label location; it does not determine reading order or importance.",
+      "Use a small priority ladder tied to the current task. When labels collide or leave the safe area, shorten, cluster or move lower-priority presentation while preserving an alternate discovery path.",
+      "World text may be an artistic choice. When text conveys interactive or factual meaning, keep a DOM or other semantic runtime representation with logical focus order and reflow."
+    ],
+    "implementation": [
+      "In Blender, create named anchor empties or objects and optional stable custom properties. Authored in-world signs or texture text may remain meaningful; when that text conveys interactive or factual content, retain an equivalent semantic runtime representation. Export cameras/anchors and selected extras only as transport hints.",
+      "In Three.js, project anchors each frame and render semantic DOM labels with a declared collision, bounds and mesh-occlusion policy. CSS2DRenderer can host translated HTML labels but does not solve those policies.",
+      "Maintain a separate logical label list/order. On resize, language change or camera change, recompute placement without rewriting object IDs; expose selected or hidden entries through search/list/details."
+    ],
+    "observable_checks": [
+      "At narrow width and enlarged text, essential controls and label details remain usable without two-dimensional page scrolling except where the spatial view itself needs two dimensions.",
+      "Tab order preserves the intended explanation rather than jumping with projected screen coordinates; selecting a hidden label reveals the same stable object.",
+      "Move an anchor behind an occluder and beyond each screen edge: the declared hide, pin, leader or list fallback occurs, and no stale label points to another object."
+    ]
+  },
+  "related_ids": [
+    "knowledge.graph-in-space",
+    "knowledge.reasoning-label-implies-relation",
+    "knowledge.object-isolation",
+    "knowledge.accessible-spatial-controls"
+  ],
+  "creative_affordances": [
+    "Use typographic scale, leaders, pins or clustered badges to match the art direction.",
+    "Let artistic world lettering coexist with a plain semantic name in the runtime layer."
+  ],
+  "known_limits": [
+    "CSS2DRenderer supports translation-only DOM labels and documents a 100% browser/display zoom limitation; capability and zoom behavior must be checked in the installed revision.",
+    "glTF extras carry application data but do not define DOM layout, localization, occlusion, focus order or accessibility behavior.",
+    "No viewport, assistive-technology or runtime label test was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.experience-css2d-label-boundary",
+      "statement": "Three.js CSS2DRenderer combines DOM elements with 3D objects using translation, ignores other renderable object types, may assign z-index by render order and camera distance, and documents support only at 100% browser/display zoom.",
+      "scope": "Current addon mechanism only; collision, mesh occlusion, semantic priority and responsive layout are application responsibilities.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-three-css2d-renderer",
+          "locator": "Class description; sortObjects; 100% browser/display zoom limitation"
+        }
+      ]
+    },
+    {
+      "id": "claim.experience-label-reflow-focus",
+      "statement": "WCAG 2.2 Reflow calls for vertically scrolling content without loss of information or functionality at an equivalent 320 CSS-pixel width, with exceptions where two-dimensional layout is required for meaning; Focus Order requires sequential focus to preserve meaning and operability.",
+      "scope": "Web interface content surrounding a spatial view; this record does not assert accessibility conformance from metadata alone.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-wcag-reflow",
+          "locator": "Success Criterion 1.4.10 and two-dimensional exceptions"
+        },
+        {
+          "source_id": "source.experience-wcag-focus-order",
+          "locator": "Success Criterion 2.4.3 and Intent"
+        }
+      ]
+    }
+  ]
+}

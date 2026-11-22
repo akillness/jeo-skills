@@ -1,0 +1,49 @@
+```pixels
+PALETTE
+. transparent
+o #2a1a14
+d #5c3520
+m #8a5530
+l #b0743c
+h #d39a58
+i #33333d
+j #5b5b69
+k #9496a6
+g #9c6b14
+G #e2ad2c
+y #fff0a0
+FRAME icon
+................................
+................................
+....oooooooooooooooooooooooo....
+..oohkjihhhhhhhhhhhhhhhhkjiloo..
+.ohhhkjihhhhhhhhhhhhhhhhkjihhlo.
+.ohllkjilllllllllmmmllllkjillmo.
+.odddkjiddddddddddddddddkjidddo.
+.ohllkjillllllllllllllllkjillmo.
+.ohllkjilmmmllllllllllllkjillmo.
+.olmmkjimmmmmmmmmmmdddmmkjimmdo.
+.odddkjiddddddddddddddddkjidddo.
+.ohllkjillllllllllllllllkjillmo.
+.olmmkjimmmmoooooooommmmkjimmdo.
+.okkkkkkkkkkoyyGGGgokkkkkkkkkjo.
+.ojjjjjjjjjjoyGGGGgojjjjjjjjjio.
+.ooooooooooooGGooGgooooooooooooo.
+.odddkjiddddoGGooGgoddddkjidddo.
+.ohllkjilllloGGooGgollllkjillmo.
+.olmmkjimmmmoGGGGGgommmmkjimmdo.
+.olmmkjimmmmoggggggommmmkjimmdo.
+.olmmkjimmmmoooooooommmmkjimmdo.
+.odddkjiddddddddddddddddkjidddo.
+.ohllkjillllllllllllllllkjillmo.
+.olmmkjimmmmdddmmmmmmmmmkjimmdo.
+.olmmkjimmmmmmmmmmmddddmkjimmdo.
+.olmmkjimmmmmmmmmmmmmmmmkjimmdo.
+.odddkjiddddddddddddddddkjidddo.
+.okkkkkkkkkkkkkkkkkkkkkkkkkkkjo.
+.ojjjjjjjjjjjjjjjjjjjjjjjjjjjio.
+.oiiiiiiiiiiiiiiiiiiiiiiiiiiiio.
+.oooooooooooooooooooooooooooooo.
+................................
+END
+```

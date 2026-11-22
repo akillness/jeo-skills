@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-scramble-reachability",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Scramble by legal moves, not by random stickers"
+  },
+  "aliases": {
+    "en": [
+      "reachable states",
+      "parity constraint",
+      "valid scramble"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles",
+    "spatial-puzzles"
+  ],
+  "summary": "Generate scrambles by applying legal moves, because randomly assigned piece positions can be unreachable.",
+  "objective": "Guarantee that a presented puzzle position is solvable and that solvers are not sent after impossible states.",
+  "applies_when": [
+    "A scramble, shuffle or random start position is generated.",
+    "The viewer can edit piece positions or stickers directly.",
+    "A solver or a solution length is offered."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "scramble",
+    "reachable state",
+    "parity",
+    "even permutation",
+    "solvability",
+    "legal moves"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "puzzle",
+    "state"
+  ],
+  "intent_signals": [
+    "scramble the cube",
+    "let me set up a position",
+    "is this position solvable"
+  ],
+  "example_prompts": [
+    "Generate a random scramble that is always solvable.",
+    "Let me enter a position and tell me whether it can be solved."
+  ],
+  "negative_signals": [
+    "Puzzles where every arrangement is reachable by construction.",
+    "Free editors explicitly intended for exploring impossible configurations."
+  ],
+  "not_for": [
+    "Puzzles where every arrangement is reachable by construction.",
+    "Free editors explicitly intended for exploring impossible configurations."
+  ],
+  "content": {
+    "principles": [
+      "Not every arrangement of pieces is reachable, and the exact condition depends on the puzzle. On the standard three by three cube a face quarter turn is a four-cycle of corners and also a four-cycle of edges, so it is even on the combined piece set and a single swap of two pieces is unreachable. The same wording fails on a two by two cube, where a quarter turn is a single four-cycle of corners and therefore odd, so name the piece sets before asserting parity.",
+      "Generating a scramble by shuffling piece positions therefore produces unsolvable states a large fraction of the time, and those states look entirely normal.",
+      "Applying random legal moves from a legal starting state guarantees reachability and gives a controllable sequence length. That length is neither solution distance nor a guarantee of difficulty; cancellations and longer group relations can return to easy states.",
+      "If direct position editing is offered, the reachability condition must be checked and reported rather than left for the solver to discover."
+    ],
+    "implementation": [
+      "Generate scrambles by applying a sequence of legal moves to the solved state, with a stated length and a stated random source.",
+      "If direct editing is allowed, validate the state against the reachability conditions of that specific puzzle, including the matching corner and edge permutation parity for the three by three and the separate orientation sums, and report which condition fails.",
+      "Keep the scramble sequence available so a position can be reproduced and shared exactly.",
+      "State the scramble length and whether cancelling moves are filtered, and do not present it as a difficulty or a solution distance: filtering removes adjacent cancellations but not longer group relations, and a random sequence can pass near or through easy states.",
+      "Do not offer solution-length claims for states that have not been validated as reachable."
+    ],
+    "observable_checks": [
+      "Apply the inverse of the generated scramble sequence and confirm the puzzle returns to solved.",
+      "For the standard 3x3 corner-and-edge model, introduce a state with only one pair of corners swapped and all edges fixed, and confirm the parity mismatch is reported. For another puzzle use a fixture known to violate that puzzle's own reachability conditions, rather than assuming every pair swap is impossible.",
+      "Regenerate with the same random seed and confirm the same scramble appears.",
+      "Confirm the stated scramble length matches the number of moves actually applied after any filtering."
+    ]
+  },
+  "related_ids": [
+    "recipe.twisty-cube-3x3-face-turns",
+    "recipe.permutation-cycles",
+    "recipe.voxel-packing-tray"
+  ],
+  "creative_affordances": [
+    "Scramble presentation, including an animated shuffle or an instant jump, is a free choice.",
+    "Exploring impossible states can be an interesting subject in itself when it is labelled as such."
+  ],
+  "known_limits": [
+    "Authored guidance citing the parity constraint for cube moves; other puzzles have their own reachability conditions, including orientation constraints not covered here.",
+    "It does not provide a full solvability test for any specific puzzle."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-cube-parity-constraint",
+      "statement": "A quarter turn of a face of the three by three cube is a four-cycle of corners and also a four-cycle of edges, so it is an even permutation of the pieces, every move sequence is therefore even, and a single swap of two pieces is an odd permutation that cannot be achieved using legal moves alone.",
+      "scope": "Piece permutation parity for the standard three by three cube with corner and edge piece sets. Other twisty puzzles have their own conditions, and piece orientation constraints are additional conditions not covered by this claim.",
+      "source_refs": [
+        {
+          "source_id": "source.jaap-permutations",
+          "locator": "Quarter turn as a four-cycle of corners and a four-cycle of edges; even permutations and the impossibility of a single swap"
+        }
+      ]
+    }
+  ]
+}

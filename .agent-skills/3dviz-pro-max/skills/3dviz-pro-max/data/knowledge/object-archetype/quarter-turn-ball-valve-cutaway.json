@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.quarter-turn-ball-valve-cutaway",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "object-archetype",
+  "title": {
+    "en": "Quarter-turn ball valve with bore and seat cutaway"
+  },
+  "aliases": {
+    "en": [
+      "ball valve anatomy",
+      "quarter turn handle",
+      "valve seats"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies"
+  ],
+  "summary": "Make a two-port ball-valve cutaway show how the handle, stem, bored ball and seat interfaces correspond at its end positions.",
+  "objective": "Make a two-port ball-valve cutaway show how the handle, stem, bored ball and seat interfaces correspond at its end positions.",
+  "tags": [
+    "object-archetype",
+    "ball valve anatomy",
+    "quarter turn handle",
+    "valve seats"
+  ],
+  "subject_terms": [
+    "ball valve anatomy",
+    "quarter turn handle",
+    "valve seats",
+    "bored ball",
+    "stem seal",
+    "on off valve"
+  ],
+  "intent_signals": [
+    "Make a two-port ball-valve cutaway show how the handle, stem, bored ball and seat interfaces correspond at its end positions."
+  ],
+  "example_prompts": [
+    "Build an explorable quarter-turn ball valve with bore and seat cutaway and expose its construction at close range."
+  ],
+  "content": {
+    "principles": [
+      "Use a two-port on/off teaching model. Distinguish the solid pressure-boundary shell, internal passage, ball bore, seats and stem penetration; a sphere pasted between pipes does not describe the mechanism.",
+      "The referenced SK product is intended for fully open or fully closed operation. Intermediate angles here expose the geometry during transition, not a recommended throttling regime."
+    ],
+    "implementation": [
+      "Construct a finite-thickness body around two coaxial port passages. Put a bored ball between two annular seats, with a stem axis perpendicular to the port axis and a handle attached to that stem. Give the stem seal and seat regions separate selectable groups; decorative threads must not fill the passage.",
+      "Set theta in[0,pi/2] as the authoritative actuation angle: zero aligns the ball bore with the two ports; pi/2 turns the bore across them. Derive ball, stem and handle transforms from theta. Keep cutaway planes and exploded offsets as separate inspection state.",
+      "At the closed endpoint inspect the seat/ball interface around the port: the authored bore must not leave a through-opening there. Show open/closed labels from theta and a separate transitioning label between endpoints; do not derive flow rate from cos(theta), color or exposed area.",
+      "Retain body wall, ball-bore rim, annular seats and handle offset in a hero closeup. In an overview omit thread helices and small packing hardware before removing the major seal boundaries. A translucent body is a view choice, not glass construction.",
+      "Offer select-seat, rotate-to-endpoint, reveal-passage and reset actions. If direction arrows are shown at open, label them a chosen illustrative direction; the cited SK design permits bidirectional flow."
+    ],
+    "observable_checks": [
+      "At zero, a section through the port axis shows a connected open passage; at pi/2 the bore no longer connects the two seat openings in the assembled geometry.",
+      "Rotate repeatedly and reset: the handle remains keyed to the stem and ball; cutaway visibility changes neither theta nor the operational label.",
+      "Inspect wall thickness and seat boundaries under neutral shading so highlights cannot conceal accidental holes or intersecting components."
+    ]
+  },
+  "known_limits": [
+    "No seal deformation, torque, pressure drop, leakage, pressure rating or fluid simulation. Product-specific spring and packing details are not certified by this simplified layout.",
+    "Authored construction and prospective checks; no runtime artifact, render or material test has been executed for this record."
+  ],
+  "creative_affordances": [
+    "Use an industrial cutaway, oversized classroom prop or stylized utility valve. Keep an open/closed end-state distinction without copying branding."
+  ],
+  "claims": [
+    {
+      "id": "claim.craft-depth-quarter-turn-ball-valve-cutaway",
+      "statement": "Swagelok documents quarter-turn operation, a directional handle, a floating ball and seats for its SK series; it states its ball valves are designed for fully open or fully closed use.",
+      "scope": "Named manufacturer construction and use scope; no transferred product ratings or universal throttling claim.",
+      "source_refs": [
+        {
+          "source_id": "source.craft-depth-quarter-turn-ball-valve-cutaway",
+          "locator": "Printed page 2: Features and Important Information About Swagelok Ball Valves; page 3 component table"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "id": "recipe.cryptographic-protocol-message-state",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "TLS 1.3 message state: bounded server-authenticated handshake"
+  },
+  "aliases": {
+    "en": [
+      "sanitized TLS handshake teaching trace",
+      "cryptographic protocol state lanes"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data"
+  ],
+  "summary": "Teach a bounded TLS 1.3 message order with public metadata and explicit external-verification gates.",
+  "objective": "Build a sanitized TLS 1.3 full-handshake state viewer where I step through hello negotiation, server authentication messages and Finished gates without displaying or computing secrets.",
+  "tags": [
+    "TLS 1.3",
+    "protocol state",
+    "handshake"
+  ],
+  "subject_terms": [
+    "TLS 1.3",
+    "full handshake",
+    "ClientHello",
+    "ServerHello",
+    "key share",
+    "EncryptedExtensions",
+    "Certificate",
+    "CertificateVerify",
+    "Finished",
+    "transcript",
+    "protocol state"
+  ],
+  "intent_signals": [
+    "teach TLS handshake message states",
+    "sanitized cryptographic protocol diagram",
+    "animation is not a cryptographic proof"
+  ],
+  "example_prompts": [
+    "Make a two-lane TLS 1.3 server-authenticated handshake viewer with hello choices, public message labels and externally supplied verification results, but no keys or secrets."
+  ],
+  "negative_signals": [
+    "Not a TLS implementation, packet decoder, key schedule, certificate validator, attack simulator, interoperability test, authentication claim or security proof."
+  ],
+  "not_for": [
+    "No PSK, resumption, 0-RTT, HelloRetryRequest, client authentication, post-handshake messages, record fragmentation, secret/key values, cryptographic primitive implementation or threat-resistance claim."
+  ],
+  "entities": [
+    {
+      "name": "Client and server lanes",
+      "guidance": "Blender creates two anchored endpoint consoles and reusable message capsules with directional sockets. Three.js owns phase, sender, receiver, sequence index and prerequisite edges; message travel follows committed state."
+    },
+    {
+      "name": "Sanitized verification gates",
+      "guidance": "Show only public message type, selected public identifiers and externally supplied pass/fail/not-run flags. Certificate-chain, CertificateVerify and Finished checks are named gates with provenance, never visual padlocks inferred from arrival."
+    }
+  ],
+  "state_contract": {
+    "model": "A teaching subset of the RFC 8446 basic full handshake: ClientHello(with supported versions, algorithms and one abstract public key-share identifier), ServerHello(with compatible selections and one abstract public key-share identifier), EncryptedExtensions, server Certificate, server CertificateVerify, server Finished, client Finished, then application-data-enabled. No client authentication, PSK, resumption, 0-RTT or retry. The viewer stores only message types, order, public option identifiers, transcript membership labels and external verification statuses (not-run/pass/fail); it never stores nonces, private keys, shared secrets, traffic secrets, MACs or signature bytes. ServerHello commit requires a compatible offered selection and key-share dependency. Advancement through CertificateVerify and each Finished gate requires an externally supplied pass status bound to the exact sanitized trace revision. Fail or out-of-order input enters a terminal teaching error until reset; a pass illustrates the declared state machine and does not prove a real peer authenticated.",
+    "authority": "Three.js owns sanitized state, ordering, prerequisites and replay. Blender owns only endpoint/message presentation. Real cryptographic computations and trust decisions, if any, belong to an external audited TLS implementation and are not part of this artifact.",
+    "actions": [
+      "Step the next legal message, or select an illegal message to see the rejected prerequisite without changing the accepted transcript.",
+      "Inspect hello offers/selections and the abstract key-share dependency without revealing values or deriving keys.",
+      "Import a provenance-labeled external verification status for the current Certificate chain, CertificateVerify or Finished gate.",
+      "Reset clears the transcript, external statuses, errors, selections and all presentation motion."
+    ]
+  },
+  "invariants": [
+    "The accepted sequence follows the declared subset; omitted optional branches stay visibly out of scope rather than silently skipped as universal TLS behavior.",
+    "No secret, private key, derived key, raw signature, Finished MAC or sensitive packet capture is accepted into state, labels, URLs, logs or export.",
+    "Application-data-enabled remains false until server Certificate/CertificateVerify/Finished and client Finished gates have the required externally supplied pass statuses for this exact trace revision.",
+    "A completed animation is never authentication evidence. not-run, pass and fail remain distinct, and changing any earlier message invalidates later external statuses."
+  ],
+  "motion_guidance": [
+    "Step commits one discrete semantic action; pause freezes playback without changing committed state. Reset cancels pending animation and restores the complete preset, including clock, history, selection and error state.",
+    "Use a static before/after view and readable tables for reduced motion. Camera movement and token/message travel only explain a committed transition."
+  ],
+  "creative_affordances": [
+    "Blender may shape distinctive, stable parts and materials for the chosen metaphor; Three.js binds those parts to model IDs and derives every label, highlight and transform from semantic state. Color is reinforced with text, shape or pattern.",
+    "The layout may be sculptural, planar or spatial, provided ordering, identity and invalid states remain unambiguous."
+  ],
+  "known_limits": [
+    "A deliberately simplified server-authenticated TLS 1.3 teaching path that withholds all application-data state until client Finished, although RFC 8446 permits the server to send protected application data earlier to an unauthenticated peer. It omits cryptographic computations and most protocol branches and makes no confidentiality, authenticity, interoperability or security-proof claim.",
+    "Authored, source-reviewed guidance only; no Blender export, solver, allocator, TLS stack, browser, renderer or interactive artifact was run."
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Message capsules illustrate ordered abstract events; distance, speed, contact and lighting do not provide security."
+  },
+  "related_ids": [
+    "recipe.finite-state-machine",
+    "recipe.service-graph",
+    "recipe.rag-retrieval-provenance"
+  ],
+  "object_craft": [
+    {
+      "family": "Protocol lane console",
+      "structure": "Build endpoint pedestals with keyed send/receive sockets, phase dividers and message capsules whose silhouettes identify hello, parameter and authentication phases. Keep verification cards fixed beside the lane so motion never hides state.",
+      "material": "Use public-data patterns and explicit text badges; reserve lock imagery for a labeled external-verification result and pair it with pass/fail/not-run text."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim.tls13-full-handshake-order",
+      "statement": "RFC 8446 presents the basic full TLS 1.3 handshake as ClientHello and ServerHello key exchange, then protected server parameters and authentication messages, followed by client authentication messages when requested and client Finished; its figure also permits optional server application data after server Finished and before client Finished.",
+      "scope": "The server-authenticated, no-PSK/no-retry/no-client-auth teaching subset declared by this recipe.",
+      "source_refs": [
+        {
+          "source_id": "source.rfc8446-tls13",
+          "locator": "Section 2, especially Figure 1 and the three handshake phases"
+        }
+      ]
+    },
+    {
+      "id": "claim.tls13-authentication-gates",
+      "statement": "CertificateVerify signs the handshake transcript with the certificate private key, Finished is a MAC over the handshake that provides key confirmation and handshake integrity, and handshake failure or protocol error terminates the connection, optionally after an alert.",
+      "scope": "RFC message roles and failure boundary only; this viewer neither computes nor validates these cryptographic values and cannot establish authentication.",
+      "source_refs": [
+        {
+          "source_id": "source.rfc8446-tls13",
+          "locator": "Sections 2, 4.4, 4.4.1, 4.4.3, 4.4.4 and 6"
+        }
+      ]
+    }
+  ]
+}

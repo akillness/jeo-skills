@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "id": "recipe.svd-sphere-to-ellipsoid",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Singular value decomposition as orthogonal map, scale, orthogonal map"
+  },
+  "aliases": {
+    "en": [
+      "SVD",
+      "singular values",
+      "sphere to ellipsoid"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra"
+  ],
+  "summary": "Decompose one matrix into three visible stages, keep reflections visible as legitimate orthogonal factors, and connect the ellipsoid semi-axes to the singular values.",
+  "objective": "Show how a matrix maps the unit sphere through separately inspectable orthogonal-map, nonnegative-scale and orthogonal-map stages, identifying rotations and reflections.",
+  "tags": [
+    "svd",
+    "singular values",
+    "decomposition"
+  ],
+  "subject_terms": [
+    "singular value decomposition",
+    "singular value",
+    "orthogonal matrix",
+    "unit sphere",
+    "ellipsoid",
+    "rank",
+    "principal axis"
+  ],
+  "intent_signals": [
+    "Show what the singular values of a matrix mean geometrically.",
+    "Break a linear map into orthogonal maps and nonnegative scaling, including reflections when required."
+  ],
+  "example_prompts": [
+    "Build an SVD demonstration where the unit sphere becomes an ellipsoid through three inspectable stages.",
+    "Show what happens to the ellipsoid when a singular value goes to zero."
+  ],
+  "negative_signals": [
+    "Not a numerical linear algebra tutorial on algorithms or conditioning.",
+    "Not a data-analysis or dimensionality-reduction recipe; that mapping needs its own claims."
+  ],
+  "not_for": [
+    "Not a numerical linear algebra tutorial on algorithms or conditioning.",
+    "Not a data-analysis or dimensionality-reduction recipe; that mapping needs its own claims."
+  ],
+  "entities": [
+    {
+      "name": "Unit sphere and frame",
+      "guidance": "Draw the sphere with a marked orthonormal frame so an orthogonal map, including a reflection, is visible; a bare sphere makes the first stage invisible."
+    },
+    {
+      "name": "Stage sequence",
+      "guidance": "Represent the three factors as separate stages with their own progress control, so the composite is never the only thing shown."
+    },
+    {
+      "name": "Ellipsoid axes",
+      "guidance": "Draw the resulting semi-axes with lengths labelled by singular value and ordered consistently."
+    }
+  ],
+  "state_contract": {
+    "model": "A real 3 by 3 matrix factored as A = U Sigma V^T with U and V orthogonal (determinant plus or minus one) and Sigma diagonal with nonnegative entries in descending order. Stages are applied to column vectors in the order V^T, then Sigma, then U, and the reported determinant sign of each orthogonal factor states whether it is a rotation or includes a reflection.",
+    "authority": "The factorisation is authoritative; the sphere, ellipsoid and axes are all rendered from the current stage parameter applied to that factorisation.",
+    "actions": [
+      "Scrub through the three stages.",
+      "Edit the matrix and refactorise.",
+      "Drive a singular value to zero and inspect the collapse.",
+      "Reset the matrix and the stage parameter."
+    ]
+  },
+  "invariants": [
+    "Semi-axis lengths equal the singular values in the declared order; a relabelled axis is a defect.",
+    "The two orthogonal stages preserve the lengths and angles they receive: applied to the unit sphere V^T keeps it a unit sphere, while U applied after Sigma preserves the already-scaled ellipsoid rather than restoring unit lengths.",
+    "Rank is reported and drawn honestly: rank 3 gives an ellipsoid, rank 2 a filled elliptical disc, rank 1 a segment and rank 0 a single point at the origin.",
+    "Singular values are never negative; a sign that belongs to the mapping is carried by the orthogonal factors, whose determinants are reported as plus or minus one."
+  ],
+  "motion_guidance": [
+    "Animate one stage at a time. A factor with determinant minus one cannot be reached from the identity through orthogonal matrices, so any smooth in-between frames for that stage are presentation and must be labelled as an interpolation rather than as intermediate orthogonal maps.",
+    "Keep the frame markers attached through the whole sequence so the correspondence between input and output directions is traceable."
+  ],
+  "known_limits": [
+    "Sign and ordering conventions differ between libraries, so the scene states its stage order (V^T, Sigma, U) and its column-vector convention. Calling the outer stages rotations is wrong whenever a factor has determinant minus one, for example with A = diag(-1, 2, 3).",
+    "The demonstration uses small matrices; nothing here addresses numerical stability at scale.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-svd-factorisation",
+      "statement": "The singular value decomposition writes any matrix A as a product U Sigma V transpose, where U and V are orthogonal and Sigma is diagonal, and the columns of U and V give bases for the four fundamental subspaces.",
+      "scope": "Real matrices with orthogonal factors, which include reflections as well as rotations; the cited overview asserts orthogonality and diagonality, not that either factor is a proper rotation.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-mit-svd",
+          "locator": "Singular Value Decomposition session overview"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-svd-ordering",
+      "statement": "A documented implementation returns u and vh with orthonormal columns and rows and returns the singular values sorted in descending order.",
+      "scope": "Contract of one library version; ordering and shape conventions must be checked against whatever library the scene uses.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-numpy-svd",
+          "locator": "numpy.linalg.svd, Returns and Notes"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Unit sphere and frame",
+      "structure": "A sphere with latitude and longitude bands plus three orthonormal axis markers rooted at the origin.",
+      "material": "Matte translucent shell so the interior frame stays visible; bands are geometry, not a texture, so they deform correctly.",
+      "articulation": "The shell is transformed by the current stage, never re-authored per stage."
+    },
+    {
+      "family": "Ellipsoid axes",
+      "structure": "Three semi-axis rods with end caps and numeric labels placed outside the surface.",
+      "material": "One accent per axis with distinct value steps so the ordering is readable in monochrome.",
+      "articulation": "Rebuilt from the factorisation whenever the matrix changes."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Mathematical transformation of authored geometry; no physical deformation is implied.",
+    "checks": [
+      "Applying all three stages equals applying the original matrix directly.",
+      "Setting a singular value to zero reports a rank drop.",
+      "Each orthogonal factor reports its determinant, and a reflection is presented as a reflection rather than animated as a rotation."
+    ]
+  },
+  "related_ids": [
+    "recipe.linear-transformation-3d",
+    "recipe.eigenvector-invariant-directions",
+    "knowledge.state-playback"
+  ]
+}

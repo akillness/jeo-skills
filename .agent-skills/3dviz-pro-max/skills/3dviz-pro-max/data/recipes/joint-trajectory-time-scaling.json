@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "id": "recipe.joint-trajectory-time-scaling",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Path, time scaling and joint limits"
+  },
+  "aliases": {
+    "en": [
+      "time scaling",
+      "trajectory",
+      "joint velocity limits"
+    ]
+  },
+  "direction_ids": [
+    "robotics-control"
+  ],
+  "summary": "Separate the geometric path from the schedule along it, so speed limits change timing without changing the path.",
+  "objective": "Build a joint-space path with a time scaling I can change, showing velocity and acceleration profiles against declared joint limits.",
+  "tags": [
+    "trajectory",
+    "time scaling",
+    "motion planning"
+  ],
+  "subject_terms": [
+    "path",
+    "trajectory",
+    "time scaling",
+    "joint space",
+    "velocity limit",
+    "acceleration limit",
+    "straight-line path",
+    "via point"
+  ],
+  "intent_signals": [
+    "Show the difference between a path and a trajectory.",
+    "Change how fast a robot follows the same path without changing the path."
+  ],
+  "example_prompts": [
+    "Build a joint-space straight-line path with an adjustable time scaling and limit checking.",
+    "Show velocity and acceleration profiles for the same path under two different time scalings."
+  ],
+  "negative_signals": [
+    "Not a collision-free motion planner: obstacle avoidance is out of scope.",
+    "Not a torque-level controller; actuator dynamics are not modelled."
+  ],
+  "not_for": [
+    "Not a collision-free motion planner: obstacle avoidance is out of scope.",
+    "Not a torque-level controller; actuator dynamics are not modelled."
+  ],
+  "entities": [
+    {
+      "name": "Path definition",
+      "guidance": "Define the path in joint space between start and end configurations with the path parameter visible, since the scaling acts on that parameter."
+    },
+    {
+      "name": "Time scaling profile",
+      "guidance": "Plot the scaling and its derivatives in the scene so the schedule is an object rather than a hidden curve."
+    },
+    {
+      "name": "Limit check",
+      "guidance": "Compare peak joint velocity and acceleration with declared limits and report which joint binds."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored planar 2R display arm with lengths 2 m and 1 m and unrestricted revolute joints. FK: p=(2 cos(q1)+cos(q1+q2),2 sin(q1)+sin(q1+q2)) m. Stored unwrapped joint endpoints define q(s)=q_start+Deltaq s without shortest-angle wrapping; defaults (0,0) to (pi/2,pi/2). For finite T>0 and u=t/T in [0,1], cubic s=3u^2-2u^3, s_dot=(6u-6u^2)/T, s_double_dot=(6-12u)/T^2. Trapezoid chooses authored acceleration duration tb=T/4, peak v=4/(3T), a=16/(3T^2): for 0<=t<tb, s=a t^2/2 and s_dot=a t; for tb<=t<T-tb, s=v(t-tb/2) and s_dot=v; for T-tb<=t<=T, s=1-a(T-t)^2/2 and s_dot=a(T-t). Accelerations are respectively a,0,-a with one-sided values at switches. Hold endpoints outside [0,T] with zero speed/acceleration and label acceleration jumps. q_dot=Deltaq s_dot and q_double_dot=Deltaq s_double_dot. Per-joint limits default to 1 rad/s and 2 rad/s^2, editable finite positive values. Exact peak magnitudes are |Deltaq| times 1.5/T and 6/T^2 for cubic, or 4/(3T) and 16/(3T^2) for trapezoid; report violations, never clip the path.",
+    "authority": "The path and the scaling are separate authoritative objects; changing the scaling must never change the geometric path traced by the end effector.",
+    "actions": [
+      "Change the total duration.",
+      "Switch between the cubic and trapezoidal time scalings.",
+      "Play, pause and scrub the trajectory.",
+      "Reset path, scaling and duration."
+    ]
+  },
+  "invariants": [
+    "The end-effector path is identical under every time scaling of the same joint-space path.",
+    "The scaling starts at zero and ends at one, so start and end configurations are reached exactly.",
+    "A violated joint limit is reported with the joint named, rather than being clipped silently.",
+    "The supplied formulas give analytic peak bounds for these schedules; any separately sampled peak estimate is labeled and never substitutes for those bounds."
+  ],
+  "motion_guidance": [
+    "Evaluate the analytic schedule at the requested scene time for playback and scrubbing; stored samples may cache those evaluations but their interpolation is labeled approximate.",
+    "Show the profile cursor moving together with the arm, so timing and pose are linked visually."
+  ],
+  "known_limits": [
+    "Kinematic scheduling only: real limits also come from torque, payload and thermal constraints.",
+    "The stated schedules have acceleration jumps and no jerk limit. Display sampling changes only the rendered approximation; it does not redefine the analytic joint path or its peak bounds.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-path-versus-trajectory",
+      "statement": "A robot configuration as a function of time is a trajectory, while a path is a curve in configuration space parameterised by a path parameter running from zero to one, and a path becomes a trajectory by defining a time scaling that maps the time range onto that parameter range.",
+      "scope": "Definitions as cited; the simplest joint-space path is the straight line between start and end configurations.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-modern-robotics-trajectories",
+          "locator": "9.1 and 9.2 Part 1, path, trajectory and time scaling definitions"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-time-scaling-families",
+      "statement": "Common time scalings include a cubic polynomial whose velocity is parabolic and whose acceleration is linear, a fifth-order polynomial that additionally sets zero acceleration at both endpoints, a trapezoidal profile of constant acceleration, constant-velocity coast and constant deceleration to rest, and a seven-segment S-curve with constant-jerk phases; the actual speed and acceleration also depend on the path distance and total duration, not only on the form of the scaling.",
+      "scope": "Named families and their qualitative derivative structure as presented in the cited section; specific coefficient formulas were not transcribed from that page and must be derived from the endpoint conditions the scene declares.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-modern-robotics-time-scalings",
+          "locator": "9.1 and 9.2 Part 2, cubic, quintic, trapezoidal and S-curve time scalings"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Path definition",
+      "structure": "A visible trace of the end-effector positions along the path with markers at the sampled path parameter values.",
+      "material": "Neutral trace material with a distinct marker for start and end so the path is legible at rest.",
+      "articulation": "The trace is regenerated only when the path endpoints change, never when the scaling changes."
+    },
+    {
+      "family": "Time scaling profile",
+      "structure": "Plot rails in the scene carrying scaling, velocity and acceleration curves with a shared time axis.",
+      "material": "Opaque plot plates with gridlines and units so peaks can be read against the limit lines.",
+      "articulation": "A cursor moves along all three plots together during playback."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Analytic kinematic scheduling and optional cached playback; no dynamics, contact or hardware feasibility certification.",
+    "state": [
+      "unwrapped joint endpoints",
+      "duration",
+      "schedule",
+      "scene time",
+      "joint states",
+      "rate limits",
+      "limit report"
+    ],
+    "checks": [
+      "The traced path is unchanged when the scaling changes.",
+      "Scrubbing to a time reproduces the same joint state every time."
+    ]
+  },
+  "related_ids": [
+    "recipe.robot-arm-forward-frames",
+    "recipe.arm-workspace-singularity",
+    "knowledge.state-playback"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "game-perf-claude-skill",
+  "version": "1.0.0",
+  "description": "Claude Code plugin to detect and fix 5 common frame-drop patterns in game/interactive app code",
+  "author": "Andrew Kim",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gykim80/andrew_game_perf.git"
+  },
+  "keywords": [
+    "claude-code",
+    "claude-plugin",
+    "performance",
+    "frame-drop",
+    "game-dev",
+    "react",
+    "zustand",
+    "canvas",
+    "optimization"
+  ],
+  "files": [
+    ".claude-plugin/",
+    "skills/",
+    "commands/",
+    "README.md",
+    "LICENSE"
+  ]
+}

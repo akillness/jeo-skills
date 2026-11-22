@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-clash-query-scope",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Clash query scope independent of layer visibility"
+  },
+  "aliases": {
+    "en": [
+      "hidden layer clash check",
+      "clash pair reporting"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors"
+  ],
+  "summary": "Confirm that hiding a layer does not change the clash result set and that every reported pair resolves to the highlighted geometry.",
+  "objective": "The clash result set is identical with layers shown or hidden, and each pair carries IDs, location and an overlap measure.",
+  "applies_when": [
+    "Coordination between systems or trades uses geometric intersection queries.",
+    "Layers or disciplines can be toggled while querying.",
+    "Both hard intersections and clearance violations matter."
+  ],
+  "check_method": "state",
+  "tags": [
+    "domain-validation",
+    "clash",
+    "coordination",
+    "query-scope"
+  ],
+  "subject_terms": [
+    "clash detection",
+    "query scope",
+    "layer visibility",
+    "element ID",
+    "clearance violation"
+  ],
+  "intent_signals": [
+    "hiding the duct layer hid the clash too",
+    "check the clash report against the highlighted parts"
+  ],
+  "example_prompts": [
+    "Check that hidden service layers still take part in clash queries."
+  ],
+  "negative_signals": [
+    "sizing HVAC or hydraulic systems",
+    "regulatory sign-off"
+  ],
+  "content": {
+    "principles": [
+      "Visibility and query scope are independent; hiding a layer is a viewing action and must not silently remove elements from the clash set.",
+      "A clash result is a pair of element IDs with a location and a measured overlap, because a highlight without those values cannot be checked or fixed.",
+      "Hard clash and clearance violation are different results with different thresholds, and merging them hides the one that matters."
+    ],
+    "implementation": [
+      "Define query scope explicitly as a filter over element IDs and record it with each run, keeping viewer layer visibility as a separate structure.",
+      "Author a small fixture with known answers: one true intersection, one pair separated by less than the required clearance, one pair that merely touches, and one pair inside a hidden layer.",
+      "Run the query with that layer visible and hidden, compare result sets element by element, then deduplicate symmetric pairs and confirm each appears once.",
+      "For each reported pair read the element IDs back from the highlighted objects rather than from the report, to confirm the highlight and the report agree."
+    ],
+    "observable_checks": [
+      "The result set is identical with the layer shown and hidden; a difference names the code path that confused visibility with scope.",
+      "The known intersection appears as a hard clash with a nonzero overlap measure and the close pair as a clearance violation; the touching pair is assigned by the declared tolerance, and the point is that the assignment is stated rather than assumed to be zero.",
+      "Every reported pair appears exactly once, and reading IDs back from the highlighted meshes reproduces the reported pair."
+    ]
+  },
+  "known_limits": [
+    "Checks the query and reporting contract; it does not establish that authored envelopes represent real equipment or that a clash-free model is buildable.",
+    "Authored verification guidance; no query was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.building-service-layers",
+    "recipe.studio-furniture-layout",
+    "recipe.voxel-packing-tray"
+  ],
+  "claims": []
+}

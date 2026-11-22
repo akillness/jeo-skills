@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.layered-garment-support",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "object-archetype",
+  "title": {
+    "en": "Layered garment panels, closures and underlying support"
+  },
+  "aliases": {
+    "en": [
+      "garment construction layers",
+      "costume silhouette and underpinnings"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "products-assemblies",
+    "environments-dioramas"
+  ],
+  "summary": "Organize clothing as panels, joined edges, lining or understructure, closures and supports rather than a single inflated shell over a body.",
+  "objective": "Make garment silhouette and motion understandable from its construction, while distinguishing authored cloth behavior from calibrated textile simulation.",
+  "tags": [
+    "object-archetype",
+    "layered-garment-support"
+  ],
+  "subject_terms": [
+    "garment panel",
+    "seam allowance",
+    "lining",
+    "hem",
+    "closure",
+    "underpinning",
+    "costume mount",
+    "drape"
+  ],
+  "intent_signals": [
+    "clothing looks like a thick plastic shell",
+    "show garment layers and seams",
+    "dress silhouette needs underlying support"
+  ],
+  "example_prompts": [
+    "Create an explorable layered coat with separate lining, closures and a readable hem.",
+    "Build a museum costume display that reveals how a support form shapes the silhouette."
+  ],
+  "content": {
+    "principles": [
+      "V&A costume mounting uses customized padding and underpinnings to support and shape displayed garments. This is a documented display practice, not evidence that every garment contains the same hidden structure.",
+      "Separate surface appearance, panel construction and mechanical behavior. A glossy material is not a stiffness setting; a normal-map seam does not join two simulated edges.",
+      "Choose which layers exist for the subject: outer cloth, optional lining/interfacing or underpinnings, trim and closures. Keep omission or exaggeration an explicit artistic decision.",
+      "Treat a worn garment, a displayed museum garment and a freely dropped cloth as different support conditions rather than reusing one unexplained pinned pose."
+    ],
+    "implementation": [
+      "Create named panel regions with matched seam relationships and clear opening boundaries. Model seam allowances, folds or rolled hems only at the detail level needed for the shot, while retaining enough edge thickness for close views.",
+      "Build any lining or underlying support as a separate layer with authored separation. Give buttons, loops, zipper-like closures or ties explicit attachment points and open/closed correspondence; decorative marks do not change the closure state.",
+      "Choose static sculpting, a skinned garment, cloth simulation or baked cloth playback per interaction. Record which system owns deformation and which vertices or regions are supported; do not blend solver output and unrelated per-frame offsets without a defined composition.",
+      "For cloth simulation, specify actual collision and self-collision thickness, layer ordering, pinned/support regions, solver timestep and initial nonpenetrating pose. Parameter values are chosen for the model and are not measured fabric properties unless separately calibrated.",
+      "For museum presentation, customize the support form to the chosen garment silhouette and let a cutaway reveal it. Keep reconstructed missing components identified as reconstructions when factual collections are depicted.",
+      "Store closure state, body/mount pose, panel rest geometry and simulation/cache start state. Provide a reset or deterministic replay from that state; opening a closure should release only the declared relationship."
+    ],
+    "observable_checks": [
+      "Inspect collar, cuff and hem close up: layers terminate intentionally and no unintended plastic-like sealed cap blocks an opening.",
+      "Open and close the chosen fastening: matching edges and attached hardware remain consistent without toggling an unrelated entire mesh.",
+      "Raise an arm or rotate the display: cloth, lining and support do not interpenetrate beyond the declared model tolerance, and fixed regions stay attached.",
+      "Remove the outer layer in inspection mode: the revealed lining or underpinning explains the chosen silhouette and returns to the same assembly on reset."
+    ]
+  },
+  "known_limits": [
+    "V&A source supports costume-mounting practice only; garment patterns, cultural attribution, textile stiffness and sewing construction need their own evidence when factual.",
+    "Authored cloth or skinning does not establish fit, comfort, conservation safety, textile failure or manufacturing accuracy.",
+    "Authored modeling guidance and prospective checks; no runtime artifact has been executed for this record."
+  ],
+  "creative_affordances": [
+    "Use tailored, loose, sculptural, historical-inspired or fictional silhouettes and omit unnecessary layers; preserve the selected construction relationships instead of imposing one fashion template."
+  ],
+  "claims": [
+    {
+      "id": "claim.object-depth-layered-garment-support",
+      "statement": "V&A describes customized costume display figures with padding and bespoke underpinnings that define the garment silhouette.",
+      "scope": "Museum display practice described by Stephanie Howell, published May 2025; not a universal garment-construction rule.",
+      "source_refs": [
+        {
+          "source_id": "source.object-depth-vam-costume-mounting",
+          "locator": "Opening paragraph: customized figure, padding and bespoke underpinnings defining silhouette."
+        }
+      ]
+    }
+  ],
+  "related_ids": []
+}

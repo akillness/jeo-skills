@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.source-model-runtime-provenance-panel",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "presentation-profile",
+  "title": {
+    "en": "Source, model and runtime provenance panel"
+  },
+  "aliases": {
+    "en": [
+      "provenance status panel",
+      "source versus simulation disclosure",
+      "data model render lineage"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment",
+    "anatomy-structures",
+    "abstract-systems-data"
+  ],
+  "summary": "Expose what came from a source, what was computed or authored, and what is only a display transform, with stable identifiers that link visible claims to their lineage.",
+  "objective": "A viewer can tell which dataset/entity, transformation/activity and runtime presentation produced a selected result, including version, units, uncertainty and not-run status where applicable.",
+  "applies_when": [
+    "A scene visualizes supplied data, a numerical model, generated geometry or a scientific claim.",
+    "Display transformations could be mistaken for source or simulated values."
+  ],
+  "subject_terms": [
+    "provenance panel",
+    "source model runtime",
+    "entity activity agent",
+    "display transform disclosure",
+    "artifact status"
+  ],
+  "tags": [
+    "presentation-profile",
+    "provenance",
+    "source",
+    "model",
+    "runtime"
+  ],
+  "intent_signals": [
+    "show whether this geometry is sourced simulated or illustrative",
+    "provenance panel for selected data point",
+    "label runtime not-run status"
+  ],
+  "example_prompts": [
+    "For a forecast playback, show the source dataset, transformation version and current rendered timestep separately.",
+    "For an anatomical mesh, distinguish supplied segmentation, authored repair and display exaggeration in the selection panel."
+  ],
+  "negative_signals": [
+    "Calling a citation a runtime validation.",
+    "Showing a source URL without the model version or transformation that produced the visible value."
+  ],
+  "not_for": [
+    "A complete PROV serialization requirement for every artistic scene.",
+    "Credentials, private paths or raw research logs."
+  ],
+  "content": {
+    "principles": [
+      "Organize the panel around the visible result: source entity, transformation/model activity, responsible tool or agent where useful, and the current runtime/display state.",
+      "Keep factual provenance separate from artistic rationale. “Sourced,” “computed,” “authored illustration,” “display-transformed” and “not run” answer different questions.",
+      "Stable IDs join selection to provenance; labels and URLs alone are insufficient when several versions or transformations share a name."
+    ],
+    "implementation": [
+      "In Blender, attach stable public IDs and compact source/model references to named objects or scene data. Export selected custom properties only after sanitization; Blender maps enabled custom properties to glTF extras without defining their namespace.",
+      "In Three.js, validate and map extras into an application provenance store. Render a semantic panel outside the canvas with source title/version, transformation/model version, units, uncertainty and runtime check status appropriate to the selected claim.",
+      "Keep raw paths, credentials, prompts and private logs outside the asset. If lineage is unavailable, show unknown or unavailable rather than inventing a source."
+    ],
+    "observable_checks": [
+      "Selecting two derived objects shows distinct entity IDs and the correct shared or separate activities; changing the display gain does not rewrite source values.",
+      "A source link, model version, units and runtime status remain readable after resize and export of the public report; missing fields display explicitly.",
+      "Inspect the GLB JSON and public panel: only allowlisted extras appear, and no local path, token, private prompt or raw memo is present."
+    ]
+  },
+  "related_ids": [
+    "knowledge.reasoning-solver-data-provenance",
+    "knowledge.uncertainty-interval-encoding",
+    "knowledge.validation-structure-identity-persistence"
+  ],
+  "creative_affordances": [
+    "Use a compact badge, expandable lineage table or node-link view depending on complexity.",
+    "Explain an artistic intervention in plain language next to formal lineage when it affects interpretation."
+  ],
+  "known_limits": [
+    "W3C PROV supplies a conceptual vocabulary; this profile does not require or claim a complete conforming PROV document.",
+    "glTF extras are application-specific and do not make provenance interoperable without an application contract.",
+    "No GLB inspection, source-link test or runtime provenance UI was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.experience-prov-core-roles",
+      "statement": "W3C PROV-DM describes provenance through entities, activities, derivations, agents and responsibility, with extensibility for domain-specific information.",
+      "scope": "Conceptual organization for a user-facing panel; no full PROV serialization or trust assessment is asserted.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-w3c-prov-dm",
+          "locator": "Abstract; 2.1 PROV Core Structures"
+        }
+      ]
+    },
+    {
+      "id": "claim.experience-gltf-extras-boundary",
+      "statement": "The glTF specification defines extras as application-specific data and recommends a JSON object for portability; Blender 4.5 exports selected custom properties into the corresponding glTF extras without a defined namespace.",
+      "scope": "Transport mechanism only; sanitization, schema, semantics and UI are application responsibilities.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-khronos-gltf-animation",
+          "locator": "5.16 Extras"
+        },
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "Custom Properties; Include > Custom Properties"
+        }
+      ]
+    }
+  ]
+}

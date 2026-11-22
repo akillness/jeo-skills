@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-felt-wool",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Felt and wool-like softness"
+  },
+  "aliases": {
+    "en": [
+      "felt creature",
+      "wool miniature",
+      "soft textile style"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "Suggest a soft crafted textile with rounded silhouettes, layered patches and sparse fibers scaled for the view.",
+  "objective": "The figure still reads at mid-distance and fibers do not conceal eyes, joins or interactive targets.",
+  "tags": [
+    "style-profile",
+    "surface-aesthetic",
+    "felt-wool"
+  ],
+  "subject_terms": [
+    "felt creature",
+    "wool miniature",
+    "soft textile style",
+    "surface aesthetic"
+  ],
+  "intent_signals": [
+    "Create a felt or wool-like appearance",
+    "Build a soft textile figure with layered patches"
+  ],
+  "example_prompts": [
+    "Build a wool-like owl with layered felt wings and an easy-to-read head turn."
+  ],
+  "content": {
+    "principles": [
+      "Suggest a soft crafted textile with rounded silhouettes, layered patches and sparse fibers scaled for the view.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Create padded masses, cut felt layers and simple stitched joins; reserve fiber geometry for contours or close focal areas.",
+      "Use soft highlights and controlled color variation; light from the side enough to reveal layer thickness without making every fiber compete.",
+      "Frame a tactile close view alongside the whole figure; gentle bobbing or jointed puppet movement can fit the intended handmade character."
+    ],
+    "observable_checks": [
+      "The figure still reads at mid-distance and fibers do not conceal eyes, joins or interactive targets.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with stop-motion-inspired timing or toy staging; apparent softness is not a tested cloth or deformation model.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

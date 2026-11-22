@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "id": "recipe.heart-cutaway",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Heart chamber cutaway"
+  },
+  "aliases": {
+    "en": [
+      "heart cutaway"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures"
+  ],
+  "summary": "Reveal four chambers without confusing presentation layers with tissue motion.",
+  "objective": "Create a labeled heart cutaway that lets me isolate each chamber while preserving anatomical left and right.",
+  "tags": [
+    "heart",
+    "cutaway"
+  ],
+  "example_prompts": [
+    "Create a labeled heart cutaway that lets me isolate each chamber while preserving anatomical left and right."
+  ],
+  "entities": [
+    {
+      "name": "Chambers",
+      "guidance": "Use distinct atrial and ventricular cavities with section thickness; identify by labels as well as color. Do not use four disconnected spheres."
+    },
+    {
+      "name": "Section shell",
+      "guidance": "Create a stable clipping plane and capped section; subdued tissue roughness separates shell from cavity without inventing diagnostic textures."
+    },
+    {
+      "name": "Orientation frame",
+      "guidance": "Keep anterior/posterior and anatomical left/right labels fixed to the organ, independent of camera."
+    }
+  ],
+  "state_contract": {
+    "model": "Structural model with chamber IDs, clipping plane and visibility; no blood-pressure or contraction solver.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Drag section plane.",
+      "Isolate a chamber and restore neighboring context.",
+      "Reset orientation and visibility."
+    ]
+  },
+  "invariants": [
+    "Each chamber ID remains attached to the same cavity through clipping and isolation.",
+    "Anatomical left and right labels attach to the organ (patient perspective) and stay valid from any camera; in the default anterior view anatomical left appears on screen right.",
+    "No clipping cap can imply a real anatomical membrane."
+  ],
+  "motion_guidance": [
+    "Animate the section plane as a display transform; retain an uncut reference silhouette.",
+    "Do not pulse chambers or flow arrows as physiological evidence."
+  ],
+  "known_limits": [
+    "A sourced or expert-reviewed mesh is still required for anatomical proportions and connections; the default dimensions bound the organ, they do not describe its shape.",
+    "The size and mass defaults are typical adult teaching figures from the cited section, not patient-specific measurements, and the section gives no numeric wall thickness for either ventricle.",
+    "Four-chamber sourcing does not validate an entire heart model or any diagnostic use.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.heart-cutaway",
+      "statement": "The human heart has a left and right atrium and a left and right ventricle.",
+      "scope": "Structural chamber identification only.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-heart",
+          "locator": "19.1, Chambers and Circulation through the Heart"
+        }
+      ]
+    },
+    {
+      "id": "claim.heart-cutaway-dimensions",
+      "statement": "A typical adult heart is about 12 cm in length, 8 cm wide and 6 cm thick, weighs approximately 250 to 300 grams in females and 300 to 350 grams in males, sits in the mediastinum medially between the lungs, has its apex just to the left of the sternum between the junction of the fourth and fifth ribs, and has a left ventricular wall much thicker than the right.",
+      "scope": "Typical adult overall size, mass and gross position for framing and scene scale. No chamber volumes, wall thicknesses in millimetres or patient-specific geometry are claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-heart",
+          "locator": "19.1 Heart Anatomy, Location of the Heart and Chambers and Circulation through the Heart: \"A typical heart is approximately the size of your fist: 12 cm (5 in) in length, 8 cm (3.5 in) wide, and 6 cm (2.5 in) in thickness\"; \"the weight of a female heart is approximately 250-300 grams (9 to 11 ounces), and the weight of a male heart is approximately 300-350 grams (11 to 12 ounces)\"; \"The human heart is located within the thoracic cavity, medially between the lungs in the space known as the mediastinum\"; \"The inferior tip of the heart, the apex, lies just to the left of the sternum between the junction of the fourth and fifth ribs\"; \"the muscle of the left ventricle is much thicker and better developed than that of the right ventricle\""
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Chambers",
+      "structure": "Use distinct atrial and ventricular cavities with section thickness; identify by labels as well as color. Do not use four disconnected spheres.",
+      "material": "Restrained nonmetallic tissue palette; cavity and capped cut surfaces differ in roughness and value. Colors are structural labels, not oxygen or pathology measurements.",
+      "articulation": "Clipping and isolation are display controls; no contraction or deformation is implied."
+    },
+    {
+      "family": "Section shell",
+      "structure": "Create a stable clipping plane and capped section; subdued tissue roughness separates shell from cavity without inventing diagnostic textures.",
+      "material": "Restrained nonmetallic tissue palette; cavity and capped cut surfaces differ in roughness and value. Colors are structural labels, not oxygen or pathology measurements.",
+      "articulation": "Clipping and isolation are display controls; no contraction or deformation is implied."
+    },
+    {
+      "family": "Orientation frame",
+      "structure": "Keep anterior/posterior and anatomical left/right labels fixed to the organ, independent of camera.",
+      "material": "Restrained nonmetallic tissue palette; cavity and capped cut surfaces differ in roughness and value. Colors are structural labels, not oxygen or pathology measurements.",
+      "articulation": "Clipping and isolation are display controls; no contraction or deformation is implied."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Semantic geometry/state presentation; no gravity, contact force or material simulation.",
+    "checks": [
+      "Each chamber ID remains attached to the same cavity through clipping and isolation.",
+      "Anatomical left and right labels stay bound to the organ under every camera: orbit from the default anterior view to a posterior view and the labelled chambers are unchanged while their screen sides swap. In the default anterior view, verify that the chamber labelled anatomical left is drawn on screen right.",
+      "The rendered mesh fits inside the default 0.12 x 0.08 x 0.06 m bounding box and does not fill it."
+    ]
+  },
+  "defaults": {
+    "provenance": "source-backed",
+    "tunable": true,
+    "claim_ids": [
+      "claim.heart-cutaway",
+      "claim.heart-cutaway-dimensions"
+    ],
+    "rationale": "Size, mass and gross position restate the cited section (claim.heart-cutaway-dimensions) and the four-chamber inventory restates claim.heart-cutaway. They exist so a scene has a real metre-scale envelope, a section-plane offset and a framing distance instead of an invented one. The bounding box is an outer bound taken from three separately quoted extents, not a measured hull, and the derived density check in the worked example says how much of it should stay empty. Ventricular wall thickness is left without a number because the section states only that the left wall is much thicker. Tunable for framing and for adapting to a supplied mesh; if the mesh carries its own measured extents, prefer those and keep these as the sanity bound.",
+    "values": {
+      "parameters": {
+        "length": {
+          "value": 0.12,
+          "unit": "m",
+          "note": "sourced 12 cm, apex-to-base long axis"
+        },
+        "width": {
+          "value": 0.08,
+          "unit": "m",
+          "note": "sourced 8 cm"
+        },
+        "thickness": {
+          "value": 0.06,
+          "unit": "m",
+          "note": "sourced 6 cm, anterior-posterior"
+        },
+        "mass_female": {
+          "value": 0.275,
+          "unit": "kg",
+          "range": [
+            0.25,
+            0.3
+          ],
+          "note": "sourced 250-300 g; midpoint used as the single default"
+        },
+        "mass_male": {
+          "value": 0.325,
+          "unit": "kg",
+          "range": [
+            0.3,
+            0.35
+          ],
+          "note": "sourced 300-350 g; midpoint used as the single default"
+        },
+        "chamber_count": {
+          "value": 4,
+          "unit": "count",
+          "note": "two atria and two ventricles; sourced"
+        },
+        "default_section_plane_offset": {
+          "value": 0.03,
+          "unit": "m",
+          "note": "derived: half of the 0.06 m anterior-posterior thickness, a coronal cut through the middle of the organ"
+        },
+        "ventricular_wall_thickness": {
+          "value": "no default; source gives none",
+          "unit": "m",
+          "note": "the section states only that the left ventricular muscle is much thicker than the right"
+        },
+        "chamber_volumes": {
+          "value": "no default; source gives none",
+          "unit": "mL",
+          "note": "19.1 gives no chamber volumes; recipe.cardiac-cycle-valves carries the sourced ventricular volumes instead"
+        }
+      },
+      "equations": [
+        "bounding_box_diagonal = sqrt(length^2 + width^2 + thickness^2)",
+        "box_volume = length * width * thickness",
+        "implied_density_if_box_were_solid = mass / box_volume"
+      ],
+      "worked_example": {
+        "inputs": "Typical adult heart 0.12 m long, 0.08 m wide, 0.06 m thick, mass 0.30 kg",
+        "expected": "Axis-aligned bounding box volume 5.76e-4 m^3, box diagonal 0.156 m, and an implied density of 521 kg/m^3 if the organ filled that box - about half of soft-tissue density, so a correct mesh occupies roughly half the box and never all of it",
+        "derivation": "box_volume = 0.12 * 0.08 * 0.06 = 5.76e-4 m^3. diagonal = sqrt(0.12^2 + 0.08^2 + 0.06^2) = sqrt(0.0144 + 0.0064 + 0.0036) = sqrt(0.0244) = 0.1562 m, the distance a camera must be able to frame. 0.30 kg / 5.76e-4 m^3 = 521 kg/m^3, roughly half the about 1050 kg/m^3 of soft tissue, which is the check: a mesh that fills the bounding box is too big by about a factor of two in volume. The 1050 kg/m^3 comparison value is general tissue-density knowledge and is not taken from the cited section."
+      },
+      "tolerance": {
+        "length_m": "+/- 0.005 m; every extent in the source is hedged approximately",
+        "orientation": "labels are exact strings, not tolerances: the anatomical left label must name the same chamber before and after any camera move"
+      }
+    }
+  }
+}

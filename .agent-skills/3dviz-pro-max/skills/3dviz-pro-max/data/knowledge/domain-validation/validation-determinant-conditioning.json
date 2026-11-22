@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-determinant-conditioning",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Signed determinant, unsigned volume and scale-relative degeneracy"
+  },
+  "aliases": {
+    "en": [
+      "determinant sign check",
+      "near singular threshold"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra"
+  ],
+  "summary": "Separate signed determinant from geometric volume and judge near-degeneracy relative to column scale rather than a fixed epsilon.",
+  "objective": "Volume equals the absolute determinant at every sample, and the angular degeneracy measure is invariant under a common finite nonzero rescaling of all columns.",
+  "applies_when": [
+    "A scene shows a determinant together with a spanned volume or area.",
+    "Vectors can be moved into a coplanar or zero configuration.",
+    "Any code path requires an inverse to render the result."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "determinant",
+    "degeneracy",
+    "conditioning"
+  ],
+  "subject_terms": [
+    "determinant",
+    "triple scalar product",
+    "parallelepiped volume",
+    "coplanar",
+    "conditioning",
+    "column norm"
+  ],
+  "intent_signals": [
+    "the volume goes negative",
+    "when should this be called singular"
+  ],
+  "example_prompts": [
+    "Check the determinant and volume readouts as the vectors become coplanar."
+  ],
+  "negative_signals": [
+    "numerical linear algebra library certification",
+    "general matrix factorisation"
+  ],
+  "content": {
+    "principles": [
+      "Signed determinant and geometric volume are different quantities: volume is the absolute value, so a column swap must flip the sign without changing the volume readout.",
+      "A zero determinant is a valid state of the model, a collapse to a plane, line or point, and rendering must not require an inverse to display it.",
+      "Near-singular is a scale-relative judgment: comparing the determinant with the product of the column norms removes per-column scale and measures how far the columns are from being linearly dependent in angle. It is not a condition number. The diagonal matrix with entries one, one and a millionth of a millionth has ratio one and condition number a million million, so any claim about safe inversion needs a singular-value or condition estimate instead."
+    ],
+    "implementation": [
+      "Compute determinant and volume from the same three column vectors and display both with their relationship stated.",
+      "Swap two columns and re-read both values, then negate one column and re-read again.",
+      "Sweep one column toward the plane of the other two, recording determinant, volume and the ratio of determinant to the product of the three column norms; guard that ratio against a zero or non-finite column norm before dividing, and report the zero-column case as degenerate rather than as a ratio.",
+      "Include the exactly coplanar case and the zero-vector case and record which code path handles each."
+    ],
+    "observable_checks": [
+      "Volume equals the absolute determinant at every sample within a stated tolerance, since a triple product and a cofactor expansion need not agree in the last digit, and a column swap flips the determinant sign while leaving the volume unchanged.",
+      "At the coplanar sample the determinant is zero within the declared tolerance and the scene still renders a flat figure rather than failing or hiding it.",
+      "Scaling all three columns by a common finite nonzero factor, chosen to avoid overflow and underflow, does not change the degeneracy classification, while scaling by zero correctly does; a fixed absolute epsilon that changes the classification under harmless rescaling is the defect this check exposes."
+    ]
+  },
+  "known_limits": [
+    "Checks the displayed relationship and its degenerate branches; it is not a certification of any determinant algorithm or of floating-point error bounds.",
+    "The normalized determinant ratio reports angular independence only; inverse-related safety claims need a singular-value or condition-number estimate that this procedure does not compute.",
+    "Authored verification guidance; no computation or render was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.determinant-volume",
+    "recipe.linear-transformation-3d",
+    "recipe.cross-product"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-parallelepiped-volume-determinant",
+      "statement": "The volume of the parallelepiped spanned by three vectors is the absolute value of their triple scalar product, which equals the absolute determinant of their coordinate matrix.",
+      "scope": "Real three-dimensional vectors in a fixed orthonormal frame.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-cross-product",
+          "locator": "2.4, Volume of a Parallelepiped and the determinant calculation"
+        }
+      ]
+    },
+    {
+      "id": "claim.validation-relative-absolute-tolerance",
+      "statement": "A widely used closeness test compares the absolute difference against an absolute tolerance plus a relative tolerance times the reference magnitude, and its documentation warns that the default absolute tolerance is inappropriate for magnitudes much smaller than one, so comparisons against zero need an explicitly chosen absolute tolerance.",
+      "scope": "The documented tolerance convention of one numerical library; it is a convention to declare in your own checks rather than a universal rule.",
+      "source_refs": [
+        {
+          "source_id": "source.validation-depth-numpy-isclose",
+          "locator": "Notes: tolerance formula, default rtol and atol, and the caveat about small magnitudes"
+        }
+      ]
+    }
+  ]
+}

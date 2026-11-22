@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-lantern-post",
+  "record_revision": 2,
+  "asset": "templates/kits/props/lantern-post.js",
+  "asset_sha256": "5ec01931315776eb1d45d49aa2c2fb2c1f6b47290e4047bb836f8755c4a69932",
+  "params": {
+    "height": 2.82,
+    "headSize": 0.34,
+    "seed": 1,
+    "iron": "#5f636d",
+    "glass": "#ffd9a0"
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-lantern-post",
+    "module": "../props/lantern-post.js",
+    "params": {
+      "height": 2.82,
+      "headSize": 0.34,
+      "seed": 1,
+      "iron": "#5f636d",
+      "glass": "#ffd9a0"
+    },
+    "triangles": 2248,
+    "bounds_m": {
+      "min": [
+        -0.1899999976158142,
+        -3.725290284584126e-10,
+        -0.24288893639011405
+      ],
+      "max": [
+        0.6328889327408931,
+        2.819999997615814,
+        0.24288892194269937
+      ],
+      "size": [
+        0.8228889303567073,
+        2.819999997988343,
+        0.4857778583328134
+      ]
+    },
+    "fit_distance_m": 4.3528,
+    "view_distances_m": {
+      "far": 10.4468,
+      "mid": 5.2234,
+      "close": 3.3952,
+      "detail": 0.9779
+    },
+    "sockets": [
+      "base",
+      "hook",
+      "lamp"
+    ],
+    "detail_socket": "base",
+    "animated": false,
+    "colliders": [
+      "post",
+      "head"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "b1db96516f13caf609fbc17c089bf4956e0f58eb0e0ede807dc12f9ac7fd7ba1",
+    "mid.png": "64a0b9d17c643479234cf7f78181e6faeaeb1b9262b5d43eeb8d7e1746c9b315",
+    "close.png": "77c5e2ccf0a7ace002ff8352b39af96f608bb6e65f4914ad75273841bb5dee78",
+    "detail.png": "da1ca306ba9729e4d0f7e156dfbafd4fb1917b1347ce3f50319a03c120e555e1"
+  },
+  "motion": null,
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:51:07+00:00",
+  "finished": "2026-09-08T13:51:10+00:00"
+}

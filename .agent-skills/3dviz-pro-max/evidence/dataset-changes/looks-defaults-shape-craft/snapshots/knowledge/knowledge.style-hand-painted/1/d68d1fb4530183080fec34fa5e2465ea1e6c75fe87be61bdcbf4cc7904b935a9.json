@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-hand-painted",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Hand-painted surface accents"
+  },
+  "aliases": {
+    "en": [
+      "hand painted textures",
+      "painted prop finish",
+      "illustrated texture"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies"
+  ],
+  "summary": "Place authored marks where they explain shape, use or attention rather than covering every surface with equal detail.",
+  "objective": "Brush marks stay attached to the intended part, seams are unobtrusive, and detail survives the normal viewing distance.",
+  "tags": [
+    "style-profile",
+    "surface-aesthetic",
+    "hand-painted"
+  ],
+  "subject_terms": [
+    "hand painted textures",
+    "painted prop finish",
+    "illustrated texture",
+    "surface aesthetic"
+  ],
+  "intent_signals": [
+    "Add hand-painted surface detail",
+    "Align brushwork with object construction"
+  ],
+  "example_prompts": [
+    "Create a hand-painted market stall with brushwork following each timber and cloth panel."
+  ],
+  "content": {
+    "principles": [
+      "Place authored marks where they explain shape, use or attention rather than covering every surface with equal detail.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Model the silhouette and major relief; assign surface regions so brushwork can follow boards, cloth or panels.",
+      "Paint selected gradients, edge accents and variation; keep illumination choices deliberate so painted highlights do not fight the scene light.",
+      "Use close and mid-distance views to set mark scale; move the camera around a static object before approving animated lighting."
+    ],
+    "observable_checks": [
+      "Brush marks stay attached to the intended part, seams are unobtrusive, and detail survives the normal viewing distance.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with stylized or low-poly forms; painted appearance is not evidence of historical fabrication or measured material behavior.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

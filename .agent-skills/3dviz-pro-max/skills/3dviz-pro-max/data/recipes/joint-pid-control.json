@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "id": "recipe.joint-pid-control",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "PID joint control with saturation"
+  },
+  "aliases": {
+    "en": [
+      "PID control",
+      "steady-state error",
+      "actuator saturation"
+    ]
+  },
+  "direction_ids": [
+    "robotics-control"
+  ],
+  "summary": "Show a controller responding to error, and let integral action and torque limits change the outcome visibly.",
+  "objective": "Build a single joint with a PID controller where I can tune gains, add a load and watch error, control effort and saturation.",
+  "tags": [
+    "control",
+    "PID",
+    "feedback"
+  ],
+  "subject_terms": [
+    "PID control",
+    "proportional gain",
+    "integral term",
+    "derivative term",
+    "steady-state error",
+    "setpoint",
+    "saturation",
+    "overshoot"
+  ],
+  "intent_signals": [
+    "Show what each PID term does to a joint response.",
+    "Explain steady-state error under a constant load."
+  ],
+  "example_prompts": [
+    "Build a single-joint PID demonstration with tunable gains and a torque limit.",
+    "Show integral action removing a steady-state error caused by gravity."
+  ],
+  "negative_signals": [
+    "Not an autotuning tool and not a stability proof; gains are explored, not certified.",
+    "Not a model of any specific actuator, gearbox or drive electronics."
+  ],
+  "not_for": [
+    "Not an autotuning tool and not a stability proof; gains are explored, not certified.",
+    "Not a model of any specific actuator, gearbox or drive electronics."
+  ],
+  "entities": [
+    {
+      "name": "Joint and load",
+      "guidance": "A rotor/link with a labeled inertia and signed constant load-torque arrow. An added mass is only a visual metaphor; this recipe has no angle-dependent gravity torque."
+    },
+    {
+      "name": "Controller panel",
+      "guidance": "Expose the three gains and the torque limit as controls with the current control effort displayed."
+    },
+    {
+      "name": "Response plot",
+      "guidance": "Plot setpoint, measured angle and control effort against time so overshoot, settling and saturation are readable."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored one-joint rotor with J=1 kg m^2 by default, theta in radians and positive theta_dot counterclockwise. Finite J>0, gains Kp,Ki,Kd>=0, torque limit tau_max>0 and signed constant tau_load in N m. No gravity-angle or friction model. Dynamics: J theta_double_dot=tau_applied+tau_load. Default derivative is on measurement: e=target-theta, tau_raw=Kp e+Ki z-Kd theta_dot, tau_applied=clamp(tau_raw,-tau_max,tau_max). At each fixed h=0.001 s default step, read target/load/gains, update z_candidate=z+h e, clamp z to [-tau_max/Ki,tau_max/Ki] when Ki>0, or set z=0 when Ki=0. Then compute torque from that z and the old theta/theta_dot; semi-implicit Euler updates theta_dot_new=theta_dot+h(tau_applied+tau_load)/J and theta_new=theta+h theta_dot_new. Optional anti-windup-off mode uses z_candidate without that clamp and is labeled. Gain/limit changes reapply the clamp; reset restores theta=theta_dot=z=0. These are authored defaults, not a stability guarantee; halt and report nonfinite state instead of clamping the display.",
+    "authority": "The controller output after saturation is what drives the joint; the plotted effort must be the saturated value, and any anti-windup treatment must be stated.",
+    "actions": [
+      "Change the setpoint.",
+      "Tune proportional, integral and derivative gains.",
+      "Add or remove the load torque.",
+      "Change the torque limit and reset the joint."
+    ]
+  },
+  "invariants": [
+    "With a nonzero constant load, positive proportional gain, gains that make the response asymptotically stable and torque authority sufficient to hold the load, a controller with no integral term settles with a persistent offset given by torque balance. If the response does not settle, or the load exceeds the torque limit, the scene reports that instead of an offset.",
+    "Saturation is visible in the effort plot and the joint never receives more torque than the limit.",
+    "Reset clears the integral accumulator; a stale accumulator after reset is a defect.",
+    "Derivative action is -Kd theta_dot, on measurement only, so a setpoint step has no derivative impulse. Proportional effort may jump and remains subject to the torque limit."
+  ],
+  "motion_guidance": [
+    "Run the controller on a fixed timestep and interpolate rendering, so gain changes affect the response and not the frame rate.",
+    "Keep the previous response trace visible when a gain changes, so tuning is a comparison rather than a memory test."
+  ],
+  "known_limits": [
+    "Single joint with ideal sensing and a constant disturbance torque; no angle-dependent gravity, friction, backlash, measurement noise or delay.",
+    "Aggressive gains can diverge; the scene should report divergence rather than clamping the display.",
+    "Friction, backlash, measurement noise and delay are excluded, so a proportional-only inertial loop need not settle at all; that outcome is reported rather than presented as an offset.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-pid-control-law",
+      "statement": "A PID controller output is the proportional gain times the position error plus the integral gain times the integral of the error plus the derivative gain times the derivative of the error.",
+      "scope": "Single-joint setpoint control with torque input as cited; gain values are not supplied by the source.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-modern-robotics-pid",
+          "locator": "11.4 Part 1, PID control law"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-pd-zero-gravity-error",
+      "statement": "For the zero-gravity single-joint case with proportional and derivative terms only, the error dynamics are homogeneous and the steady-state error is zero under the stated conditions.",
+      "scope": "Cited for the gravity-free case only; a constant load such as gravity is exactly the situation that motivates the integral term.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-modern-robotics-pid",
+          "locator": "11.4 Part 1, zero-gravity PD steady-state error discussion"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Joint and load",
+      "structure": "Rotating link with an inertia label, angle scale and a signed load-torque arrow; any visible end weight is labeled illustrative rather than a gravity model.",
+      "material": "Machined joint housing with a matte link, and a distinct material for the added load mass.",
+      "articulation": "The link rotates about the joint axis, driven by the integrated response."
+    },
+    {
+      "family": "Response plot",
+      "structure": "A plot rail with setpoint, measurement and effort curves plus a marked saturation band.",
+      "material": "Opaque plot plate with gridlines and a hatched saturation band. Angle and torque are drawn on separate labelled scales with their own units, since they are different quantities and a shared axis would be meaningless.",
+      "articulation": "The plot scrolls with time and retains the previous trace as a ghost after a gain change."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Single-joint rotational dynamics with a saturated control torque; no contact, friction model or multi-body coupling.",
+    "state": [
+      "joint angle",
+      "joint velocity",
+      "integral accumulator",
+      "commanded torque"
+    ],
+    "driving": [
+      "Saturated PID torque plus the declared load torque."
+    ],
+    "timestep": "Fixed authored semi-implicit Euler update at h=0.001 s by default, with the stated integral update order; timestep/gain choice is not certified stable. Rendering interpolates completed states.",
+    "checks": [
+      "Applied torque never exceeds the stated limit.",
+      "Reset clears the integral accumulator and returns the joint to its start state."
+    ]
+  },
+  "related_ids": [
+    "recipe.differential-drive-odometry",
+    "recipe.inverse-kinematics-target",
+    "knowledge.parameter-experiment"
+  ]
+}

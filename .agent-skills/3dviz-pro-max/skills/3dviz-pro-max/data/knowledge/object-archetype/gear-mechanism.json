@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.gear-mechanism",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "object-archetype",
+  "title": {
+    "en": "Gear mechanism with shafts and bearings"
+  },
+  "aliases": {
+    "en": [
+      "gear mechanism"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics"
+  ],
+  "summary": "Make a gear pair legible through hubs, shafts, pitch circles, teeth and bearing supports.",
+  "objective": "A slow full-cycle inspection shows fixed shaft centers and coherent wheel-to-shaft attachment.",
+  "tags": [
+    "object-archetype",
+    "gear",
+    "mechanism"
+  ],
+  "example_prompts": [
+    "Make a gear pair legible through hubs, shafts, pitch circles, teeth and bearing supports."
+  ],
+  "content": {
+    "principles": [
+      "Distinguish the visible tooth envelope from the ideal pitch circle used by the kinematic model.",
+      "Show what rotates together and what holds the axes fixed; an ornamental wheel is not a complete mechanism."
+    ],
+    "implementation": [
+      "Separate bearing housing, shaft, hub and rim meshes. Align each rotating group to its shaft axis.",
+      "Derive center spacing from declared pitch radii and retain a pitch-circle inspection overlay.",
+      "If no validated tooth generator is available, use honest schematic teeth or plain pitch wheels and label the limitation."
+    ],
+    "observable_checks": [
+      "A slow full-cycle inspection shows fixed shaft centers and coherent wheel-to-shaft attachment.",
+      "The contact-region view either shows meshing teeth without visible interference or clearly identifies schematic geometry."
+    ]
+  },
+  "known_limits": [
+    "No manufacturing tolerances, involute accuracy, torque transfer or collision dynamics are established.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+  ],
+  "related_ids": [
+    "recipe.coupled-gears",
+    "knowledge.constrained-gear-motion"
+  ],
+  "claims": []
+}

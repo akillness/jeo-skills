@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.theme-botanical-sanctuary",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "theme-profile",
+  "title": {
+    "en": "Botanical sanctuary"
+  },
+  "aliases": {
+    "en": [
+      "garden sanctuary",
+      "greenhouse world",
+      "botanical retreat"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "Arrange a fictional planted space around a sequence of open and sheltered rooms with a clear central gathering point.",
+  "objective": "Plant groups retain distinct silhouettes and the visitor route is not blocked by decorative leaves or furniture.",
+  "tags": [
+    "theme-profile",
+    "fictional-setting",
+    "botanical-sanctuary"
+  ],
+  "subject_terms": [
+    "garden sanctuary",
+    "greenhouse world",
+    "botanical retreat"
+  ],
+  "intent_signals": [
+    "Set the scene in a botanical sanctuary",
+    "Use garden sanctuary as the narrative setting"
+  ],
+  "example_prompts": [
+    "Design a botanical sanctuary with readable paths, layered plant silhouettes and a small central greenhouse."
+  ],
+  "content": {
+    "principles": [
+      "Arrange a fictional planted space around a sequence of open and sheltered rooms with a clear central gathering point.",
+      "Theme supplies setting and motifs; choose geometry style, rendering approach and factual model independently."
+    ],
+    "implementation": [
+      "Group plants by contrasting silhouette and height; give walkways, planters and greenhouse framing a consistent scale.",
+      "Use foliage-like surfaces and selected ceramic or timber accents; control dappled-looking light so paths and labels stay readable.",
+      "Use alternating close plant and wider spatial views; restrained leaf motion can support atmosphere without implying a wind calculation."
+    ],
+    "observable_checks": [
+      "Plant groups retain distinct silhouettes and the visitor route is not blocked by decorative leaves or furniture.",
+      "Inspect one focal object close up and the complete route or spatial relationship from an overview."
+    ]
+  },
+  "known_limits": [
+    "Authored fictional setting guidance; no rendered artifact or runtime improvement has been observed for this record.",
+    "This proposal does not establish historical, cultural, scientific or engineering facts."
+  ],
+  "creative_affordances": [
+    "Combine with hand-painted, translucent architectural accents or stylized realism; invented plants are not botanical identifications.",
+    "Replace motifs or combine settings to suit the user brief; maintain a readable organizing idea rather than treating these suggestions as a fixed asset list."
+  ],
+  "related_ids": [
+    "knowledge.framed-shelter",
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

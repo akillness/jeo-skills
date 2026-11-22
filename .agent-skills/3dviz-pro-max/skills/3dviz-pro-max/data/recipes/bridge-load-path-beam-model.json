@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "id": "recipe.bridge-load-path-beam-model",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Simply supported bridge load-path beam model"
+  },
+  "aliases": {
+    "en": [
+      "moving-load influence line bridge",
+      "quasi-static beam load path"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "architecture-interiors"
+  ],
+  "summary": "Compute reactions and one section response for declared point loads on a simply supported beam without presenting the result as structural design approval.",
+  "objective": "Build a bridge cutaway where moving point loads update equilibrium reactions and a chosen-section influence line, with applicability and units always visible.",
+  "tags": [
+    "bridge",
+    "beam equilibrium",
+    "influence line"
+  ],
+  "subject_terms": [
+    "simply supported beam",
+    "point load",
+    "support reaction",
+    "section moment",
+    "influence ordinate",
+    "superposition"
+  ],
+  "intent_signals": [
+    "bridge load path beam model",
+    "moving load influence line"
+  ],
+  "example_prompts": [
+    "Move two axle loads across a simply supported deck and inspect reactions and moment at one section."
+  ],
+  "negative_signals": [
+    "Not FEA, code load rating, safety factor, stress capacity or real bridge certification."
+  ],
+  "not_for": [
+    "No continuous spans, distributed/self weight unless explicitly added, dynamics, shear deformation, plasticity or support uplift."
+  ],
+  "entities": [
+    {
+      "name": "Beam and supports",
+      "guidance": "Blender authors a dimensioned centerline/deck shell, pin/roller symbols and section marker; the mathematical span remains a 1D line."
+    },
+    {
+      "name": "Load and equilibrium ledger",
+      "guidance": "Three.js owns load magnitudes/positions, reactions and section response; arrows are scaled presentation with numeric labels."
+    }
+  ],
+  "state_contract": {
+    "model": "One massless simply supported beam spans x in [0,L], L>0. Each downward point load Pi>=0 applies only when xi is within [0,L]; off-span loads contribute zero and remain visually separate. Static equilibrium gives RA=sum Pi*(L-xi)/L and RB=sum Pi*xi/L. For section a in (0,L), the unit-load moment influence ordinate is y(x)=x*(L-a)/L for x<=a and y(x)=a*(L-x)/L for x>=a; section moment M(a)=sum over on-span loads Pi*y(xi); off-span loads contribute zero to reactions and moment. Reactions and M are quasi-static response values, not capacity checks.",
+    "authority": "Three.js owns SI inputs, applicability, equilibrium and influence evaluation. Blender owns bridge/deck/support presentation; decorative trusses do not enter the beam model.",
+    "actions": [
+      "Move a finite point load along or outside the span.",
+      "Add/remove a bounded load and recompute reactions/moment atomically.",
+      "Move the section marker and rebuild its influence line.",
+      "Reset to one unit load at midspan."
+    ]
+  },
+  "invariants": [
+    "RA+RB equals total on-span downward load within tolerance.",
+    "Taking moments about either support balances within declared force-length tolerance.",
+    "Off-span loads contribute exactly zero and are labeled outside applicability.",
+    "Influence superposition uses the exact current load snapshot."
+  ],
+  "motion_guidance": [
+    "Play, pause and step advance the declared model clock only; reset restores parameters, state, solver budget, selections, errors and presentation transforms.",
+    "Use static before/after states and numeric tables for reduced motion; animation interpolates committed state and never supplies physical evidence."
+  ],
+  "creative_affordances": [
+    "Blender may shape distinctive apparatus, cutaways and materials; Three.js binds named parts to authoritative state and keeps units and error states readable.",
+    "Camera, color, trails and deformation gain are presentation controls and cannot change the numerical model."
+  ],
+  "known_limits": [
+    "Pedagogical statically determinate 1D beam only; no suitability, capacity, serviceability, traffic-code or safety conclusion.",
+    "Authored, source-reviewed guidance only; no Blender export, numerical simulation, contact solve, browser or renderer was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.physics-influence-line-definition",
+      "statement": "An influence line shows how one specified structural response varies as a unit load traverses a structure; response functions include support reaction, shear, moment and deflection at a specified point.",
+      "scope": "Statically determinate structural-analysis teaching context.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-udoeyo-influence-lines",
+          "locator": "Section 1.9 definition and static-equilibrium method"
+        }
+      ]
+    },
+    {
+      "id": "claim.physics-simple-beam-influence",
+      "statement": "For a simply supported beam, equilibrium determines support-reaction influence ordinates and section moment; responses to several point loads are summed from load times the corresponding influence ordinate.",
+      "scope": "Linear quasi-static simply supported beam under declared point loads.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-udoeyo-influence-lines",
+          "locator": "Sections on influence lines for reactions and moment, and multiple concentrated loads"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Load-path beam rail",
+      "structure": "Keep the exact span centerline and supports visible beneath any stylized deck; attach load sliders and a section plane to model coordinates.",
+      "material": "Use distinct arrow shapes for applied load and reactions and a signed ordinate plot beside the deck."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Quasi-static equilibrium and one-section influence response of a simply supported beam.",
+    "timestep": "No dynamics; every input edit recomputes a snapshot.",
+    "state": [
+      "span and section coordinate",
+      "finite point-load snapshot",
+      "reactions and section moment"
+    ],
+    "colliders": [
+      "none"
+    ],
+    "driving": [
+      "declared static point loads"
+    ],
+    "contact": [
+      "ideal pin/roller support reactions only"
+    ],
+    "checks": [
+      "vertical-force equilibrium",
+      "moment equilibrium",
+      "off-span applicability",
+      "superposition equality"
+    ]
+  },
+  "related_ids": [
+    "knowledge.reasoning-boundary-conditions-are-the-model",
+    "knowledge.bridge-bearing-support-system"
+  ]
+}

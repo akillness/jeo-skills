@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-rock-cluster",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: glacial rock cluster"
+  },
+  "aliases": {
+    "en": [
+      "rock cluster kit",
+      "boulder scatter blueprint",
+      "stone outcrop module"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "earth-environment"
+  ],
+  "summary": "A scatter of part-buried boulders built from five facet-jittered shapes and a pebble ring, parameterised by count, spread and seed, with an instancing handle for the primary boulder.",
+  "objective": "At three metres the cluster reads as boulders of clearly different mass, then flat facets and a pebble ring, then chipped corners and hue jitter.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "nature",
+    "rock",
+    "boulder",
+    "instanced"
+  ],
+  "subject_terms": [
+    "facet jitter",
+    "part-buried stone",
+    "pebble ring",
+    "chipped corner",
+    "welded vertex"
+  ],
+  "intent_signals": [
+    "scatter boulders along the stream",
+    "rock outcrop prop",
+    "instanced stone scatter"
+  ],
+  "example_prompts": [
+    "Scatter rocks along the stream bank.",
+    "I need boulders that are not obviously the same stone three times."
+  ],
+  "not_for": [
+    "Any claim about geology, rock type or weathering.",
+    "A terrain system: the cluster sits on a ground plane, it does not generate one."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/nature/rock-cluster.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "count",
+      "type": "integer",
+      "range": [
+        3,
+        24
+      ],
+      "default": 8
+    },
+    {
+      "name": "seed",
+      "type": "integer",
+      "range": [
+        0,
+        65535
+      ],
+      "default": 1
+    },
+    {
+      "name": "spread",
+      "type": "number",
+      "range": [
+        0.4,
+        3.0
+      ],
+      "default": 1.05,
+      "unit": "m"
+    },
+    {
+      "name": "rock",
+      "type": "color",
+      "default": "#8e8b84"
+    }
+  ],
+  "sockets": [
+    {
+      "name": "base",
+      "position_m": [
+        0,
+        0,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "perch",
+      "position_m": [
+        -0.334,
+        0.763,
+        0.495
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "shelter",
+      "position_m": [
+        -0.945,
+        0.06,
+        0
+      ],
+      "normal": [
+        -1,
+        0,
+        0
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "eight boulders whose masses differ by more than three to one",
+      "every boulder sunk a quarter of its height into the ground plane",
+      "no boulder spherical: each shape is jittered before it is placed"
+    ],
+    "medium": [
+      "flat facets meeting at hard edges across every stone",
+      "three separate boulder shapes, so the cluster is not one stone scaled thrice",
+      "a ring of fourteen pebbles tying the cluster to the ground"
+    ],
+    "fine": [
+      "chipped facet corners from welded per-vertex jitter of up to 32 percent",
+      "pebbles between 5 and 13 cm across, each with its own shape and attitude",
+      "per-instance hue jitter of 6 percent on the boulders and 8 on the pebbles"
+    ]
+  },
+  "footprint_m": [
+    2.26,
+    2.67
+  ],
+  "poly_budget": 800,
+  "fits_looks": [
+    "knowledge.style-faceted",
+    "knowledge.style-low-poly",
+    "knowledge.theme-coastal-exploration",
+    "knowledge.lighting-mood-overcast-soft"
+  ],
+  "content": {
+    "principles": [
+      "A stone resting exactly on the ground plane reads as a prop dropped into the scene. Sinking it a quarter of its height is what makes it part of the ground.",
+      "Vertex jitter has to be welded: IcosahedronGeometry is non-indexed, so jittering raw vertices tears the faces open.",
+      "The tumble is baked into each shape and instances only spin about Y, so every instance bounding box stays exact and the cluster sits where the framing says."
+    ],
+    "implementation": [
+      "Call create({ count, seed, spread, rock }); the cluster is centred on the origin with the ground plane at y = 0.",
+      "instancing gives { geometry, material, hueJitter } for the primary boulder, normalised to a unit box standing on y = 0, so a placement is a metre scale.",
+      "Set a figure or a marker at the perch socket; it is computed from the tallest boulder actually placed, not from the bounding box."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible.",
+      "Traversing the group finds at least three instanced fields, each with its own geometry.",
+      "Two seeds place and shape the boulders differently at the same count."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here measures a real rock, its geology or its weathering.",
+    "The poly budget is the triangle count observed at the default count of eight; a count of twenty costs about 1900 triangles. The budget is per default count.",
+    "Boulders sink a quarter of their height, so the group bounding box reaches about 32 cm below y = 0 at default parameters. That is deliberate, not a grounding error.",
+    "There is no moss, lichen or contact dirt: the cluster meets the ground with a hard edge unless the host scene adds one.",
+    "Palette values are the colours that render: kit-core scatterInstances runs its InstancedMesh on a white-based clone of the material and writes the absolute jittered colour per instance, so an unjittered instance lands on exactly the hex the parameter names."
+  ],
+  "creative_affordances": [
+    "Any parameter may be pushed outside its stated range; the range is the band that was proved, not a limit.",
+    "Raise the count and shrink the spread for a cairn, or re-colour to a warm sandstone for a desert scene."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "count": 8,
+      "spread": 1.05,
+      "rock": "#8e8b84",
+      "shapes": 3,
+      "sink_fraction": 0.24,
+      "feeling": "cold glacial stream bank"
+    },
+    "rationale": "A 95 cm spread with a tallest stone near a metre gives a cluster a figure can sit on, which is the scale cue that stops boulders reading as gravel."
+  },
+  "related_ids": [
+    "knowledge.three-instanced-scenery-adapter",
+    "knowledge.geometry-nodes-instance-handoff",
+    "knowledge.reasoning-mesh-collider-functional-fidelity",
+    "recipe.fantasy-village-diorama"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "detail_socket": "base",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-rock-cluster/far.png",
+      "evidence/kits/knowledge.blueprint-rock-cluster/mid.png",
+      "evidence/kits/knowledge.blueprint-rock-cluster/close.png",
+      "evidence/kits/knowledge.blueprint-rock-cluster/detail.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-rock-cluster/proof-log.json"
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "id": "recipe.studio-furniture-layout",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Studio furniture layout and clearance"
+  },
+  "aliases": {
+    "en": [
+      "interior arrangement",
+      "room layout editor"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors"
+  ],
+  "summary": "Arrange furniture in a measured authored room with visible footprint and door-sweep checks.",
+  "objective": "Create a studio layout where I can move the bed, desk and chair and see door-swing conflicts.",
+  "tags": [
+    "studio room",
+    "furniture footprint",
+    "door swing"
+  ],
+  "subject_terms": [
+    "studio room",
+    "furniture footprint",
+    "door swing",
+    "clearance",
+    "layout"
+  ],
+  "intent_signals": [
+    "rearrange interior furniture",
+    "check doorway clearance"
+  ],
+  "example_prompts": [
+    "Create a studio layout where I can move the bed, desk and chair and see door-swing conflicts.",
+    "Save two furniture arrangements and compare their walking space."
+  ],
+  "entities": [
+    {
+      "name": "Room",
+      "guidance": "Walls with thickness, one hinged doorway and window reveals; provide a floor grid in meters."
+    },
+    {
+      "name": "Furniture",
+      "guidance": "Bed frame and mattress, desk legs/top and chair seat/back with distinct footprints."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Room",
+      "structure": "Walls with thickness, one hinged doorway and window reveals; provide a floor grid in meters.",
+      "material": "Matte painted walls, wood-looking floor and clear glass."
+    },
+    {
+      "family": "Furniture",
+      "structure": "Bed frame and mattress, desk legs/top and chair seat/back with distinct footprints.",
+      "material": "Textile bedding, timber desk and upholstered seat.",
+      "articulation": "Door rotates about a jamb pivot; furniture rotates about its footprint anchor."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored room and furniture footprints, rigid poses, door angle and saved layouts; clearance margins are editable assumptions.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Drag and rotate furniture.",
+      "Open door and display sweep envelope.",
+      "Save, compare and reset arrangements."
+    ]
+  },
+  "invariants": [
+    "Footprints cannot cross solid walls in accepted layouts.",
+    "Conflict state includes door sweep and furniture, not only center-point tests.",
+    "Saved layouts retain metric scale."
+  ],
+  "motion_guidance": [
+    "Use plan-view dragging with snap feedback; keep orbit gestures separate.",
+    "Show invalid tentative placement without committing it."
+  ],
+  "known_limits": [
+    "Clearance is a geometric design aid, not accessibility or building-code certification.",
+    "Floor plan must come from user dimensions or be labeled invented.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [],
+  "creative_affordances": [
+    "Restrained materials make furniture proportions and free floor areas easier to compare."
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Constrained layout editing.",
+    "state": [
+      "furniture poses",
+      "door angle"
+    ],
+    "colliders": [
+      "2D footprints, wall polygons and door sweep."
+    ],
+    "driving": [
+      "Pointer translation and rotation with declared grid."
+    ],
+    "contact": [
+      "Geometric overlap rejection, not furniture contact dynamics."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Reject desk across door sweep; reset restores stored poses."
+    ]
+  }
+}

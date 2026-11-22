@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Starlight Train</title>
+<link rel="icon" type="image/png" href="assets/ui/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+  :root { --ink: #eef3f8; --warm: #ffd68a; --dim: rgba(222, 232, 246, .62); --glass: rgba(9, 16, 28, .38); }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #0b1220; color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif; user-select: none; -webkit-user-select: none; }
+  canvas#c { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  .hidden { display: none !important; }
+  .screen { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; pointer-events: none; }
+
+  /* loading */
+  #loading { justify-content: center; gap: 18px; background: #0b1220; z-index: 30; }
+  #loading .label { font-size: 22px; letter-spacing: .3em; text-transform: uppercase; color: var(--dim); }
+  #loading .bar { width: min(280px, 60vw); height: 2px; background: rgba(255,255,255,.12); }
+  #loadbar { height: 100%; width: 0; background: var(--warm); box-shadow: 0 0 10px var(--warm); transition: width .2s; }
+
+  /* title */
+  #title { justify-content: flex-start; padding-top: 4.5vh; z-index: 10; }
+  #title::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 22vh; background: linear-gradient(transparent, rgba(6, 11, 22, .62)); z-index: -1; }
+  #logo { width: min(64vw, 820px); filter: drop-shadow(0 0 24px rgba(255, 200, 110, .35)); animation: breathe 6s ease-in-out infinite; }
+  .press { margin-top: 1.2vh; font-size: clamp(22px, 2.5vw, 32px); font-style: italic; font-weight: 600; letter-spacing: .12em; color: #ffe2a8;
+    text-shadow: 0 0 14px rgba(255, 190, 90, .7), 0 0 3px rgba(20, 28, 50, .9), 0 2px 12px rgba(10, 16, 32, .8); animation: blink 2.4s ease-in-out infinite; }
+  .keys { position: absolute; bottom: 4.5vh; font-size: clamp(14px, 1.35vw, 18px); color: var(--dim); letter-spacing: .06em; text-align: center; line-height: 1.7;
+    text-shadow: 0 1px 6px rgba(0,0,0,.6); }
+  .keys b { color: var(--ink); font-weight: 600; }
+  @keyframes blink { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+  @keyframes breathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+  /* hud */
+  #hud { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
+  #wagonsHud { position: absolute; left: 26px; top: 22px; display: flex; gap: 7px; }
+  .pip { width: 40px; height: 17px; border-radius: 5px 5px 3px 3px; background: var(--glass); border: 1px solid rgba(225, 235, 250, .28);
+    display: flex; gap: 3px; padding: 3px 4px; box-sizing: border-box; transition: border-color .4s, box-shadow .4s; }
+  .pip i { flex: 1; border-radius: 2px; background: rgba(150, 172, 205, .16); transition: background .5s, box-shadow .5s; }
+  .pip i.on { background: #ffd27a; box-shadow: 0 0 8px rgba(255, 190, 90, .9); }
+  .pip.full { border-color: rgba(255, 214, 140, .8); box-shadow: 0 0 12px rgba(255, 190, 90, .45); }
+  #journey { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); width: min(34vw, 420px); height: 2px; background: rgba(230, 238, 250, .22); }
+  #jfill { position: absolute; left: 0; top: 0; height: 100%; width: 0; background: linear-gradient(90deg, rgba(255,214,140,.2), rgba(255,214,140,.85)); }
+  #jmark { position: absolute; top: -11px; width: 24px; height: 24px; margin-left: -12px; background: url(assets/ui/star_icon.png) center / 150% no-repeat; filter: drop-shadow(0 0 6px rgba(255,190,90,.8)); }
+  #jend { position: absolute; right: -6px; top: -4px; width: 10px; height: 10px; border-radius: 50%; background: radial-gradient(#ffd9b0, rgba(255,190,140,0)); }
+  #scorebox { position: absolute; right: 28px; top: 12px; text-align: right; }
+  #score { font-size: 36px; font-weight: 600; letter-spacing: .04em; text-shadow: 0 0 12px rgba(0,0,0,.45); }
+  #combo { font-size: 24px; font-style: italic; color: var(--warm); opacity: 0; transition: opacity .3s; text-shadow: 0 0 10px rgba(255,180,80,.7); }
+  #combo.show { opacity: 1; }
+  #lives { display: flex; gap: 6px; justify-content: flex-end; margin-top: 2px; }
+  #lives img { height: 30px; filter: drop-shadow(0 0 6px rgba(190, 215, 255, .7)); }
+  #msg { position: fixed; left: 0; right: 0; top: 21%; text-align: center; font-size: clamp(28px, 4vw, 52px); font-style: italic; font-weight: 500;
+    color: #fff6e4; text-shadow: 0 0 22px rgba(255, 190, 100, .75), 0 2px 10px rgba(0,0,0,.4); opacity: 0; transform: translateY(8px);
+    transition: opacity .6s, transform .6s; pointer-events: none; z-index: 6; }
+  #msg.show { opacity: 1; transform: translateY(0); }
+  #msg.big { font-size: clamp(40px, 6vw, 78px); }
+  #msg.small { font-size: clamp(22px, 2.6vw, 34px); top: 27%; }
+  #msg.phase { letter-spacing: .08em; }
+  #popups { position: fixed; inset: 0; pointer-events: none; z-index: 6; overflow: hidden; }
+  .popup { position: absolute; left: 0; top: 0; font-size: 26px; font-weight: 600; color: #fff1cf; text-shadow: 0 0 10px rgba(255, 180, 70, .9), 0 1px 3px rgba(10, 16, 30, .75); white-space: nowrap; }
+  .popup.big { font-size: 38px; }
+  #edges { position: fixed; inset: 0; pointer-events: none; z-index: 6; }
+  .edge { position: absolute; width: 34px; height: 34px; margin-top: -17px; background: url(assets/ui/star_icon.png) center / 160% no-repeat; filter: drop-shadow(0 0 8px rgba(255,190,90,.9));
+    animation: nudge 0.9s ease-in-out infinite; }
+  .edge::after { content: ''; position: absolute; top: 12px; left: -10px; border: 6px solid transparent; border-right: 8px solid rgba(255, 214, 140, .85); }
+  .edge.r::after { left: auto; right: -10px; border-right-color: transparent; border-left: 8px solid rgba(255, 214, 140, .85); }
+  @keyframes nudge { 0%, 100% { opacity: .65; } 50% { opacity: 1; } }
+
+  /* results */
+  #results { justify-content: center; gap: 2.2vh; z-index: 10; background: radial-gradient(ellipse at center, rgba(8, 14, 26, .62), rgba(8, 14, 26, .2) 75%); }
+  #resTitle { margin: 0; font-size: clamp(40px, 6vw, 76px); font-style: italic; font-weight: 500; color: #fff3dc; text-shadow: 0 0 26px rgba(255, 190, 100, .7); }
+  .stats { display: flex; gap: clamp(22px, 5vw, 70px); }
+  .stats div { display: flex; flex-direction: column; align-items: center; }
+  .stats b { font-size: clamp(30px, 3.6vw, 48px); font-weight: 600; color: var(--warm); text-shadow: 0 0 12px rgba(255, 190, 90, .5); }
+  .stats span { font-size: clamp(14px, 1.4vw, 18px); letter-spacing: .2em; text-transform: uppercase; color: var(--dim); }
+  .best { font-size: 18px; letter-spacing: .2em; text-transform: uppercase; color: var(--dim); }
+  .best span { color: var(--ink); }
+  #pause { justify-content: center; z-index: 12; font-size: clamp(36px, 5vw, 64px); font-style: italic; background: rgba(8, 14, 26, .45); text-shadow: 0 0 20px rgba(255,190,100,.6); }
+  #soundhint { position: fixed; right: 18px; bottom: 14px; font-size: 15px; letter-spacing: .1em; color: var(--dim); z-index: 20; display: none; }
+  @media (max-width: 720px) {
+    #wagonsHud { left: 12px; top: 14px; gap: 4px; } .pip { width: 30px; height: 14px; }
+    #journey { top: 52px; width: 60vw; } #scorebox { right: 14px; top: 6px; } #score { font-size: 28px; } #lives img { height: 22px; }
+  }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="loading" class="screen"><div class="label">Starlight Train</div><div class="bar"><div id="loadbar"></div></div></div>
+
+<div id="title" class="screen hidden">
+  <img id="logo" src="assets/ui/title.png" alt="Starlight Train">
+  <div class="press">Press Start</div>
+  <div class="keys"><b>&larr; &rarr; &uarr; &darr;</b> run &nbsp;&middot;&nbsp; <b>Space</b> jump, hold to glide &nbsp;&middot;&nbsp; <b>Enter</b> start<br>Gamepad: <b>stick</b> &middot; <b>A</b> &middot; <b>Start</b></div>
+</div>
+
+<div id="hud" class="hidden">
+  <div id="wagonsHud"></div>
+  <div id="journey"><div id="jfill"></div><div id="jend"></div><div id="jmark"></div></div>
+  <div id="scorebox"><div id="score">0</div><div id="combo"></div><div id="lives"></div></div>
+</div>
+<div id="msg"></div>
+<div id="popups"></div>
+<div id="edges"></div>
+
+<div id="results" class="screen hidden">
+  <h2 id="resTitle">The train shines</h2>
+  <div class="stats">
+    <div><b id="rStars">0</b><span>stars</span></div>
+    <div><b id="rWagons">0/6</b><span>wagons lit</span></div>
+    <div><b id="rScore">0</b><span>score</span></div>
+  </div>
+  <div class="best">Best <span id="rBest">0</span></div>
+  <div class="press">Press Start</div>
+</div>
+<div id="pause" class="screen hidden">Paused</div>
+<div id="soundhint">Click for sound</div>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "id": "recipe.wait-for-deadlock-cycle",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Wait-for graphs: single-instance deadlock"
+  },
+  "aliases": {
+    "en": [
+      "resource deadlock cycle",
+      "process wait-for graph"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data"
+  ],
+  "summary": "Trace an actual blocked request to its current owner and inspect a cycle witness under explicit assumptions.",
+  "objective": "Build a deadlock inspector for exclusive single-instance resources where requests create wait-for edges and I can inspect the resulting cycle.",
+  "tags": [
+    "wait-for graph",
+    "deadlock",
+    "single-instance resource"
+  ],
+  "subject_terms": [
+    "wait-for graph",
+    "deadlock",
+    "single-instance resource",
+    "circular wait",
+    "resource allocation graph",
+    "cycle witness"
+  ],
+  "intent_signals": [
+    "Build a deadlock inspector for exclusive single-instance resources where requests create wait-for edges and I can inspect the resulting cycle."
+  ],
+  "example_prompts": [
+    "Build a deadlock inspector for exclusive single-instance resources where requests create wait-for edges and I can inspect the resulting cycle."
+  ],
+  "negative_signals": [
+    "No multiple instances, OR-waits, preemptive locks, reentrant self-requests, distributed snapshots or starvation/fairness diagnosis. Recovery abort is an explicit intervention, never an ordinary progress step."
+  ],
+  "not_for": [
+    "No multiple instances, OR-waits, preemptive locks, reentrant self-requests, distributed snapshots or starvation/fairness diagnosis. Recovery abort is an explicit intervention, never an ordinary progress step."
+  ],
+  "entities": [
+    {
+      "name": "Process and resource cards",
+      "guidance": "Offer linked views: resource-allocation edges P→R for requests and R→P for ownership, alongside the contracted process-only graph. Z separates the two named views; it is not waiting time."
+    },
+    {
+      "name": "Cycle witness",
+      "guidance": "Number cycle edges and show the underlying request/resource/owner evidence; distinguish cycle members from processes blocked upstream."
+    }
+  ],
+  "state_contract": {
+    "model": "Finite processes/resources; one nonpreemptible exclusive instance per resource; owner[r] is null or one process, and each blocked process has one outstanding request. A blocked process cannot release while waiting. Before accepting a request, reject owner[r]=p visibly without changing ownership or outstanding requests. For an accepted request[p]=r owned by q≠p, derive edge p→q. Detect directed cycles from this current snapshot, not from historical trails.",
+    "authority": "The typed domain model owns each committed state and result. Geometry, labels and selection derive from that model; animation cannot certify a claim.",
+    "actions": [
+      "Let an unblocked process request a resource; grant if free or record a blocking request.",
+      "Release only from an unblocked owner; grant a newly freed resource by a declared deterministic queue rule.",
+      "Load P1 owns R1 and waits R2 while P2 owns R2 and waits R1; inspect cycle or explicitly abort a selected process as recovery."
+    ]
+  },
+  "invariants": [
+    "Every wait-for edge must resolve to a current blocked request and current owner; removing ownership must remove or recompute the edge.",
+    "A two-process circular wait gives a cycle witness; a chain ending at an unblocked owner does not.",
+    "Reject a multiple-instance input in this mode. A cycle criterion cannot silently transfer to a general resource-allocation system.",
+    "If P owns R and requests R, report an unsupported self-request and leave ownership/request state unchanged; do not silently block P while omitting its self-cycle."
+  ],
+  "motion_guidance": [
+    "Step commits one semantic action; pause freezes presentation and leaves the committed state inspectable. Reset cancels pending playback and restores the complete starting state.",
+    "Offer a static transition highlight and an equivalent readable table for reduced motion. Camera travel is presentation, not an inference or domain operation."
+  ],
+  "creative_affordances": [
+    "Use shallow sculptural cards, restrained materials and selective focus to expose relationships. Prefer a flat readable layout whenever depth has no declared role."
+  ],
+  "known_limits": [
+    "No multiple instances, OR-waits, preemptive locks, reentrant self-requests, distributed snapshots or starvation/fairness diagnosis. Recovery abort is an explicit intervention, never an ordinary progress step.",
+    "Authored, source-reviewed guidance only; no generated artifact, solver integration, runtime behavior or visual check has run."
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Abstract symbols and logical state; mesh contact, light and motion have no causal role in the model."
+  },
+  "related_ids": [
+    "recipe.petri-net-weighted-firing"
+  ],
+  "object_craft": [
+    {
+      "family": "Process and resource cards",
+      "structure": "Offer linked views: resource-allocation edges P→R for requests and R→P for ownership, alongside the contracted process-only graph. Z separates the two named views; it is not waiting time.",
+      "material": "Matte surfaces and high-contrast labels; distinguish status with text and border style as well as color."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim.wait-for-deadlock-cycle",
+      "statement": "With one instance per resource type, a wait-for edge points from a waiting process to the process holding its requested resource, and a directed wait-for cycle indicates deadlock.",
+      "scope": "Exclusive, nonpreemptible single-instance resources and blocking waits in a consistent current snapshot.",
+      "source_refs": [
+        {
+          "source_id": "source.uic-single-instance-deadlocks",
+          "locator": "7.6.1 Single Instance of Each Resource Type; 7.2 resource-allocation graphs"
+        }
+      ]
+    }
+  ]
+}

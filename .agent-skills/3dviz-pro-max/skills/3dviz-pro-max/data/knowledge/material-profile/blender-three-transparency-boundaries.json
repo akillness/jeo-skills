@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blender-three-transparency-boundaries",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Alpha coverage, blending and transmission boundaries"
+  },
+  "aliases": {
+    "en": [
+      "alpha mask versus transparent material",
+      "glass transmission versus opacity",
+      "Three.js transparent sorting"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "characters-motion-art",
+    "anatomy-structures"
+  ],
+  "summary": "Choose opaque, alpha mask, alpha blend or transmission from what the surface represents, then design geometry and sorting around the selected Three.js material path.",
+  "objective": "Cutout edges remain stable, blended layers reveal their known ordering limits, and solid transparent objects retain reflections and thickness cues without being modeled as missing coverage.",
+  "tags": [
+    "material-profile",
+    "transparency",
+    "alpha-mask",
+    "alpha-blend",
+    "transmission",
+    "sorting",
+    "gltf"
+  ],
+  "subject_terms": [
+    "alphaMode OPAQUE",
+    "alphaMode MASK",
+    "alphaCutoff",
+    "alphaMode BLEND",
+    "alphaTest",
+    "alphaHash",
+    "transparent sorting",
+    "MeshPhysicalMaterial transmission",
+    "thickness",
+    "depthWrite"
+  ],
+  "intent_signals": [
+    "tree leaves have sorting halos",
+    "glass disappears at some angles",
+    "alpha mask or blend",
+    "transparent layers render in wrong order",
+    "use transmission instead of opacity"
+  ],
+  "example_prompts": [
+    "Export leaf cards from Blender without unstable blended sorting.",
+    "Make this glass housing transmissive in Three.js while keeping the printed decal separate."
+  ],
+  "negative_signals": [
+    "one transparency mode for every surface",
+    "assume triangle sorting is perfect",
+    "use opacity to represent solid refractive glass without review"
+  ],
+  "not_for": [
+    "Order-independent transparency guarantees.",
+    "Optical simulation of dispersion, polarization or measured absorption."
+  ],
+  "content": {
+    "principles": [
+      "OPAQUE ignores coverage alpha; MASK makes a binary coverage decision at a cutoff; BLEND composites partial coverage. Choose by represented geometry before tuning edge softness.",
+      "Use transmission for a present solid surface that passes light and retains specular reflection, such as glass. Use alpha coverage for geometry that is missing or partially covers the pixel, such as foliage cards or gauze.",
+      "Blended transparency inherits depth and ordering limits. Splitting independently ordered layers, simplifying overlap or choosing MASK can be more reliable than disabling depth behavior globally.",
+      "Alpha hashing is a Three.js alternative with noise/grain and temporal-antialiasing implications, not a glTF alpha mode and not a universally equivalent substitute.",
+      "Separate transparent functional layers where possible: glass shell, decal, liquid and UI overlay should not share one material merely because all use alpha."
+    ],
+    "implementation": [
+      "Classify each Blender material as opaque coverage, binary cutout, blended partial coverage or transmissive solid. Connect alpha/transmission through exporter-recognized Principled arrangements and record any glTF extension.",
+      "For foliage, grilles and similar cutouts, begin with MASK/alphaTest and inspect edge aliasing at intended distances. Keep enough geometry separation to avoid coplanar depth conflicts.",
+      "For blended cloth, smoke-like cards or layered diagrams, minimize intersecting transparent geometry, split layers that need object-level sorting and set an explicit render order only when the view/state contract makes it stable.",
+      "For glass-like solids, use the supported transmission material path, give the mesh intentional thickness or a declared thin-wall approximation, and preserve environment/direct-light reflections. Keep decals as separate coverage geometry or a composed texture.",
+      "Record Three.js revision, renderer/backend, material class, alpha/depth settings and glTF extensions. Inspect front/back faces and overlapping objects from the full camera range."
+    ],
+    "observable_checks": [
+      "A cutout card shows stable holes with no unintended translucent fringe at the approved camera distances.",
+      "Two blended layers are inspected while orbiting and while their relative depth changes; any failure angle is recorded rather than hidden in one screenshot.",
+      "The transmissive solid retains a specular highlight and a readable boundary against the background, while an intentionally missing-coverage region does not behave like glass.",
+      "Reset restores material mode, cutoff, opacity, depth settings and layer order after any comparison control changes them."
+    ]
+  },
+  "creative_affordances": [
+    "Dithered or alpha-hashed edges can be an intentional graphic treatment when the visible grain is accepted.",
+    "Opaque stylized glass, cutaway shells or an inset may communicate structure more clearly than costly transmission."
+  ],
+  "known_limits": [
+    "Three.js transparency is view/order dependent and target-GPU behavior must be inspected; no mode promises perfect arbitrary overlap.",
+    "Transmission support and glTF extensions depend on exporter, loader, material class and renderer version.",
+    "Authored reusable guidance; no transparency or transmission artifact was rendered for this record."
+  ],
+  "related_ids": [
+    "knowledge.transmissive-medium",
+    "knowledge.shared-transmissive-enclosure-light",
+    "knowledge.three-pbr-adapter",
+    "knowledge.blender-three-ibl-shadow-ownership"
+  ],
+  "claims": [
+    {
+      "id": "claim.blender-three-gltf-alpha-modes",
+      "statement": "glTF 2.0 defines OPAQUE as ignoring alpha, MASK as fully opaque or transparent according to alphaCutoff, and BLEND as compositing with the background; its examples associate MASK with leaf or fence coverage and BLEND with materials such as gauze or fur.",
+      "scope": "glTF 2.0 core alpha coverage semantics; implementation-specific edge techniques and sorting remain outside the format guarantee.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Materials > Alpha Coverage"
+        }
+      ]
+    },
+    {
+      "id": "claim.blender-three-transmission-and-sorting",
+      "statement": "The ratified KHR_materials_transmission extension distinguishes thin-surface optical transmission from alpha coverage, keeps alphaMode OPAQUE when coverage is not used, retains specular reflection, and does not require a particular real-time ordering technique; Blender documents the corresponding export distinction, while Three.js documents alphaTest and alphaHash alternatives and the sorting limits of blended triangles.",
+      "scope": "Ratified glTF thin-surface transmission semantics plus current Blender and Three.js guidance; thick volume, exact refraction and renderer-layer support require separate version-specific testing.",
+      "source_refs": [
+        {
+          "source_id": "source.blender-three-khr-transmission",
+          "locator": "Limitations of Alpha as Coverage; Blend Mode; Implementation Notes"
+        },
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "Transmission"
+        },
+        {
+          "source_id": "source.three-material-clipping",
+          "locator": "alphaHash; alphaTest; depthWrite; transparent"
+        },
+        {
+          "source_id": "source.blender-three-transparency",
+          "locator": "Depth-buffer and triangle-order discussion; alphaTest comparison; final trade-off guidance"
+        },
+        {
+          "source_id": "source.three-physical-material",
+          "locator": "transmission; thickness; attenuationDistance; ior"
+        }
+      ]
+    }
+  ]
+}

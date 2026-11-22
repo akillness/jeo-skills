@@ -1,0 +1,1779 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Ink Fox</title>
+<style>
+  :root { --paper:#dbdddd; --ink:#0b0b0c; --red:#c5232b; }
+  html, body { margin:0; height:100%; background:var(--paper); overflow:hidden; touch-action:none; user-select:none; -webkit-user-select:none; }
+  canvas#c { position:fixed; inset:0; width:100%; height:100%; display:block; }
+  .ui { font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif; color:#111; }
+  #hud { position:fixed; inset:0; pointer-events:none; opacity:0; transition:opacity .8s; }
+  #hud.on { opacity:1; }
+  #ink { position:absolute; left:26px; top:20px; width:250px; height:46px; filter:drop-shadow(0 0 1px #dbdddd) drop-shadow(0 0 5px rgba(219,221,221,.85)); }
+  #ink img { position:absolute; inset:0; width:100%; height:100%; }
+  #ink .bg { opacity:.13; }
+  #ink .fill { position:absolute; inset:0; clip-path:inset(0 100% 0 0); }
+  #ink.low .fill { animation:blink .5s infinite alternate; }
+  #ink.empty { animation:shake .3s; }
+  @keyframes shake { 0%,100% { transform:translateX(0) } 25% { transform:translateX(-5px) } 75% { transform:translateX(5px) } }
+  body.paused #hud::after { content:'paused'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:22px; letter-spacing:.5em; background:rgba(219,221,221,.55); }
+  #lives { position:absolute; left:30px; top:74px; display:flex; gap:9px; filter:drop-shadow(0 0 1px #dbdddd) drop-shadow(0 0 4px rgba(219,221,221,.9)); }
+  #lives img { width:18px; height:18px; transition:opacity .5s, transform .5s; }
+  #lives img.off { opacity:.12; transform:scale(.6); }
+  #dist { position:absolute; right:30px; top:16px; font-size:32px; letter-spacing:.03em; text-align:right; text-shadow:0 0 6px #dbdddd, 0 0 2px #dbdddd; }
+  #dist small { font-size:15px; margin-left:4px; opacity:.55; }
+  #drops { position:absolute; right:31px; top:60px; font-size:18px; display:flex; align-items:center; gap:8px; text-shadow:0 0 6px #dbdddd, 0 0 2px #dbdddd; }
+  #drops img { width:15px; height:15px; }
+  #seal { position:absolute; right:26px; bottom:22px; width:58px; height:58px; opacity:0; transform:scale(1.9) rotate(-14deg); transition:opacity .25s, transform .45s cubic-bezier(.2,1.5,.35,1); }
+  #seal.on { opacity:.95; transform:scale(1) rotate(-5deg); }
+  #chap { position:absolute; right:94px; bottom:36px; font-size:20px; letter-spacing:.25em; opacity:0; transition:opacity .6s; }
+  #chap.on { opacity:.75; }
+  #title { position:fixed; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding-top:9vh; pointer-events:none; transition:opacity .9s; }
+  #title img.logo { width:min(56vw, 760px); filter:drop-shadow(0 0 0 transparent); }
+  #title .hint { margin-top:1.2vh; font-size:15px; letter-spacing:.12em; color:#151515; opacity:.85; text-align:center; line-height:1.9; text-shadow:0 0 6px #dbdddd, 0 0 12px #dbdddd, 0 0 2px #dbdddd; }
+  #title .hint b { font-weight:600; letter-spacing:.16em; }
+  #title .press { margin-top:2.2vh; font-size:13px; letter-spacing:.42em; text-transform:uppercase; animation:pulse 2.2s ease-in-out infinite; text-shadow:0 0 6px #dbdddd, 0 0 12px #dbdddd; }
+  #load { margin-top:2vh; width:180px; height:3px; background:rgba(0,0,0,.08); overflow:hidden; }
+  #load i { display:block; height:100%; width:0; background:#111; transition:width .2s; }
+  #over { position:fixed; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#e9e9e6; pointer-events:none; opacity:0; transition:opacity .8s; text-align:center; }
+  #over.on { opacity:1; }
+  #over h2 { margin:0; font-weight:400; font-size:44px; letter-spacing:.32em; text-transform:lowercase; }
+  #over .stats { margin-top:18px; font-size:18px; letter-spacing:.12em; opacity:.85; }
+  #over .best { margin-top:6px; font-size:14px; letter-spacing:.2em; opacity:.55; }
+  #over .press { margin-top:30px; font-size:13px; letter-spacing:.42em; text-transform:uppercase; animation:pulse 2.2s ease-in-out infinite; }
+  #over img { width:64px; margin-top:22px; opacity:.95; transform:rotate(-5deg); }
+  .hidden { opacity:0 !important; }
+  @keyframes pulse { 0%,100% { opacity:.35 } 50% { opacity:1 } }
+  @keyframes blink { from { opacity:.35 } to { opacity:1 } }
+  @media (max-width:700px) { #ink { width:170px; height:32px; } #dist { font-size:24px; } #title .hint { font-size:12px; } }
+</style>
+<script type="importmap">
+{ "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="hud" class="ui">
+  <div id="ink"><img class="bg" alt=""><div class="fill"><img alt=""></div></div>
+  <div id="lives"></div>
+  <div id="dist">0<small>m</small></div>
+  <div id="drops"><img alt=""><span>0</span></div>
+  <div id="chap"></div>
+  <img id="seal" alt="">
+</div>
+
+<div id="title" class="ui">
+  <img class="logo" alt="Ink Fox">
+  <div class="hint"><b>SPACE</b> jump &nbsp;·&nbsp; hold <b>SHIFT</b> or <b>CLICK</b> to paint a stroke &nbsp;·&nbsp; <b>↓</b> angles the brush down</div>
+  <div id="load"><i></i></div>
+  <div class="press hidden">press space</div>
+</div>
+
+<div id="over" class="ui">
+  <h2>the ink has dried</h2>
+  <div class="stats"></div>
+  <div class="best"></div>
+  <img alt="">
+  <div class="press">press space to paint again</div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+THREE.ColorManagement.enabled = false;
+
+/* =========================================================================
+   CONFIG
+   ========================================================================= */
+const Q = new URLSearchParams(location.search);
+const PAPER_HEX = 0xdbdddd;
+const PAPER = new THREE.Color(PAPER_HEX);
+const CFG = {
+  gUp: 27, gUpRelease: 64, gDown: 40, jumpV: 11.6, maxFall: 24,
+  speed0: 6.3, speedStep: 0.45, speedMax: 10.2,
+  coyote: 0.12, jumpBuffer: 0.14,
+  inkMax: 100, inkPerUnit: 4.6, inkMinStart: 8, strokeGrow: 18, strokeMax: 9.5, strokeMin: 2.8,
+  strokeLife: 4.4, strokeFade: 1.0, strokeT: 0.82, dropInk: 12,
+  foxScale: 1.72, lives: 3,
+};
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const damp = (a, b, k, dt) => lerp(a, b, 1 - Math.exp(-k * dt));
+const smooth = t => t * t * (3 - 2 * t);
+
+class RNG {
+  constructor(seed) { this.s = seed >>> 0; }
+  next() {
+    this.s = (this.s + 0x6D2B79F5) >>> 0;
+    let t = this.s;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  }
+  range(a, b) { return a + (b - a) * this.next(); }
+  int(a, b) { return Math.floor(this.range(a, b + 1)); }
+  pick(arr) { return arr[Math.floor(this.next() * arr.length) % arr.length]; }
+  chance(p) { return this.next() < p; }
+}
+const fxRng = new RNG(1234567);   // visual-only randomness
+const R = () => fxRng.next();
+
+/* =========================================================================
+   RENDERER / SCENE / CAMERA
+   ========================================================================= */
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
+renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+renderer.setClearColor(PAPER, 1);
+let VW = innerWidth, VH = innerHeight;
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
+renderer.setPixelRatio(DPR);
+renderer.setSize(VW, VH, false);
+const sceneRT = new THREE.WebGLRenderTarget(VW * DPR, VH * DPR, { samples: 4 });
+
+const scene = new THREE.Scene();
+scene.background = PAPER;
+const camera = new THREE.PerspectiveCamera(30, VW / VH, 0.5, 700);
+const TAN = Math.tan(THREE.MathUtils.degToRad(15));
+let camDist = 19;
+function fitCamera() {
+  const aspect = VW / VH;
+  const viewH = Math.max(10.4, Math.min(20, 12.5 / aspect));       // world units visible at z = 0
+  camDist = viewH / 2 / TAN;
+  camera.aspect = aspect;
+  camera.updateProjectionMatrix();
+}
+fitCamera();
+const halfWidthAt = (z) => (camDist - z) * TAN * camera.aspect;
+const halfHeightAt = (z) => (camDist - z) * TAN;
+
+const hemi = new THREE.HemisphereLight(0xffffff, 0x9aa0a6, 1.45);
+scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xffffff, 1.2);
+sun.position.set(-4, 7, 9);
+scene.add(sun);
+const rim = new THREE.DirectionalLight(0xffffff, 0.55);
+rim.position.set(3, 2, -6);
+scene.add(rim);
+
+/* =========================================================================
+   ASSETS
+   ========================================================================= */
+const texLoader = new THREE.TextureLoader();
+const TEX = {};
+let MAN = null;
+function loadTex(file) {
+  if (TEX[file]) return TEX[file];
+  TEX[file] = new Promise((res, rej) => texLoader.load('assets/' + file, t => {
+    t.colorSpace = THREE.NoColorSpace;
+    t.premultiplyAlpha = true;
+    t.anisotropy = 4;
+    res(t);
+  }, undefined, rej));
+  return TEX[file];
+}
+
+/* ----- shared geometries ----- */
+const G_CENTER = new THREE.PlaneGeometry(1, 1);
+const G_LEFT = new THREE.PlaneGeometry(1, 1).translate(0.5, 0, 0);
+const G_BOTTOM = new THREE.PlaneGeometry(1, 1).translate(0, 0.5, 0);
+const G_TOP = new THREE.PlaneGeometry(1, 1).translate(0, -0.5, 0);
+const G_TOPLEFT = new THREE.PlaneGeometry(1, 1).translate(0.5, -0.5, 0);
+const ANCHOR = { center: G_CENTER, bottom: G_BOTTOM, top: G_TOP, topleft: G_TOPLEFT, left: G_LEFT };
+
+/* ----- sprite material: premultiplied ink, depth tint toward paper, misty base ----- */
+const SPRITE_VS = /* glsl */`
+  uniform vec4 uRect;
+  varying vec2 vUv; varying vec2 vRaw;
+  void main() {
+    vRaw = uv;
+    vUv = uRect.xy + uv * uRect.zw;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }`;
+const SPRITE_FS = /* glsl */`
+  uniform sampler2D map; uniform vec3 uPaper;
+  uniform float uTint, uOpacity, uBase, uDarken, uFlash;
+  varying vec2 vUv; varying vec2 vRaw;
+  void main() {
+    vec4 t = texture2D(map, vUv);
+    float a = t.a * uOpacity;
+    if (a < 0.004) discard;
+    vec3 c = t.rgb / max(t.a, 1e-4);
+    c *= uDarken;
+    float k = uTint;
+    float b = uBase * (1.0 - smoothstep(0.0, 0.55, vRaw.y));
+    k = k + (1.0 - k) * b;
+    c = mix(c, uPaper, clamp(k, 0.0, 1.0));
+    c = mix(c, vec3(1.0), uFlash);
+    gl_FragColor = vec4(c * a, a);
+  }`;
+const premulBlend = {
+  transparent: true, depthWrite: false,
+  blending: THREE.CustomBlending,
+  blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
+  blendSrcAlpha: THREE.OneFactor, blendDstAlpha: THREE.OneMinusSrcAlphaFactor,
+};
+const matCache = new Map();
+function spriteMat(tex, o = {}, shared = true) {
+  const key = shared ? [tex.uuid, o.tint || 0, o.flip ? 1 : 0, o.base || 0, o.darken || 1, o.opacity ?? 1].join('|') : null;
+  if (key && matCache.has(key)) return matCache.get(key);
+  const m = new THREE.ShaderMaterial({
+    uniforms: {
+      map: { value: tex }, uPaper: { value: PAPER },
+      uTint: { value: o.tint || 0 }, uOpacity: { value: o.opacity ?? 1 },
+      uBase: { value: o.base || 0 }, uDarken: { value: o.darken || 1 }, uFlash: { value: 0 },
+      uRect: { value: new THREE.Vector4(o.flip ? 1 : 0, 0, o.flip ? -1 : 1, 1) },
+    },
+    vertexShader: SPRITE_VS, fragmentShader: SPRITE_FS, ...premulBlend,
+  });
+  if (key) matCache.set(key, m);
+  return m;
+}
+// spr = { tex, w, h } ; returns mesh sized in world units
+function makeSprite(spr, o) {
+  const w = o.w ?? (o.h * spr.w / spr.h);
+  const h = o.h ?? (o.w * spr.h / spr.w);
+  const mesh = new THREE.Mesh(ANCHOR[o.anchor || 'center'], spriteMat(spr.tex, o, !o.unique));
+  mesh.scale.set(w, h, 1);
+  mesh.position.set(o.x || 0, o.y || 0, o.z || 0);
+  if (o.rot) mesh.rotation.z = o.rot;
+  mesh.renderOrder = o.order ?? 0;
+  mesh.userData.w = w; mesh.userData.h = h;
+  return mesh;
+}
+
+/* =========================================================================
+   STROKE MATERIAL (9-slice brush stroke that can grow and dissolve)
+   ========================================================================= */
+const STROKE_FS = /* glsl */`
+  uniform sampler2D map; uniform vec3 uPaper;
+  uniform float uLen, uHead, uTail, uHeadU, uTailU, uFade, uSeed, uTint, uWet, uPaint, uGhost;
+  varying vec2 vUv; varying vec2 vRaw;
+  float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+  float noise(vec2 p) {
+    vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash(i), hash(i + vec2(1, 0)), f.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), f.x), f.y);
+  }
+  void main() {
+    float L = max(uLen, 1e-3);
+    float hw = uHead, tw = uTail;
+    float s = hw + tw;
+    if (L < s) { hw *= L / s; tw *= L / s; }
+    float x = vRaw.x * L;
+    float u;
+    if (x < hw) u = x / max(hw, 1e-4) * uHeadU;
+    else if (x > L - tw) u = uTailU + (x - (L - tw)) / max(tw, 1e-4) * (1.0 - uTailU);
+    else u = uHeadU + (x - hw) / max(L - hw - tw, 1e-4) * (uTailU - uHeadU);
+    vec4 t = texture2D(map, vec2(u, vRaw.y));
+    float a = t.a;
+    if (uFade > 0.0) {
+      float n = noise(vec2(x * 3.0, vRaw.y * 5.0) + uSeed) * 0.75 + noise(vec2(x * 11.0, vRaw.y * 17.0) + uSeed) * 0.25;
+      a *= smoothstep(uFade - 0.12, uFade + 0.02, n);
+    }
+    // the part not painted yet is a pale underdrawing; the brush front is ragged like wet ink
+    float front = uPaint + (noise(vec2(vRaw.y * 9.0, uSeed)) - 0.5) * 0.35;
+    float ink = smoothstep(front + 0.03, front - 0.22, x);
+    a *= mix(uGhost, 1.0, ink);
+    if (a < 0.004) discard;
+    vec3 c = t.rgb / max(t.a, 1e-4);
+    c = mix(mix(c, uPaper, 0.38), c, ink);
+    c += uWet * 0.10 * smoothstep(0.62, 0.95, vRaw.y);
+    c = mix(c, uPaper, uTint);
+    gl_FragColor = vec4(c * a, a);
+  }`;
+function strokeMat(spr) {
+  return new THREE.ShaderMaterial({
+    uniforms: {
+      map: { value: spr.tex }, uPaper: { value: PAPER },
+      uLen: { value: 0.01 }, uHead: { value: 0.1 }, uTail: { value: 1 }, uHeadU: { value: spr.headU }, uTailU: { value: spr.tailU },
+      uFade: { value: 0 }, uSeed: { value: R() * 100 }, uTint: { value: 0 }, uWet: { value: 0 },
+      uPaint: { value: 1e3 }, uGhost: { value: 0 },
+      uRect: { value: new THREE.Vector4(0, 0, 1, 1) },
+    },
+    vertexShader: SPRITE_VS, fragmentShader: STROKE_FS, ...premulBlend,
+  });
+}
+
+/* =========================================================================
+   FX PARTICLES (instanced quads sampling an atlas built from the fal ink sheet)
+   ========================================================================= */
+const FX = { mesh: null, list: [], max: 520, cells: {}, dummy: new THREE.Object3D() };
+async function buildFxAtlas(fxSprites) {
+  const N = 4, C = 256;
+  const cv = document.createElement('canvas'); cv.width = cv.height = N * C;
+  const g = cv.getContext('2d');
+  let i = 0;
+  for (const f of fxSprites) {
+    const img = f.tex.image;
+    const s = Math.min((C - 8) / img.width, (C - 8) / img.height);
+    const w = img.width * s, h = img.height * s;
+    const cx = (i % N) * C, cy = Math.floor(i / N) * C;
+    g.drawImage(img, cx + (C - w) / 2, cy + (C - h) / 2, w, h);
+    (FX.cells[f.kind] ||= []).push(i);
+    i++;
+  }
+  const tex = new THREE.CanvasTexture(cv);
+  tex.colorSpace = THREE.NoColorSpace; tex.premultiplyAlpha = true; tex.anisotropy = 4;
+  const geo = new THREE.InstancedBufferGeometry().copy(G_CENTER);
+  geo.instanceCount = 0;
+  const aCell = new THREE.InstancedBufferAttribute(new Float32Array(FX.max), 1);
+  const aAlpha = new THREE.InstancedBufferAttribute(new Float32Array(FX.max), 1);
+  const aTint = new THREE.InstancedBufferAttribute(new Float32Array(FX.max), 1);
+  aCell.setUsage(THREE.DynamicDrawUsage); aAlpha.setUsage(THREE.DynamicDrawUsage); aTint.setUsage(THREE.DynamicDrawUsage);
+  geo.setAttribute('aCell', aCell); geo.setAttribute('aAlpha', aAlpha); geo.setAttribute('aTint', aTint);
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { map: { value: tex }, uPaper: { value: PAPER } },
+    vertexShader: /* glsl */`
+      attribute float aCell; attribute float aAlpha; attribute float aTint;
+      varying vec2 vUv; varying float vA; varying float vT;
+      void main() {
+        float cx = mod(aCell, 4.0), cy = floor(aCell / 4.0);
+        vUv = (vec2(cx, 3.0 - cy) + uv) / 4.0;
+        vA = aAlpha; vT = aTint;
+        gl_Position = projectionMatrix * viewMatrix * modelMatrix * instanceMatrix * vec4(position, 1.0);
+      }`,
+    fragmentShader: /* glsl */`
+      uniform sampler2D map; uniform vec3 uPaper;
+      varying vec2 vUv; varying float vA; varying float vT;
+      void main() {
+        vec4 t = texture2D(map, vUv);
+        float a = t.a * vA;
+        if (a < 0.004) discard;
+        vec3 c = mix(t.rgb / max(t.a, 1e-4), uPaper, vT);
+        gl_FragColor = vec4(c * a, a);
+      }`,
+    ...premulBlend,
+  });
+  const mesh = new THREE.InstancedMesh(geo, mat, FX.max);
+  mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  mesh.frustumCulled = false;
+  mesh.renderOrder = 6;
+  mesh.count = 0;
+  FX.mesh = mesh; FX.aCell = aCell; FX.aAlpha = aAlpha; FX.aTint = aTint;
+  scene.add(mesh);
+}
+function fx(kind, o) {
+  if (FX.list.length >= FX.max) FX.list.shift();
+  const cells = FX.cells[kind] || FX.cells.bead;
+  FX.list.push({
+    cell: o.cell ?? cells[Math.floor(R() * cells.length)],
+    x: o.x, y: o.y, z: o.z ?? 0.25, vx: o.vx || 0, vy: o.vy || 0,
+    rot: o.rot ?? R() * 6.28, vr: o.vr || 0, s0: o.s0 ?? 0.2, s1: o.s1 ?? o.s0 ?? 0.2,
+    sy: o.sy ?? 1, life: 0, max: o.life ?? 0.8, a0: o.a ?? 1, g: o.g ?? 0, drag: o.drag ?? 0,
+    tint: o.tint || 0, fadeIn: o.fadeIn || 0, hold: o.hold ?? 0.0, follow: o.follow || null,
+  });
+}
+function updateFx(dt) {
+  if (!FX.mesh) return;
+  const L = FX.list; let n = 0;
+  for (let i = L.length - 1; i >= 0; i--) {
+    const p = L[i];
+    p.life += dt;
+    if (p.life >= p.max) { L.splice(i, 1); continue; }
+    p.vy -= p.g * dt;
+    if (p.drag) { const k = Math.exp(-p.drag * dt); p.vx *= k; p.vy *= k; }
+    p.x += p.vx * dt; p.y += p.vy * dt; p.rot += p.vr * dt;
+  }
+  for (const p of L) {
+    const t = p.life / p.max;
+    const s = lerp(p.s0, p.s1, smooth(Math.min(1, t * 1.3)));
+    let a = p.a0;
+    if (p.fadeIn) a *= Math.min(1, p.life / p.fadeIn);
+    if (t > p.hold) a *= 1 - smooth((t - p.hold) / (1 - p.hold));
+    const d = FX.dummy;
+    d.position.set(p.x, p.y, p.z); d.rotation.set(0, 0, p.rot); d.scale.set(s, s * p.sy, 1);
+    d.updateMatrix();
+    FX.mesh.setMatrixAt(n, d.matrix);
+    FX.aCell.array[n] = p.cell; FX.aAlpha.array[n] = a; FX.aTint.array[n] = p.tint;
+    n++;
+  }
+  FX.mesh.count = n;
+  FX.mesh.geometry.instanceCount = n;
+  FX.mesh.instanceMatrix.needsUpdate = true;
+  FX.aCell.needsUpdate = FX.aAlpha.needsUpdate = FX.aTint.needsUpdate = true;
+}
+function splash(x, y, power = 1, dir = 1) {
+  const n = Math.round(10 + 10 * power);
+  for (let i = 0; i < n; i++) {
+    const ang = Math.PI * (0.12 + 0.76 * R());
+    const sp = (2.2 + R() * 4.2) * (0.6 + power * 0.5);
+    const front = R() < 0.08;
+    fx('bead', { x: x + (R() - 0.5) * 0.5, y: y + 0.05, z: front ? 0.55 : -0.32, vx: Math.cos(ang) * sp * 1.15 - dir * 0.8, vy: Math.sin(ang) * sp * 0.75,
+      s0: 0.05 + R() * 0.1, s1: 0.03, g: 22, life: 0.45 + R() * 0.45, hold: 0.5 });
+  }
+  for (let i = 0; i < 2 + power * 2; i++) {
+    fx('splash', { x: x + (R() - 0.5) * 0.9, y: y + 0.08 + R() * 0.15, z: -0.34, s0: 0.15, s1: 0.5 + power * 0.25, sy: 0.75, life: 0.35 + R() * 0.2, hold: 0.25, a: 0.95 });
+  }
+  // blots that stay on the surface for a while (ink stains on landing)
+  for (let i = 0; i < 1 + Math.round(power); i++) {
+    fx('blot', { x: x + (R() - 0.5) * 0.9, y: y - 0.04, z: -0.38, s0: 0.22 + R() * 0.25, sy: 0.38, life: 2.6 + R(), hold: 0.6, rot: R() * 0.4 - 0.2 });
+  }
+  // a couple of round blobs bouncing up, like in the reference footage
+  for (let i = 0; i < 2; i++) {
+    fx('bead', { x: x - dir * (0.45 + R() * 0.4), y: y + 0.15, z: -0.3, vx: -dir * (0.8 + R()), vy: 2.2 + R() * 1.6, s0: 0.2 + R() * 0.1, s1: 0.16, g: 12, life: 0.55, hold: 0.55 });
+  }
+}
+function puff(x, y, z, size = 1, dark = 0.2) {
+  fx('puff', { x, y, z, s0: 0.3 * size, s1: 1.6 * size, life: 1.1, hold: 0.1, a: 0.55, tint: dark, vr: (R() - 0.5) * 0.6 });
+}
+
+/* =========================================================================
+   AMBIENT INK MOTES
+   ========================================================================= */
+let motes = null;
+function buildMotes(tex) {
+  const N = 260;
+  const pos = new Float32Array(N * 3), sz = new Float32Array(N), ph = new Float32Array(N);
+  for (let i = 0; i < N; i++) {
+    pos[i * 3] = (R() - 0.5) * 60; pos[i * 3 + 1] = (R() - 0.5) * 22; pos[i * 3 + 2] = -28 + R() * 33;
+    sz[i] = 0.05 + R() * R() * 0.22; ph[i] = R() * 100;
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  geo.setAttribute('aSize', new THREE.BufferAttribute(sz, 1));
+  geo.setAttribute('aPh', new THREE.BufferAttribute(ph, 1));
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { map: { value: tex }, uPaper: { value: PAPER }, uTime: { value: 0 }, uScale: { value: VH * DPR / (2 * TAN) }, uCam: { value: new THREE.Vector3() } },
+    vertexShader: /* glsl */`
+      attribute float aSize; attribute float aPh;
+      uniform float uTime, uScale; uniform vec3 uCam;
+      varying float vFog; varying float vA;
+      void main() {
+        vec3 p = position;
+        p.x += sin(uTime * 0.21 + aPh) * 0.9 - uTime * 0.25;
+        p.y += sin(uTime * 0.33 + aPh * 1.7) * 0.6 + uTime * 0.08;
+        // wrap around the camera
+        vec3 rel = p - uCam;
+        rel.x = mod(rel.x + 30.0, 60.0) - 30.0;
+        rel.y = mod(rel.y + 11.0, 22.0) - 11.0;
+        p = uCam + rel; p.z = position.z;
+        vec4 mv = modelViewMatrix * vec4(p, 1.0);
+        gl_Position = projectionMatrix * mv;
+        gl_PointSize = aSize * uScale / -mv.z;
+        vFog = clamp((-mv.z - 22.0) / 45.0, 0.0, 0.85);
+        vA = 0.85 * smoothstep(0.0, 0.3, fract(aPh));
+      }`,
+    fragmentShader: /* glsl */`
+      uniform sampler2D map; uniform vec3 uPaper;
+      varying float vFog; varying float vA;
+      void main() {
+        vec4 t = texture2D(map, gl_PointCoord);
+        float a = t.a * vA;
+        if (a < 0.01) discard;
+        vec3 c = mix(t.rgb / max(t.a, 1e-4), uPaper, vFog);
+        gl_FragColor = vec4(c * a, a);
+      }`,
+    ...premulBlend,
+  });
+  motes = new THREE.Points(geo, mat);
+  motes.frustumCulled = false;
+  motes.renderOrder = 7;
+  scene.add(motes);
+}
+
+/* =========================================================================
+   SCROLLING DECOR LAYERS (parallax comes from real depth in the perspective camera)
+   ========================================================================= */
+class Layer {
+  constructor(cfg) { Object.assign(this, cfg); this.items = []; this.nextX = null; this.rng = new RNG(cfg.seed || 7); }
+  reset(x) { for (const it of this.items) scene.remove(it); this.items = []; this.nextX = x - halfWidthAt(this.z) - 12; }
+  update(camX, camY) {
+    const hw = halfWidthAt(this.z) + 14;
+    if (this.nextX === null) this.reset(camX);
+    while (this.nextX < camX + hw) {
+      const made = this.spawn(this.nextX, this.rng);
+      for (const m of made) { m.userData.baseY = m.position.y; scene.add(m); this.items.push(m); }
+      this.nextX += this.rng.range(this.gap[0], this.gap[1]);
+    }
+    for (let i = this.items.length - 1; i >= 0; i--) {
+      const m = this.items[i];
+      if (m.position.x + (m.userData.w || 10) < camX - hw) { scene.remove(m); this.items.splice(i, 1); continue; }
+      m.position.y = m.userData.baseY + camY * this.follow;
+    }
+  }
+}
+
+/* =========================================================================
+   FOX (fal GLB + procedural gallop in the vertex shader + verlet scarf)
+   ========================================================================= */
+const foxU = {
+  uPh: { value: 0 }, uGait: { value: 0 }, uAir: { value: 0 }, uTailA: { value: 0 }, uT: { value: 0 }, uFur: { value: 1.45 }, uGlow: { value: 0.3 }, uBlink: { value: 0 },
+};
+const FOX_DEFORM = /* glsl */`
+  uniform float uPh, uGait, uAir, uTailA, uT;
+  void foxRot(inout vec3 p, inout vec3 n, float py, float pz, float ang) {
+    float c = cos(ang), s = sin(ang);
+    float dy = p.y - py, dz = p.z - pz;
+    p.y = py + dy * c - dz * s;
+    p.z = pz + dy * s + dz * c;
+    float ny = n.y * c - n.z * s, nz = n.y * s + n.z * c;
+    n.y = ny; n.z = nz;
+  }
+  void foxDeform(inout vec3 p, inout vec3 n) {
+    // legs: model space, head toward -Z, paws at y = -0.409
+    float wl = smoothstep(-0.15, -0.29, p.y);
+    if (wl > 0.0) {
+      bool front = p.z < -0.08;
+      bool left = p.x < -0.055;
+      float pz = front ? -0.232 : 0.07;
+      float off = (front ? 3.14159 : 0.0) + (left ? 0.0 : 0.75);
+      float sw = sin(uPh + off);
+      float ang = 0.66 * sw * uGait;
+      ang = mix(ang, front ? 0.85 : -0.75, uAir);
+      foxRot(p, n, -0.125, pz, ang * wl);
+      p.y += max(0.0, cos(uPh + off)) * 0.07 * uGait * (1.0 - uAir) * wl;
+    }
+    // tail: sways in waves from its root
+    float wt = smoothstep(0.16, 0.30, p.z) * smoothstep(-0.22, -0.06, p.y);
+    if (wt > 0.0) {
+      float d = length(vec2(p.z - 0.2, p.y));
+      float ang = uTailA + 0.20 * sin(uT * 6.5 - d * 6.0) * (0.35 + 0.65 * uGait);
+      foxRot(p, n, 0.0, 0.19, ang * wt);
+    }
+    // ears: a tiny flick
+    float we = smoothstep(0.18, 0.34, p.y) * step(p.z, -0.1);
+    if (we > 0.0) {
+      foxRot(p, n, 0.16, -0.22, (0.06 * sin(uT * 3.0) * (1.0 - uGait) + 0.10 * uGait) * we);
+    }
+  }`;
+const fox = {
+  root: new THREE.Group(), tilt: new THREE.Group(), body: null, mesh: null,
+  x: 0, y: 0, vx: 0, vy: 0, grounded: true, ground: null, coyote: 0, jumpBuf: 0, jumpHeld: false,
+  phase: 0, gait: 0, air: 0, squash: 0, landT: 0, tilt_: 0, blocked: 0, alive: true,
+  scarf: null,
+};
+async function buildFox() {
+  const gltf = await new GLTFLoader().loadAsync('assets/fox.glb');
+  const mesh = gltf.scene.getObjectByProperty('isMesh', true);
+  const mat = mesh.material;
+  if (mat.map) { mat.map.colorSpace = THREE.NoColorSpace; mat.map.anisotropy = 4; mat.map.needsUpdate = true; }
+  mat.metalness = 0; mat.roughness = 0.85;
+  mat.onBeforeCompile = (sh) => {
+    Object.assign(sh.uniforms, foxU);
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\n varying vec3 vFoxP;\n' + FOX_DEFORM)
+      .replace('#include <beginnormal_vertex>', '#include <beginnormal_vertex>\n vec3 fP = position; vFoxP = position; foxDeform(fP, objectNormal);')
+      .replace('#include <begin_vertex>', 'vec3 transformed = fP;');
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', '#include <common>\n uniform float uFur, uGlow; varying vec3 vFoxP;')
+      .replace('#include <map_fragment>', `#include <map_fragment>
+        float foxRed = 0.0, foxDark = 0.0;
+        {
+          vec3 c = diffuseColor.rgb;
+          float red = c.r - max(c.g, c.b);
+          float l = dot(c, vec3(0.3, 0.59, 0.11));
+          float keep = smoothstep(0.08, 0.2, red);
+          vec3 fur = vec3(pow(clamp(l * uFur, 0.0, 1.0), 0.7));
+          // like the footage: ink-black ear tips and ink-dipped paws on a white spirit
+          float ear = smoothstep(0.29, 0.37, vFoxP.y) * step(vFoxP.z, -0.12);
+          float paw = smoothstep(-0.27, -0.345, vFoxP.y) * (1.0 - step(0.2, vFoxP.z));
+          foxDark = max(ear, paw * 0.95);
+          fur = mix(fur, vec3(0.06), foxDark);
+          foxRed = keep;
+          diffuseColor.rgb = mix(fur, c * vec3(1.18, 0.95, 0.95), keep);
+        }`)
+      .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+        totalEmissiveRadiance += diffuseColor.rgb * uGlow * (1.0 - foxDark) * (1.0 - foxRed * 0.7);`)
+      .replace('#include <opaque_fragment>', `
+        { // soft white fresnel halo, the fox reads as a glowing paper spirit
+          float fr = pow(1.0 - clamp(dot(normal, geometryViewDir), 0.0, 1.0), 2.5);
+          outgoingLight += vec3(0.32) * fr * (1.0 - foxDark) * (1.0 - foxRed);
+        }
+        #include <opaque_fragment>`);
+  };
+  mat.needsUpdate = true;
+  // orientation: model faces -Z; mirror X so the generated (front-facing) side looks at the camera
+  const off = new THREE.Group();
+  mesh.rotation.set(0, Math.PI / 2, 0);
+  mesh.position.set(0.08, 0.409, -0.055);
+  off.add(mesh);
+  off.scale.set(-CFG.foxScale, CFG.foxScale, CFG.foxScale);
+  fox.tilt.add(off);
+  fox.root.add(fox.tilt);
+  fox.mesh = mesh; fox.body = off;
+  scene.add(fox.root);
+}
+/* ----- scarf: red ribbon simulated as a verlet chain, textured with the fal red-ink stroke ----- */
+function buildScarf(tex) {
+  const N = 11;
+  const pts = [], prev = [];
+  for (let i = 0; i < N; i++) { pts.push(new THREE.Vector3(-i * 0.08, 0.8, 0.2)); prev.push(pts[i].clone()); }
+  const geo = new THREE.BufferGeometry();
+  const pos = new Float32Array(N * 2 * 3), uv = new Float32Array(N * 2 * 2), idx = [];
+  for (let i = 0; i < N; i++) {
+    uv[i * 4] = i / (N - 1); uv[i * 4 + 1] = 0; uv[i * 4 + 2] = i / (N - 1); uv[i * 4 + 3] = 1;
+    if (i < N - 1) { const a = i * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  geo.setIndex(idx);
+  const m = new THREE.ShaderMaterial({
+    uniforms: { map: { value: tex } },
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
+    fragmentShader: `uniform sampler2D map; varying vec2 vUv;
+      void main(){
+        vec4 t = texture2D(map, vec2(0.02 + vUv.x * 0.96, 0.1 + vUv.y * 0.8));
+        float a = t.a;
+        if (a < 0.02) discard;
+        vec3 c = t.rgb / max(t.a, 1e-4);
+        c *= 0.86 + 0.22 * vUv.y;
+        gl_FragColor = vec4(c * a, a);
+      }`,
+    ...premulBlend, side: THREE.DoubleSide,
+  });
+  const mesh = new THREE.Mesh(geo, m);
+  mesh.frustumCulled = false;
+  mesh.renderOrder = 5;
+  scene.add(mesh);
+  fox.scarf = { N, pts, prev, geo, mesh, seg: 0.088 };
+}
+const _v = new THREE.Vector3(), _a = new THREE.Vector3(), _b = new THREE.Vector3();
+function scarfAnchor() {
+  fox.mesh.updateWorldMatrix(true, false);
+  _a.set(-0.075, 0.075, -0.115);
+  return fox.mesh.localToWorld(_a);
+}
+function stepScarf(h, t) {
+  const S_ = fox.scarf; if (!S_ || !fox.mesh) return;
+  const { pts, prev, N, seg } = S_;
+  const anc = scarfAnchor();
+  const ancV = S_.ancPrev ? _b.subVectors(anc, S_.ancPrev).divideScalar(h) : _b.set(0, 0, 0);
+  if (ancV.lengthSq() > 900) ancV.set(0, 0, 0);          // teleport (respawn): no whiplash
+  S_.ancPrev = (S_.ancPrev || new THREE.Vector3()).copy(anc);
+  pts[0].copy(anc); prev[0].copy(anc);
+  // rest shape: the ribbon streams back and slightly up (as in the footage), whatever the fox does
+  const run = Math.min(1, Math.abs(fox.vx) / 5);
+  const restA = 0.2 + 0.12 * run - clamp(fox.vy * 0.02, -0.25, 0.25);
+  const rcx = -Math.cos(restA), rcy = Math.sin(restA);
+  const ks = 60 * (0.45 + 0.55 * run);
+  const relDamp = Math.exp(-18 * h);
+  for (let i = 1; i < N; i++) {
+    const p = pts[i], q = prev[i];
+    // velocity measured relative to the fox, damped and capped there: a light silk ribbon, no whiplash on landing
+    let rvx = ((p.x - q.x) / h - ancV.x) * relDamp, rvy = ((p.y - q.y) / h - ancV.y) * relDamp;
+    const rl = Math.hypot(rvx, rvy); if (rl > 7) { rvx *= 7 / rl; rvy *= 7 / rl; }
+    const vx = ancV.x + rvx, vy = ancV.y + rvy;
+    const k = i / (N - 1);
+    const flutter = Math.sin(t * 14 - i * 0.9) * (2.5 + Math.abs(fox.vx) * 0.9) * k;
+    const tx = anc.x + rcx * seg * i, ty = anc.y + rcy * seg * i + Math.sin(t * 9 - i * 0.8) * 0.05 * k;
+    const ax = -16 * k * Math.min(1, Math.abs(fox.vx) / 4 + 0.35) + (tx - p.x) * ks;   // head-wind, shape
+    const ay = -4.0 + flutter + (ty - p.y) * ks;                                       // gravity, flutter, shape
+    q.copy(p);
+    p.x += vx * h + ax * h * h;
+    p.y += vy * h + ay * h * h;
+    p.z = fox.root.position.z + 0.36 + Math.min(i, 3) * 0.05;
+  }
+  for (let it = 0; it < 4; it++) {
+    for (let i = 1; i < N; i++) {
+      const a = pts[i - 1], b = pts[i];
+      _v.subVectors(b, a); const d = _v.length() || 1e-4;
+      const diff = (d - seg) / d;
+      if (i === 1) b.addScaledVector(_v, -diff);
+      else { a.addScaledVector(_v, diff * 0.5); b.addScaledVector(_v, -diff * 0.5); }
+    }
+    pts[0].copy(anc);
+  }
+}
+function updateScarf(dt, t) {
+  const S_ = fox.scarf; if (!S_ || !fox.mesh) return;
+  const { pts, N } = S_;
+  const pos = S_.geo.attributes.position.array;
+  for (let i = 0; i < N; i++) {
+    const a = pts[Math.max(0, i - 1)], b = pts[Math.min(N - 1, i + 1)];
+    let dx = b.x - a.x, dy = b.y - a.y; const l = Math.hypot(dx, dy) || 1; dx /= l; dy /= l;
+    const w = lerp(0.075, 0.03, i / (N - 1)) * (1 + 0.18 * Math.sin(t * 9 + i));
+    pos[i * 6] = pts[i].x - dy * w; pos[i * 6 + 1] = pts[i].y + dx * w; pos[i * 6 + 2] = pts[i].z;
+    pos[i * 6 + 3] = pts[i].x + dy * w; pos[i * 6 + 4] = pts[i].y - dx * w; pos[i * 6 + 5] = pts[i].z;
+  }
+  S_.geo.attributes.position.needsUpdate = true;
+}
+
+/* =========================================================================
+   WORLD: platforms (rocks + brush strokes), ink drops, moon gates
+   ========================================================================= */
+const world = { plats: [], drops: [], gates: [], decor: [] };
+let SPR = null;   // sprite library from manifest
+
+class RockPlat {
+  constructor(spr, x, y, width, flip, sy = 1) {
+    this.kind = 'rock'; this.spr = spr; this.flip = flip;
+    this.W = width; this.H = width * spr.h / spr.w * sy;
+    const top = flip ? [...spr.top].reverse() : spr.top;
+    const bot = flip ? [...spr.bot].reverse() : spr.bot;
+    this.top = top; this.bot = bot;
+    // walk level y is placed on the flat part (median of the central tops)
+    const mid = top.slice(Math.floor(top.length * 0.25), Math.ceil(top.length * 0.75)).filter(v => v !== null).sort((a, b) => a - b);
+    const t0 = mid[Math.floor(mid.length * 0.3)] ?? 0.05;
+    this.inset = Math.min(0.14, this.H * 0.03);
+    this.yq = y + t0 * this.H + this.inset;      // quad top edge
+    this.x0q = x;                                 // quad left edge
+    let a = 0, b = top.length - 1;
+    while (a < b && (top[a] === null || top[a] - t0 > 0.12)) a++;
+    while (b > a && (top[b] === null || top[b] - t0 > 0.12)) b--;
+    this.x0 = x + (a + 0.3) / top.length * this.W;
+    this.x1 = x + (b + 0.7) / top.length * this.W;
+    this.xr = x + this.W;
+    this.mesh = makeSprite(spr, { w: this.W, h: this.H, x, y: this.yq, z: -0.7, anchor: 'topleft', flip, order: 1, darken: 0.42 });
+    scene.add(this.mesh);
+    this.y = y;
+  }
+  prof(arr, x) {
+    const u = (x - this.x0q) / this.W * arr.length - 0.5;
+    const i = Math.floor(u), f = u - i;
+    const a = arr[clamp(i, 0, arr.length - 1)], b = arr[clamp(i + 1, 0, arr.length - 1)];
+    if (a === null && b === null) return null;
+    if (a === null) return b; if (b === null) return a;
+    return lerp(a, b, f);
+  }
+  surf(x) {
+    if (x < this.x0 || x > this.x1) return null;
+    const t = this.prof(this.top, x); if (t === null) return null;
+    return this.yq - t * this.H - this.inset;
+  }
+  span(x) {   // vertical extent of the rock silhouette at x (for walls and ceilings)
+    if (x < this.x0q || x > this.xr) return null;
+    const t = this.prof(this.top, x), b = this.prof(this.bot, x);
+    if (t === null || b === null) return null;
+    return [this.yq - b * this.H, this.yq - t * this.H];
+  }
+  update() {}
+  dispose() { scene.remove(this.mesh); }
+}
+
+class StrokePlat {
+  constructor(spr, x, y, angDeg, len, o = {}) {
+    this.kind = 'stroke'; this.spr = spr;
+    this.a = THREE.MathUtils.degToRad(angDeg);
+    this.x = x; this.y = y; this.target = len; this.len = o.instant ? len : 0;
+    this.player = !!o.player; this.growing = !!o.player; this.revealAt = o.revealAt ?? -1e9;
+    this.life = 0; this.fade = 0; this.dead = false; this.revealed = !!o.instant || this.player;
+    // level strokes exist first as a pale underdrawing of their full shape, then get painted in ink
+    this.shape = this.player ? this.len : len;
+    const T = CFG.strokeT;
+    const nat = T * spr.w / spr.h;
+    this.mat = strokeMat(spr);
+    this.mat.uniforms.uHead.value = nat * spr.headU;
+    this.mat.uniforms.uTail.value = nat * (1 - spr.tailU);
+    this.mat.uniforms.uGhost.value = this.player ? 0 : 0.3;
+    this.mat.uniforms.uPaint.value = this.player || o.instant ? 1e3 : 0;
+    this.mesh = new THREE.Mesh(G_LEFT, this.mat);
+    this.mesh.renderOrder = 2;
+    const off = (0.5 - spr.topV) * T;
+    this.mesh.position.set(x + Math.sin(this.a) * off, y - Math.cos(this.a) * off, -0.45);
+    this.mesh.rotation.z = this.a;
+    this.mesh.scale.set(Math.max(this.shape, 0.001), T, 1);
+    this.mesh.visible = this.shape > 0.01;
+    scene.add(this.mesh);
+    this.ca = Math.cos(this.a); this.ta = Math.tan(this.a);
+    this.tipX = x + len * this.ca;
+    this.x0 = x + 0.04; this.updateExtent();
+  }
+  updateExtent() { this.x1 = this.x + this.len * this.ca * 0.9; this.xr = this.x + Math.max(this.len, this.shape) * this.ca; }
+  surf(x) {
+    if (this.dead || this.fade > 0.55 || this.len < 0.25) return null;
+    if (x < this.x0 || x > this.x1) return null;
+    return this.y + (x - this.x) * this.ta;
+  }
+  span() { return null; }
+  tip() { return [this.x + this.len * this.ca, this.y + this.len * Math.sin(this.a)]; }
+  update(dt) {
+    // painted in the air ahead of the fox, once the whole stroke is on screen (or the fox gets close)
+    if (!this.revealed && (fox.x > this.revealAt || this.tipX < S.camX + halfWidthAt(-0.45) * 0.93 - 0.4)) {
+      this.revealed = true; this.growing = true; sfx('brush', 0.5, 0.9 + R() * 0.2);
+      fx('dab', { x: this.x + 0.2, y: this.y - 0.25, z: -0.32, s0: 0.5, s1: 0.75, life: 0.4, hold: 0.25, a: 0.85, sy: 0.6, rot: this.a });
+    }
+    if (this.growing && !this.player) {
+      this.len = Math.min(this.target, this.len + 21 * dt);
+      const [tx, ty] = this.tip();
+      for (let k = 0; k < 2; k++) if (R() < 0.75) fx('bead', { x: tx - 0.1, y: ty - 0.2 + (R() - 0.5) * 0.45, z: -0.3, vx: 2.5 + R() * 4, vy: (R() - 0.35) * 2.6, s0: 0.04 + R() * 0.08, s1: 0.015, g: 9, life: 0.55 });
+      if (this.len >= this.target) {
+        this.growing = false;
+        for (let k = 0; k < 6; k++) fx('bead', { x: tx - 0.15, y: ty - 0.22, z: -0.3, vx: 1 + R() * 3.5, vy: (R() - 0.2) * 3, s0: 0.04 + R() * 0.06, s1: 0.02, g: 12, life: 0.5 });
+      }
+    }
+    if (this.player) this.shape = this.len;
+    if (this.player && !this.growing) {
+      this.life += dt;
+      if (this.life > CFG.strokeLife) this.fade = Math.min(1.2, (this.life - CFG.strokeLife) / CFG.strokeFade);
+      if (this.fade >= 1.15) this.dead = true;
+    }
+    const u = this.mat.uniforms;
+    u.uWet.value = Math.max(0, 1 - this.life * 0.8) * (this.player ? 1 : 0);
+    u.uLen.value = this.shape;
+    u.uPaint.value = this.player || (this.revealed && !this.growing) ? 1e3 : this.len;
+    if (!this.player) u.uGhost.value = 0.3 + 0.06 * Math.sin(S.time * 2.4 + this.x);
+    u.uFade.value = this.fade;
+    this.mesh.scale.x = Math.max(this.shape, 0.001);
+    this.mesh.visible = this.shape > 0.01;
+    this.updateExtent();
+  }
+  dispose() { scene.remove(this.mesh); this.mat.dispose(); }
+}
+
+class Drop {
+  constructor(x, y) {
+    this.x = x; this.y = y; this.taken = false; this.t = R() * 6; this.gone = 0;
+    const spr = SPR.beads[Math.floor(R() * SPR.beads.length)];
+    this.size = 0.3 + R() * 0.07;
+    this.mesh = makeSprite(spr, { w: this.size, x, y, z: 0.05, order: 3, unique: true });
+    scene.add(this.mesh);
+  }
+  update(dt) {
+    this.t += dt;
+    if (this.taken) {
+      this.gone += dt * 4;
+      this.mesh.material.uniforms.uOpacity.value = Math.max(0, 1 - this.gone);
+      const s = this.size * (1 + this.gone * 0.8);
+      this.mesh.scale.set(s, s, 1);
+      return;
+    }
+    const s = this.size * (1 + Math.sin(this.t * 3.1) * 0.05);
+    this.mesh.scale.set(s, s, 1);
+    this.mesh.position.y = this.y + Math.sin(this.t * 2.2) * 0.09;
+  }
+  dispose() { scene.remove(this.mesh); this.mesh.material.dispose(); }
+}
+
+class Gate {
+  constructor(x, y, snap) {
+    this.x = x; this.y = y; this.snap = snap; this.passed = false; this.flash = 0;
+    const spr = SPR.bg.window;
+    this.mesh = makeSprite(spr, { h: 3.3, x, y: y - 0.25, z: -1.25, anchor: 'bottom', tint: 0.32, order: 0, unique: true });
+    scene.add(this.mesh);
+  }
+  update(dt) {
+    this.flash = Math.max(0, this.flash - dt * 1.6);
+    this.mesh.material.uniforms.uTint.value = 0.32 - this.flash * 0.28;
+  }
+  dispose() { scene.remove(this.mesh); this.mesh.material.dispose(); }
+}
+
+/* ----- decor attached to rocks: pine tufts, branches, little trees ----- */
+function decorateRock(p, rng) {
+  const out = [];
+  const span = p.x1 - p.x0;
+  const nT = span > 6 ? 3 : span > 3 ? 2 : 1;
+  for (let i = 0; i < nT; i++) {
+    const x = p.x0 + span * (0.12 + 0.76 * rng.next());
+    const y = p.surf(x); if (y === null) continue;
+    const front = rng.chance(0.42);
+    const w = front ? rng.range(0.7, 1.15) : rng.range(1.0, 1.9);
+    const spr = rng.pick(SPR.tufts);
+    out.push(makeSprite(spr, { w, x, y: y - 0.06 - (front ? 0.02 : 0), z: front ? 0.42 : -0.78, anchor: 'bottom', flip: rng.chance(0.5), order: front ? 7 : 1 }));
+  }
+  if (span > 5 && rng.chance(0.28)) {
+    const left = rng.chance(0.5);
+    const x = left ? p.x0 + 0.4 : p.x1 - 0.4; const y = p.surf(x);
+    if (y !== null) out.push(makeSprite(SPR.tree, { h: rng.range(1.8, 2.5), x, y: y - 0.05, z: -0.85, anchor: 'bottom', flip: !left, order: 1 }));
+  }
+  if (rng.chance(0.4) && p.H > 1.6) {
+    const right = rng.chance(0.55);
+    const spr = right ? SPR.branchR : SPR.branchL;
+    const w = rng.range(2.2, 3.4);
+    const yy = p.yq - p.H * rng.range(0.25, 0.5);
+    const x = right ? p.xr - 0.5 + w / 2 : p.x0q + 0.5 - w / 2;
+    out.push(makeSprite(spr, { w, x, y: yy, z: -0.9, order: 1 }));
+  }
+  for (const m of out) { scene.add(m); world.decor.push({ m, x: m.position.x + (m.userData.w || 3) }); }
+}
+
+/* ----- level generator ----- */
+const gen = { rng: null, x: 0, y: 0, chapter: 0, since: 0, n: 0, lastPaint: -99 };
+const speedFor = ch => Math.min(CFG.speedMax, CFG.speed0 + ch * CFG.speedStep);
+function jumpReach(speed, dy) {
+  const v0 = CFG.jumpV, tUp = v0 / CFG.gUp, hMax = v0 * v0 / (2 * CFG.gUp);
+  if (dy > hMax - 0.3) return 0;
+  return speed * (tUp + Math.sqrt(2 * (hMax - dy) / CFG.gDown));
+}
+function snapGen() { return { s: gen.rng.s, x: gen.x, y: gen.y, chapter: gen.chapter, since: gen.since, n: gen.n, lastPaint: gen.lastPaint }; }
+function restoreGen(sn) { gen.rng = new RNG(sn.s); Object.assign(gen, { x: sn.x, y: sn.y, chapter: sn.chapter, since: sn.since, n: sn.n, lastPaint: sn.lastPaint }); }
+function rockSprFor(rng, width) {
+  const wide = SPR.rocks.filter(r => r.w / r.h > 1.35);
+  return width > 3 ? rng.pick(wide) : rng.pick(SPR.rocks.filter(r => r.w / r.h <= 1.35 && r.w / r.h > 0.8));
+}
+function addRock(x, y, width, rng, spr) {
+  spr = spr || rockSprFor(rng, width);
+  const p = new RockPlat(spr, x, y, width, rng.chance(0.5), rng.range(0.85, 1.05));
+  world.plats.push(p);
+  decorateRock(p, rng);
+  return p;
+}
+function addDropsArc(x0, y0, x1, y1, n, lift) {
+  for (let i = 0; i < n; i++) {
+    const t = (i + 1) / (n + 1);
+    const x = lerp(x0, x1, t), y = lerp(y0, y1, t) + Math.sin(t * Math.PI) * lift;
+    world.drops.push(new Drop(x, y));
+  }
+}
+function genPiece() {
+  const r = gen.rng, ch = gen.chapter;
+  const speed = speedFor(ch);
+  const gateEvery = 105 + ch * 10;
+  if (gen.since > gateEvery) return genGate();
+  // pick a vertical change, kept inside a comfortable band
+  let dy = r.range(-1.9, 1.25);
+  if (gen.y + dy > 3.6) dy = -Math.abs(dy);
+  if (gen.y + dy < -3.2) dy = Math.abs(dy) * 0.8;
+  const reach = jumpReach(speed, dy);
+  const paintGap = gen.x > 34 && gen.x - gen.lastPaint > 22 && r.chance(Math.min(0.16 + ch * 0.07, 0.45));
+  const startX = gen.x, startY = gen.y;
+  let gap, kind;
+  if (paintGap) {
+    gap = Math.max(reach * r.range(1.3, 1.65), 6.5);
+    dy = Math.min(dy, 0.4);
+    gen.lastPaint = gen.x;
+    // ink before the gap
+    addDropsArc(startX - 2.6, startY + 0.55, startX - 0.2, startY + 0.55, 2, 0);
+  } else {
+    gap = r.range(1.4, Math.max(1.6, reach * (gen.x < 40 ? 0.5 : 0.74)));   // a gentler first stretch
+  }
+  const strokeChance = Math.max(0.22, 0.55 - ch * 0.06);
+  if (!paintGap && r.chance(strokeChance)) kind = 'stroke';
+  else if (!paintGap && r.chance(0.16 + ch * 0.03)) kind = 'pillar';
+  else kind = 'rock';
+  const nx = startX + gap, ny = startY + dy;
+  if (kind === 'stroke') {
+    const len = r.range(3.8, 6.8);
+    const ang = r.range(-5, 15);
+    const s = new StrokePlat(r.pick(SPR.strokes), nx, ny, ang, len, { revealAt: nx - 6 });
+    world.plats.push(s);
+    addDropsArc(startX, startY + 0.6, nx, ny + 0.6, gap > 2.6 ? 2 : 1, 1.4);
+    const [tx, ty] = [nx + len * Math.cos(s.a) * 0.88, ny + len * Math.sin(s.a) * 0.88];
+    if (r.chance(0.6)) addDropsArc(nx, ny + 0.6, tx, ty + 0.6, 2, 0.2);
+    gen.x = tx; gen.y = ty;
+  } else if (kind === 'pillar') {
+    const p = addRock(nx, ny, r.range(1.7, 2.2), r, SPR.rocks.find(q => q.w / q.h < 0.6) || SPR.rocks[0]);
+    addDropsArc(startX, startY + 0.6, p.x0 + 0.3, ny + 0.6, 2, 1.5);
+    gen.x = p.x1; gen.y = ny;
+  } else {
+    const w = r.range(3.6, 8.5 - Math.min(ch, 4) * 0.5);
+    const p = addRock(nx, ny, w, r);
+    if (!paintGap) addDropsArc(startX, startY + 0.6, p.x0 + 0.2, ny + 0.6, gap > 2.4 ? 3 : 1, gap > 2.4 ? 1.6 : 0.6);
+    else addDropsArc(startX + 1, startY + 1.2, p.x0 - 1, ny + 1.2, 3, 0.8);   // a dotted guide across the void
+    if (r.chance(0.45)) addDropsArc(p.x0 + 0.5, ny + 0.6, p.x1 - 0.5, ny + 0.6, r.int(1, 3), 0.15);
+    gen.x = p.x1; gen.y = p.surf(p.x1 - 0.05) ?? ny;
+  }
+  gen.since += gen.x - startX; gen.n++;
+}
+function genGate() {
+  const r = gen.rng;
+  const snap = snapGen();
+  const nx = gen.x + r.range(1.6, 2.6), ny = gen.y + r.range(-0.6, 0.3);
+  const spr = SPR.rocks.reduce((a, b) => (b.w / b.h > a.w / a.h ? b : a));
+  const p = addRock(nx, ny, 11.5, r, spr);
+  const gx = (p.x0 + p.x1) / 2, gy = p.surf(gx);
+  world.gates.push(new Gate(gx, gy, snap));
+  addDropsArc(gen.x, gen.y + 0.6, p.x0 + 0.4, ny + 0.6, 2, 1.2);
+  gen.x = p.x1; gen.y = p.surf(p.x1 - 0.05) ?? ny;
+  gen.since = 0; gen.chapter++; gen.n++;
+}
+function genStart(seed, snap) {
+  for (const p of world.plats) p.dispose();
+  for (const d of world.drops) d.dispose();
+  for (const g of world.gates) g.dispose();
+  for (const d of world.decor) scene.remove(d.m);
+  world.plats = []; world.drops = []; world.gates = []; world.decor = [];
+  FX.list.length = 0;
+  if (snap) {
+    restoreGen(snap);
+    genGate();        // rebuild the checkpoint gate first
+    const g = world.gates[0]; g.passed = true;
+    gen.chapter = snap.chapter + 1;
+    return { x: g.x - 2.2, y: g.y };
+  }
+  gen.rng = new RNG(seed); gen.x = 0; gen.y = 0; gen.chapter = 0; gen.since = 0; gen.n = 0; gen.lastPaint = -99;
+  const spr = SPR.rocks.reduce((a, b) => (b.w / b.h > a.w / a.h ? b : a));
+  const p = addRock(-9, 0, 15, gen.rng, spr);
+  gen.x = p.x1; gen.y = p.surf(p.x1 - 0.05) ?? 0;
+  return { x: -5.5, y: p.surf(-5.5) ?? 0 };
+}
+function ensureWorld(camX) {
+  let guard = 0;
+  while (gen.x < camX + 34 && guard++ < 20) genPiece();
+  const cut = camX - 30;
+  for (let i = world.plats.length - 1; i >= 0; i--) {
+    const p = world.plats[i];
+    if ((p.xr ?? p.x1) < cut || p.dead) { p.dispose(); world.plats.splice(i, 1); }
+  }
+  for (let i = world.drops.length - 1; i >= 0; i--) {
+    const d = world.drops[i];
+    if (d.x < cut || (d.taken && d.gone > 1)) { d.dispose(); world.drops.splice(i, 1); }
+  }
+  for (let i = world.decor.length - 1; i >= 0; i--) {
+    if (world.decor[i].x < cut) { scene.remove(world.decor[i].m); world.decor.splice(i, 1); }
+  }
+  for (let i = world.gates.length - 1; i >= 0; i--) {
+    const g = world.gates[i];
+    if (g.x < cut - 20 && world.gates.length > 1) { g.dispose(); world.gates.splice(i, 1); }
+  }
+}
+
+/* =========================================================================
+   PHYSICS
+   ========================================================================= */
+function surfAtFeet(p, x) {
+  const s = p.surf(x);
+  if (s !== null) return s;
+  const a = p.surf(x - 0.34), b = p.surf(x + 0.34);
+  if (a !== null && b !== null) return Math.max(a, b);
+  return a ?? b;
+}
+function surfaceUnder(x, yMax, yMin) {
+  let best = null, bp = null;
+  for (const p of world.plats) {
+    const s = surfAtFeet(p, x);
+    if (s === null || s > yMax || s < yMin) continue;
+    if (best === null || s > best) { best = s; bp = p; }
+  }
+  return [best, bp];
+}
+function wallAhead(x, y, ignore) {
+  for (const p of world.plats) {
+    if (p.kind !== 'rock' || p === ignore) continue;
+    const sp = p.span(x); if (!sp) continue;
+    const [b, t] = sp;
+    if (y < t - 0.32 && y + 0.75 > b) return p;
+  }
+  return null;
+}
+function ceilingAt(x, yHead) {
+  for (const p of world.plats) {
+    if (p.kind !== 'rock') continue;
+    const sp = p.span(x); if (!sp) continue;
+    const [b, t] = sp;
+    if (yHead > b && yHead < t - 0.4) return b;
+  }
+  return null;
+}
+
+/* =========================================================================
+   INPUT
+   ========================================================================= */
+const keys = new Set();
+const input = { jump: false, paint: false, down: false, jumpPressed: false, paintPressed: false, any: false };
+const JUMP_KEYS = ['Space', 'ArrowUp', 'KeyW', 'KeyZ'];
+const PAINT_KEYS = ['ShiftLeft', 'ShiftRight', 'KeyX', 'KeyJ', 'KeyK', 'Enter'];
+const DOWN_KEYS = ['ArrowDown', 'KeyS'];
+function refreshInput() {
+  const j = JUMP_KEYS.some(k => keys.has(k)) || pointer.jump;
+  const p = PAINT_KEYS.some(k => keys.has(k)) || pointer.paint;
+  if (j && !input.jump) input.jumpPressed = true;
+  if (p && !input.paint) input.paintPressed = true;
+  input.jump = j; input.paint = p;
+  input.down = DOWN_KEYS.some(k => keys.has(k));
+}
+const pointer = { jump: false, paint: false };
+addEventListener('keydown', e => {
+  if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) e.preventDefault();
+  if (e.repeat) return;
+  keys.add(e.code); input.any = true; refreshInput(); unlockAudio();
+  if (e.code === 'KeyM' && AUD.master) AUD.master.gain.value = AUD.master.gain.value > 0 ? 0 : 0.9;
+  if ((e.code === 'KeyP' || e.code === 'Escape') && S.mode === 'play') { S.paused = !S.paused; document.body.classList.toggle('paused', S.paused); }
+  if (JUMP_KEYS.includes(e.code)) input.start = true;
+});
+addEventListener('keyup', e => { keys.delete(e.code); refreshInput(); });
+addEventListener('blur', () => { keys.clear(); pointer.jump = pointer.paint = false; refreshInput(); });
+canvas.addEventListener('contextmenu', e => e.preventDefault());
+const touches = new Map();
+canvas.addEventListener('pointerdown', e => {
+  unlockAudio(); input.any = true;
+  if (e.pointerType === 'touch') { const role = e.clientX < innerWidth * 0.5 ? 'jump' : 'paint'; touches.set(e.pointerId, role); pointer[role] = true; }
+  else if (e.button === 2) pointer.jump = true; else pointer.paint = true;
+  input.start = true;
+  refreshInput();
+});
+const ptrUp = e => {
+  if (e.pointerType === 'touch') { const role = touches.get(e.pointerId); touches.delete(e.pointerId); if (role && ![...touches.values()].includes(role)) pointer[role] = false; }
+  else if (e.button === 2) pointer.jump = false; else pointer.paint = false;
+  refreshInput();
+};
+addEventListener('pointerup', ptrUp); addEventListener('pointercancel', ptrUp);
+
+/* =========================================================================
+   AUDIO (fal-generated music + sfx, WebAudio)
+   ========================================================================= */
+const AUD = { ctx: null, buf: {}, music: null, master: null, ready: false };
+function unlockAudio() {
+  if (AUD.ctx) { if (AUD.ctx.state === 'suspended') AUD.ctx.resume(); return; }
+  try {
+    AUD.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    AUD.master = AUD.ctx.createGain(); AUD.master.gain.value = 0.9; AUD.master.connect(AUD.ctx.destination);
+    const list = (MAN && MAN.audio) || {};
+    for (const [k, f] of Object.entries(list)) {
+      fetch('assets/' + f).then(r => r.arrayBuffer()).then(b => AUD.ctx.decodeAudioData(b)).then(buf => {
+        AUD.buf[k] = buf;
+        if (k === 'music') startMusic();
+      }).catch(() => {});
+    }
+  } catch (e) { AUD.ctx = null; }
+}
+function startMusic() {
+  if (!AUD.ctx || !AUD.buf.music || AUD.music) return;
+  const src = AUD.ctx.createBufferSource(); src.buffer = AUD.buf.music; src.loop = true;
+  const g = AUD.ctx.createGain(); g.gain.value = 0; g.gain.linearRampToValueAtTime(0.42, AUD.ctx.currentTime + 3);
+  src.connect(g); g.connect(AUD.master); src.start();
+  AUD.music = { src, g };
+}
+function sfx(name, vol = 1, rate = 1) {
+  if (!AUD.ctx || !AUD.buf[name]) return;
+  const src = AUD.ctx.createBufferSource(); src.buffer = AUD.buf[name];
+  src.playbackRate.value = rate * (0.94 + R() * 0.12);
+  const g = AUD.ctx.createGain(); g.gain.value = vol;
+  src.connect(g); g.connect(AUD.master); src.start();
+  return { src, g };
+}
+
+/* =========================================================================
+   POST PROCESS (paper fibres, vignette, grain, ink-blot wipe)
+   ========================================================================= */
+const post = {
+  scene: new THREE.Scene(), cam: new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1),
+  mat: new THREE.ShaderMaterial({
+    uniforms: {
+      tScene: { value: sceneRT.texture }, tPaper: { value: null }, tBlot: { value: null },
+      uRes: { value: new THREE.Vector2(VW, VH) }, uTime: { value: 0 }, uWipe: { value: 0 }, uWipeRot: { value: 0 }, uPaperAmt: { value: 0.0 }, uReveal: { value: 0 },
+    },
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`,
+    fragmentShader: /* glsl */`
+      uniform sampler2D tScene, tPaper, tBlot; uniform vec2 uRes; uniform float uTime, uWipe, uWipeRot, uPaperAmt, uReveal;
+      varying vec2 vUv;
+      float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+      void main() {
+        vec3 c = texture2D(tScene, vUv).rgb;
+        if (uPaperAmt > 0.0) {
+          vec3 p = texture2D(tPaper, vUv * uRes / 1100.0).rgb;
+          float pl = dot(p, vec3(0.333));
+          c *= mix(1.0, pl / 0.86, uPaperAmt);
+        }
+        vec2 q = (vUv - 0.5) * vec2(uRes.x / uRes.y, 1.0);
+        c *= mix(0.80, 1.0, smoothstep(1.05, 0.30, length(q)));
+        if (uWipe > 0.0) {
+          float cs = cos(uWipeRot), sn = sin(uWipeRot);
+          vec2 rq = mat2(cs, -sn, sn, cs) * q;
+          float b;
+          if (uReveal < 0.5) {            // ink blot floods out from the centre
+            vec2 r = rq / (0.02 + uWipe * 2.4) + 0.5;
+            b = (r.x > 0.0 && r.x < 1.0 && r.y > 0.0 && r.y < 1.0) ? texture2D(tBlot, r).a : 0.0;
+            b = max(b, smoothstep(0.85, 1.0, uWipe));
+          } else {                        // the ink clears from the centre outward
+            float pr = 1.0 - uWipe;
+            vec2 r = rq / (0.02 + pr * 2.6) + 0.5;
+            float hole = (r.x > 0.0 && r.x < 1.0 && r.y > 0.0 && r.y < 1.0) ? texture2D(tBlot, r).a : 0.0;
+            hole = max(hole, smoothstep(0.8, 1.0, pr));
+            b = 1.0 - hole;
+          }
+          c = mix(c, vec3(0.035, 0.035, 0.04), b);
+        }
+        c += (hash(vUv * uRes + fract(uTime) * 91.0) - 0.5) * 0.022;
+        gl_FragColor = vec4(c, 1.0);
+      }`,
+    depthTest: false, depthWrite: false,
+  }),
+};
+post.scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), post.mat));
+
+/* =========================================================================
+   GAME STATE
+   ========================================================================= */
+const S = {
+  mode: 'load', time: 0, ink: CFG.inkMax, lives: CFG.lives, drops: 0, dist: 0, bestDist: 0, startX: 0,
+  checkpoint: null, wipe: 0, titleT: 0, overT: 0, wipeTarget: 0, deadT: 0, shake: 0, chapterShown: -1, seed: Q.has('seed') ? +Q.get('seed') : Math.floor(Math.random() * 1e9),
+  painting: null, paintCD: 0, camX: 0, camY: 0, camTY: 0, demo: Q.has('demo'), idleT: 0, chapter: 0, sealT: 0,
+};
+try { S.bestDist = +(localStorage.getItem('inkfox.best') || 0); } catch (e) {}
+const $ = s => document.querySelector(s);
+const ui = { hud: $('#hud'), inkFill: $('#ink .fill'), ink: $('#ink'), dist: $('#dist'), drops: $('#drops span'), lives: $('#lives'), seal: $('#seal'), chap: $('#chap'), title: $('#title'), over: $('#over'), press: $('#title .press'), load: $('#load i') };
+
+let layers = [];
+function buildLayers() {
+  const B = SPR.bg;
+  const rockGray = SPR.rocks;
+  layers = [
+    new Layer({ z: -150, follow: 0.97, gap: [0, 0], seed: 3, spawn(x) {
+        const h = 54, w = h * SPR.far.w / SPR.far.h;
+        const m = makeSprite(SPR.far, { w, h, x: x + w / 2, y: -20, z: -150, anchor: 'bottom', tint: 0.18, order: -10 });
+        this.gap = [w - 0.5, w - 0.5];
+        return [m];
+      } }),
+    new Layer({ z: -78, follow: 0.82, gap: [22, 44], seed: 11, spawn(x, r) {
+        const pick = r.pick(['tower', 'tower', 'pagoda', 'gate', 'hall']);
+        const spr = B[pick];
+        const h = pick === 'tower' ? r.range(26, 36) : pick === 'hall' ? r.range(12, 16) : r.range(15, 22);
+        return [makeSprite(spr, { h, x, y: r.range(-17, -10), z: -78, anchor: 'bottom', tint: 0.72, base: 0.75, flip: r.chance(0.5), order: -9 })];
+      } }),
+    new Layer({ z: -40, follow: 0.62, gap: [13, 26], seed: 23, spawn(x, r) {
+        const out = [];
+        const pick = r.pick(['gate', 'pagoda', 'hall', 'tower', 'window', 'rockpine', 'branch']);
+        if (pick === 'branch') {
+          const spr = r.chance(0.5) ? SPR.branchR : SPR.branchL;
+          out.push(makeSprite(spr, { w: r.range(12, 18), x, y: r.range(4, 9), z: -40, tint: 0.66, order: -8 }));
+        } else if (pick === 'window') {
+          const rk = r.pick(rockGray.filter(q => q.w / q.h > 1.2));
+          const w = r.range(8, 12);
+          const y = r.range(-6, -2);
+          out.push(makeSprite(rk, { w, x, y, z: -40.2, anchor: 'top', tint: 0.66, base: 0.4, order: -8 }));
+          out.push(makeSprite(B.window, { h: w * 0.62, x: x + r.range(-1, 1), y: y - 0.3, z: -40, anchor: 'bottom', tint: 0.64, order: -8 }));
+        } else {
+          const spr = B[pick];
+          const h = pick === 'tower' ? r.range(15, 21) : pick === 'hall' ? r.range(6.5, 9) : r.range(8, 12);
+          out.push(makeSprite(spr, { h, x, y: r.range(-12, -7), z: -40, anchor: 'bottom', tint: 0.6, base: 0.7, flip: r.chance(0.5), order: -8 }));
+        }
+        return out;
+      } }),
+    new Layer({ z: -15, follow: 0.35, gap: [9, 17], seed: 37, spawn(x, r) {
+        const out = [];
+        const pick = r.pick(['rockwin', 'rockwin', 'rock', 'branch', 'pagoda']);
+        if (pick === 'branch') {
+          const spr = r.chance(0.5) ? SPR.branchR : SPR.branchL;
+          out.push(makeSprite(spr, { w: r.range(7, 11), x, y: r.range(4.5, 7.5), z: -15, tint: 0.4, order: -7 }));
+        } else if (pick === 'pagoda') {
+          out.push(makeSprite(B.pagoda, { h: r.range(5, 7), x, y: r.range(-8, -6), z: -15, anchor: 'bottom', tint: 0.42, base: 0.8, order: -7 }));
+        } else {
+          const rk = r.pick(rockGray.filter(q => q.w / q.h > 1.0));
+          const w = r.range(4, 7);
+          const y = r.range(-4.5, -1.2);
+          out.push(makeSprite(rk, { w, x, y, z: -15.2, anchor: 'top', tint: 0.4, base: 0.3, flip: r.chance(0.5), order: -7, darken: 0.7 }));
+          if (pick === 'rockwin') out.push(makeSprite(B.window, { h: w * 0.52, x: x + r.range(-0.6, 0.6), y: y - 0.2, z: -15, anchor: 'bottom', tint: 0.36, order: -7 }));
+          else out.push(makeSprite(SPR.tree, { h: r.range(2.4, 3.4), x: x + r.range(-1, 1), y: y - 0.15, z: -15.1, anchor: 'bottom', tint: 0.42, flip: r.chance(0.5), order: -7 }));
+        }
+        return out;
+      } }),
+    // drifting mist banks between the depth planes
+    new Layer({ z: -24, follow: 0.5, gap: [9, 16], seed: 61, spawn(x, r) {
+        const spr = r.pick(SPR.fx.filter(f => f.kind === 'puff'));
+        return [makeSprite(spr, { w: r.range(16, 26), h: r.range(4.5, 7), x, y: r.range(-6.5, -3.5), z: -24, tint: 1, opacity: 0.55, order: -7.5 })];
+      } }),
+    new Layer({ z: -7, follow: 0.25, gap: [11, 20], seed: 67, spawn(x, r) {
+        const spr = r.pick(SPR.fx.filter(f => f.kind === 'puff'));
+        return [makeSprite(spr, { w: r.range(12, 18), h: r.range(3, 4.5), x, y: r.range(-6.5, -4.6), z: -7, tint: 1, opacity: 0.42, order: -6 })];
+      } }),
+    // foreground: black overhangs framing the top, black masses at the bottom edge (like the reference footage)
+    new Layer({ z: 6, follow: 0.95, gap: [6, 11], seed: 51, spawn(x, r) {
+        const out = [];
+        if (r.chance(0.6)) {
+          const spr = r.pick(SPR.fg.overhang);
+          const w = spr.w / spr.h > 2 ? r.range(7.5, 10) : r.range(6.2, 8.4), h = w * spr.h / spr.w;
+          out.push(makeSprite(spr, { w, x, y: r.range(1.6, 2.4) + h, z: 6, anchor: 'top', flip: r.chance(0.5), order: 9, darken: 0.42 }));
+        } else {
+          const mound = r.chance(0.35);
+          const spr = mound ? SPR.fg.mound[0] : r.pick(SPR.rocks);
+          const w = mound ? r.range(5, 7) : r.range(4.2, 6.5);
+          out.push(makeSprite(spr, { w, x, y: -r.range(2.45, 3.1), z: 6, anchor: 'top', flip: r.chance(0.5), order: 9, darken: 0.32 }));
+        }
+        return out;
+      } }),
+  ];
+}
+
+/* =========================================================================
+   FOX CONTROL
+   ========================================================================= */
+function placeFox(x, y) {
+  Object.assign(fox, { x, y, vx: 0, vy: 0, grounded: true, coyote: 0, jumpBuf: 0, alive: true, air: 0, landT: 0, blocked: 0 });
+  const [s, p] = surfaceUnder(x, y + 0.6, y - 2); fox.ground = p; if (s !== null) fox.y = s;
+  fox.root.position.set(x, fox.y, 0);
+  if (fox.scarf) { fox.scarf.ancPrev = null; fox.mesh.updateWorldMatrix(true, false); for (let i = 0; i < fox.scarf.N; i++) { fox.scarf.pts[i].set(x - 0.4 - i * 0.07, fox.y + 0.9, 0.2); fox.scarf.prev[i].copy(fox.scarf.pts[i]); } }
+}
+function startPaint() {
+  if (S.painting || S.paintCD > 0) return;
+  if (S.ink < CFG.inkMinStart) {
+    ui.ink.classList.remove('empty'); void ui.ink.offsetWidth; ui.ink.classList.add('empty');
+    sfx('brush', 0.15, 1.6);
+    return;
+  }
+  const alive = world.plats.filter(p => p.kind === 'stroke' && p.player && !p.dead);
+  if (alive.length >= 4) { alive[0].fade = Math.max(alive[0].fade, 0.6); }
+  let ang = fox.grounded ? 7 : 2;
+  if (input.jump && !fox.grounded) ang = 14;
+  if (input.down) ang = -13;
+  const x0 = fox.x - (fox.grounded ? 0.35 : 0.75);
+  const y0 = fox.grounded ? fox.y - 0.05 : fox.y - 0.34 - Math.max(0, -fox.vy) * 0.03;
+  const st = new StrokePlat(SPR.strokes[Math.floor(R() * SPR.strokes.length)], x0, y0, ang, 0.35, { player: true });
+  if (!fox.grounded) {   // in the air the first sweep lands right under the paws, so a falling fox is caught
+    st.len = st.shape = 1.35; st.updateExtent();
+    S.ink = Math.max(0, S.ink - st.len * CFG.inkPerUnit);
+    fx('dab', { x: x0 + 0.5, y: y0 - 0.22, z: -0.32, s0: 0.45, s1: 0.6, life: 0.35, hold: 0.2, a: 0.8, sy: 0.55, rot: THREE.MathUtils.degToRad(ang) });
+  }
+  world.plats.push(st);
+  S.painting = st;
+  sfx('brush', 0.8, 1.05);
+  for (let i = 0; i < 7; i++) fx('bead', { x: x0, y: y0 - 0.2, z: -0.3, vx: (R() - 0.7) * 3, vy: R() * 3, s0: 0.05 + R() * 0.08, s1: 0.02, g: 14, life: 0.5 });
+}
+function updatePaint(dt) {
+  const st = S.painting; if (!st) return;
+  const want = input.paint || st.len < CFG.strokeMin;
+  if (want && st.len < CFG.strokeMax && S.ink > 0) {
+    const d = CFG.strokeGrow * dt;
+    st.len += d; st.updateExtent(); S.ink = Math.max(0, S.ink - d * CFG.inkPerUnit);
+    const [tx, ty] = st.tip();
+    if (R() < 0.9) fx('bead', { x: tx - 0.1, y: ty - 0.18 + (R() - 0.5) * 0.35, z: -0.3, vx: 2.5 + R() * 4, vy: (R() - 0.35) * 2.5, s0: 0.04 + R() * 0.07, s1: 0.015, g: 9, life: 0.55 });
+    if (R() < 0.15) fx('dab', { x: tx - 0.2, y: ty - 0.2, z: -0.32, s0: 0.25, s1: 0.32, life: 0.35, hold: 0.2, a: 0.7, sy: 0.6, rot: st.a + (R() - 0.5) * 0.4 });
+  } else {
+    st.growing = false; S.painting = null; S.paintCD = 0.18;
+    const [tx, ty] = st.tip();
+    for (let i = 0; i < 6; i++) fx('bead', { x: tx - 0.15, y: ty - 0.2, z: -0.3, vx: 1 + R() * 3, vy: (R() - 0.2) * 3, s0: 0.04 + R() * 0.06, s1: 0.02, g: 12, life: 0.5 });
+  }
+}
+function land(p, impact) {
+  fox.grounded = true; fox.ground = p; fox.vy = 0; fox.coyote = CFG.coyote;
+  const power = clamp(impact / 14, 0.25, 1.4);
+  fox.squash = Math.min(0.32, 0.1 + power * 0.18);
+  splash(fox.x + 0.15, fox.y, power, 1);
+  sfx('splash', 0.35 + power * 0.4, 1.1 - power * 0.15);
+  if (impact > 15) S.shake = Math.min(0.25, impact * 0.008);
+}
+function stepFox(dt) {
+  const speed = speedFor(S.chapter);
+  // horizontal: auto-run, small speed control
+  let target = speed * (keys.has('ArrowRight') || keys.has('KeyD') ? 1.12 : keys.has('ArrowLeft') || keys.has('KeyA') || keys.has('KeyQ') ? 0.78 : 1);
+  if (S.mode !== 'play' && S.mode !== 'title') target = 0;
+  fox.vx = damp(fox.vx, target, fox.grounded ? 7 : 2.5, dt);
+
+  // jump buffering / coyote time
+  if (input.jumpPressed) fox.jumpBuf = CFG.jumpBuffer;
+  fox.jumpBuf -= dt;
+  if (fox.grounded) fox.coyote = CFG.coyote; else fox.coyote -= dt;
+  if (fox.jumpBuf > 0 && fox.coyote > 0 && (S.mode === 'play' || S.mode === 'title')) {
+    fox.vy = CFG.jumpV; fox.grounded = false; fox.ground = null; fox.coyote = 0; fox.jumpBuf = 0; fox.jumpHeld = true;
+    fox.squash = -0.18;
+    sfx('jump', 0.5);
+    for (let i = 0; i < 5; i++) fx('bead', { x: fox.x - 0.1, y: fox.y + 0.02, z: -0.3, vx: -1 - R() * 2, vy: R() * 1.5, s0: 0.04 + R() * 0.05, s1: 0.02, g: 10, life: 0.4 });
+  }
+  if (!input.jump) fox.jumpHeld = false;
+
+  const xPrev = fox.x, yPrev = fox.y;
+  let nx = fox.x + fox.vx * dt;
+  // walls
+  const front = nx + 0.42;
+  const wall = wallAhead(front, fox.y, fox.grounded ? fox.ground : null);
+  if (wall && fox.vx > 0) {
+    let wx = front; for (let k = 0; k < 40 && wallAhead(wx, fox.y, fox.grounded ? fox.ground : null); k++) wx -= 0.03;
+    nx = Math.min(nx, Math.max(xPrev, wx - 0.42)); fox.vx = Math.min(fox.vx, 0.4); fox.blocked += dt;
+  } else fox.blocked = 0;
+  fox.x = nx;
+
+  if (fox.grounded) {
+    const cur = fox.ground ? surfAtFeet(fox.ground, fox.x) : null;
+    const [best, bp] = surfaceUnder(fox.x, fox.y + 0.32, fox.y - 0.45);
+    if (best !== null && (cur === null || best > cur + 0.02)) { fox.ground = bp; fox.y = best; }
+    else if (cur !== null) fox.y = cur;
+    else if (best !== null) { fox.ground = bp; fox.y = best; }
+    else { fox.grounded = false; fox.ground = null; fox.vy = Math.min(fox.vy, 0); }
+  }
+  if (!fox.grounded) {
+    const g = fox.vy > 0 ? (fox.jumpHeld ? CFG.gUp : CFG.gUpRelease) : CFG.gDown;
+    fox.vy = Math.max(-CFG.maxFall, fox.vy - g * dt);
+    fox.y += fox.vy * dt;
+    if (fox.vy > 0) {
+      const c = ceilingAt(fox.x, fox.y + 0.95);
+      if (c !== null) { fox.y = c - 0.96; fox.vy = 0; }
+    } else {
+      // landing: crossed a surface from above between the previous and current position
+      let hit = null, hy = -1e9;
+      for (const p of world.plats) {
+        const s1 = surfAtFeet(p, fox.x); if (s1 === null) continue;
+        const s0 = surfAtFeet(p, xPrev) ?? s1;
+        if (yPrev >= s0 - 0.06 && fox.y <= s1 + 0.001 && s1 > hy) { hit = p; hy = s1; }
+      }
+      if (hit) { const impact = -fox.vy; fox.y = hy; land(hit, impact); }
+    }
+  }
+}
+function animateFox(dt, t) {
+  const sp = Math.abs(fox.vx);
+  const running = fox.grounded && sp > 0.5;
+  fox.gait = damp(fox.gait, running ? clamp(sp / 6, 0.4, 1) : 0, 10, dt);
+  fox.air = damp(fox.air, fox.grounded ? 0 : 1, fox.grounded ? 18 : 9, dt);
+  fox.phase += dt * (sp / 1.3) * Math.PI * 2 * (fox.grounded ? 1 : 0.15) + dt * 1.2;
+  foxU.uPh.value = fox.phase; foxU.uGait.value = fox.gait; foxU.uAir.value = fox.air; foxU.uT.value = t;
+  foxU.uTailA.value = lerp(0, 0.42, clamp(sp / 7, 0, 1)) - (fox.grounded ? 0 : clamp(fox.vy * 0.03, -0.3, 0.3));
+  fox.squash = damp(fox.squash, 0, 9, dt);
+  // body: bob, pitch with the slope and the vertical speed
+  let slope = 0;
+  if (fox.grounded && fox.ground) {
+    const a = fox.ground.surf(fox.x - 0.3), b = fox.ground.surf(fox.x + 0.3);
+    if (a !== null && b !== null) slope = Math.atan2(b - a, 0.6);
+  }
+  const pitch = fox.grounded ? slope * 0.8 : clamp(fox.vy * 0.035, -0.45, 0.4);
+  fox.tilt_ = damp(fox.tilt_, pitch, 10, dt);
+  const bob = fox.grounded ? Math.abs(Math.sin(fox.phase)) * 0.07 * fox.gait : 0;
+  fox.tilt.rotation.z = fox.tilt_ + Math.sin(fox.phase) * 0.05 * fox.gait;
+  fox.tilt.position.y = bob;
+  const sq = fox.squash;
+  fox.tilt.scale.set(1 + sq * 0.6, 1 - sq, 1);
+  fox.root.position.set(fox.x, fox.y, 0);
+}
+
+/* =========================================================================
+   DEMO PILOT (used by ?demo and for the attract loop): jumps gaps, paints over voids
+   ========================================================================= */
+const pilot = { cool: 0, holdT: 0, paintHold: 0, prevJump: false, prevPaint: false };
+function predictLanding(x, y, vx, vy, held) {
+  let px = x, py = y, pvy = vy;
+  for (let i = 0; i < 150; i++) {
+    const dt = 1 / 60;
+    const g = pvy > 0 ? (held ? CFG.gUp : CFG.gUpRelease) : CFG.gDown;
+    pvy = Math.max(-CFG.maxFall, pvy - g * dt);
+    const ox = px, oy = py; px += vx * dt; py += pvy * dt;
+    if (pvy <= 0) for (const p of world.plats) {
+      const s1 = surfAtFeet(p, px) ?? (p.kind === 'stroke' && !p.player && px >= p.x0 - 0.34 && px <= p.x + p.target * p.ca * 0.9 + 0.34 ? p.y + (clamp(px, p.x0, p.x + p.target * p.ca * 0.9) - p.x) * p.ta : null);
+      if (s1 === null) continue;
+      if (oy >= s1 - 0.08 && py <= s1) return { x: px, y: s1, t: i * dt };
+    }
+    if (py < y - 10) break;
+  }
+  return null;
+}
+function runPilot(dt) {
+  pilot.cool -= dt; pilot.holdT -= dt; pilot.paintHold -= dt;
+  const vx = Math.max(fox.vx, speedFor(S.chapter) * 0.95);
+  let jump = false, paint = false;
+  if (fox.grounded) {
+    const ahead = fox.x + vx * 0.13;
+    const s = surfaceUnder(ahead, fox.y + 0.3, fox.y - 0.7)[0];
+    const wall = wallAhead(fox.x + 0.42 + vx * 0.12, fox.y, fox.ground);
+    if (s === null || wall) { jump = true; pilot.holdT = 0.55; }
+    else {
+      // hop for a drop floating just ahead
+      for (const d of world.drops) {
+        if (d.taken) continue;
+        const dx = d.x - fox.x, dy = d.y - fox.y;
+        if (dx > 1.2 && dx < 2.0 && dy > 1.1 && dy < 2.4) { jump = true; pilot.holdT = 0.15 + (dy - 1) * 0.2; break; }
+      }
+    }
+  } else {
+    jump = fox.vy > 0 && pilot.holdT > 0;
+    if (!S.painting && pilot.cool <= 0 && fox.vy < 2.5) {
+      const land = predictLanding(fox.x, fox.y, vx, fox.vy, jump);
+      if (!land) {
+        // no ledge in reach: drop toward the next ledge's height, then paint a bridge just long enough to reach it
+        const nxt = nextLedge(fox.x);
+        const ty = nxt ? nxt.y : fox.y;
+        const waitDrop = fox.y > ty + 1.0 && fox.vy > -14 && fox.y > S.camY - halfHeightAt(0) + 1.5;
+        if (!waitDrop) {
+          paint = true; jump = false; pilot.cool = 0.7;
+          pilot.paintHold = clamp(((nxt ? nxt.x : fox.x + 5) - fox.x + 1.2) / CFG.strokeGrow, 0.2, 0.5);
+        }
+      }
+    }
+  }
+  if (S.painting) paint = pilot.paintHold > 0;
+  return { jump, paint };
+}
+function nextLedge(x) {   // nearest level platform starting ahead of x, with its walking height
+  let best = null;
+  for (const p of world.plats) {
+    if (p.player || p.x0 <= x + 0.3) continue;
+    if (!best || p.x0 < best.x0) best = p;
+  }
+  if (!best) return null;
+  const y = best.kind === 'rock' ? (best.surf(best.x0 + 0.05) ?? best.yq) : best.y;
+  return { x: best.x0, y };
+}
+function lowestNear(x) {
+  let lo = Infinity;
+  for (const p of world.plats) {
+    if ((p.xr ?? p.x1) < x - 4 || p.x0 > x + 12) continue;
+    const a = p.surf(Math.max(p.x0, x - 4) + 0.01), b = p.surf(Math.min(p.x1, x + 12) - 0.01);
+    if (a !== null) lo = Math.min(lo, a); if (b !== null) lo = Math.min(lo, b);
+  }
+  return lo === Infinity ? fox.y - 2 : lo;
+}
+
+/* =========================================================================
+   HUD
+   ========================================================================= */
+function hudUpdate() {
+  ui.inkFill.style.clipPath = `inset(0 ${100 - S.ink}% 0 0)`;
+  ui.ink.classList.toggle('low', S.ink < 20);
+  ui.dist.firstChild.nodeValue = Math.max(0, Math.floor(S.dist));
+  ui.drops.textContent = S.drops;
+  [...ui.lives.children].forEach((im, i) => im.classList.toggle('off', i >= S.lives));
+}
+function showSeal(ch) {
+  const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+  ui.seal.classList.remove('on'); void ui.seal.offsetWidth; ui.seal.classList.add('on');
+  ui.chap.textContent = roman[Math.min(ch, roman.length - 1)];
+  ui.chap.classList.add('on');
+  S.sealT = 2.6;
+}
+
+/* =========================================================================
+   FLOW
+   ========================================================================= */
+function newRun() {
+  S.ink = CFG.inkMax; S.lives = +(Q.get('lives') || CFG.lives); S.drops = 0; S.dist = 0; S.chapter = 0; S.checkpoint = null; S.painting = null;
+  const st = genStart(S.seed = (S.seed * 16807 + 11) % 2147483647);
+  placeFox(st.x, st.y); S.startX = st.x;
+  S.camX = fox.x + 2.4; S.camY = fox.y + 1.5; S.camTY = S.camY;
+  for (const l of layers) l.reset(S.camX);
+  ensureWorld(S.camX);
+  hudUpdate();
+}
+const DBG = { deaths: [], events: [] };
+function die() {
+  if (S.mode !== 'play') return;
+  DBG.deaths.push({ x: +fox.x.toFixed(2), y: +fox.y.toFixed(2), vx: +fox.vx.toFixed(2), camY: +S.camY.toFixed(2), blocked: +fox.blocked.toFixed(2), ink: +S.ink.toFixed(1),
+    near: world.plats.filter(p => Math.abs(((p.x0 ?? 0) + (p.x1 ?? 0)) / 2 - fox.x) < 14).map(p => ({ k: p.kind, x0: +p.x0.toFixed(2), x1: +p.x1.toFixed(2), y: +(p.surf(p.x0 + 0.01) ?? -99).toFixed(2), pl: !!p.player })) });
+  S.mode = 'dying'; S.deadT = 0; S.wipeTarget = 1; S.painting = null;
+  post.mat.uniforms.uWipeRot.value = R() * 6.28;
+  sfx('fall', 0.8);
+  S.lives--;
+  hudUpdate();
+}
+function respawn() {
+  const cp = S.checkpoint;
+  let st;
+  if (cp) { st = genStart(0, cp.snap); S.chapter = cp.chapter + 1; }
+  else { st = genStart(S.seed); S.chapter = 0; }
+  placeFox(st.x, st.y);
+  S.ink = CFG.inkMax;
+  S.camX = fox.x + 2.4; S.camY = fox.y + 1.5; S.camTY = S.camY;
+  for (const l of layers) l.reset(S.camX);
+  ensureWorld(S.camX);
+  S.mode = 'play'; S.wipeTarget = 0;
+  hudUpdate();
+}
+function gameOver() {
+  S.mode = 'over'; S.overT = 0;
+  const d = Math.floor(S.dist);
+  if (d > S.bestDist) { S.bestDist = d; try { localStorage.setItem('inkfox.best', String(d)); } catch (e) {} }
+  ui.over.querySelector('.stats').textContent = `${d} m  ·  ${S.drops} drops  ·  gate ${S.chapter}`;
+  ui.over.querySelector('.best').textContent = `best ${S.bestDist} m`;
+  ui.over.classList.add('on');
+  ui.hud.classList.remove('on');
+}
+
+/* =========================================================================
+   MAIN LOOP
+   ========================================================================= */
+let last = performance.now();
+const FIXED = 1 / 120;
+let acc = 0;
+const TEST = { frozen: false };   // tests drive the simulation with __inkfox.sim() at a fixed step
+function frame(now) {
+  requestAnimationFrame(frame);
+  let dt = Math.min(0.05, (now - last) / 1000); last = now;
+  if (S.mode === 'load') { renderer.render(scene, camera); return; }
+  if (S.paused) { input.jumpPressed = input.paintPressed = false; input.start = false; return; }
+  if (!TEST.frozen) tick(dt);
+  render();
+}
+function render() {
+  renderer.setRenderTarget(sceneRT);
+  renderer.render(scene, camera);
+  renderer.setRenderTarget(null);
+  renderer.render(post.scene, post.cam);
+}
+function tick(dt) {
+  S.time += dt;
+  const t = S.time;
+
+  // mode transitions driven by real input
+  if (S.mode === 'title' && input.start && (S.titleT > 0.6 || performance.now() - S.titleAt > 600)) {
+    newRun(); S.mode = 'play'; ui.title.classList.add('hidden'); ui.hud.classList.add('on');
+    keys.clear(); pointer.jump = pointer.paint = false; refreshInput();
+    input.jumpPressed = false; input.paintPressed = false;
+  }
+  if (S.mode === 'over' && input.start && S.wipe > 0.95 && S.overT > 0.8) {
+    ui.over.classList.remove('on'); newRun(); S.mode = 'play'; S.wipeTarget = 0; ui.hud.classList.add('on');
+    input.jumpPressed = false;
+  }
+  input.start = false;
+  if (S.mode === 'title') S.titleT = (S.titleT || 0) + dt;
+  if (S.mode === 'over') S.overT += dt;
+
+  // the pilot plays the attract loop behind the title (and the whole game with ?demo)
+  const piloted = S.mode === 'title' || (S.demo && S.mode === 'play');
+  if (piloted) {
+    const p = runPilot(dt);
+    if (p.jump && !pilot.prevJump) input.jumpPressed = true;
+    if (p.paint && !pilot.prevPaint) input.paintPressed = true;
+    pilot.prevJump = p.jump; pilot.prevPaint = p.paint;
+    input.jump = p.jump; input.paint = p.paint;
+  }
+  const running = S.mode === 'play' || S.mode === 'title';
+  if (running) {
+    if (input.paintPressed) startPaint();
+    S.paintCD -= dt;
+  }
+  acc += dt;
+  while (acc >= FIXED) {
+    acc -= FIXED;
+    if (running) { stepFox(FIXED); updatePaint(FIXED); }
+    fox.root.position.set(fox.x, fox.y, 0);
+    stepScarf(FIXED, S.time);
+    input.jumpPressed = false; input.paintPressed = false;
+  }
+  input.jumpPressed = false; input.paintPressed = false;
+  if (piloted) { input.jump = false; input.paint = false; refreshInput(); }
+
+  const floorY = lowestNear(fox.x);
+  if (running) {
+    // collect ink
+    for (const d of world.drops) {
+      if (d.taken) continue;
+      const dx = d.x - (fox.x + 0.2), dy = d.mesh.position.y - (fox.y + 0.6);
+      if (dx * dx + dy * dy < 0.7) {
+        d.taken = true; S.drops++; S.ink = Math.min(CFG.inkMax, S.ink + CFG.dropInk);
+        sfx('drop', 0.5, 1 + (S.drops % 5) * 0.06);
+        for (let i = 0; i < 8; i++) fx('bead', { x: d.x, y: d.mesh.position.y, z: -0.3, vx: (R() - 0.5) * 5, vy: (R() - 0.2) * 5, s0: 0.05 + R() * 0.05, s1: 0.01, g: 6, life: 0.45 });
+      }
+    }
+    // moon gates = checkpoints
+    for (const g of world.gates) {
+      if (!g.passed && fox.x > g.x) {
+        g.passed = true; g.flash = 1;
+        if (S.mode === 'play') {
+          S.checkpoint = { snap: g.snap, chapter: g.snap.chapter };
+          S.chapter = g.snap.chapter + 1;
+          S.ink = CFG.inkMax;
+          showSeal(S.chapter);
+          sfx('gate', 0.8);
+        } else S.chapter = g.snap.chapter + 1;
+        for (let i = 0; i < 10; i++) puff(g.x + (R() - 0.5) * 3, g.y + 0.5 + R() * 3, -1.1, 0.8, 0.35);
+      }
+    }
+    if (S.mode === 'play') S.dist = Math.max(S.dist, fox.x - S.startX);
+    // out of the picture with nothing left to land on (a ledge still below the fox keeps it alive)
+    const camBottom = S.camY - halfHeightAt(0);
+    let fell = fox.y < floorY - 3.4 || fox.y < camBottom - 6;
+    if (!fell && !fox.grounded && fox.y < camBottom - 1.0) {
+      const ahead = fox.x + Math.max(0, fox.vx) * 0.35;
+      fell = surfaceUnder(fox.x, fox.y + 0.05, fox.y - 9)[0] === null && surfaceUnder(ahead, fox.y + 0.05, fox.y - 9)[0] === null;
+    }
+    if (fell) {
+      if (S.mode === 'play') die();
+      else { newRun(); }          // attract loop: just start over
+    }
+  }
+  if (S.mode === 'dying') {
+    S.deadT += dt;
+    fox.vy -= CFG.gDown * dt; fox.y += fox.vy * dt; fox.x += fox.vx * dt * 0.5;
+    if (S.deadT > 0.9) { if (S.lives <= 0) gameOver(); else respawn(); }
+  }
+
+  for (const p of world.plats) p.update(dt);
+  for (const d of world.drops) d.update(dt);
+  for (const g of world.gates) g.update(dt);
+  if (S.mode !== 'over') animateFox(dt, t);
+  updateScarf(dt, t);
+
+  // camera
+  const lookAhead = 2.4 + clamp(fox.vx, 0, 10) * 0.08;
+  S.camX = damp(S.camX, fox.x + lookAhead, 5, dt);
+  const titleLift = S.mode === 'title' ? 2.3 : 0;
+  if (S.mode !== 'dying') {
+    if (fox.grounded) S.camTY = fox.y + 1.4 + titleLift;
+    else {
+      if (fox.y + 1.4 + titleLift > S.camTY + 1.2) S.camTY = fox.y + 0.2 + titleLift;
+      if (fox.y < S.camTY - 2.4 - titleLift) S.camTY = Math.max(fox.y + 2.4 + titleLift, floorY + 0.9 + titleLift);
+    }
+  }
+  S.camY = damp(S.camY, S.camTY, fox.grounded ? 3.2 : 4.5 + Math.max(0, -fox.vy - 8) * 0.45, dt);   // keeps up with long falls
+  S.shake = Math.max(0, S.shake - dt * 1.5);
+  const sx = (R() - 0.5) * S.shake, sy = (R() - 0.5) * S.shake;
+  const drift = S.mode === 'title' ? Math.sin(t * 0.3) * 0.3 : 0;
+  camera.position.set(S.camX + sx, S.camY + sy + 0.6 + drift, camDist);
+  camera.lookAt(S.camX + sx, S.camY + sy, 0);
+
+  ensureWorld(S.camX);
+  for (const l of layers) l.update(S.camX, S.camY);
+  updateFx(dt);
+  if (motes) { motes.material.uniforms.uTime.value = t; motes.material.uniforms.uCam.value.set(S.camX, S.camY, 0); }
+
+  // wipe
+  if (S.wipeTarget > S.wipe) { S.wipe = damp(S.wipe, S.wipeTarget, 5.5, dt); post.mat.uniforms.uReveal.value = 0; }
+  else if (S.wipe > 0) { S.wipe = Math.max(0, S.wipe - dt * 1.35); post.mat.uniforms.uReveal.value = 1; }
+  post.mat.uniforms.uWipe.value = S.wipe;
+  post.mat.uniforms.uTime.value = t;
+
+  if (S.sealT > 0) { S.sealT -= dt; if (S.sealT <= 0) { ui.chap.classList.remove('on'); } }
+  if (S.mode === 'play' || S.mode === 'dying') hudUpdate();
+}
+
+function onResize() {
+  VW = innerWidth; VH = innerHeight;
+  renderer.setSize(VW, VH, false);
+  sceneRT.setSize(VW * DPR, VH * DPR);
+  post.mat.uniforms.uRes.value.set(VW, VH);
+  fitCamera();
+  if (motes) motes.material.uniforms.uScale.value = VH * DPR / (2 * TAN);
+}
+addEventListener('resize', onResize);
+
+/* =========================================================================
+   BOOT
+   ========================================================================= */
+async function boot() {
+  requestAnimationFrame(frame);
+  MAN = await fetch('assets/manifest.json').then(r => r.json());
+  const files = new Set();
+  const collect = o => { if (!o) return; if (Array.isArray(o)) o.forEach(collect); else if (typeof o === 'object') { if (o.file) files.add(o.file); else Object.values(o).forEach(collect); } };
+  collect([MAN.strokes, MAN.fx, MAN.rocks, MAN.pines, MAN.bg, MAN.fg, MAN.far, MAN.ui, MAN.paper]);
+  let done = 0; const total = files.size + 1;
+  const loadTick = () => { done++; ui.load.style.width = Math.round(done / total * 100) + '%'; };
+  await Promise.all([...files].map(f => loadTex(f).then(loadTick)));
+  const withTex = async (o) => ({ ...o, tex: await loadTex(o.file) });
+  SPR = {
+    strokes: await Promise.all(MAN.strokes.map(withTex)),
+    rocks: await Promise.all(MAN.rocks.map(withTex)),
+    fx: await Promise.all(MAN.fx.map(withTex)),
+    tufts: await Promise.all(MAN.pines.filter(p => p.kind === 'tuft').map(withTex)),
+    branchR: await withTex(MAN.pines.find(p => p.kind === 'branchR')),
+    branchL: await withTex(MAN.pines.find(p => p.kind === 'branchL')),
+    droop: await withTex(MAN.pines.find(p => p.kind === 'droop')),
+    tree: await withTex(MAN.pines.find(p => p.kind === 'tree')),
+    bg: Object.fromEntries(await Promise.all(MAN.bg.map(async b => [b.kind, await withTex(b)]))),
+    fg: { overhang: await Promise.all(MAN.fg.filter(f => f.kind === 'overhang').map(withTex)), cliff: await Promise.all(MAN.fg.filter(f => f.kind === 'cliff').map(withTex)), mound: await Promise.all(MAN.fg.filter(f => f.kind === 'mound').map(withTex)) },
+    far: await withTex(MAN.far),
+  };
+  SPR.beads = SPR.fx.filter(f => f.kind === 'bead');
+  await buildFox(); loadTick();
+  await buildFxAtlas(SPR.fx);
+  buildMotes(SPR.beads[3].tex);
+  const U = MAN.ui || {};
+  buildScarf((await withTex(U.ribbon || MAN.strokes[0])).tex);
+  if (MAN.paper) {
+    const pt = (await withTex(MAN.paper)).tex;
+    pt.wrapS = pt.wrapT = THREE.RepeatWrapping; pt.premultiplyAlpha = false; pt.needsUpdate = true;
+    post.mat.uniforms.tPaper.value = pt; post.mat.uniforms.uPaperAmt.value = 0.5;
+  }
+  post.mat.uniforms.tBlot.value = SPR.fx.find(f => f.kind === 'blot').tex;
+  // UI images (all fal generated)
+  const logo = document.querySelector('#title img.logo');
+  if (U.title) logo.src = 'assets/' + U.title.file; else logo.remove();
+  document.querySelector('#ink .bg').src = document.querySelector('#ink .fill img').src = 'assets/' + MAN.strokes[2].file;
+  document.querySelector('#drops img').src = 'assets/' + MAN.fx.find(f => f.kind === 'bead').file;
+  if (U.seal) { ui.seal.src = 'assets/' + U.seal.file; ui.over.querySelector('img').src = 'assets/' + U.seal.file; }
+  for (let i = 0; i < CFG.lives; i++) { const im = document.createElement('img'); im.src = 'assets/' + (U.icon ? U.icon.file : MAN.fx[1].file); ui.lives.appendChild(im); }
+  buildLayers();
+  newRun();
+  S.mode = 'title'; S.titleAt = performance.now();
+  ui.press.classList.remove('hidden');
+  if (matchMedia('(pointer: coarse)').matches) {
+    document.querySelector('#title .hint').innerHTML = '<b>TAP LEFT</b> jump &nbsp;·&nbsp; <b>HOLD RIGHT</b> to paint a stroke';
+    ui.press.textContent = 'tap to begin';
+    ui.over.querySelector('.press').textContent = 'tap to paint again';
+  }
+  document.getElementById('load').style.opacity = 0;
+  if (S.demo) { S.mode = 'play'; ui.title.classList.add('hidden'); ui.hud.classList.add('on'); }
+  window.__inkfox = {
+    S, fox, world, gen, input, keys, CFG, DBG,
+    // test hooks: freeze real time and advance the game by `sec` seconds at 60 Hz
+    sim(sec) { TEST.frozen = true; const n = Math.round(sec * 60); for (let i = 0; i < n; i++) tick(1 / 60); return S.time; },
+    resume() { TEST.frozen = false; last = performance.now(); },
+  };
+}
+boot().catch(err => { console.error(err); document.querySelector('#title .press').textContent = 'failed to load: ' + err.message; document.querySelector('#title .press').classList.remove('hidden'); });
+</script>
+<script src="../brand/gamepad.js"></script>
+</body>
+</html>

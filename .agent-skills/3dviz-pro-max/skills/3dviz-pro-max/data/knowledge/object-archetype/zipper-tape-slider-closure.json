@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.zipper-tape-slider-closure",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "object-archetype",
+  "title": {
+    "en": "Zipper tapes, element rows and slider closure"
+  },
+  "aliases": {
+    "en": [
+      "zipper construction",
+      "zipper teeth",
+      "slider channel"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies"
+  ],
+  "summary": "Build a readable zipper assembly whose slider, paired element rows and fabric attachment remain distinct in open and closed poses.",
+  "objective": "Build a readable zipper assembly whose slider, paired element rows and fabric attachment remain distinct in open and closed poses.",
+  "tags": [
+    "object-archetype",
+    "zipper construction",
+    "zipper teeth",
+    "slider channel"
+  ],
+  "subject_terms": [
+    "zipper construction",
+    "zipper teeth",
+    "slider channel",
+    "garment fastening",
+    "closure tape",
+    "zipper stops"
+  ],
+  "intent_signals": [
+    "Build a readable zipper assembly whose slider, paired element rows and fabric attachment remain distinct in open and closed poses."
+  ],
+  "example_prompts": [
+    "Build an explorable zipper tapes, element rows and slider closure and expose its construction at close range."
+  ],
+  "content": {
+    "principles": [
+      "Choose a closed-end discrete-element teaching zipper; coil and separating zippers require different element/termination geometry. Tape, elements and slider have different roles and should not collapse into one metallic strip.",
+      "Define the assembly path and closure state before embroidery or scratches. A slider-shaped ornament alone does not establish a working closure."
+    ],
+    "implementation": [
+      "Create two tapes with finite thickness, sewn attachment margins and element anchor edges. Add discrete complementary element shapes, a slider body with two entry channels merging into one exit, a separately hinged pull tab and authored end stops. Shape the channel and element engagement from a chosen reference rather than stamping identical intersecting cubes.",
+      "Use path coordinate s and a bounded slider position as authority. Derive paired/open element positions from the same closure boundary; preserve element IDs and count during opening. Place the closed chain behind the closing slider and separated tapes ahead, with an authored transition region inside its channel. This is a kinematic teaching layout, not deformable tooth contact.",
+      "Limit slider travel to the authored stops; animate pull-tab hinge angle independently without moving the closure boundary. Reset slider, element poses, tape spread and tab angle from the same snapshot.",
+      "At overview distance keep the two tape borders, chain line and pull aperture. In a closeup retain channel thickness, element interlock silhouette and stitch attachment; simplify thread fibers first. A bright pull and muted tape are optional style choices."
+    ],
+    "observable_checks": [
+      "Scrub closed, halfway and open: each element stays attached to its own tape and the closure boundary follows the slider without creating or deleting teeth.",
+      "Inspect front, side and slider cutaway: element paths enter the intended channels and the pull hinge has a real pivot; no visible element floats across a channel wall in the authored travel range.",
+      "Reset from a partial closure and compare all part transforms and slider position with the saved initial state."
+    ]
+  },
+  "known_limits": [
+    "No pull-force, jam, tooth-contact, fabric stress or waterproofness model. The teaching construction is not a manufacturing drawing.",
+    "Authored construction and prospective checks; no runtime artifact, render or material test has been executed for this record."
+  ],
+  "creative_affordances": [
+    "Use toy-sized elements, a technical cutaway or a stylized travel-bag closure; keep the tape/element/slider roles even when surface detail is sparse."
+  ],
+  "claims": [
+    {
+      "id": "claim.craft-depth-zipper-tape-slider-closure",
+      "statement": "YKK identifies tape, elements and slider as the three major parts of a zipper.",
+      "scope": "Part taxonomy only; the chosen closed-end geometry and kinematic transition are authored.",
+      "source_refs": [
+        {
+          "source_id": "source.craft-depth-zipper-tape-slider-closure",
+          "locator": "Structure of Zipper, sentence identifying the three major parts"
+        }
+      ]
+    }
+  ]
+}

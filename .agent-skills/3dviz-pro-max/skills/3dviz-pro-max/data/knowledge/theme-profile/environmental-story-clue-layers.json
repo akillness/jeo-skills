@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.environmental-story-clue-layers",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "theme-profile",
+  "title": {
+    "en": "Layer environmental story clues by scale and reveal"
+  },
+  "aliases": {
+    "en": [
+      "environmental storytelling layers",
+      "spatial story clue hierarchy",
+      "inspectable scene clues"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors",
+    "characters-motion-art"
+  ],
+  "summary": "Stage fictional story evidence as large spatial consequence, mid-scale activity traces and close inspection details whose reveal state stays coherent.",
+  "objective": "A viewer can form a broad situation from the entry view, refine it along the route, and inspect optional clues without a caption contradicting the visible scene state.",
+  "applies_when": [
+    "A diorama, room or explorable scene should communicate what happened through space and props rather than exposition alone."
+  ],
+  "tags": [
+    "theme-profile",
+    "environmental-storytelling",
+    "story-clues",
+    "reveal-state"
+  ],
+  "subject_terms": [
+    "story clue",
+    "spatial consequence",
+    "activity trace",
+    "inspection detail",
+    "reveal order",
+    "narrative state",
+    "reset"
+  ],
+  "intent_signals": [
+    "tell a workshop story through used tools and repair marks",
+    "layer clues from room scale to close inspection",
+    "keep environmental clues consistent after state changes"
+  ],
+  "example_prompts": [
+    "Tell the story of an interrupted greenhouse repair through route blockage, staged tools and one inspectable replacement part.",
+    "Show a closed archive wing reopening through room layout, moved carts, labels and a recovered object."
+  ],
+  "negative_signals": [
+    "scatter clues uniformly",
+    "hide required information in tiny text",
+    "every clue glows",
+    "caption claims an event the scene cannot support"
+  ],
+  "not_for": [
+    "Claims about a real event, person or culture without evidence and review.",
+    "A puzzle whose required solution depends on inaccessible color, audio or precision pointing alone."
+  ],
+  "content": {
+    "principles": [
+      "Layer clues by reading distance: silhouette and blocked routes establish situation, grouped props show activity, surface marks and labels reward inspection.",
+      "Give each clue a question it helps answer and a state in which it is valid. Repetition should strengthen an inference, while contradiction should be deliberate and inspectable.",
+      "Keep essential progression cues perceivable through more than one channel or provide an equivalent companion description and action path.",
+      "Use absence, displacement, repair and changed access as clues alongside added objects; density alone does not create narrative.",
+      "Separate invented story evidence from factual evidence. A convincing fictional trace remains an authored proposal."
+    ],
+    "implementation": [
+      "Write a clue matrix with intended inference, scale, location, reveal state, prerequisite, interaction and reset behavior. Mark clues as essential, supporting or atmospheric.",
+      "In Blender, compose large consequences first, then activity clusters and inspectable details. For the greenhouse, use a blocked service aisle, an open tool roll and a mismatched replacement valve; for the archive, use a reopened partition, relocated carts and a recovered case.",
+      "Model clues with physical attachment and plausible placement inside the fiction: tools rest on supports, labels belong to objects, trails connect locations and repair marks align with serviced parts.",
+      "Export stable clue and state identifiers plus authored bounds or anchors. Preserve source-only notes in the production manifest rather than assuming every Blender annotation or collection becomes runtime meaning.",
+      "In Three.js, reveal clues from one narrative state model, expose essential clues through selectable objects and companion text, and record inspected state separately from world state.",
+      "Reset restores world state, clue visibility, selection, camera and inspected progress according to the declared replay policy."
+    ],
+    "observable_checks": [
+      "From each composition's entry view, state the broad situation without reading close labels; the route and major spatial consequence support it.",
+      "Follow the intended path and find at least one activity cluster and one optional close clue without turning all other props into noise.",
+      "Change the story from before to after: visible clues, labels, access and interactions update from the same state and no obsolete clue remains authoritative.",
+      "Reach every essential clue through the primary 3D interaction or its documented companion action and description.",
+      "Remove atmospheric clutter; the intended inference still follows from the essential and supporting clue layers.",
+      "Reset and replay both compositions; reveal order is deterministic where authored and optional discoveries do not corrupt world state."
+    ]
+  },
+  "creative_affordances": [
+    "Use ambiguity by offering two plausible interpretations, provided the scene clearly distinguishes observed clues from conclusions.",
+    "Shift emphasis among architecture, objects, light, sound or character traces while retaining accessible equivalents for required clues."
+  ],
+  "known_limits": [
+    "Authored fictional storytelling guidance; no audience comprehension, accessibility outcome or rendered scene was observed.",
+    "Visible traces do not prove real historical, forensic or behavioral conclusions."
+  ],
+  "related_ids": [
+    "knowledge.theme-heritage-fiction",
+    "knowledge.theme-botanical-sanctuary",
+    "knowledge.inspectable-selection",
+    "knowledge.spatial-annotation-authoring"
+  ],
+  "claims": []
+}

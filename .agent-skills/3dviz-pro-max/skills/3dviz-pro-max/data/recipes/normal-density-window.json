@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.normal-density-window",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Normal density and interval probability"
+  },
+  "aliases": {
+    "en": [
+      "normal distribution area",
+      "Gaussian density",
+      "z score probability window"
+    ]
+  },
+  "direction_ids": [
+    "probability-statistics"
+  ],
+  "summary": "Move interval boundaries under a normal curve while separating density height from probability area.",
+  "objective": "Create a Gaussian density ribbon with draggable interval endpoints and linked x and z-score axes.",
+  "tags": [
+    "normal density",
+    "Gaussian",
+    "standard deviation"
+  ],
+  "subject_terms": [
+    "normal density",
+    "Gaussian",
+    "standard deviation",
+    "z score",
+    "probability area",
+    "continuous distribution"
+  ],
+  "intent_signals": [
+    "Create a Gaussian density ribbon with draggable interval endpoints and linked x and z-score axes.",
+    "Move interval boundaries under a normal curve while separating density height from probability area."
+  ],
+  "example_prompts": [
+    "Create a Gaussian density ribbon with draggable interval endpoints and linked x and z-score axes.",
+    "Create an explorable 3D explanation of normal distribution area with standardization axes."
+  ],
+  "negative_signals": [
+    "No confidence interval or hypothesis test is implied by selecting a probability interval."
+  ],
+  "not_for": [
+    "No confidence interval or hypothesis test is implied by selecting a probability interval."
+  ],
+  "entities": [
+    {
+      "name": "Density ribbon",
+      "guidance": "Sample the curve in an x-density plane and extrude only a thin constant decorative depth; show visible plotting limits and omitted tails."
+    },
+    {
+      "name": "Interval curtain",
+      "guidance": "Shade the area between curve and baseline over [a,b]; display handles projected to the x axis, not freely floating in 3D."
+    },
+    {
+      "name": "Standardization axes",
+      "guidance": "Align z=(x-mu)/sigma with x positions and show density units reciprocal to x units."
+    }
+  ],
+  "state_contract": {
+    "model": "Finite mean mu, sigma>0; density exp(-0.5*((x-mu)/sigma)^2)/(sigma*sqrt(2*pi)). Probability in [a,b] comes from the normal CDF difference, a<=b.",
+    "authority": "Distribution parameters and interval endpoints own numeric area and sampled curve; extrusion depth is decorative and never contributes to probability.",
+    "actions": [
+      "Move mean or positive standard deviation.",
+      "Drag ordered interval boundaries.",
+      "Switch between raw and standardized coordinates.",
+      "Restore default parameters and interval."
+    ]
+  },
+  "invariants": [
+    "A zero-width interval has zero probability although point density may be positive.",
+    "The CDF-derived probability stays in [0,1].",
+    "At fixed z bounds, changing mu or sigma leaves interval probability unchanged."
+  ],
+  "motion_guidance": [
+    "Recompute the analytic CDF area during changes; do not estimate probability from rendered pixel coverage.",
+    "If the x viewport clips tails, retain full-distribution normalization rather than renormalizing the visible curve."
+  ],
+  "known_limits": [
+    "No confidence interval or hypothesis test is implied by selecting a probability interval.",
+    "A truncated viewport is not a truncated normal distribution; tails and density scaling are labeled.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.normal-density-window",
+      "statement": "A normal variable with mean mu and positive standard deviation sigma is standardized by z=(x-mu)/sigma.",
+      "scope": "Declared normal model; probability areas refer to continuous intervals, not point probabilities.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-normal",
+          "locator": "6.1, z-scores and standard normal distribution"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Density ribbon",
+      "structure": "Sample the curve in an x-density plane and extrude only a thin constant decorative depth; show visible plotting limits and omitted tails.",
+      "material": "Flat shaded area against a pale baseline; avoid reflective extrusion that makes height appear to encode volume probability."
+    }
+  ]
+}

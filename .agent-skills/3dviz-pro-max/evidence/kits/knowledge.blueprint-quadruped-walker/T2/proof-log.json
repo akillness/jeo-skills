@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-quadruped-walker",
+  "record_revision": 4,
+  "asset": "templates/kits/creatures/quadruped-walker.js",
+  "asset_sha256": "15b4d744dd6db53df691bce09000d3107bb714ec8ce4241bf52d6eb279196ea3",
+  "params": {
+    "scale": 1,
+    "strideM": 0.62,
+    "strideHz": 1.1,
+    "speed": 0,
+    "seed": 1,
+    "coat": "#b39a78",
+    "yawRateRad": 1.8
+  },
+  "tier": "T2",
+  "kit": {
+    "blueprint": "knowledge.blueprint-quadruped-walker",
+    "module": "../creatures/quadruped-walker.js",
+    "params": {
+      "scale": 1,
+      "strideM": 0.62,
+      "strideHz": 1.1,
+      "speed": 0,
+      "seed": 1,
+      "coat": "#b39a78",
+      "yawRateRad": 1.8
+    },
+    "tier": "T2",
+    "surface": {
+      "seed": 1,
+      "size": 1024,
+      "materials": 11,
+      "unmapped": [
+        "#6b504a",
+        "#1d1916",
+        "#fff6e2",
+        "#e2d3ae",
+        "#332c26"
+      ],
+      "uv": [
+        "world",
+        "normalised"
+      ],
+      "ms": 140.7,
+      "ao": {
+        "vertices": 2897,
+        "casts": 17160,
+        "ms": 59.3,
+        "skipped": null
+      }
+    },
+    "triangles": 2472,
+    "bounds_m": {
+      "min": [
+        -0.21699999898672104,
+        8.940695891967998e-10,
+        -0.4854560226202011
+      ],
+      "max": [
+        0.21699999898672104,
+        1.2768958119991634,
+        0.833317192217357
+      ],
+      "size": [
+        0.4339999979734421,
+        1.2768958111050939,
+        1.3187732148375582
+      ]
+    },
+    "fit_distance_m": 2.7575,
+    "view_distances_m": {
+      "far": 6.6181,
+      "mid": 3.309,
+      "close": 2.1509,
+      "detail": 0.7527
+    },
+    "sockets": [
+      "harness",
+      "head",
+      "back"
+    ],
+    "detail_socket": "harness",
+    "animated": true,
+    "colliders": [
+      "trunk",
+      "head"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "c894f2d5379239b8a14550ad26d3e5ba2109913aee868886a800576fbe9e44ae",
+    "mid.png": "07d2ed3e1b2faaf9d2168abd04b4cc7a3c6e88bb964f423565cb04a604200e34",
+    "close.png": "d54a1cd531e74fb57bdc8d6a16ea52aa0bd05d8545ad10a8b25add70d6daaed5",
+    "detail.png": "c2f4a2c9c40cdd54d45fd4fb22637ca6c3b816fca14bbf5e2318382a0c478c46",
+    "close-motion.png": "080040e878aa45a63c41debe87706276dd1245bf2e0b22d3593ca6226610ba99"
+  },
+  "motion": {
+    "interval_ms": 700,
+    "simulated": true,
+    "animate_returned": true,
+    "differs": true,
+    "sha_before": "d54a1cd531e74fb57bdc8d6a16ea52aa0bd05d8545ad10a8b25add70d6daaed5",
+    "sha_after": "080040e878aa45a63c41debe87706276dd1245bf2e0b22d3593ca6226610ba99"
+  },
+  "gpu_requested": false,
+  "capture_mode": "swiftshader",
+  "webgl_renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-09T00:23:15+00:00",
+  "finished": "2026-09-09T00:23:21+00:00",
+  "surface": {
+    "families": {
+      "#b39a78": "fur",
+      "#ded0b6": "fur"
+    },
+    "seed": 1,
+    "size": 1024,
+    "ao": {
+      "samples": 13,
+      "radius_m": 0.38,
+      "ground_dirt_m": 0.6
+    }
+  }
+}

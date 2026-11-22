@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-gltf-asset-bridge",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "output-profile",
+  "title": {
+    "en": "Runtime asset bridge with a declared transport budget"
+  },
+  "aliases": {
+    "en": [
+      "glTF asset bridge",
+      "runtime asset handoff",
+      "what the format carries"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "products-assemblies",
+    "environments-dioramas",
+    "molecules-materials"
+  ],
+  "summary": "Decide what the asset format is expected to carry across the handoff and what has to be re-authored on the far side, before anything is exported.",
+  "objective": "The imported asset has the expected axes, scale, hierarchy and material response, and everything the format does not carry is listed as re-authored on the destination side.",
+  "tags": [
+    "output-profile",
+    "asset-exchange",
+    "gltf",
+    "handoff",
+    "transport-budget"
+  ],
+  "subject_terms": [
+    "asset format",
+    "coordinate convention",
+    "unit convention",
+    "node hierarchy",
+    "metallic roughness",
+    "skin export",
+    "animation channels",
+    "material extensions",
+    "runtime import"
+  ],
+  "intent_signals": [
+    "the model comes in rotated",
+    "materials look different after export",
+    "my animation did not survive the export",
+    "the imported model is a hundred times too big",
+    "what does this format actually keep"
+  ],
+  "example_prompts": [
+    "Export a rigged creature into an interactive scene and keep its animation.",
+    "Hand a product model to a web viewer without losing its material intent.",
+    "Explain what has to be rebuilt after importing this asset."
+  ],
+  "negative_signals": [
+    "exact CAD geometry required",
+    "scientific field data"
+  ],
+  "not_for": [
+    "Exact-geometry engineering exchange, which needs a boundary-representation format.",
+    "Sampled field or measurement data, which needs a data format rather than a scene format."
+  ],
+  "content": {
+    "principles": [
+      "An asset format is a contract about what travels, not a promise that the scene will look the same. Everything outside the contract is re-authored work on the destination side, and it should be planned before the export rather than discovered after it.",
+      "Axes and units are the first thing to reconcile. A format that fixes handedness, up axis and a linear unit removes an entire class of import surprises, but only if the authoring side actually exports in that convention.",
+      "The material model is part of the contract. A parameter set that is expressible in the destination model transfers; a procedural network, a layered shader or a renderer-specific effect does not, and substituting one for the other is a re-authoring decision.",
+      "Animation transport is usually narrower than authoring. A format may carry sampled transform and shape-key channels while carrying nothing about constraints, drivers or procedural motion, so animation that depends on those must be baked before export.",
+      "A format that stores keyframes does not define playback. Which clip runs, whether it loops and what happens on stop are runtime decisions the destination must make explicitly.",
+      "Extensions expand the contract only when both sides support them, and the format distinguishes extensions merely used from extensions required. An asset that lists an extension as required has no guaranteed base-model fallback, so support must be checked before loading and a failure reported clearly or a separately authored compatible asset selected. Only an extension that defines a fallback degrades quietly."
+    ],
+    "implementation": [
+      "Write down the transport budget before exporting: geometry, hierarchy and names, materials, textures and their roles, skinning, animation clips, and anything deliberately excluded.",
+      "Reconcile axes and scale once at the export boundary so the imported asset needs no compensating transform in the destination scene.",
+      "Bake procedural or constraint-driven animation to sampled channels on the nodes the format can address, and keep the unbaked source separately.",
+      "Keep semantic names on nodes and clips for readability, but do not treat them as identity: names in this format are optional and are not required to be unique. Carry stable application identifiers or explicit indexed paths for selection and clip choice, and check for missing or duplicated names at import.",
+      "Check texture roles at the boundary: colour textures must remain colour and data textures must remain data, because a wrongly labelled map survives the export and produces a wrong-looking surface.",
+      "State on the destination side which clip plays at load, whether it loops, and what a stop returns to, rather than relying on the importer's default.",
+      "List every material effect that did not transfer and record how it was reproduced, so the difference is documented rather than blamed on the format."
+    ],
+    "observable_checks": [
+      "The imported asset appears upright, facing the expected direction, and at the expected size without a compensating transform.",
+      "Node and clip names present in the export are present after import and can be used for selection.",
+      "A skinned asset poses correctly under its own animation and returns to its rest pose.",
+      "Materials respond to the destination lighting in the way the transport budget predicted, and every deviation appears in the re-authoring list.",
+      "The chosen clip plays, pauses and stops according to the behaviour the destination explicitly declared."
+    ]
+  },
+  "creative_affordances": [
+    "Re-authoring on the destination side is an opportunity, not only a loss: destination-specific effects can improve on what the format could carry.",
+    "The transport budget can be deliberately minimal, sending geometry only and building the whole look at the destination."
+  ],
+  "known_limits": [
+    "The specification statements here describe what the format defines; whether a particular exporter or importer implements them correctly must be checked on the actual tools.",
+    "No export or import was performed for this record, and no viewer behaviour was observed.",
+    "Extension support varies by viewer; nothing here asserts that any optional extension will be honoured.",
+    "Authored reusable guidance; no runtime artifact has been executed or observed for this record."
+  ],
+  "related_ids": [
+    "recipe.garden-creature-patrol",
+    "recipe.modular-camera-rig",
+    "recipe.fantasy-village-diorama",
+    "knowledge.shared-skinned-articulated-rig",
+    "knowledge.shared-indexed-manifold-mesh",
+    "knowledge.shared-interactive-web-scene"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-gltf-axes-and-units",
+      "statement": "The glTF 2.0 specification defines a right-handed coordinate system with positive Y as up, the front of an asset facing positive Z and its left side facing positive X, states that the units for all linear distances are metres and that all angles are in radians, and specifies that the red, green and blue primaries use ITU-R BT.709 chromaticity coordinates.",
+      "scope": "Normative coordinate and unit conventions of the glTF 2.0 specification, read from the Khronos specification source. They bind the file contents; whether an exporter honours them must be checked separately.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Coordinate System and Units"
+        }
+      ]
+    },
+    {
+      "id": "claim.shared-gltf-animation-scope",
+      "statement": "Core glTF 2.0 supports keyframe animation of node transforms and of morph target weights only, notes that extensions or a future version may be required to animate other properties such as material colours, and states that it defines only the storage of animation keyframes and no runtime behaviour such as play order, auto-start or looping.",
+      "scope": "Normative and explanatory animation text of the glTF 2.0 core specification, read from the Khronos specification source. It bounds what core animation the format transports and makes playback a destination-side decision; extensions can enlarge the animatable set.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Animations"
+        }
+      ]
+    }
+  ]
+}

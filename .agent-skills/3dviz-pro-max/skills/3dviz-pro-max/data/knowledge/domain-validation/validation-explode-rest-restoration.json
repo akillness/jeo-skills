@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-explode-rest-restoration",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Explosion offset reversibility against stored rest transforms"
+  },
+  "aliases": {
+    "en": [
+      "explode reset check",
+      "rest transform restoration"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies"
+  ],
+  "summary": "Verify that an explosion scalar is a display offset over immutable rest transforms and that returning to zero restores them exactly.",
+  "objective": "After exploding, isolating and returning the scalar to zero, every part matches its stored rest transform and inventory entry.",
+  "applies_when": [
+    "An assembly separates parts for inspection and returns them to a rest pose.",
+    "Parts can also be isolated, selected or hidden while exploded.",
+    "Any panel reports assembly coordinates or dimensions while parts are separated."
+  ],
+  "check_method": "state",
+  "tags": [
+    "domain-validation",
+    "assembly",
+    "transform",
+    "reversibility"
+  ],
+  "subject_terms": [
+    "rest transform",
+    "explode axis",
+    "display offset",
+    "assembly tree",
+    "part identity"
+  ],
+  "intent_signals": [
+    "parts do not return to their assembled position",
+    "check the exploded view is reversible"
+  ],
+  "example_prompts": [
+    "Check that this exploded speaker reassembles exactly."
+  ],
+  "negative_signals": [
+    "designing an explosion animation curve",
+    "simulating fasteners under load"
+  ],
+  "content": {
+    "principles": [
+      "An explosion scalar is a display offset applied to an immutable rest transform; the rest transform is the record and the offset is a function of it.",
+      "Accumulating offsets onto the current transform loses the rest pose after the first pass, and setting the scalar back to zero cannot recover it.",
+      "Where the local matrix is composed from position, rotation and scale, repeated decompose and compose cycles drift; compare against the stored rest values, never against the previous frame."
+    ],
+    "implementation": [
+      "Store each part rest transform once at load as position, quaternion and scale, and keep that copy read-only.",
+      "Drive display as the rest transform composed with an offset derived from the scalar and the authored explode axis, then set the scalar to 0, 1, 0, 0.5 and 0 in that order.",
+      "After the final zero, compare each part against the stored rest values as translation distance, rotation angle and scale ratio, since a decomposition may return the negated quaternion for the same rotation, and compare part count, IDs and material assignment against the load-time inventory.",
+      "Repeat the sequence with one part isolated and with a sub-assembly selected, since selection code is a common place where a transform is written back into the model."
+    ],
+    "observable_checks": [
+      "Translation returns to rest within about one part in a million of the part bounding radius and rotation within a comparable angular margin; a residual that grows with the number of cycles identifies accumulation rather than rounding.",
+      "Part identity, count and material match the load-time inventory after isolation and reassembly.",
+      "Any coordinate or dimension reported while parts are separated is the rest coordinate, not the offset display coordinate."
+    ]
+  },
+  "known_limits": [
+    "Checks transform bookkeeping only; it does not verify that the authored assembly is manufacturable or that parts could physically separate along those axes.",
+    "Authored verification guidance; no scene was run or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.portable-speaker-exploded",
+    "recipe.modular-camera-rig",
+    "recipe.knee-layer-peel"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-local-matrix-composition",
+      "statement": "In this scene graph the local transformation matrix is computed from the object position, rotation and scale, and is recomputed automatically unless the application takes over that update.",
+      "scope": "three.js Object3D transform behaviour; other engines define their own transform update rules.",
+      "source_refs": [
+        {
+          "source_id": "source.three-object3d",
+          "locator": "position, quaternion, scale, matrix, matrixAutoUpdate and updateMatrix descriptions"
+        }
+      ]
+    }
+  ]
+}

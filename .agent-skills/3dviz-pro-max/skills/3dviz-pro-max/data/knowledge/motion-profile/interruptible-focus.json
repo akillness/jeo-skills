@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.interruptible-focus",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "motion-profile",
+  "title": {
+    "en": "Interruptible focus transition"
+  },
+  "aliases": {
+    "en": [
+      "camera focus",
+      "interrupt animation"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies",
+    "abstract-systems-data"
+  ],
+  "summary": "Move attention between views while preserving user control and object state.",
+  "objective": "Move attention between views while preserving user control and object state.",
+  "subject_terms": [
+    "camera focus",
+    "interrupt animation",
+    "navigation transition"
+  ],
+  "tags": [
+    "motion-profile",
+    "interruptible-focus"
+  ],
+  "intent_signals": [
+    "navigation transition"
+  ],
+  "example_prompts": [
+    "Use interruptible focus transition for the scene, preserving its model and user controls."
+  ],
+  "content": {
+    "principles": [
+      "Camera easing is a presentation choice; it must not drive the underlying model.",
+      "A new navigation input should have a clear policy for replacing or interrupting an existing transition."
+    ],
+    "implementation": [
+      "Capture the current camera and target as the transition start, including when interrupted.",
+      "Frame the selected bounds with suitable near-plane clearance; retain a reset view.",
+      "Allow a reduced-motion or immediate-focus path when requested by the user or host preference."
+    ],
+    "observable_checks": [
+      "Rapid focus changes finish at the last requested object without a delayed snap to an older target.",
+      "Pausing world motion still permits inspection unless the interface explicitly says otherwise."
+    ]
+  },
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "creative_affordances": [
+    "Adapt the layout, visual treatment and timing to the task; these are reusable design proposals, not mandatory templates."
+  ],
+  "known_limits": [
+    "Authored interaction/presentation guidance; no new scientific claim, accessibility certification or runtime verification is asserted."
+  ],
+  "claims": []
+}

@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.feathered-wing-assembly",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "object-archetype",
+  "title": {
+    "en": "Feathered wing assembly and authored flight posing"
+  },
+  "aliases": {
+    "en": [
+      "feathered creature wing",
+      "folding bird wing construction"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "anatomy-structures",
+    "environments-dioramas"
+  ],
+  "summary": "Build a wing as a folding support hierarchy with coherent feather fields and distinguish expressive flapping from computed flight.",
+  "objective": "Expose how the wing folds and how its feather layers remain attached while making the source and limits of airborne motion clear.",
+  "tags": [
+    "object-archetype",
+    "feathered-wing-assembly"
+  ],
+  "subject_terms": [
+    "wing fold",
+    "rachis",
+    "barbs",
+    "barbules",
+    "pennaceous vane",
+    "feather overlap",
+    "wing root"
+  ],
+  "intent_signals": [
+    "wing looks like a rigid paddle",
+    "model layered flight feathers",
+    "separate flap animation from flight simulation"
+  ],
+  "example_prompts": [
+    "Give a fantasy owl folding wings with coherent feather layers and a clearly authored hover.",
+    "Make an inspectable feathered wing without claiming aerodynamic accuracy."
+  ],
+  "content": {
+    "principles": [
+      "A feather is not simply a thin rectangle: the cited pennaceous structure has a central rachis, branching barbs and interlocking barbules forming a vane. Represent these at the level visible in the intended shot.",
+      "Separate support nodes, overlapping feather fields and surface detail. A silhouette can remain stylized while preserving attachment continuity and an intentional folding order.",
+      "Distinguish a factual species reconstruction from an invented wing. Feather count, attachment map, skeletal proportions and asymmetry require matched references when labeled anatomical.",
+      "Specify whether altitude and translation come from a path controller, keyframes, measured data or an aerodynamic model. A flap cycle alone does not calculate lift, thrust or stability."
+    ],
+    "implementation": [
+      "Create a root pivot and serial folding nodes with stored rest transforms and authored angular limits. Name them anatomically only after choosing the species; otherwise use neutral proximal, middle and distal labels.",
+      "Place feather roots along authored attachment curves and orient their shafts with a consistent local frame. Give major feathers taper, a central shaft cue and a vane surface; use texture or normals for barbs unless close inspection warrants geometry.",
+      "Organize overlapping layers so closing the wing changes the fan spread as well as the support-node angles. Store feather ordering explicitly to avoid random layer swaps during interpolation.",
+      "Assign an independent wing-pose parameter and flight-path state. For a decorative hover, disclose authored altitude, heading and flap phase; for computed flight, let the physical model own body acceleration and derive pose without competing transform writers.",
+      "Build obstacle clearance from the widest allowed wing pose, including turns and folding transitions. Distinguish a ground wing stretch from takeoff; a perch state needs its own support/contact rule.",
+      "Expose folded, half-open and extended inspections plus a slow cycle. Restore feather fan, node angles, body path and animation phase together on reset."
+    ],
+    "observable_checks": [
+      "In folded and fully open poses, every major feather remains attached and neighboring layers do not reverse order unexpectedly.",
+      "An underside close-up shows whether the wing is deliberately planar or has thickness; backface disappearance is not mistaken for a fold.",
+      "Pause the path and the flap separately: each acts only on its declared state, and the interface labels decorative airborne motion honestly.",
+      "Sweep the full wing envelope past a nearby obstacle and verify that the narrow folded pose is not used as the flight collider."
+    ]
+  },
+  "known_limits": [
+    "The feather source establishes microstructure, not a calibrated aerodynamic wing or species-specific skeleton.",
+    "Stylized feather vanes and authored flapping do not predict flight capability, sound, feather damage or air loads.",
+    "Authored modeling guidance and prospective checks; no runtime artifact has been executed for this record."
+  ],
+  "creative_affordances": [
+    "Invent feather palettes, silhouette exaggerations and ornamental wing motifs; a membrane or mechanical wing may replace the feathered archetype with a different stated construction."
+  ],
+  "claims": [
+    {
+      "id": "claim.object-depth-feathered-wing-assembly",
+      "statement": "Cornell describes a pennaceous feather vane as branching from a central rachis, with neighboring barbules interlocking to create a coherent surface.",
+      "scope": "Pennaceous feather microstructure; simplified geometry and folding animation remain authored.",
+      "source_refs": [
+        {
+          "source_id": "source.object-depth-cornell-feather-structure",
+          "locator": "How Feathers Are Built: Rachis and Barbs definitions; The Structure of Lift, pennaceous vane/barbule explanation."
+        }
+      ]
+    }
+  ],
+  "related_ids": [
+    "knowledge.articulated-limb"
+  ]
+}

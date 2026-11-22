@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-topology-from-computation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Compute the invariant rather than showing it"
+  },
+  "aliases": {
+    "en": [
+      "Euler characteristic",
+      "topological invariant",
+      "cell count"
+    ]
+  },
+  "direction_ids": [
+    "topology-symmetry",
+    "solid-geometry"
+  ],
+  "summary": "Derive a topological claim from a combinatorial structure the viewer can count, not from how the surface looks.",
+  "objective": "Make a topology scene demonstrate an invariant instead of asserting one over a suggestive shape.",
+  "applies_when": [
+    "A scene claims a surface is a torus, a sphere, one-sided or of a given genus.",
+    "Cells, faces, edges or vertices are drawn on a surface.",
+    "The viewer can deform, retile or cut the surface."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "Euler characteristic",
+    "triangulation",
+    "genus",
+    "invariant",
+    "cell complex",
+    "surface"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "topology",
+    "invariants"
+  ],
+  "intent_signals": [
+    "show the Euler characteristic",
+    "why is this a torus",
+    "count the faces"
+  ],
+  "example_prompts": [
+    "Tile the torus and show that the alternating count stays the same.",
+    "Let me retile the surface and watch the invariant."
+  ],
+  "negative_signals": [
+    "Decorative surfaces where no topological claim is made.",
+    "Geometry problems about curvature or metric properties, which are not topological."
+  ],
+  "not_for": [
+    "Decorative surfaces where no topological claim is made.",
+    "Geometry problems about curvature or metric properties, which are not topological."
+  ],
+  "content": {
+    "principles": [
+      "A rendered surface cannot carry a topological claim on its own: a picture of a torus and a picture of a knotted torus look different but are the same surface, and a mesh with an invisible crack looks like a closed one.",
+      "The invariant is combinatorial. For a triangulation of a compact surface the alternating count of vertices, edges and faces is independent of which triangulation is chosen, which is precisely why it can be displayed as a property of the surface.",
+      "That independence is the demonstration: letting the viewer retile the surface and watch the count stay fixed teaches more than printing a number.",
+      "Check the declared decomposition type. In a simplicial surface, interior edges have two incident triangles and boundary edges one; two triangles share at most one edge. Edge conditions alone do not certify a surface: two triangulated spheres joined at one vertex fail the disk-neighbourhood condition. In a triangulation, vertex links must be one cycle in the interior or one arc at the boundary.",
+      "Euler counting also applies to finite cell decompositions with valid attaching and gluing data, without requiring simplicial intersection rules. Count incidences with multiplicity: a one-face torus has two incidences of its face on each edge, and faces may share several boundary edges. Use a valid triangulation or the declared local gluing to check surface neighbourhoods. Inferring genus additionally needs the component, orientability and boundary information; Euler characteristic alone is not a complete classifier."
+    ],
+    "implementation": [
+      "Maintain an explicit cell structure with vertex, edge and face lists, and derive the drawn geometry from it rather than the other way round.",
+      "Compute and display the counts and the resulting invariant live, and update them when the tiling changes.",
+      "Offer at least two different decompositions of the same surface so invariance is observable rather than claimed.",
+      "Validate against the declared construction. For simplicial surfaces check two incident triangles per interior edge, one per boundary edge, permitted simplex intersections, and cycle/arc vertex links. For general cells verify attaching maps and incidence multiplicity, then check local disk or half-disk neighbourhoods directly or through a valid triangulation. Do not reject a valid one-face torus or shared multi-edge cell boundary merely for failing simplicial intersection rules. Report the specific failed condition.",
+      "Where the surface is deformed, keep the cell structure attached so the invariant is visibly unaffected by bending."
+    ],
+    "observable_checks": [
+      "Retile the surface and confirm the invariant is unchanged while the counts change.",
+      "Compare a sphere-like and a torus-like surface and confirm the computed values differ as expected.",
+      "Introduce deliberate defects of each kind and confirm the scene names them: an edge bordering three faces, a boundary edge in a surface claimed to be closed, and two closed pieces joined at a single vertex, which passes the edge and face conditions but fails the vertex-link condition.",
+      "Deform the surface continuously and confirm the invariant does not move."
+    ]
+  },
+  "related_ids": [
+    "recipe.torus-euler-cells",
+    "recipe.mobius-orientation-trace"
+  ],
+  "creative_affordances": [
+    "Any tiling aesthetic works, from regular grids to irregular hand-drawn cells, as long as it satisfies the conditions.",
+    "Animated retiling is a strong way to dramatise invariance."
+  ],
+  "known_limits": [
+    "Authored guidance citing the combinatorial invariance of the Euler characteristic for compact surfaces; higher-dimensional or non-compact cases are outside it.",
+    "It does not certify that any particular mesh is a valid closed surface."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-euler-characteristic-invariance",
+      "statement": "For a triangulation of a compact surface the quantity given by the number of vertices minus the number of edges plus the number of faces is independent of the chosen triangulation, so it is a property of the surface; the sphere has value two and the torus has value zero, and in the triangulation described each edge belongs to the boundaries of exactly two faces and any two faces share at most one edge.",
+      "scope": "Compact surfaces without boundary, decomposed as described in the cited note. Surfaces with boundary, non-compact surfaces and higher-dimensional complexes follow related but different statements, and the invariant classifies surfaces only together with orientability and boundary data.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-cambridge-euler-characteristic",
+          "locator": "Definition of a triangulation and independence of the alternating count; sphere and torus values"
+        }
+      ]
+    }
+  ]
+}

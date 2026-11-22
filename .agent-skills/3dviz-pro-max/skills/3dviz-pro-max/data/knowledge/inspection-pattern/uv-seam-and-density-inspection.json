@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.uv-seam-and-density-inspection",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "inspection-pattern",
+  "title": {
+    "en": "UV seam and density inspection"
+  },
+  "aliases": {
+    "en": [
+      "checker texture UV audit",
+      "texel density diagnostic",
+      "UV island stretch inspection"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "Inspect authored seams, island distortion, relative texel density and the actual runtime UV set or transform with a diagnostic texture that leaves production maps untouched.",
+  "objective": "A stretched, discontinuous or blurry region can be traced to a named mesh, UV set, island, texture role and transform rather than judged from a beauty render alone.",
+  "applies_when": [
+    "Texture scale, seams, padding or coordinates differ across parts or after glTF delivery."
+  ],
+  "tags": [
+    "inspection-pattern",
+    "uv",
+    "seams",
+    "texel-density",
+    "atlas"
+  ],
+  "subject_terms": [
+    "UV seam",
+    "UV island",
+    "angle distortion",
+    "area distortion",
+    "texel density",
+    "checker texture",
+    "TEXCOORD set",
+    "texture transform",
+    "mip padding"
+  ],
+  "intent_signals": [
+    "checker squares stretch after export",
+    "find inconsistent texture density",
+    "wrong UV set on one material",
+    "atlas seam bleeds in mipmaps"
+  ],
+  "example_prompts": [
+    "Overlay a checker and identify UV islands whose scale differs from adjacent panels.",
+    "Inspect which TEXCOORD set and transform each loaded material texture actually uses."
+  ],
+  "negative_signals": [
+    "one texel density for every asset",
+    "judge UVs from base color only",
+    "change production atlas during inspection"
+  ],
+  "not_for": [
+    "Choosing a universal texture resolution budget.",
+    "Procedural 3D coordinates with no UV-dependent delivered texture."
+  ],
+  "content": {
+    "principles": [
+      "Distinguish four questions: seam placement, shape distortion, relative surface coverage and runtime coordinate selection. One checker view does not answer all four.",
+      "Texel density is a project comparison tied to texture resolution, UV coverage and modeled surface scale; prescribe consistency only where the intended material and viewing task require it.",
+      "Inspect the texture role's actual coordinate set and transform. A good active UV map in Blender does not prove a delivered base-color, normal, light or occlusion texture samples that set.",
+      "A seam is not automatically a defect. Evaluate visibility, tangent continuity, material boundary, atlas padding and intended concealment."
+    ],
+    "implementation": [
+      "In Blender, show seam overlays and UV-editor Display Stretch by angle and area; apply a labeled square-and-axis checker to selected source objects without overwriting production images.",
+      "Record object scale policy, UV map name, image dimensions and intended density groups. Compare islands by an explicit surface-area-to-UV-area calculation or a checker at the approved view distance, and disclose mirrored or intentionally rescaled islands.",
+      "After load, isolate the mesh and inspect each material texture role's coordinate channel, offset, rotation, scale and sampler. Use the linked KHR_texture_transform record for extension-specific handoff.",
+      "Test seam neighborhoods with normal and color diagnostics separately, then test atlas padding under the actual minification and mip policy. Keep inspection textures and material clones disposable.",
+      "Reset restores the original materials, color-space annotations, texture transforms and texture ownership without disposing shared production textures."
+    ],
+    "observable_checks": [
+      "Use one equal-density pair, one deliberately scaled hero island, one angle-stretched island and one accidental scale mismatch; the report distinguishes intention from defect.",
+      "Inspect a material whose texture selects a nondefault TEXCOORD set and transform; the runtime overlay follows the sampled coordinates rather than Blender's currently active UV map.",
+      "Orbit across a marked seam under a tangent-space normal test and shrink the object through mip levels; report tangent discontinuity and padding bleed separately.",
+      "Disable inspection and verify production textures, channel selection, transforms and shared-resource counts return to the pre-inspection state."
+    ]
+  },
+  "related_ids": [
+    "knowledge.uv-atlas-bake-correspondence",
+    "knowledge.gltf-texture-transform-atlas-handoff",
+    "knowledge.blender-three-tangent-normal-handoff",
+    "knowledge.layered-decal-surface-handoff"
+  ],
+  "creative_affordances": [
+    "Use numbered checker cells, density bands or synchronized UV and 3D selection.",
+    "Group hero, background and tiled surfaces by declared visual purpose rather than forcing identical density."
+  ],
+  "known_limits": [
+    "No universal pixels-per-metre or acceptable stretch threshold is asserted.",
+    "Runtime texture filtering and compression can affect appearance independently of UV layout.",
+    "Authored source-checked diagnostic guidance; no UV bake, export, texture upload or render was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.delivery-blender-uv-stretch-seams",
+      "statement": "Blender 4.5 can display UV unwrapping seams in the 3D viewport, and its UV Editor Display Stretch overlay visualizes UV-to-3D shape distortion using angle or area modes.",
+      "scope": "Blender source inspection only; this does not define a texel-density target or identify a runtime material's selected UV set.",
+      "source_refs": [
+        {
+          "source_id": "source.delivery-blender-mesh-overlays",
+          "locator": "Geometry: Seams"
+        },
+        {
+          "source_id": "source.delivery-blender-uv-overlays",
+          "locator": "Stretching: Display Stretch; Angle; Area"
+        }
+      ]
+    },
+    {
+      "id": "claim.delivery-gltf-texcoord-sets",
+      "statement": "glTF 2.0 defines TEXCOORD_n as VEC2 texture-coordinate attributes with consecutively numbered set indices starting at zero, while a texture binding may select its texture-coordinate index.",
+      "scope": "Core glTF coordinate attributes and texture binding; extension transforms, image resolution and sampler behavior require separate inspection.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Geometry > Meshes: TEXCOORD_n; Materials > Metallic-Roughness Material: texture binding texCoord"
+        }
+      ]
+    }
+  ]
+}

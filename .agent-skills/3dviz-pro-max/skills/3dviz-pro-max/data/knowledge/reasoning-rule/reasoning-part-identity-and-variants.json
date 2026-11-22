@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-part-identity-and-variants",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Give parts stable identities before configuring them"
+  },
+  "aliases": {
+    "en": [
+      "part identity",
+      "configurator variants",
+      "bill of materials"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "abstract-systems-data"
+  ],
+  "summary": "Model parts and options as data with stable identifiers, and treat meshes as one rendering of that data.",
+  "objective": "Keep selection, compatibility and quantities correct when parts are swapped, hidden or duplicated.",
+  "applies_when": [
+    "The user can swap variants, colours, sizes or optional modules.",
+    "Parts are counted, priced, labelled or checked for compatibility.",
+    "The same component appears several times in one assembly."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "configurator",
+    "variant",
+    "part identity",
+    "compatibility",
+    "bill of materials",
+    "instances"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "product",
+    "data-model"
+  ],
+  "intent_signals": [
+    "let me swap the lens",
+    "which parts are compatible",
+    "count the fasteners"
+  ],
+  "example_prompts": [
+    "Let the user swap rig modules and show what stops fitting.",
+    "List the parts used in the current configuration."
+  ],
+  "negative_signals": [
+    "Single fixed objects with no options and no part list.",
+    "Sculptural or organic forms that are not assembled from discrete components."
+  ],
+  "not_for": [
+    "Single fixed objects with no options and no part list.",
+    "Sculptural or organic forms that are not assembled from discrete components."
+  ],
+  "content": {
+    "principles": [
+      "Mesh names are a rendering convenience. Once a part can be swapped, instanced or hidden, identity has to live in data that survives geometry changes.",
+      "Compatibility is a relation, not an appearance. Whether a module fits depends on declared interfaces, not on whether two meshes happen to touch.",
+      "Instances differ from types: four identical screws are one type and four placements, and confusing them corrupts both counting and selection.",
+      "Configuration is a state a viewer can reason about, so it should be inspectable and shareable rather than implied by which objects happen to be visible."
+    ],
+    "implementation": [
+      "Define a part record with a stable identifier, a type, its interfaces and its placement, and build the scene graph from those records.",
+      "Express variant swaps as changing which type occupies a placement, keeping the placement identity, its labels and its selection state.",
+      "Declare interface compatibility explicitly and evaluate it in the model, then explain refusals in terms of the interface rather than silently disallowing a drag.",
+      "Derive counts, lists and prices from the records so the displayed bill of materials cannot drift from the visible configuration.",
+      "Keep hidden or filtered parts in the model as hidden, not deleted, so the configuration is not lost by a view operation."
+    ],
+    "observable_checks": [
+      "Swap a variant and confirm the selection, labels and any measurement stay on the same placement.",
+      "Attempt an incompatible combination and confirm the refusal names the interface reason.",
+      "Compare the on-screen part count with the parts actually instantiated after several swaps and hides.",
+      "Reload from the stored configuration and confirm the scene matches what was exported."
+    ]
+  },
+  "related_ids": [
+    "recipe.modular-camera-rig",
+    "knowledge.inspectable-selection"
+  ],
+  "creative_affordances": [
+    "The interface vocabulary is yours to invent; a fictional product can have fictional mounts as long as they are declared.",
+    "Presentation of compatibility can be playful, from a snap-fit animation to a colour-coded mount, provided the model decides the result."
+  ],
+  "known_limits": [
+    "Authored data-modelling guidance; no runtime configurator has been exercised for this record.",
+    "It does not model manufacturing tolerances, real supplier catalogues or pricing rules."
+  ],
+  "claims": []
+}

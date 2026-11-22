@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-display-color-management",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Working space, output transform and texture colour roles"
+  },
+  "aliases": {
+    "en": [
+      "colour management pipeline",
+      "linear working space",
+      "colour versus data textures"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "molecules-materials",
+    "abstract-systems-data"
+  ],
+  "summary": "Keep lighting computations in a linear working space, convert once at output, and label every texture as colour or as data.",
+  "objective": "The same scene exported through two different output transforms differs only in look, and no texture that carries data has been decoded as if it were colour.",
+  "tags": [
+    "lighting-profile",
+    "color-management",
+    "linear-workflow",
+    "tone-mapping",
+    "texture-color-space"
+  ],
+  "subject_terms": [
+    "working colour space",
+    "linear sRGB",
+    "output colour space",
+    "view transform",
+    "tone mapping",
+    "exposure",
+    "non-colour data",
+    "normal map",
+    "roughness map",
+    "display transform"
+  ],
+  "intent_signals": [
+    "colours look washed out",
+    "normal map looks wrong",
+    "render does not match the viewport",
+    "highlights clip to white",
+    "why is my render darker after export"
+  ],
+  "example_prompts": [
+    "Set up a consistent colour pipeline before comparing two materials.",
+    "Explain why the exported image looks different from the editor.",
+    "Keep a roughness texture from being brightened by colour decoding."
+  ],
+  "negative_signals": [
+    "pure geometry check with no shading",
+    "text-only tabular output"
+  ],
+  "not_for": [
+    "Views with no shading or textures at all.",
+    "Colour-accuracy certification against a measured display, which requires calibration hardware."
+  ],
+  "content": {
+    "principles": [
+      "Lighting arithmetic must happen where adding two lights means adding two amounts of light. That is what a linear working space provides, and it is why interpolation, filtering and blending are all affected by getting it wrong.",
+      "The conversion to what the viewer sees is a single, explicit step at the end. Applying it twice, or forgetting it, changes the image without changing the scene, and the difference is easy to mistake for a lighting problem.",
+      "A texture has a role and a source encoding, not just pixels. A colour texture must be converted from whatever encoding it was actually stored in, which is display-encoded for ordinary photographic formats and already linear for high-dynamic-range formats; textures that carry surface data such as orientation or roughness carry no colour space and must be read as stored.",
+      "Choosing a display transform is a look decision applied to the same scene values. It does not change the scene, and swapping it should never be described as fixing the lighting.",
+      "Exposure and the display transform together decide what clips. Highlights that blow out are usually a symptom of an exposure or transform choice rather than of an over-bright light.",
+      "Comparisons are only meaningful when the whole pipeline is held fixed. Working space, exposure and output transform must be identical across variants."
+    ],
+    "implementation": [
+      "State the working space and the output transform once for the project, and treat them as part of the scene description rather than as per-render settings.",
+      "Label every texture at load time by its actual role and source encoding: display-encoded colour textures are converted to the working space, linear high-dynamic-range colour textures are tagged as already linear, and non-colour textures such as normal, roughness, metalness, height and mask maps are read unchanged.",
+      "Author material colours in the working space rather than by typing values sampled from a display screenshot, since those values carry the display encoding.",
+      "Fix exposure before judging lights. Raising light intensity to compensate for a dark output transform produces a scene whose values no longer make sense under any other transform.",
+      "Choose the output transform for the job: a neutral one when values must survive to a measurement or a comparison, and a filmic or tone-mapped one when highlight rolloff is wanted.",
+      "For intermediate work that will be composited or re-graded, keep a high-precision linear image rather than an already display-encoded one.",
+      "When a scene will be shown both in an interactive viewer and in an offline render, record both pipelines and check them against each other rather than assuming they agree."
+    ],
+    "observable_checks": [
+      "A mid-grey surface under a doubled light intensity brightens in the way the declared pipeline predicts, rather than saturating immediately.",
+      "A normal or roughness texture applied to a flat test surface produces the expected response and shows no unexpected brightening or contrast shift from wrongly applied colour decoding.",
+      "Switching only the output transform changes the look while the scene-linear inputs stay identical, confirmed by comparing named reference patches rather than by assuming that brightness ordering between arbitrary coloured objects is preserved, since a tone map can mix channels, compress chroma and clip.",
+      "With deterministic rendering and matching state, seed, sample count, temporal history and output settings, the same scene exported twice produces identical images; otherwise the comparison uses a declared image-difference tolerance.",
+      "Compared variants share the same working space, exposure and output transform, which is stated in the comparison record."
+    ]
+  },
+  "creative_affordances": [
+    "Strong graded looks, crushed blacks and deliberate colour casts are legitimate output choices when they are applied as an output transform rather than by distorting scene values.",
+    "A non-photographic transform can be part of the art direction as long as any comparison view keeps it fixed."
+  ],
+  "known_limits": [
+    "This profile establishes internal consistency, not colour accuracy on a viewer's display, which depends on hardware and system configuration that are outside this dataset.",
+    "The specific working spaces, defaults and view transforms cited here belong to two named applications and may differ in other tools or in other versions of the same tools.",
+    "Authored reusable guidance; no runtime artifact or rendered result has been observed for this record."
+  ],
+  "related_ids": [
+    "recipe.portable-speaker-exploded",
+    "recipe.historical-diorama",
+    "knowledge.three-pbr-adapter",
+    "knowledge.shared-pbr-studio-environment",
+    "knowledge.shared-offline-frame-render",
+    "knowledge.shared-unlit-quantitative-encoding"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-linear-working-space",
+      "statement": "One widely used web renderer documents that rendering, interpolation and related operations are performed in an open-domain linear working colour space which in that library is Linear-sRGB, that its colour management is enabled by default, that output conversion is defined by the renderer's output colour space whose default is sRGB, that PNG or JPEG textures containing colour information use the closed-domain sRGB space and must be annotated as such while formats like OpenEXR used for environment or light maps use Linear-sRGB, and that textures such as normal or roughness maps carry no colour space and use the default no-colour-space annotation.",
+      "scope": "Documented colour pipeline and defaults of one library as of the access date. It defines that library's internal convention; it is not a colour-science derivation and says nothing about display calibration.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-color-management",
+          "locator": "working color space; output color space; Roles of color spaces > Input color space; Color textures; Non-color textures"
+        },
+        {
+          "source_id": "source.shared-depth-three-webglrenderer",
+          "locator": "outputColorSpace default"
+        }
+      ]
+    },
+    {
+      "id": "claim.shared-scene-linear-and-view-transform",
+      "statement": "One offline application's manual states that rendering and compositing are best done in a scene-linear colour space and that the application primarily works with scene-linear colours, that the file's working space defaults to Linear Rec.709 with wider-gamut alternatives available, that images which store data rather than colour such as normal and displacement maps should be marked as non-colour data, and that displaying an image requires converting from scene linear to a display colour space through a selectable view that produces a different look without changing the scene values.",
+      "scope": "Documented colour-management model of the Blender manual on the latest channel as of the access date. It describes configuration in one application; no render was produced or inspected for this record.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-blender-color-spaces",
+          "locator": "Linear Workflow; Working Space; Images and Video (Non-Color Data)"
+        },
+        {
+          "source_id": "source.shared-depth-blender-displays-views",
+          "locator": "Overview; Views"
+        }
+      ]
+    }
+  ]
+}

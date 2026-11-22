@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "id": "recipe.layered-maze-navigation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Layered maze route puzzle"
+  },
+  "aliases": {
+    "en": [
+      "multi level maze",
+      "3D maze navigation"
+    ]
+  },
+  "direction_ids": [
+    "spatial-puzzles"
+  ],
+  "summary": "Navigate a designed stacked maze while retaining an exact cell-and-link path history.",
+  "objective": "Build a three-level maze with explicit stair links, a movable marker and a slice view for each floor.",
+  "tags": [
+    "layered maze",
+    "stairs",
+    "portal link"
+  ],
+  "subject_terms": [
+    "layered maze",
+    "stairs",
+    "portal link",
+    "pathfinding",
+    "route history"
+  ],
+  "intent_signals": [
+    "navigate between maze levels",
+    "inspect valid connections"
+  ],
+  "example_prompts": [
+    "Build a three-level maze with explicit stair links, a movable marker and a slice view for each floor.",
+    "Let me undo a move and inspect why two visually nearby corridors are not connected."
+  ],
+  "entities": [
+    {
+      "name": "Maze floors",
+      "guidance": "Use separate slabs and wall segments with consistent corridor widths and visible stair openings."
+    },
+    {
+      "name": "Interlevel links",
+      "guidance": "Represent stairs or lifts as named paired endpoints, not arbitrary teleport glows."
+    },
+    {
+      "name": "Player marker",
+      "guidance": "Use a compact upright token with a heading notch and current-cell label."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Maze floors",
+      "structure": "Use separate slabs and wall segments with consistent corridor widths and visible stair openings.",
+      "material": "Muted floor material with distinct level-edge accents."
+    },
+    {
+      "family": "Interlevel links",
+      "structure": "Represent stairs or lifts as named paired endpoints, not arbitrary teleport glows.",
+      "material": "Contrasting treads and directional endpoint signs."
+    },
+    {
+      "family": "Player marker",
+      "structure": "Use a compact upright token with a heading notch and current-cell label.",
+      "material": "High-contrast matte token."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored graph of cells and explicit traversable edges, level index, current cell, goal and path stack; links are authoritative even when projected geometry appears adjacent.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Move along a highlighted valid edge.",
+      "Slice or isolate a level.",
+      "Undo step, reset and request a graph-derived hint."
+    ]
+  },
+  "invariants": [
+    "Every accepted move follows an actual graph edge.",
+    "Level changes use declared interlevel links only.",
+    "A hint is either a computed path or explicitly unavailable, never an invented arrow."
+  ],
+  "motion_guidance": [
+    "Interpolate token along its accepted edge; stair motion uses the link geometry and finishes at the destination cell.",
+    "Keep hidden floors in navigation state and show arrival level before completing camera transition."
+  ],
+  "known_limits": [
+    "Authored maze with graph movement, not free-body navigation or building evacuation analysis.",
+    "Verify connectivity to the goal before claiming the authored start is solvable.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [],
+  "creative_affordances": [
+    "Layer slicing preserves spatial depth while making interlevel choices inspectable."
+  ],
+  "physical_contract": {
+    "model": "controlled-locomotion",
+    "scope": "Edge-constrained token travel.",
+    "state": [
+      "cell",
+      "level",
+      "edge progress",
+      "path stack"
+    ],
+    "colliders": [
+      "Token corridor envelope and explicit edge paths."
+    ],
+    "driving": [
+      "Accepted graph edge with bounded travel speed."
+    ],
+    "contact": [
+      "No arbitrary wall crossing; graph movement rather than contact solver."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "No cross-level shortcut; undo returns exact prior cell and level."
+    ]
+  }
+}

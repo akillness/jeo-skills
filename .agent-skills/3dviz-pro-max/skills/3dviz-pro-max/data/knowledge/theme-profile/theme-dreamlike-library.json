@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.theme-dreamlike-library",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "theme-profile",
+  "title": {
+    "en": "Dreamlike library"
+  },
+  "aliases": {
+    "en": [
+      "dream library",
+      "surreal archive",
+      "impossible reading room"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "abstract-systems-data"
+  ],
+  "summary": "Use books, rooms and branching passages to express discovery while making any information-system metaphor explicit.",
+  "objective": "The viewer can find the main reading space and any graph/data meaning has a legend rather than relying on guessed symbolism.",
+  "tags": [
+    "theme-profile",
+    "fictional-setting",
+    "dreamlike-library"
+  ],
+  "subject_terms": [
+    "dream library",
+    "surreal archive",
+    "impossible reading room"
+  ],
+  "intent_signals": [
+    "Set the scene in a dreamlike library",
+    "Use dream library as the narrative setting"
+  ],
+  "example_prompts": [
+    "Create a dream library where branching shelves represent labeled research topics and transform without losing identity."
+  ],
+  "content": {
+    "principles": [
+      "Use books, rooms and branching passages to express discovery while making any information-system metaphor explicit.",
+      "Theme supplies setting and motifs; choose geometry style, rendering approach and factual model independently."
+    ],
+    "implementation": [
+      "Vary shelf and stair silhouettes around one organizing space; choose a single impossible transformation rather than making every surface unrelated.",
+      "Contrast quiet book masses with a few illuminated reading spaces; use material rhythm to distinguish floor, shelf and passage.",
+      "Lead the camera through a readable spatial reveal; shelves that represent data keep stable identities when reorganized."
+    ],
+    "observable_checks": [
+      "The viewer can find the main reading space and any graph/data meaning has a legend rather than relying on guessed symbolism.",
+      "Inspect one focal object close up and the complete route or spatial relationship from an overview."
+    ]
+  },
+  "known_limits": [
+    "Authored fictional setting guidance; no rendered artifact or runtime improvement has been observed for this record.",
+    "This proposal does not establish historical, cultural, scientific or engineering facts."
+  ],
+  "creative_affordances": [
+    "Combine with surreal, papercraft or cinematic staging; invented library geometry is not a valid map of a real information architecture unless declared.",
+    "Replace motifs or combine settings to suit the user brief; maintain a readable organizing idea rather than treating these suggestions as a fixed asset list."
+  ],
+  "related_ids": [
+    "knowledge.framed-shelter",
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

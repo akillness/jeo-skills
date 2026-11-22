@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.morph-expression-channel-ownership",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "motion-profile",
+  "title": {
+    "en": "Morph expression channel ownership"
+  },
+  "aliases": {
+    "en": [
+      "facial morph envelope",
+      "expression blend-shape playback",
+      "morph weight arbitration"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "products-assemblies"
+  ],
+  "summary": "Assign each expression morph channel to animation, procedural behavior or direct interaction at a given time, then combine only through declared envelopes and reset rules.",
+  "objective": "Facial and expressive shape-key playback remains stable when clips, gaze/blink logic and user controls overlap, without stale or silently overwritten weights.",
+  "applies_when": [
+    "Blender relative shape keys are exported as glTF morph targets for facial or expressive animation.",
+    "Animation clips and procedural controls may both write morph weights."
+  ],
+  "subject_terms": [
+    "expression morph",
+    "shape key",
+    "morph weight",
+    "blink",
+    "facial animation",
+    "channel owner"
+  ],
+  "tags": [
+    "motion-profile",
+    "morph",
+    "expression",
+    "channel-ownership"
+  ],
+  "intent_signals": [
+    "blend facial morph clips with procedural blinking",
+    "prevent animation mixer from overwriting morph slider",
+    "reset shape key weights between actions"
+  ],
+  "example_prompts": [
+    "Play a smile clip while a procedural blink owns eyelid channels.",
+    "Expose an expression slider that temporarily takes ownership from clip animation."
+  ],
+  "negative_signals": [
+    "Writing a morphTargetInfluences entry directly while an active track writes the same property with no arbitration.",
+    "Treating expression weights as physical muscle force or collision deformation."
+  ],
+  "not_for": [
+    "Full morph attribute/topology correspondence validation.",
+    "Physics-driven soft-body deformation."
+  ],
+  "content": {
+    "principles": [
+      "Use a channel ownership table: for each named expression, declare whether a clip, procedural system, interaction, or composed envelope writes its weight in each state. First inspect the actual loaded track binding: a glTF weight channel may bind the complete morphTargetInfluences vector rather than one independently owned named entry.",
+      "Blender relative shape keys and glTF morph targets are delta-based, but this profile focuses on playback weights and ownership. Validate full vertex/attribute correspondence with the dedicated topology-compatibility profile.",
+      "Order composition deliberately. Examples include animation base plus bounded blink offset, mutually exclusive viseme selection, or an interaction override that releases back to the current evaluated clip weight."
+    ],
+    "implementation": [
+      "In Blender, preserve stable Basis-relative shape-key names, preview combinations, key intended values, and enable both shape-key data and shape-key animation export. Reset unkeyed shape keys between exported actions when clips must start neutral.",
+      "In Three.js, resolve names through each Mesh.morphTargetDictionary and route writes through one channel arbiter. Inspect imported morph-track bindings: when a clip owns the whole morphTargetInfluences vector, either construct validated indexed tracks for independently owned entries or evaluate the clip into a base vector and apply one explicit post-mixer vector composer every update. A direct single-index write made before mixer.update is not protected from a later whole-vector animation write.",
+      "Capture default weights after load. On stop, interrupt, model swap or reset, restore declared defaults and clear procedural envelopes; report missing names or differing primitive dictionaries instead of shifting indices silently."
+    ],
+    "observable_checks": [
+      "Neutral, single-expression and combined-expression fixtures match the declared channel table, with no stale smile or blink after stop/reset.",
+      "While a direct slider owns one channel, an active whole-vector glTF morph track changes other expressions but cannot overwrite that channel after mixer evaluation; release returns to the current evaluated base without a discontinuity under the chosen indexed-track or post-mixer composition policy.",
+      "Every declared expression name resolves to the intended influence index on each relevant mesh, and topology compatibility is linked to its separate validation result."
+    ]
+  },
+  "related_ids": [
+    "knowledge.blender-deformation-animation-handoff",
+    "knowledge.morph-target-topology-compatibility",
+    "knowledge.animation-layer-track-mask",
+    "knowledge.three-animation-mixer-adapter"
+  ],
+  "creative_affordances": [
+    "Expressions may be realistic, graphic, creature-like, mechanical, symbolic or deliberately impossible.",
+    "Procedural envelopes may encode blinks, breathing, speech accents, damage or audience interaction."
+  ],
+  "known_limits": [
+    "Morph weights are controls over rendered deltas, not a biomechanical or physical guarantee.",
+    "The cited Mesh docs call `[0,1]` typical, not universal; this record requires a project-owned range/clamp policy.",
+    "No shape-key export or morph playback was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.motion-blender-relative-shape-keys",
+      "statement": "Blender relative shape keys define each shape relative to the Basis or another key and combine their weighted differences additively.",
+      "scope": "Blender 4.5 shape-key authoring model.",
+      "source_refs": [
+        {
+          "source_id": "source.motion-blender-shape-keys",
+          "locator": "Relative or Absolute Shape Keys; Basis"
+        }
+      ]
+    },
+    {
+      "id": "claim.motion-gltf-morph-weight-animation",
+      "statement": "glTF morph targets contain attribute deltas and animation may target morph weights; all primitives of a mesh use the same target count and order.",
+      "scope": "glTF 2.0.1 transport facts; detailed attribute validation belongs to the related topology profile.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-khronos-gltf-animation",
+          "locator": "Sections 3.7.2.2 Morph Targets and 3.11 Animations"
+        }
+      ]
+    },
+    {
+      "id": "claim.motion-three-morph-controls",
+      "statement": "Three.js Mesh exposes a morph target name-to-index dictionary and influence array when morph targets are detected.",
+      "scope": "Live Three.js Mesh API; project range and ownership policies are authored guidance.",
+      "source_refs": [
+        {
+          "source_id": "source.motion-three-mesh",
+          "locator": "morphTargetDictionary, morphTargetInfluences and updateMorphTargets"
+        }
+      ]
+    }
+  ]
+}

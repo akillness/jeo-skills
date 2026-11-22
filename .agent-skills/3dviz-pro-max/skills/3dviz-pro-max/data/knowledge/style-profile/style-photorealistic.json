@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-photorealistic",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Photorealistic appearance goal"
+  },
+  "aliases": {
+    "en": [
+      "photoreal appearance",
+      "realistic product rendering",
+      "photo-like 3D",
+      "photoreal",
+      "hero product shot"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "architecture-interiors"
+  ],
+  "summary": "Aim for a plausible photographed appearance through consistent scale, construction detail and a deliberate lighting setup, without claiming measured fidelity.",
+  "objective": "Reference comparisons reveal which proportions and details are supported; artificial-looking scale, intersections or clipped highlights prompt revision.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "photorealistic"
+  ],
+  "subject_terms": [
+    "photoreal appearance",
+    "realistic product rendering",
+    "photo-like 3D",
+    "art direction",
+    "photoreal",
+    "hero product shot"
+  ],
+  "intent_signals": [
+    "Use photorealistic rendering",
+    "Aim for a plausible photographed appearance"
+  ],
+  "example_prompts": [
+    "Present a photo-like desk lamp with readable hinges and explicit assumptions about the unmeasured finish."
+  ],
+  "content": {
+    "principles": [
+      "Aim for a plausible photographed appearance through consistent scale, construction detail and a deliberate lighting setup, without claiming measured fidelity."
+    ],
+    "implementation": [
+      "Model meaningful bevels, seams and thickness from available reference; prioritize the actual camera distance before adding hidden microdetail.",
+      "Separate materials by intended finish and use a coherent light environment; document invented surface values rather than presenting them as measurements.",
+      "Compose an inspection or photographic view with believable framing; move parts according to their declared mechanism, not a realism label.",
+      "Build the environment before any light: PMREMGenerator over RoomEnvironment (or a 4k equirectangular HDRI) into scene.environment at intensity 1.0, then add the DirectionalLight key at 3.0 purely for the shaping shadow, so removing the key still leaves a plausible image.",
+      "Set renderer.shadowMap.type = PCFSoftShadowMap, key shadow.mapSize 2048, shadow.bias -0.0002, shadow.normalBias 0.02, and a shadow camera extent 1.5x the subject bounding box; bevel every hard edge 2-5 mm so it catches a highlight."
+    ],
+    "observable_checks": [
+      "Reference comparisons reveal which proportions and details are supported; artificial-looking scale, intersections or clipped highlights prompt revision."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Photographic credibility comes from the environment and from material variety, not from light count, so the numbers put the image-based lighting first and give the key a single job: one shaping shadow at a 4:1 ratio measured on an 18% grey card. AgX at exposure 1.0 is chosen because it holds saturated highlights without the magenta shift that shows up under ACESFilmic on bright product surfaces, and the wide roughness range exists to force at least three distinct finishes into every frame.",
+    "values": {
+      "feeling": [
+        "credible",
+        "tactile",
+        "quiet"
+      ],
+      "palette": [
+        {
+          "hex": "#101215",
+          "role": "deepest shadow / contact occlusion"
+        },
+        {
+          "hex": "#4a4f56",
+          "role": "backdrop mid, cool grey"
+        },
+        {
+          "hex": "#b7b3ad",
+          "role": "neutral 60% surface value"
+        },
+        {
+          "hex": "#e8e2d6",
+          "role": "warm bounce / specular highlight"
+        },
+        {
+          "hex": "#b8794a",
+          "role": "single warm accent (leather, wood, brand cue)"
+        }
+      ],
+      "value_structure": "45/40/15 dark/mid/light; a near-90% white and a near-3% black must both appear somewhere in frame to anchor the exposure",
+      "saturation_rule": "albedo <= 25% HSL saturation except one accent at <= 55%; colour should arrive from the light and the environment, not from the base colour",
+      "sky": {
+        "model": "hdri",
+        "zenith": "#cdd6e0",
+        "horizon": "#e8e2d6"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#cdd6e0",
+        "density": 0.008
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#fff4e5",
+          "intensity": 3.0,
+          "elevation_deg": 42,
+          "azimuth_deg": 135,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "RectAreaLight",
+          "color": "#e6eef7",
+          "intensity": 2.5,
+          "size_m": [
+            2.0,
+            1.2
+          ],
+          "elevation_deg": 20,
+          "azimuth_deg": 250,
+          "castShadow": false
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#dbe6f5",
+          "intensity": 1.2,
+          "elevation_deg": 25,
+          "azimuth_deg": 300,
+          "castShadow": false
+        },
+        "ratio": "key:fill ~ 4:1 on an 18% grey card; the rim reads about one stop above the background it separates from"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "AgX",
+        "exposure": 1.0
+      },
+      "camera": {
+        "fov_deg": 35,
+        "height_m": 1.2,
+        "pitch_deg": -5,
+        "orbit": {
+          "minPolar_deg": 55,
+          "maxPolar_deg": 88,
+          "minDist_m": 0.6,
+          "maxDist_m": 6
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.08,
+          0.95
+        ],
+        "metalness": [
+          0,
+          1
+        ],
+        "notes": "at least three roughness values per asset (0.15 polished, 0.45 satin, 0.85 cast); metalness stays binary 0 or 1; shadow.bias -0.0002 with normalBias 0.02 on the key to keep acne off bevels; 2-5 mm bevels everywhere"
+      },
+      "motion": {
+        "sway_period_s": [
+          8.0,
+          12.0
+        ],
+        "ease": "cubic in-out",
+        "hold_ms": 900
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.0,
+          "strength": 0.12,
+          "radius": 0.4
+        },
+        "vignette": 0.15,
+        "grain": 0.02,
+        "dof": "focus 1.2 m at f/4 for hero stills; off during interactive orbit"
+      },
+      "signature_technique": "an HDRI or RoomEnvironment drives every reflection and the key contributes only the shaping shadow, so disabling the key leaves a complete, plausible image",
+      "never": [
+        "a single PointLight as key",
+        "untinted white ambient",
+        "one roughness value shared by every material",
+        "geometry without bevels or wall thickness"
+      ]
+    }
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for AgX tone mapping at exposure 1.0; re-tune every intensity, fog density and bloom threshold if you change the tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with restrained stylization for emphasis; this is an appearance ambition, not evidence of correct engineering, anatomy or physical simulation."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

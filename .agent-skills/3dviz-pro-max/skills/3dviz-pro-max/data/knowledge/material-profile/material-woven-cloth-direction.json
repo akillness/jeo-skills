@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.material-woven-cloth-direction",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Woven cloth with yarn direction and scale"
+  },
+  "aliases": {
+    "en": [
+      "cloth weave appearance",
+      "woven textile reflectance"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "products-assemblies",
+    "architecture-interiors"
+  ],
+  "summary": "Connect weave orientation and yarn scale to cloth panels while keeping surface appearance distinct from drape mechanics.",
+  "objective": "Make a woven cloth panel retain coherent yarn direction and readable finish through folds.",
+  "tags": [
+    "material-profile",
+    "cloth",
+    "woven fabric",
+    "warp"
+  ],
+  "subject_terms": [
+    "cloth",
+    "woven fabric",
+    "warp",
+    "weft",
+    "yarn",
+    "weave",
+    "sheen"
+  ],
+  "intent_signals": [
+    "Make a woven cloth panel retain coherent yarn direction and readable finish through folds."
+  ],
+  "example_prompts": [
+    "Create a woven cloak whose thread direction follows the cut panels and whose hems remain readable at portrait distance."
+  ],
+  "content": {
+    "principles": [
+      "Separate panel construction and drape geometry from the small-scale yarn/fiber appearance. A sheen control alone does not create a weave or solve cloth mechanics.",
+      "Direction-dependent cloth appearance can be modeled at different detail levels; a fiber-volume renderer is not required for a stylized textile."
+    ],
+    "implementation": [
+      "Assign two local weave directions to each panel and carry them through the surface coordinates. At seams, allow deliberate changes of panel orientation instead of forcing one global projection.",
+      "Model folds and hem thickness in geometry. Use explicit yarn crossings only for views that resolve them; at greater distance use filtered texture or an effective response and check that repeating lines do not dominate.",
+      "Rotate a strip light around a flat swatch and then the draped panel. Compare broad reflectance changes separately from visible weave texture and tune fine roughness without changing the fold silhouette."
+    ],
+    "observable_checks": [
+      "The chosen warp/weft pattern follows a panel across a fold and changes only at an intended seam or pattern boundary.",
+      "At the delivery camera distance, the weave reads as fabric rather than oversized rope or flickering checkerboard; reduce detail when unresolved.",
+      "Pausing motion leaves the texture attached to the cloth surface rather than drifting through world space."
+    ]
+  },
+  "known_limits": [
+    "No elasticity, bending stiffness, friction, tear resistance or complete fiber-level light transport is inferred from the finish.",
+    "Authored modeling and inspection guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Painted checks, exaggerated chunky weave or simplified smooth cloth can preserve panel direction without a prescribed shader."
+  ],
+  "related_ids": [
+    "knowledge.dielectric-surface",
+    "knowledge.material-response-check"
+  ],
+  "claims": [
+    {
+      "id": "claim.material-depth-woven-cloth-direction",
+      "statement": "Irawan and Marschner's woven-cloth model relates appearance to fiber characteristics, yarn geometry and weave pattern, and compares view/light-dependent reflectance and texture against measurements.",
+      "scope": "Author-reported woven cloth appearance model; not a model of stretch or drape.",
+      "source_refs": [
+        {
+          "source_id": "source.material-depth-woven-reflection",
+          "locator": "Abstract paragraphs 1-3"
+        }
+      ]
+    }
+  ]
+}

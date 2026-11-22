@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "id": "recipe.reversible-branching-storybook-scene",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Reversible branching storybook spatial scene"
+  },
+  "aliases": {
+    "en": [
+      "interactive pop-up storybook",
+      "branching 3D picture book",
+      "replayable story diorama"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "Turn narrative choices into distinct spatial dioramas while preserving authoritative branch state, checkpoints and a truthful back/reset contract.",
+  "objective": "Let a reader choose a branch, see the active story state embodied in a three-dimensional page scene, revisit an earlier checkpoint, try another branch, and restart with the same initial state.",
+  "claims": [
+    {
+      "id": "claim.experience-ink-choice-save-state",
+      "statement": "Ink's official runtime guide presents story execution as continuing content until choices are available, selecting a current choice by index, and saving or restoring the runtime story state through JSON serialization; it also exposes variables and variable observers for reflecting story state in a host interface.",
+      "scope": "Ink runtime API behavior documented for integration. The recipe's checkpoint stack, 3D scene binding, transition cancellation and reset semantics are authored host-application responsibilities and do not require Ink.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-ink-running-story",
+          "locator": "Getting started with the runtime API, Saving and loading, Marking up your ink content with tags, and Setting/getting ink variables / Variable observers"
+        }
+      ]
+    }
+  ],
+  "entities": [
+    {
+      "name": "Story node and choice edge",
+      "guidance": "Give every authored node and outgoing choice a stable ID; the visible choice label maps to one edge and never relies on current array order after state restoration."
+    },
+    {
+      "name": "Page diorama",
+      "guidance": "Bind each story node to a spatial layout, object-state map, character poses and camera anchors; reuse stable entity IDs for characters and important props across branches."
+    },
+    {
+      "name": "Checkpoint stack",
+      "guidance": "Store the narrative-engine state plus host scene state at each committed choice so Back restores a snapshot rather than attempting to reverse side effects."
+    },
+    {
+      "name": "Book mechanism and controls",
+      "guidance": "Keep page-turn phase, focus, choice controls, branch trail and restart action separate from narrative variables; presentation transitions cannot commit choices."
+    }
+  ],
+  "state_contract": {
+    "model": "A finite authored story graph runs from one initial snapshot. One transactional state contains narrative-engine serialization or an equivalent node/variable record, stable entity state, active page ID, branch trail, checkpoint stack, random seed or resolved authored outcome, selection, camera and transition generation. Choosing an edge first saves the current checkpoint, then commits the narrative and scene target atomically. Back restores the prior checkpoint exactly; Restart reloads the immutable initial snapshot.",
+    "authority": "Serialized narrative state and the host's versioned scene-state map are co-authoritative parts of one checkpoint. Page meshes, character animation, captions and branch-map highlights derive from that checkpoint; an animation callback may finish only when its transition generation is still current.",
+    "actions": [
+      "Advance authored text until a choice or terminal node",
+      "Focus and activate one available choice",
+      "Commit the choice and transition to its page diorama",
+      "Inspect a persistent character or prop without advancing the story",
+      "Go Back by restoring the previous checkpoint",
+      "Replay or choose a different outgoing edge from the restored node",
+      "Restart from the immutable initial snapshot",
+      "Cancel or complete the current page transition without changing the committed branch"
+    ]
+  },
+  "tags": [
+    "interactive-storybook",
+    "branching-narrative",
+    "spatial-diorama",
+    "checkpoint",
+    "reversible-interaction"
+  ],
+  "subject_terms": [
+    "branching story graph",
+    "narrative checkpoint",
+    "pop-up book diorama",
+    "story state serialization",
+    "choice history",
+    "branch replay"
+  ],
+  "intent_signals": [
+    "make a 3D storybook where I can undo choices",
+    "show each narrative branch as a different spatial scene",
+    "let me replay a chapter from a checkpoint",
+    "build an interactive pop-up book with a reliable restart"
+  ],
+  "example_prompts": [
+    "Build a three-scene pop-up storybook where two choices alter the same forest clearing, Back restores the exact prior page, and Restart reproduces the opening.",
+    "Create a branching 3D picture book with a visible choice trail, inspectable recurring props and immediate page changes under reduced motion."
+  ],
+  "negative_signals": [
+    "linear cutscene with cosmetic buttons",
+    "random scene swap presented as a narrative branch",
+    "flat text reader with an unrelated spinning book",
+    "undo that merely changes the label while leaving later state active"
+  ],
+  "not_for": [
+    "Open-ended generative narrative without a reproducible state or checkpoint policy.",
+    "External irreversible actions such as purchases, messages or shared-world mutations presented as if Back can undo them.",
+    "A paper-engineering or cloth simulation whose main goal is mechanically accurate folding rather than narrative interaction."
+  ],
+  "invariants": [
+    "Only an available choice from the current committed story state can be activated; stale controls from a departing page cannot commit later.",
+    "Narrative variables, active node, entity states, branch trail and selected page agree after every choice, Back and Restart.",
+    "Back restores a stored checkpoint and removes descendants from the active trail; it never guesses an inverse for a branch side effect.",
+    "Restart from any branch reproduces the initial node, variables, entity transforms, selection and camera for the same declared seed.",
+    "A recurring character or prop retains its stable identity across branch-specific meshes and material variants.",
+    "Three-dimensional changes communicate branch consequences through layout, occlusion, proximity or object state; decorative camera motion alone is insufficient."
+  ],
+  "motion_guidance": [
+    "Stage a page change as close current layer, turn or crossfade, then reveal the committed diorama; cancel all remaining phases when Back, Restart or another valid action changes the transition generation.",
+    "Use authored character clips tied to committed node state and stop them cleanly when restoring a checkpoint; avoid universal idle bobbing.",
+    "Offer immediate state replacement under reduced motion while preserving the same active node, branch trail and focus destination."
+  ],
+  "creative_affordances": [
+    "The book may unfold as paper theatre, floating panels, nested rooms or a tabletop set; each branch should still have a coherent spatial consequence.",
+    "Show branch history as bookmarks, page-edge marks or a small node trail without revealing future content unless the brief asks for it.",
+    "Let alternate branches reuse a location with changed paths, props, weather or character positions so the reader can compare consequences."
+  ],
+  "known_limits": [
+    "The cited Ink API establishes runtime choice and serialization mechanisms; it does not prove the host scene checkpoint is complete or that all external side effects are reversible.",
+    "Save compatibility across changed story content or engine versions requires migration policy outside this recipe.",
+    "Pop-up articulation is an authored visual proposal and does not establish manufacturable paper geometry or material mechanics.",
+    "No Ink program, renderer, transition, saved game, browser interaction or narrative usability study was executed for this draft."
+  ],
+  "object_craft": [
+    {
+      "family": "Bound storybook",
+      "structure": "Separate cover boards, spine, page block, individual active leaves and page-edge landmarks; keep hinge axes consistent and prevent the active diorama from intersecting the gutter at its documented resting pose.",
+      "material": "Use fibrous matte paper, slightly stiffer cover surfaces and restrained edge wear; printed marks should follow page surfaces rather than float in world space.",
+      "articulation": "Drive page rotation and pop-up deployment from one authored page phase with per-part curves; this is display kinematics rather than simulated paper folding."
+    },
+    {
+      "family": "Pop-up scene assembly",
+      "structure": "Group foreground tabs, midground character planes or low-relief forms, and background gates around explicit attachment seams so depth supports the story beat.",
+      "material": "Vary value, edge treatment and modest thickness by depth layer while keeping recurring entity colors subordinate to readable identity and selection cues.",
+      "articulation": "Bind folds and sliders to the active page phase; branch-specific props enter from named concealed or folded states rather than appearing from an unexplained scale of zero."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Book leaves, pop-up parts and characters use deterministic authored transforms so checkpoint restoration is exact. No paper elasticity, collision response, fluid wind or force-based character motion is claimed.",
+    "timestep": "Evaluate transforms from normalized transition phase and current checkpoint time; restoration may set phase directly without integrating through intermediate frames.",
+    "state": [
+      "Committed checkpoint, active page ID and transition generation",
+      "Normalized page phase and derived transforms for leaves, tabs, characters and props"
+    ],
+    "colliders": [
+      "Optional simplified picking volumes keyed to story entities",
+      "No physical contact colliders are needed unless the brief adds manipulable pieces with a separately declared model"
+    ],
+    "driving": [
+      "One transition phase drives the articulated page assembly through authored curves.",
+      "Narrative state selects the target configuration; render transforms never write back story variables."
+    ],
+    "contact": [
+      "Treat visible page intersections as an authoring failure checked at resting and sampled transition phases, not as a collision solver input.",
+      "Selection uses stable semantic hit proxies and is disabled for props unavailable in the restored node."
+    ],
+    "checks": [
+      "Sample the page transition including endpoints and extrema; important panels do not cross the cover, gutter or camera near plane in the declared view.",
+      "Choose each edge, inspect an entity, go Back and choose the alternate edge; restored checkpoint hashes and entity identities match before the second choice.",
+      "Interrupt page motion with Back and Restart; obsolete callbacks cannot reveal or commit an abandoned branch."
+    ]
+  },
+  "related_ids": [
+    "recipe.lantern-keeper-puppet",
+    "knowledge.guided-exploration-reversible-steps",
+    "knowledge.inspectable-selection",
+    "knowledge.interruptible-focus",
+    "knowledge.state-playback",
+    "knowledge.theme-fantasy-woodland"
+  ]
+}

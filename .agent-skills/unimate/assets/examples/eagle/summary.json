@@ -1,0 +1,43 @@
+{
+  "name": "Eagle",
+  "profile": "general",
+  "inputs": [
+    "Eagle.glb"
+  ],
+  "annotate": "file",
+  "annotation": "assets/examples/eagle/annotation.json",
+  "animated": false,
+  "n_joints_export": 51,
+  "rig_glb": null,
+  "stats_dataset": "general",
+  "dropped_translation": {
+    "max_share_of_extent": 0.0,
+    "clip": null,
+    "joint": null
+  },
+  "face_pair": {
+    "r_hip": {
+      "raw": "Bip01_R_Thigh",
+      "clean": "Right Thigh"
+    },
+    "l_hip": {
+      "raw": "Bip01_L_Thigh",
+      "clean": "Left Thigh"
+    },
+    "source": "thigh"
+  },
+  "annotation_notes": [
+    "annotation from assets/examples/eagle/annotation.json"
+  ],
+  "n_joints": 51,
+  "model_joint_limit": {
+    "max_joints": 71,
+    "source": "released UniML3D models",
+    "fits": true
+  },
+  "n_clips": 0,
+  "cond": "assets/examples/eagle/cond.npy",
+  "canonical_glb": "assets/examples/eagle/Eagle.glb",
+  "notes": [],
+  "preview": "assets/examples/eagle/preview.png"
+}

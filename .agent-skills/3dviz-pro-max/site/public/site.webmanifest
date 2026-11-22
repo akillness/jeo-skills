@@ -1,0 +1,13 @@
+{
+  "name": "3Dviz Pro Max",
+  "short_name": "3Dviz",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#fffaf2",
+  "background_color": "#fffaf2",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/favicon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

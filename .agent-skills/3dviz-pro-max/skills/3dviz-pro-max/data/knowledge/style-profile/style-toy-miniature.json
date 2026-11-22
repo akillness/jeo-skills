@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-toy-miniature",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Toy miniature scale cues"
+  },
+  "aliases": {
+    "en": [
+      "toy diorama",
+      "miniature set",
+      "collectible figure style",
+      "toy photography",
+      "figurine style"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies"
+  ],
+  "summary": "Present the subject as a deliberately crafted small object using a readable base, tactile parts and selective oversizing.",
+  "objective": "The base and part treatment convey the intended miniature reading, and focus effects never hide the currently selected component.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "toy-miniature"
+  ],
+  "subject_terms": [
+    "toy diorama",
+    "miniature set",
+    "collectible figure style",
+    "art direction"
+  ],
+  "intent_signals": [
+    "Present the scene as a toy miniature",
+    "Emphasize tactile parts and a crafted display base"
+  ],
+  "example_prompts": [
+    "Build a collectible miniature village on a crafted base with individually readable doors."
+  ],
+  "content": {
+    "principles": [
+      "Present the subject as a deliberately crafted small object using a readable base, tactile parts and selective oversizing."
+    ],
+    "implementation": [
+      "Thicken fragile-looking parts for the imagined toy design, separate assembly seams and keep one consistent miniature scale cue.",
+      "Use clean painted finishes, small wear accents and a studio key; shallow-focus treatment is optional and should not obscure inspection.",
+      "Use a tabletop-height orbit or slightly elevated view, then offer close inspection; restrained mechanical or playful motion can reinforce the crafted object.",
+      "Thicken any part thinner than 1.5 mm at true scale to 2.5-3 mm, and keep one repeated scale cue in every view (a 2.0 m door at 1:24 is 83 mm).",
+      "Shoot from 25-45 degrees above the base at 0.4-1.2 m orbit distance; a 55 mm-equivalent lens at f/2.8 gives a 60-90 mm sharp band, which is the actual miniature cue."
+    ],
+    "observable_checks": [
+      "The base and part treatment convey the intended miniature reading, and focus effects never hide the currently selected component."
+    ]
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at renderer.toneMappingExposure 1.05; re-tune intensities and fog density under a different tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with low-poly, clay or glass accents; toy appearance does not change the units of an underlying factual model."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "The miniature read comes from viewing geometry, not from the object: a high 35 degree down-pitch at 0.4-1.6 m with a 70 mm depth-of-field band mimics a macro lens over a tabletop, which is why the orbit distances are short and the polar range stays above the object. Lighting is product-clean at 2.5:1 with a 0.9 rim so no part disappears during inspection, and the depth-of-field band is explicitly forbidden from blurring the currently selected component.",
+    "values": {
+      "feeling": [
+        "crafted",
+        "precise",
+        "collectible"
+      ],
+      "palette": [
+        {
+          "hex": "#26303f",
+          "role": "display base and shadow"
+        },
+        {
+          "hex": "#4f7fb5",
+          "role": "painted body mid"
+        },
+        {
+          "hex": "#e8eef3",
+          "role": "moulded light plastic"
+        },
+        {
+          "hex": "#f4b942",
+          "role": "accent decal / warning stripe"
+        },
+        {
+          "hex": "#c14b3a",
+          "role": "secondary accent"
+        }
+      ],
+      "value_structure": "30/50/20 dark/mid/light; the display base stays one stop under the object",
+      "saturation_rule": "base and backdrop <= 30% saturation; the toy body up to 75%",
+      "sky": {
+        "model": "solid",
+        "zenith": "#dfe6ec",
+        "horizon": "#dfe6ec"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#dfe6ec",
+        "density": 0.006
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#fff4e4",
+          "intensity": 3.0,
+          "elevation_deg": 55,
+          "azimuth_deg": 300,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#cfe0f0",
+          "ground": "#3c4652",
+          "intensity": 1.2
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#ffffff",
+          "intensity": 0.9,
+          "elevation_deg": 20,
+          "azimuth_deg": 135,
+          "castShadow": false
+        },
+        "ratio": "key:fill ~ 2.5:1 - product-clean, no part hidden in a mystery shadow"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.05
+      },
+      "camera": {
+        "fov_deg": 45,
+        "height_m": 0.35,
+        "pitch_deg": -35,
+        "orbit": {
+          "minPolar_deg": 25,
+          "maxPolar_deg": 70,
+          "minDist_m": 0.4,
+          "maxDist_m": 1.6
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.3,
+          0.7
+        ],
+        "metalness": [
+          0.0,
+          0.15
+        ],
+        "notes": "injection-moulded plastic 0.35, matte paint 0.6, rubber 0.7; 0.2 mm parting-line bevel and a 3% edge-wear mask on the accent colour"
+      },
+      "motion": {
+        "sway_period_s": [
+          4.0,
+          6.0
+        ],
+        "ease": "ease-out cubic, interruptible",
+        "hold_ms": 300
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.2,
+          "strength": 0.1,
+          "radius": 0.3
+        },
+        "vignette": 0.2,
+        "grain": 0.02,
+        "dof": "focus on the hero part, 70 mm sharp band at f/2.8 equivalent; never narrow enough to blur the selected component"
+      },
+      "signature_technique": "a 35 degree down-angle at 0.4-1.6 m paired with a 70 mm depth-of-field band, so the eye reads the subject as small rather than as a scaled building",
+      "never": [
+        "eye-level horizon framing",
+        "depth of field that blurs the selected part",
+        "untinted white ambient light",
+        "full-scale environmental fog density",
+        "flat black background"
+      ]
+    }
+  }
+}

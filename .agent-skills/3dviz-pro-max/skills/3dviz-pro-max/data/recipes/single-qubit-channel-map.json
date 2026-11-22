@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "id": "recipe.single-qubit-channel-map",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Single-qubit quantum-channel map"
+  },
+  "aliases": {
+    "en": [
+      "qubit channel Bloch map",
+      "Kraus channel inspector"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra",
+    "abstract-systems-data",
+    "waves-optics-fields"
+  ],
+  "summary": "Apply a supplied finite Kraus representation to single-qubit density matrices and compare the input Bloch ball with the channel output ellipsoid or shifted body.",
+  "objective": "Apply a supplied finite Kraus representation to single-qubit density matrices and compare the input Bloch ball with the channel output ellipsoid or shifted body.",
+  "tags": [
+    "quantum channel",
+    "Kraus operators",
+    "CPTP",
+    "Bloch map"
+  ],
+  "subject_terms": [
+    "single-qubit channel",
+    "Kraus operator",
+    "operator sum",
+    "trace preserving",
+    "complete positivity",
+    "Bloch affine map"
+  ],
+  "intent_signals": [
+    "Map the Bloch ball through a supplied qubit channel.",
+    "Compare depolarizing, dephasing and amplitude-damping channel presets."
+  ],
+  "example_prompts": [
+    "Map the Bloch ball through a supplied qubit channel."
+  ],
+  "negative_signals": [
+    "decorative motion presented as computation",
+    "camera position changes authoritative values",
+    "Treating a channel as a calibrated device noise model without provenance."
+  ],
+  "not_for": [
+    "Treating a channel as a calibrated device noise model without provenance.",
+    "Reversing a nonunitary channel by inflating the Bloch ball."
+  ],
+  "entities": [
+    {
+      "name": "Kraus ledger",
+      "guidance": "Show 1..8 supplied 2×2 complex operators and the completeness residual."
+    },
+    {
+      "name": "Input/output state pair",
+      "guidance": "Compute rho_out=sum K_a rho_in K_a† and separate state validity from display projection."
+    },
+    {
+      "name": "Bloch image",
+      "guidance": "Sample a fixed diagnostic sphere mesh through the derived affine map r_out=A r_in+t; label it an image of state space, not a physical object."
+    }
+  ],
+  "state_contract": {
+    "model": "Accept 1..8 finite complex 2×2 Kraus operators per supplied channel and eps in [1e-12,1e-6]. Require ||sum_a K_a†K_a-I||_F<=eps before enabling the trace-preserving channel. For any valid single-qubit rho compute E(rho)=sum_a K_a rho K_a† and verify Hermiticity, trace one and PSD within tolerance. Derive affine Bloch coefficients from action on I and Pauli X,Y,Z, then map r_out=A r_in+t. Compose two supplied channels in explicit order E2∘E1 with the complete derived product set {N_b M_a}, allowing up to 64 derived operators. Never truncate that set; reject any further composition that would exceed the declared derived budget, and never reverse order by display layout. Exact presets declare their parameter conventions separately.",
+    "authority": "Supplied finite tensors, ordered identifiers, basis conventions and provenance own semantic state. Blender/glTF assets are display-only; Three.js owns validation, calculation, linked selection, failure states and exact reset.",
+    "actions": [
+      "Select a Kraus operator or input state.",
+      "Sweep a bounded preset parameter.",
+      "Compose two validated channels in declared order.",
+      "Reset operators, channel order, input and camera."
+    ]
+  },
+  "invariants": [
+    "The completeness residual, output trace and minimum eigenvalue remain visible.",
+    "Direct density-matrix output agrees with affine Bloch output for diagnostic states within tolerance.",
+    "Composition E2∘E1 agrees with sequential evaluation on I,X,Y,Z and selected states.",
+    "An invalid completeness relation disables CPTP labels rather than renormalizing each output."
+  ],
+  "motion_guidance": [
+    "Parameter sweeps show a family of maps, not elapsed physical time; channel composition stages use one immutable input."
+  ],
+  "creative_affordances": [
+    "Choose any coherent laboratory, constellation or sculptural art direction while preserving exact labels, selectable identity and non-color encodings."
+  ],
+  "known_limits": [
+    "Documentary authored recipe only; no model training, checkpoint execution, quantum hardware, Blender export, browser, renderer or interactive runtime was run.",
+    "glTF transports neutral display assets only; tensors, checkpoints, citations, basis order, dtype and provenance remain external data."
+  ],
+  "claims": [
+    {
+      "id": "claim.aiq-kraus-channel-map",
+      "statement": "A quantum channel has an operator-sum form E(rho)=sum_a M_a rho M_a† with sum_a M_a†M_a=I for trace preservation; channels compose in order, and common single-qubit channels contract or shift the Bloch ball.",
+      "scope": "Finite-dimensional channels and the examples in Preskill Chapter 3; no device calibration or Markovian-time claim.",
+      "source_refs": [
+        {
+          "source_id": "source.aiq-preskill-channels",
+          "locator": "Sections 3.2.1, 3.2.6, 3.3.1 and 3.4.1-.3; equations 3.32, 3.35, 3.75, 3.94-.105 and amplitude-damping discussion"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Quantum channel deformation instrument",
+      "structure": "Blender authors paired Bloch cages, operator cards and a composition gate; all exported transforms are neutral.",
+      "material": "Input/output surfaces differ by outline and texture as well as hue; invalid maps use a diagnostic frame, not a deformed ball.",
+      "articulation": "Three.js owns complex operator sums, completeness checks, affine-map derivation, parameter presets, composition order and reset."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Finite imported-data calculation and explanatory playback; no physical dynamics, model training, quantum device or causal attribution.",
+    "state": [
+      "ordered external data and provenance",
+      "declared dimensions, basis and numeric tolerance",
+      "derived readouts and selection state"
+    ],
+    "checks": [
+      "The completeness residual, output trace and minimum eigenvalue remain visible.",
+      "Direct density-matrix output agrees with affine Bloch output for diagnostic states within tolerance.",
+      "Composition E2∘E1 agrees with sequential evaluation on I,X,Y,Z and selected states."
+    ]
+  },
+  "related_ids": [
+    "recipe.single-qubit-bloch-ball",
+    "recipe.two-qubit-mixed-state-entanglement"
+  ]
+}

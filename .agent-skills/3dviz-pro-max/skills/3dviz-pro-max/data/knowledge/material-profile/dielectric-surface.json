@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.dielectric-surface",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Dielectric surface: wood, stone and painted parts"
+  },
+  "aliases": {
+    "en": [
+      "dielectric surface"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "rigid-mechanics"
+  ],
+  "summary": "Author nonmetal surfaces through finish, grain direction and controlled highlight comparisons.",
+  "objective": "Orbit the camera: the object remains readable and its finish differs visibly from the adjacent metal part.",
+  "tags": [
+    "material-profile",
+    "dielectric",
+    "surface"
+  ],
+  "example_prompts": [
+    "Author nonmetal surfaces through finish, grain direction and controlled highlight comparisons."
+  ],
+  "content": {
+    "principles": [
+      "Choose a surface story: cut timber, worn stone or painted shell. Do not use random noise as a substitute for fabrication direction.",
+      "Mechanical friction and optical roughness are separate scene decisions."
+    ],
+    "implementation": [
+      "For a nonmetal baseline use metalness 0; compare roughness candidates on the same object under a fixed light rig.",
+      "Align authored wood grain with the member length and keep mortar scale consistent across adjacent walls.",
+      "Reserve geometric relief for silhouette-changing chips; normal maps alter lighting rather than mesh shape."
+    ],
+    "observable_checks": [
+      "Orbit the camera: the object remains readable and its finish differs visibly from the adjacent metal part.",
+      "Inspect a silhouette close-up; detail claimed as geometry actually appears at the edge."
+    ]
+  },
+  "known_limits": [
+    "PBR settings do not identify species, strength, friction or measured surface properties.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+  ],
+  "related_ids": [
+    "recipe.fantasy-village-diorama",
+    "recipe.terrain-island",
+    "knowledge.three-pbr-adapter"
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-dielectric-surface",
+      "statement": "MeshStandardMaterial uses metalness 0 for nonmetals; normal maps change shading without changing geometry.",
+      "scope": "Renderer parameter semantics only.",
+      "source_refs": [
+        {
+          "source_id": "source.three-standard-material",
+          "locator": "metalness; normalMap"
+        }
+      ]
+    }
+  ]
+}

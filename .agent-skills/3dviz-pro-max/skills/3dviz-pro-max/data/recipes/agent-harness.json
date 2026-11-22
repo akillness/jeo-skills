@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "id": "recipe.agent-harness",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Agent Harness execution map"
+  },
+  "aliases": {
+    "en": [
+      "agent harness"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data"
+  ],
+  "summary": "Explain an authored agent loop with explicit tool and observation boundaries.",
+  "objective": "Create an Agent Harness map where I can step an illustrative run from request to tool result and final response.",
+  "tags": [
+    "agent",
+    "harness"
+  ],
+  "example_prompts": [
+    "Create an Agent Harness map where I can step an illustrative run from request to tool result and final response."
+  ],
+  "entities": [
+    {
+      "name": "Harness boundary",
+      "guidance": "Use a frame enclosing planner, dispatcher and state store; spatial proximity is a chosen diagram layout."
+    },
+    {
+      "name": "Tools",
+      "guidance": "Give each tool a distinct labeled port and response path; errors use shape/text as well as color."
+    },
+    {
+      "name": "Event token",
+      "guidance": "Carry event ID and phase with each visible token; avoid implying that decorative routes are real network paths."
+    }
+  ],
+  "state_contract": {
+    "model": "Illustrative authored event trace: request, decision, tool-call, observation, continue or finish; no claim about a named vendor runtime.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Step one event.",
+      "Select tool-call/result pair.",
+      "Replay a failure branch and reset."
+    ]
+  },
+  "invariants": [
+    "Tool results cannot appear before the corresponding call in this authored trace.",
+    "Pending, succeeded and failed remain distinct.",
+    "State panel and animation read the same trace index."
+  ],
+  "motion_guidance": [
+    "Token travel illustrates ordering, not measured latency.",
+    "Separate pause of presentation from any external live process; default to labeled illustrative playback."
+  ],
+  "known_limits": [
+    "This is an invented architecture and example trace, not a universal agent architecture.",
+    "Live integration needs a source adapter and actual event evidence before it can be described as observed execution.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "object_craft": [
+    {
+      "family": "Harness boundary",
+      "structure": "Use a frame enclosing planner, dispatcher and state store; spatial proximity is a chosen diagram layout.",
+      "material": "Matte functional modules and distinct port outlines; event colors encode declared status, with matching labels."
+    },
+    {
+      "family": "Tools",
+      "structure": "Give each tool a distinct labeled port and response path; errors use shape/text as well as color.",
+      "material": "Matte functional modules and distinct port outlines; event colors encode declared status, with matching labels."
+    },
+    {
+      "family": "Event token",
+      "structure": "Carry event ID and phase with each visible token; avoid implying that decorative routes are real network paths.",
+      "material": "Matte functional modules and distinct port outlines; event colors encode declared status, with matching labels."
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "id": "recipe.irrigation-finite-scenario-envelope",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Finite irrigation scenario-envelope comparison"
+  },
+  "aliases": {
+    "en": [
+      "irrigation uncertainty scenarios",
+      "root-zone scenario envelope"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment",
+    "environments-dioramas"
+  ],
+  "summary": "Run the existing bounded root-zone budget over a finite supplied set of provenance-labeled scenarios under one shared forcing schedule, then display their daywise envelope without treating it as a probability distribution or confidence interval.",
+  "objective": "Compare a finite supplied ensemble of root-zone budget assumptions under identical forcing and reveal scenario spread, threshold crossings and invalid members without duplicating the underlying water-balance model.",
+  "tags": [
+    "irrigation scenarios",
+    "scenario envelope",
+    "root-zone budget",
+    "uncertainty provenance"
+  ],
+  "subject_terms": [
+    "finite scenario ensemble",
+    "shared forcing hash",
+    "depletion envelope",
+    "scenario provenance",
+    "not confidence interval"
+  ],
+  "intent_signals": [
+    "Compare finite irrigation assumptions under one forcing schedule.",
+    "Show a provenance-labeled root-zone scenario envelope without probabilistic claims."
+  ],
+  "example_prompts": [
+    "Compare five supplied TAW, initial-depletion and capillary-rise scenarios against the same 14-day weather and irrigation ledger."
+  ],
+  "negative_signals": [
+    "confidence interval from unweighted scenarios",
+    "new irrigation equation",
+    "field prescription"
+  ],
+  "not_for": [
+    "Probabilistic uncertainty, crop-yield forecasting, field-system sizing or replacing the underlying root-zone budget."
+  ],
+  "entities": [
+    {
+      "name": "Shared forcing ledger",
+      "guidance": "Hash one finite daily precipitation, runoff, irrigation and ETc schedule used unchanged by every scenario; display any intentionally shared capillary-rise input explicitly."
+    },
+    {
+      "name": "Scenario registry",
+      "guidance": "Store 2..32 stable scenario IDs, provenance, TAW, D0, optional RAW parameter and every declared differing input; absence remains unavailable rather than sampled."
+    },
+    {
+      "name": "Envelope and members",
+      "guidance": "At day i show accepted member D_i curves and their finite min/max band; show invalid members and stop days separately instead of dropping them silently."
+    }
+  ],
+  "state_contract": {
+    "model": "Compose recipe.root-zone-irrigation-budget without changing its equations. Accept 2..32 finite supplied scenarios with unique IDs/provenance and one byte-identical shared forcing ledger hash. Run the canonical budget independently for each scenario. A daywise envelope is available only over an explicitly named set of accepted members and equals [min_s D_s,i, max_s D_s,i]; preserve individual traces and invalid stop reasons. Scenario membership carries no probability unless an external probability model is separately supplied and reviewed.",
+    "authority": "The shared forcing hash, finite supplied scenario registry/provenance, explicit accepted-member set and each underlying canonical budget ledger own state. Blender/glTF provides one static neutral prism/forcing rail/glyph set; Three.js calls the related budget contract per member, computes only the declared descriptive min/max envelope, exposes failures and resets membership and forcing exactly.",
+    "actions": [
+      "Select the fixed scenario set and shared forcing ledger.",
+      "Toggle individual members and envelope.",
+      "Inspect threshold crossings and invalid stop reasons.",
+      "Change one supplied scenario assumption without changing shared forcing.",
+      "Reset membership, forcing and selected day."
+    ]
+  },
+  "invariants": [
+    "Every member references the identical shared forcing hash.",
+    "Envelope extrema are recomputed from the visibly declared accepted-member set; failed or missing members are never silently omitted.",
+    "The envelope is labeled a finite scenario range, not likelihood, quantile, confidence or forecast skill.",
+    "Underlying daily conservation and bounds remain owned by recipe.root-zone-irrigation-budget."
+  ],
+  "motion_guidance": [
+    "Advance all valid members on the same discrete day index; scrub restores stored member ledgers, and band interpolation is display-only."
+  ],
+  "creative_affordances": [
+    "Use small multiples or a translucent min/max ribbon with selectable member threads and a fixed shared-forcing rail."
+  ],
+  "known_limits": [
+    "Scenario spread reflects only the finite supplied assumptions; it does not quantify omitted uncertainty, parameter likelihood, calibration quality or prediction accuracy.",
+    "No scenario calculation, field dataset, Blender export, render or Three.js runtime was executed."
+  ],
+  "claims": [
+    {
+      "id": "claim.env-irrigation-envelope-base-budget",
+      "statement": "FAO Paper 56 equations (85)-(88) provide the daily root-zone depletion bookkeeping used by the related root-zone budget; the finite scenario membership and min/max envelope in this recipe are explicitly authored comparison rules.",
+      "scope": "Underlying one-layer daily balance only; no probability distribution, confidence level or site-specific prescription is claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.mixed-sol-fao-56-root-zone-balance",
+          "locator": "Soil water balance, equations (85)-(88), plus Forecasting or allocating irrigations"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Scenario field small multiples",
+      "structure": "Blender authors one neutral root-zone prism, shared forcing rail and reusable line/band glyphs; glTF transports static context and stable nodes, not scenario values.",
+      "material": "Member identity uses line pattern and labels as well as hue; a hatched envelope is distinct from literal soil water or groundwater.",
+      "articulation": "Three.js binds provenance-labeled ledgers, runs the related budget per scenario, derives the finite min/max band, exposes failures and resets membership/forcing."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Finite deterministic composition of an existing daily root-zone ledger; descriptive scenario range only.",
+    "timestep": "One shared daily index; each member uses the underlying recipe timestep and validity contract.",
+    "state": [
+      "shared forcing hash",
+      "scenario registry/provenance",
+      "member ledgers and stop reasons",
+      "declared envelope membership and extrema"
+    ],
+    "checks": [
+      "Verify identical forcing hash for all members.",
+      "Compare envelope extrema against visible member ledgers.",
+      "Keep invalid members and non-probabilistic label visible."
+    ]
+  },
+  "related_ids": [
+    "recipe.root-zone-irrigation-budget"
+  ]
+}

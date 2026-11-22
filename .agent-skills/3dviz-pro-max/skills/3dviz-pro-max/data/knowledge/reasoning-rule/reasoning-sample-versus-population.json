@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-sample-versus-population",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Show a sample as one draw, not as the distribution"
+  },
+  "aliases": {
+    "en": [
+      "sampling variability",
+      "seed control",
+      "sample versus population"
+    ]
+  },
+  "direction_ids": [
+    "probability-statistics",
+    "abstract-systems-data"
+  ],
+  "summary": "Make randomness reproducible and repeatable so a point cloud reads as one realisation among many.",
+  "objective": "Prevent a single random sample from being presented as the underlying distribution.",
+  "applies_when": [
+    "Random points, trials or paths are generated and displayed.",
+    "A statistic such as a mean or a proportion is computed from generated data.",
+    "The scene animates repeated sampling or a convergence story."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "sample",
+    "population",
+    "seed",
+    "variability",
+    "resampling",
+    "realisation"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "statistics",
+    "randomness"
+  ],
+  "intent_signals": [
+    "run it again",
+    "is that the real distribution",
+    "show sampling variability"
+  ],
+  "example_prompts": [
+    "Draw a sample and let me redraw it to see how much it varies.",
+    "Show many samples and the distribution of their means."
+  ],
+  "negative_signals": [
+    "Deterministic constructions with no randomness.",
+    "Fixed measured data sets, which are one sample but not regenerable."
+  ],
+  "not_for": [
+    "Deterministic constructions with no randomness.",
+    "Fixed measured data sets, which are one sample but not regenerable."
+  ],
+  "content": {
+    "principles": [
+      "A cloud of points is one realisation. Presented once, it invites the viewer to read its accidental features, such as a gap or a cluster, as properties of the distribution.",
+      "Reproducibility and variability are both needed: a fixed seed lets a result be discussed, and redrawing shows how much of the picture was noise.",
+      "Animating a smooth approach to a limit misrepresents randomness. Real repeated sampling wanders, and that wandering is the phenomenon.",
+      "Sample size must be visible, because almost every judgement a viewer makes about a cloud depends on it."
+    ],
+    "implementation": [
+      "Use an explicit seeded generator, display the seed, and provide a redraw control that changes only the seed.",
+      "Display the sample size prominently and make it adjustable, so the effect of size is discoverable rather than asserted.",
+      "Where a limiting distribution is shown, draw it as a separate reference object rather than as something the sample turns into.",
+      "For repeated sampling, accumulate the statistic across draws and show its distribution, which is the honest form of the convergence story.",
+      "Keep the reference distribution and the sample visually distinct so a viewer never has to guess which is which."
+    ],
+    "observable_checks": [
+      "Redraw with the same seed and confirm an identical sample, then redraw with a new seed and confirm the draw is independent. Do not require the picture to look different every time: a small discrete or nearly degenerate population can legitimately repeat, and the check is that the seed changes and the draw is redrawn, not that the image changes.",
+      "Increase the sample size and confirm the reported statistic stabilises while individual draws still vary.",
+      "Confirm the reference distribution does not change when the sample is redrawn.",
+      "Check that any claimed convergence is shown as a distribution of statistics rather than as a smooth animation."
+    ]
+  },
+  "related_ids": [
+    "recipe.sampling-mean-distribution",
+    "recipe.binomial-trial-lattice",
+    "knowledge.parameter-experiment"
+  ],
+  "creative_affordances": [
+    "Presentation of samples as points, particles, physical objects or accumulating stacks is a free choice.",
+    "A deliberately dramatic single draw is fine when the viewer can immediately draw another."
+  ],
+  "known_limits": [
+    "Authored guidance about presenting randomness; it asserts no distributional result.",
+    "It does not evaluate the quality of any particular pseudo-random generator."
+  ],
+  "claims": []
+}

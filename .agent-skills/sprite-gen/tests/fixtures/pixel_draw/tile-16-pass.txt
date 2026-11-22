@@ -1,0 +1,26 @@
+```pixels
+PALETTE
+. transparent
+a #2a5fa8
+b #3a78c4
+c #5b98dc
+d #a8d4f4
+FRAME tile
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb
+bbbddddbbbbbbbbb
+bbcbbbbcbbbbbbbb
+bbbaaaabbbbbbbbb
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbddddbb
+bbbbbbbbbcbbbbcb
+bbbbbbbbbbaaaabb
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb
+ddbbbbbbbbbbbbdd
+bbcbbbbbbbbbbcbb
+aabbbbbbbbbbbbaa
+bbbbbbcccbbbbbbb
+END
+```

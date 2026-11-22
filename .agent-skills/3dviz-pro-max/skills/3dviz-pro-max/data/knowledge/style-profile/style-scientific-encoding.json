@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-scientific-encoding",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Scientific encoding as presentation"
+  },
+  "aliases": {
+    "en": [
+      "scientific visualization encoding",
+      "data color mapping",
+      "units and legend",
+      "colour-mapped data",
+      "perceptual colour ramp"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "linear-algebra",
+    "earth-environment"
+  ],
+  "summary": "Treat color, size and position as declared data mappings, not as a freely interchangeable surface style; record units and legend meaning.",
+  "objective": "A selected element agrees with its value readout, units and legend; filtering, reset and playback preserve the mapping and disclose missing values.",
+  "tags": [
+    "style-profile",
+    "representation-encoding",
+    "scientific-encoding"
+  ],
+  "subject_terms": [
+    "scientific visualization encoding",
+    "data color mapping",
+    "units and legend",
+    "representation encoding",
+    "colour-mapped data",
+    "perceptual colour ramp"
+  ],
+  "intent_signals": [
+    "Encode scientific values with a legend",
+    "Preserve data units and mappings during interaction"
+  ],
+  "example_prompts": [
+    "Show a terrain field with declared units, an unchanged legend during playback and a separate selection outline."
+  ],
+  "content": {
+    "principles": [
+      "Treat color, size and position as declared data mappings, not as a freely interchangeable surface style; record units and legend meaning."
+    ],
+    "implementation": [
+      "Keep geometry linked to the declared values or show any display exaggeration explicitly; preserve the identity of compared entities.",
+      "Reserve the data channel for its declared meaning and keep decorative lighting from changing how values are read; choose a separate channel for selection.",
+      "Offer a repeatable comparison view and state-linked playback; camera motion and decoration must not alter sampled values or timestamps.",
+      "Sample the five documented ramp stops (#440154 through #fde725) into a 256-entry lookup texture with SRGBColorSpace and apply it through MeshBasicMaterial vertex colours; Neutral tone mapping at exposure 1.0 keeps the rendered pixel equal to the legend swatch.",
+      "Render missing or out-of-domain values as an explicit hatch or as #9aa0a6 grey outside the ramp, and keep the selected element's numeric value, units and ramp position visible in the legend at all times."
+    ],
+    "observable_checks": [
+      "A selected element agrees with its value readout, units and legend; filtering, reset and playback preserve the mapping and disclose missing values."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "When colour is the data channel, any shading term is an error term, so this record goes unlit under Neutral tone mapping at exposure 1.0 with no fog and no bloom, which makes the rendered pixel match the legend swatch. The five ramp stops rise monotonically in luminance from roughly 0.15 to 0.90 so the encoding survives grayscale printing and colour-vision deficiency, and selection, hover and annotation are pushed onto outline weight and opacity so they can never be mistaken for a value.",
+    "values": {
+      "feeling": [
+        "accurate",
+        "legible",
+        "neutral"
+      ],
+      "palette": [
+        {
+          "hex": "#440154",
+          "role": "sequential ramp stop 0.00 - lowest value"
+        },
+        {
+          "hex": "#3b528b",
+          "role": "sequential ramp stop 0.25"
+        },
+        {
+          "hex": "#21918c",
+          "role": "sequential ramp stop 0.50"
+        },
+        {
+          "hex": "#5ec962",
+          "role": "sequential ramp stop 0.75"
+        },
+        {
+          "hex": "#fde725",
+          "role": "sequential ramp stop 1.00 - highest value"
+        }
+      ],
+      "value_structure": "monotonic luminance along the ramp, roughly 0.15 rising to 0.90, so the encoding survives a grayscale print; the background is held at a fixed neutral outside the ramp",
+      "saturation_rule": "the ramp owns the colour channel; selection, hover and annotation use outline weight, a white halo or opacity, never an additional hue",
+      "sky": {
+        "model": "solid",
+        "zenith": "#16181c",
+        "horizon": "#16181c"
+      },
+      "fog": {
+        "type": "none",
+        "color": "#16181c",
+        "density": 0
+      },
+      "lights": {
+        "key": {
+          "type": "none",
+          "note": "MeshBasicMaterial or a flat unlit shader; the encoded colour must equal the legend swatch pixel for pixel"
+        },
+        "fill": {
+          "type": "none"
+        },
+        "rim": {
+          "type": "none"
+        },
+        "ratio": "unlit - depth separation comes from a 1 px darker outline and from position, never from shading"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "Neutral",
+        "exposure": 1.0
+      },
+      "camera": {
+        "fov_deg": 30,
+        "height_m": 2.0,
+        "pitch_deg": -20,
+        "projection": "orthographic when lengths or areas are compared; perspective at fov 30 only for navigation",
+        "orbit": {
+          "minPolar_deg": 10,
+          "maxPolar_deg": 85,
+          "minDist_m": 1,
+          "maxDist_m": 60
+        }
+      },
+      "materials": {
+        "roughness": [
+          1.0,
+          1.0
+        ],
+        "metalness": [
+          0,
+          0
+        ],
+        "notes": "MeshBasicMaterial with vertex colours from the ramp lookup; set the ramp texture colorSpace to SRGBColorSpace explicitly or the mapping shifts, and use no emissive and no normal maps"
+      },
+      "motion": {
+        "sway_period_s": [
+          0,
+          0
+        ],
+        "ease": "linear",
+        "hold_ms": 500
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.2,
+          "strength": 0.0,
+          "radius": 0.0
+        },
+        "vignette": 0.0,
+        "grain": 0.0,
+        "dof": "off"
+      },
+      "signature_technique": "a five-stop perceptually ordered ramp with monotonic luminance plus an always-visible legend showing the stops, the units and the current selection's value",
+      "never": [
+        "shading that alters encoded colour",
+        "a rainbow ramp with non-monotonic luminance",
+        "reusing ramp hues for selection or decoration",
+        "hiding missing values by mapping them to a ramp colour"
+      ]
+    }
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for Neutral tone mapping at exposure 1.0 with unlit materials; re-tune every value if you introduce shading, a different tone mapping or a different exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with minimalist or technical illustration framing; this record proposes a representation workflow and does not establish any domain claim or validated perceptual scale."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

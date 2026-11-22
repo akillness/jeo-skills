@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-symmetry-as-exact-permutation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Apply symmetry operations to labelled elements"
+  },
+  "aliases": {
+    "en": [
+      "group action",
+      "composition order",
+      "symmetry operation"
+    ]
+  },
+  "direction_ids": [
+    "topology-symmetry",
+    "twisty-puzzles"
+  ],
+  "summary": "Represent each symmetry as a permutation of identified features and compose operations in a stated order.",
+  "objective": "Make a symmetry demonstration exact enough that composition, inverses and closure can be checked.",
+  "applies_when": [
+    "A shape is acted on by rotations, reflections or other symmetry operations.",
+    "Operations are composed, or a sequence is built up by the viewer.",
+    "The scene talks about a symmetry group, its order or its structure."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "symmetry group",
+    "permutation",
+    "composition",
+    "inverse",
+    "labelled vertices",
+    "closure"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "symmetry",
+    "algebra"
+  ],
+  "intent_signals": [
+    "compose two symmetries",
+    "show the symmetries of the square",
+    "does the order matter"
+  ],
+  "example_prompts": [
+    "Show that these two symmetry operations do not commute.",
+    "Let me build a sequence of symmetries and see the resulting permutation."
+  ],
+  "negative_signals": [
+    "Visual symmetry used as decoration with no algebraic claim.",
+    "Approximate or statistical symmetry in organic forms."
+  ],
+  "not_for": [
+    "Visual symmetry used as decoration with no algebraic claim.",
+    "Approximate or statistical symmetry in organic forms."
+  ],
+  "content": {
+    "principles": [
+      "A symmetry operation is only observable through features it actually moves, and the chosen feature set must separate the operations you want to distinguish. Marking only the centre of a square distinguishes nothing, since every symmetry fixes it; a set of features is adequate only if the action on it is faithful, meaning no non-identity operation leaves every marker in place. A continuous rotational symmetry cannot be represented by any finite marker set at all.",
+      "Composition has a direction. Applying one operation and then another is a specific convention, and the inverse of a sequence reverses it, so the inverse of doing three operations in order is undoing them from the last backwards.",
+      "The set of symmetries is closed: composing two of them yields another symmetry of the same object, which is what makes the resulting sequence expressible as a single permutation.",
+      "Presenting the result as disjoint cycles compresses a sequence into the structure that actually matters, which is where each labelled feature ends up."
+    ],
+    "implementation": [
+      "Label the features the operations permute, such as vertices, faces or edge markers, and keep the labels visible during motion.",
+      "Store the current group element itself, and use the marker permutation as its display. Where the marker action is faithful the two agree; where it is not, the element remains authoritative and the markers alone cannot reconstruct it.",
+      "State the composition convention on screen and keep it consistent between the visual sequence and the algebraic readout.",
+      "Provide an inverse control that composes the reversed inverse sequence rather than restoring a remembered pose.",
+      "Show the cycle structure of the accumulated element so the algebra and the picture are the same object."
+    ],
+    "observable_checks": [
+      "Where the group has a non-commuting pair, compose it in both orders and confirm the results differ. An abelian symmetry group, such as the rotations of a shape with no reflection symmetry, has no such pair and is not thereby faulty; check instead that composition matches the stated multiplication.",
+      "Apply an operation and its inverse and confirm the permutation returns exactly to the identity.",
+      "Compose any two operations and confirm the result is in the stated set, which tests closure.",
+      "Check the displayed cycle notation against the visible positions of the labelled features.",
+      "Apply each non-identity operation and confirm at least one marker moves; if any operation leaves every marker fixed, the feature set is not faithful and the permutation readout is not the group element."
+    ]
+  },
+  "related_ids": [
+    "recipe.square-dihedral-actions",
+    "recipe.permutation-cycles"
+  ],
+  "creative_affordances": [
+    "Labels can be colours, glyphs, textures or small objects; only their distinctness matters.",
+    "Abstract or ornamental subjects work as well as regular polygons when their features are identified.",
+    "A motion trail, an orientation gnomon or an asymmetric ornament can distinguish intermediate rotations without colouring every feature individually."
+  ],
+  "known_limits": [
+    "Authored guidance citing composition and inverse conventions from a puzzle-oriented group theory source; it proves no group-theoretic result here.",
+    "It does not enumerate the elements of any specific symmetry group."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-composition-and-inverse-order",
+      "statement": "Composing two operations means applying one and then the other in a stated order, and the inverse of a sequence of operations is the sequence of their inverses applied in reverse order; any move or move sequence can be written as a product of disjoint cycles showing where each labelled piece moves.",
+      "scope": "Permutation composition conventions as used for puzzle and symmetry operations; it does not assert any specific group structure.",
+      "source_refs": [
+        {
+          "source_id": "source.jaap-permutations",
+          "locator": "Composition of functions; inverse of a move sequence; disjoint cycle notation"
+        }
+      ]
+    }
+  ]
+}

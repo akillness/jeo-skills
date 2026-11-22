@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-span-causality-and-time",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Respect causality when laying out a trace"
+  },
+  "aliases": {
+    "en": [
+      "distributed trace",
+      "span parent",
+      "clock skew"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "operations-logistics"
+  ],
+  "summary": "Build trace visualisations from span identity, parent links and timestamps, and treat clock differences as a known hazard.",
+  "objective": "Make a distributed-trace scene reflect the causal structure recorded in the data.",
+  "applies_when": [
+    "Requests, calls or jobs are shown flowing through services.",
+    "Durations, waterfalls or critical paths are displayed.",
+    "Timestamps come from different machines."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "trace",
+    "span",
+    "parent",
+    "timestamp",
+    "clock skew",
+    "causality"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "data",
+    "tracing"
+  ],
+  "intent_signals": [
+    "show the request trace",
+    "why is the child longer than the parent",
+    "find the slow service"
+  ],
+  "example_prompts": [
+    "Visualise the trace so I can see which call dominates the latency.",
+    "Show the parent and child spans in a request."
+  ],
+  "negative_signals": [
+    "Static architecture diagrams with no timing data.",
+    "Aggregate metrics, which have a different structure from individual traces."
+  ],
+  "not_for": [
+    "Static architecture diagrams with no timing data.",
+    "Aggregate metrics, which have a different structure from individual traces."
+  ],
+  "content": {
+    "principles": [
+      "A trace has an explicit structure: a span represents a unit of work with start and end timestamps, carries a trace identifier and its own span identifier, and a child span references its parent, while a root span has no parent.",
+      "The causal structure comes from those references, not from time ordering. Laying out spans purely by timestamp can invert a parent and child when clocks differ between machines.",
+      "A child span extending beyond its parent is not by itself corruption. Ending a span has no effect on its children, which may still be running, and an initiating producer span commonly ends before the consumer span it triggers, so asynchronous work legitimately outlives its parent. Clock skew across hosts is a separate possibility. Mark the interval relationship and consider the operation semantics before diagnosing anything.",
+      "Because the identifiers carry the structure, a visualisation should use them for grouping and nesting, and treat time as a second, less reliable dimension.",
+      "Parent edges do not exhaust causality. Links can reference other span contexts in the same or a different trace, so a visualisation that shows only the parent tree hides real relationships, and a partial trace may contain spans whose parent is simply missing."
+    ],
+    "implementation": [
+      "Build the hierarchy from parent references and use timestamps for horizontal placement only.",
+      "Mark interval relationships without asserting a cause: a child that outlives its parent is expected for asynchronous and producer-consumer work, while a negative duration computed from one clock is a genuine data fault. Show an unresolved-parent marker for a span whose parent is absent, rather than inventing a parent or dropping the span.",
+      "Show the trace identifier and the span identifiers on demand so a visual element can be traced back to the data.",
+      "Distinguish measured duration from waiting or queuing time when the data supports it, and say when it does not.",
+      "State the time source and its granularity, since sub-millisecond structure may not be meaningful.",
+      "Render links as well as parent edges, including links that cross traces, and distinguish them visually from parent-child nesting."
+    ],
+    "observable_checks": [
+      "Draw each non-root span under its recorded parent when that span is available; otherwise preserve the reference with an unresolved-parent marker. Do not invent a parent from temporal adjacency or discard the child.",
+      "Feed an asynchronous case where the child outlives the parent and confirm it is displayed as a normal relationship, then feed a span whose end precedes its start on the same clock and confirm that is flagged as a data fault.",
+      "Verify a displayed duration against the difference of the recorded start and end timestamps.",
+      "Confirm spans from one trace group together by trace identifier."
+    ]
+  },
+  "related_ids": [
+    "recipe.service-graph",
+    "recipe.agent-harness",
+    "knowledge.reasoning-discrete-event-timeline"
+  ],
+  "creative_affordances": [
+    "Spatial, three-dimensional and metaphorical trace presentations are welcome above a correct causal model.",
+    "A stylised city or landscape metaphor for services works when the structural mapping is stated."
+  ],
+  "known_limits": [
+    "Authored guidance citing the documented structure of spans and trace context; it does not model sampling, exporters or backend storage.",
+    "No trace data has been visualised or validated for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-span-structure",
+      "statement": "A span represents a unit of work with start and end timestamps and carries a span context containing the trace identifier and its own span identifier, each span has zero or one parent and zero or more children representing causally related operations, ending a span has no effect on child spans which may still be running and can end later, a producer span often ends before the correlated consumer span, and a span may record links to other span contexts in the same or a different trace.",
+      "scope": "Documented structure and lifetime rules of distributed traces in one telemetry specification. It does not describe sampling, exporters, backend behaviour or clock synchronisation guarantees.",
+      "source_refs": [
+        {
+          "source_id": "source.opentelemetry-traces",
+          "locator": "Traces and spans; span context with trace and span identifiers; parent identifiers and timestamps"
+        },
+        {
+          "source_id": "source.reasoning-depth-otel-trace-api",
+          "locator": "Span parent and child relationships; End has no effect on child spans; producer spans ending before consumer spans; links to span contexts in the same or a different trace"
+        }
+      ]
+    }
+  ]
+}

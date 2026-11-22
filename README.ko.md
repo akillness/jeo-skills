@@ -399,7 +399,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 451개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 466개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
 ### 🌐 웹 (76개)
 
@@ -519,9 +519,9 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 </details>
 
-### 🎮 게임 (41개)
+### 🎮 게임 (55개)
 
-하위 분류: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (7), `qa-performance` (4), `release` (2)
+하위 분류: `client` (10), `web` (5), `server` (1), `design-ui` (7), `audio` (1), `animation` (5), `motion-vfx` (4), `sprite-image` (3), `art-resources` (4), `storytelling` (0), `tooling` (8), `qa-performance` (5), `release` (2)
 
 <details>
 <summary>스킬 보기</summary>
@@ -569,12 +569,26 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `donchitos-game-studios` |
 | `gamefactory-3a` |
 | `arnis` |
+| `unity-skills` |
+| `blender-skills` |
+| `scenario-skills` |
+| `threejs-game-skills` |
+| `mengto-game-skills` |
+| `video-to-game` |
+| `threejs-ability-casting` |
+| `isometric-voxel-builder` |
+| `game-perf` |
+| `sprite-gen` |
+| `mono-pix` |
+| `motion2mixamo` |
+| `unimate` |
+| `3d-vibe-coding` |
 
 </details>
 
-### 🎬 크리에이티브 미디어 (41개)
+### 🎬 크리에이티브 미디어 (42개)
 
-하위 분류: `image` (10), `video` (18), `motion` (2), `audio` (2), `presentation` (1), `diagram` (2), `design` (4), `capture` (0), `storytelling` (2)
+하위 분류: `image` (10), `video` (18), `motion` (2), `audio` (2), `presentation` (1), `diagram` (2), `design` (5), `capture` (0), `storytelling` (2)
 
 <details>
 <summary>스킬 보기</summary>
@@ -622,6 +636,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `diagram-design` |
 | `artcraft` |
 | `motionmaxxing` |
+| `3dviz-pro-max` |
 
 </details>
 

@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "id": "recipe.cfd-field-playback",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Precomputed flow field playback"
+  },
+  "aliases": {
+    "en": [
+      "CFD playback",
+      "flow dataset",
+      "field visualisation"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal"
+  ],
+  "summary": "Play back a computed flow field as data with provenance, and refuse to let the viewer treat playback as live simulation.",
+  "objective": "Build a supplied-field viewer with provenance, slices, streamline integration and probes, distinguishing those visualization computations from a new CFD solve.",
+  "tags": [
+    "cfd",
+    "playback",
+    "dataset"
+  ],
+  "subject_terms": [
+    "flow field",
+    "velocity field",
+    "streamline",
+    "slice plane",
+    "time step",
+    "Reynolds number",
+    "dataset provenance",
+    "verification case"
+  ],
+  "intent_signals": [
+    "Show a precomputed flow field with slices and probes.",
+    "Play back CFD results without implying the scene is solving them."
+  ],
+  "example_prompts": [
+    "Build a flow field playback viewer with a slice plane, seeded streamlines and a metadata panel.",
+    "Show a benchmark flow case with its conditions and grid stated on screen."
+  ],
+  "negative_signals": [
+    "Not a solver: nothing in this scene computes a flow, and changing a displayed parameter cannot change the data.",
+    "Not a validation of any solver or turbulence model."
+  ],
+  "not_for": [
+    "Not a solver: nothing in this scene computes a flow, and changing a displayed parameter cannot change the data.",
+    "Not a validation of any solver or turbulence model."
+  ],
+  "entities": [
+    {
+      "name": "Dataset frames",
+      "guidance": "Treat the field as a sequence of frames on a declared grid, with the grid and time step shown, since interpolation between frames is a display choice."
+    },
+    {
+      "name": "Slice and probe",
+      "guidance": "Provide a slice plane and a point probe that report interpolated values with the interpolation scheme named."
+    },
+    {
+      "name": "Provenance panel",
+      "guidance": "State the case, the boundary conditions, the solver and version that produced the data, and the licence of the dataset."
+    }
+  ],
+  "state_contract": {
+    "model": "Frames of a vector or scalar field on a stated grid, a playback index, and derived slices, instantaneous streamlines and probe readouts. Derived quantities name their interpolation/integration; these are computations on supplied data, not new CFD solutions.",
+    "authority": "The loaded dataset is authoritative. No control in the scene may alter the field values; controls change only what is displayed.",
+    "actions": [
+      "Scrub or step the playback index.",
+      "Move the slice plane and the probe.",
+      "Seed and clear streamlines.",
+      "Reset the view and reload the dataset."
+    ]
+  },
+  "invariants": [
+    "No interaction changes stored field values; controls change only what is displayed. Interpolation, slicing and streamline integration are computations performed on that data, but none of them is a new flow solution.",
+    "Streamlines are integrated within one frame and are labelled as instantaneous streamlines, not particle paths, unless the dataset is steady.",
+    "Probe values state the interpolation scheme and the grid cell they came from.",
+    "Seeds outside the domain or inside a masked region are rejected, and a streamline stops at a domain exit or where the field is zero rather than being extended by extrapolation."
+  ],
+  "motion_guidance": [
+    "Play frames at a stated rate with the physical time per frame shown, so playback speed is never mistaken for flow speed.",
+    "Allow pausing at any frame; a field that can only be watched cannot be inspected."
+  ],
+  "known_limits": [
+    "Playback fidelity depends on the dataset resolution and its own numerical error, and also on the reconstruction, sampling and colour mapping chosen here; none of these is assessed by the scene.",
+    "No dataset is bundled with this recipe: the user supplies data and its licence.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-benchmark-cases",
+      "statement": "Public turbulence modelling resources maintained for verification and validation provide documented cases together with reference experimental and high-fidelity data, which is the kind of provenance a playback scene should cite.",
+      "scope": "Existence and purpose of such a resource as stated on its landing page; no dataset was retrieved or redistributed here.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-nasa-turbulence-resource",
+          "locator": "NASA Turbulence Modeling Resource landing page description"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Dataset frames",
+      "structure": "A bounded domain box with the grid extents visible, so the data limits are part of the object rather than implied.",
+      "material": "Neutral domain wireframe; field colour uses a stated colour map with a legend and units, never an unlabelled gradient.",
+      "articulation": "Frames swap at the playback index; interpolation between frames is optional and labelled."
+    },
+    {
+      "family": "Slice and probe",
+      "structure": "A movable plane with a border and a probe marker with a leader line to its readout.",
+      "material": "Slice uses the same colour map and legend as the volume so values are comparable across views.",
+      "articulation": "Both update continuously while dragging, with the current frame index shown."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Data playback and visualisation only; no fluid equations are solved in the scene.",
+    "checks": [
+      "For the same dataset and the same interpolation settings, probe values agree across sessions within a stated numerical tolerance; no identical result is promised across different libraries or platforms.",
+      "Every displayed field has a legend with units and a named colour map."
+    ]
+  },
+  "related_ids": [
+    "recipe.nozzle-continuity",
+    "recipe.heat-rod-decay",
+    "knowledge.state-playback"
+  ]
+}

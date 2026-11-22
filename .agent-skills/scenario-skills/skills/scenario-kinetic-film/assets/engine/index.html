@@ -1,0 +1,193 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Kinetic film</title>
+<link rel="icon" href="data:,">
+<style>
+@font-face { font-family: Archivo; src: url(fonts/Archivo.ttf) format('truetype'); font-weight: 100 900; font-stretch: 62% 125%; }
+@font-face { font-family: JBM; src: url(fonts/JetBrainsMono.ttf) format('truetype'); font-weight: 100 800; }
+@font-face { font-family: Inst; src: url(fonts/InstrumentSans.ttf) format('truetype'); font-weight: 400 700; font-stretch: 75% 100%; }
+html { --bg: #0C0E11; --paper: #F4F1EA; --accent: #FF5B2E; --hot: #FF3A0A; --ink: #141210; --panel: #121519; }
+html, body { margin: 0; background: #000; overflow: hidden; }
+#root { position: relative; width: 1920px; height: 1080px; }
+.stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden;
+  background: radial-gradient(ellipse 75% 70% at 50% 42%, color-mix(in srgb, var(--bg), white 6%) 0%, color-mix(in srgb, var(--bg), white 1%) 55%, color-mix(in srgb, var(--bg), black 35%) 100%); }
+.stage > canvas.fx { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+.scenes, .overlay { position: absolute; inset: 0; }
+.ground { position: absolute; inset: 0; }
+.cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+.inv { position: absolute; inset: 0; background: #fff; mix-blend-mode: difference; display: none; pointer-events: none; }
+.flash { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+.vig { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 80% 78% at 50% 46%, rgba(0,0,0,0) 58%, rgba(0,0,0,.42) 100%); }
+.scene { position: absolute; inset: 0; }
+.persp { perspective: 1500px; perspective-origin: 50% 50%; }
+.fly { perspective: 1100px; }
+.abs { position: absolute; left: 0; top: 0; }
+.full { width: 1920px; height: 1080px; }
+.p3d { transform-style: preserve-3d; }
+.type { white-space: nowrap; line-height: 1; }
+.type.abs { position: absolute; }
+.xg { position: absolute; left: 0; top: 0; }
+.xg > .xl { position: absolute; left: 0; top: 0; backface-visibility: visible; }
+.xg > .xl:last-child { position: relative; }
+.mono { font-family: JBM; font-weight: 500; }
+
+/* caption */
+.cap { position: absolute; left: 132px; top: 82px; font-family: Inst; font-weight: 700; font-size: 34px; }
+.capline { position: absolute; left: 0; top: 0; white-space: nowrap; letter-spacing: -.005em; }
+.capbox { position: absolute; left: 0; top: -3px; height: 45px; border-radius: 5px; transform-origin: 0 50%; }
+.capw { position: relative; display: inline-block; }
+.capsp { white-space: pre; }
+
+/* hud */
+.hud { position: absolute; inset: 0; pointer-events: none; border-color: color-mix(in srgb, var(--paper) 32%, transparent); }
+.br { position: absolute; width: 26px; height: 26px; border-color: inherit; border-style: solid; border-width: 0; }
+.br.tl { left: 42px; top: 38px; border-left-width: 2px; border-top-width: 2px; }
+.br.tr { right: 42px; top: 38px; border-right-width: 2px; border-top-width: 2px; }
+.br.bl { left: 42px; bottom: 38px; border-left-width: 2px; border-bottom-width: 2px; }
+.br.brr { right: 42px; bottom: 38px; border-right-width: 2px; border-bottom-width: 2px; }
+.hudt { position: absolute; font-family: JBM; font-size: 13px; letter-spacing: .2em; font-weight: 600; white-space: pre; }
+.hudt.tl { left: 62px; top: 50px; } .hudt.tr { right: 62px; top: 50px; }
+.hudt.bl { left: 62px; bottom: 49px; } .hudt.brt { right: 62px; bottom: 49px; }
+.recdot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 10px; vertical-align: 1px; }
+
+/* Words */
+.note { font-size: 19px; color: color-mix(in srgb, var(--paper) 50%, transparent); letter-spacing: .04em; white-space: pre; }
+
+/* Strike: the timeline, tiles and rack mocks */
+.panel { position: absolute; left: 0; top: 0; width: 1120px; height: 440px; background: var(--panel); border: 1.5px solid color-mix(in srgb, var(--paper) 22%, transparent); border-radius: 12px; box-shadow: 0 40px 90px rgba(0,0,0,.55); overflow: hidden; }
+.phead { position: absolute; left: 0; top: 0; right: 0; height: 40px; border-bottom: 1px solid color-mix(in srgb, var(--paper) 10%, transparent); display: flex; align-items: center; gap: 8px; padding-left: 16px; }
+.pdot { width: 10px; height: 10px; border-radius: 50%; background: color-mix(in srgb, var(--paper) 22%, transparent); }
+.ptitle { font-size: 14px; color: color-mix(in srgb, var(--paper) 75%, transparent); margin-left: 12px; }
+.ptag { font-size: 13px; color: var(--accent); margin-left: auto; margin-right: 18px; letter-spacing: .06em; }
+.ruler { position: absolute; left: 0; right: 0; top: 40px; height: 34px; border-bottom: 1px solid color-mix(in srgb, var(--paper) 8%, transparent); }
+.tick { position: absolute; bottom: 0; width: 1px; background: color-mix(in srgb, var(--paper) 30%, transparent); }
+.tlab { position: absolute; top: 6px; font-size: 11px; color: color-mix(in srgb, var(--paper) 38%, transparent); }
+.trow { position: absolute; left: 0; right: 0; height: 40px; }
+.tname { position: absolute; left: 22px; top: 12px; font-size: 13px; color: color-mix(in srgb, var(--paper) 45%, transparent); }
+.clip { position: absolute; top: 7px; height: 26px; border-radius: 4px; background: color-mix(in srgb, var(--bg), var(--paper) 14%); border: 1px solid color-mix(in srgb, var(--paper) 12%, transparent); }
+.clip.hot { background: color-mix(in srgb, var(--accent) 32%, transparent); border-color: color-mix(in srgb, var(--accent) 60%, transparent); }
+.playhead { position: absolute; top: 40px; bottom: 0; width: 2px; background: var(--accent); box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 70%, transparent); }
+.tile { position: absolute; width: 240px; height: 124px; background: var(--panel); border: 1.5px solid color-mix(in srgb, var(--paper) 20%, transparent); border-radius: 10px; transform-origin: 50% 100%; }
+.ticon { position: absolute; left: 18px; top: 14px; font-family: Archivo; font-size: 40px; color: var(--accent); font-variation-settings: 'wght' 800; }
+.tlabel { position: absolute; left: 18px; bottom: 34px; font-size: 15px; color: color-mix(in srgb, var(--paper) 90%, transparent); font-weight: 700; letter-spacing: .04em; }
+.tver { position: absolute; left: 18px; bottom: 14px; font-size: 11px; color: color-mix(in srgb, var(--paper) 40%, transparent); }
+.unit { position: absolute; left: 0; width: 900px; height: 112px; background: var(--panel); border: 1.5px solid color-mix(in srgb, var(--paper) 22%, transparent); border-radius: 8px; }
+.uname { position: absolute; left: 30px; top: 43px; font-size: 21px; color: color-mix(in srgb, var(--paper) 80%, transparent); letter-spacing: .1em; }
+.leds { position: absolute; right: 32px; top: 47px; display: flex; gap: 11px; }
+.led { width: 16px; height: 16px; border-radius: 3px; }
+.vents { position: absolute; left: 330px; top: 26px; width: 170px; height: 60px; background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--paper) 14%, transparent) 0 3px, transparent 3px 9px); }
+
+/* Graph */
+.svgmono { font-family: JBM; font-size: 15px; fill: color-mix(in srgb, var(--paper) 45%, transparent); }
+.glowline { filter: drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 80%, transparent)); }
+.sub { font-size: 26px; color: color-mix(in srgb, var(--paper) 55%, transparent); letter-spacing: .32em; white-space: nowrap; }
+
+/* Hero */
+.by { font-size: 24px; letter-spacing: .5em; color: color-mix(in srgb, var(--paper) 75%, transparent); white-space: pre; }
+.subline { font-family: Inst; font-size: 38px; color: color-mix(in srgb, var(--paper) 75%, transparent); white-space: nowrap; }
+
+/* Prompt */
+.briefbox { background: color-mix(in srgb, var(--panel) 94%, transparent); }
+.bhead { position: absolute; left: 26px; right: 26px; top: 18px; display: flex; justify-content: space-between; font-size: 14px; color: color-mix(in srgb, var(--paper) 50%, transparent); letter-spacing: .14em; }
+.bdot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-right: 10px; vertical-align: 1px; }
+.btext { position: absolute; left: 40px; top: 74px; width: 1150px; font-size: 31px; line-height: 1.55; color: var(--paper); }
+.kw { background-image: linear-gradient(var(--accent), var(--accent)); background-repeat: no-repeat; background-size: 0% 100%; padding: 1px 0; border-radius: 3px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.caret { position: absolute; left: 0; top: 0; width: 15px; height: 36px; background: var(--accent); box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 70%, transparent); }
+.enter { position: absolute; right: 28px; bottom: 24px; width: 70px; height: 48px; border: 2px solid color-mix(in srgb, var(--paper) 50%, transparent); border-radius: 9px; font-family: JBM; font-size: 28px; line-height: 46px; text-align: center; color: var(--paper); }
+.cutsq { width: 70px; height: 70px; background: var(--accent); }
+.iris { width: 100px; height: 100px; border-radius: 50%; background: var(--accent); }
+
+/* Stretch */
+.orangebg { background: radial-gradient(ellipse 70% 70% at 50% 45%, color-mix(in srgb, var(--accent), white 8%) 0%, var(--accent) 55%, color-mix(in srgb, var(--accent), black 10%) 100%); }
+.rule { height: 2px; background: color-mix(in srgb, var(--ink) 55%, transparent); }
+.rule::before, .rule::after { content: ''; position: absolute; top: -9px; width: 2px; height: 20px; background: color-mix(in srgb, var(--ink) 55%, transparent); }
+.rule::before { left: 0; } .rule::after { right: 0; }
+.pxl { font-size: 17px; color: color-mix(in srgb, var(--ink) 70%, transparent); letter-spacing: .2em; white-space: pre; }
+.codel { font-size: 24px; color: color-mix(in srgb, var(--ink) 80%, transparent); white-space: pre; }
+
+/* Notes */
+.pvwin { border-radius: 10px; overflow: hidden; border: 1.5px solid color-mix(in srgb, var(--paper) 28%, transparent); box-shadow: 0 40px 90px rgba(0,0,0,.5); }
+.pvtag { left: 20px; top: 16px; font-size: 13px; color: color-mix(in srgb, var(--ink) 60%, transparent); letter-spacing: .18em; }
+.scanl { width: 4px; height: 562px; background: color-mix(in srgb, var(--accent), white 92%); box-shadow: 0 0 30px 10px color-mix(in srgb, color-mix(in srgb, var(--accent), white 90%) 55%, transparent); }
+.strip { height: 44px; }
+.seg { position: absolute; top: 0; height: 44px; border-radius: 6px; background: color-mix(in srgb, var(--bg), var(--paper) 9%); border: 1px solid color-mix(in srgb, var(--paper) 16%, transparent); font-family: JBM; font-size: 12px; letter-spacing: .14em; color: color-mix(in srgb, var(--paper) 60%, transparent); line-height: 44px; padding-left: 12px; box-sizing: border-box; overflow: hidden; white-space: nowrap; }
+.seg.hot { background: color-mix(in srgb, var(--accent) 28%, transparent); border-color: color-mix(in srgb, var(--accent) 70%, transparent); color: color-mix(in srgb, var(--accent), white 78%); }
+.sph { position: absolute; top: -8px; width: 2px; height: 60px; background: var(--paper); }
+.npanel { background: var(--panel); border: 1.5px solid color-mix(in srgb, var(--paper) 20%, transparent); border-radius: 12px; box-shadow: 0 40px 90px rgba(0,0,0,.5); }
+.nhead { position: absolute; left: 24px; right: 24px; top: 20px; display: flex; justify-content: space-between; font-size: 14px; letter-spacing: .2em; color: color-mix(in srgb, var(--paper) 75%, transparent); }
+.dimt { color: color-mix(in srgb, var(--paper) 40%, transparent); }
+.nlist { position: absolute; left: 24px; right: 24px; bottom: 104px; display: flex; flex-direction: column; justify-content: flex-end; gap: 16px; }
+.bub { align-self: flex-end; background: color-mix(in srgb, var(--bg), var(--paper) 9%); border: 1px solid color-mix(in srgb, var(--paper) 14%, transparent); border-left: 3px solid var(--accent); border-radius: 10px; padding: 14px 18px; transform-origin: 100% 100%; }
+.btxt { font-family: Inst; font-size: 28px; color: var(--paper); }
+.rep { font-size: 13px; color: var(--accent); margin-top: 6px; letter-spacing: .1em; }
+.ninput { position: absolute; left: 24px; right: 84px; bottom: 24px; height: 60px; border: 1.5px solid color-mix(in srgb, var(--paper) 30%, transparent); border-radius: 10px; font-size: 22px; color: var(--paper); line-height: 60px; padding-left: 18px; box-sizing: border-box; white-space: pre; }
+.ncaret { display: inline-block; width: 11px; height: 26px; background: var(--accent); vertical-align: -5px; margin-left: 2px; }
+.nsend { position: absolute; right: 24px; bottom: 24px; width: 48px; height: 60px; border-radius: 10px; background: var(--accent); color: var(--ink); font-family: Inst; font-weight: 700; font-size: 28px; line-height: 60px; text-align: center; }
+
+/* Counters and Progress */
+.codewin { background: var(--panel); border: 1.5px solid color-mix(in srgb, var(--paper) 20%, transparent); border-radius: 12px; overflow: hidden; box-shadow: 0 40px 90px rgba(0,0,0,.5); }
+.cbody { position: absolute; left: 0; right: 0; top: 41px; bottom: 0; overflow: hidden; }
+.cinner { position: absolute; left: 0; top: 14px; right: 0; font-family: JBM; font-size: 17px; line-height: 26px; color: color-mix(in srgb, var(--paper) 78%, transparent); }
+.cl { white-space: pre; height: 26px; overflow: hidden; }
+.ln { display: inline-block; width: 64px; text-align: right; padding-right: 22px; color: color-mix(in srgb, var(--paper) 22%, transparent); }
+.cinner i { font-style: normal; }
+.cinner .kw { color: color-mix(in srgb, var(--accent), white 18%); background: none; padding: 0; }
+.cinner .st { color: color-mix(in srgb, var(--accent), white 62%); } .cinner .cm { color: color-mix(in srgb, var(--paper) 32%, transparent); } .cinner .nu { color: color-mix(in srgb, var(--accent), white 35%); } .cinner .ty { color: #FFFFFF; }
+.lrow { white-space: nowrap; }
+.llab { font-size: 19px; letter-spacing: .24em; color: color-mix(in srgb, var(--paper) 60%, transparent); margin-top: 6px; }
+.rbar { width: 900px; height: 10px; border-radius: 5px; background: color-mix(in srgb, var(--paper) 12%, transparent); overflow: hidden; }
+.rfill { height: 100%; background: var(--accent); box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 80%, transparent); }
+.rlab { font-size: 15px; letter-spacing: .18em; color: color-mix(in srgb, var(--paper) 60%, transparent); white-space: pre; }
+
+/* Chain */
+.ctag { font-size: 18px; letter-spacing: .16em; color: color-mix(in srgb, var(--paper) 50%, transparent); white-space: nowrap; }
+
+/* Rewind */
+.pbwin { border: 1.5px solid color-mix(in srgb, var(--paper) 40%, transparent); border-radius: 6px; overflow: hidden; box-shadow: 0 50px 120px rgba(0,0,0,.6); }
+.track { left: 0; width: 1150px; height: 6px; background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--paper) 25%, transparent), transparent); }
+.pbhead { width: 1150px; display: flex; justify-content: space-between; font-size: 14px; letter-spacing: .22em; color: color-mix(in srgb, var(--paper) 60%, transparent); }
+.pbspd { color: var(--accent); }
+.pbbar { width: 1150px; height: 4px; background: color-mix(in srgb, var(--paper) 15%, transparent); }
+.pbph { height: 100%; background: var(--accent); }
+.pbtc { font-size: 14px; letter-spacing: .14em; color: color-mix(in srgb, var(--paper) 55%, transparent); white-space: pre; }
+
+/* Logo */
+.lline { height: 3px; border-radius: 2px; background: var(--accent); box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 90%, transparent), 0 0 50px color-mix(in srgb, var(--accent) 50%, transparent); }
+.logo svg path { transform-box: fill-box; }
+.endline { font-family: Inst; font-size: 40px; color: color-mix(in srgb, var(--paper) 92%, transparent); white-space: nowrap; }
+.made { font-size: 15px; letter-spacing: .3em; color: color-mix(in srgb, var(--paper) 60%, transparent); white-space: nowrap; }
+
+/* shared pieces, and extras for Strike, Hero, Counters and Progress */
+.ch { display: inline-block; }
+.tile.lt { background: #FFFFFF; border-color: color-mix(in srgb, var(--ink) 16%, transparent); box-shadow: 0 22px 50px color-mix(in srgb, var(--ink) 18%, transparent); }
+.tile.lt .tlabel { color: var(--ink); } .tile.lt .tver { color: color-mix(in srgb, var(--ink) 45%, transparent); }
+.reel { display: flex; white-space: nowrap; line-height: 1; }
+.rcol { display: inline-block; height: 1em; overflow: hidden; position: relative; }
+.rin { display: block; white-space: pre; line-height: 1; }
+.rch { display: inline-block; }
+.cinner.big { font-size: 20px; line-height: 30px; }
+.cinner.big .cl { height: 30px; }
+.hlrow { left: 0; top: 0; width: 100%; height: 30px; background: color-mix(in srgb, var(--accent) 16%, transparent); border-left: 4px solid var(--accent); }
+.chev { font-size: 46px; color: color-mix(in srgb, var(--paper) 90%, transparent); white-space: pre; }
+.chv { color: var(--accent); }
+.blk { display: inline-block; width: 24px; height: 46px; background: var(--accent); vertical-align: -8px; margin-left: 4px; box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 70%, transparent); }
+.bigc { font-size: 118px; font-weight: 700; letter-spacing: -.02em; white-space: pre; }
+.codebg { font-size: 22px; line-height: 34px; color: var(--paper); white-space: pre; }
+.rbar.lt { width: 1500px; height: 14px; border-radius: 7px; background: color-mix(in srgb, var(--ink) 14%, transparent); }
+.rlab.lt { color: color-mix(in srgb, var(--ink) 62%, transparent); font-size: 17px; }
+.sub.lt { color: color-mix(in srgb, var(--ink) 60%, transparent); }
+.ctag.big { font-size: 26px; }
+.sheen svg path { fill: #FFFFFF !important; }
+.sheen { -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 42%, rgba(0,0,0,.55) 50%, transparent 58%, transparent 100%); -webkit-mask-size: 300% 100%; -webkit-mask-repeat: no-repeat; }
+
+.fcard { width: 240px; height: 135px; border: 2px solid color-mix(in srgb, var(--ink) 30%, transparent); border-radius: 6px; box-sizing: border-box; overflow: hidden; }
+.rhead { width: 4px; height: 185px; background: var(--accent); box-shadow: 0 0 18px 4px color-mix(in srgb, var(--accent) 70%, transparent); border-radius: 2px; }
+
+.pic { left: -2%; top: -2%; width: 104%; height: 104%; background-size: cover; }
+
+/* preview controls */
+.scrub { position: fixed; left: 20px; right: 120px; bottom: 14px; z-index: 9; }
+.scrubt { position: fixed; right: 20px; bottom: 14px; color: #fff; font: 14px JBM; z-index: 9; }
+/* boot problems (a bad spec, missing fonts), shown in the preview instead of a blank page */
+.problems { position: fixed; left: 40px; top: 40px; right: 40px; color: #fff; font: 18px/1.5 monospace; white-space: pre-wrap; z-index: 10; }
+</style></head>
+<body><div id="root"></div><script type="module" src="main.js"></script></body></html>

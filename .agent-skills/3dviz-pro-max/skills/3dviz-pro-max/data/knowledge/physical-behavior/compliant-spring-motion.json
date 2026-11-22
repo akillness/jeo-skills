@@ -1,0 +1,103 @@
+{
+  "id": "knowledge.compliant-spring-motion",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Compliant spring motion from a restoring force"
+  },
+  "aliases": {
+    "en": [
+      "Hooke spring",
+      "simple harmonic oscillator",
+      "mass on a spring"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "soft-fluid-thermal"
+  ],
+  "summary": "Drive compliant motion from a restoring force proportional to displacement from a declared rest length, and do not treat a bounce clip as a measured spring.",
+  "objective": "A linear undamped one-dimensional oscillator moves about its force-balanced equilibrium with amplitude-independent period for positive stiffness and mass.",
+  "applies_when": [
+    "A connector, suspension, or tentacle is meant to restore toward a rest length or angle.",
+    "The viewer can change stiffness, mass or amplitude and should see the matching period or rate."
+  ],
+  "subject_terms": [
+    "Hooke's law",
+    "spring constant",
+    "rest length",
+    "simple harmonic motion",
+    "amplitude",
+    "natural frequency"
+  ],
+  "tags": [
+    "physical-behavior",
+    "spring",
+    "compliance",
+    "shm"
+  ],
+  "intent_signals": [
+    "bouncy suspension",
+    "mass on a spring I can tune",
+    "soft connector that snaps back"
+  ],
+  "example_prompts": [
+    "Hang a mass from a spring and show that larger pull-back does not change the period under Hooke's law.",
+    "Let me stiffen the spring and watch the oscillation get faster."
+  ],
+  "negative_signals": [
+    "A squash-and-stretch animation with no rest length.",
+    "Engine joint motors presented as laboratory spring constants."
+  ],
+  "not_for": [
+    "Plastic yield, rubber hyperelasticity or measured textile stiffness.",
+    "A complete cloth model; cloth may use mass-spring networks or other declared formulations."
+  ],
+  "content": {
+    "principles": [
+      "Distinguish a connector's unloaded natural length from the equilibrium of all forces. A hanging mass shifts the equilibrium under gravity.",
+      "For the selected 1D model x is displacement from force-balanced equilibrium, with finite m>0,k>0 and no damping; T=2 pi sqrt(m/k).",
+      "An authored bounce or joint controller may be useful but is not a calibrated Hooke spring merely because it looks compliant."
+    ],
+    "implementation": [
+      "Own equilibrium, displacement, velocity, m and k. Solve x''=-(k/m)x analytically or with a declared integrator; render stretch from this state.",
+      "For an optional spatial connector define d=p_B-p_A, L=|d| and unloaded L0>=0. When L>epsilon, apply F_B=-k(L-L0)d/L and F_A=-F_B, then add other forces such as gravity separately. Reject coincident endpoints at initialization; if L<=epsilon during motion, pause and report the undefined direction instead of normalizing zero.",
+      "Period checks belong to the unmodified 1D branch. Force caps or nonlinear limits must be reported as a different model; numerical instability requires a timestep/integration correction rather than an unlabelled force clamp.",
+      "If a control allows k=0, disable the finite period readout and set restoring force to zero; existing velocity can persist. Pause preserves velocity and time. Reset restores the initial displacement, velocity, equilibrium and parameters."
+    ],
+    "observable_checks": [
+      "Release two finite nonzero amplitudes from rest at fixed positive m,k: the undamped linear periods agree within declared tolerance.",
+      "Doubling positive k shortens the linear period by 1/sqrt(2).",
+      "At k=0 the restoring acceleration vanishes; motion follows remaining forces and velocity, with no independent periodic mesh writer."
+    ]
+  },
+  "related_ids": [
+    "recipe.simple-pendulum",
+    "recipe.mass-spring-cloth-contract"
+  ],
+  "creative_affordances": [
+    "Coil, leaf or cartoon springs are interchangeable skins on the same rest-length state.",
+    "Colouring the spring by stored energy is a free overlay."
+  ],
+  "known_limits": [
+    "OpenStax SHM assumes Hooke's law and no damping; real springs leave that regime at large strain.",
+    "Explicit integrators become unstable as k grows; that is a numerical limit, not a material one.",
+    "Authored reusable guidance; no runtime artifact has been observed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-compliant-spring-motion",
+      "statement": "Simple harmonic motion occurs when the net force obeys Hooke's law F_s = -k x with no damping; the period and frequency then depend on mass and the force constant and are independent of amplitude.",
+      "scope": "One-dimensional linear undamped oscillator with finite m,k>0 and x measured from force-balanced equilibrium; not a period guarantee for spatial networks or plastic materials.",
+      "source_refs": [
+        {
+          "source_id": "source.knowledge-depth-openstax-simple-harmonic-motion",
+          "locator": "15.1, Equations of SHM and Eq15.7; Figure15.10 hanging spring and shifted equilibrium"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed"
+}

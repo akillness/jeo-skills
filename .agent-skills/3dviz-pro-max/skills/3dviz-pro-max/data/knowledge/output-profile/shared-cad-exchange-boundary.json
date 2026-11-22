@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-cad-exchange-boundary",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "output-profile",
+  "title": {
+    "en": "Technical exchange boundary between exact and mesh geometry"
+  },
+  "aliases": {
+    "en": [
+      "CAD exchange boundary",
+      "exact geometry versus mesh handoff",
+      "units and identity across exchange"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "operations-logistics",
+    "architecture-interiors"
+  ],
+  "summary": "Choose deliberately between exchanging exact geometry and exchanging a mesh, and record what units, identity and attributes each choice carries.",
+  "objective": "The receiving side can state the units, the part identity and the geometric fidelity of what it received, without inferring any of them.",
+  "tags": [
+    "output-profile",
+    "cad-exchange",
+    "units",
+    "identity",
+    "fidelity",
+    "boundary"
+  ],
+  "subject_terms": [
+    "exact geometry exchange",
+    "mesh exchange",
+    "declared unit",
+    "assembly structure",
+    "part names",
+    "colours and layers",
+    "tolerance",
+    "downstream fidelity"
+  ],
+  "intent_signals": [
+    "which format should I send this model in",
+    "the received file has no units",
+    "part names are missing after exchange",
+    "can this file be machined",
+    "the assembly came in as one lump"
+  ],
+  "example_prompts": [
+    "Decide what to send a manufacturing partner and what to send a web viewer.",
+    "Explain why the received mesh cannot be used for tolerance work.",
+    "Keep the assembly tree across a technical handoff."
+  ],
+  "negative_signals": [
+    "character or creature asset",
+    "scientific field dataset"
+  ],
+  "not_for": [
+    "Character and entertainment assets, whose handoff is a runtime scene problem.",
+    "Sampled measurement data, which needs a data-format contract instead."
+  ],
+  "content": {
+    "principles": [
+      "There are two different handoffs and they answer different questions. Exact geometry preserves the surface definitions, so the receiving side can tessellate again at any tolerance its kernel and the model accuracy support; a mesh preserves one approximation at one chosen tolerance and cannot be refined beyond it without returning to the source.",
+      "The direction is one-way in practice. Going from exact surfaces to triangles is routine; going back is a reconstruction problem with its own error, not a decoding step.",
+      "A declared unit in the file is worth more than a convention. A format that names its unit removes an entire class of scale errors; a format that does not forces every recipient to guess or to ask.",
+      "Identity and attributes travel on a different path from geometry. Part names, assembly structure, colours and layers may need an extended document or a separate channel even when the surfaces themselves transfer cleanly.",
+      "Fidelity is limited at several independent points, and the limits accumulate rather than one of them governing. Source model accuracy, the recorded uncertainty in the exchanged file, any translation or healing step and the tessellation tolerance each contribute, so a fine tessellation target cannot recover accuracy the source never had. Track an explicit error budget and, where it matters, a verified deviation rather than a single quoted number.",
+      "The right choice follows the downstream operation and its acceptance tolerance, not the name of the domain. Re-derivation, tolerance analysis and feature editing need the exact definition, while many manufacturing, review and delivery workflows are properly served by a mesh format that declares its unit and its topology rules."
+    ],
+    "implementation": [
+      "State the downstream use before choosing the format, and record that reasoning with the exchange so the choice can be revisited.",
+      "Fix and declare the unit at the export boundary, and prefer formats that carry an explicit unit declaration over conventions that rely on an assumed default.",
+      "When exporting exact geometry, keep the assembly structure rather than flattening it, and check separately whether names, colours and layers were carried or need the extended document path.",
+      "When exporting a mesh, record the tessellation tolerance together with the units it was expressed in, and keep the source model so a finer mesh can be produced later.",
+      "Preserve a part identity map across the boundary so the receiving scene can link every visible object back to a source part, even if the geometry was reorganised.",
+      "Check received geometry for the specific failures the path allows: unexpected scale, missing attributes, split or merged parts, and open shells where a solid was expected.",
+      "Record what was verified after the exchange and what was accepted untested, rather than describing the exchange as successful because a file opened."
+    ],
+    "observable_checks": [
+      "The receiving side can state the unit of the received file from the file itself or from the exchange record, without measuring a known feature to infer it.",
+      "A measured overall dimension matches the source dimension under the declared unit.",
+      "The number of parts and the assembly depth match the source, with any intentional flattening stated.",
+      "Every visible part maps back to a named source part through the identity map.",
+      "For a mesh exchange, the recorded tolerance and the error budget it belongs to are present, and the surface quality at the closest intended viewing distance is consistent with them.",
+      "Attributes that were expected to transfer are present, and those that were not are listed as re-authored."
+    ]
+  },
+  "creative_affordances": [
+    "Presentation materials, lighting and annotation are re-authored freely on the receiving side; only geometry fidelity, units and identity need to survive.",
+    "A deliberately simplified exchange model is a valid deliverable when the record says which details were removed."
+  ],
+  "known_limits": [
+    "The exchange behaviour cited here is documented for one CAD kernel and one manufacturing format; other converters preserve different attributes and expose different controls.",
+    "The ISO text of the exact-geometry exchange standard was not read for this record because the catalogue page returned an access error, so no statement is made about the standard's own requirements.",
+    "No file was exported or imported for this record.",
+    "Authored reusable guidance; no runtime artifact has been executed or observed for this record."
+  ],
+  "related_ids": [
+    "recipe.modular-camera-rig",
+    "recipe.building-service-layers",
+    "recipe.parcel-sorter-events",
+    "knowledge.shared-cad-tessellation-identity",
+    "knowledge.shared-indexed-manifold-mesh",
+    "knowledge.shared-gltf-asset-bridge"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-3mf-declared-unit",
+      "statement": "The 3MF core specification defines a model-level unit attribute whose valid values are micron, millimetre, centimetre, inch, foot and metre with a default of millimetre, states that this unit is used to interpret all vertices, locations and measurements in the model, and defines a right-handed coordinate space whose origin producers and consumers must map to a specified corner of the output device field.",
+      "scope": "Normative requirements of the 3MF core specification for units and coordinates, read from the consortium's specification source on the access date. They describe that format only.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-3mf-core",
+          "locator": "Coordinates and units; model unit attribute (ST_Unit)"
+        }
+      ]
+    },
+    {
+      "id": "claim.shared-exchange-attribute-paths",
+      "statement": "One CAD kernel's exchange documentation states that its basic translator handles geometrical and topological entities and assembly structures while names, colours, layers and validation properties require the extended document translator, that assembly structures in the file are mapped into nested compound shapes with component sharing preserved, and that a write-side unit parameter converts the model into the chosen unit during translation.",
+      "scope": "Documented exchange behavior of the Open CASCADE Technology STEP processor as of the access date. It shows that geometry and descriptive attributes travel by separate paths in that implementation; it is not the exchange standard's own text.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-occt-step",
+          "locator": "Introduction; Domain covered > Assemblies; write.step.unit"
+        }
+      ]
+    }
+  ]
+}

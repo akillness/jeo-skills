@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.flat-belt-traction-bound",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Flat-belt traction bound before slip"
+  },
+  "aliases": {
+    "en": [
+      "capstan equation",
+      "belt traction"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "products-assemblies"
+  ],
+  "summary": "Compare demanded pulley torque with available belt traction without inventing a post-slip speed.",
+  "objective": "Expose the authoritative model and its visible response: flat-belt traction bound before slip.",
+  "applies_when": [
+    "Flexible massless flat belt in cylindrical contact, positive lower-side tension Tlo, static friction coefficient mu>=0 and wrap beta in radians; quasi-static traction feasibility only."
+  ],
+  "subject_terms": [
+    "capstan equation",
+    "belt traction",
+    "wrap angle",
+    "tight-side tension"
+  ],
+  "tags": [
+    "physical-behavior",
+    "flat-belt-traction-bound"
+  ],
+  "intent_signals": [
+    "Compare demanded pulley torque with available belt traction without inventing a post-slip speed."
+  ],
+  "example_prompts": [
+    "Build an inspectable demonstration of flat-belt traction bound before slip with parameter controls and a reset."
+  ],
+  "negative_signals": [
+    "Not V-belts, toothed belts, belt stretch, centrifugal tension, wear or post-slip dynamics."
+  ],
+  "not_for": [
+    "Not V-belts, toothed belts, belt stretch, centrifugal tension, wear or post-slip dynamics."
+  ],
+  "content": {
+    "principles": [
+      "No-slip motion is a conditional ideal constraint, not evidence that any requested torque can be transmitted.",
+      "The static bound identifies loss of sticking feasibility; it is not a kinetic friction or slip-rate equation."
+    ],
+    "implementation": [
+      "Own finite Tlo>0 and demanded Thi>=Tlo in N, finite mu>=0 dimensionless, finite unsigned contact angle beta>=0 in rad and finite radius R>0 in m. beta is the magnitude of the contacted arc, never a signed rotation sweep; beta=0 is the no-contact limiting case. Compare log(Thi/Tlo) with mu*beta, using a declared numerical tolerance and showing equality as the limiting case. Torque magnitude is (Thi-Tlo)*R in N m.",
+      "Draw the actual contacted arc and tangential tension arrows; beta must match that arc. In a multi-pulley drive check every contact with its own mu,beta,R. Treat Tlo as an explicit input rather than inferring it from unloaded pretension.",
+      "A separate ideal transmission mode may prescribe matching belt and rim tangential velocity. Beyond the static limit show demand exceeds bound and stop claiming sticking; do not animate an inferred slipping speed. Parameter changes recompute all labels and reset restores the initial demand."
+    ],
+    "observable_checks": [
+      "At mu=0 or beta=0 the bound permits only Thi=Tlo. At mu=0.3,beta=pi,Tlo=100 N the threshold is approximately 256.63 N; 250 N is below and 260 N above.",
+      "Increasing wrap with fixed tensions increases the margin. Swapping which physical side is tight must update arrows and torque direction without treating negative tension as compression."
+    ]
+  },
+  "known_limits": [
+    "Not V-belts, toothed belts, belt stretch, centrifugal tension, wear or post-slip dynamics.",
+    "Authored reusable guidance; no solver or rendered artifact has been tested for this record."
+  ],
+  "creative_affordances": [
+    "Use a cutaway, restrained ghost reference or annotated section only when it clarifies the modeled relation; a planar diagram remains valid when depth adds no information."
+  ],
+  "related_ids": [
+    "knowledge.constrained-gear-motion"
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-flat-belt-traction-bound",
+      "statement": "For the stated flat-belt model, the maximum larger tension before slip is Tlo exp(mu beta), with beta measured in radians. The net pulley torque magnitude is the tension difference times pulley radius; each contact must satisfy its own traction bound.",
+      "scope": "Flexible massless flat belt in cylindrical contact, positive lower-side tension Tlo, static friction coefficient mu>=0 and wrap beta in radians; quasi-static traction feasibility only.",
+      "source_refs": [
+        {
+          "source_id": "source.object-physics-flat-belt-traction-bound",
+          "locator": "Friction in Flat Belts, equation 1; Torque and Power Transmission in Belt-Driven Systems"
+        }
+      ]
+    }
+  ]
+}

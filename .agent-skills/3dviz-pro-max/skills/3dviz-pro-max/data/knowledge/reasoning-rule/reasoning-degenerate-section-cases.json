@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-degenerate-section-cases",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Handle the degenerate cases on purpose"
+  },
+  "aliases": {
+    "en": [
+      "degenerate conic",
+      "boundary case",
+      "singular configuration"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry",
+    "calculus-fields"
+  ],
+  "summary": "Enumerate the degenerate configurations of a construction and give each an intended, labelled behaviour.",
+  "objective": "Turn the cases where a construction collapses into part of the explanation instead of a rendering failure.",
+  "applies_when": [
+    "A cutting plane, projection or intersection can reach a special position.",
+    "A parameter can reach zero, infinity, a tangency or a coincidence.",
+    "The classification of the result is displayed, such as ellipse, parabola or hyperbola."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "degenerate conic",
+    "tangency",
+    "boundary case",
+    "classification",
+    "apex",
+    "special position"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "geometry",
+    "edge-cases"
+  ],
+  "intent_signals": [
+    "what happens at the apex",
+    "the section disappears",
+    "classify the curve"
+  ],
+  "example_prompts": [
+    "Show what the section becomes when the plane passes through the apex.",
+    "Let me reach the parabola case exactly."
+  ],
+  "negative_signals": [
+    "Constructions whose parameters are constrained away from the special cases by design.",
+    "Purely decorative geometry where classification is not claimed."
+  ],
+  "not_for": [
+    "Constructions whose parameters are constrained away from the special cases by design.",
+    "Purely decorative geometry where classification is not claimed."
+  ],
+  "content": {
+    "principles": [
+      "Degenerate cases are part of the mathematics, not exceptions to it. A plane through the apex of a double cone produces a point, a line or two intersecting lines depending on its angle.",
+      "The interesting boundary is often exactly at the transition, so a scene that skips or jitters past it hides the most instructive configuration.",
+      "Floating-point comparison decides when a case is reached. Without a stated tolerance, the transition either never occurs or flickers.",
+      "A classification label is a claim: if the scene names the curve, the naming must include the degenerate outcomes rather than defaulting to the nearest non-degenerate name."
+    ],
+    "implementation": [
+      "Enumerate the degenerate configurations of the construction up front and decide the intended behaviour and label for each.",
+      "Snap to or allow exact attainment of the special configuration, with a stated tolerance, so it can actually be inspected.",
+      "Render the degenerate result honestly, for example as a point or a pair of lines, rather than an empty view or a collapsed mesh.",
+      "Report the classification from the parameters rather than from the produced geometry, which may be empty.",
+      "Show the neighbourhood of the transition, for example by allowing slow movement through it, so the viewer sees the case appear."
+    ],
+    "observable_checks": [
+      "Sweep the parameter through each special value and check the expected classification on both sides and at the boundary itself; a sweep that leaves and re-enters a regular case changes label more than once, which is correct, so compare against the expected sequence rather than a fixed number of changes.",
+      "Land exactly on the degenerate value and confirm the display is intended rather than blank or broken.",
+      "Approach from both sides and confirm each side matches its expected case. Asymmetry is often correct: at a tangency the intersection can be empty on one side and non-empty on the other, so do not require a symmetric neighbourhood.",
+      "Confirm the stated tolerance is visible, since the transition point depends on it."
+    ]
+  },
+  "related_ids": [
+    "recipe.conic-slicing",
+    "knowledge.parameter-experiment"
+  ],
+  "creative_affordances": [
+    "Degenerate cases can be dramatised, for example by holding on the transition, since they are usually the memorable moment of the scene.",
+    "A gallery of all cases side by side is a legitimate alternative to a single sweep."
+  ],
+  "known_limits": [
+    "Authored guidance citing the classification of degenerate conics; other constructions have their own special cases not enumerated here.",
+    "It does not prescribe a numerical tolerance, which depends on the units and scale of the scene."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-degenerate-conic-cases",
+      "statement": "A degenerate conic results when the intersecting plane passes through the apex of the double cone, and depending on the angle of the plane the result is a point, a line, or two intersecting lines.",
+      "scope": "Classification of plane sections of a double cone; it does not cover degenerate cases of other surfaces.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-openstax-degenerate-conics",
+          "locator": "10.4, degenerate conics through the apex"
+        }
+      ]
+    }
+  ]
+}

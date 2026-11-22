@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.theme-coastal-exploration",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "theme-profile",
+  "title": {
+    "en": "Coastal exploration setting"
+  },
+  "aliases": {
+    "en": [
+      "coastal diorama",
+      "island expedition",
+      "harbor exploration"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "earth-environment"
+  ],
+  "summary": "Create a navigable edge between land and water, using a lookout, landing place and inland destination to organize discovery.",
+  "objective": "The landing point and inland route remain visible across views, and water animation is not described as a hydrodynamic result.",
+  "tags": [
+    "theme-profile",
+    "fictional-setting",
+    "coastal-exploration"
+  ],
+  "subject_terms": [
+    "coastal diorama",
+    "island expedition",
+    "harbor exploration"
+  ],
+  "intent_signals": [
+    "Set the scene in a coastal exploration setting",
+    "Use coastal diorama as the narrative setting"
+  ],
+  "example_prompts": [
+    "Create a small coastal expedition island with a landing dock, cliff path and distinct observation shelter."
+  ],
+  "content": {
+    "principles": [
+      "Create a navigable edge between land and water, using a lookout, landing place and inland destination to organize discovery.",
+      "Theme supplies setting and motifs; choose geometry style, rendering approach and factual model independently."
+    ],
+    "implementation": [
+      "Shape cliffs, beaches, paths and docks so the route can be understood; use landmarks of different height and silhouette.",
+      "Choose water, rock and vegetation appearances that separate the shoreline; place a clear sunlike key or deliberately overcast light treatment.",
+      "Offer a shoreline overview and path-following exploration; boats or creatures need declared authored routes and pause behavior."
+    ],
+    "observable_checks": [
+      "The landing point and inland route remain visible across views, and water animation is not described as a hydrodynamic result.",
+      "Inspect one focal object close up and the complete route or spatial relationship from an overview."
+    ]
+  },
+  "known_limits": [
+    "Authored fictional setting guidance; no rendered artifact or runtime improvement has been observed for this record.",
+    "This proposal does not establish historical, cultural, scientific or engineering facts."
+  ],
+  "creative_affordances": [
+    "Combine with low-poly, painterly or miniature style; geographic coordinates and coastal process claims require actual data separately.",
+    "Replace motifs or combine settings to suit the user brief; maintain a readable organizing idea rather than treating these suggestions as a fixed asset list."
+  ],
+  "related_ids": [
+    "knowledge.framed-shelter",
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

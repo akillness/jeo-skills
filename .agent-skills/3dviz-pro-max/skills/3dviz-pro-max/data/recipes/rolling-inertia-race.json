@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "id": "recipe.rolling-inertia-race",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Rolling without slipping and the inertia race"
+  },
+  "aliases": {
+    "en": [
+      "rolling motion",
+      "moment of inertia",
+      "incline race"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics"
+  ],
+  "summary": "Race bodies of equal mass and radius down one incline so the only difference is where their mass sits.",
+  "objective": "Build an incline race where a hoop, a solid cylinder and a sphere roll without slipping and their accelerations differ by moment of inertia alone.",
+  "tags": [
+    "rolling",
+    "inertia",
+    "incline"
+  ],
+  "subject_terms": [
+    "rolling without slipping",
+    "moment of inertia",
+    "static friction",
+    "incline",
+    "angular velocity",
+    "centre of mass",
+    "contact point"
+  ],
+  "intent_signals": [
+    "Show why a hoop loses a rolling race to a sphere.",
+    "Explain rolling without slipping with a visible contact condition."
+  ],
+  "example_prompts": [
+    "Build a rolling race down an incline with hoop, cylinder and sphere and a live speed comparison.",
+    "Show what happens when the incline is too steep for rolling without slipping."
+  ],
+  "negative_signals": [
+    "Not a deformable contact or rolling-resistance model.",
+    "Not a claim about real objects with bearings, air drag or surface texture."
+  ],
+  "not_for": [
+    "Not a deformable contact or rolling-resistance model.",
+    "Not a claim about real objects with bearings, air drag or surface texture."
+  ],
+  "entities": [
+    {
+      "name": "Rolling bodies",
+      "guidance": "Give each body a visible surface marker so rotation is countable and slipping would be obvious."
+    },
+    {
+      "name": "Incline and contact",
+      "guidance": "Model the incline with a stated angle and draw the contact point with the friction requirement displayed."
+    },
+    {
+      "name": "Comparison readout",
+      "guidance": "Show the mass distribution factor, the resulting acceleration and the current speed for each body side by side."
+    }
+  ],
+  "state_contract": {
+    "model": "Rigid bodies with positive mass m, radius R and inertia factor k = I/(m R squared), rolling without slipping on a rigid incline at angle theta in the interval from 0 up to but excluding a right angle, so the centre-of-mass acceleration is g sin(theta)/(1 + k) and rolling requires a static friction coefficient of at least k tan(theta)/(1 + k). Angular velocity follows from the rolling condition. When the friction requirement is exceeded the race enters a declared rolling-model-invalid state and freezes rather than inventing an unmodelled sliding branch.",
+    "authority": "The rolling condition ties rotation to translation: the visual spin is computed from travelled distance, never animated independently.",
+    "actions": [
+      "Start, pause and reset the race.",
+      "Change the incline angle and watch the friction requirement.",
+      "Reduce the friction coefficient until the requirement fails and the rolling-model-invalid state is reported.",
+      "Toggle the surface markers and readouts."
+    ]
+  },
+  "invariants": [
+    "Centre-of-mass speed equals radius times angular speed for every body while rolling.",
+    "Bodies with a larger inertia factor k accelerate less, independent of mass and radius, and the finish order follows k only for a simultaneous release from rest on a common incline with the angle held fixed for the whole run.",
+    "When the friction requirement is exceeded the scene enters the rolling-model-invalid state, freezes the affected body and says so; it does not continue with an independent spin and translation that no equation in this recipe defines."
+  ],
+  "motion_guidance": [
+    "Derive spin from travelled distance so the surface marker never drifts relative to the ground.",
+    "Keep all bodies released at the same instant from the same line so the comparison is fair and visible."
+  ],
+  "known_limits": [
+    "Idealised rigid contact: no deformation, rolling resistance or air drag.",
+    "The slipping transition is reported as a state change, not simulated as a full friction contact model.",
+    "Changing the incline angle mid-run invalidates the constant-acceleration comparison, so the scene pauses and resets the race when the angle is edited.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-rolling-condition",
+      "statement": "For rolling without slipping the velocity of the centre of mass equals the radius times the angular velocity about the axis.",
+      "scope": "Rigid body on a rigid surface as cited.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-rolling",
+          "locator": "11.1, rolling without slipping condition"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-rolling-acceleration",
+      "statement": "The centre-of-mass acceleration of a body rolling down an incline is reduced by its rotational inertia term, so bodies with mass further from the axis accelerate less, and rolling without slipping requires a static friction coefficient at least as large as a stated expression involving the incline angle and that inertia term.",
+      "scope": "Rigid symmetric bodies on a rigid incline as cited; deformation and rolling resistance are excluded.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-rolling",
+          "locator": "11.1, acceleration on an incline and static friction condition"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Rolling bodies",
+      "structure": "Distinct geometry per body with a painted radial stripe and a rim marker so rotation and slip are visible.",
+      "material": "Same base material across bodies so only geometry differs; the stripe is a high-contrast decal, not a light effect.",
+      "articulation": "Rotation angle is computed from travelled distance while rolling; in the rolling-model-invalid state the body freezes and is flagged, rather than being animated with an undefined independent spin."
+    },
+    {
+      "family": "Incline and contact",
+      "structure": "A ramp with a measured angle indicator and a contact patch marker under each body.",
+      "material": "Matte ramp with a subtle grid so travelled distance is readable.",
+      "articulation": "The contact marker follows the body and is highlighted when the friction requirement is exceeded."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Point-contact rigid rolling with an analytic acceleration; no deformation, drag or rolling resistance.",
+    "state": [
+      "position along incline",
+      "centre-of-mass speed",
+      "angular speed",
+      "slipping flag"
+    ],
+    "driving": [
+      "Gravity component along the incline with the rotational inertia term."
+    ],
+    "contact": [
+      "Single contact point per body; static friction requirement evaluated each step."
+    ],
+    "timestep": "Fixed simulation step with interpolated rendering.",
+    "checks": [
+      "Speed equals radius times angular speed while the slipping flag is clear.",
+      "For simultaneous rest release on one fixed nonzero incline, with all bodies remaining in the valid no-slip branch until completion, finish order follows inertia factor. A frozen invalid-model body has no predicted finish time under this recipe."
+    ]
+  },
+  "related_ids": [
+    "recipe.projectile-trajectory",
+    "recipe.coupled-gears",
+    "knowledge.gravity-contact"
+  ]
+}

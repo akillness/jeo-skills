@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "id": "recipe.cube-state-invariants",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Reachable cube states and their invariants"
+  },
+  "aliases": {
+    "en": [
+      "cube parity",
+      "corner twist invariant",
+      "reachable states"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles"
+  ],
+  "summary": "Let a viewer build an impossible cube on purpose and have the model name which invariant is broken.",
+  "objective": "Build a cube state editor that reports whether an assembled configuration is reachable by legal turns and which invariant fails when it is not.",
+  "tags": [
+    "parity",
+    "invariant",
+    "state space"
+  ],
+  "subject_terms": [
+    "permutation parity",
+    "corner orientation",
+    "edge flip",
+    "reachable state",
+    "invariant",
+    "state count",
+    "illegal configuration"
+  ],
+  "intent_signals": [
+    "Show why a single swapped pair of pieces is impossible on a cube.",
+    "Check whether a scrambled configuration could have come from legal turns."
+  ],
+  "example_prompts": [
+    "Build a cube configuration editor that flags unreachable states and names the broken invariant.",
+    "Show the corner twist and edge flip invariants on a deliberately broken cube."
+  ],
+  "negative_signals": [
+    "Not a solver and not a scramble generator for competition use.",
+    "Not applicable to puzzles with different piece types without restating their invariants."
+  ],
+  "not_for": [
+    "Not a solver and not a scramble generator for competition use.",
+    "Not applicable to puzzles with different piece types without restating their invariants."
+  ],
+  "entities": [
+    {
+      "name": "Editable state",
+      "guidance": "Allow direct placement of pieces into slots with orientation controls, since building an illegal state is the purpose."
+    },
+    {
+      "name": "Invariant panel",
+      "guidance": "Report permutation parity, corner twist sum and edge flip parity as three separate values with their required conditions."
+    },
+    {
+      "name": "Legal move check",
+      "guidance": "Offer a legal-turn mode so a viewer can confirm that no sequence of turns changes any of the three reported invariants."
+    }
+  ],
+  "state_contract": {
+    "model": "Exact piece positions and orientations for a standard three-layer cube with fixed centres, plus a typed inventory check that all eight corners and twelve edges appear exactly once in slots of the matching type with valid orientation codes. Reachability is then reported from three invariants: the sum of corner twists modulo 3, the sum of edge flips modulo 2, and equality of corner and edge permutation parity. Malformed inventories are reported as not-a-state rather than as unreachable states.",
+    "authority": "The invariant computation is authoritative for reachability. A configuration that looks solvable but fails an invariant must be reported as unreachable.",
+    "actions": [
+      "Place or reorient a piece directly.",
+      "Recompute the invariants and read the verdict.",
+      "Switch to legal-turn mode and confirm the invariants never change.",
+      "Reset to the solved state."
+    ]
+  },
+  "invariants": [
+    "No legal turn changes the corner twist sum modulo 3, the edge flip sum modulo 2, or the equality of corner and edge permutation parity. A raw twist sum may change by multiples of 3 under legal turns, so only the residue is invariant.",
+    "Swapping exactly two pieces makes the permutation odd and is reported as unreachable.",
+    "Twisting one corner alone changes the twist sum and is reported as unreachable.",
+    "The typed inventory check runs before any reachability verdict: a configuration with a duplicated or missing piece is reported as malformed, since the invariants are statements about states of the puzzle."
+  ],
+  "motion_guidance": [
+    "Deliberately unreachable configurations are the point of the editor and are kept and reported, not refused. Only malformed edits that break the typed inventory are rejected, and that rejection is animated so the viewer sees the model refuse.",
+    "Keep turn animation identical in both modes so the difference between editing and turning is in the rules, not the visuals."
+  ],
+  "known_limits": [
+    "Invariants stated here are for the standard cube with fixed centres; other puzzles and centre-marked cubes differ.",
+    "Reporting a state as reachable does not produce a solution for it.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-cube-invariants",
+      "statement": "The reachable configurations of the standard cube satisfy three constraints: the total corner twist is fixed modulo 3, the number of edge flips is even, and the corner and edge permutations have equal parity, which reduces the raw arrangement count to 8! times 12! times 3^7 times 2^10.",
+      "scope": "Standard three-layer cube with fixed unmarked centres; supercube centre orientation is not included, and the invariants apply only to well-formed piece inventories.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-jaap-cube3",
+          "locator": "Rubik's Cube 3x3x3, position count and constraints"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-cube-even-permutation",
+      "statement": "Every single face turn is an even permutation of the pieces, so every move sequence is even and a single swap of two pieces cannot be achieved by moves alone.",
+      "scope": "Consequence of the move set for the standard cube.",
+      "source_refs": [
+        {
+          "source_id": "source.jaap-permutations",
+          "locator": "Group Theory for puzzles, permutation parity of cube moves"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Editable state",
+      "structure": "Sticker-accurate cubies whose orientation is visible from at least two faces, so a twisted corner is detectable.",
+      "material": "Standard face palette with a distinct treatment for pieces edited outside legal turns.",
+      "articulation": "Pieces snap into slots and rotate in fixed increments."
+    },
+    {
+      "family": "Invariant panel",
+      "structure": "A physical panel in the scene showing three values with their required conditions and a pass or fail badge each.",
+      "material": "Badges use shape and text as well as colour so the verdict survives greyscale viewing.",
+      "articulation": "Values recompute after every edit or turn."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Exact discrete state and arithmetic invariants; no mechanism, friction or force.",
+    "state": [
+      "piece permutation",
+      "orientation vectors",
+      "invariant values"
+    ],
+    "checks": [
+      "Invariant values are unchanged by any sequence of legal turns.",
+      "A single two-piece swap is reported as unreachable."
+    ]
+  },
+  "related_ids": [
+    "recipe.permutation-cycles",
+    "recipe.commutator-conjugate-tools",
+    "knowledge.controlled-experiment"
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "id": "knowledge.three-animation-mixer-adapter",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Three.js AnimationMixer as authored-motion playback"
+  },
+  "aliases": {
+    "en": [
+      "mixer clipAction",
+      "timeScale pause",
+      "update deltaTime"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "environments-dioramas",
+    "products-assemblies"
+  ],
+  "summary": "Play clips through a mixer that owns time, and keep that playback from writing physics state or continuing after a pause.",
+  "objective": "clipAction plays on the intended root; timeScale 0 pauses playback; update advances playback and an explicit seek evaluates a chosen mixer time.",
+  "applies_when": [
+    "A Three.js scene plays AnimationClip data on a character, prop or camera rig.",
+    "Pause, seek or blending of authored clips is required."
+  ],
+  "subject_terms": [
+    "AnimationMixer",
+    "AnimationAction",
+    "clipAction",
+    "timeScale",
+    "deltaTime",
+    "authored clip"
+  ],
+  "tags": [
+    "tool-adapter",
+    "three",
+    "animation",
+    "mixer"
+  ],
+  "intent_signals": [
+    "play the walk cycle",
+    "pause all character clips",
+    "seek to a pose in the animation"
+  ],
+  "example_prompts": [
+    "Play a glTF walk clip with AnimationMixer.update in the loop and pause it with timeScale 0.",
+    "Seek the mixer to a named pose without stepping a physics world."
+  ],
+  "negative_signals": [
+    "Calling mixer.update while a rigid-body solver also writes the same bones.",
+    "Calling a clip a simulation because it looks heavy."
+  ],
+  "not_for": [
+    "Procedural locomotion, inverse kinematics or contact dynamics.",
+    "Claims that mixer time is the physics timestep."
+  ],
+  "content": {
+    "principles": [
+      "A mixer is a player for clips on a particular root. It advances animation time. It does not compute forces.",
+      "One mixer per independently animated object keeps clip time local. Sharing a mixer across unrelated roots hides pause bugs.",
+      "timeScale 0 pauses every action on that mixer. That is animation pause, not automatic pausing of a solver or of demand-driven rendering."
+    ],
+    "implementation": [
+      "Create a mixer on the animated root. Obtain actions with clipAction and play them explicitly.",
+      "Call mixer.update(deltaTime) from the same clock that owns presentation time. Do not also write those nodes from a physics copy unless the clip is stopped.",
+      "Use mixer.timeScale=0 to pause. For seeking while paused, save its scale, temporarily set it to 1, call setTime(t), then restore the saved scale: setTime scales its input by mixer.timeScale. For a direct clip-time inspection, select an enabled playing action with unit effective time scale, unpaused state and an intentional loop/weight policy; otherwise describe the result as the configured blend at mixer time.",
+      "Reset restores saved action configuration and an explicit initial pose or evaluates the chosen initial clip time with the seek policy; time zero is not necessarily bind pose. On disposal of this single-root mixer, call stopAllAction() then uncacheRoot(root), and separately release exclusively owned asset resources."
+    ],
+    "observable_checks": [
+      "After play, only the mixer's root and its bound tracks move; an unrelated object stays put.",
+      "Setting timeScale to 0 freezes the clip even if the render loop still runs; restoring 1 continues from the paused mixer time.",
+      "Pause at mixer.timeScale=0 and seek with the save/set-1/setTime/restore policy: the requested mixer time is evaluated and subsequent playback remains paused. Compare a selected unit-scale action within its clip duration; blended or differently scaled actions follow their declared configuration."
+    ]
+  },
+  "related_ids": [
+    "knowledge.authored-locomotion",
+    "recipe.lantern-keeper-puppet"
+  ],
+  "creative_affordances": [
+    "Clip choice, easing and additive layers are presentation; they must not be sold as contact.",
+    "A scrub bar on mixer.time is a free inspection control."
+  ],
+  "known_limits": [
+    "Documented Three.js mixer behaviour; installed-version track names and blending differ by asset.",
+    "Authored reusable guidance; no runtime artifact has been observed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-three-animation-mixer-adapter",
+      "statement": "AnimationMixer is a player for animations on a particular object; update(deltaTime) advances the global mixer time, usually from the render loop; setting timeScale to 0 pauses all actions controlled by that mixer.",
+      "scope": "Three.js AnimationMixer API; clip playback is not a physics simulation.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-three-animation-mixer",
+          "locator": "Class description as a player for animations on a particular object; update(deltaTime); timeScale 0 pauses actions"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed"
+}

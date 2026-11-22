@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-generative",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Generative variation systems"
+  },
+  "aliases": {
+    "en": [
+      "procedural art",
+      "rule-based sculpture",
+      "generative scene",
+      "seeded procedural",
+      "parametric field"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "topology-symmetry"
+  ],
+  "summary": "Choose a small set of authored rules whose variations produce coherent families, with parameters that have observable roles.",
+  "objective": "Changing one control changes the intended visual property; reset reproduces the documented starting composition when reproducibility is promised.",
+  "tags": [
+    "style-profile",
+    "process-aesthetic",
+    "generative"
+  ],
+  "subject_terms": [
+    "procedural art",
+    "rule-based sculpture",
+    "generative scene",
+    "process aesthetic",
+    "seeded procedural",
+    "parametric field"
+  ],
+  "intent_signals": [
+    "Create generative art",
+    "Expose meaningful controls for procedural variation"
+  ],
+  "example_prompts": [
+    "Create a generative grove where branch density and curvature are separate editable design controls."
+  ],
+  "content": {
+    "principles": [
+      "Choose a small set of authored rules whose variations produce coherent families, with parameters that have observable roles."
+    ],
+    "implementation": [
+      "Generate repeated elements with controlled spacing, scale and orientation ranges; retain a stable seed or saved result when reproducibility is useful.",
+      "Map material or color variation to named design parameters rather than unstructured randomness; use light to reveal the resulting pattern.",
+      "Provide an overview and local inspection; parameter changes may animate only if element identity and state interpretation remain clear.",
+      "Seed a 32-bit PRNG (mulberry32) and persist the seed with the composition together with the three exposed parameters - count, spacing ratio 1.0-1.6 and jitter 0-0.3 - rather than the generated transforms, so reset reproduces the documented layout exactly.",
+      "Apply per-instance jitter of plus or minus 8 degrees yaw and plus or minus 12% scale through InstancedMesh.setMatrixAt; below about 5% the field reads as copy-paste and above about 20% the underlying rule stops being visible."
+    ],
+    "observable_checks": [
+      "Changing one control changes the intended visual property; reset reproduces the documented starting composition when reproducibility is promised."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "A generative image is only interesting when the viewer can separate the rule from the noise, so the numbers put the primary parameter on a single 25-70% saturation ramp with monotonic value and force every other parameter onto size or orientation. The 60-degree key with a 4:1 ratio lights every instance identically on purpose - variation must read as parameter, never as lighting - and the seeded PRNG with three exposed controls makes any composition reproducible from four numbers.",
+    "values": {
+      "feeling": [
+        "emergent",
+        "rhythmic",
+        "controlled"
+      ],
+      "palette": [
+        {
+          "hex": "#0f1419",
+          "role": "background"
+        },
+        {
+          "hex": "#1f3b3a",
+          "role": "field base, unparameterised elements"
+        },
+        {
+          "hex": "#4fb3a5",
+          "role": "primary parameter ramp, low end"
+        },
+        {
+          "hex": "#d9d26a",
+          "role": "primary parameter ramp, high end"
+        },
+        {
+          "hex": "#ff7a5c",
+          "role": "seed marker and outliers outside the ramp"
+        }
+      ],
+      "value_structure": "50/35/15 dark/mid/light; luminance follows the primary parameter so the image histogram mirrors the parameter histogram",
+      "saturation_rule": "one ramp spanning 25-70% HSL along a single parameter; a second parameter must use size or orientation, never a second hue ramp",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#0f1419",
+        "horizon": "#16242a"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#16242a",
+        "density": 0.015
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#f5f7ff",
+          "intensity": 2.4,
+          "elevation_deg": 60,
+          "azimuth_deg": 40,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#3d6f78",
+          "ground": "#0f1419",
+          "intensity": 0.55
+        },
+        "rim": {
+          "type": "none"
+        },
+        "ratio": "key:fill ~ 4:1 from a high sun so every instance is lit identically and variation reads as parameter rather than as position"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.0
+      },
+      "camera": {
+        "fov_deg": 35,
+        "height_m": 6.0,
+        "pitch_deg": -25,
+        "orbit": {
+          "minPolar_deg": 20,
+          "maxPolar_deg": 78,
+          "minDist_m": 5,
+          "maxDist_m": 120
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.45,
+          0.75
+        ],
+        "metalness": [
+          0,
+          0.1
+        ],
+        "notes": "one InstancedMesh with per-instance colour and scale from the seeded generator; jitter rotation by plus or minus 8 degrees and scale by plus or minus 12% so clones never read as copies"
+      },
+      "motion": {
+        "sway_period_s": [
+          3.0,
+          6.0
+        ],
+        "ease": "sine in-out",
+        "hold_ms": 400
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.1,
+          "strength": 0.18,
+          "radius": 0.5
+        },
+        "vignette": 0.2,
+        "grain": 0.03,
+        "dof": "off"
+      },
+      "signature_technique": "one documented 32-bit seed driving exactly three exposed parameters (count, spacing ratio, jitter), so any composition is reproducible from four numbers",
+      "never": [
+        "unseeded Math.random in an authored composition",
+        "a separate hue ramp per parameter",
+        "identical clones without per-instance jitter",
+        "more than three controls hiding the rule"
+      ]
+    }
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at exposure 1.0; re-tune every intensity, fog density and bloom threshold if you change the tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with geometric abstraction or natural-world themes; procedural appearance is not evidence of a biological or physical growth model."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

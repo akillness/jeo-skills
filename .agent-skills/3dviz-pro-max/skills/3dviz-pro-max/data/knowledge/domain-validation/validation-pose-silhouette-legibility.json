@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-pose-silhouette-legibility",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Key-pose silhouette legibility and self-intersection sampling"
+  },
+  "aliases": {
+    "en": [
+      "silhouette readability review",
+      "extreme pose inspection"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art"
+  ],
+  "summary": "Judge whether key poses read as the intended action and separately measure interpenetration at the ends of authored ranges.",
+  "objective": "Each key pose has a written legibility verdict with its viewing condition, and geometric self-intersections at range extremes are listed.",
+  "applies_when": [
+    "A character, creature or deforming sculpture has key poses meant to communicate an action.",
+    "Authored joint or parameter ranges can be driven to their extremes by a viewer.",
+    "The result will be judged by people rather than by a solver."
+  ],
+  "check_method": "visual",
+  "tags": [
+    "domain-validation",
+    "silhouette",
+    "readability",
+    "advisory"
+  ],
+  "subject_terms": [
+    "silhouette",
+    "key pose",
+    "self-intersection",
+    "staging view",
+    "anticipation",
+    "extreme"
+  ],
+  "intent_signals": [
+    "does this wave read from the staging camera",
+    "check the extreme poses for interpenetration"
+  ],
+  "example_prompts": [
+    "Review whether the greeting reads in silhouette and check the extreme poses."
+  ],
+  "negative_signals": [
+    "scoring art quality against a fixed style",
+    "certifying anatomical correctness"
+  ],
+  "content": {
+    "principles": [
+      "Readability is judged against the intent of the performance, not against a house style; this record decides whether the intended action is legible, not whether the art direction is correct.",
+      "Self-intersection is a geometric fact and is reported separately from any subjective readability opinion, because a silhouette hides interpenetration.",
+      "Extremes are the interesting sample; the middle of an authored range rarely fails."
+    ],
+    "implementation": [
+      "Render the key poses as flat silhouettes against a plain background from the staging camera and from a three-quarter view, and keep the two views fixed across revisions.",
+      "For each silhouette answer two specific written questions: can the action be named from the outline alone, and do the limbs and any held prop separate from the torso.",
+      "For self-intersection, drive each authored range to both ends and query the geometry directly with a proximity or intersection test between deforming parts.",
+      "Record reviewer disagreement as a result rather than averaging it away, and note the viewing condition next to every verdict."
+    ],
+    "observable_checks": [
+      "Every key pose has a written verdict and the view it was judged from; a verdict without a stated view is discarded.",
+      "Geometric self-intersections at range extremes are listed with the joint or parameter value that produced them, and are either fixed or the range is narrowed.",
+      "Changes made for readability are recorded as editorial choices with a rationale; this record does not support a claim that one silhouette treatment is universally correct."
+    ]
+  },
+  "known_limits": [
+    "Legibility judgment here is advisory and does not establish an aesthetic rule for other scenes or audiences.",
+    "Authored verification guidance; no pose was rendered or reviewed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.lantern-keeper-puppet",
+    "recipe.ribbon-motion-sculpture",
+    "recipe.garden-creature-patrol"
+  ],
+  "claims": []
+}

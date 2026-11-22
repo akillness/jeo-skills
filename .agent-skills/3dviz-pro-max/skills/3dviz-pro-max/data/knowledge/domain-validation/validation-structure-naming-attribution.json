@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-structure-naming-attribution",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Attribution of anatomical names, groupings and geometry claims"
+  },
+  "aliases": {
+    "en": [
+      "anatomy naming audit",
+      "mesh provenance separation"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures"
+  ],
+  "summary": "Separate sourced naming and grouping claims from unverified mesh geometry, entry by entry.",
+  "objective": "Every visible name and grouping resolves to a locator, an asset provenance or an explicit invented marker.",
+  "applies_when": [
+    "A scene labels real anatomical structures or asserts how they are grouped.",
+    "The mesh comes from an asset library rather than from a documented reconstruction.",
+    "The audience may treat the scene as a reference."
+  ],
+  "check_method": "source",
+  "tags": [
+    "domain-validation",
+    "attribution",
+    "anatomy",
+    "provenance"
+  ],
+  "subject_terms": [
+    "axial skeleton",
+    "appendicular skeleton",
+    "source locator",
+    "asset provenance",
+    "scope statement"
+  ],
+  "intent_signals": [
+    "which of these anatomy labels are actually sourced",
+    "audit the naming in this skeleton scene"
+  ],
+  "example_prompts": [
+    "Audit which anatomical names in this scene have sources and which do not."
+  ],
+  "negative_signals": [
+    "diagnostic interpretation",
+    "patient-specific modelling"
+  ],
+  "content": {
+    "principles": [
+      "A named anatomical structure is a factual claim that needs a locator; a plausible mesh is not evidence for a name.",
+      "Grouping claims and geometric claims are different claims with different evidence, so sourcing a division does not source a proportion, landmark or attachment.",
+      "Scope travels with the claim: an adult reference description is not a patient, and an illustration is not a measurement."
+    ],
+    "implementation": [
+      "List every visible label and grouping in the scene and mark each as sourced, inherited from the asset, or invented.",
+      "For sourced entries record the source identifier and a locator precise enough to find the sentence, and write in one line what the source actually says.",
+      "State separately that proportions, landmarks and attachment points are unverified unless a distinct asset provenance exists for them.",
+      "Repeat the audit whenever the asset changes, because a new mesh invalidates geometric attribution even when the names are unchanged."
+    ],
+    "observable_checks": [
+      "No visible name or grouping is left unmarked; unresolved entries are downgraded rather than presented as sourced.",
+      "The scene text asserts no geometric property that only the mesh supports; where it does, either a source is added or the sentence is removed.",
+      "The recorded scope appears in the artifact, so a reader can see that a grouping statement is not a claim about proportions or a diagnostic use."
+    ]
+  },
+  "known_limits": [
+    "An attribution procedure; it does not certify anatomical accuracy and does not substitute for expert review of the geometry.",
+    "Authored verification guidance; no scene was run or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.skeletal-hierarchy",
+    "recipe.heart-cutaway",
+    "knowledge.validation-documented-versus-interpretive-layer"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-appendicular-division",
+      "statement": "The axial skeleton forms the central axis of the body including the bones of head, neck, chest and back, while the appendicular skeleton includes all bones of the upper and lower limbs plus the bones that attach each limb to the axial skeleton.",
+      "scope": "Adult human skeletal divisions as described in the cited section; the source supports divisions and counts, not the proportions of any particular mesh.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-skeleton",
+          "locator": "7.1, axial and appendicular skeleton definitions"
+        }
+      ]
+    }
+  ]
+}

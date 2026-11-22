@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "id": "recipe.sky-archipelago-world",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Floating archipelago with wind-driven travel"
+  },
+  "aliases": {
+    "en": [
+      "sky islands",
+      "floating world",
+      "wind currents"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas"
+  ],
+  "summary": "Author a fictional world whose invented rule set is stated and consistently enforced, so travel between islands has real constraints.",
+  "objective": "Build a floating island world with declared wind currents and anchor points where a glider can travel between islands under stated rules.",
+  "tags": [
+    "fantasy world",
+    "floating islands",
+    "travel"
+  ],
+  "subject_terms": [
+    "floating island",
+    "wind current",
+    "updraft",
+    "glider",
+    "anchor line",
+    "world rules",
+    "traversal",
+    "altitude"
+  ],
+  "intent_signals": [
+    "Build a world of floating islands I can travel between.",
+    "Design a sky world with wind currents that actually affect movement."
+  ],
+  "example_prompts": [
+    "Build a floating archipelago with updrafts, anchor lines and a glider I can pilot between islands.",
+    "Design a fictional sky world whose rules for staying aloft are stated and enforced."
+  ],
+  "negative_signals": [
+    "Not an aerodynamics simulation: lift here follows an authored rule set, not aerofoil physics.",
+    "Not a geological or meteorological model of any kind."
+  ],
+  "not_for": [
+    "Not an aerodynamics simulation: lift here follows an authored rule set, not aerofoil physics.",
+    "Not a geological or meteorological model of any kind."
+  ],
+  "entities": [
+    {
+      "name": "Island bodies",
+      "guidance": "Give each island a top surface, an eroded underside and a visible root or crystal mass, so the invented buoyancy has a stated cause."
+    },
+    {
+      "name": "Wind field",
+      "guidance": "Author currents as named volumes with direction and strength, visible when a wind overlay is enabled, since travel depends on them."
+    },
+    {
+      "name": "Glider and anchors",
+      "guidance": "Build a glider with a real wing, a pilot position and anchor lines that attach to island mooring points with a stated maximum length."
+    }
+  ],
+  "state_contract": {
+    "model": "World rule set stating what keeps islands aloft and how wind volumes affect a glider, plus glider position, velocity, altitude and anchor state. The rules are fictional but fixed and enforced everywhere.",
+    "authority": "The declared rule set is authoritative and applies to every object in the world. An island that floats for a different reason than the rules state is a world inconsistency, not a decoration.",
+    "actions": [
+      "Launch the glider and ride an updraft.",
+      "Attach and release an anchor line at a mooring point.",
+      "Toggle the wind overlay.",
+      "Reset the glider to the launch platform."
+    ]
+  },
+  "invariants": [
+    "The stated levitation rule applies to every island, including background ones.",
+    "In unanchored free flight the glider loses altitude outside an updraft and gains it inside one. Anchoring, landing and surface collision take precedence over wind, so a moored or landed craft does not sink because it is outside a current.",
+    "An anchor can only be attached to a mooring within line reach, and once attached the line never exceeds its declared length; if the tether constraint and a rock collision cannot both be satisfied the scene freezes and reports the conflict rather than letting the craft penetrate the island."
+  ],
+  "motion_guidance": [
+    "Drive the glider with bounded acceleration from wind and gravity, and let the pilot pose respond to turns.",
+    "Animate cloud layers and streamers at different heights so altitude change is readable without a numeric display."
+  ],
+  "known_limits": [
+    "Fictional world rules: nothing here is a physical claim about buoyancy, air density or flight.",
+    "Anchor lines are constraints, not simulated ropes with mass and stretch.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "object_craft": [
+    {
+      "family": "Island bodies",
+      "structure": "Layered top soil, exposed rock face and an eroded underside with dangling roots or crystal spires that vary per island.",
+      "material": "Grounded natural families on top with a distinct luminous or crystalline treatment on the underside, so the fantasy element is localised rather than global.",
+      "articulation": "Islands are static; only the glider, lines and vegetation move."
+    },
+    {
+      "family": "Glider and anchors",
+      "structure": "Wing with visible spars and fabric, a harness and a pilot with weight-shift posture, plus a coiled line and hook.",
+      "material": "Fabric and timber materials so the craft reads as buildable within the world, avoiding a generic metallic look.",
+      "articulation": "The glider banks with turn rate and the pilot shifts weight; the anchor line follows a constrained curve between hook and mooring."
+    },
+    {
+      "family": "Wind field",
+      "structure": "Streamer particles and drifting cloud sheets that follow the authored current volumes.",
+      "material": "Semi-transparent streamers that never obscure the horizon line; the overlay uses a legend with direction and strength.",
+      "articulation": "Streamers advect along their current volume and are recycled at the boundary."
+    }
+  ],
+  "physical_contract": {
+    "model": "controlled-locomotion",
+    "scope": "Authored glider steering influenced by declared wind volumes and an anchor constraint; no aerodynamics or rope dynamics.",
+    "state": [
+      "glider position",
+      "velocity",
+      "altitude",
+      "anchor attachment"
+    ],
+    "colliders": [
+      "Glider bounds against island surfaces and mooring structures."
+    ],
+    "driving": [
+      "Wind volume contribution plus gravity, with bounded turn rate and pitch authority."
+    ],
+    "contact": [
+      "Landing on a surface stops descent; collisions with rock faces stop forward motion instead of penetrating."
+    ],
+    "timestep": "Fixed step with interpolated rendering.",
+    "checks": [
+      "In unanchored free flight, altitude falls outside updraft volumes and rises inside them; anchoring, landing and surface collision take precedence as declared.",
+      "Anchor length is never exceeded during any manoeuvre."
+    ]
+  },
+  "creative_affordances": [
+    "The levitation rule is yours to invent: buoyant mineral, tethered spirits or an ancient machine all work if applied consistently.",
+    "Travel can be by glider, balloon or rope bridges; only the enforcement of the rules must stay constant."
+  ],
+  "related_ids": [
+    "recipe.terrain-island",
+    "knowledge.theme-science-fiction-outpost",
+    "knowledge.terrain-landmark-rhythm"
+  ]
+}

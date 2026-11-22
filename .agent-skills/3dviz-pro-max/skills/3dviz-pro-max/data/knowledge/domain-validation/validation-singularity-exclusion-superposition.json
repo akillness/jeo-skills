@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-singularity-exclusion-superposition",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Superposition before normalization and excluded singular regions"
+  },
+  "aliases": {
+    "en": [
+      "field superposition check",
+      "zero vector normalization guard"
+    ]
+  },
+  "direction_ids": [
+    "waves-optics-fields"
+  ],
+  "summary": "Sum field contributions before any glyph normalization and handle the singular and exactly cancelling cases explicitly.",
+  "objective": "The model total equals the independently computed vector sum, the glyph matches its declared mapping, and zero or excluded regions draw no direction.",
+  "applies_when": [
+    "A scene displays a field produced by several point sources.",
+    "Glyph length or colour is normalized for legibility.",
+    "A probe can approach a source or a point of exact cancellation."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "superposition",
+    "singularity",
+    "glyph-scaling"
+  ],
+  "subject_terms": [
+    "point charge",
+    "inverse square",
+    "vector sum",
+    "exclusion radius",
+    "zero vector",
+    "glyph normalization"
+  ],
+  "intent_signals": [
+    "the arrows explode near the charge",
+    "check the field at the midpoint between equal charges"
+  ],
+  "example_prompts": [
+    "Check the superposition and singular handling in this point charge scene."
+  ],
+  "negative_signals": [
+    "time-dependent electrodynamics",
+    "dielectric or boundary-value problems"
+  ],
+  "content": {
+    "principles": [
+      "Superposition is a vector sum of the individual contributions computed before any glyph normalization, because normalizing first destroys the cancellation the scene exists to show. The numeric model vector and the drawn glyph are then two different quantities: compare the model vector with an independent sum, and the glyph with its declared display mapping.",
+      "Magnitude follows an inverse-square law with distance, which is checked by a distance-doubling ratio rather than by an absolute value.",
+      "Source points are singular, so evaluation needs a declared exclusion radius, and a zero vector at a symmetric point has no direction to draw."
+    ],
+    "implementation": [
+      "Compute the total field as the signed sum of contributions and keep the unnormalized model vector alongside the glyph, recording the display mapping (normalization, clamping or logarithmic scaling) that turns one into the other.",
+      "Evaluate a single source of nonzero finite strength at two distances in the ratio two to one, both outside every exclusion region, and record the ratio of magnitudes; a zero-strength source makes that ratio indeterminate and is excluded from this case.",
+      "Evaluate at the symmetric midpoint of two equal sources and at the midpoint of two opposite sources, recording the model vector and the glyph separately, and judge the cancellation with an absolute tolerance scaled by the magnitude of the individual contributions at that point rather than by the vanishing total.",
+      "Sweep a probe toward a source and record the declared minimum distance, the value there, and how the display scale behaves as the magnitude grows."
+    ],
+    "observable_checks": [
+      "The model total equals the independently computed sum within the stated numerical tolerance, and the glyph matches what the declared display mapping produces from that total; comparing a normalized glyph directly against the physical vector is a category error rather than a test.",
+      "Doubling the distance from a single source divides the magnitude by four; a factor of two identifies a potential-versus-field confusion.",
+      "At a symmetric equal-source midpoint the total is zero within the contribution-scaled absolute tolerance and no direction glyph is drawn, and inside the exclusion radius the scene reports exclusion instead of drawing an enormous arrow."
+    ]
+  },
+  "known_limits": [
+    "Electrostatic point sources in vacuum; moving a source is an edit between static configurations rather than a time-dependent solution.",
+    "Authored verification guidance; nothing was computed or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.point-charge-field-superposition",
+    "recipe.divergence-flux-box",
+    "recipe.planar-refraction-ray"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-point-charge-superposition",
+      "statement": "The electric field of several point charges is the vector sum of the fields of the individual charges, each varying as the inverse square of the distance from its source.",
+      "scope": "Electrostatic point charges in vacuum away from the source singularities; field units are newtons per coulomb.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-electric-field",
+          "locator": "5.4, point-charge field expression and the superposition principle"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "url": "http://127.0.0.1:<port>/",
+  "dir": "<scratch>/eval/without-skill/dist",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "ready_flag": "none",
+  "ready_timeout": false,
+  "motion": {
+    "interval_ms": 2000,
+    "differs": true,
+    "sha_before": "56e838b8d7ccd308f418a668473c7d1093df9b84eb8d04e0d8c3b8853685b614",
+    "sha_after": "7d0398d13de073e7805fef6bff91abb2f987e9e824dd6b20af9857bae91384e5"
+  },
+  "views": [
+    {
+      "name": "default",
+      "file": "default.png",
+      "sha256": "56e838b8d7ccd308f418a668473c7d1093df9b84eb8d04e0d8c3b8853685b614",
+      "sha256_reencoded": "64468832e581eff1fc2e5221eed22cb04f6cbfd1dd065824d3902aa963b9aa86"
+    },
+    {
+      "name": "default-motion",
+      "file": "default-motion.png",
+      "sha256": "7d0398d13de073e7805fef6bff91abb2f987e9e824dd6b20af9857bae91384e5",
+      "sha256_reencoded": "4131f740b9fae24d53f17664e037b46232301759fcbf765d4a5691e9fb809d15"
+    }
+  ],
+  "clicks": [],
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T11:21:06+00:00",
+  "finished": "2026-09-08T11:21:13+00:00",
+  "playwright_version": "1.62.0",
+  "post_processing": "PNGs re-encoded after capture, identically for every run: RGB, 256-colour adaptive palette (median cut, Floyd-Steinberg dither), zlib level 9, to hold every file under 400 KB. 'sha256' is the capture-time hash of the original frame; 'sha256_reencoded' is the hash of the file in this folder."
+}

@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "id": "recipe.polarization-malus",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Polarization and Malus law"
+  },
+  "aliases": {
+    "en": [
+      "polarizer",
+      "Malus law",
+      "polarization direction"
+    ]
+  },
+  "direction_ids": [
+    "waves-optics-fields"
+  ],
+  "summary": "Track a transmission axis in three dimensions and derive intensity from the angle between axes rather than from an artistic dimming.",
+  "objective": "Build a stack of polarizers I can rotate, with transmitted intensity following the cosine-squared law and the three-filter case available.",
+  "tags": [
+    "polarization",
+    "optics",
+    "intensity"
+  ],
+  "subject_terms": [
+    "polarization",
+    "transmission axis",
+    "Malus law",
+    "unpolarized light",
+    "intensity",
+    "crossed polarizers",
+    "electric field direction"
+  ],
+  "intent_signals": [
+    "Show how rotating a polarizer changes transmitted light.",
+    "Explain why a third polarizer between crossed ones lets light through."
+  ],
+  "example_prompts": [
+    "Build a polarizer stack with rotatable filters and a transmitted intensity readout.",
+    "Show crossed polarizers blocking light and a middle filter restoring some transmission."
+  ],
+  "negative_signals": [
+    "Not a spectral, coherence or scattering model; monochromatic ideal polarizers only.",
+    "Not a photographic filter simulator or material birefringence model."
+  ],
+  "not_for": [
+    "Not a spectral, coherence or scattering model; monochromatic ideal polarizers only.",
+    "Not a photographic filter simulator or material birefringence model."
+  ],
+  "entities": [
+    {
+      "name": "Beam representation",
+      "guidance": "Show the field oscillation direction along the beam, since polarization is a direction and not a colour."
+    },
+    {
+      "name": "Filter discs",
+      "guidance": "Give each polarizer a visible transmission axis marker and an angle readout, so a rotation is measurable."
+    },
+    {
+      "name": "Intensity meter",
+      "guidance": "Show intensity after each filter as a fraction of the incident value, so the chain of factors is inspectable."
+    }
+  ],
+  "state_contract": {
+    "model": "Incident light declared as unpolarized or linearly polarized with an intensity, a list of ideal polarizers with axis angles, and transmitted intensity computed filter by filter with the angle measured between consecutive axes.",
+    "authority": "The axis angles are authoritative; the beam rendering and the meter values are both derived from them, so no beam may look bright when the meter reads zero.",
+    "actions": [
+      "Rotate any filter and read the resulting intensity.",
+      "Add or remove a filter from the stack.",
+      "Switch the source between unpolarized and linearly polarized with a declared source axis; the three-filter demonstration requires unpolarized input or polarization aligned with the first axis.",
+      "Reset angles and source."
+    ]
+  },
+  "invariants": [
+    "Crossed ideal polarizers transmit zero intensity. Inserting a middle filter transmits a nonzero fraction only when nonzero intensity reaches the first filter and the middle axis is strictly between the crossed axes modulo pi; a source already polarized perpendicular to the first axis is extinguished there and no later filter can restore it.",
+    "Intensity is never larger after a filter than before it.",
+    "For an unpolarized source the first ideal filter halves the intensity regardless of its angle."
+  ],
+  "motion_guidance": [
+    "Animate the oscillation direction along the beam so the change after each filter is visible as a direction change, not only as brightness.",
+    "Rotate filters continuously and update the meter continuously; a stepwise meter hides the cosine-squared shape."
+  ],
+  "known_limits": [
+    "Ideal polarizers with no additional loss for the transmitted component, no reflection and no wavelength dependence; ideal polarization selection still removes the orthogonal component, which is not a loss mechanism but the operation itself.",
+    "Rendered brightness is not a photometric measurement; the meter carries the quantitative claim.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-malus-law",
+      "statement": "For light already polarized, the transmitted intensity through an ideal polarizer is the incident intensity times the cosine squared of the angle between the light polarization direction and the polarizer axis, a relation known as Malus law.",
+      "scope": "Ideal linear polarizers and plane waves as cited.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-polarization",
+          "locator": "1.7, Malus law statement"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-unpolarized-halving",
+      "statement": "The direction of polarization of an electromagnetic wave is defined as the direction parallel to its electric field, and a first polarizing filter acting on unpolarized light polarizes it along its axis and reduces intensity by a factor of two.",
+      "scope": "Ideal filter acting on fully unpolarized incident light, as cited.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-polarization",
+          "locator": "1.7, polarization direction and first filter intensity"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Beam representation",
+      "structure": "Show the field oscillation direction along the beam for polarized light. Unpolarized light is drawn with a statistical or schematic marker rather than one fixed ribbon, since a single ribbon would assert a polarization the source does not have.",
+      "material": "Beam material intensity mapped from the computed value with a legend, so brightness is annotated rather than implied.",
+      "articulation": "The ribbon plane reorients after each filter according to that filter axis."
+    },
+    {
+      "family": "Filter discs",
+      "structure": "Discs in a rail with an engraved axis line and a rotation grip on the rim.",
+      "material": "Neutral disc material with a high-contrast axis engraving so the axis stays visible edge-on.",
+      "articulation": "Each disc rotates about the beam axis only, with its angle shown numerically."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Analytic intensity computation and presentation; no wave propagation solver.",
+    "state": [
+      "source polarization state",
+      "filter angles",
+      "intensity chain"
+    ],
+    "checks": [
+      "Two crossed ideal filters give zero output. In the demonstration with positive unpolarized input or positive linear input aligned to the first filter, inserting an axis strictly between the crossed axes modulo pi gives nonzero output. Extinguished input or an endpoint middle axis still gives zero.",
+      "Intensity never increases across a filter."
+    ]
+  },
+  "related_ids": [
+    "recipe.planar-refraction-ray",
+    "recipe.standing-string-modes",
+    "knowledge.transmissive-medium"
+  ]
+}

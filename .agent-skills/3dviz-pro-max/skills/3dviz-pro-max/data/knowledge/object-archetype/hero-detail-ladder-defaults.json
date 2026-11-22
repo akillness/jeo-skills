@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.hero-detail-ladder-defaults",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "object-archetype",
+  "title": {
+    "en": "Hero detail ladder: how much detail at which distance"
+  },
+  "aliases": {
+    "en": [
+      "detail ladder",
+      "detail hierarchy numbers",
+      "how much detail on a hero object",
+      "close-up detail budget"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies",
+    "architecture-interiors"
+  ],
+  "summary": "Authored starting numbers for the three detail bands of a hero object: how many features per square metre of visible surface, how large a bevel, how deep an opening inset, and how much per-instance variation.",
+  "objective": "A close-up capture of the hero at 3 m shows at least two features from each of the silhouette, medium and fine bands, and two instances of the same blueprint are visibly different.",
+  "tags": [
+    "object-archetype",
+    "detail",
+    "hero",
+    "close-up",
+    "bevel",
+    "inset",
+    "variation"
+  ],
+  "subject_terms": [
+    "silhouette band",
+    "medium band",
+    "fine band",
+    "bevel width",
+    "window inset",
+    "per-instance jitter",
+    "features per square metre"
+  ],
+  "intent_signals": [
+    "object looks flat close up",
+    "how much detail should a building have",
+    "scene reads as placeholder boxes",
+    "what counts as enough detail"
+  ],
+  "example_prompts": [
+    "My village buildings look like grey boxes when I zoom in.",
+    "How much geometric detail should the hero prop carry?"
+  ],
+  "not_for": [
+    "Polygon budgets for a specific target device.",
+    "Any claim about how real buildings, tools or creatures are constructed."
+  ],
+  "content": {
+    "principles": [
+      "Detail is a ladder, not a quantity. An object that fails at one rung cannot be rescued by more of another: a thousand rivets do not fix a silhouette that reads as a box.",
+      "The silhouette is what survives fog, distance and backlight. Author it before any surface treatment exists.",
+      "Thickness is the medium band's whole job. An opening cut flush with a wall is a decal at every distance; an opening set back reads as built even at low resolution.",
+      "The fine band is what a viewer discovers, not what they are shown. Its features exist to reward a close-up, so they only need to survive at the close-up distance."
+    ],
+    "implementation": [
+      "Silhouette: two to four profile events per object — a roof pitch change, an overhang, a chimney, a mast. Check by rendering the object as a flat black shape against the sky and asking whether it is still identifiable.",
+      "Medium: 3 to 6 features per square metre of visible wall or shell. Openings inset 10-15 cm behind the surrounding surface for a building, 2-4 cm for a hand prop.",
+      "Fine: bevel every hard edge that catches a highlight, 2-4 cm at building scale and 2-5 mm at prop scale. Nothing that a viewer must be closer than 1 m to see.",
+      "Per-instance variation: 3-8 percent hue offset, 5-12 percent uniform scale, and full yaw rotation on any object placed more than three times. Below 3 percent the copies read as clones; above 12 percent they read as different objects.",
+      "Spend the budget top down. If the poly budget forces a cut, cut the fine band first and the silhouette last."
+    ],
+    "observable_checks": [
+      "Capture the hero at 3 m and count features per band; two or more from each band passes.",
+      "Render the hero silhouette as a flat black shape: a viewer who knows the subject still names it.",
+      "Place two instances of the same blueprint side by side with different seeds: hue and scale differences are visible without measuring.",
+      "Probe one opening: the inset depth measured in the scene is inside the stated range for its scale."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "silhouette_events": [
+        2,
+        4
+      ],
+      "medium_features_per_m2": [
+        3,
+        6
+      ],
+      "building_opening_inset_m": [
+        0.1,
+        0.15
+      ],
+      "prop_opening_inset_m": [
+        0.02,
+        0.04
+      ],
+      "building_bevel_m": [
+        0.02,
+        0.04
+      ],
+      "prop_bevel_m": [
+        0.002,
+        0.005
+      ],
+      "instance_hue_jitter_pct": [
+        3,
+        8
+      ],
+      "instance_scale_jitter_pct": [
+        5,
+        12
+      ],
+      "close_up_distance_m": 3,
+      "feeling": "built, weathered, discoverable"
+    },
+    "rationale": "Tuned on the village kit blueprints at 1280x720, ACESFilmic tone mapping and exposure 1.0, viewed at a 3 m close-up. The bands are what separated a readable kit building from a flat box in those captures."
+  },
+  "known_limits": [
+    "Authored creative starting values. Nothing here measures any real object, and no perceptual study supports the ranges.",
+    "Tuned at 1280x720 with ACESFilmic tone mapping at exposure 1.0 and no post-processing; a bloom-heavy or low-resolution target changes which band survives.",
+    "The per-square-metre numbers assume a village-scale diorama. A vehicle interior or a molecular model needs its own ladder."
+  ],
+  "creative_affordances": [
+    "Deliberately strip the fine band for a flat-shaded or papercraft look and say so; the ladder then has two rungs by choice, not by omission.",
+    "Push the variation percentages far past the stated band for a deliberately chaotic settlement."
+  ],
+  "related_ids": [
+    "knowledge.hero-prop-detail-hierarchy",
+    "knowledge.modular-environment-kit-sockets",
+    "knowledge.framed-shelter",
+    "knowledge.blueprint-timber-cottage"
+  ],
+  "claims": []
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.signed-field-section",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "presentation-profile",
+  "title": {
+    "en": "Signed field section with a stable legend"
+  },
+  "aliases": {
+    "en": [
+      "signed field",
+      "section plane"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields",
+    "soft-fluid-thermal",
+    "earth-environment"
+  ],
+  "summary": "Expose an interior scalar field without losing the meaning of sign, missing values or the section position.",
+  "objective": "Expose an interior scalar field without losing the meaning of sign, missing values or the section position.",
+  "subject_terms": [
+    "signed field",
+    "section plane",
+    "scalar legend"
+  ],
+  "tags": [
+    "presentation-profile",
+    "signed-field-section"
+  ],
+  "intent_signals": [
+    "scalar legend"
+  ],
+  "example_prompts": [
+    "Use signed field section with a stable legend for the scene, preserving its model and user controls."
+  ],
+  "content": {
+    "principles": [
+      "Choose a section, surface or volume view according to the question; a denser image is not automatically more informative.",
+      "Keep selection emphasis separate from the color channel carrying values."
+    ],
+    "implementation": [
+      "Retain source coordinates and sampled values; apply a presentation transform only to the view.",
+      "Show the section position and a value probe; preserve or explicitly disclose legend-range changes during playback.",
+      "Offer a fixed-camera comparison and a reset to the initial section."
+    ],
+    "observable_checks": [
+      "Probe the same coordinate before and after camera motion: the value and units agree.",
+      "Missing samples have a distinct state rather than silently becoming zero."
+    ]
+  },
+  "related_ids": [
+    "recipe.determinant-volume"
+  ],
+  "creative_affordances": [
+    "Adapt the layout, visual treatment and timing to the task; these are reusable design proposals, not mandatory templates."
+  ],
+  "known_limits": [
+    "Authored interaction/presentation guidance; no new scientific claim, accessibility certification or runtime verification is asserted."
+  ],
+  "claims": []
+}

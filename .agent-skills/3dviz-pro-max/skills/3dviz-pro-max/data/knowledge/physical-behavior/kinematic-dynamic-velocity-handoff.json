@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.kinematic-dynamic-velocity-handoff",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Kinematic-to-dynamic handoff with preserved velocity"
+  },
+  "aliases": {
+    "en": [
+      "animated rigid-body release",
+      "kinematic dynamic ownership transfer",
+      "throw from authored motion"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "products-assemblies",
+    "characters-motion-art"
+  ],
+  "summary": "Transfer one body from authored or kinematic motion to solver-owned dynamics at one declared instant while preserving pose and a finite linear/angular release velocity.",
+  "objective": "A moving body released at the handoff frame continues from the same world pose and velocity under dynamics, with no snap, zero-velocity drop, double transform writer or stale animation overwrite.",
+  "applies_when": [
+    "An animation, drag controller or kinematic trajectory releases an object into rigid-body dynamics.",
+    "The outgoing motion must contribute linear or angular momentum after the ownership switch."
+  ],
+  "subject_terms": [
+    "kinematic body",
+    "dynamic rigid body",
+    "linear velocity",
+    "angular velocity",
+    "transform authority",
+    "release handoff"
+  ],
+  "tags": [
+    "physical-behavior",
+    "rigid-body",
+    "handoff",
+    "velocity"
+  ],
+  "intent_signals": [
+    "release an animated object into physics without losing momentum",
+    "throw a dragged prop",
+    "switch kinematic platform cargo to dynamic"
+  ],
+  "example_prompts": [
+    "Animate a crate along a conveyor, then release it into Rapier with its current linear and angular velocity.",
+    "Let me drag and throw a tool while proving only the physics body owns its pose after release."
+  ],
+  "negative_signals": [
+    "Leaving AnimationMixer and the solver writing the same transform after release.",
+    "Estimating velocity from one pose or from variable display-frame deltas without a declared sampling rule."
+  ],
+  "not_for": [
+    "Blending two purely authored clips.",
+    "Inferring physically valid momentum from an arbitrary teleport or discontinuous animation."
+  ],
+  "content": {
+    "principles": [
+      "Define one handoff instant and one transform owner on each side. At the instant, both representations agree on world pose; immediately after it, only the dynamic body advances that pose.",
+      "Preserve finite center-of-mass linear velocity and angular velocity. For a position-based kinematic Rapier body, read its solver-deduced body velocity after the final kinematic step when the binding exposes the required convention; otherwise derive angular velocity and center-of-mass velocity from declared fixed-time world samples. If animation samples the body origin at velocity v_origin while the center of mass has body-local offset r_COM, use v_COM = v_origin + omega cross (R r_COM), with quaternion sign continuity and stated conventions.",
+      "A discontinuity, zero/negative sample interval or nonfinite velocity is a failed handoff. Diagnose it instead of silently fabricating momentum."
+    ],
+    "implementation": [
+      "Keep the visual mesh under an identity sync node or convert its world pose into the rigid body's world frame. At the boundary, stop or mask the animation/controller, copy world translation and unit quaternion to the body, change it to dynamic, set the captured center-of-mass linear and angular velocities, and wake it.",
+      "Order the transaction so no render frame observes two writers: sample outgoing state, disable outgoing authority, initialize/wake dynamics, then begin body-to-mesh synchronization.",
+      "Reset disables dynamic ownership, clears forces/velocities and sleep state as needed, restores the authored start pose/time, and re-enables exactly the original writer. Pause freezes the active model clock without performing a second handoff."
+    ],
+    "observable_checks": [
+      "Across the handoff, position and orientation are continuous within declared tolerances and the first dynamic velocity matches the captured release velocity.",
+      "An off-center center-of-mass fixture translating and spinning about its authored origin continues with the expected center-of-mass velocity, including the omega cross offset term; a deliberately discontinuous authored pose is rejected or released with an explicitly chosen zero-velocity policy.",
+      "After release, changing the old animation time does not move the body. Reset and repeat produce the same handoff state and owner sequence."
+    ]
+  },
+  "related_ids": [
+    "knowledge.three-rigid-body-adapter",
+    "knowledge.state-playback",
+    "knowledge.gravity-contact"
+  ],
+  "creative_affordances": [
+    "Use a conveyor latch, magnetic rail, character throw or mechanical ejector; the look and release cue remain open choices.",
+    "A velocity arrow and owner badge may make the transition inspectable without changing the simulation."
+  ],
+  "known_limits": [
+    "This contract does not establish correct mass, collision shape, force model or continuous collision detection.",
+    "Finite-difference velocity can be noisy and animation easing may not represent a physical trajectory; record the chosen sampling method.",
+    "Authored guidance only; no Rapier world, Three.js scene, Blender animation or rendered handoff was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.physics-kinematic-dynamic-authority",
+      "statement": "In Rapier, dynamic bodies are affected by forces and contacts, while position-based kinematic bodies remain user-positioned and have velocity deduced from their next positions; kinematic bodies do not yield to contact forces.",
+      "scope": "Rapier JavaScript body-type semantics; application handoff ordering is authored guidance.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-rapier-rigid-body-types",
+          "locator": "RigidBodyType.Dynamic and KinematicPositionBased; kinematic contact-force limitation"
+        },
+        {
+          "source_id": "source.physics-rapier-rigid-body-velocity",
+          "locator": "Velocity relevance by body type and automatically deduced kinematic velocity"
+        }
+      ]
+    },
+    {
+      "id": "claim.physics-kinematic-dynamic-api",
+      "statement": "Rapier defines rigid-body linear velocity at the center of mass. Its JavaScript 3D RigidBody API exposes a body-type change with a wake-up argument and methods to inspect and set linear and angular velocity; setting velocities with wake-up is documented for dynamic bodies.",
+      "scope": "Live generated @dimforge/rapier3d API and JavaScript user guide read 2026-09-08; exact installed binding version must be verified.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-rapier-rigid-body-api",
+          "locator": "setBodyType(type,wakeUp); linvel; angvel; setLinvel; setAngvel"
+        },
+        {
+          "source_id": "source.physics-rapier-rigid-body-velocity",
+          "locator": "3D setLinvel/setAngvel examples and wakeUp argument"
+        }
+      ]
+    }
+  ]
+}

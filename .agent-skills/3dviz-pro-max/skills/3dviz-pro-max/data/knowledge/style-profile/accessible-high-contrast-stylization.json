@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.accessible-high-contrast-stylization",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Accessible high-contrast stylization"
+  },
+  "aliases": {
+    "en": [
+      "color-independent stylized state cues",
+      "contrast-aware 3D art direction",
+      "readable high-contrast scene style"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "anatomy-structures",
+    "products-assemblies"
+  ],
+  "summary": "Build the art direction from value lanes, boundaries, patterns and state shapes so meaningful graphics and controls survive palette changes, lighting and post effects.",
+  "objective": "Selection, status and explanatory boundaries remain readable without hue alone, while high contrast still feels authored across unlike objects.",
+  "applies_when": [
+    "A stylized 3D view contains meaningful graphics, controls, selection or status.",
+    "Lighting, bloom, fog or palette compression may erase application cues."
+  ],
+  "subject_terms": [
+    "accessible stylization",
+    "non-text contrast",
+    "color independent cues",
+    "selection boundary",
+    "value hierarchy",
+    "high contrast 3D"
+  ],
+  "tags": [
+    "style-profile",
+    "accessibility",
+    "contrast",
+    "state"
+  ],
+  "intent_signals": [
+    "stylized scene readable without color alone",
+    "high contrast selection and error cues",
+    "accessible palette with patterns and outlines"
+  ],
+  "example_prompts": [
+    "Style a heart valve diagram and a product configurator with shared dark-light lanes; keep selected, obstructed and warning states distinct in grayscale."
+  ],
+  "negative_signals": [
+    "Using red versus green as the only state distinction.",
+    "Measuring a beauty render and assuming every animated backdrop passes."
+  ],
+  "not_for": [
+    "A blanket assertion that every decorative edge needs a 3:1 ratio.",
+    "Clinical color standards or domain-specific safety certification."
+  ],
+  "content": {
+    "principles": [
+      "Assign values by semantic layer: background, subject mass, internal boundary, annotation and active state. Hue can enrich the system but does not carry the only distinction.",
+      "Pair meaningful state color with at least one authored boundary, pattern, icon, label, thickness or shape change. Choose cues that remain visible in the actual camera and scale.",
+      "Treat lighting, fog, bloom, tone mapping and transparency as part of the contrast result. Recheck target states against every declared backdrop rather than approving isolated swatches."
+    ],
+    "implementation": [
+      "In Blender, preview two unlike subjects in grayscale and under the planned key/fill. Author geometry boundaries, texture patterns or material separations for meaningful regions; keep decorative variation free where it does not convey state.",
+      "Export stable geometry/material assignments and baked patterns through glTF. Compositor outlines, view transforms and procedural marks are not assumed to transfer; record whether Three.js rebuilds them with geometry, textures, material logic or postprocessing.",
+      "In Three.js, apply state cues after the final lighting/post stack is known, expose equivalent semantic labels or controls where interaction requires them, and test adjacent colors in the rendered target state rather than raw constants."
+    ],
+    "observable_checks": [
+      "Switch to grayscale and compare selected/unselected plus normal/warning: each meaningful state retains a boundary, pattern, label, icon, thickness or shape distinction.",
+      "Measure required UI/state-identification and explanatory graphic parts against adjacent colors in representative target frames; document essential-presentation or inactive exceptions instead of broadening the rule.",
+      "Sweep bright, dark and textured backdrops plus bloom/fog extrema: state outlines and explanatory boundaries do not disappear or invert unnoticed."
+    ]
+  },
+  "related_ids": [
+    "knowledge.style-monochrome-study",
+    "knowledge.style-scientific-encoding",
+    "knowledge.shared-static-accessible-fallback"
+  ],
+  "creative_affordances": [
+    "Use split-value masses, patterned hatching, thick contour accents or luminous inset cues; accessibility constraints do not select one aesthetic.",
+    "Reserve saturated color for focus while retaining an independent boundary or symbol."
+  ],
+  "known_limits": [
+    "WCAG criteria apply to web content and include scoped exceptions; this profile does not certify a whole 3D experience or establish domain-specific safety colors.",
+    "Contrast varies with the rendered adjacent pixels and state. No browser, display or assistive-technology test was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.style-wcag-use-of-color",
+      "statement": "WCAG 2.2 Success Criterion 1.4.1 requires that color not be the only visual means of conveying information, indicating an action, prompting a response or distinguishing a visual element.",
+      "scope": "Level A web-content criterion; this record proposes additional cues but does not claim conformance from a palette alone.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-wcag22",
+          "locator": "Success Criterion 1.4.1 Use of Color"
+        }
+      ]
+    },
+    {
+      "id": "claim.style-wcag-non-text-contrast",
+      "statement": "WCAG 2.2 Success Criterion 1.4.11 requires at least 3:1 contrast against adjacent colors for visual information needed to identify authored UI components and states, and for parts of graphical objects needed to understand content, subject to its inactive, user-agent and essential-presentation exceptions.",
+      "scope": "Level AA web-content criterion, limited to required identifying or explanatory visual information rather than all decorative 3D edges.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-wcag22",
+          "locator": "Success Criterion 1.4.11 Non-text Contrast"
+        }
+      ]
+    }
+  ]
+}

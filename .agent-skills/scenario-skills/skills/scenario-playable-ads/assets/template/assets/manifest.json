@@ -1,0 +1,92 @@
+{
+  "images": [
+    {
+      "name": "bg",
+      "src": "assets/raw/plate.png",
+      "size": [720, 1280],
+      "format": "webp",
+      "quality": 68
+    },
+    {
+      "name": "piece",
+      "src": "assets/raw/sheet.png",
+      "blob": 0,
+      "alpha_floor": 40,
+      "max": 160
+    },
+    {
+      "name": "star",
+      "src": "assets/raw/sheet.png",
+      "blob": 1,
+      "alpha_floor": 40,
+      "max": 160
+    },
+    {
+      "name": "hero",
+      "src": "assets/raw/sheet.png",
+      "blob": 2,
+      "alpha_floor": 40,
+      "max": 300
+    },
+    {
+      "name": "coin",
+      "src": "intake/screenshot.png",
+      "crop": [40, 60, 160, 180],
+      "mask": "ellipse",
+      "max": 96,
+      "quality": 85
+    },
+    {
+      "name": "logo",
+      "src": "intake/logo.png",
+      "key": true,
+      "key_tol": 48,
+      "max": 560,
+      "quality": 82
+    }
+  ],
+  "audio": [
+    {
+      "name": "pop",
+      "src": "assets/raw/pop.wav",
+      "trim": true,
+      "max_s": 0.35,
+      "fade_s": 0.08,
+      "bitrate": "48k"
+    },
+    {
+      "name": "payoff",
+      "src": "assets/raw/payoff.wav",
+      "trim": true,
+      "max_s": 2.0,
+      "fade_s": 0.3,
+      "bitrate": "48k"
+    },
+    {
+      "name": "win",
+      "src": "assets/raw/win.wav",
+      "trim": true,
+      "max_s": 2.0,
+      "fade_s": 0.3,
+      "boost_db": 12,
+      "bitrate": "48k"
+    },
+    {
+      "name": "fail",
+      "src": "assets/raw/fail.wav",
+      "trim": true,
+      "max_s": 1.5,
+      "fade_s": 0.3,
+      "bitrate": "48k"
+    },
+    { "name": "music", "src": "assets/raw/music.mp3", "bitrate": "40k" }
+  ],
+  "fonts": [
+    {
+      "name": "font",
+      "src": "assets/raw/hud-font.ttf",
+      "wght": 700,
+      "text": " !%'+-./0123456789:?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    }
+  ]
+}

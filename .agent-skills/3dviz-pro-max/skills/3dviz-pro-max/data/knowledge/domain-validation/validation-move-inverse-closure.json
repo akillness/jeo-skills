@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-move-inverse-closure",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Exact state restoration under inverse and repeated moves"
+  },
+  "aliases": {
+    "en": [
+      "move inverse check",
+      "discrete state restoration"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles"
+  ],
+  "summary": "Verify that discrete puzzle state returns exactly under repeated moves, inverses and reversed sequences.",
+  "objective": "Repeating a quarter turn four times, applying a move with its inverse, and reversing a sequence each restore the exact state.",
+  "applies_when": [
+    "A puzzle has discrete legal moves with exact inverses.",
+    "Presentation interpolates a turn while the model stores exact values.",
+    "A viewer can interrupt an in-flight move or orbit the camera."
+  ],
+  "check_method": "state",
+  "tags": [
+    "domain-validation",
+    "puzzle-state",
+    "inverse",
+    "exactness"
+  ],
+  "subject_terms": [
+    "face turn",
+    "quarter turn",
+    "inverse move",
+    "orientation",
+    "slot position",
+    "move history"
+  ],
+  "intent_signals": [
+    "undo does not fully restore the cube",
+    "check that four turns return the start state"
+  ],
+  "example_prompts": [
+    "Check the exact state restoration of this cube after move sequences."
+  ],
+  "negative_signals": [
+    "solving algorithms",
+    "speedcubing hardware behaviour"
+  ],
+  "content": {
+    "principles": [
+      "Puzzle state is discrete: positions and orientations are exact integers, and an in-flight animation must never be rounded back into that state.",
+      "Every legal move has an exact inverse, and a move composed with its inverse is the identity on the whole state, including pieces the move does not touch.",
+      "Order matters when undoing: a sequence is undone by the reversed sequence of inverse moves, which is the check that catches inverses applied in the wrong order."
+    ],
+    "implementation": [
+      "Represent state as integer slot positions plus discrete orientation values and compare states by exact equality rather than by geometric proximity.",
+      "For each legal move apply it four times and compare with the start state, then apply it once followed by its inverse and compare again.",
+      "Apply a mixed sequence of at least twelve moves, then the reversed sequence of inverses, and compare with the start state.",
+      "Interrupt an in-flight animation with another input and confirm the committed state equals one of the two exact endpoints."
+    ],
+    "observable_checks": [
+      "Four quarter turns of any face restore the exact state and every move followed by its inverse restores it; unaffected pieces are identical rather than merely close.",
+      "The reversed inverse sequence restores the start state exactly; restoring positions but not orientations identifies orientation bookkeeping as the defect.",
+      "Interrupting an animation leaves a committed state equal to one of the two exact endpoints, and camera orbit changes no state or face identity."
+    ]
+  },
+  "known_limits": [
+    "Checks move algebra and state exactness; it does not validate arbitrary scrambles as reachable states or provide a solver.",
+    "Authored verification guidance; no puzzle implementation was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.twisty-cube-3x3-face-turns",
+    "recipe.direct-turn-cube",
+    "recipe.permutation-cycles"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-face-turn-notation",
+      "statement": "In this notation the face letters denote clockwise quarter turns of the named outer face, a prime denotes the counter-clockwise quarter turn, and a suffix of two denotes a half turn.",
+      "scope": "The outer-face move subset of the cited regulations, version dated April 2026; wide moves, slice moves and whole-puzzle rotations are outside it.",
+      "source_refs": [
+        {
+          "source_id": "source.wca-regulations-2026",
+          "locator": "Article 12, regulations 12a1a to 12a1c"
+        }
+      ]
+    }
+  ]
+}

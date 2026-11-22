@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "id": "recipe.imported-cube-state-solver-verification",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Imported 3×3 state and solver-result verification"
+  },
+  "aliases": {
+    "en": [
+      "verify external cube solver",
+      "imported facelet state validator",
+      "solver replay is not history inverse"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles",
+    "algorithms-data-structures"
+  ],
+  "summary": "Parse an imported 3×3 state independently of local move history, validate inventory and reachability, call a versioned solver adapter, then replay and verify its returned moves against the imported state.",
+  "objective": "An imported state is rejected with a specific invariant failure or accepted with a reproducible solver request whose returned sequence is parsed, replayed and proven to reach the declared goal.",
+  "tags": [
+    "twisty-puzzle",
+    "solver-verification",
+    "state-import",
+    "reachability"
+  ],
+  "subject_terms": [
+    "imported cube state",
+    "facelet parser",
+    "corner twist",
+    "edge flip",
+    "permutation parity",
+    "solver adapter",
+    "solution replay"
+  ],
+  "intent_signals": [
+    "solve a cube state I typed in",
+    "verify an external solver sequence",
+    "history inverse is not an imported-state solver"
+  ],
+  "example_prompts": [
+    "Import a facelet string with no scramble history, explain any reachability failure, and verify a solver's returned moves by exact replay."
+  ],
+  "negative_signals": [
+    "reverse local history",
+    "trust solver success flag",
+    "animate unparsed output",
+    "claim shortest solution"
+  ],
+  "not_for": [
+    "Optimal-distance claims without a separately sourced algorithm and bound.",
+    "States for cubes with marked centers, alternate move sets or other puzzles unless their model and invariants are declared separately."
+  ],
+  "entities": [
+    {
+      "name": "Import parser",
+      "guidance": "Map the declared facelet order and color/symbol scheme to a typed corner/edge inventory with explicit malformed-state errors."
+    },
+    {
+      "name": "Reachability report",
+      "guidance": "Report inventory, corner-twist residue, edge-flip residue and corner/edge permutation parity separately before solver invocation."
+    },
+    {
+      "name": "Solver adapter and verifier",
+      "guidance": "Record adapter/version/options/move alphabet, parse the returned sequence, replay from an immutable imported snapshot and compare the exact goal state."
+    }
+  ],
+  "state_contract": {
+    "model": "Standard fixed-center 3×3 corner/edge permutation and orientation state parsed from a declared facelet-order version. Imported snapshot, local history and candidate solver trace are distinct values. A solver request records immutable import hash, import generation, adapter/version, options, move alphabet and request generation, with pending, solution, unavailable, unknown, error and canceled outcomes.",
+    "authority": "The parser and reachability checks gate solver input; the same exact move engine used by interaction independently verifies candidate output. A solver status or visual animation is never the final verdict. Only a response matching the current request generation and exact import hash/options may enter verification.",
+    "actions": [
+      "Import and normalize a declared state encoding without creating fake move history; a new import advances its generation and invalidates pending requests.",
+      "Reject malformed or unreachable states before solver call and preserve the diagnostic.",
+      "Call an explicitly configured solver adapter, preserve unavailable/unknown/error/canceled distinctly, parse only a matching response's declared move alphabet, replay from its immutable request snapshot and accept only an exact goal.",
+      "Step or cancel viewing independently; reset or retry advances request generation and discards any stale later response."
+    ],
+    "initialization": "No history is assumed. If a scramble sequence is supplied, it is optional provenance and may be independently replayed; it is not required for solver verification."
+  },
+  "invariants": [
+    "All required corners and edges appear exactly once with compatible facelets before reachability is evaluated.",
+    "Corner twist sum modulo 3 is zero, edge flip sum modulo 2 is zero, and corner/edge permutation parity agrees for an accepted standard state.",
+    "Every returned token parses under the declared move set; unknown tokens fail verification rather than being skipped.",
+    "Replaying the candidate from the exact immutable request snapshot reaches the declared solved goal before acceptance, and the evidence records the matching import hash, generations, adapter/version and options.",
+    "A response from an earlier import, reset, canceled request or retry generation is discarded without changing the current result.",
+    "Canceling visualization changes neither imported state nor verification evidence; reversing local history is offered only when that history actually exists."
+  ],
+  "motion_guidance": [
+    "In Blender, author stable cubie IDs and facelet frames; export geometry separately from import encoding and solver configuration.",
+    "Three.js owns parsing UI, diagnostic highlights, solver lifecycle, step playback and exact replay verification.",
+    "Show rejected state elements and invariant values without moving pieces; animate only a parsed candidate after validation gates pass."
+  ],
+  "object_craft": [
+    {
+      "family": "Verification cube",
+      "structure": "Separate center, edge and corner shells with stable IDs and inspectable facelet surfaces.",
+      "material": "Face colors paired with letters or patterns; invalid inventory and invariant classes use distinct outline/icon cues.",
+      "articulation": "Candidate moves use temporary pivots but settle from exact verifier state."
+    },
+    {
+      "family": "Evidence ledger",
+      "structure": "Panel for input encoding/version, invariant values, adapter/version/options, returned tokens and replay verdict.",
+      "material": "Monospaced move tokens and high-contrast pass/reject icons independent of hue.",
+      "articulation": "Each replay step selects the corresponding token and affected pieces."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Discrete imported state and candidate trace; no mechanism physics, solving-time benchmark or optimality measurement.",
+    "state": [
+      "immutable import",
+      "parsed typed state",
+      "reachability report",
+      "solver request",
+      "candidate trace",
+      "verification result"
+    ],
+    "checks": [
+      "Invalid fixtures fail at the named gate.",
+      "Accepted output exactly solves the imported snapshot under the declared move engine."
+    ]
+  },
+  "creative_affordances": [
+    "Use a facelet grid, 3D editor, scanner-derived input or text import when its encoding and uncertainty are explicit.",
+    "Compare multiple solver adapters as separately labeled candidates without declaring a winner from one example."
+  ],
+  "known_limits": [
+    "No solver implementation, completeness, optimality, latency or supported-input guarantee is claimed; installed adapter behavior must be verified.",
+    "The reachability invariants are for a standard fixed-center 3×3 and do not transfer automatically to other puzzles.",
+    "No import, solver call, replay, browser or render was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.puzzles-cube-import-invariants",
+      "statement": "For the standard fixed-center 3×3, reachable states have fixed total corner twist modulo 3, an even number of edge flips, and equal corner and edge permutation parity.",
+      "scope": "Well-formed standard 3×3 corner/edge states; marked-center orientation and other puzzles are outside scope, and satisfying invariants does not supply a solution.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-jaap-cube3",
+          "locator": "Position count 8!*12!*3^7*2^10 with the three constraints: fixed total twist, even number of edge flips and even overall permutation"
+        }
+      ]
+    },
+    {
+      "id": "claim.puzzles-wca-sequence-verification",
+      "statement": "WCA Fewest Moves regulation E2c treats a submitted solution as correct when applying the scramble followed by the sequential solution results in a solved puzzle, and requires an unambiguous move sequence using the permitted 3×3 notation.",
+      "scope": "WCA competition verification rule at version April 1, 2026; this recipe adapts replay as an application check and does not inherit competition eligibility or optimality rules.",
+      "source_refs": [
+        {
+          "source_id": "source.puzzles-wca-solution-verification",
+          "locator": "Regulations E2c, E2c2 and E2c4"
+        }
+      ]
+    }
+  ],
+  "related_ids": [
+    "recipe.cube-state-invariants",
+    "recipe.twisty-cube-3x3-face-turns",
+    "knowledge.reasoning-scramble-reachability",
+    "knowledge.validation-move-inverse-closure"
+  ]
+}

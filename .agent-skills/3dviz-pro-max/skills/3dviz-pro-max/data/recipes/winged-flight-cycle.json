@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "id": "recipe.winged-flight-cycle",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Winged creature flight cycle and banking turns"
+  },
+  "aliases": {
+    "en": [
+      "flight cycle",
+      "wing flap",
+      "banking turn"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art"
+  ],
+  "summary": "Build a flier whose wing cycle, banking and heading come from one motion state instead of three unrelated animations.",
+  "objective": "Create a flying creature that flaps, glides and banks into turns, with the wing cycle driven by its actual motion.",
+  "tags": [
+    "creature",
+    "flight",
+    "animation"
+  ],
+  "subject_terms": [
+    "flight cycle",
+    "wing beat",
+    "banking",
+    "glide",
+    "downstroke",
+    "upstroke",
+    "heading",
+    "turn radius"
+  ],
+  "intent_signals": [
+    "Make a flying creature that turns believably.",
+    "Build a wing flap cycle that responds to speed rather than looping at a fixed rate."
+  ],
+  "example_prompts": [
+    "Create a flying creature with flap, glide and banking turns driven by its motion state.",
+    "Build a bird-like flier that circles a landmark and lands on it."
+  ],
+  "negative_signals": [
+    "Not an aerodynamic flight model: no lift, drag or stall is computed.",
+    "Not a species-accurate ornithological reconstruction."
+  ],
+  "not_for": [
+    "Not an aerodynamic flight model: no lift, drag or stall is computed.",
+    "Not a species-accurate ornithological reconstruction."
+  ],
+  "entities": [
+    {
+      "name": "Wing structure",
+      "guidance": "Build the wing as a jointed arm with membrane or feather layers driven by joint angles, so folding and extension are structural rather than a scale change."
+    },
+    {
+      "name": "Body and tail",
+      "guidance": "Give the body a spine chain and a steering tail, so banking involves the whole creature rather than only the wings."
+    },
+    {
+      "name": "Flight state",
+      "guidance": "Hold speed, heading, bank angle and flap phase as one state, since every visible motion should be derived from it."
+    }
+  ],
+  "state_contract": {
+    "model": "Flight state with position, speed, heading, bank angle and flap phase; the wing cycle rate is derived from speed and climb demand, and bank angle is derived from turn rate. Landing is a state transition with a stated approach.",
+    "authority": "The flight state is authoritative. Wing pose, tail deflection and body roll are all derived from it, so an animation that plays while the state is idle is a defect.",
+    "actions": [
+      "Steer the creature along a path or toward a target.",
+      "Switch between flapping and gliding.",
+      "Command a landing on a marked perch.",
+      "Reset position, speed and pose."
+    ]
+  },
+  "invariants": [
+    "Under the coordinated-flight rule this scene chooses, bank angle follows the commanded turn rate with a declared lag, so roll-in and roll-out legitimately show bank while the heading is still changing. Glide, landing approach and idle are separate states with their own pose rules.",
+    "In flapping flight the cycle rate follows speed and climb demand; in glide and idle the flap phase is held at a declared pose rather than continuing to advance.",
+    "Landing uses a foot-to-support alignment rule: the feet are placed on the perch surface and the flight state ends only then, since capsule contact alone does not establish that the feet are on the perch."
+  ],
+  "motion_guidance": [
+    "Use anticipation before the first downstroke and follow-through in the wing tips, and offset the tail so it does not move in lockstep with the wings.",
+    "Blend between flapping and gliding through pose targets rather than cross-fading two clips."
+  ],
+  "known_limits": [
+    "Authored motion: nothing here predicts real flight performance or energy cost.",
+    "Wing membranes are driven by joints; no cloth or feather simulation is implied.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "object_craft": [
+    {
+      "family": "Wing structure",
+      "structure": "Shoulder, elbow and wrist joints with primaries or membrane panels attached along the forearm and hand, and visible attachment at the body.",
+      "material": "Layered surfaces with slight translucency at membrane edges; feather or membrane detail should read as geometry at silhouette scale.",
+      "articulation": "Wing pose is driven by the flap phase and by the fold parameter used for gliding and perching."
+    },
+    {
+      "family": "Body and tail",
+      "structure": "Spine chain with a heavier chest mass and a tail that can fan and twist.",
+      "material": "Matte body with a distinct surface treatment on the underside so bank angle is legible against the sky.",
+      "articulation": "Roll is applied to the spine root; the tail lags the body by a short offset."
+    }
+  ],
+  "physical_contract": {
+    "model": "controlled-locomotion",
+    "scope": "Authored flight steering with bounded acceleration and turn rate; no aerodynamics or collision response beyond landing contact.",
+    "state": [
+      "position",
+      "speed",
+      "heading",
+      "bank angle",
+      "flap phase"
+    ],
+    "colliders": [
+      "Body capsule for perch contact and obstacle blocking."
+    ],
+    "driving": [
+      "Bounded acceleration, climb rate and turn rate; flap rate derived from speed and climb demand."
+    ],
+    "contact": [
+      "Perch landing places feet on the support surface and stops motion."
+    ],
+    "timestep": "Fixed step with interpolated rendering.",
+    "checks": [
+      "For the authored coordinated-flight state, bank follows the declared turn signal with the stated response lag; evaluate roll-in, roll-out, glide, landing and idle under their own state rules.",
+      "Feet contact the perch on landing without interpenetration."
+    ]
+  },
+  "creative_affordances": [
+    "The creature can be avian, chiropteran or invented, as long as the wing arm remains structurally readable.",
+    "Flight personality is a design lever: heavy slow beats or quick nervous flicks both work with the same state model."
+  ],
+  "related_ids": [
+    "recipe.garden-creature-patrol",
+    "knowledge.articulated-limb",
+    "knowledge.articulation-from-motion"
+  ]
+}

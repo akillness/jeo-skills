@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.spatial-annotation-authoring",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "interaction-profile",
+  "title": {
+    "en": "Spatial annotation authoring"
+  },
+  "aliases": {
+    "en": [
+      "anchored 3D note",
+      "callout placement",
+      "object-local annotation"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "anatomy-structures",
+    "products-assemblies"
+  ],
+  "summary": "Create, move and remove annotations as application records with stable target identity, declared anchor space and a readable nonspatial view.",
+  "objective": "A note remains attached to its intended semantic feature through hierarchy motion, can be edited without moving the model, and becomes explicitly orphaned if its target disappears.",
+  "applies_when": [
+    "A viewer adds labels, findings, measurements or review notes to a moving or nested 3D scene."
+  ],
+  "tags": [
+    "interaction-profile",
+    "annotation",
+    "anchor",
+    "callout",
+    "application-state"
+  ],
+  "subject_terms": [
+    "annotation anchor",
+    "object-local point",
+    "world-space point",
+    "surface normal",
+    "semantic target ID",
+    "screen-space label",
+    "orphan annotation"
+  ],
+  "intent_signals": [
+    "pin a note to a moving machine part",
+    "label floats after parent rotates",
+    "edit a 3D callout by keyboard",
+    "target deleted but note remains"
+  ],
+  "example_prompts": [
+    "Let reviewers pin notes to building components and find them from a list.",
+    "Anchor an anatomy callout to a moving local landmark without changing the mesh."
+  ],
+  "negative_signals": [
+    "store only screen pixels",
+    "use object name as durable identity",
+    "move geometry when dragging the label"
+  ],
+  "not_for": [
+    "Changing the source mesh to bake permanent labeling.",
+    "Certified medical or construction issue-management workflows."
+  ],
+  "content": {
+    "principles": [
+      "An annotation is application data: stable annotation ID, semantic target ID, anchor space, anchor value, authored content, visibility and lifecycle state.",
+      "Choose object-local coordinates for a point intended to follow a target, or an explicit world frame for a site marker. Screen coordinates are derived presentation state.",
+      "Separate anchor manipulation from model manipulation and camera control; entering annotation mode must make the active owner and cancel behavior visible.",
+      "Spatial labels need a readable companion list or detail panel so essential content and actions do not depend on aiming at a small projected marker."
+    ],
+    "implementation": [
+      "Export stable target keys and optional named anchor helpers from Blender. Keep note text, authoring state, permissions and edit history outside core glTF in application storage.",
+      "On placement, raycast to a semantic target and store an object-local point plus optional local normal, or store an explicit world-space anchor when that is the declared meaning.",
+      "Each frame, derive a world anchor through the target hierarchy and project it to the overlay. Apply an authored occlusion, off-screen and clustering policy without altering the stored anchor.",
+      "Provide Create, Move Anchor, Edit Text, Delete, Cancel and focus actions through spatial and companion controls. A label drag changes presentation offset unless the user explicitly enters Move Anchor mode.",
+      "When a target is hidden, unloaded or deleted, mark the note hidden, deferred or orphaned according to policy; never silently attach it to a nearby mesh."
+    ],
+    "observable_checks": [
+      "Translate, rotate, scale and reparent the target; an object-local anchor follows the same feature and a world anchor stays in its declared frame.",
+      "Drag a label without Move Anchor mode; only presentation offset changes. Move the anchor explicitly; model geometry and target transforms remain unchanged.",
+      "Hide, unload and delete the target; the note follows its declared lifecycle and the companion list exposes its state.",
+      "Create, edit, focus, cancel and delete the same note without requiring precise 3D picking."
+    ]
+  },
+  "related_ids": [
+    "knowledge.inspectable-selection",
+    "knowledge.geometric-measurement-model-units",
+    "knowledge.hard-surface-functional-assembly",
+    "knowledge.transactional-undo-redo"
+  ],
+  "creative_affordances": [
+    "Use leaders, halos, pins or grouped margin labels according to scene density.",
+    "Let annotations carry viewpoints or reveal states when those are explicit derived presentation cues."
+  ],
+  "known_limits": [
+    "Core glTF does not define this annotation workflow; application persistence and permissions remain explicit.",
+    "A fixed object-local point follows rigid object and hierarchy transforms; skinned, morphed or otherwise deforming surfaces require a declared barycentric, topology-stable or deformation-aware anchor representation.",
+    "No universal occlusion or clustering policy is prescribed.",
+    "Authored and source-checked guidance; no annotation runtime or assistive-technology test was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.experience-object3d-anchor-spaces",
+      "statement": "Current Three.js Object3D documentation defines matrixWorld as the object's world-space transform and provides localToWorld and worldToLocal methods for converting Vector3 values between an object's local and world spaces.",
+      "scope": "Current transform API only; target identity, annotation persistence, normal handling and orphan policy are application responsibilities.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-three-object3d-source",
+          "locator": "matrixWorld; localToWorld; worldToLocal"
+        }
+      ]
+    }
+  ]
+}

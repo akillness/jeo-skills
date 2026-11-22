@@ -1,0 +1,225 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-stone-guildhall",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: stone guildhall (Blender glTF)"
+  },
+  "aliases": {
+    "en": [
+      "guildhall glb",
+      "stone hall glTF asset",
+      "village guildhall blueprint",
+      "blender authored guildhall"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "A Blender-authored stone guildhall exported as a 661 KB GLB: plinth, string course, capped chimney, a twelve-course tiled gable roof, twelve windows glazed 20 cm inside 42 cm walls, four material slots and four sockets carried in glTF node extras.",
+  "objective": "Drop a hero building into a village scene as a single loadAsync call and still get the kit contract back: a group at ground level, named sockets read from the asset itself, and a detail ladder that survives from thirty metres to arm's length.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "gltf",
+    "glb",
+    "building",
+    "village",
+    "blender",
+    "hero"
+  ],
+  "subject_terms": [
+    "GLB",
+    "GLTFLoader",
+    "node extras",
+    "bevel modifier",
+    "smart UV project",
+    "material slot",
+    "gable roof",
+    "window reveal"
+  ],
+  "intent_signals": [
+    "load a blender building into three js",
+    "glb hero building for a village",
+    "gltf asset blueprint with sockets",
+    "blender exported guildhall"
+  ],
+  "example_prompts": [
+    "Put a stone guildhall at the head of the village square.",
+    "I need a GLB hero building I can attach a banner and a chimney to."
+  ],
+  "not_for": [
+    "A measured reconstruction of any real guildhall, guild practice or period construction.",
+    "Assets that must stay editable as a .blend; this one is regenerated from the export script, not from a saved file.",
+    "Draco-compressed delivery: the GLB is uncompressed on purpose so the offline harness can read it without a decoder."
+  ],
+  "asset": {
+    "kind": "gltf-asset",
+    "path": "templates/kits/gltf/stone-guildhall.glb"
+  },
+  "params": [
+    {
+      "name": "scale",
+      "type": "number",
+      "range": [
+        0.5,
+        2.0
+      ],
+      "default": 1,
+      "unit": "x"
+    }
+  ],
+  "sockets": [
+    {
+      "name": "door",
+      "position_m": [
+        0,
+        0,
+        2.7
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "banner",
+      "position_m": [
+        0,
+        3.9,
+        2.7
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "chimney",
+      "position_m": [
+        2.2,
+        8.17,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "lantern",
+      "position_m": [
+        -3.6,
+        3.3,
+        2.3
+      ],
+      "normal": [
+        -1,
+        0,
+        0
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "gable block 8.0 m wide and 6.57 m deep with the ridge at 7.30 m, roughly twice the height of the timber cottage it stands beside",
+      "40 degree tiled roof with a 34 cm eave overhang and a capped ridge, broken at 2.2 m off centre by a stone chimney whose cap tops out at 8.17 m",
+      "stone plinth 35 cm proud of the wall face and an entrance step standing 70 cm outside the front wall"
+    ],
+    "medium": [
+      "twelve openings cut clean through 42 cm walls: two upper and two lower windows on each front and back wall, three per gable-end wall, plus the door",
+      "glazing set back 20 cm from the outer face so every reveal is a shadowed recess rather than a flat panel",
+      "string course ledge at 3.02 m dividing the wall into two storeys, a recessed timber door leaf 16 cm inside its opening, and twelve roof courses each lapping 10 cm over the one below"
+    ],
+    "fine": [
+      "2 cm single-segment chamfer on every stone arris, applied by a bevel modifier limited to 35 degrees and baked in by export_apply",
+      "mullion and transom bars 5 cm square crossing each window 15 cm inside the reveal",
+      "four named material slots with distinct roughness (stone 0.88, tile 0.74, timber 0.62, glazing 0.12) so the surfaces separate under one light"
+    ]
+  },
+  "footprint_m": [
+    8.0,
+    6.57
+  ],
+  "poly_budget": 8908,
+  "fits_looks": [
+    "knowledge.style-ghibli-painterly-pastoral",
+    "knowledge.style-stylized",
+    "knowledge.style-hand-painted",
+    "knowledge.lighting-mood-dusk-golden-hour"
+  ],
+  "content": {
+    "principles": [
+      "A glTF hero is still a kit part. It has to return the same { group, sockets, colliders } shape as a procedural module, or every consumer needs a special case for it.",
+      "Sockets belong in the asset, not in a table beside it. Blender empties carrying custom properties survive the export as node extras, so the attachment points cannot drift away from the geometry they were authored against.",
+      "Wall thickness is what makes stone read as stone: an opening cut flush with the face looks like a decal at every distance, and no material can rescue it."
+    ],
+    "implementation": [
+      "Load it through the thin wrapper templates/kits/gltf/stone-guildhall.js: `const { group, sockets } = await create({ scale: 1 });`. The wrapper's create returns a Promise rather than a value -- the only place in the kit library where that is true -- because the geometry lives in a file.",
+      "The wrapper reads sockets from object.userData, which GLTFLoader fills from the node extras; the record's socket list is the same data written down, not a second source of truth.",
+      "Regenerate with: Blender -b --factory-startup --python-exit-code 1 --python templates/kits/blender/export-village-assets.py -- --asset stone-guildhall --out templates/kits/gltf/stone-guildhall.glb",
+      "Exporter keywords, verified present on Blender 5.2.1 LTS (111 operator properties): export_format='GLB', export_apply=True, export_yup=True, export_extras=True, export_lights=False, export_draco_mesh_compression_enable=False, export_animation_mode='ACTIONS', export_force_sampling=True.",
+      "export_apply=True bakes the bevel modifier into the exported mesh, so the chamfers are real geometry in the GLB and nothing has to be re-applied at load time."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible in the frame.",
+      "Parse the GLB JSON chunk: four named materials, one mesh with four primitives, POSITION/NORMAL/TEXCOORD_0 on each, and four nodes whose extras carry a socket name and a three-component normal (examples/early-slice/kits-gltf.test.js does exactly this).",
+      "KHR_draco_mesh_compression must not appear in extensionsUsed, and extensionsRequired must be absent, or the offline harness cannot decode the file."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here measures any real building, stone, joinery or guild.",
+    "The mesh is built in bpy from the parameters in export-village-assets.py rather than opened from a .blend, so no binary source is committed and the asset is reproducible from the script; the consequence is that the shape can only be changed by editing Python, not by modelling.",
+    "The poly budget is the triangle count of the exported mesh (8908 triangles, 19328 vertices) at the authored parameters. There are no LODs: the same 8908 triangles are drawn at the far view as at the detail view.",
+    "661 KB uncompressed -- almost all of it float32 position, normal and UV data for 19328 vertices. That is inside the 2 MB validator cap but two orders of magnitude above a procedural module, and Draco is deliberately off, so a bandwidth-sensitive delivery needs its own compressed copy.",
+    "The 8 m x 6.57 m footprint is the roof, chimney and step extent, not the wall line (7.2 m x 5.4 m); plots planned on the wall line will overlap the eaves.",
+    "Blender 5.2.1 LTS keyword presence was checked with bpy.ops.export_scene.gltf.get_rna_type().properties; no comparison was made against the 4.5 documentation the source record was written from."
+  ],
+  "creative_affordances": [
+    "Scale is a free parameter: the record proves 1.0, but the same GLB reads as a town hall at 1.4 and as a chapel at 0.8.",
+    "Swap the four materials after loading -- they are named, so group.traverse and a name switch is enough to move the building between the listed looks or to an unlisted one.",
+    "Attach a chimney, banner or hanging lantern through the named sockets rather than by hand-placing world coordinates."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "scale": 1,
+      "wall_thickness_m": 0.42,
+      "window_recess_m": 0.2,
+      "bevel_m": 0.02,
+      "bevel_segments": 1,
+      "roof_courses": 12,
+      "roof_course_tilt_deg": 12,
+      "feeling": "civic stone against timber neighbours"
+    },
+    "rationale": "Wall thickness and recess were chosen so the reveal still reads as a shadow at the close proof distance of about fourteen metres, where a 12 cm recess of the cottage scale would have closed up."
+  },
+  "related_ids": [
+    "knowledge.blender-headless-gltf-export-script",
+    "knowledge.gltf-material-extension-matrix",
+    "knowledge.blueprint-iron-lantern",
+    "knowledge.blueprint-timber-cottage",
+    "knowledge.modular-environment-kit-sockets",
+    "recipe.fantasy-village-diorama"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "detail_socket": "door",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-stone-guildhall/far.png",
+      "evidence/kits/knowledge.blueprint-stone-guildhall/mid.png",
+      "evidence/kits/knowledge.blueprint-stone-guildhall/close.png",
+      "evidence/kits/knowledge.blueprint-stone-guildhall/detail.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-stone-guildhall/proof-log.json"
+  }
+}

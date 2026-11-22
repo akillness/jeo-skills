@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.breadth-first-frontier",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Breadth-first search and shortest edge counts"
+  },
+  "aliases": {
+    "en": [
+      "breadth first search",
+      "BFS queue visualization",
+      "unweighted shortest path"
+    ]
+  },
+  "direction_ids": [
+    "algorithms-data-structures"
+  ],
+  "summary": "Expose discovery order, the FIFO queue and shortest paths on a small unweighted graph.",
+  "objective": "Build a layered graph where I can single-step BFS and inspect its queue, distance labels and predecessor path.",
+  "tags": [
+    "BFS",
+    "FIFO queue",
+    "frontier"
+  ],
+  "subject_terms": [
+    "BFS",
+    "FIFO queue",
+    "frontier",
+    "graph distance",
+    "predecessor tree",
+    "unweighted graph"
+  ],
+  "intent_signals": [
+    "Build a layered graph where I can single-step BFS and inspect its queue, distance labels and predecessor path.",
+    "Expose discovery order, the FIFO queue and shortest paths on a small unweighted graph."
+  ],
+  "example_prompts": [
+    "Build a layered graph where I can single-step BFS and inspect its queue, distance labels and predecessor path.",
+    "Create an explorable 3D explanation of breadth first search with path inspector."
+  ],
+  "negative_signals": [
+    "No weighted shortest-path guarantee; visual edge length is not a cost."
+  ],
+  "not_for": [
+    "No weighted shortest-path guarantee; visual edge length is not a cost."
+  ],
+  "entities": [
+    {
+      "name": "Graph nodes and edges",
+      "guidance": "Lay out a small authored graph in depth layers, routing crossings clearly without inventing junctions; include a cycle and a disconnected vertex."
+    },
+    {
+      "name": "Queue rail",
+      "guidance": "Show the front and back of the FIFO queue as ordered slots carrying vertex IDs, not copies of graph state."
+    },
+    {
+      "name": "Path inspector",
+      "guidance": "Select a vertex to show its predecessor chain, edge count or unreachable state; use edge thickness and text as well as discovery color."
+    }
+  ],
+  "state_contract": {
+    "model": "Finite unweighted undirected graph with stable vertex IDs and deterministic neighbor order. Mark vertices when enqueued; assign distance[parent]+1 at first discovery.",
+    "authority": "An executable BFS state or recorded verified trace owns queue, discovered set, distances and predecessors; spatial layout never determines graph adjacency.",
+    "actions": [
+      "Choose source before running.",
+      "Step dequeue and neighbor-discovery events.",
+      "Pause or replay the immutable trace.",
+      "Reset or edit graph, invalidating the old trace."
+    ]
+  },
+  "invariants": [
+    "A vertex is enqueued at most once.",
+    "Dequeued distances never decrease.",
+    "Every predecessor chain reaches the source and has the displayed distance; disconnected vertices remain unreachable."
+  ],
+  "motion_guidance": [
+    "Animate one semantic event at a time and highlight the exact inspected edge.",
+    "Force-directed layout motion must not consume algorithm steps or change IDs."
+  ],
+  "known_limits": [
+    "No weighted shortest-path guarantee; visual edge length is not a cost.",
+    "Different neighbor ordering can choose a different equal-length predecessor tree.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.breadth-first-frontier",
+      "statement": "Breadth-first search uses a FIFO queue to find paths with minimum edge count from a source in an unweighted graph.",
+      "scope": "Minimum edge count, not Euclidean length or weighted cost.",
+      "source_refs": [
+        {
+          "source_id": "source.princeton-bfs",
+          "locator": "Breadth-first search"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Graph nodes and edges",
+      "structure": "Lay out a small authored graph in depth layers, routing crossings clearly without inventing junctions; include a cycle and a disconnected vertex.",
+      "material": "Solid labeled nodes, subdued unvisited edges and explicit queue direction; ghost tokens in the queue reference the same stable IDs."
+    }
+  ]
+}

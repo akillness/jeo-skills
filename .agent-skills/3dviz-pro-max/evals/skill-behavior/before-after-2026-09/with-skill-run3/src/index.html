@@ -1,0 +1,38 @@
+<!doctype html>
+<!-- Keep #world, #error, #views, #control and #reset: the capture script and the viewer
+     contract read them. #buildings and #selected belong to src/selection-controller.js. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Threadwater Hollow</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <div class="viewport" aria-busy="true">
+        <canvas id="world" aria-label="A felted fantasy village at golden hour, seen in three dimensions"></canvas>
+        <p id="error" role="alert" hidden></p>
+      </div>
+      <aside class="panel">
+        <header>
+          <p class="eyebrow">A hand-felted hollow &middot; golden hour</p>
+          <h1>Threadwater Hollow</h1>
+          <p class="lede">Ten structures stitched from dyed wool, standing in a river gorge twenty
+            minutes before sunset. Drag to orbit, click a building to look closer.</p>
+        </header>
+        <h2 class="label">Camera</h2>
+        <nav id="views" aria-label="Camera views"></nav>
+        <p class="controls">
+          <button id="control" type="button" aria-pressed="false">Pause motion</button>
+          <button id="reset" type="button">Reset view</button>
+        </p>
+        <h2 class="label">Buildings</h2>
+        <nav id="buildings" aria-label="Buildings"></nav>
+        <div id="selected" class="readout" aria-live="polite"></div>
+        <p id="stats" class="stats"></p>
+      </aside>
+    </main>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

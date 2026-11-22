@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "feedback_id": "feedback.object-understanding",
+  "language": "en",
+  "received_at": "2026-09-07",
+  "provenance": "Sanitized author feedback; paraphrased without identifying information or raw conversation.",
+  "observations": [
+    "The village improved overall.",
+    "Individual objects still communicate too little about their construction, materials and function.",
+    "Physical behavior is not visibly evident enough."
+  ],
+  "requested_direction": [
+    "Choose appropriate Three.js companion tools and explain their responsibilities.",
+    "Capture reusable object knowledge in the dataset so later scenes can benefit."
+  ],
+  "hypotheses": [
+    "Reusable assembly, material and physical-behavior guidance may improve object reasoning.",
+    "Isolation and controlled actions may make construction and causal response easier to inspect."
+  ],
+  "limits": [
+    "Feedback is a qualitative author observation, not a measured benchmark.",
+    "The proposed dataset changes have not demonstrated a runtime scene improvement."
+  ],
+  "affected_record_ids": [
+    "knowledge.framed-shelter",
+    "knowledge.articulated-limb",
+    "knowledge.gear-mechanism",
+    "knowledge.dielectric-surface",
+    "knowledge.conductor-surface",
+    "knowledge.transmissive-medium",
+    "knowledge.gravity-contact",
+    "knowledge.authored-locomotion",
+    "knowledge.constrained-gear-motion",
+    "knowledge.three-scene-adapter",
+    "knowledge.three-pbr-adapter",
+    "knowledge.three-rigid-body-adapter",
+    "knowledge.object-isolation",
+    "knowledge.cutaway-explode",
+    "knowledge.controlled-experiment",
+    "knowledge.structural-coherence",
+    "knowledge.material-response-check",
+    "knowledge.physical-action-reset"
+  ]
+}

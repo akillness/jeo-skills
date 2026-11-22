@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.material-ceramic-body-glaze",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Ceramic body, glaze and decoration"
+  },
+  "aliases": {
+    "en": [
+      "glazed ceramic surface",
+      "ceramic glaze boundary"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas"
+  ],
+  "summary": "Give a ceramic vessel readable wall thickness, body/glaze boundaries and decoration depth before adding glossy highlights.",
+  "objective": "Make a glazed vessel read as a constructed ceramic object with an intentional surface layer.",
+  "tags": [
+    "material-profile",
+    "ceramic",
+    "glaze",
+    "underglaze"
+  ],
+  "subject_terms": [
+    "ceramic",
+    "glaze",
+    "underglaze",
+    "clay body",
+    "unglazed foot",
+    "vessel rim"
+  ],
+  "intent_signals": [
+    "Make a glazed vessel read as a constructed ceramic object with an intentional surface layer."
+  ],
+  "example_prompts": [
+    "Build a painted ceramic teapot with a thick rim, a selected unglazed foot and decoration beneath a satin glaze."
+  ],
+  "content": {
+    "principles": [
+      "Distinguish body geometry, surface coating and decoration placement. If a design is described as underglaze, place its appearance below the glaze response rather than automatically giving it raised metal-like relief.",
+      "Choose the depicted finish: matte, satin, glossy, opaque or translucent treatments are artistic options; no single setting defines all ceramics."
+    ],
+    "implementation": [
+      "Model the lip, inner wall, handle attachment and foot in geometry. Mask a glaze boundary only where the selected design has one; do not require every vessel to have an exposed clay band.",
+      "Keep glaze roughness independent of the body's broad color variation; test a broad highlight crossing a painted motif so coating response and decoration remain distinct.",
+      "Use actual chipped layer geometry only for an intended damaged object. Keep crackle or decoration width in object scale and avoid inflating every painted line through normal detail."
+    ],
+    "observable_checks": [
+      "At an oblique rim view, the wall and inner cavity remain understandable even when the glaze catches a large reflection.",
+      "A chosen underglaze motif remains beneath a continuous coating highlight rather than behaving like an unrelated glowing sticker.",
+      "The exposed foot, if present, contrasts with the coating through finish or boundary structure without requiring a fixed hue."
+    ]
+  },
+  "known_limits": [
+    "This does not identify firing temperature, historical origin, food safety, glaze chemistry or liquid impermeability of a particular object.",
+    "Authored modeling and inspection guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Unglazed biscuit, playful opaque glaze and graphic brushwork are valid; glossy realism is optional."
+  ],
+  "related_ids": [
+    "knowledge.dielectric-surface",
+    "knowledge.transmissive-medium"
+  ],
+  "claims": [
+    {
+      "id": "claim.material-depth-ceramic-body-glaze",
+      "statement": "The V&A defines underglaze as ceramic decoration beneath the glaze layer.",
+      "scope": "Terminology and layer ordering only; no general glaze composition or manufacturing claim.",
+      "source_refs": [
+        {
+          "source_id": "source.material-depth-ceramic-underglaze",
+          "locator": "U is for underglaze, opening sentence"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "id": "recipe.recursion-call-stack",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Recursion, call stack and backtracking"
+  },
+  "aliases": {
+    "en": [
+      "call stack",
+      "recursion tree",
+      "backtracking"
+    ]
+  },
+  "direction_ids": [
+    "algorithms-data-structures"
+  ],
+  "summary": "Build the call stack as a physical stack so that returning is popping, and let a backtracking search grow and prune it.",
+  "objective": "Build a recursion visualiser where each active call is a stacked frame with its arguments, and backtracking pops frames as the search retreats.",
+  "tags": [
+    "recursion",
+    "stack",
+    "backtracking"
+  ],
+  "subject_terms": [
+    "recursion",
+    "base case",
+    "call stack",
+    "stack frame",
+    "recursion tree",
+    "backtracking",
+    "pruning",
+    "Towers of Hanoi"
+  ],
+  "intent_signals": [
+    "Show what the call stack looks like during a recursive algorithm.",
+    "Visualise backtracking as calls being popped."
+  ],
+  "example_prompts": [
+    "Build a call stack tower for a recursive algorithm with arguments visible on each frame.",
+    "Show Towers of Hanoi and count the moves against the expected minimum."
+  ],
+  "negative_signals": [
+    "Not a debugger or language runtime model: no registers, heap allocation or tail-call behaviour.",
+    "Not a complexity proof; counts shown are for the executed instance."
+  ],
+  "not_for": [
+    "Not a debugger or language runtime model: no registers, heap allocation or tail-call behaviour.",
+    "Not a complexity proof; counts shown are for the executed instance."
+  ],
+  "entities": [
+    {
+      "name": "Stack tower",
+      "guidance": "Stack frames as physical slabs with the call arguments printed on the visible edge, so depth is countable."
+    },
+    {
+      "name": "Recursion tree",
+      "guidance": "Grow a tree beside the stack where each node is a call; the stack is then the path from root to the current node."
+    },
+    {
+      "name": "Problem view",
+      "guidance": "Show the actual problem state, for example discs on pegs, so the recursion is anchored in something being solved."
+    }
+  ],
+  "state_contract": {
+    "model": "An explicit call record holding arguments and an authored continuation phase (before the first recursive call, before the central move, before the second recursive call, returning), a stack of active calls, a growing recursion tree, the mutable problem state and a rollback record for backtracking. Arguments are passed by value, so a parent resumes with the arguments it pushed. Termination rests on a decreasing measure with a declared bound, not merely on naming a base case.",
+    "authority": "The call stack is authoritative for what happens next. The tree and the problem view are projections of the same record and must never advance independently.",
+    "actions": [
+      "Step into the next call.",
+      "Step out and pop a frame.",
+      "Run to completion and inspect the move count.",
+      "Reset to the initial problem."
+    ]
+  },
+  "invariants": [
+    "Every push is matched by exactly one pop before the algorithm finishes.",
+    "The stack depth never exceeds the declared maximum depth for the input size.",
+    "Stepping out restores the parent frame arguments exactly as they were pushed, because arguments are by value, and resumes at the recorded continuation phase rather than at the start of the parent call.",
+    "Two frames with identical arguments are distinguished by their continuation phase: in Hanoi the same arguments occur before the first child, before the central move and before the second child."
+  ],
+  "motion_guidance": [
+    "Animate a push as a frame arriving on top and a pop as it leaving, so the stack discipline is visible rather than stated.",
+    "Highlight the base case explicitly when it is reached, since that is where recursion stops."
+  ],
+  "known_limits": [
+    "These abstract frames carry by-value arguments and an authored continuation phase; they do not reproduce complete machine stack frames, return addresses or local-variable storage.",
+    "Deep recursion becomes visually unusable well before real stack limits are reached.",
+    "Termination is guaranteed by the declared decreasing measure and input bound; a base case alone does not establish it.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-recursion-base-case",
+      "statement": "A recursive function calls itself, and its base case returns a value without making any further recursive calls.",
+      "scope": "Definition as presented in the cited introductory section.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-princeton-recursion",
+          "locator": "Section 2.3 Recursion, first recursive program and base case"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-hanoi-move-count",
+      "statement": "The recursive solution to the Towers of Hanoi moves the top n minus one discs to a spare pole, moves the largest disc, then moves the rest, giving 2 to the power n minus 1 moves for n discs.",
+      "scope": "Move count for the standard three-peg problem as cited.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-princeton-recursion",
+          "locator": "Section 2.3 Recursion, Towers of Hanoi and exponential time"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Stack tower",
+      "structure": "Slabs of equal thickness with a printed edge label and a slight inset so individual frames stay countable at a glance.",
+      "material": "One material for active frames and a lower-value variant for completed ones; the top frame carries the only accent.",
+      "articulation": "Frames translate vertically on push and pop with a short settle, never fading in place."
+    },
+    {
+      "family": "Problem view",
+      "structure": "Real geometry for the problem state, such as discs with distinct radii on modelled pegs, so illegal states would be visible.",
+      "material": "Disc materials ordered by size so an illegal placement is obvious even without a rule check.",
+      "articulation": "Problem objects move only when the algorithm logs a move."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Discrete algorithm stepping with animated presentation; no physical stacking forces.",
+    "state": [
+      "call stack",
+      "recursion tree",
+      "move log"
+    ],
+    "checks": [
+      "Pushes and pops balance at completion.",
+      "The logged move count matches the expected minimum for the disc count."
+    ]
+  },
+  "related_ids": [
+    "recipe.stable-merge-sort-trace",
+    "recipe.hanoi-optimal-bound",
+    "knowledge.state-playback"
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-indexed-manifold-mesh",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "geometry-profile",
+  "title": {
+    "en": "Indexed mesh with declared manifold intent"
+  },
+  "aliases": {
+    "en": [
+      "indexed triangle mesh",
+      "manifold mesh contract",
+      "shared vertices and winding"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "architecture-interiors",
+    "solid-geometry",
+    "environments-dioramas"
+  ],
+  "summary": "Decide whether a mesh is a closed solid boundary or an open surface, then let vertex sharing, winding and normals follow that decision.",
+  "objective": "Every boundary edge in the mesh is one the record intends, back faces behave as declared, and shading seams appear only where a hard edge was asked for.",
+  "tags": [
+    "geometry-profile",
+    "mesh",
+    "manifold",
+    "winding",
+    "normals",
+    "index-buffer"
+  ],
+  "subject_terms": [
+    "indexed mesh",
+    "vertex sharing",
+    "manifold edge",
+    "winding order",
+    "face normal",
+    "vertex normal",
+    "boundary edge",
+    "back-face culling",
+    "smoothing group"
+  ],
+  "intent_signals": [
+    "my model has holes",
+    "faces disappear from one side",
+    "the roof looks paper thin",
+    "smooth shading looks blotchy",
+    "should I weld these vertices"
+  ],
+  "example_prompts": [
+    "Build a closed housing shell that can be cut away without showing hollow faces.",
+    "Make the wall thickness readable instead of using single-sided planes.",
+    "Keep the crease on the bevel sharp but the barrel smooth."
+  ],
+  "negative_signals": [
+    "point cloud with no connectivity",
+    "curve or line-only diagram"
+  ],
+  "not_for": [
+    "Unconnected sample sets such as point clouds or particle systems.",
+    "Volumetric fields that are never converted to a surface."
+  ],
+  "content": {
+    "principles": [
+      "State the intent first: a closed boundary of a solid, an open shell with real edges, or a deliberately single-sided card. Every later decision about welding, winding and thickness follows from that statement.",
+      "Vertex sharing is a shading decision as well as a memory decision. Positions are shared to close the surface; normals and texture coordinates are split to create a crease. Splitting a vertex to obtain a crease necessarily splits it in the index buffer too, so the render topology of a closed hard-edged object is no longer connected even though the object is closed.",
+      "Keep two notions of topology apart. The index buffer describes how the mesh is drawn; a separate weld map over coincident positions describes whether the surface is closed. Closure, boundary-edge and orientation checks belong to the weld map, because a closed cube with per-face split vertices has boundary edges in every index-based reading.",
+      "Winding order is the object's own outward direction. A mesh with mixed winding will look correct from some angles and inside out from others, and the failure is orientation-dependent rather than constant.",
+      "A surface that is meant to have thickness should have modelled thickness. A single plane pretending to be a wall or a roof reveals itself at grazing angles, at cutaways and wherever the camera can reach an edge."
+    ],
+    "implementation": [
+      "Use an index buffer so positions can be reused for drawing, and keep a separate weld map that groups vertices sharing a position within a stated tolerance. Use the index buffer for rendering and the weld map for adjacency, closure and orientation reasoning.",
+      "Build the weld map deliberately rather than by welding everything: parts that are coincident but logically separate, such as two abutting components of an assembly, must not be merged by the tolerance.",
+      "Choose one outward convention for the whole object and apply it consistently, so that the cross product of two triangle edge vectors taken in declared vertex order points away from the interior.",
+      "Derive smooth normals by averaging the adjacent face normals over shared vertices, and create hard edges by splitting the vertices along the crease rather than by disabling smoothing globally.",
+      "When several materials share one mesh, partition the triangles into disjoint draw groups; keep every triangle in exactly one group and leave no vertices unused so the assignment stays auditable.",
+      "For an assembly, keep one mesh per semantic part rather than merging everything, so cutaway, selection and explode operations have real objects to move.",
+      "Release owned buffers when a mesh is replaced, and rebuild bounds after any deformation so culling and picking still match the visible surface."
+    ],
+    "observable_checks": [
+      "Highlighting boundary edges of the weld-map topology shows only the openings the record intends; a shell declared closed shows none, even when its render index buffer is split for hard edges.",
+      "Turning the camera to the interior, or enabling a clipping plane, shows either a modelled interior surface or the declared single-sided behaviour, and never a randomly missing patch.",
+      "Smooth shading is continuous across surfaces declared smooth, and the visible creases coincide with the edges the record names as hard.",
+      "Scaling the object to a large size shows no cracks along seams that were meant to be welded.",
+      "Selecting one part in an assembly highlights exactly that part, which confirms that the mesh was not silently merged."
+    ]
+  },
+  "creative_affordances": [
+    "Faceted, low-polygon and hand-built looks remain fully available; the manifold decision is about intent and consistency, not about polygon count or realism.",
+    "Deliberately open shells are a valid choice for cutaways, ribbons and stage-like sets when the record says so."
+  ],
+  "known_limits": [
+    "Closing a mesh does not make it physically valid for manufacturing, simulation or volume computation; those need their own checks.",
+    "The manufacturing-format rules cited here bound what a printable mesh must satisfy; they are not a general definition of good rendering geometry, and a scene mesh may legitimately violate them.",
+    "Authored reusable guidance; no runtime artifact or rendered result has been observed for this record."
+  ],
+  "related_ids": [
+    "recipe.portable-speaker-exploded",
+    "recipe.courtyard-house-cutaway",
+    "recipe.fantasy-village-diorama",
+    "knowledge.cutaway-explode",
+    "knowledge.shared-cad-tessellation-identity"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-indexed-mesh-normals",
+      "statement": "An index buffer lets vertices be reused across triangles, and vertex-normal computation averages the normals of the faces sharing each vertex for indexed geometry while assigning the face normal directly for non-indexed geometry; when one geometry is split into material groups, every vertex and index must belong to exactly one group.",
+      "scope": "Documented behavior of one library's geometry container as of the access date. It describes how that library derives shading normals and partitions draw calls; it does not define mesh validity in general.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-buffergeometry",
+          "locator": "index; computeVertexNormals; groups"
+        }
+      ]
+    },
+    {
+      "id": "claim.shared-manifold-edge-rule",
+      "statement": "A manufacturing-oriented mesh format requires, for meshes under an object of type model or solidsupport, that every triangle edge share its vertex endpoints with the edge of exactly one other triangle, that adjacent triangles declare the shared edge in opposite vertex order, and that all triangle normals point away from the object interior, which together exclude holes, open edges and non-orientable surfaces; objects of type support, surface and other are explicitly allowed to break these conditions.",
+      "scope": "Normative requirements of the 3MF core mesh format for solid printable object types, with the format's own exemption for other object types. They define a printable solid, not a universal requirement for rendered scene geometry.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-3mf-core",
+          "locator": "Section 4.1 Meshes: object types model and solidsupport; Manifold Edges; Consistent Triangle Orientation; Outward-facing normals; exemption for support, surface and other"
+        }
+      ]
+    }
+  ]
+}

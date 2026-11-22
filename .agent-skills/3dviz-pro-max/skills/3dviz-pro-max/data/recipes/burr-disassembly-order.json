@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "id": "recipe.burr-disassembly-order",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Interlocking burr and its disassembly order"
+  },
+  "aliases": {
+    "en": [
+      "burr puzzle",
+      "interlocking assembly",
+      "disassembly tree"
+    ]
+  },
+  "direction_ids": [
+    "spatial-puzzles"
+  ],
+  "summary": "Design an interlocking puzzle whose only freedom at each step is a short list of legal slides, and expose that list.",
+  "objective": "Build an invented six-piece interlocking puzzle where each state offers only the slides that are actually free, with an undoable disassembly history.",
+  "tags": [
+    "burr",
+    "interlocking",
+    "disassembly"
+  ],
+  "subject_terms": [
+    "interlocking puzzle",
+    "burr",
+    "notched stick",
+    "legal slide",
+    "blocking piece",
+    "disassembly order",
+    "assembly state"
+  ],
+  "intent_signals": [
+    "Design an interlocking wooden puzzle I can take apart step by step.",
+    "Show which piece is blocking the one I am trying to move."
+  ],
+  "example_prompts": [
+    "Build a six-piece burr puzzle with legal slide detection and an undoable disassembly history.",
+    "Show the first free piece of an interlocking assembly and why the others are blocked."
+  ],
+  "negative_signals": [
+    "Not a solved-puzzle catalogue reproduction; the piece set here is invented.",
+    "Not a physics assembly simulation with friction, tolerance or jamming."
+  ],
+  "not_for": [
+    "Not a solved-puzzle catalogue reproduction; the piece set here is invented.",
+    "Not a physics assembly simulation with friction, tolerance or jamming."
+  ],
+  "entities": [
+    {
+      "name": "Notched pieces",
+      "guidance": "Author each piece as a stick with removed unit notches so the interlocking is real geometry that can be inspected off the assembly."
+    },
+    {
+      "name": "Legal slide test",
+      "guidance": "Determine free directions per piece by cell occupancy along the slide axis and expose the blocking piece by name when a slide is refused."
+    },
+    {
+      "name": "History spine",
+      "guidance": "Record each partial slide offset and each removal so reverse stepping restores exact model poses; the rack is a separate display-only inventory view."
+    }
+  ],
+  "state_contract": {
+    "model": "Voxel occupancy per piece on a shared lattice, a legal slide test along axis directions, and an ordered removal history. Motion is snapped along the lattice; no forces are involved.",
+    "authority": "Occupancy is authoritative. A slide is offered only when every cell along the path is free, so a piece never passes through another even mid-animation.",
+    "actions": [
+      "Try to slide a selected piece along an axis.",
+      "Inspect the reported blocking piece when a slide is refused.",
+      "Remove a freed piece and continue.",
+      "Step the history backwards to reassemble."
+    ]
+  },
+  "invariants": [
+    "A refused slide names at least one blocking piece rather than failing silently.",
+    "No model pieces overlap during legal slide animation; test the swept volume between lattice positions. Rack duplicates are explicitly display-only inventory views in a separate rack region, not additional model occupancy or physical transport.",
+    "The history stores every partial slide offset as well as removals, so stepping backwards reproduces the exact assembled state including pieces that were only partly withdrawn."
+  ],
+  "motion_guidance": [
+    "Animate a slide along one axis at constant speed and stop it exactly at a lattice position.",
+    "When a piece becomes free, indicate the newly available slides rather than moving it automatically."
+  ],
+  "known_limits": [
+    "Invented piece set: it is not a reproduction of any published burr and its difficulty is not calibrated.",
+    "Real wooden puzzles rely on tolerance and friction, which this lattice model deliberately ignores.",
+    "Before presenting the invented pieces as solvable, provide a verified disassembly sequence or a sound search that finds one under the axis-only rules. Budget exhaustion without a solution reports solvability not established, not no legal move. Report no permitted slide only after a complete current-state candidate legality test finds none; that local dead end is distinct from a global impossibility proof.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "object_craft": [
+    {
+      "family": "Notched pieces",
+      "structure": "Square-section sticks with unit notches, visible end grain and slight edge chamfers so the interlock reads at close range.",
+      "material": "Timber-like family with per-piece grain direction variation rather than colour coding, so the puzzle stays believable as an object.",
+      "articulation": "Pieces translate along a single axis at a time and are parented to the assembly frame otherwise."
+    },
+    {
+      "family": "History spine",
+      "structure": "A rack beside the puzzle holding removed pieces in removal order.",
+      "material": "Rack material subdued so attention stays on the puzzle; slot labels carry the step index.",
+      "articulation": "After a verified extraction clears the assembly, hide the assembly-view piece and show a display-only duplicate in its rack slot. No physical path to the rack is claimed. Undo removes the duplicate and restores the saved fully extracted pose before reversing recorded legal slides."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Lattice-snapped sliding with occupancy tests; no friction, gravity or compliance.",
+    "state": [
+      "piece lattice poses",
+      "partial-slide and removal history",
+      "selected slide axis",
+      "solvability status",
+      "search budget status"
+    ],
+    "checks": [
+      "Occupancy never overlaps during or after a slide.",
+      "Reverse stepping restores the assembled configuration exactly."
+    ]
+  },
+  "creative_affordances": [
+    "Vary the notch pattern to change difficulty; a single extra notch can make a different piece the first to free.",
+    "The rack, workbench and lighting are free design choices as long as the blocking report stays legible."
+  ],
+  "related_ids": [
+    "recipe.voxel-packing-tray",
+    "recipe.portable-speaker-exploded",
+    "knowledge.cutaway-explode"
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-ik-solution-multiplicity",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Report the residual and the branch in inverse kinematics"
+  },
+  "aliases": {
+    "en": [
+      "inverse kinematics",
+      "singularity",
+      "multiple solutions"
+    ]
+  },
+  "direction_ids": [
+    "robotics-control"
+  ],
+  "summary": "Treat inverse kinematics as a solve with possibly many or no solutions, and show the residual, the branch and any failure.",
+  "objective": "Keep an inverse-kinematics scene honest about reachability, branches and convergence.",
+  "applies_when": [
+    "An end effector follows a target the user can move.",
+    "The target can be placed outside the workspace or at a singular configuration.",
+    "A pose is solved numerically rather than composed forward."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "inverse kinematics",
+    "Jacobian",
+    "pseudoinverse",
+    "residual",
+    "singularity",
+    "workspace"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "robotics",
+    "solving"
+  ],
+  "intent_signals": [
+    "drag the target",
+    "the arm flips",
+    "why can it not reach"
+  ],
+  "example_prompts": [
+    "Let me drag the target and see how well the arm reaches it.",
+    "Show what happens when the target is outside the workspace."
+  ],
+  "negative_signals": [
+    "Forward-only animation where joint values are authored directly.",
+    "Closed-form solutions for specific mechanisms, which have their own branch enumeration."
+  ],
+  "not_for": [
+    "Forward-only animation where joint values are authored directly.",
+    "Closed-form solutions for specific mechanisms, which have their own branch enumeration."
+  ],
+  "content": {
+    "principles": [
+      "Numerical inverse kinematics is an iterative solve. A typical method starts from an initial guess and repeatedly adds the Jacobian pseudoinverse applied to the end-effector error, stopping when that error is small enough.",
+      "Convergence is not guaranteed from an arbitrary start: the initial guess should be close to a solution, which is why continuous dragging usually works while a jump across the workspace can fail.",
+      "Redundant mechanisms have families of solutions, and the pseudoinverse picks the least-norm update rather than the one a user might expect, so branch changes appear as sudden flips.",
+      "A solver that silently returns its last iterate reports a pose that is not the requested one, so the residual is the honest output. Report it with units and structure: position error in length units and orientation error in angle units, either separately or under an explicitly weighted metric, and say which pose components were actually constrained."
+    ],
+    "implementation": [
+      "Display the residual with its components and units, alongside the iteration count, and mark clearly when the tolerance was not met. Note that the least-norm property of the pseudoinverse depends on the joint coordinates and any weighting, which matters when prismatic and revolute joints are mixed.",
+      "Seed each solve from the current configuration to keep motion continuous, and say so. Warm starting improves continuity but cannot guarantee it: passing through a singularity, crossing into another solution branch or hitting an active joint limit can still produce a jump, and the honest response is to report it.",
+      "Detect near-singular configurations and either damp the update or report the loss of a degree of freedom rather than producing large joint velocities.",
+      "Show the reachable workspace or at least indicate when the target lies outside it.",
+      "Respect joint limits inside the iteration rather than clamping the final answer, and report when limits are active."
+    ],
+    "observable_checks": [
+      "Move the target outside the workspace and confirm the scene reports an unmet target with a residual rather than a plausible pose.",
+      "Drag the target through a singular configuration and confirm the scene keeps joint rates bounded by damping, slowing or halting the trajectory, and says which it did. Tracking every commanded motion exactly and keeping rates bounded are not simultaneously achievable there.",
+      "Jump the target across the workspace and observe whether the solver converges or reports failure.",
+      "Verify a converged solution by composing forward kinematics and comparing with the target."
+    ]
+  },
+  "related_ids": [
+    "recipe.inverse-kinematics-target",
+    "recipe.robot-arm-forward-frames",
+    "knowledge.reasoning-joint-limit-in-model"
+  ],
+  "creative_affordances": [
+    "Presentation of the solve, including showing iterations or ghost poses, is a free and often instructive choice.",
+    "Stylised or impossible mechanisms can use the same solver honestly."
+  ],
+  "known_limits": [
+    "Authored guidance citing one numerical inverse-kinematics method; analytic solutions and optimisation-based approaches behave differently.",
+    "No solver has been run or benchmarked for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-numerical-ik-behaviour",
+      "statement": "Numerical inverse kinematics starts from an initial guess and iteratively adds the Jacobian pseudoinverse applied to the end-effector error, stopping when that error is small enough; the initial guess should be close to a solution for the process to converge, and for a redundant robot the pseudoinverse yields the solution update of smallest length.",
+      "scope": "Iterative numerical inverse kinematics; analytic closed-form solutions enumerate branches differently.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-inverse-kinematics",
+          "locator": "Numerical inverse kinematics: initial guess, Jacobian pseudoinverse and stopping on end-effector error"
+        }
+      ]
+    }
+  ]
+}

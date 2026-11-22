@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-static-accessible-fallback",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "output-profile",
+  "title": {
+    "en": "Static and non-visual fallback for a spatial result"
+  },
+  "aliases": {
+    "en": [
+      "accessible fallback output",
+      "static alternative to a 3D scene",
+      "text and table equivalent"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "probability-statistics",
+    "operations-logistics",
+    "anatomy-structures"
+  ],
+  "summary": "Deliver the finding of a spatial scene in a form that survives without three-dimensional rendering, colour perception or pointer input.",
+  "objective": "A reader who never sees the interactive scene can still obtain its finding, and every conclusion the scene supports appears in the fallback.",
+  "tags": [
+    "output-profile",
+    "accessibility",
+    "fallback",
+    "text-alternative",
+    "static-view"
+  ],
+  "subject_terms": [
+    "text alternative",
+    "static frame",
+    "tabular data",
+    "colour independence",
+    "contrast",
+    "keyboard access",
+    "graceful degradation",
+    "equivalent purpose"
+  ],
+  "intent_signals": [
+    "what if webgl is not available",
+    "make this readable without colour",
+    "describe the scene for a screen reader",
+    "include a static version in the report",
+    "the viewer only has a keyboard"
+  ],
+  "example_prompts": [
+    "Add a static summary of an interactive scene for a written report.",
+    "Provide a keyboard and text route to the same conclusion.",
+    "Make the finding survive being printed in black and white."
+  ],
+  "negative_signals": [
+    "exploratory-only artifact with no finding",
+    "purely decorative animation"
+  ],
+  "not_for": [
+    "Artifacts with no stated finding, where there is nothing to carry over.",
+    "Purely decorative motion that makes no claim."
+  ],
+  "content": {
+    "principles": [
+      "The fallback carries the finding, not the scene. Describing camera moves and colours is not a substitute for stating what the scene shows.",
+      "A three-dimensional view can fail for many reasons: no graphics context, a lost context, reduced-motion preferences, no pointer, no colour discrimination, or a printed page. One fallback can address all of them if it is built around the conclusion.",
+      "Non-text content needs a text alternative that serves the equivalent purpose. That is an equivalence requirement, not a caption requirement, and it is what makes the fallback substantive rather than decorative.",
+      "Colour must not be the only carrier of a distinction. Shape, position, label, ordering and pattern all remain available, and a scene that relies on hue alone loses its meaning in the fallback.",
+      "Visual information needed to identify a control or a graphical object needs sufficient contrast against what is next to it, which constrains legends, outlines and state indicators in the static view.",
+      "Numbers beat descriptions of numbers. Where the scene shows quantities, the fallback should carry the quantities themselves in a readable table rather than an adjective.",
+      "The fallback is a deliverable with its own correctness. It has to be updated when the scene changes, or it becomes a confident record of an older result."
+    ],
+    "implementation": [
+      "Write the finding first as a short statement, then build the fallback around supporting it: one or more static frames from named viewpoints, a text description, and a table of the values the scene displays.",
+      "Choose the static viewpoints deliberately so that together they show what a viewer would have obtained by orbiting, and label each with what it is meant to establish.",
+      "Give every visual distinction a second, non-colour carrier such as a label, a pattern, an ordering or a position, and confirm the distinctions survive a greyscale rendering.",
+      "Keep legends, outlines and state markers distinguishable against their surroundings, and check them at the contrast level the guidance requires rather than by eye alone.",
+      "Provide the underlying values in a readable structure alongside the images, and include units and the value range.",
+      "Offer a non-pointer route to the same states: named viewpoint buttons, a list of selectable parts and keyboard-reachable controls, so that spatial actions have an equivalent that does not require dragging.",
+      "Detect the absence of a working three-dimensional context and present the fallback instead of an empty area or an error.",
+      "Regenerate the fallback whenever the scene changes, and record which scene revision it corresponds to."
+    ],
+    "observable_checks": [
+      "A reader given only the fallback can state the scene's finding correctly.",
+      "The fallback rendered in greyscale still distinguishes every category the scene distinguishes.",
+      "Every quantity displayed in the scene appears in the fallback with its units.",
+      "Each spatial action offered in the scene has a named, keyboard-reachable equivalent that reaches the same state.",
+      "With the three-dimensional context unavailable, the fallback appears in place of an empty area or a raw error.",
+      "The fallback names the scene revision it was generated from, and that revision matches the current scene."
+    ]
+  },
+  "creative_affordances": [
+    "The fallback can be a designed artifact in its own right, such as a plate of annotated views, rather than an apologetic reduction.",
+    "Chosen viewpoints and annotations are an editorial opportunity to state the finding more directly than free exploration does."
+  ],
+  "known_limits": [
+    "Meeting the criteria cited here for a fallback does not make the interactive scene itself conformant; that requires its own evaluation.",
+    "No conformance evaluation, assistive-technology test or contrast measurement was performed for this record.",
+    "Authored reusable guidance; no runtime artifact has been executed or observed for this record."
+  ],
+  "related_ids": [
+    "recipe.service-graph",
+    "recipe.normal-density-window",
+    "recipe.warehouse-pick-tour",
+    "knowledge.accessible-spatial-controls",
+    "knowledge.shared-unlit-quantitative-encoding",
+    "knowledge.shared-interactive-web-scene"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-wcag-fallback-criteria",
+      "statement": "WCAG 2.2 requires at Level A that all non-text content presented to the user have a text alternative that serves the equivalent purpose apart from listed exceptions, requires at Level A that colour not be used as the only visual means of conveying information, indicating an action, prompting a response or distinguishing a visual element, and requires at Level AA a contrast ratio of at least three to one against adjacent colours for the visual information needed to identify user interface components and their states.",
+      "scope": "Normative success criteria of the W3C Recommendation of 12 December 2024, read on the access date. They state requirements; no conformance evaluation was performed for this record.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-wcag22",
+          "locator": "Success Criterion 1.1.1 Non-text Content; Success Criterion 1.4.1 Use of Color; Success Criterion 1.4.11 Non-text Contrast"
+        }
+      ]
+    }
+  ]
+}

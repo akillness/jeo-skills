@@ -1,0 +1,739 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Reusable knowledge contract",
+  "description": "Style, theme, lighting, composition, motion and presentation profiles are authored creative proposals, not historical definitions, fixed templates or required rendering libraries. No rendered artifact, runtime improvement or perceptual validation is implied by a record; appearance choices do not certify factual geometry, material measurements or simulated behavior. Inspect the selected view and an alternate view at the intended output size; adapt any proposal to the explicit user brief while preserving factual and interaction contracts.",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "$ref": "recipe.schema.json#/properties/schema_version"
+    },
+    "revision": {
+      "$ref": "recipe.schema.json#/properties/revision"
+    },
+    "status": {
+      "$ref": "recipe.schema.json#/properties/status"
+    },
+    "record_kind": {
+      "$ref": "recipe.schema.json#/properties/record_kind"
+    },
+    "title": {
+      "$ref": "recipe.schema.json#/properties/title"
+    },
+    "aliases": {
+      "$ref": "recipe.schema.json#/properties/aliases"
+    },
+    "direction_ids": {
+      "$ref": "recipe.schema.json#/properties/direction_ids"
+    },
+    "summary": {
+      "$ref": "recipe.schema.json#/properties/summary"
+    },
+    "objective": {
+      "$ref": "recipe.schema.json#/properties/objective"
+    },
+    "claims": {
+      "$ref": "recipe.schema.json#/properties/claims"
+    },
+    "defaults": {
+      "$ref": "recipe.schema.json#/properties/defaults"
+    },
+    "tags": {
+      "$ref": "recipe.schema.json#/properties/tags"
+    },
+    "subject_terms": {
+      "$ref": "recipe.schema.json#/properties/subject_terms"
+    },
+    "intent_signals": {
+      "$ref": "recipe.schema.json#/properties/intent_signals"
+    },
+    "example_prompts": {
+      "$ref": "recipe.schema.json#/properties/example_prompts"
+    },
+    "negative_signals": {
+      "$ref": "recipe.schema.json#/properties/negative_signals"
+    },
+    "not_for": {
+      "$ref": "recipe.schema.json#/properties/not_for"
+    },
+    "creative_affordances": {
+      "$ref": "recipe.schema.json#/properties/creative_affordances"
+    },
+    "known_limits": {
+      "$ref": "recipe.schema.json#/properties/known_limits"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^knowledge\\.[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "knowledge_kind": {
+      "enum": [
+        "object-archetype",
+        "material-profile",
+        "physical-behavior",
+        "tool-adapter",
+        "inspection-pattern",
+        "validation-profile",
+        "style-profile",
+        "theme-profile",
+        "presentation-profile",
+        "composition-profile",
+        "motion-profile",
+        "interaction-profile",
+        "reasoning-rule",
+        "domain-validation",
+        "geometry-profile",
+        "lighting-profile",
+        "output-profile",
+        "blueprint"
+      ]
+    },
+    "asset": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "procedural-js",
+            "gltf-asset"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^templates/kits/[a-z0-9/._-]+$"
+        },
+        "factory": {
+          "type": "string",
+          "pattern": "^[a-zA-Z_$][a-zA-Z0-9_$]*$"
+        }
+      },
+      "required": [
+        "kind",
+        "path"
+      ]
+    },
+    "params": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "enum": [
+              "number",
+              "integer",
+              "boolean",
+              "string",
+              "color",
+              "enum"
+            ]
+          },
+          "range": {
+            "description": "Advisory authored band for choosing a starting value; runtime code is not required to clamp to it.",
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number"
+            }
+          },
+          "default": {},
+          "unit": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "default"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "number"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "properties": {
+                "default": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "integer"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "properties": {
+                "default": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "boolean"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "properties": {
+                "default": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "string",
+                    "enum"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "properties": {
+                "default": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "color"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "properties": {
+                "default": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "range"
+              ]
+            },
+            "then": {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "number",
+                    "integer"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "sockets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "position_m": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "number"
+            }
+          },
+          "normal": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "position_m",
+          "normal"
+        ]
+      }
+    },
+    "detail_ladder": {
+      "type": "object",
+      "properties": {
+        "silhouette": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "medium": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "fine": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "silhouette",
+        "medium",
+        "fine"
+      ]
+    },
+    "footprint_m": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 3,
+      "items": {
+        "type": "number",
+        "exclusiveMinimum": 0
+      }
+    },
+    "poly_budget": {
+      "type": "integer",
+      "exclusiveMinimum": 0
+    },
+    "fits_looks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^knowledge\\.[a-z0-9]+(?:-[a-z0-9]+)*$"
+      }
+    },
+    "proof": {
+      "type": "object",
+      "properties": {
+        "harness": {
+          "type": "string",
+          "minLength": 1
+        },
+        "captures": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "log": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "harness",
+        "captures",
+        "log"
+      ]
+    },
+    "tiers": {
+      "description": "Quality tiers this blueprint can be built at: T0 blockout proxy, T2 the same module with runtime-generated surface and occlusion, T3 a baked glTF hero, T4 an external asset. T1 is the record's own asset and proof and is never written here. Documentation only: validate.py runs the hand-written contract in scripts/blueprint_validation.py.",
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "T0",
+          "T2",
+          "T3",
+          "T4"
+        ]
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "enum": [
+              "proxy",
+              "runtime",
+              "gltf",
+              "external"
+            ]
+          },
+          "status": {
+            "enum": [
+              "generated",
+              "declared",
+              "proved",
+              "not-proved",
+              "missing"
+            ]
+          },
+          "note": {
+            "type": "string",
+            "minLength": 1
+          },
+          "poly_budget": {
+            "$ref": "#/properties/poly_budget"
+          },
+          "size_m": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "families": {
+            "type": "object",
+            "minProperties": 1,
+            "propertyNames": {
+              "pattern": "^#[0-9a-fA-F]{6}$"
+            },
+            "additionalProperties": {
+              "enum": [
+                "wood",
+                "plaster",
+                "stone",
+                "roof-tile",
+                "metal",
+                "fabric",
+                "fur"
+              ]
+            }
+          },
+          "texture_budget": {
+            "type": "object",
+            "properties": {
+              "maps": {
+                "type": "integer",
+                "exclusiveMinimum": 0
+              },
+              "resolution": {
+                "type": "integer",
+                "exclusiveMinimum": 0
+              },
+              "families": {
+                "type": "integer",
+                "exclusiveMinimum": 0
+              },
+              "format": {
+                "type": "string",
+                "enum": [
+                  "jpeg",
+                  "png",
+                  "webp"
+                ]
+              }
+            }
+          },
+          "ao": {
+            "type": "object",
+            "properties": {
+              "samples": {
+                "type": "integer",
+                "exclusiveMinimum": 0
+              },
+              "radius_m": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "ground_dirt_m": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              }
+            }
+          },
+          "asset": {
+            "$ref": "#/properties/asset"
+          },
+          "proof": {
+            "$ref": "#/properties/proof"
+          },
+          "built_by": {
+            "type": "string",
+            "description": "T3: the script that baked the asset, skill-relative (templates/kits/blender/...)."
+          },
+          "blender": {
+            "type": "string",
+            "description": "T3: Blender version the shipped asset was baked with."
+          },
+          "params_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{12}$",
+            "description": "T3: first 12 hex of sha256(module bytes + canonical params + bake settings)."
+          }
+        },
+        "required": [
+          "mode",
+          "status"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "mode"
+              ],
+              "properties": {
+                "mode": {
+                  "const": "proxy"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "size_m"
+              ],
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "asset"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "proof"
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "mode"
+              ],
+              "properties": {
+                "mode": {
+                  "const": "runtime"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "families",
+                "poly_budget"
+              ],
+              "not": {
+                "required": [
+                  "asset"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "mode"
+              ],
+              "properties": {
+                "mode": {
+                  "const": "external"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "missing",
+                    "declared"
+                  ]
+                }
+              },
+              "not": {
+                "required": [
+                  "asset"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "content": {
+      "type": "object",
+      "properties": {
+        "principles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "implementation": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "observable_checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "principles",
+        "implementation",
+        "observable_checks"
+      ]
+    },
+    "related_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(recipe|knowledge)\\.[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+      }
+    },
+    "applies_when": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "constraint_level": {
+      "enum": [
+        "advisory",
+        "correctness"
+      ]
+    },
+    "check_method": {
+      "enum": [
+        "analytic",
+        "state",
+        "geometry",
+        "source",
+        "interaction",
+        "visual"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "revision",
+    "status",
+    "record_kind",
+    "title",
+    "aliases",
+    "direction_ids",
+    "summary",
+    "objective",
+    "knowledge_kind",
+    "content"
+  ],
+  "allOf": [
+    {
+      "$ref": "recipe.schema.json#/allOf/0"
+    },
+    {
+      "if": {
+        "properties": {
+          "knowledge_kind": {
+            "const": "reasoning-rule"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "applies_when",
+          "constraint_level"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "knowledge_kind": {
+            "const": "domain-validation"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "applies_when",
+          "check_method"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "knowledge_kind": {
+            "const": "blueprint"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "asset",
+          "params",
+          "sockets",
+          "detail_ladder",
+          "footprint_m",
+          "poly_budget",
+          "fits_looks",
+          "proof"
+        ]
+      }
+    }
+  ]
+}

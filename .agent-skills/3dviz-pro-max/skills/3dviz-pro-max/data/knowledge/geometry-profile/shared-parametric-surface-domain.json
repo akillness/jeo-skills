@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-parametric-surface-domain",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "geometry-profile",
+  "title": {
+    "en": "Parametric surface with a declared domain and degeneracies"
+  },
+  "aliases": {
+    "en": [
+      "parametric surface domain",
+      "surface poles and seams",
+      "uv domain degeneracy"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry",
+    "calculus-fields",
+    "topology-symmetry"
+  ],
+  "summary": "Build a surface from an explicit parameter domain and decide in advance what happens at poles, seams and collapsed edges.",
+  "objective": "The surface renders without dark or flickering facets at its poles, apexes and seams, and the seam behaves exactly as the record declares it should.",
+  "tags": [
+    "geometry-profile",
+    "parametric-surface",
+    "uv-domain",
+    "degeneracy",
+    "seam"
+  ],
+  "subject_terms": [
+    "parametric surface",
+    "parameter domain",
+    "surface normal",
+    "pole",
+    "seam",
+    "cusp",
+    "periodic parameter",
+    "adaptive tessellation",
+    "regular parameterization"
+  ],
+  "intent_signals": [
+    "build a surface from an equation",
+    "sphere poles look wrong",
+    "seam shows a crack",
+    "how many segments should this surface have",
+    "normals break at the tip of the cone"
+  ],
+  "example_prompts": [
+    "Build a torus knot surface from its equations and keep the seam invisible.",
+    "Show a surface of revolution whose profile touches the axis, and explain the tip.",
+    "Tessellate a saddle more densely where it curves fastest."
+  ],
+  "negative_signals": [
+    "import an existing scanned mesh",
+    "sculpt an organic character by hand"
+  ],
+  "not_for": [
+    "Meshes that arrive already triangulated from a scan, a CAD kernel or an asset file.",
+    "Implicit surfaces defined only by a scalar field, which need threshold-based extraction instead."
+  ],
+  "content": {
+    "principles": [
+      "The parameter domain is part of the object description. Record the u and v ranges, which parameters are periodic, and which boundary curves are seams to be closed rather than real open edges.",
+      "A parameterization only describes a surface normal where its two partial-derivative directions stay independent. Poles, cone apexes and collapsed profile ends are places where the surface still exists but the parameterization stops describing its orientation.",
+      "Sampling density belongs to the geometry of the surface, not to a single global slider. A uniform grid over a strongly non-uniform map spends triangles on flat regions and starves the tight ones.",
+      "Decide before building whether the result must be a closed boundary of a solid or may stay open. That decision drives seam welding, facing orientation and whether any volume-like reading of the object is meaningful."
+    ],
+    "implementation": [
+      "Evaluate the position function over the declared domain and keep the u and v values with each sample, so texture placement, colour encoding and label anchoring can be recomputed later without re-deriving the map.",
+      "Take normals from the partial derivatives wherever they are independent. Where the cross product of the partials vanishes, distinguish the two cases: at a smooth pole a limiting normal usually exists and can be substituted, while at a genuine apex or crease no single normal exists and the record must choose per-face normals or another declared shading convention. Record the choice instead of letting a zero-length normal reach shading.",
+      "For a periodic parameter choose one of two documented treatments: duplicate the seam ring with identical positions and distinct texture coordinates, or weld the seam and accept a texture discontinuity. Do not leave the choice implicit.",
+      "Collapse a pole ring to one shared position only when the surface is genuinely a single point there. Otherwise keep the ring so the surrounding fan can carry different normals per triangle.",
+      "Refine adaptively: subdivide in the parameter where the normal turns more than a stated angle between neighbouring samples, and stop at a declared minimum edge length so the refinement terminates.",
+      "When the surface is a mathematical illustration, keep the defining formula, the domain and any restriction visible in the scene text so the viewer can tell the drawn extent from the full surface."
+    ],
+    "observable_checks": [
+      "Under a moving light, the poles, apexes and seams show no black facets, no flicker and no visible crack at the largest camera zoom the scene allows.",
+      "The vertex count at a seam matches the declared treatment: a welded seam has one ring, a split seam has two coincident rings, and neither shows a gap when the object is scaled up.",
+      "A checkered parameter texture or wireframe overlay shows the intended parameter flow, with the denser bands where the record says curvature is highest.",
+      "Restricting the domain to D' renders exactly the image r(D'), checked against the defining map. Do not infer an area fraction from a parameter fraction; overlapping parameter values may represent the same retained surface."
+    ]
+  },
+  "creative_affordances": [
+    "The parameter grid itself can become a visible design element: exposed isolines, ribbed construction or a deliberately coarse faceting are legitimate looks.",
+    "A degenerate point can be dramatised rather than hidden, for example as a pinched spire or a visible cap, as long as the record says which choice was made."
+  ],
+  "known_limits": [
+    "This profile governs the parameterization and its degeneracies only. It does not establish that the chosen formula models any real object.",
+    "The regularity condition cited here is a definition from calculus, not a numerical robustness guarantee for a specific floating-point evaluation.",
+    "Authored reusable guidance; no runtime artifact or rendered result has been observed for this record."
+  ],
+  "related_ids": [
+    "recipe.solid-of-revolution",
+    "recipe.conic-slicing",
+    "recipe.mobius-orientation-trace",
+    "knowledge.shared-indexed-manifold-mesh",
+    "knowledge.shared-curve-tube-frames"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-parametric-regular-domain",
+      "statement": "A surface parameterization written as a vector function of two parameters is called regular, and the surface smooth, when the cross product of its two partial derivatives is nonzero for every parameter pair in the domain; where that cross product vanishes the parameterization supplies no normal direction.",
+      "scope": "Textbook definition of regularity and smoothness for a parameterized surface. It identifies where a parameterization degenerates; it does not say the underlying point set is defective, and it makes no statement about numerical conditioning near the degeneracy.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-openstax-surface-integrals",
+          "locator": "Definition: regular parameterization; Definition: smooth surface"
+        }
+      ]
+    }
+  ]
+}

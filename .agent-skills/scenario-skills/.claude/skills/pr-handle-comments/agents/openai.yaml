@@ -1,0 +1,4 @@
+interface:
+  display_name: 'PR Handle Comments'
+  short_description: 'Fix review comments and reply in thread'
+  default_prompt: 'Use $pr-handle-comments to address the review comments on the current pull request.'

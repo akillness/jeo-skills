@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.parameter-experiment",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "interaction-profile",
+  "title": {
+    "en": "Parameter experiment with visible cause and reset"
+  },
+  "aliases": {
+    "en": [
+      "parameter control",
+      "repeat experiment"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "calculus-fields",
+    "probability-statistics"
+  ],
+  "summary": "Connect a small set of controls to meaningful model changes and repeatable observations.",
+  "objective": "Connect a small set of controls to meaningful model changes and repeatable observations.",
+  "subject_terms": [
+    "parameter control",
+    "repeat experiment",
+    "visible consequence"
+  ],
+  "tags": [
+    "interaction-profile",
+    "parameter-experiment"
+  ],
+  "intent_signals": [
+    "visible consequence"
+  ],
+  "example_prompts": [
+    "Use parameter experiment with visible cause and reset for the scene, preserving its model and user controls."
+  ],
+  "content": {
+    "principles": [
+      "Expose parameters whose consequences can actually be seen or measured in the scene.",
+      "Changing appearance is not a substitute for changing a physical or mathematical parameter."
+    ],
+    "implementation": [
+      "State whether parameter edits apply immediately, on restart or at the next committed step.",
+      "Keep units and valid ranges near the control; show derived output from the same state.",
+      "Preserve a reproducible initial condition or recorded seed when comparisons require it."
+    ],
+    "observable_checks": [
+      "Changing a control updates its actual model parameter and the corresponding derived output.",
+      "Reset restores the documented initial condition without stale trajectories or measurements."
+    ]
+  },
+  "related_ids": [
+    "knowledge.controlled-experiment"
+  ],
+  "creative_affordances": [
+    "Adapt the layout, visual treatment and timing to the task; these are reusable design proposals, not mandatory templates."
+  ],
+  "known_limits": [
+    "Authored interaction/presentation guidance; no new scientific claim, accessibility certification or runtime verification is asserted."
+  ],
+  "claims": []
+}

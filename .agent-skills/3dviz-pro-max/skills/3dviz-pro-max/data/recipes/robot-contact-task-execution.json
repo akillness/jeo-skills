@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "id": "recipe.robot-contact-task-execution",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Rigid robot contact task execution"
+  },
+  "aliases": {
+    "en": [
+      "robot force-contact task",
+      "controller contact-state inspector"
+    ]
+  },
+  "direction_ids": [
+    "robotics-control",
+    "rigid-mechanics"
+  ],
+  "summary": "Inspect a bounded rigid robot approach/contact/hold/retreat task whose controller, collision solver and state transitions have separate authority.",
+  "objective": "Build a contact-task viewer where an external dynamics solver advances a rigid arm under a declared controller and reports contact forces without treating kinematic overlap as contact evidence.",
+  "tags": [
+    "robotics",
+    "contact dynamics",
+    "controller"
+  ],
+  "subject_terms": [
+    "dynamic body",
+    "kinematic target",
+    "contact constraint",
+    "controller force",
+    "force limit",
+    "solver state",
+    "task phase"
+  ],
+  "intent_signals": [
+    "robot contact task execution",
+    "dynamic versus kinematic contact"
+  ],
+  "example_prompts": [
+    "Move a rigid end effector toward a plane, enter contact on solver evidence, regulate a target normal force, then retreat."
+  ],
+  "negative_signals": [
+    "Not a safety-certified controller, real robot calibration, grasp planner or collision-free guarantee."
+  ],
+  "not_for": [
+    "No flexible links, actuator electronics, tactile estimation, human contact, learned policy or real-time guarantee."
+  ],
+  "entities": [
+    {
+      "name": "Robot and collision proxies",
+      "guidance": "Blender authors link shells, named joint/tool frames and simple collision proxies as separate nodes; visual meshes never serve as unreviewed solver shapes."
+    },
+    {
+      "name": "Task/controller/contact panel",
+      "guidance": "Three.js orchestrates immutable requests and renders solver-returned q, qdot, actuator input, contact IDs, normal force and residual by generation."
+    }
+  ],
+  "state_contract": {
+    "model": "Use a finite rigid articulated model in an external dynamics engine with positive masses/inertias, declared joints, collision proxies, timestep and solver settings. Task phases are idle, approach, contact-hold, retreat, complete, error. A controller produces bounded actuator input from the current solver state and target; only the dynamics engine integrates dynamic bodies. A kinematic target may move as a reference but cannot be interpreted as exerting force unless the solver reports a contact constraint and force for the exact step. Enter contact-hold only after an allowed proxy pair reports contact with finite normal force; leave on separation, force-limit violation, stale generation, solver error or cancel. Reset restores q/qdot/controller state/contact set/phase and invalidates pending results.",
+    "authority": "The external rigid-body/contact engine owns integration, constraints and contact forces. Application controller owns task targets, phase and limits. Three.js owns adapter generations, history and presentation; Blender owns link/tool/collision construction.",
+    "actions": [
+      "Start approach from a validated home state.",
+      "Change target pose or normal-force target and create a new generation.",
+      "Pause/cancel without integrating hidden steps.",
+      "Retreat or reset and confirm contact/controller state clears."
+    ]
+  },
+  "invariants": [
+    "Dynamic link poses come only from accepted solver output; kinematic targets are references.",
+    "Contact phase requires an allowed solver contact ID and finite force from the current generation.",
+    "Actuator and force limits reject/terminate the step without being hidden by animation.",
+    "A late result after cancel/reset/new request is discarded."
+  ],
+  "motion_guidance": [
+    "Play, pause and step advance the declared model clock only; reset restores parameters, state, solver budget, selections, errors and presentation transforms.",
+    "Use static before/after states and numeric tables for reduced motion; animation interpolates committed state and never supplies physical evidence."
+  ],
+  "creative_affordances": [
+    "Blender may shape distinctive apparatus, cutaways and materials; Three.js binds named parts to authoritative state and keeps units and error states readable.",
+    "Camera, color, trails and deformation gain are presentation controls and cannot change the numerical model."
+  ],
+  "known_limits": [
+    "Pedagogical external-solver adapter only; controller gains, collision proxies and soft-contact parameters are authored fixture inputs, not safe real-robot settings.",
+    "Authored, source-reviewed guidance only; no Blender export, numerical simulation, contact solve, browser or renderer was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.physics-mujoco-soft-contact",
+      "statement": "MuJoCo documents soft constraints in which impedance, stiffness and damping control constraint response through solver parameters such as solref and solimp.",
+      "scope": "MuJoCo stable documentation read 2026-09-08; backend-specific behavior requiring installed-version verification.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-mujoco-modeling",
+          "locator": "Solver parameters: impedance, stiffness, damping, solref and solimp"
+        }
+      ]
+    },
+    {
+      "id": "claim.physics-mujoco-integration",
+      "statement": "MuJoCo documents semi-implicit Euler as updating position with the new velocity and provides multiple integrators; timestep and integrator are therefore explicit simulation inputs rather than animation timing.",
+      "scope": "MuJoCo stable computation documentation; no stability guarantee for this authored task.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-mujoco-computation",
+          "locator": "Numerical Integration, equations 2–3 and integrator discussion"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Contact-task rig",
+      "structure": "Build named joint and tool-frame empties, low-complexity collision proxies and a target fixture; keep proxy visibility toggleable beside render shells.",
+      "material": "Use phase text and force arrows with numeric units; contact glow appears only from current solver contact data."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "External rigid articulated dynamics and soft contact under a bounded application controller/task state machine.",
+    "timestep": "Pinned engine timestep/integrator/solver settings; accept outputs only for the current immutable generation.",
+    "state": [
+      "q, qdot and actuator input",
+      "task target/phase and controller state",
+      "contact IDs, force and residual",
+      "backend/version/timestep/generation"
+    ],
+    "colliders": [
+      "declared simplified link/tool/environment proxies"
+    ],
+    "driving": [
+      "bounded controller actuator input"
+    ],
+    "contact": [
+      "external engine contact constraints and reported forces"
+    ],
+    "checks": [
+      "dynamic-vs-kinematic authority",
+      "allowed contact pair/current generation",
+      "force/input limits",
+      "reset and stale-result rejection"
+    ]
+  },
+  "related_ids": [
+    "recipe.robot-arm-forward-frames",
+    "knowledge.reasoning-kinematics-versus-dynamics",
+    "knowledge.kinematic-dynamic-velocity-handoff"
+  ]
+}

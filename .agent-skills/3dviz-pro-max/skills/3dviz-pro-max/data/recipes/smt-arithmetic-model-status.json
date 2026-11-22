@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "id": "recipe.smt-arithmetic-model-status",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "SMT arithmetic: integer and real models"
+  },
+  "aliases": {
+    "en": [
+      "integer versus real constraints",
+      "SMT unknown result"
+    ]
+  },
+  "direction_ids": [
+    "logic-circuits"
+  ],
+  "summary": "Compare exact arithmetic domains and preserve solver uncertainty in the display.",
+  "objective": "Build a constraint inspector where I switch x between Int and Real for 2x=1, inspect a returned model and distinguish SAT, UNSAT and unknown.",
+  "tags": [
+    "SMT",
+    "integer arithmetic",
+    "real arithmetic"
+  ],
+  "subject_terms": [
+    "SMT",
+    "integer arithmetic",
+    "real arithmetic",
+    "constraint model",
+    "unknown",
+    "rational witness",
+    "unsat core"
+  ],
+  "intent_signals": [
+    "Build a constraint inspector where I switch x between Int and Real for 2x=1, inspect a returned model and distinguish SAT, UNSAT and unknown."
+  ],
+  "example_prompts": [
+    "Build a constraint inspector where I switch x between Int and Real for 2x=1, inspect a returned model and distinguish SAT, UNSAT and unknown."
+  ],
+  "negative_signals": [
+    "No nonlinear/quantified arithmetic, floating-point theory, optimizer, automatic solver installation or guarantee of a decisive response within a resource limit."
+  ],
+  "not_for": [
+    "No nonlinear/quantified arithmetic, floating-point theory, optimizer, automatic solver installation or guarantee of a decisive response within a resource limit."
+  ],
+  "entities": [
+    {
+      "name": "Constraint region",
+      "guidance": "For two variables use a labeled XY slice; a third declared numeric variable can own Z. Show integer lattice points distinctly from continuous real regions and retain exact rational labels."
+    },
+    {
+      "name": "Solver result card",
+      "guidance": "Keep model values next to the exact submitted formula. Unknown has no green feasible-region badge, and a missing backend is unavailable rather than UNSAT."
+    }
+  ],
+  "state_contract": {
+    "model": "Quantifier-free linear arithmetic with up to three declared variables, rational constants and Bool combinations of equalities/inequalities. Use a real SMT backend or provenance-labeled imported results bound to a formula hash. Track not-run/running/sat/unsat/unknown/error distinctly, plus exact model values and backend reason. A viewport window does not bound the logical domain.",
+    "authority": "The typed domain model owns each committed state and result. Geometry, labels and selection derive from that model; animation cannot certify a claim.",
+    "actions": [
+      "Edit constraints or sorts and clear old results.",
+      "Run an available backend or load a labeled result; select an assertion and inspect model evaluation.",
+      "Compare 2x=1 over Int versus Real; inspect actual unknown responses and their supplied reason."
+    ]
+  },
+  "invariants": [
+    "Re-evaluate a SAT witness against every submitted assertion using exact supported arithmetic; never treat approximate shading as a witness.",
+    "Expected arithmetic example: integer case UNSAT, real case SAT with x=1/2.",
+    "Unknown does not resolve satisfiability. An unsat core is a selected conflicting subset, not automatically a minimal subset or independently checked proof."
+  ],
+  "motion_guidance": [
+    "Step commits one semantic action; pause freezes presentation and leaves the committed state inspectable. Reset cancels pending playback and restores the complete starting state.",
+    "Offer a static transition highlight and an equivalent readable table for reduced motion. Camera travel is presentation, not an inference or domain operation."
+  ],
+  "creative_affordances": [
+    "Use shallow sculptural cards, restrained materials and selective focus to expose relationships. Prefer a flat readable layout whenever depth has no declared role."
+  ],
+  "known_limits": [
+    "No nonlinear/quantified arithmetic, floating-point theory, optimizer, automatic solver installation or guarantee of a decisive response within a resource limit.",
+    "Authored, source-reviewed guidance only; no generated artifact, solver integration, runtime behavior or visual check has run."
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Abstract symbols and logical state; mesh contact, light and motion have no causal role in the model."
+  },
+  "related_ids": [
+    "recipe.sat-model-resolution-refutation"
+  ],
+  "object_craft": [
+    {
+      "family": "Constraint region",
+      "structure": "For two variables use a labeled XY slice; a third declared numeric variable can own Z. Show integer lattice points distinctly from continuous real regions and retain exact rational labels.",
+      "material": "Matte surfaces and high-contrast labels; distinguish status with text and border style as well as color."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim.smt-arithmetic-model-status-1",
+      "statement": "SMT formulas use declared sorts, including unbounded integers and reals; arithmetic satisfiability and extracted models respect those sorts.",
+      "scope": "Quantifier-free linear arithmetic subset; exact integers/rationals, not machine floating point.",
+      "source_refs": [
+        {
+          "source_id": "source.z3-programming-arithmetic",
+          "locator": "Sections 2.1 Sorts; 3.2 Arithmetic; 4.5 Models"
+        }
+      ]
+    },
+    {
+      "id": "claim.smt-arithmetic-model-status-2",
+      "statement": "Z3 exposes a separate unknown result and its explanation; retrieving a proof requires the appropriate proof-enabled UNSAT result, and unsat cores are not minimized by default.",
+      "scope": "Official solver-result API contract, not a guarantee that every query produces a proof or model.",
+      "source_refs": [
+        {
+          "source_id": "source.z3-solver-result-api",
+          "locator": "Z3_solver_get_reason_unknown; Z3_solver_get_proof; Z3_solver_get_unsat_core"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-dem-resolution-limits",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Terrain detail is bounded by the source resolution"
+  },
+  "aliases": {
+    "en": [
+      "DEM cell size",
+      "resampling",
+      "resolvable features"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment",
+    "calculus-fields"
+  ],
+  "summary": "State the elevation source and its cell spacing, and do not present interpolated detail as observed terrain.",
+  "objective": "Keep a data-derived terrain honest about the smallest feature it can actually represent.",
+  "applies_when": [
+    "Terrain geometry comes from an elevation dataset.",
+    "The scene zooms in far enough to show fine features.",
+    "Slope, drainage, visibility or volume is derived from the surface."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "digital elevation model",
+    "cell size",
+    "resolution",
+    "resampling",
+    "interpolation",
+    "terrain detail"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "geospatial",
+    "resolution"
+  ],
+  "intent_signals": [
+    "zoom into the terrain",
+    "the hills look smooth",
+    "how detailed is this terrain"
+  ],
+  "example_prompts": [
+    "Build terrain from elevation data and say what resolution it has.",
+    "Show the real cell size of the elevation model."
+  ],
+  "negative_signals": [
+    "Procedurally invented terrain, which has no data resolution to disclose.",
+    "Regional overviews where fine features are not claimed."
+  ],
+  "not_for": [
+    "Procedurally invented terrain, which has no data resolution to disclose.",
+    "Regional overviews where fine features are not claimed."
+  ],
+  "content": {
+    "principles": [
+      "A digital elevation model is a raster representation of a terrain surface, and its cell spacing bounds what can be reliably reconstructed rather than setting a hard smallest visible feature. Nominal spacings are about thirty metres for one arc-second data, ten metres for one third of an arc-second and three metres for one ninth. Arc-second spacing is angular, so the ground distance it represents in the east-west direction shrinks with latitude while the north-south spacing stays nearly constant.",
+      "Resampling to a finer grid does not add information. A smooth interpolated surface can display features that the source never measured, and viewers read them as terrain.",
+      "Derived quantities inherit the limitation: slope, curvature and drainage computed from a coarse grid describe the grid, not the landscape, at fine scales.",
+      "Because the source resolution is a fact about the data, it belongs in the scene rather than in a forgotten import step."
+    ],
+    "implementation": [
+      "Record the elevation source, its cell spacing and its vertical units with the artifact, and display them where zoom invites fine reading.",
+      "Bind the geometry resolution to the data resolution, or mark clearly where the surface is interpolated beyond it.",
+      "Limit zoom, or change the presentation at high zoom, so the scene does not imply detail it lacks.",
+      "Report derived quantities with the resolution they were computed at.",
+      "When combining sources of different resolution, state the coarsest one for any measurement that crosses them."
+    ],
+    "observable_checks": [
+      "Zoom in until individual cells would be visible and confirm the scene either shows them or states that the surface is interpolated.",
+      "Compare a small feature against the stated cell spacing at the scene's latitude: a feature much smaller than a cell is not supported by the data, and near that size the evidence is weak rather than absent.",
+      "Recompute slope at two grid resolutions and report the difference as a stability estimate. Agreement is a valid outcome, since a nearly planar surface gives the same slope at both spacings; what matters is that the comparison is made and reported, not that the numbers differ.",
+      "Confirm the stated source and resolution match the data actually loaded."
+    ]
+  },
+  "related_ids": [
+    "recipe.terrain-contour-slices",
+    "recipe.terrain-island",
+    "knowledge.reasoning-sampling-resolution-and-features"
+  ],
+  "creative_affordances": [
+    "Artistic enhancement of terrain is fine when it is presented as interpretation rather than as measured surface.",
+    "Showing the raw grid alongside the smoothed surface is often a compelling honest presentation."
+  ],
+  "known_limits": [
+    "Authored guidance citing DEM definition and nominal resolutions from a teaching source; it makes no accuracy claim for any specific dataset.",
+    "Vertical accuracy is a separate property from horizontal resolution and is not covered here."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-dem-cell-spacing",
+      "statement": "A digital elevation model is a raster representation of a terrain surface whose cell spacing determines the level of terrain detail it can represent, with nominal spacings of about thirty metres for one arc-second data, about ten metres for one third of an arc-second and about three metres for one ninth of an arc-second.",
+      "scope": "Nominal ground spacing of raster elevation products. The arc-second figures are angular and their ground equivalent in the east-west direction varies with latitude; the claim states no vertical accuracy or coverage for any specific dataset.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-psu-dem-resolution",
+          "locator": "Chapter 7 DEM: definition and arc-second to metre conversions"
+        }
+      ]
+    }
+  ]
+}

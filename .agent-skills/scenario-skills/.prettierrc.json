@@ -1,0 +1,15 @@
+{
+  "plugins": ["prettier-plugin-sh"],
+  "spaceRedirects": false,
+  "binaryNextLine": false,
+  "overrides": [
+    {
+      "files": "*.md",
+      "options": { "proseWrap": "always", "printWidth": 100 }
+    },
+    {
+      "files": ["SKILL.md", ".claude/**/*.md"],
+      "options": { "embeddedLanguageFormatting": "off" }
+    }
+  ]
+}

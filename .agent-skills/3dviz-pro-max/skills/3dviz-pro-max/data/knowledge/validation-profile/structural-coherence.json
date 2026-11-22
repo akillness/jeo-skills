@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.structural-coherence",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "validation-profile",
+  "title": {
+    "en": "Structural coherence inspection profile"
+  },
+  "aliases": {
+    "en": [
+      "structural coherence"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "anatomy-structures",
+    "rigid-mechanics"
+  ],
+  "summary": "Check whether an object visibly communicates assembly, support and intended degrees of freedom.",
+  "objective": "A reviewer can identify the main parts and explain which move together using the visible object.",
+  "tags": [
+    "validation-profile",
+    "structural",
+    "coherence"
+  ],
+  "example_prompts": [
+    "Check whether an object visibly communicates assembly, support and intended degrees of freedom."
+  ],
+  "content": {
+    "principles": [
+      "Assess the declared object story, not compliance with a single art style. A floating fantasy object can pass if its intended support logic is explicit.",
+      "Prioritize silhouette, connections and articulation before tiny surface detail."
+    ],
+    "implementation": [
+      "Inspect overview, underside and one joint close-up. Record missing connections, unintended penetrations and parts whose purpose cannot be identified.",
+      "Exercise the full authored motion range slowly; compare endpoints against saved joint locations.",
+      "For the shelter trace the frame; for the limb follow segment attachment; for a mechanism inspect fixed housing versus rotating shaft."
+    ],
+    "observable_checks": [
+      "A reviewer can identify the main parts and explain which move together using the visible object.",
+      "Every unexplained gap, overlap or support ambiguity is either corrected or documented as an intentional visual choice."
+    ]
+  },
+  "known_limits": [
+    "Visual coherence is not structural engineering, anatomical certification or collision verification.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+  ],
+  "related_ids": [
+    "recipe.fantasy-village-diorama",
+    "recipe.skeletal-hierarchy",
+    "recipe.coupled-gears"
+  ],
+  "claims": []
+}

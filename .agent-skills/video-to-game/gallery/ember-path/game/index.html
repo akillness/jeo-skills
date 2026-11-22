@@ -1,0 +1,1523 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ember Path</title>
+<meta name="description" content="Ember Path: a little girl carries an ember that redraws a burnt forest in color. A WebGL (Three.js) game with every asset generated on fal.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{ --bg:#191512; --cream:#f4ead8; --ink:#2b221c; --ember:#ffb054; }
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none}
+#c{position:fixed;inset:0;width:100vw;height:100vh;display:block;outline:none}
+.ov{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',Georgia,serif;text-align:center;pointer-events:none;transition:opacity 1.4s ease}
+.hide{opacity:0 !important}
+#load{background:var(--bg);color:var(--cream);z-index:30}
+#load .ember{width:16px;height:16px;border-radius:50%;background:radial-gradient(circle,#fffbe0 0,#ffc061 35%,rgba(255,96,20,0) 72%);box-shadow:0 0 36px 14px rgba(255,140,40,.28);animation:pulse 1.8s ease-in-out infinite}
+#load .bar{margin-top:26px;width:180px;height:1px;background:rgba(244,234,216,.14);overflow:hidden}
+#load .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff7a2a,#ffd27a);transition:width .25s ease}
+@keyframes pulse{0%,100%{transform:scale(.8);opacity:.75}50%{transform:scale(1.18);opacity:1}}
+#title{z-index:20;color:var(--ink);padding-bottom:15vh;background:radial-gradient(ellipse at 50% 38%,rgba(246,238,222,.62) 0,rgba(246,238,222,.28) 38%,rgba(246,238,222,0) 70%)}
+#title img{width:min(66vw,920px);height:auto;display:block;filter:drop-shadow(0 0 18px rgba(255,248,236,.85)) drop-shadow(0 0 2px rgba(255,248,236,.9))}
+#title .fallback{font-size:clamp(48px,8vw,120px);font-weight:400;letter-spacing:.12em;font-style:italic}
+#title .press{margin-top:1.2vh;font-size:clamp(15px,1.45vw,22px);letter-spacing:.34em;text-transform:uppercase;animation:breathe 3.2s ease-in-out infinite}
+#title .keys{margin-top:2.4vh;font-size:clamp(13px,1.1vw,17px);line-height:2;letter-spacing:.04em;opacity:.8}
+@keyframes breathe{0%,100%{opacity:.4}50%{opacity:1}}
+kbd{font-family:inherit;font-size:.92em;border:1px solid currentColor;border-radius:5px;padding:0 .5em;margin:0 .18em}
+#hud{position:fixed;left:30px;top:22px;z-index:10;font-family:'Cormorant Garamond',Georgia,serif;color:var(--ink);font-size:23px;letter-spacing:.08em;display:flex;align-items:center;gap:10px;opacity:0;transition:opacity .9s ease;pointer-events:none;text-shadow:0 0 14px rgba(246,236,216,.9),0 0 3px rgba(246,236,216,.9)}
+#hud.show{opacity:.92}
+#hud img{width:34px;height:34px;object-fit:contain}
+.hint{position:fixed;z-index:12;transform:translate(-50%,-100%);font-family:'Cormorant Garamond',Georgia,serif;color:var(--cream);font-size:21px;pointer-events:none;opacity:0;transition:opacity .6s ease;text-shadow:0 0 12px rgba(0,0,0,.7)}
+.hint kbd{background:rgba(25,20,16,.38);border-color:rgba(255,226,180,.85)}
+.hint.show{opacity:1;animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{0%,100%{margin-top:0}50%{margin-top:-6px}}
+#end{z-index:20;color:var(--ink);background:radial-gradient(ellipse at 50% 50%,rgba(250,238,214,.8) 0,rgba(250,238,214,.42) 45%,rgba(250,238,214,0) 76%)}
+#end h1{font-weight:400;font-style:italic;font-size:clamp(34px,4.4vw,66px);margin:0 0 2.2vh}
+#end .stats{font-size:clamp(16px,1.5vw,23px);line-height:1.9;letter-spacing:.05em}
+#end .again{margin-top:3vh;font-size:clamp(14px,1.2vw,18px);letter-spacing:.32em;text-transform:uppercase;animation:breathe 3.2s ease-in-out infinite}
+#fade{position:fixed;inset:0;background:#0f0c0a;opacity:0;pointer-events:none;z-index:25;transition:opacity .8s ease}
+@media (max-width:700px){ #hud{left:16px;top:14px;font-size:18px} #title .keys{display:none} }
+.nofade .ov,.nofade #hud{transition:none !important}
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<canvas id="c" tabindex="0"></canvas>
+<div id="load" class="ov"><div class="ember"></div><div class="bar"><i></i></div></div>
+<div id="title" class="ov hide">
+  <img id="titleImg" alt="Ember Path">
+  <div class="press">Press any key</div>
+  <div class="keys"><kbd>←</kbd><kbd>→</kbd> walk &nbsp;·&nbsp; <kbd>Maj</kbd> run &nbsp;·&nbsp; <kbd>Espace</kbd> jump &nbsp;·&nbsp; <kbd>E</kbd> blow on the ember</div>
+</div>
+<div id="hud"><img id="hudIcon" alt=""><span id="hudCount">0 / 0</span></div>
+<div id="hintE" class="hint"><kbd>E</kbd></div>
+<div id="hintJ" class="hint"><kbd>Espace</kbd></div>
+<div id="end" class="ov hide"><h1>The forest remembers.</h1><div class="stats" id="endStats"></div><div class="again">Enter — play again</div></div>
+<div id="fade"></div>
+
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+// ---------------------------------------------------------------- utils
+const $ = id => document.getElementById(id);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const sstep = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+const damp = (a, b, k, dt) => lerp(a, b, 1 - Math.exp(-k * dt));
+const toward = (v, t, d) => v < t ? Math.min(t, v + d) : Math.max(t, v - d);
+function mulberry(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const rand = mulberry(20261012);
+const rr = (a, b) => a + (b - a) * rand();
+const pick = arr => arr[Math.floor(rand() * arr.length) % arr.length];
+
+const Q = new URLSearchParams(location.search);
+// headless captures (CLI --screenshot, test runners) freeze virtual time: show overlays without CSS fades
+if (/HeadlessChrome/.test(navigator.userAgent)) document.documentElement.classList.add('nofade');
+const DBG = {
+  x: Q.has('x') ? parseFloat(Q.get('x')) : null,
+  auto: Q.has('auto'),
+  warm: Q.has('w') ? parseFloat(Q.get('w')) : null,
+  play: Q.has('play') || Q.has('auto'),
+  reveal: Q.has('reveal'),
+  mute: Q.has('mute'),
+  finale: Q.has('finale'),
+};
+
+// ---------------------------------------------------------------- level design
+const LV = {
+  xMin: -40, xMax: 440, start: 4.5,
+  zone: 178,                 // green spring -> autumn
+  greatX: 380,               // the Great Tree
+  gaps: [[46, 48], [124, 126], [152, 153.8], [201, 203], [230, 232], [291, 293], [322, 324]],
+  ash: [[96, 118], [242, 268]],
+  brambles: [78, 216, 310],
+  lanterns: [2.6, 90, 171, 275, 346],
+  boulders: [[60, 1.0], [139, 1.1], [186, 0.95], [257, 1.0], [300, 1.0], [334, 1.1]],
+  logs: [[30, 1.0], [110, 0.9], [164, 1.0], [222, 1.0], [316, 0.95]],
+  motes: [[12, 1.3], [21, 1.7], [36, 1.4], [47, 2.5], [69, 1.5], [84, 1.6], [100, 1.5], [106, 2.1], [113, 1.4], [125, 2.6], [146, 1.6], [152.9, 2.5],
+    [161, 1.5], [194, 1.5], [202, 2.6], [209, 1.4], [221, 1.7], [231, 2.6], [247, 1.5], [253, 2.1], [264, 1.9], [283, 1.5], [292, 2.6], [313, 1.5],
+    [323, 2.6], [356, 1.5], [364, 2.2], [371, 1.5]],
+};
+const WALK = 3.3, RUN = 5.7, ACC = 22, AIR_ACC = 12, GRAV = 24, JUMP_V = 9.6, COYOTE = 0.12, JBUF = 0.15, MAX_FALL = 24, GIRL_H = 1.12;
+
+function rawH(x) { return 0.9 * Math.sin(x * 0.041 + 0.6) + 0.5 * Math.sin(x * 0.103 + 1.9) + 0.22 * Math.sin(x * 0.27 + 0.3); }
+const H_END = rawH(LV.greatX - 22);
+function baseH(x) { return lerp(rawH(x), H_END, sstep(LV.greatX - 22, LV.greatX - 10, x)); }
+function inGap(x) { for (const g of LV.gaps) if (x > g[0] && x < g[1]) return true; return false; }
+function inAsh(x, pad = 0) { for (const a of LV.ash) if (x > a[0] - pad && x < a[1] + pad) return true; return false; }
+function nearGap(x, pad) { for (const g of LV.gaps) if (x > g[0] - pad && x < g[1] + pad) return true; return false; }
+function topY(x, z) {
+  const h = baseH(x), az = Math.abs(z);
+  // small mounds near the path, fading out in depth; far ground slowly sinks into the mist
+  const bump = (0.18 * Math.sin(x * 0.37 + z * 0.41) + 0.1 * Math.sin(x * 0.83 - z * 0.29 + 1.3)) * sstep(2.0, 4.0, az) * (1 - sstep(8, 16, -z));
+  const back = z < -3 ? -(-3 - z) * 0.022 : 0;
+  const front = z > 1.8 ? -(z - 1.8) * 0.22 : 0;
+  return h + bump * 0.7 + back + front;
+}
+
+// ---------------------------------------------------------------- renderer / scene
+const canvas = $('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+renderer.setSize(innerWidth, innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.NoToneMapping;
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('#a39a8e');
+const camera = new THREE.PerspectiveCamera(34, innerWidth / innerHeight, 0.1, 700);
+camera.position.set(LV.start, 3, 15);
+
+// reveal field: how much each x of the path has been redrawn by the ember
+const FIELD_N = 2048, FIELD_RES = (LV.xMax - LV.xMin) / (FIELD_N - 1);
+const fieldVal = new Float32Array(FIELD_N), fieldTgt = new Float32Array(FIELD_N), fieldBytes = new Uint8Array(FIELD_N);
+const fieldTex = new THREE.DataTexture(fieldBytes, FIELD_N, 1, THREE.RedFormat, THREE.UnsignedByteType);
+fieldTex.magFilter = fieldTex.minFilter = THREE.LinearFilter; fieldTex.unpackAlignment = 1; fieldTex.needsUpdate = true;
+// ravine mask (1 inside ravines, soft falloff around their edges) used to darken the path edges
+const gapBytes = new Uint8Array(FIELD_N);
+for (let i = 0; i < FIELD_N; i++) {
+  const x = LV.xMin + i * FIELD_RES; let v = 0;
+  for (const [g0, g1] of LV.gaps) { const d = x < g0 ? g0 - x : x > g1 ? x - g1 : 0; v = Math.max(v, 1 - sstep(0, 1.1, d)); }
+  gapBytes[i] = Math.round(v * 255);
+}
+const gapTex = new THREE.DataTexture(gapBytes, FIELD_N, 1, THREE.RedFormat, THREE.UnsignedByteType);
+gapTex.magFilter = gapTex.minFilter = THREE.LinearFilter; gapTex.unpackAlignment = 1; gapTex.needsUpdate = true;
+function paintField(x, radius, strength = 1) {
+  const i0 = Math.max(0, Math.floor((x - radius - LV.xMin) / FIELD_RES)), i1 = Math.min(FIELD_N - 1, Math.ceil((x + radius - LV.xMin) / FIELD_RES));
+  for (let i = i0; i <= i1; i++) { const xi = LV.xMin + i * FIELD_RES; const v = strength * sstep(1, 0.45, Math.abs(xi - x) / radius); if (v > fieldTgt[i]) fieldTgt[i] = v; }
+}
+function fieldAt(x) { return fieldVal[clamp(Math.round((x - LV.xMin) / FIELD_RES), 0, FIELD_N - 1)]; }
+function updateField(dt) {
+  let dirty = false;
+  for (let i = 0; i < FIELD_N; i++) { const t = fieldTgt[i], v = fieldVal[i]; if (v < t) { fieldVal[i] = Math.min(t, v + dt * 0.75); fieldBytes[i] = Math.round(fieldVal[i] * 255); dirty = true; } }
+  if (dirty) fieldTex.needsUpdate = true;
+}
+
+// shared uniforms (same objects referenced by every custom material)
+const U = {
+  uTime: { value: 0 }, uField: { value: fieldTex }, uFieldRange: { value: new THREE.Vector2(LV.xMin, LV.xMax) },
+  uCam: { value: new THREE.Vector3() }, uEmber: { value: new THREE.Vector3() }, uEmberPow: { value: 1 },
+  uFogBurnt: { value: new THREE.Color('#a59c90') }, uFogGreen: { value: new THREE.Color('#ece2c8') }, uFogAutumn: { value: new THREE.Color('#f2d2a4') },
+  uZoneX: { value: LV.zone }, uCharDark: { value: new THREE.Vector3(0.19, 0.17, 0.155) }, uCharLight: { value: new THREE.Vector3(0.66, 0.62, 0.565) },
+  uFinale: { value: 0 }, uSun: { value: new THREE.Vector3(0.55, 0.75, 0.38).normalize() },
+};
+
+const COMMON = /* glsl */`
+uniform float uTime; uniform sampler2D uField; uniform vec2 uFieldRange; uniform vec3 uCam; uniform vec3 uEmber; uniform float uEmberPow;
+uniform vec3 uFogBurnt; uniform vec3 uFogGreen; uniform vec3 uFogAutumn; uniform float uZoneX; uniform vec3 uCharDark; uniform vec3 uCharLight; uniform float uFinale;
+float hash12(vec2 p){ vec3 p3 = fract(vec3(p.xyx) * 0.1031); p3 += dot(p3, p3.yzx + 33.33); return fract((p3.x + p3.y) * p3.z); }
+float vnoise(vec2 p){ vec2 i = floor(p); vec2 f = fract(p); vec2 u = f * f * (3.0 - 2.0 * f);
+  return mix(mix(hash12(i), hash12(i + vec2(1.0, 0.0)), u.x), mix(hash12(i + vec2(0.0, 1.0)), hash12(i + vec2(1.0, 1.0)), u.x), u.y); }
+float fbm(vec2 p){ float v = 0.0; float a = 0.5; for (int i = 0; i < 4; i++){ v += a * vnoise(p); p = p * 2.03 + vec2(17.1, 9.3); a *= 0.5; } return v; }
+float fieldAt(float x){ float u = (x - uFieldRange.x) / (uFieldRange.y - uFieldRange.x); return texture2D(uField, vec2(clamp(u, 0.0, 1.0), 0.5)).r; }
+float pathX(vec3 w){ float D = uCam.z; return uCam.x + (w.x - uCam.x) * D / max(D - w.z, 0.01); }
+vec3 toLin(vec3 c){ return pow(max(c, vec3(0.0)), vec3(2.2)); }
+vec3 toSrgb(vec3 c){ return pow(max(c, vec3(0.0)), vec3(1.0 / 2.2)); }
+vec3 charcoal(vec3 lin, vec2 wp){
+  vec3 s = toSrgb(lin);
+  float L = dot(s, vec3(0.299, 0.587, 0.114));
+  vec3 c = mix(uCharDark, uCharLight, smoothstep(0.04, 0.95, L));
+  c *= 0.9 + 0.2 * fbm(wp * vec2(6.0, 1.4));
+  return toLin(c);
+}
+vec3 fogColorAt(vec3 w){ float px = pathX(w); float f = max(fieldAt(px), uFinale); float z = smoothstep(uZoneX - 12.0, uZoneX + 12.0, px);
+  return mix(uFogBurnt, mix(uFogGreen, uFogAutumn, z), f); }
+`;
+
+const SPRITE_VS = /* glsl */`
+uniform float uTime; uniform float uSway; uniform float uPhase;
+varying vec2 vUv; varying vec3 vW; varying float vDepth;
+void main(){
+  vUv = uv;
+  vec3 p = position;
+  float k = uv.y * uv.y;
+  p.x += (sin(uTime * 0.7 + uPhase) * 0.65 + sin(uTime * 1.73 + uPhase * 2.1) * 0.3) * uSway * k;
+  vec4 w = modelMatrix * vec4(p, 1.0);
+  vW = w.xyz;
+  vec4 mv = viewMatrix * w;
+  vDepth = -mv.z;
+  gl_Position = projectionMatrix * mv;
+}`;
+const SPRITE_FS = /* glsl */`
+uniform sampler2D map;
+uniform float uReveal; uniform vec2 uOrigin; uniform float uSpan; uniform float uRim;
+uniform float uFogNear; uniform float uFogFar; uniform float uFogMax;
+uniform float uDark; uniform float uGlow; uniform float uOpacity; uniform vec3 uTint; uniform vec4 uHole;
+varying vec2 vUv; varying vec3 vW; varying float vDepth;
+void main(){
+  vec4 t = texture2D(map, vUv);
+  float a = t.a * uOpacity;
+  // x-ray bubble: a big foreground silhouette opens softly around the girl when she walks behind it
+  if (uHole.w > 0.0) a *= 1.0 - uHole.w * (1.0 - smoothstep(uHole.z * 0.5, uHole.z, length((gl_FragCoord.xy - uHole.xy) * vec2(1.0, 0.82))));
+  if (a < 0.012) discard;
+  vec3 base = t.rgb * uTint;
+  vec3 col = base;
+  float m = 1.0; float rim = 0.0;
+  float rv = max(uReveal, uFinale);
+  if (rv < 0.999) {
+    float n = fbm(vW.xy * 0.42 + 3.7);
+    float d = distance(vW.xy, uOrigin) / uSpan;
+    float front = rv * 1.5 - d - (n - 0.5) * 0.6;
+    m = smoothstep(0.0, 0.07, front);
+    rim = (1.0 - smoothstep(0.0, 0.07, abs(front - 0.03))) * step(0.002, rv) * (1.0 - smoothstep(0.6, 1.0, rv));
+    col = mix(charcoal(base, vW.xy), base, m);
+  }
+  col = mix(col, vec3(0.010, 0.011, 0.010) + base * 0.035, uDark);
+  float ed = length(vW - uEmber);
+  float el = exp(-ed * ed * 0.07) * uEmberPow;
+  col += col * vec3(1.0, 0.55, 0.22) * el * (1.0 - uDark * 0.6);
+  col += vec3(1.0, 0.78, 0.36) * uGlow * m;
+  col += vec3(1.0, 0.55, 0.22) * rim * uRim * 0.55 * a;
+  float f = smoothstep(uFogNear, uFogFar, vDepth) * uFogMax;
+  f += (1.0 - smoothstep(-0.5, 5.5, vW.y - uCam.y + 2.0)) * 0.18 * smoothstep(uFogNear, uFogFar * 1.4, vDepth);
+  col = mix(col, fogColorAt(vW), clamp(f, 0.0, 1.0) * (1.0 - uDark * 0.6));
+  gl_FragColor = vec4(col, a);
+}`;
+
+function spriteMat(tex, o = {}) {
+  return new THREE.ShaderMaterial({
+    uniforms: {
+      ...U,
+      map: { value: tex }, uReveal: { value: o.reveal ?? 0 }, uOrigin: { value: new THREE.Vector2() }, uSpan: { value: o.span ?? 10 },
+      uRim: { value: o.rim ?? 1 }, uFogNear: { value: o.fogNear ?? 13 }, uFogFar: { value: o.fogFar ?? 75 }, uFogMax: { value: o.fogMax ?? 0.86 },
+      uDark: { value: o.dark ?? 0 }, uGlow: { value: 0 }, uOpacity: { value: 1 }, uHole: { value: new THREE.Vector4(0, 0, 1, 0) }, uSway: { value: o.sway ?? 0 }, uPhase: { value: rand() * 6.28 },
+      uTint: { value: o.tint ?? new THREE.Color(1, 1, 1) },
+    },
+    vertexShader: SPRITE_VS, fragmentShader: COMMON + SPRITE_FS,
+    transparent: true, depthWrite: false, side: THREE.DoubleSide,
+  });
+}
+const planeGeo = {};
+function basePlane(seg = 6) { if (!planeGeo[seg]) { const g = new THREE.PlaneGeometry(1, 1, 1, seg); g.translate(0, 0.5, 0); planeGeo[seg] = g; } return planeGeo[seg]; }
+const sprites = [];   // culling registry
+function makeSprite(tex, h, o = {}) {
+  const asp = tex && tex.image ? tex.image.width / tex.image.height : 1;
+  const mat = spriteMat(tex, { span: h * 1.05, ...o });
+  const mesh = new THREE.Mesh(basePlane(o.seg ?? 6), mat);
+  mesh.scale.set(h * asp * (o.flip ? -1 : 1), h, 1);
+  mesh.frustumCulled = false;
+  mesh.userData.hw = h * asp * 0.5;
+  if (o.renderOrder !== undefined) mesh.renderOrder = o.renderOrder;
+  sprites.push(mesh);
+  scene.add(mesh);
+  return mesh;
+}
+
+// ---------------------------------------------------------------- post-processing
+const rt = new THREE.WebGLRenderTarget(innerWidth, innerHeight, { type: THREE.HalfFloatType, samples: 4 });
+const composer = new EffectComposer(renderer, rt);
+composer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+composer.addPass(new RenderPass(scene, camera));
+const sanitize = new ShaderPass({
+  uniforms: { tDiffuse: { value: null } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+  fragmentShader: `uniform sampler2D tDiffuse; varying vec2 vUv; void main(){ vec4 c = texture2D(tDiffuse, vUv); if (any(isnan(c)) || any(isinf(c))) c = vec4(0.0, 0.0, 0.0, 1.0); gl_FragColor = vec4(min(c.rgb, vec3(48.0)), 1.0); }`,
+});
+composer.addPass(sanitize);
+const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.6, 0.7, 0.93);
+composer.addPass(bloom);
+const grade = new ShaderPass({
+  uniforms: { tDiffuse: { value: null }, uPaper: { value: null }, uRes: { value: new THREE.Vector2(innerWidth, innerHeight) },
+    uCold: { value: 0 }, uFlash: { value: 0 }, uFade: { value: 0 }, uVig: { value: 0.34 }, uWarm: { value: 0 }, uHasPaper: { value: 0 } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+  fragmentShader: /* glsl */`
+    uniform sampler2D tDiffuse; uniform sampler2D uPaper; uniform vec2 uRes; uniform float uCold, uFlash, uFade, uVig, uWarm, uHasPaper; varying vec2 vUv;
+    void main(){
+      vec3 c = texture2D(tDiffuse, vUv).rgb;
+      float l = dot(c, vec3(0.2126, 0.7152, 0.0722));
+      c = mix(vec3(l), c, 1.0 - 0.8 * uCold);
+      c = mix(c, c * vec3(0.82, 0.88, 1.0), uCold * 0.65);
+      c *= mix(vec3(1.0), vec3(1.05, 0.98, 0.9), uWarm);
+      c += vec3(1.0, 0.72, 0.42) * uFlash * 0.32;
+      vec2 q = vUv - 0.5; q.x *= uRes.x / uRes.y;
+      float v = 1.0 - smoothstep(0.22, 1.0, length(q));
+      c *= mix(1.0 - uVig - uCold * 0.25, 1.0, v);
+      if (uHasPaper > 0.5) { float p = texture2D(uPaper, vUv * uRes / 1100.0).r; c *= 0.93 + 0.14 * p; }
+      c = mix(c, vec3(0.05, 0.04, 0.035), uFade);
+      gl_FragColor = vec4(c, 1.0);
+    }`,
+});
+composer.addPass(grade);
+composer.addPass(new OutputPass());
+
+// ---------------------------------------------------------------- loading
+const texLoader = new THREE.TextureLoader();
+const gltfLoader = new GLTFLoader();
+let nLoaded = 0, nTotal = 0;
+function progress() { $('load').querySelector('i').style.width = (100 * nLoaded / Math.max(1, nTotal)).toFixed(1) + '%'; }
+function loadTex(file, o = {}) {
+  if (!file) return Promise.resolve(null);
+  nTotal++;
+  return new Promise(res => texLoader.load('assets/' + file, t => {
+    t.colorSpace = o.linear ? THREE.NoColorSpace : THREE.SRGBColorSpace;
+    t.anisotropy = 4;
+    if (o.repeat) t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    if (o.mirror) { t.wrapS = THREE.MirroredRepeatWrapping; t.wrapT = THREE.ClampToEdgeWrapping; }
+    nLoaded++; progress(); res(t);
+  }, undefined, () => { nLoaded++; progress(); console.warn('missing texture', file); res(null); }));
+}
+function loadGLB(file) {
+  if (!file) return Promise.resolve(null);
+  nTotal++;
+  return new Promise(res => gltfLoader.load('assets/' + file, g => { nLoaded++; progress(); res(g); }, undefined, e => { nLoaded++; progress(); console.warn('missing model', file, e); res(null); }));
+}
+const loadAll = (arr, o) => Promise.all((arr || []).map(f => loadTex(f, o))).then(a => a.filter(Boolean));
+function solidTex(hex) { const c = new THREE.Color(hex); const d = new Uint8Array([c.r * 255, c.g * 255, c.b * 255, 255]); const t = new THREE.DataTexture(d, 1, 1); t.needsUpdate = true; t.colorSpace = THREE.SRGBColorSpace; return t; }
+
+// ---------------------------------------------------------------- game state
+const G = {
+  state: 'loading', T: 0, playTime: 0, revealed: 0, total: 0, motes: 0, motesTotal: 0,
+  checkpoint: LV.lanterns[0], lastSafeX: LV.start, deathT: 0, deathKind: '', finaleT: 0, flareCD: 0, flash: 0,
+  hudT: 0, wFall: 0, stepT: 0, hintBramble: true, hintJump: true, flareR: 0, flareX: 0, ashAmt: 0,
+};
+const pl = { x: LV.start, y: 0, vx: 0, vy: 0, face: 1, grounded: true, coyote: 0, jbuf: 0, airT: 0, idleT: 0, flareT: -1, fired: false, lock: 0, landT: 0 };
+const ember = { pos: new THREE.Vector3(LV.start - 0.6, 1, 0.3), vel: new THREE.Vector3(), W: 0.78, R: 4, hist: [], dead: false };
+const trees = [], plants = [], props = [], lanterns = [], motes = [], brambles = [], shafts = [], fgTreeMeshes = [];
+let A = {};          // loaded assets
+let MAN = {};        // manifest
+let girl = null, girlRoot = null, girlOffY = 0, mixer = null;
+const anim = { acts: {}, cur: null, name: '' };
+let greatTree = null, sparkFX = null, leafFX = null, ashTiles = [], leafTilesG = [], leafTilesA = [];
+let emberCore, emberHalo, emberLight, trail, shadowBlob, flareRing;
+
+// ---------------------------------------------------------------- particles
+const PT_VS = /* glsl */`
+attribute vec4 aCol; attribute float aSize; attribute float aRot; attribute float aTile;
+uniform float uScale; varying vec4 vCol; varying float vRot; varying float vTile;
+void main(){ vCol = aCol; vRot = aRot; vTile = aTile; vec4 mv = modelViewMatrix * vec4(position, 1.0);
+  gl_PointSize = clamp(aSize * uScale / max(-mv.z, 0.1), 0.0, 300.0); gl_Position = projectionMatrix * mv; }`;
+const PT_FS = /* glsl */`
+uniform sampler2D map; uniform float uAtlas; varying vec4 vCol; varying float vRot; varying float vTile;
+void main(){
+  vec2 c = gl_PointCoord - 0.5; float s = sin(vRot), co = cos(vRot);
+  c = vec2(co * c.x - s * c.y, s * c.x + co * c.y) * 1.414;
+  vec2 pc = c + 0.5;
+  if (pc.x < 0.0 || pc.y < 0.0 || pc.x > 1.0 || pc.y > 1.0) discard;
+  float col = mod(vTile, uAtlas); float row = floor(vTile / uAtlas);
+  vec4 t = texture2D(map, vec2((col + pc.x) / uAtlas, 1.0 - (row + pc.y) / uAtlas));
+  gl_FragColor = vec4(t.rgb * vCol.rgb, t.a * vCol.a);
+}`;
+class FX {
+  constructor(max, tex, atlas, additive, order) {
+    this.max = max; this.n = 0;
+    const F = n => new Float32Array(max * n);
+    Object.assign(this, { p: F(3), v: F(3), age: F(1), life: F(1), s0: F(1), s1: F(1), c: F(4), a0: F(1), rot: F(1), vr: F(1), tile: F(1), drag: F(1), grav: F(1), flut: F(1), ph: F(1) });
+    const g = new THREE.BufferGeometry();
+    const mk = (n) => new THREE.BufferAttribute(new Float32Array(max * n), n).setUsage(THREE.DynamicDrawUsage);
+    this.aP = mk(3); this.aC = mk(4); this.aS = mk(1); this.aR = mk(1); this.aT = mk(1);
+    g.setAttribute('position', this.aP); g.setAttribute('aCol', this.aC); g.setAttribute('aSize', this.aS); g.setAttribute('aRot', this.aR); g.setAttribute('aTile', this.aT);
+    this.mat = new THREE.ShaderMaterial({ uniforms: { map: { value: tex }, uAtlas: { value: atlas }, uScale: { value: 500 } }, vertexShader: PT_VS, fragmentShader: PT_FS,
+      transparent: true, depthWrite: false, blending: additive ? THREE.AdditiveBlending : THREE.NormalBlending });
+    this.points = new THREE.Points(g, this.mat); this.points.frustumCulled = false; this.points.renderOrder = order;
+    g.setDrawRange(0, 0); scene.add(this.points);
+  }
+  spawn(o) {
+    if (this.n >= this.max) return; const i = this.n++;
+    this.p.set([o.x, o.y, o.z ?? 0], i * 3); this.v.set([o.vx ?? 0, o.vy ?? 0, o.vz ?? 0], i * 3);
+    this.age[i] = 0; this.life[i] = o.life ?? 1; this.s0[i] = o.size ?? 0.1; this.s1[i] = o.size1 ?? this.s0[i];
+    const c = o.color ?? [1, 1, 1]; this.c.set([c[0], c[1], c[2], o.alpha ?? 1], i * 4); this.a0[i] = o.alpha ?? 1;
+    this.rot[i] = o.rot ?? rand() * 6.28; this.vr[i] = o.vr ?? 0; this.tile[i] = o.tile ?? 0; this.drag[i] = o.drag ?? 0.5; this.grav[i] = o.grav ?? 0; this.flut[i] = o.flut ?? 0; this.ph[i] = rand() * 6.28;
+  }
+  kill(i) {
+    const j = --this.n; if (i === j) return;
+    for (const k of ['p', 'v']) this[k].copyWithin(i * 3, j * 3, j * 3 + 3);
+    this.c.copyWithin(i * 4, j * 4, j * 4 + 4);
+    for (const k of ['age', 'life', 's0', 's1', 'a0', 'rot', 'vr', 'tile', 'drag', 'grav', 'flut', 'ph']) this[k][i] = this[k][j];
+  }
+  update(dt) {
+    for (let i = 0; i < this.n; i++) {
+      this.age[i] += dt;
+      if (this.age[i] >= this.life[i]) { this.kill(i); i--; continue; }
+      const i3 = i * 3, dr = Math.exp(-this.drag[i] * dt);
+      this.v[i3] = this.v[i3] * dr + Math.sin(this.age[i] * 2.7 + this.ph[i]) * this.flut[i] * dt;
+      this.v[i3 + 1] = this.v[i3 + 1] * dr - this.grav[i] * dt;
+      this.v[i3 + 2] *= dr;
+      this.p[i3] += this.v[i3] * dt; this.p[i3 + 1] += this.v[i3 + 1] * dt; this.p[i3 + 2] += this.v[i3 + 2] * dt;
+      this.rot[i] += this.vr[i] * dt;
+    }
+    const P = this.aP.array, C = this.aC.array, S = this.aS.array, R = this.aR.array, T = this.aT.array;
+    for (let i = 0; i < this.n; i++) {
+      const k = this.age[i] / this.life[i];
+      P[i * 3] = this.p[i * 3]; P[i * 3 + 1] = this.p[i * 3 + 1]; P[i * 3 + 2] = this.p[i * 3 + 2];
+      C[i * 4] = this.c[i * 4]; C[i * 4 + 1] = this.c[i * 4 + 1]; C[i * 4 + 2] = this.c[i * 4 + 2];
+      C[i * 4 + 3] = this.a0[i] * sstep(0, 0.12, k) * (1 - sstep(0.6, 1, k));
+      S[i] = lerp(this.s0[i], this.s1[i], k); R[i] = this.rot[i]; T[i] = this.tile[i];
+    }
+    for (const a of [this.aP, this.aC, this.aS, this.aR, this.aT]) a.needsUpdate = true;
+    this.points.geometry.setDrawRange(0, this.n);
+  }
+}
+function pointScale() { return renderer.domElement.height * 0.5 * camera.projectionMatrix.elements[5]; }
+
+// ---------------------------------------------------------------- world building
+function buildBackdrop() {
+  const tex = A.backdrop || solidTex('#d9cfbd');
+  const H = 130, W = 900, asp = tex.image ? tex.image.width / tex.image.height : 2.33;
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { ...U, map: { value: tex }, uRepeat: { value: W / (H * asp) } },
+    vertexShader: `uniform float uRepeat; varying vec2 vUv; varying vec3 vW; void main(){ vUv = vec2(uv.x * uRepeat, uv.y); vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`,
+    fragmentShader: COMMON + /* glsl */`
+      uniform sampler2D map; varying vec2 vUv; varying vec3 vW;
+      void main(){
+        vec3 col = texture2D(map, vUv).rgb;
+        float px = pathX(vW); float f = max(fieldAt(px), uFinale);
+        float z = smoothstep(uZoneX - 12.0, uZoneX + 12.0, px);
+        vec3 s = toSrgb(col); float L = dot(s, vec3(0.299, 0.587, 0.114));
+        vec3 burnt = toLin(mix(vec3(0.34, 0.31, 0.28), vec3(0.79, 0.75, 0.70), L));
+        vec3 aut = col * vec3(1.12, 0.93, 0.74);
+        col = mix(burnt, mix(col, aut, z), smoothstep(0.1, 0.9, f));
+        float hh = vW.y - uCam.y;
+        col = mix(col, fogColorAt(vW), (1.0 - smoothstep(-3.0, 14.0, hh)) * 0.85);
+        gl_FragColor = vec4(col, 1.0);
+      }`,
+    depthWrite: false,
+  });
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(W, H), mat);
+  m.position.set(200, 18, -150); m.renderOrder = -10;
+  scene.add(m); A.backdropMesh = m;
+}
+
+function buildGround() {
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { ...U, uMoss: { value: A.groundMoss || solidTex('#6f8a3f') }, uAutumn: { value: A.groundAutumn || solidTex('#b8682e') }, uSide: { value: A.groundSide || solidTex('#3b3128') }, uGap: { value: gapTex } },
+    vertexShader: `varying vec3 vW; varying vec3 vN; varying float vDepth; void main(){ vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; vN = normalize(mat3(modelMatrix) * normal); vec4 mv = viewMatrix * w; vDepth = -mv.z; gl_Position = projectionMatrix * mv; }`,
+    fragmentShader: COMMON + /* glsl */`
+      uniform sampler2D uMoss; uniform sampler2D uAutumn; uniform sampler2D uSide; uniform vec3 uSun; uniform sampler2D uGap;
+      varying vec3 vW; varying vec3 vN; varying float vDepth;
+      void main(){
+        vec2 uv = vW.xz * 0.17;
+        vec3 moss = texture2D(uMoss, uv).rgb;
+        vec3 aut = texture2D(uAutumn, uv * 0.93 + 0.37).rgb;
+        float zone = smoothstep(uZoneX - 10.0, uZoneX + 10.0, vW.x + (fbm(vW.xz * 0.3) - 0.5) * 8.0);
+        vec3 top = mix(moss, aut, zone);
+        vec3 side = texture2D(uSide, vec2(vW.x * 0.11 + vW.z * 0.07, vW.y * 0.11)).rgb;
+        vec3 N = normalize(vN);
+        float up = smoothstep(0.35, 0.75, N.y);
+        vec3 base = mix(side * 0.6, top, up);
+        base *= 0.74 + 0.36 * max(dot(N, normalize(uSun)), 0.0);
+        base *= mix(1.0, 0.62, smoothstep(1.6, 3.6, vW.z));
+        float n = fbm(vW.xz * 0.55 + 1.3);
+        float m = smoothstep(0.32, 0.62, max(fieldAt(vW.x), uFinale) + (n - 0.5) * 0.5);
+        vec3 col = mix(charcoal(base, vW.xz) * 0.8, base, m);
+        float ge = texture2D(uGap, vec2(clamp((vW.x - uFieldRange.x) / (uFieldRange.y - uFieldRange.x), 0.0, 1.0), 0.5)).r;
+        col *= 1.0 - 0.6 * ge * smoothstep(-5.5, -3.0, vW.z) * up;
+        float ed = length(vW - uEmber);
+        col += col * vec3(1.0, 0.5, 0.2) * exp(-ed * ed * 0.12) * uEmberPow * 1.3;
+        col = mix(col, fogColorAt(vW), smoothstep(12.0, 120.0, vDepth));
+        gl_FragColor = vec4(col, 1.0);
+      }`,
+    side: THREE.DoubleSide,
+  });
+  const addGeo = (pos, idx, side) => {
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals();
+    const m = new THREE.Mesh(g, mat); scene.add(m); return m;
+  };
+  // grid strip between x=a..b over the z rows ZS (normals up)
+  const strip = (a, b, ZS) => {
+    const nx = Math.max(2, Math.ceil((b - a) / 0.45)), nz = ZS.length, pos = [], idx = [];
+    for (let i = 0; i <= nx; i++) for (let j = 0; j < nz; j++) { const x = a + (b - a) * i / nx; pos.push(x, topY(x, ZS[j]), ZS[j]); }
+    for (let i = 0; i < nx; i++) for (let j = 0; j < nz - 1; j++) { const p = i * nz + j, q = (i + 1) * nz + j; idx.push(p, p + 1, q, q, p + 1, q + 1); }
+    addGeo(pos, idx);
+    return nx;
+  };
+  // vertical wall following a polyline of (x,z) points, from the ground surface down to y=-10
+  const wall = (pts) => {
+    const pos = [], idx = [];
+    pts.forEach(([x, z]) => pos.push(x, topY(x, z), z, x, -10, z));
+    for (let i = 0; i < pts.length - 1; i++) { const p = i * 2; idx.push(p, p + 1, p + 2, p + 1, p + 3, p + 2); }
+    addGeo(pos, idx);
+  };
+  const ZB = [-145, -105, -75, -55, -42, -32, -24, -18, -13, -9, -6, -4];   // continuous back ground
+  const ZF = [-4, -2.6, -1.3, 0, 1.3, 2.4, 3.4];                             // path strip, cut by ravines
+  strip(LV.xMin, LV.xMax, ZB);
+  const segs = []; let x0 = LV.xMin;
+  for (const g of LV.gaps) { segs.push([x0, g[0]]); x0 = g[1]; }
+  segs.push([x0, LV.xMax]);
+  for (const [a, b] of segs) {
+    strip(a, b, ZF);
+    // front skirt
+    const n = Math.max(2, Math.ceil((b - a) / 0.45)), pts = [];
+    for (let i = 0; i <= n; i++) pts.push([a + (b - a) * i / n, 3.4]);
+    wall(pts);
+  }
+  // ravine walls: left, right and back faces
+  for (const [g0, g1] of LV.gaps) {
+    wall(ZF.map(z => [g0, z]));
+    wall(ZF.map(z => [g1, z]));
+    const n = 8, back = [];
+    for (let i = 0; i <= n; i++) back.push([g0 + (g1 - g0) * i / n, -4]);
+    wall(back);
+  }
+  // darkness deep inside the ravines
+  const pit = new THREE.Mesh(new THREE.PlaneGeometry(LV.xMax - LV.xMin, 30), new THREE.MeshBasicMaterial({ color: 0x2a221c }));
+  pit.rotation.x = -Math.PI / 2; pit.position.set((LV.xMin + LV.xMax) / 2, -6, 0); pit.scale.y = 8 / 30; scene.add(pit);
+}
+
+function zoneOf(x) { return x < LV.zone - 7 ? 'green' : x > LV.zone + 7 ? 'autumn' : (rand() < (x - LV.zone + 7) / 14 ? 'autumn' : 'green'); }
+function treeTex(set, birchBias) {
+  const L = set === 'green' ? A.treesGreen : A.treesAutumn;
+  if (!L.length) return null;
+  const birch = L.filter(t => t.userData.birch), broad = L.filter(t => !t.userData.birch);
+  if (birch.length && rand() < birchBias) return pick(birch);
+  return pick(broad.length ? broad : L);
+}
+function addTree(x, z, h, layer, opts = {}) {
+  const set = opts.set || zoneOf(x);
+  const tex = opts.tex || treeTex(set, layer === 0 ? 0.32 : 0.25);
+  if (!tex) return;
+  const fog = [{ n: 13, f: 75, m: 0.86 }, { n: 13, f: 75, m: 0.9 }, { n: 10, f: 70, m: 0.94 }][layer];
+  const by = topY(x, z) - 0.25;
+  const mesh = makeSprite(tex, h, { sway: layer === 2 ? 0.08 : 0.16, fogNear: fog.n, fogFar: fog.f, fogMax: fog.m, flip: layer === 2 && rand() < 0.5, seg: 8, rim: [0.8, 0.35, 0.1][layer] });
+  mesh.position.set(x, by, z);
+  mesh.material.uniforms.uOrigin.value.set(x, by + h * 0.12);
+  const t = { mesh, x, z, h, by, layer, revealed: false, rv: 0, dead: !!opts.dead, counted: layer < 2 && !opts.dead, set, dur: layer === 0 ? 1.7 : 2.3 };
+  if (t.counted) G.total++;
+  trees.push(t);
+  return t;
+}
+function buildTrees() {
+  // main layer (just behind the path), mid layer, far misty layer
+  for (let x = LV.xMin + 4; x < LV.greatX - 17; x += rr(5.6, 8.6)) {
+    if (inAsh(x, 2)) { if (rand() < 0.45) addTree(x, rr(-4, -7), rr(11, 14), 0, { dead: true }); continue; }
+    addTree(x + rr(-0.8, 0.8), rr(-3.4, -7.4), rr(12, 15.5), 0);
+  }
+  for (let x = LV.xMin + 1; x < LV.greatX - 9; x += rr(6.2, 9.6)) {
+    if (inAsh(x, 0)) { if (rand() < 0.3) addTree(x, rr(-11, -17), rr(12, 15), 1, { dead: true }); continue; }
+    addTree(x, rr(-10.5, -18.5), rr(13, 17), 1);
+  }
+  for (let x = LV.xMin - 30; x < LV.xMax + 40; x += rr(5, 8)) addTree(x, rr(-25, -40), rr(16, 22), 2, { dead: inAsh(x, -2) });
+  // the Great Tree
+  if (A.great) {
+    const h = 30, x = LV.greatX + 4, z = -11;
+    const by = topY(x, z) - 0.6;
+    const mesh = makeSprite(A.great, h, { sway: 0.05, fogNear: 14, fogFar: 90, fogMax: 0.6, seg: 10 });
+    mesh.position.set(x, by, z);
+    mesh.material.uniforms.uOrigin.value.set(x, by + 1);
+    greatTree = { mesh, x, z, h, by, layer: 0, revealed: false, rv: 0, dead: false, counted: false, dur: 4.2 };
+  }
+}
+
+function buildPlants() {
+  const sprouts = A.sprouts, bG = A.bushesGreen, bA = A.bushesAutumn;
+  if (sprouts.length) for (let x = LV.xMin + 2; x < LV.greatX + 10; x += rr(0.9, 2.2)) {
+    if (inGap(x) || nearGap(x, 0.6)) continue;
+    const front = rand() < 0.45; const z = front ? rr(0.55, 1.5) : rr(-1.6, -0.5);
+    const tex = pick(sprouts); const h = rr(0.45, 1.05) * (inAsh(x) ? 0.8 : 1);
+    const m = makeSprite(tex, h, { sway: 0.07, fogNear: 30, fogFar: 90, fogMax: 0.3, seg: 3, renderOrder: front ? 2 : 0 });
+    m.position.set(x, topY(x, z) - 0.06, z);
+    m.material.uniforms.uOrigin.value.set(x, topY(x, z));
+    plants.push({ mesh: m, x, z, revealed: false, rv: 0, glow: 0, dead: inAsh(x), kind: 'sprout' });
+  }
+  for (let x = LV.xMin + 3; x < LV.greatX + 14; x += rr(2.2, 4.5)) {
+    if (inGap(x)) continue;
+    const L = x > LV.zone + rr(-8, 8) ? (bA.length ? bA : bG) : (bG.length ? bG : bA);
+    if (!L.length) break;
+    const z = rr(-2.4, -6.5), h = rr(1.0, 2.4);
+    const m = makeSprite(pick(L), h, { sway: 0.05, fogNear: 13, fogFar: 75, fogMax: 0.8, seg: 3 });
+    m.position.set(x, topY(x, z) - 0.15, z);
+    m.material.uniforms.uOrigin.value.set(x, topY(x, z));
+    plants.push({ mesh: m, x, z, revealed: false, rv: 0, glow: 0, dead: inAsh(x), kind: 'bush' });
+  }
+}
+
+function buildForeground() {
+  if (A.fgPlants.length) for (let x = LV.xMin; x < LV.xMax; x += rr(1.6, 4.2)) {
+    const z = rr(2.7, 4.6), h = rr(0.9, 2.3);
+    const m = makeSprite(pick(A.fgPlants), h, { dark: 1, sway: 0.12, fogMax: 0, seg: 4, renderOrder: 3, flip: rand() < 0.5 });
+    m.position.set(x, baseH(x) - 0.75 - (z - 2.7) * 0.3, z);
+  }
+  if (A.fgRocks.length) for (let x = LV.xMin; x < LV.xMax; x += rr(2.4, 5.2)) {
+    const z = rr(3.7, 5.0), h = rr(1.0, 1.8);
+    const m = makeSprite(pick(A.fgRocks), h, { dark: 0.97, fogMax: 0, seg: 1, renderOrder: 3, flip: rand() < 0.5 });
+    m.position.set(x, baseH(x) - 0.95 - (z - 3.7) * 0.2, z);
+  }
+  if (A.fgTrees.length) for (let x = LV.xMin + 14; x < LV.xMax; x += rr(38, 58)) {
+    if (Math.abs(x - LV.greatX) < 24 || nearGap(x, 4) || LV.brambles.some(b => Math.abs(b - x) < 6)) continue;
+    const z = rr(4.6, 5.6), h = rr(9.5, 11.5);
+    const m = makeSprite(pick(A.fgTrees), h, { dark: 0.9, sway: 0.03, fogMax: 0, seg: 6, renderOrder: 4, flip: rand() < 0.5 });
+    m.position.set(x, baseH(x) - 2.4, z);
+    fgTreeMeshes.push(m);
+  }
+  if (A.fgHang.length) for (let x = LV.xMin + 30; x < LV.xMax; x += rr(30, 55)) {
+    const z = rr(4.5, 5.5), h = rr(4, 6);
+    const m = makeSprite(pick(A.fgHang), h, { dark: 0.96, sway: 0.1, fogMax: 0, seg: 4, renderOrder: 4, flip: rand() < 0.5 });
+    m.position.set(x, baseH(x) + 3.4, z);
+  }
+}
+
+function buildShafts() {
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { uTime: U.uTime, uI: { value: 0.12 } },
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: /* glsl */`
+      uniform float uTime; uniform float uI; varying vec2 vUv;
+      float h(float n){ return fract(sin(n) * 43758.5453); }
+      float n1(float x){ float i = floor(x); float f = fract(x); return mix(h(i), h(i + 1.0), f * f * (3.0 - 2.0 * f)); }
+      void main(){
+        float x = vUv.x;
+        float beam = smoothstep(0.0, 0.3, x) * (1.0 - smoothstep(0.7, 1.0, x));
+        float stripes = 0.55 + 0.45 * n1(x * 9.0 + uTime * 0.08) * n1(x * 4.0 - uTime * 0.05 + 3.0);
+        float fade = smoothstep(0.0, 0.55, vUv.y) * (1.0 - smoothstep(0.8, 1.0, vUv.y));
+        float a = beam * stripes * fade * uI;
+        gl_FragColor = vec4(vec3(1.0, 0.93, 0.78) * a, a);
+      }`,
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  });
+  for (let x = LV.xMin + 10; x < LV.xMax; x += rr(28, 44)) {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(rr(5, 9), 46), mat.clone());
+    m.material.uniforms.uTime = U.uTime;
+    const z = rr(-9, -16);
+    m.position.set(x, baseH(x) + 14, z); m.rotation.z = -0.42;
+    scene.add(m); shafts.push({ m, x, z });
+  }
+}
+
+function fitModel(root, target, axis = 'y') {
+  root.updateMatrixWorld(true);
+  const b = new THREE.Box3().setFromObject(root);
+  const size = b.getSize(new THREE.Vector3());
+  const s = target / (axis === 'x' ? size.x : axis === 'z' ? size.z : size.y);
+  root.scale.multiplyScalar(s);
+  root.updateMatrixWorld(true);
+  const b2 = new THREE.Box3().setFromObject(root);
+  return { box: b2, size: b2.getSize(new THREE.Vector3()) };
+}
+function revealable(mat, rec) {
+  mat.onBeforeCompile = (sh) => {
+    Object.assign(sh.uniforms, U, { uReveal: rec.uReveal, uOrigin: rec.uOrigin, uSpan: rec.uSpan });
+    sh.vertexShader = 'varying vec3 vWp;\n' + sh.vertexShader.replace('#include <project_vertex>', '#include <project_vertex>\n vWp = (modelMatrix * vec4(transformed, 1.0)).xyz;');
+    sh.fragmentShader = COMMON + '\nuniform float uReveal; uniform vec2 uOrigin; uniform float uSpan; varying vec3 vWp;\n' + sh.fragmentShader
+      .replace('#include <map_fragment>', `#include <map_fragment>
+        { float rv = max(uReveal, uFinale); float n = fbm(vWp.xy * 0.9 + 2.1); float d = distance(vWp.xy, uOrigin) / uSpan;
+          float front = rv * 1.5 - d - (n - 0.5) * 0.6; float mm = smoothstep(0.0, 0.07, front);
+          diffuseColor.rgb = mix(charcoal(diffuseColor.rgb, vWp.xy * 3.0), diffuseColor.rgb, mm);
+          totalEmissiveRadiance += vec3(1.0, 0.42, 0.1) * (1.0 - smoothstep(0.0, 0.11, abs(front - 0.035))) * step(0.002, rv) * (1.0 - step(0.999, rv)) * 1.5; }`)
+      .replace('#include <emissivemap_fragment>', '')
+      .replace('#include <opaque_fragment>', `#include <opaque_fragment>
+        { vec4 mvp = viewMatrix * vec4(vWp, 1.0); float fd = smoothstep(14.0, 72.0, -mvp.z) * 0.9; gl_FragColor.rgb = mix(gl_FragColor.rgb, fogColorAt(vWp), fd);
+          float ed = length(vWp - uEmber); gl_FragColor.rgb += gl_FragColor.rgb * vec3(1.0, 0.5, 0.2) * exp(-ed * ed * 0.1) * uEmberPow * 0.8; }`);
+  };
+  mat.customProgramCacheKey = () => 'ember-reveal';
+}
+function placeProp(gltf, x, z, size, axis, kind, rotY = 0) {
+  const root = gltf.scene.clone(true);
+  const rec = { uReveal: { value: 0 }, uOrigin: { value: new THREE.Vector2(x, 0) }, uSpan: { value: 3 } };
+  root.traverse(o => {
+    if (o.isMesh) {
+      const src = o.material;
+      const m = new THREE.MeshStandardMaterial({ map: src.map || null, color: src.map ? 0xffffff : (src.color || new THREE.Color(0x777777)), roughness: 0.92, metalness: 0 });
+      revealable(m, rec); o.material = m;
+    }
+  });
+  root.rotation.y = rotY;
+  const { box, size: sz } = fitModel(root, size, axis);
+  const gy = topY(x, z);
+  root.position.set(x - (box.min.x + box.max.x) / 2, gy - box.min.y - 0.12, z - (box.min.z + box.max.z) / 2);
+  scene.add(root);
+  root.updateMatrixWorld(true);
+  const b = new THREE.Box3().setFromObject(root);
+  rec.uOrigin.value.set(x, b.min.y); rec.uSpan.value = Math.max(sz.x, sz.y) * 1.1;
+  const p = { root, rec, x, z, kind, box: b, w: sz.x, h: sz.y, top: b.max.y, revealed: false, rv: 0 };
+  props.push(p);
+  return p;
+}
+function buildProps() {
+  if (A.boulder) for (const [x, s] of LV.boulders) {
+    const p = placeProp(A.boulder, x, 0, 2.2 * s, 'x', 'boulder', rr(-0.6, 0.6));
+    p.solid = { x0: x - p.w * 0.36, x1: x + p.w * 0.36, top: p.top - 0.08, walk0: x - p.w * 0.3, walk1: x + p.w * 0.3 };
+  }
+  if (A.log) for (const [x, s] of LV.logs) {
+    const p = placeProp(A.log, x, 0, 3.0 * s, 'x', 'log', rr(-0.12, 0.12));
+    p.solid = { x0: x - p.w * 0.45, x1: x + p.w * 0.45, top: p.top - 0.06, walk0: x - p.w * 0.45, walk1: x + p.w * 0.45 };
+  }
+  LV.lanterns.forEach((x, i) => {
+    let p = null;
+    if (A.lantern) p = placeProp(A.lantern, x, -1.0, 1.45, 'y', 'lantern', -0.35);
+    const fy = p ? p.box.min.y + p.h * 0.6 : topY(x, -1) + 0.85;
+    const flame = new THREE.Sprite(new THREE.SpriteMaterial({ map: A.spark, color: new THREE.Color(3.2, 2.0, 0.9), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0 }));
+    flame.position.set(x, fy, -0.55); flame.scale.setScalar(0.6); flame.renderOrder = 1; scene.add(flame);
+    const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: A.spark, color: new THREE.Color(1.0, 0.45, 0.15), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0 }));
+    halo.position.copy(flame.position); halo.scale.setScalar(2.6); halo.renderOrder = 1; scene.add(halo);
+    lanterns.push({ x, p, flame, halo, lit: i === 0, litT: i === 0 ? 1 : 0 });
+  });
+}
+
+function buildMotes() {
+  for (const [x, dy] of LV.motes) {
+    const ref = inGap(x) ? Math.max(baseH(x - 1.2), baseH(x + 1.2)) : baseH(x);
+    let y = ref + dy;
+    for (const p of props) if (p.solid && x > p.solid.x0 - 0.3 && x < p.solid.x1 + 0.3) y = Math.max(y, p.top + 0.9);
+    const core = new THREE.Sprite(new THREE.SpriteMaterial({ map: A.spark, color: new THREE.Color(2.6, 1.9, 1.0), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true }));
+    core.scale.setScalar(0.42); core.renderOrder = 1; scene.add(core);
+    const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: A.spark, color: new THREE.Color(1.0, 0.5, 0.18), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.42 }));
+    halo.scale.setScalar(1.5); halo.renderOrder = 1; scene.add(halo);
+    motes.push({ x, y, z: 0.15, core, halo, taken: false, ph: rand() * 6.28 });
+  }
+  G.motesTotal = motes.length;
+}
+
+function buildBrambles() {
+  const tex = A.bramble[0];
+  for (const x of LV.brambles) {
+    const parts = [];
+    if (tex) {
+      for (const [z, s, fl] of [[-0.45, 1.0, false], [0.4, 0.8, true]]) {
+        const m = makeSprite(tex, 2.15 * s, { sway: 0.05, fogMax: 0.2, seg: 4, flip: fl, renderOrder: z > 0 ? 2 : 0 });
+        m.position.set(x + (z > 0 ? 0.25 : -0.2), baseH(x) - 0.2, z);
+        m.material.uniforms.uOrigin.value.set(x, baseH(x) + 1);
+        parts.push(m);
+      }
+    }
+    brambles.push({ x, parts, solid: true, burnT: -1, rv: 0 });
+  }
+}
+
+// The girl's Meshy texture is a flat ink-black / dress-red / skin-white atlas, packed edge to edge: sampled as a
+// texture it bleeds across UV seams (dark lines on her legs, light streaks in her hair, brown mud when small).
+// So we bake it once into flat per-triangle colours: each triangle takes the palette class of its interior texels,
+// tiny same-class patches (seam slivers) are merged into their surroundings using the mesh's own connectivity,
+// and the result is drawn with vertex colours: a crisp, graphic figure like the girl in the video, at every size.
+function flatGirlColors(mesh, tex) {
+  try {
+    const img = tex.image, geo = mesh.geometry, pos = geo.attributes.position, uv = geo.attributes.uv, index = geo.index;
+    const W = img && img.width, H = img && img.height;
+    if (!W || !H || !uv || !index) return false;
+    const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    const ctx = cv.getContext('2d', { willReadFrequently: true });
+    ctx.drawImage(img, 0, 0);
+    const px = ctx.getImageData(0, 0, W, H).data;
+    const clsAt = (u, v) => {
+      const x = Math.min(W - 1, Math.max(0, Math.floor(u * W))), y = Math.min(H - 1, Math.max(0, Math.floor(v * H))), i = (y * W + x) * 4;
+      const r = px[i] / 255, g = px[i + 1] / 255, b = px[i + 2] / 255;
+      return (r - Math.max(g, b) > 0.26 && r > 0.35) ? 1 : (0.299 * r + 0.587 * g + 0.114 * b > 0.55 ? 2 : 0);
+    };
+    const T = index.count / 3, cls = new Int8Array(T), area = new Float32Array(T), cy = new Float32Array(T), cz = new Float32Array(T);
+    geo.computeBoundingBox(); const bb = geo.boundingBox, bh = bb.max.y - bb.min.y, midZ = (bb.min.z + bb.max.z) / 2;
+    const BARY = [[1 / 3, 1 / 3, 1 / 3], [0.6, 0.2, 0.2], [0.2, 0.6, 0.2], [0.2, 0.2, 0.6], [0.45, 0.45, 0.1], [0.1, 0.45, 0.45], [0.45, 0.1, 0.45]];
+    const va = new THREE.Vector3(), vb = new THREE.Vector3(), vc = new THREE.Vector3();
+    // weld vertices by position (UV seams split them) to get the real surface connectivity
+    const weld = new Int32Array(pos.count), keyId = new Map();
+    for (let i = 0; i < pos.count; i++) {
+      const k = Math.round(pos.getX(i) * 2e4) + ',' + Math.round(pos.getY(i) * 2e4) + ',' + Math.round(pos.getZ(i) * 2e4);
+      let id = keyId.get(k); if (id === undefined) { id = keyId.size; keyId.set(k, id); } weld[i] = id;
+    }
+    const edgeTris = new Map();
+    for (let t = 0; t < T; t++) {
+      const a = index.getX(t * 3), b = index.getX(t * 3 + 1), c = index.getX(t * 3 + 2);
+      const votes = [0, 0, 0];
+      for (const [wa, wb, wc] of BARY) votes[clsAt(uv.getX(a) * wa + uv.getX(b) * wb + uv.getX(c) * wc, uv.getY(a) * wa + uv.getY(b) * wb + uv.getY(c) * wc)]++;
+      cls[t] = votes[0] >= votes[1] ? (votes[0] >= votes[2] ? 0 : 2) : (votes[1] >= votes[2] ? 1 : 2);
+      va.fromBufferAttribute(pos, a); vb.fromBufferAttribute(pos, b); vc.fromBufferAttribute(pos, c);
+      cy[t] = (va.y + vb.y + vc.y) / 3; cz[t] = (va.z + vb.z + vc.z) / 3;
+      area[t] = vb.sub(va).cross(vc.sub(va)).length() * 0.5;
+      for (const [p, q] of [[a, b], [b, c], [c, a]]) {
+        const A = weld[p], B = weld[q], k = A < B ? A * 4194304 + B : B * 4194304 + A;
+        const l = edgeTris.get(k); if (l) l.push(t); else edgeTris.set(k, [t]);
+      }
+    }
+    const nb = Array.from({ length: T }, () => []);
+    for (const l of edgeTris.values()) for (let i = 0; i < l.length; i++) for (let j = 0; j < l.length; j++) if (i !== j) nb[l[i]].push(l[j]);
+    let total = 0; for (let t = 0; t < T; t++) total += area[t];
+    const minArea = total * 0.0015, comp = new Int32Array(T), stack = [];
+    for (let pass = 0; pass < 4; pass++) {
+      comp.fill(-1); let changed = 0;
+      for (let s = 0; s < T; s++) {
+        if (comp[s] >= 0) continue;
+        const members = [s]; comp[s] = s; stack.length = 0; stack.push(s); let ca = 0, my = 0, mz = 0; const around = [0, 0, 0];
+        while (stack.length) {
+          const t = stack.pop(); ca += area[t]; my += cy[t] * area[t]; mz += cz[t] * area[t];
+          for (const u of nb[t]) {
+            if (cls[u] === cls[s]) { if (comp[u] < 0) { comp[u] = s; stack.push(u); members.push(u); } }
+            else around[cls[u]] += area[u];
+          }
+        }
+        // small ink patches on the front of the face are her eyes: keep them
+        const hy = ca > 0 ? (my / ca - bb.min.y) / bh : 0, front = ca > 0 && mz / ca > midZ;
+        const eye = cls[s] === 0 && front && hy > 0.6 && hy < 0.86 && around[2] > 0.7 * (around[0] + around[1] + around[2]) && ca > minArea * 0.04;
+        if (!eye && ca < minArea && (around[0] + around[1] + around[2]) > 0) {
+          const to = around[0] >= around[1] ? (around[0] >= around[2] ? 0 : 2) : (around[1] >= around[2] ? 1 : 2);
+          if (to !== cls[s]) { for (const t of members) cls[t] = to; changed++; }
+        }
+      }
+      if (!changed) break;
+    }
+    // flat colour per triangle: un-index the geometry so classes keep crisp borders
+    const PAL = [new THREE.Color().setRGB(0.075, 0.062, 0.058, THREE.SRGBColorSpace), new THREE.Color().setRGB(0.80, 0.16, 0.13, THREE.SRGBColorSpace), new THREE.Color().setRGB(0.97, 0.945, 0.92, THREE.SRGBColorSpace)];
+    const flat = geo.toNonIndexed();
+    const col = new Float32Array(T * 9);
+    for (let t = 0; t < T; t++) { const c = PAL[cls[t]]; for (let k = 0; k < 3; k++) { col[t * 9 + k * 3] = c.r; col[t * 9 + k * 3 + 1] = c.g; col[t * 9 + k * 3 + 2] = c.b; } }
+    flat.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    flat.deleteAttribute('uv');
+    mesh.geometry = flat;
+    return true;
+  } catch (e) { console.warn('girl flat colours skipped', e); return false; }
+}
+
+function buildGirl(gltf) {
+  girlRoot = new THREE.Group(); scene.add(girlRoot);
+  if (!gltf) return;
+  girl = gltf.scene;
+  girl.traverse(o => {
+    if (o.isMesh) {
+      o.frustumCulled = false;
+      const src = o.material;
+      // flat palette colours baked from the Meshy texture (see flatGirlColors), shaded almost flat
+      const flat = src.map ? flatGirlColors(o, src.map) : false;
+      // keep the GLB's double-sidedness (some Meshy triangles are flipped)
+      const m = new THREE.MeshLambertMaterial(flat ? { vertexColors: true, side: src.side ?? THREE.DoubleSide } : { map: src.map || null, side: src.side ?? THREE.DoubleSide });
+      m.onBeforeCompile = (sh) => {
+        sh.uniforms.uRimCol = girlRim;
+        sh.fragmentShader = 'uniform vec3 uRimCol;\n' + sh.fragmentShader
+          .replace('#include <opaque_fragment>',
+          `{ float rimF = pow(1.0 - clamp(dot(normalize(normal), normalize(vViewPosition)), 0.0, 1.0), 3.0);
+             outgoingLight = outgoingLight * 0.42 + diffuseColor.rgb * 0.6 + uRimCol * rimF * (0.35 + diffuseColor.r); }
+           #include <opaque_fragment>`);
+      };
+      m.customProgramCacheKey = () => 'girl-flat';
+      o.material = m;
+    }
+  });
+  girlRoot.add(girl);
+  girl.updateMatrixWorld(true);
+  let b = new THREE.Box3().setFromObject(girl, true);
+  const s = GIRL_H / (b.max.y - b.min.y);
+  girl.scale.multiplyScalar(s);
+  girl.updateMatrixWorld(true);
+  b = new THREE.Box3().setFromObject(girl, true);
+  girlOffY = -b.min.y;
+  girl.position.y = girlOffY;
+  mixer = new THREE.AnimationMixer(girl);
+}
+const girlRim = { value: new THREE.Color(0, 0, 0) };
+function prepClip(clip, name) {
+  const flatY = name === 'jump';
+  for (const tr of clip.tracks) {
+    if (/Hips\.position$/.test(tr.name)) {
+      const v = tr.values, x0 = v[0], z0 = v[2];
+      for (let i = 0; i < v.length; i += 3) { v[i] = x0; v[i + 2] = z0; if (flatY) v[i + 1] = 63.5; }
+    }
+  }
+  clip.name = name;
+  return clip;
+}
+function playAnim(name, fade = 0.22, o = {}) {
+  const a = anim.acts[name]; if (!a) return;
+  if (anim.name === name && !o.restart) { if (o.ts) a.setEffectiveTimeScale(o.ts); return; }
+  a.enabled = true; a.reset();
+  if (o.start) a.time = o.start;
+  a.setEffectiveTimeScale(o.ts ?? 1); a.setEffectiveWeight(1); a.fadeIn(fade); a.play();
+  if (anim.cur && anim.cur !== a) anim.cur.fadeOut(fade);
+  anim.cur = a; anim.name = name;
+}
+
+function buildEmber() {
+  emberCore = new THREE.Sprite(new THREE.SpriteMaterial({ map: A.spark, color: new THREE.Color(3.4, 2.6, 1.3), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true }));
+  emberHalo = new THREE.Sprite(new THREE.SpriteMaterial({ map: A.spark, color: new THREE.Color(1.3, 0.5, 0.15), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.55 }));
+  emberCore.renderOrder = 1.5; emberHalo.renderOrder = 1.5;
+  scene.add(emberCore, emberHalo);
+  emberLight = new THREE.PointLight(0xff9a48, 6, 9, 1.6); scene.add(emberLight);
+  // comet trail ribbon
+  const N = 36, pos = new Float32Array(N * 2 * 3), tt = new Float32Array(N * 2), side = new Float32Array(N * 2), idx = [];
+  for (let i = 0; i < N; i++) { tt[i * 2] = tt[i * 2 + 1] = i / (N - 1); side[i * 2] = -1; side[i * 2 + 1] = 1; }
+  for (let i = 0; i < N - 1; i++) { const p = i * 2; idx.push(p, p + 1, p + 2, p + 1, p + 3, p + 2); }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos, 3).setUsage(THREE.DynamicDrawUsage));
+  g.setAttribute('aT', new THREE.BufferAttribute(tt, 1)); g.setAttribute('aSide', new THREE.BufferAttribute(side, 1)); g.setIndex(idx);
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { uPow: { value: 1 } },
+    vertexShader: `attribute float aT; attribute float aSide; varying float vT; varying float vS; void main(){ vT = aT; vS = aSide; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: /* glsl */`uniform float uPow; varying float vT; varying float vS;
+      void main(){ float a = pow(max(1.0 - vT, 0.0), 1.6); float edge = 1.0 - vS * vS; edge = edge * edge;
+        vec3 c = mix(vec3(3.0, 2.2, 0.9), vec3(1.6, 0.42, 0.08), smoothstep(0.0, 0.35, vT));
+        c = mix(c, vec3(0.7, 0.07, 0.02), smoothstep(0.35, 1.0, vT));
+        gl_FragColor = vec4(c, a * edge * uPow); }`,
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+  });
+  trail = new THREE.Mesh(g, mat); trail.frustumCulled = false; trail.renderOrder = 1.4; scene.add(trail);
+  trail.userData.N = N;
+  // soft contact shadow under the girl
+  shadowBlob = new THREE.Mesh(new THREE.PlaneGeometry(1.3, 0.6), new THREE.ShaderMaterial({
+    uniforms: { uA: { value: 0.35 } },
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `uniform float uA; varying vec2 vUv; void main(){ float d = length((vUv - 0.5) * 2.0); float a = (1.0 - smoothstep(0.15, 1.0, d)) * uA; gl_FragColor = vec4(0.05, 0.035, 0.03, a); }`,
+    transparent: true, depthWrite: false,
+  }));
+  shadowBlob.rotation.x = -Math.PI / 2; shadowBlob.renderOrder = 0.5; scene.add(shadowBlob);
+  // flare shockwave ring (procedural)
+  flareRing = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.ShaderMaterial({
+    uniforms: { uR: { value: 0 }, uA: { value: 0 } },
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `uniform float uR; uniform float uA; varying vec2 vUv;
+      void main(){ float d = length(vUv - 0.5) * 2.0; float ring = 1.0 - smoothstep(0.0, 0.07 + 0.08 * uR, abs(d - uR));
+        float inner = (1.0 - smoothstep(0.0, uR + 0.001, d)) * 0.12;
+        gl_FragColor = vec4(vec3(1.0, 0.62, 0.28) * 1.4, (ring + inner) * uA); }`,
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  }));
+  flareRing.scale.setScalar(26); flareRing.renderOrder = 1.7; flareRing.visible = false; scene.add(flareRing);
+}
+
+function buildAtlas(images, cell = 170, cols = 6) {
+  const cv = document.createElement('canvas'); cv.width = cv.height = cell * cols;
+  const ctx = cv.getContext('2d');
+  images.forEach((img, i) => {
+    if (i >= cols * cols) return;
+    const cx = (i % cols) * cell, cy = Math.floor(i / cols) * cell;
+    const s = (cell - 16) / Math.max(img.width, img.height);
+    const w = img.width * s, h = img.height * s;
+    ctx.drawImage(img, cx + (cell - w) / 2, cy + (cell - h) / 2, w, h);
+  });
+  const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; t.generateMipmaps = true; t.minFilter = THREE.LinearMipmapLinearFilter;
+  return t;
+}
+
+// ---------------------------------------------------------------- audio
+const AU = { ctx: null, buf: {}, master: null, music: null, musicGain: null, filt: null, wind: null, windGain: null, amb: null, ambGain: null };
+async function audioInit() {
+  if (AU.ctx || DBG.mute) return;
+  try { AU.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+  AU.master = AU.ctx.createGain(); AU.master.gain.value = 0.9; AU.master.connect(AU.ctx.destination);
+  const list = MAN.audio || {};
+  await Promise.all(Object.entries(list).map(async ([k, f]) => {
+    try { const r = await fetch('assets/' + f); if (!r.ok) return; AU.buf[k] = await AU.ctx.decodeAudioData(await r.arrayBuffer()); } catch (e) { console.warn('audio', k, e); }
+  }));
+  const loop = (buf, vol, filt) => { const s = AU.ctx.createBufferSource(); s.buffer = buf; s.loop = true; const g = AU.ctx.createGain(); g.gain.value = 0; let n = s; if (filt) { n.connect(filt); n = filt; } n.connect(g).connect(AU.master); s.start(); g.gain.linearRampToValueAtTime(vol, AU.ctx.currentTime + 4); return g; };
+  if (AU.buf.music) { AU.filt = AU.ctx.createBiquadFilter(); AU.filt.type = 'lowpass'; AU.filt.frequency.value = 16000; AU.musicGain = loop(AU.buf.music, 0.5, AU.filt); }
+  if (AU.buf.ambience) AU.ambGain = loop(AU.buf.ambience, 0.28);
+  if (AU.buf.wind) AU.windGain = loop(AU.buf.wind, 0.0);
+}
+function sfx(name, vol = 1, rate = 1) {
+  if (!AU.ctx || !AU.buf[name]) return;
+  const s = AU.ctx.createBufferSource(); s.buffer = AU.buf[name]; s.playbackRate.value = rate;
+  const g = AU.ctx.createGain(); g.gain.value = vol; s.connect(g).connect(AU.master); s.start();
+}
+function audioUpdate(dt) {
+  if (!AU.ctx) return;
+  const t = AU.ctx.currentTime;
+  if (AU.filt) AU.filt.frequency.setTargetAtTime(ember.dead ? 500 : 900 + 15000 * sstep(0.05, 0.5, ember.W), t, 0.3);
+  if (AU.windGain) AU.windGain.gain.setTargetAtTime(0.55 * G.ashAmt, t, 0.5);
+  if (AU.musicGain && G.state === 'finale') AU.musicGain.gain.setTargetAtTime(0.75, t, 1.0);
+}
+
+// ---------------------------------------------------------------- input
+const keys = new Set(); let jumpPressed = false;
+const isJump = c => c === 'Space' || c === 'ArrowUp' || c === 'KeyW';
+const isFlare = c => c === 'KeyE' || c === 'KeyF' || c === 'KeyX' || c === 'KeyK';
+addEventListener('keydown', e => {
+  if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) e.preventDefault();
+  if (e.repeat) { keys.add(e.code); return; }
+  keys.add(e.code);
+  if (G.state === 'title') { startGame(); return; }
+  if (G.state === 'end') { if (e.code === 'Enter' || e.code === 'Space') restart(); return; }
+  if (isJump(e.code)) jumpPressed = true;
+  if (isFlare(e.code)) tryFlare();
+});
+addEventListener('keyup', e => keys.delete(e.code));
+addEventListener('blur', () => keys.clear());
+const touches = new Map();
+addEventListener('touchstart', e => {
+  if (G.state === 'title') { startGame(); return; } if (G.state === 'end') { restart(); return; }
+  for (const t of e.changedTouches) {
+    const fx = t.clientX / innerWidth, fy = t.clientY / innerHeight;
+    if (fx < 0.3) touches.set(t.identifier, 'ArrowLeft'); else if (fx > 0.7) touches.set(t.identifier, 'ArrowRight');
+    else if (fy < 0.55) { tryFlare(); continue; } else { jumpPressed = true; touches.set(t.identifier, 'Space'); }
+    keys.add(touches.get(t.identifier));
+  }
+}, { passive: true });
+addEventListener('touchend', e => { for (const t of e.changedTouches) { const k = touches.get(t.identifier); if (k) keys.delete(k); touches.delete(t.identifier); } }, { passive: true });
+const kL = () => keys.has('ArrowLeft') || keys.has('KeyA');
+const kR = () => keys.has('ArrowRight') || keys.has('KeyD');
+const kRun = () => keys.has('ShiftLeft') || keys.has('ShiftRight');
+const kJumpHeld = () => keys.has('Space') || keys.has('ArrowUp') || keys.has('KeyW');
+
+// ---------------------------------------------------------------- physics helpers
+const FOOT = 0.22;  // half-width of the girl's feet
+function supportAt(x, maxY) {
+  let best = -Infinity;
+  for (const fx of [x - FOOT, x, x + FOOT]) if (!inGap(fx)) { const g = baseH(fx); if (g <= maxY && g > best) best = g; }
+  for (const p of props) if (p.solid && x + FOOT > p.solid.walk0 && x - FOOT < p.solid.walk1 && p.solid.top <= maxY && p.solid.top > best) best = p.solid.top;
+  return best;
+}
+function blockX(x0, x1, y) {
+  let x = x1;
+  for (const b of brambles) if (b.solid) {
+    const L = b.x - 0.75, R = b.x + 0.75;
+    if (x0 <= L && x > L) x = L; else if (x0 >= R && x < R) x = R;
+  }
+  for (const p of props) if (p.solid && y < p.solid.top - 0.28) {
+    const L = p.solid.x0, R = p.solid.x1;
+    if (x0 <= L && x > L) x = L - 0.001; else if (x0 >= R && x < R) x = R + 0.001;
+  }
+  return x;
+}
+
+// ---------------------------------------------------------------- gameplay
+function revealTree(t, ox, oy) {
+  if (t.revealed) return;
+  t.revealed = true; t.rv = 0.0001;
+  t.mesh.material.uniforms.uOrigin.value.set(ox, oy);
+  if (t.counted) { G.revealed++; G.hudT = 2.8; ember.W = Math.min(1, ember.W + (t.layer === 0 ? 0.014 : 0.008)); }
+  sfx('bloom', t.layer === 0 ? 0.32 : 0.16, (t.layer === 0 ? 1.0 : 0.82) * rr(0.92, 1.1));
+  const tiles = t.set === 'autumn' ? leafTilesA : leafTilesG;
+  if (leafFX && tiles.length && t.layer < 2) for (let i = 0; i < (t.layer === 0 ? 7 : 3); i++) {
+    leafFX.spawn({ x: t.x + rr(-3, 3), y: t.by + t.h * rr(0.55, 0.85), z: t.z + 0.3, vx: rr(-0.4, 0.4), vy: rr(-0.2, 0.3), life: rr(3.5, 6), size: rr(0.22, 0.38), tile: pick(tiles), grav: 0.35, drag: 0.9, flut: 1.4, vr: rr(-2, 2) });
+  }
+  if (sparkFX) for (let i = 0; i < 10; i++) sparkFX.spawn({ x: ox + rr(-0.5, 0.5), y: oy + rr(0, 1.5), z: t.z + 0.4, vx: rr(-0.5, 0.5), vy: rr(0.5, 1.6), life: rr(0.6, 1.3), size: rr(0.1, 0.22), size1: 0.02, color: [1.6, 0.8, 0.3], drag: 1.2 });
+}
+function revealPlant(p) {
+  if (p.revealed) return;
+  p.revealed = true; p.rv = 0.0001; p.glow = p.kind === 'sprout' ? 0.85 : 0.35;
+}
+function revealProp(p) { if (p.revealed) return; p.revealed = true; p.rv = 0.0001; }
+
+function tryFlare() {
+  if (G.state !== 'play' || pl.flareT >= 0 || G.flareCD > 0) return;
+  if (ember.W < 0.2) {
+    sfx('sputter', 0.5);
+    if (sparkFX) for (let i = 0; i < 8; i++) sparkFX.spawn({ x: ember.pos.x, y: ember.pos.y, z: ember.pos.z, vx: rr(-0.6, 0.6), vy: rr(0.2, 0.9), life: rr(0.3, 0.6), size: 0.08, color: [0.8, 0.3, 0.1] });
+    G.flareCD = 0.5; return;
+  }
+  pl.flareT = 0; pl.fired = false; pl.lock = 0.75; ember.W -= 0.17; G.flareCD = 1.1;
+  playAnim('flare', 0.15, { restart: true, ts: 1.15 });
+}
+function fireFlare() {
+  const ex = ember.pos.x;
+  G.flash = 1; G.flareR = 0.01; G.flareX = ex;
+  sfx('flare', 0.75);
+  paintField(ex, 11, 1);
+  const D = camera.position.z, cx = camera.position.x;
+  for (const t of trees) if (!t.revealed && !t.dead) {
+    const px = cx + (t.x - cx) * D / (D - t.z);
+    if (Math.abs(px - ex) < 12.5) setTimeout(() => revealTree(t, cx + (ex - cx) * (D - t.z) / D, t.by + t.h * 0.2), 120 + Math.abs(px - ex) * 55);
+  }
+  for (const p of plants) if (!p.dead && Math.abs(p.x - ex) < 10) revealPlant(p);
+  for (const p of props) if (Math.abs(p.x - ex) < 10) revealProp(p);
+  for (const b of brambles) if (b.solid && Math.abs(b.x - ex) < 5.5) burnBramble(b);
+  if (sparkFX) for (let i = 0; i < 70; i++) { const a = rand() * 6.28, s = rr(3, 7); sparkFX.spawn({ x: ex, y: ember.pos.y, z: ember.pos.z, vx: Math.cos(a) * s, vy: Math.sin(a) * s * 0.7 + 0.5, life: rr(0.5, 1.2), size: rr(0.12, 0.26), size1: 0.02, color: [1.8, 0.9, 0.35], drag: 2.2 }); }
+  if (greatTree && !greatTree.revealed && Math.abs(pl.x - LV.greatX) < 13) startFinale();
+}
+function burnBramble(b) {
+  if (!b.solid) return;
+  b.burnT = 0;
+  for (const m of b.parts) m.material.uniforms.uOrigin.value.set(ember.pos.x, ember.pos.y);
+  setTimeout(() => { b.solid = false; }, 650);
+  sfx('burn', 0.6);
+  if (sparkFX) for (let i = 0; i < 40; i++) sparkFX.spawn({ x: b.x + rr(-0.8, 0.8), y: baseH(b.x) + rr(0.2, 2.2), z: rr(-0.4, 0.4), vx: rr(-0.8, 0.8), vy: rr(0.6, 2.2), life: rr(0.7, 1.6), size: rr(0.1, 0.2), size1: 0.02, color: [1.7, 0.7, 0.25], drag: 1.0 });
+}
+function lightLantern(L) {
+  if (!L.lit) { L.lit = true; L.litT = 0; sfx('lantern', 0.6); if (L.p) revealProp(L.p); paintField(L.x, 7, 1);
+    if (sparkFX) for (let i = 0; i < 30; i++) sparkFX.spawn({ x: L.x, y: L.flame.position.y, z: -0.6, vx: rr(-1, 1), vy: rr(0.5, 2.5), life: rr(0.6, 1.4), size: rr(0.1, 0.2), size1: 0.02, color: [1.8, 0.9, 0.3], drag: 1.4 }); }
+  if (ember.W < 0.999) { ember.W = Math.min(1, ember.W + 0.02); if (ember.W > 0.97) ember.W = 1; }
+  G.checkpoint = L.x;
+}
+function collectMote(m) {
+  m.taken = true; m.core.visible = m.halo.visible = false;
+  G.motes++; ember.W = Math.min(1, ember.W + 0.17);
+  sfx('mote', 0.5, rr(0.95, 1.12));
+  if (sparkFX) for (let i = 0; i < 22; i++) { const a = rand() * 6.28; sparkFX.spawn({ x: m.x, y: m.y, z: m.z, vx: Math.cos(a) * rr(1, 2.5), vy: Math.sin(a) * rr(1, 2.5), life: rr(0.4, 0.9), size: rr(0.08, 0.16), size1: 0.01, color: [1.9, 1.3, 0.5], drag: 2.5 }); }
+}
+function die(kind) {
+  if (G.state !== 'play') return;
+  G.state = 'dying'; G.deathT = 0; G.deathKind = kind;
+  if (kind === 'cold') { ember.dead = true; playAnim('kneel', 0.3, { restart: true }); sfx('die', 0.6); }
+  else { G.wFall = ember.W; sfx('fall', 0.45); }
+}
+function respawn() {
+  const fall = G.deathKind === 'fall';
+  const x = fall ? G.lastSafeX : G.checkpoint + 1.4;
+  pl.x = x; pl.y = baseH(x); pl.vx = pl.vy = 0; pl.grounded = true; pl.flareT = -1; pl.face = 1;
+  ember.dead = false; ember.W = fall ? Math.max(0.3, G.wFall - 0.1) : 0.65;
+  ember.pos.set(x - 0.6, pl.y + 0.8, 0.3); ember.vel.set(0, 0, 0); ember.hist.length = 0;
+  cam.x = x; cam.y = pl.y;
+  playAnim('idle', 0.1, { restart: true });
+  G.state = 'play';
+}
+function startFinale() {
+  G.state = 'finale'; G.finaleT = 0;
+  revealTree(greatTree, greatTree.x, greatTree.by + 1);
+  sfx('finale', 0.9);
+  setTimeout(() => playAnim('joy', 0.3, { restart: true }), 700);
+}
+function showEnd() {
+  G.state = 'end';
+  const pct = Math.round(100 * G.revealed / Math.max(1, G.total));
+  const t = Math.round(G.playTime), mm = Math.floor(t / 60), ss = String(t % 60).padStart(2, '0');
+  $('endStats').innerHTML = `Forest redrawn: <b>${pct}%</b> (${G.revealed} / ${G.total} trees)<br>Sparks gathered: ${G.motes} / ${G.motesTotal}<br>Time: ${mm}:${ss}`;
+  $('end').classList.remove('hide');
+}
+function restart() { location.reload(); }
+function startGame() {
+  if (G.state !== 'title') return;
+  $('title').classList.add('hide');
+  G.state = 'play';
+  audioInit();
+  canvas.focus();
+}
+
+// ---------------------------------------------------------------- per-frame updates
+const cam = { x: LV.start, y: 0, d: 15, lift: 0 };
+const _v1 = new THREE.Vector3(), _v2 = new THREE.Vector3(), _buf = new THREE.Vector2();
+function updatePlayer(dt) {
+  const canMove = G.state === 'play' && pl.lock <= 0;
+  let dir = 0;
+  if (canMove) { if (kL()) dir -= 1; if (kR()) dir += 1; }
+  const run = kRun() || (DBG.auto && inAsh(pl.x));
+  if (DBG.auto && G.state === 'play') {
+    dir = 1;
+    const ahead = pl.x + (run ? 0.9 : 0.45);
+    if (pl.grounded && (inGap(ahead + FOOT) || props.some(p => p.solid && pl.x + 1.0 > p.solid.x0 && pl.x < p.solid.x0 && pl.y < p.solid.top - 0.2))) jumpPressed = true;
+    for (const b of brambles) if (b.solid && b.x - pl.x < 3.2 && b.x > pl.x) tryFlare();
+    if (greatTree && !greatTree.revealed && pl.x > LV.greatX - 8) tryFlare();
+    if (inAsh(pl.x)) dir = 1;
+  }
+  const target = dir * (run ? RUN : WALK);
+  pl.vx = toward(pl.vx, target, (pl.grounded ? ACC : AIR_ACC) * dt);
+  if (dir) pl.face = dir;
+  pl.jbuf -= dt; pl.coyote -= dt; pl.lock -= dt;
+  if (jumpPressed && G.state === 'play') pl.jbuf = JBUF;
+  jumpPressed = false;
+  if (pl.jbuf > 0 && (pl.grounded || pl.coyote > 0) && G.state === 'play' && pl.flareT < 0) {
+    pl.vy = JUMP_V; pl.grounded = false; pl.coyote = 0; pl.jbuf = 0; pl.airT = 0;
+    playAnim('jump', 0.1, { restart: true, start: 0.5, ts: 1.35 }); sfx('jump', 0.25, rr(0.95, 1.05));
+  }
+  if (!pl.grounded && pl.vy > 0 && !kJumpHeld() && !DBG.auto) pl.vy -= GRAV * 1.3 * dt;
+  pl.vy = Math.max(pl.vy - GRAV * dt, -MAX_FALL);
+  const nx = clamp(blockX(pl.x, pl.x + pl.vx * dt, pl.y), LV.xMin + 3, LV.greatX + 10);
+  if (nx !== pl.x + pl.vx * dt) pl.vx = 0;
+  pl.x = nx;
+  let ny = pl.y + pl.vy * dt;
+  const sup = supportAt(pl.x, pl.y + 0.3);
+  const was = pl.grounded;
+  if (pl.vy <= 0 && ny <= sup) { ny = sup; pl.vy = 0; pl.grounded = true; }
+  else if (pl.vy <= 0 && was && sup > -1e9 && pl.y - sup < 0.4) { ny = sup; pl.vy = 0; pl.grounded = true; }
+  else pl.grounded = false;
+  pl.y = ny;
+  if (pl.grounded) { pl.coyote = COYOTE; if (!was) { pl.landT = 0.2; sfx('land', 0.22, rr(0.9, 1.1)); } }
+  else pl.airT += dt;
+  if (pl.grounded && !inGap(pl.x) && !nearGap(pl.x, 1.0) && Math.abs(pl.y - baseH(pl.x)) < 0.05) G.lastSafeX = pl.x;
+  if (pl.y < baseH(pl.x) - 4.5 && G.state === 'play') die('fall');
+  // footsteps
+  if (pl.grounded && Math.abs(pl.vx) > 0.6) { G.stepT -= dt * Math.abs(pl.vx) / 3.3; if (G.stepT <= 0) { G.stepT = 0.36; sfx('step', 0.16, rr(0.9, 1.15)); } }
+  // flare sequence
+  if (pl.flareT >= 0) {
+    pl.flareT += dt;
+    if (!pl.fired && pl.flareT > 0.42) { pl.fired = true; fireFlare(); }
+    if (pl.flareT > 1.05) pl.flareT = -1;
+  }
+  // animation state
+  if (girl && G.state !== 'dying' && G.state !== 'finale' && G.state !== 'end') {
+    const sp = Math.abs(pl.vx);
+    if (pl.flareT >= 0) { /* keep flare */ }
+    else if (!pl.grounded) { if (pl.airT > 0.55 && pl.vy < -4) playAnim('fall', 0.25); }
+    else if (sp > 4.4) playAnim('run', 0.2, { ts: sp / 5.0 });
+    else if (sp > 0.25) playAnim('walk', 0.2, { ts: clamp(sp / 1.7, 0.6, 2.4) });
+    else { pl.idleT += dt; playAnim(pl.idleT > 7 ? 'look' : 'idle', 0.35); }
+    if (sp > 0.25 || !pl.grounded) pl.idleT = 0;
+  }
+  if (girlRoot) {
+    girlRoot.position.set(pl.x, pl.y, 0);
+    const targetRot = pl.face > 0 ? Math.PI / 2 - 0.38 : -Math.PI / 2 + 0.38;
+    let r = girlRoot.rotation.y; r = damp(r, targetRot, 10, dt); girlRoot.rotation.y = r;
+  }
+}
+
+function updateEmber(dt) {
+  const f = pl.face;
+  let tx = pl.x - 0.55 * f, ty = pl.y + 0.8 + Math.sin(G.T * 2.3) * 0.07, tz = 0.3;
+  if (Math.abs(pl.vx) < 0.3 && pl.grounded && pl.flareT < 0) { tx += Math.cos(G.T * 0.9) * 0.4 + 0.2 * f; tz += Math.sin(G.T * 0.9) * 0.45; ty += Math.sin(G.T * 1.4) * 0.12; }
+  if (pl.flareT >= 0 && pl.flareT < 0.9) { tx = pl.x + 0.18 * f; ty = pl.y + 1.62; tz = 0.25; }
+  if (G.state === 'dying' && G.deathKind === 'cold') { tx = pl.x + 0.35 * f; ty = pl.y + 0.35; }
+  if (G.state === 'finale' || G.state === 'end') { tx = lerp(pl.x, greatTree ? greatTree.x : pl.x, sstep(0, 3, G.finaleT)); ty = pl.y + 1.4 + sstep(0, 4, G.finaleT) * 6; tz = lerp(0.3, -6, sstep(0.5, 4, G.finaleT)); }
+  const k = 42, c = 9.5;
+  ember.vel.x += ((tx - ember.pos.x) * k - ember.vel.x * c) * dt;
+  ember.vel.y += ((ty - ember.pos.y) * k - ember.vel.y * c) * dt;
+  ember.vel.z += ((tz - ember.pos.z) * k - ember.vel.z * c) * dt;
+  ember.pos.addScaledVector(ember.vel, dt);
+  // warmth
+  const ash = inAsh(pl.x);
+  G.ashAmt = damp(G.ashAmt, ash ? 1 : 0, 2, dt);
+  if (G.state === 'play') {
+    ember.W -= (ash ? 0.07 : 0.024) * dt;
+    for (const L of lanterns) if (Math.abs(L.x - pl.x) < 1.3) lightLantern(L);
+    if (ember.W <= 0) { ember.W = 0; die('cold'); }
+  }
+  if (DBG.warm !== null && G.state === 'play') ember.W = Math.max(ember.W, DBG.warm);
+  const alive = ember.dead ? 0 : 1;
+  ember.R = (1.6 + 4.4 * ember.W) * alive;
+  const flick = 0.85 + 0.15 * Math.sin(G.T * 17.0) * Math.sin(G.T * 7.3 + 1.0) + (ember.W < 0.22 ? 0.25 * Math.sin(G.T * 31) : 0);
+  const pw = (0.35 + 0.65 * ember.W) * flick * alive * (G.state === 'dying' ? Math.max(0, 1 - G.deathT * 0.8) : 1);
+  emberCore.position.copy(ember.pos); emberHalo.position.copy(ember.pos);
+  emberCore.scale.setScalar(0.34 * (0.6 + 0.6 * ember.W) * flick + 0.05);
+  emberHalo.scale.setScalar(1.7 * (0.5 + 0.8 * ember.W) * flick);
+  emberCore.material.opacity = Math.min(1, pw * 1.4); emberHalo.material.opacity = 0.55 * pw;
+  emberLight.position.copy(ember.pos); emberLight.intensity = 9 * pw;
+  U.uEmber.value.copy(ember.pos); U.uEmberPow.value = pw * 0.9 + G.flash * 0.8;
+  girlRim.value.setRGB(0.55 * pw, 0.22 * pw, 0.07 * pw);
+  // trail
+  ember.hist.unshift(ember.pos.clone());
+  const N = trail.userData.N;
+  if (ember.hist.length > N) ember.hist.length = N;
+  const P = trail.geometry.attributes.position.array;
+  for (let i = 0; i < N; i++) {
+    const a = ember.hist[Math.min(i, ember.hist.length - 1)], b = ember.hist[Math.min(i + 1, ember.hist.length - 1)];
+    let dx = a.x - b.x, dy = a.y - b.y; const l = Math.hypot(dx, dy) || 1; dx /= l; dy /= l;
+    const w = 0.12 * Math.pow(1 - i / (N - 1), 0.7) * (0.45 + 0.75 * ember.W) * alive;
+    P[i * 6] = a.x - dy * w; P[i * 6 + 1] = a.y + dx * w; P[i * 6 + 2] = a.z;
+    P[i * 6 + 3] = a.x + dy * w; P[i * 6 + 4] = a.y - dx * w; P[i * 6 + 5] = a.z;
+  }
+  trail.geometry.attributes.position.needsUpdate = true;
+  trail.material.uniforms.uPow.value = pw;
+  // embers shed by the ember
+  if (sparkFX && pw > 0.05 && rand() < dt * (24 + 30 * ember.W)) {
+    sparkFX.spawn({ x: ember.pos.x + rr(-0.06, 0.06), y: ember.pos.y + rr(-0.06, 0.06), z: ember.pos.z, vx: -ember.vel.x * 0.15 + rr(-0.3, 0.3), vy: rr(0.2, 0.9), vz: rr(-0.2, 0.2), life: rr(0.5, 1.2), size: rr(0.05, 0.12), size1: 0.0, color: [1.8, 0.75, 0.25], drag: 1.6 });
+  }
+}
+
+function updateReveal(dt) {
+  if (G.state === 'play' || G.state === 'title') {
+    const R = ember.R;
+    if (R > 0.1) paintField(ember.pos.x, R * 0.85, 1);
+    const D = camera.position.z, cx = camera.position.x;
+    for (const t of trees) {
+      if (t.revealed || t.dead || Math.abs(t.x - cx) > 70) continue;
+      const px = cx + (t.x - cx) * D / (D - t.z);
+      const pen = t.layer === 0 ? 0 : t.layer === 1 ? 1.5 : 2.9;
+      if (Math.abs(px - ember.pos.x) < R - pen) revealTree(t, cx + (ember.pos.x - cx) * (D - t.z) / D, t.by + t.h * 0.15);
+    }
+    for (const p of plants) if (!p.revealed && !p.dead && Math.abs(p.x - ember.pos.x) < R * 0.62 + 0.4) revealPlant(p);
+    for (const p of props) if (!p.revealed && p.kind !== 'lantern' && Math.abs(p.x - ember.pos.x) < R * 0.7 + 0.5) revealProp(p);
+  }
+  for (const t of trees) if (t.revealed && t.rv < 1) { t.rv = Math.min(1, t.rv + dt / t.dur); t.mesh.material.uniforms.uReveal.value = 1 - Math.pow(1 - t.rv, 2.2); }
+  if (greatTree && greatTree.revealed && greatTree.rv < 1) { greatTree.rv = Math.min(1, greatTree.rv + dt / greatTree.dur); greatTree.mesh.material.uniforms.uReveal.value = greatTree.rv; }
+  for (const p of plants) {
+    if (p.revealed && p.rv < 1) { p.rv = Math.min(1, p.rv + dt / 0.8); p.mesh.material.uniforms.uReveal.value = p.rv; }
+    if (p.glow > 0.001) { p.glow *= Math.exp(-dt * 1.6); p.mesh.material.uniforms.uGlow.value = p.glow; }
+  }
+  for (const p of props) if (p.revealed && p.rv < 1) { p.rv = Math.min(1, p.rv + dt / 1.3); p.rec.uReveal.value = p.rv; }
+  for (const b of brambles) if (b.burnT >= 0) {
+    b.burnT += dt; b.rv = Math.min(1, b.burnT / 0.9);
+    for (const m of b.parts) {
+      m.material.uniforms.uReveal.value = b.rv;
+      const k = sstep(0.9, 2.0, b.burnT);
+      m.scale.y = m.userData.sy0 === undefined ? (m.userData.sy0 = m.scale.y) : m.userData.sy0 * (1 - 0.92 * k);
+      m.material.uniforms.uOpacity.value = 1 - sstep(1.4, 2.2, b.burnT);
+    }
+  }
+  updateField(dt);
+}
+
+function updateWorld(dt) {
+  // motes
+  for (const m of motes) {
+    if (m.taken) continue;
+    const y = m.y + Math.sin(G.T * 1.7 + m.ph) * 0.12;
+    m.core.position.set(m.x, y, m.z); m.halo.position.set(m.x, y, m.z);
+    const s = 0.36 + 0.06 * Math.sin(G.T * 5 + m.ph);
+    m.core.scale.setScalar(s); m.halo.scale.setScalar(1.4 + 0.2 * Math.sin(G.T * 3 + m.ph));
+    if (G.state === 'play') {
+      const d1 = Math.hypot(m.x - pl.x, y - (pl.y + 0.65)), d2 = Math.hypot(m.x - ember.pos.x, y - ember.pos.y);
+      if (d1 < 0.85 || d2 < 0.6) collectMote(m);
+    }
+    if (sparkFX && rand() < dt * 3 && Math.abs(m.x - cam.x) < 20) sparkFX.spawn({ x: m.x + rr(-0.15, 0.15), y: y + rr(-0.15, 0.15), z: m.z, vy: rr(0.1, 0.4), life: rr(0.6, 1), size: rr(0.04, 0.08), color: [1.6, 1.1, 0.45] });
+  }
+  // lanterns
+  for (const L of lanterns) {
+    L.litT = Math.min(1, L.litT + dt * 1.5);
+    const on = L.lit ? L.litT : 0, fl = 0.9 + 0.1 * Math.sin(G.T * 13 + L.x) * Math.sin(G.T * 5.1 + L.x);
+    L.flame.material.opacity = on * fl; L.halo.material.opacity = 0.5 * on * fl;
+    L.flame.scale.setScalar(0.55 * fl); L.halo.scale.setScalar(2.6 * fl);
+    if (L.p && L.lit && !L.p.revealed) revealProp(L.p);
+  }
+  // light shafts brighter in restored areas
+  for (const s of shafts) s.m.material.uniforms.uI.value = 0.05 + 0.12 * Math.max(fieldAt(s.x), U.uFinale.value);
+  // ash fall
+  if (leafFX && ashTiles.length && G.ashAmt > 0.05) {
+    const n = dt * 40 * G.ashAmt;
+    for (let i = 0; i < n + (rand() < n % 1 ? 1 : 0); i++) leafFX.spawn({ x: cam.x + rr(-12, 14), y: cam.y + rr(7, 9), z: rr(-4, 3), vx: rr(-2.2, -1.2), vy: rr(-1.2, -0.6), life: rr(4, 6), size: rr(0.1, 0.2), tile: pick(ashTiles), drag: 0.2, flut: 0.6, vr: rr(-1.5, 1.5), color: [0.85, 0.82, 0.8], alpha: 0.9 });
+  }
+  // gentle ambient leaves in restored zones
+  if (leafFX && rand() < dt * 1.4) {
+    const x = cam.x + rr(-10, 12), restored = fieldAt(x) > 0.6 || U.uFinale.value > 0.5;
+    const tiles = x > LV.zone ? leafTilesA : leafTilesG;
+    if (restored && tiles.length) leafFX.spawn({ x, y: cam.y + rr(6, 8), z: rr(-3, 2), vx: rr(-0.5, 0.3), vy: rr(-0.6, -0.3), life: rr(6, 9), size: rr(0.2, 0.32), tile: pick(tiles), drag: 0.6, flut: 1.2, vr: rr(-2, 2) });
+  }
+  // dust in the light
+  if (sparkFX && rand() < dt * 6) sparkFX.spawn({ x: cam.x + rr(-9, 9), y: cam.y + rr(0.5, 6), z: rr(-3, 4), vx: rr(-0.1, 0.1), vy: rr(-0.05, 0.08), life: rr(3, 5), size: rr(0.025, 0.05), color: [0.6, 0.5, 0.35], alpha: 0.5, drag: 0.1 });
+  // flare shockwave visuals
+  if (G.flareR > 0) {
+    G.flareR += dt * 20;
+    if (G.flareR > 13) G.flareR = 0;
+  }
+  if (flareRing) {
+    flareRing.visible = G.flareR > 0;
+    if (flareRing.visible) {
+      const k = G.flareR / 13;
+      flareRing.position.set(G.flareX, ember.pos.y, 0.4);
+      flareRing.material.uniforms.uR.value = k; flareRing.material.uniforms.uA.value = Math.pow(1 - k, 1.5) * 0.9;
+    }
+  }
+  G.flash = Math.max(0, G.flash - dt * 2.2);
+}
+
+function updateCamera(dt) {
+  const fin = (G.state === 'finale' || G.state === 'end') ? sstep(0, 5, G.finaleT) : 0;
+  const glade = sstep(LV.greatX - 18, LV.greatX - 5, pl.x);
+  let tx = pl.x + pl.face * 1.4 + pl.vx * 0.22;
+  tx = lerp(tx, LV.greatX - 1, Math.max(glade * 0.55, fin * 0.8));
+  const gref = Math.max(baseH(pl.x), Math.min(pl.y, baseH(pl.x) + 2.4));
+  cam.x = damp(cam.x, tx, 2.4, dt);
+  cam.y = damp(cam.y, gref, 2.0, dt);
+  cam.d = damp(cam.d, 15 + glade * 3.5 + fin * 10, 1.4, dt);
+  cam.lift = damp(cam.lift, glade * 2.2 + fin * 6.5, 1.4, dt);
+  const shake = G.flash * 0.06;
+  camera.position.set(cam.x + Math.sin(G.T * 0.13) * 0.6 + (rand() - 0.5) * shake, cam.y + 1.6 + cam.lift * 0.55 + Math.sin(G.T * 0.21) * 0.08 + (rand() - 0.5) * shake, cam.d + Math.sin(G.T * 0.09) * 0.35);
+  camera.lookAt(cam.x, cam.y + 3.25 + cam.lift, 0);
+  U.uCam.value.copy(camera.position);
+  // cull sprites far from the view
+  const tanH = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.aspect;
+  for (const m of sprites) {
+    const half = (camera.position.z - m.position.z) * tanH + Math.abs(m.userData.hw) + 2;
+    m.visible = Math.abs(m.position.x - camera.position.x) < half && (m.material.uniforms.uOpacity.value > 0.003);
+  }
+  if (A.backdropMesh) A.backdropMesh.position.y = cam.y + 37 + cam.lift * 0.8;
+  // foreground trees open a soft bubble around the girl (only visible where a tree actually covers her)
+  if (fgTreeMeshes.length) {
+    camera.updateMatrixWorld(); renderer.getDrawingBufferSize(_buf);
+    _v1.set(pl.x, pl.y, 0).project(camera); _v2.set(pl.x, pl.y + GIRL_H, 0).project(camera);
+    const hx = (_v1.x * 0.5 + 0.5) * _buf.x, hy0 = (_v1.y * 0.5 + 0.5) * _buf.y, hy1 = (_v2.y * 0.5 + 0.5) * _buf.y;
+    const r = Math.max(8, (hy1 - hy0) * 1.25), on = G.state === 'play' || G.state === 'dying' || G.state === 'respawning' ? 0.82 : 0;
+    G.holeK = damp(G.holeK || 0, on, 4, dt);
+    for (const m of fgTreeMeshes) m.material.uniforms.uHole.value.set(hx, (hy0 + hy1) * 0.5, r, G.holeK);
+  }
+}
+
+function updateUI(dt) {
+  G.hudT -= dt;
+  $('hud').classList.toggle('show', (G.state === 'play' && G.hudT > 0) || G.state === 'finale');
+  $('hudCount').textContent = `${G.revealed} / ${G.total}`;
+  const proj = (x, y, z) => { const v = new THREE.Vector3(x, y, z).project(camera); return [(v.x * 0.5 + 0.5) * innerWidth, (-v.y * 0.5 + 0.5) * innerHeight]; };
+  let showE = false, ex = 0, ey = 0;
+  if (G.state === 'play') {
+    for (const b of brambles) if (b.solid && b.x - pl.x < 6 && b.x - pl.x > -1 && G.hintBramble) { [ex, ey] = proj(b.x, baseH(b.x) + 3.1, 0); showE = true; }
+    if (greatTree && !greatTree.revealed && pl.x > LV.greatX - 14) { [ex, ey] = proj(pl.x, pl.y + 2.5, 0); showE = true; }
+  }
+  const he = $('hintE'); he.classList.toggle('show', showE); if (showE) { he.style.left = ex + 'px'; he.style.top = ey + 'px'; }
+  let showJ = false, jx = 0, jy = 0;
+  if (G.state === 'play' && G.hintJump) { const g = LV.gaps[0]; if (g[0] - pl.x < 5 && g[0] - pl.x > -0.5) { [jx, jy] = proj((g[0] + g[1]) / 2, baseH(g[0]) + 2.2, 0); showJ = true; } if (pl.x > g[1] + 1) G.hintJump = false; }
+  const hj = $('hintJ'); hj.classList.toggle('show', showJ); if (showJ) { hj.style.left = jx + 'px'; hj.style.top = jy + 'px'; }
+  if (G.state === 'play' && brambles.length && !brambles[0].solid) G.hintBramble = false;
+}
+
+function updatePost(dt) {
+  const low = G.state === 'play' ? sstep(0.25, 0.04, ember.W) : 0;
+  let cold = Math.max(low * 0.7, G.ashAmt * 0.35);
+  let fade = 0;
+  if (G.state === 'dying') {
+    cold = Math.max(cold, G.deathKind === 'cold' ? sstep(0, 1.6, G.deathT) : 0);
+    fade = G.deathKind === 'cold' ? sstep(1.8, 2.6, G.deathT) : sstep(0.0, 0.6, G.deathT);
+    const tEnd = G.deathKind === 'cold' ? 2.7 : 0.75;
+    if (G.deathT > tEnd && !G.respawned) { G.respawned = true; respawn(); G.state = 'respawning'; G.deathT = 0; }
+  }
+  if (G.state === 'respawning') { fade = 1 - sstep(0.1, 0.9, G.deathT); if (G.deathT > 0.9) { G.state = 'play'; G.respawned = false; } }
+  grade.uniforms.uCold.value = damp(grade.uniforms.uCold.value, cold, 4, dt);
+  grade.uniforms.uFade.value = fade;
+  grade.uniforms.uFlash.value = G.flash;
+  grade.uniforms.uWarm.value = U.uFinale.value;
+  bloom.strength = 0.55 + G.flash * 0.6 + U.uFinale.value * 0.25;
+}
+
+// ---------------------------------------------------------------- adaptive resolution
+// keeps the game fluid on weak or software GPUs: during play only, it lowers the internal resolution when frames are slow
+const RES = { pr: Math.min(window.devicePixelRatio, 1.5), min: 0.5, ft: [], acc: 0 };
+function adaptRes(frameMs) {
+  if (G.state !== 'play') { RES.ft.length = 0; RES.acc = 0; return; }
+  RES.ft.push(frameMs); RES.acc += frameMs;
+  if (RES.ft.length < 45 && !(RES.ft.length >= 6 && RES.acc > 1500)) return;
+  const s = RES.ft.sort((a, b) => a - b), med = s[s.length >> 1]; RES.ft.length = 0; RES.acc = 0;
+  if (med > 40 && RES.pr > RES.min + 0.01) { RES.pr = Math.max(RES.min, RES.pr * 0.72); renderer.setPixelRatio(RES.pr); composer.setPixelRatio(RES.pr); onResize(); }
+}
+
+// ---------------------------------------------------------------- main loop
+let last = performance.now();
+function loop(now) {
+  requestAnimationFrame(loop);
+  const frameMs = now - last;
+  const dt = Math.min(0.05, Math.max(0.001, frameMs / 1000)); last = now;
+  G.T += dt; U.uTime.value = G.T;
+  if (G.state === 'loading') return;
+  adaptRes(frameMs);
+  if (G.state === 'play') G.playTime += dt;
+  if (G.state === 'dying' || G.state === 'respawning') G.deathT += dt;
+  G.flareCD -= dt;
+  if (G.state === 'finale') {
+    G.finaleT += dt;
+    U.uFinale.value = sstep(0.8, 5.5, G.finaleT);
+    if (leafFX && rand() < dt * 30) { const tiles = leafTilesA.concat(leafTilesG); if (tiles.length) leafFX.spawn({ x: cam.x + rr(-16, 16), y: cam.y + rr(9, 13), z: rr(-6, 3), vx: rr(-1, 0.4), vy: rr(-1, -0.4), life: rr(6, 9), size: rr(0.22, 0.4), tile: pick(tiles), drag: 0.5, flut: 1.4, vr: rr(-2, 2) }); }
+    if (G.finaleT > 8.5) showEnd();
+  }
+  if (G.state === 'end') G.finaleT += dt;
+  updatePlayer(dt);
+  updateEmber(dt);
+  updateCamera(dt);
+  updateReveal(dt);
+  updateWorld(dt);
+  if (mixer) mixer.update(dt);
+  if (anim.name === 'kneel' && anim.cur && anim.cur.time > 1.0) anim.cur.paused = true;
+  if (shadowBlob) {
+    const gy = supportAt(pl.x, pl.y + 0.05);
+    const hgt = pl.y - (gy > -1e9 ? gy : pl.y - 5);
+    shadowBlob.position.set(pl.x, (gy > -1e9 ? gy : -50) + 0.03, 0.05);
+    shadowBlob.material.uniforms.uA.value = 0.32 * (1 - sstep(0, 2.5, hgt));
+  }
+  if (sparkFX) { sparkFX.mat.uniforms.uScale.value = pointScale(); sparkFX.update(dt); }
+  if (leafFX) { leafFX.mat.uniforms.uScale.value = pointScale(); leafFX.update(dt); }
+  updateUI(dt);
+  updatePost(dt);
+  audioUpdate(dt);
+  composer.render(dt);
+}
+
+function onResize() {
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h); composer.setSize(w, h);
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+  grade.uniforms.uRes.value.set(w, h);
+}
+addEventListener('resize', onResize);
+
+// ---------------------------------------------------------------- init
+async function init() {
+  MAN = await fetch('assets/manifest.json').then(r => r.json());
+  const tag = (arr, flag) => arr.map((t, i) => { t.userData.birch = (flag || [])[i] || false; return t; });
+  const [treesGreen, treesAutumn, great, backdrop, gm, ga, gs, fgPlants, fgRocks, fgTrees, fgHang, sprouts, bushesGreen, bushesAutumn, bramble, spark, leaves, ash, paper] = await Promise.all([
+    loadAll(MAN.trees.green), loadAll(MAN.trees.autumn), loadTex(MAN.great), loadTex(MAN.backdrop, { repeat: true }),
+    loadTex(MAN.ground?.moss, { repeat: true }), loadTex(MAN.ground?.autumn, { repeat: true }), loadTex(MAN.ground?.side, { repeat: true }),
+    loadAll(MAN.fgPlants), loadAll(MAN.fgRocks), loadAll(MAN.fgTrees), loadAll(MAN.fgHang), loadAll(MAN.sprouts), loadAll(MAN.bushesGreen), loadAll(MAN.bushesAutumn),
+    loadAll(MAN.bramble), loadTex(MAN.spark), loadAll(MAN.leaves), loadAll(MAN.ash), loadTex(MAN.paper, { repeat: true }),
+  ]);
+  const [girlG, lantern, boulder, log, ...clips] = await Promise.all([
+    loadGLB(MAN.models.girl), loadGLB(MAN.models.lantern), loadGLB(MAN.models.boulder), loadGLB(MAN.models.log),
+    ...Object.values(MAN.anims).map(f => loadGLB(f)),
+  ]);
+  A = { treesGreen: tag(treesGreen, MAN.trees.greenBirch), treesAutumn: tag(treesAutumn, MAN.trees.autumnBirch), great, backdrop, groundMoss: gm, groundAutumn: ga, groundSide: gs,
+    fgPlants, fgRocks, fgTrees, fgHang, sprouts, bushesGreen, bushesAutumn, bramble, spark: spark || solidTex('#ffffff'), leaves, ash, paper, lantern, boulder, log };
+  if (MAN.title) $('titleImg').src = 'assets/' + MAN.title; else $('titleImg').replaceWith(Object.assign(document.createElement('div'), { className: 'fallback', textContent: 'Ember Path' }));
+  if (MAN.icon) $('hudIcon').src = 'assets/' + MAN.icon; else $('hudIcon').remove();
+  if (paper) { grade.uniforms.uPaper.value = paper; grade.uniforms.uHasPaper.value = 1; }
+
+  scene.add(new THREE.HemisphereLight(0xfff0d8, 0x4a3c30, 1.7));
+  const sun = new THREE.DirectionalLight(0xffe2b4, 2.2); sun.position.set(6, 10, 6); scene.add(sun);
+
+  buildBackdrop(); buildGround(); buildTrees(); buildProps(); buildPlants(); buildForeground(); buildShafts(); buildMotes(); buildBrambles();
+  buildGirl(girlG);
+  const names = Object.keys(MAN.anims);
+  clips.forEach((g, i) => { if (g && g.animations[0] && mixer) { const c = prepClip(g.animations[0], names[i]); const a = mixer.clipAction(c); if (['jump', 'flare', 'kneel', 'joy'].includes(names[i])) { a.setLoop(THREE.LoopOnce, 1); a.clampWhenFinished = true; } anim.acts[names[i]] = a; } });
+  playAnim('idle', 0);
+  buildEmber();
+  // particles: sparks (additive) + leaves/ash atlas
+  sparkFX = new FX(1600, A.spark, 1, true, 1.6);
+  const leafImgs = leaves.map(t => t.image), ashImgs = ash.map(t => t.image);
+  if (leafImgs.length || ashImgs.length) {
+    const atlas = buildAtlas(leafImgs.concat(ashImgs).slice(0, 36));
+    leafFX = new FX(900, atlas, 6, false, 1.2);
+    const nl = Math.min(leafImgs.length, 36);
+    for (let i = 0; i < nl; i++) ((MAN.leafAutumn || []).includes(i) ? leafTilesA : leafTilesG).push(i);
+    if (!leafTilesA.length) leafTilesA = leafTilesG.slice(); if (!leafTilesG.length) leafTilesG = leafTilesA.slice();
+    for (let i = 0; i < ashImgs.length && nl + i < 36; i++) ashTiles.push(nl + i);
+  }
+  // start position (debug)
+  if (DBG.x !== null) { pl.x = DBG.x; cam.x = DBG.x; const L = lanterns.filter(l => l.x <= DBG.x).pop(); if (L) G.checkpoint = L.x; }
+  pl.y = baseH(pl.x); cam.y = pl.y;
+  ember.pos.set(pl.x - 0.6, pl.y + 0.8, 0.3);
+  if (DBG.warm !== null) ember.W = DBG.warm;
+  if (DBG.reveal) { for (let i = 0; i < FIELD_N; i++) fieldTgt[i] = fieldVal[i] = 1; fieldBytes.fill(255); fieldTex.needsUpdate = true; for (const t of trees) if (!t.dead) { t.revealed = true; t.rv = 1; t.mesh.material.uniforms.uReveal.value = 1; } for (const p of plants) { p.revealed = true; p.rv = 1; p.mesh.material.uniforms.uReveal.value = 1; } for (const p of props) { p.revealed = true; p.rv = 1; p.rec.uReveal.value = 1; } }
+  onResize();
+  updateCamera(0.016); camera.updateMatrixWorld();
+  // warm up shaders
+  renderer.compile(scene, camera);
+  $('load').classList.add('hide');
+  G.state = 'title';
+  if (DBG.play) startGame(); else $('title').classList.remove('hide');
+  if (DBG.finale) { pl.x = LV.greatX - 6; cam.x = pl.x; pl.y = baseH(pl.x); ember.W = 1; }
+  window.__game = { G, pl, ember, trees, LV, lanterns, brambles, motes, tryFlare, U, girl, girlRoot, camera, scene, THREE, props, plants, AU, anim, RES };
+}
+requestAnimationFrame(loop);
+init().catch(e => { console.error(e); $('load').querySelector('.bar').style.background = '#a33'; });
+</script>
+<script src="../brand/gamepad.js"></script>
+</body>
+</html>

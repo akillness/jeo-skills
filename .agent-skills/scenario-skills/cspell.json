@@ -1,0 +1,34 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "dictionaryDefinitions": [
+    {
+      "name": "project-words",
+      "path": "./project-words.txt"
+    }
+  ],
+  "dictionaries": ["project-words"],
+  "allowCompoundWords": true,
+  "ignorePaths": [
+    "node_modules/**",
+    ".claude/skills/**",
+    ".agents/skills/skill-creator/**",
+    ".agents/skills/skill-development/**",
+    "pnpm-lock.yaml",
+    "skills-lock.json",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "useGitignore": true,
+  "overrides": [
+    {
+      "filename": ["skills/dcc/**", "skills/game-engines/**"],
+      "ignoreRegExpList": [
+        "Urls",
+        "/^```[\\s\\S]*?^```/gm",
+        "/`[^`\\n]*`/g",
+        "/(?<![\\w-])(?=[\\w-]{11}(?![\\w-]))(?=[\\w-]*[a-z])(?:(?=[\\w-]*[\\d_-])|(?=(?:[\\w-]*[A-Z]){2}))[\\w-]{11}(?![\\w-])/g"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "id": "knowledge.progressive-asset-streaming-output",
+  "knowledge_kind": "output-profile",
+  "title": {
+    "en": "Progressive asset streaming with explicit stage ownership"
+  },
+  "aliases": {
+    "en": [
+      "progressive glTF loading",
+      "staged scene delivery",
+      "abortable asset loading"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors",
+    "products-assemblies"
+  ],
+  "summary": "Package a scene as an independently valid shell plus prioritized asset stages, with abort, retry, identity and replacement rules for every stage.",
+  "objective": "The first useful view appears from a bounded shell, later stages replace placeholders without identity or transform jumps, and cancellation or partial failure leaves a coherent fallback.",
+  "tags": [
+    "output-profile",
+    "progressive-loading",
+    "streaming",
+    "glTF",
+    "cancellation"
+  ],
+  "subject_terms": [
+    "asset stage manifest",
+    "shell scene",
+    "priority loading",
+    "AbortSignal",
+    "partial failure",
+    "placeholder replacement",
+    "asset identity",
+    "retry"
+  ],
+  "intent_signals": [
+    "large glTF should appear progressively",
+    "cancel scene loading on navigation",
+    "show a useful shell before details",
+    "one asset chunk failed"
+  ],
+  "example_prompts": [
+    "Deliver a large architectural scene in useful stages with a static fallback.",
+    "Load a product shell first, then replace named assemblies without camera jumps.",
+    "Make scene navigation cancel obsolete asset requests and dispose late results."
+  ],
+  "negative_signals": [
+    "single atomic offline file",
+    "unmeasured performance target"
+  ],
+  "not_for": [
+    "A single offline asset that must be opened atomically.",
+    "Claims about load time or frame rate without a target network and device measurement."
+  ],
+  "content": {
+    "principles": [
+      "A stage is a complete application state, not an arbitrary byte boundary: it names visible content, stable anchors, dependencies, fallback and promotion conditions.",
+      "Progressive packaging is application orchestration around transportable assets. Core glTF does not promise that an arbitrary GLB becomes meaningfully renderable before its required content is available.",
+      "Cancellation has two owners: abort outstanding fetch work where the API exposes an AbortSignal, and reject or dispose results that finish after their stage generation became obsolete."
+    ],
+    "implementation": [
+      "In Blender, publish a lightweight shell collection with final world units, pivots, bounds, cameras and stable logical IDs; export detail stages as independently inspectable glTF/GLB assets whose attachment transforms are declared against shell anchors.",
+      "Create a versioned stage manifest containing asset URL, content hash, priority, dependencies, anchor ID, placeholder policy, required extensions/decoders and optional/fatal failure class. Do not infer identity from load order or transient scene-child indices.",
+      "In Three.js, keep one generation token and cancellation scope per requested scene state. Fetch abortable resources with the token, parse only current results, attach them under their declared anchors, atomically transfer semantic/UI ownership, and dispose placeholders or stale late results exactly once.",
+      "Expose shell, loading, degraded and complete states. Retry only the failed stage and its dependents; a missing optional detail retains its placeholder while a failed required structural stage selects the declared fallback."
+    ],
+    "observable_checks": [
+      "Cold start reaches the shell using only stage-zero files; no later stage is required to frame the camera or explain the loading state.",
+      "Completing stages in reversed network order yields the same final logical IDs, transforms and visible hierarchy as manifest order.",
+      "Navigation during a large request aborts exposed fetch work; any non-abortable late completion is rejected by generation and its owned resources are disposed without entering the scene.",
+      "One optional-stage failure produces the declared degraded view and retry replaces only that stage; one required-stage failure selects the declared fallback instead of an empty canvas."
+    ]
+  },
+  "creative_affordances": [
+    "Stage order can follow narrative reveal, spatial proximity or interaction intent.",
+    "Placeholders may be graphic, diagrammatic or low-detail as long as promotion rules are explicit."
+  ],
+  "known_limits": [
+    "This profile does not claim HTTP, GLB or GLTFLoader alone provides semantic progressive rendering.",
+    "No network, decoder, load, cancellation, disposal or performance observation was run."
+  ],
+  "related_ids": [
+    "knowledge.shared-interactive-web-scene",
+    "knowledge.shared-static-accessible-fallback",
+    "knowledge.gltf-compression-decoder-lifecycle",
+    "knowledge.geometry-nodes-instance-handoff"
+  ],
+  "claims": [
+    {
+      "id": "claim.output-fetch-abort-contract",
+      "statement": "The Fetch Standard connects a Request signal to fetch abort steps: aborting rejects a still-pending fetch promise, cancels a readable request body, and errors a readable response body; invoking abort after the fetch promise is already fulfilled does not retroactively reject that promise.",
+      "scope": "WHATWG Fetch living standard read 2026-09-08; this describes fetch-owned promises and body streams, not decoder, parser or Three.js loader cancellation.",
+      "source_refs": [
+        {
+          "source_id": "source.output-fetch-standard",
+          "locator": "Fetch method abort steps and “To abort a fetch() call”"
+        }
+      ]
+    },
+    {
+      "id": "claim.output-gltf-loader-boundary",
+      "statement": "The current Three.js GLTFLoader documentation exposes load callbacks for completion, progress and error plus parse/parseAsync and loader plugin registration; it does not document semantic stage partitioning or a general load-abort handle.",
+      "scope": "Live unversioned Three.js GLTFLoader API read 2026-09-08; installed revision and any wrapper-specific cancellation must be verified.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-three-gltf-loader",
+          "locator": "load, parse, parseAsync and register methods"
+        }
+      ]
+    }
+  ]
+}

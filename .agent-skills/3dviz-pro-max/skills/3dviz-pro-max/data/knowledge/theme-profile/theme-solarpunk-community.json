@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.theme-solarpunk-community",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "theme-profile",
+  "title": {
+    "en": "Optimistic green-city fiction"
+  },
+  "aliases": {
+    "en": [
+      "solarpunk setting",
+      "green future community",
+      "optimistic ecological city"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "operations-logistics"
+  ],
+  "summary": "Imagine a community organized around shared space, repair and visible resource connections while keeping sustainability claims separate from appearance.",
+  "objective": "Public spaces and service routes can be traced, and green decoration is not presented as proof of energy balance or environmental benefit.",
+  "tags": [
+    "theme-profile",
+    "fictional-setting",
+    "solarpunk-community"
+  ],
+  "subject_terms": [
+    "solarpunk setting",
+    "green future community",
+    "optimistic ecological city"
+  ],
+  "intent_signals": [
+    "Set the scene in a optimistic green-city fiction",
+    "Use solarpunk setting as the narrative setting"
+  ],
+  "example_prompts": [
+    "Create a solarpunk neighborhood with visible shared workshops and clearly labeled illustrative water routes."
+  ],
+  "content": {
+    "principles": [
+      "Imagine a community organized around shared space, repair and visible resource connections while keeping sustainability claims separate from appearance.",
+      "Theme supplies setting and motifs; choose geometry style, rendering approach and factual model independently."
+    ],
+    "implementation": [
+      "Combine planted terraces, homes and workshops around accessible paths; make selected water or service routes inspectable as a declared diagram.",
+      "Use warm built surfaces, grouped vegetation and restrained technical accents under clear daylight-like illumination.",
+      "Start with a neighborhood overview and let the user inspect a resource route; animate events from a stated illustrative or computed model."
+    ],
+    "observable_checks": [
+      "Public spaces and service routes can be traced, and green decoration is not presented as proof of energy balance or environmental benefit.",
+      "Inspect one focal object close up and the complete route or spatial relationship from an overview."
+    ]
+  },
+  "known_limits": [
+    "Authored fictional setting guidance; no rendered artifact or runtime improvement has been observed for this record.",
+    "This proposal does not establish historical, cultural, scientific or engineering facts."
+  ],
+  "creative_affordances": [
+    "Combine with stylized realism, hand-painted or technical-illustration layers; any claimed resource savings need supporting measurements or a model.",
+    "Replace motifs or combine settings to suit the user brief; maintain a readable organizing idea rather than treating these suggestions as a fixed asset list."
+  ],
+  "related_ids": [
+    "knowledge.framed-shelter",
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

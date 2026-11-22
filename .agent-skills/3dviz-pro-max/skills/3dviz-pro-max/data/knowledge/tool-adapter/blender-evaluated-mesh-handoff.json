@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blender-evaluated-mesh-handoff",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Evaluated Blender mesh as the runtime geometry contract"
+  },
+  "aliases": {
+    "en": [
+      "apply modifiers on glTF export",
+      "modifier stack handoff",
+      "evaluated mesh export"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "Treat Blender's editable base mesh and modifier stack as source data, then deliberately export either the evaluated result or an authored fallback that glTF can carry.",
+  "objective": "The imported asset matches the approved evaluated silhouette and topology budget, with no expectation that Three.js will reproduce Blender modifiers.",
+  "applies_when": [
+    "A Blender mesh depends on bevel, mirror, subdivision, array, boolean, geometry-generating, or deformation modifiers before glTF export."
+  ],
+  "tags": [
+    "tool-adapter",
+    "blender",
+    "gltf",
+    "modifier-stack",
+    "evaluated-mesh"
+  ],
+  "subject_terms": [
+    "Apply Modifiers",
+    "evaluated dependency graph",
+    "modifier stack order",
+    "triangulation",
+    "vertex split",
+    "export mesh snapshot",
+    "base mesh versus evaluated mesh"
+  ],
+  "intent_signals": [
+    "modifier disappeared after glTF export",
+    "web mesh differs from Blender",
+    "should I apply modifiers before GLB",
+    "triangle count changed on export"
+  ],
+  "example_prompts": [
+    "Export a non-destructive Blender product model to Three.js without losing its Boolean and bevel silhouette.",
+    "Audit why an Array-and-Mirror environment prop has different geometry in the browser."
+  ],
+  "negative_signals": [
+    "Rebuild every Blender modifier procedurally in Three.js",
+    "Assume viewport wire counts equal exported vertex counts"
+  ],
+  "not_for": [
+    "Live procedural modeling in the browser, which needs an explicit runtime generator.",
+    "Exact CAD exchange or editable Blender modifier transport."
+  ],
+  "content": {
+    "principles": [
+      "A modifier stack is Blender authoring state. glTF receives geometry attributes and node transforms, not the editable modifier operations that produced them.",
+      "Stack order is part of the shape: approve the evaluated result in the same order that export calculates it, and preserve the un-applied source file separately.",
+      "Runtime cost is measured on exported primitives. Triangulation, flat edges, UV seams and other discontinuities can increase the delivered vertex count beyond the base mesh count."
+    ],
+    "implementation": [
+      "Duplicate or version the delivery object, keep the editable source intact, and evaluate the stack top to bottom. Resolve warnings and inspect silhouette, holes, thin surfaces and shading before export.",
+      "Choose one boundary: enable Apply Modifiers in Blender's glTF exporter for a fixed mesh result, or manually apply only after preserving a source copy. Convert curves or other unsupported authoring types to an approved mesh snapshot.",
+      "Triangulate deterministically when triangle layout affects deformation, bakes or review. Record exported triangle, vertex, primitive and material-slot counts rather than quoting the edit mesh.",
+      "Load the GLB with GLTFLoader. Three.js owns draw materials, culling, disposal and optional runtime deformation; it does not own or replay Blender's modifier stack.",
+      "Keep a named comparison fixture with a Boolean opening, mirrored asymmetric marker and rounded edge. Compare its imported silhouette and counts against the approved export."
+    ],
+    "observable_checks": [
+      "The browser silhouette, openings and mirrored side match the evaluated Blender object from front, side and grazing views.",
+      "The delivery report lists imported triangle and vertex counts; an increase caused by triangulation or attribute seams is explained rather than mistaken for duplicate objects.",
+      "Disabling Apply Modifiers changes the fixture in the predicted way, proving which boundary owns evaluation."
+    ]
+  },
+  "related_ids": [
+    "knowledge.shared-gltf-asset-bridge",
+    "knowledge.shared-indexed-manifold-mesh",
+    "knowledge.three-scene-adapter"
+  ],
+  "creative_affordances": [
+    "Keep a high-detail Blender source and export separate close, medium and far evaluated meshes.",
+    "A runtime generator can replace a modifier only when that procedural behavior is an explicit product feature."
+  ],
+  "known_limits": [
+    "Exporter behavior can change; verify the installed Blender version before production delivery.",
+    "This record does not prescribe a universal polygon budget.",
+    "Authored reusable guidance; no export, import or runtime artifact was executed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.modeling-evaluated-mesh-export",
+      "statement": "Blender modifiers are non-destructive, their stack is calculated from top to bottom, and applying makes a result permanent; Blender's glTF exporter can export the evaluated mesh after all modifiers, automatically triangulates quads and n-gons, and may split vertices at discontinuous UVs or flat-shaded edges.",
+      "scope": "Blender 4.5 authoring and exporter behavior; it does not guarantee identical behavior in another Blender or exporter version.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-blender-modifier-stack",
+          "locator": "Introduction; The Modifier Stack; Apply"
+        },
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "Meshes; Data > Mesh > Apply Modifiers"
+        }
+      ]
+    }
+  ]
+}

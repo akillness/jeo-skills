@@ -1,0 +1,28 @@
+{
+  "name": "game-perf",
+  "version": "1.0.0",
+  "description": "Detect and fix 10 common frame-drop patterns in game/interactive app code (React/Zustand UI + Three.js/WebGL/PixiJS/Phaser engine)",
+  "author": {
+    "name": "Andrew Kim",
+    "url": "https://github.com/gykim80"
+  },
+  "license": "MIT",
+  "keywords": [
+    "performance",
+    "frame-drop",
+    "game-dev",
+    "react",
+    "zustand",
+    "threejs",
+    "webgl",
+    "pixijs",
+    "phaser",
+    "canvas",
+    "animation",
+    "gc-pressure",
+    "object-pooling",
+    "draw-calls"
+  ],
+  "skills": ["skills/game-perf/SKILL.md"],
+  "commands": ["commands/game-perf.md"]
+}

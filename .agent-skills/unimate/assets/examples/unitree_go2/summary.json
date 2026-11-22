@@ -1,0 +1,43 @@
+{
+  "name": "unitree_go2",
+  "profile": "general",
+  "inputs": [
+    "unitree_go2.glb"
+  ],
+  "annotate": "file",
+  "annotation": "assets/examples/unitree_go2/annotation.json",
+  "animated": false,
+  "n_joints_export": 18,
+  "rig_glb": null,
+  "stats_dataset": "general",
+  "dropped_translation": {
+    "max_share_of_extent": 0.0,
+    "clip": null,
+    "joint": null
+  },
+  "face_pair": {
+    "r_hip": {
+      "raw": "FR_hip",
+      "clean": "Right Front Hip"
+    },
+    "l_hip": {
+      "raw": "FL_hip",
+      "clean": "Left Front Hip"
+    },
+    "source": "front hip"
+  },
+  "annotation_notes": [
+    "annotation from assets/examples/unitree_go2/annotation.json"
+  ],
+  "n_joints": 18,
+  "model_joint_limit": {
+    "max_joints": 71,
+    "source": "released UniML3D models",
+    "fits": true
+  },
+  "n_clips": 0,
+  "cond": "assets/examples/unitree_go2/cond.npy",
+  "canonical_glb": "assets/examples/unitree_go2/unitree_go2.glb",
+  "notes": [],
+  "preview": "assets/examples/unitree_go2/preview.png"
+}

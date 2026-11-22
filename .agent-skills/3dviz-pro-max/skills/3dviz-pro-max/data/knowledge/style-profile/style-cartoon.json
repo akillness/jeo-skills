@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-cartoon",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Cartoon expression"
+  },
+  "aliases": {
+    "en": [
+      "cartoon character",
+      "expressive cartoon scene",
+      "cartoony",
+      "comic style",
+      "animated cartoon look"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "Organize the subject around an expressive pose, clear feature hierarchy and playful contrast of large and small shapes.",
+  "objective": "The action reads when paused at key poses; squash or stretch, if chosen, does not imply that a factual rigid mechanism deforms.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "cartoon"
+  ],
+  "subject_terms": [
+    "cartoon character",
+    "expressive cartoon scene",
+    "cartoony",
+    "art direction"
+  ],
+  "intent_signals": [
+    "Create a cartoon character or scene",
+    "Stage an expressive readable gesture"
+  ],
+  "example_prompts": [
+    "Design a cartoon forest guardian that notices a visitor and waves with a readable arm gesture."
+  ],
+  "content": {
+    "principles": [
+      "Organize the subject around an expressive pose, clear feature hierarchy and playful contrast of large and small shapes."
+    ],
+    "implementation": [
+      "Simplify small anatomical or mechanical detail into readable groups while retaining the joints needed by the intended movement.",
+      "Use separated local colors and controllable broad highlights; outlines are an option rather than the definition of the look.",
+      "Stage a readable gesture before adding secondary motion; keep the camera where the expression and action can both be seen.",
+      "Hold key poses 6-10 frames at 24 fps with 4-8 frames of anticipation, and offset secondary overlap 2-3 frames behind the primary action.",
+      "Cap eye and mouth features at three flat values, scale the head to 1.4-1.8x reference and hands to 1.2x, and leave every joint pivot at its true position."
+    ],
+    "observable_checks": [
+      "The action reads when paused at key poses; squash or stretch, if chosen, does not imply that a factual rigid mechanism deforms."
+    ]
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at renderer.toneMappingExposure 1.1; re-tune intensities and fog density under a different tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with cel shading, toy proportions or hand-painted accents; keep factual labels and state transitions independent of the performance."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Cartoon depends on local colour surviving into shadow, so the key:fill ratio is kept deliberately shallow at 2.5:1 and exposure lifted to 1.1 - a cinematic 6:1 ratio would desaturate half of every character. Metalness is zero everywhere and the only sharp specular is reserved for the eyes and one prop, so the pose silhouette against the warm off-white background stays the first thing read.",
+    "values": {
+      "feeling": [
+        "bouncy",
+        "bright",
+        "friendly"
+      ],
+      "palette": [
+        {
+          "hex": "#35284a",
+          "role": "deep shadow and contour colour"
+        },
+        {
+          "hex": "#ff6b6b",
+          "role": "hero accent"
+        },
+        {
+          "hex": "#ffd166",
+          "role": "warm light mass"
+        },
+        {
+          "hex": "#4ecdc4",
+          "role": "secondary cool mass"
+        },
+        {
+          "hex": "#fdf6e3",
+          "role": "warm off-white background"
+        }
+      ],
+      "value_structure": "25/55/20 dark/mid/light; the pose silhouette reads as one dark shape on the light background",
+      "saturation_rule": "background and set <= 45% saturation; character local colours 60-85%",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#8fd3f4",
+        "horizon": "#fdf6e3"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#e8f4fb",
+        "density": 0.008
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#fff6e0",
+          "intensity": 3.2,
+          "elevation_deg": 50,
+          "azimuth_deg": 320,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#cfe9ff",
+          "ground": "#6b5a4a",
+          "intensity": 1.1
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#ffffff",
+          "intensity": 0.5,
+          "elevation_deg": 25,
+          "azimuth_deg": 140,
+          "castShadow": false
+        },
+        "ratio": "key:fill ~ 2.5:1 - shallow on purpose so local colour stays readable in shadow"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.1
+      },
+      "camera": {
+        "fov_deg": 50,
+        "height_m": 1.2,
+        "pitch_deg": -3,
+        "orbit": {
+          "minPolar_deg": 65,
+          "maxPolar_deg": 92,
+          "minDist_m": 2,
+          "maxDist_m": 14
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.5,
+          0.85
+        ],
+        "metalness": [
+          0.0,
+          0.0
+        ],
+        "notes": "metalness 0 everywhere; one roughness-0.5 specular reserved for eyes and a single prop, everything else 0.7-0.85"
+      },
+      "motion": {
+        "sway_period_s": [
+          1.6,
+          2.6
+        ],
+        "ease": "back-out after 8 frames of anticipation at 24 fps",
+        "hold_ms": 320
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.2,
+          "strength": 0.1,
+          "radius": 0.3
+        },
+        "vignette": 0.12,
+        "grain": 0.0,
+        "dof": "off"
+      },
+      "signature_technique": "a shallow 2.5:1 key-to-fill with one white rim, so saturated local colour survives the shadow side and the pose still pops",
+      "never": [
+        "a desaturated realism grade",
+        "untinted white ambient light",
+        "flat black background",
+        "specular highlights on every surface",
+        "dead-centre eye-level framing"
+      ]
+    }
+  }
+}

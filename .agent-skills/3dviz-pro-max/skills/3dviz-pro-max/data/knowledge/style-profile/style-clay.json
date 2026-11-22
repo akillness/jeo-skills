@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-clay",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Clay-like sculpted forms"
+  },
+  "aliases": {
+    "en": [
+      "clay render",
+      "claylike objects",
+      "sculpted clay style",
+      "claymation",
+      "plasticine"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "products-assemblies"
+  ],
+  "summary": "Suggest a hand-shaped object through soft mass transitions and a few intentional surface irregularities.",
+  "objective": "A close view reveals deliberate sculpting cues rather than generic smooth blobs; adjacent clay-colored parts remain separable.",
+  "tags": [
+    "style-profile",
+    "surface-aesthetic",
+    "clay"
+  ],
+  "subject_terms": [
+    "clay render",
+    "claylike objects",
+    "sculpted clay style",
+    "surface aesthetic"
+  ],
+  "intent_signals": [
+    "Create a clay-like sculpted appearance",
+    "Show soft sculpted masses and deliberate imperfections"
+  ],
+  "example_prompts": [
+    "Create a clay-like friendly creature with pressed-in features and distinct articulated limbs."
+  ],
+  "content": {
+    "principles": [
+      "Suggest a hand-shaped object through soft mass transitions and a few intentional surface irregularities."
+    ],
+    "implementation": [
+      "Use rounded joins, slightly uneven rims and broad sculpted indentations; decide which seams are construction features.",
+      "Choose subdued highlights and an earthy or invented palette under a large soft key; retain enough value contrast between touching forms.",
+      "Use a close three-quarter inspection view; slow squash or joint motion may fit fictional figures, while technical assemblies keep their model constraints.",
+      "Round every silhouette edge with a 2-4 mm bevel and offset touching forms by 1-3 mm so adjacent clay parts still separate at a 1 m view.",
+      "Author 3-5 thumb indentations per hero form at 6-12 mm depth and keep any surface noise under 0.5 mm amplitude, so the irregularity reads as handling rather than displacement."
+    ],
+    "observable_checks": [
+      "A close view reveals deliberate sculpting cues rather than generic smooth blobs; adjacent clay-colored parts remain separable."
+    ]
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at renderer.toneMappingExposure 1.0; re-tune intensities and fog density under a different tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with toy-miniature proportions or stop-motion-inspired timing; visual clay does not imply a deformable physical model."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Clay is recognised by how light rolls across a mass, so the key is wide and soft with a 6-8 degree shadow softness at a shallow 2.6:1 ratio - a hard key reads as moulded plastic instead of pressed clay. Roughness is held at 0.55-0.75 (burnished focal form to matte surroundings) and a small transmission of 0.05 at 10 mm thickness gives thin rims the faint warm bleed that separates clay from painted foam.",
+    "values": {
+      "feeling": [
+        "tactile",
+        "soft",
+        "handmade"
+      ],
+      "palette": [
+        {
+          "hex": "#3a2a24",
+          "role": "crevice and contact shadow"
+        },
+        {
+          "hex": "#a8674a",
+          "role": "mid terracotta body"
+        },
+        {
+          "hex": "#e0a882",
+          "role": "lit clay"
+        },
+        {
+          "hex": "#f2e0cf",
+          "role": "cream slip highlight"
+        },
+        {
+          "hex": "#6f8f7a",
+          "role": "single glazed accent"
+        }
+      ],
+      "value_structure": "30/50/20 dark/mid/light; contact shadows supply the darks",
+      "saturation_rule": "clay bodies 35-55% saturation; the one glazed accent up to 65%",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#4a4038",
+        "horizon": "#d8cec2"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#d8cec2",
+        "density": 0.015
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#ffeedd",
+          "intensity": 2.6,
+          "elevation_deg": 52,
+          "azimuth_deg": 300,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#cdd8e2",
+          "ground": "#6b4f3f",
+          "intensity": 1.0
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#ffd6b8",
+          "intensity": 0.7,
+          "elevation_deg": 22,
+          "azimuth_deg": 120,
+          "castShadow": false
+        },
+        "ratio": "key:fill ~ 2.6:1 with a wide soft key; hard-edged shadows read as plastic, not clay"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.0
+      },
+      "camera": {
+        "fov_deg": 45,
+        "height_m": 0.9,
+        "pitch_deg": -12,
+        "orbit": {
+          "minPolar_deg": 55,
+          "maxPolar_deg": 88,
+          "minDist_m": 0.8,
+          "maxDist_m": 6
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.55,
+          0.75
+        ],
+        "metalness": [
+          0.0,
+          0.0
+        ],
+        "notes": "0.55 on the burnished focal form and 0.75 elsewhere; subtle subsurface note - transmission 0.05, thickness 0.01 m, subsurface tint #e8a07a so thin rims bleed warm"
+      },
+      "motion": {
+        "sway_period_s": [
+          2.0,
+          3.2
+        ],
+        "ease": "sine in-out with a soft settle",
+        "hold_ms": 400
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.2,
+          "strength": 0.08,
+          "radius": 0.35
+        },
+        "vignette": 0.22,
+        "grain": 0.03,
+        "dof": "off"
+      },
+      "signature_technique": "a wide 52 degree key with 6-8 degree shadow softness plus a faint warm subsurface bleed on thin rims, so mass transitions roll instead of breaking",
+      "never": [
+        "hard mirror specular",
+        "untinted white ambient light",
+        "perfectly symmetrical forms",
+        "uniform procedural surface noise",
+        "flat black background"
+      ]
+    }
+  }
+}

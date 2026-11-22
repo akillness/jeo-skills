@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-relaxation-monotonicity",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Monotone relaxation, settling and rejected negative weights"
+  },
+  "aliases": {
+    "en": [
+      "dijkstra invariant check",
+      "negative weight rejection"
+    ]
+  },
+  "direction_ids": [
+    "algorithms-data-structures"
+  ],
+  "summary": "Verify that tentative distances only decrease, settled values never improve, and precondition violations are rejected.",
+  "objective": "Every applied relaxation follows the declared update policy, no settled distance improves later, and non-finite or negative weights are rejected.",
+  "applies_when": [
+    "A shortest-path algorithm is stepped or animated with visible tentative values.",
+    "The graph weights are editable by the viewer.",
+    "The implementation may leave stale entries in its priority queue."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "shortest-path",
+    "relaxation",
+    "preconditions"
+  ],
+  "subject_terms": [
+    "edge relaxation",
+    "tentative distance",
+    "settled vertex",
+    "nonnegative weights",
+    "stale queue entry",
+    "tie policy"
+  ],
+  "intent_signals": [
+    "a settled distance changed later",
+    "what happens with a negative edge"
+  ],
+  "example_prompts": [
+    "Check the relaxation steps and preconditions in this shortest-path scene."
+  ],
+  "negative_signals": [
+    "negative-cycle algorithms",
+    "benchmarking heap implementations"
+  ],
+  "content": {
+    "principles": [
+      "Tentative distances only decrease. Strict improvement is the declared update policy of this implementation rather than a theorem, since updating a predecessor on an exact tie can also yield a valid shortest-path tree; a policy that updates on ties must then guard against cycles among zero-weight edges.",
+      "Settling depends on nonnegative weights, so a negative weight is a precondition violation to reject explicitly rather than a case to render silently.",
+      "Duplicate priority-queue entries are an implementation choice; if they are used, the stale entry must be skipped when dequeued and that skip should be visible in the trace."
+    ],
+    "implementation": [
+      "Log each relaxation attempt with the edge, the old and new tentative values, and whether the update was applied.",
+      "Check non-increasing distance sequences. Under strict-improvement policy every applied update decreases distance; under a declared tie-update policy an equal-distance predecessor change must preserve the equal path cost and an acyclic predecessor graph, with the deterministic tie rule recorded.",
+      "Record the dequeue order with the settled distances and confirm that no settled vertex is improved afterwards.",
+      "Reject nonfinite or negative edge weights. For each relaxation from a finite reachable distance, also check that the candidate path sum is representable before comparing or committing it; report out-of-range cost separately from unreachable, or use a validated numeric representation/input bound that prevents overflow. Exercise negative weights, zero-weight ties and a finite-edge case whose sum exceeds the supported range."
+    ],
+    "observable_checks": [
+      "Every applied relaxation matched the declared update policy and updated distance and predecessor in the same step; under a strict-improvement policy an update with equal values identifies a non-strict comparison, and under a tie-updating policy the predecessor graph is additionally checked for cycles.",
+      "No settled distance improves later in the run, and unreachable vertices keep an infinite value rather than a large finite one.",
+      "Negative, not-a-number and non-finite weights are all rejected with a message naming the edge, and zero-weight ties resolve by the declared policy so repeated runs give the same tree without a predecessor cycle."
+    ]
+  },
+  "known_limits": [
+    "Checks the invariants of the declared nonnegative-weight algorithm; graphs with negative weights need a different algorithm and a different check.",
+    "Authored verification guidance; no algorithm was executed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.dijkstra-relaxation",
+    "recipe.breadth-first-frontier",
+    "recipe.layered-maze-navigation"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-dijkstra-relaxation-nonnegative",
+      "statement": "Relaxing an edge tests whether the best known path to a vertex improves by going through another vertex and updates the data structures if so, and the algorithm that repeatedly adds the non-tree vertex with the lowest distance requires nonnegative weights.",
+      "scope": "Edge-weighted digraphs with nonnegative weights as described in the cited section.",
+      "source_refs": [
+        {
+          "source_id": "source.princeton-shortest-paths",
+          "locator": "Edge relaxation definition and Dijkstra algorithm with nonnegative weights"
+        }
+      ]
+    }
+  ]
+}

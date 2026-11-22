@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "id": "recipe.mandelbrot-escape-orbit",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Mandelbrot escape-time map and iteration orbit"
+  },
+  "aliases": {
+    "en": [
+      "Mandelbrot set",
+      "escape time",
+      "quadratic iteration"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields",
+    "abstract-systems-data"
+  ],
+  "summary": "Classify sampled parameters by detected escape and show unresolved finite-budget samples honestly.",
+  "objective": "Pick c and inspect the orbit of zero on a complex plane with iteration number as the third axis.",
+  "tags": [
+    "Mandelbrot set",
+    "escape time",
+    "quadratic iteration",
+    "critical orbit"
+  ],
+  "subject_terms": [
+    "Mandelbrot set",
+    "escape time",
+    "quadratic iteration",
+    "critical orbit",
+    "fractal parameter plane",
+    "finite iteration budget",
+    "complex dynamics",
+    "not escaped yet"
+  ],
+  "intent_signals": [
+    "Pick c and inspect the orbit of zero on a complex plane with iteration number as the third axis.",
+    "Classify sampled parameters by detected escape and show unresolved finite-budget samples honestly."
+  ],
+  "example_prompts": [
+    "Build an explorable mandelbrot escape-time map and iteration orbit. Pick c and inspect the orbit of zero on a complex plane with iteration number as the third axis."
+  ],
+  "entities": [
+    {
+      "name": "Parameter raster",
+      "guidance": "Sample c in[-2,1]x[-1.5,1.5] at explicit pixel centers. Use a legend for escape iteration and a separate not-escaped-by-N state; this raster is a parameter plane, not the orbit plane."
+    },
+    {
+      "name": "Orbit tower",
+      "guidance": "For selected c, plot points(Re z_n,Im z_n,n) on a separate labeled frame. Connect adjacent iterations with thin guides and index badges; height means integer iteration, not physical time."
+    },
+    {
+      "name": "Escape boundary and trace",
+      "guidance": "Show radius2 on the orbit-plane projection and the selected orbit values in a table. Stop plotting after first detected escape; out-of-view markers must remain linked to their actual values."
+    }
+  ],
+  "state_contract": {
+    "model": "z_0=0; z_(n+1)=z_n*z_n+c. Choose integerN>=1 and finite viewport/sample dimensions. For |c|>2 mark outside by the containing-disk result. Otherwise record the first n in1..N with |z_n|^2>4; if none exists use not-escaped-by-N, never proved-inside. Record floating-point precision and any indeterminate arithmetic separately.",
+    "authority": "Parameter coordinates, N, sample grid and arithmetic policy own classifications. Palette and vertical display scale do not affect iteration; selected-orbit iteration is recomputed when c changes.",
+    "actions": [
+      "Select c, single-step its recurrence and compare the corresponding pixel.",
+      "Raise N while keeping sample coordinates fixed; show which previously unresolved samples now escape.",
+      "Zoom the parameter viewport with bounds and arithmetic precision visible.",
+      "Pause orbit stepping; reset viewport, c, N and iteration index."
+    ]
+  },
+  "invariants": [
+    "c=0 stays0; c=-1 alternates0,-1; c=1 reaches0,1,2,5 and first exceeds radius2 at n=3.",
+    "Equality |z_n|=2 is not the escape condition; c=-2 reaches-2,2,2 without exceeding it.",
+    "At fixed c and arithmetic policy, increasing N preserves a previously recorded first escape index. No finite non-escape alone certifies membership."
+  ],
+  "motion_guidance": [
+    "A step advances an integer recurrence once. A traveling marker between successive orbit points is an authored transition, not a continuous differential equation.",
+    "Do not stretch escape heights differently per selected sample without updating the iteration-axis scale."
+  ],
+  "known_limits": [
+    "Finite pixels and iteration budget approximate the set; near-boundary classification and deep zoom require numerical error analysis beyond this recipe.",
+    "A connected-looking region or repeated-looking orbit is not an interior proof. This is not a Julia-set plot, Mandelbulb geometry or a complete fractal taxonomy.",
+    "Authored recipe and prospective checks only; no runtime artifact or rendered result has been observed."
+  ],
+  "claims": [
+    {
+      "id": "claim.handbook-math-mandelbrot-escape-orbit",
+      "statement": "The Mandelbrot set consists of complex parameters c whose orbit of0 under z->z^2+c remains bounded. It lies in |c|<=2; for such parameters, an iterate outside radius2 guarantees escape. A finite iteration image can leave slowly escaping points unresolved.",
+      "scope": "Quadratic critical orbit starting at zero; finite non-escape is not membership proof.",
+      "source_refs": [
+        {
+          "source_id": "source.handbook-math-mandelbrot",
+          "locator": "Definition, finite-iteration approximation caveat, Escape Criterion and containing radius-two disk"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Mandelbrot escape-time map and iteration orbit",
+      "structure": "Separate the c-plane board from the orbit frame with persistent labels and selection linkage. Orbit spheres and connectors are index glyphs; their mesh radius must not be mistaken for orbit uncertainty.",
+      "material": "Use independent line weights, shapes and labels for mathematical roles. Color and surface finish are presentation choices; do not infer material physics from them."
+    }
+  ],
+  "creative_affordances": [
+    "Escape palettes, contour-like bands and luminous orbit points are optional; keep classification and iteration labels readable without color."
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Derived mathematical geometry and authored inspection; no contact dynamics or calibrated physical artifact.",
+    "checks": [
+      "c=0 stays0; c=-1 alternates0,-1; c=1 reaches0,1,2,5 and first exceeds radius2 at n=3.",
+      "Equality |z_n|=2 is not the escape condition; c=-2 reaches-2,2,2 without exceeding it."
+    ]
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "id": "recipe.kinetic-typography-stage",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Kinetic typography stage with readable alternatives"
+  },
+  "aliases": {
+    "en": [
+      "animated type stage",
+      "timed spatial captions"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "Animate authored words and phrases in 3D while preserving reading order, pause control, captions and a static text representation.",
+  "objective": "Build a typographic performance where text motion serves the supplied script and every timed phrase remains available without motion or audio.",
+  "tags": [
+    "kinetic typography",
+    "captions",
+    "timed text"
+  ],
+  "subject_terms": [
+    "reading order",
+    "phrase cue",
+    "caption",
+    "pause stop hide",
+    "reduced motion",
+    "font asset"
+  ],
+  "intent_signals": [
+    "kinetic typography stage",
+    "animated words with static alternative"
+  ],
+  "example_prompts": [
+    "Stage a spoken poem as moving type, with synchronized captions, pause controls and a static transcript layout."
+  ],
+  "negative_signals": [
+    "Not automatic transcription, universal reading-speed prescription, font licensing clearance or a required style."
+  ],
+  "not_for": [
+    "No motion-only meaning, hidden transcript, uncontrolled flashing or redistribution of unlicensed fonts/text."
+  ],
+  "entities": [
+    {
+      "name": "Script tokens",
+      "guidance": "Store exact text, language, reading order, cue interval and optional speaker separately from meshes; preserve punctuation and a plain-text view."
+    },
+    {
+      "name": "Type stage",
+      "guidance": "Blender may author reusable letter/word forms and anchors; runtime layout owns line breaking, focus, occlusion avoidance and fallback fonts."
+    }
+  ],
+  "state_contract": {
+    "model": "One immutable script revision contains ordered tokens and timed phrase intervals. At model time t, active text and transforms derive from cue data; a token never changes its textual identity because of animation. Pause freezes the timeline, seek rebuilds active phrases, and skip advances to a declared boundary. Provide synchronized captions for prerecorded speech, and controls or a presentation mode that pauses/stops/hides qualifying moving content. Static transcript and reduced-motion layouts preserve the same reading order and choices.",
+    "authority": "Three.js owns the versioned semantic state, model time, history and reset; Blender/glTF assets are named presentation resources only.",
+    "actions": [
+      "Play/pause/seek or jump to next phrase.",
+      "Toggle captions and static/reduced-motion layout.",
+      "Inspect text/font/license provenance.",
+      "Reset time, focus and view state."
+    ]
+  },
+  "invariants": [
+    "Every visible glyph maps to one script token and reading-order index.",
+    "Motion cannot be the sole carrier of wording, speaker or interactive choice.",
+    "Pause and same-time seek are idempotent.",
+    "Missing font or 3D glyph falls back to readable text without losing content."
+  ],
+  "motion_guidance": [
+    "Drive presentation from a seekable model time and derive every visible transform from current state; pause and scrub never advance hidden semantic state.",
+    "Provide a static sequence/list and reduced-motion mode that preserves text, order, choices and status."
+  ],
+  "creative_affordances": [
+    "Choose typography, assets, palette, staging and metaphor per the supplied brief and licensed material; no house style is mandatory.",
+    "Blender owns expressive geometry, rigs, sets and cue anchors; Three.js owns time, branch/state, captions, interruption and checkpoints."
+  ],
+  "known_limits": [
+    "Caption and motion controls are scoped to the supplied media/function; no one animation speed, typeface or layout is declared universally accessible.",
+    "Authored, source-reviewed guidance only; no Blender export, audio playback, visitor study, show-control link, browser or renderer was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.art-captions-prerecorded",
+      "statement": "WCAG 2.2 Success Criterion 1.2.2 requires captions for prerecorded audio content in synchronized media except when the media is a clearly labeled text alternative.",
+      "scope": "WCAG conformance criterion for prerecorded synchronized media; this recipe retains a transcript additionally as authored support.",
+      "source_refs": [
+        {
+          "source_id": "source.art-wcag-captions",
+          "locator": "Understanding SC 1.2.2, Success Criterion and Intent"
+        }
+      ]
+    },
+    {
+      "id": "claim.art-pause-moving-content",
+      "statement": "WCAG 2.2 Success Criterion 2.2.2 provides pause, stop or hide requirements for certain moving, blinking, scrolling or auto-updating information, subject to its timing and essentiality conditions.",
+      "scope": "Only content meeting the criterion’s conditions; not a universal ban on kinetic typography.",
+      "source_refs": [
+        {
+          "source_id": "source.art-wcag-pause-stop-hide",
+          "locator": "Understanding SC 2.2.2, Success Criterion and Intent"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Readable type apparatus",
+      "structure": "Use generous depth separation, stable phrase anchors and a transcript panel; keep hit targets independent of glyph meshes.",
+      "material": "Maintain explicit foreground/background contrast and selection outline; decorative extrusion never obscures letter counters."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Spatial layout and motion communicate authored media/state; geometry and collisions have no physical authority.",
+    "timestep": "Evaluate from seekable authored time or discrete event state; no physics integration.",
+    "state": [
+      "versioned authored content",
+      "model time or event cursor",
+      "selection, accessibility and error state"
+    ],
+    "colliders": [
+      "optional interaction hit regions only"
+    ],
+    "driving": [
+      "authored cues and user actions"
+    ],
+    "contact": [
+      "none"
+    ],
+    "checks": [
+      "seek/reset state equality",
+      "missing asset/data fallback",
+      "presentation controls leave semantic data unchanged"
+    ]
+  },
+  "related_ids": [
+    "knowledge.modality-independent-action-map",
+    "knowledge.reasoning-discrete-event-timeline",
+    "knowledge.graphic-shape-language-across-asset-types"
+  ]
+}

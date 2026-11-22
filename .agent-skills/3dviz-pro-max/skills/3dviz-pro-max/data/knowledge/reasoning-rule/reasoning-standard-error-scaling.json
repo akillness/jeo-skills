@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-standard-error-scaling",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Show why averages concentrate as the sample grows"
+  },
+  "aliases": {
+    "en": [
+      "central limit theorem",
+      "standard error",
+      "sampling distribution"
+    ]
+  },
+  "direction_ids": [
+    "probability-statistics"
+  ],
+  "summary": "Distinguish the population, the sample and the sampling distribution, and let the spread of means shrink with the square root of the sample size.",
+  "objective": "Make a sampling scene demonstrate the behaviour of the sampling distribution rather than assert a normal curve.",
+  "applies_when": [
+    "Sample means of independent identically distributed draws from a population with finite variance are displayed, including proportions treated as Bernoulli sample means.",
+    "The scene examines the asymptotic sampling distribution of those means, with sample size as a control.",
+    "Other statistics require their own justified standard-error formula and are outside this sample-mean procedure."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "central limit theorem",
+    "sampling distribution",
+    "standard error",
+    "sample size",
+    "skewness"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "statistics",
+    "inference"
+  ],
+  "intent_signals": [
+    "why do averages look normal",
+    "increase the sample size",
+    "show the distribution of the mean"
+  ],
+  "example_prompts": [
+    "Draw samples from a skewed population and show the distribution of the means.",
+    "Show how the spread of the mean changes with sample size."
+  ],
+  "negative_signals": [
+    "Single-sample descriptive scenes with no repeated sampling.",
+    "Statistics without finite variance, where the standard result does not apply."
+  ],
+  "not_for": [
+    "Single-sample descriptive scenes with no repeated sampling.",
+    "Statistics without finite variance, where the standard result does not apply."
+  ],
+  "content": {
+    "principles": [
+      "Three distributions are involved and they are routinely confused: the population, one sample, and the distribution of a statistic across repeated samples. A scene must show which one each display represents.",
+      "For independent identically distributed draws with finite positive variance, the standardized sample mean tends to a standard normal distribution as sample size grows, and the mean has standard deviation sigma divided by square root of n. With zero population variance the means are a point mass. This formula and normal limit are not a general rule for medians, maxima, variances or ratios.",
+      "The approach is asymptotic, so a strongly skewed population needs a larger sample before the sampling distribution looks normal; showing this with a skewed population is far more instructive than using a symmetric one.",
+      "For these sample means, quadrupling sample size halves the theoretical standard error. The empirical spread from finitely many replicates need not have that exact ratio, so present the prediction with its Monte Carlo uncertainty."
+    ],
+    "implementation": [
+      "Present three panels or three clearly labelled objects: population, current sample and accumulated statistics.",
+      "Drive all three from one generator, so the sampling distribution is genuinely built from the samples that are shown.",
+      "Compute the observed spread across replicated sample means alongside sigma divided by square root of n for the declared population. Report replicate count and a justified uncertainty assessment, or mark the finite-replicate comparison advisory.",
+      "Use a visibly skewed population by default so the asymptotic nature is observable.",
+      "Give sample size a wide range and make the square-root relationship visible, for example with a reference curve."
+    ],
+    "observable_checks": [
+      "Quadruple sample size and verify the theoretical standard error halves; compare the empirical spread ratio with a declared uncertainty assessment, or report it as an advisory trend. A finite replicate sample need not yield an exact halving.",
+      "Compare observed spread with the prediction using the declared replicate uncertainty assessment. A discrepancy prompts checking the sampling assumptions, generator and accumulation, rather than proving a defect from one finite random sample.",
+      "Use a declared skewed population and compare small- and larger-sample mean distributions against their reference model. Report finite-replicate variability without requiring every realized histogram to look non-normal; handle zero variance as a point mass.",
+      "Confirm the population panel does not change when new samples are drawn."
+    ]
+  },
+  "related_ids": [
+    "recipe.sampling-mean-distribution",
+    "recipe.normal-density-window"
+  ],
+  "creative_affordances": [
+    "The accumulation display, whether a histogram, a stack of physical objects or a density estimate, is a free design choice.",
+    "Comparing several populations side by side is a legitimate extension."
+  ],
+  "known_limits": [
+    "Authored guidance citing the central limit theorem for sample means; it does not treat populations without finite variance or dependent samples.",
+    "It gives no rule for how large a sample must be for a given population."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-clt-sample-means",
+      "statement": "As the size of random samples increases, the distribution of the sample mean tends to be normal with the population mean and with standard deviation equal to the population standard deviation divided by the square root of the sample size.",
+      "scope": "Independent random samples from a population with finite variance; the result is asymptotic and does not specify the sample size needed for a given population.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-sample-means",
+          "locator": "7.1, central limit theorem for sample means and the standard deviation of the sampling distribution"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.controlled-experiment",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "inspection-pattern",
+  "title": {
+    "en": "Controlled before-and-after experiment"
+  },
+  "aliases": {
+    "en": [
+      "controlled experiment"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "environments-dioramas",
+    "solid-geometry"
+  ],
+  "summary": "Make one change produce a visible, attributable response while preserving the baseline.",
+  "objective": "Repeat the baseline before and after the altered case; unexplained differences are investigated instead of attributed to the selected input.",
+  "tags": [
+    "inspection-pattern",
+    "controlled",
+    "experiment"
+  ],
+  "example_prompts": [
+    "Make one change produce a visible, attributable response while preserving the baseline."
+  ],
+  "content": {
+    "principles": [
+      "Write the question first: which input changes, which outcome should respond and which conditions stay fixed?",
+      "A side-by-side pair can compare states; a replay can compare time evolution. Neither needs decorative motion."
+    ],
+    "implementation": [
+      "Capture baseline input, camera, lighting, model time and seed if randomness exists. Expose one independent control for the selected question.",
+      "For a drop test vary release height; for material inspection vary finish under fixed lights; for gear motion vary the radius ratio while paused.",
+      "Show the changed input beside an observable result and retain a reset action that restores the entire baseline."
+    ],
+    "observable_checks": [
+      "Repeat the baseline before and after the altered case; unexplained differences are investigated instead of attributed to the selected input.",
+      "The result can be observed at the intended camera distance without reading debug logs."
+    ]
+  },
+  "known_limits": [
+    "This is an authored inspection method, not a controlled scientific study or a numerical accuracy guarantee.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+  ],
+  "related_ids": [
+    "recipe.projectile-trajectory",
+    "recipe.coupled-gears",
+    "knowledge.material-response-check"
+  ],
+  "claims": []
+}

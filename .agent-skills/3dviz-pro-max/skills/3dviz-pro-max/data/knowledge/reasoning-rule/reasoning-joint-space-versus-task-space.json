@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-joint-space-versus-task-space",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Choose the space the motion is planned in"
+  },
+  "aliases": {
+    "en": [
+      "trajectory interpolation",
+      "joint interpolation",
+      "Cartesian path"
+    ]
+  },
+  "direction_ids": [
+    "robotics-control",
+    "characters-motion-art"
+  ],
+  "summary": "Decide whether a motion interpolates joint values or the end-effector path, because the two produce different shapes.",
+  "objective": "Match the interpolation space to what the task requires the motion to preserve.",
+  "applies_when": [
+    "A manipulator or articulated actor moves between two poses.",
+    "The end effector must follow a defined path such as a line or an arc.",
+    "Motion must respect joint velocity limits or avoid obstacles."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "trajectory",
+    "joint space",
+    "task space",
+    "interpolation",
+    "path following",
+    "velocity limits"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "robotics",
+    "motion"
+  ],
+  "intent_signals": [
+    "the tool should move in a straight line",
+    "the arm swings oddly between poses",
+    "plan the motion"
+  ],
+  "example_prompts": [
+    "Make the tool follow a straight line between the two points.",
+    "Move between poses smoothly without a strange swing."
+  ],
+  "negative_signals": [
+    "Single-joint motion, where the two spaces coincide.",
+    "Free-form artistic animation with no task constraint."
+  ],
+  "not_for": [
+    "Single-joint motion, where the two spaces coincide.",
+    "Free-form artistic animation with no task constraint."
+  ],
+  "content": {
+    "principles": [
+      "Interpolating joint values is smooth in the joints and arbitrary at the tool: the end effector traces whatever curve the mechanism produces, which is usually not a straight line.",
+      "Interpolating the tool path gives the shape the task needs but requires solving for joint values along the way, which can pass near singularities or exceed joint rates even when both endpoints are comfortable.",
+      "The choice is a task question. Reaching to grasp usually cares about the endpoint; welding, cutting, dispensing and camera moves care about the path.",
+      "Timing is a third decision. Constant tool speed and constant joint speed are different profiles, and the acceleration limits that matter live in joint space."
+    ],
+    "implementation": [
+      "State the requirement first: endpoint only, path shape, or path with a speed profile.",
+      "Interpolate in joint space for free motion and in task space where the path matters, solving inverse kinematics along the path and checking each solution.",
+      "Check joint rates along a task-space path and slow the profile where a rate limit would be exceeded, rather than letting the solver saturate.",
+      "Show the traced tool path so the difference between the two strategies is visible rather than assumed.",
+      "Blend strategies at waypoints deliberately, and state what is preserved through the blend."
+    ],
+    "observable_checks": [
+      "Run the same two endpoints with both strategies and compare the traced tool paths.",
+      "Follow a straight-line path and measure deviation from the line at several points.",
+      "Plot joint rates along a task-space path and confirm they stay within limits.",
+      "Confirm the motion respects joint limits throughout, not only at the endpoints."
+    ]
+  },
+  "related_ids": [
+    "recipe.inverse-kinematics-target",
+    "recipe.robot-arm-forward-frames",
+    "knowledge.reasoning-rotation-interpolation-path"
+  ],
+  "creative_affordances": [
+    "Expressive timing and staged waypoints remain free choices once the interpolation space is chosen.",
+    "A deliberately swinging joint-space move can be the more attractive motion when no path constraint exists."
+  ],
+  "known_limits": [
+    "Authored planning guidance; it prescribes no planner and no specific trajectory generation method.",
+    "No robot motion has been executed or simulated for this record."
+  ],
+  "claims": []
+}

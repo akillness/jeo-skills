@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-frame-handedness-orientation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Frame handedness and cross-product degeneracy"
+  },
+  "aliases": {
+    "en": [
+      "right handed frame check",
+      "orthogonality residual check"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra"
+  ],
+  "summary": "Check the declared frame handedness and verify cross-product orthogonality, area and degenerate inputs numerically.",
+  "objective": "Orthogonality residuals stay within the declared precision, degenerate inputs produce no direction, and the frame determinant matches the declared convention.",
+  "applies_when": [
+    "Directions, normals or rotation signs are derived from a cross product.",
+    "Assets arrive from a format or tool with its own axis and handedness convention.",
+    "A viewer can drive two vectors into a parallel or zero configuration."
+  ],
+  "check_method": "geometry",
+  "tags": [
+    "domain-validation",
+    "handedness",
+    "cross-product",
+    "conventions"
+  ],
+  "subject_terms": [
+    "right-handed frame",
+    "cross product",
+    "orthogonality residual",
+    "anticommutative",
+    "up axis",
+    "unit conversion"
+  ],
+  "intent_signals": [
+    "the normal points the wrong way after import",
+    "check the cross product when the vectors line up"
+  ],
+  "example_prompts": [
+    "Check the frame convention and cross-product behaviour in this vector scene."
+  ],
+  "negative_signals": [
+    "torque or angular momentum modelling",
+    "shader normal mapping"
+  ],
+  "content": {
+    "principles": [
+      "Handedness is a property of the frame you declare, and every downstream rule follows from it: cross-product direction, normal orientation and rotation sign.",
+      "The cross product is orthogonal to both inputs and its length measures area, so orthogonality residual and length are two independent checks of the same computation.",
+      "Degenerate input has no direction: parallel or zero inputs give the zero vector, which must never be normalized into an arbitrary arrow, and every residual formed by dividing by the result magnitude is undefined there and must be branched around rather than evaluated."
+    ],
+    "implementation": [
+      "Record the frame convention explicitly as an ordered basis, including whether imported assets use a different handedness or up axis and where the conversion happens; handedness is a property of that declared ordered frame, and an arbitrary triple of vectors expressed in a right-handed frame can still have negative determinant.",
+      "Classify each sampled pair first: if either input or the result magnitude falls below a declared floor relative to the input magnitudes, run the degenerate branch and record magnitudes only. Otherwise compute the two dot products of the result with the inputs divided by the product of magnitudes, so the residual is dimensionless.",
+      "Compare the result length with the parallelogram area computed independently from the magnitudes and the sine of the measured angle.",
+      "Swap the operand order and confirm the result reverses, then feed parallel, antiparallel and zero vectors and record what is drawn."
+    ],
+    "observable_checks": [
+      "In the nondegenerate regime both normalized orthogonality residuals stay below a bound scaled for precision and conditioning, of the order of a few units in the last place divided by the sine of the angle between the inputs; state the precision and the conditioning factor, because a fixed precision-only bound fails for nearly parallel inputs.",
+      "Swapping operands reverses the result exactly, and parallel or zero input draws no arrow and no direction label.",
+      "The declared ordered frame basis has positive determinant under the right-handed convention, and any asset arriving with another convention is converted at import and re-checked; an arbitrary vector triple is not evidence about the frame."
+    ]
+  },
+  "known_limits": [
+    "Checks conventions and degeneracies of the vector computation; it says nothing about the physical meaning attached to the resulting direction.",
+    "Authored verification guidance; no computation or render was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.cross-product",
+    "recipe.linear-transformation-3d",
+    "recipe.robot-arm-forward-frames"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-cross-product-properties",
+      "statement": "The cross product is orthogonal to both input vectors, its magnitude equals the area of the parallelogram they span, reversing the operand order negates it, and parallel vectors give the zero vector.",
+      "scope": "Real three-dimensional vectors; the zero result has no direction.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-cross-product",
+          "locator": "2.4, cross product orthogonality, parallelogram area, anticommutativity and parallel vectors"
+        }
+      ]
+    },
+    {
+      "id": "claim.validation-gltf-frame-convention",
+      "statement": "glTF uses a right-handed coordinate system with +Y up, and a node matrix must be decomposable to translation, rotation and scale because such matrices cannot skew or shear.",
+      "scope": "The glTF 2.0 asset convention; other tools and formats declare their own frames and must be converted explicitly.",
+      "source_refs": [
+        {
+          "source_id": "source.validation-depth-gltf-coordinates",
+          "locator": "Coordinate System and Units; Transformations"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-evaluator-owns-logic-values",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Let an evaluator decide every signal value"
+  },
+  "aliases": {
+    "en": [
+      "combinational evaluation",
+      "wire colour is a view",
+      "logic authority"
+    ]
+  },
+  "direction_ids": [
+    "logic-circuits",
+    "abstract-systems-data"
+  ],
+  "summary": "Compute node values from the circuit function and render wires from those values, never the other way round.",
+  "objective": "Make a logic scene correct by construction rather than by matching hand-authored colours.",
+  "applies_when": [
+    "Gates, wires or logic blocks are displayed with signal states.",
+    "The viewer can toggle inputs and expects outputs to follow.",
+    "A truth table, waveform or readout accompanies the circuit."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "combinational logic",
+    "truth table",
+    "evaluation",
+    "signal state",
+    "gate",
+    "authority"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "logic",
+    "state"
+  ],
+  "intent_signals": [
+    "toggle the inputs",
+    "build a logic gate demo",
+    "does the output update"
+  ],
+  "example_prompts": [
+    "Build a gate workbench where flipping an input updates everything downstream.",
+    "Show the truth table and the circuit agreeing."
+  ],
+  "negative_signals": [
+    "Decorative circuit-like graphics with no logical behaviour.",
+    "Sequential circuits with memory, which need a separate clocking discipline."
+  ],
+  "not_for": [
+    "Decorative circuit-like graphics with no logical behaviour.",
+    "Sequential circuits with memory, which need a separate clocking discipline."
+  ],
+  "content": {
+    "principles": [
+      "A combinational device produces outputs that depend only on its current inputs, so the entire visible state of a combinational circuit is a function of the input vector. Anything not derived from that function is decoration.",
+      "The functional specification can be a truth table or Boolean equations, and both are checkable, which means the scene can verify itself instead of relying on the author having coloured the wires correctly.",
+      "Rendering must read from the evaluation. When wire colours are set by hand or by animation, a later edit to the circuit leaves a confidently wrong picture.",
+      "Propagation delay is a separate property and a bound rather than a schedule: the longest input-to-output path gives the worst-case time by which outputs have settled, not the time at which every input change reaches them. An animation of a signal travelling is therefore a timing claim that needs its own model."
+    ],
+    "implementation": [
+      "Represent the circuit as a graph of typed nodes and evaluate it in dependency order from the current inputs.",
+      "Derive wire colour, node highlight and every readout from the evaluated values so they cannot disagree.",
+      "Generate the truth table by evaluating the same function over all input combinations rather than typing it in.",
+      "If a travelling-signal animation is used, either model a delay per gate or label the animation as illustrative timing.",
+      "Detect cycles in a circuit presented as combinational and report them, since a feedback loop is not a combinational function."
+    ],
+    "observable_checks": [
+      "Toggle every input in turn and confirm all downstream values update in one consistent step.",
+      "Compare the generated truth table against an independently stated specification for the intended function, not only against the circuit that produced it: exhaustive evaluation of the same evaluator proves that the picture and the model agree, which is a weaker result than proving the circuit computes what was intended.",
+      "Edit the circuit and confirm the table and colours both change without any manual fix.",
+      "Introduce a feedback loop and confirm the scene reports it rather than settling on an arbitrary value."
+    ]
+  },
+  "related_ids": [
+    "recipe.logic-gates",
+    "recipe.full-adder"
+  ],
+  "creative_affordances": [
+    "Any visual language for signals is fine, including physical metaphors such as water or light, once the evaluator is authoritative.",
+    "Deliberately abstract or sculptural circuit layouts remain valid."
+  ],
+  "known_limits": [
+    "Authored state-model guidance citing the combinational definition and propagation delay; it does not model electrical behaviour, glitches or fan-out limits.",
+    "Sequential behaviour requires the clocking discipline covered separately."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-combinational-definition",
+      "statement": "A combinational device has outputs that depend only on its current inputs, its functional specification can be given as a truth table or Boolean equations, and its propagation delay corresponds to the longest path from inputs to outputs.",
+      "scope": "Digital combinational logic; it does not describe sequential circuits, analogue behaviour or physical timing margins.",
+      "source_refs": [
+        {
+          "source_id": "source.mit-combinational",
+          "locator": "4.1, combinational device definition, functional specification and propagation delay"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-legal-move-before-animation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Validate model moves while allowing honest previews"
+  },
+  "aliases": {
+    "en": [
+      "move legality",
+      "blocked feedback",
+      "rejected action"
+    ]
+  },
+  "direction_ids": [
+    "spatial-puzzles",
+    "twisty-puzzles"
+  ],
+  "summary": "Validate committed moves against the rules; distinguish accepted clamped candidates from rejected or cancelled previews.",
+  "objective": "Keep interaction honest about which actions the puzzle rules permit.",
+  "applies_when": [
+    "The user drags, slides or drops a piece under movement rules.",
+    "Some moves are blocked by other pieces or by the board.",
+    "Actions can be attempted rapidly or repeatedly."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "legality",
+    "blocked move",
+    "feedback",
+    "validation",
+    "sliding",
+    "affordance"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "puzzle",
+    "interaction"
+  ],
+  "intent_signals": [
+    "the piece moves through walls",
+    "nothing happens when I drag",
+    "why can I not move this"
+  ],
+  "example_prompts": [
+    "Let me slide the blocks with clear feedback when a move is blocked.",
+    "Stop pieces passing through each other."
+  ],
+  "negative_signals": [
+    "Free placement sandboxes with no movement rules.",
+    "Physically simulated interactions, where contact rather than a rule set decides."
+  ],
+  "not_for": [
+    "Free placement sandboxes with no movement rules.",
+    "Physically simulated interactions, where contact rather than a rule set decides."
+  ],
+  "content": {
+    "principles": [
+      "Committing a move to the model before it is validated produces a real illegal state, which teaches the wrong rules even if it is repaired afterwards. Showing an unaccepted move is different: a rejected preview, a resisted drag or a snap-back animation is honest as long as the model was never changed and the display makes the rejection obvious.",
+      "Silent refusal is equally poor: the user cannot distinguish an illegal move from an unresponsive interface, and will repeat the attempt.",
+      "Legality is often directional and path-dependent. A sliding piece must have every intermediate cell free, not just the destination, so the test must consider the path.",
+      "The rule set is part of the puzzle. Making refusals explain themselves teaches the rules through play instead of through instructions."
+    ],
+    "implementation": [
+      "Evaluate the candidate move against the model, including its full path, before committing it. A visual preview may precede acceptance if it is clearly presented as a candidate.",
+      "Preview legality continuously during a drag, either by constraining the piece to legal positions or by showing the illegal candidate in a clearly rejected state; both are valid so long as releasing an illegal candidate changes nothing in the model.",
+      "Give refusals a specific reason and a specific location, such as the blocking piece, rather than a generic shake.",
+      "Define the policy for simultaneous or rapid input, and apply it consistently with the commit rule for accepted moves.",
+      "Keep the legality function shared between the interaction, any solver and any hint feature."
+    ],
+    "observable_checks": [
+      "Attempt a move whose destination is free but whose path is blocked and confirm it is refused.",
+      "Drag against a wall and check the declared policy. Rejected or cancelled moves leave the model unchanged; a clamp-to-last-legal policy may commit that validated candidate on release, even when it differs from the starting cell. Preview appearance does not itself imply a commit.",
+      "Confirm every refusal produces feedback identifying the obstruction.",
+      "Compare the interaction result with the solver legality function on the same move."
+    ]
+  },
+  "related_ids": [
+    "recipe.sliding-block-escape",
+    "recipe.layered-maze-navigation",
+    "knowledge.inspectable-selection"
+  ],
+  "creative_affordances": [
+    "Refusal feedback can be playful, from resistance to sound to a highlighted blocker, as long as it is specific.",
+    "Rules that change during play are fine when the current rule set is discoverable."
+  ],
+  "known_limits": [
+    "Authored interaction guidance; no runtime interaction has been exercised for this record.",
+    "It does not cover physically simulated contact, which is governed by a solver rather than a rule set."
+  ],
+  "claims": []
+}

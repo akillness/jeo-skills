@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-scrub-pose-determinism",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Scrub determinism and loop wrap of an authored performance"
+  },
+  "aliases": {
+    "en": [
+      "timeline scrub determinism",
+      "pose replay check"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art"
+  ],
+  "summary": "Confirm that clip time alone determines the pose, including at the loop boundary and for attached props.",
+  "objective": "Visiting the same clip time in any order reproduces the same local pose and the same prop transforms relative to their parents.",
+  "applies_when": [
+    "A performance is scrubbable, pausable or replayable from a timeline.",
+    "The rig carries props, effects or derived values used for shading or labels.",
+    "Any secondary motion is integrated over time rather than evaluated from the clip."
+  ],
+  "check_method": "state",
+  "tags": [
+    "domain-validation",
+    "animation",
+    "determinism",
+    "timeline"
+  ],
+  "subject_terms": [
+    "clip time",
+    "normalized time",
+    "loop wrap",
+    "pose evaluation",
+    "secondary motion",
+    "attachment"
+  ],
+  "intent_signals": [
+    "scrubbing back gives a different pose",
+    "the lantern drifts out of the hand after looping"
+  ],
+  "example_prompts": [
+    "Check that scrubbing this performance backwards reproduces the same poses."
+  ],
+  "negative_signals": [
+    "choreographing new motion",
+    "physical cloth simulation authoring"
+  ],
+  "content": {
+    "principles": [
+      "A scrubbable performance is a function from clip time to pose; anything integrated frame to frame, such as a spring, a velocity or a noise accumulator, breaks that property and must be declared as an exception.",
+      "Loop wrap is a boundary, not a continuation: a looping clip repeats its local pose at normalized time one, while a travelling clip repeats that local pose offset by a declared root displacement, so the root-motion contract is stated before any comparison.",
+      "Attachment is part of the pose; a prop parented per frame rather than derived from the rig can drift even when every joint replays exactly."
+    ],
+    "implementation": [
+      "Choose five probe times including zero, the wrap point and one inside each authored segment, then visit them in ascending, descending and shuffled order.",
+      "At each visit record the local joint transforms and each prop transform relative to its parent, and compare the three visits after canonicalizing rotation sign, since a quaternion and its negation encode the same rotation.",
+      "Repeat once after leaving the scene paused for a long interval and once after changing an unrelated control such as camera orbit or light intensity, to expose hidden coupling.",
+      "List any deliberately integrated element as a declared exception with its own reset rule instead of loosening the comparison for everything."
+    ],
+    "observable_checks": [
+      "The same clip time yields the same rotations and translations in all three visit orders, compared as rotation angle and translation distance unless byte equality of the stored representation is the declared contract; any difference names the accumulator to fix.",
+      "A looping clip reproduces its start local pose at the wrap point, including prop transforms relative to their parents, and its root displacement over one loop matches the declared root-motion contract.",
+      "Declared exceptions list the value they carry between visits; an undeclared difference is a failure even when the rendered pose looks the same."
+    ]
+  },
+  "known_limits": [
+    "Determinism of replay is not a statement about whether the performance reads well or is anatomically plausible.",
+    "Authored verification guidance; no scene was run or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.lantern-keeper-puppet",
+    "recipe.ribbon-motion-sculpture",
+    "recipe.garden-creature-patrol"
+  ],
+  "claims": []
+}

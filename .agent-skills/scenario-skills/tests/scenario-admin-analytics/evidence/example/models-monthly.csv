@@ -1,0 +1,13 @@
+month,model_id,cu,jobs,api_key_cu_subset
+2026-06,model_example_0,3150.0,104,900.0
+2026-06,model_example_1,4725.0,22,0.0
+2026-06,model_example_2,1800.0,6,0.0
+2026-06,model_example_3,450.0,14,225.0
+2026-07,model_example_0,4410.0,146,1260.0
+2026-07,model_example_1,6615.0,31,0.0
+2026-07,model_example_2,2520.0,8,0.0
+2026-07,model_example_3,630.0,20,315.0
+2026-08,model_example_0,5040.0,170,1440.0
+2026-08,model_example_1,7560.0,37,0.0
+2026-08,model_example_2,2880.0,10,0.0
+2026-08,model_example_3,720.0,26,360.0

@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-filament-band-conservation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Filament length conservation in a shortening sarcomere"
+  },
+  "aliases": {
+    "en": [
+      "sarcomere band width check",
+      "sliding filament geometry check"
+    ]
+  },
+  "direction_ids": [
+    "physiology-biomechanics"
+  ],
+  "summary": "Confirm that filament lengths stay fixed while overlap changes within the valid shortening range, using the declared reject or clamp policy for invalid requests.",
+  "objective": "Filament lengths remain constant and A-band width is preserved as Z separation changes within the valid range; the declared reject or clamp policy prevents invalid committed geometry.",
+  "applies_when": [
+    "A scene illustrates contraction by sliding overlapping elements.",
+    "Band or zone labels are derived from element boundaries.",
+    "A viewer can drive a shortening parameter to its extremes."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "sarcomere",
+    "invariant",
+    "geometry"
+  ],
+  "subject_terms": [
+    "thick filament",
+    "thin filament",
+    "A band",
+    "I band",
+    "Z disc",
+    "overlap"
+  ],
+  "intent_signals": [
+    "the whole sarcomere shrinks when it contracts",
+    "check the band widths during shortening"
+  ],
+  "example_prompts": [
+    "Check that the filaments keep their length while this sarcomere shortens."
+  ],
+  "negative_signals": [
+    "force-length calibration",
+    "molecular dynamics of myosin heads"
+  ],
+  "content": {
+    "principles": [
+      "In the sliding-filament picture the filaments do not change length; what changes is their overlap, so filament length is a model constant and band widths are derived from it.",
+      "The A band is set by thick-filament length and therefore holds while Z discs approach; a model that scales the whole sarcomere uniformly contradicts the mechanism it illustrates.",
+      "Specify the valid shortening range and apply its declared reject or clamp policy before committing geometry. An out-of-range request must not silently create an invalid configuration."
+    ],
+    "implementation": [
+      "Parametrize by Z-disc separation with thick and thin filament lengths as fixed constants, and derive the A band, I band and any central zone from those constants.",
+      "Evaluate at five shortening values including both ends of the authored range and record thick length, thin length, A width, I width and Z separation at each.",
+      "Measure band widths from the boundaries actually placed in the scene rather than from the same expressions that positioned the meshes, so a placement error is visible.",
+      "Drive the parameter past full overlap and confirm the stated rejection or clamping rule fires."
+    ],
+    "observable_checks": [
+      "Thick and thin filament lengths are identical at all five samples to the precision of the geometry; any change identifies a uniform-scale defect.",
+      "A-band width stays constant while Z separation and I-band width decrease; the direction of change is the observable, not a calibrated value.",
+      "A parameter beyond full overlap follows the declared rule, whether that is rejection with a message or clamping at the valid end; drawing an unclamped invalid configuration silently is the failure signal."
+    ]
+  },
+  "known_limits": [
+    "Schematic geometry with a dimensionless shortening parameter; no calibrated ultrastructure, force or fatigue behaviour is implied.",
+    "Authored verification guidance; no scene was run or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.sarcomere-sliding-filaments",
+    "recipe.knee-layer-peel",
+    "recipe.skeletal-hierarchy"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-sarcomere-band-behaviour",
+      "statement": "When a sarcomere contracts the Z lines move closer together and the I band becomes smaller, while the A band stays the same width.",
+      "scope": "Skeletal-muscle sarcomere under the sliding-filament model as described in the cited section; qualitative geometry, not a force model or calibrated dimensions.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-sarcomere",
+          "locator": "The Sliding Filament Model of Contraction, Z lines and band widths"
+        }
+      ]
+    }
+  ]
+}

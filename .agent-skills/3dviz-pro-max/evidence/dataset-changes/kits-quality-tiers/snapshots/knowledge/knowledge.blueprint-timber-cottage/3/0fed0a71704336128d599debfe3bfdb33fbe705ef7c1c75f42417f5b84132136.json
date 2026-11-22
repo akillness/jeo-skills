@@ -1,0 +1,310 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-timber-cottage",
+  "revision": 3,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: timber-framed cottage"
+  },
+  "aliases": {
+    "en": [
+      "timber cottage kit",
+      "half-timbered house blueprint",
+      "village cottage module"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "A two-bay timber-framed cottage with a tiled gable roof, inset windows and a chimney socket, parameterised by width, depth, storeys, roof pitch and seed.",
+  "objective": "Seen from about seven metres the cottage reads as three tiers of detail: gable-and-chimney silhouette, frame timbers and window recesses, then sill drips and peg heads.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "building",
+    "village",
+    "timber",
+    "cottage"
+  ],
+  "subject_terms": [
+    "half-timbered",
+    "gable roof",
+    "roof tiles",
+    "window inset",
+    "chimney",
+    "door step"
+  ],
+  "intent_signals": [
+    "build a village house",
+    "reusable cottage module",
+    "half-timbered building kit"
+  ],
+  "example_prompts": [
+    "Add four varied cottages along the village lane.",
+    "I need a half-timbered house I can reuse with different widths."
+  ],
+  "not_for": [
+    "Load-bearing or code-compliant construction geometry.",
+    "Any claim about historical joinery of a specific region or period."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/buildings/timber-cottage.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "width",
+      "type": "number",
+      "range": [
+        3.0,
+        7.0
+      ],
+      "default": 4.2,
+      "unit": "m"
+    },
+    {
+      "name": "depth",
+      "type": "number",
+      "range": [
+        2.6,
+        5.0
+      ],
+      "default": 3.4,
+      "unit": "m"
+    },
+    {
+      "name": "storeys",
+      "type": "integer",
+      "range": [
+        1,
+        2
+      ],
+      "default": 1
+    },
+    {
+      "name": "seed",
+      "type": "integer",
+      "range": [
+        0,
+        65535
+      ],
+      "default": 1
+    },
+    {
+      "name": "roofPitchDeg",
+      "type": "number",
+      "range": [
+        30,
+        55
+      ],
+      "default": 42,
+      "unit": "deg"
+    }
+  ],
+  "sockets": [
+    {
+      "name": "door",
+      "position_m": [
+        0,
+        0,
+        1.7
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "chimney",
+      "position_m": [
+        1.26,
+        4.73,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "sign",
+      "position_m": [
+        0,
+        2.08,
+        1.72
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "lean-to",
+      "position_m": [
+        -2.1,
+        0,
+        0
+      ],
+      "normal": [
+        -1,
+        0,
+        0
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "gable roof with 42 deg pitch and 25 cm eave overhang, ridge at 3.93 m above the ground plane",
+      "brick chimney breaking the ridge line and topped with a stone cap at 4.73 m",
+      "door step and threshold standing 16 cm outside the front wall plane"
+    ],
+    "medium": [
+      "four exposed frame timbers per long wall, 16 cm wide and standing 7 cm proud of the plaster",
+      "windows inset 12 cm behind the wall face with a 6 cm frame, cut as real holes through a 22 cm wall",
+      "roof tiles laid as overlapping strips, three rows visible per metre of slope"
+    ],
+    "fine": [
+      "3 cm bevel on every timber edge, cut as geometry rather than shaded on",
+      "sill drip groove under each window, a 2.5 cm shadow line below the sill lip",
+      "peg heads at the frame joints, 7 cm across, two per timber",
+      "per-instance hue jitter of 4 percent on the tile strips"
+    ]
+  },
+  "footprint_m": [
+    4.2,
+    3.4
+  ],
+  "poly_budget": 3468,
+  "fits_looks": [
+    "knowledge.style-ghibli-painterly-pastoral",
+    "knowledge.style-hand-painted",
+    "knowledge.style-stylized",
+    "knowledge.lighting-mood-dusk-golden-hour",
+    "knowledge.lighting-mood-night-lantern"
+  ],
+  "content": {
+    "principles": [
+      "Model the silhouette first: a cottage is recognised by roof pitch, chimney and eave line before any surface detail exists.",
+      "Wall thickness is what makes a building read as built. An opening cut flush with the wall plane looks like a decal at every distance.",
+      "Variation belongs in the parameters, not in the mesh: four cottages from one blueprint with four seeds beat four hand-modelled boxes."
+    ],
+    "implementation": [
+      "Call create({ width, depth, storeys, seed, roofPitchDeg }); the returned group is centred on its footprint with y = 0 at the ground plane.",
+      "Attach a chimney pot, sign or lean-to through the named sockets rather than by hand-placing world coordinates.",
+      "Use the returned colliders for physics; they are axis-aligned box descriptors, not the render meshes."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible in the frame.",
+      "Two instances with different seeds differ visibly in tile hue and timber placement while keeping the same silhouette.",
+      "The door socket lands on the wall face, not inside it: its z equals half the depth parameter."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here is a measurement of any real building, joinery method or material.",
+    "The poly budget is the triangle count observed at default parameters, not a guarantee at every parameter combination; two storeys costs 4980 triangles and a 55 degree pitch 3580.",
+    "Tuned against ACESFilmic tone mapping at exposure 1.0 with no post-processing; a different exposure changes how the fine band reads.",
+    "Openings are positioned as fractions of the width, so a cottage narrower than 3 m puts its door and windows uncomfortably close together.",
+    "T2 is the same geometry with runtime procedural surface and vertex occlusion (see knowledge.surface-tier-defaults); it adds no polygons and ships no files, and it reads at stylized-game quality, not photoreal."
+  ],
+  "creative_affordances": [
+    "Any parameter may be pushed outside its stated range; the range is the band that was proved, not a limit.",
+    "Swap the palette and the roof material to move the cottage between the listed looks or to an unlisted one."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "width": 4.2,
+      "depth": 3.4,
+      "storeys": 1,
+      "roofPitchDeg": 42,
+      "bevel_m": 0.03,
+      "windowInset_m": 0.12,
+      "feeling": "cosy weathered village"
+    },
+    "rationale": "Proportions tuned so a 1.7 m figure reads as door-height at the door socket and the roof still dominates the silhouette at the far proof distance of twenty-seven metres."
+  },
+  "related_ids": [
+    "knowledge.framed-shelter",
+    "knowledge.modular-environment-kit-sockets",
+    "knowledge.hero-prop-detail-hierarchy",
+    "recipe.fantasy-village-diorama"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "detail_socket": "door",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-timber-cottage/far.png",
+      "evidence/kits/knowledge.blueprint-timber-cottage/mid.png",
+      "evidence/kits/knowledge.blueprint-timber-cottage/close.png",
+      "evidence/kits/knowledge.blueprint-timber-cottage/detail.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-timber-cottage/proof-log.json"
+  },
+  "tiers": {
+    "T0": {
+      "mode": "proxy",
+      "size_m": [
+        4.54,
+        4.73,
+        4.13
+      ],
+      "poly_budget": 12,
+      "status": "generated",
+      "note": "Bevelled box from the proof log bounds; footprint and ridge height only."
+    },
+    "T2": {
+      "mode": "runtime",
+      "poly_budget": 3468,
+      "texture_budget": {
+        "maps": 3,
+        "resolution": 1024,
+        "families": 4
+      },
+      "families": {
+        "#e5dccb": "plaster",
+        "#6b4f34": "wood",
+        "#8d5a4a": "roof-tile",
+        "#9c6a55": "stone",
+        "#b3aa9c": "stone",
+        "#a07a52": "wood"
+      },
+      "ao": {
+        "samples": 13,
+        "radius_m": 0.45,
+        "ground_dirt_m": 0.6
+      },
+      "proof": {
+        "harness": "templates/kits/_harness/index.html",
+        "captures": [
+          "evidence/kits/knowledge.blueprint-timber-cottage/T2/far.png",
+          "evidence/kits/knowledge.blueprint-timber-cottage/T2/mid.png",
+          "evidence/kits/knowledge.blueprint-timber-cottage/T2/close.png",
+          "evidence/kits/knowledge.blueprint-timber-cottage/T2/detail.png"
+        ],
+        "log": "evidence/kits/knowledge.blueprint-timber-cottage/T2/proof-log.json",
+        "detail_socket": "door"
+      },
+      "status": "proved",
+      "note": "Unmapped colours stay flat on purpose: pane #2f3a3f (glass) and opening shadow #3b362f."
+    },
+    "T3": {
+      "mode": "gltf",
+      "status": "missing",
+      "note": "Blender hero tier planned in phase 9C; nothing is shipped yet."
+    },
+    "T4": {
+      "mode": "external",
+      "status": "missing",
+      "note": "No external asset ships with this skill."
+    }
+  }
+}

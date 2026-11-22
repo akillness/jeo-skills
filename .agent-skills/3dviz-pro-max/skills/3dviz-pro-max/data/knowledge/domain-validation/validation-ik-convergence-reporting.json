@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-ik-convergence-reporting",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Convergence, residual and honest failure in numerical solving"
+  },
+  "aliases": {
+    "en": [
+      "ik residual reporting",
+      "non-convergence handling"
+    ]
+  },
+  "direction_ids": [
+    "robotics-control"
+  ],
+  "summary": "Report residual, iteration budget and joint limits for every solve, and never move the tool onto the target after a failure.",
+  "objective": "Success requires a measured residual below the declared tolerance, and failures leave the last valid pose with a scoped message.",
+  "applies_when": [
+    "A pose is reached by iterative numerical solving rather than a closed form.",
+    "The viewer can place targets outside the workspace or near singularities.",
+    "The interface reports success or failure."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "inverse-kinematics",
+    "convergence",
+    "reporting"
+  ],
+  "subject_terms": [
+    "residual",
+    "Jacobian pseudoinverse",
+    "iteration budget",
+    "initial guess",
+    "singularity",
+    "joint limits"
+  ],
+  "intent_signals": [
+    "the tool snapped onto an unreachable target",
+    "check how this solver reports failure"
+  ],
+  "example_prompts": [
+    "Check the convergence reporting of this inverse kinematics scene."
+  ],
+  "negative_signals": [
+    "motion planning with obstacles",
+    "controller stability analysis"
+  ],
+  "content": {
+    "principles": [
+      "A numerical solve either meets its stopping criterion or it does not; the interface must report which, and never move the tool to the target as though it had succeeded.",
+      "The initial guess and the configuration determine convergence, so a failure is evidence about this attempt rather than proof that the target is unreachable.",
+      "Near a singularity the update direction is ill-conditioned, so any damping or pseudoinverse strategy is declared with its parameter. Damping changes how the iteration moves, not what counts as a successful final pose error, and the two must not be conflated."
+    ],
+    "implementation": [
+      "Declare the residual metric before running: position error in length units and orientation error in radians do not share an unweighted norm, so either report them separately with their own tolerances or state the weighting that combines them.",
+      "Record for every attempt the initial guess, the iteration count, the residual at each iteration, the final residual, whether joint limits were active, and the declared tolerance and budget.",
+      "Run three categories of target: well inside the workspace, just outside it, and one requiring passage near a singular configuration.",
+      "For the reachable target start from several initial guesses including a deliberately poor one and record which converge.",
+      "Compare the final tool pose with the target independently and confirm the reported residual equals the measured pose error."
+    ],
+    "observable_checks": [
+      "Success is reported only when the measured residual is below the declared tolerance in the declared metric and joint limits are satisfied, with position and orientation components and their tolerances shown separately or with the stated weighting.",
+      "Budget exhaustion or a non-finite value reports failure and leaves the tool at the last valid pose, which requires a valid pose to exist before solving; when the first attempt starts from an invalid configuration the interface says there is no pose to retain rather than inventing one.",
+      "A failure message says that this attempt did not converge from this guess, not that the target is unreachable, unless a separate reachability argument is supplied."
+    ]
+  },
+  "known_limits": [
+    "A local numerical method; passing this check implies nothing about global reachability, collision-free motion or actuator capability.",
+    "Authored verification guidance; no solve was executed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.inverse-kinematics-target",
+    "recipe.robot-arm-forward-frames",
+    "recipe.differential-drive-odometry"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-numerical-ik-behaviour",
+      "statement": "Numerical inverse kinematics updates joint values using the Jacobian inverse or pseudoinverse together with the end-effector error and stops when that error is small enough; the initial guess should be close to a solution for the process to converge, and at a singularity or with too few joints the pseudoinverse yields a least-squares result.",
+      "scope": "Local Newton-Raphson style solving as described in the cited lesson; no guarantee of a globally reachable solution or of collision-free motion.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-inverse-kinematics",
+          "locator": "Numerical inverse kinematics: Jacobian pseudoinverse update, initial guess and stopping on end-effector error"
+        }
+      ]
+    }
+  ]
+}

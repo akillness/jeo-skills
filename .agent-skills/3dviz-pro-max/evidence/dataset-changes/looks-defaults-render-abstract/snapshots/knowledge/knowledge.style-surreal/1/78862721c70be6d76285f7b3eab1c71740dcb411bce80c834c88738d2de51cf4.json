@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-surreal",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Surreal spatial invention"
+  },
+  "aliases": {
+    "en": [
+      "dreamlike 3D",
+      "impossible scene",
+      "surreal sculpture"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "Choose a purposeful impossible relationship and support it with otherwise coherent local visual cues.",
+  "objective": "The visual contradiction reads as intentional, selected objects remain reachable and factual labels do not silently inherit the fiction.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "surreal"
+  ],
+  "subject_terms": [
+    "dreamlike 3D",
+    "impossible scene",
+    "surreal sculpture",
+    "art direction"
+  ],
+  "intent_signals": [
+    "Create a surreal spatial relationship",
+    "Stage an intentional impossible transformation"
+  ],
+  "example_prompts": [
+    "Create a surreal floating library where stairs become tree branches and the paths remain explorable."
+  ],
+  "content": {
+    "principles": [
+      "Choose a purposeful impossible relationship and support it with otherwise coherent local visual cues.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Invert scale, suspend a terrain fragment or blend object categories; keep a few ordinary anchors so the intended surprise remains legible.",
+      "Use a palette and light continuity that joins the invented world, or make an intentional light discontinuity part of the stated concept.",
+      "Stage the impossible relation from a clear view; use slow transformation or unusual motion to develop the idea without obscuring navigation."
+    ],
+    "observable_checks": [
+      "The visual contradiction reads as intentional, selected objects remain reachable and factual labels do not silently inherit the fiction.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with photorealistic surfaces or minimalist staging; mark invented causal or physical behavior as fictional.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

@@ -1,0 +1,9 @@
+# Recipe depth editorial review
+
+The batch adds 72 distinct recipes, three per registered direction, bringing the catalog to six recipes in each of 24 directions. Claude Opus 5 researched and authored the batch, then resumed the same session to correct source and model findings. Three reviewers inspected all corrected emitted recipes. Targeted worker and parent corrections affected 36 records, followed by independent closure of all reported correction groups.
+
+The review reconciled anatomical branch contributions with their selected reference, classical versus revised physiology, region and rank degeneracies, algorithm item accounting, finite-sampling uncertainty, state and animation authority, physical constraint failure, optical order markers versus actual peaks, explicit robot/control and map constructions, event delivery assumptions and source access limits. Correctness conditions remain tied to the declared model; creative choices are not mandatory style gates.
+
+Two existing claims were narrowed after source re-reading: Euler's recurrence and finite-width diffraction peaks. Two source-checked claims were added for reference-specific brachial contribution routing and spherical projection formulas. Two new primary-source records document the PROJ projection equations. Source locators and exact record hashes were refreshed before promotion; previous staging evidence and correction snapshots remain private.
+
+Final targeted editorial rechecks and candidate structural/evidence validation passed. This batch contains authored construction and verification guidance, not executed scenes or solvers. No new demo, renderer, host installation or exported visual artifact ran for these recipes. Source disagreements, unavailable material and authored parameter choices remain explicit in the records.

@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-voxel-field-grid",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "geometry-profile",
+  "title": {
+    "en": "Voxel grid with explicit index-to-world ownership"
+  },
+  "aliases": {
+    "en": [
+      "voxel field grid",
+      "volume sampling lattice",
+      "index space and world space"
+    ]
+  },
+  "direction_ids": [
+    "spatial-puzzles",
+    "soft-fluid-thermal",
+    "earth-environment"
+  ],
+  "summary": "Treat a voxel grid as integer indices plus a declared transform, and keep occupancy, sampled values and their sampling positions distinct.",
+  "objective": "A named cell resolves to one world position under the declared transform, and moving the grid moves the data with it without changing any stored value.",
+  "tags": [
+    "geometry-profile",
+    "voxel",
+    "grid",
+    "sampling",
+    "field",
+    "index-space"
+  ],
+  "subject_terms": [
+    "voxel grid",
+    "index space",
+    "world space",
+    "cell-centred sampling",
+    "node-centred sampling",
+    "occupancy",
+    "scalar field",
+    "voxel size",
+    "sparse volume",
+    "background value"
+  ],
+  "intent_signals": [
+    "build a voxel world",
+    "my heat values are offset by half a cell",
+    "how big is one voxel in metres",
+    "store a field on a grid",
+    "the volume shifts when I move the object"
+  ],
+  "example_prompts": [
+    "Build a voxel packing tray where each cell has a definite size.",
+    "Store a temperature field on a grid and let me probe a cell.",
+    "Show which cells are occupied and which are merely defined."
+  ],
+  "negative_signals": [
+    "unstructured triangle mesh from a scanner",
+    "continuous analytic surface with no sampling"
+  ],
+  "not_for": [
+    "Surface-only assets, where a mesh carries the shape directly.",
+    "Solver results that must remain on their original unstructured or adaptive mesh."
+  ],
+  "content": {
+    "principles": [
+      "A voxel grid is two separate things: integer indices that address storage, and a transform that says where those indices sit in the world. Confusing them makes every later measurement ambiguous.",
+      "Occupancy and value are different questions. A cell can be defined and empty, defined and zero, or outside the stored region entirely, and the presentation must be able to tell them apart.",
+      "Say whether a stored number describes the cell as a whole or the lattice point at its corner. A half-cell offset between the two conventions is the most common silent error in voxel visualisation.",
+      "Voxel size is a modelling decision with visible consequences: it sets the smallest feature that can exist, the staircase amplitude on any diagonal surface and the memory cost of the field.",
+      "Most interesting volumes are mostly empty. Storing a default background value and only the deviations from it is a representation choice that should be stated, because it changes what iteration over the grid means."
+    ],
+    "implementation": [
+      "Record the grid origin, the voxel spacing and the axis order once, and derive every world position from that record instead of hard-coding offsets at each use site.",
+      "Provide both directions of the mapping: index to world for placing geometry and labels, and world to index for probing, picking and brush-style editing.",
+      "For interpolated lookups, convert the world position into continuous index coordinates first and interpolate there, so a fractional index has a defined meaning between neighbouring samples.",
+      "Keep an explicit active or occupied marker separate from the stored value, and make the legend distinguish empty, zero and undefined.",
+      "Render solid voxels as merged surfaces where the object reads better as a shape, and as individual cells where the discreteness is the point; state which reading the scene is using.",
+      "When the grid represents measured or computed data, keep the units and the value range with the grid, and do not rescale values silently to fit a colour ramp."
+    ],
+    "observable_checks": [
+      "Probing a named cell reports the same world position that the rendered cell occupies, and the reported index round-trips back to the same cell.",
+      "Translating or rotating the grid moves the rendered volume without changing any reported stored value.",
+      "Halving the voxel size doubles the resolution of the visible staircase on a diagonal boundary and does not shift the surface by half a cell.",
+      "Empty, zero and undefined cells are visually distinguishable, and the legend names all three.",
+      "A value probed at a stored sample location, meaning the cell centre or the lattice node according to the convention the record declares, matches the stored value exactly; probes between sample locations follow the declared interpolation rule rather than returning a stored value."
+    ]
+  },
+  "creative_affordances": [
+    "The cell grid can be celebrated rather than hidden: chamfered cells, gapped lattices and coloured strata are all legitimate voxel looks.",
+    "A coarse grid chosen for readability is a valid design decision when the record says the resolution is expressive rather than measured."
+  ],
+  "known_limits": [
+    "This profile governs the grid and its addressing. It does not make any stored field physically meaningful and does not perform any simulation.",
+    "The index-and-transform model cited here comes from one sparse-volume library's documentation; other toolkits use different conventions for where a sample sits inside a cell.",
+    "Authored reusable guidance; no runtime artifact or rendered result has been observed for this record."
+  ],
+  "related_ids": [
+    "recipe.voxel-packing-tray",
+    "recipe.heat-rod-decay",
+    "recipe.terrain-contour-slices",
+    "knowledge.style-voxel",
+    "knowledge.shared-isosurface-threshold",
+    "knowledge.shared-volume-visualization-stack"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-voxel-index-world",
+      "statement": "A sparse volume library addresses its samples with unit-less signed integer index coordinates and relies on a separate transform to place them in world space, generalising the lattice to a continuous index space so that fractional index coordinates carry meaning for interpolation, and providing explicit index-to-world and world-to-index conversions including a cell-centred variant.",
+      "scope": "Documented data model of the OpenVDB library as of the access date. It establishes that index addressing and physical placement are separate concerns; it does not standardise voxel conventions across other toolkits.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-openvdb-overview",
+          "locator": "Coordinate Systems and Transforms > Index Space; World Space; Transforms and Maps"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-creature-body-plan-coherence",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Give an invented creature a consistent body plan"
+  },
+  "aliases": {
+    "en": [
+      "body plan",
+      "creature design coherence",
+      "limb symmetry"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "Fix limb count, joint axes, mass distribution and sensory orientation once, then let style exaggerate them.",
+  "objective": "Make an invented creature read as a single organism whose movement follows from its construction.",
+  "applies_when": [
+    "A non-existing creature, mascot or fictional animal is being designed.",
+    "A creature already moves but reads as an assembly of parts.",
+    "Several creatures must belong to the same fictional world."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "creature design",
+    "body plan",
+    "joint axis",
+    "silhouette",
+    "balance",
+    "mascot"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "creature",
+    "object-craft"
+  ],
+  "intent_signals": [
+    "invent a creature for the garden",
+    "the creature looks like random parts",
+    "design a mascot"
+  ],
+  "example_prompts": [
+    "Design a six-legged garden creature that moves like it is built that way.",
+    "Make the flying creature look capable of carrying its own weight."
+  ],
+  "negative_signals": [
+    "Deliberately incoherent or surreal designs where impossible anatomy is the point.",
+    "Real animals, where anatomy is a factual matter requiring sources."
+  ],
+  "not_for": [
+    "Deliberately incoherent or surreal designs where impossible anatomy is the point.",
+    "Real animals, where anatomy is a factual matter requiring sources."
+  ],
+  "content": {
+    "principles": [
+      "Coherence, not realism, is what makes an invented creature convincing: repeated limb structure, a consistent joint direction and a plausible relationship between mass and support.",
+      "Joints are the strongest signal. A limb whose segments bend in alternating directions reads as a leg; a limb whose joints bend arbitrarily reads as a tentacle or as an error.",
+      "Support must match mass. A heavy body on thin distal limbs needs a visible reason such as a broad foot, a counterbalancing tail or a suspended posture.",
+      "Sensors and mouth parts set the front of the creature and therefore its turning behaviour and resting orientation."
+    ],
+    "implementation": [
+      "Decide the plan explicitly: number of limbs, segments per limb, joint axes and their directions, symmetry, tail or counterweight, and where the sensory end is.",
+      "Repeat the same joint logic across limb pairs, then vary length and thickness by role, such as digging forelimbs and springing hind limbs.",
+      "For a grounded creature, declare the support model and place the centre of mass over the support polygon in the rest pose and in the quasi-static poses it will hold. Flying, swimming, climbing and transient dynamic poses are outside that test and need their own justification, such as lift, adhesion or momentum.",
+      "Add style at the surface, in scale relationships and in silhouette, after the plan is fixed, so exaggeration does not invalidate the mechanics.",
+      "Where several creatures share a world, reuse the plan with variations so they read as related species."
+    ],
+    "observable_checks": [
+      "For the poses the creature actually holds on the ground, project the centre of mass and check it lies within the declared support polygon. A failure says the pose is not statically balanced under that model, which may be intended for a lunge or a fall; it does not by itself establish that the design is unbuildable, and it does not apply to flight or other unsupported poses.",
+      "Compare limb pairs: joints that bend in inconsistent directions between left and right are almost always mistakes.",
+      "Show only the silhouette and ask which end is the front; ambiguity here usually means the sensory end is undefined.",
+      "Play the intended motion at half speed and look for limbs whose range exceeds what their joints allow."
+    ]
+  },
+  "related_ids": [
+    "recipe.garden-creature-patrol",
+    "knowledge.articulated-limb",
+    "knowledge.theme-fantasy-woodland"
+  ],
+  "creative_affordances": [
+    "Asymmetry, extra limbs, impossible proportions and non-biological materials are all legitimate once the plan is deliberate.",
+    "A creature may violate its own plan for a story reason, such as an injury or a prosthesis, when that is visible in the design."
+  ],
+  "known_limits": [
+    "Authored creative guidance for invented creatures; it asserts no biological or biomechanical fact.",
+    "Real-animal anatomy, gait energetics and load capacity require sourced research rather than this rule."
+  ],
+  "claims": []
+}

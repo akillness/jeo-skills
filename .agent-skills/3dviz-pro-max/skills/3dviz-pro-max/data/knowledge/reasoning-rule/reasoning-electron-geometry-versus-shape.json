@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-electron-geometry-versus-shape",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Distinguish electron-pair geometry from molecular shape"
+  },
+  "aliases": {
+    "en": [
+      "VSEPR",
+      "lone pairs",
+      "bond angles"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Distinguish ideal electron-domain geometry from molecular shape and separately sourced distorted atomic positions.",
+  "objective": "Build molecular geometry that explains why a shape is bent or pyramidal rather than asserting it.",
+  "applies_when": [
+    "A molecule with lone pairs on the central atom is displayed.",
+    "Bond angles are labelled or compared between molecules.",
+    "The scene explains polarity, shape or why similar formulas look different."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "VSEPR",
+    "electron-pair geometry",
+    "molecular structure",
+    "lone pair",
+    "bond angle",
+    "polarity"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "molecules",
+    "geometry"
+  ],
+  "intent_signals": [
+    "why is water bent",
+    "compare molecular shapes",
+    "show the bond angles"
+  ],
+  "example_prompts": [
+    "Compare methane, ammonia and water and explain the angle differences.",
+    "Show the lone pairs and the resulting shape."
+  ],
+  "negative_signals": [
+    "Molecules displayed purely as decoration.",
+    "Predicting or replacing experimental atomic coordinates from the ideal-domain model; sourced measured geometry may instead be shown as a distinct comparison."
+  ],
+  "not_for": [
+    "Molecules displayed purely as decoration.",
+    "Predicting or replacing experimental atomic coordinates from the ideal-domain model; sourced measured geometry may instead be shown as a distinct comparison."
+  ],
+  "content": {
+    "principles": [
+      "The electron-pair geometry around a central atom is not the same as its molecular structure: the first counts all regions of electron density, the second describes only where the atoms are.",
+      "Quote ideal angles with their domain pairs: linear 180 degrees, trigonal planar 120, tetrahedral approximately 109.5, trigonal bipyramidal 90 for axial-equatorial pairs, 120 for equatorial pairs and 180 for the opposite axial pair; octahedral adjacent pairs are 90 and opposite pairs180 degrees.",
+      "Lone pairs explain deviations, case by case rather than uniformly. Because a lone pair occupies a larger region of space than a bonding pair, the source reports the ammonia HNH angle as slightly smaller than 109.5 degrees; that is an example, not a rule that every remaining angle shrinks. Which angles change, and by how much, depends on the geometry and needs its own evidence or measured data.",
+      "Showing only the atoms hides the cause, and showing only the domains hides what the molecule is; a good scene lets the viewer see both."
+    ],
+    "implementation": [
+      "For an ideal-domain illustration, place domains from their count and identify bonding versus lone-pair sites. For a sourced distorted molecular geometry, preserve the supplied atomic coordinates and show the ideal-domain construction as a separately identified comparison.",
+      "Label the electron-pair geometry and the molecular shape as two separate readouts so the distinction is explicit.",
+      "State whether displayed angles are ideal values from the domain geometry or measured values from a data source, name the two domains each angle spans, and keep the ideal-domain diagram and any separately sourced distorted atomic positions as distinct views rather than one blended picture.",
+      "Let the viewer toggle lone-pair visibility to see the same molecule as domains and as atoms.",
+      "When comparing molecules, keep the central atom and orientation aligned so the angle differences are the visible difference."
+    ],
+    "observable_checks": [
+      "In ideal-domain views within the same domain family, compare the shared ideal domain arrangement and the different subsets occupied by atoms. Check sourced distorted atomic coordinates against their own data; do not require them to coincide with ideal domain sites.",
+      "Measure the modelled angles and confirm they match the stated ideal or sourced values rather than an arbitrary placement.",
+      "Confirm the labels for electron-pair geometry and molecular shape are both present and not interchanged.",
+      "Toggle lone pairs and confirm nothing else in the geometry moves."
+    ]
+  },
+  "related_ids": [
+    "recipe.molecular-shape-comparison"
+  ],
+  "creative_affordances": [
+    "Lone pairs can be shown as lobes, clouds or ghosted domains; the representation is a design choice.",
+    "An abstract domain-only view is a valid companion to the atomic view."
+  ],
+  "known_limits": [
+    "Authored modelling guidance citing the predictive model and its ideal angles; real measured geometries differ and require structural data.",
+    "It does not cover hypervalent exceptions, resonance or computational chemistry results."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-vsepr-geometry-distinction",
+      "statement": "Electron-pair geometry describes all regions of electron density around a central atom, while molecular structure describes atom positions. Ideal angles are 180 degrees for linear, 120 for trigonal planar and approximately 109.5 for tetrahedral arrangements. In trigonal bipyramidal geometry axial-equatorial pairs are 90 degrees, equatorial pairs 120 and the two opposite axial domains 180; octahedral adjacent and opposite pairs are 90 and 180 respectively. The ammonia HNH angle is slightly smaller than 109.5 degrees because its lone pair occupies more space than a bonding pair.",
+      "scope": "Ideal VSEPR domain geometries and the source ammonia example. Pair-specific angles describe the ideal construction, not measured experimental geometries or a universal direction of lone-pair distortion.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-molecular-shape",
+          "locator": "7.6, Figure 7.16 ideal domain arrangements and axial/equatorial positions; Figure 7.19 linear axial-pair case; electron-pair geometry versus molecular structure; Figure 7.18 ammonia distortion"
+        }
+      ]
+    }
+  ]
+}

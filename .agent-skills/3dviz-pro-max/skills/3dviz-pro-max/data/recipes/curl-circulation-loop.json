@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "id": "recipe.curl-circulation-loop",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Curl and circulation around a loop"
+  },
+  "aliases": {
+    "en": [
+      "curl",
+      "circulation",
+      "paddlewheel"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields"
+  ],
+  "summary": "Compare a local curl component with circulation per unit area, distinguishing the finite-disk average from its shrinking-disk limit.",
+  "objective": "Build a field where I can move and tilt a small loop, read its circulation and compare it with the curl component along the loop normal.",
+  "tags": [
+    "curl",
+    "circulation",
+    "vector calculus"
+  ],
+  "subject_terms": [
+    "curl",
+    "circulation",
+    "line integral",
+    "loop orientation",
+    "normal vector",
+    "irrotational",
+    "conservative field"
+  ],
+  "intent_signals": [
+    "Show what curl measures at a point.",
+    "Compare a circulation integral with the curl of the field."
+  ],
+  "example_prompts": [
+    "Build a curl demonstration with a movable oriented loop and a circulation readout.",
+    "Show a field whose curl is zero and a field where it is not."
+  ],
+  "negative_signals": [
+    "Not a fluid dynamics simulation; no velocity boundary conditions or viscosity.",
+    "Not a proof of Stokes theorem: agreement in the scene is numerical, within a stated tolerance."
+  ],
+  "not_for": [
+    "Not a fluid dynamics simulation; no velocity boundary conditions or viscosity.",
+    "Not a proof of Stokes theorem: agreement in the scene is numerical, within a stated tolerance."
+  ],
+  "entities": [
+    {
+      "name": "Field and probe point",
+      "guidance": "Show the analytic field sparsely plus a highlighted probe point whose curl vector is drawn with a declared display scale."
+    },
+    {
+      "name": "Oriented loop",
+      "guidance": "Give the loop a visible traversal direction and a right-hand normal, since circulation changes sign with orientation."
+    },
+    {
+      "name": "Numerical readout",
+      "guidance": "Display the loop circulation, the loop area, their ratio and the curl component along the normal, so the comparison is explicit."
+    }
+  ],
+  "state_contract": {
+    "model": "A prescribed smooth analytic field, a loop with centre, positive radius and normal whose spanning disk lies inside the smooth domain, a numerically quadratured circulation, and the analytic curl at the centre. Circulation divided by area is the average of the normal curl component over the disk; it equals the centre value only in the shrinking-loop limit, or exactly when the field has constant curl.",
+    "authority": "The analytic field is authoritative; both the circulation estimate and the curl vector are derived from it, so no readout may be authored independently.",
+    "actions": [
+      "Move the loop through the field.",
+      "Tilt the loop normal.",
+      "Shrink the loop radius and watch the ratio converge.",
+      "Switch to a field with zero curl and reset."
+    ]
+  },
+  "invariants": [
+    "Reversing the loop traversal reverses the sign of the circulation and of the reported normal.",
+    "Alignment and perpendicularity statements hold in the shrinking-loop limit, or exactly for a declared constant-curl field. For a varying field a finite loop whose normal is perpendicular to the centre curl can still have nonzero circulation, so the scene reports the ratio as a disk average, not as the centre value.",
+    "For a conservative field the circulation stays within the stated tolerance of zero for every loop position and orientation.",
+    "For smooth fields the exact disk average tends to the centre curl component as radius tends to zero, without requiring monotonic improvement at successive radii. Quadrature error and floating-point cancellation can limit the computed comparison; distinguish them from finite-radius averaging and report radius and sample count."
+  ],
+  "motion_guidance": [
+    "Animate a marker travelling the loop in the declared direction so the sign convention is visible, not implied.",
+    "Shrink the loop smoothly and show the computed ratio alongside the analytic component, preserving nonmonotonic changes and numerical limits instead of forcing visual convergence."
+  ],
+  "known_limits": [
+    "Circulation is computed by quadrature on a discretised loop; its accuracy depends on the sample count.",
+    "Only smooth prescribed fields are handled; singular fields need their own treatment.",
+    "For a field with varying curl the finite-loop ratio differs from the centre value; for example a field whose curl has a component growing with position gives nonzero circulation on a loop whose normal is perpendicular to the centre curl.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-curl-definition",
+      "statement": "For a differentiable vector field the curl is a vector that measures the tendency of particles near a point to rotate about the axis pointing in its direction, which is the sense of the paddlewheel interpretation.",
+      "scope": "Definition and interpretation as cited; the loop comparison in the scene is a numerical illustration.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-curl",
+          "locator": "6.5, curl definition and paddlewheel interpretation"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-conservative-zero-curl",
+      "statement": "If a field is conservative then its curl is zero, and on a simply connected domain a field with zero curl is conservative.",
+      "scope": "Domain condition matters: the converse requires simple connectedness as cited.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-curl",
+          "locator": "6.5, conservative field and curl relationship"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-circulation-curl-limit",
+      "statement": "Stokes' theorem equates the circulation of a field around a positively oriented simple closed boundary curve with the flux of its curl through a compatible piecewise smooth oriented surface, for fields with continuous partial derivatives on an open region containing the surface, and the normal component of curl at a point is the limit of circulation divided by area over shrinking disks.",
+      "scope": "Smooth fields and compatible oriented surfaces as cited; the finite-radius ratio in the scene is an area average that tends to the centre value by continuity, not an identity at finite radius.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-stokes",
+          "locator": "6.7, Theorem 6.19 and the circulation-per-unit-area limit"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Oriented loop",
+      "structure": "A torus ring with an arrowhead on the ring itself plus a normal rod, so orientation is legible from any camera angle.",
+      "material": "Single accent for the loop with a matching but lighter value for its normal; the field arrows stay neutral.",
+      "articulation": "The ring rotates about its centre under the normal control and rebuilds sample points when the radius changes."
+    },
+    {
+      "family": "Field and probe point",
+      "structure": "Sparse arrows plus a distinctly larger curl arrow at the probe with its own scale legend.",
+      "material": "The curl arrow uses a reserved accent that appears nowhere else, since it is the quantity under study.",
+      "articulation": "Recomputed analytically whenever the probe moves."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Quadrature of a line integral over a prescribed field; no fluid or particle simulation.",
+    "state": [
+      "loop centre",
+      "loop radius",
+      "loop normal",
+      "sample count"
+    ],
+    "checks": [
+      "Compare the computed ratio with the centre normal curl component across declared positive radii, accounting separately for quadrature error and finite-radius averaging. The smooth-field limit does not require every radius reduction to improve agreement.",
+      "Reversing traversal flips the sign of the reported circulation."
+    ]
+  },
+  "related_ids": [
+    "recipe.divergence-flux-box",
+    "recipe.vector-field-integration",
+    "knowledge.signed-field-section"
+  ]
+}

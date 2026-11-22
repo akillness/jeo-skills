@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "skills": {
+    "Skill Development": {
+      "source": "anthropics/claude-code",
+      "sourceType": "github",
+      "skillPath": "plugins/plugin-dev/skills/skill-development/SKILL.md",
+      "computedHash": "8d262f08f33825947ea20204ebf5101e36056c98090251bd973a552ec8ef0c0c"
+    },
+    "pr-handle-comments": {
+      "source": "scenario-labs/scenario-workspace",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/pr-handle-comments/SKILL.md",
+      "computedHash": "b2222dfe34f1bf84d45037cac8653be6cace4f72426f5174843044d376d36963"
+    },
+    "pr-squash-message": {
+      "source": "scenario-labs/scenario-workspace",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/pr-squash-message/SKILL.md",
+      "computedHash": "eaeecc69bca442f95ba79fa92ceef2fa4bb13a448a220317ce6a1a93299d7f97"
+    },
+    "pr-summary": {
+      "source": "scenario-labs/scenario-workspace",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/pr-summary/SKILL.md",
+      "computedHash": "8cb401d06131f33e89bff35d5f3e233a289782d3a7cd9331e0c6a072dafa838f"
+    },
+    "skill-creator": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/skill-creator/SKILL.md",
+      "computedHash": "5ea13a6d9f0d4bb694405d79acd00cadec0d21bb138c4dd10fcf3c500cb835c2"
+    }
+  }
+}

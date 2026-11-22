@@ -1,0 +1,912 @@
+[
+  {
+    "name": "whole-brief",
+    "query": "Improve Latent Village, an explorable fantasy farming diorama with varied hills, rivers, detailed buildings, expressive spirit creatures, substantial organic paths and visible physical interactions.",
+    "collection": "recipes",
+    "kind": null,
+    "result": {
+      "status": "candidates",
+      "query": "Improve Latent Village, an explorable fantasy farming diorama with varied hills, rivers, detailed buildings, expressive spirit creatures, substantial organic paths and visible physical interactions.",
+      "algorithm": "weighted-field-bm25",
+      "index_version": 3,
+      "catalog_hash": "025c2ba5154fea9b1268242b42a4c4242a1fb9a777dfc593511627608c9c93c3",
+      "results": [
+        {
+          "id": "recipe.fantasy-village-diorama",
+          "revision": 1,
+          "title": "Fantasy village diorama",
+          "path": "data/recipes/environments-dioramas.json",
+          "collection": "recipes",
+          "kind": "recipe",
+          "score": 116.859057,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "summary",
+            "objective",
+            "tags",
+            "example_prompts"
+          ],
+          "summary": "Compose a small invented settlement around a memorable landmark, readable paths, and contrasting building silhouettes."
+        },
+        {
+          "id": "recipe.historical-diorama",
+          "revision": 1,
+          "title": "Historical diorama with evidence layers",
+          "path": "data/recipes/environments-dioramas.json",
+          "collection": "recipes",
+          "kind": "recipe",
+          "score": 63.160748,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "summary",
+            "objective",
+            "tags",
+            "example_prompts"
+          ],
+          "summary": "Organize a site reconstruction so documented remains and interpretive additions can be inspected separately."
+        },
+        {
+          "id": "recipe.monte-carlo-volume",
+          "revision": 1,
+          "title": "Monte Carlo volume estimate with an interval",
+          "path": "data/recipes/opus5-recipe-depth-probability-statistics-depth.json",
+          "collection": "recipes",
+          "kind": "recipe",
+          "score": 26.438256,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "summary",
+            "objective",
+            "intent_signals",
+            "example_prompts"
+          ],
+          "summary": "Estimate a volume by sampling a bounding box and keep the uncertainty attached to every reported number."
+        }
+      ],
+      "notice": "Lexical candidates only. Interpret negation and intent before choosing. Scores are not probabilities; no match does not limit creative capability."
+    }
+  },
+  {
+    "name": "world",
+    "query": "fantasy village terrain river bridge paths landmarks",
+    "collection": "recipes",
+    "kind": null,
+    "result": {
+      "status": "candidates",
+      "query": "fantasy village terrain river bridge paths landmarks",
+      "algorithm": "weighted-field-bm25",
+      "index_version": 3,
+      "catalog_hash": "025c2ba5154fea9b1268242b42a4c4242a1fb9a777dfc593511627608c9c93c3",
+      "results": [
+        {
+          "id": "recipe.fantasy-village-diorama",
+          "revision": 1,
+          "title": "Fantasy village diorama",
+          "path": "data/recipes/environments-dioramas.json",
+          "collection": "recipes",
+          "kind": "recipe",
+          "score": 81.061817,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "summary",
+            "tags",
+            "example_prompts"
+          ],
+          "summary": "Compose a small invented settlement around a memorable landmark, readable paths, and contrasting building silhouettes."
+        },
+        {
+          "id": "recipe.streamflow-forecast-playback",
+          "revision": 1,
+          "title": "Streamflow guidance playback on a river network",
+          "path": "data/recipes/opus5-recipe-depth-earth-environment-depth.json",
+          "collection": "recipes",
+          "kind": "recipe",
+          "score": 52.069384,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "summary",
+            "objective",
+            "intent_signals",
+            "example_prompts",
+            "subject_terms"
+          ],
+          "summary": "Play modelled streamflow over a river network while keeping guidance, observation and visualisation clearly separated."
+        },
+        {
+          "id": "recipe.terrain-island",
+          "revision": 1,
+          "title": "Terrain island with grounded exploration",
+          "path": "data/recipes/environments-dioramas.json",
+          "collection": "recipes",
+          "kind": "recipe",
+          "score": 47.423244,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "objective",
+            "tags",
+            "example_prompts"
+          ],
+          "summary": "Compose a traversable island around a ridge, sheltered inlet and readable path."
+        }
+      ],
+      "notice": "Lexical candidates only. Interpret negation and intent before choosing. Scores are not probabilities; no match does not limit creative capability."
+    }
+  },
+  {
+    "name": "creature",
+    "query": "winged creature flight landing articulated gait",
+    "collection": "recipes",
+    "kind": null,
+    "result": {
+      "status": "candidates",
+      "query": "winged creature flight landing articulated gait",
+      "algorithm": "weighted-field-bm25",
+      "index_version": 3,
+      "catalog_hash": "025c2ba5154fea9b1268242b42a4c4242a1fb9a777dfc593511627608c9c93c3",
+      "results": [
+        {
+          "id": "recipe.winged-flight-cycle",
+          "revision": 1,
+          "title": "Winged creature flight cycle and banking turns",
+          "path": "data/recipes/opus5-recipe-depth-characters-motion-art-depth.json",
+          "collection": "recipes",
+          "kind": "recipe",
+          "score": 83.602677,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "objective",
+            "tags",
+            "intent_signals",
+            "example_prompts",
+            "subject_terms"
+          ],
+          "summary": "Build a flier whose wing cycle, banking and heading come from one motion state instead of three unrelated animations."
+        },
+        {
+          "id": "recipe.garden-creature-patrol",
+          "revision": 1,
+          "title": "Garden creature route and gait",
+          "path": "data/recipes/characters-motion-art.json",
+          "collection": "recipes",
+          "kind": "recipe",
+          "score": 70.500168,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "objective",
+            "intent_signals",
+            "example_prompts",
+            "subject_terms"
+          ],
+          "summary": "Make a small fictional quadruped travel a route with readable foot placement and stopping."
+        },
+        {
+          "id": "recipe.stair-flight-geometry",
+          "revision": 1,
+          "title": "Stair flight geometry and handrail height",
+          "path": "data/recipes/opus5-recipe-depth-architecture-interiors-depth.json",
+          "collection": "recipes",
+          "kind": "recipe",
+          "score": 42.842887,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "objective",
+            "example_prompts",
+            "subject_terms"
+          ],
+          "summary": "Generate a stair from riser and tread dimensions and check it against published provisions instead of eyeballing it."
+        }
+      ],
+      "notice": "Lexical candidates only. Interpret negation and intent before choosing. Scores are not probabilities; no match does not limit creative capability."
+    }
+  },
+  {
+    "name": "craft",
+    "query": "timber roof support framing joinery",
+    "collection": "knowledge",
+    "kind": "object-archetype",
+    "result": {
+      "status": "candidates",
+      "query": "timber roof support framing joinery",
+      "algorithm": "weighted-field-bm25",
+      "index_version": 3,
+      "catalog_hash": "025c2ba5154fea9b1268242b42a4c4242a1fb9a777dfc593511627608c9c93c3",
+      "results": [
+        {
+          "id": "knowledge.framed-shelter",
+          "revision": 1,
+          "title": "Framed shelter with readable assembly",
+          "path": "data/knowledge/object-archetypes.json",
+          "collection": "knowledge",
+          "kind": "object-archetype",
+          "score": 26.547428,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "summary",
+            "objective",
+            "example_prompts"
+          ],
+          "summary": "Construct a shelter from foundation, posts, beams, roof and infill so support and enclosure can be inspected."
+        }
+      ],
+      "notice": "Lexical candidates only. Interpret negation and intent before choosing. Scores are not probabilities; no match does not limit creative capability."
+    }
+  },
+  {
+    "name": "style",
+    "query": "stylized cozy fantasy low poly handcrafted diorama",
+    "collection": "knowledge",
+    "kind": "style-profile",
+    "result": {
+      "status": "candidates",
+      "query": "stylized cozy fantasy low poly handcrafted diorama",
+      "algorithm": "weighted-field-bm25",
+      "index_version": 3,
+      "catalog_hash": "025c2ba5154fea9b1268242b42a4c4242a1fb9a777dfc593511627608c9c93c3",
+      "results": [
+        {
+          "id": "knowledge.style-low-poly",
+          "revision": 1,
+          "title": "Low-poly shape economy",
+          "path": "data/knowledge/style-profiles.json",
+          "collection": "knowledge",
+          "kind": "style-profile",
+          "score": 119.401199,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "tags",
+            "intent_signals",
+            "example_prompts",
+            "subject_terms"
+          ],
+          "summary": "Spend geometric detail on the contour and meaningful part boundaries rather than distributing it evenly."
+        },
+        {
+          "id": "knowledge.style-stylized",
+          "revision": 1,
+          "title": "Stylized proportions",
+          "path": "data/knowledge/style-profiles.json",
+          "collection": "knowledge",
+          "kind": "style-profile",
+          "score": 60.618142,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "tags",
+            "intent_signals",
+            "example_prompts",
+            "subject_terms"
+          ],
+          "summary": "Choose one proportional exaggeration that gives the subject character while preserving its identifying parts."
+        },
+        {
+          "id": "knowledge.style-stylized-realism",
+          "revision": 1,
+          "title": "Stylized realism balance",
+          "path": "data/knowledge/style-profiles.json",
+          "collection": "knowledge",
+          "kind": "style-profile",
+          "score": 54.208393,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "tags",
+            "intent_signals",
+            "example_prompts",
+            "subject_terms"
+          ],
+          "summary": "Keep construction and recognizable material relationships while deliberately exaggerating selected shapes or color relationships."
+        }
+      ],
+      "notice": "Lexical candidates only. Interpret negation and intent before choosing. Scores are not probabilities; no match does not limit creative capability."
+    }
+  },
+  {
+    "name": "theme",
+    "query": "fantasy mountain village workshop river",
+    "collection": "knowledge",
+    "kind": "theme-profile",
+    "result": {
+      "status": "candidates",
+      "query": "fantasy mountain village workshop river",
+      "algorithm": "weighted-field-bm25",
+      "index_version": 3,
+      "catalog_hash": "025c2ba5154fea9b1268242b42a4c4242a1fb9a777dfc593511627608c9c93c3",
+      "results": [
+        {
+          "id": "knowledge.theme-fantasy-woodland",
+          "revision": 1,
+          "title": "Fantasy woodland community",
+          "path": "data/knowledge/theme-profiles.json",
+          "collection": "knowledge",
+          "kind": "theme-profile",
+          "score": 80.571431,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "tags",
+            "intent_signals",
+            "subject_terms"
+          ],
+          "summary": "Make a fictional community legible through shared paths, sheltered gathering spaces and a recurring woodland motif."
+        },
+        {
+          "id": "knowledge.theme-industrial-workshop",
+          "revision": 1,
+          "title": "Industrial workshop narrative",
+          "path": "data/knowledge/theme-profiles.json",
+          "collection": "knowledge",
+          "kind": "theme-profile",
+          "score": 71.900663,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "tags",
+            "intent_signals",
+            "example_prompts",
+            "subject_terms"
+          ],
+          "summary": "Show a workspace organized around making or repairing a chosen object so tools and stations have narrative roles."
+        },
+        {
+          "id": "knowledge.theme-science-fiction-outpost",
+          "revision": 1,
+          "title": "Science-fiction outpost",
+          "path": "data/knowledge/theme-profiles.json",
+          "collection": "knowledge",
+          "kind": "theme-profile",
+          "score": 2.465564,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "example_prompts"
+          ],
+          "summary": "Give a fictional remote station a readable purpose through zones for arrival, work, habitation and maintenance."
+        }
+      ],
+      "notice": "Lexical candidates only. Interpret negation and intent before choosing. Scores are not probabilities; no match does not limit creative capability."
+    }
+  },
+  {
+    "name": "physics",
+    "query": "collision impulse friction reset experiment",
+    "collection": "knowledge",
+    "kind": "physical-behavior",
+    "result": {
+      "status": "candidates",
+      "query": "collision impulse friction reset experiment",
+      "algorithm": "weighted-field-bm25",
+      "index_version": 3,
+      "catalog_hash": "025c2ba5154fea9b1268242b42a4c4242a1fb9a777dfc593511627608c9c93c3",
+      "results": [
+        {
+          "id": "knowledge.gravity-contact",
+          "revision": 1,
+          "title": "Gravity and contact as an observable action",
+          "path": "data/knowledge/physical-behaviors.json",
+          "collection": "knowledge",
+          "kind": "physical-behavior",
+          "score": 9.434124,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "summary",
+            "example_prompts"
+          ],
+          "summary": "Release a body onto a support with visible initial state, contact behavior and a reproducible reset."
+        }
+      ],
+      "notice": "Lexical candidates only. Interpret negation and intent before choosing. Scores are not probabilities; no match does not limit creative capability."
+    }
+  },
+  {
+    "name": "adapter",
+    "query": "Three.js Rapier dynamic bodies render synchronization",
+    "collection": "knowledge",
+    "kind": "tool-adapter",
+    "result": {
+      "status": "candidates",
+      "query": "Three.js Rapier dynamic bodies render synchronization",
+      "algorithm": "weighted-field-bm25",
+      "index_version": 3,
+      "catalog_hash": "025c2ba5154fea9b1268242b42a4c4242a1fb9a777dfc593511627608c9c93c3",
+      "results": [
+        {
+          "id": "knowledge.three-rigid-body-adapter",
+          "revision": 1,
+          "title": "Three.js and Rapier rigid-body adapter",
+          "path": "data/knowledge/tool-adapters.json",
+          "collection": "knowledge",
+          "kind": "tool-adapter",
+          "score": 75.497494,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "summary",
+            "tags",
+            "example_prompts"
+          ],
+          "summary": "Connect rendered assemblies to independent rigid bodies and colliders with one authoritative simulation state."
+        },
+        {
+          "id": "knowledge.three-pbr-adapter",
+          "revision": 1,
+          "title": "Three.js PBR material adapter",
+          "path": "data/knowledge/tool-adapters.json",
+          "collection": "knowledge",
+          "kind": "tool-adapter",
+          "score": 54.415843,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "tags"
+          ],
+          "summary": "Choose Standard or Physical materials from the optical requirement, then inspect the result under controlled lighting."
+        },
+        {
+          "id": "knowledge.three-scene-adapter",
+          "revision": 1,
+          "title": "Three.js scene assembly and transform adapter",
+          "path": "data/knowledge/tool-adapters.json",
+          "collection": "knowledge",
+          "kind": "tool-adapter",
+          "score": 50.930896,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "tags"
+          ],
+          "summary": "Map semantic parts to stable scene nodes with deliberate local and world coordinate ownership."
+        }
+      ],
+      "notice": "Lexical candidates only. Interpret negation and intent before choosing. Scores are not probabilities; no match does not limit creative capability."
+    }
+  },
+  {
+    "name": "rules-world",
+    "query": "terrain paths support clearance landmarks village",
+    "collection": "knowledge",
+    "kind": "reasoning-rule",
+    "result": {
+      "status": "candidates",
+      "query": "terrain paths support clearance landmarks village",
+      "algorithm": "weighted-field-bm25",
+      "index_version": 3,
+      "catalog_hash": "025c2ba5154fea9b1268242b42a4c4242a1fb9a777dfc593511627608c9c93c3",
+      "results": [
+        {
+          "id": "knowledge.reasoning-terrain-height-authority",
+          "revision": 1,
+          "title": "One elevation function owns ground contact",
+          "path": "data/knowledge/opus5-reasoning-depth-reasoning-environments-dioramas.json",
+          "collection": "knowledge",
+          "kind": "reasoning-rule",
+          "score": 49.107683,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "aliases.en",
+            "summary",
+            "objective",
+            "tags",
+            "intent_signals",
+            "example_prompts",
+            "subject_terms",
+            "applies_when"
+          ],
+          "summary": "Sample the same elevation function that renders the ground when placing buildings, roads, water and walkable paths."
+        },
+        {
+          "id": "knowledge.reasoning-dem-resolution-limits",
+          "revision": 1,
+          "title": "Terrain detail is bounded by the source resolution",
+          "path": "data/knowledge/opus5-reasoning-depth-reasoning-earth-environment.json",
+          "collection": "knowledge",
+          "kind": "reasoning-rule",
+          "score": 44.314451,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "summary",
+            "objective",
+            "intent_signals",
+            "example_prompts",
+            "subject_terms",
+            "applies_when"
+          ],
+          "summary": "State the elevation source and its cell spacing, and do not present interpolated detail as observed terrain."
+        },
+        {
+          "id": "knowledge.reasoning-settlement-function-variation",
+          "revision": 1,
+          "title": "Vary buildings by what happens inside them",
+          "path": "data/knowledge/opus5-reasoning-depth-reasoning-environments-dioramas.json",
+          "collection": "knowledge",
+          "kind": "reasoning-rule",
+          "score": 44.026177,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "aliases.en",
+            "objective",
+            "intent_signals",
+            "example_prompts",
+            "subject_terms",
+            "applies_when"
+          ],
+          "summary": "Differentiate structures by their program, materials and site rather than by random size and rotation jitter."
+        }
+      ],
+      "notice": "Lexical candidates only. Interpret negation and intent before choosing. Scores are not probabilities; no match does not limit creative capability."
+    }
+  },
+  {
+    "name": "rules-actors",
+    "query": "creature locomotion gait ground flight clearance",
+    "collection": "knowledge",
+    "kind": "reasoning-rule",
+    "result": {
+      "status": "candidates",
+      "query": "creature locomotion gait ground flight clearance",
+      "algorithm": "weighted-field-bm25",
+      "index_version": 3,
+      "catalog_hash": "025c2ba5154fea9b1268242b42a4c4242a1fb9a777dfc593511627608c9c93c3",
+      "results": [
+        {
+          "id": "knowledge.reasoning-gait-contact-consistency",
+          "revision": 1,
+          "title": "Tie stride length to travelled distance",
+          "path": "data/knowledge/opus5-reasoning-depth-reasoning-characters-motion-art.json",
+          "collection": "knowledge",
+          "kind": "reasoning-rule",
+          "score": 68.604741,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "aliases.en",
+            "objective",
+            "tags",
+            "intent_signals",
+            "example_prompts",
+            "subject_terms",
+            "applies_when"
+          ],
+          "summary": "Derive body speed from foot contact, or drive feet from body speed, but never let the two be authored independently."
+        },
+        {
+          "id": "knowledge.reasoning-creature-body-plan-coherence",
+          "revision": 1,
+          "title": "Give an invented creature a consistent body plan",
+          "path": "data/knowledge/opus5-reasoning-depth-reasoning-characters-motion-art.json",
+          "collection": "knowledge",
+          "kind": "reasoning-rule",
+          "score": 62.034157,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "objective",
+            "tags",
+            "intent_signals",
+            "example_prompts",
+            "subject_terms",
+            "applies_when"
+          ],
+          "summary": "Fix limb count, joint axes, mass distribution and sensory orientation once, then let style exaggerate them."
+        },
+        {
+          "id": "knowledge.reasoning-terrain-height-authority",
+          "revision": 1,
+          "title": "One elevation function owns ground contact",
+          "path": "data/knowledge/opus5-reasoning-depth-reasoning-environments-dioramas.json",
+          "collection": "knowledge",
+          "kind": "reasoning-rule",
+          "score": 36.446312,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "summary",
+            "intent_signals",
+            "subject_terms",
+            "applies_when"
+          ],
+          "summary": "Sample the same elevation function that renders the ground when placing buildings, roads, water and walkable paths."
+        }
+      ],
+      "notice": "Lexical candidates only. Interpret negation and intent before choosing. Scores are not probabilities; no match does not limit creative capability."
+    }
+  },
+  {
+    "name": "checks",
+    "query": "terrain traversal support slope step clearance",
+    "collection": "knowledge",
+    "kind": "domain-validation",
+    "result": {
+      "status": "candidates",
+      "query": "terrain traversal support slope step clearance",
+      "algorithm": "weighted-field-bm25",
+      "index_version": 3,
+      "catalog_hash": "025c2ba5154fea9b1268242b42a4c4242a1fb9a777dfc593511627608c9c93c3",
+      "results": [
+        {
+          "id": "knowledge.validation-traversable-support-clearance",
+          "revision": 1,
+          "title": "Traversable support and clearance probe set",
+          "path": "data/knowledge/opus5-validation-depth-validation-environments-dioramas.json",
+          "collection": "knowledge",
+          "kind": "domain-validation",
+          "score": 121.433588,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "objective",
+            "tags",
+            "subject_terms",
+            "applies_when"
+          ],
+          "summary": "Verify that a walkable environment blocks, supports and steps where its authored limits say it should."
+        },
+        {
+          "id": "knowledge.validation-footprint-sweep-clearance",
+          "revision": 1,
+          "title": "Furniture footprint and door sweep area tests",
+          "path": "data/knowledge/opus5-validation-depth-validation-architecture-interiors.json",
+          "collection": "knowledge",
+          "kind": "domain-validation",
+          "score": 41.134527,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "aliases.en",
+            "tags",
+            "intent_signals",
+            "example_prompts",
+            "subject_terms",
+            "applies_when"
+          ],
+          "summary": "Test layout acceptance with polygon area overlaps, including the swept door sector and edge-touching cases."
+        },
+        {
+          "id": "knowledge.validation-bfs-layer-invariant",
+          "revision": 1,
+          "title": "Frontier layer invariants of a breadth-first traversal",
+          "path": "data/knowledge/opus5-validation-depth-validation-algorithms-data-structures.json",
+          "collection": "knowledge",
+          "kind": "domain-validation",
+          "score": 38.991348,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "objective",
+            "tags",
+            "intent_signals",
+            "applies_when"
+          ],
+          "summary": "Check that dequeued distances are non-decreasing, vertices are enqueued once and predecessor chains match reported distances."
+        }
+      ],
+      "notice": "Lexical candidates only. Interpret negation and intent before choosing. Scores are not probabilities; no match does not limit creative capability."
+    }
+  },
+  {
+    "name": "inspection",
+    "query": "repeat experiment cause physical response",
+    "collection": "knowledge",
+    "kind": "inspection-pattern",
+    "result": {
+      "status": "candidates",
+      "query": "repeat experiment cause physical response",
+      "algorithm": "weighted-field-bm25",
+      "index_version": 3,
+      "catalog_hash": "025c2ba5154fea9b1268242b42a4c4242a1fb9a777dfc593511627608c9c93c3",
+      "results": [
+        {
+          "id": "knowledge.controlled-experiment",
+          "revision": 1,
+          "title": "Controlled before-and-after experiment",
+          "path": "data/knowledge/inspection-patterns.json",
+          "collection": "knowledge",
+          "kind": "inspection-pattern",
+          "score": 64.000632,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "summary",
+            "objective",
+            "tags",
+            "example_prompts"
+          ],
+          "summary": "Make one change produce a visible, attributable response while preserving the baseline."
+        }
+      ],
+      "notice": "Lexical candidates only. Interpret negation and intent before choosing. Scores are not probabilities; no match does not limit creative capability."
+    }
+  },
+  {
+    "name": "surface",
+    "query": "wood stone glass copper roughness physical material",
+    "collection": "knowledge",
+    "kind": "material-profile",
+    "result": {
+      "status": "candidates",
+      "query": "wood stone glass copper roughness physical material",
+      "algorithm": "weighted-field-bm25",
+      "index_version": 3,
+      "catalog_hash": "025c2ba5154fea9b1268242b42a4c4242a1fb9a777dfc593511627608c9c93c3",
+      "results": [
+        {
+          "id": "knowledge.dielectric-surface",
+          "revision": 1,
+          "title": "Dielectric surface: wood, stone and painted parts",
+          "path": "data/knowledge/material-profiles.json",
+          "collection": "knowledge",
+          "kind": "material-profile",
+          "score": 39.334355,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "tags"
+          ],
+          "summary": "Author nonmetal surfaces through finish, grain direction and controlled highlight comparisons."
+        },
+        {
+          "id": "knowledge.conductor-surface",
+          "revision": 1,
+          "title": "Conductor surface with intentional finish",
+          "path": "data/knowledge/material-profiles.json",
+          "collection": "knowledge",
+          "kind": "material-profile",
+          "score": 9.16003,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "tags"
+          ],
+          "summary": "Make metal parts readable using finish zones and a reflected environment instead of a flat gray color."
+        },
+        {
+          "id": "knowledge.transmissive-medium",
+          "revision": 1,
+          "title": "Transmissive pane or vessel",
+          "path": "data/knowledge/material-profiles.json",
+          "collection": "knowledge",
+          "kind": "material-profile",
+          "score": 9.16003,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "tags"
+          ],
+          "summary": "Model transparent parts with inspectable boundaries and optical thickness assumptions."
+        }
+      ],
+      "notice": "Lexical candidates only. Interpret negation and intent before choosing. Scores are not probabilities; no match does not limit creative capability."
+    }
+  },
+  {
+    "name": "lighting",
+    "query": "inspect material shape key fill rim lighting",
+    "collection": "knowledge",
+    "kind": "lighting-profile",
+    "result": {
+      "status": "candidates",
+      "query": "inspect material shape key fill rim lighting",
+      "algorithm": "weighted-field-bm25",
+      "index_version": 3,
+      "catalog_hash": "025c2ba5154fea9b1268242b42a4c4242a1fb9a777dfc593511627608c9c93c3",
+      "results": [
+        {
+          "id": "knowledge.shared-pbr-studio-environment",
+          "revision": 1,
+          "title": "Environment-led studio lighting for physically based materials",
+          "path": "data/knowledge/opus5-shared-depth-lighting-profiles.json",
+          "collection": "knowledge",
+          "kind": "lighting-profile",
+          "score": 58.057328,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "tags",
+            "intent_signals",
+            "example_prompts",
+            "subject_terms"
+          ],
+          "summary": "Let a controlled environment carry most of the illumination, and add discrete lights only for the shaping the environment cannot supply."
+        },
+        {
+          "id": "knowledge.shared-transmissive-enclosure-light",
+          "revision": 1,
+          "title": "Lighting a closed transmissive volume",
+          "path": "data/knowledge/opus5-shared-depth-lighting-profiles.json",
+          "collection": "knowledge",
+          "kind": "lighting-profile",
+          "score": 40.292391,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "tags",
+            "subject_terms"
+          ],
+          "summary": "Give a transparent enclosure something worth transmitting: a lit backdrop, a lit interior and edges that stay readable."
+        },
+        {
+          "id": "knowledge.shared-light-comparison-rig",
+          "revision": 1,
+          "title": "Fixed lighting rig for one-variable comparison",
+          "path": "data/knowledge/opus5-shared-depth-lighting-profiles.json",
+          "collection": "knowledge",
+          "kind": "lighting-profile",
+          "score": 39.904597,
+          "exact_id": false,
+          "exact_alias": false,
+          "matched_fields": [
+            "title.en",
+            "aliases.en",
+            "summary",
+            "tags",
+            "example_prompts",
+            "subject_terms"
+          ],
+          "summary": "Freeze every lighting and output setting so that a difference between two views can only come from the thing being compared."
+        }
+      ],
+      "notice": "Lexical candidates only. Interpret negation and intent before choosing. Scores are not probabilities; no match does not limit creative capability."
+    }
+  }
+]

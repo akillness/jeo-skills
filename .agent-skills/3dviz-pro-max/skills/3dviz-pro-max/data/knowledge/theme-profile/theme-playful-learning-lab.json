@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.theme-playful-learning-lab",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "theme-profile",
+  "title": {
+    "en": "Playful learning laboratory"
+  },
+  "aliases": {
+    "en": [
+      "playful science lab",
+      "learning toy world",
+      "interactive teaching set"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry",
+    "logic-circuits",
+    "linear-algebra"
+  ],
+  "summary": "Frame a learning task as a small inviting experiment with one clear manipulable object and visible consequences.",
+  "objective": "A learner can identify the control, observe its effect and recover the starting state; decorative light does not impersonate a computed result.",
+  "tags": [
+    "theme-profile",
+    "fictional-setting",
+    "playful-learning-lab"
+  ],
+  "subject_terms": [
+    "playful science lab",
+    "learning toy world",
+    "interactive teaching set"
+  ],
+  "intent_signals": [
+    "Set the scene in a playful learning laboratory",
+    "Use playful science lab as the narrative setting"
+  ],
+  "example_prompts": [
+    "Build a playful full-adder lab where large switches drive real input bits and the carry output remains clear."
+  ],
+  "content": {
+    "principles": [
+      "Frame a learning task as a small inviting experiment with one clear manipulable object and visible consequences.",
+      "Theme supplies setting and motifs; choose geometry style, rendering approach and factual model independently."
+    ],
+    "implementation": [
+      "Use large handles, distinct modules and a contained experiment area; decorative props should not resemble active controls.",
+      "Choose separated accent colors for controls and state, with neutral surfaces around the experiment and broad readable lighting.",
+      "Keep a stable teaching view and offer inspection on demand; animate transitions from the actual model and provide pause, step or reset as relevant."
+    ],
+    "observable_checks": [
+      "A learner can identify the control, observe its effect and recover the starting state; decorative light does not impersonate a computed result.",
+      "Inspect one focal object close up and the complete route or spatial relationship from an overview."
+    ]
+  },
+  "known_limits": [
+    "Authored fictional setting guidance; no rendered artifact or runtime improvement has been observed for this record.",
+    "This proposal does not establish historical, cultural, scientific or engineering facts."
+  ],
+  "creative_affordances": [
+    "Combine with toy-miniature or cartoon style; playful treatment preserves equations, units, truth tables and domain invariants.",
+    "Replace motifs or combine settings to suit the user brief; maintain a readable organizing idea rather than treating these suggestions as a fixed asset list."
+  ],
+  "related_ids": [
+    "knowledge.framed-shelter",
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

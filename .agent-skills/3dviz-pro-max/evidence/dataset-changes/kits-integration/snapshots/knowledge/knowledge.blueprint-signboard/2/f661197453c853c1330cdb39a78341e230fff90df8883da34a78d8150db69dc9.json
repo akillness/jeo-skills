@@ -1,0 +1,262 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-signboard",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: hanging signboard"
+  },
+  "aliases": {
+    "en": [
+      "signboard kit",
+      "tavern sign blueprint",
+      "shop sign module"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "A hanging tavern sign: stepped stone foot, timber post, a scrolled iron bracket and a bevelled board with a raised border and a carved boss on both faces.",
+  "objective": "At two metres the sign reads as a post, arm and swinging board, then the scroll brace, border moulding and eye rings, then bolt domes, the boss and hue jitter.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "prop",
+    "village",
+    "sign",
+    "shopfront"
+  ],
+  "subject_terms": [
+    "bevelled panel",
+    "bracket",
+    "scroll brace",
+    "eye ring",
+    "border moulding",
+    "boss"
+  ],
+  "intent_signals": [
+    "add a tavern sign to the street",
+    "hanging shop sign prop",
+    "signboard prop kit"
+  ],
+  "example_prompts": [
+    "Hang a sign outside the inn.",
+    "I need a signboard I can swing and re-letter for each shop."
+  ],
+  "not_for": [
+    "Any claim about historical sign guild practice or lettering.",
+    "A sign with readable text: the board carries a boss, not a legend."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/props/signboard.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "height",
+      "type": "number",
+      "range": [
+        1.8,
+        3.6
+      ],
+      "default": 2.62,
+      "unit": "m"
+    },
+    {
+      "name": "reach",
+      "type": "number",
+      "range": [
+        0.5,
+        1.4
+      ],
+      "default": 0.86,
+      "unit": "m"
+    },
+    {
+      "name": "boardWidth",
+      "type": "number",
+      "range": [
+        0.45,
+        1.2
+      ],
+      "default": 0.78,
+      "unit": "m"
+    },
+    {
+      "name": "boardHeight",
+      "type": "number",
+      "range": [
+        0.3,
+        0.9
+      ],
+      "default": 0.52,
+      "unit": "m"
+    },
+    {
+      "name": "seed",
+      "type": "integer",
+      "range": [
+        0,
+        65535
+      ],
+      "default": 1
+    },
+    {
+      "name": "postWidth",
+      "type": "number",
+      "range": [
+        0.07,
+        0.18
+      ],
+      "default": 0.11,
+      "unit": "m"
+    }
+  ],
+  "sockets": [
+    {
+      "name": "base",
+      "position_m": [
+        0,
+        0,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "bracket",
+      "position_m": [
+        0.84,
+        2.52,
+        0
+      ],
+      "normal": [
+        0,
+        -1,
+        0
+      ]
+    },
+    {
+      "name": "swing-a",
+      "position_m": [
+        0.165,
+        2.17,
+        0
+      ],
+      "normal": [
+        0,
+        -1,
+        0
+      ]
+    },
+    {
+      "name": "swing-b",
+      "position_m": [
+        0.695,
+        2.17,
+        0
+      ],
+      "normal": [
+        0,
+        -1,
+        0
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "a 2.62 m post with an arm cantilevered 86 cm out and a board hung under it",
+      "a three-step stone and timber foot widening to 35 cm at the ground",
+      "the board hanging clear of the post, free to swing on two points"
+    ],
+    "medium": [
+      "a seven-link scroll brace curving from the post to the arm",
+      "a raised border moulding on both faces of the board, 4.5 cm wide",
+      "two eye rings, each dropping the board on a four-link chain",
+      "an iron band around the post at 46 percent of its height"
+    ],
+    "fine": [
+      "a carved boss 10 cm across at the centre of each board face",
+      "six bolt domes, 3.6 cm across: four on the mid-post band and two on the arm",
+      "1.5 cm chamfer on the board and 1.7 cm on the post",
+      "per-seed jitter on the boss placement, so no two signs are stamped alike"
+    ]
+  },
+  "footprint_m": [
+    1.02,
+    0.35
+  ],
+  "poly_budget": 2156,
+  "fits_looks": [
+    "knowledge.style-hand-painted",
+    "knowledge.style-cartoon",
+    "knowledge.lighting-mood-night-lantern",
+    "knowledge.theme-heritage-fiction"
+  ],
+  "content": {
+    "principles": [
+      "A sign has to hang clear of its post, or it reads as a plaque nailed to a stick.",
+      "The bracket is the character: a single diagonal strut reads as engineering, a stepped scroll reads as a smith.",
+      "Both faces get the border and the boss, because a hanging sign is seen from both sides and a blank back is the first thing a turntable exposes."
+    ],
+    "implementation": [
+      "Call create({ height, reach, boardWidth, boardHeight, seed, postWidth }); the group is centred on the post axis with y = 0 at the ground.",
+      "Hang a different board from the swing-a and swing-b sockets, or attach a lantern at the bracket socket.",
+      "Apply a lettered texture through materialFor with a map; the board face is a single flat panel sized for it."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible.",
+      "Both swing sockets point down and sit at different x, so a board hung on them stays level.",
+      "The board bounding box does not intersect the post collider."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here measures a real sign, bracket or fixing.",
+    "The poly budget is the triangle count observed at default parameters.",
+    "The board does not actually swing: the swing sockets are attachment points, and any motion belongs to the rig that owns them.",
+    "A sign post is taller than the proof harness close view can hold: close.png crops the foot, and the fine band is read there on the mid-post band bolts."
+  ],
+  "creative_affordances": [
+    "Any parameter may be pushed outside its stated range; the range is the band that was proved, not a limit.",
+    "Shorten the reach and widen the board for a shop fascia, or raise the post and narrow the board for a way-marker."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "height": 2.62,
+      "reach": 0.86,
+      "boardWidth": 0.78,
+      "boardHeight": 0.52,
+      "postWidth": 0.11,
+      "bevel_m": 0.015,
+      "feeling": "weathered inn frontage"
+    },
+    "rationale": "2.62 m clears a 1.7 m figure walking under the board by a comfortable margin, which is the proportion that makes a hanging sign read as a street sign."
+  },
+  "related_ids": [
+    "knowledge.framed-shelter",
+    "knowledge.theme-functional-prop-grammar",
+    "knowledge.hero-prop-detail-hierarchy",
+    "recipe.fantasy-village-diorama"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "detail_socket": "base",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-signboard/far.png",
+      "evidence/kits/knowledge.blueprint-signboard/mid.png",
+      "evidence/kits/knowledge.blueprint-signboard/close.png",
+      "evidence/kits/knowledge.blueprint-signboard/detail.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-signboard/proof-log.json"
+  }
+}

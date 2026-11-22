@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-tree-conifer",
+  "record_revision": 3,
+  "asset": "templates/kits/nature/tree-conifer.js",
+  "asset_sha256": "7754941646552dc5fd922cfea077cd38f87461ae2293c5f23d78e05fc5d1c6a4",
+  "params": {
+    "seed": 1,
+    "age": 1,
+    "lean": 0.06,
+    "height": 4.2,
+    "radius": 0.16,
+    "needle": "#4b7554"
+  },
+  "tier": "T2",
+  "kit": {
+    "blueprint": "knowledge.blueprint-tree-conifer",
+    "module": "../nature/tree-conifer.js",
+    "params": {
+      "seed": 1,
+      "age": 1,
+      "lean": 0.06,
+      "height": 4.2,
+      "radius": 0.16,
+      "needle": "#4b7554"
+    },
+    "tier": "T2",
+    "surface": {
+      "seed": 1,
+      "size": 1024,
+      "materials": 2,
+      "unmapped": [
+        "#ffffff",
+        "#4b7554"
+      ],
+      "uv": [
+        "normalised",
+        "world"
+      ],
+      "ms": 73.6,
+      "ao": {
+        "vertices": 304,
+        "casts": 1287,
+        "ms": 9.2,
+        "skipped": null
+      }
+    },
+    "triangles": 1184,
+    "bounds_m": {
+      "min": [
+        -1.2230756101045677,
+        -0.19060169829799012,
+        -1.2286988178973308
+      ],
+      "max": [
+        1.2875017694084803,
+        4.926765631905819,
+        1.3221124599824674
+      ],
+      "size": [
+        2.510577379513048,
+        5.117367330203809,
+        2.5508112778797982
+      ]
+    },
+    "fit_distance_m": 9.1292,
+    "view_distances_m": {
+      "far": 21.9102,
+      "mid": 10.9551,
+      "close": 7.1208,
+      "detail": 1.4848
+    },
+    "sockets": [
+      "base",
+      "leader",
+      "nest"
+    ],
+    "detail_socket": "base",
+    "animated": true,
+    "colliders": [
+      "bole",
+      "crown"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "76381196d25323f3e40ad232b8082e1c0deb7c9f1eb14ab8a9a1b2646573f2f3",
+    "mid.png": "c126590925fbb8431f247c302fe03e584834ac08e6f4500a9a4970cac8a9b8a3",
+    "close.png": "4174a73f91a4c3d6240ff1d83da6c1e4f1e216f2c5bf38815fd5c3e9c26f3037",
+    "detail.png": "f16fd5a978541bfed34e6c2099e5f107aa2cc6026d9c79be80466c11f7534698",
+    "close-motion.png": "76e05ec0621a830aff52b38c6c39f1520d265993fca3aeb98a4dc920f47c40e3"
+  },
+  "motion": {
+    "interval_ms": 700,
+    "simulated": true,
+    "animate_returned": true,
+    "differs": true,
+    "sha_before": "4174a73f91a4c3d6240ff1d83da6c1e4f1e216f2c5bf38815fd5c3e9c26f3037",
+    "sha_after": "76e05ec0621a830aff52b38c6c39f1520d265993fca3aeb98a4dc920f47c40e3"
+  },
+  "gpu_requested": false,
+  "capture_mode": "swiftshader",
+  "webgl_renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T16:45:37+00:00",
+  "finished": "2026-09-08T16:45:43+00:00",
+  "surface": {
+    "families": {
+      "#6b5442": "wood",
+      "#6d5640": "wood"
+    },
+    "seed": 1,
+    "size": 1024,
+    "ao": {
+      "samples": 13,
+      "radius_m": 0.45,
+      "ground_dirt_m": 0.6
+    }
+  }
+}

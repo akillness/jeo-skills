@@ -1,0 +1,90 @@
+{
+  "url": "http://127.0.0.1:<port>/",
+  "dir": "<scratch>/eval/with-skill-run3/dist",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "ready_flag": "__sceneReady",
+  "ready_timeout": false,
+  "motion": {
+    "interval_ms": 2000,
+    "differs": true,
+    "sha_before": "721970aa32127ed458787356e6c81615fa29aa36ff86e4d5a64c8f2473d7905a",
+    "sha_after": "5f6074dfccc5fd1ec51d3a80d848b7fb02a72e512512dd3c9ebf62695221f32c"
+  },
+  "views": [
+    {
+      "name": "default",
+      "file": "default.png",
+      "sha256": "721970aa32127ed458787356e6c81615fa29aa36ff86e4d5a64c8f2473d7905a",
+      "sha256_reencoded": "319df60e6c4d08b3b45e7d7903be1be665847d28962a44baf1769eb3d510ab87"
+    },
+    {
+      "name": "default-motion",
+      "file": "default-motion.png",
+      "sha256": "5f6074dfccc5fd1ec51d3a80d848b7fb02a72e512512dd3c9ebf62695221f32c",
+      "sha256_reencoded": "3e8990a187032c25005bb6ab9e6a832642b5b40274df39bfbb831b807841008f"
+    },
+    {
+      "name": "overview",
+      "file": "overview.png",
+      "sha256": "5efafc3acdff19a1e9f2ed2935a8b9a1a0f30ac32277566e2b4e2f074b567f27",
+      "requested": "overview",
+      "applied": true,
+      "sha256_reencoded": "8df62fb02b3ab41431c83bbed67a7bcff376b5048bf9fd16a8e8b63d30cb6afe"
+    },
+    {
+      "name": "green",
+      "file": "green.png",
+      "sha256": "9d3977bb1f11bf25dc64b704e270caa58e539d6407508b3e64844060d5360e5e",
+      "requested": "green",
+      "applied": true,
+      "sha256_reencoded": "c494cf3cc7dd6c899fe553f0f237ca5509c39d32a23ec972c363f5178f51b5a0"
+    },
+    {
+      "name": "mill",
+      "file": "mill.png",
+      "sha256": "0839bfed6167dee56424bc6ee3c9f12a14660960011e5cf3d2d87e04314b9c27",
+      "requested": "mill",
+      "applied": true,
+      "sha256_reencoded": "37e8ccb5e48bd4c66c50c27ff7863a50d5b1be70518b30ca17f5ab68a26df0ab"
+    },
+    {
+      "name": "tower",
+      "file": "tower.png",
+      "sha256": "9829f98a8f0d34cd2cfd1bbb030b9d869e3987a3033608746ab216baaf0202e0",
+      "requested": "tower",
+      "applied": true,
+      "sha256_reencoded": "cdc85c68f6a23ef1454b3aec8914c28c7a1ed80e889ab03f1094c0d470bc2cf5"
+    },
+    {
+      "name": "bridge",
+      "file": "bridge.png",
+      "sha256": "ee1b1b11921f62d389f4d19ef419b7d665848b4bcc2cb1588b4b05c1b0d036ac",
+      "requested": "bridge",
+      "applied": true,
+      "sha256_reencoded": "e54e93da753acffdcc07396c26f69ca7c1e629279b11b0ede5fd7cc413ed154a"
+    }
+  ],
+  "clicks": [
+    {
+      "selector": "#pick-mill",
+      "file": "click-0-pick-mill.png",
+      "sha256": "5233f9fa4a70135232a86dfc35cf7eefc776c71851869c58136eab4f7d590fbb",
+      "sha256_reencoded": "1f869ec1b25d42d76cf5f76e000890adb701f77da262feba97f3e40c4cb2193e"
+    },
+    {
+      "selector": "#reset",
+      "file": "click-1-reset.png",
+      "sha256": "7f5986c5ebfc0be619d51887a966b9d21ade6921445ba828404bdfc5c62fae00",
+      "sha256_reencoded": "8c886aeda343a0dcd2606afffd3fb8bdee23a8d4797fe1eecc62b910630c2526"
+    }
+  ],
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T15:14:42+00:00",
+  "finished": "2026-09-08T15:15:08+00:00",
+  "playwright_version": "1.62.0",
+  "post_processing": "PNGs re-encoded after capture, identically for every run: RGB, 256-colour adaptive palette (median cut, Floyd-Steinberg dither), zlib level 9, to hold every file under 400 KB. 'sha256' is the capture-time hash of the original frame; 'sha256_reencoded' is the hash of the file in this folder."
+}

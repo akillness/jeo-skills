@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "id": "recipe.folding-desk-lamp",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Folding desk lamp articulation"
+  },
+  "aliases": {
+    "en": [
+      "adjustable lamp",
+      "hinged product configurator"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies"
+  ],
+  "summary": "Explore a designed lamp by moving its hinges within a declared motion envelope.",
+  "objective": "Design a folding desk lamp with a weighted-looking base, two arms and a shade I can aim.",
+  "tags": [
+    "desk lamp",
+    "hinge",
+    "shade"
+  ],
+  "subject_terms": [
+    "desk lamp",
+    "hinge",
+    "shade",
+    "base",
+    "cable routing"
+  ],
+  "intent_signals": [
+    "adjust a product hinge",
+    "inspect folding clearance"
+  ],
+  "example_prompts": [
+    "Design a folding desk lamp with a weighted-looking base, two arms and a shade I can aim.",
+    "Show hinge limits and a cable route through the lamp arms."
+  ],
+  "entities": [
+    {
+      "name": "Base and arms",
+      "guidance": "Model base shell, hinge clevises, arm links and visible axle caps."
+    },
+    {
+      "name": "Shade and cable",
+      "guidance": "Use a hollow shade with diffuser recess; show a slack cable guide around hinges."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Base and arms",
+      "structure": "Model base shell, hinge clevises, arm links and visible axle caps.",
+      "material": "Powder-coated metal with polymer hinge caps.",
+      "articulation": "Axes pass through actual pin centers; each link has one parent."
+    },
+    {
+      "family": "Shade and cable",
+      "structure": "Use a hollow shade with diffuser recess; show a slack cable guide around hinges.",
+      "material": "Satin shade and frosted diffuser; dark flexible-looking cable.",
+      "articulation": "Shade rotates at its neck; cable is an authored curve, not tension solved."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored joint-angle vector, explicit angle bounds and evaluated rest hierarchy.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Drag hinge handles.",
+      "Choose folded and reading poses.",
+      "Show clearance envelopes."
+    ]
+  },
+  "invariants": [
+    "A rejected angle leaves the last valid pose unchanged.",
+    "Links preserve dimensions during folding.",
+    "Shade and base envelopes must not intersect in accepted presets."
+  ],
+  "motion_guidance": [
+    "Interpolate valid joint angles; check intermediate poses rather than only endpoints.",
+    "A luminous diffuser needs actual configured lighting or an honest decorative emission label."
+  ],
+  "known_limits": [
+    "No stability, spring torque, thermal, electrical or manufacturing certification.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [],
+  "creative_affordances": [
+    "Large readable hinges communicate adjustment and a warm diffuser emphasizes the aimed direction."
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Geometric articulation only.",
+    "state": [
+      "joint angles",
+      "limits",
+      "preset"
+    ],
+    "colliders": [
+      "Conservative base, link and shade envelopes for pose rejection."
+    ],
+    "driving": [
+      "User joint handles and bounded preset interpolation."
+    ],
+    "contact": [
+      "Clearance checks only; no torque solver."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Fold sweep remains clear; rest dimensions remain fixed."
+    ]
+  }
+}

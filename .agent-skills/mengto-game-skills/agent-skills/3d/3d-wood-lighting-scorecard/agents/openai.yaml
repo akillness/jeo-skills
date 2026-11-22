@@ -1,0 +1,4 @@
+interface:
+  display_name: "3D Wood Lighting Scorecard"
+  short_description: "Kibori wood, window key, shafts and dust, scored out of 10"
+  default_prompt: "Use $3d-wood-lighting-scorecard to light carved wood in a dark room with one warm window key, soft contact shadows, light shafts and dust, then run the headless scorecard and iterate until every item scores 8 out of 10."

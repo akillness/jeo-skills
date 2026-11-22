@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-partition-tiling-signed-sum",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Partition tiling and signed contribution accounting"
+  },
+  "aliases": {
+    "en": [
+      "riemann partition check",
+      "signed column sum"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields"
+  ],
+  "summary": "Check that partition cells tile the domain exactly and that signed contributions add to the displayed estimate.",
+  "objective": "Cell areas sum to the domain area, positive and negative subtotals add to the estimate, and zero-value cells contribute nothing.",
+  "applies_when": [
+    "A scene builds an integral estimate from sampled cells, columns or slabs.",
+    "The integrand can be negative somewhere in the domain.",
+    "Cell counts can be changed by the viewer."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "riemann-sum",
+    "partition",
+    "signed-volume"
+  ],
+  "subject_terms": [
+    "double Riemann sum",
+    "midpoint rule",
+    "subrectangle",
+    "signed volume",
+    "partition count"
+  ],
+  "intent_signals": [
+    "the columns all point up even for negative values",
+    "check the estimate against the exact integral"
+  ],
+  "example_prompts": [
+    "Check the column sum in this double integral scene against the exact value."
+  ],
+  "negative_signals": [
+    "adaptive quadrature research",
+    "general-purpose numerical library design"
+  ],
+  "content": {
+    "principles": [
+      "A partition tiles the domain: cell areas sum to the domain area, cells stay inside the domain and cover it, and neighbours do not overlap. Area summation alone is not tiling, so containment and coverage are stated as assumptions of the construction and checked with it.",
+      "Signed contributions are the point: negative sample values contribute negative volume, and drawing every column upward changes the quantity being summed.",
+      "A zero-height cell contributes zero; giving it a minimum visible height becomes an arithmetic error whenever the same geometry feeds the total."
+    ],
+    "implementation": [
+      "Sum the cell areas and compare with the analytic domain area, then confirm that the maximum overlap between neighbouring cell footprints is zero.",
+      "Compute the estimate as the signed sum of sampled value times cell area, and keep the positive and negative subtotals visible separately.",
+      "Compare the estimate with the analytic integral where a closed form exists, at several partition counts, recording each error with its counts.",
+      "Include an integrand that changes sign inside the domain, a cell whose sample value is exactly zero, and a run with the integrand globally negated."
+    ],
+    "observable_checks": [
+      "Summed cell areas equal the domain area within accumulated floating-point error for the number of cells; a systematic difference identifies an off-by-one in the partition rather than roundoff.",
+      "Positive and negative subtotals add to the displayed estimate, and negating the integrand negates the estimate exactly. Merely changing where the integrand is positive is not a sign test: on the interval from minus one to one the integrand x plus two is positive everywhere and integrates to four, while the integrand x changes sign and integrates to zero, so the sign structure changed and the total did not reverse.",
+      "A zero-value cell has zero contribution and zero height in the geometry feeding the total; any minimum-height rule lives in a separate display layer and is labelled."
+    ]
+  },
+  "known_limits": [
+    "Checks the accounting of the displayed sum; it does not promise that error decreases monotonically for every integrand or sampling rule.",
+    "Authored verification guidance; no computation or render was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.double-integral-columns",
+    "recipe.solid-of-revolution",
+    "recipe.normal-density-window"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-double-riemann-signed-sum",
+      "statement": "A double integral over a rectangle is approximated by a double Riemann sum of sampled function values times subrectangle area, and when the function is negative somewhere the integral represents a signed volume.",
+      "scope": "Integrable functions on a rectangular region with a declared sampling rule such as the midpoint rule.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-double-integrals",
+          "locator": "5.1, double Riemann sum definition, midpoint rule and signed volume"
+        }
+      ]
+    }
+  ]
+}

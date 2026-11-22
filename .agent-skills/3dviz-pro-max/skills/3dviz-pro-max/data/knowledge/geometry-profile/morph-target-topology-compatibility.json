@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.morph-target-topology-compatibility",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "geometry-profile",
+  "title": {
+    "en": "Morph-target topology and attribute correspondence"
+  },
+  "aliases": {
+    "en": [
+      "shape key vertex correspondence",
+      "morph target index mismatch"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "Preserve vertex correspondence from Blender shape keys through exported primitive splits and runtime morph attributes.",
+  "objective": "Every target delta addresses the intended base vertex and survives the declared mesh processing and runtime representation.",
+  "applies_when": [
+    "A mesh with shape keys or morph targets passes through export, vertex processing, simplification or runtime geometry replacement."
+  ],
+  "tags": [
+    "geometry-profile",
+    "morph-target",
+    "topology",
+    "vertex-correspondence"
+  ],
+  "subject_terms": [
+    "shape keys",
+    "morphAttributes",
+    "morphTargetsRelative",
+    "primitive targets",
+    "accessor count",
+    "vertex order",
+    "targetNames"
+  ],
+  "intent_signals": [
+    "shape key explodes after decimation",
+    "morph target count matches but vertices are scrambled",
+    "LOD cannot reuse face expression deltas"
+  ],
+  "example_prompts": [
+    "Export facial shape keys without scrambling vertices at UV seams.",
+    "Rebuild a simplified creature mesh with compatible morph targets."
+  ],
+  "negative_signals": [
+    "equal vertex counts prove correspondence",
+    "copy high resolution morph deltas into decimated geometry"
+  ],
+  "not_for": [
+    "Expression timing, emotion design or mixer channel arbitration.",
+    "Topology-changing remeshing represented as a fixed-vertex morph."
+  ],
+  "content": {
+    "principles": [
+      "Equal counts are necessary for the exported attribute arrays but do not prove matching vertex order or meaning. Maintain the base-to-target correspondence through every reorder, seam split and optimization.",
+      "Blender shape keys share the object topology. Shared edits after key creation can be possible, but a stable-topology authoring checkpoint makes correspondence reviewable. Each derived LOD needs its own compatible target set or an explicit reduced-expression policy.",
+      "Separate absolute target coordinates from additive deltas. The runtime relative flag and loader result must match the representation; a name dictionary is semantic metadata, not geometric proof."
+    ],
+    "implementation": [
+      "In Blender, settle base topology before detailed keys where practical. Record Basis/reference relationships, target order and representative isolated and combined shapes; evaluate exported output after modifiers and seam splits.",
+      "Inspect each exported primitive: target order/count, matching base semantic, accessor counts, compatible attribute types and intended vertex correspondence. A reordered base requires the same mapping on every relevant target stream; recompute or transfer targets when the topology actually changes.",
+      "For Three.js, inspect loaded morphAttributes and morphTargetsRelative before modifying weights. Do not overwrite rendered morph attribute data in place when the installed API requires a new geometry; dispose only resources owned by the replacement operation.",
+      "Verify names/index mapping separately, then compare a few marked vertices and asymmetric target shapes at base, isolated and permitted combined weights. Preserve material and UV seams as intended rather than blindly welding them."
+    ],
+    "observable_checks": [
+      "A one-vertex or asymmetric marker target moves the intended feature after export and any optimization; a deliberate index permutation is rejected even if counts match.",
+      "All primitives agree on target order and count, while each target accessor matches its own base primitive count.",
+      "Base and approved combined poses retain intended normals, seams and attachments; reset restores the declared base/default weights."
+    ]
+  },
+  "creative_affordances": [
+    "Use coarse expressive targets on distant levels when that is the declared design.",
+    "Combine sculpted morphs with skeletal movement under explicit channel ownership."
+  ],
+  "known_limits": [
+    "No authoring, export, deformation or rendered fixture ran.",
+    "Documented glTF attribute options do not guarantee support by every loader or renderer revision."
+  ],
+  "related_ids": [
+    "knowledge.blender-deformation-animation-handoff",
+    "knowledge.blender-evaluated-mesh-handoff",
+    "knowledge.blender-three-tangent-normal-handoff"
+  ],
+  "claims": [
+    {
+      "id": "claim.experience-shape-key-correspondence",
+      "statement": "Blender 4.5 describes shape keys as positions for all vertices on shared object topology. It allows shared vertex additions/deletions after key creation while recommending that shape keys be created once topology is finished or stable.",
+      "scope": "Blender 4.5 manual; no claim that arbitrary remeshing preserves expressive correspondence.",
+      "source_refs": [
+        {
+          "source_id": "source.motion-blender-shape-keys",
+          "locator": "Adding and Removing Vertices"
+        }
+      ]
+    },
+    {
+      "id": "claim.experience-gltf-morph-attribute-correspondence",
+      "statement": "glTF 2.0 morph target attributes are deltas requiring a matching base attribute. All primitives of a mesh have the same target count and order, and target accessors have the same count as the original primitive accessors.",
+      "scope": "glTF 2.0 section 3.7.2.2; count/order checks do not prove correct semantic vertex correspondence.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-khronos-gltf-animation",
+          "locator": "3.7.2.2 Morph Targets: target deltas, base attributes, target order and accessor counts"
+        }
+      ]
+    },
+    {
+      "id": "claim.experience-three-morph-buffer-lifecycle",
+      "statement": "Current Three.js BufferGeometry documents morphAttributes and states that rendered morph attribute data cannot be changed without disposing and creating a new geometry; morphTargetsRelative selects relative offsets instead of absolute positions/normals.",
+      "scope": "Live documentation accessed 2026-09-08; weight playback and owned resource cleanup are separate from attribute replacement.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-buffergeometry",
+          "locator": "morphAttributes; morphTargetsRelative"
+        }
+      ]
+    }
+  ]
+}

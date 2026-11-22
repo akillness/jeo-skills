@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.gltf-compression-decoder-lifecycle",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "glTF compression decoder lifecycle"
+  },
+  "aliases": {
+    "en": [
+      "Draco Meshopt KTX2 loader setup",
+      "Basis transcoder lifecycle"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "Inspect compressed glTF extensions, configure matching Three.js decoders before load, expose failure/fallback, and dispose loader and asset resources by ownership.",
+  "objective": "A compressed asset loads through its declared dependency or reaches an explicit fallback/error without hiding fidelity or cleanup obligations.",
+  "applies_when": [
+    "A glTF uses Draco, Meshopt or KTX2/Basis compression."
+  ],
+  "tags": [
+    "tool-adapter",
+    "gltf",
+    "compression",
+    "draco",
+    "meshopt",
+    "ktx2"
+  ],
+  "subject_terms": [
+    "KHR_draco_mesh_compression",
+    "KHR_meshopt_compression",
+    "EXT_meshopt_compression",
+    "KHR_texture_basisu",
+    "setMeshoptDecoder",
+    "detectSupport"
+  ],
+  "intent_signals": [
+    "GLB fails after Draco compression",
+    "KTX2 transcoder path missing",
+    "setMeshoptDecoder before load"
+  ],
+  "example_prompts": [
+    "Wire a viewer for Draco geometry and KTX2 textures with fallback.",
+    "Debug a Meshopt decoder CDN failure."
+  ],
+  "negative_signals": [
+    "one decoder handles geometry and textures",
+    "garbage collection disposes GPU resources"
+  ],
+  "not_for": [
+    "Choosing artistic texture resolution.",
+    "Claiming unmeasured compression ratios."
+  ],
+  "content": {
+    "principles": [
+      "Draco and Meshopt address geometry/buffers; KTX2/Basis addresses texture images and transcoding.",
+      "Inspect extensionsUsed/Required; optional is useful only with a valid fallback.",
+      "Decoder configuration, workers, asset resources and application state have separate owners.",
+      "Record Three.js revision, renderer/backend, decoder versions and asset URLs."
+    ],
+    "implementation": [
+      "Inventory extension names, required status, fallback buffers/images and producer settings.",
+      "Configure Draco and KTX2 by their documented path setters before load: `dracoLoader.setDecoderPath(...)` then `loader.setDRACOLoader(dracoLoader)`, and `ktx2Loader.setTranscoderPath(...)` plus `ktx2Loader.detectSupport(renderer)` with the actual renderer then `loader.setKTX2Loader(ktx2Loader)`.",
+      "Meshopt is configured differently and this is the usual mistake: `loader.setMeshoptDecoder(MeshoptDecoder)` takes the decoder object itself, imported from `three/addons/libs/meshopt_decoder.module.js`. There is no decoder-path setter for meshopt, so a failed meshopt load is a missing or wrong import, never a wrong URL string.",
+      "Know which tool produced each compressed asset. The Blender glTF exporter's documented compression is Draco: its `Data - Compression` section compresses meshes using Google Draco and `KHR_draco_mesh_compression` is the only compression extension in its supported-extension lists, so meshopt and KTX2/Basis payloads normally come from a separate post-export step - gltfpack, gltf-transform or toktx. Newer Blender builds do expose `export_meshopt_compression_enable`, `export_meshopt_extension` and `export_gltfpack_*` keywords on the Python operator, so record which Blender version and which tool actually produced the file rather than assuming either path.",
+      "Expose dependency and URL on failure; use only a packaged verified fallback.",
+      "Compare decoded silhouette, UVs, normals, morphs and color/non-color textures.",
+      "Dispose owned scene resources and KTX2 internals; do not dispose shared decoders during dependent loads."
+    ],
+    "observable_checks": [
+      "A matrix covers uncompressed and each claimed compression path plus missing-dependency failure.",
+      "Decoder URLs resolve and path failure differs from invalid asset.",
+      "Decoded attributes and texture roles meet fixture invariants.",
+      "Repeated load/unload does not accumulate owned resources or workers.",
+      "The loader wiring is inspected per codec: Draco and KTX2 fail with a resolvable-path error when misconfigured, while meshopt fails at import time because `setMeshoptDecoder` was never given a decoder object."
+    ]
+  },
+  "creative_affordances": [
+    "Keep a core-format fallback for one critical asset.",
+    "Use distinct compression choices by asset role."
+  ],
+  "known_limits": [
+    "Support depends on browser, device, hosting and versions.",
+    "No byte or decode-time threshold is claimed.",
+    "No compression, network, decode or disposal observation ran.",
+    "The meshopt decoder module specifier `three/addons/libs/meshopt_decoder.module.js` follows the library's documented `three/addons/` addon convention and the file is present in the published package, but no registered documentation page names that file; confirm the import path against the installed release."
+  ],
+  "related_ids": [
+    "knowledge.shared-gltf-asset-bridge",
+    "knowledge.blender-evaluated-mesh-handoff",
+    "knowledge.blender-three-linear-color-handoff"
+  ],
+  "claims": [
+    {
+      "id": "claim.craft-gltf-compression-fallbacks",
+      "statement": "KHR_draco_mesh_compression defines decoder and required-extension behavior; KHR_texture_basisu carries KTX2 Basis images with runtime transcoding and optional core-image fallback; KHR_meshopt_compression operates on buffer views and defines fallback packaging.",
+      "scope": "Cited extension contracts; inspect each asset and producer settings.",
+      "source_refs": [
+        {
+          "source_id": "source.craft-khr-draco",
+          "locator": "Status; Overview; glTF Schema Updates; Conformance; Implementation note"
+        },
+        {
+          "source_id": "source.craft-khr-texture-basisu",
+          "locator": "Status; Overview; glTF Schema Updates; Using Without a Fallback; Additional requirements"
+        },
+        {
+          "source_id": "source.craft-khr-meshopt",
+          "locator": "Status; Overview; Specifying compressed views; Fallback buffers"
+        }
+      ]
+    },
+    {
+      "id": "claim.craft-three-decoder-setup",
+      "statement": "Current GLTFLoader documents Draco, Meshopt and KTX2/Basis support and setup methods; KTX2Loader requires support detection with the selected renderer before loading and exposes disposal, while DRACOLoader requires configuration before decoding and recommends reuse.",
+      "scope": "Live docs accessed 2026-09-08; exact KHR/EXT Meshopt paths and lifecycle are revision-specific.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-three-gltf-loader",
+          "locator": "Extension support list; setDRACOLoader; setKTX2Loader; setMeshoptDecoder; image-bitmap disposal note"
+        },
+        {
+          "source_id": "source.craft-three-draco-loader",
+          "locator": "Class description; reuse recommendation; setDecoderPath; setWorkerLimit; code example"
+        },
+        {
+          "source_id": "source.craft-three-ktx2-loader",
+          "locator": "Class description; detectSupport; setTranscoderPath; setWorkerLimit; dispose"
+        }
+      ]
+    },
+    {
+      "id": "claim.craft-blender-exporter-compression-scope",
+      "statement": "The Blender glTF exporter manual documents a Data - Compression option that compresses meshes using Google Draco and lists KHR_draco_mesh_compression as the only compression extension in its supported import and export lists, naming no meshopt or KTX2/Basis extension; the current Blender Python API page for the same operator additionally exposes export_meshopt_compression_enable, export_meshopt_extension with the value 'EXT_meshopt_compression', export_draco_mesh_compression_enable and a set of export_gltfpack_* keywords.",
+      "scope": "Documented exporter compression options on the accessed 4.5 LTS manual page and the accessed current API build. The two pages describe different Blender versions, so the record states both rather than a single answer; neither page documents the resulting file bytes.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "Properties > Data - Compression > \"Compress meshes using Google Draco\" with Compression Level and Quantization sub-options; Extensions > \"The following glTF 2.0 extensions are supported directly by this add-on\" Import and Export lists, whose only compression entry is KHR_draco_mesh_compression"
+        },
+        {
+          "source_id": "source.blender-bpy-export-scene-gltf",
+          "locator": "bpy.ops.export_scene.gltf() signature: export_use_gltfpack=False and export_gltfpack_* keywords, export_meshopt_compression_enable=False, export_meshopt_extension='EXT_meshopt_compression', export_draco_mesh_compression_enable=False"
+        }
+      ]
+    }
+  ]
+}

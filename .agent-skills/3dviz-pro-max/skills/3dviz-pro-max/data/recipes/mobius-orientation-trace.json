@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.mobius-orientation-trace",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "A local orientation around a Moebius band"
+  },
+  "aliases": {
+    "en": [
+      "Mobius strip",
+      "Moebius band orientation",
+      "one sided surface"
+    ]
+  },
+  "direction_ids": [
+    "topology-symmetry"
+  ],
+  "summary": "Follow a local frame around a half-twisted ribbon and inspect the reversed seam identification.",
+  "objective": "Build a Moebius band with a centerline traveler, local normal marker and a trace of its single boundary.",
+  "tags": [
+    "Mobius",
+    "nonorientable",
+    "surface boundary"
+  ],
+  "subject_terms": [
+    "Mobius",
+    "nonorientable",
+    "surface boundary",
+    "half twist",
+    "orientation transport",
+    "parameter seam"
+  ],
+  "intent_signals": [
+    "Build a Moebius band with a centerline traveler, local normal marker and a trace of its single boundary.",
+    "Follow a local frame around a half-twisted ribbon and inspect the reversed seam identification."
+  ],
+  "example_prompts": [
+    "Build a Moebius band with a centerline traveler, local normal marker and a trace of its single boundary.",
+    "Create an explorable 3D explanation of Mobius strip with boundary trace."
+  ],
+  "negative_signals": [
+    "A thick manufactured ribbon has an ordinary solid boundary; it is not identical to the zero-thickness mathematical band."
+  ],
+  "not_for": [
+    "A thick manufactured ribbon has an ordinary solid boundary; it is not identical to the zero-thickness mathematical band."
+  ],
+  "entities": [
+    {
+      "name": "Half-twisted ribbon",
+      "guidance": "Build an indexed strip with reversed endpoint indexing at the seam; keep the mathematical surface zero-thickness and any rim thickness explicitly decorative."
+    },
+    {
+      "name": "Local frame marker",
+      "guidance": "Attach a short normal arrow and asymmetric orientation glyph to the centerline using derivatives; compare it with a saved starting marker after one loop."
+    },
+    {
+      "name": "Boundary trace",
+      "guidance": "Draw one continuous highlighted boundary path requiring two parameter circuits; distinguish the boundary route from the centerline route."
+    }
+  ],
+  "state_contract": {
+    "model": "Parametrize ((R+s*cos(t/2))*cos(t),(R+s*cos(t/2))*sin(t),s*sin(t/2)), -w<=s<=w, 0<=t<=2*pi, with 0<w<R/2. Identify (0,s) with (2*pi,-s).",
+    "authority": "The parameter point, seam identification and local derivative frame own traversal; a surface normal is local and cannot be assigned globally consistently.",
+    "actions": [
+      "Advance centerline traversal through one or two circuits.",
+      "Pause at the identification seam.",
+      "Toggle the boundary trace and local frame.",
+      "Reset traversal and camera."
+    ]
+  },
+  "invariants": [
+    "One centerline circuit returns to the same location with reversed local normal; two restore it.",
+    "The parameter seam matches opposite width coordinates without a geometric crack.",
+    "Boundary tracing returns to its starting point after covering both parameter edges."
+  ],
+  "motion_guidance": [
+    "Transport the local frame continuously rather than reorienting it toward the camera.",
+    "No physical strip twisting process is claimed by moving a marker on an already constructed surface."
+  ],
+  "known_limits": [
+    "A thick manufactured ribbon has an ordinary solid boundary; it is not identical to the zero-thickness mathematical band.",
+    "Animation illustrates the declared construction and is not a proof of general nonorientability or a cutting simulation.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.mobius-orientation-trace",
+      "statement": "The Moebius band is nonorientable and has a single boundary component.",
+      "scope": "Mathematical band surface; thick visual edging is only presentation.",
+      "source_refs": [
+        {
+          "source_id": "source.mit-mobius",
+          "locator": "Description, caption and alt text"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Half-twisted ribbon",
+      "structure": "Build an indexed strip with reversed endpoint indexing at the seam; keep the mathematical surface zero-thickness and any rim thickness explicitly decorative.",
+      "material": "Double-sided matte ribbon, distinct boundary stroke and asymmetric printed frame glyph; do not imply two global sides using permanent side colors."
+    }
+  ]
+}

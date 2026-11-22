@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.quadruped-body-support",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "object-archetype",
+  "title": {
+    "en": "Quadruped torso, limb stance and ground support"
+  },
+  "aliases": {
+    "en": [
+      "four-legged creature body plan",
+      "quadruped stance and paw placement"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "physiology-biomechanics",
+    "environments-dioramas"
+  ],
+  "summary": "Organize a four-legged character around separate shoulder and pelvic masses, named limb chains and an explicit support footprint rather than four oscillating rods.",
+  "objective": "Make a quadruped recognizable in still pose and keep accepted body travel, limb stride and ground clearance consistent through start, stop and turn.",
+  "tags": [
+    "object-archetype",
+    "quadruped-body-support"
+  ],
+  "subject_terms": [
+    "quadruped",
+    "digitigrade",
+    "pelvis",
+    "shoulder girdle",
+    "paw",
+    "stance phase",
+    "swing phase",
+    "stride length"
+  ],
+  "intent_signals": [
+    "construct a believable four-legged animal",
+    "feet slide while creature stops",
+    "distinguish rear ankle from knee"
+  ],
+  "example_prompts": [
+    "Design a stylized canine with visible pelvis, shoulders and paws, then explain what its walk animation actually controls.",
+    "Build a toy quadruped whose feet stop cycling when navigation is blocked."
+  ],
+  "content": {
+    "principles": [
+      "Choose a species reference or declare a fictional body plan before selecting paw, hoof or sole contact. The cited canine example is digitigrade; it does not establish the posture of bears, horses or every four-legged creature.",
+      "Separate the ribcage, pelvic mass, neck base and tail root so limb attachments have a place in the silhouette. Authored proportions can be caricatured without making all limbs identical.",
+      "Body navigation, joint posing and contact adjustment have different responsibilities. A gait-shaped display can suggest locomotion without calculating muscle forces or dynamically balancing the animal.",
+      "Use a foot-search region based on the actual limb reach and foot geometry; a tail or antler collision envelope is not the same thing as a supporting foot region."
+    ],
+    "implementation": [
+      "Create named torso, pelvis, shoulder region, neck/head and tail groups; attach separate left/right forelimb and hindlimb chains. Store segment lengths, rest transforms and chosen joint bounds independently of skin meshes.",
+      "Block the limbs in side and front views before adding fur. Give each foot a sole/contact patch and readable toe or hoof termination; use a species reference for anatomical labels rather than calling every rear bend a knee.",
+      "For controlled locomotion, keep body position, velocity, heading, path, status and gait phase authoritative. Advance phase from accepted horizontal distance divided by authored stride length; scale limb excursion with actual speed and stop it at rest.",
+      "If stance locking is promised, save world-space stance targets and solve bounded limb reach against accepted support. Otherwise label the cyclic posing as approximate and inspect residual sliding; do not advertise foot locking from sinusoidal joints.",
+      "Use full rendered swept envelopes for obstacles, and separate foot probes for support. Reject unsafe steps before measuring travel. Bound turning speed, reserve a brief authored goal rest and restore all body, path, gait and animation-clock state on reset.",
+      "Choose overlapping rigid pieces, skinning or another deformation method that fits the style. Fur direction, nose finish and paw-pad material can clarify parts; shader roughness does not set friction."
+    ],
+    "observable_checks": [
+      "At zero accepted travel, limb phase holds and walking amplitude reaches zero; a tail idle gesture may continue independently.",
+      "On a turn and a blocked step, no unsupported body displacement is counted as stride; joints remain attached at declared travel limits.",
+      "Inspect front, side and underside views: four intended contact regions are identifiable and decorative appendages remain within their separate collision envelope.",
+      "Reset during motion and compare pose, position, velocity, phase, path and timers with the initial snapshot."
+    ]
+  },
+  "known_limits": [
+    "The canine source supports digitigrade contact only; proportions, speed, gait sequence and joint limits need species-specific evidence if presented as measured biology.",
+    "A support footprint and kinematic gait are not a balance controller, veterinary assessment or ground-reaction-force solution.",
+    "Authored modeling guidance and prospective checks; no runtime artifact has been executed for this record."
+  ],
+  "creative_affordances": [
+    "Use stocky, elongated, mechanical or fantastical proportions; retain explicit contacts and state ownership when the creature shares space with obstacles."
+  ],
+  "claims": [
+    {
+      "id": "claim.object-depth-quadruped-body-support",
+      "statement": "The University of Minnesota canine skeleton teaching plate identifies canine ground contact as digitigrade.",
+      "scope": "Canine posture in the cited teaching plate; no extrapolation to all quadrupeds or quantitative locomotion.",
+      "source_refs": [
+        {
+          "source_id": "source.object-depth-umn-canine-skeleton",
+          "locator": "Canine Skeleton, paragraph below illustration: ground contact is digitigrade."
+        }
+      ]
+    }
+  ],
+  "related_ids": [
+    "knowledge.articulated-limb"
+  ]
+}

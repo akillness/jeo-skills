@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "id": "recipe.warehouse-pick-tour",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Warehouse pick tour and inventory"
+  },
+  "aliases": {
+    "en": [
+      "order picking route",
+      "warehouse inventory walkthrough"
+    ]
+  },
+  "direction_ids": [
+    "operations-logistics"
+  ],
+  "summary": "Connect a synthetic order list to rack locations and explicit pick confirmations.",
+  "objective": "Build a warehouse pick tour with numbered rack bays and a cart that stops for each order item.",
+  "tags": [
+    "warehouse",
+    "pick list",
+    "rack bay"
+  ],
+  "subject_terms": [
+    "warehouse",
+    "pick list",
+    "rack bay",
+    "inventory",
+    "cart route"
+  ],
+  "intent_signals": [
+    "walk an order route",
+    "confirm inventory picks"
+  ],
+  "example_prompts": [
+    "Build a warehouse pick tour with numbered rack bays and a cart that stops for each order item.",
+    "Let me compare the planned stop list with confirmed picks."
+  ],
+  "entities": [
+    {
+      "name": "Racks",
+      "guidance": "Create uprights, cross beams, shelf decks and readable bay/level signs."
+    },
+    {
+      "name": "Cart and totes",
+      "guidance": "Give cart chassis, wheels, handle and separate tote slots with item labels."
+    },
+    {
+      "name": "Aisles",
+      "guidance": "Mark walkable centerlines and turning areas away from rack envelopes."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Racks",
+      "structure": "Create uprights, cross beams, shelf decks and readable bay/level signs.",
+      "material": "Painted steel-looking uprights and neutral shelf decks."
+    },
+    {
+      "family": "Cart and totes",
+      "structure": "Give cart chassis, wheels, handle and separate tote slots with item labels.",
+      "material": "Polymer totes and brushed frame; wheel detail remains subordinate to route."
+    },
+    {
+      "family": "Aisles",
+      "structure": "Mark walkable centerlines and turning areas away from rack envelopes.",
+      "material": "Low-contrast concrete floor with restrained route markings."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored inventory by SKU and bay, requested quantities, confirmed pick log, cart path and stop index; this is a synthetic order exercise.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Select next stop.",
+      "Confirm quantity only while stopped at its bay.",
+      "Undo a pick and reset inventory."
+    ]
+  },
+  "invariants": [
+    "Inventory cannot become negative and picked quantities cannot exceed the requested remainder.",
+    "A confirmation updates shelf quantity and tote quantity atomically.",
+    "Route playback alone never confirms a pick."
+  ],
+  "motion_guidance": [
+    "Cart follows a collision-clear aisle path with bounded speed and turn rate.",
+    "Stop at bay before activating pick controls; derive wheel angle from distance when shown."
+  ],
+  "known_limits": [
+    "No route optimality, worker productivity or real inventory accuracy is claimed.",
+    "No autonomous warehouse robot integration.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [],
+  "creative_affordances": [
+    "Rack signage and tote labels expose operational identity without overwhelming the scene."
+  ],
+  "physical_contract": {
+    "model": "controlled-locomotion",
+    "scope": "Constrained cart tour with discrete inventory actions.",
+    "state": [
+      "cart pose",
+      "speed",
+      "stop index",
+      "pick log"
+    ],
+    "colliders": [
+      "Cart box envelope and rack/aisle bounds."
+    ],
+    "driving": [
+      "Authored route with acceleration and turn limits."
+    ],
+    "contact": [
+      "Stop before blocked aisle; cart stays supported on flat ground."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Reject pick at wrong bay; blocked path cannot penetrate racks."
+    ]
+  }
+}

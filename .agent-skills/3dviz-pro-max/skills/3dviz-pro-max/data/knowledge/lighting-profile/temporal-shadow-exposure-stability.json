@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.temporal-shadow-exposure-stability",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Temporal shadow and exposure stability"
+  },
+  "aliases": {
+    "en": [
+      "moving shadow stability contract",
+      "shadow texel and update policy",
+      "controlled exposure comparison"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "characters-motion-art",
+    "products-assemblies"
+  ],
+  "summary": "Keep moving-camera and moving-light results stable by fitting shadow coverage, tuning bias against visible geometry, declaring shadow-map invalidation and holding exposure constant during comparisons.",
+  "objective": "Motion does not reveal stale shadows, crawling texels, acne, detached contact or exposure pumping beyond declared tolerances, and quality settings follow scene evidence rather than a universal fixed budget.",
+  "applies_when": [
+    "The camera, shadow-casting light or caster moves.",
+    "Lighting comparisons are invalidated by changing exposure or shadow update behavior."
+  ],
+  "subject_terms": [
+    "shadow camera",
+    "shadow map texels",
+    "bias",
+    "normalBias",
+    "autoUpdate",
+    "needsUpdate",
+    "tone mapping exposure"
+  ],
+  "tags": [
+    "lighting-profile",
+    "shadows",
+    "temporal-stability",
+    "exposure"
+  ],
+  "intent_signals": [
+    "stop shadows shimmering during camera motion",
+    "update a frozen shadow map only when light changes",
+    "compare lighting with fixed exposure"
+  ],
+  "example_prompts": [
+    "Track a character under a moving key light while inspecting contact-shadow stability.",
+    "Freeze a static architectural shadow map and invalidate it only after a caster or light change."
+  ],
+  "negative_signals": [
+    "Increasing mapSize before fitting the shadow camera.",
+    "Changing exposure between lighting variants and calling the comparison a match."
+  ],
+  "not_for": [
+    "A universal shadow resolution or frame-time budget.",
+    "The global IBL versus direct-light responsibility covered by the related record."
+  ],
+  "content": {
+    "principles": [
+      "Shadow texel density depends on map resolution and the light-camera coverage. Fit the projection to the required casters/receivers before spending resolution, then inspect motion at the nearest and farthest required views.",
+      "bias and normalBias trade one artifact for another; tune against representative shallow angles, thin contact and scale. Values are evidence driven, not portable constants.",
+      "Declare both renderer-global and per-light shadow gates. In pinned WebGLRenderer r180, renderer.shadowMap.enabled must permit shadow rendering; when renderer.shadowMap.autoUpdate is false, renderer.shadowMap.needsUpdate must request the global pass. Each affected LightShadow can additionally be frozen with its own autoUpdate and requested with its own needsUpdate. A per-light request cannot bypass a closed renderer-global gate. Lock tone mapping and exposure while comparing temporal behavior."
+    ],
+    "implementation": [
+      "In Blender, author the reference light path, receiver scale and camera motion and record frames containing shallow contact, long distance and fine detail.",
+      "In Three.js WebGLRenderer r180, enable renderer.shadowMap, choose its automatic or explicit global update policy, and then choose per-light automatic or explicit updates. For a fully frozen setup, the invalidation owner sets renderer.shadowMap.needsUpdate and sets needsUpdate on every affected frozen LightShadow before the intended render. Fit each shadow camera, select mapSize within actual device limits, tune bias/normalBias, and keep toneMapping and toneMappingExposure fixed for the test sequence. Recheck another renderer or revision rather than copying this gate contract.",
+      "Run a prospective motion sweep and a deliberate invalidation test; expose shadow-camera bounds and the update counter in diagnostics."
+    ],
+    "observable_checks": [
+      "A moving light/caster updates on the next intended render. With both levels frozen, a per-light needsUpdate alone does not claim to bypass renderer.shadowMap.autoUpdate=false; the complete invalidation opens the renderer-global pass and marks every affected frozen light, then all refresh once.",
+      "Contact, shallow-angle and thin-feature fixtures avoid unacceptable acne, peter-panning and temporal crawl at declared camera distances.",
+      "Identical frames under identical light/material state keep the same controlled exposure; no universal mapSize or update cadence is claimed."
+    ]
+  },
+  "related_ids": [
+    "knowledge.blender-three-ibl-shadow-ownership",
+    "knowledge.shared-shadow-volume-fit",
+    "knowledge.shared-light-comparison-rig"
+  ],
+  "creative_affordances": [
+    "Lighting may remain cinematic, graphic or physically inspired; stability fixtures constrain behavior rather than style.",
+    "Selective frozen shadows can support stylized tableaux if invalidation is explicit."
+  ],
+  "known_limits": [
+    "Shadow behavior differs across light types, shadow algorithms, renderers and device limits.",
+    "Fixed exposure is a comparison condition, not a ban on explicitly designed auto-exposure systems with their own contract.",
+    "No moving scene, shadow map, GPU update, exposure sweep or render was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.lighting-three-shadow-controls",
+      "statement": "In Three.js WebGLRenderer r180, shadow rendering first passes renderer.shadowMap enabled and global autoUpdate/needsUpdate gates, then each light passes its LightShadow autoUpdate/needsUpdate gate. LightShadow also exposes camera, mapSize, bias and normalBias; larger maps trade computation for quality.",
+      "scope": "Pinned WebGLRenderer r180 global/per-light update gates plus live LightShadow controls; other renderers/revisions require their own verification.",
+      "source_refs": [
+        {
+          "source_id": "source.lighting-three-r180-webgl-shadow-map",
+          "locator": "Lines 60–70 and 102–114: renderer-level and per-light early-return gates"
+        },
+        {
+          "source_id": "source.shared-depth-three-lightshadow",
+          "locator": "camera, mapSize, bias, normalBias, autoUpdate and needsUpdate"
+        }
+      ]
+    },
+    {
+      "id": "claim.lighting-three-exposure-control",
+      "statement": "WebGLRenderer exposes toneMapping and toneMappingExposure, with exposure documented as the tone-mapping exposure level.",
+      "scope": "Current WebGLRenderer comparison control; it does not define an automatic exposure policy.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-webglrenderer",
+          "locator": "toneMapping and toneMappingExposure properties"
+        }
+      ]
+    }
+  ]
+}

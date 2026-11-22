@@ -1,0 +1,691 @@
+{
+  "schema_version": 1,
+  "generated": "2026-09-09T00:47:51+00:00",
+  "host": {
+    "schema_version": 1,
+    "probed_at": "2026-09-09T00:47:45+00:00",
+    "os": {
+      "system": "Darwin",
+      "release": "25.5.0",
+      "product_version": "26.5.1",
+      "arch": "arm64"
+    },
+    "cpu": {
+      "brand": "Apple M4 Max",
+      "logical_cores": 16
+    },
+    "memory_gb": 48.0,
+    "gpu": {
+      "found": true,
+      "name": "Apple M4 Max",
+      "vendor": "sppci_vendor_Apple",
+      "cores": 40,
+      "source": "system_profiler SPDisplaysDataType -json"
+    },
+    "blender": {
+      "found": true,
+      "path": "/Applications/Blender.app/Contents/MacOS/Blender",
+      "version": "5.2.1",
+      "on_path": false,
+      "meets_minimum": true,
+      "source": "standard install path + --version"
+    },
+    "runtimes": {
+      "node": "24.13.1",
+      "pnpm": "10.30.1",
+      "python": "3.14.3",
+      "playwright": "1.62.0",
+      "playwright_source": "importlib.metadata in the interpreter running this probe",
+      "chromium_installed": true
+    },
+    "quality_ceiling": "T3",
+    "quality_ceiling_reason": "Blender 5.2.1 >= 4.2 found via standard install path + --version",
+    "capture_mode_expected": "gpu",
+    "capture_mode_reason": "darwin + chromium available: --use-angle=metal is supported"
+  },
+  "versions": {
+    "three": "0.180.0",
+    "playwright": "1.62.0",
+    "postprocessing": "6.39.4"
+  },
+  "shots": [
+    {
+      "id": "village-dusk-golden-hour",
+      "file": "village-dusk-golden-hour.jpg",
+      "source": "village",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 194518
+        }
+      ],
+      "sha256": "f68b349d2c0f03d29d89705ff9d11f0abce4b88cf4657e532f858a0d9da45e19",
+      "quality": 88,
+      "bytes": 194518,
+      "seconds": 6.2,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "overview",
+      "tiers": {
+        "hero": "T3",
+        "mid": "T2",
+        "background": "T1"
+      },
+      "look": "knowledge.style-lantern-festival-riverside",
+      "mood": "knowledge.lighting-mood-dusk-golden-hour",
+      "motion_ms": null,
+      "captured": "2026-09-08T18:14:07+00:00",
+      "notes": {
+        "tiers_note": "tiers are the ladder the scene ships; the village LOD picks a level per landmark from camera distance each frame, so this is not a per-frame reading of what was drawn",
+        "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched"
+      },
+      "caption": "The whole island from the app's home camera: inn, round tower, long hall, bridge and pond under the scene's dusk look, with the rock skirt and conifers as instanced background.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "watermill-wheel-turning",
+      "file": "watermill-wheel-turning.jpg",
+      "source": "village",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 338693
+        }
+      ],
+      "sha256": "c54009ff4938b455168a2eb536e125d1f3b09b87972d9f2ef21d986c49b07b77",
+      "quality": 88,
+      "bytes": 338693,
+      "seconds": 8.4,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "mill",
+      "tiers": {
+        "hero": "T3"
+      },
+      "look": "knowledge.style-lantern-festival-riverside",
+      "mood": "knowledge.lighting-mood-dusk-golden-hour",
+      "motion_ms": 1200,
+      "captured": "2026-09-08T18:14:16+00:00",
+      "notes": {
+        "tiers_note": "tiers are the ladder the scene ships; the village LOD picks a level per landmark from camera distance each frame, so this is not a per-frame reading of what was drawn",
+        "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched"
+      },
+      "caption": "The watermill at the mill view, captured 1200 ms after the camera settled so the wheel is mid-turn; T3 is the top of this landmark's ladder and the distance the LOD serves it from.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, 1200 ms of motion, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "village-layout-overview",
+      "file": "village-layout-overview.jpg",
+      "source": "village",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 192656
+        }
+      ],
+      "sha256": "ef08044ff8647036e717bddc0e482270cb89d7df1b67d0996f1da7461e9e5f5c",
+      "quality": 88,
+      "bytes": 192656,
+      "seconds": 6.7,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "layout",
+      "tiers": {
+        "hero": "T3",
+        "mid": "T2",
+        "background": "T1"
+      },
+      "look": "knowledge.style-lantern-festival-riverside",
+      "mood": "knowledge.lighting-mood-dusk-golden-hour",
+      "motion_ms": null,
+      "captured": "2026-09-08T18:14:29+00:00",
+      "notes": {
+        "tiers_note": "tiers are the ladder the scene ships; the village LOD picks a level per landmark from camera distance each frame, so this is not a per-frame reading of what was drawn",
+        "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched"
+      },
+      "caption": "Near top-down: the plot layout, lanes and yard reservations that the landmarks were placed against.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "village-lantern-riverside-pond",
+      "file": "village-lantern-riverside-pond.jpg",
+      "source": "village",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 243420
+        }
+      ],
+      "sha256": "7a4cb198b92225b59aa521789119a350533895d7899c0a52f9fd48321ad8e017",
+      "quality": 88,
+      "bytes": 243420,
+      "seconds": 5.9,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "pond",
+      "tiers": {
+        "mid": "T2",
+        "background": "T1"
+      },
+      "look": "knowledge.style-lantern-festival-riverside",
+      "mood": "knowledge.lighting-mood-dusk-golden-hour",
+      "motion_ms": null,
+      "captured": "2026-09-08T18:14:34+00:00",
+      "notes": {
+        "tiers_note": "tiers are the ladder the scene ships; the village LOD picks a level per landmark from camera distance each frame, so this is not a per-frame reading of what was drawn",
+        "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched"
+      },
+      "caption": "The pond and the lantern post at the bridge head, the look's warm horizon band reading across the water.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "timber-cottage-t3-closeup",
+      "file": "timber-cottage-t3-closeup.jpg",
+      "source": "harness:knowledge.blueprint-timber-cottage@T3",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 124895
+        }
+      ],
+      "sha256": "22c46936d7970948aa7199ad2b8aea2c78a94751ad92a49fe815c5351a886f51",
+      "quality": 88,
+      "bytes": 124895,
+      "seconds": 3.4,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "close",
+      "tiers": {
+        "hero": "T3"
+      },
+      "look": "none \u2014 blueprint proof harness",
+      "mood": null,
+      "motion_ms": null,
+      "captured": "2026-09-08T18:14:55+00:00",
+      "notes": {},
+      "caption": "The timber cottage at T3 \u2014 the Blender-baked hero the record marks proved \u2014 framed close enough to read sill drips and peg heads.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "round-tower-elevation",
+      "file": "round-tower-elevation.jpg",
+      "source": "harness:knowledge.blueprint-round-tower@T2",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 66829
+        }
+      ],
+      "sha256": "8e8408e831723abe87c8991c62dd105ed6c496967330798d06dfc7a3b64a8b1d",
+      "quality": 88,
+      "bytes": 66829,
+      "seconds": 3.9,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "mid",
+      "tiers": {
+        "mid": "T2"
+      },
+      "look": "none \u2014 blueprint proof harness",
+      "mood": null,
+      "motion_ms": null,
+      "captured": "2026-09-08T18:15:03+00:00",
+      "notes": {},
+      "caption": "The round tower at T2: stair band, string courses and roof cone, one record alone in the harness.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "market-stall-canopy",
+      "file": "market-stall-canopy.jpg",
+      "source": "harness:knowledge.blueprint-market-stall@T2",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 90067
+        }
+      ],
+      "sha256": "d042bac104c2903e1efced0339ffd7747bf1af799743fa341b8dabe6db110d32",
+      "quality": 88,
+      "bytes": 90067,
+      "seconds": 3.9,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "mid",
+      "tiers": {
+        "mid": "T2"
+      },
+      "look": "none \u2014 blueprint proof harness",
+      "mood": null,
+      "motion_ms": null,
+      "captured": "2026-09-08T18:15:07+00:00",
+      "notes": {
+        "composition_note": "single kit: the proof harness builds exactly one record, so the barrel, crate and signboard this shot was planned with are not in frame."
+      },
+      "caption": "The market stall at T2, canopy and sacks \u2014 one kit alone, because the proof harness composes one record at a time.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "tree-round-canopy",
+      "file": "tree-round-canopy.jpg",
+      "source": "harness:knowledge.blueprint-tree-round@T2",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 41285
+        }
+      ],
+      "sha256": "6b177d814170854ea935338e36611481fa079fdac9eed5e2ea04472a7dd986c4",
+      "quality": 88,
+      "bytes": 41285,
+      "seconds": 3.9,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "mid",
+      "tiers": {
+        "background": "T2"
+      },
+      "look": "none \u2014 blueprint proof harness",
+      "mood": null,
+      "motion_ms": null,
+      "captured": "2026-09-08T18:15:15+00:00",
+      "notes": {
+        "composition_note": "single kit: planned as a cluster with the conifer, rocks and reeds; the harness builds one record."
+      },
+      "caption": "The round tree at T2: trunk taper, branch stubs and the canopy shells the village plants in numbers.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "biped-walker-stance",
+      "file": "biped-walker-stance.jpg",
+      "source": "harness:knowledge.blueprint-biped-walker@T2",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 54550
+        }
+      ],
+      "sha256": "d2d07e0b4db34a67c1c231903761a1cb98951f264ebf0b3b9984689b6267eed7",
+      "quality": 88,
+      "bytes": 54550,
+      "seconds": 3.9,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "mid",
+      "tiers": {
+        "hero": "T2"
+      },
+      "look": "none \u2014 blueprint proof harness",
+      "mood": null,
+      "motion_ms": null,
+      "captured": "2026-09-08T18:15:26+00:00",
+      "notes": {
+        "motion_note": "still: the harness page freezes animate(dt) while capturing, so this is a standing pose, not a stride."
+      },
+      "caption": "The biped walker at T2: proportion, joint placement and the surfaced limbs, held in its rest pose.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "bloch-ball-linear-algebra",
+      "file": "bloch-ball-linear-algebra.jpg",
+      "source": "breadth",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 64000
+        }
+      ],
+      "sha256": "c16eac86d8edc8ab8d49761f91f8eb4179c4762ecd95a7c1f987a40f20f1d8f4",
+      "quality": 88,
+      "bytes": 64000,
+      "seconds": 3.8,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "bloch",
+      "tiers": null,
+      "look": "knowledge.style-technical-illustration",
+      "mood": null,
+      "motion_ms": null,
+      "captured": "2026-09-08T18:15:31+00:00",
+      "notes": {
+        "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched"
+      },
+      "caption": "A pure single-qubit state on the Bloch ball at theta 55 deg, phi 35 deg \u2014 unlit flat fills on a white page, two saturated hues, one callout.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "coupled-gears-studio",
+      "file": "coupled-gears-studio.jpg",
+      "source": "breadth",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 91158
+        }
+      ],
+      "sha256": "61fe6a75c4e3765d396717bbf8e1af819c1b3533ad5ce5bee6be8413bcdcca0e",
+      "quality": 88,
+      "bytes": 91158,
+      "seconds": 5.3,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "gears",
+      "tiers": null,
+      "look": "knowledge.style-stylized-realism",
+      "mood": "knowledge.lighting-mood-dark-studio-product",
+      "motion_ms": 800,
+      "captured": "2026-09-08T18:15:37+00:00",
+      "notes": {
+        "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched"
+      },
+      "caption": "A 24/16-tooth spur pair, module 10 mm, ratio 3:2 held by the update, under the three-panel dark studio set; captured 800 ms into the view so the train is mid-rotation.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, 800 ms of motion, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "stone-bridge-over-water",
+      "file": "stone-bridge-over-water.jpg",
+      "source": "village",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 451021
+        }
+      ],
+      "sha256": "819ee1698381e9e7f16cfe8d2a6e97d7b67708d321b5c1017c45ec6878c26808",
+      "quality": 88,
+      "bytes": 451021,
+      "seconds": 5.9,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "bridge",
+      "tiers": {
+        "mid": "T2"
+      },
+      "look": "knowledge.style-lantern-festival-riverside",
+      "mood": "knowledge.lighting-mood-dusk-golden-hour",
+      "motion_ms": null,
+      "captured": "2026-09-08T18:16:53+00:00",
+      "notes": {
+        "tiers_note": "tiers are the ladder the scene ships; the village LOD picks a level per landmark from camera distance each frame, so this is not a per-frame reading of what was drawn",
+        "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched"
+      },
+      "caption": "The stone bridge and its approaches over the stream, with the persistent water surface running beneath.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "long-hall-porch-chimneys",
+      "file": "long-hall-porch-chimneys.jpg",
+      "source": "harness:knowledge.blueprint-long-hall@T2",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 226031
+        }
+      ],
+      "sha256": "ff9ef94306e352cca4769c552891878090bbc9a4ac435dfcf6b1e309af278c42",
+      "quality": 88,
+      "bytes": 226031,
+      "seconds": 4.4,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "close",
+      "tiers": {
+        "mid": "T2"
+      },
+      "look": "none \u2014 blueprint proof harness",
+      "mood": null,
+      "motion_ms": null,
+      "captured": "2026-09-08T18:16:58+00:00",
+      "notes": {},
+      "caption": "The long hall at T2 with its porch and chimney run: procedural geometry plus the record's T2 surface settings.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "well-stone-collar",
+      "file": "well-stone-collar.jpg",
+      "source": "harness:knowledge.blueprint-well@T2",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 137444
+        }
+      ],
+      "sha256": "2c1f04252c0cdf069565fac4c13d781ba873bc1228b000d61347b927d6422eef",
+      "quality": 88,
+      "bytes": 137444,
+      "seconds": 4.0,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "close",
+      "tiers": {
+        "prop": "T2"
+      },
+      "look": "none \u2014 blueprint proof harness",
+      "mood": null,
+      "motion_ms": null,
+      "captured": "2026-09-09T00:01:44+00:00",
+      "notes": {
+        "composition_note": "single kit: planned as a yard with the cart and fence run; the harness builds one record."
+      },
+      "caption": "The well at T2, close enough to read the collar stones and the roof frame over the shaft.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "village-inn-doorway",
+      "file": "village-inn-doorway.jpg",
+      "source": "village",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 388426
+        }
+      ],
+      "sha256": "bc617fcf3e3bf55be22841741be1a35617a9e25e6a1ed2c0f5ec81c8fa996471",
+      "quality": 88,
+      "bytes": 388426,
+      "seconds": 6.0,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "door",
+      "tiers": {
+        "mid": "T2"
+      },
+      "look": "knowledge.style-lantern-festival-riverside",
+      "mood": "knowledge.lighting-mood-dusk-golden-hour",
+      "motion_ms": null,
+      "captured": "2026-09-09T00:02:49+00:00",
+      "notes": {
+        "tiers_note": "tiers are the ladder the scene ships; the village LOD picks a level per landmark from camera distance each frame, so this is not a per-frame reading of what was drawn",
+        "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched"
+      },
+      "caption": "The inn doorway close enough to judge frame timbers and window recesses: the anti-slop close-up test on a T2 surface.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "quadruped-walker-stance",
+      "file": "quadruped-walker-stance.jpg",
+      "source": "harness:knowledge.blueprint-quadruped-walker@T2",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 55347
+        }
+      ],
+      "sha256": "0244f03ba0d277b9003310bbf85fd2a833ca230d3c7d6a89ecac9edc509927fe",
+      "quality": 88,
+      "bytes": 55347,
+      "seconds": 4.3,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "mid",
+      "tiers": {
+        "hero": "T2"
+      },
+      "look": "none \u2014 blueprint proof harness",
+      "mood": null,
+      "motion_ms": null,
+      "captured": "2026-09-09T00:39:34+00:00",
+      "notes": {
+        "motion_note": "still: the harness page freezes animate(dt) while capturing, so this is a standing pose, not a stride."
+      },
+      "caption": "The quadruped walker at T2 \u2014 its record marks T2 not-proved, so this shot does not claim it.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "stone-guildhall-closeup",
+      "file": "stone-guildhall-closeup.jpg",
+      "source": "harness:knowledge.blueprint-stone-guildhall@T2",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 255334
+        }
+      ],
+      "sha256": "922a07874ad7a97b57c709c6a3bfa48ccbe3efb53218813838fa52421fbc5fad",
+      "quality": 88,
+      "bytes": 255334,
+      "seconds": 16.4,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "close",
+      "tiers": {
+        "hero": "T2"
+      },
+      "look": "none \u2014 blueprint proof harness",
+      "mood": null,
+      "motion_ms": null,
+      "captured": "2026-09-09T00:39:51+00:00",
+      "notes": {},
+      "caption": "The stone guildhall's baked glTF asset at T1, in the same proof harness its evidence captures came from.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "iron-lantern-gltf-detail",
+      "file": "iron-lantern-gltf-detail.jpg",
+      "source": "harness:knowledge.blueprint-iron-lantern@T2",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 43690
+        }
+      ],
+      "sha256": "c3dcee158305a1b89f44b12faf8ae57beefd18de8685c63497c87a05c5c05c41",
+      "quality": 88,
+      "bytes": 43690,
+      "seconds": 4.4,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "close",
+      "tiers": {
+        "prop": "T2"
+      },
+      "look": "none \u2014 blueprint proof harness",
+      "mood": null,
+      "motion_ms": null,
+      "captured": "2026-09-09T00:39:57+00:00",
+      "notes": {
+        "composition_note": "single kit: planned as a lantern-post pairing; the harness builds one record, so the post is not in frame."
+      },
+      "caption": "The iron lantern's glTF asset at T1, at the harness detail distance \u2014 the closest framing any shot here uses.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "village-tilt-shift-diorama",
+      "file": "village-tilt-shift-diorama.jpg",
+      "source": "village",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 114514
+        }
+      ],
+      "sha256": "c3178f7a0b3e16c3396a8b8069ed48c74857a53a5c7437ab27cf8653ac6ea0f9",
+      "quality": 88,
+      "bytes": 114514,
+      "seconds": 6.0,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "overview",
+      "tiers": {
+        "hero": "T3",
+        "mid": "T2",
+        "background": "T1"
+      },
+      "look": "knowledge.style-tilt-shift-diorama",
+      "mood": "knowledge.lighting-mood-dusk-golden-hour",
+      "motion_ms": null,
+      "captured": "2026-09-09T00:46:50+00:00",
+      "notes": {
+        "tiers_note": "tiers are the ladder the scene ships; the village LOD picks a level per landmark from camera distance each frame, so this is not a per-frame reading of what was drawn",
+        "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched"
+      },
+      "caption": "The same island as a tabletop model: 22 degree lens, depth-of-field band across the inn and tower.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "village-overcast-morning",
+      "file": "village-overcast-morning.jpg",
+      "source": "village",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 422857
+        }
+      ],
+      "sha256": "038d491279d98e79a30c64df9600cbd1fe4cb7e59d3f71171dcabf09c8b12747",
+      "quality": 88,
+      "bytes": 422857,
+      "seconds": 6.0,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "bridge",
+      "tiers": {
+        "hero": "T3",
+        "mid": "T2",
+        "background": "T1"
+      },
+      "look": "knowledge.style-lantern-festival-riverside",
+      "mood": "knowledge.lighting-mood-overcast-soft",
+      "motion_ms": null,
+      "captured": "2026-09-09T00:46:56+00:00",
+      "notes": {
+        "tiers_note": "tiers are the ladder the scene ships; the village LOD picks a level per landmark from camera distance each frame, so this is not a per-frame reading of what was drawn",
+        "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched"
+      },
+      "caption": "The bridge under overcast light: no cast shadow, desaturated, objects grounded by the T2 bake alone.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    },
+    {
+      "id": "village-night-lantern-river",
+      "file": "village-night-lantern-river.jpg",
+      "source": "village",
+      "attempts": [
+        {
+          "quality": 88,
+          "bytes": 135705
+        }
+      ],
+      "sha256": "bf44c94ce3c6105e28ffb6c95631eb0d21308b9c2c470281d74df828539cd3db",
+      "quality": 88,
+      "bytes": 135705,
+      "seconds": 6.0,
+      "capture_mode": "gpu",
+      "webgl_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+      "view": "overview",
+      "tiers": {
+        "hero": "T3",
+        "mid": "T2",
+        "background": "T1"
+      },
+      "look": "knowledge.style-lantern-festival-riverside",
+      "mood": "knowledge.lighting-mood-night-lantern",
+      "motion_ms": null,
+      "captured": "2026-09-09T00:47:51+00:00",
+      "notes": {
+        "tiers_note": "tiers are the ladder the scene ships; the village LOD picks a level per landmark from camera distance each frame, so this is not a per-frame reading of what was drawn",
+        "ui_note": "the frame is a capture of the running app, sidebar and all: nothing was cropped or retouched"
+      },
+      "caption": "Latent Village at night: lantern practicals are the only key light, blue darkness between the pools.",
+      "renderer": "chromium headless + ANGLE, 1920x1080, jpeg q88, 1400 ms settle, page pixel ratio as authored, renderer ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)"
+    }
+  ]
+}

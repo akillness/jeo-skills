@@ -1,0 +1,8 @@
+# Toolchain pinned per project: `rokit install` gives every machine and CI runner the same versions.
+[tools]
+rojo = "rojo-rbx/rojo@7.7.1"
+wally = "UpliftGames/wally@0.3.2"
+lune = "lune-org/lune@0.11.0"
+selene = "Kampfkarren/selene@0.32.0"
+stylua = "JohnnyMorganz/StyLua@2.6.0"
+luau-lsp = "JohnnyMorganz/luau-lsp@1.70.1"

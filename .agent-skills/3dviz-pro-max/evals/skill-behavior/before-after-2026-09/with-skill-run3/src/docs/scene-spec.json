@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "artifact_id": "threadwater-hollow",
+  "objective": "Let a viewer wander a small fictional village made of felt at golden hour, pick any of its ten structures, and get back to the overview in one click.",
+  "selected_records": [
+    "knowledge.style-felt-wool",
+    "knowledge.lighting-mood-dusk-golden-hour",
+    "knowledge.blueprint-timber-cottage",
+    "knowledge.blueprint-long-hall",
+    "knowledge.blueprint-market-stall",
+    "knowledge.blueprint-round-tower",
+    "knowledge.blueprint-watermill",
+    "knowledge.blueprint-stone-bridge",
+    "knowledge.blueprint-well",
+    "knowledge.blueprint-cart",
+    "knowledge.blueprint-barrel",
+    "knowledge.blueprint-crate",
+    "knowledge.blueprint-fence-run",
+    "knowledge.blueprint-clothesline",
+    "knowledge.blueprint-signboard",
+    "knowledge.blueprint-lantern-post",
+    "knowledge.blueprint-tree-round",
+    "knowledge.blueprint-tree-conifer",
+    "knowledge.blueprint-rock-cluster",
+    "knowledge.blueprint-reeds",
+    "knowledge.blueprint-biped-walker",
+    "knowledge.blueprint-quadruped-walker"
+  ],
+  "custom_choices": [
+    "One felt material pass (src/felt-material-pass.js) re-makes every kit material as MeshPhysicalMaterial with sheen, keeping each kit's hue relationships. The kits author standard materials; the art direction is applied over them rather than forked into 22 edited copies.",
+    "A height field (src/terrain-felt-ground.js) built from the village plan: hills everywhere, flattened along lanes and under plots, then a river gorge carved through. Every object asks heightAt(x, z) where to stand.",
+    "Added #5f7a4f moss green to the felt palette: the profile's #7f9b8e sage rendered as sand under the dusk key.",
+    "Fog refitted from the profile's 0.02 to 0.0072 for a 130 m terrain.",
+    "The stone bridge is placed where the main lane meets the river, with its deck top solved to lane level (deckY = springHeight + rise + 0.525).",
+    "Walker routes are cut from the lane polylines and truncated at the gorge, so a walker never steps over the void."
+  ],
+  "runtime": {
+    "engine": "three@0.180.0",
+    "build": "vite@7.1.5",
+    "post": "postprocessing@6.39.4",
+    "pixel_ratio_cap": 2,
+    "remote_runtime_assets": false,
+    "physics": "none",
+    "render_scheduling": "Demand-driven RAF, max 60 fps, hidden-tab suspension, camera/selection/control invalidation; 2048px shadow map over a 34 m extent."
+  },
+  "scenes": [
+    {
+      "id": "threadwater-hollow",
+      "motion": "decorative, plus controlled locomotion for the four walkers",
+      "entities": [
+        "hero: Threadwater Mill with a turning overshot wheel",
+        "landmark: Emberwatch Tower, 10.5 m, on the highest clear knoll",
+        "Stitchspan Bridge over a 1.95 m river gorge, deck flush with the lane",
+        "7 plot-placed structures: moot hall, two-storey house, barn, two cottages, two market stalls",
+        "scale cues: ~1.95 m cottage doors, 1.75 m biped walkers, 1.18 m fence runs, 0.94 m barrels",
+        "planting: 37 swaying trees, 7 reed beds, 9 rock clusters, all instanced with per-instance jitter",
+        "4 lantern practicals capped by MAX_PRACTICALS = 8; the rest of the lanterns are emissive only"
+      ],
+      "actions": [
+        "orbit",
+        "zoom",
+        "named views (overview, green, mill, tower, bridge)",
+        "select a building by click or by button",
+        "pause / resume motion",
+        "reset view (home view + clear selection)"
+      ],
+      "boundaries": [
+        "Fictional village: no real place, trade guild, date or structure is depicted.",
+        "No historical or structural claim: the kit blueprints certify no construction practice.",
+        "The river has no hydrology; the water plane is a shaded surface with a scrolling normal map.",
+        "Terrain relief is invented value noise, not any real landform."
+      ],
+      "physical_contract": {
+        "model": "controlled-locomotion",
+        "scope": "Walkers advance along a polyline route in metres; gait phase = distance travelled / stride length; yaw rate is clamped so a turn is never a snap.",
+        "time": "Variable dt from the render loop, capped at 0.05 s per frame; no fixed-step solver.",
+        "limits": [
+          "No collision between walkers, buildings or props.",
+          "No ground friction, mass or momentum: speed is prescribed, not solved.",
+          "Feet follow the height field by sampling it, not by contact resolution."
+        ]
+      }
+    }
+  ],
+  "claims_to_visuals": [],
+  "selection_scope": "The style and lighting records guided the palette, materials, sheen, sun rig, sky, fog, tone mapping and post. The blueprint records supplied every piece of geometry except the terrain, the water, the lane ribbon and the selection marker, which are custom."
+}

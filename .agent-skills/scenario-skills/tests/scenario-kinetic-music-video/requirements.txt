@@ -1,0 +1,5 @@
+numpy>=2.5.4
+soundfile>=0.14.0
+pillow>=13
+opencv-python-headless>=5.0.0.93
+scipy>=1.18.1

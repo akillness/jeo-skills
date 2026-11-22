@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "id": "recipe.finite-egress-network-capacity-playback",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Finite egress-network capacity playback"
+  },
+  "aliases": {
+    "en": [
+      "evacuation bottleneck scenario",
+      "blocked exit network"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "operations-logistics"
+  ],
+  "summary": "Move a finite supplied occupant count through a directed route network with integer travel steps, per-step arc capacities and a declared blocked-edge event, as an educational capacity scenario rather than an evacuation-safety result.",
+  "objective": "Move a finite supplied occupant count through a directed route network with integer travel steps, per-step arc capacities and a declared blocked-edge event, as an educational capacity scenario rather than an evacuation-safety result.",
+  "tags": [
+    "egress network",
+    "route capacity",
+    "blocked exit",
+    "occupant conservation",
+    "finite horizon"
+  ],
+  "subject_terms": [
+    "egress network",
+    "route capacity",
+    "blocked exit",
+    "occupant conservation",
+    "finite horizon"
+  ],
+  "intent_signals": [
+    "Finite egress-network capacity playback"
+  ],
+  "example_prompts": [
+    "Build finite egress-network capacity playback with explicit stable IDs, units, time, boundary inputs and stale/unavailable states."
+  ],
+  "negative_signals": [
+    "rendered motion proves operational correctness",
+    "planned state equals observed state"
+  ],
+  "not_for": [
+    "Safety certification, regulatory compliance, or operational control without qualified local review."
+  ],
+  "entities": [
+    {
+      "name": "Route graph",
+      "guidance": "Store stable space/portal/exit IDs, directed connectivity, integer travel steps and supplied persons-per-step capacities; geometry proximity never creates an edge."
+    },
+    {
+      "name": "Occupant queues",
+      "guidance": "Initialize integer counts at source nodes and preserve every queued, in-transit and exited person in the ledger."
+    },
+    {
+      "name": "Blocked-edge event",
+      "guidance": "At one declared step set selected arc capacity to zero for future dispatch; occupants already in transit retain their scheduled arrival."
+    }
+  ],
+  "state_contract": {
+    "model": "Accept 1..64 nodes, 1..128 directed arcs, 1..10000 integer occupants and finite horizon H<=10000. Each arc has integer travel delay>=1 and integer dispatch capacity>=0 persons/step. At initialization, move every occupant placed at an exit directly to exited count; reject an exit placement if this convention is not desired. At step k, deliver previously scheduled arrivals, then visit nodes/arcs in stable ID order and dispatch up to residual arc capacity according to a supplied deterministic next-arc priority; schedule arrival at k+delay. Exit nodes absorb arrivals. A declared block changes future capacity only. Stop at H, all-exited, or invalid route; do not infer capacity from doorway mesh width.",
+    "authority": "The supplied graph/capacities/routing/event ledger owns counts. Blender authors spaces, portals and route anchors with stable IDs; glTF carries static geometry/IDs; Three.js owns queues, scheduled arrivals, conservation, block state and reset.",
+    "actions": [
+      "Select base or blocked-edge scenario.",
+      "Step/play finite ledger.",
+      "Inspect one node/arc queue and throughput.",
+      "Reset graph, occupants and event."
+    ]
+  },
+  "invariants": [
+    "initial occupants = queued + in-transit + exited at every accepted step.",
+    "Initial exit-node occupants are absorbed into exited count before step zero, never left queued.",
+    "Dispatch never exceeds declared arc capacity.",
+    "Blocked capacity affects no already-dispatched occupant.",
+    "No-clearance or safety verdict is derived from completion time."
+  ],
+  "motion_guidance": [
+    "Playback restores stored model/event steps; animation between steps is explanatory and never changes authoritative counts, timestamps or completion state."
+  ],
+  "creative_affordances": [
+    "Use cutaways, small multiples, queues and non-color status glyphs while keeping assumptions and unavailable states visible."
+  ],
+  "known_limits": [
+    "Capacities, routes and initial counts are supplied scenario inputs, not code-derived compliance values. No crowd interaction, smoke, human behavior, local-code review or runtime execution."
+  ],
+  "claims": [
+    {
+      "id": "claim.city-nist-differential-egress-capacity",
+      "statement": "NIST IR 7425 studies building evacuation with differential egress capacity when emergency responders use stairs, demonstrating that egress-capacity assumptions and counterflow scenarios materially belong in an explicitly declared model.",
+      "scope": "NIST 2007 report context only; this recipe’s discrete graph, routing order, capacities and block event are authored educational rules and are not code compliance.",
+      "source_refs": [
+        {
+          "source_id": "source.city-nist-ir7425",
+          "locator": "Linked official IR PDF, Abstract and Modeling Scenario sections"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Egress network cutaway",
+      "structure": "Blender separates floors, stairs, portals and exits into named static parts and places stable route anchors; glTF exports geometry/IDs, never occupant counts or inferred connectivity.",
+      "material": "Open, queued, blocked and exit states use glyph plus pattern; corridor width is not a capacity legend.",
+      "articulation": "Three.js builds arcs only from supplied IDs, instantiates count glyphs, updates queues/in-transit schedules and exact reset."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Finite deterministic capacitated network scenario; no collision, crowd behavior or safety model.",
+    "timestep": "One declared model step with arrivals delivered before stable-order dispatch.",
+    "state": [
+      "integer node queues",
+      "in-transit scheduled arrivals",
+      "exited count",
+      "arc capacities/block event"
+    ],
+    "checks": [
+      "Conservation ledger every step.",
+      "Capacity audit per arc/step.",
+      "Blocked-edge fixture preserves prior in-transit arrivals."
+    ]
+  },
+  "related_ids": [
+    "recipe.construction-sequence-playback",
+    "recipe.museum-route-object-inspection"
+  ]
+}

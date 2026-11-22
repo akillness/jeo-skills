@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.modular-environment-kit-sockets",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "object-archetype",
+  "title": {
+    "en": "Modular environment kit with explicit sockets"
+  },
+  "aliases": {
+    "en": [
+      "snap-together environment modules",
+      "wall floor corner kit",
+      "modular level socket grammar"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors",
+    "operations-logistics"
+  ],
+  "summary": "Build repeatable floors, walls, corners and elevation changes around named connection frames so modules join predictably without erasing silhouette or identity.",
+  "objective": "A small test layout closes on the declared grid, turns corners and changes elevation without cracks, overlaps, flipped normals or ambiguous runtime module IDs.",
+  "applies_when": [
+    "An environment is assembled from repeated interchangeable modules in Blender, Three.js, or both."
+  ],
+  "tags": [
+    "object-archetype",
+    "modular-kit",
+    "socket",
+    "environment",
+    "grid"
+  ],
+  "subject_terms": [
+    "module footprint",
+    "connection socket",
+    "socket frame",
+    "corner module",
+    "elevation adapter",
+    "grid increment",
+    "seam cover",
+    "module identity"
+  ],
+  "intent_signals": [
+    "make a modular dungeon kit",
+    "walls leave gaps at corners",
+    "snap floor pieces in Three.js",
+    "reuse corridor modules with stable IDs"
+  ],
+  "example_prompts": [
+    "Design a modular corridor kit with straight, inside-corner, outside-corner, doorway and stair-transition pieces.",
+    "Build cliff-platform modules that join on a two-metre grid and retain selectable runtime identities."
+  ],
+  "negative_signals": [
+    "Scale a module until endpoints almost meet",
+    "Use one straight piece for every corner",
+    "Weld the whole test map before validating sockets"
+  ],
+  "not_for": [
+    "A unique sculpted environment with no repeated connection grammar.",
+    "Structural or code-compliant architectural construction."
+  ],
+  "content": {
+    "principles": [
+      "A module is an envelope plus connection frames, not merely a mesh that fits inside a grid cell. Each socket declares position, outward direction, up direction, compatible type and whether its seam is exposed or covered.",
+      "Corners and elevation changes are first-class pieces because they resolve thickness, trim continuity and traversal. Rotating or stretching a straight module rarely preserves all three.",
+      "Repeatability should not flatten the scene. Preserve a common joining band while varying silhouette, openings and secondary inserts away from sockets.",
+      "Socket representation and GPU instancing must be chosen together. Child socket nodes provide an inspectable hierarchy, while transform-only GPU batches need socket data outside that child hierarchy."
+    ],
+    "implementation": [
+      "Choose a base length and elevation increment in metres. Model floor thickness, wall centerline or face convention, and clearance envelope once; document which plane each socket sits on.",
+      "Place named Empty objects as sockets with consistent local axes. Use Blender Increment/Absolute Grid snapping for coarse placement and vertex/edge snapping for exact contact during authoring; never treat the snap result alone as proof that module frames agree.",
+      "Author a minimum grammar: straight, end-cap, inside/outside corner, opening, and elevation transition where relevant. Keep trim and collision envelopes inside declared keep-out regions around every socket.",
+      "Add stable kit key, variant key and socket metadata as custom properties/extras. Name sockets by semantic role rather than authoring-axis labels, because the export boundary converts coordinate conventions. Three.js assembly code matches declared socket types and composes their frames; mesh proximity and object names are diagnostic only.",
+      "Choose one delivery representation per module family. Keep child Empty sockets for an ordinary node hierarchy, or serialize socket frames in module extras/application data when preserving a transform-only GPU-instanced batch; do not assume a module with child socket nodes remains eligible for Blender's GPU-instance export. Promote doors, damaged variants and interactive pieces to separate nodes without changing their socket contract.",
+      "Build a validation loop containing four turns, an end cap, an opening and an up/down transition. Test the same modules under allowed rotations and reject negative-scale reflections unless explicitly supported."
+    ],
+    "observable_checks": [
+      "The validation loop returns to its starting socket with position and orientation equal within the project's declared placement tolerance.",
+      "Inside and outside corners preserve wall thickness and trim continuity; elevation adapters meet both floor levels without a step or buried surface.",
+      "No camera-visible crack, z-fighting overlap or backface gap appears at socket seams from floor and oblique views.",
+      "After load, each module ID and socket ID is unique in application state, replacing one variant leaves neighbouring socket frames unchanged, and the chosen socket representation agrees with actual EXT_mesh_gpu_instancing presence or absence."
+    ]
+  },
+  "related_ids": [
+    "knowledge.geometry-nodes-instance-handoff",
+    "knowledge.gltf-transform-pivot-handoff",
+    "knowledge.blender-evaluated-mesh-handoff",
+    "knowledge.framed-shelter"
+  ],
+  "creative_affordances": [
+    "Attach interchangeable facade, debris or vegetation inserts outside socket keep-out bands.",
+    "Use rare silhouette-breaking hero modules to interrupt repetition while retaining compatible connection frames."
+  ],
+  "known_limits": [
+    "A closed visual seam does not prove manifold topology, navigation clearance, collision correctness or structural feasibility.",
+    "Grid size, tolerance and module grammar are project contracts rather than universal values.",
+    "Authored reusable guidance; no Blender assembly or Three.js placement artifact was executed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.craft-modular-socket-snapping",
+      "statement": "Blender 4.5 snapping can align objects or mesh elements using selectable snap bases and targets including increment, absolute grid, vertex, edge and face, and can align an object's rotation so its Z axis follows a target normal.",
+      "scope": "Documented Blender authoring controls; snapping does not define socket compatibility, uniqueness or geometric tolerance.",
+      "source_refs": [
+        {
+          "source_id": "source.craft-blender-snapping",
+          "locator": "Snap Base; Snap Target; Increment; Absolute Grid Snap; Vertex; Edge; Face; Align Rotation to Target"
+        }
+      ]
+    },
+    {
+      "id": "claim.craft-modular-socket-instance-boundary",
+      "statement": "Blender 4.5's glTF exporter can store selected object custom properties in glTF extras, while its GPU-instance export is limited to mesh instances that have no children, share the same parent, do not vary material, and are detected from objects sharing mesh data.",
+      "scope": "Blender 4.5 exporter representation boundary; it does not choose whether a project should retain child socket nodes or use application-owned socket metadata.",
+      "source_refs": [
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "GPU Instances; Custom Properties"
+        }
+      ]
+    }
+  ]
+}

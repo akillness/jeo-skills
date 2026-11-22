@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-section-plane-versus-deletion",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Cut with a section plane instead of deleting walls"
+  },
+  "aliases": {
+    "en": [
+      "clipping plane",
+      "cutaway",
+      "section view"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "anatomy-structures",
+    "products-assemblies"
+  ],
+  "summary": "Use a movable clipping plane with capped surfaces when the interior must be shown, and keep the model intact.",
+  "objective": "Choose a reveal technique that exposes the interior without discarding geometry or implying missing structure.",
+  "applies_when": [
+    "A building, body or product interior must be visible from outside.",
+    "A dollhouse view, floor peel or cutaway is requested.",
+    "The user needs to see a specific depth and move through it."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "section",
+    "clipping plane",
+    "cutaway",
+    "interior view",
+    "capping",
+    "dollhouse view"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "presentation",
+    "architecture"
+  ],
+  "intent_signals": [
+    "cut the house open",
+    "show me the inside",
+    "slice through the model"
+  ],
+  "example_prompts": [
+    "Cut the house so I can see the rooms and move the cut.",
+    "Section the model at any height and keep the cut faces solid."
+  ],
+  "negative_signals": [
+    "Scenes where the interior is genuinely irrelevant and an exterior view answers the question.",
+    "Cases where hiding named objects is clearer than a geometric cut, such as isolating one system."
+  ],
+  "not_for": [
+    "Scenes where the interior is genuinely irrelevant and an exterior view answers the question.",
+    "Cases where hiding named objects is clearer than a geometric cut, such as isolating one system."
+  ],
+  "content": {
+    "principles": [
+      "Three operations are often confused. Deleting geometry changes what the model contains; hiding it changes only what is rendered, since a visibility flag leaves the object, its quantities and its data intact; clipping changes only what is drawn, at a depth the viewer can move continuously. Deletion is the destructive one. Prefer clipping when the viewer must choose the depth, and named hiding when the question is which system or storey to show.",
+      "An uncapped cut exposes back faces and reads as hollow paper, which misrepresents wall thickness and construction. Capping the cut is what makes a section legible.",
+      "A section is a viewing parameter, so it should be continuous and reversible: the viewer moves the plane to find the depth that answers their question.",
+      "Renderer clipping is a per-material, world-space operation with its own enable flags, and it interacts with shadows and with the union or intersection of multiple planes."
+    ],
+    "implementation": [
+      "Prefer a movable clipping plane bound to a control for exploration, and reserve hidden groups for isolating systems by name rather than by depth.",
+      "Cap the cut, for example with a stencil pass or a matching cap surface, and give the cut face a distinct material so it reads as cut material and not as an interior surface.",
+      "Decide explicitly which objects are exempt from the cut, such as furniture, labels or a context shell, and keep that rule visible.",
+      "Enable clipping on the materials that must respond and configure shadow clipping to match the declared reveal policy: removed material changes occlusion, while an explanatory display cut may preserve the underlying light model.",
+      "For multi-storey work, combine a horizontal peel with a vertical section so both plan and elevation relationships can be inspected.",
+      "State whether shadow clipping is enabled and why; keeping the original light contribution can be the intended explanatory choice when the section is a lens rather than a demolition."
+    ],
+    "observable_checks": [
+      "Move the plane slowly through a wall junction and watch for uncapped openings or surfaces that vanish before the plane reaches them.",
+      "Decide first whether the cut is a display operation over an unchanged light model or a depiction of removed material, then confirm shadows and reflections match that decision. A shadow cast by clipped-away geometry is only a defect when the scene claims the material is gone.",
+      "Confirm areas, room counts or part quantities do not change when the section moves.",
+      "Reset the section and confirm the model returns intact with all materials restored."
+    ]
+  },
+  "related_ids": [
+    "recipe.courtyard-house-cutaway",
+    "recipe.heart-cutaway",
+    "knowledge.cutaway-explode",
+    "knowledge.assembly-layer-reveal"
+  ],
+  "creative_affordances": [
+    "The cut face can be styled: a solid fill, a hatch, a glowing edge or a material-coded cap are all legitimate presentations.",
+    "A dollhouse view with a removed front wall remains a good choice for a fixed story shot; the rule prefers a section when the viewer must choose the depth."
+  ],
+  "known_limits": [
+    "Authored presentation guidance with one documented renderer behaviour cited; no scene has been rendered for this record.",
+    "Capping techniques and their performance characteristics vary by renderer and are not evaluated here."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-material-clipping-planes",
+      "statement": "Three.js material clipping planes are user-defined world-space planes that clip points whose signed distance is negative, require the renderer local clipping flag to be enabled, and offer separate options for clipping the intersection rather than the union of planes and for clipping shadows.",
+      "scope": "Documented renderer feature; it does not describe capping the cut surface, which must be implemented separately.",
+      "source_refs": [
+        {
+          "source_id": "source.three-material-clipping",
+          "locator": "clippingPlanes, clipIntersection, clipShadows and the local clipping requirement"
+        }
+      ]
+    }
+  ]
+}

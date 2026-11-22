@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "id": "recipe.mass-spring-cloth-contract",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Mass-spring cloth and its solver contract"
+  },
+  "aliases": {
+    "en": [
+      "cloth simulation",
+      "mass spring",
+      "timestep stability"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal"
+  ],
+  "summary": "Treat cloth as a solver with declared parameters: what is integrated, at what step, and what makes it explode.",
+  "objective": "Build a cloth patch whose spring structure, timestep and substep count are visible controls, with an explicit stability report.",
+  "tags": [
+    "cloth",
+    "soft body",
+    "solver"
+  ],
+  "subject_terms": [
+    "mass-spring model",
+    "structural spring",
+    "shear spring",
+    "bending spring",
+    "timestep",
+    "substeps",
+    "damping",
+    "stability",
+    "constraint"
+  ],
+  "intent_signals": [
+    "Build a cloth simulation whose parameters I can see and change.",
+    "Show what happens to cloth when the timestep is too large."
+  ],
+  "example_prompts": [
+    "Build a mass-spring cloth patch with visible spring families and a stability readout.",
+    "Show cloth pinned at two corners settling under gravity with a declared substep count."
+  ],
+  "negative_signals": [
+    "Not a validated textile model: no fabric identification, drape prediction or material testing.",
+    "Not a claim of physical accuracy; the parameters are numerical, not measured."
+  ],
+  "not_for": [
+    "Not a validated textile model: no fabric identification, drape prediction or material testing.",
+    "Not a claim of physical accuracy; the parameters are numerical, not measured."
+  ],
+  "entities": [
+    {
+      "name": "Particle lattice",
+      "guidance": "Build the cloth as an explicit particle grid with mass per particle, so the simulated object and the rendered mesh are clearly the same thing."
+    },
+    {
+      "name": "Spring families",
+      "guidance": "Separate structural, shear and bending connections as toggleable families, since removing one produces a visibly different failure."
+    },
+    {
+      "name": "Solver panel",
+      "guidance": "Show timestep, substeps, damping and the current maximum spring stretch, so instability can be predicted rather than discovered."
+    }
+  ],
+  "state_contract": {
+    "model": "Particle positions and velocities on a fixed lattice with fixed rendered-mesh connectivity, three toggleable spring families (structural, shear, bending) forming the enabled force graph, gravity, velocity damping and pinned particles as hard constraints. Integration is semi-implicit Euler on a fixed step with a declared substep count: each substep accumulates spring forces from rest-length deviation, updates velocity, then updates position from the new velocity. A spring at zero length contributes no direction and is skipped for that substep. Pinning zeroes a particle velocity and releasing it resumes from zero velocity at its current position.",
+    "authority": "The particle state is authoritative; the rendered surface is generated from it every step. A cloth that looks settled while particle velocities are still large is a display error.",
+    "actions": [
+      "Pin or release a particle.",
+      "Change timestep, substeps or stiffness.",
+      "Toggle a spring family and observe the failure mode.",
+      "Reset particles to the rest configuration."
+    ]
+  },
+  "invariants": [
+    "Pinned particles never move, regardless of stiffness or timestep.",
+    "Particle count and rendered-mesh connectivity stay constant during a run; toggling a spring family changes only the enabled force graph, and the scene marks the run as restarted so results before and after are not compared as one experiment.",
+    "The stability report is derived from measured stretch or velocity, not from a fixed assumption that the settings are safe."
+  ],
+  "motion_guidance": [
+    "Advance the solver on a fixed step with accumulated remainder and interpolate rendering, so visual smoothness never hides step size.",
+    "Let the viewer single-step the solver; an exploding cloth is most informative one step at a time."
+  ],
+  "known_limits": [
+    "Explicit integration of stiff springs is fragile: a stiffness that works at one timestep can diverge at another.",
+    "Self-collision and cloth-to-body contact are separate problems that this recipe does not solve.",
+    "Stretch and velocity thresholds flag a diverging run; they do not certify stability, and the cited engine documentation supports generic timestep and integrator cautions rather than a stability guarantee for this particular spring network.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-solver-timestep-stability",
+      "statement": "Physics engine documentation states that the simulation timestep must be chosen carefully: too large and the simulation becomes unstable, too small and computation is wasted, and integrating velocity-dependent forces implicitly can be markedly more stable than an explicit single-step method.",
+      "scope": "Documented behaviour of one engine and version, cited here to justify exposing timestep and integrator choice rather than to certify any particular cloth solver.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-mujoco-computation",
+          "locator": "Computation, integrator and timestep discussion"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Particle lattice",
+      "structure": "A visible grid of particle markers in debug view with the rendered cloth surface generated from the same positions.",
+      "material": "Debug markers use a reserved accent that is off by default; the cloth surface uses a two-sided material so the back face is not black.",
+      "articulation": "Every visual vertex follows its particle; no smoothing may move a vertex away from its particle position."
+    },
+    {
+      "family": "Spring families",
+      "structure": "Line sets drawn per family with distinct dash patterns so overlapping families remain separable.",
+      "material": "Three neutral values rather than three hues, so the debug view stays readable over the cloth.",
+      "articulation": "Spring overlays are rebuilt from current particle positions every frame, so an enabled family always draws between the particles it actually acts on even though connectivity is unchanged."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Mass-spring integration with gravity, damping and pin constraints; no self-collision, aerodynamics or material calibration.",
+    "state": [
+      "particle positions",
+      "particle velocities",
+      "pinned set"
+    ],
+    "driving": [
+      "Spring forces from rest-length deviation, gravity and velocity damping."
+    ],
+    "contact": [
+      "No contact is modelled: cloth-to-body and cloth-to-cloth collision are out of scope for this recipe, and the solver contract makes no provision for them."
+    ],
+    "timestep": "Fixed step with a stated substep count and accumulated remainder, integrated semi-implicitly; rendering interpolates between completed steps.",
+    "checks": [
+      "Pinned particles stay exactly fixed for the whole run.",
+      "Reducing the timestep removes the divergence seen at a larger one, or the report says it did not."
+    ]
+  },
+  "related_ids": [
+    "recipe.heat-rod-decay",
+    "knowledge.physical-action-reset",
+    "knowledge.state-playback"
+  ]
+}

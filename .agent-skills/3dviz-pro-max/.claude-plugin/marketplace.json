@@ -1,0 +1,27 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "3dviz-pro-max",
+  "description": "Marketplace for the 3Dviz Pro Max agent skill: creative 3D scenes grounded in real knowledge.",
+  "owner": {
+    "name": "Viettranx",
+    "url": "https://github.com/viettranx/3dviz-pro-max"
+  },
+  "plugins": [
+    {
+      "name": "3dviz-pro-max",
+      "source": "./",
+      "description": "Design and build expressive 3D scenes, explainers and interactive models with grounded subject knowledge.",
+      "license": "MIT",
+      "homepage": "https://github.com/viettranx/3dviz-pro-max",
+      "repository": "https://github.com/viettranx/3dviz-pro-max",
+      "version": "0.1.0",
+      "category": "productivity",
+      "keywords": [
+        "3d",
+        "three.js",
+        "blender",
+        "visualization"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,5656 @@
+{
+  "capture_mode": "gpu",
+  "carried_over": [
+    "site/public/media/examples/arm.jpg",
+    "site/public/media/examples/bloch.jpg",
+    "site/public/media/examples/blue-hour.jpg",
+    "site/public/media/examples/brain.jpg",
+    "site/public/media/examples/breathing.jpg",
+    "site/public/media/examples/cavern.jpg",
+    "site/public/media/examples/chaos.jpg",
+    "site/public/media/examples/complex.jpg",
+    "site/public/media/examples/cottage.jpg",
+    "site/public/media/examples/differential.jpg",
+    "site/public/media/examples/fourier.jpg",
+    "site/public/media/examples/gears.jpg",
+    "site/public/media/examples/guildhall.jpg",
+    "site/public/media/examples/hall.jpg",
+    "site/public/media/examples/heart.jpg",
+    "site/public/media/examples/knee.jpg",
+    "site/public/media/examples/lantern.jpg",
+    "site/public/media/examples/magnetic.jpg",
+    "site/public/media/examples/market.jpg",
+    "site/public/media/examples/muscle-atlas.jpg",
+    "site/public/media/examples/neuron.jpg",
+    "site/public/media/examples/night-bridge.jpg",
+    "site/public/media/examples/night-doorway.jpg",
+    "site/public/media/examples/night-mill.jpg",
+    "site/public/media/examples/night-river.jpg",
+    "site/public/media/examples/optics.jpg",
+    "site/public/media/examples/orrery.jpg",
+    "site/public/media/examples/probability.jpg",
+    "site/public/media/examples/resonance.jpg",
+    "site/public/media/examples/sarcomere.jpg",
+    "site/public/media/examples/stag.jpg",
+    "site/public/media/examples/svd.jpg",
+    "site/public/media/examples/topology.jpg",
+    "site/public/media/examples/tower.jpg",
+    "site/public/media/examples/tree.jpg",
+    "site/public/media/examples/village.jpg",
+    "site/public/media/examples/well.jpg",
+    "site/public/media/keyart/biped-walker-stance-thumb.jpg",
+    "site/public/media/keyart/biped-walker-stance.jpg",
+    "site/public/media/keyart/bloch-ball-linear-algebra-thumb.jpg",
+    "site/public/media/keyart/bloch-ball-linear-algebra.jpg",
+    "site/public/media/keyart/coupled-gears-studio-thumb.jpg",
+    "site/public/media/keyart/coupled-gears-studio.jpg",
+    "site/public/media/keyart/iron-lantern-gltf-detail-thumb.jpg",
+    "site/public/media/keyart/iron-lantern-gltf-detail.jpg",
+    "site/public/media/keyart/long-hall-porch-chimneys-thumb.jpg",
+    "site/public/media/keyart/long-hall-porch-chimneys.jpg",
+    "site/public/media/keyart/market-stall-canopy-thumb.jpg",
+    "site/public/media/keyart/market-stall-canopy.jpg",
+    "site/public/media/keyart/quadruped-walker-stance-thumb.jpg",
+    "site/public/media/keyart/quadruped-walker-stance.jpg",
+    "site/public/media/keyart/round-tower-elevation-thumb.jpg",
+    "site/public/media/keyart/round-tower-elevation.jpg",
+    "site/public/media/keyart/stone-bridge-over-water-thumb.jpg",
+    "site/public/media/keyart/stone-bridge-over-water.jpg",
+    "site/public/media/keyart/stone-guildhall-closeup-thumb.jpg",
+    "site/public/media/keyart/stone-guildhall-closeup.jpg",
+    "site/public/media/keyart/timber-cottage-t3-closeup-thumb.jpg",
+    "site/public/media/keyart/timber-cottage-t3-closeup.jpg",
+    "site/public/media/keyart/tree-round-canopy-thumb.jpg",
+    "site/public/media/keyart/tree-round-canopy.jpg",
+    "site/public/media/keyart/village-dusk-golden-hour-thumb.jpg",
+    "site/public/media/keyart/village-dusk-golden-hour.jpg",
+    "site/public/media/keyart/village-inn-doorway-thumb.jpg",
+    "site/public/media/keyart/village-inn-doorway.jpg",
+    "site/public/media/keyart/village-lantern-riverside-pond-thumb.jpg",
+    "site/public/media/keyart/village-lantern-riverside-pond.jpg",
+    "site/public/media/keyart/village-layout-overview-thumb.jpg",
+    "site/public/media/keyart/village-layout-overview.jpg",
+    "site/public/media/keyart/village-night-lantern-river-thumb.jpg",
+    "site/public/media/keyart/village-night-lantern-river.jpg",
+    "site/public/media/keyart/village-overcast-morning-thumb.jpg",
+    "site/public/media/keyart/village-overcast-morning.jpg",
+    "site/public/media/keyart/village-tilt-shift-diorama-thumb.jpg",
+    "site/public/media/keyart/village-tilt-shift-diorama.jpg",
+    "site/public/media/keyart/watermill-wheel-turning-thumb.jpg",
+    "site/public/media/keyart/watermill-wheel-turning.jpg",
+    "site/public/media/keyart/well-stone-collar-thumb.jpg",
+    "site/public/media/keyart/well-stone-collar.jpg",
+    "site/public/media/origin/harness-village.jpg",
+    "site/public/media/origin/harness-village.mp4",
+    "site/public/media/origin/harness-village.webm"
+  ],
+  "ffmpeg_version": "ffmpeg version 8.1.2 Copyright (c) 2000-2026 the FFmpeg developers",
+  "generated_at": "2026-09-09T23:59:34+00:00",
+  "items": [
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.51",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@f53e16936c9868d5b486f95aebff541a.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/arm.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 20073,
+          "setting": 28
+        }
+      ],
+      "bytes": 20073,
+      "crf": 28,
+      "motion": "native",
+      "motion_psnr_db": 25.358068,
+      "path": "site/public/media/clips/arm.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "74f1764e98c329a0a736e056e75a9cd72bf92bb7c0f13aedae0c0fe647362147",
+      "source": "examples/arm/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.51",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@f53e16936c9868d5b486f95aebff541a.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/arm.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 19266,
+          "setting": 36
+        }
+      ],
+      "bytes": 19266,
+      "crf": 36,
+      "motion": "native",
+      "motion_psnr_db": 25.358068,
+      "path": "site/public/media/clips/arm.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "e6d745fb6755d55416bd8c2613265bdb71326b5fa6fb187370c40ee76d0306e8",
+      "source": "examples/arm/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.83",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@a910d0f13d6b646db5c951cf81c669b1.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/bloch.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 32339,
+          "setting": 28
+        }
+      ],
+      "bytes": 32339,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/bloch.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "c65f1f6988228069616403d40003380786c45bfb4074ff083aaeb9d07b12c751",
+      "source": "examples/bloch/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.83",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@a910d0f13d6b646db5c951cf81c669b1.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/bloch.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 37718,
+          "setting": 36
+        }
+      ],
+      "bytes": 37718,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/bloch.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "ea79fcae84a65dd5bd14a7b1b24ca1101fd4380a160ae7daa99bfe66ac4eaad3",
+      "source": "examples/bloch/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "5.75",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@9ceed82cb6557a66676ef386838b42bb.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/blue-hour.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 64218,
+          "setting": 28
+        }
+      ],
+      "bytes": 64218,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": 47.540894,
+      "path": "site/public/media/clips/blue-hour.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "e9a284d6b84d1632148191192829da3fa7db0b56bbdb3ff7b82a10a942f35db6",
+      "source": "examples/blue-hour/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "5.75",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@9ceed82cb6557a66676ef386838b42bb.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/blue-hour.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 80307,
+          "setting": 36
+        }
+      ],
+      "bytes": 80307,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": 47.540894,
+      "path": "site/public/media/clips/blue-hour.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "c117d4e88490f8abca284e023eab051b789701390c7672b2ca726f24d0141cf6",
+      "source": "examples/blue-hour/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "5.63",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@be6ceb910746b913b87ef03e1243babc.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/brain.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 48340,
+          "setting": 28
+        }
+      ],
+      "bytes": 48340,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/brain.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "bd5c0d1f87b41b244022ded2dc7327644487190e5ae45f106fea818c4a7ddecb",
+      "source": "examples/brain/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "5.63",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@be6ceb910746b913b87ef03e1243babc.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/brain.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 52864,
+          "setting": 36
+        }
+      ],
+      "bytes": 52864,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/brain.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "28457c181a03cf3e5452087b942f679dbfc880ecef582c04fbe0600512eee7bc",
+      "source": "examples/brain/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.67",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@8470bd3edee9d833ef61c8e697cf8fa5.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/breathing.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 26502,
+          "setting": 28
+        }
+      ],
+      "bytes": 26502,
+      "crf": 28,
+      "motion": "native",
+      "motion_psnr_db": 41.341218,
+      "path": "site/public/media/clips/breathing.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "142824b37feac64ff68f821f23b5eca72d16e23dfc75d59dc4b4772c35400390",
+      "source": "examples/breathing/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.67",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@8470bd3edee9d833ef61c8e697cf8fa5.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/breathing.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 20183,
+          "setting": 36
+        }
+      ],
+      "bytes": 20183,
+      "crf": 36,
+      "motion": "native",
+      "motion_psnr_db": 41.341218,
+      "path": "site/public/media/clips/breathing.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "7fa70682026650c59a744a8240962e1723b187424c5faf3f06baeaa641850914",
+      "source": "examples/breathing/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.31",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@76947e42fba5c851709ce592867881cf.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/cavern.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 31977,
+          "setting": 28
+        }
+      ],
+      "bytes": 31977,
+      "crf": 28,
+      "motion": "native",
+      "motion_psnr_db": 35.265719,
+      "path": "site/public/media/clips/cavern.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "b37713912eb25c69a6d2c7468d59923ae03d54879b3e957cee92b0677ddc4421",
+      "source": "examples/cavern/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.31",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@76947e42fba5c851709ce592867881cf.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/cavern.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 29543,
+          "setting": 36
+        }
+      ],
+      "bytes": 29543,
+      "crf": 36,
+      "motion": "native",
+      "motion_psnr_db": 35.265719,
+      "path": "site/public/media/clips/cavern.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "3bf647a1d452879fa660c7bbc07863c92c603591cb14af6bfcf03dae4ae1b4c7",
+      "source": "examples/cavern/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.19",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@9c05594eb970914c5eccb8442e7dfa4b.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/chaos.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 30208,
+          "setting": 28
+        }
+      ],
+      "bytes": 30208,
+      "crf": 28,
+      "motion": "native",
+      "motion_psnr_db": 26.617558,
+      "path": "site/public/media/clips/chaos.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "1499b439f8e5c2f2c29f9f6f9752840b704024f244d74adebe189904a149ff28",
+      "source": "examples/chaos/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.19",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@9c05594eb970914c5eccb8442e7dfa4b.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/chaos.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 31471,
+          "setting": 36
+        }
+      ],
+      "bytes": 31471,
+      "crf": 36,
+      "motion": "native",
+      "motion_psnr_db": 26.617558,
+      "path": "site/public/media/clips/chaos.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "66eee6a17284d89fbb4c2f124350f7858dcdd637c83142efb31340e18fee2f05",
+      "source": "examples/chaos/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.87",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@f0108e55dcfec22a60900435f72ea29f.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/complex.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 68723,
+          "setting": 28
+        }
+      ],
+      "bytes": 68723,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/complex.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "0c22d1edc6c98818b5ef83ee7c1948aff841ecb5f5f7448b02aff0da56cc847e",
+      "source": "examples/complex/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.87",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@f0108e55dcfec22a60900435f72ea29f.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/complex.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 79339,
+          "setting": 36
+        }
+      ],
+      "bytes": 79339,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/complex.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "2bfa747e728c430603a2b971b0cf031dcd2c6a6033b592aff83ec34a778965ff",
+      "source": "examples/complex/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "5.07",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@8a9daa37ec5747b94c57f0d42aa09e68.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/cottage.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 63313,
+          "setting": 28
+        }
+      ],
+      "bytes": 63313,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/cottage.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "9c3e524d1011fa2faad929aea546697836c301f3dddfb2d20e464f59cd8f250e",
+      "source": "examples/cottage/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "5.07",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@8a9daa37ec5747b94c57f0d42aa09e68.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/cottage.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 82979,
+          "setting": 36
+        }
+      ],
+      "bytes": 82979,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/cottage.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "f6f9beaef391b2430a41d60d1428c4af7f76180d3963f66209e0a6e777def673",
+      "source": "examples/cottage/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.23",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@2eb2ff2c9ac11d8c017a94e6ea17ad44.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/differential.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 61023,
+          "setting": 28
+        }
+      ],
+      "bytes": 61023,
+      "crf": 28,
+      "motion": "native",
+      "motion_psnr_db": 24.397333,
+      "path": "site/public/media/clips/differential.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "a829c087f9505ef4ab4f5d2babfaf8a2815041c6e1798dc984147fa77d58076e",
+      "source": "examples/differential/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.23",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@2eb2ff2c9ac11d8c017a94e6ea17ad44.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/differential.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 75917,
+          "setting": 36
+        }
+      ],
+      "bytes": 75917,
+      "crf": 36,
+      "motion": "native",
+      "motion_psnr_db": 24.397333,
+      "path": "site/public/media/clips/differential.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "19cc955dcdbcda37fe701f6243b38e172844d1f52b10ebcf60233604be1e058c",
+      "source": "examples/differential/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.19",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@2ec456c4992d98af0296edabf4d8fb94.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/fourier.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 48870,
+          "setting": 28
+        }
+      ],
+      "bytes": 48870,
+      "crf": 28,
+      "motion": "native",
+      "motion_psnr_db": 23.779129,
+      "path": "site/public/media/clips/fourier.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "53fa451fb23d144c109c4be485197d52e386d9a2a147cab4c9d05180c8fc0821",
+      "source": "examples/fourier/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.19",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@2ec456c4992d98af0296edabf4d8fb94.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/fourier.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 55635,
+          "setting": 36
+        }
+      ],
+      "bytes": 55635,
+      "crf": 36,
+      "motion": "native",
+      "motion_psnr_db": 23.779129,
+      "path": "site/public/media/clips/fourier.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "11be4d784b96829f7475f59e897942d544c873c8226609ba8efbffd9ee9aef68",
+      "source": "examples/fourier/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.19",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@6586391e39c0d24e6daf80cc3b36ab94.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/gears.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 103165,
+          "setting": 28
+        }
+      ],
+      "bytes": 103165,
+      "crf": 28,
+      "motion": "native",
+      "motion_psnr_db": 17.080182,
+      "path": "site/public/media/clips/gears.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "10df1d136e436aacdb2f351aca07bb727cabd7a2aa633cd4c565add2d176046e",
+      "source": "examples/gears/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.19",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@6586391e39c0d24e6daf80cc3b36ab94.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/gears.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 155668,
+          "setting": 36
+        }
+      ],
+      "bytes": 155668,
+      "crf": 36,
+      "motion": "native",
+      "motion_psnr_db": 17.080182,
+      "path": "site/public/media/clips/gears.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "5c0ba15aa183eed643d04d63adf7bb7cd020bb6442680daee6a54b4d542ccd44",
+      "source": "examples/gears/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "5.11",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@a65c360a7a240f827d5888f32ac4ddb2.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/guildhall.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 56025,
+          "setting": 28
+        }
+      ],
+      "bytes": 56025,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/guildhall.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "fbd16971d501e144230977a7faf4aec16a884584e5b3d868abec17be91b969d0",
+      "source": "examples/guildhall/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "5.11",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@a65c360a7a240f827d5888f32ac4ddb2.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/guildhall.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 66766,
+          "setting": 36
+        }
+      ],
+      "bytes": 66766,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/guildhall.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "3635bf31f47bb5997b22996de0308226549dae6c1a3775b690c5b56f58100ccb",
+      "source": "examples/guildhall/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "5.23",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@5e098da3fd6566af48948e2dbf56fbfc.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/hall.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 51159,
+          "setting": 28
+        }
+      ],
+      "bytes": 51159,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/hall.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "37f6c63dcc9f979127359e4c9a26fc742594cd0f6b839b19164bf034bcf40fb8",
+      "source": "examples/hall/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "5.23",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@5e098da3fd6566af48948e2dbf56fbfc.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/hall.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 67172,
+          "setting": 36
+        }
+      ],
+      "bytes": 67172,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/hall.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "68c952de10170bc02b5834ebb16e964184198bc4485fe3508b70aa91e3f077fd",
+      "source": "examples/hall/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.75",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@c712a763cbbff3fe08cd83919cea7efc.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/heart.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 33979,
+          "setting": 28
+        }
+      ],
+      "bytes": 33979,
+      "crf": 28,
+      "motion": "native",
+      "motion_psnr_db": 27.423252,
+      "path": "site/public/media/clips/heart.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "2d2dae23a2818a6dc741f621e794708acdd750a4c456240e8c79db6719dbd11b",
+      "source": "examples/heart/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.75",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@c712a763cbbff3fe08cd83919cea7efc.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/heart.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 20257,
+          "setting": 36
+        }
+      ],
+      "bytes": 20257,
+      "crf": 36,
+      "motion": "native",
+      "motion_psnr_db": 27.423252,
+      "path": "site/public/media/clips/heart.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "ff15b68918b40177194c97592c10c14336617b15e3441591a43a43ac00ef5e96",
+      "source": "examples/heart/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.87",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@7498367661ad303873fd398949536fcb.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/knee.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 28920,
+          "setting": 28
+        }
+      ],
+      "bytes": 28920,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/knee.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "4a2d8322edb4b5644f8fc2c04f63c365b0f87ae69be4a8a37d222921069067d4",
+      "source": "examples/knee/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.87",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@7498367661ad303873fd398949536fcb.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/knee.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 26226,
+          "setting": 36
+        }
+      ],
+      "bytes": 26226,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/knee.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "c80f33169842843663a87c7c92c869b9a7dfed0803cc39931474221faa5d9e35",
+      "source": "examples/knee/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.83",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@bb26a7c0f146d0d9382456e9f4556da9.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/lantern.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 38986,
+          "setting": 28
+        }
+      ],
+      "bytes": 38986,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": 55.631905,
+      "path": "site/public/media/clips/lantern.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "7218bcc73ced147f9e5f81047908fdf2b3f0c14289fbb12102f64d7a00f4e562",
+      "source": "examples/lantern/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.83",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@bb26a7c0f146d0d9382456e9f4556da9.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/lantern.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 49239,
+          "setting": 36
+        }
+      ],
+      "bytes": 49239,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": 55.631905,
+      "path": "site/public/media/clips/lantern.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "b3298f464ed8922b332560864bd47ef5565d2fb16952a0a035141d32fe32be10",
+      "source": "examples/lantern/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.83",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@1d62da2cd1cc67a118f445b99710e1cb.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/magnetic.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 82735,
+          "setting": 28
+        }
+      ],
+      "bytes": 82735,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/magnetic.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "91361d1e68f303f0deabc6e63c42cb74470e51b03d7d3e20f13926802f53a5df",
+      "source": "examples/magnetic/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.83",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@1d62da2cd1cc67a118f445b99710e1cb.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/magnetic.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 92655,
+          "setting": 36
+        }
+      ],
+      "bytes": 92655,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/magnetic.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "25043b5caa9ad499f7490940f090f528266e2d5c02ba2394652648168b9249c0",
+      "source": "examples/magnetic/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.87",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@c65684506de68c54708bebdd96bf059d.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/market.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 51864,
+          "setting": 28
+        }
+      ],
+      "bytes": 51864,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/market.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "314d9e70f8bc0db69d77f9e4a4da0fdd112b49ca1db344d18a4acfd63a689aba",
+      "source": "examples/market/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.87",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@c65684506de68c54708bebdd96bf059d.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/market.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 59477,
+          "setting": 36
+        }
+      ],
+      "bytes": 59477,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/market.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "785f5c7001bfa11e7e3ec183aa1598b9793162521126047bc1bc5e011d7a1bac",
+      "source": "examples/market/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "6.23",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@a1061e87b7f97236e95a8374bc7dc177.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/muscle-atlas.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 54290,
+          "setting": 28
+        }
+      ],
+      "bytes": 54290,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/muscle-atlas.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "27030356a8f4684e14f9d30af10a3b4939c3efe0019d83f3179e0daa03e55638",
+      "source": "examples/muscle-atlas/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "6.23",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@a1061e87b7f97236e95a8374bc7dc177.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/muscle-atlas.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 64245,
+          "setting": 36
+        }
+      ],
+      "bytes": 64245,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/muscle-atlas.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "cdf09ee84e0e7ff66d4593c918775c1706c646ca812db0f19c4d999a6e55082f",
+      "source": "examples/muscle-atlas/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.83",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@b59f201b781255dfb8c0412c0635a07a.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/neuron.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 39642,
+          "setting": 28
+        }
+      ],
+      "bytes": 39642,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": 50.566266,
+      "path": "site/public/media/clips/neuron.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "e836ba92062b36af6bb20f778fc67959b16d93c2c6d1f219b80e73d9a22a18bc",
+      "source": "examples/neuron/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.83",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@b59f201b781255dfb8c0412c0635a07a.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/neuron.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 47708,
+          "setting": 36
+        }
+      ],
+      "bytes": 47708,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": 50.566266,
+      "path": "site/public/media/clips/neuron.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "65ad1372edca0819f9e3902d9e1cd5e31b7d29e2f8ae4d78e313d439b7468f13",
+      "source": "examples/neuron/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.71",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@304a80dc1e0a1e3782030215af047779.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/night-bridge.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 35481,
+          "setting": 28
+        }
+      ],
+      "bytes": 35481,
+      "crf": 28,
+      "motion": "native",
+      "motion_psnr_db": 38.988169,
+      "path": "site/public/media/clips/night-bridge.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "da048e5617d65c6e332a0ea921db05594ea08999a4a72882cb908f1ec454ae3c",
+      "source": "examples/night-bridge/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.71",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@304a80dc1e0a1e3782030215af047779.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/night-bridge.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 41034,
+          "setting": 36
+        }
+      ],
+      "bytes": 41034,
+      "crf": 36,
+      "motion": "native",
+      "motion_psnr_db": 38.988169,
+      "path": "site/public/media/clips/night-bridge.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "706b28c5d8d95503724df01e9fe7ccf2c4ae4c2161bf5c44774ddd99f0b6bae9",
+      "source": "examples/night-bridge/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.71",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@2cce3a79815c4c3816eeee76c7f98385.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/night-doorway.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 33773,
+          "setting": 28
+        }
+      ],
+      "bytes": 33773,
+      "crf": 28,
+      "motion": "native",
+      "motion_psnr_db": 35.274294,
+      "path": "site/public/media/clips/night-doorway.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "80f589a98b2713a265153f0df7d16e8dd8b578642ca1f9ffc9c5f725390b372e",
+      "source": "examples/night-doorway/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.71",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@2cce3a79815c4c3816eeee76c7f98385.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/night-doorway.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 34035,
+          "setting": 36
+        }
+      ],
+      "bytes": 34035,
+      "crf": 36,
+      "motion": "native",
+      "motion_psnr_db": 35.274294,
+      "path": "site/public/media/clips/night-doorway.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "6be8ab2a7133ab0674dd95dc20d6c4335820d95c0b0b5bd5f77e1fc191d40f98",
+      "source": "examples/night-doorway/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.71",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@d1b1f11791c8f435f57336d126e010fb.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/night-mill.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 52372,
+          "setting": 28
+        }
+      ],
+      "bytes": 52372,
+      "crf": 28,
+      "motion": "native",
+      "motion_psnr_db": 31.670668,
+      "path": "site/public/media/clips/night-mill.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "6afac696bc7cc63058cfa69ceaf0a613d3801b2c6004d4d46865516358a52be6",
+      "source": "examples/night-mill/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.71",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@d1b1f11791c8f435f57336d126e010fb.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/night-mill.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 56251,
+          "setting": 36
+        }
+      ],
+      "bytes": 56251,
+      "crf": 36,
+      "motion": "native",
+      "motion_psnr_db": 31.670668,
+      "path": "site/public/media/clips/night-mill.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "67deee00fe2f14d3d797603b92692ae6ab9fe809f4327e676048b6226f7f0131",
+      "source": "examples/night-mill/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.63",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@72afb8e71a972059a2cee4d7a0858114.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/night-river.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 60507,
+          "setting": 28
+        }
+      ],
+      "bytes": 60507,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/night-river.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "0d891d6d6b1cd5c1c3694e28528519b3d19e73354dd09ae53dd2ff8c59aac303",
+      "source": "examples/night-river/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.63",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@72afb8e71a972059a2cee4d7a0858114.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/night-river.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 62813,
+          "setting": 36
+        }
+      ],
+      "bytes": 62813,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/night-river.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "537f6190fe266366b423b6b9820a3c8c7e37bcbc075b2a01a93862b31c86d630",
+      "source": "examples/night-river/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.83",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@8b0dd5fe64119f2255bcfd476bcf804e.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/optics.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 51453,
+          "setting": 28
+        }
+      ],
+      "bytes": 51453,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": 42.566175,
+      "path": "site/public/media/clips/optics.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "1b534bb7e634ad0d803246421600901ecd47729ac76d657fd329cd6f1feb4016",
+      "source": "examples/optics/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.83",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@8b0dd5fe64119f2255bcfd476bcf804e.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/optics.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 56760,
+          "setting": 36
+        }
+      ],
+      "bytes": 56760,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": 42.566175,
+      "path": "site/public/media/clips/optics.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "4f4d5580a9e265c7863194fef29eaf09d8f00d31c0049a54944df1a21c98b5ad",
+      "source": "examples/optics/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.19",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@aeb72a81d2cc73c27498f527820e6596.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/orrery.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 39150,
+          "setting": 28
+        }
+      ],
+      "bytes": 39150,
+      "crf": 28,
+      "motion": "native",
+      "motion_psnr_db": 26.511824,
+      "path": "site/public/media/clips/orrery.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "be466e3484852aa70124f167ae4dd526970aaf837c09603c25241bc940546c88",
+      "source": "examples/orrery/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.19",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@aeb72a81d2cc73c27498f527820e6596.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/orrery.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 41987,
+          "setting": 36
+        }
+      ],
+      "bytes": 41987,
+      "crf": 36,
+      "motion": "native",
+      "motion_psnr_db": 26.511824,
+      "path": "site/public/media/clips/orrery.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "f966bc245a931e683240dccab1d71a81b58b69f36e927569d934e692927fed2d",
+      "source": "examples/orrery/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.87",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@32b9c528747a0e25de400211abe7dd3f.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/probability.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 168619,
+          "setting": 28
+        }
+      ],
+      "bytes": 168619,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/probability.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "379509fb826bbfc11b7875f1890a56c42aaca07b5c42cbc385fb70a5e81e2119",
+      "source": "examples/probability/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.87",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@32b9c528747a0e25de400211abe7dd3f.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/probability.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 265013,
+          "setting": 36
+        }
+      ],
+      "bytes": 265013,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/probability.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "699642cd07a403601496cd433c097488e3460c6e8cbac2ea2a727ae6c2d33ded",
+      "source": "examples/probability/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.19",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@ae12d5d29037d31a252c6fed01ae6e15.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/resonance.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 24512,
+          "setting": 28
+        }
+      ],
+      "bytes": 24512,
+      "crf": 28,
+      "motion": "native",
+      "motion_psnr_db": 31.475148,
+      "path": "site/public/media/clips/resonance.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "2691c865b4ed8f3eaa5d118edb1686589793b1e0650e0d204a07fad6db83d9a2",
+      "source": "examples/resonance/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.19",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@ae12d5d29037d31a252c6fed01ae6e15.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/resonance.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 19733,
+          "setting": 36
+        }
+      ],
+      "bytes": 19733,
+      "crf": 36,
+      "motion": "native",
+      "motion_psnr_db": 31.475148,
+      "path": "site/public/media/clips/resonance.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "6c42110e4a6315b028f8b82d750eb8cc3330a11ddc43bd96507fde30712cb941",
+      "source": "examples/resonance/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.19",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@812c920a710fb7321b7d770a5a60a21d.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/sarcomere.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 23785,
+          "setting": 28
+        }
+      ],
+      "bytes": 23785,
+      "crf": 28,
+      "motion": "native",
+      "motion_psnr_db": 24.224644,
+      "path": "site/public/media/clips/sarcomere.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "f060c6c52af8224fffa802fd26011e1f44817cf28659b3abe01526d84f42b2c8",
+      "source": "examples/sarcomere/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.19",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@812c920a710fb7321b7d770a5a60a21d.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/sarcomere.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 23418,
+          "setting": 36
+        }
+      ],
+      "bytes": 23418,
+      "crf": 36,
+      "motion": "native",
+      "motion_psnr_db": 24.224644,
+      "path": "site/public/media/clips/sarcomere.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "7061ebadf9d1a985f0eb83734a35236e14b466bdaf5f442bbabe871f8f9f391d",
+      "source": "examples/sarcomere/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.19",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@f4444de928ebc686c053ced274209fd5.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/stag.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 19523,
+          "setting": 28
+        }
+      ],
+      "bytes": 19523,
+      "crf": 28,
+      "motion": "native",
+      "motion_psnr_db": 34.034908,
+      "path": "site/public/media/clips/stag.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "4daf7fba4c7c2ed8fde86ea9c8da2ba2379a6721cc86f1405103819af022fe26",
+      "source": "examples/stag/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.19",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@f4444de928ebc686c053ced274209fd5.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/stag.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 17327,
+          "setting": 36
+        }
+      ],
+      "bytes": 17327,
+      "crf": 36,
+      "motion": "native",
+      "motion_psnr_db": 34.034908,
+      "path": "site/public/media/clips/stag.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "69182b7a726dbbf9a0ff9a49cb01967a71865c8e557626ff03796ae548789d93",
+      "source": "examples/stag/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.23",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@8c8133424ceeae44a23fbf2889238a33.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/svd.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 101075,
+          "setting": 28
+        }
+      ],
+      "bytes": 101075,
+      "crf": 28,
+      "motion": "native",
+      "motion_psnr_db": 27.702008,
+      "path": "site/public/media/clips/svd.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "0fa8a7c551dc1f5c5a37145f98b4eeaf50793e435dc1d23f743e2029353875fa",
+      "source": "examples/svd/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.23",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@8c8133424ceeae44a23fbf2889238a33.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/svd.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 160023,
+          "setting": 36
+        }
+      ],
+      "bytes": 160023,
+      "crf": 36,
+      "motion": "native",
+      "motion_psnr_db": 27.702008,
+      "path": "site/public/media/clips/svd.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "be45a7cb2c755ce447e7d1bf96ed81e78908b27ee6ae045d8123b6fb6ed001ff",
+      "source": "examples/svd/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.79",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@1a8cfb8bd330f977db45b8764022fbc4.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/topology.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 37206,
+          "setting": 28
+        }
+      ],
+      "bytes": 37206,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": 45.669554,
+      "path": "site/public/media/clips/topology.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "477a01809ad0cc0f0f3f1b4177a5efe6072e1082f01436ca3e79d3785e74cf37",
+      "source": "examples/topology/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.79",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@1a8cfb8bd330f977db45b8764022fbc4.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/topology.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 33755,
+          "setting": 36
+        }
+      ],
+      "bytes": 33755,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": 45.669554,
+      "path": "site/public/media/clips/topology.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "47f8664f9528ffd146e90e9fe1719b07b03c741c4db5a1c555a3914eb6201851",
+      "source": "examples/topology/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.91",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@3104ea685fc79198230d602248b0c489.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/tower.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 42005,
+          "setting": 28
+        }
+      ],
+      "bytes": 42005,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/tower.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "dafefed40a35f5c284752163f4d43fdc6194c44804d97bc74a6007810f5dbec0",
+      "source": "examples/tower/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.91",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@3104ea685fc79198230d602248b0c489.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/tower.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 49915,
+          "setting": 36
+        }
+      ],
+      "bytes": 49915,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/tower.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "19a7879bec5a17f47d6978f8c98508ca2cd45ad0ab63d9576d8e19c2fffdc783",
+      "source": "examples/tower/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.91",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@733cb125302a8c4c961fff31940b647c.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/tree.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 112024,
+          "setting": 28
+        }
+      ],
+      "bytes": 112024,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/tree.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "214203b13c63d0b1c1bf7acac8b6081dfb0a9e318fb3249e6f1c6f036379a053",
+      "source": "examples/tree/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.91",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@733cb125302a8c4c961fff31940b647c.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/tree.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 159282,
+          "setting": 36
+        }
+      ],
+      "bytes": 159282,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/tree.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "3fddf5a0260aa0a2d072abaa8b380a4f6ebc9d8f22ae9217ba4d5a45b6d4f84e",
+      "source": "examples/tree/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.67",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@10e09429537581e995fc12420b9c4435.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/village.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 103312,
+          "setting": 28
+        }
+      ],
+      "bytes": 103312,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/village.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "cc4b6b5faa90da79b33eabeae78bd28419faa74103ec45a0da2223f848e686c1",
+      "source": "examples/village/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.67",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@10e09429537581e995fc12420b9c4435.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/village.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 162718,
+          "setting": 36
+        }
+      ],
+      "bytes": 162718,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/village.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "c5f6ed574fb482d9750098bf88ce0a15bf78198e54d22100a8be0b72c30ee842",
+      "source": "examples/village/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.87",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@b0903b449d25b2a0149b24892d00afe1.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "28",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/clips/well.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 47012,
+          "setting": 28
+        }
+      ],
+      "bytes": 47012,
+      "crf": 28,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/well.mp4",
+      "scale": "640:360",
+      "setting": 28,
+      "sha256": "f9737e43d46419706418ba5e4d16f1f2bff67245e3b84b3769b6390936936326",
+      "source": "examples/well/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "4.87",
+        "-t",
+        "4.00",
+        "-i",
+        "/var/folders/p8/060c2p2s6gngbdrz4m2w2fb80000gn/T/tmpg3plfy5i/page@b0903b449d25b2a0149b24892d00afe1.webm",
+        "-vf",
+        "scale=640:360",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "36",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/clips/well.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 52893,
+          "setting": 36
+        }
+      ],
+      "bytes": 52893,
+      "crf": 36,
+      "motion": "orbit",
+      "motion_psnr_db": null,
+      "path": "site/public/media/clips/well.webm",
+      "scale": "640:360",
+      "setting": 36,
+      "sha256": "cef8ed994a31b26a35219bac7120dd31d6398345bfddc51d40300dfc33f5722c",
+      "source": "examples/well/?plate=1 recording"
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 25290,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/arm.jpg",
+      "sha256": "44763273ac41260646b4a40bc13c07714412ab1ec6bc27d0a886e3d97381471b",
+      "source": "examples/arm/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0,
+        "flat_cells": 10,
+        "flat_fraction": 0.0174,
+        "flat_luma": 0.5691,
+        "luma_mean": 0.1858,
+        "luma_median_cell": 0.1739,
+        "luma_std": 0.0885,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1791,
+        "usable": true,
+        "wall_columns": 12,
+        "wall_fraction": 0.375,
+        "wall_luma": 0.1717,
+        "wall_rest_luma": 0.1943
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 27344,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/bloch.jpg",
+      "sha256": "7959c3c0f4ce801499b4b9f1172d24687fc55c24363e9533e79a24e257a6e139",
+      "source": "examples/bloch/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.0389,
+        "flat_cells": 0,
+        "flat_fraction": 0,
+        "flat_luma": null,
+        "luma_mean": 0.096,
+        "luma_median_cell": 0.0959,
+        "luma_std": 0.0451,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.096,
+        "usable": true,
+        "wall_columns": 13,
+        "wall_fraction": 0.4063,
+        "wall_luma": 0.0905,
+        "wall_rest_luma": 0.0997
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 43963,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/blue-hour.jpg",
+      "sha256": "d1315b1c47bd6720a567449f7c58460f83f87729b94ba20b80227d9d83a991f0",
+      "source": "examples/blue-hour/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.25,
+        "flat_cells": 0,
+        "flat_fraction": 0,
+        "flat_luma": null,
+        "luma_mean": 0.1046,
+        "luma_median_cell": 0.1318,
+        "luma_std": 0.0643,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1046,
+        "usable": true,
+        "wall_columns": 6,
+        "wall_fraction": 0.1875,
+        "wall_luma": 0.1311,
+        "wall_rest_luma": 0.0985
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 34444,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/brain.jpg",
+      "sha256": "46f2ccde26ebe5cd107e40f55f94136b7b0bd57f6a589235d6f36de9f1541fcd",
+      "source": "examples/brain/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0,
+        "flat_cells": 70,
+        "flat_fraction": 0.1215,
+        "flat_luma": 0.7331,
+        "luma_mean": 0.2455,
+        "luma_median_cell": 0.1834,
+        "luma_std": 0.1977,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1781,
+        "usable": true,
+        "wall_columns": 11,
+        "wall_fraction": 0.3438,
+        "wall_luma": 0.1717,
+        "wall_rest_luma": 0.2842
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 34658,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/breathing.jpg",
+      "sha256": "0598a0dadd7e4a431e1a75ec4eee6843524f03e61167cf40cd830aa7043028d4",
+      "source": "examples/breathing/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0,
+        "flat_cells": 82,
+        "flat_fraction": 0.1424,
+        "flat_luma": 0.6475,
+        "luma_mean": 0.2442,
+        "luma_median_cell": 0.1786,
+        "luma_std": 0.1843,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1773,
+        "usable": true,
+        "wall_columns": 11,
+        "wall_fraction": 0.3438,
+        "wall_luma": 0.1717,
+        "wall_rest_luma": 0.2823
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 50379,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/cavern.jpg",
+      "sha256": "832346f22187ca888b105943077774a5b8571e6599bd852a4c7a8a7aed5a9a51",
+      "source": "examples/cavern/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.0084,
+        "flat_cells": 16,
+        "flat_fraction": 0.0278,
+        "flat_luma": 0.5015,
+        "luma_mean": 0.1939,
+        "luma_median_cell": 0.1694,
+        "luma_std": 0.1056,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1852,
+        "usable": true,
+        "wall_columns": 9,
+        "wall_fraction": 0.2813,
+        "wall_luma": 0.1713,
+        "wall_rest_luma": 0.2028
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 36984,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/chaos.jpg",
+      "sha256": "6133dc0ebc20c5a80ab4fe4e9067926ac2ce27bc00762ab85769dd3a013407a0",
+      "source": "examples/chaos/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.0032,
+        "flat_cells": 7,
+        "flat_fraction": 0.0122,
+        "flat_luma": 0.4532,
+        "luma_mean": 0.1847,
+        "luma_median_cell": 0.1739,
+        "luma_std": 0.0812,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1814,
+        "usable": true,
+        "wall_columns": 7,
+        "wall_fraction": 0.2188,
+        "wall_luma": 0.1717,
+        "wall_rest_luma": 0.1883
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 43634,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/complex.jpg",
+      "sha256": "6deb459d9609db7fe37ab34a0e4dbb1363a7370ede7a118b4658ed7990764655",
+      "source": "examples/complex/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0,
+        "flat_cells": 0,
+        "flat_fraction": 0,
+        "flat_luma": null,
+        "luma_mean": 0.1821,
+        "luma_median_cell": 0.1796,
+        "luma_std": 0.051,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1821,
+        "usable": true,
+        "wall_columns": 11,
+        "wall_fraction": 0.3438,
+        "wall_luma": 0.1722,
+        "wall_rest_luma": 0.1873
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 52506,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/cottage.jpg",
+      "sha256": "2aa9f94b727cb0c54034a2874bc393c9c44c3567beeed57329e7ceef181e69e7",
+      "source": "examples/cottage/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.0389,
+        "flat_cells": 81,
+        "flat_fraction": 0.1406,
+        "flat_luma": 0.509,
+        "luma_mean": 0.161,
+        "luma_median_cell": 0.0989,
+        "luma_std": 0.1733,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1041,
+        "usable": true,
+        "wall_columns": 9,
+        "wall_fraction": 0.2813,
+        "wall_luma": 0.0907,
+        "wall_rest_luma": 0.1886
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 47479,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/differential.jpg",
+      "sha256": "011c17c5805de20cce8e43a3c902f8afa3eef3e00e49e47730db6618e51d9615",
+      "source": "examples/differential/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.0043,
+        "flat_cells": 19,
+        "flat_fraction": 0.033,
+        "flat_luma": 0.5536,
+        "luma_mean": 0.1991,
+        "luma_median_cell": 0.1769,
+        "luma_std": 0.1225,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.187,
+        "usable": true,
+        "wall_columns": 8,
+        "wall_fraction": 0.25,
+        "wall_luma": 0.1721,
+        "wall_rest_luma": 0.2081
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 30731,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/fourier.jpg",
+      "sha256": "90dfebc4e33743107071148d335248b6bcc965bd720dd84e4cb878c15732aabb",
+      "source": "examples/fourier/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0,
+        "flat_cells": 1,
+        "flat_fraction": 0.0017,
+        "flat_luma": 0.4661,
+        "luma_mean": 0.1777,
+        "luma_median_cell": 0.1786,
+        "luma_std": 0.0602,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1772,
+        "usable": true,
+        "wall_columns": 11,
+        "wall_fraction": 0.3438,
+        "wall_luma": 0.1739,
+        "wall_rest_luma": 0.1797
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 60303,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/gears.jpg",
+      "sha256": "f3e04bf8abbb6a9b35d2d4d1bac9fa298b2934d5d0d95528f4b35d0c58cace69",
+      "source": "examples/gears/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.0389,
+        "flat_cells": 108,
+        "flat_fraction": 0.1875,
+        "flat_luma": 0.5512,
+        "luma_mean": 0.1928,
+        "luma_median_cell": 0.1069,
+        "luma_std": 0.225,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1101,
+        "usable": true,
+        "wall_columns": 8,
+        "wall_fraction": 0.25,
+        "wall_luma": 0.0913,
+        "wall_rest_luma": 0.2266
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 43906,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/guildhall.jpg",
+      "sha256": "57adad2c7e3320c035c9fac985346f0f54c5330df16bc3144507aa808bc3fd85",
+      "source": "examples/guildhall/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.0389,
+        "flat_cells": 71,
+        "flat_fraction": 0.1233,
+        "flat_luma": 0.5313,
+        "luma_mean": 0.1509,
+        "luma_median_cell": 0.0959,
+        "luma_std": 0.1688,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.0974,
+        "usable": true,
+        "wall_columns": 9,
+        "wall_fraction": 0.2813,
+        "wall_luma": 0.0907,
+        "wall_rest_luma": 0.1745
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 44409,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/hall.jpg",
+      "sha256": "bf120215c6cd2940b02a5baca4f56fec5a3ca97495f775f773110c5b8aed1b77",
+      "source": "examples/hall/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.039,
+        "flat_cells": 57,
+        "flat_fraction": 0.099,
+        "flat_luma": 0.471,
+        "luma_mean": 0.1371,
+        "luma_median_cell": 0.092,
+        "luma_std": 0.1408,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1004,
+        "usable": true,
+        "wall_columns": 9,
+        "wall_fraction": 0.2813,
+        "wall_luma": 0.0907,
+        "wall_rest_luma": 0.1552
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 40209,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/heart.jpg",
+      "sha256": "f0c31bbe8fc11bc053e23eea77aa3a901ac0ad1e21014e089d3e8a5efe073171",
+      "source": "examples/heart/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0,
+        "flat_cells": 46,
+        "flat_fraction": 0.0799,
+        "flat_luma": 0.573,
+        "luma_mean": 0.214,
+        "luma_median_cell": 0.1786,
+        "luma_std": 0.1312,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1829,
+        "usable": true,
+        "wall_columns": 13,
+        "wall_fraction": 0.4063,
+        "wall_luma": 0.1719,
+        "wall_rest_luma": 0.2429
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 22149,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/knee.jpg",
+      "sha256": "046d086ae166fe150e52b7adb8ebf9d9414d17e94d552d94a261ed54d2d04cbf",
+      "source": "examples/knee/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0,
+        "flat_cells": 51,
+        "flat_fraction": 0.0885,
+        "flat_luma": 0.7264,
+        "luma_mean": 0.225,
+        "luma_median_cell": 0.1786,
+        "luma_std": 0.1749,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1763,
+        "usable": true,
+        "wall_columns": 13,
+        "wall_fraction": 0.4063,
+        "wall_luma": 0.1718,
+        "wall_rest_luma": 0.2614
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 27292,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/lantern.jpg",
+      "sha256": "43c35a386815c5895b51a67f42c6716d55d7ef5b0d69a1f58c35116da16e72f6",
+      "source": "examples/lantern/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.0413,
+        "flat_cells": 9,
+        "flat_fraction": 0.0156,
+        "flat_luma": 0.5176,
+        "luma_mean": 0.1101,
+        "luma_median_cell": 0.092,
+        "luma_std": 0.0834,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1037,
+        "usable": true,
+        "wall_columns": 9,
+        "wall_fraction": 0.2813,
+        "wall_luma": 0.0907,
+        "wall_rest_luma": 0.1178
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 47059,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/magnetic.jpg",
+      "sha256": "296ccc3e2b5616bedf9c03d3c7d9a49a2f4e1d5d1729b1b5d95d4617f08a65fc",
+      "source": "examples/magnetic/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0,
+        "flat_cells": 0,
+        "flat_fraction": 0,
+        "flat_luma": null,
+        "luma_mean": 0.1809,
+        "luma_median_cell": 0.1739,
+        "luma_std": 0.0743,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1809,
+        "usable": true,
+        "wall_columns": 8,
+        "wall_fraction": 0.25,
+        "wall_luma": 0.1718,
+        "wall_rest_luma": 0.184
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 40995,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/market.jpg",
+      "sha256": "e4858ea79ce6ebaaf16d02678d096a6bac117689ae0159e4c34497116d1c2afc",
+      "source": "examples/market/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.0389,
+        "flat_cells": 43,
+        "flat_fraction": 0.0747,
+        "flat_luma": 0.4264,
+        "luma_mean": 0.1461,
+        "luma_median_cell": 0.0989,
+        "luma_std": 0.1473,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1235,
+        "usable": true,
+        "wall_columns": 9,
+        "wall_fraction": 0.2813,
+        "wall_luma": 0.0907,
+        "wall_rest_luma": 0.1678
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 51886,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/muscle-atlas.jpg",
+      "sha256": "2f32fb543b9a4ed7ca116855f24f7fc732892ddb80edcb53d196e923522a5188",
+      "source": "examples/muscle-atlas/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0,
+        "flat_cells": 29,
+        "flat_fraction": 0.0503,
+        "flat_luma": 0.5715,
+        "luma_mean": 0.215,
+        "luma_median_cell": 0.1834,
+        "luma_std": 0.1326,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1961,
+        "usable": true,
+        "wall_columns": 10,
+        "wall_fraction": 0.3125,
+        "wall_luma": 0.1717,
+        "wall_rest_luma": 0.2346
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 32387,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/neuron.jpg",
+      "sha256": "7ce508bf90689c7e9fcea89a673369d0c236abb4bc081b96740246c7445ec851",
+      "source": "examples/neuron/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0,
+        "flat_cells": 8,
+        "flat_fraction": 0.0139,
+        "flat_luma": 0.6059,
+        "luma_mean": 0.19,
+        "luma_median_cell": 0.1786,
+        "luma_std": 0.1064,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1842,
+        "usable": true,
+        "wall_columns": 8,
+        "wall_fraction": 0.25,
+        "wall_luma": 0.1717,
+        "wall_rest_luma": 0.1961
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 103359,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/night-bridge.jpg",
+      "sha256": "b3d51c477d31e48a4371ebebf281f532ab4596ea32cc65dfcecc3a691d948c88",
+      "source": "examples/night-bridge/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.5046,
+        "flat_cells": 3,
+        "flat_fraction": 0.0052,
+        "flat_luma": 0.5535,
+        "luma_mean": 0.0983,
+        "luma_median_cell": 0.0785,
+        "luma_std": 0.1173,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.0959,
+        "usable": true,
+        "wall_columns": 3,
+        "wall_fraction": 0.0938,
+        "wall_luma": 0.078,
+        "wall_rest_luma": 0.1004
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 84260,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/night-doorway.jpg",
+      "sha256": "f78230c8521c532c99f5ec072c403d11c87693e14b1847346f087f8c7a5b79bd",
+      "source": "examples/night-doorway/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.3352,
+        "flat_cells": 5,
+        "flat_fraction": 0.0087,
+        "flat_luma": 0.3892,
+        "luma_mean": 0.1249,
+        "luma_median_cell": 0.0891,
+        "luma_std": 0.1241,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1226,
+        "usable": true,
+        "wall_columns": 4,
+        "wall_fraction": 0.125,
+        "wall_luma": 0.0777,
+        "wall_rest_luma": 0.1317
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 109277,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/night-mill.jpg",
+      "sha256": "125c78048f8e4424122da5a91202991491c0b44ce02692cb00ccc30b62aabcd1",
+      "source": "examples/night-mill/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.4298,
+        "flat_cells": 9,
+        "flat_fraction": 0.0156,
+        "flat_luma": 0.4688,
+        "luma_mean": 0.1366,
+        "luma_median_cell": 0.1108,
+        "luma_std": 0.1338,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1313,
+        "usable": true,
+        "wall_columns": 2,
+        "wall_fraction": 0.0625,
+        "wall_luma": 0.0742,
+        "wall_rest_luma": 0.1407
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 44922,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/night-river.jpg",
+      "sha256": "5066546e990d643a2d5cf2b93036e3b50396028c451978ccf86537be41084e6e",
+      "source": "examples/night-river/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.846,
+        "flat_cells": 0,
+        "flat_fraction": 0,
+        "flat_luma": null,
+        "luma_mean": 0.0667,
+        "luma_median_cell": 0.0556,
+        "luma_std": 0.0629,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.0667,
+        "usable": true,
+        "wall_columns": 10,
+        "wall_fraction": 0.3125,
+        "wall_luma": 0.0501,
+        "wall_rest_luma": 0.0742
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 31303,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/optics.jpg",
+      "sha256": "466509b456d2d060141f2a1d488671feb5a76b6ba014aacc601441e8c3f0ea9b",
+      "source": "examples/optics/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.0018,
+        "flat_cells": 7,
+        "flat_fraction": 0.0122,
+        "flat_luma": 0.5034,
+        "luma_mean": 0.1893,
+        "luma_median_cell": 0.1739,
+        "luma_std": 0.081,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1854,
+        "usable": true,
+        "wall_columns": 9,
+        "wall_fraction": 0.2813,
+        "wall_luma": 0.1721,
+        "wall_rest_luma": 0.196
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 53445,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/orrery.jpg",
+      "sha256": "7ed8b12177d8bb1cf45950fd5da47cb02eade616043727ec530d4f62ce99028c",
+      "source": "examples/orrery/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0,
+        "flat_cells": 13,
+        "flat_fraction": 0.0226,
+        "flat_luma": 0.5368,
+        "luma_mean": 0.189,
+        "luma_median_cell": 0.1781,
+        "luma_std": 0.0983,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.181,
+        "usable": true,
+        "wall_columns": 9,
+        "wall_fraction": 0.2813,
+        "wall_luma": 0.1723,
+        "wall_rest_luma": 0.1955
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 67339,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/probability.jpg",
+      "sha256": "ef7b318790be2352885a089a40eda858042b3ee6039166edf0d64d68bc572a2d",
+      "source": "examples/probability/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0,
+        "flat_cells": 18,
+        "flat_fraction": 0.0313,
+        "flat_luma": 0.523,
+        "luma_mean": 0.1956,
+        "luma_median_cell": 0.1834,
+        "luma_std": 0.1082,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1851,
+        "usable": true,
+        "wall_columns": 11,
+        "wall_fraction": 0.3438,
+        "wall_luma": 0.1729,
+        "wall_rest_luma": 0.2075
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 29397,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/resonance.jpg",
+      "sha256": "d6454fed704b12eaad505080cfdbbd4e6c2d5529e8ee29f2cf53adc7894dff64",
+      "source": "examples/resonance/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.0072,
+        "flat_cells": 59,
+        "flat_fraction": 0.1024,
+        "flat_luma": 0.7493,
+        "luma_mean": 0.2333,
+        "luma_median_cell": 0.1786,
+        "luma_std": 0.1896,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1744,
+        "usable": true,
+        "wall_columns": 10,
+        "wall_fraction": 0.3125,
+        "wall_luma": 0.1718,
+        "wall_rest_luma": 0.2612
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 32370,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/sarcomere.jpg",
+      "sha256": "234c5506e5892eb9750e8112f09e7acc5531608952448474848797a4b4955011",
+      "source": "examples/sarcomere/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0,
+        "flat_cells": 24,
+        "flat_fraction": 0.0417,
+        "flat_luma": 0.4788,
+        "luma_mean": 0.1897,
+        "luma_median_cell": 0.1786,
+        "luma_std": 0.1023,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1771,
+        "usable": true,
+        "wall_columns": 9,
+        "wall_fraction": 0.2813,
+        "wall_luma": 0.1717,
+        "wall_rest_luma": 0.1968
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 29649,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/stag.jpg",
+      "sha256": "dcf850b372abd510bb4b644a355fc997ed945ffafd9d616699d1fe67ecfac451",
+      "source": "examples/stag/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.0389,
+        "flat_cells": 19,
+        "flat_fraction": 0.033,
+        "flat_luma": 0.555,
+        "luma_mean": 0.1175,
+        "luma_median_cell": 0.092,
+        "luma_std": 0.1166,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1026,
+        "usable": true,
+        "wall_columns": 9,
+        "wall_fraction": 0.2813,
+        "wall_luma": 0.0907,
+        "wall_rest_luma": 0.128
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 42994,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/svd.jpg",
+      "sha256": "2e49b16c6a82e17b815ac50093363257234cf0f14b518d7b6b27bedd7fc1a17c",
+      "source": "examples/svd/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0,
+        "flat_cells": 3,
+        "flat_fraction": 0.0052,
+        "flat_luma": 0.4565,
+        "luma_mean": 0.1906,
+        "luma_median_cell": 0.1786,
+        "luma_std": 0.0838,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1892,
+        "usable": true,
+        "wall_columns": 12,
+        "wall_fraction": 0.375,
+        "wall_luma": 0.1722,
+        "wall_rest_luma": 0.2016
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 30126,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/topology.jpg",
+      "sha256": "18e0f1116cdc531215c1334005888c97823e1d88fb6e176fbf8f1865e4cfed23",
+      "source": "examples/topology/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0,
+        "flat_cells": 49,
+        "flat_fraction": 0.0851,
+        "flat_luma": 0.6079,
+        "luma_mean": 0.2266,
+        "luma_median_cell": 0.1834,
+        "luma_std": 0.1496,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1911,
+        "usable": true,
+        "wall_columns": 10,
+        "wall_fraction": 0.3125,
+        "wall_luma": 0.1717,
+        "wall_rest_luma": 0.2515
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 34521,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/tower.jpg",
+      "sha256": "98eab85f8737108a43ee653bd791af037cbb80c1a43f900fce7e100018df0266",
+      "source": "examples/tower/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.0389,
+        "flat_cells": 39,
+        "flat_fraction": 0.0677,
+        "flat_luma": 0.5217,
+        "luma_mean": 0.1289,
+        "luma_median_cell": 0.092,
+        "luma_std": 0.1319,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1004,
+        "usable": true,
+        "wall_columns": 9,
+        "wall_fraction": 0.2813,
+        "wall_luma": 0.0907,
+        "wall_rest_luma": 0.1439
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 49299,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/tree.jpg",
+      "sha256": "b1d9e7af2f79e69886662b4b044dccf1fde19a73922ae5f6430d6311c358927a",
+      "source": "examples/tree/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.0389,
+        "flat_cells": 30,
+        "flat_fraction": 0.0521,
+        "flat_luma": 0.4952,
+        "luma_mean": 0.1271,
+        "luma_median_cell": 0.0959,
+        "luma_std": 0.1238,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1069,
+        "usable": true,
+        "wall_columns": 9,
+        "wall_fraction": 0.2813,
+        "wall_luma": 0.0907,
+        "wall_rest_luma": 0.1414
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 62669,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/village.jpg",
+      "sha256": "ce4ef172c61d9a90a856a63582c8b0ab07dd8fe2f2874fd6954ce63ce7b5d146",
+      "source": "examples/village/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.039,
+        "flat_cells": 79,
+        "flat_fraction": 0.1372,
+        "flat_luma": 0.4975,
+        "luma_mean": 0.1654,
+        "luma_median_cell": 0.1069,
+        "luma_std": 0.1631,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1127,
+        "usable": true,
+        "wall_columns": 6,
+        "wall_fraction": 0.1875,
+        "wall_luma": 0.0911,
+        "wall_rest_luma": 0.1826
+      }
+    },
+    {
+      "argv": [
+        "playwright",
+        "screenshot",
+        "jpeg",
+        "q82"
+      ],
+      "bytes": 36260,
+      "jpeg_quality": 82,
+      "path": "site/public/media/examples/well.jpg",
+      "sha256": "bbae8f591acf9b3b1f46168f8466e13dae4813720a069b94245d04e3731b9e8d",
+      "source": "examples/well/?plate=1",
+      "view": "overview",
+      "view_quality": {
+        "dark_fraction": 0.039,
+        "flat_cells": 37,
+        "flat_fraction": 0.0642,
+        "flat_luma": 0.6447,
+        "luma_mean": 0.1499,
+        "luma_median_cell": 0.0989,
+        "luma_std": 0.1666,
+        "measured": true,
+        "reason": "usable",
+        "region": {
+          "height": 720,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "rest_luma": 0.1159,
+        "usable": true,
+        "wall_columns": 9,
+        "wall_fraction": 0.2813,
+        "wall_luma": 0.0907,
+        "wall_rest_luma": 0.173
+      }
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/biped-walker-stance.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/biped-walker-stance-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 4471,
+          "setting": 5
+        }
+      ],
+      "bytes": 4471,
+      "path": "site/public/media/keyart/biped-walker-stance-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "5ef5121b0cced7252e74f51d2ff4edf69d0f0384d46b4f2b14dc7524f7b80dc5",
+      "source": "docs/demos/showcase/biped-walker-stance.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/biped-walker-stance.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/biped-walker-stance.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 28822,
+          "setting": 4
+        }
+      ],
+      "bytes": 28822,
+      "path": "site/public/media/keyart/biped-walker-stance.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "45e01e012f335873ccb72b768c42c4879dcdf6bc99a0c136fcc07c2794e99398",
+      "source": "docs/demos/showcase/biped-walker-stance.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/bloch-ball-linear-algebra.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/bloch-ball-linear-algebra-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 5654,
+          "setting": 5
+        }
+      ],
+      "bytes": 5654,
+      "path": "site/public/media/keyart/bloch-ball-linear-algebra-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "f7a99714bc113e49c9a0c442edc28388840773d17b0eb3e2bb772c059f237a28",
+      "source": "docs/demos/showcase/bloch-ball-linear-algebra.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/bloch-ball-linear-algebra.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/bloch-ball-linear-algebra.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 37313,
+          "setting": 4
+        }
+      ],
+      "bytes": 37313,
+      "path": "site/public/media/keyart/bloch-ball-linear-algebra.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "adcdfbadcb44ddea0514dcc080c8ad3946dfd393b54bab63122733774dbdc98f",
+      "source": "docs/demos/showcase/bloch-ball-linear-algebra.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/coupled-gears-studio.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/coupled-gears-studio-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 8176,
+          "setting": 5
+        }
+      ],
+      "bytes": 8176,
+      "path": "site/public/media/keyart/coupled-gears-studio-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "11d82971efb375a17fe1c70c993f4ef91d04f9009ce22c4214381fbf745633dd",
+      "source": "docs/demos/showcase/coupled-gears-studio.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/coupled-gears-studio.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/coupled-gears-studio.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 41839,
+          "setting": 4
+        }
+      ],
+      "bytes": 41839,
+      "path": "site/public/media/keyart/coupled-gears-studio.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "7180666a6a396e34bd841dbabc9e550b2c1d1be6ac08e355188a299239bc3047",
+      "source": "docs/demos/showcase/coupled-gears-studio.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/iron-lantern-gltf-detail.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/iron-lantern-gltf-detail-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 4270,
+          "setting": 5
+        }
+      ],
+      "bytes": 4270,
+      "path": "site/public/media/keyart/iron-lantern-gltf-detail-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "857788430468a35386cc9a4be5cf31c4dad75138574d59f4f1faefa4dd780983",
+      "source": "docs/demos/showcase/iron-lantern-gltf-detail.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/iron-lantern-gltf-detail.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/iron-lantern-gltf-detail.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 23794,
+          "setting": 4
+        }
+      ],
+      "bytes": 23794,
+      "path": "site/public/media/keyart/iron-lantern-gltf-detail.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "037b21cdbec7c98e72965602276239fa60b3285a8aae14e99c89e5908d779d35",
+      "source": "docs/demos/showcase/iron-lantern-gltf-detail.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/long-hall-porch-chimneys.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/long-hall-porch-chimneys-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 11326,
+          "setting": 5
+        }
+      ],
+      "bytes": 11326,
+      "path": "site/public/media/keyart/long-hall-porch-chimneys-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "07f9774c999444bd00194d273d9c7d577a2ede642ba4390d7fea5a91bdab2462",
+      "source": "docs/demos/showcase/long-hall-porch-chimneys.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/long-hall-porch-chimneys.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/long-hall-porch-chimneys.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 98229,
+          "setting": 4
+        }
+      ],
+      "bytes": 98229,
+      "path": "site/public/media/keyart/long-hall-porch-chimneys.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "99394ca7bfa732db2722311e2157f0d618b0bbb4bad5ffa840dc302ad9d31d48",
+      "source": "docs/demos/showcase/long-hall-porch-chimneys.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/market-stall-canopy.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/market-stall-canopy-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 6863,
+          "setting": 5
+        }
+      ],
+      "bytes": 6863,
+      "path": "site/public/media/keyart/market-stall-canopy-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "9c8e2afa0d8218d42143c182923e1acd3ce1e7ff72eb89258bbf42399f1fa562",
+      "source": "docs/demos/showcase/market-stall-canopy.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/market-stall-canopy.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/market-stall-canopy.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 45340,
+          "setting": 4
+        }
+      ],
+      "bytes": 45340,
+      "path": "site/public/media/keyart/market-stall-canopy.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "45239a01d809b0a5582b1e228414f5699c42e0a7e662d547607c14fb48dffa3e",
+      "source": "docs/demos/showcase/market-stall-canopy.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/quadruped-walker-stance.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/quadruped-walker-stance-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 4580,
+          "setting": 5
+        }
+      ],
+      "bytes": 4580,
+      "path": "site/public/media/keyart/quadruped-walker-stance-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "a58d2121af2b1a7f1573325e45704b8975a11ddd685e9ade516a18408bdf0985",
+      "source": "docs/demos/showcase/quadruped-walker-stance.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/quadruped-walker-stance.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/quadruped-walker-stance.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 27698,
+          "setting": 4
+        }
+      ],
+      "bytes": 27698,
+      "path": "site/public/media/keyart/quadruped-walker-stance.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "f072f7c314da58f36bee6e57211304d3787e494775b8b6a0ab03c16e32e7d0d1",
+      "source": "docs/demos/showcase/quadruped-walker-stance.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/round-tower-elevation.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/round-tower-elevation-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 4800,
+          "setting": 5
+        }
+      ],
+      "bytes": 4800,
+      "path": "site/public/media/keyart/round-tower-elevation-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "04c53181f672a90d7e38946beb2a9a8992374e35ed262a225592327dde348b2e",
+      "source": "docs/demos/showcase/round-tower-elevation.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/round-tower-elevation.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/round-tower-elevation.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 35023,
+          "setting": 4
+        }
+      ],
+      "bytes": 35023,
+      "path": "site/public/media/keyart/round-tower-elevation.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "fc6b7d6bfb0f83c09cc3ddc99dae3a5dfb4a099649a6e52d5375d188ea99d233",
+      "source": "docs/demos/showcase/round-tower-elevation.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/stone-bridge-over-water.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/stone-bridge-over-water-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 26025,
+          "setting": 5
+        }
+      ],
+      "bytes": 26025,
+      "path": "site/public/media/keyart/stone-bridge-over-water-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "a0b1fce4a5a18ebfe57a3fad681931b8577fe9882edbee895e3d8a732d809d3f",
+      "source": "docs/demos/showcase/stone-bridge-over-water.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/stone-bridge-over-water.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/stone-bridge-over-water.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 215166,
+          "setting": 4
+        }
+      ],
+      "bytes": 215166,
+      "path": "site/public/media/keyart/stone-bridge-over-water.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "c67410a4e0038948ce82e98616272ac8fe950dea4cb6a0f543e355412984688a",
+      "source": "docs/demos/showcase/stone-bridge-over-water.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/stone-guildhall-closeup.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/stone-guildhall-closeup-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 12876,
+          "setting": 5
+        }
+      ],
+      "bytes": 12876,
+      "path": "site/public/media/keyart/stone-guildhall-closeup-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "7959d0fdfa77912c8961e3fb16a802a7100dd81da34c68f1cb5496821b010ecd",
+      "source": "docs/demos/showcase/stone-guildhall-closeup.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/stone-guildhall-closeup.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/stone-guildhall-closeup.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 128387,
+          "setting": 4
+        }
+      ],
+      "bytes": 128387,
+      "path": "site/public/media/keyart/stone-guildhall-closeup.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "9ff7ac839155c0db651345f64401ad9b4e645fd080ad75d2e8adb6cc977f1c42",
+      "source": "docs/demos/showcase/stone-guildhall-closeup.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/timber-cottage-t3-closeup.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/timber-cottage-t3-closeup-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 9834,
+          "setting": 5
+        }
+      ],
+      "bytes": 9834,
+      "path": "site/public/media/keyart/timber-cottage-t3-closeup-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "d581711db616cd924fb504c474763ada926621a10a05ad86bc9254b56d0c149b",
+      "source": "docs/demos/showcase/timber-cottage-t3-closeup.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/timber-cottage-t3-closeup.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/timber-cottage-t3-closeup.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 61293,
+          "setting": 4
+        }
+      ],
+      "bytes": 61293,
+      "path": "site/public/media/keyart/timber-cottage-t3-closeup.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "931e5334f8dc13e2cbe92aba8da27e849652be90565705c9815f907fbbf7291a",
+      "source": "docs/demos/showcase/timber-cottage-t3-closeup.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/tree-round-canopy.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/tree-round-canopy-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 4014,
+          "setting": 5
+        }
+      ],
+      "bytes": 4014,
+      "path": "site/public/media/keyart/tree-round-canopy-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "cd11ac6cc75fe2780a8cf4975c96068069eb62fbb0da121c824b8dc8f3612300",
+      "source": "docs/demos/showcase/tree-round-canopy.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/tree-round-canopy.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/tree-round-canopy.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 23116,
+          "setting": 4
+        }
+      ],
+      "bytes": 23116,
+      "path": "site/public/media/keyart/tree-round-canopy.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "8dd780e2b08a6d5efb5e4a36817efb9e997aedb2474e3c6a63effcbf8d77e86d",
+      "source": "docs/demos/showcase/tree-round-canopy.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/village-dusk-golden-hour.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/village-dusk-golden-hour-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 11996,
+          "setting": 5
+        }
+      ],
+      "bytes": 11996,
+      "path": "site/public/media/keyart/village-dusk-golden-hour-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "745fecef6cc8a0494f8bc628b4aa36f27ea0fca5022d0dd0d5d518df05f39961",
+      "source": "docs/demos/showcase/village-dusk-golden-hour.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/village-dusk-golden-hour.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/village-dusk-golden-hour.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 87485,
+          "setting": 4
+        }
+      ],
+      "bytes": 87485,
+      "path": "site/public/media/keyart/village-dusk-golden-hour.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "3cd6d5670e771eff297b3b8d99459cddac4869f31f5df6ce40247a4a12975088",
+      "source": "docs/demos/showcase/village-dusk-golden-hour.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/village-inn-doorway.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/village-inn-doorway-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 22209,
+          "setting": 5
+        }
+      ],
+      "bytes": 22209,
+      "path": "site/public/media/keyart/village-inn-doorway-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "ead05bf5dfca12f85da40baa0f305fdf70251082ec495bf1656b0f9b1965aa20",
+      "source": "docs/demos/showcase/village-inn-doorway.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/village-inn-doorway.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/village-inn-doorway.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 189264,
+          "setting": 4
+        }
+      ],
+      "bytes": 189264,
+      "path": "site/public/media/keyart/village-inn-doorway.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "3a331fedcb9e8b105851797cf5b772931b071e8598404663f43960cc8964384d",
+      "source": "docs/demos/showcase/village-inn-doorway.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/village-lantern-riverside-pond.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/village-lantern-riverside-pond-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 15346,
+          "setting": 5
+        }
+      ],
+      "bytes": 15346,
+      "path": "site/public/media/keyart/village-lantern-riverside-pond-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "a2e024b7dcaa7e38bdd95f5aff77a3a9b4a845629a91af8fbe25cdd3f1c46931",
+      "source": "docs/demos/showcase/village-lantern-riverside-pond.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/village-lantern-riverside-pond.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/village-lantern-riverside-pond.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 113271,
+          "setting": 4
+        }
+      ],
+      "bytes": 113271,
+      "path": "site/public/media/keyart/village-lantern-riverside-pond.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "2fe6a1f0bd2f9b8dcebcf34fbf2482f9382b08af9da37ef8cc53d79f3b2d26a7",
+      "source": "docs/demos/showcase/village-lantern-riverside-pond.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/village-layout-overview.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/village-layout-overview-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 11886,
+          "setting": 5
+        }
+      ],
+      "bytes": 11886,
+      "path": "site/public/media/keyart/village-layout-overview-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "b04aaf86c14808148e101e85de1cca4b7f0db6d23cffbc06ac4b74f1d3f29874",
+      "source": "docs/demos/showcase/village-layout-overview.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/village-layout-overview.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/village-layout-overview.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 83640,
+          "setting": 4
+        }
+      ],
+      "bytes": 83640,
+      "path": "site/public/media/keyart/village-layout-overview.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "4a6ed16efd1184e384272ee3ed81f61f4fb3deb94f0439102b1795648f628068",
+      "source": "docs/demos/showcase/village-layout-overview.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/village-night-lantern-river.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/village-night-lantern-river-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 8075,
+          "setting": 5
+        }
+      ],
+      "bytes": 8075,
+      "path": "site/public/media/keyart/village-night-lantern-river-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "3c047205c0f321377de192184c60fc64933db71cd5484615d49f7c81abe9733c",
+      "source": "docs/demos/showcase/village-night-lantern-river.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/village-night-lantern-river.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/village-night-lantern-river.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 63691,
+          "setting": 4
+        }
+      ],
+      "bytes": 63691,
+      "path": "site/public/media/keyart/village-night-lantern-river.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "76355d902ff4865aff2df58c3a2050df6705da2392709a5fd37d9371e10e3a43",
+      "source": "docs/demos/showcase/village-night-lantern-river.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/village-overcast-morning.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/village-overcast-morning-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 24782,
+          "setting": 5
+        }
+      ],
+      "bytes": 24782,
+      "path": "site/public/media/keyart/village-overcast-morning-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "6ead35e85731906d9fa6cb8e005df3e21f83ae91b2c55a14ee8b2fff89a9e0ac",
+      "source": "docs/demos/showcase/village-overcast-morning.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/village-overcast-morning.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/village-overcast-morning.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 200233,
+          "setting": 4
+        }
+      ],
+      "bytes": 200233,
+      "path": "site/public/media/keyart/village-overcast-morning.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "307276f134a2f0192663f069b1c7fa29a937b335c6abd1fd9aabd48bb2473519",
+      "source": "docs/demos/showcase/village-overcast-morning.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/village-tilt-shift-diorama.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/village-tilt-shift-diorama-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 11080,
+          "setting": 5
+        }
+      ],
+      "bytes": 11080,
+      "path": "site/public/media/keyart/village-tilt-shift-diorama-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "0e14c9ac7bcc46b2cbe8d4be5f4978e842d948887c1ba2bccf1b820a4e13d60d",
+      "source": "docs/demos/showcase/village-tilt-shift-diorama.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/village-tilt-shift-diorama.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/village-tilt-shift-diorama.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 55290,
+          "setting": 4
+        }
+      ],
+      "bytes": 55290,
+      "path": "site/public/media/keyart/village-tilt-shift-diorama.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "1259f48289ac921ececc0ccb1887523cd50a9c86c651b9357caca0920a3a68a4",
+      "source": "docs/demos/showcase/village-tilt-shift-diorama.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/watermill-wheel-turning.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/watermill-wheel-turning-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 20330,
+          "setting": 5
+        }
+      ],
+      "bytes": 20330,
+      "path": "site/public/media/keyart/watermill-wheel-turning-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "7769ef8060e12b01476bae9ec58949673848f4263d5dbb02d92337d873b68a64",
+      "source": "docs/demos/showcase/watermill-wheel-turning.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/watermill-wheel-turning.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/watermill-wheel-turning.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 156143,
+          "setting": 4
+        }
+      ],
+      "bytes": 156143,
+      "path": "site/public/media/keyart/watermill-wheel-turning.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "990e6f5eec115c3c7e12514709143d53f254542ec444ac7bcc9abee62b86fd03",
+      "source": "docs/demos/showcase/watermill-wheel-turning.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/well-stone-collar.jpg",
+        "-vf",
+        "scale=480:-2",
+        "-q:v",
+        "5",
+        "site/public/media/keyart/well-stone-collar-thumb.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 9057,
+          "setting": 5
+        }
+      ],
+      "bytes": 9057,
+      "path": "site/public/media/keyart/well-stone-collar-thumb.jpg",
+      "scale": "480:-2",
+      "setting": 5,
+      "sha256": "0c2313ecf05e681f0396dd34a7c8a4e83d2692ee20cf6d9c541d34c7d895e005",
+      "source": "docs/demos/showcase/well-stone-collar.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/showcase/well-stone-collar.jpg",
+        "-vf",
+        "scale=1600:-2",
+        "-q:v",
+        "4",
+        "site/public/media/keyart/well-stone-collar.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 66823,
+          "setting": 4
+        }
+      ],
+      "bytes": 66823,
+      "path": "site/public/media/keyart/well-stone-collar.jpg",
+      "scale": "1600:-2",
+      "setting": 4,
+      "sha256": "dd08008aa7c11ce259117f290eca6d79524dcaa07803ac5dfec41eaac820e53c",
+      "source": "docs/demos/showcase/well-stone-collar.jpg"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-i",
+        "docs/demos/harness-village-preview.jpg",
+        "-vf",
+        "scale=800:446",
+        "-q:v",
+        "4",
+        "site/public/media/origin/harness-village.jpg"
+      ],
+      "attempts": [
+        {
+          "bytes": 37123,
+          "setting": 4
+        }
+      ],
+      "bytes": 37123,
+      "note": "author-supplied recording predating the skill; not a benchmark; see docs/demos/README.md",
+      "path": "site/public/media/origin/harness-village.jpg",
+      "rights": "redistribution to confirm with the license",
+      "scale": "800:446",
+      "setting": 4,
+      "sha256": "035521105f0da5b31c60a9f3ca9b41ddb3ea9e1c66ce32105d2cb3a6b66b5b62",
+      "source": "docs/demos/harness-village.gif"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "0.00",
+        "-t",
+        "8.00",
+        "-i",
+        "docs/demos/harness-village.gif",
+        "-vf",
+        "scale=800:446",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "26",
+        "-preset",
+        "slow",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        "site/public/media/origin/harness-village.mp4"
+      ],
+      "attempts": [
+        {
+          "bytes": 365865,
+          "setting": 26
+        }
+      ],
+      "bytes": 365865,
+      "note": "author-supplied recording predating the skill; not a benchmark; see docs/demos/README.md",
+      "path": "site/public/media/origin/harness-village.mp4",
+      "rights": "redistribution to confirm with the license",
+      "scale": "800:446",
+      "setting": 26,
+      "sha256": "77c120d1353e8b9c98272796b541a05f5d0f9de04bb9146aca235ca9ace6957a",
+      "source": "docs/demos/harness-village.gif"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-y",
+        "-ss",
+        "0.00",
+        "-t",
+        "8.00",
+        "-i",
+        "docs/demos/harness-village.gif",
+        "-vf",
+        "scale=800:446",
+        "-c:v",
+        "libvpx-vp9",
+        "-crf",
+        "34",
+        "-b:v",
+        "0",
+        "-row-mt",
+        "1",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        "site/public/media/origin/harness-village.webm"
+      ],
+      "attempts": [
+        {
+          "bytes": 336481,
+          "setting": 34
+        }
+      ],
+      "bytes": 336481,
+      "note": "author-supplied recording predating the skill; not a benchmark; see docs/demos/README.md",
+      "path": "site/public/media/origin/harness-village.webm",
+      "rights": "redistribution to confirm with the license",
+      "scale": "800:446",
+      "setting": 34,
+      "sha256": "aa7a1e3fce3283f94ef73244d46a074095fd7c1f6b9f5a3304dea7e31d514881",
+      "source": "docs/demos/harness-village.gif"
+    }
+  ],
+  "playwright_version": "1.62.0",
+  "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Max, Unspecified Version)",
+  "stages": [
+    "clips"
+  ]
+}

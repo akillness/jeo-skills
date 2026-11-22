@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.masonry-arch-centering",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "object-archetype",
+  "title": {
+    "en": "Masonry arch units, springing supports and centering"
+  },
+  "aliases": {
+    "en": [
+      "stone arch construction assembly",
+      "voussoir arch and temporary centering"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "environments-dioramas",
+    "rigid-mechanics"
+  ],
+  "summary": "Construct a stone arch from discrete wedge-like units and distinguish temporary erection support from the finished opening.",
+  "objective": "Reveal arch depth, unit joints and supporting interfaces in assembly and cutaway views without pretending that placement alone proves stability.",
+  "tags": [
+    "object-archetype",
+    "masonry-arch-centering"
+  ],
+  "subject_terms": [
+    "masonry arch",
+    "voussoir",
+    "intrados",
+    "extrados",
+    "springing",
+    "centering",
+    "abutment",
+    "arch ring"
+  ],
+  "intent_signals": [
+    "arch stones look pasted onto a torus",
+    "show temporary arch support",
+    "explain stone arch assembly"
+  ],
+  "example_prompts": [
+    "Build an exploded masonry arch with visible wedge units and removable timber centering.",
+    "Create a fantasy gateway whose arch has depth and clear support interfaces."
+  ],
+  "content": {
+    "principles": [
+      "The documented Over Bridge construction used curved timber centring to hold its wedge-shaped stones during erection. This supplies a concrete assembly precedent, not a universal construction sequence or sizing rule.",
+      "Treat the opening profile, arch-ring thickness, depth and block joints as independent authored dimensions. A surface texture alone cannot expose how discrete units meet.",
+      "Keep temporary centering distinct from permanent piers/abutments and surrounding infill. Do not make one decorative crown block a universal explanation of structural safety.",
+      "If stability is explored, declare the contact/gravity model and support restraints explicitly. A visually assembled arch and an equilibrated arch are different outcomes."
+    ],
+    "implementation": [
+      "Choose an authored semicircular example with positive inner radius, larger outer radius and finite extrusion depth. Partition its angular extent into adjacent unit intervals and retain shared joint planes, allowing a deliberate mortar gap or contact representation.",
+      "Name arch ring, crown unit if present, springing interfaces, side supports, backing/infill and temporary centering. Give the intrados and end faces actual geometry so a view through the opening does not reveal an unintentional hollow shell.",
+      "Build centering beneath the intrados as a separate removable assembly with its own footings/support points. In an erection storyboard, keep it visible until the declared completion step; this animation remains explanatory unless mechanics are solved.",
+      "Store assembled transforms and explode offsets separately. Material variation can reveal stone units and mortar joints, but random stone rotations should not silently destroy intended joint contact.",
+      "For a declared rigid-block experiment, let gravity, unilateral contacts, friction assumptions and restrained supports own block motion. For a diagram, use explanatory arrows instead and do not label them calculated thrust or stress.",
+      "Inspect isolated units, the rear face and a transverse slice. Reset returns the same blocks and centering to saved states; removing a unit in a static illustration should not imply a computed collapse response."
+    ],
+    "observable_checks": [
+      "Rotate to the back and underside: units have finite depth, shared joint boundaries and a continuous declared arch-ring profile.",
+      "The centering lift/removal control affects the temporary assembly only; permanent supports do not disappear with it.",
+      "The assembled-state view shows both springing interfaces reaching their supports, without a hidden floating torus behind decorative blocks.",
+      "If stability output is enabled, changing restraints or removing a block triggers the stated solver or an explicit unsupported-state message, not a canned success badge."
+    ]
+  },
+  "known_limits": [
+    "English Heritage source is an Over Bridge construction account; block geometry and sequence here are authored alternatives.",
+    "No masonry capacity, compression-only equilibrium, mortar behavior, seismic resistance or safety follows from this visual archetype.",
+    "Authored modeling guidance and prospective checks; no runtime artifact has been executed for this record."
+  ],
+  "creative_affordances": [
+    "Use round, segmental, pointed or fictional opening profiles with independently authored block layouts; do not force every arch to use a semicircle or prominent keystone."
+  ],
+  "claims": [
+    {
+      "id": "claim.object-depth-masonry-arch-centering",
+      "statement": "English Heritage records curved timber centring supporting the wedge-shaped stones during construction of Over Bridge.",
+      "scope": "Specific Over Bridge historical construction method; not a general structural guarantee.",
+      "source_refs": [
+        {
+          "source_id": "source.object-depth-heritage-over-bridge",
+          "locator": "Description, paragraph beginning Construction of the bridge involved: curved timber centring held wedge-shaped arch stones."
+        }
+      ]
+    }
+  ],
+  "related_ids": [
+    "knowledge.bridge-bearing-support-system"
+  ]
+}

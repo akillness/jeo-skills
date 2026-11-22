@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-lattice-site-accounting",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Unit cell occupancy with exact shared-site keys"
+  },
+  "aliases": {
+    "en": [
+      "unit cell atom count check",
+      "shared site deduplication"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Verify conventional-cell atom counts and that neighbour expansion never duplicates a shared boundary site.",
+  "objective": "Conventional-cell totals are exact integers and expanded blocks keep one entry per shared site.",
+  "applies_when": [
+    "A crystal scene counts atoms per unit cell or shows fractional corner and face contributions.",
+    "The display expands to neighbouring cells or clips spheres at cell boundaries.",
+    "Site positions are computed by accumulating lattice steps."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "crystal",
+    "counting",
+    "identity"
+  ],
+  "subject_terms": [
+    "unit cell",
+    "body-centred cubic",
+    "face-centred cubic",
+    "corner site",
+    "face site",
+    "occupancy"
+  ],
+  "intent_signals": [
+    "my FCC cell counts six atoms",
+    "check the shared corner accounting"
+  ],
+  "example_prompts": [
+    "Check the atom accounting of this cubic unit cell scene."
+  ],
+  "negative_signals": [
+    "predicting material density or strength",
+    "diffraction pattern simulation"
+  ],
+  "content": {
+    "principles": [
+      "Unit-cell occupancy is an exact rational count: corner sites contribute one eighth, face sites one half, and a conventional cell totals an integer.",
+      "Shared sites are shared, so expanding to neighbouring cells must not create a second copy of a boundary site. Identity comes from an exact global integer key, never from a floating-point position and never from a coordinate that is unique only inside one cell.",
+      "Clipping or fading part of a sphere is presentation and does not change occupancy; a displayed fraction of a sphere is not a fraction of an atom in the count."
+    ],
+    "implementation": [
+      "Represent sites on a global doubled lattice. For cell (i,j,k), add (2i,2j,2k) to all corner offsets in {0,2}^3; add (1,1,1) for BCC, or the six permutations of (0,1,1) and (2,1,1) for FCC face centres. Deduplicate global triples, retaining outer boundary sites. Store each per-cell fractional contribution separately as an exact rational.",
+      "Sum contributions for the conventional cell and compare with the expected integer for each structure displayed.",
+      "Expand to a two by two by two block of cells and compare the number of unique keys with counts derived independently from the geometry: a closed block spans a three by three by three grid of corner sites, so the body-centred structure has twenty-seven corners plus eight body centres and the face-centred structure has twenty-seven corners plus thirty-six face centres.",
+      "Test the merge rule with a coordinate produced by summing lattice steps in a different order, which a floating-point comparison would treat as a different site."
+    ],
+    "observable_checks": [
+      "Weighted conventional-cell totals are exactly two for the body-centred structure and exactly four for the face-centred structure; a non-integer total names the contribution rule that is wrong.",
+      "The two by two by two block reports thirty-five unique displayed sites for the body-centred structure and sixty-three for the face-centred structure, while its weighted occupancy is sixteen and thirty-two atoms; a count that instead reaches the per-cell sum identifies duplicated boundary sites.",
+      "Toggling clipping or opacity changes no occupancy total."
+    ]
+  },
+  "known_limits": [
+    "Ideal lattice accounting; it implies nothing about defects, thermal motion, measured radii or material properties.",
+    "Authored verification guidance; no scene was run or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.cubic-unit-cell-accounting",
+    "recipe.molecular-shape-comparison",
+    "recipe.torus-euler-cells"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-cubic-cell-occupancy",
+      "statement": "A body-centred cubic unit cell contains two atoms and a face-centred cubic unit cell contains four, counting each corner atom as one eighth and each face atom as one half.",
+      "scope": "Ideal monatomic conventional cubic cells as described in the cited section; no defect, density or thermal claim.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-cubic-lattices",
+          "locator": "BCC and FCC unit cell atom counting paragraphs"
+        }
+      ]
+    }
+  ]
+}

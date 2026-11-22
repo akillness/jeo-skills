@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "id": "recipe.build-dependency-order",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Build dependency graph and topological order"
+  },
+  "aliases": {
+    "en": [
+      "dependency graph",
+      "topological sort",
+      "cycle detection"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data"
+  ],
+  "summary": "Show a build plan as a directed graph whose valid orders come from its structure, and make a cycle a reported failure.",
+  "objective": "Build a dependency graph where I can request a topological order, add an edge that creates a cycle and see the cycle reported instead of an order.",
+  "tags": [
+    "dependencies",
+    "topological order",
+    "graph"
+  ],
+  "subject_terms": [
+    "directed acyclic graph",
+    "topological order",
+    "dependency",
+    "cycle detection",
+    "depth-first search",
+    "build target",
+    "ordering"
+  ],
+  "intent_signals": [
+    "Show a valid build order for a dependency graph.",
+    "Demonstrate what happens when dependencies form a cycle."
+  ],
+  "example_prompts": [
+    "Build a dependency graph with a topological order I can step through and a cycle detector.",
+    "Show which targets can be built in parallel because nothing orders them."
+  ],
+  "negative_signals": [
+    "Not a build system or scheduler: no durations, resources or caching are modelled.",
+    "Not a claim that the shown order is unique; several valid orders usually exist."
+  ],
+  "not_for": [
+    "Not a build system or scheduler: no durations, resources or caching are modelled.",
+    "Not a claim that the shown order is unique; several valid orders usually exist."
+  ],
+  "entities": [
+    {
+      "name": "Target nodes",
+      "guidance": "Give each target a node with its name and its direct dependencies listed, so an edge has a readable meaning."
+    },
+    {
+      "name": "Order lane",
+      "guidance": "Lay the produced order along a lane in space, so a node position in the lane is its rank, not an aesthetic placement."
+    },
+    {
+      "name": "Cycle report",
+      "guidance": "When a cycle exists, highlight the actual cycle as a closed chain and refuse to produce an order."
+    }
+  ],
+  "state_contract": {
+    "model": "A directed graph whose edges point from dependency to dependent, a topological order computed when the graph is acyclic, and a directed cycle recovered by depth-first search otherwise. Nodes with no directed path between them in either direction are marked as concurrency candidates.",
+    "authority": "The graph is authoritative. The lane layout, the concurrency marking and the cycle highlight are all derived from it and must be recomputed after every edit.",
+    "actions": [
+      "Add or remove a dependency edge.",
+      "Request a topological order and step through it.",
+      "Introduce a cycle and read the report.",
+      "Reset to the authored graph."
+    ]
+  },
+  "invariants": [
+    "A produced order places every dependency before its dependent, without exception.",
+    "A graph with a directed cycle produces no order at all, and the cycle is found by traversal rather than inferred from the drawing: adding an edge that points backwards along a displayed order is not itself a cycle, since two unrelated nodes can be joined in either direction and stay acyclic.",
+    "Nodes marked as concurrent have no directed path between them in either direction."
+  ],
+  "motion_guidance": [
+    "Animate the order being built one node at a time so the ordering rule is observable.",
+    "Highlight the cycle as a traversal around the closed chain rather than as a static colour change."
+  ],
+  "known_limits": [
+    "Several valid topological orders usually exist; the one shown depends on the traversal and tie-breaking rule.",
+    "Real build parallelism also depends on resources and durations, which are outside this recipe.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-topological-order",
+      "statement": "A directed acyclic graph is a digraph with no directed cycles, a topological order arranges vertices so that every directed edge points from an earlier vertex to a later one, and a digraph has a topological order if and only if it is a directed acyclic graph.",
+      "scope": "Definitions and the equivalence as cited.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-algs4-digraph",
+          "locator": "4.2 Directed Graphs, DAG and topological order"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-cycle-detection",
+      "statement": "Directed cycle detection asks whether a digraph has a directed cycle and can be solved with depth-first search.",
+      "scope": "Existence of a cycle and its recovery, as cited.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-algs4-digraph",
+          "locator": "4.2 Directed Graphs, directed cycle detection"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Target nodes",
+      "structure": "Rounded blocks with a name plate and small sockets showing incoming and outgoing edge counts.",
+      "material": "Neutral node material; reserve one accent for the current step and another for cycle members.",
+      "articulation": "Nodes translate into their lane rank when an order is produced and return on reset."
+    },
+    {
+      "family": "Order lane",
+      "structure": "A physical rail with numbered slots so rank is countable rather than inferred from spacing.",
+      "material": "Rail material subdued with high-contrast slot numbers.",
+      "articulation": "Slots fill one at a time as the order is stepped."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Graph analysis with animated layout; no physical forces in the layout.",
+    "state": [
+      "edge set",
+      "produced order",
+      "cycle report"
+    ],
+    "checks": [
+      "Every edge points forward in the produced order.",
+      "In a fixture with an existing directed path A to B, adding B to A produces a cycle and no order. Adding a visually backward edge between unrelated nodes can stay acyclic and must not be rejected without graph traversal."
+    ]
+  },
+  "related_ids": [
+    "recipe.service-graph",
+    "recipe.union-find-mst",
+    "knowledge.graph-in-space"
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "id": "recipe.expression-attention-rig",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Expression rig with attention and gaze"
+  },
+  "aliases": {
+    "en": [
+      "facial rig",
+      "gaze target",
+      "expression blending"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art"
+  ],
+  "summary": "Give a character a small, well-chosen set of expression controls and let attention drive where those controls are aimed.",
+  "objective": "Build a character head that notices a pointer, holds gaze with head and eye contribution and blends a few honest expressions.",
+  "tags": [
+    "character",
+    "expression",
+    "gaze"
+  ],
+  "subject_terms": [
+    "facial rig",
+    "blend shape",
+    "gaze",
+    "attention target",
+    "eye offset",
+    "head turn",
+    "blink",
+    "expression blend"
+  ],
+  "intent_signals": [
+    "Make a character that looks at my cursor and reacts.",
+    "Build a small expression system that does not look like a mask."
+  ],
+  "example_prompts": [
+    "Build a character head with gaze tracking split between eyes and head plus a few blended expressions.",
+    "Create a mascot that notices the pointer, reacts and returns to a neutral pose."
+  ],
+  "negative_signals": [
+    "Not a facial capture or retargeting pipeline.",
+    "Not an emotion recognition or affective computing claim; expressions here are authored poses."
+  ],
+  "not_for": [
+    "Not a facial capture or retargeting pipeline.",
+    "Not an emotion recognition or affective computing claim; expressions here are authored poses."
+  ],
+  "entities": [
+    {
+      "name": "Expression set",
+      "guidance": "Author a small set of expressions with distinct shapes rather than many similar ones, and define which can blend together."
+    },
+    {
+      "name": "Gaze split",
+      "guidance": "Divide gaze between eye rotation and head turn with declared limits, since eyes alone or head alone both look wrong."
+    },
+    {
+      "name": "Attention model",
+      "guidance": "Hold an attention target with a dwell time and a return-to-neutral behaviour, so the character is not permanently locked on."
+    }
+  ],
+  "state_contract": {
+    "model": "Expression weights with declared exclusivity rules, a gaze target, an eye and head split with angle limits, blink timing and an attention state with dwell and release. Presentation follows the weights; the weights are the state.",
+    "authority": "Expression weights and the attention state are authoritative. A pose reached by animation but not represented in the weights cannot be queried, and that is a defect.",
+    "actions": [
+      "Move the attention target and watch gaze follow.",
+      "Trigger an expression and blend it with another allowed one.",
+      "Release attention and let the character return to neutral.",
+      "Reset weights, gaze and blink timing."
+    ]
+  },
+  "invariants": [
+    "Eye rotation stays inside its declared limit and the head takes over beyond it.",
+    "Exclusivity is enforced by a declared rule, not by per-weight bounds: expressions in a conflicting group have their weights normalised so the group sum stays at or below one, since individually bounded weights could otherwise both be fully active.",
+    "Blinking continues during gaze changes and expressions that do not intentionally close the eyes; an eye-closing expression suppresses independent blink motion.",
+    "When a gaze target exceeds the combined eye and head reach the head saturates at its limit and the residual is reported as unreachable, and a target at the eye origin is rejected rather than producing an undefined direction.",
+    "Expressions that intentionally close the eyes suppress the independent blink instead of fighting it."
+  ],
+  "motion_guidance": [
+    "Lead the gaze with the eyes and follow with the head after a short delay, since simultaneous motion looks robotic.",
+    "Asymmetry in expression weights often reads as more alive, and is offered as a default worth trying rather than a rule; stylised characters can be deliberately symmetric."
+  ],
+  "known_limits": [
+    "Authored expression set: no claim about universal emotion mapping or cultural reading of expressions.",
+    "Skin deformation quality depends on the rig and mesh supplied; this recipe specifies control, not geometry quality.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "object_craft": [
+    {
+      "family": "Expression set",
+      "structure": "Shape targets that change silhouette at brow, eyelid, mouth corner and cheek, not only surface texture.",
+      "material": "Skin material treatment is a style choice; subsurface warmth suits realistic characters while flat or stylised shading suits others. What matters is that shape changes stay readable, so avoid a finish that hides silhouette changes at the brow, eyelid and mouth corner.",
+      "articulation": "Weights blend additively within declared groups and exclusively across conflicting groups."
+    },
+    {
+      "family": "Gaze split",
+      "structure": "Eyes as real spheres in sockets with visible iris depth, and a neck chain that can turn and tilt.",
+      "material": "Eye materials with a clear specular highlight so gaze direction is readable from a distance.",
+      "articulation": "Eye rotation is clamped and the residual angle is passed to the neck chain."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Authored pose blending and gaze aiming; no physical simulation of tissue or muscles.",
+    "state": [
+      "expression weights",
+      "gaze target",
+      "attention state",
+      "blink phase"
+    ],
+    "checks": [
+      "Eye rotation never exceeds the declared limit.",
+      "Releasing attention returns gaze and the attention-driven weights to neutral within the stated time; whether it also cancels independently triggered expressions is a declared coupling, stated in the scene."
+    ]
+  },
+  "creative_affordances": [
+    "The character can be stylised or realistic; the split between eye and head contribution matters more than the rendering style.",
+    "Personality can be tuned by dwell time and return speed alone, without adding new expressions."
+  ],
+  "related_ids": [
+    "recipe.lantern-keeper-puppet",
+    "knowledge.interruptible-focus",
+    "knowledge.inspectable-selection"
+  ]
+}

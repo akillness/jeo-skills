@@ -1,0 +1,25 @@
+{
+  "name": "__NAME__",
+  "emitLegacyScripts": false,
+  "globIgnorePaths": [
+    "Packages/**/wally.toml",
+    "Packages/**/*.spec.lua",
+    "Packages/**/*.spec.luau",
+    "Packages/**/*.test.lua",
+    "Packages/**/*.test.luau"
+  ],
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "Shared": { "$path": "src/shared" },
+      "Client": { "$path": "src/client" },
+      "Packages": { "$path": { "optional": "Packages" } }
+    },
+    "ServerScriptService": {
+      "Server": { "$path": "src/server" }
+    },
+    "ServerStorage": {
+      "TestKit": { "$path": "tools/testkit" }
+    }
+  }
+}

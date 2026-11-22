@@ -1,0 +1,124 @@
+/* scenario-unity-ui HUD styles (Unity Expert Skills v0.1, 2026-09-24). Tokens as USS variables on :root so
+   one edit re-themes the HUD (Tarodev, I1JcytXwXM4 [00:21:17]). Sizes are reference pixels of the
+   PanelSettings reference resolution (1920 x 1080). No transitions on layout properties, no
+   overflow:hidden with border-radius (that would be a stencil mask and a batch break per mask
+   container: Borromeo, bECmaYIvZJg [00:17:05]). */
+:root {
+    --hud-margin: 32px;
+    --hud-gap: 16px;
+    --surface: rgba(35, 40, 48, 0.82);
+    --text: #f5f6fa;
+    --text-muted: #dcdde1;
+    --frame: #40739e;
+    --bar-high: #44bd32;
+    --bar-mid: #e1b12c;
+    --bar-low: #c23616;
+}
+
+.hud {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.hud-block {
+    position: absolute;
+    background-color: var(--surface);
+    border-radius: 12px;
+    padding: 16px 20px;
+}
+
+.hud-health {
+    left: var(--hud-margin);
+    top: var(--hud-margin);
+    width: 420px;
+}
+
+.hud-minimap {
+    right: var(--hud-margin);
+    top: var(--hud-margin);
+    width: 280px;
+    height: 280px;
+    padding: 8px;
+    border-width: 4px;
+    border-color: var(--frame);
+}
+
+.hud-minimap__view {
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0.35);
+    border-radius: 6px;
+}
+
+.hud-minimap__north {
+    position: absolute;
+    top: 12px;
+    left: 0;
+    right: 0;
+    -unity-text-align: middle-center;
+    color: var(--text);
+    font-size: 24px;
+    -unity-font-style: bold;
+}
+
+.hud-ammo {
+    right: var(--hud-margin);
+    bottom: var(--hud-margin);
+    align-items: flex-end;
+    min-width: 220px;
+}
+
+.hud-ammo__row {
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.hud-caption {
+    color: var(--text-muted);
+    font-size: 22px;
+    -unity-font-style: bold;
+    letter-spacing: 2px;
+    padding: 0;
+    margin: 0;
+}
+
+.hud-value {
+    color: var(--text);
+    font-size: 30px;
+    padding: 0;
+    margin: 0;
+}
+
+.hud-ammo__count {
+    color: var(--text);
+    font-size: 72px;
+    -unity-font-style: bold;
+    padding: 0;
+    margin: 0;
+}
+
+.hud-ammo__reserve {
+    color: var(--text-muted);
+    font-size: 32px;
+    padding: 0 0 10px 8px;
+    margin: 0;
+}
+
+.hud-bar {
+    height: 20px;
+    margin: 10px 0;
+    background-color: rgba(0, 0, 0, 0.45);
+    border-radius: 4px;
+}
+
+.hud-bar__fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    transform-origin: left;
+    border-radius: 4px;
+}

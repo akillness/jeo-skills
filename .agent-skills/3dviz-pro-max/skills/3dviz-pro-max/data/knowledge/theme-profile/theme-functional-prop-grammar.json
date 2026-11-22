@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.theme-functional-prop-grammar",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "theme-profile",
+  "title": {
+    "en": "Functional prop grammar for fictional settings"
+  },
+  "aliases": {
+    "en": [
+      "theme prop language",
+      "functional set dressing grammar",
+      "fictional prop system"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies",
+    "architecture-interiors"
+  ],
+  "summary": "Turn a fictional setting into a reusable prop language by assigning visible structure, interface, maintenance and state cues to each object role.",
+  "objective": "Two unlike compositions built from the grammar share recognizable construction and use logic while every focal prop still reveals its own job, supports, access and state.",
+  "applies_when": [
+    "A scene needs many theme-consistent tools, fixtures, machines or furnishings without repeating one decorative motif."
+  ],
+  "tags": [
+    "theme-profile",
+    "functional-props",
+    "set-dressing",
+    "fictional-setting"
+  ],
+  "subject_terms": [
+    "prop grammar",
+    "object role",
+    "support logic",
+    "service access",
+    "control state",
+    "wear placement",
+    "theme motif"
+  ],
+  "intent_signals": [
+    "make themed props feel like one world",
+    "design a workshop tool family with readable jobs",
+    "reuse one prop language across different rooms"
+  ],
+  "example_prompts": [
+    "Build a repair bench and a remote pump station from one invented prop grammar without cloning the same machine.",
+    "Give a library checkout desk and mobile archive cart shared construction cues but distinct functions."
+  ],
+  "negative_signals": [
+    "paste the same pipes on every object",
+    "one material makes the theme",
+    "random controls with no state",
+    "floating detail with no attachment"
+  ],
+  "not_for": [
+    "Historical or cultural attribution without separate evidence.",
+    "Engineering certification or claims that fictional equipment can operate safely."
+  ],
+  "content": {
+    "principles": [
+      "Start with verbs and roles: support, contain, transfer, protect, adjust, indicate, access and repair. Let recurring shapes and materials express those roles rather than acting as stickers.",
+      "Define a small grammar of frames, shells, joints, controls, labels and maintenance marks, then vary their proportion and combination according to each prop's job.",
+      "Place wear and repair where the invented use explains contact, heat, leakage, replacement or access. Uniform scratches and grime erase the story hierarchy.",
+      "A theme state has more than color: position, silhouette, label, light and motion may indicate ready, active, blocked or serviced states, with redundant cues where an action depends on them.",
+      "Keep the grammar open to multiple aesthetics. The same role system may be clean, ornate, improvised, playful or severe without changing its functional readability."
+    ],
+    "implementation": [
+      "Write a grammar sheet with object roles, allowed connection interfaces, two or three structural motifs, material roles, state cues and intentional exceptions before building a large prop set.",
+      "In Blender, author reusable brackets, handles, feet, access panels and control families around explicit attachment points. Apply them to at least two compositions with different scales and tasks, such as a crowded repair bench and an outdoor pump station.",
+      "Give each focal prop a readable load path or support, a reachable control or input, an output or service, and an access path. Small background props may simplify these layers according to view distance.",
+      "Export stable prop-role, interface, state-part and variant identifiers in the application's declared metadata contract; bake or model decorative detail according to inspection distance rather than assuming authoring graphs survive glTF.",
+      "In Three.js, resolve state through semantic IDs, drive only the affected indicator or moving part, and keep selection and labels tied to the prop identity. Reset restores all prop states and deterministic variants.",
+      "For a second composition, swap layout and function while retaining enough grammar to recognize the same fictional makers or institution; reject a result that works only by duplicating the first room."
+    ],
+    "observable_checks": [
+      "Name the job of every hero prop from its arrangement, supports, access and controls before reading a caption.",
+      "Compare the repair-bench and pump-station compositions: recurring interfaces are recognizable, while silhouette, scale and part combination follow each job.",
+      "Toggle one prop through ready, active, blocked and serviced states; affected geometry, labels and indicators agree and unrelated props remain stable.",
+      "Inspect wear on handles, access edges, replaced panels and output zones; each mark has an authored use explanation or is removed.",
+      "Disable decorative motifs and emissive accents; focal props remain structurally readable and selectable.",
+      "Reload with the same seed and reset state; semantic prop identities, variants and state parts resolve consistently."
+    ]
+  },
+  "creative_affordances": [
+    "Let one prop break the grammar to signal a different maker, era or improvised repair, and make that exception narratively deliberate.",
+    "Translate the grammar into miniature, hand-painted, graphic, realistic or toy-like forms while preserving role and attachment cues."
+  ],
+  "known_limits": [
+    "Authored fictional design guidance; no artifact, cultural review, usability result or mechanism was observed.",
+    "Functional readability does not establish real-world feasibility, safety or historical accuracy."
+  ],
+  "related_ids": [
+    "knowledge.hard-surface-functional-assembly",
+    "knowledge.modular-environment-kit-sockets",
+    "knowledge.theme-industrial-workshop",
+    "knowledge.theme-science-fiction-outpost"
+  ],
+  "claims": []
+}

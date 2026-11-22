@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-documented-versus-interpretive-layer",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Documented versus interpretive object attribution"
+  },
+  "aliases": {
+    "en": [
+      "evidence layer attribution",
+      "reconstruction attribution check"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas"
+  ],
+  "summary": "Check that every object claiming documented status resolves to a source locator and that interpretation stays separable.",
+  "objective": "Each scene object carries a resolvable evidence category, and the exported artifact preserves that separation.",
+  "applies_when": [
+    "A scene reconstructs a real site, artifact or period.",
+    "Some objects are evidence-based and others are invented to complete the picture.",
+    "The audience may reuse the image as documentation."
+  ],
+  "check_method": "source",
+  "tags": [
+    "domain-validation",
+    "attribution",
+    "evidence",
+    "reconstruction"
+  ],
+  "subject_terms": [
+    "evidence category",
+    "provenance",
+    "site phase",
+    "interpretive reconstruction",
+    "source locator"
+  ],
+  "intent_signals": [
+    "separate what is documented from what we invented",
+    "audit the provenance of this reconstruction"
+  ],
+  "example_prompts": [
+    "Audit which parts of this site reconstruction are actually documented."
+  ],
+  "negative_signals": [
+    "inventing a fantasy setting with no real referent",
+    "grading the visual style"
+  ],
+  "content": {
+    "principles": [
+      "Evidence category is data attached to the object, not a colour convention; an object may be labelled documented only when it carries its own resolvable locator.",
+      "Interpretive reconstruction is legitimate and must stay visibly separable from documented remains at every zoom level and in every export.",
+      "One phase is one chronology; combining phases without saying so turns a reconstruction into an unattributed composite."
+    ],
+    "implementation": [
+      "Build the inventory before modelling: object ID, evidence category (documented, inferred, invented), source locator, date or phase range, and the person who decided it.",
+      "Reconcile the inventory with the scene graph in both directions, so that every scene object resolves to a row and every documented row resolves to a locator a reader can open.",
+      "Sample at least one object per category, follow its locator to the passage or figure, and write down what the source actually shows and where it stops.",
+      "Export the categories with the artifact as a legend, data panel or written note; a category that exists only in the authoring session is not attribution."
+    ],
+    "observable_checks": [
+      "No object keeps documented status without a resolvable locator; unresolved rows are downgraded to inferred or invented rather than left ambiguous.",
+      "Objects from different phases either share one declared phase or carry visible phase labels, and a mixed-phase view states that it is a composite.",
+      "The exported artifact reproduces the categories; losing them in export is a failure even when the authoring scene passed."
+    ]
+  },
+  "known_limits": [
+    "An attribution procedure, not archaeological or historical peer review; a complete inventory does not make a reconstruction correct.",
+    "Authored verification guidance; no scene was run or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.historical-diorama",
+    "recipe.fantasy-village-diorama",
+    "knowledge.validation-graph-evidence-coverage"
+  ],
+  "claims": []
+}

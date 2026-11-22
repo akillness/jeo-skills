@@ -1,0 +1,32 @@
+<!doctype html>
+<!-- index.html - change the title, the copy in <header>, and add controls next to #control.
+     Keep #world, #error, #views and #control: the capture script and the viewer contract use them. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Scene</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <div class="viewport" aria-busy="true">
+        <canvas id="world" aria-label="Three-dimensional scene"></canvas>
+        <p id="error" role="alert" hidden></p>
+      </div>
+      <aside class="panel">
+        <header>
+          <p class="eyebrow">Replace this label</p>
+          <h1>Scene title</h1>
+          <p class="lede">One sentence saying what the viewer should understand or feel.</p>
+        </header>
+        <nav id="views" aria-label="Camera views"></nav>
+        <p class="controls">
+          <button id="control" type="button" aria-pressed="false">Pause motion</button>
+          <button id="reset" type="button">Reset view</button>
+        </p>
+      </aside>
+    </main>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

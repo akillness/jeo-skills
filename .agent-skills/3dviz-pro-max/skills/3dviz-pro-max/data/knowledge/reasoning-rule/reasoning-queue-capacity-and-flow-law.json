@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-queue-capacity-and-flow-law",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "State the queue rules and check them against flow"
+  },
+  "aliases": {
+    "en": [
+      "queue discipline",
+      "Little law check",
+      "capacity model"
+    ]
+  },
+  "direction_ids": [
+    "operations-logistics"
+  ],
+  "summary": "Declare arrival, service, capacity and discipline explicitly, then use the steady-state relation between occupancy, rate and time as a consistency check.",
+  "objective": "Give a queueing scene a stated model whose displayed numbers can be checked instead of asserted.",
+  "applies_when": [
+    "Items wait for a resource: a picker, a dock, a machine or a checkout.",
+    "The scene shows waiting time, queue length or utilisation.",
+    "The user asks where the bottleneck is or what happens if capacity changes."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "queue",
+    "arrival rate",
+    "service rate",
+    "utilisation",
+    "waiting time",
+    "steady state"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "operations",
+    "queueing"
+  ],
+  "intent_signals": [
+    "why is the queue growing",
+    "add another dock and see",
+    "how long do parcels wait"
+  ],
+  "example_prompts": [
+    "Show the dock queue and what happens when a second dock opens.",
+    "Display the average waiting time for the picking station."
+  ],
+  "negative_signals": [
+    "Decorative crowds or traffic that model no service process.",
+    "Systems in a transient burst where steady-state relations do not apply."
+  ],
+  "not_for": [
+    "Decorative crowds or traffic that model no service process.",
+    "Systems in a transient burst where steady-state relations do not apply."
+  ],
+  "content": {
+    "principles": [
+      "A queue without a declared discipline and capacity is not a model. First-come order, priority classes, balking and a finite buffer all produce different pictures from the same arrivals.",
+      "In steady state the expected number in the system equals the arrival rate times the expected time each item spends in it, and it holds for very general arrival and service processes. The rate in that relation is the rate of the population being measured: with rejection or balking, use the admitted rate and the time in system of admitted items, not the offered arrival rate.",
+      "Offered load and observed load are different quantities. With an unbounded buffer and no balking, an offered load above capacity means the queue grows without bound and no steady-state average wait exists. With a finite buffer or balking, the same offered load produces a stable system that rejects part of the demand: occupancy stays bounded and admitted customers can have finite waits, so the honest report is the blocking or rejection rate rather than an instability warning.",
+      "Averages hide the interesting behaviour. Variability, not the mean, produces the long waits that operational scenes are usually meant to explain."
+    ],
+    "implementation": [
+      "Write the model parameters on the artifact: arrival process, service time distribution, number of servers, buffer capacity and discipline.",
+      "Compute occupancy, admitted throughput and time in system from the same event stream and population. For a finite window, record contributions from customers crossing its boundaries and the uncertainty of estimated averages before comparing occupancy with rate times mean time. A discrepancy alone does not establish lost items.",
+      "When offered load exceeds capacity, say which model applies: report unbounded growth and withhold a steady-state average for an unbounded buffer, or report the blocking and rejection rates for a finite buffer or a balking model.",
+      "Show a distribution or a percentile alongside the mean when the point is congestion.",
+      "Where the numbers are illustrative rather than measured, label them, and keep the units of rate and time visible."
+    ],
+    "observable_checks": [
+      "Compare average occupancy with admitted rate times average time in system under the declared steady-state assumptions, accounting for boundary censoring and estimation uncertainty. A persistent gap is an unresolved accounting, population or window mismatch; diagnose lost or double-counted items only when an independent ledger check establishes that defect.",
+      "Drive offered load above capacity twice, once with an unbounded buffer and once with a finite one, and confirm the scene reports unbounded growth in the first case and a bounded queue with a rejection rate in the second.",
+      "Change the discipline from first-come to priority and confirm the individual waiting times change while throughput stays consistent.",
+      "Track one item end to end and check its measured time against the statistics it contributes to."
+    ]
+  },
+  "related_ids": [
+    "recipe.loading-dock-resource-board",
+    "recipe.parcel-sorter-events"
+  ],
+  "creative_affordances": [
+    "The visual metaphor for waiting is open: stacked lanes, a pressure gauge, or a physical line of objects all work.",
+    "Simplified textbook parameters are fine for teaching scenes when the simplification is stated."
+  ],
+  "known_limits": [
+    "Authored modelling guidance citing one steady-state relation; it is not a queueing analysis and provides no distributional results.",
+    "The cited relation holds in steady state and says nothing about transients, warm-up or finite-horizon runs."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-littles-law-steady-state",
+      "statement": "In steady state the expected number of users in a queueing system equals the arrival rate multiplied by the expected time a user spends in the system, and the same relation holds between the expected queue length and the expected waiting time in queue; queue capacity and discipline, including finite versus infinite capacity and balking, are separate model parameters, and the lecture's birth-and-death development assumes infinite queue capacity and first-come service.",
+      "scope": "Steady-state relationship among expected values for a queueing system. It does not predict distributions or transient behaviour, and the infinite-capacity assumption belongs to the birth-and-death analysis rather than to the relation itself.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-mit-queueing-littles-law",
+          "locator": "Some Expected Values of Interest at Steady State; Relationships among L, Lq, W, Wq; fundamental parameters listing finite versus infinite queue capacity; Birth-and-Death assumption of infinite queue capacity"
+        }
+      ]
+    }
+  ]
+}

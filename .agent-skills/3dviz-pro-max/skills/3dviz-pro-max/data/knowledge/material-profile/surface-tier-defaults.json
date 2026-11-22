@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.surface-tier-defaults",
+  "revision": 3,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Surface tier T2 defaults: procedural grain, occlusion and imperfection numbers"
+  },
+  "aliases": {
+    "en": [
+      "T2 surface defaults",
+      "procedural texture numbers",
+      "vertex AO settings",
+      "kit imperfection defaults",
+      "grain frequency and tile pitch"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors",
+    "products-assemblies"
+  ],
+  "summary": "Authored starting numbers for building a kit at quality tier T2: grain frequency and tile pitch per material family, normal strength, roughness range, wear percentage, vertex-AO samples, radius and floor, ground-dirt height and decal density.",
+  "objective": "A cottage built at T2 and captured at the close view differs from the same cottage at T1 by visible grain at 1 m, a darker band where the eave meets the wall and a darker band in the bottom 0.6 m, at a build cost recorded in milliseconds rather than guessed.",
+  "tags": [
+    "material-profile",
+    "quality-tier",
+    "T2",
+    "procedural-texture",
+    "ambient-occlusion",
+    "imperfection",
+    "kit"
+  ],
+  "subject_terms": [
+    "grain frequency",
+    "tile pitch",
+    "normal strength",
+    "roughness range",
+    "vertex ambient occlusion",
+    "ground dirt gradient",
+    "edge darkening",
+    "wear tint",
+    "decal density",
+    "hair strand direction"
+  ],
+  "intent_signals": [
+    "kit buildings look like flat coloured boxes",
+    "what texture scale should a procedural wall use",
+    "how many AO samples for a baked vertex pass",
+    "add wear and dirt to a generated model"
+  ],
+  "example_prompts": [
+    "Build the village cottages at the textured tier instead of flat colour.",
+    "What grain scale and roughness should the procedural plaster use?"
+  ],
+  "not_for": [
+    "Photoreal or film surfacing, which needs authored maps at tier T3 or an external asset at T4.",
+    "Any claim about how a real material weathers, or about human perception of surface detail."
+  ],
+  "content": {
+    "principles": [
+      "T2 buys plausibility, not realism: one seeded grain, one occlusion pass and one dirt gradient turn a flat colour into a surface, and nothing beyond that is worth the build time.",
+      "Every number is in metres, never in pixels or UV units. Tile pitch is the length of one repeat on the object, so the same wall reads at the same scale whether it is 3 m or 7 m wide.",
+      "Occlusion is contact, not shading. Its job is the darker line where two parts meet - eave to wall, sill to reveal, plank to plank - and a value that darkens a whole part uniformly is a brightness change wearing an occlusion costume.",
+      "A vertex effect can only vary where there are vertices. A bevelled box carries vertices at its corners alone, so an effect that must vary across a face (a height gradient) works and an effect that must vary near an edge (edge wear) does not.",
+      "Imperfection is per instance, not per vertex: an InstancedMesh shares one geometry, so variety between copies has to arrive through instanceColor.",
+      "A family is a *scale of structure*, not a material name. Fabric and fur share a colour range and a roughness band and still cannot be swapped: a 24-thread weave is a pattern the eye resolves at 8 cm and reads as basketwork on an animal, while fur has to stay structureless at every distance and carry only direction and tone. Judge a new family on the smallest part it will land on."
+    ],
+    "implementation": [
+      "Grain frequency is in cycles per metre and tile pitch its reciprocal band: wood 6 cycles/m at 1.2 m pitch along the grain, plaster 14 cycles/m at 2.0 m, stone 3.5 cycles/m at 1.6 m, roof-tile 4 cycles/m at 0.9 m, metal 22 cycles/m at 0.8 m, fabric 30 cycles/m at 0.5 m, fur 220 strands per 0.25 m tile (about one strand per millimetre).",
+      "Normal strength per family (three normalScale, both axes equal): wood 0.6, plaster 0.35, stone 0.9, roof-tile 0.7, metal 0.25, fabric 0.5, fur 0.35. Above 1.0 the lighting reads as embossed plastic at the close view.",
+      "Roughness stays inside a per-family band written into the roughness map: wood 0.55-0.85, plaster 0.75-0.95, stone 0.65-0.95, roof-tile 0.6-0.85, metal 0.25-0.55, fabric 0.8-1.0, fur 0.85-1.0.",
+      "Vertex AO: 24 cosine-weighted samples per clustered vertex, occluders within 0.45 m, floor 0.35 so a fully enclosed vertex keeps 35% of its colour. Measured cost on the timber cottage (3468 triangles, 7156 vertices, 87 geometries) in Chromium on an M4 Max: 192 ms at 24 samples, 107 ms at 13. Use 13 where a 120 ms build budget is binding and say which number was used.",
+      "Ground dirt darkens the bottom 0.6 m by up to 35%, falling off with the square of the height, measured on the world y of the vertex. This is the imperfection that works on any vertex count and it carries the tier when occlusion is subtle.",
+      "Wear tint: 6% hue, lightness and roughness jitter per instance, applied to a material clone; scale and yaw jitter belong to the placement, not the material. Decals sit at 0.15 per square metre of visible wall - roughly two marks on a cottage front - and never more than one per socket.",
+      "Edge darkening is authored at 0 for kit geometry. It is kept in the module for subdivided or lathed parts, where a vertex can sit in the middle of a face; on a bevelled box every vertex is a corner, so the same call lands as a flat 8-20% darken."
+    ],
+    "observable_checks": [
+      "Capture the same blueprint at T1 and at T2 from the close view: the two PNGs differ by sha256 and the T2 frame shows grain the T1 frame does not.",
+      "Amplify the difference between an occlusion-on and an occlusion-off capture six times: the bright regions are window reveals, sills, frames and plank overlaps, and flat wall centres stay black. If a whole part lights up, the effect is a brightness change, not occlusion.",
+      "Measure the mean luma of the bottom 0.6 m band and of the same wall one metre higher: the lower band is darker.",
+      "Record the bake time returned by the AO pass in the proof log and compare it with the tier's stated budget.",
+      "Place two instances with different seeds side by side: hue and lightness differ visibly without measuring."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "tile_pitch_m": {
+        "wood": 0.6,
+        "plaster": 1.2,
+        "stone": 0.8,
+        "roof-tile": 0.35,
+        "metal": 0.5,
+        "fabric": 0.4,
+        "fur": 0.25
+      },
+      "normal_strength": {
+        "wood": 0.2,
+        "plaster": 0.5,
+        "stone": 0.85,
+        "roof-tile": 0.9,
+        "metal": 0.3,
+        "fabric": 0.5,
+        "fur": 0.35
+      },
+      "texture_resolution_px": 1024,
+      "anisotropy": 4,
+      "wear_pct": 6,
+      "instance_scale_jitter_pct": 8,
+      "instance_yaw_jitter_deg": 180,
+      "ao_samples": 13,
+      "ao_radius_m": 0.45,
+      "ao_floor": 0.35,
+      "ao_max_vertices": 40000,
+      "ground_dirt_m": 0.6,
+      "ground_dirt_amount": 0.35,
+      "edge_darken_amount": 0,
+      "decal_density_per_m2": 0.15,
+      "tone_mapping": "ACESFilmic",
+      "exposure": 1.0,
+      "feeling": "weathered, hand-made, settled into its ground",
+      "albedo_floor": {
+        "wood": 0.78,
+        "plaster": 0.84,
+        "stone": 0.72,
+        "roof-tile": 0.7,
+        "metal": 0.82,
+        "fabric": 0.78,
+        "fur": 0.72
+      },
+      "roughness_floor": {
+        "wood": 0.74,
+        "plaster": 0.86,
+        "stone": 0.78,
+        "roof-tile": 0.76,
+        "metal": 0.45,
+        "fabric": 0.88,
+        "fur": 0.85
+      },
+      "texture_build_ms_cottage": {
+        "1024": 248,
+        "512": 69
+      },
+      "ao_samples_visual_reference": 24
+    },
+    "rationale": "Tuned on the timber-cottage kit at 1280x720 in the proof harness lighting - one directional sun plus one hemisphere fill, no post-processing - with ACESFilmic tone mapping at exposure 1.0. The occlusion numbers are measured, not guessed: 24 samples at 0.45 m cost 192 ms on the cottage in Chromium on an M4 Max and moved the eave and window-reveal bands by 2.5 to 3.4 luma out of 255 against an unoccluded capture, with a peak pixel delta of 44; 13 samples cost 107 ms and fit a 120 ms budget. Edge darkening is authored at 0 because a measurement showed it darkening 100% of a bevelled box's vertices by 8 to 20% - a flat tint, not wear. Tile pitch, normal strength, albedo floor and roughness floor are the STYLE table in kit-surface-draw.js, the values that drew the pilot T2 captures; the albedo and roughness maps are multipliers on the module colour and roughness, so a floor of 0.78 means the darkest grain is 78% of the flat colour. Texture generation for the cottage costs 248 ms at 1024 px and 69 ms at 512 px on the same host and is cached per family, seed and size, so a village pays it once per family. AO defaults to 13 samples because that is the measured value inside a 120 ms build budget; 24 is the visual reference the delta numbers were measured at. The fur row was added in phase 10C and tuned on the quadruped-walker kit in the same harness: 0.25 m pitch because the coat has to survive being magnified onto an 0.08 m limb, normal 0.35 because a stronger one turns strands into corrugation on the flat extruded head, and a 0.85 roughness floor because a coat has no specular band to lose. Fabric at 0.4 m had been tried there in phase 9D and read as basketwork."
+  },
+  "known_limits": [
+    "Authored creative starting values. No perceptual study and no measurement of any real material supports them; they are what looked right in one harness at one resolution.",
+    "Procedural T2 lands at stylized-game quality. Film or photoreal surfacing needs authored maps at T3 or an external asset at T4, and no amount of tuning these numbers reaches it.",
+    "An InstancedMesh shares one geometry, so per-instance ambient occlusion is impossible: every copy carries the same baked colour attribute and the only per-instance variety is wearTint through instanceColor.",
+    "Vertex-baked occlusion can only vary where vertices exist. On kit box geometry it is a subtle contact darkening at reveals, sills and plank overlaps - measured at 2.5 to 3.4 luma in those regions and 1.4 luma over the whole frame - not the deep corner shadow an aoMap or a screen-space pass would give.",
+    "Edge darkening is inert on unsubdivided boxes, where every vertex is already a corner; it is authored at 0 and only earns its place on subdivided or lathed geometry.",
+    "The 192 ms and 107 ms bake times are one host (M4 Max, Chromium, three r180) and one blueprint. Cost scales with clustered vertices times samples, so a denser kit is proportionally slower and must be measured, not extrapolated.",
+    "Tuned at exposure 1.0 with ACESFilmic tone mapping and no post-processing. A bloom-heavy or heavily graded target will need different numbers.",
+    "The 1024 px default keeps the detail view crisp at 1.5 m; at the close view 512 px is indistinguishable from 1024 px on the cottage and costs 69 ms instead of 248 ms. Pick 512 when build time matters more than the detail band.",
+    "Instanced parts are drawn from a white base material with the colour in instanceColor, so a hex-to-family lookup cannot see their colour; applySurface falls back to the mean instance colour matched to the nearest declared hex within 0.045 linear RGB. Two instanced colours closer than that share one family.",
+    "The fur family is authored for the kit creatures at 0.25 m pitch and is drawn as directional strands with low-frequency tone patches; it is not hair rendering. It carries no wear-tint variety on purpose - per-instance hue jitter on a coat reads as a herd of dyed toys - and on a part whose UVs are metre-scale (an extruded head or neck plate) it takes the finest repeat and reads as a regular ribbing rather than as hair."
+  ],
+  "creative_affordances": [
+    "Set the tile pitch far off its family value on purpose - a 6 m plaster repeat reads as a painted backdrop, a 0.2 m one as a miniature - and say that the scale break is the intent.",
+    "Push wear_pct past 15 for a deliberately ramshackle settlement, or to 0 for a clean, newly built or abstract look."
+  ],
+  "related_ids": [
+    "knowledge.hero-detail-ladder-defaults",
+    "knowledge.dielectric-surface",
+    "knowledge.blueprint-timber-cottage"
+  ],
+  "claims": []
+}

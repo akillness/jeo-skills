@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-vertical-exaggeration-disclosure",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Disclose vertical exaggeration wherever slope is read"
+  },
+  "aliases": {
+    "en": [
+      "terrain exaggeration",
+      "vertical scale",
+      "slope perception"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment",
+    "astronomy-space"
+  ],
+  "summary": "State the vertical scale factor whenever it differs from the horizontal one, because slopes and volumes become unreadable without it.",
+  "objective": "Keep an expressive terrain from being read as a measurement of steepness.",
+  "applies_when": [
+    "Terrain, bathymetry or a profile is stretched vertically for legibility.",
+    "The scene shows slope, relief or a cross-section.",
+    "A viewer might compare steepness between features or scenes."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "vertical exaggeration",
+    "relief",
+    "slope",
+    "profile",
+    "scale factor",
+    "disclosure"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "geospatial",
+    "presentation"
+  ],
+  "intent_signals": [
+    "make the mountains more dramatic",
+    "how steep is that slope",
+    "show the terrain profile"
+  ],
+  "example_prompts": [
+    "Exaggerate the relief but tell me by how much.",
+    "Show a terrain profile with an honest vertical scale."
+  ],
+  "negative_signals": [
+    "Terrain rendered at true scale, where no disclosure is needed beyond the units.",
+    "Invented landscapes that make no measurement claim."
+  ],
+  "not_for": [
+    "Terrain rendered at true scale, where no disclosure is needed beyond the units.",
+    "Invented landscapes that make no measurement claim."
+  ],
+  "content": {
+    "principles": [
+      "Vertical exaggeration is often necessary. At regional scale, true-scale relief is nearly invisible, so a scene that refuses to exaggerate may communicate nothing.",
+      "It is also a transformation of the reading. Scaling the vertical axis by a factor multiplies the tangent of every slope by the same factor, so an exaggerated hillside looks like a cliff and a gentle trench looks like a canyon.",
+      "The factor is cheap to disclose and impossible to infer. Without it, a viewer cannot compare steepness between two views, let alone against reality.",
+      "Volumes and cut-and-fill quantities are affected as well, so any quantitative readout must be computed at true scale even when the display is exaggerated."
+    ],
+    "implementation": [
+      "Keep the true-scale elevation in the model and apply exaggeration as a display transform with an explicit factor.",
+      "Display the factor persistently, and include it in any exported image or clip.",
+      "Compute slopes, volumes and profiles from the true-scale data regardless of the display factor.",
+      "Offer a control to return to true scale so the viewer can calibrate what they are seeing.",
+      "Include a vertical scale bar or a reference object of known height in profile views."
+    ],
+    "observable_checks": [
+      "Switch to true scale and confirm the geometry flattens by exactly the stated factor.",
+      "Compare a computed slope value against the visual impression at the current exaggeration.",
+      "Confirm exported images carry the factor.",
+      "Check that reported volumes do not change when the display factor changes."
+    ]
+  },
+  "related_ids": [
+    "recipe.terrain-contour-slices",
+    "recipe.divergent-ridge-crust-age",
+    "knowledge.reasoning-dual-scale-disclosure"
+  ],
+  "creative_affordances": [
+    "Dramatic relief is a legitimate and often necessary artistic choice; only the disclosure is required.",
+    "Animating between true and exaggerated scale is an effective way to convey both."
+  ],
+  "known_limits": [
+    "Authored presentation guidance based on the elementary geometry of scaling one axis; no external source is cited and no cartographic standard is asserted.",
+    "It does not recommend a particular exaggeration factor for any application."
+  ],
+  "claims": []
+}

@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-world-scale-and-traversal",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Choose the viewing scale before building the world"
+  },
+  "aliases": {
+    "en": [
+      "diorama or walkable",
+      "traversal scale",
+      "world scale decision"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "Settle whether the viewer holds the world or stands inside it, because that choice sets units, detail, camera range and collision needs.",
+  "objective": "Make the scale and traversal decision explicit early so geometry budget and camera behaviour follow one intent.",
+  "applies_when": [
+    "A new environment, diorama, town or interior is being started from a one-line brief.",
+    "The user says explore, walk around, fly over, or asks for a model on a table.",
+    "Camera controls, level of detail or object density are being chosen."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "scale",
+    "diorama",
+    "first person",
+    "orbit camera",
+    "level of detail",
+    "traversal"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "camera",
+    "scale"
+  ],
+  "intent_signals": [
+    "build a village I can explore",
+    "show me a model of the site",
+    "fly over the island"
+  ],
+  "example_prompts": [
+    "Make a tabletop diorama of the harbour I can spin and inspect.",
+    "Put me on the ground in the village at human height."
+  ],
+  "negative_signals": [
+    "Single-object product or specimen views where the subject fills the frame and traversal is irrelevant.",
+    "Abstract diagram scenes with no physical scale."
+  ],
+  "not_for": [
+    "Single-object product or specimen views where the subject fills the frame and traversal is irrelevant.",
+    "Abstract diagram scenes with no physical scale."
+  ],
+  "content": {
+    "principles": [
+      "Diorama and inhabited views fail in opposite directions. A diorama read from two metres away wastes budget on doorknobs; a walkable street built at diorama density looks like a bare stage at eye height.",
+      "The chosen scale sets the camera near and far planes, and a near plane too small next to a far plane too large is the usual cause of depth artefacts on distant surfaces.",
+      "Traversal mode decides how much physical machinery is needed: an orbiting diorama needs no collision at all, while walking needs support, clearance and step handling."
+    ],
+    "implementation": [
+      "State the intended viewing distance in the same units as the model, then place detail where that distance can resolve it: silhouette and roof mass for a diorama, thresholds, handrails and door thickness for eye-level.",
+      "For a diorama, prefer one orbit target, a bounded zoom range and a clean base or plinth that frames the world edge instead of an infinite fade.",
+      "For an inhabited view, add eye height, walk speed, a collision body and a ground query before adding more scenery.",
+      "When both are wanted, treat them as two framed modes over one model with a transition that preserves position and selection, not as two scenes."
+    ],
+    "observable_checks": [
+      "Look at the scene from the stated viewing distance only; details invisible there are budget spent in the wrong place.",
+      "Zoom to the intended extremes and watch for far-plane clipping, z-fighting on flat surfaces, and scenery pop.",
+      "In an inhabited view, walk into a doorway, a stair and a narrow alley; diorama-scale geometry usually blocks or swallows the body there.",
+      "Compare a known reference object, such as a door or a person, against buildings to expose an inconsistent scale ladder."
+    ]
+  },
+  "related_ids": [
+    "recipe.terrain-island",
+    "recipe.historical-diorama",
+    "knowledge.hero-and-context"
+  ],
+  "creative_affordances": [
+    "Deliberate scale play, such as a giant standing over a miniature town, remains available; declare it so it reads as a choice.",
+    "Mixed modes, inset views and picture-in-picture overviews are all reasonable when the transition preserves state."
+  ],
+  "known_limits": [
+    "Authored composition guidance; no runtime frame rate, draw-call or rendering measurement is asserted.",
+    "Does not prescribe a units convention; it requires only that one be chosen and used consistently."
+  ],
+  "claims": []
+}

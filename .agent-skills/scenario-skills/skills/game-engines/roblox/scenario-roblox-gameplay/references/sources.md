@@ -1,0 +1,69 @@
+# Sources
+
+Every source behind this skill, with what it is best for. Timestamps are `hh:mm:ss` into the video.
+Claims in the skill cite the video ID and timestamp; docs pages are cited by page and section.
+
+## Videos
+
+| Expert                        | Credential                                   | Video                                                                                                         | Best for                                                                        | Best timestamps                                                      |
+| ----------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Suphi Kaner                   | Roblox scripter and teacher                  | [Cars With Suspension](https://www.youtube.com/watch?v=FVOowr2DXbM) (2022)                                    | constraint car: suspension numbers, motor math, steering, exits, center of mass | 00:10:19, 00:13:43, 00:31:20, 00:44:30, 00:52:59, 00:54:05, 01:04:02 |
+| Suphi Kaner                   | Roblox scripter and teacher                  | [Pathfinding, Client VS Server, Unlimited Humanoids](https://www.youtube.com/watch?v=JyMxrcqEzu8) (2021)      | ambient crowds on clients, attribute replication, culling, world-ready gate     | 00:00:23, 00:13:50, 00:25:58, 00:38:26, 00:46:46                     |
+| Miller (Roblox Learn)         | software engineer at Roblox                  | [Guard NPCs using a state machine](https://www.youtube.com/watch?v=nlVpAZEkxgo) (2026)                        | FSM as data: context, states, tests, transitions                                | 00:00:57, 00:06:22, 00:06:55                                         |
+| Marcos Mendoza (Roblox Learn) | senior software engineer at Roblox           | [Top down camera system](https://www.youtube.com/watch?v=qx7T7EDPqPA) (2026)                                  | Scriptable camera, Input Action System contexts                                 | 00:00:31, 00:04:23, 00:07:21                                         |
+| Roblox Learn                  | Roblox Developer Relations                   | [What's a core loop on Roblox?](https://www.youtube.com/watch?v=gkFKF9A-snY) (2023)                           | core loop as a design gate                                                      | 00:00:08                                                             |
+| BrawlDev                      | Roblox developer since 2016, tutorial series | [Pathfinding](https://www.youtube.com/watch?v=ckA4fVkAjIA) (2025)                                             | agent parameters, costs, modifiers, pcall plus Status                           | 00:15:48, 00:20:34, 00:24:33                                         |
+| BrawlDev                      | same                                         | [Raycasting, guns, visualizers, shapecasts](https://www.youtube.com/watch?v=u6I17z6ggUg) (2025)               | per-shot exclude lists, visualizer first, cylinder tracers                      | 00:08:18, 00:28:41, 00:34:25, 00:42:06                               |
+| BrawlDev                      | same                                         | [Physics: projectiles, constraints, movers](https://www.youtube.com/watch?v=0Dt-Ab8czPw) (2025)               | trapezoid integration, mover traps, ragdoll neck                                | 00:07:51, 00:16:40, 00:19:09, 00:33:08                               |
+| BrawlDev                      | same                                         | [Collection Service](https://www.youtube.com/watch?v=POsw3BZH-bc) (2023)                                      | tags plus one system script                                                     | 00:05:15, 00:18:08                                                   |
+| Crusherfire                   | Roblox scripting educator                    | [Generalized shape casting](https://www.youtube.com/watch?v=EIOwGMZYidw) (2024)                               | Shapecast final position, when not to cast shapes                               | 00:03:37, 00:07:12, 00:10:42                                         |
+| veraktt                       | scripter                                     | [Advanced Projectile Tutorial](https://www.youtube.com/watch?v=GtqFcyFgIXQ) (2025)                            | sweep then move, start overlap, dt, hit VFX offset                              | 00:07:31, 00:12:22, 00:19:33, 00:24:07                               |
+| Ludius                        | scripting teacher                            | [How To Script Hitboxes Properly](https://www.youtube.com/watch?v=gmz904QpfxU) (2024)                         | GetPartBoundsInBox melee, dedupe by character                                   | 00:01:15, 00:02:20, 00:04:06                                         |
+| ArTheDev                      | combat scripter                              | [Combat system primer](https://www.youtube.com/watch?v=Aoc9HkGHu_8) (2025)                                    | combat failure modes: stun cancels hitboxes, bounded stun                       | 00:02:57, 00:03:28                                                   |
+| SimTek Game Development       | knockback and projectile demos               | [LinearVelocity vs VectorForce vs AssemblyLinearVelocity](https://www.youtube.com/watch?v=ArNJwChSU8Q) (2023) | choosing a mover by job                                                         | 00:01:07, 00:08:22, 00:14:15                                         |
+| B Ricey                       | hobbyist scripter                            | [Realistic gun with FastCast](https://www.youtube.com/watch?v=mJZWY3G7wa4) (2021)                             | WorldPosition muzzle, half-segment cosmetic offset                              | 00:08:54, 00:19:51                                                   |
+| GnomeCode                     | tutorial creator                             | [Round Based Game](https://www.youtube.com/watch?v=oEWoyT-GBZY) (2024)                                        | minimal round loop with attributes                                              | 00:08:15, 00:11:35, 00:19:38                                         |
+| pluggnsb                      | hobbyist scripter                            | [Behavior trees for NPCs](https://www.youtube.com/watch?v=TxdnHeH1iYc) (2024)                                 | task nodes start, run, finish                                                   | 00:04:18, 00:05:41                                                   |
+| Crusherfire                   | Roblox scripting educator                    | [Your Roblox Game LAGS (and how to fix it)](https://www.youtube.com/watch?v=YWyJHwynM1M) (2025)               | Humanoid cost: unused states, EvaluateStateMachine                              | 00:26:38, 00:27:11                                                   |
+| Suphi Kaner                   | Roblox scripter and teacher                  | [Stop exploiters setting humanoid states](https://www.youtube.com/watch?v=hr_8svt1n1E) (2023)                 | Dead state disabled, death handled in code                                      | 00:05:10                                                             |
+| Roblox Learn                  | Roblox product and engineering staff         | [How the Input Action System works](https://www.youtube.com/watch?v=Fg-Ksoa7b-s) (2026)                       | touch binding through `UIButton`                                                | 00:03:27                                                             |
+
+## Official docs (Roblox Creator Docs)
+
+| Page                                                                                                             | Best for                                                                         |
+| ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| [Pathfinding](https://create.roblox.com/docs/characters/pathfinding)                                             | agent parameters, costs, modifiers, links, Blocked rule, limits                  |
+| [Raycasting](https://create.roblox.com/docs/workspace/raycasting)                                                | ray limits, CanQuery, streaming caveat                                           |
+| [Mover constraints](https://create.roblox.com/docs/physics/mover-constraints)                                    | BodyMover replacement map                                                        |
+| [Network ownership](https://create.roblox.com/docs/physics/network-ownership)                                    | ownership rules, vehicle Occupant pattern, Touched exploit                       |
+| [Server authority techniques](https://create.roblox.com/docs/projects/server-authority/techniques)               | BindToSimulation, track caching, effects under rollback                          |
+| [Weapons kit](https://create.roblox.com/docs/resources/weapons-kit)                                              | projectile weapons configured by values, BulletSpeed 20000                       |
+| [Input Action System](https://create.roblox.com/docs/input/input-action-system)                                  | InputContext, InputAction, InputBinding                                          |
+| [WorldRoot reference](https://create.roblox.com/docs/reference/engine/classes/WorldRoot)                         | Spherecast, Blockcast, Shapecast limits and start-overlap rule, collision groups |
+| [RaycastParams reference](https://create.roblox.com/docs/reference/engine/datatypes/RaycastParams)               | ExcludeInstances, IncludeInstances, Margin, SizeGradient                         |
+| [CylindricalConstraint reference](https://create.roblox.com/docs/reference/engine/classes/CylindricalConstraint) | slide axis, InclinationAngle, motor                                              |
+| [RunService reference](https://create.roblox.com/docs/reference/engine/classes/RunService)                       | BindToSimulation availability                                                    |
+| [Humanoid reference](https://create.roblox.com/docs/reference/engine/classes/Humanoid)                           | MoveTo 8-second timeout, states                                                  |
+| [Improve performance](https://create.roblox.com/docs/performance-optimization/improve)                           | Humanoid states, AnimationController for static NPCs                             |
+
+## Version facts (DevForum announcements)
+
+| Fact                                                                                       | Date         | Link                                                                                                                |
+| ------------------------------------------------------------------------------------------ | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `ExcludeInstances` and `IncludeInstances` supersede `FilterDescendantsInstances`           | 2026-04-07   | https://devforum.roblox.com/t/4563575                                                                               |
+| `WorldRoot:Raycast` and `RaycastParams`                                                    | 2020-06-26   | https://devforum.roblox.com/t/644467                                                                                |
+| Spatial queries with `OverlapParams`                                                       | 2021-08-24   | https://devforum.roblox.com/t/1435720                                                                               |
+| Collision group methods move from `PhysicsService` to `WorldRoot`                          | 2026-09-03   | https://devforum.roblox.com/t/4848541                                                                               |
+| `BasePart.CollisionGroup` string property                                                  | 2022-09-19   | https://devforum.roblox.com/t/1990215                                                                               |
+| `BindToSimulation` and fixed-step simulation                                               | 2026-04-29   | https://devforum.roblox.com/t/4605516                                                                               |
+| PathfindingModifier (2022-01-31), PathfindingLink (2022-04-28), new algorithm (2024-11-14) | 2022 to 2024 | https://devforum.roblox.com/t/1651427, https://devforum.roblox.com/t/1771534, https://devforum.roblox.com/t/3258657 |
+| Creator Store assets run sandboxed (no `require(id)`)                                      | 2026-05-13   | https://devforum.roblox.com/t/4634642                                                                               |
+
+## Live measurements
+
+The numbers marked "measured" come from `tests/code/scenario-roblox-gameplay/run_live.py` in Roblox
+Studio 0.743 on macOS (Apple Silicon), one local playtest with one server and one client, on
+2026-10-19: 19 of 19 pass. Results: `tests/live_evidence/scenario-roblox-gameplay/results.json`, the
+log `live_run.log`, the captures and `contact_sheet.png` in the same folder. Other Studio windows
+were open during the run, so absolute timings carry some noise. An earlier full run gave the same
+picture (100 patrolling: physics step 1.98 ms, AI 0.14 ms per frame; 100 chasing: AI 0.43 ms).

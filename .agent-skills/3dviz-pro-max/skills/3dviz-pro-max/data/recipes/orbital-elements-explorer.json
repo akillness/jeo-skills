@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "id": "recipe.orbital-elements-explorer",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Orbital elements and orbit shape"
+  },
+  "aliases": {
+    "en": [
+      "Keplerian elements",
+      "inclination",
+      "argument of periapsis"
+    ]
+  },
+  "direction_ids": [
+    "astronomy-space"
+  ],
+  "summary": "Give each defined geometric orbital element a control, with explicit circular and equatorial conventions for undefined elements.",
+  "objective": "Build an ellipse and body marker from the stated element formulas and show enabled angle controls against a reference plane; undefined controls and unavailable timing remain labeled.",
+  "tags": [
+    "orbit",
+    "elements",
+    "geometry"
+  ],
+  "subject_terms": [
+    "semi-major axis",
+    "eccentricity",
+    "inclination",
+    "ascending node",
+    "argument of periapsis",
+    "true anomaly",
+    "reference plane",
+    "orbital element"
+  ],
+  "intent_signals": [
+    "Show what each orbital element does to an orbit.",
+    "Explain inclination and the line of nodes in three dimensions."
+  ],
+  "example_prompts": [
+    "Build an orbital element explorer with sliders for each element and a marked line of nodes.",
+    "Show how changing the argument of periapsis rotates the orbit within its plane."
+  ],
+  "negative_signals": [
+    "Not an ephemeris or mission design tool; no perturbations, manoeuvres or real body data.",
+    "Not a two-body propagation accuracy claim; timing along the orbit is a separate concern."
+  ],
+  "not_for": [
+    "Not an ephemeris or mission design tool; no perturbations, manoeuvres or real body data.",
+    "Not a two-body propagation accuracy claim; timing along the orbit is a separate concern."
+  ],
+  "entities": [
+    {
+      "name": "Reference plane and nodes",
+      "guidance": "Draw the fixed xy reference plane and a node line only for non-equatorial inclination; show the reference-axis gauge label when the node is undefined."
+    },
+    {
+      "name": "Orbit shape",
+      "guidance": "Construct the ellipse with the primary at a focus, periapsis/apoapsis markers only for e>0, and the body at nu or circular u according to the stated conversion."
+    },
+    {
+      "name": "Element readouts",
+      "guidance": "Show each element with its units and the geometric feature it controls, so a change can be attributed."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored geometry-only ellipse in a right-handed frame with reference plane xy and +z normal. Finite a>0, 0<=e<1, 0<=i<=pi, ascending-node angle Omega, argument of periapsis omega and true anomaly nu at a labeled epoch; lengths in authored scene units and angles in radians. In the orbital plane r=a(1-e^2)/(1+e cos(nu)), p=(r cos(nu),r sin(nu),0). World position is Rz(Omega) Rx(i) Rz(omega) p using active right-handed rotations on column vectors; ellipse display samples nu and uses the same transform with the primary at the focus. Rz(alpha) maps (x,y,z) to (x cos(alpha)-y sin(alpha),x sin(alpha)+y cos(alpha),z); Rx(alpha) maps to (x,y cos(alpha)-z sin(alpha),y sin(alpha)+z cos(alpha)). Time of periapsis passage remains unavailable, since there is no propagation law. At e=0 replace omega and nu by argument of latitude u=omega+nu, set omega=0 and use u for the body angle; hide periapsis/apoapsis labels. At i=0 choose canonical Omega=0 and absorb the prior Omega into omega (or u for a circle); at i=pi choose Omega=0 and subtract the prior Omega from omega (or u). These preserve the equatorial geometry while removing the undefined node gauge. Disable node-longitude control at either endpoint and hide the node line; the remaining angle is labeled relative to the reference x axis under the stated prograde/retrograde convention. On leaving a circular/equatorial state retain its canonical angle values as the new reference. Degeneracy applies at exact parameter endpoints; near-degenerate cases are labeled numerically sensitive rather than silently snapped.",
+    "authority": "The element set is authoritative; every drawn feature is derived from it, so dragging the orbit directly must write back into elements or be disallowed.",
+    "actions": [
+      "Change any enabled geometric element and watch its effect; time of periapsis passage stays unavailable in this geometry-only scene rather than presenting a false effect.",
+      "Toggle the reference plane, nodes and periapsis marker.",
+      "Move true anomaly for e>0 or the argument-of-latitude/body-angle control for e=0; disabled degenerate elements remain unavailable.",
+      "Reset elements to the authored values."
+    ]
+  },
+  "invariants": [
+    "At i=0 or pi hide the node line and disable Omega; apply the stated canonical gauge conversion so dropping the undefined node reference does not move the orbit or body.",
+    "At e=0 disable periapsis and use u=omega+nu for the body angle; hide both apsis labels. Canonicalization preserves the body position and does not manufacture a distinguished periapsis.",
+    "For e>0 and non-equatorial inclination, changing omega rotates the ellipse in its existing plane. At equatorial inclination the enabled in-plane orientation uses the stated reference-axis convention."
+  ],
+  "motion_guidance": [
+    "Animate one element at a time so the correspondence between control and geometry is unambiguous.",
+    "Keep a ghost of the previous orbit while an element changes so the difference is visible."
+  ],
+  "known_limits": [
+    "Active column-vector Rz-Rx-Rz geometry and explicit circular/equatorial gauges are authored choices; other element conventions need conversion.",
+    "Degenerate cases such as circular or equatorial orbits leave some elements undefined.",
+    "Closed elliptical orbits only: parabolic and hyperbolic cases are outside the declared eccentricity range, and the scene states the reference frame and angle conventions it uses.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-orbital-elements-set",
+      "statement": "Six quantities called orbital or Keplerian elements describe an orbit: semi-major axis and eccentricity give the size and shape of the ellipse, inclination is the angular distance of the orbital plane from a reference plane, the argument of periapsis is the angular distance of periapsis from the ascending node, together with the celestial longitude of the ascending node and the time of periapsis passage, while true anomaly measures angular distance past periapsis.",
+      "scope": "Element naming and meaning as cited. This scene implements a geometry-only state and substitutes true anomaly at a stated epoch for the time of periapsis passage, which is a conversion the cited page does not describe.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-nasa-orbital-elements",
+          "locator": "Basics of Space Flight Chapter 5, orbital elements list"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Reference plane and nodes",
+      "structure": "Bounded xy reference plane with a graticule and node line only when the orbit is not equatorial; canonical reference-axis orientation labels replace undefined node labels.",
+      "material": "Low-opacity plane with an opaque node line so orientation is readable even when the orbit is nearly in plane.",
+      "articulation": "The plane is fixed; the orbit orients relative to it."
+    },
+    {
+      "family": "Orbit shape",
+      "structure": "Ellipse tube with primary at its focus and body at the computed parameter; periapsis/apoapsis markers exist only for e>0.",
+      "material": "Single orbit accent with distinct marker materials for periapsis, apoapsis and the body.",
+      "articulation": "The ellipse is rebuilt whenever an element changes; the body marker moves along it."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Geometric construction from elements; no gravitational integration or timing model.",
+    "state": [
+      "a",
+      "e",
+      "i",
+      "Omega when defined",
+      "omega and nu or circular u",
+      "epoch label",
+      "reference frame label"
+    ],
+    "checks": [
+      "Degenerate cases report undefined elements instead of drawing arbitrary geometry.",
+      "Each element control changes only the features it should."
+    ]
+  },
+  "related_ids": [
+    "recipe.kepler-equal-area-orbit",
+    "recipe.orbital-reference-frames",
+    "knowledge.parameter-experiment"
+  ]
+}

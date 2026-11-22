@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "id": "recipe.chirality-stereocenter",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Chirality and non-superimposable mirror images"
+  },
+  "aliases": {
+    "en": [
+      "enantiomers",
+      "stereocenter",
+      "handedness of molecules"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Let a viewer attempt to superimpose two mirror-image molecules and fail for a structural reason they can inspect.",
+  "objective": "Build a pair of enantiomers I can rotate and translate freely to test whether they can be superimposed, with the four different substituents labelled.",
+  "tags": [
+    "chirality",
+    "stereochemistry",
+    "enantiomer"
+  ],
+  "subject_terms": [
+    "enantiomer",
+    "chirality",
+    "stereocenter",
+    "tetrahedral carbon",
+    "mirror plane",
+    "substituent",
+    "superimposable"
+  ],
+  "intent_signals": [
+    "Show why two mirror-image molecules are not the same molecule.",
+    "Let me try to line up a molecule with its mirror image."
+  ],
+  "example_prompts": [
+    "Build an enantiomer pair I can rotate to test superimposition, with a mirror plane I can toggle.",
+    "Show a tetrahedral carbon with four different groups and its mirror image side by side."
+  ],
+  "negative_signals": [
+    "Not a quantum chemistry, energy or optical rotation calculation.",
+    "Not a reaction mechanism or stereochemical nomenclature trainer."
+  ],
+  "not_for": [
+    "Not a quantum chemistry, energy or optical rotation calculation.",
+    "Not a reaction mechanism or stereochemical nomenclature trainer."
+  ],
+  "entities": [
+    {
+      "name": "Molecule pair",
+      "guidance": "Two complete molecules built from the same substituent set with opposite handedness at the stereocenter, each independently transformable."
+    },
+    {
+      "name": "Stereocenter marker",
+      "guidance": "Highlight the central atom and its four bonds with distinct substituent labels, since handedness is only meaningful when all four differ."
+    },
+    {
+      "name": "Mirror reference",
+      "guidance": "Provide a toggleable mirror plane and a ghost image of the reflected molecule so the comparison is explicit rather than remembered."
+    }
+  ],
+  "state_contract": {
+    "model": "Two rigid molecules with independent orientation, a stereocenter with four labelled substituents, and a superimposition test that compares corresponding atom positions within a stated tolerance. The idealised substituent directions, the handedness test and its tolerances are given in defaults.values; handedness is the sign of the triple product of three substituent directions taken in a fixed label order, and it is meaningful only while all four labels are distinct.",
+    "authority": "Atom identity and connectivity are authoritative; the superimposition verdict is computed from corresponding labelled atoms, never from a visual impression.",
+    "actions": [
+      "Rotate and translate either molecule freely.",
+      "Run the superimposition test and read the residual mismatch.",
+      "Toggle the mirror plane and the reflected ghost.",
+      "Reset both molecules to their reference poses."
+    ]
+  },
+  "invariants": [
+    "Rigid rotation and translation never change chirality; only reflection does.",
+    "The superimposition test reports failure with a residual value, not merely a verdict.",
+    "If two substituents are made identical the model must state that the centre is no longer a stereocenter."
+  ],
+  "motion_guidance": [
+    "Animate rotation smoothly and let the viewer stop at any orientation; the failure to superimpose must remain inspectable at rest.",
+    "Do not snap the molecules into alignment as a reward; snapping would assert a false result."
+  ],
+  "known_limits": [
+    "One stereocenter only; molecules with multiple centres, meso forms and conformational change are out of scope.",
+    "Bond lengths and angles are idealised for teaching, not optimised geometry: the substituent directions in the defaults are the exact tetrahedral unit vectors, and the cited section gives no bond angle, bond length or coordinates of its own.",
+    "The handedness test reads geometry and labels together; a nonzero triple product alone does not make a centre a stereocenter, because four distinct substituents are also required.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-enantiomer-definition",
+      "statement": "When a tetrahedral carbon carries four different substituents, the molecule and its mirror image cannot be brought into coincidence by rotation or translation, and the two forms are called enantiomers.",
+      "scope": "Single tetrahedral stereocentre only, independently paraphrased from the cited section. Molecules with several stereocentres, meso forms and other sources of chirality are outside this recipe.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-enantiomers",
+          "locator": "5.1, enantiomers and the four-different-substituent condition"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Molecule pair",
+      "structure": "Ball-and-stick construction with consistent atom radii and bond radii, plus a clearly modelled tetrahedral arrangement at the centre.",
+      "material": "Element-coded matte spheres with one reserved accent for the stereocenter; keep the two molecules identical in material so only geometry differs.",
+      "articulation": "Each molecule is a rigid transform group; substituents do not rotate independently in this recipe."
+    },
+    {
+      "family": "Mirror reference",
+      "structure": "A bounded plane with a visible edge rather than an infinite sheet, plus a semi-transparent reflected ghost.",
+      "material": "Low-opacity ghost with a different surface treatment so it is never mistaken for a third molecule.",
+      "articulation": "The ghost is regenerated from the current pose of its source molecule."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Rigid presentation transforms and a geometric comparison; no molecular dynamics or energetics.",
+    "checks": [
+      "The superimposition test fails for the enantiomer pair at any orientation.",
+      "The same test succeeds when a molecule is compared with a rotated copy of itself."
+    ]
+  },
+  "related_ids": [
+    "recipe.molecular-shape-comparison",
+    "knowledge.comparison-stage",
+    "knowledge.controlled-experiment"
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Illustrative geometry: the cited section states the four-different-substituent condition for enantiomers (claim.rd-enantiomer-definition) but prints no bond angle, no bond length and no coordinates, so every number below is an authored idealisation rather than a sourced value. The four directions are the exact tetrahedral unit vectors (+-1,+-1,+-1)/sqrt(3) with an even number of minus signs, chosen because they make both checks exact in closed form: the bond angle is arccos(-1/3) and the handedness triple product is 4/(3 sqrt 3), so a build can be tested against an analytic value instead of a screenshot. Bond length is left as one display unit because scaling it changes nothing the recipe tests. Tunable: any tetrahedral arrangement works, but rescaling the bond length rescales the triple-product magnitude by its cube, so the stereocenter threshold must be rescaled with it.",
+    "values": {
+      "parameters": {
+        "substituent_directions": {
+          "value": [
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              -1,
+              -1
+            ],
+            [
+              -1,
+              1,
+              -1
+            ],
+            [
+              -1,
+              -1,
+              1
+            ]
+          ],
+          "unit": "unnormalised direction vectors from the stereocenter; divide each by sqrt(3) for unit length",
+          "note": "authored idealisation; labelled a, b, c, d in this order"
+        },
+        "bond_length": {
+          "value": 1.0,
+          "unit": "display unit",
+          "note": "authored; the cited section gives no bond length, and no picometre value is implied"
+        },
+        "tetrahedral_angle": {
+          "value": 109.4712,
+          "unit": "deg",
+          "note": "derived from the authored directions as arccos(-1/3); not a sourced figure"
+        },
+        "handedness_triple_product": {
+          "value": 0.7698,
+          "unit": "dimensionless (unit vectors)",
+          "note": "derived: 4/(3 sqrt 3) for the direction order a, b, c; the mirror image gives -0.7698"
+        },
+        "distinct_substituent_count_required": {
+          "value": 4,
+          "unit": "count",
+          "note": "the condition stated by the cited section; the geometry alone cannot supply it"
+        },
+        "superimposition_rmsd_tolerance": {
+          "value": 1e-09,
+          "unit": "display unit",
+          "note": "authored: a best-fit rigid alignment of a molecule onto a rotated copy of itself should land far below this in double precision"
+        },
+        "stereocenter_triple_product_threshold": {
+          "value": 1e-06,
+          "unit": "dimensionless (unit vectors)",
+          "note": "authored: below this the four directions are too close to coplanar to call the centre tetrahedral; scale by the cube of any change in bond length"
+        }
+      },
+      "equations": [
+        "cos(bond angle) = u_i . u_j for unit substituent directions",
+        "handedness = sign(det[u_a; u_b; u_c]), evaluated in a fixed label order",
+        "mirror through any plane negates the determinant, so handedness flips",
+        "any proper rotation R has det(R) = +1, so R leaves the determinant unchanged"
+      ],
+      "worked_example": {
+        "inputs": "Stereocenter at the origin with substituents a, b, c, d along (1,1,1), (1,-1,-1), (-1,1,-1), (-1,-1,1) divided by sqrt(3); the enantiomer is the same molecule reflected in the yz-plane (x -> -x)",
+        "expected": "Every pairwise bond angle is 109.4712 degrees; the handedness triple product is +0.7698 for the original and exactly -0.7698 for the mirror image, and no rotation of either molecule changes its own value; a best-fit superimposition of the pair therefore fails at any orientation while a molecule superimposes on a rotated copy of itself to within 1e-9",
+        "derivation": "Unit vectors: u_a . u_b = (1 - 1 - 1)/3 = -1/3, so the angle is arccos(-1/3) = 109.4712 degrees, and by symmetry the same holds for every pair. Handedness: det[(1,1,1); (1,-1,-1); (-1,1,-1)] = 1(1+1) - 1(-1-1) + 1(1-1) = 2 + 2 + 0 = 4, and dividing each row by sqrt(3) scales the determinant by 1/(3 sqrt 3), giving 4/(3 sqrt 3) = 0.7698. Reflection x -> -x is an improper transformation with determinant -1, so the mirror gives -0.7698; rotations have determinant +1 and leave the value untouched, which is exactly the recipe's invariant that rigid motion never changes chirality. Second case: relabel d to match a so that only three distinct substituents remain. The triple product is still 0.7698, but the four-different-substituent condition now fails, so the centre must be reported as no longer a stereocenter - the number alone would have given the wrong answer."
+      },
+      "tolerance": {
+        "angle_deg": "1e-6 deg against arccos(-1/3)",
+        "handedness_sign": "exact: the sign must not depend on camera or on which rotation was applied; magnitudes compare within rtol 1e-9",
+        "superimposition_rmsd": "1e-9 display units for a self-comparison; report the residual value, never a bare verdict"
+      }
+    }
+  }
+}

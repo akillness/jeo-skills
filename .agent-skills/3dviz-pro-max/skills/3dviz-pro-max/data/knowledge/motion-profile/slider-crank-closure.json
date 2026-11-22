@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.slider-crank-closure",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "motion-profile",
+  "title": {
+    "en": "Slider-crank branch closure and dead centers"
+  },
+  "aliases": {
+    "en": [
+      "slider crank",
+      "connecting rod"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "products-assemblies"
+  ],
+  "summary": "Drive a piston from one crank angle while preserving rod length and the selected assembly branch.",
+  "objective": "Expose the authoritative model and its visible response: slider-crank branch closure and dead centers.",
+  "applies_when": [
+    "Inline planar rigid linkage with fixed crank center, positive crank radius r and rod length l>r; slider travels on the x axis and crank angle is prescribed."
+  ],
+  "subject_terms": [
+    "slider crank",
+    "connecting rod",
+    "dead center",
+    "loop closure"
+  ],
+  "tags": [
+    "motion-profile",
+    "slider-crank-closure"
+  ],
+  "intent_signals": [
+    "Drive a piston from one crank angle while preserving rod length and the selected assembly branch."
+  ],
+  "example_prompts": [
+    "Build an inspectable demonstration of slider-crank branch closure and dead centers with parameter controls and a reset."
+  ],
+  "negative_signals": [
+    "Not offset linkages, compliance, bearing clearance, combustion or torque-driven dynamics."
+  ],
+  "not_for": [
+    "Not offset linkages, compliance, bearing clearance, combustion or torque-driven dynamics."
+  ],
+  "content": {
+    "principles": [
+      "Prescribed crank rotation is kinematics; it does not predict motor torque, piston pressure or inertial passage through a dead center.",
+      "All pins and the slider derive from one angle; independently easing the piston would break loop closure."
+    ],
+    "implementation": [
+      "Own r,l in metres, theta in radians and optional prescribed omega in rad/s. With O=(0,0), A=(r cos(theta),r sin(theta)), use B=(r cos(theta)+sqrt(l*l-r*r*sin(theta)^2),0), fixing the positive-root assembly branch. This equation is the authored geometric solution of |B-A|=l.",
+      "Compute rod pose from endpoints A,B; build its physical thickness about that axis and keep both pin centers attached. Decorative spacers may separate parts in depth without changing joint coordinates. Show theta and B.x from model state.",
+      "Scrub theta or advance theta by the prescribed clock; do not divide by slider velocity at reversal. Validate finite inputs and l>r. Pause retains angle; reset restores dimensions, angle and clock."
+    ],
+    "observable_checks": [
+      "For r=0.1 m,l=0.3 m verify B.x=0.4 m at theta=0 and 0.2 m at pi; both are aligned dead centers.",
+      "Across a cycle, verify |A|=r, |B-A|=l and B.y=0 within a declared length tolerance; no branch flip at pi/2 or 3pi/2."
+    ]
+  },
+  "known_limits": [
+    "Not offset linkages, compliance, bearing clearance, combustion or torque-driven dynamics.",
+    "Authored reusable guidance; no solver or rendered artifact has been tested for this record."
+  ],
+  "creative_affordances": [
+    "Use a cutaway, restrained ghost reference or annotated section only when it clarifies the modeled relation; a planar diagram remains valid when depth adds no information."
+  ],
+  "related_ids": [
+    "knowledge.constrained-gear-motion"
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-slider-crank-closure",
+      "statement": "A slider-crank converts crank rotation into reciprocating slider translation. MathWorks specifies positive crank radius and a rod longer than that radius; aligned crank/rod positions are dead centers whose dynamic passage depends on inertia. The ideal geometric illustration here omits the documented block compliance.",
+      "scope": "Inline planar rigid linkage with fixed crank center, positive crank radius r and rod length l>r; slider travels on the x axis and crank angle is prescribed.",
+      "source_refs": [
+        {
+          "source_id": "source.object-physics-slider-crank-closure",
+          "locator": "Description; Crank radius, Rod length and Crank inertia parameters"
+        }
+      ]
+    }
+  ]
+}

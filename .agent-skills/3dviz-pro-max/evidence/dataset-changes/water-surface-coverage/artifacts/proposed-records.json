@@ -1,0 +1,307 @@
+[
+  {
+    "schema_version": 1,
+    "id": "knowledge.reasoning-terrain-height-authority",
+    "revision": 2,
+    "status": "active",
+    "record_kind": "creative",
+    "knowledge_kind": "reasoning-rule",
+    "title": {
+      "en": "One elevation function owns ground contact"
+    },
+    "aliases": {
+      "en": [
+        "terrain height authority",
+        "single height field",
+        "grounding placement",
+        "pond water level and shoreline"
+      ]
+    },
+    "direction_ids": [
+      "environments-dioramas",
+      "earth-environment"
+    ],
+    "summary": "Use the rendered terrain authority for ground placement, with explicit water levels and separate support surface identities in the same coordinate frame.",
+    "objective": "Decide which representation owns terrain elevation so that placement, traversal and the rendered surface cannot disagree.",
+    "applies_when": [
+      "A scene has non-flat terrain and objects that must rest on it.",
+      "Buildings, props or vegetation are scattered procedurally or from a layout table.",
+      "A camera or character walks, drives or hovers over the ground.",
+      "Water level, roads or foundations are placed relative to the landscape."
+    ],
+    "constraint_level": "correctness",
+    "subject_terms": [
+      "terrain",
+      "height field",
+      "ground contact",
+      "scatter placement",
+      "displacement",
+      "walkable surface",
+      "pond",
+      "shoreline",
+      "water surface coverage",
+      "basin floor",
+      "water level"
+    ],
+    "tags": [
+      "reasoning-rule",
+      "correctness",
+      "terrain",
+      "placement"
+    ],
+    "intent_signals": [
+      "objects float above or sink into terrain",
+      "place buildings on a hillside",
+      "walk over uneven ground",
+      "Keep a pond surface visible at its declared level above the basin floor."
+    ],
+    "example_prompts": [
+      "Scatter houses and trees over the hills so nothing floats or sinks.",
+      "Let me walk over the island terrain instead of sliding across a flat plane.",
+      "Keep pond water filled to its declared shoreline while the stream flow cues move independently."
+    ],
+    "negative_signals": [
+      "Deliberately floating architecture, dream logic or a stylised world where contact with the ground is not intended.",
+      "Flat-stage scenes where every object shares one ground plane."
+    ],
+    "not_for": [
+      "Deliberately floating architecture, dream logic or a stylised world where contact with the ground is not intended.",
+      "Flat-stage scenes where every object shares one ground plane."
+    ],
+    "content": {
+      "principles": [
+        "Terrain elevation is application state, not a look. If mesh displacement, the placement routine and the walking controller each compute height in their own way, the three drift apart and the mismatch appears as floating or buried objects.",
+        "A height source can be a noise or spline function, a sampled height array, or a collider raycast. What matters is that one of them is authoritative and the others are derived from it. Where the ground is not a single-valued surface, because of bridges, overhangs, caves or stacked storeys, the authority becomes a surface-identity query rather than one elevation per horizontal position, and consumers must say which surface they mean.",
+        "Placement needs more than a height value: slope and normal decide whether a foundation should be cut, terraced or rejected.",
+        "For authored water, distinguish basin floor, declared water level or stream profile, bridge deck and decorative cue offset. They share a coordinate frame, not necessarily one elevation; water need not follow every basin-floor height."
+      ],
+      "implementation": [
+        "Choose the authority first: an analytic height function for procedural worlds, a height array for imported or edited terrain, a collider raycast when the ground includes overhangs or separate props.",
+        "If the renderer displaces vertices in a shader, that displacement is not automatically available to placement or gameplay code on the CPU. Bridge it deliberately: evaluate the same function on the CPU, sample the same source data, or perform an explicit GPU readback or compute query, and say which of these the scene relies on.",
+        "Return position, surface normal and slope from one query, then let each consumer decide: cut a flat pad, add a plinth or stilts, terrace the slope, or exclude the site.",
+        "Store the sampled elevation with the placement so a later terrain edit can report which instances became stale instead of silently detaching.",
+        "Give water a surface identity and declared footprint/level or longitudinal profile. Derive the visible base surface and relevant boundary queries from that state; keep flow-cue phase separate. For a filled, non-draining pond whose level is unchanged, zero authored flow preserves base coverage while its flow cues stop."
+      ],
+      "observable_checks": [
+        "Move the camera to a grazing angle at the base of scattered objects on a slope; gaps and sunken corners are visible there and invisible from above.",
+        "Change one terrain parameter, such as amplitude or seed, and confirm placed objects either follow the new surface or are reported as stale.",
+        "Walk or drive across a steep region and a valley floor; a controller reading a different height source snaps, hovers or falls through.",
+        "Check a water plane against shoreline geometry: a constant water height crossing an inconsistent ground surface shows flooded interiors.",
+        "With flow cues hidden, inspect intended wet regions from above and at grazing angles: the base surface remains visible rather than buried under terrain, and dry banks are not unintentionally covered.",
+        "At a bridge, query the intended deck or water surface by identity; do not substitute the basin floor. Pause and reset preserve or restore the declared water level, footprint and cue state."
+      ]
+    },
+    "related_ids": [
+      "recipe.terrain-island",
+      "recipe.fantasy-village-diorama",
+      "knowledge.terrain-landmark-rhythm"
+    ],
+    "creative_affordances": [
+      "Terraces, retaining walls, stilts and carved pads are all legitimate answers to a steep site; the rule constrains consistency, not architectural language.",
+      "Deliberate exceptions such as a floating shrine stay expressive as long as they are authored exceptions rather than sampling bugs."
+    ],
+    "known_limits": [
+      "Authored construction guidance; no runtime scene has been rendered or measured for this record.",
+      "Says nothing about terrain generation quality, erosion realism or level-of-detail strategy.",
+      "The fixed-coverage check applies to a declared filled, non-draining authored surface; changing volume, level, waves or deliberately appearing water requires its own state contract. No hydrodynamic conservation law is asserted."
+    ],
+    "claims": []
+  },
+  {
+    "schema_version": 1,
+    "id": "knowledge.material-response-check",
+    "revision": 2,
+    "status": "active",
+    "record_kind": "creative",
+    "knowledge_kind": "validation-profile",
+    "title": {
+      "en": "Material and lighting response inspection"
+    },
+    "aliases": {
+      "en": [
+        "material response check"
+      ]
+    },
+    "direction_ids": [
+      "environments-dioramas",
+      "rigid-mechanics",
+      "solid-geometry"
+    ],
+    "summary": "Verify that selected finishes are visibly distinguishable under repeatable viewing conditions.",
+    "objective": "A viewer can distinguish the intended material roles without relying on labels alone.",
+    "tags": [
+      "validation-profile",
+      "material",
+      "response",
+      "check"
+    ],
+    "example_prompts": [
+      "Verify that selected finishes are visibly distinguishable under repeatable viewing conditions.",
+      "Inspect pond coverage and glare with flow cues hidden, then restore the intended lighting and motion."
+    ],
+    "content": {
+      "principles": [
+        "Judge materials on the target object and a simple reference sample; geometry can hide or exaggerate a finish.",
+        "Keep a written distinction between authored appearance, source-backed shader semantics and measured physical properties."
+      ],
+      "implementation": [
+        "Save the light rig, environment, exposure and camera distance. Capture front and grazing views with a neutral reference.",
+        "Compare dielectric, bare metal and transmissive parts using the relevant material profiles. Change only one setting at a time.",
+        "Record unreadable reflections, lost silhouettes, transparency artifacts and scale-inconsistent texture detail with the view that reveals them.",
+        "For a depicted filled pond, first hide animated flow cues and isolate water/terrain to locate missing, buried or masked base coverage. Then restore the intended light rig and compare overview and oblique views for broad highlights that erase water readability; fix the diagnosed geometry, material or light interaction rather than assuming every white patch is missing water."
+      ],
+      "observable_checks": [
+        "A viewer can distinguish the intended material roles without relying on labels alone.",
+        "A repeated baseline produces the same visual comparison; inconclusive differences are reported as inconclusive.",
+        "When water level and footprint are meant to stay fixed, coverage remains legible with flow cues hidden or authored flow stopped. Record separately whether a failed view shows occlusion, missing geometry, transparency artifacts or unreadable highlights; an inconclusive diagnosis stays inconclusive."
+      ]
+    },
+    "known_limits": [
+      "No universal roughness value or objective realism score is prescribed; art direction can deliberately simplify response.",
+      "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+    ],
+    "creative_affordances": [
+      "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance.",
+      "Opaque stylized water, translucent layers, transmission and deliberately bright reflections are valid choices; inspect readability under the intended camera and lighting without prescribing a tint, roughness or opacity."
+    ],
+    "related_ids": [
+      "recipe.fantasy-village-diorama",
+      "recipe.coupled-gears",
+      "recipe.solid-of-revolution"
+    ],
+    "claims": [],
+    "subject_terms": [
+      "pond",
+      "water surface",
+      "shoreline",
+      "glare",
+      "surface coverage"
+    ],
+    "intent_signals": [
+      "Diagnose a white moving patch or a pond that looks empty by separating surface coverage from highlights and flow cues."
+    ]
+  },
+  {
+    "schema_version": 1,
+    "id": "recipe.terrain-island",
+    "revision": 2,
+    "status": "active",
+    "record_kind": "creative",
+    "title": {
+      "en": "Terrain island with grounded exploration"
+    },
+    "aliases": {
+      "en": [
+        "terrain island"
+      ]
+    },
+    "direction_ids": [
+      "environments-dioramas"
+    ],
+    "summary": "Compose a traversable island around a ridge, sheltered inlet and readable path.",
+    "objective": "Build an island I can explore, with terrain-aware walkers and a clear route from jetty to lookout.",
+    "tags": [
+      "terrain",
+      "island"
+    ],
+    "example_prompts": [
+      "Build an island I can explore, with terrain-aware walkers and a clear route from jetty to lookout."
+    ],
+    "entities": [
+      {
+        "name": "Terrain",
+        "guidance": "Author silhouette before detail: ridge, saddle, shore shelf and cliff faces. Use rough rock, softer soil and low-gloss water as distinct material families; avoid uniform noise. Where a filled pond or stream is depicted, build a persistent base surface with a declared footprint and water level/profile distinct from the basin floor; add ripples or flow flecks as separate cues."
+      },
+      {
+        "name": "Jetty and lookout",
+        "guidance": "Model posts into the support surface, deck thickness, rail joints and visible steps; inspect at walking distance."
+      },
+      {
+        "name": "Walker",
+        "guidance": "Give feet, hips and a head a readable hierarchy; derive stride from traveled distance, plant feet against the support surface."
+      }
+    ],
+    "state_contract": {
+      "model": "Authored height field and static obstacles; controlled capsule actor with position, velocity and bounded steering acceleration in illustrative metres.",
+      "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate. If water is included, its level/profile and footprint own base coverage; the flow control and cue phase are separate presentation state.",
+      "actions": [
+        "Select route waypoint; reject unreachable targets.",
+        "Pause or reset actor position and velocity.",
+        "Toggle terrain and obstacle collider overlay."
+      ]
+    },
+    "invariants": [
+      "Collider includes body clearance; buildings and cliff walls block movement.",
+      "Sample support height and normal; enforce authored slope and step limits and block water unless swimming is implemented.",
+      "Bridge deck is a distinct support surface above water; do not sample seabed through it.",
+      "For a filled, non-draining authored water surface with unchanged level, hiding flow cues or setting authored flow to zero preserves base coverage; intentionally changing water volume or level needs a separate contract."
+    ],
+    "motion_guidance": [
+      "Use fixed simulation steps, sweep capsule across movement and slide/stop at contact; interpolate rendering.",
+      "Constrain feet to terrain, limit heading change, and keep acceleration bounded in free motion; gravity only in unsupported states.",
+      "Animate optional flow cues over the persistent water surface. Pause freezes their state; reset restores declared water level/coverage and cue phase. No flow simulation is implied."
+    ],
+    "known_limits": [
+      "Invented terrain, not a geologic or erosion model.",
+      "Navigation and contact implementation remain required; a waypoint curve alone does not establish clearance.",
+      "Authored guidance; no scene runtime or visual verification has run for this recipe."
+    ],
+    "object_craft": [
+      {
+        "family": "Terrain",
+        "structure": "Author silhouette before detail: ridge, saddle, shore shelf and cliff faces. Use rough rock, softer soil and low-gloss water as distinct material families; avoid uniform noise. Where a filled pond or stream is depicted, build a persistent base surface with a declared footprint and water level/profile distinct from the basin floor; add ripples or flow flecks as separate cues.",
+        "material": "Rough cliff rock, softer matte soil, directional timber grain and a low-gloss water family; use contact darkening sparingly at supports.",
+        "articulation": "Parent feet to legs and legs to pelvis; heading follows resolved velocity, foot placement follows the selected support surface."
+      },
+      {
+        "family": "Jetty and lookout",
+        "structure": "Model posts into the support surface, deck thickness, rail joints and visible steps; inspect at walking distance.",
+        "material": "Rough cliff rock, softer matte soil, directional timber grain and a low-gloss water family; use contact darkening sparingly at supports.",
+        "articulation": "Parent feet to legs and legs to pelvis; heading follows resolved velocity, foot placement follows the selected support surface."
+      },
+      {
+        "family": "Walker",
+        "structure": "Give feet, hips and a head a readable hierarchy; derive stride from traveled distance, plant feet against the support surface.",
+        "material": "Rough cliff rock, softer matte soil, directional timber grain and a low-gloss water family; use contact darkening sparingly at supports.",
+        "articulation": "Parent feet to legs and legs to pelvis; heading follows resolved velocity, foot placement follows the selected support surface."
+      }
+    ],
+    "physical_contract": {
+      "model": "controlled-locomotion",
+      "scope": "Terrain-aware authored walking; no hydrodynamics.",
+      "state": [
+        "position",
+        "velocity",
+        "heading",
+        "support surface ID"
+      ],
+      "colliders": [
+        "Capsule actor encompassing body; support contact handles feet.",
+        "Transformed static wall/roof bounds; terrain and bridge supports."
+      ],
+      "driving": [
+        "Bound free-motion acceleration and turn rate; brake or replan at blocked route."
+      ],
+      "contact": [
+        "Sweep movement, remove inward velocity, slide or stop.",
+        "Terrain normal, slope and step limits decide support; water is blocked."
+      ],
+      "timestep": "Fixed simulation step with accumulated remainder; interpolate render transforms.",
+      "checks": [
+        "Complete a route without penetration at declared tolerance.",
+        "Stop at shoreline and cliff; traverse bridge on its deck.",
+        "Pause and reset clear stale velocity.",
+        "If water is depicted, inspect overview and oblique shoreline/bridge views with flow cues hidden and with flow zero; intended wet regions stay covered and dry banks stay dry. Pause/reset preserves or restores declared coverage and cue state."
+      ]
+    },
+    "subject_terms": [
+      "pond",
+      "shoreline",
+      "water surface coverage",
+      "stream flow cues"
+    ],
+    "intent_signals": [
+      "Keep a filled pond and stream surface visible while authored flow cues move or stop."
+    ]
+  }
+]

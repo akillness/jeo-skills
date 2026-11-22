@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-unfolding-isometry",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Treat unfolding as an isometry with an overlap test"
+  },
+  "aliases": {
+    "en": [
+      "net folding",
+      "polyhedron net",
+      "edge unfolding"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry",
+    "topology-symmetry"
+  ],
+  "summary": "Preserve face shapes and edge adjacency through a folding animation, and test the flat net for self-overlap.",
+  "objective": "Make a net-and-fold scene demonstrate a real correspondence rather than an approximate animation.",
+  "applies_when": [
+    "A polyhedron is unfolded into a flat net or folded from one.",
+    "A net is printed, exported or offered for construction.",
+    "The scene claims that a particular net folds into a particular solid."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "net",
+    "unfolding",
+    "isometry",
+    "spanning tree",
+    "overlap",
+    "polyhedron"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "geometry",
+    "folding"
+  ],
+  "intent_signals": [
+    "unfold the solid",
+    "print the net",
+    "does this net fold into a cube"
+  ],
+  "example_prompts": [
+    "Unfold the polyhedron into a net I could actually cut out.",
+    "Animate folding the net back into the solid."
+  ],
+  "negative_signals": [
+    "Decorative unfolding effects that do not claim a constructible net.",
+    "Curved surfaces, which generally have no exact flat net."
+  ],
+  "not_for": [
+    "Decorative unfolding effects that do not claim a constructible net.",
+    "Curved surfaces, which generally have no exact flat net."
+  ],
+  "content": {
+    "principles": [
+      "Unfolding is an isometry of the faces: lengths and angles within each face are preserved and only the dihedral angles change. A fold animation that stretches a face is not showing an unfolding.",
+      "An edge unfolding is defined by cutting along a spanning tree of the edges so that the remaining surface opens flat; whether every convex polyhedron has a non-overlapping edge unfolding is a long-standing open problem, so overlap must be tested rather than assumed.",
+      "Adjacency is combinatorial data. The animation should move faces that remain joined along their shared edges, which requires the edge graph, not just a pile of polygons.",
+      "A net intended for construction has extra requirements, such as tabs and a cutting plan, that are separate from the mathematical unfolding."
+    ],
+    "implementation": [
+      "Keep two graphs and do not confuse them. The primal graph has the polyhedron's vertices and edges; the dual graph has one node per face and one link per shared edge. An edge unfolding cuts along a spanning tree of the primal graph, and the edges that remain uncut form a spanning tree of the dual graph, which is the hinge structure the fold animation uses. For a cube that means seven cut edges and five hinges, since eight vertices give a seven-edge primal tree and six faces give a five-edge dual tree.",
+      "Compute the flat layout by walking the dual spanning tree and unfolding each face about the hinge it shares with its parent, so every face keeps its own geometry exactly and the net stays connected.",
+      "Run a polygon overlap test on the resulting layout and report the overlapping pair rather than shipping an invalid net.",
+      "Animate the fold by interpolating dihedral angles about the shared edges, keeping the faces rigid throughout.",
+      "Offer alternative cut trees when one produces overlap, and check each candidate for the same tree property before laying it out; a cut set that is not a spanning tree of the primal graph either leaves the surface in pieces or leaves a cycle that cannot be flattened."
+    ],
+    "observable_checks": [
+      "Measure a face edge in the folded and unfolded states; any difference means the animation is not an isometry.",
+      "Run the overlap test on the produced net and confirm the reported result matches what the layout shows.",
+      "Fold and unfold repeatedly and confirm the solid closes exactly rather than drifting.",
+      "Change the cut tree and confirm the net changes while the solid stays identical.",
+      "Count the cut edges and the hinges against the solid: the cuts should number one less than the vertex count and the hinges one less than the face count, and any other split means the cut set is not a spanning tree of the primal graph."
+    ]
+  },
+  "related_ids": [
+    "recipe.polyhedron-net",
+    "recipe.torus-euler-cells"
+  ],
+  "creative_affordances": [
+    "Fold ordering, staging and easing are free artistic choices as long as faces stay rigid.",
+    "Deliberately overlapping or impossible nets can be shown as counterexamples when labelled as such."
+  ],
+  "known_limits": [
+    "Authored construction guidance citing the definition and open status of edge unfolding; it provides no algorithm guaranteeing a non-overlapping net.",
+    "Curved and non-convex surfaces are outside the cited statement."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-edge-unfolding-open-problem",
+      "statement": "An edge unfolding of a convex polyhedron cuts along a spanning tree of its edges and opens the remaining faces flat without overlap, and whether every convex polyhedron admits such a non-overlapping edge unfolding is an open problem going back to Duerer and posed formally by Shephard.",
+      "scope": "Combinatorial geometry of polyhedral unfolding; it does not assert that any particular net is valid.",
+      "source_refs": [
+        {
+          "source_id": "source.reasoning-depth-edge-unfolding-open-problem",
+          "locator": "Conjecture statement and definition of an edge unfolding"
+        }
+      ]
+    }
+  ]
+}

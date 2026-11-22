@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-watermill",
+  "record_revision": 6,
+  "asset": "templates/kits/buildings/watermill.js",
+  "asset_sha256": "f074177b02b2a39bae8fc27d47eb94604840e4f9eb6791675f1d130f3de86b12",
+  "params": {
+    "width": 6,
+    "depth": 4.5,
+    "wheelRadius": 1.6,
+    "paddles": 14,
+    "roofPitchDeg": 42,
+    "speedRadPerSec": 0.55,
+    "seed": 1
+  },
+  "tier": "T2",
+  "kit": {
+    "blueprint": "knowledge.blueprint-watermill",
+    "module": "../buildings/watermill.js",
+    "params": {
+      "width": 6,
+      "depth": 4.5,
+      "wheelRadius": 1.6,
+      "paddles": 14,
+      "roofPitchDeg": 42,
+      "speedRadPerSec": 0.55,
+      "seed": 1
+    },
+    "tier": "T2",
+    "surface": {
+      "seed": 1,
+      "size": 1024,
+      "materials": 9,
+      "unmapped": [
+        "#6a655f",
+        "#4e3b28",
+        "#503d2a",
+        "#4d3a28",
+        "#4f3c29",
+        "#2b2b30",
+        "#ffffff",
+        "#bebab5",
+        "#1d272b",
+        "#55514b",
+        "#ada8a1",
+        "#36464b",
+        "#334147",
+        "#8d867e",
+        "#4e3b29",
+        "#503d29",
+        "#1e2b2c",
+        "#4a3826",
+        "#a29d99",
+        "#29353a",
+        "#2b393c",
+        "#573f35",
+        "#65493e",
+        "#64493e",
+        "#adadad",
+        "#473625",
+        "#493726",
+        "#493725",
+        "#473624",
+        "#443323",
+        "#493826",
+        "#483625",
+        "#453423",
+        "#4b3927",
+        "#483725",
+        "#463523",
+        "#9fc4c8"
+      ],
+      "uv": [
+        "world"
+      ],
+      "ms": 290.4,
+      "ao": {
+        "vertices": 20544,
+        "casts": 56966,
+        "ms": 226.3,
+        "skipped": null
+      }
+    },
+    "triangles": 10192,
+    "bounds_m": {
+      "min": [
+        -3.1774999998509883,
+        -0.0011576886549704568,
+        -2.6113908626677076
+      ],
+      "max": [
+        6.312480681618639,
+        6.956929892217278,
+        2.699999999664724
+      ],
+      "size": [
+        9.489980681469627,
+        6.958087580872249,
+        5.3113908623324315
+      ]
+    },
+    "fit_distance_m": 18.8741,
+    "view_distances_m": {
+      "far": 45.298,
+      "mid": 22.649,
+      "close": 12.6,
+      "detail": 2.8306
+    },
+    "sockets": [
+      "wheel",
+      "door",
+      "loading-door",
+      "launder",
+      "ridge",
+      "sign"
+    ],
+    "detail_socket": "wheel",
+    "animated": true,
+    "colliders": [
+      "walls",
+      "roof",
+      "wheel"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "c2bfef6953b0e0f093daca1ecf2c8fa393a7738667c2a3bf5fac7b93ab04e7f8",
+    "mid.png": "cbc07eaf0d2a402c06cd1c63ae5cbb3d4be2b29d5b829362d433d4e07925ab1b",
+    "close.png": "e49f34f6ee095c5b84448a7bfe49b6c24962df551a543a5463565ea19abd6176",
+    "detail.png": "55b436e492837359ac54a9a2753e358fc19956f79e6444bb8bc266c02c4ca4e6",
+    "close-motion.png": "5305accf132b18b80fadc5c732fd878a2c4a8b3dc24ebabb6f33104ae89c767d"
+  },
+  "motion": {
+    "interval_ms": 700,
+    "simulated": true,
+    "animate_returned": true,
+    "differs": true,
+    "sha_before": "e49f34f6ee095c5b84448a7bfe49b6c24962df551a543a5463565ea19abd6176",
+    "sha_after": "5305accf132b18b80fadc5c732fd878a2c4a8b3dc24ebabb6f33104ae89c767d"
+  },
+  "gpu_requested": false,
+  "capture_mode": "swiftshader",
+  "webgl_renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T17:14:49+00:00",
+  "finished": "2026-09-08T17:14:57+00:00",
+  "surface": {
+    "families": {
+      "#9a938a": "stone",
+      "#ddd2bd": "plaster",
+      "#54402c": "wood",
+      "#6f5145": "roof-tile",
+      "#33322f": "metal"
+    },
+    "seed": 1,
+    "size": 1024,
+    "ao": {
+      "samples": 13,
+      "radius_m": 0.45,
+      "ground_dirt_m": 0.6
+    }
+  }
+}

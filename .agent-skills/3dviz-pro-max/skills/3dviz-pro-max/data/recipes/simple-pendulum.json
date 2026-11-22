@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "id": "recipe.simple-pendulum",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Ideal pendulum with measurable state"
+  },
+  "aliases": {
+    "en": [
+      "simple pendulum"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics"
+  ],
+  "summary": "Relate angular state to bob motion and distinguish small-angle approximation.",
+  "objective": "Simulate a pendulum with angle, angular velocity and a period comparison for small amplitudes.",
+  "tags": [
+    "simple",
+    "pendulum"
+  ],
+  "example_prompts": [
+    "Simulate a pendulum with angle, angular velocity and a period comparison for small amplitudes."
+  ],
+  "entities": [
+    {
+      "name": "Support and pivot",
+      "guidance": "Model a stable support, visible suspension point and a thin string terminating at the bob center."
+    },
+    {
+      "name": "Bob",
+      "guidance": "Use a compact weighted-looking body with subdued metal finish; declare its geometry visual while mass is concentrated at a point."
+    },
+    {
+      "name": "State overlays",
+      "guidance": "Show angular displacement, tangent velocity and gravity arrows on distinct scales."
+    }
+  ],
+  "state_contract": {
+    "model": "Ideal point bob, fixed length L>0, g>0; angle theta from downward vertical, angular velocity omega; theta acceleration=-(g/L)sin(theta).",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Set length and initial angle while stopped.",
+      "Play, pause and single-step.",
+      "Reset state and period history."
+    ]
+  },
+  "invariants": [
+    "Distance from pivot equals L.",
+    "Small-angle period comparison uses 2*pi*sqrt(L/g) and is labeled approximate.",
+    "Paused state and simulation time do not advance."
+  ],
+  "motion_guidance": [
+    "Use a documented fixed-step integrator, not a sinusoid mislabeled as the nonlinear solution.",
+    "Render bob position from angle; derive tangential velocity and acceleration from the same state."
+  ],
+  "known_limits": [
+    "No air drag, pivot friction, string elasticity or slack-string motion.",
+    "Exclude amplitudes or initial speeds that invalidate the taut-string assumption; no collision-driven pendulum here.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.simple-pendulum",
+      "statement": "An ideal simple pendulum obeys theta double-dot=-(g/L)sin(theta); its small-angle period is approximately 2*pi*sqrt(L/g).",
+      "scope": "Point bob and negligible string mass with a fixed pivot and taut length.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-pendulum",
+          "locator": "15.4, The Simple Pendulum, equations 15.17–15.19"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Support and pivot",
+      "structure": "Model a stable support, visible suspension point and a thin string terminating at the bob center.",
+      "material": "Subdued metal-looking bob and support, matte cord and low-contrast reference arc; finish is illustrative, not a mass estimator.",
+      "articulation": "Cord pivots at the support; bob center derives from theta and L, with no independent bob oscillator."
+    },
+    {
+      "family": "Bob",
+      "structure": "Use a compact weighted-looking body with subdued metal finish; declare its geometry visual while mass is concentrated at a point.",
+      "material": "Subdued metal-looking bob and support, matte cord and low-contrast reference arc; finish is illustrative, not a mass estimator.",
+      "articulation": "Cord pivots at the support; bob center derives from theta and L, with no independent bob oscillator."
+    },
+    {
+      "family": "State overlays",
+      "structure": "Show angular displacement, tangent velocity and gravity arrows on distinct scales.",
+      "material": "Subdued metal-looking bob and support, matte cord and low-contrast reference arc; finish is illustrative, not a mass estimator.",
+      "articulation": "Cord pivots at the support; bob center derives from theta and L, with no independent bob oscillator."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Ideal taut-string point pendulum in a clear scene; no collisions.",
+    "state": [
+      "theta",
+      "angular velocity",
+      "angular acceleration",
+      "simulation time"
+    ],
+    "colliders": [
+      "None; support is a fixed pivot constraint and scene must leave the bob arc unobstructed."
+    ],
+    "driving": [
+      "Gravity-only angular equation; SI units."
+    ],
+    "contact": [
+      "No ground or bob-bob contacts; exclude such configurations."
+    ],
+    "timestep": "Document fixed integrator step and convergence tolerance; pause does not accumulate hidden time.",
+    "checks": [
+      "Length remains L.",
+      "Compare small-amplitude period against analytic approximation.",
+      "Compare numerical energy drift against a declared tolerance for the chosen step."
+    ]
+  }
+}

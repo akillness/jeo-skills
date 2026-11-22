@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-depth-pressure-shape-independence",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Equal depth equal pressure across vessel shapes"
+  },
+  "aliases": {
+    "en": [
+      "hydrostatic probe check",
+      "gauge versus absolute pressure"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal"
+  ],
+  "summary": "Compare probes at equal depth in differently shaped vessels and keep gauge and absolute pressure distinct.",
+  "objective": "With density, gravity and surface pressure held equal, equal depths give equal pressure regardless of vessel shape, and the depth slope equals density times gravity.",
+  "applies_when": [
+    "A static liquid is probed at several depths or in several containers.",
+    "Both gauge and absolute pressure may be displayed.",
+    "Arrows or glyphs represent pressure at a surface."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "hydrostatics",
+    "pressure",
+    "reference-level"
+  ],
+  "subject_terms": [
+    "gauge pressure",
+    "absolute pressure",
+    "free surface",
+    "depth",
+    "density",
+    "surface normal"
+  ],
+  "intent_signals": [
+    "the wide tank shows more pressure at the same depth",
+    "is this gauge or absolute pressure"
+  ],
+  "example_prompts": [
+    "Check the depth pressure readings across these container shapes."
+  ],
+  "negative_signals": [
+    "dynamic pressure or flow",
+    "structural analysis of the vessel"
+  ],
+  "content": {
+    "principles": [
+      "Pressure in a static constant-density liquid depends on depth below the free surface rather than on the width or shape of the vessel, and that independence distinguishes the model from intuition about volume.",
+      "Gauge pressure is measured relative to atmospheric pressure, so it is zero at a free surface only when that surface is open to the atmosphere; in a sealed vessel at another surface pressure the surface gauge value is nonzero, and a quantity measured from the local surface is a surface-relative difference that must be named as such.",
+      "Pressure acts normally on a surface, so an arrow whose length encodes pressure must not be read as a velocity or as the total force on a wall."
+    ],
+    "implementation": [
+      "Restrict the comparison fixture to vessels holding the same liquid density under the same gravity with surfaces open to the same atmosphere, or state the differing surface pressures explicitly, then place probes at equal depths and record gauge and absolute pressure separately for each.",
+      "Sweep one probe from the free surface to the bottom and record the slope of pressure against depth, comparing it with density times gravity.",
+      "Evaluate exactly at the free surface, and define a probe above the surface as outside the liquid so the model reports it as such rather than extrapolating the liquid relation upward.",
+      "Record the direction of every pressure arrow relative to the local surface normal and state the scale used for arrow length."
+    ],
+    "observable_checks": [
+      "With density, gravity and surface pressure held equal, probes at equal depth in different vessels report equal pressure within the stated numerical tolerance; a difference identifies a shape or volume term that should not be present.",
+      "The slope of pressure against depth equals density times gravity in the declared units, and the reported surface value is zero exactly when the quantity is a gauge pressure at a surface open to the atmosphere or an explicitly surface-relative difference; a sealed vessel at another surface pressure reports a nonzero surface gauge value.",
+      "Arrows are normal to the local surface, their length scale is stated, and no label describes them as flow."
+    ]
+  },
+  "known_limits": [
+    "Applies to a static uniform-density liquid with declared surface pressure; stratification, compressible gases and dynamic pressure are outside it, and a point pressure is not a total wall force.",
+    "Authored verification guidance; no scene was computed or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.hydrostatic-depth-pressure",
+    "recipe.nozzle-continuity",
+    "recipe.vessel-radius-resistance"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-hydrostatic-depth",
+      "statement": "In a fluid of constant density the pressure at a depth below the surface equals the surface pressure plus density times gravity times depth, and the pressure depends only on depth rather than on the shape of the container.",
+      "scope": "Static constant-density liquid under uniform gravity with a common surface pressure.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-hydrostatics",
+          "locator": "14.1, variation of pressure with depth and the container-shape statement"
+        }
+      ]
+    },
+    {
+      "id": "claim.validation-gauge-pressure-reference",
+      "statement": "Gauge pressure is the pressure relative to atmospheric pressure, and absolute pressure is the sum of gauge pressure and atmospheric pressure.",
+      "scope": "The definition of the gauge reference level; it fixes what a zero reading means and does not make a sealed vessel surface read zero.",
+      "source_refs": [
+        {
+          "source_id": "source.validation-depth-openstax-gauge-pressure",
+          "locator": "14.2, gauge pressure relative to atmospheric pressure and equation 14.11"
+        }
+      ]
+    }
+  ]
+}

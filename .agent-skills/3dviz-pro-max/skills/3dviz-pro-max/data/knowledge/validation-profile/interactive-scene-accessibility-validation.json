@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.interactive-scene-accessibility-validation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "validation-profile",
+  "title": {
+    "en": "Interactive scene identity and accessibility validation"
+  },
+  "aliases": {
+    "en": [
+      "3D interaction accessibility acceptance",
+      "semantic selection parity check",
+      "keyboard pointer scene validation"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "architecture-interiors",
+    "abstract-systems-data"
+  ],
+  "summary": "Validate that semantic identity, selection, commands, labels, focus and alternatives remain coherent across canvas picking and companion controls.",
+  "objective": "The same stable entity and legal command are exposed through the rendered scene and companion interface, with keyboard operation and non-drag pointer alternatives evaluated explicitly rather than inferred from canvas behavior.",
+  "applies_when": [
+    "A web 3D scene exposes selection, manipulation, annotations or state-changing controls through canvas input and one or more DOM, keyboard, pointer or XR adapters."
+  ],
+  "tags": [
+    "validation-profile",
+    "interaction",
+    "accessibility",
+    "semantic-id",
+    "selection",
+    "keyboard"
+  ],
+  "subject_terms": [
+    "stable entity ID",
+    "selection parity",
+    "focus versus selection",
+    "keyboard operation",
+    "drag alternative",
+    "name role value"
+  ],
+  "intent_signals": [
+    "verify canvas and list select the same part",
+    "test keyboard and non-drag alternative for 3D control",
+    "validate semantic IDs through scene reload"
+  ],
+  "example_prompts": [
+    "Validate that clicking a nested 3D part and choosing its companion-list item select the same semantic entity.",
+    "Check a drag placement task through keyboard and click/tap alternatives with the same legality and undo command."
+  ],
+  "negative_signals": [
+    "raycast visibility equals semantic eligibility",
+    "canvas screenshot proves accessibility",
+    "every camera gesture is essential"
+  ],
+  "not_for": [
+    "Claiming whole-site WCAG conformance from one scene profile.",
+    "Requiring WebXR hardware or one fixed companion-interface layout."
+  ],
+  "content": {
+    "principles": [
+      "Semantic entity IDs and command meanings are the comparison baseline. Render nodes, mesh names, instance indices and DOM element IDs may map to them, but none should silently become the domain identity by accident.",
+      "Test focus, active item, selection set and manipulation target as distinct state. A visible highlight alone cannot prove the companion control or application model agrees.",
+      "Raycast inclusion is an input routing choice, not a consequence of visual visibility. Define semantic eligibility first, then configure object/raycaster layer masks and occlusion policy deliberately.",
+      "Evaluate keyboard operability and a single-pointer alternative to author-controlled dragging separately. An essential exception depends on the actual function and does not follow merely because the interface is 3D.",
+      "Capability availability and acceptance are separate: an unavailable optional adapter is recorded as not-run, while an advertised or required adapter that is unavailable leaves the applicable acceptance requirement unmet."
+    ],
+    "implementation": [
+      "Author stable application IDs for a nested-object fixture with one selectable parent, child and instance plus one intentionally decorative mesh. Build a manifest mapping Blender/export identity to loaded objects and companion-control rows; detect duplicate or missing IDs before interaction starts.",
+      "Exercise each adapter through the same action map and model command boundary: canvas pick, companion-list selection, keyboard step/target action, click-or-tap non-drag placement, and XR only when a supported session/input source is available. Record unsupported adapters as not-run rather than failures or implied support.",
+      "For selection parity, log input adapter, hit render node, resolved semantic ID, focus, active item, selected-ID set, preview state, committed command and accessible label/state after every action. Test nested transforms, hidden-but-semantic items, decorative geometry and layer-mask changes.",
+      "For manipulation, run legal commit, invalid target, cancellation, pre-commit capture loss, terminal cleanup, undo and reset. The alternative control must reach the same validation and commit path, while interaction-specific pointer mechanics may differ.",
+      "Inspect the companion controls with platform accessibility tooling when runtime evidence is authorized: names, roles, states/values, focus order and change announcements must describe the semantic model. Retain failures and assistive-technology/browser versions."
+    ],
+    "observable_checks": [
+      "Canvas picking and companion controls resolve the same stable entity ID and selected set; decorative or ineligible geometry never becomes selected merely because a ray intersects it.",
+      "Keyboard and single-pointer non-drag alternatives perform the same essential legal operation and create the same semantic command as dragging, within the declared interaction policy.",
+      "Focus remains visible and distinct from selection; accessible names and states track committed model state after select, cancel, undo, reset, unload and reload.",
+      "A pre-commit cancellation restores the full start state, while post-commit cleanup leaves the committed command intact.",
+      "Unsupported optional XR or assistive-technology combinations are recorded as not-run. If the product advertises or requires that capability, unavailability leaves the applicable acceptance requirement unmet; success in one pairing does not certify all devices or whole-site conformance."
+    ]
+  },
+  "related_ids": [
+    "knowledge.inspectable-selection",
+    "knowledge.accessible-spatial-controls",
+    "knowledge.linked-plot-spatial-selection",
+    "knowledge.constraint-aware-object-manipulation",
+    "knowledge.multi-selection-hierarchy",
+    "knowledge.modality-independent-action-map"
+  ],
+  "creative_affordances": [
+    "Choose any visual highlight, companion layout or input vocabulary that preserves the same semantic identity and command meaning."
+  ],
+  "known_limits": [
+    "This profile supports scoped acceptance evidence and does not by itself establish WCAG conformance.",
+    "Assistive technologies, browsers, input devices and XR capabilities vary and require an explicit tested matrix.",
+    "Semantic IDs are an application contract; optional glTF names are not guaranteed unique.",
+    "Authored and source-checked procedure; no browser, pointer, keyboard, assistive-technology or XR session was run.",
+    "A not-run result is not a pass for an advertised or required capability."
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-wcag-keyboard-drag-scope",
+      "statement": "WCAG 2.2 requires content functionality to be operable through a keyboard interface except for functions whose underlying input depends on movement path, and separately requires author-controlled dragging functionality to have a single-pointer alternative unless an exception applies.",
+      "scope": "WCAG 2.2 Success Criteria 2.1.1 and 2.5.7; this record does not assert whole-page conformance or classify any particular 3D function as essential.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-wcag22-controls",
+          "locator": "Success Criterion 2.1.1 Keyboard"
+        },
+        {
+          "source_id": "source.experience-wcag-dragging",
+          "locator": "Success Criterion 2.5.7; Intent; Relationship to keyboard accessibility requirements"
+        }
+      ]
+    },
+    {
+      "id": "claim.validation-gltf-name-identity-limit",
+      "statement": "glTF object names are optional application-facing strings and are not guaranteed unique, so exact semantic selection parity requires a separately declared stable identity contract.",
+      "scope": "Normative glTF 2.0.1 name semantics; the choice and persistence of application IDs are authored policy.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-khronos-gltf-animation",
+          "locator": "Section 3.3 Indices and Names: optional names"
+        }
+      ]
+    }
+  ]
+}

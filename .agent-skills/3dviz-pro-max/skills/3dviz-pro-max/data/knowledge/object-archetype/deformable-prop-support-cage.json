@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.deformable-prop-support-cage",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "object-archetype",
+  "title": {
+    "en": "Deformable prop with a construction-aware support cage"
+  },
+  "aliases": {
+    "en": [
+      "cage-deformed soft prop",
+      "mesh deform support envelope",
+      "deformation-safe opening and attachment"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "products-assemblies",
+    "soft-fluid-thermal"
+  ],
+  "summary": "Organize a soft prop around a low-complexity cage, protected openings, attachment zones and thickness checks so expressive deformation does not silently destroy construction.",
+  "objective": "Across approved extreme poses, the prop keeps intentional openings clear, attachments seated, wall thickness visually credible and deformation ownership explicit after export.",
+  "applies_when": [
+    "A bag, cushion, soft container, padded part or stylized flexible prop deforms as a coordinated volume rather than through a skeletal limb hierarchy."
+  ],
+  "tags": [
+    "object-archetype",
+    "deformable-prop",
+    "support-cage",
+    "mesh-deform",
+    "attachments"
+  ],
+  "subject_terms": [
+    "deformation cage",
+    "Mesh Deform bind",
+    "protected opening",
+    "attachment zone",
+    "wall thickness",
+    "cage normals",
+    "extreme pose",
+    "deformation mask"
+  ],
+  "intent_signals": [
+    "bend a bag without collapsing the zipper",
+    "soft prop loses thickness",
+    "deform several attached parts together",
+    "export cage deformation to Three.js"
+  ],
+  "example_prompts": [
+    "Create a soft equipment pouch whose zipper opening and strap anchors remain readable while the body squashes.",
+    "Build a stylized cushion with piping and buttons that follows one low-resolution deformation cage."
+  ],
+  "negative_signals": [
+    "Claim the cage automatically preserves volume",
+    "Bind after moving source and cage into unrelated poses",
+    "Export a Blender modifier expecting Three.js to evaluate it"
+  ],
+  "not_for": [
+    "Cloth, finite-element or pressure simulation.",
+    "An articulated character limb better represented by joints and skinning."
+  ],
+  "content": {
+    "principles": [
+      "The cage is a control envelope, not a physical solver. Its shape and weights determine broad motion; construction checks decide whether thickness, openings and attachments remain acceptable.",
+      "Separate soft body regions from protected zones. An opening rim, rigid insert, buckle seat or handle root may need reduced influence, a dedicated inner cage or explicit child transform rather than unrestricted deformation.",
+      "Design rest and extreme poses together. A prop that looks coherent only at rest has not established a deformation archetype."
+    ],
+    "implementation": [
+      "Model outer shell, inner opening/rim, seams or piping, and attachment hardware as named parts. Give exposed openings actual depth or paired surfaces when the intended camera can see inside.",
+      "Create a simple closed cage around the deforming region with outward normals and enough control faces near openings and anchors. Bind Mesh Deform in the agreed rest state; use vertex groups to restrict influence and increase precision only when the comparison justifies it.",
+      "For attachments that must follow without bending, parent a rigid part to a named helper driven from a stable cage region or use a separate deformation mask. Do not bake a connector into the shell and then animate a second unrelated transform.",
+      "Author representative bend, squash and twist poses. At each pose, measure or visually compare the narrowest opening, minimum wall separation, attachment penetration and silhouette; revise cage topology or influence rather than hiding failure with shading.",
+      "Choose the transport owner: export a fixed evaluated pose, bake approved poses as topology-compatible morph targets, or rig a runtime deformation representation. glTF and Three.js do not receive the editable Mesh Deform cage operation itself.",
+      "Store an undeformed rest snapshot and reset all morph, skin or controller weights together with attachment transforms."
+    ],
+    "observable_checks": [
+      "At every approved pose, the zipper, mouth or handle opening remains intentionally open and its rim does not cross itself.",
+      "Outer and inner surfaces do not visibly invert or intersect at the tightest bend; a thickness probe at declared landmarks stays above the authored visual minimum.",
+      "Rigid attachments remain seated without sinking into or floating away from their anchor regions.",
+      "The exported runtime representation reproduces the approved rest and extreme silhouettes, and reset returns exactly to the stored rest state."
+    ]
+  },
+  "related_ids": [
+    "knowledge.blender-evaluated-mesh-handoff",
+    "knowledge.blender-deformation-animation-handoff",
+    "knowledge.shared-gltf-asset-bridge",
+    "knowledge.shared-skinned-articulated-rig"
+  ],
+  "creative_affordances": [
+    "Use asymmetric squash, folded corners or exaggerated rebound for character while protecting functional openings.",
+    "Expose the low-resolution cage as an inspection overlay in educational or tooling views."
+  ],
+  "known_limits": [
+    "Cage deformation does not conserve volume, enforce collisions, preserve a numerical thickness or predict material response.",
+    "Morph or skin transport imposes its own topology and ownership contracts.",
+    "Authored reusable guidance; no cage bind, export or runtime artifact was executed for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.craft-mesh-deform-cage",
+      "statement": "Blender 4.5's Mesh Deform modifier uses an arbitrary closed mesh as a cage around another mesh, requires binding to map current cage and object vertices, can restrict affected vertices with a vertex group, and provides precision and dynamic-binding controls; the manual also requires outward cage normals for inside/outside determination.",
+      "scope": "Documented Blender Mesh Deform authoring behavior; it does not claim physical simulation or automatic preservation of openings, volume or thickness.",
+      "source_refs": [
+        {
+          "source_id": "source.craft-blender-mesh-deform",
+          "locator": "Opening description; Vertex Group; Precision; Dynamic; Bind; Hints"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "id": "recipe.knee-layer-peel",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Knee structures with layer peel"
+  },
+  "aliases": {
+    "en": [
+      "knee layer peel"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures"
+  ],
+  "summary": "Inspect the joint interior through reversible layer visibility.",
+  "objective": "Show a knee with a controlled peel that exposes the menisci and retains a reference pose.",
+  "tags": [
+    "knee",
+    "layer",
+    "peel"
+  ],
+  "example_prompts": [
+    "Show a knee with a controlled peel that exposes the menisci and retains a reference pose."
+  ],
+  "entities": [
+    {
+      "name": "Bones",
+      "guidance": "Preserve recognizable distal femur and proximal tibia landmarks from a sourced model; bone and cartilage need distinct restrained finishes."
+    },
+    {
+      "name": "Menisci",
+      "guidance": "Make separate named structures at their sourced locations; preserve curvature and thickness rather than flat generic washers."
+    },
+    {
+      "name": "Layer handles",
+      "guidance": "Separate peel controls from pose controls; retain dotted attachment/reference guides during displacement."
+    }
+  ],
+  "state_contract": {
+    "model": "Sourced structure IDs and immutable rest transforms; peel amount changes display offsets only.",
+    "authority": "One canonical model owns semantic values; derive geometry and labels from it. Keep presentation transforms separate.",
+    "actions": [
+      "Peel outer layers.",
+      "Isolate menisci with surrounding bones visible.",
+      "Restore rest pose."
+    ]
+  },
+  "invariants": [
+    "Reset reproduces original transforms exactly.",
+    "Exploded offsets do not change attachment metadata.",
+    "Do not treat the knee as a mechanically certified single-axis hinge."
+  ],
+  "motion_guidance": [
+    "Ease layers along authored nonintersecting display offsets, never a gravity simulation.",
+    "If flexion is added, obtain separate kinematic evidence and validate contacts; this record supplies no flexion limits."
+  ],
+  "known_limits": [
+    "No ligament force, cartilage deformation or joint load model.",
+    "Mesh landmarks and proportions need separate asset verification.",
+    "Authored guidance; no scene runtime or visual verification has run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.knee-layer-peel",
+      "statement": "Menisci in the knee provide cushioning between the articulating bones.",
+      "scope": "Qualitative structural function; no material or load parameters.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-synovial",
+          "locator": "9.4, articular discs and menisci paragraphs"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Bones",
+      "structure": "Preserve recognizable distal femur and proximal tibia landmarks from a sourced model; bone and cartilage need distinct restrained finishes.",
+      "material": "Matte ivory bone, smoother cartilage and a distinct meniscus family; no wet-metal appearance or decorative grooves presented as anatomy.",
+      "articulation": "Peel offsets preserve rest-pose attachments; no generic hinge is claimed as knee biomechanics."
+    },
+    {
+      "family": "Menisci",
+      "structure": "Make separate named structures at their sourced locations; preserve curvature and thickness rather than flat generic washers.",
+      "material": "Matte ivory bone, smoother cartilage and a distinct meniscus family; no wet-metal appearance or decorative grooves presented as anatomy.",
+      "articulation": "Peel offsets preserve rest-pose attachments; no generic hinge is claimed as knee biomechanics."
+    },
+    {
+      "family": "Layer handles",
+      "structure": "Separate peel controls from pose controls; retain dotted attachment/reference guides during displacement.",
+      "material": "Matte ivory bone, smoother cartilage and a distinct meniscus family; no wet-metal appearance or decorative grooves presented as anatomy.",
+      "articulation": "Peel offsets preserve rest-pose attachments; no generic hinge is claimed as knee biomechanics."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Semantic geometry/state presentation; no gravity, contact force or material simulation.",
+    "checks": [
+      "Reset reproduces original transforms exactly.",
+      "Exploded offsets do not change attachment metadata."
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "id": "recipe.monte-carlo-volume",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Monte Carlo volume estimate with an interval"
+  },
+  "aliases": {
+    "en": [
+      "Monte Carlo estimate",
+      "hit or miss sampling",
+      "estimation interval"
+    ]
+  },
+  "direction_ids": [
+    "probability-statistics"
+  ],
+  "summary": "Estimate a volume by sampling a bounding box and keep the uncertainty attached to every reported number.",
+  "objective": "Build a Monte Carlo volume estimator with visible hit/miss samples, counts and a stated-confidence interval when its usability conditions hold, showing how uncertainty changes with sample count.",
+  "tags": [
+    "monte carlo",
+    "sampling",
+    "estimation"
+  ],
+  "subject_terms": [
+    "Monte Carlo",
+    "hit or miss",
+    "bounding box",
+    "proportion",
+    "standard error",
+    "confidence interval",
+    "sample size",
+    "seeded random"
+  ],
+  "intent_signals": [
+    "Estimate the volume of an awkward solid by sampling.",
+    "Show how sample count affects an estimate and its uncertainty."
+  ],
+  "example_prompts": [
+    "Build a Monte Carlo volume estimate with visible hits and misses and a running interval that may narrow or widen as sampling continues.",
+    "Compare the sampled estimate against an analytic volume for a known solid."
+  ],
+  "negative_signals": [
+    "Not a numerical integration benchmark and not a quadrature comparison.",
+    "Not a claim of accuracy for any particular sample count; the interval is the statement."
+  ],
+  "not_for": [
+    "Not a numerical integration benchmark and not a quadrature comparison.",
+    "Not a claim of accuracy for any particular sample count; the interval is the statement."
+  ],
+  "entities": [
+    {
+      "name": "Bounding box and solid",
+      "guidance": "Show the sampling box explicitly, since the estimate is the box volume times the hit proportion and depends entirely on that box."
+    },
+    {
+      "name": "Sample points",
+      "guidance": "Render hits and misses as separate sets with counts, so the proportion is countable and not just plotted."
+    },
+    {
+      "name": "Estimate readout",
+      "guidance": "Display the running estimate together with its interval, sample count and seed, so any screenshot is reproducible."
+    }
+  ],
+  "state_contract": {
+    "model": "A closed solid with a reliable inside test, an axis-aligned bounding box that must contain the whole solid, a seeded uniform sampler, running hit and total counts, the estimate as box volume times the hit proportion, and a large-sample normal-approximation interval at a stated confidence level, displayed only while the successes-and-failures condition holds. With n = 0 the estimate and interval are unavailable rather than zero.",
+    "authority": "Counts are authoritative. The estimate and interval are recomputed from counts, and no displayed number may be smoothed or rounded away from its count.",
+    "actions": [
+      "Add a batch of samples.",
+      "Change the seed and rerun.",
+      "Shrink the bounding box to a tighter fit and compare efficiency.",
+      "Reset counts, seed and camera."
+    ]
+  },
+  "invariants": [
+    "Every sample is classified exactly once as hit or miss, and hits plus misses equals the total.",
+    "For a fixed underlying proportion the interval width scales asymptotically as one over the square root of the sample count. The displayed width uses the estimated proportion, so an individual batch may widen it; that is expected sampling behaviour and not a defect.",
+    "The bounding box must contain the entire solid, otherwise the estimate targets the intersection instead. Within that condition a tighter box changes efficiency. Each usable interval has the declared approximate marginal coverage under its assumptions; that probability is not the probability that two runs agree or their intervals overlap, and disagreement is possible."
+  ],
+  "motion_guidance": [
+    "Add samples in visible batches so interval changes can be compared with the counts, including individual widening batches rather than forcing the display to narrow.",
+    "Keep earlier samples on screen or summarised; discarding them silently makes the count unverifiable."
+  ],
+  "known_limits": [
+    "The inside test dominates correctness: a wrong test produces a confident wrong answer.",
+    "Interval coverage assumes independent uniform samples and a proportion not too close to zero or one.",
+    "All-hit or all-miss batches make the normal-approximation interval unusable; the scene reports the condition as unmet rather than displaying zero uncertainty.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-sampling-standard-error",
+      "statement": "The standard deviation of the distribution of sample means equals the population standard deviation divided by the square root of the sample size, so a larger sample concentrates the estimate.",
+      "scope": "Applied here to the mean of a zero-one indicator, whose sample mean is the hit proportion; the normal approximation degrades for extreme proportions.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-sample-means",
+          "locator": "7.1, standard deviation of the sampling distribution"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-proportion-interval",
+      "statement": "A confidence interval for a population proportion has the form p-prime plus or minus a critical value times the square root of p-prime q-prime over n, and can be used only when the number of successes and the number of failures are both greater than five.",
+      "scope": "Large-sample normal-approximation interval for a Bernoulli proportion with the usability condition stated in the source; coverage is a probability statement about the procedure, not a guarantee about any single displayed interval, and a repeatedly watched running interval is not anytime-valid.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-openstax-proportion-interval",
+          "locator": "8.3, interval form, error bound and the condition on n p' and n q'"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Bounding box and solid",
+      "structure": "Wireframe box with labelled dimensions around an opaque solid whose surface is the actual test geometry.",
+      "material": "Wire box in a neutral value with the solid slightly translucent, so interior hits stay visible.",
+      "articulation": "None. Box resizing rebuilds sampling bounds and resets counts."
+    },
+    {
+      "family": "Sample points",
+      "structure": "Two point sets with different sizes and shapes so hits and misses are distinguishable without colour.",
+      "material": "Reserved accent for hits, desaturated material for misses; both must remain legible against the solid.",
+      "articulation": "Points accumulate and are never repositioned once placed."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Statistical estimation on static geometry; no dynamics.",
+    "checks": [
+      "Hits plus misses equals the reported total at every batch.",
+      "With the proportion estimate stable, quadrupling the sample count approximately halves the reported interval width; the check states that this is an asymptotic expectation rather than a guarantee for any single pair of batches."
+    ]
+  },
+  "related_ids": [
+    "recipe.normal-density-window",
+    "recipe.convex-hull-construction",
+    "knowledge.controlled-experiment"
+  ]
+}

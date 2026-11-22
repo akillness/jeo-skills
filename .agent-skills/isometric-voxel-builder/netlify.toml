@@ -1,0 +1,41 @@
+# Netlify configuration for the Mykonos Island Voxels static site.
+#
+# We have no bundler — the site is plain ES-module JS, CSS, and PNG/OGG
+# assets — so the "build" is just a small Node script that copies the
+# runtime files into ./dist (skipping design references, dot-files, and
+# the editor's .webp duplicates). Netlify then publishes ./dist.
+
+[build]
+  publish  = "dist"
+  command  = "node netlify-build.mjs"
+
+# ── Asset cache headers ─────────────────────────────────────────────
+# All hashed-by-content assets (images, audio) are immutable for the
+# life of a deploy, so we serve them with a 1-year cache and an
+# `immutable` directive. The HTML / CSS / JS need to be revalidated on
+# every load so users always get the latest deploy.
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/src/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.ogg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

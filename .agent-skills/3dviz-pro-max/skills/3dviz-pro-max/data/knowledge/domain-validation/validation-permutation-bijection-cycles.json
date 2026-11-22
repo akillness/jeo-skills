@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-permutation-bijection-cycles",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Bijection, cycle derivation and orientation beyond position"
+  },
+  "aliases": {
+    "en": [
+      "permutation bijection check",
+      "cycle display consistency"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles"
+  ],
+  "summary": "Confirm the move permutation is a bijection, that displayed cycles come from the engine, and that position alone is not solved state.",
+  "objective": "The permutation is bijective, displayed cycles match the engine decomposition, and restored positions with changed orientation are not reported as solved.",
+  "applies_when": [
+    "A scene displays where pieces travel under a move or sequence.",
+    "Cycle notation or arrows are drawn alongside the puzzle.",
+    "Pieces carry orientation in addition to position."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "permutation",
+    "cycles",
+    "orientation"
+  ],
+  "subject_terms": [
+    "bijection",
+    "disjoint cycles",
+    "fixed point",
+    "orientation state",
+    "slot mapping"
+  ],
+  "intent_signals": [
+    "two pieces ended in the same slot",
+    "the cycle arrows disagree with the move"
+  ],
+  "example_prompts": [
+    "Check the permutation cycles shown for this move sequence."
+  ],
+  "negative_signals": [
+    "proving reachability of arbitrary states",
+    "group-theoretic solving"
+  ],
+  "content": {
+    "principles": [
+      "A move is a bijection on slots: every source appears once and every destination appears once, which is checked before any cycle display is drawn.",
+      "Cycle decomposition is derived from the same permutation the engine applies; a separately authored cycle animation can drift from the model it claims to describe.",
+      "Position is not the whole state, because pieces can return to their slots with changed orientation, so a cycle display alone cannot report a solved puzzle."
+    ],
+    "implementation": [
+      "Build the mapping from source slot to destination slot and verify that the image set equals the domain set exactly.",
+      "Derive cycles by walking unvisited slots and confirm that cycle lengths sum to the number of moved pieces plus the listed fixed points.",
+      "Compose a sequence and compare the cycle structure derived from the composed permutation with the structure obtained by composing cycles, so display and engine agree.",
+      "Construct a case where every piece returns to its slot while at least one orientation differs and record what the interface reports."
+    ],
+    "observable_checks": [
+      "The permutation is a bijection with each slot appearing exactly once as source and once as destination; a repeated destination identifies pieces being overwritten.",
+      "Cycles derived from the engine permutation match the displayed cycles element for element, including fixed points.",
+      "The all-positions-restored case with a changed orientation is not reported as solved; reporting it as solved is the failure this check exists for."
+    ]
+  },
+  "known_limits": [
+    "Positional cycle checking does not validate whether a state is reachable by legal moves, which needs a complete puzzle model.",
+    "Authored verification guidance; no puzzle implementation was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.permutation-cycles",
+    "recipe.twisty-cube-3x3-face-turns",
+    "recipe.square-dihedral-actions"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-permutation-cycle-orientation",
+      "statement": "Every permutation is a product of disjoint cycles, and cube notation that names the facelets of a piece in order records where the piece goes together with its twist, so position alone does not encode orientation.",
+      "scope": "Finite permutations of puzzle piece positions as described in the cited page; not a validity test for arbitrary puzzle states.",
+      "source_refs": [
+        {
+          "source_id": "source.jaap-permutations",
+          "locator": "Disjoint cycle decomposition and the facelet ordering that specifies piece twist"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-light-comparison-rig",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Fixed lighting rig for one-variable comparison"
+  },
+  "aliases": {
+    "en": [
+      "light comparison rig",
+      "controlled lighting for variants",
+      "hold the light constant"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "molecules-materials",
+    "solid-geometry",
+    "linear-algebra"
+  ],
+  "summary": "Freeze every lighting and output setting so that a difference between two views can only come from the thing being compared.",
+  "objective": "Two views that differ only in the declared variable are otherwise pixel-comparable, and the frozen settings are recorded with the comparison.",
+  "tags": [
+    "lighting-profile",
+    "comparison",
+    "controlled-variable",
+    "reproducibility",
+    "rig"
+  ],
+  "subject_terms": [
+    "controlled comparison",
+    "fixed lighting",
+    "exposure lock",
+    "tone mapping",
+    "camera lock",
+    "variant view",
+    "side by side",
+    "before and after"
+  ],
+  "intent_signals": [
+    "compare two materials fairly",
+    "before and after view",
+    "which of these two is rougher",
+    "the second render looks different but I changed nothing",
+    "side by side comparison"
+  ],
+  "example_prompts": [
+    "Compare two roughness values on the same object under identical light.",
+    "Show a before-and-after of a geometry change without changing the lighting.",
+    "Put three material variants in one frame under one light."
+  ],
+  "negative_signals": [
+    "single hero presentation frame",
+    "free exploration of a scene"
+  ],
+  "not_for": [
+    "Expressive hero frames, where each variant deserves its own best lighting.",
+    "Measurement claims, which need instrumented values rather than a visual comparison."
+  ],
+  "content": {
+    "principles": [
+      "A comparison is a claim that one thing changed. Everything else in the frame must be demonstrably unchanged, or the claim is not supported by the image.",
+      "Lighting is the easiest thing to change accidentally. An environment rotation, an exposure adjustment or a different output transform can produce a larger visible difference than the variable under study.",
+      "State the variable explicitly and in the scene, not only in a caption written afterwards. A viewer looking at two frames should be able to say what differs without guessing.",
+      "Simultaneous placement and sequential toggling answer different questions. Side by side supports judging magnitude; toggling in place supports detecting small differences. Choose one and say which.",
+      "Position matters as much as light. In a side-by-side, the two objects occupy different parts of the environment and therefore receive different reflections, which is a real confound that must be either removed or acknowledged.",
+      "A comparison rig is also a reproducibility record: the settings that were frozen should be written down, not just held."
+    ],
+    "implementation": [
+      "Define the rig once as a named set: environment and its intensity and rotation, every discrete light with its direction and level, exposure, output transform, camera pose and framing, and background.",
+      "Verify the neutral defaults explicitly rather than assuming them, since a renderer that applies no tone mapping by default at unit exposure will produce a different result from one that has been configured otherwise.",
+      "For side-by-side layouts, prefer rendering each variant at the same position in separate passes and composing the frames afterwards. Placing two objects at mirrored positions does not by itself equalise their illumination, because an arbitrary environment, the discrete lights and the camera need not share that symmetry; if a simultaneous layout is used, the light, view and occlusion symmetry has to be verified rather than assumed.",
+      "For toggle comparisons, keep the camera and light untouched between states and change only the variable, so the two frames register exactly.",
+      "Include an unchanged reference element visible in both views, such as a neutral sphere or a calibration strip, so a viewer can confirm that the lighting really did not move.",
+      "Label each view with the variable's value and its units where it has any, and keep the labels in the frame.",
+      "Write down the frozen settings with the comparison, so it can be rebuilt later without guesswork."
+    ],
+    "observable_checks": [
+      "The unchanged reference element looks identical in both views, or is isolated from the varied object so that interreflection and shadowing from the variable cannot reach it; any residual difference is declared as an effect of the comparison variable.",
+      "Toggling between the two states moves nothing except the declared variable; the background and the framing do not shift.",
+      "Both views report the same exposure and output transform, and the record names them.",
+      "In a side-by-side, swapping the positions of the two variants does not reverse the conclusion.",
+      "Rebuilding the rig from the recorded settings reproduces the same pair of views."
+    ]
+  },
+  "creative_affordances": [
+    "The rig can be visually attractive; neutrality is about holding settings fixed, not about being plain.",
+    "A designed comparison stage with its own identity is welcome as long as it is identical across variants."
+  ],
+  "known_limits": [
+    "A controlled visual comparison supports a judgement about appearance. It does not measure a material property or establish a numerical difference.",
+    "The renderer defaults cited here belong to one library and one version; other tools apply different defaults, so the neutral state must be verified rather than assumed.",
+    "Authored reusable guidance; no runtime artifact or rendered result has been observed for this record."
+  ],
+  "related_ids": [
+    "recipe.molecular-shape-comparison",
+    "recipe.linear-transformation-3d",
+    "knowledge.comparison-stage",
+    "knowledge.controlled-experiment",
+    "knowledge.shared-pbr-studio-environment",
+    "knowledge.shared-display-color-management"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-renderer-neutral-defaults",
+      "statement": "One widely used renderer documents tone mapping as defaulting to no tone mapping and tone mapping exposure as defaulting to one, and documents shadow maps as disabled by default with automatic shadow updates enabled.",
+      "scope": "Documented defaults of one library as of the access date. They identify which settings must be checked before calling a rig neutral; they are not a recommendation to keep those defaults.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-webglrenderer",
+          "locator": "toneMapping; toneMappingExposure; shadowMap"
+        }
+      ]
+    }
+  ]
+}

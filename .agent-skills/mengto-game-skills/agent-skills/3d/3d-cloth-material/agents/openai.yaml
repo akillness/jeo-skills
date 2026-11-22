@@ -1,0 +1,4 @@
+interface:
+  display_name: "3D Cloth Material"
+  short_description: "Woven cloth with real folds, sheen, stitching and light through the threads"
+  default_prompt: "Use $3d-cloth-material to make this cloth read as woven linen, silk or wool: thread-level weave, sheen, real folds and no plastic sheet."

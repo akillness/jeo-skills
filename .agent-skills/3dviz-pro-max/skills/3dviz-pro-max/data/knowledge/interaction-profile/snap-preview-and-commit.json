@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.snap-preview-and-commit",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "interaction-profile",
+  "title": {
+    "en": "Snap preview and commit"
+  },
+  "aliases": {
+    "en": [
+      "magnetic placement preview",
+      "socket snap transaction",
+      "grid snap ghost"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "spatial-puzzles"
+  ],
+  "summary": "Resolve grid, socket or angle candidates into a reversible preview before one explicit legal placement is committed.",
+  "objective": "The preview explains which target and orientation will win, while cancellation, invalid placement and camera movement leave committed state untouched.",
+  "applies_when": [
+    "A dragged or stepped object may align to authored increments, sockets, surfaces or orientations."
+  ],
+  "tags": [
+    "interaction-profile",
+    "snapping",
+    "preview",
+    "commit",
+    "socket"
+  ],
+  "subject_terms": [
+    "snap candidate",
+    "snap target",
+    "snap base",
+    "ghost preview",
+    "placement validity",
+    "tie-break",
+    "snap hysteresis",
+    "commit threshold"
+  ],
+  "intent_signals": [
+    "show a ghost before snapping the module",
+    "two sockets compete near a corner",
+    "invalid snap must not enter undo",
+    "preview grid rotation before placement"
+  ],
+  "example_prompts": [
+    "Preview which equipment socket will receive the dragged module, then commit on release.",
+    "Snap a puzzle piece to legal cells without moving it when the drag is cancelled."
+  ],
+  "negative_signals": [
+    "teleport to nearest mesh",
+    "commit while merely hovering",
+    "hide invalid orientation"
+  ],
+  "not_for": [
+    "Continuous free manipulation with no discrete target.",
+    "Blender authoring snap configuration alone."
+  ],
+  "content": {
+    "principles": [
+      "A snap candidate combines a semantic target, compatible role, pose and validity result; distance alone does not establish compatibility.",
+      "Preview state is derived and disposable. It may show a ghost, guide, target highlight and rejection reason without mutating occupancy, hierarchy or undo history.",
+      "Choose deterministic candidate ranking and tie-breaking, and declare entry and exit behavior so small pointer noise does not make the preview flicker between targets.",
+      "Commit revalidates against current authoritative state because another edit may have changed occupancy or permission after the preview was calculated."
+    ],
+    "implementation": [
+      "Author grid increments, socket frames, compatibility keys and keep-out guides in Blender or application data; export stable identities rather than assuming proximity carries meaning.",
+      "Generate candidates in one declared coordinate frame. Rank only compatible candidates using authored priorities and geometric distance or angle, with a stable ID tie-break.",
+      "Render the winning preview separately from committed geometry. Preserve the original parent and local transform until release or explicit Commit.",
+      "On commit, recheck target existence, compatibility, occupancy, transform limits and permissions; write placement and occupancy atomically as one command. Invalid, cancelled and pre-commit capture-loss attempts create no command.",
+      "Provide discrete target-next, rotate-step and Place/Cancel actions where the spatial drag is essential to the task."
+    ],
+    "observable_checks": [
+      "Approach two equally near sockets repeatedly; the declared tie-break chooses the same candidate and the preview does not alternate under small motion.",
+      "Invalidate or occupy the previewed target before release; commit rejects or recomputes according to policy without leaving half-updated occupancy or transforms.",
+      "Cancel from valid and invalid previews; committed parent, transform, occupancy and history remain byte-for-byte or structurally equal to the start state.",
+      "A nested, rotated module commits the same world pose shown by the preview after conversion back to its chosen parent frame."
+    ]
+  },
+  "related_ids": [
+    "knowledge.constraint-aware-object-manipulation",
+    "knowledge.modular-environment-kit-sockets",
+    "knowledge.validation-slot-occupancy-integrity",
+    "knowledge.gltf-transform-pivot-handoff",
+    "knowledge.validation-drag-to-cell-commit"
+  ],
+  "creative_affordances": [
+    "Use magnetic arcs, projected footprints or animated socket rings to make target ownership readable.",
+    "Let rejected candidates explain collision, role or occupancy with shape and text rather than color alone."
+  ],
+  "known_limits": [
+    "No universal snap radius, hysteresis band or priority order is prescribed.",
+    "Authoring-time Blender snapping and runtime application snapping are separate systems.",
+    "Authored and source-checked guidance; no placement runtime was executed."
+  ],
+  "claims": [
+    {
+      "id": "claim.experience-blender-snap-bases-targets",
+      "statement": "Blender 4.5 documents separate snap-base and snap-target choices, including increment or grid and geometric targets such as vertex, edge and face, and allows snapping to affect move, rotate and scale operations.",
+      "scope": "Blender authoring controls only; they do not define runtime compatibility, candidate ranking or atomic placement.",
+      "source_refs": [
+        {
+          "source_id": "source.craft-blender-snapping",
+          "locator": "Snap Base; Snap Target; Affect; Rotation Increment"
+        }
+      ]
+    },
+    {
+      "id": "claim.experience-three-transform-snap-units",
+      "statement": "Current Three.js TransformControls documents translation snapping as numeric world-unit steps and rotation snapping as numeric radian steps, with null defaults for continuous transformation.",
+      "scope": "Current addon properties; the documentation does not supply socket compatibility, preview hysteresis or commit validation.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-three-transform-controls",
+          "locator": "translationSnap; rotationSnap"
+        }
+      ]
+    }
+  ]
+}

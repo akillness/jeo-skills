@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "id": "recipe.orthogonal-projection-residual",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Orthogonal projection and the residual vector"
+  },
+  "aliases": {
+    "en": [
+      "orthogonal projection",
+      "least squares residual",
+      "closest point in a subspace"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra"
+  ],
+  "summary": "Make the residual the visible subject: the shortest connection from a point to a subspace is perpendicular to it.",
+  "objective": "Build a projection scene where I can move a point and a plane and confirm that the residual is perpendicular and minimal.",
+  "tags": [
+    "projection",
+    "residual",
+    "least squares"
+  ],
+  "subject_terms": [
+    "orthogonal projection",
+    "residual",
+    "subspace",
+    "orthogonal complement",
+    "least squares",
+    "projection matrix",
+    "closest vector"
+  ],
+  "intent_signals": [
+    "Show why the shortest distance to a plane is perpendicular to it.",
+    "Explain least squares as a projection in three dimensions."
+  ],
+  "example_prompts": [
+    "Build an orthogonal projection demonstration with a movable point, a spanned plane and a residual readout.",
+    "Let me test other points in the plane and see that none is closer than the projection."
+  ],
+  "negative_signals": [
+    "Not a regression modelling recipe: no data, fit statistics or inference.",
+    "Not a numerical solver comparison; conditioning and pivoting are out of scope."
+  ],
+  "not_for": [
+    "Not a regression modelling recipe: no data, fit statistics or inference.",
+    "Not a numerical solver comparison; conditioning and pivoting are out of scope."
+  ],
+  "entities": [
+    {
+      "name": "Subspace",
+      "guidance": "Span the subspace from editable basis vectors and show them, so the plane is visibly generated rather than placed."
+    },
+    {
+      "name": "Point and projection",
+      "guidance": "Draw the external point, its projection and the residual segment as three distinct objects with their own labels."
+    },
+    {
+      "name": "Comparison probe",
+      "guidance": "Let a second point slide within the subspace with a live distance readout, so minimality can be tested instead of asserted."
+    }
+  ],
+  "state_contract": {
+    "model": "Editable spanning vectors from which an independent subset, or an orthonormal basis of their span, is selected with a stated rank tolerance; the reported subspace dimension is 2, 1 or 0. The external point, its projection and the residual follow from that basis, and the identity projection plus residual equals the point is checked numerically with a stated tolerance. The inverse formula A(A^T A)^-1 A^T is used only for the independent-column case.",
+    "authority": "The basis and the external point are authoritative; the projection, the residual and every distance readout are recomputed from them.",
+    "actions": [
+      "Drag the external point.",
+      "Edit a basis vector, including making the two basis vectors parallel.",
+      "Slide the comparison probe inside the subspace.",
+      "Reset the basis, point and probe."
+    ]
+  },
+  "invariants": [
+    "The residual is perpendicular to every vector in the subspace, not only to the drawn basis vectors.",
+    "No probe position inside the subspace produces a smaller distance than the projection.",
+    "Projecting an already projected point returns the same point.",
+    "What is drawn follows the reported dimension: a plane patch with a unique normal only in dimension 2, a line with a normal plane in dimension 1, and in dimension 0 the projection is the origin with the comparison probe fixed there."
+  ],
+  "motion_guidance": [
+    "Animate the residual shrinking as the point approaches the subspace, and let it reach exactly zero when the point lies in it.",
+    "Do not animate the projection as a drop along a fixed screen axis; it must follow the subspace normal."
+  ],
+  "known_limits": [
+    "Degenerate spanning sets collapse the subspace to a line or a point. The scene reports the dimension from a rank test with a stated tolerance and draws that case, rather than drawing a plane patch and a unique normal that do not exist.",
+    "Numeric tolerances make perpendicularity approximate in floating point.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-orthogonal-decomposition",
+      "statement": "Any vector x can be written uniquely as the sum of its orthogonal projection onto a subspace W and a component in the orthogonal complement of W, and the projection is the closest vector to x in W with distance equal to the norm of that complement component.",
+      "scope": "Finite-dimensional real inner product space as presented in the cited section.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-ila-projections",
+          "locator": "Interactive Linear Algebra 6.3, orthogonal decomposition and closest vector theorems"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-projection-matrix",
+      "statement": "When W is the column space of a matrix A with linearly independent columns, orthogonal projection is given by the matrix A (A transpose A) inverse A transpose, and the projection transformation satisfies T composed with T equals T.",
+      "scope": "Independent-column case only; rank-deficient A requires a different construction.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-ila-projections",
+          "locator": "Interactive Linear Algebra 6.3, projection matrix and idempotence"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Subspace",
+      "structure": "A bounded plane patch with a visible border and a normal marker rather than an infinite grid.",
+      "material": "Low-opacity fill with an opaque border so points behind the plane remain visible and depth stays readable.",
+      "articulation": "The patch is regenerated whenever a basis vector changes."
+    },
+    {
+      "family": "Point and projection",
+      "structure": "Two markers of different shapes joined by the residual segment with a right-angle glyph at the plane.",
+      "material": "A single accent for the residual, reserved so nothing else in the scene competes with it.",
+      "articulation": "All three rebuild from the current basis and point."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Mathematical construction and measurement; no physical meaning is attached to the vectors.",
+    "checks": [
+      "Projection plus residual reconstructs the original point within the stated tolerance.",
+      "The comparison probe never reports a smaller distance than the projection."
+    ]
+  },
+  "related_ids": [
+    "recipe.cross-product",
+    "recipe.svd-sphere-to-ellipsoid",
+    "knowledge.controlled-experiment"
+  ]
+}

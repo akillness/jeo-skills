@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "id": "recipe.convex-hull-construction",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Convex hull of a point cloud"
+  },
+  "aliases": {
+    "en": [
+      "convex hull",
+      "extreme points",
+      "hull degeneracies"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry"
+  ],
+  "summary": "Build the hull of an editable point set and keep its degenerate outcomes visible instead of hiding them.",
+  "objective": "Let me move points in space and watch the convex hull rebuild, including the cases where it collapses to a polygon, a segment or a point.",
+  "tags": [
+    "convex hull",
+    "geometry",
+    "degenerate cases"
+  ],
+  "subject_terms": [
+    "convex hull",
+    "extreme point",
+    "supporting plane",
+    "coplanar",
+    "collinear",
+    "quickhull",
+    "polytope"
+  ],
+  "intent_signals": [
+    "Show which points of a cloud are on the hull and which are inside.",
+    "Demonstrate what happens to a hull when all the points become coplanar."
+  ],
+  "example_prompts": [
+    "Build an editable point cloud with its convex hull and a marker for interior points.",
+    "Show the degenerate hull cases when points are collinear or coplanar."
+  ],
+  "negative_signals": [
+    "Not a mesh reconstruction tool: a hull is not a surface fit to concave data.",
+    "Not a collision engine, although the hull may be used as one input to one."
+  ],
+  "not_for": [
+    "Not a mesh reconstruction tool: a hull is not a surface fit to concave data.",
+    "Not a collision engine, although the hull may be used as one input to one."
+  ],
+  "entities": [
+    {
+      "name": "Point set",
+      "guidance": "Give each point a stable ID and a draggable handle; hull membership is a computed property of the point, not a colour baked into it."
+    },
+    {
+      "name": "Hull surface",
+      "guidance": "Build the hull as a closed set of planar facets with outward normals and shared edges, so it can be inspected face by face."
+    },
+    {
+      "name": "Degenerate readout",
+      "guidance": "Display the current hull dimension in words as well as geometry, since a flat hull and a thin solid look alike from many angles."
+    }
+  ],
+  "state_contract": {
+    "model": "Point list with stable IDs and a hull recomputed after every edit, together with the affine dimension of the current point set (0 point, 1 segment, 2 planar polygon, 3 volumetric hull) and an explicit empty state. The recipe assumes an exact or clearly stated predicate strategy and does not claim numerical robustness by itself.",
+    "authority": "The point list is authoritative and the hull is always derived; no hull facet may persist after its supporting points move.",
+    "actions": [
+      "Drag a point and watch the hull rebuild.",
+      "Add or remove a point.",
+      "Collapse the set onto a plane and read the reported dimension.",
+      "Reset to the authored point set.",
+      "Remove points down to the empty set, which reports an empty hull instead of drawing one."
+    ]
+  },
+  "invariants": [
+    "Every hull vertex is a point of the input set; the hull never invents a vertex.",
+    "Points are classified as extreme (hull vertices), non-extreme boundary points or strictly interior points. A point at the centre of a hull facet is a boundary point that is not a vertex, so a two-way extreme-versus-interior split is wrong.",
+    "The reported affine dimension drives what is drawn: collinear points give a segment, a single point or coincident points give a point, coplanar points give a planar polygon, and only dimension 3 has closed facets with outward normals."
+  ],
+  "motion_guidance": [
+    "Rebuild the hull on release as well as during a drag, so the final state is never an interpolated intermediate.",
+    "Animate facet appearance and disappearance briefly; a facet that pops without explanation hides a topology change."
+  ],
+  "known_limits": [
+    "Floating-point predicates can flip near-degenerate cases; robustness depends on the implementation you choose.",
+    "Hull complexity grows with the point count, and this recipe makes no interactive performance claim.",
+    "A documented hull routine can return a planar polygon with a border, so a returned polyhedron is not by itself evidence of a closed three-dimensional surface; the reported affine dimension is what decides.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-convex-hull-definition",
+      "statement": "The convex hull of a set of points in three-dimensional space is a convex polytope whose vertices belong to that point set.",
+      "scope": "Definition as stated in the cited library documentation.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-cgal-convex-hull",
+          "locator": "3D Convex Hulls, definition paragraph"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-convex-hull-degenerate",
+      "statement": "Degenerate inputs are expected: a documented hull routine may return a point, a segment, a triangle or a polyhedron depending on the configuration, and the non-degenerate variant assumes more than three points that are not all collinear.",
+      "scope": "Documented behaviour of one library version; your own implementation must state its own degenerate policy.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-cgal-convex-hull",
+          "locator": "3D Convex Hulls, degenerate cases and function variants"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Point set",
+      "structure": "Small spheres with a size that stays legible at distance plus a ground-plane drop line so depth is readable.",
+      "material": "Three clearly separated materials for extreme, non-extreme boundary and strictly interior points, differing in value as well as hue so the classification survives greyscale viewing.",
+      "articulation": "Points translate under a drag handle constrained to a chosen plane or axis."
+    },
+    {
+      "family": "Hull surface",
+      "structure": "Flat facets with visible shared edges and consistent outward normals; no smoothing across facet boundaries.",
+      "material": "Semi-transparent facets over opaque edges so interior points remain visible through the hull.",
+      "articulation": "The surface is rebuilt, not deformed, whenever the point set changes."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Geometric construction and presentation only; no dynamics or contact response.",
+    "checks": [
+      "Every reported hull vertex ID exists in the point list.",
+      "Moving an interior point without leaving the hull does not change the facet set."
+    ]
+  },
+  "related_ids": [
+    "recipe.polyhedron-net",
+    "knowledge.structural-coherence",
+    "knowledge.parameter-experiment"
+  ]
+}

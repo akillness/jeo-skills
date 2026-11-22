@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-deformation-claim-limits",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Say what a deformation animation claims"
+  },
+  "aliases": {
+    "en": [
+      "homeomorphism animation",
+      "continuous deformation",
+      "illustration versus proof"
+    ]
+  },
+  "direction_ids": [
+    "topology-symmetry",
+    "characters-motion-art"
+  ],
+  "summary": "Distinguish an animation that demonstrates a continuous deformation from one that merely morphs between two shapes.",
+  "objective": "Keep morphing animations from implying topological equivalences they do not establish.",
+  "applies_when": [
+    "One shape animates into another to suggest they are the same object.",
+    "A scene shows a knot, band or surface being deformed.",
+    "The narration uses words such as equivalent, the same, or can be turned into."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "deformation",
+    "morph",
+    "homeomorphism",
+    "self-intersection",
+    "tearing",
+    "claim scope"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "topology",
+    "claims"
+  ],
+  "intent_signals": [
+    "morph the mug into the doughnut",
+    "show these knots are the same",
+    "deform the surface"
+  ],
+  "example_prompts": [
+    "Animate a deformation that never tears or passes through itself.",
+    "Show two knots and whether this animation proves anything."
+  ],
+  "negative_signals": [
+    "Artistic morphs with no mathematical claim.",
+    "Deformations of physical materials, which are governed by mechanics rather than topology."
+  ],
+  "not_for": [
+    "Artistic morphs with no mathematical claim.",
+    "Deformations of physical materials, which are governed by mechanics rather than topology."
+  ],
+  "content": {
+    "principles": [
+      "A morph implemented by interpolating vertices can tear, pinch or self-intersect on the way, and each of those events breaks the property the animation appears to demonstrate. It need not: interpolating between a mesh and its translate stays embedded throughout. What follows is that the intermediate states must be verified for the deformation class you claim, not that vertex interpolation is always wrong.",
+      "The strength of the claim depends on what is forbidden during the motion: forbidding tearing and self-intersection makes an animation evidence of an ambient deformation, while allowing them makes it an illustration.",
+      "A rendered animation is not by itself a proof: sampled frames show that these configurations were produced, not that no obstruction exists. A mathematically specified family with a justification is different, and can constitute a construction for that particular pair; the honest distinction is between an unverified animation and a specified, checked family.",
+      "Stating the claim honestly is cheap and preserves the value of the animation as intuition."
+    ],
+    "implementation": [
+      "Decide the class of deformation being demonstrated and enforce it: continuity of the map, embedding without self-intersection, or ambient isotopy.",
+      "Prefer a parametrised family of shapes over vertex interpolation, so intermediate states are genuine members of the family.",
+      "Detect and report self-intersection during the motion rather than relying on the eye.",
+      "Label the animation as illustration when the constraints are not enforced, and say which are violated.",
+      "Let the viewer stop anywhere and inspect the intermediate configuration, which is where violations show."
+    ],
+    "observable_checks": [
+      "Step through the motion and look for pinches, tears or surfaces passing through each other.",
+      "Run a self-intersection test at several intermediate parameter values rather than only at the endpoints.",
+      "Confirm intermediate frames are valid shapes of the same kind, not degenerate meshes.",
+      "Check that the words on screen match the constraints actually enforced."
+    ]
+  },
+  "related_ids": [
+    "recipe.mobius-orientation-trace",
+    "knowledge.state-playback"
+  ],
+  "creative_affordances": [
+    "Deliberately impossible morphs are excellent visual devices when labelled as such.",
+    "Slow, staged deformations with a hold at the difficult moment often communicate better than a fast morph."
+  ],
+  "known_limits": [
+    "Authored claim-scoping guidance; it establishes no topological result and provides no intersection algorithm.",
+    "No runtime animation has been inspected for this record."
+  ],
+  "claims": []
+}

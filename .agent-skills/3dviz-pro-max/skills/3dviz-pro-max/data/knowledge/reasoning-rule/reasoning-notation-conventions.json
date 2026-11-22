@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-notation-conventions",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Adopt a published notation and follow it exactly"
+  },
+  "aliases": {
+    "en": [
+      "move notation",
+      "WCA notation",
+      "convention consistency"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles",
+    "molecules-materials"
+  ],
+  "summary": "When a subject has an established notation, use it exactly, including the orientation convention that defines a positive turn.",
+  "objective": "Make a scene interoperable with the vocabulary its users already have.",
+  "applies_when": [
+    "Moves, states or structures are named in text alongside the visual.",
+    "Users may type sequences, paste scrambles or compare with external material.",
+    "A tutorial, solution or algorithm is displayed."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "notation",
+    "move naming",
+    "clockwise convention",
+    "prime",
+    "double turn",
+    "interoperability"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "puzzle",
+    "conventions"
+  ],
+  "intent_signals": [
+    "paste a scramble",
+    "show the algorithm notation",
+    "which way is R"
+  ],
+  "example_prompts": [
+    "Accept standard cube notation and animate the moves.",
+    "Show the move names as I turn the faces."
+  ],
+  "negative_signals": [
+    "Invented puzzles with no established notation, which need their own defined vocabulary.",
+    "Purely visual interaction with no textual move vocabulary."
+  ],
+  "not_for": [
+    "Invented puzzles with no established notation, which need their own defined vocabulary.",
+    "Purely visual interaction with no textual move vocabulary."
+  ],
+  "content": {
+    "principles": [
+      "A published notation is a shared interface. Regulation notation for cube face moves names the front, back, right, left, upper and bottom faces, treats the plain letter as a ninety degree clockwise turn seen from that face, marks the counter-clockwise turn with a prime and the half turn with a two.",
+      "The orientation convention is the part most often lost: clockwise as seen from the moving face is not the same as clockwise from a fixed camera, and a mirrored implementation is consistent with itself while disagreeing with every published algorithm.",
+      "Interoperability is the payoff: a scene that reads standard notation can accept community scrambles and solutions without translation.",
+      "Where a scene extends beyond the standard vocabulary, the extension should be marked as an extension rather than blended in silently."
+    ],
+    "implementation": [
+      "Implement the notation from the published definition rather than from memory, and record which document and version was used.",
+      "Verify the turn direction against the convention with a labelled test, since a sign error is invisible on a symmetric puzzle.",
+      "Support both reading and writing the notation, so a sequence performed by hand can be exported as text.",
+      "Show the move name as each move is performed, which turns the interface into a way to learn the notation.",
+      "Mark any non-standard moves or extensions distinctly in both directions of translation."
+    ],
+    "observable_checks": [
+      "Apply a well-known published sequence and confirm the resulting pattern matches the published outcome.",
+      "Perform a move and its prime and confirm the state returns and the notation output matches.",
+      "Paste a scramble, then export it, and confirm the text round-trips.",
+      "Check a single face turn against the convention with the camera behind the puzzle, where mirroring errors become obvious."
+    ]
+  },
+  "related_ids": [
+    "recipe.twisty-cube-3x3-face-turns",
+    "recipe.permutation-cycles"
+  ],
+  "creative_affordances": [
+    "A friendlier alternative notation can be offered alongside the standard one as long as the standard is supported.",
+    "Invented puzzles deserve a clearly defined notation of their own, designed with the same care."
+  ],
+  "known_limits": [
+    "Authored convention guidance citing face-turn notation from a published regulation; wide moves, slice moves and rotations were not read in this session.",
+    "Notation for other puzzle types differs and needs its own source."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-cube-face-notation",
+      "statement": "In the World Cube Association notation for cube puzzles the letters F, B, R, L, U and D denote ninety degree clockwise turns of the front, back, right, left, upper and bottom faces, a prime denotes the counter-clockwise ninety degree turn and a following two denotes a one hundred and eighty degree turn.",
+      "scope": "Face-move notation for cube puzzles; wide moves, slice moves and whole-puzzle rotations are not covered by this claim.",
+      "source_refs": [
+        {
+          "source_id": "source.wca-regulations-2026",
+          "locator": "Article 12 notation, face moves"
+        }
+      ]
+    }
+  ]
+}

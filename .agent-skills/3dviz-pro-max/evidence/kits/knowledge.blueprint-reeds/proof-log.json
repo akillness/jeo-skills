@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-reeds",
+  "record_revision": 2,
+  "asset": "templates/kits/nature/reeds.js",
+  "asset_sha256": "d3196cc7d50c78bd032e7d71104d97557d3cb7418568ce70563e2cc1833cc364",
+  "params": {
+    "count": 40,
+    "seed": 1,
+    "spread": 0.62,
+    "height": 1.25,
+    "blade": "#7c9455"
+  },
+  "kit": {
+    "blueprint": "knowledge.blueprint-reeds",
+    "module": "../nature/reeds.js",
+    "params": {
+      "count": 40,
+      "seed": 1,
+      "spread": 0.62,
+      "height": 1.25,
+      "blade": "#7c9455"
+    },
+    "triangles": 2030,
+    "bounds_m": {
+      "min": [
+        -0.8444531375981503,
+        -0.019999999552965164,
+        -0.6170960494847639
+      ],
+      "max": [
+        0.7506158438967141,
+        1.3561092428863049,
+        0.7075728089314799
+      ],
+      "size": [
+        1.5950689814948644,
+        1.37610924243927,
+        1.3246688584162438
+      ]
+    },
+    "fit_distance_m": 3.638,
+    "view_distances_m": {
+      "far": 8.7311,
+      "mid": 4.3655,
+      "close": 2.8376,
+      "detail": 0.9088
+    },
+    "sockets": [
+      "base",
+      "tip",
+      "edge"
+    ],
+    "detail_socket": "base",
+    "animated": true,
+    "colliders": [
+      "clump"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "ef76b86e8f04ebdd88aa8a2c2fbaa3091fe2fae082abf43fec77f6d9fa40edcb",
+    "mid.png": "9ec08c122f3ac36fe5e56f2d80b1bb9bd633084a4bd25a98b9a739c71e245eec",
+    "close.png": "7f4164c0acf382cf4f9c691cd69d7ac1f6e7e73d7086ab33d3bb7dec317569df",
+    "detail.png": "0c460889f7cad6deb648b2c3638ecc092a9fda43da8df56942eaf3ad726bbd5b",
+    "close-motion.png": "f3032ce160d6d452078cbd1595f15d91e9243c0d680a893ee3232f1252292ba0"
+  },
+  "motion": {
+    "interval_ms": 400,
+    "simulated": true,
+    "animate_returned": true,
+    "differs": true,
+    "sha_before": "7f4164c0acf382cf4f9c691cd69d7ac1f6e7e73d7086ab33d3bb7dec317569df",
+    "sha_after": "f3032ce160d6d452078cbd1595f15d91e9243c0d680a893ee3232f1252292ba0"
+  },
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T13:50:59+00:00",
+  "finished": "2026-09-08T13:51:03+00:00",
+  "post_encode": {
+    "file": "detail.png",
+    "bytes_before": 313647,
+    "bytes_after": 133932,
+    "method": "RGB, 256-colour adaptive palette, zlib 9 (decision D-5); the sha256 above is the re-encoded file"
+  }
+}

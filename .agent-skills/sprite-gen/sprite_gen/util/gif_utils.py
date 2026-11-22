@@ -1,0 +1,119 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Shared GIF helpers for sprite-gen.
+
+Transparent previews clear each frame with GIF disposal method 2. Opaque
+previews retain their canvas with disposal method 1 and no transparency.
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Iterable
+
+from PIL import Image, ImageSequence
+
+
+def delay_ticks_to_duration_ms(delay_ticks: int) -> int:
+    """Convert ImageMagick/GIF delay ticks (1/100 sec) to PIL milliseconds."""
+    if delay_ticks <= 0:
+        raise ValueError("delay_ticks must be positive")
+    return delay_ticks * 10
+
+
+def _prepare_transparent_frame(frame: Image.Image, alpha_threshold: int) -> Image.Image:
+    rgba = frame.convert("RGBA")
+    alpha = rgba.getchannel("A")
+
+    # Keep invisible RGB out of the adaptive palette; otherwise transparent
+    # source pixels can steal palette entries and produce colored fringe.
+    rgb = Image.new("RGB", rgba.size, (0, 0, 0))
+    rgb.paste(rgba.convert("RGB"), mask=alpha)
+
+    paletted = rgb.convert("P", palette=Image.ADAPTIVE, colors=255)
+    palette = paletted.getpalette() or []
+    if len(palette) < 768:
+        palette.extend([0] * (768 - len(palette)))
+    palette[255 * 3 : 255 * 3 + 3] = [0, 0, 0]
+    paletted.putpalette(palette)
+
+    transparent_mask = Image.eval(alpha, lambda value: 255 if value <= alpha_threshold else 0)
+    paletted.paste(255, transparent_mask)
+    paletted.info["transparency"] = 255
+    paletted.info["disposal"] = 2
+    return paletted
+
+
+def _prepare_opaque_frame(frame: Image.Image) -> Image.Image:
+    rgb = frame.convert("RGB")
+    if rgb.getcolors(maxcolors=256) is not None:
+        # Palette-sized inputs can retain every colour, including very dim light.
+        paletted = rgb.quantize(colors=256)
+    else:
+        # Refine coverage for both sparse highlights and the main glow, reserving
+        # exact black so the refinement cannot tint an empty preview background.
+        palette = rgb.quantize(colors=255, method=Image.Quantize.MAXCOVERAGE, kmeans=1)
+        colors = (palette.getpalette() or [])[:765]
+        colors.extend([0] * (768 - len(colors)))
+        palette.putpalette(colors)
+        paletted = rgb.quantize(palette=palette, dither=Image.Dither.NONE)
+    paletted.info.pop("transparency", None)
+    return paletted
+
+
+def save_clean_gif(
+    frames: Iterable[Image.Image],
+    output_path: Path,
+    *,
+    duration_ms: int,
+    loop: int | None = 0,
+    alpha_threshold: int = 8,
+    opaque: bool = False,
+) -> None:
+    """Save frames as a transparent GIF, or an explicitly opaque preview.
+
+    `loop=0` means infinite loop in GIF/Pillow terminology.
+    `opaque=True` expects frames already composited onto their preview background.
+    """
+    if duration_ms <= 0:
+        raise ValueError("duration_ms must be positive")
+    if opaque:
+        prepared = [_prepare_opaque_frame(frame) for frame in frames]
+        # Restore-to-background depends on palette indices that can change per
+        # frame. Keep the opaque canvas and encode every changed pixel instead.
+        options = {"disposal": 1, "optimize": False}
+    else:
+        prepared = [_prepare_transparent_frame(frame, alpha_threshold) for frame in frames]
+        options = {"disposal": 2, "transparency": 255}
+    if not prepared:
+        raise ValueError("at least one frame is required")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    prepared[0].save(
+        output_path,
+        save_all=True,
+        append_images=prepared[1:],
+        duration=duration_ms,
+        **({"loop": loop} if loop is not None else {}),
+        **options,
+    )
+
+
+def gif_report(path: Path) -> dict[str, object]:
+    """Return frame count, delay list, loop, transparency, and disposal values."""
+    with Image.open(path) as image:
+        delays = []
+        alpha_extrema = []
+        disposal = []
+        # The iterator reuses its decoder object. Read each frame's properties
+        # before advancing, while they still describe that frame.
+        for frame in ImageSequence.Iterator(image):
+            delays.append(int(frame.info.get("duration", 0) / 10))
+            alpha_extrema.append(frame.convert("RGBA").getchannel("A").getextrema())
+            disposal.append(getattr(frame, "disposal_method", None))
+        return {
+            "path": str(path),
+            "frames": len(delays),
+            "delay_ticks": delays,
+            "loop": image.info.get("loop", 0),
+            "transparent": all(min_alpha < 255 for min_alpha, _max_alpha in alpha_extrema),
+            "disposal": disposal,
+        }

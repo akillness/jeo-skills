@@ -1,0 +1,4 @@
+interface:
+  display_name: "3D Wood Material"
+  short_description: "Procedural grain, pores, oil sheen, and macro-proof timber"
+  default_prompt: "Use $3d-wood-material to give Three.js timber procedural growth rings, pores, tool marks, and an oil or lacquer finish that still reads as wood at macro distance."

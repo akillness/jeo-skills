@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.circular-shaft-torsion",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "physical-behavior",
+  "title": {
+    "en": "Circular shaft torque and distributed twist"
+  },
+  "aliases": {
+    "en": [
+      "shaft torsion",
+      "polar area moment"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal",
+    "products-assemblies"
+  ],
+  "summary": "Expose the load-dependent relative rotation along a circular shaft instead of rotating it as one rigid prop.",
+  "objective": "Expose the authoritative model and its visible response: circular shaft torque and distributed twist.",
+  "applies_when": [
+    "Uniform solid circular shaft, one end fixed, static end torque, homogeneous isotropic linear elasticity and small shear strain; no distributed torque."
+  ],
+  "subject_terms": [
+    "shaft torsion",
+    "polar area moment",
+    "shear modulus",
+    "angle of twist"
+  ],
+  "tags": [
+    "physical-behavior",
+    "circular-shaft-torsion"
+  ],
+  "intent_signals": [
+    "Expose the load-dependent relative rotation along a circular shaft instead of rotating it as one rigid prop."
+  ],
+  "example_prompts": [
+    "Build an inspectable demonstration of circular shaft torque and distributed twist with parameter controls and a reset."
+  ],
+  "negative_signals": [
+    "Not noncircular warping, yielding, torsional vibration, shaft rotation dynamics or a strength certification."
+  ],
+  "not_for": [
+    "Not noncircular warping, yielding, torsional vibration, shaft rotation dynamics or a strength certification."
+  ],
+  "content": {
+    "principles": [
+      "End torque creates elastic twist relative to the fixed end; it does not prescribe a rotation rate.",
+      "Cross sections remain plane in this circular-shaft model; do not generalize that assumption to arbitrary profiles."
+    ],
+    "implementation": [
+      "Own L,R in m, shear modulus G in Pa and signed end torque T in N m. For positive finite L,R,G use J=pi*R^4/2 in m^4, theta(z)=T*z/(G*J) in rad and tau(r)=T*r/J in Pa. z runs from the fixed end to L; torque and rotation follow the right-hand rule about +z.",
+      "Deform material markers with cross-section rotation theta(z). Show a fixed collar, end torque arrow and a longitudinal stripe that becomes helical. Mesh rings may aid inspection but must remain attached to one continuous surface.",
+      "Changing radius rebuilds J and geometry together. Limit the example to small |T|*R/(G*J) and the chosen elastic range; any display twist multiplier is separately labeled and excluded from stress readouts. Reset restores torque and the undeformed reference."
+    ],
+    "observable_checks": [
+      "At z=0 rotation is zero; at z=L it is T*L/(G*J). T=0 removes twist and shear stress.",
+      "At fixed T,L,G, doubling R reduces end twist by 16 and surface stress magnitude by 8. Reversing T reverses the stripe twist without changing its magnitude."
+    ]
+  },
+  "known_limits": [
+    "Not noncircular warping, yielding, torsional vibration, shaft rotation dynamics or a strength certification.",
+    "Authored reusable guidance; no solver or rendered artifact has been tested for this record."
+  ],
+  "creative_affordances": [
+    "Use a cutaway, restrained ghost reference or annotated section only when it clarifies the modeled relation; a planar diagram remains valid when depth adds no information."
+  ],
+  "related_ids": [
+    "knowledge.constrained-gear-motion"
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-circular-shaft-torsion",
+      "statement": "For a uniform circular shaft in linear elastic torsion, cross sections remain plane, angle of twist is T*L/(GJ), and shear stress at radius r is T*r/J. For a solid circular section J=pi*R^4/2.",
+      "scope": "Uniform solid circular shaft, one end fixed, static end torque, homogeneous isotropic linear elasticity and small shear strain; no distributed torque.",
+      "source_refs": [
+        {
+          "source_id": "source.object-physics-circular-shaft-torsion",
+          "locator": "Torsional Stresses and Displacements, PDF pages 6–8, equations 10–14 and polar moment J"
+        }
+      ]
+    }
+  ]
+}

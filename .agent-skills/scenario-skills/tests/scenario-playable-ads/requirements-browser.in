@@ -1,0 +1,3 @@
+# The browser workflow's extra: test_qa.py drives the real qa.py, which needs Playwright for Python.
+# Keep it on the playwright release in the kinetic scaffold's npm lock, so one Chromium serves both.
+playwright>=1.65.1,<2

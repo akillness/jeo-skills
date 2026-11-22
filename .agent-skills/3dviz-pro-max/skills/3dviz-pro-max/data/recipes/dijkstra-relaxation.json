@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.dijkstra-relaxation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Dijkstra distances and edge relaxation"
+  },
+  "aliases": {
+    "en": [
+      "Dijkstra shortest path",
+      "weighted graph relaxation",
+      "priority queue shortest paths"
+    ]
+  },
+  "direction_ids": [
+    "algorithms-data-structures"
+  ],
+  "summary": "Compare tentative distances with settled shortest distances while stepping edge relaxations.",
+  "objective": "Make a weighted directed graph with editable nonnegative costs and let me inspect each Dijkstra relaxation and priority-queue change.",
+  "tags": [
+    "Dijkstra",
+    "nonnegative weights",
+    "relaxation"
+  ],
+  "subject_terms": [
+    "Dijkstra",
+    "nonnegative weights",
+    "relaxation",
+    "priority queue",
+    "shortest path",
+    "settled vertices"
+  ],
+  "intent_signals": [
+    "Make a weighted directed graph with editable nonnegative costs and let me inspect each Dijkstra relaxation and priority-queue change.",
+    "Compare tentative distances with settled shortest distances while stepping edge relaxations."
+  ],
+  "example_prompts": [
+    "Make a weighted directed graph with editable nonnegative costs and let me inspect each Dijkstra relaxation and priority-queue change.",
+    "Create an explorable 3D explanation of Dijkstra shortest path with priority queue and tree."
+  ],
+  "negative_signals": [
+    "Negative edge weights are rejected; use an appropriate different algorithm for that case."
+  ],
+  "not_for": [
+    "Negative edge weights are rejected; use an appropriate different algorithm for that case."
+  ],
+  "entities": [
+    {
+      "name": "Weighted digraph",
+      "guidance": "Use labeled node pedestals and directional edge arrows; costs are text badges rather than geometric lengths."
+    },
+    {
+      "name": "Relaxation comparator",
+      "guidance": "For the active edge u->v display dist[u]+w(u,v) beside current dist[v], including infinity as a symbolic value."
+    },
+    {
+      "name": "Priority queue and tree",
+      "guidance": "List tentative keys in priority order and highlight the evolving predecessor tree separately from scanned edges."
+    }
+  ],
+  "state_contract": {
+    "model": "Finite directed graph, finite weights >=0, source distance zero and others infinity. Extract minimum unsettled tentative distance; relax outgoing edges and update predecessors on strict improvement.",
+    "authority": "The graph model and priority-queue algorithm own all distances and settled flags. A deterministic tie policy makes replay reproducible.",
+    "actions": [
+      "Set source and nonnegative edge weights before execution.",
+      "Single-step extract-min and relaxation events.",
+      "Select a destination and reconstruct its current or final path.",
+      "Reset after any graph edit."
+    ]
+  },
+  "invariants": [
+    "Settled distances do not subsequently improve under the stated assumptions.",
+    "Successful relaxation strictly lowers the tentative distance and updates its predecessor consistently.",
+    "Unreachable nodes keep infinity; stale queue entries are ignored if a duplicate-entry heap implementation is used."
+  ],
+  "motion_guidance": [
+    "Animate key movement after an actual decrease; never move a token to suggest an improvement that did not occur.",
+    "Show tentative paths as provisional until the destination is settled."
+  ],
+  "known_limits": [
+    "Negative edge weights are rejected; use an appropriate different algorithm for that case.",
+    "Zero-weight edges are allowed, but equal-distance tie choices can produce different valid trees.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.dijkstra-relaxation",
+      "statement": "Dijkstra algorithm solves the single-source shortest-path problem for edge-weighted directed graphs with nonnegative weights.",
+      "scope": "The nonnegative-weight precondition is essential to the settling rule.",
+      "source_refs": [
+        {
+          "source_id": "source.princeton-shortest-paths",
+          "locator": "Relaxation; Dijkstra algorithm"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Weighted digraph",
+      "structure": "Use labeled node pedestals and directional edge arrows; costs are text badges rather than geometric lengths.",
+      "material": "Neutral graph geometry with strong edge direction and readable cost labels; distinct outlines separate tentative from settled state."
+    }
+  ]
+}

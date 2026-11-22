@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-cartoon",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Cartoon expression"
+  },
+  "aliases": {
+    "en": [
+      "cartoon character",
+      "expressive cartoon scene",
+      "cartoony"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "Organize the subject around an expressive pose, clear feature hierarchy and playful contrast of large and small shapes.",
+  "objective": "The action reads when paused at key poses; squash or stretch, if chosen, does not imply that a factual rigid mechanism deforms.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "cartoon"
+  ],
+  "subject_terms": [
+    "cartoon character",
+    "expressive cartoon scene",
+    "cartoony",
+    "art direction"
+  ],
+  "intent_signals": [
+    "Create a cartoon character or scene",
+    "Stage an expressive readable gesture"
+  ],
+  "example_prompts": [
+    "Design a cartoon forest guardian that notices a visitor and waves with a readable arm gesture."
+  ],
+  "content": {
+    "principles": [
+      "Organize the subject around an expressive pose, clear feature hierarchy and playful contrast of large and small shapes.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Simplify small anatomical or mechanical detail into readable groups while retaining the joints needed by the intended movement.",
+      "Use separated local colors and controllable broad highlights; outlines are an option rather than the definition of the look.",
+      "Stage a readable gesture before adding secondary motion; keep the camera where the expression and action can both be seen."
+    ],
+    "observable_checks": [
+      "The action reads when paused at key poses; squash or stretch, if chosen, does not imply that a factual rigid mechanism deforms.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with cel shading, toy proportions or hand-painted accents; keep factual labels and state transitions independent of the performance.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

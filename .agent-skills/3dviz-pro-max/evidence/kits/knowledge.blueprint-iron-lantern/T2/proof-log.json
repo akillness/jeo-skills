@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-iron-lantern",
+  "record_revision": 5,
+  "asset": "templates/kits/gltf/iron-lantern.glb",
+  "asset_sha256": "77330025ec60646b7d8c4ac989d3b9128cbd38f38a53e87e997b213cd150eedd",
+  "params": {
+    "scale": 1
+  },
+  "tier": "T2",
+  "kit": {
+    "blueprint": "knowledge.blueprint-iron-lantern",
+    "module": "../gltf/iron-lantern.glb",
+    "params": {
+      "scale": 1
+    },
+    "tier": "T2",
+    "surface": {
+      "seed": 1,
+      "size": 1024,
+      "materials": 2,
+      "unmapped": [
+        "#3f3830"
+      ],
+      "uv": [
+        "declared"
+      ],
+      "ms": 47.2,
+      "ao": {
+        "vertices": 3888,
+        "casts": 13104,
+        "ms": 627.8,
+        "skipped": null
+      }
+    },
+    "triangles": 1944,
+    "bounds_m": {
+      "min": [
+        -0.23000000417232513,
+        0,
+        -0.4399999976158142
+      ],
+      "max": [
+        0.23000000417232513,
+        3.549999952316284,
+        0.23000000417232513
+      ],
+      "size": [
+        0.46000000834465027,
+        3.549999952316284,
+        0.6700000017881393
+      ]
+    },
+    "fit_distance_m": 5.324,
+    "view_distances_m": {
+      "far": 12.7776,
+      "mid": 6.3888,
+      "close": 4.1527,
+      "detail": 0.8193
+    },
+    "sockets": [
+      "base",
+      "hook",
+      "lamp"
+    ],
+    "detail_socket": "hook",
+    "animated": false,
+    "colliders": [],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "a23945427b77564cbf9c36def73ef0d0516dcf62d3390e012006c2dcc6f3555e",
+    "mid.png": "244ca670a7a7c48b09958d8e80a2f45b7e76ff31e81ad2ddff3e96a845ed05f1",
+    "close.png": "f2db5d25db8c6508c71cc7c1a4c3000b1566623ac38bd925992bcb011043cde9",
+    "detail.png": "a811e0c3843c22605b4242c6f4923ccb0947cbaf657b1647890183be460d8845"
+  },
+  "motion": null,
+  "gpu_requested": false,
+  "capture_mode": "swiftshader",
+  "webgl_renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-09T00:30:46+00:00",
+  "finished": "2026-09-09T00:30:52+00:00",
+  "surface": {
+    "families": {
+      "#696973": "metal",
+      "#e5c886": "metal"
+    },
+    "seed": 1,
+    "size": 1024,
+    "ao": {
+      "samples": 13,
+      "radius_m": 0.45,
+      "ground_dirt_m": 0.6
+    }
+  }
+}

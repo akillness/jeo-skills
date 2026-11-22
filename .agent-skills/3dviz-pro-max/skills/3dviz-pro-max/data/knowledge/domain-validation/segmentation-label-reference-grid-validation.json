@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.segmentation-label-reference-grid-validation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Segmentation labels: overlap and reference-grid conversion"
+  },
+  "aliases": {
+    "en": [
+      "segmentation labelmap",
+      "reference grid conversion"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures"
+  ],
+  "summary": "Validate categorical segment identity, overlapping membership and target-grid geometry before exporting a segmentation.",
+  "objective": "Export a segmentation with overlapping regions to a target grid and expose any lost membership, cropped extent or changed representation.",
+  "tags": [
+    "domain-validation",
+    "segmentation-label-reference-grid-validation"
+  ],
+  "subject_terms": [
+    "segmentation labelmap",
+    "reference grid conversion",
+    "overlapping segments",
+    "categorical labels",
+    "closed surface"
+  ],
+  "intent_signals": [
+    "Export a segmentation with overlapping regions to a target grid and expose any lost membership, cropped extent or changed representation."
+  ],
+  "example_prompts": [
+    "Export a segmentation with overlapping regions to a target grid and expose any lost membership, cropped extent or changed representation."
+  ],
+  "applies_when": [
+    "Validate categorical segment identity, overlapping membership and target-grid geometry before exporting a segmentation."
+  ],
+  "content": {
+    "principles": [
+      "Separate segment identity and membership from label values, colors and derived surface meshes. A smooth surface is a representation choice, not a replacement source segmentation.",
+      "Treat label resampling and merged-label export as declared conversions with their own loss report. Visual alignment alone does not establish matching spatial frames."
+    ],
+    "implementation": [
+      "Record source segment IDs/names, reference volume revision, origin, spacing, axis directions and extents. Resolve parent transforms into a shared patient/model frame before comparing grids; do not equate equal array dimensions with equal geometry.",
+      "Preserve separate binary memberships or a representation supporting overlap. If a target requires one label per voxel, require and disclose an explicit overlap-resolution policy instead of silently overwriting segments.",
+      "For categorical resampling choose an explicit label-preserving method such as nearest-neighbor; document that this avoids interpolated label numbers but can still erase thin regions. Record derived-surface smoothing and conversion parameters separately.",
+      "Before export report target-extent cropping, dropped segment IDs and changed membership counts. Keep the original segmentation unchanged and expose source versus converted views at the same location."
+    ],
+    "observable_checks": [
+      "Use two synthetic masks sharing one voxel: source inspection reports membership in both; merged-label export either rejects the overlap or records which membership the chosen policy removes.",
+      "Use equal-sized grids with different origins, then a target extent that excludes a labeled voxel: detect misalignment and report cropping, not successful lossless export.",
+      "Resample labels {0,3,8}; output introduces no invented labels such as 4 or 5. Compare thin-region survival and review any change rather than treating label validity as full fidelity."
+    ]
+  },
+  "known_limits": [
+    "Does not certify anatomical correctness, lesion boundaries or clinical measurements. Fractional/probabilistic segmentation needs a separate explicit policy.",
+    "Authored source-reviewed guidance only; no import adapter, runtime artifact or scientific pipeline was implemented or executed."
+  ],
+  "creative_affordances": [
+    "Use a compact source-versus-display inspector to expose the specific transformation; layout and emphasis are authored choices, not validated usability findings."
+  ],
+  "related_ids": [
+    "knowledge.dicom-image-frame-value-bridge",
+    "knowledge.validation-structure-identity-persistence"
+  ],
+  "claims": [
+    {
+      "id": "claim.slicer-segmentation-overlap-grid",
+      "statement": "Slicer supports multiple representations per segment, preserves overlapping segmentation data using additional volume layers, and warns that exporting to a reference volume can crop regions outside its geometry.",
+      "scope": "Documented Slicer representation/export behavior; proposed categorical validation procedures are authored.",
+      "source_refs": [
+        {
+          "source_id": "source.slicer-segmentation-representation-export",
+          "locator": "Overview; Editing a segmentation imported from model; Export segmentation to labelmap volume"
+        }
+      ]
+    }
+  ],
+  "check_method": "state"
+}

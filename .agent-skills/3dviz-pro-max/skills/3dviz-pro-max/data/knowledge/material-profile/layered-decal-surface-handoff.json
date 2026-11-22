@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.layered-decal-surface-handoff",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "material-profile",
+  "title": {
+    "en": "Layered decal surface handoff"
+  },
+  "aliases": {
+    "en": [
+      "decal bake versus runtime projection",
+      "layered normal roughness decal"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "Choose whether a localized mark is baked into portable texture roles, projected as runtime geometry, or reconstructed in a declared runtime shader.",
+  "objective": "The decal stays registered to its host, changes only intended color, normal or roughness roles, and has an explicit ownership and fallback path.",
+  "applies_when": [
+    "A label, stain, wear patch or damage mark is fixed authoring, replaceable runtime state or a runtime-composited effect."
+  ],
+  "tags": [
+    "material-profile",
+    "decal",
+    "uv-projection",
+    "bake",
+    "runtime-mesh"
+  ],
+  "subject_terms": [
+    "UV Project modifier",
+    "DecalGeometry",
+    "receiver mesh",
+    "roughness overlay",
+    "normal overlay",
+    "z-fighting",
+    "grazing angle"
+  ],
+  "intent_signals": [
+    "decal floats above curved mesh",
+    "bake warning label into GLB",
+    "runtime bullet mark projector",
+    "decal distorts around corner"
+  ],
+  "example_prompts": [
+    "Bake fixed paint wear while keeping interactive marks replaceable at runtime.",
+    "Add runtime warning labels to a Blender-authored machine."
+  ],
+  "negative_signals": [
+    "one universal decal method",
+    "assume Blender shader layers survive core glTF"
+  ],
+  "not_for": [
+    "True silhouette-changing cuts or dents.",
+    "A complete high-to-low UV bake workflow."
+  ],
+  "content": {
+    "principles": [
+      "Bake fixed marks, keep replaceable marks as runtime objects, and allow declared shader compositing outside the checked core glTF path.",
+      "Treat color coverage, normal perturbation and roughness change as separate roles; normal and roughness are non-color data.",
+      "Projection is directional; curvature, corners and grazing incidence can stretch or clip a patch.",
+      "Runtime mesh or shader decals need explicit host identity, state, fallback and cleanup ownership."
+    ],
+    "implementation": [
+      "In Blender, name receiver and layer roles; use stable UVs or UV Project, then bake only approved channel contributions.",
+      "For runtime projection, export stable receiver identity and store projector position, orientation and size as application state.",
+      "Use current DecalGeometry as one tested mesh option; inspect material depth, coverage and corner distortion.",
+      "For shader compositing, define coordinates, blends, renderer/backend and fallback rather than claiming automatic core glTF transport.",
+      "Dispose owned geometry, material and unshared textures; split, bake or author conforming geometry for unsupported surfaces."
+    ],
+    "observable_checks": [
+      "A registration chart stays attached through host transforms and camera orbit.",
+      "Color-only, normal-only and roughness-only fixtures affect only the intended response.",
+      "Front, oblique, corner and silhouette views expose distortion, clipping and z-fighting.",
+      "Add, replace, reset and remove preserve receiver state and release only owned resources."
+    ]
+  },
+  "creative_affordances": [
+    "Use raised geometry when a badge edge is meaningful.",
+    "Bake broad wear and reserve runtime layers for state or annotation."
+  ],
+  "known_limits": [
+    "No universal projection offset is prescribed.",
+    "Checked core glTF guidance is not a claim about every ecosystem decal extension.",
+    "No decal was baked, exported, projected or rendered."
+  ],
+  "related_ids": [
+    "knowledge.uv-atlas-bake-correspondence",
+    "knowledge.blender-three-metalrough-orm-translation",
+    "knowledge.blender-three-tangent-normal-handoff"
+  ],
+  "claims": [
+    {
+      "id": "claim.craft-blender-uv-project-decal",
+      "statement": "Blender 4.5's UV Project modifier emits a UV map from projector negative Z, can target a chosen UV map and is documented for decals; its perspective-projection limitation states that vertices behind the camera are not properly mapped and suggests subdivision so faces in front of the camera map correctly.",
+      "scope": "Blender 4.5 behavior; not glTF transport or suitability for every receiver.",
+      "source_refs": [
+        {
+          "source_id": "source.craft-blender-uv-project",
+          "locator": "UV Project Modifier; Options: UV Map and Projectors; Usage; Known Limitations: Vertices Behind the Camera"
+        }
+      ]
+    },
+    {
+      "id": "claim.craft-three-decal-geometry",
+      "statement": "Current Three.js DecalGeometry constructs decal geometry from a receiver Mesh plus projector position, orientation and size, and warns that projection around corners can be distorted.",
+      "scope": "Current addon documentation; one runtime technique, not a universal implementation.",
+      "source_refs": [
+        {
+          "source_id": "source.craft-three-decal-geometry",
+          "locator": "Class description; constructor; corner-distortion note"
+        }
+      ]
+    }
+  ]
+}

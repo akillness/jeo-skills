@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "id": "recipe.stage-previsualization-cue-stack",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Stage previsualization with a versioned cue stack"
+  },
+  "aliases": {
+    "en": [
+      "lighting camera blocking previs",
+      "multi-department stage cues"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "Coordinate performer blocking, camera, lighting and scenic cues in a reversible previsualization without claiming live show-control execution.",
+  "objective": "Build a stage model where I scrub cues, inspect department ownership and recover cleanly from interruption or a missing asset.",
+  "tags": [
+    "stage previsualization",
+    "cue stack",
+    "blocking"
+  ],
+  "subject_terms": [
+    "cue ID",
+    "department track",
+    "standby",
+    "go",
+    "model time",
+    "performer blocking",
+    "camera cue",
+    "lighting cue"
+  ],
+  "intent_signals": [
+    "stage lighting cue with camera and performer blocking",
+    "versioned cue stack previs"
+  ],
+  "example_prompts": [
+    "Preview a scene change with performer blocking, camera move and lighting cues, then interrupt and resume from a checkpoint."
+  ],
+  "negative_signals": [
+    "Not a live safety system, SMPTE certification, lighting-console protocol or guaranteed real-time show control."
+  ],
+  "not_for": [
+    "No pyrotechnics, machinery safety, performer tracking, live command transmission or timing certification."
+  ],
+  "entities": [
+    {
+      "name": "Stage and anchors",
+      "guidance": "Blender authors the stage, scenic units, performer marks, camera rails and named light targets; every cue target resolves by stable ID."
+    },
+    {
+      "name": "Cue stack",
+      "guidance": "Store immutable cue ID, revision, department, trigger mode, start/end, dependencies, target patch and reversible checkpoint policy outside glTF."
+    }
+  ],
+  "state_contract": {
+    "model": "A cue-stack revision contains ordered cues across blocking, scenic, camera and lighting tracks. A cue may trigger at model time, after a prior cue, or by explicit Go; ties use declared order. Standby changes no show state. Go commits one cue transaction or enters an error without partial target changes. Scrub reconstructs continuous target values and discrete latched cues from the selected revision. Interruption pauses model time and stores a checkpoint; resume, rollback or reset follows an explicit operator choice. Missing target IDs block only according to the cue’s declared required/optional policy.",
+    "authority": "Three.js owns the versioned semantic state, model time, history and reset; Blender/glTF assets are named presentation resources only.",
+    "actions": [
+      "Inspect standby and dependency readiness.",
+      "Go one cue or scrub the authored timeline.",
+      "Interrupt, resume or rollback to a checkpoint.",
+      "Compare cue-stack revisions without mutating the selected one."
+    ]
+  },
+  "invariants": [
+    "Cue ID/revision/department and target ownership are stable.",
+    "Standby never commits target state; Go is atomic at the semantic layer.",
+    "Same revision and model time reconstruct the same cue state.",
+    "Previsualization never sends live control commands."
+  ],
+  "motion_guidance": [
+    "Drive presentation from a seekable model time and derive every visible transform from current state; pause and scrub never advance hidden semantic state.",
+    "Provide a static sequence/list and reduced-motion mode that preserves text, order, choices and status."
+  ],
+  "creative_affordances": [
+    "Choose typography, assets, palette, staging and metaphor per the supplied brief and licensed material; no house style is mandatory.",
+    "Blender owns expressive geometry, rigs, sets and cue anchors; Three.js owns time, branch/state, captions, interruption and checkpoints."
+  ],
+  "known_limits": [
+    "Authored visualization of a finite cue stack; timing, collision, sightline and device outputs are not validated for a venue.",
+    "Authored, source-reviewed guidance only; no Blender export, audio playback, visitor study, show-control link, browser or renderer was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.art-webanimations-timing-state",
+      "statement": "Web Animations defines a timing model with current time, start time, playback rate and play/pause operations, allowing animation presentation to be derived from an owned timeline.",
+      "scope": "Browser animation timing semantics only; department cue transactions and safety policy are authored separately.",
+      "source_refs": [
+        {
+          "source_id": "source.art-w3c-web-animations",
+          "locator": "Timing model; Animation current time, start time, playback rate, play and pause procedures"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Cueable stage model",
+      "structure": "Build named marks, scenic pivots, camera rails and light aim targets; keep a cue table visible beside the spatial view.",
+      "material": "Department tracks use shape and labels as well as color; standby, active and error states remain distinct."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Spatial layout and motion communicate authored media/state; geometry and collisions have no physical authority.",
+    "timestep": "Evaluate from seekable authored time or discrete event state; no physics integration.",
+    "state": [
+      "versioned authored content",
+      "model time or event cursor",
+      "selection, accessibility and error state"
+    ],
+    "colliders": [
+      "optional interaction hit regions only"
+    ],
+    "driving": [
+      "authored cues and user actions"
+    ],
+    "contact": [
+      "none"
+    ],
+    "checks": [
+      "seek/reset state equality",
+      "missing asset/data fallback",
+      "presentation controls leave semantic data unchanged"
+    ]
+  },
+  "related_ids": [
+    "knowledge.theme-ceremonial-stage",
+    "recipe.construction-sequence-playback",
+    "knowledge.reasoning-algorithm-trace-as-data"
+  ]
+}

@@ -1,0 +1,11 @@
+identity,type,model_id,cu,jobs,api_key_cu_subset
+Artist 01,Human,model_example_1,12600,60,0
+Artist 01,Human,model_example_0,7500,250,0
+Artist 01,Human,model_example_2,3600,12,0
+Artist 01,Human,model_example_3,600,20,0
+Artist 02,Human,model_example_1,6300,30,0
+Artist 02,Human,model_example_2,3600,12,0
+Artist 02,Human,model_example_0,1500,50,0
+Artist 02,Human,model_example_3,300,10,0
+Automation,API identity,model_example_0,3600,120,3600
+Automation,API identity,model_example_3,900,30,900

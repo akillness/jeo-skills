@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.torus-euler-cells",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Torus cells and Euler characteristic"
+  },
+  "aliases": {
+    "en": [
+      "torus Euler characteristic",
+      "vertices edges faces torus",
+      "periodic mesh topology"
+    ]
+  },
+  "direction_ids": [
+    "topology-symmetry"
+  ],
+  "summary": "Count unique cells on a periodic torus mesh and compare them with the identified parameter rectangle.",
+  "objective": "Create a torus mesh with selectable vertices, edges and faces, and show why V-E+F equals zero.",
+  "tags": [
+    "Euler characteristic",
+    "torus",
+    "cell complex"
+  ],
+  "subject_terms": [
+    "Euler characteristic",
+    "torus",
+    "cell complex",
+    "periodic identification",
+    "V E F",
+    "genus"
+  ],
+  "intent_signals": [
+    "Create a torus mesh with selectable vertices, edges and faces, and show why V-E+F equals zero.",
+    "Count unique cells on a periodic torus mesh and compare them with the identified parameter rectangle."
+  ],
+  "example_prompts": [
+    "Create a torus mesh with selectable vertices, edges and faces, and show why V-E+F equals zero.",
+    "Create an explorable 3D explanation of torus Euler characteristic with cell ledger."
+  ],
+  "negative_signals": [
+    "Euler characteristic alone does not classify arbitrary spaces; this record covers the declared torus cell structure."
+  ],
+  "not_for": [
+    "Euler characteristic alone does not classify arbitrary spaces; this record covers the declared torus cell structure."
+  ],
+  "entities": [
+    {
+      "name": "Torus mesh",
+      "guidance": "Build a ring torus from a periodic parameter grid with major and minor loops; use slightly offset edges to avoid z-fighting."
+    },
+    {
+      "name": "Identification board",
+      "guidance": "Show the parameter rectangle with matching opposite-edge arrows and linked selections; mark seam copies with the same canonical ID."
+    },
+    {
+      "name": "Cell ledger",
+      "guidance": "Display V,E,F and Euler characteristic for quads or triangles, explaining the single-vertex/two-edge/one-face minimal cell decomposition separately."
+    }
+  ],
+  "state_contract": {
+    "model": "Use an m by n periodic quad grid with m,n>=3, unique wrapped vertex IDs and R>r>0 torus geometry. V=m*n, E=2*m*n, F=m*n. Triangulation adds one edge and one face per quad.",
+    "authority": "Combinatorial IDs own counts and adjacency; duplicated GPU seam vertices are presentation copies, not additional topological vertices.",
+    "actions": [
+      "Switch quad and triangle subdivisions.",
+      "Select a seam vertex to highlight all display copies.",
+      "Change mesh resolution within valid bounds.",
+      "Return to the original cell structure."
+    ]
+  },
+  "invariants": [
+    "Every periodic mesh edge has two incident faces.",
+    "V-E+F remains zero across the declared subdivisions.",
+    "Rendering seam duplication never increases the canonical vertex count."
+  ],
+  "motion_guidance": [
+    "Interpolate geometric display positions only while retaining connectivity; opening the parameter rectangle is an explanatory diagram, not a topology-preserving physical deformation.",
+    "Keep identification arrows visible when the rectangle is shown apart from the torus."
+  ],
+  "known_limits": [
+    "Euler characteristic alone does not classify arbitrary spaces; this record covers the declared torus cell structure.",
+    "A sphere-to-torus morph cannot preserve topology without a singularity or surgery and is outside this recipe.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.torus-euler-cells",
+      "statement": "Identifying opposite sides of a square constructs a torus, and Euler characteristic is the alternating count of cells by dimension.",
+      "scope": "Finite cell decomposition; the displayed torus grid is an authored subdivision.",
+      "source_refs": [
+        {
+          "source_id": "source.hatcher-cell-complexes",
+          "locator": "Chapter 0, Cell Complexes, printed pages 5-6"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Torus mesh",
+      "structure": "Build a ring torus from a periodic parameter grid with major and minor loops; use slightly offset edges to avoid z-fighting.",
+      "material": "Muted surface faces with high-contrast selected cells; vertex size remains a display marker and does not encode a count weight."
+    }
+  ]
+}

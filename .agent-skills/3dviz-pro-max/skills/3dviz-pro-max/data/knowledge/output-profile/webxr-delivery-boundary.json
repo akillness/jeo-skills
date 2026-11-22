@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "revision": 2,
+  "status": "active",
+  "record_kind": "mixed",
+  "id": "knowledge.webxr-delivery-boundary",
+  "knowledge_kind": "output-profile",
+  "title": {
+    "en": "WebXR delivery and desktop fallback boundary"
+  },
+  "aliases": {
+    "en": [
+      "WebXR delivery profile",
+      "immersive mode capability boundary",
+      "XR and non-XR handoff"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "products-assemblies",
+    "anatomy-structures"
+  ],
+  "summary": "Treat immersive XR as a capability-gated session mode with explicit reference-space, input, lifecycle and equivalent non-XR delivery.",
+  "objective": "Unsupported, denied, interrupted and completed XR requests all return to a usable non-XR scene without losing semantic state or running a second loop.",
+  "tags": [
+    "output-profile",
+    "webxr",
+    "immersive",
+    "fallback",
+    "session-lifecycle"
+  ],
+  "subject_terms": [
+    "navigator.xr",
+    "isSessionSupported",
+    "requestSession",
+    "xr-spatial-tracking",
+    "reference space",
+    "XRSession end",
+    "WebXRManager"
+  ],
+  "intent_signals": [
+    "deliver this scene in VR",
+    "WebXR button does nothing",
+    "XR denied needs fallback",
+    "keep desktop mode after headset exit"
+  ],
+  "example_prompts": [
+    "Deliver an interior walkthrough in XR with a desktop alternative.",
+    "Gate immersive AR on actual session capability and preserve selection after exit.",
+    "Define WebXR reference-space and input ownership without promising universal support."
+  ],
+  "negative_signals": [
+    "native OpenXR application",
+    "headset performance certification"
+  ],
+  "not_for": [
+    "Native XR packages outside the Web platform.",
+    "Comfort or performance certification without target-device observation."
+  ],
+  "content": {
+    "principles": [
+      "XR availability is a runtime capability and permission outcome, not an asset property. A valid glTF scene does not establish that an immersive session can start.",
+      "Choose reference space, scale, locomotion and interaction rays as delivery semantics. Blender supplies correctly scaled content and authored anchors; the browser session supplies tracked views and inputs.",
+      "XR is an enhancement of one application state. Enter, end, denial and device loss must converge on the same owned scene state and one renderer loop, with an equivalent non-XR route to the content."
+    ],
+    "implementation": [
+      "Export Blender content with declared metre scale, origin, floor and interaction anchors. Do not bake a headset pose or room boundary into the asset as if it were portable tracking data.",
+      "In a secure context, first test navigator.xr and isSessionSupported for the requested mode. Advertise an enter control only as a capability hint; request the session from an eligible user activation, handle rejection, and keep the desktop/static path available.",
+      "Enable the Three.js XR manager for the chosen renderer backend, set the intended reference-space type before the session, inject the accepted session through the documented manager path, and drive both XR and non-XR views from the renderer-owned animation loop.",
+      "On session end, detach XR-only input, restore the non-XR camera/control policy, preserve declared selection/time state, and avoid creating a second scene or mixer. Embedded deployments also declare the xr-spatial-tracking Permissions Policy relationship.",
+      "Gate first, then hand the session over: after `navigator.xr.isSessionSupported( 'immersive-vr' )` resolves true and a user activation has occurred, set `renderer.xr.enabled = true`, call `renderer.xr.setReferenceSpaceType( value )` before the session begins - the documented default is `local-floor` and the method cannot be used during a session - and pass the accepted session with `await renderer.xr.setSession( session )`. Read `renderer.xr.isPresenting` instead of tracking a private flag.",
+      "Take input from the renderer-owned manager, not from the raw session object: `renderer.xr.getController( index )` returns the targeting-ray group, `renderer.xr.getControllerGrip( index )` the grip group for a held model, and `renderer.xr.getHand( index )` the hand group; `renderer.xr.getSession()` returns the active session for teardown. Add these groups to the scene once and reuse them across sessions rather than recreating them per entry.",
+      "Drive both the XR and the non-XR view from `renderer.setAnimationLoop( fn )` so XR frame timing owns the loop, and on session end detach the XR-only input from those groups, restore the non-XR camera and control policy, and leave `renderer.xr.enabled` reflecting the state the application is actually in."
+    ],
+    "observable_checks": [
+      "With navigator.xr absent, unsupported mode, denied request and policy block, the user sees the declared non-XR scene or static equivalent rather than an inert XR button.",
+      "Entering and ending XR preserves the selected object and playback time under the declared policy; exactly one animation loop and one application state remain.",
+      "A one-metre Blender reference object, declared floor and interaction anchor are inspected in the transported asset and mapped to the chosen reference-space convention; no room-boundary accuracy is inferred.",
+      "Runtime capability reporting names browser, requested session mode, reference space and renderer backend/revision; it does not generalize one result to all devices."
+    ]
+  },
+  "creative_affordances": [
+    "XR locomotion may be teleport, guided viewpoints, room-scale or stationary inspection.",
+    "The non-XR path may be an interactive orbit view, annotated views or a static report with equivalent purpose."
+  ],
+  "known_limits": [
+    "isSessionSupported may return a false positive by design; requestSession remains authoritative for the attempted session.",
+    "No XR hardware/session, renderer backend, input, comfort or performance test was run."
+  ],
+  "related_ids": [
+    "knowledge.shared-interactive-web-scene",
+    "knowledge.shared-static-accessible-fallback",
+    "knowledge.gltf-transform-pivot-handoff",
+    "knowledge.accessible-spatial-controls"
+  ],
+  "claims": [
+    {
+      "id": "claim.output-webxr-session-gates",
+      "statement": "The WebXR Device API is exposed in secure contexts; its application flow queries isSessionSupported, requests an immersive session during transient activation, runs the XR frame loop until shutdown, and notes that support queries may produce false positives. Spatial-tracking sessions are also governed by the xr-spatial-tracking Permissions Policy whose default allowlist is self.",
+      "scope": "W3C WebXR Candidate Recommendation Draft dated 2026-06-09; actual user agent, hardware, permission and policy outcomes must be tested.",
+      "source_refs": [
+        {
+          "source_id": "source.output-w3c-webxr",
+          "locator": "Sections 1.2 Application flow, 3 Initialization, 13.8.1 and 14.1 Permissions Policy"
+        }
+      ]
+    },
+    {
+      "id": "claim.output-three-webxr-manager",
+      "statement": "Current Three.js WebXRManager documentation says XR support is disabled by default, exposes isPresenting, lets the application set a reference-space type before a session, and accepts an XRSession through setSession to start XR rendering.",
+      "scope": "Live unversioned Three.js WebXRManager documentation read 2026-09-08; renderer backend and installed revision must be verified.",
+      "source_refs": [
+        {
+          "source_id": "source.output-three-webxrmanager",
+          "locator": "enabled, isPresenting, setReferenceSpaceType and setSession"
+        }
+      ]
+    }
+  ]
+}

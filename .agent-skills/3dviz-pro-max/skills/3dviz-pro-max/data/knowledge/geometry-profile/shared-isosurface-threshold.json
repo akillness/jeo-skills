@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-isosurface-threshold",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "geometry-profile",
+  "title": {
+    "en": "Isosurface extraction with an owned threshold"
+  },
+  "aliases": {
+    "en": [
+      "isosurface threshold",
+      "contour value ownership",
+      "level set extraction"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials",
+    "soft-fluid-thermal",
+    "anatomy-structures"
+  ],
+  "summary": "Treat the isovalue as a declared, adjustable input and treat the extracted surface as one slice of a field rather than as the object itself.",
+  "objective": "Changing the threshold visibly changes the surface in the declared direction, and the current threshold and its units are always readable in the scene.",
+  "tags": [
+    "geometry-profile",
+    "isosurface",
+    "threshold",
+    "contour-value",
+    "scalar-field"
+  ],
+  "subject_terms": [
+    "isosurface",
+    "isovalue",
+    "contour value",
+    "level set",
+    "marching cubes",
+    "scalar field",
+    "gradient",
+    "degenerate triangle",
+    "surface extraction"
+  ],
+  "intent_signals": [
+    "extract a surface from volume data",
+    "which density value should I use",
+    "the surface changes when I move the slider",
+    "show an electron density isosurface",
+    "surface has tiny broken triangles"
+  ],
+  "example_prompts": [
+    "Extract a molecular surface at a chosen density and let me change the value.",
+    "Show the boundary of the hot region in a temperature field.",
+    "Compare two thresholds side by side on the same field."
+  ],
+  "negative_signals": [
+    "already have a triangle mesh",
+    "purely artistic blob shape with no underlying field"
+  ],
+  "not_for": [
+    "Objects that were modelled directly as surfaces and have no scalar field behind them.",
+    "Segmentation tasks that assign labels to regions rather than a single continuous threshold."
+  ],
+  "content": {
+    "principles": [
+      "The extracted surface is a consequence of a chosen value, not an object in its own right. Whenever the surface is shown, the value that produced it and the units of that value should be available.",
+      "One threshold is one hypothesis, and its direction must be declared. A superlevel set collects where the field is at least the threshold and a sublevel set collects where it is at most the threshold, and the two respond to a threshold change in opposite directions. A shape that changes character across a small change in the isovalue is telling the viewer that the boundary is not sharply defined.",
+      "An extracted contour is a surface, not a solid. Where the level set meets the edge of the sampled domain the contour is open, so any statement about enclosed volume requires an explicit capping or region construction at the domain boundary.",
+      "Extraction quality is limited by the sampling of the underlying field. A surface can never resolve a feature thinner than the grid that carries it, however finely the triangles are subdivided.",
+      "Extraction algorithms differ in their output even at the same isovalue. Zero-area triangles, duplicated points and differing resolutions of ambiguous cell configurations are properties of the method, not signals about the data.",
+      "Smoothing the extracted surface changes the geometry after the fact. If smoothing is applied, it belongs in the record as a presentation step, separate from the field and the threshold."
+    ],
+    "implementation": [
+      "Expose the isovalue as a named control with the field's own units and range, and show the current value next to the surface rather than only inside a settings panel.",
+      "Keep the field, the threshold and the extracted mesh as three distinct pieces of state, so a threshold change re-extracts rather than deforming the previous mesh.",
+      "Where a field gradient is sufficiently nonzero under a scale-aware threshold, normalize it and orient it according to the declared region convention. At critical points, plateaus or unresolved gradients, use a declared geometric-normal fallback or mark the normal undefined; do not normalize a zero vector or promise a unique normal.",
+      "Clean the raw output before shading: drop zero-area triangles and merge coincident points, and record that this cleaning happened.",
+      "When several thresholds matter, present them as nested shells with declared opacity ordering, or as a small set of comparison views, rather than as one surface that silently switches meaning.",
+      "For fields with a physically meaningful reference level, mark that level on the control so the viewer can see how far the current threshold sits from it."
+    ],
+    "observable_checks": [
+      "Moving the threshold control changes the enclosed region monotonically in the direction the declared level-set convention predicts: for superlevel sets a higher threshold encloses no more than a lower one. Test this on the capped region, not on the open contour surface.",
+      "The displayed value and units next to the surface always match the control position.",
+      "Use fields with known isolated extrema, multiple equal extrema and plateaus to check range endpoints, equality conventions, empty contours and domain boundaries. Multiple disconnected components or abrupt topology changes can be legitimate; compare against the selected field rather than requiring smooth shrinking or a single component.",
+      "Re-extracting at the same threshold twice yields the same visible surface.",
+      "Shading stays continuous across the surface after cleaning, with no black speckles from zero-area triangles."
+    ]
+  },
+  "creative_affordances": [
+    "Nested translucent shells, cutaway halves and colour-by-secondary-field are legitimate presentation choices on top of the extracted surface.",
+    "A stylised or simplified surface is acceptable for illustration when the record states that the geometry is presentation rather than measurement."
+  ],
+  "known_limits": [
+    "This profile governs the extraction contract. It does not certify that any threshold has clinical, chemical or physical meaning; such a value needs its own sourced evidence.",
+    "The algorithm caveats cited here are documented for specific implementations and may not apply to a different extractor.",
+    "Authored reusable guidance; no runtime artifact or rendered result has been observed for this record."
+  ],
+  "related_ids": [
+    "recipe.water-hydrogen-bond-network",
+    "recipe.heat-rod-decay",
+    "recipe.knee-layer-peel",
+    "knowledge.shared-voxel-field-grid",
+    "knowledge.shared-volume-visualization-stack",
+    "knowledge.signed-field-section"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-isosurface-contour-input",
+      "statement": "A marching-cubes isosurface filter takes a volume as input and requires one or more contour values to be specified, or a scalar range and a count from which evenly spaced contour values are generated; the filter is documented as specialised to volumes, with other data types routed to different filters.",
+      "scope": "Documented interface of one isosurface filter as of the access date. It establishes that the isovalue is an explicit required input, not a property of the data.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-vtk-marching-cubes",
+          "locator": "Detailed Description; Warning"
+        }
+      ]
+    },
+    {
+      "id": "claim.shared-isosurface-degenerate-output",
+      "statement": "A high-performance isocontouring implementation documents that it can produce degenerate zero-area triangles and may therefore not produce output identical to a marching-cubes implementation that removes degenerate triangles and duplicate points.",
+      "scope": "Documented caveat for one specific isosurface implementation. It shows that mesh artefacts can originate in the extractor rather than in the field; it does not quantify how often they occur.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-vtk-flying-edges",
+          "locator": "Warning: degenerate triangles and difference from Marching Cubes"
+        }
+      ]
+    }
+  ]
+}

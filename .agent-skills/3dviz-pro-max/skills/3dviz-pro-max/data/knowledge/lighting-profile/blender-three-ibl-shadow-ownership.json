@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blender-three-ibl-shadow-ownership",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Environment IBL and direct-shadow ownership"
+  },
+  "aliases": {
+    "en": [
+      "HDRI PMREM shadow handoff",
+      "Three.js environment lighting versus shadows",
+      "Blender HDRI match"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "environments-dioramas",
+    "architecture-interiors",
+    "characters-motion-art"
+  ],
+  "summary": "Assign environment lighting, roughness prefiltering, direct lights and shadow maps separate jobs so a Blender HDR look becomes a controlled Three.js lighting rig rather than an unexplained brightness match.",
+  "objective": "Reflective materials keep readable roughness variation, a named direct light owns the grounding shadow, and changing environment intensity does not masquerade as changing shadow-map behavior.",
+  "tags": [
+    "lighting-profile",
+    "ibl",
+    "hdr",
+    "pmrem",
+    "direct-light",
+    "shadow-map",
+    "threejs"
+  ],
+  "subject_terms": [
+    "HDR environment",
+    "image-based lighting",
+    "PMREM",
+    "roughness prefilter",
+    "Scene environment",
+    "environment intensity",
+    "DirectionalLight",
+    "castShadow",
+    "receiveShadow",
+    "shadow camera"
+  ],
+  "intent_signals": [
+    "HDRI lights object but there is no ground shadow",
+    "metal looks noisy without PMREM",
+    "environment washes out shadows",
+    "match Blender world lighting in Three.js",
+    "who owns the contact shadow"
+  ],
+  "example_prompts": [
+    "Bring this Blender HDR studio setup into Three.js with a stable grounding shadow.",
+    "Separate the environment reflection from the sun shadow in this product viewer."
+  ],
+  "negative_signals": [
+    "assume the environment image casts shadow maps",
+    "add many shadow lights without purpose",
+    "pixel-match unrelated path tracing and raster lighting"
+  ],
+  "not_for": [
+    "Claiming an HDR image reproduces measured illumination without calibration.",
+    "Treating a direct-light raster setup as equivalent to Blender path tracing."
+  ],
+  "content": {
+    "principles": [
+      "Give the environment three explicit responsibilities: broad illumination, reflected surroundings and backdrop if desired. Backdrop visibility remains a presentation choice.",
+      "Prefilter the environment for the PBR material model so rough surfaces can sample wider reflection lobes. PMREM is a runtime representation choice, not a new light source.",
+      "Assign hard or directional grounding shadows to named direct lights and shadow maps, or to a declared baked/fake shadow. An HDR environment alone does not define that shadow ownership in Three.js.",
+      "A Blender world/render match is conditional on world rotation, intensity, direct lights, exposure, view transform, material model and bounce behavior. Record differences rather than compensating all of them with one intensity slider."
+    ],
+    "implementation": [
+      "Export material and geometry separately from the lighting contract. Record the Blender world image, rotation, strength, direct lights, render engine, exposure and view transform as reference settings.",
+      "In Three.js, load the HDR environment with its linear high-dynamic-range color role and assign the renderer-appropriate prefiltered result to scene.environment. Keep scene.background independent when the backdrop should differ.",
+      "Add only the direct lights whose jobs are named. For a grounding sun/key shadow, enable renderer shadow maps, light castShadow, object castShadow and receiver receiveShadow, then fit the shadow camera to the relevant region.",
+      "Tune environment intensity for material readability and direct-light intensity for its named illumination/shadow contrast while holding exposure fixed. Use a neutral roughness ladder and a grounded object as diagnostics.",
+      "Record Three.js revision and renderer/backend because environment preprocessing and shadow features differ across paths and releases."
+    ],
+    "observable_checks": [
+      "A roughness ladder reflects progressively broader environment features rather than the same sharp image at every step.",
+      "Disabling the named shadow-casting direct light removes its grounding shadow while leaving environment reflections present.",
+      "Rotating the environment moves reflected features; the direct light's shadow direction stays fixed unless that light is also rotated.",
+      "The shadow remains inside its fitted camera through the intended interaction range and does not disappear at the near/far boundaries."
+    ]
+  },
+  "creative_affordances": [
+    "Use an invented gradient environment or studio-card scene instead of a photographic HDR when it better shapes the object.",
+    "A blob shadow or baked contact patch can replace a shadow map in a stylized scene when its ownership and limits are clear."
+  ],
+  "known_limits": [
+    "This profile does not reproduce global illumination, caustics or all bounce lighting from Blender.",
+    "Environment-map and shadow APIs vary by Three.js renderer and release; inspect the selected path.",
+    "Authored reusable guidance; no HDR was loaded and no shadow was rendered for this record."
+  ],
+  "related_ids": [
+    "knowledge.shared-pbr-studio-environment",
+    "knowledge.shared-light-comparison-rig",
+    "knowledge.blender-three-linear-color-handoff"
+  ],
+  "claims": [
+    {
+      "id": "claim.blender-three-pmrem-role",
+      "statement": "Three.js PMREMGenerator produces a prefiltered mipmapped radiance environment map whose filtered levels are selected for material roughness and whose prefiltering targets the GGX BRDF used for physically based image-based lighting.",
+      "scope": "Current Three.js PMREMGenerator behavior; it does not guarantee agreement with Blender's sampling, world shader or render engine.",
+      "source_refs": [
+        {
+          "source_id": "source.blender-three-pmrem",
+          "locator": "Class description; fromCubemap; fromEquirectangular"
+        }
+      ]
+    },
+    {
+      "id": "claim.blender-three-shadow-map-ownership",
+      "statement": "Three.js documents shadow maps as separate renders from each shadow-casting light and requires renderer shadow maps plus per-light and per-mesh cast/receive settings; environment assignment is documented separately as PBR environment lighting.",
+      "scope": "Current Three.js shadow-map and scene-environment model; baked or custom shadow methods are outside this claim.",
+      "source_refs": [
+        {
+          "source_id": "source.blender-three-shadows",
+          "locator": "Shadow-map overview; renderer, light and mesh setup; shadow camera bounds"
+        },
+        {
+          "source_id": "source.shared-depth-three-scene",
+          "locator": "environment; environmentIntensity; background"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "id": "recipe.general-soft-body-boundary-test",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "XPBD soft-body boundary fixture"
+  },
+  "aliases": {
+    "en": [
+      "compliant soft-body test",
+      "XPBD pinned deformation fixture"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal",
+    "rigid-mechanics"
+  ],
+  "summary": "Exercise one compliant particle mesh with pinned boundaries, explicit timestep/substeps/iterations and residuals rather than treating visual softness as a material measurement.",
+  "objective": "Build a bounded XPBD fixture where I change compliance or solver budget, apply a known load and inspect constraint residual, energy proxy and reset.",
+  "tags": [
+    "soft body",
+    "XPBD",
+    "compliance"
+  ],
+  "subject_terms": [
+    "constraint compliance",
+    "Lagrange multiplier",
+    "substep",
+    "iteration budget",
+    "pinned boundary",
+    "constraint residual"
+  ],
+  "intent_signals": [
+    "soft body boundary test",
+    "XPBD compliance timestep"
+  ],
+  "example_prompts": [
+    "Pin one side of a tetrahedral sample, apply gravity, then compare residuals when compliance and solver budget change."
+  ],
+  "negative_signals": [
+    "Not FEM validation, Young modulus measurement, cloth generalization or production stability guarantee."
+  ],
+  "not_for": [
+    "No fracture, plasticity, self collision, fluid coupling, remeshing or universal convergence threshold."
+  ],
+  "entities": [
+    {
+      "name": "Rest mesh and pins",
+      "guidance": "Blender authors a valid tetrahedral rest fixture, edge topology and named pinned vertex group; Three.js/solver copies positions, masses, rest edge lengths and rest signed volumes into authoritative arrays."
+    },
+    {
+      "name": "Residual fixture",
+      "guidance": "Show rest/current wireframes, pins, force arrow, maximum normalized constraint residual and exact solver budget."
+    }
+  ],
+  "state_contract": {
+    "model": "Use a finite tetrahedral particle fixture with positive masses or infinite-mass pinned particles, fixed frame step dt, S>=1 substeps of h=dt/S and I>=1 Gauss-Seidel iterations per substep. Declare edge-distance constraints C_edge=|xi-xj|-Lij and signed tetra-volume constraints C_vol=V(x)-V0 with separate nonnegative compliance values whose units follow each C. At each substep predict x_tilde=x+h*v+h^2*M^-1*f_ext, initialize every lambda_j=0, then iterate delta_lambda=(-Cj-alpha_tilde*lambda_j)/(gradC*M^-1*gradC^T+alpha_tilde), delta_x=M^-1*gradC^T*delta_lambda with alpha_tilde=alpha_j/h^2. After projection set v=(x_new-x_old)/h. Accumulate lambda only within the substep; warm starting is outside this recipe. Reject zero denominator, non-finite state and nonpositive signed tetra volume.",
+    "authority": "The selected external solver module owns particle state, constraints, multipliers, forces and fixed-step loop. Three.js owns adapter/history/diagnostics and renders state; Blender owns rest topology and pin labels.",
+    "actions": [
+      "Apply/remove one declared load and advance one substep.",
+      "Change compliance, substeps or iterations and start a fresh comparable run.",
+      "Inspect per-constraint residuals and inversion flags.",
+      "Reset positions, velocities and multipliers to the exact fixture."
+    ]
+  },
+  "invariants": [
+    "Pinned particles remain at rest coordinates within tolerance.",
+    "Every accepted denominator is positive and finite.",
+    "Solver-budget changes are recorded with results and never relabeled as material changes.",
+    "Each substep starts with zero multipliers; reset additionally clears positions, velocities, multipliers and pending forces to the exact fixture."
+  ],
+  "motion_guidance": [
+    "Play, pause and step advance the declared model clock only; reset restores parameters, state, solver budget, selections, errors and presentation transforms.",
+    "Use static before/after states and numeric tables for reduced motion; animation interpolates committed state and never supplies physical evidence."
+  ],
+  "creative_affordances": [
+    "Blender may shape distinctive apparatus, cutaways and materials; Three.js binds named parts to authoritative state and keeps units and error states readable.",
+    "Camera, color, trails and deformation gain are presentation controls and cannot change the numerical model."
+  ],
+  "known_limits": [
+    "One tetrahedral fixture with edge-distance and signed-volume XPBD constraints; compliance units differ with the constraint definition, and finite solver budgets retain residual/error. This is not FEM or measured-material equivalence.",
+    "Authored, source-reviewed guidance only; no Blender export, numerical simulation, contact solve, browser or renderer was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.physics-xpbd-update",
+      "statement": "XPBD introduces compliance as inverse stiffness, scales it by inverse squared timestep, accumulates a total Lagrange multiplier, and updates each constraint through the documented delta-lambda and mass-weighted position equations.",
+      "scope": "Macklin, Müller and Chentanez 2016 XPBD scalar-constraint update; concrete constraint units remain implementation-specific.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-xpbd-paper",
+          "locator": "Sections 3–4.1, equations 5, 16–18 and Algorithm 1"
+        }
+      ]
+    },
+    {
+      "id": "claim.physics-xpbd-budget-boundary",
+      "statement": "The XPBD paper addresses PBD stiffness dependence on timestep and iteration count, but its algorithm is still an iterative solve with approximations and finite residual; this recipe therefore records solver budget and does not assert identical finite-run states.",
+      "scope": "Documented motivation and algorithm boundary, without a universal convergence or material-validation claim.",
+      "source_refs": [
+        {
+          "source_id": "source.physics-xpbd-paper",
+          "locator": "Abstract, Introduction, equations 15–18 and stated approximations"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Compliant boundary coupon",
+      "structure": "Use a coarse inspectable volume/surface cage, explicit fixed pin fixtures and ghosted rest edges; separate render skin from solver nodes if used.",
+      "material": "Pins, free nodes, inverted cells and residual severity use redundant glyphs and labels."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Finite XPBD particle/constraint fixture with external forces and pinned boundary.",
+    "timestep": "Fixed dt split into declared substeps and iteration count; record budget with every result.",
+    "state": [
+      "rest/current particle positions and velocities",
+      "masses, pins, rest edges/volumes, two constraint compliances and per-substep multipliers",
+      "external force and solver budget"
+    ],
+    "colliders": [
+      "optional declared static plane only; no self collision"
+    ],
+    "driving": [
+      "gravity or one bounded applied force"
+    ],
+    "contact": [
+      "only if explicit plane constraint is included"
+    ],
+    "checks": [
+      "pin drift",
+      "denominator finite/positive",
+      "constraint residual",
+      "orientation/inversion and exact reset"
+    ]
+  },
+  "related_ids": [
+    "knowledge.blender-baked-deformation-runtime-adapter",
+    "knowledge.reasoning-boundary-conditions-are-the-model"
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-transmissive-enclosure-light",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Lighting a closed transmissive volume"
+  },
+  "aliases": {
+    "en": [
+      "glass enclosure lighting",
+      "transmission backdrop",
+      "lighting a vessel or dome"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies",
+    "waves-optics-fields"
+  ],
+  "summary": "Give a transparent enclosure something worth transmitting: a lit backdrop, a lit interior and edges that stay readable.",
+  "objective": "The glass boundary stays visible, the contents behind it stay recognisable, and changing the enclosure's thickness produces a visible difference or is reported as inconclusive.",
+  "tags": [
+    "lighting-profile",
+    "transmission",
+    "glass",
+    "enclosure",
+    "backdrop"
+  ],
+  "subject_terms": [
+    "transmission",
+    "refraction",
+    "thin wall",
+    "volume boundary",
+    "attenuation distance",
+    "index of refraction",
+    "backdrop",
+    "double-sided lighting",
+    "interior lighting"
+  ],
+  "intent_signals": [
+    "the glass looks like grey plastic",
+    "cannot see anything inside the dome",
+    "glass has no edge",
+    "light a bottle or vitrine",
+    "transparent object disappears"
+  ],
+  "example_prompts": [
+    "Light a glasshouse so both the frame and the plants inside read.",
+    "Show a specimen inside a sealed vessel.",
+    "Make a lens read as glass rather than as a hole in the image."
+  ],
+  "negative_signals": [
+    "fully opaque object",
+    "unlit data encoding"
+  ],
+  "not_for": [
+    "Opaque objects, where transmission adds cost and no information.",
+    "Quantitative optics results, which need a computed model rather than an appearance setting."
+  ],
+  "content": {
+    "principles": [
+      "Transparency shows what is behind it. A transmissive object in front of nothing is not transparent in any visible sense, so the backdrop is part of the lighting design and not an afterthought.",
+      "Say whether the object is a thin wall or a closed volume before choosing any optical setting, because the two cases behave differently under the same parameters and the difference is a modelling decision rather than a rendering one.",
+      "Enclosures usually need their own interior light. Illuminating only the outside makes the interior read as a dark cavity even when the enclosure is perfectly clear.",
+      "The boundary must stay findable. Rims, frames, mullions, seams and edge highlights are what tell the viewer that a surface exists there at all, and they should survive the lighting rather than being erased by it.",
+      "A transmissive material makes shading order visible. Enabling two-sided behaviour changes how back-facing surfaces are lit, which is why interior faces of a vessel can look wrong even when the exterior looks right.",
+      "Transmission is expensive per pixel and its cost rises as more optical features are enabled, so the number of transmissive surfaces is a design budget, not a free choice."
+    ],
+    "implementation": [
+      "Place a lit, recognisable reference behind the enclosure and check the object against that reference from a front view, an oblique view and an edge-on view.",
+      "If the intended view needs interior illumination, use a direct interior source, GI or path-traced bounce, baked lighting, or a declared approximate fill. A visible interior surface alone does not create indirect illumination in a direct-light rasterizer; balance the chosen mechanism against exterior highlights.",
+      "Keep the frame, rim or mounting geometry as opaque parts with their own material, so the enclosure has a readable silhouette independent of the transmission settings.",
+      "Choose thickness deliberately and record the mesh scale alongside it, since a thickness value expressed in the mesh's own coordinate space means something different after the object is scaled.",
+      "Set absorption by the distance light travels in the medium rather than by tinting the surface colour, and keep that distance in the same world units as the scene.",
+      "When interior faces are needed, enable two-sided treatment explicitly and check that the reversed-normal shading looks intentional rather than accidentally dark.",
+      "Budget the transmissive surfaces: prefer a single closed shell over stacked panes where the stack adds no information."
+    ],
+    "observable_checks": [
+      "The enclosure's edges and frame remain visible against both a bright and a dark background.",
+      "Under the viewing conditions the record declares, the reference object behind the enclosure remains recognisable to the intended degree. Frosted, strongly refracting, heavily tinted or edge-on cases may legitimately occlude it, and the record should say which of those it accepts.",
+      "The interior of a closed enclosure is legible without the exterior surface losing its highlight.",
+      "Changing thickness produces a visible optical difference in the test setup, or the record states that the change was inconclusive at this scale.",
+      "Interior faces of the enclosure are shaded consistently with the exterior and do not appear as flat black patches."
+    ]
+  },
+  "creative_affordances": [
+    "Coloured, frosted, patterned and deliberately imperfect glass are all legitimate; the requirement is a readable boundary, not clarity.",
+    "Stylised refraction, including no refraction at all, is acceptable when the record says the treatment is expressive."
+  ],
+  "known_limits": [
+    "No claim is made about caustics, dispersion, measured glass spectra or correctness for nested transmissive volumes.",
+    "Appearance settings for transmission are not an optical solver; a refraction result that must be trusted numerically requires a ray model with stated inputs.",
+    "Authored reusable guidance; no runtime artifact or rendered result has been observed for this record."
+  ],
+  "related_ids": [
+    "recipe.fantasy-village-diorama",
+    "recipe.planar-refraction-ray",
+    "knowledge.transmissive-medium",
+    "knowledge.style-glass-translucent",
+    "knowledge.shared-pbr-studio-environment"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-transmission-thickness-and-cost",
+      "statement": "In one widely used renderer a physical material's thickness is given in the coordinate space of the mesh with zero meaning a thin-walled surface and any other value meaning a volume boundary, attenuation distance is given in world-space units and must be greater than zero, index of refraction for non-metals is limited to a range from one to about 2.333, and the material is documented as having a higher per-pixel performance cost than other materials in that library with most effects disabled by default.",
+      "scope": "Documented parameters and stated cost of one library's physical material as of the access date. Re-read in this session to confirm the wording; it describes configuration, not optical validation.",
+      "source_refs": [
+        {
+          "source_id": "source.three-physical-material",
+          "locator": "thickness; attenuationDistance; ior; performance note"
+        }
+      ]
+    },
+    {
+      "id": "claim.shared-doublesided-normal-reversal",
+      "statement": "The glTF 2.0 specification states that when a material is not double sided back-face culling is enabled so only front-facing triangles are rendered, and that when it is double sided culling is disabled, double sided lighting is enabled and the back face must have its normals reversed before the lighting equation is evaluated.",
+      "scope": "Normative material text of the glTF 2.0 specification, read from the Khronos specification source. It explains why interior faces shade differently once two-sided rendering is enabled; it does not prescribe when to enable it.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-gltf-spec",
+          "locator": "Materials > Double Sided"
+        }
+      ]
+    }
+  ]
+}

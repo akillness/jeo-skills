@@ -1,0 +1,365 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-stone-bridge",
+  "revision": 3,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: segmental-arch stone bridge"
+  },
+  "aliases": {
+    "en": [
+      "stone bridge kit",
+      "arch bridge blueprint",
+      "village bridge module"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "A single segmental-arch stone bridge with a voussoir ring and raised keystone, coursed spandrels, four cutwaters, a cobbled deck and a coped parapet, exposing deck sockets at both approaches.",
+  "objective": "Seen from about thirteen metres the bridge reads as three tiers: the arch void and the parapet line, then individual voussoirs, spandrel courses, cutwaters and cobble courses, then the raised keystone, worn coping arris and moss at the springing.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "building",
+    "village",
+    "bridge",
+    "arch"
+  ],
+  "subject_terms": [
+    "segmental arch",
+    "voussoir",
+    "keystone",
+    "spandrel",
+    "cutwater",
+    "parapet coping"
+  ],
+  "intent_signals": [
+    "build a stone bridge",
+    "arch bridge over a village stream",
+    "bridge module with deck sockets"
+  ],
+  "example_prompts": [
+    "Carry the village lane over the stream on a stone bridge.",
+    "I need an arch bridge whose deck I can connect a path to."
+  ],
+  "not_for": [
+    "Any claim about the load capacity or construction sequence of a real bridge.",
+    "Structural analysis of masonry arches."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/buildings/stone-bridge.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "span",
+      "type": "number",
+      "range": [
+        3.5,
+        10.0
+      ],
+      "default": 6,
+      "unit": "m"
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "range": [
+        2.0,
+        6.0
+      ],
+      "default": 3.4,
+      "unit": "m"
+    },
+    {
+      "name": "rise",
+      "type": "number",
+      "range": [
+        0.8,
+        3.0
+      ],
+      "default": 1.5,
+      "unit": "m"
+    },
+    {
+      "name": "springHeight",
+      "type": "number",
+      "range": [
+        0.3,
+        2.0
+      ],
+      "default": 0.9,
+      "unit": "m"
+    },
+    {
+      "name": "voussoirCount",
+      "type": "integer",
+      "range": [
+        9,
+        25
+      ],
+      "default": 15
+    },
+    {
+      "name": "approach",
+      "type": "number",
+      "range": [
+        0.8,
+        4.0
+      ],
+      "default": 1.7,
+      "unit": "m"
+    },
+    {
+      "name": "parapetHeight",
+      "type": "number",
+      "range": [
+        0.6,
+        1.3
+      ],
+      "default": 0.95,
+      "unit": "m"
+    },
+    {
+      "name": "seed",
+      "type": "integer",
+      "range": [
+        0,
+        65535
+      ],
+      "default": 1
+    }
+  ],
+  "sockets": [
+    {
+      "name": "deck-centre",
+      "position_m": [
+        0,
+        2.925,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "deck-west",
+      "position_m": [
+        -4.7,
+        2.925,
+        0
+      ],
+      "normal": [
+        -1,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "deck-east",
+      "position_m": [
+        4.7,
+        2.925,
+        0
+      ],
+      "normal": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "keystone",
+      "position_m": [
+        0,
+        2.625,
+        1.77
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "lantern",
+      "position_m": [
+        -3.008,
+        3.875,
+        1.59
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "6 m segmental arch springing at 0.9 m and rising 1.5 m, a real void with daylight through it",
+      "parapet running the full 9.4 m length on both faces, capped 3.87 m above the river bed",
+      "four cutwaters wedged into the flow at the springings, breaking the elevation at both ends"
+    ],
+    "medium": [
+      "fifteen voussoirs around the arc, alternating light and dark, each a separate block with a chamfered arris",
+      "spandrel masonry sliced into 22 courses that start on the arch extrados, alternating light and dark so the joints read as coursing",
+      "cobbled deck of about 154 stones in courses across the width, each seeded in scale and rotation",
+      "projecting string course under the parapet on both faces, with two coursing bands in the parapet itself"
+    ],
+    "fine": [
+      "keystone raised 7 cm proud of its neighbours and lighter than the ring, with its own capping block",
+      "worn lighter arris along the parapet coping, seeded in length on each face",
+      "one slumped coping stone out of line, tilted a few degrees, the bridge's only asymmetry",
+      "moss patches at both springings where the masonry meets the water line"
+    ]
+  },
+  "footprint_m": [
+    9.4,
+    3.4
+  ],
+  "poly_budget": 6048,
+  "fits_looks": [
+    "knowledge.style-painterly",
+    "knowledge.style-stylized-realism",
+    "knowledge.style-tilt-shift-diorama",
+    "knowledge.lighting-mood-overcast-soft",
+    "knowledge.lighting-mood-fog-shafts"
+  ],
+  "content": {
+    "principles": [
+      "The arch is the whole subject. Model it as separate voussoirs around a real circle and everything above it can be simple.",
+      "Slice the spandrel rather than modelling it as a solid: each slice starts on the extrados, so the void under the arch is real and the joints double as coursing.",
+      "Cutwaters and a raised keystone are the two cheapest features that tell a viewer this bridge was built rather than extruded."
+    ],
+    "implementation": [
+      "Call create({ span, width, rise, springHeight, voussoirCount, approach, parapetHeight, seed }); the deck runs along X and the water passes along Z.",
+      "Join a path to deck-west and deck-east; their normals point along the deck, away from the bridge.",
+      "Place a lantern or a figure at the lantern and deck-centre sockets rather than by hand-placing world coordinates."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible in the frame.",
+      "The arch void is open: nothing renders between the springings below the extrados.",
+      "Two instances with different seeds re-rub the coping, move the slumped stone and re-jitter the cobbles."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here is a measurement of any real bridge, arch or masonry unit.",
+    "The poly budget is the triangle count observed at default parameters; a 10 m span costs about 6600 triangles.",
+    "footprint_m is the deck plan. The built bounding box is 9.5 x 4.5 m because the cutwaters project past the parapet faces.",
+    "Only a single arch is modelled. A multi-span crossing is several instances side by side, not a parameter.",
+    "Tuned against ACESFilmic tone mapping at exposure 1.0 with no post-processing.",
+    "T2 is the same geometry with runtime procedural surface and vertex occlusion (see knowledge.surface-tier-defaults); it adds no polygons and ships no files, and it reads at stylized-game quality, not photoreal."
+  ],
+  "creative_affordances": [
+    "Any parameter may be pushed outside its stated range; the range is the band that was proved, not a limit.",
+    "Raise rise and shorten span for a packhorse hump, or widen width and lengthen approach for a town bridge."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "span": 6,
+      "width": 3.4,
+      "rise": 1.5,
+      "springHeight": 0.9,
+      "voussoirCount": 15,
+      "approach": 1.7,
+      "parapetHeight": 0.95,
+      "archThickness_m": 0.45,
+      "feeling": "old damp coursed stone"
+    },
+    "rationale": "A rise of a quarter of the span gives the shallow segmental arc a village bridge has, and fifteen voussoirs over that arc give a 0.47 m block that stays countable at the close proof distance."
+  },
+  "related_ids": [
+    "knowledge.bridge-bearing-support-system",
+    "knowledge.masonry-arch-centering",
+    "knowledge.modular-environment-kit-sockets",
+    "knowledge.material-porous-weathered-stone"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "detail_socket": "deck-centre",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-stone-bridge/far.png",
+      "evidence/kits/knowledge.blueprint-stone-bridge/mid.png",
+      "evidence/kits/knowledge.blueprint-stone-bridge/close.png",
+      "evidence/kits/knowledge.blueprint-stone-bridge/detail.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-stone-bridge/proof-log.json"
+  },
+  "tiers": {
+    "T0": {
+      "mode": "proxy",
+      "size_m": [
+        9.48,
+        3.86,
+        4.54
+      ],
+      "poly_budget": 12,
+      "status": "generated",
+      "note": "Bevelled box from the proof log bounds: the span and the parapet height; the arch void is not in a proxy."
+    },
+    "T2": {
+      "mode": "runtime",
+      "poly_budget": 6048,
+      "texture_budget": {
+        "maps": 3,
+        "resolution": 1024,
+        "families": 1
+      },
+      "families": {
+        "#a79c8c": "stone",
+        "#7e7466": "stone",
+        "#8f887c": "stone",
+        "#8e8577": "stone",
+        "#afa698": "stone",
+        "#9c9283": "stone",
+        "#958b7d": "stone",
+        "#9f9585": "stone",
+        "#b9b1a6": "stone",
+        "#7d7569": "stone",
+        "#bdb6ab": "stone",
+        "#938a7b": "stone",
+        "#b7b3ac": "stone",
+        "#b2a99d": "stone"
+      },
+      "ao": {
+        "samples": 13,
+        "radius_m": 0.45,
+        "ground_dirt_m": 0.6
+      },
+      "status": "proved",
+      "note": "One family only: fourteen colours, all of them the four PALETTE stones or a lighten()/darken() of them, take the stone map. The 4312-triangle instanced cobble deck is matched by its mean instanceColor. Left flat on purpose: the moss #5f6d4b, which is foliage and has no family in the surface set.",
+      "proof": {
+        "harness": "templates/kits/_harness/index.html",
+        "captures": [
+          "evidence/kits/knowledge.blueprint-stone-bridge/T2/far.png",
+          "evidence/kits/knowledge.blueprint-stone-bridge/T2/mid.png",
+          "evidence/kits/knowledge.blueprint-stone-bridge/T2/close.png",
+          "evidence/kits/knowledge.blueprint-stone-bridge/T2/detail.png"
+        ],
+        "log": "evidence/kits/knowledge.blueprint-stone-bridge/T2/proof-log.json",
+        "detail_socket": "deck-centre"
+      }
+    },
+    "T3": {
+      "mode": "gltf",
+      "status": "missing",
+      "note": "No baked glTF ships for this blueprint: phase 9C baked only the two heroes (timber-cottage and watermill)."
+    },
+    "T4": {
+      "mode": "external",
+      "status": "missing",
+      "note": "No external asset ships with this skill."
+    }
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "id": "recipe.dental-bite-moving-hinge-illustration",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Dental bite and moving-hinge illustration"
+  },
+  "aliases": {
+    "en": [
+      "jaw opening illustration",
+      "mandibular hinge",
+      "bite motion"
+    ]
+  },
+  "direction_ids": [
+    "anatomy-structures",
+    "physiology-biomechanics"
+  ],
+  "summary": "Illustrate a supplied mandible pose sequence against a fixed skull while making translation and the limited meaning of a hinge axis explicit.",
+  "objective": "Scrub a generic opening cycle, inspect an incisal trace and compare the supplied motion with a deliberately labelled fixed-hinge illustration.",
+  "tags": [
+    "mandible",
+    "temporomandibular joint",
+    "rigid pose",
+    "educational illustration"
+  ],
+  "subject_terms": [
+    "jaw opening",
+    "mandibular translation",
+    "mandibular rotation",
+    "incisal trace",
+    "instantaneous axis",
+    "six degree of freedom pose"
+  ],
+  "intent_signals": [
+    "Explain why a jaw is not a simple fixed hinge.",
+    "Show a bite opening cycle with rotation and translation."
+  ],
+  "example_prompts": [
+    "Build a generic dental bite illustration that compares supplied jaw motion with a clearly limited fixed-hinge teaching overlay."
+  ],
+  "negative_signals": [
+    "patient diagnosis",
+    "occlusal treatment planning",
+    "physiologically exact fixed hinge"
+  ],
+  "not_for": [
+    "Patient-specific inference, diagnosis, appliance design or treatment advice.",
+    "Predicting contact forces, muscle loads or temporomandibular-joint pathology."
+  ],
+  "entities": [
+    {
+      "name": "Fixed skull frame",
+      "guidance": "Use supplied, attributed geometry and fixed millimetre coordinates; do not invent clinical landmarks from a decorative mesh."
+    },
+    {
+      "name": "Rigid mandible",
+      "guidance": "Apply one SE(3) transform to all mandibular parts so teeth and landmarks cannot shear apart."
+    },
+    {
+      "name": "Motion evidence",
+      "guidance": "Plot the incisal landmark in millimetres and show translation and rotation readouts; any axis is computed from the current pose interval and is not anatomy."
+    },
+    {
+      "name": "Fixed-hinge overlay",
+      "guidance": "Keep this optional, visually distinct and permanently labelled limited illustration; never present it as measured physiology."
+    }
+  ],
+  "state_contract": {
+    "model": "A validated supplied sequence owns rigid transforms T(s)=[R(s),d(s)] for normalized s in [0,1], with translation in mm and rotation in degrees. Every local point maps as p(s)=R(s)p0+d(s). The optional fixed-hinge pose is a separate illustrative branch.",
+    "authority": "Supplied geometry, landmark identities, coordinate frame and pose samples own anatomical shape and motion. Camera, exploded spacing, trace styling and fixed-hinge overlay never modify source state.",
+    "actions": [
+      "Scrub or pause normalized cycle state.",
+      "Select a landmark and inspect its source ID and millimetre trace.",
+      "Toggle rotation/translation decomposition and the limited fixed-hinge overlay.",
+      "Reset pose, selection, overlays and camera independently."
+    ]
+  },
+  "invariants": [
+    "Pairwise distances among at least four mandibular landmarks remain constant within 0.05 mm; R-transpose times R equals I and det(R)=+1 within declared numerical tolerance.",
+    "The fixed-hinge overlay is never the default source motion and always retains its limitation label.",
+    "A 10 mm source-space calibration segment and numeric measurement agree; camera distance does not change model units."
+  ],
+  "motion_guidance": [
+    "Interpolate supplied orientations with a normalized quaternion method and positions in the declared source frame; normalized cycle time makes no velocity claim.",
+    "Do not show teeth in continuous hard contact unless contact states are present in the supplied data."
+  ],
+  "creative_affordances": [
+    "A clinical diagram, translucent cutaway or sculptural teaching view may be used if data identity, units and limitation labels remain legible."
+  ],
+  "known_limits": [
+    "Healthy-participant measurements show translation during initial opening, so the fixed-hinge branch is only a conceptual comparison.",
+    "Generic supplied motion does not represent an individual and makes no diagnostic, force or occlusal guarantee.",
+    "Authored and source-reviewed draft only; no artifact, renderer or motion dataset was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.mixed-biomed-jaw-opening-not-pure-hinge",
+      "statement": "In a digital motion study of 46 adults with healthy temporomandibular-joint function, mandibular translation occurred from the start of opening, including about 2 mm during the first 5 mm; a fixed pure-rotation model is therefore inappropriate as a physiological account of that measured motion.",
+      "scope": "The cited healthy-participant study and its initial-opening measurements; not every individual or pathological joint.",
+      "source_refs": [
+        {
+          "source_id": "source.mixed-biomed-tmj-pure-rotation",
+          "locator": "Results: translation during the first 5 mm of opening; Discussion and Conclusions"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Mandibular teaching assembly",
+      "structure": "Keep skull, mandible, upper and lower dentition, landmarks, axes and traces as separately selectable source-linked parts.",
+      "material": "Use surface treatments for depth and separation without implying tissue stiffness, disease or contact pressure.",
+      "articulation": "The source pose drives the whole mandible; the fixed-hinge branch is an explicitly separate illustration."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Rigid playback and derived measurement only; no contact, muscle or joint dynamics.",
+    "state": [
+      "Normalized cycle s",
+      "Rigid pose R,d",
+      "Selected landmark",
+      "Overlay mode"
+    ],
+    "checks": [
+      "Rigid-landmark distances and rotation-matrix tests pass.",
+      "Fixed-hinge overlay cannot overwrite or masquerade as source motion."
+    ]
+  },
+  "related_ids": [
+    "knowledge.geometric-measurement-model-units",
+    "knowledge.reasoning-model-provenance-not-clinical",
+    "knowledge.validation-anatomical-orientation-frame"
+  ]
+}

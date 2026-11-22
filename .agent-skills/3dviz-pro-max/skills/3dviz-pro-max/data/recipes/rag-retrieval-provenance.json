@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "id": "recipe.rag-retrieval-provenance",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "RAG retrieval and provenance inspector"
+  },
+  "aliases": {
+    "en": [
+      "RAG retrieval inspector",
+      "latent document provenance",
+      "retrieved passage ranking"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data"
+  ],
+  "summary": "Inspect one query's ranked passages, its fixed top-k retriever prior, and separately defined latent-document contributions in a bounded RAG formulation without presenting retrieval as citation proof.",
+  "objective": "Select a retrieved passage or generated token and trace its stored score, query-conditioned retriever prior, text identity, and distinct role in the declared RAG-Sequence or RAG-Token calculation.",
+  "tags": [
+    "RAG",
+    "retrieval",
+    "provenance",
+    "latent documents"
+  ],
+  "subject_terms": [
+    "retrieval-augmented generation",
+    "dense passage retrieval",
+    "maximum inner product search",
+    "top-k passages",
+    "retriever prior",
+    "token-conditioned document contribution",
+    "RAG-Sequence",
+    "RAG-Token",
+    "provenance"
+  ],
+  "intent_signals": [
+    "Show which passages a RAG query retrieved and how they were weighted.",
+    "Inspect retrieval rank, the fixed retriever prior, and separately computed token-wise document contributions without claiming citation faithfulness."
+  ],
+  "example_prompts": [
+    "Build a RAG retrieval inspector for one query, its top-k passages, and a generated answer, separating the fixed retriever prior from token-wise document contributions."
+  ],
+  "negative_signals": [
+    "generic embedding scatterplot",
+    "web search product",
+    "citation faithfulness benchmark",
+    "unbounded production index"
+  ],
+  "not_for": [
+    "Certifying that a generated claim is entailed by a passage.",
+    "Inferring original-space retrieval rank from projected 3D distance.",
+    "Comparing arbitrary retrievers as though their scores shared one scale."
+  ],
+  "entities": [
+    {
+      "name": "Query and ranked passages",
+      "guidance": "Keep stable passage IDs, source titles, text locators, stored high-dimensional scores, and rank visible. If vectors are projected for layout, label the projection as display-only and never derive retrieval order from it."
+    },
+    {
+      "name": "Retriever distribution",
+      "guidance": "Show top-k logits and the query-conditioned retriever prior p_eta(z|x) as a table or stacked bar. State whether it is normalized over the displayed truncation. This prior stays fixed across generated-token positions for one query and retrieval result."
+    },
+    {
+      "name": "Generation provenance strip",
+      "guidance": "For RAG-Token, an optional token-conditioned contribution c_i(z) may place generation step on one axis, passage identity on another, and contribution on the vertical axis. Define c_i(z)=p_eta(z|x)p_theta(y_i|x,z,y_<i)/sum_z' p_eta(z'|x)p_theta(y_i|x,z',y_<i), normalize over the same identified top-k set, and label it separately from the retriever prior. Link selection to the exact passage and token; do not turn a high contribution into a claim of textual entailment."
+    }
+  ],
+  "state_contract": {
+    "model": "One supplied query x, a fixed identified passage index, integer k, retrieved passage records z_j, retriever logits s_j=d(z_j)^T q(x), query-conditioned top-k retriever prior p_eta(z_j|x)=softmax_j(s), and a declared RAG-Sequence or RAG-Token calculation. Store original vectors and scores separately from any 3D projection. The retriever prior remains fixed across token positions for this query/result. If token-conditioned contributions are supplied or computed for RAG-Token, identify the generator and prefix and define c_i(z_j)=p_eta(z_j|x)p_theta(y_i|x,z_j,y_<i)/sum_l p_eta(z_l|x)p_theta(y_i|x,z_l,y_<i) over the same top-k set; c_i is a normalized contribution to the token marginal, not a changing retriever prior.",
+    "authority": "The supplied query, index revision, passage identities, logits, fixed retriever prior, generation tokens, generator likelihoods, separately identified token contributions, and model variant own all semantic readouts. A camera move, PCA layout, highlight, or hidden passage changes no score or probability.",
+    "actions": [
+      "Select a passage and inspect source identity, text, score, rank, and fixed retriever-prior weight.",
+      "Select a generated token and inspect its separately labeled c_i passage contributions only when the generator likelihoods or recorded contributions needed to reproduce them are supplied; keep p_eta(z|x) visibly fixed.",
+      "Change k only by rerunning retrieval or loading a recorded result for that k, then recompute every displayed distribution for that identified top-k set.",
+      "Toggle original-vector and projected-layout readouts without substituting projected distance for the retrieval score.",
+      "Reset query, k, selection, token step, filters, and camera."
+    ]
+  },
+  "invariants": [
+    "Displayed rank is the stable ordering of the stored retriever scores under the declared tie policy.",
+    "The displayed top-k retriever prior is nonnegative, sums to 1 within tolerance, and is identical across token positions for a fixed query and retrieval result.",
+    "Every displayed token-conditioned c_i contribution is nonnegative, sums to 1 over the identified top-k set within tolerance, and reproduces the declared retriever-prior-times-generator-likelihood formula.",
+    "Every passage and token bar links to a stable source or model-output identity; missing provenance remains missing rather than receiving an invented citation.",
+    "Projected 3D coordinates never overwrite the original vector, logit, rank, passage identity, or model step."
+  ],
+  "motion_guidance": [
+    "Animate query-to-passage highlighting as inspection order, not network latency or physical travel.",
+    "Scrubbing generation changes the selected token step from recorded or computed state; interpolation between steps is presentation only."
+  ],
+  "creative_affordances": [
+    "Use an evidence library, index chamber, or restrained technical graph, provided text identity and numerical panels remain primary.",
+    "Passage ranks may form shelves, lanes, or small multiples; layout distance carries no retrieval meaning unless separately defined."
+  ],
+  "known_limits": [
+    "The original RAG paper supplies a particular research architecture and experimental index; this recipe is not a universal contract for current RAG systems.",
+    "Retrieved passages and latent-document weights expose model state but do not prove that generated claims are supported, entailed, or faithfully cited.",
+    "Approximate retrieval, index freshness, chunk construction, reranking, and generator behavior require their own recorded contracts.",
+    "Authored recipe and prospective checks only; no retriever, generator, scene, or rendered result was run or observed."
+  ],
+  "claims": [
+    {
+      "id": "claim.mixed-grok-rag-latent-documents",
+      "statement": "The original RAG formulation retrieves a top-k truncated distribution over passages and marginalizes latent documents either once for an output sequence or within each generated-token probability; its retriever scores passages using dense query-document inner products.",
+      "scope": "Lewis et al.'s RAG-Sequence and RAG-Token formulations and DPR-based retriever, not later products called RAG and not citation faithfulness.",
+      "source_refs": [
+        {
+          "source_id": "source.mixed-grok-rag-lewis",
+          "locator": "Sections 2.1-2.3, equations for RAG-Sequence and RAG-Token, Figure 1"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Retrieval provenance instrument",
+      "structure": "Build separately selectable query, passage, score, probability, token, and source panels around one canonical record graph. Preserve stable IDs through filtering and projected layouts.",
+      "material": "Use distinct shapes and text labels for query, passage, generated token, and missing provenance. Color may reinforce rank or selection but must not be the only carrier."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Data-linked geometry for supplied or computed retrieval and generation state; no physical dynamics.",
+    "checks": [
+      "Recompute stored inner products and top-k normalization against displayed values.",
+      "Verify projection and camera changes leave semantic scores, ranks, and identities unchanged."
+    ]
+  }
+}

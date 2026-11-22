@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-analytic-decay-rate",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Analytic decay rate, boundary values and scaling ratios"
+  },
+  "aliases": {
+    "en": [
+      "heat mode decay check",
+      "diffusion time constant scaling"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal"
+  ],
+  "summary": "Compare a sampled field with its closed-form solution and confirm the decay rate scaling with domain length and diffusivity.",
+  "objective": "Boundary values hold, the recovered rate for the declared eigenmode matches the analytic rate, and doubling length at fixed mode index quadruples the time constant.",
+  "applies_when": [
+    "A field evolves according to an analytic solution rather than a solver.",
+    "Boundary conditions are fixed at declared values.",
+    "Colour or height encodes the field value."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "diffusion",
+    "analytic-solution",
+    "scaling"
+  ],
+  "subject_terms": [
+    "heat equation",
+    "Dirichlet boundary",
+    "decay rate",
+    "diffusivity",
+    "time constant",
+    "colour mapping"
+  ],
+  "intent_signals": [
+    "does the rod cool at the right rate",
+    "check the decay against the analytic solution"
+  ],
+  "example_prompts": [
+    "Check this heat decay scene against its analytic solution."
+  ],
+  "negative_signals": [
+    "finite element heat transfer analysis",
+    "material property measurement"
+  ],
+  "content": {
+    "principles": [
+      "An analytic solution gives an exact target, so sample the field and compare with the closed form rather than judging colour. The single-rate statements below hold for one declared sine eigenmode above a constant baseline; a sum of modes has no single decay rate and can warm at a point while cooling overall.",
+      "The decay rate scales with the square of the spatial frequency, so at a fixed mode index and fixed diffusivity, doubling the domain length quadruples the time constant; that ratio checks the exponent without absolute calibration, and it is void if the mode index changes with the length.",
+      "Boundary conditions are part of the model: fixed-end values stay fixed at every time, and an excursion at the ends is a defect rather than noise."
+    ],
+    "implementation": [
+      "For the pointwise monotonicity fixture, choose the fundamental sine mode n=1 with nonnegative amplitude above a constant baseline. Compare samples with the analytic field using combined absolute and relative bounds. Higher single modes may also test analytic residual and decay rate, but are excluded from the nonnegative-excess monotonicity check.",
+      "Recover the rate by differencing the logarithm of the absolute excess above baseline, only at positions that are not nodes of the declared mode and only while that excess stays above the underflow floor; where amplitude is zero or has decayed below the floor, report no fit rather than a rate.",
+      "Repeat at two domain lengths and two diffusivity values, holding the mode index fixed, and compare the resulting time constants with the predicted ratios.",
+      "Evaluate at time zero and at a large time, and check the endpoint values at every sample time."
+    ],
+    "observable_checks": [
+      "Endpoints equal the baseline within the declared absolute tolerance. In the n=1 nonnegative-amplitude fixture, excess above baseline remains nonnegative and non-increasing within tolerance; absolute temperature may be negative if the baseline is negative. For higher modes compare the signed analytic profile rather than imposing this pointwise monotonicity.",
+      "The recovered decay rate matches the analytic rate within the reported fit tolerance where a fit was possible, and doubling the domain length at fixed mode index and diffusivity multiplies the time constant by four.",
+      "The colour or height mapping is documented with its range, so a saturated colour is never read as a field value."
+    ]
+  },
+  "known_limits": [
+    "Covers one declared sine eigenmode of one-dimensional constant-coefficient conduction with fixed ends; multi-mode initial conditions, radiation, convection and phase change are outside it.",
+    "Authored verification guidance; no field was evaluated or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.heat-rod-decay",
+    "recipe.nozzle-continuity",
+    "recipe.hydrostatic-depth-pressure"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-heat-mode-decay",
+      "statement": "Separation of variables for the heat equation with zero boundary values gives sine modes in space multiplied by an exponential factor in time whose rate is the diffusivity times the square of the spatial wavenumber.",
+      "scope": "Constant-coefficient one-dimensional diffusion with homogeneous Dirichlet boundaries as derived in the cited section.",
+      "source_refs": [
+        {
+          "source_id": "source.lebl-heat-equation",
+          "locator": "Heat equation section: separation of variables solution and its exponential decay factor"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-joint-limit-rejection",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Articulation limit rejection at and beyond the boundary"
+  },
+  "aliases": {
+    "en": [
+      "joint limit boundary check",
+      "invalid pose rejection"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies"
+  ],
+  "summary": "Check that articulation requests commit only valid poses and readouts under an explicit rejection or clamping policy.",
+  "objective": "The declared boundary contract is honoured at and beyond each limit, wrap equivalence applies only to periodic joints, and a rejected request changes no committed state.",
+  "applies_when": [
+    "A product, mechanism or rig exposes joint angles or slider positions with authored bounds.",
+    "The same value can be set through several controls, such as drag, numeric entry or presets.",
+    "Individually legal values can combine into a self-colliding pose."
+  ],
+  "check_method": "interaction",
+  "tags": [
+    "domain-validation",
+    "articulation",
+    "limits",
+    "input"
+  ],
+  "subject_terms": [
+    "joint limit",
+    "clamping",
+    "rejection",
+    "wrap convention",
+    "preset",
+    "committed pose"
+  ],
+  "intent_signals": [
+    "the lamp folds through its own base",
+    "check what happens at the end of the hinge range"
+  ],
+  "example_prompts": [
+    "Check the hinge limits of this folding lamp from every control."
+  ],
+  "negative_signals": [
+    "computing spring torque",
+    "certifying mechanical durability"
+  ],
+  "content": {
+    "principles": [
+      "Evaluate the declared limit policy before committing state. A rejected request preserves the last valid pose and readouts; a clamped request atomically commits the valid clamped pose and reports the clamp. Never commit an invalid intermediate pose.",
+      "The boundary belongs to the accepted set unless you declare otherwise, so equality at the limit and one representable step beyond it are distinct cases.",
+      "Wrap equivalence belongs to explicitly periodic joints. On a bounded hinge the coordinate is travel rather than orientation, so two commands reaching the same orientation can differ in legality: with a range of plus or minus one hundred eighty degrees, minus one hundred seventy-nine is inside the range while plus one hundred eighty-one is outside it."
+    ],
+    "implementation": [
+      "Record for each joint whether it is periodic or bounded and whether its declared contract accepts, rejects or clamps at the boundary, because the same numeric case has different correct answers under those contracts.",
+      "For each joint list the authored minimum and maximum, then test an interior value, exactly the minimum, exactly the maximum, one representable step beyond each end, a command reaching an in-range orientation through an out-of-range travel value, and a missing or non-numeric input.",
+      "For every case record the committed joint vector before and after, whether a rejection was signalled to the viewer, and whether any dependent readout such as reach, height or preset name changed.",
+      "Drive the same cases through every entry point that can set the value, including drag, numeric field, preset and any restore path.",
+      "Add a two-joint case where each value is individually legal but the combination puts one envelope through another, so pose-level rejection is exercised separately from per-joint clamping."
+    ],
+    "observable_checks": [
+      "After a rejected request the committed joint vector is identical to the value before the request and dependent readouts are unchanged.",
+      "The boundary behaves exactly as the declared contract states, whether that is acceptance, rejection or clamping, and one representable step outside the range follows the same rule consistently across drag, numeric entry and presets.",
+      "A wrapped equivalent reaches the same decision on a periodic joint and counts as out-of-range travel on a bounded joint, and the interface says which kind of joint each one is.",
+      "Rejection is visible to the viewer as rejection; silently clamping to the limit is a different behaviour and is labelled as such wherever it is used."
+    ]
+  },
+  "known_limits": [
+    "Checks the input and state contract of an articulation range; it does not evaluate whether the authored range is mechanically realistic.",
+    "Authored verification guidance; no interface was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.folding-desk-lamp",
+    "recipe.robot-arm-forward-frames",
+    "recipe.modular-camera-rig"
+  ],
+  "claims": []
+}

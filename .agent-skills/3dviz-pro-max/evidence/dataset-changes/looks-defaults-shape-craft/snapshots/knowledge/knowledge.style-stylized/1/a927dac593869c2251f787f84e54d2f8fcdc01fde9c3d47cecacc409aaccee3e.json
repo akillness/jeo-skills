@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-stylized",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Stylized proportions"
+  },
+  "aliases": {
+    "en": [
+      "stylized 3D",
+      "expressive shape design"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "Choose one proportional exaggeration that gives the subject character while preserving its identifying parts.",
+  "objective": "At thumbnail size the defining silhouette is legible; in a close view functional parts still connect.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "stylized"
+  ],
+  "subject_terms": [
+    "stylized 3D",
+    "expressive shape design",
+    "art direction"
+  ],
+  "intent_signals": [
+    "Use expressive stylized proportions",
+    "Emphasize a character-defining silhouette"
+  ],
+  "example_prompts": [
+    "Make a stylized hill village with oversized roofs and readable building entrances."
+  ],
+  "content": {
+    "principles": [
+      "Choose one proportional exaggeration that gives the subject character while preserving its identifying parts.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Enlarge a roof, head or primary joint; repeat a smaller echo of that shape in secondary details rather than distorting every dimension.",
+      "Group surfaces into a few distinct finishes and use a broad key light to separate the primary masses.",
+      "Begin with a three-quarter view; give motion a clear anticipation and settling pose appropriate to the fictional action."
+    ],
+    "observable_checks": [
+      "At thumbnail size the defining silhouette is legible; in a close view functional parts still connect.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with hand-painted surfaces or low-poly geometry; stylization describes authored emphasis, not a mandatory mesh budget.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

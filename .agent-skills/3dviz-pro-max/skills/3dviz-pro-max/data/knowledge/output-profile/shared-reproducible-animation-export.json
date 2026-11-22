@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-reproducible-animation-export",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "output-profile",
+  "title": {
+    "en": "Reproducible animation export from frame-indexed state"
+  },
+  "aliases": {
+    "en": [
+      "deterministic animation export",
+      "frame-indexed state capture",
+      "repeatable sequence output"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "rigid-mechanics",
+    "algorithms-data-structures",
+    "robotics-control"
+  ],
+  "summary": "Drive the exported sequence from state indexed by frame number rather than by elapsed wall-clock time, so the same inputs always produce the same frames.",
+  "objective": "Exporting the same sequence twice produces the same frames, and any frame can be regenerated on its own from its frame index.",
+  "tags": [
+    "output-profile",
+    "animation-export",
+    "determinism",
+    "fixed-step",
+    "frame-index"
+  ],
+  "subject_terms": [
+    "frame index",
+    "fixed timestep",
+    "frame rate",
+    "seeded randomness",
+    "state capture",
+    "frame numbering",
+    "sequence export",
+    "re-render of a single frame"
+  ],
+  "intent_signals": [
+    "the exported clip is different every time",
+    "frames are dropped or duplicated",
+    "reproduce this animation exactly",
+    "render just one frame from the middle",
+    "the timing changes on a slower machine"
+  ],
+  "example_prompts": [
+    "Export a repeatable clip of a mechanism running through one cycle.",
+    "Regenerate frame ninety of a sequence without replaying the whole run.",
+    "Produce a comparison clip whose timing does not depend on the machine."
+  ],
+  "negative_signals": [
+    "free interactive exploration",
+    "live capture of user actions"
+  ],
+  "not_for": [
+    "Interactive sessions, whose value is that they are not predetermined.",
+    "Screen recordings of live use, which are observations rather than reproducible exports."
+  ],
+  "content": {
+    "principles": [
+      "A reproducible sequence is a function from frame index and the recorded inputs to state. Anything that makes the state depend on how fast the machine ran breaks that function, and the failure appears as timing that changes between exports.",
+      "Frame rate is a declared property of the output and it enters the state function. Sampling a time-based scene at a new rate changes which instant each frame index represents and therefore changes the frames; retiming an already generated sequence keeps the same images and changes only the playback duration. These are different operations and the record should say which one it means.",
+      "Randomness is allowed; unrecorded randomness is not. A named seed turns a varied result into a reproducible one without removing the variation.",
+      "State that accumulates cannot be resumed from nothing. If the state at a frame depends on all previous frames, either the whole run must be replayable from the start or intermediate states must be stored at known frames.",
+      "Frame numbering is part of the record. Consistent, zero-padded numbering keeps a sequence in order and makes a missing frame obvious rather than silently absorbed.",
+      "Encoding is a separate step from generating frames. Keeping the frames means the sequence can be re-encoded later without re-running anything."
+    ],
+    "implementation": [
+      "Map frame index to scene time explicitly, as a start time plus the index offset divided by the declared rate, and compute state from that time rather than from the real elapsed time between rendered frames.",
+      "Keep any internal simulation timestep independent of the output rate, and reach each sample time by replaying from a checkpoint or by an explicitly declared interpolation, so that changing the output rate resamples the same underlying motion instead of changing it.",
+      "Declare the frame rate exactly, and where a rate is not a whole number express it as a ratio rather than as a rounded decimal so it survives without drift.",
+      "Give every random process a named seed and record the seeds with the export. Deriving per-frame randomness from the seed and the frame index makes a single frame regenerable, but only for processes that are independent between frames; a temporally correlated stochastic process must be replayed or checkpointed instead.",
+      "For an integrator or solver, keep a fixed internal timestep and replay from a checkpoint to the requested scene time. An output interval may span a varying number of internal steps; interpolate using a declared scheme where sample times fall between steps. Store checkpoints by simulation time and preserve stochastic state where relevant.",
+      "Write frames with consistent zero-padded numbering starting at the declared first frame, and verify that the count of written frames matches the declared range.",
+      "Keep the frame sequence as the deliverable and treat any encoded video as a derived product with its own recorded settings.",
+      "Record the export description alongside the frames: frame range, rate, seeds, scene revision and any per-frame state that was stored."
+    ],
+    "observable_checks": [
+      "Exporting the same sequence twice from the same inputs produces the same frames.",
+      "Regenerating a single interior frame from its index together with the recorded inputs, by deterministic replay or from a stored checkpoint, reproduces the frame from the full run to the declared comparison criterion, whether that is exact state, byte-identical image or a stated image tolerance.",
+      "The number of written frames equals the declared frame range, with no gaps in the numbering.",
+      "Retiming an existing sequence changes only its playback duration and leaves the images untouched, while re-exporting a time-based scene at a new rate changes which instant each index samples; the record states which of the two was performed.",
+      "Changing the seed changes the result, and restoring the seed restores it."
+    ]
+  },
+  "creative_affordances": [
+    "Timing, easing and staging remain entirely open; determinism constrains how state is derived, not how the motion should feel.",
+    "Deliberate variation between takes is welcome when each take records its own seed."
+  ],
+  "known_limits": [
+    "Reproducibility is asserted for the same software and settings; identical results across different machines, drivers or versions are not claimed.",
+    "The frame-rate and frame-numbering behaviours cited here are documented for one application and may differ elsewhere.",
+    "No sequence was exported and no frames were produced or inspected for this record.",
+    "Authored reusable guidance; no runtime artifact has been executed or observed for this record."
+  ],
+  "related_ids": [
+    "recipe.coupled-gears",
+    "recipe.stable-merge-sort-trace",
+    "recipe.differential-drive-odometry",
+    "knowledge.state-playback",
+    "knowledge.shared-interactive-web-scene",
+    "knowledge.shared-offline-frame-render"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-frame-rate-and-numbering",
+      "statement": "One offline application's manual documents a frame rate chosen from common presets or set as a custom rate expressed as a fraction whose numerator is frames per second and whose denominator is a base value, for standards requiring a more precise rate, and documents that when rendering an animation the frame number is appended to the output file name with four padded zeros, with custom padding available by placing hash characters in the name.",
+      "scope": "Documented frame-rate and output-naming behavior of the Blender manual on the latest channel as of the access date. It supports declaring an exact rate and a predictable numbering scheme; it does not describe other applications.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-blender-format",
+          "locator": "Format panel: Frame Rate (FPS and Base fraction)"
+        },
+        {
+          "source_id": "source.shared-depth-blender-output",
+          "locator": "File Path frame numbering and # padding"
+        }
+      ]
+    }
+  ]
+}

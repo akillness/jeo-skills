@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-stylized-realism",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Stylized realism balance"
+  },
+  "aliases": {
+    "en": [
+      "semi realistic 3D",
+      "stylized realistic scene",
+      "selective realism",
+      "stylised realism",
+      "grounded stylisation"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "Keep construction and recognizable material relationships while deliberately exaggerating selected shapes or color relationships.",
+  "objective": "The intended exaggeration is identifiable, while feet, hinges and supported parts retain coherent connections.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "stylized-realism"
+  ],
+  "subject_terms": [
+    "semi realistic 3D",
+    "stylized realistic scene",
+    "selective realism",
+    "art direction",
+    "stylised realism",
+    "grounded stylisation"
+  ],
+  "intent_signals": [
+    "Balance realism with stylized emphasis",
+    "Retain construction cues while exaggerating selected forms"
+  ],
+  "example_prompts": [
+    "Create a stylized-realistic village with expressive roofs but clearly supported buildings."
+  ],
+  "content": {
+    "principles": [
+      "Keep construction and recognizable material relationships while deliberately exaggerating selected shapes or color relationships."
+    ],
+    "implementation": [
+      "Retain functional joints and major proportions as anchors; exaggerate one expressive silhouette feature at a time.",
+      "Use grounded surface separation with a selectively heightened palette and controlled focal light.",
+      "Choose a cinematic or exploratory camera that still supports object inspection; let expressive secondary motion coexist with clear model boundaries.",
+      "Scale exactly one feature per asset by 1.15-1.25x (hand, roof pitch, wheel diameter) and leave every other proportion true; record the multiplier in design-system.md so collision and interaction meshes can compensate.",
+      "Halve normal-map strength with normalScale.set(0.5, 0.5) and raise minimum roughness to 0.35 while keeping metalness binary; the surface then reads as painted without losing the material separation that makes it believable."
+    ],
+    "observable_checks": [
+      "The intended exaggeration is identifiable, while feet, hinges and supported parts retain coherent connections."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "This style fails in two directions, so the numbers fence both: albedo is held between 20% and 45% saturation because below that it drifts into photoreal and above it into cartoon, and exactly one silhouette feature is exaggerated by 15-25% while joints, contacts and shadows stay physically plausible. A 4:1 key with a warm 34-degree sun and a cool hemisphere fill gives the warm/cool separation that carries stylised forms, and ACESFilmic at 1.0 keeps the pushed accent from clipping.",
+    "values": {
+      "feeling": [
+        "warm",
+        "believable",
+        "heightened"
+      ],
+      "palette": [
+        {
+          "hex": "#22304a",
+          "role": "cool deep shadow"
+        },
+        {
+          "hex": "#59728f",
+          "role": "mid cool / occlusion tint"
+        },
+        {
+          "hex": "#d8c39a",
+          "role": "warm mid ground plane"
+        },
+        {
+          "hex": "#f0a35e",
+          "role": "sunlit accent"
+        },
+        {
+          "hex": "#7a4b52",
+          "role": "muted complementary for skin and cloth"
+        }
+      ],
+      "value_structure": "40/40/20 dark/mid/light; the hero silhouette holds the single largest uninterrupted value mass",
+      "saturation_rule": "base albedo 20-45% HSL; only the accent and the light colour exceed 60%, and nothing drops below 12% or the look slides into photoreal",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#22304a",
+        "horizon": "#cfd7e0"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#cfd7e0",
+        "density": 0.018
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#ffe0b0",
+          "intensity": 3.0,
+          "elevation_deg": 34,
+          "azimuth_deg": 285,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#8fb0d8",
+          "ground": "#4a4034",
+          "intensity": 0.7
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#cfe3ff",
+          "intensity": 1.0,
+          "elevation_deg": 18,
+          "azimuth_deg": 100,
+          "castShadow": false
+        },
+        "ratio": "key:fill ~ 4:1 on a neutral card; the rim stays near one third of the key so it draws the contour without flattening the form"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.0
+      },
+      "camera": {
+        "fov_deg": 38,
+        "height_m": 1.55,
+        "pitch_deg": -4,
+        "orbit": {
+          "minPolar_deg": 55,
+          "maxPolar_deg": 86,
+          "minDist_m": 2,
+          "maxDist_m": 24
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.35,
+          0.85
+        ],
+        "metalness": [
+          0,
+          1
+        ],
+        "notes": "keep true material separation (metal 1.0, everything else 0) but flatten normalScale to 0.5 and enlarge every bevel to 3-6 mm so forms still read at 20% zoom"
+      },
+      "motion": {
+        "sway_period_s": [
+          2.4,
+          4.0
+        ],
+        "ease": "sine in-out",
+        "hold_ms": 300
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.05,
+          "strength": 0.25,
+          "radius": 0.6
+        },
+        "vignette": 0.2,
+        "grain": 0.03,
+        "dof": "off during orbit; hero at f/2.8 for held shots"
+      },
+      "signature_technique": "exaggerate one silhouette feature by 15-25% while every joint, seam and contact shadow stays physically plausible, so the eye accepts the lie",
+      "never": [
+        "pushing all proportions at once",
+        "untinted white ambient",
+        "photoreal microdetail on an exaggerated form",
+        "black shadows with no fill colour"
+      ]
+    }
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at exposure 1.0; re-tune every intensity, fog density and bloom threshold if you change the tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with painterly atmosphere or hand-painted accents; explicitly factual dimensions remain unaltered unless the view declares a visual exaggeration."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

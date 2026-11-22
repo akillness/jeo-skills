@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-gradient-geometry-invariant",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Draw the gradient with its geometric guarantees"
+  },
+  "aliases": {
+    "en": [
+      "gradient direction",
+      "level set normal",
+      "directional derivative"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields"
+  ],
+  "summary": "Show the gradient perpendicular to the level set and pointing along steepest increase, and require unit directions for directional derivatives.",
+  "objective": "Make gradient visualisations demonstrate the properties that define the gradient.",
+  "applies_when": [
+    "A scalar field, surface or terrain is shown with gradient or slope information.",
+    "A directional derivative is computed for a user-chosen direction.",
+    "Contours or level sets appear alongside gradient arrows."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "gradient",
+    "directional derivative",
+    "level curve",
+    "steepest ascent",
+    "unit vector",
+    "normal"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "calculus",
+    "fields"
+  ],
+  "intent_signals": [
+    "show the direction of steepest ascent",
+    "why is the arrow perpendicular to the contour",
+    "compute the slope in this direction"
+  ],
+  "example_prompts": [
+    "Show the gradient on the surface with the contour lines.",
+    "Let me pick a direction and read the slope along it."
+  ],
+  "negative_signals": [
+    "Vector fields that are not gradients, where these properties do not hold.",
+    "Purely decorative arrow fields."
+  ],
+  "not_for": [
+    "Vector fields that are not gradients, where these properties do not hold.",
+    "Purely decorative arrow fields."
+  ],
+  "content": {
+    "principles": [
+      "The directional derivative equals the dot product of the gradient with a unit vector in the chosen direction. If the direction is not normalised, the number reported is scaled and the demonstration is wrong.",
+      "The gradient direction is the direction of maximum increase and its magnitude is the maximum rate, which is what makes it the natural arrow to draw at a point.",
+      "Where the gradient is non-zero it is normal to the level curve in the domain metric. That is a statement about the domain, not about the picture: a perspective view, an oblique projection, unequal axis scales or vertical exaggeration can all render the true right angle as something else, and a correct oblique terrain view will fail a screen-space protractor test.",
+      "At a critical point the gradient vanishes and there is no distinguished direction, so an arrow of arbitrary orientation there is a rendering artefact."
+    ],
+    "implementation": [
+      "Normalise user-chosen directions before computing the directional derivative, show both the raw direction and its unit form, and define the response to a zero-length direction explicitly rather than dividing by zero.",
+      "Draw contours and gradient arrows from the same field evaluation so their perpendicularity is a property of the computation rather than a coincidence of two drawings.",
+      "Scale arrow length by the gradient magnitude with a stated scale factor, and keep the scale visible.",
+      "Suppress or specially mark arrows at critical points instead of drawing a direction that is not defined.",
+      "Where the surface is a terrain with vertical exaggeration, state that the drawn slope is exaggerated along with it."
+    ],
+    "observable_checks": [
+      "Test orthogonality by computing the dot product of the gradient with the level-set tangent in domain coordinates and confirming it is zero within tolerance. Only require a visible right angle when the view itself preserves angles, such as an orthographic top-down view with equal axis scales and no vertical exaggeration.",
+      "Choose the gradient direction as the query direction and confirm the directional derivative equals the gradient magnitude.",
+      "Choose a direction perpendicular to the gradient and confirm the directional derivative is zero.",
+      "Scale the query direction by two and confirm the reported value does not change."
+    ]
+  },
+  "related_ids": [
+    "recipe.directional-derivative-surface",
+    "recipe.terrain-contour-slices"
+  ],
+  "creative_affordances": [
+    "Arrow style, colour mapping and animated flow along the gradient are free choices.",
+    "A ball-rolling metaphor is legitimate for steepest descent when its physical inaccuracy is acknowledged."
+  ],
+  "known_limits": [
+    "Authored guidance citing the gradient theorems; it does not treat non-differentiable points or constrained optimisation.",
+    "Terrain slope perception under vertical exaggeration is a separate issue handled elsewhere."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-gradient-properties",
+      "statement": "The directional derivative of a differentiable function equals the dot product of its gradient with a unit vector in the chosen direction, the directional derivative is maximised in the direction of the gradient with maximum value equal to the gradient magnitude, and where the gradient is non-zero it is normal to the level curve through that point.",
+      "scope": "Differentiable scalar functions of several variables; it does not apply at non-differentiable points or to general non-gradient vector fields.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-gradient",
+          "locator": "4.6, directional derivative definition and the maximum-increase and level-curve theorems"
+        }
+      ]
+    }
+  ]
+}

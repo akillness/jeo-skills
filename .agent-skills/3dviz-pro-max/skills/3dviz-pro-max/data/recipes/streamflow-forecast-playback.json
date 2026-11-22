@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "id": "recipe.streamflow-forecast-playback",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Streamflow guidance playback on a river network"
+  },
+  "aliases": {
+    "en": [
+      "streamflow forecast",
+      "model guidance",
+      "river network playback"
+    ]
+  },
+  "direction_ids": [
+    "earth-environment"
+  ],
+  "summary": "Play modelled streamflow over a river network while keeping guidance, observation and visualisation clearly separated.",
+  "objective": "Build a river network where forecast streamflow values animate over time with their provenance, horizon and guidance status stated on screen.",
+  "tags": [
+    "hydrology",
+    "forecast",
+    "playback"
+  ],
+  "subject_terms": [
+    "streamflow",
+    "river reach",
+    "forecast horizon",
+    "model guidance",
+    "observation",
+    "time series",
+    "provenance",
+    "ensemble"
+  ],
+  "intent_signals": [
+    "Play back modelled streamflow along a river network.",
+    "Show forecast guidance without presenting it as observed data."
+  ],
+  "example_prompts": [
+    "Build a river network playback of streamflow values with a time cursor and a provenance panel.",
+    "Compare a forecast horizon with observations at a gauge location."
+  ],
+  "negative_signals": [
+    "Not a hydrological model: nothing is computed here, and the scene must not imply prediction.",
+    "Not an operational warning tool; official forecasts and warnings come from the responsible agency."
+  ],
+  "not_for": [
+    "Not a hydrological model: nothing is computed here, and the scene must not imply prediction.",
+    "Not an operational warning tool; official forecasts and warnings come from the responsible agency."
+  ],
+  "entities": [
+    {
+      "name": "River network",
+      "guidance": "Build the network as connected reaches with identifiers, since every value in the dataset belongs to a reach."
+    },
+    {
+      "name": "Time series playback",
+      "guidance": "Bind values to a time axis with the forecast issue time and horizon shown, so a frame is always attributable."
+    },
+    {
+      "name": "Provenance panel",
+      "guidance": "State the source model, its version, the horizon, the units and whether values are guidance or observations."
+    }
+  ],
+  "state_contract": {
+    "model": "Reach geometry with identifiers, per-reach time series from a supplied dataset with issue time, lead time and valid time distinguished, an explicit mapping from observation stations to reach identifiers, a playback index over valid time, and a provenance record. Missing values are shown as gaps rather than interpolated across by default. Observations and model guidance are separate series.",
+    "authority": "The supplied dataset is authoritative and read-only; the scene may interpolate for display but must mark interpolated frames as such.",
+    "actions": [
+      "Scrub or play the time index.",
+      "Select a reach and inspect its series.",
+      "Toggle observations against guidance.",
+      "Reset playback and reload the dataset."
+    ]
+  },
+  "invariants": [
+    "Every displayed value names its reach, its units, and which time it refers to: issue time, lead time or valid time. Comparisons between series are aligned on valid time.",
+    "Guidance and observation series are never merged into a single unlabelled curve.",
+    "Playback beyond the dataset horizon stops and says so instead of extrapolating."
+  ],
+  "motion_guidance": [
+    "Play frames at a stated real-time to model-time ratio with the model clock visible.",
+    "Animate reach width or colour from the value with a legend; do not animate flow particles at speeds that imply a computed velocity."
+  ],
+  "known_limits": [
+    "No dataset is bundled: the user supplies data, its licence and its provenance.",
+    "Modelled guidance can differ substantially from observations. The scene may display a numerical difference between aligned series; what it cannot do is establish forecast skill, which needs a verification study rather than a viewer.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-national-water-model-guidance",
+      "statement": "A continental-scale water model simulates and forecasts streamflow for millions of river reaches with short, medium and long range forecast horizons, and its output is described as guidance that complements official river forecasts at a much smaller number of locations.",
+      "scope": "Coverage and guidance status as described on the cited page; no forecast values were retrieved or republished here.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-noaa-national-water-model",
+          "locator": "About the National Water Model, coverage and forecast horizons"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "River network",
+      "structure": "Reaches as tubes following channel centrelines with junctions modelled as real confluences.",
+      "material": "Neutral channel material with the value encoded by a legended colour ramp and by a width glyph. That width is a data glyph, not wetted river width or flood extent; the reach centreline and topology stay fixed while the glyph varies.",
+      "articulation": "Reach geometry is static; only value-driven appearance and the time cursor change."
+    },
+    {
+      "family": "Provenance panel",
+      "structure": "A panel in the scene listing model, version, issue time, horizon, units and licence.",
+      "material": "Opaque plate with fixed layout so provenance stays visible in any screenshot.",
+      "articulation": "Updates only when a different dataset is loaded."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Dataset playback and presentation; no hydrological computation.",
+    "checks": [
+      "Every frame shows its model time and provenance.",
+      "Playback stops at the end of the dataset horizon."
+    ]
+  },
+  "related_ids": [
+    "recipe.watershed-flow-accumulation",
+    "recipe.cfd-field-playback",
+    "knowledge.state-playback"
+  ]
+}

@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.lighting-mood-overcast-soft",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Overcast daylight with no cast shadows"
+  },
+  "aliases": {
+    "en": [
+      "overcast lighting",
+      "soft overcast sky",
+      "cloudy day rig",
+      "shadowless daylight"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies",
+    "operations-logistics"
+  ],
+  "summary": "Use a bright cloud deck as the whole source so form reads through soft gradients and occlusion instead of cast shadows.",
+  "objective": "No hard cast shadow appears anywhere, and objects still separate from the ground through contact darkening and value difference.",
+  "tags": [
+    "lighting-profile",
+    "overcast",
+    "soft-light",
+    "documentary",
+    "low-contrast",
+    "shadowless"
+  ],
+  "subject_terms": [
+    "cloud deck",
+    "hemisphere light",
+    "soft shadow",
+    "ambient occlusion",
+    "low contrast",
+    "diffuse illumination",
+    "value separation",
+    "contact shadow"
+  ],
+  "intent_signals": [
+    "make the lighting neutral and even",
+    "remove the harsh shadows",
+    "light this like a cloudy day",
+    "the shadows are hiding the detail",
+    "a documentary look for this model"
+  ],
+  "example_prompts": [
+    "Light an assembly diagram so no shadow hides a part.",
+    "Give an outdoor scene a calm overcast mood without flattening it completely.",
+    "Show a terrain model evenly for measurement rather than for drama."
+  ],
+  "negative_signals": [
+    "dramatic single-source mood",
+    "long shadow composition"
+  ],
+  "not_for": [
+    "Scenes whose drama depends on a directional key and long shadows.",
+    "Looks that need a visible sun disc or specular sun highlights."
+  ],
+  "content": {
+    "principles": [
+      "An overcast sky is a very large source, and large sources give soft terminators and almost no cast shadow. Softness comes from source size, not from lowering a light's intensity.",
+      "With cast shadows gone, contact darkening and ambient occlusion carry object separation; without them everything floats.",
+      "Low contrast is not low information. Keep a value difference between the subject and the ground even when the total range is under two stops.",
+      "Overcast light is slightly cool from above and slightly warm from the ground it bounces off, and that small temperature split is most of what stops the look reading as grey."
+    ],
+    "implementation": [
+      "Carry the illumination on a HemisphereLight at 1.2 with a cool sky and a warm-grey ground, and keep any directional component under 0.6 with castShadow false.",
+      "Add an environment contribution (RoomEnvironment at 0.35) so materials pick up a soft specular gradient; a hemisphere light alone leaves smooth surfaces looking dead.",
+      "Rely on screen-space ambient occlusion or baked contact shadows for the grounding that the missing cast shadows would have given.",
+      "Keep the fog light and near-neutral (0.035, #cfd6dd) so distant objects lift toward the sky value, which is the main depth cue available at this contrast.",
+      "Keep bloom almost off (threshold 1.2, strength 0.1); there is no source bright enough in frame to justify it, and bloom at low contrast reads as haze on the lens."
+    ],
+    "observable_checks": [
+      "A grayscale screenshot shows the subject separated from the background by value, with no cast shadow anywhere.",
+      "Disabling ambient occlusion visibly ungrounds the objects, confirming occlusion is doing the separation work.",
+      "Sampled contrast between the brightest and darkest diffuse patch stays under about 2:1.",
+      "No specular hotspot in frame clips to white."
+    ]
+  },
+  "creative_affordances": [
+    "The cloud colour can be pushed cool, warm or slightly green for a mood without breaking the shadowless rule.",
+    "A very weak directional hint can be added for orientation as long as it produces no visible cast shadow."
+  ],
+  "known_limits": [
+    "Every number in this profile was tuned for ACESFilmic tone mapping at exposure 1.0; under a different tone-mapping curve or exposure the intensities and fog density must be re-derived, not copied.",
+    "Contrast this low depends on ambient occlusion being available; without it the scene will read as unlit.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "related_ids": [
+    "knowledge.three-light-units-and-exposure",
+    "knowledge.shared-stylized-outdoor-daylight",
+    "knowledge.shared-pbr-studio-environment"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "A cloud deck is a source the size of the sky, so the hemisphere carries almost all the illumination at 1.2 and the directional component stays at 0.6 with shadows off; the small sky-to-ground temperature split is what keeps the result from reading as flat grey. Exposure sits at 1.0 because nothing in frame is bright enough to need protection, and fog is kept low and near-neutral so distance reads as a lift toward the sky value. Kelvin-to-hex conversions here are authored approximations, not colorimetric transforms (2700K~#ffb46b, 3200K~#ffc58f, 4500K~#ffe4c4, 5600K~#fff4e5, 6500K~#ffffff, open shade 8000K~#cfe0ff).",
+    "values": {
+      "feeling": [
+        "calm",
+        "even",
+        "documentary"
+      ],
+      "time_of_day": "midday under full cloud cover; no visible sun disc",
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#e8edf2",
+          "intensity": 0.6,
+          "elevation_deg": 70,
+          "azimuth_deg": 180,
+          "castShadow": false,
+          "note": "orientation hint only; shadows stay off so the cloud deck remains the whole source"
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#cfd8e6",
+          "ground": "#6a6f66",
+          "intensity": 1.2
+        },
+        "rim": {
+          "type": "none"
+        },
+        "ratio": "key:fill ~ 1:2; total scene contrast under 2:1"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#b9c4d0",
+        "horizon": "#d8dee4"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#cfd6dd",
+        "density": 0.035
+      },
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.0
+      },
+      "shadow": {
+        "mapSize": 1024,
+        "bias": -0.0003,
+        "normalBias": 0.04,
+        "camera_extent_m": 25
+      },
+      "environment": {
+        "type": "RoomEnvironment",
+        "intensity": 0.35
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.2,
+          "strength": 0.1,
+          "radius": 0.4
+        },
+        "vignette": 0.15,
+        "grain": 0.02,
+        "dof": "off",
+        "ambient_occlusion": "on; this replaces the missing cast shadows as the grounding cue"
+      },
+      "never": [
+        "hard cast shadows",
+        "a warm sun key",
+        "a saturated blue sky",
+        "black shadow cores"
+      ],
+      "snippet": "scene.add(new THREE.HemisphereLight(0xcfd8e6,0x6a6f66,1.2));\nconst hint=new THREE.DirectionalLight(0xe8edf2,0.6);\nhint.position.setFromSphericalCoords(40,THREE.MathUtils.degToRad(90-70),THREE.MathUtils.degToRad(180));\nhint.castShadow=false;scene.add(hint);\nconst pmrem=new THREE.PMREMGenerator(renderer);\nscene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture;\nscene.environmentIntensity=0.35;\nscene.fog=new THREE.FogExp2(0xcfd6dd,0.035);\nrenderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;"
+    }
+  }
+}

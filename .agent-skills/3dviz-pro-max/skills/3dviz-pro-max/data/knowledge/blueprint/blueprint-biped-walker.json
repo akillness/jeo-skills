@@ -1,0 +1,335 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-biped-walker",
+  "revision": 4,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: biped walker"
+  },
+  "aliases": {
+    "en": [
+      "village figure kit",
+      "walking person blueprint",
+      "procedural two-legged gait"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "A hatted village figure - tapering torso, belted tunic, two-joint legs and arms - with a procedural walk cycle whose arms counter-swing the legs and whose torso leans with speed.",
+  "objective": "Seen from about three metres the figure reads as three tiers of detail: standing person silhouette with a hat and a tunic hem, then jointed limbs, belt, boots and collar, then cuff bands, eye highlights and hem stitching; in motion each arm swings against the leg on its side.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "creature",
+    "biped",
+    "character",
+    "walk-cycle",
+    "village"
+  ],
+  "subject_terms": [
+    "walk cycle",
+    "counter swing",
+    "torso lean",
+    "two-bone leg",
+    "foot plant",
+    "hat",
+    "belt"
+  ],
+  "intent_signals": [
+    "add a villager walking down the lane",
+    "reusable human walk cycle",
+    "character that follows a path"
+  ],
+  "example_prompts": [
+    "Walk two villagers between the market stall and the well.",
+    "I need a person-scale figure whose arms swing properly against the legs."
+  ],
+  "not_for": [
+    "Anatomy, medical or ergonomic reference of any kind.",
+    "A portrait or likeness of any real person.",
+    "Skinned deformation, cloth simulation or facial animation."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/creatures/biped-walker.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "scale",
+      "type": "number",
+      "default": 1,
+      "range": [
+        0.5,
+        1.6
+      ]
+    },
+    {
+      "name": "strideM",
+      "type": "number",
+      "default": 0.72,
+      "range": [
+        0.4,
+        1.2
+      ],
+      "unit": "m"
+    },
+    {
+      "name": "strideHz",
+      "type": "number",
+      "default": 0.95,
+      "range": [
+        0.4,
+        2.0
+      ],
+      "unit": "Hz"
+    },
+    {
+      "name": "speed",
+      "type": "number",
+      "default": 0,
+      "range": [
+        0,
+        4
+      ],
+      "unit": "m/s"
+    },
+    {
+      "name": "seed",
+      "type": "integer",
+      "default": 1,
+      "range": [
+        0,
+        65535
+      ]
+    },
+    {
+      "name": "tunic",
+      "type": "color",
+      "default": "#7a6f9c"
+    },
+    {
+      "name": "yawRateRad",
+      "type": "number",
+      "default": 2.4,
+      "range": [
+        0.4,
+        8
+      ],
+      "unit": "rad/s"
+    }
+  ],
+  "sockets": [
+    {
+      "name": "harness",
+      "position_m": [
+        0,
+        0.95,
+        0.15
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "head",
+      "position_m": [
+        0,
+        1.75,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "back",
+      "position_m": [
+        0,
+        1.32,
+        -0.14
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "standing figure 1.75 m to the crown, shoulders 0.44 m across tapering to a belted waist",
+      "hat crown and brim breaking the head outline, and a tunic hem cutting the thigh line",
+      "arms held clear of the body so the gap between arm and torso reads at any distance",
+      "in motion: opposite arm and leg lead together, and the torso leans 6 degrees into the walk"
+    ],
+    "medium": [
+      "two-joint legs and arms - thigh, shin, boot and upper arm, forearm, hand",
+      "belt with a buckle, boot soles standing 2.5 cm proud, and a collar at the neck",
+      "boots that stay flat through stance and roll over the toe through swing",
+      "hip bob of 2.6 cm at twice the stride rate, with a 3 degree hip counter-rotation"
+    ],
+    "fine": [
+      "cuff band turned at each wrist, 8 mm thick",
+      "eyes 3.8 cm across with a 1.2 cm highlight, shaded by the hat brim above them",
+      "a nose block on the face, so the head has a front at the detail distance",
+      "fourteen hem stitches around the tunic skirt, jittered per seed"
+    ]
+  },
+  "footprint_m": [
+    0.54,
+    0.74
+  ],
+  "poly_budget": 2058,
+  "fits_looks": [
+    "knowledge.style-stylized",
+    "knowledge.style-hand-painted",
+    "knowledge.style-cartoon",
+    "knowledge.style-ghibli-painterly-pastoral",
+    "knowledge.lighting-mood-dusk-golden-hour",
+    "knowledge.lighting-mood-night-lantern"
+  ],
+  "content": {
+    "principles": [
+      "Counter-swing is what makes a walk read as a person: the arm opposite the leading leg leads, and the moment both swing together the figure reads as a marching toy.",
+      "Lean the torso with speed, not the whole figure: leaning at the hips keeps the feet planted where the gait put them.",
+      "Phase advances by distance travelled, not by time, so a villager slowed to half speed takes the same steps more slowly instead of skating."
+    ],
+    "implementation": [
+      "Call create({ scale, strideM, strideHz, speed, seed, tunic, yawRateRad }); the group is centred on its footprint with y = 0 at the ground plane and the figure facing +Z.",
+      "Call animate(dt) every frame; it returns false for dt <= 0 and true when the pose advanced. animate(dt, speed) overrides the cruise speed from that frame onward.",
+      "speed = 0 means cruise, which is strideM x strideHz x scale.",
+      "setRoute(points, loop) takes [x, z] or [x, y, z] points - the polyline from layout/village-layout.js drops straight in - and turns at no more than yawRateRad.",
+      "Attach a lantern or a basket at the harness socket and a hat at head; back carries a pack.",
+      "Sockets are ordered harness, head, back: the proof harness aims its detail view at sockets[0] and lifts that anchor by 0.35 of the figure's height, so the belt socket is what frames the face."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible in the frame.",
+      "Step animate(1/60) and compare the z of hand-0 with the z of foot-0: their leads must have opposite signs (kits-creatures.test.js asserts this).",
+      "Through each stance run, the world x and z of foot-0 must vary by less than 2 cm; the authored rig measures 1.1 cm.",
+      "The same seed and the same dt sequence must reproduce the same pose exactly."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry and an authored gait; no anatomical or biomechanical claim is made, and the figure is nobody in particular.",
+    "The poly budget is the triangle count observed at default parameters.",
+    "The planted boot is not perfectly still: the hips counter-rotate 3 degrees per stride and the leg solve is sagittal only, so a stance boot drifts up to 1.1 cm in a straight line, measured over 240 frames at the default gait. A turn adds the arc the body walks. The quadruped, whose hips do not rotate, drifts 0.0 mm.",
+    "Rigid parts on rotating joints, no skinning and no cloth: the tunic does not react to the walk.",
+    "far.png, mid.png, close.png and detail.png are single frames of the delivered mid-stride pose; close-motion.png is the same view after kit-proof.py --motion-check advances animate(dt) by a fixed number of 1/60 s steps, so the walk cycle is proved by two frames, not by a film.",
+    "A 1.75 m figure does not quite fit the harness's close frame - at 0.78 of the fitting distance the vertical field is 1.61 m against a 1.71 m mid-stride bounding box - so close.png crops the top of the hat; far.png and mid.png carry the whole silhouette and detail.png carries the face.",
+    "create() returns the rig posed mid-stride rather than in its rest pose, so a single still reads as walking; the socket positions are still read off the rest pose, so they do not move with phase.",
+    "T2 is the same geometry with runtime procedural surface and vertex occlusion (see knowledge.surface-tier-defaults); it adds no polygons and ships no files, and it reads at stylized-game quality, not photoreal."
+  ],
+  "creative_affordances": [
+    "Push scale to 0.7 for a child; the stride and the arm swing scale with it.",
+    "Swap tunic and re-seed for a crowd that shares a silhouette without repeating.",
+    "Raise strideHz above 1.6 and the same rig reads as a hurried walk, without a second clip."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "scale": 1,
+      "strideM": 0.72,
+      "strideHz": 0.95,
+      "seed": 1,
+      "yawRateRad": 2.4,
+      "duty_factor": 0.6,
+      "foot_lift_m": 0.13,
+      "hip_bob_m": 0.026,
+      "arm_swing_rad": 0.5,
+      "torso_lean_rad": 0.11,
+      "feeling": "unhurried villager"
+    },
+    "rationale": "A 0.72 m stride at 0.95 Hz is 0.68 m/s, the same cruise as the quadruped, so the two walk together on one lane; 0.6 duty keeps a moment of double support in every cycle, which is what separates a walk from a run."
+  },
+  "related_ids": [
+    "knowledge.reasoning-gait-contact-consistency",
+    "knowledge.authored-locomotion",
+    "knowledge.shared-skinned-articulated-rig",
+    "knowledge.camera-orbit-follow-rig",
+    "knowledge.hero-prop-detail-hierarchy"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "detail_socket": "harness",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-biped-walker/far.png",
+      "evidence/kits/knowledge.blueprint-biped-walker/mid.png",
+      "evidence/kits/knowledge.blueprint-biped-walker/close.png",
+      "evidence/kits/knowledge.blueprint-biped-walker/detail.png",
+      "evidence/kits/knowledge.blueprint-biped-walker/close-motion.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-biped-walker/proof-log.json"
+  },
+  "tiers": {
+    "T0": {
+      "mode": "proxy",
+      "size_m": [
+        0.54,
+        1.71,
+        0.74
+      ],
+      "poly_budget": 12,
+      "status": "generated",
+      "note": "Bevelled box from the proof log bounds; the standing pose, not the stride envelope."
+    },
+    "T2": {
+      "mode": "runtime",
+      "poly_budget": 2058,
+      "texture_budget": {
+        "maps": 3,
+        "resolution": 1024,
+        "families": 2
+      },
+      "families": {
+        "#7a6f9c": "fabric",
+        "#4d4c4a": "fabric",
+        "#4a3a2c": "fabric",
+        "#3a2e24": "fabric",
+        "#8d5f4c": "fabric",
+        "#2c241d": "fabric",
+        "#ded4c0": "fabric",
+        "#c9a24b": "metal"
+      },
+      "ao": {
+        "samples": 13,
+        "radius_m": 0.45,
+        "ground_dirt_m": 0.6
+      },
+      "status": "proved",
+      "note": "Tunic, trousers, hood, belt, boots, soles and stitch beads take fabric (leather is read as fabric here; there is no leather family) and the buckle takes metal. Left flat on purpose: skin #d9a97f, eye #221c18 and the eye spark #fff6e6.",
+      "proof": {
+        "harness": "templates/kits/_harness/index.html",
+        "captures": [
+          "evidence/kits/knowledge.blueprint-biped-walker/T2/far.png",
+          "evidence/kits/knowledge.blueprint-biped-walker/T2/mid.png",
+          "evidence/kits/knowledge.blueprint-biped-walker/T2/close.png",
+          "evidence/kits/knowledge.blueprint-biped-walker/T2/detail.png",
+          "evidence/kits/knowledge.blueprint-biped-walker/T2/close-motion.png"
+        ],
+        "log": "evidence/kits/knowledge.blueprint-biped-walker/T2/proof-log.json",
+        "detail_socket": "harness"
+      }
+    },
+    "T3": {
+      "mode": "gltf",
+      "status": "missing",
+      "note": "No baked glTF ships for this blueprint: phase 9C baked only the two heroes (timber-cottage and watermill)."
+    },
+    "T4": {
+      "mode": "external",
+      "status": "missing",
+      "note": "No external asset ships with this skill."
+    }
+  }
+}

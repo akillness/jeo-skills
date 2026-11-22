@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "id": "recipe.union-find-mst",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Kruskal, union-find and the cut property"
+  },
+  "aliases": {
+    "en": [
+      "minimum spanning tree",
+      "union find",
+      "Kruskal"
+    ]
+  },
+  "direction_ids": [
+    "algorithms-data-structures"
+  ],
+  "summary": "Show component membership as a first-class object so that rejecting an edge has a visible reason.",
+  "objective": "Build a Kruskal walkthrough where each candidate edge is accepted or rejected because union-find says whether its endpoints already share a component.",
+  "tags": [
+    "mst",
+    "union find",
+    "graph"
+  ],
+  "subject_terms": [
+    "minimum spanning tree",
+    "cut property",
+    "Kruskal",
+    "union-find",
+    "connected component",
+    "edge weight",
+    "cycle",
+    "spanning tree"
+  ],
+  "intent_signals": [
+    "Show why Kruskal rejects an edge.",
+    "Visualise connected components merging while building a spanning tree."
+  ],
+  "example_prompts": [
+    "Build a Kruskal minimum spanning tree walkthrough with a component view and a sorted edge list.",
+    "Show the cut property on a selected component boundary."
+  ],
+  "negative_signals": [
+    "Not a network design tool and not a routing recipe.",
+    "Not a claim about equal-weight graphs unless a tie rule is stated explicitly."
+  ],
+  "not_for": [
+    "Not a network design tool and not a routing recipe.",
+    "Not a claim about equal-weight graphs unless a tie rule is stated explicitly."
+  ],
+  "entities": [
+    {
+      "name": "Weighted graph",
+      "guidance": "Place vertices in space with edges whose weights are readable labels, since the algorithm consumes edges in weight order."
+    },
+    {
+      "name": "Component view",
+      "guidance": "Show each current component as a visually grouped set with its representative marked, so a union is a merge of two visible groups."
+    },
+    {
+      "name": "Edge queue",
+      "guidance": "Display the sorted edge list with a cursor, so the next candidate is predictable and the ordering is auditable."
+    }
+  ],
+  "state_contract": {
+    "model": "A finite undirected, nonempty and connected edge-weighted graph with finite weights that may be zero or negative, a sorted edge list with a declared tie-breaking rule, a union-find structure over vertices, and an accepted edge set that stops at V minus one edges.",
+    "authority": "The union-find structure decides acceptance. Colours and grouping are rendered from it, so a visually merged group that union-find has not merged is a defect.",
+    "actions": [
+      "Advance to the next candidate edge and see the find results.",
+      "Accept or step through automatically to completion.",
+      "Highlight a cut and inspect its minimum crossing edge.",
+      "Reset the graph, queue and components."
+    ]
+  },
+  "invariants": [
+    "An edge is rejected exactly when its endpoints already have the same representative.",
+    "The accepted set never contains a cycle and finishes with V minus one edges on a connected graph.",
+    "Component grouping shown on screen always matches the current union-find state."
+  ],
+  "motion_guidance": [
+    "Animate a union as two groups converging into one, so merging is an event rather than a recolour.",
+    "Keep rejected edges visible in a distinct state; erasing them hides why the tree looks the way it does."
+  ],
+  "known_limits": [
+    "The cut property as cited assumes distinct edge weights; with ties the scene must state its tie-breaking rule.",
+    "Union-find path compression is an implementation detail that the display should not confuse with graph structure.",
+    "Disconnected input is either rejected or explicitly labelled a minimum spanning forest; the V minus one edge count applies to the connected case.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-mst-cut-property",
+      "statement": "A minimum spanning tree is a spanning tree whose total weight is no larger than that of any other spanning tree, and given any cut in an edge-weighted graph with distinct weights the minimum-weight crossing edge belongs to the minimum spanning tree.",
+      "scope": "Distinct edge weights as cited; ties require a stated rule.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-algs4-mst",
+          "locator": "4.3 Minimum Spanning Trees, definition and cut property"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-kruskal-union-find",
+      "statement": "Kruskal processes edges from smallest to largest weight, taking each edge that does not form a cycle with those already added and stopping after V minus one edges, using a union-find structure to identify cycle-forming edges, in time proportional to E log E in the worst case.",
+      "scope": "Connected edge-weighted graphs; the bound counts operations, not wall-clock time.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-algs4-mst",
+          "locator": "4.3 Minimum Spanning Trees, Kruskal algorithm and running time"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Weighted graph",
+      "structure": "Vertex spheres with label plates and edge tubes whose radius comes from a declared positive display mapping of the weight, so zero and negative weights stay drawable without altering the weight used by the algorithm.",
+      "material": "Neutral graph material with one accent for accepted edges and a distinct desaturated treatment for rejected ones.",
+      "articulation": "Edges do not move; only their state material changes."
+    },
+    {
+      "family": "Component view",
+      "structure": "A translucent hull or ring around each component with its representative vertex marked by a crown glyph.",
+      "material": "Component hulls use low opacity with distinct outlines so overlapping components remain separable.",
+      "articulation": "Hulls rebuild after each union and animate the merge."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Discrete graph algorithm stepping; no physical layout forces unless declared separately.",
+    "state": [
+      "edge cursor",
+      "union-find parents",
+      "accepted edge set"
+    ],
+    "checks": [
+      "Rejections coincide exactly with equal representatives.",
+      "The run ends with V minus one accepted edges on a connected graph."
+    ]
+  },
+  "related_ids": [
+    "recipe.dijkstra-relaxation",
+    "recipe.breadth-first-frontier",
+    "knowledge.graph-in-space"
+  ]
+}

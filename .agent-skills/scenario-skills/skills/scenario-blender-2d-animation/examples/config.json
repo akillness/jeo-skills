@@ -1,0 +1,24 @@
+{
+  "tag": "_snow",
+  "sea_h": 10.0,
+  "sea_horizon": 0.469,
+  "sea_base_z": 3.0,
+  "jungle_h": 6.0,
+  "jungle_z0": -1.4,
+  "ground_h": 5.5,
+  "ground_top": 0.613,
+  "island_top_px": 27,
+  "pedestal_top_px": 43,
+  "nut_size": 0.42,
+  "hero_h": 1.6,
+  "run_fig_px": 384,
+  "run_pad_px": 8,
+  "jump_base_px": 787,
+  "run_n": 12,
+  "run_canvas_px": 768,
+  "nuts": [
+    [-0.44, 3.44],
+    [0.54, 3.21],
+    [0.84, 2.77]
+  ]
+}

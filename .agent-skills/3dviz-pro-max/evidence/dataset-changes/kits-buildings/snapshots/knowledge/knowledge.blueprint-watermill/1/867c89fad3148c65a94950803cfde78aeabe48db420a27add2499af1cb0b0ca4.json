@@ -1,0 +1,300 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-watermill",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: watermill with a turning wheel"
+  },
+  "aliases": {
+    "en": [
+      "watermill kit",
+      "mill house blueprint",
+      "overshot wheel module"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "A two-storey stone-and-timber mill with an overshot wheel on a wheel socket, a launder feeding it, a first-floor loading door under a hoist beam, and an animate(dt) that turns only the wheel.",
+  "objective": "Seen from about eleven metres the mill reads as three tiers: wheel and launder breaking the gable, then rims, spokes, paddles and frame timbers, then hub bolts, rim straps and sill drips.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "building",
+    "village",
+    "watermill",
+    "wheel"
+  ],
+  "subject_terms": [
+    "overshot wheel",
+    "launder",
+    "mill house",
+    "hoist beam",
+    "string course",
+    "loading door"
+  ],
+  "intent_signals": [
+    "build a watermill",
+    "village mill with a turning wheel",
+    "animated water wheel module"
+  ],
+  "example_prompts": [
+    "Put a watermill on the stream at the edge of the village.",
+    "I need a mill whose wheel actually turns in the render loop."
+  ],
+  "not_for": [
+    "Any claim about the gearing, head or power output of a real mill.",
+    "Hydraulic or structural simulation of a water wheel."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/buildings/watermill.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "width",
+      "type": "number",
+      "range": [
+        4.5,
+        9.0
+      ],
+      "default": 6,
+      "unit": "m"
+    },
+    {
+      "name": "depth",
+      "type": "number",
+      "range": [
+        3.5,
+        6.5
+      ],
+      "default": 4.5,
+      "unit": "m"
+    },
+    {
+      "name": "wheelRadius",
+      "type": "number",
+      "range": [
+        1.0,
+        2.4
+      ],
+      "default": 1.6,
+      "unit": "m"
+    },
+    {
+      "name": "paddles",
+      "type": "integer",
+      "range": [
+        8,
+        24
+      ],
+      "default": 14
+    },
+    {
+      "name": "roofPitchDeg",
+      "type": "number",
+      "range": [
+        32,
+        52
+      ],
+      "default": 42,
+      "unit": "deg"
+    },
+    {
+      "name": "speedRadPerSec",
+      "type": "number",
+      "range": [
+        0.0,
+        2.0
+      ],
+      "default": 0.55,
+      "unit": "rad/s"
+    },
+    {
+      "name": "seed",
+      "type": "integer",
+      "range": [
+        0,
+        65535
+      ],
+      "default": 1
+    }
+  ],
+  "sockets": [
+    {
+      "name": "wheel",
+      "position_m": [
+        3.95,
+        1.92,
+        0
+      ],
+      "normal": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "door",
+      "position_m": [
+        -1.56,
+        0,
+        2.25
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "loading-door",
+      "position_m": [
+        -1.68,
+        2.62,
+        2.25
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "launder",
+      "position_m": [
+        6.15,
+        3.77,
+        0
+      ],
+      "normal": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "ridge",
+      "position_m": [
+        0,
+        6.826,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "sign",
+      "position_m": [
+        1.44,
+        2.15,
+        2.27
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "3.2 m wheel hanging clear of the +X gable and breaking the building outline from every angle",
+      "launder crossing above the wheel on two trestles, with a spilling lip over the crown",
+      "hoist beam projecting 1.3 m from the gable below the ridge at 6.83 m"
+    ],
+    "medium": [
+      "two wooden rims with an iron strap inside each, seven pairs of radial spokes and fourteen paddles running the full 84 cm width between the rims",
+      "stone ground storey and plastered timber upper storey divided by a projecting string course",
+      "four frame posts per upper long wall standing 7 cm proud, with top plate, sill beam and corner braces",
+      "first-floor loading door recessed 10 cm in its reveal directly under the hoist beam"
+    ],
+    "fine": [
+      "bright iron bolt heads at every spoke root, 8 cm across, on the outer rim face",
+      "hexagonal peg heads at the frame joints and clenched nail heads on the door leaves",
+      "sill drip groove under each window, a 2.4 cm shadow line below the sill lip",
+      "each paddle darkened by a different seeded amount, so the wet side of the wheel varies"
+    ]
+  },
+  "footprint_m": [
+    6.0,
+    4.5
+  ],
+  "poly_budget": 10192,
+  "fits_looks": [
+    "knowledge.style-ghibli-painterly-pastoral",
+    "knowledge.style-painterly",
+    "knowledge.style-stylized-realism",
+    "knowledge.lighting-mood-dawn-cool",
+    "knowledge.lighting-mood-fog-shafts"
+  ],
+  "content": {
+    "principles": [
+      "A mill is a machine with a house attached: model the wheel first and let the building be what carries it.",
+      "The wheel must be structurally believable at rest, not only in motion. Rims, spokes and a real axle read even in a still frame.",
+      "Animation belongs to one named group. animate(dt) turns the hub and nothing else, so the mill can stand still without falling apart."
+    ],
+    "implementation": [
+      "Call create({ width, depth, wheelRadius, paddles, roofPitchDeg, speedRadPerSec, seed }); the returned object carries animate(dt).",
+      "Call animate(dt) once per frame with seconds; it returns false for dt <= 0 so a paused loop reports no motion.",
+      "Attach a millpond, sluice or sign through the named sockets; the wheel socket sits on the axle centre with an outward +X normal."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible in the frame.",
+      "animate(0) returns false and moves nothing; animate(0.016) returns true and rotates only the wheel group.",
+      "Two instances with different seeds vary the paddle shading and the frame posts while keeping the same wheel diameter."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here is a measurement of any real mill, drive train or material.",
+    "The poly budget is the triangle count observed at default parameters; 24 paddles costs about 10800 triangles.",
+    "footprint_m is the nominal house plan. The built bounding box is 9.4 x 5.3 m because the wheel, the launder and the eaves project past it.",
+    "The wheel turns at a constant rate. There is no water, no torque and no relationship between speedRadPerSec and any flow.",
+    "Tuned against ACESFilmic tone mapping at exposure 1.0 with no post-processing."
+  ],
+  "creative_affordances": [
+    "Any parameter may be pushed outside its stated range; the range is the band that was proved, not a limit.",
+    "Set speedRadPerSec to 0 for a derelict mill, or swap the roof and stone colours to move it to a different look."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "width": 6,
+      "depth": 4.5,
+      "wheelRadius": 1.6,
+      "paddles": 14,
+      "roofPitchDeg": 42,
+      "speedRadPerSec": 0.55,
+      "groundStorey_m": 2.5,
+      "feeling": "working damp stone and timber"
+    },
+    "rationale": "A 1.6 m wheel radius puts the axle at 1.92 m, so the wheel fills the gable without passing the eave, and 14 paddles at that radius give a 70 cm pitch that still reads as separate blades at the far proof distance."
+  },
+  "related_ids": [
+    "knowledge.watermill-drive-train",
+    "knowledge.gear-mechanism",
+    "knowledge.framed-shelter",
+    "knowledge.modular-environment-kit-sockets",
+    "knowledge.blueprint-timber-cottage"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-watermill/far.png",
+      "evidence/kits/knowledge.blueprint-watermill/mid.png",
+      "evidence/kits/knowledge.blueprint-watermill/close.png",
+      "evidence/kits/knowledge.blueprint-watermill/detail.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-watermill/proof-log.json"
+  }
+}

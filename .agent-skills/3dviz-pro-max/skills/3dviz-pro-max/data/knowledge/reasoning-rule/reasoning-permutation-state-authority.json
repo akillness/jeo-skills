@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-permutation-state-authority",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Let the permutation state drive the puzzle"
+  },
+  "aliases": {
+    "en": [
+      "puzzle state",
+      "commit once",
+      "orientation state"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles",
+    "spatial-puzzles"
+  ],
+  "summary": "Hold piece permutation and orientation as the authoritative state and commit exactly one change per completed move.",
+  "objective": "Give a twisty puzzle a state model that stays exact through animation, interruption and repeated play.",
+  "applies_when": [
+    "A puzzle with movable pieces animates its moves.",
+    "Moves can be queued, interrupted or triggered by direct manipulation.",
+    "Solved detection, move counting or a scramble is part of the scene."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "permutation",
+    "orientation",
+    "commit",
+    "animation",
+    "puzzle state",
+    "solved detection"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "puzzle",
+    "state"
+  ],
+  "intent_signals": [
+    "turn the face",
+    "the cube drifts out of alignment",
+    "detect when it is solved"
+  ],
+  "example_prompts": [
+    "Build a cube where fast turns never corrupt the state.",
+    "Show the current permutation as I turn."
+  ],
+  "negative_signals": [
+    "Free-form sculpture or decoration that resembles a puzzle.",
+    "Continuous mechanisms without discrete states."
+  ],
+  "not_for": [
+    "Free-form sculpture or decoration that resembles a puzzle.",
+    "Continuous mechanisms without discrete states."
+  ],
+  "content": {
+    "principles": [
+      "The puzzle is a discrete object. Its state is which piece is in which position and how each is oriented, and everything else, including the rendered transforms, is derived from that.",
+      "Animation is a display of a transition, not the transition itself. If the state is updated gradually, an interrupted or overlapping animation leaves the puzzle in a position that corresponds to no legal state.",
+      "Committing exactly once per move keeps move counting, solved detection and history exact regardless of animation speed or frame drops.",
+      "Rebuilding the rendered pose from the state after each commit removes accumulated floating-point drift, which otherwise appears as a slowly disintegrating puzzle."
+    ],
+    "implementation": [
+      "Represent the state as a permutation of piece identities plus an orientation value per piece, and derive all transforms from it.",
+      "Apply each move to the model exactly once and display the transition around it. Committing when the animation completes, with a temporary visual transform over the pre-move state, and committing at the start, with a display transition that lags the model, are both valid; what matters is exactly one model transition per move and a declared policy for interruption.",
+      "Define the policy for overlapping input explicitly: queue, reject or fast-forward, and apply it consistently.",
+      "Snap the rendered pose to the exact state after each commit rather than accumulating rotations.",
+      "Derive solved detection from the state, and derive the move count from the committed move history rather than from the arrangement: the solved arrangement is reached by zero turns and also by four identical quarter turns, which are different counts."
+    ],
+    "observable_checks": [
+      "Issue rapid overlapping turns and confirm the state remains a valid permutation, that each accepted move produced exactly one model transition, and that the move count matches the committed history under the declared interruption policy.",
+      "Interrupt an animation partway and confirm the puzzle either completes or cancels the move cleanly with no half-applied state.",
+      "Perform a long sequence and confirm the pieces remain exactly aligned rather than drifting.",
+      "Reach the solved state by an unusual route and confirm detection fires from the state."
+    ]
+  },
+  "related_ids": [
+    "recipe.twisty-cube-3x3-face-turns",
+    "recipe.direct-turn-cube",
+    "recipe.permutation-cycles"
+  ],
+  "creative_affordances": [
+    "Puzzle geometry, materials, animation curves and effects are entirely free above this state contract.",
+    "Invented puzzle mechanisms work the same way once their legal move set is defined."
+  ],
+  "known_limits": [
+    "Authored state-model guidance; no runtime puzzle has been exercised for this record.",
+    "It does not provide a solver or an optimal-move claim."
+  ],
+  "claims": []
+}

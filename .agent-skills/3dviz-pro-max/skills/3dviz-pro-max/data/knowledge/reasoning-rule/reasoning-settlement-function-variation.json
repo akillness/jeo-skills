@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-settlement-function-variation",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Vary buildings by what happens inside them"
+  },
+  "aliases": {
+    "en": [
+      "functional variation",
+      "building program",
+      "village differentiation"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors"
+  ],
+  "summary": "Differentiate structures by their program, materials and site rather than by random size and rotation jitter.",
+  "objective": "Turn a repeated-house village into a settlement whose silhouette carries information about work, wealth and terrain.",
+  "applies_when": [
+    "A scene contains several buildings, tents, workshops or stalls of the same family.",
+    "A village, market, camp or town block looks repetitive or uniformly random.",
+    "The brief asks for a place with a story, an economy or a history."
+  ],
+  "constraint_level": "advisory",
+  "subject_terms": [
+    "village",
+    "settlement",
+    "building program",
+    "silhouette",
+    "variation",
+    "vernacular"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "advisory",
+    "environment",
+    "object-craft"
+  ],
+  "intent_signals": [
+    "the houses all look the same",
+    "make the village feel lived in",
+    "add a smithy and a mill"
+  ],
+  "example_prompts": [
+    "Give the village a mill, a smithy and a granary that read differently from a distance.",
+    "Make the harbour buildings look like they belong to the harbour."
+  ],
+  "negative_signals": [
+    "Deliberately uniform architecture such as barracks, container yards or planned identical housing, where sameness is the subject.",
+    "Background scenery too far away to resolve any of these features."
+  ],
+  "not_for": [
+    "Deliberately uniform architecture such as barracks, container yards or planned identical housing, where sameness is the subject.",
+    "Background scenery too far away to resolve any of these features."
+  ],
+  "content": {
+    "principles": [
+      "Random jitter of one prototype produces variety without meaning: the eye reads noise, not a settlement. Function produces silhouettes that differ in ways a viewer can name.",
+      "Programs impose consequences on shape once you have chosen how the world works. If your mill is water driven it needs a wheel and access to the water; a smithy that burns fuel needs a flue and a working yard; a store built to keep grain dry needs whatever your setting uses for that, whether a raised floor, a sealed jar or a cold cellar. These are motifs that follow from a chosen process, not universal requirements of every mill or granary.",
+      "Site and material continue the story: the same program in stone, timber or mud brick differs in wall thickness, opening size and roof pitch, and slope forces terraces, stilts or split levels."
+    ],
+    "implementation": [
+      "List three to six programs for the settlement and give each one distinguishing feature that survives at the intended viewing distance: roof shape, chimney, opening pattern, attached yard or projecting structure.",
+      "Derive secondary detail from the program rather than adding it uniformly: fuel and tools at the smithy, sacks and a hoist at the granary, drying racks at the fishery.",
+      "Let the site sort the buildings: workshops near power or water, storage near the route out, dwellings filling the space between, and orient ridge lines to the slope or prevailing wind you have chosen.",
+      "Keep a shared vocabulary of joinery, roof material and colour so the differences read as one culture rather than as a sample sheet."
+    ],
+    "observable_checks": [
+      "Render a distant silhouette pass: if three named buildings cannot be identified from the outline alone, the variation is decorative.",
+      "Ask what each building consumes and produces; a building with no answer is filler and can be merged or removed.",
+      "Look for the tell of jitter: identical footprints at different angles, or scaled copies whose door heights no longer match the ground.",
+      "Check that special structures sit where their function needs them, not where they happened to be scattered."
+    ]
+  },
+  "related_ids": [
+    "recipe.fantasy-village-diorama",
+    "knowledge.framed-shelter",
+    "knowledge.terrain-landmark-rhythm"
+  ],
+  "creative_affordances": [
+    "Invented economies and fictional crafts work as well as historical ones; the rule asks for consequences, not authenticity.",
+    "Stylised exaggeration of a functional feature, such as an oversized wheel or chimney, is a legitimate way to make the program readable."
+  ],
+  "known_limits": [
+    "Authored creative guidance; it makes no claim about the actual construction practice of any real place or period.",
+    "Historical or heritage subjects need separate evidence work before a reconstruction is presented as such."
+  ],
+  "claims": []
+}

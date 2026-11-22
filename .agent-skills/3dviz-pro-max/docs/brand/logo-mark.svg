@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="3Dviz Pro Max">
+  <!-- The site header's logo mark (site/src/components/site-nav.tsx) on a transparent background,
+       for the repository README. Same geometry and strokes as the nav; no cream tile. -->
+  <g fill="none" stroke="#0b7553" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M24 5 41 14.5v19L24 43 7 33.5v-19Z"/>
+    <path d="M7 14.5 24 24l17-9.5M24 24v19"/>
+  </g>
+  <circle cx="24" cy="24" r="3.2" fill="#c7ef7a" stroke="#0b7553" stroke-width="1.6"/>
+</svg>

@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.vtk-field-association-bridge",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "VTK scalar/vector arrays with explicit mesh association"
+  },
+  "aliases": {
+    "en": [
+      "VTK PointData CellData",
+      "scalar vector association"
+    ]
+  },
+  "direction_ids": [
+    "soft-fluid-thermal",
+    "calculus-fields"
+  ],
+  "summary": "Import scientific mesh arrays without confusing point values, cell values, active-array roles or vector components.",
+  "objective": "Load a VTK mesh with both point and cell fields and make each probe show its association, array name and unmodified value.",
+  "tags": [
+    "tool-adapter",
+    "vtk-field-association-bridge"
+  ],
+  "subject_terms": [
+    "VTK PointData CellData",
+    "scalar vector association",
+    "field tuple components",
+    "mesh data import"
+  ],
+  "intent_signals": [
+    "Load a VTK mesh with both point and cell fields and make each probe show its association, array name and unmodified value."
+  ],
+  "example_prompts": [
+    "Load a VTK mesh with both point and cell fields and make each probe show its association, array name and unmodified value."
+  ],
+  "applies_when": [
+    "Import scientific mesh arrays without confusing point values, cell values, active-array roles or vector components."
+  ],
+  "content": {
+    "principles": [
+      "Array name alone is not identity: retain dataset/piece, point-or-cell association, array name and component metadata together.",
+      "Keep scientific data arrays separate from color mapping, glyph length and render vertex duplication. A cell-to-point conversion creates derived data and must be named as such."
+    ],
+    "implementation": [
+      "Use a format-aware reader for declared VTK XML encodings. Preserve mesh connectivity and map every render primitive back to its source point/cell ID; triangulation must not reorder values independently of cell identity.",
+      "Check scalar tuple counts against their declared association and check component counts before enabling vector glyphs. Do not assume the first array is active or that any three-component array is velocity; use explicit role and field metadata.",
+      "Keep cell values on source cells unless an explicit resampling filter is requested. If point interpolation or cell averaging is used, retain the original array and label the result with method and new association.",
+      "Require units and vector coordinate basis from dataset metadata or a supplied manifest. Apply display transforms to positions separately; transform vector directions only under a declared vector-basis policy, not by copying point translations into vector components."
+    ],
+    "observable_checks": [
+      "Use a two-cell mesh with CellData values 10 and 20 and a PointData array of the same name: the selector distinguishes them and a cell probe returns the exact appropriate cell value.",
+      "Triangulate one source polygon for rendering: every child triangle resolves to the original cell value and identity.",
+      "Load an array whose tuple count or intended-vector component count is incompatible: mark that field unavailable rather than truncate/pad it. Changing the colormap or glyph scale leaves numeric probes unchanged."
+    ]
+  },
+  "known_limits": [
+    "No universal VTK reader is implemented. Higher-order cells, distributed pieces/ghost ownership, staggered fields and tensor-basis transforms need additional explicit contracts.",
+    "Authored source-reviewed guidance only; no import adapter, runtime artifact or scientific pipeline was implemented or executed."
+  ],
+  "creative_affordances": [
+    "Use a compact source-versus-display inspector to expose the specific transformation; layout and emphasis are authored choices, not validated usability findings."
+  ],
+  "related_ids": [
+    "knowledge.shared-field-data-playback-bridge",
+    "knowledge.signed-field-section"
+  ],
+  "claims": [
+    {
+      "id": "claim.vtk-associated-active-component-arrays",
+      "statement": "VTK XML distinguishes PointData and CellData, identifies active scalar/vector arrays by name, and stores per-array component counts in DataArray metadata.",
+      "scope": "VTK XML association and representation metadata only; does not supply physical units or scientific meaning.",
+      "source_refs": [
+        {
+          "source_id": "source.vtk-xml-point-cell-arrays",
+          "locator": "Serial XML File Formats: PointData/CellData, active arrays; DataArray NumberOfComponents; Cells connectivity"
+        }
+      ]
+    }
+  ]
+}

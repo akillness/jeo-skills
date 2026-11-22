@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "id": "recipe.moulded-enclosure-draft",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Moulded enclosure with draft, ribs and bosses"
+  },
+  "aliases": {
+    "en": [
+      "draft angle",
+      "injection moulding",
+      "ribs and bosses"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies"
+  ],
+  "summary": "Model a plastic housing whose features carry the reasons they exist: pull direction, draft, wall thickness and stiffening.",
+  "objective": "Build an injection-moulded enclosure where I can see the pull direction, check draft on each face and inspect ribs and bosses.",
+  "tags": [
+    "enclosure",
+    "moulding",
+    "design for manufacture"
+  ],
+  "subject_terms": [
+    "draft angle",
+    "pull direction",
+    "parting line",
+    "wall thickness",
+    "rib",
+    "boss",
+    "sink mark",
+    "ejection"
+  ],
+  "intent_signals": [
+    "Design a plastic housing that could actually be moulded.",
+    "Check the draft angles on an enclosure against its pull direction."
+  ],
+  "example_prompts": [
+    "Build a moulded enclosure with a visible pull direction and a per-face draft check.",
+    "Show ribs and bosses proportioned against the wall thickness."
+  ],
+  "negative_signals": [
+    "Not a mould flow, warpage or cooling simulation.",
+    "Not a quotation or manufacturability certification for any supplier."
+  ],
+  "not_for": [
+    "Not a mould flow, warpage or cooling simulation.",
+    "Not a quotation or manufacturability certification for any supplier."
+  ],
+  "entities": [
+    {
+      "name": "Shell walls",
+      "guidance": "Build the housing as a shelled solid with a stated nominal wall thickness rather than as a solid block, since every downstream rule refers to that wall."
+    },
+    {
+      "name": "Pull direction and draft",
+      "guidance": "Declare the pull direction and evaluate each face angle against it, marking faces that lack draft."
+    },
+    {
+      "name": "Ribs and bosses",
+      "guidance": "Model ribs and bosses with their base thickness expressed as a fraction of the wall, and show that fraction in the inspector."
+    }
+  ],
+  "state_contract": {
+    "model": "A shelled part with nominal wall thickness, a declared pull direction with an outward face-normal convention and core versus cavity side assignment, and a signed draft angle per face measured against that direction. Faces perpendicular to the pull direction are classified separately as parting or horizontal faces rather than as draft failures. Rib and boss dimensions are reported as ratios to the local wall. Findings are per feature, and one global positive-draft test does not decide pullability or undercuts.",
+    "authority": "The pull direction is authoritative for every draft evaluation; changing it must re-evaluate every face rather than keeping stale marks.",
+    "actions": [
+      "Set or flip the pull direction.",
+      "Run the draft check and step through failing faces.",
+      "Adjust a rib thickness ratio and re-inspect.",
+      "Reset the part and the pull direction."
+    ]
+  },
+  "invariants": [
+    "Every face is evaluated against the current pull direction, and a face at zero draft is reported rather than tolerated.",
+    "Rib and boss thickness is reported as a ratio to the local wall, not as an absolute number alone.",
+    "Flipping the pull direction recomputes the signed draft angle of every face against the new direction. The failing set need not change, since a zero-draft wall fails for both directions and symmetric parts can classify identically; staleness is detected by verifying selected asymmetric reference faces, not by expecting a different set."
+  ],
+  "motion_guidance": [
+    "Animate mould opening along the pull direction so an undercut becomes visible as interference rather than as an abstract warning.",
+    "Keep the failing-face highlight visible while the mould halves separate, since that is when the problem is legible."
+  ],
+  "known_limits": [
+    "The guidance cited is one supplier design guide tied to their processes; other moulders, resins and textures have different requirements.",
+    "Geometry checks here are angular and dimensional; they say nothing about filling, packing or shrinkage.",
+    "Rib and boss ratios are measured and reported; no threshold is asserted for them beyond the vendor guidance actually cited, and surface texture rendering cannot determine the draft a real process requires.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-draft-angle-guidance",
+      "statement": "Supplier design guidance recommends about one degree of draft per inch of cavity depth, strongly advises at least half a degree on vertical faces, and requires more draft for textured surfaces, because without draft the part drags on the mould surface during opening and ejection.",
+      "scope": "Vendor guidance for their processes as cited; it is not a standard and does not replace review by the actual moulder.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-protolabs-draft",
+          "locator": "Draft Angle Guidelines for Injection Molding, recommended angles and rationale"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Shell walls",
+      "structure": "Shelled housing with consistent wall thickness, radiused internal corners and a visible parting line around the perimeter.",
+      "material": "Moulded polymer look with a slight illustrative texture and a distinct treatment on the parting line. Rendered texture does not establish a required draft angle; any process recommendation remains scoped to the cited supplier guidance.",
+      "articulation": "None. Only the mould halves move during the opening animation."
+    },
+    {
+      "family": "Ribs and bosses",
+      "structure": "Ribs with draft on their sides and a radius at the base, bosses with a cored hole and supporting gussets.",
+      "material": "Same polymer material as the wall so a sink mark reads as a shape defect rather than a colour change. Any sink mark shown is an authored annotation illustrating where one is commonly expected, not a predicted defect, since no fill or shrinkage analysis is performed.",
+      "articulation": "None. Dimension changes rebuild the feature."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Geometric evaluation and an authored mould-opening animation; no material flow or thermal simulation.",
+    "state": [
+      "pull direction",
+      "per-face draft results",
+      "feature ratios"
+    ],
+    "checks": [
+      "Flipping the pull direction reverses the reported sign on the selected asymmetric reference faces, which is what distinguishes a recomputed check from a stale one.",
+      "Every reported ratio matches the modelled geometry."
+    ]
+  },
+  "related_ids": [
+    "recipe.portable-speaker-exploded",
+    "recipe.modular-camera-rig",
+    "knowledge.structural-coherence"
+  ]
+}

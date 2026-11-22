@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-crate",
+  "record_revision": 3,
+  "asset": "templates/kits/props/crate.js",
+  "asset_sha256": "c998372c351a3e05adf04ca38255e021120984009a93a4a52be663c6311590d7",
+  "params": {
+    "size": 0.62,
+    "planks": 4,
+    "seed": 1,
+    "braced": true
+  },
+  "tier": "T2",
+  "kit": {
+    "blueprint": "knowledge.blueprint-crate",
+    "module": "../props/crate.js",
+    "params": {
+      "size": 0.62,
+      "planks": 4,
+      "seed": 1,
+      "braced": true
+    },
+    "tier": "T2",
+    "surface": {
+      "seed": 1,
+      "size": 1024,
+      "materials": 6,
+      "unmapped": [],
+      "uv": [
+        "world",
+        "normalised"
+      ],
+      "ms": 118.3,
+      "ao": {
+        "vertices": 880,
+        "casts": 2379,
+        "ms": 9.1,
+        "skipped": null
+      }
+    },
+    "triangles": 2156,
+    "bounds_m": {
+      "min": [
+        -0.33442449755966663,
+        -2.384185793236071e-09,
+        -0.3422000110149384
+      ],
+      "max": [
+        0.33442449755966663,
+        0.6809999996647239,
+        0.34220001101493835
+      ],
+      "size": [
+        0.6688489951193333,
+        0.6810000020489098,
+        0.6844000220298767
+      ]
+    },
+    "fit_distance_m": 1.717,
+    "view_distances_m": {
+      "far": 4.1209,
+      "mid": 2.0605,
+      "close": 1.3393,
+      "detail": 0.7408
+    },
+    "sockets": [
+      "lid",
+      "base",
+      "label"
+    ],
+    "detail_socket": "lid",
+    "animated": false,
+    "colliders": [
+      "crate"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "2678c337e605844f6e7da04ce0a9339fb58c01734ec49709a51af20845669dea",
+    "mid.png": "83609b73f454b55651d8514eb6a66ee74d36f3248e00fea21358baf86392d71e",
+    "close.png": "aee83d56ac8cb8f09ef91227214c8a5cc7de70d23e5d4fc16619e764bb92a504",
+    "detail.png": "667b463bc8fbb278a7c474d6b903e47cd79f94c7bacc9fca2cff919769ef18a5"
+  },
+  "motion": null,
+  "gpu_requested": false,
+  "capture_mode": "swiftshader",
+  "webgl_renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T17:14:03+00:00",
+  "finished": "2026-09-08T17:14:08+00:00",
+  "surface": {
+    "families": {
+      "#b08a5c": "wood",
+      "#8a6a45": "wood",
+      "#7d6140": "wood",
+      "#3a2c1e": "wood",
+      "#cfc9bd": "metal"
+    },
+    "seed": 1,
+    "size": 1024,
+    "ao": {
+      "samples": 13,
+      "radius_m": 0.2,
+      "ground_dirt_m": 0.6
+    }
+  }
+}

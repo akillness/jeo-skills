@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "id": "recipe.commutator-conjugate-tools",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Commutators and conjugates as piece tools"
+  },
+  "aliases": {
+    "en": [
+      "commutator",
+      "conjugate",
+      "three cycle"
+    ]
+  },
+  "direction_ids": [
+    "twisty-puzzles"
+  ],
+  "summary": "Build move sequences that touch few pieces and show why the algebraic form produces that effect.",
+  "objective": "Build a cube workbench where I can assemble a commutator or a conjugate from chosen moves and see exactly which pieces it disturbs.",
+  "tags": [
+    "commutator",
+    "conjugate",
+    "algorithm"
+  ],
+  "subject_terms": [
+    "commutator",
+    "conjugate",
+    "setup move",
+    "three cycle",
+    "piece permutation",
+    "move sequence",
+    "inverse"
+  ],
+  "intent_signals": [
+    "Show how a commutator affects only a few pieces.",
+    "Explain conjugation as setup, algorithm and undo."
+  ],
+  "example_prompts": [
+    "Build a cube tool that assembles commutators and conjugates and lists the pieces each one moves.",
+    "Show a three-cycle produced by a commutator and where its setup moves point it."
+  ],
+  "negative_signals": [
+    "Not a solver: this recipe builds and inspects sequences, it does not search for solutions.",
+    "Not a speedcubing method trainer or algorithm database."
+  ],
+  "not_for": [
+    "Not a solver: this recipe builds and inspects sequences, it does not search for solutions.",
+    "Not a speedcubing method trainer or algorithm database."
+  ],
+  "entities": [
+    {
+      "name": "Move slots",
+      "guidance": "Provide explicit slots for the two operand sequences so the algebraic form stays visible instead of collapsing into one string."
+    },
+    {
+      "name": "Affected piece report",
+      "guidance": "After applying a sequence, list every piece whose position or orientation changed, since that count is the whole point of the construction."
+    },
+    {
+      "name": "Inverse preview",
+      "guidance": "Show the inverse of each operand as generated text, so the structure of the commutator or conjugate is verifiable."
+    }
+  ],
+  "state_contract": {
+    "model": "Exact discrete puzzle state as piece positions and orientations, plus a sequence builder with one declared composition convention used everywhere in this record: sequences are written left to right in execution order, so g h means apply g and then h. Under that convention this record uses the commutator [g, h] = g h g inverse h inverse (apply g, then h, then g inverse, then h inverse) and the conjugate of g by h = h g h inverse (setup h, apply g, undo h). Texts that write the commutator as g inverse h inverse g h and the conjugate as h inverse g h name a different word, and which word depends on their composition order: read right to left (rightmost applied first) g inverse h inverse g h executes as h, g, h inverse, g inverse, which is [h, g] = [g, h] inverse, the inverse commutator; read left to right, as the cited Jaap Scherphuis page does because its permutations act on the right, the same text executes as g inverse, h inverse, g, h, which is [g inverse, h inverse] here. Build and label sequences with the form written in this record and never mix the two texts. Move notation and sequence length are validated before application. Animation is presentation only.",
+    "authority": "The discrete state is authoritative; the animated mesh follows it. A sequence is judged by the state difference it produces, never by how it looks.",
+    "actions": [
+      "Choose the two operand sequences and apply the commutator.",
+      "Wrap any sequence in a conjugating setup and its inverse.",
+      "Inspect the list of affected pieces.",
+      "Undo the whole construction and reset to solved."
+    ]
+  },
+  "invariants": [
+    "Applying a sequence and then its inverse returns the exact original state, including orientations.",
+    "The affected piece list is computed from the state difference, not from what was animated.",
+    "A conjugate moves the same pattern of pieces as its inner sequence, relocated by the setup."
+  ],
+  "motion_guidance": [
+    "Animate each move as a quarter or half turn of the correct layer and keep the discrete state as the source of truth.",
+    "Allow stepping backwards through the built sequence; a construction that can only be watched cannot be understood."
+  ],
+  "known_limits": [
+    "Effect size depends on the operands chosen: not every commutator produces a small three-cycle.",
+    "This recipe covers construction and inspection, not the search for a sequence with a desired effect.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-commutator-conjugate",
+      "statement": "The cited page defines a conjugate of g as h inverse g h and the commutator of g and h as g inverse h inverse g h, composing left to right because its permutations act on the right, and states that taking a commutator of two elements that nearly commute yields a sequence that moves very little. In the convention declared by this record those two source words are the same constructions on inverted operands: the source commutator is this record's [g inverse, h inverse] and the source conjugate is this record's conjugate of g by h inverse.",
+      "scope": "Group-theoretic definitions applied to puzzle move sequences as cited. The word order depends on the composition convention: the cited page composes left to right, while texts composing right to left read the same word g inverse h inverse g h as the execution sequence h, g, h inverse, g inverse, which is the inverse commutator [h, g]. This record declares one convention in its state contract and builds only the forms written under it.",
+      "source_refs": [
+        {
+          "source_id": "source.jaap-permutations",
+          "locator": "Section 7, Conjugation and commutation: \"a conjugate of g is an element h-1gh\" and \"the commutator of g and h is the element g-1h-1gh\", with permutations acting on the right"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-conjugate-relocation",
+      "statement": "If a move sequence swaps, cycles, flips or twists particular pieces, then conjugates of that sequence apply the same kind of effect to other pieces.",
+      "scope": "Practical consequence of conjugation as cited; the relocation is determined by the setup sequence.",
+      "source_refs": [
+        {
+          "source_id": "source.jaap-permutations",
+          "locator": "Section 7, after Lemma 7.1: \"if you have a move sequence that swaps/cycles/flips/twists some particular pieces, then using conjugates of that move sequence you can swap/cycle/flip/twist any other pieces you want\""
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Move slots",
+      "structure": "Physical slot rails in the scene holding move tiles, so a sequence is an object that can be reordered.",
+      "material": "Tiles with printed notation and a face-colour edge, readable at the working camera distance.",
+      "articulation": "Tiles can be inserted, removed and reordered; the generated inverse updates immediately."
+    },
+    {
+      "family": "Affected piece report",
+      "structure": "Ghost markers on the cube at every changed piece plus a side list with piece names.",
+      "material": "One reserved accent for changed pieces so an unchanged cube reads as visually quiet.",
+      "articulation": "Markers rebuild from the state difference after each application."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Exact discrete state with animated layer turns; no friction, contact or mechanism simulation.",
+    "state": [
+      "piece permutation",
+      "piece orientation",
+      "sequence builder contents"
+    ],
+    "checks": [
+      "Sequence followed by its inverse restores the exact state.",
+      "The affected piece list matches the computed state difference."
+    ]
+  },
+  "related_ids": [
+    "recipe.permutation-cycles",
+    "recipe.twisty-cube-3x3-face-turns",
+    "knowledge.state-playback"
+  ]
+}

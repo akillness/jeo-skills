@@ -1,0 +1,300 @@
+{
+  "schema_version": 1,
+  "id": "recipe.polycrystal-slip-planes",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Polycrystalline grains and slip planes"
+  },
+  "aliases": {
+    "en": [
+      "grain boundaries",
+      "dislocation slip",
+      "microstructure"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Show a polycrystal as differently oriented lattice domains and make slip planes a property of orientation rather than a texture.",
+  "objective": "Build a polycrystalline block where each grain has its own lattice orientation and I can reveal the slip planes that follow it.",
+  "tags": [
+    "microstructure",
+    "grains",
+    "slip"
+  ],
+  "subject_terms": [
+    "grain boundary",
+    "polycrystal",
+    "lattice orientation",
+    "slip plane",
+    "dislocation",
+    "plastic deformation",
+    "work hardening"
+  ],
+  "intent_signals": [
+    "Show why a metal has grains with different orientations.",
+    "Explain slip planes and grain boundaries in a 3D block."
+  ],
+  "example_prompts": [
+    "Build a polycrystalline block with per-grain lattice orientation and toggleable slip planes.",
+    "Show a dislocation stepping through a lattice plane and where a grain boundary interrupts it."
+  ],
+  "negative_signals": [
+    "Not a crystal plasticity or finite-element solver: no stress, strain or yield strength is computed.",
+    "Not a materials-selection or failure-analysis tool."
+  ],
+  "not_for": [
+    "Not a crystal plasticity or finite-element solver: no stress, strain or yield strength is computed.",
+    "Not a materials-selection or failure-analysis tool."
+  ],
+  "entities": [
+    {
+      "name": "Grain domains",
+      "guidance": "Partition the block into grains as closed cells with shared boundary faces, each storing its own lattice orientation."
+    },
+    {
+      "name": "Lattice and slip planes",
+      "guidance": "Draw a sparse lattice inside a selected grain and derive the highlighted plane from that grain orientation, so the plane rotates with the grain."
+    },
+    {
+      "name": "Dislocation marker",
+      "guidance": "Show one dislocation line and its step-by-step advance along a plane, stopping visibly at the grain boundary."
+    }
+  ],
+  "state_contract": {
+    "model": "Grain list with orientations, a boundary set shared between neighbouring grains, and a dislocation position expressed as a step index on a chosen plane. Each grain declares a lattice type whose slip plane and slip direction families come from defaults.values.state_table, so the planes drawn in a grain are generated from its lattice and orientation rather than authored per grain. Deformation shown is an authored illustration, not a computed response to load.",
+    "authority": "Grain orientation is authoritative: lattice, slip plane and dislocation direction are all derived from it, so changing an orientation must update all three together.",
+    "actions": [
+      "Select a grain and show its lattice and available slip planes.",
+      "Step a dislocation along the selected plane.",
+      "Toggle the grain boundary surfaces and the outer block faces.",
+      "Reset orientations and the dislocation to the authored start."
+    ]
+  },
+  "invariants": [
+    "A slip plane never crosses a grain boundary unchanged; at the boundary the plane orientation changes or the marker stops.",
+    "Neighbouring grains share one boundary surface rather than each owning a private copy.",
+    "Stepping the dislocation backwards restores the previous lattice state exactly."
+  ],
+  "motion_guidance": [
+    "Advance the dislocation in discrete lattice steps so the motion reads as bond-by-bond, not as a sliding decal.",
+    "Do not deform the whole block continuously as if a load were applied; any shape change is an authored illustration."
+  ],
+  "known_limits": [
+    "Illustrative microstructure: grain sizes, shapes and orientation distribution are authored, not from a measured sample.",
+    "The cited slip-system page gives system counts for cubic close-packed (12, five independent) and hexagonal close-packed (3, two independent) but names only the plane and direction family for body-centred cubic, so no b.c.c. count is claimed here.",
+    "The recipe shows one dislocation on one plane; multiplication, tangles and cross-slip are out of scope.",
+    "Schmid's law here selects a primary system geometrically; it is not a plasticity solver and predicts no stress-strain curve.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-grain-boundaries",
+      "statement": "Grain boundaries are internal interfaces between zones of a crystalline material that have different lattice alignments.",
+      "scope": "Definition of the interface as stated in the cited session material; grain size effects are not claimed.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-mit-crystal-defects",
+          "locator": "Session 20 summary, two-dimensional defects and grain boundaries"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-dislocation-slip",
+      "statement": "Movement of dislocations through the lattice contributes to plastic deformation and work hardening.",
+      "scope": "Qualitative mechanism quoted from the cited session objectives. The same page summarises the yield-stress argument in an elliptical sentence, so no quantitative strength or yield claim is drawn from this source.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-mit-crystal-defects",
+          "locator": "Session 20 learning objectives and summary, dislocation motion and yield stress"
+        }
+      ]
+    },
+    {
+      "id": "claim.polycrystal-slip-system-families",
+      "statement": "A slip system is the combination of a slip plane and a slip direction. Cubic close-packed metals slip on <1-10>{111}, with three distinct directions in each of the four {111} planes making 12 distinct slip systems, five of which are independent. Hexagonal close-packed metals slip on <100>{001}: there is only one distinct {001} plane and three distinct <100> directions in it, giving three distinct slip systems and only two independent ones. Body-centred cubic metals slip on <1-11>{110} and have no close-packed planes; the cited page names that family without giving a system count. The von Mises criterion quoted there requires a minimum of five independent slip systems for general yielding.",
+      "scope": "Slip plane and direction families, distinct and independent system counts where the page states them, and the five-independent-system yielding criterion. No body-centred cubic count is claimed, and no temperature or strain-rate dependence is covered.",
+      "source_refs": [
+        {
+          "source_id": "source.doitpoms-slip-systems",
+          "locator": "Introduction: \"The combination of slip plane and slip direction together makes up a slip system\". Slip in CCP metals: \"There are 3 distinct slip directions lying in this plane, and there are 3 other planes of the {111} type, making 12 distinct slip systems of the <1 bar1 0>{111} type\"; \"There are 12 such <1 bar1 0>{111} systems, five of which are independent\". Slip in HCP metals 1: \"there is only one distinct lattice plane of the {001} type\"; \"the h.c.p. structure exhibits three distinct slip systems\"; \"The h.c.p structure has only two independent slip systems\". Which slip system will operate?: methods work \"only for cubic crystals that slip on <1 bar1 0> {111} or <1 bar1 1> {110}, i.e. cubic close-packed (c.c.p) or body-centred cubic (b.c.c.) metals respectively\". Summary/Questions: \"the von Mises criterion states that a minimum of five independent slip systems must exist for general yielding\"; \"Body-centred cubic metals are also ductile through the mechanism of slip, but they have no close-packed planes\""
+        }
+      ]
+    },
+    {
+      "id": "claim.polycrystal-schmid-law",
+      "statement": "The resolved shear stress on a slip system under a tensile stress is tau_R = (F/A) cos(phi) cos(lambda), where phi is the angle between the tensile axis and the slip plane normal and lambda the angle between the tensile axis and the slip direction; slip begins when tau_R reaches the critical resolved shear stress, so Schmid's law reads tau_C = sigma_y cos(phi) cos(lambda) and the primary slip system is the one with the greatest Schmid factor cos(phi) cos(lambda). In the cited cadmium example (a = b = 2.98 A, c = 5.62 A, tensile axis [021], slip on the [010](001) system) phi_0 = arctan(2a/c) = 46.7 degrees, lambda_0 = 43.3 degrees, the Schmid factor is 0.499, and with a critical resolved shear stress of 0.15 MPa and a 3 mm crystal diameter the force required to cause slip is 2.12 N.",
+      "scope": "Geometric selection of the primary slip system and one worked single-crystal force calculation. It does not predict polycrystal yield strength, work hardening or rate dependence.",
+      "source_refs": [
+        {
+          "source_id": "source.doitpoms-slip-systems",
+          "locator": "Slip geometry: the critical resolved shear stress - \"tau_R = F cos lambda / (A / cos phi) = (F/A) cos phi cos lambda\"; \"This is Schmid's Law. The quantity cos phi cos lambda is called the Schmid factor\"; \"tau_C = sigma_y cos phi cos lambda\"; \"the primary slip system will be the system with the greatest Schmid factor\". Slip in HCP metals 2 and 3: \"Cadmium is (approximately) hexagonal close-packed with a = b = 2.98 A and c = 5.62 A, and it slips on <100>{001}\", tensile axis [021]; \"phi_0 = tan^-1(2a/c) = tan^-1(2 x 2.98 / 5.62) = 46.7 deg\", \"lambda_0 = 90 deg - phi_0 = 43.3 deg\", \"cos 46.7 x cos 43.3 = 0.499\", \"F = tau_c A / (cos phi_0 cos lambda_0) = 0.15 x 10^6 x pi x (1.5 x 10^-3)^2 / 0.499 = 2.12 N\""
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Grain domains",
+      "structure": "Convex-ish cells with flat shared faces and slightly bevelled edges so boundaries read as surfaces rather than as wireframes.",
+      "material": "One metal family with per-grain variation in orientation-driven shading rather than arbitrary colour, so the block still looks like a single material.",
+      "articulation": "None. Grains are static; only visibility and selection change."
+    },
+    {
+      "family": "Lattice and slip planes",
+      "structure": "Sparse atom markers on the lattice with a translucent plane patch bounded by the grain, not extending past it.",
+      "material": "Thin translucent plane with a visible border so it can be seen edge-on; lattice markers stay small enough to avoid hiding the plane.",
+      "articulation": "Plane orientation is recomputed whenever the grain orientation changes."
+    },
+    {
+      "family": "Dislocation marker",
+      "structure": "A line defect with a visible step in the surrounding lattice rows, so the marker has structural evidence around it.",
+      "material": "A single high-contrast accent reserved for the defect; nothing else in the scene may use it.",
+      "articulation": "Advances in discrete steps along the plane and halts at the boundary."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Discrete illustrative stepping of an authored defect; no stress, strain or contact is simulated.",
+    "state": [
+      "selected grain",
+      "dislocation step index"
+    ],
+    "checks": [
+      "The dislocation marker stops at the boundary of its grain.",
+      "Changing a grain orientation rotates lattice, plane and marker together."
+    ]
+  },
+  "related_ids": [
+    "recipe.cubic-unit-cell-accounting",
+    "knowledge.structural-coherence",
+    "knowledge.object-isolation"
+  ],
+  "defaults": {
+    "provenance": "source-backed",
+    "tunable": true,
+    "claim_ids": [
+      "claim.rd-dislocation-slip",
+      "claim.polycrystal-slip-system-families",
+      "claim.polycrystal-schmid-law"
+    ],
+    "rationale": "The slip-system table, the counts and the Schmid-law numbers all restate the cited DoITPoMS package (claim.polycrystal-slip-system-families, claim.polycrystal-schmid-law); dislocation motion as the carrier of plastic deformation restates claim.rd-dislocation-slip. The body-centred cubic row deliberately carries no system count: the page names the <1-11>{110} family and says b.c.c. metals have no close-packed planes, but never prints a count, so inventing 12 or 48 here would be fabrication. Grain count, grain size and the number of dislocation steps stay authored scene choices because the source is about single-crystal geometry, and they are marked as such. Tunable: change grain count and orientations freely, but the plane and direction families per lattice are not tunable, they are the sourced content.",
+    "values": {
+      "parameters": {
+        "lattice_types": {
+          "value": [
+            "ccp/fcc",
+            "bcc",
+            "hcp"
+          ],
+          "unit": "enumeration",
+          "note": "one per grain; drives which family the grain's planes come from"
+        },
+        "ccp_distinct_slip_systems": {
+          "value": 12,
+          "unit": "count",
+          "note": "sourced: 4 distinct {111} planes x 3 <1-10> directions"
+        },
+        "ccp_independent_slip_systems": {
+          "value": 5,
+          "unit": "count",
+          "note": "sourced"
+        },
+        "hcp_distinct_slip_systems": {
+          "value": 3,
+          "unit": "count",
+          "note": "sourced: one (001) plane x 3 <100> directions"
+        },
+        "hcp_independent_slip_systems": {
+          "value": 2,
+          "unit": "count",
+          "note": "sourced"
+        },
+        "bcc_distinct_slip_systems": {
+          "value": "no default; source gives none",
+          "unit": "count",
+          "note": "the page names the <1-11>{110} family only - family only, count not given by source"
+        },
+        "von_mises_minimum_independent_systems": {
+          "value": 5,
+          "unit": "count",
+          "note": "sourced criterion for general yielding of a polycrystal"
+        },
+        "cadmium_a": {
+          "value": 2.98,
+          "unit": "angstrom",
+          "note": "sourced hcp lattice parameter used in the worked example"
+        },
+        "cadmium_c": {
+          "value": 5.62,
+          "unit": "angstrom",
+          "note": "sourced"
+        },
+        "cadmium_critical_resolved_shear_stress": {
+          "value": 0.15,
+          "unit": "MPa",
+          "note": "sourced"
+        },
+        "cadmium_crystal_diameter": {
+          "value": 0.003,
+          "unit": "m",
+          "note": "sourced"
+        },
+        "grain_count": {
+          "value": 12,
+          "unit": "count",
+          "note": "authored scene choice; the source is about single crystals and states no grain count"
+        },
+        "dislocation_steps_per_plane": {
+          "value": 20,
+          "unit": "count",
+          "note": "authored scene choice; step index is a display parameter, not a physical quantity from the source"
+        }
+      },
+      "equations": [
+        "tau_R = (F/A) cos(phi) cos(lambda)",
+        "Schmid factor = cos(phi) cos(lambda)",
+        "tau_C = sigma_y cos(phi) cos(lambda)",
+        "distinct slip systems = (distinct planes of the family) x (distinct directions lying in one such plane)"
+      ],
+      "state_table": [
+        {
+          "lattice": "cubic close-packed (c.c.p. / f.c.c.)",
+          "plane_family": "{111}",
+          "direction_family": "<1-10>",
+          "distinct_systems": 12,
+          "independent_systems": 5,
+          "note": "3 distinct directions in each of 4 distinct {111} planes; satisfies the five-independent-system criterion on its own"
+        },
+        {
+          "lattice": "body-centred cubic (b.c.c.)",
+          "plane_family": "{110}",
+          "direction_family": "<1-11>",
+          "distinct_systems": "family only, count not given by source",
+          "independent_systems": "family only, count not given by source",
+          "note": "the cited page names the <1-11>{110} family and states that b.c.c. metals have no close-packed planes, but prints no system count"
+        },
+        {
+          "lattice": "hexagonal close-packed (h.c.p.)",
+          "plane_family": "{001}",
+          "direction_family": "<100>",
+          "distinct_systems": 3,
+          "independent_systems": 2,
+          "note": "only one distinct {001} plane; two independent systems is below the von Mises minimum of five, which is why basal slip alone cannot give general yielding"
+        }
+      ],
+      "worked_example": {
+        "inputs": "Two questions on the same scene: (a) count the c.c.p. and h.c.p. slip systems from plane and direction multiplicities; (b) a cadmium h.c.p. single crystal, a = 2.98 A, c = 5.62 A, tensile axis [021], slip system [010](001), critical resolved shear stress 0.15 MPa, crystal diameter 3 mm",
+        "expected": "(a) c.c.p. 4 x 3 = 12 distinct systems, 5 independent; h.c.p. 1 x 3 = 3 distinct systems, 2 independent, so an h.c.p. grain fails the von Mises minimum of 5 while a c.c.p. grain exactly meets it. (b) phi_0 = 46.7 deg, lambda_0 = 43.3 deg, Schmid factor 0.499, force at slip 2.12 N",
+        "derivation": "(a) The {111} family has 4 distinct planes and each contains 3 distinct <1-10> directions: 4 x 3 = 12, of which the source states 5 are independent. The {001} family has 1 distinct plane containing 3 distinct <100> directions: 1 x 3 = 3, of which 2 are independent. Compare each against the sourced von Mises minimum of five independent systems. (b) phi_0 = arctan(2a/c) = arctan(2 x 2.98 / 5.62) = arctan(1.0605) = 46.7 deg; because tensile axis, slip direction and plane normal are coplanar here, lambda_0 = 90 - 46.7 = 43.3 deg; Schmid factor = cos 46.7 x cos 43.3 = 0.686 x 0.728 = 0.499; A = pi (1.5e-3)^2 = 7.07e-6 m^2; F = tau_c A / 0.499 = 0.15e6 x 7.07e-6 / 0.499 = 1.06 / 0.499 = 2.12 N."
+      },
+      "tolerance": {
+        "counts": "exact integers; a grain whose generated plane set does not match its lattice row is a defect, not a rounding difference",
+        "angles_deg": "+/- 0.1 deg against the sourced 46.7 and 43.3 values",
+        "force_N": "+/- 0.01 N against the sourced 2.12 N"
+      }
+    }
+  }
+}

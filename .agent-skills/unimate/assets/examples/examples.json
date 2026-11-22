@@ -1,0 +1,57 @@
+[
+ {
+  "asset": "objaverse:01fcb4e4c36548ca86624b63dfc6b255",
+  "id": "garfield-dance",
+  "prompt": "An object dances in place."
+ },
+ {
+  "asset": "objaverse:01fcb4e4c36548ca86624b63dfc6b255",
+  "id": "garfield-fall",
+  "prompt": "An object falls forward."
+ },
+ {
+  "asset": "objaverse:42eb6e70ce024c4c9b6ab24118c737b3",
+  "id": "gundam-kick",
+  "prompt": "An object kicks with the right leg."
+ },
+ {
+  "asset": "objaverse:42eb6e70ce024c4c9b6ab24118c737b3",
+  "id": "gundam-jump",
+  "prompt": "An object jumps in place."
+ },
+ {
+  "asset": "objaverse:e87c7d42f0b3475c9a698da8295244d1",
+  "id": "baymax-walk",
+  "prompt": "An object walks forward."
+ },
+ {
+  "asset": "objaverse:e87c7d42f0b3475c9a698da8295244d1",
+  "id": "baymax-punch",
+  "prompt": "An object punches forward with its right arm."
+ },
+ {
+  "asset": "objaverse:669a74dd57bbceb71e6e8b1d_fbx",
+  "id": "flower-close",
+  "prompt": "An object closes its petals and bends its stem."
+ },
+ {
+  "asset": "mixamo",
+  "id": "mixamo-run",
+  "prompt": "An object runs forward."
+ },
+ {
+  "asset": "mixamo",
+  "id": "mixamo-cheer",
+  "prompt": "An object cheers with its arms raised."
+ },
+ {
+  "asset": "truebones:Raindeer",
+  "id": "raindeer-walk",
+  "prompt": "An object walks in place."
+ },
+ {
+  "asset": "truebones:Raindeer",
+  "id": "raindeer-attack",
+  "prompt": "An object attacks forward."
+ }
+]

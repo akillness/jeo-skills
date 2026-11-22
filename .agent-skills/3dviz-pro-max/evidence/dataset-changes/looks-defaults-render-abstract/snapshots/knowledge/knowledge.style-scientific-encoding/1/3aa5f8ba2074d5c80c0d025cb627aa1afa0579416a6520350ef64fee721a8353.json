@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-scientific-encoding",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Scientific encoding as presentation"
+  },
+  "aliases": {
+    "en": [
+      "scientific visualization encoding",
+      "data color mapping",
+      "units and legend"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "linear-algebra",
+    "earth-environment"
+  ],
+  "summary": "Treat color, size and position as declared data mappings, not as a freely interchangeable surface style; record units and legend meaning.",
+  "objective": "A selected element agrees with its value readout, units and legend; filtering, reset and playback preserve the mapping and disclose missing values.",
+  "tags": [
+    "style-profile",
+    "representation-encoding",
+    "scientific-encoding"
+  ],
+  "subject_terms": [
+    "scientific visualization encoding",
+    "data color mapping",
+    "units and legend",
+    "representation encoding"
+  ],
+  "intent_signals": [
+    "Encode scientific values with a legend",
+    "Preserve data units and mappings during interaction"
+  ],
+  "example_prompts": [
+    "Show a terrain field with declared units, an unchanged legend during playback and a separate selection outline."
+  ],
+  "content": {
+    "principles": [
+      "Treat color, size and position as declared data mappings, not as a freely interchangeable surface style; record units and legend meaning.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Keep geometry linked to the declared values or show any display exaggeration explicitly; preserve the identity of compared entities.",
+      "Reserve the data channel for its declared meaning and keep decorative lighting from changing how values are read; choose a separate channel for selection.",
+      "Offer a repeatable comparison view and state-linked playback; camera motion and decoration must not alter sampled values or timestamps."
+    ],
+    "observable_checks": [
+      "A selected element agrees with its value readout, units and legend; filtering, reset and playback preserve the mapping and disclose missing values.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with minimalist or technical illustration framing; this record proposes a representation workflow and does not establish any domain claim or validated perceptual scale.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

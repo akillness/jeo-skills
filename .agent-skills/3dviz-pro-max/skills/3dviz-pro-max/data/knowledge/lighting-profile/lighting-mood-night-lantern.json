@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.lighting-mood-night-lantern",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Night lit by lanterns and a thin moon"
+  },
+  "aliases": {
+    "en": [
+      "night lantern lighting",
+      "lantern-lit night rig",
+      "practical light night scene",
+      "moonlight and warm practicals"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors",
+    "characters-motion-art"
+  ],
+  "summary": "Light a night scene from warm practicals at human height with only a thin cool moon as key, so the lanterns carry the composition.",
+  "objective": "Faces and signage near a lantern are readable while the space between lanterns falls away into tinted darkness rather than pure black.",
+  "tags": [
+    "lighting-profile",
+    "night",
+    "lantern",
+    "practicals",
+    "moonlight",
+    "warm-cool"
+  ],
+  "subject_terms": [
+    "practical light",
+    "point light",
+    "inverse square falloff",
+    "lantern",
+    "moonlight",
+    "colour temperature",
+    "emissive material",
+    "bloom threshold",
+    "light pooling",
+    "night sky gradient"
+  ],
+  "intent_signals": [
+    "make this scene feel like night",
+    "light a night market",
+    "my night scene is just black",
+    "the lanterns do not glow",
+    "add warm lamps to a dark street"
+  ],
+  "example_prompts": [
+    "Light a riverside night market so the lantern pools guide the eye along the street.",
+    "Set a moonlit courtyard where the only warm light comes from windows.",
+    "Make a night diorama readable without turning up an ambient light."
+  ],
+  "negative_signals": [
+    "daylight exterior",
+    "measured photometry of a real lamp"
+  ],
+  "not_for": [
+    "Daylight scenes, where a single directional key carries the composition.",
+    "Any scene that must state real luminaire output, which needs measured photometric data rather than an authored candela value."
+  ],
+  "content": {
+    "principles": [
+      "Night is a composition of pools, not a dimmed day. Place the practicals first as a rhythm of bright islands, then decide how dark the space between them is allowed to be.",
+      "The moon is a supporting cue, not a key. It exists to keep silhouettes and rooflines legible against the sky; if it lights faces the scene stops reading as night.",
+      "Warm-cool separation does the work that contrast cannot: warm practicals against a cool ambient give depth at very low overall brightness.",
+      "Falloff is the effect. A practical with physical decay produces a small bright core and a fast drop, which is what makes a lantern look like a lantern rather than a glowing sphere in a lit room.",
+      "The darkest area must still carry colour. A tinted dark blue holds shape information that pure black destroys."
+    ],
+    "implementation": [
+      "Place PointLights at the lantern positions, roughly 3-4 m apart along a street, at 60 cd with decay 2, and let their pools overlap by about a third rather than tiling evenly.",
+      "Give each lantern a matching emissive mesh at the same colour so the source is visible in frame; the light and the visible bulb are two separate objects and must agree.",
+      "Keep the moon DirectionalLight at 0.15 with castShadow false, so it tints roof planes and the ground without producing a second shadow set that competes with the lantern shadows.",
+      "Let at most two lanterns cast shadows; PointLight shadow maps are six-sided and expensive, so pick the ones nearest the hero and disable the rest.",
+      "Set bloom threshold just under the lantern's rendered value (0.9 here) so only the sources and their immediate surrounds bloom, and check that no diffuse wall enters the bloom.",
+      "Use fog colour equal to the sky horizon band so lanterns further down the street dim into the same hue instead of turning grey."
+    ],
+    "observable_checks": [
+      "Disabling every practical leaves a scene where silhouettes are still separable against the sky, confirming the moon and sky gradient carry the read.",
+      "A grayscale screenshot shows discrete bright pools with a clear falloff, not one broad even wash.",
+      "The darkest sampled pixel in frame is a tinted dark blue above zero, not pure black.",
+      "Doubling the distance from a lantern to a nearby wall drops that wall's brightness by about four times, confirming decay 2 was not flattened."
+    ]
+  },
+  "creative_affordances": [
+    "Lantern colour can be pushed to any festival palette, including green and magenta sources, as long as one warm family stays dominant.",
+    "The moon can be replaced by a second moon, an aurora or a distant city glow; the requirement is a weak cool ambient direction, not a real moon."
+  ],
+  "known_limits": [
+    "Every number in this profile was tuned for ACESFilmic tone mapping at exposure 1.15; under a different tone-mapping curve or exposure the intensities and fog density must be re-derived, not copied.",
+    "Practical count and spacing were tuned for a street-scale scene of roughly 20 m; an interior at 5 m needs fewer and weaker practicals.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "related_ids": [
+    "knowledge.three-light-units-and-exposure",
+    "knowledge.emissive-practical-light-balance",
+    "knowledge.shared-shadow-volume-fit",
+    "knowledge.theme-cyberpunk-city"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Night reads through falloff and warm-cool separation rather than overall darkness, so the practicals are given real candela values with decay 2 and the moon is held at 0.15 where it tints planes without lighting faces. Exposure sits above 1 because the scene's average luminance is low and the filmic shoulder still protects the lantern cores. Fog is dense at 0.05 and tinted to the sky so distance dissolves into hue rather than into grey, and bloom threshold 0.9 sits just under the lantern's rendered value so only the sources glow. Kelvin-to-hex conversions here are authored approximations, not colorimetric transforms (2700K~#ffb46b, 3200K~#ffc58f, 4500K~#ffe4c4, 5600K~#fff4e5, 6500K~#ffffff, open shade 8000K~#cfe0ff).",
+    "values": {
+      "feeling": [
+        "intimate",
+        "warm",
+        "hushed"
+      ],
+      "time_of_day": "two hours after sunset, no sun; thin moon at 22 deg elevation",
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#9fb4ff",
+          "intensity": 0.15,
+          "elevation_deg": 22,
+          "azimuth_deg": 40,
+          "castShadow": false,
+          "note": "moonlight only; too weak to be a key, present so rooflines and silhouettes separate from the sky"
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#16233f",
+          "ground": "#241a12",
+          "intensity": 0.12
+        },
+        "rim": {
+          "type": "none"
+        },
+        "practicals": {
+          "type": "PointLight",
+          "color": "#ffb46b",
+          "intensity": 60,
+          "decay": 2,
+          "distance": 0,
+          "spacing_m": [
+            3.0,
+            4.0
+          ],
+          "height_m": 2.4,
+          "castShadow": "two nearest the hero only",
+          "note": "60 cd at 2.4 m gives a readable pool of about 3 m diameter; space lanterns so pools overlap by roughly one third"
+        },
+        "ratio": "practical:ambient ~ 25:1 in the pool, ~ 2:1 between pools"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#070c18",
+        "horizon": "#16233f"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#0b1526",
+        "density": 0.05
+      },
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.15
+      },
+      "shadow": {
+        "mapSize": 1024,
+        "bias": -0.0004,
+        "normalBias": 0.02,
+        "camera_extent_m": 12
+      },
+      "environment": {
+        "type": "none",
+        "intensity": 0.0
+      },
+      "post": {
+        "bloom": {
+          "threshold": 0.9,
+          "strength": 0.5,
+          "radius": 0.8
+        },
+        "vignette": 0.45,
+        "grain": 0.05,
+        "dof": "off"
+      },
+      "never": [
+        "untinted white ambient light",
+        "a single PointLight used as the scene key",
+        "flat black background with no sky gradient",
+        "practicals brighter than the hero's lit side",
+        "bloom threshold low enough to make diffuse walls glow"
+      ],
+      "snippet": "const moon=new THREE.DirectionalLight(0x9fb4ff,0.15);\nmoon.position.setFromSphericalCoords(60,THREE.MathUtils.degToRad(90-22),THREE.MathUtils.degToRad(40));scene.add(moon);\nscene.add(new THREE.HemisphereLight(0x16233f,0x241a12,0.12));\nfor(const p of lanternPositions){\n  const l=new THREE.PointLight(0xffb46b,60,0,2);l.position.copy(p);l.position.y=2.4;\n  if(p.hero){l.castShadow=true;l.shadow.mapSize.set(1024,1024);l.shadow.normalBias=0.02;l.shadow.bias=-0.0004;}\n  scene.add(l);\n}\nscene.fog=new THREE.FogExp2(0x0b1526,0.05);\nrenderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;"
+    }
+  }
+}

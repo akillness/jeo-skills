@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "checks": [
+    "default totals",
+    "identity filter",
+    "combined identity/model filter",
+    "inclusive single-day filter",
+    "jobs metric",
+    "filtered CSV matches selection",
+    "out-of-range dates rejected",
+    "reset",
+    "mobile layout",
+    "no browser errors or external requests"
+  ],
+  "screenshots": [
+    "dashboard-overview.png",
+    "dashboard-filtered.png",
+    "dashboard-mobile.png"
+  ],
+  "data": "synthetic",
+  "renderer_commit": "8ed2b5423d978cd66d3eb2a69c004b11cd107259",
+  "pdf_pages_visually_inspected": 4
+}

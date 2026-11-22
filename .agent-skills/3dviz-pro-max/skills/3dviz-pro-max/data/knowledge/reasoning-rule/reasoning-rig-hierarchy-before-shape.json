@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-rig-hierarchy-before-shape",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Settle the joint hierarchy before the surface"
+  },
+  "aliases": {
+    "en": [
+      "rig before model",
+      "pivot placement",
+      "transform hierarchy"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "robotics-control",
+    "products-assemblies"
+  ],
+  "summary": "Decide joint frames, pivot positions and transform ownership before shaping the rig, using a hierarchy or an equivalent constraint model.",
+  "objective": "Make the intended articulation expressible through declared joint transforms and attachment offsets.",
+  "applies_when": [
+    "A character, creature, machine or lamp will bend, swing, open or walk.",
+    "Parts must move together, such as a hand carrying a tool or a door on a moving vehicle.",
+    "An imported asset moves incorrectly and the cause may be its pivots or parenting."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "rig",
+    "hierarchy",
+    "pivot",
+    "joint",
+    "parent transform",
+    "articulation"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "rigging",
+    "transforms"
+  ],
+  "intent_signals": [
+    "the arm rotates around the wrong point",
+    "make the creature walk",
+    "attach the tool to the hand"
+  ],
+  "example_prompts": [
+    "Rig the lamp so the head tilts around the real hinge.",
+    "Make the creature limbs bend from the shoulder and hip, not the mesh centre."
+  ],
+  "negative_signals": [
+    "Static props that never articulate.",
+    "Deformation driven by simulation such as cloth or soft bodies, where the state model differs."
+  ],
+  "not_for": [
+    "Static props that never articulate.",
+    "Deformation driven by simulation such as cloth or soft bodies, where the state model differs."
+  ],
+  "content": {
+    "principles": [
+      "A child transform is expressed in its parent frame: in a scene graph the world matrix of an object is its local matrix composed with its parent chain, so a pivot in the wrong place is multiplied into every descendant pose.",
+      "In a hierarchy-only rig, parenting the forearm directly to the torso without an elbow transform removes that articulation. A world-space rig or constraint system can encode the same elbow through explicit transform composition; check the joint relationship rather than requiring one scene-graph layout.",
+      "Pivot placement is a physical decision. A hinge lives on the hinge axis, a shoulder near the joint centre, a wheel on its axle; placing them at the mesh bounding-box centre is a default, not a choice.",
+      "Attachment is a transform invariant, not necessarily a parenting operation: what must hold is that the held object's world pose stays a fixed offset in the hand frame, with a single owner writing it. Scene-graph reparenting is the simplest implementation; a constraint or an explicit per-frame composition from the hand frame satisfies the same invariant, and a world-space rig can encode an elbow without parenting the forearm in the graph."
+    ],
+    "implementation": [
+      "Sketch the kinematic chain before modelling: which part is the root, what hangs from what, and which axis each joint turns about.",
+      "Place each pivot on its physical axis, then verify by rotating that joint alone through its full range in the rest pose.",
+      "For a scene-graph implementation, model geometry as children of joints; for a constraint-based or world-space rig, derive geometry transforms from the same declared joint frames. Either keeps shape replacement separate from articulation.",
+      "For imported assets, inspect the hierarchy and pivots before animating; re-parent or insert correction nodes deliberately rather than compensating in the animation curves.",
+      "When attaching and detaching, preserve the world transform through the handover and declare the offset that defines the grip. The library operation that reparents while maintaining the world transform is documented not to support scene graphs with non-uniformly scaled nodes, so with non-uniform scale prefer an explicit constraint or a recomputed offset."
+    ],
+    "observable_checks": [
+      "Rotate each joint through its intended range and compare the resulting geometry transforms with the declared joint and attachment model; investigate any unexpected swinging, stretching or detachment.",
+      "Compare the rest pose with an extreme pose; a rig that only looks correct at rest usually has its pivots at mesh centres.",
+      "Move the root: everything intended to belong to the body should follow, and nothing else should.",
+      "Attach and detach a held object at several poses and confirm the ownership handover preserves the intended world pose, whether implemented by reparenting or constraints."
+    ]
+  },
+  "related_ids": [
+    "recipe.lantern-keeper-puppet",
+    "recipe.folding-desk-lamp",
+    "knowledge.articulated-limb",
+    "knowledge.three-scene-adapter"
+  ],
+  "creative_affordances": [
+    "Non-anatomical rigs, extra joints for squash and stretch, and expressive secondary chains are all fine once the primary chain is correct.",
+    "A stylised creature may deviate from real anatomy; the rule only asks that the deviation be built into the hierarchy on purpose."
+  ],
+  "known_limits": [
+    "Authored rigging guidance supported by the documented transform model of one renderer; no rig has been built or rendered for this record.",
+    "Skinning weights, deformation quality and inverse-kinematic solving are separate concerns."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-world-transform-composition",
+      "statement": "In the Three.js scene graph an object has at most one parent, its matrix is its local-space transform, its matrixWorld is the world-space transform recomputed for the object and its descendants by updateMatrixWorld, and the attach method adds a child while maintaining its world transform but is documented not to support scene graphs having non-uniformly scaled nodes.",
+      "scope": "Documented library behaviour for hierarchical transforms and reparenting. It does not describe skinning, animation blending, constraint systems or physics-driven transforms.",
+      "source_refs": [
+        {
+          "source_id": "source.three-object3d",
+          "locator": "matrix, matrixWorld, parent, children, updateMatrixWorld, add and attach"
+        }
+      ]
+    }
+  ]
+}

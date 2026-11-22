@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-offline-frame-render",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "output-profile",
+  "title": {
+    "en": "Offline frame render as a declared deliverable"
+  },
+  "aliases": {
+    "en": [
+      "offline render output",
+      "batch frame rendering",
+      "render settings contract"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors",
+    "characters-motion-art",
+    "products-assemblies"
+  ],
+  "summary": "Describe an offline render as a contract: declared scene units, a fixed frame range, a named sampling budget and a colour pipeline that is chosen rather than inherited.",
+  "objective": "The render can be repeated from the recorded settings and produce the same frames, with units and colour pipeline stated rather than assumed.",
+  "tags": [
+    "output-profile",
+    "offline-render",
+    "frame-range",
+    "units",
+    "reproducibility"
+  ],
+  "subject_terms": [
+    "offline rendering",
+    "scene units",
+    "unit scale",
+    "frame range",
+    "sampling budget",
+    "denoising",
+    "output path",
+    "still versus animation output",
+    "render settings"
+  ],
+  "intent_signals": [
+    "render a sequence of frames",
+    "the render is noisy",
+    "the scale looks wrong in the render",
+    "my still render was not saved",
+    "reproduce this render later"
+  ],
+  "example_prompts": [
+    "Produce a short turntable of a model with recorded settings.",
+    "Render an architectural view at a stated scale.",
+    "Set up a frame sequence that another person can re-render identically."
+  ],
+  "negative_signals": [
+    "interactive exploration required",
+    "real-time frame budget"
+  ],
+  "not_for": [
+    "Artifacts whose value is interaction, which cannot be delivered as frames.",
+    "Any workflow requiring a real-time frame budget."
+  ],
+  "content": {
+    "principles": [
+      "An offline render is a described process, not a button. What is delivered is the pair of a scene state and the settings that produced the frames, so that the frames can be produced again.",
+      "Displayed units and simulated units are not automatically the same quantity. A scene can show metres in its interface while its internal behaviour, including any physics, uses a different scale, and mixing the two produces objects that look right and behave wrong.",
+      "Sampling is a budget with a visible signature. Residual noise, fireflies and blotchy denoised areas are consistent with an insufficient budget and are the first thing to check, though they can also come from difficult light paths, extreme material or light values, or the denoiser itself. Naming the budget makes the artefact investigable rather than mysterious.",
+      "Denoising changes the image after the light transport. It belongs in the record as a separate declared step, because a denoised frame and a converged frame are different evidence.",
+      "The colour pipeline is part of the deliverable. Two renders of the same scene under different view transforms are different outputs, and neither is more correct without a stated intent.",
+      "Still frames and animations follow different output rules in most applications, and assuming that what happens for one also happens for the other is a common way to lose work."
+    ],
+    "implementation": [
+      "Fix the scene scale early and state what one unit means. If any simulation is involved, verify that the simulation uses the same interpretation rather than the displayed one.",
+      "Record the frame range, the resolution and any resolution percentage used for test renders, and keep test and final renders distinguishable by name.",
+      "Record the sampling budget and any adaptive threshold, and state whether denoising was applied and at what stage.",
+      "Declare the working space and the view transform with the render, and keep them fixed across a sequence so no frame is graded differently from its neighbours.",
+      "Write intermediate frames in a high-precision linear format when the result will be composited or graded, and reserve display-encoded formats for final delivery.",
+      "Check the application's saving behaviour before a long run: in some applications animation renders are written automatically while still renders must be saved explicitly, which is a silent way to lose a finished frame.",
+      "Keep a written render record listing scene revision, settings, machine and date, so a later re-render can be compared against it honestly."
+    ],
+    "observable_checks": [
+      "A known dimension checked in model coordinates, or measured in a declared calibrated orthographic view, matches the source dimension under the declared unit interpretation. A dimension measured off a perspective frame does not establish this without camera and depth calibration.",
+      "Re-rendering a single frame from the recorded settings reproduces the same image, or the record states the source of the difference.",
+      "Noise in the final frames is at or below the level the sampling budget was chosen for, and the record says whether denoising was used.",
+      "Every frame in a sequence shares the same view transform and exposure; no frame is visibly graded differently.",
+      "All expected frames exist in the output location with the expected numbering, and none were silently skipped."
+    ]
+  },
+  "creative_affordances": [
+    "Look development, grading and stylisation remain fully open; this profile constrains what must be recorded, not what the image should look like.",
+    "Deliberately low sample counts and visible grain are legitimate aesthetic choices when they are declared as such."
+  ],
+  "known_limits": [
+    "No renderer is required by this profile, and no render was executed for this record; installing or running any offline application is outside its scope.",
+    "The unit, output and format behaviours cited here are documented for one application on its latest documentation channel and may differ in other applications or versions.",
+    "Reproducibility across different machines or software versions is not asserted; only reproducibility of the recorded settings is.",
+    "Authored reusable guidance; no runtime artifact has been executed or observed for this record."
+  ],
+  "related_ids": [
+    "recipe.historical-diorama",
+    "recipe.courtyard-house-cutaway",
+    "recipe.ribbon-motion-sculpture",
+    "knowledge.shared-display-color-management",
+    "knowledge.shared-reproducible-animation-export"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-unit-scale-display-only",
+      "statement": "One offline application's manual documents a scene unit system and a unit scale factor used when converting between internal units and values displayed in the interface, and states explicitly that this scale only influences the values displayed in the user interface and not how things behave internally, giving physics simulations as an example of behaviour that does not take the unit scale into account.",
+      "scope": "Documented unit semantics of the Blender manual on the latest channel as of the access date. It establishes that a displayed unit is not automatically a simulation unit in that application; it does not describe other applications.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-blender-scene-units",
+          "locator": "Units panel: Unit System; Unit Scale note on internal behavior and physics"
+        }
+      ]
+    },
+    {
+      "id": "claim.shared-still-versus-animation-saving",
+      "statement": "One offline application's manual documents that by default animation renders are saved automatically to the configured output path while still renders are not saved automatically and must be saved manually or written by an output node, and that automatic saving of renders can be toggled in the output panel.",
+      "scope": "Documented output behavior of the Blender manual on the latest channel as of the access date. It identifies a workflow hazard in that application; it does not describe other applications.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-blender-output",
+          "locator": "Output panel: automatic saving of still versus animation renders"
+        }
+      ]
+    }
+  ]
+}

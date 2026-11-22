@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game</title>
+<link rel="icon" href="data:,">
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #000; }
+  canvas { display: block; width: 100vw; height: 100vh; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<script type="module">
+// Skeleton for a game rebuilt from a gameplay video. Keep its contract:
+//  - ?autostart skips the title, ?seed=N fixes the level, so a scenario can play it the same way twice;
+//  - window.__game exposes read-only state (player position, speed, phase) for the playtest scenarios;
+//  - the look lives in one place: PALETTE, fog, lights and the post stack, all matched to the video's frames.
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+const Q = new URLSearchParams(location.search);
+let seed = +(Q.get('seed') || 1);
+const rand = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
+
+// sampled from the video with study_video.py: sky, horizon haze, ground, hero accent
+const PALETTE = { sky: 0xd8c4b5, haze: 0xc9b4a9, ground: 0x4f6b3a, accent: 0xc8402a };
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(PALETTE.sky);
+scene.fog = new THREE.Fog(PALETTE.haze, 40, 260);   // aerial perspective: far things melt into the haze
+const camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 2000);
+
+const sun = new THREE.DirectionalLight(0xfff1dd, 2.4);
+sun.position.set(30, 60, 20); sun.castShadow = true;
+scene.add(sun, new THREE.HemisphereLight(PALETTE.sky, PALETTE.ground, 0.9));
+
+// post stack, part of the spec from day one: bloom, then one grade + vignette + grain pass
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+composer.addPass(new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.35, 0.6, 0.85));
+const grade = new ShaderPass({
+  uniforms: { tDiffuse: { value: null }, uTime: { value: 0 }, uLift: { value: new THREE.Vector3(0.02, 0.01, 0.0) },
+    uGain: { value: new THREE.Vector3(1.04, 1.0, 0.95) }, uVignette: { value: 0.35 }, uGrain: { value: 0.035 } },
+  vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.); }',
+  fragmentShader: `uniform sampler2D tDiffuse; uniform float uTime, uVignette, uGrain; uniform vec3 uLift, uGain; varying vec2 vUv;
+    float h(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+    void main(){ vec3 c = texture2D(tDiffuse, vUv).rgb; c = c * uGain + uLift;
+      c *= 1. - uVignette * smoothstep(.35, .95, length(vUv - .5) * 1.25);
+      c += (h(vUv * 999. + uTime) - .5) * uGrain; gl_FragColor = vec4(c, 1.); }`,
+});
+composer.addPass(grade);
+composer.addPass(new OutputPass());
+
+// world: replace with the fal assets (GLB from image-to-3D, textures from the image model)
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(600, 600), new THREE.MeshStandardMaterial({ color: PALETTE.ground, roughness: 1 }));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+const hero = new THREE.Group();
+const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.4, 1, 6, 12), new THREE.MeshStandardMaterial({ color: PALETTE.accent }));
+body.position.y = 0.9; body.castShadow = true; hero.add(body); scene.add(hero);
+for (let i = 0; i < 60; i++) {
+  const r = new THREE.Mesh(new THREE.DodecahedronGeometry(1 + rand() * 2), new THREE.MeshStandardMaterial({ color: 0x8a8070, flatShading: true }));
+  r.position.set((rand() - .5) * 300, 0.5, -rand() * 300); r.castShadow = true; scene.add(r);
+}
+const loader = new GLTFLoader();
+// loader.load('assets/hero.glb', g => { hero.remove(body); hero.add(g.scene); });
+
+// input: keyboard + gamepad, read once per frame
+const keys = new Set();
+addEventListener('keydown', e => { keys.add(e.code); if (e.code === 'Space') e.preventDefault(); });
+addEventListener('keyup', e => keys.delete(e.code));
+function input() {
+  const pad = navigator.getGamepads?.()[0];
+  const ax = pad ? pad.axes[0] : 0, ay = pad ? pad.axes[1] : 0;
+  return {
+    x: (keys.has('ArrowRight') || keys.has('KeyD') ? 1 : 0) - (keys.has('ArrowLeft') || keys.has('KeyA') ? 1 : 0) + (Math.abs(ax) > .2 ? ax : 0),
+    z: (keys.has('ArrowDown') || keys.has('KeyS') ? 1 : 0) - (keys.has('ArrowUp') || keys.has('KeyW') ? 1 : 0) + (Math.abs(ay) > .2 ? ay : 0),
+    jump: keys.has('Space') || !!pad?.buttons[0]?.pressed,
+    start: keys.has('Enter') || !!pad?.buttons[9]?.pressed,
+  };
+}
+
+const S = { phase: Q.has('autostart') ? 'play' : 'title', pos: hero.position, vel: new THREE.Vector3(), grounded: true, t: 0 };
+window.__game = { get state() { return { phase: S.phase, x: S.pos.x, y: S.pos.y, z: S.pos.z, speed: S.vel.length(), grounded: S.grounded, t: S.t }; } };
+
+const clock = new THREE.Clock();
+function frame() {
+  const dt = Math.min(clock.getDelta(), 1 / 20);
+  const i = input();
+  if (S.phase === 'title' && (i.start || i.jump)) S.phase = 'play';
+  if (S.phase === 'play') {
+    S.t += dt;
+    S.vel.x = THREE.MathUtils.damp(S.vel.x, i.x * 8, 10, dt);
+    S.vel.z = THREE.MathUtils.damp(S.vel.z, i.z * 8, 10, dt);
+    if (i.jump && S.grounded) { S.vel.y = 9; S.grounded = false; }
+    S.vel.y -= 24 * dt;
+    S.pos.addScaledVector(S.vel, dt);
+    if (S.pos.y <= 0) { S.pos.y = 0; S.vel.y = 0; S.grounded = true; }
+  }
+  // follow camera, same framing as the video: behind, slightly above, looking ahead
+  const want = new THREE.Vector3(S.pos.x, S.pos.y + 4, S.pos.z + 9);
+  camera.position.lerp(want, 1 - Math.exp(-4 * dt));
+  camera.lookAt(S.pos.x, S.pos.y + 1.4, S.pos.z - 6);
+  grade.uniforms.uTime.value += dt;
+  composer.render();
+  requestAnimationFrame(frame);
+}
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight); composer.setSize(innerWidth, innerHeight);
+});
+frame();
+</script>
+</body>
+</html>

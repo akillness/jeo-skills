@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.theme-ceremonial-stage",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "theme-profile",
+  "title": {
+    "en": "Ceremonial storytelling stage"
+  },
+  "aliases": {
+    "en": [
+      "ceremonial stage",
+      "fictional festival",
+      "ritual-inspired performance set"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "characters-motion-art"
+  ],
+  "summary": "Invent a staged gathering around a focal object, procession route and audience space without assigning it to an unresearched real tradition.",
+  "objective": "The focal event remains visible from the intended view and participants have space along the route; cultural authenticity is not claimed for invented motifs.",
+  "tags": [
+    "theme-profile",
+    "fictional-setting",
+    "ceremonial-stage"
+  ],
+  "subject_terms": [
+    "ceremonial stage",
+    "fictional festival",
+    "ritual-inspired performance set"
+  ],
+  "intent_signals": [
+    "Set the scene in a ceremonial storytelling stage",
+    "Use ceremonial stage as the narrative setting"
+  ],
+  "example_prompts": [
+    "Design a fictional lantern festival stage with a clear procession path and an independently pausable performance."
+  ],
+  "content": {
+    "principles": [
+      "Invent a staged gathering around a focal object, procession route and audience space without assigning it to an unresearched real tradition.",
+      "Theme supplies setting and motifs; choose geometry style, rendering approach and factual model independently."
+    ],
+    "implementation": [
+      "Use repeated arches, banners or platforms to establish approach and focus; vary the hero object from the supporting motif.",
+      "Choose a coherent textile-like and sculpted surface palette with focal pools of light rather than uniform glowing decoration.",
+      "Offer audience and overhead views; choreograph an authored procession with distinct arrivals, holds and departures."
+    ],
+    "observable_checks": [
+      "The focal event remains visible from the intended view and participants have space along the route; cultural authenticity is not claimed for invented motifs.",
+      "Inspect one focal object close up and the complete route or spatial relationship from an overview."
+    ]
+  },
+  "known_limits": [
+    "Authored fictional setting guidance; no rendered artifact or runtime improvement has been observed for this record.",
+    "This proposal does not establish historical, cultural, scientific or engineering facts."
+  ],
+  "creative_affordances": [
+    "Combine with papercraft, stylized or stop-motion-inspired staging; a named real ceremony requires its own research and context.",
+    "Replace motifs or combine settings to suit the user brief; maintain a readable organizing idea rather than treating these suggestions as a fixed asset list."
+  ],
+  "related_ids": [
+    "knowledge.framed-shelter",
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "id": "recipe.arm-workspace-singularity",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Reachable workspace and singular configurations"
+  },
+  "aliases": {
+    "en": [
+      "workspace",
+      "singularity",
+      "Jacobian rank"
+    ]
+  },
+  "direction_ids": [
+    "robotics-control"
+  ],
+  "summary": "Map where an arm can reach and mark the configurations where it loses a direction of motion.",
+  "objective": "Build the authored planar 2R arm with its exact reachable annulus, analytical singular configurations and a separately labeled near-singular threshold.",
+  "tags": [
+    "workspace",
+    "singularity",
+    "manipulator"
+  ],
+  "subject_terms": [
+    "workspace",
+    "singularity",
+    "Jacobian",
+    "rank",
+    "manipulability",
+    "joint limit",
+    "end effector",
+    "reachable volume"
+  ],
+  "intent_signals": [
+    "Show the reachable workspace of a robot arm.",
+    "Explain what happens to an arm at a singularity."
+  ],
+  "example_prompts": [
+    "Build an arm with a reachable workspace volume and a singularity indicator.",
+    "Show the direction the end effector cannot move when the arm is fully stretched."
+  ],
+  "negative_signals": [
+    "Not a dynamics or torque model: this recipe is kinematic only.",
+    "Not a certified safety envelope for any real robot."
+  ],
+  "not_for": [
+    "Not a dynamics or torque model: this recipe is kinematic only.",
+    "Not a certified safety envelope for any real robot."
+  ],
+  "entities": [
+    {
+      "name": "Arm links",
+      "guidance": "Two rigid links of lengths 2 m and 1 m with parallel +z revolute axes and labeled full-turn angle ranges; self-contact is excluded from this kinematic model."
+    },
+    {
+      "name": "Workspace shell",
+      "guidance": "Draw the exact reachable planar annulus of inner radius 1 m and outer radius 3 m, with a bounded polygon tessellation labeled display resolution."
+    },
+    {
+      "name": "Singularity indicator",
+      "guidance": "At exact singular fixtures show the lost position direction; near-singular configurations show the weak singular-vector direction and a threshold label, not an exactly forbidden direction."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored planar 2R arm with L1=2 m, L2=1 m, base at (0,0), parallel +z joint axes and independent full angular range [-pi,pi] with equivalent endpoints. Position task (x,y) only. FK: x=L1 cos(q1)+L2 cos(q1+q2), y=L1 sin(q1)+L2 sin(q1+q2). Velocity Jacobian rows are [-L1 sin(q1)-L2 sin(q1+q2), -L2 sin(q1+q2)] and [L1 cos(q1)+L2 cos(q1+q2), L2 cos(q1+q2)]. Exact reachable set is 1<=sqrt(x^2+y^2)<=3 m. Analytical IK: c2=(x^2+y^2-L1^2-L2^2)/(2 L1 L2), q2=+/-acos(c2), q1=atan2(y,x)-atan2(L2 sin(q2),L1+L2 cos(q2)); wrap angles and select the branch with smallest wrapped angular distance from the prior state, with positive q2 on a tie. Reject outside the annulus except for 1e-9 m boundary roundoff, which snaps to the nearest boundary before IK; clamp c2 only for corresponding roundoff. det(J)=L1 L2 sin(q2); exact straight/folded fixtures q2=0 or pi have rank one, otherwise rank two. Report sigma_min in m/rad and near-singular when sigma_min/(L1+L2)<0.01, an authored threshold distinct from exact rank loss. Nonfinite joint or target coordinates are rejected before geometric evaluation.",
+    "authority": "Joint angles determine FK and Jacobian. A requested target is independent input to the analytical annulus test and IK; acceptance updates joint angles once. The workspace is an exact planar annulus, not a sampled proof or a pose workspace.",
+    "actions": [
+      "Drive joints individually or drag the end effector within the workspace.",
+      "Move to a stretched or aligned configuration and read the singularity indicator.",
+      "Toggle the reachable annulus and the joint-axis/angle labels.",
+      "Reset to the home configuration."
+    ]
+  },
+  "invariants": [
+    "Targets outside the supported annulus are refused, with the stated boundary-roundoff snap only; accepted targets reproduce their position through the selected analytical IK branch. No orientation target is promised.",
+    "At an exact singularity the arm loses at least one instantaneous task-space direction relative to its maximum achievable rank; an arm with fewer joints than task dimensions already lacks directions at regular configurations, so the scene reports the additional loss rather than an absolute count.",
+    "Rank is discrete, so the continuous indicator is the smallest singular value or a manipulability measure, which is displayed with its value and threshold. Its path need not be monotonic, and crossing the threshold is labelled near-singular rather than exact rank loss."
+  ],
+  "motion_guidance": [
+    "Approach a singularity slowly and show the indicator degrading, since the interesting behaviour is the approach.",
+    "Never animate the end effector through a direction it cannot achieve; a smooth-looking cheat destroys the lesson."
+  ],
+  "known_limits": [
+    "This authored 2R position-task annulus assumes full joint rotation, fixed link lengths and no obstacles or self-collision; narrower limits or another arm require a new membership model.",
+    "Kinematic singularity is not the same as a dynamic or control instability, which this recipe does not model.",
+    "A position workspace shell says nothing about achievable orientation at a point; if orientation is part of the task, the task dimension and the Jacobian convention must state so.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-singularity-rank",
+      "statement": "A manipulator is at a kinematic singularity when the rank of its Jacobian falls below the maximum rank it can achieve, and at such a configuration the robot loses the ability to move in one or more directions.",
+      "scope": "Kinematic definition as cited; numerical rank determination requires a stated threshold.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-modern-robotics-singularities",
+          "locator": "5.3 Singularities, rank definition and lost motion directions"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Arm links",
+      "structure": "Two links with joint housings, +z axis arrows, length marks and full-turn angle scales; no hard stops are drawn for the full-rotation model.",
+      "material": "Machined body material with a distinct joint housing treatment so axes are locatable from any angle.",
+      "articulation": "Each joint rotates about its declared axis within its limits; limits are enforced before any pose is displayed."
+    },
+    {
+      "family": "Workspace shell",
+      "structure": "A translucent planar annulus with explicit inner and outer circles and an exact-set/display-tessellation caption.",
+      "material": "Low-opacity planar fill, opaque circular boundary strokes and a caption separating exact annulus radii from polygon display resolution.",
+      "articulation": "The fixed-length annulus stays unchanged while joint angles move; toggles affect only its visibility."
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Kinematic pose evaluation and workspace presentation; no torques, inertia or contact.",
+    "state": [
+      "joint angles",
+      "end effector pose",
+      "manipulability value"
+    ],
+    "checks": [
+      "Poses outside the workspace are refused with a stated reason.",
+      "At q2=0 or pi the analytical Jacobian loses one position direction. At small nonzero q2 the near-singular threshold may trigger while exact rank remains two; show the distinction."
+    ]
+  },
+  "related_ids": [
+    "recipe.robot-arm-forward-frames",
+    "recipe.inverse-kinematics-target",
+    "knowledge.articulated-limb"
+  ]
+}

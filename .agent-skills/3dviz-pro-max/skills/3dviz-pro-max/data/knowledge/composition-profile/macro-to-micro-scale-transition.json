@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.macro-to-micro-scale-transition",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "composition-profile",
+  "title": {
+    "en": "Macro-to-micro scale transition"
+  },
+  "aliases": {
+    "en": [
+      "overview to detail journey",
+      "nested scale camera transition",
+      "context-preserving zoom"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "products-assemblies",
+    "anatomy-structures"
+  ],
+  "summary": "Connect overview, intermediate landmark and close inspection through explicit scale cues and interruptible camera states, without pretending that a display-scale change preserves physical size relationships.",
+  "objective": "A viewer can travel from a large setting to a small feature, understand each intermediate relationship and return without camera collision, model rescaling or hidden scale claims.",
+  "applies_when": [
+    "A scene spans scales that cannot remain useful in one camera framing.",
+    "A close detail would lose its place in a city, body, machine or landscape."
+  ],
+  "subject_terms": [
+    "macro to micro",
+    "nested scale transition",
+    "overview landmark detail",
+    "camera scale cue",
+    "context preserving zoom"
+  ],
+  "tags": [
+    "composition-profile",
+    "scale-transition",
+    "camera",
+    "context"
+  ],
+  "intent_signals": [
+    "move from city block to machine detail without losing context",
+    "zoom from whole body to tissue landmark",
+    "overview intermediate close-up camera journey"
+  ],
+  "example_prompts": [
+    "Travel from a factory overview through one machine to a bearing detail with interruptible stops.",
+    "Move from a watershed to a sensor site while disclosing any display exaggeration."
+  ],
+  "negative_signals": [
+    "Uniformly scaling the world during focus and presenting distances as unchanged.",
+    "Teleporting directly to a detail with no identity or orientation cue."
+  ],
+  "not_for": [
+    "True-scale scientific comparison across panels.",
+    "One fixed hero close-up with a simple return action."
+  ],
+  "content": {
+    "principles": [
+      "Use at least one intermediate identity cue when the endpoints differ enough that direct motion loses orientation; the cue may be a landmark, locator volume, breadcrumb or retained inset.",
+      "Camera motion and display scaling are presentation state. Preserve true source/model coordinates and disclose any nonuniform display transform used to bridge scales.",
+      "Design each camera state for its viewport and purpose. The transition may cut, dissolve or move; it remains interruptible and has a deterministic return path."
+    ],
+    "implementation": [
+      "In Blender, author named overview, intermediate and detail cameras/targets plus true-scale reference geometry. Exported cameras seed projections and transforms, not transition timing, safe areas or navigation state.",
+      "In Three.js, fit selected bounds using the installed PerspectiveCamera view-size/bounds behavior, update aspect/projection on resize, and pass each transition through the related interruptible-focus policy. Keep model transforms separate from camera/display transforms.",
+      "Retain a scale bar, known-size object, locator inset or explicit exaggeration badge at each state where size could be inferred. Store a breadcrumb of stable IDs and prior camera states."
+    ],
+    "observable_checks": [
+      "Interrupt at the midpoint, choose another target and return: the last request wins, no stale transition snaps back, and source object transforms remain unchanged.",
+      "At every stop the selected feature is identifiable in its parent context. During continuous physically framed navigation, the camera does not unintentionally cross solid geometry; an authored cut, portal or scale transition may cross when clearly presented as a display-only transition.",
+      "Compare a displayed distance/size with source values: any separate scale factors are visible, while a true-scale state uses one declared factor."
+    ]
+  },
+  "related_ids": [
+    "knowledge.interruptible-focus",
+    "knowledge.hero-and-context",
+    "knowledge.reasoning-dual-scale-disclosure",
+    "knowledge.reasoning-world-scale-and-traversal"
+  ],
+  "creative_affordances": [
+    "Use match cuts, portal frames, nested miniatures or continuous dolly moves to express the scale journey.",
+    "An intentionally disorienting reveal is valid when recovery and scale truth remain available afterward."
+  ],
+  "known_limits": [
+    "PerspectiveCamera framing utilities do not supply collision avoidance, transition timing or truthful scale disclosure.",
+    "No camera transition, resize, collision or scale comparison was run."
+  ],
+  "claims": [
+    {
+      "id": "claim.experience-perspective-framing-controls",
+      "statement": "Three.js PerspectiveCamera defines vertical field of view, aspect and clipping planes, can compute view bounds/size at a distance, supports sub-frustum view offsets, and requires updateProjectionMatrix after camera-property changes; glTF can transport a camera projection on a placed node and Blender 4.5 can export cameras.",
+      "scope": "Camera transport and current runtime framing primitives only; transition design, bounds fitting, collision and scale disclosure are application responsibilities.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-three-perspective-camera",
+          "locator": "fov, aspect, near, far; getViewBounds/getViewSize; setViewOffset; updateProjectionMatrix"
+        },
+        {
+          "source_id": "source.physics-khronos-gltf-animation",
+          "locator": "5.12 Camera; node placement and camera projection"
+        },
+        {
+          "source_id": "source.modeling-blender-gltf-export",
+          "locator": "Included Data: Cameras; Include > Cameras"
+        }
+      ]
+    }
+  ]
+}

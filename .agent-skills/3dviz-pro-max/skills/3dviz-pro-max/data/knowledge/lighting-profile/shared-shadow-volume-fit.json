@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-shadow-volume-fit",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Fitting the shadow volume to the scene that needs it"
+  },
+  "aliases": {
+    "en": [
+      "shadow camera fit",
+      "shadow map budget",
+      "acne and peter-panning trade-off"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "architecture-interiors",
+    "products-assemblies"
+  ],
+  "summary": "Size the shadow-casting volume to the region that actually needs shadows, then spend resolution and bias inside that budget.",
+  "objective": "Contact shadows stay attached to their objects, shadows do not disappear at the edge of the scene, and no striping appears on lit surfaces.",
+  "tags": [
+    "lighting-profile",
+    "shadow-map",
+    "shadow-camera",
+    "bias",
+    "resolution-budget"
+  ],
+  "subject_terms": [
+    "shadow map",
+    "shadow camera",
+    "orthographic frustum",
+    "shadow acne",
+    "peter-panning",
+    "depth bias",
+    "normal bias",
+    "map resolution",
+    "shadow blur"
+  ],
+  "intent_signals": [
+    "shadows are cut off at the edges",
+    "objects float above their shadows",
+    "stripes on the lit surface",
+    "shadow edges are blocky",
+    "shadows disappear far from the centre"
+  ],
+  "example_prompts": [
+    "Fix shadows that vanish at the edge of a large terrain.",
+    "Stop the character from floating above its own shadow.",
+    "Get clean contact shadows in a close product view."
+  ],
+  "negative_signals": [
+    "unlit data view",
+    "flat two-dimensional diagram"
+  ],
+  "not_for": [
+    "Views with no shading, where shadows carry no information.",
+    "Shadow-accuracy claims for a physical light source, which need a measured or computed model."
+  ],
+  "content": {
+    "principles": [
+      "A shadow map is a fixed budget of depth samples spread over a chosen volume. Every metre that volume covers beyond what the scene needs is resolution taken away from what the viewer actually looks at.",
+      "For a distant parallel source the shadow volume is a box, and the useful question is which part of the scene must be inside that box, not how large the scene is.",
+      "Bias controls trade one artefact for another: too little and lit surfaces stripe themselves, too much and objects separate from their own contact shadows. A given scene may well have a window where both stay within an acceptable tolerance, so the record should state bounded tolerances for residual striping, contact separation and shape distortion, and report the result as inconclusive if no tested setting meets them.",
+      "Offsetting the sample position along the surface normal attacks the same problem from a different direction and is usually the better lever on large scenes lit at a shallow angle, at the cost of distorting shadow shape.",
+      "Softening a shadow edge is not the same as increasing its accuracy. Blur hides stair-stepping but also hides contact, and a wide blur on a low-resolution map produces visible banding.",
+      "Static scenes do not need continuously recomputed shadows. Freezing a shadow that never changes is a legitimate budget decision as long as the freeze is released whenever the scene changes."
+    ],
+    "implementation": [
+      "Decide the shadow-relevant region explicitly: often the ground under the subject plus the objects that cast onto it, not the entire scene extent.",
+      "Fit the shadow volume tightly around that region, including its near and far extent along the light direction, so that no depth range is wasted on empty space.",
+      "Set the shadow map resolution from the smallest shadow feature that must read, and note that resolution is often constrained to power-of-two dimensions.",
+      "Tune bias last and in one direction at a time. Depth bias is a signed offset whose helpful direction depends on the engine and its depth convention, so move it in whichever direction reduces self-shadowing on the installed renderer, only as far as needed, then check that contact shadows are still attached; if a shallow-angle case still stripes, use a normal-direction offset instead and check for shape distortion.",
+      "Keep shadow softening proportionate to resolution, since a large blur radius on a small map produces banding rather than softness.",
+      "For a scene whose lighting and geometry are fixed, disable automatic shadow updates and request an update explicitly whenever anything relevant changes.",
+      "Check the shadow behaviour at both the closest and the furthest camera positions the scene allows, because a volume fitted for one is usually wrong for the other.",
+      "Fit the volume through the shadow's own camera and then look at it: `light.shadow.camera` is the documented camera property, orthographic for a directional light, so `left`, `right`, `top`, `bottom`, `near` and `far` define the shadow-relevant region. Add `new THREE.CameraHelper( light.shadow.camera )` to the scene and call `helper.update()` after any change, because a wasted depth range is far easier to see than to compute.",
+      "Move the two bias controls one at a time from their documented defaults of `0`: `light.shadow.bias` around -0.0005 to -0.0001 removes self-shadowing without detaching contact, and `light.shadow.normalBias` around 0.02-0.05 handles a shallow-angle surface that still stripes. `light.shadow.mapSize` is a `Vector2` documented as defaulting to `(512, 512)`; 1024-4096 is the usual working range and the value is often constrained to powers of two.",
+      "For a static rig set `light.shadow.autoUpdate = false` (documented default `true`) and request a single refresh with `light.shadow.needsUpdate = true` whenever the lighting or geometry actually changes. Keep `light.shadow.radius` (default `1`) and `light.shadow.blurSamples` (default `8`) proportionate to `mapSize`: a large radius over a small map bands rather than softens."
+    ],
+    "observable_checks": [
+      "Objects that touch the ground have shadows that meet them at the contact point, with no visible gap.",
+      "No lit surface shows regular stripes or moire patterns as the light or camera moves.",
+      "Shadows remain present across the whole region the record declares shadow-relevant, and their disappearance beyond it is intentional and stated.",
+      "The softest shadow in the scene shows smooth falloff rather than concentric bands.",
+      "With automatic updates disabled, moving an object and requesting an update changes the shadow; without the request, the shadow correctly stays frozen."
+    ]
+  },
+  "creative_affordances": [
+    "Hard graphic shadows, exaggerated long shadows and stylised shadow shapes are all legitimate; the budget discipline is about control, not about realism.",
+    "A scene may deliberately restrict shadows to a hero region and leave the surroundings unshadowed if the record says so."
+  ],
+  "known_limits": [
+    "This profile addresses shadow-map artefacts and budget. It does not produce physically correct penumbrae or contact shadowing.",
+    "The parameter names, defaults and stated trade-offs cited here belong to one renderer and its documentation; other engines expose different controls.",
+    "Authored reusable guidance; no runtime artifact or rendered result has been observed for this record."
+  ],
+  "related_ids": [
+    "recipe.terrain-island",
+    "recipe.studio-furniture-layout",
+    "recipe.folding-desk-lamp",
+    "knowledge.shared-stylized-outdoor-daylight",
+    "knowledge.shared-interactive-web-scene"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-shadow-bias-tradeoff",
+      "statement": "One widely used renderer documents shadow bias and normal bias as both defaulting to zero, describes shadow bias as adding to or subtracting from the normalised depth with very tiny adjustments on the order of one ten-thousandth able to reduce artefacts, describes normal bias as offsetting the shadow-map query position along the object normal to reduce shadow acne especially where light strikes geometry at a shallow angle at the cost of shadows appearing distorted, states that the shadow map size defaults to five hundred twelve by five hundred twelve and must be powers of two, warns that large blur radii cause banding unless the map size is increased, and provides an automatic-update flag with an explicit update request.",
+      "scope": "Documented shadow configuration and stated trade-offs of one library as of the access date. Values are that library's defaults; no shadow quality was measured for this record.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-lightshadow",
+          "locator": "bias; normalBias; radius; mapSize; autoUpdate; needsUpdate"
+        }
+      ]
+    }
+  ]
+}

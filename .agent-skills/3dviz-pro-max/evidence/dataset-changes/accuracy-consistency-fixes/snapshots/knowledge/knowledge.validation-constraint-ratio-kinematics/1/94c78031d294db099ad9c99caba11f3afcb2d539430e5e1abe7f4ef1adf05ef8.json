@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-constraint-ratio-kinematics",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Coupled rotation ratio, contact speed and phase over many turns"
+  },
+  "aliases": {
+    "en": [
+      "gear ratio check",
+      "no-slip constraint check"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics"
+  ],
+  "summary": "Derive the coupled body from one constraint and verify the constraint residual, contact-point velocity agreement and long-run phase.",
+  "objective": "The constraint residual stays at zero, contact-point velocities agree, and follower phase matches the ratio prediction over many revolutions.",
+  "applies_when": [
+    "Two rotating bodies are coupled by a kinematic constraint rather than by contact forces.",
+    "Teeth, marks or textures encode phase.",
+    "The scene runs long enough for accumulated angle error to appear."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "kinematics",
+    "constraint",
+    "phase"
+  ],
+  "subject_terms": [
+    "pitch circle",
+    "angular velocity",
+    "no-slip constraint",
+    "contact point speed",
+    "phase drift",
+    "centre distance"
+  ],
+  "intent_signals": [
+    "the gears drift out of mesh after a while",
+    "check the gear ratio in this scene"
+  ],
+  "example_prompts": [
+    "Check the coupling constraint between these meshing gears."
+  ],
+  "negative_signals": [
+    "tooth stress analysis",
+    "gearbox design certification"
+  ],
+  "content": {
+    "principles": [
+      "A no-slip coupling is one algebraic constraint between angular rates, so the mechanism has a single degree of freedom and the second body is derived rather than animated separately. Check the constraint in residual form, because a ratio of rates is undefined whenever the driver passes through zero.",
+      "Signs carry meaning: externally meshed wheels turn in opposite senses, so their signed rate times radius values are opposite while their contact-point speeds are equal in magnitude; compare magnitudes or full velocity vectors rather than signed scalars.",
+      "Ideal kinematics is not tooth contact: pitch circles describe the motion, while teeth are geometry that must be phased separately or omitted honestly."
+    ],
+    "implementation": [
+      "Drive one body and derive the other from the declared constraint, recording both angular rates and the constraint residual, the sum of each radius times its signed rate, over a full revolution including the instant when the driver rate passes through zero.",
+      "For the externally tangent fixed-centre fixture this record targets, confirm at every sample that the distance between centres equals the sum of the pitch radii within a stated tolerance; internal meshing, belts and idler chains have their own geometric preconditions and are outside this fixture.",
+      "Compute the contact-point velocity from each body independently, either as radius times angular speed compared in magnitude or as the full angular velocity crossed with the contact radius vector, and compare the two.",
+      "Accumulate unwrapped angle over at least ten driver revolutions and compare follower phase with the signed gear-ratio prediction. After N complete driver revolutions, return to the initial orientation requires N times the signed rate ratio to be an integer, subject to any separately declared marking symmetry; a noninteger ratio can still meet this condition."
+    ],
+    "observable_checks": [
+      "The constraint residual stays at zero within the declared tolerance at every sample, including where the driver rate is zero and a ratio would be undefined, and reversing the driver reverses both senses.",
+      "Contact-point velocities computed from the two bodies agree in magnitude, and as vectors where that comparison is used, within the tolerance you declare from the numerical precision; a systematic difference names a radius or unit error.",
+      "After ten driver revolutions the accumulated angles still satisfy the constraint and the follower phase matches the ratio prediction; if phase cannot be maintained, the scene shows pitch circles rather than visibly interpenetrating teeth."
+    ]
+  },
+  "known_limits": [
+    "Checks ideal kinematics under an authored constraint; it certifies no tooth profile, backlash, torque capacity or contact behaviour.",
+    "Authored verification guidance; no mechanism was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.coupled-gears",
+    "recipe.robot-arm-forward-frames",
+    "recipe.simple-pendulum"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-tangential-speed-relation",
+      "statement": "For fixed-axis rotation the tangential speed of a point equals its radius times the angular speed, and all points of a rigid rotating body share the same angular velocity.",
+      "scope": "Rigid-body rotational kinematics as stated in the cited section; the two-wheel no-slip coupling is an authored deduction from it rather than a gear design certification.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-rotation",
+          "locator": "10.1, equation 10.4 and the common angular velocity statement"
+        }
+      ]
+    }
+  ]
+}

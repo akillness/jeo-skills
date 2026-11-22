@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-photorealistic",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Photorealistic appearance goal"
+  },
+  "aliases": {
+    "en": [
+      "photoreal appearance",
+      "realistic product rendering",
+      "photo-like 3D"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "architecture-interiors"
+  ],
+  "summary": "Aim for a plausible photographed appearance through consistent scale, construction detail and a deliberate lighting setup, without claiming measured fidelity.",
+  "objective": "Reference comparisons reveal which proportions and details are supported; artificial-looking scale, intersections or clipped highlights prompt revision.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "photorealistic"
+  ],
+  "subject_terms": [
+    "photoreal appearance",
+    "realistic product rendering",
+    "photo-like 3D",
+    "art direction"
+  ],
+  "intent_signals": [
+    "Use photorealistic rendering",
+    "Aim for a plausible photographed appearance"
+  ],
+  "example_prompts": [
+    "Present a photo-like desk lamp with readable hinges and explicit assumptions about the unmeasured finish."
+  ],
+  "content": {
+    "principles": [
+      "Aim for a plausible photographed appearance through consistent scale, construction detail and a deliberate lighting setup, without claiming measured fidelity.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Model meaningful bevels, seams and thickness from available reference; prioritize the actual camera distance before adding hidden microdetail.",
+      "Separate materials by intended finish and use a coherent light environment; document invented surface values rather than presenting them as measurements.",
+      "Compose an inspection or photographic view with believable framing; move parts according to their declared mechanism, not a realism label."
+    ],
+    "observable_checks": [
+      "Reference comparisons reveal which proportions and details are supported; artificial-looking scale, intersections or clipped highlights prompt revision.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with restrained stylization for emphasis; this is an appearance ambition, not evidence of correct engineering, anatomy or physical simulation.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

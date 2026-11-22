@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-refraction-branch-handling",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Angles from the normal and the missing transmitted branch"
+  },
+  "aliases": {
+    "en": [
+      "snell law check",
+      "total internal reflection boundary"
+    ]
+  },
+  "direction_ids": [
+    "waves-optics-fields"
+  ],
+  "summary": "Measure both angles from the same normal and confirm that no refracted ray is drawn beyond the valid branch.",
+  "objective": "The measured angles satisfy the refraction relation, and beyond the boundary no transmitted ray is drawn.",
+  "applies_when": [
+    "A scene shows a ray crossing a planar interface between two media.",
+    "Indices or the incident angle can be changed by the viewer.",
+    "The configuration can reach or exceed the boundary where transmission stops."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "refraction",
+    "branching",
+    "angle-measurement"
+  ],
+  "subject_terms": [
+    "refractive index",
+    "angle of incidence",
+    "surface normal",
+    "critical angle",
+    "transmitted ray"
+  ],
+  "intent_signals": [
+    "it still draws a refracted ray past the critical angle",
+    "are the angles measured from the surface or the normal"
+  ],
+  "example_prompts": [
+    "Check the refraction angles and the total internal reflection boundary in this scene."
+  ],
+  "negative_signals": [
+    "Fresnel intensity computation",
+    "dispersion or spectral rendering"
+  ],
+  "content": {
+    "principles": [
+      "Both angles are measured from the same oriented normal with declared ray directions, because an angle taken against the opposite normal sense yields the supplement and a demonstration that looks plausible while contradicting the relation.",
+      "The transmitted solution exists only while the sine argument stays within its valid range, so beyond that boundary the model has no propagating refracted ray and drawing one is fabrication.",
+      "Normal incidence and equal indices are exact in the model, but the geometry that carries them is still floating point, so both are checked within a stated angular tolerance rather than by exact equality."
+    ],
+    "implementation": [
+      "Require both indices to be positive and finite, declare the incident direction, the transmitted direction and the oriented normal, then compute the sine of the transmitted angle from the index ratio and branch explicitly on whether it exceeds one.",
+      "Measure both displayed angles from the rendered geometry relative to the drawn normal and compare with the computed values rather than reusing them.",
+      "Sample incidence from zero toward grazing including the value where the sine argument reaches one, treat that boundary within a scaled numerical uncertainty band rather than as an exact switch, and note that a ray at exactly grazing incidence may not cross the interface at all.",
+      "Test equal indices and a reversed index order, and confirm reciprocity only on branches where a propagating transmitted ray exists in both directions."
+    ],
+    "observable_checks": [
+      "The measured angles satisfy the refraction relation within the angular tolerance you declare from the geometry; report the tolerance, since the residual near grazing incidence is larger for the same coordinate precision.",
+      "At normal incidence the direction is unchanged and with equal indices the two angles are equal, each within the stated angular tolerance, and both angles are reported against the same oriented normal so a supplementary-angle convention error is visible.",
+      "Beyond the boundary no transmitted ray is drawn and the interface says so, while inside the uncertainty band around the boundary the result is reported as indeterminate rather than forced to one side; a clamped or invented ray is the failure signal."
+    ]
+  },
+  "known_limits": [
+    "Geometrical-optics ray directions only; intensity, polarization, absorption and dispersion need separate sourced models.",
+    "Authored verification guidance; nothing was computed or rendered for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.planar-refraction-ray",
+    "recipe.standing-string-modes",
+    "recipe.point-charge-field-superposition"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-snell-law",
+      "statement": "At an interface the refractive index times the sine of the angle from the normal is the same on both sides, with angles measured relative to the perpendicular to the surface.",
+      "scope": "Planar geometrical-optics interface between media with declared indices; no intensity, polarization or dispersion.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-refraction",
+          "locator": "1.3, law of refraction equation 1.4 and the angle-from-normal statement"
+        }
+      ]
+    }
+  ]
+}

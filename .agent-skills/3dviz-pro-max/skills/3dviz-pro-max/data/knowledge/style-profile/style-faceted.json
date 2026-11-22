@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-faceted",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Faceted planes"
+  },
+  "aliases": {
+    "en": [
+      "faceted surface",
+      "angular planar style",
+      "crystalline planes",
+      "crystalline",
+      "gem facets"
+    ]
+  },
+  "direction_ids": [
+    "solid-geometry",
+    "environments-dioramas"
+  ],
+  "summary": "Use changes between visible planes as the main visual rhythm, not merely as an accidental low-resolution result.",
+  "objective": "Facet boundaries reinforce the intended form instead of producing arbitrary patchwork, and the object remains readable in shadow.",
+  "tags": [
+    "style-profile",
+    "surface-aesthetic",
+    "faceted"
+  ],
+  "subject_terms": [
+    "faceted surface",
+    "angular planar style",
+    "crystalline planes",
+    "surface aesthetic"
+  ],
+  "intent_signals": [
+    "Emphasize visible planar facets",
+    "Reveal angular form through light and shadow"
+  ],
+  "example_prompts": [
+    "Create a faceted mountain island whose broad planes lead the eye toward a summit."
+  ],
+  "content": {
+    "principles": [
+      "Use changes between visible planes as the main visual rhythm, not merely as an accidental low-resolution result."
+    ],
+    "implementation": [
+      "Arrange plane sizes to emphasize the major form; reserve small facets for a focal ridge or transition.",
+      "Use a directional key and restrained fill so adjacent planes remain distinct without making half the subject unreadable.",
+      "Use a slow inspection orbit or deliberate turning beat that reveals successive planes; keep the background quieter than the surface.",
+      "Grade facet sizes across roughly 3:1 - large planes on the primary mass, small facets only along one focal ridge - and bevel every silhouette edge by 1-2 mm so each border catches a highlight line.",
+      "Place the key at 28 degrees elevation so adjacent planes land at least 12% luminance apart; verify in a grayscale screenshot that no two touching facets share a value."
+    ],
+    "observable_checks": [
+      "Facet boundaries reinforce the intended form instead of producing arbitrary patchwork, and the object remains readable in shadow."
+    ]
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at renderer.toneMappingExposure 0.95; re-tune intensities and fog density under a different tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Pair with monochrome study or surreal proportions; choose actual planar geometry when the edge silhouette must carry the effect."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "The whole look is the value difference between neighbouring planes, so the ratio is pushed to 8:1 and the key kept low at 28 degrees: a high or soft key would land several facets on the same step and collapse the rhythm. Roughness stays low (0.2-0.45) with a light clearcoat on the focal ridge so facet borders read as crystal edges, and exposure is pulled to 0.95 to keep the specular crests from clipping into one white mass.",
+    "values": {
+      "feeling": [
+        "sharp",
+        "cool",
+        "mineral"
+      ],
+      "palette": [
+        {
+          "hex": "#101a2e",
+          "role": "deepest facet / shadow side"
+        },
+        {
+          "hex": "#2c4a72",
+          "role": "mid facet"
+        },
+        {
+          "hex": "#6f9ecb",
+          "role": "lit facet"
+        },
+        {
+          "hex": "#cfe3f5",
+          "role": "specular crest along the focal ridge"
+        },
+        {
+          "hex": "#d98f5a",
+          "role": "single warm accent facet"
+        }
+      ],
+      "value_structure": "45/35/20 dark/mid/light; adjacent facets differ by >= 12% luminance",
+      "saturation_rule": "body facets <= 35% saturation; the one warm accent facet up to 65%",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#101a2e",
+        "horizon": "#7f9fc0"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#7f9fc0",
+        "density": 0.01
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#eaf2ff",
+          "intensity": 3.6,
+          "elevation_deg": 28,
+          "azimuth_deg": 285,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#4d6b95",
+          "ground": "#23262e",
+          "intensity": 0.45
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#ffd9a8",
+          "intensity": 0.9,
+          "elevation_deg": 14,
+          "azimuth_deg": 105,
+          "castShadow": false
+        },
+        "ratio": "key:fill ~ 8:1 - the wide ratio is what separates neighbouring planes"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 0.95
+      },
+      "camera": {
+        "fov_deg": 35,
+        "height_m": 1.4,
+        "pitch_deg": -5,
+        "orbit": {
+          "minPolar_deg": 60,
+          "maxPolar_deg": 88,
+          "minDist_m": 1.5,
+          "maxDist_m": 12
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.2,
+          0.45
+        ],
+        "metalness": [
+          0.0,
+          0.2
+        ],
+        "notes": "flat shading with clearcoat 0.3 on the focal ridge only; 1-2 mm bevel on every silhouette edge so borders read as a bright line"
+      },
+      "motion": {
+        "sway_period_s": [
+          6.0,
+          9.0
+        ],
+        "ease": "linear turntable, reversible",
+        "hold_ms": 600
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.0,
+          "strength": 0.25,
+          "radius": 0.5
+        },
+        "vignette": 0.22,
+        "grain": 0.02,
+        "dof": "off"
+      },
+      "signature_technique": "a grazing 28 degree key swept across the facet field so every plane lands on a different step of one value ramp",
+      "never": [
+        "smooth normals over the facet field",
+        "untinted white ambient light",
+        "more than one accent facet colour",
+        "randomly sized facets with no size grading",
+        "a frontal key that flattens the planes"
+      ]
+    }
+  }
+}

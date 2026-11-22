@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "id": "recipe.fantasy-village-diorama",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Fantasy village diorama"
+  },
+  "aliases": {
+    "en": [
+      "storybook village",
+      "miniature fantasy settlement"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas"
+  ],
+  "summary": "Compose a small invented settlement around a memorable landmark, readable paths, and contrasting building silhouettes.",
+  "objective": "Create an explorable miniature world with a coherent visual story and room for unexpected architecture.",
+  "tags": [
+    "worldbuilding",
+    "diorama",
+    "village"
+  ],
+  "example_prompts": [
+    "Build a hillside village whose lanterns collect falling stars.",
+    "Make a rainy miniature settlement growing around an enormous teapot."
+  ],
+  "entities": [
+    {
+      "name": "Landmark",
+      "guidance": "Choose one strong silhouette and give it breathing room."
+    },
+    {
+      "name": "Homes and gathering spaces",
+      "guidance": "Vary roof profiles and clustering; connect entrances to visible paths."
+    },
+    {
+      "name": "Terrain and vegetation",
+      "guidance": "Use terraces, roots, or islands to organize depth and sightlines."
+    }
+  ],
+  "creative_affordances": [
+    "Start with a story constraint: what do the inhabitants value, collect, or fear? Let it shape the landmark and daily-life details.",
+    "Explore asymmetry, improbable materials, exaggerated scale, and palettes beyond conventional medieval fantasy.",
+    "Use a limited family of shapes for cohesion; reserve a contrasting shape for the landmark.",
+    "Choose orbit inspection, a few authored viewpoints, or a static composition according to the requested artifact."
+  ],
+  "motion_guidance": [
+    "Optional lantern sway, drifting leaves, or chimney wisps can suggest life without forcing a population simulation.",
+    "Provide a still or reduced-motion presentation; keep decorative motion separate from camera input."
+  ],
+  "known_limits": [
+    "Entirely invented setting; no claim of historical, structural, or ecological accuracy.",
+    "Spatial readability and style guidance are editorial suggestions, not universal aesthetic rules.",
+    "No bundled models, textures, or observed render evaluation."
+  ]
+}

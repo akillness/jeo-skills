@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.shared-surface-feature-inspection-light",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "lighting-profile",
+  "title": {
+    "en": "Inspection lighting for surface features and normals"
+  },
+  "aliases": {
+    "en": [
+      "raking light inspection",
+      "normal visualisation pass",
+      "geometry defect lighting"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "anatomy-structures",
+    "solid-geometry",
+    "architecture-interiors"
+  ],
+  "summary": "Use a deliberately unflattering light and a normal-revealing pass to find geometry defects that a good-looking hero light hides.",
+  "objective": "Every crease, dent and shading seam the record cares about is either visible in the inspection pass or explicitly accepted.",
+  "tags": [
+    "lighting-profile",
+    "inspection",
+    "raking-light",
+    "normals",
+    "defect-finding"
+  ],
+  "subject_terms": [
+    "raking light",
+    "grazing incidence",
+    "surface normal",
+    "shading seam",
+    "smoothing error",
+    "flat shading",
+    "normal visualisation",
+    "silhouette check",
+    "curvature reading"
+  ],
+  "intent_signals": [
+    "the surface looks lumpy but I cannot see why",
+    "find the smoothing errors",
+    "check the model before presenting it",
+    "shading seam on a curved panel",
+    "is this a real crease or a normal problem"
+  ],
+  "example_prompts": [
+    "Set up a check pass that shows whether this panel is actually smooth.",
+    "Find why the shoulder shades badly on this model.",
+    "Inspect a cutaway for missing interior faces before the final render."
+  ],
+  "negative_signals": [
+    "final presentation frame",
+    "quantitative colour encoding"
+  ],
+  "not_for": [
+    "Final beauty frames, where this lighting is deliberately unattractive.",
+    "Views where colour already encodes a measured quantity."
+  ],
+  "content": {
+    "principles": [
+      "Presentation lighting is designed to make a model look resolved, which means it also hides defects. Inspection needs a separate lighting state whose job is to be revealing, not attractive.",
+      "Light arriving nearly parallel to a surface converts small height variations into long shadows. That is the fastest way to see dents, ripples and misaligned panels that a frontal light flattens away.",
+      "Normal problems and geometry problems look similar under normal shading but differ under a pass that displays orientation directly. Separating the two determines whether the fix is in the mesh or in the shading data.",
+      "A rotating light finds more than a moving camera. Many shading defects are stationary on the surface and only reveal themselves when the illumination direction changes.",
+      "The inspection state must be reachable and reversible without rebuilding the scene, or it will not be used."
+    ],
+    "implementation": [
+      "Provide a named inspection state that swaps in a single hard directional light at a grazing angle to the surface under review, with fill reduced so shadows stay long.",
+      "Sweep the light around the object rather than fixing it, and inspect the surface while it moves; defects appear as travelling ridges rather than as static features.",
+      "Add a normal-visualisation pass, and separate the three things it can show: the geometric normals of the triangles, the authored vertex normals, and any perturbation from normal, bump or displacement inputs. Disable the perturbations first to get a baseline, then re-enable them one at a time, and record the normal coordinate space and the camera used.",
+      "Toggle flat shading in the inspection pass to see the true faceting, which distinguishes a coarse mesh from an averaging problem.",
+      "Inspect the silhouette against a plain background as a separate step, since the outline reveals proportion and construction errors that any shading can mask.",
+      "Keep a neutral mid-grey material for the inspection state so texture and colour do not compete with the shading signal.",
+      "Record what the inspection found, including defects that were seen and deliberately accepted."
+    ],
+    "observable_checks": [
+      "Under a sweeping grazing light, a surface declared smooth shows no travelling ridges or faceted bands.",
+      "In the baseline normal pass with perturbations disabled, colour varies continuously across surfaces declared smooth and changes abruptly only at edges the record names as hard.",
+      "Regions whose normal-pass colour differs strongly from their neighbours are compared against the expected local geometry rather than rejected outright, since a tightly curved smooth surface can legitimately show opposing normals on adjacent faces.",
+      "Enabling flat shading shows a facet density consistent with the declared tessellation rather than an unexpectedly coarse mesh.",
+      "Returning from the inspection state restores the presentation lighting and materials exactly."
+    ]
+  },
+  "creative_affordances": [
+    "The inspection state can be exposed to the viewer as a deliberate technical view when the subject is construction or craft.",
+    "A grazing light kept from the inspection pass can become an expressive choice in the final frame if the record says so."
+  ],
+  "known_limits": [
+    "This profile finds defects that shading reveals. It does not find errors in scale, topology or factual structure.",
+    "The debug material cited here is documented as mapping normal vectors to colours; the retrieved documentation did not state whether it responds to lights, so no such claim is made and the mapping convention should be confirmed against the installed version before it is read quantitatively.",
+    "Authored reusable guidance; no runtime artifact or rendered result has been observed for this record."
+  ],
+  "related_ids": [
+    "recipe.folding-desk-lamp",
+    "recipe.courtyard-house-cutaway",
+    "recipe.polyhedron-net",
+    "knowledge.structural-coherence",
+    "knowledge.material-response-check",
+    "knowledge.shared-indexed-manifold-mesh"
+  ],
+  "claims": [
+    {
+      "id": "claim.shared-normal-material-mapping",
+      "statement": "One widely used renderer documents a material that maps surface normal vectors to RGB colours, with a flat-shading option that is disabled by default.",
+      "scope": "Documented description of one debug material as of the access date. It supports using such a pass to read surface orientation; the retrieved page did not state the material's response to lights or the exact axis-to-channel convention.",
+      "source_refs": [
+        {
+          "source_id": "source.shared-depth-three-normal-material",
+          "locator": "class description; flatShading"
+        }
+      ]
+    }
+  ]
+}

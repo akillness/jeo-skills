@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "recipe.stellar-parallax-baseline",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Stellar parallax and observation baseline"
+  },
+  "aliases": {
+    "en": [
+      "stellar parallax",
+      "astronomical distance triangulation",
+      "annual parallax"
+    ]
+  },
+  "direction_ids": [
+    "astronomy-space"
+  ],
+  "summary": "Compare two lines of sight from opposite orbital positions and keep the half-angle convention explicit.",
+  "objective": "Build a stellar parallax diagram with opposite Earth positions, a nearby star and a distant reference backdrop.",
+  "tags": [
+    "parallax",
+    "baseline",
+    "line of sight"
+  ],
+  "subject_terms": [
+    "parallax",
+    "baseline",
+    "line of sight",
+    "stellar distance",
+    "annual displacement",
+    "angular measurement"
+  ],
+  "intent_signals": [
+    "Build a stellar parallax diagram with opposite Earth positions, a nearby star and a distant reference backdrop.",
+    "Compare two lines of sight from opposite orbital positions and keep the half-angle convention explicit."
+  ],
+  "example_prompts": [
+    "Build a stellar parallax diagram with opposite Earth positions, a nearby star and a distant reference backdrop.",
+    "Create an explorable 3D explanation of stellar parallax with angle inset."
+  ],
+  "negative_signals": [
+    "No proper motion, aberration, measurement noise or Bayesian distance inference from uncertain parallaxes."
+  ],
+  "not_for": [
+    "No proper motion, aberration, measurement noise or Bayesian distance inference from uncertain parallaxes."
+  ],
+  "entities": [
+    {
+      "name": "Observation baseline",
+      "guidance": "Place two observer markers at -b and +b around a central Sun marker; label baseline 2*b and its half b separately."
+    },
+    {
+      "name": "Nearby star and backdrop",
+      "guidance": "Show one selected nearby star and a distant fixed direction grid; mark that background stars are treated as effectively fixed for this ideal experiment."
+    },
+    {
+      "name": "Angle inset",
+      "guidance": "Draw a magnified parallax angle inset tied to the same numeric calculation, distinguishing p from the full apparent displacement 2*p."
+    }
+  ],
+  "state_contract": {
+    "model": "Ideal right-triangle geometry: star on a line perpendicular to the midpoint of a baseline of length 2*b, b>0; parallax half-angle p=atan(b/d), d>0. Full angular separation of the symmetric sightlines is 2*p.",
+    "authority": "Baseline endpoints and star distance own sightline directions and measured angle; screen exaggeration never substitutes for the model angle.",
+    "actions": [
+      "Move the nearby star farther along the perpendicular line.",
+      "Change the baseline half-length.",
+      "Switch between the two observer views.",
+      "Reset distance, baseline and magnification."
+    ]
+  },
+  "invariants": [
+    "At fixed baseline, increasing distance decreases parallax angle.",
+    "The full symmetric sightline separation is twice the defined parallax half-angle.",
+    "Geometry uses d=b/tan(p); the small-angle d≈b/p relation requires p in radians and a stated approximation."
+  ],
+  "motion_guidance": [
+    "Animate camera transfer only between declared observation positions; do not move the star to fake apparent displacement.",
+    "Show observation epoch labels as schematic positions, not dates of actual stellar measurements."
+  ],
+  "known_limits": [
+    "No proper motion, aberration, measurement noise or Bayesian distance inference from uncertain parallaxes.",
+    "Real stellar angles are tiny; geometric distance and visual angular exaggeration must remain separate.",
+    "Curated recipe only; no runtime scene or rendered behavior has been verified for this record."
+  ],
+  "claims": [
+    {
+      "id": "claim.stellar-parallax-baseline",
+      "statement": "Stellar parallax uses apparent positional displacement from different observing positions and a known baseline to infer distance by trigonometry.",
+      "scope": "Ideal geometric construction; the symmetric baseline and perpendicular star direction are chosen for clarity.",
+      "source_refs": [
+        {
+          "source_id": "source.esa-parallax",
+          "locator": "Parallax angle, Earth-Sun baseline and trigonometric distance"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Observation baseline",
+      "structure": "Place two observer markers at -b and +b around a central Sun marker; label baseline 2*b and its half b separately.",
+      "material": "Small luminous star markers are visual symbols with disclosed sizing; opaque sightlines and an angle inset carry the measurements."
+    }
+  ]
+}

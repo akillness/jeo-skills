@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "id": "recipe.spectral-transition-orbital-inspector",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Spectral transitions: mixed orbital contributions"
+  },
+  "aliases": {
+    "en": [
+      "excited state spectrum",
+      "oscillator strength"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Keep calculated transition energies and strengths tied to method output while showing that an excited state may mix several orbital pairs.",
+  "objective": "Build an excited-state inspector where I select a calculated spectral line, inspect all printed orbital-pair contributions, and compare signed orbital isosurfaces without treating them as electron trajectories or a complete spectrum.",
+  "tags": [
+    "excited state spectrum",
+    "oscillator strength",
+    "orbital contributions"
+  ],
+  "subject_terms": [
+    "excitation energy",
+    "wavelength",
+    "oscillator strength",
+    "TD-DFT",
+    "excited state",
+    "orbital contribution",
+    "configuration mixing",
+    "signed orbital isosurface",
+    "natural transition orbital"
+  ],
+  "intent_signals": [
+    "inspect spectral transition orbital contributions",
+    "mixed excited state is not one electron jump"
+  ],
+  "example_prompts": [
+    "Show calculated ORCA excited states with energy, wavelength and oscillator strength, then inspect a state made from several printed orbital transitions."
+  ],
+  "negative_signals": [
+    "Not an experimental spectrum, peak assignment proof, electron movie, total density, complete configuration expansion or accuracy guarantee."
+  ],
+  "not_for": [
+    "No broadening/solvent/vibronic spectrum unless supplied, no hidden contributions treated as zero, no orbital population movie, method benchmarking or universal assignment."
+  ],
+  "entities": [
+    {
+      "name": "Transition spectrum rail",
+      "guidance": "Blender supplies a calibrated rail and reusable state markers. Three.js places lines from supplied values and shows method, geometry, units, root convergence and print threshold."
+    },
+    {
+      "name": "Orbital contribution stage",
+      "guidance": "Blender may provide neutral molecular staging; Three.js loads provenance-bound signed grids for selected orbitals, uses paired phase surfaces at the same |isovalue| and displays every supplied contribution weight rather than choosing one arrow."
+    }
+  ],
+  "state_contract": {
+    "model": "A finite imported result bundle identifies software/version, method, basis/reference, molecular geometry hash, state/root index, convergence status, excitation energy with unit, optional wavelength, oscillator strength convention and a list of printed orbital-pair contributions with coefficients/weights and print threshold. Orbital grids separately identify orbital index/spin, geometry hash, scalar quantity/unit, grid dimensions, origin, three grid-axis step vectors/basis, data ordering and paired ±isovalue of equal magnitude. Reject mismatched geometry/method/root or nonfinite values. A state with several supplied contributions remains a mixture; omitted-below-threshold weight is unknown, not zero. Optional sticks use supplied transition energies/strengths only; broadening is disabled unless a sourced kernel/width is explicitly provided.",
+    "authority": "Three.js owns result parsing, provenance matching, line/contribution selection and signed surfaces. Blender owns only illustrative stage assets; an external quantum-chemistry calculation owns numerical output.",
+    "actions": [
+      "Select a converged state and inspect energy, wavelength, oscillator strength convention and all supplied contributions.",
+      "Toggle the supplied canonical orbital-pair grids while retaining coefficients, scalar quantity, grid frame/basis and signed phase legend.",
+      "Compare a nearly single-contribution example with a mixed state without animating an electron path.",
+      "Reject unconverged roots, geometry-hash mismatch, missing units/threshold or density grids mislabeled as orbitals; reset clears selections."
+    ]
+  },
+  "invariants": [
+    "Every displayed scalar and orbital grid retains software/method/geometry/root provenance and declared units.",
+    "Multiple printed contributions remain visible; a print threshold means the displayed list need not sum to one.",
+    "Positive and negative orbital isosurfaces represent sign of a supplied orbital amplitude grid. Their squared amplitude is not total many-electron density.",
+    "Calculated stick positions/strengths are method outputs, not a complete experimental spectrum; motion between orbitals is illustrative only."
+  ],
+  "motion_guidance": [
+    "Step commits one source frame or declared transformation; pause preserves committed state and reset restores data, view, selections and errors.",
+    "Offer a static frame/table alternative. Tweened atom, curve or surface motion explains correspondence only and never creates scientific samples."
+  ],
+  "creative_affordances": [
+    "Blender may establish a distinctive molecular stage, lattice frame and stable atom/orbital glyph families; Three.js binds them to scientific IDs and data.",
+    "Materials, camera and composition remain flexible when units, provenance, sign, identity and uncertainty stay legible without color alone."
+  ],
+  "known_limits": [
+    "One supplied calculation bundle and its printed thresholded contributions. It omits experimental conditions and broadening unless explicitly supplied and makes no accuracy or assignment guarantee.",
+    "Authored, source-reviewed guidance only; no chemistry calculation, trajectory conversion, Blender export, browser, renderer or interactive artifact was run."
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Scientific coordinates and annotations drive display; mesh contact and animation do not compute chemistry."
+  },
+  "related_ids": [
+    "recipe.orbital-isosurface-phase-probability",
+    "recipe.molecular-shape-comparison"
+  ],
+  "object_craft": [
+    {
+      "family": "Transition and orbital console",
+      "structure": "Build a precise stick-spectrum rail beside a fixed molecule cradle; use paired isosurface shells and a weighted contribution rack instead of a single transfer arrow.",
+      "material": "Use sign-paired surfaces with equal opacity and explicit +/- labels; line strength also has a numeric value and accessible height/pattern cue."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim.spectral-transition-orca-output",
+      "statement": "The ORCA 6.1.1 manual shows excited-state output with energies and thresholded individual excitation weights, including states with multiple orbital-pair contributions, and an absorption table containing transition energy, wavelength and oscillator strength.",
+      "scope": "Documented ORCA output fields and examples; no accuracy, experimental-spectrum completeness or one-electron-path claim.",
+      "source_refs": [
+        {
+          "source_id": "source.orca611-excited-states",
+          "locator": "Section 5.4.1.1: lines describing the print threshold, STATE contribution tables, and absorption spectrum columns Energy/Wavelength/fosc"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,301 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.blueprint-tree-round",
+  "revision": 3,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "blueprint",
+  "title": {
+    "en": "Blueprint: round-crowned broadleaf tree"
+  },
+  "aliases": {
+    "en": [
+      "round tree kit",
+      "broadleaf tree blueprint",
+      "village tree module"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "earth-environment"
+  ],
+  "summary": "A broadleaf tree with a flared root collar, a four-segment leaning trunk, four branches and a crown of seven overlapping canopy lobes, with sway(dt) and an instancing handle for the lobe.",
+  "objective": "At five metres the tree reads as a leaning trunk under a lobed crown, then branches reaching into their own lobes, then faceted shading, collars and hue jitter.",
+  "tags": [
+    "blueprint",
+    "kit",
+    "nature",
+    "tree",
+    "foliage",
+    "instanced",
+    "animated"
+  ],
+  "subject_terms": [
+    "root flare",
+    "trunk taper",
+    "canopy lobe",
+    "bark collar",
+    "branch fork"
+  ],
+  "intent_signals": [
+    "plant trees around a village",
+    "reusable broadleaf tree",
+    "instanced foliage kit"
+  ],
+  "example_prompts": [
+    "Plant a stand of trees behind the cottages.",
+    "I need a tree whose crown is not one green sphere."
+  ],
+  "not_for": [
+    "Any claim about a botanical species, its growth habit or its wood.",
+    "Leaf-level foliage: the crown is seven lobes, not a leaf card system."
+  ],
+  "asset": {
+    "kind": "procedural-js",
+    "path": "templates/kits/nature/tree-round.js",
+    "factory": "create"
+  },
+  "params": [
+    {
+      "name": "seed",
+      "type": "integer",
+      "range": [
+        0,
+        65535
+      ],
+      "default": 1
+    },
+    {
+      "name": "age",
+      "type": "number",
+      "range": [
+        0.3,
+        1.0
+      ],
+      "default": 1
+    },
+    {
+      "name": "lean",
+      "type": "number",
+      "range": [
+        -0.3,
+        0.3
+      ],
+      "default": 0.09,
+      "unit": "rad"
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "range": [
+        1.8,
+        6.0
+      ],
+      "default": 3.4,
+      "unit": "m"
+    },
+    {
+      "name": "radius",
+      "type": "number",
+      "range": [
+        0.08,
+        0.4
+      ],
+      "default": 0.19,
+      "unit": "m"
+    },
+    {
+      "name": "leaf",
+      "type": "color",
+      "default": "#6a9150"
+    }
+  ],
+  "sockets": [
+    {
+      "name": "base",
+      "position_m": [
+        0,
+        0,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "canopy",
+      "position_m": [
+        0.101,
+        2.377,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "swing",
+      "position_m": [
+        0.036,
+        0.883,
+        0
+      ],
+      "normal": [
+        0,
+        -1,
+        0
+      ]
+    }
+  ],
+  "detail_ladder": {
+    "silhouette": [
+      "a crown of seven overlapping lobes, never a single sphere",
+      "a trunk leaning about 5 degrees, with the lean growing up the tree",
+      "six root wedges splaying out of the base into the ground"
+    ],
+    "medium": [
+      "four branches reaching out to the lobes they carry",
+      "a bark collar over each of the three trunk segment joins",
+      "lobes of five different sizes, the crown lobe 15 percent larger than the rest"
+    ],
+    "fine": [
+      "flat-shaded facets across every lobe, so the crown catches light in planes",
+      "the trunk narrowing from 19 cm at the flare to 6 cm under the crown",
+      "per-lobe hue jitter of 10 percent across the seven lobes"
+    ]
+  },
+  "footprint_m": [
+    3.02,
+    2.78
+  ],
+  "poly_budget": 860,
+  "fits_looks": [
+    "knowledge.style-stylized",
+    "knowledge.style-low-poly",
+    "knowledge.style-ghibli-painterly-pastoral",
+    "knowledge.theme-fantasy-woodland",
+    "knowledge.lighting-mood-dusk-golden-hour"
+  ],
+  "content": {
+    "principles": [
+      "A crown of one sphere is the single tell of a procedural tree. Lobes cost nothing and they buy the whole silhouette.",
+      "A trunk that meets the ground as a clean cylinder reads as a dowel pushed into grass. The root flare is the cheapest fix.",
+      "The lobe tumble is baked into the geometry so an instance only spins about Y: a tilted instance inflates its axis-aligned box and lifts the framing off the tree."
+    ],
+    "implementation": [
+      "Call create({ seed, age, lean, height, radius, leaf }); the group is centred on the trunk base with y = 0 at the ground.",
+      "animate(dt) - also exported as sway(dt) - rocks the crown and branches and returns true when it moved; it returns false for dt <= 0.",
+      "instancing gives { geometry, material, hueJitter }: hand them to THREE.InstancedMesh, or to kit-core scatterInstances with a hue per placement, to plant a wood from one draw call."
+    ],
+    "observable_checks": [
+      "Run scripts/kit-proof.py and count features in close.png: at least two from each detail-ladder band must be visible.",
+      "age 0.4 and age 1.0 differ by more than 40 cm in crown height at the same seed.",
+      "animate(0) returns false and animate(0.4) returns true and moves the crown."
+    ]
+  },
+  "known_limits": [
+    "Authored creative geometry. Nothing here measures a real tree, species or growth habit.",
+    "The poly budget is the triangle count observed at default parameters and stays inside the 2500 triangle ceiling this phase set for nature.",
+    "sway() rotates the crown group about its own origin, so at amplitudes above about 0.05 rad the lobes visibly slide off the branch tips.",
+    "Rotated lobe instances inflate the axis-aligned bounding box: the box is up to 20 percent wider than the crown actually is.",
+    "Palette values are the colours that render: kit-core scatterInstances runs its InstancedMesh on a white-based clone of the material and writes the absolute jittered colour per instance, so an unjittered instance lands on exactly the hex the parameter names.",
+    "T2 is the same geometry with runtime procedural surface and vertex occlusion (see knowledge.surface-tier-defaults); it adds no polygons and ships no files, and it reads at stylized-game quality, not photoreal."
+  ],
+  "creative_affordances": [
+    "Any parameter may be pushed outside its stated range; the range is the band that was proved, not a limit.",
+    "Push lean past 0.3 and drop age for a wind-shaped coastal tree, or re-colour the leaf for autumn without touching the geometry."
+  ],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "values": {
+      "age": 1,
+      "lean": 0.09,
+      "height": 3.4,
+      "radius": 0.19,
+      "leaf": "#6a9150",
+      "lobes": 7,
+      "branches": 4,
+      "feeling": "settled village shade tree"
+    },
+    "rationale": "A 3.2 m crown clears a cottage eave without hiding its roof, which is the one proportion that decides whether a tree frames a building or swallows it."
+  },
+  "related_ids": [
+    "knowledge.tree-crown-root-architecture",
+    "knowledge.three-instanced-scenery-adapter",
+    "knowledge.geometry-nodes-instance-handoff",
+    "recipe.fantasy-village-diorama"
+  ],
+  "claims": [],
+  "proof": {
+    "harness": "templates/kits/_harness/index.html",
+    "detail_socket": "base",
+    "captures": [
+      "evidence/kits/knowledge.blueprint-tree-round/far.png",
+      "evidence/kits/knowledge.blueprint-tree-round/mid.png",
+      "evidence/kits/knowledge.blueprint-tree-round/close.png",
+      "evidence/kits/knowledge.blueprint-tree-round/detail.png",
+      "evidence/kits/knowledge.blueprint-tree-round/close-motion.png"
+    ],
+    "log": "evidence/kits/knowledge.blueprint-tree-round/proof-log.json"
+  },
+  "tiers": {
+    "T0": {
+      "mode": "proxy",
+      "size_m": [
+        3.02,
+        3.2,
+        2.78
+      ],
+      "poly_budget": 12,
+      "status": "generated",
+      "note": "Bevelled box from the proof log bounds; canopy plus trunk."
+    },
+    "T2": {
+      "mode": "runtime",
+      "poly_budget": 860,
+      "texture_budget": {
+        "maps": 3,
+        "resolution": 1024,
+        "families": 1
+      },
+      "families": {
+        "#7a6149": "wood",
+        "#8d7452": "wood",
+        "#6d5640": "wood"
+      },
+      "ao": {
+        "samples": 13,
+        "radius_m": 0.45,
+        "ground_dirt_m": 0.6
+      },
+      "proof": {
+        "harness": "templates/kits/_harness/index.html",
+        "captures": [
+          "evidence/kits/knowledge.blueprint-tree-round/T2/far.png",
+          "evidence/kits/knowledge.blueprint-tree-round/T2/mid.png",
+          "evidence/kits/knowledge.blueprint-tree-round/T2/close.png",
+          "evidence/kits/knowledge.blueprint-tree-round/T2/detail.png"
+        ],
+        "log": "evidence/kits/knowledge.blueprint-tree-round/T2/proof-log.json",
+        "detail_socket": "base"
+      },
+      "status": "proved",
+      "note": "Unmapped colours stay flat on purpose: leaf #6a9150: no foliage family exists in T2 and fabric would read wrong."
+    },
+    "T3": {
+      "mode": "gltf",
+      "status": "missing",
+      "note": "Blender hero tier planned in phase 9C; nothing is shipped yet."
+    },
+    "T4": {
+      "mode": "external",
+      "status": "missing",
+      "note": "No external asset ships with this skill."
+    }
+  }
+}

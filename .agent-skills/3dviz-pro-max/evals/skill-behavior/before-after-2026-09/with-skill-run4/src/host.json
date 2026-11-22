@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "probed_at": "2026-09-08T17:18:40+00:00",
+  "os": {
+    "system": "Darwin",
+    "release": "25.5.0",
+    "product_version": "26.5.1",
+    "arch": "arm64"
+  },
+  "cpu": {
+    "brand": "Apple M4 Max",
+    "logical_cores": 16
+  },
+  "memory_gb": 48.0,
+  "gpu": {
+    "found": true,
+    "name": "Apple M4 Max",
+    "vendor": "sppci_vendor_Apple",
+    "cores": 40,
+    "source": "system_profiler SPDisplaysDataType -json"
+  },
+  "blender": {
+    "found": true,
+    "path": "/Applications/Blender.app/Contents/MacOS/Blender",
+    "version": "5.2.1",
+    "on_path": false,
+    "meets_minimum": true,
+    "source": "standard install path + --version"
+  },
+  "runtimes": {
+    "node": "24.13.1",
+    "pnpm": "10.30.1",
+    "python": "3.14.3",
+    "playwright": null,
+    "playwright_source": "importlib.metadata in the interpreter running this probe",
+    "chromium_installed": true
+  },
+  "quality_ceiling": "T3",
+  "quality_ceiling_reason": "Blender 5.2.1 >= 4.2 found via standard install path + --version",
+  "capture_mode_expected": "gpu",
+  "capture_mode_reason": "darwin + chromium available: --use-angle=metal is supported"
+}

@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "id": "recipe.critical-path-delay",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Critical path and combinational delay"
+  },
+  "aliases": {
+    "en": [
+      "propagation delay",
+      "critical path",
+      "contamination delay"
+    ]
+  },
+  "direction_ids": [
+    "logic-circuits"
+  ],
+  "summary": "Make timing a property of paths through a circuit, with the longest path selected by summation rather than by appearance.",
+  "objective": "Build a combinational circuit in space where each gate carries a delay and the critical path is computed and highlighted.",
+  "tags": [
+    "timing",
+    "critical path",
+    "delay"
+  ],
+  "subject_terms": [
+    "propagation delay",
+    "contamination delay",
+    "critical path",
+    "combinational logic",
+    "gate delay",
+    "path delay",
+    "valid output"
+  ],
+  "intent_signals": [
+    "Show which path through a circuit sets its delay.",
+    "Explain propagation delay and contamination delay in a 3D circuit."
+  ],
+  "example_prompts": [
+    "Build a gate network with per-gate delays and a highlighted critical path.",
+    "Show how changing one gate delay moves the critical path."
+  ],
+  "negative_signals": [
+    "Not a transistor-level or SPICE timing model; delays here are declared per gate.",
+    "Not a synthesis or place-and-route tool."
+  ],
+  "not_for": [
+    "Not a transistor-level or SPICE timing model; delays here are declared per gate.",
+    "Not a synthesis or place-and-route tool."
+  ],
+  "entities": [
+    {
+      "name": "Gate blocks",
+      "guidance": "Give each gate a body with labelled input and output faces and a visible delay value, so timing data belongs to the object."
+    },
+    {
+      "name": "Wire routing",
+      "guidance": "Route wires with distinguishable paths and junction beads; a wire whose route is ambiguous makes a path highlight meaningless."
+    },
+    {
+      "name": "Path highlight",
+      "guidance": "Highlight the selected path as a connected chain from an input to the output with a running delay sum shown along it."
+    }
+  ],
+  "state_contract": {
+    "model": "A directed acyclic gate network with finite nonnegative per-gate propagation and contamination delays satisfying contamination at most propagation, path enumeration, circuit propagation delay as the maximum path sum and contamination delay as the minimum path sum. A graph with no input-to-output path reports that no path exists rather than a zero delay.",
+    "authority": "The network and its delay values are authoritative; every highlighted path and every reported number is recomputed from them.",
+    "actions": [
+      "Edit a gate delay and rerun the path analysis.",
+      "Step along the critical path gate by gate.",
+      "Toggle between propagation and contamination path highlighting.",
+      "Reset the network and delays."
+    ]
+  },
+  "invariants": [
+    "The reported circuit propagation delay equals the sum along the highlighted path, and the two update together.",
+    "Contamination delay is a minimum over paths and is never larger than the reported propagation delay.",
+    "A cycle in the network is rejected: this analysis applies to combinational logic only."
+  ],
+  "motion_guidance": [
+    "Animate signal validity sweeping along the path in delay-proportional time, and label the time scale as illustrative.",
+    "Do not animate all wires simultaneously with the same speed; that hides the very difference being measured."
+  ],
+  "known_limits": [
+    "Delays are declared values, not measured device parameters, and wire delay is ignored unless modelled explicitly.",
+    "Path enumeration grows quickly with reconvergent fanout; large networks need a proper timing algorithm.",
+    "Structural path sums are bounds: a path that cannot be sensitised by any input pattern still appears in the enumeration, so the validity animation illustrates a bound rather than an observed transition time.",
+    "Authored guidance only: no scene runtime, rendering or numerical calibration has been run for this recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.rd-propagation-contamination",
+      "statement": "The propagation delay of a combinational gate is an upper bound on the delay from valid inputs to valid outputs, while the contamination delay is a lower bound on the delay from an invalid input to an invalid output.",
+      "scope": "Definitions as taught for gate-level timing; specific values are technology dependent.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-mit6004-timing",
+          "locator": "3.1 slides, propagation and contamination delay definitions"
+        }
+      ]
+    },
+    {
+      "id": "claim.rd-critical-path-rule",
+      "statement": "The propagation delay of a circuit is found by summing gate propagation delays along each input-to-output path and taking the largest such path delay.",
+      "scope": "Combinational networks without cycles; wire delay is neglected in this rule as stated.",
+      "source_refs": [
+        {
+          "source_id": "source.recipe-depth-mit6004-timing",
+          "locator": "3.1 slides, computing circuit t_PD from path sums"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Gate blocks",
+      "structure": "Extruded gate bodies with recognisable silhouettes per function plus a data plate showing the delay value.",
+      "material": "Neutral matte gate bodies so the critical path accent stands out; label plates opaque for legibility.",
+      "articulation": "None. Gates are static; only highlight and labels change."
+    },
+    {
+      "family": "Wire routing",
+      "structure": "Rounded orthogonal routes with bridges at crossings so two wires never appear to merge.",
+      "material": "Two-value wire palette for logic zero and one, with a separate reserved accent for the highlighted path.",
+      "articulation": "Signal validity travels as a moving segment along the wire during animation."
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Discrete logic and timing arithmetic; no physical layout or electrical simulation.",
+    "checks": [
+      "The highlighted path sum equals the reported circuit delay.",
+      "Increasing a delay on the critical path increases the reported delay by the same amount."
+    ]
+  },
+  "related_ids": [
+    "recipe.logic-gates",
+    "recipe.full-adder",
+    "knowledge.graph-in-space"
+  ]
+}

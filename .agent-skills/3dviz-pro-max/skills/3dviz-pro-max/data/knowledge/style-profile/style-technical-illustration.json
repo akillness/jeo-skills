@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-technical-illustration",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Technical illustration clarity"
+  },
+  "aliases": {
+    "en": [
+      "technical 3D illustration",
+      "diagrammatic product view",
+      "instructional cutaway",
+      "exploded diagram",
+      "assembly drawing"
+    ]
+  },
+  "direction_ids": [
+    "products-assemblies",
+    "anatomy-structures"
+  ],
+  "summary": "Prioritize identifiable parts, ordered reveals and unambiguous labels while distinguishing sourced structure from authored simplification.",
+  "objective": "Labels point to the intended part from the supported view and displacement for explanation is not confused with the assembled geometry.",
+  "tags": [
+    "style-profile",
+    "representation-aesthetic",
+    "technical-illustration"
+  ],
+  "subject_terms": [
+    "technical 3D illustration",
+    "diagrammatic product view",
+    "instructional cutaway",
+    "representation aesthetic",
+    "exploded diagram",
+    "assembly drawing"
+  ],
+  "intent_signals": [
+    "Create a technical illustration",
+    "Explain parts with controlled reveals and clear labels"
+  ],
+  "example_prompts": [
+    "Create a technical exploded-camera illustration with leader lines and a reset to the assembled body."
+  ],
+  "content": {
+    "principles": [
+      "Prioritize identifiable parts, ordered reveals and unambiguous labels while distinguishing sourced structure from authored simplification."
+    ],
+    "implementation": [
+      "Model the features needed by the explanation; choose cutaway or exploded offsets that retain stable part identities and an assembly reference.",
+      "Use restrained surface color, clear edge contrast and broad lighting that supports part separation.",
+      "Provide a repeatable camera and controlled reveal steps; offer reset to the assembled state and avoid decorative movement during a reading task.",
+      "Explode along one declared axis: offset each part by 1.5x its own bounding depth, animate over 800 ms cubic in-out with a 200 ms stagger, and keep a dashed 0.75 px leader from each part back to its seated position so reset is unambiguous.",
+      "Render flat MeshBasicMaterial fills with an outline pass at 1.5 px on silhouettes and 0.75 px on interior edges; with Neutral tone mapping at exposure 1.0 and no lights, the on-screen part colour equals its legend swatch exactly."
+    ],
+    "observable_checks": [
+      "Labels point to the intended part from the supported view and displacement for explanation is not confused with the assembled geometry."
+    ]
+  },
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "An instructional plate is read, not admired, so the numbers make colour a label rather than an effect: unlit MeshBasicMaterial fills under Neutral tone mapping at exposure 1.0, no fog, no bloom, and exactly two saturated hues - one for the part under discussion, one for callouts - against a white page. The near-orthographic 24-degree lens and the 1.5x-bounding-depth explode offset exist so a reader can judge proportion and reassembly order without the perspective and shading cues that would make those judgements unreliable.",
+    "values": {
+      "feeling": [
+        "clear",
+        "instructive",
+        "neutral"
+      ],
+      "palette": [
+        {
+          "hex": "#ffffff",
+          "role": "page / background"
+        },
+        {
+          "hex": "#d7dde3",
+          "role": "secondary parts, de-emphasised"
+        },
+        {
+          "hex": "#3a4650",
+          "role": "line work and part outlines"
+        },
+        {
+          "hex": "#2f7dd1",
+          "role": "the part currently under discussion"
+        },
+        {
+          "hex": "#e2622f",
+          "role": "callout leaders, motion arrows, warnings"
+        }
+      ],
+      "value_structure": "15/60/25 dark/mid/light on a white page; the discussed part is the only saturated region in frame",
+      "saturation_rule": "greys stay <= 8% HSL; exactly two saturated hues, one for the focus part and one for annotation, never applied to the same element",
+      "sky": {
+        "model": "solid",
+        "zenith": "#ffffff",
+        "horizon": "#ffffff"
+      },
+      "fog": {
+        "type": "none",
+        "color": "#ffffff",
+        "density": 0
+      },
+      "lights": {
+        "key": {
+          "type": "none",
+          "note": "MeshBasicMaterial flat fills plus an outline pass; with no shading a part's colour is exactly its assigned colour"
+        },
+        "fill": {
+          "type": "none"
+        },
+        "rim": {
+          "type": "none"
+        },
+        "ratio": "unlit - separation comes from outline weight (1.5 px silhouette, 0.75 px interior) and flat fill value, not from light"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "Neutral",
+        "exposure": 1.0
+      },
+      "camera": {
+        "fov_deg": 24,
+        "height_m": 1.4,
+        "pitch_deg": -18,
+        "projection": "orthographic for the assembled plate; perspective at fov 24 only when overlap must be disambiguated",
+        "orbit": {
+          "minPolar_deg": 20,
+          "maxPolar_deg": 75,
+          "minDist_m": 0.5,
+          "maxDist_m": 8
+        }
+      },
+      "materials": {
+        "roughness": [
+          1.0,
+          1.0
+        ],
+        "metalness": [
+          0,
+          0
+        ],
+        "notes": "MeshBasicMaterial flat fills plus an inverted-hull or EdgesGeometry outline pass; each part keeps one constant colour so the reader can match it to the legend from any angle"
+      },
+      "motion": {
+        "sway_period_s": [
+          0,
+          0
+        ],
+        "ease": "cubic in-out",
+        "hold_ms": 800
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.2,
+          "strength": 0.0,
+          "radius": 0.0
+        },
+        "vignette": 0.0,
+        "grain": 0.0,
+        "dof": "off"
+      },
+      "signature_technique": "an exploded view along a single declared axis, each part offset by 1.5x its own bounding depth with a dashed 0.75 px leader back to its seated position",
+      "never": [
+        "shading that alters encoded colour",
+        "perspective distortion that changes a proportion the reader must judge",
+        "more than seven simultaneous callouts",
+        "confusing an exploded offset with the assembled geometry"
+      ]
+    }
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for Neutral tone mapping at exposure 1.0 with unlit materials; re-tune every value if you introduce shading, a different tone mapping or a different exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with monochrome, papercraft or stylized surfaces; measured dimensions and anatomical claims require their own source/geometry checks."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

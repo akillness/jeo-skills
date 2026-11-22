@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "id": "recipe.loading-dock-resource-board",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "title": {
+    "en": "Loading dock resource scheduling"
+  },
+  "aliases": {
+    "en": [
+      "dock assignment",
+      "truck service queue"
+    ]
+  },
+  "direction_ids": [
+    "operations-logistics"
+  ],
+  "summary": "Show contention for invented dock resources with inspectable event timing.",
+  "objective": "Create a loading dock board with three bays, queued trucks and explicit service-start and finish events.",
+  "tags": [
+    "loading dock",
+    "truck queue",
+    "resource capacity"
+  ],
+  "subject_terms": [
+    "loading dock",
+    "truck queue",
+    "resource capacity",
+    "service event",
+    "assignment"
+  ],
+  "intent_signals": [
+    "assign a free dock",
+    "inspect waiting versus service"
+  ],
+  "example_prompts": [
+    "Create a loading dock board with three bays, queued trucks and explicit service-start and finish events.",
+    "Close one bay and show the effect on the pending assignment list."
+  ],
+  "entities": [
+    {
+      "name": "Dock facade",
+      "guidance": "Model three bay recesses, shutters, bumpers and bay signs."
+    },
+    {
+      "name": "Trucks",
+      "guidance": "Distinct cab, chassis and box bodies with stable shipment labels."
+    },
+    {
+      "name": "Queue lanes",
+      "guidance": "Mark waiting slots and dedicated dock approach paths."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Dock facade",
+      "structure": "Model three bay recesses, shutters, bumpers and bay signs.",
+      "material": "Matte industrial cladding and dark rubber-looking bumpers."
+    },
+    {
+      "family": "Trucks",
+      "structure": "Distinct cab, chassis and box bodies with stable shipment labels.",
+      "material": "Painted body panels and muted glass."
+    },
+    {
+      "family": "Queue lanes",
+      "structure": "Mark waiting slots and dedicated dock approach paths.",
+      "material": "Asphalt-looking ground with clear slot numbering."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored first-eligible assignment policy; truck states waiting, approaching, servicing, leaving, done; dock capacity one; deterministic event queue.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Step arrivals and completions.",
+      "Close an idle dock.",
+      "Inspect waiting time from event timestamps."
+    ]
+  },
+  "invariants": [
+    "A dock has one owner at most; approach reserves it before movement.",
+    "Closing a busy dock is rejected or deferred under an explicit visible policy.",
+    "Waiting and service durations use model time, not animation completion callbacks."
+  ],
+  "motion_guidance": [
+    "Animate trucks only along assigned clearance paths; use turning envelopes and serialize conflicting approaches.",
+    "Do not imply docking precision from a smooth tween."
+  ],
+  "known_limits": [
+    "Scheduling illustration with invented durations; not an optimization, safety or throughput study.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [],
+  "creative_affordances": [
+    "Bay recesses and lane markings make resource ownership spatially visible."
+  ],
+  "physical_contract": {
+    "model": "controlled-locomotion",
+    "scope": "Scripted docking motions attached to resource reservations.",
+    "state": [
+      "truck state",
+      "dock owner",
+      "approach progress"
+    ],
+    "colliders": [
+      "Truck swept envelopes and dock facade bounds."
+    ],
+    "driving": [
+      "Reserved path with speed and turn limits."
+    ],
+    "contact": [
+      "Stop on conflicting reservation; no vehicle dynamics solver."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Simultaneous arrivals cannot reserve the same bay; reset clears ownership."
+    ]
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.three-rigid-body-adapter",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "tool-adapter",
+  "title": {
+    "en": "Three.js and Rapier rigid-body adapter"
+  },
+  "aliases": {
+    "en": [
+      "three rigid body adapter"
+    ]
+  },
+  "direction_ids": [
+    "rigid-mechanics",
+    "environments-dioramas"
+  ],
+  "summary": "Connect rendered assemblies to independent rigid bodies and colliders with one authoritative simulation state.",
+  "objective": "Toggle collider visualization: rendered surfaces and collision boundaries agree at the contact region.",
+  "tags": [
+    "tool-adapter",
+    "three",
+    "rigid",
+    "body",
+    "adapter"
+  ],
+  "example_prompts": [
+    "Connect rendered assemblies to independent rigid bodies and colliders with one authoritative simulation state."
+  ],
+  "content": {
+    "principles": [
+      "Three.js draws the view; the physics world owns dynamic poses. Give each body an explicit corresponding presentation root.",
+      "Use a solver only when the interaction requires it; an analytic trajectory can remain a smaller, clearly scoped model."
+    ],
+    "implementation": [
+      "Choose consistent distance units and axes, record the installed Three.js/Rapier versions and await engine initialization before starting controls.",
+      "Create bodies and colliders separately. Configure density or mass, friction and restitution deliberately; optical materials do not supply these values.",
+      "Step the physics world at a declared fixed interval, then copy body position and quaternion into unscaled view roots. Interpolate only the rendered pose.",
+      "Use forces or impulses for dynamic actions. For prescribed motion use the appropriate kinematic target API; clear the accumulator on reset."
+    ],
+    "observable_checks": [
+      "Toggle collider visualization: rendered surfaces and collision boundaries agree at the contact region.",
+      "Apply one impulse, pause and reset; the view follows body state and never fights a second animation writer."
+    ]
+  },
+  "known_limits": [
+    "Kinematic targets are not obstacle avoidance. Verify engine-specific collision filters, sensor flags and initialization in the installed version.",
+    "Authored reusable guidance; no runtime artifact or improvement has been observed for this record."
+  ],
+  "creative_affordances": [
+    "Adapt proportions, finish and presentation to the scene; explain deliberate departures from this guidance."
+  ],
+  "related_ids": [
+    "recipe.projectile-trajectory",
+    "recipe.fantasy-village-diorama",
+    "knowledge.gravity-contact"
+  ],
+  "claims": [
+    {
+      "id": "claim.knowledge-three-rigid-body-adapter",
+      "statement": "Rapier colliders define mass properties and friction/restitution parameters for contact.",
+      "scope": "Physics configuration, separate from rendering materials.",
+      "source_refs": [
+        {
+          "source_id": "source.rapier-colliders",
+          "locator": "Mass properties; Friction; Restitution"
+        }
+      ]
+    }
+  ]
+}

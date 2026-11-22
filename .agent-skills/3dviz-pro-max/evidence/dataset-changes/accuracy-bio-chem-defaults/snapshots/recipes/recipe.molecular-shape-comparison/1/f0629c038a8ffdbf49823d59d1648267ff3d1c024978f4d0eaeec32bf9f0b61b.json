@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "id": "recipe.molecular-shape-comparison",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Molecular shape and electron-pair geometry"
+  },
+  "aliases": {
+    "en": [
+      "VSEPR methane water",
+      "molecular geometry comparison"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Contrast methane and water while distinguishing atoms from electron-pair guides.",
+  "objective": "Compare methane and water in 3D and let me show electron-pair guides separately from atoms.",
+  "tags": [
+    "VSEPR",
+    "methane",
+    "water"
+  ],
+  "subject_terms": [
+    "VSEPR",
+    "methane",
+    "water",
+    "tetrahedral",
+    "bent",
+    "lone pair"
+  ],
+  "intent_signals": [
+    "compare molecular shapes",
+    "toggle electron-pair geometry"
+  ],
+  "example_prompts": [
+    "Compare methane and water in 3D and let me show electron-pair guides separately from atoms.",
+    "Rotate water to see why a tetrahedral electron-pair arrangement does not mean four bonded atoms."
+  ],
+  "entities": [
+    {
+      "name": "Atoms and bonds",
+      "guidance": "Construct each molecule from explicit element IDs, bonds and positions; sticks terminate at atom centers."
+    },
+    {
+      "name": "Lone-pair guides",
+      "guidance": "Use translucent lobes distinct from atom spheres and include an electron-pair legend."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Atoms and bonds",
+      "structure": "Construct each molecule from explicit element IDs, bonds and positions; sticks terminate at atom centers.",
+      "material": "Conventional labeled element colors; sphere sizes are display radii."
+    },
+    {
+      "family": "Lone-pair guides",
+      "structure": "Use translucent lobes distinct from atom spheres and include an electron-pair legend.",
+      "material": "Soft transparent guide material, never a photoreal electron cloud."
+    }
+  ],
+  "state_contract": {
+    "model": "Selected molecule with fixed idealized coordinates and independent guide visibility; methane tetrahedral, water bent using cited 104.5-degree schematic bond angle.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Switch molecule.",
+      "Toggle lone pairs and angle bracket.",
+      "Rotate or reset camera."
+    ]
+  },
+  "invariants": [
+    "Water always has two bonded hydrogens; guide visibility never adds atoms.",
+    "Methane retains four C-H bonds.",
+    "Camera motion never changes measured bond angle."
+  ],
+  "motion_guidance": [
+    "Avoid morphing methane atoms into water atoms; transition through distinct named models.",
+    "Renderer tooling owns cylinders, labels and picking; molecule connectivity is authoritative data."
+  ],
+  "known_limits": [
+    "VSEPR illustration, not electron density, molecular dynamics or an experimentally fitted structure.",
+    "Display radii and bond lengths are not van der Waals or measured values unless separately supplied.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [
+    {
+      "id": "claim.molecular-shape-comparison",
+      "statement": "Methane has tetrahedral molecular geometry. Water has tetrahedral electron-pair geometry but bent molecular geometry, with a bond angle about 104.5 degrees.",
+      "scope": "Introductory idealized VSEPR comparison of CH4 and H2O; no quantitative electronic-structure claim.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-molecular-shape",
+          "locator": "Figure 7.17 and Example 7.13 / Figure 7.23"
+        }
+      ]
+    }
+  ],
+  "physical_contract": {
+    "model": "none",
+    "scope": "Static idealized molecular geometry.",
+    "state": [
+      "molecule ID",
+      "guide visibility"
+    ],
+    "colliders": [
+      "None; display spheres are not collision radii."
+    ],
+    "driving": [
+      "Camera and selection only."
+    ],
+    "contact": [
+      "No interatomic forces."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Count bonds and confirm water guide toggles leave atom count unchanged."
+    ]
+  }
+}

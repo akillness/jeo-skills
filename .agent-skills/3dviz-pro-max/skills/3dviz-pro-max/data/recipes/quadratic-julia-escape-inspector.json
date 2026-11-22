@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "id": "recipe.quadratic-julia-escape-inspector",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "title": {
+    "en": "Quadratic Julia filled-set escape inspector"
+  },
+  "aliases": {
+    "en": [
+      "fixed-c Julia escape map",
+      "filled Julia set inspector",
+      "quadratic dynamical plane"
+    ]
+  },
+  "direction_ids": [
+    "calculus-fields",
+    "abstract-systems-data"
+  ],
+  "summary": "Hold one quadratic parameter fixed, vary the initial complex point, and inspect detected escape without confusing the dynamical plane with the Mandelbrot parameter plane or finite non-escape with membership proof.",
+  "objective": "Choose a bounded complex parameter c, inspect how sampled initial points iterate under z squared plus c, and link one escape-time pixel to its exact finite orbit.",
+  "tags": [
+    "Julia set",
+    "filled Julia set",
+    "escape time",
+    "complex dynamics"
+  ],
+  "subject_terms": [
+    "quadratic Julia set",
+    "filled Julia set",
+    "dynamical plane",
+    "fixed complex parameter",
+    "escape radius",
+    "critical orbit",
+    "finite iteration budget"
+  ],
+  "intent_signals": [
+    "Keep c fixed and show which starting points escape under repeated quadratic iteration.",
+    "Compare connected-looking and dust-like filled Julia samples while keeping finite-budget uncertainty visible.",
+    "Select a Julia raster point and inspect its exact complex orbit step by step."
+  ],
+  "example_prompts": [
+    "Build a fixed-c quadratic Julia inspector with an escape-time floor and a selected orbit rising by iteration index.",
+    "Let me switch among c=0, c=-1 and a parameter whose critical orbit escapes, then distinguish detected escape from unresolved samples."
+  ],
+  "negative_signals": [
+    "Not a Mandelbrot parameter-plane raster where c varies and z0 is always zero.",
+    "Not a three-dimensional Mandelbulb, quaternion Julia set or continuous-time flow."
+  ],
+  "not_for": [
+    "Proving boundary membership, connectedness from a finite non-escaping orbit, or deep-zoom accuracy without numerical error analysis.",
+    "Treating iteration index as physical time or the plotted height as a third complex coordinate."
+  ],
+  "entities": [
+    {
+      "name": "Fixed-parameter dynamical-plane floor",
+      "guidance": "Sample initial points z0 at declared pixel centers while one visibly pinned c remains fixed for the whole floor. Encode first detected escape index separately from not-escaped-by-N; label the latter unresolved rather than inside the Julia set."
+    },
+    {
+      "name": "Selected orbit ladder",
+      "guidance": "Plot (Re z_n, Im z_n, n) in a separate labeled frame, with exact complex values in a table and a radius-R ring on its plane projection. Stop the finite trace at first detected escape or N."
+    },
+    {
+      "name": "Critical-orbit connectivity diagnostic",
+      "guidance": "Run the same recurrence from z0=0. Label an ordinary floating-point threshold crossing as numerically detected critical-orbit escape. Report the source-backed disconnected/Cantor conclusion only when exact arithmetic, an interval enclosure or a declared certified bound proves escape; otherwise retain a numerical-evidence label. If the orbit has not escaped by N, report no finite connectivity conclusion. Keep this diagnostic distinct from the selected raster point."
+    }
+  ],
+  "state_contract": {
+    "model": "Use f_c(z)=z*z+c with one finite complex c per raster and integer 1<=N<=5000. Require finite real and imaginary inputs and set R=max(2,|c|). For each sampled z0, record the first n in 0..N for which the computed |z_n|>R; strict exceedance is numerically detected escape because the exact inequality |z_(n+1)|>=|z_n|^2-|c|>|z_n| holds when an exact orbit value satisfies |z_n|>R. If no such n exists, store not-escaped-by-N rather than filled-set membership. Record numeric precision, viewport bounds, sample dimensions and pixel-center convention. A theorem-level escape result requires exact arithmetic, interval bounds or another declared certification that accounts for rounding; ordinary floating-point thresholding remains numerical evidence. Recompute all samples when c changes.",
+    "authority": "The complex parameter, initial point, recurrence, iteration budget and arithmetic policy own all classifications and orbit coordinates. Palette, mesh extrusion and camera never change the recurrence. The Mandelbrot view is absent because this artifact varies z0 rather than c.",
+    "actions": [
+      "Choose c from exact presets or finite real and imaginary fields and recompute the entire dynamical plane.",
+      "Select z0 on the raster and step, play, pause or scrub its stored finite orbit.",
+      "Increase N without moving pixel centers and reveal samples that newly receive a first escape index.",
+      "Toggle the critical-orbit diagnostic, radius ring and exact-value table.",
+      "Reset c, z0, viewport, N, arithmetic display and orbit index."
+    ]
+  },
+  "invariants": [
+    "Every raster sample in one result uses the same c, N, R, viewport and arithmetic policy; changing c invalidates the prior raster and selected orbit together.",
+    "At c=0, z0=0 and every |z0|<1 remain bounded analytically, while every |z0|>1 diverges; finite raster labels still distinguish mathematical preset checks from sampled appearance.",
+    "At c=-1, z0=0 follows 0,-1,0,-1; the selected-orbit table and ladder must repeat those exact values.",
+    "At c=0 and z0=2, equality with R is not detected escape at n=0, but z1=4 is detected at n=1 because the comparison is strict.",
+    "Increasing N at fixed inputs preserves every existing first escape index; unresolved samples may become escaped but never the reverse under identical arithmetic.",
+    "An exact or certified escaping critical orbit supports the disconnected/Cantor conclusion. An ordinary floating-point threshold crossing is labeled numerical evidence, and a critical orbit merely unresolved at N never becomes a connectedness claim."
+  ],
+  "motion_guidance": [
+    "Advance the orbit only at integer iterations. Any marker traveling between z_n and z_(n+1) is an explanatory transition and not a continuous path generated by f_c.",
+    "When c changes, visibly clear or mark stale geometry until the new raster and orbit share one parameter revision.",
+    "Reverse scrubbing reads stored iterates; it does not apply an inverse branch of the quadratic map."
+  ],
+  "creative_affordances": [
+    "Use ceramic contour bands, luminous topographic columns or a dark mathematical instrument, provided text, shape or hatching carries the escaped versus unresolved distinction without relying on hue.",
+    "Parameter presets may be arranged as small engraved tokens, but each token must state its exact complex c and must trigger a full recomputation."
+  ],
+  "known_limits": [
+    "The raster approximates K_c at finite spatial resolution and iteration budget; it does not isolate the boundary J_c or certify membership for unresolved points.",
+    "Floating-point overflow, underflow and rounding require an explicit diagnostic. Deep zoom, arbitrary precision and interval-certified boundary tests are outside this bounded recipe.",
+    "The source's critical-orbit theorem is exact mathematics; a definitive disconnected conclusion requires exact or certified escape, not an unqualified floating-point threshold crossing. Finite failure to detect escape is also inconclusive.",
+    "No recurrence artifact, renderer, interactive control or visual result was run for this authored recipe."
+  ],
+  "claims": [
+    {
+      "id": "claim.experience-math-quadratic-filled-julia",
+      "statement": "For a polynomial f, the filled Julia set K_f consists of points whose forward iterates do not tend to infinity. For f_c(z)=z^2+c, K_c is connected when the critical point 0 belongs to K_c and is homeomorphic to a Cantor set when 0 does not belong to K_c.",
+      "scope": "Complex quadratic polynomials in monic centered form and the exact infinite forward orbit; finite sampled non-escape does not establish either membership or connectedness.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-math-douady-hubbard-orsay",
+          "locator": "Part I, Chapter 3, section 1, printed pages 21-22 (PDF indices 20-21): definition of K_f and Proposition 3.1; Chapter 4, section 4, printed page 36 (PDF index 35): f(z)=z^2+c and critical point 0"
+        }
+      ]
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Julia dynamical-plane instrument",
+      "structure": "Mount the sampled z0 plane, fixed-c plaque, escape legend and selected-point pin on one shallow base. Place the orbit ladder beside it rather than extruding every pixel into an unreadable terrain.",
+      "material": "Use a quiet matte base, crisp axis ticks and at least one non-color cue for unresolved samples. Gloss or glow may emphasize the selected orbit but must not hide pixel boundaries or exact labels.",
+      "articulation": "The selection pin moves only over the z0 plane; the orbit marker advances along stored integer-index nodes. Parameter tokens replace c atomically and invalidate both views."
+    }
+  ],
+  "physical_contract": {
+    "model": "numerical-dynamics",
+    "scope": "Finite iteration of a complex quadratic map and derived display geometry; no physical time, contact or force model.",
+    "timestep": "One exact recurrence application per integer index in the selected floating-point policy; no continuous integrator or interpolated state update.",
+    "state": [
+      "fixed complex parameter c",
+      "sampled initial point z0",
+      "stored complex iterates z_n",
+      "first detected escape index or unresolved status",
+      "iteration budget and arithmetic policy"
+    ],
+    "checks": [
+      "Evaluate the c=0, c=-1 and strict-radius boundary presets exactly before accepting a displayed implementation.",
+      "At fixed inputs compare first escape indices before and after increasing N.",
+      "Verify every selected table value, planar coordinate and ladder height comes from the same stored iterate."
+    ]
+  },
+  "related_ids": [
+    "recipe.mandelbrot-escape-orbit"
+  ]
+}

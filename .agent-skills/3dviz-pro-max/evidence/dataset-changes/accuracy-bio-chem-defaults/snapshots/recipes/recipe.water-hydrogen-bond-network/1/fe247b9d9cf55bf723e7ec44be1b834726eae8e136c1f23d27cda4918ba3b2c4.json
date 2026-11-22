@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "id": "recipe.water-hydrogen-bond-network",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "title": {
+    "en": "Water hydrogen-bond illustration"
+  },
+  "aliases": {
+    "en": [
+      "intermolecular water attraction",
+      "hydrogen bond versus covalent bond"
+    ]
+  },
+  "direction_ids": [
+    "molecules-materials"
+  ],
+  "summary": "Distinguish intramolecular O-H bonds from selected illustrative intermolecular connections.",
+  "objective": "Create a small group of water molecules with solid O-H bonds and dashed illustrative hydrogen bonds.",
+  "tags": [
+    "water network",
+    "hydrogen bond",
+    "covalent bond"
+  ],
+  "subject_terms": [
+    "water network",
+    "hydrogen bond",
+    "covalent bond",
+    "intermolecular",
+    "donor acceptor"
+  ],
+  "intent_signals": [
+    "explain hydrogen bonding",
+    "distinguish bond types"
+  ],
+  "example_prompts": [
+    "Create a small group of water molecules with solid O-H bonds and dashed illustrative hydrogen bonds.",
+    "Select a dashed link to show that it connects two separate molecules."
+  ],
+  "entities": [
+    {
+      "name": "Water molecules",
+      "guidance": "Use a small number of bent O-H units with stable molecule and atom IDs."
+    },
+    {
+      "name": "Intermolecular guides",
+      "guidance": "Connect authored donor hydrogen and neighboring oxygen endpoints with dashed lines."
+    }
+  ],
+  "object_craft": [
+    {
+      "family": "Water molecules",
+      "structure": "Use a small number of bent O-H units with stable molecule and atom IDs.",
+      "material": "Labeled oxygen/hydrogen colors and solid covalent sticks."
+    },
+    {
+      "family": "Intermolecular guides",
+      "structure": "Connect authored donor hydrogen and neighboring oxygen endpoints with dashed lines.",
+      "material": "Thin dashed contrasting material with a legend."
+    }
+  ],
+  "state_contract": {
+    "model": "Authored molecule placements and explicit illustrative intermolecular edge list; no distance-threshold bond inference or dynamic equilibrium.",
+    "authority": "Domain state owns identities, values and accepted transitions. Derive labels and meshes from that state; camera and display offsets are separate.",
+    "actions": [
+      "Select a molecular unit or intermolecular edge.",
+      "Toggle dashed guides.",
+      "Explode the group for identification then restore it."
+    ]
+  },
+  "invariants": [
+    "Solid bonds connect atoms within one molecule; illustrated dashed edges connect distinct molecules.",
+    "Moving a display group updates its guide endpoints.",
+    "A selected edge exposes both endpoint molecule IDs."
+  ],
+  "motion_guidance": [
+    "Use a static network by default; any regrouping is labeled presentation, not bond kinetics.",
+    "Retain clear separation of the two bond styles from all camera angles."
+  ],
+  "known_limits": [
+    "Illustrative small network, not liquid water structure, bond lifetime or force-field simulation.",
+    "No universal hydrogen-bond cutoff, energy or occupancy prediction.",
+    "Authored recipe only; runtime and rendered geometry checks have not run."
+  ],
+  "claims": [
+    {
+      "id": "claim.water-hydrogen-bond-network",
+      "statement": "Water molecules can participate in intermolecular hydrogen-bond interactions, distinct from their intramolecular covalent O-H bonds.",
+      "scope": "Water example only; illustrative edge selection does not establish a quantitative hydrogen-bond detection rule.",
+      "source_refs": [
+        {
+          "source_id": "source.applied-hydrogen-bonds",
+          "locator": "Hydrogen Bonding; Figure 10.10"
+        }
+      ]
+    }
+  ],
+  "physical_contract": {
+    "model": "display-transform",
+    "scope": "Presentation of an authored molecular network.",
+    "state": [
+      "molecule transforms",
+      "guide edges"
+    ],
+    "colliders": [
+      "None; geometry does not solve intermolecular forces."
+    ],
+    "driving": [
+      "Selection and optional display separation."
+    ],
+    "contact": [
+      "No force or contact calculation."
+    ],
+    "timestep": "Use a declared fixed update step for changing model state; interpolate presentation only. Pause clears accumulated playback time.",
+    "checks": [
+      "Dashed links connect different molecules and remain attached to their endpoint atoms."
+    ]
+  }
+}

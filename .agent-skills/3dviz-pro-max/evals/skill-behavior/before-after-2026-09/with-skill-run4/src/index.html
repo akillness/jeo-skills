@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lanternfall — a river village at dusk</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <div class="viewport" aria-busy="true">
+        <canvas id="world" aria-label="A fictional river village lit by paper lanterns at dusk"></canvas>
+        <p id="error" role="alert" hidden></p>
+      </div>
+      <aside class="panel">
+        <header>
+          <p class="eyebrow">Riverside lantern festival · fictional</p>
+          <h1>Lanternfall</h1>
+          <p class="lede">Civil dusk on the Selm. The lanterns are the only light, and the river
+            gives every one of them back.</p>
+        </header>
+        <h2>Views</h2>
+        <nav id="views" aria-label="Camera views"></nav>
+        <h2>Buildings</h2>
+        <nav id="picks" aria-label="Selectable buildings"></nav>
+        <p id="info" class="info" role="status"></p>
+        <p class="controls">
+          <button id="control" type="button" aria-pressed="false">Pause motion</button>
+          <button id="reset" type="button">Reset view</button>
+        </p>
+        <p class="note">Click any building in the scene to select it. Drag to orbit, scroll to zoom.</p>
+      </aside>
+    </main>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

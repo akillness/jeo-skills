@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.bridge-bearing-support-system",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "object-archetype",
+  "title": {
+    "en": "Bridge deck, bearing interface and approaches"
+  },
+  "aliases": {
+    "en": [
+      "bridge support assembly",
+      "deck to abutment connection"
+    ]
+  },
+  "direction_ids": [
+    "architecture-interiors",
+    "environments-dioramas",
+    "rigid-mechanics"
+  ],
+  "summary": "Make a small bridge legible as deck, span members, connection interfaces, abutments and approaches rather than an unsupported curved walkway.",
+  "objective": "Trace the chosen deck support arrangement in an underside view and keep traversable surfaces separate from rails, water and structural obstacles.",
+  "tags": [
+    "object-archetype",
+    "bridge-bearing-support-system"
+  ],
+  "subject_terms": [
+    "bridge deck",
+    "girder",
+    "bearing seat",
+    "abutment",
+    "pier",
+    "approach ramp",
+    "integral connection"
+  ],
+  "intent_signals": [
+    "bridge floats over river",
+    "show deck support structure",
+    "walkable bridge approach and railing"
+  ],
+  "example_prompts": [
+    "Build an inspectable footbridge with clear deck supports and continuous approaches.",
+    "Show the difference between a bearing-supported bridge and an integral connection without designing a real bridge."
+  ],
+  "content": {
+    "principles": [
+      "Choose one structural archetype before decorating: a beam span with bearings, an integral frame, an arch or a suspension system imply different connection details. The cited FHWA guidance documents both bearing and integral interfaces.",
+      "Keep deck surface, primary span members, substructure and ground interface distinguishable. Decorative rails should not visually impersonate the only load-carrying assembly.",
+      "Structural explanation and walkable collision geometry are separate layers. A deck can support a character while the underside and rails remain obstacles; water beneath it is not traversable ground.",
+      "An illustrative support arrangement must not imply verified dimensions, code compliance, structural capacity or foundation adequacy."
+    ],
+    "implementation": [
+      "For an authored beam example, name deck boards/slab, two or more chosen girders, transverse ties, bearing seats and abutments. Place each span end on a visible interface; for an integral alternative, replace the bearing detail with a continuous chosen connection.",
+      "Give the deck a real thickness and distinguish top surface from soffit. Add material changes at timber, metal or masonry interfaces without forcing one style or universally prescribing brackets.",
+      "Represent bearing movement only if its allowed translation/rotation is explicitly chosen; do not animate every support in every direction. Keep a diagrammatic degrees-of-freedom overlay separate from rendered construction.",
+      "Generate approaches from the same deck-end elevations used by support queries. Specify slope/step limits for the chosen traveler, provide a bounded support search and keep water/rail exclusions active.",
+      "Use separate selectable deck, connection and substructure groups. A cutaway or lift-off view may reveal them while preserving saved assembled transforms; collider behavior must follow the declared inspection mode.",
+      "If a load slider merely changes explanatory arrows, label it schematic. A stress or displacement result requires a stated structural model, boundary conditions and an independently checked calculation."
+    ],
+    "observable_checks": [
+      "From below, each chosen girder end reaches its bearing seat or declared integral joint; none terminates in air.",
+      "Trace a traveler from bank to approach to deck to opposite bank: support height is continuous within the declared limits and water below is rejected.",
+      "Move an inspection slider out and back: deck, supports and labels return to the same assembly, with no hidden duplicate collision plane.",
+      "Switch between the authored bearing and integral variants: connection labels and permitted-motion overlays change together."
+    ]
+  },
+  "known_limits": [
+    "FHWA source supports interface classification; this record does not certify bearings, fasteners, foundations or any pedestrian/vehicle load.",
+    "Traverse checks apply to the chosen collision/support model, not accessibility or construction approval.",
+    "Authored modeling guidance and prospective checks; no runtime artifact has been executed for this record."
+  ],
+  "creative_affordances": [
+    "Use timber, stone, metal, glass or fictional materials and vary span silhouette; choose a matching support explanation instead of enforcing a universal bridge style."
+  ],
+  "claims": [
+    {
+      "id": "claim.object-depth-bridge-bearing-support-system",
+      "statement": "FHWA describes structural bearings at superstructure/substructure connections and also documents integral connections as an alternative.",
+      "scope": "Connection classification in FHWA PBES guidance, sections 2.5 and 2.5.4; no claim that every bridge needs separate bearings.",
+      "source_refs": [
+        {
+          "source_id": "source.object-depth-fhwa-bridge-connections",
+          "locator": "Sections 2.5 Connections between Superstructures and Substructures and 2.5.4 Structural Bearings."
+        }
+      ]
+    }
+  ],
+  "related_ids": [
+    "knowledge.framed-shelter"
+  ]
+}

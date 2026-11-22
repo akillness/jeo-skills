@@ -1,0 +1,7 @@
+{
+  "className": "Script",
+  "properties": {
+    "RunContext": "Legacy",
+    "Source": "-- FIXTURE: the same script copied into every door (ArchAudit script-in-workspace, duplicate-source).\nlocal door = script.Parent\nlocal panel = door:FindFirstChild(\"Panel\")\nif panel then\n\tpanel:SetAttribute(\"Wired\", true)\nend\n"
+  }
+}

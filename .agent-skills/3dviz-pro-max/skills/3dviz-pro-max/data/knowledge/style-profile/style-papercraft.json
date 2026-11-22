@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-papercraft",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Papercraft construction cues"
+  },
+  "aliases": {
+    "en": [
+      "paper craft",
+      "cut paper diorama",
+      "folded card scene",
+      "paper cutout",
+      "card model"
+    ]
+  },
+  "direction_ids": [
+    "environments-dioramas",
+    "solid-geometry"
+  ],
+  "summary": "Express a made-from-sheet proposal through folds, cut edges and layered panels rather than adding paper texture alone.",
+  "objective": "Panel edges and layer order remain readable; a claimed buildable pattern must be checked separately instead of inferred from this appearance.",
+  "tags": [
+    "style-profile",
+    "construction-aesthetic",
+    "papercraft"
+  ],
+  "subject_terms": [
+    "paper craft",
+    "cut paper diorama",
+    "folded card scene",
+    "construction aesthetic"
+  ],
+  "intent_signals": [
+    "Use papercraft construction cues",
+    "Show cut edges folded panels and layers"
+  ],
+  "example_prompts": [
+    "Make a papercraft town with folded roof panels, visible cut edges and layered trees."
+  ],
+  "content": {
+    "principles": [
+      "Express a made-from-sheet proposal through folds, cut edges and layered panels rather than adding paper texture alone."
+    ],
+    "implementation": [
+      "Build sheets with visible boundaries and small thickness where useful; place fold seams and tabs only where the proposed construction needs them.",
+      "Use matte-looking surfaces, selective printed color and soft light that reveals overlapping layers.",
+      "Offer a three-quarter view plus inspection of a fold; animated folding uses explicit pivots and states if construction is being explained.",
+      "Give every sheet 0.35-0.6 mm modelled thickness with 3-6 mm glue tabs only where the proposed construction needs them, and offset stacked layers by 1.5-3 mm so each cut edge casts a visible line.",
+      "Keep the paper white at #f4efe4 rather than pure white and set ambient occlusion to strength 0.6 at a 4 cm radius, so layer order reads without adding outlines."
+    ],
+    "observable_checks": [
+      "Panel edges and layer order remain readable; a claimed buildable pattern must be checked separately instead of inferred from this appearance."
+    ]
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at renderer.toneMappingExposure 1.05; re-tune intensities and fog density under a different tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with technical-illustration labels or toy-miniature staging; playful impossible folds may be used when clearly presented as fiction."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "In cut paper the drawing is the shadow between layers, so the key is placed low at 35 degrees and the ratio kept shallow at 2.4:1 - a high key would flatten the 1.5-3 mm layer offsets that carry the whole construction read. Roughness 0.85-1.0 with a faint sheen (#fffdf7 at 0.1) gives uncoated card its fibre response, and holding the paper white at #f4efe4 leaves headroom so the lit sheets never clip to featureless white.",
+    "values": {
+      "feeling": [
+        "light",
+        "constructed",
+        "quiet"
+      ],
+      "palette": [
+        {
+          "hex": "#3c3730",
+          "role": "fold and layer shadow"
+        },
+        {
+          "hex": "#8a8272",
+          "role": "mid card stock"
+        },
+        {
+          "hex": "#f4efe4",
+          "role": "paper white (never #ffffff)"
+        },
+        {
+          "hex": "#d98f5a",
+          "role": "printed warm accent"
+        },
+        {
+          "hex": "#6f93a8",
+          "role": "printed cool accent"
+        }
+      ],
+      "value_structure": "25/50/25 dark/mid/light; the darks are cast shadows between layers, not printed ink",
+      "saturation_rule": "printed colours <= 55% saturation so they read as flat ink; bare card stock under 12%",
+      "sky": {
+        "model": "solid",
+        "zenith": "#eceae4",
+        "horizon": "#eceae4"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#eceae4",
+        "density": 0.008
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#fff6ea",
+          "intensity": 2.4,
+          "elevation_deg": 35,
+          "azimuth_deg": 300,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#d6e2ec",
+          "ground": "#6b6357",
+          "intensity": 1.0
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#ffffff",
+          "intensity": 0.4,
+          "elevation_deg": 15,
+          "azimuth_deg": 140,
+          "castShadow": false
+        },
+        "ratio": "key:fill ~ 2.4:1 at a low key angle; the shadow between layers is the drawing"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.05
+      },
+      "camera": {
+        "fov_deg": 40,
+        "height_m": 0.5,
+        "pitch_deg": -18,
+        "orbit": {
+          "minPolar_deg": 45,
+          "maxPolar_deg": 85,
+          "minDist_m": 0.5,
+          "maxDist_m": 5
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.85,
+          1.0
+        ],
+        "metalness": [
+          0.0,
+          0.0
+        ],
+        "notes": "0.9 uncoated card, 0.85 printed area; sheenColor #fffdf7 at sheen 0.1 for fibre response; no normal maps - every fold is geometry"
+      },
+      "motion": {
+        "sway_period_s": [
+          2.6,
+          4.0
+        ],
+        "ease": "sine in-out, 6 degree maximum amplitude",
+        "hold_ms": 300
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.3,
+          "strength": 0.06,
+          "radius": 0.3
+        },
+        "vignette": 0.18,
+        "grain": 0.03,
+        "dof": "off"
+      },
+      "signature_technique": "a 35 degree low key over 1.5-3 mm layer offsets, so the cast shadow between sheets states the construction without any outline pass",
+      "never": [
+        "paper texture mapped onto a solid mesh",
+        "untinted white ambient light",
+        "glossy specular on card",
+        "zero-thickness sheets",
+        "flat black background"
+      ]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Direction contract",
+  "description": "A taxonomy direction is a modeling category, not a tested capability. The catalog stores an array of these records.",
+  "type": "object",
+  "required": ["id", "summary"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"},
+    "summary": {"type": "string", "minLength": 1}
+  }
+}

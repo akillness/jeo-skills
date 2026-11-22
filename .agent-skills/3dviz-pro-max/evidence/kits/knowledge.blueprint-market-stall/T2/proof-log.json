@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-market-stall",
+  "record_revision": 3,
+  "asset": "templates/kits/buildings/market-stall.js",
+  "asset_sha256": "58ffbe3490badb19b64cf7500de98d1edcb4498b0c0c8fce1da36a32d54222a9",
+  "params": {
+    "width": 2.8,
+    "depth": 1.9,
+    "height": 2.4,
+    "stripes": 8,
+    "seed": 1
+  },
+  "tier": "T2",
+  "kit": {
+    "blueprint": "knowledge.blueprint-market-stall",
+    "module": "../buildings/market-stall.js",
+    "params": {
+      "width": 2.8,
+      "depth": 1.9,
+      "height": 2.4,
+      "stripes": 8,
+      "seed": 1
+    },
+    "tier": "T2",
+    "surface": {
+      "seed": 1,
+      "size": 1024,
+      "materials": 19,
+      "unmapped": [
+        "#ffffff",
+        "#c8a45c"
+      ],
+      "uv": [
+        "world",
+        "normalised"
+      ],
+      "ms": 168.1,
+      "ao": {
+        "vertices": 2757,
+        "casts": 7878,
+        "ms": 25.4,
+        "skipped": null
+      }
+    },
+    "triangles": 3104,
+    "bounds_m": {
+      "min": [
+        -1.514000000357628,
+        -4.768371586472142e-08,
+        -1.1933202516485557
+      ],
+      "max": [
+        1.514000000357628,
+        2.75999999910593,
+        1.5642572757524806
+      ],
+      "size": [
+        3.028000000715256,
+        2.7600000467896457,
+        2.757577527401036
+      ]
+    },
+    "fit_distance_m": 7.2199,
+    "view_distances_m": {
+      "far": 17.3277,
+      "mid": 8.6639,
+      "close": 5.6315,
+      "detail": 1.1466
+    },
+    "sockets": [
+      "front",
+      "counter",
+      "goods-left",
+      "goods-right",
+      "sign",
+      "keeper",
+      "ridge"
+    ],
+    "detail_socket": "front",
+    "animated": false,
+    "colliders": [
+      "frame",
+      "counter",
+      "canopy"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "08e68b5f7e39c9f527fb4b5b1708984a71d86f896bc92a9a7f032a3c51e26d75",
+    "mid.png": "bb8795f5560e6db279de66923f96abba2a852bc971610e5b47e137deb1d8315d",
+    "close.png": "caee642e50907c9462a0aa65516ef882439eac8930b2de8900d44216b3878f61",
+    "detail.png": "9229d910aaec1d9469573f3a06826d309507571af77568f27e7cec16e953148c"
+  },
+  "motion": null,
+  "gpu_requested": false,
+  "capture_mode": "swiftshader",
+  "webgl_renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T17:13:40+00:00",
+  "finished": "2026-09-08T17:13:46+00:00",
+  "surface": {
+    "families": {
+      "#8a6a45": "wood",
+      "#5d4630": "wood",
+      "#7d6242": "wood",
+      "#715637": "wood",
+      "#483624": "wood",
+      "#957a60": "wood",
+      "#9e8873": "wood",
+      "#a9a29e": "wood",
+      "#d9d2c2": "fabric",
+      "#a8443f": "fabric",
+      "#9c8455": "fabric",
+      "#c9bb98": "fabric",
+      "#ab9f81": "fabric",
+      "#2b2b30": "metal"
+    },
+    "seed": 1,
+    "size": 1024,
+    "ao": {
+      "samples": 13,
+      "radius_m": 0.45,
+      "ground_dirt_m": 0.6
+    }
+  }
+}

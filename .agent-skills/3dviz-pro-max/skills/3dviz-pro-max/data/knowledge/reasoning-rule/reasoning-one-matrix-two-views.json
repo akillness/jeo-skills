@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.reasoning-one-matrix-two-views",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "reasoning-rule",
+  "title": {
+    "en": "Drive the shape and the numbers from one matrix"
+  },
+  "aliases": {
+    "en": [
+      "single transform source",
+      "numeric and visual agreement",
+      "matrix authority"
+    ]
+  },
+  "direction_ids": [
+    "linear-algebra",
+    "abstract-systems-data"
+  ],
+  "summary": "Let the same matrix produce the deformation, the basis arrows and every displayed number, so the picture cannot lie about the algebra.",
+  "objective": "Make a linear algebra scene demonstrate the transformation rather than illustrate it.",
+  "applies_when": [
+    "A matrix acts on a shape, a grid or a set of vectors.",
+    "Entries, determinant, eigenvectors or images are displayed with the shape.",
+    "The user edits the matrix or drags a basis vector."
+  ],
+  "constraint_level": "correctness",
+  "subject_terms": [
+    "linear transformation",
+    "matrix",
+    "basis image",
+    "deformation",
+    "determinant",
+    "consistency"
+  ],
+  "tags": [
+    "reasoning-rule",
+    "correctness",
+    "linear-algebra",
+    "state"
+  ],
+  "intent_signals": [
+    "edit the matrix and watch the cube",
+    "drag the basis vector",
+    "show the transformation"
+  ],
+  "example_prompts": [
+    "Let me edit the matrix entries and see the unit cube deform.",
+    "Drag the image of the first basis vector and update the matrix."
+  ],
+  "negative_signals": [
+    "Decorative deformation effects that represent no specific transformation.",
+    "Non-linear deformations such as bends and twists, which are not matrices."
+  ],
+  "not_for": [
+    "Decorative deformation effects that represent no specific transformation.",
+    "Non-linear deformations such as bends and twists, which are not matrices."
+  ],
+  "content": {
+    "principles": [
+      "A matrix is exactly the record of where the basis vectors go: its columns are the images of the basis vectors, and every other vector follows by the same linear combination. That is why one source can drive both the numbers and the geometry.",
+      "Two independent implementations, one animating a shape and one printing numbers, will eventually disagree, and the viewer cannot tell which is right.",
+      "The relationship is invertible for interaction: dragging the image of a basis vector is the same as editing a column, so both directions of editing should update the same state.",
+      "Because linearity determines the whole map from the basis images, a scene can honestly claim that everything shown follows from a small number of degrees of freedom."
+    ],
+    "implementation": [
+      "Hold the matrix as the single state and derive the deformed geometry, the basis arrows, the grid and all readouts from it.",
+      "Apply the transformation to positions with the same matrix used for display, rather than approximating with separate scale and rotation controls.",
+      "Make direct manipulation write back into the matrix so dragging and typing produce identical state.",
+      "Show the basis images explicitly, since they are the interpretation of the columns.",
+      "Interpolate towards a target matrix rather than blending two independent visual states, and say what the intermediate frames represent."
+    ],
+    "observable_checks": [
+      "Type a matrix entry and confirm the corresponding basis image moves exactly to the new column.",
+      "Drag a basis image and confirm the printed entries match its new coordinates.",
+      "Apply the transformation to a labelled point and check the displayed image against a hand computation.",
+      "Compare the transformed grid against the transformed shape; independent implementations drift apart under extreme entries."
+    ]
+  },
+  "related_ids": [
+    "recipe.linear-transformation-3d",
+    "recipe.determinant-volume",
+    "recipe.cross-product"
+  ],
+  "creative_affordances": [
+    "Visual language for the transformation, from ghosted originals to trails and grids, is entirely open.",
+    "Non-linear artistic deformation can be layered on top for style if it is separated from the demonstrated map."
+  ],
+  "known_limits": [
+    "Authored state-model guidance citing the column interpretation of a matrix; no runtime scene has been verified.",
+    "It says nothing about numerical conditioning or about non-linear transformations."
+  ],
+  "claims": [
+    {
+      "id": "claim.reasoning-matrix-columns-are-basis-images",
+      "statement": "A matrix represents the linear transformation that sends each basis vector to the corresponding column of the matrix, and the image of any other vector is the same linear combination of those columns.",
+      "scope": "Finite-dimensional linear transformations in a fixed basis; it does not describe affine or non-linear maps.",
+      "source_refs": [
+        {
+          "source_id": "source.mit-matrices-transformations",
+          "locator": "32.5, matrix columns as images of the basis vectors"
+        }
+      ]
+    }
+  ]
+}

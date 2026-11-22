@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-minimalist",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Minimalist visual hierarchy"
+  },
+  "aliases": {
+    "en": [
+      "minimal 3D",
+      "minimalist scene",
+      "reduced visual clutter"
+    ]
+  },
+  "direction_ids": [
+    "abstract-systems-data",
+    "products-assemblies"
+  ],
+  "summary": "Keep only forms that communicate identity, relation or interaction; use spacing and proportion as the primary expressive tools.",
+  "objective": "Removing decoration has not removed the cues needed to identify parts, interpret a value or discover an action.",
+  "tags": [
+    "style-profile",
+    "art-direction",
+    "minimalist"
+  ],
+  "subject_terms": [
+    "minimal 3D",
+    "minimalist scene",
+    "reduced visual clutter",
+    "art direction"
+  ],
+  "intent_signals": [
+    "Create a minimalist scene",
+    "Reduce visual clutter while retaining meaning"
+  ],
+  "example_prompts": [
+    "Explain a service graph with minimalist forms and clearly labeled connection states."
+  ],
+  "content": {
+    "principles": [
+      "Keep only forms that communicate identity, relation or interaction; use spacing and proportion as the primary expressive tools.",
+      "This is an authored creative proposal, not a historical definition, fixed template or required rendering library."
+    ],
+    "implementation": [
+      "Reduce components to meaningful masses while preserving essential connections and selectable boundaries.",
+      "Choose a restrained palette and one clear lighting relationship; add contrast intentionally for focus and state.",
+      "Use a calm framing with room around the subject; animate only meaningful transitions or one deliberate ambient gesture."
+    ],
+    "observable_checks": [
+      "Removing decoration has not removed the cues needed to identify parts, interpret a value or discover an action.",
+      "Inspect the selected view and an alternate view at the intended output size before accepting the treatment."
+    ]
+  },
+  "known_limits": [
+    "Proposed art direction only; no rendered artifact, runtime improvement or perceptual validation has been observed for this record.",
+    "Appearance choices do not certify factual geometry, material measurements or simulated behavior."
+  ],
+  "creative_affordances": [
+    "Combine with geometric-abstract, monochrome or scientific encoding; minimalism must not delete units, uncertainty or required controls.",
+    "Adapt this proposal to the explicit user brief; combine or depart from it while preserving any factual and interaction contracts."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": []
+}

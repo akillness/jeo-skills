@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.modality-independent-action-map",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "mixed",
+  "knowledge_kind": "interaction-profile",
+  "title": {
+    "en": "Modality-independent spatial action map"
+  },
+  "aliases": {
+    "en": [
+      "semantic input action layer",
+      "mouse touch keyboard XR mapping",
+      "input arbitration map"
+    ]
+  },
+  "direction_ids": [
+    "spatial-puzzles",
+    "products-assemblies",
+    "environments-dioramas"
+  ],
+  "summary": "Map supported pointer, keyboard, touch and optional XR signals into semantic actions with shared validation, arbitration, cancel and feedback.",
+  "objective": "Essential actions have practical alternatives, unsupported modalities degrade explicitly, and simultaneous inputs cannot double-commit or steal an active operation.",
+  "applies_when": [
+    "A spatial experience supports more than one input modality or needs an alternative to precise drag interaction."
+  ],
+  "tags": [
+    "interaction-profile",
+    "input-map",
+    "keyboard",
+    "pointer",
+    "touch",
+    "webxr"
+  ],
+  "subject_terms": [
+    "semantic action",
+    "input adapter",
+    "gesture owner",
+    "capability detection",
+    "primary action",
+    "target ray",
+    "grip space",
+    "drag alternative"
+  ],
+  "intent_signals": [
+    "same action by mouse touch keyboard and XR",
+    "controller disconnect during grab",
+    "touch orbit steals object drag",
+    "provide a non-drag placement path"
+  ],
+  "example_prompts": [
+    "Map select, move, commit and cancel to pointer, keyboard and optional XR controls.",
+    "Let touch users place modules without a continuous precision drag."
+  ],
+  "negative_signals": [
+    "assume every browser has XR",
+    "bind business logic directly to pointer events",
+    "require the same physical gesture on every device"
+  ],
+  "not_for": [
+    "Claiming support for hardware or assistive technology that was not tested.",
+    "Replacing platform focus and text-editing behavior with canvas-only shortcuts."
+  ],
+  "content": {
+    "principles": [
+      "Define semantic actions such as Select, Begin Move, Step, Preview, Commit, Cancel, Orbit and Open Details before binding devices. Every adapter enters the same model validation path.",
+      "Equivalent outcomes do not require identical gestures. A labeled target chooser, step buttons or numeric field may serve an essential drag task more reliably than emulating a drag.",
+      "Arbitrate per active sequence: one pointer ID, key mode or XR input source owns an operation until commit, cancel, loss or disconnect, while unrelated inputs cannot create a second commit.",
+      "XR is conditional. Detect session and input-source capabilities, use target-ray and grip data only when supplied, and preserve a complete non-XR action path when the product requires one."
+    ],
+    "implementation": [
+      "Create a documented action table with preconditions, begin/update/end signals, focus behavior, feedback, cancel causes and commit effect for each supported adapter.",
+      "For browser pointers, declare touch-action for the interaction region and capture the active pointer where appropriate. Route pointercancel and pre-commit capture loss to cancellation; make termination idempotent so lostpointercapture after a successful pointerup only cleans up.",
+      "Keep keyboard focus in readable controls and offer explicit axis, target and amount choices. Do not let global shortcuts consume keystrokes intended for a text field.",
+      "For WebXR, associate state with the XRInputSource, derive pointing from targetRaySpace and physical grip pose from gripSpace only when present, and end or cancel active work when the source disappears according to product policy.",
+      "Expose available controls and current owner in-context. Unsupported adapters stay absent or disabled with a reason rather than silently doing nothing."
+    ],
+    "observable_checks": [
+      "Run the same select, legal move, commit and cancel sequence through every advertised adapter; model before/after states match even when gestures differ.",
+      "Begin an object action, then send orbit, second-pointer, repeated-key and second-controller signals; only the declared owner updates or commits it.",
+      "Cancel a pointer, move focus into a text field and disconnect an XR source in separate checks; scene state and input ownership follow the declared policies.",
+      "Disable XR or touch capability; the required task remains possible through advertised alternatives and no unavailable control is presented as working."
+    ]
+  },
+  "related_ids": [
+    "knowledge.accessible-spatial-controls",
+    "knowledge.constraint-aware-object-manipulation",
+    "knowledge.inspectable-selection",
+    "knowledge.snap-preview-and-commit"
+  ],
+  "creative_affordances": [
+    "Adapt prompts, sound, haptics and controller models to available devices while preserving semantic action names.",
+    "Use a compact command palette as an alternative path for complex spatial actions."
+  ],
+  "known_limits": [
+    "This profile does not assert universal WebXR, gamepad, hand-tracking or assistive-technology support.",
+    "WCAG conformance requires evaluation of the complete artifact, not merely an action map.",
+    "Authored and source-checked guidance; no browser, device or assistive-technology runtime was tested."
+  ],
+  "claims": [
+    {
+      "id": "claim.experience-wcag-drag-alternative",
+      "statement": "WCAG 2.2 Success Criterion 2.5.7 requires author-controlled functionality that uses a dragging movement to be achievable by a single pointer without dragging unless dragging is essential or the functionality belongs to the unmodified user agent; its Understanding document separately notes that keyboard accessibility remains applicable.",
+      "scope": "The criterion and informative explanation for web content; this record does not assert that any artifact conforms.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-wcag-dragging",
+          "locator": "Success Criterion; Intent; Relationship to keyboard accessibility requirements"
+        }
+      ]
+    },
+    {
+      "id": "claim.experience-webxr-input-source-contract",
+      "statement": "The 9 June 2026 WebXR Candidate Recommendation Draft defines XRInputSource targetRaySpace, optional gripSpace and handedness, and XRSession selectstart, select and selectend events around a source's primary action; selectend also fires when a source that began a primary action is disconnected.",
+      "scope": "WebXR API behavior when a compatible session and input source exist; no browser, device, controller profile or action-equivalence support is universalized.",
+      "source_refs": [
+        {
+          "source_id": "source.experience-webxr-input",
+          "locator": "Sections 10.1 and 12.6"
+        }
+      ]
+    }
+  ]
+}

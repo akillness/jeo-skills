@@ -1,0 +1,19 @@
+{
+    "name": "Unity.Testing.VisualEffectGraph.EditorTests",
+    "rootNamespace": "AgentKit.VfxGraph",
+    "references": [
+        "Unity.VisualEffectGraph.Editor",
+        "Unity.VisualEffectGraph.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

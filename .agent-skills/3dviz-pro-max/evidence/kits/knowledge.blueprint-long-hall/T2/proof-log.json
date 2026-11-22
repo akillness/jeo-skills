@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "blueprint_id": "knowledge.blueprint-long-hall",
+  "record_revision": 5,
+  "asset": "templates/kits/buildings/long-hall.js",
+  "asset_sha256": "02d426b90618d359c2164bff8ebf2600d96866898e55ae1093921991d5a52df1",
+  "params": {
+    "width": 12,
+    "depth": 5.5,
+    "wallHeight": 3,
+    "bayCount": 5,
+    "roofPitchDeg": 38,
+    "seed": 1
+  },
+  "tier": "T2",
+  "kit": {
+    "blueprint": "knowledge.blueprint-long-hall",
+    "module": "../buildings/long-hall.js",
+    "params": {
+      "width": 12,
+      "depth": 5.5,
+      "wallHeight": 3,
+      "bayCount": 5,
+      "roofPitchDeg": 38,
+      "seed": 1
+    },
+    "tier": "T2",
+    "surface": {
+      "seed": 1,
+      "size": 1024,
+      "materials": 39,
+      "unmapped": [
+        "#192025",
+        "#1b2227",
+        "#323c44",
+        "#2b343b",
+        "#2a3339",
+        "#242b32",
+        "#20272d",
+        "#354448",
+        "#20292d",
+        "#242c32",
+        "#1c1815",
+        "#c8a45c"
+      ],
+      "uv": [
+        "world",
+        "normalised"
+      ],
+      "ms": 290.1,
+      "ao": {
+        "vertices": 24948,
+        "casts": 66430,
+        "ms": 276.1,
+        "skipped": null
+      }
+    },
+    "triangles": 11344,
+    "bounds_m": {
+      "min": [
+        -6.1874999998509885,
+        -3.4015061212144815e-08,
+        -3.1311419871508113
+      ],
+      "max": [
+        6.1874999998509885,
+        6.557556603991743,
+        4.179999986886979
+      ],
+      "size": [
+        12.374999999701977,
+        6.557556638006804,
+        7.31114197403779
+      ]
+    },
+    "fit_distance_m": 23.096,
+    "view_distances_m": {
+      "far": 55.4303,
+      "mid": 27.7152,
+      "close": 15,
+      "detail": 2.9371
+    },
+    "sockets": [
+      "door",
+      "porch-door",
+      "chimney-west",
+      "chimney-east",
+      "sign",
+      "lean-to"
+    ],
+    "detail_socket": "door",
+    "animated": false,
+    "colliders": [
+      "walls",
+      "roof",
+      "porch"
+    ],
+    "three": "180"
+  },
+  "captures": {
+    "far.png": "b15574e194828c74e7f274f04c4d4fe75d436af818f577f562813bee8b251400",
+    "mid.png": "76f7e873eb63873f07810a3bebe2503070dbf59c7cda098cf9a285bab9d26d30",
+    "close.png": "8c97fc16c7f5eba771281ba1b9d33a04a697d474877598328b3cf1e19bf59832",
+    "detail.png": "6448a912873a210aa7dc8f8115a53d874b5141fc4ac0344aeef98ee48575c484"
+  },
+  "motion": null,
+  "gpu_requested": false,
+  "capture_mode": "swiftshader",
+  "webgl_renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+  "versions": {
+    "three": "0.180.0",
+    "postprocessing": "not used",
+    "playwright": "1.62.0"
+  },
+  "renderer": "headless chromium, 1280x720, sRGB output, ACESFilmic tone mapping, exposure 1.0, PCF soft shadows, no post",
+  "console_errors": [],
+  "page_errors": [],
+  "started": "2026-09-08T17:13:28+00:00",
+  "finished": "2026-09-08T17:13:34+00:00",
+  "surface": {
+    "families": {
+      "#6a5036": "wood",
+      "#7d6141": "wood",
+      "#a07a52": "wood",
+      "#5e472f": "wood",
+      "#533e29": "wood",
+      "#745a3c": "wood",
+      "#73593b": "wood",
+      "#785d3e": "wood",
+      "#765b3d": "wood",
+      "#775d3e": "wood",
+      "#795e3f": "wood",
+      "#aaa19b": "wood",
+      "#ada59f": "wood",
+      "#b0a698": "stone",
+      "#96654f": "stone",
+      "#7a7369": "stone",
+      "#625c54": "stone",
+      "#beb6ac": "stone",
+      "#cac4bd": "stone",
+      "#ccc6bf": "stone",
+      "#8b5d48": "stone",
+      "#93634d": "stone",
+      "#7d5348": "roof-tile",
+      "#624038": "roof-tile",
+      "#724b41": "roof-tile",
+      "#e2d8c4": "plaster",
+      "#2b2b30": "metal",
+      "#a3a3a4": "metal"
+    },
+    "seed": 1,
+    "size": 1024,
+    "ao": {
+      "samples": 13,
+      "radius_m": 0.45,
+      "ground_dirt_m": 0.6
+    }
+  }
+}

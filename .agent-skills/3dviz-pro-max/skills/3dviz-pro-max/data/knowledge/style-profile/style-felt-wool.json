@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.style-felt-wool",
+  "revision": 2,
+  "status": "active",
+  "record_kind": "creative",
+  "knowledge_kind": "style-profile",
+  "title": {
+    "en": "Felt and wool-like softness"
+  },
+  "aliases": {
+    "en": [
+      "felt creature",
+      "wool miniature",
+      "soft textile style",
+      "needle felted",
+      "plush toy"
+    ]
+  },
+  "direction_ids": [
+    "characters-motion-art",
+    "environments-dioramas"
+  ],
+  "summary": "Suggest a soft crafted textile with rounded silhouettes, layered patches and sparse fibers scaled for the view.",
+  "objective": "The figure still reads at mid-distance and fibers do not conceal eyes, joins or interactive targets.",
+  "tags": [
+    "style-profile",
+    "surface-aesthetic",
+    "felt-wool"
+  ],
+  "subject_terms": [
+    "felt creature",
+    "wool miniature",
+    "soft textile style",
+    "surface aesthetic"
+  ],
+  "intent_signals": [
+    "Create a felt or wool-like appearance",
+    "Build a soft textile figure with layered patches"
+  ],
+  "example_prompts": [
+    "Build a wool-like owl with layered felt wings and an easy-to-read head turn."
+  ],
+  "content": {
+    "principles": [
+      "Suggest a soft crafted textile with rounded silhouettes, layered patches and sparse fibers scaled for the view."
+    ],
+    "implementation": [
+      "Create padded masses, cut felt layers and simple stitched joins; reserve fiber geometry for contours or close focal areas.",
+      "Use soft highlights and controlled color variation; light from the side enough to reveal layer thickness without making every fiber compete.",
+      "Frame a tactile close view alongside the whole figure; gentle bobbing or jointed puppet movement can fit the intended handmade character.",
+      "Build fuzz from 2-4 shell layers offset 0.4-1.2 mm along the normal with 60-70% alpha fibre noise, applied only to silhouette-facing regions and capped at 15% of the figure's surface.",
+      "Keep stitched joins at a 2-3 mm pitch and eyes at 8 px or more on screen at the intended size; hold individual fibre strands under 1.5 mm so they never eat a joint or interactive target."
+    ],
+    "observable_checks": [
+      "The figure still reads at mid-distance and fibers do not conceal eyes, joins or interactive targets."
+    ]
+  },
+  "known_limits": [
+    "Values are authored starting points tuned for ACESFilmic tone mapping at renderer.toneMappingExposure 1.0; re-tune intensities and fog density under a different tone mapping or exposure.",
+    "No renderer run for this record; values are authored starting points."
+  ],
+  "creative_affordances": [
+    "Combine with stop-motion-inspired timing or toy staging; apparent softness is not a tested cloth or deformation model."
+  ],
+  "related_ids": [
+    "knowledge.object-isolation"
+  ],
+  "claims": [],
+  "defaults": {
+    "provenance": "authored",
+    "tunable": true,
+    "rationale": "Wool has almost no specular lobe, so softness has to come from a sheen-driven fibre rim rather than from geometry density: a dominant HemisphereLight fill at 1.4 with a shallow 1.6:1 key ratio and a bright 10 degree back light lets the fibre edge glow while the body stays matte. Roughness is pinned at 0.9-1.0 with sheen 0.6 / sheenRoughness 0.8 in #ffe6cf, because any clearcoat or gloss immediately reads as plastic rather than textile.",
+    "values": {
+      "feeling": [
+        "soft",
+        "cosy",
+        "handmade"
+      ],
+      "palette": [
+        {
+          "hex": "#35302c",
+          "role": "deep felt shadow"
+        },
+        {
+          "hex": "#8c6f5a",
+          "role": "mid wool brown"
+        },
+        {
+          "hex": "#d8c3a5",
+          "role": "lit oatmeal wool"
+        },
+        {
+          "hex": "#e2725b",
+          "role": "dyed felt accent patch"
+        },
+        {
+          "hex": "#7f9b8e",
+          "role": "secondary sage patch"
+        }
+      ],
+      "value_structure": "30/50/20 dark/mid/light; the fibre rim supplies the lightest values",
+      "saturation_rule": "wool bodies 25-45% saturation; one dyed accent patch up to 70%",
+      "sky": {
+        "model": "gradient",
+        "zenith": "#4a4a52",
+        "horizon": "#ddd6cc"
+      },
+      "fog": {
+        "type": "FogExp2",
+        "color": "#ddd6cc",
+        "density": 0.014
+      },
+      "lights": {
+        "key": {
+          "type": "DirectionalLight",
+          "color": "#fff0dc",
+          "intensity": 2.2,
+          "elevation_deg": 32,
+          "azimuth_deg": 300,
+          "castShadow": true
+        },
+        "fill": {
+          "type": "HemisphereLight",
+          "sky": "#d4dde8",
+          "ground": "#5f4c3e",
+          "intensity": 1.4
+        },
+        "rim": {
+          "type": "DirectionalLight",
+          "color": "#fff4e0",
+          "intensity": 1.6,
+          "elevation_deg": 10,
+          "azimuth_deg": 150,
+          "castShadow": false
+        },
+        "ratio": "key:fill ~ 1.6:1 with a rim at 0.7x key; the soft fill plus bright rim is what makes wool look soft"
+      },
+      "intensity_unit": "three-intensity (lux-scaled for Directional/Hemisphere, candela for Point/Spot; tuned with the stated tone_mapping.exposure)",
+      "tone_mapping": {
+        "mode": "ACESFilmic",
+        "exposure": 1.0
+      },
+      "camera": {
+        "fov_deg": 45,
+        "height_m": 0.35,
+        "pitch_deg": -8,
+        "orbit": {
+          "minPolar_deg": 55,
+          "maxPolar_deg": 90,
+          "minDist_m": 0.4,
+          "maxDist_m": 4
+        }
+      },
+      "materials": {
+        "roughness": [
+          0.9,
+          1.0
+        ],
+        "metalness": [
+          0.0,
+          0.0
+        ],
+        "notes": "0.95 body, 0.9 stitched seams; sheen 0.6 with sheenRoughness 0.8 and sheenColor #ffe6cf so the fibre rim lights; no clearcoat and no normal-mapped stitching"
+      },
+      "motion": {
+        "sway_period_s": [
+          2.2,
+          3.4
+        ],
+        "ease": "sine in-out with a soft settle",
+        "hold_ms": 380
+      },
+      "post": {
+        "bloom": {
+          "threshold": 1.15,
+          "strength": 0.14,
+          "radius": 0.55
+        },
+        "vignette": 0.2,
+        "grain": 0.02,
+        "dof": "off"
+      },
+      "signature_technique": "a sheen-driven fibre rim from a 10 degree back light over a dominant hemisphere fill, so softness comes from the rim rather than from fibre count",
+      "never": [
+        "glossy or metallic wool",
+        "untinted white ambient light",
+        "fibre geometry across the whole figure",
+        "normal-mapped stitching instead of modelled seams",
+        "flat black background"
+      ]
+    }
+  }
+}

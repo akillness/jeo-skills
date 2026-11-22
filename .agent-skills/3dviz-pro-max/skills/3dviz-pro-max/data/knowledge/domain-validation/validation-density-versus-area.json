@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "knowledge.validation-density-versus-area",
+  "revision": 1,
+  "status": "active",
+  "record_kind": "factual",
+  "knowledge_kind": "domain-validation",
+  "title": {
+    "en": "Density height, interval area and standardization invariance"
+  },
+  "aliases": {
+    "en": [
+      "probability area check",
+      "zero width interval check"
+    ]
+  },
+  "direction_ids": [
+    "probability-statistics"
+  ],
+  "summary": "Separate density height from interval probability and confirm invariance under standardization and decorative geometry.",
+  "objective": "Reported probabilities stay in the unit interval, a zero-width interval reports zero, and decorative depth changes no number.",
+  "applies_when": [
+    "A scene shades an interval under a continuous density and reports a probability.",
+    "The density belongs to a location-scale family such as the normal, so standardized bounds are meaningful.",
+    "The density is drawn as an extruded or otherwise decorated solid."
+  ],
+  "check_method": "analytic",
+  "tags": [
+    "domain-validation",
+    "density",
+    "probability",
+    "standardization"
+  ],
+  "subject_terms": [
+    "probability density",
+    "cumulative distribution",
+    "z-score",
+    "interval probability",
+    "extrusion"
+  ],
+  "intent_signals": [
+    "the density value is above one, is that wrong",
+    "check the shaded area probability"
+  ],
+  "example_prompts": [
+    "Check the interval probability readout under this normal curve."
+  ],
+  "negative_signals": [
+    "confidence intervals or hypothesis tests",
+    "fitting a distribution to data"
+  ],
+  "content": {
+    "principles": [
+      "Density is not probability: the height of a continuous density may exceed one, while probability is an area over an interval and lies between zero and one.",
+      "A zero-width interval has zero probability even where the density is positive, which is the case that exposes a display multiplying height by a fixed width.",
+      "Standardizing removes the parameters within a location-scale family, so at fixed standardized bounds the interval probability does not depend on the location or scale; outside such a family the invariance does not hold and the check does not apply."
+    ],
+    "implementation": [
+      "Reject a non-finite location or a nonfinite or nonpositive scale before evaluating anything, declare how reversed bounds are handled, and compute interval probability from a difference of cumulative values rather than by summing rendered bar heights, recording which cumulative implementation is used.",
+      "Evaluate the degenerate interval with coincident endpoints, a reversed interval, and an interval far out in the tail where subtracting two cumulative values close to one cancels; compare that case against a tail-stable reference such as a complementary cumulative form, or declare the supported range and the absolute accuracy outside it.",
+      "Hold standardized bounds fixed while varying the mean and standard deviation across several values and record the probability each time.",
+      "If the density is extruded into a solid, state in the artifact that the extrusion carries no probability and confirm that the reported number does not scale with it."
+    ],
+    "observable_checks": [
+      "Reported probability stays within zero and one for every supported input, and a zero-width interval reports exactly zero while the density readout stays positive inside the declared display range; far into the tail the density can underflow to zero, which is reported as underflow rather than as a probability statement.",
+      "Within the location-scale family, fixed standardized bounds give an unchanged probability as location and scale vary, within the accuracy of the cumulative implementation, which is reported alongside the value; nonfinite location or nonfinite or nonpositive scale is rejected rather than plotted.",
+      "Changing extrusion depth or any decorative scale changes no reported probability; if it does, geometry is being used as arithmetic."
+    ]
+  },
+  "known_limits": [
+    "Checks the density and area relationship in the declared model; selecting an interval implies no inferential statement.",
+    "Authored verification guidance; no computation or render was run for this record."
+  ],
+  "creative_affordances": [
+    "Adapt the scenario, scale and presentation to your subject; this record fixes what must be checked, not how the scene must look."
+  ],
+  "related_ids": [
+    "recipe.normal-density-window",
+    "recipe.sampling-mean-distribution",
+    "recipe.double-integral-columns"
+  ],
+  "claims": [
+    {
+      "id": "claim.validation-normal-standardization",
+      "statement": "A normal variable with mean mu and standard deviation sigma is standardized by subtracting the mean and dividing by the standard deviation, which gives a standard normal variable with mean zero and standard deviation one.",
+      "scope": "The declared normal model; probability statements refer to intervals rather than to individual points.",
+      "source_refs": [
+        {
+          "source_id": "source.openstax-normal",
+          "locator": "6.1, z-score definition and the standard normal distribution"
+        }
+      ]
+    }
+  ]
+}

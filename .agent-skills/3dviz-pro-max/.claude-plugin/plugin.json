@@ -1,0 +1,20 @@
+{
+  "name": "3dviz-pro-max",
+  "displayName": "3Dviz Pro Max",
+  "version": "0.1.0",
+  "description": "Design and build expressive 3D scenes, explainers and interactive models with grounded subject knowledge: authored looks and moods, runnable Three.js rigs and kits, inspection checklists and a capture script.",
+  "license": "MIT",
+  "homepage": "https://github.com/viettranx/3dviz-pro-max",
+  "repository": "https://github.com/viettranx/3dviz-pro-max",
+  "author": {
+    "name": "Viettranx"
+  },
+  "keywords": [
+    "3d",
+    "three.js",
+    "blender",
+    "gltf",
+    "visualization",
+    "scientific-visualization"
+  ]
+}

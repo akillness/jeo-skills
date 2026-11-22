@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-08",
+  "artifact_revision": 6,
+  "checks": {
+    "node": "historical: 41/41 sequential passed before final matrix/cube needsAnimation wiring",
+    "final_build": "passed",
+    "browser": "not-run per user request",
+    "hardware_performance": "not-measured"
+  },
+  "retired_files": ["matrix-scene.js", "cube-scene.js"],
+  "retired_on": "2026-09-08",
+  "code_sha256": {
+    "render-loop.js": "87c0555f5effd216af9edda8bcb4321c9c1c753fde6720f38989bd10b908dae0",
+    "main.js": "0f47b8065023eda21319e5f29b85fd9a001e82fde023c4200b80475af2c51e37",
+    "village-scene.js": "50375d7f8bc64498bf11983f90e3bdbc377588bf596705c5a7050e60541e3263",
+    "village-support.js": "eb44f323f200e8c19b7c22d2085e2bf5f1922ff6b34361bad9bb4d503afa2bf2",
+    "village-water.js": "8734e3f655957e037032c410e1417ade19d1d1d8db5892879033685218f57777"
+  }
+}

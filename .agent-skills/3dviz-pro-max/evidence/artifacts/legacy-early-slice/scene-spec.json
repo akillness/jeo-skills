@@ -1,0 +1,331 @@
+{
+ "schema_version": 1,
+ "artifact_id": "latent-village-early-slice",
+ "objective": "Explore a fictional miniature village with inspectable architecture, authored creature locomotion, connected mill and door mechanics, persistent water, and one isolated delivery-cargo contact experiment.",
+ "selected_records": [
+  "recipe.fantasy-village-diorama",
+  "recipe.terrain-island",
+  "recipe.winged-flight-cycle",
+  "recipe.garden-creature-patrol",
+  "knowledge.framed-shelter",
+  "knowledge.style-stylized-realism",
+  "knowledge.style-lantern-festival-riverside",
+  "knowledge.lighting-mood-dusk-golden-hour",
+  "knowledge.style-ghibli-painterly-pastoral",
+  "knowledge.style-tilt-shift-diorama",
+  "knowledge.lighting-mood-night-lantern",
+  "knowledge.lighting-mood-overcast-soft",
+  "knowledge.theme-fantasy-woodland",
+  "knowledge.gravity-contact",
+  "knowledge.three-rigid-body-adapter",
+  "knowledge.reasoning-terrain-height-authority",
+  "knowledge.reasoning-settlement-function-variation",
+  "knowledge.reasoning-gait-contact-consistency",
+  "knowledge.reasoning-creature-body-plan-coherence",
+  "knowledge.validation-traversable-support-clearance",
+  "knowledge.controlled-experiment",
+  "knowledge.dielectric-surface",
+  "knowledge.conductor-surface",
+  "knowledge.transmissive-medium",
+  "knowledge.shared-pbr-studio-environment",
+  "knowledge.blueprint-watermill",
+  "knowledge.blueprint-round-tower",
+  "knowledge.blueprint-market-stall",
+  "knowledge.blueprint-tree-round",
+  "knowledge.blueprint-tree-conifer",
+  "knowledge.blueprint-rock-cluster",
+  "knowledge.blueprint-reeds",
+  "knowledge.blueprint-barrel",
+  "knowledge.blueprint-crate",
+  "knowledge.blueprint-well",
+  "knowledge.blueprint-fence-run",
+  "knowledge.blueprint-clothesline",
+  "knowledge.blueprint-lantern-post",
+  "knowledge.blueprint-quadruped-walker"
+ ],
+ "custom_choices": [
+  "Terraced fantasy settlement with distinct architecture and mythical species",
+  "Persistent pond and stream share one authored water level while flow changes only surface cues and mill response",
+  "Detailed delivery cargo uses one enclosing collider in a reserved yard",
+  "Buildings, props and planting assembled from the shipped kit blueprints (examples/early-slice/kits), with authored geometry only where no blueprint fits"
+ ],
+ "runtime": {
+  "engine": "three@0.180.0",
+  "build": "vite@7.1.5",
+  "pixel_ratio_cap": 1.5,
+  "remote_runtime_assets": false,
+  "physics": "@dimforge/rapier3d-compat@0.20.0 for isolated village delivery cargo",
+  "render_scheduling": "Demand-driven RAF, max60fps, hidden suspension, paused camera/input invalidation;1024px directional shadow map.",
+  "postprocessing": "postprocessing@6.39.4 (pmndrs); BloomEffect + VignetteEffect + ToneMappingEffect in one EffectPass",
+  "tone_mapping": {
+   "mode": "ACESFilmic",
+   "exposure": 1.15,
+   "applied_by": "postprocessing ToneMappingEffect (renderer.toneMapping = NoToneMapping while the stack is alive)"
+  },
+  "sky": {
+   "model": "gradient CanvasTexture 1x256, SRGBColorSpace",
+   "zenith": "#1f2f45",
+   "horizon": "#b58c66"
+  },
+  "fog": {
+   "type": "FogExp2",
+   "color": "#b58c66",
+   "density": 0.014,
+   "transmittance": {
+    "18m": 0.94,
+    "25m": 0.88,
+    "33m": 0.81
+   }
+  },
+  "environment": {
+   "type": "RoomEnvironment via PMREMGenerator (blur 0.04)",
+   "intensity": 0.3
+  },
+  "post": {
+   "bloom": {
+    "threshold": 1.0,
+    "strength": 0.35,
+    "radius": 0.6,
+    "mipmapBlur": true
+   },
+   "vignette": {
+    "offset": 0.35,
+    "darkness": 0.22
+   },
+   "dof": "off"
+  },
+  "looks": {
+   "switch": "?look=<style-id> / ?mood=<lighting-mood-id>; unknown ids warn and fall back",
+   "default": "dusk-golden-hour",
+   "table": "village-look-table.js - every entry names its record and its departures",
+   "available": {
+    "dusk-golden-hour": ["knowledge.style-lantern-festival-riverside", "knowledge.lighting-mood-dusk-golden-hour"],
+    "ghibli": ["knowledge.style-ghibli-painterly-pastoral"],
+    "tilt-shift": ["knowledge.style-tilt-shift-diorama"],
+    "night-lantern": ["knowledge.lighting-mood-night-lantern", "knowledge.style-lantern-festival-riverside"],
+    "overcast": ["knowledge.lighting-mood-overcast-soft"]
+   },
+   "scope": "sky, fog, environment, lights, tone mapping, post, and the lens for tilt-shift only; no geometry and no material",
+   "note": "every value above in sky/fog/environment/post/tone_mapping is the default look; the others are in the table"
+  },
+  "views": [
+   "overview",
+   "mill",
+   "pond",
+   "door",
+   "cargo",
+   "fox"
+  ],
+  "viewer_contract": "window.__sceneReady after the first composer.render; window.__viewer = {views, setView(name)->boolean, stats(), tiers(), pinLevel(index|null)}; window.__renderStats() reports renderer.info for the whole composited frame. ?level=N pins every landmark LOD to one level (debug only).",
+  "draw_calls_measured": {
+   "overview": 2330,
+   "mill": 1955,
+   "fox": 1774,
+   "note": "1280x720 headless Chromium on the GPU (ANGLE Metal, Apple M4 Max), 1.4 s settle so the 0.9 s focus tween has finished; includes the shadow pass and the post passes, renderer.info.autoReset = false. The same build measured on the same host before the tier work read 2902 / 1955 / 2060: the overview and fox savings are the watermill's 287-mesh assembly collapsing to one baked mesh past 9.49 m, and the mill close view is unchanged because T2 adds no draw call. Revision 8's published numbers were SwiftShader and are not like-for-like."
+  },
+  "instancing": "6 InstancedMesh fields the scene drives itself over 466 decorative instances (52 shore boulders on nature/rock-cluster's shape, 224 path pavers, 68 reed blades on nature/reeds' blade, 24 grass blades, 49 flower stems, 49 petals), plus 70 InstancedMesh inside the blueprints over about 1236 instances (tile courses, fence rails, staves, planks, canopies). One material cache, in kits/kit-core.js; scene-kit.js is an adapter over it.",
+  "kits": {
+   "source": "examples/early-slice/kits/** - 36 module files, byte-identical copies of skills/3dviz-pro-max/templates/kits/** (the skill also holds a README, a proof harness and a Blender script, which are not copied)",
+   "buildings": [
+    "watermill (Willow Watermill, scale 0.42, yaw 180deg)",
+    "round-tower (Moonwatch Observatory)",
+    "market-stall (Sunleaf Glasshouse counter)"
+   ],
+   "primitives": [
+    "wall-with-openings",
+    "inset-window",
+    "door-with-step",
+    "timber-frame",
+    "roof-tile-strip",
+    "chimney",
+    "sign"
+   ],
+   "nature": [
+    "tree-round",
+    "tree-conifer",
+    "rock-cluster",
+    "reeds"
+   ],
+   "props": [
+    "barrel",
+    "crate",
+    "well",
+    "fence-run",
+    "clothesline",
+    "lantern-post"
+   ],
+   "creatures": [
+    "quadruped-walker (moon deer mesh only; village-locomotion.js remains the gait authority)"
+   ],
+   "layout": "village-layout.nearestPathPoint only. planVillage was not used: its plots would move the landmarks that the picking tests, the focus presets and the capture views name.",
+   "authored_here": [
+    "inn hinged door leaf and pivot",
+    "inn porch and copper lantern",
+    "mill sluice gate and axle drive key",
+    "Morel Cottage stalk, cap, gills and spots",
+    "glasshouse panes, frame bars and herb beds",
+    "observatory telescope and finial",
+    "path ribbons, pavers and flower drifts",
+    "seven pole lanterns",
+    "three-tail fox, jade dragon, lavender owl"
+   ],
+   "one_driver_rule": "The watermill blueprint's animate(dt) is never called. The hub found at its `wheel` socket is re-hung under the scene's own pivot and turned by the flow control.",
+   "tiers": {
+    "contract": "kits/kit-surface.buildKit + kits/kit-lod.lodFor/blockout; policy in village-tiers.js",
+    "T3": {
+     "objects": [
+      "Willow Watermill body"
+     ],
+     "asset": "kits/gltf/watermill-t3.glb (1,915,772 bytes, 12,598 triangles, one mesh, one material)",
+     "draws_from_m": 9.49,
+     "why_not_nearest": "the bake is frozen; the wheel, axle and sluice are this scene's one mechanism, so the procedural build draws inside 9.49 m"
+    },
+    "T2": {
+     "objects": [
+      "Copper Kettle Inn",
+      "Moonwatch Observatory",
+      "Willow Watermill",
+      "Morel Cottage",
+      "Sunleaf Glasshouse",
+      "well",
+      "4 barrels",
+      "2 crates",
+      "clothesline",
+      "lantern-post"
+     ],
+     "surface": {
+      "seed": 1,
+      "size": 512,
+      "anisotropy": 4,
+      "ao": {
+       "samples": 6,
+       "radius_m": 0.45,
+       "ground_dirt_m": 0.6
+      }
+     },
+     "departs_from_proof": "proofs use size 1024 and 13 AO samples; this village builds fourteen objects at page load",
+     "families": "village-tier-families.js - copied from tiers.T2.families where a record declares it, read off the module PALETTE where it does not",
+     "textured_materials": {
+      "inn": 21,
+      "observatory": 13,
+      "watermill": 9,
+      "morel-cottage": 3,
+      "glasshouse": 14
+     },
+     "unmapped_colours": {
+      "inn": 28,
+      "observatory": 18,
+      "watermill": 42,
+      "morel-cottage": 14,
+      "glasshouse": 14,
+      "note": "glass, foliage, water, fruit and flames are unmapped on purpose; the watermill's own T2 proof log lists the same 37-colour jittered set"
+     }
+    },
+    "T1": {
+     "objects": [
+      "fence-run",
+      "12 trees",
+      "creatures",
+      "shore ring",
+      "reed banks",
+      "path pavers",
+      "flower drifts",
+      "grass"
+     ],
+     "note": "instanced fields are one draw call each and are never wrapped in a LOD; a host with no 2D canvas builds the whole village at T1"
+    },
+    "T0": {
+     "objects": [
+      "one blockout per landmark, sized from what was built"
+     ],
+     "draws_from_m": 41,
+     "note": "clamped past the 40 m OrbitControls ceiling so a grey box never lands in a shipped frame; visible only under ?level=N; not pickable"
+    },
+    "lod": {
+     "wrapped": "the five landmarks only",
+     "hysteresis": 0.08,
+     "distance_rule": "fit = 2.92 x bounding-sphere radius; close 0.78 x fit, mid 1.2 x fit, far 2.4 x fit - the proof logs' own ratios, re-derived from what was built because every kit here is scaled to doll size",
+     "per_landmark_fit_m": {
+      "Copper Kettle Inn": 9.49,
+      "Moonwatch Observatory": 11.76,
+      "Willow Watermill": 7.91,
+      "Morel Cottage": 7.15,
+      "Sunleaf Glasshouse": 6.9
+     },
+     "demand_loop": "village-scene.updateLevels(camera) runs before each render; autoUpdate stays true as a safety net"
+    }
+   }
+  },
+  "triangles_measured": {
+   "overview": 340491,
+   "mill": 213443,
+   "fox": 250681
+  },
+  "frame_time_ms": {
+   "overview_median": 8.3,
+   "overview_p90": 9.5,
+   "note": "vsync-bound at 120 Hz on this host before and after; no frame-rate claim is made."
+  },
+  "page_to_first_frame_ms": {
+   "t2": 2370,
+   "t1_fallback": 453,
+   "note": "T2 draws its maps and bakes vertex occlusion at page load; 1.70 s of the T2 figure is the bake."
+  }
+ },
+ "scenes": [
+  {
+   "id": "village",
+   "motion": "fixed-step acceleration-limited controlled locomotion with swept environment contacts",
+   "entities": [
+    "layered island and terraces",
+    "five distinct buildings",
+    "pond and stream",
+    "flat bridge deck with sloped approaches",
+    "gardens and trees",
+    "three-tailed fox",
+    "moon deer",
+    "jade dragon",
+    "lavender owl",
+    "contained timber delivery cargo"
+   ],
+   "actions": [
+    "orbit",
+    "zoom",
+    "pause ambient motion",
+    "reset camera",
+    "focus landmark",
+    "inspect individual creature",
+    "adjust water flow",
+    "open/close inn door",
+    "drop cargo",
+    "nudge settled cargo",
+    "inspect cargo collider",
+    "reset village state",
+    "inspect pond coverage",
+    "current strength resumes paused motion",
+    "click a building or creature on the canvas to select and focus it"
+   ],
+   "boundaries": [
+    "Fictional miniature; no agent scheduling, biology or ecology claim. Authored creature and mill controllers; isolated cargo uses real rigid-body dynamics."
+   ],
+   "physical_contract": {
+    "model": "controlled-locomotion",
+    "scope": "Illustrative units; controlled creatures plus isolated Rapier cargo. No aerodynamic or fluid solver.",
+    "colliders": "Blueprint collider descriptors for the three kit-built landmarks and for every kit prop and tree; geometry-derived world AABBs for the authored inn and cottage; animated yaw-enclosing creature envelopes. 164 world boxes, down from 210, because a blueprint declares fewer and coarser solids than its meshes occupy.",
+    "time": "Creature fixed step 1/90s with .25s cap; cargo fixed step 1/60s with .1s cap. Global pause passes zero delta.",
+    "support": "Support-aware navigation and candidate movement with explicit foot search radius, step/slope constraints. Flat road ribbons and bridge approaches. Full bridge traversal is not exposed or certified. A 200-sample groundHeight/supportAt harness over the island returned 0/200 differences across the kit rebuild.",
+    "contact": "Swept environment contact removes inward velocity; navigation uses the same expanded volumes",
+    "limits": [
+     "Actor-to-actor separation is authored; no dynamic actor collision or current pairwise replay guarantee.",
+     "Future routes across abrupt terrace changes require swept support transitions",
+     "Plants and decorative motes are non-solid",
+     "Conservative bounds may block visually open space"
+    ],
+    "cargo": "One rigid cuboid with CCD, gravity, friction, finite retaining walls; off-center impulse only when settled. Quaternion-aware underside clearance. Reserved from creature navigation.",
+    "water": "Persistent pond and flat stream at y=.1675; authored flow changes surface cues only. Water geometry and support identity remain fixed across flow/pause/reset.",
+    "water_texture": "Shared128x128 color and normal textures, generated once;world-XZ UVs;periodic offsets follow authored flow. No extra reflection/refraction scene pass."
+   }
+  }
+ ],
+ "selection_scope": "Current Latent Village example only; selected records guide the bounded village refinement and do not claim that every catalog record was fully implemented."
+}
