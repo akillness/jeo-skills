@@ -1,0 +1,8 @@
+{
+  "name": "fuzzy-dedupe-ts",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node app.ts"
+  }
+}

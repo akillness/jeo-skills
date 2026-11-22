@@ -1,0 +1,14 @@
+{
+  "name": "fast-anything",
+  "owner": {
+    "name": "EL4CTEO"
+  },
+  "plugins": [
+    {
+      "name": "fast-anything",
+      "source": "./",
+      "description": "Port your app's hottest functions to Rust and prove they behave the same."
+    }
+  ],
+  "description": "fast-anything: port your app's hottest functions to Rust and prove they behave the same."
+}

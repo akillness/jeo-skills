@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 466,
+  "skill_count": 467,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -488,7 +488,8 @@
       "prototype",
       "codebase-memory-mcp",
       "ponytail",
-      "rust-anything"
+      "rust-anything",
+      "fast-anything"
     ],
     "research": [
       "academic-research",
@@ -1069,7 +1070,8 @@
         "performance-profiling",
         "implement",
         "ponytail",
-        "rust-anything"
+        "rust-anything",
+        "fast-anything"
       ],
       "testing": [
         "scaffold-exercises",
@@ -17001,6 +17003,36 @@
       "keyword": "3d-vibe-coding",
       "version": "1.0.0",
       "source": "https://github.com/alchaincyf/3d-vibe-coding-handbook"
+    },
+    {
+      "name": "fast-anything",
+      "description": "Speed up a slow Python, Node.js/TypeScript, Ruby, Java, Go, PHP, C, C++ or C# app by porting its hottest pure functions to Rust and proving each port gives the same results on real recorded calls using EL4CTEO/fast-anything. Measures, records, builds, verifies with cargo, and safely hot-swaps.",
+      "category": "engineering",
+      "subcategory": "code-quality",
+      "interface": "cli",
+      "path": "fast-anything/SKILL.md",
+      "tags": [
+        "fast-anything",
+        "rust",
+        "performance",
+        "profiling",
+        "ffi",
+        "hot-path",
+        "code-quality",
+        "optimization"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "fast-anything",
+      "version": "1.0.0",
+      "source": "https://github.com/EL4CTEO/fast-anything"
     }
   ]
 }

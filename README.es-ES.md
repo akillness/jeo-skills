@@ -341,7 +341,7 @@ y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 466 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 467 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (76)
 
@@ -737,9 +737,9 @@ Subcategorías: `orchestration` (21), `agent-frameworks` (22), `skill-authoring`
 
 </details>
 
-### 🧰 Ingeniería (26)
+### 🧰 Ingeniería (27)
 
-Subcategorías: `code-quality` (13), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
+Subcategorías: `code-quality` (14), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -772,6 +772,7 @@ Subcategorías: `code-quality` (13), `testing` (3), `architecture` (6), `documen
 | `codebase-memory-mcp` |
 | `ponytail` |
 | `rust-anything` |
+| `fast-anything` |
 
 </details>
 

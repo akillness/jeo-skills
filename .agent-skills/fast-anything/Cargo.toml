@@ -1,0 +1,28 @@
+[package]
+name = "fast-anything"
+version = "0.6.2"
+edition = "2024"
+rust-version = "1.88"
+description = "Find the slow 5% of your app, have your coding agent rewrite just that in Rust, and prove it still behaves the same."
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/EL4CTEO/fast-anything"
+keywords = ["performance", "python", "nodejs", "java", "ai-agents"]
+categories = ["command-line-utilities", "development-tools::profiling"]
+exclude = ["examples/*/.fast", "examples/*/bin", "examples/*/obj", ".github", "docs/assets"]
+
+[[bin]]
+name = "fast-anything"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1.0.104"
+clap = { version = "4.6.9", features = ["derive"] }
+libloading = "0.9.1"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+strip = true

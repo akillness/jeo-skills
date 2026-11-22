@@ -1,0 +1,21 @@
+{
+  "name": "fast-anything",
+  "version": "0.6.2",
+  "description": "Find the slow 5% of your app, port just that to Rust, and prove it still behaves the same.",
+  "author": {
+    "name": "EL4CTEO"
+  },
+  "homepage": "https://github.com/EL4CTEO/fast-anything",
+  "repository": "https://github.com/EL4CTEO/fast-anything",
+  "license": "MIT",
+  "keywords": [
+    "rust",
+    "python",
+    "nodejs",
+    "typescript",
+    "performance",
+    "pyo3",
+    "napi-rs",
+    "profiling"
+  ]
+}

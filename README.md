@@ -392,7 +392,7 @@ See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-dem
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 466 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 467 skills · expand a category to see its skills.
 
 ### 🌐 Web (76)
 
@@ -788,9 +788,9 @@ Subcategories: `orchestration` (21), `agent-frameworks` (22), `skill-authoring` 
 
 </details>
 
-### 🧰 Engineering (26)
+### 🧰 Engineering (27)
 
-Subcategories: `code-quality` (13), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
+Subcategories: `code-quality` (14), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
 
 <details>
 <summary>Show Engineering skills</summary>
@@ -823,6 +823,7 @@ Subcategories: `code-quality` (13), `testing` (3), `architecture` (6), `document
 | `codebase-memory-mcp` |
 | `ponytail` |
 | `rust-anything` |
+| `fast-anything` |
 
 </details>
 

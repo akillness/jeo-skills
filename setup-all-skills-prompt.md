@@ -192,13 +192,13 @@ if [ "${INSTALL_GLOBAL:-true}" != false ] && [ "${JEO_SKILLS_STAR:-true}" = true
     if [ -n "${INSTALLER:-}" ]; then
       [ -f "$INSTALLER" ] || exit 1
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$INSTALLER"
-    elif [ -f "./install.sh" ] && python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "36ef821f58916e88608272502dce9ef425ba4f6986978659caf1add068cc471b")' "./install.sh"; then
+    elif [ -f "./install.sh" ] && python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "9caa040b0a99f1c0fdf1ca813dd55f431aded43c683980363ed118d046ae0870")' "./install.sh"; then
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "./install.sh"
     elif [ "${JEO_SKILLS_STAR_DOWNLOAD:-true}" = true ]; then
       tmp=$(mktemp "${TMPDIR:-/tmp}/jeo-skills-star.XXXXXXXX") || exit 1
       trap 'rm -f "$tmp"' EXIT
       curl --disable --proto '=https' --max-time 15 -fsS 'https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh' -o "$tmp" || exit 1
-      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "36ef821f58916e88608272502dce9ef425ba4f6986978659caf1add068cc471b")' "$tmp" || exit 1
+      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "9caa040b0a99f1c0fdf1ca813dd55f431aded43c683980363ed118d046ae0870")' "$tmp" || exit 1
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$tmp"
     else
       exit 1
@@ -3643,6 +3643,10 @@ Preview `jeo-skill install arnis --global --dry-run`, then install the selected 
 ### Rust Anything operator (on demand)
 
 Preview `jeo-skill install rust-anything --global --dry-run`, then install the selected guide with `jeo-skill install rust-anything --global --yes`. Installing `rust-anything` copies operator guidance, Strangler Fig FFI bridging references, differential test schemas, and offline support tools only, not the Rust compiler, Cargo toolchain, or source code repositories. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py"` for offline tooling discovery, manifest detection, and `rust-anything.toml` inspection without network calls or process execution. Review the skill's operations and differential verification references before separately authorizing behavioral recording (`rust-anything record`), crate scaffolding, or differential test execution (`rust-anything verify`).
+
+### fast-anything operator (on demand)
+
+Preview `jeo-skill install fast-anything --global --dry-run`, then install the selected guide with `jeo-skill install fast-anything --global --yes`. Installing `fast-anything` copies operator guidance, workflow references, CLI documentation, and MCP tools (`fast_scan`, `fast_port`, `fast_verify`, `fast_enable`, `fast_bench`, `fast_report`) for `EL4CTEO/fast-anything` (MIT). It accelerates slow Python, Node.js/TypeScript, Ruby, Java, Go, PHP, C, C++, or C# applications by profiling hot pure functions, porting them to idiomatic Rust, and verifying semantic equivalence against real recorded calls.
 
 ### affectUI operator (on demand)
 

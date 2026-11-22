@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "fast-anything": {
+      "command": "fast-anything",
+      "args": [
+        "mcp"
+      ]
+    }
+  }
+}
