@@ -18,7 +18,7 @@ Use $scroll-world-storytelling to create a portable three-mode reference called 
 
 - Create a launcher at `demo/index.html`.
 - Create separate `video`, `threejs`, and `html-data` demo folders.
-- Give every folder an `index.html` and `PROMPT.md`.
+- Give every folder an `index.html` and `{PROMPT.md}`.
 - Use local assets, no framework, no build step, and no remote runtime dependency.
 - Keep the same six story beats across all modes: Destination, Fence, Bar, Loop, Route, Proof.
 - Make each renderer materially different while preserving the same thesis.

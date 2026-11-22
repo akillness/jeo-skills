@@ -203,7 +203,7 @@ credentials: `references/sources.md`.
   the kit's billow flipbook plays through `VfxShuriken.Decelerate()`.
 - **Author big (2048), import at the size the particle needs at its closest screen coverage**: a 32
   x 32 ash speck that reaches the camera is a blurry blob [00:18:38], [00:20:04]. Agent version
-  [added]: `VfxBudget.ScreenTexel` measures each layer's largest on-screen size against the texels
+    [added]: `VfxBudget.ScreenTexel` measures each layer's largest on-screen size against the texels
   its texture spans; `ut_vfx.texel_verdict` warns below 0.5 for detailed textures and lets soft ones
   (a glow, `TextureDetail` 0.003) be magnified (P18: the explosion flash at 367 px on a 64 px glow
   passes, the billow at 0.72 passes).

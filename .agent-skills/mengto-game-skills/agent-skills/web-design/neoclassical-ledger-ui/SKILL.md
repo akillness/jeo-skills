@@ -8,7 +8,7 @@ description: >
 
 Use the page as an illustrated ledger. Couple each financial or studio action to an object with a readable silhouette, such as a folded invoice, an open journal, or linked brass rings. Separate material, text and rules so the same visual system survives at phone size.
 
-Extracted from the Folvra studio ledger. Open the [working example](demo/index.html) and its [recreation prompt](demo/PROMPT.md).
+Extracted from the Folvra studio ledger. Open the [working example](demo/index.html) and its [recreation prompt](demo/{PROMPT.md}).
 
 ## Establish the paper
 

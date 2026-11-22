@@ -1,0 +1,24 @@
+# Environments Dioramas
+
+Generated from canonical data. Read only the records relevant to the task.
+
+[Back to catalog](../catalog-index.md)
+
+Use the optional `scripts/resolve.py <record-id>` helper to read one record with its sources.
+
+- [Car-following waves on a closed single lane](../../data/recipes/closed-lane-car-following.json) — `recipe.closed-lane-car-following`: Simulate continuous car-following on a periodic lane and connect every vehicle's motion to its bumper gap, approaching rate and declared Intelligent Driver Model parameters.
+- [Fantasy village diorama](../../data/recipes/fantasy-village-diorama.json) — `recipe.fantasy-village-diorama`: Compose a small invented settlement around a memorable landmark, readable paths, and contrasting building silhouettes.
+- [Historical diorama with evidence layers](../../data/recipes/historical-diorama.json) — `recipe.historical-diorama`: Organize a site reconstruction so documented remains and interpretive additions can be inspected separately.
+- [Finite irrigation scenario-envelope comparison](../../data/recipes/irrigation-finite-scenario-envelope.json) — `recipe.irrigation-finite-scenario-envelope`: Run the existing bounded root-zone budget over a finite supplied set of provenance-labeled scenarios under one shared forcing schedule, then display their daywise envelope without treating it as a probability distribution or confidence interval.
+- [Karst cave network with vertical connectivity](../../data/recipes/karst-cave-network.json) — `recipe.karst-cave-network`: Compose an underground world where the interesting decisions are vertical: which chamber connects to which, and by what route.
+- [Kinetic typography stage with readable alternatives](../../data/recipes/kinetic-typography-stage.json) — `recipe.kinetic-typography-stage`: Animate authored words and phrases in 3D while preserving reading order, pause control, captions and a static text representation.
+- [Accessible museum route and object inspection](../../data/recipes/museum-route-object-inspection.json) — `recipe.museum-route-object-inspection`: Build a navigable gallery whose route, landmarks and exhibit inspection stay connected, with equivalent controls for essential spatial actions and venue-specific clearance assumptions kept explicit.
+- [Museum visitor evaluation event playback](../../data/recipes/museum-visitor-evaluation-playback.json) — `recipe.museum-visitor-evaluation-playback`: Replay supplied or synthetic route and object-inspection events with provenance and missing-data states, without fabricating visitors or inferring causal behavior.
+- [Music structure mapped into a spatial scene](../../data/recipes/music-structure-spatial-mapping.json) — `recipe.music-structure-spatial-mapping`: Map supplied musical events and sections to authored spatial parameters while keeping timing data, audio playback and visual interpretation separate.
+- [Night market street with layered light](../../data/recipes/night-market-street.json) — `recipe.night-market-street`: Build a dense street where the lighting is made of many small owned sources and the crowd flows along readable lanes.
+- [Reversible branching storybook spatial scene](../../data/recipes/reversible-branching-storybook-scene.json) — `recipe.reversible-branching-storybook-scene`: Turn narrative choices into distinct spatial dioramas while preserving authoritative branch state, checkpoints and a truthful back/reset contract.
+- [Root-zone irrigation water budget](../../data/recipes/root-zone-irrigation-budget.json) — `recipe.root-zone-irrigation-budget`: Balance daily root-zone depletion from rain, runoff, irrigation, capillary rise, evapotranspiration and deep percolation while keeping every flux and modeling assumption visible.
+- [Floating archipelago with wind-driven travel](../../data/recipes/sky-archipelago-world.json) — `recipe.sky-archipelago-world`: Author a fictional world whose invented rule set is stated and consistently enforced, so travel between islands has real constraints.
+- [Stage previsualization with a versioned cue stack](../../data/recipes/stage-previsualization-cue-stack.json) — `recipe.stage-previsualization-cue-stack`: Coordinate performer blocking, camera, lighting and scenic cues in a reversible previsualization without claiming live show-control execution.
+- [Terrain island with grounded exploration](../../data/recipes/terrain-island.json) — `recipe.terrain-island`: Compose a traversable island around a ridge, sheltered inlet and readable path.
+- [Versioned branching-story save migration](../../data/recipes/versioned-story-save-migration.json) — `recipe.versioned-story-save-migration`: Migrate a saved branching-story state through explicit schema versions, preserving immutable source data and rolling back on unknown or invalid nodes.

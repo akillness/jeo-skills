@@ -128,7 +128,7 @@ translation for an agent without a mouse.
 - Beyond a few SubTools, masking each is "very boring": Transpose Master [00:13:26] [00:14:00]. In
   the TPose mesh, Auto Groups gives one group per disconnected piece, so hard-surface plates are
   isolated, inverted and masked whole, then the rest is shown and refined [00:15:37] [00:16:14]
-  [00:16:46]: the plates move rigidly with their segment instead of being cut by the bend. Move
+    [00:16:46]: the plates move rigidly with their segment instead of being cut by the bend. Move
   Topological (B, M) moves only the connected piece under the cursor and clears intersections
   between pieces [00:17:24] [00:17:56]; missing groups are made by hiding edge loops then Auto
   Groups [00:18:30]. TPose>SubT transfers "in two seconds" and every level keeps its detail

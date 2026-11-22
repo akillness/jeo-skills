@@ -1,0 +1,60 @@
+{
+  "_how_to_use": "Copy next to the artifact, rename to scene-spec.json, replace every <...> placeholder and delete this key. Keys mirror evidence/artifacts/legacy-early-slice/scene-spec.json. Keep claims_to_visuals honest: one row per thing a viewer could read as fact.",
+  "schema_version": 1,
+  "artifact_id": "<kebab-case-scene-id>",
+  "objective": "<one sentence: what the viewer should understand, explore or feel>",
+  "selected_records": [
+    "<knowledge.style-...>",
+    "<knowledge.lighting-mood-...>",
+    "<recipe....>"
+  ],
+  "custom_choices": [
+    "<a decision the catalog did not make for you, and why>"
+  ],
+  "runtime": {
+    "engine": "three@0.180.0",
+    "build": "vite@7.1.5",
+    "post": "postprocessing@6.39.4",
+    "pixel_ratio_cap": 2,
+    "remote_runtime_assets": false,
+    "physics": "<none | @dimforge/rapier3d-compat@x.y.z for ...>",
+    "render_scheduling": "Demand-driven RAF, max 60 fps, hidden-tab suspension, camera/input invalidation; <n>px shadow map."
+  },
+  "scenes": [
+    {
+      "id": "<scene-id>",
+      "motion": "<decorative | discrete state transition | fixed-step simulation | data playback>",
+      "entities": [
+        "<hero object>",
+        "<scale cue: 2.0 m door frame>",
+        "<scatter family, 30 instances with per-instance jitter>"
+      ],
+      "actions": [
+        "orbit",
+        "zoom",
+        "reset view",
+        "<control the scene actually exposes>"
+      ],
+      "boundaries": [
+        "<what this scene does not claim: no ecology, no measured discharge, illustrative scale>"
+      ],
+      "physical_contract": {
+        "model": "<none | controlled-locomotion | rigid-body>",
+        "scope": "<units and what is actually solved>",
+        "time": "<fixed step and delta cap, or 'authored keyframes only'>",
+        "limits": [
+          "<what the model does not guarantee>"
+        ]
+      }
+    }
+  ],
+  "claims_to_visuals": [
+    {
+      "claim": "<the factual statement>",
+      "source": "<record id or URL, read on YYYY-MM-DD>",
+      "visual": "<the geometry, label, colour or motion that carries it>",
+      "verified_by": "<capture file, computed check, or 'author read only'>"
+    }
+  ],
+  "selection_scope": "<which parts of the artifact these records actually guided>"
+}

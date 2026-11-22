@@ -206,7 +206,7 @@ Options (same master behind a texture-gating switch, or a sibling master):
 
 Why: blend mode and domain cannot change per instance without new shaders, so each gets its own
 master [added, consistent with HSPR guidance]. Glass is Ben Cloward's Substrate recipe
-[sf-K257zWh8]: flat panes use Pixel Normal Offset; Gray Transmittance when untinted. Decals end in
+  [sf-K257zWh8]: flat panes use Pixel Normal Offset; Gray Transmittance when untinted. Decals end in
 Convert To Decal (Substrate overview, Extras).
 
 ```python

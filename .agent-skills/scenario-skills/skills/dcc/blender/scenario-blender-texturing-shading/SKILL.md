@@ -45,7 +45,7 @@ exercised by `tests/code/blender-texturing-shading/`).
 - **SSS follows anatomy** (Kaspar): high on ears, nose, lids, lips, fingertips; low over bone.
   Black/white mask, Map Range sets values.
 - **Bevel, AO, Pointiness and Random Per Island are Cycles-only, and Bevel/AO are stochastic**
-  [added, measured]: EEVEE shows no Bevel edges; thresholded live masks give 17 to 18% fractional
+    [added, measured]: EEVEE shows no Bevel edges; thresholded live masks give 17 to 18% fractional
   metallic at any sample count. Bake before thresholding, or use vertex curvature.
 
 ## Establish first

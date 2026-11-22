@@ -39,7 +39,7 @@ illustration-<style>/
     lint.mjs            the file contract (viewBox, id prefixes, no <style> or <image>)
                         plus off-palette colours
     <style kit>.mjs     a dependency-free generator for the style's repeated parts
-  demo/                 index.html with the three cards and the palette, PROMPT.md, preview.jpg
+  demo/                 index.html with the three cards and the palette, {PROMPT.md}, preview.jpg
   agents/openai.yaml
 ```
 

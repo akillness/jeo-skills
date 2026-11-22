@@ -520,7 +520,7 @@ Limits: illustrative SI parameters; one solid crate collider rather than board-l
 
 ## Latent Village: catalog application, 2026-09-07
 
-Fresh implementation observations, separate from the historical prototype checks above. [Machine-readable checks and code fingerprints](village-validation.json). The [catalog walkthrough](../../evals/skill-behavior/village-application/README.md) is the preceding analysis, not runtime evidence.
+Fresh implementation observations, separate from the historical prototype checks above. [Machine-readable checks and code fingerprints](village-validation.json). The [catalog walkthrough](https://github.com/viettranx/3dviz-pro-max/blob/main/evals/skill-behavior/village-application/README.md) is the preceding analysis, not runtime evidence.
 
 Desktop Chrome headless rendered the local Vite app with SwiftShader at 1440×1000. The parent inspected overview, mill, opened door, cargo and fox frames. An additional 390×844 viewport showed a readable stacked layout and no horizontal document overflow. These are software-rendered browser observations, not hardware frame-rate or physical-device certification.
 

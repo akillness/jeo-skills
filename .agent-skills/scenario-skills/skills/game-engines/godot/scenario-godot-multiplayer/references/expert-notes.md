@@ -68,7 +68,7 @@ Claims by expert, with video id and timestamp. "Verified" means a live run in Go
 - **Host mode recursion**: do not call the broadcast again from the host's own path (FinePointCGI,
   e0JLO_5UgQo [00:42:32]).
 - **`server_relay`** (default true) lets clients address each other through the server. Verified
-  [M2]: with false, clients know only peer 1 and `rpc_id(other_client)` errors "Attempt to call RPC
+    [M2]: with false, clients know only peer 1 and `rpc_id(other_client)` errors "Attempt to call RPC
   with unknown peer ID".
 
 ## Replication
@@ -141,7 +141,7 @@ Claims by expert, with video id and timestamp. "Verified" means a live run in Go
 - **Export Mode "Export as dedicated server"**, run the console binary, skip the host player, Strip
   Visuals except what the server reads, re-export after code changes, `chmod +x` on Linux, UDP rule
   scoped to your IP (BatteryAcidDev, jgJuX04cq7k [00:00:35, 00:04:47, 00:06:30, 00:16:15]). Verified
-  [M10]: the mode adds `dedicated_server`, which forces headless display and Dummy audio without
+    [M10]: the mode adds `dedicated_server`, which forces headless display and Dummy audio without
   `--headless`; Strip Visuals removed the 3.1 MB texture.
 - **Raise `spawn_limit` past 2** (jgJuX04cq7k [00:18:34]). Correction: 2 was that project's value;
   the engine default is 0, unlimited (ClassDB, verified). Verified [M14]: with `spawn_limit = 2` the

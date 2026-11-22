@@ -2,9 +2,9 @@
 
 ONE_SENTENCE_DESCRIPTION
 
-[**View the live project**](PUBLIC_URL) · [**View the source**](REPOSITORY_URL) · [**Read the build prompt**](PROMPT.md)
+[**View the live project**]({PUBLIC_URL}) · [**View the source**]({REPOSITORY_URL}) · [**Read the build prompt**]({PROMPT.md})
 
-![PROJECT_NAME preview](assets/PROJECT_PREVIEW.jpg)
+![PROJECT_NAME preview]({PROJECT_PREVIEW.jpg})
 
 ## What it does
 

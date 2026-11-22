@@ -7,7 +7,7 @@ Frames are the unit (30 fps default). Every frame is a pure function of `t`: jum
 <link rel="stylesheet" href="./runtime/fonts.css">          <!-- Inter variable, OFL -->
 <script src="./runtime/vendor/gsap.min.js"></script><script src="./runtime/motion.js"></script>
 ```
-Copy `runtime/` next to your film (`film/runtime/`, paths `./runtime/` as above) or reference it by absolute path. Start from `templates/film.html`; see `examples/demo/index.html` (paths `../../runtime/`, because it lives two levels below the skill root).
+Copy `runtime/` next to your film (`film/runtime/`, paths `./runtime/` as above) or reference it by absolute path. Start from `templates/film.html`; see `examples/demo/index.html` (paths `runtime/`, because it lives two levels below the skill root).
 Optional layers: `runtime/hero3d/` (Three.js hero object, `M.hero3d`) and `runtime/native-ui/` (iOS phone / notification builders); examples `examples/3d-hero`, `examples/phone`.
 
 ## Seek contract
@@ -175,7 +175,7 @@ Returns `{ canvas, ready, hero, H, THREE, key, pulse }` (`hero`, `H`, `THREE` af
 * **Rules.** One hero object, spent on one event, never on two consecutive beats. Never `requestAnimationFrame`, `Math.random`, `Date` in `state` (use `ctx.rng(seed)`). Canvas `pixelRatio` is pinned to 1. A page with any WebGL canvas must be rendered in ONE mode (see GPU vs SwiftShader).
 * **ES module, not a classic script.** `M.hero3d` `import()`s `runtime/hero3d/hero3d.js` relative to `motion.js` (all vendored addons import `vendor/three.module.js` by relative path, so no importmap and no second copy of three). Module imports and the font/gltf/env fetches need `http(s)` or Chrome's `--allow-file-access-from-files`: `scripts/render.mjs` sets it, a double-clicked `file://` page will not draw 3D. Preview with `node scripts/render.mjs film.html --still t1,t2,t3 dir` or `python3 -m http.server`. If `motion.js` is inlined, pass `{ module: '<url of runtime/hero3d/hero3d.js>' }`. A failed import or no WebGL rejects `__ready`, so a render fails loudly instead of shipping a blank canvas.
 * **3D text and fonts.** `extrudedText` uses opentype.js: it reads `.ttf/.otf/.woff` but NOT woff2 and ignores variable axes. `hero3d/fonts/Inter-Bold-Latin.ttf` is the default. For the brand face (brand.mjs downloads woff2/variable): `python3 runtime/hero3d/tools/fontconv.py brand.woff2 out.ttf --wght 700 [--text "Fathom" | --latin]` (fontTools + brotli; instances variable axes, unwraps woff2, optional subset).
-* **Vendor.** `hero3d/vendor/` = three r186.1 + addons + opentype.js (licences alongside, 3 MB). The only edit: addons import `'three'` by relative path (`../../three.module.js`) instead of the bare specifier; `SVGLoader.js` was added for logos. Re-vendoring: copy the addon, then `sed "s#from 'three'#from '../../three.module.js'#"`.
+* **Vendor.** `hero3d/vendor/` = three r186.1 + addons + opentype.js (licences alongside, 3 MB). The only edit: addons import `'three'` by relative path (`three.module.js`) instead of the bare specifier; `SVGLoader.js` was added for logos. Re-vendoring: copy the addon, then `sed "s#from 'three'#from '../../three.module.js'#"`.
 * **Direct use** (no Motion): `import { createHero3D, key, pulse } from './hero3d/hero3d.js'`, `const h = await createHero3D(canvas, opts); h.renderAt(t, state?, frame?)`.
 
 ## Phone UI (native-ui)

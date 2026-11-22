@@ -127,7 +127,7 @@ experts disagree, the deciding condition is given.
 - Returning values and `WhenAll` barriers are the async wins over coroutines [00:11:01], [00:06:33].
   His `GetAwaiter().GetResult()` from sync code [00:14:21] can deadlock the main thread, because the
   continuation needs the next `Update` [added from the Manual]. Task-based async fails on WebGL
-  [00:15:10]: no managed threads on Web (6.3 Web limits).
+    [00:15:10]: no managed threads on Web (6.3 Web limits).
 - Small-game skeleton: five hierarchy roots, one persistent Systems root (the only
   DontDestroyOnLoad) [00:01:57]; SO unit data with a Stats STRUCT copied before runtime modifiers so
   definitions stay untouched [00:06:43], [00:11:18] (shipped: `HealthStats`, `HealthConfig.Stats`,

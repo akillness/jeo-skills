@@ -309,7 +309,7 @@ sh = ut_2d.shimmer_check([s["path"] for s in cap["shots"]], max_shift=24)
 `shimmer_check` finds, for each pair of consecutive frames, the integer horizontal shift that best
 maps one onto the other and scores the share of pixels that still differ (a grid-locked renderer
 slides rigidly; shimmer is art pixels changing width or color while the scene slides). URP 17.3
-[obs]: `PixelPerfectCamera` rounds the camera position to its units-per-pixel before every render
+  [obs]: `PixelPerfectCamera` rounds the camera position to its units-per-pixel before every render
 (`PixelSnap`), so with the component on a pan moves in whole pixels. Result: PASS, 6 setups x 10
 frames:
 

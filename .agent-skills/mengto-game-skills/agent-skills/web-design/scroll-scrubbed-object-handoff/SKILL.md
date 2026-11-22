@@ -8,7 +8,7 @@ description: >
 
 Measure the giving hand, receiving hand and destination, then calculate every layer from a single normalized scroll position. A shared source and destination make seven separate coins read as the same transferred advance.
 
-Extracted from the Folvra studio ledger. Open the [working example](demo/index.html) and its [recreation prompt](demo/PROMPT.md).
+Extracted from the Folvra studio ledger. Open the [working example](demo/index.html) and its [recreation prompt](demo/{PROMPT.md}).
 
 ## Register the contact
 

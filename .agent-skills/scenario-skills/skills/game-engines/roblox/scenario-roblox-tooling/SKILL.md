@@ -100,7 +100,7 @@ Full code, tests and results: [procedures.md](references/procedures.md). Runner 
    `rbx_tooling.run_kit(studio, "return SyncCheck.run(game)", kit=["SyncCheck"])` with
    [SyncCheck](scripts/agentkit/tooling/SyncCheck.luau), and `rbx_tooling.lint_scriptsync(folder)`
    on disk. GATE: no error findings; every root reads SyncedAsRoot.
-6. **CI.** Commit [ci.yml](scripts/template/.github/workflows/ci.yml): a `static` job with no
+6. **CI.** Commit [ci.yml]({workflows}/ci.yml): a `static` job with no
    secrets on every pull request, and an `engine` job for pushes and same-repository pull requests.
    The engine job checks its key and scopes (`tools/check_key.luau --require-scope ...`), uploads
    the dev build as a Saved version of a test place, and runs the one-liner through Open Cloud Luau
@@ -109,7 +109,7 @@ Full code, tests and results: [procedures.md](references/procedures.md). Runner 
      one concurrency group and `cloud_luau` retries 429 with backoff. GATE:
      `rbx_tooling.check_workflow` ok and actionlint 0; the first pull request is green, and a
      planted fault turns it red.
-7. **Release.** [publish.yml](scripts/template/.github/workflows/publish.yml) runs on a tag or by
+7. **Release.** [publish.yml]({workflows}/publish.yml) runs on a tag or by
    hand in the protected `production` environment: key check, `tools/place_versions.luau` (newest
    Version History number of each builders' place), ship build,
    `tools/merge_place.luau --manifest places.json --live-versions ...` (each base place plus the

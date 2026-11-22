@@ -8,7 +8,7 @@ description: >
 
 Intersect a small repeating ink plate with a soft pointer-centred aperture. The plate stays fixed while the aperture moves across it. The stable registration makes the marks read as print already present in the picture.
 
-Extracted from the Folvra studio ledger. Open the [working example](demo/index.html) and its [recreation prompt](demo/PROMPT.md).
+Extracted from the Folvra studio ledger. Open the [working example](demo/index.html) and its [recreation prompt](demo/{PROMPT.md}).
 
 ## Make the plate
 

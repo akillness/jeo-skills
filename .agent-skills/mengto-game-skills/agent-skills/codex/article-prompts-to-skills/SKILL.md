@@ -65,7 +65,7 @@ agent-skills/<category>/<skill-name>/
   assets/ or scripts/  # only when the workflow genuinely reuses them
   demo/
     index.html
-    PROMPT.md
+    {PROMPT.md}
     preview.jpg
     input.md            # required for workflow skills
     expected-output.md  # required for workflow skills
@@ -81,7 +81,7 @@ Write `agents/openai.yaml` from the final skill:
 
 ## 5. Write Three Useful Example Prompts
 
-Put these headings in `demo/PROMPT.md`:
+Put these headings in `demo/{PROMPT.md}`:
 
 ### Minimal prompt
 

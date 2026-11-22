@@ -4,3 +4,18 @@
 #       HTML img is NOT a rule 7a target (7a covers markdown [..](..) / ![..](..) only),
 #       so its absence from the census is correct and must not be read as a census gap.
 .agent-skills/harness/references/upstream
+.agent-skills/unity-skills
+.agent-skills/blender-skills
+.agent-skills/scenario-skills
+.agent-skills/threejs-game-skills
+.agent-skills/mengto-game-skills
+.agent-skills/video-to-game
+.agent-skills/3dviz-pro-max
+.agent-skills/threejs-ability-casting
+.agent-skills/isometric-voxel-builder
+.agent-skills/game-perf
+.agent-skills/sprite-gen
+.agent-skills/mono-pix
+.agent-skills/motion2mixamo
+.agent-skills/unimate
+.agent-skills/3d-vibe-coding

@@ -249,14 +249,14 @@ agent-skills/<category>/<skill-name>/
   scripts/            # optional: helper scripts
   demo/               # optional: visual or interaction proof
     index.html         # standalone HTML, CSS, and JavaScript
-    PROMPT.md          # exact recreation and remix prompts
+    {PROMPT.md}          # exact recreation and remix prompts
     assets/            # local demo assets when required
 ```
 
 Conventions:
 - `SKILL.md` is the skill an agent loads and follows.
 - `REFERENCES.md` is links only. Keep `SKILL.md` lean.
-- Visual and interaction skills may include a portable `demo/index.html` and `demo/PROMPT.md`.
+- Visual and interaction skills may include a portable `demo/index.html` and `demo/{PROMPT.md}`.
 - Workflow skills may include fictional `demo/input.md` and `demo/expected-output.md` handoffs when they materially improve proof.
 - Keep skills **procedural** (steps, patterns, guardrails), not encyclopedic.
 - Prefer explicit triggers: "Use when..." beats vague descriptions.
@@ -463,7 +463,7 @@ How to work with agents on a real project: the rules repeated in every thread, t
 
 3) Add a portable demo when visual or interaction proof is useful:
 - `demo/index.html` with inline CSS and JavaScript
-- `demo/PROMPT.md` with minimal, recreation, and remix prompts
+- `demo/{PROMPT.md}` with minimal, recreation, and remix prompts
 - local files under `demo/assets/`
 
 4) (Optional) add `REFERENCES.md`:

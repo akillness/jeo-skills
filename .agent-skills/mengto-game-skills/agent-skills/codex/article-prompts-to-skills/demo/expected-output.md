@@ -14,7 +14,7 @@ Each proposed folder contains:
 
 - a concise `SKILL.md` with a portable implementation contract;
 - `agents/openai.yaml` with an explicit `$skill-name` default prompt;
-- `demo/PROMPT.md` with Minimal, Recreate, and Remix examples;
+- `demo/{PROMPT.md}` with Minimal, Recreate, and Remix examples;
 - a functioning, self-contained `demo/index.html`;
 - a real browser-captured `demo/preview.jpg`;
 - targeted validation evidence.

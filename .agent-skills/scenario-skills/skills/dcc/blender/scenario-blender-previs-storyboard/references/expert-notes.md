@@ -32,7 +32,7 @@ sundae):
 5. **Depth fog:** a plane with an Array modifier and a semi-transparent viewport color placed in
    depth, to separate backdrop from characters in unrendered previews; readability, not lighting
    [00:11:13]. Charge adds: scale it to adjust depth [00:04:32]. Measured on 5.2.1 Workbench
-   [added]: the fog pulls what is behind it toward its own shaded value, so it separates a dim set
+     [added]: the fog pulls what is behind it toward its own shaded value, so it separates a dim set
    from characters of the same value (backdrop 0.373 to 0.499 display, characters 0.374 unchanged)
    and does almost nothing on a mid-gray backdrop (0.529 to 0.533). `fog_for_shot` keeps it behind
    the subjects and keyed to one shot.

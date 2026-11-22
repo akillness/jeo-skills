@@ -79,7 +79,7 @@ For a static one-file experiment, prefer this minimal shape:
 project-name/
 ├── index.html
 ├── README.md
-├── PROMPT.md        # optional
+├── {PROMPT.md}        # optional
 ├── assets/          # optional previews or runtime assets
 └── .gitignore
 ```

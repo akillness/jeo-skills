@@ -116,4 +116,4 @@ The per-particle flight math is not the main cost; additive point overdraw and a
 - Tab through controls, confirm visible focus and live announcements.
 - Confirm a clean console at both sizes.
 
-Use [demo/index.html](demo/index.html) as the working proof and [demo/PROMPT.md](demo/PROMPT.md) to recreate or remix it.
+Use [demo/index.html](demo/index.html) as the working proof and [demo/{PROMPT.md}](demo/{PROMPT.md}) to recreate or remix it.

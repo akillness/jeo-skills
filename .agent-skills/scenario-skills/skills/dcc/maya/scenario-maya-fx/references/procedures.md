@@ -157,7 +157,7 @@ mx_fx.point_to_surface(["cape_SIM.vtx[%d]" % i for i in top], "body_SIM", name="
 
 Constraint sets belong on the input mesh, or they risk a Dependency Graph loop (2027 Help, Tips).
 After `createNCloth` the transform shows the output mesh, so `"cape_SIM.vtx[3]"` resolves to it
-[verify]: pass `cloth=` and `point_to_surface` rewrites the members by index onto
+  [verify]: pass `cloth=` and `point_to_surface` rewrites the members by index onto
 `mx_fx.input_mesh(cloth)`, then raises if `constraint_members_verdict` still finds one on
 `mx_fx.output_mesh(cloth)`. The GUI equivalent is nCloth > Display Input Mesh before picking. The
 same rule holds for every set-based constraint (Slide on Surface, Tearable Surface, Component to

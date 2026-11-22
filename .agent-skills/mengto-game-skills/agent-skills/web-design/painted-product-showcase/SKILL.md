@@ -8,7 +8,7 @@ description: >
 
 Frame a small working interface inside a much larger painting. The landscape gives scale and atmosphere while every product action in the panel updates a coherent local data model.
 
-Extracted from the Folvra studio ledger. Open the [working example](demo/index.html) and its [recreation prompt](demo/PROMPT.md).
+Extracted from the Folvra studio ledger. Open the [working example](demo/index.html) and its [recreation prompt](demo/{PROMPT.md}).
 
 ## Find the quiet part of the image
 

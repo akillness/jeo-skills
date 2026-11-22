@@ -4,7 +4,7 @@ Use $generate-ledger-logo-register. Generate six fictional studio marks and arra
 
 ## Recreate the demo
 
-Use the supplied eight-cell Folvra extraction prompt. Preserve the two primary assets separately, then arrange the six resulting partner logos with folio numbers and disciplines. Test for spelling and transparent margins. Use the exact [production prompt](references/generation-prompt.md) as a replaceable template. Request black ink on pure white, two equal columns by four equal rows, generous padding and a fixed reading order. Keep sheet labels, drawn gridlines, texture and presentation mockups out of the artwork. Folvra used Seedream 5.5 in Fil. Follow the selected provider’s normal generation and cost workflow.
+Use the supplied eight-cell Folvra extraction prompt. Preserve the two primary assets separately, then arrange the six resulting partner logos with folio numbers and disciplines. Test for spelling and transparent margins. Use the exact [production prompt]({generation-prompt.md}) as a replaceable template. Request black ink on pure white, two equal columns by four equal rows, generous padding and a fixed reading order. Keep sheet labels, drawn gridlines, texture and presentation mockups out of the artwork. Folvra used Seedream 5.5 in Fil. Follow the selected provider’s normal generation and cost workflow.
 
 ## Remix prompt
 

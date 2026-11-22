@@ -48,7 +48,7 @@ agent-skills/web-design/<skill-name>/
   SKILL.md
   agents/openai.yaml
   demo/index.html
-  demo/PROMPT.md
+  demo/{PROMPT.md}
   demo/preview.jpg
 ```
 

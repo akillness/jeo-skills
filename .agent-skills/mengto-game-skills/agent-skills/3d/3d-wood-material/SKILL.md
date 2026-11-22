@@ -10,7 +10,7 @@ description: >
 
 Boundary. This skill is the wood surface itself. For whole-scene light, rays and scoring wood renders, use `3d-wood-lighting-scorecard`. For image-based PBR sets (downloaded maps, texel budgets, KTX2 delivery) use `3d-high-resolution-textures`; reach for it when you need a photographed or scanned species. For silhouette, bevel and LOD geometry use `3d-high-poly-models`; this skill only needs a rounded arris (below). Cloth, metal and paper have their own siblings.
 
-Run `demo.html` first (Kibori bench, four species, four finishes, macro views, and a switch that swaps in the failure). `PROMPT.md` recreates it.
+Run `demo.html` first (Kibori bench, four species, four finishes, macro views, and a switch that swaps in the failure). `{PROMPT.md}` recreates it.
 
 ## Recipe
 

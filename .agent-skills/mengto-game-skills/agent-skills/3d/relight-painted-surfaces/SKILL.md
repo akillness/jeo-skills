@@ -60,4 +60,4 @@ Reference the [fragment shader](assets/paint-renderer.js) when porting to anothe
 
 Park the pointer over empty paper at opposite sides of the stage. Capture the **same fixed crop** of a plate in both positions. Look for a highlight traveling from one bevel to another while the exterior edge stays in place. At one fixed pointer pose, separately substitute neutral normals, constant depth, and constant roughness. Inspect the bevel, contact shadow and reflection width after each substitution. If the images look identical, trace the sampled texture and colour-space settings.
 
-Test with a coarse pointer, keyboard input, reduced motion and WebGL disabled. The base paint should remain readable in all four cases. The [demo prompt](demo/PROMPT.md) also gives a different subject for testing reuse.
+Test with a coarse pointer, keyboard input, reduced motion and WebGL disabled. The base paint should remain readable in all four cases. The [demo prompt](demo/{PROMPT.md}) also gives a different subject for testing reuse.

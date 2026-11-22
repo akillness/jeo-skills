@@ -104,4 +104,4 @@ The temporary second representation and its line coverage are the real cost. Top
 - Hide/show the tab and leave/re-enter the viewport; confirm no time jump.
 - Confirm a clean console and disposed cage resources after completion.
 
-Use [demo/index.html](demo/index.html) as the working proof and [demo/PROMPT.md](demo/PROMPT.md) to recreate or remix it.
+Use [demo/index.html](demo/index.html) as the working proof and [demo/{PROMPT.md}](demo/{PROMPT.md}) to recreate or remix it.

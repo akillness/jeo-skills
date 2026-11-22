@@ -259,4 +259,4 @@ One person's measured results, Nov 2026. Measure your own.
 - `scripts/voice/`: `el.sh` (API helper; key from `.env`, never printed), `build_ref.py`, `scan_dataset.py`,
   `make_dataset.py`, `make_ivc.py`, `tts_line.sh`, `score_voice.py`, `watch_train.sh`.
 - `demo/index.html`: one batch for Mai, one of Fil's example presenters: her face frames, three stills, the iMac fixed,
-  a talking clip and her line. `demo/PROMPT.md`: prompts to use and remix this skill. The page is fil.design/skills/digital-twin.
+  a talking clip and her line. `demo/{PROMPT.md}`: prompts to use and remix this skill. The page is fil.design/skills/digital-twin.

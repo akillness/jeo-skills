@@ -22,7 +22,7 @@ Hair node groups (Interpolate, Clump, Curl, Hair Dynamics grooms): scenario-blen
 
 - **A field is a deferred question, not data.** Thommes: it is evaluated by the node that consumes
   it, on that node's domain and geometry; values exist only once named or consumed. Consequence
-  [added, verified]: two coupled updates (position and velocity) must be captured together in one
+    [added, verified]: two coupled updates (position and velocity) must be captured together in one
   Capture Attribute, or the second reads the first's new value.
 - **Domain changes interpolate; everything becomes a Boolean by a rule.** Erindale: float > 0 is
   true (vectors: any non-zero), so a subdivided vertex-group selection bleeds; decide with Float to

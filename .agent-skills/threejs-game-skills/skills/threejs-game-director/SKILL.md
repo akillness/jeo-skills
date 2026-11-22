@@ -25,7 +25,7 @@ Report what you ran and what you saw. If you couldn't run something, say that in
 
 ## Sibling skills
 
-Use the actual loaded skill directory as `<director-skill-dir>`. Resolve siblings through `../<skill>/SKILL.md` there. If absent, use the runner's discovered skill path, then a matching repo `skills/` directory or the active runner's install location (`~/.agents/skills` for Codex, `~/.claude/skills` for Claude Code, legacy `~/.codex/skills` last). Resolve references relative to the selected skill; avoid mixing installed versions.
+Use the actual loaded skill directory as `<director-skill-dir>`. Resolve siblings through `{skill}/SKILL.md` there. If absent, use the runner's discovered skill path, then a matching repo `skills/` directory or the active runner's install location (`~/.agents/skills` for Codex, `~/.claude/skills` for Claude Code, legacy `~/.codex/skills` last). Resolve references relative to the selected skill; avoid mixing installed versions.
 
 | Phase | Skill |
 | --- | --- |

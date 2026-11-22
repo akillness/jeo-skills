@@ -165,7 +165,7 @@ skill's inference). Where experts disagree, the deciding condition is given.
   [00:54:23].
 - **Shader branches are good when coherent and when they skip texture fetches** (864 to 14-52
   samples per pixel) [00:36:44]-[00:39:44]. Borromeo says prefer keywords over plain `if`
-  [00:30:09]: deciding condition = coherence and payoff; keywords when constant per material or
+    [00:30:09]: deciding condition = coherence and payoff; keywords when constant per material or
   build (scenario-unity-shaders owns it).
 
 ## Richard Fine, Unity (0y3erF2tzbI)

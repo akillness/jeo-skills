@@ -300,7 +300,7 @@ hs.hs_call("set_status", seam["subtools_after"] - 1, op="sub")
 ```
 
 - `create_mesh_from_curves(name, 1, thickness)` adds a new SubTool (SDK stub). What it builds is
-  [verify]: a tube or a strip.
+    [verify]: a tube or a strip.
 - Maxon's lightning example notes that a curve brush only applies when a curve is touched, so the
   brush route (CurveTube, a Tri Parts IMM) still needs a click.
 

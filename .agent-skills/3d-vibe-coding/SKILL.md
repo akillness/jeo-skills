@@ -33,7 +33,7 @@ metadata:
 | **已经动手了，卡在某个具体症状上** | **附录B 踩坑索引**，按症状查，五张表 |
 
 在线阅读：[`book/index.html`](book/index.html)（仓库转公开后可直接用 GitHub Pages 打开）
-PDF：见 [Releases](../../releases/latest)
+PDF：见 [Releases](https://github.com/alchaincyf/3d-vibe-coding-handbook/releases/latest)
 
 ---
 
@@ -43,17 +43,17 @@ PDF：见 [Releases](../../releases/latest)
 
 | 包 | 体积 | 对应章节 | 内容 |
 |---|---|---|---|
-| [`01-样例三件套.zip`](../../releases/latest) | 6.2 MB | §01 §04 §05 §06 | 三件资产走完「设计图→提示词→GLB」一条链路，含一件带骨骼的。想先看看这条路长什么样，下这个就够。 |
-| [`02-巴黎街景模型-1K.zip`](../../releases/latest) | 22.8 MB | §16 §17 | 巴黎那座城的 19 件主资产，1K 贴图档。建筑、车辆、街具，风格成套。 |
-| [`03-巴黎街景-512与植被街具.zip`](../../releases/latest) | 14.8 MB | §04 §17 | 同样 19 件的 512 贴图减面版（对照 §04 的减面下限实验），加 6 件植被与街具。 |
-| [`04-游乐设施-8K原档.zip`](../../releases/latest) | 29.0 MB | §14 | 6 件游乐设施的 8K 贴图原档，没有压过。想看「默认档到底多大」就下这个。 |
-| [`05-绑骨与动画.zip`](../../releases/latest) | 4.0 MB | §06 §15 | 带骨骼和行走动画的 GLB，加三模式对照那 3 件。§06 整节讲的就是它们怎么来的。 |
-| [`06-设计图与提示词-巴黎.zip`](../../releases/latest) | 37.0 MB | §08 §09 | 巴黎两批资产的全部设计图与提示词原文（jobs.jsonl）。 |
-| [`07-设计图与提示词-游乐园与小王子.zip`](../../releases/latest) | 50.6 MB | §09 §22 | 游乐设施参考图与小王子星球的输入图，含提示词。 |
-| [`08-demo-巴黎来信.zip`](../../releases/latest) | 11.9 MB | §12 §18 | 可驾驶巴黎的程序化城市层参考实现。起个 http 服务打开 index.html。 |
-| [`09-demo-发动机.zip`](../../releases/latest) | 18.8 MB | §20 | 单缸四冲程发动机，能拆能转，机构按真实曲柄滑块运动学算。 |
-| [`10-demo-星月夜.zip`](../../releases/latest) | 33.6 MB | §21 | 把一幅画拆成五层，两层换成 Tripo 真 3D，可切「全平面／真立体」。 |
-| [`11-工具脚本.zip`](../../releases/latest) | 0.0 MB | §04 §17 | 减面极限、批量流水线、GLB 解析与渲图等 11 个脚本，零依赖或只依赖 gltf-transform。 |
+| [`01-样例三件套.zip`](https://github.com/alchaincyf/3d-vibe-coding-handbook/releases/latest) | 6.2 MB | §01 §04 §05 §06 | 三件资产走完「设计图→提示词→GLB」一条链路，含一件带骨骼的。想先看看这条路长什么样，下这个就够。 |
+| [`02-巴黎街景模型-1K.zip`](https://github.com/alchaincyf/3d-vibe-coding-handbook/releases/latest) | 22.8 MB | §16 §17 | 巴黎那座城的 19 件主资产，1K 贴图档。建筑、车辆、街具，风格成套。 |
+| [`03-巴黎街景-512与植被街具.zip`](https://github.com/alchaincyf/3d-vibe-coding-handbook/releases/latest) | 14.8 MB | §04 §17 | 同样 19 件的 512 贴图减面版（对照 §04 的减面下限实验），加 6 件植被与街具。 |
+| [`04-游乐设施-8K原档.zip`](https://github.com/alchaincyf/3d-vibe-coding-handbook/releases/latest) | 29.0 MB | §14 | 6 件游乐设施的 8K 贴图原档，没有压过。想看「默认档到底多大」就下这个。 |
+| [`05-绑骨与动画.zip`](https://github.com/alchaincyf/3d-vibe-coding-handbook/releases/latest) | 4.0 MB | §06 §15 | 带骨骼和行走动画的 GLB，加三模式对照那 3 件。§06 整节讲的就是它们怎么来的。 |
+| [`06-设计图与提示词-巴黎.zip`](https://github.com/alchaincyf/3d-vibe-coding-handbook/releases/latest) | 37.0 MB | §08 §09 | 巴黎两批资产的全部设计图与提示词原文（jobs.jsonl）。 |
+| [`07-设计图与提示词-游乐园与小王子.zip`](https://github.com/alchaincyf/3d-vibe-coding-handbook/releases/latest) | 50.6 MB | §09 §22 | 游乐设施参考图与小王子星球的输入图，含提示词。 |
+| [`08-demo-巴黎来信.zip`](https://github.com/alchaincyf/3d-vibe-coding-handbook/releases/latest) | 11.9 MB | §12 §18 | 可驾驶巴黎的程序化城市层参考实现。起个 http 服务打开 index.html。 |
+| [`09-demo-发动机.zip`](https://github.com/alchaincyf/3d-vibe-coding-handbook/releases/latest) | 18.8 MB | §20 | 单缸四冲程发动机，能拆能转，机构按真实曲柄滑块运动学算。 |
+| [`10-demo-星月夜.zip`](https://github.com/alchaincyf/3d-vibe-coding-handbook/releases/latest) | 33.6 MB | §21 | 把一幅画拆成五层，两层换成 Tripo 真 3D，可切「全平面／真立体」。 |
+| [`11-工具脚本.zip`](https://github.com/alchaincyf/3d-vibe-coding-handbook/releases/latest) | 0.0 MB | §04 §17 | 减面极限、批量流水线、GLB 解析与渲图等 11 个脚本，零依赖或只依赖 gltf-transform。 |
 
 合计 229 MB。第一次来建议先下 `01-样例三件套`（6 MB），三件资产走完「设计图 → 提示词 → GLB」一条链路。
 

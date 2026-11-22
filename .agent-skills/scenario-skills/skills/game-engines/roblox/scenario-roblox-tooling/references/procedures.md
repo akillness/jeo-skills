@@ -348,13 +348,13 @@ is on PATH or in `RBX_ACTIONLINT`, and flags `secret-in-run`, `unpinned-action`,
 `unguarded-publish` (a Published upload outside a protected environment), `fork-secrets`,
 `pr-target` and missing `permissions`.
 
-[ci.yml](../scripts/template/.github/workflows/ci.yml) has two jobs. `static` runs on every pull
+[ci.yml](../{workflows}/ci.yml) has two jobs. `static` runs on every pull
 request with no secrets: toolchain, Wally, sourcemap, type check on both solvers, lint, format, Lune
 tests, ship build, ShipCheck and the merge of P15 (exit 2 tolerated there, so a pull request shows
 which place needs a Studio release). `engine` runs on pushes and same-repository pull requests in
 the `test-universe` environment: dev build uploaded as a Saved version of a test place, then P9.
 Both jobs that hold a key run the preflight of P13 first, each with its own `--require-scope` list
-(scope table in P13). [publish.yml](../scripts/template/.github/workflows/publish.yml) runs on a
+(scope table in P13). [publish.yml](../{workflows}/publish.yml) runs on a
 `v*` tag or by hand in the `production` environment; a manual run can set `restart_servers` to run
 P14 after the publish.
 
@@ -429,7 +429,7 @@ after modifying them". For a release built from Rojo files this means:
 
 ### The release job, whole
 
-This is [publish.yml](../scripts/template/.github/workflows/publish.yml) as the template ships it.
+This is [publish.yml](../{workflows}/publish.yml) as the template ships it.
 Nothing is left out: the ids come from `places.json`, the key from the `production` environment, and
 every tool from `rokit.toml`.
 

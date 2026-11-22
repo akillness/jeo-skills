@@ -104,4 +104,4 @@ The orbit math is negligible. The expensive work is the scene already being redr
 - Hide/show and scroll away/back; confirm no jump and only one frame loop.
 - Confirm a clean console at both sizes.
 
-Use [demo/index.html](demo/index.html) as the working proof and [demo/PROMPT.md](demo/PROMPT.md) to recreate or remix it.
+Use [demo/index.html](demo/index.html) as the working proof and [demo/{PROMPT.md}](demo/{PROMPT.md}) to recreate or remix it.

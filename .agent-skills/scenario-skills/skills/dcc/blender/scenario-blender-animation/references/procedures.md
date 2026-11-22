@@ -447,7 +447,7 @@ rebound 0.405, heavy, real gravity):
 
 `obj=` animates an existing mesh (radius from its size, verified on a named `ANIM_ball`). The weight
 mapping (rebound 0.7 to 0.35, squash 0.35 to 0.08, stretch 0.25 to 0.04, friction 0.9 to 0.7) is
-[added]: the heavy end moved from 0.25 to 0.35 after the E3 run, where 0.25 left a 1.6 cm third hop
+  [added]: the heavy end moved from 0.25 to 0.35 after the E3 run, where 0.25 left a 1.6 cm third hop
 and about 0.4 read heavy but visible. The BOUNCE easing (two keys) was measured to place its
 contacts between frames (lowest sampled heights 0.013, 0.013, 0.004), so no squash frame is ever
 shown.

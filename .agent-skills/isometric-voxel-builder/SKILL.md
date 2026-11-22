@@ -22,7 +22,7 @@ arranging things until they look right.
 
 **🌐 Play it: <https://mykonos-island-voxels.netlify.app>**
 
-![Mykonos Island Voxels — example scene](full%20city.png)
+![Mykonos Island Voxels — example scene](https://raw.githubusercontent.com/boona13/mykonos-island-voxels/main/https://raw.githubusercontent.com/boona13/mykonos-island-voxels/main/full%20city.png)
 
 ---
 

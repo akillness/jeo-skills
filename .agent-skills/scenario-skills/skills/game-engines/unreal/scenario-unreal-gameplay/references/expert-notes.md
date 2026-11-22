@@ -190,7 +190,7 @@ Persistence
 - Input Action -> input tag -> ability: the pawn holds no input and abilities ship later without
   touching it [00:34:01] to [00:35:37]; equipment remaps a tag to another ability [00:39:26].
 - New content is a child of a prebuilt parent with changed defaults (`GA_WeaponFire_SMG`)
-  [00:50:07]: the practical substitute for graph authoring.
+    [00:50:07]: the practical substitute for graph authoring.
 - Bots idle without a NavMeshBoundsVolume [00:31:36].
 - PMI shown in the talk is deprecated since 5.4.
 

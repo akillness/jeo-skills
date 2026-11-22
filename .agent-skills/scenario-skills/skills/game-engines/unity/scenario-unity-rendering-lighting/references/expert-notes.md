@@ -22,7 +22,7 @@ condition is given.
 - **Auto exposure limits come from fixed-exposure tests** of the brightest and darkest areas (13 and
   6 EV in Sponza), then Automatic clamped to them (PYD22 [00:12:22] to [00:12:55]). URP has no auto
   exposure in 6.3: the URP equivalent is one Post Exposure per zone in local Volumes (PYD
-  [00:21:25]: "Override Exposure in a volume per time of day or per zone").
+    [00:21:25]: "Override Exposure in a volume per time of day or per zone").
 - **Neutral inputs stay neutral:** shadows black for opaque casters, fog white, bloom tint white;
   color comes from lights and sky (PYD [00:39:38], [00:51:58], [01:03:39]).
 - **Tonemapper:** ACES by default, Neutral for asset review because ACES adds contrast and

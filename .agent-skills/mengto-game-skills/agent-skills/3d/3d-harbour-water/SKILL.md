@@ -8,7 +8,7 @@ description: >
 
 Start with the view that exposes the effect. Put one piling through the surface, a bright sign on the far quay and a boat between them. At water level the piling should meet its reflection, the sign should break into moving facets and the boat should leave a trail along the route it actually took.
 
-[Open the working demo](demo/index.html) · [Water implementation](demo/assets/harbour-water.js) · [Boat and quay example](demo/assets/quay.js) · [Prompt recipe](demo/PROMPT.md)
+[Open the working demo](demo/index.html) · [Water implementation](demo/assets/harbour-water.js) · [Boat and quay example](demo/assets/quay.js) · [Prompt recipe](demo/{PROMPT.md})
 
 ## Put the water in the scene
 

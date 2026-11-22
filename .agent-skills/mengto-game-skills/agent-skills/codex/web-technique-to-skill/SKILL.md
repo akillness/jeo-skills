@@ -170,12 +170,12 @@ agent-skills/<category>/<skill-name>/
   agents/openai.yaml
   demo/
     index.html
-    PROMPT.md
+    {PROMPT.md}
     preview.jpg
     reference.*        # optional owned staging required for exact fidelity
 ```
 
-Write `SKILL.md` in imperative form with only `name` and `description` in frontmatter, and put every trigger phrase in the description. Give `demo/PROMPT.md` three headings: **Minimal prompt**, **Recreate the demo**, **Remix prompt**, where the remix changes subject, palette, and composition while preserving the mechanism and the budgets.
+Write `SKILL.md` in imperative form with only `name` and `description` in frontmatter, and put every trigger phrase in the description. Give `demo/{PROMPT.md}` three headings: **Minimal prompt**, **Recreate the demo**, **Remix prompt**, where the remix changes subject, palette, and composition while preserving the mechanism and the budgets.
 
 Stage only the new folder and the gallery rows it needs. Review `git diff --cached --stat` before committing, and leave pre-existing dirty files alone.
 
