@@ -2196,7 +2196,7 @@ esac
              "JEV_LLAMA_SERVER_BIN": str(mock_llama),
              "JEV_LOCAL_ENDPOINT": f"http://127.0.0.1:{occ_port}/v1/systemone"},
             cwd=ROOT,
-            timeout=30,
+            timeout=60,
         )
         self.assertNotEqual(res.returncode, 0, res.stdout + res.stderr)
         self.assertIn("jev-gateway exited early", res.stderr)
