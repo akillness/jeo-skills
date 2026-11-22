@@ -120,12 +120,19 @@ def resolve_obsidian_mind_vault() -> Path:
 
 
 def resolve_vault_root() -> Path:
-    """llm-wiki root: $LLM_WIKI_VAULT → <obsidian-mind vault>/llm-wiki."""
-    explicit = _env_path("LLM_WIKI_VAULT")
-    if explicit:
-        return explicit
-    return resolve_obsidian_mind_vault() / "llm-wiki"
+    """llm-wiki root: $LLM_WIKI_VAULT → $OBSIDIAN_MIND_VAULT/llm-wiki → context-config.json → jeo wikiRoot → canonical/git fallback."""
+    try:
+        hooks_dir = str(Path(__file__).resolve().parent)
+        if hooks_dir not in sys.path:
+            sys.path.insert(0, hooks_dir)
+        from context_config import resolve_wiki_vault
 
+        return resolve_wiki_vault(home=HOME, git_toplevel_fn=git_toplevel)
+    except Exception:
+        explicit = _env_path("LLM_WIKI_VAULT")
+        if explicit:
+            return explicit
+        return resolve_obsidian_mind_vault() / "llm-wiki"
 
 VAULT_ROOT = resolve_vault_root()
 STATE_FILE = VAULT_ROOT / ".state" / "ingest-prompt.json"
@@ -488,8 +495,11 @@ def extract_compact_summary(payload: dict[str, Any]) -> str:
 def _delegate_turn_end_output(payload: dict[str, Any]) -> int:
     has_output = any(
         isinstance(payload.get(key), str) and payload.get(key, "").strip()
-        for key in ("assistant_output", "output", "response", "text", "raw",
-                    "transcript_path", "transcriptPath", "conversation_path", "conversationPath")
+        for key in (
+            "assistant_output", "last_assistant_message", "output", "response",
+            "lastOutput", "reply", "text", "raw",
+            "transcript_path", "transcriptPath", "conversation_path", "conversationPath",
+        )
     )
     if not has_output:
         return 0
@@ -514,18 +524,49 @@ def _delegate_turn_end_output(payload: dict[str, Any]) -> int:
     return 0
 
 
+PROMPT_EVENTS = {
+    "UserPromptSubmit",
+    "BeforeAgent",
+    "PreInvocation",
+    "beforeSubmitPrompt",
+    "pre-prompt",
+    "before_agent_start",
+    "chat.message",
+    "manual",
+}
+TURN_END_EVENTS = {
+    "Stop",
+    "AfterAgent",
+    "stop",
+    "turn-end",
+    "post-turn",
+    "agent_end",
+    "session.idle",
+}
+COMPACT_EVENTS = {"PostCompact", "post-compact", "compact"}
+
+
 def main() -> int:
     try:
         payload = read_payload()
-        event_name = payload.get("hook_event_name") or payload.get("type") or "UserPromptSubmit"
-        if event_name in {"Stop", "AfterAgent", "post-turn"}:
+        event_name = (
+            payload.get("hook_event_name")
+            or payload.get("type")
+            or os.environ.get("JEO_HOOK_EVENT")
+            or "UserPromptSubmit"
+        )
+        if event_name in TURN_END_EVENTS:
             return _delegate_turn_end_output(payload)
-        if event_name == "PostCompact":
+        if event_name in COMPACT_EVENTS:
             prompt_text = extract_compact_summary(payload)
             if not prompt_text:
                 return 0
             prompt_text = "Compact summary (PostCompact)\n\n" + prompt_text
-        elif event_name in {"UserPromptSubmit", "BeforeAgent", "manual"}:
+        elif event_name in PROMPT_EVENTS:
+            if payload.get("tool_name") and not any(
+                k in payload for k in ("prompt", "user_prompt", "message")
+            ):
+                return 0
             prompt_text = extract_prompt_text(payload)
         else:
             return 0

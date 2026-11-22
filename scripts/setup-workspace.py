@@ -25,6 +25,7 @@ written rules and pointers read-only and exits 1 when one would not be applied.
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -39,9 +40,10 @@ END = "<!-- JEO-WORKFLOWS:END -->"
 HOOK_START = "# JEO-WORKFLOWS:START zvec refresh"
 HOOK_END = "# JEO-WORKFLOWS:END"
 RULE_NAME = "jeo-workflows.md"
-STEPS = ("mex", "knowledge", "rules", "jeox", "zvec", "second-brain", "open-ontologies", "openspace",
-         "rtk-semble", "jev", "refresh", "host-isolation", "harness2")
+STEPS = ("mex", "knowledge", "rules", "host-isolation", "jeox", "zvec", "second-brain", "host-context",
+         "open-ontologies", "openspace", "rtk-semble", "jev", "refresh", "harness2")
 ALWAYS_STEPS = ("jev", "rules", "jeox", "harness2")
+GLOBAL_ONLY_STEPS = ("rules", "host-isolation", "second-brain", "host-context")
 ZVEC_EMBEDDING = "local/potion-code-16m-v2"
 ZVEC_GREP_VERSION = "0.2.2"
 HOST_CLIS = ("jeopi", "omp", "jeo", "codex", "claude", "pi", "gjc")
@@ -166,6 +168,8 @@ def _parse_order(raw: str | None) -> list[str]:
 
 class Ctx:
     def __init__(self, args: argparse.Namespace) -> None:
+        self.args = args
+        self.global_only = bool(getattr(args, "global_only", False))
         self.home = Path(args.home).expanduser().resolve()
         self.project = Path(args.project).expanduser().resolve()
         self.skills_root = Path(args.skills_root).expanduser().resolve() if args.skills_root \
@@ -688,6 +692,45 @@ def step_second_brain(ctx: Ctx) -> dict:
                         f"${BRAIN_DEFAULTS['daily_budget_usd']}/day{extra_note})")
 
 
+def _load_host_context_module(ctx: Ctx):
+    candidates = [
+        Path(__file__).resolve().parent / "setup-host-context.py",
+        ctx.skills_root / "jeo-skill" / "scripts" / "setup-host-context.py",
+    ]
+    for candidate in candidates:
+        if candidate.is_file():
+            spec = importlib.util.spec_from_file_location("setup_host_context", str(candidate))
+            if spec and spec.loader:
+                mod = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(mod)
+                return mod
+    return None
+
+
+def step_host_context(ctx: Ctx) -> dict:
+    mod = _load_host_context_module(ctx)
+    if mod is None:
+        return result("skipped", "setup-host-context.py not adjacent")
+    repo_root = Path(__file__).resolve().parents[1]
+    if not (repo_root / "hooks").is_dir():
+        repo_root = None
+    report = mod.sync_host_context(
+        ctx.home,
+        repo_root=repo_root,
+        second_brain_config=str(brain_config_path(ctx)),
+        second_brain_vault=str(brain_vault(ctx)),
+        dry_run=ctx.dry,
+        include_hooks=True,
+        respect_veto=True,
+        env=ctx.env,
+    )
+    if report.get("skipped"):
+        return result("skipped", report.get("reason", "vetoed"))
+    changed_count = len(report.get("changed") or [])
+    host_count = len(report.get("hosts") or [])
+    return result("ok", f"{changed_count} item(s) across {host_count} detected host(s)")
+
+
 def _ensure_ontology_ops(ctx: Ctx) -> list[str]:
     notes: list[str] = []
     onto_ops = ctx.skill_script("open-ontologies", "onto_ops.py")
@@ -1034,25 +1077,34 @@ def host_rule_targets(ctx: Ctx) -> list[tuple[str, Path, str]]:
 
 
 def step_rules(ctx: Ctx) -> dict:
+    global_only = bool(getattr(ctx.args, "global_only", False))
     global_text = rule_text(ctx)
-    wf, preserved_custom = resolve_project_workflow(ctx)
-    is_custom = bool(wf.get("custom"))
-    proj_text = project_rule_text(ctx, wf)
     pointer = POINTER_TEMPLATE.replace("{rule}", RULE_NAME)
     changed = []
     global_rule = ctx.home / ".agents/rules" / RULE_NAME
     changed.append(f"{global_rule}: {upsert_rule_file(ctx, global_rule, global_text, custom_workflow=False)}")
 
-    project_rule = ctx.project / ".agents/rules" / RULE_NAME
-    if preserved_custom and project_rule.is_file():
-        changed.append(f"{project_rule}: preserved (customWorkflow)")
-    else:
-        changed.append(f"{project_rule}: {upsert_rule_file(ctx, project_rule, proj_text, custom_workflow=is_custom)}")
+    if not global_only:
+        wf, preserved_custom = resolve_project_workflow(ctx)
+        is_custom = bool(wf.get("custom"))
+        proj_text = project_rule_text(ctx, wf)
+        project_rule = ctx.project / ".agents/rules" / RULE_NAME
+        if preserved_custom and project_rule.is_file():
+            changed.append(f"{project_rule}: preserved (customWorkflow)")
+        else:
+            changed.append(f"{project_rule}: {upsert_rule_file(ctx, project_rule, proj_text, custom_workflow=is_custom)}")
 
-    anchors = [ctx.project / n for n in ("AGENTS.md", "CLAUDE.md") if (ctx.project / n).is_file()]
-    for anchor in anchors or [ctx.project / "AGENTS.md"]:
-        changed.append(f"{anchor.name}: {upsert_block(ctx, anchor, pointer)}")
+        anchors = [ctx.project / n for n in ("AGENTS.md", "CLAUDE.md") if (ctx.project / n).is_file()]
+        for anchor in anchors or [ctx.project / "AGENTS.md"]:
+            changed.append(f"{anchor.name}: {upsert_block(ctx, anchor, pointer)}")
+    else:
+        preserved_custom = False
+        is_custom = False
+        proj_text = global_text
+
     for label, target, mode in host_rule_targets(ctx):
+        if global_only and mode == "rule":
+            continue
         if mode == "rule":
             if preserved_custom and target.is_file():
                 status = "preserved (customWorkflow)"
@@ -1170,25 +1222,58 @@ def check_pointer_block(path: Path, expected_pointer: str, label: str) -> dict:
 
 
 def run_verify(ctx: Ctx, as_json: bool) -> int:
+    global_only = bool(getattr(ctx.args, "global_only", False))
     expected = rule_text(ctx)
     pointer = POINTER_TEMPLATE.replace("{rule}", RULE_NAME)
-    allow_custom = is_existing_custom_project(ctx)
-    wf, _ = resolve_project_workflow(ctx)
+    allow_custom = False if global_only else is_existing_custom_project(ctx)
+    wf = (
+        {
+            "custom": False,
+            "order": list(DEFAULT_WORKFLOW_ORDER),
+            "openspace_enabled": True,
+            "jev_enabled": True,
+            "jev_profile": None,
+            "skills_root": str(ctx.skills_root),
+        }
+        if global_only
+        else resolve_project_workflow(ctx)[0]
+    )
     checks = [
         check_rule_file(ctx.home / ".agents/rules" / RULE_NAME, expected, "global rule", allow_custom=False),
-        check_rule_file(ctx.project / ".agents/rules" / RULE_NAME, expected, "project rule", allow_custom=allow_custom),
-        check_pointer(ctx.project),
     ]
+    if not global_only:
+        checks.extend([
+            check_rule_file(ctx.project / ".agents/rules" / RULE_NAME, expected, "project rule", allow_custom=allow_custom),
+            check_pointer(ctx.project),
+        ])
     for label, target, mode in host_rule_targets(ctx):
+        if global_only and mode == "rule":
+            continue
         checks.append(
             check_rule_file(target, expected, f"host {label}", allow_custom=(allow_custom and label == "cursor"))
             if mode == "rule"
             else check_pointer_block(target, pointer, f"host {label}")
         )
+    hc_mod = _load_host_context_module(ctx)
+    if hc_mod is not None and (global_only or (ctx.home / ".agents/context-config.json").is_file()):
+        if hc_mod.context_veto_reason(ctx.env) is None:
+            _hc_ok, hc_checks = hc_mod.verify_host_context(
+                ctx.home,
+                second_brain_config=str(brain_config_path(ctx)),
+                second_brain_vault=str(brain_vault(ctx)),
+                env=ctx.env,
+            )
+            for item in hc_checks:
+                checks.append({
+                    "target": f"context:{item['check']}",
+                    "path": item["detail"],
+                    "state": "ok" if item["ok"] else "missing",
+                    "detail": item["detail"],
+                })
     bad = [c for c in checks if c["state"] != "ok"]
     if as_json:
-        print(json.dumps({"project": str(ctx.project), "checks": checks, "workflow": wf,
-                          "loaders": dict(RULE_LOADERS), "ok": not bad}, indent=2))
+        print(json.dumps({"project": str(ctx.project), "global_only": global_only, "checks": checks,
+                          "workflow": wf, "loaders": dict(RULE_LOADERS), "ok": not bad}, indent=2))
     else:
         for c in checks:
             print(f"{c['target']:16} {c['state']:8} {c['path']} - {c['detail']}")
@@ -1199,7 +1284,7 @@ def run_verify(ctx: Ctx, as_json: bool) -> int:
 
 STEP_FUNCS = {
     "mex": step_mex, "knowledge": step_knowledge, "zvec": step_zvec,
-    "second-brain": step_second_brain,
+    "second-brain": step_second_brain, "host-context": step_host_context,
     "open-ontologies": step_ontologies, "openspace": step_openspace,
     "rtk-semble": step_rtk_semble, "jev": step_jev, "refresh": step_refresh,
     "host-isolation": step_host_isolation,
@@ -1215,6 +1300,8 @@ def parse(argv: list[str]) -> argparse.Namespace:
     p.add_argument("--vault", help="new second-brain vault (default: ~/vaults/jeo-second-brain)")
     p.add_argument("--inbox", help="second-brain inbox (default: ~/vaults/jeo-second-brain-inbox)")
     p.add_argument("--skip", action="append", choices=STEPS, default=[], help="skip a step (repeatable)")
+    p.add_argument("--global-only", action="store_true",
+                   help="sync global rules, second-brain, host-isolation, and detected host context without touching a project directory")
     p.add_argument("--custom-workflow", action="store_true",
                    help="isolate this project's workflow/rules/harness2 from global defaults")
     p.add_argument("--workflow-order", help="comma-separated per-project order (e.g. rtk,semble,mex)")
@@ -1235,15 +1322,17 @@ def parse(argv: list[str]) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> int:
     args = parse(sys.argv[1:] if argv is None else argv)
     ctx = Ctx(args)
-    if not ctx.project.is_dir():
-        print(f"error: project is not a directory: {ctx.project}", file=sys.stderr)
-        return 2
-    if ctx.project in (ctx.home, Path(ctx.project.anchor)):
-        print("error: refusing to activate the home directory or filesystem root as a workspace", file=sys.stderr)
-        return 2
+    if not args.global_only:
+        if not ctx.project.is_dir():
+            print(f"error: project is not a directory: {ctx.project}", file=sys.stderr)
+            return 2
+        if ctx.project in (ctx.home, Path(ctx.project.anchor)):
+            print("error: refusing to activate the home directory or filesystem root as a workspace", file=sys.stderr)
+            return 2
     if args.verify:
         return run_verify(ctx, args.json)
-    for name in STEPS:
+    selected_steps = GLOBAL_ONLY_STEPS if args.global_only else STEPS
+    for name in selected_steps:
         if name in args.skip:
             ctx.results[name] = result("skipped", "--skip")
         elif args.no_activate and name not in ALWAYS_STEPS:
@@ -1257,7 +1346,7 @@ def main(argv: list[str] | None = None) -> int:
         for res in ctx.results.values():
             if res["status"] == "ok":
                 res["status"] = "planned"
-    else:
+    elif not args.global_only:
         wf, preserved_custom = resolve_project_workflow(ctx)
         failed_steps = [k for k, v in ctx.results.items() if v["status"] == "failed"]
         outcome = "failed" if failed_steps else ("reset" if ctx.reset_project_workflow else ("preserved" if preserved_custom else "ok"))
@@ -1272,8 +1361,8 @@ def main(argv: list[str] | None = None) -> int:
         })
     failed = [k for k, v in ctx.results.items() if v["status"] == "failed"]
     if args.json:
-        print(json.dumps({"project": str(ctx.project), "dry_run": ctx.dry, "steps": ctx.results,
-                          "failed": failed}, indent=2))
+        print(json.dumps({"project": str(ctx.project), "global_only": bool(args.global_only),
+                          "dry_run": ctx.dry, "steps": ctx.results, "failed": failed}, indent=2))
     else:
         for name, res in ctx.results.items():
             print(f"{name:16} {res['status']:8} {res['detail']}")

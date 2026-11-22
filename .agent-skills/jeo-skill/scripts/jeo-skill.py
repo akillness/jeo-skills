@@ -86,10 +86,14 @@ _SAFE_SETUP_ENV_KEYS = (
     "KIMI_CODE_HOME",
     "JEO_SECOND_BRAIN_CONFIG",
     "JEO_SECOND_BRAIN_SOURCE",
+    "JEO_SECOND_BRAIN_VAULT",
+    "JEO_CONTEXT_CONFIG",
+    "JEO_SKILLS_HOST_CONTEXT",
     "JEO_SKILLS_SECOND_BRAIN",
     "JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS",
     "JEO_SKILLS_APPROVE_KNOWLEDGE_DATA",
     "LLM_WIKI_VAULT",
+    "OBSIDIAN_MIND_VAULT",
     "JEV_PROFILE",
     "JEV_AGENT",
     "JEO_SKILL_JEV_HARNESS",
@@ -901,19 +905,38 @@ def run_skill_setup(root: Path | None, selected: list[str], *,
     if with_hooks:
         env["JEO_SKILLS_APPROVE_ALL_HOOKS_MCP"] = "true"
     checkout_repo = Path(__file__).resolve().parents[3]
-    if with_hooks and ("llm-wiki" in selected or "obsidian-second-brain" in selected):
-        repo_hooks = checkout_repo / "hooks"
+    source_override = (os.environ.get("JEO_SKILLS_SOURCE") or "").strip()
+    repo_root = checkout_repo
+    if not (repo_root / "hooks").is_dir() and source_override:
+        cand_repo = Path(source_override).expanduser()
+        if (cand_repo / "hooks").is_dir():
+            repo_root = cand_repo
+
+    def _sync_managed_hooks_from_repo() -> None:
+        repo_hooks = repo_root / "hooks"
         dest_hooks = home / ".agents/hooks"
-        if (repo_hooks / "ingest-prompt.py").is_file() and not dest_hooks.is_symlink():
-            dest_hooks.mkdir(parents=True, exist_ok=True)
-            for fname in ("ingest-prompt.py", "ingest-output.py"):
-                src_f = repo_hooks / fname
-                dst_f = dest_hooks / fname
-                if src_f.is_file() and not dst_f.exists():
-                    shutil.copy2(src_f, dst_f)
+        if not ((repo_hooks / "ingest-prompt.py").is_file() and not dest_hooks.is_symlink()):
+            return
+        dest_hooks.mkdir(parents=True, exist_ok=True)
+        for fname in ("ingest-prompt.py", "ingest-output.py", "context_config.py", "llm-wiki-ingest.sh", "ctx-hook.sh"):
+            src_f = repo_hooks / fname
+            dst_f = dest_hooks / fname
+            if src_f.is_file() and not dst_f.is_symlink():
+                shutil.copy2(src_f, dst_f)
+                if fname.endswith((".py", ".sh")):
                     dst_f.chmod(0o755)
-            if (repo_hooks / "ctx").is_dir() and not (dest_hooks / "ctx").exists():
-                shutil.copytree(repo_hooks / "ctx", dest_hooks / "ctx")
+        if (repo_hooks / "ctx").is_dir() and not (dest_hooks / "ctx").is_symlink():
+            for item in (repo_hooks / "ctx").rglob("*.py"):
+                if "__pycache__" in item.parts or item.is_symlink():
+                    continue
+                out = dest_hooks / "ctx" / item.relative_to(repo_hooks / "ctx")
+                if out.is_symlink():
+                    continue
+                out.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(item, out)
+
+    if with_hooks and ("llm-wiki" in selected or "obsidian-second-brain" in selected) and not _is_second_brain_vetoed():
+        _sync_managed_hooks_from_repo()
 
     def _install_cli_wrapper(bin_name: str, script_path: Path) -> None:
         if not script_path.is_file():
@@ -966,7 +989,33 @@ def run_skill_setup(root: Path | None, selected: list[str], *,
             _install_cli_wrapper("jeo-ontology", onto_ops)
             if onto_ops.is_file():
                 subprocess.run([sys.executable, str(onto_ops), "init-store", "--json"], env=env, check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    if (
+        global_install
+        and ("obsidian-second-brain" in selected or ("llm-wiki" in selected and with_hooks))
+        and not _is_second_brain_vetoed()
+        and (os.environ.get("JEO_SKILLS_HOST_CONTEXT") or "").strip().lower() != "skip"
+    ):
+        if with_hooks:
+            _sync_managed_hooks_from_repo()
+        hc_candidates = [
+            repo_root / "scripts/setup-host-context.py",
+            *(([] if root is None else [root / "jeo-skill/scripts/setup-host-context.py"])),
+        ]
+        hc_script = next((p for p in hc_candidates if p.is_file()), None)
+        if hc_script is not None:
+            hc_cmd = [sys.executable, str(hc_script), "--home", str(home)]
+            if (repo_root / "hooks").is_dir():
+                hc_cmd.extend(["--repo-root", str(repo_root)])
+            if not with_hooks:
+                hc_cmd.append("--no-hooks")
+            sb_cfg = (os.environ.get("JEO_SECOND_BRAIN_CONFIG") or "").strip()
+            if sb_cfg:
+                hc_cmd.extend(["--second-brain-config", sb_cfg])
+            hc_res = subprocess.run(hc_cmd, env=env, check=False, stdin=subprocess.DEVNULL)
+            if hc_res.returncode != 0:
+                raise JeoSkillError(f"Host context setup failed (exit {hc_res.returncode}): {shlex.join(hc_cmd)}")
     run_readiness_report(root, selected)
+
 
 def run_readiness_report(root: Path | None, selected: list[str]) -> None:
     """Print the offline readiness report for selected program operators; blocked is a report, not a failure."""

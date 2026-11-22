@@ -281,6 +281,34 @@ fi
 # JEO_SKILLS_WORKSPACE=skip opts out; JEO_SKILLS_SECOND_BRAIN=skip or
 # JEO_SKILLS_APPROVE_KNOWLEDGE_{HOOKS,DATA}=false veto second-brain.
 if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_WORKSPACE:-}" != skip ]; then
+  if [ "${JEO_SKILLS_DRY_RUN:-}" != true ] && [ "${JEO_SKILLS_SECOND_BRAIN:-}" != skip ] && [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS:-}" != false ] && [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_DATA:-}" != false ] && [ "${JEO_SKILLS_APPROVE_ALL_HOOKS_MCP:-}" != false ]; then
+    HOOKS_SRC=''
+    if [ -d "$REPO_URL/hooks" ]; then
+      HOOKS_SRC="$REPO_URL/hooks"
+    elif [ -n "${FULL_HELPER:-}" ] && [ -d "$(dirname "$FULL_HELPER")/../hooks" ]; then
+      HOOKS_SRC="$(cd "$(dirname "$FULL_HELPER")/.." && pwd -P)/hooks"
+    fi
+    if [ -n "$HOOKS_SRC" ] && [ -f "$HOOKS_SRC/ingest-prompt.py" ] && [ ! -L "$HOME/.agents/hooks" ]; then
+      mkdir -p "$HOME/.agents/hooks"
+      for hook_f in ingest-prompt.py ingest-output.py context_config.py llm-wiki-ingest.sh ctx-hook.sh; do
+        if [ -f "$HOOKS_SRC/$hook_f" ] && [ ! -L "$HOME/.agents/hooks/$hook_f" ]; then
+          cp "$HOOKS_SRC/$hook_f" "$HOME/.agents/hooks/$hook_f"
+          chmod +x "$HOME/.agents/hooks/$hook_f"
+        fi
+      done
+      if [ -d "$HOOKS_SRC/ctx" ] && [ ! -L "$HOOKS_SRC/ctx" ] && [ ! -L "$HOME/.agents/hooks/ctx" ]; then
+        mkdir -p "$HOME/.agents/hooks/ctx"
+        for ctx_f in "$HOOKS_SRC"/ctx/*.py; do
+          [ -f "$ctx_f" ] || continue
+          [ ! -L "$ctx_f" ] || continue
+          ctx_name="$(basename "$ctx_f")"
+          if [ ! -L "$HOME/.agents/hooks/ctx/$ctx_name" ]; then
+            cp "$ctx_f" "$HOME/.agents/hooks/ctx/$ctx_name"
+          fi
+        done
+      fi
+    fi
+  fi
   WS_HELPER=''
   if [ -n "${FULL_HELPER:-}" ] && [ -f "$(dirname "$FULL_HELPER")/setup-workspace.py" ]; then
     WS_HELPER="$(dirname "$FULL_HELPER")/setup-workspace.py"
@@ -291,7 +319,43 @@ if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_WORKSPACE:-
     fi
   fi
   if [ "$PROJECT_DIR" = "$HOME" ]; then
-    info 'Workspace activation skipped: run the installer from a project directory, not $HOME.'
+    if [ -n "$WS_HELPER" ] && grep -q -- '--global-only' "$WS_HELPER"; then
+      WS_ARGS=(--global-only --skills-root "$ROOT")
+      if [ "${JEO_SKILLS_SECOND_BRAIN:-}" = skip ] || [ -n "${JEO_SECOND_BRAIN_CONFIG:-}" ]; then WS_ARGS+=(--skip second-brain); fi
+      if [ "${JEO_SKILLS_DRY_RUN:-}" = true ]; then WS_ARGS+=(--dry-run); fi
+      if ! python3 "$WS_HELPER" "${WS_ARGS[@]}" </dev/null; then
+        info 'WARNING: Global host context activation reported failed steps (see above); re-run the installer to refresh.' >&2
+        FULL_STATUS=1
+      elif [ "${JEO_SKILLS_DRY_RUN:-}" != true ] && grep -q -- '--verify' "$WS_HELPER"; then
+        if ! python3 "$WS_HELPER" --global-only --skills-root "$ROOT" --verify </dev/null; then
+          info 'WARNING: Global context rules/hooks were written but failed verify (see above); re-run the installer to refresh.' >&2
+          FULL_STATUS=1
+        fi
+      fi
+    else
+      HOST_CTX_HELPER=''
+      if [ -f "$REPO_URL/scripts/setup-host-context.py" ]; then
+        HOST_CTX_HELPER="$REPO_URL/scripts/setup-host-context.py"
+      elif [ -n "${FULL_HELPER:-}" ] && [ -f "$(dirname "$FULL_HELPER")/setup-host-context.py" ]; then
+        HOST_CTX_HELPER="$(dirname "$FULL_HELPER")/setup-host-context.py"
+      elif [ -f "$ROOT/jeo-skill/scripts/setup-host-context.py" ]; then
+        HOST_CTX_HELPER="$ROOT/jeo-skill/scripts/setup-host-context.py"
+      fi
+      if [ -n "$HOST_CTX_HELPER" ]; then
+        HC_ARGS=(--home "$HOME")
+        if [ -d "$REPO_URL/hooks" ]; then HC_ARGS+=(--repo-root "$REPO_URL"); fi
+        if [ -n "${JEO_SECOND_BRAIN_CONFIG:-}" ]; then HC_ARGS+=(--second-brain-config "$JEO_SECOND_BRAIN_CONFIG"); fi
+        if [ "${JEO_SKILLS_DRY_RUN:-}" = true ]; then HC_ARGS+=(--dry-run); fi
+        if ! python3 "$HOST_CTX_HELPER" "${HC_ARGS[@]}" </dev/null; then
+          info 'WARNING: Host context setup reported failed steps (see above).' >&2
+          FULL_STATUS=1
+        elif [ "${JEO_SKILLS_DRY_RUN:-}" != true ]; then
+          python3 "$HOST_CTX_HELPER" --home "$HOME" --verify </dev/null || FULL_STATUS=1
+        fi
+      else
+        info 'Workspace activation skipped: run the installer from a project directory, not $HOME.'
+      fi
+    fi
   elif [ -z "$WS_HELPER" ]; then
     info 'WARNING: setup-workspace.py unavailable; skills are installed but the workflows are not activated.' >&2
     # A custom source that predates the helper is not a failed install; the official source is.
@@ -299,10 +363,11 @@ if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_WORKSPACE:-
   else
     WS_ARGS=(--project "$PROJECT_DIR" --skills-root "$ROOT")
     if [ "${JEO_SKILLS_SECOND_BRAIN:-}" = skip ] || [ -n "${JEO_SECOND_BRAIN_CONFIG:-}" ]; then WS_ARGS+=(--skip second-brain); fi
+    if [ "${JEO_SKILLS_DRY_RUN:-}" = true ]; then WS_ARGS+=(--dry-run); fi
     if ! python3 "$WS_HELPER" "${WS_ARGS[@]}" </dev/null; then
       info 'WARNING: Workspace activation reported failed steps (see above); re-run the installer to refresh.' >&2
       FULL_STATUS=1
-    elif grep -q -- '--verify' "$WS_HELPER"; then
+    elif [ "${JEO_SKILLS_DRY_RUN:-}" != true ] && grep -q -- '--verify' "$WS_HELPER"; then
       # Written is not applied: confirm the harness would inject the rules (alwaysApply frontmatter,
       # current marker block, project pointer) and fail the install rather than report inert rules as active.
       if ! python3 "$WS_HELPER" --project "$PROJECT_DIR" --skills-root "$ROOT" --verify </dev/null; then
@@ -311,7 +376,7 @@ if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_WORKSPACE:-
       fi
     fi
   fi
-  if [ -f "$ROOT/open-ontologies/scripts/onto_ops.py" ]; then
+  if [ "${JEO_SKILLS_DRY_RUN:-}" != true ] && [ -f "$ROOT/open-ontologies/scripts/onto_ops.py" ]; then
     mkdir -p "$HOME/.local/bin"
     cat > "$HOME/.local/bin/jeo-ontology" <<EOF
 #!/usr/bin/env bash
@@ -319,26 +384,6 @@ exec python3 "$ROOT/open-ontologies/scripts/onto_ops.py" "\$@"
 EOF
     chmod +x "$HOME/.local/bin/jeo-ontology"
     python3 "$ROOT/open-ontologies/scripts/onto_ops.py" init-store --json </dev/null >/dev/null 2>&1 || true
-  fi
-  if [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS:-}" != false ]; then
-    HOOKS_SRC=''
-    if [ -d "$REPO_URL/hooks" ]; then
-      HOOKS_SRC="$REPO_URL/hooks"
-    elif [ -n "${FULL_HELPER:-}" ] && [ -d "$(dirname "$FULL_HELPER")/../hooks" ]; then
-      HOOKS_SRC="$(cd "$(dirname "$FULL_HELPER")/.." && pwd -P)/hooks"
-    fi
-    if [ -n "$HOOKS_SRC" ] && [ -f "$HOOKS_SRC/ingest-prompt.py" ] && [ ! -L "$HOME/.agents/hooks" ]; then
-      mkdir -p "$HOME/.agents/hooks"
-      for hook_f in ingest-prompt.py ingest-output.py; do
-        if [ -f "$HOOKS_SRC/$hook_f" ] && [ ! -e "$HOME/.agents/hooks/$hook_f" ]; then
-          cp "$HOOKS_SRC/$hook_f" "$HOME/.agents/hooks/$hook_f"
-          chmod +x "$HOME/.agents/hooks/$hook_f"
-        fi
-      done
-      if [ -d "$HOOKS_SRC/ctx" ] && [ ! -e "$HOME/.agents/hooks/ctx" ]; then
-        cp -R "$HOOKS_SRC/ctx" "$HOME/.agents/hooks/ctx"
-      fi
-    fi
   fi
   if [ "${JEO_SKILLS_APPROVE_MCP_HOSTS:-false}" = true ] || [ "${JEO_SKILLS_APPROVE_ALL_HOOKS_MCP:-false}" = true ]; then
     MCP_HELPER=''

@@ -90,19 +90,27 @@ def git_toplevel() -> Path | None:
 
 
 def resolve_vault_root() -> Path:
-    explicit = _env_path("LLM_WIKI_VAULT")
-    if explicit:
-        return explicit
-    om_explicit = _env_path("OBSIDIAN_MIND_VAULT")
-    if om_explicit:
-        return om_explicit / "llm-wiki"
-    canonical = HOME / "vaults" / "llm-wiki"
-    if canonical.is_dir():
-        return canonical
-    top = git_toplevel()
-    if top:
-        return top / "llm-wiki"
-    return HOME / "vaults" / "obsidian-mind" / "llm-wiki"
+    try:
+        hooks_dir = str(Path(__file__).resolve().parent)
+        if hooks_dir not in sys.path:
+            sys.path.insert(0, hooks_dir)
+        from context_config import resolve_wiki_vault
+
+        return resolve_wiki_vault(home=HOME, git_toplevel_fn=git_toplevel)
+    except Exception:
+        explicit = _env_path("LLM_WIKI_VAULT")
+        if explicit:
+            return explicit
+        om_explicit = _env_path("OBSIDIAN_MIND_VAULT")
+        if om_explicit:
+            return om_explicit / "llm-wiki"
+        canonical = HOME / "vaults" / "llm-wiki"
+        if canonical.is_dir():
+            return canonical
+        top = git_toplevel()
+        if top:
+            return top / "llm-wiki"
+        return HOME / "vaults" / "obsidian-mind" / "llm-wiki"
 
 
 VAULT_ROOT = resolve_vault_root()
@@ -199,7 +207,16 @@ def transcript_path(payload: dict[str, Any]) -> Path | None:
 
 def extract_last_assistant_output(payload: dict[str, Any]) -> str:
     # Direct payload fallback for non-Claude runtimes or tests.
-    for key in ("assistant_output", "output", "response", "text", "raw"):
+    for key in (
+        "assistant_output",
+        "last_assistant_message",
+        "output",
+        "response",
+        "lastOutput",
+        "reply",
+        "text",
+        "raw",
+    ):
         value = payload.get(key)
         if isinstance(value, str) and value.strip():
             return value.strip()
