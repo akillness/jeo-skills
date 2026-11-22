@@ -192,13 +192,13 @@ if [ "${INSTALL_GLOBAL:-true}" != false ] && [ "${JEO_SKILLS_STAR:-true}" = true
     if [ -n "${INSTALLER:-}" ]; then
       [ -f "$INSTALLER" ] || exit 1
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$INSTALLER"
-    elif [ -f "./install.sh" ] && python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "9caa040b0a99f1c0fdf1ca813dd55f431aded43c683980363ed118d046ae0870")' "./install.sh"; then
+    elif [ -f "./install.sh" ] && python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "36ef821f58916e88608272502dce9ef425ba4f6986978659caf1add068cc471b")' "./install.sh"; then
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "./install.sh"
     elif [ "${JEO_SKILLS_STAR_DOWNLOAD:-true}" = true ]; then
       tmp=$(mktemp "${TMPDIR:-/tmp}/jeo-skills-star.XXXXXXXX") || exit 1
       trap 'rm -f "$tmp"' EXIT
       curl --disable --proto '=https' --max-time 15 -fsS 'https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh' -o "$tmp" || exit 1
-      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "9caa040b0a99f1c0fdf1ca813dd55f431aded43c683980363ed118d046ae0870")' "$tmp" || exit 1
+      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "36ef821f58916e88608272502dce9ef425ba4f6986978659caf1add068cc471b")' "$tmp" || exit 1
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$tmp"
     else
       exit 1
