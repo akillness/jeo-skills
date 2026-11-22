@@ -959,5 +959,48 @@ else:
         self.assertEqual((self.vault / "wiki/retried.md").read_text(), "# Retried successfully\n")
         self.assertEqual(self.model_calls(), [], "Claude CLI must not be called with gpt-6.1-terra")
 
+    def test_repair_flag_reconciles_drifted_schedule_and_hook_while_preserving_user_entries(self) -> None:
+        self.install()
+        # Simulate external crontab rewrite that removed the managed second-brain block
+        self.cron.write_text("17 4 * * * /existing/job # 사용자\n0 9 * * * /other/blog-job\n", encoding="utf-8")
+        # Also remove the managed PostCompact hook while keeping an unrelated user key
+        settings_path = self.vault / ".claude/settings.json"
+        settings_path.write_text(json.dumps({"userSetting": True, "hooks": {}}, indent=2) + "\n", encoding="utf-8")
+
+        # Default rerun without --repair must refuse silent mutation and hint --repair
+        without_repair = self.setup()
+        self.assertNotEqual(without_repair.returncode, 0)
+        self.assertIn("--repair", without_repair.stdout)
+        self.assertNotIn("jeo-second-brain", self.cron.read_text(encoding="utf-8"))
+
+        # Dry-run with --repair previews repair without mutating crontab or settings
+        dry_repair = self.setup("--dry-run", "--repair")
+        self.assertEqual(dry_repair.returncode, 0, dry_repair.stdout)
+        dry_payload = json.loads(dry_repair.stdout)
+        self.assertEqual(dry_payload["status"], "dry-run")
+        self.assertTrue(dry_payload["repair"])
+        self.assertNotIn("jeo-second-brain", self.cron.read_text(encoding="utf-8"))
+
+        # Explicit --repair restores managed hook + crontab while preserving user entries
+        repaired = self.setup("--repair")
+        self.assertEqual(repaired.returncode, 0, repaired.stdout)
+        repaired_payload = json.loads(repaired.stdout)
+        self.assertEqual(repaired_payload["status"], "updated")
+        self.assertIn("repair .claude/settings.json", repaired_payload["actions"])
+        self.assertIn("repair managed crontab block", repaired_payload["actions"])
+        cron_text = self.cron.read_text(encoding="utf-8")
+        self.assertIn("17 4 * * * /existing/job # 사용자", cron_text)
+        self.assertIn("0 9 * * * /other/blog-job", cron_text)
+        self.assertIn("# BEGIN jeo-second-brain", cron_text)
+        repaired_settings = json.loads(settings_path.read_text(encoding="utf-8"))
+        self.assertTrue(repaired_settings.get("userSetting"))
+        self.assertIn("PostCompact", repaired_settings.get("hooks", {}))
+
+        # Subsequent default rerun is clean & unchanged
+        clean = self.setup()
+        self.assertEqual(clean.returncode, 0, clean.stdout)
+        self.assertEqual(json.loads(clean.stdout)["status"], "unchanged")
+
+
 if __name__ == "__main__":
     unittest.main()

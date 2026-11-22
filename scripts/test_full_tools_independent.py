@@ -364,6 +364,8 @@ exit 0''')
     def test_rtk_without_cargo_still_fails_unless_it_is_the_working_pinned_release(self):
         cases = {
             "wrong version": 'if [ "$1" = "--version" ]; then echo "rtk 1.0.0"; fi',
+            "older 0.x version": 'if [ "$1" = "--version" ]; then echo "rtk 0.44.0"; fi',
+            "incompatible major": 'if [ "$1" = "--version" ]; then echo "rtk 2.0.0"; fi',
             "no rtk": None,
             "gain fails": 'if [ "$1" = "--version" ]; then echo "rtk 1.1.0"; exit 0; fi; exit 9',
         }
@@ -378,6 +380,46 @@ exit 0''')
                 self.assertIn("cargo is required for pinned RTK installation", result.stdout)
                 self.assertIn("PARTIAL SUCCESS - failed: RTK", result.stdout)
                 self.assertIn("Full-tool result: 6/7 succeeded.", result.stdout)
+
+    def test_compatible_newer_1x_rtk_on_path_and_homebrew_upgrade_work_without_cargo(self):
+        (self.bin / "cargo").unlink()
+        self.command("rtk", 'if [ "$1" = "--version" ]; then echo "rtk 1.2.0"; fi')
+        result = self.run_installer()
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("Full-tool result: 7/7 succeeded.", result.stdout)
+
+        # Older brew-installed 0.44.0 upgrades cleanly via brew when cargo is absent
+        state = self.work / "brew-rtk-version"
+        state.write_text("0.44.0\n", encoding="utf-8")
+        self.command(
+            "rtk",
+            f'if [ "$1" = "--version" ]; then read -r v < "{state}"; printf "rtk %s\\n" "$v"; fi',
+        )
+        self.command(
+            "brew",
+            f'''printf 'brew %s\\n' "$*" >> "$FIXTURE_LOG"
+if [ "$1" = "info" ]; then
+  printf '{{"formulae":[{{"name":"rtk","versions":{{"stable":"1.2.0"}},"installed":[{{"version":"0.44.0"}}]}}]}}\\n'
+  exit 0
+fi
+if [ "$1" = "upgrade" ] && [ "$2" = "rtk" ]; then
+  if [ "${{FAIL_BREW:-}}" = "1" ]; then exit 1; fi
+  printf '1.2.0\\n' > {state}
+  exit 0
+fi
+exit 1''',
+        )
+        upgraded = self.run_installer()
+        self.assertEqual(upgraded.returncode, 0, upgraded.stdout)
+        self.assertIn("Full-tool result: 7/7 succeeded.", upgraded.stdout)
+        self.assertIn("brew upgrade rtk", self.log.read_text(encoding="utf-8"))
+
+        # Failing brew upgrade still surfaces RTK failure
+        state.write_text("0.44.0\n", encoding="utf-8")
+        failed = self.run_installer(FAIL_BREW="1")
+        self.assertNotEqual(failed.returncode, 0, failed.stdout)
+        self.assertIn("PARTIAL SUCCESS - failed: RTK", failed.stdout)
+        self.assertIn("Full-tool result: 6/7 succeeded.", failed.stdout)
 
     def test_cargo_build_failure_is_still_reported_when_cargo_exists(self):
         self.command("cargo", 'exit 1')

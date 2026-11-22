@@ -2109,6 +2109,44 @@ for row in rows:
             self.assertEqual(os.path.realpath(link), os.path.realpath(rust_skill))
             self.assertFalse((hroot / "local-private").exists(), f"non-catalog skill leaked into {hroot}")
 
+    def test_step_three_includes_claude_code_when_orca_profile_links_to_real_home_claude_skills(self) -> None:
+        shared = self.home / ".agents/skills"
+        shared.mkdir(parents=True)
+        real_claude_skills = self.home / ".claude/skills"
+        real_claude_skills.mkdir(parents=True)
+
+        orca_claude_home = self.work / "orca-real-claude-home"
+        orca_claude_home.mkdir()
+        (orca_claude_home / "skills").symlink_to(real_claude_skills)
+
+        bin_dir = self.work / "orca-bin"
+        bin_dir.mkdir()
+        claude_exe = bin_dir / "claude"
+        claude_exe.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+        claude_exe.chmod(0o755)
+
+        code = "\n".join((
+            guide_block("## Step 3 — Build non-duplicating agent targets"),
+            'printf "ARGS=%s\\n" "${SKILLS_AGENT_ARGS[*]}"',
+        ))
+        env = self.env(
+            PATH=f"{bin_dir}:/usr/bin:/bin",
+            HOME=str(self.home),
+            USER_HOME=str(self.home),
+            SKILLS_ROOT=str(shared),
+            CLAUDE_CONFIG_DIR=str(orca_claude_home),
+        )
+        res = run_block(code, env, self.project)
+        self.assertEqual(res.returncode, 0, res.stdout)
+        self.assertIn("ARGS=-a universal -a claude-code\n", res.stdout)
+
+        # If the profile symlink points to the shared root instead, claude-code must still be skipped
+        (orca_claude_home / "skills").unlink()
+        (orca_claude_home / "skills").symlink_to(shared)
+        res_shared = run_block(code, env, self.project)
+        self.assertEqual(res_shared.returncode, 0, res_shared.stdout)
+        self.assertIn("ARGS=-a universal\n", res_shared.stdout)
+
     def test_step_five_c_respects_mcp_approval_gate_and_cleans_up_remote_helper(self) -> None:
         bin_dir = self.work / "mcp-bin"
         bin_dir.mkdir()

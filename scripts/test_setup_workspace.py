@@ -704,5 +704,20 @@ class HostSkillIsolationTests(unittest.TestCase):
         self.assertFalse((home / ".cursor/skills/demo").is_symlink())
         self.assertEqual(report["tally"].get("prune-shared-link"), 2)
 
+    def test_repair_flag_forwards_to_second_brain_setup(self):
+        box = Sandbox()
+        self.addCleanup(box.cleanup)
+        proc, rep = box.run()
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        brain_calls = [c for c in box.calls() if c.startswith("brain-setup ")]
+        self.assertTrue(brain_calls)
+        self.assertNotIn("--repair", brain_calls[-1])
+
+        proc2, rep2 = box.run("--repair")
+        self.assertEqual(proc2.returncode, 0, proc2.stderr)
+        brain_calls2 = [c for c in box.calls() if c.startswith("brain-setup ")]
+        self.assertIn("--repair", brain_calls2[-1])
+
+
 if __name__ == "__main__":
     unittest.main()

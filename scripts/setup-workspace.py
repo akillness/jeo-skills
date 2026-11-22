@@ -169,6 +169,7 @@ class Ctx:
         self.skills_root = Path(args.skills_root).expanduser().resolve() if args.skills_root \
             else Path(os.environ.get("SKILLS_ROOT") or self.home / ".agents/skills")
         self.dry = args.dry_run
+        self.repair = bool(getattr(args, "repair", False))
         self.env = dict(os.environ, HOME=str(self.home))
         extra = [self.home / d for d in (".local/bin", ".cargo/bin", ".bun/bin")]
         self.env["PATH"] = os.pathsep.join([str(p) for p in extra] + [self.env.get("PATH", "")])
@@ -653,6 +654,8 @@ def step_second_brain(ctx: Ctx) -> dict:
     cmd = [sys.executable, str(setup), "--config", str(config)]
     if ctx.env.get("JEO_SECOND_BRAIN_SOURCE"):
         cmd += ["--source", ctx.env["JEO_SECOND_BRAIN_SOURCE"]]
+    if ctx.repair:
+        cmd.append("--repair")
     code, out = ctx.run(cmd, 900)
     if code != 0:
         if "explicit model identifier is required" in out and not ctx.env.get("JEO_SECOND_BRAIN_CONFIG"):
@@ -1170,6 +1173,8 @@ def parse(argv: list[str]) -> argparse.Namespace:
     p.add_argument("--no-activate", action="store_true",
                    help="write only the rules and the .harness2 manifest; run no tool")
     p.add_argument("--dry-run", action="store_true", help="report the plan; run and write nothing")
+    p.add_argument("--repair", action="store_true",
+                   help="explicitly repair drifted owned second-brain hook settings or managed crontab block")
     p.add_argument("--json", action="store_true", help="machine-readable report")
     p.add_argument("--verify", action="store_true",
                    help="read-only: check the written rules would be applied; exit 1 if not")

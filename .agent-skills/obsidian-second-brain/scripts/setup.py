@@ -832,14 +832,16 @@ def rollback_tree(root: Path, owned_files: dict[str, bytes]) -> list[str]:
     return []
 
 
-def install(config: dict, source: Path | None, dry_run: bool) -> dict:
+def install(config: dict, source: Path | None, dry_run: bool, repair: bool = False) -> dict:
     vault, inbox = Path(config["vault"]), Path(config["inbox"])
     assets = verified_local_assets(source, preview=dry_run) if source else None
     integration_status = ctx_preflight(config)
     actions = ["verify pinned upstream assets", "install commands, templates and standalone runtime", "initialize immutable raw and general wiki", "register vault-local PostCompact hook", "merge consented managed crontab block"]
+    if repair:
+        actions.append("repair owned hook settings and managed crontab block if drifted")
     if dry_run:
         return {"status": "dry-run", "vault": str(vault), "host": config.get("host", "claude"),
-                "model": config["model"], "actions": actions,
+                "model": config["model"], "actions": actions, "repair": repair,
                 "integrations": integration_status,
                 "deferred": ["git blob verification", "crontab read/registration"]}
     old_cron, had_cron = read_crontab(config["crontab_bin"])
@@ -883,11 +885,17 @@ def install(config: dict, source: Path | None, dry_run: bool) -> dict:
         updated_actions: list[str] = []
 
         if previous_config == config:
-            settings = hook_settings(original_settings, config)
+            settings = hook_settings(original_settings, config, update_existing=repair)
             if settings != original_settings:
-                raise ValueError("owned hook settings changed; repair requires an explicit reviewed operation")
+                if not repair:
+                    raise ValueError("owned hook settings changed; repair requires an explicit reviewed operation (re-run with --repair)")
+                atomic_write_bytes(settings_path, json_bytes(settings))
+                updated_actions.append("repair .claude/settings.json")
             if old_cron != new_cron:
-                raise ValueError("owned schedule changed; repair requires an explicit reviewed operation")
+                if not repair:
+                    raise ValueError("owned schedule changed; repair requires an explicit reviewed operation (re-run with --repair)")
+                subprocess.run([config["crontab_bin"], "-"], input=new_cron, text=True, capture_output=True, check=True, timeout=15)
+                updated_actions.append("repair managed crontab block")
             for name in ("runtime.py", "ctx_guard.py"):
                 src_bytes = (package / name).read_bytes()
                 dst_path = vault / ".second-brain/scripts" / name
@@ -984,12 +992,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--config", required=True)
     parser.add_argument("--source", help="self-contained checkout at the pinned upstream revision")
     parser.add_argument("--dry-run", action="store_true", help="read-only preview; no subprocess, download or writes")
+    parser.add_argument("--repair", action="store_true", help="explicitly repair drifted owned hook settings or managed crontab block")
     args = parser.parse_args(argv)
     try:
         source = absolute_path(args.source, "source") if args.source else None
         config_path = absolute_path(args.config, "config")
         config = validate_config(json.loads(config_path.read_text(encoding="utf-8")), source)
-        print(json.dumps(install(config, source, args.dry_run), ensure_ascii=False))
+        print(json.dumps(install(config, source, args.dry_run, repair=args.repair), ensure_ascii=False))
         return 0
     except (OSError, ValueError, RuntimeError, subprocess.SubprocessError, zipfile.BadZipFile, SyntaxError, AttributeError) as error:
         print(json.dumps({"status": "error", "error": str(error)}), file=sys.stderr)

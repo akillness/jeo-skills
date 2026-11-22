@@ -254,17 +254,61 @@ PY
   return "$merge_status"
 }
 
+rtk_version_compatible() {
+  local raw=${1:-}
+  python3 - "$RTK_VERSION" "$raw" <<'PY'
+import re, sys
+pin_s, raw = sys.argv[1], sys.argv[2].strip()
+m_pin = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)", pin_s)
+m_raw = re.search(r"(?:^|\brtk\s+)(\d+)\.(\d+)\.(\d+)\b", raw)
+if not m_pin or not m_raw:
+    sys.exit(1)
+pin = tuple(int(x) for x in m_pin.groups())
+got = tuple(int(x) for x in m_raw.groups())
+sys.exit(0 if (got[0] == pin[0] and got >= pin) else 1)
+PY
+}
+
 install_rtk() {
   local cargo_rtk="${CARGO_HOME:-$HOME/.cargo}/bin/rtk"
   if [ -x "$cargo_rtk" ] && [ "$("$cargo_rtk" --version 2>/dev/null || true)" = "rtk $RTK_VERSION" ]; then
     : # Already compiled and matches pinned version
   elif ! command -v cargo >/dev/null 2>&1; then
-    # Nothing can build the pin here. A release already on PATH (for example Homebrew's) at the
-    # pinned version satisfies it; any other state still fails, so a missing toolchain is never hidden.
-    if [ "$(rtk --version 2>/dev/null || true)" = "rtk $RTK_VERSION" ] && rtk gain >/dev/null 2>&1; then
+    # Nothing can build the pin here. A compatible 1.x release already on PATH (for example
+    # Homebrew's) at or above the pinned version satisfies it; otherwise, if Homebrew offers a
+    # compatible 1.x release, install/upgrade via brew and verify. Any other state still fails.
+    local current_rtk
+    current_rtk=$(rtk --version 2>/dev/null || true)
+    if rtk_version_compatible "$current_rtk" && rtk gain >/dev/null 2>&1; then
       return 0
     fi
-    printf 'cargo is required for pinned RTK installation (no rtk %s on PATH either).\n' "$RTK_VERSION" >&2
+    if command -v brew >/dev/null 2>&1; then
+      local brew_action
+      brew_action=$(brew info --json=v2 rtk 2>/dev/null | python3 -c '
+import json, re, sys
+pin = tuple(int(x) for x in sys.argv[1].split("."))
+try:
+    formula = json.load(sys.stdin)["formulae"][0]
+except Exception:
+    sys.exit(1)
+stable = str(formula.get("versions", {}).get("stable") or "")
+m = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)", stable)
+if not m:
+    sys.exit(1)
+got = tuple(int(x) for x in m.groups())
+if got[0] != pin[0] or got < pin:
+    sys.exit(1)
+print("upgrade" if formula.get("installed") else "install")
+' "$RTK_VERSION" || true)
+      if [ "$brew_action" = upgrade ] || [ "$brew_action" = install ]; then
+        brew "$brew_action" rtk || true
+        current_rtk=$(rtk --version 2>/dev/null || true)
+        if rtk_version_compatible "$current_rtk" && rtk gain >/dev/null 2>&1; then
+          return 0
+        fi
+      fi
+    fi
+    printf 'cargo is required for pinned RTK installation (no compatible rtk >= %s on PATH either).\n' "$RTK_VERSION" >&2
     return 1
   else
     if [ "$(uname -s 2>/dev/null)" = Linux ] && [ "$(uname -m 2>/dev/null)" = aarch64 ]; then

@@ -398,9 +398,13 @@ those IDEs are present:
 SKILLS_AGENT_ARGS=(-a universal)
 
 # Claude Code (if present and not symlink-managed): native ~/.claude/skills
+# Allow a profile symlink (e.g. Orca's CLAUDE_CONFIG_DIR/skills -> ~/.claude/skills) when
+# ~/.claude/skills itself is a real directory without symlink-managed skills.
 CLAUDE_SKILLS="${CLAUDE_CONFIG_DIR:-$USER_HOME/.claude}/skills"
 command -v claude >/dev/null 2>&1 \
-  && [ ! -L "$CLAUDE_SKILLS" ] && [ ! -L "$CLAUDE_SKILLS/jeo-skill" ] \
+  && { [ ! -L "$CLAUDE_SKILLS" ] || [ "$CLAUDE_SKILLS" -ef "$USER_HOME/.claude/skills" ]; } \
+  && [ ! "$CLAUDE_SKILLS" -ef "$SKILLS_ROOT" ] \
+  && [ ! -L "$CLAUDE_SKILLS/jeo-skill" ] \
   && [ ! -L "$USER_HOME/.claude/skills" ] && [ ! -L "$USER_HOME/.claude/skills/jeo-skill" ] \
   && SKILLS_AGENT_ARGS+=(-a claude-code)
 
@@ -960,8 +964,8 @@ The pins are `mex-agent` 0.8.5, `@zvec/zvec-grep` 0.2.2, `specify-cli` at
 Git commit `99e047e9b48c3ecbbc5c3e530fb45bed671960bc` (1.2.6.dev0), RTK v1.1.0,
 `semble` 0.7.0, `cli-anything-hub` 0.4.1, and `headroom-ai[proxy,mcp,code]` 0.42.0. Node.js 22.20+ is required by the
 skills CLI. RTK builds from its official pinned Git tag and requires Rust 1.91 or newer;
-without `cargo`, an `rtk` already on PATH counts only when it reports exactly the pinned
-version and `rtk gain` runs (for example Homebrew's release). Any other state, or a failed
+without `cargo`, a compatible `1.x` `rtk` (`>= 1.1.0`) already on PATH—or installed/upgraded
+via Homebrew when available—counts only when `rtk gain` also runs. Any other state, or a failed
 build, is reported as a failure.
 Another program can already own the `mex` command (TeX Live ships one, so `npm install -g
 mex-agent` stops with EEXIST). The helper then installs the pinned package under `~/.local`
