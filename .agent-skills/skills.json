@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 469,
+  "skill_count": 470,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -490,7 +490,8 @@
       "codebase-memory-mcp",
       "ponytail",
       "rust-anything",
-      "fast-anything"
+      "fast-anything",
+      "mobile-agent-testers"
     ],
     "research": [
       "academic-research",
@@ -1079,7 +1080,8 @@
       "testing": [
         "scaffold-exercises",
         "tdd",
-        "testing-strategies"
+        "testing-strategies",
+        "mobile-agent-testers"
       ],
       "architecture": [
         "improve-codebase-architecture",
@@ -17099,6 +17101,38 @@
       "keyword": "vespa",
       "version": "1.0.0",
       "source": "https://github.com/vespa-engine/vespa"
+    },
+    {
+      "name": "mobile-agent-testers",
+      "description": "Set up and run parallel AI testers for an iOS/Android app (Flutter, React Native, Expo, native, KMP, Capacitor, MAUI) - one headless Claude Code agent per iOS Simulator or Android emulator, each with a persona and a different device, on GitHub Actions, with encrypted reports using pierridotite/mobile-agent-testers.",
+      "category": "engineering",
+      "subcategory": "testing",
+      "interface": "workflow",
+      "path": "mobile-agent-testers/SKILL.md",
+      "tags": [
+        "mobile-agent-testers",
+        "mobile-qa",
+        "ios-simulator",
+        "android-emulator",
+        "claude-code",
+        "parallel-testing",
+        "github-actions",
+        "react-native",
+        "flutter",
+        "expo"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "mobile-agent-testers",
+      "version": "1.0.0",
+      "source": "https://github.com/pierridotite/mobile-agent-testers"
     }
   ]
 }

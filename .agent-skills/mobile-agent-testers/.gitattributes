@@ -1,0 +1,4 @@
+# Shell scripts must keep LF endings, even on Windows checkouts
+*.sh text eol=lf
+*.py text eol=lf
+*.yml text eol=lf

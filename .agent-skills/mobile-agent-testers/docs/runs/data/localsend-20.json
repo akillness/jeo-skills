@@ -1,0 +1,911 @@
+{
+ "app": "LocalSend",
+ "app_repo": "localsend/localsend",
+ "date": "2026-11-18",
+ "run": "https://github.com/pierridotite/mobile-agent-testers/actions/runs/44297752124",
+ "wall_clock_minutes": 69,
+ "grouping": "by hand",
+ "agents": 20,
+ "reports": 103,
+ "model_usage_usd": 4.62,
+ "agents_detail": [
+  {
+   "persona": "amira",
+   "platform": "ios",
+   "locale": "ar-SA",
+   "theme": "light",
+   "device": "iPhone 16 Pro",
+   "ios": 18,
+   "text_size": "large",
+   "minutes": 5.6,
+   "turns": 30,
+   "model_usage_usd": 0.21,
+   "reports": [
+    {
+     "severity": "major",
+     "title": "Manual send confirm button stays disabled with no progress or error",
+     "screen": "Send > manual send dialog",
+     "group": "iOS: a manual send to an address that does not answer waits forever, with no progress or error"
+    },
+    {
+     "severity": "minor",
+     "title": "Latin unit 'B' and Western digits, mis-ordered size ('B 14') in RTL",
+     "screen": "Send selection card",
+     "group": "Arabic: numbers and units not localised, a size shown as \"B 14\""
+    },
+    {
+     "severity": "cosmetic",
+     "title": "IP hint trailing dot jumps to wrong side while typing (bidi)",
+     "screen": "Manual send dialog",
+     "group": "IP hint trailing dot jumps to wrong side while typing (bidi)"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Untranslated Latin strings (LocalSend, PIN, IP) mixed in Arabic UI",
+     "screen": "Settings",
+     "group": "Latin strings (LocalSend, PIN, IP) left in Arabic and Chinese screens"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Language setting styled as plain button unlike dropdowns above",
+     "screen": "Settings",
+     "group": "Language setting styled as plain button unlike dropdowns above"
+    }
+   ]
+  },
+  {
+   "persona": "anna",
+   "platform": "android",
+   "locale": "en-GB",
+   "theme": "light",
+   "device": "Small phone",
+   "android_api": 30,
+   "font_scale": 1.3,
+   "minutes": 1.2,
+   "turns": 19,
+   "model_usage_usd": 0.16,
+   "reports": [
+    {
+     "severity": "minor",
+     "title": "Icon-only buttons by Nearby devices have no labels",
+     "screen": "Send",
+     "group": "Icon-only buttons next to Nearby devices have no accessibility label"
+    },
+    {
+     "severity": "minor",
+     "title": "Text selection shows icon only, Edit not button-like",
+     "screen": "Send",
+     "group": "Text selection shows icon only, Edit not button-like"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Save to folder value '(Downloads)' wraps leaving orphan ')'",
+     "screen": "Settings",
+     "group": "Settings values and device name cut, or broken mid-word"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Hint text partly hidden under bottom bar until scroll",
+     "screen": "Send",
+     "group": "Content tight against, or partly hidden under, the bottom bar"
+    }
+   ]
+  },
+  {
+   "persona": "clara",
+   "platform": "ios",
+   "locale": "fr-FR",
+   "theme": "light",
+   "device": "iPhone SE (3rd generation)",
+   "ios": 18,
+   "text_size": "large",
+   "minutes": 5.1,
+   "turns": 40,
+   "model_usage_usd": 0.33,
+   "reports": [
+    {
+     "severity": "major",
+     "title": "Receive via link screen overflows right by 28px, checkbox cut off",
+     "screen": "Recevoir via un lien",
+     "group": "Receive via link screen overflows right by 28px, checkbox cut off"
+    },
+    {
+     "severity": "minor",
+     "title": "History button 'Supprimer l'historique' cut off at right edge",
+     "screen": "Historique",
+     "group": "History button 'Supprimer l'historique' cut off at right edge"
+    },
+    {
+     "severity": "minor",
+     "title": "Vague 'Erreur' message for invalid hashtag/IP in manual search",
+     "screen": "Send manual search",
+     "group": "A failed manual send only says \"Error\" (\"Erreur\", \"Fehler\", \"エラー\", \"Hata\", \"Erro\"), with no reason"
+    },
+    {
+     "severity": "minor",
+     "title": "No clear empty state when no device is found",
+     "screen": "Envoyer",
+     "group": "Nearby devices: endless loading skeleton, never says that nothing was found"
+    },
+    {
+     "severity": "minor",
+     "title": "English system keyboard sheet on French device",
+     "screen": "Text dialog",
+     "group": "The Simulator's English keyboard sheet (not the app)"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Text message counted as 'Fichiers : 1'",
+     "screen": "Envoyer",
+     "group": "A text message is counted as \"Files: 1\""
+    },
+    {
+     "severity": "cosmetic",
+     "title": "'Presse-papiers' fills its button with no padding",
+     "screen": "Envoyer",
+     "group": "'Presse-papiers' fills its button with no padding"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Info popup covers the history button",
+     "screen": "Recevoir",
+     "group": "The info popup covers the History button"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Cramped icon row next to 'Appareils à proximité'",
+     "screen": "Envoyer",
+     "group": "Cramped icon row next to 'Appareils à proximité'"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Settings: Langue has no dropdown arrow, title slightly off-centre",
+     "screen": "Paramètres",
+     "group": "Settings title off-centre"
+    }
+   ]
+  },
+  {
+   "persona": "felipe",
+   "platform": "android",
+   "locale": "pt-BR",
+   "theme": "light",
+   "device": "Pixel 3a",
+   "android_api": 31,
+   "font_scale": 1.15,
+   "minutes": 1.7,
+   "turns": 26,
+   "model_usage_usd": 0.2,
+   "reports": [
+    {
+     "severity": "major",
+     "title": "Manual send failure shows only 'Erro' with no explanation",
+     "screen": "Envio manual",
+     "group": "A failed manual send only says \"Error\" (\"Erreur\", \"Fehler\", \"エラー\", \"Hata\", \"Erro\"), with no reason"
+    },
+    {
+     "severity": "minor",
+     "title": "'Jogo da velha' (tic-tac-toe) used as label for the # tab",
+     "screen": "Envio manual",
+     "group": "'Jogo da velha' (tic-tac-toe) used as label for the # tab"
+    },
+    {
+     "severity": "minor",
+     "title": "Nearby devices shows endless skeleton placeholder, no empty-state text",
+     "screen": "Enviar",
+     "group": "Nearby devices: endless loading skeleton, never says that nothing was found"
+    },
+    {
+     "severity": "minor",
+     "title": "Device name cut off 'Cogumelo F...' in settings",
+     "screen": "Configurações",
+     "group": "Settings values and device name cut, or broken mid-word"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Receber status shows unexplained '#16 #15' instead of Off-line",
+     "screen": "Receber",
+     "group": "\"#16 #15\" shown on the home screen with no explanation"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Settings title slightly off-centre",
+     "screen": "Configurações",
+     "group": "Settings title off-centre"
+    }
+   ]
+  },
+  {
+   "persona": "giulia",
+   "platform": "ios",
+   "locale": "it-IT",
+   "theme": "light",
+   "device": "iPhone 16 Plus",
+   "ios": 18,
+   "text_size": "accessibility-medium",
+   "minutes": 11.1,
+   "turns": 39,
+   "model_usage_usd": 0.29,
+   "reports": [
+    {
+     "severity": "major",
+     "title": "Invia: Media/Testo/Incolla/File/Cartella buttons overflow by 4px, labels clipped, debug overflow banner visible",
+     "screen": "Invia",
+     "group": "The Send selection buttons overflow at large text and cut their labels"
+    },
+    {
+     "severity": "minor",
+     "title": "Settings values truncated (Sistem, Local..., Lovely ...) at large text size",
+     "screen": "Impostazioni",
+     "group": "Settings values and device name cut, or broken mid-word"
+    },
+    {
+     "severity": "minor",
+     "title": "Privacy policy page opens in English only for it-IT user",
+     "screen": "Privacy policy",
+     "group": "Privacy policy and changelog only in English"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Paste permission prompt and English system sheet during text entry (likely simulator/tool artefact)",
+     "screen": "Invia - text dialog",
+     "group": "The Simulator's English keyboard sheet (not the app)"
+    }
+   ]
+  },
+  {
+   "persona": "grace",
+   "platform": "android",
+   "locale": "en-US",
+   "theme": "light",
+   "device": "Pixel 7",
+   "android_api": 34,
+   "font_scale": 2.0,
+   "minutes": 1.8,
+   "turns": 25,
+   "model_usage_usd": 0.2,
+   "reports": [
+    {
+     "severity": "major",
+     "title": "Send tab selection buttons (File/Media/Paste/Text/Folder/App) clipped with BOTTOM OVERFLOWED BY 8.0 PIXELS at 200% font",
+     "screen": "Send",
+     "group": "The Send selection buttons overflow at large text and cut their labels"
+    },
+    {
+     "severity": "minor",
+     "title": "Settings 'Save to folder' value breaks mid-word '(Downlo ads)'",
+     "screen": "Settings",
+     "group": "Settings values and device name cut, or broken mid-word"
+    },
+    {
+     "severity": "minor",
+     "title": "Settings device name truncated 'Secret ...'",
+     "screen": "Settings",
+     "group": "Settings values and device name cut, or broken mid-word"
+    },
+    {
+     "severity": "minor",
+     "title": "Nearby devices shows unlabeled grey skeleton placeholders",
+     "screen": "Send",
+     "group": "Nearby devices: endless loading skeleton, never says that nothing was found"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Advanced settings checkbox tight against bottom bar; low-contrast toggle boxes",
+     "screen": "Settings",
+     "group": "Content tight against, or partly hidden under, the bottom bar"
+    }
+   ]
+  },
+  {
+   "persona": "jonas",
+   "platform": "ios",
+   "locale": "de-DE",
+   "theme": "dark",
+   "device": "iPad Air 11-inch (M2)",
+   "ios": 18,
+   "text_size": "accessibility-extra-large",
+   "minutes": 5.9,
+   "turns": 34,
+   "model_usage_usd": 0.3,
+   "reports": [
+    {
+     "severity": "major",
+     "title": "Overflow on selection buttons (Medien/Text/Ablage/Datei/Ordner) at large text",
+     "screen": "Send",
+     "group": "The Send selection buttons overflow at large text and cut their labels"
+    },
+    {
+     "severity": "major",
+     "title": "Hinzufügen button overflows card by 114 px",
+     "screen": "Send (selection)",
+     "group": "Hinzufügen button overflows card by 114 px"
+    },
+    {
+     "severity": "major",
+     "title": "Settings values/buttons truncated or broken mid-word",
+     "screen": "Settings",
+     "group": "Settings values and device name cut, or broken mid-word"
+    },
+    {
+     "severity": "minor",
+     "title": "Manual address accepts invalid value, error shows only 'Fehler'",
+     "screen": "Enter address",
+     "group": "A failed manual send only says \"Error\" (\"Erreur\", \"Fehler\", \"エラー\", \"Hata\", \"Erro\"), with no reason"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Sidebar title touches edges, items misaligned",
+     "screen": "Receive",
+     "group": "Tablets: sidebar labels cramped, hidden or misaligned"
+    }
+   ]
+  },
+  {
+   "persona": "kenji",
+   "platform": "android",
+   "locale": "ja-JP",
+   "theme": "dark",
+   "device": "Pixel 4",
+   "android_api": 30,
+   "font_scale": 1.0,
+   "minutes": 1.6,
+   "turns": 25,
+   "model_usage_usd": 0.19,
+   "reports": [
+    {
+     "severity": "minor",
+     "title": "Manual send failure shows only a vague 'エラー' and the dialog jumps",
+     "screen": "Manual send",
+     "group": "A failed manual send only says \"Error\" (\"Erreur\", \"Fehler\", \"エラー\", \"Hata\", \"Erro\"), with no reason"
+    },
+    {
+     "severity": "minor",
+     "title": "Empty nearby-devices list shows placeholder skeleton and changing hint text",
+     "screen": "Send",
+     "group": "Nearby devices: endless loading skeleton, never says that nothing was found"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Hashtag hint shows partial IP '10.0.2.' before input",
+     "screen": "Manual send",
+     "group": "Hashtag hint shows partial IP '10.0.2.' before input"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Settings title centred unlike other screens",
+     "screen": "Settings",
+     "group": "Settings title off-centre"
+    }
+   ]
+  },
+  {
+   "persona": "layla",
+   "platform": "android",
+   "locale": "ar-EG",
+   "theme": "light",
+   "device": "Pixel 6",
+   "android_api": 33,
+   "font_scale": 1.15,
+   "minutes": 2.1,
+   "turns": 26,
+   "model_usage_usd": 0.23,
+   "reports": [
+    {
+     "severity": "minor",
+     "title": "Numbers and units (1, 10 B, IP, port) not localised to Arabic",
+     "screen": "Send selection / info popup",
+     "group": "Arabic: numbers and units not localised, a size shown as \"B 14\""
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Alias hash order '#15 #16' disagrees with IP list order; two IPs under one 'IP:' label",
+     "screen": "Receive / info popup",
+     "group": "\"#16 #15\" shown on the home screen with no explanation"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Info popup covers history button and mixes LTR numbers in RTL layout",
+     "screen": "Receive",
+     "group": "The info popup covers the History button"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Brand name LocalSend left in Latin inside Arabic labels",
+     "screen": "Settings",
+     "group": "Latin strings (LocalSend, PIN, IP) left in Arabic and Chinese screens"
+    }
+   ]
+  },
+  {
+   "persona": "lucia",
+   "platform": "android",
+   "locale": "es-ES",
+   "theme": "light",
+   "device": "Pixel Tablet",
+   "android_api": 34,
+   "font_scale": 1.0,
+   "minutes": 2.6,
+   "turns": 31,
+   "model_usage_usd": 0.26,
+   "reports": [
+    {
+     "severity": "minor",
+     "title": "Tablet space poorly used: narrow centred column, Receive screen mostly empty",
+     "screen": "Send/Receive/Settings",
+     "group": "Tablets: phone layout in a narrow centred column, large empty areas"
+    },
+    {
+     "severity": "minor",
+     "title": "Keyboard covers Cancelar/Confirmar in manual-address dialog",
+     "screen": "Enviar manualmente dialog",
+     "group": "Keyboard covers Cancelar/Confirmar in manual-address dialog"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "'App' selection button wraps alone onto second row despite free width",
+     "screen": "Send",
+     "group": "'App' selection button wraps alone onto second row despite free width"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Device search placeholder cycles icons; no clear 'no devices found' state",
+     "screen": "Send",
+     "group": "Nearby devices: endless loading skeleton, never says that nothing was found"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Dialogs are phone-sized on tablet",
+     "screen": "Dialogs",
+     "group": "Tablets: phone layout in a narrow centred column, large empty areas"
+    }
+   ]
+  },
+  {
+   "persona": "malik",
+   "platform": "android",
+   "locale": "en-US",
+   "theme": "dark",
+   "device": "Pixel 7",
+   "android_api": 34,
+   "font_scale": 1.0,
+   "minutes": 1.9,
+   "turns": 27,
+   "model_usage_usd": 0.23,
+   "reports": [
+    {
+     "severity": "minor",
+     "title": "Manual send failure shows only a bare 'Error' label with no reason",
+     "screen": "Manual sending dialog",
+     "group": "A failed manual send only says \"Error\" (\"Erreur\", \"Fehler\", \"エラー\", \"Hata\", \"Erro\"), with no reason"
+    },
+    {
+     "severity": "minor",
+     "title": "Type message dialog closes and discards input on scrim tap or a missed Confirm",
+     "screen": "Send - Text",
+     "group": "Type message dialog closes and discards input on scrim tap or a missed Confirm"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Empty nearby-devices card cycles icons with no text; unclear if searching or empty",
+     "screen": "Send",
+     "group": "Nearby devices: endless loading skeleton, never says that nothing was found"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Screenshot after tab tap showed previous screen (possible transition lag)",
+     "screen": "Send",
+     "group": "A screenshot taken before the screen changed (timing)"
+    }
+   ]
+  },
+  {
+   "persona": "mateo",
+   "platform": "ios",
+   "locale": "es-MX",
+   "theme": "light",
+   "device": "iPad mini (A17 Pro)",
+   "ios": 18,
+   "text_size": "large",
+   "minutes": 18.4,
+   "turns": 32,
+   "model_usage_usd": 0.27,
+   "reports": [
+    {
+     "severity": "minor",
+     "title": "Nearby devices list stays on grey skeleton placeholders with no empty or timeout state",
+     "screen": "Send",
+     "group": "Nearby devices: endless loading skeleton, never says that nothing was found"
+    },
+    {
+     "severity": "minor",
+     "title": "Icon-only buttons have empty accessibility labels",
+     "screen": "Home/Send",
+     "group": "Icon-only buttons next to Nearby devices have no accessibility label"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Side tab labels not visible on screen, icon-only rail on tablet",
+     "screen": "Navigation",
+     "group": "Tablets: sidebar labels cramped, hidden or misaligned"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Text message counted as 'Archivos: 1'",
+     "screen": "Selection",
+     "group": "A text message is counted as \"Files: 1\""
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Phone-style narrow layout leaves large empty areas on iPad mini",
+     "screen": "All",
+     "group": "Tablets: phone layout in a narrow centred column, large empty areas"
+    }
+   ]
+  },
+  {
+   "persona": "mehmet",
+   "platform": "android",
+   "locale": "tr-TR",
+   "theme": "dark",
+   "device": "Pixel 8",
+   "android_api": 35,
+   "font_scale": 1.0,
+   "minutes": 2.6,
+   "turns": 31,
+   "model_usage_usd": 0.24,
+   "reports": [
+    {
+     "severity": "minor",
+     "title": "Manual address Hashtag field accepts letters and shows only a vague 'Hata'",
+     "screen": "Manual send dialog",
+     "group": "A failed manual send only says \"Error\" (\"Erreur\", \"Fehler\", \"エラー\", \"Hata\", \"Erro\"), with no reason"
+    },
+    {
+     "severity": "minor",
+     "title": "No length limit or hint for very long alias; shown truncated",
+     "screen": "Settings",
+     "group": "No length limit or hint for very long alias; shown truncated"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Alias dialog changes width while typing long text",
+     "screen": "Settings alias dialog",
+     "group": "Alias dialog changes width while typing long text"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Theme dropdown label wraps to two lines",
+     "screen": "Settings",
+     "group": "Settings values and device name cut, or broken mid-word"
+    }
+   ]
+  },
+  {
+   "persona": "minjun",
+   "platform": "ios",
+   "locale": "ko-KR",
+   "theme": "dark",
+   "device": "iPad Pro 13-inch (M4)",
+   "ios": 18,
+   "text_size": "small",
+   "minutes": 5.3,
+   "turns": 21,
+   "model_usage_usd": 0.21,
+   "reports": [
+    {
+     "severity": "major",
+     "title": "Phone layout stretched on iPad: narrow centred column, large empty areas",
+     "screen": "Send/Settings/Receive",
+     "group": "Tablets: phone layout in a narrow centred column, large empty areas"
+    },
+    {
+     "severity": "minor",
+     "title": "Sidebar labels tiny and far from icons",
+     "screen": "Sidebar",
+     "group": "Tablets: sidebar labels cramped, hidden or misaligned"
+    },
+    {
+     "severity": "minor",
+     "title": "Device list stays as skeleton placeholder with no empty message",
+     "screen": "Send",
+     "group": "Nearby devices: endless loading skeleton, never says that nothing was found"
+    },
+    {
+     "severity": "minor",
+     "title": "No feedback after entering text message to send",
+     "screen": "Send",
+     "group": "No feedback after entering text message to send"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "History buttons disabled and misaligned with title",
+     "screen": "History",
+     "group": "History buttons disabled and misaligned with title"
+    }
+   ]
+  },
+  {
+   "persona": "noah",
+   "platform": "ios",
+   "locale": "en-US",
+   "theme": "light",
+   "device": "iPhone 16 Pro Max",
+   "ios": 18,
+   "text_size": "extra-extra-extra-large",
+   "minutes": 5.5,
+   "turns": 30,
+   "model_usage_usd": 0.22,
+   "reports": [
+    {
+     "severity": "major",
+     "title": "Manual send dialog: Confirm stays disabled with no progress or error message",
+     "screen": "Send / Enter address",
+     "group": "iOS: a manual send to an address that does not answer waits forever, with no progress or error"
+    },
+    {
+     "severity": "minor",
+     "title": "Empty Nearby devices shows no searching / none found status",
+     "screen": "Send",
+     "group": "Nearby devices: endless loading skeleton, never says that nothing was found"
+    },
+    {
+     "severity": "minor",
+     "title": "First tap on Confirm in address dialog ignored",
+     "screen": "Send / Enter address",
+     "group": "First tap on Confirm in address dialog ignored"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Settings values truncated at XXXL text (LocalSe..., Fresh Av...)",
+     "screen": "Settings",
+     "group": "Settings values and device name cut, or broken mid-word"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Icon buttons next to Nearby devices have no labels",
+     "screen": "Send",
+     "group": "Icon-only buttons next to Nearby devices have no accessibility label"
+    }
+   ]
+  },
+  {
+   "persona": "olga",
+   "platform": "android",
+   "locale": "ru-RU",
+   "theme": "dark",
+   "device": "Pixel 5",
+   "android_api": 31,
+   "font_scale": 1.0,
+   "minutes": 1.2,
+   "turns": 22,
+   "model_usage_usd": 0.17,
+   "reports": [
+    {
+     "severity": "minor",
+     "title": "Device name truncated with ellipsis",
+     "screen": "Settings",
+     "group": "Settings values and device name cut, or broken mid-word"
+    },
+    {
+     "severity": "minor",
+     "title": "Version label untranslated and clipped by nav bar",
+     "screen": "Settings footer",
+     "group": "Android: the system navigation bar covers the last items of a list"
+    },
+    {
+     "severity": "minor",
+     "title": "Language list last item overlapped by system nav bar",
+     "screen": "Language",
+     "group": "Android: the system navigation bar covers the last items of a list"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Download folder shown as '(Загрузки)' with parentheses",
+     "screen": "Settings",
+     "group": "Download folder shown as '(Загрузки)' with parentheses"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Grammar: 'Адрес мультивещание'",
+     "screen": "Settings advanced",
+     "group": "Grammar: 'Адрес мультивещание'"
+    }
+   ]
+  },
+  {
+   "persona": "ravi",
+   "platform": "android",
+   "locale": "hi-IN",
+   "theme": "light",
+   "device": "Small phone",
+   "android_api": 29,
+   "font_scale": 1.15,
+   "minutes": 1.4,
+   "turns": 21,
+   "model_usage_usd": 0.17,
+   "reports": [
+    {
+     "severity": "major",
+     "title": "Nearby devices shows endless grey placeholders, no searching or empty-state text",
+     "screen": "Send",
+     "group": "Nearby devices: endless loading skeleton, never says that nothing was found"
+    },
+    {
+     "severity": "minor",
+     "title": "Brand name translated as 'स्थानीय भेजें (फाइल भेजो)' in colour setting",
+     "screen": "Settings",
+     "group": "Brand name translated as 'स्थानीय भेजें (फाइल भेजो)' in colour setting"
+    },
+    {
+     "severity": "minor",
+     "title": "Colour dropdown value truncated with ellipsis",
+     "screen": "Settings",
+     "group": "Settings values and device name cut, or broken mid-word"
+    },
+    {
+     "severity": "minor",
+     "title": "'#16 #15' on Home screen unexplained",
+     "screen": "Receive",
+     "group": "\"#16 #15\" shown on the home screen with no explanation"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Edit/Add buttons in selection card inconsistent, '+' misaligned",
+     "screen": "Send",
+     "group": "Edit/Add buttons in selection card inconsistent, '+' misaligned"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Troubleshoot text runs under the system navigation bar",
+     "screen": "Troubleshoot",
+     "group": "Android: the system navigation bar covers the last items of a list"
+    }
+   ]
+  },
+  {
+   "persona": "sven",
+   "platform": "ios",
+   "locale": "sv-SE",
+   "theme": "dark",
+   "device": "iPhone SE (3rd generation)",
+   "ios": 18,
+   "text_size": "accessibility-extra-extra-extra-large",
+   "minutes": 1.8,
+   "turns": 17,
+   "model_usage_usd": 0.13,
+   "reports": [
+    {
+     "severity": "blocker",
+     "title": "Text message dialog overflows by 149px; input and Bekräfta unreachable",
+     "screen": "Send text dialog",
+     "group": "Text message dialog overflows by 149px; input and Bekräfta unreachable"
+    },
+    {
+     "severity": "major",
+     "title": "Send selection buttons overflow and clip labels",
+     "screen": "Send",
+     "group": "The Send selection buttons overflow at large text and cut their labels"
+    },
+    {
+     "severity": "major",
+     "title": "Nearby devices heading breaks mid-word, icons squeezed, list pushed off",
+     "screen": "Send",
+     "group": "Nearby devices heading breaks mid-word, icons squeezed, list pushed off"
+    },
+    {
+     "severity": "major",
+     "title": "Settings title breaks mid-word and dropdown values truncated",
+     "screen": "Settings",
+     "group": "Settings values and device name cut, or broken mid-word"
+    },
+    {
+     "severity": "minor",
+     "title": "Receive tab blank with no visible content",
+     "screen": "Receive",
+     "group": "Receive tab blank with no visible content"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Keyboard tip sheet in English",
+     "screen": "Send text dialog",
+     "group": "The Simulator's English keyboard sheet (not the app)"
+    }
+   ]
+  },
+  {
+   "persona": "wei",
+   "platform": "ios",
+   "locale": "zh-CN",
+   "theme": "light",
+   "device": "iPhone 16e",
+   "ios": 18,
+   "text_size": "extra-large",
+   "minutes": 16.4,
+   "turns": 30,
+   "model_usage_usd": 0.23,
+   "reports": [
+    {
+     "severity": "minor",
+     "title": "Text item in selection list cuts off the date/number (fade, no wrap)",
+     "screen": "Selection edit",
+     "group": "Text item in selection list cuts off the date/number (fade, no wrap)"
+    },
+    {
+     "severity": "minor",
+     "title": "Icon buttons have empty accessibility names",
+     "screen": "Send/Receive",
+     "group": "Icon-only buttons next to Nearby devices have no accessibility label"
+    },
+    {
+     "severity": "minor",
+     "title": "Nearby devices shows only grey placeholders, inconsistent hint text",
+     "screen": "Send",
+     "group": "Nearby devices: endless loading skeleton, never says that nothing was found"
+    },
+    {
+     "severity": "minor",
+     "title": "App text may not follow extra-large system text size",
+     "screen": "All",
+     "group": "App text may not follow extra-large system text size"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Latin words remain in Chinese UI (LocalSend, PIN)",
+     "screen": "Settings",
+     "group": "Latin strings (LocalSend, PIN, IP) left in Arabic and Chinese screens"
+    }
+   ]
+  },
+  {
+   "persona": "yuki",
+   "platform": "ios",
+   "locale": "ja-JP",
+   "theme": "dark",
+   "device": "iPhone 16",
+   "ios": 18,
+   "text_size": "medium",
+   "minutes": 8.3,
+   "turns": 57,
+   "model_usage_usd": 0.37,
+   "reports": [
+    {
+     "severity": "major",
+     "title": "Manual send to unreachable address: dialog stuck, input disabled, no error or progress",
+     "screen": "Send > Manual send",
+     "group": "iOS: a manual send to an address that does not answer waits forever, with no progress or error"
+    },
+    {
+     "severity": "minor",
+     "title": "Icon-only buttons expose no accessibility label and have no text in the Send toolbar",
+     "screen": "Send / Receive",
+     "group": "Icon-only buttons next to Nearby devices have no accessibility label"
+    },
+    {
+     "severity": "minor",
+     "title": "Endless skeleton placeholder in nearby devices when nothing is found",
+     "screen": "Send",
+     "group": "Nearby devices: endless loading skeleton, never says that nothing was found"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Advanced settings label for discovery timeout is mistranslated as a status",
+     "screen": "Settings",
+     "group": "Advanced settings label for discovery timeout is mistranslated as a status"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "PIN dialog prefilled with random PIN, unexplained; settings PIN toggle inconsistent with link-receive PIN",
+     "screen": "Receive via link",
+     "group": "PIN dialog prefilled with random PIN, unexplained; settings PIN toggle inconsistent with link-receive PIN"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Changelog is English only",
+     "screen": "Changelog",
+     "group": "Privacy policy and changelog only in English"
+    }
+   ]
+  }
+ ]
+}

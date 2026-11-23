@@ -1,0 +1,625 @@
+{
+ "app": "AnkiDroid 2.25.3 (release APK)",
+ "app_repo": "ankidroid/Anki-Android",
+ "date": "2026-11-18",
+ "run": "https://github.com/pierridotite/mobile-agent-testers/actions/runs/44327125792",
+ "wall_clock_minutes": 9,
+ "grouping": "by Claude (scripts/summarize.py)",
+ "agents": 10,
+ "reports": 83,
+ "model_usage_usd": 4.69,
+ "agents_detail": [
+  {
+   "persona": "anna",
+   "platform": "android",
+   "locale": "en-GB",
+   "theme": "light",
+   "device": "Small phone",
+   "android_api": 30,
+   "font_scale": 1.3,
+   "minutes": 4.7,
+   "turns": 52,
+   "model_usage_usd": 0.44,
+   "reports": [
+    {
+     "severity": "major",
+     "title": "Statistics screen blank (WebView 83 < 85)",
+     "screen": "Statistics",
+     "group": "Statistics screen blank on outdated WebView"
+    },
+    {
+     "severity": "major",
+     "title": "Jargon 'WebView outdated' dialog with only Learn More",
+     "screen": "Main (first start)",
+     "group": "Outdated WebView dialog is jargon with no close button"
+    },
+    {
+     "severity": "major",
+     "title": "Setup blocked until All files access granted via scary system page",
+     "screen": "Permissions",
+     "group": "Onboarding blocked until all-files permission granted, no explanation"
+    },
+    {
+     "severity": "major",
+     "title": "Back field hidden behind keyboard on Add card; stray tap opened Insert heading",
+     "screen": "Add card",
+     "group": "Add card back field hidden behind keyboard"
+    },
+    {
+     "severity": "minor",
+     "title": "Card browser wraps dates and words mid-word (Fre/nch), ISO date format",
+     "screen": "Card browser",
+     "group": "Card browser wraps words and dates mid-token"
+    },
+    {
+     "severity": "minor",
+     "title": "Deck counts pale and unlabeled",
+     "screen": "Deck list / study",
+     "group": "Deck counters low contrast"
+    },
+    {
+     "severity": "minor",
+     "title": "Font scaling slider hidden in Accessibility, only affects card browser",
+     "screen": "Settings"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Unexplained jargon on answer buttons and empty state",
+     "screen": "Study"
+    }
+   ]
+  },
+  {
+   "persona": "felipe",
+   "platform": "android",
+   "locale": "pt-BR",
+   "theme": "light",
+   "device": "Pixel 3a",
+   "android_api": 31,
+   "font_scale": 1.15,
+   "minutes": 3.7,
+   "turns": 45,
+   "model_usage_usd": 0.39,
+   "reports": [
+    {
+     "severity": "major",
+     "title": "Mandatory all-files permission gates onboarding (Continuar disabled)",
+     "screen": "Permissions",
+     "group": "Onboarding blocked until all-files permission granted, no explanation"
+    },
+    {
+     "severity": "minor",
+     "title": "Untranslated 'Get started' button in pt-BR",
+     "screen": "Welcome",
+     "group": "Untranslated 'Get started' button on welcome screen"
+    },
+    {
+     "severity": "minor",
+     "title": "ISO date format in card browser instead of pt-BR",
+     "screen": "Card browser",
+     "group": "Card browser shows ISO date instead of locale format"
+    },
+    {
+     "severity": "minor",
+     "title": "Stats: repetition count 0 (0%) after studying one card; mixed English s/card",
+     "screen": "Statistics",
+     "group": "Statistics untranslated/mixed English strings and odd count"
+    },
+    {
+     "severity": "minor",
+     "title": "Empty deck shows blank screen with no hint",
+     "screen": "Deck list",
+     "group": "Empty deck gives no feedback or hint"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Anglicisms and stray punctuation in labels",
+     "screen": "Browser/Settings/Stats"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Red '!' badge on sync icon with no account",
+     "screen": "Deck list",
+     "group": "Red '!' badge on sync icon without account"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Hidden 'AnkiDroid Flashcard' text exposed on review screen",
+     "screen": "Reviewer"
+    }
+   ]
+  },
+  {
+   "persona": "grace",
+   "platform": "android",
+   "locale": "en-US",
+   "theme": "light",
+   "device": "Pixel 7",
+   "android_api": 34,
+   "font_scale": 2.0,
+   "minutes": 4.3,
+   "turns": 55,
+   "model_usage_usd": 0.48,
+   "reports": [
+    {
+     "severity": "major",
+     "title": "Answer buttons (Again/Hard/Good/Easy) cut in half at 200% font",
+     "screen": "Study",
+     "group": "Answer buttons clipped at 200% font"
+    },
+    {
+     "severity": "major",
+     "title": "Statistics content overflows right edge, text cut",
+     "screen": "Statistics"
+    },
+    {
+     "severity": "major",
+     "title": "Show large answer buttons setting has no visible effect on clipped buttons",
+     "screen": "Settings > Accessibility",
+     "group": "Answer buttons clipped at 200% font"
+    },
+    {
+     "severity": "minor",
+     "title": "Card browser breaks words/dates mid-token, subtitle clipped",
+     "screen": "Card browser",
+     "group": "Card browser wraps words and dates mid-token"
+    },
+    {
+     "severity": "minor",
+     "title": "Deck counters low contrast; tapping empty deck gives no feedback",
+     "screen": "Deck list",
+     "group": "Deck counters low contrast"
+    },
+    {
+     "severity": "minor",
+     "title": "Confusing all-files-access permission step",
+     "screen": "Permissions",
+     "group": "Onboarding blocked until all-files permission granted, no explanation"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Study counters stay small at 200% font",
+     "screen": "Study"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Intro paragraph appears cut off at the end",
+     "screen": "Intro"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Status bar clock overlaps drawer header",
+     "screen": "Drawer"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Last settings item touches gesture bar",
+     "screen": "Settings",
+     "group": "Last settings item touches gesture/nav bar"
+    }
+   ]
+  },
+  {
+   "persona": "kenji",
+   "platform": "android",
+   "locale": "ja-JP",
+   "theme": "dark",
+   "device": "Pixel 4",
+   "android_api": 30,
+   "font_scale": 1.0,
+   "minutes": 4.8,
+   "turns": 52,
+   "model_usage_usd": 0.48,
+   "reports": [
+    {
+     "severity": "major",
+     "title": "Statistics screen is blank",
+     "screen": "Statistics",
+     "group": "Statistics screen blank on outdated WebView"
+    },
+    {
+     "severity": "major",
+     "title": "Outdated WebView dialog has no close button (only Details)",
+     "screen": "Deck list",
+     "group": "Outdated WebView dialog is jargon with no close button"
+    },
+    {
+     "severity": "minor",
+     "title": "Get started button not translated on Japanese welcome screen",
+     "screen": "Welcome",
+     "group": "Untranslated 'Get started' button on welcome screen"
+    },
+    {
+     "severity": "minor",
+     "title": "Continue disabled with no hint until all-files permission is granted",
+     "screen": "Permissions",
+     "group": "Onboarding blocked until all-files permission granted, no explanation"
+    },
+    {
+     "severity": "minor",
+     "title": "Top-placed Save/menu controls hard to reach one-handed",
+     "screen": "Add card"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "0 0 0 deck counts very low contrast in dark theme",
+     "screen": "Deck list",
+     "group": "Deck counters low contrast"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Drawer header logo oversized and cropped",
+     "screen": "Navigation drawer",
+     "group": "Drawer header image/logo cropped"
+    }
+   ]
+  },
+  {
+   "persona": "layla",
+   "platform": "android",
+   "locale": "ar-EG",
+   "theme": "light",
+   "device": "Pixel 6",
+   "android_api": 33,
+   "font_scale": 1.15,
+   "minutes": 3.7,
+   "turns": 52,
+   "model_usage_usd": 0.48,
+   "reports": [
+    {
+     "severity": "minor",
+     "title": "Mixed Arabic-Indic and Latin digits across screens",
+     "screen": "Deck list / Statistics"
+    },
+    {
+     "severity": "minor",
+     "title": "Deck-list footer sentence has scrambled bidi word order",
+     "screen": "Deck list"
+    },
+    {
+     "severity": "minor",
+     "title": "Statistics axis labels and calendar tiny and overlapping",
+     "screen": "Statistics",
+     "group": "Statistics calendar/axis labels tiny and overlapping"
+    },
+    {
+     "severity": "minor",
+     "title": "Settings summaries cut mid-phrase",
+     "screen": "Settings",
+     "group": "Settings summaries cut or read oddly"
+    },
+    {
+     "severity": "minor",
+     "title": "Onboarding Continue disabled until all-files permission, no skip",
+     "screen": "Permissions",
+     "group": "Onboarding blocked until all-files permission granted, no explanation"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Interval labels '<' placement odd in RTL",
+     "screen": "Reviewer"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Drawer header image cropped",
+     "screen": "Drawer",
+     "group": "Drawer header image/logo cropped"
+    }
+   ]
+  },
+  {
+   "persona": "lucia",
+   "platform": "android",
+   "locale": "es-ES",
+   "theme": "light",
+   "device": "Pixel Tablet",
+   "android_api": 34,
+   "font_scale": 1.0,
+   "minutes": 5.0,
+   "turns": 59,
+   "model_usage_usd": 0.56,
+   "reports": [
+    {
+     "severity": "major",
+     "title": "Tablet: study screen text small, big blank area, 4 stretched answer bars",
+     "screen": "Study"
+    },
+    {
+     "severity": "minor",
+     "title": "Untranslated 'Get started' button on es-ES",
+     "screen": "Onboarding",
+     "group": "Untranslated 'Get started' button on welcome screen"
+    },
+    {
+     "severity": "minor",
+     "title": "English accessibility labels (deck row, editor toolbar)",
+     "screen": "Deck list / Add card"
+    },
+    {
+     "severity": "minor",
+     "title": "Tapping an empty deck gives no feedback",
+     "screen": "Deck list",
+     "group": "Empty deck gives no feedback or hint"
+    },
+    {
+     "severity": "minor",
+     "title": "Back from Settings lands on card browser",
+     "screen": "Settings",
+     "group": "Back navigation lands on Card browser"
+    },
+    {
+     "severity": "minor",
+     "title": "Add card: Reverso hidden when keyboard open; Tab does not move focus",
+     "screen": "Add card",
+     "group": "Add card back field hidden behind keyboard"
+    },
+    {
+     "severity": "minor",
+     "title": "Tablet: permission screen full-width Continue bar, disabled with no hint",
+     "screen": "Onboarding permissions",
+     "group": "Onboarding blocked until all-files permission granted, no explanation"
+    },
+    {
+     "severity": "minor",
+     "title": "Tablet: deck list counters far from deck name; browser mostly blank",
+     "screen": "Deck list / Browser"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "ISO date format in card browser",
+     "screen": "Card browser",
+     "group": "Card browser shows ISO date instead of locale format"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Browser title bar: dropdown arrow floats, subtitle missing",
+     "screen": "Card browser"
+    }
+   ]
+  },
+  {
+   "persona": "malik",
+   "platform": "android",
+   "locale": "en-US",
+   "theme": "dark",
+   "device": "Pixel 7",
+   "android_api": 34,
+   "font_scale": 1.0,
+   "minutes": 4.7,
+   "turns": 68,
+   "model_usage_usd": 0.53,
+   "reports": [
+    {
+     "severity": "major",
+     "title": "Permission screen: Continue disabled with no explanation until All-files toggle is flipped (plus system page detour)",
+     "screen": "Permissions",
+     "group": "Onboarding blocked until all-files permission granted, no explanation"
+    },
+    {
+     "severity": "minor",
+     "title": "Deck list counters 0 0 0 dark grey on black, nearly invisible in dark theme",
+     "screen": "Deck list",
+     "group": "Deck counters low contrast"
+    },
+    {
+     "severity": "minor",
+     "title": "Empty deck state is only a transient snackbar",
+     "screen": "Deck list",
+     "group": "Empty deck gives no feedback or hint"
+    },
+    {
+     "severity": "minor",
+     "title": "Intro leads straight to a permission wall without explanation",
+     "screen": "Intro",
+     "group": "Onboarding blocked until all-files permission granted, no explanation"
+    },
+    {
+     "severity": "minor",
+     "title": "Learning cards reappear immediately; no end-of-study confirmation",
+     "screen": "Study"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Navigation drawer header logo cropped",
+     "screen": "Drawer",
+     "group": "Drawer header image/logo cropped"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Statistics calendar weekday letters tiny",
+     "screen": "Statistics",
+     "group": "Statistics calendar/axis labels tiny and overlapping"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Back from Statistics lands in Card browser; subtitle count disappears",
+     "screen": "Navigation",
+     "group": "Back navigation lands on Card browser"
+    }
+   ]
+  },
+  {
+   "persona": "mehmet",
+   "platform": "android",
+   "locale": "tr-TR",
+   "theme": "dark",
+   "device": "Pixel 8",
+   "android_api": 35,
+   "font_scale": 1.0,
+   "minutes": 4.5,
+   "turns": 55,
+   "model_usage_usd": 0.51,
+   "reports": [
+    {
+     "severity": "minor",
+     "title": "Untranslated English strings in Statistics (all, Retention, Count, Pass rate...)",
+     "screen": "Statistics",
+     "group": "Statistics untranslated/mixed English strings and odd count"
+    },
+    {
+     "severity": "minor",
+     "title": "Awkward Turkish label 'Paylaşılan desteler edin'",
+     "screen": "Main screen FAB menu"
+    },
+    {
+     "severity": "minor",
+     "title": "Statistics calendar heatmap tiny, weekday labels clipped",
+     "screen": "Statistics",
+     "group": "Statistics calendar/axis labels tiny and overlapping"
+    },
+    {
+     "severity": "minor",
+     "title": "Card browser shows ISO date instead of Turkish format",
+     "screen": "Card browser",
+     "group": "Card browser shows ISO date instead of locale format"
+    },
+    {
+     "severity": "minor",
+     "title": "Long deck name makes card browser rows 7 lines tall and toolbar titles 3 lines",
+     "screen": "Card browser / Statistics / Add card"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Orphan '0' wrapped after 'Filtrelenmiş:' in Statistics",
+     "screen": "Statistics"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Deck row zero counters very low contrast in dark theme",
+     "screen": "Deck list",
+     "group": "Deck counters low contrast"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Onboarding buttons unequal width; drawer header graphic cropped",
+     "screen": "Welcome / Drawer",
+     "group": "Drawer header image/logo cropped"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Notifications settings summary reads oddly",
+     "screen": "Settings",
+     "group": "Settings summaries cut or read oddly"
+    }
+   ]
+  },
+  {
+   "persona": "olga",
+   "platform": "android",
+   "locale": "ru-RU",
+   "theme": "dark",
+   "device": "Pixel 5",
+   "android_api": 31,
+   "font_scale": 1.0,
+   "minutes": 3.7,
+   "turns": 53,
+   "model_usage_usd": 0.45,
+   "reports": [
+    {
+     "severity": "minor",
+     "title": "Card browser shows ISO date 2026-11-18 instead of Russian format",
+     "screen": "Card browser",
+     "group": "Card browser shows ISO date instead of locale format"
+    },
+    {
+     "severity": "minor",
+     "title": "Statistics: wrong plural 'секунд', straight quotes, clumsy sentence",
+     "screen": "Statistics"
+    },
+    {
+     "severity": "minor",
+     "title": "Clumsy wording in browser ('Новая № 3', 'Поле сортировки')",
+     "screen": "Card browser"
+    },
+    {
+     "severity": "minor",
+     "title": "Untranslated 'Front'/'Back' fields and 'AnkiDroid Flashcard' card type",
+     "screen": "Add card / Review"
+    },
+    {
+     "severity": "minor",
+     "title": "Deck counters 0 0 0 almost invisible in dark theme",
+     "screen": "Deck list",
+     "group": "Deck counters low contrast"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Onboarding blocks on all-files-access permission toggle",
+     "screen": "Onboarding",
+     "group": "Onboarding blocked until all-files permission granted, no explanation"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Red '!' on sync icon before any sync",
+     "screen": "Deck list",
+     "group": "Red '!' badge on sync icon without account"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Drawer header image cropped to a giant star fragment",
+     "screen": "Drawer",
+     "group": "Drawer header image/logo cropped"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "Transparent nav bar overlaps last settings entry",
+     "screen": "Settings",
+     "group": "Last settings item touches gesture/nav bar"
+    },
+    {
+     "severity": "cosmetic",
+     "title": "General settings: only first item has an icon, misaligned labels",
+     "screen": "Settings - General"
+    }
+   ]
+  },
+  {
+   "persona": "ravi",
+   "platform": "android",
+   "locale": "hi-IN",
+   "theme": "light",
+   "device": "Small phone",
+   "android_api": 29,
+   "font_scale": 1.15,
+   "minutes": 3.1,
+   "turns": 43,
+   "model_usage_usd": 0.37,
+   "reports": [
+    {
+     "severity": "major",
+     "title": "Statistics screen blank (old WebView)",
+     "screen": "Statistics",
+     "group": "Statistics screen blank on outdated WebView"
+    },
+    {
+     "severity": "major",
+     "title": "Many strings untranslated in Hindi UI",
+     "screen": "Multiple"
+    },
+    {
+     "severity": "minor",
+     "title": "WebView warning dialog has no close button",
+     "screen": "Main",
+     "group": "Outdated WebView dialog is jargon with no close button"
+    },
+    {
+     "severity": "minor",
+     "title": "Sync icon with red ! shown for an offline user",
+     "screen": "Deck list",
+     "group": "Red '!' badge on sync icon without account"
+    },
+    {
+     "severity": "minor",
+     "title": "Empty-state wording does not match + menu",
+     "screen": "Deck list",
+     "group": "Empty deck gives no feedback or hint"
+    },
+    {
+     "severity": "minor",
+     "title": "Card 3 sort field shows Hindi transliteration (unverified)",
+     "screen": "Card browser"
+    }
+   ]
+  }
+ ]
+}

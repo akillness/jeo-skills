@@ -399,7 +399,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 469개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 470개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
 ### 🌐 웹 (76개)
 
@@ -796,9 +796,9 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 </details>
 
-### 🧰 엔지니어링 (27개)
+### 🧰 엔지니어링 (28개)
 
-하위 분류: `code-quality` (14), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
+하위 분류: `code-quality` (14), `testing` (4), `architecture` (6), `documentation` (2), `code-navigation` (2)
 
 <details>
 <summary>스킬 보기</summary>
@@ -832,6 +832,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `ponytail` |
 | `rust-anything` |
 | `fast-anything` |
+| `mobile-agent-testers` |
 
 </details>
 

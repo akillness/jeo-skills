@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="54" viewBox="0 0 160 54">
+  <rect x="0.5" y="0.5" width="159" height="53" rx="10" fill="#221D21" stroke="#221D21"/>
+  <g transform="translate(11 12)">
+    <rect width="31" height="31" rx="5" fill="#FFFFFF"/>
+    <rect x="7" y="12.2" width="4" height="12" fill="#221D21"/>
+    <circle cx="9" cy="8.2" r="2.35" fill="#221D21"/>
+    <path d="M14 12.2h3.8v1.7c.6-1.1 2-2 4-2 3.3 0 4.2 2.1 4.2 5.1v7.2h-4v-6.4c0-1.4-.4-2.6-1.9-2.6-1.6 0-2.2 1.2-2.2 2.7v6.3H14z" fill="#221D21"/>
+  </g>
+  <text x="53" y="20" font-family="Helvetica-Bold, Helvetica, Arial, sans-serif" font-size="9" font-weight="bold" fill="#EEF2FF">FOLLOW ME ON</text>
+  <text x="52" y="40" font-family="Helvetica-Bold, Helvetica, Arial, sans-serif" font-size="21" font-weight="bold" fill="#EEF2FF">LinkedIn</text>
+</svg>
