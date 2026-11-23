@@ -1,0 +1,53 @@
+version: '3.9'
+
+services:
+  langfuse-web:
+    image: ghcr.io/langfuse/langfuse:3
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://langfuse:langfuse@postgres:5432/langfuse
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=changeme_to_a_random_32_char_secret_string
+      - SALT=changeme_to_a_random_salt_string_123456
+      - ENCRYPTION_KEY=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+      - CLICKHOUSE_URL=http://clickhouse:8123
+      - CLICKHOUSE_USER=default
+      - CLICKHOUSE_PASSWORD=
+      - TELEMETRY_ENABLED=false
+    depends_on:
+      - postgres
+      - clickhouse
+
+  langfuse-worker:
+    image: ghcr.io/langfuse/langfuse-worker:3
+    environment:
+      - DATABASE_URL=postgresql://langfuse:langfuse@postgres:5432/langfuse
+      - CLICKHOUSE_URL=http://clickhouse:8123
+      - ENCRYPTION_KEY=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+      - TELEMETRY_ENABLED=false
+    depends_on:
+      - postgres
+      - clickhouse
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=langfuse
+      - POSTGRES_PASSWORD=langfuse
+      - POSTGRES_DB=langfuse
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:24-alpine
+    environment:
+      - CLICKHOUSE_DB=default
+    ports:
+      - "8123:8123"
+    volumes:
+      - chdata:/var/lib/clickhouse
+
+volumes:
+  pgdata:
+  chdata:

@@ -3632,6 +3632,10 @@ Preview `jeo-skill install pmtiles --global --dry-run`, then install the selecte
 
 Preview `jeo-skill install vespa --global --dry-run`, then install the selected guide with `jeo-skill install vespa --global --yes`. Installing `vespa` copies operator guidance, application package templates (`services.xml`, `schemas/article.sd`), ranking profile references, and preflight tools for `vespa-engine/vespa` (Apache-2.0). It configures, feeds, and queries enterprise-scale vector, lexical, and hybrid search applications with HNSW tensor indexing, BM25 rank profiles, PyVespa Python integration, and YQL queries.
 
+### Langfuse LLM observability operator (on demand)
+
+Preview `jeo-skill install langfuse --global --dry-run`, then install the selected guide with `jeo-skill install langfuse --global --yes`. Installing `langfuse` copies operator guidance, self-hosting Docker Compose stacks, OpenTelemetry trace schemas, prompt management recipes, and SDK instrumentation scripts for `langfuse/langfuse` (MIT). It instruments, traces, monitors, and evaluates LLM calls, multi-agent workflows, and token costs across Python and TypeScript runtimes.
+
 ### CanyonOS operator (on demand)
 
 Preview `jeo-skill install canyonos --global --dry-run`, then install the selected guide with `jeo-skill install canyonos --global --yes`. Installing `canyonos` copies operator guidance, `.canyon` configuration architecture, and offline support tools only, not the CanyonOS CLI, Docker Engine, agent containers, or provider credentials. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py"` for offline tool discovery and source manifest verification without network calls or binary execution. Review the skill's operations, adapter contracts, and scaling references before separately authorizing static validation (`canyonos validate`), container deployment (`canyonos deploy`), test query dispatch, or cluster target modifications.

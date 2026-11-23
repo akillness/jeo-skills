@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 470,
+  "skill_count": 471,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -225,7 +225,8 @@
       "knowledge-catalog",
       "cocoindex",
       "pmtiles",
-      "vespa"
+      "vespa",
+      "langfuse"
     ],
     "game": [
       "implement-fog-of-war",
@@ -732,7 +733,8 @@
       "observability": [
         "log-analysis",
         "monitoring-observability",
-        "openocta"
+        "openocta",
+        "langfuse"
       ],
       "security": [
         "security-best-practices",
@@ -17133,6 +17135,36 @@
       "keyword": "mobile-agent-testers",
       "version": "1.0.0",
       "source": "https://github.com/pierridotite/mobile-agent-testers"
+    },
+    {
+      "name": "langfuse",
+      "description": "Instrument, self-host, configure, and evaluate LLM applications with observability, tracing, prompt management, and metrics using langfuse/langfuse. Manages OpenTelemetry spans, token cost tracking, Docker Compose deployments, Python/TypeScript SDKs, and evaluation pipelines.",
+      "category": "infrastructure",
+      "subcategory": "observability",
+      "interface": "workflow",
+      "path": "langfuse/SKILL.md",
+      "tags": [
+        "langfuse",
+        "llm-observability",
+        "tracing",
+        "opentelemetry",
+        "prompt-management",
+        "cost-tracking",
+        "evals",
+        "docker-compose"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "langfuse",
+      "version": "1.0.0",
+      "source": "https://github.com/langfuse/langfuse"
     }
   ]
 }

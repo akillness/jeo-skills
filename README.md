@@ -392,7 +392,7 @@ See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-dem
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 470 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 471 skills · expand a category to see its skills.
 
 ### 🌐 Web (76)
 
@@ -482,9 +482,9 @@ Subcategories: `frontend` (15), `backend` (3), `design` (17), `api` (2), `auth` 
 
 </details>
 
-### 🏗 Infrastructure (19)
+### 🏗 Infrastructure (20)
 
-Subcategories: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (8), `automation` (0), `tooling` (1)
+Subcategories: `deployment` (2), `environment` (2), `observability` (4), `security` (3), `cloud-data` (8), `automation` (0), `tooling` (1)
 
 <details>
 <summary>Show Infrastructure skills</summary>
@@ -510,6 +510,7 @@ Subcategories: `deployment` (2), `environment` (2), `observability` (3), `securi
 | `cocoindex` |
 | `pmtiles` |
 | `vespa` |
+| `langfuse` |
 
 </details>
 
