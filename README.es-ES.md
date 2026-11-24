@@ -949,7 +949,7 @@ Subcategorías: `knowledge` (9), `files` (5), `git` (4), `workspace` (1), `proje
 | `scripts/` | Validación del catálogo, generación de proyecciones, changelog y pruebas de regresión |
 | `jev/` | Código fuente opcional del plano de control de Jev |
 | `changelog/` | Notas de versión mensuales (en inglés y coreano) |
-| `assets/` | Recursos visuales del README (generados por Codex; procedencia en `assets/readme-visuals.json`) |
+| `assets/` | Recursos visuales del README (generados con Gemini; procedencia en `assets/readme-visuals.json`) |
 
 El manifiesto `.agent-skills/skills.json` es la fuente de verdad. Edita allí los metadatos; no modifiques a mano las tablas y los recuentos de categorías generados en los README. Tras actualizar el catálogo, regenera y comprueba las proyecciones:
 

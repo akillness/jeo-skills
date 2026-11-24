@@ -65,7 +65,7 @@ Automatic Context7 provisioning is unsupported on Windows and fails closed; sepa
 
 ## 🧭 How it works
 
-<img src="assets/how-it-works.svg" alt="Workflow from the skill catalog through selection, installation and verification to agent hosts, with optional OpenSpace and Jev routing" width="100%">
+<img src="assets/how-it-works.webp" alt="Five-step flow from the skill catalog through select, install and verify to the agent host, with optional OpenSpace routing, Jev control plane and Jevgrep, and a note that placing files does not activate a host or authorize a provider" width="100%">
 
 <details>
 <summary>Explore the path from catalog to host</summary>
@@ -80,7 +80,7 @@ Automatic Context7 provisioning is unsupported on Windows and fails closed; sepa
 
 ## 🗂 Categories
 
-<img src="assets/catalog-map.svg" alt="Map of the ten skill categories: Web, Infrastructure, Game, Creative Media, CLI Tools, AI and Agents, Engineering, Research and Analysis, Business, Utilities" width="100%">
+<img src="assets/catalog-map.webp" alt="Ten skill categories as glowing tiles: Web, Infrastructure, Game, Creative Media, CLI Tools, AI and Agents, Engineering, Research and Analysis, Business, Utilities, each with its subcategories" width="100%">
 
 | Category | Focus | Browse |
 |---|---|---|
@@ -243,7 +243,7 @@ Recorded local dry-run example: this preview selected two skills and showed the 
 
 ## 🧹 Usage tracking and cleanup
 
-<img src="assets/skill-lifecycle.svg" alt="Lifecycle diagram: runtime records are scanned into local usage state, reported as used, protected, in grace or candidate, then previewed, reviewed and moved into a reversible quarantine that can be restored or purged; catalog retirement is a separate maintainer lane" width="100%">
+<img src="assets/skill-lifecycle.webp" alt="Skill lifecycle in three lanes: track (usage scan, local usage summary, used, protected, in grace, candidate), clean up locally (prune-unused preview, apply with Jev review, quarantine batch, restore or purge) and maintainer (retire-unused-skills.py, approved names, regenerate and validate, rollback on failure)" width="100%">
 
 <details>
 <summary>Review usage, quarantine and restore skills</summary>
@@ -1000,7 +1000,7 @@ Subcategories: `knowledge` (9), `files` (5), `git` (4), `workspace` (1), `projec
 | `scripts/` | Catalog validation, projection generation, changelog and regression tests |
 | `jev/` | Optional Jev control-plane source |
 | `changelog/` | Monthly release notes (English and Korean) |
-| `assets/` | README visuals (Codex-generated; provenance in `assets/readme-visuals.json`) |
+| `assets/` | README visuals (Gemini-generated; provenance in `assets/readme-visuals.json`) |
 
 ```bash
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/generate-catalog-projections.py
@@ -1043,10 +1043,20 @@ See the [setup boundary](setup-all-skills-prompt.md#elephant-goldfish-model-on-d
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 What's New in v2026-11-24
+
+| Change | Details |
+|--------|---------|
+| **README visuals regenerated with the Gemini app** | Replaced the cover and the three diagrams with 16:9 Gemini (Image mode) artwork in the same deep-indigo/cyan/violet palette, using `jeo-code` and `jeopi` hero art as character references: `assets/readme-cover.webp`, plus `assets/how-it-works.webp`, `assets/catalog-map.webp` and `assets/skill-lifecycle.webp` (the hand-authored `.svg` versions were removed). Labels were checked against `README.md`, `skills.json` categories and `jeo-skill` commands; provenance is recorded in `assets/readme-visuals.json`. Documentation only. |
+| **Catalog grows to 474 skills** | Adds `fast-anything`, `opencompass`, `vespa`, `mobile-agent-testers`, `langfuse`, `artex`, `vercel-agent-ui` and `mroffice`, and the 15 game, 3D and creative AI skills that took the catalog to 466. Three README inventories, `skills.json` and `SKILL.toon` are regenerated from the manifest (`validate-catalog-projections.py` reports 474 skills, 10 categories). |
+| **Jev hybrid skill routing v3** | Adds `bge-m3` embedding plus `bge-reranker-v2-m3` reranking as launchd-managed local backends (`jev/com.jeo-skills.bge-m3-embed.plist`, `jev/com.jeo-skills.bge-reranker-v2-m3.plist`), `scripts/build-skill-routing-index.mjs`, a golden prompt set with recorded baselines under `jev/routing-eval/`, setup automation in `jev-setup.sh`, and an abstention-aware prompt hook: with no confident catalog match the hook says so instead of forcing a skill. |
+| **Installer: ctx projection and knowledge wiring** | `jeo-skill install` wires host context projection, the `ctx` lifecycle CLI and portable hooks; second-brain and ontology CRUD, search, embeddings and MCP registration are wired on install; the pinned `install.sh` sha256 matches the committed installer again. |
+
 ## 🆕 What's New in v2026-11-19
 
 | Change | Details |
 |--------|---------|
+| **`jev-gateway` & client serving hardening (zero-leak single-flight, DRR fast-forward, keep-alive pooling & deadline alignment)** | Hardens bottleneck-free Jev serving across the gateway, harness, plugin, controllers, and setup scripts: fixes `jev/jev-gateway.mjs` `inFlight` leak/deadlock on `abortedBeforeDispatch`, zombie `AbortController` poisoning on waiter disconnect, DRR `guard` livelock on `>32 KiB` (`costBytes <= 36000`) payloads via O(sessions) deficit fast-forward, swallowed `upstreamErrors`, overwritten `avgWaitMs` on aging, P0 lane promotion on single-flight coalesce + P0 queue reserve (`--p0-reserve`), byte-bounded LRU (`32 MiB`, `cacheBytes`), `http.Agent` keep-alive pooling with 1 safe loopback reset retry, 500ms `/health` single-flight cache, IPv6 `[::1]` URL formatting, and deterministic `/v1/chat/completions` + `stream: true` coalescing guards. Adds transient `503 Retry-After` jittered retry, `JEV_DEADLINE_MS`/`X-Jev-Agent`/`X-Jev-No-Cache` headers, concurrent `loadCatalog`+`fetchOpenspacePrior`, and bounded parallel `pruneContext` batches in `jev-harness.mjs`; deduplicates `saveSessionTask` writes + stamp-throttled GC, parallelizes `hook()` calls, forwards `JEV_SESSION_ID` on direct `PreToolUse` paths, and extends `jev-controller.mjs` `JEV_DEADLINE_MS` + `jev-only` `context` memoization across all 7 controller bundles. Fixes standalone `com.jeo-skills.qev-server.plist` download and safe macOS launchd `--stop` in `jev-setup.sh`, `jev-plugin.mjs status` in `setup-all-skills-prompt.md`, and full asset sync in `scripts/skills-upgrade.sh`. |
 | **`jev-gateway` multi-session localhost queue & coalescing proxy (`:8017` → `:18017`)** | Adds `jev/jev-gateway.mjs` + `jev/com.jeo-skills.qev-gateway.plist` and wires `jev-setup.sh` (`launchd` + `--stop`), `scripts/skills-upgrade.sh`, `jev-harness.mjs`, and `jev-plugin.mjs` so concurrent multi-session Jev requests share a bounded `llama-server` backend cleanly: 3-lane priority scheduling (`P0` `PreToolUse` > `P1` turn-start > `P2` background + aging), per-session Deficit Round Robin (DRR) fairness (`X-Jev-Session-Id`), cross-session single-flight coalescing + RAM LRU cache, deadline/disconnect cancellation before dispatch, `P2` backpressure shedding (`503 Retry-After`), and `GET /jev/queue-metrics` (`jev/gateway.test.mjs`). |
 | **Five AI UI, CPU OCR & term-intelligence operator skills (449 total)** | Adds `affectui` (`flohoeller/affectui` @ `60308e4e`), `open-intelligent-ui` (`thesysdev/open-intelligent-ui` @ `dd45370b`), `solid-glass` (`deeplethe/solid-glass` @ `6e8903e4`), `indra` (`datalab-to/indra` @ `ca81e18f`), and `new-term-radar` (`zhuyansen/new-term-radar` @ `6ae52fc0`), each with `SKILL.md`, compact `SKILL.toon`, curated `references/` + `sources.md`, behavioral `evals/evals.json`, offline stdlib `scripts/preflight.py` helpers, and regression tests (`scripts/test_five_new_skills_preflight.py`). The 449-skill catalog, three README inventories, and `setup-all-skills-prompt.md` are synchronized. |
 | **Jev hook deduplication, benign prefiltering & `qev-0.8b` 32K context tuning** | Cuts redundant local/API Jev backend calls across high-frequency loops without weakening enforcement: `jev-plugin.mjs` adds TTL caches in `~/.agents/jev/cache/` for prompt routing (`route-v1`, 10m default via `JEV_PROMPT_CACHE_TTL_MS`), `jeo-preprompt`, and `advisory` `PreToolUse` (`pretool-v1`, 60s default via `JEV_PRETOOL_CACHE_TTL_MS`, disabled in `enforce`), plus benign prefiltering in `PostToolUse`/`jeo-posttool` (skipping short/non-suspicious outputs unless `JEV_UNTRUSTED_MODERATION=strict`). Extension controllers (`jev-controller.mjs` across `jeopi`, `omp`, `pi`, `gjc`) skip `tool_call` subprocesses when `reviewMode === 'off'` and deduplicate `tool_call`/`before_tool_call` by `toolCallId` and unchanged `context` blocks. `jev-harness.mjs` expands Korean verb-ending/prompt-writing BM25 bridging (`jev-index-v4`), raises the `qev` `local` `maxStateChars` cap from `12,000` to `36,000` (`JEV_QEV_MAX_STATE_CHARS`), and aligns `com.jeo-skills.qev-server.plist` and `jev-setup.sh` to `-c 32768` (`JEV_QEV_CTX`). |
@@ -1075,13 +1085,6 @@ See the [setup boundary](setup-all-skills-prompt.md#elephant-goldfish-model-on-d
 |--------|---------|
 | **PMTiles cloud-native tile archive skill** | Adds `pmtiles`, pinned to upstream `aec8fa1341222fdddb3318e9ffa8e18e19b312f7` (v3 spec), with PMTiles v3 127-byte header inspection, MBTiles-to-PMTiles conversion, spatial subset extraction (`--bbox`), S3/R2/GCS CORS and HTTP Range request setup, MapLibre GL JS protocol registration, and an offline binary header preflight helper. The 440-skill catalog, three README inventories, and setup guide are synchronized. |
 | **Current catalog** | The current manifest contains 440 skills in 10 categories, including `kagent`, `trulens`, `fastmcp`, `canyonos`, and `pmtiles`. Catalog tables are regenerated from `.agent-skills/skills.json`. |
-
-## 🆕 What's New in v2026-11-14
-
-| Change | Details |
-|--------|---------|
-| **TruLens evaluation and tracking operator skill** | Adds `trulens`, pinned to upstream `32f57106c7f897a05806107737c413e65665fe46` (v2.16.0), with RAG Triad evaluations (Context Relevance, Groundedness, Answer Relevance), feedback function definitions across Snowflake Cortex, OpenAI, Bedrock, and LiteLLM providers, application instrumentation (`TruChain`, `TruLlama`, `TruCustomApp`), guardrail filters, and an offline stdlib preflight helper. The 435-skill catalog, three README inventories, and setup guide are synchronized. |
-| **Current catalog** | The current manifest contains 435 skills in 10 categories, including `kagent`, `modern-web-guidance`, and `trulens`. Catalog tables are regenerated from `.agent-skills/skills.json`. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 

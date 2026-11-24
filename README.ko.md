@@ -1007,7 +1007,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `scripts/` | 카탈로그 검증, 프로젝션 생성, 변경 로그 및 회귀 테스트 |
 | `jev/` | 선택적 Jev 컨트롤 플레인 소스 |
 | `changelog/` | 월별 릴리스 노트(영어 및 한국어) |
-| `assets/` | README 시각 자료(Codex 생성, 출처는 `assets/readme-visuals.json`) |
+| `assets/` | README 시각 자료(Gemini 생성, 출처는 `assets/readme-visuals.json`) |
 
 `.agent-skills/skills.json`이 카탈로그 메타데이터의 기준입니다. README의 카테고리 개수와 스킬 목록 등 생성된 표는 직접 수정하지 말고, 매니페스트를 수정한 뒤 아래 순서로 재생성·검증하세요.
 
@@ -1053,10 +1053,20 @@ v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-11-24 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **Gemini 앱으로 README 시각 자료 전면 교체** | 표지와 다이어그램 3종을 같은 짙은 남색·시안·바이올렛 팔레트의 16:9 Gemini(이미지 모드) 작품으로 교체했습니다. `jeo-code`와 `jeopi`의 히어로 이미지를 캐릭터 참고 이미지로 썼으며, `assets/readme-cover.webp`와 `assets/how-it-works.webp`, `assets/catalog-map.webp`, `assets/skill-lifecycle.webp`가 새 파일입니다(직접 작성한 `.svg`는 제거). 글자는 `README.md`, `skills.json` 카테고리, `jeo-skill` 명령과 대조해 눈으로 확인했고, 출처는 `assets/readme-visuals.json`에 기록했습니다. 문서 전용 변경입니다. |
+| **카탈로그 474개로 확대** | `fast-anything`, `opencompass`, `vespa`, `mobile-agent-testers`, `langfuse`, `artex`, `vercel-agent-ui`, `mroffice`와 카탈로그를 466개로 만든 게임·3D·크리에이티브 AI 스킬 15종을 추가했습니다. README 3개 언어 목록, `skills.json`, `SKILL.toon`은 매니페스트에서 재생성했고 `validate-catalog-projections.py`가 474개 스킬·10개 카테고리를 확인합니다. |
+| **Jev 하이브리드 스킬 라우팅 v3** | `bge-m3` 임베딩과 `bge-reranker-v2-m3` 리랭커를 launchd 관리 로컬 백엔드로 추가했습니다(`jev/com.jeo-skills.bge-m3-embed.plist`, `jev/com.jeo-skills.bge-reranker-v2-m3.plist`). `scripts/build-skill-routing-index.mjs`, `jev/routing-eval/`의 골든 프롬프트 세트와 기준선 결과, `jev-setup.sh` 설정 자동화, 확실한 카탈로그 일치가 없으면 스킬을 억지로 고르지 않고 그렇다고 알리는 기권 인식 프롬프트 훅도 포함합니다. |
+| **설치 시 ctx 투영·지식 연결** | `jeo-skill install`이 호스트 컨텍스트 투영, `ctx` 수명 주기 CLI, 이식 가능한 훅을 연결합니다. second-brain과 온톨로지의 CRUD·검색·임베딩·MCP 등록도 설치 시 연결되고, 고정된 `install.sh` sha256이 커밋된 설치 스크립트와 다시 일치합니다. |
+
 ## 🆕 v2026-11-19 업데이트
 
 | 변경 사항 | 상세 내용 |
 |--------|---------|
+| **`jev-gateway` 및 클라이언트 무병목 서빙 고도화 (누수·라이브락 제거, Keep-Alive 풀링, 데드라인 정렬)** | 게이트웨이·하네스·플러그인·컨트롤러·설치 스크립트 전반의 서빙 병목과 치명적 수명주기 버그를 해결했습니다. `jev/jev-gateway.mjs`의 `abortedBeforeDispatch` 시 `inFlight` 영구 누수·교착, 대기자 종료 시 좀비 `AbortController` 오염, 32 KiB 초과(`costBytes <= 36000`) 페이로드 DRR `guard` 라이브락(O(sessions) deficit 패스트포워드로 해결), `upstreamErrors` 누락, 에이징 시 `avgWaitMs` 덮어쓰기를 수정하고, Single-Flight `P0` 승격·`P0` 큐/슬롯 예약(`--p0-reserve`)·바이트 상한 LRU(`32 MiB`, `cacheBytes`)·`http.Agent` Keep-Alive 풀링(로컬 소켓 리셋 1회 재시도)·`/health` 500ms 캐시·IPv6 `[::1]`·`/v1/chat/completions` 및 `stream: true` 안전 키를 추가했습니다. `jev-harness.mjs`는 로컬 `503 Retry-After` 지터 재시도·`JEV_DEADLINE_MS`/`X-Jev-Agent`/`X-Jev-No-Cache` 헤더·`loadCatalog`+`fetchOpenspacePrior` 병렬화·`pruneContext` 제한 병렬 배치를 적용했고, `jev-plugin.mjs`·7개 호스트 공용 `jev-controller.mjs`는 `saveSessionTask` 중복 제거·스탬프 기반 GC 스로틀링·`hook()` `Promise.all` 병렬화·`PreToolUse` `JEV_SESSION_ID` 전달·`JEV_DEADLINE_MS` 전달 및 `jev-only` `context` 메모이제이션을 추가했습니다. `jev-setup.sh` 단독 모드 `com.jeo-skills.qev-server.plist` 다운로드·macOS launchd 안전 `--stop`, `setup-all-skills-prompt.md`의 `jev-plugin.mjs status` 수정, `scripts/skills-upgrade.sh` 전체 자산 동기화도 반영했습니다. |
 | **`jev-gateway` 다중 세션 로컬 작업 큐·요청 병합 프록시 (`:8017` → `:18017`)** | 여러 에이전트 세션이 동시에 로컬 `qev-0.8b`(`llama-server`)를 호출해도 부하·꼬임 없이 처리하도록 `jev/jev-gateway.mjs` 및 `jev/com.jeo-skills.qev-gateway.plist`를 추가하고 `jev-setup.sh`(`launchd`·`--stop`), `scripts/skills-upgrade.sh`, `jev-harness.mjs`, `jev-plugin.mjs`에 연동했습니다. 3단계 우선순위 큐(`P0` `PreToolUse` > `P1` 턴 시작 라우팅 > `P2` 백그라운드 + 에이징), 세션별 DRR 공정 스케줄링(`X-Jev-Session-Id`), 동일 요청 Single-Flight 병합 + 인메모리 LRU 캐시, 타임아웃/연결 종료 조기 폐기, `P2` 백프레셔(`503 Retry-After`), `GET /jev/queue-metrics`를 제공합니다(`jev/gateway.test.mjs`). |
 | **AI UI · CPU OCR · AI 신조어 레이더 스킬 5종 추가 (총 449개)** | `affectui` (`flohoeller/affectui` @ `60308e4e`), `open-intelligent-ui` (`thesysdev/open-intelligent-ui` @ `dd45370b`), `solid-glass` (`deeplethe/solid-glass` @ `6e8903e4`), `indra` (`datalab-to/indra` @ `ca81e18f`), `new-term-radar` (`zhuyansen/new-term-radar` @ `6ae52fc0`) 5개 스킬을 추가했습니다. 각 스킬은 표준 `SKILL.md`, 압축 요약 `SKILL.toon`, `references/`·`sources.md`, `evals/evals.json`, 오프라인 표준 라이브러리 `scripts/preflight.py` 헬퍼와 회귀 테스트(`scripts/test_five_new_skills_preflight.py`)를 포함하며 449개 카탈로그, README 3개 언어 목록, `setup-all-skills-prompt.md`를 동기화했습니다. |
 | **Jev 고빈도 훅 중복 제거·정상 출력 사전 필터링 및 `qev-0.8b` 32K/36,000자 튜닝** | 강제(`enforce`) 경계를 약화하지 않으면서 반복 에이전트 루프의 불필요한 로컬/API 호출을 크게 줄였습니다. `jev-plugin.mjs`는 `~/.agents/jev/cache/`에 프롬프트 라우팅(`route-v1`, 기본 10분 `JEV_PROMPT_CACHE_TTL_MS`)·`jeo-preprompt`·`advisory` `PreToolUse`(`pretool-v1`, 기본 60초 `JEV_PRETOOL_CACHE_TTL_MS`, `enforce`는 미캐시) TTL 캐시를 추가하고, `PostToolUse`/`jeo-posttool`에서 16자 이하 또는 의심 패턴이 없는 정상 출력을 사전 스킵합니다(`JEV_UNTRUSTED_MODERATION=strict`로 해제 가능). 확장 컨트롤러(`jeopi`/`omp`/`pi`/`gjc` 공용 `jev-controller.mjs`)는 `reviewMode === 'off'`일 때 `tool_call` 서브프로세스를 띄우지 않고, `toolCallId` 기준 중복 `tool_call`/`before_tool_call`과 동일 `context` 블록 반복을 차단합니다. `jev-harness.mjs`는 한국어 동사 어미/프롬프트 작성 BM25 확장(`jev-index-v4`)을 반영하고, `qev` `local` `maxStateChars` 상한을 `12,000`에서 `36,000`자로 상향(`JEV_QEV_MAX_STATE_CHARS`)했으며 `com.jeo-skills.qev-server.plist`·`jev-setup.sh` 기본 컨텍스트를 `-c 32768`(`JEV_QEV_CTX`)로 통일했습니다. |
@@ -1085,13 +1095,6 @@ v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니
 |--------|---------|
 | **PMTiles 클라우드 네이티브 타일 아카이브 스킬** | 업스트림 `aec8fa1341222fdddb3318e9ffa8e18e19b312f7` (v3 규격)에 고정한 `pmtiles`를 추가했습니다. PMTiles v3 127바이트 헤더 검사, MBTiles에서 PMTiles로의 변환, 공간 하위 집합 추출(`--bbox`), S3·R2·GCS CORS 및 HTTP Range 요청 설정, MapLibre GL JS 프로토콜 등록, 오프라인 바이너리 헤더 프리플라이트 헬퍼를 제공합니다. 스킬 440개 카탈로그, README 3개 언어 목록과 setup 가이드를 동기화했습니다. |
 | **현재 카탈로그** | 현재 매니페스트는 `kagent`, `trulens`, `fastmcp`, `canyonos`, `pmtiles`를 포함한 스킬 440개·카테고리 10개를 담고 있습니다. 카탈로그 표는 `.agent-skills/skills.json`에서 다시 생성합니다. |
-
-## 🆕 v2026-11-14 업데이트
-
-| 변경 사항 | 상세 내용 |
-|--------|---------|
-| **TruLens 평가 및 트래킹 운영 스킬** | 업스트림 `32f57106c7f897a05806107737c413e65665fe46` (v2.16.0)에 고정한 `trulens`를 추가했습니다. RAG Triad 평가(문맥 관련성, 근거성, 답변 관련성), Snowflake Cortex·OpenAI·Bedrock·LiteLLM 제공자 기반 피드백 함수 정의, 애플리케이션 계측(`TruChain`, `TruLlama`, `TruCustomApp`), 가드레일 필터, 표준 라이브러리 오프라인 프리플라이트 헬퍼를 제공합니다. 스킬 435개 카탈로그, README 3개 언어 목록과 setup 가이드를 동기화했습니다. |
-| **현재 카탈로그** | 현재 매니페스트는 `kagent`, `modern-web-guidance`, `trulens`를 포함한 스킬 435개·카테고리 10개를 담고 있습니다. 카탈로그 표는 `.agent-skills/skills.json`에서 다시 생성합니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

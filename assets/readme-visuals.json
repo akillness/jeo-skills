@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-03",
-  "purpose": "README illustration and source-grounded, editable diagrams",
+  "updated": "2026-11-24",
+  "purpose": "README illustration and source-grounded infographics",
   "palette": {
     "background": "#090F25",
     "surface": "#131C39",
@@ -11,21 +11,23 @@
   },
   "hero": {
     "path": "assets/readme-cover.webp",
-    "generator": "functions.generate_image",
-    "provider": "openai-codex",
-    "model": "gpt-6.1-terra",
+    "generator": "Gemini macOS app, Image mode (Neon model)",
     "reference_inputs": ["../jeo-code/assets/hero.png", "../jeopi/assets/jeopi-hero.png"],
-    "generated_size": "1672x941",
-    "published_size": "1600x901",
+    "generated_size": "1376x768",
+    "published_size": "1376x768",
     "published_format": "WebP",
-    "conversion": "cwebp -q 80 -resize 1600 0",
-    "prompt_summary": "Cosmic archive, red crayfish wizard and stitched hooded doll, luminous skill atlas, no letters or logos.",
+    "conversion": "cwebp -q 82",
+    "prompt_summary": "Red crayfish wizard with heterochromatic cyan/magenta glasses and stitched hooded doll in a luminous deep-indigo cosmic library with orbiting archive rings and floating skill tomes; no text, no logos.",
     "boundary": "Illustrative generated artwork, not a screenshot."
   },
   "diagrams": {
-    "paths": ["assets/how-it-works.svg", "assets/catalog-map.svg", "assets/skill-lifecycle.svg"],
-    "authoring": "Hand-authored and revised SVG by jeo in the current task; catalog and lifecycle layouts adapted from the existing Codex-authored diagrams.",
+    "paths": ["assets/how-it-works.webp", "assets/catalog-map.webp", "assets/skill-lifecycle.webp"],
+    "generator": "Gemini macOS app, Image mode (Neon model), 16:9",
+    "published_size": "1376x768",
+    "published_format": "WebP",
+    "conversion": "cwebp -q 85",
+    "authoring": "Generated from text prompts that spell out every label; labels were checked by eye against the README, skills.json categories and jeo-skill commands. Replaces the earlier hand-authored SVGs.",
     "source_of_truth": ["README.md", ".agent-skills/skills.json", "install.sh", ".agent-skills/jeo-skill/SKILL.md", "jev/README.md"],
-    "boundary": "Static diagrams, not screenshots. Installation, host activation, optional routing, provider authorization and maintainer retirement are distinct."
+    "boundary": "Static illustrations, not screenshots. Installation, host activation, optional routing, provider authorization and maintainer retirement are distinct."
   }
 }
