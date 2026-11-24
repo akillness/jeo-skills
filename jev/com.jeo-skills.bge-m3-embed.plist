@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.jeo-skills.bge-m3-embed</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>__LLAMA_BIN__</string>
+    <string>-m</string>
+    <string>__MODEL_FILE__</string>
+    <string>--alias</string>
+    <string>__MODEL_NAME__</string>
+    <string>--host</string>
+    <string>__HOST__</string>
+    <string>--port</string>
+    <string>__PORT__</string>
+    <string>--embedding</string>
+    <string>--pooling</string>
+    <string>cls</string>
+    <string>-c</string>
+    <string>8192</string>
+    <string>-b</string>
+    <string>8192</string>
+    <string>-ub</string>
+    <string>8192</string>
+    <string>-np</string>
+    <string>2</string>
+    <string>-ngl</string>
+    <string>99</string>
+    <string>--no-webui</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>__LOG_PATH__</string>
+  <key>StandardErrorPath</key>
+  <string>__LOG_PATH__</string>
+</dict>
+</plist>

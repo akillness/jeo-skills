@@ -1,0 +1,3775 @@
+{
+  "mode": "jev-v2",
+  "timestamp": "2026-11-24T02:08:18.656Z",
+  "catalogCount": 471,
+  "summary": {
+    "totalCases": 80,
+    "positiveOverall": {
+      "n": 62,
+      "recall3": 0.7537,
+      "recall5": 0.7727,
+      "recall10": 0.778,
+      "primaryHit5": 0.8804,
+      "primaryHit10": 0.8844,
+      "mrr": 0.9758,
+      "ndcg10": 0.8529,
+      "avgCount": 3.45,
+      "zeroCountRate": 0,
+      "forbiddenViolationRate": 0.0323
+    },
+    "strata": {
+      "ko_single": {
+        "n": 20,
+        "recall3": 0.8417,
+        "recall5": 0.8417,
+        "recall10": 0.8417,
+        "primaryHit5": 0.925,
+        "primaryHit10": 0.925,
+        "mrr": 1,
+        "ndcg10": 0.899,
+        "avgCount": 2.65,
+        "zeroCountRate": 0,
+        "forbiddenViolationRate": 0.1
+      },
+      "en_single": {
+        "n": 15,
+        "recall3": 0.8111,
+        "recall5": 0.8111,
+        "recall10": 0.8111,
+        "primaryHit5": 1,
+        "primaryHit10": 1,
+        "mrr": 1,
+        "ndcg10": 0.9144,
+        "avgCount": 2.67,
+        "zeroCountRate": 0,
+        "forbiddenViolationRate": 0
+      },
+      "multi_intent": {
+        "n": 15,
+        "recall3": 0.5152,
+        "recall5": 0.5937,
+        "recall10": 0.6159,
+        "primaryHit5": 0.6722,
+        "primaryHit10": 0.6889,
+        "mrr": 0.9667,
+        "ndcg10": 0.7019,
+        "avgCount": 5.87,
+        "zeroCountRate": 0,
+        "forbiddenViolationRate": 0,
+        "intentCoverage": 0.7944
+      },
+      "boundary_negative": {
+        "n": 12,
+        "recall3": 0.8333,
+        "recall5": 0.8333,
+        "recall10": 0.8333,
+        "primaryHit5": 0.9167,
+        "primaryHit10": 0.9167,
+        "mrr": 0.9167,
+        "ndcg10": 0.8877,
+        "avgCount": 2.75,
+        "zeroCountRate": 0,
+        "forbiddenViolationRate": 0
+      },
+      "abstention": {
+        "n": 18,
+        "abstentionAccuracy": 1,
+        "falsePositiveRate": 0,
+        "avgCount": 0
+      }
+    },
+    "latencyMs": {
+      "mean": 558.7,
+      "p50": 705.8,
+      "p95": 879.3
+    }
+  },
+  "records": [
+    {
+      "id": "KO-01",
+      "stratum": "ko_single",
+      "prompt": "블렌더에서 캐릭터 리깅하고 웨이트 페인팅 자동화하는 방법 알려줘",
+      "expected": [
+        "blender-skills",
+        "blender-mcp",
+        "unirig"
+      ],
+      "primary": [
+        "blender-skills"
+      ],
+      "predicted": [
+        "blender-skills",
+        "blender-mcp",
+        "motion2mixamo",
+        "animato",
+        "openrig"
+      ],
+      "count": 5,
+      "recall3": 0.6666666666666666,
+      "recall5": 0.6666666666666666,
+      "recall10": 0.6666666666666666,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.4,
+      "mrr": 1,
+      "ndcg10": 0.878961873034099,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 938.8,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.8203,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6072,
+            "denseGap": 0.1467,
+            "maxLex": 16.14,
+            "stage1Ms": 234,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-02",
+      "stratum": "ko_single",
+      "prompt": "한글 HWP 파일 본문 텍스트를 파싱해서 JSON으로 추출하고 마크다운으로 변환해줘",
+      "expected": [
+        "hwp"
+      ],
+      "primary": [
+        "hwp"
+      ],
+      "predicted": [
+        "hwp"
+      ],
+      "count": 1,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 640.8,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.8504,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6897,
+            "denseGap": 0.2483,
+            "maxLex": 18.28,
+            "stage1Ms": 73.5,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-03",
+      "stratum": "ko_single",
+      "prompt": "기존 HWP 문서 안에 특정 문자열을 일괄 치환하고 표 셀 내용을 수정해줘",
+      "expected": [
+        "rhwp-edit",
+        "rhwp-advanced"
+      ],
+      "primary": [
+        "rhwp-edit"
+      ],
+      "predicted": [
+        "rhwp-edit",
+        "hwp",
+        "rhwp-advanced"
+      ],
+      "count": 3,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.6666666666666666,
+      "mrr": 1,
+      "ndcg10": 0.9639404333166532,
+      "intentCoverage": null,
+      "forbiddenHits": [
+        "hwp"
+      ],
+      "forbiddenViolated": true,
+      "latencyMs": 643.1,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.729,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6746,
+            "denseGap": 0.198,
+            "maxLex": 9.23,
+            "stage1Ms": 72.5,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-04",
+      "stratum": "ko_single",
+      "prompt": "React랑 Next.js 앱에서 불필요한 리렌더링이랑 번들 사이즈 최적화 좀 해줘",
+      "expected": [
+        "react-best-practices",
+        "performance-optimization"
+      ],
+      "primary": [
+        "react-best-practices"
+      ],
+      "predicted": [
+        "react-best-practices"
+      ],
+      "count": 1,
+      "recall3": 0.5,
+      "recall5": 0.5,
+      "recall10": 0.5,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 0.8262346571285599,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 464.3,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-single-intent",
+        "gate": {
+          "value": 0.5295,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6829,
+            "denseGap": 0.2029,
+            "maxLex": 13.49,
+            "stage1Ms": 41.7,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-05",
+      "stratum": "ko_single",
+      "prompt": "현재 브랜치 변경사항 코드 리뷰하고 잠재적 버그랑 코딩 컨벤션 체크해줘",
+      "expected": [
+        "code-review",
+        "open-code-review"
+      ],
+      "primary": [
+        "code-review"
+      ],
+      "predicted": [
+        "code-review",
+        "open-code-review",
+        "git-workflow",
+        "codeflow",
+        "improve-codebase-architecture"
+      ],
+      "count": 5,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.4,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 627.5,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.6719,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.596,
+            "denseGap": 0.0796,
+            "maxLex": 15.18,
+            "stage1Ms": 68.6,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-06",
+      "stratum": "ko_single",
+      "prompt": "우리 서비스 PostgreSQL 데이터베이스 스키마 설계랑 무중단 마이그레이션 전략 짜줘",
+      "expected": [
+        "database-schema-design"
+      ],
+      "primary": [
+        "database-schema-design"
+      ],
+      "predicted": [
+        "database-schema-design",
+        "pg-jev"
+      ],
+      "count": 2,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.5,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 453.3,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-single-intent",
+        "gate": {
+          "value": 0.814,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.5967,
+            "denseGap": 0.1273,
+            "maxLex": 13.96,
+            "stage1Ms": 39.7,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-07",
+      "stratum": "ko_single",
+      "prompt": "유튜브 쇼츠 자동 생성 파이프라인 구축해서 대본 쓰고 영상 편집까지 해줘",
+      "expected": [
+        "moneyprinter-turbo",
+        "shopping-shorts",
+        "video-production",
+        "youtube-growth-playbook-2026"
+      ],
+      "primary": [
+        "moneyprinter-turbo",
+        "video-production"
+      ],
+      "predicted": [
+        "video-production"
+      ],
+      "count": 1,
+      "recall3": 0.25,
+      "recall5": 0.25,
+      "recall10": 0.25,
+      "primaryHit3": 0.5,
+      "primaryHit5": 0.5,
+      "primaryHit10": 0.5,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 0.515157140670655,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 478.3,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-single-intent",
+        "gate": {
+          "value": 0.8863,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.5932,
+            "denseGap": 0.1067,
+            "maxLex": 17.37,
+            "stage1Ms": 32.5,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-08",
+      "stratum": "ko_single",
+      "prompt": "이미 열려 있는 크롬 브라우저 탭의 로그인 세션 그대로 써서 페이지 자동화 해줘",
+      "expected": [
+        "playwriter"
+      ],
+      "primary": [
+        "playwriter"
+      ],
+      "predicted": [
+        "playwriter",
+        "browser-harness",
+        "browser-use"
+      ],
+      "count": 3,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.3333333333333333,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [
+        "browser-harness"
+      ],
+      "forbiddenViolated": true,
+      "latencyMs": 507.8,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-single-intent",
+        "gate": {
+          "value": 0.8585,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6584,
+            "denseGap": 0.2046,
+            "maxLex": 19.7,
+            "stage1Ms": 46,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-09",
+      "stratum": "ko_single",
+      "prompt": "서버 에러 로그랑 컨테이너 스택트레이스 분석해서 첫 번째 근본 원인 찾아줘",
+      "expected": [
+        "log-analysis",
+        "debugging"
+      ],
+      "primary": [
+        "log-analysis"
+      ],
+      "predicted": [
+        "log-analysis",
+        "debugging",
+        "diagnosing-bugs"
+      ],
+      "count": 3,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.6666666666666666,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 526.7,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-single-intent",
+        "gate": {
+          "value": 0.8296,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6037,
+            "denseGap": 0.1332,
+            "maxLex": 20.13,
+            "stage1Ms": 41.5,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-10",
+      "stratum": "ko_single",
+      "prompt": "Git 머지 충돌이 심하게 났는데 안전하게 해결하는 절차 도와줘",
+      "expected": [
+        "resolving-merge-conflicts",
+        "git-workflow"
+      ],
+      "primary": [
+        "resolving-merge-conflicts"
+      ],
+      "predicted": [
+        "resolving-merge-conflicts",
+        "git-workflow"
+      ],
+      "count": 2,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 552.6,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-single-intent",
+        "gate": {
+          "value": 0.7254,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6873,
+            "denseGap": 0.2143,
+            "maxLex": 11.37,
+            "stage1Ms": 46,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-11",
+      "stratum": "ko_single",
+      "prompt": "신규 기능 PRD 기획서 작성하고 사용자 스토리랑 우선순위 정리해줘",
+      "expected": [
+        "create-prd",
+        "user-stories",
+        "prioritize-features"
+      ],
+      "primary": [
+        "create-prd"
+      ],
+      "predicted": [
+        "create-prd",
+        "user-stories",
+        "prioritize-features",
+        "user-personas"
+      ],
+      "count": 4,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.75,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 705.8,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.664,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6621,
+            "denseGap": 0.1174,
+            "maxLex": 8.85,
+            "stage1Ms": 71.1,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-12",
+      "stratum": "ko_single",
+      "prompt": "우리 웹앱 인증 세션이랑 쿠키, CSRF 보안 취약점 점검하고 강화해줘",
+      "expected": [
+        "security-best-practices",
+        "authentication-setup"
+      ],
+      "primary": [
+        "security-best-practices"
+      ],
+      "predicted": [
+        "security-best-practices",
+        "authentication-setup",
+        "zurp",
+        "codeflow"
+      ],
+      "count": 4,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.5,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 703.8,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.6913,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.5944,
+            "denseGap": 0.0974,
+            "maxLex": 14.45,
+            "stage1Ms": 61.1,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-13",
+      "stratum": "ko_single",
+      "prompt": "한국 특허청 KIPRIS에서 AI 에이전트 관련 선행 특허 검색하고 침해 위험 분석해줘",
+      "expected": [
+        "korean-patent-search"
+      ],
+      "primary": [
+        "korean-patent-search"
+      ],
+      "predicted": [
+        "korean-patent-search",
+        "openai-agents-python"
+      ],
+      "count": 2,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.5,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 706.1,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.7771,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6524,
+            "denseGap": 0.1518,
+            "maxLex": 12.62,
+            "stage1Ms": 65.9,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-14",
+      "stratum": "ko_single",
+      "prompt": "로컬 옵시디언 세컨드 브레인 볼트에 회의록 정리하고 지식 노트 연결해줘",
+      "expected": [
+        "obsidian-second-brain",
+        "obsidian-mind",
+        "llm-wiki"
+      ],
+      "primary": [
+        "obsidian-second-brain"
+      ],
+      "predicted": [
+        "obsidian-second-brain",
+        "obsidian-mind"
+      ],
+      "count": 2,
+      "recall3": 0.6666666666666666,
+      "recall5": 0.6666666666666666,
+      "recall10": 0.6666666666666666,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 0.878961873034099,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 715,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.7352,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6779,
+            "denseGap": 0.217,
+            "maxLex": 24.07,
+            "stage1Ms": 61.6,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-15",
+      "stratum": "ko_single",
+      "prompt": "MCP 서버 새로 만들어서 에이전트가 사내 도구 호출할 수 있게 구현해줘",
+      "expected": [
+        "mcp-builder",
+        "fastmcp"
+      ],
+      "primary": [
+        "mcp-builder"
+      ],
+      "predicted": [
+        "mcp-builder",
+        "agent-workflow"
+      ],
+      "count": 2,
+      "recall3": 0.5,
+      "recall5": 0.5,
+      "recall10": 0.5,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.5,
+      "mrr": 1,
+      "ndcg10": 0.8262346571285599,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 525.7,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-single-intent",
+        "gate": {
+          "value": 0.7813,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6913,
+            "denseGap": 0.1378,
+            "maxLex": 9.83,
+            "stage1Ms": 39,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-16",
+      "stratum": "ko_single",
+      "prompt": "Three.js로 웹 3D 씬 만들고 GLB 모델 로딩이랑 조명, 셰이더 세팅해줘",
+      "expected": [
+        "threejs-fundamentals",
+        "threejs-loaders",
+        "threejs-lighting",
+        "threejs-shaders"
+      ],
+      "primary": [
+        "threejs-fundamentals"
+      ],
+      "predicted": [
+        "threejs-lighting",
+        "threejs-shaders",
+        "threejs-loaders",
+        "threejs-materials"
+      ],
+      "count": 4,
+      "recall3": 0.75,
+      "recall5": 0.75,
+      "recall10": 0.75,
+      "primaryHit3": 0,
+      "primaryHit5": 0,
+      "primaryHit10": 0,
+      "precision": 0.75,
+      "mrr": 1,
+      "ndcg10": 0.4671445995090871,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 530.3,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-single-intent",
+        "gate": {
+          "value": 0.8038,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.7158,
+            "denseGap": 0.2016,
+            "maxLex": 9.42,
+            "stage1Ms": 37,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-17",
+      "stratum": "ko_single",
+      "prompt": "LLM 애플리케이션에 Langfuse 붙여서 OpenTelemetry 트레이싱이랑 프롬프트 평가 설정해줘",
+      "expected": [
+        "langfuse",
+        "agent-observability"
+      ],
+      "primary": [
+        "langfuse"
+      ],
+      "predicted": [
+        "langfuse"
+      ],
+      "count": 1,
+      "recall3": 0.5,
+      "recall5": 0.5,
+      "recall10": 0.5,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 0.8262346571285599,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 516.8,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-single-intent",
+        "gate": {
+          "value": 0.6739,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.7296,
+            "denseGap": 0.2415,
+            "maxLex": 15.99,
+            "stage1Ms": 36.7,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-18",
+      "stratum": "ko_single",
+      "prompt": "경쟁사 제품 비교 분석하고 배틀카드랑 포지셔닝 전략 정리해줘",
+      "expected": [
+        "competitor-analysis",
+        "competitive-battlecard",
+        "positioning-ideas"
+      ],
+      "primary": [
+        "competitor-analysis"
+      ],
+      "predicted": [
+        "competitor-analysis",
+        "competitive-battlecard",
+        "positioning-ideas"
+      ],
+      "count": 3,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 766.6,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.637,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6367,
+            "denseGap": 0.172,
+            "maxLex": 13.76,
+            "stage1Ms": 75.8,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-19",
+      "stratum": "ko_single",
+      "prompt": "영상에서 사람 모션 추출해서 Mixamo 3D 캐릭터 리그에 리타겟팅해줘",
+      "expected": [
+        "motion2mixamo"
+      ],
+      "primary": [
+        "motion2mixamo"
+      ],
+      "predicted": [
+        "motion2mixamo"
+      ],
+      "count": 1,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 522.3,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-single-intent",
+        "gate": {
+          "value": 0.8107,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.7386,
+            "denseGap": 0.2469,
+            "maxLex": 11.96,
+            "stage1Ms": 34.6,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "KO-20",
+      "stratum": "ko_single",
+      "prompt": "우리 에이전트용 새 SKILL.md 스킬 하나 표준 형식에 맞춰서 작성해줘",
+      "expected": [
+        "write-a-skill",
+        "skill-standardization"
+      ],
+      "primary": [
+        "write-a-skill"
+      ],
+      "predicted": [
+        "skill-standardization",
+        "write-a-skill",
+        "writing-for-agents",
+        "article-prompts-to-skills"
+      ],
+      "count": 4,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.5,
+      "mrr": 1,
+      "ndcg10": 0.7967075809905066,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 579.8,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-single-intent",
+        "gate": {
+          "value": 0.3299,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6655,
+            "denseGap": 0.1715,
+            "maxLex": 5.37,
+            "stage1Ms": 37.6,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "EN-01",
+      "stratum": "en_single",
+      "prompt": "Design a shared frontend design system with semantic color tokens, typography scale, and component API rules",
+      "expected": [
+        "design-system",
+        "web-design"
+      ],
+      "primary": [
+        "design-system"
+      ],
+      "predicted": [
+        "design-system",
+        "design-taste-frontend",
+        "web-design",
+        "codebase-design",
+        "api-design",
+        "open-design"
+      ],
+      "count": 6,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.3333333333333333,
+      "mrr": 1,
+      "ndcg10": 0.9639404333166532,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 744.7,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.4946,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.7402,
+            "denseGap": 0.1995,
+            "maxLex": 15.33,
+            "stage1Ms": 70.6,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "EN-02",
+      "stratum": "en_single",
+      "prompt": "Audit this web app for WCAG keyboard navigation, ARIA labels, focus trapping, and screen reader accessibility",
+      "expected": [
+        "web-accessibility"
+      ],
+      "primary": [
+        "web-accessibility"
+      ],
+      "predicted": [
+        "web-accessibility",
+        "modern-web-guidance"
+      ],
+      "count": 2,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.5,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 837.9,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.6909,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.7069,
+            "denseGap": 0.1947,
+            "maxLex": 23.65,
+            "stage1Ms": 164.3,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "EN-03",
+      "stratum": "en_single",
+      "prompt": "Run a structured deep research investigation with parallel web searches and produce a cited markdown report",
+      "expected": [
+        "deep-research",
+        "research"
+      ],
+      "primary": [
+        "deep-research",
+        "research"
+      ],
+      "predicted": [
+        "deep-research",
+        "research",
+        "autoresearch"
+      ],
+      "count": 3,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.6666666666666666,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 820.6,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.9502,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.7065,
+            "denseGap": 0.2173,
+            "maxLex": 16.53,
+            "stage1Ms": 71,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "EN-04",
+      "stratum": "en_single",
+      "prompt": "Deploy this Next.js project to Vercel with preview deployments, custom domain alias, and production promotion",
+      "expected": [
+        "vercel-deploy",
+        "deployment-automation"
+      ],
+      "primary": [
+        "vercel-deploy"
+      ],
+      "predicted": [
+        "vercel-deploy",
+        "deployment-automation"
+      ],
+      "count": 2,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 730.7,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.7332,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.7232,
+            "denseGap": 0.2548,
+            "maxLex": 15.93,
+            "stage1Ms": 64.5,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "EN-05",
+      "stratum": "en_single",
+      "prompt": "Implement human-in-the-loop approval checkpoints using LangGraph interrupt() and Command(resume=...)",
+      "expected": [
+        "langgraph-human-in-the-loop",
+        "langgraph-fundamentals",
+        "langgraph-persistence"
+      ],
+      "primary": [
+        "langgraph-human-in-the-loop"
+      ],
+      "predicted": [
+        "langgraph-human-in-the-loop",
+        "langchain-middleware"
+      ],
+      "count": 2,
+      "recall3": 0.3333333333333333,
+      "recall5": 0.3333333333333333,
+      "recall10": 0.3333333333333333,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.5,
+      "mrr": 1,
+      "ndcg10": 0.7262287617954056,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 879.3,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.8727,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.7261,
+            "denseGap": 0.2335,
+            "maxLex": 18.84,
+            "stage1Ms": 69.1,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "EN-06",
+      "stratum": "en_single",
+      "prompt": "Build typed LLM outputs with PydanticAI validation, tool calling, and structured retry loops",
+      "expected": [
+        "pydantic-ai"
+      ],
+      "primary": [
+        "pydantic-ai"
+      ],
+      "predicted": [
+        "pydantic-ai",
+        "langchain-middleware",
+        "mcp-builder"
+      ],
+      "count": 3,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.3333333333333333,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 767.9,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.8091,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.7596,
+            "denseGap": 0.2373,
+            "maxLex": 12.85,
+            "stage1Ms": 65.3,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "EN-07",
+      "stratum": "en_single",
+      "prompt": "Profile our Unity game frame drops and analyze stat unit GPU vs CPU bottlenecks",
+      "expected": [
+        "game-performance-profiler",
+        "unity-gamedev-skill-pack"
+      ],
+      "primary": [
+        "game-performance-profiler"
+      ],
+      "predicted": [
+        "game-performance-profiler",
+        "game-perf",
+        "performance-optimization",
+        "unity-technologies-skills",
+        "unity-skills"
+      ],
+      "count": 5,
+      "recall3": 0.5,
+      "recall5": 0.5,
+      "recall10": 0.5,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.2,
+      "mrr": 1,
+      "ndcg10": 0.8262346571285599,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 785.5,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.6673,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.7295,
+            "denseGap": 0.2253,
+            "maxLex": 11,
+            "stage1Ms": 86.9,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "EN-08",
+      "stratum": "en_single",
+      "prompt": "Write optimized PostgreSQL SQL queries for cohort retention and funnel conversion analysis",
+      "expected": [
+        "sql-queries",
+        "cohort-analysis",
+        "data-analysis"
+      ],
+      "primary": [
+        "sql-queries"
+      ],
+      "predicted": [
+        "cohort-analysis",
+        "sql-queries",
+        "data-analysis"
+      ],
+      "count": 3,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 0.8213137146137828,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 749.8,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.8386,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.5771,
+            "denseGap": 0.1406,
+            "maxLex": 8.81,
+            "stage1Ms": 59.3,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "EN-09",
+      "stratum": "en_single",
+      "prompt": "Run semantic code search over our workspace with zvec-grep zg query and index status",
+      "expected": [
+        "zvec-grep"
+      ],
+      "primary": [
+        "zvec-grep"
+      ],
+      "predicted": [
+        "zvec-grep",
+        "codebase-search",
+        "jevgrep",
+        "cocoindex"
+      ],
+      "count": 4,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.25,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 770.9,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.7023,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.7071,
+            "denseGap": 0.2227,
+            "maxLex": 23,
+            "stage1Ms": 80.7,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "EN-10",
+      "stratum": "en_single",
+      "prompt": "Create an RDF OWL ontology with SHACL validation rules using open-ontologies CLI",
+      "expected": [
+        "open-ontologies",
+        "orionbelt-ontology-builder"
+      ],
+      "primary": [
+        "open-ontologies"
+      ],
+      "predicted": [
+        "open-ontologies",
+        "orionbelt-ontology-builder"
+      ],
+      "count": 2,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 576.6,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-single-intent",
+        "gate": {
+          "value": 0.8051,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.7226,
+            "denseGap": 0.2664,
+            "maxLex": 18.37,
+            "stage1Ms": 40,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "EN-11",
+      "stratum": "en_single",
+      "prompt": "Set up a fresh headless Chrome CDP session for repeatable autonomous end-to-end browser verification",
+      "expected": [
+        "browser-harness",
+        "moli",
+        "browser-use"
+      ],
+      "primary": [
+        "browser-harness"
+      ],
+      "predicted": [
+        "browser-harness"
+      ],
+      "count": 1,
+      "recall3": 0.3333333333333333,
+      "recall5": 0.3333333333333333,
+      "recall10": 0.3333333333333333,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 0.7262287617954056,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 642.8,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-single-intent",
+        "gate": {
+          "value": 0.7746,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.7012,
+            "denseGap": 0.2216,
+            "maxLex": 10.86,
+            "stage1Ms": 43.9,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "EN-12",
+      "stratum": "en_single",
+      "prompt": "Configure Firebase Hosting, Firestore rules, and local Emulator Suite with firebase-tools CLI",
+      "expected": [
+        "firebase-cli"
+      ],
+      "primary": [
+        "firebase-cli"
+      ],
+      "predicted": [
+        "firebase-cli",
+        "cli-anything"
+      ],
+      "count": 2,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.5,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 867.5,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.743,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.7441,
+            "denseGap": 0.2871,
+            "maxLex": 17.44,
+            "stage1Ms": 70.9,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "EN-13",
+      "stratum": "en_single",
+      "prompt": "Configure Jev control plane skill routing, profile isolation, and pre-tool gate review policies",
+      "expected": [
+        "jev-control-plane",
+        "agent-tool-routing"
+      ],
+      "primary": [
+        "jev-control-plane"
+      ],
+      "predicted": [
+        "jev-control-plane",
+        "agent-tool-routing",
+        "pg-jev"
+      ],
+      "count": 3,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.6666666666666666,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 795.9,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.8971,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6496,
+            "denseGap": 0.1632,
+            "maxLex": 14.72,
+            "stage1Ms": 86.5,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "EN-14",
+      "stratum": "en_single",
+      "prompt": "Benchmark two CLI implementations accurately with warmup runs and statistical outlier checks using hyperfine",
+      "expected": [
+        "hyperfine-benchmarking",
+        "performance-optimization"
+      ],
+      "primary": [
+        "hyperfine-benchmarking"
+      ],
+      "predicted": [
+        "hyperfine-benchmarking"
+      ],
+      "count": 1,
+      "recall3": 0.5,
+      "recall5": 0.5,
+      "recall10": 0.5,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 0.8262346571285599,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 852.4,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.7701,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6923,
+            "denseGap": 0.1861,
+            "maxLex": 9.6,
+            "stage1Ms": 69.2,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "EN-15",
+      "stratum": "en_single",
+      "prompt": "Design an Agent-to-Agent (A2A) horizontal messaging protocol so independent agents exchange tasks and capabilities",
+      "expected": [
+        "a2a-protocol",
+        "agent-system-design"
+      ],
+      "primary": [
+        "a2a-protocol"
+      ],
+      "predicted": [
+        "a2a-protocol"
+      ],
+      "count": 1,
+      "recall3": 0.5,
+      "recall5": 0.5,
+      "recall10": 0.5,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 0.8262346571285599,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 634.1,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-single-intent",
+        "gate": {
+          "value": 0.7218,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.8107,
+            "denseGap": 0.2603,
+            "maxLex": 17.13,
+            "stage1Ms": 47.6,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "MI-01",
+      "stratum": "multi_intent",
+      "prompt": "React/Next.js 대시보드 렌더링 성능 최적화하고, 새로운 깨끗한 브라우저로 E2E 테스트 자동화까지 붙여줘",
+      "expected": [
+        "react-best-practices",
+        "performance-optimization",
+        "browser-harness",
+        "testing-strategies"
+      ],
+      "primary": [
+        "react-best-practices",
+        "browser-harness"
+      ],
+      "predicted": [
+        "react-best-practices",
+        "performance-optimization",
+        "optimize-web-animations",
+        "modern-web-guidance",
+        "testing-strategies",
+        "browser-use"
+      ],
+      "count": 6,
+      "recall3": 0.5,
+      "recall5": 0.75,
+      "recall10": 0.75,
+      "primaryHit3": 0.5,
+      "primaryHit5": 0.5,
+      "primaryHit10": 0.5,
+      "precision": 0.5,
+      "mrr": 1,
+      "ndcg10": 0.6899297919537469,
+      "intentCoverage": 1,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 809.5,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.7748,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6447,
+            "denseGap": 0.118,
+            "maxLex": 19.7,
+            "stage1Ms": 89.2,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "MI-02",
+      "stratum": "multi_intent",
+      "prompt": "블렌더로 3D 캐릭터 리깅하고 Three.js 웹 뷰어에 GLB 로드해서 조명까지 세팅해줘",
+      "expected": [
+        "blender-skills",
+        "unirig",
+        "threejs-fundamentals",
+        "threejs-loaders",
+        "threejs-lighting"
+      ],
+      "primary": [
+        "blender-skills",
+        "threejs-fundamentals"
+      ],
+      "predicted": [
+        "threejs-lighting",
+        "blender-skills",
+        "threejs-loaders",
+        "threejs-ability-casting",
+        "blender-mcp",
+        "web-game-development",
+        "3d-vibe-coding",
+        "3dviz-pro-max"
+      ],
+      "count": 8,
+      "recall3": 0.6,
+      "recall5": 0.6,
+      "recall10": 0.6,
+      "primaryHit3": 0.5,
+      "primaryHit5": 0.5,
+      "primaryHit10": 0.5,
+      "precision": 0.375,
+      "mrr": 1,
+      "ndcg10": 0.5463148455053497,
+      "intentCoverage": 1,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 857.1,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.8831,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6853,
+            "denseGap": 0.1664,
+            "maxLex": 14.14,
+            "stage1Ms": 83.7,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "MI-03",
+      "stratum": "multi_intent",
+      "prompt": "우리 에이전트 라우팅 시스템의 문제점을 인터뷰로 요구사항 정리하고, 최신 웹 리서치 조사한 뒤 아키텍처 개선안 만들어줘",
+      "expected": [
+        "grill-me",
+        "deep-research",
+        "research",
+        "jev-control-plane",
+        "agent-tool-routing",
+        "harness2"
+      ],
+      "primary": [
+        "deep-research",
+        "jev-control-plane"
+      ],
+      "predicted": [
+        "improve-codebase-architecture",
+        "agent-tool-routing",
+        "modern-web-guidance",
+        "survey",
+        "code-review",
+        "web-accessibility"
+      ],
+      "count": 6,
+      "recall3": 0.16666666666666666,
+      "recall5": 0.16666666666666666,
+      "recall10": 0.16666666666666666,
+      "primaryHit3": 0,
+      "primaryHit5": 0,
+      "primaryHit10": 0,
+      "precision": 0.16666666666666666,
+      "mrr": 0.5,
+      "ndcg10": 0.09608273408593927,
+      "intentCoverage": 0.3333333333333333,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 920.2,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.6748,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.5978,
+            "denseGap": 0.0637,
+            "maxLex": 13.75,
+            "stage1Ms": 100,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "MI-04",
+      "stratum": "multi_intent",
+      "prompt": "코드베이스 전체 아키텍처 리뷰하고 중복 모듈 리팩토링한 다음 TDD 단위 테스트랑 Git PR 리뷰까지 진행해줘",
+      "expected": [
+        "improve-codebase-architecture",
+        "code-refactoring",
+        "tdd",
+        "testing-strategies",
+        "code-review",
+        "open-code-review"
+      ],
+      "primary": [
+        "improve-codebase-architecture",
+        "code-refactoring",
+        "code-review"
+      ],
+      "predicted": [
+        "tdd",
+        "code-review",
+        "improve-codebase-architecture",
+        "agentic-skills",
+        "open-code-review",
+        "codebase-design",
+        "testing-strategies",
+        "codeflow"
+      ],
+      "count": 8,
+      "recall3": 0.5,
+      "recall5": 0.6666666666666666,
+      "recall10": 0.8333333333333334,
+      "primaryHit3": 0.6666666666666666,
+      "primaryHit5": 0.6666666666666666,
+      "primaryHit10": 0.6666666666666666,
+      "precision": 0.625,
+      "mrr": 1,
+      "ndcg10": 0.6757362001474453,
+      "intentCoverage": 0.75,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 850.3,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.8505,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.611,
+            "denseGap": 0.0868,
+            "maxLex": 16.37,
+            "stage1Ms": 83,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "MI-05",
+      "stratum": "multi_intent",
+      "prompt": "REST API 스펙 설계하고 PostgreSQL DB 스키마 짜고 JWT 인증이랑 웹 보안 점검까지 한 번에 설계해줘",
+      "expected": [
+        "api-design",
+        "database-schema-design",
+        "authentication-setup",
+        "security-best-practices",
+        "backend-testing"
+      ],
+      "primary": [
+        "api-design",
+        "database-schema-design",
+        "authentication-setup",
+        "security-best-practices"
+      ],
+      "predicted": [
+        "api-design",
+        "authentication-setup",
+        "security-best-practices",
+        "pg-jev",
+        "api-documentation",
+        "code-review"
+      ],
+      "count": 6,
+      "recall3": 0.6,
+      "recall5": 0.6,
+      "recall10": 0.6,
+      "primaryHit3": 0.75,
+      "primaryHit5": 0.75,
+      "primaryHit10": 0.75,
+      "precision": 0.5,
+      "mrr": 1,
+      "ndcg10": 0.7920031270989772,
+      "intentCoverage": 0.75,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 811.4,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.9193,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6461,
+            "denseGap": 0.1139,
+            "maxLex": 11.35,
+            "stage1Ms": 73.1,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "MI-06",
+      "stratum": "multi_intent",
+      "prompt": "Deep research recent agent memory architectures, build an MCP server to expose it, and write a technical spec",
+      "expected": [
+        "deep-research",
+        "research",
+        "agent-memory-architecture",
+        "mcp-builder",
+        "fastmcp",
+        "to-spec",
+        "technical-writing"
+      ],
+      "primary": [
+        "deep-research",
+        "agent-memory-architecture",
+        "mcp-builder"
+      ],
+      "predicted": [
+        "mcp-builder",
+        "technical-writing",
+        "agent-memory-architecture",
+        "to-spec",
+        "deep-agents-memory",
+        "okf-agent-memory"
+      ],
+      "count": 6,
+      "recall3": 0.42857142857142855,
+      "recall5": 0.5714285714285714,
+      "recall10": 0.5714285714285714,
+      "primaryHit3": 0.6666666666666666,
+      "primaryHit5": 0.6666666666666666,
+      "primaryHit10": 0.6666666666666666,
+      "precision": 0.6666666666666666,
+      "mrr": 1,
+      "ndcg10": 0.7040133511917716,
+      "intentCoverage": 0.6666666666666666,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 714.6,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.8667,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6902,
+            "denseGap": 0.1333,
+            "maxLex": 8.97,
+            "stage1Ms": 79.7,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "MI-07",
+      "stratum": "multi_intent",
+      "prompt": "유튜브 쇼츠 성장 전략 세우고, 자동 숏폼 영상 생성한 다음 썸네일이랑 음성 나레이션 TTS까지 만들어줘",
+      "expected": [
+        "youtube-growth-playbook-2026",
+        "moneyprinter-turbo",
+        "shopping-shorts",
+        "video-production",
+        "elevenlabs-tts",
+        "voicestudio"
+      ],
+      "primary": [
+        "youtube-growth-playbook-2026",
+        "moneyprinter-turbo",
+        "elevenlabs-tts"
+      ],
+      "predicted": [
+        "youtube-growth-playbook-2026",
+        "elevenlabs-tts",
+        "higgsfield-youtube-thumbnail",
+        "autoclip",
+        "higgsfield-generate"
+      ],
+      "count": 5,
+      "recall3": 0.3333333333333333,
+      "recall5": 0.3333333333333333,
+      "recall10": 0.3333333333333333,
+      "primaryHit3": 0.6666666666666666,
+      "primaryHit5": 0.6666666666666666,
+      "primaryHit10": 0.6666666666666666,
+      "precision": 0.4,
+      "mrr": 1,
+      "ndcg10": 0.6466361685073256,
+      "intentCoverage": 0.6666666666666666,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 756.4,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.8409,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6177,
+            "denseGap": 0.1345,
+            "maxLex": 26.7,
+            "stage1Ms": 80.3,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "MI-08",
+      "stratum": "multi_intent",
+      "prompt": "프로덕션 장애 로그 분석해서 원인 찾고, 서비스 모니터링 알림 대시보드랑 롤백 가능한 배포 전략까지 마련해줘",
+      "expected": [
+        "log-analysis",
+        "debugging",
+        "monitoring-observability",
+        "deployment-automation"
+      ],
+      "primary": [
+        "log-analysis",
+        "monitoring-observability",
+        "deployment-automation"
+      ],
+      "predicted": [
+        "log-analysis",
+        "deployment-automation",
+        "debugging",
+        "diagnosing-bugs",
+        "agent-observability",
+        "vercel-deploy"
+      ],
+      "count": 6,
+      "recall3": 0.75,
+      "recall5": 0.75,
+      "recall10": 0.75,
+      "primaryHit3": 0.6666666666666666,
+      "primaryHit5": 0.6666666666666666,
+      "primaryHit10": 0.6666666666666666,
+      "precision": 0.5,
+      "mrr": 1,
+      "ndcg10": 0.7903299296767691,
+      "intentCoverage": 0.6666666666666666,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 776.6,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.8255,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6346,
+            "denseGap": 0.0894,
+            "maxLex": 22.21,
+            "stage1Ms": 71.8,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "MI-09",
+      "stratum": "multi_intent",
+      "prompt": "반응형 웹 디자인 시스템 구축하고 접근성(a11y) 검수한 뒤 Vercel로 스테이징 배포해줘",
+      "expected": [
+        "design-system",
+        "responsive-design",
+        "web-accessibility",
+        "vercel-deploy"
+      ],
+      "primary": [
+        "design-system",
+        "responsive-design",
+        "web-accessibility",
+        "vercel-deploy"
+      ],
+      "predicted": [
+        "web-accessibility",
+        "vercel-deploy",
+        "web-design",
+        "design-system",
+        "open-design",
+        "modern-web-guidance"
+      ],
+      "count": 6,
+      "recall3": 0.5,
+      "recall5": 0.75,
+      "recall10": 0.75,
+      "primaryHit3": 0.5,
+      "primaryHit5": 0.75,
+      "primaryHit10": 0.75,
+      "precision": 0.5,
+      "mrr": 1,
+      "ndcg10": 0.8048099750039491,
+      "intentCoverage": 0.75,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 772.4,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.8307,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6009,
+            "denseGap": 0.0953,
+            "maxLex": 13.76,
+            "stage1Ms": 92.3,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "MI-10",
+      "stratum": "multi_intent",
+      "prompt": "HWP 공문서에서 표랑 텍스트를 JSON으로 추출하고, BigQuery Looker Studio 대시보드 KPI 리포트 스펙 만들어줘",
+      "expected": [
+        "hwp",
+        "looker-studio-bigquery",
+        "data-analysis"
+      ],
+      "primary": [
+        "hwp",
+        "looker-studio-bigquery"
+      ],
+      "predicted": [
+        "looker-studio-bigquery",
+        "hwp"
+      ],
+      "count": 2,
+      "recall3": 0.6666666666666666,
+      "recall5": 0.6666666666666666,
+      "recall10": 0.6666666666666666,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 0.9072836011519267,
+      "intentCoverage": 1,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 719.6,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.6559,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6262,
+            "denseGap": 0.1363,
+            "maxLex": 20.42,
+            "stage1Ms": 68.1,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "MI-11",
+      "stratum": "multi_intent",
+      "prompt": "Set up Docker local dev environment, organize .env variables cleanly, and add Git safety guardrails for Claude Code",
+      "expected": [
+        "system-environment-setup",
+        "environment-setup",
+        "git-guardrails-claude-code",
+        "git-workflow"
+      ],
+      "primary": [
+        "system-environment-setup",
+        "environment-setup",
+        "git-guardrails-claude-code"
+      ],
+      "predicted": [
+        "git-guardrails-claude-code",
+        "system-environment-setup",
+        "environment-setup",
+        "fineenvs"
+      ],
+      "count": 4,
+      "recall3": 0.75,
+      "recall5": 0.75,
+      "recall10": 0.75,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.75,
+      "mrr": 1,
+      "ndcg10": 0.9368830196397312,
+      "intentCoverage": 1,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 768.2,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.7906,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6669,
+            "denseGap": 0.1757,
+            "maxLex": 18.63,
+            "stage1Ms": 83.9,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "MI-12",
+      "stratum": "multi_intent",
+      "prompt": "Build a multi-agent LangGraph workflow with human approval, LangSmith tracing, and an evaluation harness",
+      "expected": [
+        "langgraph-fundamentals",
+        "langgraph-human-in-the-loop",
+        "langsmith",
+        "multi-agent-eval-harness",
+        "agent-benchmarking",
+        "agent-observability"
+      ],
+      "primary": [
+        "langgraph-human-in-the-loop",
+        "langsmith",
+        "multi-agent-eval-harness"
+      ],
+      "predicted": [
+        "langsmith",
+        "langgraph-human-in-the-loop",
+        "multi-agent-eval-harness",
+        "agent-workflow",
+        "aidlc-workflows"
+      ],
+      "count": 5,
+      "recall3": 0.5,
+      "recall5": 0.5,
+      "recall10": 0.5,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.6,
+      "mrr": 1,
+      "ndcg10": 0.844877744237765,
+      "intentCoverage": 1,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 780.7,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.8776,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6892,
+            "denseGap": 0.1251,
+            "maxLex": 11.77,
+            "stage1Ms": 67.7,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "MI-13",
+      "stratum": "multi_intent",
+      "prompt": "Three.js 웹 게임 만들고 VFX 이펙트랑 게임 사운드 추가한 다음 프레임 최적화까지 해줘",
+      "expected": [
+        "web-game-development",
+        "threejs-game-skills",
+        "game-vfx",
+        "game-sounds",
+        "rfxgen",
+        "game-perf"
+      ],
+      "primary": [
+        "web-game-development",
+        "game-vfx",
+        "game-sounds"
+      ],
+      "predicted": [
+        "game-perf",
+        "threejs-game-skills",
+        "web-game-development",
+        "game-vfx",
+        "optimize-web-animations",
+        "threejs-animation",
+        "threejs-geometry",
+        "meshoptimizer",
+        "threejs-postprocessing",
+        "game-performance-profiler"
+      ],
+      "count": 10,
+      "recall3": 0.5,
+      "recall5": 0.6666666666666666,
+      "recall10": 0.6666666666666666,
+      "primaryHit3": 0.3333333333333333,
+      "primaryHit5": 0.6666666666666666,
+      "primaryHit10": 0.6666666666666666,
+      "precision": 0.4,
+      "mrr": 1,
+      "ndcg10": 0.5845429642381442,
+      "intentCoverage": 0.6666666666666666,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 801.7,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.8233,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6972,
+            "denseGap": 0.1382,
+            "maxLex": 13.11,
+            "stage1Ms": 70.7,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "MI-14",
+      "stratum": "multi_intent",
+      "prompt": "시장 규모 추정하고 경쟁사 분석한 뒤 가격 정책이랑 GTM 전략까지 사업 계획 정리해줘",
+      "expected": [
+        "market-sizing",
+        "competitor-analysis",
+        "pricing-strategy",
+        "gtm-strategy",
+        "monetization-strategy"
+      ],
+      "primary": [
+        "market-sizing",
+        "competitor-analysis",
+        "pricing-strategy",
+        "gtm-strategy"
+      ],
+      "predicted": [
+        "competitor-analysis",
+        "gtm-strategy",
+        "market-sizing",
+        "pricing-strategy"
+      ],
+      "count": 4,
+      "recall3": 0.6,
+      "recall5": 0.8,
+      "recall10": 0.8,
+      "primaryHit3": 0.75,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 0.9520727775370875,
+      "intentCoverage": 1,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 519,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-single-intent",
+        "gate": {
+          "value": 0.774,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6685,
+            "denseGap": 0.1027,
+            "maxLex": 12.73,
+            "stage1Ms": 38,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "MI-15",
+      "stratum": "multi_intent",
+      "prompt": "레포지토리 코드 그래프 구축하고 시맨틱 검색 인덱스 돌린 뒤 프로젝트 지식 위키 정리해줘",
+      "expected": [
+        "mex",
+        "graphify",
+        "semble",
+        "zvec-grep",
+        "repo-knowledge-wiki",
+        "llm-wiki"
+      ],
+      "primary": [
+        "mex",
+        "graphify",
+        "zvec-grep",
+        "repo-knowledge-wiki"
+      ],
+      "predicted": [
+        "repo-knowledge-wiki",
+        "llm-wiki",
+        "agentic-graphrag-blueprint",
+        "semantica",
+        "codebase-search",
+        "zvec-grep"
+      ],
+      "count": 6,
+      "recall3": 0.3333333333333333,
+      "recall5": 0.3333333333333333,
+      "recall10": 0.5,
+      "primaryHit3": 0.25,
+      "primaryHit5": 0.25,
+      "primaryHit10": 0.5,
+      "precision": 0.5,
+      "mrr": 1,
+      "ndcg10": 0.5576196993729973,
+      "intentCoverage": 0.6666666666666666,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 741.8,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.7467,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6389,
+            "denseGap": 0.1194,
+            "maxLex": 21.28,
+            "stage1Ms": 79.8,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "BN-01",
+      "stratum": "boundary_negative",
+      "prompt": "Run repeatable headless browser checks in CI without reusing my logged-in Chrome tab",
+      "expected": [
+        "browser-harness",
+        "moli"
+      ],
+      "primary": [
+        "browser-harness"
+      ],
+      "predicted": [
+        "browser-harness"
+      ],
+      "count": 1,
+      "recall3": 0.5,
+      "recall5": 0.5,
+      "recall10": 0.5,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 0.8262346571285599,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 586.5,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-single-intent",
+        "gate": {
+          "value": 0.4931,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6077,
+            "denseGap": 0.1321,
+            "maxLex": 7.91,
+            "stage1Ms": 59.5,
+            "negatedPhrases": [
+              "reusing my logged-in chrome tab"
+            ]
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "BN-02",
+      "stratum": "boundary_negative",
+      "prompt": "Fix a Unity C# shader compile error and inspect the Unity Editor build log failure",
+      "expected": [
+        "game-build-log-triage",
+        "unity-gamedev-skill-pack"
+      ],
+      "primary": [
+        "game-build-log-triage"
+      ],
+      "predicted": [
+        "game-build-log-triage",
+        "unity-cli",
+        "unity-technologies-skills",
+        "unity-skills",
+        "debugging",
+        "threejs-shaders"
+      ],
+      "count": 6,
+      "recall3": 0.5,
+      "recall5": 0.5,
+      "recall10": 0.5,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.16666666666666666,
+      "mrr": 1,
+      "ndcg10": 0.8262346571285599,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 733.7,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.7813,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.7017,
+            "denseGap": 0.2361,
+            "maxLex": 13.47,
+            "stage1Ms": 67.8,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "BN-03",
+      "stratum": "boundary_negative",
+      "prompt": "Organize .env precedence and typed app environment variables without setting up Docker or devcontainers",
+      "expected": [
+        "environment-setup"
+      ],
+      "primary": [
+        "environment-setup"
+      ],
+      "predicted": [
+        "environment-setup",
+        "helix-foundry",
+        "firebase-cli",
+        "opencontext"
+      ],
+      "count": 4,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.25,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 804.4,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.7304,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6293,
+            "denseGap": 0.1415,
+            "maxLex": 11.68,
+            "stage1Ms": 105,
+            "negatedPhrases": [
+              "setting up docker or devcontainers"
+            ]
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "BN-04",
+      "stratum": "boundary_negative",
+      "prompt": "Bootstrap a reproducible local machine toolchain with Docker Compose and devcontainers for new hires",
+      "expected": [
+        "system-environment-setup"
+      ],
+      "primary": [
+        "system-environment-setup"
+      ],
+      "predicted": [
+        "system-environment-setup",
+        "helix-foundry"
+      ],
+      "count": 2,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.5,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 716.7,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.6359,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.7391,
+            "denseGap": 0.2204,
+            "maxLex": 10.8,
+            "stage1Ms": 70.5,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "BN-05",
+      "stratum": "boundary_negative",
+      "prompt": "Build a Firebase AI workflow with Genkit flows, prompt files, and model evaluations",
+      "expected": [
+        "genkit"
+      ],
+      "primary": [
+        "genkit"
+      ],
+      "predicted": [
+        "genkit",
+        "prompts-chat",
+        "aidlc-workflows",
+        "langsmith",
+        "trulens"
+      ],
+      "count": 5,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.2,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 722.7,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.7468,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.7671,
+            "denseGap": 0.2257,
+            "maxLex": 16.8,
+            "stage1Ms": 75.3,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "BN-06",
+      "stratum": "boundary_negative",
+      "prompt": "Audit React component re-render waterfalls and bundle size optimizations in Next.js",
+      "expected": [
+        "react-best-practices",
+        "performance-optimization"
+      ],
+      "primary": [
+        "react-best-practices"
+      ],
+      "predicted": [
+        "react-best-practices",
+        "performance-optimization",
+        "optimize-web-animations"
+      ],
+      "count": 3,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.6666666666666666,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 742.8,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.6175,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.7739,
+            "denseGap": 0.3008,
+            "maxLex": 12.2,
+            "stage1Ms": 83.1,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "BN-07",
+      "stratum": "boundary_negative",
+      "prompt": "Create a provider-neutral blue-green staging-to-production rollout and rollback strategy (not Vercel)",
+      "expected": [
+        "deployment-automation"
+      ],
+      "primary": [
+        "deployment-automation"
+      ],
+      "predicted": [
+        "deployment-automation",
+        "testing-strategies",
+        "gtm-strategy",
+        "environment-setup"
+      ],
+      "count": 4,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.25,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 714.8,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.6063,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.5447,
+            "denseGap": 0.0952,
+            "maxLex": 9.2,
+            "stage1Ms": 73.2,
+            "negatedPhrases": [
+              "vercel",
+              "vercel"
+            ]
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "BN-08",
+      "stratum": "boundary_negative",
+      "prompt": "Explain why our weekly KPI revenue dipped in BigQuery using statistical segmentation rather than building a Looker dashboard",
+      "expected": [
+        "data-analysis",
+        "pattern-detection"
+      ],
+      "primary": [
+        "data-analysis"
+      ],
+      "predicted": [
+        "user-segmentation"
+      ],
+      "count": 1,
+      "recall3": 0,
+      "recall5": 0,
+      "recall10": 0,
+      "primaryHit3": 0,
+      "primaryHit5": 0,
+      "primaryHit10": 0,
+      "precision": 0,
+      "mrr": 0,
+      "ndcg10": 0,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 549,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-single-intent",
+        "gate": {
+          "value": 0.6524,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6145,
+            "denseGap": 0.1875,
+            "maxLex": 9.87,
+            "stage1Ms": 47,
+            "negatedPhrases": [
+              "building a looker dashboard"
+            ]
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "BN-09",
+      "stratum": "boundary_negative",
+      "prompt": "Build a playable 3D browser action game with Three.js combat and enemy AI, not Unity",
+      "expected": [
+        "web-game-development",
+        "threejs-game-skills"
+      ],
+      "primary": [
+        "web-game-development"
+      ],
+      "predicted": [
+        "web-game-development",
+        "threejs-game-skills"
+      ],
+      "count": 2,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 507.3,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-single-intent",
+        "gate": {
+          "value": 0.8146,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.669,
+            "denseGap": 0.1392,
+            "maxLex": 11.09,
+            "stage1Ms": 45.3,
+            "negatedPhrases": [
+              "unity"
+            ]
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "BN-10",
+      "stratum": "boundary_negative",
+      "prompt": "Design responsive breakpoints and mobile layout adaptation without rewriting our whole design token system",
+      "expected": [
+        "responsive-design"
+      ],
+      "primary": [
+        "responsive-design"
+      ],
+      "predicted": [
+        "responsive-design",
+        "web-design"
+      ],
+      "count": 2,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.5,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 765.2,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.6106,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6484,
+            "denseGap": 0.1533,
+            "maxLex": 13.29,
+            "stage1Ms": 63.9,
+            "negatedPhrases": [
+              "rewriting our whole design token system"
+            ]
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "BN-11",
+      "stratum": "boundary_negative",
+      "prompt": "Profile iOS SwiftUI app hangs and CPU spikes in Apple Instruments and MetricKit",
+      "expected": [
+        "performance-profiling"
+      ],
+      "primary": [
+        "performance-profiling"
+      ],
+      "predicted": [
+        "performance-profiling"
+      ],
+      "count": 1,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 1,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 853.8,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.6405,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.6343,
+            "denseGap": 0.1884,
+            "maxLex": 8.29,
+            "stage1Ms": 63.4,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "BN-12",
+      "stratum": "boundary_negative",
+      "prompt": "Capture exact React component source file path and line number by clicking a live element in the browser UI",
+      "expected": [
+        "react-grab"
+      ],
+      "primary": [
+        "react-grab"
+      ],
+      "predicted": [
+        "react-grab",
+        "codeflow"
+      ],
+      "count": 2,
+      "recall3": 1,
+      "recall5": 1,
+      "recall10": 1,
+      "primaryHit3": 1,
+      "primaryHit5": 1,
+      "primaryHit10": 1,
+      "precision": 0.5,
+      "mrr": 1,
+      "ndcg10": 1,
+      "intentCoverage": null,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 946.9,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "ok-multi-intent",
+        "gate": {
+          "value": 0.915,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.683,
+            "denseGap": 0.1916,
+            "maxLex": 19.3,
+            "stage1Ms": 85.7,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": false,
+        "error": null
+      }
+    },
+    {
+      "id": "AB-01",
+      "stratum": "abstention",
+      "prompt": "1.c, 2.a, 3. 2~3초 ok, 응 허용 4. 엉뚱한걸 체크하는거같아",
+      "predicted": [],
+      "count": 0,
+      "abstainCorrect": true,
+      "falsePositive": false,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 0.4,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "abstention-choice-reply",
+        "gate": {
+          "value": 0,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0,
+            "denseGap": 0,
+            "maxLex": 0,
+            "stage1Ms": 0.13041700000030687
+          }
+        },
+        "abstained": true,
+        "error": null
+      }
+    },
+    {
+      "id": "AB-02",
+      "stratum": "abstention",
+      "prompt": "1. c, 2. a, 3. a",
+      "predicted": [],
+      "count": 0,
+      "abstainCorrect": true,
+      "falsePositive": false,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 0.1,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "abstention-choice-reply",
+        "gate": {
+          "value": 0,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0,
+            "denseGap": 0,
+            "maxLex": 0,
+            "stage1Ms": 0.01224999999976717
+          }
+        },
+        "abstained": true,
+        "error": null
+      }
+    },
+    {
+      "id": "AB-03",
+      "stratum": "abstention",
+      "prompt": "ok",
+      "predicted": [],
+      "count": 0,
+      "abstainCorrect": true,
+      "falsePositive": false,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 0.1,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "abstention-acknowledgment",
+        "gate": {
+          "value": 0,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0,
+            "denseGap": 0,
+            "maxLex": 0,
+            "stage1Ms": 0.013541000000259373
+          }
+        },
+        "abstained": true,
+        "error": null
+      }
+    },
+    {
+      "id": "AB-04",
+      "stratum": "abstention",
+      "prompt": "응 그렇게 진행해줘",
+      "predicted": [],
+      "count": 0,
+      "abstainCorrect": true,
+      "falsePositive": false,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 0.2,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "abstention-meta-followup",
+        "gate": {
+          "value": 0,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0,
+            "denseGap": 0,
+            "maxLex": 0,
+            "stage1Ms": 0.11974999999802094
+          }
+        },
+        "abstained": true,
+        "error": null
+      }
+    },
+    {
+      "id": "AB-05",
+      "stratum": "abstention",
+      "prompt": "고마워, 잘 됐어!",
+      "predicted": [],
+      "count": 0,
+      "abstainCorrect": true,
+      "falsePositive": false,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 0.1,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "abstention-short-chat",
+        "gate": {
+          "value": 0,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0,
+            "denseGap": 0,
+            "maxLex": 0,
+            "stage1Ms": 0.03650000000197906
+          }
+        },
+        "abstained": true,
+        "error": null
+      }
+    },
+    {
+      "id": "AB-06",
+      "stratum": "abstention",
+      "prompt": "계속 진행해",
+      "predicted": [],
+      "count": 0,
+      "abstainCorrect": true,
+      "falsePositive": false,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 0,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "abstention-meta-followup",
+        "gate": {
+          "value": 0,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0,
+            "denseGap": 0,
+            "maxLex": 0,
+            "stage1Ms": 0.004915999998047482
+          }
+        },
+        "abstained": true,
+        "error": null
+      }
+    },
+    {
+      "id": "AB-07",
+      "stratum": "abstention",
+      "prompt": "좋아, 2번 옵션으로 가자",
+      "predicted": [],
+      "count": 0,
+      "abstainCorrect": true,
+      "falsePositive": false,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 0,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "abstention-option-selection",
+        "gate": {
+          "value": 0,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0,
+            "denseGap": 0,
+            "maxLex": 0,
+            "stage1Ms": 0.004666000000725035
+          }
+        },
+        "abstained": true,
+        "error": null
+      }
+    },
+    {
+      "id": "AB-08",
+      "stratum": "abstention",
+      "prompt": "Thanks, looks good to me!",
+      "predicted": [],
+      "count": 0,
+      "abstainCorrect": true,
+      "falsePositive": false,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 634.2,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "abstention-gate",
+        "gate": {
+          "value": 0.0279,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.443,
+            "denseGap": 0.0244,
+            "maxLex": 2.8,
+            "stage1Ms": 31.4,
+            "negatedPhrases": []
+          }
+        },
+        "abstained": true,
+        "error": null
+      }
+    },
+    {
+      "id": "AB-09",
+      "stratum": "abstention",
+      "prompt": "Yes, go ahead and proceed",
+      "predicted": [],
+      "count": 0,
+      "abstainCorrect": true,
+      "falsePositive": false,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 35.3,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "abstention-semantic-floor",
+        "gate": {
+          "value": 0,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.4722023779774085,
+            "maxEffectiveDense": 0.4722023779774085,
+            "denseGap": 0.034723023052748214,
+            "maxLex": 1.8,
+            "stage1Ms": 35.09520799999882
+          }
+        },
+        "abstained": true,
+        "error": null
+      }
+    },
+    {
+      "id": "AB-10",
+      "stratum": "abstention",
+      "prompt": "hello there",
+      "predicted": [],
+      "count": 0,
+      "abstainCorrect": true,
+      "falsePositive": false,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 0.2,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "abstention-acknowledgment",
+        "gate": {
+          "value": 0,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0,
+            "denseGap": 0,
+            "maxLex": 0,
+            "stage1Ms": 0.02412499999627471
+          }
+        },
+        "abstained": true,
+        "error": null
+      }
+    },
+    {
+      "id": "AB-11",
+      "stratum": "abstention",
+      "prompt": "잠깐만, 방금 말한 거 다시 설명해줄래?",
+      "predicted": [],
+      "count": 0,
+      "abstainCorrect": true,
+      "falsePositive": false,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 0.2,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "abstention-meta-followup",
+        "gate": {
+          "value": 0,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0,
+            "denseGap": 0,
+            "maxLex": 0,
+            "stage1Ms": 0.01470800000242889
+          }
+        },
+        "abstained": true,
+        "error": null
+      }
+    },
+    {
+      "id": "AB-12",
+      "stratum": "abstention",
+      "prompt": "파이썬에서 list와 tuple의 차이점이 뭐야?",
+      "predicted": [],
+      "count": 0,
+      "abstainCorrect": true,
+      "falsePositive": false,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 38.1,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "abstention-concept-qa",
+        "gate": {
+          "value": 0,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.4379868463266913,
+            "maxEffectiveDense": 0.4379868463266913,
+            "denseGap": 0.03295300706128551,
+            "maxLex": 1.8,
+            "stage1Ms": 37.95358299999498
+          }
+        },
+        "abstained": true,
+        "error": null
+      }
+    },
+    {
+      "id": "AB-13",
+      "stratum": "abstention",
+      "prompt": "What is the difference between TCP and UDP in simple terms?",
+      "predicted": [],
+      "count": 0,
+      "abstainCorrect": true,
+      "falsePositive": false,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 66.3,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "abstention-concept-qa",
+        "gate": {
+          "value": 0,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.47763284684936247,
+            "maxEffectiveDense": 0.4886329884349496,
+            "denseGap": 0.062136338069305075,
+            "maxLex": 3.2199999999999998,
+            "stage1Ms": 66.06237500000134
+          }
+        },
+        "abstained": true,
+        "error": null
+      }
+    },
+    {
+      "id": "AB-14",
+      "stratum": "abstention",
+      "prompt": "자바스크립트 클로저(closure) 개념 간단하게 설명해줘",
+      "predicted": [],
+      "count": 0,
+      "abstainCorrect": true,
+      "falsePositive": false,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 53.2,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "abstention-semantic-floor",
+        "gate": {
+          "value": 0,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.4874725120253023,
+            "maxEffectiveDense": 0.4874725120253023,
+            "denseGap": 0.033122271381451907,
+            "maxLex": 1.2,
+            "stage1Ms": 53.02604099999735
+          }
+        },
+        "abstained": true,
+        "error": null
+      }
+    },
+    {
+      "id": "AB-15",
+      "stratum": "abstention",
+      "prompt": "아니 그거 말고 첫 번째 걸로 해줘",
+      "predicted": [],
+      "count": 0,
+      "abstainCorrect": true,
+      "falsePositive": false,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 0.2,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "abstention-option-selection",
+        "gate": {
+          "value": 0,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0,
+            "denseGap": 0,
+            "maxLex": 0,
+            "stage1Ms": 0.015874999997322448
+          }
+        },
+        "abstained": true,
+        "error": null
+      }
+    },
+    {
+      "id": "AB-16",
+      "stratum": "abstention",
+      "prompt": "Sounds great, let's do option B.",
+      "predicted": [],
+      "count": 0,
+      "abstainCorrect": true,
+      "falsePositive": false,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 0.1,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "abstention-option-selection",
+        "gate": {
+          "value": 0,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0,
+            "denseGap": 0,
+            "maxLex": 0,
+            "stage1Ms": 0.010625000002619345
+          }
+        },
+        "abstained": true,
+        "error": null
+      }
+    },
+    {
+      "id": "AB-17",
+      "stratum": "abstention",
+      "prompt": "오늘 서울 날씨 어떨까?",
+      "predicted": [],
+      "count": 0,
+      "abstainCorrect": true,
+      "falsePositive": false,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 26.8,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "abstention-concept-qa",
+        "gate": {
+          "value": 0,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.39801528583793455,
+            "maxEffectiveDense": 0.39801528583793455,
+            "denseGap": 0.04592122953533195,
+            "maxLex": 0,
+            "stage1Ms": 26.694665999995777
+          }
+        },
+        "abstained": true,
+        "error": null
+      }
+    },
+    {
+      "id": "AB-18",
+      "stratum": "abstention",
+      "prompt": "What does HTTP 429 status code mean?",
+      "predicted": [],
+      "count": 0,
+      "abstainCorrect": true,
+      "falsePositive": false,
+      "forbiddenHits": [],
+      "forbiddenViolated": false,
+      "latencyMs": 33.4,
+      "meta": {
+        "strategy": "hybrid-v2",
+        "reason": "abstention-concept-qa",
+        "gate": {
+          "value": 0,
+          "threshold": 0.3,
+          "values": {},
+          "stats": {
+            "maxDense": 0.4387557039168727,
+            "maxEffectiveDense": 0.4387557039168727,
+            "denseGap": 0.038884703231713225,
+            "maxLex": 4.333333333333333,
+            "stage1Ms": 33.12416700000176
+          }
+        },
+        "abstained": true,
+        "error": null
+      }
+    }
+  ]
+}

@@ -1872,7 +1872,7 @@ async function hook(flags, suppliedEvent, options = {}) {
       customProject: Boolean(ctx.projectOverride?.custom),
       workflow_order: ctx.projectOverride?.order || null,
       project: ctx.projectOverride?.projectRoot || null,
-      routed: Array.isArray(cachedRoute.routedNames) ? cachedRoute.routedNames.slice(0, 3) : [],
+      routed: Array.isArray(cachedRoute.routedNames) ? cachedRoute.routedNames.slice(0, 10) : [],
       injected: Array.isArray(cachedRoute.injected) ? cachedRoute.injected : [],
       strategy: cachedRoute.strategy || null,
       outcome: 'cached',
@@ -1887,7 +1887,7 @@ async function hook(flags, suppliedEvent, options = {}) {
       typeof harness.getCachedCatalogMeta === 'function'
         ? harness.getCachedCatalogMeta(preferredCatalog).catch(() => null)
         : null,
-      harness.routeSkills(prompt || 'Review the current task', { topK: 3 }),
+      harness.routeSkills(prompt || 'Review the current task', { topK: 10 }),
       ctx.state.values.JEV_MODEL_ROUTING === 'auto' && prompt && typeof harness.routeModel === 'function'
         ? harness.routeModel(prompt).catch(() => null)
         : null,
@@ -1912,7 +1912,7 @@ async function hook(flags, suppliedEvent, options = {}) {
         customProject: Boolean(ctx.projectOverride?.custom),
         workflow_order: ctx.projectOverride?.order || null,
         project: ctx.projectOverride?.projectRoot || null,
-        routed: routedNames.slice(0, 3),
+        routed: routedNames.slice(0, 10),
         injected: selected.injected,
         strategy: routed?.selection?.strategy || null,
         duration_ms: Date.now() - hookStart,
@@ -1930,13 +1930,18 @@ async function hook(flags, suppliedEvent, options = {}) {
         ...(modelHint?.chosen ? { modelRoute: { chosen: modelHint.chosen, complexity: modelHint.complexity?.score ?? null } } : {}),
       };
     }
-    const names = routed.topK.map(item => item.name).filter(name => SKILL_ID.test(name)).join(', ') || 'no confident catalog match';
+    const validPicks = (routed.topK || []).filter(item => SKILL_ID.test(item?.name || ''));
+    const names = validPicks.map(item => item.name).join(', ') || 'no confident catalog match';
     const routeModels = (routed.routing || []).map(item => item.chosen).filter(isApprovedModelChoice);
     if (modelHint?.chosen && isApprovedModelChoice(modelHint.chosen) && !routeModels.includes(modelHint.chosen)) {
       routeModels.unshift(modelHint.chosen);
     }
     const models = routeModels.join(', ');
-    advice = `Jev advisory only (profile ${ctx.profile}): suggested skills: ${names}${models ? `; host model candidates: ${models}` : ''}. This does not change host permissions or the host model.`;
+    const lead = `Jev advisory only (profile ${ctx.profile}): suggested skills: ${names}${models ? `; host model candidates: ${models}` : ''}. This does not change host permissions or the host model.`;
+    const deferredLines = validPicks.length && typeof harness.formatDeferredAdvisoryContext === 'function'
+      ? harness.formatDeferredAdvisoryContext(validPicks, { header: 'Deferred skill candidates (load SKILL.toon/SKILL.md on demand):' })
+      : '';
+    advice = deferredLines ? `${lead}\n${deferredLines}` : lead;
     writeTtlCache(promptCacheFile, {
       advice,
       runtime,
@@ -2368,7 +2373,7 @@ async function jeoPrePrompt(flags, { localOnly = false } = {}) {
       const preferredCatalog = explicitEnvCatalog || projectCatalogOverride(ctx.projectOverride) || join(homes().jev, 'skills.json');
       const promptCacheTtlMs = ttlMsSetting(ctx.state.values.JEV_PROMPT_CACHE_TTL_MS, DEFAULT_PROMPT_CACHE_TTL_MS);
       const cacheFile = promptCacheTtlMs > 0
-        ? ttlCachePath('jeo-preprompt-v2', [
+        ? ttlCachePath('jeo-preprompt-v3', [
             ctx.profile,
             sessionScopeFor(event, 'jeo'),
             mode,
@@ -2378,11 +2383,17 @@ async function jeoPrePrompt(flags, { localOnly = false } = {}) {
             fileMtimeMs(preferredCatalog),
             fileMtimeMs(profilePath(ctx.profile)),
             fileMtimeMs(join(HERE, 'jev-harness.mjs')),
+            fileMtimeMs(join(HERE, 'routing-engine.mjs')),
             prompt,
           ])
         : null;
+      const emitAbstain = process.env.JEV_PREPROMPT_ABSTAIN_SENTINEL === '1';
       const cached = readTtlCache(cacheFile, promptCacheTtlMs);
-      if (cached) return cached.message ? { exitCode: 0, message: cached.message } : { exitCode: 0 };
+      if (cached) {
+        if (cached.message) return { exitCode: 0, message: cached.message };
+        if (emitAbstain && cached.abstained) return { exitCode: 0, message: '__JEV_ABSTAINED__' };
+        return { exitCode: 0 };
+      }
       process.env.JEV_PROFILE = ctx.profile;
       process.env.JEV_SESSION_ID = String(sessionScopeFor(event, 'jeo') || ctx.profile || 'jeo').slice(0, 128);
       if (!explicitEnvCatalog) process.env.JEV_CATALOG_PATH = preferredCatalog;
@@ -2391,14 +2402,20 @@ async function jeoPrePrompt(flags, { localOnly = false } = {}) {
         mode === 'assist' && typeof harness.getCachedCatalogMeta === 'function'
           ? harness.getCachedCatalogMeta(preferredCatalog).catch(() => null)
           : null,
-        wantSkillRoute ? harness.routeSkills(prompt, { topK: 3, localOnly }).catch(() => null) : null,
+        wantSkillRoute ? harness.routeSkills(prompt, { topK: 10, localOnly }).catch(() => null) : null,
         wantModelRoute && typeof harness.routeModel === 'function' ? harness.routeModel(prompt).catch(() => null) : null,
       ]);
       const lines = [];
       if (routed?.topK?.length) {
-        const routedNames = routed.topK.map(item => item?.name);
-        const names = routedNames.filter(name => SKILL_ID.test(name));
-        if (names.length) lines.push(`[Jev route-skills] (${mode}) suggested skills: ${names.join(', ')}`);
+        const validPicks = routed.topK.filter(item => SKILL_ID.test(item?.name || ''));
+        const routedNames = validPicks.map(item => item.name);
+        if (routedNames.length) {
+          lines.push(`[Jev route-skills] (${mode}) suggested skills: ${routedNames.join(', ')}`);
+          const hasDeferredMeta = validPicks.some(item => item.reason || item.toonPath || item.score !== undefined);
+          if (mode === 'advisory' && hasDeferredMeta && typeof harness.formatDeferredAdvisoryContext === 'function') {
+            lines.push(harness.formatDeferredAdvisoryContext(validPicks, { header: 'Load SKILL.toon/SKILL.md on demand:' }));
+          }
+        }
         let selected = { context: '', injected: [] };
         try {
           if (mode === 'assist') selected = selectedSkillContext(routed, preloadedCatalog, extractHostInvokedSkills(prompt));
@@ -2410,8 +2427,11 @@ async function jeoPrePrompt(flags, { localOnly = false } = {}) {
       }
       if (mr?.chosen) lines.push(`[Jev route-model] suggested tier: ${mr.chosen}`);
       const message = lines.join('\n');
-      writeTtlCache(cacheFile, { message });
-      return message ? { exitCode: 0, message } : { exitCode: 0 };
+      const abstained = Boolean(wantSkillRoute && routed && !routed.topK?.length && routed.abstained);
+      writeTtlCache(cacheFile, { message, abstained });
+      if (message) return { exitCode: 0, message };
+      if (emitAbstain && abstained) return { exitCode: 0, message: '__JEV_ABSTAINED__' };
+      return { exitCode: 0 };
     }
   } catch {}
   return { exitCode: 0 };

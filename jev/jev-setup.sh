@@ -14,10 +14,13 @@ RULES_DIR="$HOME/.agents/rules"
 RAW_BASE="${JEO_SKILLS_RAW_BASE:-https://raw.githubusercontent.com/akillness/jeo-skills/main/jev}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FILES=(jev-setup.sh jev-harness.mjs jev_local_server.py README.md jev-control-plane.rule.md)
+[ -f "$SCRIPT_DIR/routing-engine.mjs" ] && FILES+=(routing-engine.mjs)
 [ -f "$SCRIPT_DIR/jev-plugin.mjs" ] && FILES+=(jev-plugin.mjs)
 [ -f "$SCRIPT_DIR/jev-gateway.mjs" ] && FILES+=(jev-gateway.mjs)
 [ -f "$SCRIPT_DIR/com.jeo-skills.qev-server.plist" ] && FILES+=(com.jeo-skills.qev-server.plist)
 [ -f "$SCRIPT_DIR/com.jeo-skills.qev-gateway.plist" ] && FILES+=(com.jeo-skills.qev-gateway.plist)
+[ -f "$SCRIPT_DIR/com.jeo-skills.bge-m3-embed.plist" ] && FILES+=(com.jeo-skills.bge-m3-embed.plist)
+[ -f "$SCRIPT_DIR/com.jeo-skills.bge-reranker-v2-m3.plist" ] && FILES+=(com.jeo-skills.bge-reranker-v2-m3.plist)
 NATIVE_PLUGIN_DIR="$SCRIPT_DIR/plugins"
 NATIVE_PLUGIN_FILES=(
   plugins/shared/jev-controller.mjs
@@ -1521,6 +1524,7 @@ pathlib.Path(sys.argv[9]).write_text(tpl)
         stop_managed_server "$PID_FILE" >/dev/null 2>&1 || true
         launchctl bootout "gui/$(id -u)" "$GW_PLIST_DST" >/dev/null 2>&1 || true
         launchctl bootout "gui/$(id -u)" "$PLIST_DST" >/dev/null 2>&1 || true
+        sleep 1
         launchctl bootstrap "gui/$(id -u)" "$PLIST_DST" >/dev/null 2>&1 || true
         if [ "$use_gateway" = true ] && [ -f "$GW_PLIST_DST" ]; then
           for _ in $(seq 1 40); do
@@ -1535,6 +1539,76 @@ pathlib.Path(sys.argv[9]).write_text(tpl)
         done
       fi
       info "Installed macOS launchd daemon at $PLIST_DST${use_gateway:+ and $GW_PLIST_DST}"
+    fi
+    if [ "${JEV_ROUTING_MODELS:-auto}" = on ] || { [ "${JEV_ROUTING_MODELS:-auto}" = auto ] && [ "$INSTALL_DAEMON" = true ]; }; then
+      EMBED_DIR="$JEV_HOME/models/bge-m3"
+      EMBED_FILE="$EMBED_DIR/bge-m3-Q8_0.gguf"
+      EMBED_URL="${JEV_EMBED_MODEL_URL:-https://huggingface.co/gpustack/bge-m3-GGUF/resolve/main/bge-m3-Q8_0.gguf}"
+      EMBED_PORT="${JEV_EMBED_PORT:-18018}"
+      RERANK_DIR="$JEV_HOME/models/bge-reranker-v2-m3"
+      RERANK_FILE="$RERANK_DIR/bge-reranker-v2-m3-Q8_0.gguf"
+      RERANK_URL="${JEV_RERANK_MODEL_URL:-https://huggingface.co/gpustack/bge-reranker-v2-m3-GGUF/resolve/main/bge-reranker-v2-m3-Q8_0.gguf}"
+      RERANK_PORT="${JEV_RERANK_PORT:-18019}"
+      if [ "${JEV_SKIP_MODEL_DOWNLOAD:-false}" != true ] && command -v curl >/dev/null 2>&1; then
+        if [ ! -s "$EMBED_FILE" ]; then
+          mkdir -p "$EMBED_DIR"
+          info "Downloading routing embedding model (bge-m3-Q8_0.gguf)..."
+          if curl -fSL "$EMBED_URL" -o "$EMBED_FILE.part"; then
+            mv "$EMBED_FILE.part" "$EMBED_FILE"
+          else
+            rm -f "$EMBED_FILE.part"
+            info "WARNING: could not download bge-m3-Q8_0.gguf (hybrid routing will fall back to BM25)"
+          fi
+        fi
+        if [ ! -s "$RERANK_FILE" ]; then
+          mkdir -p "$RERANK_DIR"
+          info "Downloading routing cross-encoder reranker (bge-reranker-v2-m3-Q8_0.gguf)..."
+          if curl -fSL "$RERANK_URL" -o "$RERANK_FILE.part"; then
+            mv "$RERANK_FILE.part" "$RERANK_FILE"
+          else
+            rm -f "$RERANK_FILE.part"
+            info "WARNING: could not download bge-reranker-v2-m3-Q8_0.gguf (routing will fall back to qev-0.8b)"
+          fi
+        fi
+      fi
+      if [ "$INSTALL_DAEMON" = true ] && [ "$(uname -s)" = Darwin ] && [ -x "$LLAMA_BIN" ] && command -v launchctl >/dev/null 2>&1; then
+        LAUNCH_DIR="$HOME/Library/LaunchAgents"
+        mkdir -p "$LAUNCH_DIR"
+        install_routing_plist() {
+          local tpl_src="$1" plist_dst="$2" model_file="$3" model_name="$4" port="$5" log_path="$6"
+          [ -f "$tpl_src" ] && [ -s "$model_file" ] || return 0
+          mkdir -p "$(dirname "$log_path")"
+          python3 -c '
+import pathlib, sys
+tpl = pathlib.Path(sys.argv[1]).read_text()
+for k, v in zip(["__LLAMA_BIN__", "__MODEL_FILE__", "__MODEL_NAME__", "__HOST__", "__PORT__", "__LOG_PATH__"], sys.argv[2:8]):
+    tpl = tpl.replace(k, v)
+pathlib.Path(sys.argv[8]).write_text(tpl)
+' "$tpl_src" "$LLAMA_BIN" "$model_file" "$model_name" "127.0.0.1" "$port" "$log_path" "$plist_dst"
+          launchctl bootout "gui/$(id -u)" "$plist_dst" >/dev/null 2>&1 || true
+          sleep 1
+          launchctl bootstrap "gui/$(id -u)" "$plist_dst" >/dev/null 2>&1 || true
+          for _ in $(seq 1 40); do
+            curl -fsS --noproxy '*' --max-time 1 "http://127.0.0.1:$port/health" >/dev/null 2>&1 && break
+            sleep 0.25
+          done
+          info "Installed macOS routing daemon at $plist_dst (127.0.0.1:$port)"
+        }
+        install_routing_plist \
+          "$JEV_HOME/com.jeo-skills.bge-m3-embed.plist" \
+          "$LAUNCH_DIR/com.jeo-skills.bge-m3-embed.plist" \
+          "$EMBED_FILE" "bge-m3" "$EMBED_PORT" "$EMBED_DIR/llama-server.log"
+        install_routing_plist \
+          "$JEV_HOME/com.jeo-skills.bge-reranker-v2-m3.plist" \
+          "$LAUNCH_DIR/com.jeo-skills.bge-reranker-v2-m3.plist" \
+          "$RERANK_FILE" "bge-reranker-v2-m3" "$RERANK_PORT" "$RERANK_DIR/llama-server.log"
+      fi
+      INDEX_BUILDER="$SCRIPT_DIR/../scripts/build-skill-routing-index.mjs"
+      if [ "${JEV_SKIP_SERVER_START:-false}" != true ] && [ -f "$INDEX_BUILDER" ] && curl -fsS --noproxy '*' --max-time 1 "http://127.0.0.1:$EMBED_PORT/health" >/dev/null 2>&1; then
+        info "Building/refreshing hybrid skill routing index..."
+        JEV_EMBED_ENDPOINT="http://127.0.0.1:$EMBED_PORT/v1/embeddings" \
+          node "$INDEX_BUILDER" >/dev/null 2>&1 || info "WARNING: routing index rebuild skipped or failed"
+      fi
     fi
   fi
 fi

@@ -9,6 +9,15 @@ try { await new Response('{}').json(); new Request('http://127.0.0.1'); } catch 
 import { homedir, tmpdir } from 'node:os';
 import { basename, dirname, join, resolve, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
+const ROUTING_ENGINE = await import('./routing-engine.mjs').catch(() => null);
+export function formatDeferredAdvisoryContext(topK, opts = {}) {
+  if (ROUTING_ENGINE?.formatDeferredAdvisoryContext) {
+    return ROUTING_ENGINE.formatDeferredAdvisoryContext(topK, opts);
+  }
+  if (!Array.isArray(topK) || !topK.length) return '';
+  const header = opts.header || '[Jev route-skills] (advisory — load SKILL.toon/SKILL.md on demand)';
+  return [header, ...topK.map(s => `- ${s.name}${s.score !== undefined ? ` (${Number(s.score).toFixed(2)})` : ''}${s.reason ? ` — ${s.reason}` : ''}${s.toonPath || s.path ? ` [${s.toonPath || s.path}]` : ''}`)].join('\n');
+}
 
 // ── Contract constants ───────────────────────────────────────────────────────
 export const BACKEND_KINDS = ['api', 'local', 'ollama', 'lmstudio', 'systemone'];
@@ -1854,12 +1863,16 @@ function scoreIndexed(nameLower, corpusLower, termsOrExpanded, entry = null, met
     score += 0.9 * scoreFieldBm25(entry.relTf, weightedTerms, meta.idf, entry.docLen, meta.avgDocLen);
   }
   const tagsLower = entry?.tagsLower || '';
+  const nameTokenSet = new Set(nameLower.split(/[-_]+/));
+  const tagTokenSet = tagsLower ? new Set(tagsLower.split(/[-_\s]+/)) : null;
   for (let i = 0; i < primaryTerms.length; i++) {
     const term = primaryTerms[i];
+    if (!term || term === 'ok' || term === 'okay' || term === 'yes' || term === 'no') continue;
+    const isShortLatin = /^[a-z0-9]+$/.test(term) && term.length < 4;
     if (nameLower === term) score += 4.0;
-    else if (nameLower.includes(term)) score += 1.5;
-    if (tagsLower && tagsLower.includes(term)) score += 0.8;
-    if (corpusLower.includes(term)) score += 0.35;
+    else if (nameTokenSet.has(term) || (!isShortLatin && nameLower.includes(term))) score += 1.5;
+    if (tagTokenSet?.has(term) || (!isShortLatin && tagsLower && tagsLower.includes(term))) score += 0.8;
+    if (!isShortLatin && corpusLower.includes(term)) score += 0.35;
   }
   return score;
 }
@@ -2201,13 +2214,114 @@ function registryFallback(task, note) {
   return { skill: 'find-skills', command: `npx skills find '${task.replace(/'/g, "'\\''")}'`, note };
 }
 
-export async function routeSkills(task, { mock = false, topK = 3, override = null, model = null, prefilter = null, openspaceHints = null, useOpenspacePrior = true, localOnly = false, fast = null } = {}) {
+async function selectHybridUnified(catalog, task, backend, kind, topK, { priorBoosts = null, fast = false, denseOnly = false, qevOnly = false, allowReranker = true } = {}) {
+  const openspacePriorMap = priorBoosts instanceof Map
+    ? priorBoosts
+    : (priorBoosts && typeof priorBoosts === 'object' ? new Map(Object.entries(priorBoosts)) : null);
+  const shortlistLimit = fast ? 14 : 20;
+  const stage1 = await ROUTING_ENGINE.retrieveHybridShortlist(task, catalog.skills, {
+    shortlistLimit,
+    openspacePriorMap,
+  });
+
+  if (stage1.abstained || !stage1.candidates.length) {
+    return {
+      gate: { value: 0, threshold: GATE_THRESHOLD, values: {}, stats: stage1.stats },
+      finalists: [],
+      ranked: [],
+      abstained: true,
+      reason: stage1.abstainReason || 'abstention',
+      envelope: null,
+      requests: 0,
+      denseActive: stage1.denseActive,
+    };
+  }
+
+  let envelope = null;
+  let rerankScores = null;
+  let qevAnswers = null;
+  let requests = 0;
+
+  if (!denseOnly) {
+    // Stage 2A: Prefer local multilingual cross-encoder (BAAI/bge-reranker-v2-m3 on :18019)
+    // unless explicitly disabled via --qev-only or JEV_DISABLE_RERANKER=1.
+    const rerankerDisabled = !allowReranker || qevOnly || /^(?:1|true|yes)$/i.test(process.env.JEV_DISABLE_RERANKER || '');
+    if (!rerankerDisabled && typeof ROUTING_ENGINE.rerankWithCrossEncoder === 'function') {
+      rerankScores = await ROUTING_ENGINE.rerankWithCrossEncoder(task, stage1);
+      if (rerankScores) requests = 1 + (rerankScores.clauseBatches || 0);
+    }
+
+    // Stage 2B: Seamless automatic fallback to qev-0.8b if cross-encoder reranker is offline or skipped.
+    if (!rerankScores) {
+      const questions = ROUTING_ENGINE.buildCalibratedStage2Questions(task, stage1.candidates, { includeGate: true });
+      envelope = await requestJev(
+        { request: task },
+        questions,
+        { op: 'route-skills', kinds: [kind], model: backend.modelOverride || null },
+      );
+      requests = 1;
+      if (envelope.error || !envelope.answers) {
+        // Fail open to Stage-1 dense+lexical ranking if qev backend errors while dense is active
+        if (!stage1.denseActive) {
+          return { error: envelope, finalists: [], ranked: [], requests };
+        }
+        qevAnswers = null;
+      } else {
+        qevAnswers = envelope.answers;
+      }
+    }
+  }
+
+  const catalogMeta = CATALOG_META.get(catalog);
+  const catalogRoot = catalogMeta?.excerptRoot || (catalog.__path ? dirname(catalog.__path) : null);
+  const finalized = ROUTING_ENGINE.finalizeDynamicSelection({
+    stage1,
+    rerankScores,
+    qevAnswers,
+    topK,
+    catalogRoot,
+  });
+  const toEntry = c => ({
+    name: c.name,
+    score: c.score,
+    rerank: c.rerank ?? null,
+    rerankLogit: c.rerankLogit ?? null,
+    fits: c.fits ?? c.rerank ?? c.score,
+    dense: c.dense,
+    lexical: c.lexical,
+    probability: c.score,
+    reason: c.reason,
+    resolvedPath: c.path,
+    toonPath: existsSync(c.toonPath) ? c.toonPath : null,
+    vetoed: c.vetoed,
+    companionOf: c.companionOf || null,
+  });
+
+  return {
+    gate: { value: finalized.gate ?? 1, threshold: GATE_THRESHOLD, values: {}, stats: stage1.stats },
+    finalists: (finalized.candidates || finalized.topK || []).map(toEntry),
+    ranked: (finalized.topK || []).map(toEntry),
+    abstained: Boolean(finalized.abstained),
+    reason: finalized.reason,
+    stage2Mode: finalized.stage2Mode || (rerankScores ? 'bge-reranker-v2-m3' : (qevAnswers ? 'qev-0.8b' : 'stage1-only')),
+    rerankMs: rerankScores?.rerankMs ?? null,
+    isMultiIntent: Boolean(finalized.isMultiIntent),
+    subQueries: finalized.subQueries || [],
+    envelope,
+    requests,
+    denseActive: stage1.denseActive,
+  };
+}
+
+export async function routeSkills(task, { mock = false, topK = null, override = null, model = null, prefilter = null, openspaceHints = null, useOpenspacePrior = true, localOnly = false, fast = null, denseOnly = false, qevOnly = false, legacy = false } = {}) {
   if (!task?.trim()) throw new Error('route-skills requires a task string');
-  if (!Number.isInteger(topK) || topK < 1 || topK > 50) throw new Error('--top-k must be an integer from 1 to 50');
+  const effectiveTopK = topK === null || topK === undefined ? (mock ? 3 : 10) : topK;
+  if (!Number.isInteger(effectiveTopK) || effectiveTopK < 1 || effectiveTopK > 50) throw new Error('--top-k must be an integer from 1 to 50');
   if (PROFILE_ERROR) throw new Error(PROFILE_ERROR);
+  if (envReadError) throw new Error(envReadError);
   if (PROFILE_DISABLED) throw new Error(`Jev profile '${PROFILE}' is disabled`);
   const effectivePrefilter = prefilter || process.env.JEV_ROUTE_PREFILTER || 'auto';
-  if (!['auto', 'bm25', 'sharded'].includes(effectivePrefilter)) throw new Error(`--prefilter must be 'auto', 'bm25', or 'sharded'`);
+  if (!['auto', 'hybrid', 'bm25', 'sharded'].includes(effectivePrefilter)) throw new Error(`--prefilter must be 'auto', 'hybrid', 'bm25', or 'sharded'`);
   const fastRoute = fast !== null && fast !== undefined
     ? Boolean(fast)
     : /^(?:true|1|yes)$/i.test(cfg(null, 'JEV_FAST_ROUTE') || '');
@@ -2239,7 +2353,7 @@ export async function routeSkills(task, { mock = false, topK = 3, override = nul
   let backendUsed = null;
   let attempted = [];
   if (mock) {
-    outcome = await selectMock(catalog, task, topK, prior.boostByName);
+    outcome = await selectMock(catalog, task, effectiveTopK, prior.boostByName);
     selection = { strategy: 'mock', prefilter: 'bm25', openspacePrior: priorSummary, choiceCap: null, shards: 0, requests: 0 };
     backendUsed = { kind: 'mock', driver: 'mock', model: 'jev-mock', configuredModel: 'jev-mock', tier: 'mock', attestation: null };
   } else {
@@ -2255,27 +2369,43 @@ export async function routeSkills(task, { mock = false, topK = 3, override = nul
         continue;
       }
       const baseStrat = selectionStrategy(catalog.skills.length, backend.choiceCap);
+      const offlineIdx = ROUTING_ENGINE?.loadOfflineRoutingIndex?.() || null;
+      const offlineMatchesCatalog = Boolean(
+        offlineIdx
+        && offlineIdx.meta?.skillCount >= 20
+        && Math.abs(offlineIdx.meta.skillCount - catalog.skills.length) <= 30,
+      );
+      const canHybrid = Boolean(ROUTING_ENGINE) && !legacy && (denseOnly || effectivePrefilter === 'hybrid' || offlineMatchesCatalog);
       let strategy;
-      if (effectivePrefilter === 'bm25') strategy = 'bm25-shortlist';
-      else if (effectivePrefilter === 'sharded') strategy = 'sharded';
+      if (effectivePrefilter === 'sharded') strategy = 'sharded';
+      else if (effectivePrefilter === 'bm25') strategy = 'bm25-shortlist';
+      else if (canHybrid) strategy = denseOnly ? 'hybrid-dense' : 'hybrid-v2';
       else strategy = catalog.skills.length >= BM25_AUTO_CATALOG_THRESHOLD ? 'shortlist' : baseStrat.strategy;
       let shards = strategy === 'sharded' ? Math.max(1, baseStrat.shards) : 0;
       let fallbackFrom = null;
       let result;
       try {
         if (strategy === 'sharded') {
-          result = await selectSharded(catalog, task, backend, kind, shards, topK);
+          result = await selectSharded(catalog, task, backend, kind, shards, effectiveTopK);
+        } else if (strategy === 'hybrid-v2' || strategy === 'hybrid-dense') {
+          result = await selectHybridUnified(catalog, task, backend, kind, effectiveTopK, {
+            priorBoosts: prior.boostByName,
+            fast: fastRoute,
+            denseOnly,
+            qevOnly,
+            allowReranker: offlineMatchesCatalog || Boolean(process.env.JEV_RERANK_ENDPOINT),
+          });
         } else {
           const cap = Math.max(2, backend.choiceCap || SHORTLIST_SIZE);
           const limit = strategy === 'bm25-shortlist'
-            ? Math.min(Math.max(16, topK), cap)
-            : Math.min(Math.max(SHORTLIST_SIZE, topK), cap);
-          result = await selectShortlist(catalog, task, backend, kind, topK, { limit, priorBoosts: prior.boostByName, fast: fastRoute });
+            ? Math.min(Math.max(16, effectiveTopK), cap)
+            : Math.min(Math.max(SHORTLIST_SIZE, effectiveTopK), cap);
+          result = await selectShortlist(catalog, task, backend, kind, effectiveTopK, { limit, priorBoosts: prior.boostByName, fast: fastRoute });
           if (result.reason === 'shortlist-empty' && baseStrat.shards <= MAX_CHOICE_SHARDS) {
             fallbackFrom = strategy;
             strategy = 'sharded';
             shards = baseStrat.shards;
-            result = await selectSharded(catalog, task, backend, kind, shards, topK);
+            result = await selectSharded(catalog, task, backend, kind, shards, effectiveTopK);
           }
         }
       } catch (error) {
@@ -2283,7 +2413,18 @@ export async function routeSkills(task, { mock = false, topK = 3, override = nul
       }
       if (result.error) { errors.push({ kind, error: result.error.error }); attempted.push(kind); continue; }
       outcome = result;
-      selection = { strategy, prefilter: effectivePrefilter, openspacePrior: priorSummary, ...(fallbackFrom ? { fallbackFrom } : {}), choiceCap: backend.choiceCap, shards, requests: result.requests ?? 0 };
+      selection = {
+        strategy,
+        prefilter: effectivePrefilter,
+        openspacePrior: priorSummary,
+        ...(fallbackFrom ? { fallbackFrom } : {}),
+        choiceCap: backend.choiceCap,
+        shards,
+        requests: result.requests ?? 0,
+        abstained: Boolean(result.abstained),
+        denseActive: Boolean(result.denseActive),
+        isMultiIntent: Boolean(result.isMultiIntent),
+      };
       backendUsed = result.envelope ? result.envelope.backend : backendSummary(backend, null);
       attempted.push(kind);
       break;
@@ -2291,7 +2432,7 @@ export async function routeSkills(task, { mock = false, topK = 3, override = nul
     if (!outcome) throw new Error(`Jev unavailable for skill routing: ${errors.map(e => `${e.kind}: ${e.error}`).join('; ') || 'no backend in chain'}`);
   }
 
-  const top = outcome.ranked.slice(0, topK).map(r => {
+  const top = outcome.ranked.slice(0, effectiveTopK).map(r => {
     const skill = byName[r.name];
     const rel = relationshipsByName[r.name] || (skill.relationships && typeof skill.relationships === 'object' ? skill.relationships : {});
     const aux = auxByName[r.name] || {};
@@ -2304,6 +2445,7 @@ export async function routeSkills(task, { mock = false, topK = 3, override = nul
       category: skill.category,
       subcategory: skill.subcategory || null,
       description: skill.description,
+      ...(r.reason ? { reason: r.reason } : {}),
       tags: Array.isArray(skill.tags) ? skill.tags : [],
       relationships: rel,
       permissions,
@@ -2311,8 +2453,11 @@ export async function routeSkills(task, { mock = false, topK = 3, override = nul
       ...(compatibility ? { compatibility } : {}),
       path: r.resolvedPath || aux.resolvedPath || skill.path || `${skill.name}/SKILL.md`,
       ...(toonPath ? { toonPath } : {}),
+      ...(r.score !== undefined ? { score: round(r.score) } : {}),
+      ...(r.dense !== undefined && r.dense !== null ? { dense: round(r.dense) } : {}),
       fits: round(r.fits),
       probability: r.probability === null || r.probability === undefined ? null : round(r.probability),
+      ...(r.companionOf ? { companionOf: r.companionOf } : {}),
     };
   });
   const leanTokens = top.reduce((n, s) => n + tokenEstimate(`${s.name} ${s.description}`), 0);
@@ -2321,7 +2466,19 @@ export async function routeSkills(task, { mock = false, topK = 3, override = nul
     ...base,
     families: [...new Set(top.map(s => s.category))],
     topK: top,
-    selection: { ...selection, gate: outcome.gate, finalists: outcome.finalists.map(f => ({ name: f.name, fits: round(f.fits), probability: f.probability === null || f.probability === undefined ? null : round(f.probability) })), reason },
+    abstained: top.length === 0 && (String(reason || '').startsWith('abstention') || reason === 'gate' || reason === 'fits'),
+    selection: {
+      ...selection,
+      gate: outcome.gate,
+      finalists: outcome.finalists.map(f => ({
+        name: f.name,
+        ...(f.score !== undefined ? { score: round(f.score) } : {}),
+        ...(f.dense !== undefined && f.dense !== null ? { dense: round(f.dense) } : {}),
+        fits: round(f.fits),
+        probability: f.probability === null || f.probability === undefined ? null : round(f.probability),
+      })),
+      reason,
+    },
     backend: backendUsed,
     attempted,
     estimatedTopKTokens: leanTokens,
@@ -2329,8 +2486,8 @@ export async function routeSkills(task, { mock = false, topK = 3, override = nul
     estimatedSavingsPercent: fullTokens ? Math.round((fullTokens - leanTokens) / fullTokens * 100) : 0,
   };
   if (!top.length) {
-    result.publicRegistryFallback = registryFallback(task, reason === 'gate'
-      ? 'The request does not appear to need a skill (gate below threshold); if it does, search the public skills.sh registry with the find-skills skill (triage installs/source/stars before installing).'
+    result.publicRegistryFallback = registryFallback(task, String(reason || '').startsWith('abstention') || reason === 'gate'
+      ? 'The request does not appear to need a skill (gate/abstention); if it does, search the public skills.sh registry with the find-skills skill (triage installs/source/stars before installing).'
       : 'No confident local catalog match; use the find-skills skill to search the public skills.sh registry (triage installs/source/stars before installing).');
   }
   result.routing = (localOnly || (fastRoute && backendUsed?.driver === 'qev')) ? [] : await routingAdvice(catalog, task, top, { mock, backendUsed, kind: backendUsed?.kind, model });
@@ -3587,7 +3744,7 @@ export async function jevStatus({ timeoutMs = 3000, operation = null } = {}) {
 function parseArgs(args) {
   const flags = {
     mock: false,
-    topK: 3,
+    topK: 10,
     backend: null,
     model: null,
     task: null,
@@ -3605,6 +3762,9 @@ function parseArgs(args) {
     openspaceHints: null,
     useOpenspacePrior: true,
     fast: null,
+    denseOnly: false,
+    qevOnly: false,
+    legacy: false,
     golden: false,
     saveCalibration: null,
   };
@@ -3619,6 +3779,10 @@ function parseArgs(args) {
     else if (a === '--score-importance') flags.scoreImportance = true;
     else if (a === '--detailed') flags.detailed = true;
     else if (a === '--fast') flags.fast = true;
+    else if (a === '--no-fast') flags.fast = false;
+    else if (a === '--dense-only') flags.denseOnly = true;
+    else if (a === '--qev-only') flags.qevOnly = true;
+    else if (a === '--legacy') flags.legacy = true;
     else if (a === '--golden') flags.golden = true;
     else if (a === '--save-calibration') flags.saveCalibration = (args[i + 1] && !args[i + 1].startsWith('--')) ? next() : true;
     else if (a.startsWith('--save-calibration=')) flags.saveCalibration = a.slice(19) || true;
@@ -3779,7 +3943,7 @@ async function main() {
     console.log(JSON.stringify(status, null, 2));
     process.exitCode = status.ready === false ? 3 : status.active ? 0 : 2;
   }
-  else if (command === 'route-skills') console.log(JSON.stringify(await routeSkills(rest.join(' '), { mock: flags.mock, topK: flags.topK, override: flags.backend, model: flags.model, prefilter: flags.prefilter, openspaceHints: flags.openspaceHints ? JSON.parse(flags.openspaceHints) : null, useOpenspacePrior: flags.useOpenspacePrior, fast: flags.fast }), null, 2));
+  else if (command === 'route-skills') console.log(JSON.stringify(await routeSkills(rest.join(' '), { mock: flags.mock, topK: flags.topK, override: flags.backend, model: flags.model, prefilter: flags.prefilter, openspaceHints: flags.openspaceHints ? JSON.parse(flags.openspaceHints) : null, useOpenspacePrior: flags.useOpenspacePrior, fast: flags.fast, denseOnly: flags.denseOnly, qevOnly: flags.qevOnly, legacy: flags.legacy }), null, 2));
   else if (command === 'route-model') {
     const parsedCands = flags.candidates ? JSON.parse(flags.candidates) : null;
     console.log(JSON.stringify(await routeModel(rest.join(' '), { mock: flags.mock, override: flags.backend, model: flags.model, candidates: parsedCands }), null, 2));

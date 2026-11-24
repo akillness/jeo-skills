@@ -876,6 +876,10 @@ if kind == 'jev':
         with log.open('a') as out:
             out.write('"jev finished"\\n')
         print('Jev advice')
+    if mode == 'abstained' and os.environ.get('JEV_PREPROMPT_ABSTAIN_SENTINEL') == '1':
+        with log.open('a') as out:
+            out.write('"jev abstained"\\n')
+        print('__JEV_ABSTAINED__')
 elif os.environ.get('OPENSPACE_FIXTURE') == 'malformed':
     print('invalid')
 else:
@@ -886,7 +890,7 @@ else:
             path.chmod(0o755)
         event = '{  "prompt": "fixture", "cwd": "/tmp/test project" }\n'
         log = self.work / "route-log"
-        for mode in ("ready", "inactive", "no-match", "error", "timeout"):
+        for mode in ("ready", "abstained", "inactive", "no-match", "error", "timeout"):
             with self.subTest(mode=mode):
                 log.unlink(missing_ok=True)
                 env = {**self.hook_env, "ROUTE_LOG": str(log), "JEV_FIXTURE": mode}
@@ -895,10 +899,16 @@ else:
                 records = [["jev", event, [str(plugin), "jeo-preprompt-local", "--agent", "jeo"]]]
                 if mode == "ready":
                     records.append("jev finished")
-                records.append(["openspace", event, ["jeo"]])
+                elif mode == "abstained":
+                    records.append("jev abstained")
+                else:
+                    records.append(["openspace", event, ["jeo"]])
                 self.assertEqual([json.loads(line) for line in log.read_text().splitlines()], records)
-                expected = "Jev advice\n\nOpenSpace advice" if mode == "ready" else "OpenSpace advice"
-                self.assertEqual(json.loads(routed.stdout), {"additionalContext": expected})
+                if mode == "abstained":
+                    self.assertEqual(routed.stdout, "")
+                else:
+                    expected = "Jev advice" if mode == "ready" else "OpenSpace advice"
+                    self.assertEqual(json.loads(routed.stdout), {"additionalContext": expected})
         routed = subprocess.run(argv, input=event, text=True, capture_output=True, timeout=5,
                                 env={**self.hook_env, "ROUTE_LOG": str(log), "JEV_FIXTURE": "ready",
                                      "OPENSPACE_FIXTURE": "malformed"})
