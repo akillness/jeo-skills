@@ -13,28 +13,17 @@
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-AC6415?style=flat-square&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-프로젝트가 작성한 부분에는 [MIT 라이선스](LICENSE)가 적용됩니다. 사본이나 상당 부분을 배포할 때 저작권 및 허가 고지를 유지해야 합니다. 제3자 구성 요소에는 별도 조건이 적용될 수 있으므로 [업스트림 출처와 라이선스](docs/attribution.md) 및 각 라이선스·고지 파일도 확인하세요.
-
-[빠른 시작](#-빠른-시작) · [작동 방식](#-작동-방식) · [설치 옵션](#-설치-옵션) · [지원 런타임](#-지원-런타임) · [라우터 CLI](#-라우터-cli) · [사용 추적 및 정리](#-사용-추적-및-정리) · [스킬](#-스킬-목록)
-
-설치부터 시작하려면 [빠른 시작](#-빠른-시작)을, 특정 작업을 찾아보려면 아래 메뉴를 펼치세요.
-
-<details>
-<summary>작업별 메뉴 열기</summary>
-
-- [카탈로그와 설치 흐름 이해하기](#-작동-방식)
-- [카테고리별 스킬 찾기](#-카테고리)
-- [설치 범위와 번들 선택하기](#-설치-옵션)
-- [호스트 경로와 Jev 프로필 확인하기](#-지원-런타임)
-- [CLI 명령 찾아보기](#-라우터-cli)
-- [사용 이력 확인 및 안전하게 정리하기](#-사용-추적-및-정리)
-- [선택적 통합 확인하기](#-선택적-통합)
-
-</details>
+[빠른 시작](#-빠른-시작) · [작동 방식](#-작동-방식) · [카테고리](#-카테고리) · [설치 옵션](#-설치-옵션) · [지원 런타임](#-지원-런타임) · [라우터 CLI](#-라우터-cli) · [수명 주기](#-사용-추적-및-정리) · [선택적 통합](#-선택적-통합) · [스킬 목록](#-스킬-목록)
 
 [English](README.md) · **한국어** · [Español](README.es-ES.md)
 
 </div>
+
+---
+
+## 라이선스 및 출처
+
+프로젝트가 작성한 부분에는 [MIT 라이선스](LICENSE)가 적용됩니다. 사본이나 상당 부분을 배포할 때 저작권 및 허가 고지를 유지해야 합니다. 제3자 구성 요소에는 별도 조건이 적용될 수 있으므로 [업스트림 출처와 라이선스](docs/attribution.md) 및 각 라이선스·고지 파일도 확인하세요.
 
 ---
 
@@ -47,7 +36,7 @@
 | **라우터** | `jeo-skill`로 찾아보고 검색하고 선택 항목을 미리 본 다음, 선택한 항목만 설치합니다 |
 | **런타임** | 대부분의 에이전트가 공유하는 루트와 Claude Code, GJC, Antigravity, Aside용 네이티브 루트 |
 | **수명 주기** | 보존된 기록에서 관찰된 호출·로드 이력으로 정리 후보를 찾고, 변경 전 미리 보기와 격리 후 복원을 지원합니다 |
-| **선택 사항** | Jev 의사결정 하네스와 Jevgrep 검색 기능은 기본적으로 꺼져 있으며 별도로 설정합니다 |
+| **선택 사항** | OpenSpace 라우팅, Jev, Jevgrep은 별도의 설정 및 승인 경계를 따르며 스킬을 설치해도 자동 활성화되지 않습니다 |
 
 ## 🚀 빠른 시작
 
@@ -59,30 +48,25 @@ Read https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skill
 
 이 가이드는 운영체제와 에이전트를 감지하고 기본 `full` 모드에서 전체 카탈로그와 고정 버전 공유 CLI 7종을 설치합니다. 먼저 전역·사용자 범위를 확인하며, 새 `second-brain` 볼트(`~/vaults/jeo-second-brain`)와 자동화를 기본 설정으로 함께 설치합니다(`JEO_SKILLS_SECOND_BRAIN=skip`으로 건너뛰기 가능; 기존 `~/vaults/llm-wiki` 등 기존 볼트는 변경하지 않음). `core only`는 `starter` 번들만, `minimal`은 라우터와 CLI 링크만 설치합니다. 사용자나 타사 스킬을 임의로 삭제하지 않습니다.
 
-가이드 설치와 아래 라우터 전용 설치는 별개입니다. 대부분의 스킬은 안내 파일만 설치합니다. 예외로 `jeo-skill install`에서 `context7`을 선택하면 기존 `ctx7`이 없을 때 npm으로 `ctx7@0.11.1`을 설치합니다(Node.js 22.20 이상 필요). `--dry-run`은 다운로드 없이 미리 봅니다. 프로젝트 설치는 `.agents/context7`, 전역 설치는 `~/.local/share/jeo-skill/context7` 아래에 두며 사용하려면 해당 `node_modules/.bin`을 `PATH`에 추가하세요. 불완전한 기존 대상은 덮어쓰지 않고 실패합니다. CLI 설치는 서비스 활성화가 아닙니다. 로그인, MCP 등록, 설정 변경 및 외부 요청에는 별도 승인이 필요합니다. 직접 실행하는 `npx skills add`는 이 CLI를 설치하지 않습니다.
-
-Windows에서는 Context7 자동 설치를 지원하지 않아 안전하게 실패합니다. 별도로 설치한 가이드와 CLI는 이 자동 경로의 대상이 아닙니다.
-
-GitHub 스타(`akillness/jeo-skills`)는 기본값(`JEO_SKILLS_STAR=true`)으로 강제 활성화되어 프롬프트 없이 `gh`로 PUT 직후 GET 검증을 수행합니다. 건너뛰려면 `JEO_SKILLS_STAR=false`를 지정하세요. `--dry-run` 미리 보기에서는 스타를 누르지 않습니다.
-
 **옵션 B: 라우터를 설치한 다음 스킬을 선택합니다.**
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh | bash
-jeo-skill doctor                                    # check catalog and installer prerequisites
-jeo-skill search "react performance"                # find skills
-jeo-skill install react-best-practices --global --dry-run   # preview
-jeo-skill install react-best-practices --global --yes      # install
+jeo-skill doctor                                    # 카탈로그 및 설치 사전 요건 확인
+jeo-skill search "react performance"                # 스킬 검색
+jeo-skill install react-best-practices --global --dry-run   # 미리 보기
+jeo-skill install react-best-practices --global --yes      # 설치
 ```
 
 > [!TIP]
-> 설치 후 `jeo-skill`을 찾을 수 없으면 `$HOME/.local/bin`을 `PATH`에 추가하세요.
+> 설치 후 `jeo-skill`을 찾을 수 없으면 `$HOME/.local/bin`을 `PATH`에 추가하세요. `context7`을 함께 선택하면 `ctx7@0.11.1`(Node.js 22.20+, Windows 제외)을 설치하고, `install.sh`는 기본값 `JEO_SKILLS_STAR=true`를 적용합니다. 자세한 경계와 예외 설정은 [설치 옵션](#-설치-옵션)을 확인하세요.
 
 ## 🧭 작동 방식
 
+<img src="assets/how-it-works.webp" alt="스킬 카탈로그에서 선택·설치·검증을 거쳐 에이전트 호스트로 전달되는 5단계 흐름과 선택적 OpenSpace 라우팅, Jev 컨트롤 플레인, Jevgrep 및 파일 배치가 호스트 활성화나 제공자 승인을 뜻하지 않는다는 안내" width="100%">
+
 <details>
 <summary>카탈로그에서 호스트까지의 흐름 보기</summary>
-
 
 1. **카탈로그.** 스킬은 `.agent-skills/<name>/SKILL.md` 형태로 평평하게 유지됩니다. 카테고리·번들·관계 정보는 `.agent-skills/skills.json`에서 중앙 관리하며, 분류를 위한 중첩 폴더는 만들지 않습니다.
 2. **라우터.** `jeo-skill`은 `skills.json`을 기준으로 이름, 번들, 카테고리 및 하위 카테고리를 확인하고, 기록하기 전에 정확한 선택 항목을 표시합니다.
@@ -93,9 +77,7 @@ jeo-skill install react-best-practices --global --yes      # install
 
 ## 🗂 카테고리
 
-<details>
-<summary>관심 분야별 카테고리 보기</summary>
-
+<img src="assets/catalog-map.webp" alt="Web, Infrastructure, Game, Creative Media, CLI Tools, AI and Agents, Engineering, Research and Analysis, Business, Utilities 10개 카테고리와 하위 분류를 보여주는 타일 지도" width="100%">
 
 | 카테고리 | 초점 | 찾아보기 |
 |---|---|---|
@@ -112,16 +94,7 @@ jeo-skill install react-best-practices --global --yes      # install
 
 전체 생성 목록은 [스킬 목록](#-스킬-목록)에 있습니다.
 
-</details>
-
 ## 📦 설치 옵션
-
-<details>
-<summary>설치 범위, 예시 및 번들 보기</summary>
-
-실제로 기록한 두 스킬 선택 미리 보기입니다. 설치나 제공자 활성화의 증거는 아닙니다.
-
-<img src="assets/jeo-skill-dry-run.svg" alt="실제 기록된 미리 보기: responsive-design과 react-best-practices 두 스킬의 대상 경로와 실행 예정 명령을 표시하며 설치는 하지 않았습니다" width="100%">
 
 | 목표 | 방법 |
 |---|---|
@@ -129,27 +102,13 @@ jeo-skill install react-best-practices --global --yes      # install
 | 라우터만 설치(기본값) | 한 줄 명령을 그대로 사용합니다 |
 | 라우터 + `starter` 번들 | `JEO_SKILLS_SELECTION=bundle`을 지정한 한 줄 명령 |
 | 전체 카탈로그 + 공유 도구·워크스페이스 설정 | `JEO_SKILLS_SELECTION=all`을 지정한 한 줄 명령. 전역 모드에서는 공유 CLI 7종과 워크스페이스 설정도 실행하므로 [설치 가이드](setup-all-skills-prompt.md)의 승인 경계를 먼저 확인합니다 |
-| 선택적 설정 없이 전체 카탈로그 설치 | `jeo-skill install --all --global --yes` (`--setup` 없이 실행; 위에 설명한 Context7 CLI 설치 포함) |
+| 선택적 설정 없이 전체 카탈로그 설치 | `jeo-skill install --all --global --yes` (`--setup`과 `--with-hooks` 없이 실행; 아래 Context7 CLI 설치 포함) |
 | 현재 프로젝트에만 설치 | `INSTALL_GLOBAL=false`를 지정한 한 줄 명령. `all`은 전역 도구 설치를 건너뛰고 부분 실패로 보고합니다 |
 | 변경 없이 미리 보기 | `JEO_SKILLS_DRY_RUN=true`를 지정한 한 줄 명령 |
 | 특정 스킬 | `jeo-skill install <name> [<name> ...] --global --yes` |
 | 특정 스킬 + 도구 설치 또는 스모크 검증 | `jeo-skill install <name> ... --global --yes --setup` (지원되는 스킬에 한함). `--with-hooks`는 `--setup`을 포함하며 지원되는 훅/MCP 등록 단계도 실행합니다. [도구별 범위](setup-all-skills-prompt.md#step-5--full-mode-shared-tools)를 먼저 확인하세요 |
 | 번들 또는 카테고리 일부 | `jeo-skill install --bundle <bundle> --global --yes` 또는 `--category <id> [--subcategory <id>]` |
 | GitHub 프로그램 5종 운영 가이드 + 준비 상태 리포트 | `jeo-skill install --bundle github-five-programs --global --yes --setup`. `JEO_SKILLS_SELECTION=bundle JEO_SKILLS_BUNDLE=github-five-programs`를 지정한 한 줄 명령도 가이드 설치 후 같은 리포트를 출력합니다. **리포트 단계만** 오프라인·읽기 전용이며 업스트림 프로그램을 설치·시작하거나 네트워크에 접속하지 않습니다 |
-
-게임 개발 도구별 스킬 10개는 `jeo-skill install --bundle game-source-repositories --dry-run`으로 미리 볼 수 있습니다. 물리, 지형, 재질, 이펙트, 경로 탐색, 애니메이션, 그래픽, 메시와 노이즈를 다루며 업스트림 도구 자체를 설치하거나 실행하지는 않습니다. [설치 범위](setup-all-skills-prompt.md#game-development-source-guides-on-demand)와 [출처별 라이선스](docs/attribution.md)를 확인하세요.
-
-Lightpanda는 `jeo-skill install lightpanda --global --dry-run`으로 선택을 미리 확인한 뒤
-스킬을 설치합니다. 스킬 설치는 안내문만 복사하며 브라우저는 설치하지 않습니다. 안정 버전
-1.0.2의 fetch, 구조화 데이터, CDP 및 MCP를 다루며, 오프라인 진단은 로컬 메타데이터만 확인하고
-실행 호환성을 보증하지 않습니다. 브라우저 다운로드·설치·실행, 사이트 접근, 서버, 자격 증명,
-프로바이더 호출은 각각 별도 승인이 필요합니다. [설치 가이드](setup-all-skills-prompt.md#lightpanda-browser-operator-on-demand)를 참고하세요.
-
-Impeccable은 `jeo-skill install impeccable --global --dry-run`으로 선택을 미리 확인한 뒤
-스킬을 설치합니다. 스킬 설치는 `pbakaus/impeccable` 4.8.0 운영 가이드만 복사하며 Impeccable,
-엔진, 디자인 훅은 설치하지 않습니다. 업스트림 설치 프로그램도 같은 `impeccable` 폴더 이름을
-쓰므로 어느 쪽이든 쓰기 전에 오프라인 doctor로 먼저 확인합니다. npm 실행, 엔진 다운로드·실행,
-훅, 브라우저 스캔, live 모드는 각각 별도 승인이 필요합니다. [설치 가이드](setup-all-skills-prompt.md#impeccable-design-operator-on-demand)를 참고하세요.
 
 설치 프로그램 변수는 파이프 오른쪽의 `bash`에 지정합니다.
 
@@ -162,7 +121,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 `--dry-run`은 선택 항목·대상 경로·실행 예정 명령을 확인하는 용도이며 실제 설치나 호스트 활성화를 검증하지 않습니다. `install.sh`의 미리 보기는 런타임 지원 여부·계정·카탈로그 선택의 유효성을 실제 실행 시점까지 확인하지 않습니다. 준비 상태 리포트의 `ready`도 로컬 사전 점검 통과를 뜻할 뿐, 프로그램의 실제 실행이나 서비스 연결을 보증하지 않습니다.
 
 <details>
-<summary><b>번들</b> — 엄선한 시작 세트</summary>
+<summary><b>번들</b> — 엄선한 시작 세트 17종</summary>
 
 | 번들 | 스킬 |
 |---|---|
@@ -181,18 +140,37 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 | `langchain` | langchain-fundamentals, langgraph-fundamentals, deep-agents-core, langsmith |
 | `knowledge-repositories` | 22 ontology, code-graph, memory 및 retrieval 운영 가이드 (`jeo-skill install --bundle knowledge-repositories --dry-run`) |
 | `ui-design-repositories` | 10 source-pinned UI operators (`jeo-skill install --bundle ui-design-repositories --dry-run`) |
+| `game-source-repositories` | 10 source-pinned 게임 개발 도구 운영 가이드 (`jeo-skill install --bundle game-source-repositories --dry-run`) |
 | `github-five-programs` | fabric, moneyprinter-v2, agent-s, google-maps-scraper, gitingest: 오픈소스 프로그램 5종 운영 가이드, 그중 4종은 source-pinned (`jeo-skill install --bundle github-five-programs --dry-run`) |
 
-대부분의 리포지터리 운영 스킬은 고정된 소스를 안내하며, 설치해도 업스트림 프로젝트를 설치·실행·연결하지 않습니다. 위에 설명한 Context7 CLI 설치는 예외이며, 활성화와 연결에는 별도 승인이 필요합니다.
+대부분의 리포지터리 운영 스킬은 고정된 소스를 안내하며, 설치해도 업스트림 프로젝트를 설치·실행·연결하지 않습니다. 아래 설명된 Context7 CLI 설치는 예외이며, 활성화와 연결에는 별도 승인이 필요합니다.
 
 </details>
+
+<details>
+<summary><b>온디맨드 경계</b> — 소스 고정 운영 가이드, Context7 및 GitHub 스타 동작</summary>
+
+| 스킬 / 기능 | 범위 및 승인 경계 | 참고 |
+|---|---|---|
+| `game-source-repositories` | 게임 개발 도구 가이드 10종(물리, 지형, 재질, 이펙트, 경로 탐색, 애니메이션, 그래픽, 메시, 노이즈); 업스트림 도구를 설치·실행하지 않음 | [설치 범위](setup-all-skills-prompt.md#game-development-source-guides-on-demand) · [출처별 라이선스](docs/attribution.md) |
+| [`lightpanda`](.agent-skills/lightpanda/SKILL.md) | Lightpanda 1.0.2(fetch, CDP, MCP) 운영 가이드 + 오프라인 메타데이터 진단; 브라우저 설치·접근·서버·자격 증명은 별도 승인 | [설치 가이드](setup-all-skills-prompt.md#lightpanda-browser-operator-on-demand) |
+| [`browser-use`](.agent-skills/browser-use/SKILL.md) | 운영 가이드 + 오프라인 프리플라이트; 패키지/브라우저 설치, 사이트 접근, 클라우드·모델 호출 및 계정은 별도 승인 | [설치 가이드](setup-all-skills-prompt.md#browser-use-operator-on-demand) |
+| [`flide`](.agent-skills/flide/SKILL.md) | 의사결정 추론 가이드 + 오프라인 프리플라이트; 패키지/모델 다운로드, GPU 사용, 서버 기동은 별도 승인 | [설치 가이드](setup-all-skills-prompt.md#flide-decision-inference-on-demand) |
+| [`impeccable`](.agent-skills/impeccable/SKILL.md) | `pbakaus/impeccable` 4.8.0 운영 가이드(동일 폴더명 `impeccable` 사용 — 쓰기 전 오프라인 doctor 확인); npm·엔진·훅·스캔·live 모드는 별도 승인 | [설치 가이드](setup-all-skills-prompt.md#impeccable-design-operator-on-demand) |
+| [`donchitos-game-studios`](.agent-skills/donchitos-game-studios/SKILL.md) | 프로젝트 템플릿 고정 운영 가이드(정규 75 + 별칭 3, 공개 파일 12개 오프라인 검사), 78개 전역 설치 아님; 복제·`/adopt`·훅·의존성은 별도 승인 | [딥리서치](.agent-skills/donchitos-game-studios/references/research.md) · [업스트림](.agent-skills/donchitos-game-studios/references/upstream.md) · [설치 가이드](setup-all-skills-prompt.md#claude-code-game-studios-on-demand-project-template-not-global-skill-pack) |
+| [`revfactory-harness`](.agent-skills/revfactory-harness/SKILL.md) | [revfactory/harness v2.1.0](https://github.com/revfactory/harness/tree/92d9f1b29e7af81acebf51a9fcd1832e739a1414) 고정 운영 가이드(공개 파일 18개 해시 검증, `runtime_verified: false`); `harness2` 및 은퇴한 `harness`와 별개 | [설치·승인 경계](setup-all-skills-prompt.md#revfactory-harness-team-architecture-factory-on-demand) |
+| [`elephant-goldfish-model`](.agent-skills/elephant-goldfish-model/SKILL.md) | [Google Elephant-Goldfish Model](https://github.com/google/elephant-goldfish-model) 설계·검토 흐름 안내; 업스트림 플러그인을 활성화하지 않으며 새 컨텍스트 검토에는 실제 격리된 서브에이전트 필요 | [설치 경계](setup-all-skills-prompt.md#elephant-goldfish-model-on-demand) |
+
+**Context7 CLI (`ctx7@0.11.1`):** `jeo-skill install`에서 `context7`을 선택하면 기존 `ctx7`이 없을 때 npm으로 `ctx7@0.11.1`을 설치합니다(Node.js 22.20+ 필요, Windows 미지원 및 안전 실패, `--dry-run` 시 다운로드 없음). 프로젝트 설치는 `.agents/context7`, 전역 설치는 `~/.local/share/jeo-skill/context7` 아래에 두며 해당 `node_modules/.bin`을 `PATH`에 추가해야 합니다. 불완전한 기존 대상은 덮어쓰지 않고 실패합니다. 직접 실행하는 `npx skills add`는 이 설치를 수행하지 않으며, 로그인·MCP 등록·설정 변경·원격 요청은 별도 승인이 필요합니다.
+
+**기본 GitHub 스타 (`JEO_SKILLS_STAR=true`):** 설치 시 `akillness/jeo-skills` 스타가 기본 활성화되며 프롬프트 없이 인증된 `gh`로 PUT 직후 GET 확인을 수행합니다(확인 실패 시 경고 후 계속). 건너뛰려면 `JEO_SKILLS_STAR=false`를 지정하세요. `JEO_SKILLS_DRY_RUN=true`에서는 GitHub 쓰기를 하지 않습니다.
 
 </details>
 
 ## 🖥 지원 런타임
 
 <details>
-<summary>호스트별 경로와 Jev 프로필 보기</summary>
+<summary>호스트별 설치 경로와 경계 보기</summary>
 
 아래는 `jeo-skill install --agent <값>`의 설치 대상 경로입니다. 파일 배치와 호스트의 실제 스킬 탐색·활성화는 별도로 확인해야 합니다. GJC와 Antigravity의 전역 네이티브 경로에는 공유 루트에 설치한 선택 항목을 추가로 복사합니다.
 
@@ -220,45 +198,6 @@ GJC 전역 설정 디렉터리는 `GJC_CONFIG_DIR`, 다음으로 `PI_CONFIG_DIR`
 > 
 > 설치하면 스킬 파일을 루트에 기록하지만 런타임에 로그인하거나 시작하거나 새로고침하지는 않습니다. 새로 설치한 스킬이 보이지 않으면 호스트를 새로고침하세요.
 
-### Jev 에이전트별 프로필과 활성화 경계
-
-Jev는 백엔드를 별도로 선택하고 옵트인한 뒤에만 설정합니다. 현재 가이드는 이전 `gemini-cli` 호스트/별칭을 설정 대상으로 사용하지 않으며, 이는 Google/Gemini 제공자·모델의 전역 종료를 주장하는 것이 아닙니다. 호스트와 모델·제공자는 별개입니다.
-
-#### 기본 프로필
-
-| canonical host ID | 기본 프로필 | 독립 실행형 설치 대상 및 비고 |
-|---|---|---|
-| `jeo` | `jeo` | `jeo` |
-| `gjc` | `gjc` | `gjc` |
-| `jeopi` | `jeopi` | `jeopi` |
-| `pi` | `pi` | `pi` |
-| `codex` | `codex` | `codex` |
-| `claude` | `claude` | `claude-code` |
-| `agy` | `agy` | `antigravity-cli` |
-| `kimi` | `kimi` | `kimi-code-cli` (`skills@1.7.0`) |
-| `grok` | `grok` | `grok` (Grok Build) |
-| `opencode` | `opencode` | `opencode` |
-| `omp` | `omp` | `omp` |
-| `cursor` | `cursor` | `cursor` |
-| `crush` | `crush` | `crush` |
-| `antigravity` | `antigravity` | `antigravity` (IDE) |
-| `aside` | `aside-u<account>` | `aside` 계정별 프로필 |
-
-호스트 선택은 `JEV_AGENT` > `JEO_SKILLS_AGENT` 순서입니다. 두 변수가 없거나 값이 `universal`이면 감지된 호스트를 각각 독립적으로 구성합니다. 한 호스트의 프로필 우선순위는 `JEO_SKILLS_JEV_PROFILE` > `JEV_PROFILE` > `~/.agents/jev/agents.json`의 canonical host ID 매핑 > host ID와 같은 이름의 프로필입니다. Aside는 계정을 먼저 선택하고 `aside-u<account>`를 기본값으로 사용합니다.
-
-호스트별 설정이 성공하면 기존 컨트롤러의 config-only 경로가 `~/.agents/jev/agents.json`에 canonical host ID 바인딩을 생성하거나 갱신합니다. 이 갱신은 기존 `native`·`scope`·사용자 지정 프로필 할당과 다른 호스트 항목을 보존하며, hook을 등록하지 않습니다. `agy`, `kimi`, `grok`, `opencode` 및 `cursor`를 제외한 기타 새 호스트의 프로필은 명시적 하네스·수동 경로만 제공하며 native hook 활성화를 주장하지 않습니다. `cursor`는 별도의 `jev-plugin.mjs hooks-install --agent cursor`로 hook 러너(스킬 이름 조언과 선택적 행동 검토)를 설치할 수 있지만, setup이 이를 자동으로 수행하지 않으며 실제 Cursor 세션에서는 검증되지 않았습니다.
-
-컨트롤러(`jev-plugin.mjs`)의 `--agent`는 canonical host ID를 사용합니다. 독립 실행형 `jev-setup.sh --agent`의 값은 스킬 설치 대상(`claude-code`, `antigravity-cli`, `kimi-code-cli`, `grok` 등)입니다. 하네스(`jev-harness.mjs`)에는 `--agent` 옵션이나 호스트 자동 감지가 없으므로 모든 작업에 현재 프로필을 `--profile`로 명시해야 하며, 선택한 프로필이 없거나 비활성화되면 다른 프로필이나 레거시 공유 설정으로 대체하지 않습니다.
-
-현재 프로필 상태만 읽으려면 다음처럼 실행하세요(`status`는 읽기 전용이며 구성된 로컬 백엔드를 확인할 수 있지만, 그 결과를 호스트 활성화나 모델 사용의 증거로 추론하지 않습니다).
-
-```bash
-node ~/.agents/jev/jev-harness.mjs \
-  --profile "${JEV_PROFILE:?현재 할당된 Jev 프로필을 먼저 선택하세요}" status
-```
-
-모든 감지 호스트를 대상으로 설정하려면 설정 서브셸 내부에서만 `JEV_AGENT`, `JEV_PROFILE`, `JEO_SKILLS_AGENT`, `JEO_SKILLS_JEV_PROFILE`을 `unset`하고, 활성 세션 바깥의 값은 보존하세요. 프로필 설정만으로 native hook이 자동 활성화되지 않으며, 기존 실제 `HOME` 설치도 삭제하거나 초기화하지 않습니다. 자세한 호스트 매핑과 활성화 경계는 [Jev 활성화 및 프로필 표](jev/jev-control-plane.rule.md#activation-and-profiles), 설정 순서는 [설정 가이드](setup-all-skills-prompt.md#jev-control-plane-harness-system-one)와 [jev/README.md](jev/README.md)를 확인하세요.
-
 </details>
 
 ## 💻 라우터 CLI
@@ -282,9 +221,15 @@ node ~/.agents/jev/jev-harness.mjs \
 
 모든 명령에서 사용할 카탈로그를 고정하려면 `JEO_SKILLS_CATALOG=/path/to/skills.json`을 설정합니다.
 
+실제로 기록한 두 스킬 선택 미리 보기입니다. 설치나 제공자 활성화의 증거는 아닙니다.
+
+<img src="assets/jeo-skill-dry-run.svg" alt="실제 기록된 미리 보기: responsive-design과 react-best-practices 두 스킬의 대상 경로와 실행 예정 명령을 표시하며 설치는 하지 않았습니다" width="100%">
+
 </details>
 
 ## 🧹 사용 추적 및 정리
+
+<img src="assets/skill-lifecycle.webp" alt="Track(usage scan, 로컬 사용 요약, used, protected, in grace, candidate), Clean up locally(prune-unused 미리 보기, Jev 리뷰 후 적용, 격리 배치, 복원 또는 영구 삭제), Maintainer(retire-unused-skills.py, 승인 목록, 재생성 및 검증, 실패 시 롤백) 세 트랙으로 나타낸 스킬 수명 주기" width="100%">
 
 <details>
 <summary>사용 상태, 격리 및 복원 절차 보기</summary>
@@ -369,33 +314,56 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 ## 🔌 선택적 통합
 
 <details>
-<summary>Jev와 Jevgrep의 선택적 설정 경계 보기</summary>
+<summary>선택적 라우팅·검색 통합과 Jev 프로필 경계 보기</summary>
 
 | 통합 | 목적 | 설정 |
 |---|---|---|
-| **Jev** | 의사결정 하네스: BM25+메타데이터 스킬 라우팅(`SKILL.toon`·핵심 섹션 계층적 `assist` 주입), 컨텍스트·메모리 정리, 행동·도구 게이팅, 모더레이션, 실행 평가 및 리랭킹 | `bash jev/jev-setup.sh --profile <name> ...` · [jev/README.md](jev/README.md) |
+| **OpenSpace** | 선택적 로컬 프롬프트 시점 스킬 검색·라우팅 | [OpenSpace 설정](setup-all-skills-prompt.md#openspace-skill-finder-and-prompt-time-skill-routing) |
+| **Jev** | 의사결정 하네스: 하이브리드 BM25+메타데이터 스킬 라우팅(선택적 `bge-m3`·`bge-reranker-v2-m3` v3 로컬 백엔드, `SKILL.toon`·섹션 계층 `assist` 주입), 컨텍스트·메모리 정리, 행동·도구 게이팅, 모더레이션 및 실행 평가 | `bash jev/jev-setup.sh --profile <name> ...` · [jev/README.md](jev/README.md) |
 | **Jevgrep** | 선택한 스킬 또는 위키 문서의 원격 검색 | `jeo-skill explore "<question>" --root <dir> --dry-run` · [jevgrep](.agent-skills/jevgrep/SKILL.md) |
 
-카탈로그에 포함된 운영 가이드를 설치해도 이 두 통합이 자동으로 활성화되지는 않습니다. 둘 다 구성된 백엔드로 데이터를 보낼 수 있습니다. `jeo-skill`에서는 이를 호출하는 명령(`prune-unused --apply`, `usage relevance`, `explore`)이 `--allow-remote` 없이는 원격 사용을 거부합니다. 독립 실행형 Jev 하네스는 구성된 백엔드로 직접 전송하므로, 사용하기 전에 호스팅 프로필을 승인하세요.
+카탈로그에 포함된 운영 가이드를 설치해도 이 통합들이 자동으로 활성화되지는 않습니다. Jev와 Jevgrep은 구성된 백엔드로 데이터를 보낼 수 있습니다. `jeo-skill`에서는 이를 호출하는 명령(`prune-unused --apply`, `usage relevance`, `explore`)이 `--allow-remote` 없이는 원격 사용을 거부합니다. 독립 실행형 Jev 하네스는 구성된 백엔드로 직접 전송하므로, 사용하기 전에 호스팅 프로필을 승인하세요. OpenSpace 설정 및 호스트 활성화에도 별도 승인이 필요합니다.
 
 명시적으로 요청한 Jev 설정이 실패해도 검증된 스킬 설치는 실패로 처리하지 않습니다. 경고를 확인하고 Jev 통합이 부분적으로 완료되었음을 별도로 확인하세요.
 
+### Jev 에이전트별 프로필과 활성화 경계
+
+Jev는 백엔드를 별도로 선택하고 옵트인한 뒤에만 설정합니다. 현재 가이드는 이전 `gemini-cli` 호스트/별칭을 설정 대상으로 사용하지 않으며, 이는 Google/Gemini 제공자·모델의 전역 종료를 주장하는 것이 아닙니다. 호스트와 모델·제공자는 별개입니다.
+
+| canonical host ID | 기본 프로필 | 독립 실행형 설치 대상 및 비고 |
+|---|---|---|
+| `jeo` | `jeo` | `jeo` |
+| `gjc` | `gjc` | `gjc` |
+| `jeopi` | `jeopi` | `jeopi` |
+| `pi` | `pi` | `pi` |
+| `codex` | `codex` | `codex` |
+| `claude` | `claude` | `claude-code` |
+| `agy` | `agy` | `antigravity-cli` |
+| `kimi` | `kimi` | `kimi-code-cli` (`skills@1.7.0`) |
+| `grok` | `grok` | `grok` (Grok Build) |
+| `opencode` | `opencode` | `opencode` |
+| `omp` | `omp` | `omp` |
+| `cursor` | `cursor` | `cursor` |
+| `crush` | `crush` | `crush` |
+| `antigravity` | `antigravity` | `antigravity` (IDE) |
+| `aside` | `aside-u<account>` | `aside` 계정별 프로필 |
+
+호스트 선택은 `JEV_AGENT` > `JEO_SKILLS_AGENT` 순서입니다. 두 변수가 없거나 값이 `universal`이면 감지된 호스트를 각각 독립적으로 구성합니다. 한 호스트의 프로필 우선순위는 `JEO_SKILLS_JEV_PROFILE` > `JEV_PROFILE` > `~/.agents/jev/agents.json`의 canonical host ID 매핑 > host ID와 같은 이름의 프로필입니다. Aside는 계정을 먼저 선택하고 `aside-u<account>`를 기본값으로 사용합니다.
+
+호스트별 설정이 성공하면 기존 컨트롤러의 config-only 경로가 `~/.agents/jev/agents.json`에 canonical host ID 바인딩을 생성하거나 갱신합니다. 이 갱신은 기존 `native`·`scope`·사용자 지정 프로필 할당과 다른 호스트 항목을 보존하며, hook을 등록하지 않습니다. `agy`, `kimi`, `grok`, `opencode` 및 `cursor`를 제외한 기타 새 호스트의 프로필은 명시적 하네스·수동 경로만 제공하며 native hook 활성화를 주장하지 않습니다. `cursor`는 별도의 `jev-plugin.mjs hooks-install --agent cursor`로 hook 러너(스킬 이름 조언과 선택적 행동 검토)를 설치할 수 있지만, setup이 이를 자동으로 수행하지 않으며 실제 Cursor 세션에서는 검증되지 않았습니다.
+
+컨트롤러(`jev-plugin.mjs`)의 `--agent`는 canonical host ID를 사용합니다. 독립 실행형 `jev-setup.sh --agent`의 값은 스킬 설치 대상(`claude-code`, `antigravity-cli`, `kimi-code-cli`, `grok` 등)입니다. 하네스(`jev-harness.mjs`)에는 `--agent` 옵션이나 호스트 자동 감지가 없으므로 모든 작업에 현재 프로필을 `--profile`로 명시해야 하며, 선택한 프로필이 없거나 비활성화되면 다른 프로필이나 레거시 공유 설정으로 대체하지 않습니다.
+
+현재 프로필 상태만 읽으려면 다음처럼 실행하세요(`status`는 읽기 전용이며 구성된 로컬 백엔드를 확인할 수 있지만, 그 결과를 호스트 활성화나 모델 사용의 증거로 추론하지 않습니다).
+
+```bash
+node ~/.agents/jev/jev-harness.mjs \
+  --profile "${JEV_PROFILE:?현재 할당된 Jev 프로필을 먼저 선택하세요}" status
+```
+
+모든 감지 호스트를 대상으로 설정하려면 설정 서브셸 내부에서만 `JEV_AGENT`, `JEV_PROFILE`, `JEO_SKILLS_AGENT`, `JEO_SKILLS_JEV_PROFILE`을 `unset`하고, 활성 세션 바깥의 값은 보존하세요. 프로필 설정만으로 native hook이 자동 활성화되지 않으며, 기존 실제 `HOME` 설치도 삭제하거나 초기화하지 않습니다. 자세한 호스트 매핑과 활성화 경계는 [Jev 활성화 및 프로필 표](jev/jev-control-plane.rule.md#activation-and-profiles), 설정 순서는 [설정 가이드](setup-all-skills-prompt.md#jev-control-plane-harness-system-one)와 [jev/README.md](jev/README.md)를 확인하세요.
+
 </details>
-
-## Claude Code Game Studios
-
-명명된 프로젝트 템플릿용 [`donchitos-game-studios`](.agent-skills/donchitos-game-studios/SKILL.md)
-운영 스킬을 추가했습니다. [딥리서치 결론](.agent-skills/donchitos-game-studios/references/research.md)은
-75개 정규 워크플로우와 별칭 3개, 스킬 표준과 점수 휴리스틱을 구분합니다.
-78개를 전역 설치하거나 별칭을 불필요하게 늘리는 대신 소스 고정·작업별 라우팅·
-승인 경계·선택 공개 파일 12개의 오프라인 검사를 제공합니다. `game-client` 번들로도
-선택할 수 있습니다. 원본 훅·게임·모델은 실행하지 않으며 정적 통과를 보안 또는
-성능 향상으로 보고하지 않습니다. 원본 설치와 활성화 범위는
-[setup 가이드](setup-all-skills-prompt.md#claude-code-game-studios-on-demand-project-template-not-global-skill-pack)를 확인하세요.
-원본 `/adopt`의 승인 동작은 자동화 모드에 따라 달라지므로 도입 계획은 별도로
-승인하세요. `/skill-test`의 네 모드는 모두 파일만 검토하며 스킬을 실행하지 않습니다.
-[원본 운영 안내](.agent-skills/donchitos-game-studios/references/upstream.md)와
-[MIT 라이선스 출처](docs/attribution.md)에서 상세 내용을 확인하세요.
 
 ## 📚 스킬 목록
 
@@ -1029,25 +997,6 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/changelog.py check
 |---|---|
 | [jeo-code](https://github.com/akillness/jeo-code) | 공유 루트에서 스킬을 로드하는 코딩 에이전트 |
 | [gajae-code (GJC)](https://github.com/akillness/gajae-code) | 자체 네이티브 스킬 루트를 사용하는 에이전트 런타임 |
-
-## Revfactory Harness 팀 아키텍처 팩토리
-
-[`revfactory-harness`](.agent-skills/revfactory-harness/SKILL.md)는
-[revfactory/harness v2.1.0](https://github.com/revfactory/harness/tree/92d9f1b29e7af81acebf51a9fcd1832e739a1414)에
-고정된 운영 스킬입니다. Claude Code 팀·스킬 생성, 실제 호스트 도구를 확인한 실행 모드 선택,
-v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니다.
-`jeo-skill install revfactory-harness --global --yes`는 가이드와 오프라인 점검 도구만 복사하며
-업스트림 플러그인을 활성화하지 않습니다. 헬퍼는 공개 파일 18개의 해시를 검증하지만
-`runtime_verified: false`를 유지합니다. [설치·승인 경계](setup-all-skills-prompt.md#revfactory-harness-team-architecture-factory-on-demand)를
-확인하세요. 기존 `harness2`와 별개이며, 은퇴된 카탈로그 이름 `harness`를 복원하지 않습니다.
-
-## Elephant-Goldfish Model
-
-[`elephant-goldfish-model`](.agent-skills/elephant-goldfish-model/SKILL.md)은
-[Google Elephant-Goldfish Model](https://github.com/google/elephant-goldfish-model)의 설계·검토 흐름을 안내합니다.
-카탈로그 스킬 설치만으로 업스트림 플러그인이 활성화되지는 않습니다. 새로운 컨텍스트의 검토에는
-실제로 격리된 서브에이전트가 필요하며, 사람의 승인과 설치 경계를 지켜야 합니다.
-[설치 경계](setup-all-skills-prompt.md#elephant-goldfish-model-on-demand)를 확인하세요.
 
 ---
 

@@ -13,7 +13,7 @@
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-AC6415?style=flat-square&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-[Start](#-quick-start) · [Explore the workflow](#-how-it-works) · [Choose an installation](#-install-options) · [Find your runtime](#-supported-runtimes) · [Operate the router](#-router-cli) · [Manage installed skills](#-usage-tracking-and-cleanup) · [Integrations](#-optional-integrations) · [Catalog](#-skills-list)
+[Start](#-quick-start) · [How it works](#-how-it-works) · [Categories](#-categories) · [Install options](#-install-options) · [Runtimes](#-supported-runtimes) · [Router CLI](#-router-cli) · [Lifecycle](#-usage-tracking-and-cleanup) · [Integrations](#-optional-integrations) · [Catalog](#-skills-list)
 
 **English** · [한국어](README.ko.md) · [Español](README.es-ES.md)
 
@@ -56,12 +56,8 @@ jeo-skill install react-best-practices --global --dry-run   # preview
 jeo-skill install react-best-practices --global --yes      # install
 ```
 
-When a `jeo-skill install` selection includes `context7`, the router also provisions `ctx7@0.11.1` with npm (Node.js 22.20+ required), unless an existing `ctx7` is found. `--dry-run` previews without downloading. The project install lives under `.agents/context7`; the global install lives under `~/.local/share/jeo-skill/context7`. Add the selected directory's `node_modules/.bin` to `PATH` to use it. An occupied incomplete target fails rather than being overwritten. This installs a CLI, not an activated service: login, MCP registration, configuration writes and remote requests require separate approval. Direct `npx skills add` does not perform this provisioning.
-
-Automatic Context7 provisioning is unsupported on Windows and fails closed; separately installed guides and CLIs are not managed by that automatic path.
-
 > [!TIP]
-> Add `$HOME/.local/bin` to `PATH` if `jeo-skill` is not found after installation.
+> Add `$HOME/.local/bin` to `PATH` if `jeo-skill` is not found after installation. Selecting `context7` also provisions `ctx7@0.11.1` (Node.js 22.20+, non-Windows) and `install.sh` sets `JEO_SKILLS_STAR=true` by default — see [Install options](#-install-options) for boundaries and opt-outs.
 
 ## 🧭 How it works
 
@@ -113,30 +109,6 @@ The full, generated list is in [Skills list](#-skills-list).
 | A bundle or category slice | `jeo-skill install --bundle <bundle> --global --yes` or `--category <id> [--subcategory <id>]` |
 | Five program guides and one readiness report | `jeo-skill install --bundle github-five-programs --global --yes --setup`; the one-liner with `JEO_SKILLS_SELECTION=bundle JEO_SKILLS_BUNDLE=github-five-programs` prints the same report. Installation writes skill guidance; only the report is offline and read-only, and it does not install or run the upstream programs or ask for per-program approval |
 
-For the ten source-specific game-development guides, preview `jeo-skill install --bundle game-source-repositories --dry-run`. The guides cover physics, terrain, materials, effects, navigation, animation, graphics, meshes, and noise; they do not install or run the upstream tools. See the [setup boundaries](setup-all-skills-prompt.md#game-development-source-guides-on-demand) and [source licenses](docs/attribution.md).
-
-<details>
-<summary>Review source-specific operator guides</summary>
-
-
-For Lightpanda, preview `jeo-skill install lightpanda --global --dry-run` before installing
-the selected skill. It installs guidance, not the browser. The skill covers stable 1.0.2
-fetch, structured data, CDP and MCP; its offline doctor checks local metadata, not runtime
-compatibility. Browser download, installation, execution, site access, servers, credentials
-and provider calls require separate approval. See the [setup guide](setup-all-skills-prompt.md#lightpanda-browser-operator-on-demand).
-
-For Browser Use, preview `jeo-skill install browser-use --global --dry-run`. The skill provides guidance and offline preflight, not a browser or provider; installation, site access, cloud/model calls and account access are separate decisions. See the [setup guide](setup-all-skills-prompt.md#browser-use-operator-on-demand).
-
-For Flide decision inference, preview `jeo-skill install flide --global --dry-run`. The guide includes an offline preflight; package/model downloads, GPU use and server startup require separate approval. See the [setup guide](setup-all-skills-prompt.md#flide-decision-inference-on-demand).
-
-For Impeccable, preview `jeo-skill install impeccable --global --dry-run` before installing
-the selected skill. It installs an operator guide for `pbakaus/impeccable` 4.8.0, not
-Impeccable, its engine or its design hook; the upstream installer uses the same `impeccable`
-folder name, so run the offline doctor before either installer writes. npm execution, engine
-download and runs, the hook, browser scans and live mode require separate approval. See the [setup guide](setup-all-skills-prompt.md#impeccable-design-operator-on-demand).
-
-</details>
-
 Installer variables belong to `bash`, on the right side of the pipe:
 
 ```bash
@@ -148,14 +120,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 The shell dry run prints a bootstrap plan without installing files or tools; runtime support, account selection and catalog selections are validated during execution. After installing the router, use `jeo-skill install ... --dry-run` to resolve a catalog selection and preview its destinations. A preview does not verify host discovery or upstream readiness.
 
 <details>
-<summary>Default repository star behavior</summary>
-
-Starring `akillness/jeo-skills` is forcibly enabled by default during installation (`JEO_SKILLS_STAR=true` default, no interactive prompt). Set `JEO_SKILLS_STAR=false` to skip; a dry run (`JEO_SKILLS_DRY_RUN=true`) never performs GitHub writes. When enabled, `install.sh` uses authenticated `gh` to send a PUT and then GET for `akillness/jeo-skills`; a failed readback is reported as unverified and installation continues. A successful PUT may have starred the repository even when readback fails.
-
-</details>
-
-<details>
-<summary><b>Bundles</b> — curated starting sets</summary>
+<summary><b>Bundles</b> — 17 curated starting sets</summary>
 
 | Bundle | Skills |
 |---|---|
@@ -174,9 +139,30 @@ Starring `akillness/jeo-skills` is forcibly enabled by default during installati
 | `langchain` | langchain-fundamentals, langgraph-fundamentals, deep-agents-core, langsmith |
 | `knowledge-repositories` | 22 ontology, code-graph, memory and retrieval operators (`jeo-skill install --bundle knowledge-repositories --dry-run`) |
 | `ui-design-repositories` | 10 source-pinned UI operators (`jeo-skill install --bundle ui-design-repositories --dry-run`) |
+| `game-source-repositories` | 10 source-pinned game-dev tool operators (`jeo-skill install --bundle game-source-repositories --dry-run`) |
 | `github-five-programs` | fabric, moneyprinter-v2, agent-s, google-maps-scraper, gitingest: five open-source program operators, four of them source-pinned (`jeo-skill install --bundle github-five-programs --dry-run`) |
 
-Most repository-operator skills are guides with pinned sources; installing them does not install, run or connect the upstream projects. Context7 CLI provisioning is the exception described above; activation and connections still need separate approval.
+Most repository-operator skills are guides with pinned sources; installing them does not install, run or connect the upstream projects. Context7 CLI provisioning is the exception described below; activation and connections still need separate approval.
+
+</details>
+
+<details>
+<summary><b>On-demand boundaries</b> — source-pinned operators, Context7 & GitHub star</summary>
+
+| Skill / feature | Scope & boundary | Reference |
+|---|---|---|
+| `game-source-repositories` | 10 game-dev tool guides (physics, terrain, materials, VFX, nav, animation, meshes, noise); does not install or run upstream tools | [setup boundaries](setup-all-skills-prompt.md#game-development-source-guides-on-demand) · [licenses](docs/attribution.md) |
+| [`lightpanda`](.agent-skills/lightpanda/SKILL.md) | Guidance for Lightpanda 1.0.2 (fetch, CDP, MCP) + offline metadata doctor; browser install, site access, servers & credentials need separate approval | [setup guide](setup-all-skills-prompt.md#lightpanda-browser-operator-on-demand) |
+| [`browser-use`](.agent-skills/browser-use/SKILL.md) | Guidance + offline preflight only; package/browser install, site access, cloud/model calls & accounts need separate approval | [setup guide](setup-all-skills-prompt.md#browser-use-operator-on-demand) |
+| [`flide`](.agent-skills/flide/SKILL.md) | Decision-inference guide + offline preflight; model/package downloads, GPU use & server startup need separate approval | [setup guide](setup-all-skills-prompt.md#flide-decision-inference-on-demand) |
+| [`impeccable`](.agent-skills/impeccable/SKILL.md) | Operator guide for `pbakaus/impeccable` 4.8.0 (shares `impeccable` folder name — run offline doctor first); npm, engine, hook, browser scans & live mode need separate approval | [setup guide](setup-all-skills-prompt.md#impeccable-design-operator-on-demand) |
+| [`donchitos-game-studios`](.agent-skills/donchitos-game-studios/SKILL.md) | Pinned project-template operator (75 workflows + 3 aliases, offline 12-file check), not 78 global skills; cloning, `/adopt`, hooks & dependencies need separate approval | [research](.agent-skills/donchitos-game-studios/references/research.md) · [upstream](.agent-skills/donchitos-game-studios/references/upstream.md) · [setup](setup-all-skills-prompt.md#claude-code-game-studios-on-demand-project-template-not-global-skill-pack) |
+| [`revfactory-harness`](.agent-skills/revfactory-harness/SKILL.md) | Source-pinned operator for [revfactory/harness v2.1.0](https://github.com/revfactory/harness/tree/92d9f1b29e7af81acebf51a9fcd1832e739a1414) (18-file hash preflight, `runtime_verified: false`); distinct from `harness2` & retired `harness` | [setup boundary](setup-all-skills-prompt.md#revfactory-harness-team-architecture-factory-on-demand) |
+| [`elephant-goldfish-model`](.agent-skills/elephant-goldfish-model/SKILL.md) | Guides the [Google Elephant-Goldfish Model](https://github.com/google/elephant-goldfish-model) design/review flow; does not activate an upstream plugin, and fresh-context review requires isolated subagents | [setup boundary](setup-all-skills-prompt.md#elephant-goldfish-model-on-demand) |
+
+**Context7 CLI (`ctx7@0.11.1`):** When a `jeo-skill install` selection includes `context7`, the router provisions `ctx7@0.11.1` via npm (Node.js 22.20+ required, unless `ctx7` already exists; unsupported on Windows and fails closed; `--dry-run` skips download). Project installs go under `.agents/context7`, global installs under `~/.local/share/jeo-skill/context7` (add its `node_modules/.bin` to `PATH`; incomplete occupied targets fail rather than overwriting). Direct `npx skills add` skips this; login, MCP registration, config writes and remote calls require separate approval.
+
+**Default GitHub star (`JEO_SKILLS_STAR=true`):** `install.sh` stars `akillness/jeo-skills` by default via authenticated `gh` (PUT then GET readback; readback failures warn and continue). Set `JEO_SKILLS_STAR=false` to skip; `JEO_SKILLS_DRY_RUN=true` never writes to GitHub.
 
 </details>
 
@@ -334,7 +320,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | Integration | Purpose | Setup |
 |---|---|---|
 | **OpenSpace** | Optional local prompt-time skill finder and routing | [OpenSpace setup](setup-all-skills-prompt.md#openspace-skill-finder-and-prompt-time-skill-routing) |
-| **Jev** | Decision harness: BM25+metadata skill routing (hierarchical `SKILL.toon`/section assist), context/memory pruning, action & tool gating, moderation, run evaluation, and reranking | `bash jev/jev-setup.sh --profile <name> ...` · [jev/README.md](jev/README.md) |
+| **Jev** | Decision harness: hybrid BM25+metadata skill routing (optional `bge-m3` + `bge-reranker-v2-m3` v3 backends, hierarchical `SKILL.toon`/section assist), context/memory pruning, action & tool gating, moderation, and run evaluation | `bash jev/jev-setup.sh --profile <name> ...` · [jev/README.md](jev/README.md) |
 | **Jevgrep** | Remote discovery over selected skill or wiki documents | `jeo-skill explore "<question>" --root <dir> --dry-run` · [jevgrep](.agent-skills/jevgrep/SKILL.md) |
 
 These integrations are independent of catalog installation and of each other. Jev and Jevgrep can send data to a configured backend. In `jeo-skill`, commands that call them (`prune-unused --apply`, `usage relevance`, `explore`) refuse remote use without `--allow-remote`; the standalone Jev harness sends to its configured backend directly, so approve a hosted profile before using it. OpenSpace setup and host activation also require their own approval.
@@ -373,22 +359,6 @@ node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current 
 ```
 
 </details>
-
-## Claude Code Game Studios
-
-[`donchitos-game-studios`](.agent-skills/donchitos-game-studios/SKILL.md) adds a
-pinned operator for the named project template, not 78 standalone global skills.
-The [source-backed review](.agent-skills/donchitos-game-studios/references/research.md)
-separates 75 canonical workflows from three aliases and specification requirements
-from quality-score heuristics. Its offline helper checks twelve selected public
-files without running upstream code; static pass is not security or measured agent
-improvement. The `game-client` bundle includes the guide; template cloning, project
-merges, hooks, dependencies and evaluation remain separately approved operations.
-Upstream `/adopt` approval behavior varies by automation mode; approve the adoption
-plan independently. All four `/skill-test` modes inspect files without running the
-skill. See the [pinned operations](.agent-skills/donchitos-game-studios/references/upstream.md)
-and [upstream MIT attribution](docs/attribution.md).
-See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-demand-project-template-not-global-skill-pack).
 
 ## 📚 Skills List
 
@@ -1019,25 +989,6 @@ The manifest `.agent-skills/skills.json` is authoritative. Edit metadata there, 
 |---|---|
 | [jeo-code](https://github.com/akillness/jeo-code) | Coding agent that loads skills from the shared root |
 | [gajae-code (GJC)](https://github.com/akillness/gajae-code) | Agent runtime with its own native skills root |
-
-## Revfactory Harness team factory
-
-[`revfactory-harness`](.agent-skills/revfactory-harness/SKILL.md) adds a source-pinned
-operator for [revfactory/harness v2.1.0](https://github.com/revfactory/harness/tree/92d9f1b29e7af81acebf51a9fcd1832e739a1414):
-Claude Code team/skill generation, three capability-gated execution modes, v1 migration,
-and evidence-based `/harness:evolve`. Install with
-`jeo-skill install revfactory-harness --global --yes`; this copies the guide and offline
-helper, **not** the upstream plugin. The helper verifies 18 pinned public-file hashes
-and reports `runtime_verified: false`. See the [setup boundary](setup-all-skills-prompt.md#revfactory-harness-team-architecture-factory-on-demand).
-This is not `harness2`; the retired catalog name `harness` is not restored.
-
-## Elephant-Goldfish Model
-
-[`elephant-goldfish-model`](.agent-skills/elephant-goldfish-model/SKILL.md) guides the
-[Google Elephant-Goldfish Model](https://github.com/google/elephant-goldfish-model) design and review workflow.
-Installing this catalog skill does not activate the upstream plugin. Fresh-context review
-requires actual isolated subagents; preserve human approval and installation boundaries.
-See the [setup boundary](setup-all-skills-prompt.md#elephant-goldfish-model-on-demand).
 
 ---
 

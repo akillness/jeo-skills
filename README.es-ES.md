@@ -13,7 +13,7 @@
 [![Licencia](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 [![Invítame a un café](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-AC6415?style=flat-square&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-[Inicio rápido](#-inicio-rápido) · [Cómo funciona](#-cómo-funciona) · [Instalación](#-opciones-de-instalación) · [Entornos](#-entornos-compatibles) · [CLI](#-cli-del-enrutador) · [Ciclo de vida](#-seguimiento-de-uso-y-limpieza) · [Habilidades](#-lista-de-habilidades)
+[Inicio rápido](#-inicio-rápido) · [Cómo funciona](#-cómo-funciona) · [Categorías](#-categorías) · [Instalación](#-opciones-de-instalación) · [Entornos](#-entornos-compatibles) · [CLI](#-cli-del-enrutador) · [Ciclo de vida](#-seguimiento-de-uso-y-limpieza) · [Integraciones](#-integraciones-opcionales) · [Habilidades](#-lista-de-habilidades)
 
 [English](README.md) · [한국어](README.ko.md) · **Español**
 
@@ -44,9 +44,7 @@ El material creado por el proyecto se distribuye bajo la [licencia MIT](LICENSE)
 Read https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md in full and follow it to install the jeo-skills.
 ```
 
-La guía detecta tu sistema operativo y tus agentes. Su modo `full` predeterminado instala todo el catálogo y las siete herramientas CLI fijadas, y prepara de forma predeterminada la nueva bóveda `second-brain` (`~/vaults/jeo-second-brain`) junto con la configuración del espacio de trabajo (`JEO_SKILLS_SECOND_BRAIN=skip` para omitir); confirma primero el alcance global. Pide «core only» para instalar el paquete `starter` (incluyendo `obsidian-second-brain`) o «minimal» para instalar solo el enrutador. Los hooks y proveedores externos mantienen sus propios límites de configuración.
-
-La estrella de GitHub para `akillness/jeo-skills` está habilitada de forma predeterminada (`JEO_SKILLS_STAR=true`, sin pregunta interactiva). Define `JEO_SKILLS_STAR=false` para omitirla; el modo de prueba nunca realiza la acción. El instalador envía PUT y GET con `gh` para comprobar `akillness/jeo-skills`; si no puede verificarla, lo comunica y continúa.
+La guía detecta tu sistema operativo y tus agentes. Su modo `full` predeterminado instala todo el catálogo y las siete herramientas CLI fijadas, y prepara la nueva bóveda `second-brain` (`~/vaults/jeo-second-brain`, opt-out con `JEO_SKILLS_SECOND_BRAIN=skip`) junto con la estrella de GitHub (`JEO_SKILLS_STAR=true` por defecto, `false` para omitir) tras confirmar el alcance global; pide «core only» para instalar el paquete `starter` (incluyendo `obsidian-second-brain`) o «minimal» para instalar solo el enrutador. La activación del espacio de trabajo, memoria, contexto, bases de datos y enrutamiento conservan sus opt-outs y requisitos previos, y las bóvedas existentes (como `~/vaults/llm-wiki`) no se modifican. Consulta la [guía completa de configuración](setup-all-skills-prompt.md) para conocer los límites exactos.
 
 **Opción B: instala el enrutador y luego elige las habilidades.**
 
@@ -58,14 +56,12 @@ jeo-skill install react-best-practices --global --dry-run   # previsualiza
 jeo-skill install react-best-practices --global --yes      # instala
 ```
 
-Si una selección de `jeo-skill install` incluye `context7`, el enrutador también instala `ctx7@0.11.1` con npm (requiere Node.js 22.20 o posterior), salvo que ya encuentre `ctx7`. `--dry-run` previsualiza sin descargar. El destino de proyecto es `.agents/context7` y el global es `~/.local/share/jeo-skill/context7`; añade el `node_modules/.bin` correspondiente a `PATH`. Si el destino existente está incompleto, la instalación falla sin sobrescribirlo. Instalar la CLI no activa el servicio: el inicio de sesión, el registro MCP, los cambios de configuración y las solicitudes externas requieren aprobación separada. `npx skills add` directamente no instala esta CLI.
-
-La instalación automática de Context7 no está admitida en Windows y falla de forma segura; las guías y CLI instaladas por separado no forman parte de esa ruta automática.
-
 > [!TIP]
-> Añade `$HOME/.local/bin` a `PATH` si `jeo-skill` no se encuentra después de la instalación.
+> Añade `$HOME/.local/bin` a `PATH` si `jeo-skill` no se encuentra después de la instalación. Al seleccionar `context7` también se instala `ctx7@0.11.1` (Node.js 22.20+, no compatible en Windows) y `install.sh` activa `JEO_SKILLS_STAR=true` de forma predeterminada; consulta [Opciones de instalación](#-opciones-de-instalación) para ver los límites y exclusiones.
 
 ## 🧭 Cómo funciona
+
+<img src="assets/how-it-works.webp" alt="Flujo de cinco pasos desde el catálogo de habilidades pasando por selección, instalación y verificación hasta el host del agente, con enrutamiento opcional OpenSpace, plano de control Jev y Jevgrep, y la nota de que colocar archivos no activa un host ni autoriza a un proveedor" width="100%">
 
 <details>
 <summary>Seguir el camino desde el catálogo hasta el host</summary>
@@ -80,6 +76,8 @@ El flujo separa selección, instalación y activación: cada paso tiene su propi
 </details>
 
 ## 🗂 Categorías
+
+<img src="assets/catalog-map.webp" alt="Diez categorías de habilidades en mosaicos luminosos: Web, Infraestructura, Juegos, Medios Creativos, Herramientas CLI, IA y Agentes, Ingeniería, Investigación y Análisis, Negocios y Utilidades, con sus subcategorías" width="100%">
 
 Explora una categoría con su comando o despliega la lista generada más abajo.
 
@@ -100,44 +98,19 @@ La lista completa y generada está en [Lista de Habilidades](#-lista-de-habilida
 
 ## 📦 Opciones de instalación
 
-<details>
-<summary>Elegir alcance, paquetes y opciones de instalación</summary>
-
 | Objetivo | Cómo |
 |---|---|
 | Todo, guiado por tu agente | Pega el prompt de configuración de [Inicio rápido](#-inicio-rápido) |
 | Solo el enrutador (predeterminado) | la línea única tal cual |
 | Enrutador + paquete `starter` | línea única con `JEO_SKILLS_SELECTION=bundle` |
-| Todo el catálogo sin configuración opcional | `jeo-skill install --all --global --yes` (sin `--setup`; incluye la instalación de Context7 descrita arriba) |
+| Instalación completa con herramientas y espacio de trabajo | línea única con `JEO_SKILLS_SELECTION=all`; requiere alcance global para las herramientas compartidas, y el alcance de proyecto devuelve fallo parcial |
+| Todo el catálogo sin configuración opcional | `jeo-skill install --all --global --yes` (omite `--setup` y `--with-hooks`; incluye la CLI de Context7 descrita abajo) |
 | Solo el proyecto actual | línea única con `INSTALL_GLOBAL=false` |
 | Previsualizar sin cambios | línea única con `JEO_SKILLS_DRY_RUN=true` |
-| Instalación completa con herramientas y espacio de trabajo | línea única con `JEO_SKILLS_SELECTION=all`; ejecuta también los pasos globales de herramientas y configuración del espacio de trabajo |
 | Habilidades específicas | `jeo-skill install <name> [<name> ...] --global --yes` |
 | Habilidades específicas con configuración/smoke | `jeo-skill install <name> ... --global --yes --setup` (añade `--with-hooks` solo para pasos de hook compatibles; consulta los límites de cada herramienta en la [guía de instalación](setup-all-skills-prompt.md#step-5--full-mode-shared-tools)) |
 | Un paquete o segmento de categoría | `jeo-skill install --bundle <bundle> --global --yes` o `--category <id> [--subcategory <id>]` |
 | Cinco programas de GitHub y un informe de preparación | `jeo-skill install --bundle github-five-programs --global --yes --setup`; la línea única con `JEO_SKILLS_SELECTION=bundle JEO_SKILLS_BUNDLE=github-five-programs` imprime el mismo informe. El comando instala las guías de habilidades; solo el informe de preparación es sin conexión y de solo lectura: no instala ni ejecuta los programas originales ni pide aprobación por programa |
-
-Con `INSTALL_GLOBAL=false`, la línea única limita los archivos de habilidades al proyecto y no añade `jeo-skill` a `PATH`. Si además eliges `JEO_SKILLS_SELECTION=all`, omite las herramientas globales y devuelve un resultado parcial con código de salida distinto de cero. Si ya tienes instalado el enrutador global `jeo-skill`, usa `jeo-skill install --all --yes` para instalar todas las guías en el proyecto sin esos pasos.
-
-Para las diez guías de herramientas de desarrollo de juegos, previsualiza `jeo-skill install --bundle game-source-repositories --dry-run`. Cubren física, terreno, materiales, efectos, navegación, animación, gráficos, mallas y ruido; no instalan ni ejecutan las herramientas originales. Consulta los [límites de instalación](setup-all-skills-prompt.md#game-development-source-guides-on-demand) y las [licencias de las fuentes](docs/attribution.md).
-
-Para Lightpanda, previsualiza la selección con `jeo-skill install lightpanda --global --dry-run`
-antes de instalar la habilidad. Se instalan instrucciones, no el navegador. La habilidad cubre
-fetch, datos estructurados, CDP y MCP de la versión estable 1.0.2; su diagnóstico sin conexión
-revisa metadatos locales, no la compatibilidad en ejecución. La descarga, instalación y ejecución
-del navegador, el acceso a sitios, los servidores, las credenciales y las llamadas a proveedores
-requieren aprobación por separado. Consulta la [guía de instalación](setup-all-skills-prompt.md#lightpanda-browser-operator-on-demand).
-
-Para Browser Use, previsualiza `jeo-skill install browser-use --global --dry-run`. La habilidad incluye instrucciones y una comprobación previa sin conexión, no el paquete ni un navegador; la instalación, el acceso a sitios, las llamadas a modelos o servicios en la nube y el acceso a cuentas requieren decisiones separadas. Consulta la [guía de instalación](setup-all-skills-prompt.md#browser-use-operator-on-demand).
-
-Para Flide, previsualiza `jeo-skill install flide --global --dry-run`. La guía incluye una comprobación previa sin conexión; la descarga de paquetes o modelos, el uso de GPU y el arranque de servidores requieren aprobación por separado. Consulta la [guía de instalación](setup-all-skills-prompt.md#flide-decision-inference-on-demand).
-
-Para Impeccable, previsualiza la selección con `jeo-skill install impeccable --global --dry-run`
-antes de instalar la habilidad. Se instala una guía de operación para `pbakaus/impeccable` 4.8.0,
-no Impeccable, su motor ni su hook de diseño; el instalador original usa la misma carpeta
-`impeccable`, así que ejecuta el diagnóstico sin conexión antes de que cualquiera de los dos escriba.
-La ejecución de npm, la descarga y ejecución del motor, el hook, los escaneos con navegador y el
-modo live requieren aprobación por separado. Consulta la [guía de instalación](setup-all-skills-prompt.md#impeccable-design-operator-on-demand).
 
 Las variables del instalador pertenecen a `bash`, en el lado derecho de la tubería:
 
@@ -147,8 +120,10 @@ curl -fsSL "$URL" | JEO_SKILLS_SELECTION=bundle bash
 curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 ```
 
+La previsualización de `install.sh` solo imprime el plan de arranque sin instalar archivos ni herramientas; el soporte del entorno, la selección de cuenta y la del catálogo se validan durante la ejecución. Después de instalar el enrutador, usa `jeo-skill install ... --dry-run` para previsualizar destinos. Una previsualización no verifica el descubrimiento por el host ni la disponibilidad upstream.
+
 <details>
-<summary><b>Paquetes</b> — conjuntos iniciales seleccionados</summary>
+<summary><b>Paquetes</b> — 17 conjuntos iniciales seleccionados</summary>
 
 | Paquete | Habilidades |
 |---|---|
@@ -167,11 +142,30 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 | `langchain` | langchain-fundamentals, langgraph-fundamentals, deep-agents-core, langsmith |
 | `knowledge-repositories` | 22 operadores de ontología, grafos de código, memoria y recuperación (`jeo-skill install --bundle knowledge-repositories --dry-run`) |
 | `ui-design-repositories` | 10 guías de operación de interfaces con fuentes fijadas (`jeo-skill install --bundle ui-design-repositories --dry-run`) |
+| `game-source-repositories` | 10 guías de herramientas de desarrollo de juegos con fuentes fijadas (`jeo-skill install --bundle game-source-repositories --dry-run`) |
 | `github-five-programs` | fabric, moneyprinter-v2, agent-s, google-maps-scraper, gitingest: cinco operadores de programas de código abierto, cuatro con fuentes fijadas (`jeo-skill install --bundle github-five-programs --dry-run`) |
 
-La mayoría de las habilidades operadoras documentan repositorios sin instalar, ejecutar ni conectar los proyectos originales. La instalación de la CLI de Context7 descrita arriba es una excepción; la activación y conexión requieren aprobación separada.
+La mayoría de las habilidades operadoras documentan repositorios con fuentes fijadas sin instalar, ejecutar ni conectar los proyectos originales. La instalación de la CLI de Context7 descrita abajo es una excepción; la activación y conexión requieren aprobación separada.
 
 </details>
+
+<details>
+<summary><b>Límites bajo demanda</b> — operadores fijados por fuente, Context7 y estrella de GitHub</summary>
+
+| Habilidad / función | Alcance y límite de aprobación | Referencia |
+|---|---|---|
+| `game-source-repositories` | 10 guías de desarrollo de juegos (física, terreno, materiales, VFX, navegación, animación, gráficos, mallas, ruido); no instala ni ejecuta herramientas upstream | [límites de instalación](setup-all-skills-prompt.md#game-development-source-guides-on-demand) · [licencias](docs/attribution.md) |
+| [`lightpanda`](.agent-skills/lightpanda/SKILL.md) | Guía para Lightpanda 1.0.2 (fetch, CDP, MCP) + diagnóstico local sin conexión; descarga del navegador, acceso a sitios, servidores y credenciales requieren aprobación | [guía de instalación](setup-all-skills-prompt.md#lightpanda-browser-operator-on-demand) |
+| [`browser-use`](.agent-skills/browser-use/SKILL.md) | Guía + comprobación previa sin conexión; instalación, acceso a sitios, llamadas cloud/modelo y cuentas requieren decisiones separadas | [guía de instalación](setup-all-skills-prompt.md#browser-use-operator-on-demand) |
+| [`flide`](.agent-skills/flide/SKILL.md) | Guía de inferencia de decisiones + comprobación sin conexión; descarga de paquetes/modelos, GPU y arranque de servidores requieren aprobación | [guía de instalación](setup-all-skills-prompt.md#flide-decision-inference-on-demand) |
+| [`impeccable`](.agent-skills/impeccable/SKILL.md) | Guía para `pbakaus/impeccable` 4.8.0 (comparte la carpeta `impeccable` — ejecuta doctor sin conexión antes); npm, motor, hook, navegador y modo live requieren aprobación | [guía de instalación](setup-all-skills-prompt.md#impeccable-design-operator-on-demand) |
+| [`donchitos-game-studios`](.agent-skills/donchitos-game-studios/SKILL.md) | Operador de plantilla fijado (75 flujos + 3 alias, inspección sin conexión de 12 archivos), no 78 habilidades globales; clonar, `/adopt`, hooks y dependencias requieren aprobación | [investigación](.agent-skills/donchitos-game-studios/references/research.md) · [upstream](.agent-skills/donchitos-game-studios/references/upstream.md) · [guía](setup-all-skills-prompt.md#claude-code-game-studios-on-demand-project-template-not-global-skill-pack) |
+| [`revfactory-harness`](.agent-skills/revfactory-harness/SKILL.md) | Operador fijado en [revfactory/harness v2.1.0](https://github.com/revfactory/harness/tree/92d9f1b29e7af81acebf51a9fcd1832e739a1414) (verificación de 18 archivos públicos, `runtime_verified: false`); distinto de `harness2` y del retirado `harness` | [límites de instalación](setup-all-skills-prompt.md#revfactory-harness-team-architecture-factory-on-demand) |
+| [`elephant-goldfish-model`](.agent-skills/elephant-goldfish-model/SKILL.md) | Guía el flujo de diseño/revisión de [Google Elephant-Goldfish Model](https://github.com/google/elephant-goldfish-model); no activa el plugin original y la revisión requiere subagentes aislados | [límites de instalación](setup-all-skills-prompt.md#elephant-goldfish-model-on-demand) |
+
+**Context7 CLI (`ctx7@0.11.1`):** Si una selección de `jeo-skill install` incluye `context7`, el enrutador instala `ctx7@0.11.1` con npm (requiere Node.js 22.20+; no compatible en Windows; `--dry-run` no descarga). El destino de proyecto es `.agents/context7` y el global `~/.local/share/jeo-skill/context7` (añade su `node_modules/.bin` a `PATH`; un destino incompleto falla sin sobrescribirse). `npx skills add` directo no realiza esta instalación; el inicio de sesión, registro MCP, cambios de configuración y solicitudes externas requieren aprobación separada.
+
+**Estrella predeterminada en GitHub (`JEO_SKILLS_STAR=true`):** `install.sh` marca con estrella `akillness/jeo-skills` de forma predeterminada usando `gh` autenticado (PUT y GET de verificación; si falla la lectura, informa y continúa). Define `JEO_SKILLS_STAR=false` para omitirla; `JEO_SKILLS_DRY_RUN=true` nunca realiza escrituras en GitHub.
 
 </details>
 
@@ -240,6 +234,8 @@ Desde este repositorio, el catálogo local permite previsualizar sin descargarlo
 
 ## 🧹 Seguimiento de uso y limpieza
 
+<img src="assets/skill-lifecycle.webp" alt="Ciclo de vida de las habilidades en tres carriles: seguimiento (usage scan, resumen local, used, protected, in grace, candidate), limpieza local (previsualización prune-unused, aplicación con revisión Jev, lote en cuarentena, restauración o purga) y mantenimiento (retire-unused-skills.py, nombres aprobados, regeneración y validación, reversión ante fallos)" width="100%">
+
 <details>
 <summary>Revisar el uso observado y gestionar la cuarentena</summary>
 
@@ -276,6 +272,48 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 
 </details>
 
+## 🔄 Mantener las habilidades actualizadas
+
+<details>
+<summary>Actualizar la raíz compartida y reconciliar hosts con enlaces simbólicos</summary>
+
+En instalaciones configuradas con enlaces simbólicos por habilidad hacia la raíz compartida (`~/.agents/skills`), actualiza **solo la raíz compartida** y luego reconcilia los enlaces de cada host. La [guía de instalación](setup-all-skills-prompt.md) también admite copias nativas, por lo que no todas las instalaciones completas usan este diseño; los instaladores por host rechazan destinos con enlaces simbólicos para no sobrescribirlos.
+
+```bash
+bash scripts/skills-upgrade.sh              # pull → doctor → refresh → prune → reconcile → verify
+bash scripts/skills-upgrade.sh --dry-run    # planificar sin escribir
+python3 scripts/refresh-host-links.py       # solo plan de enlaces (solo lectura)
+```
+
+Qué hace cada paso:
+
+1. `git pull --ff-only` en la copia de confianza: cualquier cambio que no sea fast-forward detiene la ejecución
+2. `jeo-skill doctor` informa metadatos del catálogo, prerrequisitos y estado del enlace CLI (informativo, no ejecuta validadores de proyección)
+3. `jeo-skill install --all --global --yes` actualiza la raíz compartida con el catálogo más reciente (y `scripts/skills-upgrade.sh` refresca instantáneas no simbólicas de `~/.agents/jev/skills.json`)
+4. `jeo-skill prune-retired --global` retira copias obsoletas de habilidades retiradas
+5. `scripts/refresh-host-links.py --apply` crea enlaces para habilidades nuevas, elimina enlaces rotos y **nunca borra habilidades locales fuera del catálogo**
+6. verificación: escaneo de enlaces rotos en las raíces conocidas de los hosts configurados (se omite en `--dry-run`)
+
+| Opción | Efecto |
+|---|---|
+| `--hosts <lista>` | Anular hosts (predeterminado `claude,pi,gjc,antigravity,cursor,aside-user,opencode-config`) |
+| `--skip-pull` | Omitir `git pull`; los pasos de instalación posteriores pueden seguir necesitando red |
+| `--replace-copies` | Convertir también copias reales obsoletas en enlaces (poniéndolas primero en cuarentena) |
+| `SKILLS_UPGRADE_HOSTS` | Lista predeterminada de hosts por variable de entorno |
+
+Las copias de directorio reemplazadas pasan a cuarentena en `~/.local/state/jeo-skill/quarantine/upgrade-<UTC>/`. Los enlaces obsoletos se desenlazan y los enlaces gestionados incorrectos se recrean en su sitio.
+
+### Actualización programada
+
+`scripts/com.jeo-skills.skills-upgrade.plist` es una plantilla de launchd que ejecuta la actualización semanalmente (lunes 09:30) con registros en `~/.local/state/jeo-skill/upgrade.log`. Si falta `npx` en `PATH`, el script busca un binario de Node gestionado por nvm:
+
+```bash
+cp scripts/com.jeo-skills.skills-upgrade.plist ~/Library/LaunchAgents/
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-upgrade.plist
+```
+
+</details>
+
 ## 🔌 Integraciones opcionales
 
 <details>
@@ -283,10 +321,11 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 
 | Integración | Propósito | Configuración |
 |---|---|---|
-| **Jev** | Arnés de decisiones: enrutamiento de habilidades BM25+metadatos (inyección jerárquica `assist` con `SKILL.toon`/secciones), poda de contexto/memoria, control de acciones y herramientas, moderación, evaluación de ejecuciones y reranking | `bash jev/jev-setup.sh --profile <name> ...` · [jev/README.md](jev/README.md) |
+| **OpenSpace** | Buscador y enrutamiento local opcional de habilidades al inicio del prompt | [Configuración de OpenSpace](setup-all-skills-prompt.md#openspace-skill-finder-and-prompt-time-skill-routing) |
+| **Jev** | Arnés de decisiones: enrutamiento híbrido BM25+metadatos (backends locales opcionales v3 `bge-m3` + `bge-reranker-v2-m3`, inyección jerárquica `SKILL.toon`/secciones `assist`), poda de contexto/memoria, control de acciones y herramientas, moderación y evaluación | `bash jev/jev-setup.sh --profile <name> ...` · [jev/README.md](jev/README.md) |
 | **Jevgrep** | Descubrimiento remoto sobre documentos seleccionados de habilidades o de la wiki | `jeo-skill explore "<question>" --root <dir> --dry-run` · [jevgrep](.agent-skills/jevgrep/SKILL.md) |
 
-Ninguna forma parte de la instalación del catálogo. Ambas pueden enviar datos a un backend configurado. En `jeo-skill`, los comandos que las llaman (`prune-unused --apply`, `usage relevance`, `explore`) rechazan el uso remoto sin `--allow-remote`; el arnés Jev independiente envía directamente a su backend configurado, así que aprueba un perfil alojado antes de usarlo.
+Estas integraciones son independientes de la instalación del catálogo y entre sí. Jev y Jevgrep pueden enviar datos a un backend configurado. En `jeo-skill`, los comandos que las llaman (`prune-unused --apply`, `usage relevance`, `explore`) rechazan el uso remoto sin `--allow-remote`; el arnés Jev independiente envía directamente a su backend configurado, así que aprueba un perfil alojado antes de usarlo. La configuración y activación de OpenSpace también requieren aprobación propia.
 
 ### Perfiles de Jev por agente
 
@@ -323,21 +362,6 @@ node ~/.agents/jev/jev-harness.mjs --profile "$JEV_PROFILE" status
 Consulta la [guía de instalación](setup-all-skills-prompt.md#jev-control-plane-harness-system-one) y [jev/README.md](jev/README.md) para conocer los detalles.
 
 </details>
-
-## Claude Code Game Studios
-
-[`donchitos-game-studios`](.agent-skills/donchitos-game-studios/SKILL.md) opera
-la plantilla del proyecto en una revisión fija; no instala 78 habilidades globales.
-La [investigación](.agent-skills/donchitos-game-studios/references/research.md)
-distingue 75 flujos canónicos y tres alias, la especificación y las heurísticas.
-El helper comprueba doce archivos públicos sin ejecutar código upstream. La guía
-está en `game-client`; clonar, fusionar proyectos, activar hooks, instalar dependencias
-y evaluar modelos requieren aprobación separada. Consulta la
-[guía de instalación](setup-all-skills-prompt.md#claude-code-game-studios-on-demand-project-template-not-global-skill-pack).
-La aprobación de `/adopt` depende del modo de automatización: aprueba el plan de
-adopción por separado. Los cuatro modos de `/skill-test` inspeccionan archivos sin
-ejecutar la habilidad. Consulta las [operaciones fijadas](.agent-skills/donchitos-game-studios/references/upstream.md)
-y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 
@@ -971,187 +995,46 @@ Las fuentes originales y las licencias de las habilidades adaptadas se indican e
 | [jeo-code](https://github.com/akillness/jeo-code) | Agente de codificación que carga habilidades desde la raíz compartida |
 | [gajae-code (GJC)](https://github.com/akillness/gajae-code) | Entorno de agente con su propia raíz nativa de habilidades |
 
-## Fábrica de equipos Revfactory Harness
-
-[`revfactory-harness`](.agent-skills/revfactory-harness/SKILL.md) opera
-[revfactory/harness v2.1.0](https://github.com/revfactory/harness/tree/92d9f1b29e7af81acebf51a9fcd1832e739a1414):
-creación de agentes y habilidades de Claude Code, modos condicionados a las herramientas
-reales del host, migración de v1 y evolución con `/harness:evolve` basada en evidencia.
-`jeo-skill install revfactory-harness --global --yes` copia la guía y la preflight offline,
-no activa el plugin upstream. La preflight verifica hashes de 18 archivos públicos y
-mantiene `runtime_verified: false`. Consulta los [límites de instalación](setup-all-skills-prompt.md#revfactory-harness-team-architecture-factory-on-demand).
-Es distinto de `harness2`; el nombre retirado `harness` no se restaura.
-
-## Elephant-Goldfish Model
-
-[`elephant-goldfish-model`](.agent-skills/elephant-goldfish-model/SKILL.md) guía el flujo
-de diseño y revisión de [Google Elephant-Goldfish Model](https://github.com/google/elephant-goldfish-model).
-Instalar esta habilidad del catálogo no activa el plugin original. La revisión con contexto
-nuevo requiere subagentes realmente aislados; respeta los límites de aprobación e instalación.
-Consulta los [límites de instalación](setup-all-skills-prompt.md#elephant-goldfish-model-on-demand).
-
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 Novedades en v2026-11-24
+
+| Cambio | Detalles |
+|--------|---------|
+| **Elementos visuales del README regenerados con la app de Gemini** | Se reemplazaron la portada y los tres diagramas con ilustraciones 16:9 generadas con Gemini (modo Imagen) en la misma paleta índigo oscuro/cian/violeta, usando las imágenes de `jeo-code` y `jeopi` como referencia de personajes: `assets/readme-cover.webp`, `assets/how-it-works.webp`, `assets/catalog-map.webp` y `assets/skill-lifecycle.webp` (se retiraron los `.svg` escritos a mano). Etiquetas verificadas frente a `README.md`, `skills.json` y comandos `jeo-skill`; procedencia registrada en `assets/readme-visuals.json`. Solo documentación. |
+| **El catálogo crece a 474 habilidades** | Añade `fast-anything`, `opencompass`, `vespa`, `mobile-agent-testers`, `langfuse`, `artex`, `vercel-agent-ui` y `mroffice`, además de las 15 habilidades de juegos, 3D e IA creativa que llevaron el catálogo a 466. Los tres inventarios README, `skills.json` y `SKILL.toon` están regenerados desde el manifiesto (`validate-catalog-projections.py` confirma 474 habilidades y 10 categorías). |
+| **Enrutamiento híbrido de habilidades Jev v3** | Añade embeddings `bge-m3` y reranking `bge-reranker-v2-m3` como backends locales gestionados por launchd (`jev/com.jeo-skills.bge-m3-embed.plist`, `jev/com.jeo-skills.bge-reranker-v2-m3.plist`), `scripts/build-skill-routing-index.mjs`, conjunto de prompts dorados con líneas base en `jev/routing-eval/`, automatización en `jev-setup.sh` y un hook consciente de abstención que informa cuando no hay una coincidencia segura en el catálogo. |
+| **Instalador: proyección `ctx` y cableado de conocimiento** | `jeo-skill install` conecta la proyección de contexto del host, la CLI de ciclo de vida `ctx` y hooks portables; se conectan CRUD, búsqueda, embeddings y registro MCP de second-brain y ontologías al instalar; el sha256 fijado de `install.sh` vuelve a coincidir con el instalador confirmado. |
 
 ## 🆕 Novedades en v2026-11-19
 
 | Cambio | Detalles |
 |--------|---------|
-| **Cola local multisesión `jev-gateway` y proxy de fusión (`:8017` → `:18017`)** | Añade `jev/jev-gateway.mjs` + `jev/com.jeo-skills.qev-gateway.plist` y los integra en `jev-setup.sh`, `scripts/skills-upgrade.sh`, `jev-harness.mjs` y `jev-plugin.mjs`: planificación por 3 carriles de prioridad (`P0` > `P1` > `P2` con envejecimiento), equidad DRR por sesión (`X-Jev-Session-Id`), fusión single-flight + caché LRU en RAM, cancelación anticipada por plazo/desconexión, alivio de carga `P2` (`503 Retry-After`) y `GET /jev/queue-metrics` (`jev/gateway.test.mjs`). |
-| **Cinco nuevas habilidades de UI para IA, OCR en CPU y radar de términos (449 en total)** | Añade `affectui` (`flohoeller/affectui` @ `60308e4e`), `open-intelligent-ui` (`thesysdev/open-intelligent-ui` @ `dd45370b`), `solid-glass` (`deeplethe/solid-glass` @ `6e8903e4`), `indra` (`datalab-to/indra` @ `ca81e18f`) y `new-term-radar` (`zhuyansen/new-term-radar` @ `6ae52fc0`), cada una con `SKILL.md`, `SKILL.toon`, `references/` + `sources.md`, `evals/evals.json`, ayudantes offline `scripts/preflight.py` y pruebas de regresión (`scripts/test_five_new_skills_preflight.py`). El catálogo de 449 habilidades, los tres inventarios README y `setup-all-skills-prompt.md` están sincronizados. |
+| **Cola local multisesión `jev-gateway` y proxy de fusión (`:8017` → `:18017`)** | Añade `jev/jev-gateway.mjs` + `jev/com.jeo-skills.qev-gateway.plist` y endurecimiento de servicio sin fugas ni bloqueos en gateway, harness, plugin y controladores: planificación por 3 carriles (`P0` > `P1` > `P2` con envejecimiento), equidad DRR por sesión (`X-Jev-Session-Id`), fusión single-flight + caché LRU de 32 MiB, keep-alive pooling, alivio de carga `P2` (`503 Retry-After`) y cachés TTL de hooks en `jev-plugin.mjs`. |
+| **Cinco nuevas habilidades de UI para IA, OCR en CPU y radar de términos (449 en total)** | Añade `affectui`, `open-intelligent-ui`, `solid-glass`, `indra` y `new-term-radar`, cada una con `SKILL.md`, `SKILL.toon`, `references/` + `sources.md`, `evals/evals.json`, ayudantes offline `scripts/preflight.py` y pruebas de regresión. |
+| **Unificación de `setup-all-skills-prompt.md` y paridad `jeo`** | Consolida `setup.md` en `setup-all-skills-prompt.md` y añade cobertura de hooks y MCP para `jeo` (`hooks-install --agent jeo`, `setup-mcp-hosts.py`). |
 
 ## 🆕 Novedades en v2026-11-17
 
 | Cambio | Detalles |
 |--------|---------|
-| **Operador Rust Anything para reescritura incremental de bases de código y verificación diferencial** | Añadida la guía `rust-anything`, fijada al commit `075335cf4b05f51c82fcf389acd3003266a32fc6`, con puente FFI incremental mediante el patrón Strangler Fig (PyO3, napi-rs, C-ABI), verificación de comportamiento por grabación y reproducción (golden records) en CLI y servicios HTTP, calibración de tolerancias y preflight de espacio de trabajo sin conexión. El catálogo de 444 habilidades, tres inventarios README y la guía de setup están sincronizados. |
-| **Operador Arnis para generación de vóxeles de Minecraft desde OpenStreetMap** | Añadida la guía `arnis`, fijada al commit `95594dbb5164d67d9a25a410a74c16f3c99b0d0d`, con análisis de entidades vectoriales de OpenStreetMap, escalado de elevación DEM, extrusión de edificios y tejados, paletas de bloques JSON personalizadas, exportación a región Anvil (`.mca`) y esquemáticos de WorldEdit (`.schem`) y preflight sin conexión con validación de cajas delimitadoras. El catálogo de 442 habilidades, tres inventarios README y la guía de setup están sincronizados. |
-| **Operador MiniMind para entrenamiento y alineación de LLM desde cero** | Añadida la guía `minimind`, fijada al commit `233d00fa068ec2b8c0d4f07b703934d6391a5a73`, con arquitecturas Transformer y MoE compactas (26M a 104M parámetros), preentrenamiento causal, ajuste fino completo y LoRA, optimización directa de preferencias (DPO), destilación de razonamiento (tokens `<think>`), exportación a GGUF y preflight sin conexión con estimación de parámetros. El catálogo de 441 habilidades, tres inventarios README y la guía de setup están sincronizados. |
-| **Indexación SSOT de metadatos Jev, prefiltrado BM25+IDF e inyección `assist` en 3 niveles** | Mantiene la regla SSOT de `AGENTS.md` (`category`, `subcategory`, `tags` y `relationships` viven solo en `.agent-skills/skills.json`) mientras `loadCatalog` y `resolveExcerptRoot` indexan las 440 habilidades (`relationship_groups` incluido) junto con el frontmatter auxiliar de `SKILL.md` (`compatibility`, `permissions`, `allowed-tools`, `triggers` y disparadores en la descripción). `skillMetadataAndExcerpt` prioriza resúmenes compactos `SKILL.toon` (`extractToonExcerpt`) o secciones clave de `SKILL.md` (`Triggers` / `When to Use` / `Route-outs` / `Non-goals` / `Constraints`) serializadas dentro del límite del backend mediante `budgetCandidates`. Con `--prefilter auto`, los catálogos con `>= 64` habilidades comprimen candidatos con BM25/IDF bilingüe KO/EN (`name > tags/triggers > category/subcategory > description/relationships`) unificado con el prior BM25 local de OpenSpace (`openspace/scripts/route_prompt.py --json`, `OPENSPACE_PRIOR_WEIGHT = 3.0`, desactivable con `--no-openspace-prior` / `JEV_OPENSPACE_PRIOR=0`) antes de la verificación Jev `which` + `fits::<name>` (con respaldo `sharded` anotado si no hay coincidencias léxicas y `shards <= 4`), enriqueciendo `route-skills` `topK` con `subcategory`, `tags`, `relationships`, `permissions`, `path` resuelto y `toonPath`/`allowedTools`/`compatibility`. La inyección `assist` en `jev-plugin.mjs` (`selectedSkillContext`) usa 3 niveles (`SKILL.toon` → metadatos y secciones clave con `Source:` para `SKILL.md` `> 1.536` bytes → cuerpo completo en habilidades compactas) con respaldo a OpenSpace ante fallos de backend Jev, y `scripts/skills-upgrade.sh` mantiene al día la copia `~/.agents/jev/skills.json`. |
-| **Expansión CLI de los 7 casos de uso System One en Jev y control por nivel** | Añade `decide-action` (selección acotada de acción UI/navegador, degradada a `confirm` en backends no validados), `route-model` (clasificación de complejidad y selección de nivel de modelo), `gate-tool` (compuerta previa de herramientas acotada por `choiceCap`, degradada en backends no validados), `moderate --scope untrusted` (detección de inyección indirecta), `evaluate-run --detailed` (`qualityGrade` y `failureCategory`), `calibrate-judge` (TPR/TNR), `manage-memory --score-importance` y `rerank` híbrido BM25 + calificación gradual. |
+| **Operadores `rust-anything`, `arnis` y `minimind` (hasta 444 habilidades)** | Añade `rust-anything` (reescritura incremental con Strangler Fig y verificación diferencial), `arnis` (OpenStreetMap a vóxeles de Minecraft) y `minimind` (entrenamiento y alineación LLM compacto), cada uno fijado por commit y con preflight sin conexión. |
+| **Indexación SSOT de metadatos Jev, BM25+IDF y 7 casos de uso CLI** | Indexa `skills.json` y frontmatter auxiliar de `SKILL.md` con prefiltrado BM25+IDF + prior de OpenSpace, inyección `assist` en 3 niveles (`SKILL.toon` → secciones clave → cuerpo completo) y comandos CLI `decide-action`, `route-model`, `gate-tool`, `moderate`, `evaluate-run`, `calibrate-judge`, `manage-memory` y `rerank`. |
 
 ## 🆕 Novedades en v2026-11-16
 
 | Cambio | Detalles |
 |--------|---------|
-| **Auditoría y mejora de seguridad del catálogo (440 habilidades) con NVIDIA SkillEvaluator** | Ejecutado `skillevaluator security-scan` (`0.8.0` / `SkillSpector 2.13.3`) sobre las 440 habilidades de `.agent-skills/` y remediado mediante subagentes en paralelo (`RemediateBatch01–10`, `PolishBatchA–C`, `LiveScan1–4`) y `agy` (`gemini-4-carbon-high`) coordinados con Jev (`jev-harness.mjs`). **Resultados medidos ANTES → DESPUÉS (`skillevaluator-security.json`, 440/440)**: aprobadas **221 → 366** (+145, 83,2 %), fallidas **192 → 63** (-67,2 %), incompletas **27 → 11** (-59,3 %); habilidades sin hallazgos `CRITICAL`/`HIGH` **248 → 377 / 440 (85,7 %)**; con `CRITICAL`/`HIGH` **192 → 63** (-67,2 %); hallazgos `CRITICAL` **4 → 0**, `HIGH` **956 → 290** (-69,7 %), `MEDIUM` **1.296 → 647** (-50,1 %), `LOW` **61 → 12** (-80,3 %), eliminando por completo `LP1` (109→0), `E2` (21→0), `AE1` (114→0), `LP3` (10→0) y `SC8`/`SC9` (52→0). La revisión posterior también corrigió `agent-manager/scripts/install.sh` (`fi`), `agent-manager/evals/evals.json`, `lightpanda/evals/evals.json` y `animato/SKILL.md` + `animato_agent.py` (`animato` pasa con 0 `HIGH`/`AE1`). Mejoras aplicadas: validación HTTPS/host sin redirecciones (`TT3`), listas blancas mínimas de variables de entorno (`E2`), declaraciones `permissions:` en 51 habilidades (`LP1`/`LP3`), `percent_encode` estándar en 32 `scripts/preflight.py` compartidos, limpieza de `__pycache__`/`.pyc`/`.DS_Store`, `\u200b` y relleno de espacios, fijación de versiones en `npx`/`uvx` (`RP1`), reemplazo de `curl \| sh` por descarga-inspección-ejecución (`SC2`/`TM2`), saneamiento de texto/DOM (`P1`/`P6`/`AR2`/`OH1`), ajuste de líneas (`AE1`) y sincronización de `skills.json`, `skills.toon` y README. |
-| **Sincronización de CanyonOS, grafo `jeox` y guía de setup** | Incorporados `canyonos` (habilidad 440 del catálogo) y `jeox` (`scripts/jeox.py` + `step_jeox` en `scripts/setup-workspace.py`) en `README.md`, `README.ko.md`, `README.es-ES.md` y `setup-all-skills-prompt.md` (Step 5B, Step 7 y sección bajo demanda de NVIDIA SkillEvaluator). |
+| **Auditoría y mejora de seguridad del catálogo (440 habilidades) con NVIDIA SkillEvaluator** | Ejecutado `skillevaluator security-scan` (`0.8.0` / `SkillSpector 2.13.3`) sobre las 440 habilidades: aprobadas **221 → 366** (83,2 %), hallazgos `CRITICAL` **4 → 0** y `HIGH` **956 → 290** (-69,7 %). |
+| **Sincronización de CanyonOS y grafo `jeox`** | Incorporados `canyonos` (habilidad 440) y `jeox` (`scripts/jeox.py` + `setup-workspace.py` `step_jeox`) en los tres README y `setup-all-skills-prompt.md`. |
 
-
-## Novedades en v2026-11-15
-
-| Cambio | Detalles |
-|--------|---------|
-| **Operador PMTiles para archivos de teselas en la nube** | Añadida la guía `pmtiles`, fijada al commit `aec8fa1341222fdddb3318e9ffa8e18e19b312f7` (especificación v3), con inspección de cabecera de 127 bytes, conversión de MBTiles a PMTiles, extracción de subconjuntos espaciales (`--bbox`), configuración de CORS y solicitudes HTTP Range en S3/R2/GCS, registro de protocolo MapLibre GL JS y preflight de cabecera binaria sin conexión. El catálogo de 440 habilidades, tres inventarios README y la guía de setup están sincronizados. |
-| **Catálogo actual** | El manifiesto actual contiene 440 habilidades en 10 categorías, incluidas `kagent`, `trulens`, `fastmcp`, `canyonos` y `pmtiles`. Las tablas del catálogo se regeneran desde `.agent-skills/skills.json`. |
-
-## Novedades en v2026-11-14
+## 🆕 Novedades en v2026-11-15
 
 | Cambio | Detalles |
 |--------|---------|
-| **Operador TruLens para evaluación y seguimiento** | Añadida la guía `trulens`, fijada al commit `32f57106c7f897a05806107737c413e65665fe46` (v2.16.0), con evaluaciones de la Tríada RAG (relevancia del contexto, fundamentación, relevancia de respuesta), definición de funciones de feedback con Snowflake Cortex, OpenAI, Bedrock y LiteLLM, instrumentación de aplicaciones (`TruChain`, `TruLlama`, `TruCustomApp`), filtros de guardarraíles y una preflight sin conexión. El catálogo de 435 habilidades, tres inventarios README y la guía de setup están sincronizados. |
-| **Catálogo actual** | El manifiesto actual contiene 435 habilidades en 10 categorías, incluidas `kagent`, `modern-web-guidance` y `trulens`. Las tablas del catálogo se regeneran desde `.agent-skills/skills.json`. |
-## Novedades en v2026-11-13
-
-| Cambio | Detalles |
-|--------|---------|
-| **Operador NVIDIA SkillEvaluator** | Añadida la guía `nvidia-skill-evaluator`, fijada al commit `12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2`, con comandos por nivel, límites de aprobación para escáneres, proveedores, sandbox y CI, atribución Apache-2.0, un manifiesto SHA-256 de 12 archivos y una preflight sin conexión. Instalar la guía no ejecuta evaluadores, escáneres ni modelos de pago. |
-| **Catálogo actual** | El manifiesto actual contiene 432 habilidades en 10 categorías, incluidas `donchitos-game-studios` y `nvidia-skill-evaluator`; se ha retirado el instalador del paquete `agenticskills`. Las tablas del catálogo se regeneran desde `.agent-skills/skills.json`. |
-| **Guías README alineadas en tres idiomas** | Inglés, coreano y español distinguen instalación de activación, documentan los límites del uso observado y de los destinos de cada entorno e incluyen los comandos de mantenimiento del catálogo. Para la instalación y actualización actuales, consulta las secciones operativas anteriores en lugar de los resúmenes históricos. |
-
-## 🆕 Novedades en v2026-11-04
-
-| Cambio | Detalles |
-|--------|---------|
-| **Optimización de rendimiento y memoria del instalador** | `install_support.py` ahora calcula hashes y copia archivos en streaming con un búfer reutilizable `bytearray`/`memoryview` de 256 KiB (`readinto`), sustituye los recorridos recursivos `Path.rglob("*")` en `require_safe_tree`, `dir_manifest`, `copy_tree` y `_retired_reason` por `os.scandir` iterativo (omitiendo `__pycache__` y `.DS_Store` antes de descender) y evita reescribir archivos de destino cuando `st_size`, `st_mtime_ns` y SHA-256 ya coinciden. `jeo-skill.py` devuelve al instante con `--limit 0`, selecciona resultados con `heapq.nsmallest` y enlaza la CLI global en el mismo proceso durante `bootstrap`. `install.sh` exporta `PYTHONDONTWRITEBYTECODE=1`. |
-| **Reducción de memoria en OpenSpace y soporte de hooks para Orca** | `openspace/scripts/route_prompt.py` escribe `index.json` de forma compacta y calcula frecuencias de términos sin reservar conjuntos `set` para todo el catálogo antes del ranking BM25. `openspace/scripts/route-hooks.py` detecta y conecta también hogares redirigidos de Claude Code y Codex (`CLAUDE_CONFIG_DIR`, `CODEX_HOME` y perfiles/cuentas de Orca bajo `ORCA_USER_DATA_PATH`). |
-| **Limpieza del repositorio y pruebas de regresión** | Se eliminaron directorios temporales de agentes en la raíz, cachés regenerables (`graphify-out/`, `llm-wiki/`, `.jeo/`, `.gjc/`, `.omo/`, `.serena/`), carpetas vacías de habilidades retiradas, artefactos de compilación, `__pycache__` y `.DS_Store`. `test_installer_regressions.py` aísla `stdin` con `DEVNULL` y se añadieron pruebas en `test_performance_regressions.py` y `test_openspace_routing.py`. |
-
-## 🆕 Novedades en v2026-11-01
-
-| Cambio | Detalles |
-|--------|---------|
-| **Configuración selectiva y automatización de hooks** | Añadidos `--setup` (con lista de permitidos explícita `SUPPORTED_SETUP_SKILLS`) y `--with-hooks` (que exporta `JEO_SKILLS_APPROVE_ALL_HOOKS_MCP=true`) a `jeo-skill install`. Ejecuta comprobaciones de CLI y smoke empaquetadas para habilidades compatibles (`open-ontologies`, `okf-agent-memory`, `mex`, `openspace`, `ooo`, `rtk`, `cli-anything`, `spec-kit`, `ecc`, `jev-control-plane`, `graphify`, `semble`, `zvec-grep`, `llm-wiki`) y omite de forma segura las no compatibles. `--dry-run` no ejecuta subprocesos ni escribe archivos. |
-| **Modo de runtime `--skip-mcp` y aislamiento de hooks en OpenSpace** | Añadido `--skip-mcp` a `install-openspace.sh` y conectado a `jeo-skill install openspace --setup` y `scripts/install-full-tools.sh`, evitando el registro no autorizado del servidor MCP en los hosts durante la configuración sin `--with-hooks`. Se mantiene la separación independiente de `ooo` y `openspace` introducida en v2.0. |
-| **Herramientas completas extendidas y spec-kit multiagente** | `scripts/install-full-tools.sh` añade el modo `--extended` (10/10 herramientas) que incluye `Graphify`, `OpenSpace` (prueba BM25), `Open-Ontologies` (`smoke.py`) y `OKF-Agent-Memory` (`smoke.py`), manteniendo la línea base 6/6 por defecto. Instala el envoltorio `~/.local/bin/mex-agent` (priorizando nvm/npm frente al `mex` de TeX Live), enlaza `~/.local/bin/rtk -> ~/.cargo/bin/rtk` (`1.1.0`) y admite `SPEC_KIT_INTEGRATION` multiagente con preparación y fusión atómica segura. |
-| **Canal de conocimiento y concurrencia del vault** | Empaquetados `hooks/ctx/lock.py`, `hooks/ingest-output.py` e `hooks/ingest-prompt.py` en el repositorio con respaldo real de `fcntl.flock`. Los eventos de fin de turno (`Stop`, `AfterAgent`, `post-turn`) con salida se delegan a `ingest-output.py` bajo el bloqueo del vault, extrayendo únicamente texto visible (filtrando `thinking` y `tool_use`). Se evitan colisiones con `capture_id` y creación exclusiva (`"x"`), las capturas usan bloques de código no mutables y la contención difiere la indexación a `.state/deferred-index.jsonl` con reconciliación automática en la siguiente ejecución. |
-| **Enlace multihost de Jev y actualización de ECC** | Vinculados los 10 agentes detectados a perfiles independientes en `~/.agents/jev/agents.json`, cambiado `echo-turn-jeopi` a `runtimeMode: assist` para la inyección automática de instrucciones, y actualizado el plugin `ecc@ecc` de Claude Code a `2.2.3` con revisiones de propuestas Jev. |
-
-## 🆕 Novedades en v2026-10-30
-
-| Cambio | Detalles |
-|--------|---------|
-| **Operador de diseño Impeccable** | Añadido `impeccable` v1.0.0 para `pbakaus/impeccable` (habilidad 4.8.0, motor 0.1.18), fijado en `02523aec3e4c4580102d996d1b6a71fbe062e03f` (Apache-2.0; LICENSE y NOTICE.md revisados). El catálogo pasa de 408 a 409 en `web/design`. Enruta los 24 comandos originales, incluye un método de crítica/auditoría resumido y el craft floor para trabajar sin la habilidad original, documenta el detector de 62 reglas y exige aprobaciones separadas para npm, la descarga y ejecución del motor, el hook de diseño sin sandbox, los escaneos con navegador y el modo live. El original usa la misma carpeta `impeccable`; la guía lo comprueba antes de que escriba cualquier instalador. |
-| **Herramientas y verificación** | `scripts/doctor.py` informa de instalaciones (original u operador del catálogo), candidatos del motor en el orden del lanzador con comprobación opcional del digest fijado, manifiestos de hooks, exclusión de telemetría y archivos de contexto sin ejecutar nada, abrir sockets ni escribir archivos. `scripts/triage_findings.py` ordena los hallazgos de `detect --json` por bandas con comandos sugeridos, muestra ubicaciones sin repetir y nunca reproduce los fragmentos. Comprobación real en un `HOME` temporal en macOS arm64: la instalación pública coincidió byte a byte con el repositorio, el motor 0.1.18 descargado por el lanzador fijado coincidió con su SHA-256, el catálogo de 62 reglas del binario coincidió con `source.json` y una ejecución real de `detect --json` (salida 2, 19 hallazgos) siguió el esquema documentado y pasó por el triage. Pasan 22/22 pruebas dedicadas y, con Node 24, 72/72 de instalación y 34/34 de la guía. Los nueve escenarios están redactados, no ejecutados. Quedan sin verificar los escaneos URL/CDP, los hooks, el modo live, la ruta npm y los binarios de Linux/Windows. |
-| **mex v1.2: setup de mex-agent 0.8** | En un proyecto nuevo `scripts/install.sh` se detenía tras `mex setup`: mex-agent 0.8 sale con código 2 mientras falta poblar el andamiaje y el instalador usa `set -euo pipefail`, así que el puente `AGENTS.md`, el grafo y `check` nunca se ejecutaban; 0.8 además ignora el menú de herramientas por tubería. Ahora pasa `--yes --tool <tool>` (y `--force`) a mex-agent >= 0.8, mantiene el menú para 0.7.x, informa del código 2 con el siguiente paso `mex-agent setup next --start` y continúa, y se detiene ante cualquier otro fallo. Si falta mex-agent instala `mex-agent@0.8.5` (`MEX_AGENT_NPM_SPEC` lo cambia). Con mex-agent 0.8.5 real en un `HOME` temporal: código 0, `AGENTS.md` raíz creado, grafo y `check` ejecutados. |
-| **obsidian-second-brain v1.0.1: instalación del original** | `WITH_UPSTREAM=1` abortaba en `/bin/bash` 3.2 de macOS con locale UTF-8 (`"$dest…"` se leía como variable no definida). Con `GLOBAL=1`, `npx skills add -g` enlaza `~/.claude/skills/obsidian-second-brain` a la copia de enrutamiento, así que el clon fallaba siempre mientras se imprimía `Done`, y una nueva ejecución borraba un checkout original existente. Ahora aparta un directorio real mientras corre `npx`, sustituye el enlace o la copia solo tras un clon correcto, rechaza cualquier otro directorio y sale con 1 si falta `git`, falla el clon o hay rechazo. Con `skills@1.7.0`, `git` y `/bin/bash` 3.2 reales: la primera ejecución clonó el original y la segunda conservó un marcador local e hizo pull. |
-| **devup-ui v1.0.1 y guardas de regresión** | `devup-ui/scripts/install.sh` tenía la misma expansión `$pm…` sin llaves. `scripts/test-runtime-config-writers.sh` revisa los scripts de shell versionados en busca de variables sin llaves justo antes de texto no ASCII y cubre los casos del original de obsidian (inicial, repetición, directorio ajeno, clon fallido, solo original) con locale UTF-8; `mex/scripts/test-runtime.sh` cubre el setup de mex-agent 0.8. Pasan 26/26 pruebas de escritores de configuración, 72/72 regresiones del instalador y 34/34 de la guía con Node 24. |
-| **ponytail v2.0.0: Ponytail 5.3.3** | Basado en el original `DietrichGebert/ponytail` 5.3.3, fijado en `7801d061243d7b753bad0e0b3c057cd250b11755` (MIT, licencia copiada). Reutiliza el código que ya tiene el proyecto antes que la biblioteca estándar, termina cada llamador que el cambio rompe, deja una comprobación pequeña para la lógica de riesgo y cierra cada respuesta con lo omitido y los riesgos; `ultra` cuestiona la petición; las marcas son `shortcut: <límite>, <cuándo mejorar>` (las antiguas `ponytail:` siguen contando). `/ponytail-review` y `/ponytail-audit` son revisiones de calidad completas y `/ponytail-gain` muestra el benchmark fijado (−53 % código, −26 % coste, −41 % tiempo) en lugar del antiguo 80–94 %. Pasa a `engineering/code-quality`. |
-| **Instalación de ponytail y limpieza** | `references/commands.md` y `scripts/install.sh` cubren todos los hosts del plugin original (Codex `plugin add`, Copilot CLI, Qwen, omp, OpenCode 2 `plugin add`, Antigravity, Hermes, Devin, Grok, Goose, OpenClaw, Kimi, hooks de Cursor) con ajustes y desinstalación; `APPLY=1` ejecuta un solo host y rechaza la ambigüedad. Eliminados el GIF de 2 MB (escalera antigua), la configuración MCP con `skills serve` (no existe), las rutas de archivo de OpenCode que OpenCode 2 rechaza y fechas inventadas del historial; un SVG de 5 KB muestra la escalera actual. Carga instalada: 2,03 MB → 33 KB. En entornos aislados, Claude Code y omp instalaron el plugin 5.3.3. |
-| **caveman v2.0.0: original mantenido** | La copia atribuida a `mattpocock/skills` (retirada allí) sigue ahora `JuliusBrussee/caveman` 4.0.1 en `d262ab3882952a59312ff3537cd86d894523c5ab` (Apache-2.0, licencia copiada y cambios indicados): primero la respuesta, código y rutas literales, sin abreviaturas inventadas ni flechas, y prosa completa para avisos, pasos irreversibles y todo lo que queda en archivos. El “~75 %” sin fuente se sustituye por las cifras del propio original y desaparecen las secciones de relleno. `scripts/test_ponytail_caveman_skills.py` (12 pruebas, en CI) comprueba fijaciones, versiones, enlaces, restos antiguos y el contrato del instalador. |
-| **openspace v2.0: enrutamiento de habilidades en cada prompt, para cualquier modelo** | `scripts/route_prompt.py` ordena las habilidades instaladas con el BM25 local de OpenSpace (`SkillRanker.bm25_only`: sin LLM, embeddings ni red) antes de que actúe el modelo y le pasa como máximo tres coincidencias con su ruta `SKILL.md`, así que la elección ya no depende del modelo. Solo sugiere cuando el prompt nombra una habilidad o un término poco común alcanza cobertura suficiente; trata partículas coreanas, límites latín/hangul y rareza por escritura. `scripts/route-hooks.py` lo instala en Claude Code, Codex, Gemini CLI/Antigravity, Kimi Code, jeopi/omp/pi/gjc y OpenCode con un único envoltorio que falla en silencio. Comprobación etiquetada con 764 habilidades: habilidad correcta en 26 de 33 prompts enrutables, silencio en 23 de 24 del resto, unos 0,3 s por prompt. En vivo, frente a un control con el enrutamiento apagado: Claude Code, jeopi (tres modelos, incluidos `claude-haiku-4-5` y `gpt-5.6-sol`) y omp. |
-| **OpenSpace y ooo se instalan por separado** | `ooo/scripts/install.sh` ya no comprueba, prepara ni consulta OpenSpace; `--search` y `--ensure-openspace` son errores de uso. El instalador de OpenSpace fija el commit verificado, reconstruye un venv roto, fija `mcp<2` (MCP SDK 2 rompía `openspace-mcp`) y comprueba el enrutador. El registrador ya no escribe `toolTimeout` para Gemini CLI y Qwen Code, que se negaban a arrancar, y repara entradas antiguas. `test_openspace_routing.py` (24 pruebas) y `test_ooo_installer.py` (5) sustituyen en CI a la suite acoplada. |
-
-## Novedades en v2026-10-24
-
-| Cambio | Detalles |
-|--------|---------|
-| **Colección de habilidades de juegos** | Añadido `awesome-gamedev-agent-skills` v1.0.0 para `gamedev-skills/awesome-gamedev-agent-skills`, fijado en `7eb1b53305fab881f4758e2eff2e371cd7869221` (Apache-2.0; LICENSE y NOTICE revisados). El catálogo pasa de 406 a 407 y `game-client` de tres a cuatro guías. Selecciona entre 76 habilidades originales y su router sin copiar todo el paquete, conserva las versiones del motor y protege las habilidades locales con el mismo nombre. |
-| **Verificación de la colección** | Pasan 6/6 pruebas dedicadas, 66/66 de instalación y 12/12 hashes públicos. La instalación del árbol local en un proyecto aislado usa un lanzador transparente del CLI real `skills@1.7.0` en caché y comprueba archivos, permisos, vista previa y retirada segura de `jeo`. No hubo resolución npm, instalación pública, activación en HOME real ni ejecución de motores o proveedores. Los seis escenarios están redactados, no ejecutados como evaluación de modelos. |
-| **Agentes actuales y perfiles Jev enlazados** | La guía usa `agy` en lugar del antiguo host Gemini CLI, añade Kimi (`kimi` → `kimi-code-cli`) y Grok Build de selección explícita en setup (`grok`, `.grok/skills`, `GROK_HOME`) y documenta OpenCode en todos los README. El controlador enlaza perfiles en `agents.json`, preserva campos personalizados y claves sin registrar hooks, mantiene la autodetección de LM Studio y permite activar sus perfiles con modelo vacío. Rechaza perfiles compartidos, asignaciones inseguras y ancestros enlazados antes de escribir. La selección automática de setup excluye `grok` por la colisión con Superagent/VibeKit; `detect` solo informa del inventario de binarios. |
-| **Propuestas ECC y regresiones pendientes** | La guía operativa ECC v2.2.2 usa el perfil Jev del host actual y emite JSON de solo lectura que coincide con los planes normalizados de Claude/Codex/Kimi, incluidos los valores predeterminados. Rechaza argumentos inválidos; un veredicto Jev no sustituye la aprobación del usuario ni del proveedor. CI añade la autoprueba y 5 pruebas ECC; las suites pendientes de uso/cuarentena/retirada pasan 22/18/8 sin cambios de runtime. Los 6 escenarios están redactados, no evaluados con modelos. Sin instalación ECC, hooks ni activación de proveedores; catálogo: 407. |
-
-## 🆕 Novedades en v2026-10-21
-
-| Cambio | Detalles |
-|--------|---------|
-| **Operador Agent Beacon** | Añadido `agent-beacon` v1.0.0 para `Asymptote-Labs/agent-beacon`, fijado en `cfbd7b1d721664e3b1b5ca2fca5eac4327532c07` (MIT). El catálogo pasa de 405 a 406 habilidades; `knowledge-repositories` incluye 22 guías y 19 helpers de archivos seleccionados. La instalación añade solo la guía y sus recursos, no el motor Beacon. La captura, los datos privados, los servicios, Cloud, MCP y la eliminación requieren aprobación explícita. |
-| **Verificación de Beacon** | Los 12 hashes de archivos públicos fijados coinciden. Las suites modificadas pasan 20/20 y 65/65, incluida la instalación por nombre, los recursos anidados, la retirada del `jeo` identificado como copia del catálogo y la conservación de habilidades actuales/ajenas y de HOME. La prueba de instalación usa transporte de fixture aislado, no una instalación pública. Los seis escenarios de privacidad y enrutamiento están redactados, no ejecutados como evaluación de modelos. |
-| **README reconstruido para la legibilidad** | Se sustituyeron todas las secciones de texto y los elementos visuales del README: nueva portada Codex `assets/readme-cover.webp`, `how-it-works.svg`, `catalog-map.svg` y `skill-lifecycle.svg` escritos por Codex, tablas para opciones de instalación, entornos, CLI del enrutador y estados del ciclo de vida, listas de categorías desplegables y una insignia con el número de habilidades en vivo. Se eliminaron herramientas destacadas, OSS recomendado, documentos relacionados y notas largas de operadores; las fuentes y licencias upstream pasaron a `docs/attribution.md`. Se retiraron `catalog-install-flow.svg` y `runtime-boundaries.svg`. Las variables del instalador se muestran ahora del lado de `bash` en la tubería. Solo documentación. |
-| **Actualización de Open Ontologies** | La guía existente `open-ontologies` pasa a v1.1.0 sin duplicados; el catálogo sigue en 405 habilidades. Se verificaron los SHA256 de seis archivos públicos del commit `dfb09bf815326913d7d7822fa7228f2602fb4976` (MIT), se documentaron la preflight offline y los límites de aprobación/evidencia, y se añadieron referencias de instalación. Las suites modificadas pasan 64/64 y 19/19: la instalación por nombre retira solo el `jeo` identificado como copia del catálogo y conserva habilidades actuales, homónimos ajenos y raíces fuera del alcance. La instalación del catálogo añade solo el paquete del operador, no el motor upstream. |
-| **harness → harness2** | `harness` (revfactory) se sustituye por `harness2`, operador de `google-research/harness2` fijado en `1cfe254e8d25b15f37048c3730134686abe60335` (Apache-2.0): demo sin credenciales, configuración y ejecuciones de pago de LAB/JobBench/WorkBuddy con aprobación, puente Codex y un modo método para aplicar Propose–Probe–Compose a mano (incluye el diseño de equipos de agentes). `harness` pasa a `retired_skills`. |
-| **Cuatro operadores nuevos** | `ruflo` (MIT), `voicestudio` (AGPL-3.0-only), `diagram-design` (MIT) y `artcraft` (MIT OR Apache-2.0), fijados por commit con preflight offline y puertas de aprobación. Con la retirada de `harness`, el catálogo pasa de 401 a 405 habilidades. |
-| **Limpieza de habilidades retiradas** | `jeo-skill install`, `install.sh` y `jeo-skill prune-retired [--global] [--dry-run]` eliminan copias antiguas del catálogo de `jeo` (→ `ooo`) y `harness` (→ `harness2`) solo si nombre y primer encabezado coinciden; un enlace solo se elimina si apunta a una copia eliminada en el mismo barrido. Se conservan homónimos de terceros, enlaces ajenos y raíces tras ancestros enlazados. |
-| **Verificación** | Regresiones del instalador 63/63 y de preflight 15/15; validaciones del catálogo correctas. La instalación completa documentada (pasos 4–4E y 7) se ejecutó de principio a fin con `skills@1.7.0` real en un HOME aislado con las copias antiguas de esta máquina, usando una instantánea local confirmada de este árbol (la URL de GitHub se redirigió; el HEAD público no incluye estos cambios hasta el push). Los cargadores reales de jeopi/oh-my-pi/GJC resuelven las cinco habilidades nuevas sin `jeo`/`harness`; OpenCode solo se verificó por ubicación en la raíz compartida. La demo upstream de harness2 pasó en ambos modos (2/2) junto con sus 5 pruebas; no se ejecutaron benchmarks ni modelos. |
-| **Seguimiento de uso y limpieza de habilidades no usadas** | `jeo-skill usage scan` recopila evidencia local solo de habilidades invocadas o cargadas; exige cero usos históricos y 30 días de gracia para proponer una candidata, protege el router, los bundles `starter`/`cli-core`/`infrastructure-core` y las fijaciones de relevancia, y mantiene la cuarentena limitada a copias demostrables del catálogo. `prune-unused` previsualiza y reanaliza antes de aplicar; las decisiones Jev `deny`/no disponible bloquean, `proposal_only` continúa con `--apply` explícito y `--skip-jev-review` queda registrado. `restore`/`purge-quarantine` gestionan la cuarentena y `retire-unused-skills.py --approve` es una fase separada del mantenedor. Los instaladores no inician el seguimiento ni registran hooks; `usage scan` crea el estado agregado y el reloj de gracia de 30 días, mientras los hooks de Jev ya habilitados pueden escribir `jev-usage.jsonl` en `${JEO_SKILL_STATE_DIR:-${XDG_STATE_HOME:-~/.local/state}/jeo-skill}` sin un escaneo previo y solo las inyecciones cuentan como uso. La evidencia disponible pasa 7 regresiones de uso, 15 de cuarentena y 7 de retirada en Python, más 4 pruebas Node del ledger; un escaneo de solo lectura con datos reales se ejecutó con estado en `/tmp`, sin iniciar el estado real ni instalar un hook del host. |
-| **Actualización visual del README** | Nueva portada Codex `assets/readme-cover.webp` y tres diagramas escritos por Codex (`catalog-install-flow.svg`, `runtime-boundaries.svg`, `skill-lifecycle.svg`); se retiraron `readme-hero.webp`, `catalog-workflow.svg`, `runtime-architecture.svg` y el logo huérfano `assets/scrapingant/`; se fusionaron los documentos duplicados de `ooo`, se corrigieron los comandos de god-tibo-imagen y plannotator y el recuento de operadores pasó de 12 a 18. Solo documentación. |
-
-## 🆕 Novedades en v2026-10-17
-
-| Cambio | Detalles |
-|--------|---------|
-| **Operador OpenCreator** | Añadida la guía `opencreator`, fijada al commit `b01a9f71165b9010216e25c462653b0cfa33cbce` de `krillinai/OpenCreator`. Cubre Desktop/CLI/Server, tareas creativas, configuración de Codex/proveedores, Skills/MCP/programación, integridad de releases y límites de aprobación. Incluye una preflight offline de solo lectura, 11 escenarios redactados y 16 regresiones de subprocess que pasan y se ejecutan en CI. Catálogo: 400 → 401. No se ejecutaron la aplicación upstream, instaladores, proveedores ni servicios de pago. |
-
-## 🆕 Novedades en v2026-10-15
-
-| Cambio | Detalles |
-|--------|---------|
-| **Operador OKF Agent Memory** | Añadida `okf-agent-memory` para el CLI Go y el servidor MCP stdio de `okf-memory/okf-agent-memory`, fijada al commit upstream `ad7beb01b9d4294d8dd28c25494d274374985b69` (MIT). Separa la operación de memoria de proyecto OKF v0.2 de la autoría de átomos Google OKF v0.1 de `okf`. |
-| **Límites y verificación** | Añadida una preflight de solo lectura con rutas fuente fijadas, guardas de symlink/tamaño y aislamiento del entorno Git. Las regresiones compartidas pasan 13/13; el CLI upstream, bootstrap y MCP no se instalaron ni ejecutaron. El catálogo cambia de 367 a 368 habilidades. |
-
-## Novedades en v2026-10-14
-
-| Cambio | Detalles |
-|--------|---------|
-| **Activación del runtime Jev en Codex** | El perfil `codex` está activado con backend `api`, inyección de skills assist y revisión PreToolUse advisory; ambas definiciones de hooks están verificadas como confiables en sesiones reales de Codex, con evidencia de enrutamiento TypeSafe en vivo (`react-best-practices` vía `jev-1.13.0`). El nivel sigue siendo unvalidated: prueba de transporte, no de calibración ni de permisos. |
-| **Sincronización del fixture de timeout** | La prueba de escalado SIGTERM/SIGKILL ahora sigue la preparación del handler hijo en lugar de plazos de reloj; el comportamiento de timeout en producción no cambia. |
-| **Recorte del setup del job test de CI** | El job `test` elimina la instalación Bun sin uso (los cuatro pasos son Python puro) y fija `pyyaml==6.0.3`; la pista obsoleta de `flatten_skills.py` ahora apunta al verdadero `generate-catalog-projections.py --check`. Las esperas de las suites installer son comportamiento contractual intencional y no cambian. |
-| **Actualización del README** | Esta actualización sustituye las 5 GIF de equipamiento, 2 SVG obsoletos y la imagen de CI serial antigua por una portada estática generada con Codex y 2 SVG fieles a las fuentes; también corrige comandos de instalación, enlaces documentales y los límites de TOON/hooks nativos. |
-| **Validación del catálogo y búsquedas** | En fixtures emparejados, la validación del catálogo alcanzó una mediana cálida de 268.69 → 126.49 ms y las 40 consultas en un único handler pasaron de 1134.76 → 157.30 ms; también se cubren lecturas por streaming de hash/entorno/GLB/log, limpieza tras fallos de encoder/navegador y cobertura de regresión local aislada. Las suites focalizadas de Python (31) y Node (28) pasaron sin omisiones. Son métricas de fuente/fixtures: el nuevo cableado de CI no prueba acciones remotas; no implican afirmaciones sobre arranque de CLI, proyección de catálogo, modelos, GPU, navegador completo ni ausencia de fugas globales. |
-
-## Novedades en v2026-10-12
-
-| Cambio | Detalles |
-|--------|---------|
-| **Orquestación MI** | Añadida `mi-orchestration` para el linaje de datos de inteligencia de juegos móviles, controles weekly/backfill, candidatos separados de decisiones humanas, referencias primarias y una CLI offline de auditoría y planificación de reanudación de solo lectura. Las pruebas sintéticas no certifican la recolección real; los permisos de datos y de IA, retención y publicación siguen siendo controles separados. Catálogo: 366 → 367. |
-
-## 🆕 Novedades en v2026-09-22
-
-| Cambio | Detalles |
-|--------|---------|
-| **Habilidad de agentes de navegador Stagehand** | Añadida `stagehand` para el SDK v4 y la CLI `browse` fijados a `browserbase/stagehand`: selección de navegador local, Browserbase o CDP; `act` / `observe` / `extract`; WebMCP tipado; Search/Fetch; rutas de salida para migraciones desde Playwright; preflight de solo lectura; evaluaciones y evidencia upstream fijada. |
-| **Límite de runtime bajo demanda** | La guía de instalación mantiene el SDK, la CLI, Chromium, Browserbase MCP, las credenciales y los servicios cloud de pago fuera de la instalación general. `agent-browser` no estaba presente en el árbol ni en el manifiesto actual, por lo que no hubo nada que eliminar. |
-
-## 🆕 Novedades en v2026-07-29
-
-| Cambio | Detalles |
-|--------|---------|
-| **Pipeline de rigging automático UniRig** | Añadido `unirig` para [VAST-AI-Research/UniRig](https://github.com/VAST-AI-Research/UniRig) (SIGGRAPH'25): predicción de esqueleto → pesos de skinning → fusión de vuelta al activo texturizado original. Incluye un informe de preparación `doctor.sh` que bloquea elementos, un `install.sh` que sigue el orden de instalación upstream CUDA/spconv/PyG, un envoltorio `rig.sh` con planificación `--dry-run` y verificación de artefactos por etapa, y rutas alternativas para máquinas sin GPU NVIDIA. |
-| **Bucle de texto a animación Animato** | Añadido `animato`, un bucle agente con clave de API para [otdnnc/Animato](https://github.com/otdnnc/Animato): subir un modelo con rigging, construir el prompt bpy, gastar una llamada LLM, validar el script generado con `validate_bpy_script.py`, y luego ejecutarlo en modo headless. Incluye una CLI solo con librería estándar (`animato_agent.py`), una puerta estática para APIs de Blender eliminadas y banderas de hornear animación faltantes, y un `selftest.py` sin conexión que prueba todo el bucle contra un servidor stub. |
-| **Diez habilidades de implementación Three.js** | Añadido `threejs-fundamentals`, `threejs-geometry`, `threejs-materials`, `threejs-lighting`, `threejs-textures`, `threejs-loaders`, `threejs-animation`, `threejs-interaction`, `threejs-shaders` y `threejs-postprocessing`, adaptados de [CloudAI-X/threejs-skills](https://github.com/CloudAI-X/threejs-skills). Cada uno tiene un contrato de implementación enfocado, superficie de descubrimiento TOON compacta, evaluaciones y referencias upstream/oficiales; el trabajo de renderizado directo permanece distinto del enrutamiento de sistemas de juego de `web-game-development`. |
-| **Habilidades de UI de juego Open Design** | Añadido `open-design-game-ui-concept`, `open-design-game-ui-handoff` y `open-design-game-ui-takeover` para revisión de conceptos, transferencias respaldadas por evidencia e integración de runtime aprobada. |
-| **Catálogo de categorías ligero** | Reorganizado 192 habilidades en 10 categorías principales y 74 subcategorías enfocadas con metadatos de interfaz, paquetes curados y grupos de relación. Añadida la CLI `jeo-skill` instalada selectivamente; el instalador predeterminado ya no copia el catálogo completo ni instala dependencias pesadas. El compacto `skills.toon` ahora contiene un registro por habilidad, y `skills.json` es versión 2.0.0. |
-
-## 🆕 Novedades en v2026-07-28
-
-| Cambio | Detalles |
-|--------|---------|
-| **Catálogo ahora con 152 habilidades** | Eliminadas 16 carpetas de habilidades (`lmstudio-cli`, `ohmg`, `omc`, `omx`, `prompt-repetition`, `setup-pre-commit`, `spec-stack`, `team`, `ui-component-patterns`, `ultraqa`, `ultrawork`, `user-guide-writing`, `vibe-kanban`, `video-production`, `web-design-guidelines`, `workflow-automation`) y añadidas 3 (`obsidian-mind`, `openspace`, `web-game-development`). `skills.json`, `skills.toon`, `skills-lock.json` y ambas tablas de catálogo README fueron regeneradas; `scripts/validate-catalog-projections.py` pasa en 152. |
-| **Sin más habilidades exclusivas de plataforma** | Con `omc` / `ohmg` / `omx` eliminados, el manifiesto es un único catálogo compartido. El Paso 1 de `setup-all-skills-prompt.md` ahora instala todo, el bloque de instalación por plataforma del Paso 2 fue reemplazado por una auditoría de copias sueltas, y la comprobación de deduplicación por plataforma del Paso 4 se convirtió en una comprobación de sombra de raíz compartida. |
-| **Paso 3g reducido a configuración de complemento OpenCode** | Los instaladores `oh-my-claudecode`, `oh-my-codex` (OMX) y `oh-my-agent` (OMA) existían solo para respaldar las habilidades de enrutamiento eliminadas y fueron descartados; el bloque `oh-my-openagent` (OMO) permanece sin cambios. `scripts/test-runtime-config-writers.sh` reemplazó su caso de transferencia OMX con una comprobación de no mutación de configuración y aún pasa los 25 casos. |
-| **Descripciones de obsidian-mind / web-game-development recortadas** | Ambos se lanzaron con descripciones de frontmatter por encima del límite de 1024 caracteres, lo que hace que una habilidad sea invisible para `skills add`. Reescritas bajo el límite manteniendo sus palabras clave de activación intactas. |
-| **Rutas huérfanas reconfiguradas** | Cada habilidad superviviente que enrutaba a una habilidad eliminada fue redirigida. `autopilot` fue eliminado como el último huérfano de la familia de shim `$team` / `$ultrawork` / `$ultraqa` de nombre exacto; `video-production` fue restaurada. El alcance de `ui-component-patterns` se movió a `design-system`, `web-design-guidelines` a `web-accessibility` (modo revisión amplia), `user-guide-writing` a `technical-writing` (modo guía para usuarios finales), `workflow-automation` a `deployment-automation` (autoría de trabajos CI/release), `vibe-kanban` a `task-planning` / `triage`, y `omc` / `omx` / `ohmg` a sus nombres de producto externos (`oh-my-claudecode` / `oh-my-codex` / `oh-my-agent`). `deep-dive` y `deepinit` se dejaron sin tocar: sus referencias `.omc` / `.omx` son rutas de estado de runtime, no habilidades. |
+| **Operador PMTiles para archivos de teselas en la nube** | Añadida `pmtiles` (especificación v3, `aec8fa1341222fdddb3318e9ffa8e18e19b312f7`) con inspección de cabecera de 127 bytes, conversión MBTiles → PMTiles, `--bbox`, CORS/Range en S3/R2/GCS, protocolo MapLibre GL JS y preflight binario sin conexión. |
 
 > 📜 Entradas antiguas: [`changelog/en/`](changelog/en/) (archivos mensuales, más recientes primero).
 
