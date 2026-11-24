@@ -1,0 +1,222 @@
+/* Shared layout for the Docs Page Setup, Columns, Watermark and Tabs dialogs.
+   The Office dialog chrome (OfficeDialogChrome.css) draws every control; this
+   file only places them. */
+
+.twoColumns {
+  display: grid;
+  gap: 8px 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.threeColumns {
+  display: grid;
+  gap: 8px 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.valueRow {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+}
+
+.valueRow > input,
+.valueRow > select {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.unit {
+  color: var(--office-dialog-muted, #6b7280);
+  flex: 0 0 auto;
+  font-size: 11px;
+}
+
+.choiceRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}
+
+.previewWell {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  min-height: 96px;
+  padding: 10px;
+}
+
+.previewWell svg {
+  height: 84px;
+  width: auto;
+}
+
+.presets {
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.preset {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--office-dialog-control-border, #d1d5db);
+  border-radius: 8px;
+  color: var(--office-dialog-ink, inherit);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  font: inherit;
+  font-size: 11px;
+  gap: 4px;
+  padding: 6px 4px;
+}
+
+.preset[aria-pressed="true"] {
+  background: var(--office-dialog-accent-soft, #e0ecff);
+  border-color: var(--office-dialog-accent, #2563eb);
+}
+
+.preset svg {
+  height: 32px;
+  width: 32px;
+}
+
+.columnTable {
+  display: grid;
+  gap: 6px 10px;
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+}
+
+.columnTable > span {
+  font-size: 12px;
+}
+
+.stopList {
+  border: 1px solid var(--office-dialog-control-border, #d1d5db);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  max-height: 128px;
+  min-height: 72px;
+  overflow: auto;
+  padding: 2px;
+}
+
+.stopItem {
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  color: inherit;
+  cursor: pointer;
+  display: grid;
+  font: inherit;
+  font-size: 12px;
+  gap: 8px;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  padding: 3px 6px;
+  text-align: left;
+  width: 100%;
+}
+
+.stopItem[aria-selected="true"] {
+  background: var(--office-dialog-accent-soft, #e0ecff);
+}
+
+.footerButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pictureThumb {
+  border: 1px solid var(--office-dialog-control-border, #d1d5db);
+  border-radius: 4px;
+  height: 48px;
+  object-fit: contain;
+  width: 64px;
+}
+
+.swatch {
+  border: 1px solid var(--office-dialog-control-border, #d1d5db);
+  border-radius: 4px;
+  display: inline-block;
+  height: 18px;
+  width: 28px;
+}
+
+.statsList {
+  display: grid;
+  gap: 3px 12px;
+  grid-template-columns: 1fr auto;
+  margin: 0;
+}
+
+.statsList dd {
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+  text-align: right;
+}
+
+@media (max-width: 480px) {
+  .twoColumns,
+  .threeColumns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .presets {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Page Numbers (Insert > Page Number > Page Numbers…): the two lists on the
+   left, Word's page preview on the right. */
+.pageNumbersLayout {
+  align-items: stretch;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.pageNumbersFields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.pageNumbersLayout .previewWell {
+  min-height: 0;
+  padding: 8px;
+}
+
+.pageNumbersLayout .previewWell svg {
+  height: 72px;
+}
+
+/* Inside / Outside: a facing pair, spine to spine. */
+.pageNumbersLayout .previewWell:is([data-alignment="inside"], [data-alignment="outside"]) {
+  gap: 1px;
+}
+
+/* Page Number Format: chapter-number fields indent under their checkbox,
+   as Word's do. */
+.pageNumberChapterFields {
+  display: grid;
+  gap: 6px;
+  padding-inline-start: 22px;
+}
+
+.pageNumberChapterFields > label {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+}
+
+.pageNumberStartStepper {
+  width: 112px;
+}

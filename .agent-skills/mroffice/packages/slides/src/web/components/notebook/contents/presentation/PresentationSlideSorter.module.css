@@ -1,0 +1,137 @@
+/* PowerPoint's Slide Sorter: the deck as a grid of slides on the workspace
+   backdrop, a section heading over each section's slides, the slide number
+   under each thumbnail (struck through when the slide is hidden). */
+.sorter {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  padding: 20px 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sectionHeader {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  border: 0;
+  background: transparent;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ppt-sorter-section, #334155);
+  cursor: pointer;
+}
+
+.sectionHeader:focus-visible {
+  outline: 2px solid var(--ppt-accent, #c43e1c);
+  outline-offset: 1px;
+}
+
+.chevron {
+  display: inline-block;
+  transition: transform 120ms ease;
+}
+
+.chevron[data-collapsed="true"] {
+  transform: rotate(-90deg);
+}
+
+.sectionName {
+  min-width: 0;
+}
+
+.sectionCount {
+  font-weight: 400;
+  color: var(--ppt-sorter-muted, #64748b);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(208px, 1fr));
+  gap: 22px 18px;
+}
+
+.cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  outline: none;
+  cursor: default;
+  user-select: none;
+}
+
+.cell[data-selected="true"] {
+  border-color: var(--ppt-accent, #c43e1c);
+}
+
+.cell:focus-visible {
+  box-shadow: 0 0 0 2px var(--ppt-focus, rgba(196, 62, 28, 0.35));
+}
+
+.cell[data-dragging="true"] {
+  opacity: 0.5;
+}
+
+/* The drop point: PowerPoint draws an insertion bar before the slide. */
+.cell[data-drop-target="true"]::before {
+  content: "";
+  position: absolute;
+  left: -11px;
+  top: 4px;
+  bottom: 22px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--ppt-accent, #c43e1c);
+}
+
+.thumbnail {
+  display: block;
+  aspect-ratio: 16 / 9;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.18);
+}
+
+.thumbnail > * {
+  width: 100%;
+  height: 100%;
+}
+
+.cell[data-hidden="true"] .thumbnail {
+  opacity: 0.55;
+}
+
+.number {
+  align-self: flex-start;
+  font-size: 11px;
+  line-height: 1;
+  color: var(--ppt-sorter-muted, #475569);
+  font-variant-numeric: tabular-nums;
+}
+
+.cell[data-hidden="true"] .number {
+  text-decoration: line-through;
+}
+
+/* Dark and high contrast: the sorter lies on the dark stage, where the light
+   theme's slate section headings and slide numbers all but vanished. The
+   thumbnails stay slide paper. */
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .sorter {
+  --ppt-sorter-section: var(--console-text-primary, #f2f2f7);
+  --ppt-sorter-muted: var(--console-text-muted, #a1a1a8);
+}

@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "กำหนดเอง",
+ "zoom.levels": "ระดับการซูม",
+ "dialog.close": "ปิด",
+ "toast.close": "ปิดการแจ้งเตือน",
+ "button.confirm": "ตกลง",
+ "button.cancel": "ยกเลิก",
+ "libreOffice.enable": "ดาวน์โหลดและเปิดใช้ (ประมาณ {size})",
+ "libreOffice.enableAlt": "ดาวน์โหลดและเปิดใช้ LibreOffice",
+ "libreOffice.enabled": "เปิดใช้ LibreOffice {version} แล้ว",
+ "libreOffice.retrying": "กำลังลองอีกครั้ง…",
+ "libreOffice.ready": "ตอนนี้เปิดไฟล์ Office รูปแบบเก่าและไฟล์ OpenDocument แสดงรูป EMF/WMF และส่งออกเป็น OpenDocument ได้แล้ว",
+ "libreOffice.needed": "ต้องใช้ LibreOffice โดย MR Note Classic ดาวน์โหลดรุ่นทางการไว้ในโฟลเดอร์ของตัวเองได้ และไม่ติดตั้งอะไรลงในระบบ",
+ "libreOffice.neededFor": "การบันทึกเป็น .{format} ต้องใช้ LibreOffice โดย MR Note Classic ดาวน์โหลดรุ่นทางการไว้ในโฟลเดอร์ของตัวเองได้ และไม่ติดตั้งอะไรลงในระบบ"
+}

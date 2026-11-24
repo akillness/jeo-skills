@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Настроюваний",
+ "zoom.levels": "Рівні масштабу",
+ "dialog.close": "Закрити",
+ "toast.close": "Закрити сповіщення",
+ "button.confirm": "OK",
+ "button.cancel": "Скасувати",
+ "libreOffice.enable": "Завантажити й увімкнути (приблизно {size})",
+ "libreOffice.enableAlt": "Завантажити й увімкнути LibreOffice",
+ "libreOffice.enabled": "LibreOffice {version} увімкнуто",
+ "libreOffice.retrying": "Повторна спроба…",
+ "libreOffice.ready": "Тепер працюють старі формати Office, файли OpenDocument, зображення EMF/WMF та експорт в OpenDocument.",
+ "libreOffice.needed": "Для цього потрібен LibreOffice. MR Note Classic може завантажити офіційний випуск у власну папку; у вашій системі нічого не інсталюється.",
+ "libreOffice.neededFor": "Для збереження у форматі .{format} потрібен LibreOffice. MR Note Classic може завантажити офіційний випуск у власну папку; у вашій системі нічого не інсталюється."
+}

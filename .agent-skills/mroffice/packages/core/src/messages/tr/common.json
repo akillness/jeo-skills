@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Özel",
+ "zoom.levels": "Yakınlaştırma düzeyleri",
+ "dialog.close": "Kapat",
+ "toast.close": "Bildirimi kapat",
+ "button.confirm": "Tamam",
+ "button.cancel": "İptal",
+ "libreOffice.enable": "İndir ve etkinleştir (yaklaşık {size})",
+ "libreOffice.enableAlt": "LibreOffice’i indir ve etkinleştir",
+ "libreOffice.enabled": "LibreOffice {version} etkin",
+ "libreOffice.retrying": "Yeniden deneniyor…",
+ "libreOffice.ready": "Eski Office biçimleri, OpenDocument dosyaları, EMF/WMF resimleri ve OpenDocument dışarı aktarmaları artık çalışıyor.",
+ "libreOffice.needed": "Bu işlem için LibreOffice gerekir. MR Note Classic resmî sürümü kendi klasörüne indirebilir; sisteminize hiçbir şey yüklenmez.",
+ "libreOffice.neededFor": ".{format} olarak kaydetmek için LibreOffice gerekir. MR Note Classic resmî sürümü kendi klasörüne indirebilir; sisteminize hiçbir şey yüklenmez."
+}

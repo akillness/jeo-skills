@@ -1,0 +1,325 @@
+/* One paint owner for Office commands, menu faces and disclosure rails.
+ * Existing editor classes continue to own dimensions and layout only.
+ * Palette cells, previews, tabs and menu contents are not command faces.
+ */
+.office-ribbon-control {
+  --office-control-accent: var(
+    --office-ribbon-accent,
+    var(--docs-ribbon-accent, #087c73)
+  );
+  --office-control-surface: var(
+    --office-ribbon-surface,
+    var(--console-surface-raised, #fff)
+  );
+  --office-control-hover: var(
+    --office-ribbon-hover,
+    var(
+      --office-ribbon-accent-soft,
+      color-mix(
+        in srgb,
+        var(--office-control-accent) 12%,
+        var(--office-control-surface)
+      )
+    )
+  );
+  --office-control-selected: color-mix(
+    in srgb,
+    var(--office-control-accent) 16%,
+    var(--office-control-surface)
+  );
+  --office-control-background: transparent;
+  --office-control-border: transparent;
+  /* The ink of a hovered, open or pressed command. */
+  --office-control-accent-ink: var(--office-control-accent);
+  --office-control-ink: var(
+    --office-ribbon-ink,
+    var(--docs-ribbon-ink, #1f2937)
+  );
+  background: var(--office-control-background);
+  border-color: var(--office-control-border);
+  box-shadow: none;
+  color: var(--office-control-ink);
+}
+
+/* Dark and high contrast (and a document window's own dark mode): each
+ * editor's accent is a mid-tone written for white bands; as the ink of a
+ * pressed or hovered command on the graphite band it reads at about 2.5:1,
+ * so the ink takes a lighter step of the same hue. */
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"], [data-document-dark-mode="true"])
+  .office-ribbon-control {
+  --office-control-accent-ink: color-mix(
+    in srgb,
+    var(--office-control-accent) 58%,
+    #ffffff
+  );
+}
+
+/* Geometry fallbacks on preview glyphs must not inherit a command's border
+ * token; only another canonical face establishes its own paint values. */
+.office-ribbon-control > :not(.office-ribbon-control) {
+  --office-control-border: initial;
+}
+
+.office-ribbon-control:where(
+  button:hover:not(:disabled):not([aria-disabled="true"])
+) {
+  --office-control-background: var(--office-control-hover);
+  --office-control-border: color-mix(
+    in srgb,
+    var(--office-control-accent) 24%,
+    transparent
+  );
+  --office-control-ink: var(--office-control-accent-ink);
+}
+
+.office-ribbon-control:where(
+  button[data-state="open"],
+  button[aria-expanded="true"],
+  button[aria-pressed="true"],
+  button[aria-pressed="mixed"],
+  button.is-active,
+  button.note-editor-ribbon-big--active
+) {
+  --office-control-background: var(--office-control-selected);
+  --office-control-border: color-mix(
+    in srgb,
+    var(--office-control-accent) 32%,
+    transparent
+  );
+  --office-control-ink: var(--office-control-accent-ink);
+}
+
+.office-ribbon-control:where(button:disabled, button[aria-disabled="true"]) {
+  cursor: default;
+  /* 1 inside a split faded as a whole (below), so it does not fade twice */
+  opacity: var(--office-control-disabled-opacity, 0.48);
+}
+
+ 
+@media (hover: none) {
+  :where([data-office-screen-tips], [data-office-authoring-ribbon], .note-editor-ribbon-strip)
+    :is(button:disabled, input:disabled, select:disabled) {
+    pointer-events: none;
+  }
+}
+
+.office-ribbon-control:where(button:focus-visible) {
+  outline: 2px solid var(--office-control-accent);
+  outline-offset: -2px;
+}
+
+.office-ribbon-control[data-office-control-part="field"] {
+  --office-control-background: var(--office-control-surface);
+  --office-control-border: var(
+    --office-ribbon-border,
+    var(--docs-ribbon-divider, #d8dee8)
+  );
+}
+
+.office-ribbon-control[data-office-control-part="stepper"] {
+  --office-control-border: var(
+    --office-ribbon-border,
+    var(--docs-ribbon-divider, #d8dee8)
+  );
+}
+
+/* A true split's two real buttons paint their own faces; its shell does not. */
+.office-ribbon-control[data-office-control-part="split"] {
+  background: transparent;
+}
+
+/* A menu-only command looks like a split, as the two always did: the
+ * compact trigger takes the hover / open / pressed paint of every other
+ * command over both its parts, which draw nothing of their own (painted on
+ * their own they were two tinted pills, the chevron tinted even at rest). */
+.office-ribbon-control[data-office-control-part="menu"] > .office-ribbon-control {
+  --office-control-background: transparent;
+  --office-control-border: transparent;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  color: inherit;
+}
+
+/* A large one is drawn as a large split is: the shell paints nothing, its
+ * 52px face and 14px chevron row take the command's paint together (they
+ * touch, one face over its row), and the seam between them shows with it. */
+.office-ribbon-control.note-editor-ribbon-big[data-office-control-part="menu"] {
+  --office-control-face: var(--office-control-background);
+  background: transparent;
+}
+.office-ribbon-control.note-editor-ribbon-big[data-office-control-part="menu"]
+  > .office-ribbon-control.office-ribbon-control {
+  background: var(--office-control-face, transparent);
+}
+.office-ribbon-control.note-editor-ribbon-big[data-office-control-part="menu"]
+  > .office-ribbon-control.office-ribbon-control[data-office-control-part="disclosure"] {
+  --office-control-border: var(--office-control-seam, transparent);
+}
+
+ 
+.office-ribbon-control[data-office-control-part="menu"] {
+  --office-control-seam: var(--office-control-border);
+}
+.office-ribbon-control[data-office-control-part="menu"]
+  > .office-ribbon-control[data-office-control-part="disclosure"] {
+  border-inline-start-color: var(--office-control-seam, transparent);
+}
+
+.office-ribbon-control[data-office-control-part="primary"] {
+  color: inherit;
+}
+
+ 
+.office-ribbon-control[data-office-control-part="disclosure"] {
+  color: inherit;
+}
+
+.office-ribbon-control[data-office-control-part="field"]:where(
+    button:hover:not(:disabled):not([aria-disabled="true"]),
+    button[data-state="open"],
+    button[aria-expanded="true"]
+  ),
+.office-ribbon-control[data-office-control-part="disclosure"]:where(
+    button:hover:not(:disabled):not([aria-disabled="true"]),
+    button[data-state="open"],
+    button[aria-expanded="true"]
+  ) {
+  --office-control-background: var(--office-control-hover);
+  --office-control-border: color-mix(
+    in srgb,
+    var(--office-control-accent) 32%,
+    transparent
+  );
+  --office-control-ink: var(--office-control-accent-ink);
+}
+
+ 
+@media (hover: hover) {
+  .office-ribbon-control[data-office-control-part="split"]:where([data-office-split-hover])
+    > [data-office-home-split-part="primary"] > .office-ribbon-control,
+  .office-ribbon-control[data-office-control-part="split"]:where([data-office-split-hover])
+    > .office-ribbon-control[data-office-control-part="disclosure"] {
+    --office-control-background: var(--office-control-hover);
+    --office-control-border: color-mix(
+      in srgb,
+      var(--office-control-accent) 24%,
+      transparent
+    );
+    --office-control-ink: var(--office-control-accent-ink);
+    color: var(--office-control-ink);
+  }
+}
+
+@media (any-pointer: coarse) {
+  .office-ribbon-control[data-office-control-part="split"]:where([data-office-split-press])
+    > [data-office-home-split-part="primary"] > .office-ribbon-control,
+  .office-ribbon-control[data-office-control-part="split"]:where([data-office-split-press])
+    > .office-ribbon-control[data-office-control-part="disclosure"] {
+    --office-control-background: var(--office-control-hover);
+    --office-control-border: color-mix(
+      in srgb,
+      var(--office-control-accent) 24%,
+      transparent
+    );
+    --office-control-ink: var(--office-control-accent-ink);
+    color: var(--office-control-ink);
+  }
+}
+
+.office-ribbon-control[data-office-control-part="split"]:where([data-office-split-selected])
+  > [data-office-home-split-part="primary"] > .office-ribbon-control,
+.office-ribbon-control[data-office-control-part="split"]:where([data-office-split-selected])
+  > .office-ribbon-control[data-office-control-part="disclosure"] {
+  --office-control-background: var(--office-control-selected);
+  --office-control-border: color-mix(
+    in srgb,
+    var(--office-control-accent) 32%,
+    transparent
+  );
+  --office-control-ink: var(--office-control-accent-ink);
+  color: var(--office-control-ink);
+}
+
+.office-ribbon-control[data-office-control-part="split"]:where(
+    :has(button:hover:not(:disabled):not([aria-disabled="true"]))
+  ) {
+  --office-control-background: var(--office-control-hover);
+  --office-control-border: color-mix(
+    in srgb,
+    var(--office-control-accent) 24%,
+    transparent
+  );
+  --office-control-ink: var(--office-control-accent-ink);
+}
+
+.office-ribbon-control[data-office-control-part="split"]:where(
+    :has(
+      button[aria-pressed="true"],
+      button[aria-pressed="mixed"],
+      button[data-state="open"],
+      button[aria-expanded="true"],
+      button.is-active
+    )
+  ) {
+  --office-control-background: var(--office-control-selected);
+  --office-control-border: color-mix(
+    in srgb,
+    var(--office-control-accent) 32%,
+    transparent
+  );
+  --office-control-ink: var(--office-control-accent-ink);
+}
+
+.office-ribbon-control[data-office-control-part="split"]:where(:focus-within),
+.office-ribbon-control[data-office-control-part="field"]:where(:focus-within) {
+  outline: 2px solid var(--office-control-accent);
+  outline-offset: -2px;
+}
+
+/* A true split's two real buttons keep their independent actions and focus;
+ * they share the split's segmented paint, not a new overlay. */
+.office-ribbon-control[data-office-control-part="split"]
+  .office-ribbon-control:where(button),
+.office-ribbon-control[data-office-control-part="split"]
+  > [data-office-home-split-part="primary"] > .office-ribbon-control {
+  --office-control-border: transparent;
+  background: var(--office-control-background);
+  color: inherit;
+  outline: none;
+}
+
+/* Fade the whole segmented face only when neither action is available.
+ * A partially disabled split still dims just the unavailable real button. */
+ 
+.office-ribbon-control[data-office-control-part="split"]:where(
+  [data-office-split-disabled]
+) {
+  opacity: 0.48;
+  --office-control-disabled-opacity: 1;
+}
+
+@media (forced-colors: active) {
+  .office-ribbon-control[data-office-control-part="split"] {
+    opacity: 1;
+  }
+  .office-ribbon-control {
+    --office-control-accent: Highlight;
+    --office-control-surface: ButtonFace;
+    --office-control-hover: Highlight;
+    --office-control-selected: Highlight;
+    --office-control-ink: ButtonText;
+  }
+  .office-ribbon-control:where(button:disabled) {
+    color: GrayText;
+    opacity: 1;
+  }
+  .office-ribbon-control:where(
+    button:hover:not(:disabled):not([aria-disabled="true"]),
+    button[aria-pressed="true"],
+    button[data-state="open"]
+  ) {
+    color: HighlightText;
+  }
+}
+

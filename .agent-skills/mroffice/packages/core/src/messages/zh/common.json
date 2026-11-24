@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "自定义",
+ "zoom.levels": "缩放级别",
+ "dialog.close": "关闭",
+ "toast.close": "关闭通知",
+ "button.confirm": "确定",
+ "button.cancel": "取消",
+ "libreOffice.enable": "下载并启用（约 {size}）",
+ "libreOffice.enableAlt": "下载并启用 LibreOffice",
+ "libreOffice.enabled": "LibreOffice {version} 已启用",
+ "libreOffice.retrying": "正在重试…",
+ "libreOffice.ready": "现在可以打开旧版 Office 和 OpenDocument 文件、显示 EMF/WMF 图片、导出 OpenDocument 了。",
+ "libreOffice.needed": "这需要 LibreOffice。MR Note 经典版可以把官方发布版下载到它自己的文件夹，不会安装到系统。",
+ "libreOffice.neededFor": "保存为 .{format} 需要 LibreOffice。MR Note 经典版可以把官方发布版下载到它自己的文件夹，不会安装到系统。"
+}

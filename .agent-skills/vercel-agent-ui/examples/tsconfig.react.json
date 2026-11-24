@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "*/solid",
+    "*/vue",
+    "components/*/solid",
+    "components/*/vue",
+    "mount/vue.ts"
+  ]
+}

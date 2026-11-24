@@ -1,0 +1,3222 @@
+/* ------------------------------------------------------------------ */
+/* Window Manager — free-canvas floating workspace                     */
+/* ------------------------------------------------------------------ */
+
+/* Shared window-chrome alias tokens (Fluent-style two-layer tokens: these
+   aliases resolve to the single accent family so EVERY floating window's
+   toolbar, buttons, tabs and focus states speak one visual language —
+   document/presentation/spreadsheet already migrated; new chrome should
+   reference these instead of hardcoding colors). */
+:root {
+  --win-ink: #1c4741;
+  --win-ink-strong: #0f766e;
+  --win-muted: #537069;
+  --win-hover: rgba(13, 148, 136, 0.08);
+  --win-active: rgba(13, 148, 136, 0.14);
+  --win-border: rgba(13, 148, 136, 0.2);
+  --win-hairline: rgba(13, 148, 136, 0.12);
+  --win-rule: rgba(13, 148, 136, 0.16);
+  --win-focus-border: rgba(13, 148, 136, 0.6);
+  --win-focus-ring: 0 0 0 3px rgba(13, 148, 136, 0.22);
+  --win-glass: rgba(255, 255, 255, 0.88);
+  /* Fluent-style elevation: sharp key shadow + soft ambient shadow. */
+  --win-shadow:
+    0 1px 2px color-mix(in srgb, var(--console-text-primary, #0c3a34) 5%, transparent),
+    0 10px 26px color-mix(in srgb, var(--console-text-primary, #0c3a34) 9%, transparent);
+}
+
+/* Dark and high contrast: the window helpers the theme blocks in globals.css
+   do not restate (they restate --win-border, -hairline, -ink, -ink-strong,
+   -hover and -focus-border). */
+[data-theme-mode="dark"],
+[data-theme-mode="high-contrast"] {
+  --win-muted: var(--text-muted, #8e8e96);
+  --win-active: color-mix(in srgb, var(--console-accent, #2dd4bf) 20%, transparent);
+  --win-rule: rgba(255, 255, 255, 0.1);
+  --win-focus-ring: 0 0 0 3px color-mix(in srgb, var(--console-accent, #2dd4bf) 28%, transparent);
+  --win-glass: var(--glass-pane-bg, rgba(28, 29, 33, 0.84));
+  --win-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 10px 26px rgba(0, 0, 0, 0.45);
+  /* The amber ink of window notices and the titlebar's connection state. */
+  --warning-text: var(--console-warning, #fb923c);
+}
+
+ 
+.wm-canvas-shell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.wm-canvas-viewport {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  /* WindowCanvas owns world-coordinate anchoring explicitly. Native scroll
+     anchoring treats a newly mounted floating window/chat transcript as
+     document flow and can move the entire desk to keep an arbitrary prior
+     anchor visible. */
+  overflow-anchor: none;
+  /* Keep browser back/forward swipe + page bounce out of canvas panning. */
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+/* While a window is maximized it pins to the current viewport rect; lock
+   scrolling so the desk cannot slide out from underneath it. */
+.wm-canvas-viewport--locked {
+  overflow: hidden;
+}
+
+/* A finger that landed inside a window is down (lib/window-touch-hold.ts):
+   the desk does not scroll, so nothing that finger drags can chain into it.
+   WebKit does not stop a touch's scroll chain at the window shell's
+   `overscroll-behavior: none` (a scroll container with nothing to scroll),
+   and the guard that put the desk back every frame read as the window
+   trembling under the finger. Scroll offsets are kept. */
+.wm-canvas-viewport[data-touch-held] {
+  overflow: hidden;
+}
+
+.wm-canvas--panning {
+  cursor: grabbing;
+}
+
+.wm-canvas {
+  position: relative;
+  min-width: 100%;
+  min-height: 100%;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  /* Subtle dot pattern for "free-canvas" feel */
+  background-color: var(--bg-base, #f7fefc);
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--console-accent, #0d9488) 18%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+  background-position: 0 0;
+}
+
+/* Physical scroll plane and logical world geometry are intentionally split:
+   the canvas owns the scaled scroll extent, while every window keeps stable
+   world coordinates inside this transform layer. */
+.wm-canvas-zoom-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  /* A non-100% transform already traps every window z-index below body
+     portals. Keep the same stack boundary at 100%, where the transform is
+     intentionally `none`, so an old/high-z window can never cover a ribbon
+     menu or receive its click. */
+  isolation: isolate;
+  transform-origin: 0 0;
+}
+
+/* While the zoom moves (WindowCanvas markZoomMoving): one compositor layer,
+   so each step scales what was already drawn instead of drawing every window
+   again at the new scale; the attribute goes once the zoom rests and the
+   desk is drawn sharp at the scale it settled on. */
+.wm-canvas-zoom-layer[data-zooming] {
+  will-change: transform;
+}
+
+.wm-canvas-zoom-chrome {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 70;
+  display: flex;
+}
+
+/* A maximized window owns the whole viewport, its bottom-right included:
+   the bar steps aside (it fades and sinks, then is gone) and comes back the
+   same way when the window is restored (WindowCanvas). */
+.wm-canvas-zoom-chrome {
+  animation: wm-canvas-chrome-in var(--panel-enter, 300ms)
+    var(--enter-ease, cubic-bezier(0.22, 1, 0.36, 1)) both;
+}
+
+.wm-canvas-zoom-chrome[data-leaving="true"] {
+  animation: wm-canvas-chrome-out 160ms var(--exit-ease, cubic-bezier(0.4, 0, 1, 1)) both;
+  pointer-events: none;
+}
+
+.wm-canvas-zoom-chrome--retired {
+  display: none;
+}
+
+@keyframes wm-canvas-chrome-in {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+}
+
+@keyframes wm-canvas-chrome-out {
+  to {
+    opacity: 0;
+    translate: 0 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wm-canvas-zoom-chrome,
+  .wm-canvas-zoom-chrome[data-leaving="true"] {
+    animation: none;
+  }
+}
+
+/* Exposé (Mission Control's F3): the button beside the zoom dial, the same
+   glass as the dial. */
+.wm-canvas-expose-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-right: 8px;
+  padding: 0;
+  border: 1px solid var(--win-border, rgba(13, 148, 136, 0.2));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg-surface, #ffffff) 94%, transparent);
+  color: var(--text-primary, #0f172a);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+.wm-canvas-expose-toggle:hover {
+  background: color-mix(in srgb, var(--bg-surface, #ffffff) 100%, transparent);
+}
+.wm-canvas-expose-toggle:active {
+  transform: scale(0.96);
+}
+.wm-canvas-expose-toggle:focus-visible {
+  outline: 2px solid var(--console-accent, #0d9488);
+  outline-offset: 2px;
+}
+.wm-canvas-expose-toggle:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+/* Pressed: the accent face, kept under the pointer too (the hover rule
+   above would otherwise paint it white again with its white glyph). */
+.wm-canvas-expose-toggle.wm-canvas-expose-toggle--active,
+.wm-canvas-expose-toggle.wm-canvas-expose-toggle--active:hover {
+  background: var(--console-accent, #0d9488);
+  border-color: var(--console-accent, #0d9488);
+  color: #fff;
+}
+
+/* Close every window: the same glass button, first on the bar. Its hover
+   says what it does. */
+.wm-canvas-close-all:hover:not(:disabled) {
+  border-color: color-mix(in srgb, #dc2626 38%, transparent);
+  color: #dc2626;
+}
+
+/* The minimap sits beside the bar, to its left along the desk's bottom edge
+   (CanvasMinimap.tsx): the desk at a glance, the part on screen outlined, a
+   dot on a window for each other person in it. Beside, not above: the corner
+   over the bar is where the tasks dock rests. */
+.wm-canvas-minimap-anchor {
+  position: absolute;
+  right: calc(100% + 10px);
+  bottom: 0;
+}
+/* a narrow desk has no room beside the bar: the map goes over it */
+@media (max-width: 720px) {
+  .wm-canvas-minimap-anchor {
+    right: 0;
+    bottom: calc(100% + 10px);
+  }
+}
+/* between the two there is room for a smaller map beside the bar */
+@media (max-width: 960px) {
+  .wm-canvas-minimap {
+    zoom: 0.8;
+  }
+}
+.wm-canvas-minimap {
+  --wm-minimap-accent: var(--console-accent, #0d9488);
+  --wm-minimap-ink: var(--text-primary, #0f172a);
+  --wm-minimap-paper: var(--bg-surface, #ffffff);
+  /* a window's plain card (where the window itself cannot be shown) is
+     opaque whatever the surface token is */
+  --wm-minimap-card: #ffffff;
+  display: grid;
+  gap: 7px;
+  box-sizing: border-box;
+  padding: 8px 8px 7px;
+  border: 1px solid
+    color-mix(in srgb, var(--wm-minimap-ink) 10%, transparent);
+  border-radius: 16px;
+  /* from the opaque card colour, not the surface token (which is see-through
+     in this skin): the panel reads the same where the blur does not apply */
+  background: color-mix(in srgb, var(--wm-minimap-card) 90%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  backdrop-filter: blur(18px) saturate(1.5);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #ffffff 60%, transparent),
+    0 18px 40px -12px rgba(15, 23, 42, 0.28),
+    0 2px 6px rgba(15, 23, 42, 0.08);
+  transform-origin: 100% 100%;
+  animation: wm-canvas-minimap-in 220ms cubic-bezier(0.2, 0.9, 0.25, 1) both;
+}
+/* hidden again: it folds back into the corner it came from */
+.wm-canvas-minimap-anchor[data-leaving="true"] {
+  pointer-events: none;
+}
+.wm-canvas-minimap-anchor[data-leaving="true"] .wm-canvas-minimap {
+  animation: wm-canvas-minimap-out 160ms var(--exit-ease, cubic-bezier(0.4, 0, 1, 1)) both;
+}
+@keyframes wm-canvas-minimap-out {
+  to {
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+  }
+}
+@keyframes wm-canvas-minimap-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* The map: the desk's own dots at the map's scale, the windows themselves
+   in miniature (the mirror's frame), and over them the map's marks. */
+.wm-canvas-minimap__frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  background:
+    radial-gradient(
+        circle at 0.7px 0.7px,
+        color-mix(in srgb, var(--wm-minimap-ink) 17%, transparent) 0.7px,
+        transparent 0.8px
+      )
+      var(--wm-minimap-grid-x, 0) var(--wm-minimap-grid-y, 0) /
+      var(--wm-minimap-grid, 12px) var(--wm-minimap-grid, 12px),
+    radial-gradient(
+      120% 90% at 50% 0%,
+      color-mix(in srgb, var(--wm-minimap-accent) 7%, transparent),
+      transparent 70%
+    ),
+    color-mix(in srgb, var(--wm-minimap-ink) 4%, var(--wm-minimap-paper));
+  box-shadow: 0 0 0 1px
+    color-mix(in srgb, var(--wm-minimap-ink) 8%, transparent);
+}
+.wm-canvas-minimap__mirror {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+/* The mirror's frame (.wm-canvas-minimap__mirror-frame) is one viewport
+   large, so the copies are laid out as the desk is, and scaled into the map;
+   lib/canvas-mirror sets its geometry itself. */
+.wm-canvas-minimap__map {
+  position: relative;
+  display: block;
+  cursor: crosshair;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.wm-canvas-minimap__map[data-cursor="pointer"] {
+  cursor: pointer;
+}
+.wm-canvas-minimap__map[data-cursor="grab"] {
+  cursor: grab;
+}
+.wm-canvas-minimap__map[data-cursor="grabbing"] {
+  cursor: grabbing;
+}
+/* A window's place. Over the mirror it is only an outline when pointed at;
+   without the mirror it is the window's plain card. */
+.wm-canvas-minimap__window {
+  fill: var(--wm-minimap-card);
+  stroke: color-mix(in srgb, var(--wm-minimap-ink) 24%, transparent);
+  stroke-width: 0.75;
+  transition:
+    stroke 140ms ease,
+    stroke-width 140ms ease;
+}
+.wm-canvas-minimap__item[data-focused] .wm-canvas-minimap__window {
+  stroke: color-mix(in srgb, var(--wm-minimap-accent) 70%, var(--wm-minimap-ink));
+  stroke-width: 1.2;
+}
+.wm-canvas-minimap__frame[data-mirrored] .wm-canvas-minimap__window {
+  fill: transparent;
+  stroke: transparent;
+}
+.wm-canvas-minimap__frame .wm-canvas-minimap__item[data-hovered] .wm-canvas-minimap__window {
+  stroke: var(--wm-minimap-accent);
+  stroke-width: 1.5;
+}
+.wm-canvas-minimap__person {
+  stroke: var(--wm-minimap-paper);
+  stroke-width: 1.2;
+}
+.wm-canvas-minimap__more {
+  fill: color-mix(in srgb, var(--wm-minimap-ink) 42%, var(--wm-minimap-paper));
+  stroke: var(--wm-minimap-paper);
+  stroke-width: 1;
+}
+/* someone is here now: their dot breathes */
+.wm-canvas-minimap__halo {
+  fill: currentColor;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: wm-canvas-minimap-halo 2.6s ease-out infinite;
+}
+@keyframes wm-canvas-minimap-halo {
+  0% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(2.6);
+  }
+}
+.wm-canvas-minimap__shade {
+  fill: color-mix(in srgb, var(--wm-minimap-ink) 9%, transparent);
+  pointer-events: none;
+}
+.wm-canvas-minimap__view-glow {
+  fill: none;
+  stroke: color-mix(in srgb, var(--wm-minimap-accent) 26%, transparent);
+  stroke-width: 4;
+  pointer-events: none;
+}
+.wm-canvas-minimap__view {
+  fill: none;
+  stroke: var(--wm-minimap-accent);
+  stroke-width: 1.4;
+  pointer-events: none;
+}
+.wm-canvas-minimap__caption {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 0 3px;
+  color: color-mix(in srgb, var(--wm-minimap-ink) 78%, transparent);
+  font-size: 11.5px;
+  font-weight: 550;
+  line-height: 16px;
+}
+.wm-canvas-minimap__name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.wm-canvas-minimap__count {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 3px;
+  color: color-mix(in srgb, var(--wm-minimap-ink) 48%, transparent);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.wm-canvas-minimap__count svg {
+  stroke: currentColor;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.wm-canvas-minimap__people {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0;
+  padding: 6px 0 0;
+  border-top: 1px solid
+    color-mix(in srgb, var(--wm-minimap-ink) 8%, transparent);
+  list-style: none;
+}
+.wm-canvas-minimap__people li {
+  min-width: 0;
+  max-width: 100%;
+}
+.wm-canvas-minimap__who {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 100%;
+  padding: 2px 9px 2px 2px;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--wm-minimap-ink) 6%, transparent);
+  color: var(--wm-minimap-ink);
+  font-size: 11.5px;
+  line-height: 18px;
+  cursor: pointer;
+  transition: background-color 140ms ease;
+}
+.wm-canvas-minimap__who:hover {
+  background: color-mix(in srgb, var(--wm-minimap-accent) 16%, transparent);
+}
+.wm-canvas-minimap__who:focus-visible {
+  outline: 2px solid var(--wm-minimap-accent);
+  outline-offset: 1px;
+}
+.wm-canvas-minimap__who i {
+  display: grid;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.35);
+}
+.wm-canvas-minimap__who span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wm-canvas-minimap,
+  .wm-canvas-minimap__halo {
+    animation: none;
+  }
+}
+[data-theme-mode="dark"] .wm-canvas-minimap,
+[data-theme-mode="high-contrast"] .wm-canvas-minimap {
+  --wm-minimap-card: #242a32;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 18px 40px -12px rgba(0, 0, 0, 0.6),
+    0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* While exposed (and for the return flight) the shells glide. The windows
+   stay live where they lie: their title bars close, minimize and maximize,
+   and their contents take the pointer as usual. */
+.wm-canvas-shell[data-expose="true"] .wm-window,
+.wm-canvas-shell[data-expose-motion="true"] .wm-window {
+  transition: transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+/* a spread window is not dragged: its place is the grid's */
+.wm-window[data-exposed="true"] .wm-titlebar {
+  cursor: default;
+}
+/* Each window's drag-and-resize host stays at the window's real place while
+   its shell is in the grid: an empty box there, over whatever window was
+   spread to that part of the view. It takes no pointer; the shells do. */
+.wm-canvas-shell[data-expose="true"] .wm-canvas-world > .react-draggable {
+  pointer-events: none;
+}
+.wm-canvas-shell[data-expose="true"] .wm-window {
+  pointer-events: auto;
+}
+/* The exposed shell's place and size, from the variables the window sets
+   (Window.tsx); a stylesheet rule so the shell's inline transform stays the
+   wheel bounce's own. */
+.wm-window[data-exposed="true"] {
+  transform: translate(var(--wm-expose-dx, 0px), var(--wm-expose-dy, 0px))
+    scale(var(--wm-expose-scale, 1));
+  transform-origin: 0 0;
+}
+/* Mission Control does not scroll: the view stays put while exposed. */
+.wm-canvas-shell[data-expose="true"] .wm-canvas-viewport {
+  overflow: hidden;
+}
+.wm-expose-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483000;
+}
+/* A window's title under it: the press that goes to that window and puts
+   the rest back. */
+.wm-expose-label {
+  position: absolute;
+  max-width: 320px;
+  margin: 0;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg-surface, #ffffff) 92%, transparent);
+  border: 1px solid var(--win-border, rgba(13, 148, 136, 0.2));
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+  color: var(--text-primary, #0f172a);
+  font: inherit;
+  font-size: 13px;
+  line-height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform-origin: 50% 0;
+  pointer-events: auto;
+  cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease;
+  animation: wm-expose-label-in 280ms ease-out both;
+}
+.wm-expose-label:hover {
+  border-color: var(--console-accent, #0d9488);
+  background: color-mix(
+    in srgb,
+    var(--console-accent, #0d9488) 12%,
+    var(--bg-surface, #ffffff)
+  );
+  color: var(--console-accent-strong, #0f6f68);
+}
+.wm-expose-label:focus-visible {
+  outline: 2px solid var(--console-accent, #0d9488);
+  outline-offset: 2px;
+}
+@keyframes wm-expose-label-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wm-canvas-shell[data-expose="true"] .wm-window,
+  .wm-canvas-shell[data-expose-motion="true"] .wm-window {
+    transition: none;
+  }
+  .wm-expose-label {
+    animation: none;
+  }
+}
+
+.wm-canvas-zoom-dial {
+  --continuous-zoom-border: var(--win-border, rgba(13, 148, 136, 0.2));
+  --continuous-zoom-glass: color-mix(
+    in srgb,
+    var(--bg-surface, #ffffff) 94%,
+    transparent
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Canvas connections — directed "context wiring" edges between        */
+/* windows. Drawn BEHIND the windows (zIndex 0; windows are >= 1).      */
+/* ------------------------------------------------------------------ */
+
+.wm-connections {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* User units map 1:1 to canvas px (no viewBox); let wires past the box show. */
+  overflow: visible;
+  z-index: 0;
+  /* Pointer-transparent layer: only the per-edge hit-line and delete control
+     opt back in, so wires never steal clicks meant for a window. */
+  pointer-events: none;
+}
+
+.wm-connection-wire {
+  fill: none;
+  stroke: color-mix(in srgb, var(--console-accent, #0d9488) 70%, transparent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: stroke 0.12s ease, stroke-width 0.12s ease;
+}
+
+.wm-connection-arrowhead {
+  fill: color-mix(in srgb, var(--console-accent, #0d9488) 78%, transparent);
+}
+
+.wm-connection-hit {
+  stroke: transparent;
+  stroke-width: 16;
+  fill: none;
+  pointer-events: stroke;
+  cursor: pointer;
+}
+
+.wm-connection:hover .wm-connection-wire,
+.wm-connection:focus-within .wm-connection-wire {
+  stroke: var(--console-accent, #0d9488);
+  stroke-width: 3;
+}
+
+.wm-connection-delete {
+  cursor: pointer;
+  pointer-events: auto;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+.wm-connection:hover .wm-connection-delete,
+.wm-connection:focus-within .wm-connection-delete,
+.wm-connection[data-touch-revealed] .wm-connection-delete,
+.wm-connection-delete:focus-visible {
+  opacity: 1;
+}
+
+/* touch: a tap on the wire shows its delete first; the hidden button takes
+   no tap until then, so a tap on the wire's middle never deletes unseen */
+@media (hover: none) {
+  .wm-connection:not([data-touch-revealed]):not(:focus-within)
+    .wm-connection-delete {
+    pointer-events: none;
+  }
+}
+
+/* the revealed delete's finger target (r=22, a 44px circle); a mouse and
+   a hidden button never meet it, so the 18px face is what a mouse hits */
+.wm-connection-delete-hit {
+  fill: transparent;
+  pointer-events: none;
+}
+.wm-connection[data-touch-revealed] .wm-connection-delete-hit {
+  pointer-events: all;
+}
+
+.wm-connection-delete-bg {
+  fill: var(--bg-base, #f7fefc);
+  stroke: var(--console-accent, #0d9488);
+  stroke-width: 1.5;
+}
+
+.wm-connection-delete-x {
+  stroke: var(--console-accent, #0d9488);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+}
+
+.wm-connection-delete:focus-visible .wm-connection-delete-bg {
+  outline: 2px solid var(--console-accent, #0d9488);
+  outline-offset: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wm-connection-wire,
+  .wm-connection-delete {
+    transition: none;
+  }
+}
+
+.wm-window--connect-anchor {
+  outline: 2px solid var(--console-accent, #0d9488);
+  outline-offset: 1px;
+}
+
+.wm-connect-target-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed color-mix(in srgb, var(--console-accent, #0d9488) 60%, transparent);
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 8%, transparent);
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.wm-connect-target-overlay:hover,
+.wm-connect-target-overlay:focus-visible {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 16%, transparent);
+  outline: none;
+}
+
+.wm-connect-target-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 80%;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--bg-surface, #f8fafc);
+  border: 1px solid color-mix(in srgb, var(--console-accent, #0d9488) 40%, transparent);
+  color: var(--console-accent, #0d9488);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wm-connect-target-overlay {
+    transition: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Window shell                                                       */
+/* ------------------------------------------------------------------ */
+
+/* A window opening decelerates into place; one closing is quicker and
+   accelerates away (the shared motion values: lib/desk-motion and the
+   --enter-ease / --window-enter tokens). The individual `scale` property
+   moves, never `transform`: the shell's transform belongs to the wheel
+   bounce and the exposé flight. */
+@keyframes wm-window-in {
+  from {
+    opacity: 0;
+    scale: 0.97;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+/* The person closed the window here (lib/window-exit-motion): its picture
+   shrinks a little toward its centre and fades where it stood. */
+@keyframes wm-window-close {
+  from {
+    opacity: 1;
+    scale: 1;
+  }
+  to {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+
+@keyframes wm-window-close-fade {
+  to {
+    opacity: 0;
+  }
+}
+
+/* A window's leaving picture is lifeless: nothing inside it replays its own
+   entrance or transitions (a cloned element starts its animations afresh),
+   and it takes no pointer. */
+[data-window-close-ghost],
+[data-window-close-ghost] *,
+[data-window-retraction-ghost] * {
+  pointer-events: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+[data-window-close-ghost] > .wm-window {
+  animation: wm-window-close var(--window-exit, 180ms)
+    var(--exit-ease, cubic-bezier(0.4, 0, 1, 1))
+    var(--wm-window-exit-delay, 0ms) both !important;
+  transform-origin: 50% 50%;
+}
+
+/* In exposé the shell is already scaled into its cell: it only fades. */
+[data-window-close-ghost] > .wm-window[data-exposed="true"] {
+  animation-name: wm-window-close-fade !important;
+}
+
+/* Someone else's shared window leaving a member's desk
+   (lib/window-retraction-motion): an inert picture of it sinks a little and
+   fades where it stood, so the window is seen to be taken away rather than
+   blinking out. Reduced motion never plays it (the helper does not make one). */
+@keyframes wm-window-retract {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: saturate(1);
+  }
+  35% {
+    opacity: 0.92;
+    filter: saturate(0.4);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.955);
+    filter: saturate(0.2);
+  }
+}
+
+[data-window-retraction-ghost] {
+  pointer-events: none !important;
+}
+
+[data-window-retraction-ghost] > .wm-window {
+  animation: wm-window-retract 360ms cubic-bezier(0.4, 0, 0.6, 1) forwards !important;
+  transform-origin: 50% 35%;
+}
+
+.wm-window {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+   
+  background: transparent;
+  border: none;
+  border-radius: var(--console-radius-lg, var(--radius-lg, 12px));
+   
+  --wm-window-shadow:
+    0 0 0 1px color-mix(in srgb, var(--border, #e2e8f0) 75%, transparent),
+    0 8px 24px rgba(15, 23, 42, 0.1),
+    0 2px 6px rgba(15, 23, 42, 0.06);
+  --wm-owner-halo: 0 0 0 0 transparent;
+  --wm-agent-halo-alpha: 0;
+  box-shadow:
+    var(--wm-window-shadow),
+    var(--wm-owner-halo),
+    0 0 20px 12px
+      color-mix(
+        in srgb,
+        var(--console-accent, #0d9488) calc(var(--wm-agent-halo-alpha) * 24%),
+        transparent
+      ),
+    0 0 44px 26px
+      color-mix(
+        in srgb,
+        var(--console-accent, #0d9488) calc(var(--wm-agent-halo-alpha) * 10%),
+        transparent
+      );
+  overflow: hidden;
+   
+  overflow: clip;
+   
+  overscroll-behavior: none;
+  transition:
+    box-shadow var(--motion-base, 200ms)
+      var(--motion-ease, cubic-bezier(0.4, 0, 0.2, 1)),
+    border-color var(--motion-base, 200ms)
+      var(--motion-ease, cubic-bezier(0.4, 0, 0.2, 1)),
+    transform var(--motion-base, 200ms)
+      var(--motion-ease, cubic-bezier(0.4, 0, 0.2, 1)),
+    opacity var(--motion-base, 200ms)
+      var(--motion-ease, cubic-bezier(0.4, 0, 0.2, 1));
+  animation: wm-window-in var(--window-enter, 240ms)
+    var(--enter-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  transform-origin: center center;
+   
+}
+
+/* Marked by the title bar's pointer events (Window.tsx), not matched with
+   `.wm-window:has(.wm-titlebar:hover)` / `:has(.wm-titlebar:active)`: Chromium
+   re-ran either :has() over the whole window for every element added to or
+   taken from it (20 ms an insertion, every key, in the 300-page book). */
+.wm-window[data-wm-titlebar-engaged] {
+  will-change: transform;
+}
+
+.wm-window--focused {
+  --wm-window-shadow:
+    0 0 0 1px color-mix(in srgb, var(--border, #e2e8f0) 95%, transparent),
+    0 24px 56px rgba(15, 23, 42, 0.22),
+    0 4px 14px rgba(15, 23, 42, 0.1);
+}
+
+/* The shell is programmatically focused (tabIndex=-1) by the keyboard
+   focus-cycle chord; the --focused border/shadow above is the visible
+   indicator, so the raw focus outline on the container is redundant. */
+.wm-window:focus {
+  outline: none;
+}
+
+/* Reduced motion: a window simply appears (and, with no picture made,
+   simply goes). */
+@media (prefers-reduced-motion: reduce) {
+  .wm-window {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Drag snapping: live alignment guides + edge-zone target preview    */
+/* ------------------------------------------------------------------ */
+
+/* 1px world-space lines on the neighbour edge the dragged window is
+   magnetically aligned to. Painted by Window.tsx only while a snap is
+   engaged; inline style carries the geometry. */
+.wm-snap-guide {
+  position: absolute;
+  pointer-events: none;
+  background: var(--console-accent, #0d9488);
+  opacity: 0.9;
+  animation: wm-overlay-in 120ms var(--enter-ease, cubic-bezier(0.22, 1, 0.36, 1)) both;
+}
+
+/* The drag's overlays (guides, the snap and dock previews) and the canvas's
+   small chrome come in quickly and are seen leaving: a surface that has
+   gone keeps `data-leaving` for its exit (hooks/useLingeringValue). Only
+   opacity moves, and the element's own opacity is where it settles. */
+@keyframes wm-overlay-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes wm-overlay-out {
+  to {
+    opacity: 0;
+  }
+}
+
+.wm-snap-guide[data-leaving="true"],
+.wm-snap-preview[data-leaving="true"],
+.wm-dock-preview[data-leaving="true"],
+.wm-expose-labels[data-leaving="true"] {
+  animation: wm-overlay-out 140ms var(--exit-ease, cubic-bezier(0.4, 0, 1, 1)) both;
+  pointer-events: none;
+}
+
+.wm-snap-guide--v {
+  width: 1px;
+}
+
+.wm-snap-guide--h {
+  height: 1px;
+}
+
+/* Translucent "where this will land" rect while the pointer is armed on a
+   viewport edge (left/right half, top = maximize). */
+.wm-snap-preview {
+  position: absolute;
+  pointer-events: none;
+  border: 1.5px solid var(--console-accent, #0d9488);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 12%, transparent);
+  animation: wm-overlay-in 160ms var(--enter-ease, cubic-bezier(0.22, 1, 0.36, 1)) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wm-snap-guide,
+  .wm-snap-preview,
+  .wm-snap-guide[data-leaving="true"],
+  .wm-snap-preview[data-leaving="true"],
+  .wm-dock-preview[data-leaving="true"],
+  .wm-expose-labels[data-leaving="true"] {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Titlebar                                                           */
+/* ------------------------------------------------------------------ */
+
+.wm-titlebar {
+  position: relative;
+  container: window-titlebar / inline-size;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px 0 12px;
+  gap: 10px;
+  cursor: move;
+  /* Drag-selection guard. This static rule is the ONLY selection protection
+     for window dragging: the react-draggable global user-select hack is
+     disabled (enableUserSelectHack={false} in Window.tsx) because toggling
+     it invalidates style for the whole document (~2s with a book open). */
+  user-select: none;
+   
+  background: var(--glass-pane-bg, rgba(255, 255, 255, 0.76));
+  backdrop-filter: var(--glass-pane-blur, blur(22px) saturate(165%));
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--border, #e2e8f0) 60%, transparent);
+  flex-shrink: 0;
+  transition: background var(--motion-fast, 150ms)
+    var(--motion-ease, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .wm-titlebar {
+    background: var(--bg-surface, #f8fafc);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .wm-titlebar {
+    backdrop-filter: none;
+    background: var(--bg-surface, #f8fafc);
+  }
+}
+
+/* The inline rename input lives inside the unselectable titlebar — text
+   editing needs real selection back. */
+.wm-titlebar input {
+  user-select: text;
+}
+
+/* Focus is carried by shadow depth, traffic-light color and text tone —
+   not by a brand bar. The unfocused titlebar dims like an inactive macOS
+   window. */
+.wm-window:not(.wm-window--focused) .wm-titlebar-title {
+  color: var(--text-secondary, #64748b);
+}
+
+/* A document window (a page, a file, a workbook) wears the page library's
+   colourful format glyph in its title bar, as the sidebar's page list does. */
+.wm-titlebar-artwork {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Traffic lights (Cupertino window controls)                          */
+/* ------------------------------------------------------------------ */
+
+.wm-traffic-lights {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+/* A finger on a title-bar control is a tap, never a drag or a double-tap
+   zoom gesture. */
+.wm-titlebar :is(button, [role="button"], input, textarea, select, a) {
+  touch-action: manipulation;
+}
+
+.wm-traffic-light {
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: var(--tl-bg);
+  /* macOS dots: a flat fill with a same-hue darker hairline rim and a
+     whisper of top light, so they read as tiny beads rather than stickers. */
+  box-shadow: inset 0 0 0 0.5px var(--tl-ring);
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.24),
+    rgba(255, 255, 255, 0) 55%
+  );
+  transition:
+    background-color var(--motion-fast, 150ms)
+      var(--motion-ease, cubic-bezier(0.4, 0, 0.2, 1)),
+    box-shadow var(--motion-fast, 150ms)
+      var(--motion-ease, cubic-bezier(0.4, 0, 0.2, 1)),
+    filter var(--motion-fast, 150ms)
+      var(--motion-ease, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+/* Glyphs surface on group hover (macOS behavior) or keyboard focus, with a
+   slight settle-in — the color alone is never the only affordance: every
+   button keeps its aria-label and tooltip. */
+.wm-traffic-light > svg {
+  /* the bead's own box (the glyph is drawn inside a 12x12 viewBox), so the
+     glyph and its bead share one origin and snap to pixels together */
+  display: block;
+  width: 100%;
+  height: 100%;
+  flex: none;
+  opacity: 0;
+  transform: scale(0.8);
+  transition:
+    opacity 110ms ease,
+    transform 110ms ease;
+}
+
+.wm-traffic-lights:hover .wm-traffic-light > svg,
+.wm-traffic-light:focus-visible > svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+ 
+:root[data-touch-mode] .wm-traffic-light > svg {
+  opacity: 1;
+  transform: none;
+}
+@media (hover: none) {
+  .wm-traffic-light > svg {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.wm-traffic-light:active {
+  filter: brightness(0.82);
+}
+
+.wm-traffic-light:focus-visible {
+  outline: 2px solid
+    color-mix(in srgb, var(--console-accent, #0d9488) 60%, transparent);
+  outline-offset: 1px;
+}
+
+/* Big Sur+ palette: fill, same-hue rim, deep glyph tone per light. */
+.wm-traffic-light--close {
+  --tl-bg: #ff5f57;
+  --tl-ring: #e14138;
+  color: #741d16;
+}
+
+.wm-traffic-light--minimize {
+  --tl-bg: #febc2e;
+  --tl-ring: #dfa023;
+  color: #925a12;
+}
+
+.wm-traffic-light--zoom {
+  --tl-bg: #28c840;
+  --tl-ring: #1d9f31;
+  color: var(--console-accent-strong, #10611c);
+}
+
+/* Inactive window: neutral gray beads until the pointer enters the group —
+   leaving the group's hover restores the variant palette without repeating
+   it. Theme variables serve light and dark alike. */
+.wm-window:not(.wm-window--focused)
+  .wm-traffic-lights:not(:hover)
+  .wm-traffic-light {
+  --tl-bg: color-mix(
+    in srgb,
+    var(--text-secondary, #475569) 22%,
+    var(--border, #e2e8f0)
+  );
+  --tl-ring: color-mix(
+    in srgb,
+    var(--text-secondary, #475569) 38%,
+    var(--border, #e2e8f0)
+  );
+  color: var(--text-secondary, #64748b);
+}
+
+.wm-titlebar-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-primary, #0f172a);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: -0.005em;
+}
+
+.wm-titlebar-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.8;
+  flex-shrink: 0;
+  color: var(--text-secondary, #475569);
+}
+
+.wm-window--focused .wm-titlebar-icon {
+  color: var(--text-primary, #0f172a);
+  opacity: 0.8;
+}
+
+.wm-titlebar-controls {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 1;
+  max-width: 65%;
+  align-items: center;
+  min-width: 0;
+}
+
+.wm-titlebar-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wm-titlebar-presence {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 32px;
+  max-width: 180px;
+  flex-shrink: 2;
+}
+
+.wm-titlebar-presence:empty {
+  display: none;
+}
+
+.wm-titlebar-presence > .wm-titlebar-owner,
+.wm-titlebar-presence > .wm-titlebar-agent-presence {
+  min-width: 0;
+  flex: 0 1 auto;
+  overflow: hidden;
+}
+
+.wm-titlebar-owner-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wm-titlebar-presence > button {
+  flex: 0 0 auto;
+  min-width: 32px;
+  max-width: 64px;
+  height: 32px;
+}
+
+.wm-titlebar-presence > .wm-titlebar-owner {
+  max-width: 92px;
+}
+
+.wm-titlebar-collab-button,
+.wm-titlebar-connection-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 32px;
+  min-width: 32px;
+  max-width: 160px;
+  padding: 0 9px;
+  border: 1px solid
+    color-mix(in srgb, var(--console-accent, #0d9488) 16%, transparent);
+  border-radius: 9px;
+  background: color-mix(
+    in srgb,
+    var(--console-accent, #0d9488) 6%,
+    transparent
+  );
+  color: var(--text-secondary, #53635f);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 550;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 150ms ease,
+    border-color 150ms ease;
+}
+
+.wm-titlebar-collab-button > svg,
+.wm-titlebar-connection-status > svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.wm-titlebar-collab-button > span,
+.wm-titlebar-connection-status > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wm-titlebar-connection-status {
+  color: var(--warning-text, #94620c);
+  background: color-mix(in srgb, #d99a22 9%, var(--bg-surface, #f8fafc));
+  border-color: color-mix(in srgb, #d99a22 22%, transparent);
+}
+
+.wm-titlebar-collab-button:hover,
+.wm-titlebar-connection-status:hover {
+  background: color-mix(
+    in srgb,
+    var(--text-secondary, #53635f) 12%,
+    var(--bg-surface, #f8fafc)
+  );
+}
+
+.wm-titlebar-collab-button:focus-visible,
+.wm-titlebar-connection-status:focus-visible {
+  outline: 2px solid var(--console-accent, #0d9488);
+  outline-offset: 2px;
+}
+
+/* "You can edit now" / "Now read-only" (PageCollabChip useAccessChangeCue):
+   drops out of the titlebar entry when a member's file permission changes
+   while the page is open, holds, and lifts away. Informational only; it
+   never takes the pointer. */
+.wm-titlebar-access-cue {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px 5px 9px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: color-mix(in srgb, var(--bg-surface, #ffffff) 90%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow:
+    0 8px 22px rgba(15, 23, 42, 0.14),
+    0 1px 3px rgba(15, 23, 42, 0.08);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  transform-origin: top right;
+  animation: wm-access-cue 2800ms var(--ease-spring, cubic-bezier(0.22, 1, 0.36, 1)) both;
+}
+
+.wm-titlebar-access-cue[data-cue="editable"] {
+  color: var(--console-accent, #0d9488);
+  border-color: color-mix(in srgb, var(--console-accent, #0d9488) 32%, transparent);
+}
+
+.wm-titlebar-access-cue[data-cue="readonly"] {
+  color: var(--warning-text, #94620c);
+  border-color: color-mix(in srgb, #d99a22 34%, transparent);
+}
+
+.wm-titlebar-access-cue > svg {
+  flex: none;
+  animation: wm-access-cue-icon 520ms var(--ease-spring, cubic-bezier(0.22, 1, 0.36, 1)) 90ms both;
+}
+
+@keyframes wm-access-cue {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.92);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  86% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-5px) scale(0.97);
+  }
+}
+
+@keyframes wm-access-cue-icon {
+  0% {
+    transform: rotate(-18deg) scale(0.6);
+  }
+  60% {
+    transform: rotate(6deg) scale(1.08);
+  }
+  100% {
+    transform: rotate(0) scale(1);
+  }
+}
+
+/* Reduced motion: the cue simply shows, still, until its timer removes it
+   (collapsing the animation would leave it at its faded end state). */
+@media (prefers-reduced-motion: reduce) {
+  .wm-titlebar-access-cue,
+  .wm-titlebar-access-cue > svg {
+    animation: none;
+  }
+}
+
+:root[data-reduce-motion] .wm-titlebar-access-cue,
+:root[data-reduce-motion] .wm-titlebar-access-cue > svg {
+  animation: none !important;
+}
+
+.wm-titlebar-readonly-status {
+  display: inline-flex;
+  width: 32px;
+  max-width: 32px;
+  height: 32px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid
+    color-mix(in srgb, var(--text-secondary, #53635f) 16%, transparent);
+  border-radius: 999px;
+  background: color-mix(
+    in srgb,
+    var(--text-secondary, #53635f) 7%,
+    var(--bg-surface, #f8fafc)
+  );
+  color: var(--text-secondary, #53635f);
+  font: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: default;
+}
+
+button.wm-titlebar-readonly-status {
+  cursor: pointer;
+}
+
+.wm-titlebar-readonly-status > svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.wm-titlebar-readonly-status:focus-visible {
+  outline: 2px solid
+    color-mix(in srgb, var(--brand-v2, #0f76ff) 50%, transparent);
+  outline-offset: 1px;
+}
+
+.wm-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.wm-titlebar-agent-presence {
+  display: inline-flex;
+  flex: none;
+  max-width: 124px;
+  min-height: 20px;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px 2px 5px;
+  border: 1px solid
+    color-mix(in srgb, var(--console-accent, #0d9488) 24%, transparent);
+  border-radius: 999px;
+  background: color-mix(
+    in srgb,
+    var(--console-accent, #0d9488) 11%,
+    var(--bg-surface, #f8fafc)
+  );
+  color: var(--console-accent-strong, #0a6e66);
+  font-size: 10.5px;
+  font-weight: 650;
+  letter-spacing: 0;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.wm-titlebar-agent-presence > svg {
+  flex: none;
+}
+
+.wm-titlebar-agent-presence > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* A change the member confirmed has been saved into this page: said once,
+   in the run's accent, then gone (Window.tsx, CONFIRMED_SAVE_SHOWN_MS). */
+.wm-titlebar-agent-saved {
+  animation: wm-agent-saved 2400ms var(--ai-motion-ease, cubic-bezier(0.2, 0, 0, 1)) both;
+}
+
+@keyframes wm-agent-saved {
+  0% {
+    opacity: 0;
+    transform: translateY(2px) scale(0.96);
+  }
+  10%,
+  80% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wm-titlebar-agent-saved {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Titlebar metadata chips (U-05 / Spec §19.3 for note windows)       */
+/* ------------------------------------------------------------------ */
+
+.wm-titlebar-meta--icon {
+  background: transparent;
+  padding: 0 2px;
+  font-size: 14px;
+  color: var(--text-primary, #0f172a);
+}
+
+.wm-titlebar-meta--type {
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-weight: 600;
+  font-size: 10px;
+  color: var(--console-accent, var(--brand-v2, #0f76ff));
+  background: color-mix(
+    in srgb,
+    var(--console-accent, var(--brand-v2, #0f76ff)) 10%,
+    transparent
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Titlebar buttons                                                   */
+/* ------------------------------------------------------------------ */
+
+.wm-titlebar-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-secondary, #475569);
+  transition:
+    background var(--motion-fast, 150ms)
+      var(--motion-ease, cubic-bezier(0.4, 0, 0.2, 1)),
+    color var(--motion-fast, 150ms)
+      var(--motion-ease, cubic-bezier(0.4, 0, 0.2, 1));
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.wm-titlebar-btn > svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Compact desktop windows, not a mobile surface. Preserve every action and
+   accessible status while giving the document name priority. */
+@container window-titlebar (max-width: 520px) {
+  .wm-titlebar-collab-button,
+  .wm-titlebar-connection-status {
+    width: 32px;
+    padding: 0;
+    flex: none;
+  }
+
+  .wm-titlebar-collab-button > span,
+  .wm-titlebar-connection-status > span,
+  .wm-titlebar-presence .wm-titlebar-agent-presence > span,
+  .wm-titlebar-presence .wm-titlebar-owner-name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .wm-titlebar-presence {
+    max-width: 110px;
+  }
+}
+
+/* Under a finger the bar's parts are a quarter larger (styles/
+   touch-sizing.css): the same shape at a quarter more width. */
+@container touch-shell (min-width: 0px) {
+  @container window-titlebar (max-width: 650px) {
+    .wm-titlebar-collab-button,
+    .wm-titlebar-connection-status {
+      width: 32px;
+      padding: 0;
+      flex: none;
+    }
+  
+    .wm-titlebar-collab-button > span,
+    .wm-titlebar-connection-status > span,
+    .wm-titlebar-presence .wm-titlebar-agent-presence > span,
+    .wm-titlebar-presence .wm-titlebar-owner-name {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+    }
+  
+    .wm-titlebar-presence {
+      max-width: 110px;
+    }
+  }
+}
+
+.wm-titlebar-btn:hover {
+  background: color-mix(in srgb, var(--border, #e2e8f0) 60%, transparent);
+  color: var(--text-primary, #0f172a);
+}
+
+.wm-titlebar-btn:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.wm-titlebar-btn:focus-visible {
+  outline: 2px solid
+    color-mix(in srgb, var(--brand-v2, #0f76ff) 50%, transparent);
+  outline-offset: 1px;
+}
+
+.wm-titlebar-btn--close:hover {
+  background: color-mix(in srgb, var(--error, #dc2626) 12%, transparent);
+  color: var(--error, #dc2626);
+}
+
+/* ------------------------------------------------------------------ */
+/* Body                                                               */
+/* ------------------------------------------------------------------ */
+
+.wm-body {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+  background: var(--bg-base, #ffffff);
+}
+
+/* Out of sight (off the view, or under other windows: WindowCanvas,
+   components/notebook/desk-rendering): the body keeps its content, state and
+   connections but takes no part in style, layout, paint or compositing until
+   it is in sight again. `hidden`, not `auto`: `auto` would contain layout and
+   paint of every body all the time, clipping a menu that is not portaled out
+   of its window. The body's size comes from the shell, so size containment
+   changes nothing. */
+.wm-body[data-render-suspended] {
+  content-visibility: hidden;
+}
+
+/* A window's content arrives: when its loading card gives way to the real
+   content, the content fades in once over the body's own surface
+   (lib/desk-motion revealContentWhenLoaded marks the body). Opacity on
+   the body's children, one container, never per node and never on the
+   shell, whose opacity would take the glass off its title bar. */
+@keyframes surface-content-reveal {
+  from {
+    opacity: 0;
+  }
+}
+
+[data-content-reveal="playing"] > * {
+  animation: surface-content-reveal var(--view-enter, 220ms)
+    var(--enter-ease, cubic-bezier(0.22, 1, 0.36, 1)) both;
+}
+
+/* The editors' own mount fades (the Docs wrapper, office-surface-enter)
+   would play it twice. */
+[data-content-reveal] .office-surface-enter,
+[data-content-reveal] .note-editor-wrapper {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-content-reveal="playing"] > * {
+    animation: none;
+  }
+}
+
+/* A file's own preview over its window's loading card while its page is made
+   (components/notebook/LocalFilePreviewLayer). It covers the card, scrolls on
+   its own, and fades in only when it first arrives. */
+.local-file-preview-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: auto;
+   
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+  background: var(--console-surface-canvas, #f8fafc);
+}
+
+.local-file-preview-layer[data-arriving="true"] {
+  animation: surface-content-reveal var(--view-enter, 220ms)
+    var(--enter-ease, cubic-bezier(0.22, 1, 0.36, 1)) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .local-file-preview-layer[data-arriving="true"] {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Read-only page shield                                               */
+/* A member without edit access still READS normally — the shield only */
+/* swallows mutating input (see PageReadOnlyShield.tsx). Product        */
+/* windows surface the reason in their fixed-height titlebar; the       */
+/* optional inline banner remains for standalone shield consumers.      */
+/* ------------------------------------------------------------------ */
+
+/* The shield fills the body exactly (not at least): a page's own scroll area
+ * keeps scrolling while it is read-only. With only a minimum height the page
+ * grew past the window, the window body scrolled instead, and the moment the
+ * page became writable (an AI draft handed over, a permission granted) the
+ * scroll moved to another element and the reader lost their place. */
+.wm-readonly-shield {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.wm-readonly-banner {
+  display: flex;
+  z-index: 3;
+  position: sticky;
+  top: 0;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--text-primary, #17211f) 8%, transparent);
+  background: color-mix(in srgb, var(--text-primary, #17211f) 4%, #ffffff);
+  color: var(--text-secondary, #53635f);
+  font-size: 12px;
+  font-weight: 550;
+}
+
+.wm-readonly-body {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.wm-readonly-body > * {
+  min-height: 0;
+  flex: 1;
+}
+
+/* A note the member may put away (the owner's plan lapsed: Window.tsx). */
+.wm-readonly-banner--note span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.wm-readonly-banner__dismiss {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.wm-readonly-banner__dismiss:hover {
+  background: color-mix(in srgb, var(--text-primary, #17211f) 8%, transparent);
+}
+
+[data-theme-mode="dark"] .wm-readonly-banner,
+[data-theme-mode="high-contrast"] .wm-readonly-banner {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ------------------------------------------------------------------ */
+/* Resize handles — react-rnd injects edge/corner handles             */
+/* Target them by react-rnd's default class hooks & data attrs        */
+/* ------------------------------------------------------------------ */
+
+/* react-rnd wraps window with handles as children; they use inline
+ * styles but we layer on top via generic targeting on the parent.
+ * We highlight corner/edge affordances on hover of the outer wrapper. */
+
+.wm-window::after {
+  /* Corner chevron affordance — only visible on hover */
+  content: "";
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 10px;
+  height: 10px;
+  border-right: 1.5px solid
+    color-mix(in srgb, var(--text-secondary, #475569) 35%, transparent);
+  border-bottom: 1.5px solid
+    color-mix(in srgb, var(--text-secondary, #475569) 35%, transparent);
+  border-bottom-right-radius: 3px;
+  opacity: 0;
+  transition: opacity var(--motion-fast, 150ms) ease;
+  pointer-events: none;
+}
+
+.wm-window:hover::after {
+  opacity: 0.8;
+}
+
+/* touch cannot hover: the window in use (the one last tapped) shows it */
+@media (hover: none) {
+  .wm-window--focused::after {
+    opacity: 0.8;
+  }
+}
+
+.wm-window--focused::after {
+  border-right-color: color-mix(
+    in srgb,
+    var(--brand-v2, #0f76ff) 50%,
+    transparent
+  );
+  border-bottom-color: color-mix(
+    in srgb,
+    var(--brand-v2, #0f76ff) 50%,
+    transparent
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Empty state                                                        */
+/* ------------------------------------------------------------------ */
+
+.wm-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-secondary, #475569);
+  gap: 12px;
+  user-select: none;
+  padding: 32px;
+}
+
+.wm-empty-state-shell {
+  /* six new-page tiles (the five page types and a handwriting document) */
+  width: min(640px, 100%);
+  padding: clamp(20px, 3vw, 28px);
+  border-radius: 26px;
+  border: 1px solid var(--console-border-subtle, rgba(13, 148, 136, 0.14));
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.92),
+      color-mix(in srgb, var(--console-accent-tint-soft, #f7fefc) 82%, transparent)
+    ),
+    var(--console-surface, #ffffff);
+  box-shadow: var(--console-shadow-card, 0 18px 60px rgba(6, 43, 40, 0.1));
+  -webkit-backdrop-filter: var(--glass-pane-blur, blur(22px) saturate(165%));
+  backdrop-filter: var(--glass-pane-blur, blur(22px) saturate(165%));
+  text-align: center;
+}
+
+.wm-empty-state-title {
+  overflow: hidden;
+  font-size: clamp(18px, 2vw, 22px);
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-primary, #0f172a);
+  margin-top: 0;
+}
+
+.wm-empty-state-hint {
+  font-size: 13px;
+  color: color-mix(in srgb, var(--text-secondary, #475569) 70%, transparent);
+  max-width: 380px;
+  text-align: center;
+  line-height: 1.55;
+  margin: 8px auto 0;
+}
+
+.wm-empty-state-text {
+  font-size: 0.875rem;
+}
+
+.wm-empty-state-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.wm-empty-state-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 8px 14px;
+  border-radius: var(--radius-full, 9999px);
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid var(--console-border-subtle, rgba(13, 148, 136, 0.14));
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-secondary, #475569);
+  cursor: pointer;
+  transition:
+    background var(--motion-fast, 150ms) ease,
+    border-color var(--motion-fast, 150ms) ease,
+    color var(--motion-fast, 150ms) ease,
+    transform var(--motion-fast, 150ms) ease;
+}
+
+.wm-empty-state-action > svg {
+  opacity: 0.7;
+}
+
+.wm-empty-state-action:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--console-accent, #0d9488) 34%,
+    var(--border, #e2e8f0)
+  );
+  color: var(--console-accent, #0d9488);
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 5%, #ffffff);
+  transform: translateY(-1px);
+}
+
+.wm-empty-state-action:active {
+  transform: translateY(0);
+}
+
+.wm-empty-state-action--primary {
+  background: var(
+    --console-accent-gradient,
+    linear-gradient(135deg, var(--console-accent, #0d9488), var(--console-accent-secondary, #14b8a6))
+  );
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--console-accent, #0d9488) 20%, transparent);
+}
+
+.wm-empty-state-action--primary:hover {
+  background: var(
+    --console-accent-gradient,
+    linear-gradient(135deg, var(--console-accent, #0d9488), var(--console-accent-secondary, #14b8a6))
+  );
+  color: #fff;
+}
+
+.wm-empty-state-action:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* The panel is about THIS notebook: its name, its latest pages to pick up
+   again, one-press tiles for a new page, and three quiet links. */
+.wm-empty-state-head {
+  text-align: start;
+}
+
+.wm-empty-state-head .wm-empty-state-hint {
+  max-width: none;
+  margin: 4px 0 0;
+  text-align: start;
+}
+
+.wm-empty-state-section {
+  margin-top: 20px;
+  text-align: start;
+}
+
+.wm-empty-state-label {
+  margin: 0 0 8px;
+  color: var(--console-text-muted, #64748b);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.wm-empty-state-pages {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0 -8px;
+  padding: 0;
+  list-style: none;
+}
+
+.wm-empty-state-page {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 8px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-primary, #0f172a);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: background-color 140ms ease;
+  animation: wm-empty-row-in 320ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(var(--row, 0) * 34ms + 40ms);
+}
+
+.wm-empty-state-page:hover,
+.wm-empty-state-page:focus-visible {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 8%, transparent);
+  outline: none;
+}
+
+.wm-empty-state-page-art {
+  width: 30px;
+  height: 30px;
+}
+
+.wm-empty-state-page strong {
+  overflow: hidden;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wm-empty-state-page time {
+  color: var(--console-text-muted, #64748b);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.native-create-page-tiles {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.native-create-page-tile {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 4px 9px;
+  border: 1px solid var(--console-border-subtle, rgba(13, 148, 136, 0.14));
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--console-surface, #fff) 70%, transparent);
+  color: var(--text-secondary, #475569);
+  font: inherit;
+  cursor: pointer;
+  /* The picture is drawn at its own width; a narrow tile clips it to its
+     rounded face instead of letting it run past the edges. */
+  overflow: hidden;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.native-create-page-tile:hover:not(:disabled),
+.native-create-page-tile:focus-visible {
+  border-color: color-mix(in srgb, var(--console-accent, #0d9488) 36%, transparent);
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 6%, var(--console-surface, #fff));
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--console-accent, #0d9488) 12%, transparent);
+  color: var(--text-primary, #0f172a);
+  outline: none;
+}
+
+
+.native-create-page-tile:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+.native-create-page-tile__art {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.native-create-page-tile__busy {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--console-surface, #fff) 76%, transparent);
+}
+
+.native-create-page-tile__label {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wm-empty-state-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  margin: 18px -8px 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--console-border-subtle, rgba(13, 148, 136, 0.12));
+}
+
+.wm-empty-state-links button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 10px 5px 7px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--console-text-muted, #64748b);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease;
+}
+
+.wm-empty-state-links button:hover:not(:disabled),
+.wm-empty-state-links button:focus-visible {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 8%, transparent);
+  color: var(--console-accent, #0d9488);
+  outline: none;
+}
+
+/* the sidebar's own illustrated icons; they wake a little on hover */
+.wm-empty-state-links button > svg {
+  flex: none;
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.wm-empty-state-links button:hover:not(:disabled) > svg {
+  transform: translateY(-1px) scale(1.1);
+}
+
+.wm-empty-state-links button:disabled {
+  opacity: 0.6;
+}
+
+@keyframes wm-empty-row-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wm-empty-state-page {
+    animation: none;
+  }
+}
+
+html[data-reduce-motion] .wm-empty-state-page {
+  animation: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Small screens (U-18) — keep basic usability under 640px            */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 640px) {
+   
+  .notebook-side-panel {
+    max-width: calc(100vw / var(--touch-zoom, 1) - 88px) !important;
+  }
+  /* Its rows keep their names: a finger's always-on row actions (globals.css
+     .sidebar-row-action) took the whole width at this size and left every
+     name a sliver; here they show on a selected or focused row only. */
+  .notebook-side-panel .page-list-item:not(.is-selected):not(:focus-within) .sidebar-row-action {
+    display: none !important;
+  }
+  .wm-canvas {
+    background-size: 16px 16px;
+  }
+  .wm-titlebar-meta--type,
+  .wm-titlebar-meta--time {
+    display: none; /* keep titlebar compact */
+  }
+  .wm-empty-state {
+    padding: 16px;
+  }
+  .wm-empty-state-shell {
+    padding: 20px;
+    border-radius: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .native-create-page-tiles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  /* a phone's notebook home card sits beside the icon rail: two tiles a
+     row, so "Spreadsheet" and "Presentation" keep their names */
+  .wm-canvas-home .native-create-page-tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Dark mode (U-17) — when `<html class="dark">` is set               */
+/* Tailwind `darkMode: "class"`; these styles mirror the global       */
+/* dark tokens but provide a fallback for window-manager surfaces.    */
+/* ------------------------------------------------------------------ */
+
+/* `html.dark` (legacy) or `[data-theme-mode]` attribute on <html> both apply */
+.dark .wm-canvas,
+[data-theme-mode] .wm-canvas {
+  background-color: var(--bg-base, #0d1117);
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--border, #30363d) 72%, transparent) 1px,
+    transparent 1px
+  );
+}
+
+.dark .wm-window,
+[data-theme-mode] .wm-window {
+  /* Shell stays transparent (glass titlebar, see the light rules); depth
+     comes from a light hairline ring plus deeper dark shadows. */
+  background: transparent;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.09),
+    0 8px 24px rgba(0, 0, 0, 0.45),
+    0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.dark .wm-window--focused,
+[data-theme-mode] .wm-window--focused {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 24px 56px rgba(0, 0, 0, 0.6),
+    0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.dark .wm-titlebar,
+[data-theme-mode] .wm-titlebar {
+  background: var(--glass-pane-bg, rgba(18, 23, 30, 0.8));
+  border-bottom-color: color-mix(
+    in srgb,
+    var(--border, #30363d) 70%,
+    transparent
+  );
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .dark .wm-titlebar,
+  [data-theme-mode] .wm-titlebar {
+    background: var(--bg-surface, #161b22);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .dark .wm-titlebar,
+  [data-theme-mode] .wm-titlebar {
+    background: var(--bg-surface, #161b22);
+  }
+}
+
+/* Traffic lights keep their per-variant palette in dark mode; the inactive
+   gray derives from theme tokens, so no dark override is needed. */
+
+.dark .wm-body,
+[data-theme-mode] .wm-body {
+  background: var(--bg-base, #0d1117);
+}
+
+
+.dark .wm-empty-state-action,
+[data-theme-mode] .wm-empty-state-action,
+.dark .native-create-page-tile,
+[data-theme-mode] .native-create-page-tile {
+  background: var(--bg-surface, #161b22);
+  border-color: var(--border, #30363d);
+  color: var(--text-secondary, #94a3b8);
+}
+
+.dark .wm-empty-state-shell,
+[data-theme-mode] .wm-empty-state-shell {
+  /* The graphite card of the workspace, with the light card's faint accent
+     wash in the far corner. */
+  background: linear-gradient(
+      135deg,
+      var(--console-card, rgba(36, 37, 42, 0.92)),
+      color-mix(in srgb, var(--console-accent-tint-faint, #1f2a29) 88%, transparent)
+    ),
+    var(--console-surface, #1e1f23);
+  border-color: var(--console-border, rgba(255, 255, 255, 0.1));
+}
+
+[data-theme-mode] .wm-empty-state-action:hover {
+  background: color-mix(in srgb, var(--console-accent, #2dd4bf) 10%, var(--bg-surface, #1c1d21));
+}
+
+/* The accent brightens in dark: a white label on it falls to ~2:1, so the
+   primary action takes the dark ink. */
+[data-theme-mode] .wm-empty-state-action.wm-empty-state-action--primary,
+[data-theme-mode] .wm-empty-state-action.wm-empty-state-action--primary:hover {
+  background: var(
+    --console-accent-gradient,
+    linear-gradient(135deg, var(--console-accent, #14b8a6), var(--console-accent-secondary, #2dd4bf))
+  );
+  border-color: transparent;
+  color: var(--primary-foreground, #0b0c0e);
+}
+
+/* The zoom dial's thumb defaults to white; on the dark canvas and in the
+   editors' status bars it is the raised graphite step under the dial's light
+   ink. */
+[data-theme-mode] .wm-canvas-zoom-dial,
+[data-theme-mode] .wm-window {
+  --continuous-zoom-thumb: var(--bg-raised, #26272c);
+}
+
+/* ------------------------------------------------------------------ */
+/* Minimized tray (pills in sidebar bottom)                           */
+/* ------------------------------------------------------------------ */
+
+@keyframes wm-pill-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Minimized tray (MinimizedTray.tsx): one tile per minimized window under
+   the sidebar. An AI window shows its card picture, a little broader and
+   thicker than a glyph tile; a window flies into its tile when minimized
+   and out of it when restored (lib/window-dock-motion). */
+.wm-minimized-tray {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 6px;
+}
+
+.wm-tray-tile {
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid
+    color-mix(in srgb, var(--console-accent, #0d9488) 10%, rgba(118, 118, 128, 0.18));
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--bg-base, #ffffff) 84%, transparent);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.06),
+    0 6px 14px rgba(15, 23, 42, 0.06);
+  color: var(--console-text-secondary, #55706b);
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease,
+    opacity 160ms ease;
+}
+
+@media (hover: hover) {
+  .wm-tray-tile:hover {
+    border-color: color-mix(in srgb, var(--console-accent, #0d9488) 34%, transparent);
+    box-shadow:
+      0 1px 2px rgba(15, 23, 42, 0.08),
+      0 10px 22px rgba(15, 23, 42, 0.12);
+    transform: translateY(-1px);
+  }
+}
+
+.wm-tray-tile:active {
+  transform: scale(0.94);
+}
+
+.wm-tray-tile:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--console-accent, #0d9488) 54%, transparent);
+  outline-offset: 2px;
+}
+
+.wm-tray-tile__artwork {
+  width: 24px;
+  height: 24px;
+}
+
+.wm-tray-tile__icon {
+  width: 20px;
+  height: 20px;
+}
+
+.wm-tray-tile--art {
+  width: 86px;
+}
+
+.wm-tray-tile--art > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* A page's window, once its picture is ready (DockThumbnail): the page on
+   its little stack is the tile, with no box around it, as on a Mac's Dock. */
+.wm-tray-tile:has(> .wm-tray-thumb[data-state="picture"]) {
+  width: 46px;
+  height: 50px;
+  overflow: visible;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* a slide or a sheet as wide as the box, its corner glyph included, stays
+   inside a 46px tile (the rail's tray clips at the tile's edge) */
+.wm-tray-thumb {
+  --dock-box: 40px;
+}
+
+@media (hover: hover) {
+  .wm-tray-tile:has(> .wm-tray-thumb[data-state="picture"]):hover {
+    border-color: transparent;
+    background: color-mix(in srgb, var(--console-accent, #0d9488) 8%, transparent);
+    box-shadow: none;
+  }
+}
+
+.wm-tray-tile[data-restore-refused="true"] {
+  opacity: 0.7;
+}
+
+/* a shared window's restore is on its way (a server round trip) */
+.wm-tray-tile[data-restoring] {
+  animation: wm-tray-pending 760ms ease-in-out infinite alternate;
+}
+
+@keyframes wm-tray-pending {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0.55;
+    transform: scale(0.94);
+  }
+}
+
+/* hidden while its window flies in; pops up as the picture lands */
+.wm-tray-tile[data-arriving] {
+  opacity: 0;
+  transform: scale(0.6);
+  transition: none;
+}
+
+.wm-tray-tile[data-landed] {
+  animation: wm-tray-land 380ms cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+@keyframes wm-tray-land {
+  from {
+    opacity: 0.4;
+    transform: scale(0.7);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+/* the window's picture in flight (lib/window-dock-motion) */
+.wm-dock-flight {
+  position: fixed;
+  z-index: 950;
+  overflow: hidden;
+  border-radius: var(--console-radius-lg, 12px);
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.2);
+  pointer-events: none;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.wm-dock-blank {
+  background: var(--bg-base, #ffffff);
+}
+
+/* pointing at a tile: the window, small, beside the sidebar */
+.wm-tray-preview {
+  position: fixed;
+  z-index: 960;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid rgba(118, 118, 128, 0.2);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.86);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+  box-shadow:
+    0 2px 6px rgba(15, 23, 42, 0.08),
+    0 18px 42px rgba(15, 23, 42, 0.16);
+  color: #17211f;
+  pointer-events: none;
+  animation: wm-tray-preview-in 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes wm-tray-preview-in {
+  from {
+    opacity: 0;
+    transform: translateX(-6px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.wm-tray-preview__stage {
+  display: grid;
+  height: 120px;
+  margin-bottom: 4px;
+  overflow: hidden;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(118, 118, 128, 0.08);
+}
+
+.wm-tray-preview__art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.wm-tray-preview__art > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* the page drawn small (PageThumbnail), as tall as the stage allows */
+.wm-tray-preview__stage .wm-tray-preview__thumb[data-variant] {
+  width: auto;
+  height: 108px;
+}
+
+.wm-tray-preview__glyph {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  place-items: center;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+
+.wm-tray-preview__artwork {
+  width: 40px;
+  height: 40px;
+}
+
+.wm-tray-preview__title {
+  overflow: hidden;
+  font-size: 12.5px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wm-tray-preview__note {
+  color: #6b7f7b;
+  font-size: 11px;
+}
+
+/* the preview lives outside the console subtree, so it takes the theme
+   from the root's own flag */
+:root:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .wm-tray-preview {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(32, 33, 38, 0.88);
+  color: #f2f2f7;
+}
+
+:root:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .wm-tray-preview__stage {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+:root:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .wm-tray-preview__glyph {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+:root:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .wm-tray-preview__note {
+  color: #a8a8b0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wm-tray-tile,
+  .wm-tray-preview,
+  .wm-tray-tile[data-landed],
+  .wm-tray-tile[data-restoring] {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Sidebar tab polish (glass-sidebar-nav-item overrides for workspace) */
+/* ------------------------------------------------------------------ */
+
+.glass-sidebar-nav-item {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md, 8px);
+  transition:
+    background var(--motion-fast, 150ms)
+      var(--motion-ease, cubic-bezier(0.4, 0, 0.2, 1)),
+    color var(--motion-fast, 150ms)
+      var(--motion-ease, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.glass-sidebar-nav-item:hover {
+  background: color-mix(in srgb, var(--border, #e2e8f0) 50%, transparent);
+  color: var(--text-primary, #0f172a);
+}
+
+.glass-sidebar-nav-item.is-active {
+  background: color-mix(
+    in srgb,
+    var(--console-accent, var(--brand-v2, #0f76ff)) 12%,
+    transparent
+  );
+  color: var(--console-accent, var(--brand-v2, #0f76ff));
+  /* remove legacy left border */
+  border-left: none;
+}
+
+.glass-sidebar-nav-item.is-active::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: -10px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--console-accent, var(--brand-v2, #0f76ff));
+}
+
+.glass-sidebar-nav-item.is-active svg {
+  stroke-width: 2;
+}
+
+.glass-sidebar-nav-item:focus-visible {
+  outline: 2px solid
+    color-mix(
+      in srgb,
+      var(--console-accent, var(--brand-v2, #0f76ff)) 50%,
+      transparent
+    );
+  outline-offset: 2px;
+}
+
+/* Inline titlebar rename (double-click the title of a page-bound window).
+   Mirrors the title text metrics so entering/leaving edit mode doesn't
+   shift the titlebar layout. */
+.wm-titlebar-rename-input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-size: 12px;
+  color: var(--win-ink, #1c4741);
+  background: var(--win-hover, rgba(10, 125, 114, 0.08));
+  border: 1px solid var(--win-focus-border, #0f766e);
+  border-radius: 4px;
+  padding: 1px 6px;
+  outline: none;
+}
+
+ 
+.wm-offscreen-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+}
+
+.wm-offscreen-chip {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 220px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--console-border, #e2e8f0);
+  background: color-mix(in srgb, var(--bg-surface, #ffffff) 92%, transparent);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--console-text-primary, #0c3a34) 14%, transparent);
+  font-size: 12px;
+  color: var(--text-primary, #0f172a);
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-backdrop-filter: var(--glass-chip-blur, blur(16px) saturate(160%));
+  backdrop-filter: var(--glass-chip-blur, blur(16px) saturate(160%));
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.wm-offscreen-chip:hover {
+  transform: translate(-50%, -50%) scale(1.06);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--console-text-primary, #0c3a34) 20%, transparent);
+}
+
+.wm-offscreen-chip__arrow {
+  font-size: 13px;
+  color: var(--console-accent, #0d9488);
+}
+
+.wm-offscreen-chip__title {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wm-offscreen-chip__distance {
+  color: var(--text-secondary, #64748b);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Freeform world layer: children keep unbounded WORLD coordinates; the
+   layer's offset maps them onto the scrollable plane. Zero own size —
+   every child positions absolutely. */
+.wm-canvas-world {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* The world-origin "home" viewport hosting the empty state. */
+.wm-canvas-home {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  pointer-events: none;
+}
+
+.wm-canvas-home > .wm-empty-state {
+  flex: 1 1 auto;
+  min-width: 0;
+  pointer-events: none;
+}
+
+.wm-canvas-home .wm-empty-state-shell {
+  pointer-events: auto;
+}
+
+ 
+@media (max-width: 743px) {
+  /* the foot is the corner's: on a phone its switch to the workbench (in
+     words) sat over the card's last row */
+  .wm-canvas-home > .wm-empty-state {
+    padding: 12px 8px 64px calc(var(--wm-home-covered, 0px) + 8px);
+  }
+  .wm-canvas-home > .wm-empty-state > .wm-empty-state-shell {
+    max-height: calc(var(--viewport-h, 100vh) - 76px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* The window's haloes: the collaboration owner's colour and the Agent  */
+/* run's breathing accent, both layers of the shell's own box-shadow    */
+/* (composed in .wm-window above).                                       */
+/* ------------------------------------------------------------------ */
+
+@property --wm-agent-halo-alpha {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+ 
+@property --wm-window-shadow {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --wm-owner-halo {
+  syntax: "*";
+  inherits: false;
+}
+
+/* A viewer sees the owner's colour on somebody else's window; the owner
+   sees their own window without it (Window.tsx sets the attribute). */
+.wm-window[data-owner-glow="true"] {
+  --wm-owner-halo:
+    0 0 22px 18px color-mix(in srgb, var(--wm-owner-accent, #2563eb) 22%, transparent),
+    0 0 46px 26px color-mix(in srgb, var(--wm-owner-accent, #2563eb) 10%, transparent);
+}
+
+/* The run's window breathes while the run works and fades when it lets go. */
+.wm-window[data-agent-glow="active"] {
+  --wm-agent-halo-alpha: 1;
+  animation: wm-agent-halo-breathe 3.6s ease-in-out infinite;
+}
+
+.wm-window[data-agent-glow="leaving"] {
+  --wm-agent-halo-alpha: 0;
+  transition: --wm-agent-halo-alpha 560ms ease;
+}
+
+@keyframes wm-agent-halo-breathe {
+  0%,
+  100% {
+    --wm-agent-halo-alpha: 0.55;
+  }
+  50% {
+    --wm-agent-halo-alpha: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wm-window[data-agent-glow] {
+    animation: none;
+    transition: none;
+  }
+}
+
+
+/* Owner chip in the titlebar — the readable half of the attribution the
+   halo carries in colour. */
+.wm-titlebar-owner {
+  display: inline-flex;
+  flex: none;
+  max-width: 120px;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 7px 1px 5px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text-primary, #17211f) 8%, transparent);
+  color: var(--text-secondary, #53635f);
+  font-size: 10.5px;
+  font-weight: 650;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wm-titlebar-owner-dot {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+/* An Agent is writing this document. The page is not the member's to edit
+   yet, so its editing ribbon would only be a wall of disabled controls above
+   the document being written: the window shows the page alone. */
+.wm-body[data-agent-draft] .note-editor-toolbar-stack {
+  display: none;
+}
+
+/* While the run writes, the page reads as a manuscript, not as a locked page:
+   warmer, quieter paper, an ordinary pointer, no formatting marks. Selection
+   and copy stay; the shield still refuses writes. */
+.wm-body[data-agent-draft] .note-editor-content > article[data-page-sheet] {
+  background: color-mix(in srgb, var(--doc-page-background, #ffffff) 93%, #f1e4c8);
+}
+
+.wm-body[data-agent-draft] .note-editor-content {
+  cursor: default;
+  caret-color: transparent;
+}
+
+.wm-body[data-agent-draft] .note-editor-content img {
+  filter: saturate(0.86);
+}
+
+.wm-body[data-agent-draft] .note-editor-content .mrnote-formatting-mark::before,
+.wm-body[data-agent-draft] .note-editor-content .mrnote-formatting-mark::after,
+.wm-body[data-agent-draft] .note-editor-content [data-formatting-mark-label]::after {
+  visibility: hidden !important;
+}
+
+/* A picture the run asked for and is still drawing: note-editor.css
+   ("Live AI draft motion"), keyed on the wrapper's data-picture-pending. */
+
+/* Confirmed: the draft is the member's page now and its ribbon comes in. The
+   ribbon unrolls from the top edge instead of popping in over the text. */
+.wm-body[data-agent-draft-reveal] .note-editor-toolbar-stack {
+  animation: wm-agent-draft-ribbon-reveal 460ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: top center;
+}
+
+@keyframes wm-agent-draft-ribbon-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+    clip-path: inset(0 0 100% 0 round 12px);
+  }
+  60% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 0 0 round 12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wm-body[data-agent-draft-reveal] .note-editor-toolbar-stack {
+    animation: none;
+  }
+}
+
+ 
+.wm-dock-preview {
+  position: absolute;
+  pointer-events: none;
+  border: 1.5px solid var(--console-accent, #0a7d72);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--console-accent, #0a7d72) 11%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--console-accent, #0a7d72) 12%, transparent);
+  animation: wm-dock-preview-in 220ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes wm-dock-preview-in {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+ 
+.wm-window[data-dock-seated][data-docked="right"] {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  clip-path: inset(-120px -120px -120px 0);
+}
+
+.wm-window[data-dock-seated][data-docked="left"] {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  clip-path: inset(-120px 0 -120px -120px);
+}
+
+.wm-window[data-dock-joined~="right"] {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.wm-window[data-dock-joined~="left"] {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* The seam: a hairline where the two meet, inside a wider grab strip that
+   straddles it (a child of the panel's frame, which paints over the
+   editor). Hovered or dragged, the line turns accent and thickens, like a
+   split view's divider. */
+.wm-dock-seam {
+  position: absolute;
+  z-index: 12;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  cursor: col-resize;
+  touch-action: none;
+  outline: none;
+}
+
+.wm-dock-seam[data-side="right"] {
+  left: -6px;
+}
+
+.wm-dock-seam[data-side="left"] {
+  right: -6px;
+}
+
+.wm-dock-seam[data-touch="true"] {
+  width: 24px;
+}
+
+.wm-dock-seam[data-touch="true"][data-side="right"] {
+  left: -12px;
+}
+
+.wm-dock-seam[data-touch="true"][data-side="left"] {
+  right: -12px;
+}
+
+.wm-dock-seam::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: color-mix(in srgb, var(--border, #e2e8f0) 95%, var(--text-secondary, #64748b));
+  content: "";
+  transition:
+    background-color 140ms ease,
+    width 140ms ease,
+    transform 140ms ease;
+}
+
+.wm-dock-seam[data-side="left"]::before {
+  transform: translateX(-1px);
+}
+
+/* Keyboard focus shows as the accent line itself, not a ring round the
+   grab strip. */
+.wm-dock-seam:focus-visible {
+  outline: none;
+}
+
+.wm-dock-seam:hover::before,
+.wm-dock-seam:focus-visible::before,
+.wm-dock-seam[data-dragging="true"]::before {
+  width: 3px;
+  background: var(--console-accent, #0a7d72);
+  transform: translateX(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wm-dock-seam::before {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wm-dock-preview {
+    animation: none;
+  }
+}
+
+/* Window content's own titlebar controls (the AI window's conversation
+   picker, new and delete) sit before the window's presence and share
+   controls, on the titlebar's row instead of a second header. */
+.wm-titlebar-slot {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.wm-titlebar-slot:empty {
+  display: none;
+}
+
+.wm-titlebar-slot .ai-panel-header-actions--titlebar {
+  gap: 2px;
+}
+
+.wm-titlebar-slot .ai-panel-conversation-wrap {
+  max-width: 220px;
+}
+
+@container window-titlebar (max-width: 420px) {
+  .wm-titlebar-slot .ai-panel-conversation-wrap {
+    max-width: 132px;
+  }
+}
+
+/* Under a finger the bar's parts are a quarter larger (styles/
+   touch-sizing.css): the same shape at a quarter more width. */
+@container touch-shell (min-width: 0px) {
+  @container window-titlebar (max-width: 525px) {
+    .wm-titlebar-slot .ai-panel-conversation-wrap {
+      max-width: 132px;
+    }
+  }
+}
+
+/* Classic interior (WindowCanvas, components/notebook/ClassicTabStrip): the
+   pages are tabs over one full-area page. A tab window's title bar holds the
+   strip instead of its window controls and name (the tab carries both), and
+   it is not a drag handle: the page stays where the strip put it. */
+.wm-window[data-classic-tab] .wm-titlebar {
+  cursor: default;
+  padding-left: 6px;
+}
+.wm-window[data-classic-tab] .wm-titlebar-title {
+  display: none;
+}
+/* A tab that is not in front is not drawn. The windows of a docked pair are
+   painted at the pair's own stacking slots (lib/window-dock dockPaintZ), so
+   the tab in front can sit under another full-area tab; hiding the ones
+   behind keeps the pair, and only the pair, on screen. */
+.wm-window[data-classic-behind] {
+  visibility: hidden;
+  pointer-events: none;
+}
+/* The title bar's own controls (presence, share, the sheet's group tag)
+   stay whole beside the strip; the strip scrolls in what is left. */
+.wm-window[data-classic-tab] .wm-titlebar-controls {
+  flex-shrink: 0;
+  max-width: none;
+}
+.wm-titlebar-tabs {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+  align-items: center;
+}
+
+/* The upgrade panel the workbench switch and the share button show on a
+   free plan (NotebookInteriorMode): a popover beside the switch, on an
+   opaque surface (the console card is translucent glass, and what lay under
+   the panel showed through its text). Its look is UpgradeSheet's, the one
+   every upgrade prompt shares. Placed by script; only width and edges here. */
+.notebook-interior-upgrade {
+  position: fixed;
+  z-index: 2147483000;
+  box-sizing: border-box;
+}
+.notebook-interior-upgrade__close {
+  position: absolute;
+  top: 9px;
+  right: 14px;
+  z-index: 1;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary, #475569);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.notebook-interior-upgrade__close:hover {
+  color: var(--text-primary, #0f172a);
+}

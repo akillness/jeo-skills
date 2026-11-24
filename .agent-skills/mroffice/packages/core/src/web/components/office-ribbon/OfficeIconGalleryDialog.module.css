@@ -1,0 +1,141 @@
+/*
+ * Insert > Icons. The layout lives here, not in Tailwind arbitrary values:
+ * the dev server's one Tailwind pass never picked up this lazily loaded
+ * file's `grid-cols-[...]` / `max-h-[...]` classes, so the gallery fell into
+ * one column taller than the screen and pushed its title, search and
+ * buttons out of view.
+ */
+
+/* Doubled to win over the shell's default width utility. */
+.dialog.dialog {
+  width: min(760px, calc(100vw - 32px));
+  max-width: min(760px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr);
+  gap: 12px;
+  min-height: 0;
+  height: min(380px, calc(100dvh - 300px));
+}
+
+.categories {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.category {
+  /* A column item: without this the 25 categories shrank to fit the
+     bounded column and each row's text was clipped to a sliver. */
+  flex: 0 0 auto;
+  min-height: 28px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  padding: 5px 8px;
+  text-align: left;
+  font-size: 13px;
+  line-height: 18px;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.category:hover {
+  background: color-mix(in srgb, var(--office-dialog-accent, #0d9488) 8%, transparent);
+}
+
+.category[aria-selected="true"] {
+  background: color-mix(in srgb, var(--office-dialog-accent, #0d9488) 14%, transparent);
+  color: var(--office-dialog-accent, #0f766e);
+  font-weight: 600;
+}
+
+.panel {
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 4px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 72px;
+  min-width: 0;
+  padding: 8px 4px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.item:hover {
+  background: color-mix(in srgb, var(--office-dialog-accent, #0d9488) 7%, transparent);
+}
+
+.item[aria-pressed="true"] {
+  border-color: var(--office-dialog-accent, #0d9488);
+  background: color-mix(in srgb, var(--office-dialog-accent, #0d9488) 12%, transparent);
+}
+
+.itemLabel {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.note {
+  margin: 0;
+  padding: 12px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.status {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+@media (max-width: 520px) {
+  .columns {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .categories {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 0 4px;
+  }
+}

@@ -1,0 +1,382 @@
+/* A run's output as content of the surface it is shown in (the Code window's
+   frosted output card, the Test Explorer's well, a compiled PDF's column).
+
+   Its controls, data tables, wells, notes and errors are the shared dialog
+   chrome's parts (officeDialogChrome.tsx `officeDialogParts`), so they read
+   as the same product as every other editor's, light and dark (the chrome
+   follows the app's [data-theme-mode], never the system's). This module only
+   lays those parts out and adds the inks a run's output has and a dialog does
+   not (JSON syntax, an expression's result).
+
+   `.chrome` sits on an `office-dialog office-dialog--embedded` root: the
+   chrome's tokens and parts without its card, and without a dialog's motion,
+   since an output is replaced with every run rather than opened and closed.
+   Tripled so it outranks the card rules (`.office-dialog.office-dialog`, its
+   dark and entrance rules) wherever the stylesheets land. */
+
+.chrome.chrome.chrome {
+  --code-output-result: var(--console-accent-strong, #0d9488);
+  --code-output-json-key: #7c3aed;
+  --code-output-json-string: #15803d;
+  --code-output-json-number: #1d4ed8;
+  --code-output-json-boolean: #b45309;
+  animation: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  display: block;
+  /* The host sets the output's size and rhythm (a log stays as dense as the
+     terminal it reads like); the chrome gives the face and the ink. */
+  font-size: inherit;
+  gap: 0;
+  line-height: inherit;
+  padding: 0;
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .chrome.chrome.chrome {
+  --code-output-json-key: #c4b5fd;
+  --code-output-json-string: #86efac;
+  --code-output-json-number: #93c5fd;
+  --code-output-json-boolean: #fcd34d;
+}
+
+/* The chrome's motion layer leaves a fading copy of an `.office-dialog` that
+   is removed. An output is not a dialog closing: it leaves with its run. */
+.chrome:global([data-office-dialog-ghost]),
+:global([data-office-dialog-ghost]) > .chrome {
+  display: none !important;
+}
+
+/* Bare icon commands and a header's sort command show the chrome's ring. */
+.chrome :global(.office-dialog__icon-button):focus-visible,
+.chrome .sortButton:focus-visible,
+.chrome .jsonToggle:focus-visible {
+  outline: 3px solid var(--office-dialog-focus-ring);
+  outline-offset: 0;
+}
+
+/* ---------------------------------------------------- whole-run actions */
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 6px;
+}
+
+.actionError {
+  margin: 0 0 6px;
+}
+
+/* ------------------------------------------------------------------ log */
+
+.line {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.stderr {
+  color: var(--office-dialog-danger);
+}
+
+.result {
+  margin: 0;
+  color: var(--code-output-result);
+  white-space: pre-wrap;
+}
+
+/* "Show output (+N)" at a long log's (or notebook's) hidden end. */
+.more.more {
+  margin: 4px 0;
+}
+
+.note {
+  display: block;
+}
+
+/* ---------------------------------------------------------------- table */
+
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 6px 0;
+  max-width: 100%;
+}
+
+.tableToolbar {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+}
+
+.pager {
+  align-items: center;
+  color: var(--office-dialog-muted);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 11px;
+  gap: 4px 12px;
+}
+
+.pagerAxis {
+  align-items: center;
+  display: inline-flex;
+  gap: 2px;
+}
+
+.pagerRange {
+  font-variant-numeric: tabular-nums;
+  min-width: 92px;
+  text-align: center;
+}
+
+.tableActions {
+  display: flex;
+  margin-inline-start: auto;
+}
+
+.tableWell {
+  max-width: 100%;
+  overflow: auto;
+}
+
+.tableWell :global(.office-dialog__table) {
+  font-size: 12px;
+}
+
+.tableWell :global(.office-dialog__table) :is(th, td) {
+  text-align: start;
+  white-space: nowrap;
+}
+
+.tableWell :global(.office-dialog__table) td {
+  font-variant-numeric: tabular-nums;
+}
+
+/* A column header is its sort command: the whole cell, the chrome's hover. */
+.sortButton {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 5px;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  gap: 4px;
+  justify-content: space-between;
+  padding: 2px 6px;
+  text-align: start;
+  width: 100%;
+}
+
+.sortButton:hover {
+  background: var(--office-dialog-hover);
+  color: var(--office-dialog-ink);
+}
+
+.sortGlyph {
+  display: inline-flex;
+  flex: none;
+  opacity: 0.4;
+}
+
+.sortButton[data-sort] {
+  color: var(--office-dialog-ink);
+}
+
+.sortButton[data-sort] .sortGlyph {
+  color: var(--office-dialog-accent);
+  opacity: 1;
+}
+
+/* ----------------------------------------------------- figures, markup */
+
+.figure {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 6px 0;
+  max-width: 100%;
+}
+
+.figureWell {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.figureWell img {
+  display: block;
+  height: auto;
+  max-width: 100%;
+}
+
+/* HTML and SVG are drawn by their own sandboxed document, authored for a
+   white page; the well frames it. */
+.sandbox.sandbox {
+  background: #ffffff;
+  display: block;
+  height: 220px;
+  margin: 6px 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.latex {
+  margin: 6px 0;
+  overflow-x: auto;
+}
+
+.markdown {
+  margin: 6px 0;
+}
+
+/* ----------------------------------------------------------------- json */
+
+.json {
+  color: var(--office-dialog-ink);
+  font-size: 12px;
+  line-height: 1.5;
+  /* Pull the top-level row back so it isn't indented under nothing. */
+  margin: 6px 0 6px -14px;
+  white-space: pre-wrap;
+}
+
+.jsonRow {
+  padding-inline-start: 14px;
+}
+
+.jsonKey {
+  color: var(--code-output-json-key);
+}
+
+.jsonString {
+  color: var(--code-output-json-string);
+}
+
+.jsonNumber {
+  color: var(--code-output-json-number);
+}
+
+.jsonBoolean {
+  color: var(--code-output-json-boolean);
+}
+
+.jsonMuted {
+  color: var(--office-dialog-muted);
+}
+
+.jsonToggle {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  color: var(--office-dialog-muted);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  padding: 0 2px 0 0;
+  text-align: start;
+}
+
+.jsonToggle:hover {
+  background: var(--office-dialog-hover);
+}
+
+.jsonChevron {
+  display: inline-flex;
+  flex: none;
+  justify-content: center;
+  transition: rotate 120ms ease;
+  width: 12px;
+}
+
+.jsonToggle[aria-expanded="true"] .jsonChevron {
+  rotate: 90deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jsonChevron {
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------- compiled PDF */
+
+.pdf {
+  margin: 8px 0 4px;
+}
+
+.pdfHeader {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 8px;
+}
+
+.pdfName {
+  color: var(--office-dialog-muted);
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The pages lie on the chrome's muted ground, as a PDF reader's canvas. */
+.pdfColumn.pdfColumn {
+  background: var(--office-dialog-surface-muted);
+  padding: 12px;
+}
+
+.pdfPages {
+  /* A page wider than the column (at the 0.1x floor) scrolls sideways
+     instead of spilling off the left edge. */
+  align-items: safe center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pdfStatus.pdfStatus {
+  padding: 12px;
+  text-align: center;
+}
+
+/* ------------------------------------------------- compile timed out note */
+
+.notice {
+  margin: 8px 0 0;
+}
+
+.noticeWell.noticeWell {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+}
+
+.noticeActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+/* ------------------------------------------------------ compile menu note */
+
+/* "This engine is not offered": the shared menu's detail line (its ink,
+   light and dark), wrapped under the menu's width instead of cut. */
+.menuNote.menuNote {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.35;
+  max-width: 260px;
+  white-space: normal;
+}

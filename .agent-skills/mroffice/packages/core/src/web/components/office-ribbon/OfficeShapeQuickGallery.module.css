@@ -1,0 +1,53 @@
+.gallery.gallery {
+  --office-gallery-width: calc(var(--shape-quick-columns) * 24px + 4px);
+  color: var(--office-ribbon-ink, #4b5057);
+}
+ 
+.gallery .items {
+  display: grid;
+  grid-auto-columns: 24px;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(var(--shape-quick-rows, 2), var(--shape-quick-item-height, 24px));
+  gap: 0;
+  padding: 1px;
+}
+/* Two classes on purpose: the native page window styles EVERY button in it
+   as an inline-flex control at least 36px tall (`native-page-window.css`),
+   which is later in the cascade and won the tie. A 36px button in a 20px
+   row stacked the three rows on top of each other and cropped the glyphs. */
+.gallery .items button {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: var(--shape-quick-item-height, 24px);
+  min-height: 0;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  color: inherit;
+  background: transparent;
+  line-height: 0;
+}
+/* Office draws the gallery's glyphs as outlines in the ribbon's ink. */
+.gallery .items svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+.items button:hover:not(:disabled) {
+  background: var(--office-ribbon-hover, #e8edf4);
+}
+.items button:disabled {
+  opacity: 0.35;
+}
+.items button:focus-visible {
+  outline: 2px solid var(--office-ribbon-accent, #2563eb);
+  outline-offset: -2px;
+}
+
+.gallery.gallery[data-office-gallery-disclosure="end"] {
+  --office-gallery-width: calc(var(--shape-quick-columns) * 24px + 20px);
+}
+.gallery[data-office-gallery-disclosure="end"] .items { padding: 3px 2px; }

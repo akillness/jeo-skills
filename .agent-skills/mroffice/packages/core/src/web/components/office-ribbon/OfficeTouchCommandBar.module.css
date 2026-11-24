@@ -1,0 +1,30 @@
+/* A worded command in the touch command bar: a whole 44px target. */
+.command {
+  -webkit-tap-highlight-color: transparent;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm, 4px);
+  color: var(--console-text-primary, #1a1a2e);
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 12px;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.command:active {
+  background: var(--bg-raised, #f1f5f9);
+}
+
+.command:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.command + .command {
+  border-inline-start: 1px solid var(--console-border, #e2e8f0);
+  border-radius: 0;
+}

@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
+<title>update</title>
+<!--
+  The download of a new version (src/mac-self-update.ts). The main process
+  drives it with show(...); the buttons answer through the page title, so
+  the page needs no bridge into the app.
+-->
+<style>
+  :root { color-scheme: light dark; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    display: flex; flex-direction: column; justify-content: center; box-sizing: border-box; padding: 18px 22px;
+    background: #f3f7f6; color: #183c38; user-select: none; -webkit-user-select: none;
+    font: 13px -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  h1 { font-size: 14px; font-weight: 600; margin: 0 0 4px; }
+  p { margin: 0; opacity: .72; min-height: 1.4em; font-variant-numeric: tabular-nums; }
+  .track { height: 6px; margin: 12px 0 14px; border-radius: 6px; background: rgba(13,148,136,.16); overflow: hidden; }
+  .fill { height: 100%; width: 0; border-radius: 6px; background: #0d9488; transition: width .25s ease-out; }
+  .busy .fill { width: 35%; animation: run 1.2s ease-in-out infinite; }
+  @keyframes run { from { transform: translateX(-100%); } to { transform: translateX(290%); } }
+  .actions { display: flex; justify-content: flex-end; gap: 8px; }
+  button {
+    font: inherit; border-radius: 7px; padding: 4px 14px; cursor: default;
+    border: 1px solid rgba(24,60,56,.22); background: #fff; color: inherit;
+  }
+  button.primary { background: #0d9488; border-color: #0d9488; color: #fff; }
+  button[hidden] { display: none; }
+  @media (prefers-color-scheme: dark) {
+    body { background: #1a2321; color: #e5efed; }
+    button { background: #26312f; border-color: rgba(229,239,237,.2); }
+  }
+  @media (prefers-reduced-motion: reduce) { .busy .fill { animation: none; width: 100%; opacity: .5; } .fill { transition: none; } }
+</style>
+</head>
+<body>
+<h1 id="title"></h1>
+<p id="detail"></p>
+<div class="track" id="track"><div class="fill" id="fill"></div></div>
+<div class="actions">
+  <button id="hide"></button>
+  <button id="cancel"></button>
+</div>
+<script>
+  // lang=<locale>, and the buttons' words when the app gives them (the
+  // update's twenty languages: src/update-text.ts); else Chinese or English.
+  const params = new URLSearchParams(location.hash.slice(1) || location.search);
+  const lang = params.get("lang") || "en";
+  const zh = lang === "zh";
+  const $ = (id) => document.getElementById(id);
+  $("hide").textContent = params.get("hide") || (zh ? "后台下载" : "Hide");
+  $("cancel").textContent = params.get("cancel") || (zh ? "取消" : "Cancel");
+  document.documentElement.lang = lang;
+  let asked = 0;
+  const answer = (what) => { document.title = `${what}:${++asked}`; };
+  $("hide").onclick = () => answer("hide");
+  $("cancel").onclick = () => answer("cancel");
+  /** fraction: 0..1, or null while the length is unknown or the app is being unpacked. */
+  window.show = (title, detail, fraction, cancellable) => {
+    $("title").textContent = title;
+    $("detail").textContent = detail;
+    $("track").classList.toggle("busy", fraction === null);
+    $("fill").style.width = fraction === null ? "" : `${Math.round(fraction * 1000) / 10}%`;
+    $("cancel").hidden = !cancellable;
+  };
+</script>
+</body>
+</html>

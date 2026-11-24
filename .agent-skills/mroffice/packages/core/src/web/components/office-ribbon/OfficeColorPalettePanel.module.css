@@ -1,0 +1,242 @@
+.panel {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  width: 260px;
+}
+
+/* Dark and high contrast popovers: a light hover / selected ground under the
+   dark menu's light ink washed the row's words out. The Office dialog rule
+   below has the same weight and comes later, so the card keeps its own. */
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .panel {
+  --palette-hover: rgb(255 255 255 / 8%);
+  --palette-selected: rgb(255 255 255 / 12%);
+}
+
+/* In an Office dialog (Format Cells' Fill page) the palette is page content:
+   its headings, rows and rules take the card's type and colour tokens, light
+   and dark. Elsewhere the Office popover values below apply. */
+:global(.office-dialog) .panel {
+  --palette-heading-size: 12px;
+  --palette-hover: var(--office-dialog-hover);
+  --palette-selected: var(--office-dialog-accent-soft);
+  --palette-separator: var(--office-dialog-divider);
+  --palette-focus: var(--office-dialog-accent);
+}
+
+/* No Fill / Automatic / More Colors are rows of the palette, like Office's.
+   Inside a native window the blanket `button` rule (native-page-window.css:
+   a bordered, rounded, 36px pill with hover and pressed fills) outranks one
+   class, so the rows restate their own box a step above it, as the swatch
+   cells do below. */
+.panel .actionRow.actionRow.actionRow,
+.panel .moreColors.moreColors.moreColors {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 3px;
+  box-shadow: none;
+  box-sizing: border-box;
+  color: inherit;
+  display: flex;
+  font: inherit;
+  gap: 10px;
+  justify-content: flex-start;
+  min-height: 32px;
+  padding: 4px 2px;
+  text-align: start;
+  transform: none;
+  width: 100%;
+}
+
+.panel .actionRow.actionRow.actionRow,
+.panel .moreColors.moreColors.moreColors:has(input:not(:disabled)) {
+  cursor: pointer;
+}
+
+.panel .actionRow.actionRow.actionRow:hover,
+.panel .moreColors.moreColors.moreColors:hover {
+  background: var(--palette-hover, #f3f4f6);
+  box-shadow: none;
+}
+
+.panel .actionRow.actionRow.actionRow:active,
+.panel .moreColors.moreColors.moreColors:active {
+  background: var(--palette-hover, #f3f4f6);
+  transform: none;
+}
+
+.panel .actionRow.actionRow.actionRow:focus-visible,
+.panel .moreColors.moreColors.moreColors:focus-within {
+  outline: 2px solid var(--palette-focus, #2563eb);
+  outline-offset: -2px;
+}
+
+.panel .actionRow.actionRow.actionRow[aria-pressed="true"] {
+  background: var(--palette-selected, #eef6ff);
+}
+
+.automaticChip,
+.noFillChip {
+  border: 1px solid #a9a9a9;
+  box-sizing: border-box;
+  display: block;
+  height: 16px;
+  width: 16px;
+}
+
+.automaticChip {
+  border-color: #000000;
+}
+
+.noFillChip {
+  background: #ffffff;
+}
+
+.separator {
+  background: var(--palette-separator, #c7c7c7);
+  height: 1px;
+  margin: 5px 0;
+  width: 100%;
+}
+
+.heading {
+  font-size: var(--palette-heading-size, 14px);
+  font-weight: 600;
+  line-height: 20px;
+  padding: 2px 2px 6px;
+}
+
+.colorGrid {
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(10, minmax(14px, 20px));
+  justify-content: space-between;
+}
+
+/* A swatch is the colour and nothing around it until it is pointed at or
+   chosen, as in Office's palettes. The panel also opens inside a native window,
+   whose blanket `button` rule (native-page-window.css: a bordered, rounded,
+   36px pill with hover and pressed fills) outranks one class; these rules
+   restate the cell's own box one step above it. */
+.panel .colorGrid .colorCell.colorCell {
+  align-items: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 1px;
+  box-shadow: none;
+  box-sizing: border-box;
+  display: inline-flex;
+  gap: 0;
+  height: 20px;
+  justify-content: center;
+  min-height: 0;
+  min-width: 0;
+  padding: 1px;
+  transform: none;
+  width: 100%;
+}
+
+.panel .colorGrid .colorCell.colorCell:not(:disabled) {
+  cursor: pointer;
+}
+
+.panel .colorGrid .colorCell.colorCell:hover {
+  background: transparent;
+  border-color: #7a7a7a;
+  box-shadow: none;
+}
+
+.panel .colorGrid .colorCell.colorCell:active {
+  background: transparent;
+  transform: none;
+}
+
+.panel .colorGrid .colorCell.colorCell[aria-selected="true"] {
+  border-color: #6b6b6b;
+  box-shadow: 0 0 0 1px #ffffff inset;
+}
+
+.panel .colorGrid .colorCell.colorCell:focus-visible {
+  outline: 2px solid var(--palette-focus, #2563eb);
+  outline-offset: 1px;
+}
+
+.colorChip {
+  border: 1px solid color-mix(in srgb, #000000 14%, transparent);
+  box-sizing: border-box;
+  display: block;
+  height: 16px;
+  max-width: 16px;
+  width: 100%;
+}
+
+.moreColors {
+  position: relative;
+}
+
+.moreColors input {
+  height: 1px;
+  opacity: 0;
+  position: absolute;
+  width: 1px;
+}
+
+@media (max-width: 276px) {
+  .panel {
+    width: calc(100vw - 16px);
+  }
+}
+
+@media (forced-colors: active) {
+  .actionRow[aria-pressed="true"],
+  .colorCell[aria-selected="true"] {
+    outline: 2px solid Highlight;
+  }
+}
+
+/* Text Highlight Color: Office's fifteen highlighter swatches, five a row,
+   in the theme grid's own cells and rhythm (a 20px cell holding a 16px chip,
+   4px apart both ways), with No Color under them. The panel is as wide as
+   that grid or its No Color row, whichever is wider, not a theme palette's
+   260px: spread over that width the five columns stood 30px apart while the
+   rows, whose 24px chips overflowed a 20px cell, touched. */
+.panel.highlightPanel {
+  max-width: 100%;
+  width: max-content;
+}
+
+.highlightGrid {
+  grid-template-columns: repeat(5, 20px);
+  justify-content: start;
+}
+
+ 
+:where(:root[data-touch-mode]) .panel {
+  width: min(456px, calc(100vw - 16px));
+  /* and never past the popover holding it: in a 375px window both were
+     359px, and the popover's own padding cut the last column by 6px */
+  max-width: 100%;
+}
+:where(:root[data-touch-mode]) .colorGrid {
+  gap: 0;
+  grid-template-columns: repeat(10, minmax(0, 44px));
+  justify-content: center;
+}
+:where(:root[data-touch-mode]) .highlightGrid {
+  grid-template-columns: repeat(5, 44px);
+  justify-content: start;
+}
+:where(:root[data-touch-mode]) .panel .colorGrid .colorCell.colorCell {
+  height: 44px;
+}
+:where(:root[data-touch-mode]) .colorChip {
+  height: 28px;
+  max-width: 28px;
+}
+:where(:root[data-touch-mode]) .panel .actionRow.actionRow.actionRow,
+:where(:root[data-touch-mode]) .panel .moreColors.moreColors.moreColors {
+  min-height: 44px;
+  white-space: nowrap;
+}

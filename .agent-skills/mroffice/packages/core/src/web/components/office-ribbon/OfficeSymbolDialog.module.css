@@ -1,0 +1,374 @@
+/* Word's Insert → Symbol dialog, as an MRAI centred command modal.
+
+   The dim is a REAL ELEMENT rendered as the dialog's own sibling, not a
+   pseudo-element and not a portal to <body> — the same conclusion
+   styles/native-page-window.css reached for the spreadsheet's command dialogs,
+   for the same reasons, and four pseudo-element routes were disproved on a real
+   browser before that: a card that scrolls its own content clips its ::before,
+   the window container is overflow:hidden, globals.css already owns
+   body::before, and html:has(…)::after computes yet never paints in Chrome. A
+   portal to <body> does paint but loses: the workbench shell is
+   transform-positioned and therefore a stacking context, so a card inside it
+   cannot out-rank anything at body level however high its z-index, and the dim
+   would grey the dialog along with the document.
+
+   This dialog owns its own pair rather than borrowing
+   .native-window__modal-dimmer because it is mounted from the Docs toolbar,
+   which also renders outside the notebook workspace layout that loads
+   native-page-window.css. */
+
+.dimmer {
+  background: rgba(15, 23, 42, 0.32);
+  inset: 0;
+  position: fixed;
+  z-index: 79;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .dimmer {
+    background: rgba(15, 23, 42, 0.45);
+  }
+}
+
+.dialog {
+  /* Centred with inset + margin, never a translate: a transform would make the
+     card a containing block and re-introduce the clipping described above. */
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: fit-content;
+  height: fit-content;
+  max-width: min(94vw, 720px);
+  max-height: min(88vh, 660px);
+  z-index: 80;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: auto;
+  overscroll-behavior: contain;
+
+  background: var(--office-dialog-surface, var(--console-surface, #ffffff));
+  border: 1px solid color-mix(in srgb, var(--office-dialog-accent, var(--console-accent, #0d9488)) 16%, transparent);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.18);
+  color: var(--office-dialog-ink, var(--console-text-primary, #183c38));
+  padding: 14px 16px 12px;
+}
+
+.titleRow {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.closeButton {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--office-dialog-muted, var(--console-text-secondary, #4d635e));
+  cursor: pointer;
+  display: inline-flex;
+  margin-inline-start: auto;
+  padding: 4px;
+}
+
+.closeButton:hover {
+  background: var(--office-dialog-hover, var(--console-accent-tint-soft, #f2f7f6));
+}
+
+.closeButton:focus-visible,
+.tab:focus-visible,
+.cell:focus-visible,
+.grid:focus-visible,
+.specialRow:focus-visible,
+.recentCell:focus-visible,
+.footerButton:focus-visible {
+  outline: 2px solid var(--office-dialog-accent, var(--console-accent, #0d9488));
+  outline-offset: 1px;
+}
+
+/* ---- tabs ---------------------------------------------------------------- */
+
+.tabs {
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--office-dialog-accent, var(--console-accent, #0d9488)) 14%, transparent);
+  display: flex;
+  gap: 2px;
+}
+
+.tab {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--office-dialog-muted, var(--console-text-secondary, #4d635e));
+  cursor: pointer;
+  font: inherit;
+  padding: 6px 12px;
+}
+
+.tabActive {
+  border-bottom-color: var(--office-dialog-accent, var(--console-accent, #0d9488));
+  color: var(--office-dialog-ink, var(--console-text-primary, #183c38));
+  font-weight: 600;
+}
+
+/* ---- font row ----------------------------------------------------------- */
+
+.fontRow {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.fieldLabel {
+  color: var(--office-dialog-muted, var(--console-text-secondary, #4d635e));
+  font-size: 12px;
+}
+
+/* Character code that names no character: said beside the field, in the
+   dialog's danger ink (the field itself wears the aria-invalid edge). */
+.codeInvalid {
+  color: var(--office-dialog-danger, #d70015);
+  font-size: 12px;
+}
+
+/* ---- character grid ----------------------------------------------------- */
+
+/* One tab stop for the whole grid, exactly like Word's: the grid is the
+   focusable control and the arrow keys move the highlight inside it. A grid of
+   a few thousand separately tabbable buttons would take a few thousand Tab
+   presses to cross. */
+.grid {
+  background: var(--office-dialog-surface, var(--console-surface, #ffffff));
+  border: 1px solid
+    color-mix(in srgb, var(--office-dialog-accent, var(--console-accent, #0d9488)) 18%, transparent);
+  border-radius: 8px;
+  display: grid;
+  /* Explicit square tracks. Sizing the rows from an aspect-ratio cell inside
+     1fr columns collapsed every row to ~2px in WebKit (the cell contributes
+     no height to an auto row there), so the cells piled onto one another and
+     a click picked whichever glyph lay on top. */
+  grid-auto-rows: 22px;
+  grid-template-columns: repeat(var(--symbol-grid-columns, 31), 22px);
+  max-height: 232px;
+  min-height: 232px;
+  min-width: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.cell {
+  align-items: center;
+  background: transparent;
+  border: 1px solid transparent;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  justify-content: center;
+  line-height: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.cell:hover {
+  background: var(--office-dialog-hover, var(--console-accent-tint-soft, #f2f7f6));
+}
+
+.cellSelected {
+  background: color-mix(in srgb, var(--office-dialog-accent, var(--console-accent, #0d9488)) 18%, transparent);
+  border-color: var(--office-dialog-accent, var(--console-accent, #0d9488));
+}
+
+/* ---- recent row --------------------------------------------------------- */
+
+/* Word's "Recently used symbols": a row of square cells the same size as the
+   grid's, each a real button. The label sits on the cells' centre line and
+   the cells read as keys: paper surface, a soft tinted edge, the accent
+   tint on hover and a short press on click. */
+.recentRow {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 5px;
+  margin-top: 2px;
+}
+
+.recentRow > .fieldLabel {
+  margin-right: 4px;
+}
+
+.recentCell {
+  align-items: center;
+  background: var(--office-dialog-surface, var(--console-surface, #ffffff));
+  border: 1px solid
+    color-mix(in srgb, var(--office-dialog-accent, var(--console-accent, #0d9488)) 22%, transparent);
+  border-radius: 6px;
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--office-dialog-accent, var(--console-accent, #0d9488)) 10%, transparent);
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 15px;
+  height: 28px;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    box-shadow 120ms ease,
+    transform 80ms ease;
+  width: 28px;
+}
+
+.recentCell:hover {
+  background: var(--office-dialog-hover, var(--console-accent-tint-soft, #f2f7f6));
+  border-color: color-mix(in srgb, var(--office-dialog-accent, var(--console-accent, #0d9488)) 55%, transparent);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--office-dialog-accent, var(--console-accent, #0d9488)) 18%, transparent);
+}
+
+.recentCell:active {
+  background: color-mix(in srgb, var(--office-dialog-accent, var(--console-accent, #0d9488)) 16%, transparent);
+  box-shadow: none;
+  transform: translateY(1px);
+}
+
+/* ---- readouts ----------------------------------------------------------- */
+
+.readout {
+  color: var(--office-dialog-muted, var(--console-text-secondary, #4d635e));
+  font-size: 12px;
+  min-height: 16px;
+}
+
+.readoutCode {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* ---- special characters table ------------------------------------------ */
+
+.specialScroll {
+  border: 1px solid
+    color-mix(in srgb, var(--office-dialog-accent, var(--console-accent, #0d9488)) 18%, transparent);
+  border-radius: 8px;
+  max-height: 268px;
+  min-height: 268px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.specialTable {
+  border-collapse: collapse;
+  font-size: 13px;
+  width: 100%;
+}
+
+.specialTable th {
+  background: var(--office-dialog-hover, var(--console-accent-tint-soft, #f2f7f6));
+  color: var(--office-dialog-muted, var(--console-text-secondary, #4d635e));
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  position: sticky;
+  text-align: start;
+  top: 0;
+}
+
+.specialRow {
+  cursor: pointer;
+}
+
+.specialRow > td {
+  border-top: 1px solid
+    color-mix(in srgb, var(--office-dialog-accent, var(--console-accent, #0d9488)) 10%, transparent);
+  padding: 5px 10px;
+}
+
+.specialRow:hover {
+  background: var(--office-dialog-hover, var(--console-accent-tint-soft, #f2f7f6));
+}
+
+.specialRowSelected {
+  background: color-mix(in srgb, var(--office-dialog-accent, var(--console-accent, #0d9488)) 14%, transparent);
+}
+
+.specialGlyph {
+  font-size: 15px;
+  white-space: pre;
+  width: 2.5em;
+}
+
+.specialShortcut {
+  color: var(--office-dialog-muted, var(--console-text-secondary, #4d635e));
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  text-align: end;
+  white-space: nowrap;
+}
+
+/* ---- footer ------------------------------------------------------------- */
+
+.footer {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.footerSpacer {
+  margin-inline-start: auto;
+}
+
+.footerButton {
+  background: var(--office-dialog-surface, var(--console-surface, #ffffff));
+  border: 1px solid
+    color-mix(in srgb, var(--office-dialog-accent, var(--console-accent, #0d9488)) 24%, transparent);
+  border-radius: 7px;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  min-height: 30px;
+  padding: 0 12px;
+}
+
+.footerButton:hover:not(:disabled) {
+  background: var(--office-dialog-hover, var(--console-accent-tint-soft, #f2f7f6));
+}
+
+.footerButton:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.footerButtonPrimary {
+  background: var(--office-dialog-accent, var(--console-accent, #0d9488));
+  border-color: var(--office-dialog-accent, var(--console-accent, #0d9488));
+  color: var(--office-dialog-on-accent, #ffffff);
+  font-weight: 600;
+}
+
+.footerButtonPrimary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--office-dialog-accent, var(--console-accent, #0d9488)) 88%, #000000);
+}
+
+/* Narrow viewports: the 31-column grid would make each cell sub-pixel wide, so
+   the grid scrolls horizontally inside the card instead of squeezing. */
+@media (max-width: 560px) {
+  .dialog {
+    max-width: 94vw;
+  }
+
+  .grid {
+    grid-auto-columns: 20px;
+    grid-template-columns: repeat(var(--symbol-grid-columns, 31), 20px);
+    overflow-x: auto;
+  }
+}

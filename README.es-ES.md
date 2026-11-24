@@ -341,11 +341,11 @@ y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 471 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 474 habilidades · despliega una categoría para ver sus habilidades.
 
-### 🌐 Web (76)
+### 🌐 Web (77)
 
-Subcategorías: `frontend` (15), `backend` (3), `design` (17), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
+Subcategorías: `frontend` (16), `backend` (3), `design` (17), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -428,12 +428,13 @@ Subcategorías: `frontend` (15), `backend` (3), `design` (17), `api` (2), `auth`
 | `affectui` |
 | `open-intelligent-ui` |
 | `solid-glass` |
+| `vercel-agent-ui` |
 
 </details>
 
-### 🏗 Infraestructura (20)
+### 🏗 Infraestructura (21)
 
-Subcategorías: `deployment` (2), `environment` (2), `observability` (4), `security` (3), `cloud-data` (8), `automation` (0), `tooling` (1)
+Subcategorías: `deployment` (2), `environment` (2), `observability` (4), `security` (4), `cloud-data` (8), `automation` (0), `tooling` (1)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -460,6 +461,7 @@ Subcategorías: `deployment` (2), `environment` (2), `observability` (4), `secur
 | `pmtiles` |
 | `vespa` |
 | `langfuse` |
+| `artex` |
 
 </details>
 
@@ -893,9 +895,9 @@ Subcategorías: `marketing` (5), `support` (2), `publishing` (1), `pm-toolkit` (
 
 </details>
 
-### 🔧 Utilidades (29)
+### 🔧 Utilidades (30)
 
-Subcategorías: `knowledge` (9), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
+Subcategorías: `knowledge` (9), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (4), `general` (3)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -931,6 +933,7 @@ Subcategorías: `knowledge` (9), `files` (5), `git` (4), `workspace` (1), `proje
 | `rhwp-advanced` |
 | `rhwp-edit` |
 | `rowboat` |
+| `mroffice` |
 
 </details>
 

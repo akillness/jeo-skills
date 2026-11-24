@@ -1,0 +1,33 @@
+/* Sits on the keyboard's top edge, right-aligned as the iPad keyboard's own
+   hide key is; `top` is the visual viewport's bottom (set inline). Raised
+   with `translate`, not `transform`: every .floating-toolbar scales in with
+   an animation that fills `transform: scale(1)`, which had replaced the lift
+   and left the bar behind the keyboard. */
+.bar {
+  position: fixed;
+  right: 12px;
+  translate: 0 calc(-100% - 8px);
+  z-index: var(--z-popover, 50);
+  max-width: calc(100vw - 24px);
+  overflow-x: auto;
+}
+
+.key {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+}
+
+.extraKey {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.hideGlyph {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 0;
+  gap: 1px;
+}

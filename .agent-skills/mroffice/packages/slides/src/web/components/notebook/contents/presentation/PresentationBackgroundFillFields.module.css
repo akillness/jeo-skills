@@ -1,0 +1,96 @@
+.fields {
+  display: grid;
+  gap: 8px;
+}
+
+.slider {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) 56px auto;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.slider:not(:has(input[type="range"])) {
+  grid-template-columns: minmax(0, 1fr) 72px auto;
+}
+
+.slider input[type="number"] {
+  min-width: 0;
+  font: inherit;
+}
+
+.stopRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 6px;
+}
+
+.stopBar {
+  position: relative;
+  height: 18px;
+  margin: 0 7px;
+  border: 1px solid var(--ppt-pane-border, rgba(0, 0, 0, 0.2));
+  border-radius: 3px;
+}
+
+.stopMarker {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 22px;
+  padding: 0;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(0, 0, 0, 0.55);
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px #ffffff inset;
+  cursor: pointer;
+}
+
+.stopMarker[aria-selected="true"] {
+  outline: 2px solid var(--ppt-accent, #2b579a);
+  outline-offset: 1px;
+}
+
+.iconButton {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.iconButton:hover:not(:disabled) {
+  border-color: var(--ppt-pane-border, rgba(0, 0, 0, 0.2));
+}
+
+.iconButton:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.patternGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 32px);
+  gap: 6px;
+}
+
+.patternTile {
+  width: 32px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid var(--ppt-pane-border, rgba(0, 0, 0, 0.25));
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.patternTile[aria-checked="true"] {
+  outline: 2px solid var(--ppt-accent, #2b579a);
+  outline-offset: 1px;
+}

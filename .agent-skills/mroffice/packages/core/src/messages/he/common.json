@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "מותאם אישית",
+ "zoom.levels": "רמות מרחק מתצוגה",
+ "dialog.close": "סגירה",
+ "toast.close": "סגירת ההודעה",
+ "button.confirm": "אישור",
+ "button.cancel": "ביטול",
+ "libreOffice.enable": "הורדה והפעלה (כ-{size})",
+ "libreOffice.enableAlt": "הורדה והפעלה של LibreOffice",
+ "libreOffice.enabled": "LibreOffice {version} מופעל",
+ "libreOffice.retrying": "מנסה שוב…",
+ "libreOffice.ready": "תבניות Office ישנות, קובצי OpenDocument, תמונות EMF/WMF וייצוא ל-OpenDocument פועלים כעת.",
+ "libreOffice.needed": "פעולה זו דורשת את LibreOffice. MR Note Classic יכול להוריד את הגרסה הרשמית לתיקייה משלו; שום דבר לא מותקן במערכת שלך.",
+ "libreOffice.neededFor": "שמירה בתבנית ‎.{format} דורשת את LibreOffice. MR Note Classic יכול להוריד את הגרסה הרשמית לתיקייה משלו; שום דבר לא מותקן במערכת שלך."
+}

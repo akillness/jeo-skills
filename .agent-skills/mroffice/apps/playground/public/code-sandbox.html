@@ -1,0 +1,602 @@
+<!doctype html>
+<!-- MR Office - https://mroffice.ai - AGPL-3.0-only, see NOTICE.md -->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>code sandbox</title>
+  </head>
+  <body>
+    <script>
+      // Isolated JavaScript execution sandbox.
+      //
+      // Loaded in a sandbox="allow-scripts" iframe (opaque origin — no access to
+      // app cookies/storage/DOM) and served with its OWN permissive CSP
+      // (script-src 'unsafe-eval'; worker-src blob:) set by the middleware for
+      // this path, so the app origin's CSP stays free of 'unsafe-eval'.
+      //
+      // Each request runs in a Worker (off the main thread, terminable) which
+      // executes the code with new Function and captures console output.
+      (function () {
+        var MAX_OUTPUT_LINES = 2000;
+        var MAX_OUTPUT_LINE_CHARS = 20000;
+        var MAX_OUTPUT_LOG_CHARS = 300000;
+        var MAX_OUTPUT_TEXT_CHARS = 50000;
+        var FORMAT_MAX_ENTRIES = 100;
+        var OUTPUT_TRUNCATION_MARKER =
+          "… [output truncated: execution budget reached]";
+
+        function truncateOutput(value, maxChars) {
+          value = String(value);
+          if (value.length <= maxChars) return value;
+          if (maxChars <= OUTPUT_TRUNCATION_MARKER.length) {
+            return OUTPUT_TRUNCATION_MARKER.slice(0, maxChars);
+          }
+          return (
+            value.slice(0, maxChars - OUTPUT_TRUNCATION_MARKER.length) +
+            OUTPUT_TRUNCATION_MARKER
+          );
+        }
+
+        function createOutputCapture() {
+          var logs = [];
+          var logStreams = [];
+          var chars = 0;
+          var sealed = false;
+          function marker() {
+            if (sealed) return null;
+            sealed = true;
+            var remaining = MAX_OUTPUT_LOG_CHARS - chars;
+            if (remaining <= 0 || logs.length >= MAX_OUTPUT_LINES) return null;
+            var kept = OUTPUT_TRUNCATION_MARKER.slice(0, remaining);
+            logs.push(kept);
+            logStreams.push("stderr");
+            chars += kept.length;
+            return { text: kept, stream: "stderr" };
+          }
+          return {
+            logs: logs,
+            logStreams: logStreams,
+            push: function (value, streamName) {
+              if (sealed) return null;
+              if (logs.length >= MAX_OUTPUT_LINES - 1) return marker();
+              var kept;
+              try {
+                kept = truncateOutput(value, MAX_OUTPUT_LINE_CHARS);
+              } catch (e) {
+                kept = "<unprintable>";
+              }
+              var remaining =
+                MAX_OUTPUT_LOG_CHARS - chars - OUTPUT_TRUNCATION_MARKER.length;
+              if (kept.length > remaining) {
+                if (remaining <= 0) return marker();
+                kept = truncateOutput(kept, remaining);
+                sealed = true;
+              }
+              var tag = streamName === "stderr" ? "stderr" : "stdout";
+              logs.push(kept);
+              logStreams.push(tag);
+              chars += kept.length;
+              return { text: kept, stream: tag };
+            },
+          };
+        }
+
+        function boundWorkerResult(data) {
+          data = data && typeof data === "object" ? data : {};
+          var output = createOutputCapture();
+          var rawLogs = Array.isArray(data.logs) ? data.logs : [];
+          var rawStreams = Array.isArray(data.logStreams)
+            ? data.logStreams
+            : null;
+          for (var i = 0; i < rawLogs.length; i += 1) {
+            if (
+              output.push(
+                rawLogs[i],
+                rawStreams && rawStreams[i] === "stderr" ? "stderr" : "stdout",
+              ) === null
+            ) {
+              break;
+            }
+          }
+          var result = { logs: output.logs };
+          if (rawStreams) result.logStreams = output.logStreams;
+          if (typeof data.result === "string") {
+            result.result = truncateOutput(data.result, MAX_OUTPUT_TEXT_CHARS);
+          }
+          if (typeof data.error === "string") {
+            result.error = truncateOutput(data.error, MAX_OUTPUT_TEXT_CHARS);
+          }
+          return result;
+        }
+
+        // Captures console output with per-line stream tags (logStreams[i] is
+        // "stdout"|"stderr" for logs[i]): log/info/debug -> stdout, warn/error
+        // -> stderr. `logs` stays a plain string[]; an absent tag renders as
+        // stdout in the UI (backward-compatible). Errors are reported as
+        // "name: message" so the renderer can parse the error type.
+        // When stream:true, the worker also posts incremental {type:'stream'}
+        // messages per console line (progressive output — Jupyter parity), which
+        // the host relays to the parent tagged with the request id. The final
+        // aggregate message (no `type`) still carries the complete logs.
+        // The rest of a browser's / Node's console (table, group, count,
+        // time, assert, dir, trace), the same logic as lib/code-runner/
+        // js-runner.ts CONSOLE_EXTRAS_SRC; its source is embedded in the
+        // worker below with toString(), so it must not use anything outside.
+        function extendSandboxConsole(target, sink, display) {
+          var indent = "";
+          var counts = Object.create(null);
+          var timers = Object.create(null);
+          function write(stream) {
+            var put = sink(stream);
+            return function () {
+              var args = Array.prototype.slice.call(arguments);
+              if (!indent) return put.apply(null, args);
+              var text = args.map(display).join(" ");
+              put(indent + text.split("\n").join("\n" + indent));
+            };
+          }
+          ["log", "info", "debug"].forEach(function (name) { target[name] = write("stdout"); });
+          ["warn", "error"].forEach(function (name) { target[name] = write("stderr"); });
+          target.dir = function (value) { target.log(value); };
+          target.dirxml = target.log;
+          target.trace = function () {
+            var args = Array.prototype.slice.call(arguments);
+            target.error.apply(null, ["Trace:"].concat(args));
+          };
+          target.assert = function (condition) {
+            if (condition) return;
+            var args = Array.prototype.slice.call(arguments, 1);
+            target.error.apply(null, ["Assertion failed" + (args.length ? ":" : "")].concat(args));
+          };
+          target.count = function (label) {
+            var key = label === undefined ? "default" : String(label);
+            counts[key] = (counts[key] || 0) + 1;
+            target.log(key + ": " + counts[key]);
+          };
+          target.countReset = function (label) { counts[label === undefined ? "default" : String(label)] = 0; };
+          function now() { return typeof performance !== "undefined" ? performance.now() : Date.now(); }
+          function elapsed(key) { return Math.round((now() - timers[key]) * 1000) / 1000 + "ms"; }
+          target.time = function (label) { timers[label === undefined ? "default" : String(label)] = now(); };
+          target.timeLog = function (label) {
+            var key = label === undefined ? "default" : String(label);
+            if (!(key in timers)) return target.warn("Timer '" + key + "' does not exist");
+            target.log.apply(null, [key + ": " + elapsed(key)].concat(Array.prototype.slice.call(arguments, 1)));
+          };
+          target.timeEnd = function (label) {
+            var key = label === undefined ? "default" : String(label);
+            if (!(key in timers)) return target.warn("Timer '" + key + "' does not exist");
+            target.log(key + ": " + elapsed(key));
+            delete timers[key];
+          };
+          target.group = function () {
+            if (arguments.length) target.log.apply(null, arguments);
+            indent += "  ";
+          };
+          target.groupCollapsed = target.group;
+          target.groupEnd = function () { indent = indent.slice(0, -2); };
+          target.table = function (data, properties) {
+            if (data === null || typeof data !== "object") return target.log(data);
+            var rows = [], indexKey = "(index)", valueKey = "Values";
+            var columns = [], seen = Object.create(null), hasValues = false;
+            var keys = Object.keys(data);
+            for (var i = 0; i < keys.length && i < 1000; i += 1) {
+              var key = keys[i], item = data[key], row = { index: key, cells: Object.create(null), value: undefined };
+              if (item !== null && typeof item === "object") {
+                var itemKeys = Object.keys(item);
+                for (var j = 0; j < itemKeys.length; j += 1) {
+                  var column = itemKeys[j];
+                  if (properties && properties.indexOf(column) < 0) continue;
+                  if (!seen[column]) { seen[column] = true; columns.push(column); }
+                  row.cells[column] = display(item[column]);
+                }
+              } else {
+                hasValues = true;
+                row.value = display(item);
+              }
+              rows.push(row);
+            }
+            if (properties) columns = properties.filter(function (c) { return seen[c]; });
+            var header = [indexKey].concat(columns, hasValues ? [valueKey] : []);
+            var body = rows.map(function (row) {
+              return [String(row.index)].concat(
+                columns.map(function (c) { return c in row.cells ? row.cells[c] : ""; }),
+                hasValues ? [row.value === undefined ? "" : row.value] : []
+              );
+            });
+            var widths = header.map(function (h, c) {
+              return body.reduce(function (w, r) { return Math.max(w, String(r[c]).length); }, String(h).length) + 2;
+            });
+            function center(text, width) {
+              text = String(text);
+              var left = Math.floor((width - text.length) / 2);
+              return new Array(left + 1).join(" ") + text + new Array(width - text.length - left + 1).join(" ");
+            }
+            function rule(l, m, r) { return l + widths.map(function (w) { return new Array(w + 1).join("─"); }).join(m) + r; }
+            var lines = [rule("┌", "┬", "┐"), "│" + header.map(function (h, c) { return center(h, widths[c]); }).join("│") + "│", rule("├", "┼", "┤")];
+            body.forEach(function (r) { lines.push("│" + r.map(function (v, c) { return center(v, widths[c]); }).join("│") + "│"); });
+            lines.push(rule("└", "┴", "┘"));
+            target.log(lines.join("\n"));
+          };
+          return target;
+        }
+
+        var JS_WORKER =
+          "(function(){var NativePromise=Promise,nativeThen=Promise.prototype.then,nativeSetTimeout=setTimeout;" +
+          // How many "eval at" a run's own Function frame carries in this
+          // realm; a frame with more is code the prompt handed to eval.
+          "var FUNCTION_FRAME_EVALS=(function(){try{var l=String(new Function('return new Error().stack')()).split('\\n');for(var i=0;i<l.length;i+=1){if(/<anonymous>:\\d+:\\d+\\)?\\s*$/.test(l[i]))return l[i].split('eval at ').length-1}}catch(ignored){}return 1})();" +
+          "self.addEventListener('message',function(ev){if(ev.isTrusted!==true)return;var protocolToken=ev.data.protocolToken;var nativePost=self.postMessage.bind(self);function trustedPost(payload){nativePost({protocolToken:protocolToken,payload:payload})}var code=ev.data.code;var stream=ev.data.stream===true;" +
+          // A console prompt (see SandboxRequest.prompt): frames in the
+          // submission's own eval code are named <console>, the wrapper's are
+          // dropped; "await" submissions are waited for. Captured natives keep
+          // a session that reassigns Promise or setTimeout from steering this.
+          "var prompt=ev.data.prompt==='plain'||ev.data.prompt==='await',awaitPrompt=ev.data.prompt==='await';" +
+          "var MAX_OUTPUT_LINES=" +
+          MAX_OUTPUT_LINES +
+          ",MAX_OUTPUT_LINE_CHARS=" +
+          MAX_OUTPUT_LINE_CHARS +
+          ",MAX_OUTPUT_LOG_CHARS=" +
+          MAX_OUTPUT_LOG_CHARS +
+          ",MAX_OUTPUT_TEXT_CHARS=" +
+          MAX_OUTPUT_TEXT_CHARS +
+          ";" +
+          "var FORMAT_MAX_ENTRIES=" +
+          FORMAT_MAX_ENTRIES +
+          ",FORMAT_MAX_NODES=512;" +
+          "var OUTPUT_TRUNCATION_MARKER=" +
+          JSON.stringify(OUTPUT_TRUNCATION_MARKER) +
+          ";" +
+          "function trunc(v,m){v=String(v);if(v.length<=m)return v;if(m<=OUTPUT_TRUNCATION_MARKER.length)return OUTPUT_TRUNCATION_MARKER.slice(0,m);return v.slice(0,m-OUTPUT_TRUNCATION_MARKER.length)+OUTPUT_TRUNCATION_MARKER}" +
+          "function display(v,depth,budget){depth=depth||0;budget=budget||{nodes:0};budget.nodes+=1;if(budget.nodes>FORMAT_MAX_NODES)return'[output truncated]';if(typeof v==='string')return trunc(v,MAX_OUTPUT_LINE_CHARS);if(v===null||v===undefined||typeof v!=='object')return trunc(v,MAX_OUTPUT_LINE_CHARS);if(depth>6)return Array.isArray(v)?'[Array]':'[Object]';try{if(Array.isArray(v)){var a=[],al=Math.min(v.length,FORMAT_MAX_ENTRIES);for(var ai=0;ai<al;ai+=1)a.push(display(v[ai],depth+1,budget));if(v.length>al)a.push('[output truncated]');return'['+a.join(', ')+']'}if(v instanceof Map){var m=[],mi=v.entries(),ms,mc=0;while(mc<FORMAT_MAX_ENTRIES&&!(ms=mi.next()).done){m.push(display(ms.value[0],depth+1,budget)+' => '+display(ms.value[1],depth+1,budget));mc+=1}if(v.size>mc)m.push('[output truncated]');return'Map('+v.size+') {'+m.join(', ')+'}'}if(v instanceof Set){var s=[],si=v.values(),ss,sc=0;while(sc<FORMAT_MAX_ENTRIES&&!(ss=si.next()).done){s.push(display(ss.value,depth+1,budget));sc+=1}if(v.size>sc)s.push('[output truncated]');return'Set('+v.size+') {'+s.join(', ')+'}'}var p=[],pc=0;for(var k in v){if(!Object.prototype.hasOwnProperty.call(v,k))continue;if(pc>=FORMAT_MAX_ENTRIES){p.push('[output truncated]');break}p.push(k+': '+display(v[k],depth+1,budget));pc+=1}return'{'+p.join(', ')+'}'}catch(e){try{return trunc(Object.prototype.toString.call(v),MAX_OUTPUT_LINE_CHARS)}catch(ignored){return'<unprintable>'}}}" +
+          "function capture(){var logs=[],logStreams=[],chars=0,sealed=false;function mark(){if(sealed)return null;sealed=true;var rem=MAX_OUTPUT_LOG_CHARS-chars;if(rem<=0||logs.length>=MAX_OUTPUT_LINES)return null;var kept=OUTPUT_TRUNCATION_MARKER.slice(0,rem);logs.push(kept);logStreams.push('stderr');chars+=kept.length;return{text:kept,stream:'stderr'}}return{logs:logs,logStreams:logStreams,push:function(value,streamName){if(sealed)return null;if(logs.length>=MAX_OUTPUT_LINES-1)return mark();var kept;try{kept=trunc(value,MAX_OUTPUT_LINE_CHARS)}catch(e){kept='<unprintable>'}var rem=MAX_OUTPUT_LOG_CHARS-chars-OUTPUT_TRUNCATION_MARKER.length;if(kept.length>rem){if(rem<=0)return mark();kept=trunc(kept,rem);sealed=true}var tag=streamName==='stderr'?'stderr':'stdout';logs.push(kept);logStreams.push(tag);chars+=kept.length;return{text:kept,stream:tag}}}}" +
+          "var output=capture(),logs=output.logs,logStreams=output.logStreams;" +
+          "function sink(streamName){return function(){var args=[].slice.call(arguments);var line=args.map(display).join(' ');var kept=output.push(line, streamName);" +
+          "if(stream&&kept)trustedPost({type:'stream',stream:kept.stream,chunk:kept.text+'\\n'})}}" +
+          "var console={log:sink('stdout'),info:sink('stdout'),debug:sink('stdout')," +
+          "warn:sink('stderr'),error:sink('stderr')};" +
+          extendSandboxConsole.toString() +
+          ";extendSandboxConsole(console,sink,function(v){return display(v)});" +
+          // A console SESSION evaluates in the worker's global scope so what it
+          // defines outlives the submission, and global scope cannot see the
+          // local shim above - so publish the CURRENT run's shim globally too.
+          // Rebinding per message is what keeps a session's second submission
+          // from writing into the first one's (already reported) output.
+          // Where it was thrown in the person's code ("at inner (<anonymous>:3:9)"),
+          // as Python's traceback names its line: the output turns these into
+          // jump-to-line links. Function adds three lines before the code; Safari
+          // keeps no frames for it but says where it threw.
+          "function where(e){var out=[];try{var lines=String(e&&e.stack||'').split('\\n');for(var i=0;i<lines.length&&out.length<10;i+=1){var m=/(?:<anonymous>|> Function):(\\d+):(\\d+)\\)?\\s*$/.exec(lines[i]);if(!m)continue;var nested=lines[i].split('eval at ').length-1>FUNCTION_FRAME_EVALS;if(prompt&&!nested)continue;var line=prompt?Number(m[1]):Number(m[1])-3;if(!(line>=1))continue;var src=prompt?'<console>':'<anonymous>';var f=/^\\s*at ([^\\s(]+) \\(/.exec(lines[i])||/^([^@\\s]+)@/.exec(lines[i]);var fn=f&&f[1]!=='eval'&&f[1]!=='anonymous'?f[1]:'';out.push('    at '+(fn?fn+' ('+src+':'+line+':'+m[2]+')':src+':'+line+':'+m[2]))}if(!prompt&&!out.length&&e&&typeof e.line==='number'&&e.line-3>=1)out.push('    at <anonymous>:'+(e.line-3)+':'+(typeof e.column==='number'?e.column:0))}catch(ignored){}return out.length?'\\n'+out.join('\\n'):''}" +
+          "self.console=console;" +
+          "function report(r){trustedPost({logs:logs,logStreams:logStreams,result:r===undefined||r===null?undefined:(typeof r==='string'?trunc(r,MAX_OUTPUT_TEXT_CHARS):trunc(display(r),MAX_OUTPUT_TEXT_CHARS))})}" +
+          "function errorText(e){return(e&&e.name&&e.message)?(e.name+': '+e.message):String(e&&e.message||e)}" +
+          "function failure(e){var msg;try{msg=errorText(e)+where(e)}catch(ignored){msg='Error'}trustedPost({logs:logs,logStreams:logStreams,error:trunc(msg,MAX_OUTPUT_TEXT_CHARS)})}" +
+          // A Promise returned at the prompt is shown with its state after one
+          // turn of the event loop, as a devtools console shows it.
+          "function promiseText(state,v){if(state===0)return'Promise {<pending>}';var shown;try{shown=state===1?(typeof v==='string'?JSON.stringify(v):display(v)):errorText(v)}catch(ignored){shown='<unprintable>'}return'Promise {<'+(state===1?'fulfilled':'rejected')+'>: '+shown+'}'}" +
+          "try{var r=new Function('console','\"use strict\";\\n'+code)(console);" +
+          "if(awaitPrompt&&r instanceof NativePromise){nativeThen.call(r,report,failure);return}" +
+          "if(prompt&&r instanceof NativePromise){var state=0,settled;nativeThen.call(r,function(v){state=1;settled=v},function(e){state=2;settled=e});nativeSetTimeout(function(){report(promiseText(state,settled))},0);return}" +
+          "report(r)}" +
+          "catch(e){failure(e)}})})();";
+
+        function randomProtocolToken() {
+          var bytes = new Uint32Array(4);
+          crypto.getRandomValues(bytes);
+          return Array.prototype.map
+            .call(bytes, function (value) {
+              return value.toString(16).padStart(8, "0");
+            })
+            .join("");
+        }
+
+        // Live console sessions, keyed by the host's session id. A session's
+        // worker is NOT terminated when a submission finishes: its global scope
+        // IS the session, and dropping it is what made the prompt forget the
+        // previous line. Everything else (a file run) stays one worker per run,
+        // terminated at the end, exactly as before.
+        var sessions = Object.create(null);
+        // One-shot file/cell workers are addressable by request id while they
+        // run. Stop/timeout can therefore terminate exactly one worker instead
+        // of remounting the page iframe and killing sibling views' executions.
+        var transientRuns = Object.create(null);
+        // Order of last use, oldest first. A host is expected to end its own
+        // session, but the sandbox cannot depend on that: a lost message or a
+        // page that never unmounts cleanly would otherwise leave a worker
+        // running forever. The oldest realm past the cap is retired instead.
+        var sessionOrder = [];
+        var MAX_LIVE_SESSIONS = 8;
+
+        function touchSession(session) {
+          var at = sessionOrder.indexOf(session);
+          if (at !== -1) sessionOrder.splice(at, 1);
+          sessionOrder.push(session);
+          while (sessionOrder.length > MAX_LIVE_SESSIONS) {
+            endSession(sessionOrder[0]);
+          }
+        }
+
+        function endSession(session) {
+          var worker = sessions[session];
+          if (!worker) return;
+          delete sessions[session];
+          var at = sessionOrder.indexOf(session);
+          if (at !== -1) sessionOrder.splice(at, 1);
+          try {
+            worker.terminate();
+          } catch (e) {
+            /* already gone */
+          }
+        }
+
+        function endTransientRun(id) {
+          var worker = transientRuns[id];
+          if (!worker) return;
+          delete transientRuns[id];
+          try {
+            worker.terminate();
+          } catch (e) {
+            /* already gone */
+          }
+        }
+
+        function workerFromSource(source) {
+          var objectUrl = URL.createObjectURL(
+            new Blob([source], { type: "application/javascript" }),
+          );
+          try {
+            return new Worker(objectUrl);
+          } finally {
+            // Worker has captured its script URL at construction time. Keep no
+            // blob URL registry entry alive for the lifetime of the page.
+            if (typeof URL.revokeObjectURL === "function") {
+              URL.revokeObjectURL(objectUrl);
+            }
+          }
+        }
+
+        function newWorker() {
+          return workerFromSource(JS_WORKER);
+        }
+
+        function runJs(id, code, stream, session, prompt) {
+          var worker;
+          var relayOutput = createOutputCapture();
+          var protocolToken = randomProtocolToken();
+          try {
+            if (session) {
+              worker = sessions[session] || (sessions[session] = newWorker());
+              touchSession(session);
+            } else {
+              endTransientRun(id);
+              worker = newWorker();
+              transientRuns[id] = worker;
+            }
+          } catch (e) {
+            parent.postMessage(
+              { id: id, result: { logs: [], error: String(e) } },
+              "*",
+            );
+            return;
+          }
+          worker.onmessage = function (ev) {
+            if (!session && transientRuns[id] !== worker) return;
+            var envelope = ev.data;
+            if (
+              !envelope ||
+              typeof envelope !== "object" ||
+              envelope.protocolToken !== protocolToken ||
+              !envelope.payload ||
+              typeof envelope.payload !== "object"
+            ) {
+              return;
+            }
+            var data = envelope.payload;
+            // Relay an incremental chunk to the parent without finishing the run.
+            if (data.type === "stream") {
+              var retained = relayOutput.push(data.chunk, data.stream);
+              if (retained) {
+                parent.postMessage(
+                  {
+                    id: id,
+                    stream: { stream: retained.stream, chunk: retained.text },
+                  },
+                  "*",
+                );
+              }
+              return;
+            }
+            parent.postMessage(
+              { id: id, result: boundWorkerResult(data) },
+              "*",
+            );
+            if (!session) endTransientRun(id);
+          };
+          worker.onerror = function (ev) {
+            if (!session && transientRuns[id] !== worker) return;
+            parent.postMessage(
+              {
+                id: id,
+                result: {
+                  logs: [],
+                  error: String(ev.message || "worker error"),
+                },
+              },
+              "*",
+            );
+            // A worker that failed at this level is not trustworthy as a
+            // session either: drop it so the next submission starts clean.
+            if (session) endSession(session);
+            else endTransientRun(id);
+          };
+          worker.postMessage({
+            code: code,
+            stream: stream === true,
+            protocolToken: protocolToken,
+            prompt: prompt,
+          });
+        }
+
+        // ---- Debug sessions -------------------------------------------------
+        //
+        // Debug used to build its worker on the APP's origin, which inherits the
+        // app's CSP: unisolated in development, and unable to evaluate anything
+        // in production once 'unsafe-eval' was removed from the app because
+        // execution had moved in here. It now runs where every other execution
+        // runs.
+        //
+        // The harness arrives with the request. This page does not interpret the
+        // debug protocol at all — pause, resume and the final result are the
+        // worker's own vocabulary, and everything is relayed verbatim in both
+        // directions, so the two sides cannot drift apart.
+        var debugSessions = {};
+
+        function endDebug(id) {
+          var entry = debugSessions[id];
+          if (!entry) return;
+          delete debugSessions[id];
+          try {
+            entry.worker.terminate();
+          } catch (e) {
+            /* already gone */
+          }
+        }
+
+        function startDebug(id, spec) {
+          if (
+            !spec ||
+            typeof spec.script !== "string" ||
+            spec.script === "" ||
+            debugSessions[id]
+          ) {
+            parent.postMessage(
+              {
+                id: id,
+                result: { logs: [], error: "Invalid debug session request." },
+              },
+              "*",
+            );
+            return;
+          }
+          var worker;
+          var protocolToken = randomProtocolToken();
+          try {
+            worker = workerFromSource(spec.script);
+          } catch (e) {
+            parent.postMessage(
+              { id: id, result: { logs: [], error: String(e) } },
+              "*",
+            );
+            return;
+          }
+          debugSessions[id] = { worker: worker };
+          worker.onmessage = function (ev2) {
+            // Relay only while this session is the one we started for this id;
+            // a terminated session's late message must land nowhere.
+            if (debugSessions[id] === undefined ||
+                debugSessions[id].worker !== worker) {
+              return;
+            }
+            // The user's own program runs in this worker and can call
+            // postMessage. Only the harness knows the token, so anything
+            // without it is the program talking, not the debugger: a bare
+            // {logs:[...]} would otherwise end the run with a result nothing
+            // computed, and {type:"debug-paused"} would clear the host's
+            // runaway timer. Same envelope, same check, as runJs above.
+            var envelope = ev2.data;
+            if (
+              !envelope ||
+              typeof envelope !== "object" ||
+              envelope.protocolToken !== protocolToken ||
+              !envelope.payload ||
+              typeof envelope.payload !== "object"
+            ) {
+              return;
+            }
+            parent.postMessage({ id: id, debugMessage: envelope.payload }, "*");
+          };
+          worker.onerror = function (ev2) {
+            parent.postMessage(
+              {
+                id: id,
+                result: {
+                  logs: [],
+                  error: String((ev2 && ev2.message) || "worker error"),
+                },
+              },
+              "*",
+            );
+            endDebug(id);
+          };
+          // The host mints the token, so it never travels through the app.
+          var start = {};
+          if (spec.start && typeof spec.start === "object") {
+            for (var key in spec.start) {
+              if (Object.prototype.hasOwnProperty.call(spec.start, key)) {
+                start[key] = spec.start[key];
+              }
+            }
+          }
+          start.protocolToken = protocolToken;
+          worker.postMessage(start);
+        }
+
+        window.addEventListener("message", function (ev) {
+          // This iframe deliberately has an opaque origin, so an origin string
+          // cannot identify the app. The browser-provided WindowProxy can: only
+          // the actual embedding parent owns the authority to run, reset or
+          // drive a debug session. A sibling/opener that merely found this
+          // frame must not be able to spend its execution capability.
+          if (ev.source !== window.parent) return;
+          var req = ev.data;
+          if (
+            !req ||
+            typeof req !== "object" ||
+            typeof req.id !== "string" ||
+            !req.id
+          ) {
+            return;
+          }
+          if (req.reset === true) {
+            if (req.session) endSession(req.session);
+            else if (typeof req.targetId === "string" && req.targetId) {
+              endTransientRun(req.targetId);
+            }
+            parent.postMessage({ id: req.id, result: { logs: [] } }, "*");
+            return;
+          }
+          if (req.debug) {
+            startDebug(req.id, req.debug);
+            return;
+          }
+          if (req.debugTerminate === true) {
+            endDebug(req.id);
+            return;
+          }
+          if (req.debugControl !== undefined) {
+            var session = debugSessions[req.id];
+            if (session) session.worker.postMessage(req.debugControl);
+            return;
+          }
+          if (req.language === "javascript") {
+            runJs(
+              req.id,
+              req.code || "",
+              req.stream === true,
+              typeof req.session === "string" && req.session ? req.session : null,
+              req.prompt === "plain" || req.prompt === "await" ? req.prompt : null,
+            );
+          } else {
+            parent.postMessage(
+              {
+                id: req.id,
+                result: { logs: [], error: "Unsupported language in sandbox." },
+              },
+              "*",
+            );
+          }
+        });
+        parent.postMessage({ ready: true }, "*");
+      })();
+    </script>
+  </body>
+</html>

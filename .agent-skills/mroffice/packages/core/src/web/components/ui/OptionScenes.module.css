@@ -1,0 +1,1206 @@
+/* The option and menu-row scenes (OptionScenes.tsx), on the MiniScene stage.
+   Every shape below is written as its finished frame; the keyframes start
+   from the hidden state, so a stilled scene is a whole picture. */
+
+/* ── tones ─────────────────────────────────────────────────────────── */
+
+/* The stage's --ink is var(--option-scene-ink), set here on the frame. */
+.toned {
+  --option-scene-ink: var(--console-accent, #0d9488);
+}
+
+.tone-pdf { --option-scene-ink: #c2412d; }
+.tone-docx { --option-scene-ink: #2b579a; }
+.tone-xlsx { --option-scene-ink: #1d7a45; }
+.tone-pptx { --option-scene-ink: #c8500f; }
+.tone-markdown { --option-scene-ink: #3f4b5c; }
+.tone-text { --option-scene-ink: #6b7280; }
+.tone-html { --option-scene-ink: #0e7490; }
+.tone-csv { --option-scene-ink: #4b5e78; }
+.tone-image { --option-scene-ink: #7a4bc0; }
+.aiTone { --option-scene-ink: #7052bd; }
+
+/* A scene's own layer: shapes on the paper use --ink; shapes drawn straight
+   on the tinted ground use --ground-ink, which a dark theme lifts so it
+   still reads on the dark ground. */
+.root {
+  --ground-ink: var(--ink);
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .root {
+  --ground-ink: color-mix(in srgb, var(--ink) 45%, #ffffff);
+}
+
+/* The menu item's own `[&_svg]:size-4` would shrink every svg in a row;
+   two classes outrank it. */
+.root svg {
+  position: absolute;
+  overflow: visible;
+}
+
+/* ── settings previews ─────────────────────────────────────────────── */
+
+.preview {
+  margin-inline-end: 4px;
+}
+
+@media (max-width: 560px) {
+  .preview {
+    display: none;
+  }
+}
+
+/* theme: a tiny window in the chosen appearance */
+.themeWindow {
+  --surf: #ffffff;
+  --bar: #eef1f4;
+  --side: #e8edf1;
+  --rule: rgb(30 41 59 / 20%);
+  --lead: var(--ink);
+  position: absolute;
+  left: 10px;
+  top: 5px;
+  width: 56px;
+  height: 30px;
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: var(--shade);
+}
+
+/* a dark window keeps its edge on a dark page */
+.themeWindow[data-mode="dark"],
+.themeWindow[data-mode="system"] {
+  outline: 1px solid rgb(148 163 184 / 24%);
+  outline-offset: -1px;
+}
+
+.themeWindow[data-mode="dark"],
+.themeNightInner {
+  --surf: #161b22;
+  --bar: #222830;
+  --side: #1c2229;
+  --rule: rgb(226 232 240 / 26%);
+  --lead: #2dd4bf;
+}
+
+.themeWindow[data-mode="high-contrast"] {
+  --surf: #000000;
+  --bar: #000000;
+  --side: #000000;
+  --rule: rgb(255 255 255 / 78%);
+  --lead: #67e8f9;
+  box-shadow:
+    inset 0 0 0 1.5px #ffffff,
+    var(--shade);
+}
+
+.themeSurface,
+.themeNightInner {
+  position: absolute;
+  inset: 0;
+  background: var(--surf);
+}
+
+.themeWindow[data-mode="high-contrast"] .themeSurface {
+  inset: 1.5px;
+  border-radius: 4px;
+}
+
+.themeBar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 6px;
+  background: var(--bar);
+}
+
+.themeWindow[data-mode="high-contrast"] .themeBar {
+  border-bottom: 1px solid #ffffff;
+}
+
+.themeSide {
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 0;
+  width: 12px;
+  background: var(--side);
+}
+
+.themeWindow[data-mode="high-contrast"] .themeSide {
+  border-right: 1px solid #ffffff;
+}
+
+.themeLine {
+  position: absolute;
+  left: 17px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--rule);
+  transform-origin: left;
+  animation: optionWrite 3.6s ease-in-out infinite backwards;
+}
+
+.themeLine:nth-child(3) { top: 11px; width: 24px; background: var(--lead); }
+.themeLine:nth-child(4) { top: 17px; width: 32px; animation-delay: 0.25s; }
+.themeLine:nth-child(5) { top: 23px; width: 20px; animation-delay: 0.5s; }
+
+/* system: night covers the right half, sweeping across and back */
+.themeNight {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 28px;
+  width: 56px;
+  overflow: hidden;
+  animation: optionNightSweep 6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.themeNightInner {
+  left: -28px;
+  width: 56px;
+  right: auto;
+  animation: optionNightHold 6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes optionNightSweep {
+  0%, 12% { transform: translateX(28px); }
+  32%, 50% { transform: translateX(0); }
+  68%, 84% { transform: translateX(-28px); }
+  100% { transform: translateX(28px); }
+}
+
+@keyframes optionNightHold {
+  0%, 12% { transform: translateX(-28px); }
+  32%, 50% { transform: translateX(0); }
+  68%, 84% { transform: translateX(28px); }
+  100% { transform: translateX(-28px); }
+}
+
+/* the appearance's sign in the title bar: sun, moon, contrast, both */
+.themeBadge {
+  position: absolute;
+  right: 3px;
+  top: 1px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #f5b301;
+}
+
+.themeWindow[data-mode="dark"] .themeBadge {
+  background: transparent;
+  box-shadow: inset -1.4px -0.6px 0 0 #e2e8f0;
+}
+
+.themeWindow[data-mode="high-contrast"] .themeBadge {
+  right: 4px;
+  top: 1px;
+  background: linear-gradient(90deg, #ffffff 50%, #000000 50%);
+  box-shadow: 0 0 0 0.8px #ffffff;
+}
+
+.themeWindow[data-mode="system"] .themeBadge {
+  background: transparent;
+  box-shadow: inset -1.4px -0.6px 0 0 #e2e8f0;
+}
+
+/* reduce motion: a block bouncing in, or a block at rest */
+.motionGround {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  top: 31px;
+  height: 2px;
+  border-radius: 1px;
+  background: color-mix(in srgb, var(--ground-ink) 28%, transparent);
+}
+
+.motionBlock {
+  position: absolute;
+  top: 21px;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--ink);
+  box-shadow: var(--shade);
+  transform-origin: 50% 100%;
+}
+
+.motionBlockStill {
+  left: 33px;
+}
+
+.motionBlockBounce {
+  left: 44px;
+  animation: optionBounce 2.6s cubic-bezier(0.33, 0, 0.4, 1) infinite;
+}
+
+@keyframes optionBounce {
+  0% { transform: translate(-36px, 0) scale(1.14, 0.84); }
+  13% { transform: translate(-28px, -15px) scale(0.94, 1.08); }
+  26% { transform: translate(-20px, 0) scale(1.14, 0.84); }
+  36% { transform: translate(-14px, -10px) scale(0.96, 1.05); }
+  46% { transform: translate(-8px, 0) scale(1.1, 0.88); }
+  54% { transform: translate(-4px, -4px) scale(1); }
+  62% { transform: translate(0, 0) scale(1.06, 0.94); }
+  68%, 100% { transform: translate(0, 0) scale(1); }
+}
+
+.root .motionTrail {
+  inset: 0;
+  width: 76px;
+  height: 40px;
+}
+
+.motionTrail path {
+  fill: none;
+  stroke: var(--ground-ink);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-dasharray: 0.001 0.045;
+  opacity: 0.5;
+  animation: optionTrail 2.6s ease-out infinite;
+}
+
+@keyframes optionTrail {
+  0%, 8% { opacity: 0; }
+  40%, 100% { opacity: 0.5; }
+}
+
+/* week start: seven cells, the weekend tinted, the first day lit */
+.root .weekCard {
+  left: 5px;
+  top: 6px;
+  width: 66px;
+  height: 28px;
+  overflow: hidden;
+}
+
+.weekHead {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 6px;
+  background: var(--ink);
+  opacity: 0.85;
+}
+
+.weekRow {
+  position: absolute;
+  left: 5px;
+  top: 11px;
+  display: flex;
+  gap: 2px;
+}
+
+.weekCell {
+  display: block;
+  width: 6.3px;
+  height: 11px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--ink) 14%, transparent);
+  animation: optionCell 3.8s cubic-bezier(0.22, 1, 0.36, 1) infinite backwards;
+  animation-delay: calc(var(--i, 0) * 0.08s);
+}
+
+.weekCell[data-weekend] {
+  background: color-mix(in srgb, #e0435f 34%, transparent);
+}
+
+.weekCell[data-first] {
+  background: var(--ink);
+}
+
+.weekRing {
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  width: 10.3px;
+  height: 15px;
+  box-sizing: border-box;
+  border: 1.2px solid var(--ink);
+  border-radius: 3.5px;
+  animation: optionRing 3.8s cubic-bezier(0.22, 1, 0.36, 1) infinite backwards;
+}
+
+@keyframes optionCell {
+  0% { opacity: 0; transform: translateY(4px); }
+  12%, 88% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: none; }
+}
+
+@keyframes optionRing {
+  0%, 22% { opacity: 0; transform: scale(1.7); }
+  34%, 88% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: none; }
+}
+
+/* clock: an afternoon time on either clock */
+.root .clockFace {
+  left: 9px;
+  top: 7px;
+  width: 58px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.clockDigits {
+  display: flex;
+  align-items: center;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+
+.clockDigit,
+.clockColon {
+  display: inline-block;
+}
+
+.clockDigit {
+  animation: optionDigit 4s cubic-bezier(0.22, 1, 0.36, 1) infinite backwards;
+  animation-delay: calc(var(--i, 0) * 0.07s);
+}
+
+.clockColon {
+  margin: 0 0.5px;
+  transform: translateY(-1px);
+  animation: optionColon 1.2s steps(1) infinite;
+}
+
+@keyframes optionDigit {
+  0% { opacity: 0; transform: translateY(9px); }
+  14%, 84% { opacity: 1; transform: none; }
+  96%, 100% { opacity: 0; transform: translateY(-9px); }
+}
+
+@keyframes optionColon {
+  0% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+/* the morning/afternoon pair: the lower (afternoon) dot lit */
+.clockHalf {
+  display: grid;
+  gap: 2px;
+}
+
+.clockHalf i {
+  display: block;
+  width: 4px;
+  height: 4px;
+  box-sizing: border-box;
+  border: 1px solid color-mix(in srgb, var(--ink) 45%, transparent);
+  border-radius: 50%;
+}
+
+.clockHalf i[data-on] {
+  border-color: var(--ink);
+  background: var(--ink);
+  animation: optionPop 4s cubic-bezier(0.22, 1, 0.36, 1) infinite backwards;
+  animation-delay: 0.35s;
+}
+
+@keyframes optionPop {
+  0%, 6% { opacity: 0; transform: scale(0.2); }
+  18%, 84% { opacity: 1; transform: none; }
+  96%, 100% { opacity: 0; transform: scale(0.2); }
+}
+
+/* spelling: lines of writing, a wavy underline under one word */
+.root .spellPage {
+  left: 12px;
+  top: 5px;
+  width: 52px;
+  height: 30px;
+}
+
+.root .spellPage .spellLine,
+.root .spellPage .spellWords {
+  position: absolute;
+  left: 7px;
+}
+
+.root .spellLine {
+  top: 7px;
+  width: 36px;
+  animation: optionWrite 3.8s ease-in-out infinite backwards;
+}
+
+.root .spellLineShort {
+  top: 21px;
+  width: 24px;
+  animation-delay: 0.6s;
+}
+
+.spellWords {
+  top: 13px;
+  display: flex;
+  gap: 3px;
+}
+
+.root .spellWord {
+  animation: optionWrite 3.8s ease-in-out infinite backwards;
+  animation-delay: 0.2s;
+}
+
+.root .spellWord:nth-child(1) { width: 10px; }
+.root .spellWord:nth-child(2) { width: 14px; animation-delay: 0.3s; }
+.root .spellWord:nth-child(3) { width: 9px; animation-delay: 0.4s; }
+
+.root .spellWave {
+  left: 19.5px;
+  top: 17px;
+  width: 15px;
+  height: 4px;
+}
+
+.spellWave path {
+  fill: none;
+  stroke: #d93025;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  animation: optionDraw 3.8s ease-in-out infinite backwards;
+  animation-delay: 0.6s;
+}
+
+/* output wrap: one long line folded, or running past the edge */
+.wrapPanel {
+  position: absolute;
+  left: 8px;
+  top: 5px;
+  width: 60px;
+  height: 30px;
+  overflow: hidden;
+  border-radius: 5px;
+  background: #1f2933;
+  box-shadow: var(--shade);
+  outline: 1px solid rgb(148 163 184 / 24%);
+  outline-offset: -1px;
+}
+
+.wrapPrompt {
+  position: absolute;
+  left: 5px;
+  top: 6px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink) 50%, #ffffff);
+}
+
+.wrapRun {
+  position: absolute;
+  left: 11px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgb(226 232 240 / 62%);
+  transform-origin: left;
+  animation: optionWrite 3.6s ease-in-out infinite backwards;
+}
+
+.wrapRunA {
+  top: 6px;
+  width: 66px;
+}
+
+.wrapPanel[data-wrap] .wrapRunA {
+  width: 43px;
+}
+
+.wrapRunB {
+  top: 12px;
+  width: 22px;
+  animation-delay: 0.35s;
+}
+
+.wrapRunC {
+  top: 12px;
+  width: 28px;
+  background: rgb(226 232 240 / 34%);
+  animation-delay: 0.6s;
+}
+
+.wrapPanel[data-wrap] .wrapRunC {
+  top: 19px;
+}
+
+.root .wrapArrow {
+  left: 3.5px;
+  top: 10px;
+  width: 6px;
+  height: 6px;
+}
+
+.wrapArrow path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--ink) 50%, #ffffff);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  animation: optionDraw 3.6s ease-in-out infinite backwards;
+  animation-delay: 0.25s;
+}
+
+.wrapScroll {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  bottom: 3px;
+  height: 2px;
+  border-radius: 1px;
+  background: rgb(255 255 255 / 16%);
+}
+
+.wrapScroll::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 60%;
+  border-radius: 1px;
+  background: rgb(255 255 255 / 52%);
+}
+
+/* ── shared keyframes ──────────────────────────────────────────────── */
+
+@keyframes optionWrite {
+  0% { transform: scaleX(0); }
+  22%, 84% { transform: scaleX(1); }
+  96%, 100% { transform: scaleX(0); }
+}
+
+@keyframes optionDraw {
+  0%, 12% { stroke-dashoffset: 1; }
+  36%, 84% { stroke-dashoffset: 0; }
+  96%, 100% { stroke-dashoffset: 1; }
+}
+
+/* ── hover reveal (menu rows) ──────────────────────────────────────── */
+
+/* Hidden while its row is at rest; shown, and playing (MiniScene's hover
+   play), while the row is hovered, highlighted or focused. A disabled row
+   stays at rest. */
+.reveal {
+  display: block;
+  flex: none;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+:global(:is([role="menuitem"], [data-mini-scene-host]):is(:hover, :focus-visible, [data-highlighted]):not([data-disabled], :disabled)) .reveal {
+  opacity: 1;
+}
+
+/* the conversation AI menu: at the row's trailing edge */
+.aiReveal {
+  margin-inline-start: auto;
+  padding-inline-start: 6px;
+}
+
+.root .aiPage {
+  left: 9px;
+  top: 3px;
+  width: 26px;
+  height: 20px;
+  border-radius: 3px;
+}
+
+.root .aiPage > i {
+  position: absolute;
+}
+
+/* summarize: four lines fold into two */
+.root .sumLine {
+  left: 4px;
+  height: 2.5px;
+  animation: optionFold 3.4s cubic-bezier(0.65, 0, 0.35, 1) infinite backwards;
+}
+
+.root .sumLine[data-n="1"] { --from: -2.5px; top: 6px; width: 17px; z-index: 1; }
+.root .sumLine[data-n="2"] { --from: -3.5px; top: 11.5px; width: 12px; z-index: 1; }
+.root .sumLine[data-n="3"] { --from: 5px; top: 6px; width: 14px; }
+.root .sumLine[data-n="4"] { --from: 4px; top: 11.5px; width: 10px; }
+
+@keyframes optionFold {
+  0%, 22% { transform: translateY(var(--from, 0)); }
+  50%, 88% { transform: none; }
+  100% { transform: translateY(var(--from, 0)); }
+}
+
+/* decisions: a check lands on the settled line */
+.root .decLine {
+  left: 4px;
+  height: 2.5px;
+}
+
+.root .decLine:nth-child(1) { top: 5px; width: 12px; }
+.root .decLine:nth-child(2) { top: 10px; width: 11px; }
+.root .decLine:nth-child(3) { top: 15px; width: 13px; }
+
+.root .decPicked {
+  background: var(--ink);
+  animation: optionPick 3.4s ease-in-out infinite backwards;
+}
+
+@keyframes optionPick {
+  0%, 30% { opacity: 0.3; }
+  44%, 88% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+
+.root .decCheck {
+  left: 17px;
+  top: 7.5px;
+  width: 7px;
+  height: 7px;
+}
+
+.decCheck path {
+  stroke-width: 1.8;
+  animation: optionDraw 3.4s ease-in-out infinite backwards;
+  animation-delay: 0.2s;
+}
+
+/* tasks: boxes ticked one by one */
+.root .aiPage > .taskRow {
+  left: 4px;
+  top: calc(3px + var(--i, 0) * 5.4px);
+  display: flex;
+  align-items: center;
+  gap: 2.5px;
+}
+
+.root .taskBox {
+  position: relative;
+  width: 4.6px;
+  height: 4.6px;
+}
+
+.taskBox rect {
+  fill: none;
+  stroke: color-mix(in srgb, var(--ink) 60%, transparent);
+  stroke-width: 0.9;
+}
+
+.taskBox path {
+  stroke-width: 1.5;
+  animation: optionTick 3.6s ease-in-out infinite backwards;
+  animation-delay: calc(var(--i, 0) * 0.45s);
+}
+
+@keyframes optionTick {
+  0%, 6% { stroke-dashoffset: 1; }
+  18%, 80% { stroke-dashoffset: 0; }
+  92%, 100% { stroke-dashoffset: 1; }
+}
+
+.root .taskLine {
+  width: 12px;
+  height: 2.5px;
+}
+
+.taskRow:nth-child(2) .taskLine { width: 14px; }
+.taskRow:nth-child(3) .taskLine { width: 9px; }
+
+/* draft: a reply bubble written line by line */
+.draftBubble {
+  position: absolute;
+  left: 7px;
+  top: 4px;
+  width: 30px;
+  height: 18px;
+  border-radius: 7px 7px 7px 2px;
+  background: var(--paper);
+  box-shadow: var(--shade);
+}
+
+.root .draftLine {
+  position: absolute;
+  left: 5px;
+  height: 2.5px;
+}
+
+.root .draftLine:nth-child(1) {
+  top: 5.5px;
+  width: 18px;
+  background: var(--ink);
+  animation: optionDraftA 3.6s linear infinite backwards;
+}
+
+.root .draftLine:nth-child(2) {
+  top: 10.5px;
+  width: 12px;
+  animation: optionDraftB 3.6s linear infinite backwards;
+}
+
+.draftPen {
+  position: absolute;
+  left: 16.5px;
+  top: 5px;
+  width: 2.4px;
+  height: 7px;
+  border-radius: 1px 1px 1.2px 1.2px;
+  background: var(--ink);
+  transform: rotate(35deg);
+  transform-origin: 50% 100%;
+  animation: optionPen 3.6s linear infinite backwards;
+}
+
+@keyframes optionDraftA {
+  0%, 6% { transform: scaleX(0); }
+  34%, 90% { transform: scaleX(1); }
+  100% { transform: scaleX(0); }
+}
+
+@keyframes optionDraftB {
+  0%, 42% { transform: scaleX(0); }
+  64%, 90% { transform: scaleX(1); }
+  100% { transform: scaleX(0); }
+}
+
+@keyframes optionPen {
+  0%, 6% { transform: translate(-12px, -5px) rotate(35deg); }
+  34% { transform: translate(6px, -5px) rotate(35deg); }
+  42% { transform: translate(-12px, 0) rotate(35deg); }
+  64%, 90% { transform: translate(0, 0) rotate(35deg); }
+  100% { transform: translate(-12px, -5px) rotate(35deg); }
+}
+
+/* ── export menus ──────────────────────────────────────────────────── */
+
+/* The trailing slot: the badge at rest, the scene in its place while the
+   row is hovered or focused; one width either way. */
+.trail {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 44px;
+  height: 30px;
+}
+
+.trail > :global(.docs-cupertino-menu__rich-badge) {
+  transition: opacity 160ms ease;
+}
+
+:global(:is([role="menuitem"], [data-mini-scene-host]):is(:hover, :focus-visible, [data-highlighted]):not([data-disabled], :disabled)) .trail > :global(.docs-cupertino-menu__rich-badge) {
+  opacity: 0;
+}
+
+.trailScene {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+/* a page in the middle of the stage */
+.root .exPage {
+  left: 14px;
+  top: 3.5px;
+  width: 16px;
+  height: 23px;
+  border-radius: 3px;
+  display: grid;
+  align-content: start;
+  gap: 2.5px;
+  padding: 4px 3px 0;
+  box-sizing: border-box;
+}
+
+.root .exLine {
+  height: 2.5px;
+}
+
+.root .exLine:nth-child(1) { width: 70%; }
+.root .exLine:nth-child(3) { width: 80%; }
+
+/* pdf: a frame closes round the page and a seal lands */
+.root .pdfFrame {
+  inset: 0;
+  width: 44px;
+  height: 30px;
+}
+
+.pdfFrame path {
+  fill: none;
+  stroke: var(--ground-ink);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  animation: optionDraw 3.4s ease-in-out infinite backwards;
+}
+
+.pdfSeal {
+  position: absolute;
+  left: 25px;
+  top: 18px;
+  width: 8px;
+  height: 8px;
+  box-sizing: border-box;
+  border: 1.6px solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper);
+  transform: rotate(-12deg);
+  animation: optionSeal 3.4s cubic-bezier(0.22, 1, 0.36, 1) infinite backwards;
+}
+
+@keyframes optionSeal {
+  0%, 36% { opacity: 0; transform: scale(1.9) rotate(-12deg); }
+  48%, 86% { opacity: 1; transform: rotate(-12deg); }
+  96%, 100% { opacity: 0; transform: rotate(-12deg); }
+}
+
+/* docx: a heading, then lines written in turn */
+.root .docHead,
+.root .docLine {
+  animation: optionWrite 3.2s ease-in-out infinite backwards;
+}
+
+.root .docHead { width: 75%; height: 3px; }
+.root .docLine:nth-child(2) { animation-delay: 0.25s; }
+.root .docLine:nth-child(3) { animation-delay: 0.5s; }
+.root .docLine:nth-child(4) { width: 60%; animation-delay: 0.75s; }
+
+/* xlsx: the page becomes a grid whose cells fill */
+.root .exSheet {
+  left: 10px;
+  top: 4px;
+  width: 24px;
+  height: 22px;
+  border-radius: 3px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 1.5px;
+  padding: 3px;
+  box-sizing: border-box;
+}
+
+.gridCell {
+  display: block;
+  border-radius: 1px;
+  background: var(--ink-soft);
+  animation: optionCellFill 3.4s cubic-bezier(0.22, 1, 0.36, 1) infinite backwards;
+  animation-delay: calc(var(--i, 0) * 0.08s);
+}
+
+.gridCell[data-head] {
+  background: color-mix(in srgb, var(--ink) 70%, transparent);
+}
+
+@keyframes optionCellFill {
+  0%, 6% { opacity: 0; transform: scale(0.3); }
+  22%, 86% { opacity: 1; transform: none; }
+  96%, 100% { opacity: 0; transform: scale(0.3); }
+}
+
+/* pptx: the upright page turns into a wide slide */
+.root .exSlide {
+  left: 7px;
+  top: 6px;
+  width: 30px;
+  height: 18px;
+  border-radius: 3px;
+  animation: optionTurn 3.6s cubic-bezier(0.65, 0, 0.35, 1) infinite backwards;
+}
+
+@keyframes optionTurn {
+  0%, 14% { transform: scale(0.53, 1.3); }
+  38%, 88% { transform: none; }
+  100% { transform: scale(0.53, 1.3); }
+}
+
+.slideTitle,
+.slideFigure,
+.slideText {
+  position: absolute;
+  display: block;
+  border-radius: 1.5px;
+  animation: optionSlideBits 3.6s ease-out infinite backwards;
+}
+
+.slideTitle {
+  left: 3px;
+  top: 3px;
+  width: 13px;
+  height: 3px;
+  background: var(--ink);
+}
+
+.slideText {
+  left: 3px;
+  top: 9px;
+  width: 11px;
+  height: 2px;
+  background: var(--ink-soft);
+  box-shadow: 0 4px 0 var(--ink-soft);
+  animation-delay: 0.1s;
+}
+
+.slideFigure {
+  left: 17px;
+  top: 7px;
+  width: 10px;
+  height: 8px;
+  background: color-mix(in srgb, var(--ink) 45%, transparent);
+  animation-delay: 0.2s;
+}
+
+@keyframes optionSlideBits {
+  0%, 36% { opacity: 0; transform: translateY(2px); }
+  48%, 88% { opacity: 1; transform: none; }
+  100% { opacity: 0; }
+}
+
+/* markdown and plain text: the styling drops to bare lines */
+.fmtLines {
+  position: absolute;
+  inset: 0;
+}
+
+.fmtLine {
+  position: absolute;
+  left: 3px;
+  display: block;
+  height: 2.2px;
+  border-radius: 1px;
+  background: color-mix(in srgb, var(--ink) 34%, transparent);
+  transform-origin: left center;
+}
+
+.fmtLine[data-style="head"] { top: 4.5px; width: 9px; }
+.fmtLine[data-style="bold"] { top: 9.5px; width: 10px; }
+.fmtLine[data-style="tint"] { top: 14px; width: 8px; }
+.fmtLine[data-style="plain"] { top: 18.5px; width: 10px; }
+
+.fmtLines[data-kind="md"] .fmtLine[data-style="head"] {
+  left: 8.5px;
+  width: 5px;
+}
+
+.fmtLine[data-style="head"] {
+  animation: optionUnhead 3.6s cubic-bezier(0.65, 0, 0.35, 1) infinite backwards;
+}
+
+.fmtInk {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border-radius: inherit;
+  background: var(--ink);
+  opacity: 0;
+  animation: optionUnstyle 3.6s ease-in-out infinite backwards;
+}
+
+.fmtLine[data-style="tint"] .fmtInk {
+  background: #e3a008;
+}
+
+@keyframes optionUnstyle {
+  0%, 26% { opacity: 1; }
+  50%, 88% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes optionUnhead {
+  0%, 26% { transform: scale(1.25, 1.8); }
+  50%, 88% { transform: none; }
+  100% { transform: scale(1.25, 1.8); }
+}
+
+.root .mdHash {
+  left: 2.6px;
+  top: 3.4px;
+  width: 4.4px;
+  height: 4.4px;
+}
+
+.mdHash path {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 0.9;
+  stroke-linecap: round;
+  animation: optionHash 3.6s ease-in-out infinite backwards;
+}
+
+@keyframes optionHash {
+  0%, 34% { opacity: 0; }
+  52%, 88% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* html: the page wrapped in a tag's angle brackets */
+.root .htmlBracket {
+  inset: 0;
+  width: 44px;
+  height: 30px;
+}
+
+.htmlBracket path {
+  stroke: var(--ground-ink);
+  stroke-width: 1.8;
+  animation: optionDraw 3.4s ease-in-out infinite backwards;
+}
+
+.htmlOpen {
+  animation: optionBracketIn 3.4s cubic-bezier(0.22, 1, 0.36, 1) infinite backwards;
+  --from: 5px;
+}
+
+.htmlClose {
+  animation: optionBracketIn 3.4s cubic-bezier(0.22, 1, 0.36, 1) infinite backwards;
+  --from: -5px;
+}
+
+@keyframes optionBracketIn {
+  0%, 12% { transform: translateX(var(--from, 0)); }
+  36%, 100% { transform: none; }
+}
+
+/* csv: cells come apart into values with commas between */
+.csvRows {
+  position: absolute;
+  left: 4px;
+  top: 6px;
+  display: grid;
+  gap: 2px;
+}
+
+.csvRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5px;
+}
+
+.csvValue {
+  display: block;
+  width: 9px;
+  height: 4.5px;
+  border-radius: 1.2px;
+  background: var(--paper);
+  box-shadow: 0 1px 2px rgb(15 23 42 / 12%);
+  animation: optionApart 3.4s cubic-bezier(0.65, 0, 0.35, 1) infinite backwards;
+}
+
+.csvValue[data-head] {
+  background: color-mix(in srgb, var(--ink) 40%, var(--paper));
+}
+
+.csvValue:first-child { --from: 3.5px; }
+.csvValue:last-child { --from: -3.5px; }
+
+@keyframes optionApart {
+  0%, 18% { transform: translateX(var(--from, 0)); }
+  40%, 88% { transform: none; }
+  100% { transform: translateX(var(--from, 0)); }
+}
+
+.csvComma {
+  display: block;
+  width: 2px;
+  height: 3.6px;
+  margin-bottom: -1.4px;
+  border-radius: 1px 1px 1px 2px;
+  background: var(--ground-ink);
+  transform: rotate(14deg);
+  animation: optionComma 3.4s cubic-bezier(0.22, 1, 0.36, 1) infinite backwards;
+  animation-delay: calc(0.3s + var(--i, 0) * 0.07s);
+}
+
+@keyframes optionComma {
+  0%, 22% { opacity: 0; transform: translateY(-5px) rotate(14deg); }
+  36%, 82% { opacity: 1; transform: rotate(14deg); }
+  94%, 100% { opacity: 0; transform: rotate(14deg); }
+}
+
+/* image: hills rise and the sun comes up */
+.root .exPicture {
+  left: 10px;
+  top: 4px;
+  width: 24px;
+  height: 22px;
+  overflow: hidden;
+  border-radius: 3px;
+}
+
+.picSun {
+  position: absolute;
+  left: 15px;
+  top: 4px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #f0a81a;
+  animation: optionSun 3.4s cubic-bezier(0.22, 1, 0.36, 1) infinite backwards;
+}
+
+.root .picHills {
+  left: 0;
+  bottom: 0;
+  width: 24px;
+  height: 18px;
+}
+
+.picHills path {
+  fill: color-mix(in srgb, var(--ink) 72%, transparent);
+  animation: optionRise 3.4s cubic-bezier(0.22, 1, 0.36, 1) infinite backwards;
+}
+
+@keyframes optionRise {
+  0%, 8% { transform: translateY(12px); }
+  34%, 88% { transform: none; }
+  100% { transform: translateY(12px); }
+}
+
+@keyframes optionSun {
+  0%, 30% { opacity: 0; transform: translateY(5px) scale(0.4); }
+  48%, 88% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateY(5px) scale(0.4); }
+}
+
+/* touch mode: a row of commands, tight for a mouse or spaced for a finger */
+.touchRow {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  transition: gap 320ms cubic-bezier(0.33, 0, 0.2, 1);
+}
+
+.touchRow[data-on] {
+  gap: 9px;
+}
+
+.touchKey {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--ink);
+  box-shadow: var(--shade);
+  transition: transform 320ms cubic-bezier(0.33, 0, 0.2, 1);
+}
+
+.touchRow[data-on] .touchKey {
+  transform: scale(1.18);
+}

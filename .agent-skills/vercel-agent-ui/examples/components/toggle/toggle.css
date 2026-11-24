@@ -1,0 +1,147 @@
+@scope ([data-example]) {
+  [data-slot="toggle"] {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    box-sizing: border-box;
+    min-width: var(--size);
+    height: var(--size);
+    padding-inline: var(--space-3);
+    border: 0;
+    border-radius: var(--radius-control);
+    background: transparent;
+    box-shadow: none;
+    color: var(--ink);
+    font: inherit;
+    font-weight: 500;
+    white-space: nowrap;
+    user-select: none;
+    cursor: default;
+    transition:
+      scale 0.1s ease-out,
+      box-shadow 0.1s ease-out,
+      background-color 0.12s,
+      color 0.12s;
+
+    &:hover:not([data-disabled], [data-pressed]) {
+      background: var(--tint);
+    }
+
+    &:active:not([data-disabled]) {
+      scale: 0.97;
+    }
+
+    &[data-pressed] {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    &[data-disabled] {
+      color: var(--line-disabled);
+    }
+
+    &[data-disabled][data-pressed] {
+      background: var(--line-faint);
+    }
+
+    &[aria-label]:has(> [data-slot="toggle-icon"]:only-child) {
+      width: var(--size);
+      padding: 0;
+    }
+
+    &:focus-visible {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  /* A toggle on its own looks like an outline button, and fills in while pressed. */
+  [data-slot="toggle"]:not(
+    [data-variant="ghost"],
+    [data-slot="toggle-group"] *
+  ) {
+    padding-inline: 14px;
+    background: var(--surface-1);
+    box-shadow:
+      inset 0 0 0 1px var(--ink),
+      var(--shadow-drop);
+
+    &:hover:not([data-disabled], [data-pressed]) {
+      background: var(--tint);
+    }
+
+    &:active:not([data-disabled]) {
+      box-shadow:
+        inset 0 0 0 1px var(--ink),
+        var(--shadow-drop-pressed);
+    }
+
+    &[data-pressed] {
+      background: var(--ink);
+    }
+
+    &[data-disabled] {
+      background: var(--surface-1);
+      box-shadow: inset 0 0 0 1px var(--line-faint);
+    }
+
+    &[data-disabled][data-pressed] {
+      background: var(--line-faint);
+    }
+  }
+
+  [data-slot="toggle-icon"] {
+    display: flex;
+  }
+
+  [data-pressed] > [data-slot="toggle-icon"][data-variant="fill"] svg {
+    fill: currentColor;
+  }
+
+  [data-slot="toggle-group"] {
+    display: flex;
+    gap: 2px;
+    width: fit-content;
+
+    &[data-orientation="vertical"] {
+      flex-direction: column;
+    }
+
+    & [data-slot="toggle"] {
+      border-radius: var(--radius-row);
+    }
+  }
+
+  /* A group outside a toolbar sits on its own track, sized like a menubar or toolbar so it lines up with inputs. */
+  [data-slot="toggle-group"]:not([data-slot="toolbar"] *) {
+    padding: 3px;
+    border-radius: var(--radius-surface);
+    background: var(--surface-1);
+    box-shadow: var(--shadow-1);
+
+    & [data-slot="toggle"] {
+      height: var(--size-sm);
+      min-width: var(--size-sm);
+
+      /* An icon-only toggle, named by its aria-label, is square. */
+      &[aria-label] {
+        width: var(--size-sm);
+        padding-inline: 0;
+      }
+    }
+  }
+
+  /* Basic: a document's title and details, with its star toggle at the end. */
+  :scope[data-example="toggle/basic"] [data-slot="card"] {
+    align-items: center;
+    width: 20rem;
+    max-width: 100%;
+
+    & [data-slot="stack"] {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+}

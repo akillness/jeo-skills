@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "カスタム",
+ "zoom.levels": "ズーム倍率",
+ "dialog.close": "閉じる",
+ "toast.close": "通知を閉じる",
+ "button.confirm": "OK",
+ "button.cancel": "キャンセル",
+ "libreOffice.enable": "ダウンロードして有効にする（約 {size}）",
+ "libreOffice.enableAlt": "LibreOffice をダウンロードして有効にする",
+ "libreOffice.enabled": "LibreOffice {version} を有効にしました",
+ "libreOffice.retrying": "もう一度試しています…",
+ "libreOffice.ready": "旧形式の Office ファイルや OpenDocument ファイルを開き、EMF/WMF 画像を表示し、OpenDocument で保存できるようになりました。",
+ "libreOffice.needed": "これには LibreOffice が必要です。MR Note Classic は公式リリースを専用フォルダーにダウンロードできます。システムには何もインストールされません。",
+ "libreOffice.neededFor": ".{format} で保存するには LibreOffice が必要です。MR Note Classic は公式リリースを専用フォルダーにダウンロードできます。システムには何もインストールされません。"
+}

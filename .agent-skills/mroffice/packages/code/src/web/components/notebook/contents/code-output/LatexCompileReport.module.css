@@ -1,0 +1,121 @@
+/* A LaTeX compile's log and output files, in the shared dialog chrome (Code
+   tone, embedded): the level filters are its segmented control, the raw-log
+   toggle and the file downloads its compact buttons, the entries its list
+   rows, the raw log its well. This file only lays them out. */
+
+.report {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 8px 0 4px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: auto;
+  color: var(--office-dialog-muted);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.count {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.empty {
+  margin: 0;
+}
+
+.entries {
+  max-height: 320px;
+  /* The rows inherit it (the chrome root resets its own size to inherit). */
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+  padding: 5px 8px;
+}
+
+.entry[data-static="true"] {
+  cursor: default;
+}
+
+.entry[data-static="true"]:hover {
+  background: transparent;
+}
+
+.entry svg {
+  align-self: center;
+}
+
+.entry[data-level="error"] svg {
+  color: var(--office-dialog-danger);
+}
+
+.entry[data-level="warning"] svg {
+  color: var(--office-dialog-warning);
+}
+
+.entry[data-level="typesetting"] svg {
+  color: var(--office-dialog-accent);
+}
+
+.message {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.context {
+  display: block;
+  margin-top: 3px;
+  color: var(--office-dialog-muted);
+  font: 11px/1.4 var(--font-jetbrains, ui-monospace, SFMono-Regular, Menlo, monospace);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.location {
+  color: var(--office-dialog-muted);
+  font: 11px/1.45 var(--font-jetbrains, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.raw {
+  max-height: 320px;
+  margin: 0;
+  padding: 8px 10px;
+  overflow: auto;
+  font: 11px/1.45 var(--font-jetbrains, ui-monospace, SFMono-Regular, Menlo, monospace);
+  white-space: pre;
+  tab-size: 8;
+}
+
+.files {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.file {
+  gap: 5px;
+  font-family: var(--font-jetbrains, ui-monospace, SFMono-Regular, Menlo, monospace);
+}

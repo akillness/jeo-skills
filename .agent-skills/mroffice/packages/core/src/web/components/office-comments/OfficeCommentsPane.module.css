@@ -1,0 +1,679 @@
+.popover {
+  --office-comments-accent: var(--user-theme-accent, #b146bd);
+  position: fixed;
+  z-index: 72;
+  display: flex;
+  box-sizing: border-box;
+  width: min(360px, calc(100vw - 24px));
+  max-height: min(560px, calc(100vh - 24px));
+  flex-direction: column;
+  overflow: visible;
+  border: 2px solid
+    color-mix(in srgb, var(--office-comments-accent) 72%, #ffffff);
+  border-radius: 7px;
+  background: #ffffff;
+  box-shadow: 0 12px 30px rgb(15 23 42 / 20%);
+  color: #242424;
+  isolation: isolate;
+  pointer-events: auto;
+}
+
+.popover::before {
+  position: absolute;
+  z-index: 2;
+  top: calc(var(--office-comments-anchor-offset, 28px) - 7px);
+  width: 12px;
+  height: 12px;
+  border: 2px solid
+    color-mix(in srgb, var(--office-comments-accent) 72%, #ffffff);
+  background: #ffffff;
+  content: "";
+  pointer-events: none;
+  transform: rotate(45deg);
+}
+
+.popover[data-side="right"]::before {
+  left: -7px;
+  border-top: 0;
+  border-right: 0;
+}
+
+.popover[data-side="left"]::before {
+  right: -7px;
+  border-bottom: 0;
+  border-left: 0;
+}
+
+.popoverClose {
+  position: absolute;
+  z-index: 4;
+  top: 7px;
+  right: 7px;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #616161;
+  cursor: pointer;
+}
+
+.popoverClose:hover,
+.popoverClose:focus-visible {
+  background: #f1f1f1;
+  color: #242424;
+}
+
+.thread,
+.threadCompact {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.thread {
+  max-height: min(556px, calc(100vh - 28px));
+}
+
+.threadCompact {
+  min-height: var(--office-comments-active-card-min-height, 376px);
+}
+
+.thread[data-resolved="true"] .messages,
+.threadCompact[data-resolved="true"] .messages {
+  opacity: 0.68;
+}
+
+.emptyThreadHeader {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 46px 0 18px;
+  color: color-mix(in srgb, var(--office-comments-accent) 54%, var(--office-dialog-ink, #242424));
+}
+
+.emptyThreadHeader strong {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* "Resolved" at the top of a resolved thread's card. It is not dimmed with
+   the messages: it is the one thing on the card that says why they are. */
+.resolvedHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 46px 0 18px;
+  color: var(--office-dialog-muted, #616161);
+  font-size: 12px;
+}
+
+.resolvedHeader strong {
+  font-weight: 600;
+}
+
+/* Keyed off the mode attribute, not .threadCompact: a host may bring its own
+   thread classes and still use this header. */
+[data-office-comments-mode="compact"] > .resolvedHeader {
+  padding: 10px 12px 0;
+}
+
+.emptyThreadHeader span {
+  margin-left: auto;
+  color: var(--office-dialog-muted, #666666);
+  font-size: 12px;
+}
+
+.messages {
+  display: grid;
+  min-height: 0;
+  margin: 0;
+  padding: 12px 18px 4px;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.popover .messages {
+  padding-right: 42px;
+}
+
+.threadCompact .messages {
+  padding: 10px 12px 2px;
+  overflow-y: visible;
+}
+
+.message {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 10px;
+  padding: 9px 0 12px;
+}
+
+.message + .message {
+  border-top: 1px solid var(--office-dialog-divider, #ececec);
+}
+
+.avatar {
+  display: inline-grid;
+  box-sizing: border-box;
+  width: 38px;
+  min-width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 2px solid var(--office-dialog-surface, #ffffff);
+  border-radius: 999px;
+  background: var(--office-comments-accent);
+  box-shadow: 0 0 0 1px
+    color-mix(in srgb, var(--office-comments-accent) 16%, transparent);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.messageBody {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+}
+
+.messageHeader {
+  display: flex;
+  min-width: 0;
+  min-height: 30px;
+  align-items: center;
+  gap: 7px;
+}
+
+.messageHeader > strong {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--office-dialog-ink, #272727);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cellLabel {
+  margin-left: auto;
+  color: var(--office-dialog-muted, #616161);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.messageText {
+  margin: 0;
+  color: var(--office-dialog-ink, #303030);
+  font-size: 13.5px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.messageTime {
+  color: var(--office-dialog-muted, #767676);
+  font-size: 11.5px;
+  line-height: 1.3;
+}
+
+.editComposer {
+  display: grid;
+  gap: 7px;
+}
+
+.editComposer textarea,
+.replyComposer textarea {
+  box-sizing: border-box;
+  width: 100%;
+  resize: vertical;
+  border: 1px solid var(--office-dialog-control-border, #8a8a8a);
+  border-radius: 3px;
+  outline: none;
+  background: var(--office-dialog-surface, #ffffff);
+  color: var(--office-dialog-ink, #292929);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.editComposer textarea {
+  min-height: 70px;
+  padding: 8px 9px;
+}
+
+.editComposer textarea:focus-visible,
+.replyComposer textarea:focus-visible {
+  border-color: #5b5fc7;
+  box-shadow: 0 0 0 2px rgb(91 95 199 / 18%);
+}
+
+.editActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.editActions button,
+.reopenButton {
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--office-dialog-control-border, #d1d1d1);
+  border-radius: 4px;
+  background: var(--office-dialog-surface, #ffffff);
+  color: var(--office-dialog-ink, #333333);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.editActions button:last-child {
+  border-color: #5b5fc7;
+  background: #5b5fc7;
+  color: #ffffff;
+}
+
+.editActions button:disabled,
+.reopenButton:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.replyComposer {
+  display: grid;
+  flex: 0 0 auto;
+  gap: 7px;
+  padding: 8px 18px 14px 66px;
+  border-top: 1px solid var(--office-dialog-divider, #e7e7e7);
+  background: var(--office-dialog-surface, #ffffff);
+}
+
+.thread[data-empty="true"] .messages,
+.threadCompact[data-empty="true"] .messages {
+  display: none;
+}
+
+.thread[data-empty="true"] .replyComposer,
+.threadCompact[data-empty="true"] .replyComposer {
+  padding-left: 18px;
+}
+
+.threadCompact .replyComposer {
+  padding: 8px 12px 12px 60px;
+}
+
+.replyComposer textarea {
+  min-height: 42px;
+  max-height: 120px;
+  padding: 10px 11px;
+  transition: min-height 160ms ease;
+}
+
+.replyComposer:focus-within textarea {
+  min-height: 62px;
+}
+
+.replyActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Send sits beside the comment's close, which wears the site-wide close
+   face (styles/globals.css, "One close button"): a soft rounded square of
+   --ui-close-size. Send takes the same square, so the pair reads as one row
+   of icon buttons; it fills with the accent once there is something to post. */
+.sendButton {
+  display: grid;
+  width: var(--ui-close-size, 28px);
+  min-width: var(--ui-close-size, 28px);
+  height: var(--ui-close-size, 28px);
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: #5b5fc7;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 140ms ease;
+}
+
+.sendButton svg {
+  width: 15px;
+  height: 15px;
+}
+
+.sendButton:disabled {
+  background: color-mix(in srgb, var(--console-text-primary, #17242b) 7%, transparent);
+  color: var(--office-dialog-muted, #b1b1b1);
+  cursor: default;
+}
+
+/* The close's own face comes from the site-wide rule; this is the same face
+   for a build where that rule does not reach it. */
+.closeComposerButton {
+  display: grid;
+  width: var(--ui-close-size, 28px);
+  height: var(--ui-close-size, 28px);
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--console-text-primary, #17242b) 7%, transparent);
+  color: var(--console-text-secondary, #51626c);
+  cursor: pointer;
+}
+
+/* A finger gets a larger pair, still alike. */
+:where(:root[data-touch-mode]) .replyActions > button {
+  --ui-close-size: 36px !important;
+}
+
+.reopenButton {
+  display: inline-flex;
+  width: max-content;
+  align-items: center;
+  gap: 7px;
+}
+
+.pane {
+  --office-comments-accent: var(--user-theme-accent, #b146bd);
+  --office-comments-card-min-height: 148px;
+  --office-comments-active-card-min-height: 380px;
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--office-dialog-surface, #ffffff);
+  color: var(--office-dialog-ink, #292929);
+}
+
+.paneHeader {
+  display: flex;
+  min-height: 52px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px 0 16px;
+  border-bottom: 1px solid var(--office-dialog-divider, #e2e2e2);
+}
+
+.paneHeader > div,
+.paneHeader nav {
+  display: flex;
+  align-items: center;
+}
+
+.paneHeader > div {
+  min-width: 0;
+  gap: 8px;
+}
+
+.paneHeader strong {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.paneHeader > div > span {
+  display: inline-grid;
+  min-width: 20px;
+  height: 20px;
+  place-items: center;
+  border-radius: 999px;
+  background: color-mix( in srgb, var(--office-comments-accent) 14%, var(--office-dialog-surface, var(--office-dialog-surface, #ffffff)) );
+  color: color-mix(in srgb, var(--office-comments-accent) 76%, var(--office-dialog-ink, #242424));
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.paneHeader nav {
+  gap: 2px;
+}
+
+.paneHeader nav button {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--office-dialog-muted, #5f5f5f);
+  cursor: pointer;
+}
+
+.paneHeader nav button:hover:not(:disabled),
+.paneHeader nav button:focus-visible {
+  background: var(--office-dialog-hover, #f0f0f0);
+  color: var(--office-dialog-ink, #242424);
+}
+
+.paneHeader nav button:disabled {
+  cursor: default;
+  opacity: 0.36;
+}
+
+/* The pane's own "New" command, under the title as in Office. */
+.paneToolbar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--office-dialog-divider, #e2e2e2);
+  background: var(--office-dialog-surface, #ffffff);
+}
+
+.paneNewButton {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  border: 1px solid var(--office-dialog-control-border, #d1d1d1);
+  border-radius: 4px;
+  background: var(--office-dialog-surface, #ffffff);
+  color: var(--office-dialog-ink, #242424);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.paneNewButton svg {
+  color: var(--office-comments-accent);
+}
+
+.paneNewButton:hover:not(:disabled),
+.paneNewButton:focus-visible {
+  border-color: color-mix(in srgb, var(--office-comments-accent) 60%, var(--office-dialog-surface, #ffffff));
+  background: color-mix(in srgb, var(--office-comments-accent) 6%, var(--office-dialog-surface, #ffffff));
+}
+
+.paneNewButton:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.paneEmpty {
+  margin: 4px 2px;
+  color: var(--office-dialog-muted, #616161);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.paneBody {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: stable;
+  background: var(--office-dialog-surface-muted, #f5f5f5);
+}
+
+.paneCard {
+  min-height: var(--office-comments-card-min-height);
+  flex: 0 0 auto;
+  overflow: hidden;
+  border: 1px solid var(--office-dialog-control-border, #dedede);
+  border-radius: 6px;
+  background: var(--office-dialog-surface, #ffffff);
+  box-shadow: 0 1px 3px rgb(15 23 42 / 6%);
+}
+
+.paneCard[data-active="true"] {
+  min-height: var(--office-comments-active-card-min-height);
+  border: 2px solid color-mix(in srgb, var(--office-comments-accent) 70%, var(--office-dialog-surface, #ffffff));
+  box-shadow: 0 4px 14px
+    color-mix(in srgb, var(--office-comments-accent) 12%, transparent);
+}
+
+.paneCard[data-resolved="true"] {
+  opacity: 0.68;
+}
+
+.paneSummary {
+  display: grid;
+  width: 100%;
+  min-height: var(--office-comments-card-min-height);
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  padding: 12px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.paneSummary:hover,
+.paneSummary:focus-visible {
+  background: color-mix( in srgb, var(--office-comments-accent) 4%, var(--office-dialog-surface, var(--office-dialog-surface, #ffffff)) );
+}
+
+.paneSummary > span:last-child {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+
+.paneSummary strong {
+  color: var(--office-dialog-ink, #292929);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.paneSummary small {
+  color: var(--office-dialog-muted, #666666);
+  font-size: 10.5px;
+}
+
+.paneSummary span span {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--office-dialog-ink, #3e3e3e);
+  font-size: 12px;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.paneSummary em {
+  color: color-mix(in srgb, var(--office-comments-accent) 76%, var(--office-dialog-ink, #242424));
+  font-size: 10.5px;
+  font-style: normal;
+  font-weight: 650;
+}
+
+@media (max-width: 1100px) {
+  .popover {
+    width: min(340px, calc(100vw - 20px));
+  }
+}
+
+:where(:root[data-touch-mode]) .popoverClose,
+:where(:root[data-touch-mode]) .paneHeader nav button {
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+}
+
+:where(:root[data-touch-mode]) .editActions button,
+:where(:root[data-touch-mode]) .reopenButton {
+  min-height: 44px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .replyComposer textarea {
+    transition: none;
+  }
+}
+
+/* Dark and high contrast. The pane and the cell-side card are drawn with the
+   Office dialog tokens, but only the workbook's pane is mounted as a dialog
+   card; elsewhere (slides, documents, PDF) and for the floating card the
+   tokens fell back to their light values, and the card's own fill was white.
+   Both declare the chrome's dark values here (OfficeDialogChrome.css). */
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .pane {
+  --office-dialog-surface: #1f2024;
+  --office-dialog-surface-muted: #1a1b1e;
+  --office-dialog-ink: #f2f2f7;
+  --office-dialog-muted: #a1a1a8;
+  --office-dialog-divider: rgb(255 255 255 / 10%);
+  --office-dialog-border: rgb(255 255 255 / 12%);
+  --office-dialog-control-border: rgb(255 255 255 / 15%);
+  --office-dialog-hover: rgb(255 255 255 / 8%);
+  color-scheme: dark;
+}
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .popover {
+  --office-dialog-surface: #1f2024;
+  --office-dialog-surface-muted: #1a1b1e;
+  --office-dialog-ink: #f2f2f7;
+  --office-dialog-muted: #a1a1a8;
+  --office-dialog-divider: rgb(255 255 255 / 10%);
+  --office-dialog-border: rgb(255 255 255 / 12%);
+  --office-dialog-control-border: rgb(255 255 255 / 15%);
+  --office-dialog-hover: rgb(255 255 255 / 8%);
+  color-scheme: dark;
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .popover {
+  border-color: color-mix(in srgb, var(--office-comments-accent) 72%, #1f2024);
+  background: #1f2024;
+  box-shadow: 0 12px 30px rgb(0 0 0 / 50%);
+  color: #f2f2f7;
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .popover::before {
+  border-color: color-mix(in srgb, var(--office-comments-accent) 72%, #1f2024);
+  background: #1f2024;
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .popoverClose {
+  color: #a1a1a8;
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .popoverClose:is(:hover, :focus-visible) {
+  background: rgb(255 255 255 / 10%);
+  color: #f2f2f7;
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .paneCard {
+  box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
+}

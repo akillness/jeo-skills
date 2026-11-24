@@ -1,0 +1,13 @@
+ 
+[data-equation-decoration~="underline"] .katex-html span:not(:has(> *)) {
+  text-decoration-line: underline;
+  text-decoration-color: currentColor;
+  text-decoration-skip-ink: none;
+}
+[data-equation-decoration~="line-through"] .katex-html span:not(:has(> *)) {
+  text-decoration-line: line-through;
+  text-decoration-color: currentColor;
+}
+[data-equation-decoration~="underline"][data-equation-decoration~="line-through"] .katex-html span:not(:has(> *)) {
+  text-decoration-line: underline line-through;
+}

@@ -1,0 +1,640 @@
+/* The Code editor's side and bottom panels (Outline, User snippets, Test
+   Explorer, Console, Debug, the refactor preview) are drawn with the shared
+   dialog chrome's part classes (officeDialogParts: fields, input groups,
+   buttons, segmented tabs, list boxes, messages, wells) inside the shared task
+   pane or an embedded chrome root. This module owns only what the parts do
+   not: where a part sits in a Code panel's own layout (which field grows,
+   which list scrolls and how far, a tree row's columns). Colours are the
+   chrome's tokens, so light, dark and high contrast follow data-theme-mode. */
+
+/* A part that takes the room left in its row. */
+.grow {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* A part that keeps its own width in a row. */
+.fixed {
+  flex: 0 0 auto;
+}
+
+/* Pushes what follows to the row's end. */
+.end {
+  margin-inline-start: auto;
+}
+
+/* One line of text that ends in an ellipsis when its column is narrow. */
+.ellipsis {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* A count beside a search field or in a title row (3/12). */
+.count {
+  color: var(--office-dialog-muted, #6b7280);
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* A chrome row that does not wrap (a field and its buttons); deep enough to
+   outrank the row's own wrap. */
+.nowrap:global(.office-dialog__row.office-dialog__row) {
+  flex-wrap: nowrap;
+}
+
+/* --------------------------------------------------------------- Outline */
+
+/* A leaf symbol keeps the disclosure's column (the Docs Navigation pane's
+   24px action), so names line up under their parent. */
+.outlineSpacer {
+  flex: 0 0 24px;
+}
+
+.outlineLink {
+  padding-inline-start: 4px;
+}
+
+/* --------------------------------------------------------- User snippets */
+
+.snippetList {
+  max-height: 156px;
+}
+
+/* A snippet row: its prefix (the edit button) takes the row, then its
+   language and its delete command. */
+.snippetRow {
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  gap: 4px;
+  min-width: 0;
+}
+
+.snippetRow > :first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.snippetBody {
+  resize: vertical;
+}
+
+.wellContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 10px;
+}
+
+/* ------------------------------------------------- notices and statuses */
+
+/* A chrome message with its status glyph before the text. */
+.notice {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+}
+
+.notice > svg {
+  flex: 0 0 auto;
+}
+
+.passed {
+  color: var(--office-dialog-success, #1a7f37);
+}
+
+.failed {
+  color: var(--office-dialog-danger, #d70015);
+}
+
+/* --------------------------------------------------------- Test Explorer */
+
+.historyOutput {
+  max-height: 190px;
+  overflow: auto;
+}
+
+/* The test tree is the pane's scrolling body. */
+.tree {
+  margin-inline: -4px;
+}
+
+/* A file row: its disclosure, icon, path and run command. */
+.treeFile {
+  align-items: center;
+  color: var(--office-dialog-muted, #4b5563);
+  display: flex;
+  font-size: 11px;
+  font-weight: 600;
+  gap: 5px;
+  min-height: 26px;
+  padding: 2px 4px;
+}
+
+.current {
+  color: var(--office-dialog-accent, #087c73);
+  flex: 0 0 auto;
+}
+
+/* A test row: check, status glyph, name, debug command, duration. */
+.treeTest {
+  align-items: center;
+  border-radius: 5px;
+  display: grid;
+  gap: 4px;
+  grid-template-columns: 14px 14px minmax(0, 1fr) auto auto;
+  min-height: 26px;
+  padding: 2px 4px 2px 20px;
+}
+
+.treeTest:hover {
+  background: var(--office-dialog-hover, rgb(0 0 0 / 5%));
+}
+
+.treeTest:focus-visible {
+  outline: 2px solid var(--office-dialog-focus-ring, #087c73);
+  outline-offset: -2px;
+}
+
+.testName {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: default;
+  font: inherit;
+  min-width: 0;
+  padding: 0;
+  text-align: start;
+}
+
+.testName:not(:disabled) {
+  cursor: pointer;
+}
+
+.testName > span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.testName > span + span {
+  font-size: 10px;
+}
+
+/* ------------------------------------------------------ Refactor preview */
+
+/* The undo receipt: the chrome's glass card, laid out as one row and hung
+   over the editor's lower right corner. Three classes deep so it outranks the
+   card's own column rhythm. */
+.receipt:global(.office-dialog.office-dialog) {
+  align-items: center;
+  bottom: 42px;
+  flex-direction: row;
+  gap: 8px;
+  max-width: min(460px, calc(100% - 28px));
+  padding: 8px 10px;
+  position: absolute;
+  right: 14px;
+  z-index: 30;
+}
+
+.accent {
+  color: var(--office-dialog-accent, #087c73);
+  flex: 0 0 auto;
+}
+
+/* The file list beside the diff, in one well. */
+.refactorWorkspace {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) minmax(0, 1fr);
+  max-height: min(62vh, 560px);
+  min-height: 280px;
+  overflow: hidden;
+}
+
+.refactorFiles {
+  background: var(--office-dialog-surface-muted, #f2f2f5);
+  border-inline-end: 1px solid var(--office-dialog-divider, rgb(0 0 0 / 9%));
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding: 8px;
+}
+
+.refactorFileList {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-inline: -4px;
+  min-height: 0;
+  overflow: auto;
+}
+
+.refactorFile {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+  padding-block: 5px;
+}
+
+.refactorDiff {
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+}
+
+.refactorDiffHeader {
+  background: var(--office-dialog-surface, #ffffff);
+  border-bottom: 1px solid var(--office-dialog-divider, rgb(0 0 0 / 9%));
+  display: flex;
+  gap: 10px;
+  padding: 7px 10px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+/* ---------------------------------------------------------- bottom panes */
+
+/* A panel under the editor (the Console, the Debug panel) wears the task
+   panes' glass card (office-dialog--pane), inset from the window's edges as
+   the docked right card is. Three classes deep to outrank the card's own
+   padding. */
+.bottomPane:global(.office-dialog.office-dialog) {
+  gap: 8px;
+  margin: 0 8px 8px;
+  padding: 8px 12px 10px;
+}
+
+/* The Console fills the strip its host sizes. */
+.consolePane:global(.office-dialog.office-dialog) {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* A title row's title with what it reports (the language, busy). */
+.titleRow {
+  align-items: baseline;
+  display: inline-flex;
+  flex: 1 1 auto;
+  gap: 8px;
+  min-width: 0;
+}
+
+.titleRow > :global(.office-dialog__title) {
+  flex: 0 0 auto;
+}
+
+.headerActions {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 2px;
+}
+
+/* A confirmation asked in place, beside the command that asked it. */
+.inlineConfirm {
+  align-items: center;
+  display: inline-flex;
+  gap: 2px;
+  white-space: nowrap;
+}
+
+.muted {
+  color: var(--office-dialog-muted, #6b7280);
+}
+
+.italic {
+  font-style: italic;
+}
+
+/* The console transcript: an opaque well that scrolls, set in code. */
+.transcript {
+  flex: 1 1 auto;
+  font-size: 11px;
+  line-height: 1.5;
+  min-height: 0;
+  overflow: auto;
+  padding: 4px 8px;
+}
+
+.transcript p {
+  margin: 0;
+}
+
+.consoleEntry {
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+
+.consoleEntry[data-active-search-match="true"] {
+  background: var(--office-dialog-accent-soft, #e6f4f1);
+}
+
+.consoleInputLine {
+  align-items: flex-start;
+  color: var(--office-dialog-accent, #087c73);
+  display: flex;
+  gap: 6px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.outputLine {
+  font: inherit;
+  margin: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+/* The prompt: one field holding the caret mark and a bare textarea. */
+.prompt {
+  align-items: flex-start;
+  display: flex;
+  flex: 0 0 auto;
+  font-size: 11px;
+  gap: 6px;
+  line-height: 1.6;
+  padding: 3px 8px;
+}
+
+.prompt.prompt:focus-within {
+  border-color: var(--office-dialog-accent, #087c73);
+  outline: 3px solid var(--office-dialog-focus-ring, rgb(8 124 115 / 38%));
+}
+
+.prompt .promptInput {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: inherit;
+  flex: 1 1 auto;
+  font-size: 11px;
+  line-height: 1.6;
+  min-width: 0;
+  outline: none;
+  padding: 0;
+  resize: none;
+}
+
+/* ----------------------------------------------------------------- Debug */
+
+/* The debug panel grows with what it shows (its host does not size it), so
+   the card does not clip it. */
+.debugPane:global(.office-dialog.office-dialog) {
+  overflow: visible;
+}
+
+.debugTarget {
+  max-width: 220px;
+}
+
+.lineInput {
+  width: 72px;
+}
+
+.watchInput {
+  width: 140px;
+}
+
+.warning {
+  color: var(--office-dialog-warning, #9a5b00);
+}
+
+.preWrap {
+  white-space: pre-wrap;
+}
+
+.fullRow {
+  flex-basis: 100%;
+}
+
+/* The persisted run timeline (CodeDebugTimelinePanel) runs to the card's
+   edges, as it did to the panel's. */
+.bleed {
+  margin-inline: -12px;
+}
+
+.timelineDetails {
+  background: var(--office-dialog-surface, #ffffff);
+  border-bottom: 1px solid var(--office-dialog-divider, rgb(0 0 0 / 9%));
+  padding: 5px 12px;
+}
+
+/* A bare frame command (name:line), set in code. */
+.frameButton {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: var(--office-dialog-muted, #4b5563);
+  cursor: pointer;
+  font: inherit;
+  font-size: 11px;
+  padding: 0 4px;
+}
+
+.frameButton:hover:not(:disabled) {
+  background: var(--office-dialog-hover, rgb(0 0 0 / 5%));
+  color: var(--office-dialog-ink, #1d1d1f);
+}
+
+.frameButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.frameButton:focus-visible {
+  outline: 2px solid var(--office-dialog-focus-ring, #087c73);
+  outline-offset: 1px;
+}
+
+/* Breakpoints: chips that wrap, a search row and notes on rows of their own. */
+.chips {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.breakpointSearch {
+  flex: 1 1 160px;
+  max-width: 280px;
+}
+
+.breakpointChip {
+  align-items: center;
+  background: var(--office-dialog-danger-soft, #fdecee);
+  border: 1px solid var(--office-dialog-danger-line, #f2a8b0);
+  border-radius: 999px;
+  color: var(--office-dialog-danger, #d70015);
+  display: inline-flex;
+  font-size: 11px;
+  gap: 4px;
+  padding: 2px 6px;
+}
+
+/* An unverified breakpoint is drawn greyed out, never as armed. */
+.breakpointChip[data-bound="false"] {
+  background: var(--office-dialog-surface-muted, #f2f2f5);
+  border-color: var(--office-dialog-control-border, rgb(0 0 0 / 15%));
+  color: var(--office-dialog-muted, #6e6e73);
+}
+
+.breakpointGlyph {
+  display: inline-flex;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.chipLine {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 650;
+  padding: 1px 2px;
+}
+
+/* The chrome's field, at a chip's size. */
+.breakpointChip .chipInput.chipInput {
+  font-size: 11px;
+  height: 20px;
+  min-height: 20px;
+  padding: 0 4px;
+}
+
+.conditionInput {
+  width: 110px;
+}
+
+.logpointInput {
+  width: 120px;
+}
+
+.hitInput {
+  width: 66px;
+}
+
+.breakpointChip .chipRemove.chipRemove {
+  color: inherit;
+}
+
+/* The live pauses: the chrome's segmented control, scrolling sideways. */
+.pauseStrip:global(.office-dialog__tabs.office-dialog__tabs) {
+  align-self: flex-start;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  overflow-x: auto;
+}
+
+/* Paused: the warning-tinted box with the stepping commands. */
+.pausedBox {
+  background: var(--office-dialog-warning-soft, #fdf3e3);
+  border: 1px solid var(--office-dialog-warning-line, #e6c48d);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+}
+
+.pausedLine {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  color: var(--office-dialog-warning, #9a5b00);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 1px 0;
+}
+
+.pausedTitle {
+  color: var(--office-dialog-warning, #9a5b00);
+}
+
+.stack {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 11px;
+  gap: 4px;
+}
+
+.stackFrame {
+  align-items: center;
+  display: inline-flex;
+  gap: 4px;
+}
+
+.stack .frameButton {
+  color: var(--office-dialog-warning, #9a5b00);
+}
+
+.stack .frameButton[aria-pressed="true"] {
+  background: var(--office-dialog-warning-soft, #fdf3e3);
+  border-color: var(--office-dialog-warning, #9a5b00);
+}
+
+/* A table of names and values in a well. */
+.tableWell {
+  align-self: flex-start;
+  max-width: 100%;
+  overflow: auto;
+}
+
+.cellButton {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: text;
+  font: inherit;
+  padding: 0;
+}
+
+.cellButton:disabled {
+  cursor: not-allowed;
+}
+
+.cellAction {
+  text-align: end;
+  width: 1%;
+}
+
+/* Output set in code in a scrolling well (logpoints, the result, the
+   snapshot console). */
+.codeWell {
+  font-size: 11px;
+  line-height: 1.5;
+  max-height: 140px;
+  overflow: auto;
+  padding: 4px 8px;
+}
+
+.resultWell {
+  max-height: 160px;
+}
+
+.logpointLabel {
+  margin-inline-end: 6px;
+}
+
+.evaluationEntry + .evaluationEntry {
+  margin-top: 3px;
+}
+
+.debugConsole:global(.office-dialog__group.office-dialog__group) {
+  border-top: 1px solid var(--office-dialog-divider, rgb(0 0 0 / 9%));
+  padding-top: 8px;
+}

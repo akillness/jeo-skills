@@ -1,0 +1,373 @@
+.root {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin: 12px 0;
+  padding: 0;
+  user-select: none;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  min-height: 160px;
+  overflow: visible;
+}
+
+/*
+ * A floating shape (Word's In Front Of / Behind Text) costs its page NO
+ * height. The figure stays in the flow as a zero-height wrapper at the
+ * anchor's place and is the containing block of the stage it holds; the stage
+ * is parked absolutely where offset (0, 0) resolves on the page and the shape
+ * sits inside it at its own offsets. The wrapper takes no z-index and no
+ * isolation: that would split Word's one `relativeHeight` stack into one
+ * stacking context per object. These rules ride the attribute the node view
+ * sets while rendering, so the flow is right before any layout pass runs.
+ */
+.root[data-float-mode="overlay"] {
+  height: 0;
+  margin: 0;
+  overflow: visible;
+}
+
+ 
+:global(article[data-page-sheet]:not([data-page-column-flow])) > .root[data-float-mode="overlay"][data-ink-tool] {
+  position: absolute;
+}
+
+.root[data-float-mode="overlay"] > .stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  min-height: 0;
+}
+
+/*
+ * Top and Bottom: the object takes exactly its own room, as Word gives it --
+ * no breathing space above or below, and the shape's vertical offset (its
+ * top margin) stays inside the stage instead of collapsing through it, so
+ * the stage's height is that offset plus the shape and nothing more.
+ */
+/* A stroke of ink with no words: only its drawing is in the render tree. The
+   selection boxes come back with the selection. */
+.root[data-ink-bare] .paint > :not(svg) {
+  display: none;
+}
+
+.root[data-ink-bare]:not([data-selected="true"], [data-multiselected="true"], [data-ink-lasso-member="true"], [data-member-selected]) .chrome {
+  display: none;
+}
+
+.root[data-float-band="true"] {
+  margin: 0;
+}
+
+.root[data-float-band="true"] > .stage {
+  display: flow-root;
+}
+
+/*
+ * An In Line with Text drawing read from a Word file, alone in its paragraph
+ * (a SmartArt diagram, a drawing group): Word draws it as that paragraph's
+ * one line, with only the paragraph's own spacing around it. The 12px above
+ * and below is for shapes inserted here (corpus R28-D25: the diagram 12px
+ * low).
+ */
+.root[data-wrap-mode="inline"][data-docx-source="true"]:not([data-inline="true"]) {
+  margin: var(--doc-default-paragraph-space-before, 0) 0 var(--doc-default-paragraph-space-after, 0);
+}
+
+/* Square / Tight / Through: a real CSS float the body re-wraps around. */
+.root[data-float-mode="float"] {
+  width: auto;
+  margin: 0;
+}
+
+.root[data-float-mode="float"] > .stage {
+  min-height: 0;
+}
+
+
+/* In Line with Text on a text line (`inlineDocumentShape`): a glyph-like
+   box. The stage floats inside the inline-block host so the host holds no
+   line box of its own and takes its bottom edge as its baseline -- Word's
+   drawing-on-the-baseline rule, the same one an in-line picture follows. */
+.root[data-inline="true"] {
+  display: inline-block;
+  width: auto;
+  margin: 0;
+  vertical-align: baseline;
+}
+
+.root[data-inline="true"] > .stage {
+  float: left;
+  width: auto;
+  min-height: 0;
+}
+
+.shape {
+  position: relative;
+  box-sizing: border-box;
+  transform-origin: 50% 50%;
+  cursor: move;
+}
+
+/* A shape is drawn at its own size, however small (a 3 pt bullet dot stays
+   3 pt, as Word draws it: grown to 16 px it sat 6 px off its place and over
+   the text beside it). A small one still gets a 16 px target to grab,
+   centred on it and invisible. */
+.shape::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100%, 16px);
+  height: max(100%, 16px);
+  transform: translate(-50%, -50%);
+  /* Under the shape's own drawing and words, so it never takes a click from
+     them; it only answers where a small shape has nothing to press. */
+  z-index: -1;
+}
+
+ 
+.root[data-selected="true"] .shape {
+  touch-action: none;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.groupMember {
+  border-radius: 4px;
+  outline: none;
+}
+
+.groupMember[data-document-shape-group-member-kind="shape"] {
+  cursor: move;
+}
+
+.groupMember[data-document-shape-group-member-kind="shape"]:focus-visible {
+  box-shadow: 0 0 0 2px var(--docs-accent, #2563eb);
+}
+
+.connectorLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  box-sizing: border-box;
+  width: min(112px, 80%);
+  min-width: 44px;
+  height: 24px;
+  padding: 2px 6px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: rgb(255 255 255 / 82%);
+  color: var(--console-text-primary, #172033);
+  font: 500 11px/1 var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.connectorLabel:placeholder-shown:not(:focus) {
+  width: 44px;
+  background: transparent;
+}
+
+.connectorLabel:focus-visible {
+  border-color: var(--docs-accent, #2563eb);
+  outline: 2px solid color-mix(in srgb, var(--docs-accent, #2563eb) 32%, white);
+  outline-offset: 1px;
+}
+
+/* The in-shape editor: the words are typed where `.text` draws them, in the
+   same font and colour, with no box of their own (Word does the same). The
+   shared style comes from lib/office-inline-text-editor; this only keeps the
+   editor above the label. */
+.memberTextInput {
+  min-width: 0;
+  z-index: 2;
+}
+
+.text {
+  position: absolute;
+  inset: 18% 14%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: var(--console-text-primary, #172033);
+  font: 500 14px/1.25 var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+  text-align: center;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+}
+
+/* A shape's words as a story (the body's block content): the label's own
+   font and alignment are its defaults; its paragraphs take the press and the
+   caret as the body's do. Empty while the words are still the label. */
+.story {
+  width: 100%;
+  min-width: 1px;
+  outline: none;
+  pointer-events: auto;
+  cursor: text;
+}
+
+.story:empty {
+  display: none;
+}
+
+.selectionFrame {
+  inset: 0;
+  opacity: 0;
+}
+
+.root[data-selected="true"] .selectionFrame,
+.root[data-multiselected="true"] .selectionFrame {
+  opacity: 1;
+}
+
+/* A stroke picked by Draw > Lasso Select: the one shared frame around every
+   stroke picked (OfficeInkLassoSelection) stands for its own. */
+.root[data-ink-lasso-member="true"] .selectionFrame,
+.root[data-ink-lasso-member="true"] .resizeHandle,
+.root[data-ink-lasso-member="true"] .rotateHandle {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* One shape of an authored SmartArt is selected: the graphic's frame stays
+   drawn (dashed, as Office draws a frame whose shape is the selection) and
+   its own handles step aside for the shape's. */
+.root[data-member-selected] .selectionFrame {
+  border-style: dashed;
+}
+
+/* Text-edit mode (the words of the shape are being typed): Office turns the
+   shape's selection outline dashed and keeps the handles; no inner text
+   rectangle is drawn. */
+.root[data-text-editing="true"] .selectionFrame {
+  border-style: dashed;
+}
+
+/* The caret is in the shape's story: its dashed frame shows where the box
+   is, as PowerPoint and Word keep drawing it while its words are typed (a
+   text box with no line is otherwise invisible). */
+.root[data-editable="true"][data-story-active="true"] .selectionFrame {
+  opacity: 1;
+}
+
+.root[data-member-selected] .resizeHandle,
+.root[data-member-selected] .rotateHandle {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.memberResizeHandle,
+.memberRotateHandle {
+  z-index: 9;
+}
+
+/* A grip the selected shape cannot act on is `hidden`; the shared grip
+   rule's `display: flex` drew the rotate grip anyway, a handle that did
+   nothing. */
+.memberResizeHandle[hidden],
+.memberRotateHandle[hidden] {
+  display: none;
+}
+
+/* The graphic's own grips when `hidden` (a whole SmartArt graphic wears no
+   rotation grip, a diagram that cannot be edited none at all): the shared
+   grip rule's `display` drew them anyway. */
+.root .resizeHandle[hidden],
+.root .rotateHandle[hidden] {
+  display: none;
+}
+
+/* Hidden in the Selection Pane (`wp:docPr/@hidden`): kept, not drawn. */
+.root[data-hidden="true"] .shape {
+  visibility: hidden;
+}
+
+/* Edit Points: the vertex editor replaces the frame and its grips, as in Office. */
+.root[data-edit-points="true"] .selectionFrame,
+.root[data-edit-points="true"] .resizeHandle,
+.root[data-edit-points="true"] .rotateHandle {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.root:not([data-selected="true"]) .resizeHandle,
+.root:not([data-selected="true"]) .rotateHandle,
+.root[data-editable="false"] .resizeHandle,
+.root[data-editable="false"] .rotateHandle {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.resizeHandle:focus-visible,
+.rotateHandle:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--docs-accent, #2563eb) 78%, white);
+  outline-offset: 2px;
+}
+
+@media (forced-colors: active) {
+  .resizeHandle,
+  .rotateHandle {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+  }
+
+  .selectionFrame {
+    border-color: Highlight;
+  }
+
+  .connectorLabel {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+  }
+}
+
+/* What the shape draws, carrying the page's float rank (documentShapeExtension):
+   the shape box's own area, a stacking context of its own. */
+.paint {
+  position: absolute;
+  inset: 0;
+}
+
+/* The selection chrome beside `paint` in the shape box: the box's own area,
+   no pointer of its own (the shape under it is still dragged and edited),
+   over every float on the page — the floats' ranks are small signed
+   integers, so this stands above all of them and under the editor's own
+   popovers. */
+.chrome {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+ 
+.root:not([data-selected="true"]):not([data-multiselected="true"]):not([data-text-editing="true"]):not([data-story-active="true"]):not([data-member-selected]):not([data-edit-points="true"])
+  > .stage
+  > .shape
+  > .chrome {
+  display: none;
+}
+
+/* An empty SmartArt shape's `[Text]` prompt is the editor's, never the
+   document's: it does not print, as Word prints no prompt. */
+@media print {
+  .text[data-document-shape-text-prompt] {
+    visibility: hidden;
+  }
+}

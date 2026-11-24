@@ -1,0 +1,244 @@
+.menu.menu {
+  min-width: 232px;
+  width: max-content;
+  max-width: min(320px, calc(100vw - 16px));
+}
+
+/* The labelled list grows to its longest name. */
+.listMenu.listMenu {
+  min-width: 238px;
+  width: max-content;
+}
+
+.presetGrid {
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(5, 36px);
+  padding: 6px 8px;
+}
+
+.preset {
+  align-items: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: inherit;
+  display: inline-flex;
+  height: 34px;
+  justify-content: center;
+  padding: 0;
+  width: 36px;
+}
+
+.preset[role="menuitemcheckbox"] > span:first-child {
+  display: none;
+}
+
+.presetList {
+  display: grid;
+  padding: 2px 0;
+}
+
+.presetRule.presetRule {
+  margin: 4px 6px;
+}
+
+.presetRow.presetRow {
+  gap: 10px;
+  min-height: 30px;
+  padding: 3px 12px 3px 6px;
+}
+
+/* The checkbox indicator: a row's state is its icon, as in Excel. */
+.presetRow[role="menuitemcheckbox"] > span:first-child {
+  display: none;
+}
+
+.presetRowIcon {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  height: 24px;
+  justify-content: center;
+  width: 24px;
+}
+
+/* A border the selection already shows: its glyph sits in a lit tile, the
+   way Word marks a pressed border in the list. Pressing it again takes the
+   border away. */
+.presetRow[aria-checked="true"] .presetRowIcon {
+  background: color-mix(in srgb, #2563eb 12%, transparent);
+  border-color: color-mix(in srgb, #2563eb 45%, transparent);
+}
+
+.presetRow[aria-checked="mixed"] .presetRowIcon {
+  border-color: color-mix(in srgb, #2563eb 45%, transparent);
+  border-style: dashed;
+}
+
+.presetRow[aria-checked="true"] > span:last-child {
+  font-weight: 600;
+}
+
+.presetRow[data-disabled] .presetRowIcon {
+  opacity: 0.45;
+}
+
+/* A command row is a plain menu item, whose base style shrinks every glyph
+   to 16px: the preset keeps its slot's size. */
+.presetRow .presetRowIcon > svg {
+  height: 20px;
+  width: 20px;
+}
+
+.preset:hover,
+.preset:focus-visible,
+.preset[aria-checked="true"],
+.preset[aria-checked="mixed"] {
+  background: #eff6ff;
+  border-color: color-mix(in srgb, #2563eb 42%, transparent);
+}
+
+.preset:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 1px;
+}
+
+/* On a dark menu card the pointed / chosen preset is a light veil, not the
+   light-mode blue well. */
+:global([data-theme-mode="dark"]) .preset:is(:hover, :focus-visible, [aria-checked="true"], [aria-checked="mixed"]) {
+  background: rgb(255 255 255 / 10%);
+}
+:global([data-theme-mode="high-contrast"]) .preset:is(:hover, :focus-visible, [aria-checked="true"], [aria-checked="mixed"]) {
+  background: rgb(255 255 255 / 10%);
+}
+
+.lineStyleMenu.lineStyleMenu {
+  box-sizing: border-box;
+  min-width: 148px;
+  padding: 6px;
+  width: 148px;
+}
+
+.lineStyleItem.lineStyleItem {
+  align-items: center;
+  background: #ffffff;
+  border: 3px solid transparent;
+  border-radius: 2px;
+  box-sizing: border-box;
+  display: flex;
+  height: 32px;
+  justify-content: center;
+  padding: 0 8px;
+  width: 100%;
+}
+
+.lineStyleItem.lineStyleItem > span:first-child {
+  display: none;
+}
+
+.lineStyleItem.lineStyleItem[data-state="checked"] {
+  background: #ffffff;
+  border-color: #8a8a8a;
+}
+
+.lineStyleItem.lineStyleItem:focus-visible {
+  background: #f3f4f6;
+  outline: 2px solid #2563eb;
+  outline-offset: -2px;
+}
+
+.linePreview {
+  border: 0;
+  border-top-color: currentColor;
+  border-top-style: solid;
+  border-top-width: 1px;
+  box-sizing: border-box;
+  display: block;
+  height: 0;
+  width: 100%;
+}
+
+.linePreview_dashed {
+  border-top-style: dashed;
+}
+
+.linePreview_dotted {
+  border-top-style: dotted;
+}
+
+.linePreview_medium {
+  border-top-width: 2px;
+}
+
+.linePreview_thick {
+  border-top-width: 3px;
+}
+
+.linePreview_double {
+  border-top-style: double;
+  border-top-width: 3px;
+}
+
+.weightMenu.weightMenu {
+  box-sizing: border-box;
+  min-width: 148px;
+  width: 148px;
+  padding: 2px;
+}
+
+.weightItem.weightItem {
+  align-items: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 0;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 14px;
+  height: 32px;
+  min-height: 32px;
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
+.weightItem.weightItem > span:first-child {
+  display: none;
+}
+
+.weightItem.weightItem[data-state="checked"] {
+  background: #eeedec;
+  border-color: #8a8a8a;
+}
+
+.weightItem.weightItem[data-highlighted] {
+  background: #f3f4f6;
+  outline: 1px solid #8a8a8a;
+  outline-offset: -1px;
+}
+
+/* The palette panel is 260px wide and the Cupertino submenu shell around it
+   pads 5px on every side (`.docs-cupertino-menu`, `!important`) and capped
+   submenus at 248px. Sized 260px, the shell clipped the panel's right 22px
+   behind `overflow-x: hidden`: the swatch rows ran into the right edge while
+   the left kept its gutter. The shell is sized for the panel plus its own
+   padding and border, so both gutters match the standalone colour popover. */
+.colorPaletteMenu.colorPaletteMenu {
+  box-sizing: border-box;
+  max-height: var(--radix-dropdown-menu-content-available-height);
+  max-width: min(272px, calc(100vw - 16px));
+  min-width: min(272px, calc(100vw - 16px));
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 272px;
+}
+
+@media (forced-colors: active) {
+  .lineStyleItem.lineStyleItem[data-state="checked"] {
+    outline: 2px solid Highlight;
+  }
+}

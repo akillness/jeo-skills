@@ -1,0 +1,409 @@
+{
+  "name": "@ui-sdk/react",
+  "version": "0.1.0-beta.16",
+  "description": "UI SDK for React.",
+  "keywords": [
+    "react",
+    "ui",
+    "ui-sdk",
+    "shadcn",
+    "behaviors",
+    "accessibility",
+    "a11y",
+    "aria",
+    "keyboard",
+    "focus",
+    "headless",
+    "unstyled",
+    "components",
+    "agents"
+  ],
+  "type": "module",
+  "license": "Apache-2.0",
+  "homepage": "https://ui-sdk.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vercel-labs/ui.git",
+    "directory": "packages/react"
+  },
+  "bugs": "https://github.com/vercel-labs/ui/issues",
+  "exports": {
+    "./accordion": "./src/accordion.tsx",
+    "./alert-dialog": "./src/alert-dialog.tsx",
+    "./async-options": "./src/async-options.ts",
+    "./autocomplete": "./src/autocomplete.tsx",
+    "./avatar": "./src/avatar.tsx",
+    "./button": "./src/button.tsx",
+    "./calendar": "./src/calendar.tsx",
+    "./carousel": "./src/carousel.tsx",
+    "./checkbox": "./src/checkbox.tsx",
+    "./collapsible": "./src/collapsible.tsx",
+    "./color": "./src/color.ts",
+    "./color-picker": "./src/color-picker.tsx",
+    "./combobox": "./src/combobox.tsx",
+    "./command": "./src/command.tsx",
+    "./date": "./src/date.ts",
+    "./date-input": "./src/date-input.tsx",
+    "./date-picker": "./src/date-picker.tsx",
+    "./dialog": "./src/dialog.tsx",
+    "./drawer": "./src/drawer.tsx",
+    "./field": "./src/field.tsx",
+    "./file-input": "./src/file-input.tsx",
+    "./gesture": "./src/gesture.ts",
+    "./hover-card": "./src/hover-card.tsx",
+    "./image": "./src/image.ts",
+    "./image-cropper": "./src/image-cropper.tsx",
+    "./input": "./src/input.tsx",
+    "./label": "./src/label.tsx",
+    "./listbox": "./src/listbox.tsx",
+    "./menu": "./src/menu.tsx",
+    "./menubar": "./src/menubar.tsx",
+    "./meter": "./src/meter.tsx",
+    "./navigation-menu": "./src/navigation-menu.tsx",
+    "./number": "./src/number.ts",
+    "./number-input": "./src/number-input.tsx",
+    "./otp-input": "./src/otp-input.tsx",
+    "./overlays": "./src/overlays.tsx",
+    "./pagination": "./src/pagination.tsx",
+    "./password-input": "./src/password-input.tsx",
+    "./popover": "./src/popover.tsx",
+    "./primitive": "./src/primitive.ts",
+    "./preferences": "./src/preferences.tsx",
+    "./progress": "./src/progress.tsx",
+    "./radio": "./src/radio.tsx",
+    "./rating": "./src/rating.tsx",
+    "./resizable": "./src/resizable.tsx",
+    "./scroll-area": "./src/scroll-area.tsx",
+    "./segmented-control": "./src/segmented-control.tsx",
+    "./select": "./src/select.tsx",
+    "./separator": "./src/separator.tsx",
+    "./shortcuts": "./src/shortcuts.ts",
+    "./slider": "./src/slider.tsx",
+    "./switch": "./src/switch.tsx",
+    "./tabs": "./src/tabs.tsx",
+    "./text-match": "./src/text-match.ts",
+    "./agent": "./src/agent.ts",
+    "./observe": "./src/observe.ts",
+    "./history": "./src/history.ts",
+    "./textarea": "./src/textarea.tsx",
+    "./time-input": "./src/time-input.tsx",
+    "./timeline": "./src/timeline.tsx",
+    "./toast": "./src/toast.tsx",
+    "./toggle": "./src/toggle.tsx",
+    "./token-input": "./src/token-input.tsx",
+    "./toolbar": "./src/toolbar.tsx",
+    "./tooltip": "./src/tooltip.tsx",
+    "./tree": "./src/tree.tsx",
+    "./trigger-menu": "./src/trigger-menu.tsx",
+    "./waterfall": "./src/waterfall.tsx"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "docs"
+  ],
+  "publishConfig": {
+    "exports": {
+      "./accordion": {
+        "types": "./dist/accordion.d.ts",
+        "default": "./dist/accordion.js"
+      },
+      "./alert-dialog": {
+        "types": "./dist/alert-dialog.d.ts",
+        "default": "./dist/alert-dialog.js"
+      },
+      "./async-options": {
+        "types": "./dist/async-options.d.ts",
+        "default": "./dist/async-options.js"
+      },
+      "./autocomplete": {
+        "types": "./dist/autocomplete.d.ts",
+        "default": "./dist/autocomplete.js"
+      },
+      "./avatar": {
+        "types": "./dist/avatar.d.ts",
+        "default": "./dist/avatar.js"
+      },
+      "./button": {
+        "types": "./dist/button.d.ts",
+        "default": "./dist/button.js"
+      },
+      "./calendar": {
+        "types": "./dist/calendar.d.ts",
+        "default": "./dist/calendar.js"
+      },
+      "./carousel": {
+        "types": "./dist/carousel.d.ts",
+        "default": "./dist/carousel.js"
+      },
+      "./checkbox": {
+        "types": "./dist/checkbox.d.ts",
+        "default": "./dist/checkbox.js"
+      },
+      "./collapsible": {
+        "types": "./dist/collapsible.d.ts",
+        "default": "./dist/collapsible.js"
+      },
+      "./color": {
+        "types": "./dist/color.d.ts",
+        "default": "./dist/color.js"
+      },
+      "./color-picker": {
+        "types": "./dist/color-picker.d.ts",
+        "default": "./dist/color-picker.js"
+      },
+      "./combobox": {
+        "types": "./dist/combobox.d.ts",
+        "default": "./dist/combobox.js"
+      },
+      "./command": {
+        "types": "./dist/command.d.ts",
+        "default": "./dist/command.js"
+      },
+      "./date": {
+        "types": "./dist/date.d.ts",
+        "default": "./dist/date.js"
+      },
+      "./date-input": {
+        "types": "./dist/date-input.d.ts",
+        "default": "./dist/date-input.js"
+      },
+      "./date-picker": {
+        "types": "./dist/date-picker.d.ts",
+        "default": "./dist/date-picker.js"
+      },
+      "./dialog": {
+        "types": "./dist/dialog.d.ts",
+        "default": "./dist/dialog.js"
+      },
+      "./drawer": {
+        "types": "./dist/drawer.d.ts",
+        "default": "./dist/drawer.js"
+      },
+      "./field": {
+        "types": "./dist/field.d.ts",
+        "default": "./dist/field.js"
+      },
+      "./file-input": {
+        "types": "./dist/file-input.d.ts",
+        "default": "./dist/file-input.js"
+      },
+      "./gesture": {
+        "types": "./dist/gesture.d.ts",
+        "default": "./dist/gesture.js"
+      },
+      "./hover-card": {
+        "types": "./dist/hover-card.d.ts",
+        "default": "./dist/hover-card.js"
+      },
+      "./image": {
+        "types": "./dist/image.d.ts",
+        "default": "./dist/image.js"
+      },
+      "./image-cropper": {
+        "types": "./dist/image-cropper.d.ts",
+        "default": "./dist/image-cropper.js"
+      },
+      "./input": {
+        "types": "./dist/input.d.ts",
+        "default": "./dist/input.js"
+      },
+      "./label": {
+        "types": "./dist/label.d.ts",
+        "default": "./dist/label.js"
+      },
+      "./listbox": {
+        "types": "./dist/listbox.d.ts",
+        "default": "./dist/listbox.js"
+      },
+      "./menu": {
+        "types": "./dist/menu.d.ts",
+        "default": "./dist/menu.js"
+      },
+      "./menubar": {
+        "types": "./dist/menubar.d.ts",
+        "default": "./dist/menubar.js"
+      },
+      "./meter": {
+        "types": "./dist/meter.d.ts",
+        "default": "./dist/meter.js"
+      },
+      "./navigation-menu": {
+        "types": "./dist/navigation-menu.d.ts",
+        "default": "./dist/navigation-menu.js"
+      },
+      "./number": {
+        "types": "./dist/number.d.ts",
+        "default": "./dist/number.js"
+      },
+      "./number-input": {
+        "types": "./dist/number-input.d.ts",
+        "default": "./dist/number-input.js"
+      },
+      "./otp-input": {
+        "types": "./dist/otp-input.d.ts",
+        "default": "./dist/otp-input.js"
+      },
+      "./overlays": {
+        "types": "./dist/overlays.d.ts",
+        "default": "./dist/overlays.js"
+      },
+      "./pagination": {
+        "types": "./dist/pagination.d.ts",
+        "default": "./dist/pagination.js"
+      },
+      "./password-input": {
+        "types": "./dist/password-input.d.ts",
+        "default": "./dist/password-input.js"
+      },
+      "./popover": {
+        "types": "./dist/popover.d.ts",
+        "default": "./dist/popover.js"
+      },
+      "./primitive": {
+        "types": "./dist/primitive.d.ts",
+        "default": "./dist/primitive.js"
+      },
+      "./preferences": {
+        "types": "./dist/preferences.d.ts",
+        "default": "./dist/preferences.js"
+      },
+      "./progress": {
+        "types": "./dist/progress.d.ts",
+        "default": "./dist/progress.js"
+      },
+      "./radio": {
+        "types": "./dist/radio.d.ts",
+        "default": "./dist/radio.js"
+      },
+      "./rating": {
+        "types": "./dist/rating.d.ts",
+        "default": "./dist/rating.js"
+      },
+      "./resizable": {
+        "types": "./dist/resizable.d.ts",
+        "default": "./dist/resizable.js"
+      },
+      "./scroll-area": {
+        "types": "./dist/scroll-area.d.ts",
+        "default": "./dist/scroll-area.js"
+      },
+      "./segmented-control": {
+        "types": "./dist/segmented-control.d.ts",
+        "default": "./dist/segmented-control.js"
+      },
+      "./select": {
+        "types": "./dist/select.d.ts",
+        "default": "./dist/select.js"
+      },
+      "./separator": {
+        "types": "./dist/separator.d.ts",
+        "default": "./dist/separator.js"
+      },
+      "./shortcuts": {
+        "types": "./dist/shortcuts.d.ts",
+        "default": "./dist/shortcuts.js"
+      },
+      "./slider": {
+        "types": "./dist/slider.d.ts",
+        "default": "./dist/slider.js"
+      },
+      "./switch": {
+        "types": "./dist/switch.d.ts",
+        "default": "./dist/switch.js"
+      },
+      "./tabs": {
+        "types": "./dist/tabs.d.ts",
+        "default": "./dist/tabs.js"
+      },
+      "./text-match": {
+        "types": "./dist/text-match.d.ts",
+        "default": "./dist/text-match.js"
+      },
+      "./agent": {
+        "types": "./dist/agent.d.ts",
+        "default": "./dist/agent.js"
+      },
+      "./observe": {
+        "types": "./dist/observe.d.ts",
+        "default": "./dist/observe.js"
+      },
+      "./history": {
+        "types": "./dist/history.d.ts",
+        "default": "./dist/history.js"
+      },
+      "./textarea": {
+        "types": "./dist/textarea.d.ts",
+        "default": "./dist/textarea.js"
+      },
+      "./time-input": {
+        "types": "./dist/time-input.d.ts",
+        "default": "./dist/time-input.js"
+      },
+      "./timeline": {
+        "types": "./dist/timeline.d.ts",
+        "default": "./dist/timeline.js"
+      },
+      "./toast": {
+        "types": "./dist/toast.d.ts",
+        "default": "./dist/toast.js"
+      },
+      "./toggle": {
+        "types": "./dist/toggle.d.ts",
+        "default": "./dist/toggle.js"
+      },
+      "./token-input": {
+        "types": "./dist/token-input.d.ts",
+        "default": "./dist/token-input.js"
+      },
+      "./toolbar": {
+        "types": "./dist/toolbar.d.ts",
+        "default": "./dist/toolbar.js"
+      },
+      "./tooltip": {
+        "types": "./dist/tooltip.d.ts",
+        "default": "./dist/tooltip.js"
+      },
+      "./tree": {
+        "types": "./dist/tree.d.ts",
+        "default": "./dist/tree.js"
+      },
+      "./trigger-menu": {
+        "types": "./dist/trigger-menu.d.ts",
+        "default": "./dist/trigger-menu.js"
+      },
+      "./waterfall": {
+        "types": "./dist/waterfall.d.ts",
+        "default": "./dist/waterfall.js"
+      },
+      "./package.json": "./package.json"
+    }
+  },
+  "scripts": {
+    "build": "node ../../scripts/build/build-package.mjs --use-client --server primitive.ts --server render-element.ts",
+    "prepack": "cp ../../LICENSE LICENSE",
+    "typecheck": "node ../../scripts/tsgo.mjs --noEmit && node ../../scripts/tsgo.mjs --noEmit -p tsconfig.test.json",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "@ui-sdk/core": "workspace:^",
+    "@types/react": ">=19.2.10",
+    "react": ">=19",
+    "react-dom": ">=19"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@ui-sdk/core": "workspace:*",
+    "jsdom": "^30.1.2",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "^5.0.3"
+  }
+}

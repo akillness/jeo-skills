@@ -1,0 +1,716 @@
+/*
+ * The Draw tab's pens, eraser kinds and Draw with Trackpad switch, shared by
+ * the Office editors. Office's pen gallery: tall pen glyphs side by side,
+ * the picked pen in a raised well wearing its drop arrow.
+ */
+
+.inkGallery {
+  align-items: stretch;
+  display: flex;
+  gap: 2px;
+  padding: 2px 4px;
+}
+
+.inkPen {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 2px 2px 0;
+  position: relative;
+  width: 40px;
+}
+
+.inkPen[data-selected="true"] {
+  background: color-mix(in srgb, var(--console-accent, #2563eb) 10%, #ffffff);
+  border-color: color-mix(in srgb, var(--console-accent, #2563eb) 45%, transparent);
+}
+
+.inkGallery .inkPenFace {
+  background: none;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  display: block;
+  padding: 1px 4px 0;
+}
+
+.inkGallery .inkPenFace:hover:not(:disabled),
+.inkGallery .inkPenFace:focus-visible {
+  background: rgb(15 23 42 / 6%);
+  outline: none;
+}
+
+.inkGallery .inkPenFace:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.inkGallery .inkPenMenuTrigger {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-radius: 3px;
+  color: var(--console-text-secondary, #475569);
+  cursor: pointer;
+  display: inline-flex;
+  height: 12px;
+  justify-content: center;
+  padding: 0;
+  width: 100%;
+}
+
+.inkGallery .inkPenMenuTrigger:hover,
+.inkGallery .inkPenMenuTrigger:focus-visible {
+  background: rgb(15 23 42 / 8%);
+  outline: none;
+}
+
+/* Add Pen's items show the pen large enough to tell a pen from a pencil. */
+.inkAddPenGlyph {
+  display: inline-flex;
+  margin-right: 10px;
+}
+
+/* The menu item's own rule sizes every svg to 16px; the pen keeps the 22 x 38
+   box DocumentInkPenGlyph draws at size 0.8, so the menu shows the pen at four
+   fifths of the gallery's. */
+.inkAddPenGlyph svg[width] {
+  width: 22px;
+  height: 38px;
+}
+
+/* A pen's menu: its name over a sample of its line, the thickness steps,
+   sixteen colours, eight effects, the pressure choice, More Colors and
+   Delete. A popover card rather than a list menu: rounder, roomier, and it
+   grows out of the pen it belongs to (the motion below). */
+.inkPenMenu.inkPenMenu {
+  --ink-menu-well: rgb(118 118 128 / 12%);
+  --ink-menu-card: #ffffff;
+  --ink-menu-label: rgb(60 60 67 / 60%);
+  --ink-menu-hairline: rgb(60 60 67 / 14%);
+  --ink-menu-accent: var(--console-accent, #2563eb);
+  border-radius: 18px !important;
+  min-width: 260px;
+  padding: 8px !important;
+  box-shadow:
+    0 24px 48px rgb(0 0 0 / 16%),
+    0 6px 16px rgb(0 0 0 / 8%),
+    inset 0 1px 0 rgb(255 255 255 / 86%) !important;
+}
+
+.inkPenMenu [role="separator"] {
+  background: var(--ink-menu-hairline);
+  margin: 6px 4px;
+}
+
+.inkPenMenu [role="menuitem"] {
+  border-radius: 10px;
+}
+
+/* Section names: small and quiet, as the card's captions. */
+.inkPenMenu .inkMenuLabel.inkMenuLabel {
+  color: var(--ink-menu-label);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  padding: 6px 10px 4px;
+}
+
+.inkPenMenuTitle {
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  padding: 8px 10px 0;
+}
+
+.inkPenSample {
+  align-items: center;
+  display: flex;
+  height: 104px;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+.inkPenSample svg {
+  display: block;
+  height: 96px;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.inkPenSample svg path {
+  transition:
+    fill 180ms ease,
+    stroke 180ms ease,
+    stroke-width 180ms var(--enter-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  /* The menu's icon rule thins every svg line; the sample is the pen's own. */
+  vector-effect: none !important;
+}
+
+/* The thickness steps: a segmented well, the chosen step a raised card. */
+.inkThicknessRow {
+  align-items: center;
+  background: var(--ink-menu-well);
+  border-radius: 12px;
+  display: flex;
+  gap: 2px;
+  justify-content: space-between;
+  margin: 4px 4px 2px;
+  padding: 3px;
+}
+
+.inkThicknessDot {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-radius: 9px;
+  cursor: pointer;
+  display: inline-flex;
+  flex: 1 1 0;
+  height: 34px;
+  justify-content: center;
+  padding: 0;
+  transition:
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    scale 120ms ease;
+}
+
+.inkThicknessDot > span {
+  background: #6b7280;
+  border-radius: 999px;
+  display: block;
+  transition: background-color 160ms ease;
+}
+
+.inkThicknessDot:hover,
+.inkThicknessDot:focus-visible {
+  background: rgb(255 255 255 / 55%);
+  outline: none;
+}
+
+.inkThicknessDot:active {
+  scale: 0.92;
+}
+
+.inkThicknessDot[data-selected="true"] {
+  background: var(--ink-menu-card);
+  box-shadow:
+    0 1px 3px rgb(0 0 0 / 12%),
+    0 0 0 0.5px rgb(0 0 0 / 4%);
+}
+
+.inkThicknessDot[data-selected="true"] > span {
+  background: var(--ink-menu-accent);
+}
+
+.inkColorGrid,
+.inkEffectGrid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 2px 6px 6px;
+}
+
+.inkColorSwatch,
+.inkEffectTile {
+  aspect-ratio: 8 / 5;
+  border: 0;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%);
+  cursor: pointer;
+  height: auto;
+  min-width: 0;
+  padding: 0;
+  transition:
+    box-shadow 160ms ease,
+    scale 140ms var(--enter-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  width: 100%;
+}
+
+.inkColorSwatch:hover,
+.inkEffectTile:hover {
+  scale: 1.05;
+}
+
+.inkColorSwatch:active,
+.inkEffectTile:active {
+  scale: 0.94;
+}
+
+.inkColorSwatch:focus-visible,
+.inkEffectTile:focus-visible {
+  outline: 2px solid var(--ink-menu-accent);
+  outline-offset: 2px;
+}
+
+.inkColorSwatch[data-selected="true"],
+.inkEffectTile[data-selected="true"] {
+  box-shadow:
+    inset 0 0 0 1px rgb(0 0 0 / 10%),
+    0 0 0 2px #ffffff,
+    0 0 0 4px var(--ink-menu-accent);
+}
+
+/* The pressure setting: two samples of one squiggle in a segmented well. */
+.inkPressureRow {
+  background: var(--ink-menu-well);
+  border-radius: 12px;
+  display: grid;
+  gap: 2px;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 2px 4px 6px;
+  padding: 3px;
+}
+
+.inkPressureTile {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-radius: 9px;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  height: 40px;
+  justify-content: center;
+  padding: 0;
+  transition:
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    scale 120ms ease;
+}
+
+.inkPressureTile:hover,
+.inkPressureTile:focus-visible {
+  background: rgb(255 255 255 / 55%);
+  outline: none;
+}
+
+.inkPressureTile:active {
+  scale: 0.95;
+}
+
+.inkPressureTile[data-selected="true"] {
+  background: var(--ink-menu-card);
+  box-shadow:
+    0 1px 3px rgb(0 0 0 / 12%),
+    0 0 0 0.5px rgb(0 0 0 / 4%);
+}
+
+/* Motion: the card grows out of its pen (Radix puts the transform origin
+   at the anchor), settling with a slight give, and shrinks back into it
+   faster than it came. The Cupertino menus' own fade is too slight for a
+   card this size to read as coming from anywhere. */
+.inkPenMenu.inkPenMenu[data-state="open"] {
+  animation:
+    ink-pen-menu-in 300ms cubic-bezier(0.32, 1.28, 0.52, 1) both,
+    ink-pen-menu-fade-in 140ms ease-out both !important;
+  transform-origin: var(--radix-dropdown-menu-content-transform-origin) !important;
+}
+
+.inkPenMenu.inkPenMenu[data-state="closed"] {
+  animation:
+    ink-pen-menu-out 170ms cubic-bezier(0.4, 0, 1, 1) both,
+    ink-pen-menu-fade-out 170ms ease-in both !important;
+  transform-origin: var(--radix-dropdown-menu-content-transform-origin) !important;
+}
+
+.inkPenMenu.inkPenMenu[data-side="left"] { --ink-menu-from: 10px, 0; }
+.inkPenMenu.inkPenMenu[data-side="right"] { --ink-menu-from: -10px, 0; }
+.inkPenMenu.inkPenMenu[data-side="top"] { --ink-menu-from: 0, 10px; }
+.inkPenMenu.inkPenMenu[data-side="bottom"] { --ink-menu-from: 0, -10px; }
+
+@keyframes ink-pen-menu-in {
+  from {
+    transform: translate(var(--ink-menu-from, 0, -8px)) scale(0.86);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes ink-pen-menu-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes ink-pen-menu-out {
+  to {
+    transform: translate(var(--ink-menu-from, 0, -6px)) scale(0.92);
+  }
+}
+
+@keyframes ink-pen-menu-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inkPenMenu.inkPenMenu[data-state="open"] {
+    animation: ink-pen-menu-fade-in 120ms ease-out both !important;
+  }
+
+  .inkPenMenu.inkPenMenu[data-state="closed"] {
+    animation: ink-pen-menu-fade-out 100ms ease-in both !important;
+  }
+}
+
+:global([data-reduce-motion]) .inkPenMenu.inkPenMenu[data-state="open"] {
+  animation: ink-pen-menu-fade-in 120ms ease-out both !important;
+}
+
+:global([data-reduce-motion]) .inkPenMenu.inkPenMenu[data-state="closed"] {
+  animation: ink-pen-menu-fade-out 100ms ease-in both !important;
+}
+
+/* The pen menu is a Cupertino menu (dark card in dark and high contrast);
+   its own content follows: the thickness dots, the hover wash and the
+   swatch edges, and the selected swatch's gap ring takes the dark card. */
+:global([data-theme-mode="dark"]) .inkThicknessDot > span {
+  background: #a1a1a8;
+}
+:global([data-theme-mode="high-contrast"]) .inkThicknessDot > span {
+  background: #a1a1a8;
+}
+
+:global([data-theme-mode="dark"]) .inkThicknessDot:is(:hover, :focus-visible) {
+  background: rgb(255 255 255 / 10%);
+}
+
+:global([data-theme-mode="high-contrast"]) .inkThicknessDot:is(:hover, :focus-visible) {
+  background: rgb(255 255 255 / 10%);
+}
+
+:global([data-theme-mode="dark"]) .inkColorSwatch {
+  border-color: rgb(255 255 255 / 18%);
+}
+
+:global([data-theme-mode="dark"]) .inkEffectTile {
+  border-color: rgb(255 255 255 / 18%);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .inkPressureTile {
+  background: rgb(255 255 255 / 6%);
+  border-color: rgb(255 255 255 / 18%);
+}
+
+:global([data-theme-mode="high-contrast"]) .inkColorSwatch {
+  border-color: rgb(255 255 255 / 18%);
+}
+
+:global([data-theme-mode="high-contrast"]) .inkEffectTile {
+  border-color: rgb(255 255 255 / 18%);
+}
+
+:global([data-theme-mode="dark"]) :is(.inkColorSwatch, .inkEffectTile)[data-selected="true"] {
+  box-shadow: 0 0 0 2px rgb(38 39 44), 0 0 0 4px var(--console-accent, #4f8bf5);
+}
+
+:global([data-theme-mode="high-contrast"]) :is(.inkColorSwatch, .inkEffectTile)[data-selected="true"] {
+  box-shadow: 0 0 0 2px rgb(38 39 44), 0 0 0 4px var(--console-accent, #4f8bf5);
+}
+
+/* The Eraser menu: the reach of each kind. */
+.inkEraserSample {
+  background: #cbd5e1;
+  border: 1px solid #64748b;
+  border-radius: 999px;
+  display: inline-block;
+  height: 14px;
+  margin-right: 8px;
+  width: 14px;
+}
+
+.inkEraserSample[data-eraser="stroke"] {
+  border-radius: 3px;
+  height: 10px;
+  width: 22px;
+}
+
+.inkEraserSample[data-eraser="small"] {
+  height: 8px;
+  width: 8px;
+}
+
+/* Draw with Trackpad: a switch with its state, the command's label below. */
+.inkSwitchHost .inkSwitch {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  font: inherit;
+  font-size: 11px;
+  gap: 6px;
+  justify-content: center;
+  padding: 4px 8px;
+}
+
+.inkSwitchHost .inkSwitch:hover:not(:disabled),
+.inkSwitchHost .inkSwitch:focus-visible {
+  background: rgb(15 23 42 / 6%);
+  outline: none;
+}
+
+.inkSwitchHost .inkSwitch:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.inkSwitchRow {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+}
+
+.inkSwitchTrack {
+  background: #cbd5e1;
+  border-radius: 999px;
+  display: inline-block;
+  height: 18px;
+  position: relative;
+  /* officeInkTrackpadMotion.ts: the drawing frame gathers on this clock. */
+  transition: background 460ms cubic-bezier(0.32, 0.72, 0, 1);
+  width: 32px;
+}
+
+.inkSwitchTrack[data-on="true"] {
+  background: var(--console-accent, #2563eb);
+}
+
+.inkSwitchKnob {
+  background: #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 30%);
+  height: 14px;
+  left: 2px;
+  position: absolute;
+  top: 2px;
+  transition: left 460ms cubic-bezier(0.32, 0.72, 0, 1);
+  width: 14px;
+}
+
+.inkSwitchTrack[data-on="true"] .inkSwitchKnob {
+  left: 16px;
+}
+
+.inkSwitchState {
+  color: var(--console-text-secondary, #475569);
+}
+
+.inkSwitchLabel {
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* The worksheet window styles every bare button as a 36px bordered pill and
+   nudges it down while pressed; the gallery's faces and the switch are
+   neither (two classes outrank that one-class-plus-element rule). */
+.inkGallery .inkPenFace,
+.inkGallery .inkPenMenuTrigger,
+.inkSwitchHost .inkSwitch {
+  min-height: 0;
+  transition: none;
+}
+
+.inkGallery .inkPen .inkPenFace:active,
+.inkGallery .inkPen .inkPenMenuTrigger:active,
+.inkSwitchHost .inkSwitch.inkSwitch:active {
+  transform: none;
+}
+
+.inkSwitchHost {
+  display: flex;
+}
+
+:global([data-theme-mode="dark"]) .inkPenMenu.inkPenMenu,
+:global([data-theme-mode="high-contrast"]) .inkPenMenu.inkPenMenu {
+  --ink-menu-well: rgb(118 118 128 / 24%);
+  --ink-menu-card: rgb(99 99 102);
+  --ink-menu-label: rgb(235 235 245 / 60%);
+  --ink-menu-hairline: rgb(255 255 255 / 12%);
+}
+
+/* MRAI's effects and the custom ones: a short stroke on a paper tile, so a
+   glow, a sheen and glints read as they will on the page. */
+.inkEffectStrokeGrid .inkEffectTile {
+  align-items: center;
+  background: #fbfbfd;
+  display: inline-flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.inkEffectStrokeGrid .inkEffectTile[data-effect-face] svg {
+  height: 70%;
+  width: 86%;
+}
+
+.inkEffectAddTile.inkEffectAddTile {
+  background: none;
+  box-shadow: inset 0 0 0 1.5px var(--ink-menu-hairline);
+  color: var(--ink-menu-label);
+}
+
+.inkEffectAddTile[aria-expanded="true"] {
+  box-shadow: inset 0 0 0 1.5px var(--ink-menu-accent);
+  color: var(--ink-menu-accent);
+}
+
+/* The custom effect's editor: a well under the custom tiles. */
+.inkCustomEffect {
+  background: var(--ink-menu-well);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0 6px 6px;
+  padding: 8px;
+}
+
+.inkCustomPreview {
+  align-items: center;
+  background: #fbfbfd;
+  border-radius: 9px;
+  display: flex;
+  height: 48px;
+  justify-content: center;
+}
+
+.inkCustomCaption {
+  color: var(--ink-menu-label);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 0 2px;
+}
+
+.inkCustomKinds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.inkCustomKind {
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  color: inherit;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  padding: 7px 9px;
+  transition:
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.inkCustomKind:hover,
+.inkCustomKind:focus-visible {
+  background: rgb(255 255 255 / 55%);
+  outline: none;
+}
+
+.inkCustomKind[data-selected="true"] {
+  background: var(--ink-menu-card);
+  box-shadow:
+    0 1px 3px rgb(0 0 0 / 12%),
+    0 0 0 0.5px rgb(0 0 0 / 4%);
+  color: var(--ink-menu-accent);
+  font-weight: 600;
+}
+
+.inkCustomColors {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  padding: 0 2px;
+}
+
+.inkCustomColor,
+.inkCustomColorStep {
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  flex: 0 0 auto;
+  height: 28px;
+  padding: 0;
+  width: 28px;
+}
+
+.inkCustomColor {
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 14%);
+  transition:
+    scale 140ms var(--enter-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    box-shadow 160ms ease;
+}
+
+.inkCustomColor:hover {
+  scale: 1.08;
+}
+
+.inkCustomColor[aria-expanded="true"] {
+  box-shadow:
+    inset 0 0 0 1px rgb(0 0 0 / 14%),
+    0 0 0 2px #ffffff,
+    0 0 0 4px var(--ink-menu-accent);
+}
+
+.inkCustomColorStep {
+  align-items: center;
+  background: var(--ink-menu-card);
+  color: var(--ink-menu-label);
+  display: inline-flex;
+  justify-content: center;
+}
+
+.inkCustomColorStep:hover,
+.inkCustomColorStep:focus-visible {
+  color: var(--ink-menu-accent);
+  outline: none;
+}
+
+.inkCustomDone {
+  align-items: center;
+  align-self: flex-end;
+  background: var(--ink-menu-accent);
+  border: 0;
+  border-radius: 8px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 600;
+  gap: 4px;
+  padding: 6px 12px;
+}
+
+.inkCustomDone:hover {
+  filter: brightness(1.06);
+}
+
+/* Paper tiles stay paper in the dark: the effects are drawn for the page. */
+:global([data-theme-mode="dark"]) .inkEffectStrokeGrid .inkEffectTile,
+:global([data-theme-mode="high-contrast"]) .inkEffectStrokeGrid .inkEffectTile {
+  background: rgb(255 255 255 / 92%);
+}
+
+:global([data-theme-mode="dark"]) .inkEffectAddTile.inkEffectAddTile,
+:global([data-theme-mode="high-contrast"]) .inkEffectAddTile.inkEffectAddTile {
+  background: none;
+  box-shadow: inset 0 0 0 1.5px rgb(255 255 255 / 24%);
+}
+
+:global([data-theme-mode="dark"]) .inkCustomKind:is(:hover, :focus-visible),
+:global([data-theme-mode="high-contrast"]) .inkCustomKind:is(:hover, :focus-visible) {
+  background: rgb(255 255 255 / 10%);
+}

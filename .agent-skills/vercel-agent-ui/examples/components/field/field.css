@@ -1,0 +1,76 @@
+@scope ([data-example]) {
+  [data-slot="field"] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    width: 20rem;
+    min-width: 0;
+    max-width: 100%;
+
+    &:has(> :is([data-slot="checkbox"], [data-slot="switch"])) {
+      flex-direction: row;
+      align-items: flex-start;
+
+      & > [data-slot="checkbox"] {
+        margin-top: 2px;
+      }
+
+      & > [data-slot="switch"] {
+        margin-top: 0;
+      }
+
+      & > [data-slot="stack"] {
+        gap: var(--space-1);
+      }
+    }
+
+    &[data-valid] [data-hide="valid"],
+    &:not([data-valid]) [data-show="valid"] {
+      display: none;
+    }
+  }
+
+  /* A legend sits outside the field set's flex gap, so it spaces itself. */
+  [data-slot="field-legend"] {
+    margin-bottom: var(--space-4);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 22px;
+
+    &:has(+ [data-slot="field-description"]) {
+      margin-bottom: var(--space-1);
+    }
+  }
+
+  [data-slot="field-description"] {
+    display: block;
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--text-sm);
+  }
+
+  [data-slot="field-error"] {
+    display: block;
+    margin: 0;
+    color: var(--danger);
+    font-size: var(--text-sm);
+  }
+
+  [data-slot="field-set"] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    width: 20rem;
+    min-width: 0;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  [data-slot="field-group"] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+}

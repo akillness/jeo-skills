@@ -1,0 +1,401 @@
+/* ============================================================
+   Office motion layer: the Docs editor's motion, shared by every editor.
+
+   The keyframes below were born in note-editor.css for the document editor
+   and keep its exact timing, curves and colours. They live here under
+   neutral `office-*` names so the workbook, deck, PDF and code editors can
+   use the same motion without loading Docs selectors. note-editor.css
+   @imports this file (so every page that loads the Docs skin keeps these
+   keyframes) and OfficeRibbonChassis imports it for the other editors.
+
+   Tokens: --duration-fast (100ms), --duration-normal (200ms),
+   --duration-slow (350ms) and --ease-out-v2 come from globals.css :root and
+   are never re-scoped. --motion-fast / --motion-slow are re-scoped to
+   120 / 320 ms by the draft and agent surfaces, so a 150 ms or 300 ms Docs
+   value stays literal here: a token there would drift inside those
+   surfaces.
+
+   Every animated rule has a prefers-reduced-motion fallback.
+   ============================================================ */
+
+/* ── Keyframes ───────────────────────────────────────────────────────── */
+
+/* Was note-editor.css `pulse`. Renamed so it no longer overrides
+   Tailwind's own `animate-pulse` keyframes on pages that load the skin. */
+@keyframes office-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* One busy spinner. Was `spin` (which also shadowed Tailwind's
+   `animate-spin`), `note-editor-export-spin` and `docs-home-paste-spin`. */
+@keyframes office-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* A drawn insertion point. Was note-editor-object-boundary-caret-blink.
+   It blinks by visibility, not opacity: WebKit composites an opacity
+   animation, and a composited caret inside a zoomed page (the surface's
+   transform: scale()) had Safari paint the whole page at 1x and stretch it --
+   every word blurred while the caret showed. */
+@keyframes office-caret-blink {
+  0%,
+  49% {
+    visibility: visible;
+  }
+  50%,
+  100% {
+    visibility: hidden;
+  }
+}
+
+/* Page view sheets rise in; virtualized fills fade up from 55%.
+   Was paged-sheet-enter / paged-sheet-fill. */
+@keyframes office-page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes office-page-fill {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* The settle shimmer: an accent bar sweeping while a page's content is not
+   drawn yet. Was note-pagination-initial-settle. */
+@keyframes office-settle-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+/* A small floating surface materializes. Was ai-menu-in. */
+@keyframes office-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Was scaleIn. */
+@keyframes office-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Was fadeInUp. */
+@keyframes office-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Was fadeIn. */
+@keyframes office-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* The located-target tint: a TOC jump, an AI source "Locate". Was
+   toc-jump-flash. Its length is PAGE_LOCATE_FLASH_MS in lib/page-locate.ts,
+   which removes the marker when the flash ends. */
+@keyframes office-locate-flash {
+  0%,
+  30% {
+    background-color: color-mix(
+      in srgb,
+      var(--console-accent-strong, #0a7d72) 16%,
+      transparent
+    );
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+/* The memory-evidence "view source" tint: longer, ringed and in the lighter
+   accent, so it keeps its own keyframes. Was mrnote-evidence-flash. */
+@keyframes office-evidence-flash {
+  0% {
+    background-color: color-mix(
+      in srgb,
+      var(--console-accent, #0d9488) 32%,
+      transparent
+    );
+    box-shadow: 0 0 0 2px
+      color-mix(in srgb, var(--console-accent, #0d9488) 22%, transparent);
+  }
+  55% {
+    background-color: color-mix(
+      in srgb,
+      var(--console-accent, #0d9488) 22%,
+      transparent
+    );
+    box-shadow: 0 0 0 2px
+      color-mix(in srgb, var(--console-accent, #0d9488) 10%, transparent);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+/* Cupertino menus. Was docs-cupertino-menu-in / docs-cupertino-menu-out. */
+@keyframes office-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes office-menu-out {
+  to {
+    opacity: 0;
+    transform: translateY(-1px);
+  }
+}
+
+/* Window chrome slides in from its own edge when a window opens with
+   reveal. Was note-editor-chrome-{top,bottom,side,side-left}-reveal. */
+@keyframes office-chrome-top-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes office-chrome-bottom-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes office-chrome-side-reveal {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes office-chrome-side-left-reveal {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ── Utilities ───────────────────────────────────────────────────────── */
+
+/* Busy glyph (the export chip's and the paste button's timing). */
+.office-spin {
+  animation: office-spin 0.8s linear infinite;
+}
+
+.office-pulse {
+  animation: office-pulse 1.6s ease-in-out infinite;
+}
+
+/* A drawn caret beside an object (no reduced-motion change: a caret blinks
+   under every setting, as the system caret does). */
+.office-caret-blink {
+  animation: office-caret-blink 1.06s step-end infinite;
+}
+
+/* Floating surfaces. */
+.office-pop-in {
+  animation: office-pop-in 140ms ease-out both;
+}
+
+.office-scale-in {
+  animation: office-scale-in 150ms var(--ease-out-v2, cubic-bezier(0.16, 1, 0.3, 1))
+    both;
+}
+
+.office-rise-in {
+  animation: office-rise-in var(--duration-normal, 200ms)
+    var(--ease-out-v2, cubic-bezier(0.16, 1, 0.3, 1)) both;
+}
+
+.office-surface-enter {
+  animation: office-fade-in var(--duration-normal, 200ms) ease both;
+}
+
+/* Page sheets: put `.office-page-enter` on each sheet (siblings in one
+   parent). Opt-in under no-preference, still under reduced motion, as the
+   Docs stack is. The stagger is 40 ms a sheet, capped at the seventh: later
+   sheets arrive with the scroll. `--filled` marks a virtualized fill. */
+@media (prefers-reduced-motion: no-preference) {
+  .office-page-enter {
+    animation: office-page-enter 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .office-page-enter:nth-child(2) {
+    animation-delay: 40ms;
+  }
+  .office-page-enter:nth-child(3) {
+    animation-delay: 80ms;
+  }
+  .office-page-enter:nth-child(4) {
+    animation-delay: 120ms;
+  }
+  .office-page-enter:nth-child(5) {
+    animation-delay: 160ms;
+  }
+  .office-page-enter:nth-child(6) {
+    animation-delay: 200ms;
+  }
+  .office-page-enter:nth-child(n + 7) {
+    animation-delay: 240ms;
+  }
+  .office-page-enter.office-page-enter--filled {
+    animation: office-page-fill 180ms ease-out both;
+  }
+}
+
+/* A page whose content has not been drawn yet carries the Docs settle bar
+   (the paged document's first-layout bar, same size, place and sweep) until
+   its editor marks it data-office-settled="true". The host is positioned. */
+.office-settle-shimmer:not([data-office-settled="true"])::before {
+  content: "";
+  position: absolute;
+  z-index: 7;
+  top: 28px;
+  left: 50%;
+  width: 112px;
+  height: 4px;
+  border-radius: 999px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--console-accent-strong, #0a7d72) 12%, transparent)
+      0%,
+    color-mix(in srgb, var(--console-accent-strong, #0a7d72) 72%, transparent)
+      50%,
+    color-mix(in srgb, var(--console-accent-strong, #0a7d72) 12%, transparent)
+      100%
+  );
+  background-size: 200% 100%;
+  animation: office-settle-shimmer 900ms ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Locate: lib/page-locate.ts revealLocatedElement marks the target with the
+   `is-located` class or, for a React-owned node whose className a re-render
+   would reset, with data-located="true". */
+.is-located,
+[data-located="true"] {
+  animation: office-locate-flash 1.2s ease-out;
+}
+
+/* Hand-built Cupertino menus (no Radix data-state) animate on mount when
+   they, or a window root around them, opt in. The Docs menus never set
+   these, so their own rules in note-editor.css are unchanged. */
+.docs-cupertino-menu[data-office-menu-enter]:not([data-state], [data-motion-ghost]),
+[data-office-menu-scope] .docs-cupertino-menu:not([data-state], [data-motion-ghost]) {
+  animation: office-menu-in var(--menu-enter, 150ms) var(--enter-ease, cubic-bezier(0.22, 1, 0.36, 1)) both !important;
+}
+
+/* Window chrome reveal by attribute: data-office-chrome-reveal on the
+   element itself names the edge it slides in from. */
+[data-office-chrome-reveal="top"] {
+  animation: office-chrome-top-reveal 600ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+[data-office-chrome-reveal="bottom"] {
+  animation: office-chrome-bottom-reveal 600ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+[data-office-chrome-reveal="side"] {
+  animation: office-chrome-side-reveal 600ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+[data-office-chrome-reveal="side-left"] {
+  animation: office-chrome-side-left-reveal 600ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .office-spin,
+  .office-pulse,
+  .office-pop-in,
+  .office-scale-in,
+  .office-rise-in,
+  .office-surface-enter,
+  .office-settle-shimmer::before,
+  [data-office-chrome-reveal] {
+    animation: none;
+  }
+
+  .docs-cupertino-menu[data-office-menu-enter]:not([data-state]),
+  [data-office-menu-scope] .docs-cupertino-menu:not([data-state]) {
+    animation: none !important;
+  }
+
+  /* Without the fade the located target still reads as the one, still. */
+  .is-located,
+  [data-located="true"] {
+    animation: none;
+    background-color: color-mix(
+      in srgb,
+      var(--console-accent-strong, #0a7d72) 16%,
+      transparent
+    );
+  }
+}

@@ -1,0 +1,131 @@
+@scope ([data-example]) {
+  [data-slot="accordion"] {
+    width: 100%;
+    max-width: 28rem;
+    margin-inline: auto;
+    border-top: 1px solid var(--line-faint);
+  }
+
+  /* Opening and closing only grows the demo downward. */
+  :scope[data-example^="accordion/"] {
+    justify-content: flex-start;
+  }
+
+  /* Center the demo's top-level group around an accordion; its text stays start-aligned. */
+  :scope > * > :has([data-slot="accordion"]) {
+    align-self: center;
+    width: 100%;
+    max-width: 28rem;
+  }
+
+  [data-slot="accordion-item"] {
+    border-bottom: 1px solid var(--line-faint);
+  }
+
+  [data-slot="accordion-header"] {
+    display: flex;
+    margin: 0;
+    font: inherit;
+  }
+
+  [data-slot="accordion-trigger"] {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--space-2);
+    padding: 11px 2px;
+    border: 0;
+    border-radius: 4px;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--text-md);
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: start;
+    cursor: default;
+
+    &:focus-visible {
+      outline-offset: 0;
+    }
+
+    & > svg {
+      flex: none;
+      order: -1;
+      color: color-mix(in oklab, var(--ink) 55%, var(--paper));
+      rotate: -90deg;
+
+      &:is([dir="rtl"], [dir="rtl"] *) {
+        rotate: 90deg;
+      }
+    }
+
+    &[data-open] > svg {
+      rotate: 0deg;
+    }
+
+    & > [data-slot="hint"]:last-child {
+      margin-inline-start: auto;
+    }
+
+    &:not([data-open]) [data-show="open"],
+    &[data-open] [data-show="closed"] {
+      display: none;
+    }
+
+    &[data-disabled] {
+      color: var(--line-disabled);
+
+      & > svg {
+        color: var(--line-disabled);
+      }
+    }
+  }
+
+  [data-slot="accordion-panel"] {
+    padding-inline: 26px 2px;
+    color: var(--ink);
+    font-size: var(--text-md);
+    font-weight: 400;
+
+    &::after {
+      display: block;
+      height: 11px;
+      content: "";
+    }
+
+    & [data-slot="accordion"] {
+      max-width: none;
+      border-top: 0;
+    }
+
+    & [data-slot="accordion-item"]:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  :scope[data-example="accordion/search"] mark {
+    border-radius: 3px;
+    background: color-mix(in oklab, var(--ink) 14%, var(--surface-1));
+    color: inherit;
+  }
+
+  /* Only this demo animates; the height transition is what it shows. */
+  :scope[data-example="accordion/animation"] {
+    & [data-slot="accordion-trigger"] > svg {
+      transition: rotate var(--duration);
+    }
+
+    & [data-slot="accordion-panel"] {
+      box-sizing: border-box;
+      height: var(--accordion-panel-height);
+      overflow: hidden;
+      transition: height calc(var(--duration) * 2) ease-out;
+
+      &:is([data-starting-style], [data-ending-style]) {
+        height: 0;
+      }
+    }
+  }
+}

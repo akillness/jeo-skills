@@ -1,0 +1,78 @@
+@scope ([data-example]) {
+  :is([data-slot="date-input"], [data-slot="time-input"]) {
+    display: inline-flex;
+    align-items: center;
+    width: auto;
+    padding-inline: 8px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* A field around a date or time takes the input's width, so its description wraps under it. */
+  [data-slot="field"]:has(
+    > :is([data-slot="date-input"], [data-slot="time-input"])
+  ) {
+    width: max-content;
+    max-width: 20rem;
+
+    & > [data-slot="field-description"] {
+      contain: inline-size;
+    }
+  }
+
+  /* Stacks of date and time fields shrink to their fields, so they stay centered. */
+  :scope[data-example^="date-input/"] [data-slot="stack"] {
+    width: auto;
+  }
+
+  :is([data-slot="date-input-segment"], [data-slot="time-input-segment"]) {
+    &[data-type="literal"] {
+      padding-inline: 1px;
+      color: var(--muted);
+      white-space: pre;
+    }
+
+    &:not([data-type="literal"]) {
+      box-sizing: content-box;
+      width: 2ch;
+      height: 22px;
+      padding: 0 2px;
+      border: 0;
+      border-radius: 4px;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      text-align: center;
+      caret-color: transparent;
+      outline: none;
+
+      &::placeholder {
+        color: var(--muted);
+      }
+
+      &::selection {
+        background: transparent;
+      }
+
+      &:focus {
+        background: var(--ink);
+        color: var(--paper);
+
+        &::placeholder {
+          color: var(--paper);
+        }
+      }
+
+      &:disabled {
+        color: inherit;
+      }
+    }
+
+    &[data-type="year"] {
+      width: 4ch;
+    }
+
+    &[data-type="dayPeriod"] {
+      width: 2.6ch;
+    }
+  }
+}

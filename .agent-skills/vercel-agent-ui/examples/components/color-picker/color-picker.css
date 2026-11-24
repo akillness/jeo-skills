@@ -1,0 +1,190 @@
+@scope ([data-example]) {
+  [data-slot="color-picker"] {
+    --checker: repeating-conic-gradient(
+        var(--line-faint) 0 25%,
+        var(--surface-1) 0 50%
+      )
+      0 0 / 8px 8px;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    width: 16rem;
+    max-width: 100%;
+
+    & > [data-slot="row"] {
+      flex-wrap: nowrap;
+      gap: var(--space-2);
+    }
+  }
+
+  [data-slot="color-picker-sliders"] {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+
+  [data-slot="color-picker"] > [data-slot="row"] > select {
+    flex: none;
+    width: auto;
+  }
+
+  [data-slot="color-picker-area"] {
+    height: 10rem;
+    border-radius: var(--radius-control);
+    background: var(--color-area-background, var(--checker));
+    box-shadow: inset 0 0 0 1px var(--line-faint);
+    cursor: crosshair;
+
+    &:is([data-disabled], [data-readonly]) {
+      cursor: default;
+    }
+
+    &[data-disabled] {
+      opacity: 0.5;
+    }
+  }
+
+  [data-slot="color-picker-area-canvas"] {
+    border-radius: inherit;
+  }
+
+  [data-slot="color-picker-slider"] {
+    height: 12px;
+    border-radius: 999px;
+    background: var(--color-slider-background);
+    box-shadow: inset 0 0 0 1px var(--line-faint);
+
+    &[data-channel="alpha"] {
+      background: var(--color-slider-background), var(--checker);
+    }
+
+    &[data-disabled] {
+      opacity: 0.5;
+    }
+
+    [data-slot="row"] > & {
+      flex: 1;
+    }
+  }
+
+  :is(
+    [data-slot="color-picker-area-thumb"],
+    [data-slot="color-picker-slider-thumb"]
+  ) {
+    box-sizing: border-box;
+    width: var(--size-icon);
+    height: var(--size-icon);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background: var(--color-picker-color);
+    box-shadow:
+      0 0 0 1px rgb(0 0 0 / 0.3),
+      var(--shadow-drop);
+    translate: -50% -50%;
+
+    &:is([dir="rtl"], [dir="rtl"] *) {
+      translate: 50% -50%;
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--halo);
+      outline-offset: 2px;
+    }
+
+    &[data-out-of-gamut] {
+      border-style: dashed;
+    }
+  }
+
+  [data-slot="color-picker-slider-thumb"] {
+    top: 50%;
+    translate: calc(var(--color-slider-thumb-position) * -1) -50%;
+
+    &:is([dir="rtl"], [dir="rtl"] *) {
+      translate: var(--color-slider-thumb-position) -50%;
+    }
+  }
+
+  :is(
+    [data-slot="color-picker-swatch"],
+    [data-slot="color-picker-swatch-item"]
+  ) {
+    flex: none;
+    box-sizing: border-box;
+    width: var(--size);
+    height: var(--size);
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-control);
+    background:
+      linear-gradient(var(--color-picker-color), var(--color-picker-color)),
+      var(--checker);
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.1);
+  }
+
+  [data-slot="color-picker-swatches"] {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: var(--space-2);
+  }
+
+  [data-slot="color-picker-swatch-item"] {
+    width: auto;
+    height: auto;
+    aspect-ratio: 1;
+
+    &[data-selected] {
+      box-shadow:
+        inset 0 0 0 1px rgb(0 0 0 / 0.1),
+        0 0 0 2px var(--surface-1),
+        0 0 0 3.5px var(--ink);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--halo);
+      outline-offset: 2px;
+    }
+  }
+
+  [data-slot="color-picker-input"] {
+    width: 100%;
+    font-family: var(--mono);
+  }
+
+  [data-slot="color-picker-channel-input"] {
+    padding-inline: var(--space-2);
+    font-variant-numeric: tabular-nums;
+  }
+
+  [data-slot="row"]
+    :is(
+      [data-slot="color-picker-input"],
+      [data-slot="color-picker-channel-input"]
+    ) {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+  }
+
+  [data-slot="color-picker"]:has(> [data-slot="popover-trigger"]) {
+    width: auto;
+  }
+
+  [data-slot="popover-trigger"]:has(> [data-slot="color-picker-swatch"]) {
+    width: var(--size-lg);
+    padding: 4px;
+
+    & > [data-slot="color-picker-swatch"] {
+      width: 100%;
+      height: 100%;
+      border-radius: calc(var(--radius-control) - 2px);
+    }
+  }
+
+  [data-slot="popover-content"]:has([data-slot="color-picker-area"]) {
+    width: 16rem;
+  }
+}

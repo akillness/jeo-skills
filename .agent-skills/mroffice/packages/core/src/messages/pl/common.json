@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Niestandardowe",
+ "zoom.levels": "Poziomy powiększenia",
+ "dialog.close": "Zamknij",
+ "toast.close": "Zamknij powiadomienie",
+ "button.confirm": "OK",
+ "button.cancel": "Anuluj",
+ "libreOffice.enable": "Pobierz i włącz (ok. {size})",
+ "libreOffice.enableAlt": "Pobierz i włącz LibreOffice",
+ "libreOffice.enabled": "Program LibreOffice {version} jest włączony",
+ "libreOffice.retrying": "Ponawianie próby…",
+ "libreOffice.ready": "Stare formaty pakietu Office, pliki OpenDocument, obrazy EMF/WMF i eksport do formatu OpenDocument działają teraz.",
+ "libreOffice.needed": "Wymaga to programu LibreOffice. MR Note Classic może pobrać oficjalne wydanie do własnego folderu; nic nie zostanie zainstalowane w systemie.",
+ "libreOffice.neededFor": "Zapisywanie w formacie .{format} wymaga programu LibreOffice. MR Note Classic może pobrać oficjalne wydanie do własnego folderu; nic nie zostanie zainstalowane w systemie."
+}

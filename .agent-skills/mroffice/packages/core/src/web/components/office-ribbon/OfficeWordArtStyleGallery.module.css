@@ -1,0 +1,94 @@
+.sample {
+  display: inline-block;
+  font-family: Arial, sans-serif;
+  font-size: 64px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+.gallery.gallery {
+  --office-gallery-item-width: 54px;
+  --office-gallery-gap: 2px;
+}
+.gallery > div:first-child > span {
+  width: 54px;
+  min-width: 54px;
+  height: var(--office-gallery-content-height);
+}
+.gallery :global(button[data-office-style-gallery-preview-item]) {
+  width: 54px;
+  min-width: 54px;
+  height: var(--office-gallery-content-height);
+  padding: 3px;
+}
+.gallery
+  :global(button[data-office-style-gallery-preview-item] > span:last-child) {
+  display: none;
+}
+.gallery
+  :global(button[data-office-style-gallery-preview-item] > span[aria-hidden]) {
+  border: 0;
+  background: transparent;
+  width: 46px;
+  height: 44px;
+  overflow: visible;
+}
+.gallery .sample {
+  font-size: 42px;
+}
+/* Dark menus: a style sample is text as it prints, so inside a dark menu its
+   item is a paper tile; black-filled and outline-only styles would vanish on
+   the dark card. The tile is the item, not the sample: gradient and
+   outline styles paint the sample with background-clip: text. Highlight
+   keeps the paper and rings it. The ribbon's own gallery row
+   is light and keeps none. */
+:global([data-theme-mode="dark"] .docs-cupertino-menu [role="menuitem"]):has(.sample) {
+  background: #ffffff !important;
+  border-radius: 6px;
+}
+:global([data-theme-mode="dark"] .docs-cupertino-menu [role="menuitemradio"]):has(.sample),
+:global([data-theme-mode="dark"] [data-office-gallery-menu] [role="menuitemradio"]):has(.sample) {
+  background: #ffffff !important;
+  border-radius: 6px;
+}
+:global([data-theme-mode="high-contrast"] .docs-cupertino-menu [role="menuitem"]):has(.sample) {
+  background: #ffffff !important;
+  border-radius: 6px;
+}
+:global([data-theme-mode="high-contrast"] .docs-cupertino-menu [role="menuitemradio"]):has(.sample),
+:global([data-theme-mode="high-contrast"] [data-office-gallery-menu] [role="menuitemradio"]):has(.sample) {
+  background: #ffffff !important;
+  border-radius: 6px;
+}
+
+:global([data-theme-mode="dark"] .docs-cupertino-menu [role="menuitem"]):has(.sample):is(:focus, [data-highlighted]) {
+  box-shadow: 0 0 0 2px rgb(255 255 255 / 70%);
+}
+
+:global([data-theme-mode="dark"] .docs-cupertino-menu [role="menuitemradio"]):has(.sample):is(:focus, [data-highlighted]),
+:global([data-theme-mode="dark"] [data-office-gallery-menu] [role="menuitemradio"]):has(.sample):is(:focus, [data-highlighted]) {
+  box-shadow: 0 0 0 2px rgb(255 255 255 / 70%);
+}
+
+:global([data-theme-mode="high-contrast"] .docs-cupertino-menu [role="menuitem"]):has(.sample):is(:focus, [data-highlighted]) {
+  box-shadow: 0 0 0 2px rgb(255 255 255 / 70%);
+}
+
+:global([data-theme-mode="high-contrast"] .docs-cupertino-menu [role="menuitemradio"]):has(.sample):is(:focus, [data-highlighted]),
+:global([data-theme-mode="high-contrast"] [data-office-gallery-menu] [role="menuitemradio"]):has(.sample):is(:focus, [data-highlighted]) {
+  box-shadow: 0 0 0 2px rgb(255 255 255 / 70%);
+}
+
+/* Insert > WordArt: the twenty "Aa" tiles, five to a row, the same in every
+   editor's dropdown. */
+.insertGrid {
+  display: grid;
+  gap: 2px;
+  grid-template-columns: repeat(5, minmax(84px, 1fr));
+  padding: 4px;
+}
+
+.insertTile.insertTile {
+  justify-content: center;
+  padding: 4px;
+}

@@ -1,0 +1,180 @@
+@scope ([data-example]) {
+  /* A table footer: the summary and page size on one line, the pages centered below. */
+  :scope[data-example="pagination/total"] {
+    & [data-slot="stack"] {
+      align-self: center;
+      align-items: stretch;
+      gap: var(--space-4);
+      width: 28rem;
+      max-width: 100%;
+    }
+
+    & [data-slot="row"] {
+      justify-content: space-between;
+    }
+
+    & p {
+      margin: 0;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    & [data-slot="label"] {
+      font-weight: 400;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    & select {
+      width: 4.5rem;
+      color: var(--ink);
+    }
+  }
+
+  [data-slot="pagination-list"] {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* A pill track: the current page widens to name itself, and the steps show the page they go to. */
+  :scope[data-example="pagination/render"] {
+    & [data-slot="pagination-list"] {
+      gap: 2px;
+      padding: 3px;
+      border-radius: 999px;
+      background: var(--tint);
+    }
+
+    &
+      :is(
+        [data-slot="pagination-link"],
+        [data-slot="pagination-previous"],
+        [data-slot="pagination-next"]
+      ) {
+      gap: 4px;
+      height: 28px;
+      min-width: 28px;
+      padding-inline: 10px;
+      border-radius: 999px;
+      background: transparent;
+      box-shadow: none;
+      color: var(--muted);
+      transition:
+        background var(--duration),
+        color var(--duration);
+
+      &:hover:not([aria-disabled="true"]) {
+        color: var(--ink);
+      }
+
+      &[aria-current="page"] {
+        background: var(--surface-1);
+        box-shadow: var(--shadow-drop);
+        color: var(--ink);
+        font-weight: 500;
+      }
+
+      &[aria-disabled="true"] {
+        color: var(--line-disabled);
+      }
+
+      & > span {
+        font-size: var(--text-sm);
+        font-variant-numeric: tabular-nums;
+      }
+    }
+
+    & [data-slot="pagination-ellipsis"] {
+      width: 20px;
+      height: 28px;
+    }
+  }
+
+  [data-slot="pagination-item"]:not(:has(*)) {
+    padding-inline: var(--space-2);
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  :is(
+    [data-slot="pagination-first"],
+    [data-slot="pagination-last"],
+    [data-slot="pagination-link"],
+    [data-slot="pagination-next"],
+    [data-slot="pagination-previous"]
+  ) {
+    min-width: var(--size);
+    padding-inline: var(--space-2);
+    font-variant-numeric: tabular-nums;
+    text-decoration: none;
+
+    &:is([aria-current="page"], [data-current], [data-active]) {
+      background: var(--surface-1);
+      box-shadow:
+        inset 0 0 0 1px var(--ink),
+        var(--shadow-drop);
+      color: var(--ink);
+    }
+  }
+
+  :is([data-slot="pagination-previous"], [data-slot="pagination-next"]):has(
+    > :not(svg, [data-slot="visually-hidden"])
+  ) {
+    gap: 6px;
+    padding-inline: 10px;
+  }
+
+  [data-slot="pagination-ellipsis"] {
+    display: inline-grid;
+    place-items: center;
+    width: var(--size);
+    height: var(--size);
+    color: var(--muted);
+  }
+
+  /* On a phone, a full range fits one line: tighter steps and links, and the custom track drops its step numbers. */
+  @media (width < 40rem) {
+    [data-slot="pagination-list"] {
+      flex-wrap: nowrap;
+      gap: 0;
+    }
+
+    :is(
+      [data-slot="pagination-first"],
+      [data-slot="pagination-last"],
+      [data-slot="pagination-link"],
+      [data-slot="pagination-next"],
+      [data-slot="pagination-previous"]
+    ) {
+      min-width: 30px;
+      padding-inline: 4px;
+    }
+
+    [data-slot="pagination-ellipsis"] {
+      width: 24px;
+    }
+
+    :scope[data-example="pagination/render"] {
+      &
+        :is(
+          [data-slot="pagination-link"],
+          [data-slot="pagination-previous"],
+          [data-slot="pagination-next"]
+        ) {
+        min-width: 26px;
+        padding-inline: 7px;
+
+        & > span {
+          display: none;
+        }
+      }
+    }
+  }
+}

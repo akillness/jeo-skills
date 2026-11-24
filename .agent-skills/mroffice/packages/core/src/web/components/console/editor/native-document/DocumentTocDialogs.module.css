@@ -1,0 +1,345 @@
+/*
+ * Word's Table of Contents gallery and dialogs (DocumentTocDialogs.tsx).
+ * The gallery rows are thumbnails of the block each inserts; the dialogs
+ * are the centred Office frame (OfficeDialogShell) with Word's field order.
+ */
+
+/* ------------------------------------------------------------ gallery */
+
+.galleryLabel.galleryLabel {
+  padding: 6px 8px 2px;
+  color: #35433f;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 2px 6px 6px;
+}
+
+.galleryItem.galleryItem {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  padding: 6px;
+  border: 1px solid #d5dbd9;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.galleryItem.galleryItem[data-highlighted],
+.galleryItem.galleryItem:hover {
+  border-color: #409663;
+  background: color-mix(in srgb, #15803d 8%, #fff);
+}
+
+.galleryName {
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  color: #1f2937;
+}
+
+/* A block thumbnail: a title and three entries in the format's own look. */
+.thumb {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 132px;
+  height: 78px;
+  padding: 7px 8px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #1f2937;
+  font-size: 7px;
+  line-height: 1.2;
+  overflow: hidden;
+}
+
+.thumbTitle {
+  margin-bottom: 2px;
+  font-size: 9px;
+  font-weight: 700;
+  color: #2f5496;
+}
+
+.thumbLine {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  min-width: 0;
+}
+
+.thumbText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.thumbLeader {
+  flex: 1 1 8px;
+  min-width: 8px;
+  height: 0.7em;
+  border-bottom: 1px dotted currentColor;
+}
+
+.thumbPage {
+  flex: none;
+}
+
+/* A table whose page numbers follow a bare gap (Contemporary, Simple). */
+.thumbLeader[data-leader="none"] {
+  border-bottom-color: transparent;
+}
+
+/* Dark and high contrast: the gallery sits on the dark menu card, so its
+   heading and tiles take the menu's ink and a quiet frame (the heading's
+   light-theme ink was all but invisible there). The thumbnail stays paper. */
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .galleryLabel.galleryLabel {
+  color: var(--console-text-secondary, #a1a1aa);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .galleryItem.galleryItem {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .galleryItem.galleryItem[data-highlighted],
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .galleryItem.galleryItem:hover {
+  border-color: color-mix(in srgb, var(--console-accent, #2dd4bf) 55%, transparent);
+  background: color-mix(in srgb, var(--console-accent, #2dd4bf) 12%, transparent);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .galleryName {
+  color: var(--console-text-primary, #f2f2f7);
+}
+
+/* ------------------------------------------------------------ dialogs */
+
+/* The card, title row, fields, checks, stepper and push buttons are the
+   shared Office dialog chrome in Word blue (OfficeDialogChrome.css); these
+   rules only lay out what is particular to the TOC dialogs, in the chrome's
+   colour tokens so they read in light and dark. */
+
+.dialog.dialog {
+  max-width: 640px;
+}
+
+.sectionLabel {
+  margin: 0 0 4px;
+  color: var(--office-dialog-ink);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.previews {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.previewColumn {
+  min-width: 0;
+}
+
+/* Print and Web previews are pages: white paper whatever the card. The page
+   also carries .note-editor-content for the TOC's own typography, whose
+   editor-page min-height (a full sheet of paper) and body type would otherwise
+   stretch each preview to the height of a page; the doubled class holds the
+   thumbnail's own box and type against it. */
+.previewPage.previewPage {
+  height: 128px;
+  min-height: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 8px;
+  background: #fff;
+  color: #1f2937;
+  overflow: hidden;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.previewToc.previewToc {
+  border: none;
+  pointer-events: none;
+}
+
+.previewLink {
+  color: #0563c1;
+  text-decoration: underline;
+}
+
+.optionColumns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 14px;
+  margin-top: 4px;
+}
+
+.optionColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.field > span:first-child {
+  flex: 0 0 auto;
+}
+
+.select {
+  min-width: 132px;
+}
+
+.general {
+  margin: 8px 0 0;
+}
+
+.generalRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+}
+
+/* Show levels: the chrome's stepper (office-dialog__stepper) draws the
+   field and its buttons; only its width is particular to this dialog. */
+.spinner {
+  width: 104px;
+}
+
+.dialogButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+/* ------------------------------------------------------------ options */
+
+.styleGrid {
+  margin: 2px 0 8px 24px;
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 8px;
+  background: var(--office-dialog-surface);
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.styleGridHead {
+  display: grid;
+  grid-template-columns: 1fr 64px;
+  padding: 5px 8px 5px 32px;
+  border-bottom: 1px solid var(--office-dialog-divider);
+  color: var(--office-dialog-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.styleGridBody {
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.styleRow {
+  display: grid;
+  grid-template-columns: 24px 1fr 64px;
+  align-items: center;
+  gap: 0 8px;
+  padding: 2px 8px;
+}
+
+.styleRow:nth-child(even) {
+  background: color-mix(in srgb, var(--office-dialog-ink) 4%, transparent);
+}
+
+.styleCheck {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--office-dialog-accent);
+}
+
+.styleName {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.levelInput {
+  width: 48px;
+  text-align: center;
+}
+
+/* ------------------------------------------------------------ styles */
+
+.stylesLayout {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 12px;
+}
+
+.stylesList {
+  max-height: 240px;
+  margin: 0;
+  padding: 3px;
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 8px;
+  background: var(--office-dialog-surface);
+  list-style: none;
+  overflow-y: auto;
+}
+
+.stylesItem.stylesItem {
+  display: block;
+  width: 100%;
+  padding: 3px 8px;
+  border: none;
+  border-radius: 5px;
+  background: none;
+  font: inherit;
+  font-size: 12px;
+  text-align: left;
+  color: var(--office-dialog-ink);
+  cursor: pointer;
+}
+
+.stylesItem.stylesItem:hover {
+  background: var(--office-dialog-hover);
+}
+
+.stylesItem.stylesItem[aria-selected="true"] {
+  background: var(--office-dialog-accent-soft);
+}
+
+.stylesPreview {
+  min-width: 0;
+}
+
+.stylesDescription {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--office-dialog-muted);
+}

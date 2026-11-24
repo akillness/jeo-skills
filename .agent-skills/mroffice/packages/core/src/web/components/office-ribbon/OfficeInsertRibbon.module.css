@@ -1,0 +1,617 @@
+.surface {
+  --office-insert-band-height: 100px;
+  --office-insert-caption-height: 14px;
+  --office-large-command-height: 66px;
+  --office-large-content-height: 52px;
+  --office-large-disclosure-height: 14px;
+  background: #fff;
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body) {
+  background: #fff;
+  box-sizing: border-box;
+  height: var(--office-insert-band-height);
+  max-height: var(--office-insert-band-height);
+  min-height: var(--office-insert-band-height);
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-track) {
+  align-items: stretch;
+  background: #fff;
+  box-sizing: border-box;
+  height: var(--office-insert-band-height);
+  min-height: var(--office-insert-band-height);
+  min-width: 100%;
+  overflow: visible;
+  width: max-content;
+}
+
+/* A group with no control in it (a button, an input, a select or a
+   role="button"): marked by the band (OfficeInsertRibbon
+   useEmptyRibbonGroupMarks) before the frame paints, never matched with
+   `:not(:has(...))`, which made WebKit restyle the whole desk for every
+   button inserted above a ribbon. */
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-track)
+  > :global(.note-editor-office-toolbar__group[data-office-group-empty]) {
+  display: none;
+}
+
+/* Here every group ends in its full-height divider (Word's group
+   separator), so the ribbon track's short rule between groups would only
+   stack a darker tick on top of it. */
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-track)
+  > :global(.note-editor-office-toolbar__group + .note-editor-office-toolbar__group)::before,
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-track)
+  > :global([data-ribbon-inline-contents])
+  > :global(.note-editor-office-toolbar__group + .note-editor-office-toolbar__group)::before {
+  content: none;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-track)
+  > :global(.note-editor-office-toolbar__group) {
+  align-items: center;
+  align-self: stretch;
+  background: transparent;
+  /* Reset the physical fallback first. In LTR, a later border-right reset
+     would otherwise erase border-inline-end and every secondary-tab group
+     divider with it. The band's last group drops it (note-editor.css,
+     data-ribbon-last-shown), whichever tab is shown. */
+  border-right: 0;
+  border-inline-end: 1px solid var(--docs-ribbon-divider, #e5e7eb);
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  gap: 2px;
+  height: var(--office-insert-band-height);
+  min-height: var(--office-insert-band-height);
+  overflow: visible;
+  padding: 2px 8px 0;
+  width: max-content;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-track)
+  > :global(.note-editor-office-toolbar__group)
+  > :first-child {
+  margin-block: auto;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-track)
+  > :global(.note-editor-office-toolbar__group)
+  > :first-child:not(:global(.note-editor-ribbon-big)) {
+  min-width: 0;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-track)
+  > :global(.note-editor-office-toolbar__group[data-ribbon-label]::after) {
+  align-self: center;
+  box-sizing: border-box;
+  color: var(--docs-ribbon-muted, #667085);
+  font-size: 11px;
+  font-weight: 550;
+  height: var(--office-insert-caption-height);
+  line-height: var(--office-insert-caption-height);
+  margin-top: auto;
+  min-height: var(--office-insert-caption-height);
+  padding: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-track)
+  > :global(.note-editor-office-toolbar__group[data-pdf-ribbon-label]::after) {
+  align-self: center;
+  box-sizing: border-box;
+  color: var(--docs-ribbon-muted, #667085);
+  font-size: 11px;
+  font-weight: 550;
+  height: var(--office-insert-caption-height);
+  line-height: var(--office-insert-caption-height);
+  margin-top: auto;
+  min-height: var(--office-insert-caption-height);
+  padding: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-ribbon-hstack) {
+  align-items: center;
+  min-height: 66px;
+}
+
+.surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-ribbon-row--fill) {
+  align-items: center;
+  min-height: 66px;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-big) {
+  align-self: center;
+  border: 1px solid var(--office-control-border, transparent);
+  border-radius: 6px;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  gap: 2px;
+  height: 66px;
+  justify-content: center;
+  max-height: 66px;
+  min-height: 66px;
+  min-width: 58px;
+  overflow: hidden;
+  /* Plain commands reserve the same lower 14px occupied by a menu rail, so
+     their icon and label stay on the segmented command's 52px baseline. */
+  padding: 2px 3px var(--office-large-disclosure-height, 14px);
+  transform: none;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-big):not(:global(.office-ribbon-control)) {
+  background: transparent;
+  box-shadow: none;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-big:hover:not(:disabled)),
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-big[data-state="open"]),
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-big--active) {
+  border-color: var(--office-control-border, color-mix(
+    in srgb,
+    var(--docs-ribbon-accent, #2563eb) 16%,
+    transparent
+  ));
+  transform: none;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-big:hover:not(:disabled)):not(:global(.office-ribbon-control)),
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-big[data-state="open"]):not(:global(.office-ribbon-control)),
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-big--active):not(:global(.office-ribbon-control)) {
+  background: color-mix(
+    in srgb,
+    var(--docs-ribbon-accent, #2563eb) 8%,
+    transparent
+  );
+  box-shadow: none;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-big)
+  > :global(svg:first-child),
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-big)
+  > :global(span:first-child)
+  > :global(svg:first-child),
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.docs-insert-icon) {
+  height: 24px;
+  width: 24px;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-big)
+  > :global(span:last-child:not(:first-child)) {
+  font-size: 11px;
+  font-weight: 550;
+  line-height: 1.1;
+  max-width: 100%;
+  min-height: 22px;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: normal;
+  width: 100%;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-big)
+  > :global(span:last-child:not(:first-child)):not(:global(.office-ribbon-control)) {
+  color: inherit;
+}
+
+/* Large menu commands use the same space-saving vertical anatomy as the
+   Office picture reference: command above, semantic disclosure strip below. */
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(
+    .note-editor-ribbon-big[data-office-home-menu-indicator="true"]
+  ) {
+  border: 0;
+  display: grid;
+  gap: 0;
+  grid-template-columns: minmax(58px, auto);
+  grid-template-rows: 52px 14px;
+  min-width: 58px;
+  overflow: hidden;
+  padding: 0;
+}
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(
+    .note-editor-ribbon-big[data-office-home-menu-indicator="true"]
+  ):not(:global(.office-ribbon-control)) {
+  background: transparent;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(
+    .note-editor-ribbon-big[data-office-home-menu-indicator="true"]
+  )
+  > :global(span:first-child) {
+  align-items: center;
+  border: 1px solid var(--office-control-border, transparent);
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  grid-column: 1;
+  grid-row: 1;
+  height: var(--office-large-content-height, 52px);
+  justify-content: center;
+  max-height: var(--office-large-content-height, 52px);
+  min-height: var(--office-large-content-height, 52px);
+  min-width: 58px;
+  overflow: hidden;
+  padding: 2px 3px 0;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-big[data-office-home-menu-indicator="true"])
+  > :global(span:first-child)
+  > :global(span:last-child) {
+  display: -webkit-box;
+  font-size: 11px;
+  font-weight: 550;
+  line-height: 1.1;
+  max-width: 100%;
+  min-height: 22px;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  text-align: center;
+  white-space: normal;
+  width: 100%;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(
+    .note-editor-ribbon-big[data-office-home-menu-indicator="true"]:hover:not(
+        :disabled
+      )
+  )
+  > :global(span:first-child),
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(
+    .note-editor-ribbon-big[data-office-home-menu-indicator="true"][data-state="open"]
+  )
+  > :global(span:first-child),
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(
+    .note-editor-ribbon-big[data-office-home-menu-indicator="true"].note-editor-ribbon-big--active
+  )
+  > :global(span:first-child),
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(
+    .note-editor-ribbon-big[data-office-home-menu-indicator="true"][aria-pressed="true"]
+  )
+  > :global(span:first-child) {
+  border-color: var(--office-control-border, color-mix(
+    in srgb,
+    var(--docs-ribbon-accent, #2563eb) 24%,
+    transparent
+  ));
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(
+    .note-editor-ribbon-big[data-office-home-menu-indicator="true"]:hover:not(
+        :disabled
+      )
+  )
+  > :global(span:first-child):not(:global(.office-ribbon-control)),
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(
+    .note-editor-ribbon-big[data-office-home-menu-indicator="true"][data-state="open"]
+  )
+  > :global(span:first-child):not(:global(.office-ribbon-control)),
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(
+    .note-editor-ribbon-big[data-office-home-menu-indicator="true"].note-editor-ribbon-big--active
+  )
+  > :global(span:first-child):not(:global(.office-ribbon-control)),
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(
+    .note-editor-ribbon-big[data-office-home-menu-indicator="true"][aria-pressed="true"]
+  )
+  > :global(span:first-child):not(:global(.office-ribbon-control)) {
+  background: color-mix(
+    in srgb,
+    var(--docs-ribbon-accent, #2563eb) 8%,
+    transparent
+  );
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(
+    .note-editor-ribbon-big[data-office-home-menu-indicator="true"]
+  )
+  > :global(span:last-child) {
+  align-items: center;
+  align-self: stretch;
+  border-inline-start: 0;
+  border-top: 1px solid var(--office-control-border, color-mix(
+      in srgb,
+      var(--docs-ribbon-accent, #2563eb) 16%,
+      transparent
+    ));
+  border-radius: 0 0 6px 6px;
+  box-sizing: border-box;
+  display: flex;
+  font-size: inherit;
+  font-weight: inherit;
+  grid-column: 1;
+  grid-row: 2;
+  height: 14px;
+  justify-content: center;
+  line-height: 1;
+  margin: 0;
+  max-height: 14px;
+  max-width: none;
+  min-width: 0;
+  min-height: 14px;
+  overflow: hidden;
+  overflow-wrap: normal;
+  padding: 0;
+  text-align: center;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(
+    .note-editor-ribbon-big[data-office-home-menu-indicator="true"]
+  )
+  > :global(span:last-child):not(:global(.office-ribbon-control)) {
+  background: var(--office-home-disclosure-background, color-mix(
+    in srgb,
+    var(--docs-ribbon-accent, #2563eb) 8%,
+    transparent
+  ));
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(
+    .note-editor-ribbon-big[data-office-home-menu-indicator="true"]
+  )
+  > :global(span:last-child)
+  > :global(svg) {
+  display: block;
+  height: 12px;
+  margin: 0;
+  width: 12px;
+}
+
+.surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-office-toolbar__button) {
+  box-sizing: border-box;
+  min-height: 30px;
+  transform: none;
+}
+
+.surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-office-toolbar__menu-trigger) {
+  box-sizing: border-box;
+  min-height: 30px;
+  transform: none;
+}
+
+.surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-office-toolbar__button):not(:global(.office-ribbon-control)) {
+  box-shadow: none;
+}
+
+.surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-office-toolbar__menu-trigger):not(:global(.office-ribbon-control)) {
+  box-shadow: none;
+}
+
+/* True splits retain separate primary and menu buttons while stacking the
+   disclosure below, reducing the command width without changing band height. */
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-office-toolbar__split) {
+  align-self: center;
+  border: 0;
+  border-radius: 6px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(58px, auto);
+  grid-template-rows: 52px 14px;
+  height: 66px;
+  min-height: 66px;
+  min-width: 58px;
+  overflow: hidden;
+  position: relative;
+  width: max-content;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-office-toolbar__split)
+  > :global(.note-editor-ribbon-big) {
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  grid-column: 1;
+  grid-row: 1;
+  gap: 2px;
+  height: var(--office-large-content-height, 52px);
+  max-height: var(--office-large-content-height, 52px);
+  min-height: var(--office-large-content-height, 52px);
+  min-width: 58px;
+  padding: 2px 3px 0;
+  width: auto;
+}
+
+.surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-office-toolbar__split) > :global(.note-editor-office-toolbar__menu-trigger) {
+  align-items: center;
+  align-self: stretch;
+  border: 0;
+  border-inline-start: 0;
+  border-top: 1px solid var(--office-control-border, color-mix(
+      in srgb,
+      var(--docs-ribbon-accent, #2563eb) 16%,
+      transparent
+    ));
+  border-radius: 0 0 6px 6px;
+  bottom: auto;
+  box-sizing: border-box;
+  display: flex;
+  grid-column: 1;
+  grid-row: 2;
+  height: 14px;
+  justify-content: center;
+  min-height: 14px;
+  min-width: 0;
+  padding: 0;
+  position: static;
+  right: auto;
+  transform: none;
+  width: 100%;
+  z-index: auto;
+}
+
+.surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-office-toolbar__split) > :global(.note-editor-office-toolbar__split-chevron) {
+  align-items: center;
+  align-self: stretch;
+  border: 0;
+  border-inline-start: 0;
+  border-top: 1px solid var(--office-control-border, color-mix(
+      in srgb,
+      var(--docs-ribbon-accent, #2563eb) 16%,
+      transparent
+    ));
+  border-radius: 0 0 6px 6px;
+  bottom: auto;
+  box-sizing: border-box;
+  display: flex;
+  grid-column: 1;
+  grid-row: 2;
+  height: 14px;
+  justify-content: center;
+  min-height: 14px;
+  min-width: 0;
+  padding: 0;
+  position: static;
+  right: auto;
+  transform: none;
+  width: 100%;
+  z-index: auto;
+}
+
+.surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-office-toolbar__split) > :global(.note-editor-office-toolbar__menu-trigger):not(:global(.office-ribbon-control)) {
+  background: color-mix(
+    in srgb,
+    var(--docs-ribbon-accent, #2563eb) 8%,
+    transparent
+  );
+  box-shadow: none;
+}
+
+.surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-office-toolbar__split) > :global(.note-editor-office-toolbar__split-chevron):not(:global(.office-ribbon-control)) {
+  background: color-mix(
+    in srgb,
+    var(--docs-ribbon-accent, #2563eb) 8%,
+    transparent
+  );
+  box-shadow: none;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-office-toolbar__split)
+  > :is(
+    :global(.note-editor-office-toolbar__menu-trigger),
+    :global(.note-editor-office-toolbar__split-chevron)
+  )
+  :global(svg) {
+  display: block;
+  height: 12px;
+  width: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-ribbon-big) {
+    transition: none;
+  }
+  .surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-office-toolbar__button) {
+    transition: none;
+  }
+  .surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-office-toolbar__menu-trigger) {
+    transition: none;
+  }
+}
+
+/* The app's dark theme and a document window's own dark mode. */
+:global([data-theme-mode="dark"]) .surface.surface.surface,
+:global([data-theme-mode="dark"]) .surface.surface.surface :global(.note-editor-ribbon-body),
+:global([data-theme-mode="dark"]) .surface.surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-ribbon-track),
+:global([data-theme-mode="high-contrast"]) .surface.surface.surface,
+:global([data-theme-mode="high-contrast"]) .surface.surface.surface :global(.note-editor-ribbon-body),
+:global([data-theme-mode="high-contrast"]) .surface.surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-ribbon-track),
+:global([data-document-dark-mode="true"]) .surface.surface.surface,
+:global([data-document-dark-mode="true"]) .surface.surface.surface :global(.note-editor-ribbon-body),
+:global([data-document-dark-mode="true"]) .surface.surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-ribbon-track) {
+  background: var(--office-ribbon-surface, rgb(38 39 44));
+}

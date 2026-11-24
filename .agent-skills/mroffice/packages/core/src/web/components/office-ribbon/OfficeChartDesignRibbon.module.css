@@ -1,0 +1,9 @@
+/* The one row a Chart Design group lays its large commands in. A host band
+   that owns the large-command metrics (the deck's secondary Home band) passes
+   its own class instead; nothing here restates a command's height or type. */
+.commands {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 68px;
+}

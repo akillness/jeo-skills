@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Egyéni",
+ "zoom.levels": "Nagyítási szintek",
+ "dialog.close": "Bezárás",
+ "toast.close": "Értesítés bezárása",
+ "button.confirm": "OK",
+ "button.cancel": "Mégse",
+ "libreOffice.enable": "Letöltés és engedélyezés (kb. {size})",
+ "libreOffice.enableAlt": "A LibreOffice letöltése és engedélyezése",
+ "libreOffice.enabled": "LibreOffice engedélyezve – verzió: {version}",
+ "libreOffice.retrying": "Újrapróbálkozás…",
+ "libreOffice.ready": "A régi Office-formátumok, az OpenDocument-fájlok, az EMF/WMF képek és az OpenDocument-exportálás most már működik.",
+ "libreOffice.needed": "Ehhez LibreOffice szükséges. Az MR Note Classic a hivatalos kiadást a saját mappájába tudja letölteni; a rendszerre semmi sem települ.",
+ "libreOffice.neededFor": "A(z) .{format} formátumú mentéshez LibreOffice szükséges. Az MR Note Classic a hivatalos kiadást a saját mappájába tudja letölteni; a rendszerre semmi sem települ."
+}

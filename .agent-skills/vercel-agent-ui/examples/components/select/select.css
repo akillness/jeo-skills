@@ -1,0 +1,412 @@
+@scope ([data-example]) {
+  /* The field sits near the top and centered, with room below for the open list inside the preview. */
+  :scope[data-example^="select/"] {
+    justify-content: flex-start;
+    min-height: 20rem;
+
+    & > * > * {
+      align-self: center;
+      max-width: 100%;
+    }
+  }
+
+  :scope:is(
+    [data-example="select/controlled"],
+    [data-example="select/modal"],
+    [data-example="select/align-item"]
+  ) {
+    min-height: 24rem;
+  }
+
+  :scope:is(
+    [data-example="select/groups"],
+    [data-example="select/scrollable"],
+    [data-example="select/typeahead"],
+    [data-example="select/search-groups"],
+    [data-example="select/searchable"],
+    [data-example="select/async-search"],
+    [data-example="select/virtualized"],
+    [data-example="select/controller"],
+    [data-example="select/disabled"],
+    [data-example="select/form"]
+  ) {
+    min-height: 31rem;
+  }
+
+  /* The selected item's text lands on the trigger's: the popup's padding plus the item's. */
+  :scope[data-example="select/align-item"] [data-slot="select-trigger"] {
+    padding-inline-start: 15px;
+  }
+
+  /* The controls sit wider than the field, so they wrap only on a phone. */
+  :scope[data-example="select/controller"]
+    [data-slot="stack"]:has(> [data-slot="controls"]) {
+    width: auto;
+  }
+
+  /* Each select beside its label, one per line, so the controls fit a phone. */
+  :scope[data-example="select/positioning"] {
+    min-height: 30rem;
+
+    & [data-slot="controls"] {
+      display: grid;
+      grid-template-columns: auto auto;
+      gap: var(--space-2) var(--space-3);
+
+      & [data-slot="select-label"] {
+        justify-self: end;
+      }
+
+      & [data-slot="select-trigger"] {
+        min-width: 8rem;
+      }
+
+      & > [data-slot="label"] {
+        grid-column: 2;
+      }
+    }
+  }
+
+  [data-slot="select-label"] {
+    font-weight: 500;
+
+    &[data-disabled] {
+      color: var(--line-disabled);
+    }
+  }
+
+  [data-slot="stack"]:has(
+    > [data-slot="select-label"],
+    > [data-slot="select"] > [data-slot="select-label"]
+  ) {
+    align-items: stretch;
+    gap: var(--space-2);
+  }
+
+  /* Field-shaped on top of the shared button look. */
+  [data-slot="select-trigger"] {
+    justify-content: space-between;
+    min-width: 12rem;
+    max-width: 100%;
+    padding-inline: 10px 8px;
+    font-weight: 400;
+    text-align: start;
+
+    &:active:not([data-disabled], [data-readonly]) {
+      scale: 0.98;
+    }
+
+    &:focus-visible {
+      outline-offset: 0;
+    }
+
+    &:is([data-invalid], [aria-invalid="true"]),
+    [data-invalid] > & {
+      box-shadow:
+        inset 0 0 0 1px var(--danger),
+        var(--shadow-drop);
+    }
+
+    &[data-readonly] {
+      background: var(--surface-1);
+      box-shadow: inset 0 0 0 1px var(--line);
+    }
+
+    & > svg:last-child {
+      color: var(--muted);
+    }
+
+    &[data-disabled] > svg:last-child {
+      color: inherit;
+    }
+  }
+
+  [data-slot="select-value"] {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 0;
+    overflow: hidden;
+    text-align: start;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &[data-placeholder] {
+      color: var(--muted);
+    }
+
+    [data-disabled] > & {
+      color: inherit;
+    }
+  }
+
+  [data-slot="select-value-icon"] {
+    display: flex;
+    color: var(--muted);
+  }
+
+  /* A row the keyboard reveals keeps a row of room from the scroller's edges. */
+  :is([data-slot="select-content"], [data-slot="select-list"]) {
+    scroll-padding-block: var(--space-8);
+  }
+
+  [data-slot="select-content"] {
+    min-width: max(10rem, var(--anchor-width));
+    max-height: min(20rem, var(--available-height));
+
+    &:has(> [data-slot="select-list"]) {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+      overflow: hidden;
+    }
+
+    &[data-presentation="sheet"] {
+      --sheet-backdrop: var(--backdrop);
+      width: min(36rem, 100%);
+      min-width: 0;
+      max-width: none;
+      max-height: 70dvh;
+      margin: 0 auto;
+      padding: var(--space-2) var(--space-2)
+        max(env(safe-area-inset-bottom), var(--space-4));
+      border-radius: var(--radius-popup) var(--radius-popup) 0 0;
+
+      & [data-slot="select-item"] {
+        min-height: 40px;
+      }
+    }
+  }
+
+  [data-slot="select-content"]:has(> div > [data-slot="select-list"]) {
+    overflow: hidden;
+
+    & > div {
+      max-height: calc(var(--available-height) - 10px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    & [data-slot="select-list"] > div {
+      position: relative;
+    }
+
+    & [data-slot="select-item"] {
+      position: absolute;
+      inset-inline: 0;
+    }
+  }
+
+  [data-slot="select-list"] {
+    min-height: 0;
+    overflow-y: auto;
+    outline: none;
+  }
+
+  [data-slot="select-group"] {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* The check sits in its own column at the end of each row. */
+  :is([data-slot="select-item"], [data-slot="select-select-all"]) {
+    position: relative;
+    padding-inline-end: 30px;
+
+    &:is([data-selected], [aria-selected="true"]) {
+      font-weight: 400;
+    }
+
+    &:has(> [data-slot="stack"]) {
+      padding-block: var(--space-1);
+    }
+
+    & > [data-slot="stack"] {
+      gap: 0;
+      align-items: flex-start;
+    }
+
+    & > [data-slot="hint"] {
+      margin-inline-start: auto;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  [data-slot="select-item-indicator"] {
+    position: absolute;
+    inset-inline-end: 10px;
+    display: flex;
+    padding: 0;
+
+    & > svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  [data-slot="select-select-all"] {
+    & > svg {
+      position: absolute;
+      inset-inline-end: 10px;
+      width: 14px;
+      height: 14px;
+    }
+
+    &:not([data-checked]) > svg:has(+ svg),
+    &:not([data-indeterminate]) > svg + svg {
+      display: none;
+    }
+  }
+
+  [data-slot="select-item-icon"] {
+    display: flex;
+    color: var(--muted);
+
+    [data-highlighted] > & {
+      color: inherit;
+    }
+  }
+
+  [data-slot="select-item-text"][data-matched] {
+    color: var(--muted);
+
+    [data-highlighted] > & {
+      color: inherit;
+    }
+
+    & :is(mark, b) {
+      background: none;
+      color: var(--ink);
+      font-weight: 600;
+    }
+  }
+
+  [data-slot="select-input"] {
+    box-sizing: border-box;
+    flex-shrink: 0;
+    width: 100%;
+    height: var(--size);
+    padding-inline: 10px;
+    border: 0;
+    border-radius: var(--radius-control);
+    background: var(--surface-1);
+    box-shadow: inset 0 0 0 1px var(--line);
+    color: var(--ink);
+    font: inherit;
+
+    &::placeholder {
+      color: var(--muted);
+    }
+
+    &:focus-visible {
+      outline-offset: 0;
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+  }
+
+  [data-slot="select-content"]
+    > [data-slot="row"]:has([data-slot="select-input"]) {
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    gap: var(--space-2);
+    height: var(--size);
+    padding-inline: 10px;
+    border-radius: var(--radius-control);
+    background: var(--surface-1);
+    box-shadow: inset 0 0 0 1px var(--line);
+    color: var(--muted);
+
+    &:has(:focus-visible) {
+      outline: 3px solid var(--halo);
+      outline-offset: 0;
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+
+    & [data-slot="select-input"] {
+      flex: 1;
+      min-width: 0;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      outline: none;
+    }
+  }
+
+  [data-slot="select-status"] {
+    flex-shrink: 0;
+    margin-inline: -5px;
+    padding: 6px 15px 1px;
+    border-top: 1px solid var(--line-faint);
+    color: var(--muted);
+    font-size: var(--text-xs);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  /* The clear button sits inside the trigger's end, before the chevron. */
+  [data-slot="row"]:has([data-slot="select-clear"]) {
+    position: relative;
+    flex-wrap: nowrap;
+
+    & [data-slot="select-trigger"] {
+      flex: 1;
+      padding-inline-end: 8px;
+    }
+
+    & [data-slot="select-trigger"] > [data-slot="select-value"] {
+      padding-inline-end: 28px;
+    }
+  }
+
+  [data-slot="select-clear"] {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 32px;
+    display: inline-grid;
+    place-items: center;
+    width: 24px;
+    min-width: 0;
+    height: 24px;
+    margin-block: auto;
+    padding: 0;
+    border-radius: calc(var(--radius-control) - 3px);
+    background: transparent;
+    box-shadow: none;
+    color: var(--muted);
+
+    &:hover:not([data-disabled], :disabled) {
+      background: var(--tint);
+      color: var(--ink);
+    }
+
+    &:active:not([data-disabled], :disabled) {
+      scale: 1;
+    }
+  }
+
+  [data-slot="select-item"] [data-slot="badge"] {
+    justify-content: center;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+
+    [data-selected] > & {
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+  }
+
+  [data-slot="select-trigger"] [data-slot="badge"] {
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    margin-inline-start: -4px;
+    padding: 0;
+    background: var(--ink);
+    color: var(--paper);
+  }
+}

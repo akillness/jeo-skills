@@ -1,0 +1,33 @@
+<script lang="ts">
+  import {
+    ColorPicker,
+    ColorPickerArea,
+    ColorPickerAreaCanvas,
+    ColorPickerAreaThumb,
+    ColorPickerInput,
+    ColorPickerSlider,
+    ColorPickerSliderThumb,
+    ColorPickerSwatch,
+  } from "@ui-sdk/svelte/color-picker"
+</script>
+
+<ColorPicker
+  aria-label="Accent"
+  space="oklch"
+  defaultValue="oklch(0.62 0.19 259)"
+>
+  <ColorPickerArea>
+    <ColorPickerAreaCanvas />
+    <ColorPickerAreaThumb />
+  </ColorPickerArea>
+  <ColorPickerSlider channel="hue">
+    <ColorPickerSliderThumb />
+  </ColorPickerSlider>
+  <ColorPickerSlider channel="alpha">
+    <ColorPickerSliderThumb />
+  </ColorPickerSlider>
+  <div data-slot="row">
+    <ColorPickerSwatch />
+    <ColorPickerInput aria-label="OKLCH" />
+  </div>
+</ColorPicker>

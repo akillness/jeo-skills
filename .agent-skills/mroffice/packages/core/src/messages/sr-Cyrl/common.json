@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Прилагођено",
+ "zoom.levels": "Нивои зумирања",
+ "dialog.close": "Затвори",
+ "toast.close": "Затвори обавештење",
+ "button.confirm": "У реду",
+ "button.cancel": "Откажи",
+ "libreOffice.enable": "Преузми и омогући (око {size})",
+ "libreOffice.enableAlt": "Преузми и омогући LibreOffice",
+ "libreOffice.enabled": "LibreOffice {version} је омогућен",
+ "libreOffice.retrying": "Нови покушај…",
+ "libreOffice.ready": "Стари Office формати, OpenDocument датотеке, EMF/WMF слике и извоз у OpenDocument сада раде.",
+ "libreOffice.needed": "За ово је потребан LibreOffice. MR Note Classic може да преузме званично издање у сопствену фасциклу; ништа се не инсталира на ваш систем.",
+ "libreOffice.neededFor": "За чување у формату .{format} потребан је LibreOffice. MR Note Classic може да преузме званично издање у сопствену фасциклу; ништа се не инсталира на ваш систем."
+}

@@ -1,0 +1,138 @@
+.insertBlankCommand[data-loading="true"] {
+  cursor: wait;
+}
+
+.iconSlot {
+  position: relative;
+  display: inline-grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+}
+
+.icon {
+  display: block;
+  width: var(--pdf-page-ribbon-icon-size);
+  height: var(--pdf-page-ribbon-icon-size);
+  overflow: visible;
+}
+
+.iconBackPage,
+.iconPaper,
+.iconFold,
+.iconGuide,
+.iconBadge,
+.iconPlus {
+  vector-effect: non-scaling-stroke;
+}
+
+.iconBackPage {
+  fill: color-mix(in srgb, var(--console-accent-tint-soft, #e8f3f1) 72%, #fff);
+  stroke: var(--console-text-tertiary, #6a817d);
+  stroke-width: 1.05;
+  stroke-linejoin: round;
+}
+
+.iconPaper {
+  fill: var(--console-surface, #fff);
+  stroke: var(--console-text-primary, #173b36);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+
+.iconFold {
+  stroke: var(--console-text-secondary, #42635e);
+  stroke-width: 1.05;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.iconGuide {
+  stroke: var(--console-text-tertiary, #6a817d);
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.iconBadge {
+  fill: var(--console-accent-strong, #08766d);
+  stroke: var(--console-surface, #fff);
+  stroke-width: 1.15;
+}
+
+.iconPlus {
+  stroke: #fff;
+  stroke-width: 1.55;
+  stroke-linecap: round;
+}
+
+.insertBlankCommand:hover:not(:disabled) .iconPaper {
+  stroke: var(--console-accent-strong, #08766d);
+}
+
+.insertBlankCommand[data-state="open"] .iconBadge {
+  fill: var(--console-accent, #0a8b80);
+}
+
+.insertBlankCommand[data-loading="true"] .icon:not(:global(.office-ribbon-control)) {
+  opacity: 0.28;
+}
+
+.loadingSpinner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 2px solid
+    color-mix(in srgb, var(--console-accent-strong, #08766d) 24%, transparent);
+  border-top-color: var(--console-accent-strong, #08766d);
+  border-radius: 999px;
+  animation: pdf-page-ribbon-spin 720ms linear infinite;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes pdf-page-ribbon-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loadingSpinner {
+    animation: none;
+    border-color: color-mix(
+      in srgb,
+      var(--console-accent-strong, #08766d) 42%,
+      transparent
+    );
+    border-top-color: var(--console-accent-strong, #08766d);
+  }
+}
+
+@media (forced-colors: active) {
+  .iconBackPage,
+  .iconPaper,
+  .iconFold,
+  .iconGuide {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+
+  .iconBadge {
+    fill: Highlight;
+    stroke: Canvas;
+  }
+
+  .iconPlus {
+    stroke: HighlightText;
+  }
+}

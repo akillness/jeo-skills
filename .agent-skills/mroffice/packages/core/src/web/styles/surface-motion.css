@@ -1,0 +1,201 @@
+
+/* Surface motion: one entrance and one exit per kind of surface, for every
+   menu, popover, app modal, dim, banner and notice that opts in with
+   `data-motion-surface="<kind>"` (enter and exit) or `data-motion-exit`
+   (exit only). The exit plays on the inert copy lib/surface-motion puts
+   back when the surface leaves the document.
+
+   Only `opacity`, `scale` and `translate` move: they compose with whatever
+   `transform` a surface is positioned with (a centred card, a popper), and
+   an entrance never fills forwards, so no surface is left with a transform
+   that would become the containing block of the fixed menus it opens. */
+
+@keyframes surface-pop-in {
+  from {
+    opacity: 0;
+    scale: 0.96;
+    translate: 0 -4px;
+  }
+}
+
+@keyframes surface-pop-out {
+  to {
+    opacity: 0;
+    scale: 0.97;
+  }
+}
+
+@keyframes surface-dialog-in {
+  from {
+    opacity: 0;
+    scale: 0.965;
+  }
+}
+
+@keyframes surface-dialog-out {
+  to {
+    opacity: 0;
+    scale: 0.975;
+  }
+}
+
+@keyframes surface-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes surface-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes surface-banner-in {
+  from {
+    opacity: 0;
+    translate: 0 -8px;
+  }
+}
+
+@keyframes surface-banner-out {
+  to {
+    opacity: 0;
+    translate: 0 -6px;
+  }
+}
+
+/* ── entrances ─────────────────────────────────────────────────────────── */
+
+[data-motion-surface="pop"]:not([data-motion-ghost]) {
+  transform-origin: var(--surface-origin, top center);
+  animation: surface-pop-in var(--menu-enter, 150ms) var(--enter-ease, cubic-bezier(0.22, 1, 0.36, 1)) backwards;
+}
+
+[data-motion-surface="dialog"]:not([data-motion-ghost]) {
+  animation: surface-dialog-in var(--dialog-enter, 220ms) var(--enter-ease, cubic-bezier(0.22, 1, 0.36, 1)) backwards;
+}
+
+[data-motion-surface="dim"]:not([data-motion-ghost]),
+[data-motion-surface="fade"]:not([data-motion-ghost]) {
+  animation: surface-fade-in var(--dialog-enter, 220ms) var(--enter-ease, cubic-bezier(0.22, 1, 0.36, 1)) backwards;
+}
+
+[data-motion-surface="banner"]:not([data-motion-ghost]) {
+  animation: surface-banner-in var(--dialog-enter, 220ms) var(--enter-ease, cubic-bezier(0.22, 1, 0.36, 1)) backwards;
+}
+
+/* A dialog's tab: choosing it fades its panel in. A panel kept with
+   `hidden` restarts its animation each time it is shown again; one that is
+   mounted per tab plays it on mount. Opacity only, no fill forwards. */
+@keyframes surface-view-in {
+  from {
+    opacity: 0;
+  }
+}
+
+:is([role="dialog"], .office-dialog) [role="tabpanel"]:not([hidden], [data-motion-ghost] *) {
+  animation: surface-view-in var(--view-enter, 220ms) var(--enter-ease, cubic-bezier(0.22, 1, 0.36, 1)) backwards;
+}
+
+/* A disclosure (<details>) unfolds and folds instead of jumping, where the
+   browser can animate its content box. Menus built on <details> and
+   disclosures with their own fold opt out. */
+@supports selector(::details-content) {
+  details:not([data-details-menu], [data-details-motion]) {
+    interpolate-size: allow-keywords;
+  }
+
+  details:not([data-details-menu], [data-details-motion])::details-content {
+    block-size: 0;
+    overflow-y: clip;
+    transition:
+      block-size var(--panel-exit, 200ms) var(--move-ease, cubic-bezier(0.32, 0.72, 0, 1)),
+      content-visibility var(--panel-exit, 200ms) allow-discrete;
+  }
+
+  details[open]:not([data-details-menu], [data-details-motion])::details-content {
+    block-size: auto;
+    transition-duration: var(--panel-enter, 300ms);
+  }
+}
+
+/* ── exits, on the inert copy (and on surfaces inside it) ──────────────── */
+
+[data-motion-ghost],
+[data-motion-ghost] * {
+  pointer-events: none !important;
+}
+
+/* A copy is a still picture: what was inside the surface (staggered rows,
+   a spinner) must not replay its own entrance while the surface leaves. */
+[data-motion-ghost] *:not([data-motion-surface], [data-motion-exit]) {
+  animation: none !important;
+  transition: none !important;
+}
+
+[data-motion-ghost]:is([data-motion-surface="pop"], [data-motion-exit="pop"]),
+[data-motion-ghost] :is([data-motion-surface="pop"], [data-motion-exit="pop"]) {
+  transform-origin: var(--surface-origin, top center);
+  animation: surface-pop-out var(--menu-exit, 110ms) var(--exit-ease, cubic-bezier(0.4, 0, 1, 1)) forwards;
+}
+
+[data-motion-ghost]:is([data-motion-surface="dialog"], [data-motion-exit="dialog"]),
+[data-motion-ghost] :is([data-motion-surface="dialog"], [data-motion-exit="dialog"]) {
+  animation: surface-dialog-out var(--dialog-exit, 160ms) var(--exit-ease, cubic-bezier(0.4, 0, 1, 1)) forwards;
+}
+
+[data-motion-ghost]:is([data-motion-surface="dim"], [data-motion-exit="dim"], [data-motion-surface="fade"], [data-motion-exit="fade"]),
+[data-motion-ghost] :is([data-motion-surface="dim"], [data-motion-exit="dim"], [data-motion-surface="fade"], [data-motion-exit="fade"]) {
+  animation: surface-fade-out var(--dialog-exit, 160ms) var(--exit-ease, cubic-bezier(0.4, 0, 1, 1)) forwards;
+}
+
+[data-motion-ghost]:is([data-motion-surface="banner"], [data-motion-exit="banner"]),
+[data-motion-ghost] :is([data-motion-surface="banner"], [data-motion-exit="banner"]) {
+  animation: surface-banner-out var(--dialog-exit, 160ms) var(--exit-ease, cubic-bezier(0.4, 0, 1, 1)) forwards;
+}
+
+/* A toast replaced by the next one (one at a time, hooks/use-toast): its
+   copy leaves on top of the newcomer instead of taking a row of its own,
+   so the two cross. The viewport is fixed, so it is the copy's frame. */
+[data-motion-ghost][data-motion-exit="toast"][data-state] {
+  position: absolute;
+  inset-inline: 1rem;
+  top: 1rem;
+  animation: surface-dialog-out var(--dialog-exit, 160ms) var(--exit-ease, cubic-bezier(0.4, 0, 1, 1)) forwards;
+}
+
+@media (min-width: 640px) {
+  [data-motion-ghost][data-motion-exit="toast"][data-state] {
+    top: auto;
+    bottom: 1rem;
+  }
+}
+
+/* ── reduced motion: the system setting and Settings > Reduce motion ──── */
+
+@media (prefers-reduced-motion: reduce) {
+  :is([role="dialog"], .office-dialog) [role="tabpanel"],
+  [data-motion-surface],
+  [data-motion-ghost],
+  [data-motion-ghost] * {
+    animation: none !important;
+  }
+}
+
+html[data-reduce-motion] :is([role="dialog"], .office-dialog) [role="tabpanel"],
+html[data-reduce-motion] [data-motion-surface],
+html[data-reduce-motion] [data-motion-ghost],
+html[data-reduce-motion] [data-motion-ghost] * {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  details::details-content {
+    transition: none !important;
+  }
+}
+
+html[data-reduce-motion] details::details-content {
+  transition: none !important;
+}

@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Հատուկ",
+ "zoom.levels": "Խոշորացման մակարդակներ",
+ "dialog.close": "Փակել",
+ "toast.close": "Փակել ծանուցումը",
+ "button.confirm": "Լավ",
+ "button.cancel": "Չեղարկել",
+ "libreOffice.enable": "Ներբեռնել և միացնել (մոտ {size})",
+ "libreOffice.enableAlt": "Ներբեռնել և միացնել LibreOffice-ը",
+ "libreOffice.enabled": "LibreOffice {version}-ը միացված է",
+ "libreOffice.retrying": "Կրկին փորձում ենք…",
+ "libreOffice.ready": "Հին Office ձևաչափերը, OpenDocument ֆայլերը, EMF/WMF պատկերները և OpenDocument արտահանումներն այժմ աշխատում են։",
+ "libreOffice.needed": "Սա պահանջում է LibreOffice։ MR Note Classic-ը կարող է ներբեռնել պաշտոնական թողարկումը իր սեփական պանակում․ ձեր համակարգում ոչինչ չի տեղադրվում։",
+ "libreOffice.neededFor": "Որպես .{format} պահպանելը պահանջում է LibreOffice։ MR Note Classic-ը կարող է ներբեռնել պաշտոնական թողարկումը իր սեփական պանակում․ ձեր համակարգում ոչինչ չի տեղադրվում։"
+}

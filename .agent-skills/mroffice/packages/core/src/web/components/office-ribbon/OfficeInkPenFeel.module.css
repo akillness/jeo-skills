@@ -1,0 +1,282 @@
+/* The pen menu's note-taking part (OfficeInkPenFeel): it sits in the pen
+   menu's card and takes its colours (--ink-menu-*, OfficeInkRibbon). */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 2px 4px 4px;
+}
+
+.types {
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.type {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 14px;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  gap: 6px;
+  min-height: 72px;
+  justify-content: center;
+  padding: 8px 4px;
+}
+
+.type:is(:hover, :focus-visible) {
+  background: var(--ink-menu-well, rgb(118 118 128 / 12%));
+}
+
+.type[data-selected="true"] {
+  background: var(--ink-menu-card, #ffffff);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 10%);
+}
+
+.type:focus-visible {
+  outline: 2px solid var(--ink-menu-accent, #2563eb);
+  outline-offset: 1px;
+}
+
+.typeGlyph {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+}
+
+.sliders {
+  border-top: 1px solid var(--ink-menu-hairline, rgb(60 60 67 / 14%));
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px 6px 2px;
+}
+
+.slider {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sliderHead {
+  color: var(--ink-menu-label, rgb(60 60 67 / 60%));
+  display: flex;
+  font-size: 12.5px;
+  justify-content: space-between;
+}
+
+.sliderValue {
+  font-variant-numeric: tabular-nums;
+}
+
+.sliderTrackHost {
+  height: 22px;
+  position: relative;
+}
+
+/* The track: filled up to the level, five ticks across it. */
+.sliderTrackHost::before {
+  background: linear-gradient(
+    to right,
+    var(--ink-menu-accent, #2563eb) 0 var(--feel-fill),
+    rgb(120 120 128 / 45%) var(--feel-fill) 100%
+  );
+  border-radius: 2px;
+  content: "";
+  height: 4px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 9px;
+}
+
+.sliderTicks span {
+  background: rgb(120 120 128 / 55%);
+  border-radius: 2px;
+  height: 14px;
+  position: absolute;
+  top: 4px;
+  transform: translateX(-50%);
+  width: 3px;
+}
+
+.sliderTicks span[data-on="true"] {
+  background: var(--ink-menu-accent, #2563eb);
+}
+
+.sliderInput {
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  height: 22px;
+  inset: 0;
+  margin: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.sliderInput::-webkit-slider-thumb {
+  appearance: none;
+  background: var(--ink-menu-accent, #2563eb);
+  border: 3px solid var(--ink-menu-card, #ffffff);
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 25%);
+  height: 22px;
+  width: 22px;
+}
+
+.sliderInput::-moz-range-thumb {
+  background: var(--ink-menu-accent, #2563eb);
+  border: 3px solid var(--ink-menu-card, #ffffff);
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 25%);
+  height: 16px;
+  width: 16px;
+}
+
+.sliderInput:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--ink-menu-accent, #2563eb);
+  outline-offset: 2px;
+}
+
+.settings {
+  border-top: 1px solid var(--ink-menu-hairline, rgb(60 60 67 / 14%));
+  display: flex;
+  flex-direction: column;
+  padding-top: 8px;
+}
+
+.settingsTitle {
+  color: var(--ink-menu-label, rgb(60 60 67 / 60%));
+  font-size: 12.5px;
+  padding: 2px 6px 4px;
+}
+
+.switchRow {
+  display: flex;
+  flex-direction: column;
+}
+
+.switchButton,
+.pageLink {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  font-size: 15px;
+  gap: 12px;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 6px;
+  text-align: left;
+  width: 100%;
+}
+
+.switchButton:is(:hover, :focus-visible),
+.pageLink:is(:hover, :focus-visible) {
+  background: var(--ink-menu-well, rgb(118 118 128 / 12%));
+}
+
+.switchButton:focus-visible,
+.pageLink:focus-visible,
+.back:focus-visible {
+  outline: 2px solid var(--ink-menu-accent, #2563eb);
+  outline-offset: 1px;
+}
+
+.switchTrack {
+  background: rgb(120 120 128 / 32%);
+  border-radius: 999px;
+  flex: none;
+  height: 28px;
+  position: relative;
+  transition: background 160ms ease;
+  width: 48px;
+}
+
+.switchTrack[data-on="true"] {
+  background: var(--ink-menu-accent, #2563eb);
+}
+
+.switchKnob {
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 25%);
+  height: 24px;
+  left: 2px;
+  position: absolute;
+  top: 2px;
+  transition: translate 160ms ease;
+  width: 24px;
+}
+
+.switchTrack[data-on="true"] .switchKnob {
+  translate: 20px 0;
+}
+
+.hint {
+  color: var(--ink-menu-label, rgb(60 60 67 / 60%));
+  font-size: 12.5px;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0 6px 8px;
+}
+
+.gestures {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  padding: 2px 4px 6px;
+}
+
+.pageHead {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  padding: 4px 2px 10px;
+}
+
+.back {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  height: 36px;
+  justify-content: center;
+  width: 36px;
+}
+
+.back:hover {
+  background: var(--ink-menu-well, rgb(118 118 128 / 12%));
+}
+
+.pageTitle {
+  font-size: 16px;
+  font-weight: 650;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .switchTrack,
+  .switchKnob {
+    transition: none;
+  }
+}
+
+:global([data-reduce-motion]) .switchTrack,
+:global([data-reduce-motion]) .switchKnob {
+  transition: none;
+}

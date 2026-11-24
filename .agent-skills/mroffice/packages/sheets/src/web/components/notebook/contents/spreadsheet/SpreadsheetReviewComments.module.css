@@ -1,0 +1,942 @@
+button.cellIndicator.cellIndicator {
+  position: absolute;
+  z-index: 18;
+  top: 2px;
+  inset-inline-end: 2px;
+  display: grid;
+  box-sizing: border-box;
+  width: 22px;
+  min-width: 22px;
+  max-width: 22px;
+  height: 22px;
+  min-height: 22px;
+  max-height: 22px;
+  place-items: center;
+  padding: 0;
+  margin: 0;
+  gap: 0;
+  border: 1px solid #e5d8e8;
+  border-radius: 4px;
+  background: rgb(255 255 255 / 96%);
+  box-shadow: none;
+  transform: none;
+  color: #8b2696;
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: manipulation;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    color 160ms ease;
+}
+
+button.cellIndicator.cellIndicator::before {
+  position: absolute;
+  top: 2px;
+  inset-inline-end: 2px;
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--user-theme-accent, #b146bd);
+  content: "";
+}
+
+/* A NOTE wears Excel's mark: a small red triangle in the cell's top corner,
+   not the comment's boxed bubble, which covered the end of the cell's text and
+   stood two pixels taller than a default row. The button keeps a 12px target
+   over the corner; its bubble glyph is hidden, the triangle is its ::before.
+   Like Excel's, the triangle is only a mark: a click on it selects the cell
+   and resting the pointer on the cell shows the note. */
+button.cellIndicator.cellIndicator[data-kind="note"] {
+  pointer-events: none;
+  top: 0;
+  inset-inline-end: 0;
+  width: 12px;
+  min-width: 12px;
+  max-width: 12px;
+  height: 12px;
+  min-height: 12px;
+  max-height: 12px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+button.cellIndicator.cellIndicator[data-kind="note"] svg {
+  display: none;
+}
+
+button.cellIndicator.cellIndicator[data-kind="note"]::before {
+  top: 0;
+  inset-inline-end: 0;
+  width: 0;
+  height: 0;
+  border-radius: 0;
+  /* Excel's: a 5px triangle of pure red (XLS-A051). */
+  border-block-start: 5px solid #ff0000;
+  border-inline-start: 5px solid transparent;
+  background: transparent;
+}
+
+button.cellIndicator.cellIndicator.cellIndicator[data-kind="note"]:is(:hover, :active):not(:disabled) {
+  border: 0;
+  background: transparent;
+}
+
+button.cellIndicator.cellIndicator[data-resolved="true"]::before {
+  background: #a9a9a9;
+}
+
+button.cellIndicator.cellIndicator svg {
+  width: 13px;
+  height: 13px;
+  opacity: 1;
+}
+
+button.cellIndicator.cellIndicator.cellIndicator:is(:hover, :active):not(:disabled) {
+  border-color: var(--user-theme-accent, #b146bd);
+  background: #fbf4fc;
+  box-shadow: none;
+  transform: none;
+  color: #74217e;
+}
+
+button.cellIndicator.cellIndicator:focus-visible {
+  border-color: #8b2696;
+  outline: 2px solid #8b2696;
+  outline-offset: -2px;
+  box-shadow: none;
+}
+
+/* A modal dialog (Insert, Format Cells, ...) stands over an open comment
+   card and its connector, as Excel's dialogs do; above it the card took the
+   click meant for the dialog's OK (live audit S-084). The dialogs and their
+   dimmed overlay are z-index 50. */
+:global(:root[data-modal-dialog-open]) .popover,
+:global(:root[data-modal-dialog-open]) .noteConnector,
+:global(:root[data-modal-dialog-open]) .threadPreview {
+  z-index: 49;
+}
+
+.popover {
+  --comment-accent: var(--office-comments-accent, var(--user-theme-accent, #b146bd));
+  position: fixed;
+  z-index: 72;
+  display: flex;
+  box-sizing: border-box;
+  width: min(360px, calc(100vw - 24px));
+  max-height: min(560px, calc(100vh - 24px));
+  flex-direction: column;
+  overflow: visible;
+  border: 2px solid color-mix(in srgb, var(--comment-accent) 72%, #ffffff);
+  border-radius: 7px;
+  background: var(--office-dialog-surface, #ffffff);
+  box-shadow: 0 12px 30px rgb(15 23 42 / 20%);
+  color: var(--office-dialog-ink, #242424);
+  isolation: isolate;
+  pointer-events: auto;
+}
+
+.popover::before {
+  position: absolute;
+  z-index: 2;
+  top: calc(var(--spreadsheet-comment-anchor-offset) - 7px);
+  width: 12px;
+  height: 12px;
+  border: 2px solid color-mix(in srgb, var(--comment-accent) 72%, #ffffff);
+  background: var(--office-dialog-surface, #ffffff);
+  content: "";
+  pointer-events: none;
+  transform: rotate(45deg);
+}
+
+.popover[data-side="right"]::before {
+  left: -7px;
+  border-top: 0;
+  border-right: 0;
+}
+
+.popover[data-side="left"]::before {
+  right: -7px;
+  border-bottom: 0;
+  border-left: 0;
+}
+
+.popoverClose {
+  position: absolute;
+  z-index: 4;
+  top: 7px;
+  right: 7px;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--office-dialog-muted, #616161);
+  cursor: pointer;
+}
+
+.popoverClose:hover,
+.popoverClose:focus-visible {
+  background: var(--office-dialog-surface-muted, #f1f1f1);
+  color: var(--office-dialog-ink, #242424);
+}
+
+.thread,
+.threadCompact {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.thread {
+  max-height: min(556px, calc(100vh - 28px));
+}
+
+.thread[data-resolved="true"] .messages {
+  opacity: 0.68;
+}
+
+.emptyThreadHeader {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 46px 0 18px;
+  color: #4a2550;
+}
+
+.emptyThreadHeader strong {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.emptyThreadHeader span {
+  margin-left: auto;
+  color: var(--office-dialog-muted, #666666);
+  font-size: 12px;
+}
+
+.messages {
+  display: grid;
+  min-height: 0;
+  margin: 0;
+  padding: 12px 18px 4px;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.popover .messages {
+  padding-right: 42px;
+}
+
+.message {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 10px;
+  padding: 9px 0 12px;
+}
+
+.message + .message {
+  border-top: 1px solid var(--office-dialog-divider, #ececec);
+}
+
+.avatar {
+  display: inline-grid;
+  box-sizing: border-box;
+  width: 38px;
+  min-width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  background: #9415a8;
+  box-shadow: 0 0 0 1px rgb(148 21 168 / 16%);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.messageBody {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+}
+
+.messageHeader {
+  display: flex;
+  min-width: 0;
+  min-height: 30px;
+  align-items: center;
+  gap: 7px;
+}
+
+.messageHeader > strong {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--office-dialog-ink, #272727);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cellLabel {
+  margin-left: auto;
+  color: var(--office-dialog-muted, #616161);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.messageMenuTrigger {
+  display: grid;
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--office-dialog-muted, #5e5e5e);
+  cursor: pointer;
+}
+
+.messageMenuTrigger:hover,
+.messageMenuTrigger[data-state="open"],
+.messageMenuTrigger:focus-visible {
+  background: var(--office-dialog-surface-muted, #e9e9e9);
+  color: var(--office-dialog-ink, #292929);
+}
+
+/* The menu surface is the shared Cupertino menu (docs-cupertino-menu); this
+   keeps only its placement and row layout. */
+.messageMenu {
+  z-index: 88;
+  min-width: 212px;
+}
+
+.messageMenu :global([role="menuitem"]) {
+  min-height: 36px;
+  gap: 10px;
+}
+
+.destructiveMenuItem {
+  color: #a4262c;
+}
+
+:global([data-theme-mode="dark"]) .destructiveMenuItem {
+  color: #ff8a80;
+}
+
+:global([data-theme-mode="high-contrast"]) .destructiveMenuItem {
+  color: #ff8a80;
+}
+
+.messageText {
+  margin: 0;
+  color: var(--office-dialog-ink, #303030);
+  font-size: 13.5px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.messageTime {
+  color: var(--office-dialog-muted, #767676);
+  font-size: 11.5px;
+  line-height: 1.3;
+}
+
+.editComposer {
+  display: grid;
+  gap: 7px;
+}
+
+.editComposer textarea,
+.replyComposer textarea,
+.notePopover > textarea {
+  box-sizing: border-box;
+  width: 100%;
+  resize: vertical;
+  border: 1px solid var(--office-dialog-control-border, #8a8a8a);
+  border-radius: 3px;
+  outline: none;
+  background: var(--office-dialog-surface, #ffffff);
+  color: var(--office-dialog-ink, #292929);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.editComposer textarea {
+  min-height: 70px;
+  padding: 8px 9px;
+}
+
+.editComposer textarea:focus-visible,
+.replyComposer textarea:focus-visible,
+.notePopover > textarea:focus-visible {
+  border-color: #5b5fc7;
+  box-shadow: 0 0 0 2px rgb(91 95 199 / 18%);
+}
+
+.editActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.editActions button,
+.reopenButton {
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--office-dialog-control-border, #d1d1d1);
+  border-radius: 4px;
+  background: var(--office-dialog-surface, #ffffff);
+  color: var(--office-dialog-ink, #333333);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.editActions button:last-child {
+  border-color: #5b5fc7;
+  background: #5b5fc7;
+  color: #ffffff;
+}
+
+.editActions button:disabled,
+.reopenButton:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.replyComposer {
+  display: grid;
+  flex: 0 0 auto;
+  gap: 7px;
+  padding: 8px 18px 14px 66px;
+  border-top: 1px solid var(--office-dialog-divider, #e7e7e7);
+  background: var(--office-dialog-surface, #ffffff);
+}
+
+.thread[data-empty="true"] .messages {
+  display: none;
+}
+
+.thread[data-empty="true"] .replyComposer {
+  padding-left: 18px;
+}
+
+.replyComposer textarea {
+  min-height: 42px;
+  max-height: 120px;
+  padding: 10px 11px;
+  transition: min-height 160ms ease;
+}
+
+.replyComposer:focus-within textarea {
+  min-height: 62px;
+}
+
+.replyActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Send sits beside the comment's close, which wears the site-wide close
+   face (styles/globals.css, "One close button"): a soft rounded square of
+   --ui-close-size. Send takes the same square, so the pair reads as one row
+   of icon buttons; it fills with the accent once there is something to post. */
+.sendButton {
+  display: grid;
+  width: var(--ui-close-size, 28px);
+  min-width: var(--ui-close-size, 28px);
+  height: var(--ui-close-size, 28px);
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: #5b5fc7;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 140ms ease;
+}
+
+.sendButton svg {
+  width: 15px;
+  height: 15px;
+}
+
+.sendButton:disabled {
+  background: color-mix(in srgb, var(--console-text-primary, #17242b) 7%, transparent);
+  color: #b1b1b1;
+  cursor: default;
+}
+
+/* The close's own face comes from the site-wide rule; this is the same face
+   for a build where that rule does not reach it. */
+.closeComposerButton {
+  display: grid;
+  width: var(--ui-close-size, 28px);
+  height: var(--ui-close-size, 28px);
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--console-text-primary, #17242b) 7%, transparent);
+  color: var(--console-text-secondary, #51626c);
+  cursor: pointer;
+}
+
+/* A finger gets a larger pair, still alike. */
+:where(:root[data-touch-mode]) .replyActions > button {
+  --ui-close-size: 36px !important;
+}
+
+.reopenButton {
+  display: inline-flex;
+  width: max-content;
+  align-items: center;
+  gap: 7px;
+}
+
+.workbookSurfaceWithReviewPane {
+  --spreadsheet-review-comments-pane-width: clamp(320px, 27vw, 380px);
+  display: grid !important;
+  grid-template-columns:
+    minmax(0, 1fr)
+    var(--spreadsheet-review-comments-pane-width);
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+.workbookSurfaceWithReviewPane
+  > :global([data-testid="spreadsheet-pane-layout"]) {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.workbookSurfaceWithReviewPane
+  > :global([data-testid="spreadsheet-page-layout-view"]) {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.workbookSurfaceWithReviewPane
+  > :global([data-testid="spreadsheet-sheet-tabs"]) {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  min-width: 0;
+}
+
+.workbookSurfaceWithReviewPane
+  > :global([class*="workbookWatchDock"]) {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  min-width: 0;
+}
+
+.paneDock {
+  display: none;
+}
+
+.workbookSurfaceWithReviewPane > .paneDock > * {
+  pointer-events: auto;
+}
+
+.workbookSurfaceWithReviewPane :global([data-testid="spreadsheet-grid-viewport"]) {
+  scroll-padding-left: var(--office-task-pane-cover-left, 0px);
+  scroll-padding-right: var(--office-task-pane-cover-right, 0px);
+}
+
+/* The Comments pane taken off the edge (Task Pane Options > Move, or its
+   title bar dragged): it floats over the sheet and takes no column. */
+.workbookSurfaceWithFloatingComments {
+  position: relative;
+}
+
+.workbookSurfaceWithFloatingComments > .paneDock {
+  display: block;
+  position: absolute;
+  z-index: 41;
+  top: var(--spreadsheet-comments-pane-float-y, 24px);
+  left: var(--spreadsheet-comments-pane-float-x, 24px);
+  width: var(--spreadsheet-comments-pane-float-width, 350px);
+  height: var(--spreadsheet-comments-pane-float-height, 480px);
+  /* The card draws the box and its shadow, which the box must not clip. */
+  border-radius: 12px;
+}
+
+/* Task Pane Options > Move / Size from the keyboard on the Comments pane. */
+[data-task-pane-keyboard-pane="comments"] > .paneDock {
+  outline: 2px dashed #0f766e;
+  outline-offset: -2px;
+}
+
+.workbookSurfaceWithFloatingComments > .paneDock :global(aside) {
+  box-shadow:
+    0 18px 48px rgb(15 23 42 / 18%),
+    0 2px 8px rgb(15 23 42 / 10%);
+}
+
+.workbookSurfaceWithReviewPane > .paneDock :global(aside) > header,
+.workbookSurfaceWithFloatingComments > .paneDock :global(aside) > header {
+  cursor: grab;
+}
+
+/* The Comments pane is the dialogs' chrome task pane (office-dialog--pane,
+   through OfficeTaskPaneChromeProvider): its dock only places the card, 8px
+   inside the column, and the rules below keep the pane's own content -- the
+   count badge and the comment cards -- in the chrome's colours. */
+.workbookSurfaceWithReviewPane > .paneDock {
+  display: block;
+  grid-column: 2;
+  grid-row: 1 / 3;
+  /* Docked, it lies over the sheet as the task panes do
+     (SpreadsheetHomeRibbon.module.css): the sheet spans its column. */
+  position: relative;
+  z-index: 40;
+  pointer-events: none;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 8px 8px 8px 0;
+}
+
+.pane {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.paneHeader {
+  flex: 0 0 auto;
+}
+
+.paneHeader > div,
+.paneHeader nav {
+  display: flex;
+  align-items: center;
+}
+
+.paneHeader > div {
+  min-width: 0;
+  gap: 8px;
+}
+
+.paneHeader strong {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.paneHeader > div > span {
+  display: inline-grid;
+  min-width: 20px;
+  height: 20px;
+  place-items: center;
+  border-radius: 999px;
+  background: #f0e4f2;
+  color: #7f218a;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.paneHeader nav {
+  gap: 2px;
+}
+
+/* The New row: the chrome's button on the card itself, no bar of its own. */
+.paneToolbar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 0 2px;
+}
+
+.paneBody {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  flex-direction: column;
+  gap: 8px;
+  padding: 2px 2px 4px;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: stable;
+}
+
+.paneCard {
+  min-height: 148px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border: 1px solid var(--office-dialog-control-border, #dedede);
+  border-radius: 8px;
+  background: var(--office-dialog-surface, #ffffff);
+  color: var(--office-dialog-ink, #292929);
+}
+
+/* The selected card hugs its thread, as Excel's does: two short messages make
+   a short card. A floor here ran the purple border down the whole pane. */
+.paneCard[data-active="true"] {
+  min-height: 0;
+  border: 2px solid color-mix(in srgb, var(--user-theme-accent, #b146bd) 70%, #ffffff);
+  box-shadow: 0 4px 14px rgb(99 32 112 / 12%);
+}
+
+.paneCard[data-resolved="true"] {
+  opacity: 0.68;
+}
+
+.paneSummary {
+  display: grid;
+  width: 100%;
+  min-height: 148px;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  padding: 12px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.paneSummary:hover,
+.paneSummary:focus-visible {
+  background: var(--office-dialog-hover, #faf7fb);
+}
+
+.paneSummary > span:last-child {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+
+.paneSummary strong {
+  color: var(--office-dialog-ink, #292929);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.paneSummary small {
+  color: var(--office-dialog-muted, #666666);
+  font-size: 10.5px;
+}
+
+.paneSummary span span {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--office-dialog-ink, #3e3e3e);
+  font-size: 12px;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.paneSummary em {
+  color: #7f218a;
+  font-size: 10.5px;
+  font-style: normal;
+  font-weight: 650;
+}
+
+.threadCompact .messages {
+  overflow-y: visible;
+  padding: 10px 12px 2px;
+}
+
+.threadCompact .replyComposer {
+  padding: 8px 12px 12px 60px;
+}
+
+/* Excel's note: a plain yellow box with a thin dark border that you type
+   straight into, sized by dragging its corner. No header, no buttons; the
+   leader line to the cell replaces the popover's arrow. */
+.popover.notePopover {
+  --comment-accent: #6b6b6b;
+  /* The note box being typed in is the box the note is shown in (.notePreview):
+     the same width, so its words wrap at the same place, and as tall as its
+     words between the shown note's minimum and maximum. Opened at 208 x 120,
+     a shown note re-wrapped and grew the moment it was edited. */
+  width: 176px;
+  min-width: 96px;
+  max-width: min(640px, calc(100vw - 24px));
+  height: auto;
+  min-height: 84px;
+  max-height: min(320px, calc(100vh - 24px));
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #6b6b6b;
+  border-radius: 0;
+  background: #ffffe1;
+  box-shadow: 2px 2px 4px rgb(0 0 0 / 22%);
+  resize: both;
+}
+
+.popover.notePopover::before {
+  display: none;
+}
+
+.noteConnector {
+  position: fixed;
+  z-index: 71;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.noteConnector line {
+  stroke: #3b3b3b;
+  stroke-width: 1;
+}
+
+.notePreview,
+.threadPreview {
+  position: fixed;
+  z-index: 71;
+  box-sizing: border-box;
+  pointer-events: none;
+  color: #1f1f1f;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.notePreview {
+  width: 176px;
+  min-height: 84px;
+  max-height: 320px;
+  overflow: hidden;
+  padding: 4px 6px;
+  border: 1px solid #6b6b6b;
+  background: #ffffe1;
+  box-shadow: 2px 2px 4px rgb(0 0 0 / 22%);
+  white-space: pre-wrap;
+}
+
+.threadPreview {
+  display: grid;
+  width: 280px;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgb(15 23 42 / 18%);
+}
+
+.threadPreview p {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+}
+
+.threadPreview span {
+  white-space: pre-wrap;
+}
+
+.threadPreview small {
+  color: #616161;
+}
+
+.popover.notePopover > textarea {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  padding: 4px 6px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #1f1f1f;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  resize: none;
+}
+
+.popover.notePopover > textarea:focus-visible {
+  border: 0;
+  box-shadow: none;
+}
+
+@media (max-width: 1100px) {
+  .workbookSurfaceWithReviewPane {
+    --spreadsheet-review-comments-pane-width: 320px;
+  }
+
+  .popover {
+    width: min(340px, calc(100vw - 20px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .replyComposer textarea {
+    transition: none;
+  }
+}
+
+/* The cell-side comment card floats outside any `.office-dialog`, so the
+   dialog tokens it is drawn with (surface, ink, borders) fall back to their
+   light values there. Under the dark and high-contrast themes the card
+   declares the chrome's dark values itself (OfficeDialogChrome.css) so it
+   matches the Comments pane and the dialogs. */
+:global([data-theme-mode="dark"]) .popover {
+  --office-dialog-surface: #1f2024;
+  --office-dialog-surface-muted: #1a1b1e;
+  --office-dialog-ink: #f2f2f7;
+  --office-dialog-muted: #a1a1a8;
+  --office-dialog-divider: rgb(255 255 255 / 10%);
+  --office-dialog-control-border: rgb(255 255 255 / 15%);
+  --office-dialog-hover: rgb(255 255 255 / 8%);
+  color-scheme: dark;
+}
+:global([data-theme-mode="high-contrast"]) .popover {
+  --office-dialog-surface: #1f2024;
+  --office-dialog-surface-muted: #1a1b1e;
+  --office-dialog-ink: #f2f2f7;
+  --office-dialog-muted: #a1a1a8;
+  --office-dialog-divider: rgb(255 255 255 / 10%);
+  --office-dialog-control-border: rgb(255 255 255 / 15%);
+  --office-dialog-hover: rgb(255 255 255 / 8%);
+  color-scheme: dark;
+}
+
+/* The hover card of a threaded comment is chrome, not a note: dark under the
+   dark themes like the card it previews. (A note keeps Excel's yellow.) The
+   pane's count badge takes a tint the dark header can carry. */
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .threadPreview {
+  border-color: rgb(255 255 255 / 12%);
+  background: #1f2024;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 45%);
+  color: #f2f2f7;
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .threadPreview small {
+  color: #a1a1a8;
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .paneHeader > div > span {
+  background: rgb(177 70 189 / 24%);
+  color: #e7b3ee;
+}

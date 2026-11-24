@@ -1,0 +1,1921 @@
+/* Office dialog chrome: the one visual grammar for Office-style command
+   dialogs in every MRAI editor (officeDialogChrome.tsx exports the class
+   names).
+
+   What it owns: the card (surface, border, radius, shadow, padding, rhythm),
+   the title row and its close button, the tab strip, grouped sections, field
+   labels and hints, text/number/select/textarea controls, checkboxes and
+   radios, list boxes, status messages, and the footer with its secondary and
+   primary buttons, in light and dark. What it does not own: positioning (a
+   native-window card is centred by .native-window__modal-dialog, a portaled
+   OfficeDialogShell by Radix), the backdrop, focus, or any command logic.
+
+   The look is a macOS sheet carrying an Office dialog's content. The card is
+   frosted glass (a translucent surface over a blurred backdrop, a hairline
+   edge and a deep soft shadow); the tab strip is a segmented control; groups
+   are titled sections separated by space, never boxes inside the card, so a
+   dialog is one card deep. The content keeps Office's density and order: 12px
+   text, 26px fields, 28px buttons with the default (primary) action last, and
+   the editor's one accent colour. Wells that hold content (fields, list
+   boxes, tables) stay opaque so text on them reads at full contrast.
+
+   Specificity: every rule is anchored on `.office-dialog` so it outranks the
+   single-class Tailwind utilities a shell body may still carry (text-sm, h-9,
+   rounded-md …); nothing here needs !important. The native window's blanket
+   button and style-bar rules (native-page-window.css) stop at a dialog's edge,
+   so a card mounted in a window and one portaled to <body> start from the same
+   base. Field rules stop at the property level a field's look is made of
+   (font, height, padding, border, radius, colours); width and flex stay with
+   the dialog's layout. */
+
+.office-dialog {
+  --office-dialog-accent: var(--office-dialog-tone-accent, #0f6cbd);
+  --office-dialog-accent-hover: var(--office-dialog-tone-accent-hover, #115ea3);
+  --office-dialog-accent-soft: color-mix(in srgb, var(--office-dialog-accent) 13%, var(--office-dialog-surface));
+  --office-dialog-focus-ring: color-mix(in srgb, var(--office-dialog-accent) 38%, transparent);
+  --office-dialog-on-accent: #ffffff;
+  /* The card: translucent over the blurred sheet, and the solid colour it
+     falls back to when transparency is reduced. */
+  --office-dialog-glass: var(--glass-float-bg, rgba(255, 255, 255, 0.9));
+  --office-dialog-glass-solid: #f6f6f8;
+  --office-dialog-glass-edge: rgb(0 0 0 / 11%);
+  --office-dialog-glass-highlight: rgb(255 255 255 / 75%);
+  /* Opaque wells: fields, list boxes, tables, previews. */
+  --office-dialog-surface: #ffffff;
+  --office-dialog-surface-muted: #f2f2f5;
+  --office-dialog-ink: #1d1d1f;
+  --office-dialog-muted: #6e6e73;
+  --office-dialog-border: rgb(0 0 0 / 10%);
+  --office-dialog-divider: rgb(0 0 0 / 9%);
+  --office-dialog-control-border: rgb(0 0 0 / 15%);
+  --office-dialog-control-border-hover: rgb(0 0 0 / 28%);
+  --office-dialog-hover: rgb(0 0 0 / 5%);
+  --office-dialog-pressed: rgb(0 0 0 / 9%);
+  --office-dialog-button: #ffffff;
+  --office-dialog-button-hover: #f5f5f7;
+  --office-dialog-button-pressed: #e8e8ed;
+  --office-dialog-button-shadow: 0 0.5px 1px rgb(0 0 0 / 8%), 0 1px 2px rgb(0 0 0 / 4%);
+  --office-dialog-segment-track: rgb(118 118 128 / 12%);
+  --office-dialog-segment-thumb: #ffffff;
+  --office-dialog-segment-shadow: 0 1px 2px rgb(0 0 0 / 12%), 0 0 0 0.5px rgb(0 0 0 / 5%);
+  --office-dialog-danger: #d70015;
+  --office-dialog-danger-strong: #d70015;
+  --office-dialog-success: #1a7f37;
+  --office-dialog-warning: #9a5b00;
+  /* Status tints: a note's own colour on the card, light and dark. */
+  --office-dialog-danger-soft: color-mix(in srgb, var(--office-dialog-danger) 12%, var(--office-dialog-surface));
+  --office-dialog-warning-soft: color-mix(in srgb, var(--office-dialog-warning) 14%, var(--office-dialog-surface));
+  --office-dialog-success-soft: color-mix(in srgb, var(--office-dialog-success) 12%, var(--office-dialog-surface));
+  --office-dialog-danger-line: color-mix(in srgb, var(--office-dialog-danger) 40%, var(--office-dialog-surface));
+  --office-dialog-warning-line: color-mix(in srgb, var(--office-dialog-warning) 40%, var(--office-dialog-surface));
+  --office-dialog-success-line: color-mix(in srgb, var(--office-dialog-success) 40%, var(--office-dialog-surface));
+  --office-dialog-shadow:
+    0 24px 60px -12px rgb(15 23 42 / 30%),
+    0 8px 22px -8px rgb(15 23 42 / 16%);
+  --office-dialog-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 3.5 5 6.5 8 3.5' fill='none' stroke='%236e6e73' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  /* The app's generic colour tokens, which dialog bodies still read in
+     inline styles (var(--border, …), var(--surface-muted, …)), resolve to the
+     card's own inside it, light and dark, so a body never paints a light
+     well on the dark card. */
+  --background: var(--office-dialog-surface);
+  --foreground: var(--office-dialog-ink);
+  --surface: var(--office-dialog-surface);
+  --surface-muted: var(--office-dialog-surface-muted);
+  --border: var(--office-dialog-divider);
+  --muted-foreground: var(--office-dialog-muted);
+}
+
+/* Word blue: the document ribbon's own accent
+   (DocumentHomeRibbon.module.css --docs-ribbon-accent / -strong). */
+.office-dialog--tone-document {
+  --office-dialog-tone-accent: #2563eb;
+  --office-dialog-tone-accent-hover: #1d4ed8;
+}
+
+/* Excel green: the spreadsheet ribbon's own accent, so a dialog's OK button
+   and focus ring read as the same product as the ribbon that opened it. */
+.office-dialog--tone-spreadsheet {
+  --office-dialog-tone-accent: #15803d;
+  --office-dialog-tone-accent-hover: #166534;
+}
+
+/* PowerPoint red: the slide editor ribbon's own accent
+   (presentation-window-shell.module.css --ppt-accent). */
+.office-dialog--tone-presentation {
+  --office-dialog-tone-accent: #c43e1c;
+  --office-dialog-tone-accent-hover: #a33417;
+}
+
+/* PDF teal: the PDF reader's own command colour (its ribbon selection and
+   default actions), so a PDF dialog reads as the same product. */
+.office-dialog--tone-pdf {
+  --office-dialog-tone-accent: #0f766e;
+  --office-dialog-tone-accent-hover: #115e59;
+}
+
+/* Code teal: the code ribbon's own accent (the default .office-ribbon-skin
+   --docs-ribbon-accent / -strong in note-editor.css). */
+.office-dialog--tone-code {
+  --office-dialog-tone-accent: var(--console-accent-strong, #087c73);
+  --office-dialog-tone-accent-hover: #06675f;
+}
+
+/* ------------------------------------------------------------------ card */
+
+.office-dialog.office-dialog {
+  -webkit-font-smoothing: antialiased;
+  -webkit-backdrop-filter: var(--glass-float-blur, blur(28px) saturate(170%));
+  backdrop-filter: var(--glass-float-blur, blur(28px) saturate(170%));
+  background: var(--office-dialog-glass);
+  border: 1px solid var(--office-dialog-glass-edge);
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 var(--office-dialog-glass-highlight), var(--office-dialog-shadow);
+  box-sizing: border-box;
+  color: var(--office-dialog-ink);
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", system-ui, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 12px;
+  gap: 12px;
+  line-height: 1.4;
+  padding: 16px 18px;
+}
+
+/* The card takes focus itself when it opens (so Escape and Enter reach it);
+   that is not a keyboard target of its own, so it draws no ring. Controls
+   inside keep theirs. */
+.office-dialog.office-dialog:focus {
+  outline: none;
+}
+
+/* Widths for the cards this class sizes itself (a native-window card is
+   `fit-content` otherwise). The portaled shell keeps its caller's width. */
+.office-dialog.office-dialog--sm {
+  max-width: calc(100vw - 32px);
+  width: min(340px, calc(100vw - 32px));
+}
+
+.office-dialog.office-dialog--md {
+  max-width: calc(100vw - 32px);
+  width: min(420px, calc(100vw - 32px));
+}
+
+.office-dialog.office-dialog--lg {
+  max-width: calc(100vw - 32px);
+  width: min(520px, calc(100vw - 32px));
+}
+
+.office-dialog.office-dialog--xl {
+  max-width: calc(100vw - 32px);
+  width: min(640px, calc(100vw - 32px));
+}
+
+.office-dialog.office-dialog--xxl {
+  max-width: calc(100vw - 32px);
+  width: min(760px, calc(100vw - 32px));
+}
+
+/* A card never outgrows the surface it opens on (live audit S-030: in a
+   1280x540 window Format Cells was 606 px tall, centred so its title and
+   close button sat above the window and OK / Cancel below it). Past the room
+   there is, the card scrolls: one that scrolls its own panes and holds the
+   rest (Format Cells' tab panels, `overflow: hidden` on the card) keeps its
+   title and buttons in view, any other scrolls as a whole. The overlay of a
+   card centred in a window is that window; a portaled shell's is the page. */
+.app-modal-overlay > .office-dialog.office-dialog {
+  max-height: calc(100% - 16px);
+  overflow-y: auto;
+}
+
+[data-state].office-dialog.office-dialog:not(.office-dialog--embedded):not(.office-dialog--pane) {
+  max-height: calc(100dvh - 16px);
+  overflow-y: auto;
+}
+
+/* A dialog page drawn inside another surface (the AutoFilter dropdown's Top 10
+   and Custom pages): the chrome's fields and buttons without a second card. */
+.office-dialog.office-dialog--embedded {
+  backdrop-filter: none;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 12px;
+}
+
+/* A task pane (PivotTable Fields, Selection, Navigation, Watch Window): the
+   same glass card, title row, round close button, fields and buttons as a
+   dialog, docked beside the sheet instead of centred over it. Its host places
+   and sizes it; the title stays put while the pane's body scrolls. */
+/* A pane's own module colours (--office-pane-*, OfficeTaskPane.module.css)
+   follow the chrome it wears, so a pane drawn outside OfficeTaskPane (Docs'
+   Format Picture) and its shared pages are dark in dark too. */
+.office-dialog.office-dialog.office-dialog--pane {
+  --office-pane-surface: var(--office-dialog-surface);
+  --office-pane-surface-muted: var(--office-dialog-surface-muted);
+  --office-pane-ink: var(--office-dialog-ink);
+  --office-pane-muted: var(--office-dialog-muted);
+  --office-pane-border: var(--office-dialog-divider);
+  --office-pane-control-border: var(--office-dialog-control-border);
+  --office-pane-control-border-hover: var(--office-dialog-control-border-hover);
+  --office-pane-hover: var(--office-dialog-hover);
+}
+
+.office-dialog.office-dialog--pane {
+  gap: 10px;
+  min-height: 0;
+  overflow: hidden;
+  padding: 12px 12px 10px;
+}
+
+/* A pane that stays mounted while closed (the Watch Window) hides with the
+   `hidden` attribute, which the card's own display would otherwise beat. */
+.office-dialog.office-dialog[hidden] {
+  display: none;
+}
+
+/* …and so does anything INSIDE a dialog that hides with it: a tab page
+   (`role="tabpanel" hidden`) wears `.office-dialog__body`, whose flex column
+   would otherwise keep the other tab on screen, stacked under this one. */
+.office-dialog [hidden]:not([hidden="until-found"]) {
+  display: none !important;
+}
+
+.office-dialog.office-dialog--pane > .office-dialog__header,
+.office-dialog.office-dialog--pane > .office-dialog__description {
+  flex: 0 0 auto;
+}
+
+.office-dialog.office-dialog--pane > .office-dialog__header {
+  padding-inline-start: 4px;
+}
+
+.office-dialog.office-dialog--pane > .office-dialog__description {
+  margin-block-start: -6px;
+  overflow: hidden;
+  padding-inline-start: 4px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.office-dialog.office-dialog--pane .office-dialog__pane-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* The shell renders one <form> inside the card; it carries the rhythm. */
+.office-dialog .office-dialog__form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* ------------------------------------------------------------ title row */
+
+.office-dialog .office-dialog__header {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  margin: 0;
+  min-height: 22px;
+  text-align: start;
+}
+
+.office-dialog .office-dialog__header > .office-dialog__title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.office-dialog .office-dialog__title {
+  color: var(--office-dialog-ink);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 20px;
+  margin: 0;
+}
+
+.office-dialog .office-dialog__description {
+  color: var(--office-dialog-muted);
+  font-size: 12px;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.office-dialog .office-dialog__description:empty {
+  display: none;
+}
+
+/* A round, filled close control, as on a macOS panel. */
+.office-dialog .office-dialog__close {
+  align-items: center;
+  background: var(--office-dialog-hover);
+  border: 0;
+  border-radius: 999px;
+  color: var(--office-dialog-muted);
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 22px;
+  justify-content: center;
+  margin: -1px -4px -1px 0;
+  min-height: 0;
+  padding: 0;
+  width: 22px;
+}
+
+.office-dialog .office-dialog__close svg {
+  height: 12px;
+  width: 12px;
+}
+
+.office-dialog .office-dialog__close:hover {
+  background: var(--office-dialog-pressed);
+  color: var(--office-dialog-ink);
+}
+
+/* A busy dialog holds its X the way it holds Cancel. */
+.office-dialog .office-dialog__close:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+/* A bare icon command inside a row (a Selection pane row's eye): no frame of
+   its own, a round hover like the close button's. */
+.office-dialog .office-dialog__icon-button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: var(--office-dialog-muted);
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 22px;
+  justify-content: center;
+  min-height: 0;
+  padding: 0;
+  width: 22px;
+}
+
+.office-dialog .office-dialog__icon-button svg {
+  height: 13px;
+  width: 13px;
+}
+
+.office-dialog .office-dialog__icon-button:hover:not(:disabled) {
+  background: var(--office-dialog-hover);
+  color: var(--office-dialog-ink);
+}
+
+.office-dialog .office-dialog__icon-button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+/* A text command that reads as a link inside a dialog (Excel's "Help on this
+   function"): the accent ink, underlined, no frame of its own. */
+.office-dialog .office-dialog__link {
+  align-self: flex-start;
+  background: transparent;
+  border: 0;
+  border-radius: 3px;
+  color: var(--office-dialog-accent);
+  cursor: pointer;
+  font: inherit;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  text-align: start;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  width: fit-content;
+}
+
+.office-dialog .office-dialog__link:hover:not(:disabled) {
+  color: var(--office-dialog-accent-hover);
+}
+
+.office-dialog .office-dialog__link:focus-visible {
+  outline: 3px solid var(--office-dialog-focus-ring);
+  outline-offset: 1px;
+}
+
+/* ------------------------------------------------------------- tab strip */
+
+/* A segmented control: one track, the selected page a raised thumb. It sits
+   centred under the title, as Office for Mac shows Format Cells' pages. */
+.office-dialog .office-dialog__tabs {
+  align-self: center;
+  background: var(--office-dialog-segment-track);
+  border: 0;
+  border-radius: 8px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  justify-content: center;
+  max-width: 100%;
+  padding: 2px;
+}
+
+.office-dialog .office-dialog__tab {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  box-shadow: none;
+  color: var(--office-dialog-ink);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-weight: 500;
+  justify-content: center;
+  gap: 6px;
+  margin: 0;
+  min-height: 24px;
+  padding: 0 14px;
+  white-space: nowrap;
+}
+
+.office-dialog .office-dialog__tab svg {
+  flex: 0 0 auto;
+  height: 14px;
+  width: 14px;
+}
+
+.office-dialog .office-dialog__tab:hover:not(:disabled) {
+  background: var(--office-dialog-hover);
+}
+
+.office-dialog .office-dialog__tab:is([aria-selected="true"], [aria-pressed="true"], [data-selected="true"]) {
+  background: var(--office-dialog-segment-thumb);
+  box-shadow: var(--office-dialog-segment-shadow);
+  color: var(--office-dialog-ink);
+}
+
+.office-dialog .office-dialog__tab:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+/* ---------------------------------------------- body, groups and fields */
+
+.office-dialog .office-dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* A group is a titled section, not a box: the card is the only frame, and
+   space plus the section title carry the grouping. */
+.office-dialog fieldset,
+.office-dialog .office-dialog__group {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  min-width: 0;
+  padding: 0;
+}
+
+.office-dialog legend {
+  color: var(--office-dialog-ink);
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  padding: 0;
+}
+
+.office-dialog .office-dialog__section-title,
+.office-dialog .office-dialog__group > h2:first-child,
+.office-dialog .office-dialog__group > h3:first-child,
+.office-dialog .office-dialog__group > h4:first-child {
+  color: var(--office-dialog-ink);
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* A label over its control. */
+.office-dialog .office-dialog__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+ 
+.office-dialog .office-dialog__measure {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+  min-width: 0;
+}
+
+.office-dialog .office-dialog__measure > :is(input, select) {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.office-dialog .office-dialog__measure > :not(input, select) {
+  flex: none;
+  white-space: nowrap;
+}
+
+/* A label beside its control(s). */
+.office-dialog .office-dialog__row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  min-width: 0;
+}
+
+.office-dialog .office-dialog__label {
+  color: var(--office-dialog-ink);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.office-dialog .office-dialog__hint {
+  color: var(--office-dialog-muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* A checkbox or radio with its caption. */
+.office-dialog .office-dialog__check {
+  align-items: center;
+  color: var(--office-dialog-ink);
+  display: inline-flex;
+  font-size: 12px;
+  gap: 6px;
+}
+
+/* ------------------------------------------------------------- controls */
+
+.office-dialog :is(
+    input:not([type]),
+    input[type="text"],
+    input[type="number"],
+    input[type="search"],
+    input[type="email"],
+    input[type="url"],
+    input[type="tel"],
+    input[type="password"],
+    input[type="date"],
+    input[type="time"],
+    select,
+    textarea
+  ) {
+  background-color: var(--office-dialog-surface);
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 6px;
+  box-shadow: none;
+  box-sizing: border-box;
+  color: var(--office-dialog-ink);
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 18px;
+  outline: none;
+  padding: 3px 8px;
+  transition: border-color 120ms ease, outline-color 120ms ease;
+}
+
+.office-dialog input:not([type]),
+.office-dialog input[type="text"],
+.office-dialog input[type="number"],
+.office-dialog input[type="search"],
+.office-dialog input[type="email"],
+.office-dialog input[type="url"],
+.office-dialog input[type="tel"],
+.office-dialog input[type="password"],
+.office-dialog input[type="date"],
+.office-dialog input[type="time"],
+.office-dialog select:not([multiple]):not([size]) {
+  height: 26px;
+  min-height: 26px;
+}
+
+/* A field holding a formula or code (a table formula, a script): monospaced,
+   as a formula bar. Font only, so the one rule serves every theme. */
+.office-dialog .office-dialog__mono.office-dialog__mono {
+  font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* A drop-down draws one chevron of its own instead of the platform's arrow, so
+   it reads as a field of the same family on every system. */
+.office-dialog select:not([multiple]):not([size]) {
+  appearance: none;
+  background-image: var(--office-dialog-chevron);
+  background-position: right 8px center;
+  background-repeat: no-repeat;
+  background-size: 10px 10px;
+  padding-inline-end: 24px;
+}
+
+.office-dialog select:not([multiple]):not([size]):dir(rtl) {
+  background-position: left 8px center;
+}
+
+.office-dialog input:hover:not(:disabled):not(:focus),
+.office-dialog select:hover:not(:disabled):not(:focus),
+.office-dialog textarea:hover:not(:disabled):not(:focus) {
+  border-color: var(--office-dialog-control-border-hover);
+}
+
+/* The macOS focus ring: the accent edge with a soft halo outside it. */
+.office-dialog input:focus-visible,
+.office-dialog select:focus-visible,
+.office-dialog textarea:focus-visible {
+  border-color: var(--office-dialog-accent);
+  outline: 3px solid var(--office-dialog-focus-ring);
+  outline-offset: 0;
+}
+
+.office-dialog input:disabled,
+.office-dialog select:disabled,
+.office-dialog textarea:disabled,
+.office-dialog :is(input, textarea)[readonly] {
+  background-color: var(--office-dialog-surface-muted);
+  color: var(--office-dialog-muted);
+}
+
+.office-dialog input:disabled,
+.office-dialog select:disabled,
+.office-dialog textarea:disabled {
+  cursor: not-allowed;
+}
+
+.office-dialog input::placeholder,
+.office-dialog textarea::placeholder {
+  color: var(--office-dialog-muted);
+  opacity: 0.8;
+}
+
+/* A field whose value the dialog refuses (aria-invalid) draws the danger
+   edge, and its focus ring the danger tint, so the field that blocks OK is
+   marked where it stands, not only in the message under it. */
+.office-dialog :is(input, select, textarea)[aria-invalid="true"],
+.office-dialog .office-dialog__stepper:has(input[aria-invalid="true"]),
+.office-dialog .office-dialog__input-group:has(input[aria-invalid="true"]) {
+  border-color: var(--office-dialog-danger);
+}
+
+.office-dialog :is(input, select, textarea)[aria-invalid="true"]:focus-visible,
+.office-dialog .office-dialog__stepper:has(input[aria-invalid="true"]):focus-within,
+.office-dialog .office-dialog__input-group:has(input[aria-invalid="true"]):focus-within {
+  outline-color: color-mix(in srgb, var(--office-dialog-danger) 38%, transparent);
+}
+
+.office-dialog input[type="range"] {
+  accent-color: var(--office-dialog-accent);
+}
+
+.office-dialog input[type="checkbox"],
+.office-dialog input[type="radio"] {
+  accent-color: var(--office-dialog-accent);
+  flex: 0 0 auto;
+  height: 14px;
+  margin: 0;
+  width: 14px;
+}
+
+.office-dialog input[type="checkbox"]:focus-visible,
+.office-dialog input[type="radio"]:focus-visible {
+  outline: 3px solid var(--office-dialog-focus-ring);
+  outline-offset: 1px;
+}
+
+/* The ring follows the control's own shape. */
+.office-dialog input[type="checkbox"]:focus-visible {
+  border-radius: 4px;
+}
+
+.office-dialog input[type="radio"]:focus-visible {
+  border-radius: 999px;
+}
+
+.office-dialog input[type="checkbox"]:disabled,
+.office-dialog input[type="radio"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* A touch-size row (the PDF dialogs): an invisible 44px native control over
+   a drawn mark. The control keeps its hit area and its own position; the mark
+   takes the chrome's colours, so light, dark and high contrast follow the
+   tokens. */
+.office-dialog .office-dialog__mark-input.office-dialog__mark-input {
+  accent-color: auto;
+  height: 44px;
+  margin: 0;
+  opacity: 0 !important;
+  width: 44px;
+}
+
+.office-dialog .office-dialog__mark {
+  align-items: center;
+  background: var(--office-dialog-button);
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: transparent;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.office-dialog .office-dialog__mark[data-shape="radio"] {
+  border-radius: 999px;
+}
+
+.office-dialog .office-dialog__mark-input:is(:checked, :indeterminate) + .office-dialog__mark:not([data-shape="radio"]) {
+  background: var(--office-dialog-accent);
+  border-color: var(--office-dialog-accent);
+  color: var(--office-dialog-on-accent);
+}
+
+.office-dialog .office-dialog__mark-input:checked + .office-dialog__mark[data-shape="radio"] {
+  border-color: var(--office-dialog-accent);
+}
+
+.office-dialog .office-dialog__mark-input:checked + .office-dialog__mark[data-shape="radio"]::after {
+  background: var(--office-dialog-accent);
+  border-radius: 999px;
+  content: "";
+  height: 50%;
+  width: 50%;
+}
+
+/* A glyph drawn after the mark (not inside it) shows only while checked. */
+.office-dialog .office-dialog__mark + svg {
+  color: var(--office-dialog-on-accent);
+  opacity: 0;
+}
+
+.office-dialog .office-dialog__mark-input:checked + .office-dialog__mark + svg {
+  opacity: 1;
+}
+
+.office-dialog .office-dialog__mark-input:disabled + .office-dialog__mark + svg {
+  opacity: 0;
+}
+
+.office-dialog .office-dialog__mark-input:checked:disabled + .office-dialog__mark + svg {
+  opacity: 0.5;
+}
+
+.office-dialog .office-dialog__mark-input:focus-visible + .office-dialog__mark {
+  outline: 3px solid var(--office-dialog-focus-ring);
+  outline-offset: 1px;
+}
+
+.office-dialog .office-dialog__mark-input:disabled + .office-dialog__mark {
+  opacity: 0.5;
+}
+
+/* A list box (Excel's reference lists, name lists, candidates): an opaque
+   well with rounded rows. */
+.office-dialog .office-dialog__list {
+  background: var(--office-dialog-surface);
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-height: 0;
+  overflow: auto;
+  padding: 3px;
+}
+
+.office-dialog .office-dialog__list-item {
+  background: transparent;
+  border: 0;
+  border-radius: 5px;
+  color: var(--office-dialog-ink);
+  cursor: pointer;
+  /* A row keeps its own height and the list scrolls: in the list's column
+     flex a long list (Insert Function's 520 names under max-height) would
+     otherwise shrink every row to its padding and stack the names. */
+  flex-shrink: 0;
+  font: inherit;
+  min-height: 0;
+  padding: 3px 8px;
+  text-align: start;
+}
+
+.office-dialog .office-dialog__list-item:hover:not(:disabled) {
+  background: var(--office-dialog-hover);
+}
+
+.office-dialog .office-dialog__list-item:is([aria-selected="true"], [aria-pressed="true"], [data-selected="true"]) {
+  background: var(--office-dialog-accent-soft);
+}
+
+.office-dialog .office-dialog__list-item:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Alternatives to pick one from (Recommended Charts, Recommended
+   PivotTables): rows that take a tint when pointed at and the accent tint
+   when chosen, never bordered cards inside the card. */
+.office-dialog .office-dialog__choices {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.office-dialog .office-dialog__choice {
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: var(--office-dialog-ink);
+  cursor: pointer;
+  min-width: 0;
+  padding: 8px 10px;
+  transition: background-color 120ms ease;
+}
+
+.office-dialog .office-dialog__choice:hover:not([aria-disabled="true"], :disabled) {
+  background: var(--office-dialog-hover);
+}
+
+.office-dialog .office-dialog__choice:is(:has(input:is([type="radio"], [type="checkbox"]):checked), [aria-checked="true"], [aria-selected="true"], [aria-pressed="true"], [data-selected="true"]) {
+  background: var(--office-dialog-accent-soft);
+}
+
+/* A choice that is a button of its own (an action tile) disables natively. */
+.office-dialog .office-dialog__choice:is([aria-disabled="true"], :disabled) {
+  cursor: default;
+  opacity: 0.55;
+}
+
+/* A well: content the dialog shows rather than asks for (a preview, a
+   sample), opaque so it reads at full contrast on the glass. */
+.office-dialog .office-dialog__well {
+  background: var(--office-dialog-surface);
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 8px;
+  min-width: 0;
+}
+
+/* A data table shown in a well (Text Import's data preview): hairline rules
+   between cells, header cells on the muted surface (opaque, so a sticky header
+   row or column covers what scrolls under it), the accent tint on a selected
+   column and a struck-through, muted skipped one. The well draws the outer
+   edge. A header cell holding a button (a column picker) lends it its room. */
+.office-dialog .office-dialog__table {
+  border-collapse: collapse;
+  color: var(--office-dialog-ink);
+  font-size: 11px;
+  line-height: 1.35;
+  min-width: 100%;
+}
+
+.office-dialog .office-dialog__table th,
+.office-dialog .office-dialog__table td {
+  border: 0;
+  padding: 4px 8px;
+}
+
+.office-dialog .office-dialog__table tr + tr > th,
+.office-dialog .office-dialog__table tr + tr > td,
+.office-dialog .office-dialog__table thead + tbody > tr:first-child > th,
+.office-dialog .office-dialog__table thead + tbody > tr:first-child > td {
+  border-top: 1px solid var(--office-dialog-divider);
+}
+
+.office-dialog .office-dialog__table :is(th, td) + th,
+.office-dialog .office-dialog__table :is(th, td) + td {
+  border-inline-start: 1px solid var(--office-dialog-divider);
+}
+
+.office-dialog .office-dialog__table th {
+  background: var(--office-dialog-surface-muted);
+  color: var(--office-dialog-muted);
+  font-weight: 500;
+}
+
+.office-dialog .office-dialog__table th:has(> button) {
+  padding: 2px;
+}
+
+.office-dialog .office-dialog__table td[data-selected="true"] {
+  background: var(--office-dialog-accent-soft);
+}
+
+.office-dialog .office-dialog__table [data-skipped="true"] {
+  color: var(--office-dialog-muted);
+  text-decoration: line-through;
+}
+
+.office-dialog .office-dialog__table td[data-skipped="true"] {
+  background: var(--office-dialog-surface-muted);
+}
+
+/* A stepper, and an input group: one field holding its value with its step
+   buttons or its icon, never a row of separately framed pieces. The field
+   draws the only edge and the focus ring; the input inside is bare, and the
+   step buttons are icons that tint when pointed at. */
+.office-dialog .office-dialog__stepper,
+.office-dialog .office-dialog__input-group {
+  align-items: center;
+  background-color: var(--office-dialog-surface);
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 6px;
+  box-shadow: none;
+  box-sizing: border-box;
+  color: var(--office-dialog-muted);
+  display: flex;
+  gap: 2px;
+  height: 26px;
+  min-width: 0;
+  overflow: visible;
+  padding: 0 2px;
+  transition: border-color 120ms ease, outline-color 120ms ease;
+}
+
+.office-dialog .office-dialog__input-group {
+  gap: 6px;
+  padding: 0 8px;
+}
+
+.office-dialog .office-dialog__input-group > svg {
+  flex: 0 0 auto;
+  height: 14px;
+  width: 14px;
+}
+
+.office-dialog .office-dialog__stepper:hover:not(:focus-within),
+.office-dialog .office-dialog__input-group:hover:not(:focus-within) {
+  border-color: var(--office-dialog-control-border-hover);
+}
+
+.office-dialog .office-dialog__stepper:focus-within,
+.office-dialog .office-dialog__input-group:focus-within {
+  border-color: var(--office-dialog-accent);
+  box-shadow: none;
+  outline: 3px solid var(--office-dialog-focus-ring);
+  outline-offset: 0;
+}
+
+.office-dialog :is(.office-dialog__stepper, .office-dialog__input-group) input:not([type]),
+.office-dialog :is(.office-dialog__stepper, .office-dialog__input-group) input[type="text"],
+.office-dialog :is(.office-dialog__stepper, .office-dialog__input-group) input[type="number"],
+.office-dialog :is(.office-dialog__stepper, .office-dialog__input-group) input[type="url"],
+.office-dialog :is(.office-dialog__stepper, .office-dialog__input-group) input[type="search"],
+.office-dialog :is(.office-dialog__stepper, .office-dialog__input-group) input[type="email"] {
+  appearance: textfield;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--office-dialog-ink);
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  outline: none;
+  padding: 0 4px;
+}
+
+.office-dialog .office-dialog__input-group input:not([type]),
+.office-dialog .office-dialog__input-group input[type="text"],
+.office-dialog .office-dialog__input-group input[type="number"],
+.office-dialog .office-dialog__input-group input[type="url"],
+.office-dialog .office-dialog__input-group input[type="search"],
+.office-dialog .office-dialog__input-group input[type="email"] {
+  padding: 0;
+}
+
+.office-dialog .office-dialog__stepper input:not([type]),
+.office-dialog .office-dialog__stepper input[type="text"],
+.office-dialog .office-dialog__stepper input[type="number"] {
+  text-align: center;
+}
+
+.office-dialog :is(.office-dialog__stepper, .office-dialog__input-group) input:focus-visible {
+  outline: none;
+}
+
+.office-dialog .office-dialog__stepper input::-webkit-inner-spin-button,
+.office-dialog .office-dialog__stepper input::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.office-dialog .office-dialog__stepper-button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: none;
+  color: var(--office-dialog-muted);
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 20px;
+  justify-content: center;
+  min-height: 0;
+  min-width: 0;
+  padding: 0;
+  width: 22px;
+}
+
+.office-dialog .office-dialog__stepper-button svg {
+  height: 12px;
+  width: 12px;
+}
+
+.office-dialog .office-dialog__stepper-button:hover:not(:disabled) {
+  background: var(--office-dialog-hover);
+  color: var(--office-dialog-ink);
+}
+
+.office-dialog .office-dialog__stepper-button:active:not(:disabled) {
+  background: var(--office-dialog-pressed);
+}
+
+.office-dialog .office-dialog__stepper-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.office-dialog .office-dialog__stepper-button:focus-visible {
+  outline: 2px solid var(--office-dialog-accent);
+  outline-offset: -1px;
+}
+
+/* The ribbon's font picker and editable value box (font size) used inside a
+   dialog reads as one of the dialog's fields: one frame in the card's
+   surface and ink, its text box and chevron bare inside it, and the same
+   focus ring, in light and dark. */
+.office-dialog .note-editor-ribbon-value-combobox.office-ribbon-control,
+.office-dialog .docs-home-font-trigger.office-ribbon-control {
+  background: var(--office-dialog-surface);
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 6px;
+  box-shadow: none;
+  color: var(--office-dialog-ink);
+}
+
+/* Outside the ribbon skin the value box has no layout of its own: the text
+   box and its chevron sit side by side in the one frame, as on the ribbon. */
+.office-dialog .note-editor-ribbon-value-combobox.office-ribbon-control {
+  align-items: stretch;
+  display: inline-grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  overflow: hidden;
+}
+
+.office-dialog .note-editor-ribbon-value-combobox.office-ribbon-control:hover:not(:focus-within),
+.office-dialog .docs-home-font-trigger.office-ribbon-control:hover:not(:focus-visible) {
+  border-color: var(--office-dialog-control-border-hover);
+}
+
+.office-dialog .note-editor-ribbon-value-combobox.office-ribbon-control:focus-within,
+.office-dialog .docs-home-font-trigger.office-ribbon-control:focus-visible {
+  border-color: var(--office-dialog-accent);
+  box-shadow: none;
+  outline: 3px solid var(--office-dialog-focus-ring);
+  outline-offset: 0;
+}
+
+/* Doubled: the dark ribbon field rule ([data-theme-mode] … :not(.office-ribbon-control))
+   has the same weight and loads later. */
+.office-dialog .note-editor-ribbon-value-combobox .note-editor-ribbon-value-combobox__input.note-editor-ribbon-value-combobox__input {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--office-dialog-ink);
+  height: 100%;
+  outline: none;
+}
+
+.office-dialog .note-editor-ribbon-value-combobox .note-editor-ribbon-value-combobox__trigger {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: var(--office-dialog-muted);
+}
+
+/* A caption whose own control is disabled reads as disabled too (Excel greys
+   the whole option, not only the box). */
+.office-dialog .office-dialog__check:has(> :is(input, select, textarea):disabled),
+.office-dialog .office-dialog__field:has(> :is(input, select, textarea):disabled),
+.office-dialog .office-dialog__row:has(> :is(input, select, textarea):disabled),
+.office-dialog fieldset:disabled {
+  color: var(--office-dialog-muted);
+}
+
+/* ------------------------------------------------------------- messages */
+
+.office-dialog .office-dialog__message {
+  color: var(--office-dialog-muted);
+  font-size: 12px;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.office-dialog .office-dialog__message:is([data-tone="error"], [data-status="error"], [role="alert"]),
+.office-dialog .office-dialog__error {
+  color: var(--office-dialog-danger);
+  font-size: 12px;
+}
+
+.office-dialog .office-dialog__message:is([data-tone="success"], [data-status="success"]) {
+  color: var(--office-dialog-success);
+}
+
+.office-dialog .office-dialog__message[data-tone="warning"] {
+  color: var(--office-dialog-warning);
+}
+
+/* ---------------------------------------------------------------- footer */
+
+.office-dialog .office-dialog__footer {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  margin: 6px 0 0;
+}
+
+/* A left-hand footer action (Excel's Options…, Clear, Remove link). */
+.office-dialog .office-dialog__footer-start {
+  margin-inline-end: auto;
+}
+
+/* --------------------------------------------------------------- buttons */
+
+/* Push buttons. The doubled class keeps them above the style bar's blanket
+   `label`/`button` rules when a dialog opens from inside that bar (the All
+   tools drawer). */
+.office-dialog .office-dialog__button.office-dialog__button {
+  align-items: center;
+  background: var(--office-dialog-button);
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 7px;
+  box-shadow: var(--office-dialog-button-shadow);
+  color: var(--office-dialog-ink);
+  cursor: pointer;
+  display: inline-flex;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  gap: 6px;
+  height: 28px;
+  justify-content: center;
+  line-height: 1;
+  min-height: 0;
+  min-width: 80px;
+  padding: 0 14px;
+  transform: none;
+  transition: background-color 120ms ease, border-color 120ms ease;
+  white-space: nowrap;
+  width: auto;
+}
+
+/* A compact in-body action (Add, Delete, Move up) rather than a footer one. */
+.office-dialog .office-dialog__button--compact.office-dialog__button--compact {
+  border-radius: 6px;
+  height: 24px;
+  min-width: 0;
+  padding: 0 9px;
+}
+
+.office-dialog .office-dialog__button.office-dialog__button:hover:not(:disabled) {
+  background: var(--office-dialog-button-hover);
+  border-color: var(--office-dialog-control-border-hover);
+}
+
+.office-dialog .office-dialog__button.office-dialog__button:active:not(:disabled) {
+  background: var(--office-dialog-button-pressed);
+}
+
+/* A toggle in a dialog (Data Form's Criteria, Clear All armed). */
+.office-dialog .office-dialog__button.office-dialog__button:is([aria-pressed="true"], [data-active="true"]) {
+  background: var(--office-dialog-accent-soft);
+  border-color: var(--office-dialog-accent);
+}
+
+/* The default action: the accent, with the faint top light of a macOS
+   default button. */
+.office-dialog .office-dialog__button--primary.office-dialog__button--primary {
+  background: var(--office-dialog-accent) linear-gradient(rgb(255 255 255 / 14%), rgb(255 255 255 / 0%));
+  border-color: color-mix(in srgb, var(--office-dialog-accent) 82%, #000000);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--office-dialog-accent) 30%, transparent);
+  color: var(--office-dialog-on-accent);
+  font-weight: 600;
+}
+
+.office-dialog .office-dialog__button--primary.office-dialog__button--primary:hover:not(:disabled) {
+  background: var(--office-dialog-accent-hover) linear-gradient(rgb(255 255 255 / 10%), rgb(255 255 255 / 0%));
+  border-color: color-mix(in srgb, var(--office-dialog-accent-hover) 82%, #000000);
+}
+
+.office-dialog .office-dialog__button--primary.office-dialog__button--primary:active:not(:disabled) {
+  background: var(--office-dialog-accent-hover);
+}
+
+/* A destructive default action (Delete, Overwrite). */
+.office-dialog .office-dialog__button--primary.office-dialog__button--primary[data-tone="danger"] {
+  background: var(--office-dialog-danger-strong) linear-gradient(rgb(255 255 255 / 14%), rgb(255 255 255 / 0%));
+  border-color: color-mix(in srgb, var(--office-dialog-danger-strong) 82%, #000000);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--office-dialog-danger-strong) 30%, transparent);
+  color: #ffffff;
+}
+
+.office-dialog .office-dialog__button.office-dialog__button:is(:disabled, [aria-disabled="true"]) {
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.office-dialog .office-dialog__button:focus-visible,
+.office-dialog .office-dialog__tab:focus-visible,
+.office-dialog .office-dialog__close:focus-visible,
+.office-dialog .office-dialog__list-item:focus-visible {
+  outline: 3px solid var(--office-dialog-focus-ring);
+  outline-offset: 0;
+}
+
+.office-dialog .office-dialog__button[data-tone="danger"]:focus-visible {
+  outline-color: color-mix(in srgb, var(--office-dialog-danger-strong) 38%, transparent);
+}
+
+/* A bare-text shell body inherits the dialog's 12px rather than Tailwind's
+   14px body copy, so shell and native cards read at one size. */
+.office-dialog .text-sm,
+.office-dialog .text-base {
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.office-dialog .text-xs {
+  font-size: 11px;
+}
+
+/* Field captions are regular weight, as in Office; section headings (legend,
+   .office-dialog__section-title) carry the weight instead. */
+.office-dialog label:is(.font-medium, .font-semibold) {
+  font-weight: 400;
+}
+
+/* The shell's Radix overlay, and the app-modal overlay a card like Format
+   Cells centres itself in: the same light dim as the native-window dimmer
+   (native-page-window.css), so every kind of dialog sits on one backdrop and
+   the sheet behind still shows through the glass. */
+[data-state]:has(+ .office-dialog),
+.app-modal-overlay:has(> .office-dialog) {
+  backdrop-filter: none;
+  background: rgb(15 23 42 / 18%);
+}
+
+/* ---------------------------------------------------------------- motion */
+
+/* A dialog arrives and leaves like a macOS sheet: the card settles up to size
+   while it fades in, and eases back as it fades out; the dim behind it fades
+   with it. Entrance is these keyframes on mount. Exit is played on a lifeless
+   copy the motion layer leaves behind for a moment (lib/office-dialog-motion),
+   since the editors unmount a card the instant its command ends.
+
+   `scale` and `opacity` only, never `transform`: a card centres itself with
+   its own transform or translate, and these compose with either. The entrance
+   names no end state and does not fill forwards, so once it has run the card
+   carries no `scale` (a scaled box would become the containing block of the
+   fixed-position menus and pickers a dialog opens).
+
+   Radix-portaled shells are excluded: they carry `data-state` and already
+   run their own open and close motion. */
+@keyframes office-dialog-enter {
+  from {
+    opacity: 0;
+    scale: 0.965;
+  }
+}
+
+@keyframes office-dialog-leave {
+  to {
+    opacity: 0;
+    scale: 0.975;
+  }
+}
+
+@keyframes office-dialog-dim-enter {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes office-dialog-dim-leave {
+  to {
+    opacity: 0;
+  }
+}
+
+/* A task pane wears the card's chrome but has its own motion
+   (officeTaskPaneMotion): it slides from its edge instead. */
+.office-dialog:not([data-state], .office-dialog--pane) {
+  animation: office-dialog-enter var(--dialog-enter, 220ms) var(--enter-ease, cubic-bezier(0.22, 1, 0.36, 1)) backwards;
+}
+
+.native-window__modal-dimmer,
+.app-modal-overlay:has(> .office-dialog) {
+  animation: office-dialog-dim-enter var(--dialog-enter, 220ms) var(--enter-ease, cubic-bezier(0.22, 1, 0.36, 1)) backwards;
+}
+
+[data-office-dialog-ghost],
+[data-office-dialog-ghost] * {
+  pointer-events: none !important;
+}
+
+.office-dialog[data-office-dialog-ghost]:not([data-state]),
+[data-office-dialog-ghost] > .office-dialog:not([data-state]) {
+  animation: office-dialog-leave var(--dialog-exit, 160ms) var(--exit-ease, cubic-bezier(0.4, 0, 1, 1)) forwards;
+}
+
+.native-window__modal-dimmer[data-office-dialog-ghost],
+.app-modal-overlay[data-office-dialog-ghost] {
+  animation: office-dialog-dim-leave var(--dialog-exit, 160ms) var(--exit-ease, cubic-bezier(0.4, 0, 1, 1)) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .office-dialog:not([data-state]),
+  .native-window__modal-dimmer,
+  .app-modal-overlay:has(> .office-dialog) {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------ dark */
+
+[data-theme-mode="dark"] .office-dialog,
+[data-theme-mode="high-contrast"] .office-dialog,
+/* A dialog opened from a window in document dark mode carries the theme
+   attribute itself (it is portalled outside the window). */
+.office-dialog[data-theme-mode="dark"] {
+   
+  --office-dialog-glass: rgba(38, 39, 44, 0.94);
+  --office-dialog-glass-solid: #2a2b30;
+  --office-dialog-glass-edge: rgb(0 0 0 / 55%);
+  --office-dialog-glass-highlight: rgb(255 255 255 / 12%);
+  --office-dialog-surface: #1f2024;
+  --office-dialog-surface-muted: #1a1b1e;
+  --office-dialog-ink: #f2f2f7;
+  --office-dialog-muted: #a1a1a8;
+  --office-dialog-border: rgb(255 255 255 / 12%);
+  --office-dialog-divider: rgb(255 255 255 / 10%);
+  --office-dialog-control-border: rgb(255 255 255 / 15%);
+  --office-dialog-control-border-hover: rgb(255 255 255 / 28%);
+  --office-dialog-hover: rgb(255 255 255 / 8%);
+  --office-dialog-pressed: rgb(255 255 255 / 14%);
+  --office-dialog-button: rgb(255 255 255 / 12%);
+  --office-dialog-button-hover: rgb(255 255 255 / 17%);
+  --office-dialog-button-pressed: rgb(255 255 255 / 23%);
+  --office-dialog-button-shadow: 0 1px 1px rgb(0 0 0 / 20%);
+  --office-dialog-segment-track: rgb(118 118 128 / 24%);
+  --office-dialog-segment-thumb: #636366;
+  --office-dialog-segment-shadow: 0 1px 2px rgb(0 0 0 / 30%);
+  --office-dialog-danger: #ff6961;
+  --office-dialog-danger-strong: #e5352b;
+  --office-dialog-success: #63d68a;
+  --office-dialog-warning: #f5b56b;
+  --office-dialog-accent-soft: color-mix(in srgb, var(--office-dialog-accent) 30%, var(--office-dialog-surface));
+  --office-dialog-focus-ring: color-mix(in srgb, var(--office-dialog-accent) 55%, transparent);
+  /* Ribbon pieces drawn inside a dialog or pane (the colour trigger of a
+     Format pane) read the ribbon's tokens, which a dialog sits outside of;
+     the light defaults they fall back to are dark ink on white. */
+  --office-ribbon-surface: #1f2024;
+  --office-ribbon-border: rgb(255 255 255 / 12%);
+  --office-ribbon-ink: #f2f2f7;
+  --office-ribbon-muted: #a1a1a8;
+  --office-dialog-shadow:
+    0 24px 64px -8px rgb(0 0 0 / 60%),
+    0 8px 22px -6px rgb(0 0 0 / 40%);
+  --office-dialog-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 3.5 5 6.5 8 3.5' fill='none' stroke='%23a1a1a8' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  /* Native parts the card cannot style (a listbox's selected row, its
+     scrollbar, a date field's picker) follow the dark card, not the light
+     page: a size=8 list showed white text on a pale-blue selected row. */
+  color-scheme: dark;
+}
+
+/* High contrast keeps the card solid and its edges strong. */
+[data-theme-mode="high-contrast"] .office-dialog {
+  --office-dialog-glass: #1b1c1f;
+  --office-dialog-glass-edge: rgb(255 255 255 / 45%);
+  --office-dialog-control-border: rgb(255 255 255 / 45%);
+  --office-dialog-control-border-hover: rgb(255 255 255 / 70%);
+}
+
+[data-theme-mode="dark"] .office-dialog.office-dialog--tone-spreadsheet,
+[data-theme-mode="high-contrast"] .office-dialog.office-dialog--tone-spreadsheet {
+  --office-dialog-tone-accent: #1f8f4c;
+  --office-dialog-tone-accent-hover: #26a159;
+}
+
+[data-theme-mode="dark"] .office-dialog.office-dialog--tone-document,
+[data-theme-mode="high-contrast"] .office-dialog.office-dialog--tone-document,
+.office-dialog.office-dialog--tone-document[data-theme-mode="dark"] {
+  --office-dialog-tone-accent: #4f8bf5;
+  --office-dialog-tone-accent-hover: #6b9df7;
+}
+
+[data-theme-mode="dark"] .office-dialog.office-dialog--tone-pdf,
+[data-theme-mode="high-contrast"] .office-dialog.office-dialog--tone-pdf {
+  --office-dialog-tone-accent: #14907f;
+  --office-dialog-tone-accent-hover: #1aa592;
+}
+
+[data-theme-mode="dark"] .office-dialog.office-dialog--tone-code,
+[data-theme-mode="high-contrast"] .office-dialog.office-dialog--tone-code {
+  --office-dialog-tone-accent: #14907f;
+  --office-dialog-tone-accent-hover: #1aa592;
+}
+
+/* PowerPoint red one step lighter for the dark card: white text on it stays
+   above 4.5:1 (#d04828: 4.53:1), and the accent keeps 3.7:1 against the card. */
+[data-theme-mode="dark"] .office-dialog.office-dialog--tone-presentation,
+[data-theme-mode="high-contrast"] .office-dialog.office-dialog--tone-presentation {
+  --office-dialog-tone-accent: #d04828;
+  --office-dialog-tone-accent-hover: #dc5634;
+}
+
+/* A dialog can open from a bar that styles its own labels and buttons — the
+   spreadsheet style bar gives every label inside it a pill border
+   (native-page-window.css), and the All tools drawer's dialogs sit in that
+   subtree. These restate the chrome's own parts one step above those blanket
+   rules. */
+.office-dialog .office-dialog__field.office-dialog__field,
+.office-dialog .office-dialog__row.office-dialog__row,
+.office-dialog .office-dialog__check.office-dialog__check,
+.office-dialog .office-dialog__label.office-dialog__label {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  color: var(--office-dialog-ink);
+  flex: 0 1 auto;
+  font-size: 12px;
+  font-weight: 400;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+}
+
+.office-dialog .office-dialog__field.office-dialog__field {
+  align-items: stretch;
+  gap: 4px;
+}
+
+.office-dialog .office-dialog__row.office-dialog__row {
+  align-items: center;
+  gap: 6px 10px;
+}
+
+.office-dialog .office-dialog__check.office-dialog__check {
+  align-items: center;
+  gap: 6px;
+}
+
+.office-dialog .office-dialog__hint.office-dialog__hint {
+  background: none;
+  border: 0;
+  color: var(--office-dialog-muted);
+  font-size: 11px;
+  font-weight: 400;
+  height: auto;
+  padding: 0;
+}
+
+/* Shell bodies still carry Tailwind's light palette (bg-white, text-slate-800,
+   border-slate-200 …). On the dark card those would draw dark ink on dark, so
+   inside a dialog they map onto the dialog's own tokens. Light mode needs no
+   mapping: the palette already matches the light card. */
+[data-theme-mode] .office-dialog .text-slate-900,
+[data-theme-mode] .office-dialog .text-slate-800,
+[data-theme-mode] .office-dialog .text-slate-700,
+[data-theme-mode] .office-dialog .text-foreground,
+[data-theme-mode] .office-dialog .hover\:text-slate-900:hover {
+  color: var(--office-dialog-ink);
+}
+
+[data-theme-mode] .office-dialog .text-slate-600,
+[data-theme-mode] .office-dialog .text-slate-500,
+[data-theme-mode] .office-dialog .text-slate-400,
+[data-theme-mode] .office-dialog .text-muted-foreground,
+[data-theme-mode] .office-dialog .disabled\:text-slate-400:disabled {
+  color: var(--office-dialog-muted);
+}
+
+/* A choice row keeps its own transparent, tinted-when-chosen fill. */
+[data-theme-mode] .office-dialog .bg-white:not(.office-dialog__choice),
+[data-theme-mode] .office-dialog .bg-background:not(.office-dialog__choice) {
+  background-color: var(--office-dialog-surface);
+}
+
+[data-theme-mode] .office-dialog .bg-slate-50,
+[data-theme-mode] .office-dialog .bg-slate-100,
+[data-theme-mode] .office-dialog .bg-slate-50\/70,
+[data-theme-mode] .office-dialog .disabled\:bg-slate-100:disabled {
+  background-color: var(--office-dialog-surface-muted);
+}
+
+[data-theme-mode] .office-dialog .hover\:bg-slate-50:hover:not(:disabled),
+[data-theme-mode] .office-dialog .hover\:bg-slate-100:hover:not(:disabled),
+[data-theme-mode] .office-dialog .hover\:bg-emerald-50:hover:not(:disabled) {
+  background-color: var(--office-dialog-hover);
+}
+
+[data-theme-mode] .office-dialog .border-slate-100,
+[data-theme-mode] .office-dialog .border-slate-200,
+[data-theme-mode] .office-dialog .border-slate-300,
+[data-theme-mode] .office-dialog .border-input {
+  border-color: var(--office-dialog-divider);
+}
+
+[data-theme-mode] .office-dialog .text-red-600,
+[data-theme-mode] .office-dialog .text-red-700,
+[data-theme-mode] .office-dialog .text-red-800,
+[data-theme-mode] .office-dialog .text-rose-700,
+[data-theme-mode] .office-dialog .text-rose-800,
+[data-theme-mode] .office-dialog .text-destructive,
+[data-theme-mode] .office-dialog .hover\:text-red-700:hover {
+  color: var(--office-dialog-danger);
+}
+
+[data-theme-mode] .office-dialog .bg-red-50,
+[data-theme-mode] .office-dialog .bg-rose-50,
+[data-theme-mode] .office-dialog .bg-destructive\/10,
+[data-theme-mode] .office-dialog .hover\:bg-red-50:hover {
+  background-color: var(--office-dialog-danger-soft);
+}
+
+[data-theme-mode] .office-dialog .border-red-200,
+[data-theme-mode] .office-dialog .border-red-400,
+[data-theme-mode] .office-dialog .border-red-500,
+[data-theme-mode] .office-dialog .border-rose-200 {
+  border-color: var(--office-dialog-danger-line);
+}
+
+[data-theme-mode] .office-dialog .bg-amber-50,
+[data-theme-mode] .office-dialog .bg-amber-100,
+[data-theme-mode] .office-dialog .bg-amber-50\/70,
+[data-theme-mode] .office-dialog .bg-orange-50,
+[data-theme-mode] .office-dialog .bg-amber-500\/10 {
+  background-color: var(--office-dialog-warning-soft);
+}
+
+[data-theme-mode] .office-dialog .border-amber-200,
+[data-theme-mode] .office-dialog .border-amber-300,
+[data-theme-mode] .office-dialog .border-amber-300\/70,
+[data-theme-mode] .office-dialog .border-orange-200,
+[data-theme-mode] .office-dialog .border-orange-300,
+[data-theme-mode] .office-dialog .border-amber-400\/40,
+[data-theme-mode] .office-dialog .border-amber-500\/35 {
+  border-color: var(--office-dialog-warning-line);
+}
+
+[data-theme-mode] .office-dialog .text-amber-700,
+[data-theme-mode] .office-dialog .text-amber-900,
+[data-theme-mode] .office-dialog .text-amber-950,
+[data-theme-mode] .office-dialog .text-orange-700,
+[data-theme-mode] .office-dialog .text-orange-800 {
+  color: var(--office-dialog-warning);
+}
+
+[data-theme-mode] .office-dialog .bg-teal-50,
+[data-theme-mode] .office-dialog .bg-green-50 {
+  background-color: var(--office-dialog-accent-soft);
+}
+
+[data-theme-mode] .office-dialog .border-teal-200,
+[data-theme-mode] .office-dialog .border-teal-300 {
+  border-color: var(--office-dialog-accent);
+}
+
+[data-theme-mode] .office-dialog .text-teal-700,
+[data-theme-mode] .office-dialog .text-teal-800,
+[data-theme-mode] .office-dialog .text-teal-900 {
+  color: var(--office-dialog-accent);
+}
+
+[data-theme-mode] .office-dialog .bg-emerald-50,
+[data-theme-mode] .office-dialog .bg-emerald-100,
+[data-theme-mode] .office-dialog .bg-emerald-50\/70 {
+  background-color: var(--office-dialog-accent-soft);
+}
+
+[data-theme-mode] .office-dialog .border-emerald-200,
+[data-theme-mode] .office-dialog .border-emerald-600 {
+  border-color: var(--office-dialog-accent);
+}
+
+[data-theme-mode] .office-dialog .text-emerald-700,
+[data-theme-mode] .office-dialog .text-emerald-800,
+[data-theme-mode] .office-dialog .text-emerald-900,
+[data-theme-mode] .office-dialog .text-emerald-950 {
+  color: var(--office-dialog-success);
+}
+
+/* Reduced transparency: a solid card over a firmer dim. */
+@media (prefers-reduced-transparency: reduce) {
+  .office-dialog.office-dialog:not(.office-dialog--embedded) {
+    backdrop-filter: none;
+    background: var(--office-dialog-glass-solid);
+  }
+
+  [data-state]:has(+ .office-dialog),
+  .app-modal-overlay:has(> .office-dialog) {
+    background: rgb(15 23 42 / 45%);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Command search (the action rail's magnifier, Alt+Q): the same card as   */
+/* every command dialog, holding a framed search field and a framed result */
+/* list whose rows are cmdk items. The cmdk pieces arrive with their own   */
+/* utility classes; the chrome's grammar wins by specificity here.         */
+/* ------------------------------------------------------------------ */
+
+.office-dialog.office-dialog--command-search {
+  gap: 10px;
+  max-width: calc(100vw - 32px);
+  width: min(560px, calc(100vw - 32px));
+}
+
+.office-dialog.office-dialog--command-search .office-dialog__command {
+  background: transparent;
+  border-radius: 0;
+  color: var(--office-dialog-ink);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  overflow: visible;
+}
+
+/* The search field: one frame around the magnifier and the input, focused
+   as a whole like an input group. */
+.office-dialog.office-dialog--command-search [cmdk-input-wrapper] {
+  align-items: center;
+  background: var(--office-dialog-surface);
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 6px;
+  color: var(--office-dialog-muted);
+  display: flex;
+  gap: 6px;
+  height: 30px;
+  padding: 0 8px;
+  transition: border-color 120ms ease, outline-color 120ms ease;
+}
+
+.office-dialog.office-dialog--command-search [cmdk-input-wrapper]:focus-within {
+  border-color: var(--office-dialog-accent);
+  outline: 3px solid var(--office-dialog-focus-ring);
+  outline-offset: 0;
+}
+
+.office-dialog.office-dialog--command-search [cmdk-input-wrapper] > svg {
+  flex: 0 0 auto;
+  height: 14px;
+  margin: 0;
+  opacity: 1;
+  width: 14px;
+}
+
+.office-dialog.office-dialog--command-search [cmdk-input] {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--office-dialog-ink);
+  flex: 1 1 auto;
+  font: inherit;
+  font-size: 12px;
+  height: 28px;
+  min-width: 0;
+  outline: none;
+  padding: 0;
+}
+
+.office-dialog.office-dialog--command-search [cmdk-input]:focus-visible {
+  outline: none;
+}
+
+.office-dialog.office-dialog--command-search [cmdk-input]::placeholder {
+  color: var(--office-dialog-muted);
+}
+
+/* The result list: the chrome's list frame, tall enough to show whole
+   groups, scrolling inside its frame. */
+.office-dialog.office-dialog--command-search [cmdk-list] {
+  background: var(--office-dialog-surface);
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 8px;
+  max-height: min(52vh, 440px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 3px;
+  scroll-padding-block: 3px;
+}
+
+.office-dialog.office-dialog--command-search [cmdk-group] {
+  overflow: visible;
+  padding: 0;
+}
+
+.office-dialog.office-dialog--command-search [cmdk-group] + [cmdk-group] {
+  border-top: 1px solid var(--office-dialog-divider);
+  margin-top: 3px;
+  padding-top: 3px;
+}
+
+.office-dialog.office-dialog--command-search [cmdk-group-heading] {
+  color: var(--office-dialog-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 16px;
+  padding: 4px 8px 2px;
+}
+
+.office-dialog.office-dialog--command-search [cmdk-item] {
+  align-items: center;
+  border-radius: 5px;
+  color: var(--office-dialog-ink);
+  cursor: default;
+  display: flex;
+  font-size: 12px;
+  gap: 8px;
+  line-height: 16px;
+  min-height: 26px;
+  padding: 5px 8px;
+}
+
+.office-dialog.office-dialog--command-search [cmdk-item] .font-medium {
+  font-weight: 500;
+}
+
+.office-dialog.office-dialog--command-search [cmdk-item][data-selected="true"] {
+  background: var(--office-dialog-accent-soft);
+  color: var(--office-dialog-ink);
+}
+
+.office-dialog.office-dialog--command-search [cmdk-item][data-disabled="true"] {
+  color: var(--office-dialog-muted);
+  opacity: 1;
+}
+
+.office-dialog.office-dialog--command-search [cmdk-item] .office-dialog__command-reason,
+.office-dialog.office-dialog--command-search [cmdk-item] [class*="text-muted-foreground"] {
+  color: var(--office-dialog-muted);
+  font-size: 11px;
+  line-height: 14px;
+  margin-top: 1px;
+}
+
+.office-dialog.office-dialog--command-search [cmdk-item] > span:last-child:not(:first-child) {
+  color: var(--office-dialog-muted);
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  margin-left: auto;
+}
+
+.office-dialog.office-dialog--command-search [cmdk-empty] {
+  color: var(--office-dialog-muted);
+  font-size: 12px;
+  padding: 18px 8px;
+  text-align: center;
+}
+
+/* ----------------------------------------------------------------- touch */
+
+/* A finger gets a taller field and button (--office-touch-control-height,
+   styles/touch-mode.css: 32px; a button's hit area reaches 44px past its
+   face); a mouse or trackpad keeps the Office density above (26px fields,
+   28px buttons). This is the one place a dialog's touch size is defined, for
+   every editor, so a dialog body sets no target size of its own. A stepper, an input group and the command search box grow as one
+   field: the bare control inside keeps no minimum and fills the frame. The
+   invisible check and radio hit areas (.office-dialog__mark-input) are 44px
+   on every pointer and are not listed. A field whose control is a button (a
+   colour well, a picker) is a field like any other (below): left at 32px
+   beside a 44px input in a row aligned by its bottom edge, its caption stood
+   12px below the input's (the slides' Bullets and Numbering "颜色"). */
+:where(:root[data-touch-mode]) .office-dialog :is(
+    input:not([type]),
+    input[type="text"],
+    input[type="number"],
+    input[type="search"],
+    input[type="email"],
+    input[type="url"],
+    input[type="tel"],
+    input[type="password"],
+    input[type="date"],
+    input[type="time"],
+    select:not([multiple]):not([size]),
+    .office-dialog__stepper,
+    .office-dialog__input-group,
+    [cmdk-input-wrapper],
+    .office-dialog__button,
+    .office-dialog__tab,
+    .office-dialog__icon-button,
+    .office-dialog__close
+  ) {
+  min-height: var(--office-touch-control-height, 32px);
+}
+
+/* The finger's 44px: a button's hit area reaches past its face, above and
+   below (a dialog's rows stand at least 6px apart). */
+:where(:root[data-touch-mode]) .office-dialog :is(
+    .office-dialog__button,
+    .office-dialog__tab,
+    .office-dialog__icon-button,
+    .office-dialog__close
+  ) {
+  position: relative;
+}
+:where(:root[data-touch-mode]) .office-dialog :is(
+    .office-dialog__button,
+    .office-dialog__tab,
+    .office-dialog__icon-button,
+    .office-dialog__close
+  )::before {
+  content: "";
+  inset: calc((var(--office-touch-control-height, 32px) - 44px) / 2) 0;
+  position: absolute;
+}
+
+/* Its own rule, not in the list above: :is() takes its most specific
+   argument's weight, and a compound argument there would raise every
+   control's touch rule with it. */
+:where(:root[data-touch-mode]) .office-dialog .office-dialog__field > button {
+  min-height: var(--office-touch-control-height, 32px);
+}
+
+:where(:root[data-touch-mode]) .office-dialog .office-dialog__icon-button,
+:where(:root[data-touch-mode]) .office-dialog .office-dialog__close {
+  min-width: var(--office-touch-control-height, 32px);
+}
+
+/* Doubled to outrank the rule above, which the bare control also matches. */
+:where(:root[data-touch-mode]) .office-dialog.office-dialog :is(.office-dialog__stepper, .office-dialog__input-group, [cmdk-input-wrapper]) input,
+:where(:root[data-touch-mode]) .office-dialog.office-dialog :is(.office-dialog__stepper, .office-dialog__input-group, [cmdk-input-wrapper]) select {
+  min-height: 0;
+}
+
+
+/* ------------------------------------------------------------ icons */
+
+/* A dialog's option buttons and choices carry the ribbon's glyphs (Add,
+   Delete, Move Up; shift cells right, paste values). The glyph palette is
+   the ribbon's, its accent the dialog's own (the editor's colour), and its
+   ink and paper follow the card in light and dark. */
+.office-dialog {
+  --docs-home-icon-ink: var(--office-dialog-ink);
+  --docs-home-icon-ink-soft: color-mix(in srgb, var(--office-dialog-ink) 70%, var(--office-dialog-surface));
+  --docs-home-icon-accent: var(--office-dialog-accent);
+  --docs-home-icon-accent-soft: color-mix(in srgb, var(--office-dialog-accent) 72%, var(--office-dialog-surface));
+  --docs-home-icon-stroke: 1;
+  --docs-home-icon-stroke-emphasis: 1.4;
+  --mrai-office-icon-foreground: var(--docs-home-icon-ink);
+  --mrai-office-icon-foreground-soft: var(--docs-home-icon-ink-soft);
+  --mrai-office-icon-surface: var(--office-dialog-surface);
+  --mrai-office-icon-accent: var(--office-dialog-accent);
+}
+
+.office-dialog .office-dialog__icon {
+  flex: 0 0 auto;
+  height: 16px;
+  width: 16px;
+}
+
+.office-dialog .office-dialog__icon .docs-home-icon__paper,
+.office-dialog .office-dialog__icon.docs-home-icon .docs-home-icon__paper {
+  fill: var(--office-dialog-surface);
+}
+
+/* A command that cannot run now shows its picture as quietly as its words. */
+.office-dialog :is(button, label):is(:disabled, [aria-disabled="true"], :has(> input:disabled)) > .office-dialog__icon {
+  opacity: 0.45;
+}
+
+/* In a choice, the picture sits between the radio and its words. */
+.office-dialog .office-dialog__check > .office-dialog__icon {
+  margin-inline-start: 1px;
+}

@@ -1,0 +1,35 @@
+"use client"
+
+import {
+  Resizable,
+  ResizableHandle,
+  ResizablePanel,
+} from "@ui-sdk/react/resizable"
+import { useLog } from "../../../shared/react/log"
+
+function Example() {
+  const log = useLog()
+  return (
+    <Resizable
+      onLayoutCommit={(layout, details) =>
+        log(`Saved ${layout.map(Math.round).join(" / ")} (${details.reason})`)
+      }
+    >
+      <ResizablePanel defaultSize={40} minSize={20}>
+        <h3>Files</h3>
+        <ul>
+          <li>page.tsx</li>
+          <li>layout.tsx</li>
+          <li>globals.css</li>
+        </ul>
+      </ResizablePanel>
+      <ResizableHandle aria-label="Resize files" />
+      <ResizablePanel minSize={20}>
+        <h3>page.tsx</h3>
+        <span data-slot="hint">Saved just now</span>
+      </ResizablePanel>
+    </Resizable>
+  )
+}
+
+export { Example }

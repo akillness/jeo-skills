@@ -1,0 +1,516 @@
+/* Office task pane — the shared look of a docked, non-modal pane.
+ *
+ * Word, Excel and PowerPoint all answer "format this object" with the same
+ * surface: a narrow column at the right of the document, a title row with a
+ * close button, bordered sections, and controls in the same 12px / 26px
+ * grammar as a command dialog (Microsoft Support, "Add a fill or effect to a
+ * shape or text box": Format Shape / Format Picture / Format Background are
+ * one pane frame). MRAI had three copies of it — the deck's `taskPane*`, the
+ * workbook's chart format dock, and Docs' DocumentShapeFormatPane — so this
+ * file is the one definition and each host composes from it.
+ *
+ * It owns the pane's CHROME, not its placement: a pane lives in a different
+ * box in each host (absolute inside the slide stage, fixed beside the page,
+ * a grid column of the workbook), so `.dockRight` is offered for the common
+ * case and a host may place `.pane` itself instead. It carries no behaviour:
+ * focus, Escape and the open state stay with the host that renders it.
+ *
+ * Colours come from `--office-pane-*`; a host sets them on its own composed
+ * class, the way OfficeDialogChrome.css takes `--office-dialog-tone-accent`.
+ */
+
+.pane {
+  --office-pane-accent: var(--office-pane-tone-accent, #0f6cbd);
+  --office-pane-surface: #ffffff;
+  --office-pane-surface-muted: #f5f5f5;
+  --office-pane-ink: #242424;
+  --office-pane-muted: #616161;
+  --office-pane-border: #e0e0e0;
+  --office-pane-control-border: #c7c7c7;
+  --office-pane-control-border-hover: #8f8f8f;
+  --office-pane-hover: #f0f0f0;
+
+  background: var(--office-pane-surface);
+  box-sizing: border-box;
+  color: var(--office-pane-ink);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+}
+
+/* A pane kept mounted while it is not showing (closed, or behind another
+   pane of the same dock). `display: flex` above would otherwise win over the
+   user agent's own [hidden] rule. */
+/* The pane takes focus only to keep the keyboard in it; it draws no ring. */
+.pane:focus {
+  outline: none;
+}
+
+.pane[hidden] {
+  display: none;
+}
+
+/* A pane comes and goes by the pane motion (officeTaskPaneMotion.ts): it
+   slides in from its edge and out again. A pane in the dialogs' chrome is
+   also an `.office-dialog` card, whose own entrance would play as well. */
+.pane:global(.office-dialog):not([data-state]) {
+  animation: none;
+}
+
+/* The common dock: flush with the right edge of the host's own box, full
+   height, 340px wide, never more than 44% of a narrow host. */
+.dockRight {
+  border: 1px solid rgba(15, 23, 42, 0.11);
+  border-bottom: 0;
+  border-radius: 10px 0 0;
+  bottom: 0;
+  box-shadow: -12px 0 32px rgba(15, 23, 42, 0.13);
+  max-width: min(360px, 44%);
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 340px;
+  z-index: 29;
+}
+
+.header {
+  align-items: flex-start;
+  background: var(--office-pane-surface);
+  border-bottom: 1px solid var(--office-pane-border);
+  display: flex;
+  flex: 0 0 auto;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 14px 14px 12px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.header > span:first-child {
+  display: grid;
+  flex: 1 1 auto;
+  gap: 3px;
+  min-width: 0;
+}
+
+/* A pane's own title-row controls (a filter, a "new" button), before X. */
+.headerActions {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 4px;
+}
+
+.header strong,
+.title {
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+/* The title row as the dock's tab strip: the pane's own tab reads as its
+   title; the other open panes' tabs are quieter and give way first when the
+   row is narrow. */
+.tabs {
+  align-items: stretch;
+  display: flex;
+  gap: 2px;
+  margin: -4px 0 -4px -6px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* The tab is a flex row whatever a host's button rules say, and its label
+   is the one flex item: `min-width: 0` lets the label shrink below its text,
+   and the label, not the button, ends in the ellipsis (text-overflow does not
+   reach the anonymous text of a flex container, which is how a narrow strip
+   showed "Sele" / "Anim" cut mid-letter). The full name is the tab's title
+   tooltip. */
+.tab {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 4px 4px 0 0;
+  box-sizing: border-box;
+  color: var(--office-pane-muted);
+  cursor: pointer;
+  display: flex;
+  flex: 0 1 auto;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.25;
+  min-width: 3.5em;
+  overflow: hidden;
+  padding: 4px 6px;
+  text-align: start;
+  white-space: nowrap;
+}
+
+.tabLabel {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The pane's own tab is its title: it gives way last (a quarter of the
+   others' shrink), and never below a few characters and an ellipsis. */
+.tab[aria-selected="true"] {
+  border-bottom-color: var(--office-pane-accent);
+  color: var(--office-pane-ink);
+  cursor: default;
+  flex: 0 0.25 auto;
+  font-size: 14px;
+  font-weight: 650;
+  max-width: 100%;
+  min-width: 5em;
+}
+
+/* A lone tab is the title and nothing more. */
+.tabs[data-tab-count="1"] .tab[aria-selected="true"] {
+  border-bottom-color: transparent;
+  padding-left: 6px;
+}
+
+/* A tab with its own close button (a dock whose host lets every tab close
+   its pane, as Excel's pane group does): the pair shrinks as one tab. */
+.tabItem {
+  align-items: center;
+  display: flex;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.tabItem[data-selected] {
+  flex: 0 0.25 auto;
+  max-width: 100%;
+}
+
+.tabItem > .tab {
+  flex: 1 1 auto;
+}
+
+/* The X beside a tab wears the site's one close face (globals.css, "One
+   close button, site-wide"), in its small size; it only keeps its place. */
+.tabClose {
+  margin-inline-start: 2px;
+}
+
+.tab:hover:not([aria-selected="true"]) {
+  background: var(--office-pane-hover);
+  color: var(--office-pane-ink);
+}
+
+.tab:focus-visible:not(:global(.office-ribbon-control)) {
+  outline: 2px solid var(--office-pane-accent);
+  outline-offset: -2px;
+}
+
+.header small,
+.description {
+  color: var(--office-pane-muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* `iconButton`: the same square for a pane's other icon buttons (Task Pane
+   Options, previous / next). Never `close`: the site's one close face
+   (globals.css) dresses every *close* class as an X. */
+.close,
+.iconButton {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 5px;
+  color: var(--office-pane-muted);
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 30px;
+  height: 30px;
+  justify-content: center;
+  padding: 0;
+  width: 30px;
+}
+
+.close:hover,
+.iconButton:hover {
+  background: rgba(15, 23, 42, 0.06);
+  color: var(--office-pane-ink);
+}
+
+.close:focus-visible:not(:global(.office-ribbon-control)),
+.iconButton:focus-visible:not(:global(.office-ribbon-control)) {
+  outline: 2px solid var(--office-pane-accent);
+  outline-offset: 2px;
+}
+
+.section {
+  border-bottom: 1px solid var(--office-pane-border);
+  display: grid;
+  gap: 10px;
+  padding: 13px 14px;
+}
+
+.sectionLabel {
+  color: var(--office-pane-ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* A label over its control, a label beside its control(s), a checkbox with
+   its caption, and a secondary button: the pane's own field grammar. */
+.field {
+  display: grid;
+  font-size: 12px;
+  gap: 3px;
+  min-width: 0;
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  min-width: 0;
+}
+
+.row > .field {
+  flex: 1 1 96px;
+}
+
+.check {
+  align-items: center;
+  display: inline-flex;
+  font-size: 12px;
+  gap: 6px;
+}
+
+.hint {
+  color: var(--office-pane-muted);
+  font-size: 11px;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.pane :is(input[type="text"], input[type="number"], select) {
+  background: var(--office-pane-surface);
+  border: 1px solid var(--office-pane-control-border);
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: var(--office-pane-ink);
+  font: inherit;
+  font-size: 12px;
+  height: 26px;
+  min-width: 0;
+  padding: 0 6px;
+  width: 100%;
+}
+
+.pane :is(input[type="text"], input[type="number"], select):focus-visible {
+  border-color: var(--office-pane-accent);
+  outline: 2px solid var(--office-pane-accent);
+  outline-offset: 1px;
+}
+
+/* Content an editor puts in its pane with its own inline layout (a label and
+   its controls set side by side with display:flex / inline-flex, a control
+   with a pixel width) must not break the pane when it is narrow: such a row
+   wraps instead of squeezing its label to one character per line (CJK text
+   shrinks to a single glyph), and no control is wider than the pane. A
+   column (a list) never wraps: in a pane body of bounded height a wrapping
+   column breaks into side-by-side columns past the pane's right edge instead
+   of scrolling down (the version history list). */
+.pane :where([style*="display: inline-flex"], [style*="display: flex"]):not([role="tablist"]) {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.pane :where([style*="display: inline-flex"], [style*="display: flex"]):not([role="tablist"]):not([style*="flex-direction: column"]) {
+  flex-wrap: wrap;
+}
+
+.pane :where(input:not([type="checkbox"]):not([type="radio"]):not([type="color"]), select, textarea) {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.pane input[type="color"] {
+  block-size: 26px;
+  border: 1px solid var(--office-pane-control-border);
+  border-radius: 4px;
+  inline-size: 40px;
+  padding: 1px;
+}
+
+.button {
+  align-items: center;
+  background: var(--office-pane-surface);
+  border: 1px solid var(--office-pane-control-border);
+  border-radius: 4px;
+  color: var(--office-pane-ink);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 12px;
+  gap: 6px;
+  height: 28px;
+  justify-content: center;
+  min-width: 80px;
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
+.button:hover:not(:disabled) {
+  background: var(--office-pane-hover);
+  border-color: var(--office-pane-control-border-hover);
+}
+
+.button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.button:focus-visible:not(:global(.office-ribbon-control)) {
+  outline: 2px solid var(--office-pane-accent);
+  outline-offset: 2px;
+}
+
+.footer {
+  border-top: 1px solid var(--office-pane-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: auto;
+  padding: 12px 14px;
+}
+
+.body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+/* A gallery of previews inside a pane (the slide master's layouts). */
+.gallery {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+}
+
+.galleryOption {
+  align-items: center;
+  background: var(--office-pane-surface);
+  border: 1px solid rgba(15, 23, 42, 0.2);
+  border-radius: 6px;
+  color: var(--office-pane-ink);
+  cursor: pointer;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 72px minmax(0, 1fr);
+  min-height: 76px;
+  padding: 8px;
+  text-align: left;
+}
+
+.galleryOption[aria-selected="true"] {
+  background: var(--office-pane-accent-soft, rgba(15, 108, 189, 0.1));
+  border: 2px solid var(--office-pane-accent);
+}
+
+:global([data-theme-mode="dark"]) .pane {
+  --office-pane-surface: #1b2027;
+  --office-pane-surface-muted: #222831;
+  --office-pane-ink: #e6edf3;
+  --office-pane-muted: #9aa7b4;
+  --office-pane-border: #333b44;
+  --office-pane-control-border: #3d4650;
+  --office-pane-control-border-hover: #55606c;
+  --office-pane-hover: #2a3139;
+}
+
+:global([data-theme-mode="high-contrast"]) .pane {
+  --office-pane-surface: #1b2027;
+  --office-pane-surface-muted: #222831;
+  --office-pane-ink: #e6edf3;
+  --office-pane-muted: #9aa7b4;
+  --office-pane-border: #333b44;
+  --office-pane-control-border: #3d4650;
+  --office-pane-control-border-hover: #55606c;
+  --office-pane-hover: #2a3139;
+}
+
+:where(:root[data-touch-mode]) .close,
+:where(:root[data-touch-mode]) .tab,
+:where(:root[data-touch-mode]) .button,
+:where(:root[data-touch-mode]) .check,
+:where(:root[data-touch-mode]) .pane :is(input[type="text"], input[type="number"], select) {
+  min-height: var(--office-touch-control-height, 32px);
+}
+
+/* In the dialogs' chrome (an OfficeTaskPaneChromeProvider above the pane —
+   the workbook's): the card, title row, round close, fields and checkboxes
+   are OfficeDialogChrome.css's task pane (office-dialog--pane). The pane's
+   own tokens read the chrome's, so its sections, galleries and buttons follow
+   light and dark; its title row loses its bar, and the dock floats as a card
+   8px inside the host's edge. */
+.pane:global(.office-dialog) {
+  --office-pane-accent: var(--office-dialog-accent);
+  --office-pane-surface: var(--office-dialog-surface);
+  --office-pane-surface-muted: var(--office-dialog-surface-muted);
+  --office-pane-ink: var(--office-dialog-ink);
+  --office-pane-muted: var(--office-dialog-muted);
+  --office-pane-border: var(--office-dialog-divider);
+  --office-pane-control-border: var(--office-dialog-control-border);
+  --office-pane-control-border-hover: var(--office-dialog-control-border-hover);
+  --office-pane-hover: var(--office-dialog-hover);
+}
+
+ 
+.pane:global(.office-dialog) > .header {
+  background: transparent;
+  border-bottom: 0;
+  padding: 0 4px;
+  position: static;
+}
+
+.pane:global(.office-dialog).dockRight {
+  border-radius: 12px;
+  bottom: 8px;
+  right: 8px;
+  top: 8px;
+}
+
+.pane:global(.office-dialog) .section {
+  padding: 12px 4px;
+}
+
+.pane:global(.office-dialog) .section:last-child {
+  border-bottom: 0;
+}
+
+/* The pane's secondary button in the chrome's button look. */
+.pane:global(.office-dialog) .button {
+  background: var(--office-dialog-button);
+  border-radius: 7px;
+  box-shadow: var(--office-dialog-button-shadow);
+  font-weight: 500;
+  padding: 0 14px;
+}
+
+.pane:global(.office-dialog) .button:hover:not(:disabled) {
+  background: var(--office-dialog-button-hover);
+}
+
+.pane:global(.office-dialog) .button:active:not(:disabled) {
+  background: var(--office-dialog-button-pressed);
+}

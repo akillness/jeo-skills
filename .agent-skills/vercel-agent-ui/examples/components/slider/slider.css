@@ -1,0 +1,181 @@
+@scope ([data-example]) {
+  [data-slot="slider"] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    width: 20rem;
+    max-width: 100%;
+
+    &[data-orientation="vertical"] {
+      width: auto;
+      height: 10rem;
+    }
+
+    & > [data-slot="row"] > [data-slot="label"] {
+      font-weight: 400;
+    }
+  }
+
+  :is([data-slot="slider"], [data-slot="field"]:has(> [data-slot="slider"]))
+    > [data-slot="row"] {
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  [data-slot="stack"]:has(> [data-slot="slider"]) {
+    align-items: stretch;
+    width: 20rem;
+    max-width: 100%;
+  }
+
+  [data-slot="row"]:has(
+    > [data-slot="slider"][data-orientation="vertical"],
+    > [data-slot="field"] > [data-slot="slider"][data-orientation="vertical"]
+  ) {
+    gap: var(--space-8);
+  }
+
+  /* A vertical slider's field is as narrow as the slider, with its label centered under it. */
+  [data-slot="field"]:has(> [data-slot="slider"][data-orientation="vertical"]) {
+    align-items: center;
+    width: auto;
+  }
+
+  [data-slot="stack"] > form + [data-slot="field"]:has([data-slot="slider"]) {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--line-faint);
+  }
+
+  [data-slot="slider-value"] {
+    color: var(--muted);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+
+    [data-slot="output"] > & {
+      display: inline;
+    }
+  }
+
+  [data-slot="slider-control"] {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 20px;
+    user-select: none;
+
+    &[data-orientation="vertical"] {
+      justify-content: center;
+      width: 20px;
+      height: 100%;
+    }
+  }
+
+  /* A 1px rule drawn inside a 2px box, so the 2px range sits centred on it. */
+  [data-slot="slider-track"] {
+    box-sizing: border-box;
+    width: 100%;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(var(--line), var(--line)) center / 100% 1px
+      no-repeat;
+
+    &[data-orientation="vertical"] {
+      width: 2px;
+      height: 100%;
+      background-size: 1px 100%;
+    }
+
+    &[data-disabled] {
+      background-image: linear-gradient(var(--line-faint), var(--line-faint));
+    }
+  }
+
+  /* A short line under the track for each step, spread across the thumb's travel. */
+  [data-slot="ticks"] {
+    display: flex;
+    justify-content: space-between;
+    height: 5px;
+    margin-top: -4px;
+
+    & > span {
+      width: 1px;
+      background: var(--line);
+    }
+  }
+
+  [data-slot="slider-indicator"] {
+    border-radius: 999px;
+    background: var(--ink);
+
+    &[data-disabled] {
+      background: var(--line-disabled);
+    }
+  }
+
+  [data-slot="slider-thumb"] {
+    box-sizing: border-box;
+    width: var(--size-icon);
+    height: var(--size-icon);
+    border-radius: 50%;
+    background: var(--surface-1);
+    box-shadow:
+      inset 0 0 0 1.5px var(--ink),
+      var(--shadow-drop);
+    cursor: default;
+    transition: box-shadow 0.1s ease-out;
+
+    &:hover:not([data-disabled]) {
+      background: var(--tint);
+    }
+
+    &[data-dragging] {
+      background: var(--tint);
+      box-shadow:
+        inset 0 0 0 1.5px var(--ink),
+        var(--shadow-drop-pressed);
+    }
+
+    &:has(:focus-visible) {
+      outline: 3px solid var(--halo);
+      outline-offset: 2px;
+    }
+
+    &[data-disabled] {
+      box-shadow: inset 0 0 0 1.5px var(--line-disabled);
+    }
+  }
+
+  /* A thumb with a value bubble keeps a lane above the track, so the bubble never covers the label. */
+  [data-slot="slider"]:has([data-slot="slider-thumb"] > [data-slot="output"])
+    > [data-slot="slider-control"] {
+    margin-top: var(--space-6);
+  }
+
+  [data-slot="slider-thumb"]
+    > :is([data-slot="output"], [data-slot="slider-value"]) {
+    position: absolute;
+    bottom: calc(100% + var(--space-2));
+    inset-inline-start: 50%;
+    min-height: 0;
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: var(--surface-2);
+    box-shadow: var(--shadow-2);
+    color: var(--ink);
+    font-size: var(--text-xs);
+    font-variant-numeric: tabular-nums;
+    line-height: 16px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    translate: calc(var(--slider-thumb-position) * -1) 0;
+
+    &:is([dir="rtl"], [dir="rtl"] *) {
+      translate: var(--slider-thumb-position) 0;
+    }
+
+    [data-slot="slider-thumb"]:is([data-dragging], :has(:focus-visible)) > & {
+      opacity: 1;
+    }
+  }
+}

@@ -1,0 +1,432 @@
+{
+  "name": "@ui-sdk/core",
+  "version": "0.1.0-beta.16",
+  "description": "A library of behaviors to build your components. Made for agents.",
+  "keywords": [
+    "ui",
+    "ui-sdk",
+    "shadcn",
+    "behaviors",
+    "accessibility",
+    "a11y",
+    "aria",
+    "keyboard",
+    "focus",
+    "headless",
+    "unstyled",
+    "components",
+    "agents"
+  ],
+  "type": "module",
+  "license": "Apache-2.0",
+  "homepage": "https://ui-sdk.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vercel-labs/ui.git",
+    "directory": "packages/core"
+  },
+  "bugs": "https://github.com/vercel-labs/ui/issues",
+  "imports": {
+    "#dev": {
+      "development": "./src/foundation/kernel/dev.ts",
+      "default": "./src/foundation/kernel/dev-stub.ts"
+    },
+    "#name-check": {
+      "development": "./src/foundation/text/name-check.ts",
+      "default": "./src/foundation/text/name-check-stub.ts"
+    }
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./calendar": "./src/components/calendar/calendar.ts",
+    "./menu": "./src/components/menu/menu.ts",
+    "./popover": "./src/components/popover/popover.ts",
+    "./dialog": "./src/components/dialog/dialog.ts",
+    "./alert-dialog": "./src/components/dialog/alert-dialog.ts",
+    "./drawer": "./src/components/drawer/drawer.ts",
+    "./toast": "./src/components/toast/toast.ts",
+    "./overlays": "./src/page/overlays/overlays.ts",
+    "./tooltip": "./src/components/tooltip/tooltip.ts",
+    "./hover-card": "./src/components/hover-card/hover-card.ts",
+    "./shortcuts": "./src/page/shortcuts/shortcuts.ts",
+    "./tabs": "./src/components/tabs/tabs.ts",
+    "./accordion": "./src/components/accordion/accordion.ts",
+    "./collapsible": "./src/components/collapsible/collapsible.ts",
+    "./checkbox": "./src/components/checkbox/checkbox.ts",
+    "./switch": "./src/components/switch/switch.ts",
+    "./radio": "./src/components/radio/radio.ts",
+    "./rating": "./src/components/rating/rating.ts",
+    "./field": "./src/components/field/field.ts",
+    "./label": "./src/components/label/label.ts",
+    "./button": "./src/components/button/button.ts",
+    "./toggle": "./src/components/toggle/toggle.ts",
+    "./toolbar": "./src/components/toolbar/toolbar.ts",
+    "./menubar": "./src/components/menubar/menubar.ts",
+    "./separator": "./src/components/separator/separator.ts",
+    "./select": "./src/components/select/select.ts",
+    "./segmented-control": "./src/components/segmented-control/segmented-control.ts",
+    "./combobox": "./src/components/combobox/combobox.ts",
+    "./command": "./src/components/command/command.ts",
+    "./autocomplete": "./src/components/autocomplete/autocomplete.ts",
+    "./input": "./src/components/input/input.ts",
+    "./slider": "./src/components/slider/slider.ts",
+    "./color-picker": "./src/components/color-picker/color-picker.ts",
+    "./image-cropper": "./src/components/image-cropper/image-cropper.ts",
+    "./number-input": "./src/components/number-input/number-input.ts",
+    "./file-input": "./src/components/file-input/file-input.ts",
+    "./trigger-menu": "./src/components/trigger-menu/trigger-menu.ts",
+    "./token-input": "./src/components/token-input/token-input.ts",
+    "./avatar": "./src/components/avatar/avatar.ts",
+    "./progress": "./src/components/progress/progress.ts",
+    "./meter": "./src/components/meter/meter.ts",
+    "./otp-input": "./src/components/otp-input/otp-input.ts",
+    "./scroll-area": "./src/components/scroll-area/scroll-area.ts",
+    "./resizable": "./src/components/resizable/resizable.ts",
+    "./navigation-menu": "./src/components/navigation-menu/navigation-menu.ts",
+    "./password-input": "./src/components/password-input/password-input.ts",
+    "./pagination": "./src/components/pagination/pagination.ts",
+    "./carousel": "./src/components/carousel/carousel.ts",
+    "./listbox": "./src/components/listbox/listbox-root.ts",
+    "./tree": "./src/components/tree/tree.ts",
+    "./waterfall": "./src/components/waterfall/waterfall.ts",
+    "./async-options": "./src/foundation/lists/async-options.ts",
+    "./text-match": "./src/foundation/text/text-match.ts",
+    "./date": "./src/foundation/date/date.ts",
+    "./number": "./src/foundation/number/number.ts",
+    "./date-input": "./src/components/date-input/date-input.ts",
+    "./time-input": "./src/components/date-input/time-input.ts",
+    "./timeline": "./src/components/timeline/timeline.ts",
+    "./color": "./src/foundation/color/color.ts",
+    "./image": "./src/foundation/image/image.ts",
+    "./date-picker": "./src/components/date-picker/date-picker.ts",
+    "./agent": "./src/page/agent/agent.ts",
+    "./observe": "./src/page/observe/observe.ts",
+    "./history": "./src/page/history/history.ts",
+    "./gesture": "./src/foundation/motion/gesture.ts",
+    "./renderer": "./src/renderer.ts",
+    "./testing": "./src/testing.ts",
+    "./internal/*": "./src/*.ts",
+    "./web.css": "./src/web.css"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist",
+    "docs",
+    "skills"
+  ],
+  "publishConfig": {
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "imports": {
+      "#dev": {
+        "development": {
+          "types": "./dist/foundation/kernel/dev.d.ts",
+          "default": "./dist/foundation/kernel/dev.js"
+        },
+        "default": {
+          "types": "./dist/foundation/kernel/dev-stub.d.ts",
+          "default": "./dist/foundation/kernel/dev-stub.js"
+        }
+      },
+      "#name-check": {
+        "development": {
+          "types": "./dist/foundation/text/name-check.d.ts",
+          "default": "./dist/foundation/text/name-check.js"
+        },
+        "default": {
+          "types": "./dist/foundation/text/name-check-stub.d.ts",
+          "default": "./dist/foundation/text/name-check-stub.js"
+        }
+      }
+    },
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./calendar": {
+        "types": "./dist/components/calendar/calendar.d.ts",
+        "default": "./dist/components/calendar/calendar.js"
+      },
+      "./menu": {
+        "types": "./dist/components/menu/menu.d.ts",
+        "default": "./dist/components/menu/menu.js"
+      },
+      "./popover": {
+        "types": "./dist/components/popover/popover.d.ts",
+        "default": "./dist/components/popover/popover.js"
+      },
+      "./dialog": {
+        "types": "./dist/components/dialog/dialog.d.ts",
+        "default": "./dist/components/dialog/dialog.js"
+      },
+      "./alert-dialog": {
+        "types": "./dist/components/dialog/alert-dialog.d.ts",
+        "default": "./dist/components/dialog/alert-dialog.js"
+      },
+      "./drawer": {
+        "types": "./dist/components/drawer/drawer.d.ts",
+        "default": "./dist/components/drawer/drawer.js"
+      },
+      "./toast": {
+        "types": "./dist/components/toast/toast.d.ts",
+        "default": "./dist/components/toast/toast.js"
+      },
+      "./overlays": {
+        "types": "./dist/page/overlays/overlays.d.ts",
+        "default": "./dist/page/overlays/overlays.js"
+      },
+      "./tooltip": {
+        "types": "./dist/components/tooltip/tooltip.d.ts",
+        "default": "./dist/components/tooltip/tooltip.js"
+      },
+      "./hover-card": {
+        "types": "./dist/components/hover-card/hover-card.d.ts",
+        "default": "./dist/components/hover-card/hover-card.js"
+      },
+      "./shortcuts": {
+        "types": "./dist/page/shortcuts/shortcuts.d.ts",
+        "default": "./dist/page/shortcuts/shortcuts.js"
+      },
+      "./tabs": {
+        "types": "./dist/components/tabs/tabs.d.ts",
+        "default": "./dist/components/tabs/tabs.js"
+      },
+      "./accordion": {
+        "types": "./dist/components/accordion/accordion.d.ts",
+        "default": "./dist/components/accordion/accordion.js"
+      },
+      "./collapsible": {
+        "types": "./dist/components/collapsible/collapsible.d.ts",
+        "default": "./dist/components/collapsible/collapsible.js"
+      },
+      "./checkbox": {
+        "types": "./dist/components/checkbox/checkbox.d.ts",
+        "default": "./dist/components/checkbox/checkbox.js"
+      },
+      "./switch": {
+        "types": "./dist/components/switch/switch.d.ts",
+        "default": "./dist/components/switch/switch.js"
+      },
+      "./radio": {
+        "types": "./dist/components/radio/radio.d.ts",
+        "default": "./dist/components/radio/radio.js"
+      },
+      "./rating": {
+        "types": "./dist/components/rating/rating.d.ts",
+        "default": "./dist/components/rating/rating.js"
+      },
+      "./field": {
+        "types": "./dist/components/field/field.d.ts",
+        "default": "./dist/components/field/field.js"
+      },
+      "./label": {
+        "types": "./dist/components/label/label.d.ts",
+        "default": "./dist/components/label/label.js"
+      },
+      "./button": {
+        "types": "./dist/components/button/button.d.ts",
+        "default": "./dist/components/button/button.js"
+      },
+      "./toggle": {
+        "types": "./dist/components/toggle/toggle.d.ts",
+        "default": "./dist/components/toggle/toggle.js"
+      },
+      "./toolbar": {
+        "types": "./dist/components/toolbar/toolbar.d.ts",
+        "default": "./dist/components/toolbar/toolbar.js"
+      },
+      "./menubar": {
+        "types": "./dist/components/menubar/menubar.d.ts",
+        "default": "./dist/components/menubar/menubar.js"
+      },
+      "./separator": {
+        "types": "./dist/components/separator/separator.d.ts",
+        "default": "./dist/components/separator/separator.js"
+      },
+      "./select": {
+        "types": "./dist/components/select/select.d.ts",
+        "default": "./dist/components/select/select.js"
+      },
+      "./segmented-control": {
+        "types": "./dist/components/segmented-control/segmented-control.d.ts",
+        "default": "./dist/components/segmented-control/segmented-control.js"
+      },
+      "./combobox": {
+        "types": "./dist/components/combobox/combobox.d.ts",
+        "default": "./dist/components/combobox/combobox.js"
+      },
+      "./command": {
+        "types": "./dist/components/command/command.d.ts",
+        "default": "./dist/components/command/command.js"
+      },
+      "./autocomplete": {
+        "types": "./dist/components/autocomplete/autocomplete.d.ts",
+        "default": "./dist/components/autocomplete/autocomplete.js"
+      },
+      "./input": {
+        "types": "./dist/components/input/input.d.ts",
+        "default": "./dist/components/input/input.js"
+      },
+      "./slider": {
+        "types": "./dist/components/slider/slider.d.ts",
+        "default": "./dist/components/slider/slider.js"
+      },
+      "./color-picker": {
+        "types": "./dist/components/color-picker/color-picker.d.ts",
+        "default": "./dist/components/color-picker/color-picker.js"
+      },
+      "./image-cropper": {
+        "types": "./dist/components/image-cropper/image-cropper.d.ts",
+        "default": "./dist/components/image-cropper/image-cropper.js"
+      },
+      "./number-input": {
+        "types": "./dist/components/number-input/number-input.d.ts",
+        "default": "./dist/components/number-input/number-input.js"
+      },
+      "./file-input": {
+        "types": "./dist/components/file-input/file-input.d.ts",
+        "default": "./dist/components/file-input/file-input.js"
+      },
+      "./trigger-menu": {
+        "types": "./dist/components/trigger-menu/trigger-menu.d.ts",
+        "default": "./dist/components/trigger-menu/trigger-menu.js"
+      },
+      "./token-input": {
+        "types": "./dist/components/token-input/token-input.d.ts",
+        "default": "./dist/components/token-input/token-input.js"
+      },
+      "./avatar": {
+        "types": "./dist/components/avatar/avatar.d.ts",
+        "default": "./dist/components/avatar/avatar.js"
+      },
+      "./progress": {
+        "types": "./dist/components/progress/progress.d.ts",
+        "default": "./dist/components/progress/progress.js"
+      },
+      "./meter": {
+        "types": "./dist/components/meter/meter.d.ts",
+        "default": "./dist/components/meter/meter.js"
+      },
+      "./otp-input": {
+        "types": "./dist/components/otp-input/otp-input.d.ts",
+        "default": "./dist/components/otp-input/otp-input.js"
+      },
+      "./scroll-area": {
+        "types": "./dist/components/scroll-area/scroll-area.d.ts",
+        "default": "./dist/components/scroll-area/scroll-area.js"
+      },
+      "./resizable": {
+        "types": "./dist/components/resizable/resizable.d.ts",
+        "default": "./dist/components/resizable/resizable.js"
+      },
+      "./navigation-menu": {
+        "types": "./dist/components/navigation-menu/navigation-menu.d.ts",
+        "default": "./dist/components/navigation-menu/navigation-menu.js"
+      },
+      "./password-input": {
+        "types": "./dist/components/password-input/password-input.d.ts",
+        "default": "./dist/components/password-input/password-input.js"
+      },
+      "./pagination": {
+        "types": "./dist/components/pagination/pagination.d.ts",
+        "default": "./dist/components/pagination/pagination.js"
+      },
+      "./carousel": {
+        "types": "./dist/components/carousel/carousel.d.ts",
+        "default": "./dist/components/carousel/carousel.js"
+      },
+      "./listbox": {
+        "types": "./dist/components/listbox/listbox-root.d.ts",
+        "default": "./dist/components/listbox/listbox-root.js"
+      },
+      "./tree": {
+        "types": "./dist/components/tree/tree.d.ts",
+        "default": "./dist/components/tree/tree.js"
+      },
+      "./waterfall": {
+        "types": "./dist/components/waterfall/waterfall.d.ts",
+        "default": "./dist/components/waterfall/waterfall.js"
+      },
+      "./async-options": {
+        "types": "./dist/foundation/lists/async-options.d.ts",
+        "default": "./dist/foundation/lists/async-options.js"
+      },
+      "./text-match": {
+        "types": "./dist/foundation/text/text-match.d.ts",
+        "default": "./dist/foundation/text/text-match.js"
+      },
+      "./date": {
+        "types": "./dist/foundation/date/date.d.ts",
+        "default": "./dist/foundation/date/date.js"
+      },
+      "./number": {
+        "types": "./dist/foundation/number/number.d.ts",
+        "default": "./dist/foundation/number/number.js"
+      },
+      "./date-input": {
+        "types": "./dist/components/date-input/date-input.d.ts",
+        "default": "./dist/components/date-input/date-input.js"
+      },
+      "./time-input": {
+        "types": "./dist/components/date-input/time-input.d.ts",
+        "default": "./dist/components/date-input/time-input.js"
+      },
+      "./timeline": {
+        "types": "./dist/components/timeline/timeline.d.ts",
+        "default": "./dist/components/timeline/timeline.js"
+      },
+      "./color": {
+        "types": "./dist/foundation/color/color.d.ts",
+        "default": "./dist/foundation/color/color.js"
+      },
+      "./image": {
+        "types": "./dist/foundation/image/image.d.ts",
+        "default": "./dist/foundation/image/image.js"
+      },
+      "./date-picker": {
+        "types": "./dist/components/date-picker/date-picker.d.ts",
+        "default": "./dist/components/date-picker/date-picker.js"
+      },
+      "./agent": {
+        "types": "./dist/page/agent/agent.d.ts",
+        "default": "./dist/page/agent/agent.js"
+      },
+      "./observe": {
+        "types": "./dist/page/observe/observe.d.ts",
+        "default": "./dist/page/observe/observe.js"
+      },
+      "./history": {
+        "types": "./dist/page/history/history.d.ts",
+        "default": "./dist/page/history/history.js"
+      },
+      "./gesture": {
+        "types": "./dist/foundation/motion/gesture.d.ts",
+        "default": "./dist/foundation/motion/gesture.js"
+      },
+      "./renderer": {
+        "types": "./dist/renderer.d.ts",
+        "default": "./dist/renderer.js"
+      },
+      "./testing": {
+        "types": "./dist/testing.d.ts",
+        "default": "./dist/testing.js"
+      },
+      "./package.json": "./package.json",
+      "./web.css": "./dist/web.css"
+    }
+  },
+  "scripts": {
+    "build": "node ../../scripts/build/build-package.mjs",
+    "prepack": "cp ../../LICENSE LICENSE",
+    "typecheck": "node ../../scripts/tsgo.mjs --noEmit && node ../../scripts/tsgo.mjs --noEmit -p tsconfig.test.json",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.2",
+    "typescript": "catalog:",
+    "vitest": "^5.0.3"
+  }
+}

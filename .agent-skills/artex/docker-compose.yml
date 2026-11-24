@@ -1,0 +1,89 @@
+services:
+  postgres:
+    image: postgres:16-alpine@sha256:f2f98726820d0342055351c6e9d36e705f5bfffb3dd53ff556325114b08afb6d
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-artex}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Please set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-artex}
+      # Password (SCRAM) for every TCP connection from another container, artex's
+      # included; the server's isolation self-test checks that the agent cannot
+      # connect without it. Applied when the database is first initialised (a new
+      # pgdata volume); the image keeps trust for connections from inside this
+      # container only, which no agent process reaches.
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-artex} -d ${POSTGRES_DB:-artex}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  artex:
+    # Built from this checkout. The previous reference was a third-party
+    # namespace whose repository is gone: whoever controls that name could
+    # publish the tag this file would pull.
+    build:
+      context: .
+      args:
+        ARTEX_VERSION: ${ARTEX_VERSION:-dev}
+    image: artex:local
+    # Agent processes run as an unprivileged executor (-exec-uid): no setuid program
+    # or file capability may raise them back to root.
+    security_opt:
+      - "no-new-privileges:true"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      # Parts, not a pasted URL. PostgresDSN percent-encodes the password, so a
+      # value with / ? % @ : or a space still connects. ARTEX_PG_DSN, when set,
+      # would override these and is responsible for its own escaping.
+      ARTEX_PG_HOST: postgres
+      ARTEX_PG_PORT: "5432"
+      ARTEX_PG_USER: ${POSTGRES_USER:-artex}
+      ARTEX_PG_PASSWORD: ${POSTGRES_PASSWORD:?Please set POSTGRES_PASSWORD in .env}
+      ARTEX_PG_DBNAME: ${POSTGRES_DB:-artex}
+      ARTEX_PG_SSLMODE: disable
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ARTEX_LLM_PROVIDER: ${ARTEX_LLM_PROVIDER:-}
+      ARTEX_LLM_MODEL: ${ARTEX_LLM_MODEL:-}
+      ARTEX_LLM_BASE_URL: ${ARTEX_LLM_BASE_URL:-}
+      ARTEX_LLM_PROXY: ${ARTEX_LLM_PROXY:-}
+      # Exact host:port list the model-list fetch may reach on private addresses (e.g. host.docker.internal:11434 for Ollama).
+      ARTEX_LLM_PRIVATE_ENDPOINTS: ${ARTEX_LLM_PRIVATE_ENDPOINTS:-}
+      ARTEX_JWT_KEY_DIR: /app/keys
+      # Optional: key for secrets at rest; empty = keys/secret.key (generated at first start).
+      ARTEX_SECRET_KEY: ${ARTEX_SECRET_KEY:-}
+      ARTEX_TRUSTED_PROXIES: ${ARTEX_TRUSTED_PROXIES:-}
+      # Untrusted-output boundary: on by default (empty = on); ARTEX_UNTRUSTED_BOUNDARY=0 in .env
+      # disables it. Cost: about 154 bytes per tool result plus one system note.
+      ARTEX_UNTRUSTED_BOUNDARY: ${ARTEX_UNTRUSTED_BOUNDARY:-}
+      ARTEX_UPDATE_CHECK: ${ARTEX_UPDATE_CHECK:-}
+      # Noise profile for target requests: off (default) | quiet | balanced | aggressive.
+      ARTEX_NOISE_PROFILE: ${ARTEX_NOISE_PROFILE:-}
+      ARTEX_TARGET_USER_AGENT: ${ARTEX_TARGET_USER_AGENT:-}
+      # Hierarchical run budgets: unset or 0 = unlimited (no change). See README.
+      ARTEX_TASK_BUDGET_TOKENS: ${ARTEX_TASK_BUDGET_TOKENS:-}
+      ARTEX_TASK_BUDGET_TURNS: ${ARTEX_TASK_BUDGET_TURNS:-}
+      ARTEX_INTENT_BUDGET_TOKENS: ${ARTEX_INTENT_BUDGET_TOKENS:-}
+      ARTEX_INTENT_BUDGET_TURNS: ${ARTEX_INTENT_BUDGET_TURNS:-}
+    ports:
+      - "${ARTEX_BIND_ADDR:-127.0.0.1}:8787:8787"
+      - "127.0.0.1:8788:8788"
+    volumes:
+      # Bind the runtime data directory (traffic index, task files, transcripts, etc.) to data/ in the project root,
+      # so it is easy to inspect/back up on the host and survives container rebuilds.
+      - ./data:/app/data
+      # JWT signing key and secret key (jwt.key, secret.key), kept out of data/, which the file manager browses.
+      # Persisting it keeps users signed in across container rebuilds.
+      - ./keys:/app/keys
+      # Mount skills/ from the project root into the container (overriding the image's built-in /app/skills);
+      # skill changes require no image rebuild — the container reads the host copy.
+      - ./skills:/app/skills
+    restart: unless-stopped
+
+volumes:
+  pgdata:

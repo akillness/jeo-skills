@@ -1,0 +1,8 @@
+{
+  "name": "typescript7-runner",
+  "private": true,
+  "description": "TypeScript 7 for scripts/tsgo.mjs, kept out of every other package's node_modules/.bin.",
+  "dependencies": {
+    "typescript7": "catalog:"
+  }
+}

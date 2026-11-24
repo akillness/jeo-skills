@@ -1,0 +1,49 @@
+/* Office's enhanced ScreenTip card (officeScreenTip.ts): the command's name in
+   bold, its one-sentence description, and for a greyed command the reason.
+   Moved here unchanged from the Spreadsheet ribbon (XLS-A106), which first
+   drew it, so every editor shows the same card. */
+.screenTip {
+  background: #ffffff;
+  border: 1px solid #c8cdd2;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgb(15 23 42 / 16%);
+  color: #26332d;
+  display: grid;
+  font-size: 12px;
+  gap: 4px;
+  line-height: 1.4;
+  max-width: 280px;
+  padding: 8px 10px;
+  pointer-events: none;
+  position: fixed;
+  z-index: 2147483000;
+}
+
+.screenTipTitle {
+  font-weight: 600;
+}
+
+.screenTipBody {
+  color: #3f4a45;
+}
+
+.screenTipReason {
+  border-top: 1px solid #e3e6e9;
+  color: #6b7570;
+  padding-top: 4px;
+}
+
+:global(html:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .screenTip {
+  background: #26272c;
+  border-color: rgb(255 255 255 / 14%);
+  color: #f2f2f7;
+}
+
+:global(html:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .screenTipBody {
+  color: #c7c7cc;
+}
+
+:global(html:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .screenTipReason {
+  border-top-color: rgb(255 255 255 / 12%);
+  color: #a1a1aa;
+}

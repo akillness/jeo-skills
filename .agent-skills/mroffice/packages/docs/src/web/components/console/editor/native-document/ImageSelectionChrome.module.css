@@ -1,0 +1,91 @@
+/* A selected picture wears the same Office drawing selection chrome as a
+   shape, a SmartArt graphic or a chart (OfficeDrawingSelection): a 1px frame
+   and eight white 8px grips. The resize grips carry the shared classes; this
+   module places the chrome box and retires the picture's own accent outline.
+   Showing and hiding the grips, and hiding them in crop mode, stays with the
+   note-editor.css `.note-editor-image-handle` rules.
+
+   The chrome hugs the picture, not its wrapper. A picture MRAI inserted keeps
+   the content-image margin (0.75rem above and below) inside the wrapper, so
+   the node view writes the picture's offsets in the wrapper as
+   --picture-chrome-{top,right,bottom,left} while it is selected, and the
+   chrome box (`.chrome`) IS the picture's box: the shared grip placement on
+   its edges and the frame at `inset: 0` then land on the picture.
+
+   The chrome box is beside the raster in the wrapper, which carries neither
+   a float's rank nor the picture's turn (both go on the raster and its
+   drawings, note-editor.css), so the wrapper is no stacking context and the
+   chrome paints over every float on the page, as Word draws a selected
+   picture's handles. The chrome turns with the picture
+   (`--picture-rotate`), about the same centre. */
+
+.chrome {
+  position: absolute;
+  top: var(--picture-chrome-top, 0px);
+  right: var(--picture-chrome-right, 0px);
+  bottom: var(--picture-chrome-bottom, 0px);
+  left: var(--picture-chrome-left, 0px);
+  line-height: 0;
+  pointer-events: none;
+  rotate: var(--picture-rotate, 0deg);
+  z-index: 1000;
+}
+
+.frame {
+  display: none;
+  inset: 0;
+}
+
+.host.host:global(.is-selected) > .chrome > .frame {
+  display: block;
+}
+
+.host.host:global(.ProseMirror-selectednode) > .chrome > .frame {
+  display: block;
+}
+
+/* In crop mode the black crop handles mark the frame (note-editor.css). */
+.host.host:global(.is-selected)[data-picture-crop-mode="true"] > .chrome > .frame {
+  display: none;
+}
+.host.host:global(.ProseMirror-selectednode)[data-picture-crop-mode="true"] > .chrome > .frame {
+  display: none;
+}
+
+.host.host:global(.is-selected) img {
+  outline: none;
+}
+
+.host.host:global(.ProseMirror-selectednode) img {
+  outline: none;
+}
+
+/* The rotation grip (shared .rotate, with its stem) sits above the picture's
+   top edge. It shows while the picture is selected and its rotation can be
+   saved, and not in crop mode, where the crop handles take over. */
+.host.host > .chrome > .rotate {
+  display: none;
+  top: -22px;
+  left: calc(50% - 7px);
+}
+
+.host.host:global(.is-selected)[data-picture-rotatable="true"]:not([data-picture-crop-mode="true"]) > .chrome > .rotate {
+  display: inline-flex;
+}
+
+.host.host:global(.ProseMirror-selectednode)[data-picture-rotatable="true"]:not([data-picture-crop-mode="true"]) > .chrome > .rotate {
+  display: inline-flex;
+}
+
+/* The picture border is the picture's outline, which hugs it; the wrapper
+   keeps the border's width, painted clear, so the layout does not move (see
+   ImageResizeNodeView). The Picture Styles preview follows the same rule. */
+.host.host[data-picture-style-preview] {
+  border-color: transparent !important;
+}
+
+.host.host[data-picture-style-preview] > img {
+  outline: var(--document-picture-preview-width) var(--document-picture-preview-style)
+    var(--document-picture-preview-color) !important;
+  outline-offset: 0 !important;
+}

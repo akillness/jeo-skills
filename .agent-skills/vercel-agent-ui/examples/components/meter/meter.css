@@ -1,0 +1,48 @@
+@scope ([data-example]) {
+  [data-slot="meter"] {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+    width: 20rem;
+    max-width: 100%;
+  }
+
+  [data-slot="stack"]:has(> [data-slot="meter"]) {
+    width: 20rem;
+    max-width: 100%;
+  }
+
+  [data-slot="meter-label"] {
+    font-weight: 500;
+  }
+
+  [data-slot="meter-value"] {
+    margin-inline-start: auto;
+    color: var(--muted);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  [data-slot="meter-track"] {
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    height: 10px;
+    overflow: hidden;
+    padding: 2px;
+    border-radius: 999px;
+    background: var(--surface-1);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+
+  [data-slot="meter-indicator"] {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--ink);
+
+    &[data-variant="destructive"] {
+      background: var(--danger);
+    }
+  }
+}

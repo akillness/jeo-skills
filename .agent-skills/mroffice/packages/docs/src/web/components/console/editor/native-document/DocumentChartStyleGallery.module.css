@@ -1,0 +1,53 @@
+.gallery.gallery {
+  --office-gallery-item-width: 98px;
+  --office-gallery-gap: 2px;
+}
+
+.gallery :global([data-testid$="-quick"] > span),
+.gallery :global([data-item-id]) {
+  width: 98px;
+  height: var(--office-gallery-content-height);
+  min-height: 0;
+}
+
+.gallery :global([data-item-id]) {
+  padding: 3px;
+  gap: 0;
+  border-radius: 3px;
+}
+
+.gallery :global([data-item-id] > span:first-child) {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+}
+
+.gallery :global([data-item-id] > span:last-child:not(:first-child)) {
+  display: none;
+}
+
+.picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* A tile's chart is inline SVG (the page's fonts): a picture, never a target. */
+.picture :global(svg) {
+  display: block;
+  pointer-events: none;
+}
+
+.loading {
+  color: #94a3b8;
+}
+
+/* The gallery's one line when its tiles cannot be drawn (no connection). */
+.notice {
+  padding: 6px 10px;
+  color: #6b4f00;
+  font-size: 12px;
+  line-height: 1.4;
+}

@@ -1,0 +1,345 @@
+.host {
+  display: contents;
+}
+
+.overlayHost {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.backdrop {
+  display: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgb(65 72 84 / 26%);
+  /* Clip this composited filter explicitly: Safari can otherwise paint its
+     rectangular backing surface past the shell's inherited rounded corners.
+     Do not clip the window itself or its unrelated menus/popovers. */
+  clip-path: inset(0 round var(--console-radius-lg, var(--radius-lg, 12px)));
+  -webkit-backdrop-filter: grayscale(1);
+  backdrop-filter: grayscale(1);
+  pointer-events: none;
+}
+
+.overlayHost[data-window-notice-active="true"] > .backdrop {
+  display: block;
+}
+
+.dialogPanel {
+  box-sizing: border-box;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: var(--z-popover, 50);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(520px, calc(calc(100vw / var(--touch-zoom, 1)) - 32px));
+  max-height: calc(calc(100dvh / var(--touch-zoom, 1)) - 32px);
+  padding: 24px;
+  border: 1px solid var(--border, #d8dee5);
+  border-radius: 14px;
+  background: var(--glass-float-bg);
+  -webkit-backdrop-filter: var(--glass-float-blur);
+  backdrop-filter: var(--glass-float-blur);
+  color: var(--text-primary, #273444);
+  box-shadow: 0 16px 48px rgb(31 41 55 / 18%);
+  overflow: auto;
+  pointer-events: auto;
+  outline: none;
+}
+
+/* The window's own unscaled dimensions are the ONLY containing block. */
+.overlayHost > .dialogPanel {
+  position: absolute;
+  width: min(var(--window-dialog-width, 520px), calc(100% - 24px));
+  max-width: calc(100% - 24px);
+  max-height: calc(100% - 24px);
+}
+
+.dialogPanel > h2 {
+  margin: 0;
+  padding-inline-end: 24px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* A report raised while a modal dialog is open sits inside that modal (its
+   focus trap), centred over it and never larger than it. */
+.dialogPanel[data-window-notice-in-modal="true"] {
+  position: absolute;
+  z-index: 60;
+  width: min(var(--window-dialog-width, 440px), calc(100% - 24px));
+  max-width: calc(100% - 24px);
+  max-height: calc(100% - 24px);
+}
+
+/* Author display:flex must not override the hidden queued dialog's UA rule. */
+.dialogPanel[hidden] {
+  display: none !important;
+}
+
+.dialogPanel > p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.dialogClose {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  border: 0;
+  border-radius: 6px;
+  padding: 4px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.dialogClose:focus-visible {
+  outline: 2px solid var(--console-accent, #0d9488);
+  outline-offset: 2px;
+}
+
+.standalone {
+  position: fixed;
+  inset-inline-end: 16px;
+  inset-block-end: 16px;
+  z-index: 40;
+}
+
+.trigger {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 9px;
+  border: 1px solid color-mix(in srgb, #b7791f 24%, transparent);
+  border-radius: 9px;
+  background: color-mix(in srgb, #d99a22 8%, var(--bg-surface, #f8fafc));
+  color: var(--warning-text, #94620c);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.trigger > svg {
+  flex: none;
+}
+
+.trigger:hover {
+  background: color-mix(in srgb, #d99a22 15%, var(--bg-surface, #f8fafc));
+}
+
+/* Optional tones for a standing state chip; the default stays warning. */
+.trigger[data-tone="error"] {
+  border-color: color-mix(in srgb, var(--error, #dc2626) 32%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--error, #dc2626) 8%,
+    var(--bg-surface, #f8fafc)
+  );
+  color: var(--error, #dc2626);
+}
+
+.trigger[data-tone="error"]:hover {
+  background: color-mix(
+    in srgb,
+    var(--error, #dc2626) 15%,
+    var(--bg-surface, #f8fafc)
+  );
+}
+
+.trigger[data-tone="neutral"] {
+  border-color: var(--border, #d8dee5);
+  background: var(--bg-surface, #f8fafc);
+  color: var(--text-secondary, #475569);
+}
+
+.trigger[data-tone="neutral"]:hover {
+  background: color-mix(
+    in srgb,
+    var(--text-secondary, #475569) 8%,
+    var(--bg-surface, #f8fafc)
+  );
+}
+
+.trigger:focus-visible,
+.action:focus-visible {
+  outline: 2px solid var(--console-accent, #0d9488);
+  outline-offset: 2px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  max-width: min(520px, calc(calc(100vw / var(--touch-zoom, 1)) - 32px));
+  max-height: calc(calc(100dvh / var(--touch-zoom, 1)) - 48px);
+  overflow: hidden;
+}
+
+.panel > * {
+  min-width: 0;
+}
+
+.panel > p {
+  overflow-wrap: anywhere;
+}
+
+.list {
+  flex: 1 1 auto;
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  min-height: 0;
+  overflow: auto;
+}
+
+.issue {
+  border-inline-start: 3px solid color-mix(in srgb, #b7791f 60%, transparent);
+  padding-inline-start: 12px;
+  overflow-wrap: anywhere;
+}
+
+.issue[data-tone="error"] {
+  border-color: var(--error, #dc2626);
+}
+
+.issue h3 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+.issue p {
+  margin: 5px 0 0;
+  font-size: 12px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
+.action {
+  margin-top: 8px;
+  padding: 5px 10px;
+  border: 1px solid var(--border, #d8dee5);
+  border-radius: 7px;
+  background: var(--bg-surface, #fff);
+  color: var(--text-primary, #273444);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.action:hover:not(:disabled) {
+  background: var(--bg-hover, #f4f6f8);
+}
+
+/* Narrow desktop windows retain the full accessible problem summary. */
+@container window-titlebar (max-width: 520px) {
+  .trigger {
+    width: 32px;
+    padding: 0;
+  }
+
+  .trigger > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+}
+
+/* Under a finger the bar's parts are a quarter larger (styles/
+   touch-sizing.css): the same shape at a quarter more width. */
+@container touch-shell (min-width: 0px) {
+  @container window-titlebar (max-width: 650px) {
+    .trigger {
+      width: 32px;
+      padding: 0;
+    }
+  
+    .trigger > span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+    }
+  }
+}
+
+ 
+.host[data-document-issue-host] > span:not(:first-of-type) > button[aria-haspopup="dialog"] {
+  display: none;
+}
+
+/* Reports shown without the window's lease (`passive`): Word's message bar,
+   not a dialog. They sit in the window's lower right corner, one above the
+   other, and the window behind them stays live. */
+.passiveStack {
+  position: absolute;
+  right: 16px;
+  bottom: 36px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: calc(100% - 32px);
+  max-height: calc(100% - 96px);
+  pointer-events: none;
+}
+
+.dialogPanel[data-window-notice-passive="true"] {
+  left: auto;
+  top: auto;
+  right: 16px;
+  bottom: 16px;
+  transform: none;
+  width: min(380px, calc(calc(100vw / var(--touch-zoom, 1)) - 32px));
+  max-height: min(360px, calc(calc(100dvh / var(--touch-zoom, 1)) - 32px));
+  padding: 16px 18px;
+  gap: 8px;
+  box-shadow: 0 8px 28px rgb(31 41 55 / 16%);
+}
+
+.passiveStack > .dialogPanel[data-window-notice-passive="true"] {
+  position: relative;
+  right: auto;
+  bottom: auto;
+  width: min(380px, 100%);
+  max-width: 100%;
+  max-height: min(360px, 100%);
+}
+
+/* A finger's 44 px hit area (styles/touch-hit-area.css). */
+@media (pointer: coarse) {
+  .trigger {
+    position: relative;
+  }
+  .trigger::before,
+  .dialogClose::before {
+    content: "";
+    position: absolute;
+    inset: min(0px, calc((100% - var(--touch-hit-min, 44px)) / 2));
+  }
+}

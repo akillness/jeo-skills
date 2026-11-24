@@ -1,0 +1,25 @@
+[Unit]
+Description=ARTEX application
+After=network.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=artex
+Group=artex
+WorkingDirectory=/opt/artex
+Environment=ARTEX_JWT_KEY_DIR=/opt/artex/keys
+ExecStart=/opt/artex/artex -addr 127.0.0.1:8787 -proxy 127.0.0.1:8788
+Restart=on-failure
+RestartSec=5s
+TimeoutStopSec=30s
+KillSignal=SIGTERM
+KillMode=control-group
+UMask=0002
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=artex
+
+[Install]
+WantedBy=multi-user.target

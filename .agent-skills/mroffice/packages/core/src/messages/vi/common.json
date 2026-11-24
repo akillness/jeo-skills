@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Tùy chỉnh",
+ "zoom.levels": "Mức thu phóng",
+ "dialog.close": "Đóng",
+ "toast.close": "Đóng thông báo",
+ "button.confirm": "OK",
+ "button.cancel": "Hủy",
+ "libreOffice.enable": "Tải xuống và bật (khoảng {size})",
+ "libreOffice.enableAlt": "Tải xuống và bật LibreOffice",
+ "libreOffice.enabled": "Đã bật LibreOffice {version}",
+ "libreOffice.retrying": "Đang thử lại…",
+ "libreOffice.ready": "Giờ đây có thể mở định dạng Office cũ và tệp OpenDocument, hiển thị ảnh EMF/WMF và xuất OpenDocument.",
+ "libreOffice.needed": "Thao tác này cần LibreOffice. MR Note Classic có thể tải bản phát hành chính thức vào thư mục riêng của ứng dụng; không cài gì vào hệ thống.",
+ "libreOffice.neededFor": "Lưu dưới dạng .{format} cần LibreOffice. MR Note Classic có thể tải bản phát hành chính thức vào thư mục riêng của ứng dụng; không cài gì vào hệ thống."
+}

@@ -1,0 +1,83 @@
+.scene {
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+  color: #000000;
+  line-height: 1.15;
+  /* A cover is print: it keeps its own colours in a dark console. */
+  color-scheme: light;
+}
+
+.item {
+  position: absolute;
+  box-sizing: border-box;
+  transform-origin: 50% 50%;
+}
+
+.graphic {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.textFrame {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: visible;
+}
+
+.textFrame[data-anchor="ctr"] {
+  justify-content: center;
+}
+
+.textFrame[data-anchor="b"] {
+  justify-content: flex-end;
+}
+
+.textFlow {
+  min-width: 0;
+}
+
+.paragraph {
+  margin: 0;
+  padding: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.field {
+  outline: none;
+  border-radius: 1px;
+  /* An empty control still has a box the caret can sit in. */
+  display: inline-block;
+  min-width: 0.5em;
+  max-width: 100%;
+  vertical-align: baseline;
+}
+
+.field[data-empty="true"]::before {
+  content: attr(data-placeholder);
+  /* Word draws an empty control's placeholder text in its own grey-ish style. */
+  opacity: 0.62;
+}
+
+.field[contenteditable="true"] {
+  cursor: text;
+}
+
+.field[contenteditable="true"]:hover,
+.field[contenteditable="true"]:focus {
+  background: rgba(59, 130, 246, 0.14);
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.55);
+}
+
+.field[contenteditable="true"]:focus[data-empty="true"]::before {
+  opacity: 0.4;
+}

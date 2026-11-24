@@ -1,0 +1,852 @@
+
+/* ── the painted covers (lib/cover-art.ts) ─────────────────────────────
+   The scene, plate, tint, finish and titles are the shared painted-cover
+   rules in Book3D.module.css (.book3d--art joins their lists). Here: the
+   painting itself, the moving parts a catalogue entry names, and the light
+   particles. Every moving part is a .book3d__m (paused off screen, in a
+   resting picker tile and for reduced motion) and animates only its
+   transform or opacity. The painting comes in as --art; a light source's
+   place as --lx / --ly, and the painting's own regions as the places
+   below. */
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art :is(.book3d__plate, .book3d__layer) {
+  background-image: var(--art);
+}
+
+/* the title sits on a soft veil of the painting's own dark (or light) */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 2;
+  height: 40%;
+  background: linear-gradient(180deg, rgba(8, 10, 20, 0.42), rgba(8, 10, 20, 0.16) 52%, transparent);
+  pointer-events: none;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art[data-art-ink="dark"] .book3d__art::after {
+  background: linear-gradient(180deg, rgba(255, 252, 246, 0.5), rgba(255, 252, 246, 0.2) 52%, transparent);
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d.book3d--art .book3d__cover .book3d__paper-title :is(.book3d__type, .book3d__title) {
+  color: color-mix(in oklch, var(--book-cover) 14%, #1d1b19);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+ 
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art {
+  /* the light source's place, and its reach in % of the cover's width */
+  --lx: 50%;
+  --ly: 40%;
+  --glow: 20;
+  /* the painting's regions, in % of the cover's height: where the drifting
+     sky ends, where the water begins and its far shore ends, where the
+     swaying plants begin and end and what they sway from, where a gust
+     runs, the middle of the mist and of the wavering air, how far down
+     the stars twinkle, how far light rays reach and their lean, where a
+     waterfall drops, and where falling weather stops */
+  --sky: 36%;
+  --water: 62%;
+  --shore: 120%;
+  --sway: 50%;
+  --sway-end: 130%;
+  --root: 100%;
+  --mist: 50%;
+  --heat: 58%;
+  --stars: 112%;
+  --rays: 64%;
+  --tilt: 0deg;
+  --fall-left: 40%;
+  --fall-top: 20%;
+  --fall-right: 60%;
+  --fall-bottom: 70%;
+  /* two scatters of soft dots (which stars twinkle together), glints,
+     two banks of fog, falling streaks and shafts of light: the windows
+     the light parts are cut from */
+  --dots-a: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cdefs%3E%3CradialGradient id='d'%3E%3Cstop offset='0' stop-color='white'/%3E%3Cstop offset='0.4' stop-color='white' stop-opacity='.9'/%3E%3Cstop offset='1' stop-color='white' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cg fill='url(%23d)'%3E%3Ccircle cx='45.2' cy='56.0' r='13.6'/%3E%3Ccircle cx='18.5' cy='51.2' r='12.1'/%3E%3Ccircle cx='79.3' cy='9.4' r='10.5'/%3E%3Ccircle cx='79.3' cy='109.4' r='10.5'/%3E%3Ccircle cx='9.1' cy='81.0' r='12.5'/%3E%3Ccircle cx='109.1' cy='81.0' r='12.5'/%3E%3Ccircle cx='19.0' cy='24.2' r='9.2'/%3E%3Ccircle cx='70.8' cy='31.5' r='10.1'/%3E%3Ccircle cx='40.0' cy='84.7' r='10.9'/%3E%3C/g%3E%3C/svg%3E");
+  --dots-b: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cdefs%3E%3CradialGradient id='d'%3E%3Cstop offset='0' stop-color='white'/%3E%3Cstop offset='0.4' stop-color='white' stop-opacity='.9'/%3E%3Cstop offset='1' stop-color='white' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cg fill='url(%23d)'%3E%3Ccircle cx='-7.5' cy='-5.1' r='13.5'/%3E%3Ccircle cx='-7.5' cy='94.9' r='13.5'/%3E%3Ccircle cx='92.5' cy='-5.1' r='13.5'/%3E%3Ccircle cx='92.5' cy='94.9' r='13.5'/%3E%3Ccircle cx='8.4' cy='59.2' r='11.1'/%3E%3Ccircle cx='108.4' cy='59.2' r='11.1'/%3E%3Ccircle cx='53.0' cy='13.0' r='10.0'/%3E%3Ccircle cx='42.1' cy='51.3' r='12.7'/%3E%3Ccircle cx='-2.9' cy='36.3' r='12.8'/%3E%3Ccircle cx='97.1' cy='36.3' r='12.8'/%3E%3Ccircle cx='71.8' cy='59.1' r='11.2'/%3E%3Ccircle cx='32.3' cy='81.6' r='10.0'/%3E%3C/g%3E%3C/svg%3E");
+  --glints: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cdefs%3E%3CradialGradient id='d'%3E%3Cstop offset='0' stop-color='white'/%3E%3Cstop offset='.3' stop-color='white' stop-opacity='.85'/%3E%3Cstop offset='1' stop-color='white' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cg fill='url(%23d)'%3E%3Cellipse cx='24.4' cy='50.2' rx='10.2' ry='3.9'/%3E%3Cellipse cx='82.1' cy='23.1' rx='12.7' ry='4.9'/%3E%3Cellipse cx='-7.4' cy='39.7' rx='15.4' ry='5.9'/%3E%3Cellipse cx='92.6' cy='39.7' rx='15.4' ry='5.9'/%3E%3Cellipse cx='73.1' cy='54.8' rx='13.2' ry='5.1'/%3E%3Cellipse cx='58.6' cy='36.0' rx='15.6' ry='6.0'/%3E%3Cellipse cx='40.4' cy='-1.6' rx='14.6' ry='5.6'/%3E%3Cellipse cx='40.4' cy='98.4' rx='14.6' ry='5.6'/%3E%3Cellipse cx='36.7' cy='78.6' rx='15.1' ry='5.8'/%3E%3Cellipse cx='-9.3' cy='-1.4' rx='14.5' ry='5.6'/%3E%3Cellipse cx='-9.3' cy='98.6' rx='14.5' ry='5.6'/%3E%3Cellipse cx='90.7' cy='-1.4' rx='14.5' ry='5.6'/%3E%3Cellipse cx='90.7' cy='98.6' rx='14.5' ry='5.6'/%3E%3Cellipse cx='82.6' cy='81.9' rx='12.9' ry='5.0'/%3E%3Cellipse cx='1.1' cy='66.0' rx='13.5' ry='5.2'/%3E%3Cellipse cx='101.1' cy='66.0' rx='13.5' ry='5.2'/%3E%3Cellipse cx='21.6' cy='41.3' rx='9.4' ry='3.6'/%3E%3Cellipse cx='40.9' cy='20.6' rx='15.2' ry='5.9'/%3E%3C/g%3E%3C/svg%3E");
+  --fog-a: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='140' viewBox='0 0 200 140' preserveAspectRatio='none'%3E%3Cfilter id='n' x='0' y='0' width='100%' height='100%'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.03' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  2.8 0 0 0 -1.05'/%3E%3C/filter%3E%3Crect width='200' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  --fog-b: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='140' viewBox='0 0 200 140' preserveAspectRatio='none'%3E%3Cfilter id='n' x='0' y='0' width='100%' height='100%'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.016 0.04' numOctaves='3' seed='19' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  2.8 0 0 0 -1.05'/%3E%3C/filter%3E%3Crect width='200' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  --streaks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='200' viewBox='0 0 120 200' preserveAspectRatio='none'%3E%3Cfilter id='n' x='0' y='0' width='100%' height='100%'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.07 .006' numOctaves='2' seed='5' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  3.2 0 0 0 -1.35'/%3E%3C/filter%3E%3Crect width='120' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  --shafts: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='300' viewBox='0 0 200 300' preserveAspectRatio='none'%3E%3Cfilter id='n' x='0' y='0' width='100%' height='100%'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.03 0.0015' numOctaves='2' seed='23' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  3.4 0 0 0 -1.45'/%3E%3C/filter%3E%3Crect width='200' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-world {
+  position: absolute;
+  inset: 0;
+}
+
+/* sky: the upper band drifts sideways */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-sky {
+  -webkit-mask-image: linear-gradient(180deg, #000 calc(var(--sky) - 14%), transparent var(--sky));
+  mask-image: linear-gradient(180deg, #000 calc(var(--sky) - 14%), transparent var(--sky));
+  animation: artSky 6s ease-in-out infinite alternate;
+}
+
+/* water: the band from --water to --shore ripples. Two copies cut into
+   fine alternate strips sway against each other, so the reflections break
+   and mend like water moving. */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-water {
+  -webkit-mask-image:
+    repeating-linear-gradient(180deg, #000 0, #000 1.3cqi, transparent 2.7cqi, transparent 4cqi, #000 5.4cqi),
+    linear-gradient(180deg, transparent var(--water), #000 calc(var(--water) + 5%), #000 calc(var(--shore) - 5%), transparent var(--shore));
+  -webkit-mask-composite: source-in;
+  mask-image:
+    repeating-linear-gradient(180deg, #000 0, #000 1.3cqi, transparent 2.7cqi, transparent 4cqi, #000 5.4cqi),
+    linear-gradient(180deg, transparent var(--water), #000 calc(var(--water) + 5%), #000 calc(var(--shore) - 5%), transparent var(--shore));
+  mask-composite: intersect;
+  transform-origin: 50% var(--water);
+  animation: artRipple 2.4s ease-in-out infinite alternate;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-water--b {
+  -webkit-mask-image:
+    repeating-linear-gradient(180deg, transparent 0, transparent 1.3cqi, #000 2.7cqi, #000 4cqi, transparent 5.4cqi),
+    linear-gradient(180deg, transparent var(--water), #000 calc(var(--water) + 5%), #000 calc(var(--shore) - 5%), transparent var(--shore));
+  mask-image:
+    repeating-linear-gradient(180deg, transparent 0, transparent 1.3cqi, #000 2.7cqi, #000 4cqi, transparent 5.4cqi),
+    linear-gradient(180deg, transparent var(--water), #000 calc(var(--water) + 5%), #000 calc(var(--shore) - 5%), transparent var(--shore));
+  animation-duration: 2.9s;
+  animation-direction: alternate-reverse;
+}
+
+/* wash: the surf below --water runs up the shore and draws back,
+   stretching from the cover's foot */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-wash {
+  -webkit-mask-image: linear-gradient(180deg, transparent calc(var(--water) - 8%), #000 calc(var(--water) + 4%));
+  mask-image: linear-gradient(180deg, transparent calc(var(--water) - 8%), #000 calc(var(--water) + 4%));
+  transform-origin: 50% 100%;
+  animation: artWash 5.2s ease-in-out infinite;
+}
+
+/* heat: the air over the ground wavers in fine fast strips */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-heat {
+  -webkit-mask-image:
+    repeating-linear-gradient(180deg, #000 0, #000 0.6cqi, transparent 1.2cqi, transparent 1.8cqi, #000 2.4cqi),
+    linear-gradient(180deg, transparent calc(var(--heat) - 12%), #000 calc(var(--heat) - 4%), #000 calc(var(--heat) + 6%), transparent calc(var(--heat) + 16%));
+  -webkit-mask-composite: source-in;
+  mask-image:
+    repeating-linear-gradient(180deg, #000 0, #000 0.6cqi, transparent 1.2cqi, transparent 1.8cqi, #000 2.4cqi),
+    linear-gradient(180deg, transparent calc(var(--heat) - 12%), #000 calc(var(--heat) - 4%), #000 calc(var(--heat) + 6%), transparent calc(var(--heat) + 16%));
+  mask-composite: intersect;
+  animation: artHeat 0.8s ease-in-out infinite alternate;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-heat--b {
+  -webkit-mask-image:
+    repeating-linear-gradient(180deg, transparent 0, transparent 0.6cqi, #000 1.2cqi, #000 1.8cqi, transparent 2.4cqi),
+    linear-gradient(180deg, transparent calc(var(--heat) - 12%), #000 calc(var(--heat) - 4%), #000 calc(var(--heat) + 6%), transparent calc(var(--heat) + 16%));
+  mask-image:
+    repeating-linear-gradient(180deg, transparent 0, transparent 0.6cqi, #000 1.2cqi, #000 1.8cqi, transparent 2.4cqi),
+    linear-gradient(180deg, transparent calc(var(--heat) - 12%), #000 calc(var(--heat) - 4%), #000 calc(var(--heat) + 6%), transparent calc(var(--heat) + 16%));
+  animation-duration: 1.05s;
+  animation-direction: alternate-reverse;
+}
+
+/* sway: the plants between --sway and --sway-end bend in the wind about
+   --root (their roots below, or the bough a hanging plant hangs from) */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-sway {
+  -webkit-mask-image: linear-gradient(180deg, transparent calc(var(--sway) - 12%), #000 var(--sway), #000 calc(var(--sway-end) - 10%), transparent var(--sway-end));
+  mask-image: linear-gradient(180deg, transparent calc(var(--sway) - 12%), #000 var(--sway), #000 calc(var(--sway-end) - 10%), transparent var(--sway-end));
+  transform-origin: 50% var(--root);
+  animation: artSway 3.6s ease-in-out infinite alternate;
+}
+
+/* aurora: the curtain above --sky sways (a plain copy, so it is never
+   doubled) */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-aurora {
+  -webkit-mask-image: linear-gradient(180deg, transparent 2%, #000 12%, #000 calc(var(--sky) - 6%), transparent var(--sky));
+  mask-image: linear-gradient(180deg, transparent 2%, #000 12%, #000 calc(var(--sky) - 6%), transparent var(--sky));
+  transform-origin: 50% var(--sky);
+  animation: artAurora 6s ease-in-out infinite alternate;
+}
+
+/* light on the painting's own lights: never moved (a burst grows from
+   its light), screened in and out */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art :is(.book3d__art-glow, .book3d__art-flicker, .book3d__art-flash, .book3d__art-twinkle, .book3d__art-burst) {
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+
+/* glow: the light breathes, its heart and then its bloom (a blurred copy
+   that spills the light's own colour round it) */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art :is(.book3d__art-glow, .book3d__art-flash) {
+  -webkit-mask-image: radial-gradient(circle calc(var(--glow) * 0.6cqi) at var(--lx) var(--ly), #000 0, rgba(0, 0, 0, 0.7) 40%, transparent 100%);
+  mask-image: radial-gradient(circle calc(var(--glow) * 0.6cqi) at var(--lx) var(--ly), #000 0, rgba(0, 0, 0, 0.7) 40%, transparent 100%);
+  filter: brightness(1.35) saturate(1.15);
+  animation: artGlow 3.2s ease-in-out infinite alternate;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art :is(.book3d__art-glow--b, .book3d__art-flash--b) {
+  -webkit-mask-image: radial-gradient(circle calc(var(--glow) * 1.3cqi) at var(--lx) var(--ly), rgba(0, 0, 0, 0.9) 0, rgba(0, 0, 0, 0.5) 45%, transparent 100%);
+  mask-image: radial-gradient(circle calc(var(--glow) * 1.3cqi) at var(--lx) var(--ly), rgba(0, 0, 0, 0.9) 0, rgba(0, 0, 0, 0.5) 45%, transparent 100%);
+  filter: blur(calc(var(--glow) * 0.14cqi)) brightness(1.9) saturate(1.15);
+  animation-name: artGlowB;
+  animation-delay: -2.4s;
+}
+
+/* flash: lightning, dark for a while and then a double flash */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-flash {
+  filter: brightness(1.8) saturate(1.1);
+  animation: artFlash 4.6s linear infinite;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-flash--b {
+  animation: artFlash 4.6s linear infinite;
+}
+
+/* flicker: the flame flickers and stretches up from its root, and the
+   light it throws round flickers out of step with it */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-flicker {
+  -webkit-mask-image: radial-gradient(calc(var(--glow) * 0.55cqi) calc(var(--glow) * 0.85cqi) at var(--lx) var(--ly), #000 0, rgba(0, 0, 0, 0.6) 45%, transparent 100%);
+  mask-image: radial-gradient(calc(var(--glow) * 0.55cqi) calc(var(--glow) * 0.85cqi) at var(--lx) var(--ly), #000 0, rgba(0, 0, 0, 0.6) 45%, transparent 100%);
+  filter: brightness(1.55) saturate(1.3);
+  transform-origin: var(--lx) calc(var(--ly) + var(--glow) * 0.3cqi);
+  animation: artFlicker 1.3s linear infinite, artFlame 0.9s ease-in-out infinite alternate;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-flicker--b {
+  -webkit-mask-image: radial-gradient(circle calc(var(--glow) * 1.6cqi) at var(--lx) var(--ly), rgba(0, 0, 0, 0.9) 0, rgba(0, 0, 0, 0.45) 40%, transparent 100%);
+  mask-image: radial-gradient(circle calc(var(--glow) * 1.6cqi) at var(--lx) var(--ly), rgba(0, 0, 0, 0.9) 0, rgba(0, 0, 0, 0.45) 40%, transparent 100%);
+  filter: blur(calc(var(--glow) * 0.14cqi)) brightness(2) saturate(1.2);
+  animation: artFlickerB 1.9s linear infinite;
+}
+
+/* burst: the light opens out from its heart and fades (a firework, a
+   sparkler, a ring on still water) */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-burst {
+  -webkit-mask-image: radial-gradient(circle calc(var(--glow) * 1cqi) at var(--lx) var(--ly), #000 0, rgba(0, 0, 0, 0.7) 50%, transparent 100%);
+  mask-image: radial-gradient(circle calc(var(--glow) * 1cqi) at var(--lx) var(--ly), #000 0, rgba(0, 0, 0, 0.7) 50%, transparent 100%);
+  filter: brightness(1.4) saturate(1.2);
+  transform-origin: var(--lx) var(--ly);
+  animation: artBurst 2.6s cubic-bezier(0.2, 0.6, 0.35, 1) infinite;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-burst--b {
+  animation-delay: -1.3s;
+}
+
+/* twinkle: the painting's brightest points (stars, lamps, sparks) flare
+   a few at a time: its baked light (--art-lights, what is lighter than the
+   painting's tone, haloed, its ground transparent; see
+   scripts/bake-cover-lights.py), seen through scatters of fine soft dots
+   that come and go out of step. A filtered copy of the painting forced its
+   ground to black and relied on the screen to hide it; a browser drawing a
+   frame of it without the blend flickered black dots over the cover. */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-twinkle {
+  -webkit-mask-image: var(--dots-a), linear-gradient(180deg, #000 calc(var(--stars) - 12%), transparent var(--stars));
+  -webkit-mask-size: 6cqi 6cqi, 100% 100%;
+  -webkit-mask-repeat: repeat, no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-image: var(--dots-a), linear-gradient(180deg, #000 calc(var(--stars) - 12%), transparent var(--stars));
+  mask-size: 6cqi 6cqi, 100% 100%;
+  mask-repeat: repeat, no-repeat;
+  mask-composite: intersect;
+  background-image: var(--art-lights);
+  animation: artTwinkle 2.1s ease-in-out infinite alternate;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-twinkle--b {
+  -webkit-mask-image: var(--dots-b), linear-gradient(180deg, #000 calc(var(--stars) - 12%), transparent var(--stars));
+  -webkit-mask-size: 7.7cqi 7.7cqi, 100% 100%;
+  mask-image: var(--dots-b), linear-gradient(180deg, #000 calc(var(--stars) - 12%), transparent var(--stars));
+  mask-size: 7.7cqi 7.7cqi, 100% 100%;
+  animation-duration: 2.7s;
+  animation-delay: -1.2s;
+}
+
+/* travelling light: the window is twice the cover's width and moves one
+   cover-width per loop; the copy inside moves back by as much */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-sweep {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  mix-blend-mode: screen;
+  animation: artSweep 6s linear infinite;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-sweep > i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  background: var(--art) center / cover no-repeat;
+  animation: artSweepHold 6s linear infinite;
+}
+
+/* shimmer: glints run across the water's light (its moon or sun path,
+   its crests) and flash: the water's baked glints (--art-glints, its
+   ground transparent, so the layer can only ever brighten) */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-shimmer {
+  -webkit-mask-image: var(--glints), linear-gradient(180deg, transparent var(--water), #000 calc(var(--water) + 7%), #000 calc(var(--shore) - 5%), transparent var(--shore));
+  -webkit-mask-size: 6.25% 8.6%, 100% 100%;
+  -webkit-mask-repeat: repeat, no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-image: var(--glints), linear-gradient(180deg, transparent var(--water), #000 calc(var(--water) + 7%), #000 calc(var(--shore) - 5%), transparent var(--shore));
+  mask-size: 6.25% 8.6%, 100% 100%;
+  mask-repeat: repeat, no-repeat;
+  mask-composite: intersect;
+  animation: artSweep 9s linear infinite, artGlint 1.3s ease-in-out infinite alternate;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-shimmer > i {
+  background-image: var(--art-glints);
+  animation-duration: 9s;
+}
+
+/* mist: banks of the painting's own haze, softened and lightened, drift
+   through the band round --mist, two banks at two speeds (windows cut
+   from soft noise) */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-mist {
+  -webkit-mask-image: var(--fog-a), linear-gradient(180deg, transparent calc(var(--mist) - 20%), #000 calc(var(--mist) - 8%), #000 calc(var(--mist) + 6%), transparent calc(var(--mist) + 18%));
+  -webkit-mask-size: 50% 46%, 100% 100%;
+  -webkit-mask-repeat: repeat, no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-image: var(--fog-a), linear-gradient(180deg, transparent calc(var(--mist) - 20%), #000 calc(var(--mist) - 8%), #000 calc(var(--mist) + 6%), transparent calc(var(--mist) + 18%));
+  mask-size: 50% 46%, 100% 100%;
+  mask-repeat: repeat, no-repeat;
+  mask-composite: intersect;
+  mix-blend-mode: normal;
+  opacity: 0.9;
+  animation-duration: 16s;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-mist > i {
+  filter: blur(1.1cqi) brightness(1.5) saturate(0.85);
+  animation-duration: 16s;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-mist--b {
+  -webkit-mask-image: var(--fog-b), linear-gradient(180deg, transparent calc(var(--mist) - 12%), #000 calc(var(--mist) - 2%), #000 calc(var(--mist) + 10%), transparent calc(var(--mist) + 22%));
+  -webkit-mask-size: 50% 34%, 100% 100%;
+  mask-image: var(--fog-b), linear-gradient(180deg, transparent calc(var(--mist) - 12%), #000 calc(var(--mist) - 2%), #000 calc(var(--mist) + 10%), transparent calc(var(--mist) + 22%));
+  mask-size: 50% 34%, 100% 100%;
+  opacity: 0.7;
+  animation-duration: 11s;
+  animation-direction: reverse;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-mist--b > i {
+  animation-duration: 11s;
+  animation-direction: reverse;
+}
+
+/* gust: waves of wind run over the plants below --gust (or --sway),
+   lifting their lighter sides to the light in ragged patches */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-gust {
+  -webkit-mask-image: var(--fog-b), linear-gradient(180deg, transparent calc(var(--gust, var(--sway)) - 6%), #000 calc(var(--gust, var(--sway)) + 6%));
+  -webkit-mask-size: 50% 30%, 100% 100%;
+  -webkit-mask-repeat: repeat, no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-image: var(--fog-b), linear-gradient(180deg, transparent calc(var(--gust, var(--sway)) - 6%), #000 calc(var(--gust, var(--sway)) + 6%));
+  mask-size: 50% 30%, 100% 100%;
+  mask-repeat: repeat, no-repeat;
+  mask-composite: intersect;
+  mix-blend-mode: normal;
+  opacity: 0.95;
+  animation-duration: 5s;
+  animation-direction: reverse;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-gust > i {
+  filter: brightness(1.3) saturate(1.06);
+  animation-duration: 5s;
+  animation-direction: reverse;
+}
+
+/* sheen: a broad, soft band of light, or of shifted colour (--hue: foil),
+   crosses a sheen, silk or glass (upright: a leaning band would not meet
+   itself where the window's pattern repeats) */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-sheen {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.3) 12%, rgba(0, 0, 0, 0.85) 26%, rgba(0, 0, 0, 0.3) 40%, transparent 54%);
+  -webkit-mask-size: 50% 100%;
+  -webkit-mask-repeat: repeat-x;
+  mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.3) 12%, rgba(0, 0, 0, 0.85) 26%, rgba(0, 0, 0, 0.3) 40%, transparent 54%);
+  mask-size: 50% 100%;
+  mask-repeat: repeat-x;
+  mix-blend-mode: normal;
+  opacity: 0.9;
+  animation-duration: 5.5s;
+  animation-direction: reverse;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-sheen > i {
+  filter: brightness(1.25) hue-rotate(var(--hue, 0deg)) saturate(1.5);
+  animation-duration: 5.5s;
+  animation-direction: reverse;
+}
+
+/* rays: shafts of light down to --rays, leaning by --tilt, brighten and
+   fade as they shift (sun through water, trees or glass; the pleats of an
+   aurora): a window of long soft streaks that leans with them (a skew the
+   copy undoes), three cover-widths wide to cover the lean. */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-rays {
+  left: -100%;
+  width: 300%;
+  -webkit-mask-image: var(--shafts), linear-gradient(180deg, transparent 0, #000 8%, #000 calc(var(--rays) - 14%), transparent var(--rays));
+  -webkit-mask-size: 33.333% 100%, 100% 100%;
+  -webkit-mask-repeat: repeat-x, no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-image: var(--shafts), linear-gradient(180deg, transparent 0, #000 8%, #000 calc(var(--rays) - 14%), transparent var(--rays));
+  mask-size: 33.333% 100%, 100% 100%;
+  mask-repeat: repeat-x, no-repeat;
+  mask-composite: intersect;
+  opacity: 0.85;
+  transform-origin: 0 0;
+  animation: artRays 9s linear infinite;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-rays > i {
+  left: 33.333%;
+  width: 33.333%;
+  filter: brightness(1.42) saturate(1.3);
+  transform-origin: 0 0;
+  animation: artRaysHold 9s linear infinite;
+}
+
+/* fall: streaks of white water run down the fall (a still window over the
+   fall's box, and inside it a falling window of streaks over a still
+   copy) */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-fall {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent var(--fall-left), #000 calc(var(--fall-left) + 4%), #000 calc(var(--fall-right) - 4%), transparent var(--fall-right)),
+    linear-gradient(180deg, transparent var(--fall-top), #000 calc(var(--fall-top) + 5%), #000 calc(var(--fall-bottom) - 6%), transparent var(--fall-bottom));
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent var(--fall-left), #000 calc(var(--fall-left) + 4%), #000 calc(var(--fall-right) - 4%), transparent var(--fall-right)),
+    linear-gradient(180deg, transparent var(--fall-top), #000 calc(var(--fall-top) + 5%), #000 calc(var(--fall-bottom) - 6%), transparent var(--fall-bottom));
+  mask-composite: intersect;
+  mix-blend-mode: screen;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-fall > b {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  -webkit-mask-image: var(--streaks);
+  -webkit-mask-size: 30% 50%;
+  mask-image: var(--streaks);
+  mask-size: 30% 50%;
+  animation: artFall 2.2s linear infinite;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-fall > b > i {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: var(--art) center / cover no-repeat;
+  filter: brightness(1.45);
+  animation: artFallHold 2.2s linear infinite;
+}
+
+/* turn: the whole (square) painting turns about its centre. It is 180cqi
+   across, so the circle it sweeps covers the cover's corners; its stars
+   twinkle as they wheel past. */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-turn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 180cqi;
+  height: 180cqi;
+  margin: -90cqi 0 0 -90cqi;
+  animation: artTurn 110s linear infinite;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-turn > i {
+  position: absolute;
+  inset: 0;
+  background: var(--art) center / cover no-repeat;
+}
+
+/* without motion the travelling light has nowhere to be */
+@media (prefers-reduced-motion: reduce) {
+  :is(.notebook-library-page, .notebook-luxe-cover) .book3d--art :is(.book3d__art-sweep, .book3d__art-fall) {
+    display: none;
+  }
+}
+
+html[data-reduce-motion] :is(.notebook-library-page, .notebook-luxe-cover) .book3d--art :is(.book3d__art-sweep, .book3d__art-fall) {
+  display: none;
+}
+
+@keyframes artSky {
+  0% { transform: translateX(-3.5%); }
+  100% { transform: translateX(3.5%); }
+}
+
+@keyframes artRipple {
+  0% { transform: translateX(-1.6%) scaleY(1); }
+  100% { transform: translateX(1.6%) scaleY(1.012); }
+}
+
+@keyframes artWash {
+  0%, 100% { transform: translateX(0.3%) scaleY(0.99); }
+  45% { transform: translateX(-0.5%) scaleY(1.045); }
+  70% { transform: translateX(-0.2%) scaleY(1.02); }
+}
+
+@keyframes artHeat {
+  0% { transform: translateX(-1.8%); }
+  100% { transform: translateX(1.8%); }
+}
+
+@keyframes artSway {
+  0% { transform: skewX(-2.2deg); }
+  100% { transform: skewX(2.2deg); }
+}
+
+@keyframes artAurora {
+  0% { transform: translateX(-1.2%) skewX(-2.2deg) scaleY(0.99); }
+  50% { transform: translateX(0.2%) skewX(0.6deg) scaleY(1.02); }
+  100% { transform: translateX(1.2%) skewX(2.2deg) scaleY(1); }
+}
+
+@keyframes artGlow {
+  0% { opacity: 0.05; }
+  100% { opacity: 0.9; }
+}
+
+@keyframes artGlowB {
+  0% { opacity: 0; }
+  100% { opacity: 0.85; }
+}
+
+@keyframes artFlash {
+  0%, 60%, 100% { opacity: 0; }
+  62% { opacity: 1; }
+  65% { opacity: 0.15; }
+  68% { opacity: 0.95; }
+  80% { opacity: 0; }
+}
+
+@keyframes artFlicker {
+  0% { opacity: 0.5; }
+  11% { opacity: 0.95; }
+  19% { opacity: 0.35; }
+  31% { opacity: 1; }
+  44% { opacity: 0.55; }
+  52% { opacity: 0.9; }
+  67% { opacity: 0.3; }
+  80% { opacity: 0.85; }
+  91% { opacity: 0.45; }
+  100% { opacity: 0.5; }
+}
+
+@keyframes artFlickerB {
+  0% { opacity: 0.2; }
+  17% { opacity: 0.9; }
+  29% { opacity: 0.1; }
+  46% { opacity: 0.8; }
+  58% { opacity: 0.3; }
+  75% { opacity: 1; }
+  88% { opacity: 0.15; }
+  100% { opacity: 0.2; }
+}
+
+@keyframes artFlame {
+  0% { transform: scaleY(1) skewX(-1deg); }
+  100% { transform: scaleY(1.07) skewX(1deg); }
+}
+
+@keyframes artBurst {
+  0% { opacity: 0; transform: scale(0.8); }
+  22% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.16); }
+}
+
+@keyframes artTwinkle {
+  0%, 30% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes artGlint {
+  0% { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+
+@keyframes artSweep {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes artSweepHold {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+@keyframes artRays {
+  from { transform: skewX(var(--tilt)) translateX(0); }
+  to { transform: skewX(var(--tilt)) translateX(-33.333%); }
+}
+
+@keyframes artRaysHold {
+  from { transform: translateX(0) skewX(calc(var(--tilt) * -1)); }
+  to { transform: translateX(100%) skewX(calc(var(--tilt) * -1)); }
+}
+
+@keyframes artFall {
+  from { transform: translateY(0); }
+  to { transform: translateY(50%); }
+}
+
+@keyframes artFallHold {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
+}
+
+@keyframes artTurn {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ── light particles ── (sized by the cover, so a picker tile carries the
+   same weather as the shelf) */
+
+/* weather that stops at a window sill or a shore (--weather) */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-weather {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  -webkit-mask-image: linear-gradient(180deg, #000 calc(var(--weather) - 8%), transparent var(--weather));
+  mask-image: linear-gradient(180deg, #000 calc(var(--weather) - 8%), transparent var(--weather));
+}
+
+/* rain beyond the picture plane: two sheets of streaks, each a light line
+   with a faint dark edge so it shows over a pale sky as well as a dark one */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-rain {
+  position: absolute;
+  top: calc(-32cqi - 12%);
+  right: -30%;
+  bottom: -12%;
+  left: -30%;
+  z-index: 1;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='64'%3E%3Cg stroke-linecap='round' fill='none'%3E%3Cpath d='M4.8 54.2v12.6M4.8 -9.8v12.6M7.4 31.7v10.6M16.1 50.5v8.3M2.4 22.5v10.4M19.6 6v9' stroke='rgba(20,28,44,0.4)' stroke-width='0.9'/%3E%3Cpath d='M4 54.2v12.6M4 -9.8v12.6M6.6 31.7v10.6M15.3 50.5v8.3M1.6 22.5v10.4M18.8 6v9' stroke='white' stroke-width='0.9'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 12cqi 32cqi;
+  opacity: 0.4;
+  transform: rotate(8deg);
+  animation: artRainFar 0.9s linear infinite;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-rain--near {
+  top: calc(-48cqi - 12%);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='96'%3E%3Cg stroke-linecap='round' fill='none'%3E%3Cpath d='M9.2 70v22M29.2 18v18M20.2 50v16' stroke='rgba(20,28,44,0.4)' stroke-width='1.3'/%3E%3Cpath d='M8 70v22M28 18v18M19 50v16' stroke='white' stroke-width='1.3'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 20cqi 48cqi;
+  opacity: 0.5;
+  animation-name: artRainNear;
+  animation-duration: 0.7s;
+}
+
+@keyframes artRainFar {
+  from { transform: rotate(8deg) translateY(0); }
+  to { transform: rotate(8deg) translateY(32cqi); }
+}
+
+@keyframes artRainNear {
+  from { transform: rotate(8deg) translateY(0); }
+  to { transform: rotate(8deg) translateY(48cqi); }
+}
+
+/* snow at two depths */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-snow {
+  position: absolute;
+  top: calc(-48cqi - 4%);
+  right: -6%;
+  bottom: -4%;
+  left: -6%;
+  z-index: 1;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cdefs%3E%3CradialGradient id='f'%3E%3Cstop offset='0' stop-color='white'/%3E%3Cstop offset='.5' stop-color='white' stop-opacity='.8'/%3E%3Cstop offset='1' stop-color='white' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cg fill='url(%23f)'%3E%3Ccircle cx='22.7' cy='9.9' r='2' opacity='0.62'/%3E%3Ccircle cx='6.4' cy='38.6' r='2.5' opacity='0.91'/%3E%3Ccircle cx='73.5' cy='21.3' r='2.1' opacity='0.67'/%3E%3Ccircle cx='16.6' cy='10.2' r='1.8' opacity='0.97'/%3E%3Ccircle cx='79.6' cy='77.4' r='2.4' opacity='0.64'/%3E%3Ccircle cx='29.7' cy='60.2' r='2.3' opacity='0.93'/%3E%3Ccircle cx='84.5' cy='8.3' r='2.2' opacity='0.85'/%3E%3Ccircle cx='48.6' cy='17.1' r='2.1' opacity='0.59'/%3E%3Ccircle cx='89.7' cy='83.1' r='2.1' opacity='0.69'/%3E%3Ccircle cx='87.3' cy='54.9' r='2.5' opacity='0.93'/%3E%3Ccircle cx='48.8' cy='39.7' r='2.2' opacity='0.74'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 48cqi 48cqi;
+  opacity: 0.85;
+  animation: artSnowMid 10s linear infinite;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-snow--near {
+  top: calc(-75cqi - 4%);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cdefs%3E%3CradialGradient id='f'%3E%3Cstop offset='0' stop-color='white'/%3E%3Cstop offset='.5' stop-color='white' stop-opacity='.8'/%3E%3Cstop offset='1' stop-color='white' stop-opacity='0'/%3E%3C/radialGradient%3E%3Cfilter id='b'%3E%3CfeGaussianBlur stdDeviation='0.9'/%3E%3C/filter%3E%3C/defs%3E%3Cg fill='url(%23f)' filter='url(%23b)'%3E%3Ccircle cx='119' cy='123.3' r='4.1' opacity='0.67'/%3E%3Ccircle cx='0.1' cy='99.4' r='4' opacity='0.89'/%3E%3Ccircle cx='150.1' cy='99.4' r='4' opacity='0.89'/%3E%3Ccircle cx='56' cy='115.5' r='3.7' opacity='0.91'/%3E%3Ccircle cx='109.5' cy='62.1' r='4.2' opacity='0.86'/%3E%3Ccircle cx='28.9' cy='83' r='4.6' opacity='0.67'/%3E%3Ccircle cx='120.5' cy='102.9' r='4.7' opacity='0.70'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 75cqi 75cqi;
+  opacity: 0.8;
+  animation-name: artSnowNear;
+  animation-duration: 7.5s;
+}
+
+@keyframes artSnowMid {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(3.5cqi, 12cqi); }
+  50% { transform: translate(0, 24cqi); }
+  75% { transform: translate(-3.5cqi, 36cqi); }
+  100% { transform: translate(0, 48cqi); }
+}
+
+@keyframes artSnowNear {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(6cqi, 18.75cqi); }
+  50% { transform: translate(0, 37.5cqi); }
+  75% { transform: translate(-6cqi, 56.25cqi); }
+  100% { transform: translate(0, 75cqi); }
+}
+
+/* the single particles: each placed and timed by Book3D (--x, --y, --s
+   in cqi, --t, --d) */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-p {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  z-index: 1;
+  width: calc(var(--s) * 1cqi);
+  aspect-ratio: 1;
+  animation-duration: var(--t);
+  animation-delay: var(--d);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+/* fireflies: warm points that wander and glow */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-p--fireflies {
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffef4 0 8%, rgba(240, 255, 156, 0.95) 15%, rgba(240, 255, 156, 0.45) 28%, rgba(240, 255, 156, 0.14) 50%, transparent 70%);
+  mix-blend-mode: screen;
+  animation-name: artWander, artPulse;
+  animation-duration: var(--t), calc(var(--t) / 4.6);
+  animation-direction: normal, alternate;
+}
+
+/* motes: dust shining in the light, drifting up */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-p--motes {
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 250, 232, 0.95) 0 14%, rgba(255, 244, 214, 0.4) 34%, transparent 66%);
+  mix-blend-mode: screen;
+  animation-name: artMoteRise, artPulse;
+  animation-duration: var(--t), calc(var(--t) / 3.2);
+  animation-direction: normal, alternate;
+}
+
+/* embers: sparks rising from the fire */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-p--embers {
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff3cf 0 10%, rgba(255, 170, 70, 0.95) 22%, rgba(255, 110, 40, 0.35) 46%, transparent 68%);
+  mix-blend-mode: screen;
+  animation-name: artRise;
+  animation-timing-function: ease-out;
+}
+
+/* bubbles: rings rising and wobbling */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-p--bubbles {
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.85) 0 9%, transparent 20%), radial-gradient(circle, transparent 54%, rgba(220, 245, 255, 0.55) 66%, rgba(255, 255, 255, 0.2) 74%, transparent 78%);
+  animation-name: artBubble;
+  animation-timing-function: linear;
+}
+
+/* lanterns: paper sky lanterns floating up */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-p--lanterns {
+  aspect-ratio: 0.78;
+  border-radius: 34% 34% 22% 22%;
+  background: radial-gradient(70% 60% at 50% 62%, #fff1c6 0 18%, #ffb55e 46%, #e46a2c 78%, rgba(200, 80, 30, 0.6) 100%);
+  box-shadow: 0 0 calc(var(--s) * 1.4cqi) rgba(255, 170, 80, 0.55);
+  animation-name: artFloatUp;
+  animation-timing-function: linear;
+}
+
+/* petals and leaves: tumbling down */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art :is(.book3d__art-p--petals, .book3d__art-p--leaves) {
+  aspect-ratio: 20 / 24;
+  animation-name: artTumble;
+  animation-timing-function: linear;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-p--petals {
+  background: linear-gradient(180deg, #fff6f7 0%, #ffd0dc 60%, #f4a6bd 100%);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 24'%3E%3Cpath d='M10 24C3 20 0 12 4 5 6 2 8 1.6 9 3.6L10 5 11 3.6C12 1.6 14 2 16 5 20 12 17 20 10 24Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 24'%3E%3Cpath d='M10 24C3 20 0 12 4 5 6 2 8 1.6 9 3.6L10 5 11 3.6C12 1.6 14 2 16 5 20 12 17 20 10 24Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+}
+
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-p--leaves {
+  background: linear-gradient(160deg, #f7c04a 0%, #e0762a 55%, #b7431f 100%);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 24'%3E%3Cpath d='M10 0C15 5 19 10 18 15 17 20 13 22 10.6 22.4L10.6 24 9.4 24 9.4 22.4C7 22 3 20 2 15 1 10 5 5 10 0Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 24'%3E%3Cpath d='M10 0C15 5 19 10 18 15 17 20 13 22 10.6 22.4L10.6 24 9.4 24 9.4 22.4C7 22 3 20 2 15 1 10 5 5 10 0Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+}
+
+/* meteors: a streak now and then */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d--art .book3d__art-p--meteors {
+  width: 34%;
+  height: 0.4cqi;
+  aspect-ratio: auto;
+  border-radius: 0.4cqi;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95));
+  opacity: 0;
+  transform-origin: 100% 50%;
+  animation-name: artMeteor;
+  animation-timing-function: ease-in;
+}
+
+@keyframes artWander {
+  0% { transform: translate(0, 0); }
+  22% { transform: translate(5cqi, -3.5cqi); }
+  46% { transform: translate(8cqi, -10cqi); }
+  72% { transform: translate(1.5cqi, -7cqi); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes artPulse {
+  0%, 12% { opacity: 0.1; }
+  55% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+@keyframes artMoteRise {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(3cqi, -6cqi); }
+  100% { transform: translate(-1cqi, -12cqi); }
+}
+
+@keyframes artRise {
+  0% { opacity: 0; transform: translate(0, 0) scale(1); }
+  10% { opacity: 1; }
+  60% { opacity: 0.8; transform: translate(3cqi, -24cqi) scale(0.8); }
+  100% { opacity: 0; transform: translate(-2cqi, -42cqi) scale(0.4); }
+}
+
+@keyframes artBubble {
+  0% { opacity: 0; transform: translate(0, 0); }
+  10% { opacity: 0.9; }
+  35% { transform: translate(1.6cqi, -20cqi); }
+  65% { transform: translate(-1.2cqi, -42cqi); }
+  90% { opacity: 0.8; }
+  100% { opacity: 0; transform: translate(0.8cqi, -62cqi); }
+}
+
+@keyframes artFloatUp {
+  0% { opacity: 0; transform: translate(0, 0) rotate(-3deg); }
+  12% { opacity: 1; }
+  50% { transform: translate(2cqi, -26cqi) rotate(3deg); }
+  88% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-1cqi, -54cqi) rotate(-2deg) scale(0.7); }
+}
+
+@keyframes artTumble {
+  0% { opacity: 0; transform: translate(0, 0) rotate3d(1, 0.4, 0.2, 0deg); }
+  6% { opacity: 1; }
+  26% { transform: translate(-8cqi, 30cqi) rotate3d(1, 0.4, 0.2, 200deg); }
+  52% { transform: translate(-4cqi, 62cqi) rotate3d(1, 0.4, 0.2, 380deg); }
+  76% { transform: translate(-15cqi, 94cqi) rotate3d(1, 0.4, 0.2, 560deg); }
+  92% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-22cqi, 128cqi) rotate3d(1, 0.4, 0.2, 760deg); }
+}
+
+@keyframes artMeteor {
+  0%, 74% { opacity: 0; transform: rotate(24deg) translateX(-40%) scaleX(0.3); }
+  78% { opacity: 1; }
+  90%, 100% { opacity: 0; transform: rotate(24deg) translateX(110%) scaleX(1); }
+}
+
+/* the cover's colour only warms a painting a little */
+:is(.notebook-library-page, .notebook-luxe-cover) .book3d.book3d--art .book3d__art .book3d__tint {
+  opacity: 0.1;
+}

@@ -1,0 +1,591 @@
+ 
+
+:root {
+  --touch-scale: 1;
+  --touch-here: 1;
+}
+@media (pointer: coarse) {
+  :root:not([data-workspace-app]) {
+    --touch-scale: 1.25;
+  }
+}
+:root[data-touch-mode] {
+  --touch-scale: 1.25;
+}
+
+/* Scaled: the site's pages and the shared menus. */
+:where(.desktop-service-surface, [data-radix-menu-content]) {
+  --touch-here: var(--touch-scale);
+}
+
+/* Kept as drawn. */
+:where(
+    .wm-body,
+    .office-dialog,
+    .note-editor-ribbon-tabs,
+    .note-editor-ribbon-strip,
+    [data-office-editor-action-rail],
+    [data-editor-surface],
+    .ProseMirror,
+    .cm-editor,
+    .marketing-theme main,
+    .docs-cupertino-menu,
+    .office-context-menu,
+    [data-touch-scale="none"]
+  ) {
+  --touch-here: 1;
+}
+
+/* A region, in Touch mode (with a mouse a region is not even given
+   `zoom: 1`, so not a pixel moves). --touch-zoom is the zoom its inside is
+   drawn at, for lengths that must stay screen lengths: 100vh/100dvh/100vw
+   and the shell's clearances divide by it. --viewport-h does so already.
+   The public pages' copy (a dialog, a toast) follows the device. */
+@media (pointer: coarse) {
+  :where(:root:not([data-workspace-app])) :where([data-touch-scale="region"]) {
+    zoom: var(--touch-here, 1);
+    --touch-zoom: var(--touch-here, 1);
+    --viewport-h: calc(100vh / var(--touch-here, 1));
+  }
+  @supports (height: 100svh) {
+    :where(:root:not([data-workspace-app])) :where([data-touch-scale="region"]) {
+      --viewport-h: calc(100svh / var(--touch-here, 1));
+    }
+  }
+}
+:root[data-touch-mode] :where([data-touch-scale="region"]) {
+  zoom: var(--touch-here, 1);
+  --touch-zoom: var(--touch-here, 1);
+  --viewport-h: calc(100vh / var(--touch-here, 1));
+}
+@supports (height: 100svh) {
+  :root[data-touch-mode] :where([data-touch-scale="region"]) {
+    --viewport-h: calc(100svh / var(--touch-here, 1));
+  }
+}
+:where([data-touch-scale="region"]) * {
+  --touch-here: 1;
+}
+/* a region inside a region adds no zoom and keeps the outer one's */
+:root [data-touch-scale="region"] [data-touch-scale="region"] {
+  --touch-zoom: inherit;
+  --viewport-h: inherit;
+}
+
+/* ── The workspace shell ──────────────────────────────────────────────
+   The sidebar (fixed, 8px in, 224px wide) and the top bar (fixed, 8px
+   down, 48px high) are regions; the page column clears them by their
+   lengths times the scale. The top bar's own `left` is that clearance,
+   which its zoom would scale a second time. */
+@media (min-width: 744px) {
+  :root
+    [data-shell-variant]:not([data-shell-variant="guest"]):not(
+      [data-shell-context="notebook"]
+    ):not([data-shell-page="settings"]) {
+    --console-shell-offset-left: var(
+      --touch-sidebar-reach,
+      calc(var(--global-sidebar-reach, 240px) * var(--touch-scale))
+    );
+  }
+  :root
+    [data-shell-variant]:not([data-shell-variant="guest"]):not(
+      [data-shell-context="notebook"]
+    ) {
+    --console-shell-offset-top: var(
+      --touch-topbar-reach,
+      calc(56px * var(--touch-scale))
+    );
+  }
+}
+:root[data-touch-mode] .glass-topbar[data-touch-scale="region"] {
+  left: calc(
+    var(--console-shell-offset-left, 240px) / var(--touch-here, 1)
+  ) !important;
+}
+
+/* What a zoomed top bar holds has a quarter less room. Its pages shape
+   their tools for a narrower window with media queries, which read the
+   window, not the bar; so under a finger the shell is a container
+   (touch-shell, the window's width, unzoomed: WebKit and Chromium measure a
+   zoomed container differently) and the same shapes come at the width
+   times the scale. Named only here, so no rule below can apply with
+   Touch mode off. */
+:root[data-touch-mode] [data-shell-variant] {
+  container: touch-shell / inline-size;
+}
+
+/* The page pill keeps one line under a finger, and where the bar is
+   tightest (an iPad at 1024 points) it keeps its icon: the page's name is
+   lit in the sidebar beside it. */
+@container touch-shell (min-width: 744px) {
+  .glass-topbar .inline-topbar-breadcrumb {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  /* the page's tools take the room the pill leaves, never more (WebKit
+     sized their wrapper by its widest content and pushed the bar past
+     both its ends) */
+  .glass-topbar .console-topbar-compat > div:not(.inline-topbar-left) {
+    flex: 1 1 auto;
+    min-width: 0;
+    justify-content: flex-end;
+  }
+}
+@container touch-shell (min-width: 744px) and (max-width: 1150px) {
+  .glass-topbar[data-page-tools] .workspace-topbar-breadcrumb > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* The library's actions (zh, in the bar's own pixels: 891 with every
+   label, 641 without the archive buttons' words, 505 with the switchers'
+   words gone too). The words stay for assistive tech. */
+@container touch-shell (max-width: 1463px) {
+  #notebook-library-topbar-actions
+    :is(
+      [data-testid="workspace-export-button"],
+      [data-testid="workspace-import-button"]
+    ) {
+    width: 34px;
+    justify-content: center;
+    padding-inline: 0;
+  }
+}
+@container touch-shell (max-width: 1150px) {
+  #notebook-library-topbar-actions
+    :is(
+      [data-testid="library-kind-switcher"],
+      [data-testid="library-view-switcher"]
+    )
+    button {
+    padding-inline: 10px;
+  }
+}
+@container touch-shell (max-width: 980px) {
+  #notebook-library-topbar-actions [data-testid="notebooks-create-button"] {
+    width: 38px;
+    padding-inline: 0;
+    justify-content: center;
+  }
+}
+@container touch-shell (max-width: 1463px) {
+  #notebook-library-topbar-actions
+    :is(
+      [data-testid="workspace-export-button"],
+      [data-testid="workspace-import-button"]
+    )
+    > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px !important;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+@container touch-shell (max-width: 1150px) {
+  #notebook-library-topbar-actions
+    :is(
+      [data-testid="library-kind-switcher"],
+      [data-testid="library-view-switcher"]
+    )
+    button
+    > span:not([aria-hidden="true"]) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+@container touch-shell (max-width: 980px) {
+  #notebook-library-topbar-actions
+    [data-testid="notebooks-create-button"]
+    > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* The memory graph's tools (GlassTopBar: the same rules at 1600, 1320,
+   1120, 900 and 820 px of window; the chips go to their dots a little
+   earlier, 1600 rather than 1400, where WebKit's row runs wider). One
+   class more than GlassTopBar's own rules, which read the window and
+   would otherwise win at the same width. */
+@container touch-shell (max-width: 2000px) {
+  /* WebKit keeps a row's width from before its words were dropped here;
+     it may shrink to what it holds */
+  .glass-topbar .workspace-memory-topbar-tools .mg-filter-row--topbar {
+    flex: 0 1 auto;
+  }
+  .glass-topbar .workspace-memory-topbar-tools .mg-confidence-label {
+    display: none;
+  }
+  .glass-topbar .workspace-memory-topbar-tools .mg-search-control {
+    flex-basis: 208px !important;
+    min-width: 176px !important;
+  }
+  .glass-topbar .workspace-memory-topbar-tools .mg-confidence-control input[type="range"] {
+    width: 96px !important;
+  }
+}
+@container touch-shell (max-width: 1650px) {
+  .glass-topbar .workspace-memory-topbar-tools .mg-filter-chip-count,
+  .glass-topbar .workspace-memory-topbar-tools .mg-history-label,
+  .glass-topbar .workspace-memory-topbar-tools .mg-view-count {
+    display: none;
+  }
+  .glass-topbar .workspace-memory-topbar-tools .mg-search-control {
+    flex-basis: 176px !important;
+    min-width: 164px !important;
+  }
+  .glass-topbar .workspace-memory-topbar-tools .mg-confidence-control input[type="range"] {
+    width: 76px !important;
+  }
+}
+@container touch-shell (max-width: 1600px) {
+  .glass-topbar .workspace-memory-topbar-tools .mg-filter-chip-label,
+  .glass-topbar .workspace-memory-topbar-tools .mg-view-label,
+  .glass-topbar .workspace-memory-topbar-tools .mg-history-control svg:last-child,
+  .glass-topbar .workspace-memory-topbar-tools .mg-history-count {
+    display: none;
+  }
+  .glass-topbar .workspace-memory-topbar-title {
+    padding-right: 10px;
+  }
+  .glass-topbar .workspace-memory-topbar-tools .mg-filter-chip,
+  .glass-topbar .workspace-memory-topbar-tools .mg-view-control,
+  .glass-topbar .workspace-memory-topbar-tools .mg-history-control {
+    width: 36px;
+    justify-content: center;
+    padding-inline: 0 !important;
+  }
+  .glass-topbar .workspace-memory-topbar-tools .mg-filter-chip > span[aria-hidden="true"] {
+    margin-right: 0 !important;
+  }
+  .glass-topbar .workspace-memory-topbar-tools .mg-confidence-control {
+    padding-inline: 7px !important;
+  }
+  .glass-topbar .workspace-memory-topbar-tools .mg-confidence-control input[type="range"] {
+    width: 58px !important;
+  }
+  .glass-topbar .workspace-memory-topbar-tools .mg-confidence-control output {
+    min-width: 30px !important;
+  }
+  .glass-topbar .workspace-memory-topbar-tools .mg-search-control {
+    flex-basis: 92px !important;
+    min-width: 72px !important;
+  }
+}
+@container touch-shell (max-width: 1125px) {
+  .glass-topbar .mg-toolbar-portal,
+  .glass-topbar .mg-filter-row--topbar,
+  .glass-topbar .mg-view-bar--topbar,
+  .glass-topbar .mg-toolbar-portal .mg-filter-role-group {
+    gap: 4px !important;
+  }
+  .glass-topbar .workspace-memory-topbar-tools .mg-confidence-control output {
+    display: none;
+  }
+  .glass-topbar .workspace-memory-topbar-tools .mg-confidence-control input[type="range"] {
+    width: 52px !important;
+  }
+  .glass-topbar .workspace-memory-topbar-tools .mg-search-control {
+    flex-basis: 70px !important;
+    min-width: 52px !important;
+  }
+}
+@container touch-shell (max-width: 1025px) {
+  .glass-topbar .workspace-memory-topbar-copy {
+    display: none;
+  }
+  .glass-topbar .workspace-memory-topbar-title {
+    padding-right: 4px;
+  }
+}
+
+/* A narrow window's bar (globals.css, 743px): the pill keeps one line and
+   a page's tools scroll sideways in their slot. */
+@container touch-shell (max-width: 929px) {
+  .inline-topbar-breadcrumb {
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+  .glass-topbar .console-topbar-compat {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .glass-topbar .console-topbar-compat > div:not(.inline-topbar-left) {
+    flex: 1 1 auto;
+    min-width: 0;
+    /* at the end only while they fit: wider, they spilled off the start
+       over the page pill (Messages on an iPad held upright) */
+    justify-content: safe flex-end;
+  }
+  /* the wrapper a page's slot sits in shrinks with the bar, so the slot
+     itself is what scrolls */
+  .glass-topbar .console-topbar-compat > div:not(.inline-topbar-left) > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+  /* the conversation's name gives way first (it ellipsizes) */
+  .glass-topbar [data-topbar-actions] [data-testid="messages-topbar-identity"] {
+    flex: 0 1 auto;
+    min-width: 48px;
+  }
+  .glass-topbar [data-topbar-actions] {
+    min-width: 0;
+    max-width: 100%;
+    margin-block: -6px;
+    padding-block: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+  }
+  .glass-topbar [data-topbar-actions]::-webkit-scrollbar {
+    display: none;
+  }
+  /* aligned to the end only while they fit: wider, they overflowed off
+     the start of the slot, where no scroll reaches (the library's way
+     back sat half under the page pill, out of reach) */
+  .glass-topbar [data-topbar-actions] {
+    justify-content: safe flex-end;
+  }
+  .glass-topbar [data-topbar-actions] > :only-child {
+    margin-inline-start: auto;
+  }
+  .glass-topbar [data-topbar-actions] > *,
+  .glass-topbar [data-topbar-actions] :is(button, a) {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
+/* ── Windows' chrome ──────────────────────────────────────────────────
+   Every window's title bar (the editors' too: the bar is the window's, the
+   body below it is the editor's and stays as drawn) is a quarter taller
+   under a finger, and its three parts (the lights, the title, the controls
+   a window docks there: share, document issues, presence) grow inside it
+   as regions. The bar itself is not zoomed: it is the window-titlebar
+   container its parts shape themselves by, and a zoomed container is
+   measured differently by WebKit and Chromium. The desk reads the taller
+   bar through lib/css-zoom touchScale() (desk-rendering). */
+:root[data-touch-mode] .desktop-service-surface .wm-titlebar:not(.marketing-theme main *) {
+  height: calc(40px * var(--touch-scale));
+  padding: 0 calc(8px * var(--touch-scale)) 0 calc(12px * var(--touch-scale));
+  gap: calc(10px * var(--touch-scale));
+}
+/* A classic tab's bar carries the tab strip from its left edge (window-
+   manager.css): the strip's inset grows with the bar, and matches the home
+   card's bar (OfficeHome.module.css), so switching tabs does not shift it. */
+:root[data-touch-mode] .desktop-service-surface .wm-window[data-classic-tab] .wm-titlebar:not(.marketing-theme main *) {
+  padding-left: calc(6px * var(--touch-scale));
+}
+:root[data-touch-mode] .desktop-service-surface .wm-window[data-docked] .wm-titlebar:not(.marketing-theme main *) {
+  height: calc(48px * var(--touch-scale));
+  padding-right: calc(10px * var(--touch-scale));
+}
+:root[data-touch-mode]
+  .desktop-service-surface
+  .wm-window[data-dock-seated]
+  .wm-titlebar:not(.marketing-theme main *) {
+  height: calc(40px * var(--touch-scale));
+}
+:root[data-touch-mode]
+  :where(.desktop-service-surface .wm-titlebar)
+  > :where(.wm-traffic-lights, .wm-titlebar-title, .wm-titlebar-controls) {
+  zoom: var(--touch-here, 1);
+}
+:where(.wm-titlebar)
+  > :where(.wm-traffic-lights, .wm-titlebar-title, .wm-titlebar-controls)
+  * {
+  --touch-here: 1;
+}
+
+/* The canvas's own pills and cards, placed by script in canvas or screen
+   pixels: each grows with zoom, and its script position goes over the zoom
+   (WindowCanvas, MinimizedTray): the chips pointing at windows off the
+   view, the exposé's window names, the minimized window's preview card. */
+:root[data-touch-mode] .desktop-service-surface .wm-offscreen-chip {
+  zoom: var(--touch-scale);
+  --touch-chip-zoom: var(--touch-scale);
+}
+:root[data-touch-mode] .desktop-service-surface .wm-expose-labels {
+  --touch-label-scale: var(--touch-scale);
+}
+:root[data-touch-mode] .desktop-service-surface .wm-expose-label {
+  transform-origin: 50% 0;
+}
+:root[data-touch-mode] .wm-tray-preview {
+  zoom: var(--touch-scale);
+  --touch-preview-zoom: var(--touch-scale);
+}
+
+/* The workspace's own windows on the desk are site surfaces, not editors:
+   the AI panel, search, a message thread, the extensions and the vibe
+   library grow inside their frames as one region each. The calendar's and
+   the memory graph's bodies (a dense grid, a canvas) stay as drawn; their
+   tools sit in the title bar, which grows. */
+:where(
+    [data-window-type="ai_panel"],
+    [data-window-type="search"],
+    [data-window-type="message_thread"],
+    [data-window-type="extension_manager"],
+    [data-window-type="vibe_library"]
+  )
+  > :where(.wm-body) {
+  --touch-here: var(--touch-scale);
+}
+:root[data-touch-mode]
+  :where(
+    [data-window-type="ai_panel"],
+    [data-window-type="search"],
+    [data-window-type="message_thread"],
+    [data-window-type="extension_manager"],
+    [data-window-type="vibe_library"]
+  )
+  > :where(.wm-body) {
+  zoom: var(--touch-here, 1);
+  --touch-zoom: var(--touch-here, 1);
+  --viewport-h: calc(100svh / var(--touch-here, 1));
+}
+:where(
+    [data-window-type="ai_panel"],
+    [data-window-type="search"],
+    [data-window-type="message_thread"],
+    [data-window-type="extension_manager"],
+    [data-window-type="vibe_library"]
+  )
+  > :where(.wm-body)
+  * {
+  --touch-here: 1;
+}
+
+/* ── Dialogs ──────────────────────────────────────────────────────────
+   A console dialog card is a region (components/ui/dialog); the site's
+   plain prompt card (.app-modal, ConfirmDialog without the Office chrome)
+   grows the same way. Placed at the middle of the window by percentages, a
+   zoomed card stays centred; what keeps it inside the window is a cap on
+   its height, the window's over the zoom (it scrolls past that). Widths
+   are each card's own and stay inside an iPad's 1024 points zoomed. The
+   public pages' copy follows the device. */
+@media (pointer: coarse) {
+  :where(:root:not([data-workspace-app])) .app-modal {
+    zoom: var(--touch-scale);
+  }
+  :where(:root:not([data-workspace-app])) [role="dialog"][data-touch-scale="region"] {
+    max-height: calc(100dvh / var(--touch-scale) - 24px) !important;
+    overflow-y: auto;
+  }
+}
+:root[data-touch-mode] .app-modal {
+  zoom: var(--touch-scale);
+}
+:root[data-touch-mode] [role="dialog"][data-touch-scale="region"] {
+  max-height: calc(100dvh / var(--touch-scale) - 24px) !important;
+  overflow-y: auto;
+}
+
+/* ── The notebook ─────────────────────────────────────────────────────
+   Its home card is centred on the canvas the sidebar floats over; grown,
+   it would run under the sidebar. Its layer keeps it clear of what the
+   sidebar covers (--wm-home-covered, WindowCanvas): the card moves right
+   only as far as it must. */
+@container touch-shell (min-width: 744px) {
+  /* Where the canvas beside the sidebar is narrower than the card (an iPad
+     held upright), the card starts just past the sidebar and takes what is
+     left, rather than being pushed right until its tiles were squeezed to
+     a letter each. */
+  .wm-canvas-home > .wm-empty-state {
+    padding-left: max(
+      32px,
+      min(
+        calc(
+          2 * var(--wm-home-covered, 0px) + 560px * var(--touch-scale) +
+            32px - 100%
+        ),
+        calc(var(--wm-home-covered, 0px) + 16px)
+      )
+    );
+    padding-right: max(
+      16px,
+      min(
+        32px,
+        calc(
+          100% - var(--wm-home-covered, 0px) - 560px * var(--touch-scale) -
+            48px
+        )
+      )
+    );
+  }
+}
+
+/* The canvas's map opens beside its zoom bar. Under a finger both are a
+   quarter larger, and beside the bar the map reached over the notebook's
+   sidebar (an iPad upright, or at 1024 points): it opens above the bar,
+   as on a narrow desk. */
+@container touch-shell (max-width: 1100px) {
+  .wm-canvas-minimap-anchor {
+    right: 0;
+    bottom: calc(100% + 10px);
+  }
+}
+
+/* ── Shared menus ─────────────────────────────────────────────────────
+   A Radix menu is a region of its own, portalled to the page and placed by
+   its measured (screen) size. The room Radix leaves it is in screen
+   pixels too, so it is set over the zoom. The Office menu family
+   (.docs-cupertino-menu) and every right-click menu (.office-context-menu,
+   whose tokens swap as one block) are drawn finger-sized already. The public pages'
+   copy follows the device. */
+@media (pointer: coarse) {
+  :where(:root:not([data-workspace-app]))
+    :where([data-radix-menu-content]:not(.docs-cupertino-menu, .office-context-menu)) {
+    zoom: var(--touch-here, 1);
+    --touch-zoom: var(--touch-here, 1);
+  }
+}
+:root[data-touch-mode]
+  :where([data-radix-menu-content]:not(.docs-cupertino-menu, .office-context-menu)) {
+  zoom: var(--touch-here, 1);
+  --touch-zoom: var(--touch-here, 1);
+}
+[data-radix-menu-content]:not(.docs-cupertino-menu, .office-context-menu) {
+  --radix-dropdown-menu-content-available-height: calc(
+    var(--radix-popper-available-height) / var(--touch-here, 1)
+  ) !important;
+  --radix-dropdown-menu-content-available-width: calc(
+    var(--radix-popper-available-width) / var(--touch-here, 1)
+  ) !important;
+  --radix-context-menu-content-available-height: calc(
+    var(--radix-popper-available-height) / var(--touch-here, 1)
+  ) !important;
+  --radix-context-menu-content-available-width: calc(
+    var(--radix-popper-available-width) / var(--touch-here, 1)
+  ) !important;
+  --radix-menubar-content-available-height: calc(
+    var(--radix-popper-available-height) / var(--touch-here, 1)
+  ) !important;
+  --radix-menubar-content-available-width: calc(
+    var(--radix-popper-available-width) / var(--touch-here, 1)
+  ) !important;
+}
+/* one rendered in place inside a region is scaled by it already */
+:where([data-touch-scale="region"] [data-radix-menu-content]) {
+  --touch-here: 1;
+}

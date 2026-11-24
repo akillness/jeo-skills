@@ -1,0 +1,19 @@
+@scope ([data-example]) {
+  /* ─── Shortcuts ───────────────────────────────────────────────────── */
+
+  :scope[data-example^="shortcuts/"] {
+    & button > [data-slot="kbd"] {
+      margin: 0;
+      padding: 0;
+      color: var(--line);
+      font-size: var(--text-xs);
+      font-weight: 400;
+      opacity: 1;
+    }
+
+    & textarea {
+      width: 20rem;
+      max-width: 100%;
+    }
+  }
+}

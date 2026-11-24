@@ -1,0 +1,27 @@
+ 
+@media (pointer: coarse) {
+  :where(
+      .office-ribbon-control,
+      .note-editor-ribbon-tab,
+      .note-editor-ribbon-tabs__pager,
+      .wm-titlebar button:not([data-classic-tab-close]),
+      .wm-titlebar [role="tab"],
+      .note-editor-statusbar button,
+      .native-page-window__footer button
+    ) {
+    position: relative;
+  }
+  :where(
+      .office-ribbon-control,
+      .note-editor-ribbon-tab,
+      .note-editor-ribbon-tabs__pager,
+      .wm-titlebar button:not([data-classic-tab-close]),
+      .wm-titlebar [role="tab"],
+      .note-editor-statusbar button,
+      .native-page-window__footer button
+    )::before {
+    content: "";
+    position: absolute;
+    inset: min(0px, calc((100% - var(--touch-hit-min, 44px)) / 2));
+  }
+}

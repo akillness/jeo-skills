@@ -1,0 +1,7 @@
+node_modules
+pnpm-lock.yaml
+eslint-suppressions.json
+**/next-env.d.ts
+**/.nuxt
+**/.output
+apps/docs/public/design/index.html

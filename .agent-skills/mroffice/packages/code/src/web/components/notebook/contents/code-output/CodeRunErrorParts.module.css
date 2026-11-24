@@ -1,0 +1,194 @@
+.problems {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0;
+}
+
+.problem {
+  display: grid;
+  grid-template-columns: minmax(52px, auto) minmax(0, 1fr);
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  padding: 5px 10px;
+  border: 0;
+  background: transparent;
+  color: var(--console-text-primary, #1f2937);
+  font: 12px/1.45 var(--font-jetbrains, ui-monospace, SFMono-Regular, Menlo, monospace);
+  text-align: left;
+  cursor: pointer;
+}
+
+.problem:hover {
+  background: color-mix(in srgb, var(--brand-v2, #0d9488) 7%, transparent);
+}
+
+.problem:focus-visible,
+.more:focus-visible {
+  outline: 2px solid var(--brand-v2, #0d9488);
+  outline-offset: -2px;
+}
+
+.aiAction:focus-visible {
+  outline: none;
+}
+
+.aiAction:focus-visible .aiActionFace {
+  outline: 2px solid var(--brand-v2, #0d9488);
+  outline-offset: 2px;
+}
+
+.problemLine {
+  color: var(--console-text-tertiary, #6b7280);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.problemMessage {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.more {
+  align-self: flex-start;
+  margin: 2px 10px 0;
+  padding: 2px 0;
+  border: 0;
+  background: transparent;
+  color: var(--brand-v2, #0d9488);
+  font: 12px/1.4 var(--font-sans, system-ui, sans-serif);
+  cursor: pointer;
+}
+
+.more:hover {
+  text-decoration: underline;
+}
+
+/* Explain and suggest a fix: the AI's way in from an error. A pill with the
+   brand's teal-to-blue edge and a wand in the brand ink; it lifts a little
+   on hover. The button keeps the output panel's 44px hit box (CodeWindow's
+   side-panel rule); the 32px pill is drawn inside it. The face is opaque,
+   or the gradient edge would tint through the theme's translucent surface,
+   and the dark themes give it a raised, faintly lit face. */
+.aiAction {
+  --ai-action-face: #fff;
+  --ai-action-ink: var(--console-text-primary, #1f2937);
+  --ai-action-glyph: var(--brand-v2, #0d9488);
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ai-action-ink);
+  cursor: pointer;
+}
+
+.aiActionFace {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 14px 0 11px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background:
+    linear-gradient(var(--ai-action-face), var(--ai-action-face)) padding-box,
+    linear-gradient(120deg, var(--brand-v2, #0d9488), #3b82f6) border-box;
+  font: 600 12.5px/1 var(--font-sans, system-ui, sans-serif);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  box-shadow:
+    0 1px 2px rgb(15 23 42 / 6%),
+    0 6px 14px -8px color-mix(in srgb, #3b82f6 55%, transparent);
+  transition:
+    transform 140ms ease,
+    box-shadow 160ms ease;
+}
+
+.aiActionFace svg {
+  flex: none;
+  color: var(--ai-action-glyph);
+}
+
+.aiAction:hover:not(:disabled) {
+  --ai-action-face: color-mix(in srgb, var(--brand-v2, #0d9488) 7%, #fff);
+}
+
+.aiAction:hover:not(:disabled) .aiActionFace {
+  transform: translateY(-1px);
+  box-shadow:
+    0 2px 4px rgb(15 23 42 / 8%),
+    0 10px 20px -10px color-mix(in srgb, #3b82f6 70%, transparent);
+}
+
+.aiAction:active:not(:disabled) {
+  --ai-action-face: color-mix(in srgb, var(--brand-v2, #0d9488) 12%, #fff);
+}
+
+.aiAction:active:not(:disabled) .aiActionFace {
+  transform: translateY(0);
+}
+
+.aiAction:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.aiAction:disabled .aiActionFace {
+  box-shadow: none;
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .aiAction {
+  --ai-action-face: #2a2f38;
+  --ai-action-ink: var(--text-primary, #f2f2f7);
+  --ai-action-glyph: var(--dark-theme-accent-secondary);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .aiActionFace {
+  box-shadow: 0 6px 16px -10px rgb(0 0 0 / 70%);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .aiAction:hover:not(:disabled) {
+  --ai-action-face: #333945;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiActionFace {
+    transition: none;
+  }
+
+  .aiAction:hover:not(:disabled) .aiActionFace {
+    transform: none;
+  }
+}
+
+.aiFailure {
+  margin: 6px 0 0;
+  color: var(--danger, #dc2626);
+  font: 12px/1.4 var(--font-sans, system-ui, sans-serif);
+}
+
+/* The runtime guard's two ways on: the AI rewrite (the same pill) and a
+   quiet text button that runs the code anyway. */
+.guardActions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.guardRunAnyway {
+  min-height: 32px;
+  padding: 0 6px;
+  border: 0;
+  background: none;
+  color: var(--console-text-secondary, #4b5563);
+  font: 500 12.5px/1 var(--font-sans, system-ui, sans-serif);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.guardRunAnyway:hover {
+  color: var(--console-text-primary, #1f2937);
+}

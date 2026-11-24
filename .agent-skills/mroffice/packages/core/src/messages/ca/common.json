@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Personalitzat",
+ "zoom.levels": "Nivells de zoom",
+ "dialog.close": "Tanca",
+ "toast.close": "Tanca la notificació",
+ "button.confirm": "D'acord",
+ "button.cancel": "Cancel·la",
+ "libreOffice.enable": "Baixa i activa (uns {size})",
+ "libreOffice.enableAlt": "Baixa i activa el LibreOffice",
+ "libreOffice.enabled": "El LibreOffice {version} està activat",
+ "libreOffice.retrying": "S'està tornant a provar…",
+ "libreOffice.ready": "Els formats antics d'Office, els fitxers OpenDocument, les imatges EMF/WMF i les exportacions OpenDocument ja funcionen.",
+ "libreOffice.needed": "Això necessita el LibreOffice. El MR Note Classic pot baixar la versió oficial a la seva pròpia carpeta; no s'instal·la res al vostre sistema.",
+ "libreOffice.neededFor": "Desar com a .{format} necessita el LibreOffice. El MR Note Classic pot baixar la versió oficial a la seva pròpia carpeta; no s'instal·la res al vostre sistema."
+}

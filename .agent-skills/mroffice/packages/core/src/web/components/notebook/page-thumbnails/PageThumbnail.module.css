@@ -1,0 +1,357 @@
+/* Page thumbnails (PageThumbnail.tsx): the page's own content, small. */
+
+.frame {
+  position: relative;
+  overflow: hidden;
+  max-width: 100%;
+  aspect-ratio: var(--thumb-aspect, 0.7071);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 6px;
+  background: #ffffff;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.06),
+    0 8px 22px rgba(15, 23, 42, 0.1);
+  color: #1e293b;
+  /* a page reads as the page does, whatever its host centres */
+  text-align: left;
+}
+
+ 
+.frame[data-variant="stage"] {
+  width: min(100%, calc(clamp(170px, 32vh, 290px) * var(--thumb-aspect, 0.7071)));
+  height: auto;
+  border-radius: 8px;
+}
+
+.frame[data-variant="card"] {
+  width: min(100%, 220px);
+}
+
+.frame[data-variant="strip"] {
+   
+  width: min(70px, calc(46px * var(--thumb-aspect, 0.7071)));
+  max-width: none;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+}
+
+/* A side strip's file picture (DockThumbnail): fits a --dock-box square,
+   as tall as it for a portrait page, as wide as it for a slide or a sheet.
+   The width is given, as for the strip, since the holder shrink-wraps. */
+.frame[data-variant="dock"] {
+  width: min(
+    var(--dock-box, 46px),
+    calc(var(--dock-box, 46px) * var(--thumb-aspect, 0.7071))
+  );
+  max-width: none;
+  height: auto;
+  border-radius: 3px;
+}
+
+.frame[data-state="ready"] {
+  animation: thumbIn 240ms ease-out;
+}
+
+@keyframes thumbIn {
+  from {
+    opacity: 0.2;
+  }
+}
+
+/* a deck's own renderer brings its own frame */
+.frame[data-kind="presentation"][data-state="ready"] :global(.presentation-window__thumb-mini) {
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+.frame[data-kind="code"] {
+  background: #fbfcfd;
+}
+
+.fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(160deg, #f8fafc, #eef2f6);
+}
+
+.frame[data-state="loading"] .fallback::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.65) 50%,
+    transparent 70%
+  );
+  background-size: 220% 100%;
+  content: "";
+  animation: shimmer 1.3s linear infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 120% 0;
+  }
+  to {
+    background-position: -120% 0;
+  }
+}
+
+.fallbackArt {
+  width: 44%;
+  max-width: 96px;
+  height: auto;
+}
+
+.frame[data-variant="strip"] .fallbackArt {
+  width: 60%;
+}
+
+.scaledHost {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.scaled {
+  transform-origin: top left;
+}
+
+/* ── document ── */
+
+.paper {
+  padding: 54px 58px;
+  color: #1f2937;
+  font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+  font-size: 15px;
+  line-height: 1.62;
+}
+
+.paper > * {
+  margin: 0 0 9px;
+}
+
+.paper h1 {
+  margin-bottom: 14px;
+  font-size: 30px;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.paper h2 {
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.paper h3 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.bullet,
+.numbered,
+.task {
+  position: relative;
+  padding-left: 24px;
+}
+
+.bullet::before {
+  position: absolute;
+  top: 0.62em;
+  left: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  content: "";
+}
+
+.numbered::before {
+  position: absolute;
+  left: 0;
+  content: attr(data-n);
+}
+
+.task::before {
+  position: absolute;
+  top: 0.32em;
+  left: 2px;
+  width: 13px;
+  height: 13px;
+  border: 1.6px solid #94a3b8;
+  border-radius: 3px;
+  content: "";
+}
+
+.task[data-checked]::before {
+  border-color: #0d9488;
+  background: #0d9488;
+}
+
+.paper blockquote {
+  padding-left: 14px;
+  border-left: 4px solid #cbd5e1;
+  color: #475569;
+}
+
+.paper pre {
+  overflow: hidden;
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: #f1f5f9;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 13px;
+  white-space: pre-wrap;
+}
+
+.paper hr {
+  height: 1px;
+  border: 0;
+  background: #e2e8f0;
+}
+
+.paper img {
+  display: block;
+  max-width: 100%;
+  max-height: 260px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.paper table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.paper td {
+  overflow: hidden;
+  max-width: 0;
+  padding: 4px 8px;
+  border: 1px solid #cbd5e1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── spreadsheet ── */
+
+.sheet {
+  display: grid;
+  grid-auto-rows: 26px;
+  border-right: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #1f2937;
+  font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+  font-size: 13px;
+}
+
+.sheet > span {
+  overflow: hidden;
+  padding: 0 6px;
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  line-height: 25px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.corner,
+.columnHead,
+.rowHead {
+  background: #f1f5f4;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.sheetTab {
+  display: inline-block;
+  margin: 6px 0 0 40px;
+  padding: 3px 14px;
+  border-radius: 0 0 6px 6px;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.14);
+  color: #0f766e;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+/* ── code ── */
+
+.code {
+  padding: 14px 0;
+  color: #334155;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.codeLine {
+  display: flex;
+  gap: 14px;
+  white-space: pre;
+}
+
+.lineNumber {
+  width: 34px;
+  flex: none;
+  color: #94a3b8;
+  text-align: right;
+}
+
+.code [data-token="string"] {
+  color: #b45309;
+}
+
+.code [data-token="comment"] {
+  color: #64748b;
+  font-style: italic;
+}
+
+.code [data-token="number"] {
+  color: #2563eb;
+}
+
+.code [data-token="keyword"] {
+  color: #9333ea;
+  font-weight: 600;
+}
+
+/* ── pdf ── */
+
+.pdfImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame,
+  .frame[data-state="loading"] .fallback::after {
+    animation: none !important;
+  }
+}
+
+/* A Word document's drawings, placed on the page at its own size. */
+.floats {
+  position: relative;
+  overflow: hidden;
+}
+
+.floatImage {
+  position: absolute;
+  object-fit: fill;
+}
+
+.paper > .inlineShape {
+  position: relative;
+  max-width: 100%;
+}

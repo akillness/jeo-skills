@@ -1,0 +1,37 @@
+{
+  "name": "@mrnote/slides",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "description": "The MR Office presentation editor.",
+  "homepage": "https://mroffice.ai",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/XinaTian/MROffice.git",
+    "directory": "packages/slides"
+  },
+  "exports": {
+    ".": "./src/index.tsx",
+    "./*": "./src/*"
+  },
+  "sideEffects": [
+    "*.css",
+    "**/*.css"
+  ],
+  "dependencies": {
+    "@mrnote/code": "*",
+    "@mrnote/core": "*",
+    "@mrnote/docs": "*",
+    "@mrnote/sheets": "*",
+    "lucide-react": "0.577.0",
+    "modern-screenshot": "4.7.0",
+    "react": "19.2.5",
+    "react-dom": "19.2.5",
+    "yjs": "13.6.31"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": ">=19"
+  }
+}

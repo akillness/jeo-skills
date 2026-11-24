@@ -1,0 +1,631 @@
+/*
+ * Page-access rows. The sheet SHELL (glass card, hero, groups, inset cards)
+ * comes from CupertinoSheet.module.css — this file is only what goes inside
+ * the groups: the visibility tiers and the editor checklist.
+ *
+ * Motion here explains a change of state and nothing else: the selection
+ * glides to the chosen tier, a role's thumb slides to the chosen access, the
+ * save control unfolds while there is something to save and says what it is
+ * doing, and the rows a save changed catch a brief light. Two durations from
+ * the shared tokens: --motion-fast (150ms) for a tint, a glyph or an
+ * enabled/disabled change, and --motion-slow (300ms) for anything that moves
+ * or changes size, on --ease-spring (a soft ease-out). styles/reduce-motion.css
+ * and prefers-reduced-motion still all of it; every state is applied first
+ * and the motion only follows it.
+ */
+
+.tiers {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--sheet-line, rgba(38, 53, 49, 0.1));
+  border-radius: 14px;
+  background: var(--sheet-card, rgba(255, 255, 255, 0.72));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.tier {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 14px;
+  border: 0;
+  background: transparent;
+  color: var(--sheet-ink, #17211f);
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
+  transition:
+    background 160ms ease,
+    color var(--motion-fast, 150ms) ease,
+    opacity var(--motion-fast, 150ms) ease;
+}
+
+.tier + .tier {
+  /* Hairline inset to the text column, iOS grouped-list style. */
+  background-image: linear-gradient(
+    to right,
+    transparent 0,
+    transparent 40px,
+    var(--sheet-line, rgba(38, 53, 49, 0.1)) 40px,
+    var(--sheet-line, rgba(38, 53, 49, 0.1)) 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  background-position: 0 0;
+}
+
+.tier > span {
+  flex: 1;
+  min-width: 0;
+}
+
+.tier:hover:not(:disabled) {
+  background-color: color-mix(
+    in srgb,
+    var(--sheet-ink, #17211f) 4%,
+    transparent
+  );
+}
+
+.tier[data-active] {
+  color: var(--sheet-accent-strong, #066e66);
+  font-weight: 600;
+}
+
+.tier:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+/* The chosen tier's highlight: one surface that glides from row to row
+   (position and height measured from the rows), under the rows' own ink. */
+.tierGlide {
+  position: absolute;
+  z-index: 0;
+  top: 3px;
+  right: 4px;
+  left: 4px;
+  height: max(0px, calc(var(--tier-glide-h, 0px) - 6px));
+  border-radius: 10px;
+  background: color-mix(
+    in srgb,
+    var(--sheet-accent, #07877d) 9%,
+    var(--sheet-card-strong, rgba(255, 255, 255, 0.94))
+  );
+  box-shadow:
+    inset 0 0 0 1px
+      color-mix(in srgb, var(--sheet-accent, #07877d) 16%, transparent),
+    0 1px 3px color-mix(in srgb, var(--sheet-accent, #07877d) 10%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(var(--tier-glide-y, 0px));
+}
+
+.tiers[data-glide] > .tierGlide {
+  opacity: 1;
+}
+
+.tiers[data-glide="ready"] > .tierGlide {
+  transition:
+    transform var(--motion-slow, 300ms)
+      var(--ease-spring, cubic-bezier(0.22, 1, 0.36, 1)),
+    height var(--motion-slow, 300ms)
+      var(--ease-spring, cubic-bezier(0.22, 1, 0.36, 1)),
+    opacity var(--motion-fast, 150ms) ease;
+}
+
+.tiers[data-glide][data-disabled] > .tierGlide {
+  opacity: 0.5;
+}
+
+/* The highlight already marks the chosen row; hover tints only the others. */
+.tiers[data-glide] > .tier[data-active]:hover:not(:disabled) {
+  background-color: transparent;
+}
+
+/* The check draws itself on the newly chosen row and retracts on the old. */
+.tier > .tierCheck {
+  display: grid;
+  width: 15px;
+  height: 15px;
+  flex: none;
+  place-items: center;
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity var(--motion-fast, 150ms) ease,
+    transform var(--motion-slow, 300ms)
+      var(--ease-spring, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.tier > .tierCheck[data-on] {
+  opacity: 1;
+  transform: none;
+}
+
+.tierCheck svg * {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  transition: stroke-dashoffset var(--motion-fast, 150ms) ease;
+}
+
+.tierCheck[data-on] svg * {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset var(--motion-slow, 300ms) ease-out 60ms;
+}
+
+/* A row the last save changed: one soft band of light passes across it.
+   It sits inside the row's own box, so nothing scrolls or reflows. */
+.tier[data-flash]::after,
+.memberRow[data-flash]::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+      100deg,
+      transparent 30%,
+      color-mix(in srgb, var(--sheet-accent, #07877d) 16%, transparent) 50%,
+      transparent 70%
+    )
+    no-repeat;
+  background-size: 260% 100%;
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  animation: permissionRowSaved 1100ms ease-out both;
+}
+
+@keyframes permissionRowSaved {
+  0% {
+    background-position: 100% 0;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    background-position: 0% 0;
+    opacity: 0;
+  }
+}
+
+.pickerHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.bulk {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.bulk button {
+  padding: 4px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sheet-ink, #17211f) 6%, transparent);
+  color: var(--sheet-muted, #53635f);
+  cursor: pointer;
+  font-size: 11.5px;
+  font-weight: 600;
+  transition:
+    background 160ms ease,
+    color var(--motion-fast, 150ms) ease,
+    opacity var(--motion-fast, 150ms) ease;
+}
+
+.bulk button:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--sheet-accent, #07877d) 14%, transparent);
+  color: var(--sheet-accent-strong, #066e66);
+}
+
+.bulk button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.hint {
+  padding: 0 4px;
+  color: var(--sheet-subtle, #71807c);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.row {
+  display: grid;
+  flex: none;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 13px;
+  cursor: pointer;
+}
+
+.row[data-owner] {
+  cursor: default;
+}
+
+/* A member's row: name on the left, the access control on the right. When
+   both no longer fit (a narrow sheet, a long translation) the control drops
+   to a line of its own instead of squeezing the name to nothing. */
+.memberRow {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 11px;
+  row-gap: 8px;
+  cursor: default;
+}
+
+.memberRow > .avatar {
+  flex: none;
+}
+
+.memberRow > .rowCopy {
+  flex: 1 1 7.5rem;
+}
+
+/* The shared segmented control, in the sheet's own palette. */
+.roleControl {
+  --console-accent: var(--sheet-accent, #07877d);
+  --console-accent-strong: var(--sheet-accent-strong, #066e66);
+  --console-text-primary: var(--sheet-ink, #17211f);
+  --console-text-secondary: var(--sheet-muted, #53635f);
+  --console-surface: var(--sheet-card-strong, rgba(255, 255, 255, 0.94));
+  flex: none;
+  margin-inline-start: auto;
+}
+
+.row + .row {
+  background-image: linear-gradient(
+    to right,
+    transparent 0,
+    transparent 56px,
+    var(--sheet-line, rgba(38, 53, 49, 0.1)) 56px,
+    var(--sheet-line, rgba(38, 53, 49, 0.1)) 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  background-position: 0 0;
+}
+
+/* holds the person's own UserAvatar */
+.avatar {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+}
+
+.rowCopy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.rowCopy strong {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rowCopy small {
+  overflow: hidden;
+  color: var(--sheet-subtle, #71807c);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Why 可编辑 is greyed for this person: their notebook role is read only. */
+.rowCopy .readerNote {
+  margin-top: 2px;
+  color: var(--sheet-warning, #a15c07);
+  white-space: normal;
+}
+
+.check {
+  width: 19px;
+  height: 19px;
+  accent-color: var(--sheet-accent, #07877d);
+  cursor: pointer;
+}
+
+.check:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.policyActions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.policyConfirmation {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 4px;
+  color: var(--sheet-ink, #17211f);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.lockedMark {
+  display: grid;
+  place-items: center;
+  color: var(--sheet-accent-strong, #066e66);
+  opacity: 0.55;
+}
+
+.empty {
+  padding: 22px 14px;
+  color: var(--sheet-subtle, #71807c);
+  font-size: 13px;
+  text-align: center;
+}
+
+.error {
+  flex: none;
+  padding: 11px 14px;
+  border-radius: 12px;
+  background: color-mix(in srgb, #d8483f 12%, transparent);
+  color: #a8332b;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .error {
+  background: rgba(216, 72, 63, 0.18);
+  color: #ff9a92;
+}
+
+/* The save control unfolds below everything it saves. In a long sheet it
+   stays in reach at the bottom of the scrolling body while changes wait. */
+.saveFold.saveFold {
+  position: sticky;
+  z-index: 2;
+  bottom: 0;
+}
+
+.saveBar {
+  position: relative;
+  display: flex;
+}
+
+/* No veil behind the stuck bar: the sheet is translucent over the blurred
+   page, so any fill painted here (even the sheet's own colour) composites a
+   second time and shows as a lighter band. The button's own shadow keeps it
+   apart from rows scrolling beneath. */
+
+.saveButton {
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-height: 46px;
+  place-items: center;
+  overflow: hidden;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 13px;
+  background: var(--sheet-accent, #07877d);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow:
+    0 6px 16px color-mix(in srgb, var(--sheet-accent, #07877d) 22%, transparent),
+    0 1px 3px rgba(15, 23, 42, 0.1);
+  transition:
+    transform 160ms cubic-bezier(0.32, 0.72, 0, 1),
+    background var(--motion-fast, 150ms) ease,
+    opacity var(--motion-fast, 150ms) ease;
+}
+
+.saveButton:hover:not(:disabled) {
+  background: var(--sheet-accent-strong, #066e66);
+}
+
+.saveButton:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.saveButton:focus-visible {
+  outline: 2px solid var(--sheet-accent, #07877d);
+  outline-offset: 2px;
+}
+
+/* Nothing to save yet (a legacy audience still to confirm). */
+.saveButton[data-state="idle"]:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+/* Saving and saved are busy, not unavailable: they keep full strength. */
+.saveButton[data-state="saving"],
+.saveButton[data-state="saved"] {
+  cursor: default;
+}
+
+.saveButton[data-state="saved"] {
+  background: var(--sheet-accent-strong, #066e66);
+}
+
+/* Each face is stacked in the same cell, so the button never changes size.
+   Faces move forward through idle → saving → saved: the current one rises
+   into place from below, the previous one leaves upward. */
+.saveFaces {
+  display: grid;
+  min-width: 0;
+}
+
+.saveFace {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(-9px);
+  transition:
+    opacity var(--motion-fast, 150ms) ease,
+    transform var(--motion-slow, 300ms)
+      var(--ease-spring, cubic-bezier(0.22, 1, 0.36, 1));
+  white-space: nowrap;
+}
+
+.saveButton[data-state="idle"] .saveFace:not([data-face="idle"]),
+.saveButton[data-state="saving"] .saveFace[data-face="saved"] {
+  transform: translateY(9px);
+}
+
+.saveButton[data-state="idle"] .saveFace[data-face="idle"],
+.saveButton[data-state="saving"] .saveFace[data-face="saving"],
+.saveButton[data-state="saved"] .saveFace[data-face="saved"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* "Saved": its check draws itself as the face arrives. */
+.saveFace[data-face="saved"] svg * {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+}
+
+.saveButton[data-state="saved"] .saveFace[data-face="saved"] svg * {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset var(--motion-slow, 300ms) ease-out 90ms;
+}
+
+/* Saving: an indeterminate bar runs along the inside of the button. */
+.saveProgress {
+  position: absolute;
+  right: 14px;
+  bottom: 6px;
+  left: 14px;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.22);
+  opacity: 0;
+  transition: opacity var(--motion-fast, 150ms) ease;
+}
+
+.saveProgress::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 38%;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.85);
+  content: "";
+  transform: translateX(-105%);
+}
+
+.saveButton[data-state="saving"] .saveProgress {
+  opacity: 1;
+}
+
+.saveButton[data-state="saving"] .saveProgress::after {
+  animation: permissionSaving 1100ms cubic-bezier(0.45, 0, 0.25, 1) infinite;
+}
+
+@keyframes permissionSaving {
+  from {
+    transform: translateX(-105%);
+  }
+  to {
+    transform: translateX(270%);
+  }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The hand-over sheet's confirm — its label states which ACTION the current
+   selection means (move vs. a copy each), so the difference is settled before
+   the click, not after. */
+.handOverConfirm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 18px;
+  border: 0;
+  border-radius: 13px;
+  background: var(--sheet-accent, #07877d);
+  color: #fff;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition:
+    transform 160ms cubic-bezier(0.32, 0.72, 0, 1),
+    background 160ms ease,
+    opacity 160ms ease;
+}
+
+.handOverConfirm:hover:not(:disabled) {
+  background: var(--sheet-accent-strong, #066e66);
+}
+
+.handOverConfirm:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.handOverConfirm:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+/* Reduced motion: the light passes, the bar stands still as a plain "busy"
+   line, and every glide or fold lands at once (styles/reduce-motion.css). */
+@media (prefers-reduced-motion: reduce) {
+  .tier[data-flash]::after,
+  .memberRow[data-flash]::after {
+    animation: none;
+  }
+
+  .saveButton[data-state="saving"] .saveProgress::after {
+    width: 100%;
+    animation: none;
+    opacity: 0.55;
+    transform: none;
+  }
+}
+
+:root[data-reduce-motion] .tier[data-flash]::after,
+:root[data-reduce-motion] .memberRow[data-flash]::after {
+  animation: none;
+}
+
+:root[data-reduce-motion] .saveButton[data-state="saving"] .saveProgress::after {
+  width: 100%;
+  animation: none;
+  opacity: 0.55;
+  transform: none;
+}

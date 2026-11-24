@@ -1,0 +1,4 @@
+.nativeSelection::selection {
+  background: transparent;
+  color: transparent;
+}

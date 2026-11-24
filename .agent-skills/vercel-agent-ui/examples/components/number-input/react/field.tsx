@@ -1,0 +1,35 @@
+"use client"
+
+import { Field, FieldDescription, FieldLabel } from "@ui-sdk/react/field"
+import {
+  NumberInput,
+  NumberInputControl,
+  NumberInputDecrement,
+  NumberInputGroup,
+  NumberInputIncrement,
+} from "@ui-sdk/react/number-input"
+import { MinusIcon, PlusIcon } from "lucide-react"
+
+function Example() {
+  return (
+    <Field>
+      <FieldLabel>Tickets</FieldLabel>
+      <NumberInput defaultValue={2} min={1}>
+        <NumberInputGroup>
+          <NumberInputDecrement aria-label="Decrease">
+            <MinusIcon aria-hidden="true" />
+          </NumberInputDecrement>
+          <NumberInputControl />
+          <NumberInputIncrement aria-label="Increase">
+            <PlusIcon aria-hidden="true" />
+          </NumberInputIncrement>
+        </NumberInputGroup>
+      </NumberInput>
+      <FieldDescription>
+        Each ticket admits one person to the workshop.
+      </FieldDescription>
+    </Field>
+  )
+}
+
+export { Example }

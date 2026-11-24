@@ -1,0 +1,104 @@
+/* One person, drawn the same way everywhere (see UserAvatar.tsx).
+ * `--ua-accent` is the person's identity colour when known; without it the
+ * avatar wears the viewer's console accent, which is what the sidebar showed
+ * before avatars existed. */
+.avatar {
+  --ua-accent: var(--console-accent, #0d9488);
+  --ua-gradient: var(
+    --console-accent-gradient,
+    linear-gradient(135deg, #0d9488, #14b8a6)
+  );
+  position: relative;
+  display: inline-grid;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  width: var(--ua-size, 24px);
+  height: var(--ua-size, 24px);
+  place-items: center;
+  overflow: hidden;
+  border-radius: 999px;
+  line-height: 1;
+  user-select: none;
+  vertical-align: middle;
+}
+
+/* A known identity colour derives its own gradient, the same 135deg sweep
+ * from the colour to a lighter step as the console accent gradient. */
+.custom {
+  --ua-gradient: linear-gradient(
+    135deg,
+    var(--ua-accent),
+    color-mix(in srgb, var(--ua-accent) 62%, #ffffff)
+  );
+}
+
+.letters {
+  display: block;
+}
+
+.tierInitials {
+  background: var(--ua-gradient);
+  color: #fff;
+  font-size: calc(var(--ua-size, 24px) * 0.44);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.tierDoodle {
+  border: 1px solid color-mix(in srgb, var(--ua-accent) 28%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--ua-accent) 13%,
+    var(--bg-surface, #ffffff)
+  );
+}
+
+/* a drawn doodle: white line art on the doodle's own two colours */
+.tierArt.tierArt {
+  border: 0;
+  background: linear-gradient(
+    145deg,
+    var(--ua-art-from, var(--ua-accent)),
+    var(--ua-art-to, var(--ua-accent))
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+.art {
+  color: #ffffff;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.18));
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tierPhoto {
+  background: color-mix(
+    in srgb,
+    var(--ua-accent) 13%,
+    var(--bg-surface, #ffffff)
+  );
+}
+
+/* The presence roster's ring: a surface-coloured gap, then the accent. */
+.ring {
+  overflow: visible;
+  box-shadow:
+    0 0 0 1.5px var(--bg-surface, #ffffff),
+    0 0 0 2.5px color-mix(in srgb, var(--ua-accent) 70%, transparent);
+}
+
+.ring .photo {
+  border-radius: 999px;
+}
+
+.selected {
+  overflow: visible;
+  box-shadow:
+    0 0 0 2px var(--bg-surface, #ffffff),
+    0 0 0 4px var(--ua-accent);
+}

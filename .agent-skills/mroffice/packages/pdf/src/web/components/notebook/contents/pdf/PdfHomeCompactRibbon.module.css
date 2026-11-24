@@ -1,0 +1,61 @@
+.segment {
+  display: contents;
+}
+
+.pageField {
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--docs-ribbon-border, #cfd4dc);
+  border-radius: 6px;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  gap: 4px;
+  height: 30px;
+  justify-content: center;
+  min-height: 30px;
+  min-width: 74px;
+  padding: 0 7px;
+   
+  white-space: nowrap;
+  width: auto;
+}
+
+.pageField > input {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  box-sizing: border-box;
+  font: inherit;
+  height: 28px;
+  min-height: 28px;
+  min-width: 0;
+  outline: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.pageField:has(input:focus-visible) {
+  border-color: var(--console-accent-strong, #0f766e);
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, var(--console-accent-strong, #0f766e) 24%, transparent);
+}
+
+.pageField > input:focus-visible {
+  outline: 0;
+}
+
+/* The app's dark theme: the page field is a dark well like the band's other fields. */
+:global([data-theme-mode="dark"]) .pageField.pageField {
+  background: rgb(0 0 0 / 28%);
+  border-color: rgb(255 255 255 / 18%);
+  color: var(--docs-ribbon-ink, #f2f2f7);
+}
+:global([data-theme-mode="high-contrast"]) .pageField.pageField {
+  background: rgb(0 0 0 / 28%);
+  border-color: rgb(255 255 255 / 18%);
+  color: var(--docs-ribbon-ink, #f2f2f7);
+}
+

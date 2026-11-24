@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "අභිරුචි",
+ "zoom.levels": "විශාලන මට්ටම්",
+ "dialog.close": "වසන්න",
+ "toast.close": "දැනුම්දීම වසන්න",
+ "button.confirm": "හරි",
+ "button.cancel": "අවලංගු කරන්න",
+ "libreOffice.enable": "බාගත කර සක්‍රීය කරන්න (දළ වශයෙන් {size})",
+ "libreOffice.enableAlt": "LibreOffice බාගත කර සක්‍රීය කරන්න",
+ "libreOffice.enabled": "LibreOffice {version} සක්‍රීයයි",
+ "libreOffice.retrying": "නැවත උත්සාහ කරමින්…",
+ "libreOffice.ready": "පැරණි Office ආකෘති, OpenDocument ගොනු, EMF/WMF පින්තූර සහ OpenDocument අපනයන දැන් ක්‍රියා කරයි.",
+ "libreOffice.needed": "මේ සඳහා LibreOffice අවශ්‍යයි. MR Note Classic හට නිල නිකුතුව තමන්ගේ ම බහාලුමට බාගත කළ හැක; ඔබගේ පද්ධතියේ කිසිවක් ස්ථාපනය නොවේ.",
+ "libreOffice.neededFor": ".{format} ලෙස සුරැකීමට LibreOffice අවශ්‍යයි. MR Note Classic හට නිල නිකුතුව තමන්ගේ ම බහාලුමට බාගත කළ හැක; ඔබගේ පද්ධතියේ කිසිවක් ස්ථාපනය නොවේ."
+}

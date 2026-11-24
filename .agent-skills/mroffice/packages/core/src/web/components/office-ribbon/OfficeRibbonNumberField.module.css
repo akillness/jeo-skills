@@ -1,0 +1,167 @@
+.field {
+  align-items: center;
+  box-sizing: border-box;
+  display: grid;
+  gap: 4px;
+  grid-template-columns: 22px max-content;
+  height: 25px;
+  min-height: 25px;
+  min-width: 107px;
+  white-space: nowrap;
+}
+
+.field[data-has-unit="true"] {
+  grid-template-columns: 22px max-content minmax(16px, max-content);
+}
+
+.field[data-has-visible-label="true"] {
+  grid-template-columns: 22px max-content max-content;
+}
+
+.field[data-has-unit="true"][data-has-visible-label="true"] {
+  grid-template-columns: 22px max-content max-content minmax(16px, max-content);
+}
+
+.field[data-office-ribbon-number-width-scale="1.5"] {
+  height: 25px !important;
+  min-height: 25px !important;
+  min-width: max-content !important;
+  width: max-content !important;
+}
+
+.field[data-office-ribbon-number-width-scale="1.5"]:not(
+    [data-has-unit="true"]
+  ):not([data-has-visible-label="true"]) {
+  grid-template-columns: 22px max-content !important;
+}
+
+.field[data-office-ribbon-number-width-scale="1.5"][data-has-unit="true"]:not(
+    [data-has-visible-label="true"]
+  ) {
+  grid-template-columns: 22px max-content minmax(16px, max-content) !important;
+}
+
+.field[data-office-ribbon-number-width-scale="1.5"][data-has-visible-label="true"]:not(
+    [data-has-unit="true"]
+  ) {
+  grid-template-columns: 22px max-content max-content !important;
+}
+
+.field[data-office-ribbon-number-width-scale="1.5"][data-has-unit="true"][data-has-visible-label="true"] {
+  grid-template-columns: 22px max-content max-content minmax(16px, max-content) !important;
+}
+
+.icon {
+  align-items: center;
+  color: var(--docs-ribbon-ink, var(--office-ribbon-ink, #1f2937));
+  display: inline-flex;
+  height: 22px;
+  justify-content: center;
+  width: 22px;
+}
+
+.icon > :global(svg) {
+  display: block;
+  height: 22px;
+  width: 22px;
+}
+
+.label {
+  color: var(--office-ribbon-ink, #1f2937);
+  font-size: 11px;
+  line-height: 1;
+}
+
+.input {
+  appearance: textfield;
+  /* The ribbon's own surface: white in light, graphite in the dark ribbon
+     (a white literal there left the dark ribbon's light ink unreadable). */
+  background: var(--office-ribbon-surface, #fff);
+  border: 1px solid
+    var(--docs-ribbon-divider, var(--office-ribbon-divider, #d7dce3));
+  border-radius: 6px;
+  box-sizing: border-box;
+  color: var(--office-ribbon-ink, #1f2937);
+  font: inherit;
+  font-size: 12px;
+  height: 24px;
+  min-height: 24px;
+   
+  min-width: 84px;
+  padding: 2px 7px;
+  width: 84px;
+}
+
+.input::-webkit-inner-spin-button,
+.input::-webkit-outer-spin-button {
+  margin: 0;
+}
+
+.input:focus-visible {
+  border-color: var(--docs-ribbon-accent, var(--office-ribbon-accent, #2563eb));
+  outline: 2px solid
+    color-mix(
+      in srgb,
+      var(--docs-ribbon-accent, var(--office-ribbon-accent, #2563eb)) 24%,
+      transparent
+    );
+  outline-offset: 0;
+}
+
+.input:disabled {
+  background: color-mix(in srgb, var(--office-ribbon-surface, #fff) 88%, #94a3b8);
+  color: var(--docs-ribbon-muted, #667085);
+  cursor: default;
+  opacity: 0.62;
+}
+
+.unit {
+  color: var(--docs-ribbon-muted, #667085);
+  font-size: 11px;
+  line-height: 1;
+}
+
+ 
+.field[data-touch-steppers="true"] {
+  display: inline-flex !important;
+}
+
+.stepper {
+  align-items: center;
+  background: var(--office-ribbon-surface, #fff);
+  border: 1px solid
+    var(--docs-ribbon-divider, var(--office-ribbon-divider, #d7dce3));
+  border-radius: 6px;
+  box-sizing: border-box;
+  color: var(--office-ribbon-ink, #1f2937);
+  cursor: default;
+  display: inline-flex;
+  flex: none;
+  font: inherit;
+  font-size: 15px;
+  height: 24px;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  position: relative;
+  touch-action: manipulation;
+  width: 26px;
+}
+
+.stepper::before {
+  content: "";
+  inset: -2px 0;
+  position: absolute;
+}
+
+.stepper:active:not(:disabled) {
+  background: color-mix(
+    in srgb,
+    var(--docs-ribbon-accent, var(--office-ribbon-accent, #2563eb)) 14%,
+    var(--office-ribbon-surface, #fff)
+  );
+}
+
+.stepper:disabled {
+  opacity: 0.48;
+}

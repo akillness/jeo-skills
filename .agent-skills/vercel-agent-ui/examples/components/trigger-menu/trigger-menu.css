@@ -1,0 +1,117 @@
+@scope ([data-example]) {
+  /* Room below the field for the open list, above the console. */
+  :scope:is(
+    [data-example="trigger-menu/controlled"],
+    [data-example="trigger-menu/controller"]
+  ) {
+    min-height: 24rem;
+  }
+
+  /* Room below the field for the grouped list. */
+  :scope[data-example="trigger-menu/custom-items"] {
+    min-height: 32rem;
+  }
+
+  /* A comment box at the bottom, like a chat composer, with room above it for the list. */
+  :scope[data-example="trigger-menu/positioning"] {
+    justify-content: flex-end;
+  }
+
+  [data-slot="trigger-menu-input"] {
+    box-sizing: border-box;
+    width: 20rem;
+    max-width: 100%;
+    min-height: 80px;
+    max-height: 12rem;
+    padding: var(--space-2) 10px;
+    border: 0;
+    border-radius: var(--radius-control);
+    background: var(--surface-1);
+    box-shadow: inset 0 0 0 1px var(--line);
+    color: var(--ink);
+    font: inherit;
+    resize: vertical;
+
+    &::placeholder {
+      color: var(--muted);
+    }
+
+    &:hover:not(:focus-visible, :disabled, [readonly]) {
+      box-shadow: inset 0 0 0 1px
+        color-mix(in oklab, var(--ink) 45%, var(--surface-1));
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--halo);
+      outline-offset: 0;
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+
+    &:is(input) {
+      min-height: 0;
+      height: var(--size);
+      padding-block: 0;
+    }
+  }
+
+  [data-slot="stack"]:has(> [data-slot="trigger-menu-input"]) {
+    align-items: stretch;
+    width: 20rem;
+    max-width: 100%;
+  }
+
+  [data-slot="trigger-menu-content"] {
+    width: 14rem;
+    max-width: calc(100vw - 2rem);
+    max-height: min(16rem, var(--available-height));
+    scroll-padding-block: 5px;
+
+    &[data-trigger="/"] [data-slot="trigger-menu-item"] {
+      font-family: var(--mono);
+      font-size: var(--text-sm);
+    }
+  }
+
+  [data-slot="trigger-menu-item"] {
+    & > [data-slot="trigger-menu-item-icon"],
+    & > [data-slot="badge"] {
+      color: var(--muted);
+    }
+
+    & > :is([data-slot="badge"], [data-slot="hint"]) {
+      margin-inline-start: auto;
+    }
+
+    &[data-highlighted] > [data-slot="trigger-menu-item-icon"] {
+      color: inherit;
+    }
+  }
+
+  [data-slot="trigger-menu-item-icon"] {
+    display: flex;
+
+    & svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  [data-slot="trigger-menu-status"],
+  [data-slot="trigger-menu-hint"] {
+    min-height: var(--leading);
+    color: var(--muted);
+    font-size: var(--text-sm);
+  }
+
+  [data-slot="trigger-menu-hint"] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  [data-slot="trigger-menu-content"] > [data-slot="trigger-menu-status"] {
+    padding: 6px 10px;
+
+    &:empty {
+      display: none;
+    }
+  }
+}

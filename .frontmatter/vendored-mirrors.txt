@@ -25,3 +25,7 @@
 .agent-skills/vespa
 .agent-skills/mobile-agent-testers
 .agent-skills/langfuse
+.agent-skills/artex
+.agent-skills/vercel-agent-ui
+.agent-skills/mroffice
+.agent-skills/solid-glass

@@ -1,0 +1,331 @@
+/* The one right-click menu size every MRAI surface draws.
+
+   Every editor (Docs, Spreadsheet, Presentation, PDF, Code) and the
+   notebook shell answer a right click with a menu carrying the
+   `office-context-menu` class: the shared PointerContextMenu
+   (components/ui/PointerContextMenu.tsx) for a pointer-anchored list, or a
+   Radix menu anchored to its row (the slide rail, the sheet tabs) that wears
+   the class on its content and its submenus. The numbers live here once, as
+   tokens on the panel; lib/office-context-menu.ts mirrors them
+   (OFFICE_CONTEXT_MENU_METRICS) for the tests. A surface keeps its own items,
+   commands and copy, never its own row height.
+
+   The specification. The grammar is Office's (lib/office-context-menu.ts:
+   icon column, label, the shortcut at the right edge or a ▸, the clipboard
+   group first, groups divided by a thin rule, a command that does not apply
+   greyed and kept). The density is Office for Windows / the WinUI
+   MenuFlyout with a mouse (Microsoft Learn, "Menu flyout and menu bar":
+   16x16 item icons; the narrow, mouse padding) and the density of MRAI's own
+   ribbon menus (.docs-cupertino-menu rows are 28px), so a ribbon dropdown
+   and a right-click menu opened beside it read as one family:
+
+     row             28px min, 5px block / 10px inline padding, 8px gap,
+                     6px corner; 13px type on an 18px line
+     icon            16px glyph centred in a 20px column; the column is kept
+                     blank on a row without one, so labels line up
+     shortcut        right-aligned, 12px, muted, at least 24px from the label
+     submenu ▸       14px, in the shortcut's place
+     separator       1px, 4px above and below, 6px in from the card's sides
+     heading         12px semibold, muted, not focusable
+     card            4px padding, 10px corner, 220px min / 320px max wide,
+                     never taller than the window (it scrolls instead);
+                     a submenu is 180px min / 320px max
+     disabled        the row stays, greyed
+     danger          a destructive command (Delete Slide) in Office red
+
+   Touch mode (lib/touch-mode, `data-touch-mode` on <html>) swaps the whole
+   token set at once, on the menu as one block (feedback: Touch mode grows a
+   region as a whole, never one button at a time): 44px rows (Apple's
+   finger target; Microsoft asks about 40px), 15px type, 20px glyphs in a
+   24px column, a 260px-360px card. It is done with tokens rather than a CSS
+   `zoom` on the card: the card is fixed at the press's viewport point, and
+   a zoomed fixed box has its left/top multiplied by the zoom (WebKit even
+   reports its offsets pre-zoomed, see lib/glide-geometry), so a zoomed menu
+   would open away from the finger. Placement measures the card's drawn box
+   and the containing block instead (PointerContextMenu, lib/pin-fixed-
+   to-viewport), whatever zoom or transform lies above it.
+
+   Specificity. The card also wears .docs-cupertino-menu (glass, motion,
+   light/dark/high contrast in styles/note-editor.css, which loads after this
+   file and writes its card with !important) and editor modules add their
+   own classes; the doubled class below is what lets the size rules win over
+   both without depending on load order. */
+
+.office-context-menu {
+  --ocm-font-size: 13px;
+  --ocm-line-height: 18px;
+  --ocm-row-min-height: 28px;
+  --ocm-row-padding-block: 5px;
+  --ocm-row-padding-inline: 10px;
+  --ocm-row-gap: 8px;
+  --ocm-row-radius: 6px;
+  --ocm-icon-size: 16px;
+  --ocm-icon-column: 20px;
+  --ocm-check-column: 16px;
+  --ocm-shortcut-font-size: 12px;
+  --ocm-shortcut-gap: 24px;
+  --ocm-chevron-size: 14px;
+  --ocm-separator-margin-block: 4px;
+  --ocm-separator-margin-inline: 6px;
+  --ocm-heading-font-size: 12px;
+  --ocm-panel-padding: 4px;
+  --ocm-panel-radius: 10px;
+  --ocm-min-width: 220px;
+  --ocm-max-width: 320px;
+  --ocm-submenu-min-width: 180px;
+  --ocm-icon-button-size: 28px;
+  --ocm-ink: var(--console-text-primary, #203b38);
+  --ocm-muted: color-mix(in srgb, var(--ocm-ink) 62%, transparent);
+  --ocm-hover: color-mix(in srgb, var(--console-accent-strong, #087c73) 10%, transparent);
+  --ocm-disabled: #84918f;
+  --ocm-danger: #c42b1c;
+  --ocm-separator: color-mix(in srgb, var(--console-text-secondary, #536461) 14%, transparent);
+}
+
+:root[data-touch-mode] .office-context-menu {
+  --ocm-font-size: 15px;
+  --ocm-line-height: 20px;
+  --ocm-row-min-height: 44px;
+  --ocm-row-padding-block: 8px;
+  --ocm-row-padding-inline: 12px;
+  --ocm-row-gap: 10px;
+  --ocm-row-radius: 8px;
+  --ocm-icon-size: 20px;
+  --ocm-icon-column: 24px;
+  --ocm-check-column: 20px;
+  --ocm-shortcut-font-size: 13px;
+  --ocm-chevron-size: 16px;
+  --ocm-separator-margin-block: 5px;
+  --ocm-heading-font-size: 13px;
+  --ocm-panel-padding: 5px;
+  --ocm-panel-radius: 12px;
+  --ocm-min-width: 260px;
+  --ocm-max-width: 360px;
+  --ocm-submenu-min-width: 220px;
+  --ocm-icon-button-size: 44px;
+}
+
+/* ── The card ───────────────────────────────────────────────────────── */
+.office-context-menu.office-context-menu {
+  box-sizing: border-box;
+  min-width: min(var(--ocm-min-width), calc(100vw - 16px));
+  max-width: min(var(--ocm-max-width), calc(100vw - 16px));
+  max-height: min(
+    calc(100dvh - 16px),
+    var(--radix-dropdown-menu-content-available-height, calc(100dvh - 16px))
+  );
+  padding: var(--ocm-panel-padding) !important;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  border: 1px solid rgba(60, 60, 67, 0.18) !important;
+  border-radius: var(--ocm-panel-radius) !important;
+  background: rgba(249, 249, 250, 0.98) !important;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.16),
+    0 2px 7px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86) !important;
+  color: var(--ocm-ink) !important;
+  font-size: var(--ocm-font-size);
+  line-height: var(--ocm-line-height);
+  font-weight: 400;
+  -webkit-backdrop-filter: var(--glass-float-blur, blur(28px) saturate(170%));
+  backdrop-filter: var(--glass-float-blur, blur(28px) saturate(170%));
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.office-context-menu.office-context-menu--submenu {
+  width: max-content;
+  min-width: min(var(--ocm-submenu-min-width), calc(100vw - 16px));
+}
+
+/* ── Rows ───────────────────────────────────────────────────────────── */
+.office-context-menu.office-context-menu
+  :is([role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]):not(
+    .office-context-menu__icon-button
+  ) {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--ocm-row-gap);
+  min-height: var(--ocm-row-min-height);
+  padding: var(--ocm-row-padding-block) var(--ocm-row-padding-inline);
+  border-radius: var(--ocm-row-radius);
+  font-size: var(--ocm-font-size);
+  font-weight: 400;
+  line-height: var(--ocm-line-height);
+}
+
+/* Hover and keyboard focus tint the row (the Cupertino card, where it is
+   loaded, writes the same tint over this). */
+.office-context-menu
+  :is([role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]):is(
+    :focus-visible,
+    [data-highlighted]
+  ):not(:disabled, [data-disabled]) {
+  background: var(--ocm-hover);
+  outline: none;
+}
+
+/* A list with toggles opens with its check column, in from the padding the
+   way Excel's Customize Status Bar rows are. */
+.office-context-menu.office-context-menu [role="menuitemcheckbox"][data-toggles="true"],
+.office-context-menu.office-context-menu [role="menuitem"][data-toggles="true"] {
+  padding-inline-start: calc(var(--ocm-row-padding-inline) - 2px);
+}
+
+.office-context-menu.office-context-menu
+  :is([role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"])[data-danger="true"]:not(
+    :disabled,
+    [data-disabled]
+  ),
+.office-context-menu.office-context-menu
+  :is([role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"])[data-danger="true"]:not(
+    :disabled,
+    [data-disabled]
+  )
+  .office-context-menu__icon {
+  color: var(--ocm-danger) !important;
+}
+
+/* ── Parts ──────────────────────────────────────────────────────────── */
+.office-context-menu .office-context-menu__icon {
+  display: inline-flex;
+  flex: 0 0 var(--ocm-icon-column);
+  align-items: center;
+  justify-content: center;
+  width: var(--ocm-icon-column);
+  min-width: var(--ocm-icon-column);
+  height: var(--ocm-icon-size);
+}
+
+.office-context-menu .office-context-menu__icon :is(svg, img, .docs-home-icon) {
+  flex: 0 0 auto;
+  width: var(--ocm-icon-size);
+  height: var(--ocm-icon-size);
+}
+
+.office-context-menu .office-context-menu__check {
+  display: inline-flex;
+  flex: 0 0 var(--ocm-check-column);
+  align-items: center;
+  justify-content: center;
+  width: var(--ocm-check-column);
+}
+
+.office-context-menu .office-context-menu__label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.office-context-menu.office-context-menu .office-context-menu__shortcut {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
+  padding-inline-start: var(--ocm-shortcut-gap);
+  color: var(--ocm-muted);
+  font-size: var(--ocm-shortcut-font-size);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  opacity: 1;
+  white-space: nowrap;
+}
+
+.office-context-menu .office-context-menu__detail {
+  flex: 0 1 auto;
+  min-width: 0;
+  margin-inline-start: 16px;
+  overflow: hidden;
+  color: var(--ocm-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The ▸ of a row that opens a submenu: Radix's (DropdownMenuSubTrigger draws
+   it as the row's last svg) and the shared menu's. */
+.office-context-menu.office-context-menu .office-context-menu__chevron,
+.office-context-menu.office-context-menu [aria-haspopup="menu"] > svg:last-child {
+  flex: 0 0 auto;
+  width: var(--ocm-chevron-size);
+  height: var(--ocm-chevron-size);
+  margin-inline-start: auto;
+  padding: 0;
+  color: var(--ocm-muted);
+}
+
+.office-context-menu.office-context-menu .office-context-menu__label + .office-context-menu__chevron {
+  margin-inline-start: 12px;
+}
+
+.office-context-menu.office-context-menu [role="separator"] {
+  height: 1px;
+  margin: var(--ocm-separator-margin-block) var(--ocm-separator-margin-inline);
+  background: var(--ocm-separator);
+}
+
+.office-context-menu .office-context-menu__heading {
+  padding: 5px var(--ocm-row-padding-inline) 6px;
+  color: var(--ocm-muted);
+  font-size: var(--ocm-heading-font-size);
+  font-weight: 600;
+}
+
+/* A row of icon-only commands (WPS's clipboard row). */
+.office-context-menu.office-context-menu .office-context-menu__icon-button {
+  min-width: var(--ocm-icon-button-size);
+  height: var(--ocm-icon-button-size);
+  border-radius: var(--ocm-row-radius);
+}
+
+/* A tap on a row answers at once (no double-tap-zoom wait). */
+@media (pointer: coarse) {
+  .office-context-menu :is([role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]) {
+    touch-action: manipulation;
+  }
+}
+
+/* ── Themes ─────────────────────────────────────────────────────────── */
+[data-theme-mode="dark"] .office-context-menu,
+[data-theme-mode="high-contrast"] .office-context-menu {
+  --ocm-ink: #f2f2f7;
+  --ocm-muted: #a1a1a8;
+  --ocm-hover: rgb(255 255 255 / 10%);
+  --ocm-disabled: #8e8e93;
+  --ocm-danger: #ff6b6b;
+  --ocm-separator: rgb(255 255 255 / 14%);
+}
+
+[data-theme-mode="dark"] .office-context-menu.office-context-menu,
+[data-theme-mode="high-contrast"] .office-context-menu.office-context-menu {
+  border-color: rgb(255 255 255 / 12%) !important;
+  background: rgb(38 39 44 / 96%) !important;
+  box-shadow:
+    0 12px 30px rgb(0 0 0 / 55%),
+    0 2px 7px rgb(0 0 0 / 35%),
+    inset 0 1px 0 rgb(255 255 255 / 8%) !important;
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .office-context-menu.office-context-menu {
+    background: var(--console-accent-tint-soft, #fafbfb) !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .office-context-menu.office-context-menu {
+    border-color: CanvasText !important;
+    background: Canvas !important;
+    color: CanvasText !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .office-context-menu.office-context-menu
+    :is([role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]):is(:disabled, [data-disabled]) {
+    color: GrayText !important;
+    opacity: 1;
+  }
+}

@@ -392,11 +392,11 @@ See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-dem
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 471 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 474 skills · expand a category to see its skills.
 
-### 🌐 Web (76)
+### 🌐 Web (77)
 
-Subcategories: `frontend` (15), `backend` (3), `design` (17), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
+Subcategories: `frontend` (16), `backend` (3), `design` (17), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
 
 <details>
 <summary>Show Web skills</summary>
@@ -479,12 +479,13 @@ Subcategories: `frontend` (15), `backend` (3), `design` (17), `api` (2), `auth` 
 | `affectui` |
 | `open-intelligent-ui` |
 | `solid-glass` |
+| `vercel-agent-ui` |
 
 </details>
 
-### 🏗 Infrastructure (20)
+### 🏗 Infrastructure (21)
 
-Subcategories: `deployment` (2), `environment` (2), `observability` (4), `security` (3), `cloud-data` (8), `automation` (0), `tooling` (1)
+Subcategories: `deployment` (2), `environment` (2), `observability` (4), `security` (4), `cloud-data` (8), `automation` (0), `tooling` (1)
 
 <details>
 <summary>Show Infrastructure skills</summary>
@@ -511,6 +512,7 @@ Subcategories: `deployment` (2), `environment` (2), `observability` (4), `securi
 | `pmtiles` |
 | `vespa` |
 | `langfuse` |
+| `artex` |
 
 </details>
 
@@ -944,9 +946,9 @@ Subcategories: `marketing` (5), `support` (2), `publishing` (1), `pm-toolkit` (5
 
 </details>
 
-### 🔧 Utilities (29)
+### 🔧 Utilities (30)
 
-Subcategories: `knowledge` (9), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
+Subcategories: `knowledge` (9), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (4), `general` (3)
 
 <details>
 <summary>Show Utilities skills</summary>
@@ -982,6 +984,7 @@ Subcategories: `knowledge` (9), `files` (5), `git` (4), `workspace` (1), `projec
 | `rhwp-advanced` |
 | `rhwp-edit` |
 | `rowboat` |
+| `mroffice` |
 
 </details>
 

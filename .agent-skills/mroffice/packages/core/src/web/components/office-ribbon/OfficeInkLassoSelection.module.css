@@ -1,0 +1,266 @@
+/* Draw ▸ Lasso Select, after the loop is drawn (OfficeInkLassoSelection):
+   the closed dashed loop, one shared frame with round corner grips. */
+.root {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  --office-ink-lasso-accent: #1a73e8;
+  /* The host's own zoom, so the line and the grips keep their screen size. */
+  --office-ink-lasso-zoom: 1;
+}
+
+.frame {
+  border: calc(1px / var(--office-ink-lasso-zoom)) solid var(--office-ink-lasso-accent);
+  box-sizing: border-box;
+  pointer-events: none;
+  position: absolute;
+}
+
+/* The inside of the frame drags every stroke picked; a finger or a pen on it
+   must never pan the page (pointercancel would end the drag). */
+.frame[data-draggable="true"] {
+  cursor: move;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+/* Doubled class: an editor's own button skin (the worksheet's gives every
+   button a tinted border and rounded corners) never dresses the grips. */
+.root .handle.handle {
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  box-shadow: none;
+  min-height: 0;
+  min-width: 0;
+  height: calc(24px / var(--office-ink-lasso-zoom));
+  margin: 0;
+  padding: 0;
+  pointer-events: auto;
+  position: absolute;
+  touch-action: none;
+  transform: translate(-50%, -50%);
+  width: calc(24px / var(--office-ink-lasso-zoom));
+  z-index: 1;
+}
+
+.root .handle.handle:hover,
+.root .handle.handle:active {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.handle::before {
+  background: var(--office-ink-lasso-accent);
+  border: calc(1.5px / var(--office-ink-lasso-zoom)) solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 calc(0.5px / var(--office-ink-lasso-zoom)) rgba(0, 0, 0, 0.18);
+  box-sizing: border-box;
+  content: "";
+  height: calc(11px / var(--office-ink-lasso-zoom));
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(11px / var(--office-ink-lasso-zoom));
+}
+
+.handle:focus-visible {
+  outline: 2px solid var(--office-ink-lasso-accent);
+  outline-offset: 1px;
+}
+
+.handle[data-handle="nw"] { cursor: nwse-resize; left: 0; top: 0; }
+.handle[data-handle="ne"] { cursor: nesw-resize; left: 100%; top: 0; }
+.handle[data-handle="se"] { cursor: nwse-resize; left: 100%; top: 100%; }
+.handle[data-handle="sw"] { cursor: nesw-resize; left: 0; top: 100%; }
+
+/* The bar's commands sit in the shared mini toolbar's shell. */
+
+@media (forced-colors: active) {
+  .frame { border-color: Highlight; }
+  .handle::before { background: Highlight; border-color: Canvas; }
+}
+
+/* The rotation grip: a round grip on a short stem above the top edge's
+   middle (Office's), the same accent and screen size as the corner grips. */
+.root .rotate.rotate {
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  box-shadow: none;
+  cursor: grab;
+  height: calc(28px / var(--office-ink-lasso-zoom));
+  left: 50%;
+  margin: 0;
+  min-height: 0;
+  min-width: 0;
+  padding: 0;
+  pointer-events: auto;
+  position: absolute;
+  top: calc(-30px / var(--office-ink-lasso-zoom));
+  touch-action: none;
+  transform: translate(-50%, -50%);
+  width: calc(28px / var(--office-ink-lasso-zoom));
+  z-index: 1;
+}
+
+.root .rotate.rotate:hover,
+.root .rotate.rotate:active {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.rotate:active {
+  cursor: grabbing;
+}
+
+/* The grip itself: a ring with a turning arrow. */
+.rotate::before {
+  background: #fff;
+  border: calc(1.5px / var(--office-ink-lasso-zoom)) solid var(--office-ink-lasso-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 calc(0.5px / var(--office-ink-lasso-zoom)) rgba(0, 0, 0, 0.18);
+  box-sizing: border-box;
+  content: "";
+  height: calc(20px / var(--office-ink-lasso-zoom));
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(20px / var(--office-ink-lasso-zoom));
+}
+
+/* The turning arrow inside the ring. */
+.rotateIcon {
+  color: var(--office-ink-lasso-accent);
+  height: calc(12px / var(--office-ink-lasso-zoom));
+  left: 50%;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(12px / var(--office-ink-lasso-zoom));
+  z-index: 1;
+}
+
+/* The stem down to the frame's edge. */
+.rotate::after {
+  background: var(--office-ink-lasso-accent);
+  content: "";
+  height: calc(20px / var(--office-ink-lasso-zoom));
+  left: 50%;
+  position: absolute;
+  top: calc(50% + 10px / var(--office-ink-lasso-zoom));
+  transform: translateX(-50%);
+  width: calc(1px / var(--office-ink-lasso-zoom));
+}
+
+.rotate:focus-visible {
+  outline: 2px solid var(--office-ink-lasso-accent);
+  outline-offset: 1px;
+}
+
+/* The commands sit straight in the mini toolbar's shell, as its own buttons do. */
+.commands {
+  display: contents;
+}
+
+/* The command card: the pen palette's material (it floats beside it on the
+   same page), a white card with a soft lift and no rules between the
+   commands, each an icon and its words on a rounded chip. */
+.commandCard.commandCard {
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 16px;
+  box-shadow:
+    0 10px 28px rgba(15, 23, 42, 0.14),
+    0 2px 6px rgba(15, 23, 42, 0.08);
+  gap: 2px;
+  padding: 5px;
+}
+
+.command {
+  -webkit-tap-highlight-color: transparent;
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 11px;
+  color: #1f2937;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  gap: 7px;
+  min-height: 38px;
+  padding: 0 12px 0 10px;
+  touch-action: manipulation;
+  transition: background-color 120ms ease, color 120ms ease;
+  white-space: nowrap;
+}
+
+.command:hover:not(:disabled) {
+  background: rgba(15, 23, 42, 0.06);
+}
+
+.command:active:not(:disabled) {
+  background: color-mix(in srgb, var(--console-accent, #2563eb) 14%, transparent);
+  color: color-mix(in srgb, var(--console-accent, #2563eb) 85%, #1f2937);
+}
+
+.command:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--console-accent, #2563eb) 55%, transparent);
+  outline-offset: 1px;
+}
+
+.command:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.command[data-command="delete"] {
+  color: #dc2626;
+}
+
+.command[data-command="delete"]:hover:not(:disabled) {
+  background: rgba(220, 38, 38, 0.08);
+}
+
+.commandIcon {
+  fill: none;
+  flex: none;
+  height: 16px;
+  opacity: 0.85;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+  width: 16px;
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .commandCard.commandCard {
+  background: rgba(30, 33, 40, 0.97);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .command {
+  color: #e5e7eb;
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .command:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .command[data-command="delete"] {
+  color: #f87171;
+}

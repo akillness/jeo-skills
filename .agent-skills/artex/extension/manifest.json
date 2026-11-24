@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "ARTEX Traffic Capture",
+  "version": "1.0.0",
+  "description": "Capture the current tab's network traffic into your local ARTEX instance, so operator-driven authenticated browsing becomes agent-visible evidence.",
+  "permissions": ["debugger", "storage", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "background": { "service_worker": "background.js" },
+  "action": { "default_popup": "popup.html", "default_title": "ARTEX Traffic Capture" }
+}

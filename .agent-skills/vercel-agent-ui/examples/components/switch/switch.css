@@ -1,0 +1,183 @@
+@scope ([data-example]) {
+  [data-slot="switch"] {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    box-sizing: border-box;
+    width: 38px;
+    height: 22px;
+    padding: 3px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--surface-1);
+    box-shadow: inset 0 0 0 1px var(--line);
+    cursor: default;
+    transition:
+      background-color var(--duration),
+      box-shadow var(--duration);
+
+    &:hover:not([data-disabled], [data-readonly], [data-checked]) {
+      box-shadow: inset 0 0 0 1px
+        color-mix(in oklab, var(--ink) 45%, var(--surface-1));
+    }
+
+    &[data-checked] {
+      background: var(--ink);
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+
+    &:is([data-invalid], [aria-invalid="true"]) {
+      box-shadow: inset 0 0 0 1px var(--danger);
+    }
+
+    &[data-readonly]:not([data-checked]) {
+      background: var(--tint);
+    }
+
+    &[data-disabled] {
+      box-shadow: inset 0 0 0 1px var(--line-faint);
+    }
+
+    &[data-disabled][data-checked] {
+      background: var(--line-disabled);
+      box-shadow: inset 0 0 0 1px var(--line-disabled);
+    }
+
+    &[data-size="sm"] {
+      width: 30px;
+      height: 18px;
+    }
+  }
+
+  [data-slot="switch-thumb"] {
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
+    width: var(--size-icon);
+    height: var(--size-icon);
+    border-radius: 50%;
+    background: var(--surface-1);
+    box-shadow:
+      inset 0 0 0 1px var(--line),
+      0 1px 2px color-mix(in oklab, var(--ink) 10%, transparent);
+    color: var(--muted);
+    transition: translate var(--duration);
+
+    & > svg {
+      width: 10px;
+      height: 10px;
+      stroke-width: 2.5;
+    }
+
+    &[data-checked] {
+      translate: 16px 0;
+      background: var(--paper);
+      box-shadow: var(--shadow-drop);
+
+      &:is([dir="rtl"], [dir="rtl"] *) {
+        translate: -16px 0;
+      }
+    }
+
+    [data-disabled] > & {
+      box-shadow: inset 0 0 0 1px var(--line-faint);
+    }
+
+    [data-size="sm"] > & {
+      width: 12px;
+      height: 12px;
+
+      &[data-checked] {
+        translate: 12px 0;
+
+        &:is([dir="rtl"], [dir="rtl"] *) {
+          translate: -12px 0;
+        }
+      }
+    }
+  }
+
+  :is([data-slot="label"], [data-slot="field"]):has(
+    [data-slot="switch"][data-disabled]
+  ) {
+    color: var(--line-disabled);
+  }
+
+  /* A switch row: its label at the start and the switch at the end, in a 20rem column. */
+  :scope[data-example^="switch/"]
+    :is([data-slot="label"], [data-slot="field"], [data-slot="row"]):has(
+      > [data-slot="switch"]
+    ) {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: var(--space-4);
+    box-sizing: border-box;
+    width: 20rem;
+    max-width: 100%;
+  }
+
+  /* A row with only a label stays compact, so the switch sits close to it; forms keep the full column. */
+  :scope[data-example^="switch/"]:not([data-example="switch/form"])
+    :is([data-slot="label"], [data-slot="field"], [data-slot="row"]):has(
+      > [data-slot="switch"]
+    ):not(:has(> [data-slot="stack"], > [data-slot="field-description"])) {
+    width: 14rem;
+  }
+
+  :scope[data-example^="switch/"]
+    [data-slot="stack"]:has(> [data-slot="label"] > [data-slot="switch"]) {
+    max-width: 100%;
+  }
+
+  :scope[data-example^="switch/"]
+    :is([data-slot="field"], [data-slot="row"])
+    > [data-slot="stack"]:has(+ [data-slot="switch"]) {
+    flex: 1;
+    gap: var(--space-1);
+  }
+
+  /* A row with a description keeps the switch in line with the label. */
+  :scope[data-example^="switch/"]
+    :is([data-slot="field"], [data-slot="row"]):has(
+      > [data-slot="stack"] + [data-slot="switch"]
+    ) {
+    align-items: flex-start;
+  }
+
+  /* The error's line stays reserved, so Continue never moves as the error shows and hides. */
+  :scope[data-example="switch/invalid"]
+    [data-slot="field"]:not(:has(> [data-slot="field-error"]))::after {
+    content: "\a0";
+    font-size: var(--text-sm);
+  }
+
+  /* A settings form: its switches, then the actions a step further down. */
+  :scope[data-example="switch/form"] form {
+    gap: var(--space-6);
+  }
+
+  [data-slot="field-set"] > [data-slot="label"]:has(> [data-slot="switch"]) {
+    font-weight: 400;
+  }
+
+  /* A choice card: the label covers the card, so a click anywhere on it toggles the switch. */
+  :scope[data-example="switch/choice-card"] [data-variant="card"] {
+    position: relative;
+
+    & [data-slot="field-label"]::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+    }
+
+    & > [data-slot="switch"] {
+      position: relative;
+    }
+
+    &:hover:not(:has([data-checked])) {
+      box-shadow: 0 0 0 1px
+        color-mix(in oklab, var(--ink) 45%, var(--surface-1));
+    }
+  }
+}

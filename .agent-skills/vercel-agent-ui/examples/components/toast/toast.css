@@ -1,0 +1,243 @@
+@scope ([data-example]) {
+  [data-slot="toast-region"] {
+    --dir: -1;
+    box-sizing: border-box;
+    width: 356px;
+    max-width: calc(100vw - 2rem);
+    height: var(--toast-front-height);
+    margin: var(--space-4);
+    padding: 0;
+    list-style: none;
+    outline: none;
+
+    &[data-side="top"] {
+      --dir: 1;
+    }
+
+    /* Centered on the page: the default translate already centers it, so a side margin would push it over. */
+    &[data-align="center"] {
+      margin-inline: 0;
+    }
+
+    &[data-expanded] {
+      height: calc(
+        var(--toast-stack-height) + (var(--toast-count) - 1) * var(--space-3)
+      );
+    }
+  }
+
+  [data-slot="toast"] {
+    --y: calc(var(--dir) * var(--toast-index) * var(--space-3));
+    position: absolute;
+    inset-inline: 0;
+    z-index: calc(100 - var(--toast-index));
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: var(--space-4);
+    border-radius: var(--radius-popup);
+    background: var(--surface-2);
+    box-shadow: var(--shadow-2);
+    color: var(--ink);
+    height: var(--toast-height);
+    font-size: var(--text-md);
+    outline-offset: 2px;
+    translate: calc(var(--toast-swipe-x, 0px) + var(--exit-x, 0px))
+      calc(
+        var(--y) + var(--toast-swipe-y, 0px) + var(--exit-y, 0px) *
+          var(--slide, 1)
+      );
+    scale: calc(1 - var(--toast-index) * 0.05);
+    transition-property: translate, scale, opacity, height, box-shadow;
+    transition-duration: 400ms;
+    transition-timing-function: ease;
+    -webkit-user-select: none;
+    user-select: none;
+
+    /* Covers the content of the toasts behind a collapsed stack, so only the front one reads. */
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: inherit;
+      opacity: 0;
+      pointer-events: none;
+      transition: inherit;
+    }
+
+    [data-side="bottom"] & {
+      bottom: 0;
+    }
+
+    [data-side="top"] & {
+      top: 0;
+    }
+
+    &:not([data-front], [data-expanded]) {
+      height: var(--toast-front-height);
+
+      &::before {
+        opacity: 1;
+      }
+    }
+
+    &[data-expanded] {
+      --y: calc(
+        var(--dir) * (var(--toast-offset) + var(--toast-index) * var(--space-3))
+      );
+      scale: 1;
+      transition-duration: 200ms;
+      transition-timing-function: ease-out;
+    }
+
+    /* The newest toast slides in from the edge; the ones behind it fade in where they are. */
+    &[data-starting-style] {
+      transition: none;
+
+      &:not([data-front]) {
+        opacity: 0;
+      }
+
+      &[data-front] {
+        --y: calc(var(--dir) * -100%);
+      }
+    }
+
+    /* A closing toast slides back out the way it came, or off to the side it was swiped toward. */
+    &[data-ending-style] {
+      opacity: 0;
+      transition-duration: 200ms;
+      transition-timing-function: ease-out;
+
+      @media (prefers-reduced-motion: no-preference) {
+        --exit-y: calc(var(--dir) * -100%);
+
+        &[data-swipe-direction="left"] {
+          --exit-x: -100%;
+        }
+
+        &[data-swipe-direction="right"] {
+          --exit-x: 100%;
+        }
+      }
+
+      &:not([data-front], [data-expanded]) {
+        --exit-y: 0px;
+      }
+    }
+
+    &:is([data-swipe-direction="left"], [data-swipe-direction="right"]) {
+      --slide: 0;
+    }
+
+    &[data-swiping] {
+      transition: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition-property: opacity;
+    }
+
+    & > [data-slot="stack"] {
+      flex: 1;
+      align-items: flex-start;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    /* An icon-only close button, like a dialog's. */
+    & [data-slot="toast-close"][aria-label] {
+      width: var(--size-sm);
+      height: var(--size-sm);
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+      color: var(--muted);
+
+      &:hover {
+        background: var(--tint);
+        color: var(--ink);
+      }
+    }
+
+    & > [data-slot="toast-title"] {
+      flex: 1;
+    }
+
+    & > svg {
+      flex-shrink: 0;
+      width: var(--size-icon);
+      height: var(--size-icon);
+      color: var(--muted);
+    }
+
+    /* A toast holds one icon per type; the type rules below choose which one shows. */
+    & > svg + svg {
+      display: block;
+    }
+
+    &[data-type="error"] [data-show="error"] {
+      color: var(--danger);
+    }
+
+    &:not([data-type="success"]) [data-show="success"],
+    &:not([data-type="info"]) [data-show="info"],
+    &:not([data-type="warning"]) [data-show="warning"],
+    &:not([data-type="error"]) [data-show="error"],
+    &:not([data-type="loading"]) [data-show="loading"] {
+      display: none;
+    }
+
+    & [data-show="loading"] {
+      animation: example-spin 800ms linear infinite;
+    }
+  }
+
+  [data-slot="toast-title"] {
+    margin: 0;
+    font-size: var(--text-md);
+    font-weight: 600;
+    line-height: 20px;
+  }
+
+  [data-slot="toast-description"] {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--text-sm);
+  }
+
+  /* Each select beside its label, one per line, so the controls fit a phone. */
+  :scope[data-example="toast/position"] [data-slot="controls"] {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: var(--space-2) var(--space-3);
+
+    & [data-slot="select-label"] {
+      justify-self: end;
+    }
+
+    & [data-slot="select-trigger"] {
+      min-width: 8rem;
+    }
+  }
+
+  :scope[data-example="toast/position"]
+    [data-slot="stack"]:has(> [data-slot="controls"]) {
+    width: auto;
+  }
+
+  /* The projects list, with each row's Delete at its end. */
+  :scope[data-example="toast/overlay-host"]
+    :is([data-slot="list"], [data-slot="controls"]) {
+    width: 20rem;
+  }
+
+  :scope[data-example="toast/overlay-host"]
+    [data-slot="list"]
+    > [data-slot="row"] {
+    justify-content: space-between;
+    padding-inline-end: var(--space-1);
+  }
+}

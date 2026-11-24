@@ -1,0 +1,8 @@
+{
+ "libreOffice.enable": "Transferir e ativar (cerca de {size})",
+ "libreOffice.enableAlt": "Transferir e ativar o LibreOffice",
+ "libreOffice.retrying": "A tentar novamente…",
+ "libreOffice.ready": "Formatos antigos do Office, ficheiros OpenDocument, imagens EMF/WMF e exportações OpenDocument já funcionam.",
+ "libreOffice.needed": "Isto precisa do LibreOffice. O MR Note Classic pode transferir a versão oficial para a sua própria pasta; nada é instalado no sistema.",
+ "libreOffice.neededFor": "Guardar como .{format} precisa do LibreOffice. O MR Note Classic pode transferir a versão oficial para a sua própria pasta; nada é instalado no sistema."
+}

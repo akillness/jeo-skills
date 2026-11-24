@@ -1,0 +1,61 @@
+@scope ([data-example]) {
+  /* The bar sits near the top, centered, with room below for its open menus inside the preview. */
+  :scope[data-example="menubar/demo"] {
+    justify-content: flex-start;
+    min-height: 22rem;
+  }
+
+  [data-slot="menubar"] {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    width: fit-content;
+    padding: 3px;
+    border-radius: var(--radius-surface);
+    background: var(--surface-1);
+    box-shadow: var(--shadow-1);
+
+    &[data-orientation="vertical"] {
+      flex-direction: column;
+      align-items: stretch;
+      min-width: 8rem;
+    }
+
+    &[data-disabled] {
+      box-shadow: 0 0 0 1px var(--line-faint);
+    }
+
+    & [data-slot="menu-trigger"]:not([data-slot="menu-content"] *) {
+      justify-content: flex-start;
+      height: var(--size-sm);
+      padding-inline: 10px;
+      border-radius: var(--radius-row);
+      background: transparent;
+      box-shadow: none;
+      font-weight: 500;
+
+      &:hover {
+        background: var(--tint);
+      }
+
+      &[data-open] {
+        background: var(--tint);
+        box-shadow: inset 0 0 0 1px var(--ink);
+      }
+
+      &:active {
+        scale: none;
+      }
+
+      &:focus-visible {
+        outline-offset: 0;
+      }
+
+      &:is([data-disabled], [aria-disabled="true"], :disabled) {
+        background: transparent;
+        box-shadow: none;
+        color: var(--line-disabled);
+      }
+    }
+  }
+}

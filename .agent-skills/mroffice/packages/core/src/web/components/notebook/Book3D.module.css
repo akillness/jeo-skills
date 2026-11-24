@@ -1,0 +1,2950 @@
+.book {
+  --book-luxe-texture: url("/textures/notebook-leather-grain.webp");
+  container-type: inline-size;
+}
+
+.book[data-clickable="true"] {
+  cursor: pointer;
+}
+
+.backCover,
+.pageBlock,
+.spine,
+.texture,
+.brandDeboss,
+.coverDate {
+  display: none;
+}
+
+/*
+ * The tactile treatment is deliberately scoped to the notebook library.
+ * Book3D also powers an owned marketing animation; keeping the extra material
+ * layers dormant everywhere else avoids changing that surface.
+ */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book {
+  isolation: isolate;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book .stage {
+  filter: drop-shadow(0 16px 15px rgba(31, 35, 34, 0.16));
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book .backCover {
+  position: absolute;
+  inset: 1.4% -1.8% -1.5% 2.5%;
+  z-index: 0;
+  display: block;
+  border: 1px solid rgba(18, 20, 19, 0.28);
+  border-radius: 8px 13px 13px 7px;
+  background-color: var(--book-spine);
+  background-image: var(--book-luxe-texture);
+  background-position: center;
+  background-size: 220%;
+  background-blend-mode: soft-light;
+  box-shadow:
+    1px 2px 2px rgba(20, 24, 23, 0.2),
+    5px 8px 12px rgba(20, 24, 23, 0.12);
+  pointer-events: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book .pageBlock {
+  position: absolute;
+  inset: 1.9% -1.1% -0.9% 7.7%;
+  z-index: 1;
+  display: block;
+  border: 1px solid rgba(109, 102, 89, 0.2);
+  border-radius: 4px 10px 10px 4px;
+  background-color: #f4f0e8;
+  box-shadow:
+    inset -2px 0 2px rgba(79, 72, 62, 0.12),
+    inset 0 -2px 2px rgba(79, 72, 62, 0.1);
+  pointer-events: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book .cover {
+  /* what paints edge to edge inside the board is rounded to the board's
+     inner edge: its radii less its 1px border */
+  --cover-inner-radius: 7px 12px 12px 6px;
+  border: 1px solid rgba(24, 27, 26, 0.28);
+  border-radius: 8px 13px 13px 7px;
+  background-color: var(--book-cover);
+  background-image: none;
+  box-shadow:
+    0 2px 3px rgba(20, 24, 23, 0.16),
+    7px 11px 18px rgba(20, 24, 23, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset -1px 0 0 rgba(0, 0, 0, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+/*
+ * The shared opening keyframes deliberately narrow the cover to a side view,
+ * but they also lower the whole cover's opacity. That lets the ruled page
+ * underneath bleed through the leather at the exact state shown in the bug
+ * report. Keep the physical cover fully opaque while its title/artwork fades.
+ */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book[data-opening] .cover {
+  opacity: 1 !important;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book .cover::before {
+  background: none;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.08),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.16);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book .texture {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  border-radius: inherit;
+  background-image: var(--book-luxe-texture);
+  background-position: center;
+  background-size: 235%;
+  filter: contrast(1.08);
+  mix-blend-mode: soft-light;
+  opacity: 0.68;
+  pointer-events: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book .spine {
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: 4;
+  display: block;
+  width: 9.4%;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px 2px 2px 7px;
+  background-color: var(--book-spine);
+  background-image: var(--book-luxe-texture);
+  background-position: 38% center;
+  background-size: 560%;
+  background-blend-mode: soft-light;
+  box-shadow:
+    inset -3px 0 4px rgba(0, 0, 0, 0.34),
+    inset 2px 0 2px rgba(255, 255, 255, 0.1),
+    2px 0 2px rgba(0, 0, 0, 0.22),
+    4px 0 7px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book .brandDeboss {
+  position: absolute;
+  right: 6.6%;
+  bottom: 6.1%;
+  z-index: 4;
+  display: block;
+  width: 22%;
+  --logo-hat: rgba(4, 5, 5, 0.42);
+  --logo-ink: rgba(4, 5, 5, 0.42);
+  filter: drop-shadow(-1px -1px 0 rgba(255, 255, 255, 0.1))
+    drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.72));
+  opacity: 0.74;
+  pointer-events: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book .brandDeboss svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book .coverDate {
+  position: absolute;
+  right: 21%;
+  bottom: 7.2%;
+  left: 14%;
+  z-index: 5;
+  display: block;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: clamp(8px, 4.2cqi, 11px);
+  font-variant-numeric: tabular-nums;
+  font-weight: 640;
+  letter-spacing: 0.025em;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  text-shadow:
+    0 -1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 1px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book :global(.book3d__cover-sheen) {
+  display: none;
+}
+
+ 
+ 
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book :global(.book3d__type) {
+  color: rgba(255, 255, 255, 0.64);
+  font-size: clamp(8px, 3.5cqi, 11px);
+  font-weight: 650;
+  letter-spacing: 0.22em;
+  line-height: 1.2;
+  -webkit-text-stroke: 0.15px rgba(255, 255, 255, 0.34);
+  text-shadow:
+    0 -1px 0 rgba(255, 255, 255, 0.24),
+    0 1px 1px rgba(0, 0, 0, 0.48);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book :global(.book3d__title) {
+  /* the framed template shipped its own serif ink; the shared type
+     design wins, its centring does not */
+  font-family: inherit;
+  color: rgba(255, 255, 255, 0.93);
+  font-size: clamp(15px, 7.2cqi, 22px);
+  font-weight: 720;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
+  -webkit-text-stroke: 0.2px rgba(255, 255, 255, 0.42);
+  text-shadow:
+    0 -1px 0 rgba(255, 255, 255, 0.3),
+    0 1px 1px rgba(0, 0, 0, 0.58);
+  -webkit-line-clamp: 3;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--text-dark) .texture {
+  mix-blend-mode: multiply;
+  opacity: 0.18;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--text-dark) .cover {
+  border-color: rgba(77, 76, 72, 0.13);
+  box-shadow:
+    0 2px 3px rgba(35, 36, 34, 0.1),
+    7px 11px 18px rgba(35, 36, 34, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    inset -1px 0 0 rgba(0, 0, 0, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover))
+  .book:global(.book3d--text-dark)
+  :global(.book3d__type) {
+  color: rgba(24, 24, 22, 0.56);
+  -webkit-text-stroke-color: rgba(24, 24, 22, 0.2);
+  text-shadow:
+    0 -1px 0 rgba(255, 255, 255, 0.72),
+    0 1px 1px rgba(49, 48, 44, 0.18);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover))
+  .book:global(.book3d--text-dark)
+  :global(.book3d__title) {
+  color: rgba(20, 20, 19, 0.88);
+  -webkit-text-stroke-color: rgba(20, 20, 19, 0.26);
+  text-shadow:
+    0 -1px 0 rgba(255, 255, 255, 0.8),
+    0 1px 1px rgba(49, 48, 44, 0.22);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--text-dark) .brandDeboss {
+  --logo-hat: rgba(255, 255, 255, 0.76);
+  --logo-ink: rgba(255, 255, 255, 0.76);
+  filter: drop-shadow(-1px -1px 0 rgba(255, 255, 255, 0.86))
+    drop-shadow(1px 1px 1px rgba(74, 72, 67, 0.19));
+  opacity: 0.78;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--text-dark) .coverDate {
+  color: rgba(28, 28, 26, 0.56);
+  text-shadow:
+    0 -1px 0 rgba(255, 255, 255, 0.82),
+    0 1px 1px rgba(56, 54, 49, 0.2);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover))
+  :global(.notebook-library-book-card:hover)
+  .book
+  .stage {
+  filter: drop-shadow(0 20px 18px rgba(28, 32, 31, 0.2));
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover))
+  :global(.notebook-library-book-card:has(:focus-visible))
+  .book
+  .stage {
+  filter: drop-shadow(0 20px 18px rgba(28, 32, 31, 0.2));
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover))
+  :global(.notebook-library-recent-card:hover:not(:disabled))
+  .book
+  .stage {
+  filter: drop-shadow(0 20px 18px rgba(28, 32, 31, 0.2));
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover))
+  :global(.notebook-library-recent-card:focus-visible)
+  .book
+  .stage {
+  filter: drop-shadow(0 20px 18px rgba(28, 32, 31, 0.2));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book .stage {
+    transition: none;
+  }
+}
+
+ 
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover))
+  .book:is(:global(.book3d--solid), :global(.book3d--framed), :global(.book3d--cloth), :global(.book3d--journal), :global(.book3d--ruled), :global(.book3d--marble), :global(.book3d--kraft), :global(.book3d--spiral), :global(.book3d--magazine), :global(.book3d--halfImage), :global(.book3d--fullImage))
+  :global(.book3d__type) {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover))
+  .book:is(:global(.book3d--solid), :global(.book3d--framed), :global(.book3d--journal), :global(.book3d--ruled))
+  .cover::before {
+  background:
+    radial-gradient(120% 70% at 22% 0%, rgba(255, 255, 255, 0.1), transparent 62%),
+    radial-gradient(130% 110% at 58% 44%, transparent 64%, rgba(0, 0, 0, 0.13));
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover))
+  .book:is(:global(.book3d--solid), :global(.book3d--framed), :global(.book3d--journal), :global(.book3d--ruled)):global(.book3d--text-dark)
+  .cover::before {
+  background:
+    radial-gradient(120% 70% at 22% 0%, rgba(255, 255, 255, 0.34), transparent 62%),
+    radial-gradient(130% 110% at 58% 44%, transparent 66%, rgba(60, 52, 40, 0.08));
+}
+
+/* the hinge groove: a shallow channel pressed into the board a few
+   millimetres off the spine, dark on its spine side, lit on the other */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover))
+  .book:is(:global(.book3d--solid), :global(.book3d--framed), :global(.book3d--ruled), :global(.book3d--magazine))
+  .spine::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(100% + 2.6cqi);
+  width: 2.6cqi;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0.06) 45%,
+    rgba(255, 255, 255, 0.13) 72%,
+    transparent
+  );
+  content: "";
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover))
+  .book:is(:global(.book3d--solid), :global(.book3d--framed), :global(.book3d--ruled), :global(.book3d--magazine)):global(.book3d--text-dark)
+  .spine::after {
+  background: linear-gradient(
+    90deg,
+    rgba(40, 34, 26, 0.13),
+    rgba(40, 34, 26, 0.04) 45%,
+    rgba(255, 255, 255, 0.6) 72%,
+    transparent
+  );
+}
+
+/* the solid cover's own placement (the other templates keep theirs) */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--solid) :global(.book3d__type) {
+  position: absolute;
+  top: calc(18% - 3.4cqi);
+  right: 7%;
+  left: 14%;
+  z-index: 4;
+  margin: 0;
+  /* minimal stays minimal: over the tag, one short blind-pressed rule (a
+     dark cut with its lit lower lip) */
+  padding-top: 3.4cqi;
+  background: linear-gradient(rgba(0, 0, 0, 0.34) 0 50%, rgba(255, 255, 255, 0.2) 50%) left top /
+    9cqi max(1.5px, 0.9cqi) no-repeat;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--solid):global(.book3d--text-dark) :global(.book3d__type) {
+  background-image: linear-gradient(rgba(40, 34, 26, 0.22) 0 50%, rgba(255, 255, 255, 0.78) 50%);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--solid) :global(.book3d__title) {
+  position: absolute;
+  top: 24.5%;
+  right: 7%;
+  left: 14%;
+  z-index: 4;
+  text-align: left;
+}
+
+ 
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--ruled) {
+  --label-ink: color-mix(in srgb, var(--book-cover) 58%, #1b1f26);
+  --label-rule: color-mix(in srgb, var(--label-ink) 30%, transparent);
+  --label-notch: 4.4cqi;
+}
+
+/* bookcloth: a fine weave instead of the old diagonal stripes */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--ruled) :global(.book3d__rule-bg) {
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.08) 0 1px, transparent 1px 3px);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--ruled) :global(.book3d__nameplate) {
+  position: absolute;
+  top: 20%;
+  right: 8.5%;
+  left: 17.5%;
+  z-index: 4;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2cqi;
+  padding: 6.8cqi 9cqi 7.4cqi;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  /* the shadow follows the notched paper, which the mask below cuts */
+  filter: drop-shadow(0 0.5px 0.5px rgba(0, 0, 0, 0.32))
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.16));
+  transform: rotate(-0.5deg);
+}
+
+/* the paper, with the classic label's notched corners */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--ruled) :global(.book3d__nameplate)::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+   
+  background:
+    url("/textures/label-paper.webp") center / cover,
+    linear-gradient(172deg, #fffdf7, #f3eee1);
+  background-blend-mode: multiply;
+  content: "";
+  -webkit-mask:
+    radial-gradient(circle at 0 0, transparent var(--label-notch), #000 calc(var(--label-notch) + 0.5px)) 0 0 / 51% 51% no-repeat,
+    radial-gradient(circle at 100% 0, transparent var(--label-notch), #000 calc(var(--label-notch) + 0.5px)) 100% 0 / 51% 51% no-repeat,
+    radial-gradient(circle at 0 100%, transparent var(--label-notch), #000 calc(var(--label-notch) + 0.5px)) 0 100% / 51% 51% no-repeat,
+    radial-gradient(circle at 100% 100%, transparent var(--label-notch), #000 calc(var(--label-notch) + 0.5px)) 100% 100% / 51% 51% no-repeat;
+  mask:
+    radial-gradient(circle at 0 0, transparent var(--label-notch), #000 calc(var(--label-notch) + 0.5px)) 0 0 / 51% 51% no-repeat,
+    radial-gradient(circle at 100% 0, transparent var(--label-notch), #000 calc(var(--label-notch) + 0.5px)) 100% 0 / 51% 51% no-repeat,
+    radial-gradient(circle at 0 100%, transparent var(--label-notch), #000 calc(var(--label-notch) + 0.5px)) 0 100% / 51% 51% no-repeat,
+    radial-gradient(circle at 100% 100%, transparent var(--label-notch), #000 calc(var(--label-notch) + 0.5px)) 100% 100% / 51% 51% no-repeat;
+}
+
+/* the printed double frame, clear of the notches */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--ruled) :global(.book3d__nameplate)::after {
+  position: absolute;
+  inset: 3.6cqi;
+  border: 1.2px solid var(--label-ink);
+  outline: 0.6px solid var(--label-ink);
+  outline-offset: -3.5px;
+  content: "";
+  opacity: 0.62;
+  pointer-events: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover))
+  .book:global(.book3d--ruled)
+  :global(.book3d__nameplate)
+  :global(.book3d__type) {
+  position: static;
+  margin: 0;
+  color: var(--label-ink);
+  font-size: clamp(7px, 3.2cqi, 10px);
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-align: center;
+  /* balances the tracking after the last letter */
+  text-indent: 0.32em;
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  opacity: 0.82;
+}
+
+/* the printed heading sits between two short rules */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover))
+  .book:global(.book3d--ruled)
+  :global(.book3d__nameplate)
+  :global(.book3d__type)::before,
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover))
+  .book:global(.book3d--ruled)
+  :global(.book3d__nameplate)
+  :global(.book3d__type)::after {
+  display: inline-block;
+  width: 4.4cqi;
+  height: max(0.6px, 0.35cqi);
+  margin: 0 1.6cqi 0.3em 0;
+  background: currentColor;
+  content: "";
+  opacity: 0.7;
+  vertical-align: middle;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover))
+  .book:global(.book3d--ruled)
+  :global(.book3d__nameplate)
+  :global(.book3d__type)::after {
+  margin: 0 0 0.3em 1.3cqi;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover))
+  .book:global(.book3d--ruled)
+  :global(.book3d__nameplate)
+  :global(.book3d__title) {
+  position: static;
+  min-height: 3.2em;
+  color: #23262c;
+  font-size: clamp(12.5px, 7cqi, 19px);
+  font-weight: 620;
+  letter-spacing: 0.01em;
+  line-height: 1.6;
+  text-align: left;
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  -webkit-line-clamp: 2;
+  /* two rules, the writing sitting on them */
+  background: linear-gradient(transparent calc(100% - 1px), var(--label-rule) 0)
+    0 -0.18em / 100% 1.6em repeat-y;
+}
+
+ 
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--framed) {
+  --gilt-hi: #fbeec6;
+  --gilt: #dfba68;
+  --gilt-deep: #9b7437;
+  --gilt-ink: #f8ebc4;
+  --gilt-edge: rgba(36, 18, 4, 0.5);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--framed):global(.book3d--text-dark) {
+  --gilt-hi: #b08443;
+  --gilt: #7b5927;
+  --gilt-deep: #4c3412;
+  --gilt-ink: #5b411d;
+  --gilt-edge: rgba(255, 255, 255, 0.62);
+}
+
+/* the board's content is centred on the board, not on board and spine */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--framed) .cover {
+  padding: 4cqi 13cqi 12cqi calc(9.4cqi + 13cqi);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--framed) :global(.book3d__frame) {
+  inset: 6cqi 6cqi 6cqi calc(9.4cqi + 5.4cqi);
+  z-index: 3;
+  border: max(1px, 0.7cqi) solid var(--gilt);
+  border-image: linear-gradient(
+      135deg,
+      var(--gilt-hi),
+      var(--gilt) 32%,
+      var(--gilt-deep) 62%,
+      var(--gilt) 84%,
+      var(--gilt-hi)
+    )
+    1;
+  filter: drop-shadow(0 0.6px 0 var(--gilt-edge));
+}
+
+/* the inner fillet, finer, stopping where the corner fleurons take over */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--framed) :global(.book3d__frame)::before {
+  inset: 1.5cqi;
+  border: max(0.5px, 0.32cqi) solid var(--gilt);
+  opacity: 0.9;
+  -webkit-mask:
+    linear-gradient(#000, #000) center / 100% calc(100% - 15cqi) no-repeat,
+    linear-gradient(#000, #000) center / calc(100% - 15cqi) 100% no-repeat;
+  mask:
+    linear-gradient(#000, #000) center / 100% calc(100% - 15cqi) no-repeat,
+    linear-gradient(#000, #000) center / calc(100% - 15cqi) 100% no-repeat;
+}
+
+/* the corner fleurons, one gilt piece lit from the upper left */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--framed) :global(.book3d__frame)::after {
+  inset: -2.2cqi;
+  background: linear-gradient(135deg, var(--gilt-hi), var(--gilt) 30%, var(--gilt-deep) 70%, var(--gilt));
+  -webkit-mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg %3E%3Cpath d='M3 0.6 L5.4 3 L3 5.4 L0.6 3Z'/%3E%3Cpath d='M6.8 3.1 C11 3.1 14.2 4.4 14.6 7.2 C14.9 9.2 13.1 10.3 11.8 9.4 C10.7 8.6 11.2 7.1 12.4 7.4' fill='none' stroke='%23000' stroke-width='1.05' stroke-linecap='round'/%3E%3Cpath d='M3.1 6.8 C3.1 11 4.4 14.2 7.2 14.6 C9.2 14.9 10.3 13.1 9.4 11.8 C8.6 10.7 7.1 11.2 7.4 12.4' fill='none' stroke='%23000' stroke-width='1.05' stroke-linecap='round'/%3E%3Cpath d='M5.6 5.6 C8.6 5.9 10.6 7.6 11 10.9 C7.8 10.6 5.9 8.6 5.6 5.6Z'/%3E%3Ccircle cx='15.6' cy='15.6' r='1.25'/%3E%3Ccircle cx='17.8' cy='3.1' r='0.9'/%3E%3Ccircle cx='3.1' cy='17.8' r='0.9'/%3E%3C/g%3E%3C/svg%3E") top left / 12cqi 12cqi no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg transform='translate%2824 0%29 scale%28-1 1%29'%3E%3Cpath d='M3 0.6 L5.4 3 L3 5.4 L0.6 3Z'/%3E%3Cpath d='M6.8 3.1 C11 3.1 14.2 4.4 14.6 7.2 C14.9 9.2 13.1 10.3 11.8 9.4 C10.7 8.6 11.2 7.1 12.4 7.4' fill='none' stroke='%23000' stroke-width='1.05' stroke-linecap='round'/%3E%3Cpath d='M3.1 6.8 C3.1 11 4.4 14.2 7.2 14.6 C9.2 14.9 10.3 13.1 9.4 11.8 C8.6 10.7 7.1 11.2 7.4 12.4' fill='none' stroke='%23000' stroke-width='1.05' stroke-linecap='round'/%3E%3Cpath d='M5.6 5.6 C8.6 5.9 10.6 7.6 11 10.9 C7.8 10.6 5.9 8.6 5.6 5.6Z'/%3E%3Ccircle cx='15.6' cy='15.6' r='1.25'/%3E%3Ccircle cx='17.8' cy='3.1' r='0.9'/%3E%3Ccircle cx='3.1' cy='17.8' r='0.9'/%3E%3C/g%3E%3C/svg%3E") top right / 12cqi 12cqi no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg transform='translate%280 24%29 scale%281 -1%29'%3E%3Cpath d='M3 0.6 L5.4 3 L3 5.4 L0.6 3Z'/%3E%3Cpath d='M6.8 3.1 C11 3.1 14.2 4.4 14.6 7.2 C14.9 9.2 13.1 10.3 11.8 9.4 C10.7 8.6 11.2 7.1 12.4 7.4' fill='none' stroke='%23000' stroke-width='1.05' stroke-linecap='round'/%3E%3Cpath d='M3.1 6.8 C3.1 11 4.4 14.2 7.2 14.6 C9.2 14.9 10.3 13.1 9.4 11.8 C8.6 10.7 7.1 11.2 7.4 12.4' fill='none' stroke='%23000' stroke-width='1.05' stroke-linecap='round'/%3E%3Cpath d='M5.6 5.6 C8.6 5.9 10.6 7.6 11 10.9 C7.8 10.6 5.9 8.6 5.6 5.6Z'/%3E%3Ccircle cx='15.6' cy='15.6' r='1.25'/%3E%3Ccircle cx='17.8' cy='3.1' r='0.9'/%3E%3Ccircle cx='3.1' cy='17.8' r='0.9'/%3E%3C/g%3E%3C/svg%3E") bottom left / 12cqi 12cqi no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg transform='translate%2824 24%29 scale%28-1 -1%29'%3E%3Cpath d='M3 0.6 L5.4 3 L3 5.4 L0.6 3Z'/%3E%3Cpath d='M6.8 3.1 C11 3.1 14.2 4.4 14.6 7.2 C14.9 9.2 13.1 10.3 11.8 9.4 C10.7 8.6 11.2 7.1 12.4 7.4' fill='none' stroke='%23000' stroke-width='1.05' stroke-linecap='round'/%3E%3Cpath d='M3.1 6.8 C3.1 11 4.4 14.2 7.2 14.6 C9.2 14.9 10.3 13.1 9.4 11.8 C8.6 10.7 7.1 11.2 7.4 12.4' fill='none' stroke='%23000' stroke-width='1.05' stroke-linecap='round'/%3E%3Cpath d='M5.6 5.6 C8.6 5.9 10.6 7.6 11 10.9 C7.8 10.6 5.9 8.6 5.6 5.6Z'/%3E%3Ccircle cx='15.6' cy='15.6' r='1.25'/%3E%3Ccircle cx='17.8' cy='3.1' r='0.9'/%3E%3Ccircle cx='3.1' cy='17.8' r='0.9'/%3E%3C/g%3E%3C/svg%3E") bottom right / 12cqi 12cqi no-repeat;
+  mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg %3E%3Cpath d='M3 0.6 L5.4 3 L3 5.4 L0.6 3Z'/%3E%3Cpath d='M6.8 3.1 C11 3.1 14.2 4.4 14.6 7.2 C14.9 9.2 13.1 10.3 11.8 9.4 C10.7 8.6 11.2 7.1 12.4 7.4' fill='none' stroke='%23000' stroke-width='1.05' stroke-linecap='round'/%3E%3Cpath d='M3.1 6.8 C3.1 11 4.4 14.2 7.2 14.6 C9.2 14.9 10.3 13.1 9.4 11.8 C8.6 10.7 7.1 11.2 7.4 12.4' fill='none' stroke='%23000' stroke-width='1.05' stroke-linecap='round'/%3E%3Cpath d='M5.6 5.6 C8.6 5.9 10.6 7.6 11 10.9 C7.8 10.6 5.9 8.6 5.6 5.6Z'/%3E%3Ccircle cx='15.6' cy='15.6' r='1.25'/%3E%3Ccircle cx='17.8' cy='3.1' r='0.9'/%3E%3Ccircle cx='3.1' cy='17.8' r='0.9'/%3E%3C/g%3E%3C/svg%3E") top left / 12cqi 12cqi no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg transform='translate%2824 0%29 scale%28-1 1%29'%3E%3Cpath d='M3 0.6 L5.4 3 L3 5.4 L0.6 3Z'/%3E%3Cpath d='M6.8 3.1 C11 3.1 14.2 4.4 14.6 7.2 C14.9 9.2 13.1 10.3 11.8 9.4 C10.7 8.6 11.2 7.1 12.4 7.4' fill='none' stroke='%23000' stroke-width='1.05' stroke-linecap='round'/%3E%3Cpath d='M3.1 6.8 C3.1 11 4.4 14.2 7.2 14.6 C9.2 14.9 10.3 13.1 9.4 11.8 C8.6 10.7 7.1 11.2 7.4 12.4' fill='none' stroke='%23000' stroke-width='1.05' stroke-linecap='round'/%3E%3Cpath d='M5.6 5.6 C8.6 5.9 10.6 7.6 11 10.9 C7.8 10.6 5.9 8.6 5.6 5.6Z'/%3E%3Ccircle cx='15.6' cy='15.6' r='1.25'/%3E%3Ccircle cx='17.8' cy='3.1' r='0.9'/%3E%3Ccircle cx='3.1' cy='17.8' r='0.9'/%3E%3C/g%3E%3C/svg%3E") top right / 12cqi 12cqi no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg transform='translate%280 24%29 scale%281 -1%29'%3E%3Cpath d='M3 0.6 L5.4 3 L3 5.4 L0.6 3Z'/%3E%3Cpath d='M6.8 3.1 C11 3.1 14.2 4.4 14.6 7.2 C14.9 9.2 13.1 10.3 11.8 9.4 C10.7 8.6 11.2 7.1 12.4 7.4' fill='none' stroke='%23000' stroke-width='1.05' stroke-linecap='round'/%3E%3Cpath d='M3.1 6.8 C3.1 11 4.4 14.2 7.2 14.6 C9.2 14.9 10.3 13.1 9.4 11.8 C8.6 10.7 7.1 11.2 7.4 12.4' fill='none' stroke='%23000' stroke-width='1.05' stroke-linecap='round'/%3E%3Cpath d='M5.6 5.6 C8.6 5.9 10.6 7.6 11 10.9 C7.8 10.6 5.9 8.6 5.6 5.6Z'/%3E%3Ccircle cx='15.6' cy='15.6' r='1.25'/%3E%3Ccircle cx='17.8' cy='3.1' r='0.9'/%3E%3Ccircle cx='3.1' cy='17.8' r='0.9'/%3E%3C/g%3E%3C/svg%3E") bottom left / 12cqi 12cqi no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg transform='translate%2824 24%29 scale%28-1 -1%29'%3E%3Cpath d='M3 0.6 L5.4 3 L3 5.4 L0.6 3Z'/%3E%3Cpath d='M6.8 3.1 C11 3.1 14.2 4.4 14.6 7.2 C14.9 9.2 13.1 10.3 11.8 9.4 C10.7 8.6 11.2 7.1 12.4 7.4' fill='none' stroke='%23000' stroke-width='1.05' stroke-linecap='round'/%3E%3Cpath d='M3.1 6.8 C3.1 11 4.4 14.2 7.2 14.6 C9.2 14.9 10.3 13.1 9.4 11.8 C8.6 10.7 7.1 11.2 7.4 12.4' fill='none' stroke='%23000' stroke-width='1.05' stroke-linecap='round'/%3E%3Cpath d='M5.6 5.6 C8.6 5.9 10.6 7.6 11 10.9 C7.8 10.6 5.9 8.6 5.6 5.6Z'/%3E%3Ccircle cx='15.6' cy='15.6' r='1.25'/%3E%3Ccircle cx='17.8' cy='3.1' r='0.9'/%3E%3Ccircle cx='3.1' cy='17.8' r='0.9'/%3E%3C/g%3E%3C/svg%3E") bottom right / 12cqi 12cqi no-repeat;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--framed) :global(.book3d__type) {
+  z-index: 3;
+  margin: 0 0 2.6cqi;
+  color: var(--gilt);
+  font-size: clamp(6.5px, 3cqi, 9.5px);
+  font-weight: 650;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 0.6px 0 var(--gilt-edge);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--framed) :global(.book3d__title) {
+  z-index: 3;
+  max-width: 100%;
+  color: var(--gilt-ink);
+  font-family: "Cormorant Garamond", "Iowan Old Style", "Baskerville", "Songti SC", "STSong", "Source Han Serif SC", serif;
+  font-size: clamp(14px, 8.4cqi, 24px);
+  font-weight: 600;
+  letter-spacing: 0.045em;
+  line-height: 1.2;
+  text-align: center;
+  text-wrap: balance;
+  -webkit-text-stroke: 0;
+  text-shadow:
+    0 0.8px 0 var(--gilt-edge),
+    0 -0.5px 0 rgba(255, 255, 255, 0.16);
+  -webkit-line-clamp: 3;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--framed) :global(.book3d__crest) {
+  z-index: 3;
+  width: 30cqi;
+  height: 5.6cqi;
+  margin-top: 3cqi;
+  background: linear-gradient(90deg, var(--gilt-deep), var(--gilt) 30%, var(--gilt-hi) 50%, var(--gilt) 70%, var(--gilt-deep));
+  filter: drop-shadow(0 0.6px 0 var(--gilt-edge));
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 12'%3E%3Cpath d='M3 6 L22.5 5.35 L22.5 6.65Z'/%3E%3Cpath d='M61 6 L41.5 5.35 L41.5 6.65Z'/%3E%3Ccircle cx='24.6' cy='6' r='1.15'/%3E%3Ccircle cx='39.4' cy='6' r='1.15'/%3E%3Cpath d='M32 1.2 L36.4 6 L32 10.8 L27.6 6Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 12'%3E%3Cpath d='M3 6 L22.5 5.35 L22.5 6.65Z'/%3E%3Cpath d='M61 6 L41.5 5.35 L41.5 6.65Z'/%3E%3Ccircle cx='24.6' cy='6' r='1.15'/%3E%3Ccircle cx='39.4' cy='6' r='1.15'/%3E%3Cpath d='M32 1.2 L36.4 6 L32 10.8 L27.6 6Z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* the binder's device: the mark blind-stamped, centred at the foot */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--framed) .brandDeboss {
+  right: auto;
+  bottom: 11.5%;
+  left: calc(9.4% + (90.6% - 15%) / 2);
+  width: 15%;
+}
+
+ 
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--halfImage) :global(.book3d__cover-image) {
+  border-bottom: 0;
+  box-shadow:
+    0 0.6px 0 rgba(0, 0, 0, 0.3),
+    0 1.4px 0 rgba(255, 255, 255, 0.14);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--halfImage), :global(.book3d--fullImage)) :global(.book3d__cover-image)::before {
+  position: absolute;
+  inset: 4cqi 4cqi 4cqi calc(9.4cqi + 4cqi);
+  z-index: 1;
+  border: max(0.6px, 0.35cqi) solid rgba(255, 255, 255, 0.62);
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.1);
+  content: "";
+  pointer-events: none;
+}
+
+/* no picture yet: the plate is lit like a sky, and a small landscape in
+   the board's ink marks where the picture will go */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--halfImage), :global(.book3d--fullImage)) :global(.book3d__cover-placeholder) {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent 62%, rgba(0, 0, 0, 0.06));
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--halfImage), :global(.book3d--fullImage)) :global(.book3d__cover-placeholder)::after {
+  position: absolute;
+  top: 50%;
+  left: calc(9.4% + 90.6% / 2);
+  width: 17cqi;
+  aspect-ratio: 4 / 3;
+  background: rgba(255, 255, 255, 0.58);
+  content: "";
+  transform: translate(-50%, -50%);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 36'%3E%3Ccircle cx='34.5' cy='9.5' r='4.6'/%3E%3Cpath d='M1.5 34.5 L16.5 14.5 Q17.6 13.2 18.7 14.5 L27 24.6 L31.6 19.4 Q32.6 18.3 33.6 19.4 L46.5 34.5Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 36'%3E%3Ccircle cx='34.5' cy='9.5' r='4.6'/%3E%3Cpath d='M1.5 34.5 L16.5 14.5 Q17.6 13.2 18.7 14.5 L27 24.6 L31.6 19.4 Q32.6 18.3 33.6 19.4 L46.5 34.5Z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fullImage) :global(.book3d__cover-placeholder)::after {
+  top: 36%;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--halfImage), :global(.book3d--fullImage)):global(.book3d--text-dark) :global(.book3d__cover-placeholder)::after {
+  background: rgba(30, 28, 24, 0.2);
+}
+
+/* the half picture's frame closes above the band */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--halfImage) :global(.book3d__cover-image)::after {
+  z-index: 1;
+  height: 34%;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.2));
+}
+
+/* the band is the board itself (its grain shows), lit from above */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--halfImage) :global(.book3d__cover-band) {
+  position: relative;
+  justify-content: flex-start;
+  gap: 1.5cqi;
+  padding: 5.4cqi 8cqi 0 calc(9.4cqi + 5.4cqi);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.12), transparent 18%);
+  box-shadow: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--halfImage), :global(.book3d--fullImage)) :global(.book3d__cover-band)::before {
+  flex: none;
+  width: 7cqi;
+  height: max(1px, 0.55cqi);
+  margin-bottom: 0.6cqi;
+  background: currentColor;
+  color: rgba(255, 255, 255, 0.62);
+  content: "";
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--halfImage):global(.book3d--text-dark) :global(.book3d__cover-band)::before {
+  color: rgba(24, 24, 22, 0.5);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--halfImage), :global(.book3d--fullImage)) :global(.book3d__cover-band) :global(.book3d__type) {
+  position: static;
+  margin: 0;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--halfImage), :global(.book3d--fullImage)) :global(.book3d__cover-band) :global(.book3d__title) {
+  position: static;
+  max-width: 100%;
+  font-size: clamp(13px, 7.4cqi, 21px);
+  line-height: 1.2;
+  -webkit-line-clamp: 2;
+}
+
+/* the full picture: a veil that deepens toward the foot so the caption
+   reads over any photograph, the caption standing above the mark */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fullImage) :global(.book3d__cover-veil) {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.14) 0%,
+    transparent 20%,
+    transparent 40%,
+    rgba(0, 0, 0, 0.3) 62%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fullImage) :global(.book3d__cover-band) {
+  right: 0;
+  bottom: 19%;
+  left: 0;
+  gap: 1.5cqi;
+  padding: 0 9cqi 0 calc(9.4cqi + 6cqi);
+}
+
+/* over a photograph the caption is always light ink, whatever the
+   board's own colour asks for */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fullImage) :global(.book3d__cover-band) :global(.book3d__type) {
+  color: rgba(255, 255, 255, 0.82);
+  -webkit-text-stroke: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fullImage) :global(.book3d__cover-band) :global(.book3d__title) {
+  color: #fff;
+  -webkit-text-stroke: 0;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.5),
+    0 0 10px rgba(0, 0, 0, 0.28);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fullImage) .brandDeboss {
+  --logo-hat: rgba(255, 255, 255, 0.5);
+  --logo-ink: rgba(255, 255, 255, 0.5);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.4));
+  opacity: 0.86;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fullImage) .coverDate {
+  color: rgba(255, 255, 255, 0.74);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+ 
+
+/* an empty type label (an untagged notebook) leaves no gap or pill */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book :global(.book3d__type:empty) {
+  display: none;
+}
+
+/* ── cloth: half-bound. Bookcloth boards woven in the cover colour, a
+   leather spine and corners cut from the spine colour, a gilt rule
+   where leather meets cloth, and the title in gold foil. ── */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) {
+  --cloth-weave-wash: 30%;
+  --cloth-leather: color-mix(in srgb, var(--book-spine) 70%, #1d120b);
+  --cloth-gilt: #dcbc74;
+  --cloth-gilt-hi: #f7e6ad;
+  --cloth-gilt-deep: #94733a;
+}
+
+/* pale cloth: the leather goes a shade deeper so its gilt still reads */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth):global(.book3d--text-dark) {
+  --cloth-leather: color-mix(in srgb, var(--book-spine) 36%, #2a1b10);
+}
+
+/* cloth is not leather: its own weave, the grain only a whisper */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) .texture {
+  opacity: 0.2;
+}
+
+/* the leather spine carries its raised bands: a pair of gilt fillets
+   tooled across it at the head and the tail */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) .spine {
+  width: 15%;
+  background-color: var(--cloth-leather);
+  background-image:
+    linear-gradient(
+      180deg,
+      transparent 0 6.4%,
+      var(--cloth-gilt-deep) 6.4%,
+      var(--cloth-gilt-hi) 6.7%,
+      var(--cloth-gilt) 7%,
+      transparent 7.2% 8%,
+      var(--cloth-gilt) 8% 8.35%,
+      transparent 8.35% 91.65%,
+      var(--cloth-gilt) 91.65% 92%,
+      transparent 92% 92.8%,
+      var(--cloth-gilt-hi) 92.8%,
+      var(--cloth-gilt) 93.3%,
+      var(--cloth-gilt-deep) 93.6%,
+      transparent 93.6%
+    ),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1), transparent 40%, rgba(0, 0, 0, 0.18)),
+    var(--book-luxe-texture);
+  background-position: center, center, 38% center;
+  background-size: 100% 100%, 100% 100%, 420%;
+  background-blend-mode: normal, normal, soft-light;
+  box-shadow:
+    inset -3px 0 4px rgba(0, 0, 0, 0.34),
+    inset 2px 0 2px rgba(255, 255, 255, 0.1),
+    1px 0 0 var(--cloth-gilt-deep),
+    2px 0 3px rgba(0, 0, 0, 0.3);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__weave) {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+   
+  background-color: var(--book-cover);
+  background-image:
+    radial-gradient(ellipse 110% 70% at 34% 16%, rgba(255, 255, 255, 0.13), transparent 70%),
+    radial-gradient(130% 110% at 60% 46%, transparent 62%, rgba(0, 0, 0, 0.14)),
+    linear-gradient(
+      color-mix(in srgb, var(--book-cover) var(--cloth-weave-wash), transparent),
+      color-mix(in srgb, var(--book-cover) var(--cloth-weave-wash), transparent)
+    ),
+    url("/textures/bookcloth-weave.webp");
+  background-position: center;
+  background-size: 100% 100%;
+  background-blend-mode: normal, normal, normal, overlay;
+  pointer-events: none;
+}
+
+/* a pale cloth: an overlay weave vanishes into white, so the weave is
+   printed into it darker and then mostly washed back */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth):global(.book3d--text-dark) :global(.book3d__weave) {
+  --cloth-weave-wash: 72%;
+  background-blend-mode: normal, normal, normal, multiply;
+}
+
+/* the mark is stamped into the cloth, clear of the leather corner */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) .brandDeboss {
+  right: 25%;
+}
+
+/* the luxe spine is the leather spine here */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__binding) {
+  display: none;
+}
+
+/* corners: the leather is a separate piece glued on, so it casts a
+   hairline shadow onto the cloth (drop-shadow on the box, the cut on its
+   pseudo-elements, or the clip would eat the shadow) */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__corner) {
+  position: absolute;
+  right: 0;
+  z-index: 3;
+  width: 23%;
+  aspect-ratio: 1;
+  filter: drop-shadow(-0.6px 0.6px 0.7px rgba(0, 0, 0, 0.45));
+  pointer-events: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__corner--top) {
+  top: 0;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__corner--bottom) {
+  bottom: 0;
+  filter: drop-shadow(-0.6px -0.6px 0.7px rgba(0, 0, 0, 0.45));
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__corner)::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__corner)::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__corner--top)::before {
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__corner--top)::after {
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__corner--bottom)::before {
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__corner--bottom)::after {
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__corner)::before {
+  background-color: var(--cloth-leather);
+  background-image:
+    linear-gradient(to bottom left, rgba(255, 255, 255, 0.14), transparent 38%),
+    var(--book-luxe-texture);
+  background-position: center, 70% 30%;
+  background-size: 100% 100%, 700%;
+  background-blend-mode: normal, soft-light;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__corner--bottom)::before {
+  background-image:
+    linear-gradient(to top left, rgba(0, 0, 0, 0.16), transparent 42%),
+    var(--book-luxe-texture);
+}
+
+/* the gilt rule along the cut edge */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__corner--top)::after {
+  background: linear-gradient(
+    to bottom left,
+    transparent 41.5%,
+    var(--cloth-gilt) 42.6% 43.6%,
+    transparent 44.7%
+  );
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__corner--bottom)::after {
+  background: linear-gradient(
+    to top left,
+    transparent 41.5%,
+    var(--cloth-gilt) 42.6% 43.6%,
+    transparent 44.7%
+  );
+}
+
+/* the title sits on a leather label set into the cloth (as on a
+   half-bound ledger), so the gilt reads on any cloth colour */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__foil) {
+  position: absolute;
+  top: 19%;
+  right: 12%;
+  left: 25%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.2cqi;
+  padding: 4.6cqi 3.4cqi 4.2cqi;
+  border-radius: 1.2cqi;
+  background-color: var(--cloth-leather);
+  background-image:
+    linear-gradient(170deg, rgba(255, 255, 255, 0.1), transparent 46%, rgba(0, 0, 0, 0.16)),
+    var(--book-luxe-texture);
+  background-position: center, 30% 60%;
+  background-size: 100% 100%, 520%;
+  background-blend-mode: normal, soft-light;
+  box-shadow:
+    inset 0 0 0 1.1cqi var(--cloth-leather),
+    inset 0 0 0 1.4cqi var(--cloth-gilt-deep),
+    inset 0 0 0 1.75cqi var(--cloth-leather),
+    0 0.6px 0 rgba(255, 255, 255, 0.14),
+    0 -0.6px 1px rgba(0, 0, 0, 0.4),
+    0 1px 2px rgba(0, 0, 0, 0.32);
+  text-align: center;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__foil-rule) {
+  position: relative;
+  width: 36%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cloth-gilt) 22% 78%, transparent);
+  filter: drop-shadow(0 0.5px 0 rgba(0, 0, 0, 0.4));
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__foil-rule)::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.6cqi;
+  height: 1.6cqi;
+  background: var(--cloth-gilt);
+  content: "";
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__title) {
+  position: static;
+  max-width: 100%;
+  color: transparent;
+  font-family: "Cormorant Garamond", "Iowan Old Style", "Baskerville", "Songti SC", "STSong", serif;
+  font-size: clamp(14px, 8.6cqi, 25px);
+  font-weight: 650;
+  letter-spacing: 0.03em;
+  line-height: 1.18;
+  text-align: center;
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  -webkit-line-clamp: 3;
+  background: linear-gradient(
+    172deg,
+    var(--cloth-gilt-hi) 0%,
+    var(--cloth-gilt) 36%,
+    var(--cloth-gilt-deep) 58%,
+    var(--cloth-gilt-hi) 86%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 0.6px 0 rgba(0, 0, 0, 0.5));
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--cloth) :global(.book3d__type) {
+  position: static;
+  margin: 0;
+  color: var(--cloth-gilt);
+  font-size: clamp(6.5px, 2.9cqi, 9px);
+  font-weight: 700;
+  letter-spacing: 0.36em;
+  text-indent: 0.36em;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 0.6px 0 rgba(0, 0, 0, 0.45);
+}
+
+/* ── journal: a dotted journal. Soft-touch boards with rounder corners, a
+   dot grid debossed into the lower cover, the title pressed small at the
+   top, and the elastic closure running the full height. ── */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--journal) {
+  --journal-band: color-mix(in srgb, var(--book-spine) 50%, #0d0d0f);
+  --journal-ribbon: color-mix(in srgb, var(--book-spine) 62%, #121014);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--journal) .cover {
+  border-radius: 8px 17px 17px 7px;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--journal) .backCover {
+  border-radius: 8px 17px 17px 7px;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--journal) .texture {
+  opacity: 0.46;
+  background-size: 320%;
+}
+
+/* a pale soft-touch board stays smooth (the grain greyed it) */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--journal):global(.book3d--text-dark) .texture {
+  opacity: 0.2;
+}
+
+/* the dot grid, debossed into the lower board; around the mark the dots
+   give way, so the mark stands on clear board */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--journal) :global(.book3d__dotgrid) {
+  position: absolute;
+  top: 46%;
+  right: 22%;
+  bottom: 8%;
+  left: 15%;
+  z-index: 1;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.16) 0 0.55px, transparent 0.9px),
+    radial-gradient(circle, rgba(0, 0, 0, 0.36) 0 0.65px, transparent 1px);
+  background-position:
+    0 0.6px,
+    0 0;
+  background-size: 4.4cqi 4.4cqi;
+  -webkit-mask-image:
+    linear-gradient(180deg, transparent, #000 38%),
+    radial-gradient(42% 30% at 84% 90%, transparent 62%, #000 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(180deg, transparent, #000 38%),
+    radial-gradient(42% 30% at 84% 90%, transparent 62%, #000 100%);
+  mask-composite: intersect;
+  pointer-events: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--journal):global(.book3d--text-dark) :global(.book3d__dotgrid) {
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.7) 0 0.55px, transparent 0.9px),
+    radial-gradient(circle, rgba(0, 0, 0, 0.24) 0 0.65px, transparent 1px);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--journal) :global(.book3d__journal-head) {
+  position: absolute;
+  top: 12%;
+  right: 24%;
+  left: 16%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 1.8cqi;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--journal) :global(.book3d__journal-head) :global(.book3d__type) {
+  position: static;
+  margin: 0;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--journal) :global(.book3d__journal-head) :global(.book3d__title) {
+  position: static;
+  margin: 0;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--journal) :global(.book3d__journal-head) :global(.book3d__title) {
+  font-size: clamp(14px, 7.6cqi, 22px);
+  -webkit-line-clamp: 3;
+}
+
+/* the mark sits clear of the elastic */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--journal) .brandDeboss {
+  right: 21%;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--journal) :global(.book3d__elastic) {
+  position: absolute;
+  top: -1%;
+  right: 10.5%;
+  bottom: -1%;
+  z-index: 5;
+  width: 6.2%;
+  /* a knitted elastic: fine ribs across it, a selvedge down each edge, the
+     band rounded by the light, darker where it turns over the board's
+     head and foot */
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.42), transparent 2.6% 97.4%, rgba(0, 0, 0, 0.42)),
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.4),
+      rgba(255, 255, 255, 0.17) 30%,
+      rgba(255, 255, 255, 0.05) 56%,
+      rgba(0, 0, 0, 0.44)
+    ),
+    linear-gradient(
+      90deg,
+      transparent 9%,
+      rgba(255, 255, 255, 0.13) 9% 16%,
+      transparent 16% 84%,
+      rgba(255, 255, 255, 0.1) 84% 91%,
+      transparent 91%
+    ),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.075) 0 0.45cqi, rgba(0, 0, 0, 0.09) 0.45cqi 0.9cqi),
+    var(--journal-band);
+  box-shadow:
+    -1.4px 0 1.6px rgba(0, 0, 0, 0.3),
+    1.6px 0 2px rgba(0, 0, 0, 0.24);
+  pointer-events: none;
+}
+
+/* the satin bookmark, hanging out of the pages below the foot of the
+   cover, its end cut in a swallowtail */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--journal) :global(.book3d__ribbon) {
+  position: absolute;
+  bottom: -4.6%;
+  left: 31%;
+  z-index: 2;
+  width: 4.4cqi;
+  height: 12%;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.34),
+      rgba(255, 255, 255, 0.26) 34%,
+      rgba(255, 255, 255, 0.06) 58%,
+      rgba(0, 0, 0, 0.36)
+    ),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0 60%, transparent 92%),
+    var(--journal-ribbon);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 88%, 0 100%);
+  pointer-events: none;
+}
+
+/* ── spiral: a wire-o binder. Frosted polypropylene boards (no glued
+   spine), a big translucent circle printed into the plastic, punched
+   holes and twin silver loops wrapping over the edge. ── */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--spiral) {
+  --coil-pitch: 6.2cqi;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--spiral) .spine {
+  display: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--spiral) .texture {
+  opacity: 0.08;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--spiral) .backCover {
+  background-image: none;
+  border-radius: 6px 12px 12px 6px;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--spiral) .cover {
+  border-radius: 6px 12px 12px 6px;
+  background-image: linear-gradient(
+    155deg,
+    color-mix(in srgb, var(--book-cover) 80%, white) 0%,
+    var(--book-cover) 52%,
+    color-mix(in srgb, var(--book-cover) 86%, black) 100%
+  );
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--spiral) :global(.book3d__frost) {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  /* frosted polypropylene: a fine white tooth (white specks of varying
+     strength, laid normally), the printed disc with a lit rim, the ring
+     around it, a broad sheen */
+  background:
+    linear-gradient(112deg, transparent 38%, rgba(255, 255, 255, 0.16) 47%, transparent 57%),
+    radial-gradient(
+      circle at 84% 24%,
+      rgba(255, 255, 255, 0.07) 0 22cqi,
+      rgba(255, 255, 255, 0.16) 30cqi,
+      rgba(255, 255, 255, 0.3) calc(31cqi - 0.6px) 31cqi,
+      transparent calc(31cqi + 0.5px)
+    ),
+    radial-gradient(
+      circle at 84% 24%,
+      transparent 0 37cqi,
+      rgba(255, 255, 255, 0.22) calc(37cqi + 0.4px) calc(37cqi + 1.2px),
+      transparent calc(37cqi + 1.6px)
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1.8 0 0 0 -.82'/%3E%3C/filter%3E%3Crect width='96' height='96' filter='url(%23f)' opacity='.26'/%3E%3C/svg%3E")
+      0 0 / 72px 72px;
+  border-radius: 5px 11px 11px 5px;
+  box-shadow: inset 0 0 0 0.6px rgba(255, 255, 255, 0.22);
+  pointer-events: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--spiral) :global(.book3d__coil) {
+  position: absolute;
+  top: 4.5%;
+  bottom: 4.5%;
+  left: -2.6%;
+  z-index: 6;
+  width: 10.5%;
+  /* one pitch of the twin-loop wire: punched hole, the wire's shadow on
+     the board, a dark core, the bright metal and its specular line */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 25'%3E%3Cdefs%3E%3ClinearGradient id='w' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffffff'/%3E%3Cstop offset='.35' stop-color='%23d5dae0'/%3E%3Cstop offset='.7' stop-color='%238a929b'/%3E%3Cstop offset='1' stop-color='%233e444b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='31.2' y='8.6' width='6.6' height='8.6' rx='2.6' fill='%230d0f12' fill-opacity='.86'/%3E%3Cpath d='M31.6 16.4 Q34.5 18 37.4 16.4' fill='none' stroke='%23fff' stroke-opacity='.22' stroke-width='.7'/%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cpath d='M2.6 9.6C12 6.4 25.6 6.8 34.4 10.6M2.6 15.4C12 12.2 25.6 12.6 34.4 16.4' stroke='%23000' stroke-opacity='.22' stroke-width='3.6' transform='translate%28.9 1.5%29'/%3E%3Cpath d='M2.6 9.6C12 6.4 25.6 6.8 34.4 10.6M2.6 15.4C12 12.2 25.6 12.6 34.4 16.4' stroke='%232c3137' stroke-width='2.7'/%3E%3Cpath d='M2.6 9.6C12 6.4 25.6 6.8 34.4 10.6' stroke='url%28%23w%29' stroke-width='2.05'/%3E%3Cpath d='M2.6 15.4C12 12.2 25.6 12.6 34.4 16.4' stroke='url%28%23w%29' stroke-width='2.05'/%3E%3Cpath d='M4.4 8.7C12.4 6.1 24.4 6.3 32 9.3M4.4 14.5C12.4 11.9 24.4 12.1 32 15.1' stroke='%23fff' stroke-opacity='.85' stroke-width='.5'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat-y;
+  background-size: 100% var(--coil-pitch);
+  pointer-events: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--spiral) :global(.book3d__spiral-head) {
+  position: absolute;
+  right: 9%;
+  bottom: 19%;
+  left: 16%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2cqi;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--spiral) :global(.book3d__spiral-head) :global(.book3d__type) {
+  position: static;
+  margin: 0;
+  padding: 0.9cqi 2.6cqi;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.24);
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 0.16em;
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--spiral) :global(.book3d__spiral-head) :global(.book3d__title) {
+  position: static;
+  color: #fff;
+  font-size: clamp(16px, 9.4cqi, 27px);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  line-height: 1.08;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.2);
+  -webkit-line-clamp: 3;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--spiral):global(.book3d--text-dark) :global(.book3d__spiral-head) :global(.book3d__type) {
+  background: rgba(0, 0, 0, 0.07);
+  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.14);
+  color: rgba(20, 20, 22, 0.72);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--spiral):global(.book3d--text-dark) :global(.book3d__spiral-head) :global(.book3d__title) {
+  color: rgba(18, 18, 20, 0.9);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* ── kraft: brown paper boards (the cover colour only tints them), a
+   cloth tape spine in the spine colour, a twine tie, and the title in a
+   rubber-stamped frame whose ink did not take everywhere. ── */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--kraft) {
+  --kraft-paper: color-mix(in srgb, #c49b69 84%, var(--book-cover));
+  --kraft-ink: color-mix(in srgb, var(--book-cover) 74%, #1d1510);
+  --kraft-thread: rgba(240, 228, 196, 0.8);
+}
+
+/* a pale tape is sewn with a dark linen thread, so the stitch still shows */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--kraft):global(.book3d--text-dark) {
+  --kraft-paper: color-mix(in srgb, #c49b69 90%, var(--book-cover));
+  --kraft-ink: color-mix(in srgb, var(--book-cover) 30%, #2b1f15);
+  --kraft-thread: rgba(92, 68, 40, 0.78);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--kraft) .cover {
+  background-color: var(--kraft-paper);
+  border-color: rgba(70, 48, 24, 0.32);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--kraft) .texture {
+  opacity: 0.4;
+  background-size: 150%;
+  filter: grayscale(1) contrast(1.3) brightness(1.12);
+  mix-blend-mode: multiply;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--kraft) .brandDeboss {
+  --logo-hat: rgba(66, 40, 14, 0.4);
+  --logo-ink: rgba(66, 40, 14, 0.4);
+  filter: drop-shadow(0 0.6px 0 rgba(255, 238, 205, 0.45));
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--kraft) .coverDate {
+  color: rgba(46, 28, 10, 0.78);
+  text-shadow: 0 0.6px 0 rgba(255, 238, 205, 0.45);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--kraft) :global(.book3d__fibre) {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+   
+  background-color: var(--kraft-paper);
+  background-image:
+    radial-gradient(130% 112% at 56% 44%, transparent 58%, rgba(74, 44, 14, 0.24)),
+    linear-gradient(180deg, rgba(255, 248, 232, 0.1), transparent 34%, rgba(70, 44, 16, 0.2)),
+    url("/textures/kraft-fibre.webp");
+  background-position: center;
+  background-size: 100% 100%;
+  background-blend-mode: normal, normal, multiply;
+  pointer-events: none;
+}
+
+/* the sewing shows through the cloth tape: a running stitch of natural
+   thread down the spine, each stitch with its own small shadow */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--kraft) .spine {
+  background-image:
+    repeating-linear-gradient(180deg, var(--kraft-thread) 0 2.8cqi, transparent 2.8cqi 5cqi),
+    repeating-linear-gradient(180deg, rgba(16, 9, 2, 0.5) 0 2.8cqi, transparent 2.8cqi 5cqi),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1), transparent 40%, rgba(0, 0, 0, 0.16)),
+    var(--book-luxe-texture);
+  background-position:
+    58% 2.2cqi,
+    calc(58% + 0.35cqi) calc(2.2cqi + 0.45cqi),
+    center,
+    38% center;
+  background-repeat: repeat-y, repeat-y, no-repeat, no-repeat;
+  background-size:
+    0.62cqi 100%,
+    0.62cqi 100%,
+    100% 100%,
+    560%;
+  background-blend-mode: normal, normal, normal, soft-light;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--kraft) :global(.book3d__stamp) {
+  position: absolute;
+  top: 17%;
+  right: 11%;
+  left: 20%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.8cqi;
+  padding: 4.4cqi 4cqi 4.8cqi;
+  border: 0.75cqi solid var(--kraft-ink);
+  border-radius: 2.2cqi;
+  outline: 0.35cqi solid var(--kraft-ink);
+  outline-offset: -2.1cqi;
+  color: var(--kraft-ink);
+  mix-blend-mode: multiply;
+  opacity: 0.9;
+  transform: rotate(-2.6deg);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -8 0 0 0 6.1'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23s)'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -8 0 0 0 6.1'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23s)'/%3E%3C/svg%3E");
+  -webkit-mask-size: 90px 90px;
+  mask-size: 90px 90px;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--kraft) :global(.book3d__stamp) :global(.book3d__type) {
+  position: static;
+  margin: 0;
+  color: inherit;
+  font-family: "Courier New", "American Typewriter", ui-monospace, monospace;
+  font-size: clamp(6.5px, 2.9cqi, 9px);
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--kraft) :global(.book3d__stamp) :global(.book3d__title) {
+  position: static;
+  max-width: 100%;
+  color: inherit;
+  font-family: "Rockwell", "American Typewriter", "Courier New", "STHeiti", "PingFang SC", serif;
+  font-size: clamp(13px, 7.6cqi, 22px);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1.16;
+  text-align: center;
+  -webkit-text-stroke: 0.15px currentColor;
+  text-shadow: none;
+  -webkit-line-clamp: 3;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--kraft) :global(.book3d__twine) {
+  position: absolute;
+  top: 73%;
+  right: 0;
+  left: 0;
+  z-index: 5;
+  height: 1.8cqi;
+  border-radius: 1cqi;
+  /* two-ply twine: the twist of its strands, rounded by the light, and
+     the shadow it casts on the paper */
+  background:
+    linear-gradient(180deg, rgba(255, 250, 236, 0.4), transparent 42%, rgba(70, 44, 14, 0.34)),
+    repeating-linear-gradient(62deg, #f2e6c8 0 0.65cqi, #b18f5d 0.65cqi 1.45cqi, #dcc799 1.45cqi 1.9cqi),
+    #cdb27e;
+  box-shadow:
+    0 0.7cqi 0.9cqi rgba(40, 24, 8, 0.36),
+    0 0.25cqi 0.2cqi rgba(40, 24, 8, 0.3);
+  pointer-events: none;
+}
+
+/* the knot, its two loose ends hanging below the cord */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--kraft) :global(.book3d__twine)::after {
+  position: absolute;
+  top: 50%;
+  left: 71%;
+  width: 14cqi;
+  height: 11.7cqi;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 20'%3E%3Cdefs%3E%3CradialGradient id='k' cx='.38' cy='.32' r='.75'%3E%3Cstop offset='0' stop-color='%23f3e4c0'/%3E%3Cstop offset='.55' stop-color='%23cfb27c'/%3E%3Cstop offset='1' stop-color='%238f7146'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cpath d='M11 8 C9.6 11.5 8 14.4 5.2 17.6' stroke='%235a4426' stroke-opacity='.4' stroke-width='3' transform='translate%28.5 .8%29'/%3E%3Cpath d='M13 8 C14.6 11 16.8 13.2 19.6 15.4' stroke='%235a4426' stroke-opacity='.4' stroke-width='3' transform='translate%28.5 .8%29'/%3E%3Cpath d='M11 8 C9.6 11.5 8 14.4 5.2 17.6' stroke='%239c7d4d' stroke-width='2.7'/%3E%3Cpath d='M11 8 C9.6 11.5 8 14.4 5.2 17.6' stroke='%23e6d2a4' stroke-opacity='.8' stroke-width='1.2' stroke-dasharray='1 .8'/%3E%3Cpath d='M13 8 C14.6 11 16.8 13.2 19.6 15.4' stroke='%239c7d4d' stroke-width='2.7'/%3E%3Cpath d='M13 8 C14.6 11 16.8 13.2 19.6 15.4' stroke='%23e6d2a4' stroke-opacity='.8' stroke-width='1.2' stroke-dasharray='1 .8'/%3E%3Cpath d='M5.2 17.6 L4.1 19 M5.2 17.6 L4.4 18.9 M19.6 15.4 L21 16.2 M19.6 15.4 L20.8 16.6' stroke='%23b49460' stroke-width='.5'/%3E%3C/g%3E%3Cellipse cx='12' cy='7.6' rx='4.6' ry='3.7' fill='%235a4426' fill-opacity='.35' transform='translate%28.4 .9%29'/%3E%3Cellipse cx='12' cy='7.6' rx='4.6' ry='3.7' fill='url%28%23k%29'/%3E%3Cpath d='M8.6 6.4 C10.6 8.6 13.6 9 15.6 7.4 M8.4 8.4 C10.4 10.2 13.4 10.4 15.4 9.2 M9.6 4.8 C11.4 6.4 13.8 6.6 15.2 5.6' fill='none' stroke='%237d6038' stroke-opacity='.55' stroke-width='.55'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  content: "";
+  transform: translate(-50%, -38%);
+}
+
+/* ── marble: the composition book. Marbled boards (the cover colour on
+   paper white), a cloth tape spine, and the classic boxed name label. ── */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--marble) {
+  --marble-ink: var(--book-cover);
+  --marble-print: color-mix(in srgb, var(--book-cover) 26%, #16171a);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--marble):global(.book3d--text-dark) {
+  --marble-ink: color-mix(in srgb, var(--book-cover) 52%, #2a2a2c);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--marble) .cover {
+  background-color: #f2eee4;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--marble) .texture {
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+}
+
+/* the spine is a cloth tape: its weave, a soft fold of light down its
+   middle, and the edge where it is glued over the marbled board */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--marble) .spine {
+  width: 11%;
+  background-color: color-mix(in srgb, var(--book-spine) 55%, #111214);
+  background-image:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.2), rgba(255, 255, 255, 0.1) 38%, rgba(255, 255, 255, 0.03) 60%, rgba(0, 0, 0, 0.22)),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.07) 0 0.5cqi, transparent 0.5cqi 1cqi),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.16) 0 0.5cqi, transparent 0.5cqi 1cqi);
+  background-position: center;
+  background-size: 100% 100%, auto, auto;
+  background-blend-mode: normal;
+  border-right: 0.6px solid rgba(255, 255, 255, 0.16);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--marble) :global(.book3d__marble) {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.1), transparent 45%),
+    var(--marble-ink);
+   
+  -webkit-mask-image: url("/textures/composition-marble.webp");
+  mask-image: url("/textures/composition-marble.webp");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  pointer-events: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--marble) :global(.book3d__namebox) {
+  position: absolute;
+  top: 15%;
+  right: 10%;
+  left: 19%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6cqi;
+  padding: 4.2cqi 4.6cqi 4.6cqi;
+  border-radius: 1cqi;
+  background:
+    url("/textures/label-paper.webp") center / cover,
+    linear-gradient(180deg, #fffdf8, #f6f2e8);
+  background-blend-mode: multiply;
+  box-shadow:
+    0 0 0 0.5px rgba(20, 20, 22, 0.6),
+    0 1px 2.5px rgba(0, 0, 0, 0.28);
+}
+
+/* the printed frame: a rule and a hairline inside it */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--marble) :global(.book3d__namebox)::before {
+  position: absolute;
+  inset: 1.3cqi;
+  border: max(0.6px, 0.4cqi) solid color-mix(in srgb, var(--marble-print) 82%, transparent);
+  border-radius: 0.5cqi;
+  outline: 0.5px solid color-mix(in srgb, var(--marble-print) 46%, transparent);
+  outline-offset: -1.1cqi;
+  content: "";
+  pointer-events: none;
+}
+
+/* the label's printed heading: the tag reversed out of a solid band, as
+   on the classic composition label */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--marble) :global(.book3d__namebox) :global(.book3d__type) {
+  position: static;
+  margin: -1.9cqi -2.2cqi 0.4cqi;
+  padding: 0.9cqi 1.4cqi 0.8cqi;
+  border-radius: 0.3cqi;
+  background: var(--marble-print);
+  color: #fbf6ea;
+  font-size: clamp(6.5px, 2.9cqi, 9px);
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  text-align: center;
+  text-indent: 0.3em;
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--marble) :global(.book3d__namebox) :global(.book3d__title) {
+  position: static;
+  min-height: 3.1em;
+  color: #1f2228;
+  font-size: clamp(12.5px, 7cqi, 19px);
+  font-weight: 620;
+  letter-spacing: 0.01em;
+  line-height: 1.55;
+  text-align: left;
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  -webkit-line-clamp: 2;
+  background: linear-gradient(transparent calc(100% - 0.6px), rgba(20, 20, 22, 0.42) 0)
+    0 -0.16em / 100% 1.55em repeat-y;
+}
+
+/* ── magazine: the type is the cover. The title set as the masthead,
+   tight and balanced over a double rule (heavy and fine); the dateline
+   under it carries the tag and the issue; the issue number again, huge
+   and hollow; cover lines; coated stock with its gloss; a flat printed
+   spine and the scored hinge of a perfect-bound cover. ── */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--magazine) {
+  --mag-ink: #ffffff;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--magazine):global(.book3d--text-dark) {
+  --mag-ink: #121214;
+}
+
+/* coated stock: the leather grain becomes a gloss stripe */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--magazine) .texture {
+  background-image: linear-gradient(
+    112deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.18) 41%,
+    rgba(255, 255, 255, 0.04) 47%,
+    transparent 54%
+  );
+  background-size: 100% 100%;
+  filter: none;
+  mix-blend-mode: normal;
+  opacity: 1;
+  z-index: 4;
+}
+
+/* a printed spine, not leather: the cover's own colour, a shade deeper,
+   folded round */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--magazine) .spine {
+  width: 6%;
+  border-right: 0;
+  background-color: color-mix(in srgb, var(--book-cover) 80%, #000);
+  background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.22), rgba(255, 255, 255, 0.12) 46%, rgba(0, 0, 0, 0.14));
+  background-size: 100% 100%;
+  box-shadow: 1px 0 1.5px rgba(0, 0, 0, 0.16);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--magazine) :global(.book3d__masthead) {
+  position: absolute;
+  top: 8%;
+  right: 7%;
+  left: 13%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 2cqi;
+  color: var(--mag-ink);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--magazine) :global(.book3d__title) {
+  position: static;
+  color: var(--mag-ink);
+  font-family: "Helvetica Neue", "Arial Black", "PingFang SC", "Hiragino Sans", system-ui, sans-serif;
+  font-size: clamp(18px, 13.4cqi, 36px);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+  text-transform: uppercase;
+  text-wrap: balance;
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  -webkit-line-clamp: 3;
+}
+
+/* the dateline: under the masthead's double rule (heavy over fine), the
+   tag at the left, the issue at the right, a hairline under them */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--magazine) :global(.book3d__dateline) {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2cqi;
+  padding: 3.8cqi 0 1.3cqi;
+  background:
+    linear-gradient(var(--mag-ink), var(--mag-ink)) left top / 100% 1.1cqi no-repeat,
+    linear-gradient(var(--mag-ink), var(--mag-ink)) left 1.9cqi / 100% max(0.6px, 0.35cqi) no-repeat;
+  border-bottom: max(0.6px, 0.35cqi) solid color-mix(in srgb, var(--mag-ink) 70%, transparent);
+  font-family: "Helvetica Neue", "PingFang SC", system-ui, sans-serif;
+  font-size: clamp(6.5px, 2.9cqi, 9px);
+  line-height: 1.2;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--magazine) :global(.book3d__dateline) :global(.book3d__type) {
+  position: static;
+  min-width: 0;
+  margin: 0;
+  color: var(--mag-ink);
+  font-size: inherit;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--magazine) :global(.book3d__issue-no) {
+  flex: none;
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  opacity: 0.78;
+}
+
+/* the issue number, set huge and hollow behind the cover lines */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--magazine) :global(.book3d__issue) {
+  position: absolute;
+  right: 6%;
+  bottom: 18%;
+  z-index: 2;
+  color: transparent;
+  font-family: "Helvetica Neue", "Arial Black", system-ui, sans-serif;
+  font-size: 40cqi;
+  font-variant-numeric: tabular-nums;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 0.8;
+  -webkit-text-stroke: 0.45cqi var(--mag-ink);
+  opacity: 0.3;
+}
+
+/* cover lines: a lead line in a small solid block, two lighter lines */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--magazine) :global(.book3d__headlines) {
+  position: absolute;
+  bottom: 21%;
+  left: 13%;
+  z-index: 3;
+  display: flex;
+  width: 44%;
+  flex-direction: column;
+  gap: 1.5cqi;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--magazine) :global(.book3d__headlines) span {
+  display: block;
+  height: 1.1cqi;
+  border-radius: 0.3cqi;
+  background: var(--mag-ink);
+  opacity: 0.55;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--magazine) :global(.book3d__headlines) span:nth-child(1) {
+  width: 100%;
+  height: 1.8cqi;
+  /* the lead's tag: a solid square, then the line */
+  background:
+    linear-gradient(var(--mag-ink), var(--mag-ink)) left / 3.4cqi 100% no-repeat,
+    linear-gradient(var(--mag-ink), var(--mag-ink)) right / calc(100% - 5cqi) 100% no-repeat;
+  opacity: 0.88;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--magazine) :global(.book3d__headlines) span:nth-child(2) {
+  width: 78%;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--magazine) :global(.book3d__headlines) span:nth-child(3) {
+  width: 54%;
+}
+
+/* ── aurora: light through colour. A soft mesh of the cover colour turned
+   toward rose, cyan and gold, a film grain so it never bands, a glossy
+   spine, and the title on a pane of frosted glass. ── */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--aurora) .texture {
+  display: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--aurora) .spine {
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.2), transparent 45%, rgba(0, 0, 0, 0.26));
+  background-size: 100% 100%;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--aurora) .backCover {
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.2), transparent 45%, rgba(0, 0, 0, 0.26));
+  background-size: 100% 100%;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--aurora) :global(.book3d__aurora) {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  /* rounded by a clip-path for its moving parts, as the painted scenes */
+  border-radius: var(--cover-inner-radius);
+  clip-path: inset(0 round var(--cover-inner-radius));
+  background: radial-gradient(
+    130% 95% at 30% 18%,
+    color-mix(in oklch, var(--book-cover) 82%, white) 0%,
+    var(--book-cover) 58%,
+    color-mix(in oklch, var(--book-cover) 78%, black) 100%
+  );
+  pointer-events: none;
+}
+
+/* four soft lights, each on its own slow loop: the mesh never repeats the
+   same picture, and nothing but their transforms moves (no blur filter, no
+   repaint: they are softened by their own gradients) */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--aurora) :global(.book3d__aurora-blob) {
+  --blob: color-mix(in oklch, var(--book-cover) 50%, #ff79c6);
+  position: absolute;
+  width: 95%;
+  height: 72%;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    var(--blob) 0%,
+    color-mix(in oklch, var(--blob) 62%, transparent) 42%,
+    color-mix(in oklch, var(--blob) 22%, transparent) 70%,
+    transparent 100%
+  );
+  animation: auroraDrift 11s ease-in-out infinite alternate;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--aurora) :global(.book3d__aurora-blob):nth-child(1) {
+  top: -18%;
+  left: -24%;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--aurora) :global(.book3d__aurora-blob):nth-child(2) {
+  --blob: color-mix(in oklch, var(--book-cover) 48%, #5ce1ff);
+  top: -4%;
+  right: -30%;
+  animation-name: auroraDriftB;
+  animation-duration: 13s;
+  animation-delay: -7s;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--aurora) :global(.book3d__aurora-blob):nth-child(3) {
+  --blob: color-mix(in oklch, var(--book-cover) 52%, #ffd36b);
+  bottom: -28%;
+  left: 18%;
+  animation-duration: 15s;
+  animation-delay: -13s;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--aurora) :global(.book3d__aurora-blob):nth-child(4) {
+  --blob: color-mix(in oklch, var(--book-cover) 58%, #7b61ff);
+  bottom: -12%;
+  left: -30%;
+  animation-name: auroraDriftB;
+  animation-duration: 12s;
+  animation-delay: -4s;
+}
+
+/* now and then a band of light crosses the cover */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--aurora) :global(.book3d__aurora-sheen) {
+  position: absolute;
+  inset: -30% -70%;
+  z-index: 2;
+  background: linear-gradient(
+    105deg,
+    transparent 41%,
+    rgba(255, 255, 255, 0.14) 47%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.14) 53%,
+    transparent 59%
+  );
+  transform: translateX(-62%);
+  animation: coverSheen 7s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes auroraDrift {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(20%, 14%) scale(1.16); }
+  100% { transform: translate(-6%, 24%) scale(0.92); }
+}
+
+@keyframes auroraDriftB {
+  0% { transform: translate(0, 0) scale(1.06); }
+  50% { transform: translate(-22%, 18%) scale(0.9); }
+  100% { transform: translate(-8%, -12%) scale(1.14); }
+}
+
+@keyframes coverSheen {
+  0%, 58% { transform: translateX(-62%); }
+  100% { transform: translateX(62%); }
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--aurora) :global(.book3d__grain) {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)'/%3E%3C/svg%3E")
+    0 0 / 110px 110px;
+  mix-blend-mode: overlay;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--aurora) :global(.book3d__glass) {
+  position: absolute;
+  top: 15%;
+  right: 8%;
+  left: 15%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6cqi;
+  padding: 3.8cqi 4.2cqi 4.4cqi;
+  border-radius: 3.2cqi;
+  /* a filled pane, not a backdrop blur: over light that keeps moving the
+     blur would be redone every frame */
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0.16));
+  box-shadow:
+    inset 0 0 0 0.6px rgba(255, 255, 255, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--aurora) :global(.book3d__glass) :global(.book3d__type) {
+  position: static;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.86);
+  -webkit-text-stroke: 0;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.14);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--aurora) :global(.book3d__glass) :global(.book3d__title) {
+  position: static;
+  color: #fff;
+  font-size: clamp(15px, 8.2cqi, 24px);
+  font-weight: 760;
+  line-height: 1.16;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+  -webkit-line-clamp: 3;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--aurora):global(.book3d--text-dark) :global(.book3d__glass) {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.28));
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--aurora):global(.book3d--text-dark) :global(.book3d__glass) :global(.book3d__type) {
+  color: rgba(20, 20, 24, 0.88);
+  text-shadow: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--aurora):global(.book3d--text-dark) :global(.book3d__glass) :global(.book3d__title) {
+  color: rgba(20, 20, 24, 0.88);
+  text-shadow: none;
+}
+
+ 
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book[data-dynamic] .stage {
+  filter: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book[data-dynamic] .cover {
+  box-shadow:
+    0 2px 3px rgba(20, 24, 23, 0.16),
+    7px 11px 18px rgba(20, 24, 23, 0.16),
+    0 18px 26px -10px rgba(31, 35, 34, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset -1px 0 0 rgba(0, 0, 0, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book[data-dynamic] .texture {
+  display: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book[data-dynamic] .spine,
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book[data-dynamic] .backCover {
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.2), transparent 45%, rgba(0, 0, 0, 0.3));
+  background-size: 100% 100%;
+}
+
+ 
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book[data-dynamic] :is(.spine, .coverDate, .brandDeboss, :global(.book3d__sky-title), :global(.book3d__paper-title)) {
+  will-change: transform;
+}
+
+/* The play state is !important because each cover's own `animation`
+   shorthand further down resets it to running at the same specificity. */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book[data-offscreen] :global(.book3d__m),
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book[data-motion="hover"] :global(.book3d__m) {
+  animation-play-state: paused !important;
+}
+
+:global(.cnd-template:is(:hover, :focus-visible, .is-selected)) .book[data-motion="hover"]:not([data-offscreen]) :global(.book3d__m) {
+  animation-play-state: running !important;
+}
+
+/* ...and rests behind a modal sheet or dialog. Radix marks everything
+   outside the open dialog with data-aria-hidden, so a cover inside the
+   dialog (a cover picker) keeps moving while the shelf behind it holds
+   still: a moving cover under the scrim's backdrop blur made the blur
+   redraw on every frame for as long as the sheet was up. */
+:global([data-aria-hidden="true"]) .book :global(.book3d__m) {
+  animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book :global(.book3d__m) {
+    animation: none !important;
+  }
+}
+
+:global(html[data-reduce-motion]) .book :global(.book3d__m) {
+  animation: none !important;
+}
+
+/* the moving covers' titles: over a sky, high on the cover */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--borealis), :global(.book3d--nebula), :global(.book3d--tide), :global(.book3d--rain), :global(.book3d--fireflies), :global(.book3d--snowfall), :global(.book3d--koi), :global(.book3d--art)) :global(.book3d__sky-title) {
+  position: absolute;
+  top: 11%;
+  right: 9%;
+  left: 16%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5cqi;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--borealis), :global(.book3d--nebula), :global(.book3d--tide), :global(.book3d--rain), :global(.book3d--fireflies), :global(.book3d--snowfall), :global(.book3d--koi), :global(.book3d--art)) :global(.book3d__sky-title) :global(.book3d__type) {
+  position: static;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.74);
+  letter-spacing: 0.08em;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--borealis), :global(.book3d--nebula), :global(.book3d--tide), :global(.book3d--rain), :global(.book3d--fireflies), :global(.book3d--snowfall), :global(.book3d--koi), :global(.book3d--art)) :global(.book3d__sky-title) :global(.book3d__title) {
+  position: static;
+  color: #fff;
+  font-size: clamp(15px, 8.6cqi, 26px);
+  font-weight: 760;
+  line-height: 1.14;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.38);
+  -webkit-line-clamp: 3;
+}
+
+/* ── holo: holographic foil. The spectrum drifts across a pearl ground,
+   fine sparkle, and a sheen sweeps over it like a card tilted in the
+   light. ── */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--holo) :global(.book3d__holo) {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  /* rounded by a clip-path for its moving parts, as the painted scenes */
+  border-radius: var(--cover-inner-radius);
+  clip-path: inset(0 round var(--cover-inner-radius));
+  background: linear-gradient(
+    125deg,
+    color-mix(in oklch, var(--book-cover) 50%, #f7f8fc) 0%,
+    color-mix(in oklch, var(--book-cover) 42%, #dfe6f6) 100%
+  );
+  pointer-events: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--holo) :global(.book3d__holo-shift) {
+  position: absolute;
+  inset: -60%;
+  background: repeating-linear-gradient(
+    115deg,
+    #ff9ad5 0%,
+    #ffe27a 7%,
+    #8dffb5 14%,
+    #7fd8ff 21%,
+    #b59bff 28%,
+    #ff9ad5 35%
+  );
+  opacity: 0.5;
+  animation: holoShift 12s ease-in-out infinite alternate;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--holo) :global(.book3d__holo-sparkle) {
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cg fill='white'%3E%3Ccircle cx='7' cy='11' r='.7'/%3E%3Ccircle cx='31' cy='5' r='.5'/%3E%3Ccircle cx='52' cy='17' r='.8'/%3E%3Ccircle cx='18' cy='34' r='.5'/%3E%3Ccircle cx='44' cy='41' r='.7'/%3E%3Ccircle cx='9' cy='53' r='.6'/%3E%3Ccircle cx='37' cy='26' r='.4'/%3E%3Ccircle cx='57' cy='55' r='.5'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 60px 60px;
+  opacity: 0.55;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--holo) :global(.book3d__holo-sheen) {
+  position: absolute;
+  inset: -30% -70%;
+  background: linear-gradient(
+    110deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.25) 46%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.25) 54%,
+    transparent 60%
+  );
+  transform: translateX(-62%);
+  animation: coverSheen 6.5s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--holo) :global(.book3d__holo-title) {
+  position: absolute;
+  right: 9%;
+  bottom: 12%;
+  left: 16%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4cqi;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--holo) :global(.book3d__holo-title) :global(.book3d__type),
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--holo) :global(.book3d__holo-title) :global(.book3d__title) {
+  position: static;
+  margin: 0;
+  /* a deep ink in the cover's hue, pressed into the foil */
+  color: color-mix(in oklch, var(--book-cover) 34%, #17122e);
+  -webkit-text-stroke: 0;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.55),
+    0 -1px 0 rgba(20, 14, 50, 0.12);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--holo) :global(.book3d__holo-title) :global(.book3d__type) {
+  letter-spacing: 0.1em;
+  opacity: 0.78;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--holo) :global(.book3d__holo-title) :global(.book3d__title) {
+  font-size: clamp(15px, 8.4cqi, 25px);
+  font-weight: 780;
+  line-height: 1.14;
+  -webkit-line-clamp: 3;
+}
+
+@keyframes holoShift {
+  0% { transform: translate(-12%, -8%) rotate(0deg); }
+  100% { transform: translate(12%, 8%) rotate(6deg); }
+}
+
+
+ 
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--rain), :global(.book3d--fireflies), :global(.book3d--snowfall), :global(.book3d--blossom), :global(.book3d--inkwash), :global(.book3d--koi), :global(.book3d--borealis), :global(.book3d--nebula), :global(.book3d--tide), :global(.book3d--art)) :global(.book3d__scene) {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: var(--cover-inner-radius);
+   
+  clip-path: inset(0 round var(--cover-inner-radius));
+  background: #10141f;
+  pointer-events: none;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--rain), :global(.book3d--fireflies), :global(.book3d--snowfall), :global(.book3d--blossom), :global(.book3d--inkwash), :global(.book3d--koi), :global(.book3d--borealis), :global(.book3d--tide), :global(.book3d--art)) :global(.book3d__plate),
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--rain), :global(.book3d--fireflies), :global(.book3d--snowfall), :global(.book3d--blossom), :global(.book3d--inkwash), :global(.book3d--koi), :global(.book3d--borealis), :global(.book3d--tide), :global(.book3d--art)) :global(.book3d__layer) {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+ 
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--rain) :global(.book3d__plate),
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--rain) :global(.book3d__layer) { background-image: url("/covers/moving/rain.webp"); }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fireflies) :global(.book3d__plate),
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fireflies) :global(.book3d__layer) { background-image: url("/covers/moving/fireflies.webp"); }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--snowfall) :global(.book3d__plate),
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--snowfall) :global(.book3d__layer) { background-image: url("/covers/moving/snowfall.webp"); }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--blossom) :global(.book3d__plate),
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--blossom) :global(.book3d__layer) { background-image: url("/covers/moving/blossom.webp"); }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--inkwash) :global(.book3d__plate),
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--inkwash) :global(.book3d__layer) { background-image: url("/covers/moving/inkwash.webp"); }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--koi) :global(.book3d__plate),
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--koi) :global(.book3d__layer) { background-image: url("/covers/moving/koi.webp"); }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--borealis) :global(.book3d__plate),
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--borealis) :global(.book3d__layer) { background-image: url("/covers/moving/borealis.webp"); }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--tide) :global(.book3d__plate),
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--tide) :global(.book3d__layer) { background-image: url("/covers/moving/tide.webp"); }
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--rain), :global(.book3d--fireflies), :global(.book3d--snowfall), :global(.book3d--blossom), :global(.book3d--inkwash), :global(.book3d--koi), :global(.book3d--borealis), :global(.book3d--nebula), :global(.book3d--tide), :global(.book3d--art)) :global(.book3d__tint) {
+  position: absolute;
+  inset: 0;
+  background: var(--book-cover);
+  mix-blend-mode: color;
+  opacity: 0.16;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--blossom) :global(.book3d__tint) { opacity: 0.14; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--inkwash) :global(.book3d__tint) { opacity: 0.07; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book[data-neutral]:is(:global(.book3d--rain), :global(.book3d--fireflies), :global(.book3d--snowfall), :global(.book3d--blossom), :global(.book3d--inkwash), :global(.book3d--koi), :global(.book3d--borealis), :global(.book3d--nebula), :global(.book3d--tide), :global(.book3d--art)) :global(.book3d__tint) { display: none; }
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--rain), :global(.book3d--fireflies), :global(.book3d--snowfall), :global(.book3d--blossom), :global(.book3d--inkwash), :global(.book3d--koi), :global(.book3d--borealis), :global(.book3d--nebula), :global(.book3d--tide), :global(.book3d--art)) :global(.book3d__finish) {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: radial-gradient(130% 92% at 50% 40%, transparent 58%, rgba(6, 8, 18, 0.34) 100%);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--blossom), :global(.book3d--inkwash), :global(.book3d--art[data-art-ink="dark"])) :global(.book3d__finish) {
+  background: radial-gradient(130% 92% at 50% 40%, transparent 62%, rgba(70, 48, 40, 0.14) 100%);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--rain), :global(.book3d--fireflies), :global(.book3d--snowfall), :global(.book3d--blossom), :global(.book3d--inkwash), :global(.book3d--koi), :global(.book3d--borealis), :global(.book3d--nebula), :global(.book3d--tide), :global(.book3d--art)) :global(.book3d__finish)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0 / 180px 180px;
+  mix-blend-mode: overlay;
+  opacity: 0.34;
+}
+
+/* the corner mark as foil pressed into the print */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--rain), :global(.book3d--fireflies), :global(.book3d--snowfall), :global(.book3d--koi), :global(.book3d--borealis), :global(.book3d--nebula), :global(.book3d--tide), :global(.book3d--art)) .brandDeboss {
+  --logo-hat: rgba(255, 255, 255, 0.92);
+  --logo-ink: rgba(255, 255, 255, 0.92);
+  width: 18%;
+  filter: none;
+  mix-blend-mode: soft-light;
+  opacity: 0.85;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--blossom), :global(.book3d--inkwash), :global(.book3d--art[data-art-ink="dark"])) .brandDeboss {
+  --logo-hat: rgba(60, 40, 36, 0.9);
+  --logo-ink: rgba(60, 40, 36, 0.9);
+  width: 18%;
+  filter: none;
+  mix-blend-mode: multiply;
+  opacity: 0.32;
+}
+
+
+/* ── borealis: the painting's own aurora sways and leans on its clock, a
+   brighter copy of it swells in place (a moving screened copy doubled the
+   curtain), its lake ripples, and its stars twinkle (the sky's baked
+   light, its ground transparent -- scripts/bake-cover-lights.py -- screened
+   in and out; a high-contrast copy flickered black when a frame dropped
+   the blend) ── */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--borealis) :global(.book3d__layer--stars) {
+  -webkit-mask-image:
+    linear-gradient(180deg, #000 0%, #000 16%, transparent 34%);
+  mask-image:
+    linear-gradient(180deg, #000 0%, #000 16%, transparent 34%);
+  background-image: url("/covers/moving/borealis.stars.webp");
+  mix-blend-mode: screen;
+  animation: paintTwinkle 2.6s ease-in-out infinite alternate;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--borealis) :global(.book3d__layer--aurora) {
+  -webkit-mask-image:
+    linear-gradient(180deg, transparent 2%, #000 12%, #000 50%, transparent 59%);
+  mask-image:
+    linear-gradient(180deg, transparent 2%, #000 12%, #000 50%, transparent 59%);
+  transform-origin: 50% 56%;
+  animation: borealisSway 9s ease-in-out infinite alternate;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--borealis) :global(.book3d__layer--aurora-glow) {
+  -webkit-mask-image:
+    linear-gradient(180deg, transparent 4%, #000 16%, #000 48%, transparent 58%);
+  mask-image:
+    linear-gradient(180deg, transparent 4%, #000 16%, #000 48%, transparent 58%);
+  filter: saturate(1.35) brightness(1.18);
+  mix-blend-mode: screen;
+  animation: borealisGlow 6.5s ease-in-out infinite alternate;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--borealis) :global(.book3d__layer--lake) {
+  -webkit-mask-image:
+    linear-gradient(180deg, transparent 76%, #000 83%, #000 100%);
+  mask-image:
+    linear-gradient(180deg, transparent 76%, #000 83%, #000 100%);
+  transform-origin: 50% 80%;
+  animation: borealisLake 5.5s ease-in-out infinite alternate;
+}
+
+@keyframes paintTwinkle {
+  0%, 15% { opacity: 0.08; }
+  100% { opacity: 0.9; }
+}
+
+@keyframes borealisSway {
+  0% { transform: translateX(-0.8%) skewX(-2.2deg) scaleY(0.99); }
+  50% { transform: translateX(0.2%) skewX(0.6deg) scaleY(1.022); }
+  100% { transform: translateX(0.8%) skewX(2.2deg) scaleY(1); }
+}
+
+@keyframes borealisGlow {
+  0% { opacity: 0; }
+  100% { opacity: 0.7; }
+}
+
+@keyframes borealisLake {
+  0% { transform: translateX(-0.5%) scaleY(1); }
+  100% { transform: translateX(0.5%) scaleY(1.016); }
+}
+
+ 
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--nebula) :global(.book3d__galaxy) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 180cqi;
+  height: 180cqi;
+  margin: -90cqi 0 0 -90cqi;
+  animation: nebulaTurn 120s linear infinite;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--nebula) :is(:global(.book3d__galaxy-sky), :global(.book3d__galaxy-stars), :global(.book3d__galaxy-heart)) {
+  position: absolute;
+  inset: 0;
+  background: url("/covers/moving/nebula-galaxy.webp") center / cover no-repeat;
+}
+
+/* the galaxy's baked light, its ground transparent (see borealis) */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--nebula) :global(.book3d__galaxy-stars) {
+  background-image: url("/covers/moving/nebula-galaxy.stars.webp");
+  mix-blend-mode: screen;
+  animation: paintTwinkle 2.4s ease-in-out infinite alternate;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--nebula) :global(.book3d__galaxy-heart) {
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 10%, transparent 32%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 10%, transparent 32%);
+  filter: brightness(1.35) saturate(1.15);
+  animation: nebulaHeart 7s ease-in-out infinite alternate;
+}
+
+@keyframes nebulaTurn {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes nebulaHeart {
+  0% { opacity: 0.2; transform: rotate(-6deg) scale(1); }
+  100% { opacity: 0.85; transform: rotate(6deg) scale(1.05); }
+}
+
+/* ── tide: the painted clouds drift, the sea heaves from the horizon, the
+   foam runs up the sand and back, the sun's path shimmers, the sun
+   breathes ── */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--tide) :global(.book3d__layer--sky) {
+  -webkit-mask-image:
+    linear-gradient(180deg, #000 0%, #000 31%, transparent 41%),
+    radial-gradient(circle 12cqi at 63% 41%, transparent 60%, #000 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(180deg, #000 0%, #000 31%, transparent 41%),
+    radial-gradient(circle 12cqi at 63% 41%, transparent 60%, #000 100%);
+  mask-composite: intersect;
+  animation: tideClouds 24s ease-in-out infinite alternate;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--tide) :global(.book3d__layer--sea) {
+  -webkit-mask-image:
+    linear-gradient(180deg, transparent 41.6%, #000 44.5%, #000 70%, transparent 78%);
+  mask-image:
+    linear-gradient(180deg, transparent 41.6%, #000 44.5%, #000 70%, transparent 78%);
+  transform-origin: 50% 42%;
+  animation: tideHeave 4.6s ease-in-out infinite alternate;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--tide) :global(.book3d__layer--wash) {
+  -webkit-mask-image:
+    linear-gradient(180deg, transparent 66%, #000 73%, #000 90%, transparent 97%);
+  mask-image:
+    linear-gradient(180deg, transparent 66%, #000 73%, #000 90%, transparent 97%);
+  transform-origin: 50% 92%;
+  animation: tideWash 6.4s ease-in-out infinite;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--tide) :global(.book3d__layer--path) {
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 54%, #000 60%, #000 67%, transparent 73%),
+    linear-gradient(180deg, transparent 41%, #000 46%, #000 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent 54%, #000 60%, #000 67%, transparent 73%),
+    linear-gradient(180deg, transparent 41%, #000 46%, #000 100%);
+  mask-composite: intersect;
+  filter: brightness(1.35) saturate(1.1);
+  animation: tidePath 1.6s ease-in-out infinite alternate;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--tide) :global(.book3d__layer--sun) {
+  -webkit-mask-image:
+    radial-gradient(circle 12cqi at 63% 41%, #000 30%, transparent 100%);
+  mask-image:
+    radial-gradient(circle 12cqi at 63% 41%, #000 30%, transparent 100%);
+  filter: brightness(1.3);
+  transform-origin: 63% 41%;
+  animation: tideSun 5s ease-in-out infinite alternate;
+}
+
+@keyframes tideClouds {
+  0% { transform: translateX(-1.2%); }
+  100% { transform: translateX(1.2%); }
+}
+
+@keyframes tideHeave {
+  0% { transform: translateY(0) scaleY(1); }
+  100% { transform: translateY(0.5%) scaleY(1.02); }
+}
+
+@keyframes tideWash {
+  0%, 100% { transform: translateY(1.2%) scaleY(0.985); }
+  45% { transform: translateY(-1.6%) scaleY(1.03); }
+  70% { transform: translateY(-0.4%) scaleY(1.01); }
+}
+
+@keyframes tidePath {
+  0% { opacity: 0.05; transform: translateX(-0.5%); }
+  100% { opacity: 0.8; transform: translateX(0.5%); }
+}
+
+@keyframes tideSun {
+  0% { opacity: 0.1; transform: scale(1); }
+  100% { opacity: 0.9; transform: scale(1.08); }
+}
+
+/* ── rain: the painted city's lights brighten and dim; rain falls beyond
+   the glass and drops run down it (drawn: they are on the glass) ── */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--rain) :global(.book3d__layer--lights) {
+  -webkit-mask-image:
+    radial-gradient(70% 34% at 50% 74%, #000 40%, transparent 100%);
+  mask-image:
+    radial-gradient(70% 34% at 50% 74%, #000 40%, transparent 100%);
+  filter: brightness(1.35) saturate(1.15);
+  animation: rainLights 3.8s ease-in-out infinite alternate;
+}
+
+@keyframes rainLights {
+  0%, 20% { opacity: 0; }
+  100% { opacity: 0.55; }
+}
+
+/* ── fireflies: the painted mist drifts over the meadow (a soft copy of
+   it, moving); fireflies wander and glow ── */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fireflies) :global(.book3d__layer--mist) {
+  -webkit-mask-image:
+    linear-gradient(180deg, transparent 48%, #000 56%, #000 68%, transparent 78%);
+  mask-image:
+    linear-gradient(180deg, transparent 48%, #000 56%, #000 68%, transparent 78%);
+  filter: blur(2px) brightness(1.15);
+  opacity: 0.6;
+  animation: fireflyMist 11s ease-in-out infinite alternate;
+}
+
+@keyframes fireflyMist {
+  0% { transform: translateX(-4%); }
+  100% { transform: translateX(4%); }
+}
+
+/* ── snowfall: the painted clouds drift (the moon stays), the cabin's own
+   window flickers, snow falls at three depths ── */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--snowfall) :global(.book3d__layer--sky) {
+  -webkit-mask-image:
+    linear-gradient(180deg, #000 0%, #000 30%, transparent 46%),
+    radial-gradient(circle 9cqi at 77% 14%, transparent 60%, #000 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(180deg, #000 0%, #000 30%, transparent 46%),
+    radial-gradient(circle 9cqi at 77% 14%, transparent 60%, #000 100%);
+  mask-composite: intersect;
+  animation: snowClouds 26s ease-in-out infinite alternate;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--snowfall) :global(.book3d__layer--window) {
+  -webkit-mask-image:
+    radial-gradient(circle 9cqi at 60% 73.4%, #000 18%, transparent 100%);
+  mask-image:
+    radial-gradient(circle 9cqi at 60% 73.4%, #000 18%, transparent 100%);
+  filter: brightness(1.6) saturate(1.2);
+  animation: snowWindow 3.6s ease-in-out infinite;
+}
+
+@keyframes snowClouds {
+  0% { transform: translateX(-1.2%); }
+  100% { transform: translateX(1.2%); }
+}
+
+@keyframes snowWindow {
+  0%, 100% { opacity: 0.2; }
+  30% { opacity: 0.75; }
+  45% { opacity: 0.45; }
+  70% { opacity: 0.85; }
+}
+
+/* ── blossom: the painted branch sways in the air about the corner it
+   grows from; petals tumble down ── */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--blossom) :global(.book3d__layer--branch) {
+  -webkit-mask-image:
+    radial-gradient(90% 72% at 100% 0%, #000 55%, transparent 100%);
+  mask-image:
+    radial-gradient(90% 72% at 100% 0%, #000 55%, transparent 100%);
+  transform-origin: 100% 0;
+  animation: blossomSway 4.6s ease-in-out infinite alternate;
+}
+
+@keyframes blossomSway {
+  0% { transform: rotate(-1.1deg); }
+  100% { transform: rotate(1deg); }
+}
+
+/* ── inkwash: the painting's own mist, softened and lightened, drifts and
+   thickens through the ranges; its water stirs and the boat rocks; two
+   birds cross; a seal ── */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--inkwash) :global(.book3d__layer--lake) {
+  -webkit-mask-image:
+    linear-gradient(180deg, transparent 72%, #000 79%, #000 93%, transparent 98%);
+  mask-image:
+    linear-gradient(180deg, transparent 72%, #000 79%, #000 93%, transparent 98%);
+  transform-origin: 50% 82%;
+  animation: inkLake 5s ease-in-out infinite alternate;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--inkwash) :global(.book3d__layer--mist-a),
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--inkwash) :global(.book3d__layer--mist-b) {
+  filter: blur(3px) brightness(1.2) contrast(0.85);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--inkwash) :global(.book3d__layer--mist-a) {
+  -webkit-mask-image:
+    radial-gradient(64% 8% at 50% 47%, #000 25%, transparent 100%);
+  mask-image:
+    radial-gradient(64% 8% at 50% 47%, #000 25%, transparent 100%);
+  animation: inkMist 9s ease-in-out infinite alternate;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--inkwash) :global(.book3d__layer--mist-b) {
+  -webkit-mask-image:
+    radial-gradient(64% 7% at 50% 69%, #000 25%, transparent 100%);
+  mask-image:
+    radial-gradient(64% 7% at 50% 69%, #000 25%, transparent 100%);
+  animation: inkMist 12s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes inkLake {
+  0% { transform: translateX(-0.5%) scaleY(1); }
+  100% { transform: translateX(0.5%) scaleY(1.014); }
+}
+
+@keyframes inkMist {
+  0% { opacity: 0.3; transform: translateX(-13%); }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; transform: translateX(13%); }
+}
+
+/* ── koi: the light on the painted water shimmers; two painted koi
+   (cut from a painting of their own) circle in the open water, heads
+   steady, tails swinging, their shadows on the bottom ── */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--koi) :global(.book3d__layer--water) {
+  filter: brightness(1.25) contrast(1.1);
+  animation: koiWater 4.4s ease-in-out infinite alternate;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--koi) :global(.book3d__koi-fish) {
+  position: absolute;
+  top: -11.5cqi;
+  left: 18cqi;
+  width: 8.6cqi;
+  aspect-ratio: 0.38;
+  background: url("/covers/moving/koi-kohaku.webp") center / contain no-repeat;
+  filter: drop-shadow(1.4cqi 2.2cqi 1.2cqi rgba(0, 24, 28, 0.42));
+  transform-origin: 50% 72%;
+  animation: koiSwish 1.9s ease-in-out infinite alternate;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--koi) :global(.book3d__koi-fish--b) {
+  left: -22cqi;
+  width: 7.8cqi;
+  aspect-ratio: 0.39;
+  background-image: url("/covers/moving/koi-gold.webp");
+  animation-duration: 2.3s;
+}
+
+@keyframes koiWater {
+  0% { opacity: 0; transform: translate(-0.6%, 0); }
+  100% { opacity: 0.5; transform: translate(0.6%, 0.4%); }
+}
+
+@keyframes koiSwish {
+  from { transform: rotate(-7deg); }
+  to { transform: rotate(7deg); }
+}
+
+/* the parts laid over the paintings */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--rain) :global(.book3d__rainfall) {
+  position: absolute;
+  top: calc(-64px - 12%);
+  right: -30%;
+  bottom: -12%;
+  left: -30%;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='64'%3E%3Cpath d='M4 54.2v12.6M4 -9.8v12.6M6.6 31.7v10.6M15.3 50.5v8.3M1.6 53.5v10.4' stroke='white' stroke-width='0.7' stroke-linecap='round' fill='none'/%3E%3C/svg%3E") 0 0 / 24px 64px;
+  opacity: 0.3;
+  transform: rotate(8deg);
+  animation: rainFallFar 1.1s linear infinite;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--rain) :global(.book3d__rainfall--near) {
+  top: calc(-96px - 12%);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='96'%3E%3Cpath d='M37.3 91v12.1M37.3 -5v12.1M4.2 80.2v18.6M4.2 -15.8v18.6M26.4 29.6v17.3' stroke='white' stroke-width='1.1' stroke-linecap='round' fill='none'/%3E%3C/svg%3E") 0 0 / 40px 96px;
+  opacity: 0.4;
+  animation-name: rainFallNear;
+  animation-duration: 0.75s;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--rain) :global(.book3d__runnel) {
+  position: absolute;
+  top: -30%;
+  width: 2.6cqi;
+  height: 30%;
+  transform: translateY(240%);
+  animation: rainRunnel 10s cubic-bezier(0.5, 0, 0.6, 1) infinite;
+}
+
+/* the wet trail, and the drop: a little lens, dark at its rim, lit above */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--rain) :global(.book3d__runnel)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 1.4cqi;
+  left: 50%;
+  width: 0.45cqi;
+  border-radius: 0.5cqi;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.12) 70%, rgba(255, 255, 255, 0.24));
+  transform: translateX(-50%);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--rain) :global(.book3d__runnel)::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 0.84;
+  border-radius: 50% 50% 50% 50% / 58% 58% 42% 42%;
+  background:
+    radial-gradient(circle at 36% 30%, rgba(255, 255, 255, 0.95) 0 10%, transparent 24%),
+    radial-gradient(circle at 50% 62%, rgba(255, 236, 210, 0.3) 0 30%, transparent 56%),
+    radial-gradient(circle at 50% 50%, transparent 56%, rgba(0, 0, 0, 0.32) 80%, rgba(255, 255, 255, 0.3) 92%, transparent 100%);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--rain) :global(.book3d__runnel--a) { left: 22%; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--rain) :global(.book3d__runnel--b) { left: 61%; transform: translateY(150%); animation-duration: 13.5s; animation-delay: -6s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--rain) :global(.book3d__runnel--c) { left: 83%; width: 2cqi; transform: translateY(320%); animation-duration: 11.5s; animation-delay: -3s; }
+
+@keyframes rainFallFar {
+  from { transform: rotate(8deg) translateY(0); }
+  to { transform: rotate(8deg) translateY(64px); }
+}
+
+@keyframes rainFallNear {
+  from { transform: rotate(8deg) translateY(0); }
+  to { transform: rotate(8deg) translateY(96px); }
+}
+
+@keyframes rainRunnel {
+  0% { transform: translateY(0); opacity: 0; }
+  5% { opacity: 1; }
+  28% { transform: translateY(150%); }
+  44% { transform: translateY(176%); }
+  58% { transform: translateY(196%); }
+  84% { transform: translateY(430%); opacity: 1; }
+  100% { transform: translateY(480%); opacity: 0; }
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fireflies) :global(.book3d__firefly) {
+  --glow: #f0ff9c;
+  position: absolute;
+  width: 8cqi;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #fffef4 0 8%,
+    color-mix(in srgb, var(--glow) 98%, transparent) 15%,
+    color-mix(in srgb, var(--glow) 50%, transparent) 28%,
+    color-mix(in srgb, var(--glow) 16%, transparent) 50%,
+    transparent 70%
+  );
+  mix-blend-mode: screen;
+  opacity: 0.9;
+  animation:
+    fireflyWander 15s ease-in-out infinite,
+    fireflyGlow 3.4s ease-in-out infinite alternate;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fireflies) :global(.book3d__firefly--a) { top: 60%; left: 10%; width: 5.4cqi; animation-duration: 17s, 3.1s; animation-delay: -4s, -1.2s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fireflies) :global(.book3d__firefly--b) { top: 70%; left: 34%; width: 6.8cqi; animation-name: fireflyWanderB, fireflyGlow; animation-duration: 19s, 4.2s; animation-delay: -9s, -0.4s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fireflies) :global(.book3d__firefly--c) { top: 64%; left: 62%; width: 5.9cqi; animation-duration: 16s, 2.7s; animation-delay: -12s, -2s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fireflies) :global(.book3d__firefly--d) { top: 78%; left: 80%; width: 8.6cqi; animation-name: fireflyWanderB, fireflyGlow; animation-duration: 21s, 3.8s; animation-delay: -2s, -1.6s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fireflies) :global(.book3d__firefly--e) { top: 50%; left: 22%; width: 4.9cqi; animation-duration: 14s, 3.6s; animation-delay: -6s, -0.8s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fireflies) :global(.book3d__firefly--f) { top: 46%; left: 52%; width: 4.6cqi; animation-name: fireflyWanderB, fireflyGlow; animation-duration: 18s, 2.9s; animation-delay: -3s, -2.2s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fireflies) :global(.book3d__firefly--g) { top: 56%; left: 76%; width: 6.2cqi; animation-duration: 13s, 4s; animation-delay: -8s, -0.2s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fireflies) :global(.book3d__firefly--h) { top: 84%; left: 24%; width: 10.8cqi; animation-name: fireflyWanderB, fireflyGlow; animation-duration: 17s, 3.7s; animation-delay: -11s, -2.6s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fireflies) :global(.book3d__firefly--i) { top: 90%; left: 62%; width: 10.0cqi; animation-duration: 15s, 2.8s; animation-delay: -5s, -1s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fireflies) :global(.book3d__firefly--j) { top: 54%; left: 88%; width: 5.1cqi; animation-name: fireflyWanderB, fireflyGlow; animation-duration: 22s, 3.5s; animation-delay: -17s, -0.6s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--fireflies) :global(.book3d__firefly--k) { top: 74%; left: 48%; width: 7.6cqi; animation-duration: 16s, 3.2s; animation-delay: -7s, -1.8s; }
+
+@keyframes fireflyWander {
+  0% { transform: translate(0, 0); }
+  22% { transform: translate(5cqi, -3.5cqi); }
+  46% { transform: translate(8cqi, -10cqi); }
+  72% { transform: translate(1.5cqi, -7cqi); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes fireflyWanderB {
+  0% { transform: translate(0, 0) scale(0.86); }
+  30% { transform: translate(-6cqi, -5cqi) scale(1); }
+  62% { transform: translate(-2.5cqi, -12cqi) scale(0.92); }
+  100% { transform: translate(0, 0) scale(0.86); }
+}
+
+@keyframes fireflyGlow {
+  0%, 12% { opacity: 0.1; }
+  55% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--snowfall) :global(.book3d__snow) {
+  position: absolute;
+  top: calc(-96px - 4%);
+  right: -6%;
+  bottom: -4%;
+  left: -6%;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cdefs%3E%3CradialGradient id='f'%3E%3Cstop offset='0' stop-color='white'/%3E%3Cstop offset='.5' stop-color='white' stop-opacity='.8'/%3E%3Cstop offset='1' stop-color='white' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cg fill='url(%23f)'%3E%3Ccircle cx='22.7' cy='9.9' r='2' opacity='0.62'/%3E%3Ccircle cx='6.4' cy='38.6' r='2.5' opacity='0.91'/%3E%3Ccircle cx='73.5' cy='21.3' r='2.1' opacity='0.67'/%3E%3Ccircle cx='16.6' cy='10.2' r='1.8' opacity='0.97'/%3E%3Ccircle cx='79.6' cy='77.4' r='2.4' opacity='0.64'/%3E%3Ccircle cx='29.7' cy='60.2' r='2.3' opacity='0.93'/%3E%3Ccircle cx='84.5' cy='8.3' r='2.2' opacity='0.85'/%3E%3Ccircle cx='48.6' cy='17.1' r='2.1' opacity='0.59'/%3E%3Ccircle cx='89.7' cy='83.1' r='2.1' opacity='0.69'/%3E%3Ccircle cx='87.3' cy='54.9' r='2.5' opacity='0.93'/%3E%3Ccircle cx='48.8' cy='39.7' r='2.2' opacity='0.74'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 96px 96px;
+  opacity: 0.9;
+  animation: snowFallMid 11s linear infinite;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--snowfall) :global(.book3d__snow--far) {
+  top: calc(-64px - 4%);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cdefs%3E%3CradialGradient id='f'%3E%3Cstop offset='0' stop-color='white'/%3E%3Cstop offset='.5' stop-color='white' stop-opacity='.8'/%3E%3Cstop offset='1' stop-color='white' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cg fill='url(%23f)'%3E%3Ccircle cx='15.2' cy='34.8' r='1.1' opacity='0.82'/%3E%3Ccircle cx='40' cy='4.2' r='0.9' opacity='0.93'/%3E%3Ccircle cx='16.6' cy='15' r='1.5' opacity='0.76'/%3E%3Ccircle cx='53.5' cy='30.5' r='1.3' opacity='0.62'/%3E%3Ccircle cx='40.6' cy='55.6' r='1.2' opacity='0.88'/%3E%3Ccircle cx='43' cy='4.1' r='1.4' opacity='0.82'/%3E%3Ccircle cx='19.3' cy='2' r='1.4' opacity='0.76'/%3E%3Ccircle cx='19.3' cy='66' r='1.4' opacity='0.76'/%3E%3Ccircle cx='46' cy='56.2' r='1.3' opacity='0.96'/%3E%3Ccircle cx='25.3' cy='51.3' r='1.2' opacity='0.97'/%3E%3Ccircle cx='56.2' cy='6.2' r='1' opacity='0.65'/%3E%3Ccircle cx='61.8' cy='27.9' r='1.3' opacity='0.69'/%3E%3Ccircle cx='-2.2' cy='27.9' r='1.3' opacity='0.69'/%3E%3Ccircle cx='32.5' cy='24.7' r='1.1' opacity='0.81'/%3E%3Ccircle cx='37.4' cy='57.9' r='1.3' opacity='0.97'/%3E%3Ccircle cx='54.8' cy='63.4' r='1.3' opacity='0.62'/%3E%3Ccircle cx='54.8' cy='-0.6' r='1.3' opacity='0.62'/%3E%3Ccircle cx='55.1' cy='61.7' r='1.4' opacity='0.81'/%3E%3Ccircle cx='55.1' cy='-2.3' r='1.4' opacity='0.81'/%3E%3Ccircle cx='45.7' cy='13.5' r='1.4' opacity='0.81'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 64px 64px;
+  opacity: 0.6;
+  animation-name: snowFallFar;
+  animation-duration: 15s;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--snowfall) :global(.book3d__snow--near) {
+  top: calc(-150px - 4%);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cdefs%3E%3CradialGradient id='f'%3E%3Cstop offset='0' stop-color='white'/%3E%3Cstop offset='.5' stop-color='white' stop-opacity='.8'/%3E%3Cstop offset='1' stop-color='white' stop-opacity='0'/%3E%3C/radialGradient%3E%3Cfilter id='b'%3E%3CfeGaussianBlur stdDeviation='0.9'/%3E%3C/filter%3E%3C/defs%3E%3Cg fill='url(%23f)' filter='url(%23b)'%3E%3Ccircle cx='119' cy='123.3' r='4.1' opacity='0.67'/%3E%3Ccircle cx='0.1' cy='99.4' r='4' opacity='0.89'/%3E%3Ccircle cx='150.1' cy='99.4' r='4' opacity='0.89'/%3E%3Ccircle cx='56' cy='115.5' r='3.7' opacity='0.91'/%3E%3Ccircle cx='109.5' cy='62.1' r='4.2' opacity='0.86'/%3E%3Ccircle cx='28.9' cy='83' r='4.6' opacity='0.67'/%3E%3Ccircle cx='120.5' cy='102.9' r='4.7' opacity='0.70'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 150px 150px;
+  opacity: 0.85;
+  animation-name: snowFallNear;
+  animation-duration: 8.5s;
+}
+
+@keyframes snowFallFar {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(4px, 16px); }
+  50% { transform: translate(0, 32px); }
+  75% { transform: translate(-4px, 48px); }
+  100% { transform: translate(0, 64px); }
+}
+
+@keyframes snowFallMid {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(7px, 24px); }
+  50% { transform: translate(0, 48px); }
+  75% { transform: translate(-7px, 72px); }
+  100% { transform: translate(0, 96px); }
+}
+
+@keyframes snowFallNear {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(12px, 37.5px); }
+  50% { transform: translate(0, 75px); }
+  75% { transform: translate(-12px, 112.5px); }
+  100% { transform: translate(0, 150px); }
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--blossom) :global(.book3d__petal) {
+  position: absolute;
+  top: 18%;
+  width: 4.2cqi;
+  aspect-ratio: 20 / 24;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--book-cover) 6%, #fff6f7) 0%,
+    color-mix(in srgb, var(--book-cover) 8%, #ffd0dc) 60%,
+    color-mix(in srgb, var(--book-cover) 10%, #f4a6bd) 100%
+  );
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 24'%3E%3Cpath d='M10 24C3 20 0 12 4 5 6 2 8 1.6 9 3.6L10 5 11 3.6C12 1.6 14 2 16 5 20 12 17 20 10 24Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 24'%3E%3Cpath d='M10 24C3 20 0 12 4 5 6 2 8 1.6 9 3.6L10 5 11 3.6C12 1.6 14 2 16 5 20 12 17 20 10 24Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  animation: petalFall 13s linear infinite;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--blossom) :global(.book3d__petal--a) { top: 14%; left: 70%; transform: translate(-6cqi, 30cqi) rotate(30deg); animation-delay: -1s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--blossom) :global(.book3d__petal--b) { top: 24%; left: 58%; transform: translate(-4cqi, 58cqi) rotate(-50deg); animation-duration: 15s; animation-delay: -6s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--blossom) :global(.book3d__petal--c) { top: 8%; left: 90%; width: 3.4cqi; transform: translate(-10cqi, 80cqi) rotate(70deg); animation-name: petalFallB; animation-duration: 12s; animation-delay: -9s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--blossom) :global(.book3d__petal--d) { top: 30%; left: 76%; width: 4.8cqi; transform: translate(-8cqi, 92cqi) rotate(10deg); animation-duration: 16s; animation-delay: -11s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--blossom) :global(.book3d__petal--e) { top: 18%; left: 84%; width: 3.2cqi; transform: translate(-3cqi, 46cqi) rotate(-20deg); animation-name: petalFallB; animation-duration: 14s; animation-delay: -3.5s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--blossom) :global(.book3d__petal--f) { top: 34%; left: 64%; transform: translate(-12cqi, 104cqi) rotate(110deg); animation-duration: 17s; animation-delay: -14s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--blossom) :global(.book3d__petal--g) { top: 26%; left: 48%; width: 3.6cqi; transform: translate(-5cqi, 40cqi) rotate(-80deg); animation-name: petalFallB; animation-duration: 13.5s; animation-delay: -8s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--blossom) :global(.book3d__petal--h) { top: 12%; left: 98%; width: 3.8cqi; transform: translate(-14cqi, 66cqi) rotate(40deg); animation-duration: 18s; animation-delay: -4.5s; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--blossom) :global(.book3d__petal--i) { top: 40%; left: 88%; width: 3cqi; transform: translate(-9cqi, 22cqi) rotate(150deg); animation-name: petalFallB; animation-duration: 15.5s; animation-delay: -12.5s; }
+
+@keyframes petalFall {
+  0% { opacity: 0; transform: translate(0, 0) rotate3d(1, 0.4, 0.2, 0deg); }
+  6% { opacity: 1; }
+  26% { transform: translate(-8cqi, 30cqi) rotate3d(1, 0.4, 0.2, 200deg); }
+  52% { transform: translate(-4cqi, 62cqi) rotate3d(1, 0.4, 0.2, 380deg); }
+  76% { transform: translate(-15cqi, 94cqi) rotate3d(1, 0.4, 0.2, 560deg); }
+  92% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-22cqi, 128cqi) rotate3d(1, 0.4, 0.2, 760deg); }
+}
+
+@keyframes petalFallB {
+  0% { opacity: 0; transform: translate(0, 0) rotate3d(0.3, 1, 0.4, 0deg); }
+  6% { opacity: 1; }
+  30% { transform: translate(-12cqi, 34cqi) rotate3d(0.3, 1, 0.4, -220deg); }
+  58% { transform: translate(-6cqi, 72cqi) rotate3d(0.3, 1, 0.4, -420deg); }
+  92% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-18cqi, 128cqi) rotate3d(0.3, 1, 0.4, -700deg); }
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--inkwash) :global(.book3d__birds) {
+  position: absolute;
+  top: 32%;
+  left: 8%;
+  width: 11%;
+  aspect-ratio: 40 / 14;
+  background: rgba(40, 38, 40, 0.78);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 14'%3E%3Cg fill='none' stroke='black' stroke-width='1.2' stroke-linecap='round'%3E%3Cpath d='M2 7Q5.5 2.6 9 6.2Q12.5 2.6 16 7'/%3E%3Cpath d='M23 11Q25.6 7.6 28.2 10.4Q30.8 7.6 33.4 11'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 14'%3E%3Cg fill='none' stroke='black' stroke-width='1.2' stroke-linecap='round'%3E%3Cpath d='M2 7Q5.5 2.6 9 6.2Q12.5 2.6 16 7'/%3E%3Cpath d='M23 11Q25.6 7.6 28.2 10.4Q30.8 7.6 33.4 11'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  transform: translate(22cqi, -3cqi);
+  animation: inkBirds 26s linear infinite;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--inkwash) :global(.book3d__seal) {
+  position: absolute;
+  top: 13%;
+  right: 12%;
+  z-index: 2;
+  width: 8%;
+  aspect-ratio: 1;
+  border-radius: 0.5cqi;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cg fill='none' stroke='black' stroke-width='1.6' stroke-linecap='square'%3E%3Cpath d='M5 4v12M5 10h4M9 4v12M12 5h4v4h-4zM12 12h4M14 12v4M12 16h4'/%3E%3C/g%3E%3C/svg%3E") 50% 50% / 70% 70% no-repeat,
+    color-mix(in oklch, var(--book-cover) 8%, #b0302a);
+  box-shadow:
+    inset 0 0 0 0.4cqi color-mix(in oklch, var(--book-cover) 8%, #b0302a),
+    inset 0 0 0 0.7cqi rgba(255, 236, 224, 0.5);
+  mix-blend-mode: multiply;
+  opacity: 0.9;
+}
+
+@keyframes inkBirds {
+  0% { opacity: 0; transform: translate(0, 0); }
+  8% { opacity: 0.8; }
+  50% { transform: translate(34cqi, -5cqi); }
+  88% { opacity: 0.8; }
+  100% { opacity: 0; transform: translate(66cqi, -2cqi); }
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--koi) :global(.book3d__orbit) {
+  position: absolute;
+  width: 0;
+  height: 0;
+  animation: koiOrbit 30s linear infinite;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--koi) :global(.book3d__orbit--a) { top: 50%; left: 40%; }
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--koi) :global(.book3d__orbit--b) { top: 40%; left: 46%; animation-duration: 38s; animation-direction: reverse; }
+
+@keyframes koiOrbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--nebula) :global(.book3d__meteor) {
+  position: absolute;
+  top: 18%;
+  left: 14%;
+  width: 36%;
+  height: 0.4cqi;
+  border-radius: 0.4cqi;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95));
+  opacity: 0;
+  transform: rotate(24deg);
+  transform-origin: 100% 50%;
+  animation: nebulaMeteor 4s ease-in infinite;
+}
+
+@keyframes nebulaMeteor {
+  0%, 74% { opacity: 0; transform: rotate(24deg) translateX(-40%) scaleX(0.3); }
+  78% { opacity: 1; }
+  90%, 100% { opacity: 0; transform: rotate(24deg) translateX(110%) scaleX(1); }
+}
+
+/* the titles: light over night and water (the shared sky-title rules),
+   ink over dawn and paper */
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--blossom), :global(.book3d--inkwash), :global(.book3d--art)) :global(.book3d__paper-title) {
+  position: absolute;
+  top: 12%;
+  right: 22%;
+  left: 16%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4cqi;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--blossom) :global(.book3d__paper-title) {
+  top: auto;
+  bottom: 13%;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--blossom), :global(.book3d--inkwash), :global(.book3d--art)) :global(.book3d__paper-title) :global(.book3d__type),
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--blossom), :global(.book3d--inkwash), :global(.book3d--art)) :global(.book3d__paper-title) :global(.book3d__title) {
+  position: static;
+  margin: 0;
+  color: color-mix(in oklch, var(--book-cover) 22%, #3a2228);
+  -webkit-text-stroke: 0;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--inkwash) :global(.book3d__paper-title) :global(.book3d__type),
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--inkwash) :global(.book3d__paper-title) :global(.book3d__title) {
+  color: #23211f;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--blossom), :global(.book3d--inkwash), :global(.book3d--art)) :global(.book3d__paper-title) :global(.book3d__type) {
+  letter-spacing: 0.12em;
+  opacity: 0.7;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:is(:global(.book3d--blossom), :global(.book3d--inkwash), :global(.book3d--art)) :global(.book3d__paper-title) :global(.book3d__title) {
+  font-size: clamp(15px, 8.4cqi, 25px);
+  font-weight: 740;
+  line-height: 1.16;
+  -webkit-line-clamp: 3;
+}
+
+:is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:global(.book3d--inkwash) :global(.book3d__paper-title) :global(.book3d__title) {
+  font-family: "Noto Serif SC", "Songti SC", "STSong", "Source Han Serif SC", Georgia, serif;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* A touch screen paints these on the main thread, about a dozen blurs a book
+   (Safari: a fifth of what it takes a shelf to appear). At rest the pages lie
+   behind the cover and the back cover shows only its edge; a book that is
+   opening has them all back. Same selectors as the rules they replace, so a
+   cover design's own spine still wins. */
+@media (hover: none) {
+  :is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:not([data-opening]) .backCover {
+    box-shadow: 1px 2px 2px rgba(20, 24, 23, 0.2);
+  }
+
+  :is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:not([data-opening]) .pageBlock,
+  :is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:not([data-opening]) :global(.book3d__inner-pages),
+  :is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book:not([data-opening]) :global(.book3d__inner-pages)::after {
+    box-shadow: none;
+  }
+
+  :is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book .cover::before {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.16);
+  }
+
+  :is(:global(.notebook-library-page), :global(.notebook-luxe-cover)) .book .spine {
+    box-shadow:
+      inset -3px 0 4px rgba(0, 0, 0, 0.34),
+      inset 2px 0 0 rgba(255, 255, 255, 0.06);
+  }
+}

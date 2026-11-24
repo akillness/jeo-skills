@@ -1,0 +1,395 @@
+.dialog {
+  --reader-canvas: #eef3f8;
+  --reader-surface: rgba(255, 255, 255, 0.92);
+  --reader-page: #ffffff;
+  --reader-text: #172033;
+  --reader-muted: #5c687b;
+  --reader-border: rgba(98, 116, 142, 0.22);
+  --reader-accent: #2563eb;
+  --reader-focus: #1d4ed8;
+  /* The reader fills the editor it was opened from. That is a window, not
+     the browser's viewport: sized in viewport units it was as wide as the
+     browser from the window's left edge, so the page sat off to the right
+     and the header's controls ran out of the window. Everything inside is
+     measured against this box (container units), in the document editor,
+     the workbook and the deck alike. */
+  inset: 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  container-name: immersive-reader;
+  container-type: size;
+  transform: none;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--reader-canvas);
+  color: var(--reader-text);
+  box-shadow: none;
+}
+
+.dialog[data-reader-theme="sepia"] {
+  --reader-canvas: #e9dfca;
+  --reader-surface: rgba(251, 244, 226, 0.94);
+  --reader-page: #fbf4e2;
+  --reader-text: #342d23;
+  --reader-muted: #6f6250;
+  --reader-border: rgba(105, 83, 51, 0.24);
+  --reader-accent: #81591f;
+  --reader-focus: #7c4a03;
+}
+
+.dialog[data-reader-theme="dark"] {
+  --reader-canvas: #111827;
+  --reader-surface: rgba(26, 36, 52, 0.94);
+  --reader-page: #182235;
+  --reader-text: #f3f6fb;
+  --reader-muted: #b5c0d1;
+  --reader-border: rgba(219, 229, 245, 0.2);
+  --reader-accent: #8db4ff;
+  --reader-focus: #a9c7ff;
+}
+
+.header {
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) auto minmax(150px, 1fr);
+  align-items: center;
+  min-height: 64px;
+  padding: 8px 18px;
+  border-bottom: 1px solid var(--reader-border);
+  background: var(--reader-surface);
+  box-shadow: 0 8px 30px rgba(30, 42, 61, 0.08);
+  -webkit-backdrop-filter: var(--glass-pane-blur, blur(22px) saturate(165%));
+  backdrop-filter: var(--glass-pane-blur, blur(22px) saturate(165%));
+}
+
+.closeButton,
+.preferenceButton,
+.themeButton,
+.playButton {
+  border: 1px solid var(--reader-border);
+  color: var(--reader-text);
+  background: color-mix(in srgb, var(--reader-page) 88%, transparent);
+  font: inherit;
+}
+
+.closeButton {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.titleCluster {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 15px;
+  font-weight: 720;
+  letter-spacing: -0.01em;
+}
+
+.preferences {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.preferenceGroup,
+.themeGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid var(--reader-border);
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--reader-page) 48%, transparent);
+}
+
+.preferenceButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 34px;
+  min-height: 30px;
+  padding: 0 8px;
+  border-color: transparent;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 620;
+  cursor: pointer;
+}
+
+.preferenceButton[aria-pressed="true"] {
+  border-color: color-mix(in srgb, var(--reader-accent) 42%, transparent);
+  background: color-mix(in srgb, var(--reader-accent) 13%, var(--reader-page));
+  color: var(--reader-accent);
+}
+
+.controlLabel {
+  max-width: 86px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.themeButton {
+  position: relative;
+  display: inline-grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  padding: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.themeButton[data-theme-choice="light"] {
+  color: #172033;
+  background: #ffffff;
+}
+
+.themeButton[data-theme-choice="sepia"] {
+  color: #342d23;
+  background: #f3e5c6;
+}
+
+.themeButton[data-theme-choice="dark"] {
+  color: #f3f6fb;
+  background: #182235;
+}
+
+.viewport {
+  overflow: auto;
+  padding: clamp(28px, 6cqh, 72px) 24px 96px;
+  overscroll-behavior: contain;
+}
+
+.page {
+  box-sizing: border-box;
+  width: min(780px, 100%);
+  min-height: min(840px, calc(100cqh - 164px));
+  margin: 0 auto;
+  padding: clamp(24px, 6cqw, 82px);
+  border: 1px solid var(--reader-border);
+  border-radius: 20px;
+  background: var(--reader-page);
+  box-shadow: 0 24px 70px rgba(24, 38, 61, 0.13);
+  color: var(--reader-text);
+  font-family:
+    ui-sans-serif,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  font-size: var(--immersive-reader-font-size, 22px);
+  line-height: 1.78;
+  letter-spacing: 0.012em;
+}
+
+.dialog[data-reader-font="serif"] .page {
+  font-family: Georgia, "Times New Roman", "Noto Serif", serif;
+}
+
+.dialog[data-reader-spacing="wide"] .page {
+  line-height: 2.12;
+  letter-spacing: 0.075em;
+  word-spacing: 0.22em;
+}
+
+.block {
+  margin: 0 0 1em;
+  border-radius: 7px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.block[tabindex="0"] {
+  cursor: pointer;
+}
+
+.block[tabindex="0"]:hover {
+  background: color-mix(in srgb, var(--reader-accent) 7%, transparent);
+}
+
+h1.block,
+h2.block,
+h3.block,
+h4.block,
+h5.block,
+h6.block {
+  margin-block: 1.25em 0.55em;
+  color: var(--reader-text);
+  font-weight: 760;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+h1.block {
+  font-size: 1.65em;
+}
+
+h2.block {
+  font-size: 1.42em;
+}
+
+h3.block,
+h4.block,
+h5.block,
+h6.block {
+  font-size: 1.2em;
+}
+
+blockquote.block {
+  padding-inline-start: 1em;
+  border-inline-start: 3px solid var(--reader-accent);
+  color: var(--reader-muted);
+}
+
+pre.block {
+  overflow-x: auto;
+  padding: 14px 16px;
+  border: 1px solid var(--reader-border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--reader-canvas) 64%, var(--reader-page));
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78em;
+  line-height: 1.6;
+}
+
+.notice,
+.empty {
+  margin: 24px 0 0;
+  padding: 12px 14px;
+  border: 1px solid var(--reader-border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--reader-canvas) 54%, var(--reader-page));
+  color: var(--reader-muted);
+  font-size: 0.72em;
+  line-height: 1.55;
+}
+
+.footer {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  z-index: 3;
+  transform: translateX(-50%);
+}
+
+.playButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 17px;
+  border-radius: 999px;
+  background: var(--reader-accent);
+  color: var(--reader-page);
+  box-shadow: 0 10px 30px rgba(29, 78, 216, 0.22);
+  font-size: 13px;
+  font-weight: 720;
+  cursor: pointer;
+}
+
+.closeButton:hover,
+.preferenceButton:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--reader-accent) 10%, var(--reader-page));
+}
+
+.closeButton:focus-visible,
+.preferenceButton:focus-visible,
+.themeButton:focus-visible,
+.playButton:focus-visible,
+.block:focus-visible {
+  outline: 3px solid var(--reader-focus);
+  outline-offset: 3px;
+}
+
+.closeButton:disabled,
+.preferenceButton:disabled,
+.playButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@container immersive-reader (max-width: 1050px) {
+  .header {
+    grid-template-columns: auto 1fr;
+  }
+
+  .titleCluster {
+    justify-self: center;
+  }
+
+  .preferences {
+    grid-column: 1 / -1;
+    justify-self: center;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog,
+  .closeButton,
+  .preferenceButton,
+  .themeButton,
+  .playButton {
+    animation: none;
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .dialog,
+  .header,
+  .page,
+  .closeButton,
+  .preferenceButton,
+  .themeButton,
+  .playButton,
+  .notice,
+  .empty {
+    forced-color-adjust: auto;
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    box-shadow: none;
+  }
+
+  .closeButton:focus-visible,
+  .preferenceButton:focus-visible,
+  .themeButton:focus-visible,
+  .playButton:focus-visible,
+  .block:focus-visible {
+    outline-color: Highlight;
+  }
+}

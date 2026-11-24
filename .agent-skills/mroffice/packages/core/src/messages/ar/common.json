@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "مخصص",
+ "zoom.levels": "مستويات التكبير/التصغير",
+ "dialog.close": "إغلاق",
+ "toast.close": "إغلاق الإشعار",
+ "button.confirm": "موافق",
+ "button.cancel": "إلغاء",
+ "libreOffice.enable": "التنزيل والتمكين (حوالي {size})",
+ "libreOffice.enableAlt": "تنزيل LibreOffice وتمكينه",
+ "libreOffice.enabled": "تم تمكين LibreOffice {version}",
+ "libreOffice.retrying": "جارٍ المحاولة مرة أخرى…",
+ "libreOffice.ready": "تعمل الآن تنسيقات Office القديمة وملفات OpenDocument وصور EMF/WMF وعمليات التصدير إلى OpenDocument.",
+ "libreOffice.needed": "يتطلب هذا LibreOffice. يمكن لـ MR Note Classic تنزيل الإصدار الرسمي في مجلده الخاص؛ ولن يتم تثبيت أي شيء على نظامك.",
+ "libreOffice.neededFor": "يتطلب الحفظ بتنسيق ‎.{format} وجود LibreOffice. يمكن لـ MR Note Classic تنزيل الإصدار الرسمي في مجلده الخاص؛ ولن يتم تثبيت أي شيء على نظامك."
+}

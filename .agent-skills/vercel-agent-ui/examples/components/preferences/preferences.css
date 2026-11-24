@@ -1,0 +1,66 @@
+@scope ([data-example]) {
+  /* The view switch above a file list, one 20rem column; Preferences itself renders as display: contents. */
+  :scope[data-example="preferences/basic"] [data-slot="stack"] {
+    align-self: center;
+    align-items: stretch;
+    width: 20rem;
+    max-width: 100%;
+  }
+
+  [data-slot="files"] {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    border-radius: var(--radius-control);
+    box-shadow: inset 0 0 0 1px var(--line);
+    list-style: none;
+
+    & > li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      padding: var(--space-2) var(--space-3);
+
+      & + li {
+        border-top: 1px solid var(--line-faint);
+      }
+    }
+  }
+
+  /* The grid view: tiles with a thumbnail area, two to a row. */
+  [data-view="grid"] [data-slot="files"] {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+    box-shadow: none;
+
+    & > li {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 2px;
+      padding: var(--space-2);
+      border-radius: var(--radius-control);
+      box-shadow: inset 0 0 0 1px var(--line);
+
+      &::before {
+        content: "";
+        height: 3.5rem;
+        margin-bottom: var(--space-1);
+        border-radius: calc(var(--radius-control) - 2px);
+        background: var(--tint);
+      }
+
+      & + li {
+        border-top: 0;
+      }
+
+      & > span:first-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}

@@ -1,0 +1,246 @@
+/* The chart quick buttons' face colours. The buttons keep their geometry in
+   inline styles (they must outrank a native window's blanket button rules);
+   those styles read these properties, so the face follows the theme: Office's
+   light command-bar face, and the Docs menu / dialog chrome's dark material
+   wherever <html> or the editor window carries a dark theme attribute. */
+.quickButton {
+  --office-chart-quick-face: #ffffff;
+  --office-chart-quick-edge: #c8c6c4;
+  --office-chart-quick-ink: #323130;
+  --office-chart-quick-shadow: 0 1px 2px rgb(0 0 0 / 12%);
+}
+
+.quickButton:hover:not(:disabled) {
+  --office-chart-quick-face: #f3f2f1;
+  --office-chart-quick-edge: #a19f9d;
+}
+
+:global([data-theme-mode="dark"]) .quickButton {
+  --office-chart-quick-face: rgb(38 39 44 / 96%);
+  --office-chart-quick-edge: rgb(255 255 255 / 18%);
+  --office-chart-quick-ink: #f2f2f7;
+  --office-chart-quick-shadow: 0 1px 3px rgb(0 0 0 / 45%);
+}
+
+:global([data-theme-mode="high-contrast"]) .quickButton {
+  --office-chart-quick-face: rgb(38 39 44 / 96%);
+  --office-chart-quick-edge: rgb(255 255 255 / 18%);
+  --office-chart-quick-ink: #f2f2f7;
+  --office-chart-quick-shadow: 0 1px 3px rgb(0 0 0 / 45%);
+}
+
+:global([data-theme-mode="dark"]) .quickButton:hover:not(:disabled) {
+  --office-chart-quick-face: rgb(58 59 64);
+  --office-chart-quick-edge: rgb(255 255 255 / 28%);
+}
+
+:global([data-theme-mode="high-contrast"]) .quickButton:hover:not(:disabled) {
+  --office-chart-quick-face: rgb(58 59 64);
+  --office-chart-quick-edge: rgb(255 255 255 / 28%);
+}
+
+:global([data-theme-mode="high-contrast"]) .quickButton {
+  --office-chart-quick-edge: rgb(255 255 255 / 45%);
+}
+
+/* ── The Chart Elements and Chart Filters flyouts ─────────────────────────
+   One card for both, on the shared Cupertino menu (.docs-cupertino-menu):
+   a title row with the button's own glyph, compact 32px rows whose check
+   box, glyph and words line up on one grid, and a footer for the dialog
+   link. Every colour reads the menu's tokens, so the dark and high-contrast
+   faces follow; Touch mode zooms the card as a whole (styles/touch-sizing). */
+.flyout.flyout {
+  --office-quick-check-face: #ffffff;
+  --office-quick-check-edge: #8a9694;
+  --office-quick-check-on: var(--docs-menu-accent, #087c73);
+  --office-quick-muted: color-mix(in srgb, var(--docs-menu-ink, #203b38) 58%, transparent);
+  --office-quick-rule: color-mix(in srgb, var(--docs-menu-ink, #203b38) 11%, transparent);
+  min-width: 232px;
+  max-width: 280px;
+  padding: 6px !important;
+  border-radius: 12px !important;
+}
+
+:global([data-theme-mode="dark"]) .flyout.flyout,
+:global([data-theme-mode="high-contrast"]) .flyout.flyout,
+:global([data-document-dark-mode="true"]) .flyout.flyout {
+  --office-quick-check-face: rgb(255 255 255 / 6%);
+  --office-quick-check-edge: rgb(255 255 255 / 42%);
+}
+
+.flyoutHeader {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 30px;
+  margin: 0 0 4px;
+  padding: 2px 8px 6px;
+  border-bottom: 1px solid var(--office-quick-rule);
+  color: var(--docs-menu-ink, #203b38);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  user-select: none;
+}
+
+.flyoutHeader > svg {
+  width: 14px;
+  height: 14px;
+  color: var(--docs-menu-accent, #087c73);
+}
+
+.flyoutTab {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--docs-menu-accent, #087c73) 12%, transparent);
+  color: var(--docs-menu-accent, #087c73);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Rows: check box, glyph, words, and (Chart Elements) the options arrow. */
+.flyout.flyout :global(:is([role="menuitem"], [role="menuitemcheckbox"])) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 32px;
+  padding: 0 8px;
+  border-radius: 7px;
+  font-size: 13px;
+  cursor: default;
+}
+
+/* The highlight is the focus mark; no second ring around it. */
+.flyout.flyout :global(:is([role="menuitem"], [role="menuitemcheckbox"])):focus-visible {
+  outline: none;
+}
+
+.elementsFlyout :global([data-quick-element][aria-checked="true"]) > span {
+  font-weight: 540;
+}
+
+.elementsFlyout :global([data-quick-element]) > svg:not(:first-child):not(:last-child) {
+  color: var(--office-quick-muted);
+}
+
+.elementsFlyout :global([data-quick-element][aria-checked="true"]) > svg:not(:first-child):not(:last-child) {
+  color: var(--docs-menu-accent, #087c73);
+}
+
+.elementsFlyout :global([data-quick-element-label]) {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The options arrow: its own target at the row's end (a press there opens
+   the element's options, as in Office), drawn as a small pill. */
+.elementsFlyout :global([data-quick-element]) > svg:last-child {
+  box-sizing: content-box;
+  width: 14px;
+  height: 14px;
+  margin-right: -4px;
+  padding: 4px;
+  border-radius: 6px;
+  color: var(--office-quick-muted);
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.elementsFlyout :global([data-quick-element]:is([data-highlighted], [data-state="open"])) > svg:last-child {
+  background: color-mix(in srgb, var(--docs-menu-accent, #087c73) 14%, transparent);
+  color: var(--docs-menu-accent, #087c73);
+}
+
+/* Chart Filters: a group's name and count over its rows. */
+.filterGroup + .filterGroup {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid var(--office-quick-rule);
+}
+
+.filterGroupHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 6px 8px 3px;
+  user-select: none;
+}
+
+.filterGroupName {
+  color: var(--office-quick-muted);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.filterGroupCount {
+  color: var(--office-quick-muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.filterRow {
+  max-width: 100%;
+}
+
+.filterName {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.filterRow[data-filter-select-all] .filterName {
+  color: var(--office-quick-muted);
+}
+
+/* Select All with every one plotted has nothing to do, yet it states the
+   group's state: its box keeps its colour, only the press is off. */
+.flyout.flyout .filterRow[data-filter-select-all][data-all-shown] {
+  opacity: 1;
+  color: inherit !important;
+}
+
+.filterNote {
+  display: flex;
+  gap: 7px;
+  align-items: flex-start;
+  margin: 6px 2px 2px;
+  padding: 7px 9px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--docs-menu-ink, #203b38) 5%, transparent);
+  color: var(--office-quick-muted);
+  font-size: 11.5px;
+  line-height: 1.4;
+}
+
+.filterNote > svg {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+}
+
+.flyoutFooter {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--office-quick-rule);
+}
+
+.flyout.flyout .footerAction {
+  justify-content: center;
+  gap: 7px;
+  min-height: 32px;
+  border: 1px solid var(--office-quick-rule);
+  background: color-mix(in srgb, var(--docs-menu-accent, #087c73) 6%, transparent);
+  color: var(--docs-menu-accent, #087c73);
+  font-weight: 560;
+}
+
+.footerAction > svg {
+  width: 15px;
+  height: 15px;
+}

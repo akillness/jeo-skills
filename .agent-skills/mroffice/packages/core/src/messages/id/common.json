@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Kustom",
+ "zoom.levels": "Tingkat zoom",
+ "dialog.close": "Tutup",
+ "toast.close": "Tutup notifikasi",
+ "button.confirm": "OK",
+ "button.cancel": "Batal",
+ "libreOffice.enable": "Unduh dan aktifkan (sekitar {size})",
+ "libreOffice.enableAlt": "Unduh dan aktifkan LibreOffice",
+ "libreOffice.enabled": "LibreOffice {version} sudah aktif",
+ "libreOffice.retrying": "Mencoba lagi…",
+ "libreOffice.ready": "Format Office lama, file OpenDocument, gambar EMF/WMF, dan ekspor OpenDocument kini berfungsi.",
+ "libreOffice.needed": "Ini memerlukan LibreOffice. MR Note Classic dapat mengunduh rilis resminya ke foldernya sendiri; tidak ada yang dipasang di sistem Anda.",
+ "libreOffice.neededFor": "Menyimpan sebagai .{format} memerlukan LibreOffice. MR Note Classic dapat mengunduh rilis resminya ke foldernya sendiri; tidak ada yang dipasang di sistem Anda."
+}

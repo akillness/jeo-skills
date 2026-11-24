@@ -1,0 +1,132 @@
+/* The reader turned on "Touch mode" (lib/touch-mode): Office's Touch/Mouse
+   Mode — "the buttons are spaced farther apart so they're easier to tap".
+   The same faces in the same places, with room around them: the ribbon (tab
+   row and command strip) is drawn a quarter larger, so every control, gap
+   and hit area grows together and the strip scrolls sooner, as it does in a
+   narrower window; nothing is hidden or rearranged. Off, no rule here
+   applies. */
+:root[data-touch-mode] {
+  --office-touch-scale: 1.25;
+   
+  --office-touch-control-height: 32px;
+}
+
+:root[data-touch-mode] .note-editor-ribbon-tabs,
+:root[data-touch-mode] .note-editor-ribbon-strip {
+  zoom: var(--office-touch-scale);
+}
+
+/* A dialog's number steppers are 22x20: a finger's size when asked for. */
+:root[data-touch-mode] .office-dialog .office-dialog__stepper-button {
+  height: 32px;
+  width: 36px;
+}
+
+/* The window's traffic lights keep their 12px beads; each takes the gap
+   around it as its hit area (20x24, the lights are 20px apart, so none
+   overlaps its neighbour). */
+:root[data-touch-mode] .wm-traffic-light {
+  position: relative;
+}
+:root[data-touch-mode] .wm-traffic-light::before {
+  content: "";
+  position: absolute;
+  inset: -6px -4px;
+}
+
+ 
+
+/* sliders: the memory graph's zoom and certainty sliders (the shared zoom
+   slider): a taller track so a finger beside it still lands on it */
+:root[data-touch-mode] :is(.graph-zoom-dial, .mg-confidence-dial) {
+  --continuous-zoom-height: 36px;
+}
+
+/* notebook cover colours (notebook settings, new notebook): 26 → 36.
+   The preview column holds 204px, so six 36px beads a row (261px) ran
+   out of its card on both sides; four a row (12 colours, three rows)
+   keep the finger size inside it. */
+:root[data-touch-mode] .cnd-swatches {
+  grid-template-columns: repeat(4, 36px);
+  gap: 10px;
+}
+:root[data-touch-mode] .cnd-swatch {
+  width: 36px;
+  height: 36px;
+}
+
+/* AI panel: the turn's memory chips and links, the composer's icon,
+   send and reasoning controls, the run card's collapse bar */
+:root[data-touch-mode] .ai-turn-memory-toggle,
+:root[data-touch-mode] .ai-turn-memory-choice,
+:root[data-touch-mode] .ai-turn-evidence__segment,
+:root[data-touch-mode] .ai-turn-memory-write__undo,
+:root[data-touch-mode] .ai-turn-memory-write__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
+}
+:root[data-touch-mode] [data-testid="ai-reasoning-effort"] {
+  min-height: 32px;
+}
+:root[data-touch-mode] .ai-composer-icon-btn,
+:root[data-touch-mode] .ai-panel-send-btn,
+:root[data-touch-mode] [data-testid^="workspace-boss-copy-"] {
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+}
+:root[data-touch-mode] [data-testid="agent-run-collapse-toggle"] {
+  min-height: 32px;
+}
+/* a saved workspace layout's delete, the only way to remove one */
+:root[data-touch-mode] .wl-menu__delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+/* the sidebar's page-row actions (move to folder, delete) are drawn 28px
+   inline; the desk's off-screen chips and the minimized-window tray */
+:root[data-touch-mode] .page-list-item .sidebar-row-action {
+  width: 32px !important;
+  height: 32px !important;
+}
+:root[data-touch-mode] .wm-offscreen-chip,
+:root[data-touch-mode] .wm-tray-tile {
+  min-height: 32px;
+}
+
+ 
+:root[data-touch-mode] :is(.sidebar-pinned-list button, .sidebar-history-open),
+:root[data-touch-mode] :is(.cupset-select, .cupset-button),
+:root[data-touch-mode] .wm-empty-state-links button,
+:root[data-touch-mode] .cnd-cover-shelf-tab {
+  min-height: 32px;
+}
+:root[data-touch-mode] .ai-panel-icon-btn {
+  width: 32px;
+  height: 32px;
+}
+/* a switch's 24px track takes the room above and below it as hit area */
+:root[data-touch-mode] .cupset-switch::after {
+  content: "";
+  position: absolute;
+  inset: -4px -2px;
+}
+/* the pages drawer's view buttons (24px) and its close button (22px) */
+:root[data-touch-mode] [data-testid="sidebar-page-view-switcher"] button {
+  min-height: 32px;
+}
+:root[data-touch-mode] [data-testid="sidebar-panel-close"] {
+  position: relative;
+}
+:root[data-touch-mode] [data-testid="sidebar-panel-close"]::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+}

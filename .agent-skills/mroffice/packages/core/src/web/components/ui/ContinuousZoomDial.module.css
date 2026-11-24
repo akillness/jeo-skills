@@ -1,0 +1,414 @@
+/*
+ * The shared zoom control: a slider whose thumb carries the reading and
+ * opens the levels (inline), or the same slider above the levels (inside a
+ * zoom popover). Tokens follow the console chrome; hosts tint the glass and
+ * border through --continuous-zoom-glass and --continuous-zoom-border and
+ * size it with --continuous-zoom-width and --continuous-zoom-height.
+ */
+
+/* The list is also rendered in a portal (the thumb's menu), outside
+   .control, so it carries the same tokens. */
+.control,
+.list {
+  --zoom-ink: var(--console-text-primary, #173a35);
+  --zoom-ink-soft: var(--console-text-secondary, #4e6864);
+  --zoom-accent: var(--console-accent, #0d9488);
+  --zoom-hover: color-mix(in srgb, var(--zoom-accent) 9%, transparent);
+  --zoom-press: color-mix(in srgb, var(--zoom-accent) 15%, transparent);
+  --zoom-ring: color-mix(in srgb, var(--zoom-accent) 62%, transparent);
+  color: var(--zoom-ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.control[data-disabled="true"] {
+  opacity: 0.58;
+}
+
+/* ---- the slider ------------------------------------------------------- */
+
+.inline {
+  position: relative;
+  display: inline-flex;
+  width: var(--continuous-zoom-width, 172px);
+  height: var(--continuous-zoom-height, 30px);
+  align-items: center;
+  padding: 0 4px;
+  border: 1px solid
+    var(
+      --continuous-zoom-border,
+      var(--console-border-flat, rgba(13, 148, 136, 0.22))
+    );
+  border-radius: 999px;
+  background: var(
+    --continuous-zoom-glass,
+    var(--glass-chip-bg, rgba(255, 255, 255, 0.62))
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 6px 16px
+      color-mix(in srgb, var(--console-shadow-ink, #062b28) 8%, transparent);
+  -webkit-backdrop-filter: var(--glass-chip-blur, blur(16px) saturate(160%));
+  backdrop-filter: var(--glass-chip-blur, blur(16px) saturate(160%));
+  user-select: none;
+}
+
+.track {
+  position: relative;
+  width: 100%;
+  height: calc(var(--continuous-zoom-height, 30px) - 6px);
+  cursor: pointer;
+  touch-action: none;
+}
+
+.control[data-disabled="true"] .track {
+  cursor: default;
+}
+
+.rail {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  left: 6px;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--zoom-ink-soft) 16%, transparent);
+  pointer-events: none;
+}
+
+.fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--continuous-zoom-position, 0%);
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--zoom-accent) 62%, transparent);
+}
+
+.tick {
+  position: absolute;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--zoom-ink-soft) 45%, transparent);
+}
+
+/* The thumb travels the track's width less its own: at 0 its left edge is
+   at the start, at 1 its right edge at the end. (Doubled: a host's own
+   button reset must not make it see-through.) */
+.thumb.thumb {
+  position: absolute;
+  top: 50%;
+  left: var(--continuous-zoom-position, 0%);
+  display: inline-flex;
+  height: calc(var(--continuous-zoom-height, 30px) - 8px);
+  /* editor windows give every button a 36px floor; the thumb sizes itself */
+  min-height: 0;
+  min-width: 50px;
+  max-width: 116px;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 0 6px 0 9px;
+  border: 1px solid
+    color-mix(in srgb, var(--zoom-accent) 34%, rgba(118, 118, 128, 0.22));
+  border-radius: 999px;
+  background: var(--continuous-zoom-thumb, #ffffff);
+  box-shadow:
+    0 1px 2px
+      color-mix(in srgb, var(--console-shadow-ink, #062b28) 14%, transparent),
+    0 4px 10px
+      color-mix(in srgb, var(--console-shadow-ink, #062b28) 10%, transparent);
+  color: var(--zoom-ink);
+  cursor: grab;
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 650;
+  line-height: 1;
+  white-space: nowrap;
+  translate: calc(-1 * var(--continuous-zoom-position, 0%)) -50%;
+  transition:
+    box-shadow 140ms ease,
+    border-color 140ms ease;
+}
+
+.thumb:hover:not([aria-disabled="true"]),
+.thumb[data-open="true"] {
+  border-color: color-mix(in srgb, var(--zoom-accent) 60%, transparent);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--zoom-accent) 12%, transparent),
+    0 4px 10px
+      color-mix(in srgb, var(--console-shadow-ink, #062b28) 12%, transparent);
+}
+
+.control[data-dragging="true"] .thumb {
+  cursor: grabbing;
+}
+
+.thumb[aria-disabled="true"] {
+  cursor: default;
+}
+
+.thumb:focus-visible,
+.row:focus-visible {
+  outline: 2px solid var(--zoom-ring);
+  outline-offset: 1px;
+}
+
+.thumbText {
+  overflow: hidden;
+  min-width: 0;
+  font-variant-numeric: tabular-nums;
+  text-overflow: ellipsis;
+}
+
+.chevron {
+  flex: 0 0 auto;
+  opacity: 0.5;
+  transition: transform 160ms ease;
+}
+
+.thumb[data-open="true"] .chevron {
+  transform: rotate(180deg);
+}
+
+/* the levels open from the thumb (the menu's anchor rides inside it) */
+.menuAnchor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ---- the levels (a menu from the thumb, the body of the panel) -------- */
+
+.menu.menu {
+  min-width: 168px;
+}
+
+.list {
+  display: grid;
+  min-width: 158px;
+  gap: 1px;
+}
+
+.levels {
+  display: grid;
+  gap: 1px;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  height: 28px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px 0 8px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--zoom-ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  text-align: start;
+  white-space: nowrap;
+}
+
+.row:hover:not(:disabled) {
+  background: var(--zoom-hover);
+}
+
+.row:active:not(:disabled) {
+  background: var(--zoom-press);
+}
+
+.row:disabled {
+  cursor: default;
+  opacity: 0.42;
+}
+
+.row[aria-pressed="true"] {
+  color: var(--zoom-accent);
+  font-weight: 640;
+}
+
+.rowIcon,
+.rowCheck {
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+}
+
+.rowIcon {
+  color: var(--zoom-ink-soft);
+}
+
+.row[data-resetting="true"] .rowIcon {
+  color: var(--zoom-accent);
+}
+
+.rowCheck {
+  visibility: hidden;
+}
+
+.row[aria-pressed="true"] .rowCheck {
+  visibility: inherit;
+}
+
+.rowLabel {
+  overflow: hidden;
+  min-width: 0;
+  flex: 1 1 auto;
+  text-overflow: ellipsis;
+}
+
+.separator {
+  display: block;
+  height: 1px;
+  margin: 4px 6px;
+  background: color-mix(in srgb, var(--zoom-ink-soft) 16%, transparent);
+}
+
+.field {
+  display: flex;
+  height: 34px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 4px 0 8px;
+}
+
+.fieldLabel {
+  color: var(--zoom-ink-soft);
+  font-size: 12px;
+}
+
+.fieldBox {
+  display: inline-flex;
+  height: 26px;
+  align-items: center;
+  gap: 2px;
+  padding: 0 8px 0 4px;
+  border: 1px solid
+    var(
+      --continuous-zoom-border,
+      var(--console-border-flat, rgba(13, 148, 136, 0.22))
+    );
+  border-radius: 7px;
+  background: var(--console-surface, #ffffff);
+  color: var(--zoom-ink-soft);
+  font-size: 12px;
+}
+
+.fieldBox:focus-within {
+  border-color: var(--zoom-ring);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--zoom-accent) 14%, transparent);
+}
+
+.fieldInput {
+  width: 40px;
+  min-width: 0;
+  padding: 0 2px;
+  border: 0;
+  background: transparent;
+  color: var(--zoom-ink);
+  font: inherit;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  outline: none;
+}
+
+.fieldUnit {
+  line-height: 1;
+}
+
+/* ---- panel (inside a ribbon's zoom popover) ---------------------------- */
+
+.panel {
+  display: grid;
+  width: 200px;
+  gap: 6px;
+}
+
+.panel .track {
+  height: 34px;
+  border: 1px solid
+    var(
+      --continuous-zoom-border,
+      var(--console-border-flat, rgba(13, 148, 136, 0.22))
+    );
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--console-surface, #ffffff) 70%, transparent);
+}
+
+.panel .rail {
+  right: 10px;
+  left: 10px;
+}
+
+.panel .thumb {
+  height: 26px;
+  min-width: 58px;
+  padding: 0 10px;
+  font-size: 13px;
+}
+
+.panel .list {
+  min-width: 0;
+}
+
+/* A finger needs a full target. */
+:where(:root[data-touch-mode]) .inline {
+  height: 44px;
+}
+
+:where(:root[data-touch-mode]) .track {
+  height: 40px;
+}
+
+:where(:root[data-touch-mode]) .thumb.thumb {
+  height: 34px;
+  min-width: 62px;
+  font-size: 13px;
+}
+
+:where(:root[data-touch-mode]) .row {
+  height: 44px;
+  font-size: 15px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb,
+  .chevron {
+    transition: none;
+  }
+}
+
+ 
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .thumb.thumb {
+  background: var(--continuous-zoom-thumb, var(--bg-raised));
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .inline {
+  border-color: var(--continuous-zoom-border, var(--console-border));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* A finger's 44 px hit area (styles/touch-hit-area.css). */
+@media (pointer: coarse) {
+  .thumb.thumb::before {
+    content: "";
+    position: absolute;
+    inset: min(0px, calc((100% - var(--touch-hit-min, 44px)) / 2));
+  }
+}

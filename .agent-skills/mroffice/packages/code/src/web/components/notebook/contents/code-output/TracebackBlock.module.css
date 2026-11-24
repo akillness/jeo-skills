@@ -1,0 +1,227 @@
+/* A raised error: the error class as a title, its message, a plain-language
+   hint when we know why it happened, where it happened (the user's own frames
+   first; the runtime's machinery folded away) and the full traceback behind a
+   disclosure. Inks come in as --tb-* from the panel's light/dark palette. */
+
+.card {
+  margin: 6px 0;
+  border: 1px solid var(--tb-border);
+  border-radius: 12px;
+  background: var(--tb-card);
+  overflow: hidden;
+  font: 13px/1.45 var(--font-sans, system-ui, sans-serif);
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 12px 10px;
+  background: var(--tb-head);
+}
+
+.badge {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--tb-label-bg);
+  color: var(--tb-icon);
+}
+
+.titles {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.eyebrow {
+  color: var(--tb-label);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.title {
+  color: var(--tb-head-ink);
+  font-size: 14px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+.separator {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.message {
+  color: var(--tb-head-ink);
+  font: 12.5px/1.5 var(--font-jetbrains, ui-monospace, SFMono-Regular, Menlo, monospace);
+  opacity: 0.86;
+  overflow-wrap: anywhere;
+}
+
+.note {
+  margin-top: 2px;
+  color: var(--tb-muted);
+  font-size: 12px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.action {
+  flex: none;
+  align-self: center;
+}
+
+.hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0 12px 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--tb-hint-bg);
+  color: var(--tb-hint-ink);
+  font-size: 12.5px;
+}
+
+.hint > svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.section {
+  border-top: 1px solid var(--tb-border);
+}
+
+.sectionTitle {
+  padding: 8px 12px 2px;
+  color: var(--tb-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.frames {
+  display: grid;
+  padding: 2px 6px 6px;
+}
+
+.frame {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  min-height: 30px;
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--tb-head-ink);
+  font: 12px/1.45 var(--font-jetbrains, ui-monospace, SFMono-Regular, Menlo, monospace);
+  text-align: left;
+}
+
+button.frame {
+  cursor: pointer;
+}
+
+button.frame:hover {
+  background: var(--tb-chip-link);
+}
+
+.frame[data-frame-navigable="false"] {
+  color: var(--tb-muted);
+}
+
+.frameWhere {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.frameFile {
+  margin-left: 8px;
+  color: var(--tb-muted);
+}
+
+.frameLine {
+  color: var(--tb-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.frameTag {
+  margin-left: 8px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--tb-label-bg);
+  color: var(--tb-label);
+  font: 600 10.5px/1.6 var(--font-sans, system-ui, sans-serif);
+}
+
+.runtime > summary,
+.full > summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  color: var(--tb-muted);
+  font-size: 12px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.runtime > summary::-webkit-details-marker,
+.full > summary::-webkit-details-marker {
+  display: none;
+}
+
+.runtime > summary > svg,
+.full > summary > svg {
+  transition: transform 120ms ease;
+}
+
+.runtime[open] > summary > svg,
+.full[open] > summary > svg {
+  transform: rotate(90deg);
+}
+
+.runtime > summary:hover,
+.full > summary:hover {
+  color: var(--tb-head-ink);
+}
+
+.body {
+  margin: 0;
+  padding: 4px 12px 12px;
+  color: var(--tb-body);
+  font: 12px/1.5 var(--font-jetbrains, ui-monospace, SFMono-Regular, Menlo, monospace);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.frame:focus-visible,
+.runtime > summary:focus-visible,
+.full > summary:focus-visible {
+  outline: 2px solid var(--tb-icon);
+  outline-offset: -2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .runtime > summary > svg,
+  .full > summary > svg {
+    transition: none;
+  }
+}

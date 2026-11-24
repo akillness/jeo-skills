@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Personalizzato",
+ "zoom.levels": "Livelli di zoom",
+ "dialog.close": "Chiudi",
+ "toast.close": "Chiudi notifica",
+ "button.confirm": "OK",
+ "button.cancel": "Annulla",
+ "libreOffice.enable": "Scarica e attiva (circa {size})",
+ "libreOffice.enableAlt": "Scarica e attiva LibreOffice",
+ "libreOffice.enabled": "LibreOffice {version} è attivo",
+ "libreOffice.retrying": "Nuovo tentativo…",
+ "libreOffice.ready": "Ora funzionano i vecchi formati Office, i file OpenDocument, le immagini EMF/WMF e le esportazioni OpenDocument.",
+ "libreOffice.needed": "Serve LibreOffice. MR Note Classic può scaricare la versione ufficiale nella propria cartella; nel sistema non viene installato nulla.",
+ "libreOffice.neededFor": "Per salvare in .{format} serve LibreOffice. MR Note Classic può scaricare la versione ufficiale nella propria cartella; nel sistema non viene installato nulla."
+}

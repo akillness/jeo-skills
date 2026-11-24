@@ -1,0 +1,501 @@
+.rail.rail {
+  gap: 5px;
+  min-height: 32px;
+}
+.core {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 5px;
+}
+.history {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+}
+/* The editor's own leading commands (import, export, print, version
+   history) sit ahead of Search as one tight group, like the history pair. A
+   host wrapper around them does not break the row. */
+.leading {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  flex: 0 0 auto;
+}
+.leading > :global(.note-editor-office-toolbar__page-controls) {
+  display: contents;
+}
+.history:empty {
+  display: none;
+}
+.action.action {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  gap: 5px;
+  height: 32px;
+  min-height: 32px;
+  min-width: 32px;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--console-text-primary, #34333e);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+/* The AI entry stays at the bar's right edge when the bar is too narrow for
+   its commands and scrolls (an iPad's window, every control grown by Touch
+   mode): it scrolled out of sight with the rest, and nothing showed that
+   the bar scrolls. Ahead of the hover rule, which still wins. */
+.action.action[data-rail-action="ai"] {
+  position: sticky;
+  right: 0;
+  z-index: 1;
+  background-color: var(--office-ribbon-surface, var(--bg-surface, #ffffff));
+  /* A window's ribbon surface is see-through (over its glass), and the commands
+     scrolling under the entry showed through its words. An opaque layer in the
+     entry would cover its own hover and pressed colours. */
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+.action.action > svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.65;
+}
+/* A leading menu trigger (export): its icon, then the chevron in its own
+   18px segment, drawn as a split is (OfficeRibbonControl.css): the frame and
+   the seam before the chevron show together on hover and while open. */
+.action.action[data-rail-menu] {
+  --office-control-seam: var(--office-control-border);
+  align-items: stretch;
+  border-color: var(--office-control-border);
+  border-radius: 6px;
+  gap: 0;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0 0 0 6px;
+}
+.action.action[data-rail-menu] > svg {
+  align-self: center;
+  margin-inline-end: 6px;
+}
+.action.action[data-rail-menu]:hover:not(:disabled),
+.action.action[data-rail-menu][data-state="open"] {
+  background: var(--office-control-background);
+}
+.menuRail {
+  align-items: center;
+  border-inline-start: 1px solid var(--office-control-seam, transparent);
+  display: flex;
+  flex: none;
+  justify-content: center;
+  width: 18px;
+}
+.action[data-compact] {
+  width: 32px;
+  padding: 0;
+}
+.action[data-compact] .actionLabel {
+  display: none;
+}
+.action.action:hover:not(:disabled) {
+  background: color-mix(
+    in srgb,
+    var(--console-accent, #8560b5) 7%,
+    transparent
+  );
+}
+.action.action:disabled {
+  opacity: 0.42;
+}
+.action.action[aria-pressed="true"] {
+  background: color-mix(
+    in srgb,
+    var(--office-ribbon-accent, #8560b5) 10%,
+    transparent
+  );
+}
+.action.action[data-rail-action="comments"],
+.action.action[data-rail-action="present"],
+.action.action[data-rail-action="run"],
+.action.action[data-rail-action="stop"] {
+  min-width: 68px;
+  border-color: color-mix(
+    in srgb,
+    var(--office-ribbon-accent, var(--console-accent, #8560b5)) 20%,
+    transparent
+  );
+  background: color-mix(
+    in srgb,
+    var(--office-ribbon-accent, var(--console-accent, #8560b5)) 6%,
+    transparent
+  );
+  color: var(--office-ribbon-accent, var(--console-accent-strong, #715094));
+}
+.action.action[data-rail-action="stop"] {
+  color: var(--console-danger, #b4533c);
+}
+.save.save {
+  width: 104px;
+  gap: 6px;
+  color: var(--console-text-secondary, #72717f);
+  /* Saved, a click does nothing: it reads as a status, not a button. */
+  cursor: default;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.saveHost {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+}
+.saveToast {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 6px);
+  left: 50%;
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: rgb(38 38 42 / 90%);
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateX(-50%);
+  animation: office-rail-save-toast 1800ms ease both;
+}
+/* Portaled to the body at the face's place (OfficeEditorActionRail): above
+   the ribbon panel and every window, as the ScreenTip card is. */
+.saveToastFloating {
+  position: fixed;
+  z-index: 2147483000;
+}
+@keyframes office-rail-save-toast {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -4px);
+  }
+  10%,
+  80% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0);
+  }
+}
+/* Something to save: this face is the Save button. */
+.save.save[data-save-actionable] {
+  cursor: pointer;
+  border-color: color-mix(
+    in srgb,
+    var(--office-ribbon-accent, var(--console-accent, #8560b5)) 34%,
+    transparent
+  );
+  background: color-mix(
+    in srgb,
+    var(--office-ribbon-accent, var(--console-accent, #8560b5)) 10%,
+    transparent
+  );
+  color: var(--office-ribbon-accent, var(--console-accent-strong, #715094));
+  font-weight: 600;
+}
+/* The AutoSave switch: a ring round the icon. Solid while AutoSave is on,
+   dashed while it is off; held, it fills round over the hold's length (the
+   conic sweep under a ring-shaped mask), and the switch is made when it
+   closes. The ring is there at rest, so the hold has something to be seen
+   acting on before it is ever tried. */
+/* --office-autosave-hold is registered (as an <angle>) in styles/globals.css:
+   a registration arriving with this sheet restyled every element of the page
+   it reached late (the home page's demo editors, about 120 ms). */
+.saveRing {
+  --ring-ink: color-mix(in srgb, currentColor 42%, transparent);
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border-radius: 50%;
+}
+.save[data-autosave] .saveRing::before,
+.save[data-autosave] .saveRing::after {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  content: "";
+}
+.save[data-autosave] .saveRing::before {
+  border: 1.5px solid var(--ring-ink);
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+.save[data-autosave="off"] .saveRing::before {
+  border-style: dashed;
+}
+.save[data-autosave]:hover .saveRing::before {
+  border-color: color-mix(in srgb, currentColor 70%, transparent);
+}
+.save[data-autosave] .saveRing::after {
+  background: conic-gradient(
+    var(--office-ribbon-accent, var(--console-accent, #8560b5))
+      var(--office-autosave-hold),
+    transparent 0
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px));
+  transition: --office-autosave-hold 140ms ease-out;
+}
+.save[data-autosave][data-holding] .saveRing::after {
+  --office-autosave-hold: 360deg;
+  transition: --office-autosave-hold var(--office-autosave-hold-ms, 650ms) linear;
+}
+.save[data-autosave][data-holding] .saveRing::before {
+  transform: scale(0.9);
+}
+.saveSpinner {
+  animation: office-rail-save-spin 0.9s linear infinite;
+}
+@keyframes office-rail-save-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .saveSpinner {
+    animation: none;
+  }
+}
+.saveLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.save.save[data-save-problem] {
+  color: var(--console-danger, #b4533c);
+  background: color-mix(
+    in srgb,
+    var(--console-danger, #b4533c) 8%,
+    transparent
+  );
+}
+/* The readback verdict: a quiet pill, coloured only by its status. */
+.verification.verification {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  gap: 4px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--console-text-secondary, #72717f);
+  background: color-mix(
+    in srgb,
+    var(--console-text-secondary, #72717f) 8%,
+    transparent
+  );
+  transition:
+    color var(--duration-normal, 200ms) ease,
+    background-color var(--duration-normal, 200ms) ease;
+}
+.verification.verification > svg {
+  flex: none;
+  width: 14px;
+  height: 14px;
+}
+.verification.verification[data-status="verified"] {
+  color: var(--console-accent, #0d9488);
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 10%, transparent);
+}
+.verification.verification[data-status="failed"] {
+  color: var(--console-danger, #b4533c);
+  background: color-mix(in srgb, var(--console-danger, #b4533c) 8%, transparent);
+}
+.verification.verification[data-status="notice"] {
+  color: var(--console-warning, #f97316);
+  background: color-mix(in srgb, var(--console-warning, #f97316) 10%, transparent);
+}
+.verificationLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* The save failure's reason: one line, clipped, the whole of it in the tooltip. */
+.saveFailure.saveFailure {
+  max-width: 260px;
+  white-space: nowrap;
+}
+/* The one verb beside a verdict that has one (e.g. "Fix with AI"). */
+.verificationAction.verificationAction {
+  flex: none;
+  height: 24px;
+  padding: 0 8px;
+  border: 1px solid var(--office-ribbon-border, #e5e3eb);
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--console-text-primary, #34333e);
+  background: transparent;
+  cursor: pointer;
+}
+.verificationAction.verificationAction:hover {
+  background: color-mix(
+    in srgb,
+    var(--console-text-primary, #34333e) 6%,
+    transparent
+  );
+}
+.verificationAction.verificationAction:focus-visible {
+  outline: 2px solid var(--console-accent, #0d9488);
+  outline-offset: 1px;
+}
+.divider {
+  flex: none;
+  height: 18px;
+  width: 1px;
+  margin: 0 3px;
+  background: var(--office-ribbon-border, #e5e3eb);
+}
+.rail.rail > :global(.note-editor-ribbon-quick__more) > button {
+  width: 32px;
+  height: 32px;
+  min-height: 32px;
+  border-radius: 7px;
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+  color: var(--console-text-primary, #34333e);
+}
+.utilities {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 0;
+  gap: 6px;
+  align-items: center;
+}
+.saveMenu {
+  min-width: 190px;
+  max-width: min(280px, calc(100vw - 24px));
+}
+.saveMenuLabel {
+  color: var(--console-text-secondary, #72717f);
+  font-size: 12px;
+  font-weight: 400;
+}
+.saveMenuAction {
+  gap: 8px;
+  min-height: 34px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.reason {
+  margin: 4px 8px 8px;
+  font-size: 12px;
+  color: var(--console-text-secondary, #72717f);
+  white-space: normal;
+}
+
+/* The app's dark theme (and a document window's own dark mode): the rail
+   reads the console tokens for its inks, which the workspace wrapper pins
+   to light values, so it restates them for itself here. */
+:global([data-theme-mode="dark"]) .rail.rail {
+  --console-text-primary: #f2f2f7;
+  --console-text-secondary: #a1a1a8;
+  --console-text-muted: #8e8e93;
+  --console-danger: #ff7a70;
+  --console-warning: #f0b24a;
+  --console-accent: var(--docs-ribbon-accent, #6b9df7);
+  --console-accent-strong: var(--docs-ribbon-accent, #6b9df7);
+  --office-ribbon-border: rgb(255 255 255 / 12%);
+}
+:global([data-theme-mode="high-contrast"]) .rail.rail {
+  --console-text-primary: #f2f2f7;
+  --console-text-secondary: #a1a1a8;
+  --console-text-muted: #8e8e93;
+  --console-danger: #ff7a70;
+  --console-warning: #f0b24a;
+  --console-accent: var(--docs-ribbon-accent, #6b9df7);
+  --console-accent-strong: var(--docs-ribbon-accent, #6b9df7);
+  --office-ribbon-border: rgb(255 255 255 / 12%);
+}
+:global([data-document-dark-mode="true"]) .rail.rail {
+  --console-text-primary: #f2f2f7;
+  --console-text-secondary: #a1a1a8;
+  --console-text-muted: #8e8e93;
+  --console-danger: #ff7a70;
+  --console-warning: #f0b24a;
+  --console-accent: var(--docs-ribbon-accent, #6b9df7);
+  --console-accent-strong: var(--docs-ribbon-accent, #6b9df7);
+  --office-ribbon-border: rgb(255 255 255 / 12%);
+}
+
+/* The compact chrome's face (a phone, an embedded mobile editor): Undo, Redo
+   and Save's ring in the row -- Save's words stay its accessible status --
+   and the rest worded under More, one finger-sized row each. */
+.core[data-compact-rail] .saveLabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.core[data-compact-rail] .action.action,
+.core[data-compact-rail] .save.save {
+  min-width: 40px;
+  min-height: 40px;
+}
+.core[data-compact-rail] .save.save {
+  width: 44px;
+  padding: 0;
+  justify-content: center;
+}
+.utilities[data-compact-rail-overflow] {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 2px;
+}
+.utilities[data-compact-rail-overflow] > .leading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--docs-ribbon-divider, rgb(15 23 42 / 8%));
+}
+.utilities[data-compact-rail-overflow] > .action.action {
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  gap: 10px;
+}
+
+/* A note's way in (a deck's recoverable copy): a quiet link in the pill. */
+.noteAction {
+  margin-inline-start: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--office-accent, currentColor);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}

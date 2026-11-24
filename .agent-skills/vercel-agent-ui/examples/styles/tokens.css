@@ -1,0 +1,74 @@
+@scope ([data-example]) {
+  /* The site sets its own --muted and --accent on every [data-color-scheme] element. */
+  :scope,
+  [data-color-scheme] {
+    --ink: light-dark(#171717, #dedcd7);
+    --paper: light-dark(#fff, #141413);
+    --surface-1: light-dark(#fff, #1a1a19);
+    --surface-2: light-dark(#fff, #212120);
+    --surface-3: light-dark(#fff, #282827);
+    --line: light-dark(#a2a2a0, #6f6e6b);
+    --line-faint: light-dark(#e2e2e0, #3a3937);
+    --line-disabled: light-dark(#a8a8a6, #5f5e5b);
+    --tint: light-dark(#f4f4f3, #262625);
+    --muted: light-dark(#6f6f6c, #9a9893);
+    --danger: light-dark(#d60020, #ec7a72);
+    --accent: var(--ink);
+    --halo: color-mix(in oklab, var(--accent) 22%, transparent);
+    --danger-tint: color-mix(in oklab, var(--danger) 9%, var(--surface-2));
+    --backdrop: light-dark(rgb(250 250 250 / 0.72), rgb(10 10 10 / 0.72));
+
+    --shadow-drop: 0 2px 3px -1px
+      light-dark(color-mix(in oklab, #171717 16%, transparent), #0009);
+    --shadow-drop-pressed: 0 1px 1px -1px
+      light-dark(color-mix(in oklab, #171717 16%, transparent), #0009);
+    --shadow-1:
+      0 0 0 1px var(--line),
+      0 1px 2px light-dark(color-mix(in oklab, #171717 5%, transparent), #0006);
+    --shadow-float:
+      0 2px 4px -1px
+        light-dark(color-mix(in oklab, #171717 6%, transparent), #0008),
+      0 9px 22px -6px
+        light-dark(color-mix(in oklab, #171717 16%, transparent), #000c);
+    --shadow-2: 0 0 0 1px var(--line), var(--shadow-float);
+    --shadow-3:
+      0 0 0 1px var(--line),
+      0 4px 8px -2px
+        light-dark(color-mix(in oklab, #171717 6%, transparent), #0008),
+      0 22px 46px -12px
+        light-dark(color-mix(in oklab, #171717 26%, transparent), #000e);
+
+    --radius-row: 7px;
+    --radius-control: 8px;
+    --radius-surface: 10px;
+    --radius-popup: 12px;
+
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-6: 24px;
+    --space-8: 32px;
+
+    --size-sm: 28px;
+    --size: 34px;
+    --size-lg: 38px;
+    --size-item: 32px;
+    --size-icon: 16px;
+
+    --text-xs: 12px;
+    --text-sm: 13px;
+    --text-md: 14px;
+    --text-lg: 16px;
+    --mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+    --leading: 20px;
+
+    --duration: 0.15s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :scope {
+      --duration: 0s;
+    }
+  }
+}

@@ -1,0 +1,221 @@
+@scope ([data-example]) {
+  [data-slot="collapsible"] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    width: 20rem;
+    max-width: 100%;
+
+    & > h3 {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-1);
+      margin: 0;
+      font: inherit;
+    }
+
+    &:not([data-open]) [data-show="open"],
+    &[data-open] [data-show="closed"] {
+      display: none;
+    }
+
+    &[data-disabled] {
+      color: var(--line-disabled);
+    }
+
+    li > & {
+      gap: 0;
+    }
+  }
+
+  [data-slot="collapsible-trigger"] {
+    align-self: flex-start;
+
+    &[data-open] > svg:last-child {
+      rotate: 180deg;
+    }
+
+    &:is([dir="rtl"], [dir="rtl"] *) > svg:first-child:not(:last-child) {
+      scale: -1 1;
+    }
+
+    &[data-open] > svg:first-child:not(:last-child) {
+      rotate: 90deg;
+    }
+
+    &[data-open]:is([dir="rtl"], [dir="rtl"] *)
+      > svg:first-child:not(:last-child) {
+      rotate: -90deg;
+    }
+
+    &[data-variant="ghost"] {
+      align-self: stretch;
+      justify-content: flex-start;
+      height: var(--size-sm);
+      padding-inline: var(--space-1);
+      border-radius: var(--radius-row);
+      font-weight: 400;
+
+      & > svg {
+        color: var(--muted);
+      }
+    }
+  }
+
+  [data-slot="collapsible-panel"] {
+    font-size: var(--text-sm);
+  }
+
+  /* Pinned to the top, so opening only grows the demo downward. */
+  :scope:has([data-slot="collapsible"]) {
+    justify-content: flex-start;
+  }
+
+  /* A card whose header is the trigger. */
+  [data-slot="collapsible"][data-variant="card"] {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    width: 22rem;
+    padding: 0;
+
+    & > h3 {
+      display: block;
+    }
+
+    & [data-slot="collapsible-trigger"] {
+      align-self: stretch;
+      justify-content: space-between;
+      width: 100%;
+      height: auto;
+      padding: var(--space-3);
+      border-radius: var(--radius-surface);
+      background: transparent;
+      box-shadow: none;
+      font-weight: 400;
+      text-align: start;
+
+      &:hover {
+        background: var(--tint);
+      }
+
+      &:active {
+        scale: none;
+        box-shadow: none;
+      }
+
+      &[data-open] {
+        border-end-start-radius: 0;
+        border-end-end-radius: 0;
+      }
+
+      & > [data-slot="stack"] {
+        gap: 0;
+
+        & > :first-child {
+          font-weight: 500;
+        }
+      }
+
+      & > svg {
+        color: var(--muted);
+      }
+    }
+
+    & [data-slot="collapsible-panel"] {
+      margin: 0;
+      padding: 0;
+      border-top: 1px solid var(--line-faint);
+      list-style: none;
+
+      &[hidden] {
+        border-top: 0;
+      }
+
+      & > :not([data-slot="row"]) {
+        margin: 0;
+        padding: var(--space-3);
+      }
+
+      & > [data-slot="field"] {
+        box-sizing: border-box;
+        width: 100%;
+
+        & > textarea {
+          width: 100%;
+        }
+      }
+
+      & > [data-slot="stack"] {
+        align-items: flex-start;
+        gap: var(--space-3);
+
+        & > ul {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: var(--space-2) var(--space-6);
+          margin: 0;
+          padding: 0;
+          list-style: none;
+          font-family: var(--mono);
+          font-size: var(--text-sm);
+        }
+      }
+
+      & > ul:not([data-slot]) {
+        padding-inline-start: calc(var(--space-3) + 1.25em);
+        list-style: disc;
+      }
+
+      & > [data-slot="row"] {
+        justify-content: space-between;
+        padding: var(--space-2) var(--space-3);
+        font-variant-numeric: tabular-nums;
+      }
+
+      & > [data-slot="row"] + [data-slot="row"] {
+        border-top: 1px solid var(--line-faint);
+      }
+    }
+  }
+
+  ul:has([data-slot="collapsible"]) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    & ul {
+      margin: 0;
+      margin-inline-start: 14px;
+      padding: 0;
+      padding-inline-start: 6px;
+      border-inline-start: 1px solid var(--line-faint);
+      list-style: none;
+    }
+
+    & li > [data-slot="row"] {
+      min-height: var(--size-sm);
+      padding-inline-start: calc(
+        var(--space-1) + var(--size-icon) + var(--space-2)
+      );
+    }
+  }
+
+  /* Only this demo animates; the height transition is what it shows. */
+  :scope[data-example="collapsible/animation"] {
+    & [data-slot="collapsible-trigger"] > svg {
+      transition: rotate var(--duration);
+    }
+
+    & [data-slot="collapsible-panel"] {
+      height: var(--collapsible-panel-height);
+      overflow: hidden;
+      transition: height calc(var(--duration) * 2) ease-out;
+
+      &:is([data-starting-style], [data-ending-style]) {
+        height: 0;
+      }
+    }
+  }
+}

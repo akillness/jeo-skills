@@ -1,0 +1,100 @@
+{
+  "referenceApplication": "Microsoft Word for macOS",
+  "referenceVersion": "16.86.24060916",
+  "referenceSurface": "Print to PDF",
+  "canonicalFontSha256": "8f31bec58e172359c99801268ea8a50e15bd1a2975a1cb982dfa340c69d844fa",
+  "unitsPerEm": 2048,
+  "intrinsicAscentUnits": 1923,
+  "intrinsicDescentUnits": 577,
+  "sourceDocxSha256": "8ff813c5a7156292f9eda0aa52a70a88fbf4169a995a1a33878067bb80587c73",
+  "nativePdfSha256": "5c66581cbda02d33626c733e4e2295947e2c14a7ec49dba9d3b181281d884f82",
+  "controls": [
+    {
+      "fontSizePt": 7,
+      "autoLine240ths": 245,
+      "context": "table",
+      "lineAdvancePx": 11.63058810763889,
+      "nativeIntervalPx": [
+        11.621818181818183,
+        11.632
+      ]
+    },
+    {
+      "fontSizePt": 7.5,
+      "autoLine240ths": 269,
+      "context": "table",
+      "lineAdvancePx": 13.682047526041666,
+      "nativeIntervalPx": [
+        13.663999999999996,
+        13.695999999999994
+      ]
+    }
+  ],
+  "localMetricProbe": {
+    "family": "Aptos Mono",
+    "postscriptName": "AptosMono",
+    "fontSizePx": 64,
+    "advanceTolerancePx": 0.02,
+    "metricRoundingTolerancePx": 1,
+    "advances": [
+      {
+        "text": "H",
+        "px": 38.40625
+      },
+      {
+        "text": "g",
+        "px": 38.40625
+      },
+      {
+        "text": "m",
+        "px": 38.40625
+      },
+      {
+        "text": "W",
+        "px": 38.40625
+      },
+      {
+        "text": "0",
+        "px": 38.40625
+      },
+      {
+        "text": "/",
+        "px": 38.40625
+      },
+      {
+        "text": "_",
+        "px": 38.40625
+      },
+      {
+        "text": ";",
+        "px": 38.40625
+      }
+    ]
+  },
+  "mixedControl": {
+    "sourceDocxSha256": "b7e97b898fee43497cec161905d7511fa752a1264ccc77dee122bd0704f2d252",
+    "nativePdfSha256": "6aad2f9f72753488d8c18a74d64863d6f12ab4c80b31f845f79b935c5b83d536",
+    "companionFamily": "Arial Unicode MS",
+    "companionSizePt": 8,
+    "autoLine240ths": 245,
+    "ascentCorrectionEstablished": false
+  },
+  "pureMonoControl": {
+    "sourceDocxSha256": "0fdbdf69d25199570f52e7102902956b07185c488ab9998c3cd4ee7a8ced5e2d",
+    "nativePdfSha256": "0d8b34935ff504d7844889306278466ed7b3f3c51a69ff0d3dd92539cba37ea6",
+    "fontSizePt": 7.5,
+    "autoLine240ths": 269,
+    "lineCount": 21,
+    "variants": [
+      "21 lines joined by source hard breaks in one cell paragraph",
+      "21 separate zero-spacing cell paragraphs"
+    ],
+    "nativeMeanPx": 13.68,
+    "nativeIntervalPx": [
+      13.663999999999996,
+      13.695999999999994
+    ],
+    "fontMetricLinePx": 13.682047526041666,
+    "breakLinesCovered": "every line carries text; a hard break never starts, ends, or follows another hard break"
+  }
+}

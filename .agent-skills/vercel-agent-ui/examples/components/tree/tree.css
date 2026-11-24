@@ -1,0 +1,250 @@
+@scope ([data-example]) {
+  /* Trees grow downward as branches open, so the rows above stay put. */
+  :scope:has([data-slot="tree"]) {
+    justify-content: flex-start;
+  }
+
+  [data-slot="tree"] {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    box-sizing: border-box;
+    width: 20rem;
+    max-width: 100%;
+    padding: 5px;
+    border-radius: var(--radius-surface);
+    background: var(--surface-1);
+    box-shadow: var(--shadow-1);
+    color: var(--ink);
+    font-size: var(--text-md);
+  }
+
+  /* A tree under a controls row keeps its width, and narrows with the preview. */
+  [data-slot="stack"]:has(> [data-slot="tree"]) {
+    width: 20rem;
+    max-width: 100%;
+  }
+
+  /* Virtualized: the scroller is the panel, and rows sit at their offsets in the tree. */
+  [data-slot="scroll"]:has(> [data-slot="tree"]) {
+    flex: none;
+    box-sizing: border-box;
+    width: 20rem;
+    max-width: 100%;
+    height: 288px;
+    padding: 5px;
+    border-radius: var(--radius-surface);
+    background: var(--surface-1);
+    box-shadow: var(--shadow-1);
+    overscroll-behavior: contain;
+
+    & > [data-slot="tree"] {
+      display: block;
+      position: relative;
+      width: auto;
+      padding: 0;
+      border-radius: 0;
+      background: none;
+      box-shadow: none;
+    }
+
+    & [data-slot="tree-item"] {
+      position: absolute;
+      inset-inline: 0;
+      height: var(--size-item);
+      margin: 0;
+
+      & > [data-slot="tree-label"] {
+        height: 100%;
+      }
+    }
+  }
+
+  [data-slot="tree-item"] {
+    outline: none;
+
+    /* A web label rendered as its child, like a link, sits inside the label element. */
+    &:focus-visible > [data-slot="tree-label"],
+    &:focus-visible > :not([data-slot]) > [data-slot="tree-label"] {
+      box-shadow: inset 0 0 0 1px var(--ink);
+
+      &:not([data-selected], [data-current]) {
+        background: var(--tint);
+      }
+    }
+  }
+
+  [data-slot="tree-group"] > [data-slot="tree-item"] {
+    margin-top: 1px;
+  }
+
+  [data-slot="tree-label"] {
+    --tree-indent: calc((var(--tree-level, 1) - 1) * var(--space-4));
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    box-sizing: border-box;
+    min-width: 0;
+    height: var(--size-item);
+    padding-inline: calc(var(--space-2) + var(--tree-indent)) var(--space-3);
+    border-radius: var(--radius-row);
+    color: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: default;
+    user-select: none;
+
+    &:not([data-branch]) {
+      padding-inline-start: calc(
+        var(--space-2) + var(--tree-indent) + var(--size-icon) + var(--space-2)
+      );
+    }
+
+    &:hover:not([data-disabled], [data-selected], [data-current]) {
+      background: color-mix(in oklab, var(--ink) 4%, transparent);
+    }
+
+    &:is([data-selected], [data-current]) {
+      background: color-mix(in oklab, var(--ink) 8%, transparent);
+    }
+
+    &[data-current] {
+      font-weight: 500;
+    }
+
+    &[data-disabled] {
+      color: var(--line-disabled);
+    }
+
+    &[data-pending] {
+      cursor: progress;
+    }
+
+    & > svg {
+      flex-shrink: 0;
+      width: var(--size-icon);
+      height: var(--size-icon);
+      color: var(--muted);
+    }
+
+    &[data-disabled] > svg {
+      color: inherit;
+    }
+
+    & > svg + svg,
+    &[data-expanded] > svg:has(+ svg) {
+      display: none;
+    }
+
+    &[data-expanded] > svg + svg {
+      display: block;
+    }
+
+    & > span:not([data-slot]) {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &[data-pending] > svg:last-child {
+      margin-inline-start: auto;
+      animation: tree-spin 1s linear infinite;
+    }
+  }
+
+  [data-slot="tree-indicator"] {
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: var(--size-icon);
+    height: var(--size-icon);
+    color: var(--muted);
+
+    & > svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    &[data-expanded] {
+      rotate: 90deg;
+    }
+
+    &:is([dir="rtl"], [dir="rtl"] *) {
+      rotate: 180deg;
+    }
+
+    &[data-expanded]:is([dir="rtl"], [dir="rtl"] *) {
+      rotate: 90deg;
+    }
+
+    &[data-disabled] {
+      color: inherit;
+    }
+
+    &[data-loading] {
+      rotate: none;
+
+      & > svg {
+        animation: tree-spin 1s linear infinite;
+      }
+    }
+
+    &[data-failed]:not([data-loading]) {
+      rotate: none;
+      color: var(--danger);
+    }
+  }
+
+  :is([data-slot="tree-indicator"], [data-slot="tree-label"]) {
+    & > svg[data-show] {
+      display: none;
+    }
+
+    &[data-loading] > svg[data-show="loading"],
+    &[data-failed]:not([data-loading]) > svg[data-show="failed"],
+    &:not([data-loading], [data-failed]) > svg[data-show="idle"],
+    &[data-pending] > svg[data-show="pending"] {
+      display: block;
+    }
+  }
+
+  [data-slot="tree-checkbox"] {
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    box-sizing: border-box;
+    width: var(--size-icon);
+    height: var(--size-icon);
+    border-radius: 4px;
+    background: var(--surface-1);
+    box-shadow: inset 0 0 0 1px var(--line);
+    color: var(--paper);
+
+    &:is([data-checked], [data-indeterminate]) {
+      background: var(--ink);
+      box-shadow: inset 0 0 0 1px var(--ink);
+
+      &::after {
+        width: 12px;
+        height: 12px;
+        background: currentColor;
+        content: "";
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")
+          center / contain no-repeat;
+      }
+    }
+
+    &[data-indeterminate]::after {
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M5 12h14'/%3E%3C/svg%3E");
+    }
+
+    &[data-disabled] {
+      box-shadow: inset 0 0 0 1px var(--line-faint);
+    }
+  }
+}
+
+@keyframes tree-spin {
+  to {
+    rotate: 360deg;
+  }
+}

@@ -1,0 +1,220 @@
+{
+  "apps/playground/src/fixtures/menu-cases/react.tsx": {
+    "react-hooks/immutability": {
+      "count": 1
+    }
+  },
+  "apps/playground/src/fixtures/menu-render/react.tsx": {
+    "react-hooks/immutability": {
+      "count": 2
+    }
+  },
+  "apps/playground/src/fixtures/navigation-menu-kitchen-sink/react.tsx": {
+    "react-hooks/immutability": {
+      "count": 1
+    }
+  },
+  "apps/playground/src/fixtures/otp-input/solid.tsx": {
+    "solid/prefer-for": {
+      "count": 2
+    }
+  },
+  "apps/playground/src/fixtures/react-transitions/react.tsx": {
+    "react-hooks/immutability": {
+      "count": 1
+    }
+  },
+  "apps/playground/src/fixtures/resizable-render/react.tsx": {
+    "react-hooks/immutability": {
+      "count": 1
+    }
+  },
+  "apps/playground/src/fixtures/scroll-area-render/react.tsx": {
+    "react-hooks/immutability": {
+      "count": 1
+    }
+  },
+  "apps/playground/src/fixtures/toast/react.tsx": {
+    "react-hooks/globals": {
+      "count": 1
+    }
+  },
+  "apps/playground/src/fixtures/toggle/react.tsx": {
+    "react-hooks/refs": {
+      "count": 2
+    }
+  },
+  "apps/playground/src/fixtures/token-input/TokenInputFixture.svelte": {
+    "svelte/no-useless-mustaches": {
+      "count": 1
+    }
+  },
+  "examples/behaviors/react/date-today.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "examples/behaviors/react/move-group.tsx": {
+    "react-hooks/refs": {
+      "count": 1
+    }
+  },
+  "examples/behaviors/react/move.tsx": {
+    "react-hooks/refs": {
+      "count": 2
+    }
+  },
+  "examples/behaviors/react/storage.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "examples/components/accordion/svelte/expand-all.svelte": {
+    "svelte/prefer-svelte-reactivity": {
+      "count": 1
+    }
+  },
+  "examples/components/calendar/svelte/custom-grid.svelte": {
+    "svelte/prefer-svelte-reactivity": {
+      "count": 1
+    }
+  },
+  "examples/components/command/solid/demo.tsx": {
+    "solid/no-innerhtml": {
+      "count": 1
+    }
+  },
+  "examples/components/command/solid/dialog.tsx": {
+    "solid/no-innerhtml": {
+      "count": 1
+    }
+  },
+  "examples/components/command/solid/highlight.tsx": {
+    "solid/no-innerhtml": {
+      "count": 1
+    }
+  },
+  "examples/components/command/solid/pages.tsx": {
+    "solid/no-innerhtml": {
+      "count": 1
+    }
+  },
+  "examples/components/command/solid/shortcuts.tsx": {
+    "solid/no-innerhtml": {
+      "count": 1
+    }
+  },
+  "examples/components/listbox/solid/icons.tsx": {
+    "solid/no-innerhtml": {
+      "count": 1
+    }
+  },
+  "examples/components/toggle/solid/group-single.tsx": {
+    "solid/no-innerhtml": {
+      "count": 1
+    }
+  },
+  "examples/components/toolbar/solid/controller.tsx": {
+    "solid/no-innerhtml": {
+      "count": 1
+    }
+  },
+  "examples/components/toolbar/solid/demo.tsx": {
+    "solid/no-innerhtml": {
+      "count": 1
+    }
+  },
+  "examples/components/toolbar/solid/group.tsx": {
+    "solid/no-innerhtml": {
+      "count": 1
+    }
+  },
+  "examples/components/toolbar/solid/toggle-group.tsx": {
+    "solid/no-innerhtml": {
+      "count": 1
+    }
+  },
+  "examples/components/toolbar/solid/vertical.tsx": {
+    "solid/no-innerhtml": {
+      "count": 1
+    }
+  },
+  "examples/components/tooltip/solid/shared.tsx": {
+    "solid/no-innerhtml": {
+      "count": 1
+    }
+  },
+  "examples/components/trigger-menu/solid/icons.tsx": {
+    "solid/no-innerhtml": {
+      "count": 1
+    }
+  },
+  "packages/react/src/async-options.ts": {
+    "react-hooks/refs": {
+      "count": 1
+    }
+  },
+  "packages/react/src/children.ts": {
+    "react-hooks/refs": {
+      "count": 1
+    }
+  },
+  "packages/react/src/preferences.tsx": {
+    "react-hooks/refs": {
+      "count": 5
+    }
+  },
+  "packages/react/src/shortcuts.ts": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "packages/react/src/use-primitive.tsx": {
+    "react-hooks/refs": {
+      "count": 1
+    },
+    "react-hooks/rules-of-hooks": {
+      "count": 2
+    }
+  },
+  "packages/solid/src/preferences.tsx": {
+    "solid/no-innerhtml": {
+      "count": 1
+    }
+  },
+  "packages/svelte/src/dialog/dialog-shortcut.svelte": {
+    "svelte/prefer-writable-derived": {
+      "count": 1
+    }
+  },
+  "packages/svelte/src/drawer/drawer-shortcut.svelte": {
+    "svelte/prefer-writable-derived": {
+      "count": 1
+    }
+  },
+  "packages/svelte/src/popover/popover-shortcut.svelte": {
+    "svelte/prefer-writable-derived": {
+      "count": 1
+    }
+  },
+  "packages/svelte/src/preferences/preferences.svelte": {
+    "svelte/no-at-html-tags": {
+      "count": 1
+    }
+  },
+  "packages/svelte/src/token-input/token-input-editor.svelte": {
+    "svelte/no-at-html-tags": {
+      "count": 1
+    }
+  },
+  "packages/svelte/src/token-input/token-input.svelte": {
+    "svelte/prefer-svelte-reactivity": {
+      "count": 2
+    }
+  },
+  "packages/svelte/src/tooltip/tooltip-shortcut.svelte": {
+    "svelte/prefer-writable-derived": {
+      "count": 1
+    }
+  }
+}

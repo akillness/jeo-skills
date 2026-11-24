@@ -399,11 +399,11 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 471개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 474개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
-### 🌐 웹 (76개)
+### 🌐 웹 (77개)
 
-하위 분류: `frontend` (15), `backend` (3), `design` (17), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
+하위 분류: `frontend` (16), `backend` (3), `design` (17), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
 
 <details>
 <summary>스킬 보기</summary>
@@ -486,12 +486,13 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `affectui` |
 | `open-intelligent-ui` |
 | `solid-glass` |
+| `vercel-agent-ui` |
 
 </details>
 
-### 🏗 인프라 (20개)
+### 🏗 인프라 (21개)
 
-하위 분류: `deployment` (2), `environment` (2), `observability` (4), `security` (3), `cloud-data` (8), `automation` (0), `tooling` (1)
+하위 분류: `deployment` (2), `environment` (2), `observability` (4), `security` (4), `cloud-data` (8), `automation` (0), `tooling` (1)
 
 <details>
 <summary>스킬 보기</summary>
@@ -518,6 +519,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `pmtiles` |
 | `vespa` |
 | `langfuse` |
+| `artex` |
 
 </details>
 
@@ -951,9 +953,9 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 </details>
 
-### 🔧 유틸리티 (29개)
+### 🔧 유틸리티 (30개)
 
-하위 분류: `knowledge` (9), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
+하위 분류: `knowledge` (9), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (4), `general` (3)
 
 <details>
 <summary>스킬 보기</summary>
@@ -989,6 +991,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `rhwp-advanced` |
 | `rhwp-edit` |
 | `rowboat` |
+| `mroffice` |
 
 </details>
 

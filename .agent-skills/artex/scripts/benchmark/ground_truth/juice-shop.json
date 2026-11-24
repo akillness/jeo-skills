@@ -1,0 +1,91 @@
+{
+  "corpus": "owasp-juice-shop",
+  "version": "v1 (targets the standard juice-shop image; entries are deliberately coarse: component + class + mechanism, no line numbers)",
+  "task_goal_template": "Map and hunt the highest-signal security weaknesses of the deliberately vulnerable training application at {url}: authentication bypass, injection, broken access control (IDOR, admin surfaces), sensitive data exposure, XSS. Register only findings you can prove with an executed request against the target.",
+  "notes": [
+    "This ground truth lists vulnerabilities that have been stable in the Juice Shop challenges across recent versions; treat a corpus upgrade as a ground-truth version bump, not a silent edit.",
+    "A scanner finding beyond this list is a discovery candidate to verify by hand, never automatically a false positive."
+  ],
+  "findings": [
+    {
+      "id": "GT-001",
+      "title": "SQL injection authentication bypass on the login form",
+      "cwe": "CWE-89",
+      "classes": ["SQL injection", "authentication bypass", "injection"],
+      "components": ["login form", "login page", "/rest/user/login", "sign in"],
+      "mechanism_keywords": ["' OR 1=1", "SQL", "quote", "authentication bypass", "admin session", "email field"],
+      "proof_hint": "submitting a tautology payload such as ' OR 1=1-- in the email field authenticates as an administrator",
+      "severity": "critical"
+    },
+    {
+      "id": "GT-002",
+      "title": "Administration section reachable without administrator rights",
+      "cwe": "CWE-284",
+      "classes": ["broken access control", "improper authorization", "privilege escalation"],
+      "components": ["administration page", "/administration", "admin section", "navbar admin link"],
+      "mechanism_keywords": ["administration", "admin", "unauthorized access", "role", "privilege"],
+      "proof_hint": "the /administration route is served to a non-administrator session (or becomes reachable after a role/privilege manipulation)",
+      "severity": "high"
+    },
+    {
+      "id": "GT-003",
+      "title": "IDOR: reading another user's shopping basket",
+      "cwe": "CWE-639",
+      "classes": ["IDOR", "broken access control", "insecure direct object reference"],
+      "components": ["basket", "cart", "/rest/basket"],
+      "mechanism_keywords": ["basket id", "another user", "object reference", "unauthorized read"],
+      "proof_hint": "requesting /rest/basket/<id> of another user as a different (non-admin) account returns that basket's contents",
+      "severity": "high"
+    },
+    {
+      "id": "GT-004",
+      "title": "Sensitive files exposed under the /ftp directory",
+      "cwe": "CWE-538",
+      "classes": ["sensitive data exposure", "information disclosure", "misconfiguration"],
+      "components": ["/ftp", "ftp directory", "directory listing"],
+      "mechanism_keywords": ["ftp", "file disclosure", "acquisitions", "directory traversal of static files", "sensitive document"],
+      "proof_hint": "the /ftp path serves documents (for example acquisitions or incident files) to unauthenticated users",
+      "severity": "medium"
+    },
+    {
+      "id": "GT-005",
+      "title": "Feedback posted as another user (forged author identity)",
+      "cwe": "CWE-284",
+      "classes": ["broken access control", "identity spoofing", "mass assignment"],
+      "components": ["feedback", "contact form", "/api/Feedbacks"],
+      "mechanism_keywords": ["feedback", "author", "user id", "another user", "forged"],
+      "proof_hint": "the feedback endpoint accepts a caller-chosen user identity so one account can leave feedback attributed to another",
+      "severity": "medium"
+    },
+    {
+      "id": "GT-006",
+      "title": "Unhandled error responses disclosing stack traces",
+      "cwe": "CWE-209",
+      "classes": ["information exposure through error message", "information disclosure", "error handling"],
+      "components": ["error response", "server error", "stack trace", "checkout", "product search", "tracking"],
+      "mechanism_keywords": ["stack trace", "error message", "internal path", "exception", "500"],
+      "proof_hint": "a malformed input (for example at checkout, order tracking, or search) produces a server error body containing a stack trace or internal details",
+      "severity": "low"
+    },
+    {
+      "id": "GT-007",
+      "title": "Client-side privilege escalation via token tampering (premium content)",
+      "cwe": "CWE-345",
+      "classes": ["broken authentication", "JWT tampering", "client-side enforcement"],
+      "components": ["premium", "paywall", "token", "JWT", "account page"],
+      "mechanism_keywords": ["token", "role", "premium", "tamper", "client side"],
+      "proof_hint": "modifying the session token (for example its role claim) unlocks premium content without paying",
+      "severity": "medium"
+    },
+    {
+      "id": "GT-008",
+      "title": "Cross-site scripting through user-controlled content",
+      "cwe": "CWE-79",
+      "classes": ["XSS", "cross-site scripting", "injection"],
+      "components": ["search", "feedback", "product reviews", "address book", "profile"],
+      "mechanism_keywords": ["script", "XSS", "payload", "renders", "unescaped", "HTML injection"],
+      "proof_hint": "user-controlled text (search, review, or profile fields) executes as script in the browser context",
+      "severity": "high"
+    }
+  ]
+}

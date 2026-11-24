@@ -1,0 +1,117 @@
+/* A ribbon gallery's More menu, as Office draws one (Word's Design > Style
+   Sets, PowerPoint's Design > Themes): under its gallery, as wide as its grid
+   and no wider, sections with their headings, a grid of tiles sized by the
+   gallery's own thumbnails, the commands below a rule. */
+
+.menu.menu {
+  box-sizing: border-box;
+  font-size: 13px;
+  min-width: 10rem;
+  width: max-content;
+  max-width: calc(100vw - 24px);
+  max-height: min(470px, var(--radix-dropdown-menu-content-available-height, calc(100vh - 24px)));
+  overflow-y: auto;
+}
+
+.section.section {
+  font-size: 12px;
+}
+
+/* A group inside a section (PowerPoint's Basic / Subtle / Moderate /
+   Exciting effect groups): a quieter heading over its own grid. */
+.subsection {
+  padding: 4px 12px 2px;
+  font-size: 11px;
+  line-height: 14px;
+  color: var(--console-text-secondary, #537069);
+}
+
+/* Columns of the gallery's own tile width, never stretched to the menu. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--office-gallery-menu-columns, 4), var(--office-gallery-menu-tile-width, 92px));
+  gap: var(--office-gallery-menu-gap, 6px);
+  padding: 2px 8px 8px;
+}
+
+/* A tile: its thumbnail over its name. Hover tints it, the current one wears
+   an accent ring. */
+.tile.tile {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto var(--office-gallery-menu-name-row, 14px);
+  justify-items: center;
+  align-content: start;
+  gap: 3px;
+  width: var(--office-gallery-menu-tile-width, 92px);
+  min-width: 0;
+  padding: 3px 3px 2px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  text-align: center;
+  transition:
+    background-color var(--duration-normal, 200ms) ease,
+    border-color var(--duration-normal, 200ms) ease;
+}
+
+/* A tile with no visible name (the name is its tooltip): the thumbnail alone. */
+.tile.tile[data-nameless="true"] {
+  grid-template-rows: auto;
+}
+
+/* The menu row the tile is (a Radix item) brings its own padding, focus
+   background and indicator: the tile's look is the tile's. */
+.tile.tile > :global(span.absolute):first-child {
+  display: none;
+}
+
+.tile.tile:hover:not(:disabled):not([data-disabled]),
+.tile.tile[data-highlighted] {
+  border-color: color-mix(in srgb, var(--console-accent, #0d9488) 45%, transparent);
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 5%, transparent);
+}
+
+.tile.tile[data-selected="true"] {
+  border-color: var(--accent-9, #0a7d72);
+  box-shadow: 0 0 0 1px var(--accent-9, #0a7d72) inset;
+}
+
+.tile.tile:disabled,
+.tile.tile[data-disabled] {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.thumbnail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.name {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 10px;
+  line-height: 13px;
+  color: var(--console-text-secondary, #537069);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile.tile {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .tile.tile[data-selected="true"] {
+    border-color: Highlight;
+    box-shadow: 0 0 0 1px Highlight inset;
+  }
+}

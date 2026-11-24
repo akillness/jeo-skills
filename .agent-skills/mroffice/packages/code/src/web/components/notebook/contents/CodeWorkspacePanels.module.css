@@ -1,0 +1,427 @@
+/* The Code window's own workspace panes (the workspace's Problems, Find in
+   Files, Quick Open, the Explorer). Their frame, fields, segmented filters,
+   list rows and messages are the shared Office pane and dialog parts
+   (OfficeTaskPane, officeDialogParts); this file only lays out what those
+   parts do not: a count in the title row, a file's heading in a result list,
+   and a result row's location / text columns. */
+
+.count {
+  color: var(--office-dialog-muted, var(--console-text-tertiary, #6b7280));
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.filters {
+  display: grid;
+  gap: 8px;
+}
+
+.filters > [role="group"] {
+  justify-self: start;
+}
+
+.list {
+  flex: 1 1 auto;
+  margin: 0 12px 12px;
+}
+
+.fileHeading {
+  position: sticky;
+  top: -3px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 26px;
+  margin: 2px -3px 0;
+  padding: 0 11px;
+  background: var(--office-dialog-surface, var(--bg-surface, #fff));
+  color: var(--office-dialog-ink, var(--console-text-primary, #1f2937));
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.fileHeading:first-child {
+  margin-top: 0;
+}
+
+.fileName {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.problem {
+  display: grid;
+  grid-template-columns: 14px minmax(52px, auto) minmax(0, 1fr);
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+  font: 12px/1.5 var(--font-jetbrains, ui-monospace, SFMono-Regular, Menlo, monospace);
+}
+
+.problem > svg {
+  align-self: center;
+}
+
+.problem[data-severity-group="error"] > svg {
+  color: var(--danger, #dc2626);
+}
+
+.problem[data-severity-group="warning"] > svg {
+  color: var(--warning, #d97706);
+}
+
+.problem[data-severity-group="info"] > svg {
+  color: var(--brand-v2, #0d9488);
+}
+
+.location {
+  color: var(--office-dialog-muted, var(--console-text-tertiary, #6b7280));
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Find in Files: the query and its match options on one row, the include /
+   exclude filters side by side, the replacement with its two commands. */
+.queryRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+}
+
+.option {
+  min-width: 30px;
+  padding: 0 8px;
+  font: 600 12px/1 var(--font-jetbrains, ui-monospace, SFMono-Regular, Menlo, monospace);
+}
+
+.pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 6px;
+}
+
+.replaceRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 6px;
+}
+
+.pair > input,
+.replaceRow > input {
+  min-width: 0;
+  width: 100%;
+}
+
+.errorRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.errorRow > span {
+  flex: 1 1 auto;
+}
+
+.hit {
+  display: grid;
+  grid-template-columns: minmax(28px, auto) minmax(0, 1fr);
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+  font: 12px/1.5 var(--font-jetbrains, ui-monospace, SFMono-Regular, Menlo, monospace);
+}
+
+.hit > .location {
+  text-align: end;
+}
+
+/* Quick Open: a palette card floating over the top of the editor, below the
+   Ribbon (VS Code's place for it); the anchor takes no height of its own. */
+.paletteAnchor {
+  position: relative;
+  z-index: 30;
+  height: 0;
+}
+
+.palette {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  width: min(640px, calc(100% - 24px));
+  max-height: min(420px, 60vh);
+  min-height: 0;
+  padding: 8px;
+  transform: translateX(-50%);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.paletteHead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+}
+
+.paletteHead :global(.office-dialog__input-group) {
+  height: 32px;
+}
+
+.kbd {
+  flex: none;
+  padding: 1px 5px;
+  border: 1px solid var(--office-dialog-control-border, #d1d5db);
+  border-radius: 4px;
+  color: var(--office-dialog-muted, #6b7280);
+  font: 10.5px/1.4 var(--font-jetbrains, ui-monospace, SFMono-Regular, Menlo, monospace);
+}
+
+.paletteNote {
+  margin: 6px 4px 0;
+}
+
+.paletteEmpty {
+  margin: 0;
+  padding: 18px 12px 10px;
+  text-align: center;
+}
+
+.paletteList {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-height: 0;
+  margin-top: 6px;
+  overflow-y: auto;
+}
+
+.paletteOption {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 32px;
+  padding: 4px 10px;
+  font-size: 13px;
+}
+
+.paletteOption > svg {
+  color: var(--office-dialog-muted, #6b7280);
+}
+
+.paletteOption[data-current="true"] {
+  font-weight: 600;
+}
+
+.paletteOption[data-current="true"] > svg {
+  color: var(--office-dialog-accent, var(--brand-v2, #0d9488));
+}
+
+.language {
+  color: var(--office-dialog-muted, #6b7280);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.paletteCount {
+  text-align: end;
+}
+
+/* The Explorer: the docked panes' glass card at the editor's left. */
+.explorer {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  width: min(260px, 42%);
+  min-width: 200px;
+  min-height: 0;
+  margin: 8px 0 8px 8px;
+}
+
+.explorerHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.badge {
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--office-dialog-surface-muted, #f2f2f5);
+  color: var(--office-dialog-muted, #6b7280);
+  font-size: 11px;
+  line-height: 20px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.fileActions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.fileActions > [data-tone="danger"]:not(:disabled) {
+  color: var(--danger, #dc2626);
+}
+
+.pathForm {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 6px;
+}
+
+.pathForm > label {
+  grid-column: 1 / -1;
+}
+
+.pathForm > input {
+  min-width: 0;
+  width: 100%;
+}
+
+.tree {
+  flex: 1 1 auto;
+}
+
+.treeEmpty {
+  margin: 0;
+  padding: 16px 8px;
+  text-align: center;
+}
+
+.treeRow {
+  display: grid;
+  grid-template-columns: 14px 15px minmax(0, 1fr) 14px;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  min-height: 28px;
+  font-size: 12.5px;
+}
+
+.treeRow > svg {
+  color: var(--office-dialog-muted, #6b7280);
+}
+
+.treeRow[data-current="true"] {
+  font-weight: 600;
+}
+
+.treeRow[data-current="true"] > svg:nth-child(2),
+.treeRow > svg[data-tone="accent"] {
+  color: var(--office-dialog-accent, var(--brand-v2, #0d9488));
+}
+
+.treeRow > svg[data-tone="danger"],
+.explorerStatus > svg[data-tone="danger"] {
+  color: var(--danger, #dc2626);
+}
+
+.explorerStatus {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Standard input: a field under the Ribbon, in the dialog chrome. */
+.stdinBar {
+  display: grid;
+  gap: 2px;
+  padding: 6px 12px 4px;
+  border-bottom: 1px solid var(--office-dialog-divider, rgb(0 0 0 / 9%));
+}
+
+.stdinField {
+  width: 100%;
+  min-height: 60px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.stdinBudget {
+  margin: 0;
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+/* An import's result beside the file name in the Ribbon. */
+.ribbonStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  max-width: 360px;
+  color: var(--console-text-secondary, #4b5563);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.ribbonStatus[data-tone="error"] {
+  overflow: hidden;
+  color: var(--danger, #b91c1c);
+  text-overflow: ellipsis;
+}
+
+.ribbonStatusName {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The shared notice banner's quiet form: a step in progress, not a problem. */
+:global(.page-save-conflict-banner).bannerQuiet {
+  background: var(--console-surface-2, #f4f7f6);
+  border-bottom-color: var(--border, #dfe5e4);
+  color: var(--console-text-secondary, #4b5563);
+}
+
+/* The Ribbon's runtime status (Run, Debug): a quiet pill. */
+.ribbonPill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--console-surface-2, #f4f7f6);
+  color: var(--console-text-secondary, #4b5563);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Why a Ribbon command is unavailable, under it. */
+.ribbonReason {
+  display: block;
+  max-width: 176px;
+  color: var(--console-text-secondary, #64748b);
+  font-size: 10px;
+  line-height: 1.2;
+  white-space: normal;
+}

@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 471,
+  "skill_count": 474,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -204,7 +204,8 @@
       "modern-web-guidance",
       "affectui",
       "open-intelligent-ui",
-      "solid-glass"
+      "solid-glass",
+      "vercel-agent-ui"
     ],
     "infrastructure": [
       "deployment-automation",
@@ -226,7 +227,8 @@
       "cocoindex",
       "pmtiles",
       "vespa",
-      "langfuse"
+      "langfuse",
+      "artex"
     ],
     "game": [
       "implement-fog-of-war",
@@ -617,7 +619,8 @@
       "hwp",
       "rhwp-advanced",
       "rhwp-edit",
-      "rowboat"
+      "rowboat",
+      "mroffice"
     ]
   },
   "subcategories": {
@@ -637,7 +640,8 @@
         "trickle-ui",
         "modern-web-guidance",
         "affectui",
-        "open-intelligent-ui"
+        "open-intelligent-ui",
+        "vercel-agent-ui"
       ],
       "backend": [
         "amrouter",
@@ -739,7 +743,8 @@
       "security": [
         "security-best-practices",
         "strix",
-        "zurp"
+        "zurp",
+        "artex"
       ],
       "cloud-data": [
         "firebase-cli",
@@ -1267,7 +1272,8 @@
       "productivity": [
         "google-workspace",
         "solo-skills",
-        "wizard"
+        "wizard",
+        "mroffice"
       ],
       "general": [
         "eli5",
@@ -16446,34 +16452,6 @@
       "source": "https://github.com/thesysdev/open-intelligent-ui"
     },
     {
-      "name": "solid-glass",
-      "description": "Apply deeplethe/solid-glass, a physical, tactile, technical glass design system stylesheet and component registry for AI applications built on shadcn/ui (React 19, Tailwind CSS 4, Base UI). Use when installing `solid-glass.css` via shadcn CLI, removing duplicate `:root`/`.dark` theme tokens so Solid Glass variables take effect, configuring glass surface utilities (`glass-panel`, `glass-chosen`, `glass-held`, `glass-control`, `glass-armed`, `data-glass=\"opaque\"`), customizing `--brand`/`--radius`, or adding AI interface primitives (`status-glyph`, `composer`, `tool-steps`, `diff-view`, `ask-card`, `context-ring`, `task-notice`, `reasoning`). Route zero-Tailwind standalone agent React cards to affectui, OpenUI Lang streaming to open-intelligent-ui, and SKILL.md linting to skill-standardization.",
-      "category": "web",
-      "subcategory": "design",
-      "interface": "library",
-      "path": "solid-glass/SKILL.md",
-      "tags": [
-        "solid-glass",
-        "design-system",
-        "shadcn",
-        "tailwind-v4",
-        "base-ui",
-        "glassmorphism",
-        "ai-ui",
-        "css-tokens"
-      ],
-      "platforms": [],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "solid-glass",
-      "version": "0.1.0",
-      "source": "https://github.com/deeplethe/solid-glass"
-    },
-    {
       "name": "indra",
       "description": "Run fast CPU document OCR and layout extraction on PDFs and images using datalab-to/indra (`indra-ocr`). Use when converting PDFs, scans, rotated/tilted documents, or multilingual pages (80+ languages including CJK, RTL Arabic/Hebrew, Latin, Indic) into Markdown, plain text, or JSON bounding boxes and reading-order layout blocks on CPU via ONNX Runtime without PyTorch/GPU, launching the local `indra-ocr-viewer` (`http://localhost:8765`), enabling `--math` inline LaTeX recognition, or batching pages via `convert_many`. Route Korean HWP/HWPX document parsing to hwp or rhwp-edit, and SKILL.md format linting to skill-standardization.",
       "category": "cli-tools",
@@ -17165,6 +17143,121 @@
       "keyword": "langfuse",
       "version": "1.0.0",
       "source": "https://github.com/langfuse/langfuse"
+    },
+    {
+      "name": "solid-glass",
+      "description": "Apply deeplethe/solid-glass, a physical, tactile, technical glass design system stylesheet and component registry for AI applications built on shadcn/ui (React 19, Tailwind CSS 4, Base UI). Use when installing `solid-glass.css` via shadcn CLI, removing duplicate `:root`/`.dark` theme tokens so Solid Glass variables take effect, configuring glass surface utilities (`glass-panel`, `glass-chosen`, `glass-held`, `glass-control`, `glass-armed`, `data-glass=\"opaque\"`), customizing `--brand`/`--radius`, or adding AI interface primitives (`status-glyph`, `composer`, `tool-steps`, `diff-view`, `ask-card`, `context-ring`, `task-notice`, `reasoning`). Route zero-Tailwind standalone agent React cards to affectui, OpenUI Lang streaming to open-intelligent-ui, and SKILL.md linting to skill-standardization.",
+      "category": "web",
+      "subcategory": "design",
+      "interface": "workflow",
+      "path": "solid-glass/SKILL.md",
+      "tags": [
+        "solid-glass",
+        "design-system",
+        "glassmorphism",
+        "physics-ui",
+        "tactile-ui",
+        "shaders",
+        "tailwind"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "solid-glass",
+      "version": "0.1.0",
+      "source": "https://github.com/deeplethe/solid-glass"
+    },
+    {
+      "name": "artex",
+      "description": "AI autonomous penetration testing and offensive security system using BaaRai/ARTEX. Coordinates reconnaissance, API security audits, patch diffing, code auditing, and exploit payload generation across automated security pipelines.",
+      "category": "infrastructure",
+      "subcategory": "security",
+      "interface": "workflow",
+      "path": "artex/SKILL.md",
+      "tags": [
+        "artex",
+        "penetration-testing",
+        "security",
+        "api-security",
+        "recon",
+        "code-audit",
+        "patch-diff",
+        "exploit-generation"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "artex",
+      "version": "1.0.0",
+      "source": "https://github.com/BaaRai/ARTEX"
+    },
+    {
+      "name": "vercel-agent-ui",
+      "description": "A library of behaviors, headless primitives, and agent-driven design patterns for AI agents building generative user interfaces using vercel-labs/ui.",
+      "category": "web",
+      "subcategory": "frontend",
+      "interface": "workflow",
+      "path": "vercel-agent-ui/SKILL.md",
+      "tags": [
+        "vercel-ui",
+        "generative-ui",
+        "agent-behaviors",
+        "react",
+        "nextjs",
+        "ai-sdk",
+        "headless-primitives"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "vercel-agent-ui",
+      "version": "1.0.0",
+      "source": "https://github.com/vercel-labs/ui"
+    },
+    {
+      "name": "mroffice",
+      "description": "Deploy, build, and orchestrate open-source AI office suite editors for documents, spreadsheets, and presentations using XinaTian/MROffice.",
+      "category": "utilities",
+      "subcategory": "productivity",
+      "interface": "workflow",
+      "path": "mroffice/SKILL.md",
+      "tags": [
+        "mroffice",
+        "office-suite",
+        "document-editor",
+        "spreadsheet",
+        "presentation",
+        "ai-office",
+        "react"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "mroffice",
+      "version": "1.0.0",
+      "source": "https://github.com/XinaTian/MROffice"
     }
   ]
 }

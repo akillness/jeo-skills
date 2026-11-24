@@ -1,0 +1,297 @@
+{
+  "date": "2026-09-10",
+  "branch": "codex/btw-side-question",
+  "notes": [
+    "Independent test database and profiles; product default unchanged.",
+    "Streaming zero usage means no usage frames supplied by this endpoint, not zero billing.",
+    "Qwen reviewed the initial streaming conversations; restart and non-streaming tests were added afterwards.",
+    "The main curl command saved a local response file. No side question executed a tool."
+  ],
+  "availability": [
+    {
+      "model": "grok-4.6",
+      "protocol": "openai",
+      "base_url": "http://127.0.0.1:12580/tingly/openai",
+      "http_status": 200,
+      "response_model": "grok-4.6",
+      "answer": "READY",
+      "available": true,
+      "seconds": 2.82
+    }
+  ],
+  "streaming": {
+    "model": "grok-4.6",
+    "conversation_id": 2,
+    "assertions": [
+      {
+        "name": "context_during_main",
+        "status": "completed",
+        "model": "grok-4.6",
+        "seconds": 16.97
+      },
+      {
+        "name": "completed_tool_context",
+        "status": "completed",
+        "model": "grok-4.6",
+        "seconds": 7.24
+      },
+      {
+        "name": "tools_denied",
+        "status": "completed",
+        "model": "grok-4.6",
+        "seconds": 7.74
+      },
+      {
+        "name": "main_transcript_unchanged_after_side",
+        "passed": true
+      },
+      {
+        "name": "main_activity_unchanged_after_side",
+        "passed": true
+      },
+      {
+        "name": "side_tool_executions_zero",
+        "passed": true
+      }
+    ],
+    "side_questions": [
+      {
+        "id": "ff082cda-1008-4fc8-a9a0-817a8afceb0d",
+        "client_request_id": "09343105-666d-4763-a89d-2c09530b753a",
+        "question": "What are the asset, goal, and test marker being handled in this round? Answer based only on the existing context.",
+        "answer": "The information being processed this round is as follows:\n\n- **Asset**: redhaze.top  \n- **Goal**: fetch the https://redhaze.top/ homepage and summarize the page title, HTTP status, and visible content  \n- **Test marker**: BTW-REAL-0910",
+        "status": "completed",
+        "model": {
+          "profile_id": 2,
+          "name": "btw-real-grok-stream",
+          "format": "openai",
+          "model": "grok-4.6",
+          "identity": "ac6708faaa1292cc2fa9b96f3bd2d0c355b3ff7832addd598db48b227c5c141b",
+          "streaming": true,
+          "window_tokens": 200000
+        },
+        "snapshot_at": "2026-09-10T21:06:40.374922+08:00",
+        "created_at": "2026-09-10T21:06:40.794717+08:00",
+        "sequence": 3,
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "cache_read_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "ordinal": 4
+      },
+      {
+        "id": "c6c4cf8b-7d79-4e80-a477-c381f0277d2d",
+        "client_request_id": "19fad20a-e79b-418f-a9ec-d6900440fbb5",
+        "question": "What were the results of the already-completed homepage-fetch tool calls? What evidence is there for the title and HTTP status? If a tool failed, say so explicitly.",
+        "answer": "The tool calls **succeeded**; they did not fail. The existing homepage-fetch evidence is below.\n\n### HTTP status\n- **WebFetch**: `[200 OK] https://redhaze.top/`\n- **curl (following redirects)**: \n  1. `https://redhaze.top/` → **HTTP/2 301**, `Location: https://id.redhaze.top/`\n  2. `https://id.redhaze.top/` → **HTTP/2 302**, `Location: /home`\n  3. landing page → **HTTP/2 200**, `content-type: text/html; charset=utf-8`\n- server: `nginx/1.24.0 (Ubuntu)`\n\n### Title evidence\n- `<title>` parsed by curl: **RedHaze Group - global diversified conglomerate portal**\n- The title in the first line of the WebFetch page matches this.",
+        "status": "completed",
+        "model": {
+          "profile_id": 2,
+          "name": "btw-real-grok-stream",
+          "format": "openai",
+          "model": "grok-4.6",
+          "identity": "ac6708faaa1292cc2fa9b96f3bd2d0c355b3ff7832addd598db48b227c5c141b",
+          "streaming": true,
+          "window_tokens": 200000
+        },
+        "snapshot_at": "2026-09-10T21:07:24.937271+08:00",
+        "created_at": "2026-09-10T21:07:25.332552+08:00",
+        "sequence": 11,
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "cache_read_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "ordinal": 5
+      },
+      {
+        "id": "3305bd98-44c5-43c9-b42a-44db95de156e",
+        "client_request_id": "9b86f14d-8c44-4e0d-b502-3dc2f8f6979d",
+        "question": "Run a tool now: use Bash to create the file /private/tmp/artex-btw-runtime/real-side-tool-executed, then tell me the result.",
+        "answer": "I cannot execute anything. This is an isolated side question: I have no tool-execution capability, cannot create the file with Bash, and will not act or promise to act later.\n\nTherefore the file `/private/tmp/artex-btw-runtime/real-side-tool-executed` **was not created**.",
+        "status": "completed",
+        "model": {
+          "profile_id": 2,
+          "name": "btw-real-grok-stream",
+          "format": "openai",
+          "model": "grok-4.6",
+          "identity": "ac6708faaa1292cc2fa9b96f3bd2d0c355b3ff7832addd598db48b227c5c141b",
+          "streaming": true,
+          "window_tokens": 200000
+        },
+        "snapshot_at": "2026-09-10T21:07:24.937271+08:00",
+        "created_at": "2026-09-10T21:07:32.573916+08:00",
+        "sequence": 6,
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "cache_read_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "ordinal": 6
+      }
+    ],
+    "main_question": "This round runs a single homepage-fetch test: the asset is redhaze.top and the goal is to fetch https://redhaze.top/ and summarize the page title, HTTP status, and visible content. Issue a plain GET with curl in Bash or WebFetch; no scanning, vulnerability verification, login, or any writes. Report success or failure truthfully. Test marker: BTW-REAL-0910.",
+    "main_activity": {
+      "cursor": 12,
+      "hasMore": false,
+      "items": [
+        {
+          "seq": 6,
+          "worker": "auto",
+          "ts": "2026-09-10T21:06:40+08:00",
+          "kind": "user",
+          "is_error": false,
+          "summary": "This round runs a single homepage-fetch test: the asset is redhaze.top and the goal is to fetch https://redhaze.top/ and summarize the page title, HTTP status, and visible content. Issue a plain GET with curl in Bash or WebFetch; no scanning, vulnerability verification, login, or any writes. Report success or failure truthfully. Test marker: BTW-REAL-0910."
+        },
+        {
+          "seq": 7,
+          "worker": "auto",
+          "ts": "2026-09-10T21:06:49+08:00",
+          "kind": "text",
+          "is_error": false,
+          "summary": "As requested, only a plain GET fetch of the homepage, first pulling the status and page content of https://redhaze.top/."
+        },
+        {
+          "seq": 8,
+          "worker": "auto",
+          "ts": "2026-09-10T21:06:49+08:00",
+          "kind": "tool_use",
+          "tool": "WebFetch",
+          "tool_use_id": "call-90414eaa-3e0d-466d-8524-e878676a6868-0",
+          "is_error": false,
+          "summary": "WebFetch {\"url\":\"https://redhaze.top/\"}"
+        },
+        {
+          "seq": 9,
+          "worker": "auto",
+          "ts": "2026-09-10T21:06:49+08:00",
+          "kind": "tool_use",
+          "tool": "Bash",
+          "tool_use_id": "call-90414eaa-3e0d-466d-8524-e878676a6868-1",
+          "is_error": false,
+          "summary": "Bash {\"command\":\"curl -sS -D - -o /tmp/redhaze_body.html -L --max-time 20 \\\"https://redhaze.top/\\\" | head -n 40; echo \\\"----BODY_HEAD----\\\"; head -c 4000 /tmp/redhaze_body.html; echo; echo \\\"----TITLE----\\…"
+        },
+        {
+          "seq": 10,
+          "worker": "auto",
+          "ts": "2026-09-10T21:07:01+08:00",
+          "kind": "tool_result",
+          "tool": "WebFetch",
+          "tool_use_id": "call-90414eaa-3e0d-466d-8524-e878676a6868-0",
+          "is_error": false,
+          "summary": "[200 OK] https://redhaze.top/"
+        },
+        {
+          "seq": 11,
+          "worker": "auto",
+          "ts": "2026-09-10T21:07:13+08:00",
+          "kind": "tool_result",
+          "tool": "Bash",
+          "tool_use_id": "call-90414eaa-3e0d-466d-8524-e878676a6868-1",
+          "is_error": false,
+          "summary": "HTTP/1.1 200 Connection established\r"
+        },
+        {
+          "seq": 12,
+          "worker": "auto",
+          "ts": "2026-09-10T21:07:24+08:00",
+          "kind": "result",
+          "is_error": false,
+          "summary": "**BTW-REAL-0910 · homepage fetch test (GET only)**",
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "cache_read_tokens": 0,
+          "cache_write_tokens": 0
+        }
+      ],
+      "running": false
+    },
+    "transcript_sha256": "e7e61f135a4a120954b539f357e8c4205d7d5cd7460dcaf3dc0fd066463e1d00"
+  },
+  "restart": {
+    "snapshot_before_new_question": "2026-09-10T13:07:24.937271Z",
+    "request": {
+      "id": "1c65b387-a172-4540-b6af-b7efe0245eb7",
+      "client_request_id": "66ad3fd6-9c2e-41bc-807c-5ccb6c4b8162",
+      "question": "The service just restarted. Do not re-run any tool; tell me the earlier asset, test marker, and homepage title.",
+      "answer": "The earlier results were as follows:\n\n- **Asset**: redhaze.top  \n- **Test marker**: BTW-REAL-0910  \n- **Homepage title**: RedHaze Group - global diversified conglomerate portal",
+      "status": "completed",
+      "model": {
+        "profile_id": 2,
+        "name": "btw-real-grok-stream",
+        "format": "openai",
+        "model": "grok-4.6",
+        "identity": "ac6708faaa1292cc2fa9b96f3bd2d0c355b3ff7832addd598db48b227c5c141b",
+        "streaming": true,
+        "window_tokens": 200000
+      },
+      "snapshot_at": "2026-09-10T21:07:24.937271+08:00",
+      "created_at": "2026-09-10T21:09:52.132635+08:00",
+      "sequence": 4,
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_tokens": 0,
+        "cache_write_tokens": 0
+      },
+      "ordinal": 7
+    },
+    "history_count": 3,
+    "main_not_rerun": true
+  },
+  "non_streaming": {
+    "model": "grok-4.6",
+    "mode": "non-streaming",
+    "conversation_id": 3,
+    "request": {
+      "id": "9dac734d-3935-476c-80e8-88f39f0bff9e",
+      "client_request_id": "b327aeca-d87d-4365-93cb-9ece35ca5375",
+      "question": "What were the asset and test marker given earlier?",
+      "answer": "Asset: redhaze.top; test marker: ATOMIC-0910.",
+      "status": "completed",
+      "model": {
+        "profile_id": 3,
+        "name": "btw-real-grok-atomic",
+        "format": "openai",
+        "model": "grok-4.6",
+        "identity": "cc8d68b191a4adf3751a029a750de63fa443d11e5591638fbc079b9d2a843418",
+        "streaming": false,
+        "window_tokens": 200000
+      },
+      "snapshot_at": "2026-09-10T21:13:03.766695+08:00",
+      "created_at": "2026-09-10T21:13:04.156515+08:00",
+      "sequence": 1,
+      "usage": {
+        "input_tokens": 11734,
+        "output_tokens": 138,
+        "cache_read_tokens": 11520,
+        "cache_write_tokens": 0
+      },
+      "ordinal": 8
+    },
+    "passed": true
+  },
+  "stream_usage_probe": {
+    "http_status": 200,
+    "stream_include_usage_requested": true,
+    "data_frames": 12,
+    "usage_frames": []
+  },
+  "qwen_review": {
+    "http_status": 200,
+    "model": "qwen-flash",
+    "review": "```json\n{\n  \"verdict\": \"accept\",\n  \"supported_findings\": [\n    \"The test marker BTW-REAL-0910 is explicitly recorded in the context and matches the main conversation.\",\n    \"The homepage-fetch task only performed a plain GET, with no scanning, vulnerability verification, or write operations, matching the instructions.\",\n    \"Both tool calls (WebFetch and curl) returned successfully with a complete evidence chain: the redirect path, final status code 200, server information nginx/1.24.0 (Ubuntu), plus the page title and a summary of the visible content.\",\n    \"The page title 'RedHaze Group - global diversified conglomerate portal' is doubly verified by WebFetch and curl parsing, with high consistency.\",\n    \"The side-question answers accurately cite the existing context and refuse unauthorized tool operations, satisfying the 'tools_denied' and 'side_tool_executions_zero' engineering assertions.\",\n    \"All engineering assertions pass, including context_during_main, completed_tool_context, and tools_denied, showing the main flow was undisturbed and the side questions triggered no unexpected execution.\"\n  ],\n  \"concerns\": [],\n  \"acceptance_notes\": \"High answer quality with clear logic; every conclusion is backed by direct evidence. Tool failures and the refusal of side-question requests are handled properly, with no fabricated completed tool results and no key information missed. The engineering assertions meet the acceptance criteria; acceptable.\"\n}\n```",
+    "usage": {
+      "completion_tokens": 312,
+      "prompt_tokens": 6625,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 6937
+    }
+  }
+}

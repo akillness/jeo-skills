@@ -1,0 +1,708 @@
+/*
+ * The SmartArt Design tab's own geometry, for a host that has none.
+ *
+ * Presentation passes its existing `presentation-window-shell.module.css`
+ * classes through the component's `classes` prop (they are pinned verbatim by
+ * `tests/unit/presentation-ribbon-more-css.test.ts`), so it never loads these.
+ * Docs and Spreadsheet pass nothing and get exactly this — the same numbers,
+ * kept in one place instead of re-derived per host.
+ */
+
+.createGroup {
+  min-width: 380px;
+}
+
+.createRow {
+  column-gap: 4px;
+  display: grid;
+  /* Add Shape, Text Pane, Promote / Demote / Right to Left, Move Up / Down:
+     Office's Create Graphic order. */
+  grid-template-columns: 72px 72px minmax(112px, 1fr) minmax(88px, auto);
+  min-width: 360px;
+}
+
+.createHierarchyLane {
+  display: grid;
+  grid-template-rows: repeat(3, 22px);
+  height: 66px;
+  min-width: 0;
+  width: 100%;
+}
+
+.createHierarchyLane > :global(button) {
+  box-sizing: border-box;
+  height: 22px !important;
+  justify-content: flex-start;
+  min-height: 22px !important;
+  min-width: 0;
+  padding-block: 1px !important;
+  width: 100%;
+}
+
+.createRow > :global(button:first-child) {
+  width: 72px;
+}
+
+.layoutsGroup {
+  min-width: 424px;
+}
+
+.stylesGroup {
+  min-width: 360px;
+}
+
+.layoutGallery,
+.styleGallery {
+  --office-gallery-item-width: 64px;
+  --office-gallery-visible-items: 5;
+  --office-gallery-gap: 0px;
+}
+
+.layoutGallery
+  :global(span:has(> button[data-office-style-gallery-preview-item="true"])) {
+  height: 52px;
+  width: 64px;
+}
+
+.styleGallery
+  :global(span:has(> button[data-office-style-gallery-preview-item="true"])) {
+  height: 52px;
+  width: 64px;
+}
+
+.layoutGallery :global(button[data-office-style-gallery-preview-item="true"]) {
+  border-radius: 0;
+  height: 52px;
+  min-height: 52px;
+  padding: 3px;
+  width: 64px;
+}
+
+.styleGallery :global(button[data-office-style-gallery-preview-item="true"]) {
+  border-radius: 0;
+  height: 52px;
+  min-height: 52px;
+  padding: 3px;
+  width: 64px;
+}
+
+.layoutGallery
+  :global(
+    button[data-office-style-gallery-preview-item="true"] > span:first-child
+  ) {
+  border: 0;
+  height: 44px;
+  width: 58px;
+}
+
+.styleGallery
+  :global(
+    button[data-office-style-gallery-preview-item="true"] > span:first-child
+  ) {
+  border: 0;
+  height: 44px;
+  width: 58px;
+}
+
+.layoutGallery
+  :global(
+    button[data-office-style-gallery-preview-item="true"] > span:last-child
+  ) {
+  display: none;
+}
+
+.styleGallery
+  :global(
+    button[data-office-style-gallery-preview-item="true"] > span:last-child
+  ) {
+  display: none;
+}
+
+/* The strip shows the same coloured drawing as the sheet, at slot size:
+   PowerPoint's Layouts strip is not a grey sketch of the sheet. */
+.layoutGallery
+  :global(
+    button[data-office-style-gallery-preview-item="true"] svg:not(:where(svg svg))
+  ) {
+  height: 40px;
+  max-height: 40px;
+  max-width: 54px;
+  width: 54px;
+}
+
+.styleGallery
+  :global(
+    button[data-office-style-gallery-preview-item="true"]
+      > span:first-child
+      > span
+  ) {
+  width: 54px !important;
+}
+
+.resetGroup,
+.propertiesGroup {
+  min-width: 88px;
+}
+
+/*
+ * The text pane. Colours come from the host's own Office chrome variables with
+ * neutral fallbacks, so a host that has not defined them still renders a legible
+ * pane rather than nothing.
+ */
+
+.textPane {
+  background: var(--office-pane-bg, #ffffff);
+  border: 1px solid var(--office-pane-hairline, rgba(15, 23, 42, 0.08));
+  border-radius: 12px;
+  bottom: 8px;
+  box-shadow:
+    0 16px 40px rgba(15, 23, 42, 0.14),
+    0 2px 6px rgba(15, 23, 42, 0.05);
+  color: var(--office-pane-text, var(--ppt-text, #1f2937));
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  left: 8px;
+  min-height: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 8px;
+  width: var(--smartart-text-pane-width, 264px);
+  z-index: 60;
+}
+
+/* Beside its frame: as tall as its outline, up to the canvas's height. */
+.textPane[data-anchored="true"] {
+  height: auto;
+  min-height: 176px;
+}
+
+.textPaneHeader {
+  align-items: center;
+  display: flex;
+  flex: 0 0 38px;
+  justify-content: space-between;
+  padding: 0 6px 0 12px;
+  user-select: none;
+}
+
+/* Office's pane moves by its title bar. */
+.textPaneHeader[data-draggable="true"] {
+  cursor: move;
+  touch-action: none;
+}
+
+.textPaneHeader strong {
+  font-size: 12.5px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+/* Every control in the pane is borderless: a host's loose-button rule
+   (`.native-page-window button`, which outlines bare buttons) must not
+   reach them, so the pane's own selectors carry two classes. */
+.textPane .textPaneHeader button,
+.textPane .textPaneItem button {
+  align-items: center;
+  border: 0;
+  border-radius: 7px;
+  display: inline-flex;
+  height: 26px;
+  justify-content: center;
+  min-height: 26px;
+  min-width: 26px;
+  padding: 0;
+}
+
+.textPane .textPaneHeader button:not(:global(.office-ribbon-control)) {
+  background: transparent;
+  color: var(--office-pane-muted, var(--ppt-muted, #6b7280));
+  cursor: pointer;
+}
+
+.textPane .textPaneItem button:not(:global(.office-ribbon-control)) {
+  background: transparent;
+  color: var(--office-pane-muted, var(--ppt-muted, #6b7280));
+}
+
+.textPane .textPaneHeader button:hover:not(:disabled),
+.textPane .textPaneItem button:hover:not(:disabled) {
+  background: var(--office-pane-accent-soft, rgba(15, 23, 42, 0.06));
+  color: var(--office-pane-text, var(--ppt-text, #1f2937));
+}
+
+/* Office's "SmartArt Text" window: one toolbar row above the outline. */
+.textPaneToolbar {
+  align-items: center;
+  border-bottom: 1px solid var(--office-pane-hairline, rgba(15, 23, 42, 0.07));
+  display: flex;
+  flex: 0 0 auto;
+  gap: 2px;
+  justify-content: flex-start;
+  padding: 0 8px 6px;
+}
+
+.textPane .textPaneToolbarButton {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  color: var(--office-pane-muted, var(--ppt-muted, #6b7280));
+  cursor: pointer;
+  display: inline-flex;
+  height: 28px;
+  justify-content: center;
+  min-width: 30px;
+  padding: 0;
+  transition: background-color 120ms ease;
+}
+
+/* Office colours its six commands: add green, remove red, promote / demote
+   blue, move up / down green. */
+.textPane .textPaneToolbarButton[data-command="add"],
+.textPane .textPaneToolbarButton[data-command="moveUp"],
+.textPane .textPaneToolbarButton[data-command="moveDown"] {
+  color: #2f8a46;
+}
+
+.textPane .textPaneToolbarButton[data-command="remove"] {
+  color: #d2423a;
+}
+
+.textPane .textPaneToolbarButton[data-command="promote"],
+.textPane .textPaneToolbarButton[data-command="demote"] {
+  color: #2f6fd0;
+}
+
+/* The pair of verbs that change depth sit apart from the pair that move. */
+.textPane .textPaneToolbarButton[data-command="promote"],
+.textPane .textPaneToolbarButton[data-command="moveDown"] {
+  margin-left: 6px;
+}
+
+.textPane .textPaneToolbarButton:hover:not(:disabled) {
+  background: var(--office-pane-accent-soft, rgba(15, 23, 42, 0.06));
+}
+
+.textPane .textPaneToolbarButton:active:not(:disabled) {
+  background: var(--office-pane-pressed, rgba(15, 23, 42, 0.1));
+}
+
+.textPane .textPaneToolbarButton:focus-visible {
+  outline: 2px solid var(--office-pane-focus, rgba(43, 108, 176, 0.45));
+  outline-offset: 1px;
+}
+
+.textPane .textPaneToolbarButton:disabled {
+  color: var(--office-pane-muted, var(--ppt-muted, #9ca3af));
+  cursor: default;
+  opacity: 0.32;
+}
+
+.textPaneList {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 1px;
+  list-style: none;
+  margin: 0;
+  min-height: 0;
+  overflow: auto;
+  padding: 6px;
+}
+
+.textPaneItem {
+  align-items: start;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  display: grid;
+  gap: 6px;
+  grid-template-columns: 6px minmax(0, 1fr);
+  padding: 0 4px 0 calc(8px + var(--smartart-outline-level, 0) * 18px);
+  position: relative;
+}
+
+.textPaneItem:hover {
+  background: var(--office-pane-hover, #f6f7f9);
+}
+
+/* The row being typed in wears a soft warm fill (Office's focus colour, no
+   outline); the others stay plain. */
+.textPaneItem[data-selected="true"],
+.textPaneItem:focus-within {
+  background: var(--office-pane-selected, #fdf1dc);
+  border-color: transparent;
+}
+
+/* Office's square bullet before every item, on the first line's middle. */
+.textPaneBullet {
+  background: currentColor;
+  border-radius: 1px;
+  color: var(--office-pane-text, var(--ppt-text, #374151));
+  height: 5px;
+  justify-self: center;
+  margin-top: 12px;
+  width: 5px;
+}
+
+/* A sub-item's bullet is lighter, so the outline's depth reads at a glance. */
+.textPaneItem:not([data-level="0"]) .textPaneBullet {
+  opacity: 0.6;
+}
+
+/* Office's window has no per-row delete: removal is the toolbar's "−" or
+   Backspace on an empty row. The button stays for assistive technology and
+   the hosts' own tests, out of sight. */
+.textPaneRowDelete {
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  width: 1px;
+}
+
+.textPaneItem textarea::placeholder {
+  color: var(--office-pane-muted, var(--ppt-muted, #9ca3af));
+}
+
+/* An assistant's bullet carries a line, as Office's Text pane draws it. */
+.textPaneItem[data-assistant="true"] .textPaneBullet {
+  position: relative;
+}
+
+.textPaneItem[data-assistant="true"] .textPaneBullet::after {
+  background: currentColor;
+  content: "";
+  height: 1px;
+  left: 4px;
+  position: absolute;
+  top: 2px;
+  width: 6px;
+}
+
+/* Unused text (an item the layout does not draw): Office's red X bullet. */
+.textPaneItem[data-unused="true"] .textPaneBullet {
+  background: transparent;
+  border-radius: 0;
+  height: 9px;
+  margin-top: 10px;
+  opacity: 1;
+  position: relative;
+  width: 9px;
+}
+
+.textPaneItem[data-unused="true"] .textPaneBullet::before,
+.textPaneItem[data-unused="true"] .textPaneBullet::after {
+  background: #d13438;
+  content: "";
+  height: 2px;
+  left: -1px;
+  position: absolute;
+  top: 3.5px;
+  width: 11px;
+}
+
+.textPaneItem[data-unused="true"] .textPaneBullet::before {
+  transform: rotate(45deg);
+}
+
+.textPaneItem[data-unused="true"] .textPaneBullet::after {
+  transform: rotate(-45deg);
+}
+
+/* A picture the layout does not show: a small picture frame with Office's
+   red X over it, before the row's words. */
+.textPaneItem[data-picture-hidden="true"] {
+  grid-template-columns: 6px 14px minmax(0, 1fr);
+}
+
+.textPanePictureHidden {
+  border: 1px solid var(--office-pane-muted, #9ca3af);
+  border-radius: 2px;
+  height: 10px;
+  margin-top: 7px;
+  position: relative;
+  width: 12px;
+}
+
+.textPanePictureHidden::before,
+.textPanePictureHidden::after,
+.textPaneUnusedMark::before,
+.textPaneUnusedMark::after {
+  background: #d13438;
+  content: "";
+  height: 2px;
+  left: -1px;
+  position: absolute;
+  top: 3px;
+  width: 12px;
+}
+
+.textPanePictureHidden::before,
+.textPaneUnusedMark::before {
+  transform: rotate(45deg);
+}
+
+.textPanePictureHidden::after,
+.textPaneUnusedMark::after {
+  transform: rotate(-45deg);
+}
+
+/* Office's words under the pane while any content is marked with a red X. */
+.textPaneUnusedNotice {
+  align-items: start;
+  border-top: 1px solid var(--office-pane-border, #e5e7eb);
+  color: var(--office-pane-muted, #6b7280);
+  display: flex;
+  font-size: 11px;
+  gap: 6px;
+  line-height: 1.35;
+  margin: 0;
+  padding: 8px 12px;
+}
+
+.textPaneUnusedMark {
+  flex: 0 0 auto;
+  height: 9px;
+  margin-top: 3px;
+  position: relative;
+  width: 10px;
+}
+
+/* A row is a line of text, not a box: no frame, no resize grip. */
+.textPaneItem textarea {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  color: var(--office-pane-text, var(--ppt-text, #111827));
+  font: inherit;
+  font-size: 12.5px;
+  height: auto;
+  line-height: 18px;
+  max-height: 180px;
+  min-height: 28px;
+  min-width: 0;
+  outline: none;
+  overflow: hidden auto;
+  padding: 5px 2px;
+  resize: none;
+  width: 100%;
+}
+
+.textPaneItem textarea[readonly],
+.textPaneItem button:disabled {
+  cursor: not-allowed;
+}
+
+.textPaneItem textarea[readonly]:not(:global(.office-ribbon-control)) {
+  opacity: 0.5;
+}
+
+.textPaneItem button:disabled:not(:global(.office-ribbon-control)) {
+  opacity: 0.5;
+}
+
+.textPaneHint {
+  color: var(--office-pane-muted, var(--ppt-muted, #6b7280));
+  font-size: 11px;
+  line-height: 1.45;
+  margin: 0;
+  padding: 8px 12px 2px;
+}
+
+/* Office's footer: the layout's name and what it is for. */
+.textPaneFooter {
+  background: var(--office-pane-footer, #f8f9fb);
+  border-top: 1px solid var(--office-pane-hairline, rgba(15, 23, 42, 0.07));
+  display: grid;
+  flex: 0 0 auto;
+  gap: 2px;
+  padding: 8px 12px 10px;
+}
+
+.textPaneFooter strong {
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.textPaneFooter span {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  color: var(--office-pane-muted, var(--ppt-muted, #6b7280));
+  display: -webkit-box;
+  font-size: 11px;
+  line-height: 1.45;
+  overflow: hidden;
+}
+
+/*
+ * The default pane in dark and high contrast. Scoped to this module's own
+ * `.textPane` root, so a host that passes its own root class (Docs, the deck)
+ * keeps whatever it paints; the pane's pieces read the --office-pane-* tokens
+ * set here, and a host that defines them on the pane still wins through
+ * `classes`. Values are the dark menu/dialog material.
+ */
+:global([data-theme-mode="dark"]) .textPane {
+  --office-pane-text: #f2f2f7;
+  --office-pane-muted: #a1a1a8;
+  --office-pane-border: rgb(255 255 255 / 10%);
+  --office-pane-accent-soft: rgb(255 255 255 / 10%);
+  --office-pane-hover: rgb(255 255 255 / 6%);
+  --office-control-border: rgb(255 255 255 / 18%);
+  /* The native window's dark button rule paints loose buttons with these
+     two; under the console scope they are light, which would leave light
+     pills on this dark card. */
+  --bg-surface: transparent;
+  --text-primary: #f2f2f7;
+  background: rgb(38 39 44);
+  box-shadow: 0 10px 28px rgb(0 0 0 / 45%);
+  color: #f2f2f7;
+  color-scheme: dark;
+}
+:global([data-theme-mode="high-contrast"]) .textPane {
+  --office-pane-text: #f2f2f7;
+  --office-pane-muted: #a1a1a8;
+  --office-pane-border: rgb(255 255 255 / 10%);
+  --office-pane-accent-soft: rgb(255 255 255 / 10%);
+  --office-pane-hover: rgb(255 255 255 / 6%);
+  --office-control-border: rgb(255 255 255 / 18%);
+  /* The native window's dark button rule paints loose buttons with these
+     two; under the console scope they are light, which would leave light
+     pills on this dark card. */
+  --bg-surface: transparent;
+  --text-primary: #f2f2f7;
+  background: rgb(38 39 44);
+  box-shadow: 0 10px 28px rgb(0 0 0 / 45%);
+  color: #f2f2f7;
+  color-scheme: dark;
+}
+
+:global([data-theme-mode="dark"]) .textPane .textPaneItem[data-selected="true"] {
+  background: rgb(240 178 90 / 16%);
+  border-color: transparent;
+}
+
+:global([data-theme-mode="dark"]) .textPane .textPaneItem:focus-within {
+  background: rgb(240 178 90 / 16%);
+  border-color: transparent;
+}
+
+:global([data-theme-mode="high-contrast"]) .textPane .textPaneItem[data-selected="true"] {
+  background: rgb(240 178 90 / 16%);
+  border-color: transparent;
+}
+
+:global([data-theme-mode="high-contrast"]) .textPane .textPaneItem:focus-within {
+  background: rgb(240 178 90 / 16%);
+  border-color: transparent;
+}
+
+/* Office's command colours, lifted a step so they read on the dark card. */
+:global([data-theme-mode="dark"]) .textPane .textPaneToolbarButton[data-command="add"]:not(:disabled) {
+  color: #6fcf6f;
+}
+:global([data-theme-mode="dark"]) .textPane .textPaneToolbarButton[data-command="moveUp"]:not(:disabled) {
+  color: #6fcf6f;
+}
+:global([data-theme-mode="dark"]) .textPane .textPaneToolbarButton[data-command="moveDown"]:not(:disabled) {
+  color: #6fcf6f;
+}
+:global([data-theme-mode="high-contrast"]) .textPane .textPaneToolbarButton[data-command="add"]:not(:disabled) {
+  color: #6fcf6f;
+}
+:global([data-theme-mode="high-contrast"]) .textPane .textPaneToolbarButton[data-command="moveUp"]:not(:disabled) {
+  color: #6fcf6f;
+}
+:global([data-theme-mode="high-contrast"]) .textPane .textPaneToolbarButton[data-command="moveDown"]:not(:disabled) {
+  color: #6fcf6f;
+}
+
+:global([data-theme-mode="dark"]) .textPane .textPaneToolbarButton[data-command="remove"]:not(:disabled) {
+  color: #ff7a70;
+}
+
+:global([data-theme-mode="high-contrast"]) .textPane .textPaneToolbarButton[data-command="remove"]:not(:disabled) {
+  color: #ff7a70;
+}
+
+:global([data-theme-mode="dark"]) .textPane .textPaneToolbarButton[data-command="promote"]:not(:disabled) {
+  color: #7fa8f5;
+}
+
+:global([data-theme-mode="dark"]) .textPane .textPaneToolbarButton[data-command="demote"]:not(:disabled) {
+  color: #7fa8f5;
+}
+
+:global([data-theme-mode="high-contrast"]) .textPane .textPaneToolbarButton[data-command="promote"]:not(:disabled) {
+  color: #7fa8f5;
+}
+
+:global([data-theme-mode="high-contrast"]) .textPane .textPaneToolbarButton[data-command="demote"]:not(:disabled) {
+  color: #7fa8f5;
+}
+
+/* Change Colors: Office's gallery, a heading per group over a row of swatches. */
+/* A Change Colors tile's drawing: the variation's shapes as bars. */
+.colorSwatch {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.colorSwatch > span {
+  width: 14px;
+  height: 18px;
+  border: 1.5px solid transparent;
+  border-radius: 2px;
+}
+
+/* The Text Pane control on the graphic's frame: a small tab on its left
+   edge, as Office draws it. */
+.textPaneToggle.textPaneToggle {
+  align-items: center;
+  /* Opaque and borderless over any host's loose-button rule (the deck and
+     the sheet outline bare buttons). */
+  background: #ffffff;
+  opacity: 1;
+  border: 0;
+  border-radius: 6px 0 0 6px;
+  box-shadow:
+    0 1px 4px rgba(15, 23, 42, 0.18),
+    0 0 0 0.5px rgba(15, 23, 42, 0.1);
+  color: #3c4043;
+  cursor: pointer;
+  display: inline-flex;
+  height: 34px;
+  justify-content: center;
+  left: -17px;
+  padding: 0;
+  pointer-events: auto;
+  position: absolute;
+  /* Above the frame's middle-left handle, which sits on the edge's centre. */
+  top: calc(50% - 30px);
+  width: 15px;
+  z-index: 1;
+}
+
+.textPaneToggle.textPaneToggle:hover {
+  background: #f1f3f6;
+  color: #111827;
+}
+
+.textPaneToggle.textPaneToggle:focus-visible {
+  outline: 2px solid rgba(43, 108, 176, 0.5);
+  outline-offset: 1px;
+}
+
+.textPaneToggle.textPaneToggle[data-open="true"] {
+  background: #f6f8fb;
+}
+
+/* A zero-width strip on the frame's left edge that holds the control, for a
+   host that places it from outside the frame. */
+.textPaneToggleHost {
+  pointer-events: none;
+  position: fixed;
+  width: 0;
+  z-index: 60;
+}

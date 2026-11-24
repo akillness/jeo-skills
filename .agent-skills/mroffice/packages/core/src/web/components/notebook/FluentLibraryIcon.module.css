@@ -1,0 +1,240 @@
+.icon {
+  display: block;
+  overflow: visible;
+  contain: paint;
+  transform: translateZ(0);
+}
+
+.icon [data-icon-part] {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.icon [data-icon-part="resource"],
+.icon [data-icon-part="ground"],
+.icon [data-icon-part="constellation"],
+.icon [data-icon-part="page-rear"],
+.icon [data-icon-part="page-middle"],
+.icon [data-icon-part="page-front"],
+.icon [data-icon-part="page-fold"],
+.icon [data-icon-part="page-content"],
+.icon [data-icon-part="book-rear"],
+.icon [data-icon-part="book-pages"],
+.icon [data-icon-part="book-cover"],
+.icon [data-icon-part="book-glyph"],
+.icon [data-icon-part="bookmark"],
+.icon [data-icon-part="folder-sheet-rear"],
+.icon [data-icon-part="folder-sheet"],
+.icon [data-icon-part="folder-front"],
+.icon [data-icon-part="memory-node-major"] {
+  transition:
+    opacity 180ms ease,
+    transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.icon [data-icon-part="page-rear"],
+.icon [data-icon-part="page-middle"] {
+  transform-origin: 50% 92%;
+}
+
+.icon [data-icon-part="page-fold"] {
+  transform-origin: 18% 82%;
+}
+
+.icon [data-icon-part="book-cover"] {
+  transform-origin: 13% 52%;
+}
+
+.icon [data-icon-part="bookmark"] {
+  transform-origin: 50% 0;
+}
+
+.icon:hover [data-icon-part="resource"],
+.icon:focus-visible [data-icon-part="resource"],
+:global(button:hover) .icon [data-icon-part="resource"],
+:global(article:hover) .icon [data-icon-part="resource"],
+:global(button:focus-visible) .icon [data-icon-part="resource"],
+:global(article:focus-within) .icon [data-icon-part="resource"],
+:global([data-selected="true"]) .icon [data-icon-part="resource"] {
+  transform: translateY(-0.8px);
+}
+
+.icon:hover [data-icon-part="constellation"],
+.icon:focus-visible [data-icon-part="constellation"],
+:global(button:hover) .icon [data-icon-part="constellation"],
+:global(article:hover) .icon [data-icon-part="constellation"],
+:global(button:focus-visible) .icon [data-icon-part="constellation"],
+:global(article:focus-within) .icon [data-icon-part="constellation"],
+:global([data-selected="true"]) .icon [data-icon-part="constellation"] {
+  opacity: 1;
+  transform: translate(-0.7px, -0.8px);
+}
+
+.icon:hover [data-icon-part="memory-node-major"],
+.icon:focus-visible [data-icon-part="memory-node-major"],
+:global(button:hover) .icon [data-icon-part="memory-node-major"],
+:global(article:hover) .icon [data-icon-part="memory-node-major"],
+:global(button:focus-visible) .icon [data-icon-part="memory-node-major"],
+:global(article:focus-within) .icon [data-icon-part="memory-node-major"],
+:global([data-selected="true"]) .icon [data-icon-part="memory-node-major"] {
+  transform: scale(1.18);
+}
+
+.icon:hover [data-icon-part="ground"],
+.icon:focus-visible [data-icon-part="ground"],
+:global(button:hover) .icon [data-icon-part="ground"],
+:global(article:hover) .icon [data-icon-part="ground"],
+:global(button:focus-visible) .icon [data-icon-part="ground"],
+:global(article:focus-within) .icon [data-icon-part="ground"],
+:global([data-selected="true"]) .icon [data-icon-part="ground"] {
+  opacity: 0.75;
+  transform: scaleX(0.88) translateY(0.5px);
+}
+
+.icon:hover [data-icon-part="page-rear"],
+.icon:focus-visible [data-icon-part="page-rear"],
+:global(button:hover) .icon [data-icon-part="page-rear"],
+:global(article:hover) .icon [data-icon-part="page-rear"],
+:global(button:focus-visible) .icon [data-icon-part="page-rear"],
+:global(article:focus-within) .icon [data-icon-part="page-rear"],
+:global([data-selected="true"]) .icon [data-icon-part="page-rear"] {
+  transform: translate(2px, -1px) rotate(3deg);
+}
+
+.icon:hover [data-icon-part="page-middle"],
+.icon:focus-visible [data-icon-part="page-middle"],
+:global(button:hover) .icon [data-icon-part="page-middle"],
+:global(article:hover) .icon [data-icon-part="page-middle"],
+:global(button:focus-visible) .icon [data-icon-part="page-middle"],
+:global(article:focus-within) .icon [data-icon-part="page-middle"],
+:global([data-selected="true"]) .icon [data-icon-part="page-middle"] {
+  transform: translate(0.7px, -0.55px) rotate(1deg);
+}
+
+.icon:hover [data-icon-part="page-front"],
+.icon:focus-visible [data-icon-part="page-front"],
+:global(button:hover) .icon [data-icon-part="page-front"],
+:global(article:hover) .icon [data-icon-part="page-front"],
+:global(button:focus-visible) .icon [data-icon-part="page-front"],
+:global(article:focus-within) .icon [data-icon-part="page-front"],
+:global([data-selected="true"]) .icon [data-icon-part="page-front"] {
+  transform: translate(-0.45px, -0.75px);
+}
+
+.icon:hover [data-icon-part="page-fold"],
+.icon:focus-visible [data-icon-part="page-fold"],
+:global(button:hover) .icon [data-icon-part="page-fold"],
+:global(article:hover) .icon [data-icon-part="page-fold"],
+:global(button:focus-visible) .icon [data-icon-part="page-fold"],
+:global(article:focus-within) .icon [data-icon-part="page-fold"],
+:global([data-selected="true"]) .icon [data-icon-part="page-fold"] {
+  transform: translate(-0.35px, 0.4px) scale(1.08);
+}
+
+.icon:hover [data-icon-part="page-content"],
+.icon:focus-visible [data-icon-part="page-content"],
+:global(button:hover) .icon [data-icon-part="page-content"],
+:global(article:hover) .icon [data-icon-part="page-content"],
+:global(button:focus-visible) .icon [data-icon-part="page-content"],
+:global(article:focus-within) .icon [data-icon-part="page-content"],
+:global([data-selected="true"]) .icon [data-icon-part="page-content"] {
+  transform: translateY(-0.45px);
+}
+
+.icon:hover [data-icon-part="book-rear"],
+.icon:focus-visible [data-icon-part="book-rear"],
+:global(button:hover) .icon [data-icon-part="book-rear"],
+:global(article:hover) .icon [data-icon-part="book-rear"],
+:global(button:focus-visible) .icon [data-icon-part="book-rear"],
+:global(article:focus-within) .icon [data-icon-part="book-rear"],
+:global([data-selected="true"]) .icon [data-icon-part="book-rear"] {
+  transform: translate(1.15px, -0.55px) rotate(1.4deg);
+}
+
+.icon:hover [data-icon-part="book-pages"],
+.icon:focus-visible [data-icon-part="book-pages"],
+:global(button:hover) .icon [data-icon-part="book-pages"],
+:global(article:hover) .icon [data-icon-part="book-pages"],
+:global(button:focus-visible) .icon [data-icon-part="book-pages"],
+:global(article:focus-within) .icon [data-icon-part="book-pages"],
+:global([data-selected="true"]) .icon [data-icon-part="book-pages"] {
+  transform: translate(1.25px, 0.15px);
+}
+
+.icon:hover [data-icon-part="book-cover"],
+.icon:focus-visible [data-icon-part="book-cover"],
+:global(button:hover) .icon [data-icon-part="book-cover"],
+:global(article:hover) .icon [data-icon-part="book-cover"],
+:global(button:focus-visible) .icon [data-icon-part="book-cover"],
+:global(article:focus-within) .icon [data-icon-part="book-cover"],
+:global([data-selected="true"]) .icon [data-icon-part="book-cover"] {
+  transform: translate(-0.9px, -0.55px) rotate(-1.45deg);
+}
+
+.icon:hover [data-icon-part="book-glyph"],
+.icon:focus-visible [data-icon-part="book-glyph"],
+:global(button:hover) .icon [data-icon-part="book-glyph"],
+:global(article:hover) .icon [data-icon-part="book-glyph"],
+:global(button:focus-visible) .icon [data-icon-part="book-glyph"],
+:global(article:focus-within) .icon [data-icon-part="book-glyph"],
+:global([data-selected="true"]) .icon [data-icon-part="book-glyph"] {
+  transform: scale(1.035);
+}
+
+.icon:hover [data-icon-part="bookmark"],
+.icon:focus-visible [data-icon-part="bookmark"],
+:global(button:hover) .icon [data-icon-part="bookmark"],
+:global(article:hover) .icon [data-icon-part="bookmark"],
+:global(button:focus-visible) .icon [data-icon-part="bookmark"],
+:global(article:focus-within) .icon [data-icon-part="bookmark"],
+:global([data-selected="true"]) .icon [data-icon-part="bookmark"] {
+  transform: translateY(-2px);
+}
+
+/* Folder: the pocket hinges on its bottom edge and the sheets slide up out of
+   it. Hovering a closed folder cracks it open; an open folder (its row is
+   expanded) holds the pocket tipped forward. */
+.icon [data-icon-part="folder-front"],
+.icon [data-icon-part="folder-sheet"],
+.icon [data-icon-part="folder-sheet-rear"] {
+  transform-origin: 50% 100%;
+}
+
+.icon[data-folder-open="false"]:hover [data-icon-part="folder-front"],
+:global(button:hover) .icon[data-folder-open="false"] [data-icon-part="folder-front"],
+:global(button:focus-visible) .icon[data-folder-open="false"] [data-icon-part="folder-front"],
+:global([data-selected="true"]) .icon[data-folder-open="false"] [data-icon-part="folder-front"] {
+  transform: skewX(-4deg) scaleY(0.96);
+}
+
+.icon[data-folder-open="false"]:hover [data-icon-part="folder-sheet"],
+:global(button:hover) .icon[data-folder-open="false"] [data-icon-part="folder-sheet"],
+:global(button:focus-visible) .icon[data-folder-open="false"] [data-icon-part="folder-sheet"],
+:global([data-selected="true"]) .icon[data-folder-open="false"] [data-icon-part="folder-sheet"] {
+  transform: translateY(-1.1px);
+}
+
+.icon[data-folder-open="false"]:hover [data-icon-part="folder-sheet-rear"],
+:global(button:hover) .icon[data-folder-open="false"] [data-icon-part="folder-sheet-rear"],
+:global(button:focus-visible) .icon[data-folder-open="false"] [data-icon-part="folder-sheet-rear"],
+:global([data-selected="true"]) .icon[data-folder-open="false"] [data-icon-part="folder-sheet-rear"] {
+  transform: translate(0.5px, -1.7px) rotate(1.2deg);
+}
+
+.icon[data-folder-open="true"] [data-icon-part="folder-front"] {
+  transform: skewX(-11deg) scaleY(0.87);
+}
+
+.icon[data-folder-open="true"] [data-icon-part="folder-sheet"] {
+  transform: translateY(-2.4px) rotate(-1.5deg);
+}
+
+.icon[data-folder-open="true"] [data-icon-part="folder-sheet-rear"] {
+  transform: translate(1px, -3.4px) rotate(2.5deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon [data-icon-part] {
+    transition: none;
+  }
+}

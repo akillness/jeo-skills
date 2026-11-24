@@ -1,0 +1,48 @@
+/* Table border dragging in the Docs editor (documentTableBorderDrag.ts).
+   The hover classes sit on the editor root, the drag classes on <html> so
+   the resize cursor stays while the pointer runs ahead of the border. Every
+   descendant is forced because cells, paragraphs and page chrome declare
+   their own cursors. */
+
+.hoverColumn,
+.hoverColumn *,
+.dragColumn,
+.dragColumn * {
+  cursor: col-resize !important;
+}
+
+.hoverRow,
+.hoverRow *,
+.dragRow,
+.dragRow * {
+  cursor: row-resize !important;
+}
+
+.dragColumn,
+.dragColumn *,
+.dragRow,
+.dragRow * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+/* The border the pointer would grab, drawn like the column handle
+   (note-editor.css .column-resize-handle) so an invisible border of a
+   borderless table can be found too. */
+.edge {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 45%, transparent);
+  pointer-events: none;
+  position: fixed;
+  z-index: 40;
+}
+
+/* Where the dragged row border will land. Word draws this dotted line while
+   a row border is dragged; it shows the requested height even when the
+   row's content keeps the row taller. */
+.guide {
+  border-top: 1px dashed var(--console-accent, #0d9488);
+  height: 0;
+  pointer-events: none;
+  position: fixed;
+  z-index: 40;
+}

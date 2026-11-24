@@ -1,0 +1,212 @@
+@scope ([data-example]) {
+  [data-slot="tabs"] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    width: 24rem;
+    max-width: 100%;
+
+    &[data-orientation="vertical"] {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: var(--space-2);
+    }
+  }
+
+  /* A demo with controls above its tabs keeps the tabs' width and still fits a phone. */
+  :scope[data-example^="tabs/"] > * > :has(> [data-slot="tabs"]) {
+    width: 24rem;
+    max-width: 100%;
+  }
+
+  /* A list wider than the demo scrolls sideways; the padding keeps focus rings inside it. */
+  [data-slot="tabs-list"] {
+    position: relative;
+    display: flex;
+    align-self: flex-start;
+    max-width: calc(100% + 6px);
+    margin: -3px;
+    padding: 3px;
+    overflow-x: auto;
+    gap: var(--space-1);
+    scrollbar-width: none;
+
+    &[data-orientation="vertical"] {
+      flex: none;
+      flex-direction: column;
+      gap: 2px;
+    }
+  }
+
+  [data-slot="tabs-tab"] {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--space-2);
+    height: 32px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: var(--radius-control);
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-weight: 500;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: default;
+
+    &:hover:not([data-disabled]) {
+      color: var(--ink);
+    }
+
+    &[data-selected] {
+      background: var(--surface-1);
+      box-shadow:
+        inset 0 0 0 1px var(--ink),
+        var(--shadow-drop);
+      color: var(--ink);
+    }
+
+    &[data-disabled] {
+      color: var(--line-disabled);
+    }
+
+    &:focus-visible {
+      outline-offset: 0;
+    }
+
+    &[data-orientation="vertical"] {
+      justify-content: flex-start;
+      padding-inline: 10px;
+
+      &:hover:not([data-disabled], [data-selected]) {
+        background: var(--tint);
+      }
+    }
+
+    [data-slot="tabs-list"]:has([data-slot="tabs-indicator"])
+      > &[data-selected] {
+      background: transparent;
+      box-shadow: none;
+    }
+
+    & > [data-slot="badge"] {
+      height: 18px;
+      padding-inline: 6px;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  [data-slot="tabs-tab-icon"] {
+    display: flex;
+    color: var(--muted);
+
+    [data-selected] > & {
+      color: inherit;
+    }
+  }
+
+  [data-slot="tabs-indicator"] {
+    position: absolute;
+    top: var(--active-tab-top);
+    left: var(--active-tab-left);
+    box-sizing: border-box;
+    width: var(--active-tab-width);
+    height: var(--active-tab-height);
+    border-radius: var(--radius-control);
+    background: var(--surface-1);
+    box-shadow:
+      inset 0 0 0 1px var(--ink),
+      var(--shadow-drop);
+  }
+
+  /* The panel is a framed surface under its list, tall enough for any panel in the demos so switching never jumps. */
+  [data-slot="tabs-panel"] {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 6rem;
+    padding: var(--space-4);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-surface);
+    background: var(--surface-1);
+    color: var(--ink);
+    text-wrap: pretty;
+
+    &[data-orientation="vertical"] {
+      flex: 1;
+      align-self: stretch;
+    }
+
+    &[hidden] {
+      display: none;
+    }
+
+    & > [data-slot="field"],
+    & [data-slot="field-control"] {
+      width: 100%;
+    }
+  }
+
+  /* The panels share one framed cell, so they overlap while one slides out and the next slides in. */
+  [data-slot="stack"]:has(> [data-slot="tabs-panel"]) {
+    display: grid;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 6rem;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-surface);
+    background: var(--surface-1);
+
+    & > [data-slot="tabs-panel"] {
+      grid-area: 1 / 1;
+      min-height: 0;
+      border: 0;
+      border-radius: 0;
+      background: none;
+    }
+  }
+
+  /* The indicator glides in the demos that show it. */
+  :scope:is([data-example="tabs/indicator"], [data-example="tabs/animation"]) {
+    & [data-slot="tabs-indicator"] {
+      transition-property: top, left, width, height;
+      transition-duration: calc(var(--duration) * 2);
+
+      &[data-activation-direction="none"] {
+        transition: none;
+      }
+    }
+  }
+
+  /* The reply form is the tallest panel, so both panels take its height. */
+  :scope[data-example="tabs/keep-mounted"] [data-slot="tabs-panel"] {
+    min-height: 9.5rem;
+  }
+
+  :scope[data-example="tabs/animation"] {
+    & [data-slot="stack"] > [data-slot="tabs-panel"] {
+      transition:
+        opacity var(--duration),
+        translate var(--duration);
+
+      &:is([data-starting-style], [data-ending-style]) {
+        opacity: 0;
+      }
+
+      &[data-activation-direction="right"][data-starting-style],
+      &[data-activation-direction="left"][data-ending-style] {
+        translate: 2rem 0;
+      }
+
+      &[data-activation-direction="left"][data-starting-style],
+      &[data-activation-direction="right"][data-ending-style] {
+        translate: -2rem 0;
+      }
+    }
+  }
+}

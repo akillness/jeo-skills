@@ -1,0 +1,90 @@
+/*!
+ * MR Office - https://mroffice.ai
+ * Copyright (C) 2026 MRNote. SPDX-License-Identifier: AGPL-3.0-only
+ * Licensed under the GNU AGPL v3 with the additional terms in NOTICE.md.
+ */
+import {
+  Bird,
+  Bug,
+  Camera,
+  Cat,
+  Cloud,
+  Clover,
+  Coffee,
+  Dog,
+  Fish,
+  Flame,
+  Flower2,
+  Gamepad2,
+  Guitar,
+  Headphones,
+  IceCreamCone,
+  Leaf,
+  Moon,
+  Mountain,
+  Music,
+  Palette,
+  Panda,
+  PawPrint,
+  Rabbit,
+  Rainbow,
+  Rocket,
+  Sailboat,
+  Shell,
+  Snail,
+  Snowflake,
+  Squirrel,
+  Sun,
+  Telescope,
+  Tent,
+  TreePine,
+  Turtle,
+  Waves,
+  type LucideIcon,
+} from "lucide-react";
+
+/**
+ * The drawn doodles (every group but the workspace glyphs): a white line
+ * drawing on a disc of its own two colours, so the picker reads as a set
+ * of distinct characters rather than one colour repeated.
+ */
+export const AVATAR_DOODLE_ART: Readonly<
+  Record<string, { Icon: LucideIcon; from: string; to: string }>
+> = {
+  cat: { Icon: Cat, from: "#f6a04d", to: "#dc6a34" },
+  dog: { Icon: Dog, from: "#c99a6b", to: "#94643f" },
+  rabbit: { Icon: Rabbit, from: "#f29bbb", to: "#d8628f" },
+  panda: { Icon: Panda, from: "#6b7280", to: "#2f3742" },
+  bird: { Icon: Bird, from: "#5ec3f2", to: "#2a86d4" },
+  fish: { Icon: Fish, from: "#34c3bd", to: "#17879a" },
+  turtle: { Icon: Turtle, from: "#78c96a", to: "#3a9146" },
+  squirrel: { Icon: Squirrel, from: "#e58d4c", to: "#b0582a" },
+  snail: { Icon: Snail, from: "#bb98ee", to: "#8158d0" },
+  shell: { Icon: Shell, from: "#f4a58c", to: "#dc735b" },
+  bug: { Icon: Bug, from: "#ef6767", to: "#bf3a4c" },
+  "paw-print": { Icon: PawPrint, from: "#f0bb45", to: "#d38522" },
+  sun: { Icon: Sun, from: "#fbbf24", to: "#ee8a0b" },
+  moon: { Icon: Moon, from: "#7f8af5", to: "#4a40d9" },
+  cloud: { Icon: Cloud, from: "#8ec0fb", to: "#5484e6" },
+  rainbow: { Icon: Rainbow, from: "#fb7185", to: "#5b9ef5" },
+  snowflake: { Icon: Snowflake, from: "#7ccfee", to: "#3c9bd0" },
+  flower: { Icon: Flower2, from: "#f59cc9", to: "#e2438f" },
+  leaf: { Icon: Leaf, from: "#7fcf72", to: "#3a9b48" },
+  clover: { Icon: Clover, from: "#5edba8", to: "#0f9f6e" },
+  "tree-pine": { Icon: TreePine, from: "#4aa876", to: "#1d704f" },
+  mountain: { Icon: Mountain, from: "#94a3b8", to: "#4d5d74" },
+  waves: { Icon: Waves, from: "#38bdf8", to: "#0b72b5" },
+  flame: { Icon: Flame, from: "#fb923c", to: "#e2432a" },
+  coffee: { Icon: Coffee, from: "#b98b67", to: "#744c33" },
+  rocket: { Icon: Rocket, from: "#a78bfa", to: "#6a2bd6" },
+  palette: { Icon: Palette, from: "#f8b83a", to: "#ee5f9e" },
+  music: { Icon: Music, from: "#f06fb3", to: "#b523c6" },
+  guitar: { Icon: Guitar, from: "#f39a75", to: "#d15a36" },
+  camera: { Icon: Camera, from: "#64748b", to: "#303c4f" },
+  headphones: { Icon: Headphones, from: "#22c8e2", to: "#0a7fa6" },
+  gamepad: { Icon: Gamepad2, from: "#9bd43a", to: "#5a9410" },
+  telescope: { Icon: Telescope, from: "#6366f1", to: "#2e2a7a" },
+  sailboat: { Icon: Sailboat, from: "#6cc6f7", to: "#2159e0" },
+  tent: { Icon: Tent, from: "#f9ae6a", to: "#bf4312" },
+  "ice-cream": { Icon: IceCreamCone, from: "#f99aac", to: "#e85a7c" },
+};

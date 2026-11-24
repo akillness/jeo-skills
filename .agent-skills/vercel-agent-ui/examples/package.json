@@ -1,0 +1,40 @@
+{
+  "name": "examples",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./*": "./*"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.vue.json && node ../scripts/tsgo.mjs --noEmit -p tsconfig.react.json && svelte-check --tsconfig ./tsconfig.svelte.json --fail-on-warnings && node ../scripts/tsgo.mjs --noEmit -p tsconfig.solid.json"
+  },
+  "dependencies": {
+    "@lucide/svelte": "1.54.0",
+    "@lucide/vue": "1.54.0",
+    "@solidjs/web": "catalog:",
+    "@ui-sdk/core": "workspace:*",
+    "@ui-sdk/react": "workspace:*",
+    "@ui-sdk/solid": "workspace:*",
+    "@ui-sdk/svelte": "workspace:*",
+    "@ui-sdk/vue": "workspace:*",
+    "@ui-sdk/web": "workspace:*",
+    "lucide": "1.54.0",
+    "lucide-react": "1.54.0",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "solid-js": "catalog:",
+    "svelte": "catalog:",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@solidjs/vite-plugin": "catalog:",
+    "@sveltejs/vite-plugin-svelte": "catalog:",
+    "@types/react": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "svelte-check": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vue-tsc": "catalog:"
+  }
+}

@@ -1,0 +1,880 @@
+<!doctype html>
+<!-- MR Office - https://mroffice.ai - AGPL-3.0-only, see NOTICE.md -->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>python sandbox</title>
+  </head>
+  <body>
+    <script>
+      // Independent-origin Python execution sandbox host.
+      //
+      // Loaded by the app in a CROSS-ORIGIN iframe (NEXT_PUBLIC_SANDBOX_ORIGIN,
+      // e.g. a dedicated sandbox domain in production or http://127.0.0.1:<port>
+      // against a http://localhost:<port> app in dev). Unlike the JS sandbox
+      // (opaque origin), this page keeps a REAL origin — Pyodide needs
+      // IndexedDB + nested workers, which an opaque origin blocks — and the
+      // browser's same-origin policy is the isolation boundary instead: this
+      // origin shares no cookies/storage/DOM with the app origin.
+      //
+      // The page itself runs NO user code. It is a thin relay that hosts the
+      // per-namespace Pyodide workers (same /python-worker.js the in-origin
+      // fallback uses, served same-origin to THIS page) and forwards the
+      // existing worker protocol between window.parent and the workers, adding
+      // a `namespace` field for routing (per-kernel message ids collide across
+      // namespaces, so replies must carry which kernel they came from).
+      //
+      // Extra control ops (worker.terminate() is not reachable cross-frame):
+      //   { op: "terminate", namespace }  -> kill that kernel (restart/interrupt)
+      //   { op: "terminateAll" }          -> kill every kernel
+      // Worker crashes are relayed as { namespace, workerError: <message> }.
+      //
+      // Private beta: the gate injects a fixed embedder origin and the trusted
+      // worker source after redeeming a one-use POST ticket. Neither ticket nor
+      // app credentials enter this relay or its worker. Public/dev hosting
+      // retains its referrer/first-parent-message origin binding.
+      (function () {
+        var DEFAULT_NAMESPACE = "__default__";
+        var WORKER_PROTOCOL_MARKER = "mrnote.execution-worker.v1";
+        var MAX_OUTPUT_LINES = 2000;
+        var MAX_OUTPUT_LINE_CHARS = 20000;
+        var MAX_OUTPUT_LOG_CHARS = 300000;
+        var MAX_OUTPUT_TEXT_CHARS = 50000;
+        var MAX_OUTPUT_HTML_CHARS = 200000;
+        var MAX_OUTPUT_IMAGES = 20;
+        var MAX_OUTPUT_IMAGE_CHARS = 1000000;
+        var MAX_PROTOCOL_ITEMS = 500;
+        var MAX_PROTOCOL_COMPLETIONS = 80;
+        var MAX_PROTOCOL_TOTAL_CHARS = 100000;
+        var MAX_PROTOCOL_NAME_CHARS = 256;
+        var MAX_PROTOCOL_TYPE_CHARS = 128;
+        var MAX_PROTOCOL_PREVIEW_CHARS = 120;
+        var MAX_PROTOCOL_FIELD_CHARS = 4096;
+        var MAX_PROTOCOL_DOC_CHARS = 1500;
+        var MAX_PROTOCOL_FORMATTED_CHARS = 2000000;
+        var MAX_PROTOCOL_COORDINATE = 10000000;
+        var OUTPUT_TRUNCATION_MARKER =
+          "… [output truncated: execution budget reached]";
+        var appOrigin = null;
+        var workerUrl = "/python-worker.js";
+        var privateWorkerUrl = null;
+        var disposed = false;
+        var bootstrapNode = document.getElementById(
+          "mrnote-python-bootstrap",
+        );
+        var privateBootstrap = bootstrapNode !== null;
+        if (privateBootstrap) {
+          var bootstrapText = bootstrapNode.textContent || "";
+          var bootstrapType = bootstrapNode.getAttribute("type");
+          bootstrapNode.textContent = "";
+          bootstrapNode.remove();
+          bootstrapNode = null;
+          var bootstrap = null;
+          var workerSource = "";
+          try {
+            if (
+              bootstrapType !== "application/json" ||
+              bootstrapText.length > 300000
+            ) {
+              return;
+            }
+            bootstrap = JSON.parse(bootstrapText);
+            if (
+              !bootstrap ||
+              typeof bootstrap !== "object" ||
+              Array.isArray(bootstrap) ||
+              bootstrap.version !== 1 ||
+              typeof bootstrap.appOrigin !== "string" ||
+              bootstrap.appOrigin.length > 2048 ||
+              typeof bootstrap.workerSource !== "string" ||
+              bootstrap.workerSource.length === 0 ||
+              bootstrap.workerSource.length > 262144
+            ) {
+              return;
+            }
+            var configuredApp = new URL(bootstrap.appOrigin);
+            if (
+              configuredApp.protocol !== "https:" ||
+              configuredApp.origin !== bootstrap.appOrigin
+            ) {
+              return;
+            }
+            appOrigin = configuredApp.origin;
+            workerSource = bootstrap.workerSource;
+            privateWorkerUrl = URL.createObjectURL(
+              new Blob([workerSource], { type: "text/javascript" }),
+            );
+            workerUrl = privateWorkerUrl;
+          } catch (e) {
+            // An injected but malformed private config is NOT public/dev mode.
+            return;
+          } finally {
+            bootstrapText = "";
+            workerSource = "";
+            if (bootstrap && typeof bootstrap === "object") {
+              bootstrap.workerSource = "";
+            }
+            bootstrap = null;
+          }
+        } else {
+          try {
+            if (document.referrer) appOrigin = new URL(document.referrer).origin;
+          } catch (e) {
+            /* public/dev only: unparsable referrer -> bind on first message */
+          }
+        }
+
+        var workers = Object.create(null); // namespace -> Worker
+        var workerProtocolTokens = Object.create(null); // namespace -> capability
+        var relayBudgets = Object.create(null); // namespace -> id -> capture
+
+        function truncateOutput(value, maxChars) {
+          value = String(value);
+          if (value.length <= maxChars) return value;
+          if (maxChars <= OUTPUT_TRUNCATION_MARKER.length) {
+            return OUTPUT_TRUNCATION_MARKER.slice(0, maxChars);
+          }
+          return (
+            value.slice(0, maxChars - OUTPUT_TRUNCATION_MARKER.length) +
+            OUTPUT_TRUNCATION_MARKER
+          );
+        }
+
+        function createOutputCapture() {
+          var logs = [];
+          var logStreams = [];
+          var chars = 0;
+          var sealed = false;
+          function marker() {
+            if (sealed) return null;
+            sealed = true;
+            var remaining = MAX_OUTPUT_LOG_CHARS - chars;
+            if (remaining <= 0 || logs.length >= MAX_OUTPUT_LINES) return null;
+            var kept = OUTPUT_TRUNCATION_MARKER.slice(0, remaining);
+            logs.push(kept);
+            logStreams.push("stderr");
+            chars += kept.length;
+            return { text: kept, stream: "stderr" };
+          }
+          return {
+            logs: logs,
+            logStreams: logStreams,
+            push: function (value, streamName) {
+              if (sealed) return null;
+              if (logs.length >= MAX_OUTPUT_LINES - 1) return marker();
+              if (typeof value !== "string" || value === "") return null;
+              var kept = truncateOutput(value, MAX_OUTPUT_LINE_CHARS);
+              var remaining =
+                MAX_OUTPUT_LOG_CHARS - chars - OUTPUT_TRUNCATION_MARKER.length;
+              if (kept.length > remaining) {
+                if (remaining <= 0) return marker();
+                kept = truncateOutput(kept, remaining);
+                sealed = true;
+              }
+              var tag = streamName === "stderr" ? "stderr" : "stdout";
+              logs.push(kept);
+              logStreams.push(tag);
+              chars += kept.length;
+              return { text: kept, stream: tag };
+            },
+          };
+        }
+
+        function protocolString(value, maxChars, budget, allowEmpty) {
+          if (typeof value !== "string" || budget.remaining <= 0) return null;
+          var bounded = value.slice(0, Math.min(maxChars, budget.remaining));
+          if (allowEmpty === false && bounded.length === 0) return null;
+          budget.remaining -= bounded.length;
+          return bounded;
+        }
+
+        function protocolInteger(value, min, max) {
+          return Number.isSafeInteger(value) && value >= min && value <= max
+            ? value
+            : null;
+        }
+
+        function appendProtocolError(data, result, budget) {
+          var error = protocolString(
+            data.error,
+            MAX_PROTOCOL_FIELD_CHARS,
+            budget,
+            true,
+          );
+          if (error !== null) result.error = error;
+          return result;
+        }
+
+        // The worker capability proves which transport emitted a message, not that
+        // a persistent Python interpreter did not poison a helper dependency. Copy
+        // only the fixed non-execution schema and re-apply every resource budget.
+        function boundNonExecutionResult(data) {
+          if (!data || typeof data !== "object") return null;
+          var id = protocolInteger(data.id, 0, Number.MAX_SAFE_INTEGER);
+          if (id === null) return null;
+          var budget = { remaining: MAX_PROTOCOL_TOTAL_CHARS };
+          var result;
+          var values;
+          var candidate;
+          var index;
+
+          if (Array.isArray(data.variables)) {
+            values = [];
+            for (
+              index = 0;
+              index < data.variables.length && index < MAX_PROTOCOL_ITEMS;
+              index += 1
+            ) {
+              candidate = data.variables[index];
+              if (
+                !candidate ||
+                typeof candidate !== "object" ||
+                Array.isArray(candidate)
+              )
+                continue;
+              var variableName = protocolString(
+                candidate.name,
+                MAX_PROTOCOL_NAME_CHARS,
+                budget,
+                false,
+              );
+              if (variableName === null) continue;
+              var variableType = protocolString(
+                candidate.type,
+                MAX_PROTOCOL_TYPE_CHARS,
+                budget,
+                true,
+              );
+              var variablePreview = protocolString(
+                candidate.preview,
+                MAX_PROTOCOL_PREVIEW_CHARS,
+                budget,
+                true,
+              );
+              if (variableType === null || variablePreview === null) break;
+              values.push({
+                name: variableName,
+                type: variableType,
+                preview: variablePreview,
+              });
+            }
+            return appendProtocolError(
+              data,
+              { id: id, variables: values },
+              budget,
+            );
+          }
+
+          if (
+            data.lint &&
+            typeof data.lint === "object" &&
+            !Array.isArray(data.lint)
+          ) {
+            var lint = data.lint.ok === false ? { ok: false } : { ok: true };
+            if (lint.ok === false) {
+              ["lineno", "offset", "endLineno", "endOffset"].forEach(
+                function (key) {
+                  var coordinate = protocolInteger(
+                    data.lint[key],
+                    0,
+                    MAX_PROTOCOL_COORDINATE,
+                  );
+                  if (coordinate !== null) lint[key] = coordinate;
+                },
+              );
+              var lintMessage = protocolString(
+                data.lint.msg,
+                MAX_PROTOCOL_FIELD_CHARS,
+                budget,
+                true,
+              );
+              if (lintMessage !== null) lint.msg = lintMessage;
+            }
+            var warnings = [];
+            var rawWarnings = Array.isArray(data.warnings) ? data.warnings : [];
+            for (
+              index = 0;
+              index < rawWarnings.length && index < MAX_PROTOCOL_ITEMS;
+              index += 1
+            ) {
+              candidate = rawWarnings[index];
+              if (
+                !candidate ||
+                typeof candidate !== "object" ||
+                Array.isArray(candidate)
+              )
+                continue;
+              var row = protocolInteger(
+                candidate.row,
+                1,
+                MAX_PROTOCOL_COORDINATE,
+              );
+              var col = protocolInteger(
+                candidate.col,
+                1,
+                MAX_PROTOCOL_COORDINATE,
+              );
+              if (row === null || col === null) continue;
+              var warningMessage = protocolString(
+                candidate.message,
+                MAX_PROTOCOL_FIELD_CHARS,
+                budget,
+                false,
+              );
+              var warningType = protocolString(
+                candidate.type,
+                MAX_PROTOCOL_TYPE_CHARS,
+                budget,
+                false,
+              );
+              if (warningMessage === null || warningType === null) break;
+              warnings.push({
+                row: row,
+                col: col,
+                message: warningMessage,
+                type: warningType,
+              });
+            }
+            return appendProtocolError(
+              data,
+              { id: id, lint: lint, warnings: warnings },
+              budget,
+            );
+          }
+
+          if (typeof data.formatted === "string") {
+            return appendProtocolError(
+              data,
+              {
+                id: id,
+                formatted:
+                  data.formatted.length <= MAX_PROTOCOL_FORMATTED_CHARS
+                    ? data.formatted
+                    : "",
+              },
+              budget,
+            );
+          }
+
+          if (Array.isArray(data.completions)) {
+            values = [];
+            for (
+              index = 0;
+              index < data.completions.length &&
+              index < MAX_PROTOCOL_COMPLETIONS;
+              index += 1
+            ) {
+              candidate = data.completions[index];
+              if (
+                !candidate ||
+                typeof candidate !== "object" ||
+                Array.isArray(candidate)
+              )
+                continue;
+              var completionName = protocolString(
+                candidate.name,
+                MAX_PROTOCOL_NAME_CHARS,
+                budget,
+                false,
+              );
+              if (completionName === null) continue;
+              var completionKind =
+                candidate.kind == null
+                  ? null
+                  : protocolString(
+                      candidate.kind,
+                      MAX_PROTOCOL_TYPE_CHARS,
+                      budget,
+                      true,
+                    );
+              if (candidate.kind != null && completionKind === null) break;
+              values.push({ name: completionName, kind: completionKind });
+            }
+            return appendProtocolError(
+              data,
+              { id: id, completions: values },
+              budget,
+            );
+          }
+
+          if (
+            data.hover &&
+            typeof data.hover === "object" &&
+            !Array.isArray(data.hover)
+          ) {
+            var hover = { found: false };
+            if (data.hover.found === true) {
+              var hoverName = protocolString(
+                data.hover.name,
+                MAX_PROTOCOL_NAME_CHARS,
+                budget,
+                false,
+              );
+              var hoverKind =
+                data.hover.kind == null
+                  ? null
+                  : protocolString(
+                      data.hover.kind,
+                      MAX_PROTOCOL_TYPE_CHARS,
+                      budget,
+                      true,
+                    );
+              var hoverSignature =
+                data.hover.signature == null
+                  ? null
+                  : protocolString(
+                      data.hover.signature,
+                      MAX_PROTOCOL_FIELD_CHARS,
+                      budget,
+                      true,
+                    );
+              var hoverDoc =
+                data.hover.doc == null
+                  ? null
+                  : protocolString(
+                      data.hover.doc,
+                      MAX_PROTOCOL_DOC_CHARS,
+                      budget,
+                      true,
+                    );
+              if (
+                hoverName !== null &&
+                (data.hover.kind == null || hoverKind !== null) &&
+                (data.hover.signature == null || hoverSignature !== null) &&
+                (data.hover.doc == null || hoverDoc !== null)
+              ) {
+                hover = {
+                  found: true,
+                  name: hoverName,
+                  kind: hoverKind,
+                  signature: hoverSignature,
+                  doc: hoverDoc,
+                };
+              }
+            }
+            return appendProtocolError(data, { id: id, hover: hover }, budget);
+          }
+
+          if (
+            data.signature &&
+            typeof data.signature === "object" &&
+            !Array.isArray(data.signature)
+          ) {
+            var signature = { found: false };
+            if (
+              data.signature.found === true &&
+              Array.isArray(data.signature.params)
+            ) {
+              var label = protocolString(
+                data.signature.label,
+                MAX_PROTOCOL_FIELD_CHARS,
+                budget,
+                false,
+              );
+              if (label !== null) {
+                var params = [];
+                for (
+                  index = 0;
+                  index < data.signature.params.length &&
+                  index < MAX_PROTOCOL_ITEMS;
+                  index += 1
+                ) {
+                  var param = protocolString(
+                    data.signature.params[index],
+                    MAX_PROTOCOL_NAME_CHARS,
+                    budget,
+                    true,
+                  );
+                  if (param === null) break;
+                  params.push(param);
+                }
+                var active = protocolInteger(
+                  data.signature.activeParameter,
+                  0,
+                  MAX_PROTOCOL_ITEMS,
+                );
+                signature = {
+                  found: true,
+                  label: label,
+                  params: params,
+                  activeParameter: Math.min(
+                    active === null ? 0 : active,
+                    Math.max(params.length - 1, 0),
+                  ),
+                };
+              }
+            }
+            return appendProtocolError(
+              data,
+              { id: id, signature: signature },
+              budget,
+            );
+          }
+
+          if (
+            data.definition &&
+            typeof data.definition === "object" &&
+            !Array.isArray(data.definition)
+          ) {
+            var definitionLine = protocolInteger(
+              data.definition.line,
+              1,
+              MAX_PROTOCOL_COORDINATE,
+            );
+            var definitionColumn = protocolInteger(
+              data.definition.column,
+              0,
+              MAX_PROTOCOL_COORDINATE,
+            );
+            var definition =
+              data.definition.found === true &&
+              definitionLine !== null &&
+              definitionColumn !== null
+                ? {
+                    found: true,
+                    line: definitionLine,
+                    column: definitionColumn,
+                    inBuffer: data.definition.inBuffer === true,
+                  }
+                : { found: false };
+            return appendProtocolError(
+              data,
+              { id: id, definition: definition },
+              budget,
+            );
+          }
+
+          if (
+            data.references &&
+            typeof data.references === "object" &&
+            !Array.isArray(data.references)
+          ) {
+            values = [];
+            var rawRefs = Array.isArray(data.references.refs)
+              ? data.references.refs
+              : [];
+            for (
+              index = 0;
+              index < rawRefs.length && index < MAX_PROTOCOL_ITEMS;
+              index += 1
+            ) {
+              candidate = rawRefs[index];
+              if (
+                !candidate ||
+                typeof candidate !== "object" ||
+                Array.isArray(candidate)
+              )
+                continue;
+              var refLine = protocolInteger(
+                candidate.line,
+                1,
+                MAX_PROTOCOL_COORDINATE,
+              );
+              var refColumn = protocolInteger(
+                candidate.column,
+                0,
+                MAX_PROTOCOL_COORDINATE,
+              );
+              var refLength = protocolInteger(
+                candidate.length,
+                1,
+                MAX_PROTOCOL_FIELD_CHARS,
+              );
+              if (refLine === null || refColumn === null || refLength === null)
+                continue;
+              values.push({
+                line: refLine,
+                column: refColumn,
+                length: refLength,
+              });
+            }
+            return appendProtocolError(
+              data,
+              {
+                id: id,
+                references: { found: values.length > 0, refs: values },
+              },
+              budget,
+            );
+          }
+
+          return null;
+        }
+
+        function boundWorkerResult(data) {
+          if (!data || typeof data !== "object") return {};
+          // Non-execution protocol replies are schema/budget checked here and at
+          // both neighbouring boundaries (worker + app host).
+          var isNonExecutionResult =
+            "variables" in data ||
+            "lint" in data ||
+            "formatted" in data ||
+            "completions" in data ||
+            "hover" in data ||
+            "signature" in data ||
+            "definition" in data ||
+            "references" in data;
+          if (isNonExecutionResult) return boundNonExecutionResult(data);
+          var isExecutionResult =
+            Array.isArray(data.logs) ||
+            typeof data.result === "string" ||
+            typeof data.error === "string" ||
+            typeof data.html === "string" ||
+            Array.isArray(data.images);
+          if (!isExecutionResult) return null;
+
+          var output = createOutputCapture();
+          var rawLogs = Array.isArray(data.logs) ? data.logs : [];
+          var rawStreams = Array.isArray(data.logStreams)
+            ? data.logStreams
+            : null;
+          for (var i = 0; i < rawLogs.length; i += 1) {
+            if (
+              output.push(
+                rawLogs[i],
+                rawStreams && rawStreams[i] === "stderr" ? "stderr" : "stdout",
+              ) === null
+            ) {
+              break;
+            }
+          }
+          var result = { id: data.id, logs: output.logs };
+          if (rawStreams) result.logStreams = output.logStreams;
+          if (typeof data.result === "string") {
+            result.result = truncateOutput(data.result, MAX_OUTPUT_TEXT_CHARS);
+          }
+          if (typeof data.error === "string") {
+            result.error = truncateOutput(data.error, MAX_OUTPUT_TEXT_CHARS);
+          }
+          if (typeof data.html === "string") {
+            result.html = truncateOutput(data.html, MAX_OUTPUT_HTML_CHARS);
+          }
+          if (Array.isArray(data.images)) {
+            var images = [];
+            var imageChars = 0;
+            for (
+              var imageIndex = 0;
+              imageIndex < data.images.length;
+              imageIndex += 1
+            ) {
+              var image = data.images[imageIndex];
+              if (images.length >= MAX_OUTPUT_IMAGES) break;
+              if (
+                typeof image !== "string" ||
+                image.length > MAX_OUTPUT_IMAGE_CHARS ||
+                imageChars + image.length > MAX_OUTPUT_IMAGE_CHARS
+              ) {
+                continue;
+              }
+              images.push(image);
+              imageChars += image.length;
+            }
+            if (images.length > 0) result.images = images;
+          }
+          if (Array.isArray(data.debugEvents)) {
+            result.debugEvents = data.debugEvents.slice(0, 300);
+          }
+          if (data.debugTruncated === true) result.debugTruncated = true;
+          if (typeof data.debugConditionNote === "string") {
+            result.debugConditionNote = truncateOutput(
+              data.debugConditionNote,
+              MAX_OUTPUT_TEXT_CHARS,
+            );
+          }
+          return result;
+        }
+
+        function budgetFor(namespace, id) {
+          var byId = relayBudgets[namespace];
+          if (!byId) {
+            byId = Object.create(null);
+            relayBudgets[namespace] = byId;
+          }
+          if (!byId[id]) byId[id] = createOutputCapture();
+          return byId[id];
+        }
+
+        function clearBudget(namespace, id) {
+          var byId = relayBudgets[namespace];
+          if (!byId) return;
+          delete byId[id];
+        }
+
+        function post(message, transfer) {
+          if (disposed || (privateBootstrap && appOrigin === null)) return;
+          if (transfer) parent.postMessage(message, appOrigin || "*", transfer);
+          else parent.postMessage(message, appOrigin || "*");
+        }
+
+        // A game's frame (python-worker.js runGame): raw RGBA of a bounded
+        // size, moved on as it came. It is not the run's output, so it neither
+        // spends nor clears the run's relay budget.
+        var GAME_MAX_SIDE = 2048;
+        function boundGameFrame(data) {
+          var width = data.width;
+          var height = data.height;
+          var pixels = data.pixels;
+          if (
+            typeof data.id !== "number" ||
+            !Number.isSafeInteger(width) ||
+            !Number.isSafeInteger(height) ||
+            width < 1 ||
+            height < 1 ||
+            width > GAME_MAX_SIDE ||
+            height > GAME_MAX_SIDE ||
+            !(pixels instanceof ArrayBuffer) ||
+            pixels.byteLength !== width * height * 4
+          ) {
+            return null;
+          }
+          return {
+            id: data.id,
+            type: "game-frame",
+            width: width,
+            height: height,
+            caption:
+              typeof data.caption === "string" ? data.caption.slice(0, 200) : "",
+            pixels: pixels,
+          };
+        }
+
+        function terminateNamespace(namespace) {
+          var worker = workers[namespace];
+          if (!worker) return;
+          delete workers[namespace];
+          delete workerProtocolTokens[namespace];
+          delete relayBudgets[namespace];
+          try {
+            worker.terminate();
+          } catch (e) {
+            /* already dead */
+          }
+        }
+
+        function getWorker(namespace) {
+          var existing = workers[namespace];
+          if (existing) return existing;
+          var worker = new Worker(workerUrl);
+          worker.onmessage = function (ev) {
+            var envelope = ev.data;
+            if (
+              !Array.isArray(envelope) ||
+              envelope.length !== 3 ||
+              envelope[0] !== WORKER_PROTOCOL_MARKER ||
+              typeof envelope[1] !== "string" ||
+              !/^[0-9a-f]{32}$/.test(envelope[1]) ||
+              !envelope[2] ||
+              typeof envelope[2] !== "object"
+            ) {
+              return;
+            }
+            var protocolToken = envelope[1];
+            var data = envelope[2];
+            var expectedToken = workerProtocolTokens[namespace];
+            if (!expectedToken) {
+              if (data.type !== "protocol-ready") return;
+              workerProtocolTokens[namespace] = protocolToken;
+              return;
+            }
+            if (protocolToken !== expectedToken) return;
+            if (data.type === "protocol-ready") return;
+            if (data.type === "stream" && typeof data.id === "number") {
+              var retained = budgetFor(namespace, data.id).push(
+                data.chunk,
+                data.stream,
+              );
+              if (retained) {
+                post({
+                  namespace: namespace,
+                  id: data.id,
+                  type: "stream",
+                  stream: retained.stream,
+                  chunk: retained.text,
+                });
+              }
+              return;
+            }
+            if (data.type === "game-frame") {
+              var frame = boundGameFrame(data);
+              if (frame) {
+                frame.namespace = namespace;
+                post(frame, [frame.pixels]);
+              }
+              return;
+            }
+            var relayed = boundWorkerResult(data);
+            if (!relayed) return;
+            // Stamp AFTER the copy: the worker runs untrusted Python, which
+            // can post arbitrary messages via Pyodide's js FFI — a forged
+            // `namespace` key must never override the routing key this relay
+            // owns (it would let one kernel inject replies into another's).
+            relayed.namespace = namespace;
+            post(relayed);
+            if (typeof data.id === "number") clearBudget(namespace, data.id);
+          };
+          worker.onerror = function (ev) {
+            post({
+              namespace: namespace,
+              workerError: String(
+                (ev && ev.message) || "Python worker crashed",
+              ),
+            });
+            terminateNamespace(namespace);
+          };
+          workers[namespace] = worker;
+          return worker;
+        }
+
+        function onParentMessage(ev) {
+          if (disposed) return;
+          if (ev.source !== window.parent) return;
+          if (appOrigin === null) {
+            if (privateBootstrap) return;
+            appOrigin = ev.origin; // trust-on-first-message fallback
+          } else if (ev.origin !== appOrigin) {
+            return;
+          }
+          var req = ev.data;
+          if (!req || typeof req !== "object") return;
+          var namespace =
+            typeof req.namespace === "string" && req.namespace
+              ? req.namespace
+              : DEFAULT_NAMESPACE;
+          if (req.op === "terminate") {
+            terminateNamespace(namespace);
+            return;
+          }
+          if (req.op === "terminateAll") {
+            for (var key in workers) terminateNamespace(key);
+            return;
+          }
+          // run / inspect / lint — the worker protocol proper. The worker
+          // ignores the extra `namespace` field, so forward verbatim.
+          if (typeof req.id !== "number") return;
+          budgetFor(namespace, req.id);
+          getWorker(namespace).postMessage(req);
+        }
+
+        function dispose() {
+          if (disposed) return;
+          disposed = true;
+          window.removeEventListener("message", onParentMessage);
+          window.removeEventListener("pagehide", dispose);
+          window.removeEventListener("beforeunload", dispose);
+          for (var key in workers) terminateNamespace(key);
+          if (privateWorkerUrl !== null) {
+            URL.revokeObjectURL(privateWorkerUrl);
+            privateWorkerUrl = null;
+          }
+          workerUrl = "";
+        }
+
+        window.addEventListener("message", onParentMessage);
+        window.addEventListener("pagehide", dispose);
+        window.addEventListener("beforeunload", dispose);
+
+        post({ ready: true });
+      })();
+    </script>
+  </body>
+</html>

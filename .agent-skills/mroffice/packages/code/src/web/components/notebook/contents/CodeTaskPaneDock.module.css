@@ -1,0 +1,61 @@
+ 
+.right {
+  --office-pane-tone-accent: var(--console-accent-strong, #087c73);
+
+  position: relative;
+  z-index: 30;
+  display: block;
+  width: 0;
+  min-width: 0;
+  min-height: 0;
+  flex: 0 0 0;
+  align-self: stretch;
+  overflow: visible;
+}
+
+.right > [data-office-task-pane-slot] > * {
+  position: absolute !important;
+  /* Above the editor's status bar (27px), as the right card of Docs keeps
+     clear of its own. */
+  inset: 0 8px 36px auto;
+  width: min(320px, 46vw) !important;
+  min-width: 0 !important;
+  max-width: none;
+  height: auto;
+  max-height: none;
+  min-height: 0;
+}
+
+/* A pane in the dialogs' chrome draws its own card (glass, edge, radius);
+   the console card is for a pane without it (the Test Explorer). */
+.right > [data-office-task-pane-slot] > :not(:global(.office-dialog)) {
+  border: 1px solid var(--console-border, #e2e8f0);
+  border-radius: 12px;
+  background: var(--bg-surface, #ffffff);
+  box-shadow: 0 18px 48px rgb(15 23 42 / 16%);
+}
+
+.right:empty {
+  display: none;
+}
+
+/* The cursor scrolls clear of the card (CodeMirrorEditor's scroll margins
+   read the same width), and a line longer than the editor scrolls its end
+   out from under it. A wrapping editor keeps its wrap width. */
+/* cssmodules-pure-ignore */
+:global([data-testid="code-editor-stack"]) :global(.cm-scroller) {
+  scroll-padding-right: var(--office-task-pane-cover-right, 0px);
+}
+
+/* cssmodules-pure-ignore */
+:global([data-testid="code-editor-stack"]) :global(.cm-content:not(.cm-lineWrapping)) {
+  padding-right: var(--office-task-pane-cover-right, 0px);
+}
+
+/* A docked pane scrolls inside its column. */
+.pane {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  overflow: auto;
+}

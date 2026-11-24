@@ -1,0 +1,26 @@
+{
+  "_comment": "Copy as config.json or set ARTEX_CONFIG to its path. This file configures PostgreSQL, the skill directory, and the optional Scanner User-Agent.",
+
+  "_comment_database": "PostgreSQL connection. Precedence: environment variable ARTEX_PG_DSN > database in this file. Two ways, pick one: (A) fill in the component fields below; (B) fill only database.dsn with a full connection string.",
+  "database": {
+    "host": "127.0.0.1",
+    "port": 5433,
+    "user": "artex",
+    "password": "",
+    "dbname": "artex",
+    "sslmode": "disable"
+  },
+
+  "_comment_database_dsn": "Form (B): delete the database above and use a full DSN instead. When dsn is non-empty the component fields are ignored.",
+  "_example_database_dsn": {
+    "database": {
+      "dsn": "postgres://user:pass@db.example.com:5432/artex?sslmode=require"
+    }
+  },
+
+  "_comment_skill_dir": "Skill root directory (one skill per subdirectory, each with a SKILL.md). Precedence: environment variable ARTEX_SKILL_DIR > this field > default (skills/ next to the executable). Leave empty or delete this field to use the default. Relative paths resolve against the current working directory.",
+  "skill_dir": "/opt/artex/skills",
+
+  "_comment_task_user_agents": "Leave empty to disable. To opt in, map a live task ID to an object with a nonempty origins list and an optional public reference. See docs/scanner-user-agent.md.",
+  "task_user_agents": {}
+}

@@ -1,0 +1,456 @@
+ 
+
+.palette {
+  --pen-palette-surface: rgba(255, 255, 255, 0.96);
+  --pen-palette-edge: rgba(15, 23, 42, 0.1);
+  --pen-palette-ink: #1f2937;
+  --pen-palette-muted: #64748b;
+  --pen-palette-hover: rgba(15, 23, 42, 0.06);
+  --pen-palette-active: color-mix(in srgb, var(--console-accent, #2563eb) 14%, transparent);
+  --pen-palette-active-edge: color-mix(in srgb, var(--console-accent, #2563eb) 55%, transparent);
+  --pen-palette-active-ink: color-mix(in srgb, var(--console-accent, #2563eb) 85%, var(--pen-palette-ink));
+  --pen-palette-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --pen-palette-target: 38px;
+  --pen-palette-radius: 16px;
+  box-sizing: border-box;
+  color: var(--pen-palette-ink);
+  cursor: grab;
+  display: flex;
+  flex-direction: column;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  /* Above every editor's own layers in the window (a slide's draw surface
+     stands at 9000), below what floats outside the window. */
+  z-index: 10000;
+  transition: scale 160ms var(--enter-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.palette[data-orientation="horizontal"] {
+  flex-direction: row;
+}
+
+.palette[data-folded="true"] {
+  --pen-palette-radius: 24px;
+}
+
+/* Held a moment, or on the move: lifted off the page. */
+.palette[data-lifted="true"] {
+  cursor: grabbing;
+  scale: 1.035;
+}
+
+.backdrop {
+  background: var(--pen-palette-surface);
+  border: 1px solid var(--pen-palette-edge);
+  border-radius: var(--pen-palette-radius);
+  box-shadow:
+    0 10px 28px rgba(15, 23, 42, 0.14),
+    0 2px 6px rgba(15, 23, 42, 0.08);
+  box-sizing: border-box;
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: box-shadow 160ms ease-out;
+}
+
+.palette[data-lifted="true"] .backdrop {
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.2),
+    0 4px 10px rgba(15, 23, 42, 0.1);
+}
+
+.body {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  padding: 3px;
+  position: relative;
+}
+
+.palette[data-orientation="horizontal"] .body {
+  flex-direction: row;
+}
+
+.palette[data-folded="true"] .body {
+  padding: 2px;
+}
+
+.header,
+.footer {
+  align-items: center;
+  display: flex;
+  flex: none;
+  justify-content: center;
+}
+
+.header {
+  border-bottom: 1px solid var(--pen-palette-edge);
+  margin-bottom: 2px;
+  padding-bottom: 2px;
+}
+
+.footer {
+  border-top: 1px solid var(--pen-palette-edge);
+  margin-top: 2px;
+  padding-top: 2px;
+}
+
+.palette[data-orientation="horizontal"] .header,
+.palette[data-orientation="horizontal"] .footer {
+  flex-direction: column;
+}
+
+.palette[data-orientation="horizontal"] .header {
+  border-bottom: 0;
+  border-right: 1px solid var(--pen-palette-edge);
+  margin: 0 2px 0 0;
+  padding: 0 2px 0 0;
+}
+
+.palette[data-orientation="horizontal"] .footer {
+  border-left: 1px solid var(--pen-palette-edge);
+  border-top: 0;
+  margin: 0 0 0 2px;
+  padding: 0 0 0 2px;
+}
+
+.lanes {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  /* A drag from the colours moves the palette: the browser takes no pan here. */
+  touch-action: none;
+}
+
+.palette[data-orientation="horizontal"] .lanes {
+  flex-direction: column;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.lanes::-webkit-scrollbar {
+  display: none;
+}
+
+.colors {
+  align-items: center;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+}
+
+.palette[data-orientation="horizontal"] .colors {
+  flex-direction: row;
+}
+
+ 
+.tools {
+  flex: none;
+  position: relative;
+  width: var(--pen-palette-target);
+}
+
+.colors + .tools {
+  border-left: 1px solid var(--pen-palette-edge);
+}
+
+.palette[data-orientation="horizontal"] .tools {
+  height: var(--pen-palette-target);
+  width: auto;
+}
+
+.palette[data-orientation="horizontal"] .colors + .tools {
+  border-left: 0;
+  border-top: 1px solid var(--pen-palette-edge);
+}
+
+.toolsScroller {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  position: absolute;
+  scrollbar-width: none;
+  /* Only a strip with more to show scrolls under a swipe; otherwise a drag
+     from the tools moves the palette like a drag from anywhere else. */
+  touch-action: none;
+}
+
+.toolsScroller[data-more-start="true"],
+.toolsScroller[data-more-end="true"] {
+  touch-action: pan-y;
+}
+
+.palette[data-orientation="horizontal"] .toolsScroller {
+  flex-direction: row;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.palette[data-orientation="horizontal"] .toolsScroller[data-more-start="true"],
+.palette[data-orientation="horizontal"] .toolsScroller[data-more-end="true"] {
+  touch-action: pan-x;
+}
+
+.toolsScroller::-webkit-scrollbar {
+  display: none;
+}
+
+ 
+.tools[data-free="true"] .toolsScroller {
+  position: static;
+}
+
+.toolsScroller[data-more-end="true"] {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 18px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 18px), transparent);
+}
+
+.toolsScroller[data-more-start="true"] {
+  -webkit-mask-image: linear-gradient(to top, #000 calc(100% - 18px), transparent);
+  mask-image: linear-gradient(to top, #000 calc(100% - 18px), transparent);
+}
+
+.toolsScroller[data-more-start="true"][data-more-end="true"] {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18px, #000 calc(100% - 18px), transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 18px, #000 calc(100% - 18px), transparent);
+}
+
+.palette[data-orientation="horizontal"] .toolsScroller[data-more-end="true"] {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 18px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 18px), transparent);
+}
+
+.palette[data-orientation="horizontal"] .toolsScroller[data-more-start="true"] {
+  -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 18px), transparent);
+  mask-image: linear-gradient(to left, #000 calc(100% - 18px), transparent);
+}
+
+.palette[data-orientation="horizontal"] .toolsScroller[data-more-start="true"][data-more-end="true"] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 18px, #000 calc(100% - 18px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 18px, #000 calc(100% - 18px), transparent);
+}
+
+.button {
+  align-items: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  flex: none;
+  height: var(--pen-palette-target);
+  justify-content: center;
+  padding: 0;
+  position: relative;
+  -webkit-touch-callout: none;
+  width: var(--pen-palette-target);
+}
+
+.button:hover:not(:disabled) {
+  background: var(--pen-palette-hover, rgba(15, 23, 42, 0.06));
+}
+
+ 
+.button::before {
+  background: var(--pen-palette-active);
+  border-radius: inherit;
+  content: "";
+  inset: 1px;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  scale: 0.6;
+  transition:
+    opacity 160ms ease,
+    scale 240ms var(--pen-palette-spring);
+}
+
+.button[data-active="true"]::before {
+  opacity: 1;
+  scale: 1;
+}
+
+.button > :not(.menuAnchor) {
+  position: relative;
+  transition:
+    color 160ms ease,
+    scale 120ms ease,
+    translate 260ms var(--pen-palette-spring),
+    filter 260ms ease,
+    box-shadow 220ms ease;
+}
+
+.button[data-active="true"] {
+  color: var(--pen-palette-active-ink);
+}
+
+/* A finger's press: the target gives a little under it. */
+.button:active:not(:disabled) > :not(.menuAnchor) {
+  scale: 0.9;
+}
+
+/* Pens stand in a tray: the one in hand is lifted out of it, with a soft
+   shadow under it; no chip. */
+.penButton::before,
+.swatchButton::before {
+  display: none;
+}
+
+.palette[data-orientation="vertical"] .penButton > :not(.menuAnchor) {
+  translate: 0 4px;
+}
+
+.palette[data-orientation="horizontal"] .penButton > :not(.menuAnchor) {
+  translate: 0 3px;
+}
+
+.penButton[data-active="true"] > :not(.menuAnchor) {
+  filter: drop-shadow(0 4px 4px rgba(15, 23, 42, 0.22));
+  translate: 0 -4px !important;
+}
+
+.penButton:active:not(:disabled) > :not(.menuAnchor) {
+  scale: 0.94;
+}
+
+.button:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--pen-palette-active-edge, #2563eb);
+  outline-offset: 1px;
+}
+
+ 
+.endButton {
+  height: 34px;
+  width: 34px;
+}
+
+.palette[data-orientation="vertical"] .penButton {
+  height: 42px;
+}
+
+.palette[data-orientation="horizontal"] .penButton {
+  width: 34px;
+}
+
+.foldedFace {
+  border-radius: 22px;
+  height: 44px;
+  width: 44px;
+}
+
+/* What the pen menu opens from: the pen itself, never a target of its own. */
+.menuAnchor {
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.swatch {
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.12);
+  display: block;
+  height: 22px;
+  width: 22px;
+}
+
+.swatch[data-pale="true"] {
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.32);
+}
+
+/* The colour in use grows a little inside a ring of its own colour. */
+.swatch {
+  transition:
+    box-shadow 220ms ease,
+    scale 240ms var(--pen-palette-spring);
+}
+
+.button[data-active="true"] .swatch {
+  box-shadow:
+    0 0 0 2.5px var(--pen-palette-surface, #ffffff),
+    0 0 0 4.5px var(--swatch, var(--pen-palette-active-edge, #2563eb));
+  scale: 1.06;
+}
+
+.button[data-active="true"] .swatch[data-pale="true"] {
+  box-shadow:
+    inset 0 0 0 1px rgba(15, 23, 42, 0.32),
+    0 0 0 2.5px var(--pen-palette-surface, #ffffff),
+    0 0 0 4.5px rgba(15, 23, 42, 0.32);
+}
+
+.thicknessDot {
+  background: currentColor;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.18);
+  display: block;
+}
+
+.thicknessToggle {
+  margin-top: 2px;
+}
+
+.palette[data-orientation="horizontal"] .thicknessToggle {
+  margin-left: 2px;
+  margin-top: 0;
+}
+
+.divider {
+  background: var(--pen-palette-edge);
+  display: block;
+  flex: none;
+  height: 1px;
+  margin: 2px 0;
+  width: 24px;
+}
+
+.palette[data-orientation="horizontal"] .divider {
+  height: 24px;
+  margin: 0 2px;
+  width: 1px;
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .palette {
+  --pen-palette-surface: rgba(30, 32, 38, 0.96);
+  --pen-palette-edge: rgba(255, 255, 255, 0.12);
+  --pen-palette-ink: #e5e7eb;
+  --pen-palette-muted: #94a3b8;
+  --pen-palette-hover: rgba(255, 255, 255, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .palette,
+  .backdrop,
+  .button::before,
+  .button > :not(.menuAnchor),
+  .swatch {
+    transition: none;
+  }
+}
+
+:global([data-reduce-motion]) .palette,
+:global([data-reduce-motion]) .backdrop,
+:global([data-reduce-motion]) .button::before,
+:global([data-reduce-motion]) .button > :not(.menuAnchor),
+:global([data-reduce-motion]) .swatch {
+  transition: none;
+}

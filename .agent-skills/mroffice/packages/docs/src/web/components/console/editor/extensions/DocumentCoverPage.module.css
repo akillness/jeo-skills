@@ -1,0 +1,35 @@
+/*
+ * The cover atom takes the first page's text area (so the page break it owns
+ * starts the document on page 2), while its drawing layer is pinned to the
+ * sheet's own corner and paints the whole page, margins included, the way a
+ * Word cover's page-anchored drawings do.
+ */
+.cover {
+  position: relative;
+  display: block;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  z-index: 0;
+}
+
+.layer {
+  position: absolute;
+  z-index: 0;
+  line-height: normal;
+  user-select: none;
+}
+
+.cover:global(.ProseMirror-selectednode) .layer {
+  outline: 2px solid rgba(37, 99, 235, 0.55);
+  outline-offset: -2px;
+}
+
+.cover[data-selected="true"] .layer {
+  outline: 2px solid rgba(37, 99, 235, 0.55);
+  outline-offset: -2px;
+}
+
+.layer [data-cover-field] {
+  user-select: text;
+}

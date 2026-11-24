@@ -1,0 +1,133 @@
+/* Colour roles of the Add Chart Element glyphs (OfficeChartElementIcon).
+ * The chart they sit on is the menu's own ink (currentColor, faded), so it
+ * follows the light and dark menus by itself; the element a row adds is the
+ * Office blue, and "None" wears a red cross. A disabled row greys all three. */
+.root {
+  --office-chart-icon-accent: var(--mrai-office-chart-icon-accent, #2b7cd3);
+  --office-chart-icon-accent-soft: color-mix(
+    in srgb,
+    var(--office-chart-icon-accent) 20%,
+    transparent
+  );
+  --office-chart-icon-none: var(--mrai-office-chart-icon-none, #d13438);
+
+  display: block;
+  flex: 0 0 auto;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.frame {
+  fill: none;
+  stroke: currentColor;
+  stroke-opacity: 0.3;
+}
+
+.plot {
+  fill: currentColor;
+  fill-opacity: 0.42;
+}
+
+.plotSoft {
+  fill: currentColor;
+  fill-opacity: 0.22;
+}
+
+.axis {
+  fill: currentColor;
+  fill-opacity: 0.55;
+}
+
+.series {
+  fill: none;
+  stroke: currentColor;
+  stroke-opacity: 0.55;
+}
+
+.accent {
+  fill: var(--office-chart-icon-accent);
+}
+
+.accentLine {
+  fill: none;
+  stroke: var(--office-chart-icon-accent);
+}
+
+.accentBox {
+  fill: var(--office-chart-icon-accent-soft);
+  stroke: var(--office-chart-icon-accent);
+}
+
+.none {
+  fill: none;
+  stroke: var(--office-chart-icon-none);
+}
+
+:global(.dark) .root {
+  --office-chart-icon-accent: var(--mrai-office-chart-icon-accent, #5aa6f0);
+  --office-chart-icon-accent-soft: color-mix(
+    in srgb,
+    var(--office-chart-icon-accent) 28%,
+    transparent
+  );
+  --office-chart-icon-none: var(--mrai-office-chart-icon-none, #f0787c);
+}
+
+:global([data-theme="dark"]) .root {
+  --office-chart-icon-accent: var(--mrai-office-chart-icon-accent, #5aa6f0);
+  --office-chart-icon-accent-soft: color-mix(
+    in srgb,
+    var(--office-chart-icon-accent) 28%,
+    transparent
+  );
+  --office-chart-icon-none: var(--mrai-office-chart-icon-none, #f0787c);
+}
+
+:global([data-color-scheme="dark"]) .root {
+  --office-chart-icon-accent: var(--mrai-office-chart-icon-accent, #5aa6f0);
+  --office-chart-icon-accent-soft: color-mix(
+    in srgb,
+    var(--office-chart-icon-accent) 28%,
+    transparent
+  );
+  --office-chart-icon-none: var(--mrai-office-chart-icon-none, #f0787c);
+}
+
+/* A row the chart or the host cannot take: the whole glyph turns grey (the
+ * row's own opacity then fades it with the label). */
+:global([data-disabled]) .root {
+  --office-chart-icon-accent: currentColor;
+  --office-chart-icon-accent-soft: color-mix(
+    in srgb,
+    currentColor 14%,
+    transparent
+  );
+  --office-chart-icon-none: currentColor;
+}
+:global([aria-disabled="true"]) .root {
+  --office-chart-icon-accent: currentColor;
+  --office-chart-icon-accent-soft: color-mix(
+    in srgb,
+    currentColor 14%,
+    transparent
+  );
+  --office-chart-icon-none: currentColor;
+}
+.root[data-office-chart-icon-disabled="true"] {
+  --office-chart-icon-accent: currentColor;
+  --office-chart-icon-accent-soft: color-mix(
+    in srgb,
+    currentColor 14%,
+    transparent
+  );
+  --office-chart-icon-none: currentColor;
+}
+
+@media (forced-colors: active) {
+  .root {
+    --office-chart-icon-accent: LinkText;
+    --office-chart-icon-accent-soft: Canvas;
+    --office-chart-icon-none: Highlight;
+    forced-color-adjust: auto;
+  }
+}

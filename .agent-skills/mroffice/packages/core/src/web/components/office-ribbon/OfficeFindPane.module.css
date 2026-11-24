@@ -1,0 +1,29 @@
+/* The shared Find pane (OfficeFindPane.tsx) docked in an OfficeTaskPane.
+   The parts keep their note-editor.css rules (the Docs look); docked, the
+   pane has no card of its own (the task pane is the frame), fills the
+   dock's height, and the result list takes the room the fields leave. */
+.docked {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.docked :global(.note-editor-find-replace__results) {
+  flex: 1 1 auto;
+  max-height: none;
+}
+
+.docked :global(.note-editor-find-replace__replace-panel) {
+  flex: 0 0 auto;
+}
+
+/* The status under the actions ("3 replaced"). */
+.status {
+  color: var(--office-dialog-muted, #5f7772);
+  font-size: 12px;
+  line-height: 1.45;
+  margin: 0;
+  padding: 6px 12px 10px;
+}

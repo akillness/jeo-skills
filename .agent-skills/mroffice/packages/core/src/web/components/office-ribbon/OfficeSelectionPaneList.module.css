@@ -1,0 +1,274 @@
+/* The Selection Pane's object list (Word / PowerPoint Home > Select >
+   Selection Pane): rows with a type icon, the name, the stacking ordinal, an
+   eye and the reorder rail. Moved from the Docs pane
+   (console/editor/DocumentSelectionPane.module.css) unchanged; the pane's
+   frame is the shared Office task pane. */
+.body {
+  flex: 1 1 auto;
+  min-height: 92px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 7px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+}
+
+.item[data-reorderable="true"] {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+}
+
+/* A hidden object stays listed, dimmed, as in Word's pane. */
+.item[data-hidden="true"] .label,
+.item[data-hidden="true"] .icon {
+  opacity: 0.45;
+}
+
+.visibilityButton {
+  display: inline-flex;
+  width: 26px;
+  height: 26px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--office-dialog-muted, #526075);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.visibilityButton:hover:not(:disabled) {
+  color: var(--office-dialog-accent, #2563eb);
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.visibilityButton:disabled {
+  opacity: 0.42;
+  cursor: default;
+}
+
+.visibilityButton:focus-visible {
+  outline: 2px solid var(--console-accent, #2563eb);
+  outline-offset: 1px;
+}
+
+.row {
+  display: grid;
+  width: 100%;
+  min-height: 38px;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 8px;
+  color: var(--office-dialog-ink, #172033);
+  font: inherit;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+/* A pane that lists groups' objects (PowerPoint's): every row keeps room for
+   the disclosure arrow, and a group's object is indented under its group. */
+.row[data-level] {
+  position: relative;
+  padding-left: calc(24px + var(--pane-indent, 0px));
+}
+
+.disclosure {
+  position: absolute;
+  top: 50%;
+  left: calc(5px + var(--pane-indent, 0px));
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  color: var(--office-dialog-muted, #64748b);
+  border-radius: 4px;
+  transform: translateY(-50%);
+}
+
+.disclosure:hover {
+  background: var(--office-dialog-hover, rgba(148, 163, 184, 0.18));
+}
+
+.disclosure svg {
+  transition: transform 120ms ease;
+}
+
+.disclosure[data-expanded="true"] svg {
+  transform: rotate(90deg);
+}
+
+.row:hover {
+  background: var(--office-dialog-hover, rgba(148, 163, 184, 0.12));
+}
+
+.row[data-selected="true"] {
+  background: rgba(37, 99, 235, 0.11);
+  border-color: rgba(37, 99, 235, 0.28);
+}
+
+.row:focus-visible,
+.reorderButton:focus-visible {
+  outline: 2px solid var(--console-accent, #2563eb);
+  outline-offset: 1px;
+}
+
+.reorderRail {
+  display: grid;
+  grid-template-columns: repeat(2, 20px);
+  gap: 2px;
+}
+
+ 
+:where(:root[data-touch-mode]) .reorderRail.reorderRail {
+  gap: 6px;
+  grid-template-columns: repeat(2, 36px);
+}
+
+:where(:root[data-touch-mode]) .reorderButton.reorderButton {
+  height: 36px;
+  width: 36px;
+}
+
+.reorderButton {
+  display: inline-flex;
+  width: 20px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--office-dialog-muted, #526075);
+  background: var(--office-dialog-surface-muted, rgba(255, 255, 255, 0.56));
+  border: 1px solid var(--office-dialog-control-border, rgba(100, 116, 139, 0.22));
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.reorderButton:hover:not(:disabled) {
+  color: var(--office-dialog-accent, #2563eb);
+  background: rgba(37, 99, 235, 0.09);
+  border-color: rgba(37, 99, 235, 0.26);
+}
+
+.reorderButton:disabled {
+  opacity: 0.34;
+  cursor: default;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--office-dialog-accent, #2563eb);
+}
+
+.label {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 550;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ordinal {
+  color: var(--office-dialog-muted, #64748b);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.empty {
+  margin: 0;
+  padding: 24px 12px;
+  color: var(--office-dialog-muted, #64748b);
+  font-size: 12px;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .row,
+  .reorderButton {
+    background: Canvas;
+    border-color: CanvasText;
+    color: CanvasText;
+    forced-color-adjust: auto;
+  }
+}
+
+/* Dragging a row through the list (Microsoft Support: "drag the selected
+   object name up or down in the list"): the rows being moved dim, and a line
+   shows where they will land. */
+.list[data-reorderable="true"] .row {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.list[data-dragging="true"] {
+  cursor: grabbing;
+}
+
+.list[data-dragging="true"] .row {
+  cursor: grabbing;
+}
+
+.item[data-dragging="true"] {
+  opacity: 0.5;
+}
+
+.item[data-drop-before="true"],
+.item[data-drop-after="true"] {
+  position: relative;
+}
+
+.item[data-drop-before="true"]::before,
+.item[data-drop-after="true"]::after {
+  position: absolute;
+  right: 4px;
+  left: 4px;
+  height: 2px;
+  background: var(--office-dialog-accent, #2563eb);
+  border-radius: 1px;
+  content: "";
+  pointer-events: none;
+}
+
+.item[data-drop-before="true"]::before {
+  top: -2px;
+}
+
+.item[data-drop-after="true"]::after {
+  bottom: -2px;
+}
+
+@media (forced-colors: active) {
+  .item[data-drop-before="true"]::before,
+  .item[data-drop-after="true"]::after {
+    background: Highlight;
+  }
+}

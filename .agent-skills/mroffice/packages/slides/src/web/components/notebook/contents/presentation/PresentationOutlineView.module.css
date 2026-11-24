@@ -1,0 +1,93 @@
+/* PowerPoint's Outline View pane: slide number, slide icon and title in bold,
+   the body's paragraphs indented by level under it. */
+.outline {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 8px 6px 24px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.slide {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  border-radius: 4px;
+  padding: 2px 0;
+}
+
+.slide[data-current="true"] {
+  background: var(--ppt-outline-current, rgba(196, 62, 28, 0.06));
+}
+
+.slide[data-hidden="true"] .number {
+  text-decoration: line-through;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.number {
+  flex: 0 0 auto;
+  min-width: 14px;
+  text-align: right;
+  font-size: 11px;
+  color: var(--ppt-sorter-muted, #475569);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The slide icon: a small slide outline, filled corner when graphics live
+   on the slide (PowerPoint marks them on the icon only). */
+.icon {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 10px;
+  border: 1px solid currentColor;
+  border-radius: 1px;
+  color: var(--ppt-sorter-muted, #64748b);
+}
+
+.icon[data-graphics="true"] {
+  background: linear-gradient(135deg, transparent 55%, currentColor 55%);
+}
+
+.title,
+.line {
+  min-width: 0;
+  width: auto;
+  flex: 1 1 auto;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  padding: 2px 4px;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.line {
+  font-size: 12px;
+}
+
+.title:focus,
+.line:focus {
+  outline: 1px solid var(--ppt-accent, #c43e1c);
+  /* White in light; the dark window's raised step in dark (the field's ink is
+     inherited, light there). */
+  background: var(--ppt-outline-field, var(--console-surface-1, #ffffff));
+}
+
+/* Dark and high contrast: the outline lies on the dark stage; its slide
+   numbers and icons take the dark theme's muted ink. */
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .outline {
+  --ppt-sorter-muted: var(--console-text-muted, #a1a1a8);
+}

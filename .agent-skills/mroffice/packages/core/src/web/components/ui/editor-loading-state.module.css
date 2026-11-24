@@ -1,0 +1,1495 @@
+
+ 
+
+.root {
+  --k: var(--console-accent, #0d9488);
+  --k2: var(--k);
+  --cycle: 3.6s;
+  --card-w: 132px;
+  --card-h: 150px;
+  /* the editor's own raised surface where it has one, else the theme's
+     (--console-surface-raised exists only inside the editor; outside it the
+     card fell back to white under the dark theme) */
+  --card-bg: var(--console-surface-raised, var(--bg-raised, #ffffff));
+  --ink: color-mix(in srgb, var(--k) 20%, var(--console-border, #dbe4e1));
+  --ink-strong: color-mix(in srgb, var(--k) 72%, transparent);
+  align-items: center;
+  box-sizing: border-box;
+  color: var(--console-text-primary, #183b35);
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  padding: 20px;
+  width: 100%;
+}
+.root[data-editor-loading-kind="document"] {
+  --k: #2f6fd8;
+}
+.root[data-editor-loading-kind="spreadsheet"] {
+  --k: #16905f;
+  --card-w: 152px;
+  --card-h: 128px;
+}
+.root[data-editor-loading-kind="presentation"] {
+  --k: #dd6a2c;
+  --card-w: 170px;
+  --card-h: 122px;
+}
+.root[data-editor-loading-kind="pdf"] {
+  --k: #d4434f;
+}
+.root[data-editor-loading-kind="code"] {
+  --k: #6d6af2;
+  --card-w: 168px;
+  --card-h: 128px;
+  --card-bg: #1c2130;
+}
+.root[data-editor-loading-kind="ai"] {
+  --k: #0f9f8f;
+  --k2: #8b5cf6;
+  --card-w: 150px;
+  --card-h: 134px;
+}
+.root[data-editor-loading-kind="reference"] {
+  --k: #c8891c;
+}
+.root[data-editor-loading-kind="generic"] {
+  --card-w: 128px;
+  --card-h: 132px;
+}
+ 
+.root[data-editor-loading-kind="library"] {
+  --k2: #2f6fd8;
+  --card-w: 160px;
+  --card-h: 138px;
+}
+.root[data-editor-loading-kind="list"] {
+  --card-w: 150px;
+  --card-h: 136px;
+}
+.root[data-editor-loading-kind="messages"] {
+  --k: #2a84d8;
+  --k2: #0f9f8f;
+  --card-w: 150px;
+  --card-h: 138px;
+}
+.root[data-editor-loading-kind="calendar"] {
+  --k: #e0564b;
+  --k2: #f08a3c;
+  --card-w: 156px;
+  --card-h: 136px;
+}
+.root[data-editor-loading-kind="graph"] {
+  --k: #c2478f;
+  --k2: #7c5ce6;
+  --card-w: 150px;
+  --card-h: 140px;
+}
+.root[data-editor-loading-kind="settings"] {
+  --k: #4b7f8c;
+  --card-w: 150px;
+  --card-h: 136px;
+}
+.root[data-editor-loading-kind="people"] {
+  --k: #7a62d6;
+  --k2: #2a84d8;
+  --card-w: 148px;
+  --card-h: 140px;
+}
+.root[data-editor-loading-kind="dashboard"] {
+  --k2: #2f6fd8;
+  --card-w: 168px;
+  --card-h: 132px;
+}
+.root[data-editor-loading-kind="media"] {
+  --k: #2f9e6e;
+  --k2: #e59a2b;
+  --card-w: 150px;
+  --card-h: 134px;
+}
+.root[data-editor-loading-kind="app"] {
+  --card-w: 172px;
+  --card-h: 130px;
+}
+
+/* ── the stage: a breathing glow and the card floating over it ── */
+.visual {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  height: 190px;
+  justify-content: center;
+  margin-bottom: 6px;
+  width: 220px;
+}
+.stage {
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+.halo {
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--k) 26%, transparent),
+    color-mix(in srgb, var(--k2) 10%, transparent) 60%,
+    transparent
+  );
+  border-radius: 50%;
+  height: calc(var(--card-h) + 70px);
+  position: absolute;
+  width: calc(var(--card-w) + 90px);
+  animation: haloBreathe var(--cycle) ease-in-out infinite;
+}
+.card {
+  background: var(--card-bg);
+  border: 1px solid color-mix(in srgb, var(--k) 20%, var(--console-border, #dbe4e1));
+  border-radius: 14px;
+  box-shadow:
+    0 14px 30px color-mix(in srgb, var(--k) 16%, transparent),
+    0 2px 6px rgba(15, 30, 28, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  height: var(--card-h);
+  overflow: hidden;
+  padding: 10px 12px 12px;
+  position: relative;
+  width: var(--card-w);
+  animation: cardFloat var(--cycle) ease-in-out infinite;
+}
+.cardHead {
+  align-items: center;
+  display: flex;
+  gap: 7px;
+}
+.badge {
+  align-items: center;
+  background: linear-gradient(135deg, var(--k), var(--k2));
+  border-radius: 6px;
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--k) 35%, transparent);
+  color: #ffffff;
+  display: inline-flex;
+  flex: none;
+  height: 18px;
+  justify-content: center;
+  width: 18px;
+}
+.badgeIcon {
+  height: 12px;
+  width: 12px;
+}
+/* the kind's office icon, drawn as one white line on the coloured tile
+   (its own paper / ink / accent fills belong on white paper) */
+.badge .badgeIcon :is(path, rect, circle, line, polyline, polygon, ellipse) {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+}
+.headTitle {
+  background: var(--ink);
+  border-radius: 3px;
+  height: 5px;
+  width: 40px;
+}
+.headDots {
+  display: inline-flex;
+  gap: 3px;
+  margin-left: auto;
+}
+.headDots > span {
+  background: var(--ink);
+  border-radius: 50%;
+  height: 4px;
+  width: 4px;
+}
+.body {
+  flex: 1 1 auto;
+  min-height: 0;
+  position: relative;
+}
+
+/* ── pieces ── */
+.piece {
+  --from-t: scaleX(0);
+  animation-duration: var(--cycle);
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.3, 1);
+  display: block;
+  transform-origin: left center;
+}
+.piece[data-from="rise"] {
+  --from-t: scaleY(0);
+  transform-origin: center bottom;
+}
+.piece[data-from="pop"] {
+  --from-t: scale(0.3);
+  transform-origin: center;
+}
+.piece[data-from="drop"] {
+  --from-t: translateY(-14px);
+}
+.piece[data-from="lift"] {
+  --from-t: translateY(8px) scale(0.9);
+}
+.line {
+  background: var(--ink);
+  border-radius: 2px;
+  height: 4px;
+  max-width: 100%;
+}
+.heading {
+  background: var(--ink-strong);
+  height: 6px;
+}
+
+/* the caret that writes */
+.caret {
+  background: var(--k);
+  border-radius: 1px;
+  height: 9px;
+  left: 0;
+  position: absolute;
+  top: 1px;
+  width: 1.5px;
+  animation: caretWrite var(--cycle) linear infinite;
+}
+.caret::after {
+  background: inherit;
+  border-radius: inherit;
+  content: "";
+  inset: 0;
+  position: absolute;
+  animation: caretBlink 0.9s steps(1, end) infinite;
+}
+
+/* document */
+.doc {
+  align-items: center;
+  display: grid;
+  grid-auto-rows: 11px;
+  position: relative;
+}
+.gap {
+  display: block;
+}
+
+/* spreadsheet: a header row, four rows of cells, a selection that moves */
+.sheet {
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(5, 22px);
+  grid-auto-rows: 11px;
+  position: relative;
+}
+.cell {
+  background: var(--ink);
+  border-radius: 2px;
+}
+.cellHead {
+  background: var(--ink-strong);
+}
+.cellFilled {
+  background: color-mix(in srgb, var(--k) 42%, var(--card-bg));
+}
+.sheet .piece {
+  animation-delay: calc(var(--cell-col) * 40ms);
+}
+.selection {
+  border: 1.5px solid var(--k);
+  border-radius: 3px;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--k) 16%, transparent);
+  height: 15px;
+  left: -2px;
+  position: absolute;
+  top: -2px;
+  width: 26px;
+  animation: selectionHop var(--cycle) cubic-bezier(0.5, 0, 0.2, 1) infinite;
+}
+
+/* presentation */
+.slide {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.slideBody {
+  align-items: end;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+.bullets {
+  display: grid;
+  gap: 8px;
+}
+.bullet {
+  align-items: center;
+  display: flex;
+  gap: 5px;
+}
+.bulletDot {
+  background: var(--k);
+  border-radius: 50%;
+  flex: none;
+  height: 4px;
+  width: 4px;
+}
+.bulletBar {
+  background: var(--ink);
+  border-radius: 2px;
+  display: block;
+  height: 4px;
+}
+.chart {
+  align-items: end;
+  border-bottom: 1.5px solid var(--ink);
+  display: flex;
+  gap: 4px;
+  height: 46px;
+  padding: 0 2px;
+}
+.chartBar {
+  background: linear-gradient(
+    to top,
+    var(--k),
+    color-mix(in srgb, var(--k) 55%, var(--card-bg))
+  );
+  border-radius: 2px 2px 0 0;
+  width: 9px;
+}
+
+/* pdf: a scan passes down the page as its text appears */
+.pdf {
+  display: grid;
+  gap: 7px;
+  position: relative;
+}
+.pdfTag {
+  background: var(--k);
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 7.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  padding: 3px 4px;
+  position: absolute;
+  right: 0;
+  top: -1px;
+}
+.scan {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--k) 22%, transparent) 70%,
+    color-mix(in srgb, var(--k) 70%, transparent) 96%,
+    transparent
+  );
+  height: 22px;
+  left: -12px;
+  position: absolute;
+  right: -12px;
+  top: -18px;
+  animation: scanPass var(--cycle) cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+/* code: typed in colour in a dark editor */
+.code {
+  display: grid;
+  grid-auto-rows: 12px;
+  position: relative;
+}
+.codeRow {
+  align-items: center;
+  display: flex;
+}
+.gutter {
+  color: #4b5469;
+  flex: none;
+  font: 600 7px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  width: 14px;
+}
+.codeLine {
+  display: flex;
+  gap: 3px;
+}
+.token {
+  border-radius: 2px;
+  display: block;
+  height: 4px;
+}
+.token[data-role="kw"] {
+  background: #c792ea;
+}
+.token[data-role="id"] {
+  background: #82aaff;
+}
+.token[data-role="str"] {
+  background: #c3e88d;
+}
+.token[data-role="fn"] {
+  background: #ffcb6b;
+}
+.token[data-role="pun"] {
+  background: #7f8aa3;
+}
+.codeCaret {
+  background: #e8ecf5;
+  top: 1.5px;
+}
+.root[data-editor-loading-kind="code"] .headTitle,
+.root[data-editor-loading-kind="code"] .headDots > span {
+  background: #343b50;
+}
+.root[data-editor-loading-kind="code"] .card {
+  border-color: #2b3246;
+  box-shadow:
+    0 14px 30px color-mix(in srgb, var(--k) 26%, transparent),
+    0 2px 6px rgba(15, 20, 35, 0.2);
+}
+
+/* ai: a question, a moment of thought, an answer */
+.chat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+.prompt {
+  align-self: flex-end;
+  background: linear-gradient(135deg, var(--k), var(--k2));
+  border-radius: 9px 9px 3px 9px;
+  padding: 6px 8px;
+  transform-origin: right bottom;
+}
+.prompt > span {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 2px;
+  display: block;
+  height: 4px;
+}
+.thinking {
+  display: inline-flex;
+  gap: 3px;
+  left: 2px;
+  position: absolute;
+  top: 30px;
+  animation: thinkingWindow var(--cycle) linear infinite;
+}
+.thinking > span {
+  background: color-mix(in srgb, var(--k2) 70%, transparent);
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  animation: thinkingDot 0.9s ease-in-out infinite;
+}
+.thinking > span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.thinking > span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.answer {
+  align-self: flex-start;
+  background: color-mix(in srgb, var(--k) 7%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, var(--k) 16%, transparent);
+  border-radius: 9px 9px 9px 3px;
+  display: grid;
+  gap: 6px;
+  padding: 7px 8px;
+  transform-origin: left bottom;
+  width: 100px;
+}
+
+/* reference: a bookmark drops in, a passage is marked */
+.root[data-editor-loading-kind="reference"] .headDots {
+  visibility: hidden;
+}
+.reference {
+  display: grid;
+  gap: 8px;
+  padding-top: 4px;
+  position: relative;
+}
+.ribbon {
+  background: linear-gradient(to bottom, var(--k), color-mix(in srgb, var(--k) 70%, #ffffff));
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 76%, 0 100%);
+  height: 24px;
+  position: absolute;
+  right: 0;
+  top: -16px;
+  width: 12px;
+}
+.quote {
+  border-left: 2px solid color-mix(in srgb, var(--k) 55%, transparent);
+  display: grid;
+  gap: 7px;
+  padding-left: 8px;
+}
+.highlightRow {
+  display: block;
+  position: relative;
+}
+.highlight {
+  background: color-mix(in srgb, #facc15 55%, transparent);
+  border-radius: 2px;
+  height: 9px;
+  left: -2px;
+  position: absolute;
+  top: -2.5px;
+  width: 92px;
+}
+.source {
+  background: var(--ink-strong);
+  height: 4px;
+  margin-left: auto;
+}
+
+/* generic: a list ticked off */
+.note {
+  display: grid;
+  gap: 10px;
+}
+.check {
+  align-items: center;
+  display: flex;
+  gap: 7px;
+}
+.box {
+  border: 1.5px solid color-mix(in srgb, var(--k) 45%, var(--ink));
+  border-radius: 3px;
+  box-sizing: border-box;
+  display: grid;
+  flex: none;
+  height: 10px;
+  place-items: center;
+  width: 10px;
+}
+.tick {
+  background: var(--k);
+  border-radius: 1.5px;
+  height: 5px;
+  width: 5px;
+}
+
+/* ── the other surfaces ── */
+
+/* a kind's second, third and fourth colours (books, events, nodes, tiles) */
+.piece[data-tone] {
+  --tone: var(--k);
+}
+.piece[data-tone="1"] {
+  --tone: color-mix(in srgb, var(--k) 42%, #6d6af2);
+}
+.piece[data-tone="2"] {
+  --tone: color-mix(in srgb, var(--k) 36%, #f0a23c);
+}
+.piece[data-tone="3"] {
+  --tone: color-mix(in srgb, var(--k) 40%, #e0564b);
+}
+
+/* library: notebooks stand up on a shelf, a ribbon drops into one */
+.library {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+}
+.shelf {
+  align-items: flex-end;
+  border-bottom: 3px solid var(--ink-strong);
+  border-radius: 0 0 2px 2px;
+  box-sizing: border-box;
+  display: flex;
+  gap: 8px;
+  height: 68px;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+.book {
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--tone) 76%, #0b1f1c) 0 5px,
+    var(--tone) 5px
+  );
+  border-radius: 3px 3px 0 0;
+  flex: none;
+  position: relative;
+  width: 24px;
+}
+.bookLabel {
+  background: rgba(255, 255, 255, 0.72);
+  border-radius: 2px;
+  height: 4px;
+  left: 9px;
+  position: absolute;
+  right: 4px;
+  top: 9px;
+}
+.bookRibbon {
+  background: #f5b83d;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 74%, 0 100%);
+  height: 17px;
+  left: calc(50% - 5px);
+  position: absolute;
+  top: 2px;
+  width: 6px;
+}
+.shelfCaption {
+  height: 4px;
+}
+
+/* list: each row's icon, then its name */
+.list {
+  display: grid;
+  gap: 9px;
+  padding-top: 1px;
+}
+.listRow {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+.listIcon {
+  background: color-mix(in srgb, var(--tone) 82%, var(--card-bg));
+  border-radius: 4px;
+  flex: none;
+  height: 14px;
+  width: 14px;
+}
+
+/* messages: both sides of a conversation */
+.thread {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.bubbleIn,
+.bubbleOut {
+  display: grid;
+  gap: 4px;
+  padding: 5px 7px;
+}
+.bubbleIn > span,
+.bubbleOut > span {
+  border-radius: 2px;
+  display: block;
+  height: 4px;
+}
+.bubbleIn {
+  align-self: flex-start;
+  background: color-mix(in srgb, var(--k) 8%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, var(--k) 16%, transparent);
+  border-radius: 8px 8px 8px 3px;
+  transform-origin: left bottom;
+}
+.bubbleIn > span {
+  background: var(--ink);
+}
+.bubbleOut {
+  align-self: flex-end;
+  background: linear-gradient(135deg, var(--k), var(--k2));
+  border-radius: 8px 8px 3px 8px;
+  transform-origin: right bottom;
+}
+.bubbleOut > span {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* calendar: a month, today ringed, events laid across the days
+   (a day is 16 x 13 with a 3px gap: a pitch of 19 x 16) */
+.calendar {
+  display: grid;
+  gap: 8px;
+}
+.calendarHead {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+.calendarNav {
+  display: inline-flex;
+  gap: 3px;
+}
+.calendarNav > span {
+  background: var(--ink);
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+}
+.calendarGrid {
+  display: grid;
+  gap: 3px;
+  grid-auto-rows: 13px;
+  grid-template-columns: repeat(7, 16px);
+  position: relative;
+}
+.calendarDay {
+  background: color-mix(in srgb, var(--ink) 45%, transparent);
+  border-radius: 3px;
+}
+.calendarEvent {
+  background: var(--tone);
+  border-radius: 2px;
+  height: 4px;
+  left: calc(var(--cal-col) * 19px + 2px);
+  position: absolute;
+  top: calc(var(--cal-row) * 16px + 7px);
+  width: calc(var(--cal-span) * 19px - 7px);
+}
+.calendarToday {
+  border: 1.5px solid var(--k);
+  border-radius: 4px;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--k) 14%, transparent);
+  box-sizing: border-box;
+  height: 16px;
+  left: calc(5 * 19px - 1.5px);
+  position: absolute;
+  top: calc(1 * 16px - 1.5px);
+  width: 19px;
+}
+
+/* graph: the centre, then each link drawn out to its node */
+.graph {
+  height: 100%;
+  min-height: 88px;
+  position: relative;
+}
+.graphEdge {
+  display: block;
+  height: 1.5px;
+  position: absolute;
+  transform-origin: left center;
+}
+.graphLink {
+  background: color-mix(in srgb, var(--k) 46%, var(--ink));
+  border-radius: 1px;
+  height: 1.5px;
+}
+.graphCore {
+  background: linear-gradient(135deg, var(--k), var(--k2));
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--k) 16%, transparent);
+  height: 18px;
+  position: absolute;
+  width: 18px;
+}
+.graphNode {
+  background: var(--tone);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--card-bg);
+  position: absolute;
+}
+
+/* settings: an option's name, then its switch */
+.settings {
+  display: grid;
+  gap: 11px;
+  padding-top: 3px;
+}
+.settingRow {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+.toggle {
+  background: var(--ink);
+  border-radius: 5px;
+  flex: none;
+  height: 10px;
+  position: relative;
+  width: 18px;
+}
+.toggleOn {
+  background: var(--k);
+  border-radius: 5px;
+  inset: 0;
+  position: absolute;
+}
+.knob {
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(15, 30, 28, 0.25);
+  height: 7px;
+  left: 1.5px;
+  position: absolute;
+  top: 1.5px;
+  width: 7px;
+}
+.knobOn {
+  left: auto;
+  right: 1.5px;
+}
+
+/* people: a person, then the people with them */
+.people {
+  display: grid;
+  gap: 7px;
+}
+.person {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+.avatar {
+  background: linear-gradient(135deg, var(--k), var(--k2));
+  border-radius: 50%;
+  flex: none;
+  height: 24px;
+  width: 24px;
+}
+.personText {
+  display: grid;
+  gap: 5px;
+}
+.rule {
+  background: var(--ink);
+  display: block;
+  height: 1px;
+}
+.member {
+  align-items: center;
+  display: flex;
+  gap: 7px;
+}
+.memberAvatar {
+  background: var(--tone);
+  border-radius: 50%;
+  flex: none;
+  height: 12px;
+  width: 12px;
+}
+
+/* dashboard: figures in their tiles, then the chart */
+.dashboard {
+  display: grid;
+  gap: 9px;
+}
+.tiles {
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(3, 1fr);
+}
+.tile {
+  background: color-mix(in srgb, var(--tone) 12%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, var(--tone) 22%, transparent);
+  border-radius: 6px;
+  box-sizing: border-box;
+  display: grid;
+  gap: 4px;
+  padding: 6px 6px 7px;
+}
+.tileValue {
+  background: var(--tone);
+  border-radius: 2px;
+  display: block;
+  height: 6px;
+  width: 60%;
+}
+.tileLabel {
+  background: var(--ink);
+  border-radius: 2px;
+  display: block;
+  height: 3px;
+  width: 86%;
+}
+.dashboardChart {
+  align-items: flex-end;
+  border-bottom: 1.5px solid var(--ink);
+  display: flex;
+  gap: 6px;
+  height: 38px;
+  padding: 0 3px;
+}
+.dashboardChart .chartBar {
+  flex: 1;
+  width: auto;
+}
+
+/* media: a picture developing, then its strip */
+.media {
+  display: grid;
+  gap: 8px;
+}
+.frame {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--k2) 20%, var(--card-bg)),
+    color-mix(in srgb, var(--k) 12%, var(--card-bg))
+  );
+  border-radius: 7px;
+  height: 54px;
+  overflow: hidden;
+  position: relative;
+}
+.sun {
+  background: var(--k2);
+  border-radius: 50%;
+  height: 12px;
+  position: absolute;
+  right: 18px;
+  top: 9px;
+  width: 12px;
+}
+.hillFar,
+.hillNear {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+.hillFar {
+  background: color-mix(in srgb, var(--k) 46%, var(--card-bg));
+  clip-path: polygon(0 100%, 0 62%, 22% 28%, 40% 58%, 62% 12%, 100% 70%, 100% 100%);
+  height: 30px;
+}
+.hillNear {
+  background: var(--k);
+  clip-path: polygon(0 100%, 0 45%, 30% 78%, 52% 30%, 74% 66%, 100% 22%, 100% 100%);
+  height: 22px;
+}
+.thumbs {
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(4, 1fr);
+}
+.thumb {
+  background: color-mix(in srgb, var(--tone) 56%, var(--card-bg));
+  border-radius: 4px;
+  height: 16px;
+}
+
+/* app: the workspace assembling (its rail, a heading, cards, lines) */
+.app {
+  display: flex;
+  gap: 9px;
+  height: 100%;
+}
+.appRail {
+  align-items: center;
+  background: color-mix(in srgb, var(--k) 12%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, var(--k) 18%, transparent);
+  border-radius: 6px;
+  box-sizing: border-box;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 5px;
+  min-height: 74px;
+  padding-top: 6px;
+  width: 18px;
+}
+.appRail > span {
+  background: color-mix(in srgb, var(--k) 56%, var(--card-bg));
+  border-radius: 3px;
+  height: 8px;
+  width: 8px;
+}
+.appMain {
+  align-content: start;
+  display: grid;
+  flex: 1;
+  gap: 8px;
+  min-width: 0;
+  padding-top: 2px;
+}
+.appCards {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(3, 1fr);
+}
+.appCard {
+  background: color-mix(in srgb, var(--tone) 22%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, var(--tone) 30%, transparent);
+  border-radius: 5px;
+  box-sizing: border-box;
+  height: 26px;
+}
+
+/* ── label ── */
+.statusRow {
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+  min-width: 0;
+}
+.label {
+  color: var(--console-text-secondary, #647b73);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+.detail {
+  color: var(--console-text-muted, #647b73);
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 5px 0 0;
+  max-width: 340px;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+/* ── densities ── */
+.compact {
+  padding: 16px;
+}
+.compact .visual {
+  height: 164px;
+  margin-bottom: 4px;
+  width: 190px;
+}
+.compact .stage {
+  transform: scale(0.86);
+}
+.minimal {
+  align-content: center;
+  column-gap: 10px;
+  display: grid;
+  grid-template-columns: 64px minmax(0, auto);
+  /* the pair sits in the middle of whatever it stands in for */
+  justify-content: center;
+  padding: 10px 12px;
+}
+/* asked for by the caller (a list, a section, a popover body): a row of its
+   own height, which a column layout around it may not squeeze away */
+.row {
+  flex: 0 0 auto;
+  height: auto;
+  min-height: 80px;
+}
+.minimal .visual {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  height: 60px;
+  margin: 0;
+  width: 64px;
+}
+.minimal .stage {
+  transform: scale(0.4);
+}
+.minimal .statusRow {
+  align-self: center;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  justify-content: start;
+}
+.minimal:has(.detail) .statusRow {
+  align-self: end;
+  grid-row: 1;
+}
+.minimal .label,
+.minimal .detail {
+  text-align: start;
+}
+.minimal .detail {
+  grid-column: 2;
+  grid-row: 2;
+  margin-top: 2px;
+  max-width: 240px;
+}
+
+/* ── the cycle ── */
+@keyframes buildIn0 {
+  0%,
+  4% {
+    opacity: 0;
+    transform: var(--from-t);
+  }
+  12%,
+  84% {
+    opacity: 1;
+    transform: none;
+  }
+  93%,
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+}
+.s0 {
+  animation-name: buildIn0;
+}
+@keyframes buildIn1 {
+  0%,
+  12% {
+    opacity: 0;
+    transform: var(--from-t);
+  }
+  20%,
+  84% {
+    opacity: 1;
+    transform: none;
+  }
+  93%,
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+}
+.s1 {
+  animation-name: buildIn1;
+}
+@keyframes buildIn2 {
+  0%,
+  20% {
+    opacity: 0;
+    transform: var(--from-t);
+  }
+  28%,
+  84% {
+    opacity: 1;
+    transform: none;
+  }
+  93%,
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+}
+.s2 {
+  animation-name: buildIn2;
+}
+@keyframes buildIn3 {
+  0%,
+  28% {
+    opacity: 0;
+    transform: var(--from-t);
+  }
+  36%,
+  84% {
+    opacity: 1;
+    transform: none;
+  }
+  93%,
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+}
+.s3 {
+  animation-name: buildIn3;
+}
+@keyframes buildIn4 {
+  0%,
+  36% {
+    opacity: 0;
+    transform: var(--from-t);
+  }
+  44%,
+  84% {
+    opacity: 1;
+    transform: none;
+  }
+  93%,
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+}
+.s4 {
+  animation-name: buildIn4;
+}
+@keyframes buildIn5 {
+  0%,
+  44% {
+    opacity: 0;
+    transform: var(--from-t);
+  }
+  52%,
+  84% {
+    opacity: 1;
+    transform: none;
+  }
+  93%,
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+}
+.s5 {
+  animation-name: buildIn5;
+}
+@keyframes buildIn6 {
+  0%,
+  52% {
+    opacity: 0;
+    transform: var(--from-t);
+  }
+  60%,
+  84% {
+    opacity: 1;
+    transform: none;
+  }
+  93%,
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+}
+.s6 {
+  animation-name: buildIn6;
+}
+@keyframes buildIn7 {
+  0%,
+  60% {
+    opacity: 0;
+    transform: var(--from-t);
+  }
+  68%,
+  84% {
+    opacity: 1;
+    transform: none;
+  }
+  93%,
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+}
+.s7 {
+  animation-name: buildIn7;
+}
+/* each line's end is reached half a percent before the next line starts:
+   two keyframes at one offset would merge and lose the line's end */
+@keyframes caretWrite {
+  0%,
+  3% {
+    opacity: 0;
+    transform: translate(0, calc(var(--caret-pitch) * var(--caret-r0)));
+  }
+  4% {
+    opacity: 1;
+    transform: translate(var(--caret-s0, 0px), calc(var(--caret-pitch) * var(--caret-r0)));
+  }
+  11.5% {
+    opacity: 1;
+    transform: translate(var(--caret-x0), calc(var(--caret-pitch) * var(--caret-r0)));
+  }
+  12% {
+    opacity: 1;
+    transform: translate(var(--caret-s1, 0px), calc(var(--caret-pitch) * var(--caret-r1)));
+  }
+  19.5% {
+    opacity: 1;
+    transform: translate(var(--caret-x1), calc(var(--caret-pitch) * var(--caret-r1)));
+  }
+  20% {
+    opacity: 1;
+    transform: translate(var(--caret-s2, 0px), calc(var(--caret-pitch) * var(--caret-r2)));
+  }
+  27.5% {
+    opacity: 1;
+    transform: translate(var(--caret-x2), calc(var(--caret-pitch) * var(--caret-r2)));
+  }
+  28% {
+    opacity: 1;
+    transform: translate(var(--caret-s3, 0px), calc(var(--caret-pitch) * var(--caret-r3)));
+  }
+  35.5% {
+    opacity: 1;
+    transform: translate(var(--caret-x3), calc(var(--caret-pitch) * var(--caret-r3)));
+  }
+  36% {
+    opacity: 1;
+    transform: translate(var(--caret-s4, 0px), calc(var(--caret-pitch) * var(--caret-r4)));
+  }
+  43.5% {
+    opacity: 1;
+    transform: translate(var(--caret-x4), calc(var(--caret-pitch) * var(--caret-r4)));
+  }
+  44% {
+    opacity: 1;
+    transform: translate(var(--caret-s5, 0px), calc(var(--caret-pitch) * var(--caret-r5)));
+  }
+  51.5% {
+    opacity: 1;
+    transform: translate(var(--caret-x5), calc(var(--caret-pitch) * var(--caret-r5)));
+  }
+  52% {
+    opacity: 1;
+    transform: translate(var(--caret-s6, 0px), calc(var(--caret-pitch) * var(--caret-r6)));
+  }
+  59.5% {
+    opacity: 1;
+    transform: translate(var(--caret-x6), calc(var(--caret-pitch) * var(--caret-r6)));
+  }
+  84% {
+    opacity: 1;
+    transform: translate(var(--caret-x6), calc(var(--caret-pitch) * var(--caret-r6)));
+  }
+  92%,
+  100% {
+    opacity: 0;
+    transform: translate(var(--caret-x6), calc(var(--caret-pitch) * var(--caret-r6)));
+  }
+}
+@keyframes caretBlink {
+  0%,
+  55% {
+    opacity: 1;
+  }
+  56%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes haloBreathe {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+@keyframes cardFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+/* selection: arrives once the rows are in, hops between four cells
+   (pitch 26 x 15), leaves with the page */
+@keyframes selectionHop {
+  0%,
+  30% {
+    opacity: 0;
+    transform: translate(26px, 15px) scale(0.8);
+  }
+  36% {
+    opacity: 1;
+    transform: translate(26px, 15px) scale(1);
+  }
+  46%,
+  50% {
+    opacity: 1;
+    transform: translate(78px, 30px);
+  }
+  60%,
+  64% {
+    opacity: 1;
+    transform: translate(52px, 45px);
+  }
+  74%,
+  84% {
+    opacity: 1;
+    transform: translate(104px, 60px);
+  }
+  92%,
+  100% {
+    opacity: 0;
+    transform: translate(104px, 60px);
+  }
+}
+@keyframes scanPass {
+  0%,
+  3% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  6% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  58% {
+    opacity: 1;
+    transform: translateY(96px);
+  }
+  64%,
+  100% {
+    opacity: 0;
+    transform: translateY(104px);
+  }
+}
+/* the thinking dots show between the question (slot 0) and the answer
+   (slot 3) */
+@keyframes thinkingWindow {
+  0%,
+  10% {
+    opacity: 0;
+  }
+  13%,
+  26% {
+    opacity: 1;
+  }
+  29%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes thinkingDot {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-3px);
+  }
+}
+
+/* Reduced motion: the finished page, standing still. */
+/* Many windows loading together (a desk restored with dozens of them): only
+   the focused window's card moves. Each card runs a dozen endless
+   animations, and two dozen of them kept the compositor busy for nothing;
+   the others hold the still picture reduced motion shows. */
+:global(.wm-window[data-focused="false"]) .card,
+:global(.wm-window[data-focused="false"]) .halo,
+:global(.wm-window[data-focused="false"]) .piece,
+:global(.wm-window[data-focused="false"]) .selection,
+:global(.wm-window[data-focused="false"]) .thinking > span,
+:global(.wm-window[data-focused="false"]) .caret::after {
+  animation: none;
+}
+:global(.wm-window[data-focused="false"]) .piece {
+  opacity: 1;
+  transform: none;
+}
+:global(.wm-window[data-focused="false"]) .caret,
+:global(.wm-window[data-focused="false"]) .scan,
+:global(.wm-window[data-focused="false"]) .thinking {
+  animation: none;
+  display: none;
+}
+:global(.wm-window[data-focused="false"]) .selection {
+  transform: translate(52px, 45px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .halo,
+  .piece,
+  .selection,
+  .thinking > span,
+  .caret::after {
+    animation: none;
+  }
+  .piece {
+    opacity: 1;
+    transform: none;
+  }
+  .caret,
+  .scan,
+  .thinking {
+    animation: none;
+    display: none;
+  }
+  .selection {
+    transform: translate(52px, 45px);
+  }
+}

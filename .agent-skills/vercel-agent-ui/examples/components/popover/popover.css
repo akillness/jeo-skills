@@ -1,0 +1,237 @@
+@scope ([data-example]) {
+  /* The trigger sits near the top, centered, with room below for the open popover inside the preview. */
+  :scope:is(
+    [data-example="popover/basic"],
+    [data-example="popover/form"],
+    [data-example="popover/draft"],
+    [data-example="popover/modal"],
+    [data-example="popover/focus"],
+    [data-example="popover/hover"],
+    [data-example="popover/controlled"],
+    [data-example="popover/shortcut"],
+    [data-example="popover/payload"],
+    [data-example="popover/animation"],
+    [data-example="popover/custom-rendering"],
+    [data-example="popover/offsets"],
+    [data-example="popover/align"],
+    [data-example="popover/anchor"]
+  ) {
+    justify-content: flex-start;
+    min-height: 16rem;
+  }
+
+  :scope:is(
+    [data-example="popover/basic"],
+    [data-example="popover/form"],
+    [data-example="popover/focus"],
+    [data-example="popover/controlled"],
+    [data-example="popover/shortcut"],
+    [data-example="popover/anchor"]
+  ) {
+    min-height: 20rem;
+  }
+
+  :scope:is([data-example="popover/draft"], [data-example="popover/modal"]) {
+    min-height: 23rem;
+  }
+
+  /* Stacks, forms and fields take the popover's width, not the 20rem a stack with a field gets elsewhere. */
+  :scope [data-slot="popover-content"] > :is([data-slot="stack"], form) {
+    width: auto;
+    max-width: none;
+  }
+
+  :scope
+    [data-slot="popover-content"]
+    :is(
+      [data-slot="field"],
+      [data-slot="field-control"],
+      textarea,
+      select,
+      input:not([type="checkbox"], [type="radio"], [type="hidden"])
+    ) {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: none;
+  }
+
+  [data-slot="popover-content"] {
+    gap: var(--space-3);
+    box-sizing: border-box;
+    width: 18rem;
+    max-width: calc(100vw - 2rem);
+    padding: var(--space-4);
+    font-size: var(--text-sm);
+
+    & > :is([data-slot="stack"], form) {
+      align-items: stretch;
+    }
+
+    & > form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    & [data-slot="field"] {
+      gap: 6px;
+    }
+
+    & [data-slot="field-label"] {
+      font-size: var(--text-sm);
+    }
+
+    & > [data-slot="stack"]:has(> [data-slot="label"]) {
+      gap: var(--space-2);
+    }
+
+    & textarea {
+      min-height: 5rem;
+    }
+
+    /* Actions sit at the bottom, aligned to the end, with the primary last. */
+    & > [data-slot="row"],
+    & > form > [data-slot="row"] {
+      justify-content: flex-end;
+      margin-top: var(--space-1);
+    }
+
+    /* A question inside the popover, with its answers at the end. */
+    & > [data-slot="row"][role="alert"] {
+      justify-content: space-between;
+      padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3);
+      border-radius: var(--radius-control);
+      background: var(--tint);
+    }
+
+    &[data-presentation="sheet"] {
+      width: min(36rem, 100%);
+      max-width: none;
+      margin: 0 auto;
+      border-radius: var(--radius-popup) var(--radius-popup) 0 0;
+      padding-bottom: max(var(--space-4), env(safe-area-inset-bottom));
+      --sheet-backdrop: var(--backdrop);
+    }
+  }
+
+  [data-slot="popover-title"] {
+    margin: 0;
+    font-size: var(--text-md);
+    font-weight: 600;
+    line-height: 20px;
+  }
+
+  [data-slot="popover-description"] {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--text-sm);
+  }
+
+  /* The title and description read as one header. */
+  [data-slot="popover-title"] + [data-slot="popover-description"] {
+    margin-top: calc(var(--space-3) * -1 + 2px);
+  }
+
+  a[data-slot="popover-close"] {
+    align-self: flex-start;
+    color: var(--ink);
+    text-underline-offset: 3px;
+  }
+
+  [data-slot="popover-trigger"]:not([data-open]) [data-show="open"],
+  [data-slot="popover-trigger"][data-open] [data-hide="open"] {
+    display: none;
+  }
+
+  /* The arrow takes the popover's fill and border. */
+  [data-slot="popover-arrow"] {
+    background: var(--surface-2);
+    border-color: var(--line);
+  }
+
+  /* Room around the trigger for the popover on any side. */
+  :scope[data-example="popover/arrow"] [data-slot="popover-trigger"] {
+    margin-block: 6rem;
+  }
+
+  :scope[data-example="popover/placement"] [data-slot="popover-trigger"] {
+    margin-block: 6rem;
+  }
+
+  /* Each select beside its label, one per line, so the controls fit a phone. */
+  :scope:is(
+      [data-example="popover/placement"],
+      [data-example="popover/modal"],
+      [data-example="popover/offsets"]
+    )
+    [data-slot="controls"] {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: var(--space-2) var(--space-3);
+
+    & [data-slot="select-label"] {
+      justify-self: end;
+    }
+
+    & [data-slot="select-trigger"] {
+      min-width: 8rem;
+    }
+  }
+
+  :scope:is(
+      [data-example="popover/placement"],
+      [data-example="popover/offsets"]
+    )
+    [data-slot="stack"]:has(> [data-slot="controls"]) {
+    width: auto;
+  }
+
+  /* The list, with room below its last row for the editor. */
+  :scope[data-example="popover/payload"] {
+    min-height: 27rem;
+
+    & [data-slot="stack"]:has(> [data-slot="list"]) {
+      width: 24rem;
+      max-width: 100%;
+    }
+
+    & [data-slot="list"] {
+      width: 100%;
+    }
+  }
+
+  /* The search field and its filter button, side by side. */
+  :scope[data-example="popover/anchor"]
+    [data-slot="row"]:has(> input[type="search"]) {
+    flex-wrap: nowrap;
+    width: 20rem;
+    max-width: 100%;
+
+    & > input {
+      flex: 1;
+      width: auto;
+    }
+  }
+
+  [data-slot="popover-frame"] {
+    position: relative;
+    box-sizing: border-box;
+    width: min(28rem, 100%);
+    height: 16rem;
+    overflow: hidden;
+    border-radius: var(--radius-surface);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+
+  [data-slot="popover-corner"] {
+    position: absolute;
+    right: var(--space-4);
+    bottom: var(--space-4);
+
+    & [data-slot="popover-content"] {
+      position: absolute;
+      right: 0;
+      bottom: calc(100% + var(--space-2));
+    }
+  }
+}

@@ -1,0 +1,148 @@
+/* The zoom writing window (OfficeInkZoomWindow): the box on the page and the
+   panel along the bottom of the editor's window. Over the editors' windows,
+   under the running stroke's canvas (lib/office-ink-live's float layer). */
+
+.box {
+  border: 2px solid rgba(37, 99, 235, 0.85);
+  border-radius: 6px;
+  box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.04);
+  box-sizing: border-box;
+  pointer-events: none;
+  position: fixed;
+  z-index: 2147482000;
+}
+
+/* The tab the box is dragged by: under its bottom-right corner. */
+.tab {
+  background: rgba(37, 99, 235, 0.9);
+  border: 0;
+  border-radius: 0 0 8px 8px;
+  bottom: -18px;
+  cursor: grab;
+  height: 18px;
+  padding: 0;
+  pointer-events: auto;
+  position: absolute;
+  right: 8px;
+  touch-action: none;
+  width: 44px;
+}
+
+/* Nothing in the panel is text to select: a pen writing across it (or
+   resting on the bar) must not start iOS's text selection on its buttons. */
+.panel {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  background: var(--office-surface, #ffffff);
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  border-radius: 14px;
+  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.22);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: fixed;
+  z-index: 2147482001;
+}
+
+.bar {
+  align-items: center;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex: 0 0 auto;
+  gap: 2px;
+  height: 44px;
+  padding: 0 6px 0 12px;
+}
+
+.title {
+  color: rgba(15, 23, 42, 0.72);
+  font: 600 13px/1 system-ui, -apple-system, sans-serif;
+  margin-right: 6px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.level {
+  color: rgba(15, 23, 42, 0.6);
+  font: 500 12px/1 system-ui, -apple-system, sans-serif;
+  min-width: 40px;
+  text-align: center;
+}
+
+.button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  color: rgba(15, 23, 42, 0.82);
+  display: inline-flex;
+  font: 500 18px/1 system-ui, -apple-system, sans-serif;
+  height: 40px;
+  justify-content: center;
+  min-width: 40px;
+  padding: 0 8px;
+}
+
+.button:disabled {
+  opacity: 0.35;
+}
+
+@media (hover: hover) {
+  .button:not(:disabled):hover {
+    background: rgba(15, 23, 42, 0.06);
+  }
+}
+
+.body {
+  background: #ffffff;
+  cursor: crosshair;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.view,
+.canvas {
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.view {
+  overflow: hidden;
+}
+
+.canvas {
+  height: 100%;
+  width: 100%;
+}
+
+/* Where writing walks the box on along the line. */
+.advanceMark {
+  border-left: 1px dashed rgba(37, 99, 235, 0.35);
+  bottom: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+}
+
+/* by the app's theme, not the device's: a dark app on a light device drew
+   a white panel under the dark theme's light text */
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .panel {
+  background: #1f2328;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .bar {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) :is(.title, .level, .button) {
+  color: rgba(255, 255, 255, 0.82);
+}

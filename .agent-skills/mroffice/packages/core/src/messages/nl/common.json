@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Aangepast",
+ "zoom.levels": "Zoomniveaus",
+ "dialog.close": "Sluiten",
+ "toast.close": "Melding sluiten",
+ "button.confirm": "OK",
+ "button.cancel": "Annuleren",
+ "libreOffice.enable": "Downloaden en inschakelen (ca. {size})",
+ "libreOffice.enableAlt": "LibreOffice downloaden en inschakelen",
+ "libreOffice.enabled": "LibreOffice {version} is ingeschakeld",
+ "libreOffice.retrying": "Opnieuw proberen…",
+ "libreOffice.ready": "Oude Office-indelingen, OpenDocument-bestanden, EMF/WMF-afbeeldingen en OpenDocument-exports werken nu.",
+ "libreOffice.needed": "Hiervoor is LibreOffice nodig. MR Note Classic kan de officiële versie in een eigen map downloaden; er wordt niets op je systeem geïnstalleerd.",
+ "libreOffice.neededFor": "Opslaan als .{format} vereist LibreOffice. MR Note Classic kan de officiële versie in een eigen map downloaden; er wordt niets op je systeem geïnstalleerd."
+}

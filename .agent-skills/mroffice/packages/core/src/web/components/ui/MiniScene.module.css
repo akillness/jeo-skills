@@ -1,0 +1,105 @@
+/* The stage and shared shapes of the small looping scenes (MiniScene.tsx). */
+
+.frame {
+  display: block;
+  flex: none;
+}
+
+.stage {
+  --ink: var(--console-accent, #0d9488);
+  --ink-soft: color-mix(in srgb, var(--ink) 22%, transparent);
+  --paper: rgba(255, 255, 255, 0.92);
+  --shade: 0 2px 6px rgb(15 23 42 / 10%);
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--ink) 8%, rgba(255, 255, 255, 0.5));
+  transform-origin: 0 0;
+}
+
+.stage[data-bare] {
+  border-radius: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+/* Dark paper is a raised graphite sheet with a hairline: a pale sheet put
+   the brightened accent ink (clock digits, week cells) at ~1.4:1 and lit a
+   white island in every settings row. */
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .stage {
+  --paper: #2c2d33;
+  --shade:
+    0 0 0 1px rgb(255 255 255 / 9%),
+    0 2px 6px rgb(0 0 0 / 35%);
+  background: color-mix(in srgb, var(--ink) 16%, rgba(255, 255, 255, 0.04));
+}
+
+:global([data-theme-mode="high-contrast"]) .stage {
+  --paper: #111111;
+  --shade: 0 0 0 1px rgb(255 255 255 / 55%);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .stage[data-bare] {
+  background: transparent;
+}
+
+/* ── when it moves ── */
+
+/* Still (off screen, or a hover scene whose host is not hovered): the
+   animations are off, so the scene rests on its finished picture. */
+.stage[data-still] * {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+:global(html[data-reduce-motion]) .stage * {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* ── shared shapes ── */
+
+/* a sheet of paper */
+.paper {
+  position: absolute;
+  border-radius: 4px;
+  background: var(--paper);
+  box-shadow: var(--shade);
+}
+
+/* a line of text; add .lead for the heading-coloured one */
+.line {
+  display: block;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--ink-soft);
+  transform-origin: left;
+}
+
+.lead {
+  background: var(--ink);
+}
+
+/* a round dot in the accent */
+.dot {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+/* an svg stroke that draws itself: give the path pathLength="1" */
+.stroke {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+}

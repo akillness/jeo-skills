@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MR Office Editors</title>
+    <script>
+      // Modules written for a Next.js app read process.env; a browser has none.
+      globalThis.process = globalThis.process || { env: {} };
+      globalThis.process.env = globalThis.process.env || {};
+      globalThis.process.env.NODE_ENV = globalThis.process.env.NODE_ENV || "production";
+      // Python runs in a sandbox page on another origin than the editors.
+      // On this computer the other loopback name is one (as MR Note Classic
+      // does); a deployment sets its own sandbox origin here.
+      (function () {
+        var other = { localhost: "127.0.0.1", "127.0.0.1": "localhost" }[location.hostname];
+        if (other && !globalThis.process.env.NEXT_PUBLIC_SANDBOX_ORIGIN) {
+          globalThis.process.env.NEXT_PUBLIC_SANDBOX_ORIGIN = location.protocol + "//" + other + (location.port ? ":" + location.port : "");
+          globalThis.process.env.NEXT_PUBLIC_SANDBOX_EMBEDDER_ORIGIN = location.origin;
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

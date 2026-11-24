@@ -1,0 +1,7 @@
+@scope ([data-example]) {
+  /* Content marked with data-show="pending" or "idle" shows only in that state. */
+  [data-slot="button"]:not([data-pending]) [data-show="pending"],
+  [data-slot="button"][data-pending] [data-show="idle"] {
+    display: none;
+  }
+}

@@ -1,0 +1,270 @@
+/* The run, debug and test histories, and the saved runs. Two layouts: a
+   strip of chips across the top of the debug and test panels, and a list of
+   rows in the run output's history menu. Glyphs are the Code window's own
+   (code-output/CodeRibbonIcons). */
+
+.section {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 6px 10px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border, #e5e7eb);
+  background: var(--console-surface-1, var(--bg-surface, #fff));
+  scrollbar-width: thin;
+}
+
+.heading {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  min-width: 0;
+  margin-right: 2px;
+  color: var(--console-text-muted, #6b7280);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.note {
+  flex: 0 1 auto;
+  min-width: 0;
+  color: #b45309;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+/* ---- One run: select + replay, or run + remove ------------------------ */
+
+.entry {
+  display: inline-flex;
+  align-items: stretch;
+  flex: 0 0 auto;
+  min-height: 34px;
+  border: 1px solid color-mix(in srgb, var(--console-text-primary, #1f2937) 10%, transparent);
+  border-radius: 10px;
+  background: var(--bg-surface, #fff);
+  overflow: hidden;
+  transition: border-color 120ms ease, background-color 120ms ease, box-shadow 120ms ease;
+}
+
+.entry:hover {
+  border-color: color-mix(in srgb, var(--console-text-primary, #1f2937) 18%, transparent);
+}
+
+.entry[data-selected="true"] {
+  border-color: color-mix(in srgb, var(--console-accent, #0d9488) 55%, transparent);
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 7%, var(--bg-surface, #fff));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--console-accent, #0d9488) 12%, transparent);
+}
+
+.main {
+  display: inline-grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 8px;
+  row-gap: 1px;
+  min-width: 128px;
+  padding: 5px 10px 5px 8px;
+  border: 0;
+  background: transparent;
+  color: var(--console-text-primary, #1f2937);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.main > svg {
+  grid-row: 1 / span 2;
+}
+
+.main:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.meta {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--console-text-muted, #6b7280);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.meta[data-stale="true"] {
+  color: #b45309;
+}
+
+.action {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 34px;
+  padding: 0;
+  border: 0;
+  border-left: 1px solid color-mix(in srgb, var(--console-text-primary, #1f2937) 8%, transparent);
+  background: transparent;
+  color: var(--console-text-secondary, #4b5563);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.action:hover:not(:disabled),
+.main:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--console-text-primary, #1f2937) 5%, transparent);
+}
+
+.action:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.prompt {
+  align-self: center;
+  padding-inline: 8px;
+  color: #b45309;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+/* ---- Toolbar buttons of a section (Save run, Clear history) ------------ */
+
+.tool {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--console-text-secondary, #4b5563);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.tool:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--console-text-primary, #1f2937) 6%, transparent);
+}
+
+.tool:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.confirm {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 2px;
+  color: #b45309;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.main:focus-visible,
+.action:focus-visible,
+.tool:focus-visible {
+  outline: 2px solid var(--console-accent, #0d9488);
+  outline-offset: -2px;
+}
+
+/* ---- The run history menu: sections stacked, runs as rows ------------- */
+
+.section[data-layout="list"] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  row-gap: 4px;
+  min-width: 260px;
+  max-width: 360px;
+  min-height: 0;
+  padding: 6px 4px 8px;
+  overflow: visible;
+  border-bottom: 1px solid color-mix(in srgb, var(--console-text-primary, #1f2937) 8%, transparent);
+  background: transparent;
+}
+
+.section[data-layout="list"]:last-child {
+  border-bottom: 0;
+  padding-bottom: 2px;
+}
+
+.section[data-layout="list"] > .heading {
+  grid-column: 1;
+  padding-left: 6px;
+}
+
+.section[data-layout="list"] > :is(.tool, .confirm) {
+  grid-column: 2;
+  justify-self: end;
+}
+
+.section[data-layout="list"] > :is(.entry, .note) {
+  grid-column: 1 / -1;
+}
+
+.section[data-layout="list"] > .entry {
+  display: flex;
+  width: 100%;
+  border-color: transparent;
+  background: transparent;
+}
+
+.section[data-layout="list"] > .entry:hover {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--console-text-primary, #1f2937) 4%, transparent);
+}
+
+.section[data-layout="list"] > .entry[data-selected="true"] {
+  border-color: color-mix(in srgb, var(--console-accent, #0d9488) 40%, transparent);
+  box-shadow: none;
+}
+
+.section[data-layout="list"] .main {
+  flex: 1 1 auto;
+}
+
+.section[data-layout="list"] .action {
+  border-left: 0;
+  border-radius: 8px;
+  margin: 3px 3px 3px 0;
+  width: 30px;
+}
+
+.section[data-layout="list"] .note {
+  padding-left: 6px;
+  white-space: normal;
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .section {
+  --docs-home-icon-ink: #e8e8ed;
+  --docs-home-icon-ink-soft: #b4b4bb;
+  --docs-home-icon-accent: #6fb1ee;
+  --docs-home-icon-accent-soft: #8fc0ef;
+  --docs-home-icon-warm: #f0b24a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entry,
+  .action,
+  .tool {
+    transition: none;
+  }
+}

@@ -1,0 +1,239 @@
+@scope ([data-example]) {
+  /* Waterfalls grow downward as spans open, so the rows above stay put. */
+  :scope:has([data-slot="waterfall"]) {
+    justify-content: flex-start;
+  }
+
+  [data-slot="waterfall"] {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 36rem;
+    max-width: 100%;
+    padding: 5px;
+    overflow: hidden;
+    border-radius: var(--radius-surface);
+    background: var(--surface-1);
+    box-shadow: var(--shadow-1);
+    color: var(--ink);
+    font-size: var(--text-md);
+  }
+
+  [data-slot="stack"]:has(> [data-slot="waterfall"]) {
+    width: 36rem;
+    max-width: 100%;
+  }
+
+  :is([data-slot="waterfall-header-row"], [data-slot="waterfall-row"]) {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    height: var(--size-item);
+    padding-inline: var(--space-2);
+    border-radius: var(--radius-row);
+  }
+
+  [data-slot="waterfall-header-row"] {
+    color: var(--muted);
+    font-size: var(--text-sm);
+  }
+
+  [data-slot="waterfall-row"] {
+    outline: none;
+    cursor: default;
+    user-select: none;
+
+    &[hidden] {
+      display: none;
+    }
+
+    &:hover:not([data-selected]) {
+      background: color-mix(in oklab, var(--ink) 4%, transparent);
+    }
+
+    &[data-selected] {
+      background: color-mix(in oklab, var(--ink) 8%, transparent);
+    }
+
+    &:focus-visible {
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+
+    &[data-level="1"] {
+      font-weight: 500;
+    }
+  }
+
+  :is([data-slot="waterfall-column-header"], [data-slot="waterfall-cell"]) {
+    flex: none;
+    width: 4rem;
+  }
+
+  :is(
+    [data-slot="waterfall-header-row"] > :first-child,
+    [data-slot="waterfall-row-header"]
+  ) {
+    display: flex;
+    flex: 0 1 11rem;
+    align-items: center;
+    gap: var(--space-1);
+    min-width: 6rem;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  [data-slot="waterfall-row-header"] {
+    padding-inline-start: calc((var(--waterfall-level) - 1) * var(--space-4));
+
+    &:not([data-branch]) {
+      padding-inline-start: calc(
+        (var(--waterfall-level) - 1) * var(--space-4) + var(--size-icon) +
+          var(--space-1)
+      );
+    }
+  }
+
+  :is(
+    [data-slot="waterfall-row-header"],
+    [data-slot="waterfall-cell"],
+    [data-slot="waterfall-bar"]
+  ) {
+    align-self: stretch;
+    align-content: center;
+    border-radius: var(--radius-row);
+    outline: none;
+
+    &:focus-visible {
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+  }
+
+  [data-slot="waterfall-cell"] {
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  [data-slot="waterfall-indicator"] {
+    display: flex;
+    color: var(--muted);
+
+    & > svg {
+      width: var(--size-icon);
+      height: var(--size-icon);
+      transition: rotate var(--duration);
+    }
+
+    &[data-expanded] > svg {
+      rotate: 90deg;
+    }
+
+    &:dir(rtl) > svg {
+      scale: -1 1;
+    }
+  }
+
+  /* The bar column and the axis above it share a width, so ticks line up with bars. */
+  :is(
+    [data-slot="waterfall-header-row"] > :last-child,
+    [data-slot="waterfall-bar"]
+  ) {
+    position: relative;
+    flex: 1 1 10rem;
+    align-self: stretch;
+    min-width: 0;
+  }
+
+  [data-slot="waterfall-bar"]::before {
+    content: "";
+    position: absolute;
+    inset-block: 7px;
+    inset-inline-start: var(--waterfall-start);
+    width: max(var(--waterfall-size), 2px);
+    border-radius: 3px;
+    background: color-mix(in oklab, var(--accent) 55%, transparent);
+  }
+
+  [data-slot="waterfall-row"][data-selected]
+    [data-slot="waterfall-bar"]::before {
+    background: var(--accent);
+  }
+
+  [data-slot="waterfall-axis"] {
+    position: relative;
+    height: 100%;
+    container-type: inline-size;
+  }
+
+  /* A narrow axis labels every other tick, or only the first, so labels never meet. */
+  @container (width < 16rem) {
+    [data-slot="waterfall-tick"]:nth-child(even) {
+      color: transparent;
+    }
+  }
+
+  @container (width < 8rem) {
+    [data-slot="waterfall-tick"]:not(:first-child) {
+      color: transparent;
+    }
+  }
+
+  [data-slot="waterfall-tick"] {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: var(--waterfall-tick);
+    align-content: center;
+    padding-inline-start: var(--space-1);
+    border-inline-start: 1px solid var(--line-faint);
+    font-size: var(--text-xs);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* A mark is a line down every row, with its name at the top. */
+  [data-slot="waterfall-mark"] {
+    position: absolute;
+    top: 0;
+    inset-inline-start: var(--waterfall-mark);
+    height: 100vh;
+    padding-inline-start: var(--space-1);
+    border-inline-start: 1px dashed var(--danger);
+    color: var(--danger);
+    font-size: var(--text-xs);
+    white-space: nowrap;
+    pointer-events: none;
+
+    &[data-outside] {
+      display: none;
+    }
+  }
+
+  /* Virtualized: the scroller is the panel, and rows sit at their offsets in the waterfall. */
+  [data-slot="scroll"]:has(> [data-slot="waterfall"]) {
+    flex: none;
+    box-sizing: border-box;
+    width: 36rem;
+    max-width: 100%;
+    height: 288px;
+    padding: 5px;
+    border-radius: var(--radius-surface);
+    background: var(--surface-1);
+    box-shadow: var(--shadow-1);
+    overscroll-behavior: contain;
+
+    & > [data-slot="waterfall"] {
+      display: block;
+      width: auto;
+      padding: 0;
+      overflow: visible;
+      border-radius: 0;
+      background: none;
+      box-shadow: none;
+    }
+
+    & [data-slot="waterfall-row"] {
+      position: absolute;
+      inset-inline: 0;
+    }
+  }
+}

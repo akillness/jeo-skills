@@ -1,0 +1,299 @@
+@scope ([data-example]) {
+  /* The trigger sits near the top, centered, with room below for the open menu inside the preview. */
+  :scope:is(
+    [data-example="menu/basic"],
+    [data-example="menu/submenu"],
+    [data-example="menu/shortcuts"],
+    [data-example="menu/icons"],
+    [data-example="menu/checkboxes"],
+    [data-example="menu/radio-group"],
+    [data-example="menu/disabled"],
+    [data-example="menu/animation"]
+  ) {
+    justify-content: flex-start;
+    min-height: 20rem;
+  }
+
+  :scope[data-example="menu/disabled"] {
+    min-height: 24rem;
+  }
+
+  [data-slot="menu-content"] [data-slot="menu-trigger"] {
+    &[data-open]:not([data-highlighted]) {
+      background: var(--tint);
+    }
+
+    & > svg:last-child {
+      width: 14px;
+      height: 14px;
+      margin-inline-start: auto;
+      opacity: 0.7;
+
+      &:is([dir="rtl"], [dir="rtl"] *) {
+        rotate: 180deg;
+      }
+    }
+
+    &[data-highlighted] > svg:last-child {
+      opacity: 1;
+    }
+  }
+
+  [data-slot="menu-item"] {
+    position: relative;
+
+    & > svg:first-child,
+    & > [data-slot="menu-item-icon"] {
+      color: var(--muted);
+    }
+
+    &:is([data-highlighted], [data-destructive]) > svg:first-child,
+    &:is([data-highlighted], [data-destructive])
+      > [data-slot="menu-item-icon"] {
+      color: inherit;
+    }
+
+    &[data-disabled] > svg:first-child {
+      color: inherit;
+    }
+
+    & > svg:last-child:not(:first-child) {
+      margin-inline-start: auto;
+    }
+
+    & > [data-slot="stack"] {
+      align-items: flex-start;
+      gap: 0;
+      padding-block: 2px;
+    }
+
+    & [data-slot="hint"] {
+      font-size: var(--text-xs);
+    }
+  }
+
+  a[data-slot="menu-item"] {
+    color: inherit;
+    text-decoration: none;
+
+    & > svg {
+      width: 14px;
+      height: 14px;
+      margin-inline-start: auto;
+    }
+
+    &:not([data-highlighted]) > svg {
+      visibility: hidden;
+    }
+  }
+
+  [data-slot="menu-checkbox-item"] {
+    position: relative;
+
+    & > svg:first-child {
+      color: var(--muted);
+    }
+
+    &:is([data-highlighted], [data-checked]) > svg:first-child {
+      color: inherit;
+    }
+
+    & > svg:last-child:not(:first-child) {
+      width: 14px;
+      height: 14px;
+      margin-inline-start: auto;
+    }
+
+    &:not([data-checked]) > svg:last-child:not(:first-child) {
+      visibility: hidden;
+    }
+
+    &[data-checked] > [data-slot="stack"] {
+      font-weight: 500;
+    }
+  }
+
+  [data-slot="menu-radio-item"] {
+    position: relative;
+
+    & > svg:first-child {
+      color: var(--muted);
+    }
+
+    &:is([data-highlighted], [data-checked]) > svg:first-child {
+      color: inherit;
+    }
+
+    & > svg:last-child:not(:first-child) {
+      width: 14px;
+      height: 14px;
+      margin-inline-start: auto;
+    }
+
+    &:not([data-checked]) > svg:last-child:not(:first-child) {
+      visibility: hidden;
+    }
+
+    &[data-checked] > [data-slot="stack"] {
+      font-weight: 500;
+    }
+  }
+
+  [data-slot="menu-content"]:has([data-slot="menu-item-indicator"])
+    :is(
+      [data-slot="menu-item"],
+      [data-slot="menu-checkbox-item"],
+      [data-slot="menu-radio-item"],
+      [data-slot="menu-trigger"],
+      [data-slot="menu-group-label"]
+    ) {
+    position: relative;
+    padding-inline-start: 30px;
+  }
+
+  [data-slot="menu-item-indicator"] {
+    display: grid;
+    position: absolute;
+    inset-inline-start: 10px;
+    place-items: center;
+    width: 14px;
+    height: 14px;
+
+    &[data-unchecked] {
+      visibility: hidden;
+    }
+
+    & svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    [data-slot="menu-radio-item"] > & svg:has(> circle:only-child) {
+      width: 8px;
+      height: 8px;
+      fill: currentColor;
+    }
+
+    [data-slot="menu-radio-item"] > &:empty::before {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      content: "";
+    }
+  }
+
+  [data-slot="menu-item-icon"] {
+    display: flex;
+  }
+
+  [data-slot="menu-content"] > [data-slot="row"] {
+    flex-wrap: nowrap;
+    padding: 6px 10px;
+
+    & > [data-slot="stack"] {
+      align-items: flex-start;
+      gap: 0;
+    }
+  }
+
+  [data-slot="menu-content"][data-presentation="sheet"] {
+    max-height: none;
+    border-radius: var(--radius-popup) var(--radius-popup) 0 0;
+    padding: var(--space-6) var(--space-2)
+      max(env(safe-area-inset-bottom), var(--space-3));
+
+    &::before {
+      position: absolute;
+      inset-block-start: var(--space-2);
+      inset-inline-start: 50%;
+      width: 36px;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--line-faint);
+      content: "";
+      translate: -50% 0;
+    }
+
+    &
+      :is(
+        [data-slot="menu-item"],
+        [data-slot="menu-checkbox-item"],
+        [data-slot="menu-radio-item"],
+        [data-slot="menu-trigger"]
+      ) {
+      min-height: 40px;
+      padding-inline: var(--space-3);
+    }
+
+    & [data-slot="menu-content"] {
+      min-width: 0;
+      padding: 0;
+      padding-inline-start: var(--space-6);
+      background: none;
+      box-shadow: none;
+    }
+
+    & [data-slot="menu-trigger"][data-open] > svg:last-child {
+      rotate: 90deg;
+    }
+  }
+
+  [data-slot="menu-context-trigger"] {
+    display: grid;
+    box-sizing: border-box;
+    place-items: center;
+    width: 24rem;
+    max-width: 100%;
+    height: 9rem;
+    border: 1px dashed var(--line);
+    border-radius: var(--radius-surface);
+    background: var(--surface-1);
+    color: var(--muted);
+    font-size: var(--text-sm);
+    text-align: center;
+    user-select: none;
+
+    &[data-open] {
+      border-color: var(--ink);
+      background: var(--tint);
+      color: var(--ink);
+    }
+  }
+
+  ul:has([data-slot="menu-trigger"]) {
+    gap: 0;
+    box-sizing: border-box;
+    width: 20rem;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    border-radius: var(--radius-surface);
+    background: var(--surface-1);
+    box-shadow: var(--shadow-1);
+    list-style: none;
+
+    & > li {
+      flex-wrap: nowrap;
+      padding-block: var(--space-1);
+      padding-inline: var(--space-3) var(--space-1);
+    }
+
+    & > li + li {
+      border-top: 1px solid var(--line-faint);
+    }
+
+    & [data-slot="hint"] {
+      margin-inline-start: auto;
+    }
+  }
+
+  :scope[data-example="menu/animation"] {
+    &
+      [data-slot="menu-content"][data-presentation="sheet"]
+      [data-slot="menu-trigger"]
+      > svg:last-child {
+      transition: rotate var(--duration);
+    }
+  }
+}

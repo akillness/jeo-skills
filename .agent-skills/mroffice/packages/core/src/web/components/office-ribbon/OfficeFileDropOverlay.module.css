@@ -1,0 +1,33 @@
+/* "Drop to import": the Docs editor's drop target and its label, shared by
+   the editors that take a dropped file (useOfficeFileDrop). */
+
+/* The surface under an accepted drag. */
+.activeTarget {
+  outline: 2px solid
+    color-mix(in srgb, var(--console-accent, #0d9488) 32%, transparent);
+  outline-offset: -10px;
+}
+
+.overlay {
+  align-items: center;
+  background: color-mix(
+    in srgb,
+    var(--console-accent-tint-soft, #ecfdf5) 92%,
+    transparent
+  );
+  border: 1px solid
+    color-mix(in srgb, var(--console-accent, #0d9488) 22%, transparent);
+  border-radius: 8px;
+  color: var(--console-text-primary, #115e59);
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 800;
+  gap: 8px;
+  left: 50%;
+  padding: 10px 14px;
+  pointer-events: none;
+  position: absolute;
+  top: 88px;
+  transform: translateX(-50%);
+  z-index: 4;
+}

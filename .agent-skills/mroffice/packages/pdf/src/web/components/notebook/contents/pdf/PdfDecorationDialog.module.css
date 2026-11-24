@@ -1,0 +1,528 @@
+/* The dialog is the shared Office dialog chrome (OfficeDialogShell); the
+   layout's own parts read the card's tokens through the names they were
+   drawn with, so they follow its accent and its light and dark surfaces. */
+.layout {
+  --sheet-accent: var(--office-dialog-accent, #07877d);
+  --sheet-accent-strong: var(--office-dialog-accent-hover, #066e66);
+  --sheet-ink: var(--office-dialog-ink, #17211f);
+  --sheet-muted: var(--office-dialog-muted, #53635f);
+  --sheet-line: var(--office-dialog-divider, rgba(38, 53, 49, 0.1));
+  --sheet-card: var(--office-dialog-surface, rgba(255, 255, 255, 0.72));
+  --sheet-card-strong: var(--office-dialog-surface, rgba(255, 255, 255, 0.94));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 16px;
+}
+
+.form {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+
+/* Groups are titled sections of the dialog, not cards inside it. */
+.sourceFieldset,
+.geometryFieldset {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.sourceFieldset legend,
+.geometryFieldset legend {
+  padding: 0;
+  margin-bottom: 6px;
+  color: var(--sheet-ink, #17211f);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.sourceChoices,
+.repeatRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.sourceChoices label,
+.checkboxField {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--foreground, #1f2937);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.sourceChoices input,
+.checkboxField input {
+  accent-color: var(--console-accent, #0f766e);
+}
+
+.radioField,
+.checkboxField {
+  position: relative;
+  /* The row is the dialogs' height; the invisible input below keeps the
+     44px hit target. */
+  min-height: 32px;
+  padding-inline-start: 48px;
+  cursor: pointer;
+}
+
+.radioField input,
+.checkboxField input {
+  position: absolute;
+  top: 50%;
+  inset-inline-start: 0;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  cursor: pointer;
+  /* An invisible 44px hit target; ::before and ::after draw the control.
+     Held against the dialog chrome's disabled dimming, which would otherwise
+     bring the native control back at half opacity. */
+  opacity: 0 !important;
+  transform: translateY(-50%);
+}
+
+.radioField::before,
+.checkboxField::before {
+  position: absolute;
+  top: 50%;
+  inset-inline-start: 15px;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #94a3b8;
+  background: var(--background, #fff);
+  content: "";
+  transform: translateY(-50%);
+}
+
+.radioField::before {
+  border-radius: 999px;
+}
+
+.radioField::after {
+  position: absolute;
+  top: 50%;
+  inset-inline-start: 19px;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--console-accent, #0f766e);
+  content: "";
+  opacity: 0;
+  transform: translateY(-50%);
+}
+
+.radioField:has(input:checked)::before,
+.checkboxField:has(input:checked)::before {
+  border-color: var(--console-accent, #0f766e);
+}
+
+.radioField:has(input:checked)::after {
+  opacity: 1;
+}
+
+.checkboxField::before {
+  border-radius: 4px;
+}
+
+.checkboxField::after {
+  position: absolute;
+  top: 50%;
+  inset-inline-start: 20px;
+  width: 5px;
+  height: 9px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  content: "";
+  opacity: 0;
+  transform: translateY(-62%) rotate(45deg);
+}
+
+.checkboxField:has(input:checked)::before {
+  background: var(--console-accent, #0f766e);
+}
+
+.checkboxField:has(input:checked)::after {
+  opacity: 1;
+}
+
+.radioField:has(input:focus-visible)::before,
+.checkboxField:has(input:focus-visible)::before {
+  outline: 2px solid var(--console-accent, #0f766e);
+  outline-offset: 2px;
+}
+
+.radioField:has(input:disabled) {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+.imageSource {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 6px 10px;
+}
+
+.imageSourceChosen {
+  grid-template-columns: minmax(0, max-content) max-content;
+}
+
+.imagePickButton {
+  max-width: 100%;
+}
+
+.imagePickLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.imageSource small {
+  grid-column: 1 / -1;
+  color: var(--muted-foreground, #64748b);
+  font-size: 11px;
+}
+
+.imageFilename {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted-foreground, #64748b);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.field,
+.sharedPicker,
+.colorField {
+  display: grid;
+  gap: 5px;
+  color: var(--sheet-ink, #17211f);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-width: 0;
+  font-weight: 400;
+}
+
+.colorButton:focus-visible {
+  outline: 2px solid var(--console-accent, #0f766e);
+  outline-offset: 2px;
+}
+
+.field small {
+  color: #b42318;
+  font-weight: 500;
+}
+
+.inlineFields,
+.rangeRow,
+.styleRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.imageScaleRow {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px);
+}
+
+.positionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.repeatRow .field {
+  margin-left: auto;
+  min-width: 110px;
+}
+
+.styleRow {
+  grid-template-columns: minmax(150px, 1fr) minmax(130px, 0.7fr) 72px;
+  align-items: end;
+}
+
+.sharedPicker :global(.note-editor-office-toolbar__select) {
+  height: 32px;
+  min-height: 32px;
+}
+
+.colorField {
+  position: relative;
+}
+
+.colorButton {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--sheet-line, rgba(38, 53, 49, 0.1));
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* Touch mode: the size box is a 44px field (OfficeDialogChrome's touch rule
+   reaches its input) inside a 1px frame, 46px in all. The font and colour
+   buttons beside it kept 30px and 32px, and in this row aligned by its
+   bottom edge their captions ("字体", "颜色") stood 14-16px below "字号".
+   They take the size box's height: finger-sized like it, captions level.
+   The font picker's own face rule is three classes deep (30px), so the
+   trigger is named by its three shared classes here. */
+:where(:root[data-touch-mode])
+  .sharedPicker
+  > :global(.office-ribbon-control.note-editor-office-toolbar__select.docs-home-font-trigger) {
+  min-height: 46px;
+}
+
+:where(:root[data-touch-mode]) .colorButton {
+  width: 46px;
+  height: 46px;
+}
+
+.sixSlots {
+  display: grid;
+  gap: 10px;
+}
+
+.sixSlots fieldset {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.sixSlots legend {
+  padding: 0;
+  margin-bottom: 6px;
+  color: var(--sheet-ink, #17211f);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.tokenHint {
+  margin: 0;
+  color: var(--sheet-muted, #53635f);
+  font-size: 11px;
+}
+
+.tokenToolbar {
+  display: grid;
+  grid-template-columns: minmax(92px, 1fr) repeat(3, auto);
+  align-items: center;
+  gap: 6px;
+}
+
+.activeSlotLabel {
+  min-width: 0;
+  overflow: hidden;
+  padding: 0 5px;
+  color: var(--sheet-ink, #17211f);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sixSlots input[data-active="true"] {
+  outline: 3px solid var(--office-dialog-focus-ring, #0f766e);
+  outline-offset: 0;
+}
+
+.marginFieldset {
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.marginFieldset legend {
+  padding: 0;
+  margin-bottom: 6px;
+  color: var(--sheet-ink, #17211f);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.marginGrid {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.operationError {
+  margin: 0;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fff1f2;
+  padding: 9px 11px;
+  color: #9f1239;
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+
+.operationProgress {
+  margin: 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #f8fafc;
+  padding: 9px 11px;
+  color: #334155;
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+
+.removeButton {
+  justify-self: start;
+}
+
+.previewPanel {
+  position: sticky;
+  top: 0;
+  /* As tall as the preview, never stretched to the form's row: stretched,
+     it filled the whole grid area and so had no room to stick in, and
+     scrolled away with the form when the card scrolled (a short window). */
+  align-self: start;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  gap: 8px;
+  color: var(--sheet-muted, #53635f);
+  font-size: 11px;
+}
+
+.previewPanel strong {
+  justify-self: start;
+  color: var(--sheet-ink, #17211f);
+  font-size: 12px;
+}
+
+.previewPage {
+  position: relative;
+  width: 220px;
+  aspect-ratio: 0.77;
+  overflow: hidden;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.1);
+}
+
+.previewImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.previewText {
+  position: absolute;
+  inset: 16% 12%;
+  opacity: 0.22;
+  background: repeating-linear-gradient(
+    to bottom,
+    #64748b 0 1px,
+    transparent 1px 13px
+  );
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  /* Match flatten order: above source pixels, below annotations/redactions. */
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.watermark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  max-width: 86%;
+  overflow: hidden;
+  color: #64748b;
+  font-weight: 700;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.watermarkImage {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  text-overflow: clip;
+}
+
+.slot {
+  position: absolute;
+  max-width: 31%;
+  overflow: hidden;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header {
+  top: 3.5%;
+}
+.footer {
+  bottom: 3.5%;
+}
+.left {
+  left: 4%;
+  text-align: left;
+}
+.center {
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+.right {
+  right: 4%;
+  text-align: right;
+}
+
+.previewOverlay .slot {
+  max-width: 38%;
+}
+
+@media (max-width: 760px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .previewPanel {
+    position: static;
+  }
+
+  .tokenToolbar {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .activeSlotLabel {
+    grid-column: 1 / -1;
+  }
+
+  .marginGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

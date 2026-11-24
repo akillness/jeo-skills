@@ -1,0 +1,199 @@
+/* The ONE Format Shape pane: Office's docked pane frame (OfficeTaskPane)
+   with the pane's own tab strip, section legends, draft-conflict banner and
+   the small controls the three editors' shape writers share. A host that
+   places the pane itself (Docs' floating card) composes `.pane` and sets
+   its own position. */
+
+.pane {
+  --office-shape-pane-accent: var(--office-pane-accent, #0f6cbd);
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px;
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--office-pane-border);
+}
+
+.tab {
+  min-height: 32px;
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 11px;
+}
+
+/* The strip reads the same in every host: a host's own button rules (the
+   deck's 16px, Docs' 14px) must not resize it, so the tab is stated at a
+   specificity those rules do not reach. */
+.tabs > .tab.tab {
+  min-height: 30px;
+  padding: 5px 9px;
+  border: 0;
+  border-radius: 7px;
+  box-shadow: none;
+  background: transparent;
+  color: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.tabs > .tab.tab:hover:not([aria-selected="true"]) {
+  background: var(--office-pane-hover, #f0f0f0);
+}
+
+.tabs > .tab.tab[aria-selected="true"] {
+  background: color-mix(in srgb, var(--office-shape-pane-accent) 12%, var(--office-pane-surface, white));
+  color: var(--office-shape-pane-accent);
+  font-weight: 700;
+}
+
+.tab[aria-selected="true"] {
+  background: color-mix(in srgb, var(--office-shape-pane-accent) 12%, var(--office-pane-surface, white));
+  color: var(--office-shape-pane-accent);
+  font-weight: 700;
+}
+
+.body {
+  composes: body from "./OfficeTaskPane.module.css";
+  padding: 0;
+}
+
+.section {
+  composes: section from "./OfficeTaskPane.module.css";
+}
+
+/* `composes` only works on a simple class selector, and the pane's sections
+   name themselves with a <legend>; this is the shared .sectionLabel grammar
+   restated for that element. */
+.section legend {
+  padding: 0;
+  color: var(--office-pane-ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.field {
+  composes: field from "./OfficeTaskPane.module.css";
+}
+
+.row {
+  composes: row from "./OfficeTaskPane.module.css";
+}
+
+.check {
+  composes: check from "./OfficeTaskPane.module.css";
+}
+
+.hint {
+  composes: hint from "./OfficeTaskPane.module.css";
+}
+
+/* Why a typed value was not taken, under its field. */
+.invalid {
+  /* Red toward the pane's ink: darker on a light pane, lighter on a dark one. */
+  color: color-mix(in srgb, #d70015 72%, var(--office-pane-ink, #1f2937));
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.numberRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.numberRow input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+ 
+.unit {
+  color: var(--office-pane-muted);
+  flex: none;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.field textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 112px;
+  padding: 6px 8px;
+  border: 1px solid var(--office-pane-control-border);
+  border-radius: 4px;
+  background: var(--office-pane-surface);
+  color: var(--office-pane-ink);
+  font: inherit;
+  font-size: 12px;
+  resize: vertical;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.actions button,
+.buttonList button,
+.conflict button {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--office-shape-pane-accent) 10%, var(--office-pane-surface, white));
+  color: inherit;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.actions button:disabled,
+.buttonList button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.buttonList {
+  display: grid;
+  gap: 6px;
+}
+
+.conflict {
+  composes: hint from "./OfficeTaskPane.module.css";
+  display: grid;
+  gap: 6px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--office-pane-border);
+}
+
+:is(.tab, .actions button, .buttonList button, .conflict button):focus-visible,
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
+  outline: 2px solid var(--office-shape-pane-accent);
+  outline-offset: 2px;
+}
+
+:where(:root[data-touch-mode]) .tab,
+:where(:root[data-touch-mode]) .actions button,
+:where(:root[data-touch-mode]) .buttonList button,
+:where(:root[data-touch-mode]) .field input,
+:where(:root[data-touch-mode]) .field select,
+:where(:root[data-touch-mode]) .field textarea {
+  min-height: var(--office-touch-control-height, 32px);
+}

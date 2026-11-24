@@ -1,0 +1,37 @@
+@scope ([data-example]) {
+  [data-slot="avatar"] {
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    box-sizing: border-box;
+    width: var(--size);
+    height: var(--size);
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--surface-1);
+    outline: 1px solid var(--line);
+    outline-offset: -1px;
+    user-select: none;
+
+    &[data-loading-status="loaded"] {
+      outline-color: color-mix(in oklab, var(--ink) 12%, transparent);
+    }
+
+    &[data-loading-status="error"] {
+      background: var(--tint);
+    }
+  }
+
+  [data-slot="avatar-image"] {
+    filter: grayscale(1);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  [data-slot="avatar-fallback"] {
+    color: var(--muted);
+    font-size: var(--text-xs);
+    font-weight: 500;
+  }
+}

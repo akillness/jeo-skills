@@ -1,0 +1,253 @@
+.colorMenu.colorMenu,
+.fontMenu.fontMenu {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  max-height: min(
+    520px,
+    var(--radix-dropdown-menu-content-available-height, calc(100vh - 24px))
+  );
+  overflow: hidden;
+  padding: 0;
+}
+
+.colorMenu.colorMenu {
+  min-width: 260px;
+  width: 260px;
+}
+
+.fontMenu.fontMenu {
+  min-width: 250px;
+  width: 250px;
+}
+
+/* Button and disclosure paint is owned by OfficeRibbonControl.css. */
+
+.body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.heading {
+  background: #f1f1f1;
+  border-bottom: 1px solid #d7d7d7;
+  color: #666;
+  flex-shrink: 0;
+  font-size: 12px;
+  line-height: 18px;
+  padding: 4px 8px;
+}
+
+.scrollArea {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  padding: 4px;
+  scrollbar-gutter: stable;
+}
+
+.colorList,
+.fontList {
+  display: flex;
+  flex-direction: column;
+}
+
+.colorRow.colorRow,
+.fontRow.fontRow {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: #222;
+  cursor: pointer;
+  min-width: 0;
+  outline: none;
+}
+
+.colorRow.colorRow > :global(span:first-child) {
+  display: none;
+}
+
+.fontRow.fontRow > :global(span:first-child) {
+  display: none;
+}
+
+.colorRow.colorRow {
+  align-items: center;
+  column-gap: 8px;
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr);
+  min-height: 27px;
+  padding: 2px 7px;
+}
+
+.fontRow.fontRow {
+  align-items: center;
+  column-gap: 7px;
+  display: grid;
+  grid-template-columns: 43px minmax(0, 1fr);
+  min-height: 62px;
+  padding: 5px 8px;
+}
+
+.colorRow.colorRow[data-highlighted],
+.fontRow.fontRow[data-highlighted] {
+  background: #e8f1eb;
+  border-color: #6aa27b;
+}
+
+.colorRow.colorRow[data-selected="true"],
+.fontRow.fontRow[data-selected="true"] {
+  background: #d8eadf;
+  border-color: #3e8b5a;
+}
+
+.colorRow.colorRow:focus-visible,
+.fontRow.fontRow:focus-visible {
+  box-shadow: inset 0 0 0 2px #0f766e;
+}
+
+.colorRow.colorRow[data-disabled],
+.fontRow.fontRow[data-disabled] {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.swatches {
+  border: 1px solid #777;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  height: 14px;
+  overflow: hidden;
+  width: 104px;
+}
+
+.swatches > span {
+  border-inline-end: 1px solid rgb(255 255 255 / 38%);
+  display: block;
+}
+
+.swatches > span:last-child {
+  border-inline-end: 0;
+}
+
+.colorLabel {
+  font-size: 14px;
+  line-height: 20px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fontPreview {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #8d8d8d;
+  box-sizing: border-box;
+  color: #090909;
+  display: flex;
+  font-size: 27px;
+  height: 43px;
+  justify-content: center;
+  line-height: 1;
+  overflow: hidden;
+  width: 43px;
+}
+
+.fontDetails {
+  display: grid;
+  grid-template-rows: repeat(3, minmax(0, auto));
+  min-width: 0;
+}
+
+.fontName,
+.fontFace {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fontName {
+  color: #777;
+  font-size: 12px;
+  line-height: 15px;
+}
+
+.fontFace {
+  color: #181818;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+/* Dark menus: the heading, row captions and selection follow the dark
+   Cupertino card. The colour swatches and the "Aa" font sample stay as they
+   print (a sample on paper). */
+:global([data-theme-mode="dark"]) .heading {
+  background: rgb(255 255 255 / 6%);
+  border-bottom-color: rgb(255 255 255 / 10%);
+  color: #a1a1a8;
+}
+:global([data-theme-mode="high-contrast"]) .heading {
+  background: rgb(255 255 255 / 6%);
+  border-bottom-color: rgb(255 255 255 / 10%);
+  color: #a1a1a8;
+}
+
+:global([data-theme-mode="dark"]) .colorRow.colorRow {
+  color: #f2f2f7;
+}
+
+:global([data-theme-mode="high-contrast"]) .colorRow.colorRow {
+  color: #f2f2f7;
+}
+
+:global([data-theme-mode="dark"]) .fontRow.fontRow {
+  color: #f2f2f7;
+}
+
+:global([data-theme-mode="high-contrast"]) .fontRow.fontRow {
+  color: #f2f2f7;
+}
+
+:global([data-theme-mode="dark"]) .colorRow.colorRow[data-selected="true"] {
+  background: color-mix(in srgb, #1f8f4c 24%, transparent);
+  border-color: #26a159;
+}
+
+:global([data-theme-mode="high-contrast"]) .colorRow.colorRow[data-selected="true"] {
+  background: color-mix(in srgb, #1f8f4c 24%, transparent);
+  border-color: #26a159;
+}
+
+:global([data-theme-mode="dark"]) .fontRow.fontRow[data-selected="true"] {
+  background: color-mix(in srgb, #1f8f4c 24%, transparent);
+  border-color: #26a159;
+}
+
+:global([data-theme-mode="high-contrast"]) .fontRow.fontRow[data-selected="true"] {
+  background: color-mix(in srgb, #1f8f4c 24%, transparent);
+  border-color: #26a159;
+}
+
+:global([data-theme-mode="dark"]) .fontName {
+  color: #a1a1a8;
+}
+
+:global([data-theme-mode="high-contrast"]) .fontName {
+  color: #a1a1a8;
+}
+
+:global([data-theme-mode="dark"]) .fontFace {
+  color: #f2f2f7;
+}
+
+:global([data-theme-mode="high-contrast"]) .fontFace {
+  color: #f2f2f7;
+}

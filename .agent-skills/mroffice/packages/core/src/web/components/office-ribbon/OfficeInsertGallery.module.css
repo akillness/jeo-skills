@@ -1,0 +1,190 @@
+.familyLabel {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: normal;
+}
+
+.preview.familyPreview {
+  background: transparent;
+  border-radius: 0;
+  height: 28px !important;
+  width: 40px !important;
+}
+
+/* The first level of a SmartArt menu is a short list of families, as wide
+   as Docs' insert menus; only the layout gallery it opens is a wide flyout. */
+.familyMenu {
+  min-width: 210px;
+}
+
+.flyout {
+  --office-smartart-gallery-accent: #2563eb;
+  --office-smartart-gallery-accent-soft: rgba(37, 99, 235, 0.18);
+  --office-smartart-gallery-focus-ring: rgba(37, 99, 235, 0.28);
+  --office-smartart-gallery-hover-border: #6596cc;
+  /* Never past the room the menu has below (or above) its trigger, nor
+     past the window's width: in a short or narrow window (an iPad in
+     Split View) the gallery scrolled off the bottom and squeezed to
+     100vw - 240px, a desktop sidebar's allowance. */
+  max-height: min(
+    620px,
+    calc(100dvh - 48px),
+    var(--radix-dropdown-menu-content-available-height, 100dvh)
+  );
+  max-width: min(
+    680px,
+    var(--radix-dropdown-menu-content-available-width, calc(100vw - 240px))
+  ) !important;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0;
+  width: min(
+    680px,
+    var(--radix-dropdown-menu-content-available-width, calc(100vw - 240px))
+  );
+}
+
+.flyout[data-smartart-gallery-application="presentation"] {
+  --office-smartart-gallery-accent: #c43e1c;
+  --office-smartart-gallery-accent-soft: rgba(196, 62, 28, 0.18);
+  --office-smartart-gallery-focus-ring: rgba(196, 62, 28, 0.28);
+  --office-smartart-gallery-hover-border: #d97a5c;
+}
+
+.familyTrigger[role="menuitem"][data-smartart-gallery-application="presentation"]:is(
+    :focus,
+    [data-state="open"]
+  ) {
+  background: rgba(196, 62, 28, 0.09);
+  color: #a33417;
+}
+
+.section + .section {
+  border-top: 1px solid var(--border, #d7dde5);
+}
+
+.sectionHeading {
+  background: #f3f4f6;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 650;
+  padding: 7px 10px;
+}
+
+.grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 9px;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #d7dde5;
+  border-radius: 5px;
+  color: #334155;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 118px;
+  padding: 7px;
+  position: relative;
+  white-space: normal;
+}
+
+.card:hover {
+  border-color: var(--office-smartart-gallery-hover-border);
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.12);
+}
+
+.card:focus-visible {
+  box-shadow: 0 0 0 3px var(--office-smartart-gallery-focus-ring);
+  outline: none;
+}
+
+.selected {
+  border-color: var(--office-smartart-gallery-accent);
+  box-shadow: 0 0 0 2px var(--office-smartart-gallery-accent-soft);
+}
+
+.check {
+  background: var(--office-smartart-gallery-accent);
+  border-radius: 999px;
+  color: #ffffff;
+  height: 18px;
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  width: 18px;
+}
+
+.preview {
+  background: transparent;
+  border-radius: 3px;
+  display: block;
+  height: 76px !important;
+  width: 100% !important;
+}
+
+/* A content-fitted SmartArt card: the diagram, framed by the card alone. */
+.card .preview[data-smartart-menu-preview] {
+  padding: 4px 6px;
+}
+
+.card:has(> [data-smartart-menu-preview]) > span:not(.preview) {
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+}
+
+/*
+ * The dropdown item and sub-trigger primitives size every descendant `svg`
+ * as a 16px icon (`[&_svg]:size-4`). A preview is a drawing, not an icon: the
+ * host's real engine scene (an SVG with nested shape SVGs) and the schematic
+ * alike must fill the preview box, so the box wins here for both.
+ */
+.preview svg {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+@media (max-width: 860px) {
+  .flyout {
+    width: min(520px, calc(100vw - 210px));
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Dark: the flyout is the dark menu card, but its section band and the
+   chart and SmartArt cards stayed white — a bright slab in the dark menu.
+   They become wells on the card; the drawings inside keep their colours. */
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .sectionHeading {
+  background: rgb(255 255 255 / 6%);
+  color: #a1a1a8;
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .section + .section {
+  border-top-color: rgb(255 255 255 / 10%);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .card {
+  border-color: rgb(255 255 255 / 12%);
+  background: rgb(255 255 255 / 6%);
+  color: #e5e5ea;
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .card:hover {
+  box-shadow: 0 3px 10px rgb(0 0 0 / 35%);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]))
+  .familyTrigger[role="menuitem"][data-smartart-gallery-application="presentation"]:is(
+    :focus,
+    [data-state="open"]
+  ) {
+  background: rgba(208, 72, 40, 0.24);
+  color: #ffb39e;
+}

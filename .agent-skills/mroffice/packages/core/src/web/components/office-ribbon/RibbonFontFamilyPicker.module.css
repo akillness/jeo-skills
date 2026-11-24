@@ -1,0 +1,361 @@
+.trigger.trigger.trigger {
+  box-sizing: border-box;
+  flex: 0 0 142px;
+  width: 142px;
+  max-width: 142px;
+  min-width: 142px;
+  height: 30px;
+  max-height: 30px;
+  min-height: 30px;
+  padding: 0 7px 0 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.trigger.trigger:disabled {
+  cursor: default;
+}
+
+.trigger.trigger:disabled:not(:global(.office-ribbon-control)) {
+  opacity: 0.55;
+}
+
+.trigger.trigger:focus-visible:not(:global(.office-ribbon-control)),
+.searchField:focus-within:not(:global(.office-ribbon-control)),
+.browseButton:focus-visible:not(:global(.office-ribbon-control)),
+.sectionHeader:focus-visible:not(:global(.office-ribbon-control)),
+.pinButton:focus-visible:not(:global(.office-ribbon-control)),
+.variantTrigger:focus-visible:not(:global(.office-ribbon-control)) {
+  outline: 2px solid var(--office-ribbon-accent, #2563eb);
+  outline-offset: 1px;
+}
+
+.trigger.trigger .triggerLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trigger.triggerMixed .triggerLabel {
+  font-style: italic;
+}
+
+.trigger.triggerMixed .triggerLabel:not(:global(.office-ribbon-control)) {
+  color: var(--office-ribbon-muted, #64748b);
+}
+
+.menu {
+  box-sizing: border-box;
+  width: min(348px, calc(100vw - 24px));
+  max-height: min(620px, var(--radix-dropdown-menu-content-available-height));
+  padding: 6px;
+  overflow: auto;
+  border-radius: 9px;
+}
+
+.menuTools {
+  position: sticky;
+  z-index: 2;
+  top: -6px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px;
+  padding: 6px;
+  margin: -6px -6px 4px;
+  border-bottom: 1px solid var(--office-ribbon-border, #d8dee8);
+  background: var(--office-ribbon-surface, #fff);
+}
+
+.searchField {
+  box-sizing: border-box;
+  height: 30px;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  border: 1px solid var(--office-ribbon-border, #cbd5e1);
+  border-radius: 6px;
+  color: var(--office-ribbon-muted, #64748b);
+  background: #fff;
+}
+
+.searchField input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  color: var(--office-ribbon-ink, #1f2937);
+  background: transparent;
+  font: inherit;
+}
+
+.browseButton {
+  box-sizing: border-box;
+  min-width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 8px;
+  border: 1px solid var(--office-control-border, var(--office-ribbon-border, #cbd5e1));
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.browseButton:not(:global(.office-ribbon-control)) {
+  color: var(--office-ribbon-ink, #1f2937);
+  background: #fff;
+}
+
+/* Dark menus: the search box and Browse take the menu's dark field (the same
+   well as a toolbar menu's value box), not a white one. */
+:global([data-theme-mode="dark"]) .searchField,
+:global([data-theme-mode="high-contrast"]) .searchField,
+:global([data-theme-mode="dark"]) .browseButton:not(:global(.office-ribbon-control)),
+:global([data-theme-mode="high-contrast"]) .browseButton:not(:global(.office-ribbon-control)) {
+  border-color: rgb(255 255 255 / 18%);
+  background: rgb(0 0 0 / 28%);
+}
+
+:global([data-theme-mode="dark"]) .browseMessage {
+  color: #f5b56b;
+}
+
+:global([data-theme-mode="high-contrast"]) .browseMessage {
+  color: #f5b56b;
+}
+
+:global([data-theme-mode="dark"]) .availabilityWarning {
+  color: #f5b56b;
+}
+
+:global([data-theme-mode="high-contrast"]) .availabilityWarning {
+  color: #f5b56b;
+}
+
+.browseMessage {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #9a3412;
+  font-size: 11px;
+  line-height: 15px;
+}
+
+.section {
+  border-top: 1px solid var(--office-ribbon-border, #e2e8f0);
+}
+
+.section:first-of-type {
+  border-top: 0;
+}
+
+.sectionHeader {
+  box-sizing: border-box;
+  width: 100%;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 5px;
+  color: var(--office-ribbon-muted, #64748b);
+  background: transparent;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  text-align: left;
+}
+
+.sectionChevron {
+  transition: transform 120ms ease;
+}
+
+.sectionChevronCollapsed {
+  transform: rotate(-90deg);
+}
+
+.sectionBody,
+.legacySection {
+  display: grid;
+  gap: 1px;
+}
+
+.legacySectionLabel {
+  padding: 5px 8px 3px;
+  color: var(--office-ribbon-muted, #64748b);
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.fontRow,
+.variantRow {
+  min-width: 0;
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  border-radius: 6px;
+}
+
+.fontItem,
+.variantItem {
+  min-width: 0;
+  min-height: 32px;
+  flex: 1 1 auto;
+  padding: 3px 5px;
+  gap: 6px;
+  border-radius: 5px;
+}
+
+.check {
+  width: 15px;
+  flex: 0 0 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fontIdentity {
+  min-width: 0;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.fontName,
+.variantName {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.previewMeta,
+.availability,
+.variantMeta {
+  flex: 0 0 auto;
+  color: var(--office-ribbon-muted, #64748b);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.availabilityWarning {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #9a3412;
+}
+
+.pinButton,
+.variantTrigger {
+  box-sizing: border-box;
+  width: 28px;
+  min-width: 28px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+}
+
+.pinButton:not(:global(.office-ribbon-control)) {
+  color: var(--office-ribbon-muted, #64748b);
+  background: transparent;
+}
+
+.variantTrigger:not(:global(.office-ribbon-control)) {
+  color: var(--office-ribbon-muted, #64748b);
+  background: transparent;
+}
+
+/* The pin shows on the row under the pointer or keyboard focus, and stays
+   on a pinned font, so the list reads as Office's plain list of names. */
+.fontRow .pinButton:not([data-pinned="true"]) {
+  opacity: 0;
+}
+
+.fontRow:hover .pinButton,
+.fontRow:focus-within .pinButton,
+.pinButton:focus-visible {
+  opacity: 1;
+}
+
+.pinButton[data-pinned="true"]:not(:global(.office-ribbon-control)) {
+  color: var(--office-ribbon-accent, #2563eb);
+}
+
+.pinButton:hover:not(:global(.office-ribbon-control)) {
+  color: var(--office-ribbon-accent, #2563eb);
+  background: var(--office-ribbon-accent-soft, #eff6ff);
+}
+
+.variantTrigger:hover:not(:global(.office-ribbon-control)) {
+  color: var(--office-ribbon-accent, #2563eb);
+  background: var(--office-ribbon-accent-soft, #eff6ff);
+}
+
+.sectionHeader:hover:not(:global(.office-ribbon-control)) {
+  color: var(--office-ribbon-accent, #2563eb);
+  background: var(--office-ribbon-accent-soft, #eff6ff);
+}
+
+.browseButton:hover:not(:global(.office-ribbon-control)) {
+  color: var(--office-ribbon-accent, #2563eb);
+  background: var(--office-ribbon-accent-soft, #eff6ff);
+}
+
+.variantTrigger > svg:last-child:not(:first-child) {
+  display: none;
+}
+
+.variantMenu {
+  min-width: 220px;
+  padding: 5px;
+}
+
+.variantItem {
+  padding-left: 9px;
+}
+
+.noResults {
+  margin: 0;
+  padding: 12px 8px;
+  color: var(--office-ribbon-muted, #64748b);
+  text-align: center;
+  font-size: 12px;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sectionChevron {
+    transition: none;
+  }
+}
+
+@media (hover: none) {
+  .fontRow .pinButton:not([data-pinned="true"]) {
+    opacity: 1;
+  }
+}

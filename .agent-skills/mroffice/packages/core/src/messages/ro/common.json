@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Particularizat",
+ "zoom.levels": "Niveluri de panoramare",
+ "dialog.close": "Închidere",
+ "toast.close": "Închidere notificare",
+ "button.confirm": "OK",
+ "button.cancel": "Anulare",
+ "libreOffice.enable": "Descărcare și activare (aproximativ {size})",
+ "libreOffice.enableAlt": "Descărcare și activare LibreOffice",
+ "libreOffice.enabled": "LibreOffice {version} este activat",
+ "libreOffice.retrying": "Se încearcă din nou…",
+ "libreOffice.ready": "Formatele Office vechi, fișierele OpenDocument, imaginile EMF/WMF și exporturile OpenDocument funcționează acum.",
+ "libreOffice.needed": "Este necesar LibreOffice. MR Note Classic poate descărca versiunea oficială în propriul folder; nu se instalează nimic în sistem.",
+ "libreOffice.neededFor": "Salvarea ca .{format} necesită LibreOffice. MR Note Classic poate descărca versiunea oficială în propriul folder; nu se instalează nimic în sistem."
+}

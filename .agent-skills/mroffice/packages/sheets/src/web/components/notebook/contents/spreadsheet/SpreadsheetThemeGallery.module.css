@@ -1,0 +1,35 @@
+
+.preview {
+  display: block;
+  height: 48px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.footer {
+  background: #f3f3f3;
+  border-top: 1px solid #d6d6d6;
+  flex-shrink: 0;
+  padding: 4px 6px;
+}
+
+.footerAction.footerAction {
+  align-items: center;
+  border-radius: 3px;
+  display: flex;
+  font-size: 13px;
+  gap: 7px;
+  min-height: 30px;
+  padding: 4px 8px;
+}
+
+:global([data-theme-mode="dark"]) .footer {
+  background: rgb(255 255 255 / 4%);
+  border-top-color: rgb(255 255 255 / 10%);
+}
+
+:global([data-theme-mode="high-contrast"]) .footer {
+  background: rgb(255 255 255 / 4%);
+  border-top-color: rgb(255 255 255 / 10%);
+}
+

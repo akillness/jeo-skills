@@ -1,0 +1,70 @@
+@scope ([data-example]) {
+  [data-slot="separator"] {
+    flex-shrink: 0;
+    border: 0;
+    background: var(--line-faint);
+
+    &[data-orientation="horizontal"] {
+      width: 100%;
+      height: 1px;
+    }
+
+    &[data-orientation="vertical"] {
+      align-self: stretch;
+      width: 1px;
+    }
+  }
+
+  [data-slot="row"]:has(
+    > [data-slot="separator"][data-orientation="horizontal"]
+  ) {
+    flex-wrap: nowrap;
+    gap: var(--space-3);
+    width: 20rem;
+    max-width: 100%;
+    color: var(--muted);
+    font-size: var(--text-sm);
+
+    & > [data-slot="separator"] {
+      flex: 1;
+    }
+  }
+
+  [data-slot="row"]:has(
+    > [data-slot="separator"][data-orientation="vertical"]
+  ) {
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: var(--space-4);
+  }
+
+  [data-slot="stack"]:has(
+    > [data-slot="separator"],
+    > [data-slot="row"] > [data-slot="separator"][data-orientation="horizontal"]
+  ) {
+    align-items: stretch;
+    width: 20rem;
+    max-width: 100%;
+
+    & > [data-slot="stack"] {
+      gap: var(--space-1);
+    }
+  }
+
+  /* Plan details: each label at the start of its row, its value at the end. */
+  :scope[data-example="separator/list"] dd {
+    text-align: end;
+  }
+
+  /* Profile stats: equal columns, each number over its label. */
+  :scope[data-example="separator/menu"] [data-slot="row"] {
+    width: 20rem;
+    max-width: 100%;
+
+    & > [data-slot="stack"] > :first-child {
+      font-size: var(--text-lg);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+}

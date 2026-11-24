@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Pertsonalizatua",
+ "zoom.levels": "Zooma-mailak",
+ "dialog.close": "Itxi",
+ "toast.close": "Itxi jakinarazpena",
+ "button.confirm": "Ados",
+ "button.cancel": "Utzi",
+ "libreOffice.enable": "Deskargatu eta gaitu (gutxi gorabehera {size})",
+ "libreOffice.enableAlt": "Deskargatu eta gaitu LibreOffice",
+ "libreOffice.enabled": "LibreOffice {version} gaituta dago",
+ "libreOffice.retrying": "Berriro saiatzen…",
+ "libreOffice.ready": "Office formatu zaharrek, OpenDocument fitxategiek, EMF/WMF irudiek eta OpenDocument esportazioek orain funtzionatzen dute.",
+ "libreOffice.needed": "Horretarako LibreOffice behar da. MR Note Classic-ek kaleratze ofiziala bere karpetara deskarga dezake; ez da ezer instalatzen zure sisteman.",
+ "libreOffice.neededFor": ".{format} gisa gordetzeko LibreOffice behar da. MR Note Classic-ek kaleratze ofiziala bere karpetara deskarga dezake; ez da ezer instalatzen zure sisteman."
+}

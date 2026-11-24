@@ -3660,6 +3660,18 @@ Preview `jeo-skill install fast-anything --global --dry-run`, then install the s
 
 Preview `jeo-skill install mobile-agent-testers --global --dry-run`, then install the selected guide with `jeo-skill install mobile-agent-testers --global --yes`. Installing `mobile-agent-testers` copies operator guidance, test persona definitions (`personas.json`), setup scripts (`setup.sh`), decryption utilities, and CI workflows for `pierridotite/mobile-agent-testers` (MIT). It sets up and orchestrates parallel headless Claude Code AI agents running across iOS Simulators and Android emulators on GitHub Actions, delivering encrypted bug reports and aggregated test summaries.
 
+### ARTEX autonomous penetration testing operator (on demand)
+
+Preview `jeo-skill install artex --global --dry-run`, then install the selected guide with `jeo-skill install artex --global --yes`. Installing `artex` copies operator guidance, attack surface reconnaissance workflows, API security audit playbooks, patch diff analyzers, and payload generation modules for `BaaRai/ARTEX` (GPL-3.0). It coordinates autonomous penetration testing pipelines, attack surface exploration, and automated vulnerability exploitation verification.
+
+### Vercel Agent UI operator (on demand)
+
+Preview `jeo-skill install vercel-agent-ui --global --dry-run`, then install the selected guide with `jeo-skill install vercel-agent-ui --global --yes`. Installing `vercel-agent-ui` copies operator guidance, headless generative UI primitives, and agent-driven interaction patterns for `vercel-labs/ui` (Apache-2.0). It enables AI agents to construct responsive, next-generation generative user interfaces and client-side conversational artifacts.
+
+### MR Office AI suite operator (on demand)
+
+Preview `jeo-skill install mroffice --global --dry-run`, then install the selected guide with `jeo-skill install mroffice --global --yes`. Installing `mroffice` copies operator guidance, document architecture references, and open-source office suite editor components for `XinaTian/MROffice` (MIT). It deploys, customizes, and orchestrates AI-integrated web editors for rich text documents, data spreadsheets, and slide presentations.
+
 ### affectUI operator (on demand)
 
 Preview `jeo-skill install affectui --global --dry-run`, then install the selected guide with `jeo-skill install affectui --global --yes`. Installing `affectui` copies operator guidance, the 74-item MIT registry inventory (`-clean` vs classic), MCP configuration notes, and offline support tools only, not npm packages, `.tsx` components, or an MCP server registration. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py" --workspace "/abs/path/to/app" --json` for offline React 19, `@/*` alias, and `components.json` checks without running `npx` or opening network sockets. Obtain explicit user approval before running `npx shadcn@latest add`, modifying `components.json`, or registering `https://www.affectui.com/api/mcp`; never fabricate registry URLs for commercial affectUI Pro components.

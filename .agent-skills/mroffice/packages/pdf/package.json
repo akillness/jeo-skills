@@ -1,0 +1,44 @@
+{
+  "name": "@mrnote/pdf",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "description": "The MR Office pdf editor.",
+  "homepage": "https://mroffice.ai",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/XinaTian/MROffice.git",
+    "directory": "packages/pdf"
+  },
+  "exports": {
+    ".": "./src/index.tsx",
+    "./*": "./src/*"
+  },
+  "sideEffects": [
+    "*.css",
+    "**/*.css"
+  ],
+  "dependencies": {
+    "@codemirror/merge": "6.12.2",
+    "@codemirror/state": "6.6.0",
+    "@mrnote/core": "*",
+    "@mrnote/docs": "*",
+    "@mrnote/sheets": "*",
+    "@mrnote/slides": "*",
+    "@pdf-lib/fontkit": "1.1.1",
+    "fflate": "0.8.2",
+    "jszip": "3.10.1",
+    "katex": "0.16.47",
+    "lucide-react": "0.577.0",
+    "pdf-lib": "1.17.1",
+    "react": "19.2.5",
+    "react-dom": "19.2.5",
+    "yjs": "13.6.31",
+    "zod": "3.25.76"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": ">=19"
+  }
+}

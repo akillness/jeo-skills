@@ -1,0 +1,133 @@
+/* The shared pointer-anchored menu. Its sizes are the one right-click menu
+   specification (the office-context-menu tokens, styles/office-context-menu.css,
+   which the card also wears); its glass, radius-free item focus and dark theme
+   come from the Cupertino menu card (docs-cupertino-menu). These rules read
+   the tokens for the hand-built buttons — the spreadsheet grid's menu wears
+   these classes too — and add a hover tint, the open submenu trigger's tint,
+   native `disabled` and the muted heading/detail text, in light and dark.
+   No length is written here: a size change is a token change. */
+.menu {
+  position: fixed;
+  user-select: none;
+  z-index: 10000;
+}
+
+.item {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: var(--ocm-row-radius, 6px);
+  box-sizing: border-box;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  font-size: var(--ocm-font-size, 13px);
+  gap: var(--ocm-row-gap, 8px);
+  line-height: var(--ocm-line-height, 18px);
+  min-height: var(--ocm-row-min-height, 28px);
+  padding: var(--ocm-row-padding-block, 5px) var(--ocm-row-padding-inline, 10px);
+  text-align: start;
+  width: 100%;
+}
+
+.item:hover:not(:disabled),
+.item[data-expanded="true"] {
+  background: var(--ocm-hover, color-mix(in srgb, var(--console-accent-strong, #087c73) 10%, transparent));
+}
+
+.item:disabled {
+  color: var(--ocm-disabled, #84918f);
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.icon {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 var(--ocm-icon-column, 20px);
+  justify-content: center;
+  width: var(--ocm-icon-column, 20px);
+}
+
+/* A label never wraps: the menu grows to the row (up to its max width),
+   and near the viewport's edge the placement flips it instead. */
+.label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shortcut {
+  color: var(--ocm-muted, inherit);
+  flex: 0 0 auto;
+  font-size: var(--ocm-shortcut-font-size, 12px);
+  font-variant-numeric: tabular-nums;
+  margin-inline-start: var(--ocm-shortcut-gap, 24px);
+  white-space: nowrap;
+}
+
+.separator {
+  height: 1px;
+}
+
+/* A row of icon-only commands (WPS's clipboard row). */
+.iconRow {
+  display: flex;
+  gap: 2px;
+  padding: 2px 4px;
+}
+
+.iconRowItem {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: var(--ocm-row-radius, 6px);
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  flex: 1 1 0;
+  height: var(--ocm-icon-button-size, 28px);
+  justify-content: center;
+  min-width: var(--ocm-icon-button-size, 28px);
+  padding: 0;
+}
+
+.iconRowItem:hover:not(:disabled) {
+  background: var(--ocm-hover, color-mix(in srgb, var(--console-accent-strong, #087c73) 10%, transparent));
+}
+
+.iconRowItem:disabled {
+  color: var(--ocm-disabled, #84918f);
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.heading,
+.detail {
+  color: var(--ocm-muted, inherit);
+}
+
+.heading {
+  font-size: var(--ocm-heading-font-size, 12px);
+  font-weight: 600;
+  padding: 5px var(--ocm-row-padding-inline, 10px) 6px;
+}
+
+.detail {
+  flex: 0 1 auto;
+  margin-inline-start: 16px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:global([data-theme-mode="dark"]) .item:disabled,
+:global([data-theme-mode="dark"]) .iconRowItem:disabled,
+:global([data-theme-mode="high-contrast"]) .item:disabled,
+:global([data-theme-mode="high-contrast"]) .iconRowItem:disabled {
+  opacity: 1;
+}

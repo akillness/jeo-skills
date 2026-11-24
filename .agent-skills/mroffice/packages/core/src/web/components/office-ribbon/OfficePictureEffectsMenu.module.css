@@ -1,0 +1,50 @@
+.menu {
+  min-width: 180px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--columns, 4), 46px);
+  gap: 4px;
+  padding: 4px 6px 6px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+
+.tile[data-checked="true"] {
+  border-color: var(--ring, #2563eb);
+  background: var(--accent, rgba(37, 99, 235, 0.12));
+}
+
+.previewCell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 38px;
+  overflow: visible;
+  perspective: none;
+}
+
+.preview {
+  position: relative;
+  display: block;
+  width: 34px;
+  height: 26px;
+  /* A neutral picture, as PowerPoint's gallery previews the effect on one. */
+  background: linear-gradient(160deg, #9cc3e6 0%, #4f81bd 100%);
+}

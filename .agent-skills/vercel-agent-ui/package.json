@@ -1,0 +1,40 @@
+{
+  "name": "ui-sdk",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.34.5",
+  "scripts": {
+    "dev": "bash scripts/docs-dev.sh",
+    "playground": "pnpm --filter playground dev",
+    "typecheck": "node scripts/check-type-imports.mjs && pnpm -r --workspace-concurrency=4 --no-sort typecheck",
+    "lint": "node scripts/check-code.mjs && node scripts/check-comments.mjs && node scripts/check-braces.mjs && node scripts/check-coverage.mjs",
+    "lint:idioms": "eslint packages examples apps/playground/src",
+    "format": "prettier --check . --log-level warn",
+    "format:write": "node scripts/check-braces.mjs --fix && prettier --write . --log-level warn",
+    "test": "pnpm --filter tests test",
+    "test:pr": "bash scripts/test-slot.sh node scripts/affected-specs.mjs",
+    "test:sweep": "bash scripts/test-slot.sh node scripts/affected-specs.mjs --all",
+    "test:docs": "cd tests && playwright test --config docs.config.ts",
+    "test:browser-build": "cd tests && playwright test --config browser-build.config.ts",
+    "build": "pnpm -r --filter \"./packages/**\" build",
+    "check:packages": "node scripts/check-packages.mjs",
+    "size": "node scripts/size.mjs",
+    "docs:packages": "node scripts/package-docs.mjs",
+    "docs:perf": "node scripts/perf-docs.mjs",
+    "docs:prod": "pnpm --filter examples build && pnpm --filter docs build && pnpm --filter docs start"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^3.0.3",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.13.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-solid": "^0.18.1",
+    "eslint-plugin-svelte": "^3.23.1",
+    "eslint-plugin-vue": "^10.12.0",
+    "prettier": "^3.9.9",
+    "prettier-plugin-svelte": "^4.1.1",
+    "rolldown": "1.2.12",
+    "typescript": "catalog:",
+    "typescript-eslint": "^8.72.1"
+  }
+}

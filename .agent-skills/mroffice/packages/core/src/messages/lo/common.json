@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "ກຳນົດເອງ",
+ "zoom.levels": "ລະດັບການຊູມ",
+ "dialog.close": "ປິດ",
+ "toast.close": "ປິດການແຈ້ງເຕືອນ",
+ "button.confirm": "ຕົກລົງ",
+ "button.cancel": "ຍົກເລີກ",
+ "libreOffice.enable": "ດາວໂຫລດ ແລະ ເປີດໃຊ້ (ປະມານ {size})",
+ "libreOffice.enableAlt": "ດາວໂຫລດ ແລະ ເປີດໃຊ້ LibreOffice",
+ "libreOffice.enabled": "LibreOffice {version} ເປີດໃຊ້ງານແລ້ວ",
+ "libreOffice.retrying": "ກຳລັງລອງອີກຄັ້ງ…",
+ "libreOffice.ready": "ຮູບແບບ Office ເກົ່າ, ໄຟລ໌ OpenDocument, ຮູບພາບ EMF/WMF ແລະ ການສົ່ງອອກ OpenDocument ໃຊ້ໄດ້ແລ້ວ.",
+ "libreOffice.needed": "ສິ່ງນີ້ຕ້ອງການ LibreOffice. MR Note Classic ສາມາດດາວໂຫລດເວີຊັນທາງການເຂົ້າໂຟນເດີຂອງຕົນເອງ; ບໍ່ມີການຕິດຕັ້ງໃດໆໃນລະບົບຂອງທ່ານ.",
+ "libreOffice.neededFor": "ການບັນທຶກເປັນ .{format} ຕ້ອງໃຊ້ LibreOffice. MR Note Classic ສາມາດດາວໂຫລດເວີຊັນທາງການເຂົ້າໂຟນເດີຂອງຕົນເອງ; ບໍ່ມີການຕິດຕັ້ງຫຍັງໃນລະບົບຂອງທ່ານ."
+}

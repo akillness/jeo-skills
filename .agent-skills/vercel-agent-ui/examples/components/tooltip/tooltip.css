@@ -1,0 +1,188 @@
+@scope ([data-example]) {
+  /* The tooltip grows out of its trigger and fades in, and one that opens at once, in a group, doesn't animate. */
+  [data-slot="tooltip-content"] {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    box-sizing: border-box;
+    width: max-content;
+    max-width: min(16rem, var(--available-width));
+    padding: 6px 10px;
+    border-radius: var(--radius-control);
+    background: var(--surface-2);
+    box-shadow: var(--shadow-2);
+    color: var(--ink);
+    font-size: var(--text-xs);
+    line-height: 16px;
+    transform-origin: var(--transform-origin);
+    transition:
+      opacity 150ms ease-out,
+      scale 150ms ease-out;
+
+    &:is([data-starting-style], [data-ending-style]) {
+      opacity: 0;
+      scale: 0.9;
+    }
+
+    &[data-instant] {
+      transition: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: opacity 150ms ease-out;
+
+      &:is([data-starting-style], [data-ending-style]) {
+        scale: none;
+      }
+    }
+  }
+
+  [data-slot="tooltip-shortcut"] {
+    margin-inline-start: auto;
+  }
+
+  a[data-slot="tooltip-trigger"][data-variant="link"] {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--ink);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 3px;
+
+    &:hover {
+      text-decoration-color: var(--ink);
+    }
+  }
+
+  [data-slot="row"][role="group"]:has([data-slot="tooltip-trigger"]) {
+    gap: var(--space-1);
+  }
+
+  [data-slot="grid"]:has([data-level]) {
+    display: grid;
+    grid-template-columns: repeat(7, var(--space-6));
+    gap: var(--space-1);
+  }
+
+  [data-slot="tooltip-trigger"][data-level] {
+    width: var(--space-6);
+    height: var(--space-6);
+    padding: 0;
+    border-radius: 5px;
+    box-shadow: inset 0 0 0 1px var(--line-faint);
+
+    &[data-level="1"] {
+      background: color-mix(in oklab, var(--ink) 22%, var(--surface-1));
+    }
+
+    &[data-level="2"] {
+      background: color-mix(in oklab, var(--ink) 55%, var(--surface-1));
+    }
+
+    &[data-level="3"] {
+      background: var(--ink);
+    }
+
+    &:hover {
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+
+    &:active {
+      scale: none;
+    }
+  }
+
+  ul:has(> li [data-slot="tooltip-trigger"]) {
+    gap: 0;
+    box-sizing: border-box;
+    width: 16rem;
+    max-width: 100%;
+    padding: var(--space-1);
+    border-radius: var(--radius-surface);
+    background: var(--surface-1);
+    box-shadow: var(--shadow-1);
+  }
+
+  ul > li [data-slot="tooltip-trigger"] {
+    justify-content: flex-start;
+    width: 100%;
+    height: auto;
+    min-height: 32px;
+    padding: 6px 10px;
+    border-radius: var(--radius-row);
+    background: transparent;
+    box-shadow: none;
+    font-weight: 400;
+
+    &:hover {
+      background: var(--tint);
+    }
+
+    &:active {
+      scale: none;
+      box-shadow: none;
+    }
+
+    &:focus-visible {
+      outline-offset: -3px;
+    }
+
+    & > svg {
+      width: 14px;
+      height: 14px;
+      color: var(--muted);
+    }
+
+    & > span {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  [data-slot="row"]:has(> input):has([data-slot="tooltip-trigger"]) {
+    flex-wrap: nowrap;
+    width: 20rem;
+    max-width: 100%;
+
+    & > input {
+      flex: 1;
+    }
+  }
+
+  [data-slot="row"]:has(> code):has([data-slot="tooltip-trigger"]) > code {
+    padding: 6px 10px;
+    border-radius: var(--radius-control);
+    background: var(--tint);
+    font-family: var(--mono);
+    font-size: var(--text-sm);
+  }
+
+  /* The controls leave room for the tooltip that opens above Export. */
+  :scope[data-example="tooltip/controlled"] [data-slot="controls"] {
+    margin-bottom: var(--space-8);
+  }
+
+  /* The side buttons sit around an empty middle, wide enough for a tooltip that flips into it on a phone. */
+  :scope[data-example="tooltip/side"] [data-slot="grid"] {
+    grid-template-columns: auto 7rem auto;
+    justify-items: center;
+    gap: var(--space-2);
+
+    & > :nth-child(1 of :not([data-slot="tooltip-content"])),
+    & > :nth-child(4 of :not([data-slot="tooltip-content"])) {
+      grid-column: 2;
+    }
+
+    & > :nth-child(2 of :not([data-slot="tooltip-content"])) {
+      grid-column: 1;
+    }
+
+    & > :nth-child(3 of :not([data-slot="tooltip-content"])) {
+      grid-column: 3;
+    }
+  }
+}

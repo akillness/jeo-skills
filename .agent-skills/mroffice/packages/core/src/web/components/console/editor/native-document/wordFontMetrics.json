@@ -1,0 +1,1142 @@
+{
+  "description": "Design metrics of the font files Microsoft Word for macOS lays text out with: the glyph advances a decimal numbering label uses (digits and full stop; none recorded for symbol-encoded faces) and the horizontal header (hhea) ascender, descender and line gap that Word's single line box is read from. Keyed by the family names Word resolves; values are font units. \"eastAsian\" marks a face whose OS/2 code page range declares an East Asian code page: Word gives it the East Asian single line whether or not the document's font table lists it.",
+  "referenceApplication": "Microsoft Word for macOS",
+  "referenceVersion": "16.86.24060916",
+  "fonts": [
+    {
+      "family": "Aptos",
+      "names": [
+        "Aptos"
+      ],
+      "postscriptName": "Aptos",
+      "file": "Aptos.ttf",
+      "sha256": "95980114fcfd42f2f9c446dae429b70582bf2f03097d68433ea9e7d85a49da0b",
+      "unitsPerEm": 2048,
+      "ascender": 1923,
+      "descender": -577,
+      "lineGap": 0,
+      "advances": {
+        "0": 1094,
+        "1": 1094,
+        "2": 1094,
+        "3": 1094,
+        "4": 1094,
+        "5": 1094,
+        "6": 1094,
+        "7": 1094,
+        "8": 1094,
+        "9": 1094,
+        ".": 585
+      }
+    },
+    {
+      "family": "Calibri",
+      "names": [
+        "Calibri"
+      ],
+      "postscriptName": "Calibri",
+      "file": "Calibri.ttf",
+      "sha256": "ea801e1f869b55464339058b1d4263d07cc074a18e20aa3ee1d07901423dee53",
+      "unitsPerEm": 2048,
+      "ascender": 1950,
+      "descender": -550,
+      "lineGap": 0,
+      "advances": {
+        "0": 1038,
+        "1": 1038,
+        "2": 1038,
+        "3": 1038,
+        "4": 1038,
+        "5": 1038,
+        "6": 1038,
+        "7": 1038,
+        "8": 1038,
+        "9": 1038,
+        ".": 517
+      }
+    },
+    {
+      "family": "Cambria",
+      "names": [
+        "Cambria"
+      ],
+      "postscriptName": "Cambria",
+      "file": "Cambria.ttc",
+      "sha256": "ca2a527ab14967b1c7170a97329ed29f38af51b71c8c2073d89d1c055de22de1",
+      "unitsPerEm": 2048,
+      "ascender": 1946,
+      "descender": -455,
+      "lineGap": 0,
+      "advances": {
+        "0": 1134,
+        "1": 1134,
+        "2": 1134,
+        "3": 1134,
+        "4": 1134,
+        "5": 1134,
+        "6": 1134,
+        "7": 1134,
+        "8": 1134,
+        "9": 1134,
+        ".": 420
+      }
+    },
+    {
+      "family": "Consolas",
+      "names": [
+        "Consolas"
+      ],
+      "postscriptName": "Consolas",
+      "file": "Consola.ttf",
+      "sha256": "b1dc8633f1cca6a74b84a26e04d61dad05cb8151ee094964fdd30d4852386a6b",
+      "unitsPerEm": 2048,
+      "ascender": 1521,
+      "descender": -527,
+      "lineGap": 350,
+      "advances": {
+        "0": 1126,
+        "1": 1126,
+        "2": 1126,
+        "3": 1126,
+        "4": 1126,
+        "5": 1126,
+        "6": 1126,
+        "7": 1126,
+        "8": 1126,
+        "9": 1126,
+        ".": 1126
+      }
+    },
+    {
+      "family": "Candara",
+      "names": [
+        "Candara"
+      ],
+      "postscriptName": "Candara",
+      "file": "Candara.ttf",
+      "sha256": "31ef1a249923a19f1cb676e57b9873bdb83f5bb42baf9c6ad9d03906663da294",
+      "unitsPerEm": 2048,
+      "ascender": 1484,
+      "descender": -564,
+      "lineGap": 452,
+      "advances": {
+        "0": 1125,
+        "1": 716,
+        "2": 946,
+        "3": 995,
+        "4": 1092,
+        "5": 1006,
+        "6": 1130,
+        "7": 968,
+        "8": 1127,
+        "9": 1123,
+        ".": 516
+      }
+    },
+    {
+      "family": "Corbel",
+      "names": [
+        "Corbel"
+      ],
+      "postscriptName": "Corbel",
+      "file": "Corbel.ttf",
+      "sha256": "73a0bd7d2b511fe0dd2cdbeba8af280089abdc51f80f41b2c82bc97fda0e5b1d",
+      "unitsPerEm": 2048,
+      "ascender": 1523,
+      "descender": -525,
+      "lineGap": 425,
+      "advances": {
+        "0": 1052,
+        "1": 918,
+        "2": 1046,
+        "3": 928,
+        "4": 1058,
+        "5": 983,
+        "6": 1074,
+        "7": 876,
+        "8": 1054,
+        "9": 1074,
+        ".": 541
+      }
+    },
+    {
+      "family": "Constantia",
+      "names": [
+        "Constantia"
+      ],
+      "postscriptName": "Constantia",
+      "file": "Constan.ttf",
+      "sha256": "86448f9e0ce99376786556b1486417b25acd8da96d81bb8ee8ccd15b3135ea83",
+      "unitsPerEm": 2048,
+      "ascender": 1538,
+      "descender": -510,
+      "lineGap": 452,
+      "advances": {
+        "0": 1103,
+        "1": 641,
+        "2": 992,
+        "3": 935,
+        "4": 1087,
+        "5": 974,
+        "6": 1108,
+        "7": 990,
+        "8": 1099,
+        "9": 1119,
+        ".": 524
+      }
+    },
+    {
+      "family": "Century Gothic",
+      "names": [
+        "Century Gothic"
+      ],
+      "postscriptName": "CenturyGothic",
+      "file": "Century Gothic.ttf",
+      "sha256": "3a9cbb5d75b2a2b0d22dc94571608e4e9dc7b88e825374985880c5722c1c9e5f",
+      "unitsPerEm": 2048,
+      "ascender": 2060,
+      "descender": -451,
+      "lineGap": 0,
+      "advances": {
+        "0": 1135,
+        "1": 1135,
+        "2": 1135,
+        "3": 1135,
+        "4": 1135,
+        "5": 1135,
+        "6": 1135,
+        "7": 1135,
+        "8": 1135,
+        "9": 1135,
+        ".": 567
+      }
+    },
+    {
+      "family": "Century",
+      "names": [
+        "Century"
+      ],
+      "postscriptName": "Century",
+      "file": "Century.ttf",
+      "sha256": "66984601b15643089dfce43423b605647a2add7bff0f901488e49835a3131732",
+      "unitsPerEm": 2048,
+      "ascender": 2019,
+      "descender": -443,
+      "lineGap": 0,
+      "advances": {
+        "0": 1139,
+        "1": 1139,
+        "2": 1139,
+        "3": 1139,
+        "4": 1139,
+        "5": 1139,
+        "6": 1139,
+        "7": 1139,
+        "8": 1139,
+        "9": 1139,
+        ".": 569
+      }
+    },
+    {
+      "family": "Book Antiqua",
+      "names": [
+        "Book Antiqua"
+      ],
+      "postscriptName": "BookAntiqua",
+      "file": "Book Antiqua.ttf",
+      "sha256": "c019f155a0004760f32079c22c29ef0ddd223d0c2c79e2487122e66d38a53b32",
+      "unitsPerEm": 2048,
+      "ascender": 1891,
+      "descender": -578,
+      "lineGap": 0,
+      "advances": {
+        "0": 1024,
+        "1": 1024,
+        "2": 1024,
+        "3": 1024,
+        "4": 1024,
+        "5": 1024,
+        "6": 1024,
+        "7": 1024,
+        "8": 1024,
+        "9": 1024,
+        ".": 512
+      }
+    },
+    {
+      "family": "DengXian",
+      "names": [
+        "DengXian",
+        "DengXian Regular",
+        "等线"
+      ],
+      "postscriptName": "DengXian-Regular",
+      "file": "Deng.ttf",
+      "sha256": "b975b088200b56452b0cba317b0735ea457ee0eaac3b92ed927b6f0ec20d7568",
+      "unitsPerEm": 2048,
+      "ascender": 1659,
+      "descender": -475,
+      "lineGap": 0,
+      "advances": {
+        "0": 1079,
+        "1": 1079,
+        "2": 1079,
+        "3": 1079,
+        "4": 1079,
+        "5": 1079,
+        "6": 1079,
+        "7": 1079,
+        "8": 1079,
+        "9": 1079,
+        ".": 449
+      },
+      "eastAsian": true
+    },
+    {
+      "family": "SimSun",
+      "names": [
+        "SimSun",
+        "宋体"
+      ],
+      "postscriptName": "SimSun",
+      "file": "Simsun.ttc",
+      "sha256": "05068fa1acae212120dcc7e98c884b174a6eca252a636b4b64030235473ec27e",
+      "unitsPerEm": 256,
+      "ascender": 220,
+      "descender": -36,
+      "lineGap": 36,
+      "advances": {
+        "0": 128,
+        "1": 128,
+        "2": 128,
+        "3": 128,
+        "4": 128,
+        "5": 128,
+        "6": 128,
+        "7": 128,
+        "8": 128,
+        "9": 128,
+        ".": 128
+      },
+      "eastAsian": true
+    },
+    {
+      "family": "SimHei",
+      "names": [
+        "SimHei",
+        "黑体"
+      ],
+      "postscriptName": "SimHei",
+      "file": "SimHei.ttf",
+      "sha256": "ef70e6bba293c9d30bdeb0dba2dd6019cceacbfddab3fb0c550ff14d9127c813",
+      "unitsPerEm": 256,
+      "ascender": 220,
+      "descender": -36,
+      "lineGap": 36,
+      "advances": {
+        "0": 128,
+        "1": 128,
+        "2": 128,
+        "3": 128,
+        "4": 128,
+        "5": 128,
+        "6": 128,
+        "7": 128,
+        "8": 128,
+        "9": 128,
+        ".": 128
+      },
+      "eastAsian": true
+    },
+    {
+      "family": "KaiTi",
+      "names": [
+        "KaiTi",
+        "楷体"
+      ],
+      "postscriptName": "KaiTi",
+      "file": "Kaiti.ttf",
+      "sha256": "483c7cdec7874dcc6c39d278c367c512a1b909b34d2776fd72c2a941fc3cfd2e",
+      "unitsPerEm": 256,
+      "ascender": 220,
+      "descender": -36,
+      "lineGap": 36,
+      "advances": {
+        "0": 128,
+        "1": 128,
+        "2": 128,
+        "3": 128,
+        "4": 128,
+        "5": 128,
+        "6": 128,
+        "7": 128,
+        "8": 128,
+        "9": 128,
+        ".": 128
+      },
+      "eastAsian": true
+    },
+    {
+      "family": "FangSong",
+      "names": [
+        "FangSong",
+        "仿宋"
+      ],
+      "postscriptName": "FangSong",
+      "file": "Fangsong.ttf",
+      "sha256": "d6d75adf4be24d51bbf08f7208359bfe7bdf6ec70806bbb9873412ba4e696f75",
+      "unitsPerEm": 256,
+      "ascender": 220,
+      "descender": -36,
+      "lineGap": 36,
+      "advances": {
+        "0": 128,
+        "1": 128,
+        "2": 128,
+        "3": 128,
+        "4": 128,
+        "5": 128,
+        "6": 128,
+        "7": 128,
+        "8": 128,
+        "9": 128,
+        ".": 128
+      },
+      "eastAsian": true
+    },
+    {
+      "family": "Microsoft YaHei",
+      "names": [
+        "Microsoft YaHei",
+        "微软雅黑"
+      ],
+      "postscriptName": "MicrosoftYaHei",
+      "file": "msyh.ttc",
+      "sha256": "3084f1f88369af6bf9989c909024164d953d1e38d08734f05f28ef24b2f9d577",
+      "unitsPerEm": 2048,
+      "ascender": 2167,
+      "descender": -536,
+      "lineGap": 0,
+      "advances": {
+        "0": 1201,
+        "1": 1201,
+        "2": 1201,
+        "3": 1201,
+        "4": 1201,
+        "5": 1201,
+        "6": 1201,
+        "7": 1201,
+        "8": 1201,
+        "9": 1201,
+        ".": 493
+      },
+      "eastAsian": true
+    },
+    {
+      "family": "Times New Roman",
+      "names": [
+        "Times New Roman"
+      ],
+      "postscriptName": "TimesNewRomanPSMT",
+      "file": "Times New Roman.ttf",
+      "sha256": "f3b4ffff71c2a0c7227d37497683b2498fb2d0a4e8beae26f022e3ccfcaabfa3",
+      "unitsPerEm": 2048,
+      "ascender": 1825,
+      "descender": -443,
+      "lineGap": 87,
+      "advances": {
+        "0": 1024,
+        "1": 1024,
+        "2": 1024,
+        "3": 1024,
+        "4": 1024,
+        "5": 1024,
+        "6": 1024,
+        "7": 1024,
+        "8": 1024,
+        "9": 1024,
+        ".": 512
+      }
+    },
+    {
+      "family": "Arial",
+      "names": [
+        "Arial"
+      ],
+      "postscriptName": "ArialMT",
+      "file": "Arial.ttf",
+      "sha256": "525979822591a3447cfc49d943d6f7683508e25543407871c0ed8fed05fd2bd9",
+      "unitsPerEm": 2048,
+      "ascender": 1854,
+      "descender": -434,
+      "lineGap": 67,
+      "advances": {
+        "0": 1139,
+        "1": 1139,
+        "2": 1139,
+        "3": 1139,
+        "4": 1139,
+        "5": 1139,
+        "6": 1139,
+        "7": 1139,
+        "8": 1139,
+        "9": 1139,
+        ".": 569
+      }
+    },
+    {
+      "family": "Courier New",
+      "names": [
+        "Courier New"
+      ],
+      "postscriptName": "CourierNewPSMT",
+      "file": "Courier New.ttf",
+      "sha256": "c886ca3172d8ce9189976992d145ec090500a4ff516ecb9d4df56b1a78336247",
+      "unitsPerEm": 2048,
+      "ascender": 1705,
+      "descender": -615,
+      "lineGap": 0,
+      "advances": {
+        "0": 1229,
+        "1": 1229,
+        "2": 1229,
+        "3": 1229,
+        "4": 1229,
+        "5": 1229,
+        "6": 1229,
+        "7": 1229,
+        "8": 1229,
+        "9": 1229,
+        ".": 1229
+      }
+    },
+    {
+      "family": "Georgia",
+      "names": [
+        "Georgia"
+      ],
+      "postscriptName": "Georgia",
+      "file": "Georgia.ttf",
+      "sha256": "4f54eb299fccea7f103edeb0d92437359bfd4441811d53222b82b335369f6218",
+      "unitsPerEm": 2048,
+      "ascender": 1878,
+      "descender": -449,
+      "lineGap": 0,
+      "advances": {
+        "0": 1257,
+        "1": 880,
+        "2": 1144,
+        "3": 1130,
+        "4": 1157,
+        "5": 1082,
+        "6": 1159,
+        "7": 1029,
+        "8": 1221,
+        "9": 1159,
+        ".": 552
+      }
+    },
+    {
+      "family": "Verdana",
+      "names": [
+        "Verdana"
+      ],
+      "postscriptName": "Verdana",
+      "file": "Verdana.ttf",
+      "sha256": "0da8c12f3e15d95585434d2cf294b3113a3e3fc84bf9ba9d64f2ef834ef4bd98",
+      "unitsPerEm": 2048,
+      "ascender": 2059,
+      "descender": -430,
+      "lineGap": 0,
+      "advances": {
+        "0": 1302,
+        "1": 1302,
+        "2": 1302,
+        "3": 1302,
+        "4": 1302,
+        "5": 1302,
+        "6": 1302,
+        "7": 1302,
+        "8": 1302,
+        "9": 1302,
+        ".": 745
+      }
+    },
+    {
+      "family": "Tahoma",
+      "names": [
+        "Tahoma"
+      ],
+      "postscriptName": "Tahoma",
+      "file": "Tahoma.ttf",
+      "sha256": "359413e76969fc8a03e0acf91b355a98bb13c42472614e54bff5c8e4f4817fbb",
+      "unitsPerEm": 2048,
+      "ascender": 2049,
+      "descender": -423,
+      "lineGap": 0,
+      "advances": {
+        "0": 1118,
+        "1": 1118,
+        "2": 1118,
+        "3": 1118,
+        "4": 1118,
+        "5": 1118,
+        "6": 1118,
+        "7": 1118,
+        "8": 1118,
+        "9": 1118,
+        ".": 620
+      }
+    },
+    {
+      "family": "Symbol",
+      "names": [
+        "Symbol"
+      ],
+      "postscriptName": "SymbolMT",
+      "file": "symbol.ttf",
+      "sha256": "08253a10a93a80f978d88087000e6a6f4952aeffc2e972e81f6f84bbfa679fe4",
+      "unitsPerEm": 2048,
+      "ascender": 2059,
+      "descender": -450,
+      "lineGap": 0,
+      "advances": {}
+    },
+    {
+      "family": "Wingdings",
+      "names": [
+        "Wingdings"
+      ],
+      "postscriptName": "Wingdings-Regular",
+      "file": "Wingdings.ttf",
+      "sha256": "472858c86b3af58a8d46d96ac423f861717c8164a8104432eb92278bbf921a73",
+      "unitsPerEm": 2048,
+      "ascender": 1841,
+      "descender": -432,
+      "lineGap": 0,
+      "advances": {}
+    },
+    {
+      "family": "Arial Unicode MS",
+      "names": [
+        "Arial Unicode MS"
+      ],
+      "postscriptName": "ArialUnicodeMS",
+      "file": "Arial Unicode.ttf",
+      "sha256": "876af2cd4854644e7f3e7feb2f688997fdb3343c6df6693611209c9dfb47ccec",
+      "unitsPerEm": 2048,
+      "ascender": 2189,
+      "descender": -555,
+      "lineGap": 0,
+      "advances": {
+        "0": 1139,
+        "1": 1139,
+        "2": 1139,
+        "3": 1139,
+        "4": 1139,
+        "5": 1139,
+        "6": 1139,
+        "7": 1139,
+        "8": 1139,
+        "9": 1139,
+        ".": 569
+      },
+      "eastAsian": true
+    },
+    {
+      "family": "Aptos Mono",
+      "names": [
+        "Aptos Mono"
+      ],
+      "postscriptName": "AptosMono",
+      "file": "Office cloud font AptosMono (Regular)",
+      "sha256": "03fd2366d28670b2dfe313b3f6e00278b31a5d5845dcf0128369f31d6aa44710",
+      "unitsPerEm": 2048,
+      "ascender": 1923,
+      "descender": -577,
+      "lineGap": 0,
+      "advances": {
+        "0": 1229,
+        "1": 1229,
+        "2": 1229,
+        "3": 1229,
+        "4": 1229,
+        "5": 1229,
+        "6": 1229,
+        "7": 1229,
+        "8": 1229,
+        "9": 1229,
+        ".": 1229
+      }
+    },
+    {
+      "family": "Noto Sans SC",
+      "names": [
+        "Noto Sans SC",
+        "Noto Sans SC Regular",
+        "Noto Sans SC Thin"
+      ],
+      "postscriptName": "NotoSansSC-Regular",
+      "file": "NotoSansSC-Regular.ttf",
+      "sha256": "4b2be8791bb2f58f7d9c1a2977ed82b5bda0d475dc480f1a6ad7782c07858280",
+      "unitsPerEm": 1000,
+      "ascender": 1160,
+      "descender": -288,
+      "lineGap": 0,
+      "advances": {
+        "0": 555,
+        "1": 555,
+        "2": 555,
+        "3": 555,
+        "4": 555,
+        "5": 555,
+        "6": 555,
+        "7": 555,
+        "8": 555,
+        "9": 555,
+        ".": 278
+      },
+      "eastAsian": true
+    },
+    {
+      "family": "Noto Sans CJK SC",
+      "names": [
+        "Noto Sans CJK SC",
+        "Noto Sans CJK SC Regular"
+      ],
+      "postscriptName": "NotoSansCJKsc-Regular",
+      "file": "NotoSansCJKsc-Regular.otf",
+      "sha256": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+      "unitsPerEm": 1000,
+      "ascender": 1160,
+      "descender": -288,
+      "lineGap": 0,
+      "advances": {
+        "0": 555,
+        "1": 555,
+        "2": 555,
+        "3": 555,
+        "4": 555,
+        "5": 555,
+        "6": 555,
+        "7": 555,
+        "8": 555,
+        "9": 555,
+        ".": 278
+      },
+      "eastAsian": true
+    },
+    {
+      "family": "Noto Sans Devanagari",
+      "names": [
+        "Noto Sans Devanagari",
+        "Noto Sans Devanagari Regular"
+      ],
+      "postscriptName": "NotoSansDevanagari-Regular",
+      "file": "NotoSansDevanagari-Regular.ttf",
+      "sha256": "4e3c66638958c3e2ab5d37f47a8deb89fffeb7be9985c665a519bbc7ba762313",
+      "unitsPerEm": 1000,
+      "ascender": 896,
+      "descender": -408,
+      "lineGap": 0,
+      "advances": {
+        "0": 551,
+        "1": 551,
+        "2": 551,
+        "3": 551,
+        "4": 551,
+        "5": 551,
+        "6": 551,
+        "7": 551,
+        "8": 551,
+        "9": 551,
+        ".": 268
+      }
+    },
+    {
+      "family": "Noto Sans Arabic",
+      "names": [
+        "Noto Sans Arabic",
+        "Noto Sans Arabic Regular"
+      ],
+      "postscriptName": "NotoSansArabic-Regular",
+      "file": "NotoSansArabic-Regular.ttf",
+      "sha256": "bdff3e5659d67e67def05b33f749683b9376ae819d65d3dd62ac4640b3aaef48",
+      "unitsPerEm": 1000,
+      "ascender": 1374,
+      "descender": -738,
+      "lineGap": 0,
+      "advances": {
+        "0": 572,
+        "1": 572,
+        "2": 572,
+        "3": 572,
+        "4": 572,
+        "5": 572,
+        "6": 572,
+        "7": 572,
+        "8": 572,
+        "9": 572,
+        ".": 268
+      }
+    },
+    {
+      "family": "Noto Sans Hebrew",
+      "names": [
+        "Noto Sans Hebrew",
+        "Noto Sans Hebrew Regular"
+      ],
+      "postscriptName": "NotoSansHebrew-Regular",
+      "file": "NotoSansHebrew-Regular.ttf",
+      "sha256": "cdefaf8efd47045f6820928eba84db5bed7557539328952b5f828315485e02ee",
+      "unitsPerEm": 1000,
+      "ascender": 1068,
+      "descender": -292,
+      "lineGap": 0,
+      "advances": {}
+    },
+    {
+      "family": "Noto Sans Thai",
+      "names": [
+        "Noto Sans Thai",
+        "Noto Sans Thai Regular"
+      ],
+      "postscriptName": "NotoSansThai-Regular",
+      "file": "NotoSansThai-Regular.ttf",
+      "sha256": "61cf814eec46b294d6ea4401ac295d0cecd5207bd2331dcc5a15e7301d30ee44",
+      "unitsPerEm": 1000,
+      "ascender": 1061,
+      "descender": -450,
+      "lineGap": 0,
+      "advances": {}
+    },
+    {
+      "family": "Noto Sans Bengali",
+      "names": [
+        "Noto Sans Bengali",
+        "Noto Sans Bengali Regular"
+      ],
+      "postscriptName": "NotoSansBengali-Regular",
+      "file": "NotoSansBengali-Regular.ttf",
+      "sha256": "b55c62ee531e3214da6c0701daecea89a52ba42db7d8206b92e6b51f397a3193",
+      "unitsPerEm": 1000,
+      "ascender": 917,
+      "descender": -408,
+      "lineGap": 0,
+      "advances": {}
+    },
+    {
+      "family": "Noto Sans Math",
+      "names": [
+        "Noto Sans Math",
+        "Noto Sans Math Regular"
+      ],
+      "postscriptName": "NotoSansMath-Regular",
+      "file": "NotoSansMath-Regular.ttf",
+      "sha256": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d",
+      "unitsPerEm": 1000,
+      "ascender": 1069,
+      "descender": -423,
+      "lineGap": 0,
+      "advances": {
+        "0": 572,
+        "1": 572,
+        "2": 572,
+        "3": 572,
+        "4": 572,
+        "5": 572,
+        "6": 572,
+        "7": 572,
+        "8": 572,
+        "9": 572,
+        ".": 268
+      }
+    },
+    {
+      "family": "MS Mincho",
+      "names": [
+        "MS Mincho",
+        "ＭＳ 明朝"
+      ],
+      "postscriptName": "MS-Mincho",
+      "file": "msmincho.ttc",
+      "sha256": "9c2edfd189157477cdbe60bfe85bad7cda4ae27bd66cd269288a07a50dcb2a85",
+      "unitsPerEm": 256,
+      "ascender": 220,
+      "descender": -36,
+      "lineGap": 0,
+      "eastAsian": true,
+      "advances": {
+        "0": 128,
+        "1": 128,
+        "2": 128,
+        "3": 128,
+        "4": 128,
+        "5": 128,
+        "6": 128,
+        "7": 128,
+        "8": 128,
+        "9": 128,
+        ".": 128
+      }
+    },
+    {
+      "family": "MS PMincho",
+      "names": [
+        "MS PMincho",
+        "ＭＳ Ｐ明朝"
+      ],
+      "postscriptName": "MS-PMincho",
+      "file": "msmincho.ttc",
+      "sha256": "9c2edfd189157477cdbe60bfe85bad7cda4ae27bd66cd269288a07a50dcb2a85",
+      "unitsPerEm": 256,
+      "ascender": 220,
+      "descender": -36,
+      "lineGap": 0,
+      "eastAsian": true,
+      "advances": {
+        "0": 128,
+        "1": 128,
+        "2": 128,
+        "3": 128,
+        "4": 128,
+        "5": 128,
+        "6": 128,
+        "7": 128,
+        "8": 128,
+        "9": 128,
+        ".": 78
+      }
+    },
+    {
+      "family": "MS Gothic",
+      "names": [
+        "MS Gothic",
+        "ＭＳ ゴシック"
+      ],
+      "postscriptName": "MS-Gothic",
+      "file": "msgothic.ttc",
+      "sha256": "dc68e70dce920b8fc279e56ee86a67950d192d02506515f848dd4d0d12e1bde9",
+      "unitsPerEm": 256,
+      "ascender": 220,
+      "descender": -36,
+      "lineGap": 0,
+      "eastAsian": true,
+      "advances": {
+        "0": 128,
+        "1": 128,
+        "2": 128,
+        "3": 128,
+        "4": 128,
+        "5": 128,
+        "6": 128,
+        "7": 128,
+        "8": 128,
+        "9": 128,
+        ".": 128
+      }
+    },
+    {
+      "family": "MS UI Gothic",
+      "names": [
+        "MS UI Gothic"
+      ],
+      "postscriptName": "MS-UIGothic",
+      "file": "msgothic.ttc",
+      "sha256": "dc68e70dce920b8fc279e56ee86a67950d192d02506515f848dd4d0d12e1bde9",
+      "unitsPerEm": 256,
+      "ascender": 220,
+      "descender": -36,
+      "lineGap": 0,
+      "eastAsian": true,
+      "advances": {
+        "0": 128,
+        "1": 128,
+        "2": 128,
+        "3": 128,
+        "4": 128,
+        "5": 128,
+        "6": 128,
+        "7": 128,
+        "8": 128,
+        "9": 128,
+        ".": 52
+      }
+    },
+    {
+      "family": "MS PGothic",
+      "names": [
+        "MS PGothic",
+        "ＭＳ Ｐゴシック"
+      ],
+      "postscriptName": "MS-PGothic",
+      "file": "msgothic.ttc",
+      "sha256": "dc68e70dce920b8fc279e56ee86a67950d192d02506515f848dd4d0d12e1bde9",
+      "unitsPerEm": 256,
+      "ascender": 220,
+      "descender": -36,
+      "lineGap": 0,
+      "eastAsian": true,
+      "advances": {
+        "0": 128,
+        "1": 128,
+        "2": 128,
+        "3": 128,
+        "4": 128,
+        "5": 128,
+        "6": 128,
+        "7": 128,
+        "8": 128,
+        "9": 128,
+        ".": 52
+      }
+    },
+    {
+      "family": "Yu Mincho",
+      "names": [
+        "Yu Mincho",
+        "游明朝",
+        "Yu Mincho Regular",
+        "游明朝 Regular"
+      ],
+      "postscriptName": "YuMincho-Regular",
+      "file": "yumin.ttf",
+      "sha256": "926c1f98c3c603656222e0122c6bdabe17817d1c284a69abd4c337276dde9233",
+      "unitsPerEm": 2048,
+      "ascender": 1802,
+      "descender": -455,
+      "lineGap": 1024,
+      "eastAsian": true,
+      "advances": {
+        "0": 1110,
+        "1": 1110,
+        "2": 1110,
+        "3": 1110,
+        "4": 1110,
+        "5": 1110,
+        "6": 1110,
+        "7": 1110,
+        "8": 1110,
+        "9": 1110,
+        ".": 559
+      }
+    },
+    {
+      "family": "Yu Gothic",
+      "names": [
+        "Yu Gothic",
+        "游ゴシック",
+        "Yu Gothic Regular",
+        "游ゴシック Regular"
+      ],
+      "postscriptName": "YuGothic-Regular",
+      "file": "YuGothR.ttc",
+      "sha256": "109b8dcaa475799278a8ca84fd5aeb94fa4fdbf7ee24f226e3de27e0e0c8a103",
+      "unitsPerEm": 2048,
+      "ascender": 1802,
+      "descender": -455,
+      "lineGap": 1024,
+      "eastAsian": true,
+      "advances": {
+        "0": 1139,
+        "1": 1139,
+        "2": 1139,
+        "3": 1139,
+        "4": 1139,
+        "5": 1139,
+        "6": 1139,
+        "7": 1139,
+        "8": 1139,
+        "9": 1139,
+        ".": 528
+      }
+    },
+    {
+      "family": "Meiryo",
+      "names": [
+        "Meiryo",
+        "メイリオ"
+      ],
+      "postscriptName": "Meiryo",
+      "file": "meiryo.ttc",
+      "sha256": "7207c466d70d897ab21489063f47eee03be6929c351e60845698c5ab4ae16b48",
+      "unitsPerEm": 2048,
+      "ascender": 2171,
+      "descender": -901,
+      "lineGap": 0,
+      "eastAsian": true,
+      "advances": {
+        "0": 1272,
+        "1": 1272,
+        "2": 1272,
+        "3": 1272,
+        "4": 1272,
+        "5": 1272,
+        "6": 1272,
+        "7": 1272,
+        "8": 1272,
+        "9": 1272,
+        ".": 715
+      }
+    },
+    {
+      "family": "Malgun Gothic",
+      "names": [
+        "Malgun Gothic",
+        "맑은 고딕"
+      ],
+      "postscriptName": "MalgunGothic",
+      "file": "malgun.ttf",
+      "sha256": "a476b34af18296df7d6e61b786affa451b845d7c9c05aadd9423569330251e66",
+      "unitsPerEm": 2048,
+      "ascender": 2229,
+      "descender": -495,
+      "lineGap": 0,
+      "eastAsian": true,
+      "advances": {
+        "0": 1128,
+        "1": 1128,
+        "2": 1128,
+        "3": 1128,
+        "4": 1128,
+        "5": 1128,
+        "6": 1128,
+        "7": 1128,
+        "8": 1128,
+        "9": 1128,
+        ".": 448
+      }
+    },
+    {
+      "family": "Angsana New",
+      "names": [
+        "Angsana New",
+        "AngsanaUPC"
+      ],
+      "postscriptName": "AngsanaNew",
+      "file": "angsa.ttf",
+      "sha256": "0c4574df502aeb5cddfc09293a129187b853dc1212fdf249eca025ff16037d8e",
+      "unitsPerEm": 4096,
+      "ascender": 3854,
+      "descender": -1679,
+      "lineGap": 0,
+      "advances": {}
+    },
+    {
+      "family": "Browallia New",
+      "names": [
+        "Browallia New",
+        "BrowalliaUPC"
+      ],
+      "postscriptName": "BrowalliaNew",
+      "file": "",
+      "sha256": "",
+      "unitsPerEm": 4096,
+      "ascender": 3534,
+      "descender": -1541,
+      "lineGap": 0,
+      "advances": {},
+      "estimatedFromPrint": true
+    }
+  ]
+}

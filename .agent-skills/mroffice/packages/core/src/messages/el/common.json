@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Προσαρμογή",
+ "zoom.levels": "Επίπεδα ζουμ",
+ "dialog.close": "Κλείσιμο",
+ "toast.close": "Κλείσιμο ειδοποίησης",
+ "button.confirm": "OK",
+ "button.cancel": "Άκυρο",
+ "libreOffice.enable": "Λήψη και ενεργοποίηση (περίπου {size})",
+ "libreOffice.enableAlt": "Λήψη και ενεργοποίηση του LibreOffice",
+ "libreOffice.enabled": "Το LibreOffice {version} είναι ενεργοποιημένο",
+ "libreOffice.retrying": "Νέα προσπάθεια…",
+ "libreOffice.ready": "Οι παλαιές μορφές Office, τα αρχεία OpenDocument, οι εικόνες EMF/WMF και οι εξαγωγές OpenDocument λειτουργούν πλέον.",
+ "libreOffice.needed": "Αυτό απαιτεί το LibreOffice. Το MR Note Classic μπορεί να κάνει λήψη της επίσημης έκδοσης στον δικό του φάκελο· δεν εγκαθίσταται τίποτα στο σύστημά σας.",
+ "libreOffice.neededFor": "Η αποθήκευση ως .{format} απαιτεί το LibreOffice. Το MR Note Classic μπορεί να κάνει λήψη της επίσημης έκδοσης στον δικό του φάκελο· δεν εγκαθίσταται τίποτα στο σύστημά σας."
+}

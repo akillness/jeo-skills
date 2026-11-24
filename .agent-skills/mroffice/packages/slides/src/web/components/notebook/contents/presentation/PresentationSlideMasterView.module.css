@@ -1,0 +1,104 @@
+/* Slide Master view (PPT-B030): PowerPoint's thumbnail pane -- the master on
+   top, its layouts indented beneath it -- beside the selected card drawn at
+   stage size. */
+.view {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(168px, 220px) minmax(0, 1fr);
+  min-height: 0;
+  width: 100%;
+}
+
+.tree {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 2px 4px 8px 2px;
+}
+
+/* Doubled: the ribbon's button reset lays a button out as a flex row, which
+   shrank the preview column to its content (3 px; acceptance finding 9). */
+.card.card {
+  align-items: start;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: inherit;
+  cursor: pointer;
+  display: grid;
+  gap: 4px;
+  grid-template-columns: 18px minmax(0, 1fr);
+  padding: 4px;
+  text-align: left;
+  width: 100%;
+  /* The pane is a flex column that scrolls: a card keeps its own height
+     instead of being squeezed to share the pane (12 cards in 610 px gave
+     43 px each over a 102 px miniature). */
+  flex: none;
+}
+
+.card[data-kind="layout"] {
+  margin-inline-start: 18px;
+}
+
+.card:hover {
+  background: color-mix(in srgb, CanvasText 5%, transparent);
+}
+
+.card[aria-selected="true"] {
+  border-color: var(--ppt-accent, #c43e1c);
+  box-shadow: 0 0 0 1px var(--ppt-accent, #c43e1c);
+}
+
+.cardIndex {
+  color: color-mix(in srgb, CanvasText 60%, transparent);
+  font-size: 11px;
+  line-height: 1.2;
+  padding-top: 2px;
+  text-align: right;
+}
+
+.cardPreview {
+  display: block;
+  min-width: 0;
+  width: 100%;
+}
+
+.stage {
+  align-content: start;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  min-width: 0;
+}
+
+.stageFrame {
+  max-width: 960px;
+  width: 100%;
+}
+
+.stageCaption {
+  color: color-mix(in srgb, CanvasText 64%, transparent);
+  font-size: 12px;
+}
+
+@media (max-width: 720px) {
+  .view {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tree {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .card {
+    flex: 0 0 132px;
+  }
+
+  .card[data-kind="layout"] {
+    margin-inline-start: 0;
+  }
+}

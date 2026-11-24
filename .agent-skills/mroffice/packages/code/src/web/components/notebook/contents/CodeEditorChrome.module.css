@@ -1,0 +1,1247 @@
+/* The Code editor's popovers, panels and secondary views wear the shared
+   chrome: the Office dialog card (OfficeDialogChrome.css, code tone) and the
+   Docs Find and Replace card (note-editor.css .note-editor-find-replace).
+   This module only places those shared surfaces inside the editor and lays
+   out the few rows the shared parts leave to their host; every colour is a
+   chrome token (--office-dialog-*), so light, dark and high contrast follow
+   the window's data-theme-mode. */
+
+/* A card in the Find family (Find, Go To, Rename, References, Symbols, Quick
+   Fix, Command Palette): at the editor's top-right edge, in flow. */
+.findCard.findCard {
+  align-self: flex-end;
+  flex: 0 0 auto;
+  margin: 8px 8px 6px;
+}
+
+/* Code values keep the editor's monospace face inside the shared cards (the
+   chrome's field rule, `.office-dialog :is(input…)`, would set the card's). */
+.mono.mono.mono {
+  font-family: var(--font-jetbrains, ui-monospace, SFMono-Regular, Menlo, monospace);
+}
+
+/* A card's title row: the title at the start, its count and close at the end. */
+.headerEnd {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 2px;
+}
+
+/* A one-line outcome (copied, formatted, a language-service note): the
+   card shrinks to its message. */
+.noticeCard.noticeCard.noticeCard {
+  max-width: min(440px, calc(100% - 16px));
+  width: auto;
+}
+
+.noticeText {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+  padding: 7px 12px;
+}
+
+.noticeText > svg {
+  flex: 0 0 auto;
+}
+
+/* A short message row inside a Find-family card (a rename error). */
+.cardMessage {
+  margin: 0;
+  padding: 0 12px 8px;
+}
+
+/* A Find-family results list sized to its content (the Docs one reserves a
+   floor for its "no results yet" state). */
+.results.results {
+  min-height: 0;
+  padding: 4px 6px;
+}
+
+/* A dense row of a results list (a command, a code action, a compare
+   source): the chrome's list item, one line, ellipsised. */
+.row.row {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+/* A row naming code (a reference, a symbol): the editor's monospace face
+   (the list item's own `font: inherit` would take the card's). */
+.codeRow.codeRow.codeRow {
+  font-family: var(--font-jetbrains, ui-monospace, SFMono-Regular, Menlo, monospace);
+}
+
+.rowText {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rowMeta {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+  min-width: 44px;
+}
+
+/* The file a cross-file reference lives in. */
+.rowAccent {
+  color: var(--office-dialog-accent);
+  flex: 0 1 auto;
+  font-weight: 600;
+  max-width: 40%;
+  min-width: 48px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* A symbol's kind ahead of its name. */
+.rowKind {
+  flex: 0 0 auto;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  min-width: 64px;
+  text-transform: uppercase;
+}
+
+/* A code action's light bulb. */
+.rowBulb {
+  color: var(--office-dialog-warning);
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+/* "Show more" under a bounded list. */
+.moreRow {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  padding: 6px 8px 2px;
+}
+
+/* An autocomplete popup (the textarea editor's): the chrome card as a
+   compact listbox at the caret. */
+.completion.completion.completion {
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  max-height: 200px;
+  min-width: 140px;
+  overflow-y: auto;
+  padding: 4px;
+  position: absolute;
+  z-index: 5;
+}
+
+.completionItem.completionItem {
+  justify-content: space-between;
+}
+
+.badge {
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 4px;
+  color: var(--office-dialog-muted);
+  flex: 0 0 auto;
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  line-height: 14px;
+  padding: 0 5px;
+  text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------- Problems pane */
+
+.filterGroup {
+  align-items: center;
+  display: inline-flex;
+  gap: 4px;
+}
+
+.severityFilter.severityFilter.severityFilter {
+  gap: 4px;
+  min-width: 40px;
+  padding: 0 7px;
+}
+
+/* A problem's severity mark, in the chrome's status inks. */
+.severity {
+  align-self: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.severity[data-severity="error"] {
+  color: var(--office-dialog-danger);
+}
+
+.severity[data-severity="warning"] {
+  color: var(--office-dialog-warning);
+}
+
+.severity[data-severity="info"] {
+  color: var(--office-dialog-accent);
+}
+
+.paneStatus {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  padding: 8px 10px;
+}
+
+.paneStatus > button {
+  margin-inline-start: auto;
+}
+
+.paneRows {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 2px 0;
+}
+
+/* A problem the editor cannot jump to still reads at full strength. */
+.problemRow.problemRow.problemRow:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+/* ------------------------------------------------------ settings popover */
+
+/* The gear's popover: the dialogs' card, compact, under the editor's
+   floating buttons. Its check rows draw the shared quick check (the chart
+   flyouts' box) in the card's own colours. */
+.popover.popover.popover {
+  --office-quick-check-face: var(--office-dialog-surface);
+  --office-quick-check-edge: var(--office-dialog-control-border-hover);
+  --office-quick-check-on: var(--office-dialog-accent);
+  flex: 0 1 auto;
+  max-height: min(560px, calc(100dvh - 96px));
+  min-height: 0;
+  min-width: 248px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px 6px;
+}
+
+.popoverBody {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.popoverHeader.popoverHeader {
+  padding: 0 8px 2px;
+}
+
+.checkList {
+  border-bottom: 1px solid var(--office-dialog-divider);
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 6px;
+}
+
+.checkList:last-child {
+  border-bottom: 0;
+  border-top: 1px solid var(--office-dialog-divider);
+  padding-bottom: 0;
+  padding-top: 6px;
+}
+
+/* One toggle: the chrome's check caption laid out as a full-width row. */
+.checkRow.checkRow {
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+  min-height: 28px;
+  padding: 3px 8px;
+  text-align: start;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.checkRow:hover:not(:disabled) {
+  background: var(--office-dialog-hover);
+}
+
+.checkRow:focus-visible {
+  outline: 3px solid var(--office-dialog-focus-ring);
+  outline-offset: 0;
+}
+
+.checkRow:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.checkIcon {
+  color: var(--office-dialog-muted);
+  display: inline-flex;
+}
+
+.fieldRow.fieldRow {
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  padding: 2px 8px;
+}
+
+.rulersInput.rulersInput {
+  font-variant-numeric: tabular-nums;
+  width: 96px;
+}
+
+.zoomRow.zoomRow {
+  border-top: 1px solid var(--office-dialog-divider);
+  padding-top: 8px;
+}
+
+.zoomDial {
+  --continuous-zoom-height: 28px;
+  --continuous-zoom-width: 150px;
+  display: inline-flex;
+}
+
+/* --------------------------------------------- performance-mode popover */
+
+/* Above the status bar's badge, at the editor's bottom-right. */
+.infoPopover.infoPopover.infoPopover {
+  bottom: 27px;
+  gap: 8px;
+  padding: 12px 14px;
+  position: absolute;
+  right: 10px;
+  width: min(390px, calc(100% - 20px));
+  z-index: 12;
+}
+
+.infoPopover > p {
+  margin: 0;
+}
+
+.infoGlyph {
+  align-items: center;
+  align-self: flex-start;
+  background: var(--office-dialog-accent-soft);
+  border-radius: 6px;
+  color: var(--office-dialog-accent);
+  display: inline-flex;
+  flex: 0 0 26px;
+  height: 26px;
+  justify-content: center;
+  width: 26px;
+}
+
+.wellNote.wellNote {
+  background: var(--office-dialog-accent-soft);
+  border-color: transparent;
+  color: var(--office-dialog-ink);
+  font-size: 12px;
+  line-height: 1.45;
+  padding: 7px 9px;
+}
+
+/* ----------------------------------------------------- parameter hints */
+
+.signature.signature.signature {
+  border-radius: 8px;
+  bottom: 8px;
+  display: block;
+  font-size: 12px;
+  left: 8px;
+  line-height: 1.4;
+  max-width: calc(100% - 16px);
+  overflow: hidden;
+  padding: 5px 9px;
+  position: absolute;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
+  z-index: 4;
+}
+
+.signature strong {
+  color: var(--office-dialog-accent);
+}
+
+/* ------------------------------------------------------ Markdown preview */
+
+/* The preview's Close, pinned at the top right while the page scrolls. */
+.previewBar.previewBar.previewBar {
+  align-items: center;
+  backdrop-filter: none;
+  background: transparent;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 0 0 4px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.previewNote.previewNote.previewNote {
+  backdrop-filter: none;
+  background: transparent;
+  padding: 0 0 8px;
+}
+
+.previewNoteWell.previewNoteWell {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  padding: 7px 9px;
+}
+
+.previewNoteWell > :first-child {
+  flex: 1 1 auto;
+}
+
+/* ---------------------------------------------------- full-surface views */
+
+/* A view that fills the editor (Compare, Keyboard Shortcuts, a binary file):
+   the chrome without a floating card, on the chrome's opaque surface. */
+.surface.surface.surface {
+  background: var(--office-dialog-surface);
+  border-radius: 0;
+  gap: 0;
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+}
+
+.overlay.overlay.overlay {
+  inset: 0;
+  position: absolute;
+}
+
+.surfaceHeader.surfaceHeader {
+  border-bottom: 1px solid var(--office-dialog-divider);
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  min-height: 40px;
+  padding: 6px 10px 6px 12px;
+}
+
+.surfaceHeader > :last-child {
+  margin-inline-start: auto;
+}
+
+.surfaceTitle {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 1 auto;
+  gap: 7px;
+  min-width: 0;
+}
+
+.surfaceTitleText {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.surfaceTitleText > * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* A search field in a surface's title row. */
+.surfaceSearch.surfaceSearch {
+  flex: 1 1 160px;
+  min-width: 120px;
+}
+
+/* A surface's scrolling body holding a toolbar and rows (the compare picker). */
+.surfaceScroll {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.surfaceRows {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 6px 8px 10px;
+}
+
+.emptyNote {
+  padding: 8px 6px;
+}
+
+/* --- Compare */
+
+.compareLayer.compareLayer.compareLayer {
+  z-index: 5;
+}
+
+.compareLabel {
+  color: var(--office-dialog-accent);
+  font-weight: 600;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.compareBase {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --- The compare view (CodeCompareView) inside the Compare surface */
+
+/* Its toolbar strip (Download, the grammar status). */
+.toolbar {
+  align-items: center;
+  border-bottom: 1px solid var(--office-dialog-divider);
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  justify-content: flex-end;
+  min-height: 34px;
+  padding: 4px 10px;
+}
+
+.toolbarStart {
+  margin-inline-end: auto;
+}
+
+.threeWay {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.conflicts {
+  border-top: 1px solid var(--office-dialog-divider);
+  flex: 0 1 auto;
+  max-height: 100%;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 10px;
+}
+
+/* The counter, picker and Apply, pinned while long previews scroll. */
+.summary.summary {
+  background: var(--office-dialog-surface);
+  flex-wrap: nowrap;
+  padding: 8px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.picker.picker {
+  min-width: 120px;
+  width: auto;
+}
+
+.pushEnd.pushEnd {
+  margin-inline-start: auto;
+}
+
+.activeConflict {
+  display: flex;
+  flex-direction: column;
+}
+
+.previews {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.preview.preview {
+  font-size: 11px;
+  line-height: 1.4;
+  margin: 0;
+  max-height: 120px;
+  min-height: 44px;
+  overflow: auto;
+  overflow-wrap: anywhere;
+  padding: 6px 8px;
+  white-space: pre-wrap;
+}
+
+/* Accept Current / Incoming / Both, pinned at the bottom. */
+.decisions {
+  background: var(--office-dialog-surface);
+  bottom: 0;
+  display: flex;
+  gap: 6px;
+  padding: 8px 0;
+  position: sticky;
+  z-index: 1;
+}
+
+/* --- Keyboard Shortcuts */
+
+.shortcutsLayer.shortcutsLayer.shortcutsLayer {
+  z-index: 6;
+}
+
+.shortcutGroup.shortcutGroup {
+  gap: 4px;
+  padding: 8px 4px 4px;
+}
+
+.shortcutList {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+}
+
+.shortcutRow {
+  align-items: baseline;
+  border-radius: 6px;
+  display: flex;
+  gap: 10px;
+  padding: 3px 6px;
+}
+
+.shortcutRow:hover {
+  background: var(--office-dialog-hover);
+}
+
+.shortcutRow > dt {
+  flex: 1 1 auto;
+  margin: 0;
+  min-width: 0;
+}
+
+.keycap.keycap {
+  background: var(--office-dialog-surface-muted);
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 4px;
+  color: var(--office-dialog-ink);
+  flex: 0 0 auto;
+  font-size: 11px;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0 6px;
+}
+
+.surfaceToolbar {
+  align-items: center;
+  border-bottom: 1px solid var(--office-dialog-divider);
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  padding: 6px 12px;
+}
+
+.surfaceToolbar > :first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.surfaceNote {
+  border-bottom: 1px solid var(--office-dialog-divider);
+  flex: 0 0 auto;
+  padding: 6px 12px;
+}
+
+.surfaceBody {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 12px;
+}
+
+.surfaceList {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 6px 8px 10px;
+}
+
+/* A centred state in a surface's body (an error, a file's details). */
+.centred {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  min-height: 100%;
+  text-align: center;
+}
+
+.centred > strong {
+  overflow-wrap: anywhere;
+}
+
+.glyph {
+  color: var(--office-dialog-muted);
+  opacity: 0.5;
+}
+
+.picture {
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* ------------------------------------------------- editor surface chrome */
+
+/* The editor's own commands (format, compare, problems, settings; the
+   textarea editor's run, format and minimap) at its top-right edge, the
+   gear's popover hanging under them. Their card and keys are the editors'
+   shared mini toolbar (note-editor.css .floating-toolbar, the one Docs,
+   Slides, Sheet and PDF float over a selection): its frosted card, its
+   30 px keys (44 px in Touch mode), its lit key and its dark and high
+   contrast faces. Stood up as a column, it covers the minimap's corner
+   rather than the code. */
+.editorToolbar {
+  align-items: flex-end;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 6px;
+  position: absolute;
+  /* Beside a docked task pane, not under it (the dock covers the editor's
+     right edge; its width is published by useOfficeTaskPaneCover). */
+  right: calc(6px + var(--office-task-pane-cover-right, 0px));
+  top: 6px;
+  /* Over the floating run output (CodeWindow .outputDock, z 6) so its
+     settings popover is never under the output card; under the docked
+     task panes (z 30). */
+  z-index: 8;
+  /* Never taller than the editor it stands in: the popover shrinks and
+     scrolls when Debug or Console takes the window's lower part. */
+  max-height: calc(100% - 12px);
+}
+
+.editorToolbarFace.editorToolbarFace {
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px;
+}
+
+.editorToolbarButton.editorToolbarButton {
+  flex: 0 0 auto;
+  padding: 0;
+  position: relative;
+}
+
+/* The Code window lends its loose editor controls a 44 px transparent hit
+   carrier (CodeWindow.module.css). Packed in the toolbar's column it would
+   lie over the neighbouring key and take its presses; these keys size for
+   a finger the way every editor's mini toolbar does (Touch mode). */
+.editorToolbarFace.editorToolbarFace > .editorToolbarButton.editorToolbarButton::after {
+  content: none;
+}
+
+/* The number of problems, on the Problems key's corner. */
+.editorToolbarBadge {
+  background: #dc2626;
+  border-radius: 7px;
+  color: #ffffff;
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  height: 14px;
+  line-height: 14px;
+  min-width: 14px;
+  padding: 0 3px;
+  pointer-events: none;
+  position: absolute;
+  right: -3px;
+  text-align: center;
+  top: -3px;
+}
+
+/* The breadcrumbs: the editors' docked status strip (OfficeStatusBar's
+   `.bar[data-office-status-docked]`, whose defaults carry no specificity)
+   laid along the editor's top edge, so the path above the code and the
+   status under it are one material, ink and type in every theme. Only the
+   rule moves to the strip's bottom edge and the crumbs start at the left. */
+.breadcrumbs {
+  border-width: 0 0 1px;
+  flex: 0 0 auto;
+  gap: 2px;
+  justify-content: flex-start;
+  line-height: 1.4;
+  min-height: 22px;
+  overflow-x: auto;
+  padding: 2px 8px;
+}
+
+.breadcrumbFile {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 1 auto;
+  font-weight: 600;
+  gap: 4px;
+  max-width: 220px;
+  min-width: 0;
+  overflow: hidden;
+  padding: 1px 4px;
+}
+
+.breadcrumbFile > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.breadcrumbStep {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 2px;
+}
+
+.breadcrumbFile > svg,
+.breadcrumbStep > svg {
+  flex: 0 0 auto;
+  opacity: 0.7;
+}
+
+/* A symbol crumb: a bare key in the strip's ink, tinted under the pointer
+   as the status bar's own keys are. The Code window's loose-control rule
+   sets `overflow: visible` on it for its hit carrier; the name still ends
+   in an ellipsis (and the carrier stays inside the key, as it was). */
+.breadcrumbItem.breadcrumbItem.breadcrumbItem.breadcrumbItem {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  color: inherit;
+  cursor: pointer;
+  font-family: var(--font-jetbrains, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 11px;
+  line-height: 1.4;
+  max-width: 180px;
+  overflow: hidden;
+  padding: 1px 4px;
+  text-overflow: ellipsis;
+  transition: background-color var(--duration-fast, 100ms) ease;
+  white-space: nowrap;
+}
+
+.breadcrumbItem.breadcrumbItem.breadcrumbItem.breadcrumbItem:hover {
+  background: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+/* Sticky scroll: the enclosing headers pinned over the code's top lines,
+   on the gutter's ground (the editor's light gutter; in dark the step
+   below the editor the minimap stands on), short of the floating toolbar's
+   column at the right. */
+.stickyScroll {
+  background: #f8fafa;
+  border-bottom: 1px solid #eef2f1;
+  box-shadow: 0 2px 6px rgb(15 23 42 / 10%);
+  display: flex;
+  flex-direction: column;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 48px;
+  top: 0;
+  z-index: 2;
+}
+
+:global(:root[data-touch-mode]) .stickyScroll {
+  right: 62px;
+}
+
+.stickyHeader {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: #334155;
+  cursor: pointer;
+  display: block;
+  font-family: var(--font-jetbrains, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+  overflow: hidden;
+  padding: 1px 8px;
+  pointer-events: auto;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: pre;
+  width: 100%;
+}
+
+.stickyHeader:hover {
+  background: rgb(15 23 42 / 4%);
+}
+
+/* The minimap's frame: the gutter's ground and rule at the editor's right
+   edge; the "you are here" box in the code tone's accent. */
+.minimap {
+  /* A finger on the strip scrubs the editor; it never pans the page. */
+  touch-action: none;
+  background: #f8fafa;
+  border-left: 1px solid #eef2f1;
+  cursor: pointer;
+  flex-grow: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+  user-select: none;
+}
+
+.minimapCanvas {
+  height: 100%;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.minimapViewport {
+  background: color-mix(in srgb, var(--console-accent-strong, #087c73) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--console-accent-strong, #087c73) 35%, transparent);
+  box-sizing: border-box;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+}
+
+/* Dark and high contrast (the app's theme, as the CodeMirror theme reads
+   it): the editor's one-dark ground is #282c34; the sticky band and the
+   minimap stand one step below it, as the light ones stand off white. */
+:global([data-theme-mode="dark"]) .stickyScroll,
+:global([data-theme-mode="high-contrast"]) .stickyScroll {
+  background: #21252b;
+  border-bottom-color: rgb(255 255 255 / 8%);
+  box-shadow: 0 2px 6px rgb(0 0 0 / 35%);
+}
+
+:global([data-theme-mode="dark"]) .stickyHeader,
+:global([data-theme-mode="high-contrast"]) .stickyHeader {
+  color: #cbd5e1;
+}
+
+:global([data-theme-mode="dark"]) .stickyHeader:hover,
+:global([data-theme-mode="high-contrast"]) .stickyHeader:hover {
+  background: rgb(255 255 255 / 5%);
+}
+
+:global([data-theme-mode="dark"]) .minimap,
+:global([data-theme-mode="high-contrast"]) .minimap {
+  background: #21252b;
+  border-left-color: rgb(255 255 255 / 8%);
+}
+
+:global([data-theme-mode="dark"]) .minimapViewport,
+:global([data-theme-mode="high-contrast"]) .minimapViewport {
+  background: rgb(255 255 255 / 12%);
+}
+
+/* The status bar: the shared docked strip (OfficeStatusBar) in its own
+   material and ink, as the breadcrumbs above the code wear it; Code keeps
+   its compact row and the monospace its values (Ln/Col, UTF-8, LF) read in.
+   Its zoom is the shared status-bar slider's size (OfficeStatusBar
+   .zoomSlider). */
+.statusBar {
+  flex: 0 0 auto;
+  font-family: var(--font-jetbrains, ui-monospace, SFMono-Regular, Menlo, monospace);
+  gap: 8px;
+  line-height: 1.6;
+  overflow: hidden;
+  padding: 1px 10px;
+}
+
+/* A clickable segment (problems, run, indent, encoding, EOL): a bare key in
+   the strip's ink, tinted under the pointer and while its pane is open. */
+.statusButton.statusButton {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font: inherit;
+  gap: 4px;
+  line-height: 1.6;
+  padding: 0 4px;
+  transition: background-color var(--duration-fast, 100ms) ease;
+}
+
+.statusButton.statusButton:hover,
+.statusButton.statusButton[aria-pressed="true"] {
+  background: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.statusButton.statusButton[data-status-tone="error"] {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.statusButton.statusButton[data-status-tone="warning"] {
+  color: #92400e;
+  font-weight: 700;
+}
+
+.statusButton.statusButton[data-status-tone="action"] {
+  color: var(--console-accent-strong, #0f766e);
+  font-weight: 650;
+}
+
+/* The automatic performance mode's badge: a lit pill in the code accent. */
+.statusBadge.statusBadge.statusBadge {
+  background: #e7f5f2;
+  color: var(--console-accent-strong, #0f766e);
+  font-weight: 700;
+  padding: 0 6px;
+}
+
+.statusCursor {
+  padding: 0 4px;
+}
+
+.statusCursor > span {
+  margin-left: 6px;
+}
+
+.statusZoom {
+  display: inline-flex;
+}
+
+:global([data-theme-mode="dark"]) .statusButton.statusButton[data-status-tone="error"],
+:global([data-theme-mode="high-contrast"]) .statusButton.statusButton[data-status-tone="error"] {
+  color: #fca5a5;
+}
+
+:global([data-theme-mode="dark"]) .statusButton.statusButton[data-status-tone="warning"],
+:global([data-theme-mode="high-contrast"]) .statusButton.statusButton[data-status-tone="warning"] {
+  color: #fcd34d;
+}
+
+:global([data-theme-mode="dark"]) .statusButton.statusButton[data-status-tone="action"],
+:global([data-theme-mode="high-contrast"]) .statusButton.statusButton[data-status-tone="action"] {
+  color: #7dd3fc;
+}
+
+:global([data-theme-mode="dark"]) .statusBadge.statusBadge.statusBadge,
+:global([data-theme-mode="high-contrast"]) .statusBadge.statusBadge.statusBadge {
+  background: rgb(45 212 191 / 12%);
+  color: #5eead4;
+}
+
+:global([data-theme-mode="dark"]) .statusZoom,
+:global([data-theme-mode="high-contrast"]) .statusZoom {
+  --continuous-zoom-glass: rgb(255 255 255 / 6%);
+  --continuous-zoom-border: rgb(255 255 255 / 16%);
+}
+
+/* ------------------------------------------------ textarea editor surface */
+
+/* The textarea editor (the fallback when CodeMirror is switched off) is a
+   light surface: its highlighting is the light palette, so its gutter and
+   minimap stay on the CodeMirror light theme's ground (.cm-gutters: #f8fafa,
+   #64748b ink, #eef2f1 rule) in every app theme. Its floating commands are
+   the shared mini toolbar above, which follows the app theme as it does
+   over the white Docs page. Row geometry stays inline: it is the editor's
+   own line metrics. */
+.fallbackEditor {
+  background: #ffffff;
+  color-scheme: light;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 160px;
+  overflow: hidden;
+  position: relative;
+}
+
+.fallbackBody {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.fallbackGutter {
+  background: #f8fafa;
+  border-right: 1px solid #eef2f1;
+  color: #64748b;
+  flex: 0 0 auto;
+  overflow: hidden;
+  user-select: none;
+}
+
+.fallbackGutterRow {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+/* A fold key: a bare 14 px glyph key in the gutter's ink, tinted under the
+   pointer and lit while its region is folded. */
+.foldToggle {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 3px;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  height: 14px;
+  justify-content: center;
+  line-height: 0;
+  padding: 0;
+  transition: background-color var(--duration-fast, 100ms) ease, color var(--duration-fast, 100ms) ease;
+  width: 14px;
+}
+
+.foldToggle:hover {
+  background: rgb(15 23 42 / 8%);
+  color: #24292f;
+}
+
+.foldToggle[data-fold-collapsed="true"] {
+  color: var(--console-accent-strong, #087c73);
+}
+
+.foldSpacer {
+  height: 14px;
+  width: 14px;
+}
+
+.fallbackSurface {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.fallbackDecorations {
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+}
+
+.fallbackDecorationSizer {
+  min-width: 100%;
+  position: relative;
+  width: 4000px;
+}
+
+.fallbackActiveLine {
+  background: rgb(75 105 145 / 7%);
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.fallbackIndentGuide {
+  background: rgb(120 134 156 / 22%);
+  position: absolute;
+  width: 1px;
+}
+
+.fallbackFoldBand {
+  background: rgb(120 134 156 / 10%);
+  border-bottom: 1px dashed rgb(120 134 156 / 35%);
+  border-top: 1px dashed rgb(120 134 156 / 35%);
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.fallbackFoldEllipsis {
+  background: rgb(120 134 156 / 14%);
+  border-radius: 3px;
+  color: #64748b;
+  padding: 0 4px;
+  position: absolute;
+  top: 0;
+  transform: translateY(-100%);
+}
+
+.fallbackBracketMatch {
+  background: rgb(59 130 246 / 12%);
+  border: 1px solid rgb(59 130 246 / 70%);
+  border-radius: 2px;
+  box-sizing: border-box;
+  position: absolute;
+}
+
+/* The minimap: the CodeMirror minimap's light frame and "you are here"
+   box. */
+.fallbackMinimap {
+  /* A finger on the strip scrubs the editor; it never pans the page. */
+  touch-action: none;
+  background: #f8fafa;
+  border-left: 1px solid #eef2f1;
+  cursor: pointer;
+  flex: 0 0 auto;
+  overflow: hidden;
+  position: relative;
+  user-select: none;
+}
+
+.fallbackMinimapBlock {
+  background: #c7d0d9;
+}
+
+.fallbackMinimapViewport {
+  background: color-mix(in srgb, var(--console-accent-strong, #087c73) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--console-accent-strong, #087c73) 35%, transparent);
+  box-sizing: border-box;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+}
+
+/* The Markdown preview laid over the editor: the editor's own surface. */
+.markdownPreview {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  overflow: auto;
+  padding: 8px 16px 16px;
+  background: #ffffff;
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .markdownPreview {
+  background: #1e2530;
+}
+
+/* The textarea editor's highlight layer: GitHub-light syntax colours by
+   role (lib/code-runner/highlight tokenRole); the layer stays light, as the
+   editor's surface does. */
+.fallbackHighlight {
+  background: transparent;
+  color: #24292f;
+}
+
+.fallbackHighlight [data-token="keyword"] { color: #cf222e; }
+.fallbackHighlight [data-token="constant"] { color: #0550ae; }
+.fallbackHighlight [data-token="string"] { color: #0a3069; }
+.fallbackHighlight [data-token="comment"] { color: #6e7781; }
+.fallbackHighlight [data-token="function"] { color: #8250df; }
+.fallbackHighlight [data-token="tag"] { color: #116329; }
+.fallbackHighlight [data-token="variable"] { color: #e36209; }
+.fallbackHighlight [data-token="plain"] { color: #24292f; }
+.fallbackHighlight [data-token="deletion"] { color: #82071e; }

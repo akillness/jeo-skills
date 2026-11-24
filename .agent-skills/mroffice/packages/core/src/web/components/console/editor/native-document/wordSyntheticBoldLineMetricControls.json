@@ -1,0 +1,245 @@
+{
+  "referenceApplication": "Microsoft Word for macOS",
+  "referenceVersion": "16.86.24060916",
+  "referenceSurface": "installed Print to PDF",
+  "canonicalRegularFontSha256": "7f8dd82e3359081d2114b7effaacd59409c762b9a57aaddd5bf19f3e960e3e1e",
+  "sourceDocxSha256": "e1ff088207aac85033f99a3f2258556ed22128dfea132165a7324fdab6891333",
+  "nativePdfSha256": "a9a0d620bfbf78ac2e1802ef2a7422829509d20f6020aaf10a3144be4696426f",
+  "role": "synthetic-bold",
+  "allocation": "advance-only; keep browser baseline and paint",
+  "estimator": "least-squares baseline slope constrained to the all-pair print-quantization interval",
+  "controls": [
+    {
+      "fontSizePt": 9,
+      "autoLine240ths": 259,
+      "lineAdvancePt": 16.91999841,
+      "lineAdvanceIntervalPt": [
+        16.91477843478261,
+        16.925213217391306
+      ],
+      "samplePage": 2,
+      "lines": 25
+    },
+    {
+      "fontSizePt": 9,
+      "autoLine240ths": 269,
+      "lineAdvancePt": 17.574643828,
+      "lineAdvanceIntervalPt": [
+        17.573333333333338,
+        17.576465647058825
+      ],
+      "samplePage": 3,
+      "lines": 25
+    },
+    {
+      "fontSizePt": 8,
+      "autoLine240ths": 245,
+      "lineAdvancePt": 14.227200033,
+      "lineAdvanceIntervalPt": [
+        14.225454545454538,
+        14.22857142857143
+      ],
+      "samplePage": 4,
+      "lines": 25
+    },
+    {
+      "fontSizePt": 7,
+      "autoLine240ths": 245,
+      "lineAdvancePt": 12.448615389,
+      "lineAdvanceIntervalPt": [
+        12.448000000000002,
+        12.451764705882356
+      ],
+      "samplePage": 5,
+      "lines": 25
+    },
+    {
+      "fontSizePt": 14,
+      "autoLine240ths": 269,
+      "lineAdvancePt": 27.3359928,
+      "lineAdvanceIntervalPt": [
+        27.335992799999996,
+        27.339994599999994
+      ],
+      "samplePage": 6,
+      "lines": 20
+    },
+    {
+      "fontSizePt": 27,
+      "autoLine240ths": 240,
+      "lineAdvancePt": 47.03999755,
+      "lineAdvanceIntervalPt": [
+        47.018179636363634,
+        47.061816
+      ],
+      "samplePage": 7,
+      "lines": 12
+    }
+  ],
+  "tableContextControls": [
+    {
+      "fontSizePt": 8,
+      "autoLine240ths": 245,
+      "context": "direct-uniform-docx-table-cell",
+      "sourceDocxSha256": "443831547b1df77a4e40bb29f992ce92c0ec5891471858ef2159d915ed8a38fe",
+      "nativePdfSha256": "7bdb3ed0389ce816d98acd9a1d02e743c1ca6a2304b38616903eec5b52bff2b5",
+      "referenceFontSha256": "876af2cd4854644e7f3e7feb2f688997fdb3343c6df6693611209c9dfb47ccec",
+      "sourceTypography": {
+        "fontFamily": "Arial Unicode MS",
+        "syntheticBold": true,
+        "paragraphBeforeAfterTwips": 0,
+        "cellMarginsTwips": 120,
+        "borderEighthPoints": 8,
+        "cellVerticalAlign": "top",
+        "fixedRowHeight": false
+      },
+      "lineAdvanceAuthority": "existing independent 25-line8pt/245 control; new table witness admits this tuple only",
+      "tableLineAdvanceIntervalPt": [
+        14.220001800000007,
+        14.256001439999997
+      ],
+      "allPairPrintQuantumPt": 0.24,
+      "boldBaselinesPt": [
+        214.42352879999999,
+        228.82352880000008,
+        242.98352880000004,
+        257.14353600000004,
+        271.543536,
+        285.703536,
+        299.86353600000007
+      ],
+      "regularBaselinesPt": [
+        89.04000000000008,
+        103.20000000000005,
+        117.60000000000002,
+        131.76,
+        145.92000000000007,
+        160.32000000000005,
+        174.48000000000002
+      ],
+      "singleLineParagraphs": 5,
+      "naturallyWrappedLines": 2,
+      "analysisSha256": "e1b0d8cd45ad95f32e3bc060b5e98a835c9bc3355849f621b92ab6e5b5c75caa",
+      "consistencySha256": "1d76be3c996e70525cd27d1296bfe0fdffc742ed70c2848dcd8af3379e4bdcf4",
+      "allocation": "advance-only; no new ascent or paint transform inferred from cell borders",
+      "canonicalRegularFontSha256": "7f8dd82e3359081d2114b7effaacd59409c762b9a57aaddd5bf19f3e960e3e1e"
+    },
+    {
+      "fontSizePt": 7,
+      "autoLine240ths": 245,
+      "context": "direct-uniform-docx-table-cell",
+      "sourceDocxSha256": "5f53ad200fad5d301eae53df0b9aa77a0fe00335d3135d2d3a677eda3ea6e000",
+      "nativePdfSha256": "0150e7d3b8880414cd4d764ddc7134a17872e4796d4d4a21061ad4ea5af9e05f",
+      "referenceFontSha256": "876af2cd4854644e7f3e7feb2f688997fdb3343c6df6693611209c9dfb47ccec",
+      "sourceTypography": {
+        "fontFamily": "Arial Unicode MS",
+        "syntheticBold": true,
+        "paragraphBeforeAfterTwips": 0,
+        "cellMarginsTwips": 120,
+        "borderEighthPoints": 8,
+        "cellVerticalAlign": "top",
+        "fixedRowHeight": false
+      },
+      "lineAdvanceAuthority": "existing independent 25-line7pt/245 control; new table witness admits this tuple only",
+      "tableLineAdvanceIntervalPt": [
+        12.432000480000012,
+        12.48000000000001
+      ],
+      "allPairPrintQuantumPt": 0.24,
+      "boldBaselinesPt": [
+        200.9929416,
+        213.2329416,
+        225.71294160000002,
+        238.19294160000004,
+        250.67294400000003,
+        263.15294400000005,
+        275.63294400000007
+      ],
+      "regularBaselinesPt": [
+        87.84000000000003,
+        100.32000000000005,
+        112.80000000000007,
+        125.28000000000009,
+        137.76,
+        150.24,
+        162.48000000000002
+      ],
+      "singleLineParagraphs": 5,
+      "naturallyWrappedLines": 2,
+      "analysisSha256": "a97353ab39599138c4ee7ced1d33c23e08a5378018d35f7803efdeb2ded0e9db",
+      "allocation": "advance-only; no new ascent or paint transform inferred from cell borders",
+      "canonicalRegularFontSha256": "7f8dd82e3359081d2114b7effaacd59409c762b9a57aaddd5bf19f3e960e3e1e"
+    }
+  ],
+  "mixedContextControls": [
+    {
+      "fontSizePt": 9,
+      "autoLine240ths": 269,
+      "context": "direct-uniform-font-regular-and-synthetic-bold-body",
+      "canonicalRegularFontSha256": "7f8dd82e3359081d2114b7effaacd59409c762b9a57aaddd5bf19f3e960e3e1e",
+      "sourceDocxSha256": "5f53ad200fad5d301eae53df0b9aa77a0fe00335d3135d2d3a677eda3ea6e000",
+      "nativePdfSha256": "0150e7d3b8880414cd4d764ddc7134a17872e4796d4d4a21061ad4ea5af9e05f",
+      "mixedLineAdvanceIntervalPt": [
+        17.559984000000007,
+        17.579976
+      ],
+      "allocation": "reuse native regular allocation ascent; retain separately measured700 line-height/fraction; no additional ink transform",
+      "observedBoldInkBaselineDeltaPt": -0.14832,
+      "inkDeltaApplied": false
+    },
+    {
+      "fontSizePt": 9,
+      "autoLine240ths": 259,
+      "context": "direct-regular-and-synthetic-bold-lines",
+      "canonicalRegularFontSha256": "7f8dd82e3359081d2114b7effaacd59409c762b9a57aaddd5bf19f3e960e3e1e",
+      "sourceDocxSha256": "d303e706cffc23ae40998fbcdf6cf9e47cde327a86828147fb9740adffff9a84",
+      "nativePdfSha256": "867f90a0124ddec57d8c386f1455bbc4db03befb84cf698159a71f209b323617",
+      "allocation": "reuse native regular allocation ascent; retain separately measured700 line-height/fraction; no additional ink transform",
+      "inkDeltaApplied": false,
+      "cases": "bold and regular runs alternating on every line; bold lead-ins opening consecutive paragraphs; lead-ins whose lines also carry 8pt Aptos Mono runs",
+      "samplePage": 1,
+      "lines": 27,
+      "mixedLineAdvanceIntervalPt": [
+        16.9152,
+        16.9248
+      ],
+      "observedBoldInkBaselineDeltaPt": -0.14832
+    },
+    {
+      "fontSizePt": 8,
+      "autoLine240ths": 245,
+      "context": "direct-regular-and-synthetic-bold-lines",
+      "canonicalRegularFontSha256": "7f8dd82e3359081d2114b7effaacd59409c762b9a57aaddd5bf19f3e960e3e1e",
+      "sourceDocxSha256": "d303e706cffc23ae40998fbcdf6cf9e47cde327a86828147fb9740adffff9a84",
+      "nativePdfSha256": "867f90a0124ddec57d8c386f1455bbc4db03befb84cf698159a71f209b323617",
+      "allocation": "reuse native regular allocation ascent; retain separately measured700 line-height/fraction; no additional ink transform",
+      "inkDeltaApplied": false,
+      "cases": "bold and regular runs alternating on every line; bold lead-ins opening consecutive paragraphs",
+      "samplePage": 3,
+      "lines": 15,
+      "mixedLineAdvanceIntervalPt": [
+        14.22,
+        14.232
+      ],
+      "observedBoldInkBaselineDeltaPt": -0.13647
+    },
+    {
+      "fontSizePt": 7,
+      "autoLine240ths": 245,
+      "context": "direct-regular-and-synthetic-bold-lines",
+      "canonicalRegularFontSha256": "7f8dd82e3359081d2114b7effaacd59409c762b9a57aaddd5bf19f3e960e3e1e",
+      "sourceDocxSha256": "d303e706cffc23ae40998fbcdf6cf9e47cde327a86828147fb9740adffff9a84",
+      "nativePdfSha256": "867f90a0124ddec57d8c386f1455bbc4db03befb84cf698159a71f209b323617",
+      "allocation": "reuse native regular allocation ascent; retain separately measured700 line-height/fraction; no additional ink transform",
+      "inkDeltaApplied": false,
+      "cases": "bold and regular runs alternating on every line; bold lead-ins opening consecutive paragraphs",
+      "samplePage": 4,
+      "lines": 14,
+      "mixedLineAdvanceIntervalPt": [
+        12.443076923,
+        12.48
+      ],
+      "observedBoldInkBaselineDeltaPt": -0.12706
+    }
+  ]
+}

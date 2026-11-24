@@ -1,0 +1,6303 @@
+/* ------------------------------------------------------------------ */
+/* PDF Viewer — PDF.js-backed reader window                            */
+/* ------------------------------------------------------------------ */
+
+.pdf-viewer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background: #f8fafc;
+  min-height: 0;
+}
+
+.pdf-viewer--center {
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px;
+  text-align: center;
+  color: var(--console-text-muted, #64748b);
+}
+
+.pdf-viewer--center strong {
+  font-size: 0.9375rem;
+  color: var(--console-text-primary, #0f172a);
+}
+
+.pdf-viewer--center button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--office-control-border, var(--win-hairline, rgba(13, 148, 136, 0.12)));
+  cursor: pointer;
+  font-size: 0.8125rem;
+}
+
+.pdf-viewer--center button:not(.office-ribbon-control) {
+  background: #fff;
+  color: var(--console-text-primary, #0f172a);
+}
+
+/* Toolbar clusters, in order: [view: thumbnails/outline/layout] |
+   [page navigation] | [zoom] | [search] | [annotate: note/draw/sign/redact] |
+   [export/download]. Adjacent clusters get a thin separator; a cluster whose
+   conditional children are all absent collapses entirely so no stray
+   separator is painted. */
+.pdf-viewer__toolbar-group {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
+.pdf-viewer__toolbar-group:empty {
+  display: none;
+}
+
+/* The native text editor's ribbon host is a group only while the editor
+   portals its controls into it. Empty, the Docs-tone ribbon rules (which
+   outrank the plain `:empty` rule above) would still lay it out as a blank
+   group under its "Text Editing" caption at the front of the tab. */
+.note-editor-ribbon-body
+  .note-editor-ribbon-track
+  > .pdf-viewer__toolbar-group.note-editor-office-toolbar__group[data-pdf-native-list-text-ribbon-host]:empty {
+  display: none;
+}
+
+.pdf-viewer__toolbar-group + .pdf-viewer__toolbar-group {
+  border-left: 1px solid var(--win-rule, rgba(13, 148, 136, 0.16));
+  padding-left: 12px;
+}
+
+/* The export/download cluster is pinned to the toolbar's right edge (last
+   flex child + margin-left:auto), so the conditional "download annotated"
+   button appearing/disappearing grows into free space instead of reflowing
+   the left-aligned clusters. */
+.pdf-viewer__toolbar-group--download {
+  margin-left: auto;
+}
+
+.pdf-viewer__nav,
+.pdf-viewer__zoom {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background: rgba(248, 250, 252, 0.96);
+  border: 1px solid var(--win-hairline, rgba(13, 148, 136, 0.12));
+  border-radius: 999px;
+}
+
+.pdf-viewer__nav button,
+.pdf-viewer__zoom button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+}
+
+.pdf-viewer__nav button:not(.office-ribbon-control),
+.pdf-viewer__zoom button:not(.office-ribbon-control) {
+  background: transparent;
+  color: var(--console-text-primary, #0f172a);
+}
+
+.pdf-viewer__nav button:hover:not(:disabled):not(.office-ribbon-control),
+.pdf-viewer__zoom button:hover:not(:disabled):not(.office-ribbon-control) {
+  background: var(--win-hover, rgba(13, 148, 136, 0.08));
+}
+
+.pdf-viewer__nav button:disabled,
+.pdf-viewer__zoom button:disabled {
+  cursor: default;
+}
+
+.pdf-viewer__nav button:disabled:not(.office-ribbon-control),
+.pdf-viewer__zoom button:disabled:not(.office-ribbon-control) {
+  opacity: 0.4;
+}
+
+.pdf-viewer__nav input {
+  width: 44px;
+  text-align: center;
+  border: 1px solid var(--win-border, rgba(13, 148, 136, 0.2));
+  border-radius: 6px;
+  padding: 2px 4px;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.pdf-viewer__nav span,
+.pdf-viewer__zoom span {
+  font-size: 0.75rem;
+  color: var(--console-text-muted, #64748b);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ */
+/* In-document find bar (Ctrl/Cmd+F)                                   */
+/* ------------------------------------------------------------------ */
+
+/* The bar is the Docs find bar (note-editor.css .note-editor-find-replace in
+   the dialogs' chrome, PdfFindBar.tsx); this block only places it over the
+   pages, top right, instead of in the document column. */
+.pdf-viewer__find-bar.note-editor-find-replace.office-dialog {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  z-index: 20;
+  margin: 0;
+  width: min(440px, calc(100% - 40px));
+}
+
+/* Its search row keeps the field and the count on one line at any width. */
+.pdf-viewer__find-bar .note-editor-find-replace__search-row {
+  flex-wrap: nowrap;
+}
+
+/* Matches in hidden layers are told on a line of their own, under the row,
+   wrapping as long as they need to (user audit PDF 0037). */
+.pdf-viewer__find-hidden-note {
+  color: var(--office-dialog-muted, #5f7772);
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 0;
+  overflow-wrap: anywhere;
+  padding: 0 12px 6px;
+}
+
+/* The replace toggle's chevron turns as the panel opens (Docs' replace
+   toggle, 160 ms). */
+.pdf-viewer__find-replace-chevron {
+  transition: transform 160ms ease;
+}
+
+.pdf-viewer__find-replace-toggle[aria-expanded="true"] > .pdf-viewer__find-replace-chevron {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdf-viewer__find-replace-chevron {
+    transition: none;
+  }
+}
+
+.pdf-viewer__find-replace-status {
+  padding-inline: 2px;
+  text-align: start;
+}
+
+/* One tinted rect per find match (all matches on rendered pages); the
+   ACTIVE match's rects carry the --active modifier with a stronger tint. */
+.pdf-viewer__find-highlight {
+  position: absolute;
+  z-index: 4;
+  pointer-events: none;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 20%, transparent);
+  mix-blend-mode: multiply;
+}
+
+/* A match in a text box's text: over the box's opaque cover (user audit
+   PDF 0047), which the text box view layer draws at the same level. */
+.pdf-viewer__find-highlight--textbox {
+  z-index: 5;
+}
+
+.pdf-viewer__find-highlight--active {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 45%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--console-accent, #0d9488) 70%, transparent);
+}
+
+/* The exact currently spoken segment. It is geometry-only view state: no
+   pointer capture and no mutation of the PDF text layer or source bytes. */
+.pdf-viewer__speech-highlight {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  border-radius: 3px;
+  background: color-mix(in srgb, #f59e0b 28%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, #b45309 70%, transparent);
+  mix-blend-mode: multiply;
+}
+
+/* ---- Smart reference links (Eq./图/Fig./Theorem/[k] mentions) --------- */
+/* Subtle dashed underline over the mention text; tint on hover. Sits with
+   the find highlights in the overlay stack but IS clickable. */
+.pdf-viewer__ref-link {
+  position: absolute;
+  z-index: 4;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-bottom: 1px dashed color-mix(in srgb, var(--console-accent, #0d9488) 55%, transparent);
+  border-radius: 1px;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    background var(--duration-fast, 100ms) ease,
+    box-shadow var(--duration-fast, 100ms) ease;
+}
+
+.pdf-viewer__ref-link:hover,
+.pdf-viewer__ref-link:focus-visible {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 14%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--console-accent, #0d9488) 45%, transparent);
+  outline: none;
+}
+
+/* ---- Link annotation overlays ---------------------------------------- */
+.pdf-viewer__link-layer {
+  position: absolute;
+  inset: 0;
+  /* Above the note-layer (z-index 5) so internal/external link click regions
+     aren't blocked by the (otherwise transparent, pointer-events:none) note
+     overlay sitting at the same stacking level. */
+  z-index: 6;
+  pointer-events: none;
+}
+
+.pdf-viewer__link-region {
+  position: absolute;
+  display: block;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 2px;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    background var(--duration-fast, 100ms) ease,
+    box-shadow var(--duration-fast, 100ms) ease;
+}
+
+ 
+.pdf-viewer:is([data-pdf-markup-armed], [data-pdf-proofing-mode]:not([data-pdf-proofing-mode="none"]))
+  .pdf-viewer__link-region {
+  pointer-events: none;
+}
+
+.pdf-viewer__link-region:hover,
+.pdf-viewer__link-region:focus-visible {
+  background: rgba(37, 99, 235, 0.16);
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.55);
+  outline: none;
+}
+
+ 
+.pdf-viewer__link-region--quads {
+  pointer-events: none;
+}
+
+.pdf-viewer__link-region--quads:hover,
+.pdf-viewer__link-region--quads:focus-visible {
+  background: transparent;
+  box-shadow: none;
+}
+
+.pdf-viewer__link-quad {
+  position: absolute;
+  display: block;
+  border-radius: 2px;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.pdf-viewer__link-region--quads:hover .pdf-viewer__link-quad,
+.pdf-viewer__link-region--quads:focus-visible .pdf-viewer__link-quad {
+  background: rgba(37, 99, 235, 0.16);
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.55);
+}
+
+ 
+.pdf-viewer[data-pdf-content-edit-mode="active"] .pdf-viewer__link-region,
+.pdf-viewer[data-pdf-content-edit-mode="active"] .pdf-viewer__link-quad {
+  pointer-events: none;
+}
+
+/* The editable hotspot over a link while reading draws nothing at rest and
+   the reader link's tint under the pointer, as WPS shows a link. */
+.pdf-viewer__user-link-region[data-link-reading="true"] {
+  padding: 0;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background: transparent;
+}
+
+.pdf-viewer__user-link-region[data-link-reading="true"]:hover,
+.pdf-viewer__user-link-region[data-link-reading="true"]:focus-visible {
+  background: rgba(37, 99, 235, 0.16);
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.55);
+  outline: none;
+}
+
+/* ---- Document-wide search results panel ------------------------------ */
+.pdf-viewer__docsearch {
+  width: 260px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--win-hairline, rgba(13, 148, 136, 0.12));
+  background: #fff;
+  padding: 12px 8px 12px 12px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pdf-viewer__docsearch-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  color: var(--console-accent, #0d9488);
+}
+
+ 
+.pdf-viewer__docsearch-header > svg {
+  flex-shrink: 0;
+}
+
+.pdf-viewer__docsearch-header strong {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.pdf-viewer__docsearch-count {
+  margin-inline-start: auto;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--console-text-muted, #94a3b8);
+  white-space: nowrap;
+}
+
+.pdf-viewer__docsearch-header .pdf-viewer__docsearch-redact-all {
+  order: 1;
+}
+
+.pdf-viewer__docsearch-empty {
+  font-size: 0.75rem;
+  color: var(--console-text-muted, #94a3b8);
+  padding: 8px 2px;
+  margin: 0;
+}
+
+.pdf-viewer__docsearch-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pdf-viewer__docsearch-result {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+
+.pdf-viewer__docsearch-result:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 10%, transparent);
+}
+
+.pdf-viewer__docsearch-result.is-active {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 16%, transparent);
+}
+
+.pdf-viewer__docsearch-result:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.pdf-viewer__docsearch-page {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  font-style: normal;
+  color: var(--console-accent, #0d9488);
+}
+
+.pdf-viewer__docsearch-snippet {
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: var(--console-text-primary, #0f172a);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---- Search-and-redact review (doc-search panel) --------------------- */
+.pdf-viewer__docsearch-redact-review {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+}
+
+.pdf-viewer__docsearch-redact-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pdf-viewer__docsearch-redact-group > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pdf-viewer__docsearch-redact-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 4px 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.75rem;
+}
+
+.pdf-viewer__docsearch-redact-row:hover {
+  background: rgba(15, 23, 42, 0.05);
+}
+
+.pdf-viewer__docsearch-redact-row input[type="checkbox"] {
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.pdf-viewer__docsearch-redact-row.is-unmeasured {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.pdf-viewer__docsearch-redact-hint {
+  font-size: 0.6875rem;
+  color: var(--console-text-muted, #94a3b8);
+  flex-shrink: 0;
+}
+
+/* The redact buttons are the dialog chrome's compact buttons (the task pane
+   wears the chrome); this row only lays them out. */
+.pdf-viewer__docsearch-redact-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 4px;
+  border-top: 1px solid var(--office-control-border, var(--win-hairline, rgba(13, 148, 136, 0.12)));
+}
+
+.pdf-viewer__outline-toggle,
+.pdf-viewer__annotations-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid var(--office-control-border, var(--win-hairline, rgba(13, 148, 136, 0.12)));
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background var(--duration-fast, 100ms) ease,
+    border-color var(--duration-fast, 100ms) ease,
+    color var(--duration-fast, 100ms) ease;
+}
+
+.pdf-viewer__outline-toggle:not(.office-ribbon-control),
+.pdf-viewer__annotations-toggle:not(.office-ribbon-control) {
+  background: #fff;
+  color: var(--console-text-primary, #0f172a);
+}
+
+.pdf-viewer__outline-toggle:hover:not(:disabled),
+.pdf-viewer__annotations-toggle:hover:not(:disabled) {
+  border-color: var(--office-control-border, color-mix(in srgb, var(--console-accent, #0d9488) 30%, transparent));
+}
+
+.pdf-viewer__outline-toggle:hover:not(:disabled):not(.office-ribbon-control),
+.pdf-viewer__annotations-toggle:hover:not(:disabled):not(.office-ribbon-control) {
+  background: rgba(239, 246, 255, 0.95);
+}
+
+.pdf-viewer__outline-toggle.is-active,
+.pdf-viewer__annotations-toggle.is-active {
+  border-color: var(--office-control-border, color-mix(in srgb, var(--console-accent, #0d9488) 40%, transparent));
+}
+
+.pdf-viewer__outline-toggle.is-active:not(.office-ribbon-control),
+.pdf-viewer__annotations-toggle.is-active:not(.office-ribbon-control) {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 12%, transparent);
+  color: var(--console-accent, #0d9488);
+}
+
+.pdf-viewer__outline-toggle:disabled,
+.pdf-viewer__annotations-toggle:disabled {
+  cursor: default;
+}
+
+.pdf-viewer__outline-toggle:disabled:not(.office-ribbon-control),
+.pdf-viewer__annotations-toggle:disabled:not(.office-ribbon-control) {
+  opacity: 0.4;
+}
+
+.pdf-viewer__view-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid var(--office-control-border, var(--win-hairline, rgba(13, 148, 136, 0.12)));
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background var(--duration-fast, 100ms) ease,
+    border-color var(--duration-fast, 100ms) ease,
+    color var(--duration-fast, 100ms) ease;
+}
+
+.pdf-viewer__view-mode-toggle:not(.office-ribbon-control) {
+  background: #fff;
+  color: var(--console-text-primary, #0f172a);
+}
+
+.pdf-viewer__view-mode-toggle:hover:not(:disabled) {
+  border-color: var(--office-control-border, color-mix(in srgb, var(--console-accent, #0d9488) 30%, transparent));
+}
+
+.pdf-viewer__view-mode-toggle:hover:not(:disabled):not(.office-ribbon-control) {
+  background: rgba(239, 246, 255, 0.95);
+}
+
+.pdf-viewer__view-mode-toggle.is-active {
+  border-color: var(--office-control-border, color-mix(in srgb, var(--console-accent, #0d9488) 40%, transparent));
+}
+
+.pdf-viewer__view-mode-toggle.is-active:not(.office-ribbon-control) {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 12%, transparent);
+  color: var(--console-accent, #0d9488);
+}
+
+.pdf-viewer__view-mode-toggle:disabled {
+  cursor: default;
+}
+
+.pdf-viewer__view-mode-toggle:disabled:not(.office-ribbon-control) {
+  opacity: 0.4;
+}
+
+.pdf-viewer__flatten-error {
+  font-size: 12px;
+  color: var(--console-danger, #dc2626);
+  align-self: center;
+}
+
+.pdf-viewer__signature-proof {
+  display: grid;
+  gap: 5px;
+  flex: 1 1 380px;
+  min-width: 260px;
+  max-width: 720px;
+  padding: 7px 10px;
+  border: 1px solid color-mix(in srgb, currentColor 24%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, currentColor 6%, #fff);
+  color: var(--console-text-secondary, #475569);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+/* Inside the titlebar indicator's panel the card fills the column. */
+.pdf-viewer__signature-indicator-panel .pdf-viewer__signature-proof {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: none;
+  overflow: auto;
+}
+
+.pdf-viewer__signature-proof-summary {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+}
+
+.pdf-viewer__signature-proof--intact {
+  color: var(--console-accent, #0d9488);
+}
+
+.pdf-viewer__signature-proof--mismatch {
+  color: var(--console-danger, #dc2626);
+}
+
+.pdf-viewer__signature-proof--unknown {
+  color: #a16207;
+}
+
+.pdf-viewer__signature-proof-icon {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+.pdf-viewer__signature-proof-copy {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.pdf-viewer__signature-proof-copy strong {
+  color: currentColor;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.pdf-viewer__signature-proof-details {
+  min-width: 0;
+  margin-left: 23px;
+}
+
+.pdf-viewer__signature-proof-details > summary {
+  width: fit-content;
+  cursor: pointer;
+  color: currentColor;
+  font-weight: 650;
+}
+
+.pdf-viewer__signature-proof-details-panel {
+  display: grid;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 8px;
+  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--console-text-primary, #0f172a);
+}
+
+.pdf-viewer__signature-proof-fact {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 8px;
+  margin: 0;
+}
+
+.pdf-viewer__signature-proof-fact dt,
+.pdf-viewer__signature-proof-signatures strong,
+.pdf-viewer__signature-proof-axes dt {
+  font-weight: 650;
+}
+
+.pdf-viewer__signature-proof-fact dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.pdf-viewer__signature-proof-signatures {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pdf-viewer__signature-proof-signatures li {
+  display: grid;
+  grid-template-columns: minmax(72px, 0.7fr) repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  align-items: baseline;
+}
+
+.pdf-viewer__signature-proof-signatures li[data-integrity="intact"] span:first-of-type {
+  color: var(--console-accent, #0d9488);
+}
+
+.pdf-viewer__signature-proof-signatures li[data-integrity="mismatch"] span:first-of-type {
+  color: var(--console-danger, #dc2626);
+}
+
+.pdf-viewer__signature-proof-signatures li[data-integrity="unknown"] span:first-of-type {
+  color: #a16207;
+}
+
+.pdf-viewer__signature-proof-reason {
+  margin: 0;
+}
+
+.pdf-viewer__signature-proof-axes {
+  display: grid;
+  gap: 3px;
+  margin: 0;
+}
+
+.pdf-viewer__signature-proof-axes > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pdf-viewer__signature-proof-axes dd {
+  margin: 0;
+  color: var(--console-text-secondary, #475569);
+  text-align: right;
+}
+
+.pdf-viewer__signature-proof-download {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 5px;
+  min-height: 28px;
+  padding: 4px 9px;
+  border: 1px solid color-mix(in srgb, var(--console-accent, #0d9488) 30%, transparent);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--console-accent, #0d9488);
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.pdf-viewer__signature-proof-download:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 8%, #fff);
+}
+
+.pdf-viewer__signature-proof-download:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+/* File-level merge / split share the rounded pill look of download-annotated. */
+
+.pdf-viewer__split {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.pdf-viewer__split-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 220px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--office-control-border, var(--win-hairline, rgba(13, 148, 136, 0.12)));
+}
+
+.pdf-viewer__split-popover:not(.office-ribbon-control) {
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.16);
+}
+
+.pdf-viewer__split-modes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pdf-viewer__split-mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.pdf-viewer__split-mode:not(.office-ribbon-control, .office-dialog__check) {
+  color: var(--console-text-primary, #0f172a);
+}
+
+ 
+.pdf-viewer__export-resolution select {
+  min-height: 32px;
+  font-size: 12px;
+}
+
+.pdf-viewer__export-resolution-size {
+  margin: 0;
+  font-size: 12px;
+  color: var(--console-text-muted, #64748b);
+}
+
+.pdf-viewer__layer-mode {
+  position: relative;
+  min-height: 44px;
+  padding: 0 8px 0 50px;
+  border-radius: 6px;
+}
+
+ 
+.office-dialog .office-dialog__check.office-dialog__check.pdf-viewer__layer-mode {
+  min-height: 44px;
+  padding: 0 8px 0 50px;
+  align-items: center;
+}
+
+.pdf-viewer__layer-mode:hover {
+  background: color-mix(in srgb, var(--office-dialog-accent, var(--console-accent, #0d9488)) 7%, transparent);
+}
+
+.pdf-viewer__layer-toggle {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.pdf-viewer__layer-toggle:not(.office-ribbon-control) {
+  opacity: 0;
+}
+
+.pdf-viewer__layer-toggle-mark {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.pdf-viewer__layer-toggle-mark::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 5px;
+  height: 9px;
+  border: solid currentColor;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.pdf-viewer__layer-toggle-mark:not(.office-ribbon-control)::after {
+  opacity: 0;
+}
+
+.pdf-viewer__layer-toggle:checked + .pdf-viewer__layer-toggle-mark:not(.office-ribbon-control)::after {
+  opacity: 1;
+}
+
+.pdf-viewer__layer-toggle:focus-visible + .pdf-viewer__layer-toggle-mark:not(.office-ribbon-control) {
+  outline: 3px solid var(--office-dialog-focus-ring, color-mix(in srgb, var(--console-accent, #0d9488) 78%, transparent));
+  outline-offset: 3px;
+}
+
+/* A text label heading a nested group in the author's layer list. */
+.pdf-viewer__layer-group-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #475569;
+  padding-block: 4px 2px;
+}
+
+.pdf-viewer__layer-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.pdf-viewer__split-input {
+  height: 30px;
+  padding: 0 8px;
+  border-radius: 6px;
+  border: 1px solid var(--office-control-border, rgba(15, 23, 42, 0.16));
+  font-size: 12px;
+  width: 100%;
+}
+
+ 
+.pdf-viewer__split-error {
+  margin: 0;
+  max-width: 260px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--office-danger-text, #a4262c);
+}
+
+.pdf-viewer__split-go {
+  height: 30px;
+  border-radius: 6px;
+  border: 1px solid var(--office-control-border, color-mix(in srgb, var(--console-accent, #0d9488) 40%, transparent));
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.pdf-viewer__split-go:not(.office-ribbon-control, .office-dialog__button) {
+  background: var(--console-accent, #0d9488);
+  color: #fff;
+}
+
+.pdf-viewer__split-go:disabled {
+  cursor: default;
+}
+
+.pdf-viewer__split-go:disabled:not(.office-ribbon-control) {
+  opacity: 0.5;
+}
+
+/* Stacked label + control used by the "insert pages" popover (label over its
+   number / range input), matching the split popover's compact typography. */
+.pdf-viewer__split-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+}
+.pdf-viewer__split-field:not(.office-ribbon-control, .office-dialog__field) {
+  color: var(--console-text-primary, #0f172a);
+}
+
+/* Small helper line under the custom header/footer template input listing the
+   available {date}/{time}/{p}/{total}/{n} tokens. */
+.pdf-viewer__stamp-token-hint {
+  font-size: 11px;
+  color: var(--console-text-secondary, #64748b);
+}
+
+.pdf-viewer__body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* The reader's panes docked in the shared task pane chrome
+   (pdf/pdfTaskPaneDock.tsx): the card, title row and close button are the
+   chrome's; the pane's own class keeps its width, and its content keeps the
+   column rhythm it had under its old header. */
+.pdf-viewer__task-pane-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pdf-viewer__thumbnails .pdf-viewer__task-pane-body {
+  gap: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Consolidated comments / annotations sidebar (Acrobat "Comments")    */
+/* ------------------------------------------------------------------ */
+
+.pdf-viewer__annotations {
+  width: 280px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--win-hairline, rgba(13, 148, 136, 0.12));
+  background: #fff;
+  padding: 12px 8px 12px 12px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pdf-viewer__annotations-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--console-accent, #0d9488);
+}
+
+.pdf-viewer__annotations-header strong {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.pdf-viewer__annotations-tabs {
+  display: flex;
+  min-height: 48px;
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.035);
+}
+
+.pdf-viewer__annotations-tabs > button {
+  display: inline-flex;
+  min-width: 0;
+  min-height: 44px;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 7px;
+  border: 1px solid var(--office-control-border, transparent);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 650;
+}
+
+.pdf-viewer__annotations-tabs > button:not(.office-ribbon-control) {
+  background: transparent;
+  color: var(--console-text-muted, #64748b);
+}
+
+.pdf-viewer__annotations-tabs > button[aria-selected="true"] {
+  border-color: var(--office-control-border, rgba(15, 23, 42, 0.1));
+}
+
+.pdf-viewer__annotations-tabs > button[aria-selected="true"]:not(.office-ribbon-control) {
+  background: #fff;
+  color: var(--console-text-primary, #0f172a);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+}
+
+.pdf-viewer__annotations-tabs > button:focus-visible:not(.office-ribbon-control) {
+  outline: 2px solid var(--console-accent, #0d9488);
+  outline-offset: 1px;
+}
+
+.pdf-viewer__annotations-tabs > button span:not(.pdf-viewer__annotations-tab-count) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdf-viewer__annotations-tab-count {
+  min-width: 18px;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.07);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.65rem;
+  text-align: center;
+}
+
+.pdf-viewer__annotations-panel {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pdf-viewer__annotations-panel[hidden] {
+  display: none;
+}
+
+.pdf-viewer__annotations-export-wrap {
+  position: relative;
+  margin-inline-start: auto;
+}
+
+.pdf-viewer__annotations-export {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid var(--win-hairline, rgba(13, 148, 136, 0.12));
+  background: #f8fafc;
+  color: var(--console-text-muted, #64748b);
+  cursor: pointer;
+}
+
+.pdf-viewer__annotations-export:hover:not(:disabled) {
+  background: var(--win-hover, rgba(13, 148, 136, 0.08));
+}
+
+.pdf-viewer__annotations-export:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.pdf-viewer__annotations-export-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 20;
+  min-width: 160px;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.16);
+}
+
+.pdf-viewer__annotations-export-menu button {
+  display: block;
+  width: 100%;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pdf-viewer__annotations-export-menu button:not(.office-ribbon-control) {
+  background: transparent;
+  color: var(--console-text-primary, #0f172a);
+}
+
+.pdf-viewer__annotations-export-menu button:hover:not(.office-ribbon-control) {
+  background: var(--win-hover, rgba(13, 148, 136, 0.08));
+}
+
+.pdf-viewer__annotations-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.pdf-viewer__annotations-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: #fff;
+  font-size: 0.7rem;
+  color: var(--console-text-muted, #64748b);
+  cursor: pointer;
+}
+
+.pdf-viewer__annotations-chip.is-active {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 12%, transparent);
+  border-color: color-mix(in srgb, var(--console-accent, #0d9488) 40%, transparent);
+  color: var(--console-accent, #0d9488);
+}
+
+.pdf-viewer__annotations-chip:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.pdf-viewer__annotations-advanced-filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.pdf-viewer__annotations-advanced-filters select {
+  min-width: 0;
+  min-height: 32px;
+  padding: 4px 22px 4px 7px;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  border-radius: 6px;
+  background: var(--console-panel, #fff);
+  color: var(--console-text, #0f172a);
+  font: inherit;
+  font-size: 0.7rem;
+  text-overflow: ellipsis;
+}
+
+.pdf-viewer__annotations-advanced-filters select:focus-visible {
+  outline: 2px solid var(--console-accent, #0d9488);
+  outline-offset: 1px;
+}
+
+.pdf-viewer__annotations-advanced-filters select:disabled {
+  opacity: 0.45;
+}
+
+.pdf-viewer__annotations-batch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 34px;
+}
+
+.pdf-viewer__annotations-batch label,
+.pdf-viewer__annotations-batch button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 30px;
+  font-size: 0.7rem;
+}
+
+.pdf-viewer__annotations-batch button {
+  padding: 3px 8px;
+  border: 1px solid var(--office-control-border, rgba(185, 28, 28, 0.28));
+  border-radius: 6px;
+}
+
+.pdf-viewer__annotations-batch button:not(.office-ribbon-control) {
+  background: transparent;
+  color: #b91c1c;
+}
+
+.pdf-viewer__annotations-batch button:disabled:not(.office-ribbon-control) {
+  opacity: 0.4;
+}
+
+.pdf-viewer__annotations-batch-error {
+  margin: 0;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: rgba(185, 28, 28, 0.08);
+  color: #b91c1c;
+  font-size: 0.7rem;
+}
+
+.pdf-viewer__annotations-item.is-selectable {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  align-items: start;
+}
+
+.pdf-viewer__annotations-item.is-selectable > input {
+  grid-column: 1;
+  margin-top: 9px;
+}
+
+.pdf-viewer__annotations-item.is-selectable > .pdf-viewer__annotations-link,
+.pdf-viewer__annotations-item.is-selectable > .pdf-viewer__annotations-thread-toggle,
+.pdf-viewer__annotations-item.is-selectable > .pdf-viewer__annotations-thread {
+  grid-column: 2;
+}
+.pdf-viewer__annotations-count {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.65rem;
+  opacity: 0.8;
+}
+
+.pdf-viewer__annotations-empty {
+  font-size: 0.75rem;
+  color: var(--console-text-muted, #94a3b8);
+  padding: 8px 2px;
+  margin: 0;
+}
+
+.pdf-viewer__annotations-attachment-blocked {
+  color: #9a3412;
+  display: block;
+  font-size: 0.6875rem;
+  line-height: 1.25;
+  margin-top: 2px;
+}
+
+.pdf-viewer__annotations-attachments > strong {
+  font-size: 0.75rem;
+  color: var(--console-text-secondary, #475569);
+}
+
+.pdf-viewer__annotations-attachments ul {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pdf-viewer__annotations-attachments li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 40px 40px;
+  align-items: start;
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.pdf-viewer__annotations-attachments button {
+  border: 1px solid var(--office-control-border, transparent);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pdf-viewer__annotations-attachments button:not(.office-ribbon-control) {
+  background: transparent;
+  color: var(--console-text-secondary, #475569);
+}
+
+.pdf-viewer__annotations-attachment-main {
+  display: grid;
+  min-width: 0;
+  min-height: 44px;
+  grid-template-columns: 18px minmax(0, 1fr);
+  align-items: center;
+  gap: 2px 5px;
+  padding: 5px 6px;
+  text-align: left;
+}
+
+.pdf-viewer__annotations-attachment-main:hover:not(.office-ribbon-control),
+.pdf-viewer__annotations-attachment-action:hover:not(:disabled):not(.office-ribbon-control) {
+  background: rgba(15, 23, 42, 0.05);
+}
+
+.pdf-viewer__annotations-attachment-name,
+.pdf-viewer__annotations-attachment-page,
+.pdf-viewer__annotations-attachment-blocked {
+  grid-column: 2;
+}
+
+.pdf-viewer__annotations-attachment-name {
+  overflow: hidden;
+  color: var(--console-text-primary, #0f172a);
+  font-size: 0.75rem;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdf-viewer__annotations-attachment-page {
+  color: var(--console-text-muted, #64748b);
+  font-size: 0.6875rem;
+}
+
+.pdf-viewer__annotations-attachment-action {
+  display: inline-flex;
+  width: 40px;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdf-viewer__annotations-attachments button:disabled {
+  cursor: not-allowed;
+}
+
+.pdf-viewer__annotations-attachments button:disabled:not(.office-ribbon-control) {
+  opacity: 0.45;
+}
+
+.pdf-viewer__annotations-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pdf-viewer__annotations-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 6px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pdf-viewer__annotations-link:hover:not(:disabled) {
+  background: rgba(15, 23, 42, 0.05);
+}
+
+.pdf-viewer__annotations-link:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.pdf-viewer__annotations-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  margin-top: 1px;
+  color: var(--console-text-muted, #64748b);
+}
+
+.pdf-viewer__annotations-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.pdf-viewer__annotations-meta {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--console-text-muted, #94a3b8);
+  font-variant-numeric: tabular-nums;
+}
+
+.pdf-viewer__annotations-preview {
+  font-size: 0.8rem;
+  color: var(--console-text-primary, #0f172a);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* ------------------------------------------------------------------ */
+/* Outline / bookmarks sidebar (collapsible, toggled from the toolbar) */
+/* ------------------------------------------------------------------ */
+
+.pdf-viewer__outline {
+  width: 260px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--win-hairline, rgba(13, 148, 136, 0.12));
+  background: #fff;
+  padding: 12px 8px 12px 12px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pdf-viewer__outline-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--console-accent, #0d9488);
+}
+
+.pdf-viewer__outline-header strong {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Expand-all / collapse-all controls, pushed to the header's right edge. */
+.pdf-viewer__outline-header-actions {
+  margin-inline-start: auto;
+  display: inline-flex;
+  gap: 2px;
+}
+
+.pdf-viewer__outline-tree-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition:
+    background var(--duration-fast, 100ms) ease,
+    color var(--duration-fast, 100ms) ease;
+}
+
+.pdf-viewer__outline-tree-action:not(.office-ribbon-control) {
+  background: transparent;
+  color: var(--console-text-muted, #94a3b8);
+}
+
+.pdf-viewer__outline-tree-action:hover:not(:disabled):not(.office-ribbon-control) {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 10%, transparent);
+  color: var(--console-accent, #0d9488);
+}
+
+.pdf-viewer__outline-tree-action:disabled {
+  cursor: default;
+}
+
+.pdf-viewer__outline-tree-action:disabled:not(.office-ribbon-control) {
+  opacity: 0.4;
+}
+
+.pdf-viewer__outline-empty {
+  font-size: 0.75rem;
+  color: var(--console-text-muted, #94a3b8);
+  padding: 8px 2px;
+  margin: 0;
+}
+
+.pdf-viewer__outline-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 2px 6px;
+  padding: 0 8px;
+  min-height: 30px;
+  border: 1px solid var(--console-border, #e2e8f0);
+  border-radius: 8px;
+  background: var(--console-surface, #fff);
+  color: var(--console-text-muted, #94a3b8);
+}
+
+.pdf-viewer__outline-search:focus-within {
+  border-color: var(--console-accent, #2563eb);
+}
+
+.pdf-viewer__outline-search-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font-size: 0.78rem;
+  color: var(--console-text, #0f172a);
+  outline: none;
+}
+
+.pdf-viewer__outline-tree,
+.pdf-viewer__outline-children {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.pdf-viewer__outline-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  border-radius: 8px;
+}
+
+/* Current-section highlight: the entry whose section contains the page the
+   reader is on (computed by currentOutlineSectionId). */
+.pdf-viewer__outline-row.is-current {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 10%, transparent);
+}
+
+.pdf-viewer__outline-row.is-current .pdf-viewer__outline-link,
+.pdf-viewer__outline-row.is-current .pdf-viewer__outline-text {
+  color: var(--console-accent, #0d9488);
+  font-weight: 600;
+}
+
+.pdf-viewer__outline-twisty {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: var(--console-text-muted, #94a3b8);
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.pdf-viewer__outline-twisty:hover:not(:disabled) {
+  background: var(--win-hover, rgba(13, 148, 136, 0.08));
+  color: var(--console-text-primary, #0f172a);
+}
+
+.pdf-viewer__outline-twisty--spacer {
+  cursor: default;
+}
+
+.pdf-viewer__outline-link,
+.pdf-viewer__outline-text {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  color: var(--console-text-primary, #0f172a);
+  padding: 5px 6px;
+  border-radius: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdf-viewer__outline-link {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.pdf-viewer__outline-link span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdf-viewer__outline-link:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 10%, transparent);
+  color: var(--console-accent, #0d9488);
+}
+
+.pdf-viewer__outline-link:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.pdf-viewer__outline-text {
+  color: var(--console-text-muted, #64748b);
+  cursor: default;
+}
+
+/* ------------------------------------------------------------------ */
+/* Read-mode (night / invert / sepia) toolbar toggle                    */
+/* ------------------------------------------------------------------ */
+
+.pdf-viewer__read-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid var(--office-control-border, var(--win-hairline, rgba(13, 148, 136, 0.12)));
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background var(--duration-fast, 100ms) ease,
+    border-color var(--duration-fast, 100ms) ease,
+    color var(--duration-fast, 100ms) ease;
+}
+
+.pdf-viewer__read-mode-toggle:not(.office-ribbon-control) {
+  background: #fff;
+  color: var(--console-text-primary, #0f172a);
+}
+
+.pdf-viewer__read-mode-toggle:hover:not(:disabled) {
+  border-color: var(--office-control-border, color-mix(in srgb, var(--console-accent, #0d9488) 30%, transparent));
+}
+
+.pdf-viewer__read-mode-toggle:hover:not(:disabled):not(.office-ribbon-control) {
+  background: rgba(239, 246, 255, 0.95);
+}
+
+.pdf-viewer__read-mode-toggle.is-active {
+  border-color: var(--office-control-border, color-mix(in srgb, var(--console-accent, #0d9488) 40%, transparent));
+}
+
+.pdf-viewer__read-mode-toggle.is-active:not(.office-ribbon-control) {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 12%, transparent);
+  color: var(--console-accent, #0d9488);
+}
+
+.pdf-viewer__read-mode-toggle:disabled {
+  cursor: default;
+}
+
+.pdf-viewer__read-mode-toggle:disabled:not(.office-ribbon-control) {
+  opacity: 0.4;
+}
+
+/* ------------------------------------------------------------------ */
+/* User-created bookmarks (in the outline side panel)                   */
+/* ------------------------------------------------------------------ */
+
+.pdf-viewer__bookmarks {
+  border-top: 1px solid var(--win-hairline, rgba(13, 148, 136, 0.12));
+  padding: 8px 6px 12px;
+}
+
+.pdf-viewer__bookmarks-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 6px 6px;
+}
+
+.pdf-viewer__bookmarks-header strong {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--console-text-primary, #0f172a);
+}
+
+.pdf-viewer__bookmark-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid var(--win-hairline, rgba(13, 148, 136, 0.12));
+  background: #fff;
+  color: var(--console-accent, #0d9488);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background var(--duration-fast, 100ms) ease,
+    border-color var(--duration-fast, 100ms) ease;
+}
+
+.pdf-viewer__bookmark-add:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 10%, transparent);
+  border-color: color-mix(in srgb, var(--console-accent, #0d9488) 40%, transparent);
+}
+
+.pdf-viewer__bookmark-add:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.pdf-viewer__bookmark-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.pdf-viewer__bookmark-item {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.pdf-viewer__bookmark-link {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+  padding: 5px 6px;
+  border: none;
+  background: transparent;
+  color: var(--console-text-primary, #0f172a);
+  font-size: 12px;
+  text-align: start;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.pdf-viewer__bookmark-link:hover:not(:disabled) {
+  background: rgba(239, 246, 255, 0.95);
+}
+
+.pdf-viewer__bookmark-link:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.pdf-viewer__bookmark-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdf-viewer__bookmark-page {
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  color: var(--console-text-muted, #64748b);
+}
+
+.pdf-viewer__bookmark-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: var(--console-text-muted, #94a3b8);
+  cursor: pointer;
+  border-radius: 5px;
+  opacity: 0;
+  transition:
+    opacity var(--duration-fast, 100ms) ease,
+    color var(--duration-fast, 100ms) ease,
+    background var(--duration-fast, 100ms) ease;
+}
+
+.pdf-viewer__bookmark-item:hover .pdf-viewer__bookmark-delete,
+.pdf-viewer__bookmark-item:focus-within .pdf-viewer__bookmark-delete {
+  opacity: 1;
+}
+
+/* touch cannot hover: a bookmark's delete and rename stay shown (a disabled
+   one keeps its dimmed :disabled opacity, which is more specific) */
+@media (hover: none) {
+  .pdf-viewer__bookmark-delete,
+  .pdf-viewer__bookmark-rename {
+    opacity: 1;
+  }
+}
+
+.pdf-viewer__bookmark-delete:hover:not(:disabled) {
+  background: rgba(248, 113, 113, 0.12);
+  color: #ef4444;
+}
+
+.pdf-viewer__bookmark-delete:disabled {
+  cursor: default;
+  opacity: 0.3;
+}
+
+/* Inline rename: pencil revealed on row hover/focus (same pattern as the
+   delete control), input replaces the row while editing. */
+.pdf-viewer__bookmark-rename {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: var(--console-text-muted, #94a3b8);
+  cursor: pointer;
+  border-radius: 5px;
+  opacity: 0;
+  transition:
+    opacity var(--duration-fast, 100ms) ease,
+    color var(--duration-fast, 100ms) ease,
+    background var(--duration-fast, 100ms) ease;
+}
+
+.pdf-viewer__bookmark-item:hover .pdf-viewer__bookmark-rename,
+.pdf-viewer__bookmark-item:focus-within .pdf-viewer__bookmark-rename {
+  opacity: 1;
+}
+
+.pdf-viewer__bookmark-rename:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 10%, transparent);
+  color: var(--console-accent, #0d9488);
+}
+
+.pdf-viewer__bookmark-rename:disabled {
+  cursor: default;
+  opacity: 0.3;
+}
+
+.pdf-viewer__bookmark-rename-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 4px 6px;
+  font-size: 12px;
+  border: 1px solid color-mix(in srgb, var(--console-accent, #0d9488) 40%, transparent);
+  border-radius: 5px;
+  outline: none;
+  background: #fff;
+  color: var(--console-text-primary, #0f172a);
+}
+
+/* ------------------------------------------------------------------ */
+/* Page-thumbnails sidebar (collapsible, toggled from the toolbar)      */
+/* ------------------------------------------------------------------ */
+
+.pdf-viewer__thumbnails {
+  width: 168px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--win-hairline, rgba(13, 148, 136, 0.12));
+  background: #fff;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.pdf-viewer__thumbnails ul {
+  list-style: none;
+  margin: 0;
+  padding: 12px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.pdf-viewer__thumbnails li {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+/* Per-thumbnail page operations (rotate / move / insert / delete + restore). */
+.pdf-viewer__page-ops {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  margin-bottom: 4px;
+  opacity: 0;
+  transition: opacity var(--duration-fast, 100ms) ease;
+}
+
+.pdf-viewer__thumbnails li:hover .pdf-viewer__page-ops,
+.pdf-viewer__thumbnails li:focus-within .pdf-viewer__page-ops {
+  opacity: 1;
+}
+
+/* touch cannot hover: the current page's thumbnail (the one just tapped)
+   shows its page operations */
+@media (hover: none) {
+  .pdf-viewer__thumbnails li:has(> .pdf-viewer__thumb.is-active) .pdf-viewer__page-ops {
+    opacity: 1;
+  }
+}
+
+.pdf-viewer__page-op {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--console-text-muted, #475569);
+  cursor: pointer;
+  transition:
+    background var(--duration-fast, 100ms) ease,
+    color var(--duration-fast, 100ms) ease,
+    border-color var(--duration-fast, 100ms) ease;
+}
+
+.pdf-viewer__page-op:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--console-accent, #0d9488) 45%, transparent);
+  color: var(--console-accent, #0d9488);
+}
+
+.pdf-viewer__page-op:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.pdf-viewer__page-op.is-delete:hover:not(:disabled) {
+  border-color: rgba(220, 38, 38, 0.5);
+  color: #dc2626;
+}
+
+.pdf-viewer__page-op.is-restore {
+  border-color: color-mix(in srgb, var(--console-accent, #0d9488) 45%, transparent);
+  color: var(--console-accent, #0d9488);
+}
+
+.pdf-viewer__thumb.is-deleted {
+  opacity: 0.55;
+}
+
+.pdf-viewer__thumb.is-deleted .pdf-viewer__thumb-canvas {
+  border-style: dashed;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(148, 163, 184, 0.12),
+    rgba(148, 163, 184, 0.12) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+
+.pdf-viewer__thumb {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.pdf-viewer__thumb:hover .pdf-viewer__thumb-canvas {
+  border-color: color-mix(in srgb, var(--console-accent, #0d9488) 45%, transparent);
+}
+
+.pdf-viewer__thumb-canvas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 60px;
+  min-height: 60px;
+  border: 2px solid rgba(15, 23, 42, 0.12);
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+  transition: border-color var(--duration-fast, 100ms) ease;
+}
+
+.pdf-viewer__thumb-canvas canvas {
+  display: block;
+}
+
+.pdf-viewer__thumb.is-active .pdf-viewer__thumb-canvas {
+  border-color: var(--console-accent, #0d9488);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--console-accent, #0d9488) 20%, transparent);
+}
+
+.pdf-viewer__thumb em {
+  font-style: normal;
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--console-text-muted, #64748b);
+}
+
+.pdf-viewer__thumb.is-active em {
+  color: var(--console-accent, #0d9488);
+  font-weight: 600;
+}
+
+.pdf-viewer__pages {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+   
+  scrollbar-gutter: stable;
+  padding: 20px 16px 32px;
+  display: flex;
+  flex-direction: column;
+  /* `safe`: a page wider than this area (a narrow window, a task pane open
+     beside it, a high zoom) starts at the left edge and scrolls sideways.
+     Plainly centred, it overflowed both ways, and the part past the LEFT
+     edge is one no scrollbar reaches. */
+  align-items: safe center;
+  gap: 16px;
+}
+
+/* Spread (facing-pages / two-up) layout: lay the page list out as rows of two.
+   The flat list still renders in order; a zero-size full-width break element
+   (`.pdf-viewer__spread-break`) before each left page forces a new flex line so
+   exactly two pages share a row at any zoom. */
+.pdf-viewer__pages--spread {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  /* `safe`, as above: a pair wider than the area starts at the left. */
+  justify-content: safe center;
+  column-gap: 16px;
+  row-gap: 16px;
+}
+
+/* The forced line break: full row width, no height, so the next page wraps to a
+   fresh row (the right page of the previous pair stays beside its left page). */
+.pdf-viewer__spread-break {
+  flex-basis: 100%;
+  width: 100%;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+}
+
+.pdf-viewer__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 60px 0;
+  color: var(--console-text-muted, #64748b);
+  font-size: 0.8125rem;
+}
+
+.pdf-viewer__page {
+  position: relative;
+  flex: 0 0 auto;
+  background: #fff;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.08);
+  border-radius: 6px;
+  /* The paper is a fixed coordinate space. Hidden overflow still lets focus
+     and scrollIntoView scroll its contents, separating canvas coordinates
+     from the page rect used by editing gestures. Only the outer reader scrolls. */
+  overflow: clip;
+  /* Programmatic scrollIntoView (page jumps, find matches) leaves breathing
+     room below the toolbar instead of pinning the page flush under the bar. */
+  scroll-margin-top: 12px;
+}
+
+.pdf-viewer__page canvas[data-pdf-page] {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.pdf-viewer__text-layer {
+  --min-font-size: 1;
+  --scale-factor: 1;
+  --user-unit: 1;
+  --total-scale-factor: calc(var(--scale-factor) * var(--user-unit));
+  --scale-round-x: 1px;
+  --scale-round-y: 1px;
+  --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size));
+  --min-font-size-inv: calc(1 / var(--min-font-size));
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Container is pass-through so empty space (between text and inside
+     highlights) reaches the highlight-rect below. Individual spans
+     re-enable pointer-events for text selection. This matches the
+     PDF.js v3+ stylesheet convention. */
+  pointer-events: none;
+  opacity: 0.25;
+  overflow: clip;
+  line-height: 1;
+  text-align: initial;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+  forced-color-adjust: none;
+  transform-origin: 0 0;
+  user-select: text;
+  --highlight-bg-color: rgba(180, 0, 170, 0.25);
+  --highlight-selected-bg-color: color-mix(in srgb, var(--console-text-primary, var(--console-text-primary, #006400)) 25%, transparent);
+}
+
+.pdf-viewer__text-layer span,
+.pdf-viewer__text-layer br {
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+  color: transparent;
+  pointer-events: auto;
+}
+
+/* pdf.js v5 writes per-item font height, horizontal scale and rotation as
+   custom properties. Keep these rules scoped to the MRNote text layer rather
+   than importing pdf_viewer.css (which would also restyle the surrounding
+   editor shell). Inline geometry from the Safari fallback remains dominant. */
+.pdf-viewer__text-layer > :not(.markedContent),
+.pdf-viewer__text-layer .markedContent span:not(.markedContent) {
+  z-index: 1;
+  --font-height: 0;
+  --scale-x: 1;
+  --rotate: 0deg;
+  font-size: calc(var(--text-scale-factor) * var(--font-height));
+  transform: rotate(var(--rotate)) scaleX(var(--scale-x))
+    scale(var(--min-font-size-inv));
+}
+
+.pdf-viewer__text-layer .markedContent {
+  display: contents;
+}
+
+.pdf-viewer__text-layer[data-main-rotation="90"] {
+  transform: rotate(90deg) translateY(-100%);
+}
+
+.pdf-viewer__text-layer[data-main-rotation="180"] {
+  transform: rotate(180deg) translate(-100%, -100%);
+}
+
+.pdf-viewer__text-layer[data-main-rotation="270"] {
+  transform: rotate(270deg) translateX(-100%);
+}
+
+/* Text a switched-off layer draws is not on the page the reader sees: it is
+   neither selected nor hit (user audit PDF 0036). */
+.pdf-viewer__text-layer [data-pdf-hidden-layer] {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+ 
+.pdf-viewer__text-layer ::selection {
+  background: var(--console-accent, #0d9488);
+}
+
+.pdf-viewer[data-pdf-content-edit-mode="active"] .pdf-viewer__text-layer ::selection {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 35%, transparent);
+}
+
+@media (pointer: coarse) {
+  .pdf-viewer__text-layer ::selection {
+    background: color-mix(in srgb, var(--console-accent, #0d9488) 35%, transparent);
+  }
+}
+
+/* The line breaks pdf.js puts between lines are not text: selected, they
+   drew a block at each line end (pdf.js's own stylesheet clears them too). */
+.pdf-viewer__text-layer br::selection {
+  background: transparent;
+}
+
+/* WPS-style content-edit mode. The native text layer keeps its exact pdf.js
+   geometry and raw item identity; these outlines are controls, not synthetic
+   editable overlays. Unsupported items remain visibly bounded but fail closed
+   during the native planner preflight. */
+.pdf-viewer[data-pdf-content-edit-mode="active"] .pdf-viewer__text-layer {
+  z-index: 7;
+  opacity: 1;
+   
+  --pdf-text-frame-px: calc(1px * var(--min-font-size, 1));
+}
+
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-edit-box="true"] {
+  cursor: pointer;
+  outline: none;
+}
+
+/* Live Preview draws the selected characters, and their band, in the draft
+   at their previewed width: the held selection ghost of the line's input
+   (lib/office-inactive-selection.ts) would mark their old place. */
+textarea[data-pdf-native-text-format-preview="true"] + [data-office-inactive-selection] {
+  visibility: hidden;
+}
+
+/* 格式刷 armed in this window (lib/pdf/native-text-format-painter): the text
+   it would paint shows the copy cursor. */
+[data-pdf-format-painter="armed"]
+  .pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-edit-box="true"] {
+  cursor: copy;
+}
+
+/* The frame is the span's ::before, not the span's outline: the span keeps
+   pdf.js's ascent-high geometry for selection and the caret probe, while the
+   frame sits on the box the editor opens the line in (`--pdf-native-text-
+   edit-frame`, set by synchronizePdfNativeTextEditFrame in em of the span's
+   font; unset, it is the span's own box). It is paint only: the span, not the
+   frame, takes the click. */
+/* The second selector is the same frame on a box held as a picture while the
+   saved revision's text layer is rebuilt (lib/pdf/text-layer-ghost). */
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-edit-box="true"]::before,
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-edit-box-ghost="true"]::before {
+  content: "";
+  position: absolute;
+  inset: var(--pdf-native-text-edit-frame, 0);
+  pointer-events: none;
+  outline: var(--pdf-text-frame-px) dashed
+    color-mix(in srgb, var(--console-accent, #0d9488) 72%, #ffffff);
+  outline-offset: calc(2 * var(--pdf-text-frame-px));
+  border-radius: var(--pdf-text-frame-px);
+  transition:
+    outline-color var(--duration-fast, 100ms) ease,
+    background-color var(--duration-fast, 100ms) ease,
+    box-shadow var(--duration-fast, 100ms) ease;
+}
+
+/* A line left a moment ago is held by its finish ghost, whose frame has the
+   line's new size: its box here (and the box's held picture) has the old
+   one and draws no second frame (PdfNativeListTextEditDialog). */
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-frame-held="true"][data-pdf-native-text-frame-held]::before {
+  outline-color: transparent;
+}
+
+/* The box under the pointer is the one whose frame holds it (set from
+   script, pdfNativeTextEditBoxAtPoint): the span the browser hovers is not
+   the frame drawn, and Safari hovered the next paragraph from the gap inside
+   this one's frame. */
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-editable="true"][data-pdf-native-text-hovered="true"]::before {
+  outline-style: solid;
+  outline-color: var(--console-accent, #0d9488);
+  background: color-mix(
+    in srgb,
+    var(--console-accent, #0d9488) 9%,
+    transparent
+  );
+}
+
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-edit-selected="true"]::before,
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-editable="true"]:focus-visible::before {
+  outline: calc(2 * var(--pdf-text-frame-px)) solid var(--console-accent, #0d9488);
+  outline-offset: calc(2 * var(--pdf-text-frame-px));
+  box-shadow: 0 0 0 calc(3 * var(--pdf-text-frame-px))
+    color-mix(in srgb, var(--console-accent, #0d9488) 16%, transparent);
+}
+
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-editable="true"]:focus-visible {
+  outline: none;
+}
+
+/* Runs added to the active one with shift / meta click. They are not being
+   edited, so they keep the dashed frame's geometry and only gain a fill. */
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-multi-selected]::before {
+  outline: calc(2 * var(--pdf-text-frame-px)) solid var(--console-accent, #0d9488);
+  outline-offset: calc(2 * var(--pdf-text-frame-px));
+  background: color-mix(
+    in srgb,
+    var(--console-accent, #0d9488) 18%,
+    transparent
+  );
+}
+
+/* Editing hands visual and pointer ownership to the single page-level text
+   frame. Keep the source span in the DOM for identity, geometry and cancel
+   restoration, but never leave its selection chrome over the live editor. */
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-edit-box="true"][data-pdf-native-text-inline-editing="true"] {
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+  pointer-events: none;
+}
+
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-edit-box="true"][data-pdf-native-text-inline-editing="true"]::before {
+  content: none;
+}
+
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-editable="false"] {
+  cursor: not-allowed;
+}
+
+/* A box an edit just moved or retyped, until the reader has read the new
+   bytes and built the boxes again: the page no longer shows it there, so
+   neither its frame nor a click does (PdfNativeListTextEditDialog). */
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-superseded="true"] {
+  pointer-events: none;
+}
+
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-superseded="true"]::before {
+  content: none;
+}
+
+/* Inert only while the reader checks the revision an edit just saved: the
+   frame keeps its live colour (a click is kept for the rebuilt box). */
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-editable="pending"] {
+   
+  cursor: text;
+}
+
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-editable="false"]::before {
+  outline-color: color-mix(
+    in srgb,
+    var(--console-text-muted, #64748b) 65%,
+    #ffffff
+  );
+  /* A box unavailable only for a moment (the reader checking the revision
+     an edit just saved) does not blink grey after every edit: the muted
+     colour waits, and the live colour comes back at once. */
+  transition-delay: 600ms;
+}
+
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-activation-pending="true"]:not(
+    [data-pdf-native-text-inline-editing="true"]
+  ) {
+   
+  cursor: text;
+}
+
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-activation-pending="true"]:not(
+    [data-pdf-native-text-inline-editing="true"]
+  )::before {
+  outline: var(--pdf-text-frame-px) solid var(--console-accent, #0d9488);
+  outline-offset: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+/* Editable native vectors (a stroked frame, a filled bar, a line) carry no
+   frame at rest, as in WPS: the canvas already draws the vector, and a frame
+   around every path buried the page under outlines. Hover draws a dashed
+   frame on its bounds; a click selects it and opens Shape Editing, whose own
+   selection frame then takes over. */
+.pdf-viewer__native-vector-target {
+  outline: 1px dashed transparent;
+  outline-offset: 1px;
+  transition: outline-color var(--duration-fast, 100ms) ease;
+}
+
+/* Qualified past the page window's generic `button:hover` reset (which
+   removes outlines and adds a tinted halo to every button). */
+.pdf-viewer .pdf-viewer__page button.pdf-viewer__native-vector-target:hover {
+  background: transparent !important;
+  box-shadow: none;
+  outline: 1px dashed var(--console-accent, #0d9488);
+  outline-offset: 1px;
+}
+
+.pdf-viewer
+  .pdf-viewer__page
+  button.pdf-viewer__native-vector-target:focus-visible {
+  box-shadow: none;
+  outline: 2px dashed var(--console-accent-strong, #0a7d72);
+  outline-offset: 1px;
+}
+
+/* Selected: the Shape Editing selection frame draws the handles and border,
+   so the target itself stays unframed underneath it. */
+.pdf-viewer
+  .pdf-viewer__page
+  button.pdf-viewer__native-vector-target[aria-pressed="true"] {
+  box-shadow: none;
+  outline-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdf-viewer[data-pdf-content-edit-mode="active"]
+    .pdf-viewer__text-layer
+    span[data-pdf-native-text-edit-box="true"]::before {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdf-viewer__native-vector-target {
+    transition: none;
+  }
+}
+
+/* A picture selected in place (WPS 图片编辑): a thin red frame, round white
+   dots at its corners and capsules at its edge midpoints, as WPS draws it
+   (wps/tabs/image-frame.png). The page clips the frame where the picture
+   runs past it, so a part outside is neither drawn nor grabbed. */
+/* The picture's floating tools, beside it on the page (wps/tabs/tips.png):
+   square icon buttons in a column, the name in a pill on hover. */
+.pdf-viewer__picture-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: auto;
+  position: absolute;
+  z-index: 9;
+}
+
+.pdf-viewer .pdf-viewer__picture-toolbar button.pdf-viewer__picture-tool {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e3e5e8;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  color: #2b2f36;
+  cursor: pointer;
+  display: inline-flex;
+  height: 30px;
+  justify-content: center;
+  margin: 0;
+  min-height: 30px;
+  padding: 0;
+  position: relative;
+  width: 30px;
+}
+
+.pdf-viewer .pdf-viewer__picture-toolbar button.pdf-viewer__picture-tool--round {
+  align-self: center;
+  border-radius: 50%;
+  height: 22px;
+  min-height: 22px;
+  width: 22px;
+}
+
+.pdf-viewer .pdf-viewer__picture-toolbar button.pdf-viewer__picture-tool:hover:not(:disabled) {
+  background: #f4f6f8 !important;
+}
+
+.pdf-viewer .pdf-viewer__picture-toolbar button.pdf-viewer__picture-tool:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.pdf-viewer__picture-toolbar[data-side="right"]
+  button.pdf-viewer__picture-tool:not(.pdf-viewer__picture-tool--round):hover::after,
+.pdf-viewer__picture-toolbar[data-side="left"]
+  button.pdf-viewer__picture-tool:not(.pdf-viewer__picture-tool--round):hover::after {
+  background: #fff;
+  border: 1px solid #e3e5e8;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  color: #2b2f36;
+  content: attr(data-label);
+  font-size: 12px;
+  line-height: 24px;
+  padding: 0 10px;
+  pointer-events: none;
+  position: absolute;
+  top: 2px;
+  white-space: nowrap;
+}
+
+.pdf-viewer__picture-toolbar[data-side="right"]
+  button.pdf-viewer__picture-tool:hover::after {
+  left: calc(100% + 6px);
+}
+
+.pdf-viewer__picture-toolbar[data-side="left"]
+  button.pdf-viewer__picture-tool:hover::after {
+  right: calc(100% + 6px);
+}
+
+.pdf-viewer__picture-crop-handle {
+  background: #1f2328;
+  border: 1px solid #fff;
+  pointer-events: auto;
+  position: absolute;
+  touch-action: none;
+}
+
+/* Shapes, stamps and ink strokes the PDF came with are selectable wherever
+   the page is writable. They already show their own ink on every tab, so
+   they announce their frame on hover and focus rather than at rest. */
+.pdf-viewer__native-source-shape-target:not([aria-disabled="true"]):hover > rect,
+.pdf-viewer__native-source-shape-target:focus-visible > rect {
+  stroke: var(--console-accent, #0d9488);
+  stroke-dasharray: 4 3;
+}
+
+.pdf-viewer__native-source-shape-target:focus-visible {
+  outline: none;
+}
+
+.pdf-viewer__native-source-ink-target:not([tabindex="-1"]):hover,
+.pdf-viewer__native-source-ink-target:focus-visible {
+  stroke: color-mix(in srgb, var(--console-accent, #0d9488) 45%, transparent);
+}
+
+.pdf-viewer__native-source-stamp-target:not([aria-disabled="true"]):hover,
+.pdf-viewer__native-source-stamp-target:focus-visible {
+  outline: 1px dashed var(--console-accent, #0d9488);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Scanned-page OCR affordance: a small pill pinned to the page's top-right,
+   shown only while the page's pdf.js text layer rendered EMPTY and no OCR
+   runs exist yet. Sits above the text layer (z-index 3, see below). */
+.pdf-viewer__ocr-affordance {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border: 1px solid var(--console-border, #e2e8f0);
+  border-radius: 999px;
+  background: var(--glass-float-bg);
+  -webkit-backdrop-filter: var(--glass-float-blur);
+  backdrop-filter: var(--glass-float-blur);
+  color: var(--console-text-secondary, #475569);
+  font-size: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+}
+
+/* On a page too small to share with the pill: a corner badge that leaves
+   the page's content clickable (user audit PDF 0153). */
+.pdf-viewer__ocr-affordance--compact {
+  top: 2px;
+  right: 2px;
+  padding: 1px 6px;
+  font-size: 10px;
+  line-height: 14px;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.16);
+}
+
+.pdf-viewer__ocr-affordance:hover:not(:disabled) {
+  color: var(--console-text-primary, #0f172a);
+  border-color: var(--console-accent, #0d9488);
+}
+
+.pdf-viewer__ocr-affordance:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+/* ------------------------------------------------------------------ */
+/* Quote-to-page dialog                                                */
+/* ------------------------------------------------------------------ */
+
+.quote-to-page-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quote-to-page-dialog__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.32);
+  backdrop-filter: blur(2px);
+}
+
+.quote-to-page-dialog__panel {
+  position: relative;
+  width: min(420px, 92vw);
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 20px;
+  background: #fff;
+  border: 1px solid var(--win-hairline, rgba(13, 148, 136, 0.12));
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.22);
+}
+
+.quote-to-page-dialog__panel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.quote-to-page-dialog__panel header strong {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--console-text-primary, #0f172a);
+}
+
+.quote-to-page-dialog__panel header button {
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.quote-to-page-dialog__panel header button:not(.office-ribbon-control) {
+  background: transparent;
+  color: var(--console-text-muted, #64748b);
+}
+
+.quote-to-page-dialog__hint {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--console-text-muted, #64748b);
+  line-height: 1.6;
+}
+
+.quote-to-page-dialog__error {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(220, 38, 38, 0.08);
+  color: #b91c1c;
+  font-size: 0.75rem;
+}
+
+.quote-to-page-dialog__new {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px dashed color-mix(in srgb, var(--office-dialog-accent, var(--console-accent, #0d9488)) 40%, transparent);
+  background: var(--office-dialog-accent-soft, rgba(239, 246, 255, 0.95));
+  color: var(--office-dialog-ink, var(--console-accent, #0d9488));
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.quote-to-page-dialog__new:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 8%, transparent);
+}
+
+.quote-to-page-dialog__new:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.quote-to-page-dialog__list {
+  flex: 1;
+  min-height: 80px;
+  max-height: 320px;
+  overflow-y: auto;
+  border: 1px solid var(--office-dialog-divider, var(--win-hairline, rgba(13, 148, 136, 0.12)));
+  border-radius: 10px;
+  background: var(--office-dialog-surface, rgba(248, 250, 252, 0.7));
+}
+
+.quote-to-page-dialog__list ul {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.quote-to-page-dialog__list button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  font-size: 0.8125rem;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.quote-to-page-dialog__list button:not(.office-ribbon-control) {
+  background: transparent;
+  color: var(--office-dialog-ink, var(--console-text-primary, #0f172a));
+}
+
+.quote-to-page-dialog__list button:hover:not(:disabled):not(.office-ribbon-control) {
+  background: var(--office-dialog-surface-muted, rgba(255, 255, 255, 0.95));
+}
+
+.quote-to-page-dialog__list button > span {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quote-to-page-dialog__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--office-dialog-muted, var(--console-text-muted, #64748b));
+  padding: 28px 0;
+  font-size: 0.8125rem;
+  flex-direction: column;
+}
+
+/* ------------------------------------------------------------------ */
+/* Highlight overlay (inside .pdf-viewer__page)                        */
+/* ------------------------------------------------------------------ */
+
+.pdf-viewer__highlight-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Comment Mode changes interaction only; Hide Comments is a view-local layer
+   switch. Neither state mutates, exports, or persists an annotation. Native
+   appearance streams are suppressed by PDFViewer's pdf.js render parameter;
+   these selectors cover the reader-owned overlays. */
+.pdf-viewer[data-pdf-comment-mode="inactive"] .pdf-viewer__highlight-rect,
+.pdf-viewer[data-pdf-comment-mode="inactive"] .pdf-viewer__native-text-markup-target,
+.pdf-viewer[data-pdf-comment-mode="inactive"] .pdf-viewer__ink-layer,
+.pdf-viewer[data-pdf-comment-mode="inactive"] .pdf-viewer__shape-layer,
+.pdf-viewer[data-pdf-comment-mode="inactive"] [data-pdf-stamp-layer],
+.pdf-viewer[data-pdf-comment-mode="inactive"] [data-pdf-measurement],
+.pdf-viewer[data-pdf-comment-mode="inactive"] .pdf-viewer__measure-layer,
+.pdf-viewer[data-pdf-comment-mode="inactive"] .pdf-viewer__measure-readout,
+.pdf-viewer[data-pdf-comment-mode="inactive"] .pdf-viewer__note-layer,
+.pdf-viewer[data-pdf-comment-mode="inactive"] .pdf-viewer__annotation-hits,
+.pdf-viewer[data-pdf-comment-mode="inactive"] :is( .pdf-viewer__highlight-rect, .pdf-viewer__native-text-markup-target, .pdf-viewer__ink-layer, .pdf-viewer__shape-layer, [data-pdf-stamp-layer], [data-pdf-measurement], .pdf-viewer__measure-layer, .pdf-viewer__measure-readout, .pdf-viewer__note-layer, .pdf-viewer__annotation-hits ) * {
+  pointer-events: none !important;
+}
+
+.pdf-viewer[data-pdf-comments-hidden="true"] .pdf-viewer__highlight-rect,
+.pdf-viewer[data-pdf-comments-hidden="true"] .pdf-viewer__native-text-markup-target,
+.pdf-viewer[data-pdf-comments-hidden="true"] .pdf-viewer__ink-layer,
+.pdf-viewer[data-pdf-comments-hidden="true"] .pdf-viewer__shape-layer,
+.pdf-viewer[data-pdf-comments-hidden="true"] [data-pdf-stamp-layer],
+.pdf-viewer[data-pdf-comments-hidden="true"] [data-pdf-measurement],
+.pdf-viewer[data-pdf-comments-hidden="true"] .pdf-viewer__measure-layer,
+.pdf-viewer[data-pdf-comments-hidden="true"] .pdf-viewer__measure-readout,
+.pdf-viewer[data-pdf-comments-hidden="true"] .pdf-viewer__note-layer,
+.pdf-viewer[data-pdf-comments-hidden="true"] .pdf-viewer__annotation-hits {
+  display: none !important;
+}
+
+/* A placing tool armed (Insert Text): the page's object targets let its
+   click through to the page, as WPS places a text box over a shape. */
+[data-pdf-native-content-vector-layer][data-pdf-placing="true"] *,
+[data-pdf-native-content-image-layer][data-pdf-placing="true"] * {
+  pointer-events: none !important;
+}
+
+ 
+.pdf-viewer__text-box-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+
+/* The reader's own annotation layers (charts and SmartArt, tables, text
+   boxes) share one stack, at the text box layer's height: each object's slot
+   is stacked at its place in the page's /Annots (lib/pdf/annotation-stack-
+   order.ts), the order every reader paints annotations in, so a table made
+   after a text box is in front of it here too. A text box layer placing or
+   holding a box keeps the whole stack's front while it does. */
+.pdf-viewer__annotation-stack {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  isolation: isolate;
+}
+
+.pdf-viewer__annotation-stack > .pdf-viewer__chart-layer,
+.pdf-viewer__annotation-stack > .pdf-viewer__table-layer,
+.pdf-viewer__annotation-stack > .pdf-viewer__text-box-layer {
+  z-index: auto;
+}
+
+/* The click targets of shapes, ink and stamps (PdfViewerPages): each at its
+   own place in the stack, so their container makes no stacking context of
+   its own (z-index auto). It takes no pointer; the targets do. */
+.pdf-viewer__annotation-stack > .pdf-viewer__annotation-hits {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.pdf-viewer__annotation-stack > .pdf-viewer__text-box-layer--placing,
+.pdf-viewer__annotation-stack > .pdf-viewer__text-box-layer--holding {
+  z-index: 2000000;
+}
+
+ 
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__page:not(:has([data-pdf-native-text-inline-editing="true"]))
+  .pdf-viewer__annotation-stack:has(> .pdf-viewer__text-box-layer--holding, .pdf-viewer__painted-text-box-target) {
+  z-index: 8;
+}
+
+/* 表格: the page's tables made in MRAI (PdfTableLayer). The page's revision
+   paints a saved one; the layer keeps only its hit target until it is
+   selected, then shows its own over a cover of the page's copy. */
+.pdf-viewer__table-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.pdf-viewer__table,
+.pdf-viewer__table-cover {
+  position: absolute;
+}
+
+/* The words of a table, chart or SmartArt the page draws as its own content
+   are in the text layer too (found and copied as page text). The pointer
+   goes through them to the object's layer: over an Edit Content text layer a
+   press on a cell's word would otherwise reach nothing. */
+.pdf-viewer__text-layer span[data-pdf-managed-object-text="true"] {
+  pointer-events: none !important;
+}
+
+.pdf-viewer__table {
+  pointer-events: auto;
+  cursor: default;
+}
+
+.pdf-viewer__table-cover {
+  background: #ffffff;
+  pointer-events: none;
+}
+
+.pdf-viewer__table--painted {
+  opacity: 0;
+}
+
+.pdf-viewer__table--selected {
+  outline: 1px solid rgba(37, 99, 235, 0.85);
+  outline-offset: 2px;
+}
+
+/* 图表: the page's charts made in MRAI (PdfChartLayer), drawn as the
+   chart engine's picture; a saved one painted by the page keeps only its
+   hit target until selected. */
+.pdf-viewer__chart-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.pdf-viewer__chart {
+  position: absolute;
+  pointer-events: auto;
+  cursor: default;
+}
+
+.pdf-viewer__chart--selected {
+  outline: 1px solid rgba(37, 99, 235, 0.85);
+  outline-offset: 2px;
+  cursor: move;
+}
+
+.pdf-viewer__chart--painted {
+  opacity: 0;
+}
+
+.pdf-viewer__chart-picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+}
+
+.pdf-viewer__chart-pending {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border: 1px dashed rgba(100, 116, 139, 0.7);
+  color: #64748b;
+  font-size: 12px;
+}
+
+.pdf-viewer__table-grid {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.pdf-viewer__table-grid td {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  box-sizing: border-box;
+}
+
+.pdf-viewer__table-grid td[data-active="true"] {
+  box-shadow: inset 0 0 0 2px rgba(37, 99, 235, 0.55);
+}
+
+.pdf-viewer__table-cell-editor {
+  outline: none;
+  min-height: 1em;
+  white-space: pre-wrap;
+  cursor: text;
+}
+
+.pdf-viewer__table-column-border {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.pdf-viewer__table-column-border:hover {
+  background: rgba(37, 99, 235, 0.25);
+}
+
+.pdf-viewer__table-grip,
+.pdf-viewer__table-size {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  border: 1px solid rgba(37, 99, 235, 0.9);
+  background: #ffffff;
+  border-radius: 2px;
+}
+
+.pdf-viewer__table-grip {
+  left: -18px;
+  top: -18px;
+  cursor: move;
+  background-image:
+    linear-gradient(rgba(37, 99, 235, 0.9), rgba(37, 99, 235, 0.9)),
+    linear-gradient(rgba(37, 99, 235, 0.9), rgba(37, 99, 235, 0.9));
+  background-size: 8px 1px, 1px 8px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.pdf-viewer__table-size {
+  right: -9px;
+  bottom: -9px;
+  width: 10px;
+  height: 10px;
+  cursor: nwse-resize;
+}
+
+.pdf-viewer__text-box-layer--placing,
+.pdf-viewer__text-box-layer--typing {
+  pointer-events: auto;
+}
+
+/* 编辑内容: a text box the page paints (one made by hand with formats, or by
+   the AI) is offered as the page's own lines are, in the same dashed frame;
+   a click opens it for editing. */
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-box-layer
+  .pdf-viewer__painted-text-box-target {
+  outline: var(--pdf-text-frame-px, 1px) dashed
+    color-mix(in srgb, var(--console-accent, #0d9488) 72%, #ffffff);
+  outline-offset: calc(2 * var(--pdf-text-frame-px, 1px));
+  border-radius: var(--pdf-text-frame-px, 1px);
+}
+
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-box-layer
+  .pdf-viewer__painted-text-box-target:hover {
+  outline-style: solid;
+  outline-color: var(--console-accent, #0d9488);
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 9%, transparent) !important;
+}
+
+.pdf-viewer__page--add-text-mode {
+  cursor: crosshair;
+}
+
+.pdf-viewer__native-image-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.pdf-viewer__native-image-layer img {
+  position: absolute;
+  display: block;
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+}
+
+.pdf-viewer__highlight-rect {
+  position: absolute;
+  pointer-events: auto;
+  border: none;
+  cursor: pointer;
+  border-radius: 2px;
+  mix-blend-mode: multiply;
+  transition: filter var(--duration-fast, 100ms) ease;
+}
+
+.pdf-viewer__highlight-rect:hover {
+  filter: brightness(0.92);
+}
+
+/* A highlight carried over a line being edited (lib/pdf/draft-highlight-tint):
+   a copy of the draft's glyphs that paints the highlight's colour wherever
+   the draft paints ink -- its words, their decorations and rules -- and
+   nothing else (a selection band or a run's own background is the editor's,
+   not the page's). */
+[data-pdf-native-text-highlight-tint] * {
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
+  -webkit-text-stroke-color: currentColor !important;
+  text-decoration-color: currentColor !important;
+  text-shadow: none !important;
+  background: transparent !important;
+}
+
+[data-pdf-native-text-highlight-tint] [data-pdf-text-draft-rule] {
+  background: currentColor !important;
+}
+
+.pdf-viewer__native-text-markup-target {
+  position: absolute;
+  pointer-events: auto;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.pdf-viewer__native-text-markup-target:focus-visible {
+  outline: 2px solid rgba(37, 99, 235, 0.85);
+  outline-offset: 2px;
+}
+
+.pdf-viewer__text-layer {
+  z-index: 3;
+}
+
+.pdf-viewer__textbox-view-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.pdf-viewer__redaction-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.pdf-viewer__redaction {
+  box-sizing: border-box;
+  border: 2px solid var(--office-control-border, #dc2626);
+  border-radius: 2px;
+}
+
+.pdf-viewer__redaction:not(.office-ribbon-control) {
+  background: repeating-linear-gradient(
+    135deg,
+    rgba(220, 38, 38, 0.2) 0,
+    rgba(220, 38, 38, 0.2) 6px,
+    rgba(15, 23, 42, 0.28) 6px,
+    rgba(15, 23, 42, 0.28) 10px
+  );
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72);
+}
+
+.pdf-viewer__redaction--marked:not(.office-ribbon-control) {
+  opacity: 0.88;
+}
+
+.pdf-viewer__redaction--pending {
+  border-style: dashed;
+}
+
+.pdf-viewer__redaction--pending:not(.office-ribbon-control) {
+  opacity: 0.58;
+}
+
+ 
+.pdf-viewer__redaction--failed {
+  border-color: var(--console-danger, #dc2626);
+}
+
+.pdf-viewer__redaction--failed:not(.office-ribbon-control) {
+  opacity: 1;
+}
+
+.pdf-viewer__redaction-draft-bar {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+  padding: 2px 4px;
+  min-width: max-content;
+  max-width: 320px;
+  border-radius: 4px;
+  background: var(--glass-float-bg);
+  -webkit-backdrop-filter: var(--glass-float-blur);
+  backdrop-filter: var(--glass-float-blur);
+  color: var(--console-danger, #b91c1c);
+  font-size: 11px;
+  line-height: 1.3;
+  box-shadow: 0 1px 4px rgb(15 23 42 / 18%);
+  z-index: 1;
+}
+
+.pdf-viewer__redaction-draft-bar button {
+  min-height: 22px;
+  padding: 0 6px;
+  font-size: 11px;
+}
+
+.pdf-viewer__redaction-delete {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--office-control-border, rgba(127, 29, 29, 0.34));
+  border-radius: 4px;
+}
+
+.pdf-viewer__redaction-delete:not(.office-ribbon-control) {
+  background: rgba(255, 255, 255, 0.94);
+  color: #991b1b;
+}
+
+.pdf-viewer__redact-controls {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.pdf-viewer__redact-hint,
+.pdf-viewer__redaction-pending-status {
+  max-width: 220px;
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.pdf-viewer__redact-hint:not(.office-ribbon-control),
+.pdf-viewer__redaction-pending-status:not(.office-ribbon-control) {
+  color: var(--office-ribbon-muted, #475569);
+}
+
+.pdf-viewer__redaction-pending-status {
+  font-weight: 600;
+}
+
+.pdf-viewer__redaction-pending-status:not(.office-ribbon-control) {
+  color: #991b1b;
+}
+
+.pdf-viewer__visual-mask-hydration-status {
+  display: inline-flex;
+  max-width: 390px;
+  align-items: center;
+  gap: 6px;
+  color: #92400e;
+}
+
+.pdf-viewer__visual-mask-hydration-status > svg {
+  flex: 0 0 auto;
+}
+
+.pdf-viewer__visual-mask-hydration-status.is-failed {
+  color: #991b1b;
+}
+
+.pdf-viewer__visual-mask-hydration-retry {
+  display: inline-flex;
+  min-height: 24px;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border: 1px solid currentColor;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.94);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.pdf-viewer__visual-mask-hydration-retry:hover {
+  background: rgba(254, 242, 242, 0.96);
+}
+
+.pdf-viewer__visual-mask-hydration-retry:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.pdf-viewer__apply-redactions {
+  flex: 0 0 auto;
+}
+
+.pdf-viewer__apply-redactions:not(.office-ribbon-control) {
+  color: #991b1b;
+}
+
+.pdf-viewer__redaction-review {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.pdf-viewer__redaction-review-summary {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 7px;
+  border: 1px solid var(--office-control-border, rgba(153, 27, 27, 0.24));
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  list-style: none;
+  white-space: nowrap;
+}
+
+.pdf-viewer__redaction-review-summary:not(.office-ribbon-control) {
+  background: rgba(254, 242, 242, 0.82);
+  color: #7f1d1d;
+}
+
+.pdf-viewer__redaction-review-summary::-webkit-details-marker {
+  display: none;
+}
+
+.pdf-viewer__redaction-review[open]
+  > .pdf-viewer__redaction-review-summary:not(.office-ribbon-control) {
+  background: #fee2e2;
+}
+
+.pdf-viewer__redaction-review-count {
+  display: inline-flex;
+  min-width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+  border-radius: 999px;
+  font-size: 10px;
+}
+
+.pdf-viewer__redaction-review-count:not(.office-ribbon-control) {
+  background: rgba(127, 29, 29, 0.1);
+}
+
+.pdf-viewer__redaction-review-list {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 6px);
+  right: 0;
+  display: grid;
+  width: min(340px, calc(100vw - 32px));
+  max-height: 280px;
+  gap: 5px;
+  margin: 0;
+  padding: 8px;
+  overflow: auto;
+  border: 1px solid var(--office-control-border, rgba(15, 23, 42, 0.14));
+  border-radius: 8px;
+  list-style: none;
+}
+
+.pdf-viewer__redaction-review-list:not(.office-ribbon-control) {
+  background: var(--office-ribbon-surface, #fff);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.2);
+}
+
+.pdf-viewer__redaction-review-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 30px;
+  align-items: stretch;
+  overflow: hidden;
+  border: 1px solid var(--office-control-border, rgba(148, 163, 184, 0.28));
+  border-radius: 6px;
+}
+
+.pdf-viewer__redaction-review-item:not(.office-ribbon-control) {
+  background: rgba(248, 250, 252, 0.82);
+}
+
+.pdf-viewer__redaction-review-item--unmapped {
+  border-color: var(--office-control-border, rgba(185, 28, 28, 0.38));
+}
+
+.pdf-viewer__redaction-review-item--unmapped:not(.office-ribbon-control) {
+  background: rgba(254, 242, 242, 0.94);
+}
+
+.pdf-viewer__redaction-review-jump,
+.pdf-viewer__redaction-review-delete {
+  border: 0;
+}
+
+.pdf-viewer__redaction-review-jump:not(.office-ribbon-control),
+.pdf-viewer__redaction-review-delete:not(.office-ribbon-control) {
+  background: transparent;
+}
+
+.pdf-viewer__redaction-review-jump {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+  padding: 7px 8px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.pdf-viewer__redaction-review-jump:not(.office-ribbon-control) {
+  color: #334155;
+}
+
+.pdf-viewer__redaction-review-jump > span {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pdf-viewer__redaction-review-jump strong {
+  font-size: 11px;
+}
+
+.pdf-viewer__redaction-review-jump strong:not(.office-ribbon-control) {
+  color: #7f1d1d;
+}
+
+.pdf-viewer__redaction-review-jump span span,
+.pdf-viewer__redaction-review-jump small {
+  font-size: 10px;
+}
+
+.pdf-viewer__redaction-review-jump span span:not(.office-ribbon-control),
+.pdf-viewer__redaction-review-jump small:not(.office-ribbon-control) {
+  color: #64748b;
+}
+
+.pdf-viewer__redaction-review-jump:disabled {
+  cursor: default;
+}
+
+.pdf-viewer__redaction-review-item--unmapped
+  .pdf-viewer__redaction-review-jump small {
+  font-weight: 600;
+}
+
+.pdf-viewer__redaction-review-item--unmapped
+  .pdf-viewer__redaction-review-jump small:not(.office-ribbon-control) {
+  color: #991b1b;
+}
+
+.pdf-viewer__redaction-review-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid var(--office-control-border, rgba(148, 163, 184, 0.28));
+  cursor: pointer;
+}
+
+.pdf-viewer__redaction-review-delete:not(.office-ribbon-control) {
+  color: #991b1b;
+}
+
+.pdf-viewer__redaction-review-delete:disabled {
+  cursor: default;
+}
+
+.pdf-viewer__redaction-review-delete:disabled:not(.office-ribbon-control) {
+  opacity: 0.5;
+}
+
+.pdf-viewer__textbox-view-mask,
+.pdf-viewer__textbox-view-text {
+  position: absolute;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.pdf-viewer__textbox-view-text {
+  line-height: 1.2;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  overflow: visible;
+  padding-bottom: 0.2em;
+}
+
+.pdf-viewer__textbox-view-text::before {
+  content: attr(data-pdf-textbox-view-content);
+  white-space: pre-wrap;
+}
+
+.pdf-viewer__textbox-view-text [data-pdf-textbox-run-content]::before {
+  content: attr(data-pdf-textbox-run-content);
+  white-space: pre-wrap;
+}
+
+/* lineLayout already owns wrapping/positioning. Do not let the legacy run
+   pseudo-element wrap again when its platform font measures a few pixels wider. */
+.pdf-viewer__textbox-view-text
+  [data-pdf-textbox-line-content]
+  [data-pdf-textbox-run-content]::before {
+  white-space: pre;
+}
+
+.pdf-viewer__textbox-view-text [data-pdf-textbox-line-content]::before {
+  content: attr(data-pdf-textbox-line-content);
+  white-space: pre;
+}
+
+/* PDF text boxes are extracted as `top = baseline - fontSize`, and both the
+   native and raster export paths draw at `top + fontSize`. A normal browser
+   line box derives its baseline from font ascent metadata instead, which moves
+   replacement text upward when editing starts. This zero-width inline strut
+   has its baseline at its bottom edge, pinning the shared line baseline to
+   exactly one em below the box/positioned-line top. Generated content keeps it
+   out of contenteditable text, selection offsets, copy/paste, and persistence. */
+.pdf-textbox-source-baseline::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 1em;
+  vertical-align: baseline;
+  pointer-events: none;
+}
+
+.pdf-viewer__textbox-view-formula {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+  overflow: visible;
+}
+
+.pdf-viewer__textbox-view-formula::before {
+  content: "";
+}
+
+.pdf-viewer__textbox-view-formula .katex-display {
+  margin: 0;
+}
+
+.pdf-formula-preview--compact .katex-display {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.pdf-formula-preview--compact .katex {
+  color: inherit;
+  transform-origin: center center;
+}
+
+.pdf-formula-preview[data-invalid="true"] {
+  color: var(--console-danger, #dc2626);
+  border-color: rgba(220, 38, 38, 0.35);
+  background: rgba(254, 242, 242, 0.85);
+}
+
+.pdf-formula-preview--compact[data-invalid="true"] {
+  outline: 1px solid rgba(220, 38, 38, 0.45);
+  outline-offset: -1px;
+  background: rgba(254, 242, 242, 0.45);
+}
+
+/* ------------------------------------------------------------------ */
+/* Sticky-note annotations                                            */
+/* ------------------------------------------------------------------ */
+
+/* While placing, the whole page reads as a click target. */
+.pdf-viewer__page--note-mode {
+  cursor: copy;
+}
+
+.pdf-viewer__note-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.pdf-viewer__note-marker {
+  position: absolute;
+  /* Anchor the icon's lower-left to the stored point. */
+  transform: translate(-2px, -100%);
+  pointer-events: auto;
+  border: none;
+  background: transparent;
+  padding: 2px;
+  cursor: pointer;
+  line-height: 0;
+  filter: drop-shadow(0 1px 1px rgba(15, 23, 42, 0.35));
+  transition: transform var(--duration-fast, 100ms)
+    var(--ease-out-v2, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.pdf-viewer__note-marker:hover,
+.pdf-viewer__note-marker.is-active {
+  transform: translate(-2px, -100%) scale(1.15);
+}
+
+.pdf-viewer__note-marker--centered {
+  transform: translate(-50%, -50%);
+}
+
+.pdf-viewer__note-marker--centered:hover,
+.pdf-viewer__note-marker--centered.is-active {
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+.pdf-viewer__note-marker--pending {
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.pdf-viewer__native-text-note-target {
+  position: absolute;
+  pointer-events: auto;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  cursor: pointer;
+}
+
+ 
+.pdf-viewer__form-validation-toast {
+  position: absolute;
+  bottom: 16px;
+  /* Centred without a transform, so the shared pop-in entrance
+     (.office-pop-in) can animate it. */
+  left: 0;
+  right: 0;
+  width: fit-content;
+  margin-inline: auto;
+  z-index: 30;
+  max-width: min(520px, calc(100% - 32px));
+  pointer-events: none;
+}
+
+/* A RadiosInUnison copy: the same option drawn again; the page paints the
+   widget, the control is only the hit area and the state for the reader. */
+.pdf-viewer__form-radio--unison {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+/* The selection outline held over a vector while its write is accepted and
+   the routes are rebuilt: the same dashed line as the live frame, no handles,
+   no pointer events. */
+.pdf-viewer__native-vector-ghost-frame {
+  position: absolute;
+  box-sizing: border-box;
+  border: 1px dashed rgba(37, 99, 235, 0.85);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 7;
+}
+
+/* The shape's pixels riding along with a frame drag, then parked at the drop
+ * point until the reader paints the moved shape. */
+.pdf-viewer__native-vector-drag-ghost {
+  position: absolute;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 7;
+}
+
+/* Over a text box being edited the stage is cut away: it holds the page's
+   words as they stood when its shape was lifted, and showed them in place of
+   the box's draft (the editor sets the box's edges on its page). */
+.pdf-viewer__page[data-pdf-native-text-editing-box="true"] .pdf-viewer__native-vector-drag-ghost {
+  clip-path: polygon(
+    evenodd,
+    0 0, 100% 0, 100% 100%, 0 100%, 0 0,
+    var(--pdf-text-editing-left) var(--pdf-text-editing-top),
+    var(--pdf-text-editing-left) var(--pdf-text-editing-bottom),
+    var(--pdf-text-editing-right) var(--pdf-text-editing-bottom),
+    var(--pdf-text-editing-right) var(--pdf-text-editing-top),
+    var(--pdf-text-editing-left) var(--pdf-text-editing-top)
+  );
+}
+
+.pdf-viewer__native-text-note-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.pdf-viewer__native-text-note-target:focus-visible {
+  outline: 2px solid rgba(37, 99, 235, 0.85);
+  outline-offset: 2px;
+}
+
+/* The sticky-note card wears the PDF dialog chrome (`.office-dialog`): the
+   chrome draws the card, the text, the fields and the buttons; this keeps
+   placement and layout, and the colour swatches keep their own colours. */
+/* The note's popover is the shared comment popover (OfficeCommentPopover:
+   white card, the note's colour as its accent, the arrow at the marker),
+   placed inside the page rather than fixed to the viewport. */
+.pdf-viewer__page .pdf-note-popover,
+.pdf-note-popover {
+  position: absolute;
+  z-index: 6;
+  width: min(320px, calc(100% - 12px));
+  max-height: none;
+  pointer-events: auto;
+}
+
+.pdf-note-popover__thread {
+  min-width: 0;
+}
+
+/* The note's own row: edit, delete, resolve beside its author, as a
+   comment row's actions sit (the thread's header is a flex row). */
+.pdf-note-popover__actions {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+  /* Room for the popover's close button at the card's corner. */
+  margin-right: 28px;
+}
+
+.pdf-note-popover__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 26px;
+  min-width: 26px;
+  padding: 0 5px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #616161;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.pdf-note-popover__action:hover,
+.pdf-note-popover__action:focus-visible {
+  background: #f1f1f1;
+  color: #242424;
+}
+
+.pdf-note-popover__action[data-tone="danger"]:hover,
+.pdf-note-popover__action[data-tone="danger"]:focus-visible {
+  color: #c4314b;
+}
+
+.pdf-note-popover__action:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Editing the note takes the thread's place: its words, its colour, Save. */
+.pdf-note-popover__editor {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 36px 12px 12px;
+}
+
+.pdf-note-popover__field {
+  display: block;
+}
+
+.pdf-note-popover__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pdf-note-popover textarea {
+  width: 100%;
+  min-height: 72px;
+  padding: 6px 8px;
+  border: 1px solid #d1d1d1;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #242424;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.45;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.pdf-note-popover textarea:focus-visible {
+  outline: 2px solid var(--office-comments-accent, #b146bd);
+  outline-offset: -1px;
+}
+
+.pdf-note-popover__editor-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pdf-note-popover__colors {
+  display: flex;
+  gap: 6px;
+}
+
+.pdf-note-popover__swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.pdf-note-popover__swatch.is-active {
+  border-color: rgba(15, 23, 42, 0.7);
+}
+
+.pdf-note-popover__swatch:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.5);
+  outline-offset: 1px;
+}
+
+.pdf-note-popover__editor-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.pdf-note-popover__editor-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Ink / freehand drawing annotations                                 */
+/* ------------------------------------------------------------------ */
+
+/* Area-highlight preset button: a rect-fill wash for figures / scanned regions.
+   Active state tints it the highlighter colour so it reads as armed. */
+
+/* Shape interior-fill controls (fill toggle + color + opacity), inline. */
+
+/* While drawing, the whole page reads as a drawing surface. */
+.pdf-viewer__page--draw-mode {
+  cursor: crosshair;
+  touch-action: none;
+}
+ 
+ 
+.pdf-viewer__page--shape-mode,
+.pdf-viewer__page--redact-mode,
+.pdf-viewer__page--link-mode,
+.pdf-viewer__page--snapshot-mode,
+.pdf-viewer__page--measure-mode,
+.pdf-viewer__page--erase-mode {
+  touch-action: none;
+}
+
+/* The Draw tab's Eraser (绘图): the page is the eraser's surface, its ring
+   (below) stands for the cursor, and the strokes stop taking clicks so a
+   drag over one erases it instead of selecting it. */
+.pdf-viewer[data-pdf-ink-tool="eraser"] .pdf-viewer__page {
+  cursor: none;
+  touch-action: none;
+}
+.pdf-viewer[data-pdf-ink-tool="eraser"] .pdf-viewer__ink-layer path,
+.pdf-viewer[data-pdf-ink-tool="eraser"] .pdf-viewer__annotation-hit--ink path {
+  pointer-events: none !important;
+}
+.pdf-viewer__ink-eraser-ring {
+  position: fixed;
+  z-index: 2147483000;
+  box-sizing: border-box;
+  border: 1px solid #64748b;
+  border-radius: 50%;
+  background: rgba(148, 163, 184, 0.35);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+.pdf-viewer__ink-eraser-ring[data-eraser-kind="stroke"] {
+  border-style: dashed;
+}
+
+.pdf-viewer__ink-layer,
+/* Shape annotations, and the hit targets of a source PDF's own shapes, are
+   drawn in page-percent coordinates over the paper exactly as ink is. Left in
+   flow, the layer lands below the canvas, where the paper clips it: a drawn
+   rectangle vanished and a source shape could not be clicked. */
+.pdf-viewer__shape-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Sits above highlights but below note markers / popovers. */
+  z-index: 4;
+}
+
+/* ------------------------------------------------------------------ */
+/* Deck picker dialog (extends quote-to-page-dialog styles)            */
+/* ------------------------------------------------------------------ */
+
+.deck-picker-dialog__count {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  color: var(--console-text-muted, #64748b);
+}
+
+.deck-picker-dialog__count input {
+  width: 64px;
+  font-variant-numeric: tabular-nums;
+}
+
+.deck-picker-dialog__new {
+  display: flex;
+  gap: 6px;
+}
+
+.deck-picker-dialog__new input {
+  flex: 1;
+}
+
+.deck-picker-dialog__new button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px dashed var(--office-control-border, color-mix(in srgb, var(--console-accent, #0d9488) 40%, transparent));
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.deck-picker-dialog__new button:not(.office-ribbon-control) {
+  background: var(--office-dialog-accent-soft, rgba(239, 246, 255, 0.95));
+  color: var(--office-dialog-ink, var(--console-accent, #0d9488));
+}
+
+.deck-picker-dialog__new button:disabled {
+  cursor: default;
+}
+
+.deck-picker-dialog__new button:disabled:not(.office-ribbon-control) {
+  opacity: 0.6;
+}
+
+.quote-to-page-dialog__list button > small {
+  margin-left: auto;
+  padding-left: 8px;
+  font-size: 0.6875rem;
+}
+
+.quote-to-page-dialog__list button > small:not(.office-ribbon-control) {
+  color: var(--office-dialog-muted, var(--console-text-muted, #94a3b8));
+}
+
+/* ------------------------------------------------------------------ */
+/* Versions panel (overlays inside ReferenceDocumentWindow body)       */
+/* ------------------------------------------------------------------ */
+
+/* The versions pane is the shared task pane in the PDF chrome; this class
+   only docks it at the window's right edge (the chrome draws the card, title
+   row, buttons and error line). */
+.versions-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(340px, 50%);
+  z-index: 10;
+}
+
+.versions-panel__body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.versions-panel__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--console-text-muted, #64748b);
+  font-size: 0.8125rem;
+}
+
+.versions-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.versions-panel__row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(248, 250, 252, 0.7);
+}
+
+.versions-panel__row > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.75rem;
+}
+
+.versions-panel__row > div > strong {
+  color: var(--console-text-primary, #0f172a);
+  font-weight: 700;
+}
+
+.versions-panel__row > div > small,
+.versions-panel__row > div > span {
+  color: var(--console-text-muted, #64748b);
+  font-size: 0.6875rem;
+}
+
+.versions-panel__row > div > em {
+  color: var(--console-accent, #0d9488);
+  font-style: normal;
+  font-size: 0.6875rem;
+}
+
+.versions-panel__row button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: 1px solid var(--office-control-border, var(--win-border, rgba(13, 148, 136, 0.2)));
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.versions-panel__row button:not(.office-ribbon-control) {
+  background: #fff;
+  color: var(--console-text-primary, #0f172a);
+}
+
+.versions-panel__row button:hover:not(:disabled) {
+  border-color: var(--office-control-border, var(--console-accent, #0d9488));
+}
+
+.versions-panel__row button:hover:not(:disabled):not(.office-ribbon-control) {
+  color: var(--console-accent, #0d9488);
+}
+
+.versions-panel__row button:disabled {
+  cursor: default;
+}
+
+.versions-panel__row button:disabled:not(.office-ribbon-control) {
+  opacity: 0.6;
+}
+
+/* ------------------------------------------------------------------ */
+/* Highlight edit dialog                                              */
+/* ------------------------------------------------------------------ */
+
+.highlight-edit-dialog__snippet {
+  margin: 6px 0 12px;
+  padding: 10px 12px;
+  background: rgba(248, 250, 252, 0.95);
+  border-left: 3px solid rgba(252, 211, 77, 0.7);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--console-text-secondary, #475569);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.highlight-edit-dialog__snippet small {
+  font-size: 0.6875rem;
+  color: var(--console-text-muted, #94a3b8);
+}
+
+.highlight-edit-dialog__section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.highlight-edit-dialog__section > label,
+.highlight-edit-dialog__section > strong {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--console-text-muted, #64748b);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.highlight-edit-dialog__section textarea {
+  width: 100%;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  resize: vertical;
+  background: #fff;
+}
+
+.highlight-edit-dialog__color-row {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.highlight-edit-dialog__swatch {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid var(--win-hairline, rgba(13, 148, 136, 0.12));
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--console-text-primary, #0f172a);
+}
+
+.highlight-edit-dialog__swatch.is-active {
+  border-color: color-mix(in srgb, var(--console-accent, #0d9488) 60%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--console-accent, #0d9488) 18%, transparent);
+}
+
+.highlight-edit-dialog__pages {
+  border: 1px solid var(--win-hairline, rgba(13, 148, 136, 0.12));
+  border-radius: 10px;
+  background: rgba(248, 250, 252, 0.7);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.highlight-edit-dialog__pages ul {
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.highlight-edit-dialog__pages button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 10px;
+  border: none;
+  font-size: 0.8125rem;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.highlight-edit-dialog__pages button:not(.office-ribbon-control) {
+  background: transparent;
+  color: var(--console-text-primary, #0f172a);
+}
+
+.highlight-edit-dialog__pages button:hover:not(.office-ribbon-control) {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.highlight-edit-dialog__pages button.is-linked:not(.office-ribbon-control) {
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 8%, transparent);
+  color: var(--console-accent, #0d9488);
+}
+
+.highlight-edit-dialog__pages button > span {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.highlight-edit-dialog__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+/* The style toggles (highlight / underline / strikethrough / squiggly) and
+   the delete command are the dialog chrome's compact buttons; a pressed
+   toggle takes the chrome's accent, delete its danger tone. */
+.highlight-edit-dialog__style-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.office-dialog .office-dialog__button.highlight-edit-dialog__delete {
+  border-color: var(--office-dialog-danger-line);
+  color: var(--office-dialog-danger);
+}
+
+.office-dialog .office-dialog__button.highlight-edit-dialog__delete:hover:not(:disabled) {
+  background: var(--office-dialog-danger-soft);
+}
+
+.highlight-edit-dialog__save:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.highlight-edit-dialog__save {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 14px;
+  border: none;
+  background: var(
+    --console-cta-gradient,
+    linear-gradient(135deg, #f97316, #ea6a0f)
+  );
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+/* ------------------------------------------------------------------ */
+/* Referencing highlights (in NoteWindow)                              */
+/* ------------------------------------------------------------------ */
+
+.referencing-highlights {
+  margin: 16px 24px 24px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--win-hairline, rgba(13, 148, 136, 0.12));
+  background: rgba(252, 211, 77, 0.05);
+}
+
+.referencing-highlights header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.referencing-highlights header strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--console-text-muted, #64748b);
+}
+
+.referencing-highlights header button {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.referencing-highlights header button:not(.office-ribbon-control) {
+  background: transparent;
+  color: var(--console-text-muted, #64748b);
+}
+
+.referencing-highlights header button:hover:not(:disabled):not(.office-ribbon-control) {
+  background: var(--win-hover, rgba(13, 148, 136, 0.08));
+}
+
+.referencing-highlights__error {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: #b91c1c;
+  margin-bottom: 8px;
+}
+
+.referencing-highlights__loading-skeleton {
+  align-items: center;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  min-height: 30px;
+  width: 100%;
+}
+
+.referencing-highlights__loading-skeleton > * {
+  justify-self: stretch;
+  max-width: 100%;
+  min-width: 34px;
+}
+
+.referencing-highlights ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.referencing-highlights li > button {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--office-control-border, var(--win-hairline, rgba(13, 148, 136, 0.12)));
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.referencing-highlights li > button:not(.office-ribbon-control) {
+  background: #fff;
+}
+
+.referencing-highlights li > button:hover {
+  border-color: var(--office-control-border, color-mix(in srgb, var(--console-accent, #0d9488) 30%, transparent));
+}
+
+.referencing-highlights__swatch {
+  width: 6px;
+  flex-shrink: 0;
+  border-radius: 4px;
+}
+
+.referencing-highlights__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+
+.referencing-highlights__copy strong {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--console-text-primary, #0f172a);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.referencing-highlights__copy em {
+  font-style: normal;
+  font-size: 0.75rem;
+  color: var(--console-text-secondary, #475569);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.referencing-highlights__copy small {
+  font-size: 0.6875rem;
+  color: var(--console-text-muted, #94a3b8);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.referencing-highlights__copy small.is-note {
+  color: var(--console-accent, #0d9488);
+}
+
+/* ---- Interactive AcroForm form-fill overlays ------------------------- */
+
+.pdf-viewer__form-layer {
+  position: absolute;
+  inset: 0;
+  /* Above link (z 6) / note (z 5) layers so the interactive controls receive
+     pointer events when form-fill mode is on. When inactive the layer ignores
+     pointer events so text selection / notes / drawing work as before. */
+  z-index: 7;
+  pointer-events: none;
+}
+
+.pdf-viewer__form-layer.is-active {
+  pointer-events: none; /* layer is a passthrough; only the controls opt in */
+}
+
+/* The page canvas paints every widget from the PDF's own appearance stream in
+   every mode, with the viewer's current values (pdf.js annotation storage).
+   The controls below are hit targets over that painting: they never draw a
+   check, a dot, a chevron or a value of their own, so a field looks the same
+   whether the page is browsed, filled or edited. The caret's field alone
+   swaps to a live editor while it has focus. */
+.pdf-viewer__form-field {
+  position: absolute;
+  box-sizing: border-box;
+  margin: 0;
+  font-size: 12px;
+  font-family: inherit;
+  color: #0f172a;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  /* Inputs are only interactive while form-fill mode is on. */
+  pointer-events: none;
+}
+
+.pdf-viewer__form-layer.is-active .pdf-viewer__form-field:not(:disabled) {
+  pointer-events: auto;
+  /* The fill highlight readers know from other PDF tools: a light tint over
+     each fillable field, the widget's own painting showing through. */
+  background-color: rgba(37, 99, 235, 0.1);
+  cursor: pointer;
+}
+
+.pdf-viewer__form-layer.is-active
+  .pdf-viewer__form-field:not(:disabled):hover {
+  background-color: rgba(37, 99, 235, 0.16);
+}
+
+.pdf-viewer__form-field:focus-visible {
+  outline: 2px solid rgba(37, 99, 235, 0.75);
+  outline-offset: 0;
+}
+
+.pdf-viewer__form-field:disabled {
+  /* Inactive/read-only HTML controls sit over the PDF's own appearance
+     stream. Hide their paint completely so values, checks and radio dots are
+     never drawn twice; authoring selection triggers are buttons and remain
+     visible because they are not disabled. */
+  opacity: 0;
+  background: transparent;
+  border-color: transparent;
+  cursor: default;
+}
+
+/* Text fields carry the widget's /MK and /DA look as inline styles for the
+   live editor. While the caret is elsewhere the painting under the control is
+   the value, so the control's own text, fill and border go transparent
+   (inline styles need !important to be overridden). */
+.pdf-viewer__form-text {
+  padding: 0 2px;
+  cursor: text;
+}
+
+.pdf-viewer__form-text:not(:focus),
+.pdf-viewer__form-choice[data-field-editable="true"]:not(:focus) {
+  color: transparent !important;
+  caret-color: transparent;
+  border-color: transparent !important;
+  background-image: none !important;
+  text-shadow: none;
+}
+
+.pdf-viewer__form-layer.is-active
+  .pdf-viewer__form-text:not(:disabled):not(:focus),
+.pdf-viewer__form-layer.is-active
+  .pdf-viewer__form-choice[data-field-editable="true"]:not(:disabled):not(:focus) {
+  background-color: rgba(37, 99, 235, 0.1) !important;
+}
+
+.pdf-viewer__form-text:focus,
+.pdf-viewer__form-choice[data-field-editable="true"]:focus {
+  background-color: #fff;
+  border-color: rgba(37, 99, 235, 0.45);
+}
+
+/* An editable combo box is a text field while it has the caret: the
+   dropdown rule below makes the closed control's text transparent, which
+   must not swallow what is being typed. */
+.pdf-viewer__form-choice[data-field-editable="true"]:focus {
+  color: #0f172a;
+  caret-color: auto;
+}
+
+.pdf-viewer__form-text:not(:focus)::placeholder {
+  color: transparent;
+}
+
+/* A password field is the exception: its own appearance stream can hold the
+   value as plain text, so the page never paints it (a noView storage entry,
+   lib/pdf/form-appearance-storage.ts) and the control draws the field, its
+   value masked, in every state: browsing, filling, focused or not (user audit
+   PDF 0006). The widget's /MK and /DA colours arrive as custom properties. */
+.pdf-viewer__form-text[data-field-password="true"]:not(:focus),
+.pdf-viewer__form-text[data-field-password="true"]:disabled {
+  opacity: 1;
+  color: var(--pdf-form-password-color, #000) !important;
+  -webkit-text-fill-color: var(--pdf-form-password-color, #000);
+  border-color: var(--pdf-form-password-border, transparent) !important;
+}
+
+.pdf-viewer__form-layer.is-active
+  .pdf-viewer__form-text[data-field-password="true"]:not(:disabled):not(:focus) {
+  background-color: var(--pdf-form-password-background, transparent) !important;
+  background-image: linear-gradient(
+    rgba(37, 99, 235, 0.1),
+    rgba(37, 99, 235, 0.1)
+  ) !important;
+}
+
+.pdf-viewer__form-textarea {
+  resize: none;
+  line-height: 1.2;
+  padding: 1px 2px;
+}
+
+/* Dropdowns keep the native popup; the closed control itself draws nothing
+   over the widget's painted value and arrow. */
+.pdf-viewer__form-choice {
+  padding: 0 2px;
+  appearance: none;
+  -webkit-appearance: none;
+  color: transparent;
+}
+
+.pdf-viewer__form-choice option {
+  color: #0f172a;
+  background: #fff;
+}
+
+/* A list box's rows must line up with the rows the reader clicks, so it is a
+   live control only while focused; unfocused it is a transparent target and
+   the page's own painting shows which rows are selected (the control's
+   inline style carries no opacity, so this rule holds). A single-selection
+   list box (a /Ch field without the Combo flag) is a list too, never a
+   dropdown. */
+.pdf-viewer__form-choice[multiple],
+.pdf-viewer__form-choice[data-field-listbox="true"] {
+  opacity: 0;
+}
+
+.pdf-viewer__form-choice[multiple]:focus:not(:disabled),
+.pdf-viewer__form-choice[data-field-listbox="true"]:focus:not(:disabled) {
+  opacity: 1;
+  color: #0f172a;
+  background: #fff;
+  border-color: rgba(37, 99, 235, 0.45);
+}
+
+/* Check boxes and radio buttons: the page paints the box, the check and the
+   dot from the widget's own appearance states; the control is the click. */
+.pdf-viewer__form-checkbox,
+.pdf-viewer__form-radio {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
+}
+
+.pdf-viewer__form-radio {
+  border-radius: 50%;
+}
+
+/* While placing a signature, the whole page reads as a click target. */
+.pdf-viewer__page--sign-mode {
+  cursor: copy;
+}
+
+/* "Sign here" affordance shown over a PDF signature (Sig) form field. */
+.pdf-viewer__sign-field {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1d4ed8;
+  background: rgba(191, 219, 254, 0.55);
+  border: 1px dashed rgba(37, 99, 235, 0.65);
+  border-radius: 3px;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.pdf-viewer__sign-field:disabled {
+  color: #64748b;
+  background: rgba(148, 163, 184, 0.18);
+  border-style: solid;
+  cursor: default;
+}
+
+/* 图片字段: the page draws the field's face (its picture, or the empty
+   frame); the control over it is its hit area, its focus and its busy state. */
+.pdf-viewer__image-field {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.pdf-viewer__image-field:hover:not(:disabled),
+.pdf-viewer__image-field:focus-visible {
+  border-color: rgba(37, 99, 235, 0.75);
+  background: rgba(191, 219, 254, 0.18);
+  outline: none;
+}
+
+.pdf-viewer__image-field:disabled {
+  cursor: default;
+}
+
+.pdf-viewer__image-field[data-busy="true"] {
+  cursor: progress;
+  background: rgba(148, 163, 184, 0.2);
+}
+
+ 
+.pdf-viewer__sign-field--source-face,
+.pdf-viewer__sign-field--source-face:disabled {
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+.pdf-viewer__sign-field--source-face > * {
+  visibility: hidden;
+}
+
+.pdf-viewer__sign-field--source-face:hover {
+  background: rgba(37, 99, 235, 0.1);
+}
+
+.pdf-viewer__sign-field--source-face:focus-visible {
+  outline: 2px solid rgba(37, 99, 235, 0.75);
+  outline-offset: 1px;
+}
+
+/* The placed-signatures layer (above the note layer, below the form controls). */
+.pdf-viewer__signature-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+   
+  z-index: 8;
+}
+
+.pdf-viewer__signature {
+  position: absolute;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid transparent;
+  background: transparent;
+  color: inherit;
+  pointer-events: auto;
+}
+
+.pdf-viewer__signature:focus-visible {
+  outline: 2px solid rgba(37, 99, 235, 0.85);
+  outline-offset: 2px;
+}
+
+.pdf-viewer__signature-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  user-select: none;
+}
+
+.pdf-viewer__signature-text {
+  width: 100%;
+  /* Scale the script font to the box height; never overflow. */
+  font-size: clamp(10px, 4vh, 40px);
+  line-height: 1.1;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+/* What is placed on a page (a signature, a stamp, a measurement, a note,
+   a link) and the page tiles of the rail are pressed as objects, never as
+   text or pictures: Safari dragged a pressed stamp's or signature's words,
+   or a link, as a grey ghost beside it, and an aborted drag left the pages
+   hit-testing off what they drew (lib/native-drag-guard; the reader's root
+   refuses every stray dragstart too). The page's own text layer and an
+   open note's words keep their selection. */
+.pdf-viewer :is(.pdf-viewer__signature, [data-pdf-stamp-layer], [data-pdf-measurement], .pdf-viewer__measure-readout, .pdf-viewer__note-marker, .pdf-viewer__native-text-note-target, .pdf-viewer__link-layer, .pdf-viewer__thumb-item) {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.pdf-viewer :is(.pdf-viewer__signature, [data-pdf-stamp-layer], [data-pdf-measurement], .pdf-viewer__measure-readout, .pdf-viewer__note-marker, .pdf-viewer__native-text-note-target, .pdf-viewer__link-layer, .pdf-viewer__thumb-item)
+  :is(img, a[href]):not([draggable="true"]) {
+  -webkit-user-drag: none;
+}
+.pdf-viewer :is(.pdf-viewer__signature, [data-pdf-stamp-layer], [data-pdf-measurement], .pdf-viewer__measure-readout, .pdf-viewer__note-marker, .pdf-viewer__native-text-note-target, .pdf-viewer__link-layer, .pdf-viewer__thumb-item)
+  :is(input, textarea, [contenteditable="true"], [contenteditable=""], [contenteditable="plaintext-only"]) {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.pdf-viewer__signature:disabled {
+  cursor: default;
+}
+
+/* The compose-signature popover (above everything else on the page). It
+   wears the PDF dialog chrome (`.office-dialog`): the chrome draws the card,
+   text, fields and buttons; this keeps placement and layout. The pad, the
+   uploaded image and the typed preview are paper (`data-chrome-preview`), so
+   they stay white with dark ink in either theme. */
+.pdf-signature-composer {
+  position: absolute;
+  z-index: 8;
+  box-sizing: border-box;
+  width: 320px;
+  max-width: calc(100% - 32px);
+  max-height: calc(100% - 32px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  pointer-events: auto;
+}
+
+.pdf-signature-composer__header {
+  font-size: 12px;
+}
+
+/* The unlock panel of an encrypted PDF: the dialog card, centred in the
+   reading area instead of over it. */
+.office-dialog.pdf-password-prompt {
+  margin: 48px auto;
+  max-width: 340px;
+}
+
+/* The three kinds (draw / type / upload) are the dialog chrome's segmented
+   tab strip, stretched across the composer; aria-pressed marks the thumb. */
+.office-dialog .office-dialog__tabs.pdf-signature-composer__kinds {
+  align-self: stretch;
+  display: flex;
+}
+
+.pdf-signature-composer__kind {
+  flex: 1;
+}
+
+.office-dialog .pdf-signature-composer__font.is-active {
+  background: var(--office-dialog-accent-soft);
+  border-color: var(--office-dialog-accent);
+  color: var(--office-dialog-ink);
+}
+
+.pdf-signature-composer__pad-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pdf-signature-composer__pad {
+  width: 100%;
+  height: 120px;
+  border: 1px dashed rgba(15, 23, 42, 0.3);
+  border-radius: 6px;
+  background: #fff;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.pdf-signature-composer__clear {
+  align-self: flex-start;
+}
+
+.pdf-signature-composer__typed {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pdf-signature-composer__upload {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.pdf-signature-composer__upload-preview {
+  width: 100%;
+  max-height: 120px;
+  object-fit: contain;
+  border: 1px dashed rgba(15, 23, 42, 0.3);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.pdf-signature-composer__upload-pick {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.pdf-signature-composer__upload-hint,
+.pdf-signature-composer__upload-error {
+  margin: 0;
+}
+
+.pdf-signature-composer__field input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.pdf-signature-composer__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pdf-signature-composer__fonts {
+  display: flex;
+  gap: 4px;
+}
+
+/* A font choice shows the signature face itself, so it keeps its size. */
+.pdf-signature-composer__font {
+  flex: 1;
+  padding: 4px;
+  font-size: 18px;
+  border: 1px solid var(--office-dialog-control-border, rgba(13, 148, 136, 0.2));
+  border-radius: 6px;
+  background: var(--office-dialog-button, #fff);
+  color: var(--office-dialog-ink, #0f172a);
+  cursor: pointer;
+}
+
+.pdf-signature-composer__font:focus-visible {
+  outline: 3px solid var(--office-dialog-focus-ring, rgba(37, 99, 235, 0.5));
+  outline-offset: 1px;
+}
+
+.pdf-signature-composer__preview {
+  min-height: 36px;
+  padding: 4px 8px;
+  font-size: 24px;
+  line-height: 1.2;
+  color: #0f172a;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 6px;
+  background: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pdf-signature-composer__footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pdf-signature-composer__confirm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+/* ---- Hand tool (grab-to-pan) -------------------------------------------
+   Cursor + selection suppression while panning is available / active.
+   Mirrors pdf.js web/grab_to_pan.js's grab / grabbing classes (Apache-2.0).
+   The text layer re-enables `user-select: text` on its spans, so both the
+   container and the layer must opt out while the hand tool owns the drag. */
+.pdf-viewer__pages--pan {
+  cursor: grab;
+  user-select: none;
+}
+
+.pdf-viewer__pages--pan .pdf-viewer__text-layer,
+.pdf-viewer__pages--pan .pdf-viewer__text-layer > span {
+  user-select: none;
+  cursor: grab;
+}
+
+.pdf-viewer__pages--panning,
+.pdf-viewer__pages--panning .pdf-viewer__text-layer,
+.pdf-viewer__pages--panning .pdf-viewer__text-layer > span {
+  cursor: grabbing;
+  user-select: none;
+}
+
+/* ---- Presentation (fullscreen reading) mode ----------------------------
+   The viewer root is the fullscreen element: black surround (projector
+   style), chrome hidden — Esc / the fullscreenchange handler restores the
+   prior view. Keyboard + click paging still work on the page surface. */
+.pdf-viewer--presentation {
+  background: #000;
+}
+
+.pdf-viewer--presentation .pdf-viewer__thumbnails,
+.pdf-viewer--presentation .pdf-viewer__outline,
+.pdf-viewer--presentation .pdf-viewer__docsearch,
+.pdf-viewer--presentation .pdf-viewer__annotations,
+.pdf-viewer--presentation .pdf-viewer__find-bar {
+  display: none;
+}
+
+/* The docked panes and the find bar wear the dialogs' chrome, whose card
+   rule (.office-dialog.office-dialog) would otherwise show them. */
+.pdf-viewer--presentation .pdf-viewer__task-pane.office-dialog.office-dialog,
+.pdf-viewer--presentation .pdf-viewer__find-bar.office-dialog.office-dialog {
+  display: none;
+}
+
+.pdf-viewer--presentation .pdf-viewer__pages {
+  background: #000;
+  padding: 0;
+}
+
+.pdf-viewer--presentation .pdf-viewer__page {
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* Transient confirmation toast for the snapshot copy. */
+ 
+.pdf-viewer__feedback-host > span,
+.pdf-viewer__feedback-host > div {
+  flex: 1 1 100%;
+  min-width: 0;
+}
+.pdf-viewer__feedback-host > .pdf-viewer__snapshot-toast {
+  width: fit-content;
+  max-width: 100%;
+  flex: 0 1 auto;
+}
+
+.pdf-viewer__snapshot-toast {
+  font-size: 12px;
+  color: #1d4ed8;
+  background: rgba(37, 99, 235, 0.12);
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+[data-theme-mode="dark"] .pdf-viewer__snapshot-toast,
+[data-theme-mode="high-contrast"] .pdf-viewer__snapshot-toast {
+  color: #bfdbfe;
+  background: rgba(96, 165, 250, 0.18);
+}
+
+/* Inline measure controls (kind / unit / scale ratio). */
+
+/* Page-labels dialog: an absolutely-positioned popover like the split menu. */
+.pdf-viewer__page-labels {
+  position: relative;
+  display: inline-flex;
+}
+
+.pdf-viewer__page-labels-dialog {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 300px;
+  max-width: 360px;
+  padding: 12px;
+}
+
+.pdf-viewer__page-labels-hint,
+.pdf-viewer__page-labels-empty,
+.pdf-viewer__page-labels-preview {
+  margin: 0;
+}
+
+.pdf-viewer__page-labels-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 6px;
+  align-items: end;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--office-dialog-divider, var(--win-hairline, rgba(13, 148, 136, 0.12)));
+}
+
+.pdf-viewer__page-labels-row label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 11px;
+  color: var(--office-dialog-muted, rgba(15, 23, 42, 0.7));
+}
+
+.pdf-viewer__page-labels-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  color: var(--office-dialog-danger, #b91c1c);
+}
+
+.pdf-viewer__page-labels-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pdf-viewer__page-labels-commit-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Document properties dialog (Acrobat "File > Properties")            */
+/* ------------------------------------------------------------------ */
+
+.pdf-properties-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdf-properties-dialog__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+}
+
+.pdf-properties-dialog__panel {
+  position: relative;
+  width: min(420px, calc(100vw - 32px));
+  max-height: calc(var(--viewport-h) - 64px);
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid var(--win-hairline, rgba(13, 148, 136, 0.12));
+  border-radius: 12px;
+  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.22);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pdf-properties-dialog__panel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pdf-properties-dialog__panel header strong {
+  font-size: 0.875rem;
+  color: var(--console-text-primary, #0f172a);
+}
+
+.pdf-properties-dialog__panel header button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.pdf-properties-dialog__panel header button:not(.office-ribbon-control) {
+  background: transparent;
+  color: var(--console-text-muted, #94a3b8);
+}
+
+.pdf-properties-dialog__panel header button:hover:not(.office-ribbon-control) {
+  background: var(--win-hover, rgba(13, 148, 136, 0.08));
+  color: var(--console-text-primary, #0f172a);
+}
+
+.pdf-properties-dialog__hint,
+.pdf-properties-dialog__keywords-hint {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--office-dialog-muted, var(--console-text-muted, #64748b));
+}
+
+.pdf-properties-dialog__fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.pdf-properties-dialog__fields [data-properties-field="subject"] {
+  grid-column: 1 / -1;
+}
+
+.pdf-properties-dialog__fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* The dialog chrome draws the fields and buttons, at its own sizes; this
+   keeps the grid. */
+.pdf-properties-dialog__fields label span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--office-dialog-muted, var(--console-text-secondary, #475569));
+}
+
+.pdf-properties-dialog__fields input,
+.pdf-properties-dialog__fields textarea {
+  width: 100%;
+  resize: vertical;
+}
+
+.pdf-properties-dialog__fields textarea {
+  min-height: 76px;
+}
+
+.pdf-properties-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+@media (max-width: 639px) {
+  .pdf-properties-dialog__fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   PDF-only Office ribbon surface.
+
+   The PDF reader is hosted inside .native-page-window, whose generic button
+   chrome is intentionally stronger than the shared ribbon base. Keep every
+   corrective selector below rooted in BOTH .pdf-viewer and the PDF ribbon so
+   none of this geometry can restyle Spreadsheet or Presentation windows.
+
+   The PDF ribbon now shares the same desktop anatomy as the other editors: a
+   44px tab row over a neutral 100px command band with one 14px caption rail.
+   PDF Home adapter keeps its command inventory, but no longer collapses to a
+   private reader-only strip.
+   -------------------------------------------------------------------------- */
+.pdf-viewer .pdf-viewer__office-ribbon.office-ribbon-skin {
+  --docs-ribbon-border: #dfe3e6;
+  --docs-ribbon-divider: #dfe3e6;
+  --docs-ribbon-accent: var(--console-accent, #0a7d72);
+  --docs-ribbon-accent-strong: var(--console-accent-strong, #0a6e66);
+  --docs-ribbon-active: color-mix(
+    in srgb,
+    var(--console-accent, #0a7d72) 12%,
+    transparent
+  );
+  --docs-ribbon-hover: color-mix(
+    in srgb,
+    var(--console-accent, #0a7d72) 8%,
+    transparent
+  );
+  --docs-home-icon-accent: var(--console-accent-strong, #0a6e66);
+  --docs-home-icon-accent-soft: color-mix(
+    in srgb,
+    var(--console-accent, #0a7d72) 62%,
+    var(--console-text-secondary, #42635e)
+  );
+  --office-ribbon-accent: var(--console-accent, #0a7d72);
+  --office-ribbon-accent-soft: color-mix(
+    in srgb,
+    var(--console-accent, #0a7d72) 10%,
+    transparent
+  );
+  --office-ribbon-band: 100px;
+  background: #ffffff;
+  background-image: none;
+  border-color: var(--docs-ribbon-border);
+}
+
+.pdf-viewer
+  .pdf-viewer__office-ribbon.office-ribbon-skin
+  .docs-home-icon__accent-soft-fill {
+  fill: color-mix(in srgb, var(--console-accent, #0a7d72) 16%, #ffffff);
+}
+
+.pdf-viewer .pdf-viewer__office-ribbon.office-ribbon-skin [data-office-home-split="true"],
+.pdf-viewer .pdf-viewer__office-ribbon.office-ribbon-skin [data-office-home-menu-indicator="true"] {
+  --office-home-disclosure-accent: var(--console-accent, #0a7d72) !important;
+}
+
+.pdf-viewer .pdf-viewer__office-ribbon.office-ribbon-skin [data-office-home-density],
+.pdf-viewer .pdf-viewer__office-ribbon.office-ribbon-skin .note-editor-ribbon-strip,
+.pdf-viewer .pdf-viewer__office-ribbon.office-ribbon-skin .note-editor-ribbon-body,
+.pdf-viewer .pdf-viewer__office-ribbon.office-ribbon-skin .note-editor-ribbon-track {
+  background: #ffffff;
+  background-image: none;
+}
+
+.pdf-viewer
+  .pdf-viewer__office-ribbon
+  [data-office-home-density] {
+  --docs-home-icon-stroke: 1.4;
+  --office-home-band-height: 100px;
+  --pdf-home-icon-stroke: 1.4;
+}
+
+.pdf-viewer .pdf-viewer__office-ribbon .note-editor-ribbon-body,
+.pdf-viewer .pdf-viewer__office-ribbon .note-editor-ribbon-track {
+  box-sizing: border-box;
+  height: 100px;
+  max-height: 100px;
+  min-height: 100px;
+}
+
+.pdf-viewer
+  .pdf-viewer__office-ribbon
+  .note-editor-ribbon-track
+  > .note-editor-office-toolbar__group {
+  box-sizing: border-box;
+  height: 100px;
+  min-height: 100px;
+  overflow: visible;
+  padding: 2px 8px 0;
+  border-right: 1px solid var(--docs-ribbon-divider);
+}
+
+.pdf-viewer
+  .pdf-viewer__office-ribbon
+  .note-editor-ribbon-track
+  > .note-editor-office-toolbar__group[data-ribbon-label]::after {
+  align-self: stretch;
+  box-sizing: border-box;
+  color: var(--docs-ribbon-muted, #667085);
+  content: attr(data-ribbon-label);
+  display: block;
+  flex: 0 0 var(--office-home-caption-height, 14px);
+  font-size: 11px;
+  font-weight: 550;
+  height: var(--office-home-caption-height, 14px);
+  letter-spacing: 0.01em;
+  line-height: var(--office-home-caption-height, 14px);
+  margin-top: auto;
+  max-width: 100%;
+  min-height: var(--office-home-caption-height, 14px);
+  overflow: hidden;
+  padding-top: 0;
+  text-align: center;
+  text-overflow: ellipsis;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* The shared pdfCompact adapter historically suppressed its caption rail.
+   This PDF-rooted selector deliberately carries enough specificity to restore
+   the common caption anatomy even when the shared module loads later. */
+.pdf-viewer
+  .pdf-viewer__office-ribbon
+  [data-office-home-density]
+  .note-editor-ribbon-body[data-ribbon-active="home"]
+  .note-editor-ribbon-track
+  > .note-editor-office-toolbar__group[data-ribbon-label]::after {
+  content: attr(data-ribbon-label);
+  display: block;
+}
+
+.pdf-viewer .pdf-viewer__office-ribbon[data-pdf-ribbon-active="home"] [data-office-home-density] svg[data-pdf-home-icon] path,
+.pdf-viewer .pdf-viewer__office-ribbon[data-pdf-ribbon-active="home"] [data-office-home-density] svg[data-pdf-home-icon] rect,
+.pdf-viewer .pdf-viewer__office-ribbon[data-pdf-ribbon-active="home"] [data-office-home-density] svg[data-pdf-home-icon] circle,
+.pdf-viewer .pdf-viewer__office-ribbon[data-pdf-ribbon-active="home"] [data-office-home-density] svg[data-pdf-home-icon] ellipse,
+.pdf-viewer .pdf-viewer__office-ribbon[data-pdf-ribbon-active="home"] [data-office-home-density] svg[data-pdf-home-icon] line,
+.pdf-viewer .pdf-viewer__office-ribbon[data-pdf-ribbon-active="home"] [data-office-home-density] svg[data-pdf-home-icon] polygon,
+.pdf-viewer .pdf-viewer__office-ribbon[data-pdf-ribbon-active="home"] [data-office-home-density] svg[data-pdf-home-icon] polyline {
+  stroke-width: var(--pdf-home-icon-stroke);
+}
+
+/* The convert menu is a described menu (docs-cupertino-menu--described):
+   the card and its rows take that grammar's sizes. */
+.docs-cupertino-menu.pdf-home-compact-convert-menu {
+  --docs-home-icon-stroke: 1.4;
+  --pdf-home-icon-stroke: 1.4;
+}
+
+.docs-cupertino-menu.pdf-home-compact-convert-menu svg[data-pdf-home-icon] path,
+.docs-cupertino-menu.pdf-home-compact-convert-menu svg[data-pdf-home-icon] rect,
+.docs-cupertino-menu.pdf-home-compact-convert-menu svg[data-pdf-home-icon] circle,
+.docs-cupertino-menu.pdf-home-compact-convert-menu svg[data-pdf-home-icon] ellipse,
+.docs-cupertino-menu.pdf-home-compact-convert-menu svg[data-pdf-home-icon] line,
+.docs-cupertino-menu.pdf-home-compact-convert-menu svg[data-pdf-home-icon] polygon,
+.docs-cupertino-menu.pdf-home-compact-convert-menu svg[data-pdf-home-icon] polyline {
+  stroke-width: var(--pdf-home-icon-stroke);
+}
+
+.docs-cupertino-menu.pdf-home-compact-action-menu {
+  --docs-home-icon-stroke: 1.4;
+  --pdf-home-icon-stroke: 1.4;
+  box-sizing: border-box;
+  min-width: 154px;
+  padding: 3px !important;
+}
+
+.docs-cupertino-menu.pdf-home-compact-action-menu svg[data-pdf-home-icon] path,
+.docs-cupertino-menu.pdf-home-compact-action-menu svg[data-pdf-home-icon] rect,
+.docs-cupertino-menu.pdf-home-compact-action-menu svg[data-pdf-home-icon] circle,
+.docs-cupertino-menu.pdf-home-compact-action-menu svg[data-pdf-home-icon] ellipse,
+.docs-cupertino-menu.pdf-home-compact-action-menu svg[data-pdf-home-icon] line,
+.docs-cupertino-menu.pdf-home-compact-action-menu svg[data-pdf-home-icon] polygon,
+.docs-cupertino-menu.pdf-home-compact-action-menu svg[data-pdf-home-icon] polyline {
+  stroke-width: var(--pdf-home-icon-stroke);
+}
+
+.docs-cupertino-menu.pdf-home-compact-action-menu [data-pdf-home-file-menu-item],
+.docs-cupertino-menu.pdf-home-compact-action-menu [data-pdf-home-screenshot-menu-item] {
+  box-sizing: border-box;
+  min-height: 30px;
+  padding: 4px 7px;
+}
+
+:is(
+    .docs-cupertino-menu.pdf-home-compact-convert-menu,
+    .docs-cupertino-menu.pdf-home-compact-action-menu,
+    [data-testid="pdf-home-layout-menu"]
+  )
+  svg {
+  height: 16px;
+  width: 16px;
+}
+
+/* Control clusters flatten inside the band: the pill chrome belongs to the
+   floating read-mode bar, not to the docs-style ribbon. */
+.pdf-viewer
+  .pdf-viewer__office-ribbon
+  .note-editor-ribbon-track
+  .pdf-viewer__nav,
+.pdf-viewer
+  .pdf-viewer__office-ribbon
+  .note-editor-ribbon-track
+  .pdf-viewer__zoom {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  gap: 1px;
+  padding: 0;
+}
+
+/* --------------------------------------------------------------------------
+   PDF Web ribbon Phase2A — desktop material, intrinsic breadth and edge rail.
+
+   These selectors remain under the PDF page root. The reader and edit-content
+   ribbons therefore share one neutral shell without changing the Office
+   foundation or another editor. Natural trailing space is preserved: groups
+   keep their intrinsic width and scroll only when the inventory exceeds the
+   available band. The mobile product surface is sealed, so the annotation
+   edge treatment is intentionally desktop-only.
+   -------------------------------------------------------------------------- */
+.native-page-window.pdf-page-window {
+  --pdf-web-canvas: #eef1f3;
+  --pdf-web-hairline: #d9dee4;
+  --pdf-web-muted: #68727f;
+  --pdf-web-ribbon: #ffffff;
+  --pdf-web-shell: #f6f7f8;
+  background: var(--pdf-web-shell);
+}
+
+.native-page-window.pdf-page-window .pdf-page-window__body {
+  background: var(--pdf-web-canvas);
+}
+
+.pdf-page-window .pdf-office-ribbon-shell {
+  background: var(--pdf-web-shell);
+  border-bottom: 0;
+  box-sizing: border-box;
+  padding: 8px 8px 6px;
+}
+
+ 
+
+.pdf-page-window
+  .pdf-office-ribbon-shell
+  > .pdf-office-ribbon.office-ribbon-skin {
+  background: var(--pdf-web-ribbon);
+  background-image: none;
+  overflow: clip;
+}
+
+.pdf-page-window .pdf-office-ribbon-shell > .pdf-office-ribbon.office-ribbon-skin [data-office-home-density],
+.pdf-page-window .pdf-office-ribbon-shell > .pdf-office-ribbon.office-ribbon-skin .note-editor-ribbon-strip,
+.pdf-page-window .pdf-office-ribbon-shell > .pdf-office-ribbon.office-ribbon-skin .note-editor-ribbon-body,
+.pdf-page-window .pdf-office-ribbon-shell > .pdf-office-ribbon.office-ribbon-skin .note-editor-ribbon-track {
+  background: var(--pdf-web-ribbon);
+  background-image: none;
+}
+
+.pdf-page-window
+  .pdf-office-ribbon-shell
+  [data-office-home-density] {
+  --office-home-band-height: 100px;
+}
+
+.pdf-page-window .pdf-office-ribbon-shell .note-editor-ribbon-body,
+.pdf-page-window .pdf-office-ribbon-shell .note-editor-ribbon-track {
+  box-sizing: border-box;
+  height: 100px;
+  max-height: 100px;
+  min-height: 100px;
+}
+
+.pdf-page-window
+  .pdf-office-ribbon-shell
+  .note-editor-ribbon-track {
+  align-items: stretch;
+  min-width: 100%;
+  width: max-content;
+}
+
+.pdf-page-window
+  .pdf-office-ribbon-shell
+  .note-editor-ribbon-track
+  > .note-editor-office-toolbar__group {
+  flex: 0 0 auto;
+  min-width: max-content;
+  width: max-content;
+}
+
+ 
+.pdf-page-window
+  .pdf-office-ribbon-shell
+  .note-editor-ribbon-track
+  > .note-editor-office-toolbar__group:not(:last-child) {
+  border-inline-end: 1px solid var(--docs-ribbon-divider, #e5e7eb);
+}
+
+.pdf-page-window
+  .pdf-office-ribbon-shell
+  .note-editor-ribbon-track
+  > .note-editor-office-toolbar__group[data-ribbon-label]::after {
+  color: var(--pdf-web-muted);
+  content: attr(data-ribbon-label);
+  display: block;
+  flex: 0 0 var(--office-home-caption-height, 14px);
+  font-size: 11px;
+  height: var(--office-home-caption-height, 14px);
+  line-height: var(--office-home-caption-height, 14px);
+  margin-top: auto;
+  min-height: var(--office-home-caption-height, 14px);
+  overflow: hidden;
+  padding-top: 0;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdf-page-window
+  .pdf-office-ribbon-shell
+  .note-editor-office-toolbar
+  button:disabled {
+  border-color: var(--office-control-border, transparent);
+  cursor: default;
+}
+
+.pdf-page-window
+  .pdf-office-ribbon-shell
+  .note-editor-office-toolbar
+  button:disabled:not(.office-ribbon-control) {
+  background: #f3f4f6;
+  box-shadow: none;
+  color: #707985;
+  opacity: 1;
+}
+
+.pdf-page-window
+  .pdf-office-ribbon-shell
+  .note-editor-office-toolbar
+  button:disabled
+  svg:not(.office-ribbon-control) {
+  color: #7b8591;
+  opacity: 0.88;
+}
+
+.pdf-page-window .pdf-viewer,
+.pdf-page-window .pdf-page-window__text-editor {
+  background: var(--pdf-web-canvas);
+}
+
+.pdf-page-window .pdf-page-window__workspace-file-menu-trigger {
+  align-items: center;
+  display: inline-flex;
+  height: 30px;
+  justify-content: center;
+  min-height: 30px;
+  min-width: 30px;
+  padding: 0;
+  width: 30px;
+}
+
+.pdf-page-window
+  .pdf-office-ribbon-shell
+  .pdf-office-ribbon
+  .note-editor-save-status {
+  height: 30px;
+  min-height: 30px;
+}
+
+/* The workspace actions are large ribbon commands in the Home tab's
+   Document group; they lay out as one command row, not a 30px strip. */
+.pdf-page-window .pdf-page-window__workspace-actions {
+  align-items: flex-start;
+  display: inline-flex;
+  gap: 2px;
+}
+
+.docs-cupertino-menu.pdf-page-window__workspace-file-menu {
+  box-sizing: border-box;
+  min-width: 190px;
+  padding: 4px !important;
+}
+
+.docs-cupertino-menu.pdf-page-window__workspace-file-menu
+  [data-pdf-file-action-order] {
+  align-items: center;
+  border: 0;
+  border-radius: 5px;
+  display: flex;
+  font-size: 12px;
+  gap: 8px;
+  justify-content: flex-start;
+  min-height: 30px;
+  padding: 5px 8px;
+  text-align: start;
+  width: 100%;
+}
+
+.docs-cupertino-menu.pdf-page-window__workspace-file-menu
+  [data-pdf-file-action-order]:not(.office-ribbon-control) {
+  background: transparent;
+  color: #374151;
+}
+
+.docs-cupertino-menu.pdf-page-window__workspace-file-menu
+  [data-pdf-file-action-order]:disabled:not(.office-ribbon-control) {
+  color: #707985;
+  opacity: 1;
+}
+
+/* Narrower, the body is one column and the collapsed annotations bar a row
+   of its own under the page: the page's row takes the height, the bar its
+   own. Both rows were auto, and WebKit shared the free height between them
+   -- on an iPhone the PDF ended a third of the way up its window, the rest
+   an empty band (Safari, iOS 26 simulator; Playwright WebKit). */
+@media (max-width: 860px) {
+  .pdf-page-window
+    .pdf-page-window__body.pdf-page-window__body--annotations-collapsed {
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+}
+
+@media (min-width: 861px) {
+  .pdf-page-window
+    .pdf-page-window__body.pdf-page-window__body--annotations-open {
+    /* The Docs comments pane's width (note-editor.css). */
+    grid-template-columns: minmax(0, 1fr) 360px;
+  }
+
+  .pdf-page-window
+    .pdf-page-window__body.pdf-page-window__body--annotations-collapsed {
+    grid-template-columns: minmax(0, 1fr);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .pdf-page-window
+    .pdf-page-window__body--annotations-open
+    > .pdf-page-window__side {
+    width: 360px;
+  }
+
+  .pdf-page-window
+    .pdf-page-window__body--annotations-open
+    .pdf-page-window__annotations {
+    box-sizing: border-box;
+    width: 360px;
+  }
+
+  .pdf-page-window.pdf-page-window
+    .pdf-page-window__body--annotations-collapsed
+    > .pdf-page-window__side--collapsed {
+    display: block;
+    height: 0;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    min-height: 0;
+    overflow: visible;
+    pointer-events: none;
+    position: absolute;
+    width: 0;
+    z-index: 36;
+  }
+
+  .pdf-page-window.pdf-page-window
+    .pdf-page-window__body--annotations-collapsed
+    .pdf-page-window__annotations-tab {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid var(--pdf-web-hairline);
+    border-radius: 7px 0 0 7px;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.1);
+    color: var(--pdf-web-muted);
+    display: inline-flex;
+    flex-direction: row;
+    gap: 0;
+    height: 30px;
+    inset-block-start: 12px;
+    inset-inline-end: 0;
+    justify-content: center;
+    min-height: 30px;
+    min-width: 30px;
+    padding: 0;
+    pointer-events: auto;
+    position: absolute;
+    width: 30px;
+  }
+
+  .pdf-page-window.pdf-page-window
+    .pdf-page-window__body--annotations-collapsed
+    .pdf-page-window__annotations-tab:hover {
+    background: #f7f9fa;
+    border-color: #cbd2d9;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+  }
+
+  .pdf-page-window.pdf-page-window
+    .pdf-page-window__body--annotations-collapsed
+    .pdf-page-window__annotations-tab:focus-visible {
+    background: #ffffff;
+    border-color: var(--console-accent-strong, #0f766e);
+    box-shadow: 0 0 0 2px
+      color-mix(in srgb, var(--console-accent-strong, #0f766e) 24%, transparent);
+    outline: none;
+  }
+
+  /* The count is a corner badge on the 30px tab, not a second inline item
+     that overflows the tab past the window edge. */
+  .pdf-page-window.pdf-page-window
+    .pdf-page-window__body--annotations-collapsed
+    .pdf-page-window__annotations-tab-count {
+    background: var(--console-accent-strong, #0f766e);
+    color: #ffffff;
+    font-size: 9.5px;
+    inset-block-start: -5px;
+    inset-inline-end: 1px;
+    line-height: 14px;
+    min-width: 14px;
+    padding: 0 3px;
+    pointer-events: none;
+    position: absolute;
+  }
+}
+
+/* Replace Page is a dedicated full-thumbnail workspace, not a modal laid over
+   the document. Keep the ribbon and file inputs mounted while retiring every
+   competing reader surface from layout and pointer reach. */
+.pdf-viewer[data-pdf-page-workspace="replace"] {
+  overflow: hidden;
+}
+
+.pdf-viewer[data-pdf-page-workspace="replace"]
+  > :not(input):not(.note-editor-toolbar-stack):not(
+    .pdf-viewer__page-special-workspace
+  ) {
+  display: none !important;
+}
+
+.pdf-viewer__page-special-workspace {
+  background: #f8fafc;
+  flex: 1 1 auto;
+  min-height: min(620px, calc(100dvh - 190px));
+  min-width: 0;
+  overflow: hidden;
+}
+
+.pdf-viewer__page-special-workspace
+  > .pdf-page-organizer__workspace {
+  height: 100%;
+}
+
+/* The Page tab's page view (WPS) stands in for the reading view: the pages
+   and the panes docked over them fold away under it (they peeked out under
+   the grid, a page's top and the outline card), kept laid out -- hidden, not
+   removed -- so the reading view comes back where it was. The grid keeps
+   clear of the cards that float over the reader's edges (the Comments card). */
+.pdf-viewer[data-pdf-page-workspace="grid"] .pdf-viewer__body {
+  flex: 0 0 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.pdf-viewer[data-pdf-page-workspace="grid"] .pdf-viewer__page-special-workspace {
+  padding-left: var(--pdf-page-grid-cover-left, 0px);
+  padding-right: var(--pdf-page-grid-cover-right, 0px);
+}
+
+/* ------------------------------------------------------------------ */
+/* Status bar: the Docs status pill (OfficeStatusBar) floating at the   */
+/* bottom right of the reading area, over the page gutter.              */
+/* ------------------------------------------------------------------ */
+
+.pdf-viewer__statusbar {
+  position: absolute;
+  right: 16px;
+  bottom: 10px;
+  z-index: 6;
+  margin: 0;
+}
+
+.pdf-viewer__statusbar [data-testid="pdf-status-page"] {
+  font-variant-numeric: tabular-nums;
+}
+
+.pdf-viewer__status-output {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* The page's locate tint target (lib/page-locate.ts, office-motion.css
+   `[data-located="true"]`): laid over the canvas, under the page's own
+   overlays, so a deliberate jump (outline, comment, search result, citation)
+   flashes the paper without restarting the page's entrance animation. */
+.pdf-viewer__page-locate {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* The page's photos copied from its bitmap in their own colours, over the
+   dark read mode's filter (lib/pdf/read-mode-photos.ts): under the page's
+   overlays, as the canvas is. */
+.pdf-viewer__page-photos {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: inherit;
+}
+.pdf-viewer__page-photos > span {
+  position: absolute;
+}
+.pdf-viewer__page-photos > span > canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* A comment's reply thread in the Comments pane: the shared comment cards
+   (OfficeCommentsPane.module.css messages), inset to the pane's narrow
+   column instead of the card's own 18px gutter. */
+.pdf-viewer__annotations-item .pdf-viewer__annotations-thread {
+  padding: 4px 0 2px;
+  overflow: visible;
+}
+
+/* ------------------------------------------------------------------ */
+/* Thumbnail reorder: the Docs style-card hover (note-editor.css      */
+/* .note-style-card) on a draggable page, its active edge on the drop */
+/* target plus the insertion line under it (a drop lands after it),   */
+/* and a grip that shows on hover or focus.                           */
+/* ------------------------------------------------------------------ */
+
+.pdf-viewer__thumbnails .pdf-viewer__thumb-item {
+  position: relative;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  transition:
+    border-color var(--duration-fast, 100ms) ease,
+    background var(--duration-fast, 100ms) ease,
+    box-shadow var(--duration-fast, 100ms) ease;
+}
+
+.pdf-viewer__thumbnails .pdf-viewer__thumb-item[draggable="true"]:hover {
+  border-color: color-mix(in srgb, var(--console-accent, #0d9488) 45%, transparent);
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 5%, transparent);
+}
+
+.pdf-viewer__thumbnails .pdf-viewer__thumb-item.is-drop-target {
+  border-color: var(--console-accent-strong, #0a7d72);
+  background: color-mix(in srgb, var(--console-accent, #0d9488) 6%, transparent);
+  box-shadow:
+    0 0 0 1px var(--console-accent-strong, #0a7d72) inset,
+    0 3px 0 0 var(--console-accent-strong, #0a7d72);
+}
+
+.pdf-viewer__thumb-drag-handle {
+  position: absolute;
+  top: 6px;
+  left: 4px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  border-radius: 4px;
+  color: var(--console-text-muted, #64748b);
+  cursor: grab;
+  opacity: 0;
+  transition: opacity var(--duration-fast, 100ms) ease;
+}
+
+.pdf-viewer__thumb-item:hover > .pdf-viewer__thumb-drag-handle,
+.pdf-viewer__thumb-item:focus-within > .pdf-viewer__thumb-drag-handle,
+.pdf-viewer__thumb-item.is-drop-target > .pdf-viewer__thumb-drag-handle {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .pdf-viewer__thumb-item:has(> .pdf-viewer__thumb.is-active)
+    > .pdf-viewer__thumb-drag-handle {
+    opacity: 1;
+  }
+}
+
+.pdf-viewer__thumb-item:active > .pdf-viewer__thumb-drag-handle {
+  cursor: grabbing;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdf-viewer__thumbnails .pdf-viewer__thumb-item,
+  .pdf-viewer__thumb-drag-handle {
+    transition: none;
+  }
+}
+
+ 
+:where(:root[data-touch-mode]) .pdf-crop-dialog__handle::after,
+:where(:root[data-touch-mode]) .pdf-viewer__note-marker::after,
+:where(:root[data-touch-mode]) .pdf-textbox-move-grip::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+}
+:where(:root[data-touch-mode]) .pdf-viewer__page-op {
+  width: 44px;
+  height: 44px;
+}
+
+/* Under a coarse pointer whatever the switch says: a finger dragging a crop
+   handle must not pan the page, and the text layer is drawn at full
+   strength, so a finger's selection (the platform's long press and
+   handles) reads clearly; its glyphs stay transparent over the canvas. */
+@media (pointer: coarse) {
+  .pdf-crop-dialog__handle {
+    touch-action: none;
+  }
+  .pdf-viewer__text-layer {
+    opacity: 1;
+  }
+}
+
+ 
+.pdf-viewer__native-text-note-open {
+  position: absolute;
+  z-index: 2;
+  width: 220px;
+  max-height: 180px;
+  overflow: auto;
+  pointer-events: auto;
+  background: #fffbe6;
+  border: 1px solid #e0c96a;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18);
+  font-size: 12px;
+  line-height: 1.4;
+  color: #1f2937;
+}
+
+.pdf-viewer__native-text-note-open-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 3px 6px;
+  border-bottom: 1px solid #efe1a8;
+  font-weight: 600;
+}
+
+.pdf-viewer__native-text-note-open-head button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  color: #475569;
+}
+
+.pdf-viewer__native-text-note-open p {
+  margin: 0;
+  padding: 4px 6px 6px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+ 
+@media (min-width: 861px) {
+  .pdf-page-window
+    .pdf-page-window__body.pdf-page-window__body--annotations-open {
+    grid-template-columns: minmax(0, 1fr);
+    position: relative;
+  }
+
+  .pdf-page-window
+    .pdf-page-window__body--annotations-open
+    > .pdf-page-window__side {
+     
+    bottom: calc(8px + var(--pdf-pages-bar-x, 0px));
+    position: absolute;
+    right: calc(8px + var(--pdf-pages-bar, 0px));
+    top: calc(var(--pdf-comments-pane-top, 0px) + 6px);
+    width: 360px;
+    z-index: 30;
+  }
+
+   
+  .pdf-page-window.pdf-page-window
+    .pdf-page-window__body
+    > .pdf-page-window__side
+    .pdf-page-window__annotations.pdf-page-window__annotations--comments,
+  .pdf-page-window.pdf-page-window
+    .pdf-page-window__body
+    > .pdf-page-window__side
+    .pdf-page-window__annotations--comments
+    > .comments-panel {
+    background: transparent;
+    border-left: 0;
+    height: 100%;
+  }
+
+   
+  .pdf-page-window.pdf-page-window
+    .pdf-page-window__body
+    > .pdf-page-window__side {
+    bottom: calc(8px + var(--pdf-pages-bar-x, 0px));
+    height: auto;
+    overflow: visible;
+    position: absolute;
+    right: calc(8px + var(--pdf-pages-bar, 0px));
+    top: calc(var(--pdf-comments-pane-top, 0px) + 6px);
+    transition:
+      transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      opacity 180ms ease,
+      visibility 0s linear 0s;
+    width: 360px;
+    z-index: 30;
+  }
+
+  .pdf-page-window.pdf-page-window
+    .pdf-page-window__body
+    > .pdf-page-window__side.pdf-page-window__side--collapsed {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(calc(100% + 16px + var(--pdf-pages-bar, 0px)));
+    transition:
+      transform 200ms cubic-bezier(0.4, 0, 1, 1),
+      opacity 160ms ease 40ms,
+      visibility 0s linear 200ms;
+    visibility: hidden;
+  }
+
+  .pdf-page-window.pdf-page-window
+    .pdf-page-window__side--collapsed
+    .pdf-page-window__annotations {
+    display: flex;
+  }
+
+   
+  .pdf-page-window
+    .pdf-page-window__body--annotations-open
+    [data-testid="pdf-compare-panel"] {
+    margin-right: 368px;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdf-page-window.pdf-page-window .pdf-page-window__body > .pdf-page-window__side,
+  .pdf-page-window.pdf-page-window
+    .pdf-page-window__body
+    > .pdf-page-window__side.pdf-page-window__side--collapsed {
+    transition: none;
+  }
+}
+
+/* A box carried to where its line was moved, until the boxes are built
+   again from the saved bytes: shown there, but it takes no click (its
+   evidence is still the old place's). */
+.pdf-viewer[data-pdf-content-edit-mode="active"]
+  .pdf-viewer__text-layer
+  span[data-pdf-native-text-carried="true"] {
+  pointer-events: none;
+}
+
+/* The right-hand settings of a selected text box (PdfTextSettingsPane):
+   ONLYOFFICE's right panel, its rows the Text Editing tab's own controls. */
+.pdf-viewer__settings-pane {
+  width: 280px;
+}
+
+/* Format Shape (PdfShapeFormatPane) in the right-edge dock: the width of
+   the deck's and Docs' pane, its sections scrolling under its title. */
+.pdf-viewer__shape-format-pane {
+  width: 300px;
+  max-width: calc(100vw - 32px);
+}
+
+.pdf-viewer__settings-section {
+  display: grid;
+  gap: 8px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--pdf-chrome-border, rgba(15, 23, 42, 0.12));
+}
+
+.pdf-viewer__settings-section:last-child {
+  border-bottom: 0;
+}
+
+.pdf-viewer__settings-heading {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--pdf-chrome-ink-muted, #475569);
+}
+
+.pdf-viewer__settings-row {
+  display: grid;
+  gap: 4px;
+}
+
+.pdf-viewer__settings-label {
+  font-size: 12px;
+  color: var(--pdf-chrome-ink, #0f172a);
+}
+
+.pdf-viewer__settings-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.pdf-viewer__settings-choice,
+.pdf-viewer__settings-link {
+  min-height: 28px;
+  padding: 2px 8px;
+  border: 1px solid var(--pdf-chrome-field-border, #d1d5db);
+  border-radius: 4px;
+  background: var(--pdf-chrome-field, #fff);
+  color: var(--pdf-chrome-ink, #0f172a);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.pdf-viewer__settings-choice[aria-checked="true"] {
+  border-color: var(--pdf-chrome-accent, #2563eb);
+  background: var(--pdf-chrome-accent-soft, rgba(37, 99, 235, 0.1));
+}
+
+.pdf-viewer__settings-choice:disabled,
+.pdf-viewer__settings-link:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.pdf-viewer__settings-link {
+  justify-self: start;
+}
+
+/* A form field's properties docked at the right edge
+   (PdfFormFieldAuthoringDialog docked): the dialog's sections in a pane. */
+.pdf-viewer__form-field-pane {
+  width: 340px;
+  max-width: calc(100vw - 32px);
+}
+
+.pdf-viewer__form-field-pane-body {
+  display: grid;
+  gap: 12px;
+}
+
+.pdf-viewer__form-field-pane-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 4px;
+}
+
+/* Another member's selection on a page (pdfPeerSelections): a frame in
+   their colour, their name on its top edge, never in the way. */
+.pdf-viewer__peer-selections {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  pointer-events: none;
+  /* A co-author's typing is sized in the page's height (cqh). */
+  container-type: size;
+}
+
+.pdf-viewer__peer-selection {
+  position: absolute;
+  border: 2px solid;
+  border-radius: 2px;
+  box-sizing: border-box;
+}
+
+/* What a co-author is typing, live, over what the page shows there. */
+.pdf-viewer__peer-typing {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  background: rgba(255, 255, 255, 0.92);
+  line-height: 1.2;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-family: "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+.pdf-viewer__peer-selection-name {
+  position: absolute;
+  left: -2px;
+  bottom: 100%;
+  max-width: 160px;
+  overflow: hidden;
+  padding: 1px 6px;
+  border-radius: 3px 3px 3px 0;
+  color: #fff;
+  font-size: 11px;
+  line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+ 
+[data-pdf-native-text-visual-draft],
+[data-pdf-native-text-visual-draft] * {
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.06em;
+}
+
+/* Reflow (PdfReflowView): the PDF's text as one column at the reader's own
+   size, over the whole window -- on a phone a page fitted to the screen's
+   width sets its text far too small to read. The pages stay under it. */
+.pdf-viewer__reflow {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  color: #1f2328;
+}
+.pdf-viewer__reflow-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px max(12px, env(safe-area-inset-right)) 8px max(12px, env(safe-area-inset-left));
+  padding-top: max(8px, env(safe-area-inset-top));
+  border-bottom: 1px solid #e5e7eb;
+  background: #f8fafc;
+}
+.pdf-viewer__reflow-title { flex: 1; font-size: 15px; }
+.pdf-viewer__reflow-button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+.pdf-viewer__reflow-button:disabled { opacity: 0.4; cursor: default; }
+.pdf-viewer__reflow-text {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px max(16px, env(safe-area-inset-right)) 48px max(16px, env(safe-area-inset-left));
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.pdf-viewer__reflow-page { max-width: 40em; margin: 0 auto 2em; }
+.pdf-viewer__reflow-page h2 { font-size: 1.5em; line-height: 1.25; margin: 0.6em 0 0.4em; }
+.pdf-viewer__reflow-page h3 { font-size: 1.25em; line-height: 1.3; margin: 0.6em 0 0.4em; }
+.pdf-viewer__reflow-page h4 { font-size: 1.1em; margin: 0.6em 0 0.3em; }
+.pdf-viewer__reflow-page p { margin: 0 0 0.8em; }
+.pdf-viewer__reflow-page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #6b7280;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 6px;
+  margin-bottom: 8px;
+}
+.pdf-viewer__reflow-link {
+  min-height: 44px;
+  border: 0;
+  background: none;
+  color: #2563eb;
+  font: inherit;
+  cursor: pointer;
+}
+.pdf-viewer__reflow-note { color: #6b7280; font-style: italic; }
+.pdf-viewer__reflow-sentinel { height: 1px; }
+.pdf-viewer__reflow-more { display: block; margin: 0 auto; min-height: 44px; padding: 0 16px; border: 1px solid #d0d7de; border-radius: 8px; background: #fff; font: inherit; font-size: 15px; }
+@media (prefers-color-scheme: dark) {
+  .dark .pdf-viewer__reflow, :root[data-theme="dark"] .pdf-viewer__reflow { background: #111418; color: #e6e8eb; }
+}

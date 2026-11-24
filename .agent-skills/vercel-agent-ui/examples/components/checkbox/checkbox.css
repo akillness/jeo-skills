@@ -1,0 +1,153 @@
+@scope ([data-example]) {
+  [data-slot="checkbox"] {
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    box-sizing: border-box;
+    width: var(--size-icon);
+    height: var(--size-icon);
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: var(--surface-1);
+    box-shadow: inset 0 0 0 1px var(--line);
+    color: var(--paper);
+    cursor: default;
+
+    &:hover:not(
+        [data-disabled],
+        [data-readonly],
+        [data-checked],
+        [data-indeterminate]
+      ) {
+      box-shadow: inset 0 0 0 1px
+        color-mix(in oklab, var(--ink) 45%, var(--surface-1));
+    }
+
+    &:is([data-checked], [data-indeterminate]) {
+      background: var(--ink);
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+
+    &:is([data-invalid], [aria-invalid="true"]) {
+      box-shadow: inset 0 0 0 1px var(--danger);
+    }
+
+    &[data-readonly]:not([data-checked], [data-indeterminate]) {
+      background: var(--tint);
+    }
+
+    &[data-readonly]:is([data-checked], [data-indeterminate]) {
+      background: var(--muted);
+      box-shadow: inset 0 0 0 1px var(--muted);
+    }
+
+    &[data-disabled] {
+      box-shadow: inset 0 0 0 1px var(--line-faint);
+    }
+
+    &[data-disabled]:is([data-checked], [data-indeterminate]) {
+      background: var(--line-disabled);
+      box-shadow: inset 0 0 0 1px var(--line-disabled);
+    }
+
+    & svg {
+      width: 12px;
+      height: 12px;
+      stroke-width: 2.5;
+    }
+  }
+
+  [data-slot="checkbox-indicator"] {
+    display: grid;
+    place-items: center;
+
+    &[data-unchecked] > svg {
+      visibility: hidden;
+    }
+  }
+
+  :scope[data-example="checkbox/indicator"] [data-slot="checkbox-indicator"] {
+    transition:
+      opacity 0.15s,
+      scale 0.15s;
+
+    &:is([data-starting-style], [data-ending-style]) {
+      opacity: 0;
+      scale: 0.5;
+    }
+  }
+
+  /* A checkbox with its own content is a choice card. */
+  [data-slot="checkbox"]:not(:empty, :has(> [data-slot="checkbox-indicator"])) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: auto;
+    min-width: var(--size);
+    height: auto;
+    min-height: var(--size);
+    padding: 10px 14px;
+    border-radius: var(--radius-surface);
+    background: var(--surface-1);
+    box-shadow: inset 0 0 0 1px var(--line);
+    color: var(--ink);
+    font: inherit;
+    text-align: start;
+
+    &:hover:not([data-disabled], [data-checked]) {
+      box-shadow: inset 0 0 0 1px
+        color-mix(in oklab, var(--ink) 45%, var(--surface-1));
+    }
+
+    &[data-checked] {
+      background: var(--tint);
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+
+    &[data-disabled] {
+      background: var(--surface-1);
+      box-shadow: inset 0 0 0 1px var(--line-faint);
+      color: var(--line-disabled);
+    }
+
+    & svg {
+      width: var(--size-icon);
+      height: var(--size-icon);
+      stroke-width: 2;
+    }
+
+    & > [data-slot="stack"] {
+      flex: 1;
+      gap: 0;
+      font-weight: 500;
+    }
+
+    & > svg:last-child:not(:first-child) {
+      margin-inline-start: auto;
+    }
+  }
+
+  [data-slot="checkbox-group"] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+
+    &[data-disabled] [data-slot="label"] {
+      color: var(--line-disabled);
+    }
+
+    & > [data-slot="stack"] {
+      gap: var(--space-2);
+      padding-inline-start: var(--space-6);
+    }
+  }
+
+  [data-slot="label"]:has(> [data-slot="checkbox"][data-disabled]) {
+    color: var(--line-disabled);
+  }
+
+  :is(th, td) > [data-slot="checkbox"] {
+    vertical-align: middle;
+  }
+}

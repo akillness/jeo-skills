@@ -1,0 +1,67 @@
+ 
+
+.left {
+  --office-pane-tone-accent: var(--console-accent, #0d9488);
+
+  position: relative;
+  z-index: 30;
+  display: block;
+  width: 0;
+  min-width: 0;
+  min-height: 0;
+  flex: 0 0 0;
+  align-self: stretch;
+  overflow: visible;
+}
+
+.left > [data-office-task-pane-slot] > * {
+  position: absolute !important;
+  /* 8px above the pages' horizontal scroll bar where it takes room of its
+     own (--pdf-pages-bar-x, pdfTaskPaneDock.tsx). */
+  inset: 8px auto calc(8px + var(--pdf-pages-bar-x, 0px)) 8px;
+  min-height: 0;
+}
+
+.left:empty {
+  display: none;
+}
+
+/* The format panes' anchor at the body's right edge (Format Shape, Format
+   Chart): a zero-width column the card hangs from, 8px in from the edge. */
+.right {
+  --office-pane-tone-accent: var(--console-accent, #0d9488);
+
+  position: absolute;
+  inset: 0 0 0 auto;
+  z-index: 30;
+  display: block;
+  width: 0;
+  overflow: visible;
+}
+
+.right > [data-office-task-pane-slot] > * {
+  position: absolute !important;
+  /* 8px in from the pages' scroll bars where they take room of their own
+     (Windows; --pdf-pages-bar, pdfTaskPaneDock.tsx): the bar under the card
+     could not be pressed. */
+  inset: 8px calc(8px + var(--pdf-pages-bar, 0px)) calc(8px + var(--pdf-pages-bar-x, 0px)) auto;
+  min-height: 0;
+}
+
+.right:empty {
+  display: none;
+}
+
+/* The pages keep clear of a card when they bring a page or a search hit
+   into view, and keep room to scroll out from under it when a card would
+   cover a page (keepOfficeTaskPaneRoom, `--pdf-task-pane-room`). */
+/* cssmodules-pure-ignore */
+:global(.pdf-viewer__pages) {
+  scroll-padding-left: var(--office-task-pane-cover-left, 0px);
+  scroll-padding-right: var(--office-task-pane-cover-right, 0px);
+}
+
+/* cssmodules-pure-ignore */
+:global(.pdf-viewer__pages[data-task-pane-room]) {
+  padding-inline: max(16px, var(--pdf-task-pane-room, 0px));
+}

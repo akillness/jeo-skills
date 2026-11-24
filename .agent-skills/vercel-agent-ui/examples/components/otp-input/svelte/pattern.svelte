@@ -1,0 +1,19 @@
+<script lang="ts">
+  import { Field, FieldLabel } from "@ui-sdk/svelte/field"
+  import {
+    OTPInput,
+    OTPInputGroup,
+    OTPInputSlot,
+  } from "@ui-sdk/svelte/otp-input"
+</script>
+
+<Field>
+  <FieldLabel>Device code</FieldLabel>
+  <OTPInput maxLength={6} pattern={/[0-9A-F]/i} inputMode="text">
+    <OTPInputGroup>
+      {#each [0, 1, 2, 3, 4, 5] as index (index)}
+        <OTPInputSlot {index} />
+      {/each}
+    </OTPInputGroup>
+  </OTPInput>
+</Field>

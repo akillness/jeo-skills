@@ -1,0 +1,86 @@
+/* Touch grips (OfficeTouchGrip): a transparent 44px target around a small
+   mark. The target takes the finger without letting the page scroll or zoom
+   under it; the mark is what the eye sees. */
+.grip {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  cursor: grab;
+  pointer-events: auto;
+  position: absolute;
+  touch-action: none;
+  user-select: none;
+}
+
+/* While a grip is being dragged the whole layer lets the finger's hit tests
+   through to the cells under it. */
+:global([data-office-touch-grips="dragging"]) .grip {
+  pointer-events: none;
+}
+
+.mark {
+  /* Centred on the grip's point, wherever the target sits around it. */
+  position: absolute;
+  translate: -50% -50%;
+  background: #ffffff;
+  border: 2px solid var(--console-accent, #0d9488);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 24%);
+  box-sizing: border-box;
+  height: 14px;
+  width: 14px;
+}
+
+.grip[data-variant="fill"] .mark {
+  background: var(--console-accent, #0d9488);
+  border: 2px solid #ffffff;
+  border-radius: 2px;
+  height: 12px;
+  width: 12px;
+}
+
+.grip[data-variant="resize-col"] .mark,
+.grip[data-variant="resize-row"] .mark {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* The double line on a heading's edge. */
+.grip[data-variant="resize-col"] .mark {
+  border-inline: 2px solid var(--console-accent, #0d9488);
+  height: 16px;
+  width: 6px;
+}
+
+.grip[data-variant="resize-row"] .mark {
+  border-block: 2px solid var(--console-accent, #0d9488);
+  height: 6px;
+  width: 16px;
+}
+
+.grip[data-variant="resize-col"] {
+  cursor: col-resize;
+}
+
+.grip[data-variant="resize-row"] {
+  cursor: row-resize;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .grip[data-emphasis="true"] .mark {
+    animation: office-touch-grip-emphasis 260ms ease-out;
+  }
+}
+
+@keyframes office-touch-grip-emphasis {
+  0% {
+    transform: scale(0.4);
+  }
+  60% {
+    transform: scale(1.35);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

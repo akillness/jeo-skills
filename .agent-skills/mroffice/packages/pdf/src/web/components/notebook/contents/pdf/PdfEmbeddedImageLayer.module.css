@@ -1,0 +1,26 @@
+/* A resize or crop grip is a 44px hit target with a small painted mark. The
+   page window skins every button as a bordered 36px control
+   (`.native-page-window button`), which drew each grip as a rounded white
+   box, and its hover rule (`button:hover:not(.office-ribbon-control)`)
+   tinted the target on hover; the tripled class outranks both and leaves
+   only the mark. */
+.grip.grip.grip,
+.grip.grip.grip:hover,
+.grip.grip.grip:active,
+.grip.grip.grip:focus-visible {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  box-sizing: border-box;
+  height: 44px;
+  margin: 0;
+  max-height: 44px;
+  max-width: 44px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0;
+  transition: none;
+  width: 44px;
+}

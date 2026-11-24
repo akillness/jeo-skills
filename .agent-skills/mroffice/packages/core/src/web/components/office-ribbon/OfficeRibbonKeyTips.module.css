@@ -1,0 +1,58 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  pointer-events: none;
+}
+
+.badge {
+  position: fixed;
+  min-width: 20px;
+  max-width: min(112px, calc(100vw - 16px));
+  height: 20px;
+  padding: 0 5px;
+  transform: translate(-50%, -2px);
+  border: 1px solid color-mix(in srgb, var(--console-accent, #0f766e) 42%, #fff);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--surface, #fff) 94%, #fef3c7);
+  box-shadow: 0 2px 7px rgb(15 23 42 / 18%);
+  color: var(--foreground, #17202a);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  line-height: 18px;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (forced-colors: active) {
+  .badge {
+    border-color: ButtonText;
+    background: Canvas;
+    color: CanvasText;
+    forced-color-adjust: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .badge {
+    animation: none;
+    transition: none;
+  }
+}

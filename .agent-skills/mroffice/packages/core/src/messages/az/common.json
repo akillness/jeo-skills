@@ -1,0 +1,14 @@
+{
+ "zoom.custom": "Fərdi",
+ "zoom.levels": "Miqyas səviyyələri",
+ "dialog.close": "Bağla",
+ "toast.close": "Bildirişi bağla",
+ "button.confirm": "OK",
+ "button.cancel": "Ləğv et",
+ "libreOffice.enable": "Yüklə və aktivləşdir (təxminən {size})",
+ "libreOffice.enableAlt": "LibreOffice-i yüklə və aktivləşdir",
+ "libreOffice.enabled": "LibreOffice {version} aktivləşdirilib",
+ "libreOffice.retrying": "Yenidən cəhd edilir…",
+ "libreOffice.ready": "Köhnə Office formatları, OpenDocument faylları, EMF/WMF şəkilləri və OpenDocument ixracı artıq işləyir.",
+ "libreOffice.needed": "Bunun üçün LibreOffice tələb olunur. MR Note Classic rəsmi buraxılışı öz qovluğuna yükləyə bilər; sisteminizə heç nə quraşdırılmır."
+}

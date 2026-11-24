@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.base.json",
+  "include": ["*/solid/*.tsx", "components/*/solid/*.tsx"],
+  "compilerOptions": {
+    "noUnusedLocals": false,
+    "jsx": "preserve",
+    "jsxImportSource": "@solidjs/web"
+  }
+}

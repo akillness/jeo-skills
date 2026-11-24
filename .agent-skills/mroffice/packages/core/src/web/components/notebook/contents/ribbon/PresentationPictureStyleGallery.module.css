@@ -1,0 +1,5 @@
+/* Strip geometry only; the popup is the shared Picture Styles sheet
+   (OfficeStyleGallery.module.css, data-menu-tile="picture"). */
+.gallery {
+  --office-gallery-visible-items: 6;
+}

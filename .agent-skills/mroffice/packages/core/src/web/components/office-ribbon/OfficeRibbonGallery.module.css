@@ -1,0 +1,163 @@
+.gallery {
+  --office-gallery-content-height: calc(
+    var(--office-gallery-height, 66px) -
+      var(--office-gallery-disclosure-height, 14px)
+  );
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) var(
+      --office-gallery-disclosure-height,
+      14px
+    );
+  gap: 0;
+  height: var(--office-gallery-height, 66px);
+  min-height: var(--office-gallery-height, 66px);
+  min-width: 0;
+  width: var(
+    --office-gallery-width,
+    calc(
+      var(--office-gallery-item-width, 70px) *
+        var(--office-gallery-visible-items, 3) +
+        var(--office-gallery-gap, 4px) *
+        (var(--office-gallery-visible-items, 3) - 1)
+    )
+  );
+  max-width: 100%;
+  flex: 0 0 auto;
+  overflow: visible;
+  position: relative;
+  border-radius: 6px;
+}
+
+/* Frame only the preview; the reserved footer keeps the outside trigger from
+   shifting the Ribbon or overlapping its group caption when it appears. */
+.gallery::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 var(--office-gallery-disclosure-height, 14px);
+  z-index: 1;
+  box-sizing: border-box;
+  border: 1px solid
+    var(--office-ribbon-border, var(--docs-ribbon-divider, #cfd7df));
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.viewport {
+  box-sizing: border-box;
+  display: flex;
+  align-items: stretch;
+  gap: var(--office-gallery-gap, 4px);
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: none;
+  border-radius: inherit;
+  background: var(--office-ribbon-surface, #fff);
+}
+
+.viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.viewport > * {
+  flex: 0 0 auto;
+}
+
+.more {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-width: 0;
+  width: 100%;
+  min-height: 0;
+  height: var(--office-gallery-disclosure-height, 14px);
+   
+  opacity: 0.55;
+  transition: opacity 120ms ease;
+}
+
+/* Include the short path down to the button so it stays available on approach.
+   Opacity (not visibility) preserves Tab access; open portalled menus keep their
+   anchor visible even after focus leaves the inline gallery. */
+.gallery:hover > .more,
+.gallery:focus-within > .more,
+.gallery:has([data-office-gallery-part="disclosure"][aria-expanded="true"])
+  > .more {
+  opacity: 1;
+}
+
+/* Touch screens cannot hover: the disclosure that opens the whole gallery
+   stays shown in its reserved footer. */
+@media (hover: none) {
+  .more {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .more {
+    transition: none;
+  }
+}
+
+/* One disclosure face, deliberately not a standard icon/button side rail. */
+.disclosureButton.disclosureButton {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  box-sizing: border-box;
+  width: var(--office-gallery-disclosure-width, 32px);
+  min-width: 0;
+  max-width: 100%;
+  height: calc(var(--office-gallery-disclosure-height, 14px) - 2px);
+  min-height: calc(var(--office-gallery-disclosure-height, 14px) - 2px);
+  max-height: calc(var(--office-gallery-disclosure-height, 14px) - 2px);
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: var(--office-control-background, transparent);
+  color: var(--office-control-ink, #4b5057);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.disclosureButton > span {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: auto;
+  min-width: 0;
+  height: 12px;
+  min-height: 0;
+}
+
+.disclosureButton svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* A multi-row shape gallery shares the same scroller and menu ownership,
+   with a persistent disclosure at the end instead of below its previews. */
+.gallery[data-office-gallery-disclosure="end"] {
+  grid-template-columns: minmax(0, 1fr) 16px;
+  grid-template-rows: minmax(0, 1fr);
+  --office-gallery-content-height: var(--office-gallery-height, 66px);
+}
+.gallery[data-office-gallery-disclosure="end"]::before { inset: 0; }
+.gallery[data-office-gallery-disclosure="end"] > .more {
+  height: 100%;
+  align-items: center;
+  opacity: 1;
+  pointer-events: auto;
+}
+.gallery[data-office-gallery-disclosure="end"] .disclosureButton svg {
+  transform: rotate(-90deg);
+}

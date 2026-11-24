@@ -1,0 +1,154 @@
+@scope ([data-example]) {
+  [data-slot="resizable"] {
+    box-sizing: border-box;
+    width: 28rem;
+    max-width: 100%;
+    height: 13rem;
+    overflow: hidden;
+    border-radius: var(--radius-surface);
+    background: var(--surface-1);
+    box-shadow: var(--shadow-1);
+
+    & & {
+      width: auto;
+      max-width: none;
+      height: 100%;
+      border-radius: 0;
+      background: none;
+      box-shadow: none;
+    }
+  }
+
+  [data-slot="stack"]:has(> [data-slot="resizable"]) {
+    width: 28rem;
+    max-width: 100%;
+  }
+
+  /* A panel lists its title and content from the top, clipping what no longer fits. */
+  [data-slot="resizable-panel"] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    box-sizing: border-box;
+    padding: var(--space-4);
+    overflow: hidden;
+
+    &:has(> [data-slot="resizable"]) {
+      padding: 0;
+    }
+
+    & > :is(h3, [data-slot="hint"]),
+    & li {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    & > h3 + ul {
+      margin-top: var(--space-2);
+    }
+
+    & li {
+      color: var(--muted);
+    }
+
+    & li[data-slot="row"] {
+      flex-wrap: nowrap;
+      height: var(--size-sm);
+      color: var(--ink);
+
+      & > span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    &[data-collapsed] li[data-slot="row"] > span {
+      display: none;
+    }
+  }
+
+  [data-slot="resizable-handle"] {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 1px;
+    background: var(--line);
+    outline: none;
+    cursor: col-resize;
+
+    &::before {
+      position: absolute;
+      inset: 0 -5px;
+      content: "";
+    }
+
+    &[aria-orientation="horizontal"] {
+      width: 100%;
+      height: 1px;
+      cursor: row-resize;
+
+      &::before {
+        inset: -5px 0;
+      }
+    }
+
+    &:is(:hover, [data-hovering], [data-dragging]) {
+      background: var(--ink);
+    }
+
+    &:focus-visible {
+      background: var(--ink);
+      box-shadow: 0 0 0 3px var(--halo);
+    }
+
+    &[data-disabled] {
+      background: var(--line-faint);
+      cursor: default;
+    }
+
+    & > div {
+      flex-shrink: 0;
+      box-sizing: border-box;
+      width: 8px;
+      height: 20px;
+      border-radius: 4px;
+      background: var(--surface-1);
+      box-shadow: inset 0 0 0 1px var(--line);
+    }
+
+    &[aria-orientation="horizontal"] > div {
+      width: 20px;
+      height: 8px;
+    }
+
+    &:is(:hover, [data-hovering], [data-dragging], :focus-visible) > div {
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+
+    /* A finger needs a wider target than a pointer. */
+    @media (pointer: coarse), (max-width: 40rem) {
+      &::before {
+        inset: 0 -12px;
+      }
+
+      &[aria-orientation="horizontal"]::before {
+        inset: -12px 0;
+      }
+
+      & > div {
+        width: 10px;
+        height: 28px;
+        border-radius: 5px;
+      }
+
+      &[aria-orientation="horizontal"] > div {
+        width: 28px;
+        height: 10px;
+      }
+    }
+  }
+}

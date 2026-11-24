@@ -1,0 +1,36 @@
+<script setup lang="ts">
+import {
+  Calendar,
+  CalendarDay,
+  CalendarGrid,
+  CalendarHeading,
+  CalendarNext,
+  CalendarPrevious,
+  CalendarWeekday,
+  CalendarWeekdays,
+  CalendarWeeks,
+} from "@ui-sdk/vue/calendar"
+import { ChevronLeftIcon, ChevronRightIcon } from "@lucide/vue"
+</script>
+
+<template>
+  <Calendar default-value="2026-10-16" min="2026-10-05" max="2026-11-20">
+    <div data-slot="row">
+      <CalendarPrevious data-variant="ghost">
+        <ChevronLeftIcon aria-hidden="true" />
+      </CalendarPrevious>
+      <CalendarHeading />
+      <CalendarNext data-variant="ghost">
+        <ChevronRightIcon aria-hidden="true" />
+      </CalendarNext>
+    </div>
+    <CalendarGrid>
+      <CalendarWeekdays v-slot="{ index }">
+        <CalendarWeekday :index="index" />
+      </CalendarWeekdays>
+      <CalendarWeeks v-slot="{ cell }">
+        <CalendarDay :value="cell.date" />
+      </CalendarWeeks>
+    </CalendarGrid>
+  </Calendar>
+</template>

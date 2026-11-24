@@ -1,0 +1,320 @@
+@scope ([data-example]) {
+  /* Stacks, forms and fields take the sheet's width, not the 20rem a stack with a field gets elsewhere. */
+  :scope [data-slot="drawer-content"] > :is([data-slot="stack"], form) {
+    width: auto;
+    max-width: none;
+  }
+
+  :scope
+    [data-slot="drawer-content"]
+    :is(
+      [data-slot="field"],
+      [data-slot="field-control"],
+      textarea,
+      input:not([type="checkbox"], [type="radio"], [type="hidden"])
+    ) {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: none;
+  }
+
+  /* A goal between its decrease and increase buttons. */
+  :scope[data-example="drawer/basic"]
+    [data-slot="drawer-content"]
+    > [data-slot="row"] {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+
+    & > [data-slot="stack"] {
+      flex: 1;
+      align-items: center;
+      gap: 0;
+      text-align: center;
+
+      & > :first-child {
+        font-size: 2.5rem;
+        font-weight: 600;
+        line-height: 1.1;
+        font-variant-numeric: tabular-nums;
+      }
+    }
+  }
+
+  [data-slot="drawer-backdrop"] {
+    &[data-hidden] {
+      display: none;
+    }
+  }
+
+  [data-slot="drawer-content"] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    box-sizing: border-box;
+    width: 100%;
+    max-height: 85dvh;
+    padding: 18px;
+    padding-bottom: max(18px, env(safe-area-inset-bottom));
+    background: var(--surface-3);
+    box-shadow: var(--shadow-3);
+    color: var(--ink);
+    outline: none;
+
+    &::after {
+      position: absolute;
+      background: inherit;
+      content: "";
+    }
+
+    &:is([data-side="bottom"], [data-side="top"]) {
+      max-width: 32rem;
+      height: fit-content;
+      margin-inline: auto;
+    }
+
+    &[data-side="bottom"] {
+      border-radius: var(--radius-popup) var(--radius-popup) 0 0;
+
+      &::after {
+        inset-inline: 0;
+        top: 100%;
+        height: 6rem;
+        box-shadow:
+          -1px 0 0 var(--line),
+          1px 0 0 var(--line);
+      }
+    }
+
+    &[data-side="top"] {
+      border-radius: 0 0 var(--radius-popup) var(--radius-popup);
+
+      &::after {
+        inset-inline: 0;
+        bottom: 100%;
+        height: 6rem;
+        box-shadow:
+          -1px 0 0 var(--line),
+          1px 0 0 var(--line);
+      }
+    }
+
+    &:is([data-side="left"], [data-side="right"]) {
+      width: 20rem;
+      max-width: 85vw;
+      height: 100%;
+      max-height: none;
+    }
+
+    &[data-side="left"] {
+      border-radius: 0 var(--radius-popup) var(--radius-popup) 0;
+
+      &::after {
+        inset-block: 0;
+        right: 100%;
+        width: 6rem;
+        box-shadow:
+          0 -1px 0 var(--line),
+          0 1px 0 var(--line);
+      }
+    }
+
+    &[data-side="right"] {
+      border-radius: var(--radius-popup) 0 0 var(--radius-popup);
+
+      &::after {
+        inset-block: 0;
+        left: 100%;
+        width: 6rem;
+        box-shadow:
+          0 -1px 0 var(--line),
+          0 1px 0 var(--line);
+      }
+    }
+
+    &[data-snap-point]:not([data-snap-point="content"]) {
+      height: calc(100dvh - 3rem);
+      max-height: none;
+    }
+
+    &[data-nested-open] {
+      scale: 0.97;
+    }
+
+    &[data-dragging] {
+      user-select: none;
+    }
+
+    & > :is([data-slot="stack"], form) {
+      align-items: stretch;
+    }
+
+    /* The title and description sit close together; a form spaces its fields. */
+    & > [data-slot="stack"]:has(> [data-slot="drawer-title"]) {
+      gap: var(--space-1);
+    }
+
+    & > form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    & > [data-slot="stack"]:last-child {
+      margin-top: auto;
+    }
+
+    & > [data-slot="stack"]:has([data-slot="drawer-close"]) {
+      gap: var(--space-2);
+    }
+
+    & > [data-slot="row"] {
+      justify-content: flex-end;
+    }
+
+    /* A long middle section scrolls between a fixed header and actions. */
+    & > [data-slot="scroll"] {
+      flex: 1;
+      min-height: 0;
+      max-height: none;
+      margin: 0 -18px;
+      padding: 0 18px;
+      overflow-y: auto;
+    }
+
+    & [data-slot="list"] {
+      width: auto;
+    }
+
+    & [data-slot="drawer-close"][aria-label] {
+      position: absolute;
+      top: var(--space-3);
+      inset-inline-end: var(--space-3);
+      width: var(--size-sm);
+      height: var(--size-sm);
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+      color: var(--muted);
+
+      &:hover {
+        background: var(--tint);
+        color: var(--ink);
+      }
+    }
+  }
+
+  [data-slot="drawer-title"] {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 22px;
+  }
+
+  [data-slot="drawer-description"] {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--text-md);
+  }
+
+  [data-slot="drawer-handle"] {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--space-1);
+    margin-inline: auto;
+    padding: var(--space-1) var(--space-3);
+    border: 0;
+    border-radius: var(--radius-row);
+    background: none;
+    color: var(--muted);
+    font: inherit;
+    font-size: var(--text-xs);
+    font-variant-numeric: tabular-nums;
+    cursor: default;
+
+    &:empty {
+      box-sizing: content-box;
+      width: 36px;
+      height: 4px;
+      padding: var(--space-1);
+      background: var(--line-faint);
+      background-clip: content-box;
+      border-radius: 999px;
+    }
+
+    &:hover:empty {
+      background-color: var(--line);
+    }
+
+    & svg[data-disabled] {
+      color: var(--line-disabled);
+    }
+  }
+
+  /* Release notes long enough to scroll on any screen, between the header and the button. */
+  :scope[data-example="drawer/scrollable"]
+    [data-slot="drawer-content"]
+    > [data-slot="scroll"] {
+    max-height: 18rem;
+    padding-block: var(--space-3);
+    border-block: 1px solid var(--line-faint);
+  }
+
+  /* Places behind the directions sheet: whole rows to pick from, the chosen one marked. */
+  :scope[data-example="drawer/non-modal"]
+    [data-slot="stack"]:has(> [data-slot="list"]) {
+    align-items: center;
+
+    & > [data-slot="list"] {
+      width: 22rem;
+      max-width: 100%;
+
+      & > li {
+        padding: 0;
+      }
+
+      & button {
+        justify-content: space-between;
+        width: 100%;
+        height: auto;
+        padding: var(--space-2) var(--space-3);
+        background: transparent;
+        box-shadow: none;
+        font-weight: 400;
+
+        &:hover {
+          background: var(--tint);
+        }
+
+        &[aria-pressed="true"] {
+          background: var(--tint);
+          color: var(--ink);
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  /* The inbox behind the compose sheet: a header the list's width, with its action at the end. */
+  :scope[data-example="drawer/outlet"] [data-slot="drawer-outlet"] {
+    width: 28rem;
+    max-width: 100%;
+
+    & > [data-slot="row"] {
+      justify-content: space-between;
+      padding: 0 var(--space-3) var(--space-3);
+      font-weight: 600;
+    }
+
+    & > [data-slot="list"] {
+      width: auto;
+    }
+  }
+
+  [data-slot="drawer-outlet"] {
+    display: block;
+    transform-origin: top;
+  }
+}

@@ -1,0 +1,166 @@
+/* Docs' code chart block, on the page: a card holding the chart a script
+   drew, its caption, its source and the commands that run and edit it.
+
+   The card and its controls are the shared dialog chrome's (officeDialogParts,
+   document tone) on an embedded `office-dialog`, so they read as the same
+   product as every Docs dialog. The `.office-dialog` sits one level inside
+   the node view's wrapper, never on it: the chrome's motion layer leaves a
+   fading copy of an `.office-dialog` that is removed, and a copy dropped into
+   the editor's own DOM is not wanted there. */
+
+.card.card.card {
+  animation: none;
+  background: var(--office-dialog-surface);
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 8px;
+  display: block;
+  font-size: 12px;
+  gap: 0;
+  padding: 12px;
+}
+
+.card:global([data-office-dialog-ghost]),
+:global([data-office-dialog-ghost]) > .card {
+  display: none !important;
+}
+
+/* The page stays light paper under the app's dark theme (note-editor.css
+   restates the page's tokens there); only a window's Document Dark Mode
+   darkens it. On light paper the card takes the chrome's light values back,
+   as the paper does, instead of the dark ones the app theme gives a dialog. */
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .card.card.card:not(:global([data-document-dark-mode="true"] *)) {
+  --office-dialog-tone-accent: #2563eb;
+  --office-dialog-tone-accent-hover: #1d4ed8;
+  --office-dialog-accent-soft: color-mix(in srgb, var(--office-dialog-accent) 13%, var(--office-dialog-surface));
+  --office-dialog-focus-ring: color-mix(in srgb, var(--office-dialog-accent) 38%, transparent);
+  --office-dialog-surface: #ffffff;
+  --office-dialog-surface-muted: #f2f2f5;
+  --office-dialog-ink: #1d1d1f;
+  --office-dialog-muted: #6e6e73;
+  --office-dialog-border: rgb(0 0 0 / 10%);
+  --office-dialog-divider: rgb(0 0 0 / 9%);
+  --office-dialog-control-border: rgb(0 0 0 / 15%);
+  --office-dialog-control-border-hover: rgb(0 0 0 / 28%);
+  --office-dialog-hover: rgb(0 0 0 / 5%);
+  --office-dialog-pressed: rgb(0 0 0 / 9%);
+  --office-dialog-button: #ffffff;
+  --office-dialog-button-hover: #f5f5f7;
+  --office-dialog-button-pressed: #e8e8ed;
+  --office-dialog-button-shadow: 0 0.5px 1px rgb(0 0 0 / 8%), 0 1px 2px rgb(0 0 0 / 4%);
+  --office-dialog-danger: #d70015;
+  --office-dialog-danger-strong: #d70015;
+  --office-dialog-success: #1a7f37;
+  --office-dialog-warning: #9a5b00;
+  color: var(--office-dialog-ink);
+  color-scheme: light;
+}
+
+/* ----------------------------------------------------------------- output */
+
+.status {
+  margin: 8px 0;
+}
+
+.error {
+  background: var(--office-dialog-danger-soft);
+  border: 1px solid var(--office-dialog-danger-line);
+  border-radius: 6px;
+  margin: 0;
+  padding: 8px;
+  white-space: pre-wrap;
+}
+
+.image {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.caption {
+  color: var(--office-dialog-muted);
+  font-size: 13px;
+  margin: 6px 0 0;
+  text-align: center;
+}
+
+.source {
+  background: var(--office-dialog-surface-muted);
+  border: 1px solid var(--office-dialog-divider);
+  border-radius: 6px;
+  color: var(--office-dialog-ink);
+  font-size: 12px;
+  margin: 8px 0 0;
+  overflow-x: auto;
+  padding: 8px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+/* ----------------------------------------------------------------- editor */
+
+.editor {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 0;
+}
+
+.templates {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+}
+
+.editor textarea,
+.editor input[type="text"] {
+  width: 100%;
+}
+
+.editor textarea {
+  font-size: 12px;
+  resize: vertical;
+}
+
+.editorFooter {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+/* The node view's wrapper: the block's place in the flow and the shape the
+   selection outline (OfficeDrawingSelection) follows. */
+.host {
+  border-radius: 8px;
+  margin: 8px 0;
+}
+
+/* ---------------------------------------------------- Mermaid's canvas */
+/* The Mermaid block wears this card too (MermaidBlock / MermaidBlockCanvas):
+   its diagram centred, a render failure's title and the source that failed. */
+
+.diagram {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+.canvasErrorTitle {
+  color: var(--office-dialog-danger);
+  font-size: 13px;
+  margin: 0 0 6px;
+  white-space: pre-wrap;
+}
+
+.canvasErrorSource {
+  color: var(--office-dialog-ink);
+  font-size: 12px;
+  margin: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}

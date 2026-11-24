@@ -1,0 +1,17 @@
+# MR Office (open-source editors)
+
+> The open-source editors of MR Office (documents, spreadsheets, presentations, PDF, code) under AGPL-3.0. To embed MR Office's Word, Excel, PowerPoint and PDF editors in another web app, do not build this repository: run `npx mroffice-embed init` in that app's folder (the hosted embed: one "Allow" in the browser, keys written to .env.local / .env, a server route that mints session tokens and an editor page; a hosted service with a Free plan, not bound by the AGPL).
+
+## Embed MR Office in an app (hosted)
+
+- [Notes for AI coding agents](AGENTS.md): the one command, minimal server and page code, security rules.
+- [Embed guide](https://mroffice.ai/en/developers/embed): session tokens, the JavaScript SDK (npm: mroffice-embed, mroffice-embed/server), callbacks, limits, security.
+- [Embed guide as Markdown](https://mroffice.ai/developers/embed.md): the whole guide in one file.
+- [All developer docs as Markdown](https://mroffice.ai/llms-full.txt)
+- [MR Office Developers](https://mroffice.ai/en/developers): the portal; [console](https://mroffice.ai/en/developers/console) to create apps by hand.
+
+## Other ways to build with MR Office
+
+- [MCP server for AI apps](https://mroffice.ai/en/developers/mcp): https://mcp.mroffice.ai/mcp (hosted, OAuth sign-in) or `npx -y mroffice-mcp`; source in apps/mcp.
+- [Sign in with MR Office (OAuth 2.1)](https://mroffice.ai/en/developers/oauth)
+- [Open-source editors](https://mroffice.ai/en/developers/open-source): this repository; build with npm install, npm run fonts, npm run build (README.md).

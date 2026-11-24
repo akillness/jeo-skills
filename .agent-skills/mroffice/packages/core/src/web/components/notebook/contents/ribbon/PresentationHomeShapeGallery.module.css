@@ -1,0 +1,158 @@
+.shapeGallery {
+  box-sizing: border-box;
+  max-height: min(430px, calc(100vh - 120px));
+  max-width: calc(100vw - 32px);
+  overflow: auto;
+  padding: 5px 7px 8px;
+  width: 584px;
+}
+
+.searchField {
+  background: #fff;
+  border: 1px solid rgba(65, 72, 82, 0.28);
+  border-radius: 5px;
+  box-sizing: border-box;
+  display: flex;
+  margin: 1px 1px 6px;
+  min-height: 30px;
+}
+
+.searchField:focus-within {
+  border-color: #c43e1c;
+  box-shadow: 0 0 0 1px rgba(196, 62, 28, 0.2);
+}
+
+.searchField input {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  min-width: 0;
+  outline: 0;
+  padding: 5px 8px;
+  width: 100%;
+}
+
+.srOnly {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.shapeSection + .shapeSection {
+  border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  margin-top: 4px;
+  padding-top: 4px;
+}
+
+.sectionTitle {
+  color: #5d6570;
+  font-size: 10.5px;
+  font-weight: 650;
+  line-height: 18px;
+  padding-inline: 2px;
+}
+
+.shapeGrid {
+  display: grid;
+  gap: 2px;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+}
+
+.shapeTile {
+  align-items: center !important;
+  box-sizing: border-box;
+  display: flex !important;
+  flex-direction: column;
+  gap: 2px !important;
+  height: 56px;
+  justify-content: center !important;
+  min-width: 0;
+  padding: 4px 2px !important;
+  text-align: center;
+}
+
+.shapePreviewFrame {
+  align-items: center;
+  display: flex;
+  height: 30px;
+  justify-content: center;
+  width: 42px;
+}
+
+.shapePreviewFrame svg {
+  height: 28px;
+  overflow: visible;
+  width: 38px;
+}
+
+.shapeLabel {
+  display: block;
+  font-size: 9.5px;
+  line-height: 1.05;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.noResults {
+  color: #68707a;
+  font-size: 11px;
+  margin: 0;
+  padding: 22px 8px;
+  text-align: center;
+}
+
+.quickStyleGrid {
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(3, 116px);
+  padding: 6px;
+}
+
+.quickStyleTile {
+  align-items: center !important;
+  display: grid !important;
+  font-size: 10.5px;
+  gap: 6px !important;
+  grid-template-columns: 44px minmax(0, 1fr);
+  min-height: 42px;
+  padding: 4px 6px !important;
+}
+
+.quickStylePreviewFrame {
+  align-items: center;
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 4px;
+  display: flex;
+  height: 30px;
+  justify-content: center;
+  width: 42px;
+}
+
+.quickStylePreviewFrame svg {
+  height: 22px;
+  overflow: visible;
+  width: 34px;
+}
+
+.menuPreview {
+  color: #374151;
+  flex: 0 0 28px;
+  height: 18px;
+  overflow: visible;
+  width: 28px;
+}
+
+@media (prefers-contrast: more) {
+  .shapeTile,
+  .quickStyleTile {
+    outline-offset: -2px;
+  }
+}

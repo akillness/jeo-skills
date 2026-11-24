@@ -1,0 +1,201 @@
+@scope ([data-example]) {
+  [data-slot="token-input"] {
+    width: 20rem;
+    max-width: 100%;
+
+    [data-slot="field"] > & {
+      width: 100%;
+    }
+  }
+
+  [data-slot="token-input-editor"] {
+    position: relative;
+    box-sizing: border-box;
+    width: 20rem;
+    max-width: 100%;
+    min-height: 80px;
+    padding: var(--space-2) 10px;
+    border-radius: var(--radius-control);
+    background: var(--surface-1);
+    box-shadow: inset 0 0 0 1px var(--line);
+    color: var(--ink);
+    line-height: 24px;
+
+    &:hover:not(:focus-visible, [data-disabled], [data-readonly]) {
+      box-shadow: inset 0 0 0 1px
+        color-mix(in oklab, var(--ink) 45%, var(--surface-1));
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--halo);
+      outline-offset: 0;
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+
+    &[data-empty]::before {
+      content: attr(aria-placeholder);
+      position: absolute;
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    &[data-readonly] {
+      box-shadow: inset 0 0 0 1px var(--line-faint);
+    }
+
+    &[data-disabled] {
+      background: var(--tint);
+      box-shadow: inset 0 0 0 1px var(--line-faint);
+      color: var(--line-disabled);
+    }
+
+    :is([data-slot="field"], [data-slot="field"] > [data-slot="token-input"])
+      > & {
+      width: 100%;
+    }
+
+    [data-slot="card"] > & {
+      width: auto;
+      max-width: none;
+      min-height: 56px;
+      padding: var(--space-3) 14px 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      outline: none;
+    }
+  }
+
+  /* The prompt card is the field: gray line at rest, ink and halo while typing. */
+  [data-slot="card"]:has(> [data-slot="token-input-editor"]) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    width: 20rem;
+    max-width: 100%;
+    padding: 0;
+    box-shadow: inset 0 0 0 1px var(--line);
+
+    &:hover {
+      box-shadow: inset 0 0 0 1px
+        color-mix(in oklab, var(--ink) 45%, var(--surface-1));
+    }
+
+    &:has(> [data-slot="token-input-editor"]:focus-visible) {
+      outline: 3px solid var(--halo);
+      outline-offset: 0;
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+
+    & > [data-slot="row"] {
+      justify-content: space-between;
+      padding: var(--space-2);
+    }
+  }
+
+  [data-slot="token-input-host"] {
+    display: inline-flex;
+    vertical-align: bottom;
+    white-space: normal;
+
+    & > span:not([data-slot]) {
+      display: contents;
+    }
+  }
+
+  [data-slot="token-input-host"]:has([data-slot="token-input-token"]) {
+    display: inline;
+  }
+
+  :is(
+    [data-slot="token-input-token"],
+    [data-slot="token-input-host"]:not(:has([data-slot="token-input-token"]))
+  ) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    box-sizing: border-box;
+    height: 22px;
+    padding-inline: 8px;
+    border-radius: calc(var(--radius-control) - 2px);
+    background: var(--surface-1);
+    box-shadow: inset 0 0 0 1px var(--line);
+    color: var(--ink);
+    font-size: var(--text-xs);
+    line-height: 20px;
+    white-space: nowrap;
+    vertical-align: 1px;
+
+    &:has(
+      [data-slot="token-input-token-remove"]:not(
+        [data-disabled],
+        [data-readonly]
+      )
+    ) {
+      padding-inline-end: 3px;
+    }
+
+    & > svg {
+      width: 14px;
+      height: 14px;
+      color: var(--muted);
+    }
+
+    &[data-token-type="skill"] {
+      background: var(--tint);
+    }
+
+    &[data-pending] {
+      background: var(--tint);
+      color: var(--muted);
+    }
+
+    &[data-unresolved] {
+      box-shadow: inset 0 0 0 1px var(--line-faint);
+      color: var(--muted);
+    }
+
+    &[data-selected] {
+      background: var(--tint);
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+
+    &[data-disabled],
+    [data-disabled] > & {
+      box-shadow: inset 0 0 0 1px var(--line-faint);
+      color: var(--line-disabled);
+    }
+  }
+
+  [data-slot="token-input-token-remove"] {
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: var(--size-icon);
+    height: var(--size-icon);
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--muted);
+    cursor: default;
+    transition:
+      background-color 0.12s,
+      color 0.12s;
+
+    &:hover {
+      background: var(--tint);
+      box-shadow: inset 0 0 0 1px var(--ink);
+      color: var(--ink);
+    }
+
+    &:is([data-disabled], [data-readonly]) {
+      display: none;
+    }
+
+    & svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+}

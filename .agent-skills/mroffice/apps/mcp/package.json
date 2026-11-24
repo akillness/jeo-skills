@@ -1,0 +1,70 @@
+{
+  "name": "mroffice-mcp",
+  "version": "0.2.0",
+  "mcpName": "ai.mroffice/office",
+  "type": "module",
+  "description": "MR Office's document, spreadsheet and PDF editors for AI apps: an MCP server whose tools create, open, read, picture and export files, with the real editor shown inline where the host renders MCP Apps -- or, with the MR Office desktop app open, the app's window as the AI's live screen for your own files.",
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "mcp-apps",
+    "office",
+    "document-editor",
+    "spreadsheet",
+    "markdown",
+    "pdf",
+    "docx",
+    "mroffice",
+    "desktop"
+  ],
+  "homepage": "https://mroffice.ai/developers/mcp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XinaTian/MROffice.git",
+    "directory": "apps/mcp"
+  },
+  "bugs": {
+    "email": "support@mr-note.com"
+  },
+  "author": "MR Note <support@mr-note.com>",
+  "license": "AGPL-3.0-only",
+  "bin": {
+    "mroffice-mcp": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "src",
+    "tsconfig.json",
+    "tsconfig.build.json",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "prepack": "npm run build",
+    "typecheck": "tsc -p tsconfig.json",
+    "start": "node src/cli.ts --http",
+    "stdio": "node src/cli.ts --stdio",
+    "test": "node --test test/*.test.ts"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/ext-apps": "1.7.5",
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "zod": "^4.1.12"
+  },
+  "optionalDependencies": {
+    "playwright-core": "1.58.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "^5.9.3"
+  }
+}

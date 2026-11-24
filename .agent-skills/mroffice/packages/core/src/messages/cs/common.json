@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Vlastní",
+ "zoom.levels": "Úrovně přiblížení",
+ "dialog.close": "Zavřít",
+ "toast.close": "Zavřít oznámení",
+ "button.confirm": "OK",
+ "button.cancel": "Zrušit",
+ "libreOffice.enable": "Stáhnout a povolit (přibližně {size})",
+ "libreOffice.enableAlt": "Stáhnout a povolit LibreOffice",
+ "libreOffice.enabled": "LibreOffice {version} je povolen",
+ "libreOffice.retrying": "Nový pokus…",
+ "libreOffice.ready": "Staré formáty Office, soubory OpenDocument, obrázky EMF/WMF a exporty do OpenDocument nyní fungují.",
+ "libreOffice.needed": "Tato funkce vyžaduje LibreOffice. MR Note Classic může stáhnout oficiální verzi do vlastní složky; do systému se nic neinstaluje.",
+ "libreOffice.neededFor": "Uložení ve formátu .{format} vyžaduje LibreOffice. MR Note Classic může stáhnout oficiální verzi do vlastní složky; do systému se nic neinstaluje."
+}

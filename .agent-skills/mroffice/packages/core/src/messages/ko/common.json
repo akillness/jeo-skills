@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "사용자 지정",
+ "zoom.levels": "확대/축소 수준",
+ "dialog.close": "닫기",
+ "toast.close": "알림 닫기",
+ "button.confirm": "확인",
+ "button.cancel": "취소",
+ "libreOffice.enable": "다운로드하여 사용 (약 {size})",
+ "libreOffice.enableAlt": "LibreOffice 다운로드하여 사용",
+ "libreOffice.enabled": "LibreOffice {version}을(를) 사용할 수 있습니다",
+ "libreOffice.retrying": "다시 시도하는 중…",
+ "libreOffice.ready": "이제 이전 Office 형식과 OpenDocument 파일을 열고, EMF/WMF 그림을 표시하고, OpenDocument로 저장할 수 있습니다.",
+ "libreOffice.needed": "LibreOffice가 필요합니다. MR Note Classic이 공식 릴리스를 자체 폴더에 다운로드할 수 있으며, 시스템에는 아무것도 설치되지 않습니다.",
+ "libreOffice.neededFor": ".{format}(으)로 저장하려면 LibreOffice가 필요합니다. MR Note Classic이 공식 릴리스를 자체 폴더에 다운로드할 수 있으며, 시스템에는 아무것도 설치되지 않습니다."
+}

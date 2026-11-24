@@ -1,0 +1,39 @@
+{
+  "name": "strict-vdp",
+  "version": "v1",
+  "description": "Default rule set mirroring a strict vulnerability-disclosure policy (rewrite it to your program's exact published text; the reviewer only judges against what is written here).",
+  "accepted_classes": [
+    "SQL injection",
+    "arbitrary file upload / deletion / download with full path and extension control",
+    "remote code execution",
+    "PHP object injection",
+    "significant settings change (impactful application options)",
+    "privilege escalation to contributor level or above",
+    "broken access control on genuinely sensitive objects only (API keys, secrets, password hashes, backup or SQL files)",
+    "IDOR with significant impact (personal-data leakage alone is NOT significant)",
+    "stored XSS that executes on page open with zero interaction, unauthenticated or low-privilege reachable",
+    "CSRF only when it chains into one of the accepted write actions above",
+    "denial of service only when the whole site crashes"
+  ],
+  "rejected_classes": [
+    "user or account enumeration and other low-impact information disclosure",
+    "personal-data-limited broken access control or IDOR",
+    "CSRF that does not chain into an accepted write action",
+    "role prerequisites at or below contributor level",
+    "blind SSRF",
+    "CSV injection",
+    "open redirects",
+    "self-XSS or XSS requiring unusual interaction"
+  ],
+  "format_requirements": {
+    "language": "English",
+    "version": "the latest released version of the component at the time of writing",
+    "poc_perspective": "remote attacker over HTTP; steps a third party can follow end to end; the full PoC lives in the report body, not only in attachments",
+    "consolidation": "multiple findings of the same type go into ONE report",
+    "impact": "quantified with its denominator or a concrete demonstrated attacker outcome"
+  },
+  "risk_notes": [
+    "an untested or assumption-based report can earn an immediate temporary ban",
+    "a high rejection rate can remove the reporter from the program"
+  ]
+}

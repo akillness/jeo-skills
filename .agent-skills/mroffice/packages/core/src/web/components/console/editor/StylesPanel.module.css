@@ -1,0 +1,289 @@
+/* The Styles task pane: the shared Office pane frame (OfficeTaskPane),
+   placed over the page column's right edge at the shared pane width. */
+.panel {
+  --office-pane-tone-accent: var(--console-accent, #2563eb);
+  background: var(--office-dialog-surface, #ffffff);
+  border: 1px solid var(--office-dialog-control-border, rgba(148, 163, 184, 0.28));
+  border-radius: 12px;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
+  color: var(--office-dialog-ink, #183b37);
+  display: flex;
+  flex: 0 0 340px;
+  flex-direction: column;
+  max-height: min(640px, 56vh);
+  min-width: min(340px, calc(100vw - 32px)) !important;
+  overflow: hidden;
+  position: absolute !important;
+  right: 0;
+  top: 0;
+  width: min(340px, calc(100vw - 32px)) !important;
+  z-index: 8;
+}
+
+/* Set by the editor while the panel is open: a :has() on the body was
+   re-evaluated on every keystroke, recalculating the whole editor.
+   The host is the editor's own element, so this rule has no local class; the
+   release build (webpack css-loader, pure mode) accepts it only with the
+   pure-ignore marker below. */
+/* cssmodules-pure-ignore */
+:global(.note-editor-body)[data-styles-panel="open"] {
+  position: relative;
+}
+
+.controls {
+  border-bottom: 1px solid var(--office-dialog-divider, rgba(148, 163, 184, 0.18));
+  display: grid;
+  gap: 8px;
+  padding: 9px 10px 8px;
+}
+
+.searchField {
+  align-items: center;
+  background: var(--office-dialog-surface, #ffffff);
+  border: 1px solid var(--office-dialog-control-border, rgba(100, 116, 139, 0.3));
+  border-radius: 7px;
+  color: var(--office-dialog-muted, #42625d);
+  display: flex;
+  gap: 7px;
+  min-height: 34px;
+  padding-inline: 9px;
+}
+
+.searchField:focus-within {
+  border-color: color-mix(
+    in srgb,
+    var(--console-accent, #0d9488) 56%,
+    transparent
+  );
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--console-accent, #0d9488) 12%, transparent);
+}
+
+.searchField input {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  flex: 1;
+  font: inherit;
+  min-width: 0;
+  outline: none;
+}
+
+.tabs {
+  background: var(--office-dialog-hover, rgba(148, 163, 184, 0.1));
+  border-radius: 7px;
+  display: grid;
+  gap: 2px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 2px;
+}
+
+.tab {
+  background: transparent;
+  border: 0;
+  border-radius: 5px;
+  color: var(--office-dialog-ink, #526b66);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 750;
+  min-height: 30px;
+  padding: 4px 6px;
+}
+
+.tab:hover,
+.tab:focus-visible {
+  background: var(--office-dialog-surface, rgba(255, 255, 255, 0.72));
+  outline: none;
+}
+
+.tabActive {
+  background: var(--office-dialog-surface, #ffffff);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.1);
+  color: var(--office-dialog-accent, #0f766e);
+}
+
+.currentStyle,
+.importedCurrent {
+  align-items: center;
+  background: var(--office-dialog-accent-soft, color-mix(in srgb, var(--console-accent, #0d9488) 8%, #ffffff));
+  color: var(--office-dialog-muted, #42625d);
+  display: grid;
+  font-size: 11px;
+  gap: 7px;
+  grid-template-columns: 16px auto minmax(0, 1fr);
+  padding: 7px 11px;
+}
+
+.currentStyle strong,
+.importedCurrent strong {
+  color: var(--office-dialog-ink, #183b37);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.panel :global(.styles-panel-body) {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.panel :global(.styles-panel-section-title) {
+  letter-spacing: 0.025em;
+  text-transform: none;
+}
+
+.panel :global(.styles-panel-apply) {
+  position: relative;
+}
+
+.currentMarker {
+  color: var(--office-dialog-accent, #0f766e);
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 800;
+  margin-left: auto;
+}
+
+.sourceNotice {
+  align-items: center;
+  background: var(--office-dialog-hover, rgba(148, 163, 184, 0.09));
+  border-radius: 6px;
+  color: var(--office-dialog-muted, #5f7772);
+  display: flex;
+  font-size: 10px;
+  gap: 6px;
+  margin-bottom: 6px;
+  padding: 6px 8px;
+}
+
+.sourceNotice span {
+  flex: 1;
+}
+
+.sourceNotice code {
+  background: var(--office-dialog-hover, rgba(148, 163, 184, 0.14));
+  border-radius: 4px;
+  font-size: 8px;
+  padding: 2px 4px;
+}
+
+.importedItem {
+  border: 1px solid var(--office-dialog-control-border, rgba(148, 163, 184, 0.2));
+  border-radius: 8px;
+  display: grid;
+  gap: 5px;
+  padding: 6px;
+}
+
+.importedApply {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  justify-content: space-between;
+  min-height: 32px;
+  padding: 4px 6px;
+  text-align: left;
+  width: 100%;
+}
+
+.importedApply:hover {
+  background: color-mix(
+    in srgb,
+    var(--console-accent, #0d9488) 9%,
+    transparent
+  );
+  outline: none;
+}
+
+.importedApply:focus-visible {
+  background: color-mix(
+    in srgb,
+    var(--console-accent, #0d9488) 9%,
+    transparent
+  );
+  outline: none;
+}
+
+.importedApply:global(.is-active) {
+  background: color-mix(
+    in srgb,
+    var(--console-accent, #0d9488) 9%,
+    transparent
+  );
+  outline: none;
+}
+
+.importedApply small {
+  color: var(--office-dialog-muted, #64748b);
+  font-size: 9px;
+}
+
+.importedApply:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+.readOnlyBadge {
+  color: var(--office-dialog-muted, #64748b);
+  font-size: 9px;
+  font-weight: 750;
+  padding-inline: 6px;
+}
+
+.importedMetadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 8px;
+  margin: 0;
+  padding-inline: 6px 4px;
+}
+
+.importedMetadata > div {
+  display: inline-flex;
+  font-size: 9px;
+  gap: 3px;
+}
+
+.importedMetadata dt {
+  color: var(--office-dialog-muted, #64748b);
+}
+
+.importedMetadata dd {
+  color: var(--office-dialog-ink, #334155);
+  margin: 0;
+}
+
+.panel :global(.styles-panel-icon:disabled) {
+  cursor: not-allowed;
+  opacity: 0.38;
+}
+
+.panel :global(.styles-panel-dialog) {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+}
+
+:where(:root[data-touch-mode]) .tab,
+:where(:root[data-touch-mode]) .searchField,
+:where(:root[data-touch-mode]) .importedApply,
+:where(:root[data-touch-mode]) .panel :global(button),
+:where(:root[data-touch-mode]) .panel :global(input),
+:where(:root[data-touch-mode]) .panel :global(select) {
+  min-height: 44px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .panel * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

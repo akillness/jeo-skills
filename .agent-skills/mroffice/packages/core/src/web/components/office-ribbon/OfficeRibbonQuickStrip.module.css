@@ -1,0 +1,97 @@
+.quickStrip {
+  min-width: 0;
+  min-height: 30px;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Adapters may contribute existing comments/export buttons directly. Keep
+   those faces on the same title-row tier as the shared Save/More commands;
+   otherwise native-window button rules inflate only PPT to 36px. */
+.quickStrip.quickStrip > button {
+  box-sizing: border-box;
+  height: 30px;
+  min-height: 30px;
+}
+
+.more {
+  flex: 0 0 auto;
+}
+
+.moreButton.moreButton,
+.saveButton.saveButton {
+  box-sizing: border-box;
+  min-width: 30px;
+  height: 30px;
+  min-height: 30px;
+  border-radius: 6px;
+  line-height: 1;
+}
+
+.saveButton.saveButton {
+  padding: 0 10px;
+  white-space: nowrap;
+}
+
+.moreButton.moreButton:focus-visible:not(:global(.office-ribbon-control)) {
+  outline: 2px solid var(--office-ribbon-accent, #2563eb);
+  outline-offset: 2px;
+}
+
+.saveButton.saveButton:focus-visible:not(:global(.office-ribbon-control)) {
+  outline: 2px solid var(--office-ribbon-accent, #2563eb);
+  outline-offset: 2px;
+}
+
+.flyout {
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 6px;
+  gap: 6px;
+  align-items: center;
+  border: 1px solid var(--office-ribbon-border, #d8dee8);
+  border-radius: 8px;
+  background: var(--office-ribbon-surface, #fff);
+  box-shadow: 0 8px 24px rgb(15 23 42 / 14%);
+}
+
+/* Override the older absolute-position rule without changing global ribbon
+   clipping. Native top-layer placement uses viewport coordinates. */
+.flyout.flyout[popover] {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  max-width: calc(100vw - 16px);
+  overflow: auto;
+  visibility: hidden;
+}
+
+.flyout.flyout[popover]:not(:popover-open) {
+  display: none;
+}
+
+.flyout[popover]::backdrop {
+  background: transparent;
+  pointer-events: none;
+}
+
+.flyoutHost,
+.flyout .tailPortal {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+
+.flyout :where([role="group"], [role="toolbar"]) {
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .moreButton,
+  .saveButton {
+    transition: none;
+  }
+}

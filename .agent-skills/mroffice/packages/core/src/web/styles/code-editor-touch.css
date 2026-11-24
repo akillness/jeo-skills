@@ -1,0 +1,54 @@
+ 
+
+ 
+@media (hover: none) {
+  .cm-editor
+    .cm-debug-breakpoint-gutter
+    .cm-gutterElement.cm-activeLineGutter
+    .cm-debug-breakpoint-marker[data-active="false"] {
+    opacity: 0.35;
+  }
+}
+:root[data-touch-mode] .cm-editor .cm-gutters .cm-debug-breakpoint-gutter,
+:root[data-touch-mode]
+  .cm-editor
+  .cm-gutters
+  .cm-debug-breakpoint-gutter
+  .cm-gutterElement {
+  width: 28px;
+  min-width: 28px;
+}
+:root[data-touch-mode]
+  .cm-editor
+  .cm-debug-breakpoint-gutter
+  .cm-gutterElement.cm-activeLineGutter
+  .cm-debug-breakpoint-marker[data-active="false"] {
+  opacity: 0.35;
+}
+:root[data-touch-mode] .cm-editor .cm-gutters .cm-foldGutter .cm-gutterElement {
+  min-width: 24px;
+  text-align: center;
+}
+
+ 
+:root[data-touch-mode] .code-output-resizer {
+  --code-output-resizer-size: 24px;
+  position: relative;
+}
+:root[data-touch-mode] .code-output-resizer::before {
+  content: "";
+  position: absolute;
+  inset: -10px 0;
+}
+
+ 
+:root[data-touch-mode] .code-autocomplete-item,
+:root[data-touch-mode]
+  .cm-editor
+  .cm-tooltip.cm-tooltip-autocomplete
+  > ul
+  > li {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}

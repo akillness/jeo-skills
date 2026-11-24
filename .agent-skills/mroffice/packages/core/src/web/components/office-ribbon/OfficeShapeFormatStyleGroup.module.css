@@ -1,0 +1,19 @@
+.group {
+  flex: 0 0 auto;
+  width: max-content;
+  min-width: max-content;
+}
+.group[data-ribbon="shape"] {order:20;}
+.group[data-ribbon="shape"] .commands { min-width: 0; }
+.group[data-ribbon="shape"] .row { gap: 4px; }
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: max-content;
+}
+.commands {
+  display: flex;
+  align-items: center;
+  min-width: 100px;
+}

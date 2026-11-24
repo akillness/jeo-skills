@@ -1,0 +1,58 @@
+@scope ([data-example]) {
+  [data-slot="hover-card-trigger"] {
+    border-radius: 4px;
+    color: var(--ink);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 3px;
+
+    &:hover,
+    &[data-open] {
+      text-decoration-color: var(--ink);
+    }
+  }
+
+  [data-slot="hover-card-content"] {
+    gap: var(--space-1);
+    width: 18rem;
+    font-size: var(--text-sm);
+
+    & > p:first-of-type,
+    & [data-slot="stack"] > p:first-child {
+      font-size: var(--text-md);
+      font-weight: 600;
+    }
+
+    & [data-slot="stack"] {
+      gap: var(--space-1);
+    }
+
+    & p + p {
+      margin-top: 0;
+    }
+
+    & p[data-slot="hint"] {
+      margin-top: var(--space-1);
+    }
+  }
+
+  /* Two short selects in one row, and room around the link for a card on any side. */
+  :scope[data-example="hover-card/side"] {
+    & [data-slot="stack"] {
+      width: auto;
+    }
+
+    & [data-slot="hover-card-trigger"] {
+      margin-block: 6.5rem;
+    }
+
+    & [data-slot="select-trigger"] {
+      min-width: 8rem;
+    }
+
+    & [data-slot="hover-card-content"] {
+      width: 15rem;
+    }
+  }
+}

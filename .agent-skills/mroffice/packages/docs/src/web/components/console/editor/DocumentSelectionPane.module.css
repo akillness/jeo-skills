@@ -1,0 +1,102 @@
+/* The Selection Pane's own parts. Its frame (title row, close, placement)
+   is the shared Office task pane in the Docs dock
+   (native-document/DocumentShapeFormatPane.module.css `.pane`); its object
+   list is the shared OfficeSelectionPaneList. */
+.count {
+  min-width: 18px;
+  padding: 1px 5px;
+  color: var(--office-dialog-ink, #64748b);
+  font-size: 10px;
+  font-weight: 600;
+  text-align: center;
+  background: var(--office-dialog-hover, rgba(148, 163, 184, 0.16));
+  border-radius: 999px;
+}
+
+.extensionNote {
+  display: grid;
+  gap: 5px;
+  padding: 9px 12px 10px;
+  color: var(--office-dialog-muted, #526075);
+  font-size: 11px;
+  line-height: 1.4;
+  border-bottom: 1px solid var(--office-dialog-divider, rgba(100, 116, 139, 0.14));
+}
+
+.actionRail {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  padding: 7px 9px;
+  background: var(--office-dialog-surface-muted, rgba(255, 255, 255, 0.42));
+  border-bottom: 1px solid var(--office-dialog-divider, rgba(100, 116, 139, 0.14));
+}
+
+.actionButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 28px;
+  padding: 4px 8px;
+  color: var(--office-dialog-ink, #172033);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--office-dialog-surface, rgba(255, 255, 255, 0.68));
+  border: 1px solid var(--office-dialog-control-border, rgba(100, 116, 139, 0.22));
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.actionButton:hover:not(:disabled) {
+  color: var(--office-dialog-accent, #2563eb);
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.28);
+}
+
+.actionButton:disabled {
+  opacity: 0.42;
+  cursor: default;
+}
+
+.extensionBadge {
+  width: max-content;
+  padding: 2px 7px;
+  color: var(--office-dialog-accent, #1d4ed8);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgba(37, 99, 235, 0.1);
+  border: 1px solid rgba(37, 99, 235, 0.22);
+  border-radius: 999px;
+}
+
+.actionButton:focus-visible {
+  outline: 2px solid var(--console-accent, #2563eb);
+  outline-offset: 1px;
+}
+
+/* The object list (rows, eye, reorder rail, empty state) is the shared
+   components/office-ribbon/OfficeSelectionPaneList.module.css. */
+
+@media (prefers-reduced-motion: reduce) {
+  .pane,
+  .close {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .pane,
+  .header,
+  .extensionNote,
+  .actionRail,
+  .actionButton,
+  .extensionBadge {
+    background: Canvas;
+    border-color: CanvasText;
+    color: CanvasText;
+    forced-color-adjust: auto;
+  }
+}

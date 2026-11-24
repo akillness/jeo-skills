@@ -1,0 +1,129 @@
+/* The chart source strip above the embedded ChartData workbook: the sheet
+   picker, the data range and the status text. Light matches the workbook
+   window it sits in; dark and high contrast take the Office dialog chrome's
+   dark field values wherever <html> or the window carries the theme. */
+.strip {
+  display: flex;
+  order: 1;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-bottom: 1px solid #d8e0e9;
+  background: #ffffff;
+  color: #1d1d1f;
+}
+
+.strip select,
+.strip input {
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  background: #ffffff;
+  color: inherit;
+  font: inherit;
+  padding: 3px 8px;
+}
+
+.strip input {
+  width: 140px;
+}
+
+.strip select:focus-visible,
+.strip input:focus-visible {
+  border-color: #2563eb;
+  outline: 2px solid color-mix(in srgb, #2563eb 30%, transparent);
+  outline-offset: 0;
+}
+
+.status {
+  color: #6e6e73;
+  font-size: 12px;
+}
+
+.error {
+  color: #b91c1c;
+  font-size: 12px;
+}
+
+:global([data-theme-mode="dark"]) .strip {
+  border-bottom-color: rgb(255 255 255 / 10%);
+  background: rgb(38 39 44);
+  color: #f2f2f7;
+}
+
+:global([data-theme-mode="high-contrast"]) .strip {
+  border-bottom-color: rgb(255 255 255 / 10%);
+  background: rgb(38 39 44);
+  color: #f2f2f7;
+}
+
+:global([data-theme-mode="dark"]) .strip select {
+  border-color: rgb(255 255 255 / 18%);
+  background: rgb(0 0 0 / 28%);
+  color: #f2f2f7;
+  color-scheme: dark;
+}
+
+:global([data-theme-mode="dark"]) .strip input {
+  border-color: rgb(255 255 255 / 18%);
+  background: rgb(0 0 0 / 28%);
+  color: #f2f2f7;
+  color-scheme: dark;
+}
+
+:global([data-theme-mode="high-contrast"]) .strip select {
+  border-color: rgb(255 255 255 / 18%);
+  background: rgb(0 0 0 / 28%);
+  color: #f2f2f7;
+  color-scheme: dark;
+}
+
+:global([data-theme-mode="high-contrast"]) .strip input {
+  border-color: rgb(255 255 255 / 18%);
+  background: rgb(0 0 0 / 28%);
+  color: #f2f2f7;
+  color-scheme: dark;
+}
+
+:global([data-theme-mode="high-contrast"]) .strip select {
+  border-color: rgb(255 255 255 / 45%);
+}
+
+:global([data-theme-mode="high-contrast"]) .strip input {
+  border-color: rgb(255 255 255 / 45%);
+}
+
+:global([data-theme-mode="dark"]) .strip select:focus-visible {
+  border-color: #4f8bf5;
+  outline-color: color-mix(in srgb, #4f8bf5 45%, transparent);
+}
+
+:global([data-theme-mode="dark"]) .strip input:focus-visible {
+  border-color: #4f8bf5;
+  outline-color: color-mix(in srgb, #4f8bf5 45%, transparent);
+}
+
+:global([data-theme-mode="high-contrast"]) .strip select:focus-visible {
+  border-color: #4f8bf5;
+  outline-color: color-mix(in srgb, #4f8bf5 45%, transparent);
+}
+
+:global([data-theme-mode="high-contrast"]) .strip input:focus-visible {
+  border-color: #4f8bf5;
+  outline-color: color-mix(in srgb, #4f8bf5 45%, transparent);
+}
+
+:global([data-theme-mode="dark"]) .status {
+  color: #a1a1a8;
+}
+
+:global([data-theme-mode="high-contrast"]) .status {
+  color: #a1a1a8;
+}
+
+:global([data-theme-mode="dark"]) .error {
+  color: #ff6961;
+}
+
+:global([data-theme-mode="high-contrast"]) .error {
+  color: #ff6961;
+}

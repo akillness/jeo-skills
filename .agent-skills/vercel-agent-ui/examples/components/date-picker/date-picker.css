@@ -1,0 +1,191 @@
+@scope ([data-example]) {
+  /* The field sits near the top, centered, with room below for the open calendar inside the preview. */
+  :scope[data-example^="date-picker/"] {
+    justify-content: flex-start;
+    min-height: 26rem;
+  }
+
+  :scope:is(
+    [data-example="date-picker/presets"],
+    [data-example="date-picker/dismissible"],
+    [data-example="date-picker/controller"]
+  ) {
+    min-height: 29rem;
+  }
+
+  /* In a field, the picker takes the field's width. */
+  [data-slot="field"] > [data-slot="date-picker"] {
+    align-self: stretch;
+
+    & > [data-slot="row"]:has(> [data-slot="date-picker-input"]) {
+      width: 100%;
+    }
+  }
+
+  /* A picker inside a stack sits on the stack's center line. */
+  [data-slot="stack"]:has(> [data-slot="date-picker"]) {
+    align-items: center;
+  }
+
+  [data-slot="date-picker"] {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    max-width: 100%;
+
+    /* The row around the inputs and trigger is the field. */
+    & > [data-slot="row"]:has(> [data-slot="date-picker-input"]) {
+      flex-wrap: nowrap;
+      gap: var(--space-1);
+      box-sizing: border-box;
+      width: 12rem;
+      max-width: 100%;
+      height: var(--size);
+      padding-inline: 0 3px;
+      border-radius: var(--radius-control);
+      background: var(--surface-1);
+      box-shadow: inset 0 0 0 1px var(--line);
+
+      &:hover {
+        box-shadow: inset 0 0 0 1px
+          color-mix(in oklab, var(--ink) 45%, var(--surface-1));
+      }
+
+      &:has(input:focus-visible) {
+        box-shadow: inset 0 0 0 1px var(--ink);
+        outline: 3px solid var(--halo);
+        outline-offset: 0;
+      }
+    }
+
+    &
+      > [data-slot="row"]:has(
+        > [data-slot="date-picker-input"] ~ [data-slot="date-picker-input"]
+      ) {
+      width: 16rem;
+    }
+
+    &:has([aria-invalid="true"]) > [data-slot="row"] {
+      box-shadow: inset 0 0 0 1px var(--danger);
+    }
+
+    &[data-disabled] > [data-slot="row"] {
+      box-shadow: inset 0 0 0 1px var(--line-faint);
+      color: var(--line-disabled);
+    }
+
+    &[data-readonly] > [data-slot="row"] {
+      background: var(--tint);
+    }
+  }
+
+  /* The input reaches the field's start edge, so the calendar lines up with the field. */
+  [data-slot="date-picker-input"] {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    padding-inline-start: 10px;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-variant-numeric: tabular-nums;
+    outline: none;
+
+    &::placeholder {
+      color: var(--muted);
+    }
+
+    &[data-disabled]::placeholder {
+      color: var(--line-disabled);
+    }
+  }
+
+  :is([data-slot="date-picker-trigger"], [data-slot="date-picker-clear"]) {
+    width: var(--size-sm);
+    height: var(--size-sm);
+    padding: 0;
+    border-radius: var(--radius-row);
+    color: var(--muted);
+
+    &:hover:not(:disabled, [data-disabled]) {
+      color: var(--ink);
+    }
+  }
+
+  [data-slot="date-picker-hint"] {
+    min-height: var(--leading);
+    color: var(--muted);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+
+    &[data-placeholder] {
+      font-size: var(--text-xs);
+    }
+  }
+
+  [data-slot="date-picker-clear"][data-empty] {
+    visibility: hidden;
+  }
+
+  [data-slot="date-picker-content"] {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-sizing: border-box;
+    max-width: var(--available-width);
+    max-height: var(--available-height);
+    overflow-y: auto;
+    padding: 10px;
+    border-radius: var(--radius-popup);
+    background: var(--surface-2);
+    box-shadow: var(--shadow-2);
+    font-size: var(--text-sm);
+    outline: none;
+    transform-origin: var(--transform-origin);
+
+    /* As in Calendar, the header takes the grid's width rather than widening the popup for a long heading. */
+    & > [data-slot="row"]:first-child {
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      width: 0;
+      min-width: 100%;
+      padding-bottom: var(--space-1);
+    }
+
+    & > [data-slot="row"]:has(> [data-slot="date-picker-preset"]) {
+      gap: var(--space-1);
+      padding-top: 6px;
+      border-top: 1px solid var(--line-faint);
+    }
+
+    /* Messages wrap to the grid's width instead of widening the popup. */
+    & > [data-slot="hint"] {
+      width: 0;
+      min-width: 100%;
+      margin: 0;
+      padding-top: var(--space-2);
+      border-top: 1px solid var(--line-faint);
+    }
+
+    & [data-slot="calendar"] {
+      padding: 0;
+      background: none;
+      box-shadow: none;
+    }
+  }
+
+  [data-slot="date-picker-preset"] {
+    height: var(--size-sm);
+    padding-inline: 10px;
+    border-radius: var(--radius-row);
+    font-size: var(--text-sm);
+
+    &[data-selected] {
+      background: var(--tint);
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+  }
+}

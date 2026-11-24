@@ -1,0 +1,173 @@
+@scope ([data-example]) {
+  [data-slot="number-input"] {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+
+    &:has(> [data-slot="number-input-scrub-area"] [data-slot="field-label"]) {
+      flex-direction: column;
+      align-items: stretch;
+
+      & > [data-slot="number-input-scrub-area"] {
+        align-self: flex-start;
+      }
+    }
+  }
+
+  [data-slot="number-input-group"] {
+    gap: 0;
+    width: 20rem;
+    max-width: 100%;
+    padding: 3px;
+
+    &:not(:has(button)) {
+      padding-inline: 10px;
+    }
+  }
+
+  [data-slot="field"]:has(> [data-slot="number-input"]) {
+    width: 20rem;
+    max-width: 100%;
+  }
+
+  /* Stacks of number fields shrink to their fields, so they stay centered. */
+  :scope[data-example^="number-input/"] [data-slot="stack"] {
+    width: auto;
+  }
+
+  [data-slot="number-input-control"] {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    padding: 0 2px;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    outline: none;
+
+    &:disabled {
+      color: var(--line-disabled);
+    }
+  }
+
+  :is(
+    [data-slot="number-input-decrement"],
+    [data-slot="number-input-increment"]
+  ) {
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    box-sizing: border-box;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 var(--space-1);
+    border: 0;
+    border-radius: calc(var(--radius-control) - 3px);
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: var(--text-xs);
+    font-weight: 500;
+    user-select: none;
+    transition:
+      background-color 0.12s,
+      color 0.12s;
+
+    &:hover:not([data-disabled]) {
+      background: var(--tint);
+      color: var(--ink);
+    }
+
+    &:active:not([data-disabled]) {
+      background: var(--tint);
+      box-shadow: inset 0 0 0 1px var(--ink);
+      color: var(--ink);
+    }
+
+    &:focus-visible {
+      outline-offset: -3px;
+    }
+
+    &[data-disabled] {
+      color: var(--line-disabled);
+    }
+
+    & svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  [data-slot="number-input-increment"]:not([data-at-bound]) > span,
+  [data-slot="number-input-increment"][data-at-bound] > svg:has(+ span) {
+    display: none;
+  }
+
+  [data-slot="number-input-scrub-area"] {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--muted);
+    cursor: ew-resize;
+    user-select: none;
+
+    &[data-orientation="vertical"] {
+      cursor: ns-resize;
+    }
+
+    &[data-scrubbing] {
+      color: var(--ink);
+    }
+
+    & [data-slot="field-label"] {
+      cursor: inherit;
+    }
+  }
+
+  [data-slot="number-input-scrub-area-cursor"] {
+    margin: -10px 0 0 -10px;
+    color: var(--ink);
+
+    & svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  /* A design-tool inspector: a titled card with a 2×2 grid of compact fields, each led by a letter handle. */
+  :scope[data-example="number-input/scrub"] {
+    & [data-slot="card"] {
+      flex-direction: column;
+      align-items: stretch;
+      width: 16rem;
+    }
+
+    & [data-slot="grid"] {
+      gap: var(--space-2);
+    }
+
+    & [data-slot="number-input-group"] {
+      width: auto;
+      height: 28px;
+      padding: 0 var(--space-2) 0 0;
+    }
+
+    & [data-slot="number-input-scrub-area"] {
+      flex-shrink: 0;
+      justify-content: center;
+      align-self: stretch;
+      width: 24px;
+      font-size: var(--text-xs);
+      font-weight: 500;
+    }
+
+    & [data-slot="number-input-control"] {
+      text-align: start;
+    }
+  }
+}

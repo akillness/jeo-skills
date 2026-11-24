@@ -1,0 +1,40 @@
+.bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px 0 14px;
+  min-height: 44px;
+  border-radius: 22px;
+  font-size: 14px;
+  color: var(--console-text-primary, #1a1a2e);
+  white-space: nowrap;
+}
+
+/* Over an editor: bottom centre of its window, above the page. */
+.floating {
+  position: fixed;
+  transform: translate(-50%, -100%);
+  z-index: var(--z-popover, 50);
+}
+
+.count {
+  font-variant-numeric: tabular-nums;
+}
+
+.done {
+  min-width: 44px;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 18px;
+  background: var(--console-accent, #2563eb);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.done:focus-visible {
+  outline: 2px solid var(--console-accent, #2563eb);
+  outline-offset: 2px;
+}

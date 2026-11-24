@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Pielāgots",
+ "zoom.levels": "Tālummaiņas līmeņi",
+ "dialog.close": "Aizvērt",
+ "toast.close": "Aizvērt paziņojumu",
+ "button.confirm": "Labi",
+ "button.cancel": "Atcelt",
+ "libreOffice.enable": "Lejupielādēt un iespējot (aptuveni {size})",
+ "libreOffice.enableAlt": "Lejupielādēt un iespējot LibreOffice",
+ "libreOffice.enabled": "LibreOffice {version} ir iespējota",
+ "libreOffice.retrying": "Mēģina vēlreiz…",
+ "libreOffice.ready": "Vecie Office formāti, OpenDocument faili, EMF/WMF attēli un OpenDocument eksporti tagad darbojas.",
+ "libreOffice.needed": "Tam nepieciešama LibreOffice. MR Note Classic var lejupielādēt oficiālo laidienu savā mapē; jūsu sistēmā nekas netiek instalēts.",
+ "libreOffice.neededFor": "Saglabāšanai kā .{format} nepieciešama LibreOffice. MR Note Classic var lejupielādēt oficiālo laidienu savā mapē; jūsu sistēmā nekas netiek instalēts."
+}

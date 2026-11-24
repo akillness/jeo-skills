@@ -1,0 +1,1154 @@
+.root {
+  --equation-cupertino-glass: rgba(249, 249, 251, 0.96);
+  --equation-cupertino-glass-raised: #fff;
+  --equation-cupertino-border: rgba(37, 99, 235, 0.58);
+  min-width: 0;
+  container-name: visual-math-editor;
+  container-type: inline-size;
+}
+
+.root:global(.visual-math-editor) {
+  gap: 4px;
+  padding: 4px 6px 5px;
+  overflow: visible;
+  border-color: var(--equation-cupertino-border);
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.root:global(.visual-math-editor--block) {
+  width: min(520px, 100%);
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.root:global(.visual-math-editor--inline) {
+  position: relative;
+  inset: auto;
+  display: inline-flex;
+  width: min(420px, calc(100vw - 56px));
+  max-width: min(420px, calc(100vw - 56px));
+  max-height: none;
+  margin: 0;
+  overflow: visible;
+  vertical-align: middle;
+}
+
+.root :global(.visual-math-editor__tabs) {
+  background: var(--equation-cupertino-glass-raised);
+  box-shadow: none;
+}
+
+.root :global(.visual-math-editor__mathfield) {
+  background: var(--equation-cupertino-glass-raised);
+  box-shadow: none;
+}
+
+.root :global(.visual-math-editor__source) {
+  background: var(--equation-cupertino-glass-raised);
+  box-shadow: none;
+}
+
+.root :global(.visual-math-editor__linear-preview) {
+  background: var(--equation-cupertino-glass-raised);
+  box-shadow: none;
+}
+
+.root :global(.visual-math-editor__header) {
+  min-width: 0;
+  justify-content: flex-start;
+  gap: 4px;
+}
+
+.root :global(.visual-math-editor__title) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.root :global(.visual-math-editor__tabs) {
+  min-width: 0;
+  gap: 1px;
+  padding: 1px;
+  border: 1px solid rgba(37, 99, 235, 0.12);
+  border-radius: 3px;
+}
+
+.root :global(.visual-math-editor__tab) {
+  min-height: 22px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.root :global(.visual-math-editor__field-host) {
+  min-height: 44px;
+}
+
+.root :global(.visual-math-editor__mathfield) {
+  min-height: 44px;
+}
+
+.root :global(.visual-math-editor__loading) {
+  min-height: 44px;
+}
+
+.root :global(.visual-math-editor__mathfield) {
+  padding: 6px 8px;
+  border-width: 1px;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: none;
+  font-size: 1.2rem;
+}
+
+.root :global(.visual-math-editor__mathfield:focus-within) {
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.16);
+}
+
+.root :global(.visual-math-editor__loading) {
+  padding: 12px 8px;
+  border-radius: 2px;
+}
+
+.root :global(.visual-math-editor__source) {
+  min-height: 52px;
+  padding: 6px 8px;
+  border-width: 1px;
+  border-radius: 2px;
+}
+
+.root :global(.visual-math-editor__linear-preview) {
+  min-height: 44px;
+  padding: 6px 8px;
+  border-radius: 2px;
+}
+
+.root.fieldOnly:global(.visual-math-editor) {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+  container-type: normal;
+  font-size: inherit;
+  line-height: inherit;
+  /* Drawn in its words' colour, as the committed equation is (white on a
+     dark slide), not the app's text colour. */
+  color: inherit;
+  gap: 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* The container holds focus only while the field mounts; the frame, not a
+   focus ring, is what shows the equation is being edited. */
+.root.fieldOnly:global(.visual-math-editor):focus {
+  outline: none;
+}
+
+.root.fieldOnly :global([hidden]) {
+  display: none !important;
+}
+
+.root.fieldOnly :global(.visual-math-editor__panel) {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+.root.fieldOnly :global(.visual-math-editor__field-host) {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+.root.fieldOnly :global(.visual-math-editor__source-label) {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ONE box for the rendered and the editing state.
+   The passive KaTeX reference and the live MathLive field share a single grid
+   cell, so the host always measures max(committed geometry, live draft): the
+   moment editing opens the box is still exactly the rendered formula's box,
+   and a draft that outgrows it (placeholders, limits, tall glyphs) widens and
+   heightens that same box instead of spilling out of a frame that was
+   measured once. Both layers are centred in the cell so the two engines'
+   renderings stay concentric instead of one being start-aligned.
+   Each layer keeps its OWN size: neither is stretched to, nor sized in
+   percentages of, the shared cell. A layer sized from the cell feeds the
+   cell's previous size back into it -- WebKit keeps a stretched grid item's
+   old height as its contribution, so the frame of an equation that opened
+   empty stayed at the empty floor after typing. */
+.root.fieldOnly :global(.visual-math-editor__field-host) {
+  position: relative;
+  display: grid;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: 100%;
+  min-height: 0;
+  place-items: center;
+}
+
+.root.fieldOnly :global(.visual-math-editor__field-host) > * {
+  grid-area: 1 / 1;
+}
+
+.root.fieldOnly :global(.visual-math-editor__mathfield) {
+  position: relative;
+  box-sizing: border-box;
+  /* The field hugs the live formula and grows the shared cell with it. A
+     click on the part of the container the field does not cover is routed
+     to the field by the editor itself (see the field host's pointerdown). */
+  width: max-content;
+  min-width: 0;
+  max-width: 100%;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  font-size: inherit;
+  color: inherit;
+  /* The document's line-height would give MathLive a line box TALLER than the
+     formula, and its baseline-aligned content would then sit several pixels
+     below the KaTeX rendering it replaces — the formula appeared to jump the
+     moment editing started. A zero strut makes the field's own box hug the
+     typeset formula, which is what keeps both states on the same geometry. */
+  line-height: 0;
+  background: transparent;
+  box-shadow: none;
+  /* MathLive shades the group holding the caret and every text zone; the
+     rendered formula has neither, and in place the two must look the same. */
+  --contains-highlight-background-color: transparent;
+  --text-highlight-background-color: transparent;
+  /* The variable MathLive's \text{} zones actually read. */
+  --highlight-text: transparent;
+}
+
+/* MathLive exposes these parts for embedding a field in document flow.
+   Its default editor padding must not become part of the printed formula. */
+/* One rule per part on purpose: a selector LIST holding two `::part()`
+   selectors is dropped whole by the CSS-module compiler, and MathLive's own
+   4px container + 2px content padding then pushed the live formula ~6px below
+   the KaTeX rendering it replaces. */
+.root.fieldOnly :global(.visual-math-editor__mathfield)::part(container) {
+  padding: 0;
+  min-height: 0;
+  width: auto;
+}
+
+.root.fieldOnly :global(.visual-math-editor__mathfield)::part(content) {
+  padding: 0;
+  min-height: 0;
+  width: auto;
+}
+
+/* MathLive's container defaults to `width: 100%` and bottom-aligns its
+   content; in place the container is exactly the formula, so the field's own
+   box is the formula's box and the cell centres it like the reference. */
+.root.fieldOnly :global(.visual-math-editor__mathfield)::part(container) {
+  height: auto;
+  align-items: center;
+}
+
+.root.fieldOnly :global(.visual-math-editor__mathfield)::part(content) {
+  overflow: visible;
+  /* Set at runtime (alignLiveFieldToReference): lands MathLive's baseline and
+     left edge on the KaTeX reference the frame is sized from. */
+  translate: var(--mrai-live-dx, 0px) var(--mrai-live-dy, 0px);
+}
+
+.root.fieldOnly :global(.visual-math-editor__size-reference) {
+  display: flex;
+  align-items: center;
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.root.fieldOnly :global(.visual-math-editor__size-reference .katex) {
+  font-size: 1em;
+}
+
+.root.fieldOnly :global(.visual-math-editor__size-reference .katex-display) {
+  margin: 0;
+}
+
+/* Out of flow on purpose: the "loading" copy is far wider than a formula and
+   must never widen the shared box while MathLive mounts. */
+.root.fieldOnly :global(.visual-math-editor__loading) {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  width: auto;
+  max-width: 100%;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+ 
+.root.fieldOnly :global(.visual-math-editor__source) {
+  padding: 3px 6px;
+  border: 1px solid var(--equation-container-frame, #b4b4b4);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  resize: none;
+}
+
+.root.fieldOnly :global(.visual-math-editor__source:focus) {
+  border-color: var(--equation-container-frame, #b4b4b4);
+  outline: 0;
+  box-shadow: none;
+}
+
+/* Word's equation container: a thin neutral frame hugging the formula while
+   it is edited, with the options tab on its right edge. It is drawn on the
+   SHARED box, so rendered and editing states keep the frame in one place and
+   the frame follows the formula as it grows. The frame stays while the
+   options menu (inside the host) has focus. */
+ 
+.root.fieldOnly :global(.visual-math-editor__field-host) {
+  --mrai-frame-gap: 3px;
+}
+
+.root.fieldOnly :global(.visual-math-editor__field-host)::after {
+  content: "";
+  position: absolute;
+  top: calc(0px - var(--mrai-frame-gap) - 1px - var(--mrai-frame-t, 0px));
+  right: calc(0px - var(--mrai-frame-gap) - 1px - var(--mrai-frame-r, 0px));
+  bottom: calc(0px - var(--mrai-frame-gap) - 1px - var(--mrai-frame-b, 0px));
+  left: calc(0px - var(--mrai-frame-gap) - 1px - var(--mrai-frame-l, 0px));
+  display: none;
+  box-sizing: border-box;
+  border: 1px solid var(--equation-container-frame, #b4b4b4);
+  pointer-events: none;
+}
+
+.root.fieldOnly :global(.visual-math-editor__field-host:focus-within)::after {
+  display: block;
+}
+
+/* An in-line equation shares its line with words that do not move while it
+   is edited, so its frame hugs the formula's own box instead of standing 3px
+   off it over the neighbouring characters. */
+.root.fieldOnly:global(.visual-math-editor--inline)
+  :global(.visual-math-editor__field-host) {
+  --mrai-frame-gap: 0px;
+}
+
+/* The tab shares the frame's right edge (its own left border is the frame
+   line) and spans the frame's full height: outline-offset 3px + 1px line. */
+.root.fieldOnly :global(.visual-math-editor__options-tab) {
+  position: absolute;
+  top: calc(-4px - var(--mrai-frame-t, 0px));
+  bottom: calc(-4px - var(--mrai-frame-b, 0px));
+  left: calc(100% + 4px + var(--mrai-frame-r, 0px));
+  display: none;
+  width: 13px;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--equation-container-frame, #b4b4b4);
+  border-left: 0;
+  border-radius: 0 2px 2px 0;
+  background: #f2f2f2;
+  color: #5b5b5b;
+  font: inherit;
+  line-height: 0;
+  cursor: pointer;
+  user-select: none;
+  z-index: 1;
+}
+
+.root.fieldOnly
+  :global(.visual-math-editor__field-host:focus-within)
+  > :global(.visual-math-editor__options-tab) {
+  display: flex;
+}
+
+.root.fieldOnly :global(.visual-math-editor__options-tab:hover) {
+  background: #e4e4e4;
+  color: #1f1f1f;
+}
+
+.root.fieldOnly :global(.visual-math-editor__options-tab[aria-expanded="true"]) {
+  background: #e4e4e4;
+  color: #1f1f1f;
+}
+
+.root.fieldOnly :global(.visual-math-editor__options-tab:focus-visible) {
+  outline: 2px solid #1d4ed8;
+  outline-offset: 1px;
+}
+
+.root.fieldOnly:global(.visual-math-editor--inline)
+  :global(.visual-math-editor__options-tab) {
+  top: calc(-1px - var(--mrai-frame-t, 0px));
+  bottom: calc(-1px - var(--mrai-frame-b, 0px));
+  left: calc(100% + 1px + var(--mrai-frame-r, 0px));
+}
+
+.root.fieldOnly:global(.visual-math-editor--inline)
+  :global(.visual-math-editor__field-host:focus-within)
+  > :global(.visual-math-editor__options-tab) {
+  /* In a line the tab would sit over the next characters. It stays in the
+     tab order but shows only while the pointer is on the equation, while it
+     has keyboard focus, or while its menu is open. */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+
+.root.fieldOnly:global(.visual-math-editor--inline)
+  :global(.visual-math-editor__field-host:focus-within:hover)
+  > :global(.visual-math-editor__options-tab) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.root.fieldOnly:global(.visual-math-editor--inline)
+  :global(.visual-math-editor__field-host:focus-within)
+  > :global(.visual-math-editor__options-tab:focus-visible) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.root.fieldOnly:global(.visual-math-editor--inline)
+  :global(.visual-math-editor__field-host:focus-within)
+  > :global(.visual-math-editor__options-tab[aria-expanded="true"]) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Touch cannot hover: while the inline equation is being edited, its
+   options tab shows. */
+@media (hover: none) {
+  .root.fieldOnly:global(.visual-math-editor--inline)
+    :global(.visual-math-editor__field-host:focus-within)
+    > :global(.visual-math-editor__options-tab) {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.root.fieldOnly:global(.visual-math-editor--inline)
+  :global(.visual-math-editor__options-menu) {
+  left: calc(100% + 1px + var(--mrai-frame-r, 0px));
+}
+
+.root.fieldOnly :global(.visual-math-editor__options-menu) {
+  position: absolute;
+  top: calc(100% + 8px + var(--mrai-frame-b, 0px));
+  left: calc(100% + 4px + var(--mrai-frame-r, 0px));
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  min-width: 168px !important;
+  line-height: 1.3;
+  font-family: var(--font-sans, Inter, system-ui, sans-serif);
+  font-size: 13px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.root.fieldOnly :global(.visual-math-editor__options-menu[hidden]) {
+  display: none !important;
+}
+
+.root.fieldOnly :global(.visual-math-editor__options-item) {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 5px 9px 5px 6px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: default;
+}
+
+.root.fieldOnly :global(.visual-math-editor__options-item:hover) {
+  outline: 0;
+  background: var(--console-accent-strong, #087c73);
+  color: #fff;
+}
+
+.root.fieldOnly :global(.visual-math-editor__options-item:focus-visible) {
+  outline: 0;
+  background: var(--console-accent-strong, #087c73);
+  color: #fff;
+}
+
+.root.fieldOnly :global(.visual-math-editor__options-check) {
+  width: 12px;
+  flex: 0 0 auto;
+  font-size: 11px;
+  text-align: center;
+  visibility: hidden;
+}
+
+.root.fieldOnly
+  :global(.visual-math-editor__options-item[aria-checked="true"])
+  > :global(.visual-math-editor__options-check) {
+  visibility: inherit;
+}
+
+.root.fieldOnly :global(.visual-math-editor__options-menu [role="separator"]) {
+  display: block;
+  height: 1px;
+  margin: 4px 6px;
+  background: rgba(60, 60, 67, 0.16);
+}
+
+:global(.math-block-wrapper[data-text-align="left"]) > .root.fieldOnly {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+:global(.math-block-wrapper[data-text-align="right"]) > .root.fieldOnly {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+/* An INLINE equation is edited where it sits in its line, inside the same
+   Word equation container as a display equation: the editor is one atomic
+   inline on the text baseline, never a panel under the line. */
+.root.fieldOnly:global(.visual-math-editor--inline) {
+  position: relative;
+  inset: auto;
+  display: inline-block;
+  width: auto;
+  max-width: 100%;
+  max-height: none;
+  margin: 0;
+  overflow: visible;
+  vertical-align: baseline;
+  text-indent: 0;
+  /* The line's own font, so linear text sits on the line like its words. */
+  font-family: inherit;
+}
+
+ 
+.root.fieldOnly:global(.visual-math-editor--inline)
+  :global(.visual-math-editor__panel),
+.root.fieldOnly:global(.visual-math-editor--inline)
+  :global(.visual-math-editor__field-host) {
+  display: inline;
+  width: auto;
+  max-width: none;
+}
+
+.root.fieldOnly:global(.visual-math-editor--inline)
+  :global(.visual-math-editor__field-host) {
+  position: relative;
+}
+
+.root.fieldOnly:global(.visual-math-editor--inline)
+  :global(.visual-math-editor__size-reference) {
+  display: inline;
+}
+
+.root.fieldOnly:global(.visual-math-editor--inline)
+  :global(.visual-math-editor__size-reference):not(:empty)
+  ~ :global(.visual-math-editor__mathfield) {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Linear format in a line: the linear text is edited in the same thin
+   container, one line high and as wide as its text, like Word's linear
+   equation -- not the display equation's source box. */
+.root.fieldOnly:global(.visual-math-editor--inline)
+  :global(.visual-math-editor__source-label) {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.root.fieldOnly:global(.visual-math-editor--inline)
+  :global(.visual-math-editor__source) {
+  display: inline-block;
+  box-sizing: content-box;
+  width: auto;
+  min-width: 2ch;
+  height: 1lh;
+  min-height: 0;
+  margin: 0;
+  padding: 0 2px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  outline: 1px solid var(--equation-container-frame, #b4b4b4);
+  outline-offset: 3px;
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  /* Exactly one line box tall and aligned to the line's top, so the line
+     keeps its height (a text control's own baseline is not its text's). */
+  vertical-align: top;
+  white-space: pre;
+  resize: none;
+  field-sizing: content;
+}
+
+.root.fieldOnly:global(.visual-math-editor--inline)
+  :global(.visual-math-editor__source:focus) {
+  border: 0;
+  outline: 1px solid var(--equation-container-frame, #b4b4b4);
+  box-shadow: none;
+}
+
+.root :global(.visual-math-editor__footer) {
+  gap: 4px;
+  padding-top: 0;
+}
+
+.root :global(.visual-math-editor__action) {
+  min-height: 28px;
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-size: 11.5px;
+}
+
+.visualPanel {
+  min-width: 0;
+}
+
+.axisExplanation {
+  display: none;
+}
+
+.visualPanel > :global(.visual-math-editor__hint) {
+  display: none;
+}
+
+.root .catalogGroup {
+  /* The contextual Formula ribbon owns structures and symbols while a visual
+     equation draft is active. Keep this legacy catalog mounted for the shared
+     command controller, but remove the duplicate surface from the editor card. */
+  display: none;
+  min-width: 0;
+}
+
+.catalogRail {
+  display: flex;
+  min-width: 0;
+  gap: 5px;
+  padding: 1px 1px 5px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  scrollbar-gutter: stable;
+}
+
+.catalogTrigger {
+  display: grid;
+  flex: 0 0 84px;
+  width: 84px;
+  min-width: 84px;
+  min-height: 76px;
+  grid-template-rows: minmax(44px, auto) minmax(18px, auto);
+  align-content: center;
+  gap: 3px;
+  padding: 5px 6px;
+  background: var(--equation-cupertino-glass-raised);
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
+}
+
+.catalogTriggerPreview {
+  display: flex;
+  min-width: 0;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  font-size: 17px;
+}
+
+.catalogTriggerPreview :global(.katex) {
+  max-width: 100%;
+  font-size: 1em;
+  line-height: 1.35;
+}
+
+.catalogTriggerLabel {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  pointer-events: none;
+}
+
+.catalogTriggerText {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 10.5px;
+  font-weight: 620;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chevron {
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-1px) rotate(45deg);
+}
+
+.symbolGroup {
+  min-width: 0;
+}
+
+.symbolRail {
+  display: grid;
+  min-width: 0;
+  grid-template-rows: auto 20px;
+  justify-items: stretch;
+  gap: 2px;
+  padding: 1px 1px 5px;
+}
+
+.compactSymbolViewport {
+  display: block;
+  min-width: 0;
+  padding: 3px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 1px solid var(--equation-cupertino-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.42);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+}
+
+.compactSymbolGrid {
+  display: grid;
+  width: max-content;
+  grid-auto-columns: 30px;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, 30px);
+  gap: 2px;
+}
+
+.symbolShortcut {
+  appearance: none;
+  display: grid;
+  width: 30px;
+  min-width: 30px;
+  min-height: 30px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid var(--console-border-subtle, #c5cfcd);
+  border-radius: 2px;
+  background: var(--equation-cupertino-glass-raised);
+  color: var(--console-text-primary, #243d3a);
+  cursor: pointer;
+}
+
+.symbolShortcut:is(:hover, :focus-visible) {
+  border-color: color-mix(
+    in srgb,
+    var(--console-accent-strong, #087c73) 26%,
+    transparent
+  );
+  background: color-mix(
+    in srgb,
+    var(--console-accent-strong, #087c73) 8%,
+    transparent
+  );
+}
+
+.symbolShortcut:focus-visible {
+  outline: 2px solid
+    color-mix(in srgb, var(--console-accent-strong, #087c73) 42%, transparent);
+  outline-offset: 1px;
+}
+
+.symbolShortcutGlyph {
+  font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.symbolDisclosure {
+  appearance: none;
+  display: grid;
+  width: 54px;
+  height: 20px;
+  justify-self: center;
+  padding: 0 18px;
+  place-items: center;
+  border: 1px solid var(--console-border-subtle, #c5cfcd);
+  border-top: 0;
+  border-radius: 0 0 7px 7px;
+  background: var(--equation-cupertino-glass-raised);
+  color: var(--console-text-primary, #243d3a);
+  cursor: pointer;
+}
+
+.symbolDisclosure:is(:hover, :focus-visible),
+.symbolDisclosure[aria-expanded="true"] {
+  border-color: color-mix(
+    in srgb,
+    var(--console-accent-strong, #087c73) 34%,
+    var(--console-border-subtle, #c5cfcd)
+  );
+  background: color-mix(
+    in srgb,
+    var(--console-accent-strong, #087c73) 8%,
+    var(--console-surface-raised, #fff)
+  );
+}
+
+.symbolDisclosure:focus-visible {
+  outline: 2px solid
+    color-mix(in srgb, var(--console-accent-strong, #087c73) 42%, transparent);
+  outline-offset: 1px;
+}
+
+.detail:global(.docs-home-gallery-menu) {
+  --docs-home-gallery-columns: 4;
+  --equation-cupertino-glass: rgba(249, 249, 251, 0.86);
+  --equation-cupertino-glass-raised: rgba(255, 255, 255, 0.7);
+  --equation-cupertino-border: rgba(60, 60, 67, 0.2);
+  position: fixed;
+  z-index: 240;
+  box-sizing: border-box;
+  width: min(596px, calc(100vw - 24px));
+  min-width: min(320px, calc(100vw - 24px));
+  max-width: min(596px, calc(100vw - 24px));
+  max-height: min(340px, calc(100vh - 24px));
+  max-height: min(340px, calc(100dvh - 24px));
+  padding: 0 !important;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  border-color: var(--equation-cupertino-border) !important;
+  border-radius: 14px !important;
+  background: var(--equation-cupertino-glass) !important;
+  box-shadow:
+    0 24px 64px rgba(21, 35, 33, 0.2),
+    0 6px 18px rgba(21, 35, 33, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92) !important;
+  -webkit-backdrop-filter: var(--glass-float-blur);
+  backdrop-filter: var(--glass-float-blur);
+  isolation: isolate;
+}
+
+.detail[data-catalog-kind="symbols"]:global(.docs-home-gallery-menu) {
+  width: min(720px, calc(100vw - 24px));
+  max-width: min(720px, calc(100vw - 24px));
+  max-height: min(680px, calc(100vh - 24px));
+  max-height: min(680px, calc(100dvh - 24px));
+}
+
+.detail[hidden] {
+  display: none;
+}
+
+.detailHeader {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  min-height: 34px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 6px 3px 8px;
+  border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+  background: rgba(249, 249, 251, 0.78);
+  -webkit-backdrop-filter: var(--glass-pane-blur);
+  backdrop-filter: var(--glass-pane-blur);
+}
+
+.detailHeading {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--console-text-primary, #243d3a);
+  font-size: 11.5px;
+  font-weight: 650;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pager {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 3px;
+}
+
+.pager[hidden] {
+  display: none;
+}
+
+.pagerButton {
+  appearance: none;
+  display: grid;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.pagerButton:is(:hover, :focus-visible) {
+  border-color: color-mix(
+    in srgb,
+    var(--console-accent-strong, #087c73) 26%,
+    transparent
+  );
+  background: color-mix(
+    in srgb,
+    var(--console-accent-strong, #087c73) 8%,
+    transparent
+  );
+}
+
+.pagerButton:focus-visible {
+  outline: 2px solid
+    color-mix(in srgb, var(--console-accent-strong, #087c73) 42%, transparent);
+  outline-offset: 1px;
+}
+
+.pagerButton:disabled {
+  opacity: 0.38;
+  cursor: default;
+}
+
+.pageStatus {
+  min-width: 42px;
+  color: var(--console-text-secondary, #536461);
+  font-variant-numeric: tabular-nums;
+  font-size: 10.5px;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.detailSection:global(.docs-home-gallery-menu__section) {
+  display: block;
+  padding: 0 6px 6px;
+}
+
+.detailGrid:global(.docs-home-gallery-menu__grid) {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+:global(.docs-cupertino-menu)
+  .detailTile:global(.docs-home-gallery-menu__tile) {
+  width: 100%;
+  min-height: 96px;
+  overflow: visible;
+  border-color: rgba(60, 60, 67, 0.16);
+  background: var(--equation-cupertino-glass-raised) !important;
+  box-shadow:
+    0 1px 2px rgba(21, 35, 33, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.76);
+}
+
+:global(.docs-cupertino-menu)
+  .detailTile:global(.docs-home-gallery-menu__tile):is(:hover, :focus-visible) {
+  background: rgba(242, 249, 248, 0.86) !important;
+}
+
+.detailPreview:global(.docs-home-gallery-menu__preview) {
+  display: flex;
+  min-width: 0;
+  min-height: 62px;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.detailPreview :global(.katex) {
+  max-width: 100%;
+  font-size: 1em;
+  line-height: 1.4;
+}
+
+.detailLabel:global(.docs-home-gallery-menu__label) {
+  display: block;
+}
+
+.symbolDetailSection {
+  display: block;
+  border-top: 1px solid var(--console-border-subtle, #d8dfde);
+}
+
+.symbolDetailHeading {
+  position: sticky;
+  top: 34px;
+  z-index: 1;
+  display: block;
+  min-height: 30px;
+  padding: 6px 10px 5px;
+  border-bottom: 1px solid rgba(60, 60, 67, 0.1);
+  background: rgba(243, 245, 245, 0.82);
+  color: var(--console-text-secondary, #536461);
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 19px;
+  -webkit-backdrop-filter: var(--glass-pane-blur);
+  backdrop-filter: var(--glass-pane-blur);
+}
+
+.symbolDetailGrid {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(42px, 1fr));
+  gap: 8px;
+  padding: 10px;
+}
+
+:global(.docs-cupertino-menu)
+  .symbolDetailTile:global(.docs-home-gallery-menu__tile) {
+  width: 100%;
+  min-width: 42px;
+  min-height: 48px;
+  padding: 2px;
+  border-radius: 3px;
+}
+
+.symbolDetailGlyph:global(.docs-home-gallery-menu__preview) {
+  min-height: 42px;
+  font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+  font-size: 22px;
+  line-height: 1;
+}
+
+@container visual-math-editor (max-width: 520px) {
+  .detail:global(.docs-home-gallery-menu) {
+    --docs-home-gallery-columns: 2;
+  }
+
+  .detailGrid:global(.docs-home-gallery-menu__grid) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .catalogTrigger {
+    flex-basis: min(104px, calc((100cqw - 9px) / 2));
+    width: min(104px, calc((100cqw - 9px) / 2));
+    min-width: min(104px, calc((100cqw - 9px) / 2));
+  }
+}
+
+@container visual-math-editor (max-width: 280px) {
+  .detail:global(.docs-home-gallery-menu) {
+    --docs-home-gallery-columns: 1;
+  }
+
+  .detailGrid:global(.docs-home-gallery-menu__grid) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .catalogTrigger {
+    flex-basis: calc(100cqw - 2px);
+    width: calc(100cqw - 2px);
+    min-width: calc(100cqw - 2px);
+  }
+}
+
+:where(:root[data-touch-mode]) .catalogTrigger,
+:where(:root[data-touch-mode]) .pagerButton {
+  min-height: 44px;
+}
+
+:where(:root[data-touch-mode]) .pagerButton {
+  width: 44px;
+  height: 44px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catalogTrigger {
+    transition: none;
+  }
+
+  .detail:global(.docs-cupertino-menu) {
+    animation: none !important;
+  }
+}
+
+@supports not (
+  (-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))
+) {
+  .root:global(.visual-math-editor) {
+    background: rgba(249, 249, 251, 0.98) !important;
+  }
+  .detail:global(.docs-cupertino-menu) {
+    background: rgba(249, 249, 251, 0.98) !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .root:global(.visual-math-editor) {
+    border-color: CanvasText !important;
+    background: Canvas !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .detail:global(.docs-cupertino-menu) {
+    border-color: CanvasText !important;
+    background: Canvas !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .catalogTrigger,
+  .symbolShortcut,
+  .symbolDisclosure,
+  .pagerButton,
+  .detailHeading {
+    border-color: CanvasText;
+    color: CanvasText;
+  }
+}

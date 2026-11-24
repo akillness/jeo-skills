@@ -1,0 +1,55 @@
+{
+  "version": "0.1.0",
+  "packages": {
+    "core": {
+      "name": "mroffice-core",
+      "description": "The shared layer of the MR Office editors (the host adapter, ribbon, fonts and text measurement, themes, charts, SmartArt, equations); every editor package uses it.",
+      "keywords": ["mroffice", "editor", "office", "react"]
+    },
+    "docs": {
+      "name": "mroffice-docs",
+      "label": "document editor",
+      "description": "The MR Office document editor for React: a paged word processor with an Office-style ribbon, in the browser.",
+      "keywords": ["mroffice", "word-processor", "document-editor", "rich-text", "editor", "react"],
+      "file": { "name": "Untitled.mrdoc", "note": "a new document" },
+      "opens": ".mrdoc (the editor's own JSON), .html, .md, .txt",
+      "saves": ".mrdoc"
+    },
+    "sheets": {
+      "name": "mroffice-sheets",
+      "label": "spreadsheet editor",
+      "description": "The MR Office spreadsheet editor for React: formulas, number formats, cell styles, tables, charts, many sheets, in the browser.",
+      "keywords": ["mroffice", "spreadsheet", "excel", "grid", "editor", "react"],
+      "opens": ".mrsheet (the editor's own JSON), .csv, .tsv",
+      "saves": ".mrsheet, or CSV/TSV for a CSV/TSV file"
+    },
+    "slides": {
+      "name": "mroffice-slides",
+      "label": "presentation editor",
+      "description": "The MR Office presentation editor for React: slides with themes, layouts, shapes, tables, charts and SmartArt, in the browser.",
+      "keywords": ["mroffice", "presentation", "slides", "powerpoint", "editor", "react"],
+      "opens": ".mrslides (the editor's own JSON)",
+      "saves": ".mrslides"
+    },
+    "pdf": {
+      "name": "mroffice-pdf",
+      "label": "PDF editor",
+      "description": "The MR Office PDF viewer for React: pages, thumbnails, search, presenting and comments, in the browser.",
+      "keywords": ["mroffice", "pdf", "pdf-viewer", "annotation", "react"],
+      "opens": ".pdf",
+      "saves": "the PDF as it was opened (comments stay in the page)"
+    },
+    "code": {
+      "name": "mroffice-code",
+      "label": "code editor",
+      "description": "The MR Office code editor for React: CodeMirror 6 with an Office-style ribbon, outline, quick open, find and problems, in the browser.",
+      "keywords": ["mroffice", "code-editor", "codemirror", "ide", "react"],
+      "opens": "source and text files (.js .ts .py .sql .go .rs .md .json ...)",
+      "saves": "the file as text"
+    }
+  },
+  "assets": {
+    "name": "mroffice-assets",
+    "description": "The files the MR Office editors fetch on demand (fonts, the PDF worker and its data, spelling dictionaries, code runners, interface text): served from a CDN, or copied to a site that hosts them itself. Not a dependency to import."
+  }
+}

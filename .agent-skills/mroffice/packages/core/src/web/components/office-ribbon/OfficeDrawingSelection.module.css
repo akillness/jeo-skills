@@ -1,0 +1,433 @@
+.frame.frame {
+  box-sizing: border-box;
+  border: 1px solid #686868;
+  pointer-events: none;
+  position: absolute;
+  transform-origin: center;
+}
+
+/* `data-selected` marks the primary object; a host whose multi-selection
+ * has further members marks each of them `data-multiselected`, and every
+ * selected object wears the same frame (as PowerPoint draws one per object). */
+.selectedHost.selectedHost[data-selected="true"],
+.selectedHost.selectedHost[data-multiselected="true"] {
+  outline: 1px solid #686868;
+  outline-offset: 0;
+  box-shadow: none;
+}
+
+/* A stroke picked by Draw > Lasso Select is framed with the others by the one
+ * shared frame around them all (OfficeInkLassoSelection): its own outline,
+ * frame and grips stand down. Hosts mark it `data-ink-lasso-member`. */
+.selectedHost.selectedHost[data-ink-lasso-member="true"] {
+  outline: none;
+}
+
+/* A member of a whole selected group: the group's one frame, drawn around
+ * all its members, stands for each member's own (PowerPoint frames a group as
+ * one object). Hosts mark it `data-group-frame-member`. */
+.selectedHost.selectedHost[data-group-frame-member="true"] {
+  outline: none;
+}
+.frame.frame[data-ink-lasso-member="true"],
+[data-ink-lasso-member="true"] .frame.frame,
+[data-ink-lasso-member="true"] .resize.resize,
+[data-ink-lasso-member="true"] .rotate.rotate {
+  display: none;
+}
+
+/* A chart with one of its elements selected (its title, legend, plot area,
+ * a series): the element wears the selection frame and the chart's own frame
+ * and grips stay, lighter, as Office keeps a chart framed around the element
+ * selected inside it. Hosts mark the selected chart's host or chrome with
+ * `data-chart-element-selected`. */
+.selectedHost.selectedHost[data-selected="true"][data-chart-element-selected="true"] {
+  outline-color: #c4c7cc;
+}
+:global([data-chart-element-selected="true"]) > .frame.frame,
+.frame.frame[data-chart-element-selected="true"] {
+  border-color: #c4c7cc;
+}
+:global([data-chart-element-selected="true"]) > .resize::before,
+:global([data-chart-element-selected="true"]) > * > .resize::before,
+.frame[data-chart-element-selected="true"] > .resize::before {
+  border-color: #c4c7cc;
+}
+
+/* Office hit-tests a drawn shape by its GEOMETRY, not its box: a press lands
+ * on the shape whose fill or outline is painted under the pointer, or on its
+ * words, and passes through the empty part of its box to whatever lies below.
+ * A Segmented Cycle's five wedges each span the whole disc; hit by box, the
+ * topmost wedge took every press and the other four could not be selected.
+ * A host marks a shape's element `.geometryHit` and its words
+ * `data-office-hit-text`; the element keeps its own listeners (a press on a
+ * painted part bubbles to it). Inside the SmartArt's frame but on no shape,
+ * the press reaches the graphic, which Office then selects as a whole. */
+.geometryHit.geometryHit,
+.geometryHit.geometryHit svg {
+  pointer-events: none;
+}
+.geometryHit.geometryHit svg :is(path, rect, circle, ellipse, polygon, polyline, line, text, image, use) {
+  pointer-events: visiblePainted;
+}
+/* No Fill is no geometry inside the outline: Office passes a press on a
+ * no-fill shape's interior through, and a shape with neither fill nor line
+ * (a SmartArt text shape laid over a block or a picture frame) is hit only by
+ * its words. Every host draws "no fill" / "no line" as `transparent` so that
+ * a stand-alone shape stays clickable; under `.geometryHit` that value is no
+ * paint. A 100%-transparent SOLID fill is drawn otherwise and is still hit. */
+.geometryHit.geometryHit svg :is(path, rect, circle, ellipse, polygon, polyline, line, text, image, use)[fill="transparent"] {
+  pointer-events: visibleStroke;
+}
+.geometryHit.geometryHit svg :is(path, rect, circle, ellipse, polygon, polyline, line, text, image, use)[stroke="transparent"] {
+  pointer-events: visibleFill;
+}
+.geometryHit.geometryHit svg :is(path, rect, circle, ellipse, polygon, polyline, line, text, image, use)[fill="transparent"][stroke="transparent"] {
+  pointer-events: none;
+}
+/* The words are hit where their lines are, not across their whole text box:
+ * the marked container passes presses through and the elements inside it
+ * (lines, runs, paragraphs) take them. A host wraps bare text in an element. */
+.geometryHit.geometryHit [data-office-hit-text] {
+  pointer-events: none;
+}
+.geometryHit.geometryHit [data-office-hit-text] * {
+  pointer-events: auto;
+}
+/* A shape a host paints as an HTML box (a CSS rectangle, or an ellipse whose
+ * border-radius also rounds its hit area) IS its geometry: the box wears
+ * `data-office-hit-box` and is hit where it is drawn. */
+.geometryHit.geometryHit [data-office-hit-box] {
+  pointer-events: auto;
+}
+/* A No Fill shape is hit by its outline (Office: the click passes through
+ * the interior to what lies below). A hairline is no target, and a shape
+ * drawn as an HTML box has no stroke to hit at all, so its outline carries an
+ * invisible SVG twin, `data-office-hit-band`, hit across the line's own width
+ * but never less than 6 screen pixels (24 in touch mode, as a line's band).
+ * Outside `.geometryHit` the twin keeps its `pointer-events="none"`. */
+.geometryHit.geometryHit svg [data-office-hit-band][data-office-hit-band] {
+  pointer-events: stroke;
+  stroke-width: max(var(--office-hit-band-line, 0px), calc(6px * var(--office-drawing-grip-scale, 1)));
+}
+:global(:root[data-touch-mode]) .geometryHit.geometryHit svg [data-office-hit-band][data-office-hit-band] {
+  stroke-width: max(var(--office-hit-band-line, 0px), calc(24px * var(--office-drawing-grip-scale, 1)));
+}
+
+/* Text-edit mode: the insertion point is in the object's words. Office draws
+ * the same outline dashed (solid while the object itself is selected) and
+ * keeps the handles; no inner text rectangle ("Add or remove a border on a
+ * text box, shape, or SmartArt graphic", Microsoft Support). Hosts mark the
+ * outline they draw with `data-text-editing="true"`
+ * (lib/office-text-edit-mode.ts). */
+.frame.frame[data-text-editing="true"] {
+  border-style: dashed;
+}
+.selectedHost.selectedHost[data-text-editing="true"][data-selected="true"] {
+  outline-style: dashed;
+}
+
+/* Default preserves PPT's 8px hit geometry. Hosts may explicitly enlarge the
+ * invisible target without changing the painted 8px square. */
+.resize.resize,
+.resize.resize:hover,
+.resize.resize:active:not(:disabled),
+.resize.resize:focus-visible {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  box-sizing: border-box;
+  color: #555;
+  height: var(--office-drawing-grip-size, 8px);
+  min-height: var(--office-drawing-grip-size, 8px);
+  max-height: var(--office-drawing-grip-size, 8px);
+  width: var(--office-drawing-grip-size, 8px);
+  min-width: var(--office-drawing-grip-size, 8px);
+  max-width: var(--office-drawing-grip-size, 8px);
+  margin: 0;
+  padding: 0;
+  pointer-events: auto;
+  position: absolute;
+  touch-action: none;
+  transition: none;
+  z-index: 8;
+}
+/* The painted square. `.resizeMark` is the same square as a paint-only
+ * element, for a host whose hit target is its own larger control (the PDF
+ * editor's 44px touch targets) and centres the mark inside it. */
+.resize::before,
+.resizeMark.resizeMark {
+  box-sizing: border-box;
+  width: calc(8px * var(--office-drawing-grip-scale, 1));
+  height: calc(8px * var(--office-drawing-grip-scale, 1));
+  border: 1px solid #777;
+  background: #fff;
+  pointer-events: none;
+}
+.resize::before {
+  content: "";
+  position: absolute;
+  left: calc((var(--office-drawing-grip-size, 8px) - 8px * var(--office-drawing-grip-scale, 1)) / 2);
+  top: calc((var(--office-drawing-grip-size, 8px) - 8px * var(--office-drawing-grip-scale, 1)) / 2);
+}
+.resizeMark.resizeMark { display: block; flex: none; }
+.resize[data-office-drawing-handle="nw"] { left: var(--office-drawing-grip-edge, -5px); top: var(--office-drawing-grip-edge, -5px); cursor: nwse-resize; }
+.resize[data-office-drawing-handle="n"] { left: calc(50% - var(--office-drawing-grip-size, 8px) / 2); top: var(--office-drawing-grip-edge, -5px); cursor: ns-resize; }
+.resize[data-office-drawing-handle="ne"] { right: var(--office-drawing-grip-edge, -5px); top: var(--office-drawing-grip-edge, -5px); cursor: nesw-resize; }
+.resize[data-office-drawing-handle="e"] { right: var(--office-drawing-grip-edge, -5px); top: calc(50% - var(--office-drawing-grip-size, 8px) / 2); cursor: ew-resize; }
+.resize[data-office-drawing-handle="se"] { right: var(--office-drawing-grip-edge, -5px); bottom: var(--office-drawing-grip-edge, -5px); cursor: nwse-resize; }
+.resize[data-office-drawing-handle="s"] { left: calc(50% - var(--office-drawing-grip-size, 8px) / 2); bottom: var(--office-drawing-grip-edge, -5px); cursor: ns-resize; }
+.resize[data-office-drawing-handle="sw"] { left: var(--office-drawing-grip-edge, -5px); bottom: var(--office-drawing-grip-edge, -5px); cursor: nesw-resize; }
+.resize[data-office-drawing-handle="w"] { left: var(--office-drawing-grip-edge, -5px); top: calc(50% - var(--office-drawing-grip-size, 8px) / 2); cursor: ew-resize; }
+.resize:focus-visible::before { outline: 2px solid #555; outline-offset: 2px; }
+
+/* The round grip and its 8px stem. `.rotateMark` is the same paint without
+ * the grip's placement or hit target, for a host that centres it inside its
+ * own larger control; placing its top 22px above the frame, as the grip
+ * sits, lands the stem on the frame. */
+.rotate.rotate,
+.rotate.rotate:hover,
+.rotate.rotate:active:not(:disabled),
+.rotate.rotate:focus-visible,
+.rotateMark.rotateMark {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #777;
+  border-radius: 50%;
+  box-shadow: none;
+  box-sizing: border-box;
+  color: #555;
+  display: inline-flex;
+  justify-content: center;
+  width: calc(14px * var(--office-drawing-grip-scale, 1));
+  min-width: calc(14px * var(--office-drawing-grip-scale, 1));
+  height: calc(14px * var(--office-drawing-grip-scale, 1));
+  min-height: calc(14px * var(--office-drawing-grip-scale, 1));
+  padding: 0;
+  margin: 0;
+}
+.rotate.rotate,
+.rotate.rotate:hover,
+.rotate.rotate:active:not(:disabled),
+.rotate.rotate:focus-visible {
+  appearance: none;
+  cursor: grab;
+  position: absolute;
+  left: calc(50% - 7px * var(--office-drawing-grip-scale, 1));
+  top: calc(-22px * var(--office-drawing-grip-scale, 1));
+  pointer-events: auto;
+  touch-action: none;
+  transition: none;
+  z-index: 8;
+}
+.rotateMark.rotateMark { flex: none; position: relative; pointer-events: none; }
+.rotate::after,
+.rotateMark::after { content: ""; position: absolute; left: 50%; bottom: calc(-9px * var(--office-drawing-grip-scale, 1)); height: calc(8px * var(--office-drawing-grip-scale, 1)); border-left: 1px solid #777; pointer-events: none; }
+.rotate:focus-visible { outline: 2px solid #555; outline-offset: 2px; }
+
+/* WPS's look (the PDF editor; WPS 6.8.2 PDF, WPS-SPEC §1): a thin red frame,
+ * round white dots at the corners, white capsules at the edge midpoints --
+ * lying along their edge -- and the round rotate grip on its stem. A host
+ * opts in with data-office-drawing-look="wps" on its frame element; the
+ * grips are the same classes and hit targets, only their paint changes.
+ * A paint-only mark (.resizeMark) names its handle the way a grip does
+ * (data-office-drawing-handle). */
+.selectedHost.selectedHost[data-office-drawing-look="wps"][data-selected="true"] {
+  outline-color: #e65046;
+}
+.frame.frame[data-office-drawing-look="wps"] {
+  border-color: #e65046;
+}
+ 
+.selectedHost.selectedHost[data-office-drawing-look="wps"][data-office-drawing-frame="accent"][data-selected="true"] {
+  outline-color: var(--console-accent, #0d9488);
+}
+.frame.frame[data-office-drawing-look="wps"][data-office-drawing-frame="accent"] {
+  border-color: var(--console-accent, #0d9488);
+}
+[data-office-drawing-look="wps"] .resizeMark.resizeMark,
+[data-office-drawing-look="wps"] .resize.resize::before {
+  background: #fff;
+  border: 1px solid #a8aeb8;
+  border-radius: 999px;
+  box-shadow: 0 0 1px rgb(15 23 42 / 35%);
+}
+[data-office-drawing-look="wps"] .resizeMark.resizeMark[data-office-drawing-handle="nw"],
+[data-office-drawing-look="wps"] .resizeMark.resizeMark[data-office-drawing-handle="ne"],
+[data-office-drawing-look="wps"] .resizeMark.resizeMark[data-office-drawing-handle="se"],
+[data-office-drawing-look="wps"] .resizeMark.resizeMark[data-office-drawing-handle="sw"] {
+  width: calc(10px * var(--office-drawing-grip-scale, 1));
+  height: calc(10px * var(--office-drawing-grip-scale, 1));
+}
+[data-office-drawing-look="wps"] .resizeMark.resizeMark[data-office-drawing-handle="n"],
+[data-office-drawing-look="wps"] .resizeMark.resizeMark[data-office-drawing-handle="s"] {
+  width: calc(18px * var(--office-drawing-grip-scale, 1));
+  height: calc(8px * var(--office-drawing-grip-scale, 1));
+}
+[data-office-drawing-look="wps"] .resizeMark.resizeMark[data-office-drawing-handle="e"],
+[data-office-drawing-look="wps"] .resizeMark.resizeMark[data-office-drawing-handle="w"] {
+  width: calc(8px * var(--office-drawing-grip-scale, 1));
+  height: calc(18px * var(--office-drawing-grip-scale, 1));
+}
+[data-office-drawing-look="wps"] .resize[data-office-drawing-handle="nw"]::before,
+[data-office-drawing-look="wps"] .resize[data-office-drawing-handle="ne"]::before,
+[data-office-drawing-look="wps"] .resize[data-office-drawing-handle="se"]::before,
+[data-office-drawing-look="wps"] .resize[data-office-drawing-handle="sw"]::before {
+  width: calc(10px * var(--office-drawing-grip-scale, 1));
+  height: calc(10px * var(--office-drawing-grip-scale, 1));
+  left: calc((var(--office-drawing-grip-size, 8px) - 10px * var(--office-drawing-grip-scale, 1)) / 2);
+  top: calc((var(--office-drawing-grip-size, 8px) - 10px * var(--office-drawing-grip-scale, 1)) / 2);
+}
+[data-office-drawing-look="wps"] .resize[data-office-drawing-handle="n"]::before,
+[data-office-drawing-look="wps"] .resize[data-office-drawing-handle="s"]::before {
+  width: calc(18px * var(--office-drawing-grip-scale, 1));
+  height: calc(8px * var(--office-drawing-grip-scale, 1));
+  left: calc((var(--office-drawing-grip-size, 8px) - 18px * var(--office-drawing-grip-scale, 1)) / 2);
+  top: calc((var(--office-drawing-grip-size, 8px) - 8px * var(--office-drawing-grip-scale, 1)) / 2);
+}
+[data-office-drawing-look="wps"] .resize[data-office-drawing-handle="e"]::before,
+[data-office-drawing-look="wps"] .resize[data-office-drawing-handle="w"]::before {
+  width: calc(8px * var(--office-drawing-grip-scale, 1));
+  height: calc(18px * var(--office-drawing-grip-scale, 1));
+  left: calc((var(--office-drawing-grip-size, 8px) - 8px * var(--office-drawing-grip-scale, 1)) / 2);
+  top: calc((var(--office-drawing-grip-size, 8px) - 18px * var(--office-drawing-grip-scale, 1)) / 2);
+}
+[data-office-drawing-look="wps"] .rotateMark.rotateMark,
+[data-office-drawing-look="wps"] .rotate.rotate {
+  border-color: #a8aeb8;
+  color: #6b7280;
+  width: calc(16px * var(--office-drawing-grip-scale, 1));
+  min-width: calc(16px * var(--office-drawing-grip-scale, 1));
+  height: calc(16px * var(--office-drawing-grip-scale, 1));
+  min-height: calc(16px * var(--office-drawing-grip-scale, 1));
+  box-shadow: 0 0 1px rgb(15 23 42 / 35%);
+}
+[data-office-drawing-look="wps"] .rotateMark.rotateMark::after,
+[data-office-drawing-look="wps"] .rotate.rotate::after {
+  border-left-color: #a8aeb8;
+}
+
+/* Adjustment handles (the yellow ones). The layer covers the shape's own box
+ * inside the selection frame; each grip is centred on its `a:pos`. */
+.adjustLayer.adjustLayer {
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 9;
+}
+.adjust.adjust,
+.adjust.adjust:hover,
+.adjust.adjust:active:not(:disabled),
+.adjust.adjust:focus-visible {
+  appearance: none;
+  background: #ffd731;
+  border: 1px solid #5f5f5f;
+  border-radius: 50%;
+  box-shadow: none;
+  box-sizing: border-box;
+  cursor: default;
+  height: calc(10px * var(--office-drawing-grip-scale, 1));
+  min-height: calc(10px * var(--office-drawing-grip-scale, 1));
+  width: calc(10px * var(--office-drawing-grip-scale, 1));
+  min-width: calc(10px * var(--office-drawing-grip-scale, 1));
+  margin: calc(-5px * var(--office-drawing-grip-scale, 1)) 0 0 calc(-5px * var(--office-drawing-grip-scale, 1));
+  padding: 0;
+  pointer-events: auto;
+  position: absolute;
+  touch-action: none;
+  transition: none;
+}
+.adjust:focus-visible { outline: 2px solid #555; outline-offset: 2px; }
+
+/* Edit Points: black vertex squares, white handle squares on grey stems, and
+ * the outline drawn over the shape (the host's own frame and grips hide). */
+.editLayer.editLayer {
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 10;
+}
+.editVertex.editVertex,
+.editHandle.editHandle {
+  appearance: none;
+  border: 1px solid #fff;
+  border-radius: 0;
+  box-shadow: 0 0 0 1px #222;
+  box-sizing: border-box;
+  cursor: move;
+  height: calc(7px * var(--office-drawing-grip-scale, 1));
+  min-height: calc(7px * var(--office-drawing-grip-scale, 1));
+  width: calc(7px * var(--office-drawing-grip-scale, 1));
+  min-width: calc(7px * var(--office-drawing-grip-scale, 1));
+  margin: calc(-3.5px * var(--office-drawing-grip-scale, 1)) 0 0 calc(-3.5px * var(--office-drawing-grip-scale, 1));
+  padding: 0;
+  pointer-events: auto;
+  position: absolute;
+  touch-action: none;
+  transition: none;
+}
+.editVertex.editVertex { background: #222; }
+.editVertex.editVertex[data-active="true"] { background: #c00000; }
+.editHandle.editHandle { background: #fff; border-color: #222; box-shadow: none; }
+.editMenu {
+  background: #fff;
+  border: 1px solid #c8c8c8;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 18%);
+  display: flex;
+  flex-direction: column;
+  font: 12px/1.3 system-ui, sans-serif;
+  min-width: 160px;
+  padding: 4px 0;
+}
+.editMenu > button {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: #222;
+  cursor: default;
+  padding: 5px 14px;
+  text-align: left;
+}
+.editMenu > button:hover,
+.editMenu > button:focus-visible { background: #e8e8e8; outline: none; }
+.drawLayer { position: absolute; inset: 0; }
+
+/* Touch (P-3 of the touch audit; iOS HIG: a target is at least 44x44 pt).
+ *
+ * Under a coarse pointer every grip — resize, rotate, adjustment, edit
+ * point — takes a finger-sized hit area, centred on the grip, while the
+ * painted mark keeps its size. The hit area is a pseudo-element of the grip
+ * itself, so a press on it is a press on the grip, and the grip's own box
+ * (and every host's inline placement of it, which the mouse path relies on)
+ * does not move. This is the ONE place grip hit sizes are decided: Docs
+ * pictures, shapes and SmartArt, the PDF editor's boxes and the deck and
+ * sheet objects all wear these classes.
+ *
+ * --office-drawing-touch-grip-size  the finger target (default 44px);
+ * --office-drawing-grip-scale       a host drawn inside a scaled stage
+ *   (PowerPoint's slide at 50 % view) sets the reciprocal of its scale, so
+ *   paint and target stay the same size on screen at any zoom. The rotate,
+ *   adjustment and edit-point grips follow it everywhere; a resize grip's
+ *   box follows --office-drawing-grip-size / -edge, which such a host scales
+ *   the same way (PowerPoint's handles keep their size at every zoom).
+ */
+/* Touch mode (lib/touch-mode) asks for the finger targets whatever the
+   device's primary pointer: Office's Touch Mode draws its handles larger. */
+:global(:root[data-touch-mode]) .resize.resize::after,
+:global(:root[data-touch-mode]) .adjust.adjust::after,
+:global(:root[data-touch-mode]) .editVertex.editVertex::after,
+:global(:root[data-touch-mode]) .editHandle.editHandle::after,
+:global(:root[data-touch-mode]) .rotate.rotate::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: calc(var(--office-drawing-touch-grip-size, 44px) * var(--office-drawing-grip-scale, 1));
+    height: calc(var(--office-drawing-touch-grip-size, 44px) * var(--office-drawing-grip-scale, 1));
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: transparent;
+    pointer-events: auto;
+}

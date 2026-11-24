@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Персонализиран",
+ "zoom.levels": "Нива на мащаба",
+ "dialog.close": "Затваряне",
+ "toast.close": "Затваряне на известието",
+ "button.confirm": "OK",
+ "button.cancel": "Отказ",
+ "libreOffice.enable": "Изтегляне и включване (около {size})",
+ "libreOffice.enableAlt": "Изтегляне и включване на LibreOffice",
+ "libreOffice.enabled": "LibreOffice {version} е включен",
+ "libreOffice.retrying": "Опит отново…",
+ "libreOffice.ready": "Старите формати на Office, файловете OpenDocument, картините EMF/WMF и експортите в OpenDocument вече работят.",
+ "libreOffice.needed": "Това изисква LibreOffice. MR Note Classic може да изтегли официалната версия в собствена папка; нищо не се инсталира в системата Ви.",
+ "libreOffice.neededFor": "Запазването като .{format} изисква LibreOffice. MR Note Classic може да изтегли официалната версия в собствена папка; нищо не се инсталира в системата Ви."
+}

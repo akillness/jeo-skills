@@ -1,0 +1,75 @@
+/* Excel's RefEdit "Collapse Dialog": the dialog shrinks to one reference box
+   at the top of the window while a range is selected on the sheet. */
+.picker {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  z-index: 80;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  width: min(420px, calc(100vw - 32px));
+  margin-left: calc(min(420px, calc(100vw - 32px)) / -2);
+  box-sizing: border-box;
+  padding: 6px 8px;
+  border: 1px solid var(--border, #d9d9d9);
+  border-radius: 6px;
+  background: var(--glass-float-bg);
+  -webkit-backdrop-filter: var(--glass-float-blur);
+  backdrop-filter: var(--glass-float-blur);
+  box-shadow: 0 6px 18px rgb(15 23 42 / 18%);
+  color: var(--text, #1f1f1f);
+  font-size: 12px;
+}
+
+.title {
+  flex: 1 0 100%;
+  overflow: hidden;
+  color: var(--text-secondary, #5f5f5f);
+  font-size: 11px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.input {
+  flex: 1;
+  min-height: 24px;
+  box-sizing: border-box;
+  padding: 2px 6px;
+  border: 1px solid var(--border, #d9d9d9);
+  border-radius: 4px;
+  background: var(--console-surface, #ffffff);
+  color: inherit;
+  font: inherit;
+}
+
+.iconButton {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 28px;
+  min-height: 26px;
+  padding: 0;
+  /* The picker sits inside an Office dialog card: its collapse button takes
+     the card's control colours so it follows the dark theme with the card. */
+  border: 1px solid var(--office-dialog-control-border, var(--border, #d9d9d9));
+  border-radius: 4px;
+  background: var(--office-dialog-surface, var(--console-surface, #ffffff));
+  color: inherit;
+  cursor: pointer;
+}
+
+.iconButton:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.iconButton:not(:disabled):hover {
+  background: color-mix(
+    in srgb,
+    currentColor 6%,
+    var(--office-dialog-surface, var(--console-surface, #ffffff))
+  );
+}

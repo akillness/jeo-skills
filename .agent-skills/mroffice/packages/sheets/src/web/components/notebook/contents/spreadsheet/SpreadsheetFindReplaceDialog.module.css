@@ -1,0 +1,112 @@
+/* Excel's Find and Replace dialog (Home > Find & Select). The card, title
+   row, tab strip, fields and buttons come from the shared Office dialog
+   chrome (components/office-ribbon/OfficeDialogChrome.css, centred by
+   .native-window__modal-dialog); this module only lays out what is particular
+   to Find and Replace. */
+
+.dialog {
+  width: min(560px, calc(100vw - 32px));
+}
+
+.fields {
+  align-items: center;
+  display: grid;
+  gap: 8px 10px;
+  grid-template-columns: max-content minmax(0, 1fr);
+}
+
+.fields input {
+  min-width: 0;
+}
+
+.options {
+  align-items: center;
+  display: grid;
+  gap: 8px 16px;
+  grid-template-columns: max-content minmax(96px, max-content) 1fr;
+}
+
+.checks {
+  display: grid;
+  gap: 6px;
+  grid-column: 3;
+  grid-row: 1 / span 3;
+  align-self: start;
+}
+
+.check {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+}
+
+.optionsToggleRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.status {
+  color: var(--office-dialog-muted);
+  min-height: 16px;
+}
+
+.results {
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 4px;
+  max-height: 180px;
+  overflow: auto;
+}
+
+.results table {
+  border-collapse: collapse;
+  min-width: 100%;
+  table-layout: auto;
+}
+
+.results th,
+.results td {
+  max-width: 180px;
+  overflow: hidden;
+  padding: 3px 8px;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.results thead th {
+  background: var(--office-dialog-surface);
+  border-bottom: 1px solid var(--office-dialog-divider);
+  position: sticky;
+  top: 0;
+}
+
+.sortButton {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  padding: 0;
+}
+
+.resultRow {
+  cursor: pointer;
+}
+
+.resultRow:hover {
+  background: var(--office-dialog-hover);
+}
+
+.resultRow[aria-selected="true"] {
+  background: var(--office-dialog-accent-soft);
+}
+
+.resultRow:focus-visible {
+  outline: 2px solid var(--office-dialog-accent);
+  outline-offset: -2px;
+}
+
+.resultsCount {
+  color: var(--office-dialog-muted);
+}

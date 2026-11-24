@@ -1,0 +1,15 @@
+-- UsageDaily and JudgeUsageStats (db/llm_usage.go) filter llm_usage on
+-- ts >= now() - interval; the dashboard polls UsageDaily every 15 seconds.
+-- llm_usage is an append-only ledger that gains a row per LLM call and is never
+-- purged, so without an index on ts those queries scan the whole table.
+--
+-- This is a plain (non-concurrent) CREATE INDEX: migrations run in a
+-- transaction, where CONCURRENTLY is not allowed. It is safe here because
+-- db.Open applies migrations at startup, before the HTTP server listens, so the
+-- SHARE lock it takes blocks no agent call or request in flight.
+--
+-- For an exceptionally large ledger, build the same index online before the
+-- upgrade, outside a transaction:
+--   CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_llm_usage_ts ON llm_usage(ts);
+-- This migration then finds it and does nothing.
+CREATE INDEX IF NOT EXISTS idx_llm_usage_ts ON llm_usage(ts);

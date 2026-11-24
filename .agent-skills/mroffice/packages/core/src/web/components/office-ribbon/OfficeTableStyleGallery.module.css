@@ -1,0 +1,43 @@
+.gallery {
+  --office-gallery-visible-items: 7;
+}
+
+.preview {
+  border-collapse: collapse;
+  border-spacing: 0;
+  height: 40px;
+  table-layout: fixed;
+  width: 60px;
+}
+.preview td {
+  border: 0;
+  box-sizing: border-box;
+  color: #000;
+  font-family: Arial, sans-serif;
+  font-size: 6px;
+  font-weight: 400;
+  height: 8px;
+  line-height: 6px;
+  padding: 0;
+  text-align: center;
+  width: 12px;
+}
+.gallery
+  :global([data-office-style-gallery-preview-item="true"] > span:first-child) {
+  border: 0;
+  border-radius: 0;
+}
+.gallery :global([data-office-style-gallery-preview-item="true"]) {
+  border: 1px solid #d2d2d2 !important;
+  border-radius: 5px;
+}
+/* A heading may break ("Light" / "Medium" carry a line each in some locales). */
+.menu :global([role="group"][data-headed="true"] > div:not([role])) {
+  white-space: pre-line;
+}
+.clear {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+}

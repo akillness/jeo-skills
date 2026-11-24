@@ -1,0 +1,25 @@
+/* Docs' Format Shape pane is the shared OfficeShapeFormatPane
+   (components/office-ribbon/OfficeShapeFormatPane.module.css draws its tab
+   strip, sections and fields over the shared Office task pane chrome). What
+   stays here is what is Docs' own: where the pane sits (a floating card
+   beside the page rather than flush with the stage) and the Docs blue. */
+
+.pane {
+  --office-pane-tone-accent: var(--console-accent, #2563eb);
+  --office-pane-surface: rgb(249 250 251 / 98%);
+  --office-pane-ink: #203b38;
+  --office-pane-border: rgb(15 23 42 / 10%);
+
+  position: fixed;
+  z-index: 68;
+  /* Docked, the pane fills the right dock, which sits below the ribbon;
+     standing alone it takes the same measured top when one is inherited. */
+  top: var(--document-task-pane-top, 52px);
+  right: 16px;
+  bottom: 18px;
+  width: min(340px, calc(100vw - 32px));
+  overflow: hidden;
+  border: 1px solid rgb(15 23 42 / 16%);
+  border-radius: 12px;
+  box-shadow: 0 18px 48px rgb(15 23 42 / 24%);
+}

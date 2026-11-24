@@ -1,0 +1,176 @@
+@scope ([data-example]) {
+  /* The formatting toolbar spans the notes field below it, like an editor's. */
+  :scope[data-example="toolbar/controller"]
+    [data-slot="stack"]
+    > [data-slot="toolbar"] {
+    width: 100%;
+  }
+
+  /* The zoom toolbar sits near the top, with room below for its open list. */
+  :scope[data-example="toolbar/select"] {
+    justify-content: flex-start;
+    min-height: 16rem;
+  }
+
+  [data-slot="toolbar"] {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px;
+    box-sizing: border-box;
+    width: fit-content;
+    max-width: 100%;
+    padding: 3px;
+    border-radius: var(--radius-surface);
+    background: var(--surface-1);
+    box-shadow: var(--shadow-1);
+
+    &[data-orientation="vertical"] {
+      flex-direction: column;
+    }
+
+    & :focus-visible {
+      position: relative;
+      z-index: 1;
+      outline-offset: 0;
+    }
+
+    &
+      :is(
+        [data-slot="toolbar-button"],
+        [data-slot="toolbar-link"],
+        [data-slot="toggle"],
+        [data-slot="menu-trigger"],
+        [data-slot="select-trigger"]
+      ):not(:is([data-slot="menu-content"], [data-slot="select-content"]) *) {
+      display: inline-flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-sizing: border-box;
+      min-width: var(--size-sm);
+      height: var(--size-sm);
+      padding-inline: 10px;
+      border-radius: var(--radius-row);
+      background: transparent;
+      box-shadow: none;
+      color: var(--ink);
+      font-weight: 500;
+      text-decoration: none;
+
+      &:is([aria-label], [aria-labelledby]):has(
+          > svg:only-child,
+          > [data-slot="toggle-icon"]:only-child
+        ) {
+        width: var(--size-sm);
+        padding: 0;
+      }
+
+      &:hover:not(:disabled, [data-disabled], [aria-disabled="true"]) {
+        background: var(--tint);
+      }
+
+      &:active {
+        scale: none;
+      }
+
+      &:is([data-pressed], [data-open]) {
+        background: var(--tint);
+        box-shadow: inset 0 0 0 1px var(--ink);
+      }
+
+      &:is(:disabled, [data-disabled], [aria-disabled="true"]) {
+        background: transparent;
+        box-shadow: none;
+        color: var(--line-disabled);
+      }
+
+      & > svg:last-child:not(:only-child) {
+        color: var(--muted);
+      }
+    }
+
+    & [data-slot="toolbar-link"]:hover {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    & [data-slot="select-trigger"] {
+      justify-content: space-between;
+      width: 5.5rem;
+      padding-inline: 10px 6px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    &
+      :is([data-slot="toolbar-input"], [data-slot="number-input-group"]):not(
+        :focus-visible,
+        :has(:focus-visible)
+      ) {
+      box-shadow: inset 0 0 0 1px var(--line-faint);
+
+      &:hover:not(:disabled, [data-disabled]) {
+        box-shadow: inset 0 0 0 1px var(--line);
+      }
+    }
+
+    & [data-slot="toolbar-input"] {
+      width: 9rem;
+      height: var(--size-sm);
+      border-radius: var(--radius-row);
+    }
+
+    & [data-slot="number-input-group"] {
+      width: auto;
+      height: var(--size-sm);
+      padding: 0;
+      border-radius: var(--radius-row);
+
+      & [data-slot="number-input-control"] {
+        width: 2.5rem;
+        flex: none;
+      }
+
+      &
+        :is(
+          [data-slot="number-input-decrement"],
+          [data-slot="number-input-increment"]
+        ) {
+        min-width: 26px;
+        height: 26px;
+        border-radius: calc(var(--radius-row) - 2px);
+      }
+    }
+  }
+
+  :is(
+    [data-slot="toolbar-group"],
+    [data-slot="toolbar"] [data-slot="toggle-group"]
+  ) {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+
+    &[data-orientation="vertical"] {
+      flex-direction: column;
+    }
+  }
+
+  [data-slot="toolbar-separator"] {
+    flex-shrink: 0;
+    background: var(--line-faint);
+
+    &[data-orientation="vertical"] {
+      width: 1px;
+      height: var(--space-4);
+      margin-inline: var(--space-1);
+    }
+
+    &[data-orientation="horizontal"] {
+      width: var(--space-4);
+      height: 1px;
+      margin-block: var(--space-1);
+    }
+  }
+}

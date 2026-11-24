@@ -1,0 +1,30 @@
+{
+  "name": "@mrnote/playground",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "dev": "vite",
+    "build": "node --max-old-space-size=8192 ../../node_modules/vite/bin/vite.js build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@mrnote/code": "*",
+    "@mrnote/core": "*",
+    "@mrnote/docs": "*",
+    "@mrnote/pdf": "*",
+    "@mrnote/sheets": "*",
+    "@mrnote/slides": "*",
+    "react": "19.2.5",
+    "react-dom": "19.2.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "autoprefixer": "^10.4.20",
+    "postcss": "8.5.10",
+    "tailwindcss": "3.4.19",
+    "tailwindcss-animate": "^1.0.7",
+    "vite": "8.1.5"
+  }
+}

@@ -1,0 +1,178 @@
+/* WPS 分割页面 mode: red dashed cut lines over the page and the floating
+   vertical toolbar beside it (添加分割线 · 删除分割线 · 页面设置 · 立即分割 ·
+   退出分割) with its two popovers. */
+
+.overlay {
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 7;
+}
+
+/* Clicking the page away from a line lets go of the selected line. */
+.catcher {
+  inset: 0;
+  pointer-events: auto;
+  position: absolute;
+}
+
+/* A line's hit area is wider than the line it draws, so a finger finds it. */
+.line {
+  pointer-events: auto;
+  position: absolute;
+  touch-action: none;
+}
+
+.line::after {
+  content: "";
+  position: absolute;
+}
+
+.lineColumn {
+  bottom: 0;
+  cursor: col-resize;
+  top: 0;
+  transform: translateX(-50%);
+  width: 14px;
+}
+
+.lineColumn::after {
+  border-left: 1.5px dashed #e5484d;
+  bottom: 0;
+  left: calc(50% - 0.75px);
+  top: 0;
+}
+
+.lineRow {
+  cursor: row-resize;
+  height: 14px;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+.lineRow::after {
+  border-top: 1.5px dashed #e5484d;
+  left: 0;
+  right: 0;
+  top: calc(50% - 0.75px);
+}
+
+.line[data-selected="true"]::after {
+  border-color: #c4161c;
+  border-style: solid;
+  border-width: 2px;
+}
+
+.line[data-selected="true"].lineColumn::after {
+  border-bottom: 0;
+  border-right: 0;
+  border-top: 0;
+  left: calc(50% - 1px);
+}
+
+.line[data-selected="true"].lineRow::after {
+  border-bottom: 0;
+  border-left: 0;
+  border-right: 0;
+  top: calc(50% - 1px);
+}
+
+.line:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: -4px;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: absolute;
+  right: 24px;
+  top: 16px;
+  z-index: 40;
+}
+
+/* A native window's blanket `button` rule (native-page-window.css) outranks
+   one class; the toolbar's buttons restate their own box a step above it. */
+.toolButton.toolButton.toolButton {
+  align-items: center;
+  background: var(--office-surface, #ffffff);
+  border: 1px solid var(--office-border, #d9dce1);
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+  box-sizing: border-box;
+  color: var(--office-text, #1f2329);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 12px;
+  gap: 6px;
+  justify-content: flex-start;
+  min-height: 32px;
+  min-width: 112px;
+  padding: 4px 12px;
+  transform: none;
+  white-space: nowrap;
+}
+
+.toolButton.toolButton.toolButton:hover:not(:disabled) {
+  background: var(--office-hover, #f2f3f5);
+}
+
+.toolButton.toolButton.toolButton[aria-expanded="true"] {
+  background: var(--office-selected, #eef4ff);
+  border-color: var(--office-accent, #2563eb);
+}
+
+.toolButton.toolButton.toolButton:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.toolButton.toolButton.toolButton:focus-visible {
+  outline: 2px solid var(--office-accent, #2563eb);
+  outline-offset: 1px;
+}
+
+/* The popovers open to the left of the toolbar: it stands at the window's
+   right edge. */
+.popover.popover {
+  max-height: min(70vh, 520px);
+  overflow: auto;
+  position: absolute;
+  right: calc(100% + 8px);
+  top: 0;
+  width: 340px;
+}
+
+.optionRow {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-inline-start: 22px;
+}
+
+.numberField.numberField {
+  width: 64px;
+}
+
+.rangeField.rangeField {
+  flex: 1 1 120px;
+  min-width: 96px;
+}
+
+.muted {
+  color: var(--office-ribbon-muted, #6b7280);
+  font-size: 12px;
+}
+
+/* the app's theme (data-theme-mode on <html>), not the device's: the app
+   never sets data-theme="dark", and the device's own mode drew these dark in
+   the light app */
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .toolButton.toolButton.toolButton {
+  background: var(--office-surface, #24262b);
+  border-color: var(--office-border, #3a3d44);
+  color: var(--office-text, #e6e8eb);
+}

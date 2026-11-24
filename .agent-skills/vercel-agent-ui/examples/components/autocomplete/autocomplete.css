@@ -1,0 +1,213 @@
+@scope ([data-example]) {
+  [data-slot="autocomplete-label"] {
+    font-weight: 500;
+
+    &[data-disabled] {
+      color: var(--line-disabled);
+    }
+  }
+
+  [data-slot="autocomplete-input"]::-webkit-search-cancel-button {
+    display: none;
+  }
+
+  [data-slot="row"]:has(
+    > [data-slot="autocomplete-input"],
+    > * > [data-slot="autocomplete-input"]
+  ) {
+    position: relative;
+    flex-wrap: nowrap;
+    gap: 0;
+    width: 20rem;
+    max-width: 100%;
+    color: var(--muted);
+
+    & > *:has(> [data-slot="autocomplete-input"]) {
+      flex: 1;
+    }
+
+    & [data-slot="autocomplete-input"] {
+      flex: 1;
+      max-width: none;
+    }
+
+    &:has(
+        :is(
+          [data-slot="autocomplete-trigger"],
+          [data-slot="autocomplete-clear"]
+        )
+      )
+      [data-slot="autocomplete-input"] {
+      padding-inline-end: calc(var(--space-2) + 24px);
+    }
+
+    &:has([data-slot="autocomplete-trigger"]):has(
+        [data-slot="autocomplete-clear"]
+      )
+      [data-slot="autocomplete-input"] {
+      padding-inline-end: calc(var(--space-2) + 48px);
+    }
+
+    &
+      :is(
+        [data-slot="autocomplete-trigger"],
+        [data-slot="autocomplete-clear"]
+      ) {
+      position: absolute;
+      inset-block: 0;
+      inset-inline-end: 5px;
+      margin-block: auto;
+    }
+
+    &:has([data-slot="autocomplete-trigger"]) [data-slot="autocomplete-clear"] {
+      inset-inline-end: calc(5px + 24px);
+    }
+
+    & > svg:first-child {
+      position: absolute;
+      inset-inline-start: 10px;
+      pointer-events: none;
+    }
+
+    &:has(> svg:first-child) [data-slot="autocomplete-input"] {
+      padding-inline-start: calc(10px + var(--size-icon) + var(--space-2));
+    }
+  }
+
+  :is([data-slot="autocomplete-trigger"], [data-slot="autocomplete-clear"]) {
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    border-radius: calc(var(--radius-control) - 3px);
+    background: transparent;
+    color: var(--muted);
+    transition:
+      background-color 0.12s,
+      color 0.12s;
+
+    &:hover:not([data-disabled], :disabled) {
+      background: var(--tint);
+      color: var(--ink);
+    }
+
+    &[data-open] {
+      color: var(--ink);
+    }
+
+    &:focus-visible {
+      outline-offset: 0;
+    }
+
+    &:is([data-disabled], :disabled) {
+      color: var(--line-disabled);
+    }
+  }
+
+  [data-slot="autocomplete-content"] {
+    width: var(--anchor-width);
+    max-height: min(18rem, var(--available-height));
+
+    &[data-presentation="sheet"] {
+      width: auto;
+      height: auto;
+      max-height: 85dvh;
+      padding: var(--space-2) var(--space-2)
+        max(env(safe-area-inset-bottom), var(--space-3));
+      scroll-padding-top: 48px;
+
+      & > [data-slot$="-header"] {
+        position: sticky;
+        top: calc(var(--space-2) * -1);
+        z-index: 1;
+        padding-block: var(--space-2);
+        background: inherit;
+      }
+
+      & [data-slot="autocomplete-input"] {
+        width: 100%;
+        max-width: none;
+      }
+    }
+  }
+
+  [data-slot="autocomplete-item"] {
+    &:is(a),
+    & > a:not([data-slot]) {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    & > :is([data-slot="hint"], svg):last-child:not(:first-child) {
+      margin-inline-start: auto;
+    }
+
+    & > svg:last-child:is([dir="rtl"], [dir="rtl"] *) {
+      scale: -1 1;
+    }
+
+    & > [data-slot="stack"] {
+      flex: 1;
+      align-items: flex-start;
+      gap: 0;
+      min-width: 0;
+    }
+  }
+
+  [data-slot^="autocomplete-"] {
+    &:not([data-pending]) > [data-show="pending"],
+    &[data-pending] > [data-hide="pending"],
+    &:not([data-selected]) > [data-show="selected"],
+    &:not([data-disabled]) > [data-show="disabled"],
+    &:not([data-highlighted]) > [data-show="highlighted"] {
+      display: none;
+    }
+  }
+
+  [data-slot="autocomplete-item-icon"] {
+    display: flex;
+    color: var(--muted);
+
+    [data-highlighted] > & {
+      color: inherit;
+    }
+  }
+
+  [data-slot="autocomplete-item-text"] :is(mark, strong) {
+    background: none;
+    color: inherit;
+    font-weight: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  [data-slot="autocomplete-status"]:empty {
+    padding: 0;
+  }
+
+  [data-slot="autocomplete-empty"][data-empty]:empty {
+    display: none;
+  }
+
+  /* Only this demo animates; the slide and fade are what it shows. */
+  :scope[data-example="autocomplete/animation"]
+    [data-slot="autocomplete-content"] {
+    transition:
+      opacity 0.15s,
+      translate 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+
+    &:is([data-starting-style], [data-ending-style]) {
+      opacity: 0;
+      translate: 0 -6px;
+    }
+  }
+
+  :scope[data-example="autocomplete/positioning"] [data-slot="card"] {
+    width: 22rem;
+    max-width: 100%;
+  }
+}

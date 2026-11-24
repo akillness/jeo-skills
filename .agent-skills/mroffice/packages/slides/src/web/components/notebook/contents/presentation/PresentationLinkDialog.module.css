@@ -1,0 +1,103 @@
+.dialog {
+  width: min(750px, calc(100vw - 40px));
+  max-width: min(750px, calc(100vw - 40px));
+  gap: 20px;
+  padding: 28px 30px;
+}
+/* Card, ink and accent are the dialog chrome's (OfficeDialogShell renders this
+   root as .office-dialog, so its tokens are in scope and follow the theme and
+   the Presentation tone). */
+.dialog :global(h2) {
+  color: var(--office-dialog-accent, #c43e1c);
+  font-size: 20px;
+}
+.dialog > button {
+  color: var(--office-dialog-accent, #c43e1c);
+}
+/* Colours (accent, disabled) come from the dialog chrome's primary button. */
+.dialog :global([data-testid="presentation-link-dialog-default-action"]) {
+  min-width: 108px;
+}
+.dialog :global([data-testid="presentation-link-dialog-cancel"]) {
+  min-width: 108px;
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.textRow,
+.addressRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.textRow > span,
+.addressRow > span {
+  flex: none;
+}
+.dialog input {
+  width: 100%;
+  min-width: 0;
+  height: 38px;
+  border: 1px solid var(--office-dialog-control-border, #c8c6c4);
+  border-radius: 3px;
+  padding: 6px 9px;
+  background: var(--office-dialog-surface, #fff);
+  color: inherit;
+  font: inherit;
+}
+.dialog input:focus {
+  outline: 2px solid var(--office-dialog-accent, #c43e1c);
+  outline-offset: 1px;
+}
+/* The destination tabs and the slide list are the shared dialog chrome's
+   segmented tabs and list box (OfficeDialogChrome.css); the page under the
+   tabs is plain content on the card, not a second panel. */
+.panel {
+  min-height: 156px;
+  max-height: min(300px, 45vh);
+  overflow: auto;
+  font-size: 12px;
+}
+.panel > p {
+  margin: 0 0 10px;
+}
+.addressRow {
+  margin-top: 8px;
+}
+.targets {
+  gap: 1px;
+}
+.targets .titlesToggle {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.slideList {
+  display: flex;
+  flex-direction: column;
+  padding-left: 18px;
+}
+.reason {
+  margin: -12px 0 0;
+  color: var(--office-dialog-muted, #605e5c);
+  font-size: 12px;
+}
+/* Text to Display fills the row; ScreenTip... sits at its end (PPT-B010). */
+.textHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.textHeader > label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.textHeader > button {
+  flex: none;
+}

@@ -1,0 +1,12 @@
+/* PDF-only placement for the shared Office drawing selection chrome
+   (components/office-ribbon/OfficeDrawingSelection). The paint comes from the
+   shared classes; nothing here changes a colour, a size or a hit target.
+
+   A text box's rotate grip keeps its centre 22px above the box, because the
+   rotate gesture derives the pivot from that distance (ROTATE_HANDLE_GAP_PX).
+   That is 7px higher than the shared grip sits, so the stem runs the full
+   15px down to the frame instead of the shared 8px. */
+.textBoxRotate.textBoxRotate::after {
+  bottom: -16px;
+  height: 15px;
+}

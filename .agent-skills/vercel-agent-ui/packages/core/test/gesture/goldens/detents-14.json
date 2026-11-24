@@ -1,0 +1,60 @@
+{
+  "format": "drawer-lab/golden@1",
+  "name": "detents-14",
+  "source": "ios/iPhone18,1 (Simulator)/iOS 26.5",
+  "geometry": {
+    "dimension": 874,
+    "snapPoints": [
+      { "id": "medium", "extent": 459.01, "ratio": 0.5252 },
+      { "id": "large", "extent": 812, "ratio": 0.9291 }
+    ],
+    "dismissible": true
+  },
+  "start": { "extent": 812 },
+  "finger": [
+    { "t": 0, "y": 94, "phase": "down" },
+    { "t": 83.33, "y": 128.33, "phase": "move" },
+    { "t": 99.61, "y": 170, "phase": "move" },
+    { "t": 116.11, "y": 215, "phase": "move" },
+    { "t": 133.26, "y": 260.67, "phase": "move" },
+    { "t": 149.39, "y": 305.33, "phase": "move" },
+    { "t": 166.13, "y": 347, "phase": "move" },
+    { "t": 183.33, "y": 382, "phase": "move" },
+    { "t": 198.98, "y": 394, "phase": "move" },
+    { "t": 199.07, "y": 394, "phase": "up" }
+  ],
+  "sheet": [
+    { "t": 25.92, "extent": 812 },
+    { "t": 42.59, "extent": 812 },
+    { "t": 59.26, "extent": 812 },
+    { "t": 75.94, "extent": 812 },
+    { "t": 93.03, "extent": 812 },
+    { "t": 111.37, "extent": 812 },
+    { "t": 127.17, "extent": 742.34 },
+    { "t": 143.76, "extent": 694.95 },
+    { "t": 175.53, "extent": 647.35 },
+    { "t": 195.82, "extent": 558.73 },
+    { "t": 225.78, "extent": 495.32 },
+    { "t": 242.42, "extent": 474.95 },
+    { "t": 259.07, "extent": 461.25 },
+    { "t": 275.74, "extent": 452.71 },
+    { "t": 292.4, "extent": 447.91 },
+    { "t": 309.07, "extent": 445.76 },
+    { "t": 325.73, "extent": 445.4 },
+    { "t": 342.4, "extent": 446.17 },
+    { "t": 359.06, "extent": 447.57 },
+    { "t": 375.73, "extent": 449.26 },
+    { "t": 392.39, "extent": 451 },
+    { "t": 409.08, "extent": 452.66 },
+    { "t": 425.74, "extent": 454.13 },
+    { "t": 442.4, "extent": 455.39 },
+    { "t": 459.06, "extent": 456.42 },
+    { "t": 475.73, "extent": 457.25 },
+    { "t": 492.41, "extent": 457.88 },
+    { "t": 509.07, "extent": 458.34 },
+    { "t": 525.73, "extent": 458.68 },
+    { "t": 542.4, "extent": 458.9 },
+    { "t": 559.07, "extent": 459.05 }
+  ],
+  "outcome": { "snapPoint": "medium" }
+}

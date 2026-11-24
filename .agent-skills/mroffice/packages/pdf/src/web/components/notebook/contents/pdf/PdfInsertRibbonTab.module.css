@@ -1,0 +1,202 @@
+.iconSlot {
+  position: relative;
+  display: inline-grid;
+  flex: 0 0 24px;
+  inline-size: 24px;
+  block-size: 24px;
+  place-items: center;
+}
+
+ 
+.laneIconSlot {
+  position: relative;
+  display: inline-grid;
+  flex: 0 0 18px;
+  inline-size: 18px;
+  block-size: 18px;
+  place-items: center;
+}
+
+.busySpinner {
+  position: absolute;
+  inset: 3px;
+  border: 1.5px solid color-mix(in srgb, currentColor 24%, transparent);
+  border-block-start-color: currentColor;
+  border-radius: 999px;
+  animation: pdf-insert-spin 700ms linear infinite;
+}
+
+.menuContent {
+  inline-size: 238px;
+  min-inline-size: 238px;
+  max-inline-size: min(320px, calc(100vw - 24px));
+}
+
+.menuContent [role="menuitem"] {
+  min-block-size: 44px;
+  font-size: 12px;
+}
+
+.menuContent [role="menuitem"] svg {
+  flex: 0 0 16px;
+  inline-size: 16px;
+  block-size: 16px;
+}
+
+.menuContent [data-pdf-insert-icon="importFile"],
+.menuContent [data-pdf-insert-icon="importWord"],
+.menuContent [data-pdf-insert-icon="importText"] {
+  color: #2563eb;
+}
+
+.menuContent [data-pdf-insert-icon="importPdf"] {
+  color: #db2777;
+}
+
+.menuContent [data-pdf-insert-icon="importExcel"] {
+  color: #15803d;
+}
+
+.menuContent [data-pdf-insert-icon="importPpt"] {
+  color: #c2410c;
+}
+
+.menuContent [data-pdf-insert-icon="importImage"] {
+  color: #475569;
+}
+
+.menuContent :global(.pdf-viewer__split-modes) {
+  gap: 8px;
+  padding: 4px;
+}
+
+.menuContent :global(.pdf-viewer__split-input) {
+  box-sizing: border-box;
+  inline-size: 100%;
+}
+
+.menuContent :global(.pdf-viewer__split-go) {
+  display: flex;
+  inline-size: 100%;
+  min-block-size: 44px;
+  align-items: center;
+  justify-content: center;
+}
+
+.decorationDialog {
+  max-block-size: min(82vh, 720px);
+  inline-size: min(92vw, 520px);
+  overflow: auto;
+}
+
+.decorationForm {
+  position: static;
+  display: grid;
+  inline-size: auto;
+  min-inline-size: 0;
+  gap: 12px;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+}
+
+@keyframes pdf-insert-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .busySpinner {
+    animation: none;
+  }
+}
+
+/* Drawing Tools (comment-tool context): captioned fields in two compact rows
+   per column, the Shape Editing anatomy, so the ink / shape / measurement
+   settings read like the rest of the band instead of bare form controls. */
+.fieldStack {
+  align-content: center;
+  align-items: center;
+  display: grid;
+  grid-template-rows: 30px 30px;
+  justify-items: start;
+  padding-inline: 2px;
+  row-gap: 4px;
+}
+
+.fieldRow {
+  align-items: center;
+  color: var(--foreground, #0f172a);
+  display: flex;
+  font-size: 12px;
+  gap: 6px;
+  min-height: 30px;
+  white-space: nowrap;
+}
+
+.fieldLabel,
+.fieldStack .fieldLabel {
+  color: var(--foreground, #0f172a);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* The fields carry a caption, not a glyph: the shared number field's leading
+   22px icon column is dropped, leaving caption | input. */
+.noIcon {
+  display: none !important;
+}
+
+.fieldStack
+  .captionField[data-office-ribbon-number-field="true"][data-has-visible-label="true"] {
+  grid-template-columns: max-content max-content !important;
+  min-width: 0 !important;
+}
+
+.styleSelect {
+  box-sizing: border-box;
+  border: 1px solid var(--office-control-border, var(--docs-ribbon-divider, #d8dee8));
+  border-radius: 6px;
+  font-size: 12px;
+  height: 28px;
+  max-width: 108px;
+  min-width: 76px;
+  padding-inline: 4px;
+}
+
+/* The font family select shows full font names. */
+.wideSelect {
+  max-width: 184px;
+  min-width: 132px;
+}
+
+.swatch {
+  block-size: 28px;
+  border: 1px solid var(--office-control-border, var(--docs-ribbon-divider, #d8dee8));
+  border-radius: 6px;
+  box-sizing: border-box;
+  cursor: pointer;
+  inline-size: 34px;
+  padding: 2px;
+}
+
+.swatch:disabled {
+  cursor: default;
+  opacity: 0.48;
+}
+
+/* A colour field's swatch button (DrawingSwatch) and the palette it opens. */
+.swatchHost {
+  display: inline-flex;
+  position: relative;
+}
+
+.swatchChip {
+  block-size: 16px;
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  border-radius: 3px;
+  box-sizing: border-box;
+  display: block;
+  inline-size: 24px;
+}

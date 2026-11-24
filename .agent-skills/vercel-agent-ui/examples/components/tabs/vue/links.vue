@@ -1,0 +1,52 @@
+<script setup lang="ts">
+import {
+  Tabs,
+  TabsIndicator,
+  TabsList,
+  TabsPanel,
+  TabsTab,
+} from "@ui-sdk/vue/tabs"
+
+const pages = [
+  {
+    value: "overview",
+    href: "#project-overview",
+    label: "Overview",
+    content:
+      "Hollis Grant started this project in March. It has 14 open issues.",
+  },
+  {
+    value: "activity",
+    href: "#project-activity",
+    label: "Activity",
+    content:
+      "Wren Takahashi merged 3 pull requests and closed 5 issues this week.",
+  },
+  {
+    value: "members",
+    href: "#project-members",
+    label: "Members",
+    content:
+      "Hollis Grant owns the project. Wren Takahashi and 3 others can edit it.",
+  },
+]
+</script>
+
+<template>
+  <Tabs default-value="overview">
+    <TabsList aria-label="Project">
+      <TabsTab v-for="page in pages" :key="page.value" :value="page.value">
+        <template #render="{ props, children }">
+          <a v-bind="props" :href="page.href">
+            <component :is="children" />
+          </a>
+        </template>
+        {{ page.label }}
+      </TabsTab>
+      <TabsIndicator />
+    </TabsList>
+    <TabsPanel v-for="page in pages" :key="page.value" :value="page.value">
+      {{ page.content }}
+    </TabsPanel>
+  </Tabs>
+</template>

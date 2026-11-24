@@ -1,0 +1,287 @@
+@scope ([data-example]) {
+  [data-slot="scroll-area"] {
+    position: relative;
+    box-sizing: border-box;
+    width: 20rem;
+    max-width: 100%;
+    height: 16rem;
+    overflow: hidden;
+    border-radius: var(--radius-surface);
+    background: var(--surface-1);
+    box-shadow: var(--shadow-1);
+
+    [data-slot="row"] > [data-slot="stack"] > & {
+      width: 12rem;
+    }
+
+    /* Edge fades read the overflow variables, which only the root holds. */
+    &
+      > :is(
+        [data-slot="top-fade"],
+        [data-slot="bottom-fade"],
+        div:not([data-slot])
+      ) {
+      --scroll-area-overflow-y-start: inherit;
+      --scroll-area-overflow-y-end: inherit;
+      position: absolute;
+      inset-inline: 0;
+      top: 0;
+      height: min(2rem, var(--scroll-area-overflow-y-start));
+      background: linear-gradient(var(--surface-1), transparent);
+      pointer-events: none;
+    }
+
+    &
+      > :is(
+        [data-slot="bottom-fade"],
+        div:not([data-slot]) + div:not([data-slot])
+      ) {
+      top: auto;
+      bottom: 0;
+      height: min(2rem, var(--scroll-area-overflow-y-end));
+      background: linear-gradient(transparent, var(--surface-1));
+    }
+  }
+
+  [data-slot="stack"]:has(> [data-slot="scroll-area"]) {
+    max-width: 100%;
+  }
+
+  [data-slot="scroll-area-viewport"] {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    outline-offset: -3px;
+  }
+
+  [data-slot="scroll-area-content"] {
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-sm);
+
+    & > h3 {
+      margin-bottom: var(--space-1);
+    }
+
+    & > ul {
+      gap: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    & > ul > li {
+      padding-block: 6px;
+    }
+
+    & > ul > li + li {
+      border-top: 1px solid var(--line-faint);
+    }
+
+    & > ul > li:has(> [data-slot="hint"]) {
+      display: flex;
+      flex-direction: column;
+      padding-block: var(--space-2);
+      font-weight: 500;
+
+      & > [data-slot="hint"] {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    & > article + article {
+      margin-top: var(--space-3);
+      padding-top: var(--space-3);
+      border-top: 1px solid var(--line-faint);
+    }
+
+    & > article > h3 {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: var(--space-1);
+
+      & > [data-slot="hint"] {
+        font-size: var(--text-xs);
+      }
+    }
+
+    &:has(> figure) {
+      display: flex;
+      gap: var(--space-4);
+      width: max-content;
+    }
+
+    & > figure {
+      margin: 0;
+
+      & > div {
+        box-sizing: border-box;
+        width: 8rem;
+        height: 10rem;
+        border-radius: var(--radius-control);
+        background: var(--tint);
+        box-shadow: inset 0 0 0 1px var(--line-faint);
+      }
+
+      & > figcaption {
+        padding-top: var(--space-2);
+        color: var(--muted);
+        font-size: var(--text-xs);
+      }
+    }
+
+    &:has(> table) {
+      padding: 0;
+    }
+
+    & > table {
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+
+      & thead th {
+        position: sticky;
+        top: 0;
+        border-bottom: 0;
+        background: var(--surface-1);
+        box-shadow: inset 0 -1px var(--line-faint);
+      }
+
+      & tbody th {
+        color: var(--ink);
+      }
+
+      & tr:last-child > * {
+        border-bottom: 0;
+      }
+    }
+  }
+
+  [data-slot="scroll-area-scrollbar"] {
+    display: flex;
+    box-sizing: border-box;
+    padding: 2px;
+    opacity: 0;
+    transition: opacity var(--duration);
+
+    &[data-orientation="vertical"] {
+      flex-direction: column;
+      width: 10px;
+      margin-block: var(--space-1);
+    }
+
+    &[data-orientation="horizontal"] {
+      height: 10px;
+      margin-inline: var(--space-1);
+    }
+
+    &[data-visible] {
+      opacity: 1;
+    }
+  }
+
+  [data-slot="scroll-area-thumb"] {
+    position: relative;
+    border-radius: 999px;
+    background: var(--line-faint);
+
+    :is([data-scrolling], [data-hovering]) > & {
+      background: var(--line);
+    }
+
+    &[data-dragging] {
+      background: var(--muted);
+    }
+  }
+
+  [data-slot="scroll-area-corner"] {
+    background: transparent;
+  }
+
+  [data-slot="scroll-area"] > [data-slot="hint"] {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    padding-block: var(--space-2);
+    background: linear-gradient(transparent, var(--surface-1) 40%);
+    font-size: var(--text-xs);
+    text-align: center;
+    pointer-events: none;
+
+    [data-slot="scroll-area"]:is(
+        [data-at-end],
+        :not([data-overflow-x], [data-overflow-y])
+      )
+      > & {
+      display: none;
+    }
+
+    [data-slot="scroll-area"][data-at-start] > & > [data-show="more"],
+    [data-slot="scroll-area"]:not([data-at-start]) > & > [data-show="start"] {
+      display: none;
+    }
+  }
+
+  /* Four equal swatches fill the row at rest, with gaps as wide as the padding and room for the scrollbar. */
+  :scope[data-example="scroll-area/horizontal"] [data-slot="scroll-area"] {
+    container-type: inline-size;
+    height: auto;
+
+    & [data-slot="scroll-area-content"] {
+      padding: var(--space-3) var(--space-3) 22px;
+    }
+
+    & ul {
+      flex-direction: row;
+      gap: var(--space-3);
+      width: max-content;
+    }
+
+    & li {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: calc((100cqi - 5 * var(--space-3)) / 4);
+      padding: 0;
+      border-top: 0;
+      color: var(--muted);
+      font-size: var(--text-xs);
+    }
+
+    & [data-slot="swatch"] {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1;
+      border-radius: var(--radius-control);
+    }
+  }
+
+  /* Labeled scroll areas side by side, two to a row. */
+  :scope:is(
+    [data-example="scroll-area/type"],
+    [data-example="scroll-area/hide-delay"]
+  ) {
+    & [data-slot="grid"] {
+      align-items: end;
+      gap: var(--space-3);
+      width: 26rem;
+      max-width: 100%;
+    }
+
+    & [data-slot="stack"] {
+      align-items: stretch;
+      gap: var(--space-2);
+      min-width: 0;
+    }
+
+    & [data-slot="scroll-area"] {
+      width: 100%;
+      height: 10rem;
+    }
+
+    & code {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: var(--text-xs);
+    }
+  }
+}

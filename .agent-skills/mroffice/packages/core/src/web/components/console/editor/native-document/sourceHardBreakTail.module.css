@@ -1,0 +1,35 @@
+/* Keep the editable node and native source anchor. Only its redundant physical
+   line disappears; removing the decoration restores every original style. */
+.nonPrintingTail {
+  block-size: 0 !important;
+  min-block-size: 0 !important;
+  max-block-size: 0 !important;
+  margin-block: 0 !important;
+  padding-block: 0 !important;
+  border-block-width: 0 !important;
+  overflow: visible !important;
+}
+
+/* A tail that is its own list item (a numbered paragraph split by a page
+   break): Word draws no number for the paragraph mark either. */
+.nonPrintingTailList {
+  visibility: hidden !important;
+}
+
+/* Browsers do not consistently paint a native caret in a zero-height empty
+   paragraph. This cue follows its real text selection and inherited alignment;
+   it adds no document content or physical paragraph height. */
+:global(.ProseMirror-focused[contenteditable="true"]) .focusedCaret::before {
+  content: "";
+  display: inline-block;
+  inline-size: 0;
+  block-size: 1em;
+  border-inline-start: 1px solid currentColor;
+  pointer-events: none;
+}
+
+/* Text after a page break inside its paragraph: the paragraph's space before
+   is its first line's, not this piece's (sourceHardBreakPiecePositions). */
+.breakContinuation {
+  margin-block-start: 0 !important;
+}

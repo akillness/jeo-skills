@@ -1,0 +1,167 @@
+/* @mentions in comments — chips, the in-box tint, the people list, the notice.
+ * Colours come from the comment surface's own tokens (copied onto the
+ * portalled list), so light, dark and every editor's chrome match. */
+
+.chip {
+  --mention-accent: var(--office-comments-accent, var(--user-theme-accent, #5b5fc7));
+  padding: 0 2px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--mention-accent) 12%, transparent);
+  color: color-mix(in srgb, var(--mention-accent) 82%, currentColor);
+  font-weight: 600;
+  white-space: pre-wrap;
+}
+
+.chip[data-self="true"] {
+  background: color-mix(in srgb, var(--mention-accent) 26%, transparent);
+  box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--mention-accent) 70%, transparent);
+  color: inherit;
+}
+
+.fieldOverlay {
+  position: absolute;
+  z-index: 1;
+  overflow: hidden;
+  margin: 0;
+  border-color: transparent;
+  background: transparent;
+  color: transparent;
+  pointer-events: none;
+  white-space: pre;
+}
+
+.fieldOverlay[data-multiline="true"] {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.fieldOverlayContent {
+  will-change: transform;
+}
+
+.fieldMention {
+  --mention-accent: var(--office-comments-accent, var(--user-theme-accent, #5b5fc7));
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--mention-accent) 20%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--mention-accent) 24%, transparent);
+  color: transparent;
+}
+
+.picker {
+  --mention-accent: var(--office-comments-accent, var(--user-theme-accent, #5b5fc7));
+  position: fixed;
+  box-sizing: border-box;
+  max-height: min(320px, calc(100vh - 16px));
+  overflow: auto;
+  padding: 4px;
+  border: 1px solid var(--office-dialog-divider, #d6d6d6);
+  border-radius: 8px;
+  background: var(--office-dialog-surface, #ffffff);
+  box-shadow: 0 10px 28px rgb(15 23 42 / 22%);
+  color: var(--office-dialog-ink, #242424);
+  font-size: 13px;
+  pointer-events: auto;
+}
+
+.pickerList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pickerRow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 36px;
+  padding: 5px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pickerRow[data-active="true"] {
+  background: color-mix(in srgb, var(--mention-accent) 14%, transparent);
+}
+
+.pickerCopy {
+  display: grid;
+  min-width: 0;
+  line-height: 1.3;
+}
+
+.pickerCopy strong,
+.pickerCopy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pickerCopy strong {
+  font-weight: 600;
+}
+
+.pickerCopy small {
+  color: var(--office-dialog-muted, #616161);
+  font-size: 11.5px;
+}
+
+.notice {
+  --mention-accent: var(--office-comments-accent, var(--user-theme-accent, #5b5fc7));
+  display: grid;
+  gap: 8px;
+  margin: 6px 0;
+  padding: 9px 11px;
+  border: 1px solid color-mix(in srgb, var(--mention-accent) 30%, transparent);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--mention-accent) 7%, var(--office-dialog-surface, #ffffff));
+  color: var(--office-dialog-ink, #303030);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.notice p {
+  margin: 0;
+}
+
+.noticeError {
+  color: #b42318;
+}
+
+.noticeActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+/* Doubled class: hosts style every button in their panel (the PDF notes
+ * panel paints them white); the notice's own actions keep their look. */
+.notice .noticeActions button {
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--office-dialog-control-border, #c8c8c8);
+  border-radius: 4px;
+  background: var(--office-dialog-surface, #ffffff);
+  color: var(--office-dialog-ink, #333333);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+}
+
+.notice .noticeActions button[data-primary="true"] {
+  border-color: var(--mention-accent);
+  background: var(--mention-accent);
+  color: #ffffff;
+}
+
+.notice .noticeActions button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+:where(:root[data-touch-mode]) .pickerRow {
+  min-height: 44px;
+}
+
+:where(:root[data-touch-mode]) .notice .noticeActions button {
+  min-height: 44px;
+}

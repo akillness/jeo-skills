@@ -1,0 +1,53 @@
+.gallery.gallery {
+  --office-gallery-item-width: 48px;
+  --office-gallery-gap: 2px;
+}
+
+.gallery > div:first-child > span,
+.gallery :global(button[data-office-style-gallery-preview-item]) {
+  width: 48px;
+  min-width: 48px;
+  height: var(--office-gallery-content-height);
+}
+
+.gallery :global(button[data-office-style-gallery-preview-item]) {
+  padding: 3px;
+  border-color: transparent;
+  background: transparent;
+}
+
+.gallery
+  :global(button[data-office-style-gallery-preview-item] > span:last-child) {
+  display: none;
+}
+
+.gallery
+  :global(button[data-office-style-gallery-preview-item] > span[aria-hidden]) {
+  border: 0;
+  background: transparent;
+  width: 44px;
+  height: 44px;
+  overflow: visible;
+}
+
+.gallery
+  :global(
+    button[data-office-style-gallery-preview-item][data-selected="true"]
+  ) {
+  border-color: var(--office-style-gallery-accent);
+}
+
+.gallery
+  :global(button[data-office-style-gallery-preview-item]:hover:not(:disabled)) {
+  background: var(--office-style-gallery-hover);
+}
+
+.gallery :global(svg[data-office-shape-style-preview]),
+.menu :global(svg[data-office-shape-style-preview]) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  overflow: visible;
+}

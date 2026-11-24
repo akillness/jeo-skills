@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Tersuai",
+ "zoom.levels": "Tahap zum",
+ "dialog.close": "Tutup",
+ "toast.close": "Tutup pemberitahuan",
+ "button.confirm": "OK",
+ "button.cancel": "Batal",
+ "libreOffice.enable": "Muat turun dan dayakan (kira-kira {size})",
+ "libreOffice.enableAlt": "Muat turun dan dayakan LibreOffice",
+ "libreOffice.enabled": "LibreOffice {version} didayakan",
+ "libreOffice.retrying": "Cuba lagi…",
+ "libreOffice.ready": "Format Office lama, fail OpenDocument, gambar EMF/WMF dan eksport OpenDocument kini berfungsi.",
+ "libreOffice.needed": "Ini memerlukan LibreOffice. MR Note Classic boleh memuat turun keluaran rasmi ke dalam foldernya sendiri; tiada apa-apa dipasang pada sistem anda.",
+ "libreOffice.neededFor": "Menyimpan sebagai .{format} memerlukan LibreOffice. MR Note Classic boleh memuat turun keluaran rasmi ke dalam foldernya sendiri; tiada apa-apa dipasang pada sistem anda."
+}

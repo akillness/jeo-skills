@@ -1,0 +1,20 @@
+.stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  gap: 4px;
+  width: max-content;
+  min-width: max-content;
+  height: 66px;
+  flex: none;
+}
+.stack > * {
+  height: 30px;
+  min-height: 30px;
+  width: max-content;
+  min-width: max-content;
+}
+.label {
+  min-width: 42px;
+}

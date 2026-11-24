@@ -1,0 +1,202 @@
+@scope ([data-example]) {
+  [data-slot="command"] {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 24rem;
+    max-width: 100%;
+    max-height: 20rem;
+    overflow: hidden;
+    border-radius: var(--radius-popup);
+    background: var(--surface-3);
+    box-shadow: var(--shadow-3);
+    color: var(--ink);
+
+    &:has([data-slot="command-input"]:focus-visible) {
+      outline: 3px solid var(--halo);
+      outline-offset: 2px;
+    }
+  }
+
+  [data-slot="stack"]:has(> [data-slot="command"] [data-slot="command-input"]) {
+    max-width: 24rem;
+  }
+
+  [data-slot="command-input"] {
+    box-sizing: border-box;
+    flex-shrink: 0;
+    width: 100%;
+    min-width: 0;
+    height: 42px;
+    margin: 0;
+    padding: 0 var(--space-3);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: inset 0 -1px 0 var(--line-faint);
+    color: inherit;
+    font: inherit;
+    outline: none;
+
+    &::placeholder {
+      color: var(--muted);
+    }
+  }
+
+  [data-slot="command"] > [data-slot="row"] {
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+    padding-inline: var(--space-3);
+
+    &:has([data-slot="command-input"]) {
+      box-shadow: inset 0 -1px 0 var(--line-faint);
+      color: var(--muted);
+
+      & [data-slot="command-input"] {
+        padding: 0;
+        box-shadow: none;
+        color: var(--ink);
+      }
+    }
+
+    &:not(:has([data-slot="command-input"])) {
+      gap: var(--space-1);
+      padding-block-start: var(--space-2);
+
+      &:not(:has(*)) {
+        display: none;
+      }
+    }
+  }
+
+  [data-slot="command-status"] {
+    flex-shrink: 0;
+    padding: 6px var(--space-3);
+    box-shadow: inset 0 -1px 0 var(--line-faint);
+    color: var(--muted);
+    font-size: var(--text-xs);
+  }
+
+  [data-slot="command-empty"] {
+    flex-shrink: 0;
+  }
+
+  [data-slot="command-list"] {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 5px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scroll-padding-block: 5px;
+    outline: none;
+
+    &:not(:has([data-slot="command-item"])) {
+      display: none;
+    }
+
+    &[data-has-icons] [data-slot="command-item"]:not([data-has-icon]) {
+      padding-inline-start: calc(10px + var(--space-4) + 14px);
+    }
+  }
+
+  [data-slot="command"] > :has(> [data-slot="command-list"]) {
+    position: relative;
+    flex: none;
+    height: 16rem;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  [data-slot="command-item"] {
+    color: inherit;
+    text-decoration: none;
+
+    &[aria-posinset] {
+      position: absolute;
+      inset-inline: 5px;
+      height: 32px;
+    }
+
+    & > svg,
+    & > [data-slot="hint"] {
+      margin-inline-start: auto;
+    }
+
+    & > svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    &:not([data-pending]) > [data-slot="spinner"],
+    &:is(a):not([data-highlighted]) > svg {
+      display: none;
+    }
+
+    & > strong {
+      font-weight: 500;
+    }
+  }
+
+  [data-slot="command-item-icon"] {
+    display: flex;
+    margin-inline-start: 0;
+    color: var(--muted);
+
+    :is([data-highlighted], [data-disabled]) > & {
+      color: inherit;
+    }
+
+    & svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  [data-slot="command-item-text"] mark {
+    background: none;
+    color: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  [data-slot="command-item"]:not([data-highlighted])
+    [data-slot="command-item-text"][data-matched] {
+    color: var(--muted);
+
+    & mark {
+      color: var(--ink);
+    }
+  }
+
+  [data-slot="dialog-content"]:has(> [data-slot="command"]) {
+    inset: min(6rem, 10dvh) 0 auto;
+    width: min(28rem, 100% - 2rem);
+    max-height: 80dvh;
+    margin: 0 auto;
+    padding: 0;
+    overflow: hidden;
+
+    & > [data-slot="dialog-title"] {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    & > [data-slot="command"] {
+      width: auto;
+      max-width: none;
+      border-radius: 0;
+      background: none;
+      box-shadow: none;
+    }
+  }
+}

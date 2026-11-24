@@ -1,0 +1,119 @@
+/* The editors' status bar: the Docs status pill (note-editor.css
+   .note-editor-statusbar and .note-editor-export-status) as shared
+   defaults. Every rule is wrapped in :where() so it carries no specificity:
+   an editor's own skin (Docs keeps its note-editor.css classes on the same
+   nodes) always wins, whatever order the stylesheets load in. */
+
+:where(.bar) {
+  /* Controls, not text: no iOS text selection from a pen or a long press. */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid
+    color-mix(in srgb, var(--console-accent, #0d9488) 10%, transparent);
+  border-radius: 999px;
+  color: var(--console-text-secondary, #537069);
+  display: flex;
+  font-size: 11px;
+  font-weight: 500;
+  gap: 10px;
+  justify-content: flex-end;
+  letter-spacing: 0.01em;
+  margin: 4px 0 0 auto;
+  padding: 2px 10px;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+/* Docked at a window's bottom edge: a full-width strip, as the Docs window
+   footer draws it. */
+:where(.bar[data-office-status-docked="true"]) {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  border-width: 1px 0 0;
+  border-radius: 0;
+  padding: 4px 12px;
+}
+
+ 
+:where(.bar[data-office-status-docked="true"]) {
+  justify-content: safe flex-end;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+:where(.bar[data-office-status-docked="true"])::-webkit-scrollbar {
+  display: none;
+}
+
+/* The left slot takes the free space, so counters sit at the left edge
+   while status, zoom and the right slot stay right-aligned. */
+:where(.left) {
+  align-items: center;
+  display: inline-flex;
+  gap: 10px;
+  margin-right: auto;
+  min-width: 0;
+}
+
+:where([data-document-dark-mode="true"] .bar) {
+  background: rgb(38 39 44 / 92%);
+  border-color: rgb(255 255 255 / 12%);
+  color: #c7c7cc;
+  color-scheme: dark;
+}
+
+:where([data-theme-mode] .bar) {
+  background: var(--bg-raised, #21262d);
+  border-color: var(--border, #30363d);
+  color: var(--text-secondary, #cbd5e1);
+}
+
+:where(.progress) {
+  align-items: center;
+  display: inline-flex;
+  gap: 4px;
+  max-width: min(52vw, 34rem);
+  min-width: 0;
+}
+
+:where(.progress > span) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:where(.progress[data-office-status-phase="preparing"]) {
+  color: var(--console-accent-strong, #0f6f68);
+}
+
+:where(.progress[data-office-status-phase="ready"]) {
+  color: var(--console-success, #166534);
+}
+
+:where(.progress[data-office-status-phase="failed"]) {
+  color: #b42318;
+}
+
+:where([data-theme-mode] .progress[data-office-status-phase="preparing"]) {
+  color: var(--console-accent-secondary, #5eead4);
+}
+
+:where([data-theme-mode] .progress[data-office-status-phase="ready"]) {
+  color: var(--console-success, #86efac);
+}
+
+:where([data-theme-mode] .progress[data-office-status-phase="failed"]) {
+  color: #fca5a5;
+}
+
+/* The zoom slider (OfficeStatusZoomDial). */
+:where(.zoomSlider) {
+  /* a status bar is short: the slider sits in it at its own height */
+  --continuous-zoom-width: 168px;
+  --continuous-zoom-height: 26px;
+  flex: 0 0 auto;
+}

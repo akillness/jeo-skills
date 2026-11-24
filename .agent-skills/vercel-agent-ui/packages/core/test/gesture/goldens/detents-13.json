@@ -1,0 +1,62 @@
+{
+  "format": "drawer-lab/golden@1",
+  "name": "detents-13",
+  "source": "ios/iPhone18,1 (Simulator)/iOS 26.5",
+  "geometry": {
+    "dimension": 874,
+    "snapPoints": [
+      { "id": "medium", "extent": 459.01, "ratio": 0.5252 },
+      { "id": "large", "extent": 812, "ratio": 0.9291 }
+    ],
+    "dismissible": true
+  },
+  "start": { "extent": 458.97 },
+  "finger": [
+    { "t": 0, "y": 446, "phase": "down" },
+    { "t": 82.23, "y": 406, "phase": "move" },
+    { "t": 99.87, "y": 358.33, "phase": "move" },
+    { "t": 115.69, "y": 316, "phase": "move" },
+    { "t": 132.28, "y": 306, "phase": "move" },
+    { "t": 132.48, "y": 306, "phase": "up" }
+  ],
+  "sheet": [
+    { "t": 4.64, "extent": 458.97 },
+    { "t": 37.56, "extent": 458.97 },
+    { "t": 54.23, "extent": 458.97 },
+    { "t": 70.94, "extent": 459.35 },
+    { "t": 88, "extent": 459.65 },
+    { "t": 104.88, "extent": 459.96 },
+    { "t": 123.18, "extent": 460.27 },
+    { "t": 149.28, "extent": 503.55 },
+    { "t": 154.02, "extent": 522.06 },
+    { "t": 171.23, "extent": 566.9 },
+    { "t": 187.98, "extent": 611.72 },
+    { "t": 204.59, "extent": 653.7 },
+    { "t": 220.71, "extent": 689.88 },
+    { "t": 237.95, "extent": 722.9 },
+    { "t": 270.72, "extent": 768.83 },
+    { "t": 287.37, "extent": 784.64 },
+    { "t": 304.05, "extent": 796.33 },
+    { "t": 320.71, "extent": 804.6 },
+    { "t": 337.46, "extent": 810.18 },
+    { "t": 354.04, "extent": 813.9 },
+    { "t": 370.71, "extent": 816.07 },
+    { "t": 387.38, "extent": 817.11 },
+    { "t": 404.05, "extent": 817.37 },
+    { "t": 420.71, "extent": 817.14 },
+    { "t": 437.41, "extent": 816.63 },
+    { "t": 454.05, "extent": 815.98 },
+    { "t": 470.73, "extent": 815.29 },
+    { "t": 487.39, "extent": 814.62 },
+    { "t": 504.05, "extent": 814.03 },
+    { "t": 520.72, "extent": 813.51 },
+    { "t": 537.38, "extent": 813.08 },
+    { "t": 554.38, "extent": 812.74 },
+    { "t": 570.71, "extent": 812.48 },
+    { "t": 587.38, "extent": 812.28 },
+    { "t": 604.05, "extent": 812.14 },
+    { "t": 620.73, "extent": 812.04 },
+    { "t": 637.4, "extent": 811.98 }
+  ],
+  "outcome": { "snapPoint": "large" }
+}

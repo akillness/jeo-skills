@@ -1,0 +1,622 @@
+/*
+ * PDF viewer chrome in light, dark and high contrast.
+ *
+ * pdf-viewer.css drew the reader's floating bars, cards and left-rail panes in
+ * light colours only: white fills with `--console-text-*` ink, and the console
+ * ink turns light in dark mode, so those surfaces went light-on-white. This
+ * sheet is loaded right after pdf-viewer.css (the notebook workspace layout
+ * and the dev galleries import both) and gives each of them its dark values.
+ *
+ * - `--pdf-chrome-*` tokens are declared on the root for both themes. Surfaces
+ *   styled inline in TSX (the text-box format toolbar, the formula editor
+ *   card, the reflow prompt, the compare header) read them with their old
+ *   light colour as the fallback.
+ * - Every override below repeats the pdf-viewer.css selector behind the theme
+ *   attribute, so it always outranks the light rule it replaces.
+ * - The page itself, thumbnails' paper and colour swatches keep their printed
+ *   colours: they are previews, not chrome.
+ *
+ * Two things reach these surfaces in dark mode besides pdf-viewer.css, and each
+ * dark root below re-declares the tokens they read:
+ * - the `--console-*` tokens: dark on <html>, but pinned to their light values
+ *   again by every `[data-theme="console"]` wrapper (the workspace shell), so
+ *   the same pane could get dark or light ink depending on where it rendered;
+ * - the native window's dark blanket button rule
+ *   (`[data-theme-mode] .native-page-window button`, native-page-window.css),
+ *   which paints every bare button with `--bg-surface` / `--text-primary`
+ *   at a specificity above the pdf-viewer.css button rules.
+ * Buttons that need a fill of their own carry the pane root in their selector
+ * so they outrank that blanket rule.
+ *
+ * `data-theme-mode` lives on <html>, so portalled surfaces match as well.
+ */
+
+:root {
+  --pdf-chrome-card: #ffffff;
+  --pdf-chrome-pane: #ffffff;
+  --pdf-chrome-ink: #0f172a;
+  --pdf-chrome-secondary: #475569;
+  --pdf-chrome-muted: #64748b;
+  --pdf-chrome-border: rgba(15, 23, 42, 0.12);
+  --pdf-chrome-divider: rgba(15, 23, 42, 0.08);
+  --pdf-chrome-field: #ffffff;
+  --pdf-chrome-field-border: #d1d5db;
+  --pdf-chrome-hover: rgba(15, 23, 42, 0.05);
+  --pdf-chrome-pressed: #dbeafe;
+  --pdf-chrome-pressed-border: #93c5fd;
+  --pdf-chrome-focus: #2563eb;
+  --pdf-chrome-danger: #b91c1c;
+  --pdf-chrome-danger-border: #fca5a5;
+  --pdf-chrome-warning-ink: #92400e;
+  --pdf-chrome-warning-hint: #b45309;
+  --pdf-chrome-warning-bg: #fffbeb;
+  --pdf-chrome-warning-border: #fde68a;
+  --pdf-chrome-error-bg: #fff7ed;
+  --pdf-chrome-error-border: #fed7aa;
+  --pdf-chrome-plot-axis: #d1d5db;
+  --pdf-chrome-shadow: 0 6px 18px rgba(15, 23, 42, 0.14);
+  /* The accent family (--pdf-chrome-accent-*) is dark-only: in light mode
+     each use falls back to the console accent tokens it always read. */
+}
+
+:root[data-theme-mode="dark"],
+:root[data-theme-mode="high-contrast"] {
+  --pdf-chrome-card: rgb(38 39 44 / 96%);
+  --pdf-chrome-pane: #1f2024;
+  --pdf-chrome-ink: #f2f2f7;
+  --pdf-chrome-secondary: #a1a1a8;
+  --pdf-chrome-muted: #a1a1a8;
+  --pdf-chrome-border: rgb(255 255 255 / 12%);
+  --pdf-chrome-divider: rgb(255 255 255 / 10%);
+  --pdf-chrome-field: rgb(0 0 0 / 28%);
+  --pdf-chrome-field-border: rgb(255 255 255 / 18%);
+  --pdf-chrome-hover: rgb(255 255 255 / 10%);
+  --pdf-chrome-pressed: rgb(79 139 245 / 28%);
+  --pdf-chrome-pressed-border: rgb(107 157 247 / 75%);
+  --pdf-chrome-focus: #6b9df7;
+  --pdf-chrome-danger: #ff6961;
+  --pdf-chrome-danger-border: rgb(255 105 97 / 45%);
+  --pdf-chrome-warning-ink: #f5b56b;
+  --pdf-chrome-warning-hint: #f5b56b;
+  --pdf-chrome-warning-bg: rgb(245 181 107 / 12%);
+  --pdf-chrome-warning-border: rgb(245 181 107 / 38%);
+  --pdf-chrome-error-bg: rgb(255 105 97 / 12%);
+  --pdf-chrome-error-border: rgb(255 105 97 / 38%);
+  --pdf-chrome-accent-ink: var(--dark-theme-accent-secondary);
+  --pdf-chrome-accent-soft: rgb(20 144 127 / 18%);
+  --pdf-chrome-accent-line: rgb(94 234 212 / 38%);
+  --pdf-chrome-accent-line-soft: rgb(94 234 212 / 24%);
+  --pdf-chrome-accent-pressed: rgb(20 144 127 / 34%);
+  --pdf-chrome-accent-pressed-border: rgb(94 234 212 / 60%);
+  --pdf-chrome-plot-axis: rgb(255 255 255 / 22%);
+  --pdf-chrome-shadow: 0 10px 28px rgb(0 0 0 / 45%);
+  /* The selection pill is dark in both themes (it floats over paper); light
+     mode keeps its console-ink fill, see the pill rule. */
+  --pdf-chrome-pill: rgb(38 39 44 / 96%);
+  --pdf-chrome-pill-edge: rgb(255 255 255 / 12%);
+  --pdf-chrome-pill-ink: #f2f2f7;
+}
+
+:root[data-theme-mode="high-contrast"] {
+  --pdf-chrome-card: #1b1c1f;
+  --pdf-chrome-border: rgb(255 255 255 / 45%);
+  --pdf-chrome-field-border: rgb(255 255 255 / 45%);
+  --pdf-chrome-pill: #1b1c1f;
+  --pdf-chrome-pill-edge: rgb(255 255 255 / 45%);
+}
+
+/* ------------------------------------------------------------------ */
+/* Classes for surfaces the TSX renders inline                         */
+/* ------------------------------------------------------------------ */
+
+/* A small floating card beside a text box: the reflow prompt. */
+.pdf-chrome-float-card {
+  background: var(--pdf-chrome-card);
+  border: 1px solid
+    var(--pdf-chrome-accent-line, var(--console-border-flat, #99f6e4));
+  box-shadow: var(--pdf-chrome-shadow);
+  color: var(--pdf-chrome-ink);
+}
+
+/* Scoped under the card (and repeated) so the native window's button rules,
+   light and dark, do not reach it. */
+.pdf-chrome-float-card
+  .pdf-chrome-float-card__button.pdf-chrome-float-card__button:not(
+    .office-ribbon-control
+  ) {
+  min-height: 24px;
+  padding: 2px 8px;
+  border: 1px solid var(--pdf-chrome-field-border);
+  border-radius: 4px;
+  background: var(--pdf-chrome-field);
+  color: var(--pdf-chrome-ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.pdf-chrome-float-card
+  .pdf-chrome-float-card__button.pdf-chrome-float-card__button:hover:not(
+    .office-ribbon-control
+  ) {
+  background: var(--pdf-chrome-hover);
+}
+
+.pdf-chrome-float-card
+  .pdf-chrome-float-card__button.pdf-chrome-float-card__button:focus-visible:not(
+    .office-ribbon-control
+  ) {
+  outline: 2px solid var(--pdf-chrome-focus);
+  outline-offset: 1px;
+}
+
+.pdf-chrome-float-card
+  .pdf-chrome-float-card__button.pdf-chrome-float-card__button--primary:not(
+    .office-ribbon-control
+  ) {
+  border-color: var(--pdf-chrome-accent-line, var(--console-border-flat, #99f6e4));
+  background: var(--pdf-chrome-accent-soft, var(--console-accent-tint-soft, #f0fdfa));
+  color: var(--pdf-chrome-accent-ink, var(--console-accent-strong, #0f766e));
+}
+
+/* The text-box format toolbar hosts the shared ribbon number field, whose
+   icon reads the ribbon ink; its input keeps its own white field. */
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-chrome-textbox-toolbar {
+  --docs-ribbon-ink: var(--pdf-chrome-ink);
+  color-scheme: dark;
+}
+
+/* ------------------------------------------------------------------ */
+/* Find bar                                                            */
+/* ------------------------------------------------------------------ */
+
+/* A find bar outside the dialogs' chrome; the reader's own bar wears it
+   (PdfFindBar.tsx) and takes the chrome's dark glass. */
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__find-bar:not(.office-dialog) {
+  color-scheme: dark;
+  background: var(--pdf-chrome-card);
+  border-color: var(--pdf-chrome-border);
+  box-shadow: var(--pdf-chrome-shadow);
+  color: var(--pdf-chrome-muted);
+  -webkit-backdrop-filter: var(--glass-float-blur, blur(28px) saturate(170%));
+  backdrop-filter: var(--glass-float-blur, blur(28px) saturate(170%));
+}
+
+/* ------------------------------------------------------------------ */
+/* Left-rail panes: annotations, outline + bookmarks, thumbnails,      */
+/* document search, and the navigation rail beside them                */
+/* ------------------------------------------------------------------ */
+
+/* One token block for every dark root (the rail panes, the rail, the find
+   bar, the Explain card, the versions sheet, the pending-redactions list): the
+   pdf-viewer.css rules already read these console tokens, so re-declaring them
+   darkens their ink, hairlines, hovers and accent; the blanket window button
+   rule reads the last three. Only hard-coded fills need their own rule. */
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__annotations,
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__outline,
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__thumbnails,
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__docsearch,
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__navigation-rail,
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__find-bar,
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .versions-panel,
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__redaction-review-list {
+  --console-text: var(--pdf-chrome-ink);
+  --console-text-primary: var(--pdf-chrome-ink);
+  --console-text-secondary: var(--pdf-chrome-secondary);
+  --console-text-muted: var(--pdf-chrome-muted);
+  --console-panel: var(--pdf-chrome-field);
+  --console-accent: var(--pdf-chrome-accent-ink);
+  --console-accent-strong: var(--pdf-chrome-accent-ink);
+  --win-hairline: var(--pdf-chrome-divider);
+  --win-border: var(--pdf-chrome-field-border);
+  --win-hover: var(--pdf-chrome-hover);
+  --bg-surface: transparent;
+  --text-primary: var(--pdf-chrome-ink);
+  --border: var(--pdf-chrome-divider);
+  color-scheme: dark;
+  color: var(--pdf-chrome-ink);
+}
+
+/* A pane docked in the shared task pane chrome (.office-dialog) draws the
+   chrome's own dark glass; only a pane outside it takes the reader fill. */
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__annotations:not(.office-dialog),
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__outline:not(.office-dialog),
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__thumbnails:not(.office-dialog),
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__docsearch:not(.office-dialog) {
+  background: var(--pdf-chrome-pane);
+  border-right-color: var(--pdf-chrome-divider);
+}
+
+/* Annotations pane */
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__annotations-tabs {
+  border-color: var(--pdf-chrome-divider);
+  background: rgb(118 118 128 / 24%);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__annotations-tabs
+  > button[aria-selected="true"]:not(.office-ribbon-control) {
+  background: #636366;
+  color: var(--pdf-chrome-ink);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 30%);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__annotations-tab-count {
+  background: rgb(255 255 255 / 12%);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__annotations
+  .pdf-viewer__annotations-export:not(.office-ribbon-control) {
+  border-color: var(--pdf-chrome-field-border);
+  background: var(--pdf-chrome-field);
+  color: var(--pdf-chrome-muted);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__annotations
+  .pdf-viewer__annotations-chip:not(.office-ribbon-control) {
+  border-color: var(--pdf-chrome-field-border);
+  background: var(--pdf-chrome-field);
+  color: var(--pdf-chrome-muted);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__annotations
+  .pdf-viewer__annotations-chip.is-active:not(.office-ribbon-control) {
+  background: var(--pdf-chrome-accent-pressed);
+  border-color: var(--pdf-chrome-accent-pressed-border);
+  color: var(--pdf-chrome-accent-ink);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__annotations-advanced-filters
+  select {
+  border-color: var(--pdf-chrome-field-border);
+  background: var(--pdf-chrome-field);
+  color: var(--pdf-chrome-ink);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__annotations
+  .pdf-viewer__annotations-batch
+  button:not(.office-ribbon-control) {
+  border-color: var(--pdf-chrome-danger-border);
+  color: var(--pdf-chrome-danger);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__annotations-batch-error {
+  color: var(--pdf-chrome-danger);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__annotations-batch-error {
+  background: var(--pdf-chrome-error-bg);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__annotations-attachment-blocked {
+  color: var(--pdf-chrome-warning-ink);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__annotations-attachments
+  li {
+  border-color: var(--pdf-chrome-divider);
+  background: rgb(255 255 255 / 4%);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__annotations-attachment-main:hover:not(.office-ribbon-control),
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__annotations-attachment-action:hover:not(:disabled):not(.office-ribbon-control),
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__annotations-link:hover:not(:disabled) {
+  background: var(--pdf-chrome-hover);
+}
+
+/* Outline + bookmarks pane */
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__outline .pdf-viewer__bookmark-add:not( .office-ribbon-control ),
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__outline .pdf-viewer__bookmark-rename-input:not( .office-ribbon-control ) {
+  background: var(--pdf-chrome-field);
+  color: var(--pdf-chrome-ink);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__bookmark-link:hover:not(:disabled) {
+  background: var(--pdf-chrome-hover);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__bookmark-delete:hover:not(:disabled) {
+  background: var(--pdf-chrome-error-bg);
+  color: var(--pdf-chrome-danger);
+}
+
+/* Thumbnails pane: the per-page operation buttons. The thumbnail paper keeps
+   its white: it is the page. */
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__thumbnails
+  .pdf-viewer__page-op:not(.office-ribbon-control) {
+  border-color: var(--pdf-chrome-field-border);
+  background: var(--pdf-chrome-card);
+  color: var(--pdf-chrome-muted);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__thumbnails
+  .pdf-viewer__page-op.is-delete:hover:not(:disabled):not(.office-ribbon-control) {
+  border-color: var(--pdf-chrome-danger-border);
+  color: var(--pdf-chrome-danger);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__thumb-canvas {
+  border-color: rgb(255 255 255 / 14%);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 40%);
+}
+
+/* Document search pane */
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__docsearch
+  .pdf-viewer__docsearch-redact-all:not(.office-ribbon-control) {
+  border-color: var(--pdf-chrome-field-border);
+  background: var(--pdf-chrome-field);
+  color: var(--pdf-chrome-ink);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__docsearch-redact-all:hover:not(:disabled) {
+  border-color: rgb(255 255 255 / 40%);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  :is(
+    .pdf-viewer__docsearch-redact-row:hover,
+    .pdf-viewer__docsearch-redact-cancel:hover:not(:disabled)
+  ) {
+  background: var(--pdf-chrome-hover);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__docsearch
+  .pdf-viewer__docsearch-redact-confirm:not(.office-ribbon-control) {
+  background: #f2f2f7;
+  color: #1d1d1f;
+}
+
+/* Navigation rail (its light rules are the global style block in
+   PDFViewer.tsx) and the pane close buttons it styles. */
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__navigation-rail {
+  background: #1a1b1e;
+  border-right-color: var(--pdf-chrome-divider);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__navigation-rail-button,
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__panel-close {
+  color: var(--pdf-chrome-muted);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__navigation-rail-button:hover:not(:disabled),
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]) .pdf-viewer__panel-close:hover:not(:disabled) {
+  background: var(--pdf-chrome-hover);
+  color: var(--pdf-chrome-ink);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__navigation-rail
+  .pdf-viewer__navigation-rail-button.is-active:not(.office-ribbon-control) {
+  background: rgb(20 144 127 / 26%);
+  border-color: rgb(94 234 212 / 34%);
+  color: var(--dark-theme-accent-secondary);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__navigation-rail-count {
+  border-color: #1a1b1e;
+}
+
+/* ------------------------------------------------------------------ */
+/* Pending-redactions drop-down                                        */
+/* ------------------------------------------------------------------ */
+
+/* Its list read `--office-ribbon-surface`, which only exists inside the
+   ribbon and a dialog; outside them it fell back to white. */
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__redaction-review-list:not(.office-ribbon-control) {
+  border-color: var(--pdf-chrome-border);
+  background: var(--pdf-chrome-card);
+  box-shadow: var(--pdf-chrome-shadow);
+  -webkit-backdrop-filter: var(--glass-float-blur, blur(28px) saturate(170%));
+  backdrop-filter: var(--glass-float-blur, blur(28px) saturate(170%));
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__redaction-review-item {
+  border-color: var(--pdf-chrome-divider);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__redaction-review-item:not(.office-ribbon-control) {
+  background: rgb(255 255 255 / 4%);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__redaction-review-item--unmapped {
+  border-color: var(--pdf-chrome-danger-border);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__redaction-review-item--unmapped:not(.office-ribbon-control) {
+  background: var(--pdf-chrome-error-bg);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__redaction-review-list
+  .pdf-viewer__redaction-review-jump:not(.office-ribbon-control) {
+  background: transparent;
+  color: var(--pdf-chrome-ink);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__redaction-review-jump
+  strong:not(.office-ribbon-control) {
+  color: var(--pdf-chrome-danger);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  :is(
+    .pdf-viewer__redaction-review-jump span span:not(.office-ribbon-control),
+    .pdf-viewer__redaction-review-jump small:not(.office-ribbon-control)
+  ) {
+  color: var(--pdf-chrome-muted);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__redaction-review-item--unmapped
+  .pdf-viewer__redaction-review-jump
+  small:not(.office-ribbon-control) {
+  color: var(--pdf-chrome-danger);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-viewer__redaction-review-list
+  .pdf-viewer__redaction-review-delete:not(.office-ribbon-control) {
+  background: transparent;
+  color: var(--pdf-chrome-danger);
+}
+
+/* ------------------------------------------------------------------ */
+/* Versions sheet                                                      */
+/* ------------------------------------------------------------------ */
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .versions-panel {
+  background: var(--pdf-chrome-pane);
+  border-left-color: var(--pdf-chrome-divider);
+  box-shadow: -8px 0 24px rgb(0 0 0 / 40%);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .versions-panel__row {
+  background: rgb(255 255 255 / 5%);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .versions-panel
+  .versions-panel__row
+  button:not(.office-ribbon-control) {
+  background: var(--pdf-chrome-field);
+  color: var(--pdf-chrome-ink);
+}
+
+/* ------------------------------------------------------------------ */
+/* Fields inside chrome dialogs, and the note's referencing highlights */
+/* ------------------------------------------------------------------ */
+
+/* These two sit inside `.office-dialog` (OfficeDialogShell), so they read the
+   dialog's own tokens in both themes. */
+.office-dialog .highlight-edit-dialog__section textarea,
+.office-dialog .deck-picker-dialog__new input {
+  border-color: var(--office-dialog-control-border);
+  background: var(--office-dialog-surface);
+  color: var(--office-dialog-ink);
+}
+
+.office-dialog .highlight-edit-dialog__section textarea:focus-visible,
+.office-dialog .deck-picker-dialog__new input:focus-visible {
+  border-color: var(--office-dialog-accent);
+  outline: 2px solid var(--office-dialog-focus-ring);
+  outline-offset: 0;
+}
+
+/* The "referenced by highlights" cards under a note page. They are not in a
+   dialog, so the dialog tokens do not reach them: explicit dark values. */
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .referencing-highlights {
+  --console-text-primary: var(--pdf-chrome-ink);
+  --console-text-secondary: var(--pdf-chrome-secondary);
+  --console-text-muted: var(--pdf-chrome-muted);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .referencing-highlights
+  li
+  > button:not(.office-ribbon-control) {
+  border-color: var(--pdf-chrome-field-border);
+  background: rgb(255 255 255 / 6%);
+  color: var(--pdf-chrome-ink);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .referencing-highlights__error {
+  color: var(--pdf-chrome-danger);
+}
+
+/* ------------------------------------------------------------------ */
+/* Visual formula editor dialog                                        */
+/* ------------------------------------------------------------------ */
+
+/* The shared equation editor (VisualMathEditorCupertino.module.css) is drawn
+   as a light card only, while part of it reads `--console-text-*`, which is
+   light ink in dark mode wherever no console wrapper pins it back. Hosted in
+   the PDF dialog it stays the light card it was designed as, with its ink
+   pinned to the light values. */
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  [data-testid="pdf-formula-visual-dialog"] {
+  --console-text-primary: #0f2f2c;
+  --console-text-secondary: #415c59;
+  --console-text-muted: #5e7370;
+  --console-border-subtle: #c5cfcd;
+  --console-accent-strong: #0a6e66;
+  color-scheme: light;
+  color: #1d1d1f;
+}
+
+/* ------------------------------------------------------------------ */
+/* Window shell and page canvas                                        */
+/* ------------------------------------------------------------------ */
+
+/* The page window's shell, ribbon band and the canvas the pages sit on
+   (--pdf-web-*, pdf-viewer.css) were light in every theme: under the dark
+   theme the pages floated on a pale grey field in a dark window. They take
+   the workspace graphite (the canvas the document paper sits on); the pages
+   keep their printed colours. */
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .native-page-window.pdf-page-window {
+  --pdf-web-canvas: var(--bg-base, #141518);
+  --pdf-web-hairline: rgb(255 255 255 / 12%);
+  --pdf-web-muted: var(--text-secondary, #a8a8b0);
+  --pdf-web-ribbon: rgb(38 39 44);
+  --pdf-web-shell: var(--bg-surface, #1c1d21);
+}
+
+/* The collapsed comments tab at the canvas's top-right corner. */
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-page-window.pdf-page-window
+  .pdf-page-window__body--annotations-collapsed
+  .pdf-page-window__annotations-tab {
+  background: rgb(38 39 44 / 96%);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 40%);
+}
+
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  .pdf-page-window.pdf-page-window
+  .pdf-page-window__body--annotations-collapsed
+  .pdf-page-window__annotations-tab:is(:hover, :focus-visible) {
+  background: rgb(52 53 59);
+  border-color: rgb(255 255 255 / 22%);
+}
+
+/* The accent brightens for dark grounds: the count badges and the split
+   command's accent fill take the dark ink instead of white (~2:1). */
+:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])
+  :is(
+    .pdf-viewer__navigation-rail-count,
+    .pdf-page-window.pdf-page-window .pdf-page-window__body--annotations-collapsed .pdf-page-window__annotations-tab-count,
+    .pdf-viewer__split-go:not(.office-ribbon-control, .office-dialog__button)
+  ) {
+  color: var(--primary-foreground, #0b0c0e);
+}

@@ -1,0 +1,45 @@
+{
+  "format": "drawer-lab/golden@1",
+  "name": "detents-22",
+  "source": "ios/iPhone18,1 (Simulator)/iOS 26.5",
+  "geometry": {
+    "dimension": 874,
+    "snapPoints": [
+      { "id": "medium", "extent": 459.01, "ratio": 0.5252 },
+      { "id": "large", "extent": 812, "ratio": 0.9291 }
+    ],
+    "dismissible": true
+  },
+  "start": { "extent": 458.97 },
+  "finger": [
+    { "t": 0, "y": 446, "phase": "down" },
+    { "t": 83.27, "y": 468, "phase": "move" },
+    { "t": 100, "y": 495.33, "phase": "move" },
+    { "t": 116.67, "y": 523.67, "phase": "move" },
+    { "t": 133.33, "y": 551.67, "phase": "move" },
+    { "t": 150, "y": 577.33, "phase": "move" },
+    { "t": 166.67, "y": 596, "phase": "up" }
+  ],
+  "sheet": [
+    { "t": 22.7, "extent": 458.97 },
+    { "t": 39.4, "extent": 458.97 },
+    { "t": 56.03, "extent": 459.37 },
+    { "t": 72.73, "extent": 459.67 },
+    { "t": 89.86, "extent": 459.98 },
+    { "t": 107.42, "extent": 460.26 },
+    { "t": 123.16, "extent": 421.17 },
+    { "t": 139.72, "extent": 393.03 },
+    { "t": 156.43, "extent": 365.26 },
+    { "t": 205.05, "extent": 341.45 },
+    { "t": 239.19, "extent": 251.6 },
+    { "t": 256.18, "extent": 206.7 },
+    { "t": 273.1, "extent": 163.23 },
+    { "t": 289.77, "extent": 124.21 },
+    { "t": 306.44, "extent": 90.38 },
+    { "t": 339.2, "extent": 40.17 },
+    { "t": 355.86, "extent": 22.35 },
+    { "t": 372.53, "extent": 8.94 },
+    { "t": 389.19, "extent": 0 }
+  ],
+  "outcome": { "snapPoint": null }
+}

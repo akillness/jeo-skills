@@ -1,0 +1,286 @@
+package db
+
+import (
+	"fmt"
+	"net"
+	"net/url"
+	"strings"
+	"unicode"
+
+	"golang.org/x/net/idna"
+	"golang.org/x/net/publicsuffix"
+)
+
+// ParsedScope is one parsed asset-scope entry. Its kind selects Domain, Net, or Value.
+// Used internally by the company scope parsers and CompanyStore.
+type ParsedScope struct {
+	Kind   string // "domain" | "ip" | "cidr" | "icp" | "keyword"
+	Domain string // normalized registrable/root domain (kind=domain)
+	Net    string // normalized CIDR, single IP as /32 or /128 (kind=ip|cidr)
+	Value  string // normalized text (kind=icp|keyword)
+	Raw    string // original input line
+}
+
+// ScopeInput is the structured API form for a company scope rule. Empty Kind
+// uses the same automatic classification as the single-textarea UI.
+type ScopeInput struct {
+	Kind  string `json:"kind,omitempty"`
+	Value string `json:"value"`
+}
+
+// NormalizeICP removes every Unicode whitespace character and folds case. ICP
+// matching intentionally performs no fuzzy or punctuation normalization.
+func NormalizeICP(value string) string {
+	return strings.ToLower(strings.Map(func(r rune) rune {
+		if unicode.IsSpace(r) {
+			return -1
+		}
+		return r
+	}, strings.TrimSpace(value)))
+}
+
+func normalizeKeyword(value string) string {
+	return strings.ToLower(strings.Join(strings.Fields(value), " "))
+}
+
+func looksLikeIPAddress(value string) bool {
+	value = strings.TrimSpace(value)
+	if strings.Contains(value, "://") || strings.IndexFunc(value, unicode.IsSpace) >= 0 {
+		return false
+	}
+	if strings.Count(value, ":") >= 2 {
+		// Require an IPv6-looking prefix. This still catches malformed values such
+		// as 2001:db8::zz without treating ordinary colon-delimited keywords as IPs.
+		parts := strings.Split(value, ":")
+		validSegments := 0
+		for _, part := range parts {
+			if part == "" {
+				if validSegments > 0 || strings.HasPrefix(value, "::") {
+					return true
+				}
+				continue
+			}
+			if len(part) > 4 {
+				return false
+			}
+			for _, r := range part {
+				if !((r >= '0' && r <= '9') || (r >= 'a' && r <= 'f') || (r >= 'A' && r <= 'F')) {
+					return false
+				}
+			}
+			validSegments++
+			if validSegments >= 2 {
+				return true
+			}
+		}
+		return false
+	}
+	if !strings.Contains(value, ".") {
+		return false
+	}
+	for _, r := range value {
+		if r != '.' && (r < '0' || r > '9') {
+			return false
+		}
+	}
+	return true
+}
+
+// ParseScopeInput validates an explicitly typed rule. Legacy callers can omit
+// Kind and use the same automatic classification as the single-textarea UI.
+func ParseScopeInput(input ScopeInput) (ParsedScope, error) {
+	kind := strings.ToLower(strings.TrimSpace(input.Kind))
+	raw := strings.TrimSpace(input.Value)
+	if kind == "" {
+		return ParseAutoScopeLine(raw)
+	}
+	switch kind {
+	case "domain", "ip", "cidr":
+		rule, err := ParseScopeLine(raw)
+		if err != nil {
+			return rule, err
+		}
+		if rule.Kind != kind {
+			return ParsedScope{Kind: kind, Raw: raw}, fmt.Errorf("%q is not a valid %s scope", raw, kind)
+		}
+		return rule, nil
+	case "icp":
+		value := NormalizeICP(raw)
+		if value == "" {
+			return ParsedScope{Kind: kind, Raw: raw}, fmt.Errorf("ICP must not be empty")
+		}
+		return ParsedScope{Kind: kind, Value: value, Raw: raw}, nil
+	case "keyword":
+		value := normalizeKeyword(raw)
+		if value == "" {
+			return ParsedScope{Kind: kind, Raw: raw}, fmt.Errorf("company keyword must not be empty")
+		}
+		return ParsedScope{Kind: kind, Value: value, Raw: raw}, nil
+	default:
+		return ParsedScope{Kind: kind, Raw: raw}, fmt.Errorf("unsupported scope kind: %s", kind)
+	}
+}
+
+// ParseAutoScopeLine classifies one untyped textarea line. Network-looking and
+// domain-looking values remain strict so malformed ranges do not silently become
+// Agent keywords; all other non-empty text is a keyword.
+func ParseAutoScopeLine(line string) (ParsedScope, error) {
+	raw := strings.TrimSpace(line)
+	if raw == "" {
+		return ParsedScope{}, fmt.Errorf("empty line")
+	}
+
+	if _, _, err := net.ParseCIDR(raw); err == nil {
+		return ParseScopeLine(raw)
+	}
+	if ip := net.ParseIP(raw); ip != nil {
+		return ParseScopeLine(raw)
+	}
+	if slash := strings.LastIndexByte(raw, '/'); slash > 0 {
+		address := strings.TrimSpace(raw[:slash])
+		if net.ParseIP(address) != nil || looksLikeIPAddress(address) {
+			return ParsedScope{Raw: raw}, fmt.Errorf("invalid CIDR: %s", raw)
+		}
+	}
+
+	if looksLikeIPAddress(raw) {
+		return ParsedScope{Raw: raw}, fmt.Errorf("invalid IP: %s", raw)
+	}
+
+	looksLikeDomain := strings.Contains(raw, "://") ||
+		(strings.Contains(raw, ".") && strings.IndexFunc(raw, unicode.IsSpace) < 0)
+	if looksLikeDomain {
+		return ParseScopeLine(raw)
+	}
+	// An ICP filing number itself contains no dot (e.g. Beijing ICP filing
+	// 12345678-1). Text with a dot has usually picked up a domain or a version
+	// number; storing it as ICP would only produce a dead rule that never matches
+	// any asset — ICP attribution uses exact equality (see the kind='icp'
+	// attribution query in companies.go), so such text is classified as a keyword.
+	lower := strings.ToLower(raw)
+	if !strings.ContainsAny(raw, ".\uff0e\u3002") &&
+		(strings.Contains(lower, "icp") || strings.Contains(lower, "filing")) {
+		return ParseScopeInput(ScopeInput{Kind: "icp", Value: raw})
+	}
+	return ParseScopeInput(ScopeInput{Kind: "keyword", Value: raw})
+}
+
+func scopeHostname(raw string) (host string, wildcard bool, err error) {
+	candidate := strings.TrimSpace(raw)
+	if candidate == "" {
+		return "", false, fmt.Errorf("hostname is empty")
+	}
+	if strings.HasPrefix(candidate, "//") {
+		candidate = "http:" + candidate
+	} else if !strings.Contains(candidate, "://") {
+		candidate = "http://" + candidate
+	}
+	parsed, err := url.Parse(candidate)
+	if err != nil || parsed.Host == "" {
+		if err == nil {
+			err = fmt.Errorf("missing hostname")
+		}
+		return "", false, err
+	}
+	host = strings.TrimSuffix(strings.TrimSpace(parsed.Hostname()), ".")
+	host, wildcard = strings.CutPrefix(host, "*.")
+	if host == "" {
+		return "", false, fmt.Errorf("hostname is empty")
+	}
+	if ip := net.ParseIP(host); ip != nil {
+		if wildcard {
+			return "", false, fmt.Errorf("a wildcard needs a domain, not an IP")
+		}
+		return ip.String(), false, nil
+	}
+	host, err = idna.Lookup.ToASCII(host)
+	if err != nil {
+		return "", false, err
+	}
+	host = strings.ToLower(host)
+	if len(host) > 253 {
+		return "", false, fmt.Errorf("domain exceeds 253 characters")
+	}
+	labels := strings.Split(host, ".")
+	if len(labels) < 2 {
+		return "", false, fmt.Errorf("domain needs at least two labels")
+	}
+	for _, label := range labels {
+		if label == "" || len(label) > 63 || label[0] == '-' || label[len(label)-1] == '-' {
+			return "", false, fmt.Errorf("invalid domain label")
+		}
+		for _, r := range label {
+			if !((r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') || r == '-') {
+				return "", false, fmt.Errorf("domain contains invalid characters")
+			}
+		}
+	}
+	return host, wildcard, nil
+}
+
+// ParseScopeLine classifies and validates one scope line (root domain / IP /
+// CIDR). Guardrails reject bare TLDs and over-broad networks so a rule can never
+// swallow the internet. IP ranges must be expressed as CIDR.
+func ParseScopeLine(line string) (ParsedScope, error) {
+	raw := strings.TrimSpace(line)
+	r := ParsedScope{Raw: raw}
+	if raw == "" {
+		return r, fmt.Errorf("empty line")
+	}
+	// CIDR first because URL parsing treats its slash as a path separator.
+	if _, ipnet, err := net.ParseCIDR(raw); err == nil {
+		ones, bits := ipnet.Mask.Size()
+		if bits == 32 && ones < 16 {
+			return r, fmt.Errorf("network too broad (IPv4 requires >= /16): %s", raw)
+		}
+		if bits == 128 && ones < 32 {
+			return r, fmt.Errorf("network too broad (IPv6 requires >= /32): %s", raw)
+		}
+		r.Kind, r.Net = "cidr", ipnet.String()
+		return r, nil
+	}
+	// Single IP.
+	if ip := net.ParseIP(raw); ip != nil {
+		r.Kind = "ip"
+		if ip.To4() != nil {
+			r.Net = ip.String() + "/32"
+		} else {
+			r.Net = ip.String() + "/128"
+		}
+		return r, nil
+	}
+	host, wildcard, err := scopeHostname(raw)
+	if err != nil {
+		return r, fmt.Errorf("not recognizable as a valid domain/IP/CIDR: %s", raw)
+	}
+	// "*.example.com" is how bug bounty programs write a domain and its
+	// subdomains, which is what a domain rule on example.com covers (assets match
+	// on their registrable domain). A deeper wildcard has no such rule yet.
+	if wildcard {
+		if root, err := publicsuffix.EffectiveTLDPlusOne(host); err != nil || root != host {
+			return r, fmt.Errorf("a wildcard is only supported on a registrable domain such as *.example.com: %s", raw)
+		}
+	}
+	if ip := net.ParseIP(host); ip != nil {
+		r.Kind = "ip"
+		if ip.To4() != nil {
+			r.Net = ip.String() + "/32"
+		} else {
+			r.Net = ip.String() + "/128"
+		}
+		return r, nil
+	}
+	if looksLikeIPAddress(host) {
+		return r, fmt.Errorf("invalid IP: %s", raw)
+	}
+	if strings.Contains(raw, "-") && strings.Count(raw, ".") >= 6 {
+		return r, fmt.Errorf("express IP ranges as CIDR (e.g. 1.2.3.0/24): %s", raw)
+	}
+	// Domain (registrable). Reject bare TLDs / public suffixes.
+	d := DomainKey(host)
+	if suf, icann := publicsuffix.PublicSuffix(d); icann && suf == d {
+		return r, fmt.Errorf("a bare TLD cannot be used as a scope: %s", raw)
+	}
+	r.Kind, r.Domain = "domain", d
+	return r, nil
+}

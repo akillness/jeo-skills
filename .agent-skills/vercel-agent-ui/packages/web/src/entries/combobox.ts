@@ -1,0 +1,51 @@
+// Importing this defines <ui-combobox> and its parts. On the server it does nothing.
+import { defineComboboxElements } from "../combobox"
+
+defineComboboxElements()
+
+export type {
+  ComboboxApi,
+  ComboboxArrowState,
+  ComboboxChangeOptions,
+  ComboboxChipProps,
+  ComboboxChipState,
+  ComboboxChipsOverflowState,
+  ComboboxClearProps,
+  ComboboxClearState,
+  ComboboxContentProps,
+  ComboboxContentState,
+  ComboboxController,
+  ComboboxCreateProps,
+  ComboboxCreateState,
+  ComboboxDismissReason,
+  ComboboxEmptyState,
+  ComboboxInputState,
+  ComboboxItemIconProps,
+  ComboboxItemIconState,
+  ComboboxItemIndicatorProps,
+  ComboboxItemIndicatorState,
+  ComboboxItemProps,
+  ComboboxItemState,
+  ComboboxItemTextState,
+  ComboboxOpenChangeReason,
+  ComboboxOptions,
+  ComboboxPrimitive,
+  ComboboxQueryChangeReason,
+  ComboboxSelectAllState,
+  ComboboxStatusState,
+  ComboboxTriggerState,
+  ComboboxValue,
+  ComboboxValueChangeReason,
+  ComboboxValueProps,
+  ComboboxValueState,
+  ListAnnouncement,
+  ListData,
+  ListFilter,
+  ListGroup,
+  ListHighlightDetails,
+  ListItem,
+  ListSeparator,
+  MatchSegment,
+} from "@ui-sdk/core/combobox"
+export type { ComboboxEvents, UiComboboxElement } from "../events"
+export { createComboboxController } from "@ui-sdk/core/combobox"

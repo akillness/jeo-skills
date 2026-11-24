@@ -1,0 +1,111 @@
+/* Background error checking (Excel: File > Options > Formulas). A flagged
+   cell wears a small green triangle in its top-left corner; the note's red
+   triangle sits in the opposite corner and the fill handle, validation caret
+   and link badge along the right edge, so the marks never overlap. */
+/* Above every in-cell layer that can reach the top-left corner (the display
+   and spill layers, a data bar, a conditional-format icon, the Circle Invalid
+   Data ellipse), so a selected, circled or conditionally formatted cell keeps
+   its triangle; the note's indicator and the error button sit higher still,
+   in other corners. */
+.indicator {
+  position: absolute;
+  z-index: 7;
+  top: 0;
+  inset-inline-start: 0;
+  width: 0;
+  height: 0;
+  border-block-start: 6px solid #107c41;
+  border-inline-end: 6px solid transparent;
+  pointer-events: none;
+}
+
+/* The error button beside the active cell. Doubled class: the window gives
+   every button a 36px floor that would stretch it past its row. */
+button.button.button {
+  position: absolute;
+  z-index: 19;
+  top: 0;
+  inset-inline-end: 100%;
+  display: grid;
+  box-sizing: border-box;
+  width: 18px;
+  min-width: 18px;
+  height: 18px;
+  min-height: 18px;
+  place-items: center;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #c8c6c4;
+  border-radius: 2px;
+  background: #ffffff;
+  color: #b45309;
+  cursor: pointer;
+}
+
+/* In column A there is no room to the left; the button sits to the right. */
+button.button.button[data-side="end"] {
+  inset-inline-start: 100%;
+  inset-inline-end: auto;
+}
+
+button.button.button:is(:hover, :focus-visible) {
+  border-color: #107c41;
+  background: #f3f9f5;
+}
+
+.button :global(.docs-home-icon__muted) {
+  fill: #fde68a;
+  stroke: #b45309;
+}
+
+.button :global(.docs-home-icon__accent) {
+  stroke: #7c2d12;
+  stroke-width: 1.8;
+}
+
+.menu {
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  min-width: 240px;
+  max-width: calc(100vw - 16px);
+  flex-direction: column;
+  padding: 4px 0;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 6px;
+  background: var(--surface, #ffffff);
+  box-shadow: 0 12px 36px rgb(15 23 42 / 22%);
+  color: var(--console-text-primary, #172b2a);
+  font-size: 12px;
+}
+
+.menuTitle {
+  padding: 5px 12px 6px;
+  border-bottom: 1px solid var(--border, #e5e7eb);
+  margin-bottom: 4px;
+  font-weight: 650;
+}
+
+button.item.item {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 26px;
+  padding: 4px 12px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: start;
+}
+
+button.item.item:is(:hover, :focus-visible):not(:disabled) {
+  background: var(--console-surface-2, #f1f5f9);
+}
+
+button.item.item:disabled {
+  color: var(--muted, #9ca3af);
+  cursor: default;
+}

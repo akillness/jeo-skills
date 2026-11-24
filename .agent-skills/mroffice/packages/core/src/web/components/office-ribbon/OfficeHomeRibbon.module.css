@@ -1,0 +1,1950 @@
+.surface {
+  --office-home-band-height: 100px;
+  --office-home-caption-height: 14px;
+  --office-large-command-height: 66px;
+  --office-large-content-height: 52px;
+  --office-large-disclosure-height: 14px;
+  background: #fff;
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+}
+
+/* The band's own dark colours under the app's dark theme (and a document
+   window's own dark mode): the shared skin in note-editor.css states the
+   ribbon tokens, this module only follows for the faces it paints itself. */
+:global([data-theme-mode="dark"]) .surface.surface,
+:global([data-theme-mode="high-contrast"]) .surface.surface,
+:global([data-document-dark-mode="true"]) .surface.surface,
+:global([data-theme-mode="dark"]) .surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-ribbon-track),
+:global([data-theme-mode="high-contrast"]) .surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-ribbon-track),
+:global([data-document-dark-mode="true"]) .surface.surface :global(.note-editor-ribbon-body) :global(.note-editor-ribbon-track) {
+  background: var(--office-ribbon-surface, rgb(38 39 44));
+}
+
+:global([data-theme-mode="dark"]) .numberField {
+  background: rgb(0 0 0 / 28%);
+  border-color: rgb(255 255 255 / 18%);
+  color: var(--office-ribbon-ink, #f2f2f7);
+}
+
+:global([data-theme-mode="high-contrast"]) .numberField {
+  background: rgb(0 0 0 / 28%);
+  border-color: rgb(255 255 255 / 18%);
+  color: var(--office-ribbon-ink, #f2f2f7);
+}
+
+:global([data-document-dark-mode="true"]) .numberField {
+  background: rgb(0 0 0 / 28%);
+  border-color: rgb(255 255 255 / 18%);
+  color: var(--office-ribbon-ink, #f2f2f7);
+}
+
+:global([data-theme-mode="dark"]) .numberField[data-disabled="true"] {
+  background: rgb(255 255 255 / 6%);
+}
+
+:global([data-theme-mode="high-contrast"]) .numberField[data-disabled="true"] {
+  background: rgb(255 255 255 / 6%);
+}
+
+:global([data-document-dark-mode="true"]) .numberField[data-disabled="true"] {
+  background: rgb(255 255 255 / 6%);
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-track) {
+  align-items: stretch;
+  background: #fff;
+  height: var(--office-home-band-height);
+  min-height: var(--office-home-band-height);
+  min-width: 100%;
+  width: 100%;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-track)
+  > :global(.note-editor-office-toolbar__group) {
+  align-items: center;
+  background: transparent;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  height: var(--office-home-band-height);
+  min-height: var(--office-home-band-height);
+  overflow: visible;
+  padding: 2px 8px 0;
+  width: auto;
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-track)
+  > :global(.note-editor-office-toolbar__group)[data-ribbon-label]::after {
+  box-sizing: border-box;
+  color: var(--docs-ribbon-muted, #667085);
+  font-size: 11px;
+  height: var(--office-home-caption-height);
+  line-height: var(--office-home-caption-height);
+  min-height: var(--office-home-caption-height);
+  padding: 0;
+}
+
+.group {
+  border-inline-end: 1px solid var(--docs-ribbon-divider, #e5e7eb);
+  min-width: 0;
+}
+
+.surface.surface .group.group {
+  border-right: 0;
+  border-inline-end: 1px solid var(--docs-ribbon-divider, #e5e7eb);
+}
+
+/* That divider is the group separator (Word draws one thin full-height
+   line): the ribbon track's own rule between groups would sit beside it.
+   The band's last group drops it (note-editor.css, data-ribbon-last-shown). */
+.surface.surface .group.group::before {
+  content: none;
+}
+
+/* A plain ribbon group in this band (OfficeRibbonGroup, an editor's own
+   group) takes the same divider. It used to fall back to the track's short
+   rule, which stopped above the caption beside its neighbours' full lines
+   (Code's Edit tab, Word's Equation tab). */
+.surface.surface
+  :global(.note-editor-ribbon-track)
+  > :global(.note-editor-office-toolbar__group):not(.group),
+.surface.surface
+  :global(.note-editor-ribbon-track)
+  > :global([data-ribbon-inline-contents])
+  > :global(.note-editor-office-toolbar__group):not(.group) {
+  border-right: 0;
+  border-inline-end: 1px solid var(--docs-ribbon-divider, #e5e7eb);
+}
+
+.surface.surface
+  :global(.note-editor-ribbon-track)
+  > :global(.note-editor-office-toolbar__group):not(.group)::before,
+.surface.surface
+  :global(.note-editor-ribbon-track)
+  > :global([data-ribbon-inline-contents])
+  > :global(.note-editor-office-toolbar__group):not(.group)::before {
+  content: none;
+}
+
+.group > :first-child {
+  margin-block: auto;
+  min-width: 0;
+}
+
+.groupRail {
+  min-inline-size: 36px;
+}
+
+.command {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  margin: 0;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.surface.surface .command.command {
+  border: 1px solid var(--office-control-border, transparent);
+  border-radius: 6px;
+}
+
+.surface.surface .command.command:not(:global(.office-ribbon-control)) {
+  color: var(--office-ribbon-ink, #1f2937);
+  background: transparent;
+  box-shadow: none;
+}
+
+.surface.surface .command.command:hover:not(:disabled):not(:global(.office-ribbon-control)) {
+  color: var(--office-ribbon-accent, #2563eb);
+  background: var(--office-ribbon-accent-soft, #eff6ff);
+}
+
+.surface.surface .command.command[data-state="open"]:not(:global(.office-ribbon-control)) {
+  color: var(--office-ribbon-accent, #2563eb);
+  background: var(--office-ribbon-accent-soft, #eff6ff);
+}
+
+.surface.surface .command.command:disabled {
+  cursor: default;
+}
+
+.surface.surface .command.command:disabled:not(:global(.office-ribbon-control)) {
+  opacity: 0.48;
+}
+
+.surface.surface
+  .command.command:is(
+    :global(.note-editor-ribbon-big--active),
+    :global(.is-active)
+  ) {
+  border-color: var(--office-control-border, color-mix(
+    in srgb,
+    var(--office-ribbon-accent, #2563eb) 32%,
+    transparent
+  ));
+}
+
+.surface.surface .command.command[aria-pressed="true"] {
+  border-color: var(--office-control-border, color-mix(
+    in srgb,
+    var(--office-ribbon-accent, #2563eb) 32%,
+    transparent
+  ));
+}
+
+.surface.surface
+  .command.command:is(
+    :global(.note-editor-ribbon-big--active),
+    :global(.is-active)
+  ):not(:global(.office-ribbon-control)),
+.surface.surface .command.command[aria-pressed="true"]:not(:global(.office-ribbon-control)) {
+  color: var(--office-ribbon-accent, #2563eb);
+  background: var(--office-ribbon-accent-soft, #eff6ff);
+}
+
+.command:focus-visible:not(:global(.office-ribbon-control)) {
+  outline: 2px solid
+    color-mix(in srgb, var(--docs-ribbon-accent, #2563eb) 58%, transparent);
+  outline-offset: -2px;
+}
+
+.commandGlyph {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.commandGlyph > svg {
+  display: block;
+  height: 20px;
+  width: 20px;
+}
+
+.commandGlyph > svg + svg {
+  height: 14px;
+  width: 14px;
+}
+
+ 
+.commandLarge {
+  gap: 2px;
+  height: var(--office-large-command-height, 66px);
+  justify-content: center;
+  max-height: var(--office-large-command-height, 66px);
+  min-height: var(--office-large-command-height, 66px);
+  min-width: 58px;
+  padding: 2px 3px var(--office-large-disclosure-height, 14px);
+}
+
+.commandLarge .commandGlyph,
+.commandLarge .commandGlyph > svg {
+  height: 24px;
+  width: 24px;
+}
+
+.commandLarge .commandLabel {
+  line-height: 1.1;
+  max-width: 100%;
+  min-height: 22px;
+  width: 100%;
+}
+
+.commandCompact {
+  align-items: center;
+  display: inline-flex;
+  flex-direction: row;
+  gap: 5px;
+  height: 30px;
+  justify-content: flex-start;
+  min-height: 30px;
+  padding: 3px 6px;
+}
+
+/* The shared Home anatomy is also used by migrated secondary tabs. Native
+   editor skins load later and still carry a 36px generic button height, so
+   keep the shared 30px compact row authoritative on every shared surface. */
+.surface.surface[data-office-home-density]
+  .command.commandCompact {
+  box-sizing: border-box;
+  height: 30px;
+  min-height: 30px;
+}
+
+/* Labelled actions own their intrinsic face; the legacy icon-button skin
+   must not collapse them to 28px. Menu disclosures and split rails keep their
+   existing independent geometry. */
+.surface.surface[data-office-home-density]
+  .command.commandCompact:not(.commandWithDisclosure):has(> .commandLabel):not(.split *) {
+  gap: 5px;
+  justify-content: flex-start;
+  min-width: max-content;
+  padding: 3px 6px;
+  width: max-content;
+}
+
+.surface.surface[data-office-home-density]
+  .command.commandLarge {
+  box-sizing: border-box;
+  height: 66px;
+  justify-content: center;
+  max-height: 66px;
+  min-height: 66px;
+  padding: 2px 3px var(--office-large-disclosure-height);
+}
+
+ 
+.command.command.commandCompact {
+  max-width: none;
+  min-width: 0;
+  white-space: nowrap;
+  width: auto;
+}
+
+/* A labelled compact command keeps its padded, start-aligned face on every
+   surface, density or not (the PDF ribbon has none), in either sheet order. */
+.command.command.commandCompact:not(.commandWithDisclosure):has(> .commandLabel):not(.split *) {
+  justify-content: flex-start;
+  padding: 3px 6px;
+}
+
+.commandIcon {
+  align-items: center;
+  display: inline-flex;
+  height: 30px;
+  justify-content: center;
+  min-height: 30px;
+  min-width: 30px;
+  padding: 3px;
+  width: 30px;
+}
+
+/* Native editor shells still carry older generic button padding rules. Keep
+   the shared icon face authoritative so a 20px glyph cannot be clipped inside
+   its 30px command box. */
+.surface.surface[data-office-home-density]
+  .command.commandIcon {
+  box-sizing: border-box;
+  flex: 0 0 30px;
+  height: 30px;
+  min-height: 30px;
+  min-width: 30px;
+  padding: 3px;
+  width: 30px;
+}
+
+/* Menu-only commands use the same primary-face + bounded disclosure rail as
+   true split buttons. Callers no longer squeeze two unrelated glyphs into a
+   30px icon square, so the seam, hit area and chevron alignment are identical
+   across Docs, Spreadsheet and Presentation. */
+.commandWithDisclosure {
+  display: grid;
+  gap: 0;
+  grid-template-columns: minmax(0, 1fr) 18px;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* Editor skins load after the shared module and still carry legacy flex
+   anatomy. This bounded selector makes the shared segmented structure the
+   computed result without resorting to !important. */
+.surface.surface.surface[data-office-home-density]
+  .command.command.commandWithDisclosure[data-office-home-menu-indicator="true"] {
+  display: grid;
+  flex-direction: initial;
+  gap: 0;
+  grid-template-columns: minmax(0, 1fr) 18px;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* A compact or icon menu command is the same segmented control as a compact
+   split on every band, not only inside the Home strip: one bordered shell
+   whose primary face and disclosure rail meet at the divider and fill it
+   edge to edge. Insert-style and contextual strips still host generic
+   window button skins (inline-flex with a 7px gap, vertical padding, visible
+   overflow) that otherwise split the rail off as a second box and leave the
+   selected fill short of the border. The host keeps owning the row height. */
+.command.command.command.commandWithDisclosure.commandWithDisclosure[data-office-home-menu-indicator="true"]:not(.commandLarge) {
+  align-items: stretch;
+  border: 1px solid var(--office-control-border, transparent);
+  border-radius: 6px;
+  display: grid;
+  flex-direction: initial;
+  gap: 0;
+  /* one row filling the box: an auto row took the face's own height (24px
+     in a 24px box less its border) and pushed the face 1px low (the
+     sheet's Sheet View choice) */
+  grid-template-rows: minmax(0, 1fr);
+  overflow: hidden;
+  padding: 0;
+}
+
+.commandMain {
+  align-items: center;
+  display: inline-flex;
+  gap: 5px;
+  height: 100%;
+  justify-content: center;
+  min-width: 0;
+  padding: 3px;
+}
+
+.commandCompact.commandWithDisclosure .commandMain {
+  justify-content: flex-start;
+  padding-inline: 6px;
+}
+
+.commandLarge.commandWithDisclosure .commandMain {
+  flex-direction: column;
+  gap: 2px;
+  padding: 2px 3px 0;
+}
+
+/* A labelled compact menu owns an intrinsic primary face plus the fixed 18px
+ * disclosure rail. Treating the primary track as minmax(0, 1fr) collapses the
+ * button to its glyph width in a max-content ribbon group, so the visible
+ * label paints outside the clickable box. Icon-only menu buttons deliberately
+ * keep the compact 48px anatomy below. */
+.command.commandCompact.commandWithDisclosure[data-office-home-menu-indicator="true"]:has(> .commandMain.commandMain > .commandLabel.commandLabel),
+.surface.surface.surface[data-office-home-density] .command.command.commandCompact.commandWithDisclosure[data-office-home-menu-indicator="true"]:has(> .commandMain.commandMain > .commandLabel.commandLabel) {
+  grid-template-columns: max-content 18px;
+  min-width: max-content;
+  width: max-content;
+}
+
+.command.commandCompact.commandWithDisclosure[data-office-home-menu-indicator="true"]:has(> .commandMain.commandMain > .commandLabel.commandLabel)
+  > .commandMain.commandMain,
+.surface.surface.surface[data-office-home-density] .command.command.commandCompact.commandWithDisclosure[data-office-home-menu-indicator="true"]:has(> .commandMain.commandMain > .commandLabel.commandLabel)
+  > .commandMain.commandMain {
+  min-width: max-content;
+  width: max-content;
+}
+
+.command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"]:has(> .commandMain.commandMain > .commandLabel.commandLabel),
+.surface.surface.surface[data-office-home-density] .command.command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"]:has(> .commandMain.commandMain > .commandLabel.commandLabel) {
+  grid-template-columns: minmax(58px, max-content);
+  grid-template-rows: minmax(0, 1fr) 14px;
+  min-width: 58px;
+  width: max-content;
+}
+
+.command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"]:has(> .commandMain.commandMain > .commandLabel.commandLabel)
+  > .commandMain.commandMain,
+.surface.surface.surface[data-office-home-density] .command.command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"]:has(> .commandMain.commandMain > .commandLabel.commandLabel)
+  > .commandMain.commandMain {
+  box-sizing: border-box;
+  border: 1px solid var(--office-control-border, transparent);
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  flex: 1 1 auto;
+  gap: 2px;
+  grid-column: 1;
+  grid-row: 1;
+  height: var(--office-large-content-height, 52px);
+  max-height: var(--office-large-content-height, 52px);
+  min-height: var(--office-large-content-height, 52px);
+  min-width: 58px;
+  overflow: hidden;
+  padding: 2px 3px 0;
+  width: max-content;
+}
+
+ 
+.command.command.command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"] {
+  border: 0;
+  display: grid;
+  flex-direction: initial;
+  gap: 0;
+  padding: 0;
+}
+.command.command.command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"]:not(:global(.office-ribbon-control)) {
+  background: transparent;
+}
+
+.surface.surface
+  .command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"]:hover:not(
+    :disabled
+  )
+  > .commandMain.commandMain,
+.surface.surface
+  .command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"][data-state="open"]
+  > .commandMain.commandMain,
+.surface.surface
+  .command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"]:global(
+    .note-editor-ribbon-big--active
+  )
+  > .commandMain.commandMain,
+.surface.surface
+  .command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"][aria-pressed="true"]
+  > .commandMain.commandMain {
+  border-color: var(--office-control-border, color-mix(
+    in srgb,
+    var(--office-ribbon-accent, #2563eb) 32%,
+    transparent
+  ));
+}
+
+.surface.surface
+  .command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"]:hover:not(
+    :disabled
+  )
+  > .commandMain.commandMain:not(:global(.office-ribbon-control)),
+.surface.surface
+  .command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"][data-state="open"]
+  > .commandMain.commandMain:not(:global(.office-ribbon-control)),
+.surface.surface
+  .command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"]:global(
+    .note-editor-ribbon-big--active
+  )
+  > .commandMain.commandMain:not(:global(.office-ribbon-control)),
+.surface.surface
+  .command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"][aria-pressed="true"]
+  > .commandMain.commandMain:not(:global(.office-ribbon-control)) {
+  background: var(--office-ribbon-accent-soft, #eff6ff);
+}
+
+.command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"]:has(> .commandMain.commandMain > .commandLabel.commandLabel)
+  > .commandMain.commandMain
+  > .commandLabel.commandLabel,
+.surface.surface.surface[data-office-home-density] .command.command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"]:has(> .commandMain.commandMain > .commandLabel.commandLabel)
+  > .commandMain.commandMain
+  > .commandLabel.commandLabel {
+  flex: 0 0 auto;
+  line-height: 1.1;
+  max-width: 100%;
+  min-height: 22px;
+  width: 100%;
+}
+
+/* An editor may supply disclosure paint on a specific control state. Leaving
+   the token unset preserves the existing semantic tint and transparent bases. */
+.disclosureRail {
+  align-items: center;
+  align-self: stretch;
+  /* The seam a split draws before its chevron, in the face's frame paint
+     (OfficeRibbonControl.css): unseen at rest, shown with the frame. */
+  border-inline-start: 1px solid var(--office-control-seam, transparent);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  line-height: 1;
+  max-width: 18px;
+  min-width: 18px;
+  overflow: hidden;
+  padding: 0;
+  pointer-events: none;
+  width: 18px;
+}
+.disclosureRail:not(:global(.office-ribbon-control)) {
+  background: var(--office-home-disclosure-background, transparent);
+  box-shadow: none;
+}
+
+.disclosureRail svg {
+  display: block;
+  flex: 0 0 16px;
+  height: 16px;
+  margin: 0;
+  width: 16px;
+}
+
+/* Spreadsheet's older large-command label selector also matches the final
+   disclosure span. Reassert the shared rail anatomy so host typography rules
+   cannot turn a full-height rail into a top-aligned two-line label box. */
+.surface.surface.surface[data-office-home-density]
+  .command.command.commandWithDisclosure[data-office-home-menu-indicator="true"]
+  > .disclosureRail.disclosureRail {
+  align-items: center;
+  align-self: stretch;
+  box-sizing: border-box;
+  display: flex;
+  font-size: inherit;
+  font-weight: inherit;
+  justify-content: center;
+  line-height: 1;
+  margin: 0;
+  max-width: 18px;
+  min-width: 18px;
+  overflow: hidden;
+  overflow-wrap: normal;
+  padding: 0;
+  text-align: center;
+  white-space: nowrap;
+  width: 18px;
+  -webkit-box-orient: initial;
+  -webkit-line-clamp: initial;
+}
+.surface.surface.surface[data-office-home-density]
+  .command.command.commandWithDisclosure[data-office-home-menu-indicator="true"]
+  > .disclosureRail.disclosureRail:not(:global(.office-ribbon-control)) {
+  box-shadow: none;
+}
+
+.surface.surface.surface[data-office-home-density]
+  .command.command.commandWithDisclosure[data-office-home-menu-indicator="true"]
+  > .disclosureRail.disclosureRail
+  > svg {
+  display: block;
+  flex: 0 0 16px;
+  height: 16px;
+  margin: 0;
+  width: 16px;
+}
+
+.command.commandIcon.commandWithDisclosure,
+.surface.surface[data-office-home-density]
+  .command.commandIcon.commandWithDisclosure {
+  box-sizing: border-box;
+  flex: 0 0 48px;
+  min-width: 48px;
+  padding: 0;
+  width: 48px;
+}
+
+.surface.surface.surface[data-office-home-density]
+  .command.command.commandIcon.commandWithDisclosure[data-office-home-menu-indicator="true"] {
+  flex: 0 0 48px;
+  min-width: 48px;
+  padding: 0;
+  width: 48px;
+}
+
+.surface.surface.surface[data-office-home-density]
+  .command.command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"] {
+  min-width: 58px;
+}
+
+.command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"]
+  > .disclosureRail.disclosureRail,
+.surface.surface.surface[data-office-home-density]
+  .command.command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"]
+  > .disclosureRail.disclosureRail {
+  align-self: stretch;
+  border-inline-start: 0;
+  border-top: 1px solid var(--office-control-border, color-mix(
+      in srgb,
+      var(
+          --office-home-disclosure-accent,
+          var(--docs-ribbon-accent, var(--office-ribbon-accent, #2563eb))
+        )
+        16%,
+      transparent
+    ));
+  border-radius: 0 0 6px 6px;
+  grid-column: 1;
+  grid-row: 2;
+  height: 14px;
+  max-width: none;
+  min-width: 0;
+  width: 100%;
+}
+
+.command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"]
+  > .disclosureRail.disclosureRail:not(:global(.office-ribbon-control)),
+.surface.surface.surface[data-office-home-density]
+  .command.command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"]
+  > .disclosureRail.disclosureRail:not(:global(.office-ribbon-control)) {
+  background: var(--office-home-disclosure-background, color-mix(
+    in srgb,
+    var(
+        --office-home-disclosure-accent,
+        var(--docs-ribbon-accent, var(--office-ribbon-accent, #2563eb))
+      )
+      8%,
+    transparent
+  ));
+}
+
+.command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"]
+  > .disclosureRail.disclosureRail
+  > svg,
+.surface.surface.surface[data-office-home-density]
+  .command.command.commandLarge.commandWithDisclosure[data-office-home-menu-indicator="true"]
+  > .disclosureRail.disclosureRail
+  > svg {
+  flex-basis: 12px;
+  height: 12px;
+  width: 12px;
+}
+
+/* Style galleries use a deliberately tiny third pager face beside their
+   up/down controls. Keep it on the same compact rail instead of promoting
+   only that button to the ordinary 30px command tier. */
+.surface.surface[data-office-home-density]
+  .command.commandIcon.commandPager {
+  box-sizing: border-box;
+  height: 15px;
+  min-height: 15px;
+  min-width: 18px;
+  padding: 0;
+  width: 18px;
+}
+
+/* One shared 30px value-field shell with 28px inner faces. This wins over the
+   legacy native-window 36px button rule and prevents Spreadsheet font size
+   controls from rendering a 28px shell, 30px input and 36px trigger at once. */
+.surface.surface[data-office-home-density]
+  :global(.note-editor-ribbon-value-combobox) {
+  box-sizing: border-box;
+  grid-template-columns: minmax(0, 1fr) 19px;
+  height: 30px;
+  min-height: 30px;
+  border-radius: 6px;
+}
+
+.surface.surface[data-office-home-density] :global(.note-editor-ribbon-value-combobox) > :global(.note-editor-ribbon-value-combobox__input) {
+  box-sizing: border-box;
+  height: 28px;
+  min-height: 28px;
+}
+
+.surface.surface[data-office-home-density] :global(.note-editor-ribbon-value-combobox) > :global(.note-editor-ribbon-value-combobox__trigger) {
+  box-sizing: border-box;
+  height: 28px;
+  min-height: 28px;
+}
+
+.surface.surface[data-office-home-density]
+  :global(.note-editor-ribbon-value-combobox)
+  > :global(.note-editor-ribbon-value-combobox__input) {
+  min-width: 0;
+  width: 100%;
+}
+
+.surface.surface[data-office-home-density]
+  :global(.note-editor-ribbon-value-combobox)
+  > :global(.note-editor-ribbon-value-combobox__trigger) {
+  border-inline-start: 1px solid var(--office-control-border, var(--docs-ribbon-divider));
+  border-radius: 0;
+  min-width: 19px;
+  width: 19px;
+}
+
+.numberField {
+  align-items: stretch;
+  background: #fff;
+  border: 1px solid var(--docs-ribbon-border, #cfd4dc);
+  border-radius: 6px;
+  box-sizing: border-box;
+  display: grid;
+  flex: 0 0 auto;
+  grid-template-columns: minmax(0, 1fr);
+  height: 30px;
+  min-height: 30px;
+  min-width: 54px;
+  overflow: hidden;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.numberField.numberField[data-has-stepper="true"] {
+  grid-template-columns: minmax(44px, 1fr) 88px;
+  height: 46px;
+  min-height: 46px;
+  min-width: 132px;
+}
+
+.numberField[data-appearance="native-spinner"] {
+  height: 24px;
+  min-height: 24px;
+}
+
+.numberField:hover:not([data-disabled="true"]) {
+  background: var(--office-ribbon-accent-soft, #eff6ff);
+  border-color: color-mix(
+    in srgb,
+    var(--office-ribbon-accent, #2563eb) 36%,
+    transparent
+  );
+}
+
+.numberField:has(.numberFieldInput:focus-visible) {
+  border-color: color-mix(
+    in srgb,
+    var(--office-ribbon-accent, #2563eb) 64%,
+    transparent
+  );
+  box-shadow: 0 0 0 2px
+    color-mix(
+      in srgb,
+      var(--office-ribbon-accent, #2563eb) 24%,
+      transparent
+    );
+}
+
+.numberField[data-disabled="true"] {
+  background: color-mix(in srgb, #fff 84%, #e5e7eb);
+  opacity: 0.48;
+}
+
+.numberFieldInput {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  box-sizing: border-box;
+  color: var(--office-ribbon-ink, #1f2937);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  height: 28px;
+  min-height: 28px;
+  min-width: 0;
+  outline: 0;
+  padding: 0 6px;
+  text-align: end;
+  width: 100%;
+}
+
+.numberFieldInput:disabled {
+  color: inherit;
+}
+
+.numberField.numberField[data-has-stepper="true"]
+  > .numberFieldInput.numberFieldInput {
+  height: 44px;
+  min-height: 44px;
+}
+
+.numberField[data-appearance="native-spinner"] .numberFieldInput {
+  font-size: 12px;
+  height: 22px;
+  min-height: 22px;
+  padding: 2px 7px;
+  text-align: start;
+}
+
+.numberField[data-appearance="native-spinner"]
+  .numberFieldInput::-webkit-inner-spin-button,
+.numberField[data-appearance="native-spinner"]
+  .numberFieldInput::-webkit-outer-spin-button {
+  margin: 0;
+}
+
+.numberStepper.numberStepper {
+  align-self: center;
+  border-inline-start: 1px solid var(--docs-ribbon-divider, #e5e7eb);
+  display: grid;
+  grid-template-columns: repeat(2, 44px);
+  grid-template-rows: 44px;
+  height: 44px;
+  min-height: 44px;
+  min-width: 88px;
+  width: 88px;
+}
+
+.numberStepperButton.numberStepperButton {
+  align-items: center;
+  border: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-flex;
+  gap: 0;
+  height: 44px;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0;
+  width: 44px;
+}
+
+.numberStepperButton.numberStepperButton:not(:global(.office-ribbon-control)) {
+  background: transparent;
+  color: var(--office-ribbon-ink, #1f2937);
+}
+
+.numberStepperButton + .numberStepperButton {
+  border-inline-start: 1px solid var(--office-control-border, var(--docs-ribbon-divider, #e5e7eb));
+}
+
+.numberStepperButton:hover:not(:disabled):not(:global(.office-ribbon-control)) {
+  background: var(--office-ribbon-accent-soft, #eff6ff);
+  color: var(--office-ribbon-accent, #2563eb);
+}
+
+.numberStepperButton:focus-visible:not(:global(.office-ribbon-control)) {
+  box-shadow: inset 0 0 0 2px
+    color-mix(
+      in srgb,
+      var(--office-ribbon-accent, #2563eb) 46%,
+      transparent
+    );
+  outline: 0;
+}
+
+.numberStepperButton:disabled {
+  cursor: default;
+}
+
+.numberStepperIncrement svg {
+  transform: rotate(180deg);
+}
+
+.checkbox {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  box-sizing: border-box;
+  color: var(--office-ribbon-ink, #1f2937);
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 5px;
+  height: 30px;
+  min-height: 30px;
+  padding: 3px 6px;
+  position: relative;
+  white-space: nowrap;
+}
+
+.checkbox:hover:not([data-disabled="true"]) {
+  background: var(--office-ribbon-accent-soft, #eff6ff);
+  color: var(--office-ribbon-accent, #2563eb);
+}
+
+.checkbox:has(.checkboxInput:focus-visible) {
+  outline: 2px solid
+    color-mix(
+      in srgb,
+      var(--office-ribbon-accent, #2563eb) 58%,
+      transparent
+    );
+  outline-offset: -2px;
+}
+
+.checkbox[data-disabled="true"] {
+  cursor: default;
+  opacity: 0.48;
+}
+
+.checkboxInput {
+  height: 16px;
+  inset-inline-start: 5px;
+  margin: 0;
+  opacity: 0;
+  position: absolute;
+  width: 16px;
+}
+
+.checkboxIndicator {
+  align-items: center;
+  background: var(--office-dialog-button, var(--office-ribbon-surface, #fff));
+  border: 1px solid var(--office-dialog-control-border, var(--docs-ribbon-border, #cfd4dc));
+  border-radius: 3px;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: 0 0 15px;
+  height: 15px;
+  justify-content: center;
+  width: 15px;
+}
+
+.checkbox[data-checked="true"] .checkboxIndicator {
+  background: var(--office-ribbon-accent, #2563eb);
+  border-color: var(--office-ribbon-accent, #2563eb);
+  color: #fff;
+}
+
+.checkboxLabel {
+  font-size: 11px;
+  line-height: 1.15;
+}
+
+.commandLabel {
+  display: -webkit-box;
+  font-size: 11px;
+  line-height: 1.15;
+  max-width: 84px;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  text-align: center;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.commandBadge {
+  align-items: center;
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  height: 17px;
+  justify-content: center;
+  line-height: 17px;
+  min-width: 17px;
+  padding-inline: 4px;
+}
+
+.commandBadge:not(:global(.office-ribbon-control)) {
+  background: var(--danger, #dc2626);
+  color: #fff;
+}
+
+.commandCompact .commandLabel {
+  display: block;
+  max-width: none;
+  overflow: visible;
+  overflow-wrap: normal;
+  text-align: start;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+.undoRail {
+  gap: 2px;
+}
+
+.commandStack {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  justify-content: center;
+  min-width: 0;
+}
+
+.commandRow {
+  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 2px;
+  min-height: 30px;
+  min-width: 0;
+}
+
+ 
+.commandStack:is(.commandStackThreeRows, [data-office-stack-lane="3"]) {
+  align-content: center;
+  display: grid;
+  gap: 0;
+  grid-template-columns: max-content;
+  grid-template-rows: repeat(3, 22px);
+  height: var(--office-large-command-height, 66px);
+  max-height: var(--office-large-command-height, 66px);
+  min-height: var(--office-large-command-height, 66px);
+}
+
+ 
+.commandStack:is(.commandStackThreeRows, [data-office-stack-lane="3"]) > *,
+.commandStack:is(.commandStackThreeRows, [data-office-stack-lane="3"]) .split:not(.split .command),
+.commandStack:is(.commandStackThreeRows, [data-office-stack-lane="3"]) .command:not(.split .command) {
+  box-sizing: border-box;
+  height: 22px !important;
+  max-height: 22px !important;
+  min-height: 22px !important;
+  padding-block: 0 !important;
+}
+
+.commandStack:is(.commandStackThreeRows, [data-office-stack-lane="3"]) .split > *,
+.commandStack:is(.commandStackThreeRows, [data-office-stack-lane="3"]) .split > * > :is(button, [role="button"]) {
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  padding-block: 0 !important;
+}
+
+ 
+:global(.note-editor-office-toolbar__group):has(
+    .commandStackThreeRows,
+    [data-office-stack-lane="3"],
+    :global(.note-editor-ribbon-col)[data-ribbon-lane="3"]
+  )
+  .commandStack:has(> :nth-child(2):last-child) {
+  gap: 0;
+}
+
+:global(.note-editor-office-toolbar__group):has( .commandStackThreeRows, [data-office-stack-lane="3"], :global(.note-editor-ribbon-col)[data-ribbon-lane="3"] ) .commandStack:has(> :nth-child(2):last-child) > .split {
+  box-sizing: border-box;
+  height: 22px !important;
+  max-height: 22px !important;
+  min-height: 22px !important;
+  padding-block: 0 !important;
+}
+
+:global(.note-editor-office-toolbar__group):has( .commandStackThreeRows, [data-office-stack-lane="3"], :global(.note-editor-ribbon-col)[data-ribbon-lane="3"] ) .commandStack:has(> :nth-child(2):last-child) > .command {
+  box-sizing: border-box;
+  height: 22px !important;
+  max-height: 22px !important;
+  min-height: 22px !important;
+  padding-block: 0 !important;
+}
+
+:global(.note-editor-office-toolbar__group):has( .commandStackThreeRows, [data-office-stack-lane="3"], :global(.note-editor-ribbon-col)[data-ribbon-lane="3"] ) .commandStack:has(> :nth-child(2):last-child) > .commandRow {
+  box-sizing: border-box;
+  height: 22px !important;
+  max-height: 22px !important;
+  min-height: 22px !important;
+  padding-block: 0 !important;
+}
+
+:global(.note-editor-office-toolbar__group):has( .commandStackThreeRows, [data-office-stack-lane="3"], :global(.note-editor-ribbon-col)[data-ribbon-lane="3"] ) .commandStack:has(> :nth-child(2):last-child) > .commandRow > .split {
+  box-sizing: border-box;
+  height: 22px !important;
+  max-height: 22px !important;
+  min-height: 22px !important;
+  padding-block: 0 !important;
+}
+
+:global(.note-editor-office-toolbar__group):has( .commandStackThreeRows, [data-office-stack-lane="3"], :global(.note-editor-ribbon-col)[data-ribbon-lane="3"] ) .commandStack:has(> :nth-child(2):last-child) > .commandRow > .command {
+  box-sizing: border-box;
+  height: 22px !important;
+  max-height: 22px !important;
+  min-height: 22px !important;
+  padding-block: 0 !important;
+}
+
+ 
+:global(.note-editor-office-toolbar__group):has(
+    .commandStackThreeRows,
+    [data-office-stack-lane="3"],
+    :global(.note-editor-ribbon-col)[data-ribbon-lane="3"]
+  )
+  .commandStack:has(> :nth-child(2):last-child)
+  .split
+  > * {
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  padding-block: 0 !important;
+}
+:global(.note-editor-office-toolbar__group):has(
+    .commandStackThreeRows,
+    [data-office-stack-lane="3"],
+    :global(.note-editor-ribbon-col)[data-ribbon-lane="3"]
+  )
+  .commandStack:has(> :nth-child(2):last-child)
+  .split
+  > *
+  > :is(button, [role="button"]) {
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  padding-block: 0 !important;
+}
+
+ 
+.commandStack:is(.commandStackThreeRows, [data-office-stack-lane="3"])
+  .commandWithDisclosure,
+:global(.note-editor-office-toolbar__group):has(
+    .commandStackThreeRows,
+    [data-office-stack-lane="3"],
+    :global(.note-editor-ribbon-col)[data-ribbon-lane="3"]
+  )
+  .commandStack:has(> :nth-child(2):last-child)
+  .commandWithDisclosure {
+  grid-template-rows: 100%;
+}
+
+.commandStack:is(.commandStackThreeRows, [data-office-stack-lane="3"])
+  .commandWithDisclosure
+  > *,
+:global(.note-editor-office-toolbar__group):has(
+    .commandStackThreeRows,
+    [data-office-stack-lane="3"],
+    :global(.note-editor-ribbon-col)[data-ribbon-lane="3"]
+  )
+  .commandStack:has(> :nth-child(2):last-child)
+  .commandWithDisclosure
+  > * {
+  height: 100%;
+  line-height: 1;
+  max-height: 100%;
+  min-height: 0;
+  padding-block: 0;
+}
+
+.commandStack:is(.commandStackThreeRows, [data-office-stack-lane="3"]) .commandGlyph > svg {
+  height: 18px;
+  width: 18px;
+}
+
+/* A labelled small command owns its intrinsic face in every host. The rule
+   above this one used to live only under the Home surface
+   (`.surface[data-office-home-density]`); a contextual strip without that
+   surface (the worksheet's Shape Format tab) let the legacy
+   `.office-ribbon-skin .note-editor-office-toolbar__button { width: 28px }`
+   win, and Selection Pane / Group painted their labels outside a 28px box. */
+:is(.commandStack, .commandRow)
+  > .command.command.commandCompact:not(.commandWithDisclosure):has(
+    > .commandLabel
+  ) {
+  justify-content: flex-start;
+  max-width: none;
+  min-width: max-content;
+  width: max-content;
+}
+
+ 
+.commandStack.commandStack:not(.commandStackThreeRows)
+  > .command.command.command.commandCompact:not(.commandWithDisclosure):has(
+    > .commandLabel
+  ) {
+  width: auto;
+}
+
+.clipboard {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: row;
+  gap: 4px;
+  height: 66px;
+  max-height: 66px;
+  min-height: 66px;
+  min-width: max-content;
+  overflow: visible;
+  width: max-content;
+}
+
+.clipboardSplit {
+  border: 0;
+  box-sizing: border-box;
+  flex: 0 0 58px;
+  grid-template-columns: minmax(0, 58px);
+  grid-template-rows: 52px 14px;
+  height: 66px;
+  max-height: 66px;
+  max-width: 58px;
+  min-height: 66px;
+  min-width: 58px;
+  width: 58px;
+}
+
+.clipboardSplit :global(.note-editor-ribbon-big) {
+  box-sizing: border-box;
+  height: 66px;
+  max-height: 66px;
+  min-height: 66px;
+  min-width: 0;
+  width: 100%;
+}
+
+.clipboardSplit :global(.note-editor-office-toolbar__split-chevron) {
+  box-sizing: border-box;
+  height: 14px;
+  max-height: 14px;
+  min-height: 14px;
+  min-width: 0;
+  padding-inline: 0;
+  width: 100%;
+}
+
+.clipboardActions {
+  align-content: center;
+  align-self: center;
+  box-sizing: border-box;
+  display: grid;
+  flex: 0 0 auto;
+  grid-template-columns: max-content;
+  grid-template-rows: repeat(3, 21px);
+  height: 65px;
+  max-height: 65px;
+  min-height: 65px;
+  min-width: max-content;
+  overflow: visible;
+  row-gap: 1px;
+  width: max-content;
+}
+
+.clipboardActions > :global(.note-editor-office-toolbar__button) {
+  box-sizing: border-box;
+  flex: 0 0 21px;
+  gap: 4px;
+  height: 21px;
+  justify-content: flex-start;
+  line-height: 17px;
+  max-height: 21px;
+  max-width: none;
+  min-height: 21px;
+  min-width: max-content;
+  overflow: visible;
+  padding: 1px 4px;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.clipboardActions > :global(.note-editor-office-toolbar__button) svg {
+  height: 16px;
+  width: 16px;
+}
+
+.split {
+  align-items: stretch;
+  border: 1px solid var(--office-control-border, transparent);
+  border-radius: 6px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 18px;
+  height: 30px;
+  max-height: 30px;
+  min-height: 30px;
+  min-width: 0;
+  overflow: hidden;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.split:focus-within {
+  border-color: var(--office-control-border, color-mix(
+    in srgb,
+    var(--docs-ribbon-accent, #2563eb) 58%,
+    transparent
+  ));
+}
+
+.split:focus-within:not(:global(.office-ribbon-control)) {
+  outline: 2px solid
+    color-mix(
+      in srgb,
+      var(--docs-ribbon-accent, #2563eb) 58%,
+      transparent
+    );
+  outline-offset: -2px;
+}
+
+.split:has(
+    :is(
+      [data-office-home-split-part="primary"],
+      [data-office-home-split-part="trigger"]
+    )
+      > :is(button, [role="button"]):hover:not(:disabled)
+  ),
+.split:has([data-state="open"]) {
+  border-color: var(--office-control-border, color-mix(
+    in srgb,
+    var(--office-ribbon-accent, #2563eb) 24%,
+    transparent
+  ));
+}
+
+.split:has(
+    :is(
+      [data-office-home-split-part="primary"],
+      [data-office-home-split-part="trigger"]
+    )
+      > :is(button, [role="button"]):hover:not(:disabled)
+  ):not(:global(.office-ribbon-control)) {
+  background: var(--office-ribbon-accent-soft, #eff6ff);
+  color: var(--office-ribbon-accent, #2563eb);
+}
+
+.split:has([data-state="open"]):not(:global(.office-ribbon-control)) {
+  background: var(--office-ribbon-accent-soft, #eff6ff);
+  color: var(--office-ribbon-accent, #2563eb);
+}
+
+.split
+  :is(
+    [data-office-home-split-part="primary"],
+    [data-office-home-split-part="trigger"]
+  )
+  > :is(button, [role="button"]):is(:hover, :focus-visible, [data-state="open"]) {
+  border-color: var(--office-control-border, transparent);
+}
+
+.split
+  :is(
+    [data-office-home-split-part="primary"],
+    [data-office-home-split-part="trigger"]
+  )
+  > :is(button, [role="button"]):is(:hover, :focus-visible, [data-state="open"]):not(:global(.office-ribbon-control)) {
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+  outline: 0;
+}
+
+.split
+  :is(
+    [data-office-home-split-part="primary"],
+    [data-office-home-split-part="trigger"]
+  )
+  > :is(button, [role="button"]):disabled:not(:global(.office-ribbon-control)) {
+  opacity: 0.48;
+}
+
+.splitPrimary,
+.splitTrigger {
+  align-items: stretch;
+  display: flex;
+  min-width: 0;
+}
+
+.splitPrimary > *,
+.splitTrigger > * {
+  border-radius: 0;
+  height: 100%;
+  min-width: 0;
+  width: 100%;
+}
+
+.splitTrigger svg {
+  display: block;
+  height: 12px;
+  margin: 0;
+  width: 12px;
+}
+
+.splitTrigger {
+  align-items: center;
+  border-inline-start: 1px solid var(--office-control-border, var(--docs-ribbon-divider, #e5e7eb));
+  justify-content: center;
+}
+
+.splitTrigger:not(:global(.office-ribbon-control)) {
+  background: var(--office-home-disclosure-background, transparent);
+  box-shadow: none;
+}
+
+/* Every ribbon hosted by this shared surface reuses the Home disclosure face:
+   the main command stays white while the attached menu face carries a small
+   amount of the command's semantic colour. Keeping this at the surface level
+   prevents contextual tabs from falling back to a parallel plain chevron. */
+.surface.surface :global(.note-editor-ribbon-body) .split {
+  --office-home-disclosure-accent: var(
+    --docs-home-icon-accent,
+    var(
+      --mrai-office-icon-accent,
+      var(--docs-ribbon-accent, var(--office-ribbon-accent, #2563eb))
+    )
+  );
+}
+.surface.surface :global(.note-editor-ribbon-body) .commandWithDisclosure {
+  --office-home-disclosure-accent: var(
+    --docs-home-icon-accent,
+    var(
+      --mrai-office-icon-accent,
+      var(--docs-ribbon-accent, var(--office-ribbon-accent, #2563eb))
+    )
+  );
+}
+
+.surface.surface :global(.note-editor-ribbon-body) .split:has( :global(.docs-home-icon__warm), :global(.docs-home-icon__warm-fill), [data-office-icon-role="warm"], [data-office-icon-role="warm-fill"] ) {
+  --office-home-disclosure-accent: var(--docs-home-icon-warm, #e79a1c);
+}
+
+.surface.surface :global(.note-editor-ribbon-body) .commandWithDisclosure:has( :global(.docs-home-icon__warm), :global(.docs-home-icon__warm-fill), [data-office-icon-role="warm"], [data-office-icon-role="warm-fill"] ) {
+  --office-home-disclosure-accent: var(--docs-home-icon-warm, #e79a1c);
+}
+
+.surface.surface :global(.note-editor-ribbon-body) .split:has( :global(.docs-home-icon__magenta), :global(.docs-home-icon__magenta-fill) ) {
+  --office-home-disclosure-accent: var(--docs-home-icon-magenta, #b348a7);
+}
+
+.surface.surface :global(.note-editor-ribbon-body) .commandWithDisclosure:has( :global(.docs-home-icon__magenta), :global(.docs-home-icon__magenta-fill) ) {
+  --office-home-disclosure-accent: var(--docs-home-icon-magenta, #b348a7);
+}
+
+.surface.surface :global(.note-editor-ribbon-body) .split:has( :global(.docs-home-icon__danger), :global(.docs-home-icon__danger-fill) ) {
+  --office-home-disclosure-accent: var(--docs-home-icon-danger, #e24c35);
+}
+
+.surface.surface :global(.note-editor-ribbon-body) .commandWithDisclosure:has( :global(.docs-home-icon__danger), :global(.docs-home-icon__danger-fill) ) {
+  --office-home-disclosure-accent: var(--docs-home-icon-danger, #e24c35);
+}
+
+.surface.surface :global(.note-editor-ribbon-body) .splitTrigger {
+  border-inline-start-color: var(--office-control-border, color-mix(
+    in srgb,
+    var(--office-home-disclosure-accent) 16%,
+    transparent
+  ));
+  border-radius: 0 6px 6px 0;
+}
+
+.surface.surface :global(.note-editor-ribbon-body) .disclosureRail {
+  border-inline-start-color: var(--office-control-seam, transparent);
+  border-radius: 0 6px 6px 0;
+}
+
+.surface.surface :global(.note-editor-ribbon-body) .splitTrigger:not(:global(.office-ribbon-control)) {
+  background: var(--office-home-disclosure-background, color-mix(
+    in srgb,
+    var(--office-home-disclosure-accent) 8%,
+    transparent
+  ));
+}
+
+.surface.surface :global(.note-editor-ribbon-body) .disclosureRail:not(:global(.office-ribbon-control)) {
+  background: var(--office-home-disclosure-background, color-mix(
+    in srgb,
+    var(--office-home-disclosure-accent) 8%,
+    transparent
+  ));
+}
+
+.surface.surface :global(.note-editor-ribbon-body) .split:has(> .splitPrimary .commandLarge) > .splitTrigger {
+  border-inline-start: 0;
+  border-top: 1px solid var(--office-control-border, color-mix(
+      in srgb,
+      var(--office-home-disclosure-accent) 16%,
+      transparent
+    ));
+  border-radius: 0 0 6px 6px;
+}
+
+.surface.surface :global(.note-editor-ribbon-body) .commandLarge.commandWithDisclosure > .disclosureRail {
+  border-inline-start: 0;
+  border-top: 1px solid var(--office-control-border, color-mix(
+      in srgb,
+      var(--office-home-disclosure-accent) 16%,
+      transparent
+    ));
+  border-radius: 0 0 6px 6px;
+}
+
+/* The generic icon command is 30px, but a split trigger owns an 18px grid
+   track. Keep the child inside that track instead of letting it overflow and
+   get clipped by the split container. */
+.surface.surface[data-office-home-density]
+  .splitTrigger
+  .command.commandIcon {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 auto;
+  height: 100%;
+  justify-content: center;
+  min-height: 0;
+  min-width: 0;
+  padding: 0;
+  width: 100%;
+}
+.surface.surface[data-office-home-density]
+  .splitTrigger
+  .command.commandIcon:not(:global(.office-ribbon-control)) {
+  box-shadow: none;
+}
+
+/* Compact splits retain one 18px disclosure column. Large splits reflow that
+   same centered arrow into the full-width bottom row below. */
+.surface.surface.surface[data-office-home-density] .split.split {
+  grid-template-columns: minmax(0, 1fr) 18px;
+}
+
+/* A split containing a large command is a 66px ribbon control, not a compact
+   30px row. This geometry belongs to the split itself: secondary decks such
+   as Docs References host the same primitive inside the Insert ribbon surface
+   rather than the Home surface. Keeping the rule surface-agnostic prevents
+   the 30px fallback + overflow:hidden pair from cutting the command in half. */
+.split.split:has(> .splitPrimary.splitPrimary .command.commandLarge),
+.surface.surface.surface[data-office-home-density] .split.split:has(> .splitPrimary.splitPrimary .command.commandLarge) {
+  border: 0;
+  grid-template-columns: minmax(58px, max-content);
+  grid-template-rows: minmax(0, 1fr) 14px;
+  height: 66px;
+  max-height: 66px;
+  min-height: 66px;
+  min-width: 58px;
+  width: max-content;
+}
+
+.split.split:has(> .splitPrimary.splitPrimary .command.commandLarge)
+  > .splitPrimary.splitPrimary,
+.surface.surface.surface[data-office-home-density] .split.split:has(> .splitPrimary.splitPrimary .command.commandLarge)
+  > .splitPrimary.splitPrimary {
+  flex: 0 0 auto;
+  grid-column: 1;
+  grid-row: 1;
+  height: 52px;
+  max-height: 52px;
+  min-height: 52px;
+  min-width: max-content;
+  width: max-content;
+}
+
+.split.split:has(> .splitPrimary.splitPrimary .command.commandLarge)
+  > .splitPrimary.splitPrimary
+  > .command.commandLarge,
+.surface.surface.surface[data-office-home-density] .split.split:has(> .splitPrimary.splitPrimary .command.commandLarge)
+  > .splitPrimary.splitPrimary
+  > .command.commandLarge {
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  gap: 2px;
+  height: var(--office-large-content-height);
+  max-height: var(--office-large-content-height);
+  min-height: var(--office-large-content-height);
+  min-width: 58px;
+  padding: 2px 3px 0;
+  width: auto;
+}
+
+.split.split:has(> .splitPrimary.splitPrimary .command.commandLarge)
+  > .splitTrigger.splitTrigger,
+.surface.surface.surface[data-office-home-density]
+  .split.split:has(> .splitPrimary.splitPrimary .command.commandLarge)
+  > .splitTrigger.splitTrigger {
+  align-self: stretch;
+  border-inline-start: 0;
+  border-top: 1px solid var(--office-control-border, color-mix(
+      in srgb,
+      var(
+          --office-home-disclosure-accent,
+          var(--docs-ribbon-accent, var(--office-ribbon-accent, #2563eb))
+        )
+        16%,
+      transparent
+    ));
+  border-radius: 0 0 6px 6px;
+  grid-column: 1;
+  grid-row: 2;
+  height: 14px;
+  max-height: 14px;
+  max-width: none;
+  min-height: 14px;
+  min-width: 0;
+  width: 100%;
+}
+
+.split.split:has(> .splitPrimary.splitPrimary .command.commandLarge)
+  > .splitTrigger.splitTrigger:not(:global(.office-ribbon-control)),
+.surface.surface.surface[data-office-home-density]
+  .split.split:has(> .splitPrimary.splitPrimary .command.commandLarge)
+  > .splitTrigger.splitTrigger:not(:global(.office-ribbon-control)) {
+  background: var(--office-home-disclosure-background, color-mix(
+    in srgb,
+    var(
+        --office-home-disclosure-accent,
+        var(--docs-ribbon-accent, var(--office-ribbon-accent, #2563eb))
+      )
+      8%,
+    transparent
+  ));
+}
+
+.split.split:has(> .splitPrimary.splitPrimary .command.commandLarge)
+  > .splitTrigger.splitTrigger
+  > .command.command.commandIcon,
+.surface.surface.surface[data-office-home-density]
+  .split.split:has(> .splitPrimary.splitPrimary .command.commandLarge)
+  > .splitTrigger.splitTrigger
+  > .command.command.commandIcon {
+  flex-basis: 100%;
+  height: 13px;
+  max-height: 13px;
+  max-width: none;
+  min-height: 13px;
+  min-width: 0;
+  width: 100%;
+}
+
+.split.split > .splitTrigger.splitTrigger {
+  align-items: center;
+  align-self: stretch;
+  box-sizing: border-box;
+  display: flex;
+  inset: auto;
+  justify-content: center;
+  max-width: 18px;
+  min-width: 18px;
+  overflow: hidden;
+  position: static;
+  width: 18px;
+}
+
+.split.split > .splitTrigger.splitTrigger:not(:global(.office-ribbon-control)) {
+  box-shadow: none;
+}
+
+.split.split > .splitTrigger.splitTrigger > .command.command.commandIcon {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 18px;
+  height: 100%;
+  inset: auto;
+  justify-content: center;
+  margin: 0;
+  max-height: none;
+  max-width: 18px;
+  min-height: 0;
+  min-width: 18px;
+  padding: 0;
+  position: static;
+  transform: none;
+  width: 18px;
+}
+
+.split.split > .splitTrigger.splitTrigger > .command.command.commandIcon:not(:global(.office-ribbon-control)) {
+  box-shadow: none;
+}
+
+/* The primary face of a compact split fills its cell exactly as the rail
+   does. Host skins size generic buttons to their own boxes (the 24px
+   secondary rhythm, the 30px Home row and icon square) and round every face,
+   which left the hover and selected fill short of the split border, pushed
+   an icon face under the rail and notched the divider. The split shell owns
+   the geometry; its faces follow it. */
+/* `data-office-split-large` (OfficeHomeSplitLayout) marks a split holding a
+   large command; it stands for `:not(:has(.commandLarge))`, which in this
+   ancestor position made WebKit restyle every node inserted anywhere in the
+   page against it (~120 ms per ribbon tab change on an iPad). */
+.split.split.split:not([data-office-split-large]) > .splitPrimary.splitPrimary > * {
+  border-radius: 0;
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+}
+
+ 
+.split.split.split:not([data-office-split-large])
+  > .splitPrimary.splitPrimary
+  > .command.command.commandCompact:has(> .commandLabel) {
+  gap: 5px;
+  justify-content: flex-start;
+  padding-inline: 5px 6px;
+}
+
+.split.split:not([data-office-split-large]) > .splitTrigger.splitTrigger > .command.command.commandIcon svg {
+  display: block;
+  flex: 0 0 16px;
+  height: 16px;
+  margin: 0;
+  max-height: 16px;
+  max-width: 16px;
+  min-height: 16px;
+  min-width: 16px;
+  width: 16px;
+}
+
+/* The desktop product owns one fixed clipboard anatomy even when a coarse
+   pointer is present (trackpads and hybrid displays can expose both pointer
+   modes). These scoped selectors beat the legacy global touch expansion
+   without changing mobile, which is unmounted at the product boundary. */
+.surface.surface .clipboard.clipboard {
+  flex: 0 0 auto;
+  flex-direction: row;
+  height: 66px;
+  max-height: 66px;
+  min-height: 66px;
+  min-width: max-content;
+  width: max-content;
+}
+
+.surface.surface .clipboardSplit.clipboardSplit {
+  border: 0;
+  flex: 0 0 58px;
+  grid-template-columns: minmax(0, 58px);
+  grid-template-rows: 52px 14px;
+  height: 66px;
+  max-height: 66px;
+  max-width: 58px;
+  min-height: 66px;
+  min-width: 58px;
+  width: 58px;
+}
+
+.surface.surface
+  .clipboardSplit.clipboardSplit
+  .splitPrimary.splitPrimary {
+  box-sizing: border-box;
+  height: 52px;
+  max-height: 52px;
+  min-height: 52px;
+  min-width: 0;
+  width: 100%;
+}
+
+.surface.surface
+  .clipboardSplit.clipboardSplit
+  .splitTrigger.splitTrigger {
+  box-sizing: border-box;
+  height: 14px;
+  max-height: 14px;
+  min-height: 14px;
+  min-width: 0;
+  width: 100%;
+}
+
+.surface.surface
+  .clipboardSplit.clipboardSplit
+  .splitPrimary.splitPrimary
+  > * {
+  box-sizing: border-box;
+  flex: 0 0 var(--office-large-content-height);
+  height: var(--office-large-content-height);
+  max-height: var(--office-large-content-height);
+  max-width: 100%;
+  min-height: var(--office-large-content-height);
+  min-width: 0;
+  width: 100%;
+}
+
+.surface.surface .clipboardActions.clipboardActions {
+  align-content: center;
+  align-self: center;
+  display: grid;
+  flex: 0 0 auto;
+  grid-template-columns: max-content;
+  grid-template-rows: repeat(3, 21px);
+  height: 65px;
+  max-height: 65px;
+  min-height: 65px;
+  min-width: max-content;
+  overflow: visible;
+  row-gap: 1px;
+  width: max-content;
+}
+
+.surface.surface .clipboardActions.clipboardActions > * {
+  box-sizing: border-box;
+  height: 21px;
+  max-height: 21px;
+  max-width: none;
+  min-height: 21px;
+  min-width: max-content;
+  overflow: visible;
+  width: 100%;
+}
+
+.surface.surface
+  .clipboardActions.clipboardActions
+  > :global(.note-editor-office-toolbar__button) {
+  flex: 0 0 21px;
+  gap: 4px;
+  height: 21px;
+  justify-content: flex-start;
+  line-height: 17px;
+  max-height: 21px;
+  max-width: none;
+  min-height: 21px;
+  min-width: max-content;
+  overflow: visible;
+  padding: 1px 4px;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.surface.surface
+  .clipboardActions.clipboardActions
+  > :global(.note-editor-office-toolbar__button)
+  > span:last-child {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 17px;
+  max-width: none;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+.surface.surface
+  .clipboardActions.clipboardActions
+  > :global(.note-editor-office-toolbar__button)
+  svg {
+  height: 16px;
+  width: 16px;
+}
+
+.gallery {
+  align-items: stretch;
+  display: flex;
+  gap: 4px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .command,
+  .split {
+    transition: none;
+  }
+}
+
+/* A large split (Office's Eraser): the 52px command face over a 14px strip
+   that opens its menu. The strip holds one chevron, sized by the strip, so a
+   menu trigger of any variant reads as Office's drop arrow. The doubled
+   class outranks the compact 30px split box above. */
+.largeSplit.largeSplit {
+  border: 0;
+  flex: 0 0 auto;
+  grid-template-columns: minmax(58px, auto);
+  grid-template-rows: 52px 14px;
+  height: 66px;
+  max-height: 66px;
+  min-height: 66px;
+  min-width: 58px;
+  overflow: hidden;
+  width: max-content;
+}
+
+.largeSplit.largeSplit > .splitPrimary {
+  grid-column: 1;
+  grid-row: 1;
+  height: 52px;
+  max-height: 52px;
+  min-height: 52px;
+  min-width: 0;
+  width: 100%;
+}
+
+.largeSplit.largeSplit > .splitPrimary > :global(.note-editor-ribbon-big) {
+  border-radius: 6px 6px 0 0;
+  box-sizing: border-box;
+  gap: 2px;
+  height: 52px;
+  max-height: 52px;
+  min-height: 52px;
+  min-width: 0;
+  padding: 2px 3px 0;
+  width: 100%;
+}
+
+.largeSplit.largeSplit > .splitTrigger {
+  border-inline-start: 0;
+  border-radius: 0 0 6px 6px;
+  border-top: 1px solid var(--office-control-border, var(--docs-ribbon-divider, #e5e7eb));
+  box-sizing: border-box;
+  grid-column: 1;
+  grid-row: 2;
+  height: 14px;
+  max-height: 14px;
+  max-width: none;
+  min-height: 14px;
+  min-width: 0;
+  width: 100%;
+}
+
+.largeSplit.largeSplit > .splitTrigger > :is(button, [role="button"]) {
+  align-items: center;
+  border: 0;
+  border-radius: 0 0 6px 6px;
+  box-sizing: border-box;
+  display: flex;
+  height: 13px;
+  justify-content: center;
+  margin: 0;
+  max-height: 13px;
+  max-width: none;
+  min-height: 13px;
+  min-width: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.largeSplit.largeSplit > .splitTrigger > :is(button, [role="button"]) > span {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+}

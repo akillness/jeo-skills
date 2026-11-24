@@ -1,0 +1,2906 @@
+/* Docs adapter for the shared Office Home foundation. The shared module owns
+   band/group/control anatomy; this file contributes only Docs-blue semantics
+   and content-derived minimums for its command inventory. */
+
+.docsRibbon.docsRibbon {
+  --office-ribbon-accent: #2563eb;
+  --office-ribbon-accent-soft: #eff6ff;
+  --office-ribbon-border: #d8dee8;
+  --office-ribbon-ink: #1f2937;
+  --office-ribbon-muted: #64748b;
+  --office-ribbon-surface: #fff;
+  --docs-ribbon-accent: #2563eb;
+  --docs-ribbon-accent-strong: #1d4ed8;
+  --docs-ribbon-divider: #d8dee8;
+  --docs-ribbon-hover: #eff6ff;
+  --docs-ribbon-ink: #1f2937;
+  --docs-ribbon-muted: #64748b;
+  --console-accent: #2563eb;
+  --console-accent-strong: #1d4ed8;
+  --office-authoring-tab-face-height: 34px;
+  background: #fff;
+}
+
+/* The Ribbon's width, for controls that take the room a tab leaves them
+   (the Design tab's style-set gallery). */
+.docsRibbon.docsRibbon :global(.note-editor-ribbon-body) {
+  container: docs-ribbon / inline-size;
+}
+
+.docsRibbon.docsRibbon > :global(.note-editor-ribbon-tabs) {
+  box-sizing: border-box;
+  height: 36px;
+  min-height: 36px;
+  padding: 2px 8px 0;
+  border-bottom: 1px solid #e2e8f0;
+  border-radius: 0;
+  background: #fff;
+}
+
+.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab) {
+  box-sizing: border-box;
+  height: 34px;
+  min-height: 34px;
+  padding: 6px 12px 7px;
+  border-radius: 6px 6px 0 0;
+}
+
+/* The face keeps the shared authoring geometry: 34px, 5/12/6, 7px corners. */
+.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab__face) {
+  height: 34px;
+  min-height: 34px;
+}
+
+/* Word blue, unless an embedded editor's white-label theme names its own
+   accent (lib/embed/frame-theme: --embed-accent*, set only there). */
+.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab:hover) {
+  color: var(--embed-accent-strong, #1d4ed8);
+  background: var(--embed-accent-soft, #eff6ff);
+}
+
+.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab:focus-visible) {
+  color: var(--embed-accent-strong, #1d4ed8);
+  background: var(--embed-accent-soft, #eff6ff);
+}
+
+.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab:focus-visible) {
+  outline: 2px solid var(--embed-accent, #2563eb);
+  outline-offset: -2px;
+}
+
+.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab--active) {
+  color: var(--embed-accent, #2563eb);
+}
+
+.docsRibbon.docsRibbon :global(.note-editor-ribbon-scroll) {
+  color: var(--embed-accent, #2563eb);
+}
+
+.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab--active::after) {
+  background: var(--embed-accent, #2563eb);
+}
+
+/* Contextual tabs take the shared tint (styles/note-editor.css,
+   `[data-contextual]`), the same in every editor. */
+
+.docsRibbon.docsRibbon :global(.note-editor-ribbon-strip) {
+  border-radius: 0;
+  background: #fff;
+}
+
+.docsRibbon.docsRibbon :global(.note-editor-ribbon-track) {
+  border-radius: 0;
+  background: #fff;
+}
+
+.docsRibbon.docsRibbon :global(.note-editor-ribbon-body) {
+  background: #fff;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="tableLayout"]),
+.docsRibbon.docsRibbon
+  :global(
+    .note-editor-ribbon-body[data-ribbon-active="tableLayout"]
+      .note-editor-ribbon-track
+  ),
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="headerFooter"]),
+.docsRibbon.docsRibbon
+  :global(
+    .note-editor-ribbon-body[data-ribbon-active="headerFooter"]
+      .note-editor-ribbon-track
+  ) {
+  height: 100px;
+  max-height: 100px;
+  min-height: 100px;
+}
+
+.docsRibbon.docsRibbon :global([data-ribbon="headerFooter"]) {
+  max-height: 100px;
+}
+
+.docsRibbon.docsRibbon
+  :global(
+    .note-editor-ribbon-body[data-ribbon-active="headerFooter"]
+      .note-editor-ribbon-track
+  ) {
+  align-items: stretch;
+  background: #fff;
+  min-width: 100%;
+  width: max-content;
+}
+
+.docsRibbon.docsRibbon
+  :global(
+    .note-editor-ribbon-body[data-ribbon-active="headerFooter"]
+      .note-editor-ribbon-track
+      > [data-ribbon="headerFooter"]
+  ) {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  height: 100px;
+  min-height: 100px;
+  min-width: max-content;
+  width: max-content;
+}
+
+.headerFooterNavigationRow.headerFooterNavigationRow {
+  gap: 2px;
+  height: 66px;
+  min-height: 66px;
+  width: max-content;
+}
+
+.headerFooterNavigationStack.headerFooterNavigationStack {
+  gap: 2px;
+  height: 66px;
+  justify-content: center;
+  min-height: 66px;
+  min-width: 78px;
+  width: 78px;
+}
+
+.headerFooterNavigationStack.headerFooterNavigationStack
+  > :global(.note-editor-ribbon-row) {
+  height: 30px;
+  min-height: 30px;
+}
+
+.headerFooterOptionsStack.headerFooterOptionsStack {
+  gap: 2px;
+  height: 66px;
+  justify-content: center;
+  min-height: 66px;
+  min-width: max-content;
+}
+
+.headerFooterOptionToggle.headerFooterOptionToggle {
+  border: 0;
+  border-radius: 4px;
+  height: 30px;
+  min-height: 30px;
+  padding-inline: 4px 7px;
+}
+
+.headerFooterOptionToggle.headerFooterOptionToggle:not(:global(.office-ribbon-control)) {
+  background: transparent;
+}
+
+.headerFooterOptionToggle.headerFooterOptionToggle[data-checked="true"]
+  > :global(span:first-of-type) {
+  border-color: var(--office-control-border, #475569);
+}
+
+.headerFooterOptionToggle.headerFooterOptionToggle[data-checked="true"]
+  > :global(span:first-of-type):not(:global(.office-ribbon-control)) {
+  background: #fff;
+  color: #111827;
+}
+
+.headerFooterOptionToggle.headerFooterOptionToggle[data-checked="true"]
+  > :global(span:first-of-type svg) {
+  stroke-width: 2.4;
+}
+
+.docsRibbon.docsRibbon
+  :global([data-testid="document-toolbar-header-footer-navigation-group"])
+  :global(
+    button:is(
+      [data-testid="document-toolbar-header-footer-header"],
+      [data-testid="document-toolbar-header-footer-footer"]
+    )
+  ) {
+  min-width: 64px !important;
+  width: 64px !important;
+}
+
+.docsRibbon.docsRibbon
+  :global([data-testid="document-toolbar-header-footer-navigation-group"])
+  :global(
+    button:is(
+      [data-testid="document-toolbar-header-footer-previous"],
+      [data-testid="document-toolbar-header-footer-next"]
+    )
+  ) {
+  gap: 3px;
+  height: 30px;
+  justify-content: flex-start;
+  min-height: 30px;
+  min-width: 78px !important;
+  padding-inline: 3px;
+  width: 78px !important;
+}
+
+.docsRibbon.docsRibbon
+  :global([data-testid="document-toolbar-header-footer-story-group"])
+  :global(button[data-testid^="document-toolbar-header-footer-"]) {
+  min-width: 56px !important;
+  width: 56px !important;
+}
+
+.docsRibbon.docsRibbon
+  :global([data-testid="document-toolbar-header-footer-delete-group"])
+  :global(button) {
+  min-width: 64px;
+  width: 64px;
+}
+
+.docsRibbon.docsRibbon
+  :global([data-testid="document-toolbar-header-footer-close-group"])
+  :global(button) {
+  min-width: 64px;
+  width: 64px;
+}
+
+/* Table Layout -> Cell Size. The shared number field owns spinbutton/stepper
+   anatomy; Docs only supplies the compact Office-Web-style label and unit. */
+.tableColumnWidthControl,
+.tableRowHeightControl {
+  box-sizing: border-box;
+  display: block;
+  min-height: 38px;
+  padding: 0 2px;
+}
+
+.tableColumnWidthLabel,
+.tableRowHeightLabel {
+  color: var(--docs-ribbon-muted, #64748b);
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.tableColumnWidthField.tableColumnWidthField,
+.tableRowHeightField.tableRowHeightField {
+  min-height: 38px;
+}
+
+/* Word Web contextual table bands. The outer node remains the one chassis
+   child used by contextual-tab gating; the existing shared group primitives
+   own every labelled command family inside it. */
+.tableContextSurface {
+  align-items: stretch;
+  box-sizing: border-box;
+  display: flex;
+  height: 100px;
+  max-height: 100px;
+  min-height: 100px;
+  min-width: max-content;
+  padding: 2px 8px 0;
+}
+
+.tableDesignSurface {
+  align-items: stretch;
+  display: flex;
+  height: 98px;
+  min-height: 98px;
+  min-width: max-content;
+}
+
+.tableDesignDrawGroup.tableDesignDrawGroup {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  height: 98px;
+  justify-content: flex-start;
+  min-height: 98px;
+  overflow: visible;
+  padding: 2px 6px 0;
+}
+
+.tableDesignDrawGroup.tableDesignDrawGroup[data-ribbon-label]::after {
+  box-sizing: border-box;
+  color: var(--docs-ribbon-muted, #64748b);
+  content: attr(data-ribbon-label);
+  font-size: 11px;
+  height: 14px;
+  line-height: 14px;
+  margin-top: auto;
+  min-height: 14px;
+  white-space: nowrap;
+}
+
+.tableDesignDrawRow {
+  align-items: stretch;
+  display: flex;
+  gap: 2px;
+  min-height: 76px;
+}
+
+.tableLayoutSurface {
+  align-items: stretch;
+  display: flex;
+  height: 98px;
+  min-height: 98px;
+  min-width: max-content;
+}
+
+.tableLayoutGroup.tableLayoutGroup {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  height: 98px;
+  justify-content: flex-start;
+  min-height: 98px;
+  overflow: visible;
+  padding: 2px 5px 0;
+}
+
+/* Table Layout groups are nested inside the single contextual chassis child,
+   so the legacy adjacent-group pseudo would otherwise fall back to a 16px
+   centered rule. Own the nested geometry here: one real near-full-height
+   separator and no inherited inter-group margin/padding. The band's last
+   group keeps none (note-editor.css, data-ribbon-last-shown). */
+.docsRibbon.docsRibbon
+  .tableLayoutSurface
+  > .tableLayoutGroup.tableLayoutGroup[data-ribbon="tableLayout"] {
+  border-inline-end: 1px solid var(--docs-ribbon-divider, #d8dee8) !important;
+  margin-inline-start: 0;
+  padding-inline: 5px;
+  position: relative;
+}
+
+.docsRibbon.docsRibbon
+  .tableLayoutSurface
+  > .tableLayoutGroup.tableLayoutGroup[data-ribbon="tableLayout"][data-ribbon-last-shown] {
+  border-inline-end-width: 0 !important;
+}
+
+.docsRibbon.docsRibbon
+  .tableLayoutSurface
+  > .tableLayoutGroup.tableLayoutGroup[data-ribbon="tableLayout"]
+  + .tableLayoutGroup.tableLayoutGroup[data-ribbon="tableLayout"] {
+  margin-left: 0;
+  padding-left: 5px;
+}
+
+.docsRibbon.docsRibbon
+  .tableLayoutSurface
+  > .tableLayoutGroup.tableLayoutGroup[data-ribbon="tableLayout"]
+  + .tableLayoutGroup.tableLayoutGroup[data-ribbon="tableLayout"]::before {
+  content: none;
+}
+
+.tableLayoutGroup.tableLayoutGroup[data-ribbon-label]::after {
+  box-sizing: border-box;
+  color: var(--docs-ribbon-muted, #64748b);
+  content: attr(data-ribbon-label);
+  font-size: 11px;
+  height: 14px;
+  line-height: 14px;
+  margin-top: auto;
+  min-height: 14px;
+  white-space: nowrap;
+}
+
+.tableLayoutLargeRow {
+  align-items: stretch;
+  display: flex;
+  gap: 2px;
+  min-height: 76px;
+}
+
+/* The Data group intentionally mixes a large Sort split, two compact native
+   commands, and a large Formula command. Keep the compact stack at its
+   intrinsic label width so the surrounding flex row cannot collapse it to
+   icon width and paint labels across Formula. */
+.tableDataCommandStack {
+  flex: 0 0 auto;
+  min-width: max-content;
+}
+
+/* Pin / Unpin Header Rows as two large buttons side by side: the command
+   stack's own column rule (same specificity, later in the build in some
+   orders) stacked them, and two large buttons do not fit one ribbon's
+   height, so the upper one was cut off. */
+.tableDataWebDirect.tableDataWebDirect {
+  align-items: center;
+  flex-direction: row;
+}
+
+.tableToolsCommandStack {
+  flex: 0 0 auto;
+  min-width: max-content;
+}
+
+.docsRibbon.docsRibbon
+  .tableDataCommandStack.tableDataCommandStack
+  > :global(.note-editor-office-toolbar__button) {
+  flex: 0 0 auto;
+  min-width: max-content;
+  padding-inline: 6px;
+  width: auto;
+}
+
+.docsRibbon.docsRibbon
+  .tableToolsCommandStack.tableToolsCommandStack
+  > :global(.note-editor-office-toolbar__button) {
+  flex: 0 0 auto;
+  min-width: max-content;
+  padding-inline: 6px;
+  width: auto;
+}
+
+/* Plain large commands keep the row's narrow face. A large menu (Select,
+   Delete, Insert) is the shared segmented command -- 52px face over the
+   tinted 14px disclosure rail, as every other ribbon draws it -- so its shell
+   keeps the shared zero padding and width. */
+.docsRibbon.docsRibbon
+  .tableLayoutLargeRow.tableLayoutLargeRow
+  :global(.note-editor-ribbon-big:not([data-office-home-menu-indicator="true"])) {
+  min-width: 44px !important;
+  padding-inline: 4px !important;
+}
+
+.tableCellSizeBody {
+  align-items: center;
+  display: grid;
+  gap: 1px 6px;
+  grid-template-columns: auto max-content;
+  /* Reserve the 14px caption inside the 98px contextual group. */
+  grid-template-rows: repeat(2, 38px);
+  min-height: 77px;
+}
+
+.tableCellSizeBody:has(.tableAutoFitMenu) {
+  grid-template-columns: auto max-content max-content;
+}
+
+.tableAutoFitMenu.tableAutoFitMenu {
+  align-self: stretch;
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  min-height: 66px;
+}
+
+.tableCellSizeBody .tableColumnWidthControl,
+.tableCellSizeBody .tableRowHeightControl {
+  grid-row: 1;
+  min-height: 38px;
+}
+
+.tableCellSizeBody .tableRowHeightControl {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.tableCellSizeBody .tableColumnWidthControl {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.tableDistributeRow {
+  align-items: stretch;
+  display: grid;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  grid-template-rows: repeat(2, 32px);
+  justify-content: center;
+  min-height: 64px;
+}
+
+/* Both labels are longer than the 20px glyph. Let the compact stack contribute
+   its real icon + caption width to the Cell Size grid; otherwise the shared
+   command's 28px default centers a 66px label outside its own button and over
+   the neighboring 3x3 Alignment controls. The ribbon track already owns the
+   narrower-window horizontal scroll boundary. */
+.docsRibbon.docsRibbon
+  .tableDistributeRow.tableDistributeRow
+  > :global(.note-editor-office-toolbar__button) {
+  flex: 0 0 auto;
+  min-width: max-content;
+  padding-inline: 4px;
+  width: auto;
+}
+
+.tableAlignmentBody {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+  min-height: 76px;
+}
+
+.docsRibbon.docsRibbon
+  :global([data-testid="document-toolbar-cell-alignment"]) {
+  height: 44px !important;
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.docsRibbon.docsRibbon
+  :global(
+  [data-testid^="document-toolbar-cell-alignment-"][role="menuitemradio"]
+  ) {
+  height: 44px !important;
+  min-height: 44px !important;
+  min-width: 44px !important;
+  width: 44px !important;
+}
+
+.docsRibbon.docsRibbon
+  .tableLayoutGroup.tableLayoutGroup[data-testid="document-toolbar-table-layout-group-alignment"] {
+  min-width: max-content;
+}
+
+.tableAlignmentCommandStack {
+  flex: 0 0 auto;
+  min-width: max-content;
+}
+
+.docsRibbon.docsRibbon
+  .tableAlignmentCommandStack.tableAlignmentCommandStack
+  > :global(.note-editor-office-toolbar__button) {
+  flex: 0 0 auto;
+  min-width: max-content;
+  padding-inline: 6px;
+  width: auto;
+}
+
+/* References ▸ Table of Contents stacks Add Text over Update Table, as Word
+   does. Add Text is a menu trigger and sizes itself; Update Table is a plain
+   command, and the shared command's 28px default centred its icon and label
+   on that 28px box, so both spilled left over the Table of Contents split.
+   Its stack keeps its intrinsic width like the Table Layout stacks above, and
+   the command sizes to its label and starts where Add Text starts: the stack
+   stretches it to Add Text's width, so centring would still misalign it. */
+.docsRibbon.docsRibbon
+  :global(
+    div:has(> [data-testid="document-toolbar-ribbon-references-toc-update-visible"])
+  ) {
+  flex: 0 0 auto;
+  min-width: max-content;
+}
+
+.docsRibbon.docsRibbon
+  :global(
+    .note-editor-office-toolbar__button[data-testid="document-toolbar-ribbon-references-toc-update-visible"]
+  ) {
+  flex: 0 0 auto;
+  justify-content: flex-start;
+  min-width: max-content;
+  padding-inline: 6px;
+  width: auto;
+}
+
+.tableAlignmentInline {
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(3, 26px);
+  grid-template-rows: repeat(3, 24px);
+}
+
+.tableAlignmentInline :global(.note-editor-office-table-alignment-option) {
+  align-items: center;
+  background: #fff;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: var(--docs-ribbon-ink, #1f2937);
+  cursor: pointer;
+  display: inline-flex;
+  height: 24px;
+  justify-content: center;
+  padding: 0;
+  width: 26px;
+}
+
+.tableAlignmentInline
+  :global(.note-editor-office-table-alignment-option:hover:not(:disabled)),
+.tableAlignmentInline
+  :global(.note-editor-office-table-alignment-option[data-active="true"]) {
+  background: var(--docs-ribbon-hover, #eff6ff);
+  border-color: color-mix(
+    in srgb,
+    var(--docs-ribbon-accent, #2563eb) 38%,
+    transparent
+  );
+  color: var(--docs-ribbon-accent-strong, #1d4ed8);
+}
+
+.tableAlignmentInline
+  :global(.note-editor-office-table-alignment-option:focus-visible) {
+  outline: 2px solid var(--docs-ribbon-accent, #2563eb);
+  outline-offset: -2px;
+}
+
+.tableAlignmentInline
+  :global(.note-editor-office-table-alignment-option:disabled) {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.tableAlignmentInline :global(.note-editor-office-table-alignment-option svg) {
+  height: 20px;
+  width: 20px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tableContextSurface :global(button) {
+    transition: none !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .tableAlignmentInline :global(.note-editor-office-table-alignment-option) {
+    background: Canvas;
+    border-color: CanvasText;
+    color: CanvasText;
+    forced-color-adjust: auto;
+  }
+
+  .tableAlignmentInline
+    :global(.note-editor-office-table-alignment-option[data-active="true"]) {
+    border-color: Highlight;
+    color: Highlight;
+  }
+}
+
+/* Picture is a real contextual tab, not an always-visible legacy context
+   appendage. Keep it on the same 100px shared Home anatomy while the global
+   legacy tab selector remains untouched for table tools. */
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="picture"]),
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="picture"])
+  :global(.note-editor-ribbon-strip) {
+  box-sizing: border-box;
+  height: 100px;
+  min-height: 100px;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="picture"])
+  :global(.note-editor-ribbon-track) {
+  align-items: stretch;
+  background: #fff;
+  height: 100px;
+  min-height: 100px;
+  min-width: 100%;
+  width: max-content;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="picture"])
+  :global(.note-editor-ribbon-track)
+  > :global([data-ribbon]:not([data-ribbon~="picture"])) {
+  display: none;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="picture"])
+  :global(.note-editor-ribbon-track)
+  > :global([data-ribbon~="picture"]) {
+  align-items: center;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  height: 100px;
+  min-height: 100px;
+  min-width: max-content;
+  overflow: visible;
+  padding: 2px 8px 0;
+  width: max-content;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="picture"])
+  :global(.note-editor-ribbon-track)
+  > :global([data-ribbon~="picture"][data-ribbon-label])::after {
+  box-sizing: border-box;
+  color: var(--docs-ribbon-muted, #64748b);
+  font-size: 11px;
+  height: 14px;
+  line-height: 14px;
+  min-height: 14px;
+  padding: 0;
+}
+
+/* SmartArt is a self-contained contextual ribbon. The React collector keeps
+   Home commands out of the DOM; this owns the surviving contextual carrier's
+   Web-height geometry and terminal group labels. */
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="smartArt"]),
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="smartArt"])
+  :global(.note-editor-ribbon-strip) {
+  box-sizing: border-box;
+  height: 100px;
+  min-height: 100px;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="smartArt"])
+  :global(.note-editor-ribbon-track) {
+  align-items: stretch;
+  background: #fff;
+  height: 100px;
+  min-height: 100px;
+  min-width: 100%;
+  width: max-content;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="smartArt"])
+  :global(.note-editor-ribbon-track)
+  > :global([data-ribbon~="smartArt"]) {
+  align-items: center;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  height: 100px;
+  min-height: 100px;
+  min-width: max-content;
+  overflow: visible;
+  padding: 2px 8px 0;
+  width: max-content;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="smartArt"])
+  :global(.note-editor-ribbon-track)
+  > :global([data-ribbon~="smartArt"][data-ribbon-label])::after {
+  box-sizing: border-box;
+  color: var(--docs-ribbon-muted, #64748b);
+  font-size: 11px;
+  height: 14px;
+  line-height: 14px;
+  min-height: 14px;
+  padding: 0;
+}
+
+/* A selected native document chart owns a real Chart Design tab. The shared
+   Office groups remain intrinsic and the ribbon track scrolls at narrower
+   desktop widths instead of shrinking the style previews or labels. */
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="chartDesign"]),
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="chartDesign"])
+  :global(.note-editor-ribbon-strip) {
+  box-sizing: border-box;
+  height: 100px;
+  min-height: 100px;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="chartDesign"])
+  :global(.note-editor-ribbon-track) {
+  align-items: stretch;
+  background: #fff;
+  height: 100px;
+  min-height: 100px;
+  min-width: 100%;
+  width: max-content;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="chartDesign"])
+  :global(.note-editor-ribbon-track)
+  > :global([data-ribbon]:not([data-ribbon~="chartDesign"])) {
+  display: none;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="chartDesign"])
+  :global(.note-editor-ribbon-track)
+  > :global([data-ribbon~="chartDesign"]) {
+  align-items: center;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  height: 100px;
+  min-height: 100px;
+  min-width: max-content;
+  overflow: visible;
+  padding: 2px 8px 0;
+  width: max-content;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="chartDesign"])
+  :global(.note-editor-ribbon-track)
+  > :global([data-ribbon~="chartDesign"][data-ribbon-label])::after {
+  box-sizing: border-box;
+  color: var(--docs-ribbon-muted, #64748b);
+  font-size: 11px;
+  height: 14px;
+  line-height: 14px;
+  min-height: 14px;
+  padding: 0;
+}
+
+.chartDesignGroup.chartDesignGroup {
+  flex: 0 0 auto;
+  min-width: max-content;
+  overflow: visible;
+}
+
+/* The row a shared Chart Design group lays its large commands in. */
+.chartDesignCommands {
+  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 2px;
+  min-height: 30px;
+  min-width: 0;
+}
+
+.chartStylesGroup.chartStylesGroup {
+  min-width: 398px;
+}
+
+.chartStyleGallery.chartStyleGallery {
+  min-width: max-content;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .docsRibbon.docsRibbon
+    :global(.note-editor-ribbon-body[data-ribbon-active="chartDesign"])
+    :global(button) {
+    transition: none !important;
+  }
+}
+
+/* View → Ruler is a session surface. The page-width rail scrolls instead of
+   shrinking its physical measurements; paragraph markers commit through the
+   existing precise-indent/tab-stop commands rather than storing CSS state. */
+.docsRibbon.docsRibbon :global(.docs-document-ruler-viewport) {
+  box-sizing: border-box;
+  width: 100%;
+  height: 36px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 3px 12px 4px;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #cbd5e1;
+  background: #f1f5f9;
+  scrollbar-width: thin;
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler) {
+  position: relative;
+  box-sizing: border-box;
+  height: 27px;
+  min-width: 320px;
+  margin: 0 auto;
+  cursor: crosshair;
+  border: 1px solid #b9c4d3;
+  border-radius: 3px;
+  background-color: #fff;
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(12px * var(--docs-ruler-scale, 1) - 1px),
+      #cbd5e1 calc(12px * var(--docs-ruler-scale, 1) - 1px),
+      #cbd5e1 calc(12px * var(--docs-ruler-scale, 1))
+    ),
+    repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(48px * var(--docs-ruler-scale, 1) - 1px),
+      #64748b calc(48px * var(--docs-ruler-scale, 1) - 1px),
+      #64748b calc(48px * var(--docs-ruler-scale, 1))
+    );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* Following the page: the ruler sits over the paper at the page's zoom and
+   scrolls with it (DocumentRuler places it), so the strip no longer scrolls
+   on its own. */
+.docsRibbon.docsRibbon :global(.docs-document-ruler-viewport[data-follows-page="true"]) {
+  overflow-x: hidden;
+}
+
+.docsRibbon.docsRibbon
+  :global(.docs-document-ruler-viewport[data-follows-page="true"] .docs-document-ruler) {
+  min-width: 0;
+  margin-right: 0;
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__margin) {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: rgba(203, 213, 225, 0.72);
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__margin--left) {
+  left: 0;
+  border-right: 1px solid #94a3b8;
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__margin--right) {
+  right: 0;
+  border-left: 1px solid #94a3b8;
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__indent) {
+  position: absolute;
+  z-index: 2;
+  box-sizing: border-box;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  transform: translateX(-50%);
+  cursor: ew-resize;
+  border: 0;
+  background: transparent;
+  /* a finger drags the marker, as a tab stop's; the strip scrolls sideways */
+  touch-action: none;
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__tab-stop) {
+  position: absolute;
+  z-index: 2;
+  box-sizing: border-box;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  transform: translateX(-50%);
+  cursor: ew-resize;
+  border: 0;
+  background: transparent;
+  /* a finger drags the marker; the ruler strip itself scrolls sideways */
+  touch-action: none;
+}
+
+ 
+:where(:root[data-touch-mode]) .docsRibbon.docsRibbon :global(.docs-document-ruler__indent::after),
+:where(:root[data-touch-mode]) .docsRibbon.docsRibbon :global(.docs-document-ruler__tab-stop::after) {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__indent::before) {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border: 1px solid #1d4ed8;
+  background: #dbeafe;
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__tab-stop::before) {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border: 1px solid #1d4ed8;
+  background: #dbeafe;
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__indent--left) {
+  bottom: -1px;
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__indent--left::before) {
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__indent--first-line) {
+  top: -1px;
+}
+
+.docsRibbon.docsRibbon
+  :global(.docs-document-ruler__indent--first-line::before) {
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__indent--right) {
+  bottom: -1px;
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__indent--right::before) {
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__tab-stop) {
+  top: 7px;
+  cursor: pointer;
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__tab-stop::before) {
+  inset: 2px 3px;
+  border-top: 0;
+  border-right: 0;
+  background: transparent;
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__indent:hover::before) {
+  border-color: #1e40af;
+  background-color: #bfdbfe;
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__tab-stop:hover::before) {
+  border-color: #1e40af;
+  background-color: #bfdbfe;
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__indent:focus-visible) {
+  outline: 2px solid #2563eb;
+  outline-offset: 1px;
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__tab-stop:focus-visible) {
+  outline: 2px solid #2563eb;
+  outline-offset: 1px;
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__indent:disabled) {
+  cursor: default;
+  opacity: 0.48;
+}
+
+.docsRibbon.docsRibbon :global(.docs-document-ruler__tab-stop:disabled) {
+  cursor: default;
+  opacity: 0.48;
+}
+
+.clipboardGroup.clipboardGroup,
+.fontGroup.fontGroup,
+.paragraphGroup.paragraphGroup,
+.stylesGroup.stylesGroup,
+.editingGroup.editingGroup {
+  position: relative;
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="home"])
+  .clipboardGroup.clipboardGroup {
+  min-width: 136px;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="home"])
+  .fontGroup.fontGroup {
+  min-width: 358px;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="home"])
+  .paragraphGroup.paragraphGroup {
+  min-width: 392px;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="home"])
+  .stylesGroup.stylesGroup {
+  min-width: 394px;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="home"])
+  .editingGroup.editingGroup {
+  min-width: 118px;
+}
+
+.clipboardRow.clipboardRow {
+  height: 66px;
+  min-height: 66px;
+  justify-content: flex-start;
+}
+
+.pictureRunControls {
+  display: flex;
+  flex: 0 0 auto;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.fontStack.fontStack,
+.paragraphStack.paragraphStack {
+  width: max-content;
+  min-width: 0;
+  gap: 4px;
+}
+
+.fontRow.fontRow,
+.paragraphRow.paragraphRow {
+  width: max-content;
+  min-width: 0;
+  justify-content: flex-start;
+  gap: 2px;
+}
+
+.fontRow.fontRow :global(.note-editor-office-toolbar__select) {
+  box-sizing: border-box;
+  height: 30px;
+  min-height: 30px;
+  border-radius: 6px;
+  border-color: var(--office-control-border, #cbd5e1);
+  line-height: 28px;
+}
+
+.fontRow.fontRow :global(.note-editor-ribbon-value-combobox__trigger) {
+  box-sizing: border-box;
+  height: 30px;
+  min-height: 30px;
+  border-radius: 6px;
+  border-color: var(--office-control-border, #cbd5e1);
+  line-height: 28px;
+}
+
+.fontRow.fontRow :global(.note-editor-office-toolbar__size-input) {
+  box-sizing: border-box;
+  height: 30px;
+  min-height: 30px;
+  border-radius: 6px;
+  border-color: var(--office-control-border, #cbd5e1);
+  line-height: 28px;
+}
+
+.fontRow.fontRow :global(.note-editor-office-toolbar__select):not(:global(.office-ribbon-control)) {
+  background: #fff;
+}
+
+.fontRow.fontRow :global(.note-editor-ribbon-value-combobox__trigger):not(:global(.office-ribbon-control)) {
+  background: #fff;
+}
+
+.fontRow.fontRow :global(.note-editor-office-toolbar__size-input):not(:global(.office-ribbon-control)) {
+  background: #fff;
+}
+
+.fontRow.fontRow :global(.note-editor-ribbon-value-combobox) {
+  height: 30px;
+  min-height: 30px;
+}
+
+.fontRow.fontRow
+  :global(.note-editor-ribbon-value-combobox--font-size)
+  :global(.note-editor-ribbon-value-combobox__input) {
+  width: 52px;
+  min-width: 52px;
+}
+
+.fontRow.fontRow
+  :global(.note-editor-ribbon-value-combobox__trigger) {
+  width: 22px;
+  min-width: 22px;
+  padding: 0;
+}
+
+.fontRow.fontRow :global(.note-editor-office-toolbar__split-chevron) {
+  width: 18px;
+  min-width: 18px;
+  padding: 0;
+}
+
+.paragraphRow.paragraphRow
+  :global(.note-editor-office-toolbar__split-chevron) {
+  width: 18px;
+  min-width: 18px;
+  padding: 0;
+}
+
+.colorPopoverHost {
+  position: relative;
+  flex: 0 0 auto;
+  width: 48px;
+  height: 30px;
+}
+
+.colorPopoverHost > :first-child {
+  width: 48px;
+  height: 30px;
+  grid-template-columns: 30px 18px;
+}
+
+/* Table Design uses the same authenticated palette popover but its launcher is
+   a full Office contextual-ribbon command, not the compact Home font-color
+   split. Keep the host positioning only; gallery anatomy owns its 66px face. */
+.tableShadingPopoverHost {
+  flex: 0 0 auto;
+  height: 66px;
+  min-height: 66px;
+  position: relative;
+  width: max-content;
+}
+
+.fontDialogLauncher,
+.stylesLauncher {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  height: 30px;
+  position: static;
+  width: auto;
+}
+
+.docsRibbon.docsRibbon[data-docs-office-parity-v2="on"]
+  .fontDialogLauncher.fontDialogLauncher
+  > :global(.note-editor-office-toolbar__button) {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  height: 30px;
+  max-height: 30px;
+  max-width: none;
+  min-height: 30px;
+  min-width: 30px;
+  padding: 3px 6px;
+  width: auto;
+}
+
+.docsRibbon.docsRibbon[data-docs-office-parity-v2="on"]
+  .stylesLauncher.stylesLauncher
+  > :global(.note-editor-office-toolbar__button) {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  height: 30px;
+  max-height: 30px;
+  max-width: none;
+  min-height: 30px;
+  min-width: 30px;
+  padding: 3px 6px;
+  width: auto;
+}
+
+.fontDialogLauncher :global(.docs-home-icon) {
+  width: 14px;
+  height: 14px;
+}
+
+.stylesLauncher :global(.docs-home-icon) {
+  width: 14px;
+  height: 14px;
+}
+
+.stylesGallery.stylesGallery {
+  --office-gallery-item-width: 124px;
+  --office-gallery-visible-items: 3;
+  --office-gallery-gap: 4px;
+}
+
+.stylesLayout {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+  min-width: 0;
+  width: max-content;
+}
+
+.stylesGallery.stylesGallery :global(.note-style-strip__card) {
+  flex: 0 0 var(--office-gallery-item-width);
+  height: 100%;
+  min-height: 0;
+  width: var(--office-gallery-item-width);
+}
+
+.editingStack.editingStack {
+  height: 65px;
+  margin-block: 0 auto;
+  max-height: 65px;
+  min-height: 65px;
+  width: max-content;
+  min-width: 0;
+  gap: 1px;
+  justify-content: flex-start;
+}
+
+.editingStack.editingStack
+  > :global(.note-editor-office-toolbar__button) {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 94px;
+  height: 21px;
+  min-height: 21px;
+  padding: 1px 5px;
+}
+
+.editingSplit.editingSplit {
+  width: 100%;
+  min-width: 94px;
+  height: 21px;
+  min-height: 21px;
+  grid-template-columns: minmax(0, 1fr) 18px;
+}
+
+.editingSplit.editingSplit :global(.note-editor-office-toolbar__button) {
+  height: 21px;
+  min-height: 21px;
+  padding-block: 1px;
+}
+
+.editingSplit.editingSplit :global(.note-editor-office-toolbar__split-chevron) {
+  height: 21px;
+  min-height: 21px;
+  padding-block: 1px;
+}
+
+/* The shared split owns a flexible primary column. Keep the compact command
+   face stretched across that column instead of letting its legacy auto-width
+   rule collapse the visible Select label into the chevron. */
+.editingSplit.editingSplit
+  > :first-child
+  > :global(.note-editor-office-toolbar__button) {
+  max-width: none;
+  min-width: 0;
+  width: 100%;
+}
+
+/* This three-row group owns 21px rows, including the inner split faces.
+   Shared 30px compact commands otherwise overflow its 65px stack and cover
+   the group caption. Keep the override local to the desktop Editing group. */
+.docsRibbon.docsRibbon .editingGroup.editingGroup .editingStack.editingStack
+  :global(button.office-ribbon-control) {
+  height: 21px;
+  min-height: 21px;
+  max-height: 21px;
+  padding-block: 1px;
+}
+
+.docsRibbon.docsRibbon .editingGroup.editingGroup .editingSplit.editingSplit {
+  flex: 0 0 21px;
+  grid-template-rows: 21px;
+  max-height: 21px;
+}
+
+.docsRibbon.docsRibbon .editingGroup.editingGroup .editingStack.editingStack
+  :global(.docs-home-icon) {
+  width: 16px;
+  height: 16px;
+}
+
+ 
+/* Docs Insert uses the shared 100px Office band and intrinsic group widths.
+   Order mirrors Word Web while command authority remains in this adapter. */
+.insertPagesGroup {
+  order: 10;
+}
+
+.insertTableGroup {
+  order: 20;
+}
+
+.insertIllustrationsGroup {
+  order: 30;
+}
+
+.insertLinksGroup {
+  order: 40;
+}
+
+.insertBookmarkGroup {
+  order: 60;
+}
+
+.insertMediaGroup {
+  order: 70;
+}
+
+.insertCommentGroup {
+  order: 80;
+}
+
+.insertHeaderFooterGroup {
+  order: 90;
+}
+
+.insertTextGroup {
+  order: 130;
+}
+
+.insertSymbolsGroup {
+  order: 110;
+}
+
+
+/* Layout reuses the shared Home command anatomy: intrinsic groups, one 66px
+   command rail and the same 100px captioned band. */
+.layoutPageSetupGroup,
+.layoutParagraphGroup,
+.layoutArrangeGroup,
+.layoutSizeGroup,
+.designDocumentFormattingGroup,
+.shapeInsertGroup,
+.shapeStylesGroup,
+.shapeTextStylesGroup,
+.shapeTextGroup,
+.shapeAltTextGroup,
+.shapeFormatPaneGroup,
+.layoutBackgroundGroup {
+  flex: 0 0 auto;
+  min-width: max-content;
+  width: max-content;
+}
+
+.layoutPageSetupGroup {
+  order: 10;
+}
+
+.layoutParagraphGroup {
+  order: 20;
+}
+
+.layoutArrangeGroup {
+  order: 30;
+}
+
+.layoutSizeGroup {
+  order: 35;
+}
+
+/* Word's Design tab order: Document Formatting, then Page Background. */
+/* Design tab: Document Formatting, then Page Background (Word's order). */
+.designDocumentFormattingGroup {
+  order: 38;
+}
+
+.layoutBackgroundGroup {
+  order: 40;
+}
+
+.drawToolsGroup,
+.drawPensGroup,
+.drawConvertGroup,
+.drawReplayGroup,
+.drawStencilsGroup,
+.drawPaperGroup,
+.drawTrackpadGroup,
+.drawPenPaletteGroup {
+  flex: 0 0 auto;
+  min-width: max-content;
+  width: max-content;
+}
+
+ 
+.drawToolsGroup {
+  order: 4;
+}
+
+.drawPensGroup {
+  order: 6;
+}
+
+.drawConvertGroup {
+  order: 7;
+}
+
+.drawReplayGroup {
+  order: 8;
+}
+
+.drawStencilsGroup {
+  order: 9;
+}
+
+/* The pen's paper sits beside the stencils, before the device switches. */
+.drawPaperGroup {
+  order: 9;
+}
+
+ 
+.drawPaperGroup.drawHandwritingGroup {
+  order: 1;
+}
+
+.drawTrackpadGroup {
+  order: 10;
+}
+
+/* Hide the ribbon (pen-first drawing) ends the tab, right of the switches. */
+.drawPenPaletteGroup {
+  order: 11;
+}
+
+.drawCommandRow {
+  align-items: stretch;
+  display: flex;
+  gap: 2px;
+  height: 66px;
+  min-height: 66px;
+  width: max-content;
+}
+
+.shapeInsertGroup {
+  order: 10;
+}
+
+.shapeStylesGroup {
+  order: 20;
+}
+
+.shapeTextStylesGroup {
+  order: 30;
+}
+
+.shapeTextGroup {
+  order: 40;
+}
+
+.shapeAltTextGroup {
+  order: 50;
+}
+
+.shapeFormatPaneGroup {
+  order: 80;
+}
+
+/* Contextual formats share Home/Layout's band and command metrics. This
+   adapter owns only composition, never a smaller button or disclosure rail. */
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body:is([data-ribbon-active="shape"], [data-ribbon-active="chartFormat"])) {
+  box-sizing: border-box;
+  height: var(--office-home-band-height, 100px);
+  min-height: var(--office-home-band-height, 100px);
+}
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body:is([data-ribbon-active="shape"], [data-ribbon-active="chartFormat"]))
+  :global(.note-editor-ribbon-strip) {
+  box-sizing: border-box;
+  height: var(--office-home-band-height, 100px);
+  min-height: var(--office-home-band-height, 100px);
+}
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body:is([data-ribbon-active="shape"], [data-ribbon-active="chartFormat"]))
+  :global(.note-editor-ribbon-track) {
+  box-sizing: border-box;
+  height: var(--office-home-band-height, 100px);
+  min-height: var(--office-home-band-height, 100px);
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body:is([data-ribbon-active="shape"], [data-ribbon-active="chartFormat"]))
+  :global(.note-editor-ribbon-track) {
+  align-items: stretch;
+  min-width: 100%;
+  width: max-content;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body:is([data-ribbon-active="shape"], [data-ribbon-active="chartFormat"]))
+  :global(.note-editor-ribbon-track)
+  > :global(.note-editor-office-toolbar__group) {
+  height: var(--office-home-band-height, 100px);
+  min-height: var(--office-home-band-height, 100px);
+  padding: 2px 8px 0;
+  border-inline-end: 1px solid var(--docs-ribbon-divider, #d8dee8);
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="shape"])
+  .layoutArrangeGroup {
+  order: 60;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="shape"])
+  .layoutSizeGroup {
+  order: 70;
+}
+
+.shapeInsertBody.shapeInsertBody {
+  align-items: center;
+  gap: 8px;
+  height: 66px;
+  min-height: 66px;
+  width: max-content;
+}
+
+/* The shared three-row stack owns the row height. Menu internals must fit
+   that row instead of retaining the generic 22px inline-span minimum. */
+.shapeTextGroup
+  :global(button[data-office-home-menu-indicator="true"])
+  > :global([data-office-home-menu-part]) {
+  height: 100%;
+  min-height: 0;
+  max-height: 100%;
+}
+
+.shapeStylesBody {
+  align-items: center;
+  display: flex;
+  gap: 5px;
+  height: 66px;
+  min-height: 66px;
+  width: max-content;
+}
+
+.docsRibbon :global([data-ribbon="shape"]) .shapeStylesBody {
+  gap: 8px;
+}
+
+.docsRibbon :global([data-ribbon="chartFormat"]) .shapeStylesBody {
+  gap: 8px;
+}
+
+/* Non-Docs chart hosts retain their existing preview adapter. */
+.shapeTextStyleGallery.shapeTextStyleGallery {
+  --office-gallery-gap: 2px;
+  --office-gallery-item-width: 54px;
+}
+
+.shapeTextStyleGallery
+  :global([data-office-style-gallery-preview-item="true"]) {
+  height: var(--office-gallery-content-height);
+  min-height: 0;
+  padding: 2px;
+  width: 54px;
+}
+
+.shapeTextStyleGallery
+  :global([data-office-style-gallery-preview-item="true"] > span:last-child) {
+  display: none;
+}
+
+.shapeTextStylePreview {
+  display: grid;
+  height: 48px;
+  place-items: center;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.shapeStyleCommands {
+  min-width: max-content;
+}
+
+/* Standard large Fill beside two standard icon-menu commands. The shared
+   components own their 66px/30px faces and 18px chevrons. */
+.formatPaintCommands.formatPaintCommands {
+  align-items: center;
+  display: grid;
+  grid-template-columns: max-content max-content;
+  grid-template-rows: 30px 30px;
+  gap: 6px;
+  height: 66px;
+  min-width: max-content;
+  width: max-content;
+}
+
+.formatPaintCommands > div {
+  display: contents;
+}
+
+.formatPaintCommands > div:first-child > .shapeColorPopoverHost:first-child {
+  grid-column: 1;
+  grid-row: 1 / 3;
+}
+
+.formatPaintCommands > div:first-child > .shapeColorPopoverHost:last-child {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.formatPaintCommands > div:last-child > button {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* Labels keep their natural width. Group/Rotate share the final column. */
+.shapeArrangeRow.shapeArrangeRow,
+.formatArrangeRow.formatArrangeRow {
+  align-content: center;
+  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(7, max-content);
+  grid-template-rows: 30px 30px;
+  gap: 6px 4px;
+  height: 66px;
+  min-height: 66px;
+  width: max-content;
+}
+
+.formatArrangeRow > div,
+.formatArrangeRow > div > div {
+  display: contents;
+}
+
+.shapeArrangeRow > button,
+.formatArrangeRow > button,
+.formatArrangeRow > div button {
+  grid-row: 1 / 3;
+}
+
+.shapeArrangeRow > button:nth-last-child(2),
+.formatArrangeRow > button:nth-last-child(2) {
+  grid-column: 7;
+  grid-row: 1;
+}
+
+.shapeArrangeRow > button:last-child,
+.formatArrangeRow > button:last-child {
+  grid-column: 7;
+  grid-row: 2;
+}
+
+.layoutSizeGroup.layoutSizeGroup {
+  align-items: center;
+  column-gap: 6px;
+  display: grid;
+  flex: 0 0 auto;
+  grid-template-columns: max-content 30px;
+  grid-template-rows: minmax(0, 1fr) var(--office-home-caption-height, 14px);
+  min-width: max-content;
+  width: max-content;
+}
+
+.layoutSizeGroup.layoutSizeGroup::after {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  margin: 0;
+}
+
+.layoutSizeGroup > div {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.layoutSizeGroup > button {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.shapeOutlineOptions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 4px;
+  border: 0;
+  margin: 0;
+}
+
+.shapeOutlineOptions legend {
+  font-size: 12px;
+}
+
+.shapeOutlineOptions label {
+  display: grid;
+  gap: 3px;
+  font-size: 11px;
+}
+
+.shapeOutlineOptions select {
+  height: 28px;
+  border: 1px solid var(--docs-ribbon-divider, #d8dee8);
+  border-radius: 4px;
+  background: var(--office-ribbon-surface, #fff);
+  color: inherit;
+}
+
+.shapeColorPopoverHost {
+  flex: 0 0 auto;
+  position: relative;
+}
+
+.documentShapePreview {
+  height: 26px;
+  width: 26px;
+}
+
+.referencesContentsGroup,
+.referencesNotesGroup,
+.referencesCitationsGroup,
+.referencesCaptionsGroup,
+.referencesIndexGroup,
+.referencesAuthoritiesGroup,
+.reviewProofingGroup,
+.reviewReadAloudGroup,
+.reviewAccessibilityGroup,
+.reviewLanguageGroup,
+.reviewCommentsGroup,
+.reviewMarkupGroup,
+.reviewTrackingGroup,
+.reviewChangesGroup,
+.reviewCompareGroup,
+.reviewProtectGroup,
+.reviewAdvancedFontGroup,
+.reviewParagraphToolsGroup,
+.reviewMenusGroup,
+.viewViewsGroup,
+.viewZoomGroup,
+.viewShowGroup,
+.viewDarkModeGroup,
+.viewPanesGroup,
+.viewWindowGroup {
+  flex: 0 0 auto;
+  min-width: max-content;
+  width: max-content;
+}
+
+.pictureAdjustGroup.pictureAdjustGroup,
+.pictureStylesGroup.pictureStylesGroup,
+.pictureArrangeGroup.pictureArrangeGroup,
+.pictureSizeGroup.pictureSizeGroup,
+.pictureDrawGroup.pictureDrawGroup,
+.pictureAltGroup.pictureAltGroup {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  height: 100px;
+  max-height: 100px;
+  min-width: max-content;
+  min-height: 100px;
+  overflow: visible;
+  width: max-content;
+}
+
+/* Shape commands can scroll beneath the fixed edge controls. Reserve the
+   complete 52px edge hint (which contains the 44px pager), as well as each
+   command's intrinsic width, so Group/Rotate retain visible clickable faces. */
+.docsRibbon.docsRibbon
+  :global(
+    .note-editor-ribbon-strip:has(
+        .note-editor-ribbon-body[data-ribbon-active="shape"]
+      )
+  ) {
+  box-sizing: border-box;
+  padding-inline-end: 52px;
+}
+
+ 
+.docsRibbon.docsRibbon
+  :global(
+    .note-editor-ribbon-strip:has(
+        .note-editor-ribbon-body[data-ribbon-active="picture"]
+      )
+  ) {
+  box-sizing: border-box;
+  padding-inline-end: 44px;
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="picture"]),
+.docsRibbon.docsRibbon
+  :global(
+    .note-editor-ribbon-body[data-ribbon-active="picture"]
+      .note-editor-ribbon-track
+  ) {
+  box-sizing: border-box;
+  height: 100px;
+  max-height: 100px;
+  min-height: 100px;
+}
+
+.docsRibbon.docsRibbon
+  :global(
+    .note-editor-ribbon-body[data-ribbon-active="picture"]
+      .note-editor-ribbon-track
+      > [data-ribbon="picture"]
+  ) {
+  gap: 0;
+}
+
+.docsRibbon.docsRibbon
+  :global(
+    .note-editor-ribbon-body[data-ribbon-active="picture"]
+      .note-editor-ribbon-track
+      > [data-ribbon="picture"][data-ribbon-label]::after
+  ) {
+  transform: translateY(-1px);
+}
+
+.pictureAdjustGroup {
+  order: 40;
+}
+
+.pictureStylesGroup {
+  order: 10;
+}
+
+.pictureArrangeGroup {
+  order: 20;
+}
+
+.pictureSizeGroup {
+  order: 30;
+}
+
+.pictureDrawGroup {
+  order: 45;
+}
+
+.pictureAltGroup {
+  order: 50;
+}
+
+.docsRibbon.docsRibbon :global(.note-editor-ribbon-body[data-ribbon-active="picture"]) .pictureAdjustGroup.pictureAdjustGroup {
+  border-inline-end: 1px solid var(--docs-ribbon-divider, #d8dee8);
+}
+
+.docsRibbon.docsRibbon :global(.note-editor-ribbon-body[data-ribbon-active="picture"]) .pictureStylesGroup.pictureStylesGroup {
+  border-inline-end: 1px solid var(--docs-ribbon-divider, #d8dee8);
+}
+
+.docsRibbon.docsRibbon :global(.note-editor-ribbon-body[data-ribbon-active="picture"]) .pictureArrangeGroup.pictureArrangeGroup {
+  border-inline-end: 1px solid var(--docs-ribbon-divider, #d8dee8);
+}
+
+.docsRibbon.docsRibbon :global(.note-editor-ribbon-body[data-ribbon-active="picture"]) .pictureSizeGroup.pictureSizeGroup {
+  border-inline-end: 1px solid var(--docs-ribbon-divider, #d8dee8);
+}
+
+.docsRibbon.docsRibbon :global(.note-editor-ribbon-body[data-ribbon-active="picture"]) .pictureDrawGroup.pictureDrawGroup {
+  border-inline-end: 1px solid var(--docs-ribbon-divider, #d8dee8);
+}
+
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="picture"])
+  .pictureAltGroup.pictureAltGroup {
+  border-inline-end: 0;
+}
+
+.pictureCommandRow.pictureCommandRow {
+  gap: 2px;
+  height: 66px;
+  min-height: 66px;
+  width: max-content;
+}
+
+/* The shared color host is sized for a compact 30px icon split. Picture
+   Border uses the full 66px Office command face, so reserve its complete
+   56px + 18px split width instead of letting the chevron sit underneath the
+   following Picture Effects command. */
+.pictureStylesGroup.pictureStylesGroup .colorPopoverHost {
+  height: 66px;
+  min-width: 58px;
+  width: 58px;
+}
+
+.pictureStylesGroup.pictureStylesGroup .colorPopoverHost > :first-child {
+  grid-template-columns: 58px;
+  grid-template-rows: 52px 14px;
+  height: 66px;
+  width: 58px;
+}
+
+.pictureStylesGroup.pictureStylesGroup
+  [data-office-style-gallery-preview-item="true"]
+  > span:last-child {
+  display: none;
+}
+
+.pictureResetSplit.pictureResetSplit {
+  flex: 0 0 auto;
+  height: 66px;
+  min-height: 66px;
+  width: max-content;
+}
+
+.pictureSizeStack.pictureSizeStack {
+  align-items: center;
+  display: grid;
+  gap: 0;
+  grid-template-rows: repeat(3, 22px);
+  height: 66px;
+  min-height: 66px;
+  width: max-content;
+}
+
+.pictureSizeRow.pictureSizeRow {
+  gap: 4px;
+  height: 22px;
+  min-height: 22px;
+  width: max-content;
+}
+
+.pictureSizeGroup.pictureSizeGroup .layoutValueField {
+  height: 22px;
+  min-height: 22px;
+}
+
+.pictureSizeGroup.pictureSizeGroup .layoutValueInput {
+  height: 22px;
+  min-height: 22px;
+}
+
+.pictureSizeGroup.pictureSizeGroup .layoutValueIcon,
+.pictureSizeGroup.pictureSizeGroup .layoutValueIcon > :global(svg) {
+  height: 18px;
+  width: 18px;
+}
+
+/* Word Web keeps lock ratio above the two numeric rows. The full label remains
+   the pointer/focus target; the 22px row prevents it from colliding with the
+   Height and Width fields below. */
+.pictureAspectRatioTarget.pictureAspectRatioTarget {
+  height: 22px;
+  margin-block: 0;
+  min-height: 22px;
+  min-width: 44px;
+}
+
+.referencesContentsGroup,
+.reviewProofingGroup,
+.viewViewsGroup {
+  order: 10;
+}
+
+.reviewReadAloudGroup {
+  order: 15;
+}
+
+.referencesNotesGroup,
+.reviewAccessibilityGroup,
+.viewZoomGroup {
+  order: 20;
+}
+
+.referencesCitationsGroup,
+.reviewLanguageGroup,
+.viewShowGroup {
+  order: 30;
+}
+
+.referencesCaptionsGroup,
+.reviewCommentsGroup,
+.viewDarkModeGroup {
+  order: 40;
+}
+
+.referencesIndexGroup,
+.reviewMarkupGroup,
+.viewPanesGroup {
+  order: 50;
+}
+
+.viewWindowGroup {
+  display: none;
+}
+
+.referencesAuthoritiesGroup,
+.reviewTrackingGroup {
+  order: 60;
+}
+
+.reviewChangesGroup {
+  order: 70;
+}
+
+/* Review has three auto-margin flex slots around a 66px command row and the
+   14px caption. The legacy 2px gap divides the remaining space into fractional
+   thirds and rounds the real scroll extent up to 101px. Remove only that
+   redundant gap while keeping the shared 100px Office deck and captions. */
+.docsRibbon.docsRibbon
+  :global(.note-editor-ribbon-body[data-ribbon-active="review"]),
+.docsRibbon.docsRibbon
+  :global(
+    .note-editor-ribbon-body[data-ribbon-active="review"]
+      .note-editor-ribbon-track
+  ) {
+  box-sizing: border-box;
+  height: 100px;
+  max-height: 100px;
+  min-height: 100px;
+}
+
+.docsRibbon.docsRibbon
+  :global(
+    .note-editor-ribbon-body[data-ribbon-active="review"]
+      .note-editor-ribbon-track
+      > [data-ribbon="review"]
+  ) {
+  box-sizing: border-box;
+  gap: 0;
+  height: 100px;
+  max-height: 100px;
+  min-height: 100px;
+}
+
+/* The caption line box ends exactly on the 100px edge; its font ink extends by
+   a fractional pixel and Chromium rounds the scroll extent to 101. Move only
+   the direct Review caption one pixel inward so the complete glyph remains
+   visible while the true scroll box stays at 100px. */
+.docsRibbon.docsRibbon
+  :global(
+    .note-editor-ribbon-body[data-ribbon-active="review"]
+      .note-editor-ribbon-track
+      > [data-ribbon="review"][data-ribbon-label]::after
+  ) {
+  transform: translateY(-1px);
+}
+
+/* Home and View share the same caption anatomy. Keep their direct command
+   rows on an integer flex grid and move the caption ink one pixel inward, as
+   Review does above. This affects only the active Docs base tab; dropdown
+   panels and contextual ribbons retain their own geometry. */
+.docsRibbon.docsRibbon
+  :global(
+    .note-editor-ribbon-body:is(
+        [data-ribbon-active="home"],
+        [data-ribbon-active="view"]
+      )
+  ) {
+  box-sizing: border-box;
+  height: 100px;
+  max-height: 100px;
+  min-height: 100px;
+}
+.docsRibbon.docsRibbon
+  :global(
+    .note-editor-ribbon-body:is(
+        [data-ribbon-active="home"],
+        [data-ribbon-active="view"]
+      )
+      .note-editor-ribbon-track
+  ) {
+  box-sizing: border-box;
+  height: 100px;
+  max-height: 100px;
+  min-height: 100px;
+}
+
+.docsRibbon.docsRibbon
+  :global(
+    .note-editor-ribbon-body:is(
+        [data-ribbon-active="home"],
+        [data-ribbon-active="view"]
+      )
+      .note-editor-ribbon-track
+      > :is([data-ribbon="home"], [data-ribbon="view"])
+  ) {
+  box-sizing: border-box;
+  gap: 0;
+  height: 100px;
+  max-height: 100px;
+  min-height: 100px;
+}
+
+.docsRibbon.docsRibbon
+  :global(
+    .note-editor-ribbon-body:is(
+        [data-ribbon-active="home"],
+        [data-ribbon-active="view"]
+      )
+      .note-editor-ribbon-track
+      > :is([data-ribbon="home"], [data-ribbon="view"])[data-ribbon-label]::after
+  ) {
+  transform: translateY(-1px);
+}
+
+.reviewChangeNavigationStack {
+  flex: 0 0 auto;
+  min-width: max-content;
+}
+
+/* Word Web Dark Mode is a session-only reading/editing projection. Scope the
+   palette to this editor wrapper so print/export clones and neighboring editor
+   windows keep their authored page colors. */
+.documentDarkMode.documentDarkMode {
+  color-scheme: dark;
+}
+
+.documentDarkMode.documentDarkMode :global(.note-editor-body) {
+  background: #1f1f1f;
+}
+
+.documentDarkMode.documentDarkMode :global(.note-editor-body-main) {
+  background: #1f1f1f;
+}
+
+.documentDarkMode.documentDarkMode :global(.note-editor-page-surface) {
+  background: #1f1f1f;
+}
+
+.documentDarkMode.documentDarkMode :global(article[data-page-sheet]) {
+  background: #252525 !important;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 12%),
+    0 12px 32px rgb(0 0 0 / 34%);
+  color: #f3f3f3;
+}
+
+/* The footnote area lies on the same dark paper, in its light ink. */
+.documentDarkMode.documentDarkMode :global(.paged-edit-seam__footnotes) {
+  background: #252525;
+  color: #f3f3f3;
+}
+.documentDarkMode.documentDarkMode :global(.paged-edit-seam__footnotes)::before {
+  border-top-color: currentColor;
+}
+
+.documentDarkMode.documentDarkMode :global(.note-editor-content.ProseMirror) {
+  caret-color: #ffffff;
+}
+
+/* On the dark paper the text is the light ink: the watermark stays under it
+   by keeping the lighter of the two. */
+.documentDarkMode.documentDarkMode :global(.sheet-watermark-overlay .note-editor-watermark__text) {
+  mix-blend-mode: lighten;
+}
+.documentDarkMode.documentDarkMode :global(.sheet-watermark-overlay .note-editor-watermark__picture) {
+  mix-blend-mode: lighten;
+}
+
+.docsRibbon.docsRibbon
+  .reviewChangeNavigationStack.reviewChangeNavigationStack
+  > :global(.note-editor-office-toolbar__button) {
+  flex: 0 0 auto;
+  min-width: max-content;
+  padding-inline: 6px;
+  width: auto;
+}
+
+.reviewCompareGroup {
+  order: 75;
+  display: none;
+}
+
+.reviewProtectGroup {
+  order: 76;
+  display: none;
+}
+
+.reviewAdvancedFontGroup {
+  order: 80;
+}
+
+.reviewParagraphToolsGroup {
+  order: 81;
+}
+
+.reviewMenusGroup {
+  order: 80;
+}
+
+.secondaryCommandRow.secondaryCommandRow {
+  gap: 2px;
+  min-height: 66px;
+  width: max-content;
+}
+
+.layoutCommandRow.layoutCommandRow {
+  gap: 2px;
+  min-height: 66px;
+  width: max-content;
+}
+
+.layoutShapeSizeStack {
+  align-items: center;
+  display: grid;
+  gap: 4px;
+  grid-template-rows: repeat(2, 25px);
+  height: 66px;
+  min-height: 66px;
+  min-width: max-content;
+}
+
+.layoutParagraphGrid {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  height: 66px;
+  min-height: 66px;
+  width: max-content;
+}
+
+.layoutParagraphStack {
+  align-items: center;
+  display: grid;
+  gap: 2px;
+  grid-template-rows: 12px repeat(2, 25px);
+  height: 66px;
+  min-height: 66px;
+  min-width: max-content;
+}
+
+.layoutParagraphStackTitle {
+  color: var(--docs-ribbon-muted, #667085);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 12px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Roomy surfaces reuse the exact Layout > Paragraph number-input skin but
+   keep dialog/pane geometry instead of inheriting the compact 54px ribbon
+   width. `layoutValueInput` remains on every control for one visual source. */
+.layoutValueInput.layoutValueInputDialog {
+  flex: 1 1 auto;
+  font-size: 14px;
+  height: 36px;
+  min-height: 36px;
+  min-width: 0;
+  padding: 6px 10px;
+  width: 100%;
+}
+
+.layoutValueInput.layoutValueInputInline {
+  flex: 0 0 auto;
+  width: 96px;
+}
+
+.layoutColorHost {
+  height: 66px;
+  min-height: 66px;
+  min-width: 58px;
+  position: relative;
+  width: max-content;
+}
+
+.layoutBorderColors {
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(6, 22px);
+  padding: 4px 8px;
+}
+
+.layoutBorderColors > button {
+  align-items: center;
+  border: 1px solid var(--office-control-border, rgb(15 23 42 / 15%));
+  border-radius: 4px;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-flex;
+  height: 22px;
+  justify-content: center;
+  padding: 0;
+  width: 22px;
+}
+
+.layoutBorderColors > button[aria-pressed="true"] {
+  border-color: var(--office-control-border, var(--docs-ribbon-accent, #2563eb));
+}
+
+.layoutBorderColors > button[aria-pressed="true"]:not(:global(.office-ribbon-control)) {
+  box-shadow: inset 0 0 0 1px var(--docs-ribbon-accent, #2563eb);
+}
+
+.layoutBorderColors > button:focus-visible:not(:global(.office-ribbon-control)) {
+  outline: 2px solid var(--docs-ribbon-accent, #2563eb);
+  outline-offset: 1px;
+}
+
+
+
+
+
+.borderSplit.borderSplit {
+  width: 48px;
+  min-width: 48px;
+  height: 30px;
+  min-height: 30px;
+  grid-template-columns: 30px 18px;
+}
+
+.borderSplit.borderSplit :global(.note-editor-office-toolbar__button) {
+  width: 100%;
+  min-width: 0;
+  height: 30px;
+  min-height: 30px;
+  padding: 2px;
+}
+
+.borderSplit.borderSplit :global(.note-editor-office-toolbar__menu-trigger) {
+  width: 100%;
+  min-width: 0;
+  height: 30px;
+  min-height: 30px;
+  padding: 2px;
+}
+
+/* Contextual-table splits use the same vertical command/disclosure anatomy as
+   the rest of the Office ribbon. */
+.docsRibbon.docsRibbon
+  .tableDesignBorderSplit.tableDesignBorderSplit.tableDesignBorderSplit[data-testid="document-toolbar-table-borders-split"] {
+  grid-template-columns: 58px !important;
+  grid-template-rows: 52px 14px !important;
+  height: 66px !important;
+  max-height: 66px !important;
+  min-height: 66px !important;
+  min-width: 58px !important;
+  width: 58px !important;
+}
+
+.docsRibbon.docsRibbon
+  .tableDesignBorderSplit.tableDesignBorderSplit[data-testid="document-toolbar-table-borders-split"]
+  > :first-child
+  > * {
+  box-sizing: border-box;
+  height: 52px !important;
+  max-height: 52px !important;
+  min-height: 52px !important;
+  min-width: 58px !important;
+  padding: 2px 3px 0 !important;
+  width: 58px !important;
+}
+
+.docsRibbon.docsRibbon
+  .tableDesignBorderSplit.tableDesignBorderSplit[data-testid="document-toolbar-table-borders-split"]
+  > :last-child {
+  align-self: stretch;
+  border-inline-start: 0 !important;
+  border-top: 1px solid var(--office-control-border, color-mix(
+      in srgb,
+      var(--docs-ribbon-accent, #2563eb) 16%,
+      transparent
+    )) !important;
+  border-radius: 0 0 6px 6px;
+  grid-column: 1;
+  grid-row: 2;
+  height: 14px;
+  max-width: 58px !important;
+  min-height: 14px;
+  min-width: 58px !important;
+  width: 58px !important;
+}
+
+.docsRibbon.docsRibbon
+  .tableDesignBorderSplit.tableDesignBorderSplit[data-testid="document-toolbar-table-borders-split"]
+  > :last-child:not(:global(.office-ribbon-control)) {
+  background: color-mix(
+    in srgb,
+    var(--docs-ribbon-accent, #2563eb) 8%,
+    transparent
+  ) !important;
+}
+
+.docsRibbon.docsRibbon
+  .tableDesignBorderSplit.tableDesignBorderSplit[data-testid="document-toolbar-table-borders-split"]
+  > :last-child
+  > * {
+  height: 13px !important;
+  max-width: 58px !important;
+  min-height: 13px !important;
+  min-width: 58px !important;
+  width: 58px !important;
+}
+
+.docsRibbon.docsRibbon
+  .tableAdvancedSplit.tableAdvancedSplit.tableAdvancedSplit[data-testid="document-toolbar-table-alt-text-advanced-split"] {
+  grid-template-columns: minmax(58px, max-content) !important;
+  grid-template-rows: 52px 14px !important;
+  height: 66px !important;
+  max-height: 66px !important;
+  min-height: 66px !important;
+  min-width: 58px !important;
+  width: max-content !important;
+}
+
+.docsRibbon.docsRibbon
+  .tableAdvancedSplit.tableAdvancedSplit[data-testid="document-toolbar-table-alt-text-advanced-split"]
+  > :first-child
+  > * {
+  height: 52px !important;
+  max-height: 52px !important;
+  min-height: 52px !important;
+  min-width: 58px !important;
+  padding: 2px 3px 0 !important;
+}
+
+.docsRibbon.docsRibbon
+  .tableAdvancedSplit.tableAdvancedSplit[data-testid="document-toolbar-table-alt-text-advanced-split"]
+  > :last-child,
+.docsRibbon.docsRibbon
+  .tableAdvancedSplit.tableAdvancedSplit[data-testid="document-toolbar-table-alt-text-advanced-split"]
+  > :last-child
+  > * {
+  border-inline-start: 0 !important;
+  border-top: 1px solid var(--office-control-border, color-mix(
+      in srgb,
+      var(--docs-ribbon-accent, #2563eb) 16%,
+      transparent
+    )) !important;
+  height: 14px !important;
+  max-height: 14px !important;
+  max-width: none !important;
+  min-height: 14px !important;
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+.docsRibbon.docsRibbon
+  .tableAdvancedSplit.tableAdvancedSplit[data-testid="document-toolbar-table-alt-text-advanced-split"]
+  > :last-child:not(:global(.office-ribbon-control)) {
+  background: color-mix(
+    in srgb,
+    var(--docs-ribbon-accent, #2563eb) 8%,
+    transparent
+  ) !important;
+}
+
+.docsRibbon.docsRibbon
+  .tableAdvancedSplit.tableAdvancedSplit[data-testid="document-toolbar-table-alt-text-advanced-split"]
+  > :last-child
+  > *:not(:global(.office-ribbon-control)) {
+  background: color-mix(
+    in srgb,
+    var(--docs-ribbon-accent, #2563eb) 8%,
+    transparent
+  ) !important;
+}
+
+/*
+ * The SmartArt text pane, on the Docs host: where it docks when it cannot
+ * find the diagram's frame to stand beside (the shared pane places itself
+ * beside the frame otherwise). Only placement lives here; the chrome is the
+ * shared module's, the same pane every editor shows.
+ */
+.smartArtTextPane.smartArtTextPane {
+  position: fixed;
+  z-index: 74;
+  top: 154px;
+  right: 18px;
+  bottom: auto;
+  left: auto;
+  max-height: calc(100vh - 178px);
+}
+
+/* Document dark mode is Word's dark window (Word for the web: View > Dark
+   Mode): the ribbon goes dark with the page. The window carries the app's
+   dark theme attribute (DocumentToolbar scopeDocumentDarkMode); the ribbon
+   takes the same dark material as the dark menus and dialogs beside it. */
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon {
+  --office-ribbon-accent: #6b9df7;
+  --office-ribbon-accent-soft: rgb(79 139 245 / 20%);
+  --office-ribbon-border: rgb(255 255 255 / 14%);
+  --office-ribbon-ink: #f2f2f7;
+  --office-ribbon-muted: #a1a1a8;
+  --office-ribbon-surface: rgb(38 39 44);
+  --office-ribbon-hover: rgb(255 255 255 / 8%);
+  --docs-ribbon-accent: #6b9df7;
+  --docs-ribbon-accent-strong: #8fb4fa;
+  --docs-ribbon-divider: rgb(255 255 255 / 14%);
+  --docs-ribbon-hover: rgb(255 255 255 / 8%);
+  --docs-ribbon-ink: #f2f2f7;
+  --docs-ribbon-muted: #a1a1a8;
+  --docs-ribbon-border: rgb(255 255 255 / 16%);
+  --console-accent: #6b9df7;
+  --console-accent-strong: #8fb4fa;
+  --tb-ink: #f2f2f7;
+  --tb-ink-strong: #ffffff;
+  --tb-hover: rgb(255 255 255 / 8%);
+  --tb-rule: rgb(255 255 255 / 14%);
+  --tb-border: rgb(255 255 255 / 16%);
+  --tb-active-bg: rgb(79 139 245 / 24%);
+  --tb-active-border: rgb(107 157 247 / 55%);
+  --tb-focus-border: #6b9df7;
+  --office-home-disclosure-background: rgb(255 255 255 / 6%);
+  --office-home-disclosure-accent: #8fb4fa;
+  color-scheme: dark;
+  color: #f2f2f7;
+  background: rgb(38 39 44);
+}
+
+/* The ribbon modules paint their bands white at up to four classes; the
+   dark window repeats the Docs class to stay ahead of them. */
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon > :global(.note-editor-ribbon-tabs),
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-strip),
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-body),
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-body .note-editor-ribbon-track),
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon [class*="surface"] {
+  border-color: rgb(255 255 255 / 12%);
+  background: rgb(38 39 44);
+}
+
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-scroll) {
+  color: #f2f2f7;
+  background: rgb(38 39 44 / 90%);
+}
+
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-style-strip__card) {
+  color: #f2f2f7;
+  border-color: rgb(255 255 255 / 14%);
+  background: rgb(52 53 58);
+}
+
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-style-strip__card.is-active) {
+  border-color: #6b9df7;
+  background: rgb(79 139 245 / 22%);
+}
+
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon :global(.note-editor-ribbon-tab) {
+  color: #c7c7cc;
+}
+
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon :global(.note-editor-ribbon-tab:hover) {
+  color: #ffffff;
+  background: rgb(255 255 255 / 8%);
+}
+
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon :global(.note-editor-ribbon-tab:focus-visible) {
+  color: #ffffff;
+  background: rgb(255 255 255 / 8%);
+}
+
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon :global(.note-editor-ribbon-tab[aria-selected="true"]) {
+  color: #8fb4fa;
+}
+
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon :global(:is(input, select, textarea)) {
+  color: #f2f2f7;
+  border-color: rgb(255 255 255 / 18%);
+  background: rgb(28 29 33);
+}
+
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon :global(.docs-document-ruler-viewport) {
+  border-color: rgb(255 255 255 / 12%);
+  background: rgb(31 32 36);
+}
+
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon :global(.docs-document-ruler) {
+  border-color: rgb(255 255 255 / 20%);
+  background-color: rgb(52 53 58);
+  box-shadow: none;
+}
+
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon :global(.docs-document-ruler__margin) {
+  background: rgb(0 0 0 / 35%);
+}
+
+/* The app's dark theme and a document window's own dark mode: the shared
+   skin (styles/note-editor.css) states the band's dark tokens; the whites
+   and the context-tab tints this module paints itself follow here. */
+:global([data-theme-mode="dark"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-strip) {
+  background: var(--office-ribbon-surface, rgb(38 39 44));
+}
+:global([data-theme-mode="dark"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-track) {
+  background: var(--office-ribbon-surface, rgb(38 39 44));
+}
+:global([data-theme-mode="dark"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-body) {
+  background: var(--office-ribbon-surface, rgb(38 39 44));
+}
+:global([data-theme-mode="high-contrast"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-strip) {
+  background: var(--office-ribbon-surface, rgb(38 39 44));
+}
+:global([data-theme-mode="high-contrast"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-track) {
+  background: var(--office-ribbon-surface, rgb(38 39 44));
+}
+:global([data-theme-mode="high-contrast"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-body) {
+  background: var(--office-ribbon-surface, rgb(38 39 44));
+}
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-strip) {
+  background: var(--office-ribbon-surface, rgb(38 39 44));
+}
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-track) {
+  background: var(--office-ribbon-surface, rgb(38 39 44));
+}
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-body) {
+  background: var(--office-ribbon-surface, rgb(38 39 44));
+}
+
+:global([data-theme-mode="dark"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab:hover) {
+  background: transparent;
+}
+
+:global([data-theme-mode="dark"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab:focus-visible) {
+  background: transparent;
+}
+
+:global([data-theme-mode="dark"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab).tableContextTab {
+  background: transparent;
+}
+
+:global([data-theme-mode="dark"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab).pictureContextTab {
+  background: transparent;
+}
+
+:global([data-theme-mode="dark"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab).chartContextTab {
+  background: transparent;
+}
+
+:global([data-theme-mode="dark"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab) > :global(.note-editor-ribbon-tab__face) {
+  background: transparent;
+}
+
+:global([data-theme-mode="high-contrast"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab:hover) {
+  background: transparent;
+}
+
+:global([data-theme-mode="high-contrast"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab:focus-visible) {
+  background: transparent;
+}
+
+:global([data-theme-mode="high-contrast"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab).tableContextTab {
+  background: transparent;
+}
+
+:global([data-theme-mode="high-contrast"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab).pictureContextTab {
+  background: transparent;
+}
+
+:global([data-theme-mode="high-contrast"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab).chartContextTab {
+  background: transparent;
+}
+
+:global([data-theme-mode="high-contrast"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab) > :global(.note-editor-ribbon-tab__face) {
+  background: transparent;
+}
+
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab:hover) {
+  background: transparent;
+}
+
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab:focus-visible) {
+  background: transparent;
+}
+
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab).tableContextTab {
+  background: transparent;
+}
+
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab).pictureContextTab {
+  background: transparent;
+}
+
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab).chartContextTab {
+  background: transparent;
+}
+
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab) > :global(.note-editor-ribbon-tab__face) {
+  background: transparent;
+}
+
+:global([data-theme-mode="dark"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab:hover) > :global(.note-editor-ribbon-tab__face),
+:global([data-theme-mode="dark"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab--active) > :global(.note-editor-ribbon-tab__face),
+:global([data-theme-mode="high-contrast"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab:hover) > :global(.note-editor-ribbon-tab__face),
+:global([data-theme-mode="high-contrast"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab--active) > :global(.note-editor-ribbon-tab__face),
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab:hover) > :global(.note-editor-ribbon-tab__face),
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab--active) > :global(.note-editor-ribbon-tab__face) {
+  background: rgb(255 255 255 / 8%);
+}
+
+:global([data-theme-mode="dark"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab).tableContextTab,
+:global([data-theme-mode="dark"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab).pictureContextTab,
+:global([data-theme-mode="dark"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab).chartContextTab,
+:global([data-theme-mode="dark"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab:hover),
+:global([data-theme-mode="dark"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab--active),
+:global([data-theme-mode="dark"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-scroll),
+:global([data-theme-mode="high-contrast"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab).tableContextTab,
+:global([data-theme-mode="high-contrast"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab).pictureContextTab,
+:global([data-theme-mode="high-contrast"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab).chartContextTab,
+:global([data-theme-mode="high-contrast"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab:hover),
+:global([data-theme-mode="high-contrast"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab--active),
+:global([data-theme-mode="high-contrast"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-scroll),
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab).tableContextTab,
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab).pictureContextTab,
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab).chartContextTab,
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab:hover),
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-tab--active),
+:global([data-document-dark-mode="true"]) .docsRibbon.docsRibbon.docsRibbon :global(.note-editor-ribbon-scroll) {
+  color: #8fb4fa;
+}
+
+/* Enclose Characters: a panel of tiles that show the result. */
+.enclosedPanel {
+  width: 248px;
+  padding: 4px;
+}
+
+.enclosedHeading.enclosedHeading {
+  padding: 6px 6px 4px;
+  color: var(--console-text-secondary, #5b6472);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.enclosedTiles {
+  display: grid;
+  gap: 6px;
+  padding: 0 4px 6px;
+}
+
+.enclosedTiles[data-columns="2"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.enclosedTiles[data-columns="4"] {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.enclosedTile.enclosedTile {
+  display: flex;
+  min-height: 62px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 7px 4px 6px;
+  border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+/* The tile is the indicator; Radix's radio dot keeps the semantics only. */
+.enclosedTile > span:first-child:not(.enclosedSample) {
+  display: none;
+}
+
+.enclosedTile.enclosedTile[data-state="checked"] {
+  border-color: color-mix(in srgb, var(--docs-ribbon-accent, #2563eb) 52%, transparent);
+  background: color-mix(in srgb, var(--docs-ribbon-accent, #2563eb) 10%, transparent);
+}
+
+.enclosedTileLabel {
+  font-size: 11.5px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* The sample: a character in its enclosure. Shrink keeps the ring at the
+   line's size and makes the letter smaller; Enlarge keeps the letter and
+   grows the ring. */
+.enclosedSample {
+  position: relative;
+  display: inline-grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  color: var(--console-text-primary, #1f2937);
+}
+
+.enclosedSample > span {
+  position: relative;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.enclosedSample[data-style="shrink"] {
+  width: 22px;
+  height: 22px;
+}
+
+.enclosedSample[data-style="shrink"] > span {
+  font-size: 10.5px;
+}
+
+.enclosedSample::before {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid var(--docs-ribbon-accent, #2563eb);
+  content: "";
+}
+
+.enclosedSample[data-shape="circle"]::before {
+  border-radius: 50%;
+}
+
+.enclosedSample[data-shape="square"]::before {
+  border-radius: 2px;
+}
+
+.enclosedSample[data-shape="diamond"]::before {
+  inset: 3px;
+  transform: rotate(45deg);
+}
+
+.enclosedSample[data-shape="triangle"]::before {
+  inset: -1px;
+  border: 0;
+  background: var(--docs-ribbon-accent, #2563eb);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%, 50% 0, 50% 12%, 9% 94%, 91% 94%, 50% 12%);
+}
+
+.enclosedSample[data-shape="triangle"] > span {
+  top: 3px;
+  font-size: 9.5px;
+}
+
+.enclosedNone.enclosedNone {
+  justify-content: center;
+  margin: 2px 4px 2px;
+  border-radius: 8px;
+}
+

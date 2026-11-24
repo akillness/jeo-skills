@@ -1,0 +1,14 @@
+/* Command geometry, captions and state paint belong to the shared Office
+ * ribbon. PDF owns only the placement of its live editing status. */
+.statusHost {
+  position: relative;
+}
+
+.status {
+  inset-block-start: calc(100% + 4px);
+  inset-inline-end: 8px;
+  max-width: min(420px, 52vw);
+  position: absolute;
+  width: max-content;
+  z-index: 30;
+}

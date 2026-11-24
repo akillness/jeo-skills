@@ -1,0 +1,191 @@
+/* Home > Conditional Formatting > Manage Rules / New Rule, laid out as
+   Excel's Conditional Formatting Rules Manager and New Formatting Rule. The
+   card, title, fields and buttons come from the shared Office dialog chrome
+   (components/office-ribbon/OfficeDialogChrome.css, centred by
+   .native-window__modal-dialog); the --cf-* names below are that chrome's
+   tokens under the names this module's own layout uses. */
+
+.dialog {
+  --cf-border: var(--office-dialog-divider);
+  --cf-surface: var(--office-dialog-surface);
+  --cf-text: var(--office-dialog-ink);
+  --cf-muted: var(--office-dialog-muted);
+  --cf-accent: var(--office-dialog-accent);
+  --cf-selected: var(--office-dialog-accent-soft);
+}
+
+.manager {
+  width: min(760px, calc(100vw - 32px));
+}
+
+.editor {
+  width: min(560px, calc(100vw - 32px));
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.label {
+  color: var(--cf-text);
+  white-space: nowrap;
+}
+
+.muted {
+  color: var(--cf-muted);
+}
+
+.iconButton {
+  width: 28px;
+  padding: 0;
+}
+
+.tableFrame {
+  min-height: 150px;
+  max-height: 300px;
+  overflow: auto;
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 8px;
+  background: var(--office-dialog-surface);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--cf-border);
+  background: color-mix(in srgb, var(--cf-text) 4%, var(--cf-surface));
+  font-weight: 600;
+  text-align: start;
+}
+
+.table td {
+  padding: 3px 6px;
+  border-bottom: 1px solid color-mix(in srgb, var(--cf-border) 60%, transparent);
+  vertical-align: middle;
+}
+
+.ruleRow {
+  cursor: default;
+}
+
+.ruleRow[data-selected="true"] {
+  background: var(--cf-selected);
+}
+
+.ruleRow[data-readonly="true"] .ruleText {
+  color: var(--cf-muted);
+}
+
+.ruleText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sample {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 22px;
+  overflow: hidden;
+  border: 1px solid var(--cf-border);
+  background: #ffffff;
+  color: #000000;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.sampleEmpty {
+  color: var(--cf-muted);
+  background: transparent;
+}
+
+.appliesTo {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.appliesTo .input {
+  min-width: 0;
+  flex: 1;
+}
+
+.center {
+  text-align: center;
+}
+
+/* The rule types are the chrome's list box (office-dialog__list); only
+   Excel's leading triangle is particular to this list. */
+/* Each rule type leads with its picture (the bullet Excel draws there). */
+.typeOption {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+/* Edit the Rule Description: a titled section under its heading, not a
+   second box inside the card. */
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.heading {
+  font-weight: 600;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: max-content repeat(var(--cf-columns, 2), minmax(0, 1fr));
+  gap: 6px 10px;
+  align-items: center;
+}
+
+.swatchButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 24px;
+  padding: 2px 6px;
+}
+
+.swatch {
+  display: inline-block;
+  width: 28px;
+  height: 14px;
+  border: 1px solid rgb(0 0 0 / 20%);
+}
+
+.previewBar {
+  height: 22px;
+  border: 1px solid var(--cf-border);
+}
+
+.iconRow {
+  display: inline-flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.error {
+  color: var(--office-dialog-danger);
+}
+
+.notice {
+  color: var(--office-dialog-warning);
+}
+

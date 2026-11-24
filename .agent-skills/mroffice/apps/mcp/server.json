@@ -1,0 +1,36 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "ai.mroffice/office",
+  "title": "MR Office",
+  "description": "Create, open and edit documents, spreadsheets and PDFs in MR Office's editor, inline in chat.",
+  "version": "0.2.0",
+  "websiteUrl": "https://mroffice.ai/developers/mcp",
+  "repository": {
+    "url": "https://github.com/XinaTian/MROffice",
+    "source": "github",
+    "subfolder": "apps/mcp"
+  },
+  "icons": [
+    { "src": "https://mroffice.ai/icon.png", "mimeType": "image/png", "sizes": ["192x192"] }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.mroffice.ai/mcp"
+    }
+  ],
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "mroffice-mcp",
+      "version": "0.2.0",
+      "runtimeHint": "npx",
+      "transport": { "type": "stdio" },
+      "environmentVariables": [
+        { "name": "MROFFICE_MCP_DATA_DIR", "description": "Folder where documents and their revisions are kept (default: a folder in the system temp directory)", "isRequired": false, "isSecret": false, "format": "filepath" },
+        { "name": "MROFFICE_MCP_PORT", "description": "Port of the local editor pages (default 3410)", "isRequired": false, "isSecret": false, "format": "number" }
+      ]
+    }
+  ]
+}

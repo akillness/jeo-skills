@@ -1,0 +1,128 @@
+/* Draw > Paper on a handwriting document: the papers and paper colours. */
+
+.glyph {
+  display: block;
+  width: 18px;
+  height: 25px;
+  border-radius: 2px;
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.16),
+    0 1px 2px rgba(15, 23, 42, 0.12);
+}
+
+.menu {
+  width: min(452px, calc(100vw - 24px));
+  max-height: min(560px, calc(100dvh - 120px));
+  overflow-y: auto;
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.heading {
+  font-size: 11.5px;
+  font-weight: 650;
+  color: var(--docs-menu-subtle, rgba(60, 60, 67, 0.72));
+}
+
+.colors {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.colors > .heading {
+  margin-right: 4px;
+}
+
+.swatch {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1.5px solid;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.swatch[aria-checked="true"] {
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 0 4px var(--docs-accent, #2b6cd8);
+}
+
+.category {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 3px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.tile:hover {
+  background: rgba(120, 120, 128, 0.1);
+}
+
+.tile[aria-checked="true"] {
+  border-color: var(--docs-accent, #2b6cd8);
+  background: color-mix(in srgb, var(--docs-accent, #2b6cd8) 9%, transparent);
+}
+
+.tile .glyph {
+  width: 52px;
+  height: 74px;
+}
+
+.tile:focus-visible,
+.swatch:focus-visible {
+  outline: 2px solid var(--docs-accent, #2b6cd8);
+  outline-offset: 2px;
+}
+
+.name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  color: inherit;
+}
+
+/* The app's dark theme: the group headings read light on the dark menu
+   (they were the light theme's grey, near invisible), the picked colour's
+   ring stands off the menu's own surface, and a tile's hover lightens. */
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .heading {
+  color: rgba(235, 235, 245, 0.64);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .swatch[aria-checked="true"] {
+  box-shadow:
+    0 0 0 2px var(--console-surface, #1f2024),
+    0 0 0 4px var(--docs-accent, #6ea0ff);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .tile:hover {
+  background: rgba(235, 235, 245, 0.08);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .glyph {
+  box-shadow:
+    0 0 0 1px rgba(235, 235, 245, 0.22),
+    0 1px 2px rgba(0, 0, 0, 0.4);
+}

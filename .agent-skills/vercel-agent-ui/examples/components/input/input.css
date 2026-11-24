@@ -1,0 +1,18 @@
+@scope ([data-example]) {
+  [data-slot="input-group"] {
+    color: var(--muted);
+
+    /* Text before or after the input reads as part of the value, like https://hollisgrant.com. */
+    & > span:has(+ input) {
+      margin-inline-end: calc(var(--space-2) * -1);
+    }
+
+    & > input + span {
+      margin-inline-start: calc(var(--space-2) * -1);
+    }
+  }
+
+  [data-slot="input-clear"]:not([data-filled]) {
+    visibility: hidden;
+  }
+}

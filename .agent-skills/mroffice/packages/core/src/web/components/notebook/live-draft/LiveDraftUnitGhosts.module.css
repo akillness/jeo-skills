@@ -1,0 +1,200 @@
+/* The slides and sheets an Agent run has planned and not written yet: ghosts
+ * in the deck's rail and the workbook's tab bar. House motion (AI window):
+ * 120 / 200 / 320 ms, ease-out settle; under reduced motion they stand still. */
+
+.slide,
+.sheet {
+  --ghost-accent: var(--console-accent, #0d9488);
+  --ghost-ink: color-mix(in srgb, var(--text-primary, #17211f) 46%, transparent);
+  --ghost-rule: color-mix(in srgb, var(--text-primary, #17211f) 16%, transparent);
+  pointer-events: none;
+  user-select: none;
+  animation: live-draft-ghost-in 320ms cubic-bezier(0.2, 0, 0, 1) both;
+}
+
+/* A slide still to come: the rail's own card (number beside a miniature),
+   drawn as an outline of paper with its planned title. */
+.slide {
+  position: relative;
+  flex: none;
+  padding: 4px 7px 8px 24px;
+}
+
+.slide::before {
+  content: attr(data-slide-number);
+  position: absolute;
+  top: 7px;
+  left: 2px;
+  color: var(--ghost-ink);
+  font-size: 11px;
+}
+
+.paper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  box-sizing: border-box;
+  padding: 8% 10%;
+  overflow: hidden;
+  border: 1px dashed var(--ghost-rule);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--bg-base, #ffffff) 70%, transparent);
+}
+
+/* One soft light crossing the paper: the unit is on its way. */
+.paper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    color-mix(in srgb, var(--ghost-accent) 10%, transparent) 50%,
+    transparent 70%
+  );
+  background-size: 250% 100%;
+  animation: live-draft-ghost-sheen 1.8s ease-in-out infinite;
+}
+
+/* One line: a rail miniature has room for its title and two rules. */
+.title {
+  flex: none;
+  overflow: hidden;
+  color: var(--ghost-ink);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.line {
+  display: block;
+  flex: none;
+  width: 78%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--ghost-rule);
+}
+
+.line[data-short] {
+  width: 52%;
+}
+
+/* The slide being written now: its outline breathes in the run's accent. */
+.slide[data-next] .paper {
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--ghost-accent) 55%, transparent);
+  animation: live-draft-ghost-breathe 1.6s ease-in-out infinite;
+}
+
+/* A sheet still to come: a flat tab beside the written ones, its underline
+   drawn dashed (the written sheet's underline is solid). */
+.sheet {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  max-width: 160px;
+  min-height: 28px;
+  box-sizing: border-box;
+  padding: 0 14px;
+  overflow: hidden;
+  color: var(--ghost-ink);
+  font-size: 12px;
+}
+
+.sheet::before {
+  content: "";
+  position: absolute;
+  right: 10px;
+  bottom: 0;
+  left: 10px;
+  border-bottom: 2px dashed var(--ghost-rule);
+}
+
+.sheet::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    color-mix(in srgb, var(--ghost-accent) 12%, transparent) 50%,
+    transparent 70%
+  );
+  background-size: 250% 100%;
+  animation: live-draft-ghost-sheen 1.8s ease-in-out infinite;
+}
+
+/* The sheet being written now. */
+.sheet[data-next] {
+  color: color-mix(in srgb, var(--ghost-accent) 80%, var(--text-primary, #17211f));
+}
+
+.sheet[data-next]::before {
+  border-bottom-style: solid;
+  border-bottom-color: var(--ghost-accent);
+  animation: live-draft-ghost-pulse 1.6s ease-in-out infinite;
+}
+
+.sheetName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@keyframes live-draft-ghost-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes live-draft-ghost-sheen {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -150% 0;
+  }
+}
+
+@keyframes live-draft-ghost-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes live-draft-ghost-breathe {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--ghost-accent) 0%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ghost-accent) 16%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide,
+  .sheet,
+  .slide[data-next] .paper,
+  .sheet[data-next]::before,
+  .paper::after,
+  .sheet::after {
+    animation: none;
+  }
+}

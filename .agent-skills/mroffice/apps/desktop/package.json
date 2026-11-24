@@ -1,0 +1,22 @@
+{
+  "name": "mroffice-editors-desktop",
+  "productName": "MR Office Editors",
+  "version": "0.1.0",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "description": "MR Office Editors: the MR Office desktop app's shell, open source. With the free MR Office component it opens and saves Word, Excel, PowerPoint and PDF files; without it, the open-source editors.",
+  "main": "dist/entry.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "npm run build && node node_modules/electron/install.js && electron .",
+    "test": "npm run build && node --test test/app-state.test.mjs test/component.test.mjs test/default-app-offer.test.mjs test/document-target.test.mjs test/document-thumbnail.test.mjs test/editors-server.test.mjs test/files.test.mjs test/launch-cache.test.mjs test/navigation.test.mjs test/permissions.test.mjs test/prelaunch.test.mjs test/service-log.test.mjs test/web-port.test.mjs",
+    "package": "npm run build && electron-builder --dir --config electron-builder.config.cjs",
+    "dist": "npm run build && electron-builder --config electron-builder.config.cjs"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.11",
+    "electron": "44.4.5",
+    "electron-builder": "26.16.1",
+    "typescript": "5.9.3"
+  }
+}

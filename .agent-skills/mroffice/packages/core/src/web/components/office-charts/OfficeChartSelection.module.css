@@ -1,0 +1,141 @@
+/* A chart element's selection chrome over a chart's picture, the same in
+ * Docs, the worksheet and the deck: Office frames the element selected with
+ * a thin line and, on the elements a hand sizes (the plot area, the legend),
+ * eight round handles; a text element (a title) has its frame alone. The
+ * frame and the handles keep their pixel size at any zoom: they are laid
+ * over the picture in percentages, their lines in CSS px. */
+
+.frame {
+  position: absolute;
+  box-sizing: border-box;
+  border: 1px solid #5f6368;
+  border-radius: 1px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* An element a hand places: the press on it is the element's (a drag moves
+ * it, a click stays a click). */
+.frame[data-chart-part-placeable="true"] {
+  pointer-events: auto;
+  cursor: move;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* What inside the selected element is selected (a legend entry, a series'
+ * labels, one label): a lighter frame, as Office draws it. */
+.frame[data-chart-frame-kind="member"] {
+  border-color: #7f868d;
+}
+
+.handle {
+  position: absolute;
+  /* The hit target; the painted round mark is ::before. */
+  width: var(--chart-handle-hit, 13px);
+  height: var(--chart-handle-hit, 13px);
+  margin-left: calc(var(--chart-handle-hit, 13px) / -2);
+  margin-top: calc(var(--chart-handle-hit, 13px) / -2);
+  box-sizing: border-box;
+  pointer-events: auto;
+  touch-action: none;
+  z-index: 3;
+}
+
+.handle::before {
+  content: "";
+  position: absolute;
+  left: calc(50% - 3.5px);
+  top: calc(50% - 3.5px);
+  width: 7px;
+  height: 7px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #5f6368;
+  box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.85);
+  pointer-events: none;
+}
+
+.handle:hover::before {
+  background: #e8eaed;
+}
+
+/* A finger needs a larger target than the 7px mark (the mark stays 7px). */
+:where(:root[data-touch-mode]) .handle {
+  --chart-handle-hit: 24px;
+}
+
+.handle[data-handle="nw"],
+.handle[data-handle="se"] {
+  cursor: nwse-resize;
+}
+.handle[data-handle="ne"],
+.handle[data-handle="sw"] {
+  cursor: nesw-resize;
+}
+.handle[data-handle="n"],
+.handle[data-handle="s"] {
+  cursor: ns-resize;
+}
+.handle[data-handle="e"],
+.handle[data-handle="w"] {
+  cursor: ew-resize;
+}
+
+/* The outline a drag carries: where the element lands on release. */
+.ghost {
+  position: absolute;
+  box-sizing: border-box;
+  border: 1px dashed #3c4043;
+  background: rgba(95, 99, 104, 0.06);
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* A dropped element's new place, framed while the chart is drawn again. */
+.landing {
+  position: absolute;
+  box-sizing: border-box;
+  border: 1px solid #5f6368;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* A selected series' or point's handles. */
+.pointMark {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  margin-top: -3.5px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #5f6368;
+}
+
+/* Office's chart tip: the element's name (and a point's value) by the
+ * pointer, in the window's own small type. */
+.tip {
+  position: absolute;
+  z-index: 4;
+  max-width: 320px;
+  padding: 3px 7px 4px;
+  box-sizing: border-box;
+  border: 1px solid #c4c7cc;
+  border-radius: 3px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.14);
+  color: #2b2f33;
+  font: 12px/1.35 "Segoe UI", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+.tip strong {
+  font-weight: 600;
+}

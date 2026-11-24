@@ -1,0 +1,40 @@
+.design,
+.format {
+  /* Both chart tabs render inside the presentation's secondary Home band
+     (`PresentationRibbonStrip`), which defines the shared large-command
+     metrics and owns the large-command anatomy. Nothing here restates them:
+     a local height or font size is how Chart Design used to drift from the
+     Insert tab's commands. */
+  display: flex;
+  align-items: stretch;
+  flex: 0 0 auto;
+  min-width: max-content;
+}
+.commands {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 68px;
+}
+.design :global(.note-editor-office-toolbar__group) {
+  flex: 0 0 auto;
+  height: 98px;
+  padding-inline: 6px;
+}
+.status {
+  position: absolute;
+  right: 12px;
+  bottom: 0;
+  font-size: 11px;
+  color: #667085;
+}
+
+.format :global([data-testid="presentation-chart-format-reset-style"]) {
+  width: max-content !important;
+  min-width: max-content !important;
+}
+
+.format :global([data-testid="presentation-chart-format-group"]) {
+  width: max-content !important;
+  min-width: max-content !important;
+}

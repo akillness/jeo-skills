@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "حسبِ ضرورت",
+ "zoom.levels": "زوم کی سطحیں",
+ "dialog.close": "بند کریں",
+ "toast.close": "اطلاع بند کریں",
+ "button.confirm": "ٹھیک ہے",
+ "button.cancel": "منسوخ کریں",
+ "libreOffice.enable": "ڈاؤن لوڈ کریں اور فعال کریں (تقریباً {size})",
+ "libreOffice.enableAlt": "LibreOffice ڈاؤن لوڈ کریں اور فعال کریں",
+ "libreOffice.enabled": "LibreOffice {version} فعال ہے",
+ "libreOffice.retrying": "دوبارہ کوشش کی جا رہی ہے…",
+ "libreOffice.ready": "پرانی Office فارمیٹس، OpenDocument فائلیں، EMF/WMF تصاویر اور OpenDocument ایکسپورٹس اب کام کرتی ہیں۔",
+ "libreOffice.needed": "اس کے لیے LibreOffice درکار ہے۔ MR Note Classic سرکاری ریلیز کو اپنے فولڈر میں ڈاؤن لوڈ کر سکتا ہے؛ آپ کے سسٹم پر کچھ انسٹال نہیں ہوتا۔",
+ "libreOffice.neededFor": "‎.{format} کے طور پر محفوظ کرنے کے لیے LibreOffice درکار ہے۔ MR Note Classic سرکاری ریلیز کو اپنے فولڈر میں ڈاؤن لوڈ کر سکتا ہے؛ آپ کے سسٹم پر کچھ انسٹال نہیں ہوتا۔"
+}

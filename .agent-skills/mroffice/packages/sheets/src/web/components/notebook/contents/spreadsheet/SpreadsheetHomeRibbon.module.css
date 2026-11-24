@@ -1,0 +1,4291 @@
+/* Spreadsheet-owned Excel-Web ribbon surface.
+ *
+ * Shared Office primitives continue to own focus, menus, command authority,
+ * and overflow measurement. This module only adapts their visual grammar for
+ * the Spreadsheet editor: neutral chrome, restrained spreadsheet-green
+ * semantic accents, intrinsic group widths, and a stable desktop rhythm.
+ */
+
+.webSurface[data-spreadsheet-ribbon-surface="web"] {
+  --spreadsheet-ribbon-accent: #15803d;
+  --spreadsheet-ribbon-accent-strong: #166534;
+  --spreadsheet-ribbon-accent-soft: #f0fdf4;
+  --spreadsheet-ribbon-hover: #e1eee5;
+  --spreadsheet-ribbon-hover-border: #b7d2c1;
+  --spreadsheet-ribbon-idle: #f7f8f8;
+  --console-accent: var(--spreadsheet-ribbon-accent);
+  --console-accent-strong: var(--spreadsheet-ribbon-accent-strong);
+  --console-accent-tint-soft: var(--spreadsheet-ribbon-idle);
+  --docs-ribbon-accent: var(--spreadsheet-ribbon-accent);
+  --docs-ribbon-accent-strong: var(--spreadsheet-ribbon-accent-strong);
+  --docs-ribbon-active: #ecf8ef;
+  --docs-ribbon-hover: var(--spreadsheet-ribbon-hover);
+  --office-ribbon-hover: var(--spreadsheet-ribbon-hover);
+  --office-ribbon-accent: var(--spreadsheet-ribbon-accent);
+  --office-ribbon-accent-soft: var(--spreadsheet-ribbon-accent-soft);
+  --office-ribbon-ink: var(--docs-ribbon-ink);
+  --tb-hover: var(--spreadsheet-ribbon-hover);
+  --tb-ink-strong: var(--spreadsheet-ribbon-accent-strong);
+  --docs-ribbon-border: #d7dce0;
+  --docs-ribbon-divider: #dfe3e6;
+  --docs-ribbon-ink: #26332d;
+  --docs-ribbon-muted: #66706b;
+  --docs-home-icon-ink: #263238;
+  --docs-home-icon-ink-soft: #52605a;
+  --docs-home-icon-accent: var(--spreadsheet-ribbon-accent);
+  --docs-home-icon-accent-soft: #5cae73;
+  --docs-home-icon-warm: #e09a16;
+  --docs-home-icon-magenta: #a855a6;
+  --docs-home-icon-danger: #d64b45;
+  --docs-home-icon-stroke: 1.35;
+  --docs-home-icon-stroke-emphasis: 1.7;
+  --office-authoring-tab-face-height: 34px;
+  --office-ribbon-band: 104px;
+  background: #ffffff;
+  border-color: var(--docs-ribbon-border);
+  box-shadow:
+    0 1px 2px rgb(15 23 42 / 6%),
+    0 5px 16px rgb(15 23 42 / 5%);
+}
+
+/* View and the status bar are two doors into one session-only, per-sheet zoom
+ * authority. The shared crown owns interaction; this adapter only supplies the
+ * restrained Excel-green surface and the compact status-bar hit target. */
+.zoomPopover {
+  --console-accent: #15803d;
+  --console-surface: #ffffff;
+  --console-text-primary: #26332d;
+  --console-text-secondary: #26332d;
+  --console-text-muted: #66706b;
+  --console-shadow-ink: #12351e;
+  --continuous-zoom-border: color-mix(in srgb, #15803d 28%, #d7dce0);
+  --continuous-zoom-glass: color-mix(in srgb, #ffffff 94%, transparent);
+}
+
+.zoomDialHost {
+  display: contents;
+}
+
+.zoomDial {
+  color: #26332d;
+  filter: none;
+}
+
+.zoomStatusControls {
+  /* the zoom slider sits in the status bar at the bar's own height */
+  --continuous-zoom-width: 168px;
+  --continuous-zoom-height: 26px;
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.zoomStatusButton.zoomStatusButton {
+  align-items: center;
+  border: 1px solid var(--office-control-border, #d7dce0);
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  height: 28px;
+  justify-content: center;
+  min-height: 28px;
+  min-width: 28px;
+  padding: 0 6px;
+}
+
+.zoomStatusButton.zoomStatusButton:not(:global(.office-ribbon-control)) {
+  background: #ffffff;
+  color: #26332d;
+}
+
+.zoomStatusButton:hover {
+  border-color: var(--office-control-border, color-mix(in srgb, #15803d 34%, #d7dce0));
+}
+
+.zoomStatusButton:hover:not(:global(.office-ribbon-control)) {
+  background: #f0fdf4;
+}
+
+.zoomStatusButton:focus-visible:not(:global(.office-ribbon-control)) {
+  outline: 2px solid color-mix(in srgb, #15803d 58%, transparent);
+  outline-offset: 1px;
+}
+
+.zoomStatusPercent {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.zoomStatusCrown {
+  gap: 5px;
+}
+
+/* The dial and its reading are one flex row inside the button, not an inline
+   box on a text baseline: a plain span would sit the 22px dial on the 11px
+   line's baseline and ride 2.5px high in a 28px button. */
+.zoomStatusValue {
+  align-items: center;
+  display: inline-flex;
+}
+
+.numberFormatTrigger.numberFormatTrigger {
+  align-items: center;
+  column-gap: 4px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 16px;
+  min-width: 120px;
+  padding-inline: 8px 5px;
+  text-align: start;
+  width: 120px;
+}
+
+.numberFormatValue {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.numberFormatChevron {
+  align-items: center;
+  display: inline-flex;
+  justify-content: flex-end;
+  justify-self: end;
+  margin-inline-start: auto;
+  width: 16px;
+}
+
+.numberFormatMenu.numberFormatMenu {
+  box-sizing: border-box;
+  max-height: min(
+    490px,
+    var(--radix-dropdown-menu-content-available-height, calc(100vh - 16px))
+  );
+  /* Wide enough for a long-date preview such as "Wednesday, September 20, 2026". */
+  min-width: 232px;
+  overflow-y: auto;
+  padding: 4px;
+  width: 232px;
+}
+
+.numberFormatMenuItem.numberFormatMenuItem {
+  align-items: center;
+  border-radius: 4px;
+  column-gap: 6px;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) 16px;
+  min-height: 36px;
+  padding: 2px 6px;
+}
+
+.numberFormatMenuItem[data-active="true"] {
+  background: color-mix(in srgb, #15803d 9%, #ffffff);
+}
+
+.numberFormatMenuIcon {
+  color: #3b3b3b;
+  display: block;
+  height: 16px;
+  overflow: visible;
+  width: 16px;
+}
+
+.numberFormatMenuIcon [data-tone="ink"] {
+  fill: none;
+  stroke: #3b3b3b;
+}
+
+.numberFormatMenuIcon [data-tone="ink-fill"] {
+  fill: #3b3b3b;
+  stroke: none;
+}
+
+.numberFormatMenuIcon [data-tone="accent"] {
+  fill: none;
+  stroke: #087cc1;
+}
+
+.numberFormatMenuIcon [data-tone="accent-fill"] {
+  fill: #087cc1;
+  stroke: none;
+}
+
+.numberFormatMenuIcon [data-tone="warm"] {
+  fill: #ffffff;
+  stroke: #e55417;
+}
+
+/* Name over the active cell's preview, as in Excel's list. */
+.numberFormatMenuText {
+  display: grid;
+  min-width: 0;
+  row-gap: 1px;
+}
+
+.numberFormatMenuName {
+  color: #343434;
+  font-size: 14px;
+  line-height: 1.2;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.numberFormatMenuPreview {
+  color: #616161;
+  font-size: 12px;
+  line-height: 1.2;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.numberFormatMenuCheck {
+  color: #15803d;
+  display: grid;
+  place-items: center;
+}
+
+.numberFormatMoreItem.numberFormatMoreItem {
+  border-radius: 4px;
+  font-size: 14px;
+  min-height: 34px;
+  padding: 3px 10px;
+}
+
+/* Dark menus: the list's own ink, icon strokes, tint on the current format
+   and check follow the dark Cupertino menu instead of Excel's light list. */
+:global([data-theme-mode="dark"]) .numberFormatMenuItem[data-active="true"] {
+  background: color-mix(in srgb, #1f8f4c 24%, transparent);
+}
+:global([data-theme-mode="high-contrast"]) .numberFormatMenuItem[data-active="true"] {
+  background: color-mix(in srgb, #1f8f4c 24%, transparent);
+}
+
+:global([data-theme-mode="dark"]) .numberFormatMenuIcon {
+  color: #d1d1d6;
+}
+
+:global([data-theme-mode="high-contrast"]) .numberFormatMenuIcon {
+  color: #d1d1d6;
+}
+
+:global([data-theme-mode="dark"]) .numberFormatMenuIcon [data-tone="ink"] {
+  stroke: #d1d1d6;
+}
+
+:global([data-theme-mode="high-contrast"]) .numberFormatMenuIcon [data-tone="ink"] {
+  stroke: #d1d1d6;
+}
+
+:global([data-theme-mode="dark"]) .numberFormatMenuIcon [data-tone="ink-fill"] {
+  fill: #d1d1d6;
+}
+
+:global([data-theme-mode="high-contrast"]) .numberFormatMenuIcon [data-tone="ink-fill"] {
+  fill: #d1d1d6;
+}
+
+:global([data-theme-mode="dark"]) .numberFormatMenuIcon [data-tone="accent"] {
+  stroke: #4ba3e3;
+}
+
+:global([data-theme-mode="high-contrast"]) .numberFormatMenuIcon [data-tone="accent"] {
+  stroke: #4ba3e3;
+}
+
+:global([data-theme-mode="dark"]) .numberFormatMenuIcon [data-tone="accent-fill"] {
+  fill: #4ba3e3;
+}
+
+:global([data-theme-mode="high-contrast"]) .numberFormatMenuIcon [data-tone="accent-fill"] {
+  fill: #4ba3e3;
+}
+
+:global([data-theme-mode="dark"]) .numberFormatMenuIcon [data-tone="warm"] {
+  fill: transparent;
+  stroke: #f07a45;
+}
+
+:global([data-theme-mode="high-contrast"]) .numberFormatMenuIcon [data-tone="warm"] {
+  fill: transparent;
+  stroke: #f07a45;
+}
+
+:global([data-theme-mode="dark"]) .numberFormatMenuName {
+  color: #f2f2f7;
+}
+
+:global([data-theme-mode="high-contrast"]) .numberFormatMenuName {
+  color: #f2f2f7;
+}
+
+:global([data-theme-mode="dark"]) .numberFormatMenuPreview {
+  color: #a1a1a8;
+}
+
+:global([data-theme-mode="high-contrast"]) .numberFormatMenuPreview {
+  color: #a1a1a8;
+}
+
+:global([data-theme-mode="dark"]) .numberFormatMenuCheck {
+  color: #63d68a;
+}
+
+:global([data-theme-mode="high-contrast"]) .numberFormatMenuCheck {
+  color: #63d68a;
+}
+
+.marginPresetMenu.marginPresetMenu {
+  /* As wide as its rows, up to the old fixed width. */
+  width: max-content;
+  max-width: min(320px, calc(100vw - 24px));
+  min-width: 184px;
+  scrollbar-gutter: auto;
+}
+
+.marginPresetItem.marginPresetItem {
+  gap: 8px;
+  min-height: 38px;
+  padding: 2px 6px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+/* The whole selected row is the indicator; keep Radix's radio semantics
+   without reserving a second, empty indicator column. */
+.marginPresetItem > span:first-child {
+  display: none;
+}
+
+.marginPresetItem.marginPresetItem[data-state="checked"] {
+  border-color: #409663;
+  background: color-mix(in srgb, #15803d 14%, transparent);
+}
+
+.marginPresetItem.marginPresetItem:focus-visible {
+  outline: 2px solid #15803d;
+  outline-offset: -2px;
+}
+
+.marginPresetItem .marginPresetPreview {
+  flex: 0 0 28px;
+  width: 28px;
+  height: 30px;
+}
+
+.marginPresetPreview :global(.docs-home-icon__paper) {
+  fill: #fff;
+  stroke: #7b858b;
+}
+
+.marginPresetPreview :global(.docs-home-icon__muted) {
+  stroke: #408bd0;
+}
+
+.marginPresetPreview :global(.docs-home-icon__accent) {
+  display: none;
+}
+
+.marginPresetCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.marginPresetCopy > strong {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.marginPresetValues {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 6px;
+  color: #626b69;
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+.marginPresetValues > span {
+  white-space: nowrap;
+}
+
+.marginPresetCustom.marginPresetCustom {
+  min-height: 28px;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.paperSizeMenu.paperSizeMenu {
+  width: max-content;
+  max-width: min(270px, calc(100vw - 24px));
+  min-width: 184px;
+  max-height: min(510px, var(--radix-dropdown-menu-content-available-height, calc(100vh - 16px)));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.paperSizeItem.paperSizeItem {
+  min-height: 42px;
+  gap: 10px;
+  padding: 4px 6px;
+}
+
+.paperSizeItem .marginPresetCopy > strong {
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.paperSizeValues {
+  color: #626b69;
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.cellStyleMenu.cellStyleMenu {
+  box-sizing: border-box;
+  max-height: min(
+    76vh,
+    620px,
+    var(--radix-dropdown-menu-content-available-height, calc(100vh - 24px))
+  );
+  max-width: calc(100vw - 24px);
+  min-width: min(640px, calc(100vw - 24px));
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  padding: 6px 8px;
+  scrollbar-gutter: stable;
+  width: min(640px, calc(100vw - 24px));
+}
+
+.cellStyleCompactHost {
+  display: inline-flex;
+  position: relative;
+}
+
+.cellStyleCompactMenu {
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+  box-sizing: border-box;
+  display: block;
+  font-weight: 400;
+  inset-inline-start: 0;
+  max-height: min(70vh, 620px);
+  max-width: calc(100vw - 24px);
+  overflow-y: auto;
+  padding: 6px 8px;
+  position: absolute;
+  text-align: left;
+  top: calc(100% + 2px);
+  width: min(640px, calc(100vw - 24px));
+  z-index: 30;
+}
+
+.cellStyleGallery {
+  display: grid;
+  min-width: 0;
+  width: 100%;
+}
+
+.cellStyleGroup {
+  border-bottom: 1px solid var(--docs-ribbon-divider, #d9dde3);
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  padding: 6px 0 7px;
+}
+
+.cellStyleGroup:first-child {
+  padding-top: 2px;
+}
+
+.cellStyleGroup:last-child {
+  border-bottom: 0;
+  padding-bottom: 3px;
+}
+
+.cellStyleGroupLabel {
+  color: var(--office-ribbon-ink, #1f2937);
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 18px;
+  padding-inline: 2px;
+}
+
+.cellStyleGroupGrid {
+  display: grid;
+  gap: 6px 10px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  min-width: 0;
+}
+
+.cellStyleTile.cellStyleTile {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: var(--office-ribbon-ink, #1f2937);
+  cursor: pointer;
+  display: block;
+  min-height: 30px;
+  min-width: 0;
+  padding: 1px;
+  width: 100%;
+}
+
+.cellStyleTile.cellStyleTile:focus-visible,
+.cellStyleTile.cellStyleTile[data-highlighted] {
+  background: var(--office-ribbon-hover, #f3f5f4);
+  border-color: var(--spreadsheet-ribbon-accent-strong, #15803d);
+  outline: 1px solid var(--spreadsheet-ribbon-accent-strong, #15803d);
+  outline-offset: -2px;
+}
+
+.cellStyleTile.cellStyleTile:hover:not(:disabled) {
+  background: var(--office-ribbon-hover, #f3f5f4);
+  border-color: color-mix(
+    in srgb,
+    var(--spreadsheet-ribbon-accent-strong, #15803d) 38%,
+    transparent
+  );
+}
+
+.cellStyleTile.cellStyleTile[data-active="true"] {
+  border-color: #737373;
+  box-shadow: inset 0 0 0 1px #737373;
+}
+
+.cellStyleTile.cellStyleTile[data-active="mixed"] {
+  border-color: var(--spreadsheet-ribbon-accent-strong, #15803d);
+  box-shadow: inset 0 -3px 0
+    color-mix(in srgb, var(--spreadsheet-ribbon-accent-strong, #15803d) 55%, transparent);
+}
+
+.cellStyleTile.cellStyleTile:disabled,
+.cellStyleTile.cellStyleTile[data-disabled] {
+  cursor: default;
+  opacity: 0.46;
+}
+
+.cellStyleSwatch {
+  align-items: center;
+  border: 1px solid var(--docs-ribbon-divider, #c8cbd0);
+  border-radius: 1px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-start;
+  min-height: 28px;
+  min-width: 0;
+  overflow: hidden;
+  padding: 3px 6px;
+  width: 100%;
+}
+
+.cellStyleSwatchLabel {
+  display: block;
+  font-size: inherit;
+  line-height: 20px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cellStyleFormatCells.cellStyleFormatCells {
+  font-size: 13px;
+  min-height: 34px;
+  padding: 5px 8px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  > :global(.note-editor-ribbon-tabs) {
+  box-sizing: border-box;
+  height: 36px;
+  min-height: 36px;
+  padding: 3px 8px 0;
+  background: #fafafa;
+  border-bottom-color: #dfe3e6;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-tab) {
+  box-sizing: border-box;
+  height: 32px;
+  min-height: 32px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-tab__face) {
+  height: 34px;
+  min-height: 34px;
+  padding: 5px 12px 6px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-tab:hover) {
+  background: var(--docs-ribbon-hover);
+  color: var(--spreadsheet-ribbon-accent-strong);
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-tab--active) {
+  color: var(--spreadsheet-ribbon-accent-strong);
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-tab--active::after) {
+  background: var(--spreadsheet-ribbon-accent);
+}
+
+.viewModeSwitcher {
+  display: grid;
+  flex: 0 0 auto;
+  grid-template-columns: repeat(3, 28px);
+  height: 28px;
+  overflow: hidden;
+  border: 1px solid var(--docs-ribbon-border, #d7dce0);
+  border-radius: 7px;
+  background: var(--spreadsheet-ribbon-idle, #f7f8f8);
+}
+
+.viewModeSwitcher > .viewModeButton {
+  display: inline-grid;
+  box-sizing: border-box;
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  min-height: 28px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-inline-end: 1px solid var(--office-control-border, var(--docs-ribbon-border, #d7dce0));
+  border-radius: 0;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.viewModeSwitcher > .viewModeButton:not(:global(.office-ribbon-control)) {
+  background: transparent;
+  color: var(--docs-ribbon-muted, #66706b);
+}
+
+.viewModeSwitcher > .viewModeButton:last-child {
+  border-inline-end: 0;
+}
+
+.viewModeSwitcher > .viewModeButton:hover:not(:disabled):not(:global(.office-ribbon-control)) {
+  background: var(--docs-ribbon-hover, #f3f5f4);
+  color: var(--spreadsheet-ribbon-accent-strong, #166534);
+}
+
+.viewModeSwitcher > .viewModeButton[data-active="true"]:not(:global(.office-ribbon-control)) {
+  background: var(--docs-ribbon-active, #ecf8ef);
+  color: var(--spreadsheet-ribbon-accent-strong, #166534);
+}
+
+.viewModeSwitcher > .viewModeButton[aria-pressed="true"]:not(:global(.office-ribbon-control)) {
+  background: var(--docs-ribbon-active, #ecf8ef);
+  color: var(--spreadsheet-ribbon-accent-strong, #166534);
+}
+
+.viewModeSwitcher > .viewModeButton:focus-visible {
+  position: relative;
+  z-index: 1;
+}
+
+.viewModeSwitcher > .viewModeButton:focus-visible:not(:global(.office-ribbon-control)) {
+  outline: 2px solid
+    color-mix(in srgb, var(--spreadsheet-ribbon-accent) 58%, transparent);
+  outline-offset: -2px;
+}
+
+.viewModeSwitcher > .viewModeButton:disabled {
+  cursor: default;
+}
+
+.viewModeSwitcher > .viewModeButton:disabled:not(:global(.office-ribbon-control)) {
+  opacity: 0.45;
+}
+
+:where(:root[data-touch-mode]) .viewModeSwitcher {
+  grid-template-columns: repeat(3, 44px);
+  height: 44px;
+}
+
+:where(:root[data-touch-mode]) .viewModeSwitcher > .viewModeButton {
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-tab:focus-visible):not(:global(.office-ribbon-control)) {
+  outline: 2px solid
+    color-mix(in srgb, var(--spreadsheet-ribbon-accent) 58%, transparent);
+  outline-offset: -2px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-office-toolbar__button:focus-visible):not(:global(.office-ribbon-control)) {
+  outline: 2px solid
+    color-mix(in srgb, var(--spreadsheet-ribbon-accent) 58%, transparent);
+  outline-offset: -2px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-big:focus-visible):not(:global(.office-ribbon-control)) {
+  outline: 2px solid
+    color-mix(in srgb, var(--spreadsheet-ribbon-accent) 58%, transparent);
+  outline-offset: -2px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-office-toolbar__select:focus-visible):not(:global(.office-ribbon-control)) {
+  outline: 2px solid
+    color-mix(in srgb, var(--spreadsheet-ribbon-accent) 58%, transparent);
+  outline-offset: -2px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-value-combobox__input:focus-visible):not(:global(.office-ribbon-control)) {
+  outline: 2px solid
+    color-mix(in srgb, var(--spreadsheet-ribbon-accent) 58%, transparent);
+  outline-offset: -2px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-strip) {
+  background: #ffffff;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body) {
+  background: #ffffff;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-track) {
+  background: #ffffff;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body) {
+  box-sizing: border-box;
+  height: 104px;
+  min-height: 104px;
+  max-height: 104px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-track) {
+  box-sizing: border-box;
+  align-items: stretch;
+  height: 104px;
+  min-height: 104px;
+  width: max-content;
+  min-width: 100%;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-strip::before) {
+  background: linear-gradient(
+    to right,
+    rgb(255 255 255 / 98%),
+    rgb(255 255 255 / 0%)
+  );
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-strip::after) {
+  background: linear-gradient(
+    to right,
+    rgb(255 255 255 / 98%),
+    rgb(255 255 255 / 0%)
+  );
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-strip::after) {
+  background: linear-gradient(
+    to left,
+    rgb(255 255 255 / 98%),
+    rgb(255 255 255 / 0%)
+  );
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-track)
+  > :global(.note-editor-office-toolbar__group) {
+  box-sizing: border-box;
+  align-self: stretch;
+  flex: 0 0 auto;
+  width: max-content;
+  min-width: max-content;
+  max-width: none;
+  height: 104px;
+  min-height: 104px;
+  padding: 4px 8px 3px;
+  overflow: visible;
+}
+
+/* Excel for the web's current object carriers share the canonical 100px
+ * contextual deck. Keep this Spreadsheet-owned adapter below the 104px
+ * persistent-secondary fallback so Table, PivotTable, Chart, Picture/Shape
+ * and Slicer all receive the same physical contract without touching the
+ * shared Office chassis or changing native horizontal overflow behaviour. */
+.contextualDeck100 {
+  --office-ribbon-band: 100px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .contextualDeck100
+  :global(.note-editor-ribbon-body) {
+  height: 100px;
+  max-height: 100px;
+  min-height: 100px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .contextualDeck100
+  :global(.note-editor-ribbon-track) {
+  height: 100px;
+  max-height: 100px;
+  min-height: 100px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .contextualDeck100
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-track)
+  > :global(.note-editor-office-toolbar__group) {
+  height: 100px;
+  max-height: 100px;
+  min-height: 100px;
+  padding-block: 2px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body)
+  :global(.note-editor-ribbon-track)
+  > :global(.note-editor-office-toolbar__group[data-ribbon-label]::after) {
+  box-sizing: border-box;
+  align-self: center;
+  height: 15px;
+  min-height: 15px;
+  margin-top: auto;
+  padding-top: 0;
+  color: var(--docs-ribbon-muted);
+  font-size: 11.5px;
+  font-weight: 550;
+  letter-spacing: 0;
+  line-height: 15px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.homeSurface {
+  --office-home-band-height: 104px;
+  --office-home-caption-height: 15px;
+  box-sizing: border-box;
+  height: 104px;
+  min-height: 104px;
+  background: #ffffff;
+}
+
+/* Touch mode draws the strip inside a quarter larger (zoom, styles/
+ * touch-mode.css); the surface around it is not zoomed, so a fixed 104px
+ * left the strip's last quarter, the group captions, under the toolbar's
+ * clip. The surface takes the strip's zoomed height instead. */
+:global(:root[data-touch-mode]) .homeSurface {
+  height: auto;
+}
+
+/* A glyph may keep a semantic red delete mark or magenta eraser without
+ * turning the attached disclosure face into a warning button. Spreadsheet
+ * Home owns one workbook-green disclosure language, so reset the shared
+ * icon-derived accent at both disclosure roots. This is intentionally a custom
+ * property override: icon strokes remain untouched, while compact splits and
+ * large menu commands continue to reuse the shared Office geometry. */
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .homeSurface
+  :global([data-office-home-split="true"]) {
+  --office-home-disclosure-accent: var(
+    --spreadsheet-ribbon-accent,
+    #15803d
+  ) !important;
+}
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .homeSurface
+  :global([data-office-home-menu-indicator="true"]) {
+  --office-home-disclosure-accent: var(
+    --spreadsheet-ribbon-accent,
+    #15803d
+  ) !important;
+}
+
+/* Contextual tabs use the same real split chassis as Home. Their independent
+ * disclosure face stays workbook-green even when the primary glyph contains a
+ * semantic fill/outline colour; only the primary face owns that swatch. */
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .contextualDeck100
+  :global([data-office-home-split="true"]) {
+  --office-home-disclosure-accent: var(
+    --spreadsheet-ribbon-accent,
+    #15803d
+  ) !important;
+}
+
+.homeGroup {
+  flex-basis: auto;
+  width: max-content;
+  min-width: max-content;
+  max-width: none;
+}
+
+.homeGroupContent {
+  box-sizing: border-box;
+  align-items: center;
+  flex: 0 0 auto;
+  width: max-content;
+  min-width: 0;
+  max-width: none;
+  height: 80px;
+  min-height: 0;
+  max-height: 80px;
+  overflow: visible;
+}
+
+/* Data, Review, View and the other secondary tabs reuse the shared Office
+ * command anatomy inside the Insert band. Their content must keep intrinsic
+ * width: a narrow host pages the ribbon horizontally, just like Excel for the
+ * web, instead of shrinking command stacks until labels and glyphs overlap. */
+.secondaryGroup {
+  flex: 0 0 auto;
+  max-width: none;
+  min-width: max-content;
+  width: max-content;
+}
+
+.secondaryGroupContent {
+  align-items: center;
+  box-sizing: border-box;
+  column-gap: 4px;
+  flex: 0 0 auto;
+  height: 80px;
+  max-height: 80px;
+  max-width: none;
+  min-height: 0;
+  min-width: max-content;
+  overflow: visible;
+  width: max-content;
+}
+
+.secondaryGroupContent > * {
+  align-self: center;
+  flex: 0 0 auto;
+  min-width: max-content;
+}
+
+.secondaryGroupContent > * > * {
+  flex-shrink: 0;
+}
+
+/* View reuses the existing 104/80/24/66px secondary band. Its compact rows
+ * must win over Insert's later generic 30px minimum, not grow the band. */
+.viewFieldRow {
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 6px;
+}
+
+.viewFieldLabel,
+.viewChoiceValue {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.viewFieldLabel {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .viewCompact .viewChoiceTrigger {
+  --spreadsheet-view-choice-width: 120px;
+  flex: 0 0 var(--spreadsheet-view-choice-width);
+  max-width: var(--spreadsheet-view-choice-width);
+  min-width: var(--spreadsheet-view-choice-width);
+  width: var(--spreadsheet-view-choice-width);
+  grid-template-columns: minmax(0, 1fr) 18px;
+}
+
+.viewCompact .viewChoiceTrigger
+  > :global([data-office-home-menu-part="primary"]) {
+  justify-content: flex-start;
+  min-width: 0;
+  padding-inline: 6px;
+}
+
+.viewCompact .viewChoiceTrigger
+  > :global([data-office-home-menu-part="primary"]) > span:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+}
+
+/* The Sheet View name box. Excel for the web lets you type straight into the
+   Sheet View box and press Enter to keep a temporary view under that name (or
+   rename the active one); the dropdown beside it only switches. Same tokens as
+   the other ribbon text inputs, at the field's own 12px metrics and width. */
+.viewNameInput {
+  background: var(--office-ribbon-surface, #fff);
+  border: 1px solid var(--docs-ribbon-divider, #d1d5db);
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: var(--office-ribbon-ink, #1f2937);
+  flex: 0 0 var(--spreadsheet-view-choice-width, 120px);
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.5;
+  min-width: 0;
+  outline: none;
+  padding: 1px 6px;
+  width: var(--spreadsheet-view-choice-width, 120px);
+}
+
+/* The box and its switch read as one field: the input gives up its right
+   corners and the chevron sits flush against it at the input's own height. */
+.viewNameInput {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+
+.viewNameDisclosure.viewNameDisclosure {
+  --office-gallery-disclosure-width: 22px;
+  --office-gallery-disclosure-height: calc(1.5em + 4px + 2px);
+  background: var(--office-ribbon-surface, #fff);
+  border: 1px solid var(--docs-ribbon-divider, #d1d5db);
+  border-inline-start: 0;
+  border-radius: 0 3px 3px 0;
+  color: var(--office-ribbon-ink, #1f2937);
+  font-size: 12px;
+}
+
+.viewNameDisclosure.viewNameDisclosure:hover {
+  background: var(--docs-ribbon-hover, #eff9f7);
+}
+
+.viewNameInput:focus-visible {
+  border-color: var(--spreadsheet-ribbon-accent, #15803d);
+  box-shadow: 0 0 0 1px var(--spreadsheet-ribbon-accent, #15803d);
+}
+
+.viewNameInput[aria-invalid="true"] {
+  border-color: var(--docs-home-icon-danger, #e24c35);
+  box-shadow: 0 0 0 1px var(--docs-home-icon-danger, #e24c35);
+}
+
+.viewChoiceValue {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-align: start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"] .viewCompact .viewFieldRow,
+.webSurface[data-spreadsheet-ribbon-surface="web"] .viewCompact .viewSmallCommands {
+  min-height: 0;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .viewCompact .secondaryGroupContent
+  .viewSmallCommands > :global(.note-editor-office-toolbar__button) {
+  height: 24px;
+  min-height: 24px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .viewCompact .secondaryGroupContent
+  .viewFieldRow :global(.note-editor-office-toolbar__button) {
+  height: 24px;
+  min-height: 24px;
+}
+
+/* A plain command owns its padding/glyph directly; a disclosure command owns
+ * them inside its primary face. Normalize those two paths in the import stack
+ * without resizing the independent disclosure rail or other Ribbon groups. */
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent .dataImportCommands
+  :global(.note-editor-office-toolbar__button:not([data-office-home-menu-indicator="true"])),
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent .dataImportCommands
+  :global([data-office-home-menu-part="primary"]) {
+  padding-inline: 6px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent .dataImportCommands
+  :global(.note-editor-office-toolbar__button:not([data-office-home-menu-indicator="true"])) > span:first-child,
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent .dataImportCommands
+  :global([data-office-home-menu-part="primary"]) > span:first-child {
+  flex: 0 0 18px;
+  height: 18px;
+  width: 18px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent .dataImportCommands
+  :global(.note-editor-office-toolbar__button:not([data-office-home-menu-indicator="true"])) > span:first-child > svg,
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent .dataImportCommands
+  :global([data-office-home-menu-part="primary"]) > span:first-child > svg {
+  height: 18px;
+  width: 18px;
+}
+
+/* The shared compact command defaults intentionally permit 28px icon-only
+ * controls. Secondary spreadsheet tabs also use that anatomy for labelled
+ * commands. Their nowrap labels used to paint outside the 28px button box and
+ * over the next command, producing the Data / Review / View "ghost" text.
+ * Give every labelled compact face its intrinsic width; split-menu indicator
+ * faces remain the deliberately narrow chevron rail. */
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent
+  :global(
+    .note-editor-office-toolbar__button:not(
+        [data-office-home-menu-indicator="true"]
+      )
+  ) {
+  flex: 0 0 auto;
+  max-width: none;
+  min-width: max-content;
+  width: max-content;
+}
+
+/* A labelled compact command keeps room around its words. The shared
+ * toolbar button rule (`padding: 0`) outranks the compact anatomy's own
+ * padding, so the glyph sat on the left edge and a three-character label
+ * (Gridlines, Formula Bar, Bring to Front) ran into the right one -- most
+ * visible on a pressed toggle, whose fill shows the button's edge. */
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent
+  :global(
+    .note-editor-office-toolbar__button[data-office-anatomy="compact"]:not(
+        [data-office-home-menu-indicator="true"]
+      )
+  ) {
+  padding-inline: 6px 10px;
+}
+
+/* Secondary tabs legitimately use three compact rows (Clear / Reapply /
+ * Advanced, or the query inventory).  The shared Home 30px row is correct for
+ * a two-row Home stack but exceeds this 80px command band at three rows.  Use
+ * Excel-Web's denser 24px secondary rhythm so labels never paint over adjacent
+ * commands while every face retains a full desktop pointer target. */
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent
+  :global(.note-editor-office-toolbar__button) {
+  box-sizing: border-box;
+  height: 24px;
+  min-height: 24px;
+  padding-block: 2px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent
+  :global(
+    .note-editor-office-toolbar__button:not(
+        [data-office-home-menu-indicator="true"]
+      )
+  )
+  > span:first-child {
+  flex: 0 0 18px;
+  height: 18px;
+  width: 18px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent
+  :global(
+    .note-editor-office-toolbar__button:not(
+        [data-office-home-menu-indicator="true"]
+      )
+  )
+  > span:first-child
+  > svg {
+  height: 18px;
+  width: 18px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent
+  :global(.note-editor-ribbon-big) {
+  box-sizing: border-box;
+  height: 66px;
+  justify-content: center;
+  max-height: 66px;
+  min-height: 66px;
+  min-width: 58px;
+  padding: 2px 7px 14px;
+}
+
+/* Excel Web keeps the eighteen supported Insert commands in one desktop band.
+ * Tighten only its chart split buttons and group gutters; the 24px icons,
+ * menus, focus owners and the narrow-host pager remain unchanged. */
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroup:global([data-testid^="spreadsheet-ribbon-group-insert-"]) {
+  padding-inline: 4px;
+}
+
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent:global(
+    [data-testid="spreadsheet-ribbon-group-content-insert-charts"]
+  ) {
+  column-gap: 2px;
+}
+
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent:global(
+    [data-testid="spreadsheet-ribbon-group-content-insert-charts"]
+  )
+  :global(.note-editor-office-toolbar__split) {
+  box-sizing: border-box;
+  grid-template-columns: minmax(58px, auto);
+  grid-template-rows: 52px 14px;
+  max-width: 58px;
+  min-width: 58px;
+  width: 58px;
+}
+
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent:global(
+    [data-testid="spreadsheet-ribbon-group-content-insert-charts"]
+  )
+  :global(.note-editor-ribbon-big) {
+  box-sizing: border-box;
+  height: 52px;
+  max-height: 52px;
+  max-width: 58px;
+  min-height: 52px;
+  min-width: 58px;
+  padding: 2px 3px 0;
+  width: 58px;
+}
+
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent:global(
+    [data-testid="spreadsheet-ribbon-group-content-insert-charts"]
+  )
+  :global(.note-editor-office-toolbar__split-chevron) {
+  box-sizing: border-box;
+  grid-column: 1;
+  grid-row: 2;
+  height: 14px;
+  max-height: 14px;
+  max-width: none;
+  min-height: 14px;
+  min-width: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent:global(
+    [data-testid="spreadsheet-ribbon-group-content-insert-charts"]
+  )
+  :global(.spreadsheet-ribbon-action__label) {
+  font-size: 10px;
+  line-height: 12px;
+  max-width: 40px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent
+  :global(.note-editor-ribbon-big)
+  > span:first-child,
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent
+  :global(.note-editor-ribbon-big)
+  > span:first-child
+  > svg {
+  height: 24px;
+  width: 24px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent
+  :global(button) {
+  font-family: inherit;
+  letter-spacing: 0;
+}
+
+ 
+
+/* Table Design follows the compact Excel-Web rhythm inside the canonical 100px
+ * contextual band. The table name owns the first row and the two property
+ * commands (Alt Text, Resize Table) reuse the shared compact command for the
+ * remaining rows: three rows in the 72px above the caption, nothing more. */
+.tableDesignProperties {
+  align-content: center;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: repeat(3, 24px);
+  height: 72px;
+  min-width: 132px;
+  padding-inline: 4px;
+  width: 132px;
+}
+
+.tableDesignNameField {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  height: 24px;
+  min-height: 24px;
+  padding: 2px 4px;
+  width: 100%;
+}
+
+.tableDesignNameInput {
+  background: var(--office-ribbon-surface, #fff);
+  border: 1px solid var(--docs-ribbon-divider, #d1d5db);
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: var(--office-ribbon-ink, #1f2937);
+  font: inherit;
+  font-size: 12px;
+  height: 21px;
+  min-width: 0;
+  outline: none;
+  padding: 1px 6px;
+  width: 100%;
+}
+
+.tableDesignNameInput:focus-visible {
+  border-color: var(--office-ribbon-accent, #15803d);
+  box-shadow: 0 0 0 1px var(--office-ribbon-accent, #15803d);
+}
+
+.tableDesignNameInput:disabled {
+  background: color-mix(
+    in srgb,
+    var(--office-ribbon-surface, #fff) 88%,
+    #94a3b8
+  );
+  color: var(--docs-ribbon-muted, #667085);
+  cursor: default;
+}
+
+ 
+.tableDesignProperties
+  :global(.note-editor-office-toolbar__button:not([hidden])) {
+  box-sizing: border-box;
+  height: 24px !important;
+  justify-content: flex-start;
+  max-height: 24px !important;
+  min-height: 24px !important;
+  padding: 2px 4px !important;
+  width: 100%;
+}
+
+/* Four Office columns, each read vertically: Header/Total, First/Last,
+ * Banded Rows/Banded Columns, Filter/blank. Every hit area remains above the
+ * shared caption band without hiding or scaling a command. */
+.tableDesignStyleOptions {
+  align-content: center;
+  box-sizing: border-box;
+  column-gap: 6px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, 24px);
+  height: 72px;
+  min-width: max-content;
+  padding-inline: 4px;
+  row-gap: 0;
+}
+
+.tableDesignStyleOptions > span {
+  height: 24px;
+  min-height: 24px;
+}
+
+.tableDesignStyleOptions > span > :global(label) {
+  border-radius: 4px;
+  gap: 4px;
+  height: 24px;
+  min-height: 24px;
+  padding: 2px 3px;
+}
+
+/* The per-column total picker fills the blank slot under Filter Button; it
+ * reads next to Total Row as Excel's totals do. */
+.tableDesignColumnTotal {
+  align-items: center;
+  display: flex;
+  min-width: 96px;
+}
+
+.tableDesignColumnTotal > label {
+  padding-inline: 3px;
+}
+
+.contextualStyleGallery {
+  --office-gallery-visible-items: 7;
+}
+
+/* Seven Excel Web Shape samples; the shared gallery owns focus and commit. */
+.shapeStyleGallery,
+.shapeStyleGallery :global([data-testid$="-quick"]) {
+  gap: 2px;
+}
+
+.shapeStyleGallery :global([data-testid$="-quick"] > span),
+.shapeStyleGallery :global([data-office-style-gallery-preview-item="true"]) {
+  width: 62px;
+}
+
+.shapeStyleGallery :global([data-office-style-gallery-preview-item="true"]) {
+  padding: 4px;
+}
+
+.shapeStyleGallery
+  :global([data-office-style-gallery-preview-item="true"] > span:first-child) {
+  border: 0;
+  height: 52px;
+  width: 52px;
+}
+
+.shapeStyleGallery
+  :global([data-office-style-gallery-preview-item="true"] > span:last-child) {
+  display: none;
+}
+
+.shapeStyleGallery :global([data-spreadsheet-shape-style-preview-svg="true"]) {
+  display: block;
+  height: 100%;
+  max-height: none;
+  max-width: none;
+  width: 100%;
+}
+
+.shapeStyleGalleryMenu
+  :global([data-spreadsheet-shape-style-preview-svg="true"]) {
+  display: block;
+  height: 100%;
+  max-height: none;
+  max-width: none;
+  width: 100%;
+}
+
+.shapeStyleGalleryMenu.shapeStyleGalleryMenu {
+  min-width: min(484px, calc(100vw - 32px));
+  padding: 8px;
+  width: min(484px, calc(100vw - 32px));
+}
+
+/* Radix's menu radio collection is role=group, not role=radiogroup. */
+.shapeStyleGalleryMenu :global([role="group"] > [role="group"]) {
+  gap: 6px 8px;
+  grid-template-columns: repeat(7, 60px);
+  justify-content: center;
+}
+
+.shapeStyleGalleryMenu :global([role="group"] > [role="group"] > div) {
+  height: 56px;
+  min-width: 60px;
+  width: 60px;
+}
+
+.shapeStyleGalleryMenu :global([role="menuitemradio"]),
+.shapeStyleGalleryMenu.shapeStyleGalleryMenu :global([role="menuitemradio"]) {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  gap: 0;
+  justify-content: center;
+  height: 56px;
+  min-height: 56px;
+  padding: 6px 8px;
+}
+
+.shapeStyleGalleryMenu.shapeStyleGalleryMenu
+  :global([role="menuitemradio"][data-selected="true"]) {
+  outline: 2px solid var(--office-style-gallery-accent);
+  outline-offset: -2px;
+}
+
+.shapeStyleGalleryMenu.shapeStyleGalleryMenu
+  :global([role="menuitemradio"][data-highlighted]) {
+  background: var(--office-style-gallery-hover);
+  outline: 2px solid var(--office-style-gallery-accent);
+  outline-offset: -2px;
+}
+
+/* Keep the shape's own outline; remove only the surrounding preview card.
+ * The first child is Radix's radio marker, the second is the real preview. */
+.shapeStyleGalleryMenu :global([role="menuitemradio"] > span:nth-child(2)) {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  display: flex;
+  height: 44px;
+  justify-content: center;
+  overflow: visible;
+  width: 44px;
+}
+
+.shapeStyleGalleryMenu :global([role="menuitemradio"] > span:first-child),
+.shapeStyleGalleryMenu :global([role="menuitemradio"] > span:nth-child(3)) {
+  display: none;
+}
+
+ 
+button.tableFilterButton.tableFilterButton[data-table-filter-toggle="true"] {
+  position: absolute;
+  inset-inline-end: 3px;
+  top: auto;
+  bottom: 2px;
+  z-index: 12;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: clamp(6px, calc(100% - 9px), 18px);
+  min-width: 0;
+  max-width: 18px;
+  height: 18px;
+  min-height: 18px;
+  max-height: 18px;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+  /* Excel's AutoFilter button: a square, grey-edged face with a solid
+     triangle (XLS-A050). The face is a solid colour under its gradient and
+     the button has no transition: the skin's 0.14s button transition cannot
+     interpolate a gradient, so hovering swapped the gradient for nothing and
+     faded the hover colour in from transparent -- a flash of the header's
+     own (often dark) fill. Excel's button changes state instantly. */
+  border: 1px solid #ababab;
+  border-radius: 1px;
+  background-color: #f4f4f4;
+  background-image: linear-gradient(#fdfdfd, #ececec);
+  color: #444;
+  box-shadow: none;
+  cursor: pointer;
+  transform: none;
+  transition: none;
+}
+
+button.tableFilterButton.tableFilterButton[data-table-filter-toggle="true"]:is(:hover, :active):not(:disabled),
+button.tableFilterButton.tableFilterButton[data-table-filter-toggle="true"][aria-expanded="true"],
+button.tableFilterButton.tableFilterButton[data-table-filter-toggle="true"][data-active="true"] {
+  background-color: #eaf4ed;
+  background-image: none;
+  border-color: #15803d;
+  color: #116530;
+  box-shadow: none;
+  transform: none;
+}
+
+button.tableFilterButton.tableFilterButton[data-table-filter-toggle="true"]:focus-visible:not(:disabled) {
+  outline: 2px solid #15803d;
+  outline-offset: -2px;
+  box-shadow: none;
+}
+
+button.tableFilterButton.tableFilterButton[data-table-filter-toggle="true"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+button.tableFilterButton.tableFilterButton[data-table-filter-toggle="true"] svg {
+  display: block;
+  flex: 0 0 12px;
+  width: 12px;
+  height: 12px;
+  pointer-events: none;
+}
+
+.tableDesignStyleGallery {
+  --office-gallery-item-width: 70px;
+  --office-gallery-gap: 2px;
+}
+
+.tableDesignStyleGallery :global([data-testid$="-quick"] > span) {
+  width: 70px;
+}
+
+.tableDesignStyleGallery
+  :global([data-office-style-gallery-preview-item="true"]) {
+  gap: 0;
+  padding: 3px;
+  width: 70px;
+}
+
+.tableDesignStyleGallery
+  :global([data-office-style-gallery-preview-item="true"] > span:first-child) {
+  border: 0;
+  height: 44px;
+  width: 64px;
+}
+
+.tableDesignStyleGallery
+  :global([data-office-style-gallery-preview-item="true"] > span:last-child) {
+  display: none;
+}
+
+.tableDesignStyleGallery
+  :global([data-office-style-gallery-preview-item="true"] svg) {
+  height: 42px;
+  max-height: 42px;
+  max-width: 60px;
+  width: 60px;
+}
+
+.pivotStyleGallery {
+  --office-gallery-visible-items: 7;
+}
+
+/* Picture Format keeps Excel-Web's bounded command rhythm: four stacking
+ * commands read as two vertical pairs, while Selection Pane remains the large
+ * companion command. Every hit target stays above the shared caption band. */
+.pictureFormatArrange {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  gap: 4px;
+  height: 72px;
+  min-width: max-content;
+  padding-inline: 2px;
+}
+
+.pictureFormatArrangeGrid {
+  align-content: center;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, 30px);
+  height: 64px;
+  min-width: max-content;
+}
+
+.pictureFormatArrangeGrid
+  :global(.note-editor-office-toolbar__button:not([hidden])) {
+  box-sizing: border-box;
+  height: 30px;
+  justify-content: flex-start;
+  min-height: 30px;
+  min-width: max-content;
+}
+
+/* Exact picture dimensions use the user's Office unit (cm in Chinese, inches
+ * otherwise). Keep both real inputs side by side so each focusable target can
+ * own a full 44px hit area without pushing either field into the caption band.
+ * Values still commit only on blur/Enter, so a partially typed number never
+ * creates a string of workbook saves. */
+.pictureFormatSize {
+  align-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  column-gap: 6px;
+  display: grid;
+  grid-template-columns: 22px repeat(2, max-content);
+  grid-template-rows: 64px;
+  height: 72px;
+  min-width: max-content;
+  padding-inline: 4px;
+}
+
+.pictureFormatSize > svg {
+  grid-row: 1;
+  color: var(--docs-home-icon-ink-soft, #52605a);
+}
+
+.pictureFormatSize label {
+  align-content: center;
+  align-items: center;
+  display: grid;
+  font-size: 10px;
+  font-weight: 550;
+  column-gap: 4px;
+  grid-template-columns: 58px 18px;
+  grid-template-rows: 12px 44px;
+  height: 64px;
+  line-height: 1;
+  row-gap: 2px;
+  white-space: nowrap;
+}
+
+.pictureFormatSize label > span {
+  grid-column: 1 / 3;
+}
+
+.pictureFormatSize input {
+  background: var(--office-ribbon-surface, #fff);
+  border: 1px solid var(--docs-ribbon-divider, #d1d5db);
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: var(--office-ribbon-ink, #1f2937);
+  font: inherit;
+  font-size: 11px;
+  grid-column: 1;
+  grid-row: 2;
+  height: 44px;
+  min-height: 44px;
+  min-width: 0;
+  outline: none;
+  padding: 1px 4px;
+  width: 58px;
+}
+
+.pictureFormatSize input:focus-visible {
+  border-color: var(--spreadsheet-ribbon-accent, #15803d);
+  box-shadow: 0 0 0 1px var(--spreadsheet-ribbon-accent, #15803d);
+}
+
+.pictureFormatSize input:disabled {
+  background: #f3f4f6;
+  color: var(--docs-ribbon-muted, #66706b);
+  cursor: not-allowed;
+}
+
+.pictureFormatSize small {
+  align-self: center;
+  color: var(--docs-ribbon-muted, #66706b);
+  font-size: 9px;
+  font-weight: 500;
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* Spreadsheet's real two-row command sets occupy the reference-height local
+ * rhythm. Width still derives only from those children, so a wide host may
+ * retain natural trailing whitespace. */
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .homeSurface
+  .homeGroupContent
+  > div {
+  min-height: 64px;
+}
+
+.webSurface .homeSurface :global(.note-editor-ribbon-row) {
+  min-width: 0;
+}
+
+.webSurface .homeSurface :global(.note-editor-ribbon-hstack) {
+  min-width: 0;
+}
+
+.webSurface .homeSurface :global(.note-editor-ribbon-col) {
+  min-width: 0;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .homeSurface
+  :global(.note-editor-ribbon-big) {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  height: 66px;
+  justify-content: center;
+  min-height: 66px;
+  max-height: 66px;
+  min-width: 62px;
+  padding: 2px 8px 14px;
+}
+
+.webSurface .homeSurface :global(.note-editor-office-toolbar__button) {
+  box-sizing: border-box;
+  height: 30px;
+  min-height: 30px;
+  border-radius: 6px;
+}
+
+.webSurface .homeSurface :global(.note-editor-office-toolbar__select) {
+  box-sizing: border-box;
+  height: 30px;
+  min-height: 30px;
+  border-radius: 6px;
+}
+
+.webSurface .homeSurface :global(.note-editor-ribbon-value-combobox__input) {
+  box-sizing: border-box;
+  height: 30px;
+  min-height: 30px;
+  border-radius: 6px;
+}
+
+.webSurface .homeSurface :global(.note-editor-office-toolbar__size-input) {
+  box-sizing: border-box;
+  height: 30px;
+  min-height: 30px;
+  border-radius: 6px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .homeSurface
+  :global(.docs-home-font-trigger) {
+  width: 142px;
+  min-width: 112px;
+  height: 30px;
+  min-height: 30px;
+}
+
+.webSurface .homeSurface :global(.note-editor-office-toolbar__select) {
+  border-color: var(--office-control-border, #cfd5d2);
+  line-height: 18px;
+}
+
+.webSurface .homeSurface :global(.note-editor-ribbon-value-combobox__input) {
+  border-color: var(--office-control-border, #cfd5d2);
+  line-height: 18px;
+}
+
+.webSurface .homeSurface :global(.note-editor-office-toolbar__size-input) {
+  border-color: var(--office-control-border, #cfd5d2);
+  line-height: 18px;
+}
+
+.webSurface .homeSurface :global(.note-editor-office-toolbar__select):not(:global(.office-ribbon-control)) {
+  background: #ffffff;
+  color: #26332d;
+}
+
+.webSurface .homeSurface :global(.note-editor-ribbon-value-combobox__input):not(:global(.office-ribbon-control)) {
+  background: #ffffff;
+  color: #26332d;
+}
+
+.webSurface .homeSurface :global(.note-editor-office-toolbar__size-input):not(:global(.office-ribbon-control)) {
+  background: #ffffff;
+  color: #26332d;
+}
+
+/* One hover paint contract across Home, secondary and contextual decks.
+   Command faces paint once; menu/split shells and nested trigger buttons stay
+   transparent. In particular, a split must not combine a blue fallback shell
+   with a second translucent green button face. Selected/open state is kept
+   independently by the shared primitives and returns on pointer leave. */
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body)
+  :is(
+    :global(.note-editor-office-toolbar__button),
+    :global(.note-editor-ribbon-big),
+    :global(.note-editor-office-toolbar__menu-trigger),
+    :global(.note-editor-ribbon-value-combobox__trigger),
+    :global(button.note-editor-office-toolbar__select),
+    button[role="combobox"]
+  ):hover:not(:disabled):not([aria-disabled="true"]),
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body)
+  button[data-office-home-menu-indicator="true"]:hover:not(:disabled):not([aria-disabled="true"])
+  > [data-office-home-menu-part="primary"] {
+  --office-ribbon-accent-soft: var(--spreadsheet-ribbon-hover);
+  --office-home-disclosure-background: var(--spreadsheet-ribbon-hover);
+  border-color: var(--office-control-border, var(--spreadsheet-ribbon-hover-border));
+}
+/* A split's halves light from the marks OfficeHomeSplitLayout keeps on the
+   split (data-office-split-hover / data-office-split-press, read with the
+   split's own :has() query), not from a :has() above them: WebKit re-matched
+   the whole page against such a rule on every aria-disabled change anywhere
+   (6 ms each with a long document open; minutes when an equation-heavy book
+   turned editable, 10k previews). The media queries are the ones
+   postcss-touch-hover gave the hover rule. The mark is written four times
+   and `:is(*, button)` added so each selector keeps the specificity the
+   :has() gave it (four attributes or pseudo-classes and one element). */
+@media (hover: hover) {
+  .webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body)
+  [data-office-home-split][data-office-split-hover][data-office-split-hover][data-office-split-hover][data-office-split-hover]:is(*, button)
+    > [data-office-home-split-part="primary"] > button:not(:disabled):not([aria-disabled="true"]) {
+    --office-ribbon-accent-soft: var(--spreadsheet-ribbon-hover);
+    --office-home-disclosure-background: var(--spreadsheet-ribbon-hover);
+    border-color: var(--office-control-border, var(--spreadsheet-ribbon-hover-border));
+  }
+}
+@media (any-pointer: coarse) {
+  .webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body)
+  [data-office-home-split][data-office-split-press][data-office-split-press][data-office-split-press][data-office-split-press]:is(*, button)
+    > [data-office-home-split-part="primary"] > button:not(:disabled):not([aria-disabled="true"]) {
+    --office-ribbon-accent-soft: var(--spreadsheet-ribbon-hover);
+    --office-home-disclosure-background: var(--spreadsheet-ribbon-hover);
+    border-color: var(--office-control-border, var(--spreadsheet-ribbon-hover-border));
+  }
+}
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body)
+  :is(
+    :global(.note-editor-office-toolbar__button),
+    :global(.note-editor-ribbon-big),
+    :global(.note-editor-office-toolbar__menu-trigger),
+    :global(.note-editor-ribbon-value-combobox__trigger),
+    :global(button.note-editor-office-toolbar__select),
+    button[role="combobox"]
+  ):hover:not(:disabled):not([aria-disabled="true"]):not(:global(.office-ribbon-control)),
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body)
+  button[data-office-home-menu-indicator="true"]:hover:not(:disabled):not([aria-disabled="true"])
+  > [data-office-home-menu-part="primary"]:not(:global(.office-ribbon-control)) {
+  background: var(--spreadsheet-ribbon-hover);
+  color: var(--spreadsheet-ribbon-accent-strong);
+  box-shadow: none;
+}
+@media (hover: hover) {
+  .webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body)
+  [data-office-home-split][data-office-split-hover][data-office-split-hover][data-office-split-hover][data-office-split-hover]:is(*, button)
+    > [data-office-home-split-part="primary"] > button:not(:disabled):not([aria-disabled="true"]):not(:global(.office-ribbon-control)) {
+    background: var(--spreadsheet-ribbon-hover);
+    color: var(--spreadsheet-ribbon-accent-strong);
+    box-shadow: none;
+  }
+}
+@media (any-pointer: coarse) {
+  .webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body)
+  [data-office-home-split][data-office-split-press][data-office-split-press][data-office-split-press][data-office-split-press]:is(*, button)
+    > [data-office-home-split-part="primary"] > button:not(:disabled):not([aria-disabled="true"]):not(:global(.office-ribbon-control)) {
+    background: var(--spreadsheet-ribbon-hover);
+    color: var(--spreadsheet-ribbon-accent-strong);
+    box-shadow: none;
+  }
+}
+
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body)
+  button[data-office-home-menu-indicator="true"]:hover:not(:disabled):not([aria-disabled="true"]),
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body)
+  [data-office-home-split]:has(> [data-office-home-split-part] > button:hover:not(:disabled):not([aria-disabled="true"])) {
+  --office-home-disclosure-background: var(--spreadsheet-ribbon-hover);
+  border-color: var(--office-control-border, transparent);
+}
+@media (hover: hover) {
+  .webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body)
+  [data-office-home-split][data-office-split-hover][data-office-split-hover][data-office-split-hover][data-office-split-hover]:is(*, button)
+    > [data-office-home-split-part="trigger"] > button {
+    --office-home-disclosure-background: var(--spreadsheet-ribbon-hover);
+    border-color: var(--office-control-border, transparent);
+  }
+}
+@media (any-pointer: coarse) {
+  .webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body)
+  [data-office-home-split][data-office-split-press][data-office-split-press][data-office-split-press][data-office-split-press]:is(*, button)
+    > [data-office-home-split-part="trigger"] > button {
+    --office-home-disclosure-background: var(--spreadsheet-ribbon-hover);
+    border-color: var(--office-control-border, transparent);
+  }
+}
+
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body)
+  button[data-office-home-menu-indicator="true"]:hover:not(:disabled):not([aria-disabled="true"]):not(:global(.office-ribbon-control)),
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body)
+  [data-office-home-split]:has(> [data-office-home-split-part] > button:hover:not(:disabled):not([aria-disabled="true"])):not(:global(.office-ribbon-control)) {
+  background: transparent;
+  box-shadow: none;
+}
+@media (hover: hover) {
+  .webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body)
+  [data-office-home-split][data-office-split-hover][data-office-split-hover][data-office-split-hover][data-office-split-hover]:is(*, button)
+    > [data-office-home-split-part="trigger"] > button:not(:global(.office-ribbon-control)) {
+    background: transparent;
+    box-shadow: none;
+  }
+}
+@media (any-pointer: coarse) {
+  .webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  :global(.note-editor-ribbon-body)
+  [data-office-home-split][data-office-split-press][data-office-split-press][data-office-split-press][data-office-split-press]:is(*, button)
+    > [data-office-home-split-part="trigger"] > button:not(:global(.office-ribbon-control)) {
+    background: transparent;
+    box-shadow: none;
+  }
+}
+
+.webSurface
+  .homeSurface
+  :is(
+    :global(.note-editor-office-toolbar__button.is-active),
+    :global(.note-editor-office-toolbar__button[data-state="open"]),
+    :global(.note-editor-ribbon-big--active),
+    :global(.note-editor-ribbon-big[data-state="open"])
+  ):not(:global(.office-ribbon-control)) {
+  background: var(--docs-ribbon-active);
+  color: var(--spreadsheet-ribbon-accent-strong);
+}
+
+.webSurface
+  .homeSurface
+  :is(
+    :global(.note-editor-office-toolbar__button),
+    :global(.note-editor-ribbon-big)
+  )
+  > span:first-child
+  svg:not([data-spreadsheet-home-menu-chevron]):not([data-spreadsheet-home-menu-chevron-slot] svg) {
+  width: 21px;
+  height: 21px;
+}
+
+.webSurface
+  .homeSurface
+  :global(.note-editor-ribbon-big)
+  > span:first-child
+  svg:not([data-spreadsheet-home-menu-chevron]):not([data-spreadsheet-home-menu-chevron-slot] svg) {
+  width: 24px;
+  height: 24px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .homeSurface
+  :global(.docs-home-icon) {
+  width: 21px;
+  height: 21px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .homeSurface
+  :global(.note-editor-ribbon-big)
+  :global(.docs-home-icon) {
+  width: 24px;
+  height: 24px;
+}
+
+.webSurface
+  .homeSurface
+  :global(.note-editor-ribbon-big)
+  > span:last-child:not(:first-child) {
+  display: -webkit-box;
+  max-width: 84px;
+  overflow: hidden;
+  font-size: 11.5px;
+  font-weight: 550;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  text-align: center;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.webSurface
+  .homeSurface
+  :global(.note-editor-office-toolbar__button)
+  > span:last-child:not(:first-child) {
+  overflow: visible;
+  font-size: 11.5px;
+  font-weight: 550;
+  line-height: 1.2;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"] .homeSurface .clipboard {
+  align-items: center;
+  gap: 4px;
+  width: max-content;
+  height: 66px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"] .homeSurface .pasteSplit {
+  position: static;
+  display: grid;
+  flex: 0 0 58px;
+  grid-template-columns: minmax(0, 58px);
+  grid-template-rows: 52px 14px;
+  width: 58px;
+  min-width: 58px;
+  max-width: 58px;
+  height: 66px;
+  min-height: 66px;
+  max-height: 66px;
+  overflow: hidden;
+}
+
+.pasteSplit > :first-child {
+  grid-column: 1;
+  grid-row: 1;
+  height: 52px;
+  position: static;
+  inset: auto;
+  min-width: 0;
+}
+
+.pasteSplit > :last-child {
+  border-inline-start: 0;
+  border-top: 1px solid var(--office-control-border, color-mix(in srgb, var(--spreadsheet-ribbon-accent) 16%, transparent));
+  border-radius: 0 0 6px 6px;
+  grid-column: 1;
+  grid-row: 2;
+  position: static;
+  right: auto;
+  bottom: auto;
+  z-index: auto;
+  width: 100%;
+  height: 14px;
+}
+
+.pasteSplit > :last-child:not(:global(.office-ribbon-control)) {
+  background: color-mix(
+    in srgb,
+    var(--spreadsheet-ribbon-accent) 8%,
+    transparent
+  );
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .homeSurface
+  .pasteSplit
+  [data-testid="spreadsheet-ribbon-home-paste"] {
+  width: 100%;
+  min-width: 0;
+  height: 52px;
+  min-height: 52px;
+  max-height: 52px;
+  padding: 2px 3px 0;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .homeSurface
+  .pasteSplit
+  [data-testid="spreadsheet-ribbon-home-paste-options"] {
+  width: 100%;
+  min-width: 0;
+  height: 13px;
+  min-height: 13px;
+  max-height: 13px;
+  padding: 0;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"] .homeSurface .clipboardRail {
+  align-self: center;
+  align-content: center;
+  box-sizing: border-box;
+  display: grid;
+  flex: 0 0 auto;
+  grid-template-columns: max-content;
+  grid-template-rows: repeat(3, 21px);
+  row-gap: 1px;
+  column-gap: 0;
+  justify-content: start;
+  padding: 0;
+  padding-block: 0;
+  width: max-content;
+  min-width: 0;
+  height: 65px;
+}
+
+.clipboardRail > * {
+  width: 100%;
+  min-width: 0;
+  height: 21px;
+  min-height: 21px;
+}
+
+.webSurface .homeSurface .clipboardRail button {
+  justify-content: flex-start;
+  width: 100%;
+  min-width: 0;
+  height: 21px;
+  min-height: 21px;
+  max-width: none;
+  padding: 0 4px;
+  overflow: visible;
+  font-size: 11px;
+  gap: 4px;
+}
+
+.webSurface .homeSurface .clipboardRail :global(.docs-home-icon),
+.webSurface
+  .homeSurface
+  .clipboardRail
+  button
+  > span:first-child
+  svg:not([data-spreadsheet-home-menu-chevron]):not([data-spreadsheet-home-menu-chevron-slot] svg) {
+  width: 16px;
+  height: 16px;
+}
+
+/* a command's label (after its glyph); a lone span is a menu chevron's glyph,
+   which must stay a centring box (it sat 1.3px high as a block) */
+.clipboardRail button > span:last-child:not(:only-child) {
+  display: block;
+  flex: 0 0 auto;
+  width: auto;
+  max-width: none;
+  overflow: visible;
+  font-size: 11px;
+  font-weight: 550;
+  line-height: 1.15;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+.clipboardRowSplit {
+  grid-template-columns: minmax(0, max-content) 16px;
+  width: 100%;
+  min-width: 0;
+  height: 21px;
+}
+
+.clipboardRowSplit > :last-child {
+  width: 16px;
+  min-width: 16px;
+}
+
+.webSurface
+  .clipboardRowSplit
+  [data-testid="spreadsheet-ribbon-home-copy-options"],
+.webSurface .clipboardRowSplit > :last-child button {
+  justify-content: center;
+  width: 16px;
+  min-width: 16px;
+  padding-inline: 1px;
+}
+
+.iconSplit > :last-child,
+.compactSplit > :last-child,
+.labeledSplit > :last-child,
+.webSurface .iconSplit > :last-child button,
+.webSurface .compactSplit > :last-child button,
+.webSurface .labeledSplit > :last-child button {
+  width: 18px;
+  min-width: 18px;
+}
+
+.webSurface .iconSplit > :last-child button,
+.webSurface .compactSplit > :last-child button,
+.webSurface .labeledSplit > :last-child button {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.iconSplit {
+  grid-template-columns: minmax(30px, max-content) 18px;
+  width: max-content;
+  height: 30px;
+  min-height: 30px;
+}
+
+/* A compact split has the same 48×30 outer shell as an icon menu command.
+ * Its faces fit inside that shell; a 30px child must not spill past the 28px
+ * content box. */
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .iconSplit.iconSplit[data-office-home-split="true"] {
+  grid-template-columns: 28px 18px;
+  width: 48px;
+  min-width: 48px;
+  max-width: 48px;
+}
+
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .iconSplit.iconSplit[data-office-home-split="true"]
+  > :global([data-office-home-split-part]) {
+  min-height: 0;
+  height: 100%;
+}
+
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .iconSplit.iconSplit[data-office-home-split="true"]
+  > :global([data-office-home-split-part]) > button {
+  flex: 1 1 auto;
+  border: 0;
+  border-radius: 0;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+}
+
+.compactSplit,
+.labeledSplit {
+  flex: 0 0 auto;
+  grid-template-columns: max-content 18px;
+  width: max-content;
+  min-width: max-content;
+  max-width: none;
+  height: 30px;
+  min-height: 30px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .homeSurface
+  :is(.compactSplit, .labeledSplit)
+  > :first-child
+  > button {
+  width: max-content;
+  min-width: max-content;
+  max-width: none;
+  overflow: visible;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .homeSurface
+  :is(.compactSplit, .labeledSplit)
+  > :first-child
+  > button
+  > span:last-child {
+  max-width: none;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+.alignmentLayout {
+  display: grid;
+  grid-template-columns: max-content max-content;
+}
+
+.alignmentMatrix {
+  gap: 1px;
+}
+
+.alignmentMatrix > :global(.note-editor-ribbon-row) {
+  height: 21px;
+  min-height: 21px;
+}
+
+.alignmentLayout .alignmentMatrix :global(.note-editor-office-toolbar__button) {
+  height: 21px;
+  min-height: 21px;
+  padding-block: 0;
+}
+
+.alignmentActions {
+  border-inline-start: 1px solid var(--office-control-border, var(--docs-ribbon-divider, #e5e7eb));
+  gap: 4px;
+  padding-inline-start: 8px;
+}
+
+.wrapActionRow :global(.note-editor-office-toolbar__button) {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  min-width: max-content;
+  padding-inline: 6px;
+  width: max-content;
+}
+
+/* The disclosure glyph is the shared 12px Office chevron, the same face the
+ * Docs and Presentation ribbons draw; the slot and the svg share one size. */
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .homeSurface
+  [data-spreadsheet-home-menu-chevron-slot="true"],
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .homeSurface
+  [data-spreadsheet-home-menu-chevron-slot="true"] > svg {
+  flex: 0 0 12px;
+  width: 12px;
+  min-width: 12px;
+  max-width: 12px;
+  height: 12px;
+  min-height: 12px;
+  max-height: 12px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .homeSurface
+  [data-spreadsheet-home-menu-chevron-slot="true"] > svg {
+  display: block;
+  overflow: visible;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .homeSurface
+  .homeGroupContent
+  .editingStack {
+  align-self: center;
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  grid-template-rows: repeat(2, 30px);
+  column-gap: 2px;
+  row-gap: 4px;
+  width: max-content;
+  min-width: 0;
+  height: 64px;
+  overflow: visible;
+}
+
+.editingStack > * {
+  box-sizing: border-box;
+  width: auto;
+  min-width: max-content;
+  max-width: none;
+  height: 30px;
+  min-height: 30px;
+}
+
+.editingStack > :last-child {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.webSurface .editingStack button {
+  width: 100%;
+  min-width: max-content;
+  max-width: none;
+  height: 30px;
+  min-height: 30px;
+  overflow: visible;
+  padding-inline: 6px;
+  padding-block: 3px;
+}
+
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .homeSurface
+  .homeGroupContent
+  > div:has(.editingStack) {
+  align-items: center;
+  gap: 2px;
+  min-height: 66px;
+  overflow: visible;
+}
+
+/* Ink containment is pointer-agnostic: compact desktop faces still need each
+ * group to stay inside the canonical 104px Home deck. */
+.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .homeSurface.homePrimaryHitLane
+  :global(.note-editor-office-toolbar__group) {
+  overflow-block: clip !important;
+  overflow-y: clip !important;
+}
+
+.menuItemIcon {
+  display: block;
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  margin-right: 7px;
+}
+
+/* A two-state menu command that is on (Home > Sort & Filter > Filter while
+ * AutoFilter is on) frames its icon, as the Office menus do. */
+[role="menuitemcheckbox"][aria-checked="true"] > .menuItemIcon {
+  border-radius: 2px;
+  background: #d9ecdf;
+  box-shadow: 0 0 0 2px #d9ecdf, 0 0 0 3px #15803d;
+}
+
+.disabledOverflowCommand {
+  cursor: not-allowed;
+}
+
+.disabledOverflowCommand:not(:global(.office-ribbon-control)) {
+  opacity: 0.58;
+}
+
+/* Insert split commands use the shared Office layout: one 52px command face
+   and one full-width 14px disclosure rail. */
+.insertLargeSplit {
+  align-self: center;
+  grid-template-columns: minmax(58px, max-content);
+  grid-template-rows: 52px 14px;
+  height: 66px;
+  max-height: 66px;
+  min-height: 66px;
+  min-width: 58px;
+  width: max-content;
+}
+
+.insertLargeSplit > :first-child,
+.insertLargeSplit > :first-child button {
+  height: 52px;
+  max-height: 52px;
+  min-height: 52px;
+  min-width: 58px;
+}
+
+.insertLargeSplit > :last-child {
+  border-inline-start: 0;
+  border-top: 1px solid var(--office-control-border, color-mix(in srgb, var(--spreadsheet-ribbon-accent) 16%, transparent));
+  border-radius: 0 0 6px 6px;
+  max-width: none;
+  min-width: 0;
+  width: 100%;
+}
+
+.insertLargeSplit > :last-child:not(:global(.office-ribbon-control)) {
+  background: color-mix(
+    in srgb,
+    var(--spreadsheet-ribbon-accent) 8%,
+    transparent
+  );
+}
+
+.webSurface .insertLargeSplit > :last-child button {
+  box-sizing: border-box;
+  height: 13px;
+  max-height: 13px;
+  max-width: none;
+  min-height: 13px;
+  min-width: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* A five-character label (PivotChart in CJK) does not fit the 58px chart
+   button; the wide split keeps it on one line instead of wrapping under the
+   icon. The selectors outrank the Charts group's fixed 58px anatomy. */
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent:global(
+    [data-testid="spreadsheet-ribbon-group-content-insert-charts"]
+  )
+  .insertLargeSplitWide:global(.note-editor-office-toolbar__split) {
+  grid-template-columns: minmax(80px, auto);
+  max-width: 80px;
+  min-width: 80px;
+  width: 80px;
+}
+
+.webSurface.webSurface[data-spreadsheet-ribbon-surface="web"]
+  .secondaryGroupContent:global(
+    [data-testid="spreadsheet-ribbon-group-content-insert-charts"]
+  )
+  .insertLargeSplitWide
+  :global(.note-editor-ribbon-big) {
+  max-width: 80px;
+  min-width: 80px;
+  width: 80px;
+}
+
+.insertLargeSplitWide > :first-child,
+.insertLargeSplitWide > :first-child button {
+  min-width: 80px;
+}
+
+/* Page Layout consumes the same shared 66/30px Office anatomy as Home while
+   remaining content-derived inside the 104px secondary-tab strip. */
+.pageLayoutCommandStack,
+.pageLayoutThemeStack {
+  align-self: center;
+  box-sizing: border-box;
+  gap: 2px;
+  height: 64px;
+  min-height: 64px;
+  min-width: max-content;
+  overflow: visible;
+}
+
+.pageLayoutThemeStack {
+  min-width: 88px;
+}
+
+.pageLayoutLargeSplit {
+  align-self: center;
+  grid-template-columns: minmax(58px, max-content);
+  grid-template-rows: 52px 14px;
+  height: 66px;
+  max-height: 66px;
+  min-height: 66px;
+  min-width: 58px;
+  width: max-content;
+}
+
+.pageLayoutLargeSplit > :first-child,
+.pageLayoutLargeSplit > :first-child button {
+  height: 52px;
+  max-height: 52px;
+  min-height: 52px;
+  min-width: 58px;
+}
+
+.pageLayoutLargeSplit > :last-child {
+  border-inline-start: 0;
+  border-top: 1px solid var(--office-control-border, color-mix(in srgb, var(--spreadsheet-ribbon-accent) 16%, transparent));
+  border-radius: 0 0 6px 6px;
+  max-width: none;
+  min-width: 0;
+  width: 100%;
+}
+
+.pageLayoutLargeSplit > :last-child:not(:global(.office-ribbon-control)) {
+  background: color-mix(
+    in srgb,
+    var(--spreadsheet-ribbon-accent) 8%,
+    transparent
+  );
+}
+
+.webSurface .pageLayoutLargeSplit > :last-child button {
+  box-sizing: border-box;
+  height: 13px;
+  max-height: 13px;
+  max-width: none;
+  min-height: 13px;
+  min-width: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.webSurface :is(.pageLayoutCommandStack, .pageLayoutThemeStack) button {
+  box-sizing: border-box;
+  height: 30px;
+  min-height: 30px;
+  max-width: none;
+  overflow: visible;
+}
+
+.webSurface .pageScaleTrigger {
+  min-width: 156px;
+  width: 100%;
+}
+
+.pageScaleMenu.pageScaleMenu {
+  min-width: 156px;
+  width: 156px;
+}
+
+.pageScaleMenu [role^="menuitem"] {
+  min-height: 28px;
+}
+
+.pageLayoutSheetOptions {
+  align-self: center;
+  align-items: center;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  grid-template-rows: 16px repeat(2, 22px);
+  column-gap: 4px;
+  row-gap: 1px;
+  height: 62px;
+  min-height: 62px;
+  min-width: max-content;
+  overflow: visible;
+}
+
+.pageLayoutOptionName {
+  align-items: center;
+  color: var(--console-text-secondary, #354c4a);
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: 550;
+  height: 16px;
+  justify-content: center;
+  line-height: 1.15;
+  padding-inline: 4px 6px;
+  white-space: nowrap;
+}
+
+.webSurface .pageLayoutSheetOptions label {
+  height: 22px;
+  min-height: 22px;
+  padding-inline: 5px;
+}
+
+/* PivotTable Fields follows the Office task-pane contract: one fixed header,
+ * one vertically scrolling body, a unique source-field catalog and a 2×2 Areas
+ * section. It docks in the workbook's task pane column (OfficeDockedPane),
+ * which the sheet makes room for, so the pane never covers cells, sheet tabs
+ * or the native horizontal scrollbar. Its card, title row, close button,
+ * fields and buttons are the shared dialog chrome's task pane
+ * (office-dialog--pane), so it reads as the same family as a dialog. */
+.pivotFieldListPane {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+
+/* The pane takes focus (F6, Move / Size) without a ring of its own, as
+   OfficeTaskPane's frame does; its controls keep theirs. */
+.pivotFieldListPane:focus {
+  outline: none;
+}
+
+.pivotFieldIconButton,
+.pivotFieldAreaActions button {
+  display: grid;
+  box-sizing: border-box;
+  width: 30px;
+  min-width: 30px;
+  height: 30px;
+  min-height: 30px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pivotFieldIconButton:not(:global(.office-ribbon-control)),
+.pivotFieldAreaActions button:not(:global(.office-ribbon-control)) {
+  background: transparent;
+  color: var(--office-dialog-ink);
+}
+
+.pivotFieldIconButton:hover:not(:global(.office-ribbon-control)),
+.pivotFieldAreaActions button:hover:not(:disabled):not(:global(.office-ribbon-control)) {
+  background: var(--office-dialog-surface-muted);
+  color: var(--office-dialog-accent);
+}
+
+.pivotFieldListBody {
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.pivotFieldListEditor {
+  display: grid;
+  min-width: 0;
+  gap: 12px;
+  margin: 0;
+  padding: 0 4px 4px;
+  border: 0;
+}
+
+.pivotFieldListEditor:disabled {
+  opacity: 0.72;
+}
+
+/* The source and destination row wraps in a narrow pane (Excel's border
+   drags a pane down to 270 px) rather than scrolling its fields away. */
+.pivotFieldListToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 0;
+  align-items: end;
+  gap: 6px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--office-dialog-divider);
+  font-size: 11px;
+}
+
+.pivotFieldListToolbar > label {
+  display: grid;
+  flex: 0 0 auto;
+  gap: 3px;
+  color: var(--office-dialog-ink);
+  font-weight: 600;
+}
+
+.pivotFieldListInput,
+.pivotFieldAreaSelect,
+.pivotFieldAreaMove {
+  box-sizing: border-box;
+  min-width: 0;
+  height: 30px;
+  padding: 4px 7px;
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 6px;
+  background: var(--office-dialog-surface);
+  color: var(--office-dialog-ink);
+  font: 500 11px/1.2 var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+}
+
+.pivotFieldListInput {
+  width: 112px;
+}
+
+/* A created PivotTable's source is shown, not edited here: Change Data Source
+   owns it. The box reads as a value rather than as a broken field. */
+.pivotFieldListInput:read-only {
+  border-style: dashed;
+  background: var(--office-dialog-surface-muted);
+  color: var(--office-dialog-muted);
+  cursor: default;
+}
+
+.pivotFieldListInputHint {
+  max-width: 112px;
+  color: var(--office-dialog-muted);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.pivotFieldListInputHint[data-tone="error"] {
+  color: var(--danger, #dc2626);
+}
+
+.pivotFieldListToolbarButton {
+  box-sizing: border-box;
+  min-height: 30px;
+  flex: 0 0 auto;
+  padding: 5px 9px;
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.pivotFieldListToolbarButton:not(:global(.office-ribbon-control)) {
+  background: var(--office-dialog-surface);
+  color: var(--office-dialog-ink);
+}
+
+.pivotFieldListToolbarButton:hover:not(:disabled) {
+  border-color: var(--office-dialog-control-border-hover);
+}
+
+.pivotFieldListToolbarButton:hover:not(:disabled):not(:global(.office-ribbon-control)) {
+  background: var(--office-dialog-accent-soft);
+  color: var(--office-dialog-accent);
+}
+
+.pivotFieldListCheckboxLabel {
+  display: inline-flex;
+  min-height: 30px;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 5px;
+  color: var(--office-dialog-ink);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.pivotFieldCatalog {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+}
+
+.pivotFieldSectionHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--office-dialog-ink);
+}
+
+.pivotFieldSectionHeading strong {
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.pivotFieldSectionHeading span {
+  min-width: 22px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: var(--office-dialog-surface-muted);
+  color: var(--office-dialog-muted);
+  font-size: 10px;
+  text-align: center;
+}
+
+.pivotFieldSearch {
+  display: flex;
+  height: 32px;
+  align-items: center;
+  gap: 7px;
+  padding-inline: 9px;
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 6px;
+  background: var(--office-dialog-surface);
+  color: var(--office-dialog-muted);
+}
+
+.pivotFieldSearch input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--office-dialog-ink);
+  font-size: 12px;
+}
+
+.pivotFieldCatalogList {
+  display: grid;
+  min-width: 0;
+  gap: 1px;
+}
+
+.pivotFieldCatalogItem {
+  display: grid;
+  min-height: 34px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 7px;
+  border-radius: 5px;
+  color: var(--office-dialog-ink);
+  cursor: pointer;
+  font-size: 11.5px;
+}
+
+.pivotFieldCatalogItem:hover {
+  background: var(--office-dialog-surface-muted);
+}
+
+.pivotFieldCatalogChoice {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 20px 20px minmax(0, 1fr);
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.pivotFieldCatalogChoice > span:last-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pivotFieldCatalogItem > select {
+  width: 70px;
+  height: 26px;
+  min-width: 0;
+  padding: 2px 4px;
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 5px;
+  background: var(--office-dialog-surface);
+  color: var(--office-dialog-ink);
+  font-size: 9.5px;
+}
+
+.pivotFieldTypeIcon {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  color: var(--office-dialog-muted);
+}
+
+.pivotFieldEmpty {
+  margin: 4px 0;
+  padding: 10px;
+  border: 1px dashed var(--office-dialog-control-border);
+  border-radius: 6px;
+  color: var(--office-dialog-muted);
+  font-size: 11px;
+  text-align: center;
+}
+
+.pivotFieldListContent {
+  display: grid;
+  min-width: 0;
+  gap: 12px;
+}
+
+.pivotFieldAreas {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pivotFieldAreaCard,
+.pivotFieldAdvancedCard {
+  min-width: 0;
+  margin: 0;
+  padding: 7px;
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 7px;
+  background: var(--office-dialog-surface);
+}
+
+.pivotFieldAreaCard {
+  min-height: 106px;
+}
+
+.pivotFieldAreaCard > legend,
+.pivotFieldAdvancedCard > legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding-inline: 3px;
+  color: var(--office-dialog-ink);
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.pivotFieldAreaList {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+  margin: 2px 0 6px;
+  padding: 0;
+  list-style: none;
+}
+
+/* A field's row in an area: its grip, name and area box, then its Move Up /
+   Move Down / Remove buttons -- on the same line when the area is wide
+   enough, under the rest at the right when it is not. A fixed four-column
+   row is ~230px wide and an area of the 2x2 grid ~130px in the default pane:
+   the buttons ran into the next area, which took their clicks (live audit
+   S-159). */
+.pivotFieldAreaItem {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 0;
+  min-height: 34px;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 3px 2px 5px;
+  border: 1px solid var(--office-dialog-control-border);
+  border-radius: 5px;
+  background: var(--office-dialog-surface);
+  cursor: grab;
+}
+
+.pivotFieldAreaItem:active {
+  cursor: grabbing;
+}
+
+.pivotFieldAreaItemLabel {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--office-dialog-ink);
+  font-size: 10.5px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pivotFieldAreaMove {
+  width: 100%;
+  height: 26px;
+  padding: 2px 4px;
+  font-size: 9.5px;
+}
+
+.pivotFieldAreaItem > :first-child {
+  flex: 0 0 16px;
+}
+
+.pivotFieldAreaItem > .pivotFieldAreaItemLabel {
+  flex: 1 1 42px;
+}
+
+.pivotFieldAreaItem > .pivotFieldAreaMove {
+  width: auto;
+  flex: 1 1 54px;
+  min-width: 54px;
+  max-width: 74px;
+}
+
+.pivotFieldAreaItem > .pivotFieldAreaActions {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.pivotFieldAreaActions {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.pivotFieldAreaActions button,
+.pivotFieldIconButton {
+  width: 26px;
+  min-width: 26px;
+  height: 26px;
+  min-height: 26px;
+}
+
+.pivotFieldAreaActions button:disabled {
+  cursor: default;
+}
+
+.pivotFieldAreaActions button:disabled:not(:global(.office-ribbon-control)) {
+  opacity: 0.35;
+}
+
+.pivotFieldAreaOption,
+.pivotFieldAdvancedRow {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  margin-top: 5px;
+  color: var(--office-dialog-ink);
+  font-size: 10.5px;
+}
+
+/* A field's own row in an area (its grouping, its value settings): in a
+   narrow area the control moves under the field's name instead of
+   squeezing it to its first letter. */
+.pivotFieldAreaOption {
+  flex-wrap: wrap;
+}
+
+.pivotFieldAreaOption > span:first-child {
+  flex: 1 0 auto;
+  max-width: 100%;
+}
+
+.pivotFieldAreaOption > select {
+  flex: 1 1 6.5em;
+  min-width: 6.5em;
+}
+
+.pivotFieldAreaOption > span,
+.pivotFieldAdvancedRow > span:first-child {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pivotFieldAreaSelect {
+  width: 100%;
+}
+
+.pivotFieldAdvanced {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+}
+
+.pivotFieldAdvancedForm {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(74px, 0.8fr) minmax(120px, 1.4fr) auto;
+  align-items: end;
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.pivotFieldAdvancedForm .pivotFieldListInput {
+  width: 100%;
+}
+
+.pivotFieldListPane button:focus-visible:not(:global(.office-ribbon-control)) {
+  outline: 2px solid var(--spreadsheet-ribbon-accent, #15803d);
+  outline-offset: 2px;
+}
+
+.pivotFieldListPane input:focus-visible:not(:global(.office-ribbon-control)) {
+  outline: 2px solid var(--spreadsheet-ribbon-accent, #15803d);
+  outline-offset: 2px;
+}
+
+.pivotFieldListPane select:focus-visible:not(:global(.office-ribbon-control)) {
+  outline: 2px solid var(--spreadsheet-ribbon-accent, #15803d);
+  outline-offset: 2px;
+}
+
+@media (max-width: 1100px) {
+  .pivotFieldAreas {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+ 
+.workbookSurfaceWithChartPane {
+  --spreadsheet-chart-format-pane-width: clamp(320px, 26vw, 360px);
+  display: grid !important;
+  grid-template-columns:
+    minmax(0, 1fr)
+    var(--spreadsheet-chart-format-pane-width);
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+.workbookSurfaceWithChartPane
+  > :global([data-testid="spreadsheet-pane-layout"]) {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.workbookSurfaceWithChartPane
+  > :global([data-testid="spreadsheet-page-layout-view"]) {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.workbookSurfaceWithChartPane
+  > :global([data-testid="spreadsheet-sheet-tabs"]) {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  min-width: 0;
+}
+
+.workbookWatchDock {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  min-width: 0;
+}
+
+/* The Comments pane and a docked task pane at once: the task pane column
+ * sits outside the Comments column, so neither hides the other. Paired with
+ * SpreadsheetReviewComments' workbookSurfaceWithReviewPane, whose single
+ * class this doubled one outranks. */
+.workbookSurfaceWithTaskPaneBesideReview.workbookSurfaceWithTaskPaneBesideReview {
+  grid-template-columns:
+    minmax(0, 1fr)
+    var(--spreadsheet-review-comments-pane-width, clamp(320px, 27vw, 380px))
+    var(--spreadsheet-chart-format-pane-width, clamp(320px, 26vw, 360px));
+}
+
+.workbookSurfaceWithTaskPaneBesideReview > .chartFormatPaneDock {
+  display: block;
+  grid-column: 3;
+  grid-row: 1 / 3;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  /* The pane is the chrome's card (OfficeTaskPaneChromeProvider); the
+     column only places it, inset as the Comments column insets its card,
+     so the two read as one pair of cards in light and dark alike. */
+  padding: 8px 8px 8px 0;
+}
+
+.chartFormatPaneDock {
+  display: none;
+}
+
+/* A docked card lies over the sheet: above the grid's own layers (frozen
+   panes, selection, objects), and only the card takes the pointer; the
+   column's inset around it is the sheet. */
+.workbookSurfaceWithChartPane > .chartFormatPaneDock,
+.workbookSurfaceWithTaskPaneBesideReview > .chartFormatPaneDock,
+.workbookSurfaceWithPaneColumns[data-task-pane-group="docked"] > .chartFormatPaneDock,
+.workbookSurfaceWithPaneColumns[data-comments-column="docked"]
+  > :global([data-testid="spreadsheet-comments-pane-dock"]),
+.taskPaneSeparateColumn:not(.taskPaneSeparateColumnFloating) {
+  position: relative;
+  z-index: 40;
+  pointer-events: none;
+}
+
+.workbookSurfaceWithChartPane > .chartFormatPaneDock > *,
+.workbookSurfaceWithTaskPaneBesideReview > .chartFormatPaneDock > *,
+.workbookSurfaceWithPaneColumns[data-task-pane-group="docked"] > .chartFormatPaneDock > *,
+.workbookSurfaceWithPaneColumns[data-comments-column="docked"]
+  > :global([data-testid="spreadsheet-comments-pane-dock"]) > *,
+.taskPaneSeparateColumn:not(.taskPaneSeparateColumnFloating) > * {
+  pointer-events: auto;
+}
+
+/* The grid scrolls a cell clear of the card (focus and scrollIntoView). */
+.workbookSurfaceWithChartPane :global([data-testid="spreadsheet-grid-viewport"]),
+.workbookSurfaceWithPaneColumns :global([data-testid="spreadsheet-grid-viewport"]),
+.workbookSurfaceWithTaskPaneBesideReview :global([data-testid="spreadsheet-grid-viewport"]) {
+  scroll-padding-left: var(--office-task-pane-cover-left, 0px);
+  scroll-padding-right: var(--office-task-pane-cover-right, 0px);
+}
+
+/* A task pane taken off the edge (Task Pane Options > Move, or its title
+   bar dragged): it floats over the sheet where the person put it, as an
+   Office pane does once undocked, and takes no column of the grid. */
+.workbookSurfaceWithFloatingTaskPane {
+  position: relative;
+}
+
+.workbookSurfaceWithFloatingTaskPane > .chartFormatPaneDock {
+  display: block;
+  position: absolute;
+  z-index: 40;
+  top: var(--spreadsheet-task-pane-float-y, 24px);
+  left: var(--spreadsheet-task-pane-float-x, 24px);
+  width: var(--spreadsheet-task-pane-float-width, 340px);
+  height: var(--spreadsheet-task-pane-float-height, 480px);
+  /* The card inside draws the box; the box only lifts it off the sheet. */
+  border-radius: 12px;
+}
+
+.workbookSurfaceWithFloatingTaskPane > .chartFormatPaneDock :global(:is([data-office-task-pane], aside)) {
+  box-shadow:
+    0 18px 48px rgb(15 23 42 / 18%),
+    0 2px 8px rgb(15 23 42 / 10%);
+}
+
+/* The title bar of a pane is where it is dragged from (Office). */
+.workbookSurfaceWithChartPane > .chartFormatPaneDock :global(:is([data-office-task-pane], aside)) > header,
+.workbookSurfaceWithTaskPaneBesideReview > .chartFormatPaneDock :global(:is([data-office-task-pane], aside)) > header,
+.workbookSurfaceWithFloatingTaskPane > .chartFormatPaneDock :global(:is([data-office-task-pane], aside)) > header {
+  cursor: grab;
+}
+
+/* Task Pane Options > Move / Size from the keyboard: the arrows act on the
+   outlined pane until Enter or Esc (the Comments column outlines its own,
+   SpreadsheetReviewComments.module.css). */
+[data-task-pane-keyboard-pane="group"] > .chartFormatPaneDock,
+.taskPaneSeparateColumn[data-keyboard-mode] {
+  outline: 2px dashed #0f766e;
+  outline-offset: -2px;
+}
+
+/* A pane moved out of the tab group (Task Pane Options > Move Out of Tab)
+   shows beside the group in a column of its own, as Office lays such panes
+   side by side. The workbook then lays every pane column out from the
+   panes' own widths (useSpreadsheetTaskPaneLayout): Comments, the panes
+   moved out, then the tab group at the edge; a floating one takes none. */
+.workbookSurfaceWithPaneColumns {
+  display: grid !important;
+  position: relative;
+  grid-template-columns: var(--spreadsheet-pane-grid-template, minmax(0, 1fr));
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+.workbookSurfaceWithPaneColumns > :global([data-testid="spreadsheet-pane-layout"]),
+.workbookSurfaceWithPaneColumns > :global([data-testid="spreadsheet-page-layout-view"]) {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.workbookSurfaceWithPaneColumns > :global([data-testid="spreadsheet-sheet-tabs"]) {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  min-width: 0;
+}
+
+.workbookSurfaceWithPaneColumns[data-task-pane-group="docked"] > .chartFormatPaneDock,
+.workbookSurfaceWithPaneColumns[data-comments-column="docked"]
+  > :global([data-testid="spreadsheet-comments-pane-dock"]),
+.taskPaneSeparateColumn {
+  display: block;
+  grid-row: 1 / 3;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  /* Each places its chrome card, inset as the Comments card is. */
+  padding: 8px 8px 8px 0;
+}
+
+.workbookSurfaceWithPaneColumns[data-task-pane-group="docked"] > .chartFormatPaneDock {
+  grid-column: var(--spreadsheet-task-pane-grid-column);
+}
+
+.workbookSurfaceWithPaneColumns[data-comments-column="docked"]
+  > :global([data-testid="spreadsheet-comments-pane-dock"]) {
+  grid-column: var(--spreadsheet-comments-grid-column);
+}
+
+/* A pane moved out of the tab and then moved off the edge: it floats over
+   the sheet like the group's floating pane. */
+.taskPaneSeparateColumn.taskPaneSeparateColumnFloating {
+  position: absolute;
+  z-index: 40;
+  overflow: visible;
+  padding: 0;
+  border-radius: 12px;
+}
+
+.taskPaneSeparateColumnFloating :global(:is([data-office-task-pane], aside)) {
+  box-shadow:
+    0 18px 48px rgb(15 23 42 / 18%),
+    0 2px 8px rgb(15 23 42 / 10%);
+}
+
+.workbookSurfaceWithPaneColumns > .chartFormatPaneDock :global(:is([data-office-task-pane], aside)) > header,
+.workbookSurfaceWithPaneColumns > :global([data-testid="spreadsheet-comments-pane-dock"] aside) > header,
+.taskPaneSeparateColumn :global(:is([data-office-task-pane], aside)) > header {
+  cursor: grab;
+}
+
+/* A docked column's inner border: the pointer turns into a two-headed arrow
+   and the border drags the pane's width (Office's task pane resize). */
+.taskPaneResizeHandle {
+  position: relative;
+  /* Over the sheet it now lies on, beside the card it resizes. */
+  z-index: 42;
+  justify-self: start;
+  align-self: stretch;
+  width: 8px;
+  margin-inline-start: -4px;
+  cursor: col-resize;
+  touch-action: none;
+  outline: none;
+}
+
+.taskPaneResizeHandle::after {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 3px;
+  width: 2px;
+  background: transparent;
+  content: "";
+  transition: background-color 120ms ease;
+}
+
+.taskPaneResizeHandle:hover::after,
+.taskPaneResizeHandle:focus-visible::after,
+.taskPaneResizeHandle:active::after {
+  background: #0f766e;
+}
+
+/* A finger needs more than the mouse's 8 px to take the border: on a touch
+   screen the border is taken 24 px wide, centred on the same line. */
+:where(:root[data-touch-mode]) .taskPaneResizeHandle {
+  width: 24px;
+  margin-inline-start: -12px;
+}
+
+:where(:root[data-touch-mode]) .taskPaneResizeHandle::after {
+  inset-inline-start: 11px;
+}
+
+/* A pane fills the workbook's dock column, as the chrome's card the column
+   places (the card draws its own edge and shadow). */
+.chartFormatPaneFill {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.workbookSurfaceWithChartPane > .chartFormatPaneDock {
+  display: block;
+  grid-column: 2;
+  grid-row: 1 / 3;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  /* The column places the chrome's card, inset like the Comments card. */
+  padding: 8px 8px 8px 0;
+}
+
+/* The chart Format pane is the shared one (DocumentChartFormatPane); its
+   PLACEMENT is the workbook's, because Excel docks the pane as a column of
+   the workbook grid rather than as a card over the sheet, so
+   `.workbookSurfaceWithChartPane > .chartFormatPaneDock` above owns where it
+   sits. The rules below dress the worksheet's own options inside it. */
+.chartFormatOptions .chartFormatIconButton {
+  display: grid;
+  box-sizing: border-box;
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  min-height: 32px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.chartFormatOptions .chartFormatIconButton:not(:global(.office-ribbon-control)) {
+  background: transparent;
+  color: #52605a;
+}
+
+.chartFormatOptions .chartFormatIconButton:hover:not(:global(.office-ribbon-control)) {
+  background: #f2f4f3;
+  color: #1f3b32;
+}
+
+/* The worksheet's own options on the shared Format pane
+   (DocumentChartFormatPane's host options slot) and its header command. */
+.chartFormatOptions {
+  display: contents;
+}
+
+/* Inside the shared chart Format pane the worksheet's own options take the
+   pane's grammar (OfficeTaskPane / OfficeShapeFormatPane): a pane section's
+   rhythm, its 11px heading, 12px labels and 26px controls, so the element's
+   page reads as one pane rather than a second skin inside it. A coarse
+   pointer keeps the 44px touch target. */
+.chartFormatOptions .chartFormatSection {
+  gap: 10px;
+  padding: 0;
+  border: 0;
+}
+
+.chartFormatOptions .chartFormatSection + .chartFormatSection {
+  padding-top: 13px;
+  border-top: 1px solid var(--office-pane-border, #e0e0e0);
+}
+
+.chartFormatOptions .chartFormatSectionHeading {
+  color: var(--office-pane-ink, #242424);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.chartFormatOptions :is(.chartFormatField, .chartFormatFields > label) {
+  gap: 3px;
+  color: var(--office-pane-ink, #242424);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.chartFormatOptions
+  :is(.chartFormatField, .chartFormatFields > label)
+  :is(input:not([type="checkbox"]):not([type="radio"]), select) {
+  height: 26px;
+  min-height: 26px;
+  padding: 0 6px;
+  border: 1px solid var(--office-pane-control-border, #c7c7c7);
+  border-radius: 4px;
+  background: var(--office-pane-surface, #fff);
+  color: var(--office-pane-ink, #242424);
+  font: inherit;
+  font-size: 12px;
+}
+
+.chartFormatOptions .chartFormatPrimaryAction,
+.chartFormatOptions .chartFormatSecondaryAction {
+  min-height: 28px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+:where(:root[data-touch-mode]) .chartFormatOptions :is(.chartFormatField, .chartFormatFields > label) :is(input:not([type="checkbox"]):not([type="radio"]), select),
+:where(:root[data-touch-mode]) .chartFormatOptions .chartFormatPrimaryAction,
+:where(:root[data-touch-mode]) .chartFormatOptions .chartFormatSecondaryAction {
+  height: auto;
+  min-height: var(--office-touch-control-height, 32px);
+}
+
+.chartFormatSection {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 14px 16px 16px;
+  border: 0;
+  border-bottom: 1px solid #e7eae8;
+}
+
+.chartFormatSectionHeading {
+  margin: 0;
+  color: #35423c;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.chartFormatFields {
+  display: grid;
+  gap: 10px;
+}
+
+.chartFormatField,
+.chartFormatFields > label {
+  display: grid;
+  gap: 5px;
+  color: #4c5953;
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.chartFormatField input,
+.chartFormatField select,
+.chartFormatFields > label input,
+.chartFormatFields > label select {
+  box-sizing: border-box;
+  width: 100%;
+   
+  min-height: 28px;
+  padding: 4px 9px;
+  border: 1px solid #cfd7d3;
+  border-radius: 6px;
+  background: #fff;
+  color: #26322d;
+  font: 500 12px/1.25 var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+}
+
+.chartFormatField input:disabled,
+.chartFormatField select:disabled,
+.chartFormatFields > label input:disabled,
+.chartFormatFields > label select:disabled {
+  cursor: not-allowed;
+  background: #f3f5f4;
+  color: #84908a;
+}
+
+.chartFormatDataRange {
+  box-sizing: border-box;
+  min-height: 34px;
+  padding: 8px 9px;
+  overflow: hidden;
+  border: 1px solid #dde3e0;
+  border-radius: 6px;
+  background: #f7f9f8;
+  color: #33413b;
+  font: 500 11px/1.35 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    monospace;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chartFormatDataActions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.chartFormatOptions .chartFormatPrimaryAction,
+.chartFormatOptions .chartFormatSecondaryAction {
+  display: inline-flex;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 7px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.chartFormatOptions .chartFormatPrimaryAction {
+  border: 1px solid var(--office-control-border, #b6d8c0);
+}
+
+.chartFormatOptions .chartFormatPrimaryAction:not(:global(.office-ribbon-control)) {
+  background: #edf8f0;
+  color: #166534;
+}
+
+.chartFormatOptions .chartFormatSecondaryAction {
+  border: 1px solid var(--office-control-border, #d5dcd8);
+}
+
+.chartFormatOptions .chartFormatSecondaryAction:not(:global(.office-ribbon-control)) {
+  background: #fff;
+  color: #44514b;
+}
+
+.chartFormatOptions
+  :is(
+    .chartFormatIconButton,
+    .chartFormatPrimaryAction,
+    .chartFormatSecondaryAction,
+    input,
+    select
+  ):focus-visible:not(:global(.office-ribbon-control)) {
+  outline: 2px solid var(--spreadsheet-ribbon-accent, #15803d);
+  outline-offset: 2px;
+}
+
+/* Office Web worksheet-tab rail. Navigation and the + command stay fixed;
+ * only the flat tab list scrolls. Menus are shared Radix/Office surfaces, so
+ * right-click, two-finger click and keyboard context-menu activation all own
+ * the same focus/disabled semantics. */
+.sheetTabsBar {
+  display: grid;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 36px;
+  flex: 0 0 auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: stretch;
+  overflow: hidden;
+  border-top: 1px solid color-mix(in srgb, #64748b 22%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, #64748b 15%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--surface, #ffffff) 94%,
+    var(--muted, #64748b) 6%
+  );
+  color: var(--foreground, #262626);
+}
+
+.sheetTabsNavigation {
+  display: inline-flex;
+  align-items: stretch;
+  border-inline-end: 1px solid
+    color-mix(in srgb, var(--muted, #64748b) 18%, transparent);
+}
+
+.sheetTabsBar .sheetTabNavigationButton,
+.sheetTabsBar .sheetTabAdd {
+  display: inline-grid;
+  box-sizing: border-box;
+  width: 32px;
+  min-width: 32px;
+  height: 35px;
+  min-height: 35px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.sheetTabsBar .sheetTabNavigationButton:not(:global(.office-ribbon-control)) {
+  background: transparent;
+  color: var(--muted-foreground, #525252);
+}
+
+.sheetTabsBar .sheetTabAdd:not(:global(.office-ribbon-control)) {
+  background: transparent;
+  color: var(--muted-foreground, #525252);
+}
+
+.sheetTabsBar .sheetTabNavigationButton:hover:not(:disabled):not(:global(.office-ribbon-control)) {
+  background: color-mix(in srgb, var(--muted, #64748b) 12%, transparent);
+  color: var(--foreground, #262626);
+}
+
+.sheetTabsBar .sheetTabAdd:hover:not(:disabled):not(:global(.office-ribbon-control)) {
+  background: color-mix(in srgb, var(--muted, #64748b) 12%, transparent);
+  color: var(--foreground, #262626);
+}
+
+.sheetTabsBar .sheetTabNavigationButton:focus-visible,
+.sheetTabsBar .sheetTabAdd:focus-visible,
+.sheetTabsBar .sheetTabButton:focus-visible,
+.sheetTabRename:focus-visible {
+  position: relative;
+  z-index: 2;
+}
+
+.sheetTabsBar .sheetTabNavigationButton:focus-visible:not(:global(.office-ribbon-control)),
+.sheetTabsBar .sheetTabAdd:focus-visible:not(:global(.office-ribbon-control)),
+.sheetTabsBar .sheetTabButton:focus-visible:not(:global(.office-ribbon-control)),
+.sheetTabRename:focus-visible:not(:global(.office-ribbon-control)) {
+  outline: 2px solid var(--spreadsheet-ribbon-accent, #15803d);
+  outline-offset: -2px;
+}
+
+.sheetTabsBar .sheetTabNavigationButton:disabled,
+.sheetTabsBar .sheetTabAdd:disabled {
+  cursor: default;
+}
+
+.sheetTabsBar .sheetTabNavigationButton:disabled:not(:global(.office-ribbon-control)) {
+  color: color-mix(in srgb, var(--muted-foreground, #737373) 45%, transparent);
+}
+
+.sheetTabsBar .sheetTabAdd:disabled:not(:global(.office-ribbon-control)) {
+  color: color-mix(in srgb, var(--muted-foreground, #737373) 45%, transparent);
+}
+
+.sheetTabsScroller {
+  display: flex;
+  min-width: 0;
+  align-items: stretch;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: none;
+}
+
+.sheetTabsScroller::-webkit-scrollbar {
+  display: none;
+}
+
+.sheetTab {
+  position: relative;
+  display: inline-flex;
+  min-width: 0;
+  flex: 0 0 auto;
+  align-items: stretch;
+}
+
+.sheetTabMenuAnchor {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.sheetTabsBar .sheetTabButton {
+  position: relative;
+  display: inline-flex;
+  box-sizing: border-box;
+  max-width: 220px;
+  min-width: 72px;
+  height: 35px;
+  min-height: 35px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  overflow: hidden;
+  border: 0;
+  border-inline-end: 1px solid var(--office-control-border, color-mix(in srgb, var(--muted, #64748b) 12%, transparent));
+  border-radius: 0;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.sheetTabsBar .sheetTabButton:not(:global(.office-ribbon-control)) {
+  background: transparent;
+  color: var(--muted-foreground, #525252);
+}
+
+.sheetTabButton > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sheetTabViewIndicator {
+  display: inline-flex;
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  align-items: center;
+  justify-content: center;
+  margin-inline-start: 5px;
+  overflow: visible !important;
+  color: var(--spreadsheet-ribbon-accent, #15803d);
+}
+
+.sheetTabViewIndicator > svg {
+  display: block;
+}
+
+.sheetTabButton::after {
+  position: absolute;
+  right: 10px;
+  bottom: 0;
+  left: 10px;
+  height: 3px;
+  border-radius: 2px 2px 0 0;
+  content: "";
+}
+
+.sheetTabButton:not(:global(.office-ribbon-control))::after {
+  background: var(--spreadsheet-sheet-tab-color);
+  opacity: 0;
+}
+
+.sheetTabsBar .sheetTabButton:hover:not(:global(.office-ribbon-control)) {
+  background: color-mix(in srgb, var(--muted, #64748b) 10%, transparent);
+  color: var(--foreground, #262626);
+}
+
+.sheetTabsBar .sheetTabButton[data-active="true"] {
+  font-weight: 750;
+}
+
+.sheetTabsBar .sheetTabButton[data-active="true"]:not(:global(.office-ribbon-control)) {
+  background: var(--surface, #ffffff);
+  color: var(--foreground, #262626);
+}
+
+/* Pressed, the open sheet's tab stays the white paper it is: the window's
+   pressed-button rule would wash it to a 13% tint for the moment of the
+   press. An idle tab gets an opaque step of the hover instead. */
+:global(.native-page-window) .sheetTabsBar .sheetTabButton.sheetTabButton[data-active="true"]:active:not(:disabled) {
+  background: var(--surface, #ffffff);
+  transform: none;
+}
+
+.sheetTabButton[data-active="true"]:not(:global(.office-ribbon-control))::after {
+  opacity: 1;
+}
+
+/* XLS-A079: a grouped (selected) sheet's tab is white like the shown one;
+   only the shown sheet's name is bold. */
+.sheetTabsBar .sheetTabButton[data-grouped="true"]:not([data-active="true"]):not(:global(.office-ribbon-control)) {
+  background: var(--surface, #ffffff);
+  color: var(--foreground, #262626);
+}
+
+.sheetGroupTitleTag {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--foreground, #262626);
+  white-space: nowrap;
+  padding: 0 6px;
+}
+
+.sheetTabButton[data-has-tab-color="true"]:not([data-active="true"]):not(:global(.office-ribbon-control))::after {
+  opacity: 0.62;
+}
+
+.sheetTabsBar .sheetTabButton[data-drop-target="true"]:not(:global(.office-ribbon-control)) {
+  background: color-mix(
+    in srgb,
+    var(--spreadsheet-ribbon-accent, #15803d) 12%,
+    transparent
+  );
+}
+
+.sheetTabRename {
+  box-sizing: border-box;
+  width: 150px;
+  height: 30px;
+  align-self: center;
+  margin: 2px 4px;
+  padding: 0 9px;
+  border: 1px solid var(--spreadsheet-ribbon-accent, #15803d);
+  border-radius: 3px;
+  background: var(--surface, #ffffff);
+  color: var(--foreground, #262626);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+/* The reason a sheet name was refused, just above the rename box. */
+.sheetTabRenameError {
+  position: fixed;
+  z-index: 90;
+  box-sizing: border-box;
+  max-width: min(340px, calc(100vw - 16px));
+  padding: 6px 10px;
+  border: 1px solid #c42b1c;
+  border-radius: 4px;
+  background: var(--surface, #ffffff);
+  box-shadow: 0 4px 14px rgb(0 0 0 / 18%);
+  color: var(--foreground, #262626);
+  font-size: 12px;
+  line-height: 1.4;
+  pointer-events: none;
+}
+
+.sheetTabsBar .sheetTabAdd {
+  border-inline-start: 1px solid
+    color-mix(in srgb, var(--muted, #64748b) 16%, transparent);
+}
+
+/* The sheet tab's menu (right click, or the tab's ▾) is a right-click menu:
+   its card, rows, glyphs and submenus take the one specification
+   (office-context-menu, styles/office-context-menu.css). Only the colour
+   grid below is the tab menu's own. */
+.sheetTabMenuIcon {
+  display: inline-flex;
+  flex: 0 0 var(--ocm-icon-column, 20px);
+  width: var(--ocm-icon-column, 20px);
+  min-width: var(--ocm-icon-column, 20px);
+  align-items: center;
+  justify-content: center;
+  color: var(--muted-foreground, #525252);
+}
+
+.sheetTabMenuIcon :global(.docs-home-icon),
+.sheetTabMenuIcon svg {
+  width: var(--ocm-icon-size, 16px);
+  height: var(--ocm-icon-size, 16px);
+}
+
+.sheetTabColorMenu {
+  min-width: 222px;
+  padding: 7px;
+}
+
+.sheetTabColorGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+  padding: 3px;
+}
+
+.sheetTabColorChoice.sheetTabColorChoice {
+  display: grid;
+  min-height: 34px;
+  place-items: center;
+  padding: 4px;
+}
+
+.sheetTabColorSwatch {
+  display: block;
+  width: 28px;
+  height: 18px;
+  border: 1px solid rgb(15 23 42 / 20%);
+  border-radius: 3px;
+}
+
+.sheetTabCustomColorItem label {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sheetTabCustomColorItem input {
+  width: 30px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.sheetTabSheetList {
+  min-width: 220px;
+  max-height: min(420px, calc(100vh - 56px));
+  overflow-y: auto;
+}
+
+.sheetTabListColor,
+.sheetTabListIcon {
+  display: inline-grid;
+  width: 18px;
+  min-width: 18px;
+  height: 18px;
+  place-items: center;
+  border-radius: 3px;
+}
+
+.sheetTabListColor {
+  border: 1px solid rgb(15 23 42 / 18%);
+}
+
+.sheetTabListIcon {
+  background: color-mix(in srgb, var(--muted, #64748b) 12%, transparent);
+  color: var(--muted-foreground, #525252);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+@media (max-width: 1100px) {
+  .workbookSurfaceWithChartPane {
+    --spreadsheet-chart-format-pane-width: 320px;
+  }
+
+  .sheetTabsBar .sheetTabButton {
+    max-width: 180px;
+    min-width: 64px;
+    padding-inline: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .webSurface :global(.note-editor-ribbon-tab),
+  .webSurface :global(.note-editor-office-toolbar__button),
+  .webSurface :global(.note-editor-ribbon-big),
+  .chartFormatOptions,
+  .chartFormatOptions *,
+  .sheetTabButton {
+    transition: none;
+  }
+}
+.chartDesktopArrange {
+  flex: 0 0 auto;
+}
+/* Dark menus: the Margins and Size lists' value lines and checked row follow
+   the dark Cupertino card; the paper previews stay white. */
+:global([data-theme-mode="dark"]) .marginPresetValues {
+  color: #a1a1a8;
+}
+:global([data-theme-mode="high-contrast"]) .marginPresetValues {
+  color: #a1a1a8;
+}
+:global([data-theme-mode="dark"]) .paperSizeValues {
+  color: #a1a1a8;
+}
+:global([data-theme-mode="high-contrast"]) .paperSizeValues {
+  color: #a1a1a8;
+}
+
+:global([data-theme-mode="dark"]) .marginPresetItem.marginPresetItem[data-state="checked"] {
+  border-color: #26a159;
+  background: color-mix(in srgb, #1f8f4c 24%, transparent);
+}
+
+:global([data-theme-mode="high-contrast"]) .marginPresetItem.marginPresetItem[data-state="checked"] {
+  border-color: #26a159;
+  background: color-mix(in srgb, #1f8f4c 24%, transparent);
+}
+
+/* Dark: the zoom popover is a dark glass card like the ribbon's menus. */
+:global([data-theme-mode="dark"]) .zoomPopover.zoomPopover {
+  --console-surface: #26272c;
+  --console-text-primary: #f2f2f7;
+  --console-text-secondary: #f2f2f7;
+  --console-text-muted: #a1a1a8;
+  --console-shadow-ink: #000000;
+  --continuous-zoom-border: rgb(255 255 255 / 14%);
+  --continuous-zoom-glass: rgb(38 39 44 / 94%);
+  box-shadow:
+    0 18px 38px rgb(0 0 0 / 45%),
+    inset 0 1px 0 rgb(255 255 255 / 8%);
+  color: #f2f2f7;
+}
+:global([data-theme-mode="high-contrast"]) .zoomPopover.zoomPopover {
+  --console-surface: #26272c;
+  --console-text-primary: #f2f2f7;
+  --console-text-secondary: #f2f2f7;
+  --console-text-muted: #a1a1a8;
+  --console-shadow-ink: #000000;
+  --continuous-zoom-border: rgb(255 255 255 / 14%);
+  --continuous-zoom-glass: rgb(38 39 44 / 94%);
+  box-shadow:
+    0 18px 38px rgb(0 0 0 / 45%),
+    inset 0 1px 0 rgb(255 255 255 / 8%);
+  color: #f2f2f7;
+}
+
+
+/* Dark and high contrast: the worksheet-tab rail and the status bar's view
+   switcher are window chrome, graphite like the ribbon. The open sheet's tab
+   is the raised step of the rail (it is white paper in light). */
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .sheetTabsBar {
+  --surface: var(--bg-raised, #26272c);
+  --foreground: var(--text-primary, #f2f2f7);
+  --muted-foreground: var(--text-secondary, #a8a8b0);
+  border-top-color: var(--border, #34353b);
+  border-bottom-color: var(--border-light, #2a2b30);
+  background: var(--bg-surface, #1c1d21);
+  color: var(--text-primary, #f2f2f7);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"])) .viewModeSwitcher {
+  border-color: rgb(255 255 255 / 12%);
+  background: rgb(0 0 0 / 22%);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]))
+  .viewModeSwitcher
+  > .viewModeButton {
+  border-inline-end-color: rgb(255 255 255 / 12%);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]))
+  .viewModeSwitcher
+  > .viewModeButton:not(:global(.office-ribbon-control)) {
+  color: var(--text-secondary, #a8a8b0);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]))
+  .viewModeSwitcher
+  > .viewModeButton:hover:not(:disabled):not(:global(.office-ribbon-control)) {
+  background: rgb(255 255 255 / 8%);
+  color: var(--text-primary, #f2f2f7);
+}
+
+:global(:is([data-theme-mode="dark"], [data-theme-mode="high-contrast"]))
+  .viewModeSwitcher
+  > .viewModeButton:is([data-active="true"], [aria-pressed="true"]):not(:global(.office-ribbon-control)) {
+  background: var(--console-accent-soft, rgb(45 212 191 / 12%));
+  color: var(--console-accent, #2dd4bf);
+}
+
+/* Sparkline tab. Excel's Show group is six check boxes read down two
+ * columns of three; the Sparkline and Axis groups are label + field rows on
+ * the same three 24px rows, so every group sits on one baseline grid. */
+.sparklineShowOptions {
+  align-content: center;
+  box-sizing: border-box;
+  column-gap: 8px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(3, 24px);
+  height: 72px;
+  min-width: max-content;
+  padding-inline: 4px;
+}
+
+.sparklineShowOptions > :global(label),
+.sparklineFields > :global(label) {
+  border-radius: 4px;
+  gap: 5px;
+  height: 24px;
+  min-height: 24px;
+  padding: 2px 4px;
+}
+
+.sparklineFields {
+  align-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  column-gap: 8px;
+  display: grid;
+  grid-template-columns: max-content max-content;
+  grid-template-rows: repeat(3, 24px);
+  height: 72px;
+  min-width: max-content;
+  padding-inline: 4px;
+}
+
+.sparklineFieldWide {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+.sparklineFieldLabel {
+  color: var(--console-text-secondary, #354c4a);
+  font-size: 12px;
+  line-height: 1.5;
+  padding-inline-start: 4px;
+  white-space: nowrap;
+}
+
+.sparklineFieldPair {
+  align-items: center;
+  display: inline-flex;
+  gap: 4px;
+}
+
+.sparklineFieldControl {
+  background: var(--office-ribbon-surface, #fff);
+  border: 1px solid var(--docs-ribbon-divider, #d1d5db);
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: var(--office-ribbon-ink, #1f2937);
+  font: inherit;
+  font-size: 12px;
+  height: 22px;
+  min-width: 0;
+  outline: none;
+  padding: 1px 6px;
+  width: 112px;
+}
+
+.sparklineFieldNumber {
+  width: 64px;
+}
+
+.sparklineFieldControl:focus-visible {
+  border-color: var(--office-ribbon-accent, #15803d);
+  box-shadow: 0 0 0 1px var(--office-ribbon-accent, #15803d);
+}
+
+.sparklineFieldControl:disabled {
+  color: var(--console-text-muted, #8a9a98);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* A finger's 44 px targets on the sheet bar (styles/touch-hit-area.css):
+   the bar clips what stands out of it, so under a coarse pointer its arrows,
+   list and add buttons and its sheet tabs are 44 px themselves -- the bar
+   grows to them; a mouse keeps the 35 px bar. */
+@media (pointer: coarse) {
+  .sheetTabsBar {
+    min-height: 44px;
+  }
+  .sheetTabsBar .sheetTabNavigationButton,
+  .sheetTabsBar .sheetTabAdd {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+  }
+  .sheetTabsBar .sheetTabButton {
+    height: 44px;
+    min-height: 44px;
+  }
+}

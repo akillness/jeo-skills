@@ -1,0 +1,371 @@
+{
+  "name": "@ui-sdk/web",
+  "version": "0.1.0-beta.16",
+  "description": "UI SDK as web components.",
+  "keywords": [
+    "web-components",
+    "custom-elements",
+    "ui",
+    "ui-sdk",
+    "shadcn",
+    "behaviors",
+    "accessibility",
+    "a11y",
+    "aria",
+    "keyboard",
+    "focus",
+    "headless",
+    "unstyled",
+    "components",
+    "agents"
+  ],
+  "type": "module",
+  "license": "Apache-2.0",
+  "homepage": "https://ui-sdk.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vercel-labs/ui.git",
+    "directory": "packages/web"
+  },
+  "bugs": "https://github.com/vercel-labs/ui/issues",
+  "exports": {
+    ".": "./src/index.ts",
+    "./accordion": "./src/entries/accordion.ts",
+    "./alert-dialog": "./src/entries/alert-dialog.ts",
+    "./autocomplete": "./src/entries/autocomplete.ts",
+    "./avatar": "./src/entries/avatar.ts",
+    "./button": "./src/entries/button.ts",
+    "./calendar": "./src/entries/calendar.ts",
+    "./carousel": "./src/entries/carousel.ts",
+    "./checkbox": "./src/entries/checkbox.ts",
+    "./collapsible": "./src/entries/collapsible.ts",
+    "./color-picker": "./src/entries/color-picker.ts",
+    "./combobox": "./src/entries/combobox.ts",
+    "./command": "./src/entries/command.ts",
+    "./date-picker": "./src/entries/date-picker.ts",
+    "./date-input": "./src/entries/date-input.ts",
+    "./dialog": "./src/entries/dialog.ts",
+    "./drawer": "./src/entries/drawer.ts",
+    "./events": "./src/events.ts",
+    "./field": "./src/entries/field.ts",
+    "./label": "./src/entries/label.ts",
+    "./file-input": "./src/entries/file-input.ts",
+    "./hover-card": "./src/entries/hover-card.ts",
+    "./image-cropper": "./src/entries/image-cropper.ts",
+    "./input": "./src/entries/input.ts",
+    "./listbox": "./src/entries/listbox.ts",
+    "./tree": "./src/entries/tree.ts",
+    "./agent": "./src/agent.ts",
+    "./observe": "./src/observe.ts",
+    "./history": "./src/history.ts",
+    "./menu": "./src/entries/menu.ts",
+    "./menubar": "./src/entries/menubar.ts",
+    "./meter": "./src/entries/meter.ts",
+    "./navigation-menu": "./src/entries/navigation-menu.ts",
+    "./number-input": "./src/entries/number-input.ts",
+    "./otp-input": "./src/entries/otp-input.ts",
+    "./overlays": "./src/entries/overlays.ts",
+    "./pagination": "./src/entries/pagination.ts",
+    "./password-input": "./src/entries/password-input.ts",
+    "./popover": "./src/entries/popover.ts",
+    "./preferences": "./src/entries/preferences.ts",
+    "./progress": "./src/entries/progress.ts",
+    "./radio": "./src/entries/radio.ts",
+    "./rating": "./src/entries/rating.ts",
+    "./resizable": "./src/entries/resizable.ts",
+    "./scroll-area": "./src/entries/scroll-area.ts",
+    "./select": "./src/entries/select.ts",
+    "./segmented-control": "./src/entries/segmented-control.ts",
+    "./separator": "./src/entries/separator.ts",
+    "./slider": "./src/entries/slider.ts",
+    "./switch": "./src/entries/switch.ts",
+    "./tabs": "./src/entries/tabs.ts",
+    "./textarea": "./src/entries/textarea.ts",
+    "./time-input": "./src/entries/time-input.ts",
+    "./timeline": "./src/entries/timeline.ts",
+    "./toast": "./src/entries/toast.ts",
+    "./toggle": "./src/entries/toggle.ts",
+    "./token-input": "./src/entries/token-input.ts",
+    "./toolbar": "./src/entries/toolbar.ts",
+    "./tooltip": "./src/entries/tooltip.ts",
+    "./trigger-menu": "./src/entries/trigger-menu.ts",
+    "./waterfall": "./src/entries/waterfall.ts"
+  },
+  "sideEffects": [
+    "./src/entries/*.ts",
+    "./dist/entries/*.js"
+  ],
+  "files": [
+    "dist",
+    "browser",
+    "docs",
+    "custom-elements.json",
+    "html-custom-data.json"
+  ],
+  "customElements": "custom-elements.json",
+  "publishConfig": {
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./accordion": {
+        "types": "./dist/entries/accordion.d.ts",
+        "default": "./dist/entries/accordion.js"
+      },
+      "./alert-dialog": {
+        "types": "./dist/entries/alert-dialog.d.ts",
+        "default": "./dist/entries/alert-dialog.js"
+      },
+      "./autocomplete": {
+        "types": "./dist/entries/autocomplete.d.ts",
+        "default": "./dist/entries/autocomplete.js"
+      },
+      "./avatar": {
+        "types": "./dist/entries/avatar.d.ts",
+        "default": "./dist/entries/avatar.js"
+      },
+      "./button": {
+        "types": "./dist/entries/button.d.ts",
+        "default": "./dist/entries/button.js"
+      },
+      "./calendar": {
+        "types": "./dist/entries/calendar.d.ts",
+        "default": "./dist/entries/calendar.js"
+      },
+      "./carousel": {
+        "types": "./dist/entries/carousel.d.ts",
+        "default": "./dist/entries/carousel.js"
+      },
+      "./checkbox": {
+        "types": "./dist/entries/checkbox.d.ts",
+        "default": "./dist/entries/checkbox.js"
+      },
+      "./collapsible": {
+        "types": "./dist/entries/collapsible.d.ts",
+        "default": "./dist/entries/collapsible.js"
+      },
+      "./color-picker": {
+        "types": "./dist/entries/color-picker.d.ts",
+        "default": "./dist/entries/color-picker.js"
+      },
+      "./combobox": {
+        "types": "./dist/entries/combobox.d.ts",
+        "default": "./dist/entries/combobox.js"
+      },
+      "./command": {
+        "types": "./dist/entries/command.d.ts",
+        "default": "./dist/entries/command.js"
+      },
+      "./date-picker": {
+        "types": "./dist/entries/date-picker.d.ts",
+        "default": "./dist/entries/date-picker.js"
+      },
+      "./date-input": {
+        "types": "./dist/entries/date-input.d.ts",
+        "default": "./dist/entries/date-input.js"
+      },
+      "./dialog": {
+        "types": "./dist/entries/dialog.d.ts",
+        "default": "./dist/entries/dialog.js"
+      },
+      "./drawer": {
+        "types": "./dist/entries/drawer.d.ts",
+        "default": "./dist/entries/drawer.js"
+      },
+      "./events": {
+        "types": "./dist/events.d.ts",
+        "default": "./dist/events.js"
+      },
+      "./field": {
+        "types": "./dist/entries/field.d.ts",
+        "default": "./dist/entries/field.js"
+      },
+      "./label": {
+        "types": "./dist/entries/label.d.ts",
+        "default": "./dist/entries/label.js"
+      },
+      "./file-input": {
+        "types": "./dist/entries/file-input.d.ts",
+        "default": "./dist/entries/file-input.js"
+      },
+      "./hover-card": {
+        "types": "./dist/entries/hover-card.d.ts",
+        "default": "./dist/entries/hover-card.js"
+      },
+      "./image-cropper": {
+        "types": "./dist/entries/image-cropper.d.ts",
+        "default": "./dist/entries/image-cropper.js"
+      },
+      "./input": {
+        "types": "./dist/entries/input.d.ts",
+        "default": "./dist/entries/input.js"
+      },
+      "./listbox": {
+        "types": "./dist/entries/listbox.d.ts",
+        "default": "./dist/entries/listbox.js"
+      },
+      "./tree": {
+        "types": "./dist/entries/tree.d.ts",
+        "default": "./dist/entries/tree.js"
+      },
+      "./agent": {
+        "types": "./dist/agent.d.ts",
+        "default": "./dist/agent.js"
+      },
+      "./observe": {
+        "types": "./dist/observe.d.ts",
+        "default": "./dist/observe.js"
+      },
+      "./history": {
+        "types": "./dist/history.d.ts",
+        "default": "./dist/history.js"
+      },
+      "./menu": {
+        "types": "./dist/entries/menu.d.ts",
+        "default": "./dist/entries/menu.js"
+      },
+      "./menubar": {
+        "types": "./dist/entries/menubar.d.ts",
+        "default": "./dist/entries/menubar.js"
+      },
+      "./meter": {
+        "types": "./dist/entries/meter.d.ts",
+        "default": "./dist/entries/meter.js"
+      },
+      "./navigation-menu": {
+        "types": "./dist/entries/navigation-menu.d.ts",
+        "default": "./dist/entries/navigation-menu.js"
+      },
+      "./number-input": {
+        "types": "./dist/entries/number-input.d.ts",
+        "default": "./dist/entries/number-input.js"
+      },
+      "./otp-input": {
+        "types": "./dist/entries/otp-input.d.ts",
+        "default": "./dist/entries/otp-input.js"
+      },
+      "./overlays": {
+        "types": "./dist/entries/overlays.d.ts",
+        "default": "./dist/entries/overlays.js"
+      },
+      "./pagination": {
+        "types": "./dist/entries/pagination.d.ts",
+        "default": "./dist/entries/pagination.js"
+      },
+      "./password-input": {
+        "types": "./dist/entries/password-input.d.ts",
+        "default": "./dist/entries/password-input.js"
+      },
+      "./popover": {
+        "types": "./dist/entries/popover.d.ts",
+        "default": "./dist/entries/popover.js"
+      },
+      "./preferences": {
+        "types": "./dist/entries/preferences.d.ts",
+        "default": "./dist/entries/preferences.js"
+      },
+      "./progress": {
+        "types": "./dist/entries/progress.d.ts",
+        "default": "./dist/entries/progress.js"
+      },
+      "./radio": {
+        "types": "./dist/entries/radio.d.ts",
+        "default": "./dist/entries/radio.js"
+      },
+      "./rating": {
+        "types": "./dist/entries/rating.d.ts",
+        "default": "./dist/entries/rating.js"
+      },
+      "./resizable": {
+        "types": "./dist/entries/resizable.d.ts",
+        "default": "./dist/entries/resizable.js"
+      },
+      "./scroll-area": {
+        "types": "./dist/entries/scroll-area.d.ts",
+        "default": "./dist/entries/scroll-area.js"
+      },
+      "./select": {
+        "types": "./dist/entries/select.d.ts",
+        "default": "./dist/entries/select.js"
+      },
+      "./segmented-control": {
+        "types": "./dist/entries/segmented-control.d.ts",
+        "default": "./dist/entries/segmented-control.js"
+      },
+      "./separator": {
+        "types": "./dist/entries/separator.d.ts",
+        "default": "./dist/entries/separator.js"
+      },
+      "./slider": {
+        "types": "./dist/entries/slider.d.ts",
+        "default": "./dist/entries/slider.js"
+      },
+      "./switch": {
+        "types": "./dist/entries/switch.d.ts",
+        "default": "./dist/entries/switch.js"
+      },
+      "./tabs": {
+        "types": "./dist/entries/tabs.d.ts",
+        "default": "./dist/entries/tabs.js"
+      },
+      "./textarea": {
+        "types": "./dist/entries/textarea.d.ts",
+        "default": "./dist/entries/textarea.js"
+      },
+      "./time-input": {
+        "types": "./dist/entries/time-input.d.ts",
+        "default": "./dist/entries/time-input.js"
+      },
+      "./timeline": {
+        "types": "./dist/entries/timeline.d.ts",
+        "default": "./dist/entries/timeline.js"
+      },
+      "./toast": {
+        "types": "./dist/entries/toast.d.ts",
+        "default": "./dist/entries/toast.js"
+      },
+      "./toggle": {
+        "types": "./dist/entries/toggle.d.ts",
+        "default": "./dist/entries/toggle.js"
+      },
+      "./token-input": {
+        "types": "./dist/entries/token-input.d.ts",
+        "default": "./dist/entries/token-input.js"
+      },
+      "./toolbar": {
+        "types": "./dist/entries/toolbar.d.ts",
+        "default": "./dist/entries/toolbar.js"
+      },
+      "./tooltip": {
+        "types": "./dist/entries/tooltip.d.ts",
+        "default": "./dist/entries/tooltip.js"
+      },
+      "./trigger-menu": {
+        "types": "./dist/entries/trigger-menu.d.ts",
+        "default": "./dist/entries/trigger-menu.js"
+      },
+      "./waterfall": {
+        "types": "./dist/entries/waterfall.d.ts",
+        "default": "./dist/entries/waterfall.js"
+      },
+      "./package.json": "./package.json"
+    }
+  },
+  "scripts": {
+    "build": "node ../../scripts/build/build-package.mjs && node ../../scripts/build/browser.mjs",
+    "prepack": "cp ../../LICENSE LICENSE",
+    "typecheck": "node ../../scripts/tsgo.mjs --noEmit && node ../../scripts/tsgo.mjs --noEmit -p tsconfig.test.json",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "@ui-sdk/core": "workspace:^"
+  },
+  "devDependencies": {
+    "@ui-sdk/core": "workspace:*",
+    "typescript": "catalog:",
+    "vitest": "^5.0.3"
+  }
+}

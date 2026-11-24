@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "I personalizuar",
+ "zoom.levels": "Nivelet e zoom-it",
+ "dialog.close": "Mbyll",
+ "toast.close": "Mbyll njoftimin",
+ "button.confirm": "Në rregull",
+ "button.cancel": "Anulo",
+ "libreOffice.enable": "Shkarko dhe aktivizo (rreth {size})",
+ "libreOffice.enableAlt": "Shkarko dhe aktivizo LibreOffice",
+ "libreOffice.enabled": "LibreOffice {version} është aktivizuar",
+ "libreOffice.retrying": "Po provohet përsëri…",
+ "libreOffice.ready": "Formatet e vjetra Office, skedarët OpenDocument, figurat EMF/WMF dhe eksportet OpenDocument tani funksionojnë.",
+ "libreOffice.needed": "Kjo kërkon LibreOffice. MR Note Classic mund të shkarkojë versionin zyrtar në dosjen e vet; asgjë nuk instalohet në sistemin tuaj.",
+ "libreOffice.neededFor": "Ruajtja si .{format} kërkon LibreOffice. MR Note Classic mund të shkarkojë versionin zyrtar në dosjen e vet; asgjë nuk instalohet në sistemin tuaj."
+}

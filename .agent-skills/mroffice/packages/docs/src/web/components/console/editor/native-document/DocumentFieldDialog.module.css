@@ -1,0 +1,97 @@
+/* Word's Field dialog: Categories | Field names | the field's properties
+   and options, side by side; the field code underneath. One column on a
+   narrow window. */
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 9.5rem) minmax(0, 13rem) minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.list {
+  height: 18rem;
+  overflow: auto;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+}
+
+.name {
+  flex: none;
+}
+
+.caption {
+  overflow: hidden;
+  min-width: 0;
+  color: var(--office-dialog-muted, #65777d);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.panel {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.heading > svg {
+  flex: none;
+}
+
+.headingName {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.formats {
+  max-height: 11rem;
+  overflow: auto;
+}
+
+.codeRow {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.code {
+  display: block;
+  overflow: hidden;
+  min-height: 28px;
+  padding: 5px 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .layout,
+  .codeRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .list {
+    height: auto;
+    max-height: 10rem;
+  }
+}
+
+/* A date picture's code beside its sample, at the row's end. */
+.formats .caption {
+  margin-left: auto;
+}

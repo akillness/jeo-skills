@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Mukautettu",
+ "zoom.levels": "Zoomaustasot",
+ "dialog.close": "Sulje",
+ "toast.close": "Sulje ilmoitus",
+ "button.confirm": "OK",
+ "button.cancel": "Peruuta",
+ "libreOffice.enable": "Lataa ja ota käyttöön (n. {size})",
+ "libreOffice.enableAlt": "Lataa LibreOffice ja ota se käyttöön",
+ "libreOffice.enabled": "LibreOffice {version} on käytössä",
+ "libreOffice.retrying": "Yritetään uudelleen…",
+ "libreOffice.ready": "Vanhat Office-muodot, OpenDocument-tiedostot, EMF/WMF-kuvat ja OpenDocument-vienti toimivat nyt.",
+ "libreOffice.needed": "Tähän tarvitaan LibreOffice. MR Note Classic voi ladata virallisen version omaan kansioonsa; järjestelmään ei asenneta mitään.",
+ "libreOffice.neededFor": "Tallentaminen muodossa .{format} vaatii LibreOfficen. MR Note Classic voi ladata virallisen version omaan kansioonsa; järjestelmään ei asenneta mitään."
+}

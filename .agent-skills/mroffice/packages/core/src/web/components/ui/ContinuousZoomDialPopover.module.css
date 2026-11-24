@@ -1,0 +1,88 @@
+.crown {
+  position: relative;
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 3px;
+  color: currentcolor;
+  font-variant-numeric: tabular-nums;
+}
+
+.crownValue {
+  overflow: hidden;
+  font-size: 11px;
+  font-weight: 680;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.crownChevron {
+  flex: 0 0 auto;
+  opacity: 0.55;
+  transition: transform 160ms ease;
+}
+
+.crown[data-open="true"] .crownChevron {
+  transform: rotate(180deg);
+}
+
+/* Where the reading sits in the range, as the capsule's hairline. */
+.crown::after {
+  position: absolute;
+  right: 12px;
+  bottom: -4px;
+  left: 0;
+  height: 2px;
+  border-radius: 1px;
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, currentcolor 62%, transparent)
+      var(--continuous-zoom-crown-position, 0%),
+    color-mix(in srgb, currentcolor 14%, transparent)
+      var(--continuous-zoom-crown-position, 0%)
+  );
+  content: "";
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.crown[data-open="true"]::after {
+  opacity: 1;
+}
+
+.popover.popover {
+  /* A transient popover opens over the shell's persistent docks: the
+     memory task dock (1250) sits right above the canvas zoom capsule.
+     Radix copies this onto its positioning wrapper. */
+  z-index: 1300;
+  width: max-content;
+  min-width: max-content;
+  max-width: calc(calc(100vw / var(--touch-zoom, 1)) - 16px);
+  max-height: calc(calc(100vh / var(--touch-zoom, 1)) - 16px);
+  overflow: visible;
+  border-color: var(
+    --continuous-zoom-border,
+    var(--console-border-flat, rgba(13, 148, 136, 0.22))
+  );
+  border-radius: 14px;
+  padding: 6px;
+  background: var(--glass-float-bg, rgba(255, 255, 255, 0.9));
+  box-shadow:
+    0 18px 38px
+      color-mix(in srgb, var(--console-shadow-ink, #062b28) 16%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.84);
+  -webkit-backdrop-filter: var(--glass-float-blur, blur(28px) saturate(170%));
+  backdrop-filter: var(--glass-float-blur, blur(28px) saturate(170%));
+}
+
+.interaction {
+  display: grid;
+  place-items: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popover.popover {
+    animation: none;
+  }
+}

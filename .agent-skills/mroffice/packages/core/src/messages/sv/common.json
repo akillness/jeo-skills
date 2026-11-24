@@ -1,0 +1,15 @@
+{
+ "zoom.custom": "Anpassad",
+ "zoom.levels": "Zoomnivåer",
+ "dialog.close": "Stäng",
+ "toast.close": "Stäng avisering",
+ "button.confirm": "OK",
+ "button.cancel": "Avbryt",
+ "libreOffice.enable": "Ladda ned och aktivera (cirka {size})",
+ "libreOffice.enableAlt": "Ladda ned och aktivera LibreOffice",
+ "libreOffice.enabled": "LibreOffice {version} är aktiverat",
+ "libreOffice.retrying": "Försöker igen…",
+ "libreOffice.ready": "Äldre Office-format, OpenDocument-filer, EMF/WMF-bilder och export till OpenDocument fungerar nu.",
+ "libreOffice.needed": "Det här kräver LibreOffice. MR Note Classic kan ladda ned den officiella versionen till en egen mapp; inget installeras i systemet.",
+ "libreOffice.neededFor": "Att spara som .{format} kräver LibreOffice. MR Note Classic kan ladda ned den officiella versionen till en egen mapp; inget installeras i systemet."
+}

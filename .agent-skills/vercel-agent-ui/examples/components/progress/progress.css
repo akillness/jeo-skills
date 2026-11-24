@@ -1,0 +1,74 @@
+@scope ([data-example]) {
+  [data-slot="progress"] {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+    width: 20rem;
+    max-width: 100%;
+  }
+
+  [data-slot="stack"]:has(> [data-slot="progress"]) {
+    width: 20rem;
+    max-width: 100%;
+  }
+
+  [data-slot="progress-label"] {
+    font-weight: 500;
+  }
+
+  [data-slot="progress-value"] {
+    margin-inline-start: auto;
+    color: var(--muted);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  [data-slot="progress-track"] {
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    height: 10px;
+    overflow: hidden;
+    padding: 2px;
+    border-radius: 999px;
+    background: var(--surface-1);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+
+  [data-slot="progress-indicator"] {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--ink);
+
+    &[data-variant="destructive"] {
+      background: var(--danger);
+    }
+
+    [data-slot="progress-track"][data-indeterminate] & {
+      width: 40%;
+      background: linear-gradient(90deg, transparent, var(--ink), transparent);
+      animation: progress-sweep 1.2s ease-in-out infinite;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-slot="progress-track"][data-indeterminate]
+      [data-slot="progress-indicator"] {
+      width: 100%;
+      background: color-mix(in oklab, var(--ink) 30%, transparent);
+      animation: none;
+    }
+  }
+}
+
+@keyframes progress-sweep {
+  from {
+    translate: -100% 0;
+  }
+
+  to {
+    translate: 250% 0;
+  }
+}

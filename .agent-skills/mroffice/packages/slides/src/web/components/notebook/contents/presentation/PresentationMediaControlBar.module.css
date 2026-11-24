@@ -1,0 +1,164 @@
+/* PowerPoint's media control bar under a selected clip (Normal view): one
+   row as wide as the object, Play, the timeline, Move Back / Forward, the
+   time and the volume. */
+.bar {
+  align-items: center;
+  background: rgba(32, 32, 32, 0.88);
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: #ffffff;
+  display: flex;
+  gap: 2px;
+  height: 26px;
+  min-width: 0;
+  padding: 0 4px;
+  width: 100%;
+}
+
+/* The bar's own controls, over the slide's skin for inputs and buttons
+   inside an embed block (a mint field with a border and a 32px minimum,
+   which drew the timeline as a pale pill): the rules here are scoped under
+   the bar so they outrank that skin. */
+.bar .button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 3px;
+  box-shadow: none;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 22px;
+  justify-content: center;
+  min-height: 0;
+  padding: 0;
+  width: 22px;
+}
+
+.bar .button:hover,
+.bar .button:focus-visible {
+  background: rgba(255, 255, 255, 0.16);
+  outline: none;
+}
+
+.timeline {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  margin: 0 4px;
+  min-width: 40px;
+  position: relative;
+}
+
+.bar .range {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  box-shadow: none;
+  min-height: 0;
+  padding: 0;
+  background: linear-gradient(
+    to right,
+    #ffffff 0,
+    #ffffff var(--media-progress, 0%),
+    rgba(255, 255, 255, 0.35) var(--media-progress, 0%),
+    rgba(255, 255, 255, 0.35) 100%
+  );
+  border-radius: 2px;
+  cursor: pointer;
+  height: 4px;
+  margin: 0;
+  width: 100%;
+}
+
+.bar .range::-webkit-slider-thumb {
+  appearance: none;
+  background: #ffffff;
+  border: 0;
+  border-radius: 50%;
+  height: 10px;
+  width: 10px;
+}
+
+.bar .range::-moz-range-thumb {
+  background: #ffffff;
+  border: 0;
+  border-radius: 50%;
+  height: 10px;
+  width: 10px;
+}
+
+.bar .bookmark {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  height: 8px;
+  padding: 0;
+  position: absolute;
+  top: 2px;
+  transform: translateX(-50%);
+  width: 8px;
+}
+
+.bar .bookmark[data-selected="true"] {
+  background: #f5c518;
+}
+
+.hoverTime {
+  background: rgba(32, 32, 32, 0.92);
+  border-radius: 3px;
+  bottom: calc(100% + 4px);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  line-height: 16px;
+  padding: 0 4px;
+  pointer-events: none;
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.time {
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  padding: 0 4px;
+}
+
+.volume {
+  display: inline-flex;
+  flex: 0 0 auto;
+  position: relative;
+}
+
+/* The volume slider opens over the bar while the speaker is hovered or
+   focused, as PowerPoint's does. */
+.volumePopover {
+  align-items: center;
+  background: rgba(32, 32, 32, 0.92);
+  border-radius: 3px;
+  /* Flush with the speaker, so the pointer never crosses a gap that would
+     close it on the way to the slider. */
+  bottom: 100%;
+  display: none;
+  height: 26px;
+  padding: 0 8px;
+  position: absolute;
+  right: 0;
+}
+
+.volume:hover .volumePopover,
+.volume:focus-within .volumePopover {
+  display: flex;
+}
+
+.bar .volumeRange {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  min-height: 0;
+  padding: 0;
+  width: 80px;
+}

@@ -1,0 +1,104 @@
+/* A side strip's file picture (DockThumbnail.tsx): the page on a small
+   stack of paper, a Dock stack's document, with the format's glyph in the
+   corner. The card fits a --dock-box square and keeps
+   the page's own shape: a portrait page is as tall as the box, a slide or
+   a sheet as wide. */
+
+/* --dock-box and --dock-badge are the host's to set (46px and 17px when it
+   does not): a sidebar row's miniature is about its icon's size, a tile's
+   larger */
+.host {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  min-width: 0;
+}
+
+.host[data-state="picture"] {
+  width: var(--dock-box, 46px);
+  height: var(--dock-box, 46px);
+}
+
+.stack {
+  position: relative;
+  display: grid;
+  place-items: center;
+  /* the sheets behind lean a little left and right of the page */
+  --dock-sheet: #f3f5f8;
+  --dock-sheet-edge: rgba(15, 23, 42, 0.16);
+  --dock-shadow: rgba(15, 23, 42, 0.22);
+}
+
+.stack::before,
+.stack::after {
+  position: absolute;
+  inset: 0;
+  border: 0.5px solid var(--dock-sheet-edge);
+  border-radius: 3px;
+  background: var(--dock-sheet);
+  box-shadow: 0 1px 2px var(--dock-shadow);
+  content: "";
+}
+
+.stack::before {
+  transform: rotate(-7deg) translate(-1px, 1px);
+}
+
+.stack::after {
+  transform: rotate(5deg) translate(1px, 0.5px);
+}
+
+.card {
+  /* above the two sheets */
+  z-index: 1;
+  border: 0.5px solid rgba(15, 23, 42, 0.18) !important;
+  border-radius: 3px !important;
+  box-shadow:
+    0 0.5px 1px rgba(15, 23, 42, 0.18),
+    0 3px 8px var(--dock-shadow) !important;
+  transform: rotate(-1.5deg);
+}
+
+/* a picture the system made of a file on this computer (the desktop app's
+   places tree: Quick Look's, or the one an Office file carries), as the
+   card: fitted to the box in its own shape */
+.image {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: var(--dock-box, 46px);
+  max-height: var(--dock-box, 46px);
+  background: #fff;
+}
+
+/* the page's format, in the corner, so the kind still reads at a glance */
+.badge {
+  position: absolute;
+  z-index: 2;
+  /* overlapping the card's corner, so a slide as wide as the box keeps its
+     glyph within a 56px rail */
+  right: calc(var(--dock-badge, 17px) * -0.18);
+  bottom: calc(var(--dock-badge, 17px) * -0.24);
+  width: var(--dock-badge, 17px);
+  height: var(--dock-badge, 17px);
+  filter: drop-shadow(0 0.5px 1px rgba(15, 23, 42, 0.35));
+  pointer-events: none;
+}
+
+:global(.dark) .stack,
+:global([data-theme-mode="dark"]) .stack {
+  --dock-sheet: #d4d9e0;
+  --dock-sheet-edge: rgba(0, 0, 0, 0.45);
+  --dock-shadow: rgba(0, 0, 0, 0.55);
+}
+
+:global(.dark) .badge,
+:global([data-theme-mode="dark"]) .badge {
+  filter: drop-shadow(0 0.5px 1.5px rgba(0, 0, 0, 0.7));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    animation: none !important;
+  }
+}
