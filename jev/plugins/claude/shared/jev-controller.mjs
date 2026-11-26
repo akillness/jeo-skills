@@ -200,6 +200,25 @@ function withMessageText(message, text) {
   return { ...message, content: typeof message.content === 'string' ? text : [{ type: 'text', text }] };
 }
 
+function getActiveTurnProtection(messages) {
+  const activeToolIndices = new Set();
+  let lastAssistantIdx = -1;
+  for (let index = messages.length - 1; index >= 0; index -= 1) {
+    const message = messages[index];
+    if (message?.role === 'assistant') {
+      lastAssistantIdx = index;
+      break;
+    }
+    if (message?.role === 'user') {
+      break;
+    }
+    if (message?.role === 'toolResult' || message?.role === 'tool') {
+      activeToolIndices.add(index);
+    }
+  }
+  return { activeToolIndices, lastAssistantIdx };
+}
+
 /**
  * Register the provider-owned before_agent_start, context, and tool_call callbacks
  * used by jeopi/OMP/Pi/GJC.
@@ -220,7 +239,7 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
   let activeMemoryMode = configuredMemoryMode || 'jev-only';
   let activeReviewMode = null;
   let lastContextKey = null;
-  let lastContextResult = null;
+  let lastContextDecision = null;
   const seenToolCalls = new Map();
   let generation = 0;
   const matcherRe = compileToolMatcher(toolMatcher);
@@ -232,7 +251,7 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
     activeMemoryMode = configuredMemoryMode || 'jev-only';
     activeReviewMode = null;
     lastContextKey = null;
-    lastContextResult = null;
+    lastContextDecision = null;
     seenToolCalls.clear();
     const result = await invokeControllerHook({
       agent,
@@ -300,25 +319,29 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
       }
       if (!eligible.length) return {};
       const contextKey = JSON.stringify([activeMemoryMode, latestPrompt, eligible.map(b => [b.id, b.text])]);
-      if (contextKey === lastContextKey && lastContextResult) return lastContextResult;
-      const currentGeneration = generation;
-      const result = await invokeControllerHook({
-        agent, profile, controllerPath, timeoutMs,
-        input: { type: 'Context', prompt: latestPrompt, agent, profile: profile || null, blocks: eligible.map(({ id, text }) => ({ id, text })) },
-      });
-      if (generation !== currentGeneration || result?.ok !== true || result?.enabled !== true || result?.runtime?.mode !== 'assist' || !Array.isArray(result.runtime.dropContextIds)) return {};
-      const dropIds = new Set(result.runtime.dropContextIds.filter(id => typeof id === 'string'));
+      let dropIds;
+      if (contextKey === lastContextKey && lastContextDecision) {
+        dropIds = lastContextDecision.dropIds;
+      } else {
+        const currentGeneration = generation;
+        const result = await invokeControllerHook({
+          agent, profile, controllerPath, timeoutMs,
+          input: { type: 'Context', prompt: latestPrompt, agent, profile: profile || null, blocks: eligible.map(({ id, text }) => ({ id, text })) },
+        });
+        if (generation !== currentGeneration || result?.ok !== true || result?.enabled !== true || result?.runtime?.mode !== 'assist' || !Array.isArray(result.runtime.dropContextIds)) return {};
+        dropIds = new Set(result.runtime.dropContextIds.filter(id => typeof id === 'string'));
+        lastContextKey = contextKey;
+        lastContextDecision = { dropIds };
+      }
       const dropIndices = new Set(eligible.filter(({ id }) => dropIds.has(id)).map(({ index }) => index));
-      const out = dropIndices.size ? { messages: event.messages.filter((_message, index) => !dropIndices.has(index)) } : {};
-      lastContextKey = contextKey;
-      lastContextResult = out;
-      return out;
+      return dropIndices.size ? { messages: event.messages.filter((_message, index) => !dropIndices.has(index)) } : {};
     }
 
     // Extended memory management mode: supports Jev skill messages, tool output
     // compression, and older conversation turn summarization while keeping the
-    // newest message intact.
+    // newest message and all trailing active tool results intact.
     const cutoff = Math.max(0, event.messages.length - 1);
+    const { activeToolIndices, lastAssistantIdx } = getActiveTurnProtection(event.messages);
     const eligible = [];
     let chars = 0;
     for (let index = 0; index < cutoff && eligible.length < 32; index += 1) {
@@ -326,8 +349,8 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
       let id = null;
       let kind = null;
       if (isSkillMessage(message)) { id = `jev-context-${index}`; kind = 'jev-skill'; }
-      else if (isToolResultMessage(message)) { id = `tool-output-${index}`; kind = 'tool-output'; }
-      else if (isConvMessage(message) && index < cutoff - 1) { id = `conv-turn-${index}`; kind = 'conversation'; }
+      else if (isToolResultMessage(message) && !activeToolIndices.has(index)) { id = `tool-output-${index}`; kind = 'tool-output'; }
+      else if (isConvMessage(message) && index < cutoff - 1 && (lastAssistantIdx < 0 || index < lastAssistantIdx)) { id = `conv-turn-${index}`; kind = 'conversation'; }
       const text = id ? messageText(message) : null;
       if (text === null || chars + text.length > 262_144) continue;
       eligible.push({ id, kind, text, index });
@@ -335,22 +358,34 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
     }
     if (!eligible.length) return {};
     const contextKey = JSON.stringify([activeMemoryMode, latestPrompt, eligible.map(b => [b.id, b.kind || '', b.text])]);
-    if (contextKey === lastContextKey && lastContextResult) return lastContextResult;
-    const currentGeneration = generation;
-    const result = await invokeControllerHook({
-      agent, profile, controllerPath, timeoutMs,
-      input: {
-        type: 'Context',
-        memoryMode: 'extended',
-        prompt: latestPrompt,
-        agent,
-        profile: profile || null,
-        blocks: eligible.map(({ id, kind, text }) => ({ id, kind, text })),
-      },
-    });
-    if (generation !== currentGeneration || result?.ok !== true || result?.enabled !== true || result?.runtime?.mode !== 'assist') return {};
-    const dropIds = new Set(Array.isArray(result.runtime.dropContextIds) ? result.runtime.dropContextIds.filter(id => typeof id === 'string') : []);
-    const compressed = result.runtime.compressedBlocks && typeof result.runtime.compressedBlocks === 'object' ? result.runtime.compressedBlocks : {};
+    let decision;
+    if (contextKey === lastContextKey && lastContextDecision) {
+      decision = lastContextDecision;
+    } else {
+      const currentGeneration = generation;
+      const result = await invokeControllerHook({
+        agent, profile, controllerPath, timeoutMs,
+        input: {
+          type: 'Context',
+          memoryMode: 'extended',
+          prompt: latestPrompt,
+          agent,
+          profile: profile || null,
+          blocks: eligible.map(({ id, kind, text }) => ({ id, kind, text })),
+        },
+      });
+      if (generation !== currentGeneration || result?.ok !== true || result?.enabled !== true || result?.runtime?.mode !== 'assist') return {};
+      decision = {
+        dropIds: new Set(Array.isArray(result.runtime.dropContextIds) ? result.runtime.dropContextIds.filter(id => typeof id === 'string') : []),
+        compressed: result.runtime.compressedBlocks && typeof result.runtime.compressedBlocks === 'object' ? result.runtime.compressedBlocks : {},
+        conversationSummary: typeof result.runtime.conversationSummary === 'string' && result.runtime.conversationSummary.trim()
+          ? result.runtime.conversationSummary.trim()
+          : '',
+      };
+      lastContextKey = contextKey;
+      lastContextDecision = decision;
+    }
+    const { dropIds, compressed, conversationSummary } = decision;
     const byIndex = new Map(eligible.map(item => [item.index, item]));
     let changed = false;
     let dropped = 0;
@@ -358,7 +393,7 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
     for (let index = 0; index < event.messages.length; index += 1) {
       const item = byIndex.get(index);
       const message = event.messages[index];
-      if (item && dropIds.has(item.id)) {
+      if (!activeToolIndices.has(index) && item && dropIds.has(item.id)) {
         changed = true;
         dropped += 1;
         // A tool result answers a tool call in the preceding assistant message;
@@ -366,27 +401,24 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
         if (item.kind === 'tool-output') nextMessages.push(withMessageText(message, TOOL_OUTPUT_OMITTED));
         continue;
       }
-      if (item && typeof compressed[item.id] === 'string' && compressed[item.id] !== item.text) {
+      if (!activeToolIndices.has(index) && item && typeof compressed[item.id] === 'string' && compressed[item.id] !== item.text) {
         changed = true;
         nextMessages.push(withMessageText(message, compressed[item.id]));
       } else {
         nextMessages.push(message);
       }
     }
-    if (typeof result.runtime.conversationSummary === 'string' && result.runtime.conversationSummary.trim() && dropped > 0) {
+    if (conversationSummary && dropped > 0) {
       changed = true;
       nextMessages.unshift({
         role: 'custom',
         customType: JEV_MEMORY_SUMMARY_CUSTOM_TYPE,
-        content: result.runtime.conversationSummary.trim(),
+        content: conversationSummary,
         display: false,
         attribution: 'agent',
       });
     }
-    const out = changed ? { messages: nextMessages } : {};
-    lastContextKey = contextKey;
-    lastContextResult = out;
-    return out;
+    return changed ? { messages: nextMessages } : {};
   });
 
   const handleToolCall = async (event = {}) => {

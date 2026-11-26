@@ -1403,6 +1403,7 @@ function selectedSkillContext(routed, preloaded = null, skipNames = null) {
 
 const DEFAULT_CODEX_MATCHER = 'Bash|apply_patch|Write|Edit|exec_command|write_stdin';
 const DEFAULT_HOST_MATCHER = 'Bash|bash|apply_patch|Write|write|Edit|edit|ast_edit|MultiEdit|NotebookEdit|exec_command|write_stdin';
+const DEFAULT_AGY_MATCHER = 'run_command|write_file|edit_file|write_to_file|replace_file_content|multi_replace_file_content|Bash|bash|apply_patch|Write|write|Edit|edit';
 // Cursor names its tools Shell, Write (file edits), Delete and WriteShellStdin (input to a running shell). Cursor
 // tests the matcher as a regular expression, so the default is anchored: it must not catch MCP or other tools.
 const DEFAULT_CURSOR_MATCHER = '^(?:Shell|WriteShellStdin|Write|Delete)$';
@@ -1528,6 +1529,37 @@ function sessionScopeFor(event, agent) {
 
 function codexDecision(context, decision, reason) {
   return { hookSpecificOutput: { hookEventName: 'PreToolUse', ...(decision ? { permissionDecision: decision, permissionDecisionReason: reason } : { additionalContext: context }) } };
+}
+
+function normalizeAgyEvent(event) {
+  const src = event && typeof event === 'object' ? event : {};
+  const cwd = typeof src.cwd === 'string' && src.cwd
+    ? src.cwd
+    : Array.isArray(src.workspacePaths) && typeof src.workspacePaths[0] === 'string' && src.workspacePaths[0]
+      ? src.workspacePaths[0]
+      : undefined;
+  const sessionId = src.session_id || src.sessionId || src.conversation_id || src.conversationId || undefined;
+  const toolCall = src.toolCall || src.preToolHookArgs?.toolCall || src.pre_tool_hook_args?.tool_call || null;
+  const toolName = src.tool_name || src.toolName || (typeof toolCall?.name === 'string' ? toolCall.name : '') || '';
+  const toolInput = src.tool_input ?? src.toolInput ?? toolCall?.args ?? {};
+  const eventName = src.hook_event_name || src.hookEventName || (toolCall || toolName ? 'PreToolUse' : (typeof src.lastUserInput === 'string' ? 'PreInvocation' : null));
+  const normalized = {
+    ...src,
+    ...(cwd ? { cwd } : {}),
+    ...(sessionId ? { session_id: sessionId } : {}),
+    ...(toolName ? { tool_name: toolName } : {}),
+    ...(toolCall || src.tool_input !== undefined || src.toolInput !== undefined ? { tool_input: toolInput } : {}),
+    ...(eventName ? { hook_event_name: eventName } : {}),
+  };
+  return { eventName, normalized };
+}
+
+function agyPreToolResponse(result) {
+  const out = result?.hookSpecificOutput;
+  if (out?.permissionDecision === 'deny') {
+    return { decision: 'deny', reason: out.permissionDecisionReason || 'Jev withheld action.' };
+  }
+  return { decision: 'ask' };
 }
 
 function resolveCachedTask(event, ctx) {
@@ -1672,8 +1704,20 @@ async function evaluatePreToolUse(ctx, event) {
 async function hook(flags, suppliedEvent, options = {}) {
   const hookStart = Date.now();
   const explicitEnvCatalog = process.env.JEV_CATALOG_PATH;
-  const initialCwd = suppliedEvent?.cwd || null;
+  const initialCwd = suppliedEvent?.cwd || (Array.isArray(suppliedEvent?.workspacePaths) ? suppliedEvent.workspacePaths[0] : null) || null;
   let activation = resolveHookContext(flags, { eventCwd: initialCwd });
+  const isAgy = activation.agent === 'agy';
+  let event;
+  if (suppliedEvent !== undefined) event = suppliedEvent;
+  else if (isAgy || (!activation.projectDisabled && activation.profile && activation.state.present && activation.state.enabled && !activation.state.invalidEnabled)) {
+    const input = await readStdin();
+    try { event = input.trim() ? JSON.parse(input) : {}; } catch { throw new Error('hook input must be JSON'); }
+  }
+  const agyMeta = isAgy && event ? normalizeAgyEvent(event) : null;
+  if (agyMeta) event = agyMeta.normalized;
+  if (event?.cwd && event.cwd !== initialCwd) {
+    activation = resolveHookContext(flags, { eventCwd: event.cwd });
+  }
   if (activation.projectDisabled) {
     recordWorkflowEvent('jev-skip', {
       agent: activation.agent,
@@ -1684,34 +1728,17 @@ async function hook(flags, suppliedEvent, options = {}) {
       project: activation.projectOverride?.projectRoot || null,
       duration_ms: Date.now() - hookStart,
     });
-    return { ...common('hook', activation, false, false), skipped: 'project-workflow-disabled' };
+    return {
+      ...common('hook', activation, false, false),
+      skipped: 'project-workflow-disabled',
+      ...(isAgy && agyMeta?.eventName === 'PreToolUse' ? { decision: 'ask' } : {}),
+    };
   }
   if (!activation.profile || !activation.state.present || !activation.state.enabled || activation.state.invalidEnabled) {
-    return common('hook', activation, false, false);
-  }
-  let event;
-  if (suppliedEvent !== undefined) event = suppliedEvent;
-  else {
-    const input = await readStdin();
-    try { event = input.trim() ? JSON.parse(input) : {}; } catch { throw new Error('hook input must be JSON'); }
-  }
-  if (event?.cwd && event.cwd !== initialCwd) {
-    activation = resolveHookContext(flags, { eventCwd: event.cwd });
-    if (activation.projectDisabled) {
-      recordWorkflowEvent('jev-skip', {
-        agent: activation.agent,
-        skipped: 'project-workflow-disabled',
-        outcome: 'skipped',
-        customProject: true,
-        workflow_order: activation.projectOverride?.order || null,
-        project: activation.projectOverride?.projectRoot || null,
-        duration_ms: Date.now() - hookStart,
-      });
-      return { ...common('hook', activation, false, false), skipped: 'project-workflow-disabled' };
-    }
-    if (!activation.profile || !activation.state.present || !activation.state.enabled || activation.state.invalidEnabled) {
-      return common('hook', activation, false, false);
-    }
+    return {
+      ...common('hook', activation, false, false),
+      ...(isAgy && agyMeta?.eventName === 'PreToolUse' ? { decision: 'ask' } : {}),
+    };
   }
   const ctx = activation;
   const configuredMode = runtimeMode(ctx);
@@ -1727,14 +1754,22 @@ async function hook(flags, suppliedEvent, options = {}) {
   if (event.type === 'PreToolUse' || event.hook_event_name === 'PreToolUse') {
     try {
       const decision = await evaluatePreToolUse(ctx, event);
-      return { ...common('hook', ctx, false, true), ...decision };
+      return {
+        ...common('hook', ctx, false, true),
+        ...decision,
+        ...(ctx.agent === 'agy' ? agyPreToolResponse(decision) : {}),
+      };
     } catch {
       const fallback = revMode === 'advisory'
         ? codexDecision('Jev review unavailable; host permissions remain unchanged.')
         : revMode === 'enforce'
           ? codexDecision(null, 'deny', 'Jev review failed; action withheld.')
           : {};
-      return { ...common('hook', ctx, false, true), ...fallback };
+      return {
+        ...common('hook', ctx, false, true),
+        ...fallback,
+        ...(ctx.agent === 'agy' ? agyPreToolResponse(fallback) : {}),
+      };
     }
   }
 
@@ -1979,8 +2014,7 @@ async function hook(flags, suppliedEvent, options = {}) {
       ...common('hook', ctx, false, true),
       ...(runtime ? { runtime } : {}),
       context: advice,
-      injectSteps: [{ ephemeralMessage: combinedContext }],
-      hookSpecificOutput: { hookEventName: 'PreInvocation', additionalContext: combinedContext },
+      ...(combinedContext ? { injectSteps: [{ ephemeralMessage: combinedContext }] } : {}),
     };
   }
   return { ...common('hook', ctx, false, true), ...(runtime ? { runtime } : {}), context: advice };
@@ -2035,7 +2069,7 @@ async function hooksInstall(flags) {
     throw new Error(`hooks-install currently supports --agent ${[...HOOK_INSTALL_HOSTS].join(', ')}`);
   }
   if (!ctx.profile || !ctx.state.present) throw new Error('configure a named profile before installing hooks');
-  const matcher = flags.matcher || ctx.state.values.JEV_PRETOOL_MATCHER || (ctx.agent === 'codex' ? DEFAULT_CODEX_MATCHER : DEFAULT_HOST_MATCHER);
+  const matcher = flags.matcher || ctx.state.values.JEV_PRETOOL_MATCHER || (ctx.agent === 'codex' ? DEFAULT_CODEX_MATCHER : ctx.agent === 'agy' ? DEFAULT_AGY_MATCHER : DEFAULT_HOST_MATCHER);
 
   if (EXTENSION_HOSTS.has(ctx.agent)) {
     const extRoot = process.env.JEV_EXTENSION_HOME
@@ -2112,7 +2146,7 @@ async function hooksInstall(flags) {
     const command = [nodeBin, join(HERE, 'jev-plugin.mjs'), 'codex-hook', '--agent', 'agy', '--profile', ctx.profile].map(shellQuote).join(' ');
     config['jev-control-plane'] = {
       PreInvocation: [{ type: 'command', command, timeout: 90, statusMessage: 'Jev: load selected skills' }],
-      PreToolUse: [{ matcher, type: 'command', command, timeout: 90, statusMessage: 'Jev: review proposed action' }],
+      PreToolUse: [{ matcher, hooks: [{ type: 'command', command, timeout: 90, statusMessage: 'Jev: review proposed action' }] }],
     };
     if (flags.apply) atomicWrite(path, `${JSON.stringify(config, null, 2)}\n`);
     return {
@@ -2251,24 +2285,11 @@ async function codexHook(flags) {
   let event;
   let ctx;
   let mode = 'off';
+  let agyEventName = null;
   try {
     ctx = resolveHookContext(flags);
-    if (ctx.projectDisabled) {
-      recordWorkflowEvent('jev-skip', {
-        agent: ctx.agent,
-        skipped: 'project-workflow-disabled',
-        outcome: 'skipped',
-        customProject: true,
-        workflow_order: ctx.projectOverride?.order || null,
-        project: ctx.projectOverride?.projectRoot || null,
-      });
-      return {};
-    }
-    if (!ctx.profile || !ctx.state.present || (!ctx.state.enabled && !ctx.state.invalidEnabled)) return {};
-    const input = await readStdin();
-    event = JSON.parse(input);
-    if (event?.cwd) {
-      ctx = resolveHookContext(flags, { eventCwd: event.cwd });
+    const isAgy = ctx.agent === 'agy';
+    if (!isAgy) {
       if (ctx.projectDisabled) {
         recordWorkflowEvent('jev-skip', {
           agent: ctx.agent,
@@ -2282,9 +2303,33 @@ async function codexHook(flags) {
       }
       if (!ctx.profile || !ctx.state.present || (!ctx.state.enabled && !ctx.state.invalidEnabled)) return {};
     }
+    const input = await readStdin();
+    event = input.trim() ? JSON.parse(input) : (isAgy ? {} : JSON.parse(input));
+    if (isAgy) {
+      const agyMeta = normalizeAgyEvent(event);
+      event = agyMeta.normalized;
+      agyEventName = agyMeta.eventName;
+    }
+    if (event?.cwd) {
+      ctx = resolveHookContext(flags, { eventCwd: event.cwd });
+    }
+    if (ctx.projectDisabled) {
+      recordWorkflowEvent('jev-skip', {
+        agent: ctx.agent,
+        skipped: 'project-workflow-disabled',
+        outcome: 'skipped',
+        customProject: true,
+        workflow_order: ctx.projectOverride?.order || null,
+        project: ctx.projectOverride?.projectRoot || null,
+      });
+      return isAgy && agyEventName === 'PreToolUse' ? { decision: 'ask' } : {};
+    }
+    if (!ctx.profile || !ctx.state.present || (!ctx.state.enabled && !ctx.state.invalidEnabled)) {
+      return isAgy && agyEventName === 'PreToolUse' ? { decision: 'ask' } : {};
+    }
     if (ctx.state.invalidEnabled) throw new Error('Invalid JEV_ENABLED');
     mode = reviewMode(ctx);
-    const eventName = event.hook_event_name || (ctx.agent === 'agy' && typeof event.lastUserInput === 'string' ? 'PreInvocation' : null);
+    const eventName = isAgy ? agyEventName : (event.hook_event_name || null);
     if (eventName === 'UserPromptSubmit' || eventName === 'PreInvocation') {
       const promptText = typeof event.prompt === 'string' ? event.prompt : typeof event.lastUserInput === 'string' ? event.lastUserInput : null;
       if (mode !== 'off' && typeof promptText === 'string') {
@@ -2297,16 +2342,27 @@ async function codexHook(flags) {
       const result = await hook(flags, { ...event, ...(promptText !== null ? { prompt: promptText } : {}) }, { skipSaveTask: savedInCodexHook });
       const combined = result.hookSpecificOutput?.additionalContext || [result.context, result.runtime?.skillContext].filter(Boolean).join('\n\n');
       if (ctx.agent === 'agy') {
-        return {
-          injectSteps: [{ ephemeralMessage: combined }],
-          hookSpecificOutput: { hookEventName: eventName, additionalContext: combined },
-        };
+        return combined ? { injectSteps: [{ ephemeralMessage: combined }] } : {};
       }
       return { hookSpecificOutput: { hookEventName: 'UserPromptSubmit', additionalContext: combined } };
     }
-    if (eventName !== 'PreToolUse' || mode === 'off') return {};
-    return await evaluatePreToolUse(ctx, event);
+    if (eventName !== 'PreToolUse' || mode === 'off') {
+      return isAgy && eventName === 'PreToolUse' ? { decision: 'ask' } : {};
+    }
+    const decision = await evaluatePreToolUse(ctx, event);
+    return isAgy ? agyPreToolResponse(decision) : decision;
   } catch {
+    if (ctx?.agent === 'agy' || flags.agent === 'agy') {
+      const resolvedEvent = agyEventName || (event ? normalizeAgyEvent(event).eventName : null);
+      const badReviewMode = ctx?.state.values.JEV_REVIEW_MODE && !['off', 'advisory'].includes(ctx.state.values.JEV_REVIEW_MODE);
+      if (resolvedEvent === 'PreToolUse') {
+        return mode === 'advisory' ? { decision: 'ask' } : { decision: 'deny', reason: 'Jev review failed; action withheld.' };
+      }
+      if (badReviewMode || (!ctx && flags.profile)) {
+        return { decision: 'deny', reason: 'Jev enforcement configuration or input is invalid; action withheld.' };
+      }
+      return {};
+    }
     if ((event?.hook_event_name === 'PreToolUse' || event?.type === 'PreToolUse') && mode !== 'off') {
       return mode === 'advisory' ? codexDecision('Jev review unavailable; host permissions remain unchanged.') : codexDecision(null, 'deny', 'Jev review failed; action withheld.');
     }

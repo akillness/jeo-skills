@@ -158,6 +158,13 @@ test('hooks-install supports claude, agy, jeopi, jeo, omp, pi, and gjc in previe
       assert.ok(cfg['jev-control-plane']);
       assert.equal(Array.isArray(cfg['jev-control-plane'].PreInvocation), true);
       assert.equal(Array.isArray(cfg['jev-control-plane'].PreToolUse), true);
+      const preToolGroup = cfg['jev-control-plane'].PreToolUse[0];
+      assert.equal(Array.isArray(preToolGroup.hooks), true);
+      assert.equal(preToolGroup.hooks[0].type, 'command');
+      const matcherRe = new RegExp(`^(?:${preToolGroup.matcher})$`);
+      assert.equal(matcherRe.test('run_command'), true);
+      assert.equal(matcherRe.test('write_file'), true);
+      assert.equal(matcherRe.test('edit_file'), true);
     } else if (host === 'jeo') {
       // jeo-code loads only `pre-tool` command hooks from config.json; there is no extension API.
       const cfg = JSON.parse(readFileSync(applied.path, 'utf8'));
@@ -307,36 +314,67 @@ test('Claude and AGY hooks inject selected skills and enforce PreToolUse review'
   for (const host of ['claude', 'agy']) {
     const denyFixture = createFixture({ agent: host, profile: `${host}-deny`, verdict: 'proposal_only', tier: 'validated', reviewMode: 'enforce' });
     const promptEvent = host === 'agy'
-      ? { hook_event_name: 'PreInvocation', lastUserInput: 'Deploy production database', session_id: 's1', turn_id: 't1' }
+      ? { hookEventName: 'PreInvocation', lastUserInput: 'Deploy production database', conversationId: 's1', workspacePaths: [denyFixture.root] }
       : { hook_event_name: 'UserPromptSubmit', prompt: 'Deploy production database', session_id: 's1', turn_id: 't1' };
     const promptOut = denyFixture.invoke('codex-hook', promptEvent, { targetAgent: host });
     if (host === 'agy') {
+      assert.deepEqual(Object.keys(promptOut), ['injectSteps']);
       assert.ok(Array.isArray(promptOut.injectSteps));
       assert.match(promptOut.injectSteps[0].ephemeralMessage, /Trusted full body/);
     } else {
       assert.match(promptOut.hookSpecificOutput.additionalContext, /Trusted full body/);
     }
 
-    const toolOut = denyFixture.invoke('codex-hook', {
-      hook_event_name: 'PreToolUse',
-      session_id: 's1',
-      turn_id: 't1',
-      tool_name: 'Bash',
-      tool_input: { command: 'rm -rf /tmp/build' },
-    }, { targetAgent: host });
-    assert.equal(toolOut.hookSpecificOutput.permissionDecision, 'deny');
+    const denyToolEvent = host === 'agy'
+      ? {
+          hookEventName: 'PreToolUse',
+          conversationId: 's1',
+          workspacePaths: [denyFixture.root],
+          toolCall: { name: 'run_command', args: { CommandLine: 'rm -rf /tmp/build' } },
+        }
+      : {
+          hook_event_name: 'PreToolUse',
+          session_id: 's1',
+          turn_id: 't1',
+          tool_name: 'Bash',
+          tool_input: { command: 'rm -rf /tmp/build' },
+        };
+    const toolOut = denyFixture.invoke('codex-hook', denyToolEvent, { targetAgent: host });
+    if (host === 'agy') {
+      assert.equal(toolOut.decision, 'deny');
+      assert.equal(typeof toolOut.reason, 'string');
+      assert.equal(toolOut.hookSpecificOutput, undefined);
+    } else {
+      assert.equal(toolOut.hookSpecificOutput.permissionDecision, 'deny');
+    }
 
     const permitFixture = createFixture({ agent: host, profile: `${host}-permit`, verdict: 'permit', tier: 'validated', reviewMode: 'enforce' });
-    permitFixture.invoke('codex-hook', promptEvent, { targetAgent: host });
-    const allowedOut = permitFixture.invoke('codex-hook', {
-      hook_event_name: 'PreToolUse',
-      session_id: 's1',
-      turn_id: 't1',
-      tool_name: 'Bash',
-      tool_input: { command: 'npm test' },
-    }, { targetAgent: host });
-    assert.equal(allowedOut.hookSpecificOutput.permissionDecision, undefined);
-    assert.match(allowedOut.hookSpecificOutput.additionalContext, /Jev review: permit/);
+    const permitPromptEvent = host === 'agy'
+      ? { hookEventName: 'PreInvocation', lastUserInput: 'Deploy production database', conversationId: 's1', workspacePaths: [permitFixture.root] }
+      : promptEvent;
+    permitFixture.invoke('codex-hook', permitPromptEvent, { targetAgent: host });
+    const allowToolEvent = host === 'agy'
+      ? {
+          hookEventName: 'PreToolUse',
+          conversationId: 's1',
+          workspacePaths: [permitFixture.root],
+          toolCall: { name: 'run_command', args: { CommandLine: 'npm test' } },
+        }
+      : {
+          hook_event_name: 'PreToolUse',
+          session_id: 's1',
+          turn_id: 't1',
+          tool_name: 'Bash',
+          tool_input: { command: 'npm test' },
+        };
+    const allowedOut = permitFixture.invoke('codex-hook', allowToolEvent, { targetAgent: host });
+    if (host === 'agy') {
+      assert.equal(allowedOut.decision, 'ask');
+      assert.equal(allowedOut.hookSpecificOutput, undefined);
+    } else {
+      assert.equal(allowedOut.hookSpecificOutput.permissionDecision, undefined);
+      assert.match(allowedOut.hookSpecificOutput.additionalContext, /Jev review: permit/);
+    }
   }
 });
 
@@ -910,9 +948,10 @@ test('High-frequency hook prefilters and deduplication caches suppress redundant
   assert.equal(agy.calls().filter(c => c.op === 'route-skills').length, 1);
 
   // Advisory PreToolUse also deduplicates identical repeated tool calls within TTL.
-  const toolEv = { hook_event_name: 'PreToolUse', session_id: 'agy-s1', tool_name: 'Bash', tool_input: { command: 'git status' } };
+  const toolEv = { hookEventName: 'PreToolUse', conversationId: 'agy-s1', toolCall: { name: 'run_command', args: { CommandLine: 'git status' } } };
   const t1 = agy.invoke('codex-hook', toolEv, { targetAgent: 'agy' });
   const t2 = agy.invoke('codex-hook', toolEv, { targetAgent: 'agy' });
+  assert.equal(t1.decision, 'ask');
   assert.deepEqual(t2, t1);
   assert.equal(agy.calls().filter(c => c.op === 'review').length, 1);
 
@@ -1153,5 +1192,84 @@ test('pruneContext preserves exact block order across concurrent multi-batch exe
     ]);
   } finally {
     await new Promise((r) => server.close(r));
+  }
+});
+
+test('jeopi context hook protects parallel trailing active tool results and never truncates past 32 eligible items', async () => {
+  const f = createFixture({
+    agent: 'jeopi',
+    profile: 'jeopi-ctx-guard',
+    runtimeMode: 'assist',
+    reviewMode: 'advisory',
+    memoryMode: 'extended',
+  });
+  const previousHome = process.env.HOME;
+  process.env.HOME = f.home;
+  try {
+    const mod = await import(pathToFileURL(join(here, 'plugins', 'jeopi', 'index.mjs')).href);
+    const callbacks = new Map();
+    mod.createJevExtension(
+      { on(event, fn) { callbacks.set(event, fn); } },
+      { agent: 'jeopi', profile: f.profile, controllerPath: f.controller, memoryMode: 'extended' },
+    );
+    await callbacks.get('before_agent_start')({
+      prompt: 'Inspect active turn handling',
+      systemPrompt: ['Base'],
+      sessionId: 'sess-ctx-guard',
+      turnId: 'turn-1',
+    });
+
+    // Scenario A: parallel trailing active tool results [assistant, toolResult_1, toolResult_2, toolResult_3]
+    const parallelMessages = [
+      { role: 'user', content: 'Earlier user message' },
+      { role: 'assistant', content: 'Calling earlier tool' },
+      { role: 'toolResult', toolCallId: 'old-call', content: [{ type: 'text', text: 'Old tool output to compress or omit' }] },
+      { role: 'assistant', content: 'Calling 3 parallel tools' },
+      { role: 'toolResult', toolCallId: 'active-1', content: [{ type: 'text', text: 'Active parallel result 1 '.repeat(30) }] },
+      { role: 'toolResult', toolCallId: 'active-2', content: [{ type: 'text', text: 'Active parallel result 2 '.repeat(30) }] },
+      { role: 'toolResult', toolCallId: 'active-3', content: [{ type: 'text', text: 'Active parallel result 3 '.repeat(30) }] },
+    ];
+    const outA = await callbacks.get('context')({ messages: parallelMessages });
+    assert.ok(Array.isArray(outA.messages));
+    const findById = (msgs, id) => msgs.find((m) => m.toolCallId === id);
+    assert.match(findById(outA.messages, 'old-call').content[0].text, /^\[compressed\]/);
+    assert.equal(findById(outA.messages, 'active-1').content[0].text, parallelMessages[4].content[0].text);
+    assert.equal(findById(outA.messages, 'active-2').content[0].text, parallelMessages[5].content[0].text);
+    assert.equal(findById(outA.messages, 'active-3').content[0].text, parallelMessages[6].content[0].text);
+
+    // Scenario B: stale cache past 32-item cap must still preserve all newly appended tail messages
+    const baseMessages = [];
+    for (let i = 0; i < 18; i += 1) {
+      baseMessages.push({ role: 'user', content: `Turn ${i} user` });
+      baseMessages.push({ role: 'toolResult', toolCallId: `hist-${i}`, content: [{ type: 'text', text: `History output ${i}` }] });
+    }
+    const turn1Messages = [
+      ...baseMessages,
+      { role: 'assistant', content: 'Active turn 1' },
+      { role: 'toolResult', toolCallId: 'tail-a', content: [{ type: 'text', text: 'Tail A active result' }] },
+    ];
+    const callsBefore = f.calls().filter((c) => c.op === 'manage-memory').length;
+    const outB1 = await callbacks.get('context')({ messages: turn1Messages });
+    assert.ok(Array.isArray(outB1.messages));
+    assert.equal(f.calls().filter((c) => c.op === 'manage-memory').length, callsBefore + 1);
+    assert.ok(findById(outB1.messages, 'tail-a'));
+
+    const turn2Messages = [
+      ...turn1Messages,
+      { role: 'assistant', content: 'Active turn 2' },
+      { role: 'toolResult', toolCallId: 'tail-b', content: [{ type: 'text', text: 'Tail B active result' }] },
+      { role: 'toolResult', toolCallId: 'tail-c', content: [{ type: 'text', text: 'Tail C active result' }] },
+    ];
+    const outB2 = await callbacks.get('context')({ messages: turn2Messages });
+    assert.ok(Array.isArray(outB2.messages));
+    // First 32 eligible blocks unchanged -> memoized Context RPC hit (no extra manage-memory call)
+    assert.equal(f.calls().filter((c) => c.op === 'manage-memory').length, callsBefore + 1);
+    assert.equal(findById(outB2.messages, 'tail-a').content[0].text, 'Tail A active result');
+    assert.equal(findById(outB2.messages, 'tail-b').content[0].text, 'Tail B active result');
+    assert.equal(findById(outB2.messages, 'tail-c').content[0].text, 'Tail C active result');
+    assert.equal(outB2.messages.at(-1).toolCallId, 'tail-c');
+  } finally {
+    if (previousHome === undefined) delete process.env.HOME;
+    else process.env.HOME = previousHome;
   }
 });

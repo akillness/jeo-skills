@@ -9,10 +9,14 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "Bash|bash|apply_patch|Write|write|Edit|edit|ast_edit|MultiEdit|NotebookEdit|exec_command|write_stdin",
-        "type": "command",
-        "command": "node ${AGY_PLUGIN_ROOT}/hooks/jev-hook.mjs --agent agy",
-        "timeout": 90
+        "matcher": "run_command|write_file|edit_file|write_to_file|replace_file_content|multi_replace_file_content|Bash|bash|apply_patch|Write|write|Edit|edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${AGY_PLUGIN_ROOT}/hooks/jev-hook.mjs --agent agy",
+            "timeout": 90
+          }
+        ]
       }
     ]
   }

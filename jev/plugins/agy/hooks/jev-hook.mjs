@@ -13,7 +13,13 @@ export async function runAgyHook(args = process.argv.slice(2), inputStream = pro
   const agent = readFlag(args, '--agent') || process.env.JEV_AGENT_ID || 'agy';
   const profile = readFlag(args, '--profile') || process.env.JEV_PROFILE || undefined;
   const result = await invokeControllerHook({ agent, profile, inputStream });
-  if (result?.injectSteps) return { injectSteps: result.injectSteps, ...(result.hookSpecificOutput ? { hookSpecificOutput: result.hookSpecificOutput } : {}) };
+  if (result?.injectSteps) return { injectSteps: result.injectSteps };
+  if (result?.decision === 'deny' || result?.hookSpecificOutput?.permissionDecision === 'deny') {
+    return { decision: 'deny', reason: result.reason || result.hookSpecificOutput?.permissionDecisionReason || 'Jev withheld action.' };
+  }
+  if (result?.decision === 'ask' || result?.hookSpecificOutput?.hookEventName === 'PreToolUse') {
+    return { decision: 'ask' };
+  }
   if (result?.hookSpecificOutput) return { hookSpecificOutput: result.hookSpecificOutput };
   return {};
 }
