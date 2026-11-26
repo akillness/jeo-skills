@@ -1,0 +1,31 @@
+{
+  "skill_name": "rete",
+  "authored": true,
+  "executed": false,
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Package a directory of Turtle and N-Quads files into a reproducible .rete archive with Dataset Card and full-text search, then run a bounded SPARQL query.",
+      "expected_output": "Runs offline preflight first, confirms rete CLI vs rete-graph library separation, builds with RETE_BUILD_RECORD=reproducible --card --label-index --text-index, warns about 0x08 format compatibility with <=0.6.x readers, and inspects rete card before running a LIMIT-bounded SPARQL query.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "We installed pip install rete-graph in our Python environment and want to query a confidential internal .rete graph via the hosted Hugging Face MCP endpoint.",
+      "expected_output": "Clarifies that pip install rete-graph installs the Python library only (not the native rete CLI), blocks sending confidential graphs to the public hosted MCP (katospiegel-rete.hf.space/mcp/), and recommends local rete.mcpb, in-process rete_graph.open(), or gated local rete serve.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Our browser client fails to read a .rete file hosted on S3/R2 and another JSON-LD build fails offline because of https://schema.org/.",
+      "expected_output": "Verifies Accept-Ranges: bytes and CORS AllowedHeaders (Range) + ExposeHeaders (Content-Range, Content-Length, Accept-Ranges, ETag), avoids 302 redirect URLs for browser sync XHR, and maps the remote JSON-LD @context locally with --context IRI=FILE instead of silently enabling --fetch-contexts.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "I want to edit an OWL ontology interactively with RocksDB staging, diffing, and oo-cert proof certificates, OR package vector map tiles on R2.",
+      "expected_output": "Routes interactive mutable ontology staging/diff/oo-cert to open-ontologies and map tile archiving to pmtiles rather than forcing rete.",
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "skill_name": "gstack",
+  "evals": [
+    {
+      "id": "gstack-host-setup-and-qa",
+      "prompt": "Install gstack for Claude Code and Codex and run a read-only browser QA pass on localhost:3000.",
+      "expected_outcome": "Runs preflight, checks bun, uses ./setup --host claude / codex, and picks /qa-only for read-only QA.",
+      "assertions": [
+        "Checks bun availability via preflight",
+        "Uses ./setup --host claude or codex",
+        "Selects /qa-only when user asks for read-only bug report"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "gstack"
+    },
+    {
+      "id": "gstack-safety-guardrails",
+      "prompt": "Lock agent edits to src/payments/ and warn before destructive commands during a bug hunt.",
+      "expected_outcome": "Recommends /freeze src/payments/ and /careful (or /guard) plus /investigate.",
+      "assertions": [
+        "Uses /freeze src/payments/ or /guard",
+        "Uses /careful or /investigate"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "gstack"
+    },
+    {
+      "id": "route-out-devtools-trace",
+      "prompt": "Attach to Chrome DevTools MCP to extract a raw CPU performance trace and Lighthouse report.",
+      "expected_outcome": "Routes out cleanly to chrome-devtools-mcp.",
+      "assertions": [
+        "Routes DevTools MCP performance traces to chrome-devtools-mcp"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "chrome-devtools-mcp"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

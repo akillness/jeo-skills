@@ -1,0 +1,6 @@
+N:jarrodwatts-hud
+D:Configure jarrodwatts/claude-hud live Claude Code statusline plugin (context %, git status, tools, subagents, hud.mjs doctor/schema/preview/set).
+G:cli-tools ai-cli cli claude-hud statusline
+U[5]:install-plugin,configure-preset,diagnose-doctor,custom-layout,failure-triage
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[3]:ccusage,codeburn,cc-switch

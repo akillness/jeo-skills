@@ -1,0 +1,46 @@
+{
+  "skill_name": "happy",
+  "evals": [
+    {
+      "id": "happy-cli-launch",
+      "prompt": "Set up slopus/happy so I can monitor and approve a Claude Code or Codex session from my phone.",
+      "expected_outcome": "Installs happy (noting migration from happy-coder), runs happy claude or happy codex, and explains E2E QR device pairing.",
+      "assertions": [
+        "Uses npm install -g happy (not legacy happy-coder)",
+        "Covers happy claude and happy codex",
+        "Notes local key security / mobile approval risk boundary"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "happy"
+    },
+    {
+      "id": "happy-pairing-privacy",
+      "prompt": "Can I paste my happy pairing QR link or relay key file into a team issue for debugging?",
+      "expected_outcome": "Firmly refuses/warns that pairing QR and local device keys grant encrypted session access and must stay private.",
+      "assertions": [
+        "Warns never to share QR pairing links or local encryption keys"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "happy"
+    },
+    {
+      "id": "route-out-orca-worktrees",
+      "prompt": "Run four local coding agents in separate Git worktrees on my Mac desktop app.",
+      "expected_outcome": "Routes out cleanly to orca.",
+      "assertions": [
+        "Routes desktop Git-worktree orchestration to orca"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "orca"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

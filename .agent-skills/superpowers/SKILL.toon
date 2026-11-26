@@ -1,0 +1,6 @@
+N:superpowers
+D:Run obra/superpowers 14-skill software engineering methodology (brainstorming, git worktrees, writing-plans, subagent TDD, two-stage code review, verification-before-completion).
+G:ai-agents orchestration workflow superpowers tdd
+U[5]:install-platform,brainstorm-design,plan-execute-tdd,review-verify,route-subskill
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[3]:gstack,spec-kit,aidlc-workflows

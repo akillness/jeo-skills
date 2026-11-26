@@ -4094,6 +4094,52 @@ OS code-signing; the README pipes the installer into `sh`, so prefer the downloa
 v3 harness is `kiro-ide` at the pin and `kiro` on main), so read `aidlc config --help` for the installed release.
 Installing `aidlc-workflows` does not configure AI-DLC, and it is separate from `spec-kit` and `bmad`.
 
+### Coding Agent Ecosystem (On-Demand, 19 Curated Repositories)
+
+The `coding-agent-ecosystem` bundle collects 19 coding-agent tools from the curated 20-project GitHub roundup (`https://lnkd.in/p/gxj87eAC`), excluding `oh-my-claudecode`. Six tools were already present in `jeo-skills` (`rtk`, `context-mode`, `graphify`, `context7`, `spec-kit`, `ruflo`) and 13 new source-pinned operator skills were added:
+
+| Skill (Local Name) | Upstream Repository | Focus & Approval Boundary |
+|---|---|---|
+| [`thedotmack-mem`](.agent-skills/thedotmack-mem/SKILL.md) | `thedotmack/claude-mem` | Cross-session SQLite/Chroma worker (`localhost:37777`) & progressive 3-layer MCP search. Install via `npx claude-mem install` (not `npm -g` alone); use `<private>` tags and `npx claude-mem telemetry disable` where required; confirm before touching `~/.claude-mem/`. |
+| [`beads`](.agent-skills/beads/SKILL.md) | `gastownhall/beads` | Distributed git/Dolt graph issue tracker (`bd`). Use `bd init --stealth` in third-party repos; gate `bd init`, `bd dolt push`, and `bd compact`. |
+| [`serena`](.agent-skills/serena/SKILL.md) | `oraios/serena` | SolidLSP semantic symbol MCP (`uv tool install -p 3.13 serena-agent` — do not use outdated MCP marketplace wrappers). Dual-licensed (`SolidLSP` MIT, `Serena` GPL-3.0-or-later). |
+| [`chrome-devtools-mcp`](.agent-skills/chrome-devtools-mcp/SKILL.md) | `ChromeDevTools/chrome-devtools-mcp` | Official DevTools MCP & standalone `chrome-devtools` CLI. Default to `--isolated --headless --no-usage-statistics --no-performance-crux`; never attach `--autoConnect`/`--browserUrl` to personal cookie profiles without consent. |
+| [`superpowers`](.agent-skills/superpowers/SKILL.md) | `obra/superpowers` | 14-skill Socratic `brainstorming` -> worktrees -> `writing-plans` -> TDD -> `verification-before-completion` workflow; avoid stacking conflicting methodology hooks simultaneously. |
+| [`gstack`](.agent-skills/gstack/SKILL.md) | `garrytan/gstack` | Role-based sprint suite (`/office-hours`, `/review`, `/qa`, `/cso`, `/ship`, `/browse` Bun daemon `$B`, `/careful`, `/freeze`, `/guard`). Gate `/ship` & live deploys explicitly. |
+| [`official-agent-skills`](.agent-skills/official-agent-skills/SKILL.md) | `anthropics/skills` | Official 19-skill catalog, `document-skills`/`example-skills` marketplace, spec & template. Audit `THIRD_PARTY_NOTICES.md` and prefer existing local `jeo-skills` counterparts (`pdf`, `docx`, `mcp-builder`, etc.). |
+| [`orca`](.agent-skills/orca/SKILL.md) | `stablyai/orca` | Git-worktree parallel agent desktop & CLI (`orca status --json`, `orca worktree create`, `orca orchestration`). Gate `orca server`, Slack/Linear/Jira bots, webhooks, and worktree deletion. |
+| [`wshobson-agents`](.agent-skills/wshobson-agents/SKILL.md) | `wshobson/agents` | 73-plugin `claude-code-workflows` marketplace + `Makefile` cross-host adapters. Install only 2-5 selective domain plugins per workspace — never bulk-install all 73. |
+| [`happy`](.agent-skills/happy/SKILL.md) | `slopus/happy` | TweetNaCl E2E encrypted mobile/web remote client (`npm install -g happy`, `happy claude`, `happy codex`, `happy-mcp`). Keep QR pairing keys private; gate self-hosted `happy-server`. |
+| [`cc-switch`](.agent-skills/cc-switch/SKILL.md) | `farion1231/cc-switch` | Cross-CLI provider/MCP/Skills/proxy manager (`~/.cc-switch/cc-switch.db`). Back up live `~/.claude/`, `~/.codex/`, `~/.gemini/` configs first; never print or commit API tokens. |
+| [`jarrodwatts-hud`](.agent-skills/jarrodwatts-hud/SKILL.md) | `jarrodwatts/claude-hud` | Zero-context-token live statusline HUD (`hud.mjs doctor/schema/preview/set`). Requires Node.js (`Bun` alone is insufficient). |
+| [`ccusage`](.agent-skills/ccusage/SKILL.md) | `ccusage/ccusage` | Local JSONL token/cost reporter (`daily`, `weekly`, `monthly`, `session`, `blocks`, `statusline`) across Claude/Codex/OpenCode. Pass `--offline` to disable pricing fetches; costs are estimates. |
+
+Local skill names `thedotmack-mem`, `jarrodwatts-hud`, and `official-agent-skills` avoid reserved evaluator words (`claude`, `anthropic`) while keeping upstream commands verbatim. Installing these skills copies markdown guides and the offline manifest preflight helper (`scripts/preflight.py`) only — upstream binaries, plugins, daemons, and live config writes require separate approval:
+
+```bash
+python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install \
+  --bundle coding-agent-ecosystem --global --dry-run
+
+python3 "$SKILLS_ROOT/beads/scripts/preflight.py" --json
+python3 "$SKILLS_ROOT/serena/scripts/preflight.py" --json
+python3 "$SKILLS_ROOT/ccusage/scripts/preflight.py" --json
+```
+
+### Rete single-file RDF archive & SPARQL operator (on demand)
+
+Install only if you need to build, inspect, host, or SPARQL-query single-file `.rete` RDF knowledge graph archives (`caviri/rete`, `0.7.8`, pinned commit `c38b7ffb304dfaeb9c8ad3a37dd6416678e198e0`, Apache-2.0):
+
+```bash
+python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install rete --global --dry-run
+python3 "$SKILLS_ROOT/rete/scripts/preflight.py" --json
+```
+
+What catalog install does vs what remains gated:
+- Installing `rete` copies only `SKILL.md`, `SKILL.toon`, `references/upstream.md`, `references/source.json`, `evals/evals.json`, and the offline `scripts/preflight.py` checker — it does not install `rete-cli`, Python/npm `rete-graph`, Docker images, or `rete.mcpb`.
+- `pip install rete-graph` and `npm install rete-graph` install in-process libraries only (no native `rete` CLI binary; install `rete-cli` separately via `cargo install rete-cli`, release `v0.7.8`, or `ghcr.io/caviri/rete`).
+- `0.7.8` writes format `0x08` (readable by `0.7.x+`; `<= 0.6.x` readers reject `0x08`) and defaults to `--permutations 6`; JSON-LD builds remain offline unless `--context IRI=FILE` is mapped locally or `--fetch-contexts` is explicitly approved.
+- Never send private `.rete` files or confidential RDF text to the hosted Hugging Face MCP (`https://katospiegel-rete.hf.space/mcp/`); use local `rete.mcpb` or explicit approval before running `rete serve`, editing S3/R2 CORS headers, or mutating `.rete` files with `rete recard --in-place`.
+
 ---
 
 ## Guard Boundaries

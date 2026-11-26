@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "skill": "beads",
+  "repository": "gastownhall/beads",
+  "commit": "78624109904655d7a4609f27d34eb0982cd8963f",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "1d21bb710106c1368062b4834cb44d209b8125e3bacd560366d81f0d945ff9e3",
+      "url": "https://github.com/gastownhall/beads/blob/78624109904655d7a4609f27d34eb0982cd8963f/README.md"
+    },
+    {
+      "path": "go.mod",
+      "sha256": "2e6247bc649ba2065a0c7fcdf45b3d17cf721ba7a9ebaa66f786ff4973bef61c",
+      "url": "https://github.com/gastownhall/beads/blob/78624109904655d7a4609f27d34eb0982cd8963f/go.mod"
+    },
+    {
+      "path": ".claude-plugin/marketplace.json",
+      "sha256": "f643934c81ad5ea23596e2294a3844d163dbe5a539432a9ea1b74df4b4ba4ade",
+      "url": "https://github.com/gastownhall/beads/blob/78624109904655d7a4609f27d34eb0982cd8963f/.claude-plugin/marketplace.json"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "caa2c60efbbf71e18b45ef6006a18213f8a42554b235af88883f6f1ec240b7db",
+      "url": "https://github.com/gastownhall/beads/blob/78624109904655d7a4609f27d34eb0982cd8963f/LICENSE"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "bd"
+    },
+    {
+      "name": "dolt"
+    },
+    {
+      "name": "git"
+    },
+    {
+      "name": "go"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+N:official-agent-skills
+D:Browse and install anthropics/skills official 19-skill catalog, marketplace plugins (document-skills, example-skills), Agent Skills spec pointer, and template.
+G:ai-agents skill-authoring workflow anthropics-skills
+U[5]:browse-catalog,install-plugin,spec-template-author,document-skills-route,license-audit
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[3]:skill-standardization,write-a-skill,nvidia-skill-evaluator

@@ -1,0 +1,6 @@
+N:cc-switch
+D:Manage farion1231/cc-switch cross-CLI provider, MCP, Skills, Prompt, and local failover proxy manager for Claude Code, Codex, Gemini CLI, OpenCode, and OpenClaw.
+G:utilities workspace cli cc-switch provider-switch
+U[5]:provider-switch,mcp-skills-sync,proxy-failover,backup-recovery,failure-triage
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[3]:ccusage,jarrodwatts-hud,happy

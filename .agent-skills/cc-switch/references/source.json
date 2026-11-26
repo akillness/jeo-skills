@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "skill": "cc-switch",
+  "repository": "farion1231/cc-switch",
+  "commit": "754fed72d428c66c1e6ed45f38601ac25ded90c6",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "2f512f86a50c9a4434d7e794755c1b159bbd6cda915324ddfd1c8465d3efdb68",
+      "url": "https://github.com/farion1231/cc-switch/blob/754fed72d428c66c1e6ed45f38601ac25ded90c6/README.md"
+    },
+    {
+      "path": "package.json",
+      "sha256": "25a2d51d383b7de6c7bc5dd2c3a344e879021b5b2dd02a8088bf3d397c6626ca",
+      "url": "https://github.com/farion1231/cc-switch/blob/754fed72d428c66c1e6ed45f38601ac25ded90c6/package.json"
+    },
+    {
+      "path": "src-tauri/Cargo.toml",
+      "sha256": "1a765e108890673f09ed6bdd6159f750fd59a860b7ccb46a978bb3b7f02a90ee",
+      "url": "https://github.com/farion1231/cc-switch/blob/754fed72d428c66c1e6ed45f38601ac25ded90c6/src-tauri/Cargo.toml"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "912b6a597d10c43b40a0909349ed95b052b17efb6502b4898e1b35dafb896755",
+      "url": "https://github.com/farion1231/cc-switch/blob/754fed72d428c66c1e6ed45f38601ac25ded90c6/LICENSE"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "sqlite3"
+    },
+    {
+      "name": "claude"
+    },
+    {
+      "name": "codex"
+    },
+    {
+      "name": "gemini"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+N:chrome-devtools-mcp
+D:Operate ChromeDevTools/chrome-devtools-mcp MCP server and standalone CLI for live Chrome DOM, console, network, Lighthouse, and performance traces.
+G:web testing mcp chrome-devtools-mcp cdp
+U[5]:mcp-setup,cli-automation,perf-trace-audit,privacy-isolation,failure-triage
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[4]:aside-browser,playwright-cli,browser-harness,lightpanda

@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "skill": "orca",
+  "repository": "stablyai/orca",
+  "commit": "687383b94b9453d52e3dc368a87465a7ce5ebc58",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "6b54e587ad7274ef4218fbc5584f20bf679eb5059f8eed9600803bdac3b973af",
+      "url": "https://github.com/stablyai/orca/blob/687383b94b9453d52e3dc368a87465a7ce5ebc58/README.md"
+    },
+    {
+      "path": "package.json",
+      "sha256": "19bd72a3900c24526cb92cffea0cc829a34befc5d8b506f2b79a9d24fdefe218",
+      "url": "https://github.com/stablyai/orca/blob/687383b94b9453d52e3dc368a87465a7ce5ebc58/package.json"
+    },
+    {
+      "path": "orca.yaml",
+      "sha256": "9bf619c494ce5a5801bc0835e21b357c04c1bbe2026eaf806433c8ed7e41d072",
+      "url": "https://github.com/stablyai/orca/blob/687383b94b9453d52e3dc368a87465a7ce5ebc58/orca.yaml"
+    },
+    {
+      "path": "src/cli/index.ts",
+      "sha256": "032d75493d5ae7beff10673a951bb48bb94ea98ad85921c9609b31a69753f3b4",
+      "url": "https://github.com/stablyai/orca/blob/687383b94b9453d52e3dc368a87465a7ce5ebc58/src/cli/index.ts"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "ff1b611f80580d49f4b97e93a97b24eb050b0671b26b8afe16341fab699112f3",
+      "url": "https://github.com/stablyai/orca/blob/687383b94b9453d52e3dc368a87465a7ce5ebc58/LICENSE"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "orca"
+    },
+    {
+      "name": "git"
+    },
+    {
+      "name": "pnpm"
+    },
+    {
+      "name": "node"
+    }
+  ]
+}

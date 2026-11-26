@@ -1,0 +1,47 @@
+{
+  "skill_name": "superpowers",
+  "evals": [
+    {
+      "id": "superpowers-end-to-end-loop",
+      "prompt": "Build a new billing webhook handler using the obra/superpowers workflow without skipping design sign-off or TDD.",
+      "expected_outcome": "Walks through brainstorming -> using-git-worktrees -> writing-plans -> test-driven-development -> two-stage code review -> verification-before-completion.",
+      "assertions": [
+        "Requires design sign-off via brainstorming before writing code",
+        "Enforces RED-GREEN-REFACTOR TDD and isolated worktree",
+        "Requires fresh test run via verification-before-completion"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "superpowers"
+    },
+    {
+      "id": "install-codex-gemini",
+      "prompt": "Install superpowers on Gemini CLI and check Codex setup docs.",
+      "expected_outcome": "Provides gemini extensions install https://github.com/obra/superpowers and points to .codex/INSTALL.md.",
+      "assertions": [
+        "Uses gemini extensions install https://github.com/obra/superpowers",
+        "References .codex/INSTALL.md for Codex"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "superpowers"
+    },
+    {
+      "id": "route-out-gstack",
+      "prompt": "Run a headless browser QA pass and founder product office-hours using /qa and /office-hours.",
+      "expected_outcome": "Routes out cleanly to gstack.",
+      "assertions": [
+        "Routes /qa and /office-hours role commands to gstack"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "gstack"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

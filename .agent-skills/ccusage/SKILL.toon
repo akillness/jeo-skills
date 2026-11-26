@@ -1,0 +1,6 @@
+N:ccusage
+D:Run ccusage/ccusage CLI (daily, weekly, monthly, session, blocks, statusline) to analyze local JSONL token usage and costs across Claude Code, Codex, OpenCode, and siblings.
+G:cli-tools ai-cli cli ccusage cost-analytics
+U[5]:usage-report,live-blocks-monitor,multi-agent-apps,mcp-export,failure-triage
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[3]:jarrodwatts-hud,codeburn,cc-switch

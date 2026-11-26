@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "skill": "happy",
+  "repository": "slopus/happy",
+  "commit": "92826ef40fc96daec2ac87e975ce14ff00ad3a43",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "9b8e9a41438374e7ed9e625c02e67ab74f46bebc1e085fc9938f480e6f02db09",
+      "url": "https://github.com/slopus/happy/blob/92826ef40fc96daec2ac87e975ce14ff00ad3a43/README.md"
+    },
+    {
+      "path": "package.json",
+      "sha256": "fa877f55be1fe13d9f8465e0496c3699aa0f3fa683d067d75b0589025a390aa6",
+      "url": "https://github.com/slopus/happy/blob/92826ef40fc96daec2ac87e975ce14ff00ad3a43/package.json"
+    },
+    {
+      "path": "packages/happy-cli/package.json",
+      "sha256": "26ce9f6d4d85e59cdde1094bc0056af92d5ee79474b77feadbf87116e6c466f2",
+      "url": "https://github.com/slopus/happy/blob/92826ef40fc96daec2ac87e975ce14ff00ad3a43/packages/happy-cli/package.json"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "e251d0448ef3ce023c20ebac9b90a7d8642b1434825838247d6e457668eb3e00",
+      "url": "https://github.com/slopus/happy/blob/92826ef40fc96daec2ac87e975ce14ff00ad3a43/LICENSE"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "happy"
+    },
+    {
+      "name": "happy-mcp"
+    },
+    {
+      "name": "node"
+    },
+    {
+      "name": "npm"
+    }
+  ]
+}

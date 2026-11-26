@@ -121,8 +121,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 `--dry-run`은 선택 항목·대상 경로·실행 예정 명령을 확인하는 용도이며 실제 설치나 호스트 활성화를 검증하지 않습니다. `install.sh`의 미리 보기는 런타임 지원 여부·계정·카탈로그 선택의 유효성을 실제 실행 시점까지 확인하지 않습니다. 준비 상태 리포트의 `ready`도 로컬 사전 점검 통과를 뜻할 뿐, 프로그램의 실제 실행이나 서비스 연결을 보증하지 않습니다.
 
 <details>
-<summary><b>번들</b> — 엄선한 시작 세트 17종</summary>
-
+<summary><b>번들</b> — 엄선한 시작 세트 18종</summary>
 | 번들 | 스킬 |
 |---|---|
 | `starter` | jeo-skill, skill-standardization, codebase-search, git-workflow, debugging, testing-strategies, image-to-github-repo, obsidian-second-brain |
@@ -142,6 +141,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 | `ui-design-repositories` | 10 source-pinned UI operators (`jeo-skill install --bundle ui-design-repositories --dry-run`) |
 | `game-source-repositories` | 10 source-pinned 게임 개발 도구 운영 가이드 (`jeo-skill install --bundle game-source-repositories --dry-run`) |
 | `github-five-programs` | fabric, moneyprinter-v2, agent-s, google-maps-scraper, gitingest: 오픈소스 프로그램 5종 운영 가이드, 그중 4종은 source-pinned (`jeo-skill install --bundle github-five-programs --dry-run`) |
+| `coding-agent-ecosystem` | 컨텍스트/메모리, 코드/브라우저, 개발 방법론, 멀티 에이전트 오케스트레이션, 제어/모니터링 분야 큐레이션 운영 가이드 19종 (`rtk`, `thedotmack-mem`, `beads`, `context-mode`, `graphify`, `serena`, `context7`, `chrome-devtools-mcp`, `superpowers`, `spec-kit`, `gstack`, `official-agent-skills`, `ruflo`, `orca`, `wshobson-agents`, `happy`, `cc-switch`, `jarrodwatts-hud`, `ccusage`; `oh-my-claudecode` 제외) |
 
 대부분의 리포지터리 운영 스킬은 고정된 소스를 안내하며, 설치해도 업스트림 프로젝트를 설치·실행·연결하지 않습니다. 아래 설명된 Context7 CLI 설치는 예외이며, 활성화와 연결에는 별도 승인이 필요합니다.
 
@@ -152,7 +152,9 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 
 | 스킬 / 기능 | 범위 및 승인 경계 | 참고 |
 |---|---|---|
+| `coding-agent-ecosystem` | 코딩 에이전트 생태계 20선 링크 중 `oh-my-claudecode`를 제외한 19종(신규 13종 source-pinned 가이드 + 기존 6종); 카탈로그 설치는 문서와 오프라인 `preflight.py`만 복사하며 플러그인·MCP·데몬·실제 설정 변경은 별도 승인 필요 | [설치 범위](setup-all-skills-prompt.md#coding-agent-ecosystem-on-demand-19-curated-repositories) · [출처별 라이선스](docs/attribution.md) |
 | `game-source-repositories` | 게임 개발 도구 가이드 10종(물리, 지형, 재질, 이펙트, 경로 탐색, 애니메이션, 그래픽, 메시, 노이즈); 업스트림 도구를 설치·실행하지 않음 | [설치 범위](setup-all-skills-prompt.md#game-development-source-guides-on-demand) · [출처별 라이선스](docs/attribution.md) |
+| [`rete`](.agent-skills/rete/SKILL.md) | [`caviri/rete`](https://github.com/caviri/rete) `0.7.8` source-pinned 운영 가이드(단일 파일 `.rete` RDF 아카이브, SPARQL/SHACL, 포맷 `0x08`); `pip`/`npm` `rete-graph`는 네이티브 `rete` CLI를 포함하지 않으며, `rete serve`·`--fetch-contexts`·S3/R2 CORS 수정·비공개 그래프의 호스트 MCP 전송은 별도 승인/경계 필요 | [설치 가이드](setup-all-skills-prompt.md#rete-single-file-rdf-archive--sparql-operator-on-demand) · [출처별 라이선스](docs/attribution.md) |
 | [`lightpanda`](.agent-skills/lightpanda/SKILL.md) | Lightpanda 1.0.2(fetch, CDP, MCP) 운영 가이드 + 오프라인 메타데이터 진단; 브라우저 설치·접근·서버·자격 증명은 별도 승인 | [설치 가이드](setup-all-skills-prompt.md#lightpanda-browser-operator-on-demand) |
 | [`browser-use`](.agent-skills/browser-use/SKILL.md) | 운영 가이드 + 오프라인 프리플라이트; 패키지/브라우저 설치, 사이트 접근, 클라우드·모델 호출 및 계정은 별도 승인 | [설치 가이드](setup-all-skills-prompt.md#browser-use-operator-on-demand) |
 | [`flide`](.agent-skills/flide/SKILL.md) | 의사결정 추론 가이드 + 오프라인 프리플라이트; 패키지/모델 다운로드, GPU 사용, 서버 기동은 별도 승인 | [설치 가이드](setup-all-skills-prompt.md#flide-decision-inference-on-demand) |
@@ -367,11 +369,11 @@ node ~/.agents/jev/jev-harness.mjs \
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 474개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 488개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
-### 🌐 웹 (77개)
+### 🌐 웹 (78개)
 
-하위 분류: `frontend` (16), `backend` (3), `design` (17), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
+하위 분류: `frontend` (16), `backend` (3), `design` (17), `api` (2), `auth` (1), `data` (13), `testing` (5), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
 
 <details>
 <summary>스킬 보기</summary>
@@ -455,12 +457,13 @@ node ~/.agents/jev/jev-harness.mjs \
 | `open-intelligent-ui` |
 | `solid-glass` |
 | `vercel-agent-ui` |
+| `chrome-devtools-mcp` |
 
 </details>
 
-### 🏗 인프라 (21개)
+### 🏗 인프라 (22개)
 
-하위 분류: `deployment` (2), `environment` (2), `observability` (4), `security` (4), `cloud-data` (8), `automation` (0), `tooling` (1)
+하위 분류: `deployment` (2), `environment` (2), `observability` (4), `security` (4), `cloud-data` (9), `automation` (0), `tooling` (1)
 
 <details>
 <summary>스킬 보기</summary>
@@ -488,6 +491,7 @@ node ~/.agents/jev/jev-harness.mjs \
 | `vespa` |
 | `langfuse` |
 | `artex` |
+| `rete` |
 
 </details>
 
@@ -612,9 +616,9 @@ node ~/.agents/jev/jev-harness.mjs \
 
 </details>
 
-### ⌨️ CLI 도구 (48개)
+### ⌨️ CLI 도구 (51개)
 
-하위 분류: `developer-cli` (12), `ai-cli` (18), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
+하위 분류: `developer-cli` (12), `ai-cli` (21), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>스킬 보기</summary>
@@ -669,12 +673,15 @@ node ~/.agents/jev/jev-harness.mjs \
 | `connectonion` |
 | `flide` |
 | `indra` |
+| `happy` |
+| `jarrodwatts-hud` |
+| `ccusage` |
 
 </details>
 
-### 🤖 AI 및 에이전트 (83개)
+### 🤖 AI 및 에이전트 (88개)
 
-하위 분류: `orchestration` (21), `agent-frameworks` (22), `skill-authoring` (5), `evaluation` (10), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
+하위 분류: `orchestration` (24), `agent-frameworks` (22), `skill-authoring` (6), `evaluation` (10), `memory` (8), `planning-review` (13), `discovery` (3), `prompting` (2)
 
 <details>
 <summary>스킬 보기</summary>
@@ -764,12 +771,17 @@ node ~/.agents/jev/jev-harness.mjs \
 | `fastmcp` |
 | `canyonos` |
 | `agent-substrate` |
+| `thedotmack-mem` |
+| `superpowers` |
+| `gstack` |
+| `official-agent-skills` |
+| `wshobson-agents` |
 
 </details>
 
-### 🧰 엔지니어링 (28개)
+### 🧰 엔지니어링 (29개)
 
-하위 분류: `code-quality` (14), `testing` (4), `architecture` (6), `documentation` (2), `code-navigation` (2)
+하위 분류: `code-quality` (14), `testing` (4), `architecture` (6), `documentation` (2), `code-navigation` (3)
 
 <details>
 <summary>스킬 보기</summary>
@@ -804,6 +816,7 @@ node ~/.agents/jev/jev-harness.mjs \
 | `rust-anything` |
 | `fast-anything` |
 | `mobile-agent-testers` |
+| `serena` |
 
 </details>
 
@@ -921,9 +934,9 @@ node ~/.agents/jev/jev-harness.mjs \
 
 </details>
 
-### 🔧 유틸리티 (30개)
+### 🔧 유틸리티 (33개)
 
-하위 분류: `knowledge` (9), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (4), `general` (3)
+하위 분류: `knowledge` (9), `files` (5), `git` (4), `workspace` (3), `project-management` (5), `productivity` (4), `general` (3)
 
 <details>
 <summary>스킬 보기</summary>
@@ -960,6 +973,9 @@ node ~/.agents/jev/jev-harness.mjs \
 | `rhwp-edit` |
 | `rowboat` |
 | `mroffice` |
+| `beads` |
+| `orca` |
+| `cc-switch` |
 
 </details>
 
@@ -1002,6 +1018,13 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/changelog.py check
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-11-27 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **`rete` 단일 파일 RDF 아카이브·SPARQL 운영 스킬 추가 (총 488개 스킬)** | [`caviri/rete`](https://github.com/caviri/rete) `0.7.8`(`c38b7ffb304dfaeb9c8ad3a37dd6416678e198e0`, Apache-2.0)을 고정 참조하는 `.agent-skills/rete` (`infrastructure` / `cloud-data`)를 추가했습니다. 단일 파일 `.rete` 빌드(`0x08` 포맷, `0x05`–`0x08` 읽기 호환), HTTP Range 기반 SPARQL/openCypher/SHACL/OWL 2 QL 질의, `rete-graph` 라이브러리와 네이티브 `rete-cli` 구분, 오프라인 JSON-LD `@context` 매핑, S3/R2 CORS 요구사항 및 비공개 그래프의 로컬 `rete.mcpb` vs 호스트 MCP 격리를 다룹니다. `SKILL.toon`, `references/upstream.md`, `references/source.json`(SHA-256 10건 검증), 오프라인 `scripts/preflight.py`, `evals/evals.json`, `scripts/test_rete_skill.py`를 포함합니다. |
+| **코딩 에이전트 생태계 번들 추가 (`coding-agent-ecosystem`, 총 487개 스킬)** | 코딩 에이전트 깃허브 20선 링크에서 `oh-my-claudecode`를 제외한 19개 프로젝트 중 미등록 13종(`thedotmack-mem`, `beads`, `serena`, `chrome-devtools-mcp`, `superpowers`, `gstack`, `official-agent-skills`, `orca`, `wshobson-agents`, `happy`, `cc-switch`, `jarrodwatts-hud`, `ccusage`)을 source-pinned 스킬로 추가하고 기존 6종(`rtk`, `context-mode`, `graphify`, `context7`, `spec-kit`, `ruflo`)과 함께 번들로 묶었습니다. 각 신규 스킬은 `SKILL.md`, `SKILL.toon`, `references/upstream.md`, 검증된 SHA-256 다이제스트가 담긴 `references/source.json`, 오프라인 `scripts/preflight.py`, `evals/evals.json`을 포함하며 3개 언어 README, `setup-all-skills-prompt.md`, `docs/attribution.md`를 함께 동기화했습니다. |
+
 ## 🆕 v2026-11-24 업데이트
 
 | 변경 사항 | 상세 내용 |
@@ -1037,13 +1060,6 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/changelog.py check
 |--------|---------|
 | **NVIDIA SkillEvaluator 전체 카탈로그(440개 스킬) 보안 감사 및 개선** | `.agent-skills/` 전체 440개 스킬에 `skillevaluator security-scan`(`0.8.0` / `SkillSpector 2.13.3`)을 실행하고 Jev(`jev-harness.mjs` 검토·평가), 병렬 서브에이전트 배치(`RemediateBatch01–10`, `PolishBatchA–C`, `LiveScan1–4`), `agy`(`gemini-4-carbon-high`)를 연계해 보안 취약점과 정적 경고를 체계적으로 개선했습니다. **실측 BEFORE → AFTER(`skillevaluator-security.json`, 440/440)**: 통과 스킬 **221 → 366개**(+145, 83.2%), 실패 **192 → 63개**(-67.2%), 미완료 **27 → 11개**(-59.3%), `CRITICAL`/`HIGH` 무검출 스킬 **248 → 377 / 440개(85.7%)**, `CRITICAL`/`HIGH` 보유 스킬 **192 → 63개**(-67.2%), `CRITICAL` 발견 **4 → 0건**, `HIGH` **956 → 290건**(-69.7%), `MEDIUM` **1,296 → 647건**(-50.1%), `LOW` **61 → 12건**(-80.3%)이며 `LP1`(109→0)·`E2`(21→0)·`AE1`(114→0)·`LP3`(10→0)·`SC8`/`SC9`(52→0)을 전량 해소했습니다. 사후 리뷰를 통해 `agent-manager/scripts/install.sh`(`fi` 복구)·`agent-manager/evals/evals.json`·`lightpanda/evals/evals.json` 구문 오류 및 `animato/SKILL.md`·`animato_agent.py` 독스트링 길이(`animato` `passed`, `HIGH`/`AE1` 0건)까지 수정했습니다. 주요 조치: `animato`·`gbro-collage-broll`·`scientific-llm-benchmarks`·`elevenlabs-tts`의 HTTPS/호스트 화이트리스트 및 리다이렉트 차단(`TT3`), 최소 허용 환경변수 전달(`E2`, `obsidian-second-brain`·`zvec-grep` 포함), 51개 스킬 `permissions:` 최소 권한 선언(`LP1`/`LP3`), 32개 공용 `scripts/preflight.py`의 순수 표준 라이브러리 `percent_encode` 적용, `__pycache__`/`.pyc`/`.DS_Store`·`\u200b` 제로폭 문자·과다 공백 제거(`SC8`/`SC9`/`P2`/`P9`), `npx`/`uvx` 버전 고정(`RP1`), `curl \| sh`를 다운로드-검증-실행 절차로 교체(`SC2`/`TM2`), 안전 문구·DOM 정제(`P1`/`P6`/`AR2`/`OH1`), `static_parse_limit` 정리(`AE1`), 그리고 `skills.json`/`skills.toon`/README 프로젝션 동기화를 완료했습니다. |
 | **CanyonOS·`jeox` 코드 그래프 및 설정 가이드 동기화** | 440번째 카탈로그 스킬 `canyonos`(`.canyon` 멀티에이전트 배포 운영자)와 `jeox`(`scripts/jeox.py` SQLite/FTS5 폴백 코드 그래프 및 `scripts/setup-workspace.py` `step_jeox`) 현황을 `README.md`·`README.ko.md`·`README.es-ES.md` 및 `setup-all-skills-prompt.md`(Step 5B·Step 7·온디맨드 NVIDIA SkillEvaluator 섹션)에 반영했습니다. |
-
-## 🆕 v2026-11-15 업데이트
-
-| 변경 사항 | 상세 내용 |
-|--------|---------|
-| **PMTiles 클라우드 네이티브 타일 아카이브 스킬** | 업스트림 `aec8fa1341222fdddb3318e9ffa8e18e19b312f7` (v3 규격)에 고정한 `pmtiles`를 추가했습니다. PMTiles v3 127바이트 헤더 검사, MBTiles에서 PMTiles로의 변환, 공간 하위 집합 추출(`--bbox`), S3·R2·GCS CORS 및 HTTP Range 요청 설정, MapLibre GL JS 프로토콜 등록, 오프라인 바이너리 헤더 프리플라이트 헬퍼를 제공합니다. 스킬 440개 카탈로그, README 3개 언어 목록과 setup 가이드를 동기화했습니다. |
-| **현재 카탈로그** | 현재 매니페스트는 `kagent`, `trulens`, `fastmcp`, `canyonos`, `pmtiles`를 포함한 스킬 440개·카테고리 10개를 담고 있습니다. 카탈로그 표는 `.agent-skills/skills.json`에서 다시 생성합니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "skill": "gstack",
+  "repository": "garrytan/gstack",
+  "commit": "0febbce1e4382b140a930f6a17c53234de2b05e7",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "b7323cc367d51166d5278090f14990ed6432a85bdd092b9566d7bc785476d97b",
+      "url": "https://github.com/garrytan/gstack/blob/0febbce1e4382b140a930f6a17c53234de2b05e7/README.md"
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "e4bb00a89e71c1fa25f2e31a7f1b7346972c7a070fdc019fd70683a809bac5d2",
+      "url": "https://github.com/garrytan/gstack/blob/0febbce1e4382b140a930f6a17c53234de2b05e7/SKILL.md"
+    },
+    {
+      "path": "ARCHITECTURE.md",
+      "sha256": "69e38f253c093ac96a5aac56e6d5575c61326dbf559a7ffda3f1bd20ae738e88",
+      "url": "https://github.com/garrytan/gstack/blob/0febbce1e4382b140a930f6a17c53234de2b05e7/ARCHITECTURE.md"
+    },
+    {
+      "path": "package.json",
+      "sha256": "c2369aa5cad897da1151abe3a6e997730d9ef84ee64f017b041424bdf36b9fd7",
+      "url": "https://github.com/garrytan/gstack/blob/0febbce1e4382b140a930f6a17c53234de2b05e7/package.json"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "e56fbb5b3d95756f3fa1cfefa24732ec79f18ece1ad08a4e79e00df57e8b198c",
+      "url": "https://github.com/garrytan/gstack/blob/0febbce1e4382b140a930f6a17c53234de2b05e7/LICENSE"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "bun"
+    },
+    {
+      "name": "git"
+    },
+    {
+      "name": "claude"
+    },
+    {
+      "name": "codex"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "skill": "thedotmack-mem",
+  "repository": "thedotmack/claude-mem",
+  "commit": "9b3b78dfa53f80e7c9c447b9269ceda255ee99d9",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "1a8a6caf9e86df366ea90027db0087cec87d12062365d876776b126c04859457",
+      "url": "https://github.com/thedotmack/claude-mem/blob/9b3b78dfa53f80e7c9c447b9269ceda255ee99d9/README.md"
+    },
+    {
+      "path": "package.json",
+      "sha256": "9ef81488ee2f139c99ebf743f68e63c4a22fc7890462df6f245ca20ea06e0fcb",
+      "url": "https://github.com/thedotmack/claude-mem/blob/9b3b78dfa53f80e7c9c447b9269ceda255ee99d9/package.json"
+    },
+    {
+      "path": ".claude-plugin/plugin.json",
+      "sha256": "4768cc886868b05f9e43ece25df66c92352a92ddf05a860be6bbd6bdccb5d49d",
+      "url": "https://github.com/thedotmack/claude-mem/blob/9b3b78dfa53f80e7c9c447b9269ceda255ee99d9/.claude-plugin/plugin.json"
+    },
+    {
+      "path": ".claude-plugin/marketplace.json",
+      "sha256": "ae825aa3dd548dee8d2b758ed1cb0e6e049e25b4e3e0e8387f4b6378fa5e1f62",
+      "url": "https://github.com/thedotmack/claude-mem/blob/9b3b78dfa53f80e7c9c447b9269ceda255ee99d9/.claude-plugin/marketplace.json"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "url": "https://github.com/thedotmack/claude-mem/blob/9b3b78dfa53f80e7c9c447b9269ceda255ee99d9/LICENSE"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "node"
+    },
+    {
+      "name": "npx"
+    },
+    {
+      "name": "claude"
+    },
+    {
+      "name": "sqlite3"
+    },
+    {
+      "name": "uv"
+    }
+  ]
+}

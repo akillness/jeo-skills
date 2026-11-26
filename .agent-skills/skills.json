@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 474,
+  "skill_count": 488,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -205,7 +205,8 @@
       "affectui",
       "open-intelligent-ui",
       "solid-glass",
-      "vercel-agent-ui"
+      "vercel-agent-ui",
+      "chrome-devtools-mcp"
     ],
     "infrastructure": [
       "deployment-automation",
@@ -228,7 +229,8 @@
       "pmtiles",
       "vespa",
       "langfuse",
-      "artex"
+      "artex",
+      "rete"
     ],
     "game": [
       "implement-fog-of-war",
@@ -379,7 +381,10 @@
       "craft-anything",
       "connectonion",
       "flide",
-      "indra"
+      "indra",
+      "happy",
+      "jarrodwatts-hud",
+      "ccusage"
     ],
     "ai-agents": [
       "bmad",
@@ -464,7 +469,12 @@
       "trulens",
       "fastmcp",
       "canyonos",
-      "agent-substrate"
+      "agent-substrate",
+      "thedotmack-mem",
+      "superpowers",
+      "gstack",
+      "official-agent-skills",
+      "wshobson-agents"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -494,7 +504,8 @@
       "ponytail",
       "rust-anything",
       "fast-anything",
-      "mobile-agent-testers"
+      "mobile-agent-testers",
+      "serena"
     ],
     "research": [
       "academic-research",
@@ -620,7 +631,10 @@
       "rhwp-advanced",
       "rhwp-edit",
       "rowboat",
-      "mroffice"
+      "mroffice",
+      "beads",
+      "orca",
+      "cc-switch"
     ]
   },
   "subcategories": {
@@ -693,7 +707,8 @@
         "backend-testing",
         "browser-harness",
         "playwriter",
-        "stagehand"
+        "stagehand",
+        "chrome-devtools-mcp"
       ],
       "accessibility": [
         "web-accessibility"
@@ -754,7 +769,8 @@
         "knowledge-catalog",
         "cocoindex",
         "pmtiles",
-        "vespa"
+        "vespa",
+        "rete"
       ],
       "automation": [],
       "tooling": [
@@ -937,7 +953,10 @@
         "llmfit",
         "hyper-extract",
         "flide",
-        "indra"
+        "indra",
+        "happy",
+        "jarrodwatts-hud",
+        "ccusage"
       ],
       "media-cli": [
         "compresso"
@@ -988,7 +1007,10 @@
         "revfactory-harness",
         "elephant-goldfish-model",
         "canyonos",
-        "agent-substrate"
+        "agent-substrate",
+        "superpowers",
+        "gstack",
+        "wshobson-agents"
       ],
       "agent-frameworks": [
         "microsoft-agent-framework",
@@ -1019,7 +1041,8 @@
         "skill-standardization",
         "upskill",
         "write-a-skill",
-        "writing-for-agents"
+        "writing-for-agents",
+        "official-agent-skills"
       ],
       "evaluation": [
         "langsmith",
@@ -1040,7 +1063,8 @@
         "memmachine",
         "memori",
         "memsearch",
-        "agent-beacon"
+        "agent-beacon",
+        "thedotmack-mem"
       ],
       "planning-review": [
         "bmad-idea",
@@ -1104,7 +1128,8 @@
       ],
       "code-navigation": [
         "codebase-search",
-        "codebase-memory-mcp"
+        "codebase-memory-mcp",
+        "serena"
       ]
     },
     "research": {
@@ -1261,13 +1286,16 @@
         "resolving-merge-conflicts"
       ],
       "workspace": [
-        "game-sounds"
+        "game-sounds",
+        "orca",
+        "cc-switch"
       ],
       "project-management": [
         "sprint-retrospective",
         "standup-meeting",
         "task-estimation",
-        "task-planning"
+        "task-planning",
+        "beads"
       ],
       "productivity": [
         "google-workspace",
@@ -1424,6 +1452,27 @@
       "agent-s",
       "google-maps-scraper",
       "gitingest"
+    ],
+    "coding-agent-ecosystem": [
+      "rtk",
+      "thedotmack-mem",
+      "beads",
+      "context-mode",
+      "graphify",
+      "serena",
+      "context7",
+      "chrome-devtools-mcp",
+      "superpowers",
+      "spec-kit",
+      "gstack",
+      "official-agent-skills",
+      "ruflo",
+      "orca",
+      "wshobson-agents",
+      "happy",
+      "cc-switch",
+      "jarrodwatts-hud",
+      "ccusage"
     ]
   },
   "retired_skills": {
@@ -2138,6 +2187,45 @@
         "craft-anything"
       ],
       "note": "rea (morluto/rea) focuses on local evidence-backed inspection of binaries, JS/Electron, and saved captures; craft-anything (storytold/craft-anything, MIT OR Apache-2.0) is a pure-Rust clean-room/deep inspection and AI rebuilding engine with 320 tools, desktop app, CLI, and MCP server."
+    },
+    "coding-agent-methodologies": {
+      "mode": "adjacent",
+      "members": [
+        "superpowers",
+        "gstack",
+        "spec-kit",
+        "aidlc-workflows"
+      ],
+      "note": "Distinct workflow orchestrators: superpowers enforces TDD/subagent loops, gstack adds founder/QA browser sprints, spec-kit scaffolds spec templates, and aidlc-workflows tracks AWS AI-DLC gates."
+    },
+    "coding-agent-telemetry": {
+      "mode": "adjacent",
+      "members": [
+        "jarrodwatts-hud",
+        "ccusage",
+        "codeburn",
+        "cc-switch"
+      ],
+      "note": "Complementary runtime controls: jarrodwatts-hud shows live session HUD, ccusage & codeburn report historical/TUI usage costs, and cc-switch manages multi-CLI provider profiles."
+    },
+    "coding-agent-worktree-orchestrators": {
+      "mode": "adjacent",
+      "members": [
+        "orca",
+        "ruflo",
+        "wshobson-agents",
+        "happy"
+      ],
+      "note": "Distinct multi-agent layers: orca runs desktop Git worktree fleets, ruflo coordinates swarm memory/hooks, wshobson-agents packages modular plugins, and happy bridges encrypted mobile control."
+    },
+    "rdf-archives-and-single-file-stores": {
+      "mode": "adjacent",
+      "members": [
+        "rete",
+        "open-ontologies",
+        "pmtiles"
+      ],
+      "note": "Distinct single-file and RDF domains: rete builds and queries immutable HTTP-Range .rete RDF graph archives, open-ontologies manages mutable local RocksDB ontology diffs and oo-cert proofs, and pmtiles serves geospatial map tile archives."
     }
   },
   "model_policies": {
@@ -17258,6 +17346,239 @@
       "keyword": "mroffice",
       "version": "1.0.0",
       "source": "https://github.com/XinaTian/MROffice"
+    },
+    {
+      "name": "thedotmack-mem",
+      "category": "ai-agents",
+      "subcategory": "memory",
+      "description": "Operate thedotmack/claude-mem, a persistent cross-session memory system for coding agents using lifecycle hooks, an HTTP worker daemon on localhost port 37777, SQLite FTS5 plus Chroma search, and progressive three-layer MCP retrieval. Use when installing claude-mem via npx or Claude Code plugins, configuring worker telemetry or OpenCode and Cursor adapters, querying prior observations via search, timeline, and get_observations, or triaging private memory capture. Do not use for repo-local living wikis (route to mex), structural code graphs (route to graphify), or personal Obsidian vaults (route to obsidian-second-brain). Triggers on: claude-mem, thedotmack-mem, session memory plugin, worker 37777, progressive memory retrieval.",
+      "interface": "mcp",
+      "path": "thedotmack-mem/SKILL.md",
+      "tags": [
+        "claude-mem",
+        "memory",
+        "hooks",
+        "sqlite",
+        "mcp",
+        "progressive-retrieval"
+      ]
+    },
+    {
+      "name": "beads",
+      "category": "utilities",
+      "subcategory": "project-management",
+      "description": "Manage gastownhall/beads (bd), a distributed git-backed and Dolt-backed graph issue tracker built for coding agents with hash-based IDs, dependency edges, and JSON task queries. Use when initializing .beads/, finding unblocked work with bd ready --json, creating or claiming issues, wiring blocks or discovered-from dependencies, compacting memory, or syncing via bd dolt. Do not use for lightweight product specs (route to spec-kit) or git branch/worktree fleets (route to orca). Triggers on: beads, bd ready, bd create, bd dolt, graph issue tracker, gastownhall/beads.",
+      "interface": "cli",
+      "path": "beads/SKILL.md",
+      "tags": [
+        "beads",
+        "bd",
+        "dolt",
+        "issue-tracker",
+        "dependency-graph",
+        "agent-workflow"
+      ]
+    },
+    {
+      "name": "serena",
+      "category": "engineering",
+      "subcategory": "code-navigation",
+      "description": "Operate oraios/serena, a semantic coding agent toolkit and MCP server backed by SolidLSP language servers for symbol-level retrieval and editing across 30+ programming languages. Use when installing serena-agent with uv, initializing or indexing a project, running serena start-mcp-server with context/mode profiles, or troubleshooting language server setups and JetBrains integration. Do not use for lightweight AST/ripgrep search without LSP daemons (route to semble) or document+code community graphs (route to graphify). Triggers on: serena, serena-agent, solidlsp, serena start-mcp-server, symbol-level mcp.",
+      "interface": "mcp",
+      "path": "serena/SKILL.md",
+      "tags": [
+        "serena",
+        "solidlsp",
+        "lsp",
+        "symbol-editing",
+        "mcp",
+        "semantic-search"
+      ]
+    },
+    {
+      "name": "chrome-devtools-mcp",
+      "category": "web",
+      "subcategory": "testing",
+      "description": "Operate ChromeDevTools/chrome-devtools-mcp, the official Chrome DevTools MCP server and standalone chrome-devtools CLI for live browser DOM, console, network, Lighthouse, and performance trace inspection. Use when configuring chrome-devtools-mcp flags (--browserUrl, --autoConnect, --headless, --isolated, --slim), running chrome-devtools CLI commands, or recording performance traces. Do not use on local macOS when Aside browser priority applies first (route to aside-browser) or for full Playwright test suites (route to playwright-cli). Triggers on: chrome-devtools-mcp, chrome-devtools cli, devtools trace, --autoConnect, --browserUrl, lighthouse_audit.",
+      "interface": "mcp",
+      "path": "chrome-devtools-mcp/SKILL.md",
+      "tags": [
+        "chrome-devtools",
+        "cdp",
+        "mcp",
+        "performance-trace",
+        "lighthouse",
+        "debugging"
+      ]
+    },
+    {
+      "name": "superpowers",
+      "category": "ai-agents",
+      "subcategory": "orchestration",
+      "description": "Run obra/superpowers, an agentic software engineering workflow suite enforcing Socratic brainstorming, git worktree isolation, micro-task planning, red-green-refactor TDD, two-stage code review, and fresh verification before completion. Use when installing superpowers across Claude Code, Cursor, Codex, OpenCode, or Gemini CLI, executing brainstorming -> writing-plans -> subagent-driven-development -> verification-before-completion, or coordinating systematic debugging. Do not use for role-based browser QA sprints (route to gstack) or Spec Kit CLI artifacts (route to spec-kit). Triggers on: superpowers, obra/superpowers, subagent-driven-development, systematic-debugging, verification-before-completion.",
+      "interface": "workflow",
+      "path": "superpowers/SKILL.md",
+      "tags": [
+        "superpowers",
+        "tdd",
+        "brainstorming",
+        "subagent-workflow",
+        "worktrees",
+        "code-review"
+      ]
+    },
+    {
+      "name": "gstack",
+      "category": "ai-agents",
+      "subcategory": "orchestration",
+      "description": "Operate garrytan/gstack, Garry Tan's role-based engineering sprint toolkit providing slash skills (/office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review, /review, /qa, /cso, /ship, /retro, /browse) and a fast persistent Bun/Playwright browser daemon ($B) with safety guardrails (/careful, /freeze, /guard). Use when setting up gstack across Claude Code, Codex, OpenCode, Cursor, Gemini, or Antigravity via ./setup, running role-based reviews or browser QA, or enabling command safety hooks. Do not use for Socratic TDD-first engineering (route to superpowers) or standalone Chrome DevTools traces (route to chrome-devtools-mcp). Triggers on: gstack, /office-hours, /plan-ceo-review, /qa, /cso, /browse, garrytan/gstack.",
+      "interface": "workflow",
+      "path": "gstack/SKILL.md",
+      "tags": [
+        "gstack",
+        "qa",
+        "code-review",
+        "cso",
+        "browser-daemon",
+        "sprint-workflow"
+      ]
+    },
+    {
+      "name": "official-agent-skills",
+      "category": "ai-agents",
+      "subcategory": "skill-authoring",
+      "description": "Browse, install, and reference anthropics/skills, the official Anthropic Agent Skills catalog and specification hosting 19 reference skills across documents (docx, pdf, pptx, xlsx, doc-coauthoring), design (frontend-design, algorithmic-art, brand-guidelines, canvas-design, theme-factory, slack-gif-creator), development (skill-creator, mcp-builder, claude-api, web-artifacts-builder, webapp-testing), and comms. Use when adding anthropics/skills plugins, inspecting the agentskills.io template, or auditing per-skill licenses. Do not use for jeo-skills catalog validation (route to skill-standardization) or quality scoring (route to nvidia-skill-evaluator). Triggers on: anthropics/skills, anthropic agent skills, document-skills, example-skills, official-agent-skills.",
+      "interface": "workflow",
+      "path": "official-agent-skills/SKILL.md",
+      "tags": [
+        "anthropics-skills",
+        "agent-skills",
+        "document-skills",
+        "example-skills",
+        "catalog"
+      ]
+    },
+    {
+      "name": "orca",
+      "category": "utilities",
+      "subcategory": "workspace",
+      "description": "Operate stablyai/orca, an agent orchestration workspace and CLI managing isolated Git worktrees, embedded terminals, multi-agent orchestration runs, Slack/Linear/Jira bot dispatches, and remote servers for Claude Code, Codex, Gemini CLI, and OpenCode. Use when installing Orca via Homebrew cask, inspecting orca status --json, creating isolated worktrees with orca worktree create, or coordinating multi-agent runs. Do not use for mobile E2E encrypted session relay (route to happy) or swarm memory frameworks (route to ruflo). Triggers on: orca, stablyai/orca, orca worktree, orca orchestration, git worktree agent fleet.",
+      "interface": "cli",
+      "path": "orca/SKILL.md",
+      "tags": [
+        "orca",
+        "git-worktree",
+        "multi-agent",
+        "orchestration",
+        "terminals",
+        "automation"
+      ]
+    },
+    {
+      "name": "wshobson-agents",
+      "category": "ai-agents",
+      "subcategory": "orchestration",
+      "description": "Operate wshobson/agents, a modular plugin marketplace organizing 73 focused plugins, 112 specialized agents, 16 orchestrators, 146 skills, and 79 tools across 24 engineering categories with cross-platform adapters for OpenCode, Codex, Cursor, and Gemini CLI. Use when browsing wshobson/agents plugins, installing selective domain plugins via /plugin, exporting adapters via Makefile, or running plugin-eval. Do not use for bulk installing all 73 plugins or for role-based browser QA sprints (route to gstack). Triggers on: wshobson/agents, wshobson-agents, claude-code-workflows marketplace, wshobson plugins.",
+      "interface": "workflow",
+      "path": "wshobson-agents/SKILL.md",
+      "tags": [
+        "wshobson",
+        "plugins",
+        "multi-agent",
+        "marketplace",
+        "adapters",
+        "orchestration"
+      ]
+    },
+    {
+      "name": "happy",
+      "category": "cli-tools",
+      "subcategory": "ai-cli",
+      "description": "Operate slopus/happy, an end-to-end encrypted mobile and web remote control client for Claude Code and Codex sessions using device-held TweetNaCl keys, zero-knowledge relay sync, and instant desktop-mobile handoff. Use when installing happy via npm, launching happy or happy claude or happy codex sessions, pairing mobile QR keys, configuring happy-mcp, or auditing self-hosted happy-server setups. Do not use for local Git worktree fleets (route to orca) or API provider switching (route to cc-switch). Triggers on: happy coder, happy claude, happy codex, slopus/happy, happy-mcp, mobile agent relay.",
+      "interface": "cli",
+      "path": "happy/SKILL.md",
+      "tags": [
+        "happy",
+        "mobile-control",
+        "e2e-encryption",
+        "claude-code",
+        "codex",
+        "relay"
+      ]
+    },
+    {
+      "name": "cc-switch",
+      "category": "utilities",
+      "subcategory": "workspace",
+      "description": "Manage farion1231/cc-switch, a cross-platform desktop and config manager for switching API providers, MCP servers, Skills, system prompts, and local failover proxies across Claude Code, Codex, Gemini CLI, OpenCode, and OpenClaw. Use when installing CC Switch (brew install --cask cc-switch), backing up or migrating ~/.cc-switch/cc-switch.db, configuring multi-CLI MCP/Skills sync, or troubleshooting local proxy failover endpoints. Do not use for historical token cost analytics (route to ccusage) or terminal statusline HUDs (route to jarrodwatts-hud). Triggers on: cc-switch, farion1231/cc-switch, provider switcher, cc-switch.db, failover proxy.",
+      "interface": "cli",
+      "path": "cc-switch/SKILL.md",
+      "tags": [
+        "cc-switch",
+        "provider-switch",
+        "mcp-sync",
+        "failover-proxy",
+        "multi-cli"
+      ]
+    },
+    {
+      "name": "jarrodwatts-hud",
+      "category": "cli-tools",
+      "subcategory": "ai-cli",
+      "description": "Configure jarrodwatts/claude-hud, a live statusline HUD plugin for Claude Code displaying context window %, active model/usage limits, git dirty/ahead/behind status, running tools, subagents, todos, and session speed via native statusline JSON and transcript JSONL without consuming model context tokens. Use when installing claude-hud, tuning ~/.claude/plugins/claude-hud/config.json presets via hud.mjs, or running doctor diagnostics. Do not use for historical cost reports (route to ccusage or codeburn). Triggers on: claude-hud, jarrodwatts-hud, statusline hud, hud.mjs, /claude-hud:setup.",
+      "interface": "cli",
+      "path": "jarrodwatts-hud/SKILL.md",
+      "tags": [
+        "claude-hud",
+        "statusline",
+        "hud",
+        "context-monitor",
+        "git-status"
+      ]
+    },
+    {
+      "name": "ccusage",
+      "category": "cli-tools",
+      "subcategory": "ai-cli",
+      "description": "Run ccusage/ccusage to analyze local coding-agent JSONL session logs and generate daily, weekly, monthly, per-session, and 5-hour billing block token and cost reports across Claude Code, Codex, OpenCode, Amp, Pi, Copilot, Gemini, and Antigravity. Use when running npx ccusage@latest daily/monthly/blocks/statusline, exporting --json cost breakdowns, or checking --live 5-hour billing windows with --offline pricing cache. Do not use for live in-session HUD rendering (route to jarrodwatts-hud) or provider switching (route to cc-switch). Triggers on: ccusage, token usage report, billing blocks, ccusage daily, ccusage --json.",
+      "interface": "cli",
+      "path": "ccusage/SKILL.md",
+      "tags": [
+        "ccusage",
+        "token-usage",
+        "cost-analytics",
+        "billing-blocks",
+        "jsonl"
+      ]
+    },
+    {
+      "name": "rete",
+      "description": "Build, inspect, host, and query caviri/rete single-file immutable .rete RDF knowledge graph archives via HTTP Range Requests, SPARQL 1.1, openCypher, SHACL, and OWL 2 QL reasoning across rete CLI, Python/JS-WASM libraries, and MCP. Use when creating .rete files from Turtle/N-Triples/N-Quads/TriG/RDF-XML/Jelly/JSON-LD/YAML-LD, reading Dataset Cards or community pyramids, running local or remote SPARQL over URLs, configuring S3/R2/GitHub Pages Range hosting, or connecting local rete.mcpb vs hosted MCP. Do not use for mutable local RocksDB ontology planning/diff workspaces (route to open-ontologies), geospatial vector/raster map tiles (route to pmtiles), or repository code-graph extraction (route to graphify). Triggers on: rete, .rete, rete-cli, rete-graph, caviri/rete, RDF archive, HTTP Range SPARQL, rete.mcpb.",
+      "category": "infrastructure",
+      "subcategory": "cloud-data",
+      "interface": "cli",
+      "path": "rete/SKILL.md",
+      "tags": [
+        "rete",
+        "rdf",
+        "sparql",
+        "shacl",
+        "owl",
+        "knowledge-graph",
+        "http-range",
+        "wasm",
+        "mcp",
+        "cloud-data"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Bash"
+      ],
+      "keyword": "rete",
+      "version": "1.0.0",
+      "source": "https://github.com/caviri/rete"
     }
   ]
 }

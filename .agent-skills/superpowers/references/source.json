@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "skill": "superpowers",
+  "repository": "obra/superpowers",
+  "commit": "22f0b463e7a5e579904dd6211a520321035526f7",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "79f29f50c735862d2e304ea547b4c9aa67d9db6909ff6fb7b5ea922d7bcbc3e7",
+      "url": "https://github.com/obra/superpowers/blob/22f0b463e7a5e579904dd6211a520321035526f7/README.md"
+    },
+    {
+      "path": "package.json",
+      "sha256": "49004c08be59f027bf23a500d57ab1ba6a288deb5697d3cbd743432cf4a42059",
+      "url": "https://github.com/obra/superpowers/blob/22f0b463e7a5e579904dd6211a520321035526f7/package.json"
+    },
+    {
+      "path": ".claude-plugin/plugin.json",
+      "sha256": "6728b554d1aaf9235f7981c7838a32f50c191297284af97f4c2a808155f7c399",
+      "url": "https://github.com/obra/superpowers/blob/22f0b463e7a5e579904dd6211a520321035526f7/.claude-plugin/plugin.json"
+    },
+    {
+      "path": ".claude-plugin/marketplace.json",
+      "sha256": "04015bf36c0c8e475e61509f4c0c2e72838abb1b6ab70a2c44f04be4317f79fa",
+      "url": "https://github.com/obra/superpowers/blob/22f0b463e7a5e579904dd6211a520321035526f7/.claude-plugin/marketplace.json"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "a37e0e9697144819e1d965176ac4ae5bc3fa02d11e7812036bbcadf6dafe2400",
+      "url": "https://github.com/obra/superpowers/blob/22f0b463e7a5e579904dd6211a520321035526f7/LICENSE"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "git"
+    },
+    {
+      "name": "claude"
+    },
+    {
+      "name": "codex"
+    },
+    {
+      "name": "gemini"
+    }
+  ]
+}

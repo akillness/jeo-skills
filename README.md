@@ -120,8 +120,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 The shell dry run prints a bootstrap plan without installing files or tools; runtime support, account selection and catalog selections are validated during execution. After installing the router, use `jeo-skill install ... --dry-run` to resolve a catalog selection and preview its destinations. A preview does not verify host discovery or upstream readiness.
 
 <details>
-<summary><b>Bundles</b> — 17 curated starting sets</summary>
-
+<summary><b>Bundles</b> — 18 curated starting sets</summary>
 | Bundle | Skills |
 |---|---|
 | `starter` | jeo-skill, skill-standardization, codebase-search, git-workflow, debugging, testing-strategies, image-to-github-repo, obsidian-second-brain |
@@ -141,6 +140,7 @@ The shell dry run prints a bootstrap plan without installing files or tools; run
 | `ui-design-repositories` | 10 source-pinned UI operators (`jeo-skill install --bundle ui-design-repositories --dry-run`) |
 | `game-source-repositories` | 10 source-pinned game-dev tool operators (`jeo-skill install --bundle game-source-repositories --dry-run`) |
 | `github-five-programs` | fabric, moneyprinter-v2, agent-s, google-maps-scraper, gitingest: five open-source program operators, four of them source-pinned (`jeo-skill install --bundle github-five-programs --dry-run`) |
+| `coding-agent-ecosystem` | 19 curated coding-agent operators across context/memory, code intelligence/browser, methodologies, multi-agent orchestration, and telemetry (`rtk`, `thedotmack-mem`, `beads`, `context-mode`, `graphify`, `serena`, `context7`, `chrome-devtools-mcp`, `superpowers`, `spec-kit`, `gstack`, `official-agent-skills`, `ruflo`, `orca`, `wshobson-agents`, `happy`, `cc-switch`, `jarrodwatts-hud`, `ccusage`; excludes `oh-my-claudecode`) |
 
 Most repository-operator skills are guides with pinned sources; installing them does not install, run or connect the upstream projects. Context7 CLI provisioning is the exception described below; activation and connections still need separate approval.
 
@@ -151,7 +151,9 @@ Most repository-operator skills are guides with pinned sources; installing them 
 
 | Skill / feature | Scope & boundary | Reference |
 |---|---|---|
+| `coding-agent-ecosystem` | 13 new source-pinned guides + 6 existing sibling operators from the 20-project coding-agent roundup (`oh-my-claudecode` excluded); catalog install copies docs & offline `preflight.py` only — plugin/MCP/daemon installs & live config switches need separate approval | [setup boundaries](setup-all-skills-prompt.md#coding-agent-ecosystem-on-demand-19-curated-repositories) · [licenses](docs/attribution.md) |
 | `game-source-repositories` | 10 game-dev tool guides (physics, terrain, materials, VFX, nav, animation, meshes, noise); does not install or run upstream tools | [setup boundaries](setup-all-skills-prompt.md#game-development-source-guides-on-demand) · [licenses](docs/attribution.md) |
+| [`rete`](.agent-skills/rete/SKILL.md) | Source-pinned operator for [`caviri/rete`](https://github.com/caviri/rete) `0.7.8` (single-file `.rete` RDF archives, SPARQL/SHACL, format `0x08`); `pip`/`npm` `rete-graph` excludes the native `rete` CLI, and `rete serve`, `--fetch-contexts`, S3/R2 CORS edits & hosted HF MCP calls on private graphs require explicit boundaries/approval | [setup guide](setup-all-skills-prompt.md#rete-single-file-rdf-archive--sparql-operator-on-demand) · [licenses](docs/attribution.md) |
 | [`lightpanda`](.agent-skills/lightpanda/SKILL.md) | Guidance for Lightpanda 1.0.2 (fetch, CDP, MCP) + offline metadata doctor; browser install, site access, servers & credentials need separate approval | [setup guide](setup-all-skills-prompt.md#lightpanda-browser-operator-on-demand) |
 | [`browser-use`](.agent-skills/browser-use/SKILL.md) | Guidance + offline preflight only; package/browser install, site access, cloud/model calls & accounts need separate approval | [setup guide](setup-all-skills-prompt.md#browser-use-operator-on-demand) |
 | [`flide`](.agent-skills/flide/SKILL.md) | Decision-inference guide + offline preflight; model/package downloads, GPU use & server startup need separate approval | [setup guide](setup-all-skills-prompt.md#flide-decision-inference-on-demand) |
@@ -362,11 +364,11 @@ node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current 
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 474 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 488 skills · expand a category to see its skills.
 
-### 🌐 Web (77)
+### 🌐 Web (78)
 
-Subcategories: `frontend` (16), `backend` (3), `design` (17), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
+Subcategories: `frontend` (16), `backend` (3), `design` (17), `api` (2), `auth` (1), `data` (13), `testing` (5), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
 
 <details>
 <summary>Show Web skills</summary>
@@ -450,12 +452,13 @@ Subcategories: `frontend` (16), `backend` (3), `design` (17), `api` (2), `auth` 
 | `open-intelligent-ui` |
 | `solid-glass` |
 | `vercel-agent-ui` |
+| `chrome-devtools-mcp` |
 
 </details>
 
-### 🏗 Infrastructure (21)
+### 🏗 Infrastructure (22)
 
-Subcategories: `deployment` (2), `environment` (2), `observability` (4), `security` (4), `cloud-data` (8), `automation` (0), `tooling` (1)
+Subcategories: `deployment` (2), `environment` (2), `observability` (4), `security` (4), `cloud-data` (9), `automation` (0), `tooling` (1)
 
 <details>
 <summary>Show Infrastructure skills</summary>
@@ -483,6 +486,7 @@ Subcategories: `deployment` (2), `environment` (2), `observability` (4), `securi
 | `vespa` |
 | `langfuse` |
 | `artex` |
+| `rete` |
 
 </details>
 
@@ -607,9 +611,9 @@ Subcategories: `image` (10), `video` (18), `motion` (2), `audio` (2), `presentat
 
 </details>
 
-### ⌨️ CLI Tools (48)
+### ⌨️ CLI Tools (51)
 
-Subcategories: `developer-cli` (12), `ai-cli` (18), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
+Subcategories: `developer-cli` (12), `ai-cli` (21), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>Show CLI Tools skills</summary>
@@ -664,12 +668,15 @@ Subcategories: `developer-cli` (12), `ai-cli` (18), `media-cli` (1), `automation
 | `connectonion` |
 | `flide` |
 | `indra` |
+| `happy` |
+| `jarrodwatts-hud` |
+| `ccusage` |
 
 </details>
 
-### 🤖 AI & Agents (83)
+### 🤖 AI & Agents (88)
 
-Subcategories: `orchestration` (21), `agent-frameworks` (22), `skill-authoring` (5), `evaluation` (10), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
+Subcategories: `orchestration` (24), `agent-frameworks` (22), `skill-authoring` (6), `evaluation` (10), `memory` (8), `planning-review` (13), `discovery` (3), `prompting` (2)
 
 <details>
 <summary>Show AI &amp; Agents skills</summary>
@@ -759,12 +766,17 @@ Subcategories: `orchestration` (21), `agent-frameworks` (22), `skill-authoring` 
 | `fastmcp` |
 | `canyonos` |
 | `agent-substrate` |
+| `thedotmack-mem` |
+| `superpowers` |
+| `gstack` |
+| `official-agent-skills` |
+| `wshobson-agents` |
 
 </details>
 
-### 🧰 Engineering (28)
+### 🧰 Engineering (29)
 
-Subcategories: `code-quality` (14), `testing` (4), `architecture` (6), `documentation` (2), `code-navigation` (2)
+Subcategories: `code-quality` (14), `testing` (4), `architecture` (6), `documentation` (2), `code-navigation` (3)
 
 <details>
 <summary>Show Engineering skills</summary>
@@ -799,6 +811,7 @@ Subcategories: `code-quality` (14), `testing` (4), `architecture` (6), `document
 | `rust-anything` |
 | `fast-anything` |
 | `mobile-agent-testers` |
+| `serena` |
 
 </details>
 
@@ -916,9 +929,9 @@ Subcategories: `marketing` (5), `support` (2), `publishing` (1), `pm-toolkit` (5
 
 </details>
 
-### 🔧 Utilities (30)
+### 🔧 Utilities (33)
 
-Subcategories: `knowledge` (9), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (4), `general` (3)
+Subcategories: `knowledge` (9), `files` (5), `git` (4), `workspace` (3), `project-management` (5), `productivity` (4), `general` (3)
 
 <details>
 <summary>Show Utilities skills</summary>
@@ -955,6 +968,9 @@ Subcategories: `knowledge` (9), `files` (5), `git` (4), `workspace` (1), `projec
 | `rhwp-edit` |
 | `rowboat` |
 | `mroffice` |
+| `beads` |
+| `orca` |
+| `cc-switch` |
 
 </details>
 
@@ -994,6 +1010,13 @@ The manifest `.agent-skills/skills.json` is authoritative. Edit metadata there, 
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 What's New in v2026-11-27
+
+| Change | Details |
+|--------|---------|
+| **`rete` single-file RDF archive & SPARQL operator (`488 skills total`)** | Adds `.agent-skills/rete` (`infrastructure` / `cloud-data`), source-pinned to [`caviri/rete`](https://github.com/caviri/rete) `0.7.8` (`c38b7ffb304dfaeb9c8ad3a37dd6416678e198e0`, Apache-2.0), covering single-file `.rete` RDF builds (`0x08` format, `0x05`–`0x08` read compatibility), HTTP Range SPARQL/openCypher/SHACL/OWL 2 QL querying, Python/JS-WASM `rete-graph` libraries vs native `rete-cli`, offline JSON-LD `@context` mapping, S3/R2 CORS boundaries, and local `rete.mcpb` vs public hosted MCP isolation. Includes `SKILL.toon`, `references/upstream.md`, `references/source.json` (10 verified SHA-256 digests), offline `scripts/preflight.py`, `evals/evals.json`, and `scripts/test_rete_skill.py`. |
+| **Coding agent ecosystem bundle (`coding-agent-ecosystem`, 487 skills total)** | Adds 13 source-pinned operator skills from the curated coding-agent GitHub roundup (`thedotmack-mem`, `beads`, `serena`, `chrome-devtools-mcp`, `superpowers`, `gstack`, `official-agent-skills`, `orca`, `wshobson-agents`, `happy`, `cc-switch`, `jarrodwatts-hud`, `ccusage`) alongside six existing catalog siblings (`rtk`, `context-mode`, `graphify`, `context7`, `spec-kit`, `ruflo`), excluding `oh-my-claudecode` as requested. Each new skill includes `SKILL.md`, `SKILL.toon`, `references/upstream.md`, `references/source.json` with verified SHA-256 digests, offline `scripts/preflight.py`, and `evals/evals.json`, with synchronized READMEs, `setup-all-skills-prompt.md`, and `docs/attribution.md`. |
+
 ## 🆕 What's New in v2026-11-24
 
 | Change | Details |
@@ -1029,13 +1052,6 @@ The manifest `.agent-skills/skills.json` is authoritative. Edit metadata there, 
 |--------|---------|
 | **Catalog-wide NVIDIA SkillEvaluator security audit & remediation (440 skills)** | Ran `skillevaluator security-scan` (`0.8.0` / `SkillSpector 2.13.3`) across all 440 skills in `.agent-skills/` and remediated findings via parallel subagent batches (`RemediateBatch01–10`, `PolishBatchA–C`, `LiveScan1–4`) plus `agy` (`gemini-4-carbon-high`) coordinated with Jev (`jev-harness.mjs` review & evaluation). **Measured BEFORE → AFTER (`skillevaluator-security.json`, 440/440)**: passing skills **221 → 366** (+145, 83.2%), failing **192 → 63** (-67.2%), incomplete **27 → 11** (-59.3%); zero-`CRITICAL`/`HIGH` skills **248 → 377 / 440 (85.7%)**; `CRITICAL`/`HIGH`-finding skills **192 → 63** (-67.2%); `CRITICAL` findings **4 → 0**; `HIGH` **956 → 290** (-69.7%); `MEDIUM` **1,296 → 647** (-50.1%); `LOW` **61 → 12** (-80.3%), with `LP1` (109 → 0), `E2` (21 → 0), `AE1` (114 → 0), `LP3` (10 → 0), and `SC8`/`SC9` (52 → 0) eliminated. Post-audit review also repaired `agent-manager/scripts/install.sh` (`fi`), `agent-manager/evals/evals.json`, `lightpanda/evals/evals.json`, and `animato/SKILL.md` + `animato_agent.py` docstring span (`animato` now `passed` with 0 `HIGH`/`AE1`). Concrete fixes include HTTPS/host allowlisting without auto-redirects in `animato`, `gbro-collage-broll`, `scientific-llm-benchmarks`, and `elevenlabs-tts`; minimal allowlisted subprocess env passing (`E2`, incl. `obsidian-second-brain` & `zvec-grep`); truthful `permissions:` capability declarations across 51 skills (`LP1`/`LP3`); pure-stdlib `percent_encode` across all 32 byte-identical `scripts/preflight.py` helpers; `__pycache__`/`.pyc`/`.DS_Store`, `\u200b` zero-width, and whitespace-padding cleanup (`SC8`/`SC9`/`P2`/`P9`); pinned `npx`/`uvx` versions (`RP1`); download-inspect-run replacing `curl \| sh` (`SC2`/`TM2`); safe DOM/prompt wording (`P1`/`P6`/`AR2`/`OH1`); `static_parse_limit` fixes (`AE1`); and synchronized `skills.json`/`skills.toon`/README projections. |
 | **CanyonOS, `jeox` code graph, and setup guide sync** | Synchronizes `canyonos` (440th catalog skill for `.canyon` multi-agent deployment) and `jeox` (`scripts/jeox.py` SQLite/FTS5 fallback code graph + `scripts/setup-workspace.py` `step_jeox`) across `README.md`, `README.ko.md`, `README.es-ES.md`, and `setup-all-skills-prompt.md` (Step 5B, Step 7, and the on-demand NVIDIA SkillEvaluator section). |
-
-## 🆕 What's New in v2026-11-15
-
-| Change | Details |
-|--------|---------|
-| **PMTiles cloud-native tile archive skill** | Adds `pmtiles`, pinned to upstream `aec8fa1341222fdddb3318e9ffa8e18e19b312f7` (v3 spec), with PMTiles v3 127-byte header inspection, MBTiles-to-PMTiles conversion, spatial subset extraction (`--bbox`), S3/R2/GCS CORS and HTTP Range request setup, MapLibre GL JS protocol registration, and an offline binary header preflight helper. The 440-skill catalog, three README inventories, and setup guide are synchronized. |
-| **Current catalog** | The current manifest contains 440 skills in 10 categories, including `kagent`, `trulens`, `fastmcp`, `canyonos`, and `pmtiles`. Catalog tables are regenerated from `.agent-skills/skills.json`. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 

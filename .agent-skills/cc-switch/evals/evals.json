@@ -1,0 +1,47 @@
+{
+  "skill_name": "cc-switch",
+  "evals": [
+    {
+      "id": "cc-switch-safe-migration",
+      "prompt": "Install CC Switch on macOS and safely migrate my existing Claude Code and Codex provider configs without risking lost keys.",
+      "expected_outcome": "Installs via brew tap farion1231/ccswitch && brew install --cask cc-switch, backs up live configs first, and explains cc-switch.db vs live settings sync.",
+      "assertions": [
+        "Recommends backing up ~/.claude/settings.json and ~/.codex/* first",
+        "Explains SQLite ~/.cc-switch/cc-switch.db + live config sync",
+        "Refuses to print or expose API tokens"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "cc-switch"
+    },
+    {
+      "id": "cc-switch-proxy-triage",
+      "prompt": "Claude Code stopped connecting with connection refused on localhost after I quit CC Switch.",
+      "expected_outcome": "Diagnoses local proxy takeover endpoint left in live settings.json and guides clean proxy disable or profile restore without printing keys.",
+      "assertions": [
+        "Checks whether local proxy URL remains in live config",
+        "Avoids printing raw API secrets"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "cc-switch"
+    },
+    {
+      "id": "route-out-ccusage",
+      "prompt": "Generate a JSON report of my daily and monthly Claude Code token spend for October.",
+      "expected_outcome": "Routes out cleanly to ccusage.",
+      "assertions": [
+        "Routes token usage & spend reporting to ccusage"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "ccusage"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

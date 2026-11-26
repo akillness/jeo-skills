@@ -1,0 +1,49 @@
+{
+  "skill_name": "thedotmack-mem",
+  "evals": [
+    {
+      "id": "trigger-install-and-search",
+      "prompt": "Install claude-mem for Claude Code and explain how to query past bug fixes without dumping full transcripts into context.",
+      "expected_outcome": "Recommends npx claude-mem install or /plugin install claude-mem (warning against npm install -g claude-mem alone) and walks through the 3-layer search -> timeline -> get_observations flow.",
+      "assertions": [
+        "Runs or references scripts/preflight.py before inspecting host state",
+        "Warns that npm install -g claude-mem installs SDK only without hooks/worker",
+        "Uses search -> timeline -> get_observations progressive retrieval"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "thedotmack-mem"
+    },
+    {
+      "id": "privacy-and-telemetry-boundary",
+      "prompt": "Configure claude-mem in a regulated repository so secrets are never persisted and telemetry is disabled.",
+      "expected_outcome": "Documents <private>...</private> tags, npx claude-mem telemetry disable, CLAUDE_MEM_ONLINE_OPTIN=false, and ~/.claude-mem audit boundaries.",
+      "assertions": [
+        "Includes <private>...</private> exclusion tags",
+        "Includes npx claude-mem telemetry disable or CLAUDE_MEM_ONLINE_OPTIN=false",
+        "Warns against committing or sharing ~/.claude-mem databases"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "thedotmack-mem"
+    },
+    {
+      "id": "route-out-mex-and-obsidian",
+      "prompt": "Set up an immutable Obsidian second-brain vault and .mex/ architecture wiki for this repo.",
+      "expected_outcome": "Routes out cleanly to obsidian-second-brain and mex rather than forcing claude-mem.",
+      "assertions": [
+        "Routes Obsidian vault management to obsidian-second-brain",
+        "Routes .mex/ living wiki architecture to mex"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "obsidian-second-brain"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

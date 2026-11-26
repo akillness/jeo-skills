@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "skill": "chrome-devtools-mcp",
+  "repository": "ChromeDevTools/chrome-devtools-mcp",
+  "commit": "faa6c871208279c485a1fd926f92f5363435af4a",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "58254ecb025ed2c83d161887ade1c53b4912393a588762c0229de1408784c656",
+      "url": "https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/faa6c871208279c485a1fd926f92f5363435af4a/README.md"
+    },
+    {
+      "path": "package.json",
+      "sha256": "c109aea71a95d51dc39460b1b0f86c2e9b3c2db62fa123bc3d13258cfe7072f3",
+      "url": "https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/faa6c871208279c485a1fd926f92f5363435af4a/package.json"
+    },
+    {
+      "path": "docs/cli.md",
+      "sha256": "c74b608139b86a21ebaff7921553b4a4a967d13379da1ef73f1dfd4a80501ade",
+      "url": "https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/faa6c871208279c485a1fd926f92f5363435af4a/docs/cli.md"
+    },
+    {
+      "path": "docs/configuration.md",
+      "sha256": "64b5b5fe522fd5d754fd53729eeb1023ff3dbe216d72c1841bf774ddfe3ce289",
+      "url": "https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/faa6c871208279c485a1fd926f92f5363435af4a/docs/configuration.md"
+    },
+    {
+      "path": "docs/tool-reference.md",
+      "sha256": "9b0a04467a19809394f1f8e4b17974f7836e2514aa924d560a29e7751ddfd295",
+      "url": "https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/faa6c871208279c485a1fd926f92f5363435af4a/docs/tool-reference.md"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "url": "https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/faa6c871208279c485a1fd926f92f5363435af4a/LICENSE"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "node"
+    },
+    {
+      "name": "npx"
+    },
+    {
+      "name": "chrome-devtools-mcp"
+    },
+    {
+      "name": "chrome-devtools"
+    }
+  ]
+}

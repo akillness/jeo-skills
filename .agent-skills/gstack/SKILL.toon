@@ -1,0 +1,6 @@
+N:gstack
+D:Operate garrytan/gstack role-based engineering sprint toolkit (/office-hours, /plan-ceo-review, /review, /qa, /cso, /ship, $B browser daemon, /careful, /freeze, /guard).
+G:ai-agents orchestration workflow gstack qa
+U[5]:setup-host,founder-planning,review-qa-browse,ship-release,safety-guardrails
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[4]:superpowers,chrome-devtools-mcp,aside-browser,spec-kit

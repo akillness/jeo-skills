@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "skill": "jarrodwatts-hud",
+  "repository": "jarrodwatts/claude-hud",
+  "commit": "5fc08cbb610a7439993e40124637cbe193d60ea3",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "2fb5f29f4a0fef719c9edc1da451fb66a69232649128580d8a2ae9522c00c700",
+      "url": "https://github.com/jarrodwatts/claude-hud/blob/5fc08cbb610a7439993e40124637cbe193d60ea3/README.md"
+    },
+    {
+      "path": "package.json",
+      "sha256": "5abf217a75ed3dc061dd5d8fde2df9b1a359e6b84139937574effca8bd8ae281",
+      "url": "https://github.com/jarrodwatts/claude-hud/blob/5fc08cbb610a7439993e40124637cbe193d60ea3/package.json"
+    },
+    {
+      "path": ".claude-plugin/plugin.json",
+      "sha256": "a8cd032cae63c1c765cd6c4f3869556bab01cb732ea3ab3ee91439798068ce2e",
+      "url": "https://github.com/jarrodwatts/claude-hud/blob/5fc08cbb610a7439993e40124637cbe193d60ea3/.claude-plugin/plugin.json"
+    },
+    {
+      "path": "skills/hud/SKILL.md",
+      "sha256": "cc13d88c924388f748b2b9767ab489bedefaa333773497bc43ba72cbce47844a",
+      "url": "https://github.com/jarrodwatts/claude-hud/blob/5fc08cbb610a7439993e40124637cbe193d60ea3/skills/hud/SKILL.md"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "510e16f7421025e2a661e93604c06d82048182b7ad4f30bfc793eda68b3686ff",
+      "url": "https://github.com/jarrodwatts/claude-hud/blob/5fc08cbb610a7439993e40124637cbe193d60ea3/LICENSE"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "node"
+    },
+    {
+      "name": "git"
+    },
+    {
+      "name": "claude"
+    }
+  ]
+}

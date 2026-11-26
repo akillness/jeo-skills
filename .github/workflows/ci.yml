@@ -125,3 +125,7 @@ jobs:
         run: python3 -B scripts/test_aidlc_workflows.py -v
       - name: Revfactory Harness operator offline contracts
         run: python3 -B scripts/test_revfactory_harness.py -v
+      - name: Coding agent ecosystem operator offline contracts
+        run: python3 -B scripts/test_coding_agent_ecosystem_skills.py -v
+      - name: Rete RDF archive operator offline contracts
+        run: python3 -B scripts/test_rete_skill.py -v

@@ -1,0 +1,47 @@
+{
+  "skill_name": "wshobson-agents",
+  "evals": [
+    {
+      "id": "wshobson-selective-install",
+      "prompt": "Add wshobson/agents to Claude Code for a Kubernetes + Python backend project without bloating context.",
+      "expected_outcome": "Registers wshobson/agents marketplace and installs only python-development, kubernetes-operations, and security-scanning instead of all 73 plugins.",
+      "assertions": [
+        "Uses /plugin marketplace add wshobson/agents",
+        "Explicitly warns against bulk-installing all 73 plugins",
+        "Recommends selective 2-5 domain plugins"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "wshobson-agents"
+    },
+    {
+      "id": "wshobson-cross-platform-export",
+      "prompt": "Export a wshobson/agents plugin for OpenCode or Codex using the upstream tooling.",
+      "expected_outcome": "Points to Makefile targets and tools/adapters in a clean upstream checkout before copying artifacts.",
+      "assertions": [
+        "References Makefile and tools/adapters",
+        "Stages and inspects generated plugin files before installing"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "wshobson-agents"
+    },
+    {
+      "id": "route-out-gstack-qa",
+      "prompt": "Run /office-hours and /qa with a persistent headless browser daemon.",
+      "expected_outcome": "Routes out cleanly to gstack.",
+      "assertions": [
+        "Routes /office-hours and /qa browser workflows to gstack"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "gstack"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

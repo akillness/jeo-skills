@@ -1,0 +1,45 @@
+{
+  "skill_name": "jarrodwatts-hud",
+  "evals": [
+    {
+      "id": "hud-doctor-and-node-check",
+      "prompt": "My claude-hud statusline stopped showing up after installing on a Bun-only machine. How do I diagnose and fix it?",
+      "expected_outcome": "Runs preflight, highlights that Node.js (not Bun alone) is required by hud.mjs, and runs hud.mjs doctor + /claude-hud:setup.",
+      "assertions": [
+        "Calls out Node.js requirement over Bun alone",
+        "Uses hud.mjs doctor or /claude-hud:setup"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "jarrodwatts-hud"
+    },
+    {
+      "id": "hud-safe-config-edit",
+      "prompt": "Switch claude-hud to a compact preset and preview it before applying.",
+      "expected_outcome": "Uses hud.mjs schema -> hud.mjs set -> hud.mjs preview on ~/.claude/plugins/claude-hud/config.json.",
+      "assertions": [
+        "Inspects schema and runs preview via hud.mjs"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "jarrodwatts-hud"
+    },
+    {
+      "id": "route-out-ccusage-history",
+      "prompt": "Export a JSON breakdown of my last 30 days of Claude and Codex token costs.",
+      "expected_outcome": "Routes out cleanly to ccusage.",
+      "assertions": [
+        "Routes historical token and cost reporting to ccusage"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "ccusage"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

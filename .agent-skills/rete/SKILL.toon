@@ -1,0 +1,6 @@
+N:rete
+D:Build, inspect, host, and SPARQL-query caviri/rete single-file immutable .rete RDF knowledge graph archives via CLI, Python/JS-WASM, and MCP.
+G:infrastructure cloud-data rdf sparql shacl owl knowledge-graph http-range mcp
+U:rete build|info|card|card-url|sparql|sparql-url|query|search|shacl|verify|serve; rete-graph Python/WASM; rete.mcpb local MCP
+S:preflight -> check CLI vs rete-graph library & 0x08 compat -> build/recard safely -> inspect card/schema before SPARQL -> gate serve/fetch-contexts/hosted MCP
+R:open-ontologies(mutable ontology diff/oo-cert), pmtiles(map tile archives), graphify(code graphs), semantica(extraction pipelines)

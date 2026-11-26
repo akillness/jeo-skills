@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "skill": "official-agent-skills",
+  "repository": "anthropics/skills",
+  "commit": "e4bb5d960d87126ff3b3a8af1a104b7db67560ba",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "1fca448ca17ccf901bd068c661209b15300bc5be3f039ba1a616c3a13a374ccb",
+      "url": "https://github.com/anthropics/skills/blob/e4bb5d960d87126ff3b3a8af1a104b7db67560ba/README.md"
+    },
+    {
+      "path": ".claude-plugin/marketplace.json",
+      "sha256": "9bafecba8a8fd0a4d73670cc442504fcb27394d3f8960a5171f570d443b81936",
+      "url": "https://github.com/anthropics/skills/blob/e4bb5d960d87126ff3b3a8af1a104b7db67560ba/.claude-plugin/marketplace.json"
+    },
+    {
+      "path": "spec/agent-skills-spec.md",
+      "sha256": "ff22f2be775f4b757c9a7a2df0421de4c94021d34d9382cea5dd567ff0cdad2c",
+      "url": "https://github.com/anthropics/skills/blob/e4bb5d960d87126ff3b3a8af1a104b7db67560ba/spec/agent-skills-spec.md"
+    },
+    {
+      "path": "template/SKILL.md",
+      "sha256": "eb685d91de039ed864fbd790cddf31684b017fd4a34ee1a55760d8d7cdbadefa",
+      "url": "https://github.com/anthropics/skills/blob/e4bb5d960d87126ff3b3a8af1a104b7db67560ba/template/SKILL.md"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "sha256": "a8ff7a84dee9dfb42ab448de281784387ceafdf63881b7c070ee2de7f6ed865c",
+      "url": "https://github.com/anthropics/skills/blob/e4bb5d960d87126ff3b3a8af1a104b7db67560ba/THIRD_PARTY_NOTICES.md"
+    },
+    {
+      "path": "skills/pdf/LICENSE.txt",
+      "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
+      "url": "https://github.com/anthropics/skills/blob/e4bb5d960d87126ff3b3a8af1a104b7db67560ba/skills/pdf/LICENSE.txt"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "git"
+    },
+    {
+      "name": "claude"
+    }
+  ]
+}

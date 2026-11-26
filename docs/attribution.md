@@ -101,3 +101,30 @@ These four guides and the `fabric` guide (listed with the older sources above) f
 | `aidlc-workflows` | [awslabs/aidlc-workflows @ a8721be (v2.11.3)](https://github.com/awslabs/aidlc-workflows/tree/a8721be3631e6a254cf524ea57e5932aa56b4149) | MIT-0 |
 
 The `aidlc-workflows` guide is original operator documentation. It bundles no upstream code, documentation or runtime and records its audited commit and file hashes in `references/source.json`; the AI-DLC methodology, the `aidlc` command and the harness projections stay the upstream project's. Unreleased `main` differs from the pin, so consult the upstream repository's current terms and docs before relying on newer behavior.
+
+## Coding agent ecosystem operators
+
+| Component | Source | License |
+|-----------|--------|---------|
+| `thedotmack-mem` | [thedotmack/claude-mem @ 9b3b78d (v17.0.0)](https://github.com/thedotmack/claude-mem/tree/9b3b78dfa53f80e7c9c447b9269ceda255ee99d9) | Apache-2.0 |
+| `beads` | [gastownhall/beads @ 7862410](https://github.com/gastownhall/beads/tree/78624109904655d7a4609f27d34eb0982cd8963f) | MIT |
+| `serena` | [oraios/serena @ 23c06ff](https://github.com/oraios/serena/tree/23c06ff715409b2e9dc9be7ca26b7b2fbf356b7c) | MIT (`src/solidlsp`) AND GPL-3.0-or-later (`src/serena`) |
+| `chrome-devtools-mcp` | [ChromeDevTools/chrome-devtools-mcp @ faa6c87 (v0.21.0)](https://github.com/ChromeDevTools/chrome-devtools-mcp/tree/faa6c871208279c485a1fd926f92f5363435af4a) | Apache-2.0 |
+| `superpowers` | [obra/superpowers @ 22f0b46 (v5.0.7)](https://github.com/obra/superpowers/tree/22f0b463e7a5e579904dd6211a520321035526f7) | MIT |
+| `gstack` | [garrytan/gstack @ 0febbce](https://github.com/garrytan/gstack/tree/0febbce1e4382b140a930f6a17c53234de2b05e7) | MIT |
+| `official-agent-skills` | [anthropics/skills @ e4bb5d9](https://github.com/anthropics/skills/tree/e4bb5d960d878493121417d9d88adfb2f4722854) | Apache-2.0 (`LICENSE.txt` per skill; see `THIRD_PARTY_NOTICES.md`) |
+| `orca` | [stablyai/orca @ 687383b](https://github.com/stablyai/orca/tree/687383b94b9453d52e3dc368a87465a7ce5ebc58) | MIT |
+| `wshobson-agents` | [wshobson/agents @ c96b5f6](https://github.com/wshobson/agents/tree/c96b5f6552dba32e4492307493ee613581430715) | MIT |
+| `happy` | [slopus/happy @ 92826ef (v0.13.0)](https://github.com/slopus/happy/tree/92826ef40fc96daec2ac87e975ce14ff00ad3a43) | MIT |
+| `cc-switch` | [farion1231/cc-switch @ 754fed7 (v3.13.0)](https://github.com/farion1231/cc-switch/tree/754fed72d428c66c1e6ed45f38601ac25ded90c6) | MIT |
+| `jarrodwatts-hud` | [jarrodwatts/claude-hud @ 5fc08cb (v0.0.15)](https://github.com/jarrodwatts/claude-hud/tree/5fc08cbb610a7439993e40124637cbe193d60ea3) | MIT |
+| `ccusage` | [ccusage/ccusage @ 98b9dbd (v20.1.2)](https://github.com/ccusage/ccusage/tree/98b9dbd84a53d9fc7b5a1e62a3d9d891c8624bc7) | MIT |
+
+These thirteen guides join six pre-existing catalog operators (`rtk`, `context-mode`, `graphify`, `context7`, `spec-kit`, `ruflo`) in the `coding-agent-ecosystem` bundle, derived from the 20-project GitHub roundup shared in [this LinkedIn post](https://lnkd.in/p/gxj87eAC) (explicitly excluding `oh-my-claudecode` as requested). Local names `thedotmack-mem`, `jarrodwatts-hud`, and `official-agent-skills` satisfy skill-evaluator naming policies while keeping upstream repository links and CLI commands exact. Each skill bundles only original documentation, evals, and an offline `scripts/preflight.py` manifest checker (`references/source.json`); no upstream binaries or codebases are vendored.
+## Knowledge graph & single-file archive operators
+
+| Component | Source | License |
+|-----------|--------|---------|
+| `rete` | [caviri/rete @ c38b7ff (v0.7.8)](https://github.com/caviri/rete/tree/c38b7ffb304dfaeb9c8ad3a37dd6416678e198e0) · [crates.io `rete-cli`](https://crates.io/crates/rete-cli) · [PyPI `rete-graph`](https://pypi.org/project/rete-graph/) · [npm `rete-graph`](https://www.npmjs.com/package/rete-graph) | Apache-2.0 |
+
+The `rete` skill is original source-pinned operator documentation; it bundles no upstream crates, binaries, WASM artifacts, or MCP extensions and records audited commit/file hashes in `.agent-skills/rete/references/source.json`.

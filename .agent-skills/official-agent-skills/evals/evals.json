@@ -1,0 +1,46 @@
+{
+  "skill_name": "official-agent-skills",
+  "evals": [
+    {
+      "id": "official-skills-marketplace",
+      "prompt": "How do I add the official anthropics/skills marketplace and install document-skills without blindly copying all 19 folders?",
+      "expected_outcome": "Provides /plugin marketplace add anthropics/skills, /plugin install document-skills@anthropic-agent-skills, and checks local jeo-skills equivalents first.",
+      "assertions": [
+        "Uses /plugin marketplace add anthropics/skills",
+        "Suggests selective plugin or folder install instead of bulk copy",
+        "Notes local jeo-skills counterparts like pdf/docx/mcp-builder"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "official-agent-skills"
+    },
+    {
+      "id": "license-audit-notices",
+      "prompt": "What license rules apply before redistributing skills copied from anthropics/skills?",
+      "expected_outcome": "Points to per-skill LICENSE.txt (Apache-2.0) and THIRD_PARTY_NOTICES.md (BSD-2-Clause and embedded package notices).",
+      "assertions": [
+        "Checks per-skill LICENSE.txt and THIRD_PARTY_NOTICES.md"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "official-agent-skills"
+    },
+    {
+      "id": "route-out-jeo-standardization",
+      "prompt": "Validate a new .agent-skills/<name>/SKILL.md against jeo-skills skills.json and frontmatter rules.",
+      "expected_outcome": "Routes out cleanly to skill-standardization.",
+      "assertions": [
+        "Routes jeo-skills manifest/frontmatter validation to skill-standardization"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "skill-standardization"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

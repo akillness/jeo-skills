@@ -123,8 +123,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 La previsualización de `install.sh` solo imprime el plan de arranque sin instalar archivos ni herramientas; el soporte del entorno, la selección de cuenta y la del catálogo se validan durante la ejecución. Después de instalar el enrutador, usa `jeo-skill install ... --dry-run` para previsualizar destinos. Una previsualización no verifica el descubrimiento por el host ni la disponibilidad upstream.
 
 <details>
-<summary><b>Paquetes</b> — 17 conjuntos iniciales seleccionados</summary>
-
+<summary><b>Paquetes</b> — 18 conjuntos iniciales seleccionados</summary>
 | Paquete | Habilidades |
 |---|---|
 | `starter` | jeo-skill, skill-standardization, codebase-search, git-workflow, debugging, testing-strategies, image-to-github-repo, obsidian-second-brain |
@@ -144,6 +143,7 @@ La previsualización de `install.sh` solo imprime el plan de arranque sin instal
 | `ui-design-repositories` | 10 guías de operación de interfaces con fuentes fijadas (`jeo-skill install --bundle ui-design-repositories --dry-run`) |
 | `game-source-repositories` | 10 guías de herramientas de desarrollo de juegos con fuentes fijadas (`jeo-skill install --bundle game-source-repositories --dry-run`) |
 | `github-five-programs` | fabric, moneyprinter-v2, agent-s, google-maps-scraper, gitingest: cinco operadores de programas de código abierto, cuatro con fuentes fijadas (`jeo-skill install --bundle github-five-programs --dry-run`) |
+| `coding-agent-ecosystem` | 19 operadores curados para agentes de código (contexto/memoria, código/navegador, metodologías, orquestación y telemetría: `rtk`, `thedotmack-mem`, `beads`, `context-mode`, `graphify`, `serena`, `context7`, `chrome-devtools-mcp`, `superpowers`, `spec-kit`, `gstack`, `official-agent-skills`, `ruflo`, `orca`, `wshobson-agents`, `happy`, `cc-switch`, `jarrodwatts-hud`, `ccusage`; excluye `oh-my-claudecode`) |
 
 La mayoría de las habilidades operadoras documentan repositorios con fuentes fijadas sin instalar, ejecutar ni conectar los proyectos originales. La instalación de la CLI de Context7 descrita abajo es una excepción; la activación y conexión requieren aprobación separada.
 
@@ -154,7 +154,9 @@ La mayoría de las habilidades operadoras documentan repositorios con fuentes fi
 
 | Habilidad / función | Alcance y límite de aprobación | Referencia |
 |---|---|---|
+| `coding-agent-ecosystem` | 13 nuevas guías fijadas por fuente + 6 habilidades hermanas previas del listado de 20 proyectos (`oh-my-claudecode` excluido); la instalación copia solo guías y `preflight.py` sin conexión — plugins, MCP, demonios y cambios de configuración requieren aprobación separada | [límites de instalación](setup-all-skills-prompt.md#coding-agent-ecosystem-on-demand-19-curated-repositories) · [licencias](docs/attribution.md) |
 | `game-source-repositories` | 10 guías de desarrollo de juegos (física, terreno, materiales, VFX, navegación, animación, gráficos, mallas, ruido); no instala ni ejecuta herramientas upstream | [límites de instalación](setup-all-skills-prompt.md#game-development-source-guides-on-demand) · [licencias](docs/attribution.md) |
+| [`rete`](.agent-skills/rete/SKILL.md) | Operador fijado por fuente para [`caviri/rete`](https://github.com/caviri/rete) `0.7.8` (archivos RDF de archivo único `.rete`, SPARQL/SHACL, formato `0x08`); `pip`/`npm` `rete-graph` no incluye la CLI nativa `rete`, y `rete serve`, `--fetch-contexts`, cambios CORS en S3/R2 o envío de grafos privados al MCP alojado requieren aprobación/límites explícitos | [guía de instalación](setup-all-skills-prompt.md#rete-single-file-rdf-archive--sparql-operator-on-demand) · [licencias](docs/attribution.md) |
 | [`lightpanda`](.agent-skills/lightpanda/SKILL.md) | Guía para Lightpanda 1.0.2 (fetch, CDP, MCP) + diagnóstico local sin conexión; descarga del navegador, acceso a sitios, servidores y credenciales requieren aprobación | [guía de instalación](setup-all-skills-prompt.md#lightpanda-browser-operator-on-demand) |
 | [`browser-use`](.agent-skills/browser-use/SKILL.md) | Guía + comprobación previa sin conexión; instalación, acceso a sitios, llamadas cloud/modelo y cuentas requieren decisiones separadas | [guía de instalación](setup-all-skills-prompt.md#browser-use-operator-on-demand) |
 | [`flide`](.agent-skills/flide/SKILL.md) | Guía de inferencia de decisiones + comprobación sin conexión; descarga de paquetes/modelos, GPU y arranque de servidores requieren aprobación | [guía de instalación](setup-all-skills-prompt.md#flide-decision-inference-on-demand) |
@@ -365,11 +367,11 @@ Consulta la [guía de instalación](setup-all-skills-prompt.md#jev-control-plane
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 474 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 488 habilidades · despliega una categoría para ver sus habilidades.
 
-### 🌐 Web (77)
+### 🌐 Web (78)
 
-Subcategorías: `frontend` (16), `backend` (3), `design` (17), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
+Subcategorías: `frontend` (16), `backend` (3), `design` (17), `api` (2), `auth` (1), `data` (13), `testing` (5), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -453,12 +455,13 @@ Subcategorías: `frontend` (16), `backend` (3), `design` (17), `api` (2), `auth`
 | `open-intelligent-ui` |
 | `solid-glass` |
 | `vercel-agent-ui` |
+| `chrome-devtools-mcp` |
 
 </details>
 
-### 🏗 Infraestructura (21)
+### 🏗 Infraestructura (22)
 
-Subcategorías: `deployment` (2), `environment` (2), `observability` (4), `security` (4), `cloud-data` (8), `automation` (0), `tooling` (1)
+Subcategorías: `deployment` (2), `environment` (2), `observability` (4), `security` (4), `cloud-data` (9), `automation` (0), `tooling` (1)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -486,6 +489,7 @@ Subcategorías: `deployment` (2), `environment` (2), `observability` (4), `secur
 | `vespa` |
 | `langfuse` |
 | `artex` |
+| `rete` |
 
 </details>
 
@@ -610,9 +614,9 @@ Subcategorías: `image` (10), `video` (18), `motion` (2), `audio` (2), `presenta
 
 </details>
 
-### ⌨️ Herramientas CLI (48)
+### ⌨️ Herramientas CLI (51)
 
-Subcategorías: `developer-cli` (12), `ai-cli` (18), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
+Subcategorías: `developer-cli` (12), `ai-cli` (21), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -667,12 +671,15 @@ Subcategorías: `developer-cli` (12), `ai-cli` (18), `media-cli` (1), `automatio
 | `connectonion` |
 | `flide` |
 | `indra` |
+| `happy` |
+| `jarrodwatts-hud` |
+| `ccusage` |
 
 </details>
 
-### 🤖 IA y Agentes (83)
+### 🤖 IA y Agentes (88)
 
-Subcategorías: `orchestration` (21), `agent-frameworks` (22), `skill-authoring` (5), `evaluation` (10), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
+Subcategorías: `orchestration` (24), `agent-frameworks` (22), `skill-authoring` (6), `evaluation` (10), `memory` (8), `planning-review` (13), `discovery` (3), `prompting` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -762,12 +769,17 @@ Subcategorías: `orchestration` (21), `agent-frameworks` (22), `skill-authoring`
 | `fastmcp` |
 | `canyonos` |
 | `agent-substrate` |
+| `thedotmack-mem` |
+| `superpowers` |
+| `gstack` |
+| `official-agent-skills` |
+| `wshobson-agents` |
 
 </details>
 
-### 🧰 Ingeniería (28)
+### 🧰 Ingeniería (29)
 
-Subcategorías: `code-quality` (14), `testing` (4), `architecture` (6), `documentation` (2), `code-navigation` (2)
+Subcategorías: `code-quality` (14), `testing` (4), `architecture` (6), `documentation` (2), `code-navigation` (3)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -802,6 +814,7 @@ Subcategorías: `code-quality` (14), `testing` (4), `architecture` (6), `documen
 | `rust-anything` |
 | `fast-anything` |
 | `mobile-agent-testers` |
+| `serena` |
 
 </details>
 
@@ -919,9 +932,9 @@ Subcategorías: `marketing` (5), `support` (2), `publishing` (1), `pm-toolkit` (
 
 </details>
 
-### 🔧 Utilidades (30)
+### 🔧 Utilidades (33)
 
-Subcategorías: `knowledge` (9), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (4), `general` (3)
+Subcategorías: `knowledge` (9), `files` (5), `git` (4), `workspace` (3), `project-management` (5), `productivity` (4), `general` (3)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -958,6 +971,9 @@ Subcategorías: `knowledge` (9), `files` (5), `git` (4), `workspace` (1), `proje
 | `rhwp-edit` |
 | `rowboat` |
 | `mroffice` |
+| `beads` |
+| `orca` |
+| `cc-switch` |
 
 </details>
 
@@ -999,6 +1015,13 @@ Las fuentes originales y las licencias de las habilidades adaptadas se indican e
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 Novedades en v2026-11-27
+
+| Cambio | Detalles |
+|--------|---------|
+| **Operador de archivo RDF único y SPARQL `rete` (488 habilidades en total)** | Añade `.agent-skills/rete` (`infrastructure` / `cloud-data`), fijado a [`caviri/rete`](https://github.com/caviri/rete) `0.7.8` (`c38b7ffb304dfaeb9c8ad3a37dd6416678e198e0`, Apache-2.0): archivos `.rete` (`0x08`, lectura `0x05`–`0x08`), consultas HTTP Range SPARQL/openCypher/SHACL/OWL 2 QL, separación entre `rete-graph` y `rete-cli`, contextos JSON-LD locales, CORS S3/R2 y aislamiento entre `rete.mcpb` local y MCP alojado. Incluye `SKILL.toon`, `references/`, `scripts/preflight.py`, `evals/evals.json` y `scripts/test_rete_skill.py`. |
+| **Paquete del ecosistema de agentes de código (`coding-agent-ecosystem`, 487 habilidades en total)** | Añade 13 habilidades fijadas por fuente del recopilatorio de 20 proyectos de agentes de código (`thedotmack-mem`, `beads`, `serena`, `chrome-devtools-mcp`, `superpowers`, `gstack`, `official-agent-skills`, `orca`, `wshobson-agents`, `happy`, `cc-switch`, `jarrodwatts-hud`, `ccusage`) junto a seis habilidades hermanas ya existentes (`rtk`, `context-mode`, `graphify`, `context7`, `spec-kit`, `ruflo`), excluyendo `oh-my-claudecode`. Cada nueva habilidad incluye `SKILL.md`, `SKILL.toon`, `references/upstream.md`, `references/source.json` con SHA-256 verificados, `scripts/preflight.py` sin conexión y `evals/evals.json`. |
+
 ## 🆕 Novedades en v2026-11-24
 
 | Cambio | Detalles |
@@ -1030,16 +1053,9 @@ Las fuentes originales y las licencias de las habilidades adaptadas se indican e
 | **Auditoría y mejora de seguridad del catálogo (440 habilidades) con NVIDIA SkillEvaluator** | Ejecutado `skillevaluator security-scan` (`0.8.0` / `SkillSpector 2.13.3`) sobre las 440 habilidades: aprobadas **221 → 366** (83,2 %), hallazgos `CRITICAL` **4 → 0** y `HIGH` **956 → 290** (-69,7 %). |
 | **Sincronización de CanyonOS y grafo `jeox`** | Incorporados `canyonos` (habilidad 440) y `jeox` (`scripts/jeox.py` + `setup-workspace.py` `step_jeox`) en los tres README y `setup-all-skills-prompt.md`. |
 
-## 🆕 Novedades en v2026-11-15
-
-| Cambio | Detalles |
-|--------|---------|
-| **Operador PMTiles para archivos de teselas en la nube** | Añadida `pmtiles` (especificación v3, `aec8fa1341222fdddb3318e9ffa8e18e19b312f7`) con inspección de cabecera de 127 bytes, conversión MBTiles → PMTiles, `--bbox`, CORS/Range en S3/R2/GCS, protocolo MapLibre GL JS y preflight binario sin conexión. |
-
 > 📜 Entradas antiguas: [`changelog/en/`](changelog/en/) (archivos mensuales, más recientes primero).
 
 <!-- WHATS-NEW:END -->
-
 ---
 
 <div align="center">

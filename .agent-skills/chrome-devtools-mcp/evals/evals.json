@@ -1,0 +1,46 @@
+{
+  "skill_name": "chrome-devtools-mcp",
+  "evals": [
+    {
+      "id": "devtools-isolated-perf-audit",
+      "prompt": "Run a Chrome DevTools MCP performance and network waterfall audit against localhost:3000 without polluting my personal Chrome profile or sending telemetry.",
+      "expected_outcome": "Uses --isolated --headless --no-usage-statistics --no-performance-crux flags and performance_start_trace / list_network_requests tools.",
+      "assertions": [
+        "Runs scripts/preflight.py first",
+        "Includes --isolated and --no-usage-statistics / --no-performance-crux",
+        "Avoids attaching to personal Chrome cookies without consent"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "chrome-devtools-mcp"
+    },
+    {
+      "id": "devtools-cli-vs-mcp",
+      "prompt": "How do I invoke Chrome DevTools tools directly from shell without loading 25 MCP schemas into my prompt?",
+      "expected_outcome": "Explains standalone chrome-devtools CLI (start, status) or --slim MCP flag.",
+      "assertions": [
+        "Mentions standalone chrome-devtools CLI or --slim flag"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "chrome-devtools-mcp"
+    },
+    {
+      "id": "route-out-playwright-e2e",
+      "prompt": "Write and run a multi-browser CI Playwright test suite in tests/e2e/.",
+      "expected_outcome": "Routes Playwright test authoring and CI runs to playwright-cli or browser-harness.",
+      "assertions": [
+        "Routes Playwright test suite authoring to playwright-cli or browser-harness"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "playwright-cli"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

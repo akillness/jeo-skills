@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "skill": "rete",
+  "repository": "caviri/rete",
+  "commit": "c38b7ffb304dfaeb9c8ad3a37dd6416678e198e0",
+  "commit_date": "2026-11-26T05:17:51Z",
+  "pinned_at": "2026-11-27",
+  "license": "Apache-2.0",
+  "upstream_version": "0.7.8",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "3d0511f2080b3f9aa7f731534c753075ed0deb67b0782b07d2c4d2b98e3edc64",
+      "url": "https://github.com/caviri/rete/blob/c38b7ffb304dfaeb9c8ad3a37dd6416678e198e0/README.md"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "d66f91e2659679e64a96343a1e0df3fabe941ff049aed15167d69762ec3c86e0",
+      "url": "https://github.com/caviri/rete/blob/c38b7ffb304dfaeb9c8ad3a37dd6416678e198e0/LICENSE"
+    },
+    {
+      "path": "Cargo.toml",
+      "sha256": "7bb957700dd5b6c5df678736b1f36f420c90738b4910beb0072d6e220ac90670",
+      "url": "https://github.com/caviri/rete/blob/c38b7ffb304dfaeb9c8ad3a37dd6416678e198e0/Cargo.toml"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "72dfed2cdf51410603e716f7556dcd2eeee59e89ccea41f53803a9ed98f7e92f",
+      "url": "https://github.com/caviri/rete/blob/c38b7ffb304dfaeb9c8ad3a37dd6416678e198e0/AGENTS.md"
+    },
+    {
+      "path": "crates/rete-cli/Cargo.toml",
+      "sha256": "af9ca14700ad4fca36408226274a1649920f789c9ebca78b53e2c0745ca46650",
+      "url": "https://github.com/caviri/rete/blob/c38b7ffb304dfaeb9c8ad3a37dd6416678e198e0/crates/rete-cli/Cargo.toml"
+    },
+    {
+      "path": "docs/cli.md",
+      "sha256": "170e02b6455d14fd3e9dce96f259bf0ab56857f83b09c6b12cda5db03ee2804f",
+      "url": "https://github.com/caviri/rete/blob/c38b7ffb304dfaeb9c8ad3a37dd6416678e198e0/docs/cli.md"
+    },
+    {
+      "path": "docs/agents.md",
+      "sha256": "2b66a7c4f1a4df9ab99db33e6f945da269c477b62562e78b2bd45d6de61cd65d",
+      "url": "https://github.com/caviri/rete/blob/c38b7ffb304dfaeb9c8ad3a37dd6416678e198e0/docs/agents.md"
+    },
+    {
+      "path": "docs/install.md",
+      "sha256": "3f3041cd1c9c21c6e7a1156385edb7a34a8ebd328a082338fe9c9a0002b13c85",
+      "url": "https://github.com/caviri/rete/blob/c38b7ffb304dfaeb9c8ad3a37dd6416678e198e0/docs/install.md"
+    },
+    {
+      "path": "clients/python/pyproject.toml",
+      "sha256": "f6687bf5b8b14227abdb363254c767ba531736c0682059c2f483731e48bbaa42",
+      "url": "https://github.com/caviri/rete/blob/c38b7ffb304dfaeb9c8ad3a37dd6416678e198e0/clients/python/pyproject.toml"
+    },
+    {
+      "path": "clients/js/package.json",
+      "sha256": "ced8955642db988461d597dec7a38b0d2dc7e533a655ead26523b4fc5d594752",
+      "url": "https://github.com/caviri/rete/blob/c38b7ffb304dfaeb9c8ad3a37dd6416678e198e0/clients/js/package.json"
+    }
+  ],
+  "tools": [
+    {"name": "rete"},
+    {"name": "cargo"},
+    {"name": "python3"},
+    {"name": "node"},
+    {"name": "docker"}
+  ]
+}

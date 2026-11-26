@@ -1,0 +1,47 @@
+{
+  "skill_name": "beads",
+  "evals": [
+    {
+      "id": "bd-ready-and-dep-graph",
+      "prompt": "Use beads to pick the next unblocked task, log a newly discovered bug blocking it, and claim work safely.",
+      "expected_outcome": "Runs preflight, uses bd ready --json, bd create --json, bd dep add, and bd update --claim --json.",
+      "assertions": [
+        "Uses --json flags on bd commands",
+        "Creates child/blocker issue before adding dependency edge",
+        "Claims issue via bd update <id> --claim --json"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "beads"
+    },
+    {
+      "id": "stealth-oss-repo",
+      "prompt": "I want to track my own beads task graph in an open-source repository without committing .beads/ files to upstream PRs.",
+      "expected_outcome": "Recommends bd init --stealth (or --contributor for fork workflows) and warns against pushing .beads/ upstream.",
+      "assertions": [
+        "Recommends bd init --stealth",
+        "Explains keeping tracker files out of upstream PR diffs"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "beads"
+    },
+    {
+      "id": "route-out-speckit",
+      "prompt": "Generate a product constitution, specification, and implementation plan from scratch using /speckit.specify.",
+      "expected_outcome": "Routes out to spec-kit instead of beads.",
+      "assertions": [
+        "Routes spec-driven /speckit workflows to spec-kit"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "spec-kit"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

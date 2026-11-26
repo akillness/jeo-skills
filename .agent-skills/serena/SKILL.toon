@@ -1,0 +1,6 @@
+N:serena
+D:Operate oraios/serena SolidLSP semantic code retrieval and symbol-level editing toolkit and MCP server (30+ languages, serena-agent).
+G:engineering code-navigation mcp serena solidlsp
+U[5]:install-setup,project-index,mcp-serving,symbol-edit,failure-triage
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[4]:semble,codebase-search,codebase-memory-mcp,graphify

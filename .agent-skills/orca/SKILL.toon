@@ -1,0 +1,6 @@
+N:orca
+D:Operate stablyai/orca Git-worktree parallel coding-agent orchestration workspace and CLI (orca open, status --json, worktree create, orchestration, bots, server).
+G:utilities workspace cli orca worktree
+U[5]:worktree-isolation,agent-orchestration,daemon-remote-server,integration-dispatch,failure-triage
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[3]:happy,ruflo,git-workflow

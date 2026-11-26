@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "skill": "wshobson-agents",
+  "repository": "wshobson/agents",
+  "commit": "c96b5f6552dba32e4492307493ee613581430715",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "2c1370dab7dc4b0dfb40ffd32200885767d64d240b1024f7f61739985a22e567",
+      "url": "https://github.com/wshobson/agents/blob/c96b5f6552dba32e4492307493ee613581430715/README.md"
+    },
+    {
+      "path": ".claude-plugin/marketplace.json",
+      "sha256": "618404b0c586e842f41dc2be6b04ed4fd913468e04bb88864594643955ae2e57",
+      "url": "https://github.com/wshobson/agents/blob/c96b5f6552dba32e4492307493ee613581430715/.claude-plugin/marketplace.json"
+    },
+    {
+      "path": "Makefile",
+      "sha256": "328455f0ed597ff76eb64e6eedde74f18c110880883f24b9990d2a1a533549d1",
+      "url": "https://github.com/wshobson/agents/blob/c96b5f6552dba32e4492307493ee613581430715/Makefile"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "f89abb55d9f073f38f1703e4518f0613c788c6174be7f13b8dfe48a1c076c746",
+      "url": "https://github.com/wshobson/agents/blob/c96b5f6552dba32e4492307493ee613581430715/LICENSE"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "git"
+    },
+    {
+      "name": "make"
+    },
+    {
+      "name": "claude"
+    }
+  ]
+}

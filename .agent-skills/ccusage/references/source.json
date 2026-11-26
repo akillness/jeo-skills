@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "skill": "ccusage",
+  "repository": "ccusage/ccusage",
+  "commit": "98b9dbd84a534b594e6bbd76f7511bed43a87771",
+  "files": [
+    {
+      "path": "apps/ccusage/README.md",
+      "sha256": "589bfa99968a871a4c8bdf2cededd3fc0b82ca7c5ce24c0685c3b57540d03922",
+      "url": "https://github.com/ccusage/ccusage/blob/98b9dbd84a534b594e6bbd76f7511bed43a87771/apps/ccusage/README.md"
+    },
+    {
+      "path": "apps/ccusage/package.json",
+      "sha256": "d23a7ced23e96e2e91697aaeb49087d0afac89b13eba22430fc192484fd3b027",
+      "url": "https://github.com/ccusage/ccusage/blob/98b9dbd84a534b594e6bbd76f7511bed43a87771/apps/ccusage/package.json"
+    },
+    {
+      "path": "package.json",
+      "sha256": "43284add0aad33a8198e1393f0667c8f718efc2eedc51a2951df35e3ddd7b236",
+      "url": "https://github.com/ccusage/ccusage/blob/98b9dbd84a534b594e6bbd76f7511bed43a87771/package.json"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "ffa4dd2d15c2e9f87d21367a007593002366c308d90b4a666d5bd43f57df7563",
+      "url": "https://github.com/ccusage/ccusage/blob/98b9dbd84a534b594e6bbd76f7511bed43a87771/LICENSE"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "node"
+    },
+    {
+      "name": "npx"
+    },
+    {
+      "name": "bunx"
+    },
+    {
+      "name": "ccusage"
+    }
+  ]
+}

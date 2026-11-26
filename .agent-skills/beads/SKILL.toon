@@ -1,0 +1,6 @@
+N:beads
+D:Manage gastownhall/beads (bd) distributed git/Dolt-backed dependency-graph issue tracker with hash IDs and --json agent workflows.
+G:utilities project-management cli beads bd
+U[5]:init-setup,ready-triage,graph-planning,sync-dolt,failure-triage
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[3]:spec-kit,orca,task-planning

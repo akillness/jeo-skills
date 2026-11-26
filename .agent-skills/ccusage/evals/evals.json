@@ -1,0 +1,46 @@
+{
+  "skill_name": "ccusage",
+  "evals": [
+    {
+      "id": "ccusage-offline-json-report",
+      "prompt": "Export a monthly breakdown of Claude Code and Codex token costs for November without making any network requests.",
+      "expected_outcome": "Runs ccusage monthly --offline --json --breakdown --sources claude,codex and notes costs are local JSONL estimates.",
+      "assertions": [
+        "Uses --offline to prevent external pricing fetches",
+        "Uses --json and --breakdown flags",
+        "Uses --sources for multi-agent reporting"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "ccusage"
+    },
+    {
+      "id": "ccusage-live-blocks",
+      "prompt": "Monitor my active 5-hour Claude billing block burn rate in real time.",
+      "expected_outcome": "Uses npx ccusage@latest blocks --live --active.",
+      "assertions": [
+        "Uses blocks --live or blocks --active"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "ccusage"
+    },
+    {
+      "id": "route-out-hud",
+      "prompt": "Show my active git branch, dirty files, subagents, and context % in Claude Code bottom statusline.",
+      "expected_outcome": "Routes out cleanly to jarrodwatts-hud.",
+      "assertions": [
+        "Routes live statusline HUD configuration to jarrodwatts-hud"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "jarrodwatts-hud"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

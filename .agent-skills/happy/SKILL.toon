@@ -1,0 +1,6 @@
+N:happy
+D:Operate slopus/happy end-to-end encrypted mobile/web remote control wrapper for Claude Code and Codex sessions (happy, happy claude, happy codex, happy-mcp).
+G:cli-tools ai-cli cli happy mobile-relay
+U[5]:cli-session-launch,e2e-mobile-pairing,mcp-daemon,self-host-server,failure-triage
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[3]:orca,cc-switch,jarrodwatts-hud

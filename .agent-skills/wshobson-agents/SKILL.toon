@@ -1,0 +1,6 @@
+N:wshobson-agents
+D:Operate wshobson/agents selective 73-plugin / 112-agent marketplace (claude-code-workflows) with Makefile cross-host adapters and plugin-eval.
+G:ai-agents orchestration workflow wshobson-agents plugins
+U[5]:marketplace-browse,plugin-install,cross-platform-export,orchestration-patterns,plugin-eval
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[4]:gstack,superpowers,donchitos-game-studios,nvidia-skill-evaluator

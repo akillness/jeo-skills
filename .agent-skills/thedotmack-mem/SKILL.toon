@@ -1,0 +1,6 @@
+N:thedotmack-mem
+D:Operate thedotmack/claude-mem persistent cross-session memory plugin (hooks, localhost:37777 worker, SQLite FTS5+Chroma, progressive MCP search/timeline/get_observations).
+G:ai-agents memory mcp claude-mem
+U[5]:install-setup,search-retrieval,worker-lifecycle,privacy-config,failure-triage
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[4]:mex,graphify,context-mode,obsidian-second-brain

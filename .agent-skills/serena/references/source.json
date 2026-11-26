@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "skill": "serena",
+  "repository": "oraios/serena",
+  "commit": "23c06ff715409b2e9dc9be7ca26b7b2fbf356b7c",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "47f4105dd3c6a9eb84896bb50fb0d51189c27e2c3cb6e0ea0ff2e3c1916a3c00",
+      "url": "https://github.com/oraios/serena/blob/23c06ff715409b2e9dc9be7ca26b7b2fbf356b7c/README.md"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "eda230592d3a8aeb7cf74c54a526f7bd13fd9c9462d057e2902297156f15ffe5",
+      "url": "https://github.com/oraios/serena/blob/23c06ff715409b2e9dc9be7ca26b7b2fbf356b7c/pyproject.toml"
+    },
+    {
+      "path": "src/serena/cli.py",
+      "sha256": "e961ef3d6d071811a3658417ed4edd44480c4dab42dbeaff68719d4ad30719f2",
+      "url": "https://github.com/oraios/serena/blob/23c06ff715409b2e9dc9be7ca26b7b2fbf356b7c/src/serena/cli.py"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "6239f4be78ccff409aedfbce88ac89b26f488f76aac7ab199fb6876dc7fdeb4c",
+      "url": "https://github.com/oraios/serena/blob/23c06ff715409b2e9dc9be7ca26b7b2fbf356b7c/LICENSE"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "serena"
+    },
+    {
+      "name": "serena-agent"
+    },
+    {
+      "name": "uv"
+    },
+    {
+      "name": "git"
+    }
+  ]
+}

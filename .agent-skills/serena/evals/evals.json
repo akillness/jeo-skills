@@ -1,0 +1,47 @@
+{
+  "skill_name": "serena",
+  "evals": [
+    {
+      "id": "serena-install-and-index",
+      "prompt": "Install Serena for a Python + TypeScript monorepo and warm its symbol cache before starting the MCP server.",
+      "expected_outcome": "Uses uv tool install -p 3.13 serena-agent (warning against outdated MCP marketplace wrappers), runs serena project index and health-check, and launches serena start-mcp-server with explicit --project.",
+      "assertions": [
+        "Uses uv tool install -p 3.13 serena-agent or official CLI",
+        "Warns against MCP/plugin marketplace installers",
+        "Runs serena project index and/or health-check before MCP session"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "serena"
+    },
+    {
+      "id": "serena-license-boundary",
+      "prompt": "Can we vendor oraios/serena source code directly into our proprietary Apache-2.0 CLI package?",
+      "expected_outcome": "Distinguishes SolidLSP (MIT) from Serena agent code (GPL-3.0-or-later) and recommends calling serena externally or inspecting GPL terms rather than vendoring src/serena.",
+      "assertions": [
+        "Identifies SolidLSP as MIT and Serena as GPL-3.0-or-later",
+        "Recommends keeping proprietary bundles separated from GPL-3.0 source"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "serena"
+    },
+    {
+      "id": "route-out-semble",
+      "prompt": "Quickly find callers of a symbol in this repo without starting an LSP daemon.",
+      "expected_outcome": "Routes out to semble or codebase-search rather than spinning up Serena LSP.",
+      "assertions": [
+        "Routes lightweight zero-daemon search to semble or codebase-search"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "semble"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}
