@@ -1,0 +1,6 @@
+N:llm-asm
+D:Assemble and inspect 100% pure x86-64 NASM Qwen3-0.6B inference, bare-metal OS, and Mini-GPT trainer with zero libc.
+G:engineering architecture cli llm-asm nasm assembly
+U[5]:nasm-assembly,avx2-gemm-audit,qwen3-inference,bare-metal-boot,zero-libc-linking
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[3]:architecture,compilers,system-environment-setup

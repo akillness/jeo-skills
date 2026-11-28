@@ -1,0 +1,6 @@
+N:freellm-router
+D:Self-host a single OpenAI-compatible /v1 endpoint aggregating free-tier LLM providers with automatic failover and quota tracking.
+G:ai-agents orchestration cli freellm llm-router gateway
+U[5]:gateway-deployment,rate-limit-failover,key-encryption-setup,quota-tracking,openai-v1-proxy
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[3]:orchestration,agent-frameworks,cc-switch

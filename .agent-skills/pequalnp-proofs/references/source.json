@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "skill": "pequalnp-proofs",
+  "repository": "open-goat/pequalnp-proofs",
+  "commit": "3c12bb097bb91b6c3cfc4ffd278d63aed0093195",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "3978f486edf474c49c52064f3d74ad00bc8f850ccdae4fed8c906970dfc3b6f5",
+      "url": "https://github.com/open-goat/pequalnp-proofs/blob/3c12bb097bb91b6c3cfc4ffd278d63aed0093195/README.md"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "url": "https://github.com/open-goat/pequalnp-proofs/blob/3c12bb097bb91b6c3cfc4ffd278d63aed0093195/LICENSE"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "a9746119eae5d543b52fabcb19110e77a661957a827ae2fc21de0f5a0274da40",
+      "url": "https://github.com/open-goat/pequalnp-proofs/blob/3c12bb097bb91b6c3cfc4ffd278d63aed0093195/CONTRIBUTING.md"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "lake"
+    },
+    {
+      "name": "lean"
+    }
+  ]
+}

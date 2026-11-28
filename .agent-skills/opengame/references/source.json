@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "skill": "opengame",
+  "repository": "nexu-io/opengame",
+  "commit": "f17151f3cc7838ddbe13d9b94392e0f983fc341b",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "77c2f97aa9e8c0732fa41f962710a15576f9cb990465b6491cb1ef62906bb93b",
+      "url": "https://github.com/nexu-io/opengame/blob/f17151f3cc7838ddbe13d9b94392e0f983fc341b/README.md"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "url": "https://github.com/nexu-io/opengame/blob/f17151f3cc7838ddbe13d9b94392e0f983fc341b/LICENSE"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "25c0f0dd6aff083bc4e5c15bd762cb4fe1ddae9077905c01113727492dc65b53",
+      "url": "https://github.com/nexu-io/opengame/blob/f17151f3cc7838ddbe13d9b94392e0f983fc341b/AGENTS.md"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "node"
+    },
+    {
+      "name": "npm"
+    },
+    {
+      "name": "npx"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "skill": "freellm-router",
+  "repository": "jaredfreellm/FREELLM_INSTALL",
+  "commit": "30471459fb792d45362bf3f2396cc83cddf333a2",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "b5b1ece0594fa52805c0d45849e16923161126cef48c21e03e92f21cd025d719",
+      "url": "https://github.com/jaredfreellm/FREELLM_INSTALL/blob/30471459fb792d45362bf3f2396cc83cddf333a2/README.md"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "6b8924706728253af543b08c3e47ec833c2fc3bea71295a5940ba0fc330a09c3",
+      "url": "https://github.com/jaredfreellm/FREELLM_INSTALL/blob/30471459fb792d45362bf3f2396cc83cddf333a2/LICENSE"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "uv"
+    },
+    {
+      "name": "docker"
+    }
+  ]
+}

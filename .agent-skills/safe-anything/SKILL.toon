@@ -1,0 +1,6 @@
+N:safe-anything
+D:Scan code, secrets, mobile/cloud configs, and AI agent setups for vulnerabilities with fast 100% Rust scanner.
+G:infrastructure security cli safe-anything security sast
+U[5]:sast-scan,secret-detection,agent-config-audit,osv-cve-lookup,ci-security-gate
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[3]:security,infrastructure-core,code-quality

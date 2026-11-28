@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "skill": "safe-anything",
+  "repository": "erkamyaman/safe-anything",
+  "commit": "a2d74536418b8f14535e044d9fcf76b5eb946b75",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "0e6945f0fe4ecfd2b75edf7dabda712bbd7a279aaa771a644fa800e67ec62017",
+      "url": "https://github.com/erkamyaman/safe-anything/blob/a2d74536418b8f14535e044d9fcf76b5eb946b75/README.md"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "a52aeaac070d6124da2369af2420a83c791c0f745c2aceb4f8ddd43931d3c918",
+      "url": "https://github.com/erkamyaman/safe-anything/blob/a2d74536418b8f14535e044d9fcf76b5eb946b75/CHANGELOG.md"
+    },
+    {
+      "path": "CODE_OF_CONDUCT.md",
+      "sha256": "bc6e7c46a1f1f63c5c470515f896f45549f5bd83ff2165f355e583b3f664aa75",
+      "url": "https://github.com/erkamyaman/safe-anything/blob/a2d74536418b8f14535e044d9fcf76b5eb946b75/CODE_OF_CONDUCT.md"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "safe-anything"
+    },
+    {
+      "name": "cargo"
+    },
+    {
+      "name": "git"
+    }
+  ]
+}

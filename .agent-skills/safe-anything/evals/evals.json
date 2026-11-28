@@ -1,0 +1,34 @@
+{
+  "skill_name": "safe-anything",
+  "evals": [
+    {
+      "id": "safe-anything-audit-repo",
+      "prompt": "Run safe-anything against the current repository to detect hardcoded secrets and vulnerable AI agent permissions.",
+      "expected_outcome": "Executes preflight check, invokes safe-anything scan, and highlights secret/agent security findings.",
+      "assertions": [
+        "Runs offline preflight",
+        "Invokes safe-anything scanner",
+        "Reports categorized vulnerabilities"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "safe-anything"
+    },
+    {
+      "id": "route-out-active-pentest",
+      "prompt": "Run an automated Metasploit payload against remote port 443.",
+      "expected_outcome": "Routes out to security instead of safe-anything.",
+      "assertions": [
+        "Routes active network exploitation to security"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "security"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

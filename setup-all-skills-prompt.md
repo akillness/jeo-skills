@@ -4140,6 +4140,34 @@ What catalog install does vs what remains gated:
 - `0.7.8` writes format `0x08` (readable by `0.7.x+`; `<= 0.6.x` readers reject `0x08`) and defaults to `--permutations 6`; JSON-LD builds remain offline unless `--context IRI=FILE` is mapped locally or `--fetch-contexts` is explicitly approved.
 - Never send private `.rete` files or confidential RDF text to the hosted Hugging Face MCP (`https://katospiegel-rete.hf.space/mcp/`); use local `rete.mcpb` or explicit approval before running `rete serve`, editing S3/R2 CORS headers, or mutating `.rete` files with `rete recard --in-place`.
 
+
+### Trending GitHub AI & Agent Operators (On-Demand, 10 Curated Repositories)
+
+The `trending-github-ai` bundle collects 10 high-impact open-source AI and agent tools from trending GitHub repositories across game generation, assembly bare-metal inference, security scanning, interactive diagrams, hardware upscaling, complexity proofs, multi-provider routing, sales prospecting, local media creation, and robotics:
+
+| Skill (Local Name) | Upstream Repository | Focus & Approval Boundary |
+|---|---|---|
+| [`opengame`](.agent-skills/opengame/SKILL.md) | `nexu-io/opengame` | Super Game Agent & AI game studio for 3D/9:16 mini-games (WeChat, TikTok, itch.io). Gate full export builds and remote publishing. |
+| [`llm-asm`](.agent-skills/llm-asm/SKILL.md) | `alesha-pro/llm.asm` | 100% pure x86-64 NASM assembly Qwen3-0.6B inference, bare-metal OS, and Mini-GPT trainer with zero C/libc runtime dependencies. |
+| [`safe-anything`](.agent-skills/safe-anything/SKILL.md) | `erkamyaman/safe-anything` | Fast 100% Rust vulnerability scanner auditing XSS, SQLi, secrets, dependency CVEs, and AI agent setup permissions. |
+| [`inkworks`](.agent-skills/inkworks/SKILL.md) | `Moh4696/inkworks-skill` | Interactive 3D how-it-works visual explainers in Three.js styled like engineering blueprint drawings. |
+| [`waifu2x-vulkan`](.agent-skills/waifu2x-vulkan/SKILL.md) | `Red2076-arch/waifu2x-image-upscaler-windows` | Vulkan GPU-accelerated ncnn image upscaler and photo denoiser across AMD, Intel, NVIDIA, and Apple Silicon. |
+| [`pequalnp-proofs`](.agent-skills/pequalnp-proofs/SKILL.md) | `open-goat/pequalnp-proofs` | Machine-checked Lean 4 formal verification proofs of computational complexity theory from pequalnp.com. |
+| [`freellm-router`](.agent-skills/freellm-router/SKILL.md) | `jaredfreellm/FREELLM_INSTALL` | Self-hosted OpenAI-compatible gateway combining multiple free-tier LLM providers with automatic health checks and failover. |
+| [`garimpo`](.agent-skills/garimpo/SKILL.md) | `matheusmongarde/garimpo` | Automated B2B sales prospecting from Google Maps scraping, personalized landing pages, to WhatsApp closing and payment checkout. |
+| [`h3-creator-studio`](.agent-skills/h3-creator-studio/SKILL.md) | `animede/h3-creator-studio` | Local AI media studio orchestrating MiniMax-H3 video, ACE-Step music, and AivisSpeech voice with aggressive VRAM management. |
+| [`rollerskate-robot`](.agent-skills/rollerskate-robot/SKILL.md) | `AI-FanGe/A-MicroRobot-that-can-Rollerskate` | Open-source 30cm 20-DOF humanoid desktop robot with MuJoCo RL rollerskating control policies and LLM interactions. |
+
+Installing these skills copies markdown guides and the offline manifest preflight helper (`scripts/preflight.py`) only — upstream runtimes, model weights, and external daemons remain on demand:
+
+```bash
+python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install \
+  --bundle trending-github-ai --global --dry-run
+
+python3 "$SKILLS_ROOT/opengame/scripts/preflight.py" --json
+python3 "$SKILLS_ROOT/llm-asm/scripts/preflight.py" --json
+python3 "$SKILLS_ROOT/safe-anything/scripts/preflight.py" --json
+```
 ---
 
 ## Guard Boundaries

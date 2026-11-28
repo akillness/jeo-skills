@@ -1,0 +1,6 @@
+N:waifu2x-vulkan
+D:Upscale and denoise images with Vulkan GPU-accelerated ncnn neural network models across Windows, Linux, and macOS.
+G:creative-media image cli waifu2x upscaler vulkan
+U[5]:batch-upscaling,noise-reduction,cunet-model-selection,vulkan-gpu-tuning,cli-artifact-cleanup
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[3]:image,media-video,creative-media

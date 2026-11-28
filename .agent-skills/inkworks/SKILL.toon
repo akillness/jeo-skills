@@ -1,0 +1,6 @@
+N:inkworks
+D:Generate interactive 3D how-it-works explainers styled like engineering drawings and blueprint sheets in Three.js.
+G:creative-media diagram prompt inkworks 3d-diagram threejs
+U[5]:blueprint-shader-prompting,3d-architecture-explainer,interactive-callouts,orbit-controls-setup,mechanical-exploded-view
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[3]:diagram,threejs-fundamentals,web-design

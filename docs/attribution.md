@@ -128,3 +128,20 @@ These thirteen guides join six pre-existing catalog operators (`rtk`, `context-m
 | `rete` | [caviri/rete @ c38b7ff (v0.7.8)](https://github.com/caviri/rete/tree/c38b7ffb304dfaeb9c8ad3a37dd6416678e198e0) · [crates.io `rete-cli`](https://crates.io/crates/rete-cli) · [PyPI `rete-graph`](https://pypi.org/project/rete-graph/) · [npm `rete-graph`](https://www.npmjs.com/package/rete-graph) | Apache-2.0 |
 
 The `rete` skill is original source-pinned operator documentation; it bundles no upstream crates, binaries, WASM artifacts, or MCP extensions and records audited commit/file hashes in `.agent-skills/rete/references/source.json`.
+
+## Trending GitHub AI & agent operators
+
+| Component | Source | License |
+|-----------|--------|---------|
+| `opengame` | [nexu-io/opengame @ f17151f](https://github.com/nexu-io/opengame/tree/f17151f3cc7838ddbe13d9b94392e0f983fc341b) | Apache-2.0 |
+| `llm-asm` | [alesha-pro/llm.asm @ e7d4883](https://github.com/alesha-pro/llm.asm/tree/e7d48837421da791cb9468fd518e22e0b996d1ad) | MIT |
+| `safe-anything` | [erkamyaman/safe-anything @ a2d7453](https://github.com/erkamyaman/safe-anything/tree/a2d74536418b8f14535e044d9fcf76b5eb946b75) | MIT |
+| `inkworks` | [Moh4696/inkworks-skill @ 8769b7d](https://github.com/Moh4696/inkworks-skill/tree/8769b7d4191088a94448294d7bd28ae84d34906c) | MIT |
+| `waifu2x-vulkan` | [Red2076-arch/waifu2x-image-upscaler-windows @ 022f8f9](https://github.com/Red2076-arch/waifu2x-image-upscaler-windows/tree/022f8f96aef4a63ffb2a3acf867d7a6aaa88b086) | MIT |
+| `pequalnp-proofs` | [open-goat/pequalnp-proofs @ 3c12bb0](https://github.com/open-goat/pequalnp-proofs/tree/3c12bb097bb91b6c3cfc4ffd278d63aed0093195) | Apache-2.0 |
+| `freellm-router` | [jaredfreellm/FREELLM_INSTALL @ 3047145](https://github.com/jaredfreellm/FREELLM_INSTALL/tree/30471459fb792d45362bf3f2396cc83cddf333a2) | MIT |
+| `garimpo` | [matheusmongarde/garimpo @ ac28cde](https://github.com/matheusmongarde/garimpo/tree/ac28cde3b30506cf28926d813141cea757170a2b) | MIT |
+| `h3-creator-studio` | [animede/h3-creator-studio @ 6ef2167](https://github.com/animede/h3-creator-studio/tree/6ef2167bbab80a1e3da7b79fee0c4b3a24481d61) | Apache-2.0 |
+| `rollerskate-robot` | [AI-FanGe/A-MicroRobot-that-can-Rollerskate @ f4de92b](https://github.com/AI-FanGe/A-MicroRobot-that-can-Rollerskate/tree/f4de92baffe394cd82d5d7140f3a48c4ed7282d4) | GPL-3.0 (software) / CC-BY-SA-4.0 (hardware) |
+
+These ten source-pinned operator skills form the `trending-github-ai` bundle, providing verified documentation, evals, and offline `scripts/preflight.py` manifest checks for leading open-source AI repositories. No upstream binaries or external codebases are vendored.

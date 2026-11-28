@@ -1,0 +1,6 @@
+N:h3-creator-studio
+D:Local AI creator studio orchestrating MiniMax-H3 video, ACE-Step music, and AivisSpeech with low-VRAM GPU management.
+G:creative-media video cli h3-creator-studio minimax-h3 video-generation
+U[5]:music-video-generation,low-vram-orchestration,minimax-h3-video,ace-step-music,aivis-speech-voice
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[3]:video,audio,media-video

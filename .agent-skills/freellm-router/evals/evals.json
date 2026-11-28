@@ -1,0 +1,34 @@
+{
+  "skill_name": "freellm-router",
+  "evals": [
+    {
+      "id": "freellm-configure-routing",
+      "prompt": "Configure FreeLLM with Groq and Gemini free keys and verify OpenAI-compatible /v1/chat/completions fallback routing.",
+      "expected_outcome": "Executes preflight check, inspects provider config, verifies encryption at rest, and tests local endpoint routing.",
+      "assertions": [
+        "Runs offline preflight",
+        "Verifies encrypted key configuration",
+        "Tests failover routing logic"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "freellm-router"
+    },
+    {
+      "id": "route-out-langchain-chains",
+      "prompt": "Build an enterprise RAG chain with LangChain and Pinecone vector database.",
+      "expected_outcome": "Routes out to langchain instead of freellm-router.",
+      "assertions": [
+        "Routes vector RAG architectures to langchain"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "langchain"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

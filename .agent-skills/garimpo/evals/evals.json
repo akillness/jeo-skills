@@ -1,0 +1,34 @@
+{
+  "skill_name": "garimpo",
+  "evals": [
+    {
+      "id": "garimpo-prospecting-flow",
+      "prompt": "Run garimpo to prospect local bakeries in a target district, generate preview pages, and draft outreach messages.",
+      "expected_outcome": "Executes preflight check, verifies Google Maps scraping parameters, and prepares merchant preview landing pages.",
+      "assertions": [
+        "Runs offline preflight",
+        "Configures location and merchant query",
+        "Generates personalized preview metadata"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "garimpo"
+    },
+    {
+      "id": "route-out-email-blast",
+      "prompt": "Set up a bulk SendGrid email blast campaign to 50,000 subscriber emails.",
+      "expected_outcome": "Routes out to marketing instead of garimpo.",
+      "assertions": [
+        "Routes bulk email marketing campaigns to marketing"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "marketing"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

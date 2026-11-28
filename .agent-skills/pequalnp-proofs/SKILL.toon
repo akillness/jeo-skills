@@ -1,0 +1,6 @@
+N:pequalnp-proofs
+D:Verify and contribute machine-checked Lean 4 computational complexity proofs from the public AI P vs NP initiative.
+G:research academic cli pequalnp lean4 formal-verification
+U[5]:lake-build-verification,lean4-lemma-formalization,proof-gap-audit,complexity-reduction-check,mathlib-integration
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[3]:academic,data-analysis,experimentation

@@ -1,0 +1,6 @@
+N:opengame
+D:Operate nexu-io/opengame AI game studio to remix, test, and publish 3D/mini-games across 20+ coding agents.
+G:game tooling cli opengame game-generator threejs
+U[5]:template-scaffolding,mechanic-generation,threejs-pipeline,wechat-export,multimodal-preview
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[3]:game-client,game-art,threejs-fundamentals

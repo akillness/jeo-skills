@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 488,
+  "skill_count": 498,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -230,7 +230,8 @@
       "vespa",
       "langfuse",
       "artex",
-      "rete"
+      "rete",
+      "safe-anything"
     ],
     "game": [
       "implement-fog-of-war",
@@ -287,7 +288,8 @@
       "mono-pix",
       "motion2mixamo",
       "unimate",
-      "3d-vibe-coding"
+      "3d-vibe-coding",
+      "opengame"
     ],
     "creative-media": [
       "aura-asset-images",
@@ -331,7 +333,10 @@
       "diagram-design",
       "artcraft",
       "motionmaxxing",
-      "3dviz-pro-max"
+      "3dviz-pro-max",
+      "inkworks",
+      "waifu2x-vulkan",
+      "h3-creator-studio"
     ],
     "cli-tools": [
       "context7",
@@ -474,7 +479,9 @@
       "superpowers",
       "gstack",
       "official-agent-skills",
-      "wshobson-agents"
+      "wshobson-agents",
+      "freellm-router",
+      "rollerskate-robot"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -505,7 +512,8 @@
       "rust-anything",
       "fast-anything",
       "mobile-agent-testers",
-      "serena"
+      "serena",
+      "llm-asm"
     ],
     "research": [
       "academic-research",
@@ -526,7 +534,8 @@
       "minimind",
       "new-term-radar",
       "last30days",
-      "opencompass"
+      "opencompass",
+      "pequalnp-proofs"
     ],
     "business": [
       "marketing-automation",
@@ -599,7 +608,8 @@
       "positioning-ideas",
       "product-name",
       "value-prop-statements",
-      "moneyprinter-v2"
+      "moneyprinter-v2",
+      "garimpo"
     ],
     "utilities": [
       "lapian-notes",
@@ -759,7 +769,8 @@
         "security-best-practices",
         "strix",
         "zurp",
-        "artex"
+        "artex",
+        "safe-anything"
       ],
       "cloud-data": [
         "firebase-cli",
@@ -845,7 +856,8 @@
         "donchitos-game-studios",
         "gamefactory-3a",
         "arnis",
-        "unity-skills"
+        "unity-skills",
+        "opengame"
       ],
       "qa-performance": [
         "game-build-log-triage",
@@ -870,7 +882,8 @@
         "higgsfield-marketplace-cards",
         "higgsfield-product-photoshoot",
         "higgsfield-soul-id",
-        "higgsfield-youtube-thumbnail"
+        "higgsfield-youtube-thumbnail",
+        "waifu2x-vulkan"
       ],
       "video": [
         "browser-video-recording",
@@ -890,7 +903,8 @@
         "video-use",
         "autoclip",
         "moneyprinter-turbo",
-        "opencreator"
+        "opencreator",
+        "h3-creator-studio"
       ],
       "motion": [
         "video-motion-previs",
@@ -905,7 +919,8 @@
       ],
       "diagram": [
         "drawio",
-        "diagram-design"
+        "diagram-design",
+        "inkworks"
       ],
       "design": [
         "open-design",
@@ -1010,7 +1025,8 @@
         "agent-substrate",
         "superpowers",
         "gstack",
-        "wshobson-agents"
+        "wshobson-agents",
+        "freellm-router"
       ],
       "agent-frameworks": [
         "microsoft-agent-framework",
@@ -1034,7 +1050,8 @@
         "agentic-graphrag-blueprint",
         "agent-s",
         "kagent",
-        "fastmcp"
+        "fastmcp",
+        "rollerskate-robot"
       ],
       "skill-authoring": [
         "article-prompts-to-skills",
@@ -1120,7 +1137,8 @@
         "nightrun",
         "codebase-design",
         "domain-modeling",
-        "prototype"
+        "prototype",
+        "llm-asm"
       ],
       "documentation": [
         "changelog-maintenance",
@@ -1136,7 +1154,8 @@
       "academic": [
         "academic-research",
         "research-paper-writing",
-        "scientific-agent-skills"
+        "scientific-agent-skills",
+        "pequalnp-proofs"
       ],
       "web-research": [
         "deep-research",
@@ -1171,7 +1190,8 @@
         "write-like-meng-on-x",
         "x-bookmark-quote-posts",
         "youtube-growth-playbook-2026",
-        "moneyprinter-v2"
+        "moneyprinter-v2",
+        "garimpo"
       ],
       "support": [
         "customer-email-draft-threads",
@@ -1473,6 +1493,18 @@
       "cc-switch",
       "jarrodwatts-hud",
       "ccusage"
+    ],
+    "trending-github-ai": [
+      "opengame",
+      "llm-asm",
+      "safe-anything",
+      "inkworks",
+      "waifu2x-vulkan",
+      "pequalnp-proofs",
+      "freellm-router",
+      "garimpo",
+      "h3-creator-studio",
+      "rollerskate-robot"
     ]
   },
   "retired_skills": {
@@ -17579,6 +17611,170 @@
       "keyword": "rete",
       "version": "1.0.0",
       "source": "https://github.com/caviri/rete"
+    },
+    {
+      "name": "opengame",
+      "category": "game",
+      "subcategory": "tooling",
+      "description": "Operate nexu-io/opengame, an open-source super game agent and full-stack AI game studio for remixing, generating, and publishing 3D and 9:16 mini-games (WeChat, TikTok, Douyin, Telegram, itch.io) across 20+ coding agents. Use when scaffolding web/mobile games from prompts or templates, configuring Three.js/WebGL runtime pipelines, generating game mechanics, or building and exporting mini-games with MCP tools. Do not use for native Unity/Unreal C++ engine compilation (route to game-client) or pure 2D sprite generation (route to game-art). Triggers on: opengame, super game agent, remix game, wechat minigame, tiktok game, ai game studio, nexu-io/opengame.",
+      "interface": "cli",
+      "path": "opengame/SKILL.md",
+      "tags": [
+        "opengame",
+        "game-generator",
+        "threejs",
+        "mini-games",
+        "wechat-minigame",
+        "ai-game-studio"
+      ]
+    },
+    {
+      "name": "llm-asm",
+      "category": "engineering",
+      "subcategory": "architecture",
+      "description": "Inspect, assemble, and run alesha-pro/llm.asm, a pure x86-64 NASM assembly implementation of Qwen3-0.6B inference (12 KB), bare-metal bootable OS (22 KB), and Mini-GPT trainer with live Braille TUI (32 KB) with zero C and zero libc runtime dependencies. Use when studying minimal AVX2/FMA/F16C GEMM/GEMV matrix kernels, low-level transformer arithmetic (expf, sincosf, RMSNorm, RoPE, SiLU, Softmax), bare-metal OS boot routines with QEMU, or building zero-dependency assembly binaries. Do not use for high-throughput CUDA/ROCm cluster inference (route to vllm) or PyTorch model training (route to architecture). Triggers on: llm.asm, nasm llm, baremetal os llm, qwen3 assembly, zero libc inference, alesha-pro/llm.asm.",
+      "interface": "cli",
+      "path": "llm-asm/SKILL.md",
+      "tags": [
+        "llm-asm",
+        "nasm",
+        "assembly",
+        "qwen3",
+        "bare-metal",
+        "avx2",
+        "zero-dependency"
+      ]
+    },
+    {
+      "name": "safe-anything",
+      "category": "infrastructure",
+      "subcategory": "security",
+      "description": "Run erkamyaman/safe-anything, a high-performance 100% Rust static vulnerability scanner auditing code for XSS, SQL injection, leaked secrets, risky mobile/cloud configurations, dependency CVEs via OSV, and AI agent setup weaknesses. Use when performing pre-commit security audits, scanning agent instructions (.claude-plugin, system prompts) for prompt injection or permission leaks, verifying secrets in git trees, or integrating automated SAST in CI pipelines. Do not use for dynamic penetration testing or network exploit fuzzing (route to security). Triggers on: safe-anything, rust security scanner, agent vuln scan, secret scanning, osv cve check, erkamyaman/safe-anything.",
+      "interface": "cli",
+      "path": "safe-anything/SKILL.md",
+      "tags": [
+        "safe-anything",
+        "security",
+        "sast",
+        "vulnerability-scanner",
+        "secret-scanning",
+        "rust"
+      ]
+    },
+    {
+      "name": "inkworks",
+      "category": "creative-media",
+      "subcategory": "diagram",
+      "description": "Guide coding agents with Moh4696/inkworks-skill to generate interactive 3D how-it-works visual explainers styled like an engineering blueprint or architectural schematic in Three.js. Use when creating interactive product architecture diagrams, mechanical exploded views, animated process flows, or technical documentation with blueprint shader aesthetics, annotated callouts, and OrbitControls navigation. Do not use for standard 2D vector Mermaid/D2 diagrams (route to diagram) or pure video rendering (route to media-video). Triggers on: inkworks, interactive 3d diagram, engineering sheet explainer, threejs blueprint, architectural how-it-works, Moh4696/inkworks-skill.",
+      "interface": "prompt",
+      "path": "inkworks/SKILL.md",
+      "tags": [
+        "inkworks",
+        "3d-diagram",
+        "threejs",
+        "blueprint",
+        "explainer",
+        "technical-visualization"
+      ]
+    },
+    {
+      "name": "waifu2x-vulkan",
+      "category": "creative-media",
+      "subcategory": "image",
+      "description": "Operate Red2076-arch/waifu2x-image-upscaler-windows, a Vulkan GPU-accelerated image upscaler and photo denoiser powered by ncnn neural network runtimes across AMD, Intel, NVIDIA, and Apple Silicon. Use when upscaling anime artwork, cleaning JPEG compression artifacts, batch denoising photos, or automating image super-resolution without heavy CUDA or cloud dependencies. Do not use for diffusion generative image synthesis (route to image) or video temporal interpolation (route to media-video). Triggers on: waifu2x, waifu2x-vulkan, ncnn upscaler, image super-resolution, photo denoiser, Red2076-arch.",
+      "interface": "cli",
+      "path": "waifu2x-vulkan/SKILL.md",
+      "tags": [
+        "waifu2x",
+        "upscaler",
+        "vulkan",
+        "ncnn",
+        "denoiser",
+        "super-resolution",
+        "image-processing"
+      ]
+    },
+    {
+      "name": "pequalnp-proofs",
+      "category": "research",
+      "subcategory": "academic",
+      "description": "Inspect, check, and contribute to open-goat/pequalnp-proofs, a machine-checked Lean 4 formal verification repository formalizing computational complexity theorems and proof gaps from the public AI P vs NP project (pequalnp.com). Use when validating complexity theory lemmas with Lake and Lean 4, formalizing reduction algorithms, auditing machine-checked proof certificates, or verifying circuit complexity bounds. Do not use for general software model checking (route to testing) or Coq/Isabelle theorem provers without Lean 4 toolchains. Triggers on: pequalnp, lean4 complexity proofs, p vs np formal proof, open-goat, lake build complexity.",
+      "interface": "cli",
+      "path": "pequalnp-proofs/SKILL.md",
+      "tags": [
+        "pequalnp",
+        "lean4",
+        "formal-verification",
+        "complexity-theory",
+        "math-proofs",
+        "p-vs-np"
+      ]
+    },
+    {
+      "name": "freellm-router",
+      "category": "ai-agents",
+      "subcategory": "orchestration",
+      "description": "Deploy and operate jaredfreellm/FREELLM_INSTALL, a self-hosted OpenAI-compatible gateway combining multiple free-tier LLM providers into a resilient /v1 endpoint with automated health checks, intelligent rate-limit failover, and per-key quota tracking. Use when aggregating free model tiers across Gemini, Groq, Cerebras, Mistral, and HuggingFace, routing agent prompts with automatic fallback, managing encrypted API keys at rest, or configuring local proxy ports. Do not use for enterprise multi-cloud cost billing or Kubernetes LLM clusters (route to cloud-data). Triggers on: freellm, freellm-router, free llm tier gateway, openai-compatible router, rate limit failover, jaredfreellm.",
+      "interface": "cli",
+      "path": "freellm-router/SKILL.md",
+      "tags": [
+        "freellm",
+        "llm-router",
+        "gateway",
+        "failover",
+        "quota-management",
+        "openai-proxy"
+      ]
+    },
+    {
+      "name": "garimpo",
+      "category": "business",
+      "subcategory": "marketing",
+      "description": "Operate matheusmongarde/garimpo, an end-to-end open-source automated B2B prospecting and sales pipeline from Google Maps scraping, personalized preview website generation, WhatsApp conversational outreach, to Pix/Stripe/MercadoPago payment checkout. Use when orchestrating local business lead generation, generating dynamic landing pages per merchant, wiring agent APIs (Claude Code, Codex, n8n) to conversational outreach, and tracking conversions without spreadsheets. Do not use for generic web scraping without merchant prospecting pipelines (route to search-cli) or email marketing blasts (route to marketing). Triggers on: garimpo, google maps prospecting, automated b2b sales, whatsapp sales agent, pix checkout, matheusmongarde.",
+      "interface": "cli",
+      "path": "garimpo/SKILL.md",
+      "tags": [
+        "garimpo",
+        "prospecting",
+        "google-maps-scraper",
+        "lead-generation",
+        "whatsapp-agent",
+        "sales-automation"
+      ]
+    },
+    {
+      "name": "h3-creator-studio",
+      "category": "creative-media",
+      "subcategory": "video",
+      "description": "Operate animede/h3-creator-studio (YUZU Creator Studio), a local AI creative suite orchestrating text-to-video (MiniMax-H3), music generation (ACE-Step), voice synthesis (AivisSpeech), and image models with aggressive VRAM/RAM paging management for 8-96GB GPUs. Use when producing AI music videos, multi-scene video stories, automated prompt enhancement, or low-VRAM generation on consumer GPUs (e.g. RTX 3060 6GB) with dynamic engine unloading. Do not use for cloud commercial API video generation (route to media-video) or standalone audio mastering (route to audio). Triggers on: h3-creator-studio, yuzu creator studio, minimax-h3, ace-step music, local ai music video, low vram video, animede.",
+      "interface": "cli",
+      "path": "h3-creator-studio/SKILL.md",
+      "tags": [
+        "h3-creator-studio",
+        "minimax-h3",
+        "video-generation",
+        "ace-step",
+        "music-video",
+        "low-vram",
+        "local-ai"
+      ]
+    },
+    {
+      "name": "rollerskate-robot",
+      "category": "ai-agents",
+      "subcategory": "agent-frameworks",
+      "description": "Inspect, simulate, and control AI-FanGe/A-MicroRobot-that-can-Rollerskate (Xiaoxiaobai), an open-source 30cm desktop humanoid robot featuring 20 degrees of freedom, reinforcement learning locomotion/rollerskating policies in MuJoCo, and multimodal LLM voice interactions. Use when training or running locomotion neural network policies, simulating robot dynamics in MuJoCo mjlab, analyzing hardware BOM and 3D printing specs, or programming ESP32 and edge-compute LLM sensory loops. Do not use for purely simulated game agents (route to opengame) or industrial multi-axis robotic arms. Triggers on: rollerskate robot, xiaoxiaobai, micro desktop robot, mujoco locomotion rl, humanoid robot llm, AI-FanGe.",
+      "interface": "cli",
+      "path": "rollerskate-robot/SKILL.md",
+      "tags": [
+        "rollerskate-robot",
+        "xiaoxiaobai",
+        "humanoid-robot",
+        "mujoco",
+        "reinforcement-learning",
+        "esp32",
+        "physical-agent"
+      ]
     }
   ]
 }

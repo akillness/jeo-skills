@@ -1,0 +1,34 @@
+{
+  "skill_name": "h3-creator-studio",
+  "evals": [
+    {
+      "id": "h3-creator-studio-mv-plan",
+      "prompt": "Configure YUZU Creator Studio to generate a 3-scene music video with ACE-Step music and MiniMax-H3 video on a 6GB VRAM GPU.",
+      "expected_outcome": "Runs preflight, verifies stop_on_switch memory setting for low VRAM, and plans multi-engine execution.",
+      "assertions": [
+        "Checks ffmpeg and python preflight",
+        "Enables stop_on_switch VRAM unloading",
+        "Structures audio and video engine steps"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "h3-creator-studio"
+    },
+    {
+      "id": "route-out-cloud-video-api",
+      "prompt": "Call Runway Gen-3 cloud API endpoint with commercial enterprise billing.",
+      "expected_outcome": "Routes out to media-video instead of h3-creator-studio.",
+      "assertions": [
+        "Routes cloud video API calls to media-video"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "media-video"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

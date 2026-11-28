@@ -1,0 +1,34 @@
+{
+  "skill_name": "pequalnp-proofs",
+  "evals": [
+    {
+      "id": "pequalnp-check-lake",
+      "prompt": "Run Lake build to verify the machine-checked complexity lemmas in pequalnp-proofs and check for open proof gaps.",
+      "expected_outcome": "Executes preflight check, runs lake build, and reports on checked lemmas and remaining sorries/gaps.",
+      "assertions": [
+        "Runs offline preflight",
+        "Invokes lake build on Lean 4 project",
+        "Identifies verified versus open proof targets"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "pequalnp-proofs"
+    },
+    {
+      "id": "route-out-smt-z3",
+      "prompt": "Solve bitvector satisfiability constraints with Z3 SMT solver.",
+      "expected_outcome": "Routes out to testing instead of pequalnp-proofs.",
+      "assertions": [
+        "Routes SMT solving to testing"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "testing"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "skill": "llm-asm",
+  "repository": "alesha-pro/llm.asm",
+  "commit": "e7d48837421da791cb9468fd518e22e0b996d1ad",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "66469421fec380d8fc4ec134f57876ebabc11045282cac7f15c6c89682e23f18",
+      "url": "https://github.com/alesha-pro/llm.asm/blob/e7d48837421da791cb9468fd518e22e0b996d1ad/README.md"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "4d23a5160fe16fdf2a7126bcf06be039db46ecc0b75d66de9a39d90313372d1b",
+      "url": "https://github.com/alesha-pro/llm.asm/blob/e7d48837421da791cb9468fd518e22e0b996d1ad/LICENSE"
+    },
+    {
+      "path": "Makefile",
+      "sha256": "3c6e819f1ee7cf385f47a1fbbdbb61784918a7d0c866bf937069ba4b9ee223a2",
+      "url": "https://github.com/alesha-pro/llm.asm/blob/e7d48837421da791cb9468fd518e22e0b996d1ad/Makefile"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "nasm"
+    },
+    {
+      "name": "ld"
+    },
+    {
+      "name": "make"
+    },
+    {
+      "name": "qemu-system-x86_64"
+    }
+  ]
+}

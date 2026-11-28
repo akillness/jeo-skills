@@ -1,0 +1,34 @@
+{
+  "skill_name": "inkworks",
+  "evals": [
+    {
+      "id": "inkworks-blueprint-explainer",
+      "prompt": "Generate a blueprint-styled 3D explainer page for a distributed consensus protocol with annotated components and OrbitControls.",
+      "expected_outcome": "Uses inkworks prompt guidelines to structure a clean Three.js page with technical blueprint shaders and callouts.",
+      "assertions": [
+        "Applies inkworks prompt guidelines",
+        "Generates Three.js blueprint aesthetic",
+        "Includes interactive navigation"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "inkworks"
+    },
+    {
+      "id": "route-out-mermaid-flow",
+      "prompt": "Create a simple markdown table and 2D Mermaid sequence diagram for user login.",
+      "expected_outcome": "Routes out to diagram instead of inkworks.",
+      "assertions": [
+        "Routes 2D Mermaid diagramming to diagram"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "diagram"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

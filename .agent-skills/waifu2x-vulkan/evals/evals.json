@@ -1,0 +1,34 @@
+{
+  "skill_name": "waifu2x-vulkan",
+  "evals": [
+    {
+      "id": "waifu2x-batch-upscale",
+      "prompt": "Upscale a folder of 2D illustration PNGs by 2x with level 2 noise reduction using Vulkan GPU acceleration.",
+      "expected_outcome": "Runs preflight, verifies waifu2x command flags (-s 2 -n 2 -m models-cunet), and executes batch upscale.",
+      "assertions": [
+        "Checks waifu2x CLI presence",
+        "Configures 2x scale and noise reduction flags",
+        "Selects Vulkan GPU acceleration"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "waifu2x-vulkan"
+    },
+    {
+      "id": "route-out-diffusion-synth",
+      "prompt": "Generate a photorealistic image from prompt using Flux.1 Schnell diffusion model.",
+      "expected_outcome": "Routes out to image instead of waifu2x-vulkan.",
+      "assertions": [
+        "Routes generative diffusion synthesis to image"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "image"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

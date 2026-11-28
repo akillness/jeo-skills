@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "skill": "waifu2x-vulkan",
+  "repository": "Red2076-arch/waifu2x-image-upscaler-windows",
+  "commit": "022f8f96aef4a63ffb2a3acf867d7a6aaa88b086",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "3e37c71af72ded6b21dbbc186fe0c495dbc7e435e3e90ae9d48dc1475179fd61",
+      "url": "https://github.com/Red2076-arch/waifu2x-image-upscaler-windows/blob/022f8f96aef4a63ffb2a3acf867d7a6aaa88b086/README.md"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "8df5c7f908bc5b5a1479e4cd44174570c1bcab83b743a5d2d338fe060ae7219a",
+      "url": "https://github.com/Red2076-arch/waifu2x-image-upscaler-windows/blob/022f8f96aef4a63ffb2a3acf867d7a6aaa88b086/LICENSE"
+    },
+    {
+      "path": "SECURITY.md",
+      "sha256": "c6a2b1eac99fe72070e2163bd74606ff16b84bc80c2c9e2e2b91661d1157053f",
+      "url": "https://github.com/Red2076-arch/waifu2x-image-upscaler-windows/blob/022f8f96aef4a63ffb2a3acf867d7a6aaa88b086/SECURITY.md"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "waifu2x-ncnn-vulkan"
+    },
+    {
+      "name": "vulkaninfo"
+    }
+  ]
+}

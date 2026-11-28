@@ -369,7 +369,7 @@ node ~/.agents/jev/jev-harness.mjs \
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 488개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 498개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
 ### 🌐 웹 (78개)
 
@@ -461,9 +461,9 @@ node ~/.agents/jev/jev-harness.mjs \
 
 </details>
 
-### 🏗 인프라 (22개)
+### 🏗 인프라 (23개)
 
-하위 분류: `deployment` (2), `environment` (2), `observability` (4), `security` (4), `cloud-data` (9), `automation` (0), `tooling` (1)
+하위 분류: `deployment` (2), `environment` (2), `observability` (4), `security` (5), `cloud-data` (9), `automation` (0), `tooling` (1)
 
 <details>
 <summary>스킬 보기</summary>
@@ -492,12 +492,13 @@ node ~/.agents/jev/jev-harness.mjs \
 | `langfuse` |
 | `artex` |
 | `rete` |
+| `safe-anything` |
 
 </details>
 
-### 🎮 게임 (55개)
+### 🎮 게임 (56개)
 
-하위 분류: `client` (10), `web` (5), `server` (1), `design-ui` (7), `audio` (1), `animation` (5), `motion-vfx` (4), `sprite-image` (3), `art-resources` (4), `storytelling` (0), `tooling` (8), `qa-performance` (5), `release` (2)
+하위 분류: `client` (10), `web` (5), `server` (1), `design-ui` (7), `audio` (1), `animation` (5), `motion-vfx` (4), `sprite-image` (3), `art-resources` (4), `storytelling` (0), `tooling` (9), `qa-performance` (5), `release` (2)
 
 <details>
 <summary>스킬 보기</summary>
@@ -559,12 +560,13 @@ node ~/.agents/jev/jev-harness.mjs \
 | `motion2mixamo` |
 | `unimate` |
 | `3d-vibe-coding` |
+| `opengame` |
 
 </details>
 
-### 🎬 크리에이티브 미디어 (42개)
+### 🎬 크리에이티브 미디어 (45개)
 
-하위 분류: `image` (10), `video` (18), `motion` (2), `audio` (2), `presentation` (1), `diagram` (2), `design` (5), `capture` (0), `storytelling` (2)
+하위 분류: `image` (11), `video` (19), `motion` (2), `audio` (2), `presentation` (1), `diagram` (3), `design` (5), `capture` (0), `storytelling` (2)
 
 <details>
 <summary>스킬 보기</summary>
@@ -613,6 +615,9 @@ node ~/.agents/jev/jev-harness.mjs \
 | `artcraft` |
 | `motionmaxxing` |
 | `3dviz-pro-max` |
+| `inkworks` |
+| `waifu2x-vulkan` |
+| `h3-creator-studio` |
 
 </details>
 
@@ -679,9 +684,9 @@ node ~/.agents/jev/jev-harness.mjs \
 
 </details>
 
-### 🤖 AI 및 에이전트 (88개)
+### 🤖 AI 및 에이전트 (90개)
 
-하위 분류: `orchestration` (24), `agent-frameworks` (22), `skill-authoring` (6), `evaluation` (10), `memory` (8), `planning-review` (13), `discovery` (3), `prompting` (2)
+하위 분류: `orchestration` (25), `agent-frameworks` (23), `skill-authoring` (6), `evaluation` (10), `memory` (8), `planning-review` (13), `discovery` (3), `prompting` (2)
 
 <details>
 <summary>스킬 보기</summary>
@@ -776,12 +781,14 @@ node ~/.agents/jev/jev-harness.mjs \
 | `gstack` |
 | `official-agent-skills` |
 | `wshobson-agents` |
+| `freellm-router` |
+| `rollerskate-robot` |
 
 </details>
 
-### 🧰 엔지니어링 (29개)
+### 🧰 엔지니어링 (30개)
 
-하위 분류: `code-quality` (14), `testing` (4), `architecture` (6), `documentation` (2), `code-navigation` (3)
+하위 분류: `code-quality` (14), `testing` (4), `architecture` (7), `documentation` (2), `code-navigation` (3)
 
 <details>
 <summary>스킬 보기</summary>
@@ -817,12 +824,13 @@ node ~/.agents/jev/jev-harness.mjs \
 | `fast-anything` |
 | `mobile-agent-testers` |
 | `serena` |
+| `llm-asm` |
 
 </details>
 
-### 🔭 연구 및 분석 (19개)
+### 🔭 연구 및 분석 (20개)
 
-하위 분류: `academic` (3), `web-research` (5), `data-analysis` (2), `experimentation` (3), `benchmarking` (2), `intelligence` (4)
+하위 분류: `academic` (4), `web-research` (5), `data-analysis` (2), `experimentation` (3), `benchmarking` (2), `intelligence` (4)
 
 <details>
 <summary>스킬 보기</summary>
@@ -848,12 +856,13 @@ node ~/.agents/jev/jev-harness.mjs \
 | `new-term-radar` |
 | `last30days` |
 | `opencompass` |
+| `pequalnp-proofs` |
 
 </details>
 
-### 📣 비즈니스 (71개)
+### 📣 비즈니스 (72개)
 
-하위 분류: `marketing` (5), `support` (2), `publishing` (1), `pm-toolkit` (5), `pm-discovery` (13), `pm-strategy` (12), `pm-execution` (12), `pm-market-research` (7), `pm-analytics` (3), `pm-go-to-market` (6), `pm-growth` (5)
+하위 분류: `marketing` (6), `support` (2), `publishing` (1), `pm-toolkit` (5), `pm-discovery` (13), `pm-strategy` (12), `pm-execution` (12), `pm-market-research` (7), `pm-analytics` (3), `pm-go-to-market` (6), `pm-growth` (5)
 
 <details>
 <summary>스킬 보기</summary>
@@ -931,6 +940,7 @@ node ~/.agents/jev/jev-harness.mjs \
 | `product-name` |
 | `value-prop-statements` |
 | `moneyprinter-v2` |
+| `garimpo` |
 
 </details>
 

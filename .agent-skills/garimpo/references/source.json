@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "skill": "garimpo",
+  "repository": "matheusmongarde/garimpo",
+  "commit": "ac28cde3b30506cf28926d813141cea757170a2b",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "40cfe7ec8959ed3a97cc18be87cc0aaa6d7e7153687e9d2a2b2247ead3abcdf1",
+      "url": "https://github.com/matheusmongarde/garimpo/blob/ac28cde3b30506cf28926d813141cea757170a2b/README.md"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "e9ebfa5652c07e628a2591bbdf88343ce1732fd324c15682942152956e961848",
+      "url": "https://github.com/matheusmongarde/garimpo/blob/ac28cde3b30506cf28926d813141cea757170a2b/LICENSE"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "063098f6cb31bb44c6f8fbea25b3876de7ee1e5f7d00a50dbab506f6415eb7f0",
+      "url": "https://github.com/matheusmongarde/garimpo/blob/ac28cde3b30506cf28926d813141cea757170a2b/AGENTS.md"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "node"
+    },
+    {
+      "name": "npm"
+    },
+    {
+      "name": "docker"
+    }
+  ]
+}

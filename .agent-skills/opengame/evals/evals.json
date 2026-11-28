@@ -1,0 +1,34 @@
+{
+  "skill_name": "opengame",
+  "evals": [
+    {
+      "id": "opengame-remix-mini-game",
+      "prompt": "Use opengame to scaffold a new 3D parkour mini-game from a template and export it for WeChat Mini Games.",
+      "expected_outcome": "Runs preflight, locates template, sets up Three.js configuration, and prepares export build targeting WeChat.",
+      "assertions": [
+        "Runs offline preflight",
+        "Configures export target for mini-game platform",
+        "Preserves game loop assets"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "opengame"
+    },
+    {
+      "id": "route-out-ue5-native",
+      "prompt": "Compile native C++ plugins for Unreal Engine 5.4 dedicated servers.",
+      "expected_outcome": "Routes out to game-client instead of opengame.",
+      "assertions": [
+        "Routes native UE5 engine compilation to game-client"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "game-client"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

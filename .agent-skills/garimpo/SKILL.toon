@@ -1,0 +1,6 @@
+N:garimpo
+D:Automated B2B prospecting pipeline from Google Maps scraping to personalized websites and WhatsApp sales closing.
+G:business marketing cli garimpo prospecting google-maps-scraper
+U[5]:google-maps-scraping,preview-site-generation,whatsapp-outreach,payment-closing,agent-api-integration
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[3]:marketing,google-maps-scraper,pm-growth

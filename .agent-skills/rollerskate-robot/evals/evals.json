@@ -1,0 +1,34 @@
+{
+  "skill_name": "rollerskate-robot",
+  "evals": [
+    {
+      "id": "rollerskate-robot-mujoco-sim",
+      "prompt": "Load Xiaoxiaobai 20-DOF humanoid model in MuJoCo mjlab and test the reinforcement learning rollerskating policy.",
+      "expected_outcome": "Runs preflight, verifies MuJoCo environment, inspects URDF/MJCF models and RL policy weights.",
+      "assertions": [
+        "Checks MuJoCo preflight presence",
+        "Locates 20-DOF humanoid MJCF/URDF models",
+        "Verifies RL policy inference pipeline"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "rollerskate-robot"
+    },
+    {
+      "id": "route-out-virtual-game-npc",
+      "prompt": "Build a 3D browser mini-game with autonomous NPC game agents.",
+      "expected_outcome": "Routes out to opengame instead of rollerskate-robot.",
+      "assertions": [
+        "Routes virtual browser mini-game agents to opengame"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "opengame"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

@@ -367,7 +367,7 @@ Consulta la [guía de instalación](setup-all-skills-prompt.md#jev-control-plane
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 488 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 498 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (78)
 
@@ -459,9 +459,9 @@ Subcategorías: `frontend` (16), `backend` (3), `design` (17), `api` (2), `auth`
 
 </details>
 
-### 🏗 Infraestructura (22)
+### 🏗 Infraestructura (23)
 
-Subcategorías: `deployment` (2), `environment` (2), `observability` (4), `security` (4), `cloud-data` (9), `automation` (0), `tooling` (1)
+Subcategorías: `deployment` (2), `environment` (2), `observability` (4), `security` (5), `cloud-data` (9), `automation` (0), `tooling` (1)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -490,12 +490,13 @@ Subcategorías: `deployment` (2), `environment` (2), `observability` (4), `secur
 | `langfuse` |
 | `artex` |
 | `rete` |
+| `safe-anything` |
 
 </details>
 
-### 🎮 Juego (55)
+### 🎮 Juego (56)
 
-Subcategorías: `client` (10), `web` (5), `server` (1), `design-ui` (7), `audio` (1), `animation` (5), `motion-vfx` (4), `sprite-image` (3), `art-resources` (4), `storytelling` (0), `tooling` (8), `qa-performance` (5), `release` (2)
+Subcategorías: `client` (10), `web` (5), `server` (1), `design-ui` (7), `audio` (1), `animation` (5), `motion-vfx` (4), `sprite-image` (3), `art-resources` (4), `storytelling` (0), `tooling` (9), `qa-performance` (5), `release` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -557,12 +558,13 @@ Subcategorías: `client` (10), `web` (5), `server` (1), `design-ui` (7), `audio`
 | `motion2mixamo` |
 | `unimate` |
 | `3d-vibe-coding` |
+| `opengame` |
 
 </details>
 
-### 🎬 Medios Creativos (42)
+### 🎬 Medios Creativos (45)
 
-Subcategorías: `image` (10), `video` (18), `motion` (2), `audio` (2), `presentation` (1), `diagram` (2), `design` (5), `capture` (0), `storytelling` (2)
+Subcategorías: `image` (11), `video` (19), `motion` (2), `audio` (2), `presentation` (1), `diagram` (3), `design` (5), `capture` (0), `storytelling` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -611,6 +613,9 @@ Subcategorías: `image` (10), `video` (18), `motion` (2), `audio` (2), `presenta
 | `artcraft` |
 | `motionmaxxing` |
 | `3dviz-pro-max` |
+| `inkworks` |
+| `waifu2x-vulkan` |
+| `h3-creator-studio` |
 
 </details>
 
@@ -677,9 +682,9 @@ Subcategorías: `developer-cli` (12), `ai-cli` (21), `media-cli` (1), `automatio
 
 </details>
 
-### 🤖 IA y Agentes (88)
+### 🤖 IA y Agentes (90)
 
-Subcategorías: `orchestration` (24), `agent-frameworks` (22), `skill-authoring` (6), `evaluation` (10), `memory` (8), `planning-review` (13), `discovery` (3), `prompting` (2)
+Subcategorías: `orchestration` (25), `agent-frameworks` (23), `skill-authoring` (6), `evaluation` (10), `memory` (8), `planning-review` (13), `discovery` (3), `prompting` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -774,12 +779,14 @@ Subcategorías: `orchestration` (24), `agent-frameworks` (22), `skill-authoring`
 | `gstack` |
 | `official-agent-skills` |
 | `wshobson-agents` |
+| `freellm-router` |
+| `rollerskate-robot` |
 
 </details>
 
-### 🧰 Ingeniería (29)
+### 🧰 Ingeniería (30)
 
-Subcategorías: `code-quality` (14), `testing` (4), `architecture` (6), `documentation` (2), `code-navigation` (3)
+Subcategorías: `code-quality` (14), `testing` (4), `architecture` (7), `documentation` (2), `code-navigation` (3)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -815,12 +822,13 @@ Subcategorías: `code-quality` (14), `testing` (4), `architecture` (6), `documen
 | `fast-anything` |
 | `mobile-agent-testers` |
 | `serena` |
+| `llm-asm` |
 
 </details>
 
-### 🔭 Investigación y Análisis (19)
+### 🔭 Investigación y Análisis (20)
 
-Subcategorías: `academic` (3), `web-research` (5), `data-analysis` (2), `experimentation` (3), `benchmarking` (2), `intelligence` (4)
+Subcategorías: `academic` (4), `web-research` (5), `data-analysis` (2), `experimentation` (3), `benchmarking` (2), `intelligence` (4)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -846,12 +854,13 @@ Subcategorías: `academic` (3), `web-research` (5), `data-analysis` (2), `experi
 | `new-term-radar` |
 | `last30days` |
 | `opencompass` |
+| `pequalnp-proofs` |
 
 </details>
 
-### 📣 Negocios (71)
+### 📣 Negocios (72)
 
-Subcategorías: `marketing` (5), `support` (2), `publishing` (1), `pm-toolkit` (5), `pm-discovery` (13), `pm-strategy` (12), `pm-execution` (12), `pm-market-research` (7), `pm-analytics` (3), `pm-go-to-market` (6), `pm-growth` (5)
+Subcategorías: `marketing` (6), `support` (2), `publishing` (1), `pm-toolkit` (5), `pm-discovery` (13), `pm-strategy` (12), `pm-execution` (12), `pm-market-research` (7), `pm-analytics` (3), `pm-go-to-market` (6), `pm-growth` (5)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -929,6 +938,7 @@ Subcategorías: `marketing` (5), `support` (2), `publishing` (1), `pm-toolkit` (
 | `product-name` |
 | `value-prop-statements` |
 | `moneyprinter-v2` |
+| `garimpo` |
 
 </details>
 

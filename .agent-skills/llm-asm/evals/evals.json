@@ -1,0 +1,34 @@
+{
+  "skill_name": "llm-asm",
+  "evals": [
+    {
+      "id": "llm-asm-inspect-gemm",
+      "prompt": "Examine the AVX2 GEMM matrix multiplication kernel in llm.asm and test assembling the inference binary with nasm.",
+      "expected_outcome": "Runs preflight, verifies nasm compiler, inspects SIMD vector instructions, and explains zero-libc linking.",
+      "assertions": [
+        "Checks nasm presence via preflight",
+        "Identifies AVX2 SIMD kernel files",
+        "Explains zero-libc ld flags"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "llm-asm"
+    },
+    {
+      "id": "route-out-vllm-cluster",
+      "prompt": "Deploy distributed vLLM server across 8 H100 GPUs with tensor parallelism.",
+      "expected_outcome": "Routes out to infrastructure-core instead of llm-asm.",
+      "assertions": [
+        "Routes multi-GPU vLLM deployment to infrastructure-core"
+      ],
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed",
+      "expected_skill": "infrastructure-core"
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

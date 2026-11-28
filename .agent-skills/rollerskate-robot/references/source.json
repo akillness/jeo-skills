@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "skill": "rollerskate-robot",
+  "repository": "AI-FanGe/A-MicroRobot-that-can-Rollerskate",
+  "commit": "f4de92baffe394cd82d5d7140f3a48c4ed7282d4",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "160bb96238006ea3c1d1f55fc86e0d6feb160b23a295d20131276a3176ee8e80",
+      "url": "https://github.com/AI-FanGe/A-MicroRobot-that-can-Rollerskate/blob/f4de92baffe394cd82d5d7140f3a48c4ed7282d4/README.md"
+    },
+    {
+      "path": "BOM.md",
+      "sha256": "c413b2eb7efb4e3500a904c3e958794a6fb130bc817b0ba0816c7e0c7f43bdc9",
+      "url": "https://github.com/AI-FanGe/A-MicroRobot-that-can-Rollerskate/blob/f4de92baffe394cd82d5d7140f3a48c4ed7282d4/BOM.md"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "fd2ce6bdefd470f088d8f2925961f7f472e218cb6d5e8d456ff6a820e262a59c",
+      "url": "https://github.com/AI-FanGe/A-MicroRobot-that-can-Rollerskate/blob/f4de92baffe394cd82d5d7140f3a48c4ed7282d4/LICENSE"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "mujoco"
+    }
+  ]
+}

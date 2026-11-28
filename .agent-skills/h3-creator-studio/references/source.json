@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "skill": "h3-creator-studio",
+  "repository": "animede/h3-creator-studio",
+  "commit": "6ef2167bbab80a1e3da7b79fee0c4b3a24481d61",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "ab58f5f4a36ccf9e3c886c81b9ced830cc30ef0f144c4ec318157a73dfb73e32",
+      "url": "https://github.com/animede/h3-creator-studio/blob/6ef2167bbab80a1e3da7b79fee0c4b3a24481d61/README.md"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "8f6901d17bea4ca8b64de387f5f82774687e11558b3f96c10e461de5c68fb8b3",
+      "url": "https://github.com/animede/h3-creator-studio/blob/6ef2167bbab80a1e3da7b79fee0c4b3a24481d61/LICENSE"
+    },
+    {
+      "path": "NOTICE",
+      "sha256": "b364bccd41f44b0b965a3190b76f9bca3fa99018d7094b5911f96f22dc824fad",
+      "url": "https://github.com/animede/h3-creator-studio/blob/6ef2167bbab80a1e3da7b79fee0c4b3a24481d61/NOTICE"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3"
+    },
+    {
+      "name": "ffmpeg"
+    },
+    {
+      "name": "git"
+    }
+  ]
+}

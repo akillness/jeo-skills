@@ -1,0 +1,6 @@
+N:rollerskate-robot
+D:Simulate and control Xiaoxiaobai, an open-source 30cm 20-DOF humanoid robot with MuJoCo RL rollerskating policies and LLM interactions.
+G:ai-agents agent-frameworks cli rollerskate-robot xiaoxiaobai humanoid-robot
+U[5]:mujoco-simulation,reinforcement-learning-policy,hardware-bom-audit,esp32-motor-control,llm-voice-interaction
+S[4]:scripts/preflight.py,references/source.json,references/upstream.md,evals/evals.json
+R[3]:agent-frameworks,orchestration,experimentation
